@@ -1,0 +1,12 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Built something with Overalls, or running it somewhere interesting? Share it here: fleet setups, guest images, overlays, integrations and agent workflows are all welcome.
+  - type: textarea
+    id: what
+    attributes:
+      label: What did you make?
+      description: Links, screenshots and how you built it.
+    validations:
+      required: true

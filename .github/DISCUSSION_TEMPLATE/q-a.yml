@@ -1,0 +1,75 @@
+title: "[Q&A] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for asking. Please search [existing discussions](https://github.com/ghuntley/overalls/discussions) and the [self-hosting guide](https://overalls.dev/self-host/) first; your question may already be answered.
+
+        > [!WARNING]
+        > **Don't post security vulnerabilities here.** Report them privately through a [security advisory](https://github.com/ghuntley/overalls/security/advisories/new). See [SECURITY.md](https://github.com/ghuntley/overalls/blob/trunk/SECURITY.md).
+  - type: textarea
+    id: question
+    attributes:
+      label: What are you trying to do?
+      description: Describe your goal and what's getting in the way.
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of Overalls is this about? Pick "Not sure" if you don't know.
+      multiple: true
+      options:
+        - Not sure
+        - Marshall (web app and control plane)
+        - Lilly (host provisioner)
+        - Porsche (SSH management gateway)
+        - Audi (DNS and ingress)
+        - Brady (egress proxy and cache)
+        - Enrico (GitHub mirror)
+        - Galileo (integration gateway)
+        - Ziggy (inference proxy)
+        - Lyra (overalls CLI and guest tools)
+        - Browser extension
+        - Fleet, Nix and host provisioning
+        - Guest images
+    validations:
+      required: true
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: Deployment
+      options:
+        - Single host
+        - Multiple hosts
+        - Inception (Overalls inside Overalls)
+        - Not deployed yet
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Commit or release
+      description: The revision your fleet is running, from `git rev-parse HEAD` in your fork.
+      placeholder: e.g. be22c9d
+  - type: dropdown
+    id: guest
+    attributes:
+      label: Guest operating system
+      description: If the question is about a machine.
+      options:
+        - Not applicable
+        - NixOS
+        - Ubuntu 26.04 LTS
+        - Windows Server 2025
+        - AlmaLinux
+        - FreeBSD
+        - illumos
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+      description: Commands you ran and what happened. Paste logs as text, not screenshots, and remove any secrets.
+      render: shell

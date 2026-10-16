@@ -1,0 +1,14 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For anything that doesn't fit another category. If you need help, [Q&A](https://github.com/ghuntley/overalls/discussions/categories/q-a) is the place, so answers can be marked and found later.
+
+        > [!WARNING]
+        > **Don't post security vulnerabilities here.** Report them privately through a [security advisory](https://github.com/ghuntley/overalls/security/advisories/new).
+  - type: textarea
+    id: body
+    attributes:
+      label: Message
+    validations:
+      required: true
