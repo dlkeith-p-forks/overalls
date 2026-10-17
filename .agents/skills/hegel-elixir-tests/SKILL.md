@@ -27,6 +27,12 @@ ExUnit tests where those provide the required evidence.
 
 - Keep Hegel development/test-only (`runtime: false`) and use the repository-pinned
   native engine. Fail clearly when the NIF or ABI version is unavailable.
+- When changing the `hegel_ex` Git revision in any `mix.exs` or `mix.lock`, update
+  the corresponding fixed-output Mix dependency hash in
+  `nix/domains/artifacts/dependency-hashes.json` for every affected application.
+  Rebuild the relevant Nix artifact (or run the repository's hash-refresh workflow)
+  and record the resulting hash; a Mix lock update alone leaves offline Nix builds
+  inconsistent.
 - Prefer explicit typed generators and bounded values. Give collections finite size;
   do not generate arbitrary atoms, PIDs, references, resources, secrets, or unbounded
   terms implicitly. Use assumptions only for genuinely unreachable combinations.
