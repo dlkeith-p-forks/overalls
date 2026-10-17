@@ -1,6 +1,7 @@
 defmodule Audi.HealthTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   property "gateway health needs both listener observations and positive current authority" do
     check all(before? <- boolean(), after? <- boolean(), authority? <- boolean()) do
