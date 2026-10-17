@@ -22,7 +22,5 @@ antithesis/scratchbook
 docs
 fleet
 hldd
-marshall
-scripts
 # Nix runtime closures may contain required bytecode and are copied verbatim.
 !antithesis/build/contexts/**
