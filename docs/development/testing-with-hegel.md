@@ -225,8 +225,8 @@ secrets into the serial log, keep `assert` messages value-free.
 ## Elixir and BEAM properties
 
 Elixir properties use the same native Hegel engine but run inside the Mix test VM.
-The protocol frontend is pinned to `2c9f7a4`; its merged full-gate execution is
-pending. The review preserves the passing `6a62795` result separately. This
+The protocol frontend is pinned to `2c9f7a4`; its merged full gate passed 299
+tests and properties. The review preserves the passing `6a62795` result separately. This
 frontend update changes no native engine sources.
 Use them for pure functions, protocol codecs, Ash changesets, lifecycle models,
 authorization decisions, bounded retry/reconciliation models, and BEAM-visible

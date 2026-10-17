@@ -11,7 +11,7 @@ use serde_json::Value;
 use std::fs::{self, File, OpenOptions};
 use std::io::{self, Read, Write};
 #[cfg(unix)]
-use std::os::unix::fs::{OpenOptionsExt, PermissionsExt};
+use std::os::unix::fs::{MetadataExt, OpenOptionsExt, PermissionsExt};
 #[cfg(unix)]
 use std::os::unix::process::CommandExt;
 use std::path::{Path, PathBuf};
@@ -272,6 +272,10 @@ impl Paths {
 
     pub fn status(&self) -> PathBuf {
         self.run.join("status")
+    }
+
+    pub fn git_configuration(&self) -> PathBuf {
+        self.run.join("gitconfig")
     }
 
     pub fn checkout(&self, source: &WorkspaceSource) -> PathBuf {
@@ -576,6 +580,7 @@ impl Retry {
 /// Persistent receiver state rooted at [`Paths`].
 pub struct Receiver {
     paths: Paths,
+    shared_git_configuration: bool,
 }
 
 fn write_atomic(path: &Path, bytes: &[u8], mode: u32) -> io::Result<()> {
@@ -646,7 +651,85 @@ impl Receiver {
     pub fn new(paths: Paths) -> io::Result<Self> {
         directory(&paths.state, 0o700)?;
         directory(&paths.run, 0o755)?;
-        Ok(Self { paths })
+        Ok(Self {
+            paths,
+            shared_git_configuration: false,
+        })
+    }
+
+    /// Enable the native image's root-controlled system Git include.
+    pub fn with_shared_git_configuration(mut self) -> Self {
+        self.shared_git_configuration = true;
+        self
+    }
+
+    /// @cc [owner:ghuntley,label:security;recovery] native-workspace-exact-git-ownership
+    /// Native completion MUST publish one exact checkout ownership exception
+    /// from the validated persisted source before Done, and restore it before
+    /// publishing Done after a reboot. The include MUST remain outside the
+    /// writable checkout in a daemon-owned non-writable runtime directory;
+    /// checkout/parent links and group/other-writable configuration MUST refuse.
+    /// The receiver's isolated Git environment MUST remain unchanged.
+    fn publish_shared_git_configuration(&self, source: &WorkspaceSource) -> io::Result<()> {
+        if !self.shared_git_configuration {
+            return Ok(());
+        }
+        if self.persisted()?.as_ref() != Some(source) {
+            return Err(io::Error::other("invalid shared checkout source"));
+        }
+        let checkout = self.paths.checkout(source);
+        let checkout_metadata = fs::symlink_metadata(&checkout)?;
+        let run_metadata = fs::symlink_metadata(&self.paths.run)?;
+        if !checkout_metadata.file_type().is_dir()
+            || !run_metadata.file_type().is_dir()
+            || fs::canonicalize(&checkout)? != checkout
+            || fs::canonicalize(&self.paths.run)? != self.paths.run
+        {
+            return Err(io::Error::other(
+                "invalid shared checkout configuration path",
+            ));
+        }
+        #[cfg(unix)]
+        {
+            // SAFETY: geteuid has no arguments or memory access requirements.
+            let owner = unsafe { libc::geteuid() };
+            if checkout_metadata.uid() != owner
+                || run_metadata.uid() != owner
+                || run_metadata.mode() & 0o022 != 0
+            {
+                return Err(io::Error::other(
+                    "invalid shared checkout configuration owner",
+                ));
+            }
+        }
+        let path = self.paths.git_configuration();
+        match fs::symlink_metadata(&path) {
+            Ok(metadata) => {
+                if !metadata.file_type().is_file() {
+                    return Err(io::Error::other(
+                        "invalid shared checkout configuration file",
+                    ));
+                }
+                #[cfg(unix)]
+                if metadata.uid() != run_metadata.uid() || metadata.mode() & 0o022 != 0 {
+                    return Err(io::Error::other(
+                        "invalid shared checkout configuration file",
+                    ));
+                }
+            }
+            Err(error) if error.kind() == io::ErrorKind::NotFound => {}
+            Err(error) => return Err(error),
+        }
+        let directory = checkout
+            .to_str()
+            .ok_or_else(|| io::Error::other("invalid shared checkout configuration path"))?
+            .replace('\\', "\\\\")
+            .replace('"', "\\\"")
+            .replace('\n', "\\n")
+            .replace('\t', "\\t")
+            .replace('\u{8}', "\\b");
+        let configuration = format!("[safe]\n\tdirectory = \"{directory}\"\n");
+        write_atomic(&path, configuration.as_bytes(), 0o644)
     }
 
     pub fn paths(&self) -> &Paths {
@@ -684,8 +767,18 @@ impl Receiver {
     /// Startup state: `done` wins, an undone persisted source resumes cloning,
     /// otherwise wait for Lilly.
     pub fn start(&self) -> io::Result<Option<WorkspaceSource>> {
+        if self.shared_git_configuration {
+            self.publish(Status::Waiting)?;
+        }
         let persisted = self.persisted()?;
         if self.done() {
+            if self.shared_git_configuration {
+                self.publish_shared_git_configuration(
+                    persisted
+                        .as_ref()
+                        .ok_or_else(|| io::Error::other("missing completed checkout source"))?,
+                )?;
+            }
             self.publish(Status::Done)?;
             return Ok(None);
         }
@@ -731,6 +824,7 @@ impl Receiver {
     /// One clone attempt; `Ok(true)` when the checkout is complete and `done` is written.
     pub fn attempt(&self, source: &WorkspaceSource, git: &mut impl GitRunner) -> io::Result<bool> {
         if self.done() {
+            self.publish_shared_git_configuration(source)?;
             return Ok(true);
         }
         let workspace = &self.paths.workspace;
@@ -763,6 +857,7 @@ impl Receiver {
             share(&partial)?;
             crate::durable::rename(&partial, &checkout)?;
         }
+        self.publish_shared_git_configuration(source)?;
         write_atomic(&self.paths.done(), b"done\n", 0o600)?;
         self.publish(Status::Done)?;
         Ok(true)
@@ -798,8 +893,9 @@ impl Receiver {
 /// (ADR-0110), so the checkout is a shared workspace, not a per-user boundary.
 /// The root-owned checkout MUST be made writable by those accounts without
 /// following symlinks from repository content: directories 0777, regular files
-/// 0666 (0777 when executable). Git's ownership check is satisfied by the
-/// image's system `safe.directory = /workspace/*`, not by weakening git here.
+/// 0666 (0777 when executable). Native images MUST use the receiver's trusted
+/// exact-path include for Git ownership; other images retain their reviewed
+/// system ownership policy. Repository-owned config MUST NOT supply trust.
 #[cfg(unix)]
 fn share(root: &Path) -> io::Result<()> {
     let mut pending = vec![root.to_path_buf()];

@@ -487,13 +487,17 @@ def terminal_until(channel: Connection, expected: bytes, initial: bytes = b"") -
     return bytes(output)
 
 
-def terminal_session(uds: Path, binding: Binding) -> None:
+def terminal_session(uds: Path, binding: Binding, os_name: Os) -> None:
     """@cc [owner:ghuntley,label:verification;security] native-terminal-real-pty
     PTY evidence MUST create a real managed-account session, authenticate every
     connection, refuse an incorrect attach token, and verify executed identity,
     input, resize and retained replay. Synthetic proof bytes MUST NOT enter
     diagnostic or receipt fields, and the session MUST be explicitly retired.
+    Resize proof MUST query the selected native stty dialect; the command input
+    MUST NOT contain the expected geometry output.
     """
+    if os_name not in ("freebsd", "illumos"):
+        raise ValueError("invalid native terminal platform")
     user, term = b"u200000", b"xterm-256color"
     request_id = secrets.token_bytes(16)
     create = bytes([len(user)]) + user + bytes([len(term)]) + term + struct.pack(">HH", 80, 24)
@@ -535,8 +539,12 @@ def terminal_session(uds: Path, binding: Binding) -> None:
                 terminal_until(data, identity)
                 if terminal_request(control, 5, struct.pack(">QHH", session_id, 101, 41)):
                     raise ProtocolError("invalid native terminal resize receipt")
-                data.send(b"printf '%s%s:' native- pty-size; stty size\r")
-                terminal_until(data, b"native-pty-size:41 101\n")
+                if os_name == "illumos":
+                    data.send(b"LC_ALL=C /usr/bin/stty -a\r")
+                    terminal_until(data, b"rows = 41; columns = 101;")
+                else:
+                    data.send(b"printf '%s%s:' native- pty-size; stty size\r")
+                    terminal_until(data, b"native-pty-size:41 101\n")
                 data.send(b"printf '%s%s\\n' native- pty-retained\r")
                 retained = terminal_until(data, b"native-pty-retained\n")
             with connect(uds, 1075) as replayed:

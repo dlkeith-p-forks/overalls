@@ -143,8 +143,8 @@ defmodule Marshall.Ingress.AccessTest do
              Marshall.Ingress.ControlRequests.handle("web-renew", token, renew)
   end
 
-  property "public primary streams cannot survive policy changes or authorize alternate ports",
-           c do
+  @tag :hegel
+  test "public primary streams cannot survive policy changes or authorize alternate ports", c do
     check all(port <- filter(integer(3000..9999), &(&1 != 4444)), max_runs: 8) do
       [endpoint] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
 

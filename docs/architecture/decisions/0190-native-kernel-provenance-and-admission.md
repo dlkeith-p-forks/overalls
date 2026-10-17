@@ -467,7 +467,17 @@ shutdown, sealing the 8,589,934,592-byte disk SHA256
 Its 158,319-byte assembly receipt SHA256 is
 `512a112f910a3ce65c5f3f791a91aecbdcc20c8e428af6f9f9702ee904320180`.
 The receipt binds nine modules, 764 payload records, all three native SMF
-validations and the safe native SSH executable check. The final kit includes
+validations and the safe native SSH executable check. The native workspace
+receiver binds OmniOS Git ownership to one validated checkout path. Its
+immutable native Git configuration includes the
+root-controlled `/run/overalls-workspace/gitconfig`; the receiver writes one
+exact `/workspace/<repository>` entry atomically before its durable `done`
+marker and recreates it after volatile runtime loss. The include is outside the
+writable checkout, and unrelated root-owned repositories remain refused. This
+native-only closure is required because pinned OmniOS Git 2.44 does not support
+the `/workspace/*` prefix form; it establishes checkout ownership only, not
+native service or admission.
+The final kit includes
 the executor lease/stop correction and both SSH fixes. Runtime, complete
 services, growth, recovery and admission remain false or pending for these
 exact bytes; the admission review records their separate replay requirements.

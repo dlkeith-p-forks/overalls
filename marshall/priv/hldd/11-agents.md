@@ -371,6 +371,11 @@ malformed JSON and unsafe names return `invalid_configuration`; a changed
 configuration changes the inventory digest. Configuration content is provenance,
 not an instruction body.
 Worktree roots are supported.
+Native OmniOS workspace checkout uses a root-controlled exact Git ownership
+entry under `/run/overalls-workspace/gitconfig`, regenerated before the durable
+checkout completion marker. The pinned Git rejects the broader `/workspace/*`
+form; unrelated repositories remain refused. This records checkout ownership,
+not native service readiness or admission.
 Project guidance has a 32 KiB budget with a visible truncation warning. Guidance
 below the selected directory must still be inspected before work in that
 subtree. Typed bounded inventory and paginated reads run inside the guest

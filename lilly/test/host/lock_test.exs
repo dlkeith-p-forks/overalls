@@ -10,8 +10,8 @@ defmodule Lilly.Host.LockTest do
     :ok
   end
 
-  property "bounded acquisition waits for the same native inode and retains exclusive ownership",
-           c do
+  @tag :hegel
+  test "bounded acquisition waits for the same native inode and retains exclusive ownership", c do
     check all(
             # Release happens within the first third of the retry window, so at
             # least ~650ms of budget remains for the retry port under host load;

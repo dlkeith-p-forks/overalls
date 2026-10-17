@@ -298,8 +298,9 @@ defmodule Marshall.Compute.DrainsTest do
              |> Ash.update()
   end
 
-  property "duplicate work and reordered old outcomes cannot release a pending drain reservation",
-           c do
+  @tag :hegel
+  test "duplicate work and reordered old outcomes cannot release a pending drain reservation",
+       c do
     check all(
             actions <-
               list_of(member_of([:duplicate, :old_crash, :unknown]),

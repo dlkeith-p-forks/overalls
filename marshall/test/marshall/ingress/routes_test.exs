@@ -217,8 +217,8 @@ defmodule Marshall.Ingress.RoutesTest do
     end
   end
 
-  property "refreshes preserve one route and reject unacknowledged certificate substitutions",
-           c do
+  @tag :hegel
+  test "refreshes preserve one route and reject unacknowledged certificate substitutions", c do
     check all(
             fingerprints <- list_of(member_of(["a", "b", "c"]), min_length: 1, max_length: 12),
             max_runs: 15
@@ -250,8 +250,8 @@ defmodule Marshall.Ingress.RoutesTest do
     end
   end
 
-  property "only completed start or provision history admits readiness and current projection",
-           c do
+  @tag :hegel
+  test "only completed start or provision history admits readiness and current projection", c do
     {:ok, accepted} = report(c.request)
 
     check all(

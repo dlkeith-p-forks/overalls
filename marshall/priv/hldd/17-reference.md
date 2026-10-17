@@ -716,7 +716,8 @@ establish native guest execution, TLS, physical isolation, storage recovery or
 fleet acceptance. Protocol's workspace-source and View properties still use
 StreamData, and the wider migration remains partial. The recorded 299-test pass
 used the previous frontend pin `6a62795`; the merged frontend's complete gate
-is pending. Native engine sources are unchanged by that frontend update. The
+also passed 299 tests and properties, Covenant 14/14 and Dialyzer with zero
+errors or skips. Native engine sources are unchanged by that frontend update. The
 [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

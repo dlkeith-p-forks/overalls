@@ -18,9 +18,11 @@ import ssl
 import struct
 import subprocess
 import tempfile
+import threading
 import time
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
+from enum import StrEnum
 from pathlib import Path
 
 from native_git_fixture import Repository
@@ -31,10 +33,71 @@ DEADLINE = 3.0
 COMMAND_ID = "dddddddd-dddd-4ddd-8ddd-000000000301"
 CALL_ID = "native-execution-fixture"
 PROOF = "native-executor-proof"
+WITHDRAW_COMMAND_ID = "dddddddd-dddd-4ddd-8ddd-000000000303"
+RECOVERY_COMMAND_ID = "dddddddd-dddd-4ddd-8ddd-000000000304"
+RECOVERY_PROOF = "native-fresh-executor-proof"
+LEASE_PROBE_ROOT = "/var/run/overalls/native-lease-probe"
+LEASE_PROBE_COMMAND = (
+    "set -eu; umask 077; "
+    f"test -d {LEASE_PROBE_ROOT}; test ! -e {LEASE_PROBE_ROOT}/pids; "
+    "sleep 60 & descendant=$!; "
+    f'printf \'%s %s\\n\' "$$" "$descendant" > {LEASE_PROBE_ROOT}/pids.tmp; '
+    f'mv {LEASE_PROBE_ROOT}/pids.tmp {LEASE_PROBE_ROOT}/pids; wait "$descendant"'
+)
+WITHDRAWAL_SECONDS = 15.0
 
 
 class Refused(ValueError):
     """A closed diagnostic containing no request data."""
+
+
+@dataclass(frozen=True, repr=False)
+class Fence:
+    executor_id: str
+    epoch: int
+
+
+class WithdrawalPhase(StrEnum):
+    IDLE = "idle"
+    ARMED = "armed"
+    CLAIMED = "claimed"
+    STARTED = "started"
+    REQUESTED = "requested"
+    REVOKED = "revoked"
+    REJECTED = "rejected"
+    DEAD = "dead"
+    RECOVERY_CLAIMED = "recovery_claimed"
+    RECOVERY_STARTED = "recovery_started"
+    COMPLETE = "complete"
+
+
+@dataclass(repr=False)
+class Withdrawal:
+    phase: WithdrawalPhase = WithdrawalPhase.IDLE
+    fence: Fence | None = None
+    recovery_fence: Fence | None = None
+    started_at: float | None = None
+    terminal_attempts: int = 0
+    heartbeat_403: int = 0
+    death_elapsed_ms: int | None = None
+
+
+@dataclass(frozen=True, repr=False)
+class Snapshot:
+    execution_completed: bool
+    phase: WithdrawalPhase
+    started_at: float | None
+    terminal_attempts: int
+    heartbeat_403: int
+    death_elapsed_ms: int | None
+
+
+class Withdrawn(Refused):
+    """Matching heartbeat refusal, acknowledged only after the HTTP 403 is sent."""
+
+    def __init__(self, fence: Fence) -> None:
+        super().__init__("fixture executor withdrawn")
+        self.fence = fence
 
 
 def key(value: object) -> str:
@@ -119,7 +182,7 @@ class Config:
             key(self.user_key)
 
 
-@dataclass
+@dataclass(repr=False)
 class Authority:
     config: Config
     counters: dict[str, int] = field(default_factory=dict)
@@ -130,21 +193,101 @@ class Authority:
     claimed: bool = False
     started: bool = False
     execution_completed: bool = False
+    withdrawal: Withdrawal = field(default_factory=Withdrawal, init=False, repr=False)
+    _lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
+
+    def snapshot(self) -> Snapshot:
+        with self._lock:
+            state = self.withdrawal
+            return Snapshot(
+                self.execution_completed,
+                state.phase,
+                state.started_at,
+                state.terminal_attempts,
+                state.heartbeat_403,
+                state.death_elapsed_ms,
+            )
+
+    def count(self, event: str) -> int:
+        with self._lock:
+            return self.counters.get(event, 0)
+
+    def set_login_allowed(self, allowed: bool) -> None:
+        with self._lock:
+            self.config = replace(self.config, allow_login=allowed)
+
+    def arm_withdrawal(self) -> None:
+        """Issue no long command until the certified-SSH runner explicitly arms it."""
+        with self._lock:
+            if not self.config.execution_probe or not self.execution_completed:
+                raise Refused("ordinary fixture execution must complete first")
+            if self.withdrawal.phase != WithdrawalPhase.IDLE:
+                raise Refused("fixture withdrawal already armed")
+            self.withdrawal.phase = WithdrawalPhase.ARMED
+            self.record("withdrawal_armed")
+
+    def request_withdrawal(self) -> None:
+        with self._lock:
+            if self.withdrawal.phase != WithdrawalPhase.STARTED:
+                raise Refused("fixture withdrawal requires a started command")
+            if self.withdrawal.terminal_attempts:
+                raise Refused("fixture withdrawal observed a result attempt")
+            self.withdrawal.phase = WithdrawalPhase.REQUESTED
+            self.record("withdrawal_requested")
+
+    def heartbeat_refusal_sent(self, fence: Fence) -> None:
+        with self._lock:
+            state = self.withdrawal
+            if state.phase != WithdrawalPhase.REVOKED or state.fence != fence:
+                raise Refused("fixture withdrawal response identity differs")
+            state.phase = WithdrawalPhase.REJECTED
+            state.heartbeat_403 += 1
+            self.record("withdrawal_heartbeat_403")
+
+    def confirm_group_dead(self) -> None:
+        """@cc [owner:ghuntley,label:verification;security] native-withdrawal-recovery-gate
+        Fresh proof work MUST remain withheld until the runner observes the old
+        whole process group absent before accepted-start plus fifteen seconds,
+        after a matching heartbeat HTTP 403 and with zero result attempts.
+        Only a strictly newer, different executor fence may receive that proof.
+        """
+        with self._lock:
+            state = self.withdrawal
+            elapsed = time.monotonic() - state.started_at if state.started_at is not None else -1.0
+            if (
+                state.phase != WithdrawalPhase.REJECTED
+                or state.started_at is None
+                or state.heartbeat_403 != 1
+                or state.terminal_attempts
+                or not 0 <= elapsed < WITHDRAWAL_SECONDS
+            ):
+                raise Refused("fixture group-death confirmation refused")
+            state.death_elapsed_ms = int(elapsed * 1000)
+            state.phase = WithdrawalPhase.DEAD
+            self.record("withdrawal_group_dead")
 
     def record(self, event: str) -> None:
         """Persist bounded event counts; never request, key, token or result bytes."""
-        self.counters[event] = min(self.counters.get(event, 0) + 1, 1_000_000)
-        if self.config.receipt is not None:
-            receipt: dict[str, object] = {
-                "version": 1,
-                "fixture": "isolated-native-control",
-                "events": self.counters,
-                "execution_completed": self.execution_completed,
-                "native_admission": False,
-            }
-            temporary = self.config.receipt.with_suffix(".tmp")
-            temporary.write_text(json.dumps(receipt, sort_keys=True) + "\n")
-            temporary.replace(self.config.receipt)
+        with self._lock:
+            self.counters[event] = min(self.counters.get(event, 0) + 1, 1_000_000)
+            if self.config.receipt is not None:
+                state = self.withdrawal
+                receipt: dict[str, object] = {
+                    "version": 1,
+                    "fixture": "isolated-native-control",
+                    "events": self.counters,
+                    "execution_completed": self.execution_completed,
+                    "withdrawal": {
+                        "phase": state.phase.value,
+                        "terminal_attempts": state.terminal_attempts,
+                        "heartbeat_403": state.heartbeat_403,
+                        "death_elapsed_ms": state.death_elapsed_ms,
+                    },
+                    "native_admission": False,
+                }
+                temporary = self.config.receipt.with_suffix(".tmp")
+                temporary.write_text(json.dumps(receipt, sort_keys=True) + "\n")
+                temporary.replace(self.config.receipt)
 
     def certificate(self, public: object) -> dict[str, object]:
         public_key = key(public)
@@ -210,10 +353,16 @@ class Authority:
     def dispatch(self, method: str, host: str, path: str, body: bytes) -> dict[str, object]:
         """@cc [owner:ghuntley,label:verification;security] native-control-fixture-boundary
         The fixture MUST serve only exact synthetic SSH/executor routes, refuse
-        unknown fields and stale fences, and issue at most one fixed execution
-        probe. Signing MUST use the supplied isolated CA without a shell. Closed
+        unknown fields and stale fences, and issue only the ordinary fixed probe,
+        explicitly armed withdrawal probe and newer-fence recovery probe. State
+        changes and runner observations MUST synchronize. Signing MUST use the
+        supplied isolated CA without a shell. Closed
         counters MUST NOT contain request bodies, keys, commands or tool output.
         """
+        with self._lock:
+            return self._dispatch(method, host, path, body)
+
+    def _dispatch(self, method: str, host: str, path: str, body: bytes) -> dict[str, object]:
         if (
             host == "ssh.integration.internal"
             and method == "GET"
@@ -228,6 +377,17 @@ class Authority:
         if method != "POST":
             raise Refused("unknown fixture route")
         request = object_body(body)
+        if (
+            host == "llm.internal"
+            and path == "/agent/v1/transition"
+            and request.get("command_id") == WITHDRAW_COMMAND_ID
+            and (request.get("status") != "started" or request.get("result") != {})
+        ):
+            # Count attempts before route shape, executor identity or lease validation.
+            self.withdrawal.terminal_attempts = min(
+                self.withdrawal.terminal_attempts + 1, 1_000_000
+            )
+            self.record("withdrawal_result_attempt")
         if host == "ssh.integration.internal":
             if path == "/ssh/v1/host-certificate" and request.keys() == {"public_key"}:
                 return self.certificate(request["public_key"])
@@ -274,6 +434,12 @@ class Authority:
         }:
             self.lease(request)
             if path.endswith("/heartbeat"):
+                state = self.withdrawal
+                current = Fence(self.executor_id, self.fence_epoch)
+                if state.phase == WithdrawalPhase.REQUESTED and state.fence == current:
+                    state.phase = WithdrawalPhase.REVOKED
+                    self.lease_deadline = 0.0
+                    raise Withdrawn(current)
                 self.lease_deadline = time.monotonic() + 60
                 self.record("heartbeat")
                 return {}
@@ -289,6 +455,27 @@ class Authority:
                         "arguments": {"cmd": "printf native-executor-proof", "workdir": "/"},
                     }
                 }
+            state = self.withdrawal
+            current = Fence(self.executor_id, self.fence_epoch)
+            if state.phase == WithdrawalPhase.ARMED:
+                state.phase = WithdrawalPhase.CLAIMED
+                state.fence = current
+                self.record("withdrawal_claimed")
+                return self.probe(
+                    WITHDRAW_COMMAND_ID, "native-lease-withdrawal", LEASE_PROBE_COMMAND
+                )
+            if (
+                state.phase == WithdrawalPhase.DEAD
+                and state.fence is not None
+                and current.epoch > state.fence.epoch
+                and current.executor_id != state.fence.executor_id
+            ):
+                state.phase = WithdrawalPhase.RECOVERY_CLAIMED
+                state.recovery_fence = current
+                self.record("withdrawal_recovery_claimed")
+                return self.probe(
+                    RECOVERY_COMMAND_ID, "native-lease-recovered", f"printf {RECOVERY_PROOF}"
+                )
             return {"command": None}
         if path == "/agent/v1/transition" and request.keys() == {
             "executor_id",
@@ -298,6 +485,8 @@ class Authority:
             "result",
         }:
             self.lease(request)
+            if request["command_id"] in (WITHDRAW_COMMAND_ID, RECOVERY_COMMAND_ID):
+                return self.withdrawal_transition(request)
             if (
                 not self.claimed
                 or request["command_id"] != COMMAND_ID
@@ -321,6 +510,58 @@ class Authority:
                 return {}
             raise Refused("invalid fixture command transition")
         raise Refused("unknown fixture route")
+
+    @staticmethod
+    def probe(identifier: str, call_id: str, command: str) -> dict[str, object]:
+        return {
+            "command": {
+                "id": identifier,
+                "call_id": call_id,
+                "tool": "exec_command",
+                "arguments": {"cmd": command, "workdir": "/"},
+            }
+        }
+
+    def withdrawal_transition(self, request: dict[str, object]) -> dict[str, object]:
+        state = self.withdrawal
+        current = Fence(self.executor_id, self.fence_epoch)
+        if request["command_id"] == WITHDRAW_COMMAND_ID:
+            if (
+                state.phase == WithdrawalPhase.CLAIMED
+                and state.fence == current
+                and request["status"] == "started"
+                and request["result"] == {}
+            ):
+                state.started_at = time.monotonic()
+                state.phase = WithdrawalPhase.STARTED
+                self.record("withdrawal_started")
+                return {}
+        elif state.recovery_fence == current and state.fence is not None:
+            if (
+                current.epoch <= state.fence.epoch
+                or current.executor_id == state.fence.executor_id
+                or state.terminal_attempts
+            ):
+                raise Refused("fixture recovery fence refused")
+            if (
+                state.phase == WithdrawalPhase.RECOVERY_CLAIMED
+                and request["status"] == "started"
+                and request["result"] == {}
+            ):
+                state.phase = WithdrawalPhase.RECOVERY_STARTED
+                self.record("withdrawal_recovery_started")
+                return {}
+            result = object_value(request["result"])
+            if (
+                state.phase == WithdrawalPhase.RECOVERY_STARTED
+                and request["status"] == "completed"
+                and type(result.get("exit_code")) is int
+                and result == {"exit_code": 0, "stdout": RECOVERY_PROOF, "stderr": ""}
+            ):
+                state.phase = WithdrawalPhase.COMPLETE
+                self.record("withdrawal_recovery_completed")
+                return {}
+        raise Refused("invalid fixture withdrawal transition")
 
 
 def receive(stream: socket.socket, size: int, deadline: float) -> bytes:
@@ -379,6 +620,7 @@ class Handler(socketserver.BaseRequestHandler):
         if not isinstance(self.request, ssl.SSLSocket) or not isinstance(self.server, Server):
             return
         stream = self.request
+        withdrawal: Withdrawn | None = None
         try:
             stream.do_handshake()
             method, host, path, body = request(stream)
@@ -396,7 +638,9 @@ class Handler(socketserver.BaseRequestHandler):
                     json.dumps(response, allow_nan=False).encode(),
                 )
             status = b"200 OK"
-        except (OSError, ValueError, subprocess.SubprocessError):
+        except (OSError, ValueError, subprocess.SubprocessError) as error:
+            if isinstance(error, Withdrawn):
+                withdrawal = error
             status, content_type, payload = (
                 b"403 Forbidden",
                 b"application/json",
@@ -416,6 +660,8 @@ class Handler(socketserver.BaseRequestHandler):
                 + b"\r\n\r\n"
                 + payload
             )
+            if withdrawal is not None:
+                self.server.authority.heartbeat_refusal_sent(withdrawal.fence)
         except OSError:
             return
 

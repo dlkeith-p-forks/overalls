@@ -660,8 +660,9 @@ defmodule Lilly.VM.ActorTest do
   # Generated retry/restart histories MUST retain the exact command and durable
   # stopped outcome until an executor supplies a confirmed result. This tests
   # actor persistence only; native fixtures separately prove no VMM launch.
-  property "storage retry histories preserve authority and observations until success or failure",
-           context do
+  @tag :hegel
+  test "storage retry histories preserve authority and observations until success or failure",
+       context do
     check all(
             restarts <- list_of(boolean(), min_length: 1, max_length: 8),
             terminal? <- boolean(),
@@ -823,8 +824,8 @@ defmodule Lilly.VM.ActorTest do
   # Consecutive cleanup failures MUST retain delete intent and a nonterminal
   # outcome while the delay reaches and stays at thirty seconds. A newer
   # generation MUST be attempted immediately despite the old retry deadline.
-  property "generated cleanup failures plateau without retiring or delaying new intent",
-           context do
+  @tag :hegel
+  test "generated cleanup failures plateau without retiring or delaying new intent", context do
     check all(failures <- integer(6..8), max_runs: 6) do
       directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
       File.mkdir!(directory)

@@ -143,6 +143,18 @@ tests are separate from current-boot native lease-withdrawal and image replay.
 The existing accepted fencing decision and partial implementation status remain
 unchanged.
 
+The typed native control fixture now records the complete withdrawal history:
+ordinary completion, explicit arming, accepted start, matching heartbeat
+refusal with an observed HTTP 403, process-group death before the accepted-start
+deadline, and completion under a higher epoch and different executor fence.
+It also proves that stale or wrong-fence heartbeats and result attempts cannot
+advance the history. The companion service fixture checks an exact managed Git
+checkout and refuses an unrelated root-owned repository with Git's
+`detected dubious ownership in repository` error. These are fixture and unit
+evidence only; current-boot FreeBSD/OmniOS execution and promotion remain
+pending. Details and test limits are recorded in the
+[native lease-withdrawal review](../reviews/2026-10-17-native-lease-withdrawal.md).
+
 ## Open questions
 
 The [reporter receipt history review](../reviews/2026-10-03-ziggy-reporter-histories.md)

@@ -10,7 +10,6 @@ import tempfile
 import threading
 import time
 import unittest
-from dataclasses import replace
 from pathlib import Path
 from unittest.mock import patch
 
@@ -63,6 +62,196 @@ class AuthorityTest(unittest.TestCase):
             },
         )
         return {name: registration[name] for name in ("executor_id", "fence_epoch")}
+
+    def transition(
+        self, lease: dict[str, object], identifier: str, status: str, result: object
+    ) -> dict[str, object]:
+        return self.rpc(
+            "/agent/v1/transition",
+            {**lease, "command_id": identifier, "status": status, "result": result},
+        )
+
+    def start_withdrawal(self) -> dict[str, object]:
+        lease = self.register()
+        self.rpc("/agent/v1/claim", lease)
+        self.transition(lease, control.COMMAND_ID, "started", {})
+        self.transition(
+            lease,
+            control.COMMAND_ID,
+            "completed",
+            {"exit_code": 0, "stdout": control.PROOF, "stderr": ""},
+        )
+        self.authority.arm_withdrawal()
+        self.rpc("/agent/v1/claim", lease)
+        self.transition(lease, control.WITHDRAW_COMMAND_ID, "started", {})
+        return lease
+
+    def reject_heartbeat(self, lease: dict[str, object]) -> control.Fence:
+        self.authority.request_withdrawal()
+        with self.assertRaises(control.Withdrawn) as rejected:
+            self.rpc("/agent/v1/heartbeat", lease)
+        return rejected.exception.fence
+
+    def test_long_command_requires_explicit_runner_gate_after_fixed_completion(self) -> None:
+        with self.assertRaises(control.Refused):
+            self.authority.arm_withdrawal()
+        lease = self.register()
+        self.rpc("/agent/v1/claim", lease)
+        self.assertEqual(self.rpc("/agent/v1/claim", lease), {"command": None})
+        with self.assertRaises(control.Refused):
+            self.authority.request_withdrawal()
+        self.transition(lease, control.COMMAND_ID, "started", {})
+        self.transition(
+            lease,
+            control.COMMAND_ID,
+            "completed",
+            {"exit_code": 0, "stdout": control.PROOF, "stderr": ""},
+        )
+        self.assertEqual(self.rpc("/agent/v1/claim", lease), {"command": None})
+        self.authority.arm_withdrawal()
+        with self.assertRaises(control.Refused):
+            self.authority.arm_withdrawal()
+        claimed = control.object_value(self.rpc("/agent/v1/claim", lease)["command"])
+        self.assertEqual(claimed["id"], control.WITHDRAW_COMMAND_ID)
+        self.assertEqual(self.rpc("/agent/v1/claim", lease), {"command": None})
+        with self.assertRaises(control.Refused):
+            self.authority.request_withdrawal()
+
+    def test_matching_heartbeat_requires_actual_response_ack_and_fresh_fence(self) -> None:
+        with patch.object(control.time, "monotonic", return_value=100.0):
+            old = self.start_withdrawal()
+            self.authority.request_withdrawal()
+            with self.assertRaises(control.Refused):
+                self.rpc("/agent/v1/heartbeat", {**old, "fence_epoch": True})
+            self.assertEqual(self.authority.snapshot().phase, control.WithdrawalPhase.REQUESTED)
+            self.assertEqual(self.authority.count("withdrawal_heartbeat_403"), 0)
+            with self.assertRaises(control.Withdrawn) as rejected:
+                self.rpc("/agent/v1/heartbeat", old)
+            self.assertEqual(self.authority.snapshot().phase, control.WithdrawalPhase.REVOKED)
+            with self.assertRaises(control.Refused):
+                self.authority.confirm_group_dead()
+            with self.assertRaises(control.Refused):
+                self.authority.heartbeat_refusal_sent(control.Fence("foreign", 1))
+            self.authority.heartbeat_refusal_sent(rejected.exception.fence)
+            new = self.register()
+            self.assertEqual(self.rpc("/agent/v1/claim", new), {"command": None})
+            with self.assertRaises(control.Refused):
+                self.rpc("/agent/v1/heartbeat", old)
+            self.authority.confirm_group_dead()
+            claimed = control.object_value(self.rpc("/agent/v1/claim", new)["command"])
+            self.assertEqual(claimed["id"], control.RECOVERY_COMMAND_ID)
+            self.assertNotEqual(old["executor_id"], new["executor_id"])
+            self.assertEqual(
+                self.authority.snapshot().phase, control.WithdrawalPhase.RECOVERY_CLAIMED
+            )
+            with self.assertRaises(control.Refused):
+                self.transition(
+                    new,
+                    control.RECOVERY_COMMAND_ID,
+                    "completed",
+                    {"exit_code": 0, "stdout": control.RECOVERY_PROOF, "stderr": ""},
+                )
+            self.transition(new, control.RECOVERY_COMMAND_ID, "started", {})
+            for result in (
+                {"exit_code": False, "stdout": control.RECOVERY_PROOF, "stderr": ""},
+                {"exit_code": 0, "stdout": control.PROOF, "stderr": ""},
+            ):
+                with self.assertRaises(control.Refused):
+                    self.transition(new, control.RECOVERY_COMMAND_ID, "completed", result)
+            self.transition(
+                new,
+                control.RECOVERY_COMMAND_ID,
+                "completed",
+                {"exit_code": 0, "stdout": control.RECOVERY_PROOF, "stderr": ""},
+            )
+            self.assertEqual(self.authority.snapshot().phase, control.WithdrawalPhase.COMPLETE)
+            receipt = self.receipt.read_text()
+            for sensitive in (
+                str(old["executor_id"]),
+                str(new["executor_id"]),
+                control.WITHDRAW_COMMAND_ID,
+                control.RECOVERY_COMMAND_ID,
+                control.RECOVERY_PROOF,
+                control.LEASE_PROBE_COMMAND,
+            ):
+                self.assertNotIn(sensitive, receipt)
+
+    def test_every_cancelled_result_attempt_counts_before_lease_and_shape_refusal(self) -> None:
+        old = self.start_withdrawal()
+        fence = self.reject_heartbeat(old)
+        self.authority.heartbeat_refusal_sent(fence)
+        for index, change in enumerate(
+            (
+                {"status": "completed"},
+                {"status": "failed", "executor_id": "foreign"},
+                {"status": "completed", "fence_epoch": True},
+                {"status": "failed", "extra": 1},
+                {"status": "started", "result": {"unexpected": True}},
+            ),
+            1,
+        ):
+            with self.assertRaises(control.Refused):
+                self.rpc(
+                    "/agent/v1/transition",
+                    {
+                        **old,
+                        "command_id": control.WITHDRAW_COMMAND_ID,
+                        "status": "completed",
+                        "result": {},
+                        **change,
+                    },
+                )
+            self.assertEqual(self.authority.snapshot().terminal_attempts, index)
+        with self.assertRaises(control.Refused):
+            self.authority.confirm_group_dead()
+
+    def test_group_death_at_command_start_plus_fifteen_seconds_refuses(self) -> None:
+        with patch.object(control.time, "monotonic", return_value=100.0):
+            old = self.start_withdrawal()
+            fence = self.reject_heartbeat(old)
+            self.authority.heartbeat_refusal_sent(fence)
+        for now in (99.0, 115.0, 120.0):
+            with (
+                patch.object(control.time, "monotonic", return_value=now),
+                self.assertRaises(control.Refused),
+            ):
+                self.authority.confirm_group_dead()
+        with patch.object(control.time, "monotonic", return_value=114.999):
+            self.authority.confirm_group_dead()
+        elapsed = self.authority.snapshot().death_elapsed_ms
+        if elapsed is None:
+            self.fail("group death must record a closed elapsed duration")
+        self.assertGreaterEqual(elapsed, 14900)
+        self.assertLess(elapsed, 15000)
+
+    def test_higher_epoch_with_reused_executor_identity_cannot_receive_fresh_proof(self) -> None:
+        old = self.start_withdrawal()
+        fence = self.reject_heartbeat(old)
+        self.authority.heartbeat_refusal_sent(fence)
+        self.authority.confirm_group_dead()
+        with patch.object(control.uuid, "uuid4", return_value=control.uuid.UUID(fence.executor_id)):
+            reused = self.register()
+        self.assertEqual(self.rpc("/agent/v1/claim", reused), {"command": None})
+        new = self.register()
+        self.assertIsNotNone(self.rpc("/agent/v1/claim", new)["command"])
+
+    def test_concurrent_claims_issue_one_ordinary_command(self) -> None:
+        lease = self.register()
+        barrier = threading.Barrier(3)
+        claimed: list[bool] = []
+
+        def claim() -> None:
+            barrier.wait(timeout=3)
+            claimed.append(self.rpc("/agent/v1/claim", lease)["command"] is not None)
+
+        threads = [threading.Thread(target=claim) for _ in range(2)]
+        for thread in threads:
+            thread.start()
+        barrier.wait(timeout=3)
+        for thread in threads:
+            thread.join(timeout=3)
+            self.assertFalse(thread.is_alive())
+        self.assertEqual(sorted(claimed), [False, True])
 
     def test_real_host_certificate_and_exact_roster(self) -> None:
         roster = self.authority.dispatch("GET", "ssh.integration.internal", "/ssh/v1/roster", b"")
@@ -146,7 +335,7 @@ class AuthorityTest(unittest.TestCase):
             self.assertNotIn(sensitive, receipt)
 
     def test_login_refusal_does_not_turn_key_authorization_into_login_authority(self) -> None:
-        self.authority.config = replace(self.authority.config, allow_login=False)
+        self.authority.set_login_allowed(False)
         identity = {"username": "u200000", "public_key": self.public}
         self.assertEqual(
             self.rpc("/ssh/v1/authorize", identity, ssh=True), {"public_key": self.public}
@@ -244,6 +433,25 @@ class AuthorityTest(unittest.TestCase):
                         response.extend(part)
                 self.assertIn(b"200 OK", response)
                 self.assertIn(b'"username": "u200000"', response)
+                lease = self.start_withdrawal()
+                self.authority.request_withdrawal()
+                payload = json.dumps(lease).encode()
+                with (
+                    socket.create_connection(address, timeout=3) as raw,
+                    trusted.wrap_socket(raw, server_hostname="llm.internal") as stream,
+                ):
+                    stream.sendall(
+                        b"POST /agent/v1/heartbeat HTTP/1.1\r\nHost: llm.internal\r\nContent-Length: "
+                        + str(len(payload)).encode()
+                        + b"\r\n\r\n"
+                        + payload
+                    )
+                    response = bytearray()
+                    while part := stream.recv(4096):
+                        response.extend(part)
+                self.assertIn(b"403 Forbidden", response)
+                self.assertEqual(self.authority.count("withdrawal_heartbeat_403"), 1)
+                self.assertEqual(self.authority.snapshot().phase, control.WithdrawalPhase.REJECTED)
                 for context, hostname in (
                     (trusted, "foreign.internal"),
                     (ssl.create_default_context(), "ssh.integration.internal"),

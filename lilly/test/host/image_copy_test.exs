@@ -6,8 +6,8 @@ defmodule Lilly.Host.ImageCopyTest do
   @moduletag :tmp_dir
   @moduletag capture_log: true
 
-  property "native materialization preserves sparse bytes and independent destination writes",
-           c do
+  @tag :hegel
+  test "native materialization preserves sparse bytes and independent destination writes", c do
     check all(
             prefix <- binary(min_length: 1, max_length: 1024),
             suffix <- binary(min_length: 1, max_length: 1024),

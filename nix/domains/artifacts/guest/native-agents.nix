@@ -305,11 +305,13 @@ let
   illumosSupervisor = supervisor "illumos";
   # @cc [owner:ghuntley,label:security] native-workspace-system-git-ownership
   # Native Git MUST permit managed accounts to use the root-owned shared
-  # checkouts under /workspace only. Repository-owned configuration MUST NOT
-  # supply this ownership exception and unrelated paths MUST remain protected.
+  # checkout through the receiver's root-controlled exact-path configuration.
+  # The pinned OmniOS Git does not support /workspace/* ownership exceptions.
+  # Repository-owned configuration MUST NOT supply this exception and
+  # unrelated paths MUST remain protected.
   gitConfiguration = pkgs.writeText "overalls-native-shared-workspace-gitconfig" ''
-    [safe]
-      directory = /workspace/*
+    [include]
+      path = /run/overalls-workspace/gitconfig
   '';
   freebsdService = pkgs.writeTextFile {
     name = "overalls-native-agents-freebsd";

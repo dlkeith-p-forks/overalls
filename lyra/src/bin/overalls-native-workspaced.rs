@@ -25,7 +25,7 @@ fn main() -> ! {
         execution_epoch: boot.execution_epoch,
         boot_challenge: boot.boot_challenge,
     };
-    let state = match Receiver::new(Paths::guest()) {
+    let state = match Receiver::new(Paths::guest()).map(Receiver::with_shared_git_configuration) {
         Ok(value) => Arc::new(value),
         Err(_) => std::process::exit(2),
     };
@@ -67,8 +67,10 @@ fn main() -> ! {
                 flag.store(false, Ordering::SeqCst);
             });
     };
-    if let Ok(Some(source)) = state.start() {
-        spawn(&state, &cloning, source);
+    match state.start() {
+        Ok(Some(source)) => spawn(&state, &cloning, source),
+        Ok(None) => {}
+        Err(_) => std::process::exit(4),
     }
     let listener = match Listener::bind(receiver::PORT, 4) {
         Ok(value) => value,

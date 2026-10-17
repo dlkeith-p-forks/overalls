@@ -151,6 +151,17 @@ keys/certificate were removed. Evidence is
 This native configuration check starts no daemon and grants no SSH-session or
 complete readiness claim.
 
+The pinned OmniOS Git 2.44.3 accepts exact `safe.directory` paths but not the
+`/workspace/*` prefix form. A disposable clone reproduced its `dubious
+ownership` refusal. The native receiver now writes one exact source-validated
+checkout entry to the root-controlled `/run/overalls-workspace/gitconfig`
+include before publishing `done`, and recreates it after volatile runtime loss.
+Focused real-Git tests accept only the approved checkout, refuse an unrelated
+root-owned repository, preserve conflicts and reject linked or unsafe config
+paths. The `/run/overalls-workspace` canonicality check passed on the pinned
+OmniOS clone. This is checkout-ownership evidence and does not establish native
+service, PTY, recovery or admission acceptance.
+
 The shared native command path also bypassed the executor's existing lease
 callback while running a command. The corrected
 [native runner](../../../lyra/src/agent/native_command.rs) now invokes that

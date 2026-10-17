@@ -18,7 +18,7 @@ import subprocess
 import threading
 import time
 from collections.abc import Callable
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from functools import partial
 from pathlib import Path
 
@@ -73,6 +73,10 @@ class Platform:
     @property
     def git(self) -> str:
         return "/usr/local/bin/git" if self.name == "freebsd" else "/usr/bin/git"
+
+    @property
+    def ps(self) -> str:
+        return "/bin/ps" if self.name == "freebsd" else "/usr/bin/ps"
 
     @property
     def home(self) -> str:
@@ -183,8 +187,11 @@ def ssh(
     key: str = "user",
     options: tuple[str, ...] = (),
     network: Network = DEFAULT_NETWORK,
+    timeout: float = 20,
 ) -> subprocess.CompletedProcess[bytes]:
     """Run fixed synthetic probes without emitting commands or output."""
+    if not 0 < timeout <= 20:
+        raise ValueError("invalid native SSH probe deadline")
     arguments = [
         "ssh",
         "-F",
@@ -218,7 +225,7 @@ def ssh(
     if command is not None:
         arguments.append(command)
     result = subprocess.run(
-        arguments, stdin=subprocess.DEVNULL, capture_output=True, check=False, timeout=20
+        arguments, stdin=subprocess.DEVNULL, capture_output=True, check=False, timeout=timeout
     )
     if len(result.stdout) > 4096 or len(result.stderr) > 4096:
         raise RuntimeError("native SSH probe exceeded its output bound")
@@ -310,8 +317,8 @@ def ssh_checks(
         b"native-startup-prepared",
     )
     print("native SSH synthetic startup fixtures prepared", flush=True)
-    previous = authority.counters.get("login_refused", 0)
-    authority.config = replace(authority.config, allow_login=False)
+    previous = authority.count("login_refused")
+    authority.set_login_allowed(False)
     try:
         for command in (None, "printf native-user-command-before-receipt"):
             refused(
@@ -325,11 +332,11 @@ def ssh_checks(
                     ),
                 )
             )
-        if authority.counters.get("login_refused", 0) < previous + 2:
+        if authority.count("login_refused") < previous + 2:
             raise RuntimeError("native session did not reach the denied private login authority")
         print("native SSH login receipt refusals verified", flush=True)
     finally:
-        authority.config = replace(authority.config, allow_login=True)
+        authority.set_login_allowed(True)
     restored = probe(
         fixture,
         known_hosts,
@@ -372,16 +379,207 @@ def ssh_checks(
 
 def wait_executor(process: subprocess.Popen[bytes], authority: control.Authority) -> None:
     deadline = time.monotonic() + 90
-    while not authority.execution_completed:
+    while not authority.snapshot().execution_completed:
         alive(process)
         if time.monotonic() >= deadline:
             raise RuntimeError("native fixed execution deadline exceeded")
         time.sleep(0.25)
-    if any(
-        authority.counters.get(event, 0) < 1
-        for event in ("register", "claim", "started", "completed")
-    ):
+    if any(authority.count(event) < 1 for event in ("register", "claim", "started", "completed")):
         raise RuntimeError("native executor omitted a fenced execution phase")
+
+
+@dataclass(frozen=True, repr=False)
+class GroupObservation:
+    """Ephemeral numeric identities; never serialized to receipts or diagnostics."""
+
+    parent: int
+    descendant: int
+    members: tuple[tuple[int, str], ...]
+    present: bool
+
+    @property
+    def live(self) -> bool:
+        return (
+            self.present
+            and len(self.members) == 2
+            and all(state[0] not in ("Z", "X") for _, state in self.members)
+        )
+
+    @property
+    def absent(self) -> bool:
+        return not self.present and not self.members
+
+
+def process_group(payload: bytes, expected: tuple[int, int] | None = None) -> GroupObservation:
+    """Narrow bounded marker/ps output without accepting PID reuse or escaped groups."""
+    if len(payload) > 256:
+        raise ValueError("native process observation exceeds its bound")
+    lines = payload.splitlines()
+    if not 2 <= len(lines) <= 4 or not payload.endswith(b"\n"):
+        raise ValueError("invalid native process observation")
+    marker = re.fullmatch(rb"([1-9][0-9]{0,9}) ([1-9][0-9]{0,9})", lines[0])
+    if marker is None:
+        raise ValueError("invalid native process identity marker")
+    parent, descendant = (int(marker[index]) for index in (1, 2))
+    if (
+        not 1 < parent <= 2_147_483_647
+        or not 1 < descendant <= 2_147_483_647
+        or parent == descendant
+        or (expected is not None and (parent, descendant) != expected)
+        or lines[-1] not in (b"group-present", b"group-absent")
+    ):
+        raise ValueError("native process identity differs")
+    members: dict[int, str] = {}
+    for line in lines[1:-1]:
+        member = re.fullmatch(
+            rb"[ \t]*([1-9][0-9]{0,9})[ \t]+([1-9][0-9]{0,9})[ \t]+([DILORSTWXZ][A-Za-z+<>]{0,7})[ \t]*",
+            line,
+        )
+        if member is None:
+            raise ValueError("invalid native process member")
+        pid, group = int(member[1]), int(member[2])
+        if pid not in (parent, descendant) or pid in members or group != parent:
+            raise ValueError("native process escaped or changed its group")
+        members[pid] = member[3].decode("ascii")
+    return GroupObservation(
+        parent, descendant, tuple(members.items()), lines[-1] == b"group-present"
+    )
+
+
+def withdrawal_deadline(snapshot: control.Snapshot, now: float) -> float:
+    """Reject results or observations at the independent command deadline boundary."""
+    if (
+        snapshot.started_at is None
+        or snapshot.terminal_attempts
+        or not 0 <= now - snapshot.started_at < control.WITHDRAWAL_SECONDS
+    ):
+        raise RuntimeError("native lease withdrawal deadline or result boundary failed")
+    return snapshot.started_at + control.WITHDRAWAL_SECONDS
+
+
+def observe_group(
+    context: BootContext, deadline: float, expected: tuple[int, int] | None
+) -> GroupObservation | None:
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        raise RuntimeError("native lease process observation was late")
+    root = control.LEASE_PROBE_ROOT
+    state = "state" if context.platform.name == "freebsd" else "s"
+    command = (
+        f"set -eu; test -f {root}/pids; test ! -L {root}/pids; "
+        f'test "$(wc -c < {root}/pids)" -le 24; '
+        f"read -r parent descendant extra < {root}/pids; "
+        '[[ "$parent" =~ ^[1-9][0-9]{0,9}$ && "$descendant" =~ ^[1-9][0-9]{0,9}$ '
+        '&& -z "$extra" ]]; printf \'%s %s\\n\' "$parent" "$descendant"; '
+        f'{context.platform.ps} -p "$parent,$descendant" -o pid= -o pgid= -o {state}= '
+        '|| test "$?" -eq 1; '
+        "if kill -0 -- \"-$parent\" 2>/dev/null; then printf 'group-present\\n'; "
+        "else printf 'group-absent\\n'; fi"
+    )
+    result = ssh(
+        context.fixture,
+        context.work / "known_hosts",
+        f"{context.platform.sudo} -n {context.platform.bash} -c " + shlex.quote(command),
+        network=context.network,
+        timeout=min(2.0, remaining),
+    )
+    if time.monotonic() >= deadline:
+        raise RuntimeError("native lease process observation was late")
+    if result.returncode == 1 and not result.stdout and not result.stderr:
+        return None
+    if result.returncode != 0 or result.stderr:
+        raise RuntimeError("native lease process observation failed")
+    return process_group(result.stdout, expected)
+
+
+def executor_withdrawal(context: BootContext) -> None:
+    """@cc [owner:ghuntley,label:verification;security] native-current-lease-history
+    The runner MUST arm the long command only after certified SSH and ordinary
+    fixed completion, observe its live parent-led group and live descendant,
+    then withdraw its exact heartbeat. It MUST observe the whole group absent
+    before accepted-start plus fifteen seconds, after an actual matching HTTP
+    403 and with no cancelled result attempts, then complete a strictly newer
+    fence. Observations MUST never kill the group or log PIDs, arguments or output.
+    """
+    wait_executor(context.process, context.authority)
+    root = control.LEASE_PROBE_ROOT
+    prepare = f"set -eu; test ! -e {root}; umask 077; mkdir {root}; printf native-lease-prepared"
+    success(
+        ssh(
+            context.fixture,
+            context.work / "known_hosts",
+            f"{context.platform.sudo} -n {context.platform.bash} -c " + shlex.quote(prepare),
+            network=context.network,
+        ),
+        b"native-lease-prepared",
+    )
+    context.authority.arm_withdrawal()
+    awaiting = time.monotonic() + 30
+    while context.authority.snapshot().started_at is None:
+        alive(context.process)
+        if time.monotonic() >= awaiting:
+            raise RuntimeError("native withdrawal command did not start")
+        time.sleep(0.1)
+    identity: tuple[int, int] | None = None
+    while identity is None:
+        alive(context.process)
+        deadline = withdrawal_deadline(context.authority.snapshot(), time.monotonic())
+        observed = observe_group(context, deadline, None)
+        if observed is not None:
+            if not observed.live:
+                raise RuntimeError("native withdrawal group was not initially live")
+            identity = (observed.parent, observed.descendant)
+        else:
+            time.sleep(0.1)
+    context.authority.request_withdrawal()
+    while True:
+        alive(context.process)
+        snapshot = context.authority.snapshot()
+        deadline = withdrawal_deadline(snapshot, time.monotonic())
+        if snapshot.phase != control.WithdrawalPhase.REJECTED:
+            time.sleep(0.1)
+            continue
+        observed = observe_group(context, deadline, identity)
+        snapshot = context.authority.snapshot()
+        withdrawal_deadline(snapshot, time.monotonic())
+        if (
+            snapshot.phase == control.WithdrawalPhase.REJECTED
+            and observed is not None
+            and observed.absent
+        ):
+            context.authority.confirm_group_dead()
+            break
+        time.sleep(0.1)
+    awaiting = time.monotonic() + 90
+    while True:
+        alive(context.process)
+        snapshot = context.authority.snapshot()
+        if snapshot.terminal_attempts:
+            raise RuntimeError("native cancelled executor attempted a result")
+        if snapshot.phase == control.WithdrawalPhase.COMPLETE:
+            break
+        if time.monotonic() >= awaiting:
+            raise RuntimeError("native fresh-fence execution did not complete")
+        time.sleep(0.1)
+    cleanup = f"set -eu; rm {root}/pids; rmdir {root}; printf native-lease-cleaned"
+    success(
+        ssh(
+            context.fixture,
+            context.work / "known_hosts",
+            f"{context.platform.sudo} -n {context.platform.bash} -c " + shlex.quote(cleanup),
+            network=context.network,
+        ),
+        b"native-lease-cleaned",
+    )
+
+
+def git_ownership_refused(result: subprocess.CompletedProcess[bytes]) -> None:
+    if (
+        result.returncode == 0
+        or result.stdout
+        or b"detected dubious ownership in repository" not in result.stderr
+    ):
+        raise RuntimeError("native unrelated repository ownership was not refused")
 
 
 def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
@@ -390,6 +588,8 @@ def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
     wait for the actual native Git operation, and verify its commit, shallow
     metadata and fixture file digests through the managed SSH account. A source
     acceptance or a done marker alone MUST NOT establish checkout evidence.
+    Managed-user Git MUST succeed for that exact checkout and MUST reject an
+    unrelated root-owned repository with Git's actual dubious-ownership refusal.
     """
     services.workspace(context.uds, context.boot.binding, repository.source())
     probe = partial(ssh, context.fixture, context.work / "known_hosts", network=context.network)
@@ -417,6 +617,24 @@ def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
         result = probe(f"set -eu; test -w {root}/{name}; cat {root}/{name}")
         if result.returncode != 0 or hashlib.sha256(result.stdout).hexdigest() != expected:
             raise RuntimeError("native workspace checkout bytes differ from the fixture")
+    unrelated = "/workspace/native-unrelated-root-repository"
+    prepare = (
+        f"set -eu; test ! -e {unrelated}; umask 022; mkdir {unrelated}; "
+        f"{context.platform.git} -C {unrelated} init --quiet; printf native-unrelated-repository"
+    )
+    success(
+        probe(f"{context.platform.sudo} -n {context.platform.bash} -c " + shlex.quote(prepare)),
+        b"native-unrelated-repository",
+    )
+    try:
+        git_ownership_refused(probe(f"{context.platform.git} -C {unrelated} status --porcelain"))
+    finally:
+        cleanup = f"rm -rf {unrelated}"
+        result = probe(
+            f"{context.platform.sudo} -n {context.platform.bash} -c " + shlex.quote(cleanup)
+        )
+        if result.returncode != 0 or result.stdout:
+            raise RuntimeError("native unrelated repository cleanup failed")
 
 
 def metadata(path: Path, binding: services.Binding, network: Network) -> None:
@@ -667,10 +885,10 @@ def run(
                             checkout(boot_context, repository)
                             print("native service workspace checkout verified", flush=True)
                             stage = "terminal-session"
-                            services.terminal_session(uds, binding)
+                            services.terminal_session(uds, binding, platform.name)
                             print("native service managed PTY verified", flush=True)
                             stage = "executor"
-                            wait_executor(process, authority)
+                            executor_withdrawal(boot_context)
                             print("native service fenced execution verified", flush=True)
                             stage = "retained-home"
                             retained_command = (
@@ -767,6 +985,7 @@ def run(
                 "flush-current-boot-and-refusals",
                 "workspace-stale-foreign-malformed-refused",
                 "workspace-native-https-shallow-checkout-and-exact-bytes",
+                "workspace-exact-git-ownership-and-unrelated-root-refusal",
                 "terminal-hello-ping-and-refusals",
                 "terminal-managed-pty-input-resize-replay-and-token-refusal",
                 "kernel-current-boot-rechecked",
@@ -776,6 +995,8 @@ def run(
                 "ssh-foreign-key-root-foreign-user-and-password-refusals",
                 "ssh-login-receipt-before-startup-and-client-environment",
                 "executor-private-https-fixed-command-completed",
+                "executor-current-heartbeat-withdrawal-before-command-deadline",
+                "executor-whole-group-death-no-result-and-fresh-fence-completion",
                 "first-boot-sigkill-and-final-clean-shutdown"
                 if crash_first_boot
                 else "ssh-triggered-clean-guest-shutdown",

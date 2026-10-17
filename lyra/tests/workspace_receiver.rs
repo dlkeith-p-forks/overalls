@@ -13,6 +13,7 @@ use std::fs;
 use std::io;
 use std::os::unix::fs::{MetadataExt, PermissionsExt};
 use std::path::{Path, PathBuf};
+use std::process::{Command, Output};
 use std::sync::OnceLock;
 use std::time::Duration;
 use tempfile::TempDir;
@@ -350,6 +351,7 @@ struct ReceiverMachine {
     done: bool,
     status: Status,
     calls_at_done: Option<usize>,
+    shared_git_configuration: bool,
 }
 
 impl ReceiverMachine {
@@ -456,7 +458,15 @@ impl ReceiverMachine {
 
     #[rule]
     fn restart(&mut self, _: TestCase) {
-        self.receiver = Receiver::new(self.paths()).expect("restart");
+        let receiver = Receiver::new(self.paths()).expect("restart");
+        if self.shared_git_configuration {
+            let _ = fs::remove_file(self.paths().git_configuration());
+        }
+        self.receiver = if self.shared_git_configuration {
+            receiver.with_shared_git_configuration()
+        } else {
+            receiver
+        };
         let resumed = self.receiver.start().expect("startup");
         if self.done {
             assert_eq!(resumed, None);
@@ -526,6 +536,16 @@ impl ReceiverMachine {
         }
         assert_eq!(self.receiver.done(), self.done);
         let paths = self.paths();
+        if self.shared_git_configuration && self.done {
+            let configuration = paths.git_configuration();
+            let metadata = fs::symlink_metadata(&configuration).expect("trusted configuration");
+            assert!(metadata.file_type().is_file());
+            assert_eq!(metadata.permissions().mode() & 0o777, 0o644);
+            assert_eq!(
+                metadata.uid(),
+                fs::metadata(&paths.run).expect("run owner").uid()
+            );
+        }
         if let Ok(bytes) = fs::read(paths.status()) {
             assert_eq!(bytes, format!("{}\n", self.status.as_str()).into_bytes());
             assert_eq!(
@@ -593,7 +613,11 @@ impl GitRunner for AlwaysFail<'_> {
 #[hegel::test(test_cases = 64)]
 fn receiver_state_machine(tc: TestCase) {
     let root = tempfile::tempdir().expect("temporary guest root");
-    let receiver = Receiver::new(Paths::under(root.path())).expect("receiver");
+    let mut receiver = Receiver::new(Paths::under(root.path())).expect("receiver");
+    let shared_git_configuration = tc.draw(gs::booleans());
+    if shared_git_configuration {
+        receiver = receiver.with_shared_git_configuration();
+    }
     let mut sources = accepted_sources();
     sources
         .push(workspace_source::parse_url("https://github.com/o/other/tree/main").expect("valid"));
@@ -610,6 +634,165 @@ fn receiver_state_machine(tc: TestCase) {
         done: false,
         status: Status::Waiting,
         calls_at_done: None,
+        shared_git_configuration,
     };
     hegel::stateful::run(machine, tc);
+}
+
+fn native_receiver(paths: Paths) -> Receiver {
+    Receiver::new(paths)
+        .expect("native receiver")
+        .with_shared_git_configuration()
+}
+
+fn real_git(system_configuration: &Path, arguments: &[&std::ffi::OsStr], foreign: bool) -> Output {
+    Command::new("git")
+        .env_clear()
+        .env(
+            "PATH",
+            std::env::var_os("PATH").expect("test Git search path"),
+        )
+        .env("GIT_CONFIG_SYSTEM", system_configuration)
+        .env("GIT_CONFIG_GLOBAL", "/dev/null")
+        .env(
+            "GIT_TEST_ASSUME_DIFFERENT_OWNER",
+            if foreign { "1" } else { "0" },
+        )
+        .args(arguments)
+        .output()
+        .expect("real Git process")
+}
+
+#[test]
+fn native_git_include_trusts_only_exact_checkout_and_survives_runtime_loss() {
+    let root = tempfile::tempdir().expect("temporary guest root");
+    let paths = Paths::under(root.path());
+    let source = workspace_source::parse_url("https://github.com/fixture/approved").unwrap();
+    let other = workspace_source::parse_url("https://github.com/fixture/unrelated").unwrap();
+    let receiver = native_receiver(paths.clone());
+    receiver.deliver(&source).unwrap();
+    let checkout = paths.checkout(&source);
+    let unrelated = paths.checkout(&other);
+    fs::create_dir_all(&checkout).unwrap();
+    fs::create_dir_all(&unrelated).unwrap();
+    let system_configuration = root.path().join("system-gitconfig");
+    fs::write(
+        &system_configuration,
+        format!(
+            "[include]\npath = {}\n",
+            paths.git_configuration().display()
+        ),
+    )
+    .unwrap();
+    for path in [&checkout, &unrelated] {
+        let result = real_git(
+            &system_configuration,
+            &["init".as_ref(), "-q".as_ref(), path.as_os_str()],
+            false,
+        );
+        assert!(result.status.success(), "fixture Git init failed");
+    }
+    let probe = |path: &Path| {
+        real_git(
+            &system_configuration,
+            &[
+                "-C".as_ref(),
+                path.as_os_str(),
+                "rev-parse".as_ref(),
+                "--show-toplevel".as_ref(),
+            ],
+            true,
+        )
+    };
+    assert!(
+        !probe(&checkout).status.success(),
+        "ownership check was not exercised"
+    );
+    let mut git = FakeGit {
+        calls: Vec::new(),
+        fail_at: None,
+    };
+    assert!(receiver.attempt(&source, &mut git).unwrap());
+    assert!(git.calls.is_empty(), "finished checkout was cloned again");
+    assert!(
+        probe(&checkout).status.success(),
+        "exact approved path was refused"
+    );
+    assert!(
+        !probe(&unrelated).status.success(),
+        "unrelated path gained ownership trust"
+    );
+    let configuration = fs::read(paths.git_configuration()).unwrap();
+    assert_eq!(receiver.deliver(&other).unwrap().reply, Reply::Conflict);
+    assert_eq!(fs::read(paths.git_configuration()).unwrap(), configuration);
+    fs::remove_file(paths.git_configuration()).unwrap();
+    let restarted = native_receiver(paths.clone());
+    assert_eq!(restarted.start().unwrap(), None);
+    assert_eq!(fs::read(paths.status()).unwrap(), b"done\n");
+    assert!(
+        probe(&checkout).status.success(),
+        "volatile configuration was not restored"
+    );
+    assert!(
+        !probe(&unrelated).status.success(),
+        "reboot expanded ownership trust"
+    );
+    assert_eq!(
+        fs::metadata(&paths.state).unwrap().permissions().mode() & 0o777,
+        0o700
+    );
+    assert_eq!(
+        fs::metadata(paths.git_configuration())
+            .unwrap()
+            .permissions()
+            .mode()
+            & 0o777,
+        0o644
+    );
+}
+
+#[test]
+fn native_git_publication_failure_withholds_done_and_retries_existing_checkout() {
+    let root = tempfile::tempdir().expect("temporary guest root");
+    let paths = Paths::under(root.path());
+    let source = workspace_source::parse_url("https://github.com/fixture/approved").unwrap();
+    let receiver = native_receiver(paths.clone());
+    receiver.deliver(&source).unwrap();
+    fs::set_permissions(&paths.run, fs::Permissions::from_mode(0o777)).unwrap();
+    let mut git = FakeGit {
+        calls: Vec::new(),
+        fail_at: None,
+    };
+    assert!(receiver.attempt(&source, &mut git).is_err());
+    assert!(
+        !receiver.done(),
+        "unsafe public configuration granted completion"
+    );
+    assert!(!paths.git_configuration().exists());
+    let calls = git.calls.len();
+    fs::set_permissions(&paths.run, fs::Permissions::from_mode(0o755)).unwrap();
+    assert!(receiver.attempt(&source, &mut git).unwrap());
+    assert_eq!(git.calls.len(), calls, "publication retry cloned again");
+    assert_eq!(fs::read(paths.status()).unwrap(), b"done\n");
+}
+
+#[test]
+fn native_git_startup_refuses_linked_configuration_without_stale_done() {
+    let root = tempfile::tempdir().expect("temporary guest root");
+    let paths = Paths::under(root.path());
+    let source = workspace_source::parse_url("https://github.com/fixture/approved").unwrap();
+    let receiver = native_receiver(paths.clone());
+    receiver.deliver(&source).unwrap();
+    let mut git = FakeGit {
+        calls: Vec::new(),
+        fail_at: None,
+    };
+    assert!(receiver.attempt(&source, &mut git).unwrap());
+    let outside = root.path().join("unrelated-gitconfig");
+    fs::write(&outside, b"unrelated configuration\n").unwrap();
+    fs::remove_file(paths.git_configuration()).unwrap();
+    std::os::unix::fs::symlink(&outside, paths.git_configuration()).unwrap();
+    assert!(native_receiver(paths.clone()).start().is_err());
+    assert_eq!(fs::read(paths.status()).unwrap(), b"waiting\n");
+    assert_eq!(fs::read(&outside).unwrap(), b"unrelated configuration\n");
 }

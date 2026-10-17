@@ -91,9 +91,14 @@ and original out-of-range refusal fixtures. It retains the six StreamData View
 and workspace-source properties with their broad generators and assertions:
 the upstream mechanical migration instead narrowed generated sources and
 integer boundaries, so it did not provide equivalent coverage. The complete
-merged-pin protocol gate is pending at
+merged-pin protocol gate passed on 2026-10-17: **299 passed** (6 StreamData
+properties and 293 tests, including Hegel properties) in **410.8 seconds**,
+with Covenant **14/14**, Dialyzer **0 errors, 0 skipped and 0 unnecessary
+skips**, the shared contract validator's **19 tests passed**, and compiler and
+format checks passed. Its execution log is
 `/tmp/overalls-native-protocol-hegel-merged-precommit.log`, against source
-aggregate `c17753a49b4ef02f6243ece724b32ef5aaf87aa8ab129e133754d46b9f9d7987`.
+aggregate `c17753a49b4ef02f6243ece724b32ef5aaf87aa8ab129e133754d46b9f9d7987`,
+which stayed unchanged throughout the gate.
 The historical 299-test result and its exact source hash above apply only to the
 pre-merge frontend pin.
 

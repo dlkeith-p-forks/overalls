@@ -30,8 +30,9 @@ defmodule Lilly.VM.ActorDeferralTest do
   # consecutive deferral reason, and deferrals MUST never append an outcome.
   # This exercises actor logic with a controlled executor; native readiness of
   # private services is covered by the brady-fleet machine scenario.
-  property "deferral diagnostics follow reason transitions across outcomes and actor restarts",
-           context do
+  @tag :hegel
+  test "deferral diagnostics follow reason transitions across outcomes and actor restarts",
+       context do
     check all(
             steps <-
               list_of(

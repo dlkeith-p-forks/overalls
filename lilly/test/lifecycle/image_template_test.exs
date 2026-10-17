@@ -70,8 +70,8 @@ defmodule Lilly.Lifecycle.ImageTemplateTest do
   # Generated histories MUST track prerequisite evidence independently from the
   # production graph, reopen durable state after every operation and preserve
   # state and revision on refusal. Replays MUST NOT change either.
-  property "publication and retirement require evidence; bindings and tombstones survive reopen",
-           c do
+  @tag :hegel
+  test "publication and retirement require evidence; bindings and tombstones survive reopen", c do
     check all(
             commands <-
               list_of(
