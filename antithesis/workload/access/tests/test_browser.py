@@ -8,6 +8,7 @@ import os
 import subprocess
 import unittest
 
+from access.browser import pending_mutation_refused, pending_read_ok
 from access.http import hidden_form
 from access.liveview import parse_live_page
 from access.mail import _message_link
@@ -127,6 +128,20 @@ class BrowserHelpersTest(unittest.TestCase):
         self.assertEqual(
             (live.csrf, live.session, live.node_id), ("csrf123", "signed-session", "phx-main")
         )
+
+    def test_pending_mfa_read_follows_adr_0160_signed_in_boundary(self) -> None:
+        self.assertTrue(pending_read_ok(200, True, False, True))
+        # The superseded read-boundary redirect is no longer the contract.
+        self.assertFalse(pending_read_ok(302, False, False, True))
+        self.assertFalse(pending_read_ok(200, False, False, True))
+        self.assertFalse(pending_read_ok(200, True, True, True))
+        self.assertFalse(pending_read_ok(200, True, False, False))
+
+    def test_pending_mfa_mutation_requires_no_stored_effect(self) -> None:
+        self.assertTrue(pending_mutation_refused(True, False, True))
+        self.assertFalse(pending_mutation_refused(False, False, True))
+        self.assertFalse(pending_mutation_refused(True, True, True))
+        self.assertFalse(pending_mutation_refused(True, False, False))
 
 
 if __name__ == "__main__":

@@ -6,6 +6,7 @@ reproduce blob for the value case).
 """
 
 import sys
+import threading
 
 from hegel import (
     MachineStateMachine,
@@ -62,6 +63,29 @@ class CounterMachine(MachineStateMachine):
 
 if MODE in ("state", "state_failing"):
     CounterMachine.run(steps=20)
+
+
+class ConcurrentMachine(MachineStateMachine):
+    def setup(self) -> None:
+        self._lock = threading.Lock()
+        self.count = 0
+        self.workers: set[int] = set()
+
+    @rule(group=0)
+    def increment(self) -> None:
+        worker = self.worker
+        assert worker is not None
+        with self._lock:
+            self.workers.add(worker.index)
+            self.count += 1
+
+    @invariant(always=True)
+    def count_is_bounded(self) -> None:
+        assert self.count >= 0
+
+
+if MODE == "concurrent":
+    ConcurrentMachine.run(steps=8, min_concurrency=2, max_concurrency=2)
 
 if MODE in ("value_failing", "state_failing"):
     _run_registered(profile="development", test_cases=200, sink=print)

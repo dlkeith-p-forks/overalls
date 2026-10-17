@@ -10,6 +10,13 @@
 }:
 let
   inherit (pkgs) lib;
+  nixCache = import ../../../../platform/nix-cache.nix;
+  nixConfig = pkgs.writeText "overalls-ubuntu-nix.conf" ''
+    substituters = https://cache.nixos.org/ ${nixCache.substituter}
+    trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= ${nixCache.publicKey}
+    require-sigs = true
+    fallback = true
+  '';
   workspaceSourceEnabled = privateServiceRoots != [ ];
   base = builtins.fromJSON (builtins.readFile ./base.json);
   # @cc [owner:ghuntley,label:security] ubuntu-personal-account-sudo
@@ -234,6 +241,7 @@ let
       test "$(stat -c %u:%g:%a "$root${editorConfiguration}")" = 0:0:444
     ''}
     chroot "$root" /usr/bin/nix-store --load-db < ${developmentToolsClosure}/registration
+    install -D -m 0644 ${nixConfig} "$root/etc/nix/nix.conf"
     # @cc [owner:ghuntley,label:build;security] ubuntu-rootfs-same-derivation-same-image
     # Registering identical closure paths on different hosts MUST NOT embed
     # wall-clock registrationTime or transient SQLite WAL/SHM bytes into the

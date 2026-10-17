@@ -3149,12 +3149,12 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/access/browser.py",
-          "line": 216,
+          "line": 286,
           "kind": "always",
-          "sha256": "9b40c54f9fe1011bf211da84746ffdd6c3a85b5eaade5a94c503245b3c8f10b6"
+          "sha256": "09ee2415222b843175990bfcb638cb476c52cc1f027faba6cc12c131cf4d8a37"
         }
       ],
-      "implementation_scope": "Marshall HTTPS/SQL token and login receipts after two preview GETs, then pending-MFA protected GET on replica B; same-login WebAuthn positive is optional and guest bytes, same-origin failover, and hosted execution remain unverified.",
+      "implementation_scope": "Marshall HTTPS/SQL token and login receipts after two preview GETs; then, per ADR-0160, the pending-MFA login on replica B is served an ordinary /overview read without verification or extra login, and a SecurityLive passkey rename on B is refused with an unchanged passkey inventory. Same-login WebAuthn positive is optional; Control room administrator step-up, guest bytes, same-origin failover and hosted execution remain unverified.",
       "selected_control_core_intent": false,
       "selected_control_core_hash_current": false,
       "authored_support_callsites": [],
@@ -3190,9 +3190,9 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/access/browser.py",
-          "line": 346,
+          "line": 426,
           "kind": "always",
-          "sha256": "9b40c54f9fe1011bf211da84746ffdd6c3a85b5eaade5a94c503245b3c8f10b6"
+          "sha256": "09ee2415222b843175990bfcb638cb476c52cc1f027faba6cc12c131cf4d8a37"
         }
       ],
       "implementation_scope": "Replica B exchange, replica A sign-out, replica B refusal, and exact SQL JTI sets; no guest byte witness, ordinary same-origin failover, or hosted execution.",
@@ -3231,9 +3231,9 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/access/browser.py",
-          "line": 479,
+          "line": 559,
           "kind": "always",
-          "sha256": "9b40c54f9fe1011bf211da84746ffdd6c3a85b5eaade5a94c503245b3c8f10b6"
+          "sha256": "09ee2415222b843175990bfcb638cb476c52cc1f027faba6cc12c131cf4d8a37"
         }
       ],
       "implementation_scope": "Replica B mounted LiveView, real pre-fence set-role target/audit pair, closed Ash demotion, and processed post-fence event with unchanged inventory; hosted execution and guest effects remain unverified.",
@@ -3845,11 +3845,11 @@
   ],
   "authored_snapshot": {
     "as_of_utc": "2026-10-17 UTC",
-    "source_callsite_count": 162,
+    "source_callsite_count": 164,
     "catalog_primary_matches": 30,
     "duplicate_callsite_messages": [],
     "source_sha256": {
-      "antithesis/workload/access/browser.py": "9b40c54f9fe1011bf211da84746ffdd6c3a85b5eaade5a94c503245b3c8f10b6",
+      "antithesis/workload/access/browser.py": "09ee2415222b843175990bfcb638cb476c52cc1f027faba6cc12c131cf4d8a37",
       "antithesis/workload/admission/physical_scenario.py": "4fc2cab60d0f74376da546f6cf3f9aa262b5955f2ffe1f4545f43a0c4fc8e4f8",
       "antithesis/workload/admission/scenarios.py": "467d99aa4f9fa5b2ecdf1c07d0ba52532f40861e897deb06f2e4a2feaeb30720",
       "antithesis/workload/backup/scenarios.py": "c037cd1d31e4ea171caf7d7de5b02342a6e110763229359d10893911ccb931d4",

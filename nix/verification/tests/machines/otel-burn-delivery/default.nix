@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, hegel }:
 let
   fixture = pkgs.runCommand "burn-webhook-fixture" { nativeBuildInputs = [ pkgs.rustc pkgs.stdenv.cc ]; } ''
     mkdir -p $out/bin
@@ -17,9 +17,14 @@ let
       labels = { severity = "warning"; status = "provisional"; slo = "galileo"; window = "fast"; };
     }]; }];
   });
-in pkgs.testers.runNixOSTest {
+in hegel.runTest {
   name = "overalls-otel-burn-delivery";
-  extraPythonPackages = packages: [ packages.hypothesis ];
+  properties = {
+    enable = true;
+    profile = "ci";
+    testCases = 80;
+    derandomize = true;
+  };
   nodes.machine = { lib, ... }: {
     imports = [ ../../../../domains/system/otel-fleet/burn-delivery.nix ];
     options.services.overallsOtelFleet = {

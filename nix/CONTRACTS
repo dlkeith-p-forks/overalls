@@ -19,3 +19,9 @@ Provisionable Lilly pools MUST require native ZFS GUID identity and MUST NOT
 accept the retired logical budget (ADR-0159). Missing configuration MUST NOT
 select ext4 or another backend.
 Guest ext4 image generation and unrelated host root filesystems remain independent.
+
+@cc [owner:ghuntley,label:security;deployment] signed-nix-cache-custody
+Every Nix-enabled machine MUST configure the Overalls Cachix substituter with
+the reviewed public signing key, retain the NixOS substituter, and require
+signature verification. Cache credentials and signing private keys MUST NOT
+enter Nix configuration or any machine image.

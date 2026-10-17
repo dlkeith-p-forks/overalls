@@ -1,7 +1,17 @@
-{ pkgs, packages, guest ? packages.guest, ubuntu ? false, backups ? false, namespaceCleanup ? false, cloneMatrix ? false, actorRecovery ? false, bootProfile ? false }:
-pkgs.testers.runNixOSTest {
+{ pkgs, packages, guest ? packages.guest, ubuntu ? false, backups ? false, namespaceCleanup ? false, cloneMatrix ? false, actorRecovery ? false, bootProfile ? false, hegel ? null }:
+let
+  runTest =
+    if hegel != null && actorRecovery then hegel.runTest
+    else args: pkgs.testers.runNixOSTest (pkgs.lib.removeAttrs args [ "properties" ]);
+in
+runTest {
+  properties = {
+    enable = hegel != null && actorRecovery;
+    profile = "ci";
+    testCases = 4;
+    redact = false;
+  };
   name = if bootProfile then (if ubuntu then "overalls-ubuntu-guest-boot-profile" else "overalls-guest-boot-profile") else if actorRecovery then "overalls-lilly-native-actor-recovery" else if backups then "overalls-guest-backups" else if namespaceCleanup then "overalls-zfs-namespace-cleanup" else if cloneMatrix then "overalls-zfs-guest-clone" else if ubuntu then "overalls-ubuntu-guest" else "overalls-zfs-guest";
-  extraPythonPackages = pythonPackages: pkgs.lib.optionals actorRecovery [ pythonPackages.hypothesis ];
   requiredFeatures.nested-kvm = true;
   # The full NixOS journey reached its last multi-disk case at the old one-hour
   # deadline. Keep individual operation deadlines and every assertion intact.

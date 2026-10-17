@@ -1,4 +1,4 @@
-{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, relocation ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false }:
+{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, relocation ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false, hegel ? null }:
 let
   inherit (pkgs) lib;
   otelExporter = pkgs.callPackage ../../../../domains/system/otel-guest/receiver.nix {};
@@ -1265,6 +1265,9 @@ let
       '';
     };
   };
+  runTest =
+    if hegel != null && (runtimeReadiness || observabilityRecovery) then hegel.runTest
+    else args: pkgs.testers.runNixOSTest (lib.removeAttrs args [ "properties" ]);
 in
 # @cc [owner:ghuntley,label:verification;security] default-profile-trust-prerequisites
 # Default-profile, resize, account-lifecycle and team-resource journeys MUST use the trust-enabled Audi fleet image and
@@ -1327,9 +1330,14 @@ assert !porscheLifecycleOnly || (porsche && !terminal && !userSshJourney && !clo
 # launcher. They MUST retain independent NixOS and Ubuntu driver identities.
 assert !codingClis || (!editor && !audi && !porsche && !cloning && !agent && !relocation);
 assert !editor || (audi && !porsche && !cloning && !agent && !relocation);
-(pkgs.testers.runNixOSTest {
+(runTest {
+  properties = {
+    enable = hegel != null && (runtimeReadiness || observabilityRecovery);
+    profile = "ci";
+    testCases = 4;
+    redact = false;
+  };
   hostPkgs = lib.mkForce (import ../../support/driver-pkgs.nix pkgs);
-  extraPythonPackages = pythonPackages: lib.optionals runtimeReadiness [ pythonPackages.hypothesis ];
   name = if codingClis then (if ubuntu then "overalls-coding-clis-ubuntu-fleet" else "overalls-coding-clis-nixos-fleet") else if editor then (if ubuntu then "overalls-vscode-web-ubuntu-fleet" else "overalls-vscode-web-nixos-fleet") else if observabilityRecovery then "overalls-lilly-observability-recovery" else if porscheLifecycleOnly then (if ubuntu then "overalls-porsche-lifecycle-ubuntu-fleet" else "overalls-porsche-lifecycle-fleet") else if runtimeReadiness then "overalls-lilly-runtime-readiness" else if otelPorsche then "overalls-otel-porsche-native" else if otelAudiSsh then "overalls-otel-audi-ssh-native" else if otelGalileo then "overalls-otel-galileo-native" else if otelGuest then "overalls-otel-guest-native" else if cloneDestinationLoss then "overalls-clone-destination-loss" else if cloneMarshallRestart then "overalls-clone-marshall-restart" else if hostReplacement then "overalls-host-replacement" else if executorLoss then "overalls-executor-loss" else if sharingSurfaces then "overalls-sharing-surfaces" else if cloneCancellation then "overalls-clone-cancellation" else if guestCliRecovery then (if ubuntu then "overalls-guest-cli-recovery-ubuntu" else "overalls-guest-cli-recovery") else if maintenanceEvacuation then "overalls-maintenance-evacuation" else if agentCli then "overalls-agent-cli-journey" else if privateWeb then "overalls-private-web" else if integrationRenewals then "overalls-integration-renewals" else if teamResources then "overalls-team-resources" else if guestTrust then "overalls-fleet-guest-trust" else if accountLifecycle then "overalls-account-lifecycle" else if resize then "overalls-resize-browser" else if repositoryLaunch then (if ubuntu then "overalls-repository-launch-ubuntu-fleet" else "overalls-repository-launch") else if defaultOss then "overalls-default-oss-creation" else if userSshJourney then (if ubuntu then "overalls-user-ssh-journey-ubuntu-fleet" else "overalls-user-ssh-journey-fleet") else if agent then (if ubuntu then "overalls-agent-ubuntu-fleet" else "overalls-agent-fleet") else if terminal then (if ubuntu then "overalls-terminal-ubuntu-fleet" else "overalls-terminal-fleet") else if galileo then "overalls-galileo-fleet" else if brady then "overalls-brady-fleet" else if sshRosterMatrix then (if ubuntu then "overalls-ssh-roster-matrix-ubuntu-fleet" else "overalls-ssh-roster-matrix-fleet") else if sshBootstrap then (if ubuntu then "overalls-ssh-bootstrap-ubuntu-fleet" else "overalls-ssh-bootstrap-fleet") else if ubuntu && audi then (if relocation then "overalls-audi-ubuntu-relocation-fleet" else "overalls-audi-ubuntu-fleet") else if ubuntu then "overalls-ubuntu-fleet" else if customerIsolation then "overalls-customer-isolation-fleet" else if cloning then "overalls-cloning-fleet" else if audi && relocation then "overalls-audi-relocation-fleet" else if audi then "overalls-audi-fleet" else if relocation then "overalls-relocation-fleet" else if porsche then "overalls-porsche-fleet" else "overalls-fleet";
   requiredFeatures.nested-kvm = true;
   inherit skipTypeCheck;

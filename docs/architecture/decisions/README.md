@@ -1,5 +1,13 @@
 # Architecture decision records
 
+[ADR-0189](0189-cachix-watch-store-publishing.md) enables the Cachix watch-store
+agent on Overalls and Dungarees with a host-delivered SOPS token.
+
+[ADR-0188](0188-signed-overalls-cachix-substitution.md) configures the signed
+Overalls Cachix substituter for every Nix-running host and guest while retaining
+`cache.nixos.org`, signature enforcement and local-build fallback. Configuration
+evaluation is implemented; live cache availability and rollout remain partial.
+
 [ADR-0187](0187-detached-ingress-bridges.md) bridges Audi's guest SSH and
 plain web connections straight to the guest in detached `lilly-ingress-<key>`
 scopes that survive lilly-hostd and Lilly restarts, while Lilly keeps the
@@ -392,6 +400,8 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0184](0184-lilly-owns-every-socket.md) | accepted | partial | Lilly owns every socket it uses |
 | [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
 | [ADR-0186](0186-covenant-contract-verification.md) | accepted | partial | Covenant contract verification across Elixir applications |
+| [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
+| [ADR-0188](0188-signed-overalls-cachix-substitution.md) | accepted | partial | Use the signed Overalls Cachix cache across Nix machines |
 | [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |
 | [ADR-0190](0190-native-kernel-provenance-and-admission.md) | accepted | partial | Native kernel provenance and fail-closed multi-OS admission |
 | [ADR-0180](0180-multi-os-guest-image-contract.md) | superseded | partial | Multi-OS guest image families on the Firecracker fleet |

@@ -8,7 +8,10 @@ shrunk to a minimal counterexample on failure.
 
 from __future__ import annotations
 
+import contextvars
+import threading
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
 from ctypes import byref, c_bool, c_char_p, c_double, c_int64, c_void_p
 from dataclasses import dataclass
 from typing import Any
@@ -22,6 +25,18 @@ from hegel._lib import (
 )
 from hegel.engine import TestCase
 from hegel.generators import Generator
+
+_ACTIVE_WORKER: contextvars.ContextVar[tuple[TestCase, int] | None] = contextvars.ContextVar(
+    "hegel_active_worker", default=None
+)
+
+
+@dataclass(frozen=True)
+class WorkerContext:
+    """The test-case handle and stable index for the current rule worker."""
+
+    test_case: TestCase
+    index: int
 
 
 @dataclass(frozen=True)
@@ -97,6 +112,11 @@ class Pool:
         self._handle: int | None = None
         self._tc: TestCase | None = None
         self._values: dict[int, object] = {}
+        self._lock = threading.RLock()
+
+    def _active_test_case(self) -> TestCase:
+        active = _ACTIVE_WORKER.get()
+        return active[0] if active is not None else self._tc  # type: ignore[return-value]
 
     def _bind(self, tc: TestCase) -> None:
         engine = lib()
@@ -117,24 +137,28 @@ class Pool:
         if self._handle is None or self._tc is None:
             raise RuntimeError("Pool is only usable while a state machine test case runs")
         engine = lib()
+        tc = self._active_test_case()
         out = c_int64()
-        check(engine.hegel_pool_add(engine.ctx, self._tc._ptr, self._handle, byref(out)))
-        self._values[int(out.value)] = value
+        with self._lock:
+            check(engine.hegel_pool_add(engine.ctx, tc._ptr, self._handle, byref(out)))
+            self._values[int(out.value)] = value
         return int(out.value)
 
     def draw[T](self, *, consume: bool = False) -> T:
         if self._handle is None or self._tc is None:
             raise RuntimeError("Pool is only usable while a state machine test case runs")
         engine = lib()
+        tc = self._active_test_case()
         out = c_int64()
-        check(
-            engine.hegel_pool_generate(engine.ctx, self._tc._ptr, self._handle, consume, byref(out))
-        )
-        if int(out.value) not in self._values:
-            raise AssumptionRejected("pool variable no longer available")
-        value = self._values[int(out.value)]
-        if consume:
-            del self._values[int(out.value)]
+        with self._lock:
+            check(
+                engine.hegel_pool_generate(engine.ctx, tc._ptr, self._handle, consume, byref(out))
+            )
+            if int(out.value) not in self._values:
+                raise AssumptionRejected("pool variable no longer available")
+            value = self._values[int(out.value)]
+            if consume:
+                del self._values[int(out.value)]
         return value
 
 
@@ -173,13 +197,33 @@ class MachineStateMachine:
         return sorted(specs, key=lambda spec: spec.name)
 
     @classmethod
-    def run(cls, *, steps: int | None = None) -> None:
+    def run(
+        cls,
+        *,
+        steps: int | None = None,
+        min_concurrency: int = 1,
+        max_concurrency: int = 1,
+    ) -> None:
         """Register this machine as a stateful property for `_run_registered`."""
         if steps is not None and steps <= 0:
             raise ValueError("run(steps=) must be a positive step count")
+        if min_concurrency < 1 or max_concurrency < min_concurrency:
+            raise ValueError("run concurrency must satisfy 1 <= min_concurrency <= max_concurrency")
         _registry.REGISTRY.entries.append(
-            _registry.StatefulProperty(name=cls.__name__, machine_cls=cls, steps=steps)
+            _registry.StatefulProperty(
+                name=cls.__name__,
+                machine_cls=cls,
+                steps=steps,
+                min_concurrency=min_concurrency,
+                max_concurrency=max_concurrency,
+            )
         )
+
+    @property
+    def worker(self) -> WorkerContext | None:
+        """Return the current worker context while a rule is executing."""
+        active = _ACTIVE_WORKER.get()
+        return WorkerContext(*active) if active is not None else None
 
 
 def _pools_of(instance: MachineStateMachine) -> list[Pool]:
@@ -191,11 +235,14 @@ def execute_state_machine(
     tc: TestCase,
     *,
     step_count: int,
+    min_concurrency: int = 1,
+    max_concurrency: int = 1,
 ) -> None:
     """One stateful test case: setup, engine-driven rule loop, guaranteed
     invariant checks at initial/final/join points, teardown."""
     engine = lib()
     instance = machine_cls()
+    worker_cases: list[TestCase] = []
     try:
         instance.setup()
         pools = _pools_of(instance)
@@ -226,14 +273,46 @@ def execute_state_machine(
                 invariant_names,
                 invariant_always,
                 len(invariants),
-                1,
-                1,
+                min_concurrency,
+                max_concurrency,
                 step_count,
                 byref(sm),
                 byref(out_concurrency),
             )
         )
         assert sm.value is not None
+        worker_count = int(out_concurrency.value)
+        worker_cases = [tc]
+        if worker_count > 1:
+            for index in range(1, worker_count):
+                worker_cases.append(tc.clone(worker_index=index))
+
+        def run_worker(index: int) -> None:
+            worker_tc = worker_cases[index]
+            token = _ACTIVE_WORKER.set((worker_tc, index))
+            try:
+                while True:
+                    rule_index = c_int64()
+                    check(
+                        engine.hegel_state_machine_next_rule(
+                            engine.ctx, worker_tc._ptr, sm, index, byref(rule_index)
+                        )
+                    )
+                    if rule_index.value == STATE_MACHINE_DONE:
+                        return
+                    spec = rules[rule_index.value]
+                    try:
+                        values = {name: worker_tc.draw(gen) for name, gen in spec.params.items()}
+                        spec.fn(instance, **values)
+                    except AssumptionRejected:
+                        check(
+                            engine.hegel_state_machine_rule_rejected(
+                                engine.ctx, worker_tc._ptr, sm, index
+                            )
+                        )
+            finally:
+                _ACTIVE_WORKER.reset(token)
+
         try:
             while True:
                 group = c_int64()
@@ -250,24 +329,15 @@ def execute_state_machine(
                         )
                     if should.value:
                         spec.fn(instance)
-                while True:
-                    rule_index = c_int64()
-                    check(
-                        engine.hegel_state_machine_next_rule(
-                            engine.ctx, tc._ptr, sm, 0, byref(rule_index)
-                        )
-                    )
-                    if rule_index.value == STATE_MACHINE_DONE:
-                        break
-                    spec = rules[rule_index.value]
-                    rejected = False
-                    try:
-                        values = {name: tc.draw(gen) for name, gen in spec.params.items()}
-                        spec.fn(instance, **values)
-                    except AssumptionRejected:
-                        rejected = True
-                    if rejected:
-                        check(engine.hegel_state_machine_rule_rejected(engine.ctx, tc._ptr, sm, 0))
+                if worker_count == 1:
+                    run_worker(0)
+                else:
+                    with ThreadPoolExecutor(max_workers=worker_count) as executor:
+                        futures = [
+                            executor.submit(run_worker, index) for index in range(worker_count)
+                        ]
+                        for future in futures:
+                            future.result()
             for spec in invariants:
                 spec.fn(instance)
         finally:
@@ -276,5 +346,7 @@ def execute_state_machine(
         try:
             instance.teardown()
         finally:
+            for worker_tc in worker_cases[1:]:
+                worker_tc.close()
             for pool in _pools_of(instance):
                 pool._release()

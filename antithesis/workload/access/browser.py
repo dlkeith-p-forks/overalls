@@ -175,12 +175,82 @@ def verify_fixture_login(config: Config, login: Login, actor: Actor, webauthn_or
         mounted.close()
 
 
+def pending_read_ok(
+    status: int, live_main: bool, login_verified: bool, logins_unchanged: bool
+) -> bool:
+    """@cc [owner:ghuntley,label:verification;security] pending-mfa-ordinary-read
+    Under ADR-0160 a pending-MFA login's protected read MUST be served as a
+    rendered LiveView page while its stored login remains unverified and no
+    further stored login is issued. A redirect is not the expected contract.
+    """
+    return status == 200 and live_main and not login_verified and logins_unchanged
+
+
+def pending_mutation_refused(
+    passkeys_unchanged: bool, login_verified: bool, logins_unchanged: bool
+) -> bool:
+    """A privileged credential change from an unverified login commits nothing."""
+    return passkeys_unchanged and not login_verified and logins_unchanged
+
+
+def _pending_rename_refused(
+    config: Config, context: BrowserClient, origin: str, actor: Actor, login_jti: str
+) -> bool | None:
+    """@cc [owner:ghuntley,label:verification;security] pending-mfa-mutation-refusal
+    The privileged probe MUST use the copied pending-login session on the given
+    replica, send a real SecurityLive credential rename with a fresh label for
+    the actor's existing passkey, and compare the stored passkey inventory,
+    verification and login rows. A missing page, mount, reply or SQL read MUST
+    return None (unexercised), never a refusal.
+    """
+    oracle = AccessOracle(SqlOracle(config))
+    before = _value(oracle.passkeys(actor.user_id))
+    tokens_before = _value(oracle.tokens(actor.user_id))
+    if before is None or tokens_before is None or not before:
+        return None
+    response = _value(context.request("GET", f"{origin}/settings/security"))
+    # ADR-0160 keeps Security reachable for a signed-in login so setup is not
+    # circular; any other reply sends no mutation and proves nothing.
+    if response is None or response.status != 200:
+        return None
+    page = parse_live_page(response.body)
+    if page is None:
+        return None
+    mounted = _value(LiveView.mount(context, origin, "/settings/security", page, config.ca_file))
+    if mounted is None:
+        return None
+    try:
+        credential_id, _label = min(before)
+        replied = mounted.event(
+            "credential",
+            {
+                "operation": "rename",
+                "id": str(credential_id),
+                "label": f"pending-{uuid4().hex[:12]}",
+            },
+        )
+    finally:
+        mounted.close()
+    if replied.state is not State.OBSERVED:
+        return None
+    after = _value(oracle.passkeys(actor.user_id))
+    completed = _value(oracle.completed_verifications(actor.user_id))
+    tokens_after = _value(oracle.tokens(actor.user_id))
+    if after is None or completed is None or tokens_after is None:
+        return None
+    return pending_mutation_refused(
+        before == after, login_jti in completed, tokens_before.user == tokens_after.user
+    )
+
+
 def run_magic_preview(config: Config, links: LinkSource, fixture: AccessFixture) -> int:
     """@cc [owner:ghuntley,label:verification] magic-preview-independent-authority
     The preview assertion MUST require SMTP link capture and a stored valid
     magic token, then compare stored login/remember rows and the browser cookie
     before and after a repeated GET. Pending-MFA claims MUST require an
-    enrolled account and compare the exact new login's verification state.
+    enrolled account and compare the exact new login's verification state:
+    per ADR-0160 its ordinary read is served without elevation, while a
+    privileged passkey change is refused with no stored effect.
     Unavailable HTTP or SQL MUST leave those checkpoints unexercised.
     """
     actor = fixture.target
@@ -249,31 +319,41 @@ def run_magic_preview(config: Config, links: LinkSource, fixture: AccessFixture)
     pending_context = browser.copied_session(host_b) if host_b is not None else None
     if pending_context is None:
         return 0
+    # ADR-0160: email authentication establishes the ordinary signed-in session
+    # even for an enrolled account; passkey step-up gates privileged mutations
+    # only. The superseded ADR-0123/ADR-0131 read-boundary redirect is not the
+    # contract, so the read must be served and must mint no authority.
     pending = _value(pending_context.request("GET", f"{origin_b}/overview"))
     completed = _value(oracle.completed_verifications(actor.user_id))
     pending_tokens = _value(oracle.tokens(actor.user_id))
-    if pending is None or completed is None or pending_tokens is None:
+    if pending is None or completed is None or pending_tokens is None or pending.status >= 500:
+        # A server error is unavailable evidence, not a classified refusal.
         return 0
-    # The fixture target is enrolled. A pending login must not authorize a
-    # protected page; the database witness catches login issuance during probes.
-    pending_ok = (
-        login_jti not in completed
-        and pending.status in (302, 303)
-        and pending.location is not None
-        and pending.location.startswith("/settings/security")
-        and pending_tokens.user == after_post.user
+    read_ok = pending_read_ok(
+        pending.status,
+        parse_live_page(pending.body) is not None,
+        login_jti in completed,
+        pending_tokens.user == after_post.user,
     )
     always(
-        pending_ok,
-        "Magic-link pending MFA refuses protected browser access on another replica",
-        {"stage": "pending_mfa", "replica": "b"},
+        read_ok,
+        "Magic-link pending MFA login serves ordinary reads on another replica without elevation",
+        {"stage": "pending_mfa_read", "replica": "b"},
     )
-    if pending_ok and origin_a == fixture.webauthn_origin:
+    if not read_ok:
+        return 0
+    refused = _pending_rename_refused(config, pending_context, origin_b, actor, login_jti)
+    if refused is None:
+        return 0
+    always(
+        refused,
+        "Magic-link pending MFA login cannot change a passkey on another replica before step-up",
+        {"stage": "pending_mfa_mutation", "replica": "b", "event": "credential-rename"},
+    )
+    if refused and origin_a == fixture.webauthn_origin:
         pending_login = Login(browser, actor.user_id, login_jti, origin_a)
         if verify_fixture_login(config, pending_login, actor, fixture.webauthn_origin):
-            accepted = _value(pending_context.request("GET", f"{origin_b}/overview"))
-            if accepted is not None and accepted.status == 200:
-                reachable("Same-login WebAuthn verification opened protected browser page")
+            reachable("Same-login WebAuthn verification completed after pending-MFA probes")
     return 0
 
 

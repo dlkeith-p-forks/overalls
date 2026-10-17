@@ -104,6 +104,21 @@ class AccessOracle:
             )
         )
 
+    def passkeys(self, user_id: UUID) -> Observation[frozenset[tuple[UUID, str]]]:
+        rows = self._sql.select(
+            "SELECT id, label FROM account_passkeys WHERE user_id = %s::uuid",
+            (str(user_id),),
+            maximum_rows=64,
+        )
+        if rows.state is not State.OBSERVED or rows.value is None:
+            return Observation.unavailable()
+        result: set[tuple[UUID, str]] = set()
+        for row in rows.value:
+            if len(row) != 2 or not isinstance(row[0], UUID) or not isinstance(row[1], str):
+                return Observation.unavailable()
+            result.add((row[0], row[1]))
+        return Observation.observed(frozenset(result))
+
     def verification_ids(self, user_id: UUID) -> Observation[frozenset[str]]:
         rows = self._sql.select(
             "SELECT id FROM account_verifications WHERE user_id = %s::uuid",

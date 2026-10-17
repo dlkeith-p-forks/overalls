@@ -11,9 +11,12 @@ inputs:
     required: false
     default: ""
   system-features:
-    description: Nix system features this runner provides (machine tests add kvm and nested-kvm).
+    description: >-
+      Nix system features this runner provides. Every privileged Namespace
+      runner exposes /dev/kvm, which evaluation needs for import-from-derivation
+      image builds (vmTools); machine tests add nested-kvm.
     required: false
-    default: nixos-test benchmark big-parallel
+    default: nixos-test benchmark big-parallel kvm
   install-devenv:
     description: Whether to install the devenv CLI.
     required: false
@@ -57,16 +60,53 @@ runs:
     # sandbox needs a privileged runner container
     # (`<profile>;container.privileged=true`); with fallback disabled an
     # unprivileged runner fails loudly instead of building unsandboxed.
+    #
+    # Builds MUST also run as nixbld build users under a nix-daemon, as on the
+    # fleet. A single-user install builds as the runner user, whose sandbox
+    # root is writable; nix-compact's functional tests then create
+    # /homeless-shelter and refuse their own nested builds. The runner
+    # container has no systemd, so install-nix-action would fall back to
+    # single-user: install multi-user here and start the daemon directly.
+    # The installer takes ownership of a /nix restored from the cache volume.
     - name: Install Nix
-      uses: cachix/install-nix-action@9aaadd8b85853f67fcdf488e6a4e9efa94ee96e2
-      with:
-        extra_nix_config: |
-          access-tokens = github.com=${{ github.token }}
-          sandbox = true
-          sandbox-fallback = false
-          system-features = ${{ inputs.system-features }}
-          max-jobs = auto
-          cores = 0
+      shell: bash
+      env:
+        NIX_VERSION: 2.30.2
+        GITHUB_ACCESS_TOKEN: ${{ github.token }}
+        SYSTEM_FEATURES: ${{ inputs.system-features }}
+      run: |
+        conf=$(mktemp)
+        cat > "$conf" <<EOF
+        experimental-features = nix-command flakes
+        access-tokens = github.com=$GITHUB_ACCESS_TOKEN
+        trusted-users = root $USER
+        always-allow-substitutes = true
+        sandbox = true
+        sandbox-fallback = false
+        system-features = $SYSTEM_FEATURES
+        max-jobs = auto
+        cores = 0
+        EOF
+        curl -sSfL --retry 5 -o "$RUNNER_TEMP/install-nix" \
+          "https://releases.nixos.org/nix/nix-$NIX_VERSION/install"
+        sh "$RUNNER_TEMP/install-nix" --daemon --yes --no-channel-add \
+          --daemon-user-count "$(( $(nproc) * 2 ))" --nix-extra-conf-file "$conf"
+        rm -f "$conf"
+        # A socket restored from the cache volume would end the wait early.
+        sudo rm -f /nix/var/nix/daemon-socket/socket
+        # NixOS's nix-daemon unit sets LimitNOFILE=1048576. VM image builds
+        # need it: virtiofsd holds a descriptor per inode when it cannot
+        # open file handles, and copying a system closure exceeds the
+        # container's default limit (the build VM panics with ENFILE).
+        sudo sh -c 'ulimit -n 1048576 && nohup /nix/var/nix/profiles/default/bin/nix-daemon > /tmp/nix-daemon.log 2>&1 &'
+        for _ in $(seq 1 30); do
+          [ -S /nix/var/nix/daemon-socket/socket ] && break
+          sleep 1
+        done
+        echo "/nix/var/nix/profiles/default/bin" >> "$GITHUB_PATH"
+        echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
+        echo "NIX_REMOTE=daemon" >> "$GITHUB_ENV"
+        NIX_REMOTE=daemon /nix/var/nix/profiles/default/bin/nix store info
 
     # Push in the post-job step rather than through the cachix daemon: the
     # daemon holds a read lock on the local Nix database for the whole job,

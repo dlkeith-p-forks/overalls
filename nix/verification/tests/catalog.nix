@@ -14,8 +14,16 @@ let
     libhegel = hegelLibhegel;
   };
   hegel = import ../hegel/run-test.nix { pkgs = testPkgs; inherit hegelPython; };
+  # Keep the engine/binding smoke suite as an explicit check.  Machine tests
+  # depend on these packages transitively, but that does not make shrinking,
+  # replay mismatch handling, or concurrent state-machine cleanup observable
+  # when no migrated machine is selected by a CI matrix.
+  hegel-framework-packages = buildPkgs.linkFarm "overalls-hegel-framework-packages" [
+    { name = "libhegel"; path = hegelLibhegel; }
+    { name = "python"; path = hegelPython; }
+  ];
   featureFleet = options: import ./machines/fleet (service // {
-    hostFixture = fixtures.hetzner-uefi;
+    hostFixture = fixtures.hetzner-uefi; inherit hegel;
   } // options);
   featureFleets = {
     fleet = featureFleet {};
@@ -42,6 +50,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
     package = packages.${application};
     inherit (packages) toolchain;
   }) // {
+  hegel-framework-packages = hegel-framework-packages;
   team-ssh = import ./machines/team-ssh service;
   vscode-web-package = import ./machines/vscode-web { pkgs = testPkgs; inherit packages; };
   vscode-web-broker = packages.vscodeWebBroker;
@@ -97,11 +106,11 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   public-grafana-configuration = import ./evaluation/public-grafana.nix { pkgs = testPkgs; inherit nixpkgs; module = modules.default; };
   trace-spool-native = import ./machines/trace-spool { pkgs = testPkgs; };
   otel-fleet = import ./machines/otel-fleet { pkgs = testPkgs; };
-  otel-burn-delivery = import ./machines/otel-burn-delivery { pkgs = testPkgs; };
+  otel-burn-delivery = import ./machines/otel-burn-delivery { pkgs = testPkgs; inherit hegel; };
   otel-marshall = import ./machines/otel-marshall service;
-  otel-request-recorder = import ./machines/otel-request-recorder { pkgs = testPkgs; inherit (packages) toolchain; };
+  otel-request-recorder = import ./machines/otel-request-recorder { pkgs = testPkgs; inherit (packages) toolchain; inherit hegel; };
   otel-request-recorder-commit-reply-loss = import ./machines/otel-request-recorder {
-    pkgs = testPkgs; inherit (packages) toolchain; commitReplyLoss = true;
+    pkgs = testPkgs; inherit (packages) toolchain; inherit hegel; commitReplyLoss = true;
   };
   otel-slo-rules = import ./evaluation/otel-slo-rules.nix { pkgs = buildPkgs; };
   telemetry-diagnostics = import ./evaluation/telemetry-diagnostics.nix { pkgs = buildPkgs; };
@@ -226,6 +235,9 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   auto-update = import ./machines/auto-update service;
   nix-gc-configuration = import ./evaluation/nix-gc.nix {
     pkgs = testPkgs; inherit nixpkgs; module = modules.default; inherit fixtures;
+  };
+  nix-cache-configuration = import ./evaluation/nix-cache.nix {
+    pkgs = testPkgs; inherit nixpkgs fixtures; module = modules.default;
   };
   tailscale-configuration = import ./evaluation/tailscale.nix {
     pkgs = testPkgs; inherit nixpkgs; module = modules.default; inherit fixtures;
@@ -380,7 +392,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
     bootProfile = true;
     guest = import ./fixtures/ubuntu { inherit packages; };
   });
-  lilly-native-actor-recovery = import ./machines/zfs-guest (storage // { actorRecovery = true; });
+  lilly-native-actor-recovery = import ./machines/zfs-guest (storage // { actorRecovery = true; inherit hegel; });
   zfs-namespace-cleanup = import ./machines/zfs-guest (storage // { namespaceCleanup = true; });
   inception = import ./machines/inception storage;
   zfs-transfer = import ./machines/zfs-transfer (storage // { inherit hegel; });

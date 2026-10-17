@@ -90,6 +90,26 @@ HEGEL_REPLAY_BLOB="AAEAAAAA..." \
 With `redact = true`, blobs are suppressed deliberately; the failure origin
 is still reported, and the journal/invariant context in the log is the record.
 
+A replay blob is an assertion about one registered property. The runner fails
+if the blob is malformed, if it overruns the property's generators, or if it
+does not reproduce a failure in any registered property. Stale and
+cross-property blobs therefore cannot silently turn a check green.
+
+## Imperative failures and concurrent state machines
+
+`runTest` executes registered properties from a `finally`-style wrapper around
+the imperative `testScript`. When an imperative assertion fails, Hegel still
+runs and reports its properties before the original assertion is re-raised.
+
+State machines accept `min_concurrency` and `max_concurrency` in `run()`. The
+engine chooses a worker count in that range; each worker receives a cloned
+`TestCase` (`self.worker` exposes its index and handle), and rules in one
+concurrency group may run in parallel. Rule bodies that share fixture state
+must provide their own synchronization. Concurrent runs are deliberately
+reported as nondeterministic by libhegel and do not produce shrink/replay
+blobs; keep a sequential projection for shrinkable diagnosis when a property
+needs both forms.
+
 ## Interactive use
 
 The interactive driver carries the same environment, so properties are
@@ -102,6 +122,11 @@ nix build .#checks.x86_64-linux.<name>.driverInteractive
 from hegel import _run_registered
 _run_registered(profile="development")
 ```
+
+The catalog exports `hegel-framework-packages` as a standalone check. It builds
+the pinned native engine and Python binding and runs the binding smoke suite,
+including shrinking, replay, replay-mismatch rejection, state machines, and a
+concurrent schedule.
 
 ## Versioning
 

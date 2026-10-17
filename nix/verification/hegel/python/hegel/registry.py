@@ -34,6 +34,8 @@ class StatefulProperty:
     name: str
     machine_cls: type[MachineStateMachine]
     steps: int | None
+    min_concurrency: int = 1
+    max_concurrency: int = 1
 
 
 Entry = Property | StatefulProperty

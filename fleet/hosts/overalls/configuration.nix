@@ -14,6 +14,20 @@
     preserveGenerations = "14d";
   };
 
+  services.cachix-watch-store = {
+    enable = true;
+    cacheName = "overalls";
+    cachixTokenFile = "/run/overalls-secrets/cachix/token";
+  };
+  services.overallsSecrets.bundles.cachix = {
+    encryptedFile = "${../../../secrets/overalls-cachix.enc.json}";
+    outputs.token = { format = "raw"; secrets = [ "CACHIX_AUTH_TOKEN" ]; };
+  };
+  systemd.services.cachix-watch-store-agent = {
+    requires = [ "overalls-secrets-cachix.service" ];
+    after = [ "overalls-secrets-cachix.service" ];
+  };
+
   overalls.remoteBuilders = {
     enable = true;
     localName = "overalls";

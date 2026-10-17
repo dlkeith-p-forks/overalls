@@ -1,5 +1,7 @@
 # Architecture reviews
 
+- [Hegel NixOS property migration (2026-10-17)](2026-10-17-hegel-nixos-migration.md): selected live machine drivers use Hegel for generated histories and stateful schedules; evaluation, guest-side and exact acceptance checks retain their evidence boundaries.
+
 - [Detached ingress bridges (2026-10-17)](2026-10-17-detached-ingress-bridges.md): ADR-0187 moves guest SSH and plain web bridges out of lilly-hostd and the BEAM relay into per-connection `lilly-ingress-<key>.scope` units that survive hostd and Lilly restarts; Lilly records each binding and keeps the execution fence through keepers and re-adoption. Unit and property tests passed; the user-SSH journey machine run is pending.
 - [Underclass tailnet exit-node egress (2026-10-17)](2026-10-17-underclass-tailnet-egress.md): ADR-0185 routes only Underclass provider traffic through a dedicated userspace tailnet node and the Australian exit node, confines the unit to loopback and gates start on exit-node selection. Configuration and headscale machine checks passed; live login and stage 2 pending.
 - [Lilly owns every socket it uses (2026-10-17)](2026-10-17-lilly-owns-every-socket.md): ADR-0184 removes hostd descriptor passing (the BEAM never closes a descriptor it did not create), adding connect-on-behalf, a privilege-dropped ingress bridge and Lilly socket custody. Machine runs pending.
