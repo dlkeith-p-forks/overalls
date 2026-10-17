@@ -26,11 +26,12 @@ defmodule Lilly.VM.ActorFailureEventTest do
 
   # @cc [owner:ghuntley,label:verification;observability] actor-failure-event-model
   # Generated histories of repeated failed observations (a failed placement
-  # whose desired state stays running is re-driven every tick), recoveries,
-  # actor restarts and newer commands MUST emit vm.failed exactly when the
-  # reference model sees a newly recorded failed outcome: once per
-  # generation/reason until a recovery or a newer command, never once per
-  # reconcile, and a repeated failure MUST NOT append a durable outcome.
+  # whose desired state stays running is re-observed once by each actor
+  # process, then settled), recoveries, actor restarts and newer commands MUST
+  # emit vm.failed exactly when the reference model sees a newly recorded
+  # failed outcome: once per generation/reason until a recovery or a newer
+  # command, never once per reconcile, and a repeated failure MUST NOT append
+  # a durable outcome. A reconcile of a settled failure MUST start no work.
   property "vm.failed follows recorded failed outcomes, not reconcile ticks", context do
     check all(
             steps <-
@@ -68,8 +69,8 @@ defmodule Lilly.VM.ActorFailureEventTest do
           actor = start_supervised!({Actor, options}, id: id)
           assert_receive {:vm_actor_ready, ^id, ^actor, _}, 2000
 
-          Enum.reduce(steps, {actor, first}, fn step, {actor, current} ->
-            apply_step(step, actor, current, store, options)
+          Enum.reduce(steps, {actor, first, false}, fn step, {actor, current, settled} ->
+            apply_step(step, actor, current, settled, store, options)
           end)
 
           stop_supervised!(id)
@@ -88,17 +89,18 @@ defmodule Lilly.VM.ActorFailureEventTest do
     end
   end
 
-  @spec apply_step(step(), pid(), map(), Store.t(), keyword()) :: {pid(), map()}
-  defp apply_step(:actor_restart, _actor, current, _store, options) do
+  @spec apply_step(step(), pid(), map(), boolean(), Store.t(), keyword()) ::
+          {pid(), map(), boolean()}
+  defp apply_step(:actor_restart, _actor, current, _settled, _store, options) do
     id = current.placement_id
     stop_supervised!(id)
     flush_executions()
     replacement = start_supervised!({Actor, options}, id: id)
     assert_receive {:vm_actor_ready, ^id, ^replacement, _}, 2000
-    {replacement, current}
+    {replacement, current, false}
   end
 
-  defp apply_step(:newer_command, actor, current, store, _options) do
+  defp apply_step(:newer_command, actor, current, _settled, store, _options) do
     newer = %{
       current
       | id: Lilly.UUID.generate(),
@@ -107,10 +109,20 @@ defmodule Lilly.VM.ActorFailureEventTest do
     }
 
     {:ok, :stored} = Store.accept(store, newer)
-    {actor, newer}
+    {actor, newer, false}
   end
 
-  defp apply_step(step, actor, current, _store, _options) do
+  # A settled failure is not re-driven: the reconcile starts no executor work.
+  defp apply_step(_step, actor, current, true, _store, _options) do
+    before = Actor.status(actor).outcome_sequence
+    Actor.reconcile(actor)
+    _ = :sys.get_state(actor)
+    refute_received {:execute, _, ^current, _}
+    assert %{executing: false, outcome_sequence: ^before} = Actor.status(actor)
+    {actor, current, true}
+  end
+
+  defp apply_step(step, actor, current, false, _store, _options) do
     id = current.placement_id
     before = Actor.status(actor).outcome_sequence
     recorded = recorded(actor)
@@ -135,7 +147,7 @@ defmodule Lilly.VM.ActorFailureEventTest do
       do: assert(Actor.status(actor).outcome_sequence == before),
       else: assert(Actor.status(actor).outcome_sequence == before + 1)
 
-    {actor, current}
+    {actor, current, state == :failed}
   end
 
   @spec recorded(pid()) :: key() | nil
@@ -161,25 +173,30 @@ defmodule Lilly.VM.ActorFailureEventTest do
 
   # Reference model: the journal keeps the last recorded outcome across actor
   # restarts; a failure is reported when it differs from that outcome by
-  # generation or reason, or follows a recorded recovery.
+  # generation or reason, or follows a recorded recovery. A recorded failure
+  # settles the command until a newer command or an actor restart, and a
+  # settled reconcile observes nothing.
   @spec expected([step()]) :: [atom()]
   defp expected(steps) do
-    {emitted, _, _} =
-      Enum.reduce(steps, {[], nil, 1}, fn
-        {:failed, reason}, {emitted, {generation, :failed, reason}, generation} ->
-          {emitted, {generation, :failed, reason}, generation}
+    {emitted, _, _, _} =
+      Enum.reduce(steps, {[], nil, 1, false}, fn
+        :newer_command, {emitted, last, generation, _settled} ->
+          {emitted, last, generation + 1, false}
 
-        {:failed, reason}, {emitted, _, generation} ->
-          {[reason | emitted], {generation, :failed, reason}, generation}
+        :actor_restart, {emitted, last, generation, _settled} ->
+          {emitted, last, generation, false}
 
-        :observed, {emitted, _, generation} ->
-          {emitted, {generation, :running, :none}, generation}
-
-        :newer_command, {emitted, last, generation} ->
-          {emitted, last, generation + 1}
-
-        :actor_restart, accumulator ->
+        _drive, {_, _, _, true} = accumulator ->
           accumulator
+
+        {:failed, reason}, {emitted, {generation, :failed, reason}, generation, false} ->
+          {emitted, {generation, :failed, reason}, generation, true}
+
+        {:failed, reason}, {emitted, _, generation, false} ->
+          {[reason | emitted], {generation, :failed, reason}, generation, true}
+
+        :observed, {emitted, _, generation, false} ->
+          {emitted, {generation, :running, :none}, generation, false}
       end)
 
     Enum.reverse(emitted)

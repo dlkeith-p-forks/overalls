@@ -278,6 +278,18 @@ current code):
   evidence ends steadiness (contract `steady-state-reconcile-backstop`;
   [actor watch test](../../../lilly/test/vm/actor_watch_test.exs)
   `steady-actor-skips-ticks-until-evidence`).
+- **Settled failed outcome.** A placement whose launch failed but whose
+  desired state is still running kept its command, so its actor re-ran the
+  failure fence, with its placement, intent and network locks, every second
+  until Marshall sent a newer command (production, 2026-10-17). The actor now
+  settles once it has durably recorded a failed outcome for the exact current
+  command: ticks and unchanged reconcile casts start no work, and a newer
+  command or delete drives at once. A replacement actor re-observes once, so
+  readiness still needs a current-runtime observation (contract
+  `failed-outcome-settles-command`;
+  [settled-failure property](../../../lilly/test/vm/actor_failure_settled_test.exs)).
+  This refines the cadence and keeps ADR-0017's rule that a failed launch
+  needs a new explicit command; Marshall's outcome path is unchanged.
 
 Decision 1, first stage (FIFO turns):
 [`Lilly.Host.PoolQueue`](../../../lilly/lib/lilly/host/pool_queue.ex)
