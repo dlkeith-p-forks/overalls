@@ -24,9 +24,11 @@ case "$kind" in
 esac
 
 results=$(mktemp)
+# Workers share the runner's memory with the guest-image builds that machine
+# tests trigger at evaluation time (import-from-derivation), so cap them.
 nix shell --inputs-from . nixpkgs#nix-eval-jobs --command \
   nix-eval-jobs --flake '.#checks.x86_64-linux' --meta \
-    --workers "$(nproc)" --max-memory-size 4096 > "$results"
+    --workers 8 --max-memory-size 4096 > "$results"
 
 # Every line must be a JSON object naming its attribute.
 jq -e -s 'all(type == "object" and (.attr | type == "string"))' "$results" > /dev/null
