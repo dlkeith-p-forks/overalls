@@ -12,7 +12,9 @@ templates. The latter three each contain one terminal singleton command. The
 separate `repository-origin` profile selects four repository commands with the
 origin and Enrico overlays; `access-smtp` selects three access commands with
 the SMTP overlay; `recorder-host` selects the three recorder commands with the
-TCG recorder VM overlay. Each requires an independent fixture readiness probe
+TCG recorder VM overlay; `admission-stub` selects the two admission commands
+on the harness stub storage substrate (not ZFS; see the admission workload
+notes). Each requires an independent fixture readiness probe
 before the sole bootstrap owner signals setup completion. Stage the chosen
 command selection immediately before building its workload image. Guest,
 backup and satellite commands remain unselected until each has a complete
@@ -54,8 +56,8 @@ python3.13 antithesis/verification/campaign.py reserve \
 
 For an optional profile, pass its JSON file to `selection.py stage` with
 `--selection`, use the same file for `selection.py materialize`, then pass
-`--selection repository-origin`, `--selection access-smtp` or
-`--selection recorder-host` to `identity.py`. Render and build the exact ordered
+`--selection repository-origin`, `--selection access-smtp`,
+`--selection recorder-host` or `--selection admission-stub` to `identity.py`. Render and build the exact ordered
 Compose files listed in that profile. All campaign operations use the one
 canonical ledger path. Point `snouty validate` or the launch skill at the
 materialized `antithesis/runtime/configs/<profile>` directory only after its

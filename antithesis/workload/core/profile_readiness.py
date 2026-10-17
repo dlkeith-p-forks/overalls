@@ -285,3 +285,48 @@ def recorder_host_ready(config: Config) -> bool:
     except (OSError, sqlite3.Error) as error:
         return _incomplete(profile, f"archive_unreadable ({type(error).__name__})")
     return True
+
+
+_STUB_POOL_IDENTITY = ("10001", "10002", "overalls/antithesis")
+
+
+def admission_stub_ready(config: Config, host_ids: tuple[UUID, ...]) -> bool:
+    """@cc [owner:ghuntley,label:verification;capacity] bootstrap-admission-stub-authority
+    Admission-stub setup MUST observe, through the SELECT-only oracle, that
+    Marshall committed for the single fixture host a fresh execution-ready
+    report with measured v1 compute headroom, a fresh pool observation with
+    positive free bytes under the stub's configured pool identity, and an
+    enabled catalog image that the host advertises. These rows show only that
+    Marshall can make a real admission decision on stub storage; they are not
+    ZFS, KVM or isolation evidence. Missing or stale rows MUST leave setup
+    incomplete.
+    """
+    profile = "admission-stub"
+    if len(host_ids) != 1:
+        return _incomplete(profile, "fixture_host_count")
+    observed = SqlOracle(config).select(
+        "SELECT h.inventory -> 'execution_ready' = 'true'::jsonb, "
+        "h.capacity ->> 'version' = '1', "
+        "h.reported_at >= now() - interval '5 seconds', "
+        "(SELECT count(*) FROM compute_storage_pools p WHERE p.host_id = h.id "
+        "AND p.reported_at >= now() - interval '5 seconds' AND p.free_bytes > 0 "
+        "AND p.zpool_guid = %s AND p.dataset_guid = %s AND p.dataset = %s), "
+        "(SELECT count(*) FROM compute_images i WHERE i.enabled "
+        "AND COALESCE(h.inventory -> 'images', '[]'::jsonb) @> jsonb_build_array(i.id)) "
+        "FROM compute_hosts h WHERE h.id = %s::uuid",
+        (*_STUB_POOL_IDENTITY, str(host_ids[0])),
+        maximum_rows=1,
+    )
+    if observed.state is not State.OBSERVED or observed.value is None:
+        return _incomplete(profile, f"sql_host_{observed.state.value}")
+    if len(observed.value) != 1:
+        return _incomplete(profile, "sql_host_missing")
+    ready, capacity, fresh, pools, images = observed.value[0]
+    for name, value in (("execution_ready", ready), ("capacity", capacity), ("fresh", fresh)):
+        if value is not True:
+            return _incomplete(profile, f"host_{name}_not_observed")
+    if type(pools) is not int or pools < 1:
+        return _incomplete(profile, "stub_pool_observation_missing")
+    if type(images) is not int or images < 1:
+        return _incomplete(profile, "advertised_enabled_image_missing")
+    return True

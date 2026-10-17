@@ -1,0 +1,21 @@
+# Optional admission profile on a STUB storage substrate (`admission-stub`).
+# The controlled Lilly release reports configured stub pool totals from a
+# harness-only substrate file instead of ZFS, measured cgroup CPU/memory
+# headroom, and a tiny digest-verified, non-bootable stub image the operator
+# registers through Marshall's reviewed catalog action. Admission decisions
+# still run through real Marshall code; nothing here is ZFS, KVM or isolation
+# evidence, and no guest is ever launched.
+services:
+  lilly-a:
+    environment:
+      OVERALLS_ANTITHESIS_STORAGE_STUB: "1"
+
+  enrollment:
+    environment:
+      OVERALLS_ANTITHESIS_STORAGE_STUB: "1"
+
+  workload:
+    environment:
+      ANTITHESIS_BOOTSTRAP_PROFILE: admission-stub
+      ANTITHESIS_REPOSITORY_FIXTURE_FILE: /run/overalls-control-secrets/fixture.json
+      ANTITHESIS_CONTROL_OPERATOR_ROOT: /run/overalls-control-requests

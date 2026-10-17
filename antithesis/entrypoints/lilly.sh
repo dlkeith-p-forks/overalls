@@ -21,6 +21,49 @@ machine_id="sha256:$(printf '%s' "$machine_hex" | xxd -r -p | openssl dgst -sha2
 unset machine_hex
 [[ "$machine_id" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo 'invalid derived machine identity' >&2; exit 1; }
 
+# @cc [owner:ghuntley,label:capacity;verification] lilly-entrypoint-stub-storage
+# Only OVERALLS_ANTITHESIS_STORAGE_STUB=1 creates the harness stub substrate:
+# a fixed private substrate file naming configured (not measured) totals for
+# the enrolled pool identity, and a tiny non-bootable image whose manifest is
+# published for the operator to register. Nothing here creates or observes ZFS.
+case "${OVERALLS_ANTITHESIS_STORAGE_STUB:-0}" in
+  0) storage_stub=0 ;;
+  1) storage_stub=1 ;;
+  *) echo 'invalid storage stub selection' >&2; exit 1 ;;
+esac
+stub_image="$state/stub-image"
+stub_artifact() {
+  local file="$state/.stub-image.new/$1" digest
+  digest=$(sha256sum "$file")
+  jq -n --argjson bytes "$(stat -c '%s' "$file")" --arg sha "${digest%% *}" '{bytes:$bytes,sha256:$sha}'
+}
+if [[ "$storage_stub" == 1 ]]; then
+  if [[ ! -d "$stub_image" ]]; then
+    rm -rf "$state/.stub-image.new"
+    mkdir -m 0755 "$state/.stub-image.new"
+    printf 'overalls antithesis admission-stub kernel placeholder; not bootable\n' > "$state/.stub-image.new/kernel"
+    printf 'overalls antithesis admission-stub initrd placeholder; not bootable\n' > "$state/.stub-image.new/initrd"
+    head -c 4096 /dev/zero > "$state/.stub-image.new/rootfs.ext4"
+    jq -n --argjson kernel "$(stub_artifact kernel)" --argjson initrd "$(stub_artifact initrd)" \
+      --argjson rootfs "$(stub_artifact rootfs.ext4)" \
+      '{version:4,architecture:"x86_64",boot_args:"console=ttyS0 overalls.antithesis.storage_stub=1",minimum_memory_bytes:536870912,minimum_disk_bytes:1073741824,kernel:$kernel,initrd:$initrd,rootfs:$rootfs,workspace_source_version:null}' \
+      > "$state/.stub-image.new/manifest.json"
+    chmod 0444 "$state/.stub-image.new"/*
+    mv -T "$state/.stub-image.new" "$stub_image"
+  fi
+  cp "$stub_image/manifest.json" "$secrets/.lilly-a-stub-image.json.new"
+  chmod 0600 "$secrets/.lilly-a-stub-image.json.new"
+  mv -f "$secrets/.lilly-a-stub-image.json.new" "$secrets/lilly-a-stub-image.json"
+  jq -n --arg image "$stub_image" \
+    '{version:1,scope:"antithesis-harness-stub-not-zfs",zpool_guid:"10001",dataset_guid:"10002",dataset:"overalls/antithesis",total_bytes:68719476736,free_bytes:51539607552,image_path:$image}' \
+    > "$runtime/.storage-stub.json.new"
+  chmod 0600 "$runtime/.storage-stub.json.new"
+  mv -f "$runtime/.storage-stub.json.new" "$runtime/storage-stub.json"
+  export OVERALLS_ANTITHESIS_STORAGE_STUB_FILE="$runtime/storage-stub.json"
+else
+  unset OVERALLS_ANTITHESIS_STORAGE_STUB_FILE
+fi
+
 request="$secrets/lilly-a-enrollment.json"
 if [[ ! -f "$request" ]]; then
   jq -n --arg machine "$machine_id" '{version:3,name:"lilly-a",architecture:"x86_64",machine_id:$machine,overhead_cores:0,overhead_memory_bytes:0,credential_ttl_seconds:86400,pools:[{name:"antithesis",storage:{backend:"zfs",zpool_guid:"10001",dataset_guid:"10002",dataset:"overalls/antithesis"},overhead_bytes:0}]}' > "$secrets/.lilly-a-enrollment.json.new"

@@ -230,8 +230,22 @@ checkpoint whose pending admissions name only the current producer PID and
 start ticks, a readable SQLite archive and writable request and ledger volumes.
 Missing or stale evidence leaves setup incomplete. The profile is selectable,
 but no local or hosted run is recorded; its evidence is emulated, not native.
-The host report has unavailable pool capacity and false execution readiness,
-so a successful Control connection cannot authorize a guest placement. The
+The optional `admission-stub` profile runs the atomic-allocation and key-replay
+admission commands on a harness **stub** storage substrate, which is not ZFS.
+Only in that profile does the controlled Lilly release report configured stub
+pool totals for its enrolled pool identity, measured cgroup CPU and memory
+headroom, and a tiny non-bootable image it digest-verifies before advertising;
+the enrollment operator registers that image through Marshall's catalog action.
+A fully stub-backed report advertises placement readiness, so Marshall's real
+admission transaction commits VM, placement, reservation and dispatch rows,
+but the controlled executor never launches a guest and a delete never
+completes. Setup requires those committed report, pool and image rows in SQL.
+The results are admission-logic evidence only, never ZFS, physical-capacity,
+KVM or isolation evidence; the measured-capacity command stays in a separate,
+unselected template for the measured host graph.
+In every other profile the host report has unavailable pool capacity and false
+execution readiness, so a successful Control connection cannot authorize a
+guest placement. The
 controlled executor records requests without claiming physical effects; its
 default guest callbacks remain unavailable. An optional integrated TCG adapter
 is authored with a measured inner ZFS host and emulated guest observation, but

@@ -14,6 +14,7 @@ from core.http import HttpClient
 from core.outcome import State
 from core.profile_readiness import (
     access_smtp_ready,
+    admission_stub_ready,
     recorder_host_ready,
     repository_origin_ready,
 )
@@ -64,7 +65,13 @@ def probe(config: Config) -> Probe:
         host = observed.value
         if host.report_sequence < 1 or not host.connected or not host.report_fresh:
             return Probe(False, "host_connection_or_report")
-    if config.profile not in ("control-core", "repository-origin", "access-smtp", "recorder-host"):
+    if config.profile not in (
+        "control-core",
+        "repository-origin",
+        "access-smtp",
+        "recorder-host",
+        "admission-stub",
+    ):
         return Probe(False, "invalid_profile")
     if config.profile == "repository-origin" and not repository_origin_ready(
         config, fixture.fixture_id
@@ -74,6 +81,8 @@ def probe(config: Config) -> Probe:
         return Probe(False, "access_smtp")
     if config.profile == "recorder-host" and not recorder_host_ready(config):
         return Probe(False, "recorder_host")
+    if config.profile == "admission-stub" and not admission_stub_ready(config, fixture.host_ids):
+        return Probe(False, "admission_stub")
     return Probe(True, "complete")
 
 
@@ -96,6 +105,8 @@ def run(config: Config, stop: Event) -> int:
                 setup_complete({"template": "access-smtp"})
             elif config.profile == "recorder-host":
                 setup_complete({"template": "recorder-host"})
+            elif config.profile == "admission-stub":
+                setup_complete({"template": "admission-stub"})
             elif config.profile == "control-core":
                 setup_complete({"template": "control-core"})
             else:

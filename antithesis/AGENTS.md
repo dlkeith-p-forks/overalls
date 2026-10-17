@@ -17,7 +17,11 @@ environment values, image layers, build contexts, logs, assertion details or
 scratchbook manifests. Production credential files are not mounted here.
 Do not turn a missing physical prerequisite into a passing result. The hosted
 Lilly controlled pool has a configured identity and unavailable capacity;
-native ZFS, KVM and Firecracker claims require separate native evidence.
+native ZFS, KVM and Firecracker claims require separate native evidence. The
+only exception is the explicitly labelled `admission-stub` profile, whose
+harness stub storage substrate reports configured (not measured) pool totals
+so real Marshall admission can run; never present its results as ZFS,
+physical-capacity or isolation evidence.
 
 Run Docker Compose with the pinned CLI and Podman socket recorded in
 `.devenv/antithesis-environment.json`. Validate the rendered Compose graph and

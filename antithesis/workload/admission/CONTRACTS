@@ -12,3 +12,9 @@ later mutable reports cannot reconstruct the exact admission-time budget.
 Mutation clients MUST invoke only reviewed fixed synthetic fixture actions.
 Neither an Antithesis draw nor an external request may select arbitrary actor,
 source, command, SQL mutation, or runtime code.
+
+@cc [owner:ghuntley,label:capacity;verification] admission-stub-substrate-boundary
+Commands selected with the stub storage substrate MUST NOT emit assertions
+whose messages claim measured ZFS, physical headroom, KVM or isolation, and
+MUST NOT read a stub-derived file as an independent physical witness. Their
+assertions may claim only Marshall admission effects observed in PostgreSQL.

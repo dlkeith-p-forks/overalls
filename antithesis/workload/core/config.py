@@ -27,9 +27,9 @@ class Config:
     db_name: str
     db_password_file: Path
     timeout_seconds: int
-    profile: Literal["control-core", "repository-origin", "access-smtp", "recorder-host"] = (
-        "control-core"
-    )
+    profile: Literal[
+        "control-core", "repository-origin", "access-smtp", "recorder-host", "admission-stub"
+    ] = "control-core"
 
     @classmethod
     def from_environment(cls) -> "Config":
@@ -56,7 +56,13 @@ class Config:
         if port > 65535 or timeout > 3600:
             raise ValueError("port or bootstrap timeout out of range")
         profile = os.getenv("ANTITHESIS_BOOTSTRAP_PROFILE", "control-core")
-        if profile not in ("control-core", "repository-origin", "access-smtp", "recorder-host"):
+        if profile not in (
+            "control-core",
+            "repository-origin",
+            "access-smtp",
+            "recorder-host",
+            "admission-stub",
+        ):
             raise ValueError("unsupported bootstrap profile")
         return cls(
             marshall_urls=urls,

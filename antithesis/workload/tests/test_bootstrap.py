@@ -17,6 +17,7 @@ from core.config import Config, read_fixture
 from core.outcome import State
 from core.profile_readiness import (
     access_smtp_ready,
+    admission_stub_ready,
     recorder_host_ready,
     repository_origin_ready,
 )
@@ -68,7 +69,12 @@ class BootstrapTests(unittest.TestCase):
 
     def test_optional_profiles_emit_exactly_one_selected_tag(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            for profile in ("repository-origin", "access-smtp", "recorder-host"):
+            for profile in (
+                "repository-origin",
+                "access-smtp",
+                "recorder-host",
+                "admission-stub",
+            ):
                 with self.subTest(profile=profile):
                     config = replace(self.config(Path(directory)), profile=profile)
                     stop = Event()
@@ -215,6 +221,33 @@ class BootstrapTests(unittest.TestCase):
                 ]
                 receipt.state = State.UNAVAILABLE
                 self.assertFalse(access_smtp_ready(config, "fixture-a"))
+
+    def test_admission_stub_probe_requires_committed_stub_backed_report(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config = self.config(Path(directory))
+            host = uuid4()
+            with patch("core.profile_readiness.SqlOracle") as sql:
+                select = sql.return_value.select
+                select.return_value = MagicMock(
+                    state=State.OBSERVED, value=((True, True, True, 1, 1),)
+                )
+                self.assertTrue(admission_stub_ready(config, (host,)))
+                self.assertEqual(select.call_args.args[1][-1], str(host))
+                self.assertFalse(admission_stub_ready(config, (host, uuid4())))
+                for row in (
+                    (False, True, True, 1, 1),
+                    (True, None, True, 1, 1),
+                    (True, True, False, 1, 1),
+                    (True, True, True, 0, 1),
+                    (True, True, True, 1, 0),
+                ):
+                    with self.subTest(row=row):
+                        select.return_value = MagicMock(state=State.OBSERVED, value=(row,))
+                        self.assertFalse(admission_stub_ready(config, (host,)))
+                select.return_value = MagicMock(state=State.OBSERVED, value=())
+                self.assertFalse(admission_stub_ready(config, (host,)))
+                select.return_value = MagicMock(state=State.UNAVAILABLE, value=None)
+                self.assertFalse(admission_stub_ready(config, (host,)))
 
     def test_recorder_probe_requires_fresh_independent_witnesses(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

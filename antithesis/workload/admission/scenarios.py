@@ -5,14 +5,12 @@ import logging
 import os
 import time
 from dataclasses import dataclass
-from datetime import UTC
 from pathlib import Path
 from uuid import UUID, uuid4
 
 from antithesis.assertions import always, reachable
 
 from admission.attempts import AttemptLedger
-from admission.capacity import CapacityOracle
 from admission.client import (
     Catalog,
     CatalogImage,
@@ -22,8 +20,6 @@ from admission.client import (
     provisioned,
 )
 from admission.oracle import AdmissionOracle, Allocation
-from admission.physical import PhysicalSample, read_sample
-from admission.verdict import measured_capacity_verdict
 from core.config import Config, read_fixture
 from core.outcome import Observation, State
 from core.sql import SqlOracle
@@ -52,7 +48,7 @@ def _owner(path: Path) -> UUID:
     return UUID(account["id"])
 
 
-def _runtime() -> Runtime | None:
+def load_runtime() -> Runtime | None:
     config = Config.from_environment()
     fixture = read_fixture(config.fixture_manifest)
     owner_id = _owner(
@@ -95,7 +91,7 @@ def _rows(oracle: AdmissionOracle, owner_id: UUID, key: UUID) -> tuple[Allocatio
     return result.value if result.state is State.OBSERVED else None
 
 
-def _new_admission(
+def new_admission(
     runtime: Runtime, key: UUID, name: str
 ) -> tuple[Observation[DomainResult], tuple[Allocation, ...] | None]:
     """@cc [owner:ghuntley,label:verification] admission-attempt-vs-commit
@@ -119,12 +115,12 @@ def _new_admission(
 
 
 def run_atomic_allocation() -> int:
-    runtime = _runtime()
+    runtime = load_runtime()
     if runtime is None:
         return 0
     key = uuid4()
     name = f"admission-{key.hex[:20]}"
-    response, rows = _new_admission(runtime, key, name)
+    response, rows = new_admission(runtime, key, name)
     if rows is None or response.state is not State.OBSERVED or response.value is None:
         return 0
     result = response.value
@@ -178,12 +174,12 @@ def _key_verdict(verdicts: list[bool]) -> int:
 
 
 def run_key_survives_archive() -> int:
-    runtime = _runtime()
+    runtime = load_runtime()
     if runtime is None:
         return 0
     key = uuid4()
     name = f"admission-{key.hex[:20]}"
-    first, initial_rows = _new_admission(runtime, key, name)
+    first, initial_rows = new_admission(runtime, key, name)
     if first.state is not State.OBSERVED or first.value is None:
         return 0
     if initial_rows is None:
@@ -260,57 +256,3 @@ def run_key_survives_archive() -> int:
         elif archived is not None:
             verdicts.append(False)
     return _key_verdict(verdicts)
-
-
-def run_measured_physical_capacity() -> int:
-    """Check one admitted shape against an unchanged report and inner ZFS witness."""
-    runtime = _runtime()
-    if runtime is None or len(runtime.host_ids) != 1:
-        return 0
-    host_id = runtime.host_ids[0]
-    capacity_oracle = CapacityOracle(runtime.sql)
-    pools = capacity_oracle.pool_ids(host_id)
-    if pools.state is not State.OBSERVED or pools.value is None or len(pools.value) != 1:
-        return 0
-    pool_id = pools.value[0]
-    before_result = capacity_oracle.frame(host_id, pool_id)
-    if before_result.state is not State.OBSERVED or before_result.value is None:
-        return 0
-    before = before_result.value
-    sample_path = Path(
-        os.getenv("ANTITHESIS_PHYSICAL_SAMPLE_FILE", "/run/overalls-host-observation/physical.json")
-    )
-    frame_at_ns = int(before.observed_at.replace(tzinfo=UTC).timestamp() * 1_000_000_000)
-    physical: PhysicalSample | None = None
-    deadline = time.monotonic() + 4
-    while time.monotonic() < deadline:
-        sample = read_sample(sample_path)
-        if (
-            sample.state is State.OBSERVED
-            and sample.value is not None
-            and sample.value.sampled_at_ns >= frame_at_ns
-        ):
-            physical = sample.value
-            break
-        time.sleep(0.25)
-    if physical is None:
-        return 0
-
-    key = uuid4()
-    response, rows = _new_admission(runtime, key, f"capacity-{key.hex[:20]}")
-    if response.state is not State.OBSERVED or response.value is None:
-        return 0
-    if response.value.status != "ok" or rows is None:
-        return 0
-    receipt = provisioned(response.value)
-    after = capacity_oracle.frame(host_id, pool_id)
-    verdict = measured_capacity_verdict(receipt, rows, before, after, physical, runtime.image)
-    if verdict is None:
-        return 0
-    always(
-        verdict,
-        "marshall placement fits fresh measured physical headroom and all outstanding holds",
-    )
-    if verdict:
-        reachable("Marshall admitted against independently sampled live ZFS capacity")
-    return 0

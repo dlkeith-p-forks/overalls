@@ -87,6 +87,32 @@ case "${OVERALLS_ANTITHESIS_SATELLITES:-0}" in
   1) /opt/overalls/entrypoints/satellite-enroll.sh ;;
   *) echo 'Invalid satellite fixture mode' >&2; exit 1 ;;
 esac
+# @cc [owner:ghuntley,label:verification;security] stub-image-registration
+# Only the admission-stub profile registers Lilly's published stub image, and
+# only a version-4 manifest carrying the fixed stub boot marker, through
+# Marshall's reviewed Images.register action. Marshall still validates the
+# manifest and derives its identity; no admission row is written here.
+stub_image_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); [path] = System.argv(); {:ok, _} = Marshall.Compute.Images.register(path |> File.read!() |> JSON.decode!(), "Antithesis admission stub (not bootable)")'
+case "${OVERALLS_ANTITHESIS_STORAGE_STUB:-0}" in
+  0) ;;
+  1)
+    stub_manifest="$secrets/lilly-a-stub-image.json"
+    if [[ -L "$stub_manifest" || ! -f "$stub_manifest" ]] ||
+        ! jq -e '
+          type == "object" and .version == 4 and .architecture == "x86_64" and
+          .boot_args == "console=ttyS0 overalls.antithesis.storage_stub=1" and
+          .rootfs.bytes == 4096 and .workspace_source_version == null
+        ' "$stub_manifest" >/dev/null 2>&1; then
+      echo 'Stub image manifest unavailable' >&2
+      exit 1
+    fi
+    "$release" eval "$stub_image_eval" "$stub_manifest" >/dev/null 2>&1 || {
+      echo 'Stub image registration failed' >&2
+      exit 1
+    }
+    ;;
+  *) echo 'Invalid storage stub fixture mode' >&2; exit 1 ;;
+esac
 touch /tmp/enrollment-ready
 
 # Optional inner host enrollment is a distinct one-shot action. The marker

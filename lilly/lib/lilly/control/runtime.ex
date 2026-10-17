@@ -14,6 +14,7 @@ defmodule Lilly.Control.Runtime do
        System.get_env("ANTITHESIS_INTEGRATED_HOST") == "1" and
        System.get_env("ANTITHESIS_GUEST") == "1" do
     @integrated_guest true
+    @stub_storage false
     @native_execution_ready false
     @collector Collector
     @zfs_io Lilly.Host.ZFSIO
@@ -30,10 +31,13 @@ defmodule Lilly.Control.Runtime do
 
       if System.get_env("ANTITHESIS_GUEST") == "1" do
         @executor OverallsAntithesis.Lilly.GuestExecutor
+        @stub_storage false
       else
         @executor OverallsAntithesis.Lilly.ControlledExecutor
+        @stub_storage true
       end
     else
+      @stub_storage false
       @native_execution_ready true
       @collector Collector
       @zfs_io Lilly.Host.ZFSIO
@@ -61,8 +65,18 @@ defmodule Lilly.Control.Runtime do
       end
     end
   else
-    @spec guest_health?(Config.t(), OverallsProtocol.report()) :: boolean()
-    defp guest_health?(_config, _report), do: @native_execution_ready
+    if @stub_storage do
+      # @cc [owner:ghuntley,label:capacity;verification] stub-storage-placement-readiness
+      # The controlled harness release MAY advertise placement readiness only
+      # from a report the selected stub substrate fully backed (measured host
+      # headroom, stub pool totals, a digest-verified stub image). Its executor
+      # still records requests without any execution claim.
+      @spec guest_health?(Config.t(), OverallsProtocol.report()) :: boolean()
+      defp guest_health?(_config, report), do: OverallsAntithesis.Lilly.StubStorage.ready?(report)
+    else
+      @spec guest_health?(Config.t(), OverallsProtocol.report()) :: boolean()
+      defp guest_health?(_config, _report), do: @native_execution_ready
+    end
 
     if @native_execution_ready do
       @spec mode_ready?(map()) :: boolean()

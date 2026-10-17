@@ -9,3 +9,6 @@ Every submitted configuration MUST bind its source selection, dependencies, exec
 
 @cc [owner:ghuntley,label:verification] antithesis-setup-owner
 Exactly one workload bootstrap owner MUST signal setup completion after the selected services, fixture identities and independent oracles are ready. Test commands MUST NOT signal setup completion. Failed prerequisites MUST leave setup incomplete.
+
+@cc [owner:ghuntley,label:capacity;verification] antithesis-stub-storage-substrate
+The `admission-stub` storage substrate is a harness-only stub, not ZFS: its pool totals are configured, its image is non-bootable, and it is selected only by explicit Compose environment on the controlled Lilly release. Stub-backed runs MUST NOT claim native ZFS, physical capacity, KVM, Firecracker or isolation, and MUST NOT fake admission results; admission decisions MUST run through real Marshall actions and be witnessed in PostgreSQL.

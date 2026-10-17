@@ -39,7 +39,9 @@ from schema import (
 
 TEMPLATE = re.compile(r"^[a-z][a-z0-9_]*$")
 CONFIG = re.compile(r"^[a-z][a-z0-9-]*$")
-REVIEWED_PROFILES = frozenset({"control-core", "repository-origin", "access-smtp", "recorder-host"})
+REVIEWED_PROFILES = frozenset(
+    {"control-core", "repository-origin", "access-smtp", "recorder-host", "admission-stub"}
+)
 COMMAND = re.compile(r"^(?:serial_driver|singleton_driver|first|helper)_[a-z][a-z0-9_]*\.py$")
 
 
@@ -406,8 +408,40 @@ def validate_compose(selection: Selection, rendered: dict[str, Json]) -> None:
                 raise EvidenceError(f"SMTP fixture {key} lacks a mounted volume")
     elif selection.name == "recorder-host":
         validate_recorder_host(services, workload, environment, depends, targets)
+    elif selection.name == "admission-stub":
+        validate_admission_stub(services, environment, targets)
     else:
         raise EvidenceError("selection has no reviewed bootstrap prerequisite validator")
+
+
+def validate_admission_stub(
+    services: dict[str, Json], environment: dict[str, Json], targets: set[str]
+) -> None:
+    """@cc [owner:ghuntley,label:verification;capacity] admission-stub-selection-boundary
+    The admission-stub profile MUST select the stub substrate on exactly the
+    controlled Lilly release and the enrollment operator, select the
+    admission bootstrap probe, and add no measured host, guest or physical
+    observation share: its workload MUST NOT receive a physical ZFS sample.
+    """
+    if environment.get("ANTITHESIS_BOOTSTRAP_PROFILE") != "admission-stub":
+        raise EvidenceError("admission bootstrap profile differs from selected commands")
+    if "ANTITHESIS_PHYSICAL_SAMPLE_FILE" in environment:
+        raise EvidenceError("stub admission profile must not claim a physical ZFS sample")
+    for name in ("lilly-a", "enrollment"):
+        service = obj(field(services, name), f"{name} service")
+        service_environment = obj(field(service, "environment"), f"{name} environment")
+        if service_environment.get("OVERALLS_ANTITHESIS_STORAGE_STUB") != "1":
+            raise EvidenceError(f"stub storage substrate is not selected on {name}")
+    lilly = obj(field(services, "lilly-a"), "lilly-a service")
+    if lilly.get("image") != "overalls-antithesis/lilly:local":
+        raise EvidenceError("stub storage requires the controlled Lilly release")
+    fixture = string(field(environment, "ANTITHESIS_REPOSITORY_FIXTURE_FILE"), "admission fixture")
+    if not any(fixture.startswith(target.rstrip("/") + "/") for target in targets):
+        raise EvidenceError("admission fixture lacks a mounted volume")
+    if field(environment, "ANTITHESIS_CONTROL_OPERATOR_ROOT") != field(
+        environment, "ANTITHESIS_CONTROL_REQUEST_DIR"
+    ):
+        raise EvidenceError("admission operator root differs from the Control request handoff")
 
 
 def validate_recorder_host(

@@ -917,6 +917,7 @@ class VerificationTests(unittest.TestCase):
             ("repository-origin", "repository", 4),
             ("access-smtp", "access", 3),
             ("recorder-host", "recorder", 3),
+            ("admission-stub", "admission", 2),
         ):
             with self.subTest(profile=name):
                 selection = read_selection(
@@ -1036,6 +1037,75 @@ class VerificationTests(unittest.TestCase):
         ):
             with self.subTest(change=change), self.assertRaises(EvidenceError):
                 validate_compose(selection, rendered(**change))
+
+    def test_admission_stub_profile_selects_stub_without_physical_claims(self) -> None:
+        root = Path(__file__).resolve().parents[3]
+        selection = read_selection(root / "antithesis/verification/selections/admission-stub.json")
+        data = manifest(root, selection)
+        runtime = {
+            string(field(obj(item, "dependency"), "path"), "path")
+            for item in arr(field(data, "runtime_dependencies"), "runtime dependencies")
+        }
+        # The stub profile never declares the live-ZFS physical assertions.
+        for module in ("physical_scenario.py", "physical.py", "verdict.py", "capacity.py"):
+            self.assertNotIn(f"antithesis/workload/admission/{module}", runtime)
+
+        def rendered(**changes: object) -> dict[str, Json]:
+            environment: dict[str, object] = {
+                key: "/run/overalls-secrets/fixture.json" for key in selection.workload_environment
+            }
+            environment.update(
+                {
+                    "ANTITHESIS_DB_HOST": "pg",
+                    "ANTITHESIS_MARSHALL_URLS": "https://marshall-a,https://marshall-b",
+                    "ANTITHESIS_CONTROL_CREDENTIAL_FILE": (
+                        "/run/overalls-control-secrets/lilly-a-credential.json"
+                    ),
+                    "ANTITHESIS_CONTROL_REQUEST_DIR": "/run/overalls-control-requests",
+                    "ANTITHESIS_CONTROL_OPERATOR_ROOT": "/run/overalls-control-requests",
+                    "ANTITHESIS_REPOSITORY_FIXTURE_FILE": (
+                        "/run/overalls-control-secrets/fixture.json"
+                    ),
+                    "ANTITHESIS_BOOTSTRAP_PROFILE": "admission-stub",
+                }
+            )
+            stub = {"OVERALLS_ANTITHESIS_STORAGE_STUB": "1"}
+            services: dict[str, object] = {name: {} for name in selection.services}
+            services["lilly-a"] = {
+                "image": "overalls-antithesis/lilly:local",
+                "environment": dict(stub),
+            }
+            services["enrollment"] = {"environment": dict(stub)}
+            services["workload"] = {
+                "environment": environment,
+                "depends_on": {
+                    name: {"condition": "service_healthy"}
+                    for name in ("pg", "marshall-a", "marshall-b", "enrollment", "lilly-a")
+                },
+                "volumes": [
+                    {"target": "/run/overalls-secrets"},
+                    {"target": "/run/overalls-control-secrets"},
+                    {"target": "/run/overalls-control-requests/requests"},
+                    {"target": "/run/overalls-control-requests/results"},
+                ],
+            }
+            if changes.get("physical"):
+                environment["ANTITHESIS_PHYSICAL_SAMPLE_FILE"] = "/run/physical.json"
+            if changes.get("no_stub"):
+                services["lilly-a"] = {"image": "overalls-antithesis/lilly:local"}
+            if changes.get("guest_lilly"):
+                services["lilly-a"] = {
+                    "image": "overalls-antithesis/lilly-guest:local",
+                    "environment": dict(stub),
+                }
+            if changes.get("profile"):
+                environment["ANTITHESIS_BOOTSTRAP_PROFILE"] = "control-core"
+            return obj(narrow_json({"services": services}), "admission Compose")
+
+        validate_compose(selection, rendered())
+        for change in ("physical", "no_stub", "guest_lilly", "profile"):
+            with self.subTest(change=change), self.assertRaises(EvidenceError):
+                validate_compose(selection, rendered(**{change: True}))
 
     def test_global_budget_and_five_inflight_limit_across_configs(self) -> None:
         ledger = initialize(

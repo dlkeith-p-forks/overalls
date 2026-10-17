@@ -27,14 +27,14 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `antithesis/workload/access/browser.py:466` | `reachable` | Authorized Control room set-role committed target and audit before demotion | support / startup |
 | `antithesis/workload/access/browser.py:479` | `always` | Stale Control room tab cannot commit an admin mutation after authority withdrawal | `stale-admin-tab-current-mutation-authority` |
 | `antithesis/workload/access/browser.py:485` | `reachable` | Stale admin LiveView event was processed after committed demotion | support / startup |
-| `antithesis/workload/admission/scenarios.py:144` | `always` | Marshall acknowledged admission has one joined allocation and dispatch job | `marshall-admission-atomic-allocation` |
-| `antithesis/workload/admission/scenarios.py:146` | `reachable` | Marshall admission reached joined dispatch enqueue | support / startup |
-| `antithesis/workload/admission/scenarios.py:176` | `always` | Marshall replayed admission key never allocates a second VM | `marshall-admission-key-survives-archive` |
-| `antithesis/workload/admission/scenarios.py:218` | `reachable` | Marshall admission reused durable idempotency history | support / startup |
-| `antithesis/workload/admission/scenarios.py:237` | `reachable` | Marshall admission rejected changed same-key request | support / startup |
-| `antithesis/workload/admission/scenarios.py:259` | `reachable` | Marshall admission replay found archived idempotency history | support / startup |
-| `antithesis/workload/admission/scenarios.py:310` | `always` | marshall placement fits fresh measured physical headroom and all outstanding holds | `marshall-admission-measured-physical-capacity` |
-| `antithesis/workload/admission/scenarios.py:315` | `reachable` | Marshall admitted against independently sampled live ZFS capacity | support / startup |
+| `antithesis/workload/admission/scenarios.py:140` | `always` | Marshall acknowledged admission has one joined allocation and dispatch job | `marshall-admission-atomic-allocation` |
+| `antithesis/workload/admission/scenarios.py:142` | `reachable` | Marshall admission reached joined dispatch enqueue | support / startup |
+| `antithesis/workload/admission/scenarios.py:172` | `always` | Marshall replayed admission key never allocates a second VM | `marshall-admission-key-survives-archive` |
+| `antithesis/workload/admission/scenarios.py:214` | `reachable` | Marshall admission reused durable idempotency history | support / startup |
+| `antithesis/workload/admission/scenarios.py:233` | `reachable` | Marshall admission rejected changed same-key request | support / startup |
+| `antithesis/workload/admission/scenarios.py:255` | `reachable` | Marshall admission replay found archived idempotency history | support / startup |
+| `antithesis/workload/admission/physical_scenario.py:69` | `always` | marshall placement fits fresh measured physical headroom and all outstanding holds | `marshall-admission-measured-physical-capacity` |
+| `antithesis/workload/admission/physical_scenario.py:74` | `reachable` | Marshall admitted against independently sampled live ZFS capacity | support / startup |
 | `antithesis/workload/backup/scenarios.py:55` | `always` | Backup retention keeps exactly the newest complete manifest points | support / startup |
 | `antithesis/workload/backup/scenarios.py:73` | `always` | Retained backup manifest references restorable component snapshots | `backup-retained-manifest-closure` |
 | `antithesis/workload/backup/scenarios.py:80` | `always` | Retained backup point passes the production manifest validator | support / startup |

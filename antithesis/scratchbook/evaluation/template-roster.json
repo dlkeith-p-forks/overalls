@@ -1579,7 +1579,8 @@
         "integrated-zfs-host"
       ],
       "limited_support_templates": [
-        "control: authenticated report/refusal only; no accepted allocation"
+        "control: authenticated report/refusal only; no accepted allocation",
+        "admission-stub: real Marshall admission on a harness STUB storage substrate (configured pool totals, measured cgroup compute, non-bootable digest-verified stub image); no ZFS, physical capacity, KVM or isolation claim"
       ],
       "requires_integrated_zfs_host": true,
       "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
@@ -1599,9 +1600,9 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/admission/scenarios.py",
-          "line": 144,
+          "line": 140,
           "kind": "always",
-          "sha256": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3"
+          "sha256": "467d99aa4f9fa5b2ecdf1c07d0ba52532f40861e897deb06f2e4a2feaeb30720"
         }
       ],
       "implementation_scope": "One serial trusted-operator admission joins a terminal domain receipt to one-statement PostgreSQL VM, placement, reservation, address, provision-operation and dispatch-job rows; no cross-node same-key race, commit-cut run, or positive integrated-host checkpoint.",
@@ -1621,7 +1622,9 @@
       "hosted_templates": [
         "integrated-zfs-host"
       ],
-      "limited_support_templates": [],
+      "limited_support_templates": [
+        "admission-stub: real Marshall admission on a harness STUB storage substrate (configured pool totals, measured cgroup compute, non-bootable digest-verified stub image); no ZFS, physical capacity, KVM or isolation claim"
+      ],
       "requires_integrated_zfs_host": true,
       "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
       "native_campaign": true,
@@ -1640,9 +1643,9 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/admission/scenarios.py",
-          "line": 176,
+          "line": 172,
           "kind": "always",
-          "sha256": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3"
+          "sha256": "467d99aa4f9fa5b2ecdf1c07d0ba52532f40861e897deb06f2e4a2feaeb30720"
         }
       ],
       "implementation_scope": "Observed first-key SQL contradictions fail, identical replay and exact idempotency conflict are checked, and archived replay waits for real delete plus SQL archival; integrated physical cleanup and hosted execution remain unverified.",
@@ -1682,10 +1685,10 @@
       "variant_coverage_state": "unselected; record exact values before claiming evaluation",
       "authored_primary_callsites": [
         {
-          "file": "antithesis/workload/admission/scenarios.py",
-          "line": 310,
+          "file": "antithesis/workload/admission/physical_scenario.py",
+          "line": 69,
           "kind": "always",
-          "sha256": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3"
+          "sha256": "4fc2cab60d0f74376da546f6cf3f9aa262b5955f2ffe1f4545f43a0c4fc8e4f8"
         }
       ],
       "implementation_scope": "Dedicated host/pool brackets unchanged SQL report and holds, waits for a newer independent inner-ZFS sample, and checks shape/overhead arithmetic; changing frames and physical free disagreement remain unknown without commit-time and CPU/memory interval correlation. No live admission has run.",

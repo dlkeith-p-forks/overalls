@@ -154,6 +154,21 @@ share. A separate private fault-control share links only the host and enrollment
 operator for bounded guest crash requests. The host health check requires the
 inner host's current authenticated Control readiness. It is measured emulation
 evidence, not native KVM evidence.
+`config/compose.admission-stub.yaml` is the `admission-stub` profile. It
+selects a harness **stub** storage substrate on the controlled Lilly release:
+`entrypoints/lilly.sh` writes a fixed private substrate file and a tiny
+non-bootable image, the harness collector reports configured stub pool totals
+for the enrolled pool identity plus measured cgroup CPU/memory headroom, and
+Lilly digest-verifies the stub image before advertising it. The enrollment
+operator registers that image through Marshall's reviewed catalog action. A
+fully stub-backed report advertises placement readiness, so Marshall's real
+admission transaction can place the atomic-allocation and key-replay
+commands; the controlled executor still never launches a guest. The workload
+probe requires the committed execution-ready report, measured compute, a fresh
+stub pool row and an enabled advertised image in SQL before setup. This is
+admission-logic evidence only: not ZFS, physical capacity, KVM or isolation.
+The measured-capacity command is a separate unselected `admission_physical`
+template that needs the host-vmm overlay.
 `config/compose.recorder-host.yaml` adds an independent TCG NixOS recorder
 host for exact service UID and cgroup authority, retained recorder state, and
 bounded archive filesystem tests. Workload can submit private fixed requests
