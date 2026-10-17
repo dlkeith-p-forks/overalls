@@ -371,20 +371,30 @@ def run_native_admission_after_restart() -> int:
         # Bracket the ninth admission with holder-identity witnesses: a slot
         # freed and retaken between the status read and the later witness
         # (for example by the ninth itself) must not satisfy the premise.
-        before = read_snapshot(observer, receipt.generation)
-        before_slots = occupied_slots(runtime.mirror_root)
-        if not (
-            before.state is State.OBSERVED
-            and before.value is not None
-            and before_slots.state is State.OBSERVED
-            and before_slots.value is not None
-            and len(before_slots.value) == 8
-            and snapshot_matches_inodes(before.value, runtime.mirror_root)
-            and {slot.slot for slot in before.value.slots if slot.holder_pids} == before_slots.value
-        ):
+        # The observer publishes snapshots periodically, so poll for the
+        # pre-admission witness as the post-admission loop below does. When it
+        # never appears, the ninth case is unexercised but the ownership bound
+        # is still evaluated.
+        before_holders: set[tuple[int, tuple[int, ...]]] | None = None
+        before_deadline = time.monotonic() + 5
+        while time.monotonic() < before_deadline:
+            before = read_snapshot(observer, receipt.generation)
+            before_slots = occupied_slots(runtime.mirror_root)
+            if (
+                before.state is State.OBSERVED
+                and before.value is not None
+                and before_slots.state is State.OBSERVED
+                and before_slots.value is not None
+                and len(before_slots.value) == 8
+                and snapshot_matches_inodes(before.value, runtime.mirror_root)
+                and {slot.slot for slot in before.value.slots if slot.holder_pids}
+                == before_slots.value
+            ):
+                before_holders = {(slot.slot, slot.holder_pids) for slot in before.value.slots}
+                break
+            time.sleep(0.1)
+        if before_holders is None:
             LOG.info("Enrico ninth-admission case unexercised: eight slots not witnessed first")
-            return 0
-        before_holders = {(slot.slot, slot.holder_pids) for slot in before.value.slots}
         runtime.enrico.refresh(ninth_id, ninth_attempt, runtime.fixture.owner, runtime.fixture.name)
         ninth = runtime.enrico.status(ninth_id, ninth_attempt)
         witness_deadline = time.monotonic() + 5
@@ -427,6 +437,7 @@ def run_native_admission_after_restart() -> int:
             and after.value is not None
             and len(after.value) == 8
             and snapshot.value is not None
+            and before_holders is not None
             and {(slot.slot, slot.holder_pids) for slot in snapshot.value.slots} == before_holders
             and all(
                 repository.repository_id != ninth_id or not repository.holder_pids
