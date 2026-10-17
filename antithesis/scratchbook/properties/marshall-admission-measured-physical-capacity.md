@@ -25,7 +25,7 @@ focus: "05 — Resource Boundaries"
 
 #### Which hosted adapter can supply independent host usage and ZFS samples without changing Collector freshness?
 
-- Examined: `lilly/lib/lilly/host/collector.ex:1-80`, `lilly/lib/lilly/host/pool.ex:130-205`, `nix/tests/machines/native-zfs/driver.py:73-90,308-321`, `nix/tests/machines/fleet/scenarios/capacity.py:1-85,185-248`, and `antithesis/scratchbook/deployment-topology.md`.
+- Examined: `lilly/lib/lilly/host/collector.ex:1-80`, `lilly/lib/lilly/host/pool.ex:130-205`, `nix/verification/tests/machines/native-zfs/driver.py:73-90,308-321`, `nix/verification/tests/machines/fleet/scenarios/capacity.py:1-85,185-248`, and `antithesis/scratchbook/deployment-topology.md`.
 - Found: production Collector samples host inventory/limits/usage and each configured pool, carrying `sampled_at`; native ZFS tests independently invoke `zfs-check observe/headroom` and apply cgroup pressure; the fleet capacity scenario queries retained reservations and fresh physical report headroom across a race. A hosted router VMM is only a topology plan.
 - Not found: a built hosted TCG adapter that runs those native probes beside the production Collector and records a correlated, independently sampled cgroup/ZFS state at each admitted transaction. A later sample can verify physical consistency, but cannot by itself reconstruct exact commit-time headroom.
 - Conclusion: partial. Put the existing read-only probes inside a real TCG Linux/ZFS guest, timestamp their output, and join them to the accepted report/locked reservation snapshot. Keep production `sampled_at` and report freshness logic untouched.

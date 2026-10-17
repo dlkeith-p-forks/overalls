@@ -1,5 +1,19 @@
 # Architecture decision records
 
+[ADR-0185](0185-underclass-tailnet-exit-egress.md) routes Underclass provider
+traffic, and only that traffic, through a dedicated userspace tailnet node and
+an Australian exit node, confining the Underclass unit to loopback behind a
+start gate that refuses to run without the exit node selected.
+
+[ADR-0184](0184-lilly-owns-every-socket.md) keeps every socket the BEAM uses
+one it created: lilly-hostd connects Lilly's own socket or bridges it to a
+VM-namespace connection, and never passes a descriptor, replacing ADR-0182
+step 2.
+
+[ADR-0183](0183-guest-dataset-streams-in-hostd.md) runs every guest dataset
+`send` and `receive` inside lilly-hostd from typed fields and removes the
+unprivileged `lilly` user's ZFS delegation, replacing ADR-0182 step 3.
+
 [ADR-0181](0181-public-proxy-http01-ingress.md) admits public TCP 80 for the
 opted-in Marshall proxy's HTTP-01 ingress so Overalls' `ghuntley.dev`
 certificate renews unattended, amending ADR-0075.
@@ -40,11 +54,10 @@ illumos.org as the upstream source project and selects pinned OmniOS as the
 installable downstream. Artifact names, OS facts and
 capabilities come from the protocol; Lilly keeps its jailer, network and storage
 boundaries while selecting the validated boot path. The implementation is
-partial: foreign-Linux and preliminary native-builder evaluations plus focused
-protocol/Lilly tests exist; the FreeBSD source endpoint is retired, and no
-successful native FreeBSD or OmniOS image, boot, agent, recovery or fleet
-evidence is recorded. The detailed Windows choices remain in ADR-0169 through
-ADR-0173.
+partial: foreign-Linux and native-builder evaluations plus focused
+protocol/Lilly/Marshall tests exist; the FreeBSD source endpoint is retired,
+and native Lyra/image assembly, boot, agent, recovery and fleet evidence remain
+unrecorded. The detailed Windows choices remain in ADR-0169 through ADR-0173.
 
 [ADR-0174](0174-user-threads.md) adds the user-level Threads domain. Threads
 persist a pending task and typed machine specification, then bind the existing
@@ -72,6 +85,10 @@ The [Underclass stream statistics pin review](../reviews/2026-10-15-underclass-p
 records bounded stream outcome and long-range capacity statistics behind the same
 administrator token. ADR-0102's accepted decision and partial implementation
 status remain unchanged; tests for this pin were not run.
+
+The [Underclass saturation reselect pin review](../reviews/2026-10-16-underclass-pin.md)
+records a proxy-internal fix for stale saturation 429s. ADR-0102's accepted
+decision and partial implementation status remain unchanged.
 
 [ADR-0168](0168-guest-coding-cli-dangerous-defaults.md) sets the requested
 dangerous native execution defaults for the pinned guest coding CLIs and
@@ -230,9 +247,10 @@ of ADR-0037, ADR-0061 and ADR-0072 and carries their other requirements forward.
 [ADR-0157](0157-multi-provider-authenticated-repository-launch.md) supersedes
 ADR-0128's GitHub-only/no-resume choices with source2, bounded signed-cookie
 authentication resume and manifest4 capabilities. [ADR-0156](0156-browser-launcher-distribution.md)
-adds explicitly configured unsigned browser packages at public `/bin` routes.
-ADR-0156 is accepted/implemented with recorded immutable package and browser
-checks; ADR-0157 is accepted/implemented after both captured provider/revision
+adds explicitly configured unsigned browser packages at public `/bin` routes
+and an exact-origin optional presence marker that only hides setup affordances.
+ADR-0156 is accepted/partial pending Chrome and Firefox setup-visibility runtime
+evidence; immutable package and browser launch checks are recorded; ADR-0157 is accepted/implemented after both captured provider/revision
 journeys passed. Production deployment remains an explicit validation gap.
 
 Proposed [ADR-0151](0151-existing-state-standard-profile-migration.md) reviews the
@@ -347,7 +365,10 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0173](0173-windows-images-winget-desktop-experience.md) | proposed | partial | Windows images on Desktop Experience with pinned winget packages |
 | [ADR-0181](0181-public-proxy-http01-ingress.md) | accepted | partial | Public HTTP-01 ingress for the Marshall proxy |
 | [ADR-0182](0182-unprivileged-lilly-beam.md) | accepted | partial | Run the Lilly BEAM unprivileged behind lilly-hostd |
-| [ADR-0180](0180-multi-os-guest-image-contract.md) | proposed | partial | Multi-OS guest image families on the Firecracker fleet |
+| [ADR-0183](0183-guest-dataset-streams-in-hostd.md) | accepted | partial | Guest dataset streams run in lilly-hostd |
+| [ADR-0184](0184-lilly-owns-every-socket.md) | accepted | partial | Lilly owns every socket it uses |
+| [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
+| [ADR-0180](0180-multi-os-guest-image-contract.md) | accepted | partial | Multi-OS guest image families on the Firecracker fleet |
 | [ADR-0174](0174-user-threads.md) | superseded | partial | User threads own isolated work machines |
 | [ADR-0175](0175-thread-sharing-and-bound-machine-authority.md) | accepted | partial | Thread sharing and bound machine authority |
 | [ADR-0176](0176-host-concurrency-single-writers-and-effects.md) | accepted | planned | Host concurrency through single writers, reconcilers and a host-effects engine |
@@ -368,7 +389,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0159](0159-remove-legacy-compatibility.md) | accepted | implemented | Remove legacy compatibility after convergence |
 | [ADR-0158](0158-durable-guest-identities.md) | superseded | partial | Durable guest identities independent of email |
 | [ADR-0157](0157-multi-provider-authenticated-repository-launch.md) | accepted | implemented | Multi-provider repository launch and authentication resume |
-| [ADR-0156](0156-browser-launcher-distribution.md) | accepted | implemented | Browser launcher build and public distribution |
+| [ADR-0156](0156-browser-launcher-distribution.md) | accepted | partial | Browser launcher build, distribution and exact-origin presence detection |
 | [ADR-0151](0151-existing-state-standard-profile-migration.md) | superseded | partial | Existing-state Standard profile migration |
 | [ADR-0152](0152-lean-pool-locked-preparation.md) | accepted | partial | Lean pool-locked disk preparation |
 | [ADR-0154](0154-guest-boot-profile.md) | accepted | partial | Guest boot profile and measured boot reductions |

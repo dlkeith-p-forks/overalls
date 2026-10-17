@@ -87,7 +87,7 @@ on 2026-10-09 and confirmed it on 2026-10-10.
 **Update (2026-10-11, [ADR-0159](0159-remove-legacy-compatibility.md)):** the
 zero/off value was removed. `standbyDisks.perImage` is a positive per-pool,
 per-image count (1..128, default 1) in the
-[Nix module](../../../nix/modules/lilly.nix) and
+[Nix module](../../../nix/domains/system/lilly.nix) and
 [pool model](../../../lilly/lib/lilly/host/pool.ex); refill visits every pool
 (`refill` (`lilly/lib/lilly/host/standby_refill.ex`, removed by ADR-0177)). Standbys of an image
 that is no longer configured are retired by the sweep, which the native
@@ -119,12 +119,12 @@ on trace admission or a diagnostic ACK.
 - `fill, claim, sweep and retirement` (`lilly/lib/lilly/host/standby_disk.ex`, removed by ADR-0177);
 - the `refill process` (`lilly/lib/lilly/host/standby_refill.ex`, removed by ADR-0177);
 - [materialization](../../../lilly/lib/lilly/vm/disk.ex);
-- the [Nix option](../../../nix/modules/lilly.nix).
+- the [Nix option](../../../nix/domains/system/lilly.nix).
 
 **Tests:**
 - the `state-machine property` (`lilly/test/lifecycle/standby_disk_test.exs`, removed by ADR-0177);
 - the [accounting property](../../../lilly/test/host/zfs_test.exs);
-- the native [`image-template` standby subtest](../../../nix/tests/machines/image-template/driver.py),
+- the native [`image-template` standby subtest](../../../nix/verification/tests/machines/image-template/driver.py),
   whose historical version is recorded as passing on 2026-10-09. That evidence covers:
   - fill from the sealed template, with `bcloneused` growth;
   - a claim by rename that keeps the GUID;

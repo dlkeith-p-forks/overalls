@@ -116,11 +116,11 @@ persists integrations, headers, attachments and host credentials, and the
 [control service](../../../marshall/lib/marshall/control/services/galileo.ex) performs
 authorization and renewal. The [Audi private DNS](../../../audi/lib/audi/private/dns.ex)
 and [frontend](../../../audi/lib/audi/private/front.ex) answer and route the
-integration zone. The [NixOS module](../../../nix/modules/galileo.nix) and
-[machines test](../../../nix/tests/machines/galileo-service/default.nix)
+integration zone. The [NixOS module](../../../nix/domains/system/galileo.nix) and
+[machines test](../../../nix/verification/tests/machines/galileo-service/default.nix)
 cover deployment and packaged-service fixture verification. Remaining gaps are
-recorded in the [ledger](../../galileo.md). The
-[fleet scenario](../../../nix/tests/machines/fleet/scenarios/galileo.py) supplies
+recorded in the [ledger](../../services/galileo.md). The
+[fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/galileo.py) supplies
 real Marshall/Lilly/Firecracker evidence within one physical failure domain.
 The packaged service test additionally passes stalled-source/destination bounds
 and concurrent load. The September 20 review retains its historical combined Marshall failures;
@@ -132,7 +132,7 @@ They do not rerun unchanged consumer/native cases at this revision.
 The [renewal verification review](../reviews/2026-09-25-integration-renewal-verification.md)
 records generated membership/attachment/configuration histories with exact
 TTL-only renewal and unchanged credential/token rows. A new
-[native journey](../../../nix/tests/machines/integration-renewals/driver.py)
+[native journey](../../../nix/verification/tests/machines/integration-renewals/driver.py)
 requires successful HTTPS renewal before ordinary membership/attachment
 withdrawal, actual origin socket closure without retry and fresh restoration.
 The captured native execution passed all eight stages in 413.94 seconds.

@@ -2,7 +2,7 @@
   privateServiceRoots ? [ ], extraModules ? [ ] }:
 let
   lib = pkgs.lib;
-  observerTerminald = import ../../nix/packages/terminald.nix {
+  observerTerminald = import ../../nix/domains/artifacts/infrastructure/terminald.nix {
     inherit pkgs;
     antithesisObserver = true;
   };
@@ -11,7 +11,7 @@ let
   # The emulator image MUST use the production NixOS guest builder and services.
   # Harness changes are limited to q35 boot/network/memory adjustments and the
   # synthetic terminal observer/probe; production terminald remains unchanged.
-  image = import ../../nix/packages/guest {
+  image = import ../../nix/domains/artifacts/guest {
     inherit pkgs lyraLinux vscodeWeb vscodeWebBroker privateServiceRoots;
     terminald = observerTerminald;
     imageName = "overalls-antithesis-tcg-nixos-x86_64";

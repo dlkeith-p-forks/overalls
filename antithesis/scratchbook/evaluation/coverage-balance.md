@@ -180,7 +180,7 @@ instances.
 
 Inception has an embedded verified-TLS PostgreSQL/Marshall and nested
 Lilly/KVM/ZFS with separate identities and publication authority
-(`nix/packages/guest/inception/default.nix:33,100`,
+(`nix/domains/artifacts/guest/inception/default.nix:33,100`,
 `focus-01-architecture.md:345-358`). No catalog property names that recursive
 control-plane boundary. The native inventory separately identifies NixOS and
 Ubuntu guest families, Customer/OSS policy, multiple source providers and
@@ -199,7 +199,7 @@ required reach witnesses before treating optional-path non-execution as success.
 `backup-time-skew-never-activates-historical-authority`.
 
 Those rows test retained component references, cleanup ownership and isolation
-of mixed-time authority. `nix/modules/backups/runtime.py:328-345` and
+of mixed-time authority. `nix/domains/system/backups/runtime.py:328-345` and
 `focus-10-product-context.md` §8 identify a different failure boundary:
 interrupt an isolated restore after some components were written but before
 complete publication. An individually valid retained manifest does not prove

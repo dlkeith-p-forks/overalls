@@ -136,7 +136,7 @@ atomic bound, collision-budget rollback with recovery, and the contested
 retirement recheck; the [roster identity review](../reviews/2026-09-26-roster-identities.md)
 records their execution and the recheck mutant. The [review](../reviews/2026-09-25-fresh-guest-identity-verification.md)
 records actual runs, including [three-BEAM contention schedules](../../../marshall/test/marshall/accounts/guest_identity_distributed_test.exs),
-and the complete [NixOS machine journey](../../../nix/tests/machines/account-lifecycle/driver.py).
+and the complete [NixOS machine journey](../../../nix/verification/tests/machines/account-lifecycle/driver.py).
 The latter passed old/fresh browser identities, distinct fresh personal and shared
 guest SSH/home/UID, retained retired home ownership, explicit re-sharing and
 packaged Lyra discovery/connection. It preserves old-key, unshared and stale-name

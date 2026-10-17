@@ -7,7 +7,7 @@ P0 safety; high design confidence, medium hosted feasibility. Canonical candidat
 - `lyra/src/agent.rs:119-124,135-169` claims and heartbeats, acknowledges `started` before dispatching `exec_command`, `read_file` or `web_fetch`, then sends one terminal result. `lyra/CONTRACTS:16-20` requires the start-before-side-effect and fail-closed RPC boundary.
 - `marshall/lib/marshall/agents/executor_session.ex:131-189` moves a queued command to `claimed` under current actor/profile authority; `:256-302` validates the same executor/fence for `started` and terminal transitions; `:335-365` invalidates a predecessor and retires `claimed` as cancelled versus `started` as uncertain. `marshall/lib/marshall/agents/command.ex:13-16,32-52` retains command/turn/call identity and terminal state.
 - `marshall/lib/marshall/agents/loop.ex:157-181` fails a turn with `tool_uncertain` when any command is uncertain. `marshall/priv/hldd/11-agents.md:115-133` states no redispatch and explicit new invocation after uncertainty. ADR-0100/0101 provide the accepted durable executor and approved CLI context.
-- The SQL-backed history explicitly does not prove guest effect (`docs/architecture/reviews/2026-09-26-executor-loss-histories.md:24-46`). A prior native run did observe one real started effect and one explicit retried effect at `:120-143`; `nix/tests/machines/executor-loss/driver.py:460-513` inspects exact command/fence and finite no-replay window. This supports fixture shape, not new hosted or all-interleaving coverage.
+- The SQL-backed history explicitly does not prove guest effect (`docs/architecture/reviews/2026-09-26-executor-loss-histories.md:24-46`). A prior native run did observe one real started effect and one explicit retried effect at `:120-143`; `nix/verification/tests/machines/executor-loss/driver.py:460-513` inspects exact command/fence and finite no-replay window. This supports fixture shape, not new hosted or all-interleaving coverage.
 
 ## Workload and independent oracle
 
@@ -29,7 +29,7 @@ Open question: Can selected hosted composition stop only the executor after `sta
 
 #### Can selected hosted composition preserve the guest effect while replacing only the executor?
 
-- Examined: `lyra/src/agent.rs`, `marshall/lib/marshall/agents/executor_session.ex`, `nix/tests/machines/executor-loss/driver.py:460-513`, the executor-loss review and `antithesis/scratchbook/deployment-topology.md:56-96`.
+- Examined: `lyra/src/agent.rs`, `marshall/lib/marshall/agents/executor_session.ex`, `nix/verification/tests/machines/executor-loss/driver.py:460-513`, the executor-loss review and `antithesis/scratchbook/deployment-topology.md:56-96`.
 - Found: source retains command/fence states, and the native fixture freezes one real effect before targeted process loss. The topology proposes a real guest and separately faultable services.
 - Not found: a built hosted guest-vmm observer or recorded hosted fault result in this fresh scratchbook.
 - Conclusion: retain partial feasibility tag; do not promote the native run to a current hosted or arbitrary-interleaving result.

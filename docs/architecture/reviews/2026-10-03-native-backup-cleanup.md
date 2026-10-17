@@ -11,7 +11,7 @@ not establish Python HostCapture ownership.
 
 ## Property and independent oracle
 
-`nix/tests/machines/backup-cleanup/native_cleanup.py` invokes actual HostCapture
+`nix/verification/tests/machines/backup-cleanup/native_cleanup.py` invokes actual HostCapture
 cleanup/release with native ZFS and actual mounted snapshots. Seven fixed cases
 and six generated combinations vary dataset/snapshot GUID mismatch, wrong local
 nonce, inherited nonce, an actual foreign tmpfs mount, unavailable snapshot

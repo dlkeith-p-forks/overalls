@@ -93,4 +93,4 @@ implementation does not resolve them.
 [observation checks](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/telemetry/observations_test.exs),
 [database tests](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/telemetry/retention_test.exs),
 [three-node tests](../../../marshall/test/marshall/compute/distributed_admission_test.exs),
-[operator guide](../../capacity-history.md).
+[operator guide](../../history/ledgers/capacity-history.md).

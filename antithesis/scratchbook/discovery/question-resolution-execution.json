@@ -16,7 +16,7 @@
       "examined": [
         "marshall/lib/marshall/compute/relocation_restoration.ex:16-51",
         "marshall/lib/marshall/compute/relocation_coordinator.ex:243-255",
-        "nix/tests/machines/fleet/scenarios/audi-relocation.py"
+        "nix/verification/tests/machines/fleet/scenarios/audi-relocation.py"
       ],
       "proposed_catalog_edit": "Keep an open partial question about a lock-preserving coordinator pause; scope current oracle to response loss and receipts.",
       "remaining_question": [
@@ -42,7 +42,7 @@
         "lilly/lib/lilly/vm/boot.ex:64-86",
         "lilly/lib/lilly/vm/driver.ex:776-875",
         "lilly/test/vm/boot_generation_adoption_property_test.exs:12-65",
-        "nix/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655"
+        "nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655"
       ],
       "proposed_catalog_edit": "Retain partial; separate journal adoption from a future native delayed-reply result.",
       "remaining_question": [
@@ -65,7 +65,7 @@
       "status": "partial",
       "answer": "The native lifecycle scenario checks systemd unit inactivity, ZFS dataset and rootfs absence, and DB reservation release after archive. It does not inspect network attachment in that same delete assertion or sample every pre-release transition. Add a host-side network attachment query and synchronized pre/post DB snapshots around the accepted deleted outcome.",
       "examined": [
-        "nix/tests/machines/fleet/scenarios/lifecycle.py:68-96",
+        "nix/verification/tests/machines/fleet/scenarios/lifecycle.py:68-96",
         "lilly/lib/lilly/vm/driver.ex:1280-1327",
         "marshall/lib/marshall/compute/outcomes.ex:210-229"
       ],
@@ -117,7 +117,7 @@
       "examined": [
         "lilly/lib/lilly/vm/driver.ex:941-975",
         "lilly/lib/lilly/vm/boot.ex:64-86",
-        "nix/tests/machines/fleet/scenarios/user-ssh-journey.py:626-657"
+        "nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py:626-657"
       ],
       "proposed_catalog_edit": "Remove the witness-selection question; retain physical replacement execution as an unrun workload.",
       "remaining_question": null,
@@ -215,7 +215,7 @@
       "answer": "The production launch path persists launch-attempt.bin before privileged start, and the native submission-recovery scenario has a real barrier on either side of submission plus marker hash and VMM snapshot checks. A hosted executor adapter with an independently durable submission ledger is not present in inspected source. Probe adapter marker-before-effect ordering under process death; do not equate adapter success with systemd acceptance.",
       "examined": [
         "lilly/lib/lilly/vm/driver.ex:336-421,1474-1492",
-        "nix/tests/machines/fleet/scenarios/submission-recovery.py:21-105,190-191"
+        "nix/verification/tests/machines/fleet/scenarios/submission-recovery.py:21-105,190-191"
       ],
       "proposed_catalog_edit": "Name native barrier as existing test presence; keep hosted adapter question partial.",
       "remaining_question": [
@@ -264,7 +264,7 @@
       "examined": [
         "lilly/lib/lilly/host/storage.ex:9-30",
         "lilly/lib/lilly/control/runtime.ex:252-313,445-478",
-        "nix/tests/machines/fleet/scenarios/capacity.py:114-155",
+        "nix/verification/tests/machines/fleet/scenarios/capacity.py:114-155",
         "antithesis/scratchbook/emulated-storage-feasibility.md"
       ],
       "proposed_catalog_edit": "Keep both measured interval and hosted two-pool feasibility partial.",
@@ -369,8 +369,8 @@
       "status": "partial",
       "answer": "Native fleet helpers can snapshot VMM process custody, and guest SSH can produce a boot ID or write sentinel. The inspected relocation scenario does not time-align a source and destination writable sentinel with the handoff commit. Probe per-host VMM PID/start time/cgroup and guest-owned monotonically numbered writes on both hosts while sampling one DB commit identity; absence of a guest response alone is not absence of execution.",
       "examined": [
-        "nix/tests/machines/fleet/scenarios/submission-recovery.py:79-86",
-        "nix/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655",
+        "nix/verification/tests/machines/fleet/scenarios/submission-recovery.py:79-86",
+        "nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655",
         "marshall/lib/marshall/compute/relocation_coordinator.ex:174-239"
       ],
       "proposed_catalog_edit": "Keep partial simultaneous physical/writable oracle; DB authority check remains separate.",
@@ -396,7 +396,7 @@
       "examined": [
         "marshall/lib/marshall/compute/clone_placement.ex:69-155",
         "marshall/lib/marshall/compute/clone_coordinator.ex:47-65",
-        "nix/tests/machines/fleet/scenarios/lifecycle.py:37-60"
+        "nix/verification/tests/machines/fleet/scenarios/lifecycle.py:37-60"
       ],
       "proposed_catalog_edit": "Remove witness-selection question; add exact DB fields and physical stop observer.",
       "remaining_question": null,
@@ -417,7 +417,7 @@
       "status": "partial",
       "answer": "The native fleet lifecycle scenario already checks ZFS dataset GUID across stop/start and unit inactivity, but its stop assertion does not inspect network attachment and the hosted TCG storage/guest design has not executed this composed sequence. Probe actual TCG guest boot UUID, real ZFS GUID, and link/nft attachment across stop/start; keep native fleet result as test presence only.",
       "examined": [
-        "nix/tests/machines/fleet/scenarios/lifecycle.py:37-60",
+        "nix/verification/tests/machines/fleet/scenarios/lifecycle.py:37-60",
         "antithesis/scratchbook/emulated-storage-feasibility.md",
         "antithesis/scratchbook/emulated-guest-feasibility.md"
       ],

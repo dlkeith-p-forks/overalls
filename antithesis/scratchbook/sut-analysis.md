@@ -215,7 +215,7 @@ appropriate. Focus10 supplies the detailed journey and impact map.
 
 Backups capture guests, PostgreSQL and host metadata sequentially. A complete
 manifest is a recovery graph, not a simultaneous global snapshot
-(`nix/modules/backups/runtime.py:122`). Historical restore must fence old nodes
+(`nix/domains/system/backups/runtime.py:122`). Historical restore must fence old nodes
 and reconcile restored authority, pool identities and permanent UID reservations.
 Local owner locks cannot prove another cloned/restored node is dead. Current
 ADR-0158 explicitly records historical sequence/identity reconciliation limits.

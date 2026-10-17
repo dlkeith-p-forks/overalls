@@ -139,20 +139,20 @@ machine ownership. The [refactor review](../reviews/2026-09-16-nix-layout-and-te
 records preserved public exports and regression checks after internal paths moved.
 
 The [root flake](../../../flake.nix) and
-[source packages](../../../nix/packages/default.nix) build independent releases
+[source packages](../../../nix/domains/artifacts/default.nix) build independent releases
 with the pinned Elixir/OTP runtime, hash-verified Mix/Cargo dependencies, a
 source-built Cedar NIF and prefetched frontend tools. Both
-[release checks](../../../nix/tests/release/default.nix) pass, including exact runtime
+[release checks](../../../nix/verification/tests/release/default.nix) pass, including exact runtime
 agreement, actual Cedar execution, asset manifests and consumer independence.
 The [release script](../../../scripts/package_release.sh) now checks these
 packages and exports their complete closures; both exports were exercised.
 
-The [Marshall](../../../nix/modules/marshall.nix) and
-[Lilly](../../../nix/modules/lilly.nix) modules expose independent roles, private
+The [Marshall](../../../nix/domains/system/marshall.nix) and
+[Lilly](../../../nix/domains/system/lilly.nix) modules expose independent roles, private
 runtime paths, resource limits, TLS/connection budgets and startup dependencies.
-[Configuration checks](../../../nix/tests/evaluation/module-configuration.nix) exercise role
+[Configuration checks](../../../nix/verification/tests/evaluation/module-configuration.nix) exercise role
 combinations and rejection cases. The
-[role machine suite](../../../nix/tests/machines/service-roles/default.nix) passes on four QEMU nodes with
+[role machine suite](../../../nix/verification/tests/machines/service-roles/default.nix) passes on four QEMU nodes with
 hardware acceleration forced, including startup, explicit migrations, verified
 TLS, privileges and role independence. The expanded combined role passes with
 three colocated Marshall instances, Lilly and HAProxy, checking effective resource
@@ -172,8 +172,8 @@ defect, role regression and separate-machine fleet verification status.
 The fleet's whole-machine loss case also exposed database wait timeouts after a
 client vanished. [Runtime configuration](../../../marshall/lib/marshall/operations/runtime_config.ex)
 now supplies the server-side idle-transaction limit above. The
-[fixture operator](../../../nix/tests/machines/fleet/operator.exs) and
-[fleet driver](../../../nix/tests/machines/fleet/driver.py) deliberately hold a real VM row lock
+[fixture operator](../../../nix/verification/tests/machines/fleet/operator.exs) and
+[fleet driver](../../../nix/verification/tests/machines/fleet/driver.py) deliberately hold a real VM row lock
 using those connection parameters before stopping its machine, then require the
 orphan backend to disappear within 20 seconds before continuing browser recovery.
 The retained-machine check demonstrated an old-release lock surviving for more
@@ -195,7 +195,7 @@ found a later schedule where dead clients queued on a held row lock survived tha
 preceding lock was released. A diagnostic repeat reclaimed idle connections in
 30.848 seconds but did not reproduce the queued-statement schedule; terminal
 reattachment then failed a separate live-status assertion. The new
-[two-machine recovery fixture](../../../nix/tests/machines/database-recovery/driver.py)
+[two-machine recovery fixture](../../../nix/verification/tests/machines/database-recovery/driver.py)
 requires three actual blocked release-Repo connections before machine loss.
 The original settings and polling-only candidate failed; combined one-second
 polling and a 15-second TCP limit reclaimed all ten backends in 27.719 seconds.
@@ -210,7 +210,7 @@ budget under ADR-0031. They require a correctly mounted existing parent and use
 the host's kernel-matched ZFS userspace. Activation does not create/import pools
 or modify dataset properties. The [storage lifecycle review](../reviews/2026-09-16-owned-zfs-lifecycle.md)
 records module rejection cases, role regression and native storage checks.
-The [mirrored storage module](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/modules/mirrored-zfs.nix) now declares
+The [mirrored storage module](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/domains/system/mirrored-zfs.nix) now declares
 two explicit disks, ZFS root/Lilly datasets and independent removable-path EFI
 loaders using locked disko. It retains LZ4, no reservations, the reference ARC
 cap and a separate dataset quota. Formatting remains an explicit build artifact;
@@ -224,41 +224,41 @@ The module's `system.build.overallsMirroredImages` wraps the locked disko image
 build with an in-VM clean root-pool export before shutdown; normal host boot
 still refuses forced import. The exact exported-image check exercises this
 separate build path without test instrumentation.
-[Storage configuration checks](../../../nix/tests/evaluation/storage-configuration.nix)
-and the [firmware installation suite](../../../nix/tests/machines/mirrored-installation/default.nix)
+[Storage configuration checks](../../../nix/verification/tests/evaluation/storage-configuration.nix)
+and the [firmware installation suite](../../../nix/verification/tests/machines/mirrored-installation/default.nix)
 validate these definitions and boot behavior; actual results are recorded in the
 [installation review](../reviews/2026-09-16-mirrored-installation.md).
 The existing reference host's hardware/network adapter and its earlier external
 mirrored-boot test still need to be reconciled with the supplied configuration.
 
-The [HAProxy module](../../../nix/modules/proxy.nix) terminates TLS and verifies
+The [HAProxy module](../../../nix/domains/system/proxy.nix) terminates TLS and verifies
 backend trust, SNI and hostname for requests and readiness checks. The role suite
 passed backend loss/recovery and wrong-hostname rejection against real Marshall.
 It also verifies URL exclusion from structured request logs and isolation of
 Lilly's managed uplink from host network managers.
 
-The [secret module](../../../nix/modules/secrets/default.nix) supplies the initial
+The [secret module](../../../nix/domains/system/secrets/default.nix) supplies the initial
 SSH-derived SecretSpec/SOPS integration described in ADR-0032. The reference
 host adapter remains outstanding. Generic bootstrap images generate new private
 SSH identities at boot and contain the pinned public administration key. The
-[ACME module](../../../nix/modules/acme/default.nix) uses privately selected Route 53
+[ACME module](../../../nix/domains/system/acme/default.nix) uses privately selected Route 53
 credentials, real DNS validation and a scoped IAM policy artifact. The
-[certificate publisher](../../../nix/modules/acme/publish.py) verifies the chain, hostname,
+[certificate publisher](../../../nix/domains/system/acme/publish.py) verifies the chain, hostname,
 lifetime, key and actual proxy configuration before persistent atomic publication.
 Startup/reload revalidate the cache; independent retries cover failed reloads
 without requiring another issuance. The
-[ACME machine check](../../../nix/tests/machines/acme-route53/default.nix) passed local issuance,
+[ACME machine check](../../../nix/verification/tests/machines/acme-route53/default.nix) passed local issuance,
 renewal, provider failure, invalid material and proxy recovery. Its real Marshall
 WebSocket heartbeat check is a transport check; the separate passing fleet suite
 verifies authenticated terminal sessions through the proxy. See the
 [ACME review](../reviews/2026-09-16-acme-publication.md) for execution results.
 The manual deployment examples have been retired. The maintained
-[Marshall](../../../nix/modules/marshall.nix), [Lilly](../../../nix/modules/lilly.nix)
-and [proxy](../../../nix/modules/proxy.nix) modules now supply the service boundary.
+[Marshall](../../../nix/domains/system/marshall.nix), [Lilly](../../../nix/domains/system/lilly.nix)
+and [proxy](../../../nix/domains/system/proxy.nix) modules now supply the service boundary.
 Four historical definitions remain only as
 [isolated harness fixtures](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/README.md),
 preserving complementary database recovery and local fault/load checks.
-Historical validation remains in ADR-0027. See the [deployment guide](../../deployment.md)
+Historical validation remains in ADR-0027. See the [deployment guide](../../operations/deployment.md)
 and [refactor review](../reviews/2026-09-16-nix-layout-and-test-refactor.md).
 
 ## Open questions

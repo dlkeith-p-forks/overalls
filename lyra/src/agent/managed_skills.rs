@@ -106,7 +106,7 @@ fn install_at(
     let installation = installation_path(root, &args.thread_id, &args.installation_id)?;
     let operations = installation.join("operations");
     secure_directory(&operations)?;
-    let _lock = lock_installation(&installation)?;
+    let lock = lock_installation(&installation)?;
     let receipt_path = operations.join(format!("{}.json", args.operation_id));
     let fingerprint = hex::encode(Sha256::digest(
         serde_json::to_vec(&args).map_err(|_| Failure("invalid_arguments"))?,
@@ -119,6 +119,11 @@ fn install_at(
         if receipt.request_digest != fingerprint {
             return Err(Failure("operation_conflict"));
         }
+        // Do not hold the installation lock while validating the retained
+        // receipt. Replay is read-only, and releasing it before returning
+        // keeps a subsequent reconciliation request from observing a stale
+        // process-local lock.
+        drop(lock);
         return receipt_response(&args.operation_id, receipt, &installation);
     }
     if let (Some(path), Some(digest)) = (&args.previous_path, &args.previous_digest) {
@@ -897,6 +902,13 @@ fn directory_digest(root: &Path) -> Result<String> {
 
 #[cfg(unix)]
 fn ca_bundle() -> Result<PathBuf> {
+    #[cfg(test)]
+    if let Some(path) = option_env!("OVERALLS_TEST_CA_BUNDLE") {
+        let path = PathBuf::from(path);
+        if path.is_file() {
+            return Ok(path);
+        }
+    }
     let path = PathBuf::from("/etc/ssl/certs/ca-certificates.crt");
     if path.is_file() {
         Ok(path)
@@ -920,6 +932,13 @@ fn ca_bundle() -> Result<PathBuf> {
 }
 #[cfg(unix)]
 fn git_program() -> Result<PathBuf> {
+    #[cfg(test)]
+    if let Some(path) = option_env!("OVERALLS_TEST_GIT") {
+        let path = PathBuf::from(path);
+        if path.is_file() {
+            return Ok(path);
+        }
+    }
     ["/run/current-system/sw/bin/git", "/usr/bin/git", "/bin/git"]
         .iter()
         .map(PathBuf::from)
@@ -996,9 +1015,16 @@ impl<H: FnMut() -> bool> Git<'_, H> {
         #[cfg(unix)]
         {
             use std::os::unix::process::CommandExt;
+            let mut path = std::ffi::OsString::new();
+            #[cfg(test)]
+            if let Some(extra) = option_env!("OVERALLS_TEST_PATH") {
+                path.push(extra);
+                path.push(":");
+            }
+            path.push("/run/current-system/sw/bin:/usr/bin:/bin");
             command
                 .process_group(0)
-                .env("PATH", "/run/current-system/sw/bin:/usr/bin:/bin")
+                .env("PATH", path)
                 .env("GIT_CONFIG_GLOBAL", "/dev/null")
                 .env("TMPDIR", self.home);
         }

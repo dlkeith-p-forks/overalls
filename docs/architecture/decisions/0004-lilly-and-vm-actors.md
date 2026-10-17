@@ -59,7 +59,7 @@ with the shared runtime and validation gates. A typed
 implementation. Release and gate verification is tracked in the
 [foundation review](../reviews/2026-09-15-toolchain.md).
 
-[Guest image](../../../nix/packages/guest/default.nix)
+[Guest image](../../../nix/domains/artifacts/guest/default.nix)
 and [KVM smoke harness](../../../lilly/scripts/smoke_guest.exs) proved local
 NixOS boot, root console reattachment and disk persistence across VMM restart.
 See [ADR-0011](0011-nixos-guest-and-console.md) and its execution review.
@@ -84,7 +84,7 @@ implements automatic reporting and durable receipt; ADR-0014 supplies image and
 address admission prerequisites. ADR-0015 selects local supervision, manifests
 and networking. Protected enrollment and host drains now have implementation
 under ADRs 0025/0026; shared terminal integration is implemented under ADRs
-0018–0022. The [NixOS fleet](../../../nix/tests/machines/fleet/default.nix) verifies two distinct
+0018–0022. The [NixOS fleet](../../../nix/verification/tests/machines/fleet/default.nix) verifies two distinct
 nested-KVM Lilly machines and three Marshall machines. Independent physical
 failure domains and deployment-specific replacement operations remain required.
 

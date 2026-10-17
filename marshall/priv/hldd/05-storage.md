@@ -129,7 +129,7 @@ completed. Independent exact-two SQL/ZFS/systemd checks confirmed source and
 target deletion, released reservation holds, absent datasets and inactive units;
 see the [production review](repo:docs/architecture/reviews/2026-10-02-galileo-production.md).
 This records observed recovery without arbitrary namespace churn. The
-[native scenario](repo:nix/tests/machines/zfs-guest/namespace-cleanup.py) includes
+[native scenario](repo:nix/verification/tests/machines/zfs-guest/namespace-cleanup.py) includes
 an empty descriptor-held namespace, an active file holder and a surviving guest;
 the native check passed on `5c623418`. After healthy production activation of
 `99f13b26`, the original blocked deletion completed through its existing request.
@@ -188,7 +188,8 @@ lock. The native lock still excludes and still provides crash custody; the
 queue only decides who goes next. The two pool sections of a create may wait
 up to 30 s for their turn, so a burst of creates drains in arrival order
 instead of returning `storage_busy` after one second and retrying on a later
-tick. Creates waiting together are prepared together. The create that gets
+tick. A disk delete waits the same 30 s, so it keeps its place in the queue
+instead of rejoining at the back. Creates waiting together are prepared together. The create that gets
 the turn also takes up to 15 queued creates for the same pool. It prepares the
 whole batch with one pool snapshot, one allocation audit and one re-read after
 the batch's own mutations, and answers each waiting create with that create's
@@ -384,6 +385,44 @@ the pool UUID, closed outcome and first failing stage (`bind`, `record`, `owner`
 Partial retirement still attempts the other incarnations. Periodic contention
 retry has no new recorded native or property execution at this checkpoint.
 
+A record stays decodable after its image kind leaves the protocol's file sets
+(`template-record-outlives-image-kind`). Identities are validated as 2-4 closed
+artifact names that include `manifest.json`, and the reader, not the record,
+refuses a kind this release cannot verify, which quarantines the template so
+it can retire. Retirement destroys a template only when every file in its root
+is one of the record's own sealed identities (or that file's `.pending` copy)
+(`template-destroy-known-files`). On 2026-10-16 one FreeBSD template sealed
+before the kernel `rootfs.ufs` kind was removed failed to decode. Because
+reading the catalog halts on the first undecodable record, every template
+read, build and sweep on both hosts reported `template_unconfirmed` from about
+14:00 until this rule shipped. A property test covers the name rule and a unit
+test covers the retired kind; no native retirement of a retired kind is
+recorded yet.
+
+Services started while a template is mounted keep a copy of that mount in
+their private mount namespaces, so `zfs destroy` unmounted the host copy and
+then reported the dataset busy. The template stayed `retiring`, counted
+against the budget (creates then used the verified uncached path) and was left
+unmounted. On 2026-10-16, 44 service namespaces on overalls held such copies
+of one template. Template retirement now runs the ADR-0112 namespace helper
+(`lilly-zfs-namespace-unmount`) before `zfs destroy`, as guest deletion does,
+under the exclusive image lease after the durable `retiring` record. A manual
+run of the helper on that template reported `cleaned 44` and left the host
+mount in place. After `cb42f2c5` deployed, Lilly's own retirement destroyed
+the stale templates on both hosts and the next prewarm sealed fresh ones.
+
+A sealed file's recorded identity includes its device number, but Linux ZFS
+gives a dataset a new device number each time it is mounted (a throwaway pool
+showed 202 then 203 for the same inode with another mount in between). Every
+template was therefore quarantined after any remount, including each host
+reboot and the root-era handover, and the next create on that image failed
+`template_quarantined` before a rebuild. `Image.same_files?/2` now ignores
+the device number only (`sealed-identity-survives-remount`); inode, size,
+mode, owner, links and nanosecond times still match exactly, and the caller
+still pins the filesystem by dataset GUID and mountpoint before and after. The
+zfs-guest handover subtest reproduced the quarantine before the fix and passed
+after it; that run's last subtest, the Inception clone, still fails.
+
 ZFS create, set, mount, unmount, rename, destroy, snapshot and receive-abort use a
 120-second default native utility bound; explicit bounds take precedence and
 other utilities retain three seconds. The new interrupted-create and
@@ -404,7 +443,7 @@ callbacks, independent disks, interrupted effects and bounded retirement.
 It uses synthetic artifacts; no production template hit or real guest SSH
 follows from this result.
 
-Evidence: [capacity model](repo:docs/storage-capacity.md),
+Evidence: [capacity model](repo:docs/operations/storage-capacity.md),
 [admission budgets](repo:marshall/lib/marshall/compute/budget.ex),
 [disk limit](repo:docs/architecture/decisions/0053-vm-disk-limit.md),
 [multi-disk transfer](repo:docs/architecture/decisions/0072-multi-disk-workload-transfer.md).
@@ -426,7 +465,8 @@ lease-order properties, session-death custody) and the
 [lock test](repo:lilly/test/host/lock_test.exs) (`holder-death-kills-leased-command`,
 `waiters-granted-in-arrival-order`).
 
-Transfer-stream and source-export helpers retain completion and lock custody until every
+Transfer-stream (run by lilly-hostd under the stream lease, ADR-0183) and
+source-export helpers retain completion custody until every
 adopted child is reaped across process groups/sessions. Direct leader retirement
 does not permit a reply or successor mutation. Native completion and failure
 histories, scoped selector mutations and source identity after integration are

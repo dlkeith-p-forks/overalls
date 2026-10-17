@@ -98,8 +98,8 @@ A byte-identical rootfs rebuild does not validate networking or VM isolation.
 
 ## Implementation evidence
 
-[Guest configuration](../../../nix/packages/guest/configuration.nix) and
-[image derivation](../../../nix/packages/guest/default.nix) define the image.
+[Guest configuration](../../../nix/domains/artifacts/guest/configuration.nix) and
+[image derivation](../../../nix/domains/artifacts/guest/default.nix) define the image.
 [Devenv output](../../../devenv.nix) reuses the pinned package input.
 The console client and its property tests implemented the bounded local
 protocol. [Smoke harness](../../../lilly/scripts/smoke_guest.exs) exercises
@@ -122,8 +122,8 @@ catalog registration, artifact integrity and host image availability.
 
 The image catalog/verification and execution protocol now have implementation
 under ADRs 0014–0017; source-built Nix closures supply the immutable artifacts
-under ADR-0030. The real [guest suite](../../../nix/tests/machines/zfs-guest/default.nix) and
-[fleet](../../../nix/tests/machines/fleet/default.nix) exercise jailer/systemd/manifest integration.
+under ADR-0030. The real [guest suite](../../../nix/verification/tests/machines/zfs-guest/default.nix) and
+[fleet](../../../nix/verification/tests/machines/fleet/default.nix) exercise jailer/systemd/manifest integration.
 Define how guest-initiated
 shutdown and reboot communicate intent to Lilly without using terminal output
 as an authority. Provide independent physical failure domains and workload targets.

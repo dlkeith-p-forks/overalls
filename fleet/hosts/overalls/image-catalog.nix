@@ -21,7 +21,7 @@ let
       File.write!(output, image.id)
     ' ${overallsPackages.guest}/manifest.json "$out"
   '';
-  mailEnvironment = import ../../../nix/modules/smtp-relay/environment.nix {
+  mailEnvironment = import ../../../nix/domains/system/smtp-relay/environment.nix {
     inherit lib;
     cfg = marshall.smtpRelay;
   };

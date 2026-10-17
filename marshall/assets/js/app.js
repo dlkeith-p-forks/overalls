@@ -7,6 +7,7 @@ import {PasskeyCeremony} from "./passkey";
 import {AdminElevation} from "./admin_elevation";
 import "./appearance.js";
 import {captureRepositoryLaunch, RepositoryLaunchComplete} from "./repository_launch.js";
+import {initBrowserExtensionPresence} from "./browser_extension_presence.js";
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
 // import "./user_socket.js"
@@ -37,6 +38,7 @@ const csrfToken = document
   .querySelector("meta[name='csrf-token']")
   ?.getAttribute("content");
 captureRepositoryLaunch(document, window);
+initBrowserExtensionPresence(document);
 /**
  * @cc [owner:ghuntley,label:integration] liveview-hook-and-csrf-registration
  * liveSocket MUST send the page CSRF token and register TerminalWorkspace along

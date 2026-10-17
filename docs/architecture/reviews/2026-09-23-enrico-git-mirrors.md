@@ -37,7 +37,7 @@ executed checks, not the presence of dependencies alone.
   refs, and disables automatic Git maintenance. The machine test force-pushes
   an unrelated history, runs `git gc --prune=now` and reads the older SHA.
 - **Resolved, medium — cache capacity escape.** The production
-  [NixOS module](../../../nix/modules/enrico.nix) creates a service-owned ZFS
+  [NixOS module](../../../nix/domains/system/enrico.nix) creates a service-owned ZFS
   dataset, sets `refquota=100G` and checks its mounted state before launch.
   A failed mount no longer permits writes into an unbounded parent directory.
   Reads have bounded Git operation time, output, body size and path scans.
@@ -89,7 +89,7 @@ executed checks, not the presence of dependencies alone.
 
 - Enrico `mix precommit` passed compiler, event catalog, formatter, tests and
   forced Dialyzer after the final recovery refinements.
-- The packaged [Enrico NixOS machine test](../../../nix/tests/machines/enrico-service/default.nix)
+- The packaged [Enrico NixOS machine test](../../../nix/verification/tests/machines/enrico-service/default.nix)
   passed verified HTTPS Git clone, token rejection, tree/blob reads, update and
   preservation of published content after source failure. The revised test
   also passed a force-push and pruning case. It uses a synthetic GitHub DNS/TLS

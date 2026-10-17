@@ -89,9 +89,9 @@ guest executor is a loopback fixture. The
 [namespace socket implementation](../../../lilly/lib/lilly/network/ingress.ex)
 and [optional nftables rules](../../../lilly/lib/lilly/network/policy.ex) implement
 the marked SSH and web kernel paths. The
-[NixOS network check](../../../nix/tests/machines/audi-ingress/default.nix) uses the
+[NixOS network check](../../../nix/verification/tests/machines/audi-ingress/default.nix) uses the
 actual release with veth echo fixtures. The
-[Lilly module](../../../nix/modules/lilly.nix) and
+[Lilly module](../../../nix/domains/system/lilly.nix) and
 [application](../../../lilly/lib/lilly/application.ex) now wire the restricted
 connector behind Runtime supervision, with persistent
 [socket custody](../../../lilly/lib/lilly/ingress/socket_custody.ex) for crash
@@ -101,7 +101,7 @@ The check passed marked SSH for both fixtures, unprivileged mark denial,
 disabled/unmarked/wrong-port denial, guest-to-host/lateral denial and unsolicited
 host forwarding denial. It does not establish Firecracker or fleet acceptance.
 
-The [Audi fleet scenario](../../../nix/tests/machines/fleet/scenarios/audi.py) now
+The [Audi fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/audi.py) now
 includes a real Lilly main-process kill while SSH and HTTP streams are active.
 It requires both streams to end without client timeout, unchanged guest process
 identity, a new Lilly process and fresh strict-SSH/verified-HTTPS access afterward.
@@ -133,7 +133,7 @@ network fixture now covers web ports 80, 443, 3000 and 9999, disabled web ingres
 and unsupported services while retaining SSH wrong-port and lateral-denial cases.
 The expanded network check passes with real namespaces and nftables. Audi’s
 HTTP/WebSocket application tests also pass. The separate
-[fleet scenario](../../../nix/tests/machines/fleet/scenarios/audi.py) passes with
+[fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/audi.py) passes with
 actual Firecracker guests across two Lilly hosts: guest-to-guest and guest-to-host
 connections remain denied, including guest attempts to set privileged marks.
 Native SSH and web ingress succeed; revocation and control-plane outage close

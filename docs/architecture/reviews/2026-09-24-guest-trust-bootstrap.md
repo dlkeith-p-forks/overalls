@@ -14,7 +14,7 @@ durable audit model; ADR-0110's SSH roster still determines SSH authorization.
 
 - The previous immutable NixOS `security.pki.caBundle` and Ubuntu image-build
   `update-ca-certificates` step could not replace platform roots on a retained
-  disk. The [NixOS trust unit](../../../nix/packages/guest/private-services.nix)
+  disk. The [NixOS trust unit](../../../nix/domains/artifacts/guest/private-services.nix)
   now atomically points `/etc/ssl/certs` at the writable installed bundle. The
   [Ubuntu receiver](../../../lyra/src/bin/overalls-trustd.rs) replaces a managed
   certificate directory and rebuilds the system bundle before notifying
@@ -40,7 +40,7 @@ durable audit model; ADR-0110's SSH roster still determines SSH authorization.
   publishes the public directory and PEM with modes `0755` and `0644`, and
   repairs old modes on retry. A Rust regression test checks those modes. The
   fleet machine fixture checks readability as the SSH callback user.
-- The isolated [Ubuntu storage fixture](../../../nix/tests/machines/zfs-guest/probe.exs)
+- The isolated [Ubuntu storage fixture](../../../nix/verification/tests/machines/zfs-guest/probe.exs)
   has no Audi authority to issue an SSH roster. It now verifies installed
   trust, networking and storage while asserting SSH stays closed, without
   calling that VM fully ready. The Ubuntu relocation fleet test supplies the

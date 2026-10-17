@@ -196,7 +196,7 @@ separate from these passing named suites.
 
 ## Completion update
 
-The recovered [original plan](../../terminal-v2-plan.md) requires end-to-end
+The recovered [original plan](../../history/ledgers/terminal-v2-plan.md) requires end-to-end
 consumption credit and per-terminal sharing. Version-two control
 envelopes now carry cumulative `input_ack`/`output_ack` counters with 256 KiB and
 sixteen-frame windows, and attachment replies declare replay bytes. Lilly streams
@@ -207,7 +207,7 @@ limit visibility to the creator and explicit viewers who retain Cedar VM read.
 Only the creator may grant/revoke; shared operators remain read-only. Final
 protocol and consumer precommit gates, the native terminal-fleet scenario and
 the Ubuntu guest VM matrix pass on the coordinated implementation; see the
-[completion ledger](../../terminal-v2-completion.md).
+[completion ledger](../../history/ledgers/terminal-v2-completion.md).
 
 A generated local HostStream property now checks that a future output sequence
 closes only its viewer channel and emits a channel-close control, while a replayed

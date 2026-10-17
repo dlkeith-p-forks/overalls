@@ -80,16 +80,16 @@ remote store connectivity, reciprocal substitution and updater health.
 
 ## Implementation evidence
 
-- [Module](../../../nix/modules/remote-builders.nix) implements opt-in scheduling,
+- [Module](../../../nix/domains/system/remote-builders.nix) implements opt-in scheduling,
   SSH restrictions, scoped cache trust and runtime secret dependencies.
-- [Access policy](../../../nix/modules/access.nix) admits the account only when
+- [Access policy](../../../nix/domains/system/access.nix) admits the account only when
   the remote-builder module is enabled.
 - [Fleet registry](../../../fleet/remote-builders.nix) derives pins and document
   paths from authoritative inventory.
-- [Evaluation check](../../../nix/tests/evaluation/remote-builders.nix) and
-  [two-machine check](../../../nix/tests/machines/remote-builders/default.nix)
+- [Evaluation check](../../../nix/verification/tests/evaluation/remote-builders.nix) and
+  [two-machine check](../../../nix/verification/tests/machines/remote-builders/default.nix)
   cover configuration and actual Nix/SSH behavior separately.
-- [Operator guide](../../remote-builders.md) documents recovery and rotation.
+- [Operator guide](../../operations/remote-builders.md) documents recovery and rotation.
 
 Execution and rollout evidence is tracked in the
 [review](../reviews/2026-09-18-remote-builders.md). Configuration, two-machine failure/rotation checks, governance gates and bounded

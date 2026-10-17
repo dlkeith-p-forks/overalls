@@ -4,7 +4,9 @@ defmodule Lilly.Host.ZFSNamespaceMounts do
 
   # @cc [owner:ghuntley,label:security;recovery] namespace-cleanup-only-after-fence
   # detach/2 MUST be called only while the host lock is held, after physical VM
-  # stop, ownership/GUID verification and the durable deleting fence. The native
+  # stop, ownership/GUID verification and the durable deleting fence; for a
+  # template, under its exclusive image lease (no reader) after the durable
+  # retiring record and owner/nonce/GUID verification. The native
   # helper rechecks every namespace before ordinary unmount. Any busy, unknown or
   # detected raced mount prevents the enclosing deletion from releasing capacity.
   @spec detach(String.t(), Path.t()) ::

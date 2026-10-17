@@ -66,14 +66,7 @@ defmodule Marshall.Compute.ServiceLevelAdmission do
       now = Ledger.now()
       profile = operation.command_snapshot["profile"]
 
-      seconds =
-        case operation.kind do
-          kind when kind in [:provision, :start] ->
-            if(profile == "inception", do: 3_000, else: 600)
-
-          _ ->
-            120
-        end
+      seconds = deadline_seconds(operation, service, profile)
 
       Ledger.create!(ServiceLevelAttempt, :admit, %{
         operation_id: operation.id,
@@ -84,5 +77,35 @@ defmodule Marshall.Compute.ServiceLevelAdmission do
     end
 
     :ok
+  end
+
+  # @cc [owner:ghuntley,label:capacity;recovery] service-level-budget-by-agent-set
+  # Creation-to-ready provision/start measurements MUST use the same validated
+  # agent-set budget Lilly records for the boot. Physical and non-readiness
+  # services retain their operation windows, while an unavailable image keeps
+  # the historical profile fallback for old snapshots.
+  @spec deadline_seconds(Operation.t(), atom(), String.t() | nil) :: pos_integer()
+  defp deadline_seconds(operation, :marshall_ready, profile)
+       when operation.kind in [:provision, :start] do
+    profile = if profile == "inception", do: :inception, else: :customer
+
+    Marshall.Compute.Images.readiness_budget_ms(
+      operation.command_snapshot["image_id"],
+      profile
+    )
+    |> case do
+      budget when is_integer(budget) -> div(budget, 1_000)
+      nil -> if(profile == :inception, do: 2_400, else: 600)
+    end
+  end
+
+  defp deadline_seconds(operation, _service, profile) do
+    case operation.kind do
+      kind when kind in [:provision, :start] ->
+        if(profile == "inception", do: 3_000, else: 600)
+
+      _ ->
+        120
+    end
   end
 end

@@ -8,7 +8,7 @@ let
         python = pkgs.python3.withPackages (p: [ p.cryptography ]);
         fixture = ../emulation/storage;
         origin = ../emulation/storage/origin.py;
-        prepare = ../../nix/tests/machines/brady-network/prepare.exs;
+        prepare = ../../nix/verification/tests/machines/brady-network/prepare.exs;
       in {
         # @cc [owner:ghuntley,label:verification;storage] router-emulated-kernel-boundary
         # This is a separate TCG Linux/ZFS fixture. It does not replace the
@@ -31,7 +31,7 @@ let
         fileSystems."/" = { device = "/dev/disk/by-label/nixos"; fsType = "ext4"; };
         users.users.brady = { isSystemUser = true; group = "brady"; uid = 991; };
         users.groups.brady = {};
-        environment.etc."brady-storage.py".source = ../../nix/modules/brady/storage.py;
+        environment.etc."brady-storage.py".source = ../../nix/domains/system/brady/storage.py;
         environment.etc."router-network.exs".source = prepare;
         environment.etc."router-origin.py".source = origin;
         environment.systemPackages = [

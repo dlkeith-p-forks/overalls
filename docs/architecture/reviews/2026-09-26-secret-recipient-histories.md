@@ -12,17 +12,17 @@ new decision or implementation-status change is needed. ADR-0009/0033 evidence
 boundaries remain in force.
 
 The public package normalizes reviewed users and inventory through
-[Nix option types](../../../nix/lib/registry.nix), then supplies that public
-manifest to [the CLI](../../../nix/packages/secrets/cli.py). Generated fixtures
+[Nix option types](../../../nix/platform/lib/registry.nix), then supplies that public
+manifest to [the CLI](../../../nix/domains/artifacts/secrets/cli.py). Generated fixtures
 use those valid shapes. Malformed policy booleans are not modeled as a new
 public attack surface. The existing fixed policy-refusal cases remain.
 
 ## Existing evidence and new composition
 
-The existing [reconciliation tests](../../../nix/tests/evaluation/secrets_test.py)
+The existing [reconciliation tests](../../../nix/verification/tests/evaluation/secrets_test.py)
 contain 14 fixed actual SOPS cases, including add/remove, hostless custody,
 preflight, idempotence, safe output and interrupted publication/retry. The
-[systemd environment properties](../../../nix/tests/machines/secret-custody/properties.py)
+[systemd environment properties](../../../nix/verification/tests/machines/secret-custody/properties.py)
 already generate 40 environment roundtrips and check interruption. These are
 credited separately from the new recipient-history properties.
 
@@ -33,7 +33,7 @@ limitations. Coordinated credentials passed across three Marshall machines in
 **249.75 seconds**, as recorded in the [rotation review](2026-09-16-fleet-credential-rotation.md).
 Neither result is a new run or evidence for every generated history.
 
-The [new histories](../../../nix/tests/evaluation/secret_recipient_histories.py)
+The [new histories](../../../nix/verification/tests/evaluation/secret_recipient_histories.py)
 execute the production CLI entry point for encrypt, check, rekey and decrypt:
 
 - Twelve generated histories compose recovery membership/key overlap, host-key

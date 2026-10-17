@@ -26,7 +26,7 @@ Marshall and Audi only gain coverage; ADR-0047 evidence text only.
 3. `audi/test/http_front_test.exs` (385 lines): the `Audi.HTTP.Front` refusal
    matrix — 308/421/404/SNI==Host/303/403/503 and the reserved `/_audi/` space,
    with the alt-port boundary and callback gating pinned.
-4. `nix/tests/machines/fleet/audi-refusal.py` (92 lines) and the
+4. `nix/verification/tests/machines/fleet/audi-refusal.py` (92 lines) and the
    `audi-guest.exs` additions carry the per-vector refusal-class legs whose
    guest-origin non-contact counters the native run below executes.
 

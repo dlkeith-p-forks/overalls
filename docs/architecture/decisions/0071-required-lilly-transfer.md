@@ -54,11 +54,11 @@ Native transfer authentication and source fencing must remain unchanged.
 
 ## Implementation evidence
 
-- [Lilly module](../../../nix/modules/lilly.nix) enables transfer and refuses disablement.
-- [Transfer module](../../../nix/modules/transfer.nix) rejects administrative port collisions.
-- [Host profile](../../../nix/hosts/profile.nix) binds declared endpoint ports and identity.
-- [Module checks](../../../nix/tests/evaluation/module-configuration.nix) cover mandatory service and collision rejection.
-- [Enrollment checks](../../../nix/tests/evaluation/enrollment-configuration.nix) cover declaration binding.
+- [Lilly module](../../../nix/domains/system/lilly.nix) enables transfer and refuses disablement.
+- [Transfer module](../../../nix/domains/system/transfer.nix) rejects administrative port collisions.
+- [Host profile](../../../nix/platform/hosts/profile.nix) binds declared endpoint ports and identity.
+- [Module checks](../../../nix/verification/tests/evaluation/module-configuration.nix) cover mandatory service and collision rejection.
+- [Enrollment checks](../../../nix/verification/tests/evaluation/enrollment-configuration.nix) cover declaration binding.
 - [Overalls](../../../fleet/hosts/overalls/host.json) and [Dungarees](../../../fleet/hosts/dungarees/host.json) declare endpoints.
 
 Production activation, registration and evacuation acceptance remain pending.

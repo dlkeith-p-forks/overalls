@@ -48,7 +48,7 @@ case "$role" in
       '{version:1,host_id:$host,control_plane:"https://marshall-a:5443",ca_file:($satellite+"/control-ca.pem"),credential_file:($satellite+"/ziggy.token"),openai_key_file:($satellite+"/openai.key"),anthropic_key_file:($satellite+"/anthropic.key"),socket:"/run/ziggy/proxy.sock",spool:"/var/lib/ziggy/spool",max_requests:1000,enabled_providers:["openai","anthropic"],agent_enabled:false}' > "$runtime/ziggy.json"
     chmod 0600 "$runtime/ziggy.json"
     export ZIGGY_CONFIG_FILE="$runtime/ziggy.json" RELEASE_TMP="$runtime"
-    exec /opt/overalls/ziggy/bin/ziggy start
+    exec /opt/kittens/ziggy/bin/ziggy start
     ;;
   galileo)
     mkdir -p /run/galileo
@@ -57,7 +57,7 @@ case "$role" in
       '{version:1,host_id:$host,control_plane:"https://marshall-a:5443",ca_file:($satellite+"/control-ca.pem"),credential_file:($satellite+"/galileo.token"),socket:"/run/galileo/proxy.sock"}' > "$runtime/galileo.json"
     chmod 0600 "$runtime/galileo.json"
     export GALILEO_CONFIG_FILE="$runtime/galileo.json" RELEASE_TMP="$runtime"
-    exec /opt/overalls/galileo/bin/galileo start
+    exec /opt/kittens/galileo/bin/galileo start
     ;;
   audi-private)
     private_file "$satellite/private-leaf.pem" && private_file "$satellite/private-leaf.key" && private_file "$satellite/private-root.pem" || exit 1
@@ -73,7 +73,7 @@ case "$role" in
       '{version:1,role:"private",host_id:$host,connector_path:"/run/lilly-ingress/audi.sock",ziggy_socket:"/run/ziggy/proxy.sock",galileo_socket:"/run/galileo/proxy.sock",certificate_file:($satellite+"/private-leaf.pem"),key_file:($satellite+"/private-leaf.key"),roots_file:($satellite+"/private-root.pem"),status_socket:"/run/audi-private/status.sock"}' > "$runtime/audi.json"
     chmod 0600 "$runtime/audi.json"
     export AUDI_CONFIG_FILE="$runtime/audi.json" RELEASE_TMP="$runtime"
-    exec /opt/overalls/audi/bin/audi start
+    exec /opt/kittens/audi/bin/audi start
     ;;
   porsche)
     private_file "$satellite/porsche.token" || exit 1
@@ -87,6 +87,6 @@ case "$role" in
       '{version:1,control_plane:"https://marshall-a:5443",public_origin:"https://marshall-a",credential_file:($satellite+"/porsche.token"),host_key_dir:"/var/lib/porsche/host-keys",bind:"0.0.0.0",port:2223,cacertfile:($satellite+"/control-ca.pem"),status_socket:"/run/overalls-satellite/porsche-status.sock"}' > "$runtime/porsche.json"
     chmod 0600 "$runtime/porsche.json"
     export PORSCHE_CONFIG_FILE="$runtime/porsche.json" RELEASE_TMP="$runtime"
-    exec /opt/overalls/porsche/bin/porsche start
+    exec /opt/kittens/porsche/bin/porsche start
     ;;
 esac

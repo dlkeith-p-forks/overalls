@@ -148,6 +148,7 @@ defmodule Marshall.Ingress.Routes do
       List.first(
         Ledger.read!(FleetCertificateInstallation,
           host_id: service.host_id,
+          zone: zone,
           generation: active.generation
         )
       ) || deny!()

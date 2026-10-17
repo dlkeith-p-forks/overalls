@@ -12,5 +12,5 @@ flowchart LR
   Services["Audi, Porsche, Brady, Ziggy, Galileo and Enrico"] -->|"Library dependency"| Protocol
 ```
 
-See the [transport guide](../docs/provisioner-transport.md) and
+See the [transport guide](../docs/operations/provisioner-transport.md) and
 [protocol contracts](CONTRACTS).

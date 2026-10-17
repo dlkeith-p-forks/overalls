@@ -77,7 +77,7 @@ an abrupt-loss simulation that invalidates the relevant caches.
 ### 4. High — deployment and TLS changes require implementation
 
 [Packaging](../../../scripts/package_release.sh) builds outside Nix and then uses
-the [closure wrapper](../../../nix/packages/release-bundle.nix). The
+the [closure wrapper](../../../nix/domains/artifacts/applications/release-bundle.nix). The
 [HAProxy example](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/haproxy.cfg.example) and
 [deployment contract](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/CONTRACTS) require passthrough. They do not
 implement ADR-0030's source-built packages, host modules or TLS bridge.
@@ -101,7 +101,7 @@ conversion and recovery, and test private runtime delivery with synthetic keys.
 
 ### 6. Medium — machine tests and tuning evidence are absent
 
-The [deployment harness](../../../nix/tests/README.md) and
+The [deployment harness](../../../nix/verification/tests/README.md) and
 [execution harness](../../../marshall/scripts/smoke_execution.exs) do not provide
 the required `runNixOSTest` host suite. Nested KVM availability has not been
 established for a test builder. No measurements establish 16K records, 20%

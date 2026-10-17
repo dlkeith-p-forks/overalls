@@ -41,7 +41,7 @@ determinism properties, one reviewed ioctl shim) and the launch guard (selector
 and intent-frame Hegel oracles, custody-refusal matrix, and an exclusive-flock
 probe proving the shared intent lock is carried across exec). The C sources
 (`host_lock.c`, `kvm_probe.c`, `launch_guard.c`) were removed and the host tools
-assembler (now `nix/packages/host-tools.nix`) symlinks the Rust binaries from
+assembler (now `nix/domains/artifacts/hosts/host-tools.nix`) symlinks the Rust binaries from
 their independently gated derivations; remaining C helpers are unchanged.
 
 ImageTemplate is an Ash resource separating staging, verification, sealing,
@@ -462,7 +462,7 @@ written during this investigation
 (`/tmp/opencode/fastpath-ubuntu-db-real-normalization.json`).
 
 The proposed build correction in
-[`normalize_nix_db.py`](../../../nix/packages/guest/ubuntu/normalize_nix_db.py)
+[`normalize_nix_db.py`](../../../nix/domains/artifacts/guest/ubuntu/normalize_nix_db.py)
 operates only on the sandboxed Ubuntu guest tree, immediately after offline
 `nix-store --load-db`. It preserves registered paths and references, fixes the
 registration timestamp, checkpoints and verifies SQLite, and removes the

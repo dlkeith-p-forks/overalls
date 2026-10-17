@@ -96,26 +96,26 @@ files. Guest account refresh still restores the reviewed Bash shell policy.
 
 ## Implementation evidence
 
-The [NixOS configuration](../../../nix/packages/guest/configuration.nix) enables
+The [NixOS configuration](../../../nix/domains/artifacts/guest/configuration.nix) enables
 the native Starship module and interactive Bash defaults. The
-[Ubuntu builder](../../../nix/packages/guest/ubuntu/default.nix),
-[required package set](../../../nix/packages/guest/ubuntu/required-packages.json)
-and [initializer](../../../nix/packages/guest/ubuntu/starship.sh) package and
+[Ubuntu builder](../../../nix/domains/artifacts/guest/ubuntu/default.nix),
+[required package set](../../../nix/domains/artifacts/guest/ubuntu/required-packages.json)
+and [initializer](../../../nix/domains/artifacts/guest/ubuntu/starship.sh) package and
 activate the distribution's locked Starship command without home-file edits.
 The [managed account helper](../../../lyra/src/bin/overalls-ssh-authorize.rs)
 selects an executable distribution-specific Bash and applies it on both
 creation and refresh; source-local tests cover selection and refusal.
 
-[Image evaluation](../../../nix/tests/evaluation/guest-toolset.nix) checks NixOS
+[Image evaluation](../../../nix/verification/tests/evaluation/guest-toolset.nix) checks NixOS
 installation and prompt initialization, while
-[Ubuntu evaluation](../../../nix/tests/evaluation/ubuntu-guest.nix) checks its
+[Ubuntu evaluation](../../../nix/verification/tests/evaluation/ubuntu-guest.nix) checks its
 required inputs and startup wiring. The
-[shared native guest probe](../../../nix/tests/machines/zfs-guest/probe.exs)
+[shared native guest probe](../../../nix/verification/tests/machines/zfs-guest/probe.exs)
 checks root and manually created users in both images, including nested shells
 and exact noninteractive output. The
-[personal SSH journey](../../../nix/tests/machines/fleet/scenarios/user-ssh-journey.py)
+[personal SSH journey](../../../nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py)
 checks real PTY hooks through repeated refresh, relocation and reboot, and invokes
-[the browser prompt probe](../../../nix/tests/machines/fleet/browser.py) on its
+[the browser prompt probe](../../../nix/verification/tests/machines/fleet/browser.py) on its
 newly provisioned guest. Before integration with independent observability at
 `a2d9e6e` (feature `63214e60` on base `1cd8be40`), both complete root machine suites
 and both serial personal SSH/browser journeys passed: root/manual-account prompts

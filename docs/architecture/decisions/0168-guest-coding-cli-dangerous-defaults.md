@@ -75,11 +75,11 @@ migrated by this image change.
 
 ## Implementation evidence
 
-The shared [guest package configuration](../../../nix/packages/guest/coding-clis.nix)
+The shared [guest package configuration](../../../nix/domains/artifacts/guest/coding-clis.nix)
 generates the Codex and Claude settings for both image builders. The
-[native guest probe](../../../nix/tests/machines/zfs-guest/coding_clis.py)
-asserts every dangerous-mode key. The [NixOS fleet helper](../../../nix/tests/machines/fleet/coding-clis-guest.exs)
-and [fleet scenario](../../../nix/tests/machines/fleet/scenarios/coding-clis.py)
+[native guest probe](../../../nix/verification/tests/machines/zfs-guest/coding_clis.py)
+asserts every dangerous-mode key. The [NixOS fleet helper](../../../nix/verification/tests/machines/fleet/coding-clis-guest.exs)
+and [fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/coding-clis.py)
 run the native commands without launch overrides. Existing image evaluations,
 Ziggy route checks and production provider-boundary evidence remain the
 implementation evidence carried forward from ADR-0167.

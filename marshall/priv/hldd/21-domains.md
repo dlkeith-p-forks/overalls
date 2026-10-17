@@ -4,6 +4,12 @@ An Ash domain groups resource actions and their code interfaces. It is a busines
 boundary inside an application. It does not create a service, database or process.
 The diagrams and resource inventory below are extracted from literal declarations.
 
+Browser extension presence detection is outside Ash domain ownership. The browser
+requests optional exact-origin access and emits a local document marker; Marshall
+only uses that marker for setup presentation. It creates no resource, listener,
+identity, machine grant or durable authority, so no new domain or resource enters
+the ownership inventory.
+
 ## Responsibilities
 
 | Domain | Responsibility and authority |
@@ -179,7 +185,7 @@ These measurements provide no workflow, reservation or execution authority.
 
 [View properties and units](repo:marshall/test/architecture/hldd_views_test.exs)
 check source drift, domain/resource ownership and missing explanations. The
-[NixOS browser scenario](repo:nix/tests/machines/hldd/browser.py) checks the release's
+[NixOS browser scenario](repo:nix/verification/tests/machines/hldd/browser.py) checks the release's
 authenticated section delivery and rendered diagrams. Neither establishes that a
 resource policy is correct.
 
@@ -188,9 +194,9 @@ authority/state histories. The [scenario ledger](#coverage) records exact eviden
 and remaining gaps for sharing, execution, ingress, private services and recovery.
 [Enrollment histories](repo:marshall/test/marshall/compute/enrollment_history_test.exs)
 cover the Compute enrollment/credential/drain/retire ownership boundary against a
-pure model; the [replacement journey](repo:nix/tests/machines/fleet/scenarios/host-replacement.py)
+pure model; the [replacement journey](repo:nix/verification/tests/machines/fleet/scenarios/host-replacement.py)
 repeats it on the real topology with fresh physical identities.
-The [fleet lifecycle scenario](repo:nix/tests/machines/fleet/scenarios/lifecycle.py)
+The [fleet lifecycle scenario](repo:nix/verification/tests/machines/fleet/scenarios/lifecycle.py)
 exercises real guests, but is not exhaustive coverage of every action in this
 inventory. There is no complete generated cross-domain authorization matrix;
 add stale/foreign-authority histories and a native allowed/refused journey when

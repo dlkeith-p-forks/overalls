@@ -96,8 +96,8 @@ require NixOS machine tests.
   [report codec](../../../protocol/lib/overalls_protocol.ex) require ZFS identity.
 - [Provisioner API](../../../marshall/lib/marshall_web/provisioner_api.ex) and
   [Lilly client](../../../lilly/lib/lilly/control/client.ex) use v2 only.
-- [NixOS options](../../../nix/modules/lilly.nix) require pool identity/budget;
-  [fleet scenarios](../../../nix/tests/machines/fleet/default.nix) cover real
+- [NixOS options](../../../nix/domains/system/lilly.nix) require pool identity/budget;
+  [fleet scenarios](../../../nix/verification/tests/machines/fleet/default.nix) cover real
   collection failures, missing images and revoked authority.
 - [Fixture helper](../../../lilly/scripts/zfs_fixture.exs) bounds disposable
   native dataset creation and deletion for opt-in root harnesses.

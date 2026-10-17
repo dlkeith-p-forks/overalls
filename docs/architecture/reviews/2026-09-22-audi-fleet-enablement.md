@@ -19,11 +19,11 @@ behavior without changing the original review boundary.
   that accepted consequence. Resolved explicitly rather than silently:
   [ADR-0091](../decisions/0091-fleet-perimeter-public-listeners.md) amends the
   perimeter with a typed, reviewed `publicServices` registry
-  (`nix/modules/fleet-firewall.nix`) admitting destination-scoped listeners
+  (`nix/domains/system/fleet-firewall.nix`) admitting destination-scoped listeners
   from any source. Wildcard destinations, duplicate addresses/ports and empty
   port sets fail evaluation; ordinary per-service contributions remain
   suppressed (verified by the extended
-  `nix/tests/evaluation/fleet-firewall.nix`, where an ordinary `dport 9999`
+  `nix/verification/tests/evaluation/fleet-firewall.nix`, where an ordinary `dport 9999`
   rule stays suppressed while public service rules survive composition).
 - **Resolved by decision, high:** ADR-0047 requires at least two control-plane
   hosts for the DNS role; the fleet has one.
@@ -48,7 +48,7 @@ behavior without changing the original review boundary.
   placeholder tokens (documented in `secrets/README.md`, Ziggy precedent).
   Audi fails closed without valid credentials; activation requires the
   operator CLI rotation and document replacement per the
-  [rollout runbook](../../fleet-network.md#audi-public-plane-rollout). Real
+  [rollout runbook](../../operations/fleet-network.md#audi-public-plane-rollout). Real
   credentials must never be fabricated as defaults (ADR-0085 requirement).
 - **Low, observation:** `services.marshall.ingress.zone` is now set on
   Overalls, which activates SSH-config downloads, known-hosts responses, web

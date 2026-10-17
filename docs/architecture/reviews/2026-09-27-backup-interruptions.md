@@ -39,7 +39,7 @@ same operations reported a generic `repository` failure instead of a closed
 `credentials` refusal: 43 failing subtests (8 custody corruptions × 7
 operations + S3 distinctions). What capture already refused is now uniform.
 
-Fix ([restic.py](../../../nix/modules/backups/restic.py)): `command()` runs
+Fix ([restic.py](../../../nix/domains/system/backups/restic.py)): `command()` runs
 `self.credentials()` before spawning Restic. One line plus its contract.
 
 `test_generated_credential_custody_refusal_symmetry` then passed in 88.371s
@@ -58,7 +58,7 @@ stale-writer-lock pin records intended restic semantics, no defect.
 ## Interruption and concurrency histories
 
 All through the real runtime and local encrypted Restic
-([backup-operators.py](../../../nix/tests/evaluation/backup-operators.py)):
+([backup-operators.py](../../../nix/verification/tests/evaluation/backup-operators.py)):
 
 | Test family | Independent assertion |
 | --- | --- |

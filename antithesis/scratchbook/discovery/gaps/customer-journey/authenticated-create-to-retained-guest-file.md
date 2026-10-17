@@ -45,7 +45,7 @@ must not be promoted to success by a later marker from another VM.
 | Durable admission | `marshall/lib/marshall/compute/admission.ex:34-82,143-202,228-270` locks owner/key, compares request shape, selects a fresh capable host, and creates joined allocation/operation rows. `marshall/lib/marshall/compute/virtual_machine.ex:400-454` stores key and owner identity. Read these through authorized domain projections plus read-only snapshot; do not write rows or bypass Ash to drive the SUT. |
 | Physical start and readiness | `lilly/lib/lilly/vm/driver.ex:368-420,486-545` uses retained disk on restart, prepares a new boot on stopped start, and rechecks the exact boot around guest readiness. `lilly/CONTRACTS` requires VM lifetime independent of Lilly and physically confirmed execution. A modeled actor receipt is insufficient. |
 | Durable personal UID | `marshall/lib/marshall/accounts/guest_accounts.ex:10-18,65-96` allocates a permanently reserved UID; ADR-0158 specifies `u<uid>` and `/home/u<uid>`. `marshall/lib/marshall/terminal/authority.ex:8-63,93-111` obtains that account for the authenticated actor under Cedar write authority, and `marshall/lib/marshall/terminal/creation.ex:10-67,96-145` reserves and settles one opening. |
-| Actual guest process and file | `nix/packages/terminald/src/session.rs:226-267,816-826` calls the account helper and spawns a PTY for the resolved user; `nix/packages/terminald/src/pty.rs:113-135,186-257` sets passwd UID, HOME and cwd before exec. The file/UID/hash and exit status must come from the guest, then from a distinct process after restart. |
+| Actual guest process and file | `nix/domains/artifacts/terminald/src/session.rs:226-267,816-826` calls the account helper and spawns a PTY for the resolved user; `nix/domains/artifacts/terminald/src/pty.rs:113-135,186-257` sets passwd UID, HOME and cwd before exec. The file/UID/hash and exit status must come from the guest, then from a distinct process after restart. |
 
 The related accepted decisions are ADR-0017 (durable actor/physical ownership),
 ADR-0022 (live login), ADR-0083 (terminal stream/registry), ADR-0117 as carried
@@ -97,7 +97,7 @@ This candidate composes but does not replace `marshall-admission-atomic-allocati
 `terminal-create-reply-loss-one-pty`, and
 `stop-retains-disk-until-restart`. Each can pass while the new full path cannot
 reach a writable, retained guest file. The oracle's tuple join is the distinct
-claim. Historical `nix/tests/machines/zfs-guest/probe.exs:501-507` uses a
+claim. Historical `nix/verification/tests/machines/zfs-guest/probe.exs:501-507` uses a
 guest-written marker plus sync/readback pattern; it is a design precedent,
 not passing evidence for this combined candidate.
 

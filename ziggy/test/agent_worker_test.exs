@@ -100,6 +100,49 @@ defmodule Ziggy.AgentWorkerTest do
     refute_receive {:provider_call, _, _}
   end
 
+  test "summary compaction streams a completed message through the existing route" do
+    summary_item = %{
+      "type" => "message",
+      "role" => "assistant",
+      "content" => [%{"type" => "output_text", "text" => "Earlier work recorded."}]
+    }
+
+    response = %{
+      "status" => "completed",
+      "output" => [],
+      "usage" => %{"input_tokens" => 19, "output_tokens" => 6}
+    }
+
+    body =
+      "data: " <>
+        Jason.encode!(%{
+          "type" => "response.output_item.done",
+          "output_index" => 0,
+          "item" => summary_item
+        }) <>
+        "\n\n" <>
+        "data: " <>
+        Jason.encode!(%{"type" => "response.completed", "response" => response}) <>
+        "\n\n"
+
+    config = configuration(200, "text/event-stream", body)
+    request = request(%{"input" => [%{"role" => "system", "content" => "compact"}]})
+
+    assert :completed = Ziggy.AgentWorker.execute(config, work(request))
+    assert_receive {:admission, %{"operation" => "responses"}}
+    assert_receive {:provider_call, "/v1/responses", ^request}
+
+    assert_receive {:delivered, %{"response" => delivered}}
+    assert delivered["status"] == "completed"
+    assert delivered["output"] == [summary_item]
+    assert delivered["usage"] == response["usage"]
+
+    assert [%{"completion" => completion}] = Ziggy.Spool.pending(Ziggy.Spool)
+    assert completion["tokens"] == response["usage"]
+    assert completion["completeness"] == "complete"
+    refute_receive {:provider_call, _, _}
+  end
+
   test "ordinary JSON Responses retain maps and missing usage stays unknown" do
     response = %{"status" => "completed", "output" => [%{"type" => "message", "content" => []}]}
     config = configuration(200, "application/json", Jason.encode!(response))

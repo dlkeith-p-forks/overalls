@@ -264,6 +264,12 @@ defmodule Lilly.Events do
     metadata: [vm_id: :uuid, placement_id: :uuid, reason: :atom]
   )
 
+  defevent("vm.observation_failed",
+    level: :info,
+    message: "VMM observation check failed",
+    metadata: [placement_id: :uuid, check: :atom]
+  )
+
   defevent("vm.watch_ended",
     level: :warning,
     message: "VM exit watcher ended and revoked the live proof",
@@ -303,6 +309,12 @@ defmodule Lilly.Events do
     level: :info,
     message: "VM execution preempted by a newer command before its launch commit",
     metadata: [vm_id: :uuid, placement_id: :uuid]
+  )
+
+  defevent("lilly.lease_order_inverted",
+    level: :warning,
+    message: "Lease acquired in the reverse of an order seen earlier (possible deadlock)",
+    metadata: [held_class: :atom, acquired_class: :atom]
   )
 
   defevent("lilly.pool_section",

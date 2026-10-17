@@ -118,7 +118,7 @@ coordinated fleet credential-rotation tests pass; actual host recipients,
 deployment documents and fleet rotation
 scheduling remain deployment work. ZFS enrollment extends validation
 under [ADR-0031](0031-sparse-zfs-storage-and-capacity.md). The separate
-[NixOS fleet](../../../nix/tests/machines/fleet/default.nix) now proves two simulated provisioner
+[NixOS fleet](../../../nix/verification/tests/machines/fleet/default.nix) now proves two simulated provisioner
 hosts; physical failure-domain and representative workload acceptance remain open.
 
 ## Related decisions

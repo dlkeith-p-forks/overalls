@@ -94,7 +94,7 @@ change; the existing HTTPS terminal probe runs in the integration harness.
 
 ## Remaining work
 
-The [operator guide](../../host-maintenance.md) documents prerequisites and the
+The [operator guide](../../operations/host-maintenance.md) documents prerequisites and the
 difference between historical confirmation and current quiescence. Install the
 migration and compatible code on all Marshall nodes, plus the updated Lilly
 executor, before enabling this workflow.

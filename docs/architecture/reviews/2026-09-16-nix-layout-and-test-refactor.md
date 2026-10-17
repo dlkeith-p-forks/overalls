@@ -10,7 +10,7 @@ split large/embedded drivers and share existing fixtures. Application test
 layouts and runtime behavior remain unchanged; the existing execution smoke
 script now reads its service fixture from the test tree. The
 [layout guide](../../../nix/README.md) and
-[test catalog](../../../nix/tests/README.md) describe the resulting ownership.
+[test catalog](../../../nix/verification/tests/README.md) describe the resulting ownership.
 
 This preserves ADRs 0011, 0028 and 0030–0033. There is no replacement deployment,
 storage, custody or verification decision. Source links and implementation

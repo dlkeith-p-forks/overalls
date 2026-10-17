@@ -12,8 +12,8 @@ work. This record was written before any implementation or native run.
 - User operation: browse and administer Git mirrors — register, refresh, cache
   reads and an unavailable mirror. This improvement scopes to the packaged
   Enrico native service boundary: the existing `enrico-service` machine check
-  ([fixture](../../../nix/tests/machines/enrico-service/default.nix),
-  [driver](../../../nix/tests/machines/enrico-service/driver.py)) recorded as
+  ([fixture](../../../nix/verification/tests/machines/enrico-service/default.nix),
+  [driver](../../../nix/verification/tests/machines/enrico-service/driver.py)) recorded as
   `present` in the `git-mirrors` scenario row, with the merged 017 review
   retaining its force-push/outage evidence only historically.
 - Allowed result: the source-built Enrico service behind verified private TLS
@@ -38,7 +38,7 @@ work. This record was written before any implementation or native run.
   per-stage results and cleanup/process drain are recorded below. Physical
   tunnel, ZFS quota/100 GiB cache pressure, large-repository durations and
   production rollout stay outside this boundary.
-- Dependencies: `nix/tests/machines/enrico-service/`, the `enrico` NixOS
+- Dependencies: `nix/verification/tests/machines/enrico-service/`, the `enrico` NixOS
   module, the packaged Enrico release and the serialized native-build lock
   `/tmp/kittens-native-build.lock`.
 - Required checks: all-file prek (Ruff/ty cover the driver), ADR, HLDD
@@ -74,7 +74,7 @@ found three unexercised boundaries that no covered test duplicated:
 
 No production source, schema or protocol change resulted; the additions are
 test-infra only. The machine contract in
-[nix/tests/machines/enrico-service/default.nix](../../../nix/tests/machines/enrico-service/default.nix)
+[nix/verification/tests/machines/enrico-service/default.nix](../../../nix/verification/tests/machines/enrico-service/default.nix)
 was updated in the same change to describe the extended boundary.
 
 An intermediate amended driver failed the strict composed-driver `ty` gate

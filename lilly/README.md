@@ -13,4 +13,4 @@ flowchart LR
 ```
 
 See the [machine lifecycle handbook](../marshall/priv/hldd/04-lifecycle.md) and
-[deployment guide](../docs/deployment.md).
+[deployment guide](../docs/operations/deployment.md).

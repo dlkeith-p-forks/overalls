@@ -72,6 +72,21 @@ defmodule Marshall.ComputeFixtures do
     image
   end
 
+  def native_image_manifest(os \\ "freebsd", agents \\ "freebsd-v1") do
+    windows_image_manifest()
+    |> Map.merge(%{
+      "version" => 6,
+      "os" => os,
+      "guest_agents" => agents,
+      "workspace_source_version" => 2
+    })
+  end
+
+  def native_image_fixture(os \\ "freebsd", agents \\ "freebsd-v1") do
+    {:ok, image} = Images.register(native_image_manifest(os, agents), "#{os} native")
+    image
+  end
+
   def windows_image_id do
     {:ok, image} = OverallsProtocol.ImageManifest.validate(windows_image_manifest())
     image.id

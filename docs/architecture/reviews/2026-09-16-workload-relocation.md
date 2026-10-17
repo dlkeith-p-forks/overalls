@@ -323,7 +323,7 @@ overlays only the seven changed native helper, worker/import, driver and test
 files. Fleet and storage driver builds are running in
 `/tmp/kittens-relocation-stage-drivers.log`; no second VM fleet was launched.
 
-The [failure scenarios](../../../nix/tests/machines/fleet/scenarios/relocation-failures.py)
+The [failure scenarios](../../../nix/verification/tests/machines/fleet/scenarios/relocation-failures.py)
 add transport-only proxy gates, current-authority public actions, service/machine
 restarts and sibling ZFS pressure. The updater scenario requires interrupted
 nonempty native receive, token presence without token disclosure, actual candidate
@@ -633,8 +633,8 @@ partial; no current evidence establishes a complete workload relocation.
 
 ## Guest boot readiness follow-up — 2026-09-17
 
-The [guest service](../../../nix/packages/guest/readiness.py) is installed by the
-[Nix guest configuration](../../../nix/packages/guest/configuration.nix), with the
+The [guest service](../../../nix/domains/artifacts/guest/readiness.py) is installed by the
+[Nix guest configuration](../../../nix/domains/artifacts/guest/configuration.nix), with the
 virtio-vsock guest module. It starts only with explicit placement, execution epoch,
 32-byte boot challenge and guest address parameters. Duplicate, missing, noncanonical
 and reserved values fail closed. Identity is read from this boot's kernel command
@@ -719,7 +719,7 @@ placement rebinding and revision regression. The jail test checks the actual
 Firecracker configuration includes the persisted boot identity and stable networking.
 Focused verification passed eight cases (one property, seven tests).
 
-The [real guest fixture](../../../nix/tests/machines/zfs-guest/probe.exs) now requires
+The [real guest fixture](../../../nix/verification/tests/machines/zfs-guest/probe.exs) now requires
 challenge-bound readiness after each physical boot and checks stale epoch/challenge
 rejection against the live guest. The Nix machine run was started from an explicit
 working-tree package import with the pinned flake inputs, including untracked source
@@ -1409,9 +1409,9 @@ uses ordinary ready-disk accounting, capped at its logical disk commitment; this
 does not implement temporary-reservation credit. New `zfs set` effects are
 delegated to the lock-owning helper and rejected without a lock.
 
-The [native fixture](../../../nix/tests/machines/zfs-transfer/adoption.exs) uses
+The [native fixture](../../../nix/verification/tests/machines/zfs-transfer/adoption.exs) uses
 content-verified synthetic boot artifacts and a real received ext4 backing file.
-The [driver](../../../nix/tests/machines/zfs-transfer/driver.py) interrupts actual
+The [driver](../../../nix/verification/tests/machines/zfs-transfer/driver.py) interrupts actual
 snapshot destruction, mounting and property changes before their callers complete,
 then retries from the retained claims. It also checks image mismatch, baseline
 refusal, imported-file size mismatch, foreign nonce, ordinary-prepare exclusion,
@@ -1447,13 +1447,13 @@ Delete, source cleanup coordination and user actions remain outstanding.
 
 Architecture impact: additional native evidence for ADR-0037, with no change to
 its accepted requirements or production interfaces. The
-[adoption fixture](../../../nix/tests/machines/zfs-transfer/adoption.exs) now
+[adoption fixture](../../../nix/verification/tests/machines/zfs-transfer/adoption.exs) now
 constructs a distinct placement and immutable descriptor for baseline receipt,
 then advances through production guarded preparation to its exact incremental
 stream. The source receives a later disk-tail write, so the final hash must differ
 from the earlier full-transfer fixture.
 
-The [driver](../../../nix/tests/machines/zfs-transfer/driver.py) checks baseline
+The [driver](../../../nix/verification/tests/machines/zfs-transfer/driver.py) checks baseline
 adoption refusal, stable destination GUID through incremental receive, and caller
 death after native removal of snapshot B but before removal of A. It introduces
 an unknown snapshot at that interrupted point and requires refusal without
@@ -1845,7 +1845,7 @@ The corrected immutable derivation is
 `/nix/store/r3z99hmll338ixzbkvil7fmxkmkxj0hk-vm-test-run-kittens-source-export.drv`;
 its log is `/tmp/kittens-source-export-native-final.log`.
 
-The [OpenSSH fixture](../../../nix/tests/machines/ssh-transfer/default.nix) now
+The [OpenSSH fixture](../../../nix/verification/tests/machines/ssh-transfer/default.nix) now
 uses production permit lookup for AuthorizedKeysCommand and verifies that the
 forced command receives the authenticated public key. Initial execution exposed
 two fixture configuration errors: list merging appended ordinary key paths to
@@ -1896,7 +1896,7 @@ This includes the stronger sender-identity and continued-liveness checks.
 
 Architecture impact: implements ADR-0037's accepted restricted source service
 within Lilly's privileged host boundary; no new domain, protocol version,
-persistence authority or decision supersession. The [module](../../../nix/modules/transfer.nix)
+persistence authority or decision supersession. The [module](../../../nix/domains/system/transfer.nix)
 adds a dedicated SSH listener and a private socket-activated export worker. The
 transfer account is excluded from ordinary SSH. Its only accepted key source is
 the production permit lookup, with a forced command carrying the selected public
@@ -1937,7 +1937,7 @@ the pre-existing missing Antithesis skill contract coverage; log:
 `/tmp/kittens-endpoint-precommit.log`. The existing Nix module-configuration check
 passed at `/nix/store/azf12nl4nd54j1azs6adk1p7j6hhpxf4-kittens-module-configuration-check.json`.
 
-The new [endpoint machine check](../../../nix/tests/machines/export-endpoint/default.nix)
+The new [endpoint machine check](../../../nix/verification/tests/machines/export-endpoint/default.nix)
 uses distinct source/destination NixOS nodes, the installed service and actual ZFS
 send/receive. It also attempts a malicious command with an accepted key and stops
 the listener during a blocked sender, requiring source quiescence before cleanup.
@@ -1967,7 +1967,7 @@ adoption or guest activation.
 
 ADR-0028 impact: added a [subtree contract](../../../.agents/skills/CONTRACTS) for
 installed development/test assets. Production applications do not import these
-assets, and the existing [release allowlist](../../../nix/packages/source.nix)
+assets, and the existing [release allowlist](../../../nix/domains/artifacts/applications/source.nix)
 excludes the subtree. The contract records that separation and prevents treating
 skill installation/execution alone as repository acceptance. No skill asset,
 scanner exemption, validator rule or accepted design was changed. This is a
@@ -2929,7 +2929,7 @@ ADR-0037 remains partial.
 
 ## Native cancelled-source restoration acceptance in progress
 
-The [restoration fixture](../../../nix/tests/machines/zfs-guest/restoration.exs)
+The [restoration fixture](../../../nix/verification/tests/machines/zfs-guest/restoration.exs)
 extends the real ZFS/Firecracker guest check with a running source cancellation.
 It creates a native baseline through the production source effect, revokes through
 the typed revocation effect, stops at source epoch 2, restarts at the next

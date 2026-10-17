@@ -67,7 +67,7 @@ monitoring never establishes execution authority.
 
 ## Executed checks
 
-The [implementation ledger](../../ziggy.md) records executed tests and remaining
+The [implementation ledger](../../services/ziggy.md) records executed tests and remaining
 work. Structural contract/ADR checks establish syntax and coverage only. Review
 of the actual authority, credential, streaming, persistence and monitoring paths
 provides a separate semantic assessment; it does not establish native capacity.

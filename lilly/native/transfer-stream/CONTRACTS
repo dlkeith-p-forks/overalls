@@ -1,17 +1,20 @@
 @cc [owner:ghuntley,label:security;recovery] transfer-stream-custody-boundaries
 Producer stdout MUST flow only to consumer stdin through a kernel pipe; disk
 bytes never appear on helper stdout or become diagnostics. Diagnostics are
-discarded with a 65536-byte cap. EOF/revocation, deadline, excessive
-diagnostics or either failed child stop and reap both sides before exit. Only
-two successful exits may return success. The trusted caller supplies absolute
-argv, never shell text. Byte rates are bounded integers using monotonic time
-with at most 65536 bytes of burst credit; throttling never delays revocation.
-Progress frames carry only a fixed counter, at most once per second plus
-completion; a blocked progress sink revokes. Splice accounting is transport
-progress only. No setuid or capabilities.
+discarded with a 65536-byte cap. Deadline, excessive diagnostics, a failed
+progress write or either failed child stop and reap both sides before exit.
+Only two successful exits may return success. Only lilly-hostd runs this
+helper, inside its command cgroup and under the stream lease it holds, with
+argv it derived itself; cancellation is hostd killing that cgroup. A side
+given a uid runs as that non-root uid with no supplementary groups and
+no_new_privs. Byte rates are bounded integers using monotonic time with at
+most 65536 bytes of burst credit; throttling never delays cancellation.
+Progress is a fixed 8-byte counter overwritten at offset 0 of an inherited
+regular file, at most once per second plus completion. Splice accounting is
+transport progress only. No setuid or capabilities.
 
 @cc [owner:ghuntley,label:verification] transfer-stream-hegel-properties
-Hegel properties MUST cover the argv/env selector lattice, the credit-throttle
+Hegel properties MUST cover the argv selector lattice, the credit-throttle
 arithmetic and status mapping, while process-level fixtures cover exact byte
-custody, locks acquired before spawn, revocation/deadline kills, diagnostics
-caps and the exclusive progress frame format on inherited stdout.
+custody, adopted-descendant reaping, deadline kills, diagnostics caps and the
+progress counter on an inherited descriptor.

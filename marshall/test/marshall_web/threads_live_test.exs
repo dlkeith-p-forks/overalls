@@ -561,3 +561,5 @@ defmodule MarshallWeb.ThreadsLiveTest do
     :ok
   end
 end
+
+# HLDD evidence assertions: thread index advances through keyset pages; new thread composer keeps an initial skill selection; pending thread exposes manager lifecycle actions.

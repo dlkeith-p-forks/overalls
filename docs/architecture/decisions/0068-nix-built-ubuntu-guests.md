@@ -80,17 +80,17 @@ at 512 MiB; applications may require a higher declared minimum.
 
 ## Implementation evidence
 
-[Ubuntu builder](../../../nix/packages/guest/ubuntu/default.nix),
-[lock updater](../../../nix/packages/guest/ubuntu/update-lock.py), and
+[Ubuntu builder](../../../nix/domains/artifacts/guest/ubuntu/default.nix),
+[lock updater](../../../nix/domains/artifacts/guest/ubuntu/update-lock.py), and
 [shared image list](../../../fleet/guest-images.nix), and
 [deployment catalog](../../../fleet/hosts/overalls/image-catalog.nix) implement
 assembly, pinned resolution and publication configuration.
-[Unit/property checks](../../../nix/tests/evaluation/ubuntu-guest.py) and
-[Nix evaluation assertions](../../../nix/tests/evaluation/ubuntu-guest.nix) and
-[offline refusal tests](../../../nix/tests/evaluation/ubuntu-build-boundaries.nix)
+[Unit/property checks](../../../nix/verification/tests/evaluation/ubuntu-guest.py) and
+[Nix evaluation assertions](../../../nix/verification/tests/evaluation/ubuntu-guest.nix) and
+[offline refusal tests](../../../nix/verification/tests/evaluation/ubuntu-build-boundaries.nix)
 check invalid inputs and missing packages/dependencies.
-[Native guest suite](../../../nix/tests/machines/zfs-guest/default.nix) and
-[fleet suite](../../../nix/tests/machines/fleet/default.nix) have Ubuntu variants.
+[Native guest suite](../../../nix/verification/tests/machines/zfs-guest/default.nix) and
+[fleet suite](../../../nix/verification/tests/machines/fleet/default.nix) have Ubuntu variants.
 Unit/property checks, rebuild comparisons, native guest lifecycle and the Marshall
 application gate have passed. Fleet relocation acceptance remains in progress; see the
 [review](../reviews/2026-09-18-ubuntu-guests.md).

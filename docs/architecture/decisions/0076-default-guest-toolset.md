@@ -89,14 +89,14 @@ a new boundary. Both images remain reproducible from pinned inputs.
 
 ## Implementation evidence
 
-[NixOS guest configuration](../../../nix/packages/guest/configuration.nix) and
-the [Ubuntu builder](../../../nix/packages/guest/ubuntu/default.nix) with its
-[required packages](../../../nix/packages/guest/ubuntu/required-packages.json)
-and [package lock](../../../nix/packages/guest/ubuntu/packages.lock.json)
+[NixOS guest configuration](../../../nix/domains/artifacts/guest/configuration.nix) and
+the [Ubuntu builder](../../../nix/domains/artifacts/guest/ubuntu/default.nix) with its
+[required packages](../../../nix/domains/artifacts/guest/ubuntu/required-packages.json)
+and [package lock](../../../nix/domains/artifacts/guest/ubuntu/packages.lock.json)
 implement the toolset. The
-[evaluation check](../../../nix/tests/evaluation/guest-toolset.nix) asserts
+[evaluation check](../../../nix/verification/tests/evaluation/guest-toolset.nix) asserts
 the NixOS configuration, and the
-[guest suite probe](../../../nix/tests/machines/zfs-guest/probe.exs) boots
+[guest suite probe](../../../nix/verification/tests/machines/zfs-guest/probe.exs) boots
 both images with the live toolset smoke. The
 [review](../reviews/2026-09-19-guest-toolset.md) records executed verification
 and remaining acceptance limits.

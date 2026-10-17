@@ -2,7 +2,7 @@
 
 - ID: ADR-0180
 - Date: 2026-10-16
-- Status: proposed
+- Status: accepted
 - Implementation: partial
 - Components: Nix guest builders, Protocol, Lilly, Marshall, guest-images
 - Supersedes: none
@@ -50,12 +50,16 @@ image contains a tool.
   Artifact file lists come from
    the protocol. Version-1 Linux and version-2 Windows firmware encodings
    remain byte-compatible.
-4. **Capabilities stay explicit.** The protocol's capability table is the sole
-   source for Lilly and Marshall. `freebsd-v1` and `illumos-v1` currently have
-   the same capability flags as `windows-v1` (readiness, trust, terminal,
-   workspace, SSH and agents; no editor or Inception) and a 600-second readiness
-   budget. This is a contract definition, not evidence that those guests or
-   agents exist yet.
+4. **Capabilities stay explicit and fail closed.** The protocol's capability
+   table is the sole source for Lilly and Marshall. `freebsd-v1` and
+   `illumos-v1` retain their OS-specific wire identities and advertise the
+   shared readiness, trust, terminal, workspace, flush, SSH and agent-control
+   surfaces, while editor and Inception remain disabled. Native manifests may
+   therefore declare `workspace_source_version = 2`. The capability row is a
+   protocol contract, not proof that a guest earned a capability: Lilly must
+   attach a vsock only for the declared agent set, and every surface still
+   requires the current boot-bound guest response. A missing or mismatched
+   manifest remains all-false.
 5. **Lilly preserves shared boundaries.** Kernel bundles include an initrd only
    when the validated bundle declares one. Firmware bundles select the default
    CPU model for illumos and retain Hyper-V configuration only for Windows.
@@ -64,8 +68,8 @@ image contains a tool.
    lifecycle remain shared boundaries.
 6. **Evidence is scoped to what exists.** The Arch/Alma evaluation check proves
    builder command shape and distinct distribution markers only. Protocol tests
-   and the Lilly jail test prove bounded metadata and the no-initrd native
-   kernel configuration only. No native FreeBSD or OmniOS boot, readiness,
+   and the Lilly jail test prove bounded metadata and the native firmware
+   configuration only. No native FreeBSD or OmniOS boot, readiness,
    trust, terminal, workspace, relocation or Marshall fleet acceptance is
    implied by those checks.
 
@@ -97,9 +101,10 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
   builders and catalog entries exist, but successful reproducible builds,
   machine tests, security scenarios and fleet rollout evidence are required
   before staging.
-- The FreeBSD and illumos capability rows remain contract surface only until
-  those artifacts and tests are recorded; callers must preserve their partial
-  status.
+- The FreeBSD and illumos capability rows now describe the intended native
+  daemon contract. Until those daemons are packaged and their machine evidence
+  is recorded, callers must preserve the implementation's partial status and
+  must not treat the rows as proof of readiness, trust or user access.
 
 ## Invariants and verification
 
@@ -108,9 +113,11 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
   shape and their own deterministic distribution marker.
 - Version-6 manifests and version-3 bundles reject unknown keys, OS/agent
   mismatches, malformed boot arguments and out-of-bound artifact sizes.
-- Native FreeBSD and illumos firmware bundles receive a vsock only for their
-  declared protocol-speaking agent set and never receive the Windows Hyper-V
-  CPU template.
+- Native FreeBSD and illumos firmware bundles receive the jail-local vsock
+  endpoint because their capability rows speak the shared guest protocols;
+  they never receive the Windows Hyper-V CPU template. A native daemon must
+  bind host CID 2 to guest CID 3 and every response to the current boot before
+  Lilly or Marshall grants the corresponding operation.
 - The current `foreign-linux-guests`, `native-os-guest-unit`, protocol
   validation, `Lilly.VM.JailTest` and `Lilly.Host.ImageTest` checks are
   structural evidence. Native
@@ -120,18 +127,18 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
 ## Implementation evidence
 
 The implementation is partial. Arch and Alma builders are in
-[`nix/packages/guest/arch`](../../../nix/packages/guest/arch),
-[`nix/packages/guest/alma`](../../../nix/packages/guest/alma) and the shared
-[`foreign-linux.nix`](../../../nix/packages/guest/foreign-linux.nix), with the
-[`foreign-linux-guests`](../../../nix/tests/evaluation/foreign-linux-guests.nix)
+[`nix/domains/artifacts/guest/arch`](../../../nix/domains/artifacts/guest/arch),
+[`nix/domains/artifacts/guest/alma`](../../../nix/domains/artifacts/guest/alma) and the shared
+[`foreign-linux.nix`](../../../nix/domains/artifacts/guest/foreign-linux.nix), with the
+[`foreign-linux-guests`](../../../nix/verification/tests/evaluation/foreign-linux-guests.nix)
 evaluation and catalog entries in [`fleet/guest-images.nix`](../../../fleet/guest-images.nix).
 
 Native builders and catalog entries are in
-[`native.nix`](../../../nix/packages/guest/native.nix),
-[`freebsd/default.nix`](../../../nix/packages/guest/freebsd/default.nix),
-[`omnios/default.nix`](../../../nix/packages/guest/omnios/default.nix),
-and [`illumos/default.nix`](../../../nix/packages/guest/illumos/default.nix),
-[`native-os-guests.nix`](../../../nix/tests/evaluation/native-os-guests.nix) and
+[`native.nix`](../../../nix/domains/artifacts/guest/native.nix),
+[`freebsd/default.nix`](../../../nix/domains/artifacts/guest/freebsd/default.nix),
+[`omnios/default.nix`](../../../nix/domains/artifacts/guest/omnios/default.nix),
+and [`illumos/default.nix`](../../../nix/domains/artifacts/guest/illumos/default.nix),
+[`native-os-guests.nix`](../../../nix/verification/tests/evaluation/native-os-guests.nix) and
 [`fleet/guest-images.nix`](../../../fleet/guest-images.nix). The FreeBSD source
 endpoint is retired and is replaced by an archived, checksum-pinned capture;
 the explicit illumos constructor records `https://illumos.org/` as the upstream
@@ -156,19 +163,25 @@ name; it does not realize an image or boot a guest.
 
 The pinned FreeBSD and OmniOS builders now have successful local Nix
 realization checks, including preservation of FreeBSD's complete EFI/GPT/UFS
-disk. No
-signed production artifact, machine test, native guest agent implementation or
-runtime execution record exists yet. The catalog entries do not carry standby
-metadata and must not be treated as launchable support.
+disk. The protocol and Marshall projections now expose the native capability
+rows and permit workspace source version 2; this proves only the versioned
+contract. The shared native Lyra vsock adapter, readiness daemon, trust daemon
+and workspace receiver now exist with host-CID/guest-CID and boot-bound checks;
+the native builder wires those artifacts into an optional image-agent payload,
+while terminal, flush, SSH and agent daemons, target-native packaging, service
+definitions and runtime image assembly are still being implemented. No signed
+production artifact, nested machine test, or runtime
+execution record exists yet. The catalog entries do not carry standby metadata
+and must not be treated as accepted fleet support.
 
 ## Open questions
 
-- Which FreeBSD and OmniOS/illumos image builders and signed inputs should be
-  accepted, and whether OmniOS should retain the protocol label `illumos`.
+- Which signed FreeBSD and OmniOS/illumos inputs should be accepted. OmniOS is
+  the installable downstream image and `illumos` is the stable protocol label.
   A direct illumos.org image source is unavailable: the upstream project
   identifies OmniOS, OpenIndiana and Tribblix as downstream distributions.
-- Whether native guests can support the declared vsock protocols and the
-  600-second readiness budget.
+- Whether the native guest services pass the declared vsock protocols and the
+  600-second readiness budget under CloudHv boot and restart.
 - Which native machine tests can establish boot, isolation, storage growth and
   recovery before either family is staged.
 

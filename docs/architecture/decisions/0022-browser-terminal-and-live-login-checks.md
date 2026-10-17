@@ -115,7 +115,7 @@ and [private probe driver](../../../marshall/scripts/browser_terminal_probe.exs)
 against the real Firecracker guest through the full HTTPS endpoint. See the
 [review](../reviews/2026-09-16-browser-terminal.md) for executed results and limits.
 
-The [production failover harness](../../../nix/tests/README.md)
+The [production failover harness](../../../nix/verification/tests/README.md)
 adds three deployed Marshall services, a newly provisioned real guest and actual
 Chromium browsers. It suppresses replies after accepted input, queues more typing,
 kills the serving node, and proves explicit reacquisition without replay. It also

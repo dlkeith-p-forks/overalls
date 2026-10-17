@@ -205,7 +205,7 @@ outstanding. [ADR-0031](0031-sparse-zfs-storage-and-capacity.md) adds ZFS
 identity/accounting validation and a separate enrolled logical cap while retaining
 this record's transaction order and ledger. The native Lilly backend now passes
 real accounting/failure tests and concurrent admission in the
-[NixOS fleet](../../../nix/tests/machines/fleet/default.nix). Physical performance and production
+[NixOS fleet](../../../nix/verification/tests/machines/fleet/default.nix). Physical performance and production
 failure-domain evidence remain outstanding.
 
 ## Related decisions

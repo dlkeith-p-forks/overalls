@@ -102,20 +102,20 @@ application releases and shared protocol types remain unchanged.
 
 ## Implementation evidence
 
-The [ACME module](../../../nix/modules/acme/default.nix) selects the challenge
+The [ACME module](../../../nix/domains/system/acme/default.nix) selects the challenge
 method and conditional credentials. The
-[HTTP module](../../../nix/modules/acme/http.nix) defines independent ingress,
+[HTTP module](../../../nix/domains/system/acme/http.nix) defines independent ingress,
 private responders, firewall rules and assertions. The
-[lookup service](../../../nix/modules/acme/lookup.py) bounds direct requests and
+[lookup service](../../../nix/domains/system/acme/lookup.py) bounds direct requests and
 validates key authorizations without accessing certificates.
-[Configuration checks](../../../nix/tests/evaluation/module-configuration.nix)
-and [lookup checks](../../../nix/tests/evaluation/acme-lookup.py) pass locally.
-The [HTTP machine suite](../../../nix/tests/machines/acme-http01/default.nix)
-and [DNS regression suite](../../../nix/tests/machines/acme-route53/default.nix)
+[Configuration checks](../../../nix/verification/tests/evaluation/module-configuration.nix)
+and [lookup checks](../../../nix/verification/tests/evaluation/acme-lookup.py) pass locally.
+The [HTTP machine suite](../../../nix/verification/tests/machines/acme-http01/default.nix)
+and [DNS regression suite](../../../nix/verification/tests/machines/acme-route53/default.nix)
 passed locally, along with the service-role regression. Exact execution results
 and production acceptance limits are tracked in the
 [review](../reviews/2026-09-17-http01-validation.md).
-The [deployment guide](../../nixos.md) documents inputs,
+The [deployment guide](../../operations/nixos.md) documents inputs,
 limits and standalone/three-machine configurations.
 
 ## Open questions

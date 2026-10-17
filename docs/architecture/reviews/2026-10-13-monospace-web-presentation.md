@@ -18,8 +18,8 @@ authorization, isolation, capacity or recovery boundary. The asset pipeline
 changes from Tailwind plus esbuild to esbuild alone with `css/app.css` as a
 second entry point; `tailwind`, `daisyui`, `heroicons`, `cinder`,
 `mishka_chelekom` and the `igniter_js` override leave `mix.exs`, so the
-Marshall fixed-output dependency hash in `nix/packages/dependency-hashes.json`
-changes and `nix/packages/default.nix` drops its Tailwind configuration line.
+Marshall fixed-output dependency hash in `nix/domains/artifacts/dependency-hashes.json`
+changes and `nix/domains/artifacts/default.nix` drops its Tailwind configuration line.
 No migration, runtime JavaScript framework or deployment topology change is
 introduced. The removed Mishka retention clause in ADR-0010 is marked
 historical with a reciprocal link.

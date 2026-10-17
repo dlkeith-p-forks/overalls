@@ -151,13 +151,19 @@ Linux account database or Windows SID profile registration.
 [Managed skill operations](../../../lyra/src/agent/managed_skills.rs) implement
 bounded public Git fetching, ordinary-blob extraction, durable guest receipts,
 content digests and local-edit refusal. These sources add no standalone service.
+The [skill maintenance loop](../../../marshall/lib/marshall/agents/skill_maintenance.ex)
+round-robins bounded replacement-machine scans, skips generations with an
+existing restoration receipt, and records rejected restorations as catalogued
+outcomes so one failed thread cannot starve later work.
 
 [Catalog cases](../../../marshall/test/marshall/agents/skills_catalog_test.exs),
-[skill authority/recovery cases](../../../marshall/test/marshall/agents/skills_test.exs)
-and colocated Rust file/operation tests are present. Final integration, guest
-transport, Windows native runtime, physical reopen and live deployment
-acceptance remain tracked in the
-[context review](../reviews/2026-10-16-agent-context-and-planning.md).
+[skill authority/recovery and restoration scheduling cases](../../../marshall/test/marshall/agents/skills_test.exs)
+and colocated Rust file/operation tests are present. The distributed recovery
+suite also verifies that a managed-skill operation can be dispatched and
+completed by replacement peers after process loss; this remains database-state
+evidence, not guest installation or physical reopen evidence. Final
+integration, guest transport, Windows native runtime, physical reopen and live
+deployment acceptance remain tracked in the [context review](../reviews/2026-10-16-agent-context-and-planning.md).
 
 ## Open questions
 

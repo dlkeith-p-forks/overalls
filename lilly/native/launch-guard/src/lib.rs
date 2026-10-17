@@ -34,6 +34,9 @@ pub struct Request {
     pub generation: u64,
     pub program: PathBuf,
     pub arguments: Vec<OsString>,
+    /// A second uid allowed to own the lock and intent files (an unprivileged
+    /// Lilly's service uid); None accepts only the guard's own uid.
+    pub owner: Option<u32>,
 }
 
 /// A structurally framed intent payload.
@@ -75,9 +78,24 @@ fn counter(unparsed: &OsStr) -> Option<u64> {
         .then_some(value)
 }
 
-/// Validate the command line: absolute lock and intent paths, exact placement
-/// UUID, two affirmative decimal counters and an absolute executable.
+/// Validate the command line: an optional `--owner-uid N` (N a nonzero uid),
+/// absolute lock and intent paths, exact placement UUID, two affirmative
+/// decimal counters and an absolute executable.
 pub fn parse_cli(arguments: &[OsString]) -> Option<Request> {
+    let (owner, arguments) = match arguments {
+        [flag, uid_bytes, rest @ ..] if flag.as_bytes() == b"--owner-uid" => {
+            let uid: u32 = std::str::from_utf8(uid_bytes.as_bytes())
+                .ok()?
+                .parse()
+                .ok()?;
+            // Canonical decimal only: no sign, no leading zero, never root.
+            if uid == 0 || uid.to_string().as_bytes() != uid_bytes.as_bytes() {
+                return None;
+            }
+            (Some(uid), rest)
+        }
+        _ => (None, arguments),
+    };
     let [lock, intent, placement_text, epoch, generation, program, rest @ ..] = arguments else {
         return None;
     };
@@ -94,13 +112,19 @@ pub fn parse_cli(arguments: &[OsString]) -> Option<Request> {
         generation: counter(generation)?,
         program: PathBuf::from(program),
         arguments: rest.to_vec(),
+        owner,
     })
 }
 
 /// The descriptor must be a private, single-link, owner-exclusive regular file
 /// of exactly `expected_size`, never a symlink resolution, and never one of the
 /// process standard descriptors.
-fn acquire_fd(path: &Path, expected_size: u64, cloexec: bool) -> Result<OwnedFd, ()> {
+fn acquire_fd(
+    path: &Path,
+    expected_size: u64,
+    cloexec: bool,
+    owner: Option<u32>,
+) -> Result<OwnedFd, ()> {
     let mut flags = OFlags::RDONLY | OFlags::NOFOLLOW;
     if cloexec {
         flags |= OFlags::CLOEXEC;
@@ -114,7 +138,7 @@ fn acquire_fd(path: &Path, expected_size: u64, cloexec: bool) -> Result<OwnedFd,
     let fd: OwnedFd = file.into();
     let private = metadata.is_file()
         && metadata.nlink() == 1
-        && metadata.uid() == rustix::process::geteuid().as_raw()
+        && (metadata.uid() == rustix::process::geteuid().as_raw() || Some(metadata.uid()) == owner)
         && metadata.mode() & 0o777 == 0o600
         && metadata.len() == expected_size;
     if private {
@@ -166,7 +190,7 @@ pub fn current(intent: &Intent, request: &Request) -> bool {
 /// mark it CLOEXEC. A stopped or fenced intent must never race the generation
 /// check against entering the owned jailer.
 pub fn run(request: &Request) -> u8 {
-    let Ok(lock) = acquire_fd(&request.lock, 0, false) else {
+    let Ok(lock) = acquire_fd(&request.lock, 0, false, request.owner) else {
         return EXIT_CUSTODY;
     };
     let acquired = loop {
@@ -178,7 +202,7 @@ pub fn run(request: &Request) -> u8 {
     if acquired.is_err() {
         return EXIT_CUSTODY;
     }
-    let valid = match acquire_fd(&request.intent, INTENT_BYTES as u64, true) {
+    let valid = match acquire_fd(&request.intent, INTENT_BYTES as u64, true, request.owner) {
         Err(()) => return EXIT_CUSTODY,
         Ok(intent) => read_intent(&intent),
     };

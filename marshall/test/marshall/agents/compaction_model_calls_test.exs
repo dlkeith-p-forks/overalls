@@ -106,6 +106,50 @@ defmodule Marshall.Agents.CompactionModelCallsTest do
              1
   end
 
+  test "summary compaction completes through the Ziggy control routes", c do
+    turn = start_turn(c)
+    append_history(c.thread.id, turn.id, 200)
+
+    assert {:ok, %{purpose: :summary} = call} = ModelCalls.queue(turn.id, "test-model")
+
+    assert {:ok, %{"call" => %{"id" => id, "claim_id" => claim_id, "request" => request}}} =
+             control_request(c.token, "agent_next", %{"version" => 2})
+
+    assert id == call.id
+    assert request["input"] != []
+
+    response = %{
+      "status" => "completed",
+      "output" => [
+        %{
+          "type" => "message",
+          "role" => "assistant",
+          "content" => [%{"type" => "output_text", "text" => "Earlier work recorded."}]
+        }
+      ],
+      "usage" => %{"input_tokens" => 19, "output_tokens" => 6}
+    }
+
+    assert {:ok, %{"acknowledged" => ^id}} =
+             control_request(c.token, "agent_result", %{
+               "version" => 2,
+               "call_id" => id,
+               "claim_id" => claim_id,
+               "response" => response
+             })
+
+    assert [%{generation: 1, state: %{"kind" => "summary"}}] =
+             Ledger.read!(ContextCheckpoint, thread_id: c.thread.id)
+
+    assert {:ok, %{purpose: :inference} = resumed} = ModelCalls.queue(turn.id, "test-model")
+    assert resumed.id != call.id
+
+    assert Enum.any?(resumed.request["input"], fn item ->
+             is_binary(item["content"]) and
+               String.contains?(item["content"], "Earlier work recorded.")
+           end)
+  end
+
   test "manual compaction uses a maintenance turn with no fabricated user prompt", c do
     original = start_turn(c)
     append_history(c.thread.id, original.id, 4)
@@ -252,4 +296,10 @@ defmodule Marshall.Agents.CompactionModelCallsTest do
         %{"type" => "message", "content" => [%{"type" => "output_text", "text" => text}]}
       ]
     }
+
+  @spec control_request(String.t(), String.t(), map()) :: {:ok, map()} | {:error, String.t()}
+  defp control_request(token, route, body) do
+    {:ok, principal} = Marshall.Control.Services.Ziggy.authenticate(token)
+    Marshall.Control.Services.Ziggy.handle_request("ziggy." <> route, body, principal)
+  end
 end

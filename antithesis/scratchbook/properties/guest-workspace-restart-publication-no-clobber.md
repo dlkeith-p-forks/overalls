@@ -10,7 +10,7 @@ Evidence: `lyra/src/workspace_receiver.rs:466-489` (`write_atomic`) fsync/rename
 identical redelivery and refuses conflicts; `:598-635` (`attempt`) deletes only
 partial path, recognizes already renamed checkout, then publishes done. Crash
 between rename and done is explicitly handled. Guest unit custody is defined in
-`nix/packages/guest/private-services.nix:57-83`; immutable source protocol in
+`nix/domains/artifacts/guest/private-services.nix:57-83`; immutable source protocol in
 ADR-0128 and source revision updates. Lyra CONTRACTS forbid URL/ref/Git output
 diagnostics. Accepted source is a reference; mutable branch resolution can change
 before an unpublished partial retry, so do not promise a commit not yet resolved.
@@ -49,7 +49,7 @@ Open questions: How will the selected TCG executor retain one writable disk over
 
 #### How does a TCG restart preserve guest filesystem and independently witness rename durability?
 
-- Examined: `lyra/src/workspace_receiver.rs:466-489,550-635`, `nix/tests/machines/repository-launch/guest.exs:35-57`, and `../deployment-topology.md` guest-vmm design.
+- Examined: `lyra/src/workspace_receiver.rs:466-489,550-635`, `nix/verification/tests/machines/repository-launch/guest.exs:35-57`, and `../deployment-topology.md` guest-vmm design.
 - Found: the guest receiver renames the complete partial checkout, syncs the workspace directory, then writes `done` atomically. It treats a directory already present after restart as published and writes `done` without cloning again. The existing native guest probe checks retained checkout HEAD, its local marker, `done`, and absence of partial path after a restart. A hosted TCG probe needs the same writable qcow2 overlay and independently recorded overlay/boot identities before and after a power cut, plus guest file bytes and HEAD after remount.
 - Not found: a built hosted QMP/power-cut action with a retained overlay and a pre-crash witness at the rename/directory-sync boundary.
 - Conclusion: partial harness task. Receiver status alone cannot establish durability; verify the same overlay and actual bytes across reboot, with native Firecracker scope kept separate.

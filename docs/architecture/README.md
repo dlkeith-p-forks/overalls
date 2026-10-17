@@ -61,10 +61,11 @@ the illumos constructor records illumos.org as the upstream source project and
 selects OmniOS as its pinned installable downstream;
 protocol-owned artifact names, OS facts and capability rows prevent filename
 inference. Lilly keeps the jailer, per-tap guard, ZFS ownership and recovery
-boundary while selecting the validated boot path. Foreign-Linux and preliminary
-native-builder evaluations plus focused protocol/Lilly tests exist; the
-FreeBSD source endpoint is retired and native FreeBSD/OmniOS boots, agents,
-recovery and fleet acceptance remain unverified.
+boundary while selecting the validated boot path. The protocol and Marshall
+capability projections now expose native readiness, trust, terminal, workspace,
+flush, SSH and agent-control contracts, with editor and Inception disabled.
+Native Lyra/image assembly and nested boot, recovery and fleet acceptance remain
+unverified.
 
 [ADR-0149](decisions/0149-independent-observability.md) separates control and
 observability: Lilly v4 carries capacity and physical readiness receipts, Ziggy v2
@@ -258,8 +259,10 @@ capability and optional editor release. Only the guest resolves and clones;
 boot-bound delivery remains independent of running/readiness. Retained snapshots
 and journals are not rewritten. [ADR-0156](decisions/0156-browser-launcher-distribution.md)
 adds explicitly configured unsigned Chrome/Firefox packages, source-built by Nix
-and served from public `/bin` routes. ADR-0156 is implemented with recorded
-immutable packaging and real browser checks; ADR-0157 is implemented after both
+and served from public `/bin` routes, plus an exact-origin optional detector whose
+presentation marker never grants authority. ADR-0156 remains partial until the
+Chrome and Firefox setup-visibility runtime evidence is recorded; its immutable
+packaging and launch checks are implemented. ADR-0157 is implemented after both
 captured provider/revision journeys passed all twenty combinations, cross-tab
 resume/MFA, retained restart, public downloads and packaged CLI. The
 [launcher review](reviews/2026-10-10-browser-launcher.md) separates implementation
@@ -326,7 +329,7 @@ remains accepted/partial and [ADR-0146](decisions/0146-standby-guest-disks.md)
 is now accepted/partial following the user acceptance recorded in `e7e2f2e3`.
 Complete current NixOS/Ubuntu and fault-matrix acceptance,
 retained-state native upgrade and matched post-rollout performance remain
-separate obligations. The [ledger](../provisioning-fastpath.md) records each
+separate obligations. The [ledger](../history/ledgers/provisioning-fastpath.md) records each
 result's scope.
 
 [ADR-0152](decisions/0152-lean-pool-locked-preparation.md) (accepted/partial)
@@ -567,6 +570,9 @@ machine-only recipients do not gain task or transcript access. Focused database/
 and synthetic browser checks passed; native sharing and recovery acceptance
 remain partial in the
 [sharing review](reviews/2026-10-16-thread-sharing.md).
+Durable agent-event receipts also advance the enclosing thread's database activity
+clock after commit, so activity reflects work performed by its bound agent while
+archived and deleting threads remain unchanged.
 
 [ADR-0096](decisions/0096-lyra-developer-ssh.md) historically introduced the
 Rust `overalls` CLI, wildcard SSH setup and Audi proxying. ADR-0110 replaces
@@ -595,7 +601,7 @@ is maintained in [ghuntley/nix-compact](https://github.com/ghuntley/nix-compact)
 consumed through pinned flake/devenv inputs with compatibility adapters. Hegel and native
 build checks verify capture, budgets, unchanged results, retention, interruption,
 Unix daemon and remote protocol paths for both pinned package inputs. The
-[guide](../nix-build-logs.md) covers usage and
+[guide](../development/nix-build-logs.md) covers usage and
 [review](reviews/2026-09-21-compact-nix-build-logs.md) records validation and rollout
 boundaries. Existing fleet hosts receive the package on normal activation.
 
@@ -642,7 +648,7 @@ separate, as scoped in the [coding CLI review](reviews/2026-10-13-native-guest-c
 [ADR-0079](decisions/0079-peer-vm-vm-attestation.md)
 accepts attested peer VM-to-VM integrations; digest-backed one-use tokens and
 destination verification and nested-KVM cross-guest/relocation acceptance now pass. Progress and remaining
-acceptance obligations are tracked in the [Galileo ledger](../galileo.md).
+acceptance obligations are tracked in the [Galileo ledger](../services/galileo.md).
 
 [ADR-0105](decisions/0105-public-audi-wildcard-custody.md) replaces Audi's public
 per-VM ACME custody with one zone wildcard issued by Marshall. Account and
@@ -679,7 +685,7 @@ Restic S3 repositories, short retention of complete host recovery points,
 flush-only guest snapshots, Marshall database capture and admin backup status.
 Isolated native recovery tests and application/type gates pass; production
 enablement still requires the destination and runtime credentials. See the
-[recovery guide](../backups.md) and
+[recovery guide](../operations/backups.md) and
 [implementation review](reviews/2026-09-18-host-recovery-backups.md).
 
 [ADR-0068](decisions/0068-nix-built-ubuntu-guests.md) adds Nix-built Ubuntu 26.04
@@ -690,7 +696,7 @@ verified; fleet relocation acceptance is in progress.
 `direnv` and `devenv` to every fleet host and both guest images. Ubuntu retains
 locked archive packages except for an offline, registered and GC-rooted
 `devenv` closure from the supplied pinned Nixpkgs input.
-See the [Ubuntu guide](../ubuntu-guests.md) and
+See the [Ubuntu guide](../guests/ubuntu-guests.md) and
 [review](reviews/2026-09-18-ubuntu-guests.md).
 
 [ADR-0150](decisions/0150-default-guest-starship.md) adds stock Starship prompts
@@ -742,7 +748,7 @@ Superseded [ADR-0063](decisions/0063-private-services-and-ziggy.md) accepted pri
 guest services and Ziggy. Its routing, private PKI/networking and durable accounting
 requirements continue under [ADR-0149](decisions/0149-independent-observability.md),
 which replaces application diagnostic transport with independent export and keeps
-Ziggy's v2 accounting documents separate. The [ledger](../ziggy.md) retains the
+Ziggy's v2 accounting documents separate. The [ledger](../services/ziggy.md) retains the
 historical implementation and verification scope; source publication does not
 establish production load acceptance.
 
@@ -772,7 +778,7 @@ A UID-authenticated Lilly endpoint joins kernel flow labels to fresh execution
 and the owner every execution command carries (ADR-0159 removed owner-less
 commands and their metadata refresh). Complete Firecracker attribution,
 independent restarts, address-reuse refusal and live monitoring history pass in the native fleet test.
-The [implementation ledger](../brady-implementation.md) records acceptance scope.
+The [implementation ledger](../history/ledgers/brady-implementation.md) records acceptance scope.
 
 Superseded [ADR-0062](decisions/0062-interactive-monitoring-dashboards.md) provided
 Marshall fleet, host and workload charts through bounded retained-telemetry SQL
@@ -788,7 +794,7 @@ publication, nested TLS and SSH routing, and current SSH key discovery have
 targeted verification. ADR-0106 specifies the new child apps-zone wildcard and
 proof path; complete inner bootstrap and native two-environment acceptance
 remain outstanding.
-The [fleet network](../fleet-network.md) separates machine APIs from browser
+The [fleet network](../operations/fleet-network.md) separates machine APIs from browser
 ingress and declares an IPv4 WireGuard transport between physical hosts. Host
 configuration evaluation passes; native and production acceptance remain pending.
 
@@ -812,7 +818,7 @@ verification limits; they do not establish the independent cutover or fleet scal
 
 [ADR-0058](decisions/0058-administrative-authority.md) adds administrative account
 authority. Bootstrap and membership coordination are in progress; the
-[implementation ledger](../admin-implementation.md) retains the full console,
+[implementation ledger](../history/ledgers/admin-implementation.md) retains the full console,
 monitoring, evacuation and acceptance scope. No production acceptance is claimed.
 
 [ADR-0059](decisions/0059-administrative-job-history.md) adds an Administration
@@ -828,7 +834,7 @@ delete fences remain intact; see the [cleanup review](reviews/2026-09-18-vm-dire
 development profile at 10.40.0.0/16. Public admission, native nesting eligibility,
 two-disk accounting and the bootstrapped PostgreSQL/Marshall/Lilly guest are
 implemented. Basic native boot and restart passed; expanded acceptance is in
-progress. See the [development guide](../inception.md) and
+progress. See the [development guide](../guests/inception.md) and
 [review](reviews/2026-09-18-inception-profile.md) for verification limits.
 
 [ADR-0052](decisions/0050-usage-based-overcommit.md) accepts usage-based CPU, RAM
@@ -1100,14 +1106,14 @@ including helper-backed EOF cancellation, resumable receive and matching disk
 hashes. Permit-bound SSH commands and Oban integration remain unimplemented.
 
 The [Nix layout](../../nix/README.md) groups packages, modules, machines and
-[test suites](../../nix/tests/README.md) by responsibility. The
+[test suites](../../nix/verification/tests/README.md) by responsibility. The
 [refactor review](reviews/2026-09-16-nix-layout-and-test-refactor.md) records
 compatibility and regression evidence; public flake outputs remain unchanged.
 
 [ADR-0028](decisions/0028-colocated-code-contracts.md) adds colocated `@cc`
 requirements and scoped `CONTRACTS` throughout the source tree, plus a pinned
 structural gate in each project. Native source discovery has explicit limits;
-see the [contract guide](../code-contracts.md). These annotations preserve existing
+see the [contract guide](../development/code-contracts.md). These annotations preserve existing
 architecture and do not establish the remaining platform acceptance obligations.
 
 Marshall has email magic-link registration and an Ash Compute domain with shared
@@ -1205,30 +1211,30 @@ owned capacity summaries in Marshall's Ash Telemetry domain. ADR-0149 removes
 that domain and its summary writers; independent infrastructure export and
 Grafana provide diagnostic history. Current host reports and durable reservations
 remain scheduling authority, and diagnostic history never participates in
-admission. The [history guide](../capacity-history.md) records the retired path.
+admission. The [history guide](../history/ledgers/capacity-history.md) records the retired path.
 
 [ADR-0040](decisions/0040-host-local-smtp-relay.md) carries forward
 [ADR-0024](decisions/0024-durable-magic-link-email.md)'s encrypted, durable
 magic-link email through AshOban. SMTP uses verified TLS and authentication
 either directly or through the optional host-local relay. Three nodes share
 cooldown and delivery authority. Authentication diagnostics
-redact token-bearing paths. See the [production email guide](../production-email.md)
+redact token-bearing paths. See the [production email guide](../operations/production-email.md)
 for configuration and the remaining real-provider delivery verification.
 
 [ADR-0025](decisions/0025-protected-provisioner-enrollment.md) adds trusted release
 commands for disabled-host enrollment, private credential export/verification,
 rotation/revocation and guarded enable/disable. Lilly accepts a separate private
-credential file. See the [enrollment guide](../provisioner-enrollment.md) for
+credential file. See the [enrollment guide](../operations/provisioner-enrollment.md) for
 installation and recovery after uncertain file/database outcomes.
 
 [ADR-0026](decisions/0026-host-maintenance-and-retirement.md) adds host maintenance
 through audited AshOban drains, physical stop confirmation, explicit resume and
-permanent empty-host retirement. See the [maintenance guide](../host-maintenance.md).
+permanent empty-host retirement. See the [maintenance guide](../operations/host-maintenance.md).
 
 [ADR-0027](decisions/0027-production-release-deployment.md) adds production runtime
 TLS and replica/connection budgets, bounded readiness probes, explicit release
 migrations, Nix runtime-closure packaging and systemd service templates. See the
-[deployment guide](../deployment.md). Three production Marshall services pass
+[deployment guide](../operations/deployment.md). Three production Marshall services pass
 TLS, shared-state failover and database outage/recovery checks. The packaged
 Lilly service passes stop/automatic-restart checks with three real KVM guests.
 The [terminal failover review](reviews/2026-09-16-terminal-failover.md) also verifies
@@ -1266,7 +1272,7 @@ database commits, a tested local synchronous standby promotion, and verified
 physical backup restoration into isolation. Three existing Marshall processes
 recover through a stable database endpoint. Historical backups can resurrect old
 credentials; automated fleet reconciliation and production HA/backup infrastructure
-remain open. See the [recovery guide](../database-recovery.md).
+remain open. See the [recovery guide](../operations/database-recovery.md).
 
 Architecture guidance, two repository skills, ADRs, and the shared structural
 validator complete the first milestone. The pinned Elixir 1.20.4/OTP 29.0.6
@@ -1326,7 +1332,7 @@ requiring explicit load validation.
   16K records, 20% admission headroom and cache settings require mixed-workload
   measurement. They are not proven optima or accepted automatic defaults.
 
-The [NixOS guide](../nixos.md) describes the source packages, service options and
+The [NixOS guide](../operations/nixos.md) describes the source packages, service options and
 role, secret and ACME suites. The combined role now passes with three colocated
 Marshall instances, Lilly and HAProxy, including effective resource limits and
 independent restart/failover checks; see the
@@ -1370,7 +1376,7 @@ random base64 prefixes from becoming Erlang options.
 | Host deployment and TLS | NixOS roles, reproducible packages/images, verified proxy backends and HTTP-01 peer routing | [ADR-0038](decisions/0038-http01-validation-and-peer-routing.md) |
 | Storage | ZFS backing, placement commitments, physical accounting and explicit relocation | [ADR-0037](decisions/0037-workload-placement-and-relocation.md) |
 | Deployment assurance | SSH-derived secret custody and NixOS machine tests | [ADR-0041](decisions/0041-declarative-fleet-users.md), [ADR-0033](decisions/0033-nixos-machine-verification.md) |
-| Developer inference proxy | Independent host-local subscription pools, runtime credentials, local read-only monitor socket and tailnet-only HTTPS | [ADR-0102](decisions/0102-local-underclass-monitor-socket.md) |
+| Developer inference proxy | Independent host-local subscription pools, runtime credentials, local read-only monitor socket, tailnet-only HTTPS and opt-in exit-node upstream egress | [ADR-0102](decisions/0102-local-underclass-monitor-socket.md), [ADR-0185](decisions/0185-underclass-tailnet-exit-egress.md) |
 
 These are modeling boundaries, not instructions to create separate services for
 every domain. Marshall and Lilly are the application boundary.
@@ -1434,7 +1440,7 @@ and Firecracker evidence, bounded metrics and optional encrypted OTP dumps.
 Actual Marshall, Lilly and Porsche summaries now pass source-built service checks
 through native collector output; strict source filtering preserves numeric metrics
 without opening crash-report payloads. Live AWS acceptance remains separate.
-[Configuration and operation](../observability.md) includes identity, queues and IAM.
+[Configuration and operation](../operations/observability.md) includes identity, queues and IAM.
 
 [ADR-0044](decisions/0044-recovery-only-secret-documents.md) carries forward
 ADR-0041 and adds explicit recovery-only bootstrap documents to the same secret
@@ -1462,7 +1468,7 @@ All four application gates pass, including 200 property tests and Dialyzer.
 The [review](reviews/2026-09-17-audi-ingress.md) records exact source revisions,
 results and earlier failures. ADR-0047 is implemented for the authorized scope;
 the user removed scale investigation on September 18. These results do not
-claim a public rollout or production capacity. [Access-flow diagrams](../audi.md)
+claim a public rollout or production capacity. [Access-flow diagrams](../services/audi.md)
 show service placement and authenticated user paths.
 
 The physical two-host fleet now configures Audi's public plane under

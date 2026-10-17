@@ -77,6 +77,30 @@ utilities! {
     SystemdRun = 24, "systemd-run", true;
     Systemctl = 25, "systemctl", false;
     ImageIdentity = 26, "lilly-image-copy", false;
+    Chmod = 27, "chmod", true;
+    TransferStream = 28, "lilly-transfer-stream", true;
+    Ssh = 29, "ssh", false;
+    Cmp = 30, "cmp", false;
+    IngressBridge = 31, "lilly-ingress-bridge", false;
+}
+
+impl Utility {
+    /// @cc [owner:ghuntley,label:security] typed-only-utilities
+    /// systemd-run, lilly-transfer-stream, ssh, cmp and lilly-ingress-bridge
+    /// MUST be reachable only through the typed LaunchVm, TransferStream and
+    /// BridgeNetnsTcp requests, whose command lines hostd derives itself; a
+    /// generic Run or RunDurable naming one is malformed. Lilly's own utility
+    /// list therefore omits them.
+    pub const fn typed_only(self) -> bool {
+        matches!(
+            self,
+            Utility::SystemdRun
+                | Utility::TransferStream
+                | Utility::Ssh
+                | Utility::Cmp
+                | Utility::IngressBridge
+        )
+    }
 }
 
 /// Executables resolved once at startup. A utility missing from `PATH`

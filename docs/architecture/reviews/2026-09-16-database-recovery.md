@@ -9,9 +9,9 @@ acknowledgment, fencing and historical-restore quarantine boundaries. The user's
 full implementation authorization covers these requirements; production provider
 selection remains open.
 
-The [harness](../../../nix/tests/README.md) uses actual PostgreSQL,
+The [harness](../../../nix/verification/tests/README.md) uses actual PostgreSQL,
 TLS replication, three immutable Marshall releases and the shared
-[deployment fixture](../../../nix/tests/README.md). It does not simulate
+[deployment fixture](../../../nix/verification/tests/README.md). It does not simulate
 physical VM state or claim that test records establish guest recovery.
 
 ## Findings and changes

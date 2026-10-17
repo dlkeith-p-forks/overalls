@@ -2,7 +2,7 @@
 
 ## Scope and architecture impact
 
-Advance the [immutable package](../../../nix/packages/underclass/default.nix)
+Advance the [immutable package](../../../nix/domains/artifacts/underclass/default.nix)
 from `9244c8169bb1b73492f0c5ad5b693d59d65034da` to
 `3e35c3bf3d24c7fa79cb93602b571b1b9c194514`, the latest upstream GitHub `main`
 revision at review time. Refresh both source and locked Cargo vendor hashes.
@@ -34,7 +34,7 @@ monitor routers are unchanged, as is the `utop` wrapper contract.
 Inspected upstream migration and rotation unit tests, the generated rotation
 interval property, and HTTP recovery/Enable fixtures. Their presence is not
 passing execution. The fleet's existing
-[service machine test](../../../nix/tests/machines/underclass-service/default.nix)
+[service machine test](../../../nix/verification/tests/machines/underclass-service/default.nix)
 covers service custody and authentication but does not exercise provider rotation
 or migration of an existing account database.
 

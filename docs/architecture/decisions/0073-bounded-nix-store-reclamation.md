@@ -72,14 +72,14 @@ remain open obligations.
 
 ## Implementation evidence
 
-- [Module](../../../nix/modules/nix-gc.nix) implements the threshold-gated,
+- [Module](../../../nix/domains/system/nix-gc.nix) implements the threshold-gated,
   bounded collector and its contract.
-- [Host profile](../../../nix/hosts/profile.nix) enables collection on every
+- [Host profile](../../../nix/platform/hosts/profile.nix) enables collection on every
   fleet host by default.
 - [Overalls](../../../fleet/hosts/overalls/configuration.nix) and
   [Dungarees](../../../fleet/hosts/dungarees/configuration.nix) carry the
   reviewed 200/400 GiB values with measured rationale.
-- [Evaluation check](../../../nix/tests/evaluation/nix-gc.nix) covers unit,
+- [Evaluation check](../../../nix/verification/tests/evaluation/nix-gc.nix) covers unit,
   script, type and fleet-default obligations.
 - The [review](../reviews/2026-09-19-nix-store-gc.md) records scope and
   verification limits. Configuration-level implementation is verified; actual

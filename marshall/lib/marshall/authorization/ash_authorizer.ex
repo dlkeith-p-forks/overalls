@@ -86,6 +86,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :reopen,
       :set_title,
       :set_collaboration_mode_state,
+      :touch_activity,
       :archive
     ],
     Marshall.Threads.Grant => [:read, :history, :grant, :mark_revoked, :revoke],

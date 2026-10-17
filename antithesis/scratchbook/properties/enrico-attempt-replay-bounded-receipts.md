@@ -20,7 +20,7 @@ Open question: Can the 1,025-receipt boundary be exercised in a dedicated native
 
 2026-10-13 source follow-up:
 
-- Examined: `enrico/test/manager_history_property_test.exs:349-427,601-618`, `enrico/test/support/controlled_git.sh`, `nix/tests/machines/enrico-service/default.nix:12-40`, and `driver.py:190-245`.
+- Examined: `enrico/test/manager_history_property_test.exs:349-427,601-618`, `enrico/test/support/controlled_git.sh`, `nix/verification/tests/machines/enrico-service/default.nix:12-40`, and `driver.py:190-245`.
 - Found: the generated Manager history uses a controlled Git executable and reaches the receipt cap cheaply, but it is not native Git/network proof. The packaged Nix fixture redirects fixed `github.com` to a local verified HTTPS Git origin and exercises real fetches. A small bare repo can supply 1,025 sequential attempts to one registered repo with distinct attempt IDs, but that is a dedicated longer campaign.
 - Conclusion: partial on run cost, resolved on mechanism. Keep the cap-state property backed by generated histories and sample the native fetch counter on selected attempts. Claim cap plus real Git only after executing the dedicated campaign.
 

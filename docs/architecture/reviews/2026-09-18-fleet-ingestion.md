@@ -77,7 +77,7 @@ Reviewed root/Marshall/Fleet/web/test contracts and the AshOban scheduling helpe
 Its insertion raises on failure, preserving retention-continuation atomicity.
 New notes cover scoped ingestion, durable ACKs, once-per-minute commits, bounded
 projections and independent retention. Final gates, native acceptance and the
-[complete ledger](../../admin-implementation.md) remain required.
+[complete ledger](../../history/ledgers/admin-implementation.md) remain required.
 
 ## 2026-09-22 Galileo schema reconciliation
 

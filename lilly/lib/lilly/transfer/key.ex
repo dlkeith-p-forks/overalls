@@ -265,7 +265,25 @@ defmodule Lilly.Transfer.Key do
              ["-q", "-t", "ed25519", "-N", "", "-C", "", "-f", Path.join(directory, @key)],
              10_000
            ),
+         :ok <- own_key(directory),
          do: public_key(directory)
+  end
+
+  # hostd generates the key as root; an unprivileged Lilly (ADR-0182) must own
+  # both files to read its own key, so hostd hands them to the service uid.
+  defp own_key(directory) do
+    uid = Lilly.Host.Privilege.service_uid()
+
+    if uid == 0 do
+      :ok
+    else
+      Enum.reduce_while([@key, @key <> ".pub"], :ok, fn name, :ok ->
+        case Command.run(:chown, ["#{uid}:#{uid}", "--", Path.join(directory, name)]) do
+          {:ok, _} -> {:cont, :ok}
+          _ -> {:halt, {:error, :invalid_transfer_key_state}}
+        end
+      end)
+    end
   end
 
   defp public_key(directory) do

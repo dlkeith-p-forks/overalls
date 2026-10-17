@@ -5,7 +5,8 @@ defmodule OverallsProtocol.ImageManifest do
   Version 4 describes kernel-booted Linux images (kernel, initrd, ext4 root,
   boot arguments) with explicit workspace-source and editor capabilities.
   Version 5 describes firmware-booted images (a PVH firmware and a raw GPT
-  root disk) that carry no guest agents. Version 6 adds native FreeBSD and
+  root disk) that declare no guest agents or the Windows v1 agent set.
+  Version 6 adds native FreeBSD and
   illumos firmware disk images. Both derive the same content-addressed
   `sha256:` identity from an ordered identity array.
   """
@@ -48,7 +49,7 @@ defmodule OverallsProtocol.ImageManifest do
           architecture: :x86_64,
           os: :freebsd | :illumos,
           boot_kind: :firmware,
-          pci: boolean(),
+          pci: true,
           root_format: :raw_gpt,
           guest_agents: :freebsd_v1 | :illumos_v1,
           minimum_memory_bytes: pos_integer(),
@@ -205,7 +206,8 @@ defmodule OverallsProtocol.ImageManifest do
   # @cc [owner:ghuntley,label:protocol;security] image-native-manifest-closed
   # Version 6 admits only the explicit FreeBSD or illumos native image shapes;
   # each OS is bound to its agent set, boot transport and root format. Unknown
-  # keys, source versions on agentless images, and cross-OS substitutions refuse.
+  # keys, source versions on unsupported agent sets, and cross-OS substitutions
+  # refuse. Native agent sets may advertise workspace source protocol 2.
   @spec validate_native(term()) :: {:ok, native_image()} | {:error, :invalid_image_manifest}
   def validate_native(%{"version" => 6, "os" => "freebsd"} = manifest),
     do: validate_freebsd(manifest)

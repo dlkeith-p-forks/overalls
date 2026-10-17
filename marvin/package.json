@@ -1,0 +1,22 @@
+{
+  "name": "@overalls/marvin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "package": "node scripts/package.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test common/*.test.mjs scripts/*.test.mjs",
+    "lint:firefox": "addons-linter --self-hosted --warnings-as-errors dist/firefox",
+    "smoke:chrome": "node scripts/chromium-smoke.mjs",
+    "check": "npm run typecheck && npm test && npm run build && npm run package && npm run lint:firefox",
+    "watch": "node --watch scripts/build.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "addons-linter": "10.13.0",
+    "playwright-core": "1.61.1",
+    "typescript": "5.9.3"
+  }
+}

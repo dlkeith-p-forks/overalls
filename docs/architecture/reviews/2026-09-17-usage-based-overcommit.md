@@ -12,23 +12,23 @@ forward requirements outside capacity admission and reviewed resource tuning.
 ## Stage one: resource-policy updater
 
 The old updater rejects guest CPU/RAM and installation-quota changes. The
-[resource helper](../../../nix/modules/auto-update/resources.py) introduces an
+[resource helper](../../../nix/domains/system/auto-update/resources.py) introduces an
 exact allowlist tied to unchanged enrolled dataset/pool GUIDs. Original receipts
 are journaled before native effects; interrupted updates accept only their old or
 target receipts. CPU/RAM/quota decreases remain maintenance operations. Properties
 are applied to the live slice and existing dataset, with native readback. Boot
 reapplies the reviewed policy. No formatting, guest stop or new session is involved.
 
-The [unit tests](../../../nix/tests/machines/auto-update/resources_test.py) passed
+The [unit tests](../../../nix/verification/tests/machines/auto-update/resources_test.py) passed
 allowlist, identity substitution, policy removal/decrease, native-quota drift and
 interrupted receipt reconciliation scenarios. Existing authority-compatibility
 tests passed. ADR structure and code-contract syntax/coverage checks passed.
 The host-planning checks passed after updating a constructor-bypassing test fixture
 to provide its configuration. The initial existing updater machine suite passed.
 
-The expanded [updater machine](../../../nix/tests/machines/auto-update/driver.py)
+The expanded [updater machine](../../../nix/verification/tests/machines/auto-update/driver.py)
 checks slice changes preserve a live process. The
-[native ZFS fixture](../../../nix/tests/machines/auto-update/native_resources.py)
+[native ZFS fixture](../../../nix/verification/tests/machines/auto-update/native_resources.py)
 checks real property updates, interruption recovery, GUID/receipt preservation
 and a surviving guest-slice process. The expanded native ZFS suite passed in 277 seconds and the actual Git/NixOS
 updater suite passed in 100 seconds. Host-planning and storage-configuration
@@ -183,7 +183,7 @@ effects, without printing terminal contents, tokens or session identifiers.
 | Requirement | Evidence |
 | --- | --- |
 | Measured CPU/RAM admission without fixed ratios | [Usage sampler](../../../lilly/lib/lilly/host/usage.ex), [budget](../../../marshall/lib/marshall/compute/budget.ex), and passing [usage tests](../../../lilly/test/host/usage_test.exs). |
-| CPU, RAM and disk commitments may exceed physical budgets | Passing [admission tests](../../../marshall/test/marshall/compute/usage_admission_test.exs) and [real Firecracker overcommit scenario](../../../nix/tests/machines/zfs-guest/driver.py). |
+| CPU, RAM and disk commitments may exceed physical budgets | Passing [admission tests](../../../marshall/test/marshall/compute/usage_admission_test.exs) and [real Firecracker overcommit scenario](../../../nix/verification/tests/machines/zfs-guest/driver.py). |
 | Full-shape, durable concurrent startup holds | [Settlement coordinator](../../../marshall/lib/marshall/compute/startup_holds.ex), stale/outcome/allocation rejection cases, distributed races, and the passing six-guest fleet capacity scenario. |
 | Restart/recovery/relocation admission follows current headroom | [Restart capacity](../../../marshall/lib/marshall/compute/restart_capacity.ex), manual/recovery pressure tests and relocation tests in the passing Marshall gate. |
 | Replace old overalls limits and overheads | [Host configuration](../../../fleet/hosts/overalls/host.json), [operator reconciliation](../../../marshall/lib/marshall/compute/capacity_policy.ex), and production native/SQL readback recorded above. |

@@ -69,8 +69,8 @@ still work. New callers and the helper ship together in the source-built closure
 - Four-machine service-role regression passed in **77.92 seconds**, including
   actual Lilly startup, restart and inner-KVM checks with the corrected helper.
   It does not exercise ZFS provisioning or guest flush durability.
-- The [NixOS suite](../../../nix/tests/machines/native-zfs/default.nix) and
-  [driver](../../../nix/tests/machines/native-zfs/driver.py) exercise actual ZFS datasets and Lilly code.
+- The [NixOS suite](../../../nix/verification/tests/machines/native-zfs/default.nix) and
+  [driver](../../../nix/verification/tests/machines/native-zfs/driver.py) exercise actual ZFS datasets and Lilly code.
   The first complete run with 301 children passed in **209.52 seconds**. The
   final 401-child run passed in **229.27 seconds**, including the assertion that
   native property output exceeds 64 KiB, observed reclamation, replaced identity

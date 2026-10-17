@@ -42,13 +42,13 @@ journeys but gain no acceptance from this merge.
 
 2. **Resolved verification schema drift, medium: ZFS observation.** Current
    main separates pool capacity from I/O rate samples. The
-   [native ZFS test](../../../nix/tests/machines/zfs-io/driver.py) now validates
+   [native ZFS test](../../../nix/verification/tests/machines/zfs-io/driver.py) now validates
    a typed `capacity` object separately from `io`; pool-wide logical rates
    cannot substitute for measured dataset capacity. This is a fixture repair
    under ADR-0033, not native execution evidence for the new harness.
 
 3. **Resolved stale replay revision, medium: retained enrollment authority.**
-   The [native resource fixture](../../../nix/tests/machines/auto-update/native_resources.py)
+   The [native resource fixture](../../../nix/verification/tests/machines/auto-update/native_resources.py)
    publishes a newer, valid 40-hex enrollment revision while resource replay
    is pending. It checks that replay updates the storage binding yet retains
    that revision through a later retry. This tests the current main replay

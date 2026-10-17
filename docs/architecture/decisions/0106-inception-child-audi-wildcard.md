@@ -85,18 +85,18 @@ wildcard material and prove that a restarted child Audi reinstalls it.
 ## Implementation evidence
 
 The [protocol](../../../protocol/lib/overalls_protocol/inception_exchange.ex),
-[guest projection](../../../nix/packages/guest/inception/publication.py),
+[guest projection](../../../nix/domains/artifacts/guest/inception/publication.py),
 [parent proof observation](../../../lilly/lib/lilly/inception/propagation.ex),
 [parent snapshot](../../../marshall/lib/marshall/ingress/publications.ex) and
 [Audi DNS decoder](../../../audi/lib/audi/dns/snapshot.ex) form the bounded
-proof path. The [inner namespace bootstrap](../../../nix/packages/guest/inception/ingress.py)
+proof path. The [inner namespace bootstrap](../../../nix/domains/artifacts/guest/inception/ingress.py)
 selects its own issuer and trust roots. Focused tests and runtime evaluation
 pass: the [Marshall projection test](../../../marshall/test/marshall/compute/inception_test.exs),
 [Lilly replica test](../../../lilly/test/inception/propagation_test.exs),
 [Audi authoritative DNS test](../../../audi/test/dns_replica_test.exs) and
-[guest publication test](../../../nix/tests/evaluation/inception-publication.py)
+[guest publication test](../../../nix/verification/tests/evaluation/inception-publication.py)
 exercise proof scope and routing separation. The native Inception scenario
-now includes a [child wildcard handshake probe](../../../nix/tests/machines/inception/wildcard_probe.py)
+now includes a [child wildcard handshake probe](../../../nix/verification/tests/machines/inception/wildcard_probe.py)
 for two workload names, control-origin rejection and Marshall/Audi restart
 with the same certificate. Its driver evaluates,
 but the run stops before nested boot proof and does not yet execute this probe

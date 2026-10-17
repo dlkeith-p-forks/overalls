@@ -109,32 +109,32 @@ code. Record physical Hetzner/EC2 acceptance separately.
 
 ## Implementation evidence
 
-The [host transport](../../../nix/packages/host/cli.py) now selects explicit
+The [host transport](../../../nix/domains/artifacts/host/cli.py) now selects explicit
 administrative ports for SSH and Nix copies. Plans bind source and installer ports;
 post-kexec calls use the installer port. Enrollment preparation selects Marshall's
-operator port independently. [Planning tests](../../../nix/tests/evaluation/host-planning.py)
-cover port binding and phase selection; [preparation tests](../../../nix/tests/evaluation/enrollment-preparation.py)
+operator port independently. [Planning tests](../../../nix/verification/tests/evaluation/host-planning.py)
+cover port binding and phase selection; [preparation tests](../../../nix/verification/tests/evaluation/enrollment-preparation.py)
 verify the independent Marshall choice. This preserves existing identity and
 erasure authorization boundaries.
 
 
-- [Inventory derivation](../../../nix/hosts/inventory.nix) and
-  [platform composition](../../../nix/hosts/profile.nix) implement public policy.
-- [Host tool](../../../nix/packages/host/cli.py),
-  [target checks](../../../nix/packages/host/remote.py) and
-  [enrollment runner](../../../nix/packages/host/enrollment.py) implement the phases.
-- [Updater](../../../nix/modules/auto-update/runtime.py) rejects changed installation
+- [Inventory derivation](../../../nix/platform/hosts/inventory.nix) and
+  [platform composition](../../../nix/platform/hosts/profile.nix) implement public policy.
+- [Host tool](../../../nix/domains/artifacts/host/cli.py),
+  [target checks](../../../nix/domains/artifacts/host/remote.py) and
+  [enrollment runner](../../../nix/domains/artifacts/host/enrollment.py) implement the phases.
+- [Updater](../../../nix/domains/system/auto-update/runtime.py) rejects changed installation
   bindings before migrations and activation.
-- [Profile evaluation](../../../nix/tests/evaluation/storage-configuration.nix),
-  [plan safety tests](../../../nix/tests/evaluation/host-planning.py) and
-  [production-profile fixtures](../../../nix/tests/fixtures/hosts/configurations.nix)
+- [Profile evaluation](../../../nix/verification/tests/evaluation/storage-configuration.nix),
+  [plan safety tests](../../../nix/verification/tests/evaluation/host-planning.py) and
+  [production-profile fixtures](../../../nix/verification/tests/fixtures/hosts/configurations.nix)
   cover the explicit policy and failure checks.
-- [Conversion machines](../../../nix/tests/machines/host-conversion/default.nix)
+- [Conversion machines](../../../nix/verification/tests/machines/host-conversion/default.nix)
   exercise real recovery-Linux and Ubuntu kexec and installed boot;
-  [enrollment machine](../../../nix/tests/machines/host-enrollment/default.nix)
+  [enrollment machine](../../../nix/verification/tests/machines/host-enrollment/default.nix)
   exercises published configuration and credential transitions. Execution
   results and remaining gaps are recorded in the review.
-- [Operational guide](../../host-provisioning.md) describes publication and recovery.
+- [Operational guide](../../operations/host-provisioning.md) describes publication and recovery.
   [Review](../reviews/2026-09-17-host-provisioning.md) records executed checks and
   outstanding acceptance obligations, including independent physical validation.
 
@@ -144,6 +144,14 @@ The local automated acceptance matrix has passed. The real
 a successful UEFI rescue conversion, mirrored installation, authenticated
 installed boot, secret enrollment and subsequent automatic update. Implementation remains partial pending the remaining physical
 acceptance matrix. Private credentials remain outside Git.
+
+Correction (2026-10-17): "this repository" is now `ghuntley/overalls`, whose
+published branch is `trunk`. Both [host declarations](../../../fleet/hosts/overalls/host.json)
+poll `ssh://git@github.com/ghuntley/overalls` with the same shared deploy key
+and pinned GitHub host key, and the [host tool](../../../nix/domains/artifacts/host/cli.py),
+[remote preflight](../../../nix/domains/artifacts/host/remote.py) and
+[enrollment](../../../nix/domains/artifacts/host/enrollment.py) check `trunk`
+instead of `main`. Transport and authentication are unchanged.
 
 ## Open questions
 

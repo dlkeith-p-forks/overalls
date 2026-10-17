@@ -9,13 +9,13 @@ Additional ADR-0032/0033 acceptance work using the existing
 [signing configuration](../../../marshall/lib/marshall/secrets.ex), database and
 SecretSpec/SOPS interfaces. No production domain,
 module, key format or authorization policy changes. The
-[machine suite](../../../nix/tests/machines/credential-rotation/default.nix) boots three actual
+[machine suite](../../../nix/verification/tests/machines/credential-rotation/default.nix) boots three actual
 Marshall machines and a shared PostgreSQL machine. Each application receives a
 host-specific encrypted document through the production preparation module.
 
 ## Rollout and evidence boundaries
 
-- The [runtime fixture](../../../nix/tests/machines/credential-rotation/fixture.py)
+- The [runtime fixture](../../../nix/verification/tests/machines/credential-rotation/fixture.py)
   generates synthetic credentials and independently verifies operator recovery
   for every document. Private transfers use temporary directories outside the
   retained test output; errors omit secret values and raw exceptions.
@@ -24,7 +24,7 @@ host-specific encrypted document through the production preparation module.
   AshCloak host credentials written before and after promotion must authenticate
   through every live service's verified HTTPS provisioner endpoint, including
   nodes that have staged the new key but have not promoted it.
-- The [trusted release probe](../../../nix/tests/machines/credential-rotation/probe.exs)
+- The [trusted release probe](../../../nix/verification/tests/machines/credential-rotation/probe.exs)
   creates real Ash credentials and stored login tokens in the shared database,
   guarded by a disposable fixture sentinel. Plug generates signed session
   cookies for those tokens. HTTP requests exercise the actual machine-page

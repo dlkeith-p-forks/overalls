@@ -88,13 +88,13 @@ the [review](../reviews/2026-09-25-control-room-read-access.md); deployment rema
 outside the implementation evidence.
 
 [Generated Control room histories](../../../marshall/test/marshall_web/control_room_history_test.exs)
-and a [focused native browser journey](../../../nix/tests/machines/control-room/browser.py)
+and a [focused native browser journey](../../../nix/verification/tests/machines/control-room/browser.py)
 extend current-role, elevation and stored-login coverage. Exact execution and
 remaining cross-replica/hardware limits are recorded in the
 [verification review](../reviews/2026-09-25-control-room-verification.md).
 
 The
-[credential self-service journey](../../../nix/tests/machines/credential-self-service/browser.py)
+[credential self-service journey](../../../nix/verification/tests/machines/credential-self-service/browser.py)
 additionally exercises a mounted Control room page losing its elevation
 mid-session when the proving passkey is removed from a second self-service tab;
 the next role click is refused into the step-up flow and persisted role and

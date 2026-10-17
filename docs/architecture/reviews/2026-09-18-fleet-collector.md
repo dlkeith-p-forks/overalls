@@ -11,14 +11,14 @@ ADR-0017's execution guards and physical outcome authority are unchanged.
 
 ## Findings and evidence
 
-The [measurement library](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/metrics.py) separates
+The [measurement library](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/metrics.py) separates
 host/CPU/device/interface/workload/ZFS records, omits unavailable values and uses
 context-bound counter deltas. CPU guest time is removed from user/nice before
 displaying a breakdown. ZFS GUIDs retain the full unsigned 64-bit identity range;
 they are strings, not floating-point metrics. Dataset recursion and physical pool
 use remain separate. Unlimited cgroup and dataset limits are explicit.
 
-The [runtime](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/runtime.py) bounds subprocess
+The [runtime](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/runtime.py) bounds subprocess
 output/time and checks systemd invocation metadata before and after cgroup
 collection. VM namespace TAP names derive from physical placement, not guest input.
 Only selected unit properties are read; guest processes and terminal contents are
@@ -72,4 +72,4 @@ Reviewed root, Nix/module/test, Lilly and relevant source contracts. New notes
 require independent budgets, safe metadata, identity-aware rates and durable ACK
 semantics. Unit descriptions preserve existing native guard argv and cgroup
 ownership. Final component gates and the remaining
-[acceptance ledger](../../admin-implementation.md) remain required.
+[acceptance ledger](../../history/ledgers/admin-implementation.md) remain required.

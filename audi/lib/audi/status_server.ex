@@ -7,7 +7,8 @@ defmodule Audi.StatusServer do
   def start_link(options), do: GenServer.start_link(__MODULE__, options)
 
   # @cc [owner:ghuntley,label:security;recovery] audi-status-socket-boundary
-  # The socket MUST live in a private validated directory, refuse active sockets
+  # The socket MUST live in a validated directory (`audi-status-private-directory`)
+  # with the mode it permits (`audi-status-socket-mode`), refuse active sockets
   # and nonsocket entries, and expose only version/role/ready. Each accepted connection
   # receives a fresh bounded readiness check; no request bytes are interpreted.
   @impl true
@@ -27,7 +28,9 @@ defmodule Audi.StatusServer do
              send_timeout: 1000,
              send_timeout_close: true
            ]),
-         :ok <- File.chmod(path, 0o600) do
+         {mode, group} = Audi.Config.status_socket_access(path),
+         :ok <- if(group, do: File.chgrp(path, group), else: :ok),
+         :ok <- File.chmod(path, mode) do
       client = Keyword.fetch!(options, :client)
 
       health =

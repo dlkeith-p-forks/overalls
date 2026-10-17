@@ -14,7 +14,7 @@ defmodule Lilly.Control.HistoricalFenceTest do
   local host inventory: an enrolled host may have a readable, empty lilly.slice
   after all guests are deleted.
 
-  [native-zfs]: ../../../../nix/tests/machines/native-zfs/driver.py
+  [native-zfs]: ../../../../nix/verification/tests/machines/native-zfs/driver.py
   """
   use ExUnit.Case, async: true
   use ExUnitProperties

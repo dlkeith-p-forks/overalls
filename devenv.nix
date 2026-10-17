@@ -4,11 +4,11 @@ let
   # @cc [owner:ghuntley,label:build] development-toolchain-source
   # The development shell MUST import the same pinned runtime derivation used
   # by release packaging; enabling Elixir MUST NOT select a second OTP build.
-  toolchain = import ./nix/packages/toolchain.nix { inherit pkgs; };
-  hostLock = import ./nix/packages/host-tools.nix { inherit pkgs; };
+  toolchain = import ./nix/domains/artifacts/infrastructure/toolchain.nix { inherit pkgs; };
+  hostLock = import ./nix/domains/artifacts/hosts/host-tools.nix { inherit pkgs; };
   compactNix = inputs.nix-compact.lib.mkPackage { inherit pkgs; };
   # The same patched Firecracker the release metadata points Lilly at.
-  inherit (import ./nix/packages/firecracker.nix { inherit pkgs; }) vmm;
+  inherit (import ./nix/domains/artifacts/infrastructure/firecracker.nix { inherit pkgs; }) vmm;
 
   # @cc [owner:ghuntley,label:build] python-static-toolchain
   # The Python gate MUST use the same pinned ruff and ty as the python-static
@@ -28,8 +28,8 @@ let
   antithesisWheels = import ./antithesis/nix/python-wheels.nix { inherit pkgs; };
 in
 {
-  outputs.guest = import ./nix/packages/guest { inherit pkgs; };
-  outputs.ubuntuGuest = (import ./nix/packages/guest/ubuntu { inherit pkgs; }) { };
+  outputs.guest = import ./nix/domains/artifacts/guest { inherit pkgs; };
+  outputs.ubuntuGuest = (import ./nix/domains/artifacts/guest/ubuntu { inherit pkgs; }) { };
   # @cc [owner:ghuntley,label:isolation] jailed-vmm-static-runtime
   # outputs.vmm MUST supply a static Firecracker/jailer pair that can run inside
   # the prepared chroot without copying host dynamic libraries into each jail.
@@ -92,24 +92,24 @@ in
   scripts.hello.exec = ''
     echo hello from $GREET
   '';
-  # @cc [owner:ghuntley,label:build] browser-development-commands
+  # @cc [owner:ghuntley,label:build] marvin-development-commands
   # Development commands MUST install only lockfile-pinned tools, with install
   # scripts disabled, and invoke the same build/check source as release packaging.
-  scripts.browser-build.exec = ''
-    cd "$DEVENV_ROOT/browser"
+  scripts.marvin-build.exec = ''
+    cd "$DEVENV_ROOT/marvin"
     npm ci --ignore-scripts
     npm run build
     npm run package
   '';
-  scripts.browser-check.exec = ''
-    cd "$DEVENV_ROOT/browser"
+  scripts.marvin-check.exec = ''
+    cd "$DEVENV_ROOT/marvin"
     npm ci --ignore-scripts
     export CHROME="${lib.getExe pkgs.chromium}"
     npm run check
     npm run smoke:chrome
   '';
-  scripts.browser-watch.exec = ''
-    cd "$DEVENV_ROOT/browser"
+  scripts.marvin-watch.exec = ''
+    cd "$DEVENV_ROOT/marvin"
     npm ci --ignore-scripts
     ${lib.getExe pkgs.watchexec} --watch common --watch scripts --watch types --watch package.json --watch package-lock.json --watch tsconfig.json --watch README.md --watch CONTRACTS -- npm run build
   '';

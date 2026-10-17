@@ -47,6 +47,23 @@ defmodule Audi.StatusServerTest do
              start_supervised({Audi.StatusServer, [path: c.path, client: nil, role: :gateway]})
   end
 
+  test "a shared 0750 directory makes the socket group-connectable only", c do
+    File.chmod!(Path.dirname(c.path), 0o750)
+    start_supervised!({Audi.StatusServer, [path: c.path, client: nil, role: :private]})
+    assert Bitwise.band(File.stat!(c.path).mode, 0o777) == 0o660
+    assert %{"version" => 1, "role" => "private"} = snapshot(c.path)
+    :ok = stop_supervised(Audi.StatusServer)
+
+    # Group write or any other-user permission is still refused.
+    for mode <- [0o770, 0o751] do
+      File.rm(c.path)
+      File.chmod!(Path.dirname(c.path), mode)
+
+      assert {:error, _} =
+               start_supervised({Audi.StatusServer, [path: c.path, client: nil, role: :private]})
+    end
+  end
+
   test "health exceptions return only fixed unavailability", c do
     start_supervised!(
       {Audi.StatusServer,

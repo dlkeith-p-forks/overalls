@@ -193,11 +193,11 @@ service resource limits still apply, so production traffic and retention require
 separate sizing evidence.
 Existing native process, boot, storage and lease fences determine recovery even
 while the observability backend is unavailable. Local properties cover this
-independence. The [focused native recovery fixture](repo:nix/tests/machines/fleet/scenarios/observability-recovery.py)
+independence. The [focused native recovery fixture](repo:nix/verification/tests/machines/fleet/scenarios/observability-recovery.py)
 configures the production collector and trace spool, stops them on the worker,
 reopens Lilly without replacing native VMMs, settles a fresh stop/start readiness
 receipt, and recovers retained diagnostic custody. Its companion
-[submission recovery histories](repo:nix/tests/machines/fleet/scenarios/submission-recovery.py)
+[submission recovery histories](repo:nix/verification/tests/machines/fleet/scenarios/submission-recovery.py)
 keep the before/after native launch barrier and exact-generation outcome oracle.
 The final typed packaged recovery capture passed in 707.93 seconds on its
 pre-Starship/pre-profile runtime. Its observer-outage subtest passed in 113.51
@@ -473,9 +473,9 @@ Database HA, WAL archival, PITR and independent failure domains are separate fro
 the host logical backup. Test actual restore and key recovery. Retain original
 state until acceptance, and record RPO/RTO from measured drills.
 
-Evidence: [backup procedures](repo:docs/backups.md),
-[database recovery limits](repo:docs/database-recovery.md),
-[backup module](repo:nix/modules/backups/default.nix).
+Evidence: [backup procedures](repo:docs/operations/backups.md),
+[database recovery limits](repo:docs/operations/database-recovery.md),
+[backup module](repo:nix/domains/system/backups/default.nix).
 
 The [operator verification review](repo:docs/architecture/reviews/2026-09-26-backup-operator-verification.md)
 tracks generated complete-manifest, reference-retention, host-lock and refusal

@@ -15,7 +15,7 @@ No accepted decision changes. ADR-0070 requires strict type checking for the
 backup modules; this change preserves that requirement while moving it from
 mypy to the pinned Rust toolchain. The machine drivers keep the NixOS test
 framework's own lint and type gates over the composed driver, as required by
-the `composed-drivers-statically-checked` contract in `nix/tests/support`;
+the `composed-drivers-statically-checked` contract in `nix/verification/tests/support`;
 this change adds standalone formatting, linting and annotation enforcement for
 the fragment files without bypassing composition.
 
@@ -24,10 +24,10 @@ the fragment files without bypassing composition.
 Three tiers, configured in `pyproject.toml`:
 
 - Fully checked standalone (ruff format, ruff check with annotation rules, ty):
-  `nix/modules`, `nix/packages`, `nix/tests/evaluation`, `nix/tests/support`,
+  `nix/domains/system`, `nix/domains/artifacts`, `nix/verification/tests/evaluation`, `nix/verification/tests/support`,
   `audi`, `scripts`, `marshall/scripts`, `lilly/test/transfer`.
 - Format, lint and annotations without standalone type checking (the framework
-  type-checks the concatenated driver): `nix/tests/machines`.
+  type-checks the concatenated driver): `nix/verification/tests/machines`.
 - Excluded: `.agents/skills` assets (managed skill payloads) and vendored code.
 
 Third-party imports resolve against a pinned `python3.withPackages` closure

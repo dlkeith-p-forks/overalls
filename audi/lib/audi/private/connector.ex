@@ -3,15 +3,16 @@ defmodule Audi.Private.Connector do
   @type purpose :: OverallsProtocol.PrivateServices.purpose()
 
   # @cc [owner:ghuntley,label:security] private-connector-subscription
-  # subscribe/3 MUST authenticate Lilly as UID 0 by peer credentials, send one
+  # subscribe/4 MUST authenticate Lilly as the configured UID by peer credentials
+  # (the unprivileged service user in production, ADR-0182), send one
   # v3 request for the transport-derived source address, and accept only a
   # grant whose binding validates for the requested purpose. On success the
   # caller receives the still-open socket: Lilly revokes by sending the fixed
   # revocation frame or closing it. Every failure returns :unavailable.
-  @spec subscribe(Path.t(), :inet.ip_address(), purpose()) ::
+  @spec subscribe(Path.t(), non_neg_integer(), :inet.ip_address(), purpose()) ::
           {:ok, map(), :gen_tcp.socket()} | {:error, :unavailable}
-  def subscribe(path, {_, _, _, _} = peer, purpose)
-      when purpose in [:services, :ssh_roster, :ssh_host_certificate] do
+  def subscribe(path, uid, {_, _, _, _} = peer, purpose)
+      when is_integer(uid) and purpose in [:services, :ssh_roster, :ssh_host_certificate] do
     with {:ok, socket} <-
            :gen_tcp.connect(
              {:local, path},
@@ -32,7 +33,7 @@ defmodule Audi.Private.Connector do
       with {:ok,
             [
               {:raw, 1, 17,
-               <<_pid::native-signed-32, 0::native-unsigned-32, _gid::native-unsigned-32>>}
+               <<_pid::native-signed-32, ^uid::native-unsigned-32, _gid::native-unsigned-32>>}
             ]} <- :inet.getopts(socket, [{:raw, 1, 17, 12}]),
            :ok <- :gen_tcp.send(socket, JSON.encode!(request)),
            {:ok, bytes} <- :gen_tcp.recv(socket, 0, 1000),
@@ -49,5 +50,5 @@ defmodule Audi.Private.Connector do
     end
   end
 
-  def subscribe(_, _, _), do: {:error, :unavailable}
+  def subscribe(_, _, _, _), do: {:error, :unavailable}
 end

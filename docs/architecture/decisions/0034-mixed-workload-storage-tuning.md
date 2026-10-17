@@ -100,7 +100,7 @@ separate maintenance action and must not happen automatically during rebuild.
 No benchmark harness or measurement supporting these candidate defaults exists.
 [Current disk creation](../../../lilly/lib/lilly/vm/disk.ex) uses owned sparse
 ZFS storage only under [ADR-0035](0035-zfs-only-provisioning.md). The
-[mirrored storage module](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/modules/mirrored-zfs.nix) supplies LZ4,
+[mirrored storage module](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/domains/system/mirrored-zfs.nix) supplies LZ4,
 zero reservations, explicit quota/ARC limits and conservative installation
 behavior. It deliberately does not promote the proposed record-size/cache/
 headroom candidates. Real functional guest/fleet tests pass under ADR-0033;

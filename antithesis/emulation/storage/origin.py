@@ -92,6 +92,7 @@ def prepare() -> None:
     runtime = {
         "version": 1,
         "host_id": "11111111-1111-4111-8111-111111111111",
+        "attribution_uid": 0,
         "issuer_cert_file": "/run/brady/credentials/issuer.pem",
         "issuer_key_file": "/run/brady/credentials/issuer.key",
         "upstream_ca_file": str(ROOT / "ca.pem"),

@@ -118,7 +118,7 @@ multiplexer and persistent host stream decisions.
 to the runtime: the actor derives paths and verifies its running generation,
 while the transport process owns I/O and authenticated controls. The gate monitors
 both processes, so an actor or transport crash detaches it without stopping the VM.
-The [production browser failover harness](../../../nix/tests/README.md)
+The [production browser failover harness](../../../nix/verification/tests/README.md)
 proves a real guest command is not replayed after its browser acknowledgments are
 lost and the serving Marshall process dies. Queued browser input is discarded,
 and the VMM PID remains stable. See the

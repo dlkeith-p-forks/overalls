@@ -102,7 +102,7 @@ Unit/property evidence alone cannot establish physical isolation or live reuse.
 - [Cache boundary](../../../brady/lib/brady/cache.ex) and
   [store](../../../brady/lib/brady/cache/store.ex) support incremental reservations.
 - [Archive classifier](../../../brady/lib/brady/cache/archive.ex) supplies provider policy.
-- [Native matrix](../../../nix/tests/machines/brady-network/large-storage.py) and
+- [Native matrix](../../../nix/verification/tests/machines/brady-network/large-storage.py) and
   [property tests](../../../brady/test/brady/chunked_store_property_test.exs) exist.
 - [Review](../reviews/2026-10-02-large-egress-cache.md) records execution separately;
   native matrix, component gates and live nixpkgs/LLVM reuse passed.

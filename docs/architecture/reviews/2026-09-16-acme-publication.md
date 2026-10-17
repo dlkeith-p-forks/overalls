@@ -10,21 +10,21 @@ The user's instruction to implement the accepted plan authorizes this work.
 
 Implementation evidence:
 
-- [ACME module](../../../nix/modules/acme/default.nix): native NixOS ACME issuance,
+- [ACME module](../../../nix/domains/system/acme/default.nix): native NixOS ACME issuance,
   explicit Route 53 zone, private systemd credentials, scoped IAM policy artifact,
   publication/retry services and proxy ordering.
-- [Client wrapper](../../../nix/modules/acme/lego.py): sole validated default AWS profile,
+- [Client wrapper](../../../nix/domains/system/acme/lego.py): sole validated default AWS profile,
   no ambient/metadata fallback, bounded execution and fixed JSON diagnostics.
-- [Publisher](../../../nix/modules/acme/publish.py) and
-  [atomic bundle helper](../../../nix/modules/secrets/prepare.py): trust, hostname,
+- [Publisher](../../../nix/domains/system/acme/publish.py) and
+  [atomic bundle helper](../../../nix/domains/system/secrets/prepare.py): trust, hostname,
   lifetime, matching key, custody and actual HAProxy configuration checks;
   persistent publication with fsync and graceful reload.
-- [Machine suite](../../../nix/tests/machines/acme-route53/default.nix),
-  [certificate fixture](../../../nix/tests/support/acme-fixture.py) and
-  [Route 53/DNS fixture](../../../nix/tests/machines/acme-route53/route53.py): actual source-built
+- [Machine suite](../../../nix/verification/tests/machines/acme-route53/default.nix),
+  [certificate fixture](../../../nix/verification/tests/support/acme-fixture.py) and
+  [Route 53/DNS fixture](../../../nix/verification/tests/machines/acme-route53/route53.py): actual source-built
   Marshall and HAProxy with Lego, Pebble and cryptographically signed DNS changes.
   Credentials, SSH keys and CA keys are generated privately inside the VM.
-- [NixOS guide](../../nixos.md): configuration, private state, operational
+- [NixOS guide](../../operations/nixos.md): configuration, private state, operational
   boundaries and separate production-provider acceptance.
 
 ## Findings and resolution

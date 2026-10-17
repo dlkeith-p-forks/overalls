@@ -58,7 +58,7 @@ window.
 - A RAM decrease is applied only if `memory.current + 2 GiB ≤ new ceiling`,
   read just before the change; a refused decrease changes nothing.
 - CPU and quota ceilings never decrease outside maintenance.
-- Unit tests `nix/tests/machines/auto-update/resources_test.py`; the native
+- Unit tests `nix/verification/tests/machines/auto-update/resources_test.py`; the native
   `auto-update` resource fragment raises, safely lowers and then refuses an
   unsafe decrease.
 
@@ -66,12 +66,12 @@ window.
 
 - Budgets and boot parameters: [overalls](../../../fleet/hosts/overalls/host.json),
   [dungarees](../../../fleet/hosts/dungarees/host.json),
-  [host profile](../../../nix/hosts/profile.nix).
+  [host profile](../../../nix/platform/hosts/profile.nix).
 - Live application and safe decrease:
-  [resources.py](../../../nix/modules/auto-update/resources.py)
+  [resources.py](../../../nix/domains/system/auto-update/resources.py)
   (`compatible`, `Transition.apply_native`, `dnode_limit`).
-- Tests: [resources_test.py](../../../nix/tests/machines/auto-update/resources_test.py),
-  [native_resources.py](../../../nix/tests/machines/auto-update/native_resources.py).
+- Tests: [resources_test.py](../../../nix/verification/tests/machines/auto-update/resources_test.py),
+  [native_resources.py](../../../nix/verification/tests/machines/auto-update/native_resources.py).
 - Fleet activation (ARC size, `arc_prune` CPU, host load) is recorded in the
   [storage churn review](../reviews/2026-10-13-storage-churn-and-capacity-damping.md)
   when it happens, dungarees first.

@@ -14,7 +14,7 @@ Answer: The physical stop witness is systemd unit inactivity plus process_snapsh
 
 #### Which physical stop event and reservation fields best witness the clone transition?
 
-- Examined: `marshall/lib/marshall/compute/clone_placement.ex:69-155; marshall/lib/marshall/compute/clone_coordinator.ex:47-65; nix/tests/machines/fleet/scenarios/lifecycle.py:37-60`.
+- Examined: `marshall/lib/marshall/compute/clone_placement.ex:69-155; marshall/lib/marshall/compute/clone_coordinator.ex:47-65; nix/verification/tests/machines/fleet/scenarios/lifecycle.py:37-60`.
 - Found: The physical stop witness is systemd unit inactivity plus process_snapshot absence for the source placement, tied to the exact stopped outcome ID rather than a request or Control timeout. Immediately before that event sample clone destination WorkloadPlacement and Reservation, source Reservation.temporary_disk_bytes, and source/destination transfer slot records in one repeatable-read PostgreSQL transaction. ClonePlacement persists these before CloneCoordinator proceeds to stop.
 - Not established: No current hosted/native execution was run in this investigation; source and test presence alone do not establish the physical outcome.
 - Conclusion: resolved; Remove witness-selection question; add exact DB fields and physical stop observer.

@@ -127,8 +127,8 @@ contracts/ADRs; the current cheap availability check cannot authorize launch.
 Single-pass verification likewise must reconcile the current verify-before-use
 contract, not silently bypass it. Keep all required flushes.
 
-The [NixOS builder](../../../nix/packages/guest/default.nix) and
-[Ubuntu builder](../../../nix/packages/guest/ubuntu/default.nix) link kernel.dev's
+The [NixOS builder](../../../nix/domains/artifacts/guest/default.nix) and
+[Ubuntu builder](../../../nix/domains/artifacts/guest/ubuntu/default.nix) link kernel.dev's
 `vmlinux`. A stripped candidate must remain the supported uncompressed ELF, preserve
 load segments, regenerate exact manifest digests and pass real Firecracker boot.
 No candidate was built or substituted during this investigation.
@@ -141,7 +141,7 @@ initial certificate/account reconciliation takes 6.442–7.223 s, and SSH starts
 7.244 s. These guest durations overlap the host timeline and must not be added
 to it. Large device durations in `systemd-analyze blame` overlap each other too.
 
-[Guest configuration](../../../nix/packages/guest/configuration.nix) orders Nix
+[Guest configuration](../../../nix/domains/artifacts/guest/configuration.nix) orders Nix
 path registration before `sysinit.target`; this took 377 ms on the critical path.
 `initrd-switch-root.service` accounted for 1.498 s. Test a smaller initrd and
 build-time Nix DB registration, or narrower ordering that still blocks every Nix

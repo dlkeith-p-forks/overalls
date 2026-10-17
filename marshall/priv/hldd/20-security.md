@@ -87,6 +87,29 @@ custody and all nonleaf host values; they do not establish commit/push,
 live replacement or renewed client
 acceptance. TLS verification and native client configuration remain unchanged.
 
+## Underclass provider egress layers
+
+ADR-0185 sends Underclass provider traffic through a dedicated tailnet node and
+the operator's exit node in Australia. The host's own tailnet node and every
+other service keep direct egress. These sensitive operations are root-only:
+joining the egress node (`sudo underclass-egress up`) and changing its exit
+node.
+
+| Layer | Authority and required refusal |
+| --- | --- |
+| Identity | Each host has a separate `<host>-underclass-egress` tailnet identity, joined once by an operator; the module holds no Tailscale key. A logged-out or unapproved node makes the start gate refuse to start Underclass. |
+| Authorization | Tailnet policy must allow that identity to use the exit node. The egress socket directory is private to the node's dynamic user, so only root can change it. Underclass's proxy and admin bearer tokens are unchanged. |
+| Transport | Underclass reaches only the loopback HTTP proxy. HTTPS stays end to end between Underclass and the provider through `CONNECT`, inside WireGuard to the exit node. LAN access through the exit node is disabled. |
+| Execution | A privileged start gate re-selects the exit node on every start. Without a selected exit node, Underclass does not start. |
+| Isolation | systemd IP filtering allows the Underclass cgroup only loopback addresses, so direct connections fail. The egress node is userspace-only: no TUN device, routes, capabilities or IPv6 sockets. |
+| Storage | The node's keys live in `/var/lib/underclass-egress` (mode 0700, dynamic user), separate from the Underclass pool database and the host's own tailnet state. |
+| Recovery | If the exit node is lost, provider requests fail and never use the host's address. Underclass still restarts while the exit node is offline. Node state survives a reboot. Removing `exitNode` restores direct egress. |
+
+Untested boundaries: the production Tailscale control plane and tailnet policy,
+the macOS exit node, and stage-2 activation. Root clearing the preference
+mid-run leaks until the next start. Evidence: the `underclass-egress` machine
+check and the [Underclass operations](repo:docs/services/underclass.md) guide.
+
 ## Experimental Antithesis fixture custody
 
 The default control fixture generates synthetic TLS, database, signing,
@@ -174,6 +197,31 @@ records the current evidence boundaries and preferred real-action property plus
 NixOS browser acceptance. Hardware authenticators, physical-host separation and
 production cutover remain separate. Historical Control room, credential and
 Customer tests cannot close the remaining final-snapshot gaps in [coverage](#coverage).
+
+## Browser extension presence layers
+
+The browser extension detector is a local presentation aid, not a security
+boundary. It requests optional host access only for the exact normalized
+Overalls origin saved by the user. A packaged content script sets a stable
+installed marker on that origin; no source page contents, credentials or
+telemetry are collected.
+
+| Layer | Authority and refusal |
+| --- | --- |
+| Identity | The marker carries no account, login, thread or machine identity. Current stored login and GuestAccount checks remain required for every protected page and launch. |
+| Authorization | Setup links hide only after a positive marker. A spoofed, stale or absent marker cannot grant a Cedar action, machine visibility, terminal/editor access or repository admission. |
+| Transport | Browser permission and registration are restricted to the saved exact origin. Missing, denied or withdrawn access, failed registration and detector outage leave setup visible. |
+| Execution | Startup and origin changes reconcile detector registration; a failed change retains the last working configuration. The detector cannot invoke a server mutation. |
+| Isolation | The content script is injected only on the configured origin. Provider pages and unrelated origins are outside its host permission scope. |
+| Storage | Presence is not stored by Marshall. Browser-local configuration and permission state may disappear; the page then fails open to visible setup. |
+| Recovery | Reloading or a LiveView replacement can re-observe the marker. If observation fails, setup remains available and protected actions continue their normal admission checks. |
+
+The marker's positive path and denied/withdrawn permission path require Chrome and
+Firefox browser execution evidence. Unit and package checks establish exact
+registration and asset shape only; they do not prove browser permission prompts,
+Firefox runtime injection or deployed TLS. See the
+[presence review](repo:docs/architecture/reviews/2026-10-16-browser-extension-presence.md)
+and [coverage](#coverage).
 
 ## Personal browser editor layers
 
@@ -320,10 +368,10 @@ Original storage success/refusal checks and attempt bounds remain unchanged.
 ([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)
 decision 4). Its boundary:
 
-- **Peers.** The socket is root-only (`0600` in a `0700` runtime directory). A session
-  needs `SO_PEERCRED` uid 0 and a peer process in `/system.slice/lilly.service`, then
-  a `Hello` with the exact protocol version. Anything else is closed before any lease
-  or command.
+- **Peers.** The socket is owned by the admitted Lilly service uid (`0600` in a `0711`
+  runtime directory). A session needs `SO_PEERCRED` with that uid and a peer process in
+  `/system.slice/lilly.service`, then a `Hello` with the exact protocol version.
+  Anything else is closed before any lease or command.
 - **Closed utilities.** Lilly names a utility by its index in a fixed table. hostd
   resolves each executable once, from its own PATH (Lilly's PATH), runs it with a
   cleared environment and closed stdin, and refuses a mutating utility without a
@@ -341,22 +389,132 @@ decision 4). Its boundary:
   `SystemCallArchitectures=native`, `LockPersonality` and `RestrictRealtime`.
   `RestrictSUIDSGID` is deliberately absent: its seccomp filter fails every
   `openat2` with ENOSYS, which refused every hostd lease and kept Lilly from
-  starting on both hosts on 2026-10-16. Neither unit gets a mount namespace: hostd mounts guest
+  starting on both hosts on 2026-10-16. The `lilly-transfer-export@` source
+  export workers omit it for the same reason: each starts a private hostd for
+  its pool lease, and the filter turned every export into `storage_busy`
+  (export-endpoint machine test). Neither unit gets a mount namespace: hostd mounts guest
   datasets for the host, and with the pool recursively private (ADR-0144) a
   Lilly namespace would not see new guest mounts.
 
-- **Unprivileged mode (off).** `services.lilly.unprivileged` runs the BEAM as
-  `lilly` with no capabilities ([ADR-0182](repo:docs/architecture/decisions/0182-unprivileged-lilly-beam.md)).
-  hostd then opens Firecracker API and vsock connections (only `api.sock` and
-  `v.sock` beneath pool roots) and VM-namespace TCP connections for Lilly and
-  passes the descriptors; ZFS delegation gives `lilly` send and receive on
-  pool datasets only. It is not enabled on any host and has no native test.
+- **Unprivileged Lilly (the only mode).** The BEAM always runs as
+  `lilly` with no capabilities; there is no root mode or option ([ADR-0182](repo:docs/architecture/decisions/0182-unprivileged-lilly-beam.md)).
+  Every socket the BEAM uses is one it created
+  ([ADR-0184](repo:docs/architecture/decisions/0184-lilly-owns-every-socket.md)):
+  OTP never closes a descriptor it did not create, so the descriptors hostd
+  used to pass leaked and Firecracker's API stopped answering after about
+  ten connections. For a jail socket Lilly sends hostd its own unconnected
+  Unix stream socket. hostd connects it only to `api.sock` or `v.sock`
+  beneath pool roots, without symbolic links. For ingress, hostd dials the
+  guest inside the VM namespace (tap-bound, marked) and hands that connection
+  and Lilly's socket to `lilly-ingress-bridge`. That helper runs as `lilly`
+  with no supplementary groups and `no_new_privs`, splices bytes without
+  reading or logging them, and ends when Lilly closes. Guest bytes therefore
+  never pass through a root process.
+
+  hostd sends Lilly no descriptor. It refuses a received descriptor that is
+  not an unconnected, non-listening AF_UNIX stream socket, and it ends the
+  session on a descriptor attached to any other request, a missing
+  descriptor, more than one descriptor, or truncated or foreign ancillary
+  data. Lilly closes each socket once its `gen_tcp` port is down, whether
+  the owner closed it, died or handed it on.
+
+  Evidence:
+  - hostd fixture tests and Hegel decoding models;
+  - bridge process fixtures (the privilege-drop fixture runs only as root);
+  - a Lilly custody property test that fails if a socket is not released.
+  The namespace dial and the bridge in a real VM namespace are covered only
+  by the fleet machine test.
+
+  Services that call Lilly authenticate it by `SO_PEERCRED` as the configured
+  Lilly uid, which the NixOS modules fill from `users.users.lilly.uid`:
+  - private Audi's guest lookup (`connector_uid`);
+  - the Audi gateway's ingress connector (`connectorUid`, which Lilly's module
+    asserts);
+  - Brady's egress attribution (`attribution_uid`).
+
+  Before 2026-10-17 private Audi and Brady required uid 0. After the
+  unprivileged switch, every guest host-certificate and roster lookup was
+  refused, so sshd never started and readiness timed out. The fleet machine
+  test found this; Brady's attribution failed the same way, reporting
+  unresolved.
+
+  `lilly` holds no ZFS delegation: every guest
+  dataset `send` and `receive` is a typed hostd stream
+  ([ADR-0183](repo:docs/architecture/decisions/0183-guest-dataset-streams-in-hostd.md)).
+  Lilly names the placement, pool and peer; hostd derives the `zfs`, `ssh`
+  and `cmp` commands with the fixed receive policy (unmounted, read-only,
+  no exec, setuid or devices). It runs `ssh` and `cmp` as `lilly`, and only
+  the ZFS sides as root. A delegated non-root receive silently dropped those
+  properties, so a `lilly` process could have created a setuid- or
+  device-bearing dataset. Root-only file effects stay in hostd: `chmod` of files
+  the BEAM does not own, removal of jail trees and backup copies, and
+  handing new dataset and template roots to `lilly`; everything else Lilly
+  writes lives in directories `lilly` owns. At boot, `lilly-ownership` gives
+  `lilly` Lilly's state trees, including the transfer state directory (the
+  `transfers/` keys and `exports/` permits a root Lilly wrote), the files
+  directly in `/var/lib/lilly` (the `owner.json` host binding) and any `<socket>.owner` custody a root Lilly left
+  in the shared socket directories. Only the owner changes there, so the
+  peer service's group stays. In each pool it also hands over the `vms`,
+  `standbys` and `templates` mountpoint parents (owner and mode 0700, which
+  Lilly's private-directory check requires) and, for every template a
+  root Lilly sealed, the template's root directory alone: it mounts the
+  template, lifts `readonly` around that one `chown` and restores it, and
+  never touches a sealed file. Lock inodes are left for hostd. The unit's
+  pre-start host check alone runs elevated (`+`), because it reads the
+  root-only enrollment baseline and SSH host key. On 2026-10-16 the first
+  unprivileged activation missed both and kept Lilly down on both hosts until
+  they were fixed. The pool directories were missed too: `lilly` could not
+  traverse the root-owned `templates` directory, so on both hosts every
+  template read, build and retirement failed (`template_unconfirmed`) until
+  the next release handed them over. The zfs-guest machine test now rebuilds
+  that root-era state and requires a guest to start from it. The updater's preflight accepts the binding only as a
+  private 0600 file in a 0700 directory, both owned by root or `lilly`,
+  beneath root-owned parents (`lilly-owner-binding-custody`). Its generic
+  secret-file check had refused every later update. Secrets arrive as systemd
+  credentials (owner-only 0400), and so does the control-plane CA, so a
+  root-only CA path still authenticates Marshall; and hostd's socket is owned
+  by the admitted uid. Before it admits guest execution, Lilly reads Ziggy's
+  proxy health and private Audi's status socket. It holds only those two
+  groups: `ziggy-proxy`, which Audi already holds, and `audi-private-status`,
+  which shares only the status socket. Audi makes that socket 0660 with the
+  directory's group only when its directory is the shared 0750 layout
+  (`audi-status-socket-mode`). Credentials stay in a 0700 subdirectory.
+  Without these groups, after the unprivileged switch every new guest start on a
+  private-services host was deferred `private_services_unavailable`. The
+  fleet machine test caught it before any production guest was started. hostd confines what a compromised BEAM can direct: it builds the VM
+  unit's command line itself from validated fields (direct `systemd-run` is
+  refused); it performs `chmod`, `chown`, `mv`, `rm`, `truncate`, `mkfifo`,
+  `sync` and jail bind mounts natively on descriptors resolved beneath
+  Lilly's state, pool and `/run/lilly*` roots without following symlinks;
+  and every other utility must match the argument shapes Lilly uses (ZFS
+  names beneath the pool datasets, `ip`/`sysctl` only on Lilly's devices
+  and namespaces, `netns exec` only for `ip`, `nft`, `sysctl` and the flow
+  labeller with hostd's own executable, `systemctl` only on `lilly-vm-*`
+  units; host-namespace `nft` rule files may only define Lilly's own
+  `lilly_<hex>_filter`/`_nat` tables and are loaded from hostd's checked
+  copy). **Residual risks:** Lilly's own tables can still drop or redirect
+  host traffic (it is the network policy author); namespace-local rule
+  files are not inspected; `lilly-resume-token` receives a peer-supplied
+  token checked only by its own parser. The grammar has
+  unit tests; every machine test runs the real `lilly.service` as `lilly`.
+  `enrollment-operator` drives it (credentials via `LoadCredential`, empty
+  capability set) through enrollment and readiness, and `zfs-guest` runs the
+  guest journey with the probe BEAM as `lilly`. Root Lilly tools (backups,
+  transfer workers, operator `lilly eval`, test probes) are not the service:
+  they set `LILLY_SERVICE_UID` (exported system-wide) so they trust state
+  only root or the service user wrote. A refusal-focused machine test of the
+  hostd grammar is not yet recorded.
 
 Expected refusals: a wrong uid or cgroup, a version mismatch, an unknown utility, a
-mutating utility without a lease, a second command on a busy lease, and a lease
-another session holds. Untested gaps: the peer cgroup check reads `/proc/<pid>/cgroup`
-after connect rather than through a pidfd, and Lilly and hostd both still run as
-root until the privilege drop.
+mutating utility without a lease, a second command on a busy lease, a lease
+another session holds, and, for a transfer stream, any field outside its
+grammar (a pool that is not a configured pair, a non-UUID placement, a token
+outside the resume-token grammar, a relative or expanding path, a local
+resume `lilly-resume-token` rejects) or generic `Run` of the stream helper,
+`ssh` or `cmp`. Untested gaps: the peer cgroup check reads `/proc/<pid>/cgroup`
+after connect rather than through a pidfd; hostd itself runs as root; no
+machine test yet records that `zfs receive` as `lilly` is refused on a
+deployed pool.
 
 ## Retained-state profile rewrite authority
 
@@ -453,23 +611,23 @@ neither that authority nor the control-plane database.
 | --- | --- | --- |
 | Open a magic link and remember this browser | The connected browser submits the single-use token through the CSRF-protected authentication POST; the stored login and remembered credential remain subject to revocation, with passkey proof required separately for privileged operations. Plain GET, invalid and replayed links confer no authority. | [HTTP flow tests](repo:marshall/test/marshall_web/magic_link_flow_test.exs) inspect token preservation, redirect and cookie issuance; the [updated native MFA browser journey](repo:docs/architecture/reviews/2026-10-02-automatic-magic-link.md) passed automatic navigation and remembered-cookie assertion across three colocated replicas under the historical login-MFA policy. Real inbox and JavaScript-capable mail scanners remain outside that run. |
 | Deliver fleet diagnostic samples | Retired application ingestion: no route or bearer can grant sample authority, and Marshall keeps no monitor credential or host model (ADR-0159). | A generated [retirement property](repo:marshall/test/marshall_web/diagnostic_retirement_test.exs) asserts 404 without consuming the body. Independent exporter freshness/privacy/native checks are recorded in the [cutover review](repo:docs/architecture/reviews/2026-10-09-observability-decoupling.md); production activation remains separate. |
-| Submit guest OpenTelemetry diagnostics | Eligible guest profile reaches Audi private TLS; Audi obtains current Lilly VM/placement/epoch binding and forwards only exact protobuf routes to a Unix socket; Rust receiver checks Audi UID, assigns outer provenance and strips claims before localhost collection. Lyra sends fixed tool counters, duration and an identity-free span only after terminal result acknowledgment. | Audi request-grammar properties, Rust binding/sanitization/chunk properties, Lyra payload properties and the [two-node NixOS test](repo:nix/tests/machines/otel-fleet/default.nix) cover bounded payload shape, socket UID, valid metric forwarding, forged outer-namespace refusal, authenticated collector tunnel, worker scrape loss and queued trace replay after a WireGuard outage. The recorded [real guest journey](repo:nix/tests/machines/fleet/scenarios/agent.py) adds Firecracker guest TLS, current Lilly binding, acknowledged tool result, collector export and an exact trace query at disposable local Tempo. Binding change during upload, customer-profile refusal, guest trace delivery across WireGuard and production collection remain untested. |
-| Export Brady candidate SLI | Lilly-derived resolved attribution and validated HTTP admission gate source-owned terminal counters. Brady publishes a private fixed-schema snapshot; a Rust host process checks owner, mode, freshness, arithmetic and monotonicity before OTLP over a restricted local Unix socket. | Brady and Rust generated properties cover outcome arithmetic and file custody. The [NixOS collector fixture](repo:nix/tests/machines/otel-fleet/default.nix) passes exporter delivery, ordinary Brady UID socket refusal and exporter-group trace-queue refusal, but synthesizes the Brady snapshot. A scoped [native Firecracker journey](repo:nix/tests/machines/fleet/scenarios/brady.py) passed request-to-collector export, while its later restart subtest failed; the full gate and measured target remain open, so no fleet compliance rule consumes it. |
-| Export Galileo candidate SLI | Marshall authorizes each integration attempt before Galileo counts it. The private Unix `/slo` route exposes fixed cumulative numeric outcomes and duration; a Rust exporter sends them through a Galileo-only collector socket with collector-owned service identity. | A generated [Galileo property](repo:galileo/test/slo_test.exs) checks closed outcome arithmetic and bucket totals. The [service machine test](repo:nix/tests/machines/galileo-service/driver.py) asserts packaged source-to-collector delivery and ordinary UID socket refusal. The full [Firecracker fleet test](repo:nix/tests/machines/fleet/scenarios/galileo.py) passed guest-to-collector export, unchanged denominator after a detached request, relocation and recovery. Failure classification under live revocation, production collection and measured targets remain open. |
-| Export Enrico candidate SLI | Enrico counts only unique admitted terminal mirror refreshes in its manager; its owner-only Unix `/slo` route exposes fixed numeric outcomes and duration. A Rust exporter sends them through an Enrico-only collector socket with Nix-owned identity. | A generated [Enrico property](repo:enrico/test/slo_test.exs) checks closed arithmetic and buckets. The [service machine test](repo:nix/tests/machines/enrico-service/driver.py) passed local Git success, duplicate exclusion, outage failure, source-to-collector export and ordinary Enrico UID socket refusal. Cross-host Marshall scheduling, manager-crash accounting, production collection and measured targets remain open. |
-| Export Porsche candidate SSH dispatch SLI | Porsche records only eligible terminal SSH command results; invalid and forbidden results are excluded. A mode-0600 private numeric snapshot is read by a Rust exporter and sent through a Porsche-only collector socket with Nix-owned identity. | A generated [Porsche property](repo:porsche/test/slo_test.exs) passed closed arithmetic and refusal exclusion; the [service fixture](repo:nix/tests/machines/porsche-service/default.nix) passed packaged startup, zero-valued snapshot custody, Rust exporter delivery and ordinary UID socket refusal. It has no authorized Marshall-backed command, so full command-to-collector delivery, process-crash accounting, production collection and measured targets remain open. |
-| Export Ziggy candidate inference SLI | Durable spool completion is the source outcome; caller cancellations are excluded, and recovered interrupted admissions retain unknown duration. A private numeric snapshot feeds a Rust exporter through a Ziggy-only collector socket with Nix-owned identity. Owned private regular checkpoints preserve totals and source lifetime; invalid schema, arithmetic, custody or uncertain persistence refuses admission and ACKs. Checkpoint creation is unconditional. | Generated [spool histories](repo:ziggy/test/spool_test.exs) preserve acknowledged totals and prevent replay duplication; [checkpoint properties](repo:ziggy/test/slo_checkpoint_test.exs) reject malformed aggregate state. The [service machine fixture](repo:nix/tests/machines/ziggy-service/driver.py) asserts packaged provider responses, source-to-collector export, SIGKILL recovery without provider replay and Audi checkpoint refusal. Native Firecracker, power-loss, live collection and measured targets remain open. |
-| Export Audi private candidate transport SLI | Current Lilly binding and TLS identity precede counting. Pre-binding denials and guest OTLP uploads stay outside the denominator. Only a fixed owner-only numeric snapshot enters a Rust exporter and Audi-private-only collector socket with Nix-owned identity. | A generated [Audi property](repo:audi/test/slo_test.exs) checks closed outcomes and fixed buckets; the [two-node fixture](repo:nix/tests/machines/otel-fleet/default.nix) checks exporter delivery and ordinary Audi UID socket refusal using synthetic outcomes. The full native [Galileo machine gate](repo:nix/tests/machines/fleet/scenarios/galileo.py) passed bound source-to-collector delivery, ordinary Audi UID refusal, relocation and recovery. Crash accounting, other private routes and production collection remain open. |
-| Export Audi public DNS candidate SLI | Audi DNS alone counts ordinary well-formed in-zone questions after a socket send. Expected NXDOMAIN counts as a completed answer; stale SERVFAIL or send failure does not. The mode-0600 snapshot goes through a DNS-only Rust exporter and collector socket with Nix-owned identity. | Generated [DNS properties](repo:audi/test/dns_server_test.exs) check authoritative and excluded question classes. The [DNS service machine](repo:nix/tests/machines/audi-dns/default.nix) checks real UDP/TCP snapshot accounting and custody; the [two-node collector fixture](repo:nix/tests/machines/otel-fleet/default.nix) checks synthetic export and ordinary DNS UID refusal. Neither test establishes production DNS delivery, crash accounting or measured targets. |
-| Export Audi guest SSH candidate SLI | A proved key and valid current Marshall grant precede counting. A failed Lilly connector or guard then counts failure; a connected guest socket and acknowledged SSH exec count success. The public Audi process writes a fixed mode-0640 snapshot for a separate Rust exporter with read-only source-group access and an SSH-only collector socket. | A generated [Audi property](repo:audi/test/slo_test.exs) checks fixed outcome arithmetic. The [two-node fixture](repo:nix/tests/machines/otel-fleet/default.nix) passed synthetic SSH export and ordinary Audi UID socket refusal. The local real-SSH test currently fails in listener setup before its source-boundary assertion. Native authorized guest-to-collector delivery, crash accounting, production collection and measured targets remain open. |
-| Export Marshall browser candidate SLI | The browser endpoint counts only requests past privacy, health and early machine-API filters. Its dynamic UID owns a mode-0750 directory and publishes a mode-0640 cumulative snapshot; the static Rust exporter has group read access without directory write, and alone holds the Marshall-only collector group and Nix-supplied replica identity. | A generated [Marshall property and endpoint test](repo:marshall/test/marshall/slo_test.exs) check closed outcomes, private metadata exclusion, health refusal and completed 404 counting. The [two-node collector fixture](repo:nix/tests/machines/otel-fleet/default.nix) tests synthetic export and custody refusal. The [packaged Marshall check](repo:nix/tests/machines/otel-marshall/default.nix) passed a real HTTPS 404 through source snapshot, Rust exporter and collector. Signed-in browser traffic, crash accounting and live collection remain open. |
-| Read fleet telemetry objectives | Grafana operator authentication protects Nix-provisioned objectives and burn panels. Prometheus enforces source lifetime, cadence and elapsed retained-history guards. Missing history remains unknown; diagnostics confer no control or accounting authority. Marshall's `/admin/slos` reader is retired. | The [Prometheus fixtures](repo:nix/tests/evaluation/otel-slo-rules.nix) check closed source arithmetic and coverage guards. [Retirement properties](repo:marshall/test/marshall_web/diagnostic_retirement_test.exs) refuse obsolete ingestion. Historical Marshall parser/browser evidence remains scoped to its archived revision; production targets and live dashboard acceptance remain open. |
-| Read Grafana candidate dashboard | The Grafana backend binds Overalls loopback; the optional public HTTPS frontend retains a separate Grafana operator identity. Marshall login and guest headers grant no query authority. Candidate panels repeat trusted source/history guards before displaying recordings. | The [two-node NixOS fixture](repo:nix/tests/machines/otel-fleet/default.nix) checks configured operator admission, wrong-password refusal, worker-node loopback refusal and provisioned panels. The [Prometheus fixture](repo:nix/tests/evaluation/otel-slo-rules.nix) withholds a retained ratio during source warmup. External operator login and measured production compliance remain separate. |
+| Submit guest OpenTelemetry diagnostics | Eligible guest profile reaches Audi private TLS; Audi obtains current Lilly VM/placement/epoch binding and forwards only exact protobuf routes to a Unix socket; Rust receiver checks Audi UID, assigns outer provenance and strips claims before localhost collection. Lyra sends fixed tool counters, duration and an identity-free span only after terminal result acknowledgment. | Audi request-grammar properties, Rust binding/sanitization/chunk properties, Lyra payload properties and the [two-node NixOS test](repo:nix/verification/tests/machines/otel-fleet/default.nix) cover bounded payload shape, socket UID, valid metric forwarding, forged outer-namespace refusal, authenticated collector tunnel, worker scrape loss and queued trace replay after a WireGuard outage. The recorded [real guest journey](repo:nix/verification/tests/machines/fleet/scenarios/agent.py) adds Firecracker guest TLS, current Lilly binding, acknowledged tool result, collector export and an exact trace query at disposable local Tempo. Binding change during upload, customer-profile refusal, guest trace delivery across WireGuard and production collection remain untested. |
+| Export Brady candidate SLI | Lilly-derived resolved attribution and validated HTTP admission gate source-owned terminal counters. Brady publishes a private fixed-schema snapshot; a Rust host process checks owner, mode, freshness, arithmetic and monotonicity before OTLP over a restricted local Unix socket. | Brady and Rust generated properties cover outcome arithmetic and file custody. The [NixOS collector fixture](repo:nix/verification/tests/machines/otel-fleet/default.nix) passes exporter delivery, ordinary Brady UID socket refusal and exporter-group trace-queue refusal, but synthesizes the Brady snapshot. A scoped [native Firecracker journey](repo:nix/verification/tests/machines/fleet/scenarios/brady.py) passed request-to-collector export, while its later restart subtest failed; the full gate and measured target remain open, so no fleet compliance rule consumes it. |
+| Export Galileo candidate SLI | Marshall authorizes each integration attempt before Galileo counts it. The private Unix `/slo` route exposes fixed cumulative numeric outcomes and duration; a Rust exporter sends them through a Galileo-only collector socket with collector-owned service identity. | A generated [Galileo property](repo:galileo/test/slo_test.exs) checks closed outcome arithmetic and bucket totals. The [service machine test](repo:nix/verification/tests/machines/galileo-service/driver.py) asserts packaged source-to-collector delivery and ordinary UID socket refusal. The full [Firecracker fleet test](repo:nix/verification/tests/machines/fleet/scenarios/galileo.py) passed guest-to-collector export, unchanged denominator after a detached request, relocation and recovery. Failure classification under live revocation, production collection and measured targets remain open. |
+| Export Enrico candidate SLI | Enrico counts only unique admitted terminal mirror refreshes in its manager; its owner-only Unix `/slo` route exposes fixed numeric outcomes and duration. A Rust exporter sends them through an Enrico-only collector socket with Nix-owned identity. | A generated [Enrico property](repo:enrico/test/slo_test.exs) checks closed arithmetic and buckets. The [service machine test](repo:nix/verification/tests/machines/enrico-service/driver.py) passed local Git success, duplicate exclusion, outage failure, source-to-collector export and ordinary Enrico UID socket refusal. Cross-host Marshall scheduling, manager-crash accounting, production collection and measured targets remain open. |
+| Export Porsche candidate SSH dispatch SLI | Porsche records only eligible terminal SSH command results; invalid and forbidden results are excluded. A mode-0600 private numeric snapshot is read by a Rust exporter and sent through a Porsche-only collector socket with Nix-owned identity. | A generated [Porsche property](repo:porsche/test/slo_test.exs) passed closed arithmetic and refusal exclusion; the [service fixture](repo:nix/verification/tests/machines/porsche-service/default.nix) passed packaged startup, zero-valued snapshot custody, Rust exporter delivery and ordinary UID socket refusal. It has no authorized Marshall-backed command, so full command-to-collector delivery, process-crash accounting, production collection and measured targets remain open. |
+| Export Ziggy candidate inference SLI | Durable spool completion is the source outcome; caller cancellations are excluded, and recovered interrupted admissions retain unknown duration. A private numeric snapshot feeds a Rust exporter through a Ziggy-only collector socket with Nix-owned identity. Owned private regular checkpoints preserve totals and source lifetime; invalid schema, arithmetic, custody or uncertain persistence refuses admission and ACKs. Checkpoint creation is unconditional. | Generated [spool histories](repo:ziggy/test/spool_test.exs) preserve acknowledged totals and prevent replay duplication; [checkpoint properties](repo:ziggy/test/slo_checkpoint_test.exs) reject malformed aggregate state. The [service machine fixture](repo:nix/verification/tests/machines/ziggy-service/driver.py) asserts packaged provider responses, source-to-collector export, SIGKILL recovery without provider replay and Audi checkpoint refusal. Native Firecracker, power-loss, live collection and measured targets remain open. |
+| Export Audi private candidate transport SLI | Current Lilly binding and TLS identity precede counting. Pre-binding denials and guest OTLP uploads stay outside the denominator. Only a fixed owner-only numeric snapshot enters a Rust exporter and Audi-private-only collector socket with Nix-owned identity. | A generated [Audi property](repo:audi/test/slo_test.exs) checks closed outcomes and fixed buckets; the [two-node fixture](repo:nix/verification/tests/machines/otel-fleet/default.nix) checks exporter delivery and ordinary Audi UID socket refusal using synthetic outcomes. The full native [Galileo machine gate](repo:nix/verification/tests/machines/fleet/scenarios/galileo.py) passed bound source-to-collector delivery, ordinary Audi UID refusal, relocation and recovery. Crash accounting, other private routes and production collection remain open. |
+| Export Audi public DNS candidate SLI | Audi DNS alone counts ordinary well-formed in-zone questions after a socket send. Expected NXDOMAIN counts as a completed answer; stale SERVFAIL or send failure does not. The mode-0600 snapshot goes through a DNS-only Rust exporter and collector socket with Nix-owned identity. | Generated [DNS properties](repo:audi/test/dns_server_test.exs) check authoritative and excluded question classes. The [DNS service machine](repo:nix/verification/tests/machines/audi-dns/default.nix) checks real UDP/TCP snapshot accounting and custody; the [two-node collector fixture](repo:nix/verification/tests/machines/otel-fleet/default.nix) checks synthetic export and ordinary DNS UID refusal. Neither test establishes production DNS delivery, crash accounting or measured targets. |
+| Export Audi guest SSH candidate SLI | A proved key and valid current Marshall grant precede counting. A failed Lilly connector or guard then counts failure; a connected guest socket and acknowledged SSH exec count success. The public Audi process writes a fixed mode-0640 snapshot for a separate Rust exporter with read-only source-group access and an SSH-only collector socket. | A generated [Audi property](repo:audi/test/slo_test.exs) checks fixed outcome arithmetic. The [two-node fixture](repo:nix/verification/tests/machines/otel-fleet/default.nix) passed synthetic SSH export and ordinary Audi UID socket refusal. The local real-SSH test currently fails in listener setup before its source-boundary assertion. Native authorized guest-to-collector delivery, crash accounting, production collection and measured targets remain open. |
+| Export Marshall browser candidate SLI | The browser endpoint counts only requests past privacy, health and early machine-API filters. Its dynamic UID owns a mode-0750 directory and publishes a mode-0640 cumulative snapshot; the static Rust exporter has group read access without directory write, and alone holds the Marshall-only collector group and Nix-supplied replica identity. | A generated [Marshall property and endpoint test](repo:marshall/test/marshall/slo_test.exs) check closed outcomes, private metadata exclusion, health refusal and completed 404 counting. The [two-node collector fixture](repo:nix/verification/tests/machines/otel-fleet/default.nix) tests synthetic export and custody refusal. The [packaged Marshall check](repo:nix/verification/tests/machines/otel-marshall/default.nix) passed a real HTTPS 404 through source snapshot, Rust exporter and collector. Signed-in browser traffic, crash accounting and live collection remain open. |
+| Read fleet telemetry objectives | Grafana operator authentication protects Nix-provisioned objectives and burn panels. Prometheus enforces source lifetime, cadence and elapsed retained-history guards. Missing history remains unknown; diagnostics confer no control or accounting authority. Marshall's `/admin/slos` reader is retired. | The [Prometheus fixtures](repo:nix/verification/tests/evaluation/otel-slo-rules.nix) check closed source arithmetic and coverage guards. [Retirement properties](repo:marshall/test/marshall_web/diagnostic_retirement_test.exs) refuse obsolete ingestion. Historical Marshall parser/browser evidence remains scoped to its archived revision; production targets and live dashboard acceptance remain open. |
+| Read Grafana candidate dashboard | The Grafana backend binds Overalls loopback; the optional public HTTPS frontend retains a separate Grafana operator identity. Marshall login and guest headers grant no query authority. Candidate panels repeat trusted source/history guards before displaying recordings. | The [two-node NixOS fixture](repo:nix/verification/tests/machines/otel-fleet/default.nix) checks configured operator admission, wrong-password refusal, worker-node loopback refusal and provisioned panels. The [Prometheus fixture](repo:nix/verification/tests/evaluation/otel-slo-rules.nix) withholds a retained ratio during source warmup. External operator login and measured production compliance remain separate. |
 | Read handbook sections | Current completed login; administrator membership is unnecessary | Generated chapter histories reject revoked, expired and deleted logins. The native fixture asserts the persisted reader remains ordinary and checks revoked mounted navigation and a fresh deep link; see [execution scope](#coverage). Cross-replica and hardware-authenticator acceptance remain separate. |
 | Login, passkey enrollment, elevation, remembered browser resume/revocation | Current login; single-use, session-bound verified ceremony | Generated independent-login histories and signed ceremonies; recorded native virtual-WebAuthn subsequent magic-link and remembered login, administrator revocation across three colocated serving replicas, and copied-cookie refusal for enrolled and no-MFA accounts in the [subsequent-login review](repo:docs/architecture/reviews/2026-09-25-mfa-login-verification.md). Independent physical hosts, hardware authenticators and production rollout remain external acceptance |
 | Read fleet metadata / change administration | Signed-in redacted read; separate current admin plus elevation for mutation | Generated current-role/session histories and a recorded native browser read/mutation journey; see the [verification review](repo:docs/architecture/reviews/2026-09-25-control-room-verification.md). Native session revocation across three colocated replicas is recorded in the [subsequent-login review](repo:docs/architecture/reviews/2026-09-25-mfa-login-verification.md); other mutation families and populated drill-down pages remain gaps |
 | Change account role, reset MFA or revoke browser authority | Current elevated actor held through audit commit; installation latch, retirement fence and sorted actor/target User rows | Recorded independent histories and three-Marshall schedules cover all five account mutation families, both elevation-lock/sign-out orders, ungated completed revocation and sorted consumer liveness. A generated [Cedar owner-resource property](repo:marshall/test/marshall/authorization/cedar_test.exs) additionally checks that VM, team and integration actions refuse resources missing their owner attribute; it does not exercise database faults at Ash callers. Captured native reset and five stale mounted mutation refusals pass with verified TLS and virtual WebAuthn; see exact source attribution in the [account authority review](repo:docs/architecture/reviews/2026-09-25-admin-account-authority-verification.md). Physical authenticators, production rollout and mail delivery remain separate. |
-| Read fleet diagnostic logs | Grafana authentication and reader-only `/select/*` credentials held by its systemd service; verified TLS to the fleet-network store. Restricted host audit, crash and guest classes remain outside this destination. | The [log-store machine test](repo:nix/tests/machines/log-store/default.nix) checks authenticated ingestion, scope refusal, queued backfill and provisioned Grafana reads. Marshall has no reader credential or log route. External Grafana login and CA rotation acceptance remain separate. |
+| Read fleet diagnostic logs | Grafana authentication and reader-only `/select/*` credentials held by its systemd service; verified TLS to the fleet-network store. Restricted host audit, crash and guest classes remain outside this destination. | The [log-store machine test](repo:nix/verification/tests/machines/log-store/default.nix) checks authenticated ingestion, scope refusal, queued backfill and provisioned Grafana reads. Marshall has no reader credential or log route. External Grafana login and CA rotation acceptance remain separate. |
 | Inspect and retry background jobs | Signed-in redacted reads; current elevated administrator, actor account and raw-job locks, actor/request receipt | Generated exact history/refusal models and three independent BEAM schedules cover elevation lock, sign-out, demotion, raw transition and pruning. A generated [projection property](repo:marshall/test/marshall/administration/jobs_test.exs) checks exact safe keys and secret exclusion across mixed raw job states, then refuses a revoked ordinary reader. Captured native packaged SMTP/browser execution passed real failed-worker retry, exact receipt, current-authority refusals, retained pruning history and mounted/fresh reader revocation in 65.85 seconds; see the [job-history review](repo:docs/architecture/reviews/2026-09-25-job-history-verification.md). Other projection families, throughput, inbox delivery and production rollout remain separate. |
 | Invite and retire accounts | Verified identity; current admin and passkey elevation; typed confirmation; old-UUID physical cleanup; permanent retired GuestAccount UUID/UID reservations | Complete current NixOS and Ubuntu generated-identity lifecycles passed retirement stream closure, fresh same-email/no inheritance, physical cleanup, shared storage/process retention and reserved-home/explicit sharing. Historical email-derived results retain their scope. Retained disks, restore reconciliation and deployment remain separately classified in [coverage](#coverage). SMTP delivery and team overlap retain their existing scopes. |
 | Grant/revoke sharing, team transfer | Current Cedar action and persisted ownership/membership | Recorded generated team role/consent histories and NixOS browser transfer/removal reject owner replacement and stale page authority. Full public retirement has mutation-sensitive three-Marshall overlap checks. Recorded ordinary-account native shared SSH/integration transitions verify member use, management/foreign/Customer refusal, retained home after restart and removal/re-addition with exact unauthorized evidence. Terminal/agent-specific team journeys and existing SSH session termination remain separate; see [scenario evidence](#coverage). |
@@ -509,7 +667,7 @@ evidence type, execution record where available, scope, and missing preferred te
 A test's existence is not a passing result. A passing mock or unit test is not proof
 that a kernel, TLS endpoint, native VM, or physical recovery boundary held.
 
-The [verification campaign](repo:docs/verification-campaign.md) tracks a current
+The [verification campaign](repo:docs/history/ledgers/verification-campaign.md) tracks a current
 base-fleet fixture gap: seven catalog variants select images without an enabled
 boot-trust receiver while Lilly requires a trust receipt. Historical passes keep
 their original revision and scope; they do not establish current fixture
@@ -613,13 +771,19 @@ Lilly accepts its launch guard and boot-log writer only as separate trusted loca
 executables. Their Nix release links may span multiple packages; executable and
 ancestor-directory links must be root-owned and bounded, and the final executable
 must have trusted ownership, ancestry and mode. Missing or excessive links
-refuse startup.
+refuse startup. The boot-log writer runs as root, because it forks the guarded
+jailer chain, and opens `boot.log` without following a final symlink. It writes
+only a single-link 0600 regular file owned by itself or the configured reader.
+With an unprivileged Lilly, hostd passes the service uid as `--reader-uid` and
+the writer changes the file's owner to it through the open descriptor, so only
+Lilly can read console bytes and a planted link or foreign file is refused
+(exit 74) before any console byte is written to it.
 Template diagnostics leave the native postcommit boundary through the independent
 observability plane. Validated host/pool/record identities support correlation;
 no trace, timestamp or historical event can create a placement, prove current
 readiness or release capacity commitments.
 
-The [post-import cache fixture](repo:nix/tests/machines/zfs-guest/template-post-import.exs)
+The [post-import cache fixture](repo:nix/verification/tests/machines/zfs-guest/template-post-import.exs)
 preserves exact sealed identity, including the native device field. A device-only
 change must refuse reuse; supported fenced retirement and full hashing produce a
 distinct ready incarnation rather than revive a quarantined one. Its cache action
@@ -715,15 +879,17 @@ network guard, storage ownership or recovery boundary. The builder evaluation
 does not establish runtime isolation or distribution-native security behavior.
 
 The protocol's native FreeBSD and OmniOS rows (`freebsd-v1` and `illumos-v1`)
-are contract declarations only. Preliminary image packages and catalog entries
-exist, but the rolling FreeBSD source endpoint is retired and replaced by a
-checksum-pinned archive capture; no successful native output has been recorded.
-They currently expose the same capability flags as Windows
-agents, but no native agent, boot, readiness, terminal, workspace, SSH, recovery
-or fleet result exists. Lilly must select transport
-from validated metadata, reject cross-OS agent sets and preserve the jailer,
-seccomp, per-tap guard and ZFS boundaries. OmniOS's `illumos` wire name remains
-unsettled and must not be treated as production support.
+are explicit capability contracts. Preliminary image packages and catalog
+entries exist, and the rolling FreeBSD source endpoint is retired and replaced
+by a checksum-pinned archive capture; local Nix realization of the pinned
+artifacts succeeds, without establishing native runtime output. The rows expose
+readiness, trust, terminal, workspace, flush, SSH and agent execution over the
+existing vsock framing, while editor and Inception remain disabled. Native Lyra
+service assembly and boot evidence are still pending, so these rows do not by
+themselves grant a guest capability. Lilly selects transport from validated
+metadata, rejects cross-OS agent sets and preserves the jailer, seccomp,
+per-tap guard and ZFS boundaries. OmniOS remains the installable downstream
+image while `illumos` is the protocol family.
 
 ## Windows guest boundaries
 

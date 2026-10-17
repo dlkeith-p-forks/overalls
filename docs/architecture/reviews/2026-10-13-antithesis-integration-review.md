@@ -29,7 +29,7 @@ during this review. Recheck changed hashes before using it as a run receipt.
 | `antithesis/emulation/storage/bootstrap.py` | `328a821939af24d29dd1225178ed561f54504d37baf60803129dddaababa7836` |
 | `antithesis/emulation/host/runner.py` | `2c255e3af43f36a479f25b314cd4a8acfcd469d50204fea14f6b2ea0883c31a6` |
 | `lilly/lib/lilly/host/ownership.ex` | `dfb62e1a82e5c06a74e51be2e5330a67f197c25063b53bc9447c03893f350b4c` |
-| `nix/packages/terminald/src/observer.rs` | `61117f313df92dc8a84a96401ebb79467482e4a095b0637d29304cc9bf9bbe2b` |
+| `nix/domains/artifacts/terminald/src/observer.rs` | `61117f313df92dc8a84a96401ebb79467482e4a095b0637d29304cc9bf9bbe2b` |
 
 ## Architecture impact and findings
 

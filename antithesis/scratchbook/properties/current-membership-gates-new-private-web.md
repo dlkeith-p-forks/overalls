@@ -29,7 +29,7 @@ Value menu: `:web` grant versus revoked; same-key old sharing retry versus new-k
 
 #### Which minimal private guest app and browser-login fixture can issue and record unique non-sensitive request nonces through the full Audi route?
 
-- Examined: `nix/tests/machines/private-web/guest.py:1-106`, `browser.py:48-112`, `driver.py:42-140`, and `nix/tests/machines/sharing-surfaces/browser.py:150-190`.
+- Examined: `nix/verification/tests/machines/private-web/guest.py:1-106`, `browser.py:48-112`, `driver.py:42-140`, and `nix/verification/tests/machines/sharing-surfaces/browser.py:150-190`.
 - Found: the disposable Python guest origin serves HTTP, streaming HTTP and WebSocket on ports 8080/3000; the Playwright journey signs in over HTTPS, obtains the host-only Audi cookie, keeps original streams open across team removal, then makes a fresh request. The driver reads guest counters through owner-authorized SSH. Reuse this owned fixture shape and extend its guest observer with a bounded ledger of synthetic nonce IDs, without recording cookies, headers or request bodies.
 - Not found: per-request nonce capture in the current origin or an assembled replacement harness.
 - Conclusion: the concrete fixture is identified; byte-effect attribution after the admission lock remains a targeted harness addition. Counter increments alone cannot classify one racing request.

@@ -18,7 +18,7 @@ ADR-0110 Cedar accounts, ADR-0104/0113 update and platform trust rules unchanged
 
 ## Implementation
 
-- `nix/tests/machines/installer-trust/`: two static eval fixtures
+- `nix/verification/tests/machines/installer-trust/`: two static eval fixtures
   (`register.exs`, `revoke.exs`) apply the real owner-scoped
   `Marshall.SSH.add_key`/`remove_key` domain actions when the driver starts
   their one-shot units. Two release fixtures copy `packages.lyra`: the

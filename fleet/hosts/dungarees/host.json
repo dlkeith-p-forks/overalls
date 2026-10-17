@@ -194,7 +194,7 @@
   "firmware": "uefi",
   "git": {
     "knownHosts": "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\n",
-    "repository": "ssh://git@github.com/antithesishq/kittens"
+    "repository": "ssh://git@github.com/ghuntley/overalls"
   },
   "identity": {
     "hostId": "5ffb4252",

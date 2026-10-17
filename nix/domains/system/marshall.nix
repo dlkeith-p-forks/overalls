@@ -1,0 +1,395 @@
+{ packages }:
+{ config, lib, pkgs, ... }:
+let
+  inherit (lib) mkOption mkEnableOption mkIf types;
+  cfg = config.services.marshall;
+  dumps = import ./crash-dumps { inherit lib pkgs; };
+  mailEnvironment = import ./smtp-relay/environment.nix { inherit lib; cfg = cfg.smtpRelay; };
+  localTypes = import ./types.nix { inherit lib; };
+  names = builtins.attrNames cfg.instances;
+  ports = map (instance: instance.port) (builtins.attrValues cfg.instances);
+  fleetPorts = map (instance: instance.fleetPort) (builtins.attrValues cfg.instances);
+  fleetOtelEnabled = lib.attrByPath [ "services" "overallsOtelFleet" "enable" ] false config;
+  sloCatalog = pkgs.writeText "marshall-fleet-slo-catalog.json" (builtins.toJSON (import ./otel-fleet/slo-catalog.nix));
+in
+{
+  imports = [ ./marshall-operator.nix ./crash-dumps/retention.nix (import ./smtp-relay { inherit packages; }) ];
+  options.services.marshall = {
+    enable = mkEnableOption "Marshall control plane instances";
+    crashDumps = dumps.options;
+    package = mkOption {
+      type = types.package;
+      default = if cfg.crashDumps.enable then packages.encrypted.marshall else packages.marshall;
+      description = "Source-built Marshall release.";
+    };
+    editorPackage = mkOption {
+      type = types.nullOr types.package;
+      default = packages.vscodeWeb or null;
+      description = "Immutable official-source browser editor package whose protocol, commit and release digest govern image and gateway admission. Null disables editor authority.";
+    };
+    marvinPackage = mkOption {
+      type = types.nullOr types.package;
+      default = packages.marvin or null;
+      description = "Immutable unsigned Chrome and Firefox browser extension package served at the public /bin routes. Null disables browser extension downloads.";
+    };
+    environmentFile = mkOption {
+      type = localTypes.privatePath;
+      default = "/run/overalls-secrets/marshall.env";
+      description = "Private systemd environment file containing database, signing, Cloak and SMTP configuration.";
+    };
+    serperKeyFile = mkOption {
+      type = types.nullOr localTypes.privatePath;
+      default = null;
+      description = "Private runtime Serper API key, delivered to each Marshall instance through systemd credentials.";
+    };
+    serperOrigin = mkOption {
+      type = types.enum [ "https://google.serper.dev" "http://127.0.0.1:18080" ];
+      default = "https://google.serper.dev";
+      description = "Fixed Serper origin; loopback is reserved for the machine-test fixture.";
+    };
+    secretUnits = mkOption {
+      type = types.listOf (types.strMatching "[a-zA-Z0-9_.@-]+\\.service");
+      default = [];
+      description = "Required preparation services that publish runtime secrets before startup.";
+    };
+    publicHost = mkOption {
+      type = types.strMatching "[a-zA-Z0-9][a-zA-Z0-9.-]*";
+      description = "Public DNS name used by sign-in links and origin checks.";
+    };
+    inference = {
+      detailDays = mkOption { type = types.ints.between 1 36500; default = 90; description = "Inference request metadata retention in days."; };
+      aggregateDays = mkOption { type = types.ints.between 1 36500; default = 365; description = "Daily inference usage retention in days."; };
+    };
+    sshHostCa = {
+      publicKey = mkOption { type = types.nullOr (types.strMatching "ssh-ed25519 [A-Za-z0-9+/]{68}"); default = null; description = "Dedicated SSH host CA public key."; };
+      keyFile = mkOption { type = types.nullOr localTypes.privatePath; default = null; description = "Runtime SSH CA private key delivered only to Marshall."; };
+      retirement = mkOption { type = types.ints.positive; default = 2421446400; description = "SSH CA operational retirement in Unix seconds (2046-09-25)."; };
+    };
+    publicHostFile = mkOption {
+      type = types.nullOr localTypes.privatePath;
+      default = null;
+      description = "Optional operator-owned runtime public hostname, delivered through systemd credentials. Overrides publicHost; invalid or missing input prevents startup.";
+    };
+    defaultImageIdFile = mkOption {
+      type = types.nullOr localTypes.privatePath;
+      default = null;
+      description = "Optional operator-owned runtime default image identity, delivered through systemd credentials. Overrides defaultImageId; empty input disables the default and invalid input prevents startup.";
+    };
+    ingress = {
+      wildcardAcme = mkOption {
+        default = null;
+        description = "One Marshall instance authorized to issue the public Audi wildcard.";
+        type = types.nullOr (types.submodule { options = {
+          issuerInstance = mkOption { type = types.str; description = "Local Marshall instance consuming the certificate queue."; };
+          directory = mkOption { type = types.strMatching "https://[^ ]+"; description = "Operator selected ACME directory."; };
+          issuerCaFile = mkOption { type = localTypes.absolutePath; description = "CA roots authenticating the ACME directory."; };
+          certificateRootsFile = mkOption { type = localTypes.absolutePath; description = "CA roots validating issued certificate chains."; };
+          acceptTerms = mkOption { type = types.bool; default = false; description = "Explicit consent to register an ACME account."; };
+          nameservers = mkOption { type = types.listOf (types.submodule { options = {
+            address = mkOption { type = localTypes.ipv4; };
+            port = mkOption { type = types.port; default = 53; };
+          }; }); description = "Authoritative Audi DNS replicas checked before challenge acknowledgement."; };
+        }; });
+      };
+      inceptionPublicFile = mkOption {
+        type = types.nullOr localTypes.absolutePath;
+        default = null;
+        description = "Operator-owned JSON public Inception issuer, consent, DNS and trust settings, delivered through systemd credentials. Contains no parent credentials. Null leaves public bootstrap disabled.";
+      };
+      zone = mkOption {
+        type = types.nullOr (types.strMatching "[a-z0-9][a-z0-9.-]*");
+        default = null;
+        description = "Delegated Audi application zone, shared by all gateways and DNS replicas. Editor authority requires at least two canonical lowercase DNS labels.";
+      };
+      httpsPort = mkOption {
+        type = types.port;
+        default = 443;
+        description = "Public HTTPS port shared by Audi gateways; used for browser callbacks.";
+      };
+    };
+    defaultImageId = mkOption {
+      type = types.nullOr (types.strMatching "sha256:[0-9a-f]{64}");
+      default = null;
+      description = "Default immutable image for new SSH machines and initial browser drafts; admission still requires image availability.";
+    };
+    inceptionImageId = mkOption {
+      type = types.nullOr (types.strMatching "sha256:[0-9a-f]{64}");
+      default = null;
+      description = "Immutable image bound exclusively to the Inception development profile; native host eligibility is also required.";
+    };
+    replicaCount = mkOption {
+      type = types.ints.between 1 100;
+      default = 3;
+      description = "Total planned Marshall instances across the fleet.";
+    };
+    poolSize = mkOption {
+      type = types.ints.between 1 100;
+      default = 10;
+      description = "Database pool connections per instance.";
+    };
+    databaseConnectionBudget = mkOption {
+      type = types.ints.between 1 100000;
+      description = "Fleet database allocation, including one notifier per instance and ten operator connections.";
+    };
+    databaseCAFile = mkOption {
+      type = localTypes.absolutePath;
+      default = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+      description = "CA bundle authenticating the PostgreSQL endpoint.";
+    };
+    cpuCores = mkOption {
+      type = types.ints.positive;
+      default = 4;
+      description = "Aggregate CPU quota in logical cores for Marshall instances.";
+    };
+    memoryMiB = mkOption {
+      type = types.ints.positive;
+      default = 8192;
+      description = "Aggregate Marshall memory limit in MiB.";
+    };
+    openFirewall = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Open backend TLS ports; unnecessary for a colocated proxy.";
+    };
+    instances = mkOption {
+      default = {};
+      description = "Local instances keyed by distinct fleet-wide identities.";
+      type = types.attrsOf (types.submodule ({ config, ... }: {
+        options = {
+          port = mkOption { type = types.port; description = "Backend HTTPS port."; };
+          terminalPeerUrl = mkOption {
+            type = types.nullOr (types.strMatching "https://[A-Za-z0-9.-]+(:[0-9]+)?/?");
+            default = null;
+            description = "Verified HTTPS origin of this instance's fleet listener for terminal peer routing.";
+          };
+          terminalPeerCAFile = mkOption {
+            type = types.nullOr localTypes.absolutePath;
+            default = null;
+            description = "Optional private CA bundle for terminal peer TLS; system roots otherwise.";
+          };
+          fleetPort = mkOption {
+            type = types.port;
+            default = config.port + 1000;
+            description = "Separate machine HTTPS port; never opened by openFirewall.";
+          };
+          fleetBindAddress = mkOption {
+            type = types.addCheck localTypes.ipv4 (address: address != "0.0.0.0");
+            default = "127.0.0.1";
+            description = "Explicit IPv4 fleet listener address. Remote access requires separate interface-scoped firewall policy.";
+          };
+          fleetLoopback = mkOption {
+            type = types.bool;
+            default = false;
+            description = "Also bind fleet TLS to loopback for colocated clients when the main fleet bind uses a private interface.";
+          };
+          bindAddress = mkOption {
+            type = localTypes.ipv4;
+            default = "127.0.0.1";
+            description = "Literal IPv4 backend bind address.";
+          };
+          certificateFile = mkOption {
+            type = localTypes.privatePath;
+            description = "Runtime backend certificate delivered through systemd credentials.";
+          };
+          keyFile = mkOption {
+            type = localTypes.privatePath;
+            description = "Runtime backend private key delivered through systemd credentials.";
+          };
+        };
+      }));
+    };
+  };
+
+  config = mkIf cfg.enable {
+    services.overallsCrashDumpRetention.directories = lib.mkIf cfg.crashDumps.enable (map (name: "/var/lib/marshall-${name}-crash-dumps") (builtins.attrNames cfg.instances));
+    systemd.coredump.settings.Coredump = lib.mkIf cfg.crashDumps.enable { Storage = "none"; ProcessSizeMax = 0; };
+    assertions = [
+      # @cc [owner:ghuntley,label:protocol;reliability] editor-module-zone-boundary
+      # A configured editor zone MUST satisfy the canonical multi-label protocol
+      # boundary before service rendering. Null leaves discovery unconfigured.
+      { assertion = cfg.editorPackage == null || cfg.ingress.zone == null ||
+          (builtins.stringLength cfg.ingress.zone <= 189 &&
+           builtins.length (lib.splitString "." cfg.ingress.zone) >= 2 &&
+           lib.all (label: builtins.match "[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?" label != null) (lib.splitString "." cfg.ingress.zone));
+        message = "Marshall editor authority requires a canonical zone with at least two DNS labels."; }
+      { assertion = (cfg.sshHostCa.publicKey == null) == (cfg.sshHostCa.keyFile == null) && (cfg.sshHostCa.publicKey == null || cfg.ingress.zone != null); message = "SSH CA requires public key, private runtime key and ingress zone together."; }
+
+      { assertion = cfg.ingress.wildcardAcme == null ||
+          (cfg.ingress.zone != null && builtins.elem cfg.ingress.wildcardAcme.issuerInstance names &&
+           builtins.length cfg.ingress.wildcardAcme.nameservers >= 2 &&
+           builtins.length cfg.ingress.wildcardAcme.nameservers <= 8 &&
+           builtins.length (lib.unique cfg.ingress.wildcardAcme.nameservers) == builtins.length cfg.ingress.wildcardAcme.nameservers);
+        message = "Wildcard ACME requires a local issuer instance, ingress zone and two to eight distinct DNS peers."; }
+      { assertion = !cfg.crashDumps.enable || cfg.crashDumps.publicKeyFile != null; message = "Encrypted dumps require an operator public key file."; }
+      { assertion = names != [] && builtins.length names <= cfg.replicaCount;
+        message = "Marshall requires 1..replicaCount local instances."; }
+      { assertion = lib.all (name: builtins.match "[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}" name != null) names;
+        message = "Marshall instance names must be valid distinct runtime identities."; }
+      { assertion = builtins.length ports == builtins.length (lib.unique ports);
+        message = "Marshall backend ports must be distinct on a host."; }
+      { assertion = builtins.length (ports ++ fleetPorts) == builtins.length (lib.unique (ports ++ fleetPorts));
+        message = "Marshall browser and fleet ports must be distinct across local instances."; }
+      { assertion = cfg.databaseConnectionBudget >= cfg.replicaCount * (cfg.poolSize + 1) + 10;
+        message = "Marshall database budget must cover replicas * (poolSize + 1) + 10."; }
+      { assertion = cfg.memoryMiB >= 256 * builtins.length names;
+        message = "Marshall aggregate memory must provide at least 256 MiB per local instance."; }
+    ];
+
+    networking.firewall.allowedTCPPorts = lib.optionals cfg.openFirewall ports;
+    systemd.slices.marshall = {
+      description = "Marshall control plane resource budget";
+      sliceConfig = {
+        CPUAccounting = true;
+        MemoryAccounting = true;
+        IOAccounting = true;
+        CPUQuota = "${toString (cfg.cpuCores * 100)}%";
+        MemoryMax = "${toString cfg.memoryMiB}M";
+      };
+    };
+
+    systemd.services = lib.mkMerge [
+      (lib.mapAttrs' (name: instance: lib.nameValuePair "marshall-${name}" {
+      description = "Marshall control plane (${name})";
+      wantedBy = [ "multi-user.target" ];
+      wants = [ "network-online.target" ] ++ lib.optional cfg.smtpRelay.enable "overalls-smtprelay.service";
+      after = [ "network-online.target" ] ++ cfg.secretUnits ++ lib.optional cfg.smtpRelay.enable "overalls-smtprelay.service";
+      requires = cfg.secretUnits;
+      startLimitIntervalSec = 60;
+      startLimitBurst = 5;
+      environment = {
+        MARSHALL_INFERENCE_DETAIL_DAYS = toString cfg.inference.detailDays;
+        MARSHALL_INFERENCE_AGGREGATE_DAYS = toString cfg.inference.aggregateDays;
+        MARSHALL_SERPER_ORIGIN = cfg.serperOrigin;
+      } // lib.optionalAttrs (cfg.sshHostCa.publicKey != null) {
+        MARSHALL_SSH_HOST_TRUST = builtins.toJSON { version = 1; ca = cfg.sshHostCa.publicKey; management_host = cfg.publicHost; zone = cfg.ingress.zone; retirement = cfg.sshHostCa.retirement; };
+        MARSHALL_SSH_HOST_CA_KEY_FILE = "/run/credentials/marshall-${name}.service/ssh-host-ca";
+      } // lib.optionalAttrs (cfg.serperKeyFile != null) {
+        MARSHALL_SERPER_KEY_FILE = "/run/credentials/marshall-${name}.service/serper.key";
+      } // lib.optionalAttrs (packages ? lyra) {
+        OVERALLS_LYRA_RELEASE = toString packages.lyra;
+      } // lib.optionalAttrs (cfg.ingress.zone != null) {
+        MARSHALL_INGRESS_ZONE = cfg.ingress.zone;
+      } // lib.optionalAttrs (cfg.editorPackage != null) {
+        MARSHALL_INGRESS_EDITOR_RELEASE = builtins.toJSON {
+          protocol = cfg.editorPackage.editorProtocol;
+          commit = cfg.editorPackage.sourceCommit;
+          release = cfg.editorPackage.releaseId;
+        };
+      } // lib.optionalAttrs (cfg.ingress.wildcardAcme != null && cfg.ingress.wildcardAcme.issuerInstance == name) {
+        MARSHALL_FLEET_ACME_DIRECTORY = cfg.ingress.wildcardAcme.directory;
+        MARSHALL_FLEET_ACME_ISSUER_CA_FILE = "/run/credentials/marshall-${name}.service/fleet-issuer-ca.pem";
+        MARSHALL_FLEET_ACME_ROOTS_FILE = "/run/credentials/marshall-${name}.service/fleet-roots.pem";
+        MARSHALL_FLEET_ACME_NAMESERVERS = builtins.toJSON cfg.ingress.wildcardAcme.nameservers;
+        MARSHALL_FLEET_ACME_ACCEPT_TERMS = if cfg.ingress.wildcardAcme.acceptTerms then "true" else "false";
+      } // lib.optionalAttrs (cfg.ingress.inceptionPublicFile != null) {
+        MARSHALL_INCEPTION_PUBLIC_FILE = "/run/credentials/marshall-${name}.service/inception-public.json";
+      } // {
+        MARSHALL_INGRESS_HTTPS_PORT = toString cfg.ingress.httpsPort;
+        RELEASE_TMP = "/run/marshall-${name}";
+        ERL_CRASH_DUMP = "/dev/null";
+      };
+
+      # @cc [owner:ghuntley,label:coordination] module-instance-runtime-authority
+      # The launch wrapper MUST enforce the module's identity, TLS listener and
+      # fleet budget even if a shared environment file contains conflicting values.
+
+      # @cc [owner:ghuntley,label:security] marvin-package-runtime-authority
+      # The final wrapper MUST clear inherited Marvin release selection and bind
+      # the module's immutable package, or an empty value when downloads are
+      # disabled. EnvironmentFile MUST NOT select or re-enable Marvin artifacts.
+
+      # @cc [owner:ghuntley,label:security] marshall-cookie-argument-alphabet
+      # The generated cookie MUST contain only hexadecimal digits so erlexec cannot
+      # interpret a leading base64 '+' as a VM flag or echo it in usage diagnostics.
+      script = ''
+        ${lib.optionalString fleetOtelEnabled "${pkgs.coreutils}/bin/chmod 0700 /run/marshall-${name}"}
+        export RELEASE_COOKIE
+        RELEASE_COOKIE="$(${pkgs.coreutils}/bin/head -c 32 /dev/urandom | ${pkgs.coreutils}/bin/basenc --base16 -w0)"
+        ${lib.optionalString (cfg.publicHostFile != null) ''
+          public_host="$(${pkgs.python3}/bin/python3 ${./marshall-public-host.py} "$CREDENTIALS_DIRECTORY/public-host")" || exit 1
+        ''}
+        ${lib.optionalString (cfg.defaultImageIdFile != null) ''
+          default_image="$(${pkgs.python3}/bin/python3 ${./marshall-default-image.py} "$CREDENTIALS_DIRECTORY/default-image-id")" || exit 1
+        ''}
+        exec ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_SLO_SNAPSHOT -u MARSHALL_SERVICE_LEVEL_DIRECTORY -u MARSHALL_INGRESS_EDITOR_RELEASE -u OVERALLS_MARVIN_RELEASE \
+          ${mailEnvironment}          PHX_SERVER=true RELEASE_DISTRIBUTION=none \
+          ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_SNAPSHOT=/run/marshall-slo-${name}/slo.json"} \
+          ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_CATALOG=${sloCatalog}"} \
+          ${lib.optionalString (cfg.editorPackage != null) ("MARSHALL_INGRESS_EDITOR_RELEASE=" + lib.escapeShellArg (builtins.toJSON { protocol = cfg.editorPackage.editorProtocol; commit = cfg.editorPackage.sourceCommit; release = cfg.editorPackage.releaseId; }))} \
+          OVERALLS_MARVIN_RELEASE=${lib.escapeShellArg (if cfg.marvinPackage == null then "" else toString cfg.marvinPackage)} \
+          ${lib.optionalString (fleetOtelEnabled && name == "overalls") "MARSHALL_SERVICE_LEVEL_DIRECTORY=/run/marshall-slo-overalls"} \
+          ERL_CRASH_DUMP=/dev/null RELEASE_TMP=/run/marshall-${name} \
+          PHX_HOST=${if cfg.publicHostFile == null then lib.escapeShellArg cfg.publicHost else ''"$public_host"''} \
+          MARSHALL_DEFAULT_IMAGE_ID=${if cfg.defaultImageIdFile != null then ''"$default_image"'' else lib.escapeShellArg (if cfg.defaultImageId == null then "" else cfg.defaultImageId)} \
+          MARSHALL_INCEPTION_IMAGE_ID=${lib.escapeShellArg (if cfg.inceptionImageId == null then "" else cfg.inceptionImageId)} \
+          MARSHALL_INSTANCE_ID=${lib.escapeShellArg name} \
+          MARSHALL_TERMINAL_PEER_URL=${lib.escapeShellArg (if instance.terminalPeerUrl == null then "" else instance.terminalPeerUrl)} \
+          MARSHALL_TERMINAL_PEER_CA_CERTFILE=${if instance.terminalPeerCAFile == null then "''" else ''"$CREDENTIALS_DIRECTORY/terminal-peer-ca.crt"''} \
+          MARSHALL_REPLICA_COUNT=${toString cfg.replicaCount} \
+          POOL_SIZE=${toString cfg.poolSize} \
+          MARSHALL_DB_CONNECTION_BUDGET=${toString cfg.databaseConnectionBudget} \
+          MARSHALL_DB_TLS=verify \
+          MARSHALL_DB_CA_CERTFILE="$CREDENTIALS_DIRECTORY/database-ca.crt" \
+          MARSHALL_BIND_IP=${lib.escapeShellArg instance.bindAddress} \
+          MARSHALL_TLS_PORT=${toString instance.port} \
+          MARSHALL_FLEET_BIND_IP=${lib.escapeShellArg instance.fleetBindAddress} \
+          MARSHALL_FLEET_TLS_PORT=${toString instance.fleetPort} \
+          MARSHALL_FLEET_LOOPBACK=${if instance.fleetLoopback then "true" else "false"} \
+          MARSHALL_TLS_CERTFILE="$CREDENTIALS_DIRECTORY/tls.crt" \
+          MARSHALL_TLS_KEYFILE="$CREDENTIALS_DIRECTORY/tls.key" \
+          ${dumps.launch cfg.crashDumps cfg.package "/var/lib/marshall-${name}-crash-dumps" "${cfg.package}/bin/marshall start"}
+      '';
+      serviceConfig = {
+        StateDirectory = lib.optional cfg.crashDumps.enable "marshall-${name}-crash-dumps";
+        StateDirectoryMode = "0700";
+        ExecStopPost = lib.optional cfg.crashDumps.enable (dumps.finish "/var/lib/marshall-${name}-crash-dumps");
+        Type = "exec";
+        DynamicUser = true;
+        User = "marshall-${name}";
+        ReadWritePaths = lib.optionals fleetOtelEnabled [ "/run/marshall-slo-${name}" ];
+        Slice = "marshall.slice";
+        UMask = "0077";
+        EnvironmentFile = cfg.environmentFile;
+        # @cc [owner:ghuntley,label:security] marshall-runtime-input-custody
+        # Optional public settings MUST reach the dynamic service user through
+        # systemd credentials. Root-only operator files MUST NOT require relaxed
+        # filesystem permissions or privileged application execution.
+        LoadCredential = [
+          "tls.crt:${instance.certificateFile}" "tls.key:${instance.keyFile}"
+          "database-ca.crt:${cfg.databaseCAFile}"
+        ] ++ lib.optional (cfg.sshHostCa.keyFile != null) "ssh-host-ca:${cfg.sshHostCa.keyFile}"
+          ++ lib.optional (cfg.serperKeyFile != null) "serper.key:${cfg.serperKeyFile}"
+          ++ lib.optional (cfg.publicHostFile != null) "public-host:${cfg.publicHostFile}"
+          ++ lib.optional (instance.terminalPeerCAFile != null) "terminal-peer-ca.crt:${instance.terminalPeerCAFile}"
+          ++ lib.optional (cfg.defaultImageIdFile != null) "default-image-id:${cfg.defaultImageIdFile}"
+          ++ lib.optional (cfg.ingress.inceptionPublicFile != null)
+            "inception-public.json:${cfg.ingress.inceptionPublicFile}"
+          ++ lib.optionals (cfg.ingress.wildcardAcme != null && cfg.ingress.wildcardAcme.issuerInstance == name) [
+            "fleet-issuer-ca.pem:${cfg.ingress.wildcardAcme.issuerCaFile}"
+            "fleet-roots.pem:${cfg.ingress.wildcardAcme.certificateRootsFile}"
+          ];
+        RuntimeDirectory = [ "marshall-${name}" ] ++ lib.optional fleetOtelEnabled "marshall-slo-${name}";
+        RuntimeDirectoryMode = if fleetOtelEnabled then "0750" else "0700";
+        WorkingDirectory = cfg.package;
+        Restart = "on-failure";
+        RestartSec = 5;
+        TimeoutStopSec = 45;
+        KillMode = "control-group";
+        LimitNOFILE = 65536;
+        NoNewPrivileges = true;
+        PrivateDevices = true;
+        ProtectSystem = "strict";
+        ProtectHome = true;
+        ProtectKernelTunables = true;
+        ProtectKernelModules = true;
+        ProtectControlGroups = true;
+        RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" ];
+        RestrictSUIDSGID = true;
+        LockPersonality = true;
+      } // lib.optionalAttrs fleetOtelEnabled {
+        Group = "overalls-otel-marshall-source";
+      };
+      }) cfg.instances)
+    ];
+  };
+}

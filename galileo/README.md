@@ -14,5 +14,5 @@ flowchart LR
   Galileo -->|"Attested peer forwarding"| Peer["Peer VM ingress"]
 ```
 
-See the [Galileo guide](../docs/galileo.md) and
+See the [Galileo guide](../docs/services/galileo.md) and
 [integration decision](../docs/architecture/decisions/0080-named-edge-integrations.md).

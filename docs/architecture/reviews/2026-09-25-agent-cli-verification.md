@@ -18,9 +18,9 @@ three-BEAM contention schedule is inferred from this sequential-history gap.
 Existing [HTTP/LiveView tests](../../../marshall/test/marshall_web/agent_cli_test.exs)
 already check explicit approval, digest-only persistence, wrong VM/thread,
 withdrawal, deletion and expiry. The
-[packaged CLI fixture](../../../nix/tests/machines/agent-cli/default.nix)
+[packaged CLI fixture](../../../nix/verification/tests/machines/agent-cli/default.nix)
 already exercises verified HTTPS against a synthetic control. The
-[native agent scenario](../../../nix/tests/machines/fleet/scenarios/agent.py)
+[native agent scenario](../../../nix/verification/tests/machines/fleet/scenarios/agent.py)
 already exercises real guest execution using a private prompt helper. This
 improvement joins the ordinary browser and packaged user CLI to that real stack.
 
@@ -38,8 +38,8 @@ invocation. Real DELETE sign-out rejects a mounted stale browser approval while
 the independent CLI invocation remains usable. Real VM deletion and account
 retirement, and explicitly synthetic session expiry, then refuse CLI use.
 
-The [dedicated native driver](../../../nix/tests/machines/agent-cli-journey/driver.py)
-and [browser helper](../../../nix/tests/machines/agent-cli-journey/browser.py)
+The [dedicated native driver](../../../nix/verification/tests/machines/agent-cli-journey/driver.py)
+and [browser helper](../../../nix/verification/tests/machines/agent-cli-journey/browser.py)
 compose the existing source-built fleet modules with a current NixOS guest.
 An ordinary owner shares a stopped Standard VM through the UI. An ordinary
 member signs in through the magic-link form, compares the packaged CLI's digest

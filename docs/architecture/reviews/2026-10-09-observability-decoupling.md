@@ -832,7 +832,7 @@ boundary. It does not establish the replacement SDK, spool, Grafana or protocol.
 
 ### Retired evidence telemetry-retention-diagnostics item 5
 
-Pre-cutover source: `nix/tests/machines/otel-marshall/browser.py` at baseline
+Pre-cutover source: `nix/verification/tests/machines/otel-marshall/browser.py` at baseline
 `a99f74f06542798dc9ef288e77c99d480433fc57`.
 Assertion: retained for 90 days
 
@@ -931,7 +931,7 @@ boundary. It does not establish the replacement SDK, spool, Grafana or protocol.
 
 ### Retired evidence fleet-monitor-delivery item 2
 
-Pre-cutover source: `nix/tests/evaluation/fleet-monitor.py` at baseline
+Pre-cutover source: `nix/verification/tests/evaluation/fleet-monitor.py` at baseline
 `a99f74f06542798dc9ef288e77c99d480433fc57`.
 Assertion: test_conflicting_sample_refusal_retains_neighbors_until_poison_removed
 
@@ -942,7 +942,7 @@ boundary. It does not establish the replacement SDK, spool, Grafana or protocol.
 
 ### Retired evidence fleet-slo-read item 2
 
-Pre-cutover source: `nix/tests/machines/otel-marshall/seed.exs` at baseline
+Pre-cutover source: `nix/verification/tests/machines/otel-marshall/seed.exs` at baseline
 `a99f74f06542798dc9ef288e77c99d480433fc57`.
 Assertion: Marshall.Telemetry.SloBurnRead.snapshot()
 
@@ -953,7 +953,7 @@ boundary. It does not establish the replacement SDK, spool, Grafana or protocol.
 
 ### Retired evidence fleet-slo-read item 8
 
-Pre-cutover source: `nix/tests/machines/otel-marshall/browser.py` at baseline
+Pre-cutover source: `nix/verification/tests/machines/otel-marshall/browser.py` at baseline
 `a99f74f06542798dc9ef288e77c99d480433fc57`.
 Assertion: expect(page.locator("#slo-ingress p").first).to_have_text("Unknown")
 
@@ -964,7 +964,7 @@ boundary. It does not establish the replacement SDK, spool, Grafana or protocol.
 
 ### Retired evidence fleet-slo-read item 11
 
-Pre-cutover source: `nix/tests/machines/otel-marshall/browser.py` at baseline
+Pre-cutover source: `nix/verification/tests/machines/otel-marshall/browser.py` at baseline
 `a99f74f06542798dc9ef288e77c99d480433fc57`.
 Assertion: expect(page.locator("#slo-underclass_monitor")).to_contain_text("Seven days: Unknown")
 
@@ -975,7 +975,7 @@ boundary. It does not establish the replacement SDK, spool, Grafana or protocol.
 
 ### Retired evidence underclass-proxy-slo item 4
 
-Pre-cutover source: `nix/tests/machines/otel-marshall/browser.py` at baseline
+Pre-cutover source: `nix/verification/tests/machines/otel-marshall/browser.py` at baseline
 `a99f74f06542798dc9ef288e77c99d480433fc57`.
 Assertion: #slo-underclass_proxy
 

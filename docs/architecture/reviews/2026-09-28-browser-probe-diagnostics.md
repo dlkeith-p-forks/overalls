@@ -3,7 +3,7 @@
 ## Scope
 
 Test-infrastructure only: the fleet browser acceptance worker
-(`nix/tests/machines/fleet/browser.py`) and its coordinator
+(`nix/verification/tests/machines/fleet/browser.py`) and its coordinator
 (`browser-coordination.py`) gain bounded, allowlisted failure diagnostics, so a
 red acceptance phase is now root-causeable from build logs alone.
 

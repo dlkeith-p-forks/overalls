@@ -61,12 +61,12 @@ and receiver-side deduplication must be expected.
 
 ## Implementation evidence
 
-The [delivery module](../../../nix/modules/otel-fleet/burn-delivery.nix) configures
+The [delivery module](../../../nix/domains/system/otel-fleet/burn-delivery.nix) configures
 the sender, routes, custody and private listener. The
-[NixOS test](../../../nix/tests/machines/otel-burn-delivery/default.nix) uses actual
+[NixOS test](../../../nix/verification/tests/machines/otel-burn-delivery/default.nix) uses actual
 Prometheus and Alertmanager with a
-[Rust fixture](../../../nix/tests/machines/otel-burn-delivery/receiver.rs) behind
-verified TLS. Its [driver](../../../nix/tests/machines/otel-burn-delivery/driver.py)
+[Rust fixture](../../../nix/verification/tests/machines/otel-burn-delivery/receiver.rs) behind
+verified TLS. Its [driver](../../../nix/verification/tests/machines/otel-burn-delivery/driver.py)
 contains refusal, retry and restart assertions. The
 [review](../reviews/2026-10-03-private-burn-delivery.md) records the complete
 final native check passing in 97.55 seconds, including eighty generated route histories.

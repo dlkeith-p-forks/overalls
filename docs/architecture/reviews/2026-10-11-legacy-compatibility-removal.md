@@ -408,7 +408,7 @@ The owner chose to unify the Underclass histograms rather than keep ADR-0138's
 separate versioned one. This push replaces only that clause (ADR-0138 carries a
 carry-forward note; ADR-0159 lists the evidence).
 
-- **Underclass journal:** `nix/packages/underclass/slo.rs` keeps one totals record
+- **Underclass journal:** `nix/domains/artifacts/underclass/slo.rs` keeps one totals record
   whose single histogram has the fifteen bounds through 86,400 seconds (16 buckets).
   It persists in a new file, `slo-totals.sqlite`, with only `slo_totals` and
   `slo_pending`. The `slo_latency_v2` table, the startup migration, the
@@ -655,8 +655,8 @@ found ten genuine leftovers; this push removes them.
 - **Docs.** The architecture overview no longer describes the removed v1
   envelope migration or the ADR-0088 importer as current. HLDD 07 describes v4
   manifests only, HLDD 16 the current readiness-journal supersession,
-  `docs/provisioning-fastpath.md` marks its rollout-switch section historical, and
-  `docs/terminal-v2-completion.md` closes its stale probe row.
+  `docs/history/ledgers/provisioning-fastpath.md` marks its rollout-switch section historical, and
+  `docs/history/ledgers/terminal-v2-completion.md` closes its stale probe row.
 - **Known gap (pre-existing).** The `console` action of `smoke_execution.exs`
   still calls `Lilly.Console.Dtach` and `Lilly.VM.Unit.console/2`, removed with
   terminal v1 in `4e4ad9ea`, so that manual root/KVM harness cannot complete its
@@ -686,7 +686,7 @@ and compared byte-for-byte with host-side SHA-256 digests, then deleted.
 Archive digests: dungarees `5b0c73ff…9f0c53`, overalls `6f6b9529…ad92`.
 
 **Correction to the plan.** `slo.lock` is not retired: the current journal still
-takes its process lock on it ([accounting](../../../nix/packages/underclass/slo.rs)).
+takes its process lock on it ([accounting](../../../nix/domains/artifacts/underclass/slo.rs)).
 Deleting it while Underclass holds the lock would let a second process lock a new
 inode and recover the same journal, so it was kept. Underclass stayed active on
 both hosts and served requests after the deletion.
@@ -707,10 +707,10 @@ reset at 14:03:37.081–.089, then `code-nixos` reset at .220 and `code-ubuntu`
 regrouped at .313. Exporters retry silently, so every Overalls application SLO
 other than Brady read unknown.
 
-- **Fix.** [Browser probe custody](../../../nix/modules/otel-fleet/browser-probes.nix)
+- **Fix.** [Browser probe custody](../../../nix/domains/system/otel-fleet/browser-probes.nix)
   now joins the collector's single `postStart`, ahead of the base block that ends
   in `exit 0`. A `collector-socket-custody` assertion in the
-  [fleet module](../../../nix/modules/otel-fleet/default.nix) refuses any second
+  [fleet module](../../../nix/domains/system/otel-fleet/default.nix) refuses any second
   `ExecStartPost`. The assertion fails when evaluating Overalls on `8aa4911e`
   and passes with the fix.
 - **Durability.** Exporters read cumulative durable journals, so totals resume

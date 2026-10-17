@@ -96,6 +96,8 @@ defmodule Marshall.Compute.ServiceLevelsTest do
     [operation] = Ledger.read!(Operation, vm_id: vm.id, kind: :provision)
     attempts = Ledger.read!(ServiceLevelAttempt, operation_id: operation.id)
     assert Enum.sort(Enum.map(attempts, & &1.service)) == [:lilly_physical, :marshall_ready]
+    [ready] = Enum.filter(attempts, &(&1.service == :marshall_ready))
+    assert DateTime.diff(ready.deadline, ready.admitted_at) == 120
     assert Enum.all?(attempts, &(&1.status == :pending and &1.success == nil))
     assert {:ok, replay} = Marshall.Compute.provision(request, actor: actor)
     assert replay.id == vm.id

@@ -35,9 +35,9 @@ stop/resume/power loss, host systemd freeze/restart, Firecracker termination,
 vsock helper loss, native child suspension and ZFS/storage faults therefore need
 explicit commands and acknowledgments of the selected target. Existing native
 test sources demonstrate narrower mechanisms: destination loss is armed only
-after a received dataset exists (`nix/tests/machines/clone-permutations/destination-loss.py:106-133`),
+after a received dataset exists (`nix/verification/tests/machines/clone-permutations/destination-loss.py:106-133`),
 and the executor observer freezes its service from outside that cgroup
-(`nix/tests/machines/executor-loss/observer.py:129-143`). Test presence establishes
+(`nix/verification/tests/machines/executor-loss/observer.py:129-143`). Test presence establishes
 neither passing execution here nor automatic Antithesis coverage of those faults.
 
 ## Marshall: ambiguous commit, authority and physical receipts
@@ -205,12 +205,12 @@ escaped descendants may retain custody indefinitely; fault tests must distinguis
 safe retained ownership from false successful cleanup.
 
 Guest readiness validates current boot identity and actively probes units,
-networking and root fsync (`nix/packages/guest/readiness.py:28-64,123-154`). Guest
+networking and root fsync (`nix/domains/artifacts/guest/readiness.py:28-64,123-154`). Guest
 daemon death, helper freeze or disk-full can therefore disagree with a running
 Firecracker process. Terminald explicit kill interrupts credit-stalled writers
-and PTY pumps before PID retirement (`nix/packages/terminald/src/session.rs:323-343`),
+and PTY pumps before PID retirement (`nix/domains/artifacts/terminald/src/session.rs:323-343`),
 while local pressure must not stall neighbors
-(`nix/packages/terminald/src/session.rs:634-646`). Verify
+(`nix/domains/artifacts/terminald/src/session.rs:634-646`). Verify
 guest process, boot, stream and storage state independently; native isolation is
 outside what source inspection or mocked executor tests establish.
 
@@ -218,10 +218,10 @@ outside what source inspection or mocked executor tests establish.
 
 Request recording is separate from effect authority. Recorder state transitions
 fsync a private stage, rename and directory-sync before acknowledgment; storage
-failure poisons the writer (`nix/modules/otel-guest/receiver/src/durable_slo.rs:518-587`).
+failure poisons the writer (`nix/domains/system/otel-guest/receiver/src/durable_slo.rs:518-587`).
 Kernel producer identity/death proof and deadlines settle pending measurements;
 recorder restart alone cannot prove producer death
-(`nix/modules/otel-guest/receiver/src/request_recorder.rs:151-175,306-319`). Producer
+(`nix/domains/system/otel-guest/receiver/src/request_recorder.rs:151-175,306-319`). Producer
 ambiguous RPCs report gaps while preserving work semantics
 (`elixir/request_accounting/lib/overalls/request_accounting/producer.ex:49-82`). Cut
 committed admission/completion replies, kill only recorder versus only producer,
@@ -231,10 +231,10 @@ the request effect succeeded.
 
 Backups recover interrupted runs through durable cleaning and reject unresolved
 cleanup; only complete component capture plus cleanup publishes a host manifest
-(`nix/modules/backups/runtime.py:78-92,199-238`). PostgreSQL capture validates version,
+(`nix/domains/system/backups/runtime.py:78-92,199-238`). PostgreSQL capture validates version,
 archive readability and hash using runtime TLS authority
-(`nix/modules/backups/postgres.py:104-155`). Restic partial backup is failure, and
-retention validates references before deleting (`nix/modules/backups/restic.py:153-174,256-293`).
+(`nix/domains/system/backups/postgres.py:104-155`). Restic partial backup is failure, and
+retention validates references before deleting (`nix/domains/system/backups/restic.py:153-174,256-293`).
 Fault upload/manifest acknowledgment, pool pressure, cleanup and prune concurrently.
 Check referenced component presence, exact nonce/GUID cleanup and verified isolated
 restore; historical restored metadata must not automatically serve execution
@@ -244,9 +244,9 @@ valid outcome, not guaranteed application-consistent recovery.
 
 Nix updater stops socket activators before services, retains a recovery descriptor
 and attempts prior role restoration after failed switching
-(`nix/modules/auto-update/runtime.py:573-586,638-677`). Private readiness must be
+(`nix/domains/system/auto-update/runtime.py:573-586,638-677`). Private readiness must be
 affirmative before advancing lastHealthy
-(`nix/modules/auto-update/runtime.py:880-924`). Kill updater
+(`nix/domains/system/auto-update/runtime.py:880-924`). Kill updater
 during switch or revoke custody while probes lag. Check selected generation,
 running roles, durable ownership and surviving guests separately from a green
 health response.

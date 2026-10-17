@@ -20,6 +20,7 @@ defmodule Marshall.Agents.Event do
 
     create :append do
       accept [:thread_id, :turn_id, :sequence, :kind, :body]
+      change Marshall.Agents.EventActivity
     end
   end
 

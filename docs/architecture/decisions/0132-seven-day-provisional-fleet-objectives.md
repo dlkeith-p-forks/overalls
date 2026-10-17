@@ -86,13 +86,13 @@ provisional warning state is visible to operators but does not notify anyone.
 
 ## Implementation evidence
 
-The [objective roster](../../../nix/modules/otel-fleet/objectives.nix) and
-[rules](../../../nix/modules/otel-fleet/objective-rules.nix) provision targets,
-coverage guards and burn expressions. The [signed-in catalog](../../../nix/modules/otel-fleet/slo-catalog.nix)
+The [objective roster](../../../nix/domains/system/otel-fleet/objectives.nix) and
+[rules](../../../nix/domains/system/otel-fleet/objective-rules.nix) provision targets,
+coverage guards and burn expressions. The [signed-in catalog](../../../nix/domains/system/otel-fleet/slo-catalog.nix)
 feeds [Marshall's bounded reader](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/slo_read.ex)
 and [SLO page](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall_web/live/slo_live.ex).
-The [Promtool fixture](../../../nix/tests/evaluation/otel-slo-rules.nix) and
-[browser machine fixture](../../../nix/tests/machines/otel-marshall/default.nix)
+The [Promtool fixture](../../../nix/verification/tests/evaluation/otel-slo-rules.nix) and
+[browser machine fixture](../../../nix/verification/tests/machines/otel-marshall/default.nix)
 check the boundaries. The [provisional objective review](../reviews/2026-10-02-provisional-seven-day-slos.md)
 records passing checks, production rollout and remaining acceptance gaps.
 
@@ -111,8 +111,8 @@ Producer activation at `4f2f7186` was verified healthy on both hosts with privat
 mode-0600 checkpoints agreeing with live source lifetimes and aggregate counters.
 Power-loss and native Firecracker provider-path acceptance remain open.
 
-Underclass's private [Rust journal](../../../nix/packages/underclass/slo.rs)
-and [pinned instrumentation patch](../../../nix/packages/underclass/instrumentation.patch)
+Underclass's private [Rust journal](../../../nix/domains/artifacts/underclass/slo.rs)
+and [pinned instrumentation patch](../../../nix/domains/artifacts/underclass/instrumentation.patch)
 extend the fixed roster with a separate durable proxy completion candidate.
 Authorized parsed admission commits before effects; completion requires response
 EOF and, for SSE, a dispatched terminal marker without errors. Pending work

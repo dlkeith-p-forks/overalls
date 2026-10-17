@@ -439,7 +439,7 @@ new obligations: static property identity/catalog completeness; exact per-kind
 wire semantics; one complete atomic record per successful write; bounded producer
 admission; no SUT authority; no output when disabled; closed details schemas;
 exactly one readiness owner; random choices read entropy at the decision boundary.
-Owner is `ghuntley`, already verified in `docs/code-contracts.md`; do not add notify
+Owner is `ghuntley`, already verified in `docs/development/code-contracts.md`; do not add notify
 metadata without instruction.
 
 This read-only research changes no architecture or implementation status. A future

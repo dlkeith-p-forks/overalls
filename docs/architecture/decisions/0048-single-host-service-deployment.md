@@ -98,7 +98,7 @@ change overalls' declared one-Marshall deployment or establish its acceptance.
 - [Marshall runtime](../../../marshall/lib/marshall/operations/runtime_config.ex)
   and [runtime tests](../../../marshall/test/marshall/operations/runtime_config_test.exs)
   preserve connection budgets and TLS/durability while accepting one replica.
-- [Marshall Nix module](../../../nix/modules/marshall.nix) retains the default of
+- [Marshall Nix module](../../../nix/domains/system/marshall.nix) retains the default of
   three while allowing explicit single-instance deployments.
 - [Overalls configuration](../../../fleet/hosts/overalls/configuration.nix)
   declares the local PostgreSQL bootstrap and runtime secret delivery.
@@ -108,7 +108,7 @@ change overalls' declared one-Marshall deployment or establish its acceptance.
 - [Image catalog bootstrap](../../../fleet/hosts/overalls/image-catalog.nix)
   registers the same manifest advertised by Lilly through the operator catalog.
 - [Host inventory](../../../fleet/hosts/overalls/host.json) retains actual hardware,
-  network and storage identity. [Host workflow](../../host-provisioning.md) retains
+  network and storage identity. [Host workflow](../../operations/host-provisioning.md) retains
   the published installation and enrollment protocol.
 
 Physical deployment is verified: PostgreSQL, Marshall and Lilly are active;

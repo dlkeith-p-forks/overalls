@@ -59,19 +59,8 @@ defmodule Lilly.VM.Logging do
          do: :ok
   end
 
-  @spec arguments(Config.t(), Intent.t()) :: [String.t()]
-  def arguments(%Config{firecracker_logging: false}, _), do: ["--level", "Off"]
-
-  def arguments(_, intent),
-    do: [
-      "--level",
-      "Info",
-      "--log-path",
-      "/" <> filename(intent, "log"),
-      "--metrics-path",
-      "/" <> filename(intent, "metrics")
-    ]
-
+  # The fifo names here match the --log-path and --metrics-path that
+  # lilly-hostd's typed launch passes to Firecracker (vm_launch.rs).
   defp filename(intent, kind), do: "#{kind}-#{intent.execution_epoch}-#{intent.generation}.fifo"
   defp key(intent), do: "#{intent.placement_id}-#{intent.execution_epoch}-#{intent.generation}"
 end

@@ -6,7 +6,7 @@ policy boundaries. Oban performs retryable background work.
 
 The signed-in sidebar in Workspace and Control room places **Source code**
 directly below **HLDD**. It opens the
-[Overalls repository](https://github.com/antithesishq/kittens) on GitHub.
+[Overalls repository](https://github.com/ghuntley/overalls) on GitHub.
 
 Workspace labels `/usage` **AI usage**; its page shows **Your AI usage**.
 Control room labels `/admin/usage` **Fleet AI usage**. These names describe
@@ -256,7 +256,7 @@ revocations. Marshall's host liveness, and Porsche and the remaining edge
 services, adopt them in later phases.
 
 Evidence: [coordination decision](repo:docs/architecture/decisions/0003-control-plane-coordination.md),
-[control transport](repo:docs/provisioner-transport.md), [runtime configuration](repo:marshall/config/runtime.exs),
+[control transport](repo:docs/operations/provisioner-transport.md), [runtime configuration](repo:marshall/config/runtime.exs),
 [protocol library](repo:protocol/mix.exs),
 [liveness primitives decision](repo:docs/architecture/decisions/0140-event-driven-liveness-and-single-writer-views.md).
 

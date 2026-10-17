@@ -16,9 +16,9 @@ with its rationale, status and ADR-0007 supersession preserved.
 retain relocation, cancellation, resize and resize retry.
 [Executor adoption](../../../lilly/lib/lilly/vm/executor.ex) retains transient
 execution-lock retries and resize-specific guest readiness. The
-[native guest fixture](../../../nix/tests/machines/zfs-guest/driver.py) retains
+[native guest fixture](../../../nix/verification/tests/machines/zfs-guest/driver.py) retains
 relocation restoration, overcommit and resizing scenarios with distinct identities;
-its [probe](../../../nix/tests/machines/zfs-guest/probe.exs) applies the larger
+its [probe](../../../nix/verification/tests/machines/zfs-guest/probe.exs) applies the larger
 overcommit shape only to that scenario.
 
 ## Validation and remaining gaps

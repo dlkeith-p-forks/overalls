@@ -128,19 +128,36 @@ defmodule Lilly.Host.Image do
   def stage(path), do: inspect_image(path, :stage)
 
   # @cc [owner:ghuntley,label:security] sealed-image-independent-authority
-  # sealed/2 MUST validate the manifest and exact recorded file identities without
-  # rehashing. Callers MUST hold a template reader lease and independently verify
+  # sealed/2 MUST validate the manifest and the recorded file identities
+  # (`same_files?/2`) without rehashing. Callers MUST hold a template reader lease and independently verify
   # its owned dataset GUID and readonly seal before and after this check. This
   # function alone MUST NOT authorize copying or launch.
   @spec sealed(Path.t(), map()) :: {:ok, t()} | {:error, :invalid_local_image}
   def sealed(path, expected) do
     with {:ok, image} <- inspect_image(path, :identity),
-         {:ok, ^expected} <- identities(image),
+         {:ok, actual} <- identities(image),
+         true <- same_files?(actual, expected),
          true <-
            Enum.all?(image.files, fn {_, {_, stat}} -> stat.uid == 0 and stat.links == 1 end),
          do: {:ok, image},
          else: (_ -> {:error, :invalid_local_image})
   end
+
+  # @cc [owner:ghuntley,label:recovery;security] sealed-identity-survives-remount
+  # Two identity maps MUST match only when they name the same files and every
+  # field but the first (the device number) is equal. Linux ZFS assigns a
+  # dataset a new device number on each mount, so comparing it quarantined
+  # every template after a reboot; the caller pins the filesystem by dataset
+  # GUID and mountpoint instead. Inode, size, mode, owner, links and
+  # nanosecond mtime/ctime MUST still match exactly.
+  @spec same_files?(map(), map()) :: boolean()
+  def same_files?(actual, expected) when is_map(actual) and is_map(expected) do
+    Enum.sort(Map.keys(actual)) == Enum.sort(Map.keys(expected)) and
+      Enum.all?(actual, fn {name, values} -> same_file?(values, expected[name]) end)
+  end
+
+  defp same_file?([_ | values], [_ | values]) when length(values) == 10, do: true
+  defp same_file?(_, _), do: false
 
   # @cc [owner:ghuntley,label:security] template-file-identity-precision
   # Persisted identities MUST include nanosecond mtime and ctime from the native
@@ -167,6 +184,7 @@ defmodule Lilly.Host.Image do
          {:ok, body} <- File.read(manifest_path),
          {:ok, value} <- JSON.decode(body),
          {:ok, manifest} <- ImageManifest.validate(value),
+         true <- exact_file_set?(path, manifest),
          {:ok, files} <- artifacts(path, manifest, verification),
          image = %__MODULE__{
            id: manifest.id,
@@ -183,6 +201,31 @@ defmodule Lilly.Host.Image do
   end
 
   defp inspect_image(_, _), do: {:error, :invalid_local_image}
+
+  # @cc [owner:ghuntley,label:security] image-directory-file-set-closed
+  # exact_file_set?/2 MUST reject any configured image directory whose direct
+  # entries differ from ImageManifest.file_names/1, before any artifact bytes
+  # are accepted for staging or hashing. The one exception is an `evidence`
+  # directory (build evidence of Windows images, never staged or launched),
+  # which may sit beside the manifest's files as a real directory.
+  # A manifest controls the complete image directory, not only the names of
+  # artifacts that the launcher happens to consume. Rejecting extra entries
+  # prevents an operator from staging unverified payloads alongside a valid
+  # image and keeps the on-disk shape equal to ImageManifest.file_names/1.
+  @spec exact_file_set?(Path.t(), ImageManifest.t()) :: boolean()
+  defp exact_file_set?(path, manifest) do
+    case File.ls(path) do
+      {:ok, entries} ->
+        {evidence, artifacts} = Enum.split_with(entries, &(&1 == "evidence"))
+
+        Enum.sort(artifacts) == Enum.sort(ImageManifest.file_names(manifest)) and
+          (evidence == [] or
+             match?({:ok, %File.Stat{type: :directory}}, File.lstat(Path.join(path, "evidence"))))
+
+      _ ->
+        false
+    end
+  end
 
   @doc "Cheap availability check. The VM driver must call load again before copying/launching."
   # @cc [owner:ghuntley,label:assumption;security] availability-does-not-authorize-launch
@@ -222,8 +265,8 @@ defmodule Lilly.Host.Image do
 
   # @cc [owner:ghuntley,label:security] image-artifacts-follow-manifest-kind
   # artifacts/3 MUST verify exactly the files the validated manifest's boot kind
-  # names (kernel, optional initrd and the declared root artifact, or firmware and
-  # disk.raw) and nothing
+  # names (kernel, optional initrd and the declared ext4 root artifact, or
+  # firmware and disk.raw) and nothing
   # else; the file list comes from the protocol, never from directory contents.
   defp artifacts(path, manifest, verification) do
     Enum.reduce_while(
@@ -253,8 +296,7 @@ defmodule Lilly.Host.Image do
   defp resolve(path) do
     with false <- String.contains?(path, ["\n", "\r", "\0"]),
          :ok <- safe_ancestors(Path.dirname(path)),
-         {:ok, output} <- Command.run(:realpath, ["-e", "--", path]),
-         resolved = String.trim_trailing(output, "\n"),
+         {:ok, resolved} <- Lilly.Host.Paths.canonical(path),
          true <- Path.type(resolved) == :absolute,
          :ok <- safe_ancestors(Path.dirname(resolved)),
          {:ok, %File.Stat{type: :regular, mode: mode, uid: uid} = stat} <- File.lstat(resolved),

@@ -20,7 +20,7 @@ remain separate in the [context review](repo:docs/architecture/reviews/2026-10-1
 
 Both standard images install pinned Codex 0.149.0 (`codex`) and Claude Code
 2.1.238 (`claude`) using their native system configuration. The
-[shared package/settings source](repo:nix/packages/guest/coding-clis.nix) selects
+[shared package/settings source](repo:nix/domains/artifacts/guest/coding-clis.nix) selects
 Ziggy's verified private endpoint without provider credentials or custom
 launchers. Automatic client updates are disabled. No model catalog synchronizer
 is installed; ordinary native model choices/catalogs may differ from Ziggy's
@@ -145,7 +145,7 @@ mode-0600 Unix socket; there is no root editor fallback. Passwordless sudo remai
 available to existing guest writers, so these personal directories do not establish
 confidentiality against another writer or root.
 
-The [package procedure](repo:nix/packages/vscode-web/README.md) explains source and
+The [package procedure](repo:nix/domains/artifacts/vscode-web/README.md) explains source and
 signing-key updates. Compiled policy and 19 extension-maintenance checks passed
 with actual source-bundled validation. The final specialized Nix package passed
 its complete build and installed Chromium/PTY checks; fresh native
@@ -159,7 +159,7 @@ later passed the cold browser journey and Alice's outside-HOME policy stage,
 then failed before invoking Bob's HOME command because its palette row was
 absent for 30 seconds. Complete two-account controls/language execution and a
 passing rerun remain required. The
-[native fixture](repo:nix/tests/machines/vscode-web/default.nix)
+[native fixture](repo:nix/verification/tests/machines/vscode-web/default.nix)
 uses the actual package and broker with a synthetic roster/bridge. The complete
 NixOS service/Firecracker journey passed creation, tools, personal custody,
 broker/worker loss, stop/start and revocation. Ubuntu provisioned and reached the
@@ -422,8 +422,8 @@ Its minimum shape is 16 vCPUs, 32 GiB RAM, a 64 GiB root, and a separate sparse
 retains its database, keys, and ZFS identity; initialization must not format an
 already initialized but mismatched disk. It does not offer another Inception layer.
 
-Evidence: [guest builder](repo:nix/packages/guest/default.nix),
-[Ubuntu builder guide](repo:docs/ubuntu-guests.md), [Inception](repo:docs/inception.md),
+Evidence: [guest builder](repo:nix/domains/artifacts/guest/default.nix),
+[Ubuntu builder guide](repo:docs/guests/ubuntu-guests.md), [Inception](repo:docs/guests/inception.md),
 [boot trust decision](repo:docs/architecture/decisions/0113-guest-trust-at-boot.md),
 [fleet images](repo:fleet/guest-images.nix).
 
@@ -639,7 +639,7 @@ The shared fleet fixture enables boot-trust receivers, private DNS and current
 SSH roster prerequisites for every feature variant. The selected feature
 scenario remains independent of those prerequisites. Both Ubuntu's primary
 image and its alternate NixOS image receive the current host's public roots.
-The bounded [native trust journey](repo:nix/tests/machines/fleet-guest-trust/driver.py)
+The bounded [native trust journey](repo:nix/verification/tests/machines/fleet-guest-trust/driver.py)
 checks current durable receipts, actual service order, wrong-boot refusal with
 positive delivery controls, and a new receipt with retained data after restart.
 The wrong-boot request carries a different valid root set and must finish with
@@ -791,27 +791,37 @@ boot after an image change takes the full trust path.
 ## Multi-OS image families
 
 The catalog now includes Arch Linux and AlmaLinux as foreign Linux variants.
-Their builders reuse the version-4 kernel image contract and Ubuntu's reviewed
-offline root assembly, but add deterministic `arch` and `almalinux` markers so
-their image IDs remain distinct. The [`foreign-linux-guests` evaluation](repo:nix/tests/evaluation/foreign-linux-guests.nix)
+Their builders reuse the version-4 kernel image contract and the reviewed shared
+foreign-Linux root assembly, but add deterministic `arch` and `almalinux` markers so
+their image IDs remain distinct. The [`foreign-linux-guests` evaluation](repo:nix/verification/tests/evaluation/foreign-linux-guests.nix)
 checks the marker, version-4 command shape and kernel/root artifact bounds. It
 does not boot either distribution or establish distribution-native package,
 network, isolation or recovery behavior. Both entries use the normal Linux
 guest agent row and are catalogued without standby metadata in [`fleet/guest-images.nix`](repo:fleet/guest-images.nix).
+Their offline image assembly now carries the pinned Lyra/terminald binaries,
+Python, Git, OpenSSH, CA bundle and generic systemd service units; evaluation
+checks verify those closures and service references, while no native Arch or
+Alma boot result is recorded.
 
 The shared protocol also defines native FreeBSD and OmniOS contracts. Both use
-`os = freebsd` or `os = illumos`, a version-6 firmware manifest, a complete
-raw-GPT disk and the matching native agent set. FreeBSD's pinned disk retains
-its EFI and UFS partitions; OmniOS carries its ZFS root. Bundle version 3
-carries the OS, matching agent set, firmware byte length and bounded artifact
-metadata. Lilly emits firmware launch metadata, attaches vsock only for a
-protocol-speaking agent set and applies the Hyper-V CPU template only to
-Windows firmware. Preliminary FreeBSD and OmniOS builder/catalog entries
-exist, but the rolling FreeBSD 14.3 source endpoint is retired and replaced by
-a checksum-pinned archive capture. Local Nix realization is recorded for both
-builders; no signed production artifact, guest agent, machine boot, readiness,
-terminal, workspace, relocation or fleet evidence is recorded. OmniOS's
-`illumos` wire label remains an open naming decision.
+version-6 firmware/raw-GPT manifests; FreeBSD uses `os = freebsd` and OmniOS is
+represented as `os = illumos`. The FreeBSD disk retains its complete GPT layout
+with EFI and UFS partitions. Bundle version 3 carries the OS, matching agent set,
+firmware and bounded artifact sizes. Linux kernel bundles emit `initrd_path` only
+when an initrd is declared; native FreeBSD and illumos bundles are firmware-only.
+Lilly attaches vsock only for a protocol-speaking agent set and applies the
+Hyper-V CPU template only to Windows firmware.
+Preliminary FreeBSD and OmniOS
+builder/catalog entries exist; the OmniOS catalog row consumes the explicit
+`illumosGuest` constructor while retaining its downstream display name. Their
+native agent rows are currently
+all-false: no vsock, readiness, trust, terminal, workspace or SSH capability is
+advertised. The rolling FreeBSD 14.3 source endpoint is retired and replaced by
+a checksum-pinned archive capture; local Nix realization of the pinned
+preliminary artifacts succeeds, but no guest agent, machine boot, readiness,
+terminal, workspace, relocation or fleet evidence is recorded.
+OmniOS's `illumos` wire label remains an open naming
+decision.
 
 See [ADR-0180](repo:docs/architecture/decisions/0180-multi-os-guest-image-contract.md)
 and the [multi-OS architecture review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md).
@@ -826,9 +836,9 @@ with no initrd and no kernel command line, and exposes its devices over the
 opt-in virtio-pci transport (`--enable-pci`) so the signed virtio-win
 `viostor` and `NetKVM` drivers bind. The firmware is built from the pinned edk2
 with one patch that ends its 32-bit PCI aperture at Firecracker's MMCONFIG
-window ([firmware package](repo:nix/packages/guest/windows/firmware.nix)).
+window ([firmware package](repo:nix/domains/artifacts/guest/windows/firmware.nix)).
 
-The [patched static Firecracker](repo:nix/packages/firecracker.nix) is the only
+The [patched static Firecracker](repo:nix/domains/artifacts/infrastructure/firecracker.nix) is the only
 VMM Lilly's release metadata and the development shell reference. Its nine
 patches keep the upstream version string and `Cargo.lock`, and widen the
 seccomp surface by exactly one vCPU-thread ioctl (`KVM_IOEVENTFD`, already
@@ -851,9 +861,9 @@ offered). Linux guests see no change: they never touch the new ports, keep their
 firmware-less boot, never move a BAR and, not being offered the feature, never
 post an indirect table.
 
-The [image builder](repo:nix/packages/guest/windows/default.nix) installs
+The [image builder](repo:nix/domains/artifacts/guest/windows/default.nix) installs
 Windows offline inside a KVM Nix sandbox: QEMU with OVMF boots Microsoft's
-hash-pinned evaluation ISO ([pin](repo:nix/packages/guest/windows/iso.json))
+hash-pinned evaluation ISO ([pin](repo:nix/domains/artifacts/guest/windows/iso.json))
 with modern-only virtio-pci devices, restricted user networking, an answer file
 and the pinned virtio-win drivers. `SetupComplete.cmd` enables Emergency
 Management Services on COM1 at 115200 baud, disables sleep, Windows Update
@@ -877,8 +887,8 @@ admits exactly the eight-key version-5 shape beside version 4 and derives a
 [workload bundle](repo:protocol/lib/overalls_protocol/workload_bundle.ex) gains a
 seven-key version 2 for firmware bundles while version 1 encodes byte for byte
 as before. Both results carry `boot_kind`, `root_format` and `guest_agents`, and
-the protocol alone names the artifact files (`kernel`, `initrd`, `rootfs.ext4`
-or `firmware`, `disk.raw`).
+the protocol alone names the artifact files (`kernel`, `initrd`, `rootfs.ext4`, or
+`firmware`, `disk.raw`).
 
 Lilly keeps `rootfs.ext4` as the pool-side root drive slot for every image and
 maps the image's `disk.raw` onto it. For a firmware bundle the
@@ -903,7 +913,7 @@ fact, and readiness, terminals, workspace sources and the Inception profile are
 refused. Restart and adoption decide from the same durable bundle.
 
 Inside the image, the SYSTEM task
-[`overalls-bootstrap.ps1`](repo:nix/packages/guest/windows/overalls-bootstrap.ps1)
+[`overalls-bootstrap.ps1`](repo:nix/domains/artifacts/guest/windows/overalls-bootstrap.ps1)
 runs at every boot: it reaches MMDS over a temporary link-local address when the
 stack has none, obtains a V2 session token, validates every field of `/lilly`
 (including that the MAC is the adapter's), applies exactly the delivered `/32`
@@ -914,7 +924,8 @@ Administrator credential, EMS and SAC are unchanged, so the serial login gap of
 ADR-0169 stands.
 
 Marshall projects per-capability guest facts (`guest_capabilities`: available,
-ssh, terminal, agents, editor, readiness, inception) from the immutable image
+readiness, trust, terminal, workspace, flush, SSH, agents, editor, Inception)
+from the immutable image
 ([image](repo:marshall/lib/marshall/compute/image.ex),
 [views](repo:marshall/lib/marshall/compute/views.ex)), each derived from the
 protocol's capability table for the row-bound validated manifest and all false
@@ -930,22 +941,22 @@ the selected image's minima. The image stays out of `fleet/guest-images.nix`;
 staging and registration are operator actions after every host runs a release
 that understands the shapes.
 
-### Agents over virtio-vsock (`windows-v1`, in progress)
+### Agents over virtio-vsock (`windows-v1`, FreeBSD and illumos in progress)
 
 [ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md) adds a
 third agent set. [`OverallsProtocol.GuestAgents`](repo:protocol/lib/overalls_protocol/guest_agents.ex)
-names the closed set (`linux`, `none`, `windows-v1`) and a pure capability
-table: Linux has everything, `none` nothing, `windows-v1` readiness, trust,
-terminal, workspace, flush, SSH and agents but neither the editor nor
-Inception. Lilly's driver, executor and jail and Marshall's surfaces branch on
-these capabilities, never on the set's name, so the agentless path of ADR-0170
-is the `none` row of the table and is pinned unchanged. The readiness budget is
-the agent set's (`readiness_budget_ms/2`: 120 s Linux, 2400 s Linux Inception,
-600 s `windows-v1`) and is recorded once at the first launch of a boot. The
-version-5 manifest admits `windows-v1` with `workspace_source_version` 2;
-the identity array already carried the agent set, so the IDs differ and an
-older Lilly refuses a `windows-v1` bundle, which is why the converged push
-precedes any placement.
+names the closed set (`linux`, `none`, `windows-v1`, `freebsd-v1` and
+`illumos-v1`) and a pure capability table: Linux has everything, `none`
+nothing, and each firmware agent set has readiness, trust, terminal, workspace,
+flush, SSH and agents but neither the editor nor Inception. Lilly's driver,
+executor and jail and Marshall's surfaces branch on these capabilities, never on
+the set's name, so the agentless path of ADR-0170 remains the `none` row. The
+readiness budget is the agent set's (`readiness_budget_ms/2`: 120 s Linux,
+2400 s Linux Inception, 600 s firmware agent sets) and is recorded once at the
+first launch of a boot. Version-5 Windows and version-6 FreeBSD/illumos
+manifests may declare `workspace_source_version` 2; the identity array carries
+the agent set, so each image ID differs and an older Lilly refuses an unknown
+bundle, which is why the converged push precedes placement.
 
 The transport is virtio-vsock through the virtio-win `viosock` driver and
 Winsock provider, shipped in the image beside the other drivers and bound
@@ -954,7 +965,7 @@ address family is discovered at runtime (control device or Winsock catalog),
 never assumed. The Lilly guest protocols (readiness 1024, credentials 1025,
 flush 1026, trust 1030, workspace 1031, terminal 1075) are reused byte for byte.
 The agents are Rust, cross-built from the shared Lyra crate as `lyraWindows`
-through the pinned zig toolchain ([packaging](repo:nix/packages/lyra.nix)); the
+through the pinned zig toolchain ([packaging](repo:nix/domains/artifacts/infrastructure/lyra.nix)); the
 shared modules are portable (`O_NOFOLLOW` on Unix and
 `FILE_FLAG_OPEN_REPARSE_POINT` on Windows for symlink refusal, POSIX modes and
 process-group kills under `cfg(unix)`), and the Lyra gate type-checks the
@@ -1004,7 +1015,7 @@ Administrators with a never-recorded random password, disabled rather than
 deleted when they leave), writes one `AuthorizedKeysFile` per account under
 `C:\overalls\ssh\authorized_keys` (SYSTEM-owned, readable only by that account)
 and, after the first applied roster, publishes `ssh-ready` and starts `sshd`.
-The shipped [`sshd_config`](repo:nix/packages/guest/windows/sshd_config) is
+The shipped [`sshd_config`](repo:nix/domains/artifacts/guest/windows/sshd_config) is
 public-key only, has no `administrators_authorized_keys` and serves the per-boot
 host certificate that
 [`overalls-host-certificate-windows`](repo:lyra/src/bin/overalls-host-certificate-windows.rs)
@@ -1026,9 +1037,9 @@ Gate 4 brings the browser terminal. Windows guests run the same terminald
 source as Linux guests, built for Windows as `terminaldWindows`: one session
 engine, framing, scrollback ring and boot-bound HELLO, with only sockets, the
 PTY and the boot identity chosen by target
-([ConPTY layer](repo:nix/packages/terminald/src/pty_windows.rs),
-[viosock sockets](repo:nix/packages/terminald/src/conn_windows.rs),
-[MMDS identity](repo:nix/packages/terminald/src/identity_windows.rs)). It
+([ConPTY layer](repo:nix/domains/artifacts/terminald/src/pty_windows.rs),
+[viosock sockets](repo:nix/domains/artifacts/terminald/src/conn_windows.rs),
+[MMDS identity](repo:nix/domains/artifacts/terminald/src/identity_windows.rs)). It
 listens on vsock port 1075 as a SYSTEM task, accepts only the host CID and
 derives its HELLO key from the MMDS boot challenge, so Lilly's terminal
 client is unchanged. Each session is a PowerShell in ConPTY inside a
@@ -1049,7 +1060,7 @@ listens on vsock port 1031 for the host CID only, validates, persists and
 answers Lilly's one-line delivery with the same code as Linux guests, then
 clones into `C:\workspace` in the background. Git is Git for Windows,
 installed machine-wide by winget from the pinned
-[`winget.json`](repo:nix/packages/guest/windows/winget.json) (see below). It runs with an empty environment, no
+[`winget.json`](repo:nix/domains/artifacts/guest/windows/winget.json) (see below). It runs with an empty environment, no
 system or global configuration and the OpenSSL backend, so it trusts exactly
 the bundle the trust daemon last published, and each invocation lives in a
 kill-on-close job so a timeout ends its helpers too.
@@ -1072,26 +1083,26 @@ Tools in Windows images ([ADR-0173](repo:docs/architecture/decisions/0173-window
 Windows images install Windows Server 2025 **Desktop Experience**, because
 winget and AppX provisioning exist only there (Server Core has no DISM AppX
 provider). winget and every package come from
-[`winget.json`](repo:nix/packages/guest/windows/winget.json): the App Installer
+[`winget.json`](repo:nix/domains/artifacts/guest/windows/winget.json): the App Installer
 release assets and, per package, the winget-pkgs manifests and one x64
 installer, each fetched by Nix against its SHA-256. The pinned set is Git for
 Windows, GitHub CLI, Claude Code, Codex with ripgrep and the Visual C++
 redistributable, WSL, Podman and Visual Studio Community 2026 (C++ and .NET
 desktop workloads) from a pinned offline layout
-([`vs-layout.json`](repo:nix/packages/guest/windows/vs-layout.json), recorded
-by [`update-vs-layout.ps1`](repo:nix/packages/guest/windows/update-vs-layout.ps1),
+([`vs-layout.json`](repo:nix/domains/artifacts/guest/windows/vs-layout.json), recorded
+by [`update-vs-layout.ps1`](repo:nix/domains/artifacts/guest/windows/update-vs-layout.ps1),
 rebuilt in `C:\vslayout` from the file server, installed with
 `--installLayoutPath` and `--noWeb`, then deleted); the image disk is 64 GiB;
 operators change the set only with
-[`update-winget-pins.py`](repo:nix/packages/guest/windows/update-winget-pins.py).
-The installation stays offline: [`stage-winget.py`](repo:nix/packages/guest/windows/stage-winget.py)
+[`update-winget-pins.py`](repo:nix/domains/artifacts/guest/windows/update-winget-pins.py).
+The installation stays offline: [`stage-winget.py`](repo:nix/domains/artifacts/guest/windows/stage-winget.py)
 puts the manifests on the boot media with each installer reduced to the pinned
 entry, and the guest's only reachable endpoint is `10.0.2.100:80`, a QEMU
-`guestfwd` to [`serve-pinned.py`](repo:nix/packages/guest/windows/serve-pinned.py),
+`guestfwd` to [`serve-pinned.py`](repo:nix/domains/artifacts/guest/windows/serve-pinned.py),
 which serves exactly the staged installers. As SYSTEM, SetupComplete
 provisions App Installer; the packages install in the build's single
 interactive logon (`AutoLogon` `LogonCount 1` running
-[`FirstLogon.cmd`](repo:nix/packages/guest/windows/FirstLogon.cmd)), because
+[`FirstLogon.cmd`](repo:nix/domains/artifacts/guest/windows/FirstLogon.cmd)), because
 winget needs package identity and its `.exe` installers never start from a
 session-0 task. Each package installs machine-wide from its local manifest
 (winget verifies the installer digest) with a serial checkpoint before and
@@ -1172,4 +1183,4 @@ the build reads back from the raw disk with mtools. A stalled or failed
 installation can therefore be placed between two known checkpoints and examined
 without rerunning it. The launcher keeps Firecracker's own log and metrics next
 to the disk copy for the same reason. See
-[docs/windows-guests.md](repo:docs/windows-guests.md).
+[docs/guests/windows-guests.md](repo:docs/guests/windows-guests.md).

@@ -3,7 +3,7 @@
 ## Scope and architecture impact
 
 This review covers the automatic host updater's consumer and secret-unit stop
-phase in [runtime.py](../../../nix/modules/auto-update/runtime.py). It affects
+phase in [runtime.py](../../../nix/domains/system/auto-update/runtime.py). It affects
 the recovery implementation under ADR-0036 and the host activation flow under
 ADR-0043. It preserves their existing authority, candidate, migration,
 rollback and health contracts; no replacement decision is needed.

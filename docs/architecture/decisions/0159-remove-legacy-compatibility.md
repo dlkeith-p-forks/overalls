@@ -116,10 +116,10 @@ and the [transfer endpoint](../../../lilly/lib/lilly/transfer/endpoint.ex) refus
 pool that carries one, with refusal tests in
 [session pools](../../../lilly/test/lilly/control/session_pools_test.exs) and the
 [endpoint suite](../../../lilly/test/transfer/endpoint_test.exs). The
-[Lilly module](../../../nix/modules/lilly.nix) has no budget option, the updater's
-[Lilly owner descriptor](../../../nix/modules/auto-update/default.nix) and both
+[Lilly module](../../../nix/domains/system/lilly.nix) has no budget option, the updater's
+[Lilly owner descriptor](../../../nix/domains/system/auto-update/default.nix) and both
 fleet `host.json` declarations omit it, and the
-[host tool](../../../nix/packages/host/preparation.py) neither sends a budget nor
+[host tool](../../../nix/domains/artifacts/host/preparation.py) neither sends a budget nor
 bounds headroom by one. [Marshall enrollment](../../../marshall/lib/marshall/compute/enrollment_request.ex)
 accepts only the three-key pool shape and refuses a supplied budget, with refusal
 tests in the [request parser suite](../../../marshall/test/marshall/compute/enrollment_request_test.exs)
@@ -139,28 +139,28 @@ provisioning rollout switches: readiness is unconditional in
 [the executor](../../../lilly/lib/lilly/vm/executor.ex), same-pool clones always
 block-copy in [clone effects](../../../lilly/lib/lilly/clone/effects.ex), and
 template budget and standby count are positive sizes in
-[the Nix module](../../../nix/modules/lilly.nix). Remaining pushes
+[the Nix module](../../../nix/domains/system/lilly.nix). Remaining pushes
 are listed in the plan record.
 
-The [request recorder checkpoint](../../../nix/modules/otel-guest/receiver/src/durable_slo.rs)
+The [request recorder checkpoint](../../../nix/domains/system/otel-guest/receiver/src/durable_slo.rs)
 accepts only version 3 and refuses any other version unchanged, with a regression
 test for versions 1, 2 and 4. The logging collector's
-[cursor preflight](../../../nix/modules/logging/check_cursors.py) only verifies
-existing shard cursors; the [health evaluation](../../../nix/tests/evaluation/logging-health.py)
+[cursor preflight](../../../nix/domains/system/logging/check_cursors.py) only verifies
+existing shard cursors; the [health evaluation](../../../nix/verification/tests/evaluation/logging-health.py)
 exercises fresh, valid, corrupt and unsafe-custody cursors and confirms a retired
 `journal.db` is neither read nor converted.
 
 Underclass keeps one totals record with a single fifteen-bound duration histogram
 in a fresh `slo-totals.sqlite` journal
-([accounting](../../../nix/packages/underclass/slo.rs)); no code reads the retired
+([accounting](../../../nix/domains/artifacts/underclass/slo.rs)); no code reads the retired
 `slo.sqlite`, which Window M2 exported and deleted on both hosts; `slo.lock`
 remains the current journal's process lock. The
-[exporter](../../../nix/modules/otel-guest/receiver/src/slo.rs) validates one
+[exporter](../../../nix/domains/system/otel-guest/receiver/src/slo.rs) validates one
 per-service bound set and has no `latency_v2` metrics; the
-[recording rules](../../../nix/modules/otel-fleet/rules.nix) and
-[diagnostics](../../../nix/modules/otel-fleet/diagnostics.nix) read the ordinary
-histogram, exercised by the [rule fixtures](../../../nix/tests/evaluation/otel-slo-rules.nix)
-and the [native Underclass check](../../../nix/tests/machines/underclass-slo/driver.py).
+[recording rules](../../../nix/domains/system/otel-fleet/rules.nix) and
+[diagnostics](../../../nix/domains/system/otel-fleet/diagnostics.nix) read the ordinary
+histogram, exercised by the [rule fixtures](../../../nix/verification/tests/evaluation/otel-slo-rules.nix)
+and the [native Underclass check](../../../nix/verification/tests/machines/underclass-slo/driver.py).
 
 Applied one-shot data migrations are pruned under the policy above: the
 monitor-credential retirement, profile rename, guest local-part pair and every

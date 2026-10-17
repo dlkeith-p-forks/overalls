@@ -109,7 +109,7 @@
       "package_output": null,
       "sources": [
         {
-          "path": "nix/tests/machines/zfs-io/driver.py",
+          "path": "nix/verification/tests/machines/zfs-io/driver.py",
           "role": "embedded_test_script_from_driver_py",
           "sha256": "43f26d3e2c13d7ac3de49a3778e145099bb8793fa22d3f0282fb5774c616dbff"
         },
@@ -158,7 +158,7 @@
       "package_output": "/nix/store/hszc8j1k80gyr30ajd15bgx03fgw9lvg-overalls-lilly-0.1.0",
       "sources": [
         {
-          "path": "nix/tests/machines/zfs-io/driver.py",
+          "path": "nix/verification/tests/machines/zfs-io/driver.py",
           "role": "embedded_test_script_from_driver_py",
           "sha256": "43f26d3e2c13d7ac3de49a3778e145099bb8793fa22d3f0282fb5774c616dbff"
         },
@@ -202,7 +202,7 @@
       "package_output": null,
       "sources": [
         {
-          "path": "nix/tests/machines/service-roles/driver.py",
+          "path": "nix/verification/tests/machines/service-roles/driver.py",
           "role": "embedded_test_script_from_driver_py_at_failed_derivation",
           "sha256": "eb1f3f3bb0f598c2d5af3c2791014e85811ec5d92fd95dc42ea053dc11df3322"
         },
@@ -249,7 +249,7 @@
       "package_output": null,
       "sources": [
         {
-          "path": "nix/tests/machines/service-roles/driver.py",
+          "path": "nix/verification/tests/machines/service-roles/driver.py",
           "role": "embedded_test_script_from_driver_py_at_failed_derivation",
           "sha256": "a6b2ffbc434280eceed48d8c216de47f9a574925079e89b95a30f97c19424230"
         },

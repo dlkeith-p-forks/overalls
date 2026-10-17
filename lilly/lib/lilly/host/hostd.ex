@@ -61,9 +61,9 @@ defmodule Lilly.Host.Hostd do
     mount: 21,
     umount: 22,
     chown: 23,
-    systemd_run: 24,
     systemctl: 25,
-    image_identity: 26
+    image_identity: 26,
+    chmod: 27
   }
 
   @type mode :: :exclusive | :shared
@@ -204,14 +204,159 @@ defmodule Lilly.Host.Hostd do
     :exit, _ -> {:error, :host_lock_unavailable}
   end
 
-  # @cc [owner:ghuntley,label:security] hostd-descriptor-requests
-  # open_unix/2 and open_netns_tcp/2 MUST return a descriptor only when hostd
-  # answered with exactly one SCM_RIGHTS descriptor for that request; a
-  # refusal or a lost session is :connect_failed.
-  @spec open_unix(Path.t(), pos_integer()) :: {:ok, non_neg_integer()} | {:error, :connect_failed}
-  def open_unix(path, timeout) do
+  @typedoc "The fields of one typed VM launch; hostd derives the command line."
+  @type launch :: %{
+          placement: OverallsProtocol.uuid(),
+          epoch: pos_integer(),
+          generation: pos_integer(),
+          uid: pos_integer(),
+          memory_bytes: pos_integer(),
+          vcpus: 1..64,
+          firmware: boolean(),
+          logging: boolean(),
+          state_dir: Path.t(),
+          namespace: String.t(),
+          pool: Path.t()
+        }
+
+  # @cc [owner:ghuntley,label:security] hostd-launch-vm-typed
+  # launch_vm/3 MUST send only the launch's typed fields under the caller's
+  # lease: never an executable, path list or command line, which hostd
+  # derives itself (vm-launch-argv-derived-by-hostd). Results map like run/6.
+  @spec launch_vm(pid(), pos_integer(), launch()) :: {:ok, binary()} | {:error, run_error()}
+  def launch_vm(session, lease, %{namespace: namespace, state_dir: state_dir} = launch)
+      when byte_size(namespace) in 1..32 and byte_size(state_dir) in 1..45 do
+    GenServer.call(session, {:launch_vm, lease, launch}, 20_000)
+  catch
+    :exit, _ -> {:error, :host_lock_unavailable}
+  end
+
+  @typedoc "The source of one guest dataset stream; hostd derives its command."
+  @type stream_producer ::
+          {:local_send, %{dataset: String.t(), placement: OverallsProtocol.uuid()}}
+          | {:local_resume,
+             %{
+               dataset: String.t(),
+               placement: OverallsProtocol.uuid(),
+               to_guid: String.t(),
+               token: String.t()
+             }}
+          | {:ssh,
+             %{
+               address: String.t(),
+               port: 1..65_535,
+               source_host: OverallsProtocol.uuid(),
+               relocation: OverallsProtocol.uuid(),
+               identity: Path.t(),
+               known_hosts: Path.t(),
+               verb: :export | {:resume, String.t()} | {:probe, OverallsProtocol.uuid()}
+             }}
+
+  @typedoc "The sink of one guest dataset stream; hostd derives its command."
+  @type stream_consumer ::
+          {:receive,
+           %{
+             dataset: String.t(),
+             pool: Path.t(),
+             placement: OverallsProtocol.uuid(),
+             host: OverallsProtocol.uuid(),
+             pool_id: OverallsProtocol.uuid(),
+             nonce: String.t()
+           }}
+          | {:compare, Path.t()}
+
+  @type stream_result ::
+          {:exited, 0..255}
+          | {:error,
+             :stream_timeout
+             | :stream_revoked
+             | :invalid_stream
+             | :utility_unavailable
+             | run_error()}
+
+  # @cc [owner:ghuntley,label:security] hostd-transfer-stream-typed
+  # transfer_stream/6 MUST send only the stream's typed fields under the
+  # caller's stream lease: never an executable, option or command line, which
+  # hostd derives itself. A finished helper is {:exited, code}; a timeout,
+  # cancellation, refusal or lost session is an error, never an exit code.
+  @spec transfer_stream(
+          pid(),
+          pos_integer(),
+          stream_producer(),
+          stream_consumer(),
+          1000..86_400_000,
+          0..1_073_741_824
+        ) :: stream_result()
+  def transfer_stream(session, lease, producer, consumer, timeout_ms, rate)
+      when timeout_ms in 1000..86_400_000 and rate in 0..1_073_741_824 do
+    {producer_kind, producer_fields} = producer_fields(producer)
+    {consumer_kind, consumer_fields} = consumer_fields(consumer)
+    fields = producer_fields ++ consumer_fields
+
+    if Enum.all?(fields, &(is_binary(&1) and not String.contains?(&1, <<0>>))) do
+      body = [
+        <<lease::64, timeout_ms::32, rate::32, producer_kind, consumer_kind>>,
+        Enum.map(fields, &[&1, 0])
+      ]
+
+      GenServer.call(session, {:transfer_stream, body}, timeout_ms + 30_000)
+    else
+      {:error, :host_lock_unavailable}
+    end
+  catch
+    :exit, _ -> {:error, :host_lock_unavailable}
+  end
+
+  defp producer_fields({:local_send, %{dataset: dataset, placement: placement}}),
+    do: {1, [dataset, placement]}
+
+  defp producer_fields(
+         {:local_resume, %{dataset: dataset, placement: placement, to_guid: guid, token: token}}
+       ),
+       do: {2, [dataset, placement, guid, token]}
+
+  defp producer_fields({:ssh, %{verb: verb} = ssh}) do
+    common = [
+      ssh.address,
+      Integer.to_string(ssh.port),
+      ssh.source_host,
+      ssh.relocation,
+      ssh.identity,
+      ssh.known_hosts
+    ]
+
+    case verb do
+      :export -> {3, common}
+      {:resume, token} -> {4, common ++ [token]}
+      {:probe, challenge} -> {5, common ++ [challenge]}
+    end
+  end
+
+  defp consumer_fields({:receive, receive}),
+    do:
+      {1,
+       [
+         receive.dataset,
+         receive.pool,
+         receive.placement,
+         receive.host,
+         receive.pool_id,
+         receive.nonce
+       ]}
+
+  defp consumer_fields({:compare, path}), do: {2, [path]}
+
+  # @cc [owner:ghuntley,label:security] hostd-lends-no-descriptors
+  # connect_unix/3 and bridge_netns_tcp/2 MUST send the caller's own
+  # unconnected socket with the request and return :ok only when hostd
+  # answered Connected for it; a refusal, a closed socket or a lost session is
+  # :connect_failed. hostd never sends a descriptor back: the BEAM cannot
+  # release a descriptor it did not create (ADR-0184), so every socket Lilly
+  # uses stays one it created and closes.
+  @spec connect_unix(:socket.socket(), Path.t(), 1..30_000) :: :ok | {:error, :connect_failed}
+  def connect_unix(socket, path, timeout) do
     with {:ok, session} <- session() do
-      GenServer.call(session, {:descriptor, 8, path}, timeout + 5000)
+      GenServer.call(session, {:connect, 12, [<<timeout::32>>, path], socket}, timeout + 5000)
     end
   catch
     :exit, _ -> {:error, :connect_failed}
@@ -226,9 +371,13 @@ defmodule Lilly.Host.Hostd do
           source: :inet.ip4_address() | nil,
           timeout: 1..30_000
         }
-  @spec open_netns_tcp(netns_tcp(), pos_integer()) ::
-          {:ok, non_neg_integer()} | {:error, :connect_failed}
-  def open_netns_tcp(request, timeout) do
+
+  @doc """
+  Bridge the caller's own unconnected Unix stream socket to a guest TCP
+  connection that hostd dials inside the Lilly network namespace.
+  """
+  @spec bridge_netns_tcp(:socket.socket(), netns_tcp()) :: :ok | {:error, :connect_failed}
+  def bridge_netns_tcp(socket, request) do
     {a, b, c, d} = request.destination
     {e, f, g, h} = request.source || {0, 0, 0, 0}
 
@@ -240,7 +389,7 @@ defmodule Lilly.Host.Hostd do
     ]
 
     with {:ok, session} <- session() do
-      GenServer.call(session, {:descriptor, 9, body}, timeout + 5000)
+      GenServer.call(session, {:connect, 13, body, socket}, request.timeout + 5000)
     end
   catch
     :exit, _ -> {:error, :connect_failed}
@@ -295,6 +444,25 @@ defmodule Lilly.Host.Hostd do
     )
   end
 
+  def handle_call({:launch_vm, lease, launch}, from, state) do
+    flags = if(launch.firmware, do: 1, else: 0) + if(launch.logging, do: 2, else: 0)
+
+    send_request(
+      state,
+      10,
+      [
+        <<lease::64>>,
+        launch.placement,
+        <<launch.epoch::64, launch.generation::64, launch.uid::32, launch.memory_bytes::64,
+          launch.vcpus, flags, byte_size(launch.state_dir), byte_size(launch.namespace)>>,
+        launch.state_dir,
+        launch.namespace,
+        launch.pool
+      ],
+      {:run, from}
+    )
+  end
+
   def handle_call({:run_durable, key, lease, utility, arguments, timeout_ms, limit}, from, state) do
     body = Enum.map(arguments, &[&1, 0])
 
@@ -306,8 +474,21 @@ defmodule Lilly.Host.Hostd do
     )
   end
 
-  def handle_call({:descriptor, op, body}, from, state),
-    do: send_request(state, op, body, {:descriptor, from})
+  def handle_call({:transfer_stream, body}, from, state),
+    do: send_request(state, 11, body, {:stream, from})
+
+  # The descriptor number is read from the caller's live socket here, just
+  # before it is sent, so a socket closed meanwhile is refused rather than its
+  # reused number sent.
+  def handle_call({:connect, op, body, socket}, from, state) do
+    case :socket.getopt(socket, {:otp, :fd}) do
+      {:ok, fd} when is_integer(fd) and fd >= 0 ->
+        send_request(state, op, body, {:connect, from}, fd)
+
+      _ ->
+        {:reply, {:error, :connect_failed}, state}
+    end
+  end
 
   def handle_call({:attach, key, wait_ms}, from, state),
     do: send_request(state, 7, [key, <<wait_ms::32>>], {:run, from})
@@ -381,11 +562,19 @@ defmodule Lilly.Host.Hostd do
     with executable when is_binary(executable) <- System.find_executable("lilly-hostd"),
          :ok <- File.mkdir(directory),
          :ok <- File.chmod(directory, 0o700) do
+      # A root tool's daemon treats Lilly's service uid as the owner of
+      # Lilly's state, as the system daemon does (ADR-0182).
+      service =
+        case Lilly.Host.Privilege.service_uid() do
+          0 -> []
+          uid -> ["--service-uid", Integer.to_string(uid)]
+        end
+
       port =
         Port.open({:spawn_executable, executable}, [
           :binary,
           :exit_status,
-          args: ["--socket", path, "--root", "/", "--stdin-lifetime"]
+          args: ["--socket", path, "--root", "/", "--stdin-lifetime" | service]
         ])
 
       if listening?(path, port, System.monotonic_time(:millisecond) + 10_000),
@@ -449,10 +638,10 @@ defmodule Lilly.Host.Hostd do
     :ok
   end
 
-  defp send_request(state, op, body, waiter) do
+  defp send_request(state, op, body, waiter, descriptor \\ nil) do
     id = state.next
 
-    case :socket.send(state.socket, [<<op, id::64>>, body], 5000) do
+    case transmit(state.socket, [<<op, id::64>>, body], descriptor) do
       :ok ->
         state = %{state | next: id + 1, pending: Map.put(state.pending, id, waiter)}
         {:noreply, state}
@@ -462,12 +651,25 @@ defmodule Lilly.Host.Hostd do
     end
   end
 
-  defp receive_all(state) do
-    case :socket.recvmsg(state.socket, @record, 64, [], :nowait) do
-      {:ok, %{iov: iov} = message} ->
-        data = IO.iodata_to_binary(iov)
-        Process.put({__MODULE__, :descriptors}, descriptors(message))
+  defp transmit(socket, datagram, nil), do: :socket.send(socket, datagram, 5000)
 
+  defp transmit(socket, datagram, fd) do
+    :socket.sendmsg(
+      socket,
+      %{
+        iov: [IO.iodata_to_binary(datagram)],
+        ctrl: [%{level: :socket, type: :rights, data: <<fd::native-signed-32>>}]
+      },
+      [],
+      5000
+    )
+  end
+
+  # Plain receive with no control buffer: should a datagram ever carry a
+  # descriptor, the kernel discards (closes) it instead of leaking it here.
+  defp receive_all(state) do
+    case :socket.recv(state.socket, @record, [], :nowait) do
+      {:ok, data} ->
         case reply(data, state) do
           {:ok, state} -> receive_all(state)
           :invalid -> {:stop, :hostd_session_lost, state}
@@ -480,22 +682,6 @@ defmodule Lilly.Host.Hostd do
         {:stop, :hostd_session_lost, state}
     end
   end
-
-  # Descriptors passed with the current datagram (SCM_RIGHTS).
-  defp descriptors(%{ctrl: ctrl}) when is_list(ctrl) do
-    Enum.flat_map(ctrl, fn
-      %{level: :socket, type: :rights, data: data} when is_binary(data) ->
-        for <<fd::native-signed-32 <- data>>, do: fd
-
-      %{level: :socket, type: :rights, value: fds} when is_list(fds) ->
-        fds
-
-      _ ->
-        []
-    end)
-  end
-
-  defp descriptors(_), do: []
 
   defp reply(<<kind, id::64, body::binary>>, state) when is_map_key(state.pending, id) do
     {waiter, pending} = Map.pop(state.pending, id)
@@ -520,15 +706,23 @@ defmodule Lilly.Host.Hostd do
         GenServer.reply(from, {:error, refusal(reason)})
         {:ok, state}
 
-      {7, {:descriptor, from}, <<>>} ->
-        case Process.get({__MODULE__, :descriptors}, []) do
-          [fd] -> GenServer.reply(from, {:ok, fd})
-          _ -> GenServer.reply(from, {:error, :connect_failed})
-        end
-
+      {6, {:stream, from}, body} ->
+        GenServer.reply(from, stream_result(body))
         {:ok, state}
 
-      {3, {:descriptor, from}, _} ->
+      {3, {:stream, from}, <<3>>} ->
+        GenServer.reply(from, {:error, :invalid_stream})
+        {:ok, state}
+
+      {3, {:stream, from}, <<reason>>} ->
+        GenServer.reply(from, {:error, refusal(reason)})
+        {:ok, state}
+
+      {8, {:connect, from}, <<>>} ->
+        GenServer.reply(from, :ok)
+        {:ok, state}
+
+      {3, {:connect, from}, _} ->
         GenServer.reply(from, {:error, :connect_failed})
         {:ok, state}
 
@@ -606,6 +800,12 @@ defmodule Lilly.Host.Hostd do
   defp refusal(8), do: :job_unknown
   defp refusal(9), do: :job_running
   defp refusal(_), do: :host_lock_unavailable
+
+  defp stream_result(<<status, code>>) when status in [0, 1], do: {:exited, code}
+  defp stream_result(<<2>>), do: {:error, :stream_timeout}
+  defp stream_result(<<5>>), do: {:error, :stream_revoked}
+  defp stream_result(<<4>>), do: {:error, :utility_unavailable}
+  defp stream_result(_), do: {:error, :host_lock_unavailable}
 
   defp run_result(0, output), do: {:ok, output}
   defp run_result(1, _), do: {:error, :command_failed}

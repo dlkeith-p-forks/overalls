@@ -45,8 +45,21 @@ defmodule Lilly.Host.Lock do
   defp open(directory, mode, wait_ms) do
     with :ok <- PrivateFiles.directory(directory),
          {:ok, id, session} <- Hostd.acquire(directory, mode, wait_ms) do
-      lease = %Lease{id: id, session: session, monitor: Process.monitor(session)}
-      Process.put({__MODULE__, :leases}, [lease | Process.get({__MODULE__, :leases}, [])])
+      lease = %Lease{
+        id: id,
+        session: session,
+        monitor: Process.monitor(session),
+        directory: directory
+      }
+
+      held = Process.get({__MODULE__, :leases}, [])
+
+      Lilly.Host.LockOrder.acquired(
+        for(%Lease{directory: held} <- held, held, do: held),
+        directory
+      )
+
+      Process.put({__MODULE__, :leases}, [lease | held])
       {:ok, lease}
     else
       {:error, :host_already_owned} = error -> error

@@ -57,6 +57,19 @@ defmodule Marshall.Compute.Images do
 
   def guest_capabilities(_), do: Image.guest_capabilities(nil)
 
+  # @cc [owner:ghuntley,label:capacity;security] images-readiness-budget-row-bound
+  # readiness_budget_ms/2 MUST read the durable image row and return nil for an
+  # unknown ID, so readiness deadlines cannot be selected by a peer-provided set.
+  @spec readiness_budget_ms(term(), atom()) :: pos_integer() | nil
+  def readiness_budget_ms(id, profile) when is_binary(id) and is_atom(profile) do
+    case Ledger.read!(Image, id: id) do
+      [image] -> Image.readiness_budget_ms(image, profile)
+      _ -> nil
+    end
+  end
+
+  def readiness_budget_ms(_, _), do: nil
+
   @doc "The guest operating system family agents should be told about."
   # @cc [owner:ghuntley,label:product] images-guest-platform-by-id
   # guest_platform/1 MUST be :windows exactly when the catalog row's validated

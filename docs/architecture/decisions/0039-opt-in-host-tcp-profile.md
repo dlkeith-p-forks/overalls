@@ -70,14 +70,14 @@ deployment-specific work.
 
 ## Implementation evidence
 
-The [module](../../../nix/modules/sysctl.nix) and [flake](../../../flake.nix)
-provide the opt-in interface. The [evaluation checks](../../../nix/tests/evaluation/module-configuration.nix)
-cover defaults, overrides and service composition. The [machine suite](../../../nix/tests/machines/sysctl/default.nix)
-uses actual pinned kernels, [socket probes](../../../nix/tests/machines/sysctl/probe.py)
-and [runtime/reboot assertions](../../../nix/tests/machines/sysctl/driver.py).
+The [module](../../../nix/domains/system/sysctl.nix) and [flake](../../../flake.nix)
+provide the opt-in interface. The [evaluation checks](../../../nix/verification/tests/evaluation/module-configuration.nix)
+cover defaults, overrides and service composition. The [machine suite](../../../nix/verification/tests/machines/sysctl/default.nix)
+uses actual pinned kernels, [socket probes](../../../nix/verification/tests/machines/sysctl/probe.py)
+and [runtime/reboot assertions](../../../nix/verification/tests/machines/sysctl/driver.py).
 Evaluation and the two-node KVM suite pass, including connected IPv4 sockets and
 reboot persistence. The [review](../reviews/2026-09-17-host-tcp-profile.md) records
-the exact derivations and passing service-role regression. The [guide](../../nixos.md#opt-in-host-tcp-profile)
+the exact derivations and passing service-role regression. The [guide](../../operations/nixos.md#opt-in-host-tcp-profile)
 documents activation and restoration semantics.
 
 ## Open questions

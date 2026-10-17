@@ -34,7 +34,7 @@ fresh login and opens the actor's personal session, while `Terminal.Authority`
 derives the stored account under current Cedar write permission
 (`marshall/lib/marshall_web/live/terminal_live.ex:14-36,60-89`,
 `marshall/lib/marshall/terminal/authority.ex:8-31`). The guest shell runs under
-the resolved passwd UID/HOME (`nix/packages/terminald/src/pty.rs:113-135,186-257`).
+the resolved passwd UID/HOME (`nix/domains/artifacts/terminald/src/pty.rs:113-135,186-257`).
 No SSH, editor, provider, repository checkout or second guest profile is needed
 for this first candidate; those remain independent paths and coverage choices.
 

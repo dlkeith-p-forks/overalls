@@ -115,7 +115,7 @@ three new suites included (`mix test --include distributed`), catalogued
 
 ### Native composed fleet journey
 
-`nix/tests/machines/fleet/scenarios/sharing-surfaces.py`, registered as the
+`nix/verification/tests/machines/fleet/scenarios/sharing-surfaces.py`, registered as the
 explicit Nix check `sharing-surfaces` (HEAVY lock class; nine QEMU machines:
 three Marshall replicas, one PostgreSQL/mod chrony node, three-replica HAProxy,
 two Lilly hosts with nested Firecracker, a browser/SSH client and the egress

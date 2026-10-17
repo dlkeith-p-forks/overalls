@@ -436,7 +436,7 @@ defmodule Marshall.Agents.ModelCallsTest do
 
   test "queued native maintenance is cancelled when verification is disabled", c do
     previous = Application.get_env(:marshall, :agent_context_policy)
-    Application.put_env(:marshall, :agent_context_policy, %{native_compaction_verified: false})
+    Application.put_env(:marshall, :agent_context_policy, %{native_compaction_capabilities: []})
 
     on_exit(fn ->
       if is_nil(previous),

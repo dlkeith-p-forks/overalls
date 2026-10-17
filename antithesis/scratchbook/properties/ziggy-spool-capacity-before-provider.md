@@ -25,13 +25,13 @@ focus: "05 — Resource Boundaries"
 
 #### Which HTTP and agent routes share a spool in the chosen deployment?
 
-- Examined: `ziggy/lib/ziggy/application.ex:15-45`, `ziggy/lib/ziggy/http.ex:323-420`, `ziggy/lib/ziggy/agent_worker.ex:68-125`, `ziggy/lib/ziggy/config.ex:34-60`, and `nix/tests/machines/ziggy-service/default.nix:33-36`.
+- Examined: `ziggy/lib/ziggy/application.ex:15-45`, `ziggy/lib/ziggy/http.ex:323-420`, `ziggy/lib/ziggy/agent_worker.ex:68-125`, `ziggy/lib/ziggy/config.ex:34-60`, and `nix/verification/tests/machines/ziggy-service/default.nix:33-36`.
 - Found: application supervision starts one named `Ziggy.Spool` with `config.spool`; HTTP and optional `AgentWorker` both call that same name before `Upstream.stream/5`. The packaged machine enables the agent and sets eight pending slots.
 - Conclusion: resolved for one Ziggy release instance. Fill the common spool with mixed HTTP/agent admissions; do not aggregate counts across distinct Ziggy hosts as though they share a spool.
 
 #### Can hosted faults expose directory-sync uncertainty beyond process restart?
 
-- Examined: `ziggy/lib/ziggy/spool.ex:260-285,375-391,473-480` and `nix/tests/machines/ziggy-service/driver.py:135-190`.
+- Examined: `ziggy/lib/ziggy/spool.ex:260-285,375-391,473-480` and `nix/verification/tests/machines/ziggy-service/driver.py:135-190`.
 - Found: a slot write syncs its file and the containing directory; any failed write or sync marks the spool failed and refuses further admission. The existing packaged history uses SIGKILL/restart and a held receipt, not a controlled `fsync` error or power cut.
 - Not found: a configured faultable filesystem that can fail precisely at directory sync while preserving the fixture's provider ledger, or a power-cut disk boundary.
 - Conclusion: partial. Process-kill histories can establish recovery of acknowledged admissions. An injected directory `fsync` failure should verify admission refusal and no upstream effect; a power-cut durability claim requires separate disk-fault infrastructure.

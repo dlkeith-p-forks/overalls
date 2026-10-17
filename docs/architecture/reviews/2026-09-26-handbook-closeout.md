@@ -20,7 +20,7 @@ provider validation is claimed.
 
 Each `handbook` scenario-row claim was traced to current source:
 
-- **machine, recorded** (`nix/tests/machines/hldd/browser.py` stale-page sign-in
+- **machine, recorded** (`nix/verification/tests/machines/hldd/browser.py` stale-page sign-in
   assertion): current at browser.py:209-223 — `revoke_reader()` changes the
   actual stored token purpose; the mounted page's next navigation lands on
   `/sign-in` (browser.py:216-218) and a fresh deep link carrying the
@@ -56,9 +56,9 @@ Each `handbook` scenario-row claim was traced to current source:
   contracts. The 22 chapter files are consistent with the native bound
   `len(sections) >= 22` (browser.py:151) and the diagram bound at
   browser.py:159.
-- **015 typed helper**: `checkedBrowser` (nix/tests/machines/hldd/default.nix:4-13)
+- **015 typed helper**: `checkedBrowser` (nix/verification/tests/machines/hldd/default.nix:4-13)
   type-checks the executed copied bytes and runs in the actual native subtest
-  command (:45); the catalog export is at nix/tests/default.nix:39. Rebuilding
+  command (:45); the catalog export is at nix/verification/tests/catalog.nix:39. Rebuilding
   `.#checks.x86_64-linux.hldd-browser.checkedBrowser` on this tree reuses
   `/nix/store/k1pml4qqwx0pk806v7ab5wmg2mnnndpf-hldd-browser-typed`, byte-identical
   to the artifact recorded in
@@ -73,7 +73,7 @@ Each `handbook` scenario-row claim was traced to current source:
   It now states that three-replica revocation delivered through the
   administration UI is recorded for the `login` journey in
   [2026-09-25-mfa-login-verification](2026-09-25-mfa-login-verification.md)
-  (machine evidence `nix/tests/machines/mfa-login/browser.py`,
+  (machine evidence `nix/verification/tests/machines/mfa-login/browser.py`,
   "final mfa-login-browser passed", 57.20 seconds on its captured source) and
   belongs to that scenario. The handbook native journey remains honestly
   single-instance; the `preferred_gap` text already assigned multi-replica and

@@ -140,7 +140,7 @@ records completed checks and remaining platform requirements.
 
 Remote terminal transport, writer ownership, terminal revocation and current
 account-token enforcement are implemented under ADRs 0019–0022. The
-[fleet browser test](../../../nix/tests/machines/fleet/browser.py) verifies sharing,
+[fleet browser test](../../../nix/verification/tests/machines/fleet/browser.py) verifies sharing,
 writer handoff, revocation and loss/recovery through the real production stack.
 Measure metadata polling at the intended fleet/user load. Production email has
 the durable implementation under ADR-0024; supply and verify its actual provider

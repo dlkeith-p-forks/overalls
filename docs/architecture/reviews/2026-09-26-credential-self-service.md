@@ -63,7 +63,7 @@ credentials, locked elevation and the administrator refusal without a view
 crash. [SSH key bounds](../../../marshall/test/marshall/ssh/key_test.exs)
 cover the hundred-key limit with closed refusal and re-admission.
 
-[Native browser journey](../../../nix/tests/machines/credential-self-service/browser.py)
+[Native browser journey](../../../nix/verification/tests/machines/credential-self-service/browser.py)
 uses packaged Marshall, HAProxy, PostgreSQL and Chromium in one NixOS VM with
 verified TLS and virtual WebAuthn authenticators (Chrome permits one internal
 authenticator at a time; each enrollment swaps authenticators). It enrolls two

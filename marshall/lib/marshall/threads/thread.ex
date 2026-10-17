@@ -282,6 +282,13 @@ defmodule Marshall.Threads.Thread do
       accept [:collaboration_mode]
     end
 
+    # Activity is projected from durable agent events. This action intentionally
+    # accepts no business attributes: the update timestamp is the projection.
+    update :touch_activity do
+      accept []
+      change Marshall.Threads.TouchActivity
+    end
+
     destroy :archive
   end
 

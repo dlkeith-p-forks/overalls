@@ -101,4 +101,4 @@ remaining requirements.
 [file/privacy tests](../../../marshall/test/marshall/operations/private_files_test.exs),
 [Lilly configuration tests](../../../lilly/test/lilly/control/config_test.exs),
 [Lilly envelope properties](../../../lilly/test/lilly/control/credential_file_test.exs),
-[operator guide](../../provisioner-enrollment.md).
+[operator guide](../../operations/provisioner-enrollment.md).

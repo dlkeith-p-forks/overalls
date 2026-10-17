@@ -231,8 +231,16 @@ fn source_lease(path: &Path) -> Result<OwnedFd, Error> {
     .map_err(|_| Error::Lease)?;
     let file = File::from(descriptor);
     let metadata = file.metadata().map_err(|_| Error::Lease)?;
+    // A private lock: this process's uid, or the owner of the directory that
+    // holds it (Lilly's service uid when it runs unprivileged, ADR-0182).
+    let directory_owner = path
+        .parent()
+        .and_then(|parent| std::fs::symlink_metadata(parent).ok())
+        .filter(std::fs::Metadata::is_dir)
+        .map(|parent| parent.uid());
+    let owner = metadata.uid();
     if !metadata.is_file()
-        || metadata.uid() != rustix::process::geteuid().as_raw()
+        || (owner != rustix::process::geteuid().as_raw() && Some(owner) != directory_owner)
         || metadata.mode() & 0o777 != 0o600
         || metadata.nlink() != 1
     {

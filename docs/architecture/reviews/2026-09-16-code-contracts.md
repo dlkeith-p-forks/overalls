@@ -23,7 +23,7 @@ directory requirements, verification tooling and documentation.
 
 ## Contract evidence and review
 
-The [guide](../../code-contracts.md) describes scope, syntax, ownership and limits.
+The [guide](../../development/code-contracts.md) describes scope, syntax, ownership and limits.
 The final structural inventory inspected 385 maintained source files, 42 directory
 contract files, 306 native source notes and six files with supported documentation
 contracts. The precommit runs preceded the concurrent addition of the database

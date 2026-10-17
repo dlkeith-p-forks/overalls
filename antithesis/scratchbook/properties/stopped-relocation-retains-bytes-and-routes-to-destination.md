@@ -11,7 +11,7 @@ From a separate client, ask both authoritative Audi DNS replicas for the real VM
 ## Source trail and fault interleaving
 
 - ADR-0155 (`docs/architecture/decisions/0155-stopped-only-relocation.md:43-70,125-158`) replaces pre-copy with one stopped full stream; source cleanup follows destination readiness. The earlier ADR-0072 multi-drive requirement is carried forward, so check both `rootfs.ext4` and `data.raw` for Inception, with one dataset GUID per placement. `marshall/lib/marshall/compute/relocation_coordinator.ex:123-166,174-239` records probe-bound stop and commits successor placement/epoch/activation; `relocation_readiness_state.ex:94-143` requires exact activation outcome; `relocation_cleanup.ex:19-27,63-80` retains source disk until proof. Race lost effects/receipts and coordinator restart around these commits; never impose live pre-copy timing.
-- `nix/tests/machines/fleet/scenarios/relocation.py:44-84,139-177` tests running and stopped real moves and guest assertions. `nix/tests/machines/fleet/scenarios/audi-relocation.py:50-81,110-145,130-313` tests DNS answers from both replicas, strict SSH, HTTPS, retained home marker and old-source forced transport refusal. `nix/tests/machines/fleet/scenarios/user-ssh-journey.py:991-1085` reads a home marker and new boot/host key after relocation. These source tests have overlapping but different fixture contexts; none is evidence of a newly executed composed two-drive byte-plus-route Antithesis history.
+- `nix/verification/tests/machines/fleet/scenarios/relocation.py:44-84,139-177` tests running and stopped real moves and guest assertions. `nix/verification/tests/machines/fleet/scenarios/audi-relocation.py:50-81,110-145,130-313` tests DNS answers from both replicas, strict SSH, HTTPS, retained home marker and old-source forced transport refusal. `nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py:991-1085` reads a home marker and new boot/host key after relocation. These source tests have overlapping but different fixture contexts; none is evidence of a newly executed composed two-drive byte-plus-route Antithesis history.
 
 ## Values, boundary, questions
 
@@ -25,14 +25,14 @@ Full evidence needs two real Lilly hosts, actual ZFS full stream/Firecracker des
 
 #### Can the native fixture hold source disk after readiness and before cleanup for a destination read?
 
-- Examined: `docs/architecture/decisions/0155-stopped-only-relocation.md:43-70`, `marshall/lib/marshall/compute/relocation_readiness_state.ex:94-143`, `marshall/lib/marshall/compute/relocation_cleanup.ex:19-27,63-80`, `nix/tests/machines/fleet/scenarios/relocation.py:44-84`, `nix/tests/machines/fleet/scenarios/audi-relocation.py:110-145`.
+- Examined: `docs/architecture/decisions/0155-stopped-only-relocation.md:43-70`, `marshall/lib/marshall/compute/relocation_readiness_state.ex:94-143`, `marshall/lib/marshall/compute/relocation_cleanup.ex:19-27,63-80`, `nix/verification/tests/machines/fleet/scenarios/relocation.py:44-84`, `nix/verification/tests/machines/fleet/scenarios/audi-relocation.py:110-145`.
 - Found: Source deletion is gated after readiness; the inspected fixtures wait for the move rather than exposing a stable post-readiness pre-cleanup pause.
 - Not established: A harness control point that delays cleanup without modifying production authority. If none exists, report the narrower completed-move destination byte result and separately observe the custody rule at native state boundaries.
 - Conclusion: partial; do not claim this intermediate read is already proven.
 
 #### Which Inception guest paths expose distinct fsynced markers for the combined route test?
 
-- Examined: `nix/tests/machines/zfs-guest/driver.py:250-271`, `nix/tests/machines/zfs-transfer/driver.py:360-450`, `nix/tests/machines/fleet/scenarios/audi-relocation.py:50-81,130-313`.
+- Examined: `nix/verification/tests/machines/zfs-guest/driver.py:250-271`, `nix/verification/tests/machines/zfs-transfer/driver.py:360-450`, `nix/verification/tests/machines/fleet/scenarios/audi-relocation.py:50-81,130-313`.
 - Found: Native two-drive copy/adoption probes exist separately from the Audi move, which uses a persistent home marker and actual client routes.
 - Not established: One combined fleet scenario that fsyncs and rereads distinct root and data-drive markers through destination SSH/HTTPS; do not substitute host-side prefix hashing or SQL for guest reads.
 - Conclusion: partial; retain this as a proposed composed workload, not an executed acceptance claim.

@@ -35,9 +35,9 @@ absent and repeated cleanup, filesystem errors, failed sync and retry, ownership
 symlinks, regular files, nested directories and FIFOs. Generated unexpected
 filenames and bytes must survive refusal unchanged.
 
-[Native lifecycle probes](../../../nix/tests/machines/zfs-lifecycle/probe.exs)
+[Native lifecycle probes](../../../nix/verification/tests/machines/zfs-lifecycle/probe.exs)
 assert directory absence after every successful deletion. The
-[machine suite](../../../nix/tests/machines/zfs-lifecycle/driver.py) covers real
+[machine suite](../../../nix/verification/tests/machines/zfs-lifecycle/driver.py) covers real
 interrupted destruction, retained-record repair, foreign ownership, remaining
 mounts and replacement datasets. An isolated sync wrapper fails only the VM
 parent sync and checks active/retired retries cannot acknowledge success early.

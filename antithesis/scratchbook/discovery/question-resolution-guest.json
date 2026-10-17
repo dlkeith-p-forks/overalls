@@ -10,7 +10,7 @@
       "answer": "The existing private-web native fixture has a disposable Python HTTP/stream/WebSocket origin, Playwright HTTPS login with an Audi host-only cookie, an open-stream removal journey, and owner-SSH guest counter inspection. It lacks per-request nonce capture; extend that origin with a bounded synthetic nonce ledger and preserve the real route.",
       "status": "partial",
       "proposed_catalog_edits": "Replace the open question with the bounded nonce-ledger harness gap; do not claim fresh-request guest effect from aggregate counters.",
-      "evidence": ["nix/tests/machines/private-web/guest.py:38", "nix/tests/machines/private-web/browser.py:66", "nix/tests/machines/private-web/driver.py:42"]
+      "evidence": ["nix/verification/tests/machines/private-web/guest.py:38", "nix/verification/tests/machines/private-web/browser.py:66", "nix/verification/tests/machines/private-web/driver.py:42"]
     },
     {
       "slug": "expired-web-lease-stops-existing-guest-bytes",
@@ -18,7 +18,7 @@
       "answer": "Audi's local monotonic deadline and independent watchdog can provide the time authority, but a per-stream owner-death acknowledgement and guest nonce ledger are missing. A targeted PID controller must suspend only the real guard, leaving its socket owner and watchdog scheduled; no such hosted mapping/controller is assembled.",
       "status": "partial",
       "proposed_catalog_edits": "Tag both questions partial; state the expiry oracle as owner-death barrier followed by a post-barrier guest nonce check, never a cross-node clock comparison or client-socket closure alone.",
-      "evidence": ["audi/lib/audi/authority/lease.ex:18", "audi/lib/audi/authority/stream_guard.ex:17", "nix/tests/machines/private-web/guest.py:38"]
+      "evidence": ["audi/lib/audi/authority/lease.ex:18", "audi/lib/audi/authority/stream_guard.ex:17", "nix/verification/tests/machines/private-web/guest.py:38"]
     },
     {
       "slug": "guest-identity-cutover-preserves-uid-custody",
@@ -34,7 +34,7 @@
       "answer": "The account-lifecycle native fixture retains an old home and checks SSH and browser terminal identities; the editor fixture is separate and needs an editor-enabled image with at least 2 GiB. No single existing same-email retirement fixture covers all three surfaces across both guest families. ADR-0158 explicitly limits UID/home separation to preventing accidental inheritance: a newly authorized sudo-capable writer is not promised confidentiality from the old home.",
       "status": "partial",
       "proposed_catalog_edits": "Replace the broad question with a tagged image-capability matrix gap; count each surface and guest family only when its real fixture runs. Narrow the property and oracle to distinct GuestAccount UUID/UID/u<uid>/home, no inherited credentials or grant, and unchanged numeric file custody; remove blanket old-home read/write denial after an explicit grant.",
-      "evidence": ["nix/tests/machines/account-lifecycle/driver.py:790", "nix/tests/machines/account-lifecycle/driver.py:1297", "nix/packages/guest/default.nix:197"]
+      "evidence": ["nix/verification/tests/machines/account-lifecycle/driver.py:790", "nix/verification/tests/machines/account-lifecycle/driver.py:1297", "nix/domains/artifacts/guest/default.nix:197"]
     },
     {
       "slug": "guest-ready-does-not-claim-workspace-checkout",
@@ -42,7 +42,7 @@
       "answer": "LaunchLive's complete state is a Compute.provision admission receipt and navigation; its text explicitly says the machine will clone after boot. The native guest probe separately waits for done and checks Git HEAD. No checkout-complete claim was found in that launch path.",
       "status": "resolved",
       "proposed_catalog_edits": "Remove the UI-completion question and scope the safety oracle to guest ready versus durable done/HEAD; do not interpret launch admission as checkout completion.",
-      "evidence": ["marshall/lib/marshall_web/live/launch_live.ex:50", "marshall/lib/marshall_web/live/launch_live.ex:175", "nix/tests/machines/repository-launch/guest.exs:35"]
+      "evidence": ["marshall/lib/marshall_web/live/launch_live.ex:50", "marshall/lib/marshall_web/live/launch_live.ex:175", "nix/verification/tests/machines/repository-launch/guest.exs:35"]
     },
     {
       "slug": "guest-workspace-restart-publication-no-clobber",
@@ -50,7 +50,7 @@
       "answer": "Lyra renames a completed partial checkout, syncs the workspace directory, then writes done; restart recognizes a directory at the checkout path without recloning. Native guest verification checks retained HEAD, local marker, done and no partial path. A hosted TCG executor must retain one qcow2 overlay, record boot/overlay identity, power-cut after a witnessed rename boundary and inspect bytes after remount; it is not assembled. Source hypothesis only: any unrelated pre-existing directory at that path may be treated as finished because the branch does not validate HEAD or source binding.",
       "status": "partial",
       "proposed_catalog_edits": "Tag the TCG restart/overlay probe partial and distinguish source test presence from a recorded hosted durability run. Add a foreign pre-existing checkout-directory value with independent HEAD/content validation as an unconfirmed source hypothesis, not a confirmed defect.",
-      "evidence": ["lyra/src/workspace_receiver.rs:613", "nix/tests/machines/repository-launch/guest.exs:35", "antithesis/scratchbook/deployment-topology.md"]
+      "evidence": ["lyra/src/workspace_receiver.rs:613", "nix/verification/tests/machines/repository-launch/guest.exs:35", "antithesis/scratchbook/deployment-topology.md"]
     },
     {
       "slug": "guest-workspace-source-replay-once",
@@ -91,7 +91,7 @@
       "answer": "Terminald CREATION_STATUS reports one request-to-session ID and live flag; LIST reports current PTYs. Neither counts PTYs born and exited between samples. The real path is Marshall authority through Lilly's authenticated stream and guest vsock HELLO to CREATE_ONCE, but no TCG composition or lost-reply run exists.",
       "status": "partial",
       "proposed_catalog_edits": "Tag both questions partial; require a bounded guest PTY birth observer as the independent at-most-one effect oracle, and label direct daemon tests separately from the composed stream.",
-      "evidence": ["nix/packages/terminald/src/main.rs:150", "nix/packages/terminald/src/session.rs:137", "lilly/lib/lilly/terminal/vsock.ex:121"]
+      "evidence": ["nix/domains/artifacts/terminald/src/main.rs:150", "nix/domains/artifacts/terminald/src/session.rs:137", "lilly/lib/lilly/terminal/vsock.ex:121"]
     },
     {
       "slug": "terminal-input-frame-replay-once",
@@ -107,7 +107,7 @@
       "answer": "The master is opened without O_NONBLOCK and reader_loop holds SessionInner during write_all, so lock contention is source plausible. The existing kill test proves output viewer-credit pressure only; it does not witness blocked PTY input. No runtime defect is confirmed.",
       "status": "partial",
       "proposed_catalog_edits": "Retain a tagged blocked-input precondition and require independent thread/PTY observation before classifying a kill deadline failure as a product defect; do not cite the output-credit test as that proof.",
-      "evidence": ["nix/packages/terminald/src/pty.rs:157", "nix/packages/terminald/src/session.rs:506", "nix/packages/terminald/src/session.rs:1145"]
+      "evidence": ["nix/domains/artifacts/terminald/src/pty.rs:157", "nix/domains/artifacts/terminald/src/session.rs:506", "nix/domains/artifacts/terminald/src/session.rs:1145"]
     },
     {
       "slug": "terminal-physical-scrollback-budget",
@@ -115,7 +115,7 @@
       "answer": "Ring::allocated_capacity is cfg(test) only; production LIST has live IDs but no backing or ring_total. A coherent guest-local snapshot under daemon locks is needed. Authenticated guest vsock can maintain concurrent sessions if guest-vmm lives through outer faults, but no composed fixture exists.",
       "status": "partial",
       "proposed_catalog_edits": "Tag both questions partial; require actual VecDeque capacity summed over live rings, not logical limit or RSS. Separate local Rust allocator evidence from hosted guest/vsock execution.",
-      "evidence": ["nix/packages/terminald/src/ring.rs:21", "nix/packages/terminald/src/session.rs:729", "nix/packages/terminald/src/main.rs:150"]
+      "evidence": ["nix/domains/artifacts/terminald/src/ring.rs:21", "nix/domains/artifacts/terminald/src/session.rs:729", "nix/domains/artifacts/terminald/src/main.rs:150"]
     },
     {
       "slug": "terminal-stalled-viewer-neighbor-progress",
@@ -123,7 +123,7 @@
       "answer": "The local real-PTY/Unix-socket property test confirms actual queue pressure, holds both sockets open, requires successive neighbor byte markers within five seconds each, then checks retirement and further progress. This gives a local baseline only. No TCG quiet interval or hosted socket-retention fault action exists.",
       "status": "partial",
       "proposed_catalog_edits": "Tag both questions partial; use the local five-second marker checks as design evidence, measure a TCG-specific quiet interval, and exclude whole-guest pauses from the liveness precondition.",
-      "evidence": ["nix/packages/terminald/src/neighbor_property_tests.rs:26", "nix/packages/terminald/src/neighbor_property_tests.rs:66", "nix/packages/terminald/src/neighbor_property_tests.rs:82"]
+      "evidence": ["nix/domains/artifacts/terminald/src/neighbor_property_tests.rs:26", "nix/domains/artifacts/terminald/src/neighbor_property_tests.rs:66", "nix/domains/artifacts/terminald/src/neighbor_property_tests.rs:82"]
     }
   ]
 }

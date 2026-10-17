@@ -41,7 +41,7 @@ handbook evidence text and one fleet argument-list restoration.
    elevated administrator actor is refused Customer reads and lifecycle with
    zero new operation rows while successfully stop/start-managing an OSS
    control machine.
-4. Native: `nix/tests/machines/default-oss/driver.py` — owner Porsche CLI
+4. Native: `nix/verification/tests/machines/default-oss/driver.py` — owner Porsche CLI
    stop/start/rm on the real Customer guest with receipt replay (`request show`
    and same-command replay return the pinned operation), real Firecracker
    process/cgroup death and recreation around the retained ZFS dataset
@@ -50,7 +50,7 @@ handbook evidence text and one fleet argument-list restoration.
    a fixture-promoted administrator flag, a member browser member-page refusal
    through a fresh magic-link login, and Customer egress re-probe after the
    real CLI restart. `operator.exs` gained only the sentinel-fenced
-   `customer-promote-admin` fixture action; `nix/tests/README.md` documents the
+   `customer-promote-admin` fixture action; `nix/verification/tests/README.md` documents the
    extended scope; the `defaultOssBrowser` artifact covers `browser.py` typing.
 
 ## Suspected defect verdicts

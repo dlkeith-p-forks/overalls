@@ -182,7 +182,8 @@ defmodule Marshall.MixProject do
            [
              "--test",
              "test/browser/repository_launch_test.mjs",
-             "test/browser/admin_elevation_test.mjs"
+             "test/browser/admin_elevation_test.mjs",
+             "test/browser/browser_extension_presence_test.mjs"
            ],
            stderr_to_stdout: true
          ) do

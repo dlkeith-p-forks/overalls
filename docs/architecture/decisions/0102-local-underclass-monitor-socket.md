@@ -65,15 +65,15 @@ without obtaining a credential that permits account administration.
 
 ## Implementation evidence
 
-The [pinned source package](../../../nix/packages/underclass/default.nix)
+The [pinned source package](../../../nix/domains/artifacts/underclass/default.nix)
 contains upstream's separate monitor router and socket binding. The
-[NixOS module](../../../nix/modules/underclass.nix) supplies the runtime socket
+[NixOS module](../../../nix/domains/system/underclass.nix) supplies the runtime socket
 path and directory while retaining the private environment file and loopback
-command. The [configuration check](../../../nix/tests/evaluation/underclass.nix)
+command. The [configuration check](../../../nix/verification/tests/evaluation/underclass.nix)
 checks the socket path, directory and address families; the
-[service VM check](../../../nix/tests/machines/underclass-service/default.nix)
+[service VM check](../../../nix/verification/tests/machines/underclass-service/default.nix)
 exercises local unauthenticated monitoring and continued network token checks.
-The [operations guide](../../underclass.md) distinguishes local and remote use.
+The [operations guide](../../services/underclass.md) distinguishes local and remote use.
 Both physical hosts activated revision `882bc34f` and reported healthy. On
 each host the running package was `8c4cd02`, the daemon was active, the socket
 was mode `0666`, local monitoring succeeded, socket administration returned
@@ -89,7 +89,7 @@ exercised.
 Implementation remains partial for ADR-0081's provider, tailnet and encrypted-restore
 obligations.
 
-The fleet's [Rust readiness probe](../../../nix/modules/otel-guest/receiver/src/underclass_probe.rs)
+The fleet's [Rust readiness probe](../../../nix/domains/system/otel-guest/receiver/src/underclass_probe.rs)
 now uses the existing tokenless `GET /monitor` boundary to publish one fixed
 local readiness bit through a group-restricted collector socket. It never reads
 the private database or proxy/admin credentials. A passing local monitor check
@@ -109,6 +109,12 @@ monitor socket, proxy credential, service placement or independent-pool
 ownership; prompts, credentials and cache keys remain excluded from stored
 statistics. The [current pin review](../reviews/2026-10-15-underclass-pin.md)
 records this source inspection separately from unexecuted tests.
+
+The pin at `469aff4` corrects saturation handling inside the proxy: requests
+reselect after the automatic reset attempt and skip the reset lock while a Codex
+account is healthy. It changes no socket, credential, placement or pool-ownership
+boundary. The [saturation pin review](../reviews/2026-10-16-underclass-pin.md)
+records upstream test execution and the remaining regression-test gap.
 
 The pin at `d0cb274` adds manual redemption of one banked Codex reset credit
 through a new admin-token-gated route, page button and `underclass reset`
@@ -130,3 +136,6 @@ measure usage-ledger growth, and test encrypted isolated restoration.
 independent-pool rationale and requirements carried forward here.
 [ADR-0042](0042-host-observability.md) governs diagnostics.
 [ADR-0075](0075-fleet-overlay-and-source-access.md) governs overlay admission.
+[ADR-0185](0185-underclass-tailnet-exit-egress.md) adds opt-in upstream egress
+through a dedicated userspace tailnet node and exit node, preserving these
+boundaries.

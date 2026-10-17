@@ -80,6 +80,13 @@ effective authority; loss of the thread source must not erase a surviving
 independent source. Closed diagnostic outcomes and identifiers may be emitted
 after commit; emails, prompts and transcript contents remain excluded.
 
+Agent event receipts update the enclosing current user-thread activity clock in
+a post-commit projection. This is a redacted list/activity ordering hint, not a
+grant or transcript projection: the projection checks the current agent-thread
+binding, locks the user-thread row and skips archived or deleting threads.
+Sharing and lifecycle authorization remain governed by current thread grants
+and machine checks.
+
 ## Alternatives
 
 Copying each thread share into a VM grant would create two authorities, ambiguous
@@ -120,6 +127,9 @@ Share control calls the same domain actions as forged or direct requests.
   conflicts without changing grants.
 - Machine and SSH candidate queries remain bounded and are followed by current
   Cedar evaluation. Guest identity and personal-session ownership stay intact.
+- A durable event advances only its current enclosing thread's activity clock
+  after commit; archived or deleting threads and stale bindings do not move the
+  clock or acquire authority.
 - Use SQL-backed role, replay and binding histories plus native sharing,
   terminal/editor/SSH revocation and cross-node race acceptance. Unit tests alone
   cannot establish transport revocation or physical VM isolation.
@@ -158,7 +168,9 @@ bounded fixture evidence from native revocation and recovery acceptance.
 
 Native cross-node grant revocation across terminal, editor, SSH and web ingress, and grant
 continuity through physical archive/reopen, require separate execution evidence.
-Previous-generation transcript browsing remains unimplemented under ADR-0174.
+Previous-generation transcript browsing is implemented through the retained-generation
+selector and read-only transcript path; native archive/reopen continuity still requires
+separate execution evidence.
 
 ## Related decisions
 

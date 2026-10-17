@@ -65,6 +65,10 @@ defmodule MarshallWeb.OverviewLive do
   @spec gib(non_neg_integer()) :: String.t()
   defp gib(value), do: :erlang.float_to_binary(value / 1_073_741_824, decimals: 1)
 
+  # @cc [owner:ghuntley,label:product] overview-machine-agentless-navigation
+  # The overview's per-machine preview MUST expose terminal, editor and access
+  # destinations without a machine-scoped agent entry; global Threads is the
+  # user-facing entry point for agent work.
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
@@ -135,13 +139,17 @@ defmodule MarshallWeb.OverviewLive do
             <% end %>
           </UI.panel>
           <div class="overview-side">
-            <UI.panel id="overview-browser-extension" title="Open repositories from your browser">
+            <UI.panel
+              id="overview-marvin-extension"
+              title="Open repositories from your browser"
+              data-overalls-extension-setup="true"
+            >
               <p class="muted">
                 Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls
                 with the Chrome or Firefox extension.
               </p>
               <.link
-                id="overview-browser-extension-link"
+                id="overview-marvin-extension-link"
                 href={~p"/docs/browser-extension"}
                 class="console-button ghost"
               >Set up the browser extension ↗</.link>

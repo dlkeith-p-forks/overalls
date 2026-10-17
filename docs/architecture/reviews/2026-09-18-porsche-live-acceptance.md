@@ -23,7 +23,7 @@ submission, checks names/ownership before lifecycle mutations, and uses recorded
 UUIDs for cleanup. Its [safety tests](../../../scripts/test/test_porsche_acceptance.py)
 exercise ownership rejection, generated-name custody, sharing exclusion, SSH
 transport errors, approval-link redaction and stable-ID admission retries.
-The [operator guide](../../porsche-acceptance.md) describes setup and resume limits.
+The [operator guide](../../acceptance/porsche-acceptance.md) describes setup and resume limits.
 
 ## Executed evidence
 

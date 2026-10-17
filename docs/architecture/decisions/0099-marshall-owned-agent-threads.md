@@ -90,7 +90,7 @@ exercise those portions against PostgreSQL. The
 supports authorized conversation reads, prompts and child-thread creation;
 the owner can read retained history after VM archival. The
 [Ziggy route](../../../ziggy/lib/ziggy/config.ex) and
-[NixOS machine test](../../../nix/tests/machines/ziggy-underclass/default.nix)
+[NixOS machine test](../../../nix/verification/tests/machines/ziggy-underclass/default.nix)
 verify host-local Underclass discovery with the proxy credential. Inference
 orchestration, Marshall-to-Ziggy and guest executor transport, running children,
 CLI flows and whole-system acceptance remain open; this decision is partial.

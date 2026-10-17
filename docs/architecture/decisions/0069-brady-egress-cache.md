@@ -119,7 +119,7 @@ Brady for intended-role filtering; observed roles continue to come from samples.
 
 ## Alternatives
 
-The [networking and Squid comparison](../../brady-design.md) records the upstream
+The [networking and Squid comparison](../../services/brady-design.md) records the upstream
 cache layout, freshness and TLS references alongside the chosen implementation.
 
 Squid managed by OTP was rejected in favor of native Elixir. Per-guest caches lose
@@ -170,7 +170,7 @@ requires separate evidence.
 [independent recovery](../../../brady/lib/brady/cache/recovery.ex) provide bounded
 public-only storage and uncached streaming on cache failure.
 
-The packaged [native network check](../../../nix/tests/machines/brady-network/driver.py)
+The packaged [native network check](../../../nix/verification/tests/machines/brady-network/driver.py)
 passed transparent HTTP/TLS, upstream trust rejection, explicit TLS tunneling,
 Customer/protected destination denial, fail-closed proxy outage, actual HTTP3
 fallback after UDP rejection, and secret-free journal assertions. It exercises
@@ -178,14 +178,14 @@ Lilly's generated nftables rules, routing and a Brady process restricted to
 `CAP_NET_RAW`; veth peers stand in for guests. It does not establish Firecracker
 identity or lifecycle acceptance.
 
-The [native ZFS check](../../../nix/tests/machines/brady-network/storage.py) passed
+The [native ZFS check](../../../nix/verification/tests/machines/brady-network/storage.py) passed
 separate-dataset preparation, complete-object/range hits with the origin stopped,
 restart recovery, credential/cookie/query bypass, stale-observer fallback,
 quota shrink/restore, guest-parent headroom eviction/recovery, and physical pool
 15% stop / 20% resume hysteresis. The root
-[storage helper](../../../nix/modules/brady/storage.py) uses enrolled GUIDs and
+[storage helper](../../../nix/domains/system/brady/storage.py) uses enrolled GUIDs and
 read-only native pressure observations. The
-[module](../../../nix/modules/brady/default.nix) preserves actual parent/cache
+[module](../../../nix/domains/system/brady/default.nix) preserves actual parent/cache
 mount write flags inside the observer sandbox: `ProtectSystem=strict` otherwise
 appeared to ZFS as a host readonly-policy change. Configuration assertions and
 the sandboxed native check cover this integration. Unit tests additionally cover
@@ -210,7 +210,7 @@ execution-intent mutation.
 [current actor proof](../../../lilly/lib/lilly/vm/actor.ex), and
 [resolver](../../../lilly/lib/lilly/network/attribution.ex) join kernel flows to
 current execution authority. The packaged
-[native helper check](../../../nix/tests/machines/brady-flow/default.nix) passed
+[native helper check](../../../nix/verification/tests/machines/brady-flow/default.nix) passed
 label bit order, existing-flow retention after rule changes, and unlabeled-flow
 refusal. The Rust port of that helper (3b38f5e0) passed host-order IPv4 integers
 to conntrack, so on x86 every exact GET queried a byte-reversed address and all
@@ -224,7 +224,7 @@ VM/owner attribution, legacy refresh, restart survival and old-flow refusal
 after IP reassignment to a different owner.
 
 The [aggregate producer](../../../brady/lib/brady/metrics.ex),
-[collector](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/runtime.py),
+[collector](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/runtime.py),
 [ingestion schema](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/sample.ex) and
 [panel catalog](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/dashboard_catalog.ex) extend
 the existing collector, actor, durable history and administration dashboards.
@@ -235,7 +235,7 @@ acceptance passed in the complete fleet run; no deployment is claimed.
 Complete application gates passed after integration of main `8446a41`: protocol
 134 cases (51 properties), Lilly 323 (37 properties), Brady 49 (7 properties),
 Marshall 725 (64 properties, two excluded), all with zero Dialyzer errors.
-The complete [Firecracker fleet scenario](../../../nix/tests/machines/fleet/scenarios/brady.py)
+The complete [Firecracker fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/brady.py)
 passed in 248.82 seconds with the shared NixOS/Ubuntu guest networking. Native
 ZFS quota/headroom/hysteresis acceptance passed in 114.69 seconds. ADR/contracts
 and configuration checks provide complementary structural evidence.
@@ -245,7 +245,7 @@ and Lilly/Brady release checks passed. Native acceptance above remains scoped to
 `8446a41`; the later transfer-only changes preserve those Brady paths.
 Published remote-builder and Ubuntu records retain IDs 0067 and 0068; this
 decision was assigned the next free ID, 0069, during integration.
-The [implementation ledger](../../brady-implementation.md) and
+The [implementation ledger](../../history/ledgers/brady-implementation.md) and
 [review](../reviews/2026-09-18-brady-egress-cache.md) record scope and validation.
 
 The [cache history verification](../reviews/2026-09-26-cache-history-verification.md)

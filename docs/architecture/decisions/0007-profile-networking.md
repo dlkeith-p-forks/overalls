@@ -72,14 +72,14 @@ exhaustion and three-node/two-host-record races are tested under
 [owned TAP/routing setup](../../../lilly/lib/lilly/network.ex), NAT, anti-spoofing
 and nftables filtering. The [KVM smoke](../../../lilly/scripts/smoke_jailed.exs)
 checks real same-host guests, Internet access and denial paths. The
-[NixOS fleet](../../../nix/tests/machines/fleet/default.nix) now verifies remote execution and
+[NixOS fleet](../../../nix/verification/tests/machines/fleet/default.nix) now verifies remote execution and
 cross-host isolation across two nested-KVM provisioners in one physical failure
 domain. Independent physical-host acceptance remains open.
 
 ## Open questions
 
 ADR-0015 selects IPv4/public DNS, denies IPv6 and host/private access, and reserves
-a host transit range. The [fleet matrix](../../../nix/tests/machines/fleet/network.exs)
+a host transit range. The [fleet matrix](../../../nix/verification/tests/machines/fleet/network.exs)
 now passes actual egress, all directed peer denials across two Lilly machines,
 protected-address denial and spoofing checks under ADR-0033. Supply the real
 deployment's protected public infrastructure addresses and verify independent

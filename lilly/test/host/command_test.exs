@@ -51,7 +51,7 @@ defmodule Lilly.Host.CommandTest do
   test "a native timeout identifies the utility and retains the lock", c do
     fifo = Path.join(c.directory, "private-source")
     target = Path.join(c.directory, "private-destination")
-    assert {:ok, _} = Command.run(:mkfifo, ["--", fifo])
+    assert {:ok, _} = Command.run(:mkfifo, ["--mode=0600", "--", fifo])
 
     log =
       ExUnit.CaptureLog.capture_log([metadata: @metadata], fn ->

@@ -94,4 +94,4 @@ The test environment now honors `PGPORT`; checks used a private PostgreSQL on
 shell for the existing SMTP certificate test. These preserve production behavior.
 
 Reconcile this review with the final native outcomes and final diff before merging.
-See the [operator/developer guide](../../inception.md) for configuration and limits.
+See the [operator/developer guide](../../guests/inception.md) for configuration and limits.

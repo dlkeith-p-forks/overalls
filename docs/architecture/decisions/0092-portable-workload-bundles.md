@@ -115,9 +115,9 @@ project host names and retain permission-gated automatic relocation.
 
 Focused [Marshall SSH tests](../../../marshall/test/marshall/ssh/commands_test.exs),
 [web tests](../../../marshall/test/marshall_web/machines_live_test.exs), native
-[ZFS guest tests](../../../nix/tests/machines/zfs-guest/driver.py), native
-[transfer tests](../../../nix/tests/machines/zfs-transfer/driver.py), and the
-[Porsche fleet scenario](../../../nix/tests/machines/fleet/scenarios/porsche.py)
+[ZFS guest tests](../../../nix/verification/tests/machines/zfs-guest/driver.py), native
+[transfer tests](../../../nix/verification/tests/machines/zfs-transfer/driver.py), and the
+[Porsche fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/porsche.py)
 encode the intended acceptance.
 
 The Porsche scenario now executes the complete public-SSH clone relocation

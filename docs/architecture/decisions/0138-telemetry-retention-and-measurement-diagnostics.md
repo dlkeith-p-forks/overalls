@@ -70,11 +70,11 @@ production retention remains a future acceptance requirement.
 
 ## Implementation evidence
 
-[Retention and dashboard provisioning](../../../nix/modules/otel-fleet/default.nix),
-[diagnostic rules](../../../nix/modules/otel-fleet/diagnostics.nix),
-[storage monitoring](../../../nix/modules/otel-fleet/storage.nix),
-[Underclass accounting](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/packages/underclass/slo.rs),
-[export validation](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/modules/otel-guest/receiver/src/slo.rs) and
+[Retention and dashboard provisioning](../../../nix/domains/system/otel-fleet/default.nix),
+[diagnostic rules](../../../nix/domains/system/otel-fleet/diagnostics.nix),
+[storage monitoring](../../../nix/domains/system/otel-fleet/storage.nix),
+[Underclass accounting](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/underclass/slo.rs),
+[export validation](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/system/otel-guest/receiver/src/slo.rs) and
 [signed-in diagnostics](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/slo_status_read.ex)
 implement the decision. Exact passing scopes and remaining gaps are recorded in
 the [review](../reviews/2026-10-03-telemetry-retention-and-diagnostics.md).
@@ -84,9 +84,9 @@ Carry-forward evidence (ADR-0159, Push 9): the separate versioned latency
 histogram, its migration and the `latency_v2` metrics are removed. Underclass now
 keeps one totals record with a single fifteen-bound histogram through twenty-four
 hours in a fresh `slo-totals.sqlite` journal
-([accounting](../../../nix/packages/underclass/slo.rs)); the
-[exporter](../../../nix/modules/otel-guest/receiver/src/slo.rs) fixes one bound set
-per service, and the [p95 rule](../../../nix/modules/otel-fleet/rules.nix) reads the
+([accounting](../../../nix/domains/artifacts/underclass/slo.rs)); the
+[exporter](../../../nix/domains/system/otel-guest/receiver/src/slo.rs) fixes one bound set
+per service, and the [p95 rule](../../../nix/domains/system/otel-fleet/rules.nix) reads the
 ordinary duration histogram. Every other requirement of this record, including
 finite buckets through twenty-four hours, unmeasured unknown recovery durations
 and pre-publication validation, is unchanged.

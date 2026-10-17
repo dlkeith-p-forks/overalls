@@ -201,6 +201,7 @@ defmodule Marshall.ThreadsTest do
              )
 
     [ready] = Ledger.read!(Marshall.Threads.Thread, id: thread.id)
+    activity_before = ready.updated_at
     request_key = Ash.UUID.generate()
 
     assert {:ok, %{turn_id: turn_id}} =
@@ -214,6 +215,23 @@ defmodule Marshall.ThreadsTest do
 
     assert agent_thread_id == ready.agent_thread_id
     assert actor_id == actor.id
+
+    [active] = Ledger.read!(Marshall.Threads.Thread, id: ready.id)
+    assert DateTime.compare(active.updated_at, activity_before) == :gt
+
+    [agent] = Ledger.read!(Marshall.Agents.Thread, id: ready.agent_thread_id)
+    event_before = active.updated_at
+
+    _event =
+      Ledger.create!(Marshall.Agents.Event, :append, %{
+        thread_id: agent.id,
+        sequence: agent.next_event_sequence,
+        kind: :assistant,
+        body: %{"text" => "activity receipt"}
+      })
+
+    [event_active] = Ledger.read!(Marshall.Threads.Thread, id: ready.id)
+    assert DateTime.compare(event_active.updated_at, event_before) == :gt
 
     assert {:ok, %{turn_id: ^turn_id}} =
              Marshall.Threads.submit_prompt(

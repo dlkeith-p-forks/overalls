@@ -100,7 +100,7 @@ liveness from a writable, migrated database. The explicit
 runs independently of the serving application.
 
 [Packaging](../../../scripts/package_release.sh) and its
-[Nix closure](../../../nix/packages/release-bundle.nix) produce immutable releases with
+[Nix closure](../../../nix/domains/artifacts/applications/release-bundle.nix) produce immutable releases with
 runtime dependencies and Lilly's canonical launcher paths. The
 [Marshall service](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/systemd/marshall@.service),
 [Lilly service](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/systemd/lilly.service),
@@ -110,7 +110,7 @@ runtime dependencies and Lilly's canonical launcher paths. The
 record the earlier topology. These four definitions are retained only as test
 fixtures after removal of the manual deployment examples. Current installation
 and rollout use the NixOS modules under ADR-0030.
-The [NixOS deployment checks](../../../nix/tests/README.md) exercises
+The [NixOS deployment checks](../../../nix/verification/tests/README.md) exercises
 actual releases, PostgreSQL TLS and multi-process deployment failure behavior;
 see the [review](../reviews/2026-09-16-production-deployment.md) for checks completed
 and remaining infrastructure obligations. The three-node production service,
@@ -125,7 +125,7 @@ new authenticated session and fresh capacity report. The full drain/recovery/
 retirement run cleans its fixture resources. This is single-host acceptance;
 the production infrastructure and cross-host obligations below remain open.
 
-The [production terminal harness](../../../nix/tests/README.md)
+The [production terminal harness](../../../nix/verification/tests/README.md)
 also provisions a fresh guest through the packaged Lilly service, with three
 Marshall services and Chromium. Lost acknowledgments and serving-node death do
 not replay accepted or queued input; guest process identity survives, and writer
@@ -135,7 +135,7 @@ validation fix and actual acceptance. This extends the retained-guest service
 check above without changing the single-host evidence boundary.
 
 [ADR-0029](0029-database-durability-and-recovery.md) adds explicit durable Repo
-commits and [local database recovery acceptance](../../../nix/tests/README.md).
+commits and [local database recovery acceptance](../../../nix/verification/tests/README.md).
 It proves synchronous waiting, fenced promotion and isolated backup restoration
 through actual PostgreSQL instances. It does not provide a production HA controller
 or authorize connecting historical backups to surviving guests.

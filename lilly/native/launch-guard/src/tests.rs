@@ -166,6 +166,7 @@ fn current_generation_predicate_is_exact(tc: TestCase) {
         generation,
         program: PathBuf::from("/jailer"),
         arguments: Vec::new(),
+        owner: None,
     };
     let mut bytes: [u8; 36] = uuid.as_bytes().try_into().expect("uuid bytes");
     let mut intent = Intent {
@@ -212,4 +213,31 @@ fn current_generation_predicate_is_exact(tc: TestCase) {
         && intent.generation == request.generation
         && intent.state == RUNNING_STATE;
     assert_eq!(current(&intent, &request), expected);
+}
+
+/// `--owner-uid` admits exactly one extra nonzero, canonical owner uid.
+#[test]
+fn owner_uid_prefix_is_optional_and_canonical() {
+    let base = [
+        "/lock",
+        "/intent",
+        "11111111-2222-4333-8444-555555555555",
+        "1",
+        "2",
+        "/jailer",
+    ];
+    let parse = |prefix: &[&str]| {
+        let arguments: Vec<OsString> = prefix
+            .iter()
+            .chain(base.iter())
+            .map(OsString::from)
+            .collect();
+        parse_cli(&arguments).map(|request| request.owner)
+    };
+    assert_eq!(parse(&[]), Some(None));
+    assert_eq!(parse(&["--owner-uid", "977"]), Some(Some(977)));
+    assert_eq!(parse(&["--owner-uid", "0"]), None);
+    assert_eq!(parse(&["--owner-uid", "0977"]), None);
+    assert_eq!(parse(&["--owner-uid", "+977"]), None);
+    assert_eq!(parse(&["--owner-uid"]), None);
 }

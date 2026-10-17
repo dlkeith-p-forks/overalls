@@ -5,7 +5,7 @@ defmodule Marshall.SSH.HostCertificatesTest do
   alias Marshall.Compute.Ledger
   alias Marshall.SSH
   alias OverallsProtocol.SSHHostCertificate, as: Certificate
-  @root Path.expand("../../../../nix/tests/fixtures/ssh-host-ca", __DIR__)
+  @root Path.expand("../../../../nix/verification/tests/fixtures/ssh-host-ca", __DIR__)
 
   setup do
     ca = @root |> Path.join("key.pub") |> File.read!() |> String.trim()

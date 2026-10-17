@@ -96,7 +96,7 @@ pending login and step-up behavior. Validation and remaining native acceptance a
 tracked in the [review](../reviews/2026-09-18-passkey-administration.md).
 
 [Generated Control room histories](../../../marshall/test/marshall_web/control_room_history_test.exs)
-and a [focused native browser journey](../../../nix/tests/machines/control-room/browser.py)
+and a [focused native browser journey](../../../nix/verification/tests/machines/control-room/browser.py)
 extend current-role, elevation and stored-login coverage. Exact execution and
 remaining cross-replica/hardware limits are recorded in the
 [verification review](../reviews/2026-09-25-control-room-verification.md).
@@ -105,7 +105,7 @@ remaining cross-replica/hardware limits are recorded in the
 [domain regressions](../../../marshall/test/marshall/accounts/security_credential_test.exs),
 [LiveView regressions](../../../marshall/test/marshall_web/security_live_test.exs)
 and the
-[credential self-service browser journey](../../../nix/tests/machines/credential-self-service/browser.py)
+[credential self-service browser journey](../../../nix/verification/tests/machines/credential-self-service/browser.py)
 pin rename/remove bounds, immediate elevation loss on proving-credential
 removal, last-credential and limit refusals, and the repaired label-constraint
 crash. Execution is recorded in the

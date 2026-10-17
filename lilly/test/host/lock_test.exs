@@ -122,7 +122,7 @@ defmodule Lilly.Host.LockTest do
     holder =
       spawn(fn ->
         {:ok, _lease} = Lock.acquire(c.tmp_dir)
-        {:ok, _} = Lilly.Host.Command.run(:mkfifo, ["--", fifo])
+        {:ok, _} = Lilly.Host.Command.run(:mkfifo, ["--mode=0600", "--", fifo])
         send(parent, :blocked)
         Lilly.Host.Command.run(:cp, ["--", fifo, Path.join(c.tmp_dir, "target")], 60_000)
       end)

@@ -70,7 +70,7 @@ wire field. A future role-dependent tool policy requires a new decision.
 
 ## Implementation evidence
 
-The [default-profile journey](../../../nix/tests/machines/default-oss/driver.py)
+The [default-profile journey](../../../nix/verification/tests/machines/default-oss/driver.py)
 also inspects registration after native browser/Porsche creation: both OSS VMs
 have roots, while an explicitly selected Customer VM has no root and its owner
 receives a closed conversation refusal from packaged Marshall. The
@@ -85,7 +85,7 @@ implement the profile matrix and layered checks. The
 [property tests](../../../marshall/test/marshall/agents/capabilities_test.exs)
 and [database tests](../../../marshall/test/marshall/agents/executor_session_test.exs)
 exercise the policy and durable retirement. The
-[fleet NixOS scenario](../../../nix/tests/machines/fleet/scenarios/agent.py)
+[fleet NixOS scenario](../../../nix/verification/tests/machines/fleet/scenarios/agent.py)
 passed with a Standard guest tool round trip and a denied child call.
 
 ## Open questions

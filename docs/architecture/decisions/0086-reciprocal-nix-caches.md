@@ -80,17 +80,17 @@ both hosts and the absence of peer build dispatch under concurrent updates.
 
 ## Implementation evidence
 
-- [Module](../../../nix/modules/remote-builders.nix) configures cache trust,
+- [Module](../../../nix/domains/system/remote-builders.nix) configures cache trust,
   SSH restrictions and runtime secret dependencies without `buildMachines`.
-- [Guest images](../../../nix/packages/guest/default.nix) declare
+- [Guest images](../../../nix/domains/artifacts/guest/default.nix) declare
   `preferLocalBuild` for the rootfs and manifest derivations.
-- [Evaluation check](../../../nix/tests/evaluation/remote-builders.nix) and
-  [two-machine check](../../../nix/tests/machines/remote-builders/default.nix)
+- [Evaluation check](../../../nix/verification/tests/evaluation/remote-builders.nix) and
+  [two-machine check](../../../nix/verification/tests/machines/remote-builders/default.nix)
   assert cache-only configuration and local build placement with working
   reciprocal substitution.
-- [Updater runtime](../../../nix/modules/auto-update/runtime.py) signals the
+- [Updater runtime](../../../nix/domains/system/auto-update/runtime.py) signals the
   whole child process group on timeout, and the
-  [update timer](../../../nix/modules/auto-update/default.nix) desynchronizes
+  [update timer](../../../nix/domains/system/auto-update/default.nix) desynchronizes
   fleet hosts with a random start delay.
 
 Fleet rollout evidence is tracked in the

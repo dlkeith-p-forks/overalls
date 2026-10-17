@@ -13,7 +13,8 @@ defmodule Lilly.Transfer.Exporter do
   # ownership and sender registration; disk bytes never pass through BEAM. The
   # caller MUST release pool/mutation locks before wait/2. Caller death closes the
   # private control channel; the native helper retains its lock through reaping.
-  @spec start(Path.t(), Lilly.Transfer.Stream.command(), pos_integer()) :: {:ok, t()} | failure()
+  @spec start(Path.t(), Lilly.Transfer.SourceSnapshots.command(), pos_integer()) ::
+          {:ok, t()} | failure()
   def start(directory, {executable, args}, lease)
       when is_binary(executable) and is_list(args) and lease in 1..300_000 do
     with true <- Path.type(executable) == :absolute and length(args) < 128,

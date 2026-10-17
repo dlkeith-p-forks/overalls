@@ -31,7 +31,7 @@ Open questions: Which bounded guest observation path can return only the source 
 
 #### 2026-10-13 follow-up: How can clone effects be counted without disclosing source content?
 
-- Examined: `nix/tests/machines/repository-launch/guest.exs:35-57`, `lyra/src/workspace_receiver.rs:219-238,529-635`, and the local origin role in `../deployment-topology.md`.
+- Examined: `nix/verification/tests/machines/repository-launch/guest.exs:35-57`, `lyra/src/workspace_receiver.rs:219-238,529-635`, and the local origin role in `../deployment-topology.md`.
 - Found: owner-scoped guest inspection can return a digest of `source.json`, the closed status, done presence and HEAD equality without printing the reference. A controlled local Git origin can keep a bounded request ledger; counts may increase for legitimate pre-done retries and should be compared only after done for no-reclone.
 - Not found: a packaged guest-side clone-attempt counter or hosted observer that correlates these with one physical boot.
 - Conclusion: partial harness instrumentation, with the check narrowed to supported replay semantics.
