@@ -30,7 +30,7 @@ defmodule Lilly.Host.SocketsCustodyTest do
   # transfer (closed or abandoned by the new owner), every adopted socket MUST
   # carry bytes, its peer MUST see end of stream, and the test process's
   # descriptor count MUST return to its baseline.
-  property "adopted sockets are released exactly when their port goes down", context do
+  test "adopted sockets are released exactly when their port goes down", context do
     check all(
             endings <-
               list_of(member_of([:close, :owner_dies, :transfer_close, :transfer_dies]),

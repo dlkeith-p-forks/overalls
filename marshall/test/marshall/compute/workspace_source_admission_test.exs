@@ -41,7 +41,7 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   # Generated admissions MUST return the original VM for the same key and source,
   # conflict for the same key with any other source (including none), and refuse
   # a source on a profile without egress without creating any allocation.
-  property "the workspace source joins idempotent admission identity", c do
+  test "the workspace source joins idempotent admission identity", c do
     check all(
             first <- member_of([nil | @sources]),
             second <- member_of([nil | @sources]),
@@ -74,7 +74,7 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
     end
   end
 
-  property "a source on a profile without egress is refused before allocation", c do
+  test "a source on a profile without egress is refused before allocation", c do
     check all(url <- member_of(@sources), max_runs: 4) do
       before = counts()
 
@@ -101,7 +101,7 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   # Source requests MUST refuse absent or stale capabilities for every provider
   # without changing allocation inventory. A matching explicit v4 capability
   # MUST allow the normal transaction; package/name hints never grant it.
-  property "every provider requires an explicit source-capable image before allocation", c do
+  test "every provider requires an explicit source-capable image before allocation", c do
     check all(url <- member_of(@sources), max_runs: 7) do
       manifest = Map.put(image_manifest(), "workspace_source_version", nil)
       {:ok, image} = Images.register(manifest, "receiver-installed-hint")

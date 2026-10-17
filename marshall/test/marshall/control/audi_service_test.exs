@@ -98,7 +98,7 @@ defmodule Marshall.Control.AudiServiceTest do
   # with the remaining HTTPS route's class (identity and DNS snapshots, kept
   # for Inception publication): the same document on success, and the same
   # denial class (unauthorized, forbidden, named error, unavailable) otherwise.
-  property "the socket and the HTTPS routes answer every request with the same class", c do
+  test "the socket and the HTTPS routes answer every request with the same class", c do
     cases =
       member_of([
         {"identity", %{}},

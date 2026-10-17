@@ -56,7 +56,7 @@ defmodule Marshall.Operations.SSHGatewayTest do
              )
   end
 
-  property "malformed private credential contents never alter gateway authority", c do
+  test "malformed private credential contents never alter gateway authority", c do
     check all(bytes <- binary(max_length: 256)) do
       File.write!(c.first, "invalid:" <> bytes)
       File.chmod!(c.first, 0o600)

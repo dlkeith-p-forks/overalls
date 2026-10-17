@@ -97,7 +97,7 @@ defmodule Ziggy.VersionRefusalTest do
   # @cc [owner:ghuntley,label:verification;recovery] version-refusal-stops-retries
   # Generated transient replies MAY retry, but a subsequent 426 MUST leave
   # durable completions unacknowledged and stop automatic control requests.
-  property "completion reporter stops after version refusal and retains receipts", c do
+  test "completion reporter stops after version refusal and retains receipts", c do
     check all(transient_replies <- integer(0..4), max_runs: 8) do
       directory = Path.join(c.directory, Integer.to_string(System.unique_integer([:positive])))
       File.mkdir!(directory)
@@ -183,7 +183,7 @@ defmodule Ziggy.VersionRefusalTest do
     end
   end
 
-  property "one version refusal preserves every queued completion", c do
+  test "one version refusal preserves every queued completion", c do
     check all(receipts <- integer(1..5), max_runs: 5) do
       directory = Path.join(c.directory, Integer.to_string(System.unique_integer([:positive])))
       File.mkdir!(directory)

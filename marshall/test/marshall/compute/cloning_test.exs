@@ -546,7 +546,7 @@ defmodule Marshall.Compute.CloningTest do
     end)
   end
 
-  property "arbitrary repeated request histories preserve one destination per distinct key", c do
+  test "arbitrary repeated request histories preserve one destination per distinct key", c do
     check all(keys <- list_of(integer(1..8), min_length: 1, max_length: 24), max_runs: 20) do
       prefix = Ash.UUID.generate()
 

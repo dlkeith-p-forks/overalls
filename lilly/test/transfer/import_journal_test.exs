@@ -75,7 +75,7 @@ defmodule Lilly.Transfer.ImportJournalTest do
     end)
   end
 
-  property "local inventory preserves storage binding and never mutates the journal", c do
+  test "local inventory preserves storage binding and never mutates the journal", c do
     check all(replacement <- integer(1000..100_000)) do
       locked(c, fn ->
         {:ok, expected} = Journal.prepare(c.directory, c.descriptor, c.identity)
@@ -219,7 +219,7 @@ defmodule Lilly.Transfer.ImportJournalTest do
     end)
   end
 
-  property "arbitrary persisted bytes never crash or change immutable scope", c do
+  test "arbitrary persisted bytes never crash or change immutable scope", c do
     locked(c, fn ->
       check all(bytes <- binary(max_length: 4096)) do
         :ok = PrivateFiles.write(c.directory, "import.json", bytes)

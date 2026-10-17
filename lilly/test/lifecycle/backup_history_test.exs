@@ -173,7 +173,7 @@ defmodule Lilly.Lifecycle.BackupHistoryTest do
     end)
   end
 
-  property "native backup histories cannot skip cleanup or resurrect a cleaned producer", c do
+  test "native backup histories cannot skip cleanup or resurrect a cleaned producer", c do
     check all(
             targets <- list_of(member_of(~w(creating ready cleaning cleaned)), max_length: 15),
             max_runs: 20

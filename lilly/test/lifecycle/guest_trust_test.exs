@@ -25,7 +25,7 @@ defmodule Lilly.Lifecycle.GuestTrustTest do
     }
   end
 
-  property "a boot must pass pending and delivering before installed", c do
+  test "a boot must pass pending and delivering before installed", c do
     check all(attempts <- integer(1..3), max_runs: 12) do
       directory = Path.join(c.root, Lilly.UUID.generate())
       {:ok, lock} = Lock.acquire(directory)

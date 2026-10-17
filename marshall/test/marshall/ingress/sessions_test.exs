@@ -377,7 +377,7 @@ defmodule Marshall.Ingress.SessionsTest do
     end
   end
 
-  property "current sharing roles alone decide new SSH admission", c do
+  test "current sharing roles alone decide new SSH admission", c do
     member = Marshall.ComputeFixtures.user()
     public_key = key_text()
     {:ok, _} = Marshall.SSH.add_key(%{public_key: public_key}, actor: member)

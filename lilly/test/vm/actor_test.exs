@@ -537,7 +537,7 @@ defmodule Lilly.VM.ActorTest do
   # @cc [owner:ghuntley,label:verification;recovery] generated-superseded-results-stay-old
   # A completed executor task for an older revision MUST NOT publish after
   # durable intent advances, even when the replacement changes epoch or kind.
-  property "generated supersession histories publish only the current revision", context do
+  test "generated supersession histories publish only the current revision", context do
     check all(
             newer_epoch? <- boolean(),
             next_generation <- integer(2..30),
@@ -590,7 +590,7 @@ defmodule Lilly.VM.ActorTest do
   # @cc [owner:ghuntley,label:verification;recovery] generated-journal-before-effect
   # For every generated execution revision, the journal MUST contain its
   # attempted epoch and generation before the executor can return any effect.
-  property "generated revisions are durably attempted before executor work", context do
+  test "generated revisions are durably attempted before executor work", context do
     check all(
             epoch <- integer(1..8),
             generation <- integer(1..100),

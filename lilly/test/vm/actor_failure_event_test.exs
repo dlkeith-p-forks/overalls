@@ -33,7 +33,7 @@ defmodule Lilly.VM.ActorFailureEventTest do
   # failed outcome: once per generation/reason until a recovery or a newer
   # command, never once per reconcile, and a repeated failure MUST NOT append
   # a durable outcome. A reconcile of a settled failure MUST start no work.
-  property "vm.failed follows recorded failed outcomes, not reconcile ticks", context do
+  test "vm.failed follows recorded failed outcomes, not reconcile ticks", context do
     check all(
             steps <-
               list_of(

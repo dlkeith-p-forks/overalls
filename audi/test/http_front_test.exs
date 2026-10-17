@@ -126,7 +126,7 @@ defmodule Audi.HTTP.FrontTest do
   # @cc [owner:ghuntley,label:verification;protocol] audi-fleet-version-owner-retirement
   # Verified 426 at fetch, acknowledgement or catalog MUST retire even a
   # suspended scheduler, stop later control work and preserve installed expiry.
-  property "fleet version refusal retires suspended readiness without reopening polling", c do
+  test "fleet version refusal retires suspended readiness without reopening polling", c do
     check all(
             generated <- member_of([:fetch, :ack, :catalog, :ready, :catalog_with_job]),
             max_runs: 1

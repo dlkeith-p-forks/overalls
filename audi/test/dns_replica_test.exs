@@ -48,7 +48,7 @@ defmodule Audi.DNS.ReplicaTest do
   # @cc [owner:ghuntley,label:verification;protocol] audi-version-refusal-transport
   # Explicit 426 MUST preserve its terminal class before payload-size or JSON
   # classification over real verified HTTPS, including configured-limit families.
-  property "verified TLS version refusal precedes malformed and oversized payloads", c do
+  test "verified TLS version refusal precedes malformed and oversized payloads", c do
     check all(generated <- member_of([0, 4095, 4096, 4097, 8_388_608, 8_388_609]), max_runs: 2) do
       for size <- Enum.uniq([0, 4095, 4096, 4097, 8_388_608, 8_388_609, generated]),
           operation <- [:dns, :identity] do
@@ -121,7 +121,7 @@ defmodule Audi.DNS.ReplicaTest do
   # transient, as MUST actual close4008 loss; the oracle MUST observe both
   # peer requests before closing.
   @tag :actual_version_close
-  property "pending reads retain terminal version refusal over the actual TLS socket", c do
+  test "pending reads retain terminal version refusal over the actual TLS socket", c do
     check all(prefix <- member_of([0, 1, 2]), max_runs: 3) do
       for {close_reason, expected} <- [
             {:idle, :transport_error},
@@ -191,7 +191,7 @@ defmodule Audi.DNS.ReplicaTest do
   # MUST NOT revive it; independent UDP/TCP queries MUST lose expired authority.
   @tag timeout: 120_000
   @tag :actual_version_close
-  property "DNS cadence stops on a pending socket version close without renewing authority", c do
+  test "DNS cadence stops on a pending socket version close without renewing authority", c do
     check all(generated <- member_of([0, 1, 2]), max_runs: 2) do
       for transients <- Enum.uniq([0, 1, 2, generated]) do
         client = Audi.Test.DNSControl.connected(c.client)
@@ -248,7 +248,7 @@ defmodule Audi.DNS.ReplicaTest do
   # @cc [owner:ghuntley,label:verification;recovery] audi-dns-terminal-version-history
   # Transient failures may retry; an explicit 426 MUST halt automatic and stale
   # timer refreshes while preserving exact published bytes and original expiry.
-  property "DNS replica halts after version refusal without extending published authority", c do
+  test "DNS replica halts after version refusal without extending published authority", c do
     check all(transients <- member_of([0, 1, 2]), max_runs: 3) do
       replica =
         start_supervised!({Replica, client: c.client, directory: c.directory, zone: @zone})
@@ -386,7 +386,7 @@ defmodule Audi.DNS.ReplicaTest do
   # @cc [owner:ghuntley,label:verification;security] dns-wire-snapshot-history
   # Generated accepted, stale and invalid publications MUST keep actual UDP and
   # TCP answers aligned with the latest accepted live route and proof inventory.
-  property "UDP and TCP answers follow only the latest accepted snapshot", c do
+  test "UDP and TCP answers follow only the latest accepted snapshot", c do
     check all(
             actions <-
               shuffle([

@@ -28,7 +28,7 @@ defmodule Marshall.Agents.PromptTest do
     assert root_id == c.root.id
   end
 
-  property "a repeated prompt key creates one turn, event and audit receipt", c do
+  test "a repeated prompt key creates one turn, event and audit receipt", c do
     check all(prompt <- string(:alphanumeric, min_length: 1, max_length: 64), max_runs: 12) do
       key = Ash.UUID.generate()
       input = %{thread_id: c.thread.id, prompt: prompt, request_key: key}
@@ -57,7 +57,7 @@ defmodule Marshall.Agents.PromptTest do
     assert [%{prompt: "first"}] = Ledger.read!(Turn, request_key: key)
   end
 
-  property "stopped VM prompt retries and changed payload retain one turn and wake", c do
+  test "stopped VM prompt retries and changed payload retain one turn and wake", c do
     check all(
             prompt <- string(:alphanumeric, min_length: 1, max_length: 24),
             retries <- integer(1..4),
@@ -155,7 +155,7 @@ defmodule Marshall.Agents.PromptTest do
              Ledger.read!(AuditEvent, kind: :wake_requested)
   end
 
-  property "shared write roles can wake, read-only roles cannot", c do
+  test "shared write roles can wake, read-only roles cannot", c do
     member = user()
 
     check all(role <- member_of([:web, :viewer, :operator, :manager]), max_runs: 12) do

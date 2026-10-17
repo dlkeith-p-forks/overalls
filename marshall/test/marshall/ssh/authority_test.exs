@@ -43,7 +43,7 @@ defmodule Marshall.SSH.AuthorityTest do
     assert session.token_hash == :crypto.hash(:sha256, pending.session_token)
   end
 
-  property "removal and re-addition never restore a previous connection", c do
+  test "removal and re-addition never restore a previous connection", c do
     check all(bytes <- binary(length: 32), max_runs: 20) do
       text = public_key(bytes)
       assert {:ok, key} = SSH.add_key(%{public_key: text}, actor: c.user)

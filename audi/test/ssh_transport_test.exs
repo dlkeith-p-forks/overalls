@@ -83,7 +83,7 @@ defmodule Audi.SSH.TransportTest do
   # @cc [owner:ghuntley,label:verification;security] ssh-delayed-admission-no-connector
   # A grant delivered after its request-start deadline MUST NOT invoke the
   # connector or forward bytes. Healthy admission MUST still establish a stream.
-  property "expired delayed authorization never reaches the guest connector", context do
+  test "expired delayed authorization never reaches the guest connector", context do
     supervisor = start_supervised!({Task.Supervisor, []}, id: make_ref())
 
     check all(ttl <- member_of([25, 75, 150]), max_runs: 4) do

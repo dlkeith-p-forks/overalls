@@ -28,7 +28,7 @@ defmodule MarshallWeb.TeamsSSHAPITest do
   # the control socket since ADR-0142) with current session authority and
   # compare full durable inventories on refusals and pinned replays. A successful
   # historical receipt MUST NOT restore membership or mutate a reused team name.
-  property "HTTP histories preserve pinned receipts and permanent team refusals", c do
+  test "HTTP histories preserve pinned receipts and permanent team refusals", c do
     check all(
             suffix <- string(?a..?z, min_length: 1, max_length: 12),
             steps <-
@@ -196,7 +196,7 @@ defmodule MarshallWeb.TeamsSSHAPITest do
   # Generated malformed names MUST refuse before any durable row changes; the
   # one- and 63-character boundaries MUST remain usable. Parser length refusal
   # and domain grammar refusal MUST both stay permanent HTTP 400 responses.
-  property "team name grammar and boundary refusals remain permanent", c do
+  test "team name grammar and boundary refusals remain permanent", c do
     owner = account(c)
 
     check all(label <- string(?a..?z, min_length: 1, max_length: 20), max_runs: 20) do

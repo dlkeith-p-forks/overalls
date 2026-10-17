@@ -104,7 +104,7 @@ defmodule Marshall.Inference.UpdateAuthorityTest do
     assert {:error, :unavailable} = Requests.authorize_update(c.ziggy_token, c.binding)
   end
 
-  property "arbitrary wire shapes never disclose artifacts and never raise", c do
+  test "arbitrary wire shapes never disclose artifacts and never raise", c do
     check all(
             wire <-
               map_of(
@@ -122,7 +122,7 @@ defmodule Marshall.Inference.UpdateAuthorityTest do
     end
   end
 
-  property "exactly-shaped bindings with mutated decisive fields never reach eligibility", c do
+  test "exactly-shaped bindings with mutated decisive fields never reach eligibility", c do
     mutations = [
       :foreign_host,
       :foreign_vm,

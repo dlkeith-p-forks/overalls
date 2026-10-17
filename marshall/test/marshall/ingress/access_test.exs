@@ -187,7 +187,7 @@ defmodule Marshall.Ingress.AccessTest do
     end
   end
 
-  property "closed and expired web streams never regain authority", c do
+  test "closed and expired web streams never regain authority", c do
     [endpoint] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
 
     assert {:ok, _} =
@@ -276,7 +276,7 @@ defmodule Marshall.Ingress.AccessTest do
              )
   end
 
-  property "browser codes require matching state and are consumed exactly once", c do
+  test "browser codes require matching state and are consumed exactly once", c do
     old = Application.get_env(:marshall, :ingress_zone)
     Application.put_env(:marshall, :ingress_zone, "apps.example")
 

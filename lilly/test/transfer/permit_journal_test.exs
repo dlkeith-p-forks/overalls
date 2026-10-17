@@ -528,7 +528,7 @@ defmodule Lilly.Transfer.PermitJournalTest do
              Enum.sort(["owner.lock", "keys", c.relocation])
   end
 
-  property "leases reject zero, negative and excessive validity before persistence", c do
+  test "leases reject zero, negative and excessive validity before persistence", c do
     check all(offset <- one_of([integer(-1000..0), integer(301..10_000)])) do
       assert {:error, _} = grant(c, 1, 1000 + offset)
       refute File.exists?(path(c))

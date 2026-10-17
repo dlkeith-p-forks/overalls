@@ -9,7 +9,7 @@ defmodule Audi.SSH.KeyPublisherTest do
   # @cc [owner:ghuntley,label:verification;protocol] audi-host-key-version-halt-history
   # Transient publication failures may retry; verified 426 MUST halt queued
   # publication while preserving the exact local key-file digests.
-  property "host key publisher halts after version refusal and preserves key files", context do
+  test "host key publisher halts after version refusal and preserves key files", context do
     server =
       start_supervised!(
         {Bandit,

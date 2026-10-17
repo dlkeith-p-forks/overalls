@@ -117,7 +117,7 @@ defmodule Lilly.Transfer.CloneCopyJournalTest do
     end)
   end
 
-  property "bindings, file records and completion refuse every conflicting history", c do
+  test "bindings, file records and completion refuse every conflicting history", c do
     check all(
             other_nonce <- member_of([String.duplicate("b", 32), "short", @nonce]),
             other_guid <- member_of(["300", "301"]),
