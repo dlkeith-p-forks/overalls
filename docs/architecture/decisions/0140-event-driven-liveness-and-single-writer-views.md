@@ -429,7 +429,10 @@ window measured Marshall's outage, not the host. `host_authority_ms` is now
 60 seconds ([config.exs](../../../marshall/config/config.exs)). This is the
 backstop for a silently lost host only: a reset or replaced connection session
 still ends authority at once, and capacity decisions keep the five-second
-rule. Earlier phase notes record the 30-second value as it was.
+rule. (Narrowed on 2026-10-17 by
+[ADR-0192](0192-staged-detached-ingress.md) decision 6: renewal of an admitted
+editor, web or guest SSH stream is inconclusive while the host reconnects, within its
+unchanged lease; admission is unchanged.) Earlier phase notes record the 30-second value as it was.
 
 *Live pages wait instead of reloading (2026-10-03).* With host authority
 held, the browser still lost its terminal: the reconnecting LiveView's join

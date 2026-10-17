@@ -48,6 +48,8 @@ sessions, cross-node races and physical archive/reopen continuity remain gaps.
 The existing terminal viewer rechecks on user/VM hints, input/resize and a
 five-second backstop. Editor and SSH renewal use current write authority and
 existing thirty-second leases; expiry remains a backstop when hints are lost.
+While Lilly reconnects, renewal applies these revocation checks first and only
+then answers `unavailable`, so revocation stays conclusive in that window.
 These are source-reviewed revocation paths, not a recorded native closure result
 for thread sharing.
 
@@ -247,7 +249,7 @@ existing authority. Static package defaults produce no invented audit events.
 | Identity | Current completed stored login and permanent GuestAccount UUID. One-use exchange, host-only cookie and separate personal origins refuse cross-account/replayed proof; retirement loses old authority. Same-User email changes preserve the guest UUID/UID/name/home and editor origin. |
 | Authorization | Current Cedar write, plus exact owner for Customer. Viewer/web/revoked roles and elevated foreign administrators cannot open Customer editors. Generic web/public/peer port authority never grants TCP 4444. |
 | Transport | Audi public TLS, service-authenticated control, exact unsafe HTTP/WebSocket Origin and fixed callback host. Same-site sibling origins and caller-supplied identity headers refuse before guest contact. Gallery VSIX authenticity uses packaged Ed25519 keys before extraction; local imports remain a separate user decision. |
-| Execution | Thirty-second leases bind service generation, host connection session, VM placement/epoch/generation, account, UID/name, release and origin. Expired/closed or changed bindings cannot revive. Lilly binds the dedicated marked gateway path and writes the typed preface. |
+| Execution | Thirty-second leases bind service generation, host, VM placement/epoch/generation, account, UID/name, release and origin; admission also needs a live host connection session. Renewal while Lilly reconnects (no session, or a new one not yet reported) is `unavailable` and retried only inside the unchanged lease; sign-out, revoked write, stop, a newer generation and a stale report stay conclusive ([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)). Expired/closed or changed bindings cannot revive. Lilly binds the dedicated marked gateway path and writes the typed preface. |
 | Isolation | Broker binds exact boot IPv4/eth0 and admits only the derived gateway. Worker runs reconciled personal UID on its owner-only Unix socket; no root fallback. Separate browser/webview origins prevent automatic browser-state sharing. Passwordless sudo writers still hold root capability, so no cross-writer OS confidentiality is claimed. |
 | Storage | Current manifest v4 binds exact immutable editor package and declared source capability; obsolete/mismatched images refuse. Ubuntu registers and GC-roots the offline closure. Personal home/server/extensions data is never automatically inherited by another account incarnation. Disable state uses upstream browser-profile storage on the separate account origin, without a cross-device synchronization promise; shared builtins remain immutable. |
 | Recovery | Broker restart retains independent systemd workers and sockets. Authority loss closes communication without claiming process death. Fresh admission can start a lost worker but cannot revive an old lease; upstream native activity governs idle shutdown. |
@@ -411,11 +413,18 @@ decision 4). Its boundary:
   logging them, and ends when its client closes. Guest bytes therefore never
   pass through a root process.
 
-  The bridge's client depends on the service
-  ([ADR-0187](repo:docs/architecture/decisions/0187-detached-ingress-bridges.md)).
-  Editor and nested HTTPS use Lilly's own socket (op 13); the BEAM relays
-  Audi's bytes, and a hostd or Lilly restart ends the connection. Guest SSH
-  and plain web use Audi's connection itself (op 14). hostd accepts it only
+  The bridge's client is Audi's connection itself (op 14) for every
+  service: guest SSH and plain web
+  ([ADR-0187](repo:docs/architecture/decisions/0187-detached-ingress-bridges.md)),
+  and the editor and nested HTTPS
+  ([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)).
+  For the last two, hostd first writes a preface Lilly derived from the
+  validated binding (a PROXY v2 header naming the Audi-attested client, or
+  the framed editor binding) and, for the editor, reads exactly the guest
+  broker's ready frame and compares it byte for byte with the frame Lilly
+  supplied. hostd interprets neither, reads no guest byte past the frame, and
+  starts no bridge on any difference. Lilly's own socket and BEAM relay
+  (op 13) remain only as a fallback. hostd accepts Audi's connection only
   as a connected AF_UNIX stream whose peer uid is Audi's, so it never bridges
   a guest to another local service. The bridge runs detached in its own
   `lilly-ingress-<key>.scope` in `lilly_ingress.slice`, with no parent-death

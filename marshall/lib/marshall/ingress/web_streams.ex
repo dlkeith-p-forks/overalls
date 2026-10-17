@@ -115,7 +115,8 @@ defmodule Marshall.Ingress.WebStreams do
     service = Services.authenticate!(request.service_token, :exclusive)
     candidate = candidate!(request.stream_token)
     bind!(candidate, service)
-    {vm, _, _} = Execution.web!(service, candidate, :exclusive)
+    # A reconnecting provisioner is inconclusive, not a revocation (ADR-0192).
+    {vm, host, _} = Execution.web!(service, candidate, :exclusive, :renew)
     require_owner!(vm)
     endpoint = List.first(Ledger.read!(Endpoint, vm_id: vm.id)) || deny!()
 
@@ -131,8 +132,12 @@ defmodule Marshall.Ingress.WebStreams do
     unless is_nil(stream.closed_at) and DateTime.compare(stream.expires_at, Ledger.now()) == :gt,
       do: deny!()
 
+    expires_at = deadline!(vm, credential, Ledger.now())
+    # Conclusive checks are done; a reconnecting provisioner is inconclusive.
+    Execution.renewable!(host, Ledger.now())
+
     stream
-    |> Ledger.update!(:renew, %{expires_at: deadline!(vm, credential, Ledger.now())})
+    |> Ledger.update!(:renew, %{expires_at: expires_at})
     |> view(credential)
   end
 

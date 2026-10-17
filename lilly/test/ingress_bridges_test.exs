@@ -9,6 +9,7 @@ defmodule Lilly.IngressBridgesTest do
   alias Lilly.Ingress.Bridges
   alias OverallsProtocol.IngressConnect, as: Wire
   @id "11111111-1111-4111-8111-111111111111"
+  @account "33333333-3333-4333-8333-333333333333"
 
   defmodule Host do
     @moduledoc "Live bridges in an Agent; ending one reports to the test."
@@ -109,6 +110,106 @@ defmodule Lilly.IngressBridgesTest do
     assert_receive {:ended, ^key}, 3000
     Process.sleep(50)
     refute File.exists?(Path.join(ctx.records, Bridges.name(key)))
+  end
+
+  defp editor_binding(binding) do
+    label = OverallsProtocol.EditorName.label(@id, @account)
+
+    %{
+      vm_id: @id,
+      host_id: @id,
+      placement_id: @id,
+      session_id: @id,
+      execution_epoch: binding.execution_epoch,
+      generation: binding.generation,
+      label: label,
+      service: :editor,
+      port: 4444,
+      user_id: @account,
+      guest_account_id: @account,
+      uid: 200_000,
+      username: "alice",
+      editor_protocol: 1,
+      editor_commit: String.duplicate("a", 40),
+      editor_release: String.duplicate("b", 64),
+      editor_origin: "https://#{label}.apps.test"
+    }
+  end
+
+  defp https_binding(binding),
+    do:
+      Map.merge(binding, %{
+        service: :control_https,
+        port: 443,
+        environment_generation: 1,
+        client_peer: %{address: "203.0.113.7", port: 50_000}
+      })
+
+  # @cc [owner:ghuntley,label:verification;security;recovery] ingress-editor-https-detached-fixture
+  # Editor and nested HTTPS bindings MUST take the detached path exactly as
+  # SSH (ADR-0192): Audi gets the greeting, the exact binding (including the
+  # nested client endpoint) is recorded before the bridge and reads back as
+  # an adoptable binding, and the keeper guards that binding.
+  test "editor and nested HTTPS connections are bridged detached and recorded", ctx do
+    guardian = guardian()
+    server(ctx, guardian)
+
+    for binding <- [editor_binding(ctx.binding), https_binding(ctx.binding)] do
+      {:ok, client} =
+        :gen_tcp.connect({:local, ctx.path}, 0, [:binary, active: false, packet: 4])
+
+      {:ok, message} = Wire.encode(binding)
+      :ok = :gen_tcp.send(client, message)
+      assert {:ok, ready} = :gen_tcp.recv(client, 0, 2000)
+      assert Wire.ready?(ready)
+      assert_receive {:bridged, key, ^binding}, 2000
+      assert %{^key => ^binding} = Bridges.records(ctx.records)
+      assert_receive {:guarded, ^binding}, 2000
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] ingress-detached-stage-fixture
+  # The stage hostd exchanges with the guest MUST be connect/3's preface:
+  # nothing for SSH, exactly one 28-byte PROXY v2 header naming the client
+  # and derived destination for nested HTTPS, and the length-framed editor
+  # binding plus the exact length-framed ready document within 20 s for the
+  # editor. A binding that cannot be encoded yields no stage.
+  test "detached stages carry only Lilly-derived prefaces and the exact ready frame", ctx do
+    assert {:ok, %{preface: <<>>, expect: <<>>, ready: 0}} =
+             Lilly.Network.Ingress.stage(ctx.binding, "10.20.0.2", 22)
+
+    assert {:ok, %{preface: header, expect: <<>>, ready: 0}} =
+             Lilly.Network.Ingress.stage(https_binding(ctx.binding), "10.41.0.2", 443)
+
+    assert {:ok, %{source: {{203, 0, 113, 7}, 50_000}, destination: {{10, 41, 0, 2}, 443}}} =
+             OverallsProtocol.ProxyHeader.decode(header)
+
+    editor = editor_binding(ctx.binding)
+
+    assert {:ok,
+            %{
+              preface: <<length::32, document::binary-size(length)>>,
+              expect: expect,
+              ready: 20_000
+            }} =
+             Lilly.Network.Ingress.stage(editor, "10.20.0.2", 4444)
+
+    assert {:ok, ^editor} = OverallsProtocol.EditorConnect.decode(document)
+    ready = ~s({"version":1,"ready":true})
+    assert expect == <<byte_size(ready)::32, ready::binary>>
+    assert Wire.ready?(ready)
+
+    assert {:error, :ingress_unavailable} =
+             Lilly.Network.Ingress.stage(
+               %{https_binding(ctx.binding) | client_peer: %{address: "nope", port: 1}},
+               "10.41.0.2",
+               443
+             )
+
+    assert Enum.all?(
+             [:ssh, :web, :editor, :porsche_ssh, :audi_ssh, :control_https, :audi_https],
+             &Lilly.Network.Ingress.detachable?(%{service: &1})
+           )
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] ingress-readoption-fixture

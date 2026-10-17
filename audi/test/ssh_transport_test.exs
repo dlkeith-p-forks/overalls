@@ -229,6 +229,30 @@ defmodule Audi.SSH.TransportTest do
     end
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] audi-ssh-renewal-across-lilly-restart
+  # Marshall answers "unavailable" while Lilly reconnects (ADR-0187, ADR-0192).
+  # The SSH channel MUST keep its stream, retry inside the unchanged lease, and
+  # carry it past the original deadline once a renewal succeeds.
+  test "unavailable SSH renewals during a Lilly restart are retried and the stream survives",
+       context do
+    Agent.update(context.agent, &%{&1 | renew: :unavailable, ttl: 2000})
+    connection = connect(context)
+    {:ok, channel} = :ssh_connection.session_channel(connection, 1000)
+    started = System.monotonic_time(:millisecond)
+    assert :success = :ssh_connection.exec(connection, channel, ~c"connect #{@label}", 2000)
+    assert_receive :guest_connected
+    assert_receive :renewing, 2000
+    assert_receive :renewing, 1000
+    Agent.update(context.agent, &%{&1 | renew: :allow})
+    assert_receive :renewing, 1000
+    # Past the original deadline: only a retried, successful renewal keeps it.
+    Process.sleep(max(started + 2500 - System.monotonic_time(:millisecond), 0))
+    assert :ok = :ssh_connection.send(connection, channel, "after restart", 1000)
+    assert receive_bytes(connection, channel, 13) == "after restart"
+    :ssh.close(connection)
+    assert_receive :guest_closed, 1000
+  end
+
   test "a stalled renewal closes the connector and SSH channel", context do
     Agent.update(context.agent, &%{&1 | renew: :hang})
     connection = connect(context)

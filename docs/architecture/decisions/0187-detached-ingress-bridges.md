@@ -4,7 +4,7 @@
 - Date: 2026-10-17
 - Status: accepted
 - Implementation: partial
-- Components: Lilly, lilly-hostd, lilly-ingress-bridge, NixOS lilly module
+- Components: Lilly, lilly-hostd, lilly-ingress-bridge, NixOS lilly module, Marshall SSH session renewal
 - Supersedes: none
 - Superseded by: none
 
@@ -64,6 +64,10 @@ decisions stand.
    The BEAM then closes its own copy. Editor and nested HTTPS bindings, which
    need a preface or a ready frame from the guest, keep ADR-0184's op 13 and
    BEAM relay.
+   *Amended by [ADR-0192](0192-staged-detached-ingress.md) (2026-10-17):*
+   the editor and nested HTTPS now take this path too. op 14 carries a
+   preface and an exact expected frame that Lilly derives; hostd writes the
+   one to the guest and compares the other before starting the bridge.
 2. **The bridge lives outside both services.** hostd places each detached
    bridge in its own transient scope, `systemd-run --scope
    --unit=lilly-ingress-<key>.scope --slice=lilly_ingress.slice
@@ -135,6 +139,32 @@ decisions stand.
 - hostd gains three typed requests and one more received-descriptor form; the
   generic `Run` still cannot reach `systemd-run` or the bridge.
 
+### Correction: SSH renewal across restarts (2026-10-17)
+
+A surviving bridge is not enough for a surviving session: Audi also renews
+the session's 30-second lease with Marshall about every 15 seconds. Marshall's
+SSH renewal (`Marshall.Ingress.Sessions`, `host!/1` and `ready!/2`) refused
+with `unauthorized`, a conclusive revocation, whenever the host had no
+provisioner session or a new session that had not reported yet. A Lilly
+restart produces exactly that window, so a guest SSH session whose renewal
+(or a hint-driven renewal) fell inside it was cut even though its bridge
+lived. The user-SSH journey subtest passed because its renewals happened to
+miss the window; the editor subtest of
+[ADR-0192](0192-staged-detached-ingress.md) hit the same class of refusal.
+
+SSH renewal now follows ADR-0192 decision 6: it rechecks the gateway, the
+key and its owner, current write membership, the VM's placement, epoch,
+generation, running state, readiness and completed start, and the session's
+own binding, all conclusively; only then, if the provisioner is merely
+reconnecting, it answers `temporarily_unavailable` and leaves the lease
+unchanged (`ingress-ssh-renewal-no-resurrection`,
+`ingress-renewal-host-reconnecting`). Marshall's Audi channel reports that as
+`unavailable`; Audi's SSH channel already treats it as inconclusive and
+retries until the lease deadline (`Audi.Authority.Renewal`,
+`Audi.SSH.Channel`). Admission still requires a live, reported host. Nested
+`porsche_ssh` and `audi_ssh` streams renew through Inception publication
+authority, not this path, and are unchanged (see ADR-0192).
+
 ## Invariants and verification
 
 - hostd bridges only Audi's connection: a connected, non-listening AF_UNIX
@@ -154,6 +184,12 @@ decisions stand.
   a hostd restart and a Lilly restart, the adoption, the adoption grace
   passing, and an unrecorded bridge ended
   (`journey-hostd-restart-keeps-bridges`).
+- SSH renewal while Lilly reconnects is inconclusive and then keeps the
+  binding; key removal, write revocation and a stop with a newer generation
+  stay conclusive in that window; Audi's SSH channel retries an unavailable
+  renewal inside the lease (`ssh-renewal-across-lilly-restart`,
+  `ssh-renewal-revocation-stays-conclusive`,
+  `audi-ssh-renewal-across-lilly-restart`).
 
 ## Implementation evidence
 
@@ -193,8 +229,17 @@ decisions stand.
   passed in a native `user-ssh-journey-fleet` run on 2026-10-17 (64.99 s
   within 16 passing subtests).
 
-Remaining: editor and nested HTTPS still use op 13, and the adoption grace
-is unmeasured on a heavily loaded production host. The review is
+- SSH renewal correction: [`Sessions`](../../../marshall/lib/marshall/ingress/sessions.ex)
+  (`:renew_ssh`), tests in
+  [`sessions_test.exs`](../../../marshall/test/marshall/ingress/sessions_test.exs)
+  and Audi's
+  [`ssh_transport_test.exs`](../../../audi/test/ssh_transport_test.exs).
+
+Remaining: the adoption grace is unmeasured on a heavily loaded production
+host. No machine run yet forces an SSH renewal into the Lilly restart
+window. Editor and nested HTTPS moved to this path under
+[ADR-0192](0192-staged-detached-ingress.md), whose machine evidence is
+pending. The review is
 [2026-10-17 detached ingress bridges](../reviews/2026-10-17-detached-ingress-bridges.md).
 
 ## Open questions
@@ -208,6 +253,9 @@ is unmeasured on a heavily loaded production host. The review is
 
 - [ADR-0184](0184-lilly-owns-every-socket.md): decision 3 is amended here for
   preface-free services; custody and op 13 for the rest stand.
+- [ADR-0192](0192-staged-detached-ingress.md): amends decision 1 so the
+  editor and nested HTTPS also use detached bridges, with a hostd-executed
+  stage.
 - [ADR-0176](0176-host-concurrency-single-writers-and-effects.md): Lilly stays
   bound to its hostd session; only bridges leave it.
 - [ADR-0182](0182-unprivileged-lilly-beam.md): the unprivileged BEAM and hostd

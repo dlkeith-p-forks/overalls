@@ -107,9 +107,15 @@ sequenceDiagram
   A->>M: Renew while current authority remains valid
 ```
 
-Admission and renewal bind the current stored login, write grant, account
-incarnation, host session, gateway identity, placement, execution epoch/generation,
-release and origin. Unsafe HTTP and WebSocket requests require the exact origin;
+Admission binds the current stored login, write grant, account incarnation,
+live host session, gateway identity, placement, execution epoch/generation,
+release and origin. Renewal rechecks all of them except the provisioner's control
+session: a Lilly restart opens a new session while the execution and the
+detached bridge stay current, so a renewal while Lilly reconnects is answered
+`unavailable` (Audi retries within the unchanged lease) and succeeds once the new
+session reports
+([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)).
+A stale report on a live session still refuses. Unsafe HTTP and WebSocket requests require the exact origin;
 same-site sibling origins cannot use the credential. Missing/mismatched capability,
 retired accounts, stale logins, changed execution and expired leases refuse without
 fallback. Generic guest-web visibility or port settings cannot grant editor access.
@@ -117,6 +123,19 @@ An upgraded editor or guest-web WebSocket ends with its lease, either peer's clo
 or 60 s without a browser frame; the gateway listener's 5 s HTTP read timeout does
 not apply to it, so a client with a 5 s keepalive is not cut off
 ([regression test](repo:audi/test/http_proxy_test.exs)).
+
+Lilly's leg runs in a detached ingress bridge
+([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)).
+Lilly derives the typed account preface and the exact ready frame it requires
+from the guest broker; lilly-hostd writes the one and compares the other
+before it starts `lilly-ingress-bridge` in its own scope, then splices Audi's
+connection straight to the guest. A live editor WebSocket therefore survives a
+lilly-hostd or Lilly restart. Lilly still ends the bridge when the execution
+loses authority, and Audi's sign-out revocation still closes the WebSocket,
+which ends the bridge. Its first machine run failed: the bridges survived, but
+Marshall refused the next renewal because the lease was pinned to Lilly's
+replaced control session, so Audi revoked the stream. Renewal no longer pins
+that session; the corrected subtest has not run yet.
 
 The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant's
 source commit permits same-origin framing for the upstream browser extension host.

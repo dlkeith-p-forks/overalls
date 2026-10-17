@@ -370,6 +370,7 @@ let
     mkdir -p "$out" config
     cp ${../vscode-web/prepare.py} "$out/prepare.py"
     cp ${../vscode-web/authorization.py} "$out/authorization.py"
+    cp ${../vscode-web/restart.py} "$out/restart.py"
     cp ${../vscode-web/fleet_policy.py} "$out/fleet_policy.py"
     cp ${../vscode-web/policy.py} "$out/policy.py"
     cp ${../vscode-web/browser.py} "$out/browser.py"
