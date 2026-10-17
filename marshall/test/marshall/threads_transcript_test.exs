@@ -201,6 +201,25 @@ defmodule Marshall.ThreadsTranscriptTest do
 
     assert {:error, :not_found} = Marshall.Threads.events(thread.id, creator, 3, 100)
 
+    [current_generation] =
+      Ledger.read!(Marshall.Threads.Generation, thread_id: thread.id, ordinal: 2)
+
+    Ledger.update!(current_generation, :bind, %{
+      machine_id: first_vm.id,
+      agent_root_id: first_root.id,
+      agent_thread_id: first_agent.id
+    })
+
+    assert {:error, :machine_unavailable} = Marshall.Threads.events(thread.id, creator)
+
+    Ledger.update!(current_generation, :bind, %{
+      machine_id: nil,
+      agent_root_id: nil,
+      agent_thread_id: nil
+    })
+
+    assert {:error, :machine_unavailable} = Marshall.Threads.events(thread.id, creator)
+
     assert {:ok, _} =
              Marshall.Threads.set_access(
                %{

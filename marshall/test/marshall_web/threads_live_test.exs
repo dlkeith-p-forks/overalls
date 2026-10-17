@@ -17,12 +17,67 @@ defmodule MarshallWeb.ThreadsLiveTest do
     assert has_element?(view, "a[href='/threads/activity']", "Activity")
   end
 
+  # @cc [owner:ghuntley,label:verification;durability] thread-index-keyset-controls
+  # The LiveView MUST expose the domain's next keyset page once more than one
+  # bounded page exists, and advancing it MUST reveal older authorized threads.
+  test "thread index advances through keyset pages", c do
+    oldest = create_thread(c.owner, "Oldest thread")
+    Enum.each(1..50, &create_thread(c.owner, "Thread #{&1}"))
+
+    {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads")
+
+    assert has_element?(view, "#thread-page-next")
+    refute has_element?(view, "#thread-list-items a[href='/threads/#{oldest.id}']")
+
+    render_click(view, "threads_next")
+
+    assert has_element?(view, "#thread-list-items a[href='/threads/#{oldest.id}']")
+    assert has_element?(view, "#thread-page-first")
+  end
+
   test "new thread view collects an objective and machine settings", c do
     {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/new")
     assert has_element?(view, "#new-thread-form")
     assert has_element?(view, "textarea[name='thread[objective]']")
     assert has_element?(view, "select[name='thread[mode]']")
     assert has_element?(view, "#create-thread")
+  end
+
+  # @cc [owner:ghuntley,label:verification;product] new-thread-skill-selection
+  # A new thread has no guest context yet, but a bounded skill source selected
+  # from the composer MUST remain in the draft and be sent with creation.
+  test "new thread composer keeps an initial skill selection", c do
+    {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/new")
+
+    render_click(view, "skill_search", %{"query" => "release-checks"})
+
+    assert has_element?(
+             view,
+             "#thread-skill-suggestions button[data-thread-skill='release-checks']"
+           )
+
+    render_click(view, "select_skill", %{"id" => "release-checks"})
+    assert has_element?(view, "#thread-selected-skills", "$release-checks")
+
+    send(view.pid, :refresh_threads)
+    assert has_element?(view, "#thread-selected-skills", "$release-checks")
+
+    render_submit(view, "create", %{
+      "thread" => %{
+        "objective" => "Prepare the release",
+        "mode" => "medium",
+        "collaboration_mode" => "work",
+        "profile" => "standard",
+        "image_id" => "image",
+        "vcpu" => "2",
+        "memory_mib" => "4096",
+        "disk_gib" => "40",
+        "team_id" => ""
+      }
+    })
+
+    [thread] = Marshall.Compute.Ledger.read!(Marshall.Threads.Thread, creator_id: c.owner.id)
+    assert thread.initial_skill_ids == ["release-checks"]
   end
 
   # @cc [owner:ghuntley,label:verification;product] composer-mode-does-not-provision
@@ -186,6 +241,26 @@ defmodule MarshallWeb.ThreadsLiveTest do
     assert Marshall.Compute.Ledger.read!(Marshall.Agents.Turn, actor_id: c.owner.id) == []
   end
 
+  # @cc [owner:ghuntley,label:verification;product] pending-thread-lifecycle-control
+  # A manager MUST be able to archive a pending or provisioning thread so a
+  # stuck admission can be cancelled through the same durable lifecycle used
+  # for ready and failed threads.
+  test "pending thread exposes manager lifecycle actions", c do
+    thread = create_thread(c.owner, "Cancel a stuck admission")
+    {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/#{thread.id}")
+
+    assert has_element?(view, "details.thread-actions-menu")
+    assert has_element?(view, "details.thread-actions-menu button[phx-click='archive']")
+    assert has_element?(view, "details.thread-actions-menu button[phx-click='delete']")
+
+    view
+    |> element("details.thread-actions-menu button[phx-click='archive']")
+    |> render_click()
+
+    assert {:ok, %Marshall.Threads.Thread{status: :archived}} =
+             Marshall.Threads.get_thread(%{thread_id: thread.id}, actor: c.owner)
+  end
+
   # @cc [owner:ghuntley,label:verification;product] thread-conversation-reading-order
   # The reply composer MUST precede the transcript in document order. Events
   # MUST appear newest first by their persisted sequence, including after refresh.
@@ -204,6 +279,7 @@ defmodule MarshallWeb.ThreadsLiveTest do
     })
 
     current_thread = Ledger.read!(Marshall.Threads.Thread, id: thread.id) |> hd()
+    Marshall.Threads.Generation.sync!(current_thread)
 
     Ledger.create!(Marshall.Threads.Generation, :open, %{
       thread_id: current_thread.id,
@@ -234,6 +310,12 @@ defmodule MarshallWeb.ThreadsLiveTest do
     assert has_element?(view, "#thread-generations")
     assert has_element?(view, "#thread-generation-selector option[value='1']")
     assert has_element?(view, "#thread-generation-selector option[value='2']")
+
+    {:ok, invalid_view, _html} =
+      live(signed_in(c.conn, c.owner), ~p"/threads/#{thread.id}?generation=999")
+
+    assert has_element?(invalid_view, "#thread-not-found")
+    refute has_element?(invalid_view, "#thread-prompt-form")
 
     assert conversation_order(view) == [
              "thread-prompt-form",
@@ -331,6 +413,11 @@ defmodule MarshallWeb.ThreadsLiveTest do
       agent_thread_id: agent_thread.id,
       status: :ready
     })
+
+    Marshall.Threads.Generation.sync!(
+      Ledger.read!(Marshall.Threads.Thread, id: thread.id)
+      |> hd()
+    )
 
     collaborator = user()
     :ok = set_thread_access(c.owner, thread, collaborator, :viewer)
@@ -486,6 +573,8 @@ defmodule MarshallWeb.ThreadsLiveTest do
         status: :ready
       })
 
+    Marshall.Threads.Generation.sync!(bound)
+
     Ledger.create!(Marshall.Agents.Event, :append, %{
       thread_id: agent_thread.id,
       sequence: agent_thread.next_event_sequence,
@@ -561,5 +650,3 @@ defmodule MarshallWeb.ThreadsLiveTest do
     :ok
   end
 end
-
-# HLDD evidence assertions: thread index advances through keyset pages; new thread composer keeps an initial skill selection; pending thread exposes manager lifecycle actions.

@@ -466,11 +466,17 @@ defmodule ZFSGuestFixture do
       "coding-clis" ->
         # Native help/version commands and system configuration must work for
         # root and an ordinary user, before and after collection in the guest.
-        console(config, spec, "bash -lc " <> shell_quote(coding_cli_commands()))
-        console(config, spec, manually_created_user_coding_cli_commands())
-        console(config, spec, "nix-store --gc >/dev/null 2>&1")
-        console(config, spec, "bash -lc " <> shell_quote(coding_cli_commands()))
-        console(config, spec, manually_created_user_coding_cli_commands())
+        for phase <- ["before-gc", "after-gc"] do
+          if phase == "after-gc", do: console(config, spec, "nix-store --gc >/dev/null 2>&1")
+
+          console_steps(
+            config,
+            spec,
+            Enum.map(coding_cli_steps(), fn {name, command} ->
+              {"#{phase} root #{name}", "bash -lc " <> shell_quote(command)}
+            end) ++ [{"#{phase} new-user", manually_created_user_coding_cli_commands()}]
+          )
+        end
 
       "observe" ->
         true = Observation.running?(config, pool, spec)
@@ -715,6 +721,59 @@ defmodule ZFSGuestFixture do
     end
   end
 
+  # @cc [owner:ghuntley,label:verification;security] zfs-fixture-step-status
+  # Multi-step guest assertions MUST report the failing step name and its exit
+  # status (or a step timeout) while still withholding every terminal byte.
+  @spec console_steps(Config.t(), Spec.t(), [{String.t(), String.t()}]) :: :ok
+  defp console_steps(config, spec, steps) do
+    {:ok, terminal} = connect_terminal(config, spec, deadline(120_000))
+
+    try do
+      ready = "SHELL_" <> Base.encode16(:crypto.strong_rand_bytes(12))
+      :ok = Vsock.write(terminal.socket, "\nprintf '\\n%s%s\\n' #{ready} _READY\n")
+      wait(terminal.socket, "\n#{ready}_READY\n", deadline(120_000), "")
+
+      Enum.each(steps, fn {name, command} ->
+        marker = "ZFS_" <> Base.encode16(:crypto.strong_rand_bytes(12))
+        :ok = Vsock.write(terminal.socket, "( #{command} ); printf '\\n#{marker}:%s\\n' $?\n")
+
+        case wait_status(terminal.socket, marker, deadline(60_000), "") do
+          0 -> :ok
+          :timeout -> raise "Guest step #{name} timed out; terminal bytes withheld"
+          code -> raise "Guest step #{name} exited #{code}; terminal bytes withheld"
+        end
+      end)
+    after
+      close_terminal(terminal)
+    end
+  end
+
+  defp wait_status(socket, marker, until, tail) do
+    if System.monotonic_time(:millisecond) >= until do
+      :timeout
+    else
+      case :gen_tcp.recv(socket, 0, 1000) do
+        {:ok, bytes} ->
+          body = :binary.replace(tail <> bytes, "\r", "", [:global])
+
+          case Regex.run(~r/\n#{marker}:(\d{1,3})\n/, body) do
+            [_, code] ->
+              String.to_integer(code)
+
+            nil ->
+              keep = min(byte_size(body), byte_size(marker) + 8)
+              wait_status(socket, marker, until, binary_part(body, byte_size(body) - keep, keep))
+          end
+
+        {:error, :timeout} ->
+          wait_status(socket, marker, until, tail)
+
+        _ ->
+          raise "Guest console closed; terminal bytes withheld"
+      end
+    end
+  end
+
   # @cc [owner:ghuntley,label:verification;security] zfs-fixture-terminal-current-boot
   # Real-guest assertions MUST authenticate terminald with the persisted current
   # boot identity and an isolated PTY. The fixture MUST retire that PTY and MUST
@@ -866,14 +925,21 @@ defmodule ZFSGuestFixture do
   # Both real images MUST execute native Codex and Claude version/help commands
   # without provider authentication or a network connection. The login shell
   # MUST expose Ziggy system settings and verified CA trust before and after GC.
-  @spec coding_cli_commands() :: String.t()
-  defp coding_cli_commands do
+  @spec coding_cli_steps() :: [{String.t(), String.t()}]
+  defp coding_cli_steps do
     settings = "/etc/zfs-coding-clis.py" |> File.read!() |> Base.encode64()
 
-    "codex --version >/dev/null && codex --help >/dev/null && " <>
-      "claude --version >/dev/null && claude --help >/dev/null && " <>
-      "python3 -c \"$(printf %s #{settings} | base64 -d)\""
+    [
+      {"codex-version", "codex --version >/dev/null"},
+      {"codex-help", "codex --help >/dev/null"},
+      {"claude-version", "claude --version >/dev/null"},
+      {"claude-help", "claude --help >/dev/null"},
+      {"settings", "python3 -c \"$(printf %s #{settings} | base64 -d)\""}
+    ]
   end
+
+  @spec coding_cli_commands() :: String.t()
+  defp coding_cli_commands, do: Enum.map_join(coding_cli_steps(), " && ", &elem(&1, 1))
 
   # @cc [owner:ghuntley,label:verification] guest-coding-cli-user-login
   # A plain useradd account MUST execute both native clients with inherited

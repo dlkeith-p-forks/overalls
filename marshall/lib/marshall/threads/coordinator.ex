@@ -82,10 +82,10 @@ defmodule Marshall.Threads.Coordinator do
   end
 
   defp execute(:list, args, actor) do
-    thread_query(actor)
-    |> Ash.Query.limit(args[:limit] || 100)
-    |> Ash.read!(actor: SystemActor.compute())
-    |> Enum.filter(&Authorization.allowed?(&1, actor, "read"))
+    case authorized_page(thread_query(actor), actor, args[:limit] || 100) do
+      {:ok, {items, _has_more?}} -> Enum.take(items, args[:limit] || 100)
+      {:error, reason} -> Ledger.rollback(reason)
+    end
   end
 
   # @cc [owner:ghuntley,label:security;durability] thread-list-keyset-page
@@ -97,15 +97,15 @@ defmodule Marshall.Threads.Coordinator do
 
     case page_query(thread_query(actor), args[:after], actor) do
       {:ok, query} ->
-        rows =
-          query
-          |> Ash.Query.limit(limit + 1)
-          |> Ash.read!(actor: SystemActor.compute())
-          |> Enum.filter(&Authorization.allowed?(&1, actor, "read"))
+        case authorized_page(query, actor, limit) do
+          {:ok, {rows, has_more?}} ->
+            items = Enum.take(rows, limit)
 
-        items = Enum.take(rows, limit)
+            %{items: items, next_cursor: if(has_more?, do: List.last(items).id)}
 
-        %{items: items, next_cursor: if(length(rows) > limit, do: List.last(items).id)}
+          {:error, reason} ->
+            Ledger.rollback(reason)
+        end
 
       :empty ->
         %{items: [], next_cursor: nil}
@@ -274,6 +274,71 @@ defmodule Marshall.Threads.Coordinator do
   end
 
   defp page_query(_query, _cursor, _actor), do: :empty
+
+  @page_batch 100
+  @max_page_scan 10_000
+
+  # @cc [owner:ghuntley,label:security;durability] thread-authorized-page-bound
+  # Authorized thread pagination MUST continue past post-query authorization
+  # refusals so visible pages do not contain holes. It MUST stop after a fixed
+  # scan budget and return a closed error rather than silently truncating or
+  # exposing a cursor that could broaden the reader's scope.
+  @spec authorized_page(Ash.Query.t(), Marshall.Accounts.User.t(), pos_integer()) ::
+          {:ok, {[Thread.t()], boolean()}} | {:error, :authorization_scan_limit}
+  defp authorized_page(query, actor, limit) do
+    collect_authorized(query, actor, limit, [], 0)
+  end
+
+  @spec collect_authorized(
+          Ash.Query.t(),
+          Marshall.Accounts.User.t(),
+          pos_integer(),
+          [Thread.t()],
+          non_neg_integer()
+        ) :: {:ok, {[Thread.t()], boolean()}} | {:error, :authorization_scan_limit}
+  defp collect_authorized(query, actor, limit, collected, scanned) do
+    batch_size = min(@page_batch, limit + 1)
+
+    rows =
+      query
+      |> Ash.Query.limit(batch_size)
+      |> Ash.read!(actor: SystemActor.compute())
+
+    authorized = Enum.filter(rows, &Authorization.allowed?(&1, actor, "read"))
+    collected = collected ++ authorized
+    scanned = scanned + length(rows)
+
+    cond do
+      length(collected) > limit ->
+        {:ok, {Enum.take(collected, limit + 1), true}}
+
+      length(rows) < batch_size ->
+        {:ok, {collected, false}}
+
+      scanned >= @max_page_scan ->
+        {:error, :authorization_scan_limit}
+
+      true ->
+        last = List.last(rows)
+
+        collect_authorized(
+          after_thread(query, last),
+          actor,
+          limit,
+          collected,
+          scanned
+        )
+    end
+  end
+
+  @spec after_thread(Ash.Query.t(), Thread.t()) :: Ash.Query.t()
+  defp after_thread(query, %Thread{} = thread) do
+    Ash.Query.filter(
+      query,
+      inserted_at < ^thread.inserted_at or
+        (inserted_at == ^thread.inserted_at and id < ^thread.id)
+    )
+  end
 
   @spec cancel_pending_question!(Thread.t()) :: :ok
   defp cancel_pending_question!(%Thread{agent_thread_id: agent_thread_id})

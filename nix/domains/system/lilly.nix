@@ -26,14 +26,34 @@ let
     LockPersonality = true;
     RestrictRealtime = true;
   };
-  serviceUser = if cfg.unprivileged then "lilly" else "root";
-  # Directories the unprivileged BEAM owns (its private state and runtime).
-  ownedDirectories = lib.unique ([ "/run/lilly" "/var/lib/lilly" cfg.stateDirectory cfg.vmStateDirectory cfg.networkStateDirectory ]
+  # The BEAM always runs as `lilly` (ADR-0182); hostd is the only root component.
+  serviceUser = "lilly";
+  serviceUid = toString config.users.users.lilly.uid;
+  # Root-owned secrets reach the BEAM only as systemd credentials.
+  secretPath = name: "/run/credentials/lilly.service/${name}";
+  # The control-plane CA is public, but its path may be root-only (a fixture's
+  # private state directory); systemd reads it as root and hands the service
+  # user a private copy, exactly as it does the credential.
+  loadCredentials = [ "credential:${cfg.credentialFile}" "control-ca:${cfg.controlPlaneCAFile}" ]
+    ++ lib.optional (cfg.inceptionSMTPFile != null) "inception-smtp:${cfg.inceptionSMTPFile}";
+  # Directories the BEAM owns (its private state and runtime).
+  ownedDirectories = lib.unique ([ "/run/lilly" "/var/lib/lilly" "/run/lilly-clone-copies" cfg.stateDirectory cfg.vmStateDirectory cfg.networkStateDirectory ]
     ++ map (pool: pool.path) cfg.pools);
+  transferStateDirectory = if config.services.lillyTransfer.enable
+    then config.services.lillyTransfer.stateDirectory else null;
   hostdSocket = "/run/lilly-hostd/control.sock";
   hostdRoots = lib.unique ([ "/run" "/var/lib/lilly" cfg.stateDirectory cfg.vmStateDirectory cfg.networkStateDirectory ]
     ++ map (pool: pool.path) cfg.pools
     ++ lib.optional (config.services.lillyTransfer.enable or false) config.services.lillyTransfer.stateDirectory);
+  # Native file effects (chmod, chown, mv, rm, truncate, mkfifo, sync) act only
+  # beneath these: Lilly's own state and pools, never all of /run
+  # (native-file-effects-beneath-roots).
+  # The /run entries are the directories Lilly locks and publishes in: its
+  # own state, clone and backup mounts, and the sockets it serves.
+  fileRoots = lib.unique ([ "/run/lilly" "/run/lilly-clone-copies" "/run/overalls-backups"
+      "/run/lilly-ingress" "/run/lilly-brady" "/run/lilly-inception" "/run/audi-private" "/run/ziggy"
+      "/var/lib/overalls-firecracker" ]
+    ++ lib.remove "/run" hostdRoots);
   uplink = "lu${builtins.substring 0 12 (builtins.hashString "sha256" cfg.hostId)}";
   guestTrustRootFiles = map (path: pkgs.runCommand "lilly-public-guest-root.pem" {} ''
     cp ${path} "$out"
@@ -42,11 +62,10 @@ let
     version = 4;
     control_plane = cfg.controlPlane;
     host_id = cfg.hostId;
-    credential_file = cfg.credentialFile;
-    cacertfile = cfg.controlPlaneCAFile;
+    credential_file = secretPath "credential";
+    cacertfile = secretPath "control-ca";
     state_dir = cfg.stateDirectory;
-    transfer_state_dir = if config.services.lillyTransfer.enable
-      then config.services.lillyTransfer.stateDirectory else null;
+    transfer_state_dir = transferStateDirectory;
     transfer_bytes_per_second = cfg.transferBytesPerSecond;
     local_transfer_bytes_per_second = cfg.localTransferBytesPerSecond;
     cgroup_path = "/sys/fs/cgroup/lilly.slice";
@@ -70,7 +89,7 @@ let
         dns = config.services.brady.dnsResolvers;
       } else null;
       firecracker_logging = cfg.firecrackerLogging.enable;
-      inception_smtp_file = cfg.inceptionSMTPFile;
+      inception_smtp_file = if cfg.inceptionSMTPFile == null then null else secretPath "inception-smtp";
       inception_image_id = cfg.inceptionImageId;
       inception_proof_file = if cfg.inceptionImageId == null then null else "/run/lilly-inception/proof.json";
       inception_probe_id = if cfg.inceptionImageId == null then null else toString packages.inceptionProbeGuest;
@@ -139,7 +158,7 @@ in
     controlPlaneCAFile = mkOption {
       type = localTypes.absolutePath;
       default = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
-      description = "CA bundle authenticating the control-plane endpoint.";
+      description = "CA bundle authenticating the control-plane endpoint. Lilly reads it through systemd LoadCredential, so the file may be readable by root only.";
     };
     credentialFile = mkOption {
       type = localTypes.privatePath;
@@ -150,16 +169,6 @@ in
       type = types.listOf (types.strMatching "[a-zA-Z0-9_.@-]+\\.service");
       default = [];
       description = "Required preparation services that publish runtime credentials.";
-    };
-    unprivileged = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Run the Lilly BEAM as the unprivileged `lilly` user with no
-        capabilities, with lilly-hostd as the only root component (ADR-0182).
-        Off until a native machine test covers the full guest lifecycle as
-        `lilly`.
-      '';
     };
     hostd.peerCgroups = mkOption {
       type = types.listOf types.str;
@@ -280,8 +289,8 @@ in
           ((lib.attrByPath [ "services" "audi" "enable" ] false config)
             && config.services.audi.hostId == cfg.hostId
             && config.services.audi.connectorPath == "/run/lilly-ingress/audi.sock"
-            && config.services.audi.connectorUid == 0);
-        message = "Lilly ingress requires the local Audi gateway with matching host and root connector identity."; }
+            && config.services.audi.connectorUid == config.users.users.lilly.uid);
+        message = "Lilly ingress requires the local Audi gateway with matching host and Lilly service-user connector identity."; }
       { assertion = !config.services.lillyTransfer.enable || hasZfs;
         message = "Lilly transfer export requires at least one configured native ZFS pool."; }
       { assertion = !cfg.privateServices.enable || cfg.guestTrustRoots != [];
@@ -375,7 +384,9 @@ in
     networking.firewall.extraForwardRules = lib.mkIf config.networking.firewall.filterForward ''
       iifname "${uplink}" oifname "${cfg.egressInterface}" ip saddr 169.254.255.2 ct state { new, established, related } accept
     '';
-    systemd.tmpfiles.rules = lib.optional audiConnector "d /run/lilly-ingress 2750 root audi -" ++ map (path: "d ${path} 0700 root root -") [
+    # Boot-time ownership follows the service user: tmpfiles adjusts existing
+    # directories, so root here would undo lilly-ownership on every boot.
+    systemd.tmpfiles.rules = lib.optional audiConnector "d /run/lilly-ingress 2750 ${serviceUser} audi -" ++ map (path: "d ${path} 0700 ${serviceUser} ${serviceUser} -") [
       "/var/lib/lilly" cfg.stateDirectory cfg.vmStateDirectory cfg.networkStateDirectory
     ];
     systemd.slices.lilly = {
@@ -405,7 +416,7 @@ in
           probe = packages.inceptionProbeGuest;
           release = cfg.package;
         });
-        script = ../packages/guest/nesting-probe;
+        script = ../artifacts/guest/nesting-probe;
       in {
         Type = "oneshot";
         RemainAfterExit = true;
@@ -431,54 +442,146 @@ in
         RestrictAddressFamilies = [ "AF_UNIX" ];
       };
     };
-    # @cc [owner:ghuntley,label:security] lilly-unprivileged-mode
-    # With services.lilly.unprivileged the BEAM MUST run as the `lilly` system
-    # user with an empty capability set; lilly-hostd MUST admit exactly that
-    # uid; Lilly's state and runtime directories MUST be owned by it before
-    # Lilly starts; and each pool dataset MUST delegate only the ZFS
-    # permissions transfers need (send, receive, snapshot, hold, release,
-    # userprop) to it. Mounts and every other root effect stay in hostd.
-    users.users.lilly = lib.mkIf cfg.unprivileged {
-      isSystemUser = true;
-      # Fixed so hostd's peer check and LILLY_SERVICE_UID agree on every host.
-      uid = 977;
-      group = "lilly";
-      description = "Lilly provisioner (unprivileged BEAM)";
-    };
-    users.groups.lilly = lib.mkIf cfg.unprivileged { };
-    systemd.services.lilly-ownership = lib.mkIf cfg.unprivileged {
-      description = "Hand Lilly's state to the unprivileged service user";
-      wantedBy = [ "multi-user.target" ];
-      before = [ "lilly.service" ];
-      after = [ "zfs-mount.service" "lilly-pool-propagation.service" ];
-      unitConfig.RequiresMountsFor = map (pool: pool.path) cfg.pools;
-      path = [ pkgs.coreutils config.boot.zfs.package ];
-      serviceConfig = { Type = "oneshot"; RemainAfterExit = true; };
-      # State directories are Lilly's alone and handed over recursively. Pools
-      # hold guest datasets owned by per-VM uids: only the pool root and
-      # Lilly's own .lilly-* metadata trees change owner.
-      script = lib.concatMapStringsSep "\n" (directory: ''
-        mkdir -p ${lib.escapeShellArg directory}
-        chown lilly:lilly ${lib.escapeShellArg directory}
-        chmod 0700 ${lib.escapeShellArg directory}
-      '') ownedDirectories + "\n" + lib.concatMapStringsSep "\n" (directory: ''
-        chown -R lilly:lilly ${lib.escapeShellArg directory}
-      '') (lib.unique [ "/run/lilly" cfg.stateDirectory cfg.vmStateDirectory cfg.networkStateDirectory ])
-        + "\n" + lib.concatMapStringsSep "\n" (pool: ''
-        for metadata in ${lib.escapeShellArg pool.path}/.lilly-*; do
-          [ -d "$metadata" ] && chown -R lilly:lilly "$metadata"
-        done
-      '') cfg.pools + "\n" + lib.concatMapStringsSep "\n" (pool: ''
-        zfs allow -u lilly send,receive,snapshot,hold,release,userprop ${lib.escapeShellArg pool.storage.dataset}
-      '') cfg.pools;
-    };
-
     # @cc [owner:ghuntley,label:security;recovery] hostd-unit-custody
     # lilly-hostd MUST be ready (Type=notify) before Lilly starts, resolve
     # utilities from Lilly's exact PATH, keep command custody in its delegated
     # cgroup, permit lock directories only beneath Lilly's runtime, state and
     # pool roots, admit only root peers from the configured cgroups, and stop
     # Lilly whenever it stops (ADR-0176 decision 4).
+
+    # @cc [owner:ghuntley,label:security] lilly-unprivileged-mode
+    # The BEAM MUST run as the `lilly` system user with an empty capability
+    # set, with no root mode; lilly-hostd MUST admit exactly that
+    # uid; Lilly's state and runtime directories, the files directly in
+    # /var/lib/lilly, any socket custody a root Lilly left, each pool's vms,
+    # standbys and templates directories and every root-owned sealed
+    # template root (the directory alone, readonly restored) MUST be owned
+    # by it before Lilly starts (peer groups kept, lock inodes left to
+    # hostd); only the pre-start host check, which reads root-only enrollment
+    # state, runs elevated; and the uid MUST hold no ZFS delegation on any pool
+    # dataset (any found is revoked before Lilly starts). Every root effect,
+    # including guest dataset send and receive, stays in hostd (ADR-0183).
+    users.users.lilly = {
+      isSystemUser = true;
+      # Fixed so hostd's peer check and LILLY_SERVICE_UID agree on every host.
+      # Below NixOS's dynamic 400-999 system range (which allocated 977 to
+      # another service on dungarees) and unassigned in nixpkgs' ids.nix.
+      uid = 377;
+      group = "lilly";
+      description = "Lilly provisioner (unprivileged BEAM)";
+    };
+    # Root Lilly tools an operator or fixture runs (eval, probes) trust what
+    # the service user wrote: Privilege normalises exactly this uid.
+    environment.variables.LILLY_SERVICE_UID = serviceUid;
+    # Fixed like the uid: hostd chowns lease files to uid:uid (377:377).
+    users.groups.lilly.gid = 377;
+    systemd.services.lilly-ownership = {
+      description = "Hand Lilly's state to its service user";
+      wantedBy = [ "multi-user.target" ];
+      before = [ "lilly.service" ];
+      after = [ "zfs-mount.service" "lilly-pool-propagation.service" ];
+      unitConfig.RequiresMountsFor = map (pool: pool.path) cfg.pools;
+      path = [ pkgs.coreutils pkgs.findutils pkgs.gnugrep config.boot.zfs.package ];
+      serviceConfig = { Type = "oneshot"; RemainAfterExit = true; };
+      # State directories are Lilly's alone and handed over recursively. Pools
+      # hold guest datasets owned by per-VM uids: only the pool root and
+      # Lilly's own .lilly-* metadata trees change owner.
+      # Lock inodes (owner.lock) are left alone: lilly-hostd hands each to the
+      # service uid itself when it next opens it. Nothing is followed and no
+      # file system is crossed.
+      script = ''
+        handover() {
+          find "$1" -xdev ! -name owner.lock -exec chown -h lilly:lilly {} +
+        }
+      '' + lib.concatMapStringsSep "\n" (directory: ''
+        mkdir -p ${lib.escapeShellArg directory}
+        chown lilly:lilly ${lib.escapeShellArg directory}
+        chmod 0700 ${lib.escapeShellArg directory}
+      '') ownedDirectories + ''
+
+        # Lilly's own files directly in /var/lib/lilly (owner.json, the host
+        # ownership binding) change owner; its subdirectories are handed over
+        # below or hold pools, so nothing deeper is touched here.
+        find /var/lib/lilly -xdev -mindepth 1 -maxdepth 1 -type f ! -name owner.lock \
+          -exec chown -h lilly:lilly {} +
+        # Socket custody a root Lilly left in the shared socket directories:
+        # each <socket>.owner claim directory, its claim and the socket it
+        # names. Owner only, so the peer service's group stays.
+        for sockets in /run/lilly-ingress /run/lilly-brady /run/lilly-inception /run/audi-private /run/ziggy; do
+          for custody in "$sockets"/*.owner; do
+            [ -d "$custody" ] && [ ! -L "$custody" ] || continue
+            find "$custody" -xdev ! -name owner.lock -exec chown -h lilly {} +
+            socket="''${custody%.owner}"
+            if [ -S "$socket" ]; then chown -h lilly "$socket"; fi
+          done
+        done
+      '' + "\n" + lib.concatMapStringsSep "\n" (directory: ''
+        handover ${lib.escapeShellArg directory}
+      '') (lib.unique [ "/run/lilly" cfg.stateDirectory cfg.vmStateDirectory cfg.networkStateDirectory ])
+        # Transfer keys and export permits a root Lilly wrote (transfers/,
+        # exports/) are the BEAM's state too; the root export worker trusts the
+        # service uid. Left root-owned, every clone fails at
+        # invalid_transfer_identity.
+        + lib.optionalString (transferStateDirectory != null) ''
+
+        if [ -d ${lib.escapeShellArg transferStateDirectory} ] && [ ! -L ${lib.escapeShellArg transferStateDirectory} ]; then
+          handover ${lib.escapeShellArg transferStateDirectory}
+        fi
+      ''
+        + "\n" + lib.concatMapStringsSep "\n" (pool: ''
+        for metadata in ${lib.escapeShellArg pool.path}/.lilly-*; do
+          [ -d "$metadata" ] || continue
+          if [ "$(basename "$metadata")" = .lilly-jails ]; then
+            # Jail trees hold files owned by per-VM uids: hand over only the
+            # directories Lilly itself creates entries in.
+            chown lilly:lilly "$metadata"
+            for jails in "$metadata"/*; do [ -d "$jails" ] && chown lilly:lilly "$jails"; done
+            for jail in "$metadata"/*/*; do
+              [ -d "$jail" ] && chown lilly:lilly "$jail"
+              [ -d "$jail/root" ] && chown lilly:lilly "$jail/root"
+            done
+          else
+            handover "$metadata"
+          fi
+        done
+        # Mountpoint parents a root Lilly created: guest and template datasets
+        # mount beneath them, so only each directory itself changes owner (and
+        # becomes private, as Lilly requires).
+        for parent in vms standbys templates; do
+          entry=${lib.escapeShellArg pool.path}/$parent
+          if [ -d "$entry" ] && [ ! -L "$entry" ]; then
+            chown -h lilly:lilly "$entry"
+            chmod 0700 "$entry"
+          fi
+        done
+        # Template roots a root Lilly sealed stay root-owned inside read-only
+        # datasets the service user cannot list. Each template child of this
+        # pool dataset mounted at its own templates/<id> is mounted and its
+        # root directory alone (never a sealed file) is handed over, lifting
+        # readonly only around that one chown.
+        zfs list -H -o name,mountpoint,readonly,mounted -d 1 ${lib.escapeShellArg pool.storage.dataset} 2>/dev/null |
+          while IFS="$(printf '\t')" read -r name mountpoint readonly mounted; do
+            case "$name" in ${lib.escapeShellArg pool.storage.dataset}/template-*) ;; *) continue ;; esac
+            id="''${name##*/template-}"
+            if [ "$mountpoint" != ${lib.escapeShellArg pool.path}/templates/"$id" ]; then continue; fi
+            if [ "$mounted" != yes ] && ! zfs mount "$name"; then continue; fi
+            if [ ! -d "$mountpoint" ] || [ -L "$mountpoint" ]; then continue; fi
+            if [ "$(stat -c %u "$mountpoint")" != 0 ]; then continue; fi
+            if [ "$readonly" = on ]; then zfs set readonly=off "$name"; fi
+            status=0
+            chown -h lilly:lilly "$mountpoint" || status=$?
+            if [ "$readonly" = on ]; then zfs set readonly=on "$name"; fi
+            if [ "$status" != 0 ]; then exit "$status"; fi
+          done
+      '') cfg.pools + "\n" + lib.concatMapStringsSep "\n" (pool: ''
+        # lilly holds no ZFS permissions (ADR-0183): revoke any delegation an
+        # earlier build granted. An absent pool has none to revoke.
+        if zfs allow ${lib.escapeShellArg pool.storage.dataset} 2>/dev/null | grep -q '^[[:space:]]*user lilly '; then
+          zfs unallow -u lilly ${lib.escapeShellArg pool.storage.dataset}
+        fi
+      '') cfg.pools;
+    };
+
     systemd.services.lilly-hostd = {
       description = "Lilly host-effects engine";
       wantedBy = [ "multi-user.target" ];
@@ -495,15 +598,29 @@ in
           "${cfg.package}/host-tools/bin/lilly-hostd"
           "--socket" hostdSocket
           "--cgroup" "self"
-          "--peer-uid" (if cfg.unprivileged then toString config.users.users.lilly.uid else "0")
+          "--peer-uid" serviceUid
         ] ++ lib.concatMap (root: [ "--root" root ]) hostdRoots
           ++ lib.concatMap (pool: [ "--socket-root" pool.path ]) cfg.pools
+          ++ lib.concatMap (root: [ "--file-root" root ]) fileRoots
+          # ZFS mutations stay strictly beneath these (zfs-arguments-within-pools).
+          ++ lib.concatMap (pool: [ "--pool-dataset" pool.storage.dataset ]) cfg.pools
+          # Typed VM launches: hostd builds the unit command line from these
+          # trusted paths, never from Lilly (vm-launch-argv-derived-by-hostd).
+          ++ [
+            "--vm-boot-log" "${cfg.package}/host-tools/bin/lilly-boot-log"
+            "--vm-unshare" "${cfg.package}/host-tools/bin/unshare"
+            "--vm-launch-guard" "${cfg.package}/host-tools/bin/lilly-launch-guard"
+            "--vm-jailer" "${packages.vmm}/bin/jailer"
+            "--vm-firecracker" "${packages.vmm}/bin/firecracker"
+          ]
           ++ lib.concatMap (group: [ "--peer-cgroup" group ]) cfg.hostd.peerCgroups);
         User = "root";
         Group = "root";
         UMask = "0077";
         RuntimeDirectory = "lilly-hostd";
-        RuntimeDirectoryMode = "0700";
+        # `lilly` must reach the socket hostd hands to it
+        # (hostd-socket-owned-by-peer); the directory stays unlistable.
+        RuntimeDirectoryMode = "0711";
         Delegate = true;
         KillMode = "control-group";
         Restart = "always";
@@ -518,7 +635,7 @@ in
       wants = [ "network-online.target" "lilly.slice" ] ++ lib.optional (cfg.inceptionImageId != null) "lilly-inception-preflight.service";
       after = [ "network-online.target" "lilly.slice" "systemd-tmpfiles-setup.service" "nftables.service" "lilly-inception-preflight.service" "lilly-hostd.service" ] ++ cfg.secretUnits;
       requires = cfg.secretUnits ++ lib.optional hasZfs "lilly-pool-propagation.service"
-        ++ lib.optional cfg.unprivileged "lilly-ownership.service";
+        ++ [ "lilly-ownership.service" ];
       # Every lease lives in hostd: Lilly cannot outlive its session.
       bindsTo = [ "lilly-hostd.service" ];
       unitConfig.RequiresMountsFor = map (pool: pool.path) cfg.pools ++ [
@@ -535,8 +652,7 @@ in
         LILLY_CONFIG_FILE = "/run/lilly-release/config.json";
         LILLY_STATUS_SOCKET = "/run/lilly-release/status.sock";
         LILLY_HOSTD_SOCKET = hostdSocket;
-      } // lib.optionalAttrs cfg.unprivileged {
-        LILLY_SERVICE_UID = toString config.users.users.lilly.uid;
+        LILLY_SERVICE_UID = serviceUid;
         RELEASE_DISTRIBUTION = "none";
         RELEASE_TMP = "/run/lilly-release";
         ERL_CRASH_DUMP = "/dev/null";
@@ -578,7 +694,8 @@ in
         TimeoutStopSec = 45;
         KillMode = "control-group";
         LimitNOFILE = 65536;
-      } // hardening // lib.optionalAttrs cfg.unprivileged {
+      } // hardening // {
+        LoadCredential = loadCredentials;
         CapabilityBoundingSet = "";
         AmbientCapabilities = "";
         NoNewPrivileges = true;

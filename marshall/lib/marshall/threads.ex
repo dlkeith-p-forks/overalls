@@ -122,7 +122,11 @@ defmodule Marshall.Threads do
 
     case Enum.find(generations, &(&1.machine_key == thread.machine_key)) do
       %Marshall.Threads.Generation{} = generation ->
-        {:ok, hydrate_current_generation(thread, generation)}
+        if current_binding?(thread, generation) do
+          {:ok, hydrate_current_generation(thread, generation)}
+        else
+          {:error, :machine_unavailable}
+        end
 
       nil ->
         {:error, :machine_unavailable}
@@ -134,14 +138,31 @@ defmodule Marshall.Threads do
          |> Ash.Query.filter(thread_id == ^thread.id and ordinal == ^ordinal)
          |> Ash.read_one(actor: Marshall.Authorization.SystemActor.compute()) do
       {:ok, %Marshall.Threads.Generation{} = generation} ->
-        {:ok,
-         if(generation.machine_key == thread.machine_key,
-           do: hydrate_current_generation(thread, generation),
-           else: generation
-         )}
+        if generation.machine_key == thread.machine_key do
+          if current_binding?(thread, generation) do
+            {:ok, hydrate_current_generation(thread, generation)}
+          else
+            {:error, :machine_unavailable}
+          end
+        else
+          {:ok, generation}
+        end
 
       _ ->
         {:error, :not_found}
+    end
+  end
+
+  @spec current_binding?(Thread.t(), Marshall.Threads.Generation.t()) :: boolean()
+  defp current_binding?(thread, generation) do
+    if is_nil(generation.machine_id) and is_nil(generation.agent_root_id) and
+         is_nil(generation.agent_thread_id) and is_nil(thread.machine_id) and
+         is_nil(thread.agent_root_id) and is_nil(thread.agent_thread_id) do
+      true
+    else
+      generation.machine_id == thread.machine_id and
+        generation.agent_root_id == thread.agent_root_id and
+        generation.agent_thread_id == thread.agent_thread_id
     end
   end
 

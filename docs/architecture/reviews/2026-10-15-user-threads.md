@@ -247,12 +247,19 @@ labels. The ready-thread reply composer precedes the transcript, whose authorize
 events are displayed newest first. The thread index, recent-thread rail and
 activity rows retain the existing bounded streams and domain authority. Index search matches titles and
 objectives without case sensitivity; all/active/archived filtering operates only
-on the current authorized page of at most 100 threads. The filters do not expand
-read authority or search older pages.
+on the current authorized keyset page. The index and activity rail expose First
+page/Next page controls for 50-item pages; each cursor is issued by the
+authorized domain query and cannot expand read authority.
 
 A ready thread's Open VS Code action uses a fresh authorized Compute projection
 and the shared editor eligibility helper. Opening the existing machine editor
 route still checks current Editor authority; the visible control grants none.
+
+Managers can invoke the existing Archive/Delete lifecycle actions while a
+thread is pending or provisioning, so a stuck admission can be cancelled from
+its detail view. The domain still rechecks current manage authority and leaves
+the thread in archived or deleting state according to whether a machine was
+admitted.
 
 The machine navigation drops its Agents tab. Direct machine-agent routes and
 their existing backend authority remain available; global Threads becomes the
@@ -261,17 +268,17 @@ primary visible entry point for agent tasks.
 The terminal remains available as a link to the bound machine's terminal page
 and now also has an opt-in, lazy embedded terminal disclosure. The activity
 route keeps the recent-thread rail visible and supports bounded status, time,
-owner, team and text filters over the current authorized page. A persistent
-global rail, project-specific filtering and pagination beyond the bounded page
-remain separate work. Previous-generation transcript browsing is addressed by
+owner, team and text filters over the current authorized keyset page. A
+persistent global rail and project-specific filtering remain separate work.
+Previous-generation transcript browsing is addressed by
 the retained-generation selector below; native lifecycle/recovery acceptance
 retains its separate gap.
 
-The focused thread suite passed 111 cases on 2026-10-16, including the new
-presentation and sharing LiveView assertions. The follow-up generation,
-planning-cancellation and activity-filter cases pass in the isolated focused
-run described by the current source. Its exact command and bounded scope are
-recorded in the [sharing review](2026-10-16-thread-sharing.md).
+The earlier focused thread suite passed 111 cases on 2026-10-16, including the initial
+presentation and sharing LiveView assertions. The current follow-up suite passes 117 cases,
+including keyset pagination, initial skill selection, pending lifecycle actions and the
+activity-clock projection. Its exact command and bounded scope are recorded in the
+[sharing review](2026-10-16-thread-sharing.md).
 The maintained browser probe passed all 32 thread route/theme/viewport
 combinations, four expanded settings views, four expanded sharing views and
 36 collaborator role/state/theme/viewport combinations. Newest-first reading,
