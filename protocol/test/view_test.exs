@@ -37,7 +37,7 @@ defmodule OverallsProtocol.ViewTest do
     end
   end
 
-  property "rows, ownership, versions and lookups match a reference model", %{view: view} do
+  test "rows, ownership, versions and lookups match a reference model", %{view: view} do
     check all(
             commands <-
               list_of(
@@ -76,7 +76,7 @@ defmodule OverallsProtocol.ViewTest do
     end
   end
 
-  property "subscribers are notified of every change to a subscribed key", %{view: view} do
+  test "subscribers are notified of every change to a subscribed key", %{view: view} do
     check all(
             ops <-
               list_of(
