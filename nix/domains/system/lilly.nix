@@ -403,6 +403,22 @@ in
         MemoryMax = "${toString cfg.guestMemoryMiB}M";
       };
     };
+    # @cc [owner:ghuntley,label:security;recovery] ingress-bridge-slice
+    # Detached ingress bridges (ADR-0187) MUST run in their own top-level
+    # slice, outside lilly-hostd.service, lilly.service and the guest slice:
+    # a restart of either service leaves them running, they never count
+    # against guest capacity, and the slice bounds their memory and tasks.
+    # Restarting this slice would kill every live guest SSH session.
+    systemd.slices.lilly_ingress = lib.mkIf audiConnector {
+      description = "Detached Lilly ingress bridges";
+      unitConfig.X-RestartIfChanged = false;
+      sliceConfig = {
+        MemoryAccounting = true;
+        TasksAccounting = true;
+        MemoryMax = "1G";
+        TasksMax = 1100;
+      };
+    };
     # This trusted prerequisite has no user data or network interface. It boots
     # both virtualization layers once per host boot before Lilly starts. A failed
     # probe withholds Inception without preventing ordinary profile service.
@@ -447,7 +463,9 @@ in
     # utilities from Lilly's exact PATH, keep command custody in its delegated
     # cgroup, permit lock directories only beneath Lilly's runtime, state and
     # pool roots, admit only root peers from the configured cgroups, and stop
-    # Lilly whenever it stops (ADR-0176 decision 4).
+    # Lilly whenever it stops (ADR-0176 decision 4). With an Audi connector it
+    # MUST bridge only the `audi` user's connections, in detached scopes in
+    # lilly_ingress.slice that its own restart leaves running (ADR-0187).
 
     # @cc [owner:ghuntley,label:security] lilly-unprivileged-mode
     # The BEAM MUST run as the `lilly` system user with an empty capability
@@ -613,6 +631,7 @@ in
             "--vm-jailer" "${packages.vmm}/bin/jailer"
             "--vm-firecracker" "${packages.vmm}/bin/firecracker"
           ]
+          ++ lib.optionals audiConnector [ "--ingress-peer-user" "audi" "--ingress-slice" "lilly_ingress.slice" ]
           ++ lib.concatMap (group: [ "--peer-cgroup" group ]) cfg.hostd.peerCgroups);
         User = "root";
         Group = "root";

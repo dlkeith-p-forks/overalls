@@ -1,15 +1,20 @@
 @cc [owner:ghuntley,label:security;isolation] ingress-bridge-boundaries
-Only lilly-hostd runs this helper, inside its command cgroup, with argv it
-derived itself: the accepted end of a connection whose peer is a socket the
-Lilly BEAM created, and the guest TCP connection hostd dialled inside the
-Lilly network namespace. Run as root it first drops to the service uid with
-no supplementary groups and no_new_privs; it holds no capability, setuid bit
-or other descriptor. Guest and Lilly bytes move only between those two
-sockets through kernel pipes, never to stdout, stderr or a diagnostic.
-Cancellation is hostd killing its cgroup.
+Only lilly-hostd runs this helper, with argv it derived itself: the client
+socket (the accepted end of a connection whose peer is a socket the Lilly BEAM
+created, or, detached, Audi's authenticated connection to Lilly's ingress
+socket) and the guest TCP connection hostd dialled inside the Lilly network
+namespace. An attached bridge runs in hostd's command cgroup and dies with
+hostd; a detached bridge (ADR-0187) runs in its own transient
+`lilly-ingress-<key>.scope` in lilly.slice, outlives hostd and Lilly, and is
+ended by hostd killing that scope's cgroup. Run as root it first drops to the
+service uid with no supplementary groups and no_new_privs; it holds no
+capability, setuid bit or other descriptor. Guest and client bytes move only
+between those two sockets through kernel pipes, never to stdout, stderr or a
+diagnostic.
 
 @cc [owner:ghuntley,label:verification] ingress-bridge-hegel-properties
 Hegel properties MUST cover the command line against an independent oracle
 and the per-direction byte accounting, while process fixtures cover exact
-byte custody both ways, half-close ordering, Lilly's close ending the
-bridge, guest loss, refusals and the privilege drop.
+byte custody both ways, half-close ordering, the client's close ending the
+bridge, guest loss, refusals, the detached start handshake and the privilege
+drop.

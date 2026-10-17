@@ -1,5 +1,11 @@
 # Architecture decision records
 
+[ADR-0187](0187-detached-ingress-bridges.md) bridges Audi's guest SSH and
+plain web connections straight to the guest in detached `lilly-ingress-<key>`
+scopes that survive lilly-hostd and Lilly restarts, while Lilly keeps the
+execution fence through recorded bindings, keepers and re-adoption, amending
+ADR-0184 decision 3.
+
 [ADR-0186](0186-covenant-contract-verification.md) adopts Covenant as a test-only, deterministic contract verification layer across all twelve Elixir applications. It complements existing `CONTRACTS`, ADR, HLDD, native and integration evidence; the initial obligations establish module-loadability baselines and explicitly do not claim native or deployment guarantees.
 
 [ADR-0185](0185-underclass-tailnet-exit-egress.md) routes Underclass provider
@@ -370,6 +376,8 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0183](0183-guest-dataset-streams-in-hostd.md) | accepted | partial | Guest dataset streams run in lilly-hostd |
 | [ADR-0184](0184-lilly-owns-every-socket.md) | accepted | partial | Lilly owns every socket it uses |
 | [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
+| [ADR-0186](0186-covenant-contract-verification.md) | accepted | partial | Covenant contract verification across Elixir applications |
+| [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |
 | [ADR-0180](0180-multi-os-guest-image-contract.md) | accepted | partial | Multi-OS guest image families on the Firecracker fleet |
 | [ADR-0174](0174-user-threads.md) | superseded | partial | User threads own isolated work machines |
 | [ADR-0175](0175-thread-sharing-and-bound-machine-authority.md) | accepted | partial | Thread sharing and bound machine authority |

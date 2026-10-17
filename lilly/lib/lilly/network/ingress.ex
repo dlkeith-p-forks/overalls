@@ -71,6 +71,54 @@ defmodule Lilly.Network.Ingress do
 
   def connect(_, _, _), do: {:error, :ingress_unavailable}
 
+  @doc "Services whose stream needs no preface or ready frame, so hostd may bridge them detached."
+  @spec detachable?(map()) :: boolean()
+  def detachable?(%{service: service}), do: service in [:ssh, :web, :porsche_ssh, :audi_ssh]
+  def detachable?(_), do: false
+
+  # @cc [owner:ghuntley,label:security;recovery] ingress-detached-bridge-derived-target
+  # bridge/6 MUST apply exactly connect/3's enablement, identity revalidation
+  # and target derivation, accept only a detachable binding (no preface and
+  # no ready frame), and have hostd bridge Audi's connection `client` to that
+  # target in a detached bridge named by `key`, writing `greeting` first
+  # (ADR-0187). No service may supply a peer address or a greeting.
+  @spec bridge(Config.t(), Guest.t(), map(), :gen_tcp.socket(), <<_::128>>, binary()) ::
+          :ok | {:error, :ingress_unavailable}
+  def bridge(%Config{ingress: true} = network, %Guest{} = guest, binding, client, key, greeting) do
+    with true <- detachable?(binding),
+         {:ok, ^network} <-
+           Config.new(
+             network.host_id,
+             network.egress,
+             network.protected,
+             network.state_dir,
+             true,
+             network.private_services,
+             network.brady
+           ),
+         {:ok, ^guest} <- Guest.new(guest.vm_id, guest.profile, guest.slot),
+         {:ok, {destination, port, mark}} <- target(guest, binding),
+         {:ok, address} <- :inet.parse_ipv4strict_address(String.to_charlist(destination)),
+         :ok <-
+           Lilly.Host.Hostd.bridge_ingress(client, key, greeting, %{
+             namespace: network.namespace,
+             device: guest.tap,
+             mark: mark,
+             destination: address,
+             port: port,
+             source: nil,
+             timeout: 750
+           }) do
+      :ok
+    else
+      _ -> {:error, :ingress_unavailable}
+    end
+  rescue
+    _ -> {:error, :ingress_unavailable}
+  end
+
+  def bridge(_, _, _, _, _, _), do: {:error, :ingress_unavailable}
+
   # @cc [owner:ghuntley,label:security] connector-owned-proxy-preface
   # Nested HTTPS MUST require validated client metadata before opening a socket
   # and prepend exactly one IPv4 PROXY header using the derived guest destination.

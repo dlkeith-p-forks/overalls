@@ -201,7 +201,8 @@ mod child {
 
     /// @cc [owner:ghuntley,label:recovery;security] hostd-child-pinned
     /// Before exec a utility MUST: die with its spawning thread (parent-death
-    /// signal, verified against the recorded parent), restore default SIGPIPE,
+    /// signal, verified against the recorded parent) unless it is a detached
+    /// ingress bridge (spawn_detached), which must outlive hostd, restore default SIGPIPE,
     /// move itself into its command cgroup when one is given, and keep the
     /// lease descriptor and the request's inherited descriptors (and only
     /// those) across exec. Handed-off descriptors are placed at 3, 4, ... in
@@ -212,7 +213,7 @@ mod child {
     /// descriptors opened beforehand.
     pub(super) fn pin(
         command: &mut Command,
-        parent: Pid,
+        parent: Option<Pid>,
         cgroup_procs: Option<RawFd>,
         lease: Option<RawFd>,
         inherit: Vec<RawFd>,
@@ -220,10 +221,12 @@ mod child {
     ) {
         unsafe {
             command.pre_exec(move || {
-                if set_parent_process_death_signal(Some(Signal::KILL)).is_err()
-                    || getppid() != Some(parent)
-                {
-                    return Err(std::io::Error::from(std::io::ErrorKind::PermissionDenied));
+                if let Some(parent) = parent {
+                    if set_parent_process_death_signal(Some(Signal::KILL)).is_err()
+                        || getppid() != Some(parent)
+                    {
+                        return Err(std::io::Error::from(std::io::ErrorKind::PermissionDenied));
+                    }
                 }
                 libc::signal(libc::SIGPIPE, libc::SIG_DFL);
                 if let Some(procs) = cgroup_procs {
@@ -281,7 +284,7 @@ pub fn run_coded(
 }
 
 /// Most descriptors one handoff places in a child.
-pub const HANDOFF_LIMIT: usize = 2;
+pub const HANDOFF_LIMIT: usize = 3;
 
 /// @cc [owner:ghuntley,label:security;recovery] hostd-handoff-sole-owner
 /// run_handoff MUST place the handed-off descriptors at 3, 4, ... in the
@@ -356,7 +359,7 @@ fn run_inner(
         .process_group(0);
     child::pin(
         &mut builder,
-        rustix::process::getpid(),
+        Some(rustix::process::getpid()),
         cgroup.as_ref().map(|(_, procs)| procs.as_raw_fd()),
         spec.lease.map(|fd| fd.as_raw_fd()),
         spec.inherit.iter().map(|fd| fd.as_raw_fd()).collect(),
@@ -498,5 +501,91 @@ fn finish(
     if leader_running {
         // The leader was killed; its status arrives from the reaper.
         let _ = receiver.recv();
+    }
+}
+
+/// A detached child: its pid and a pidfd that names it even after hostd's
+/// reaper collected it, so a kill can never reach a reused pid.
+pub struct Detached {
+    pub pid: i32,
+    pub pidfd: OwnedFd,
+}
+
+impl Detached {
+    /// Kill the child through its pidfd.
+    pub fn kill(&self) {
+        let _ = rustix::process::pidfd_send_signal(&self.pidfd, Signal::KILL);
+    }
+}
+
+/// @cc [owner:ghuntley,label:recovery;security] hostd-detached-spawn
+/// spawn_detached MUST start the executable with the handed-off descriptors
+/// at 3, 4, ... (as hostd-handoff-sole-owner, closing hostd's copies at once),
+/// stdio on /dev/null, a cleared environment, no lease, no command cgroup and
+/// no parent-death signal, so it can outlive hostd. The pid is registered with
+/// the single reaper and a pidfd opened before the registry lock is released,
+/// so the child is reaped exactly once and never killed by a reused pid. A
+/// spawn failure or more than HANDOFF_LIMIT descriptors returns None.
+pub fn spawn_detached(
+    executable: &Path,
+    arguments: &[CString],
+    handoff: Vec<OwnedFd>,
+) -> Option<Detached> {
+    if handoff.len() > HANDOFF_LIMIT {
+        return None;
+    }
+    let mut builder = std::process::Command::new(executable);
+    builder
+        .args(
+            arguments
+                .iter()
+                .map(|argument| std::ffi::OsStr::from_bytes(argument.as_bytes())),
+        )
+        .env_clear()
+        .env("PATH", std::env::var_os("PATH").unwrap_or_default())
+        .env("LC_ALL", "C")
+        .stdin(std::process::Stdio::null())
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null())
+        .process_group(0);
+    child::pin(
+        &mut builder,
+        None,
+        None,
+        None,
+        Vec::new(),
+        handoff.iter().map(|fd| fd.as_raw_fd()).collect(),
+    );
+    let (sender, _status) = channel::<WaitStatus>();
+    let reaper = reaper();
+    let spawned = {
+        let mut waiting = reaper.waiting.lock().expect("reaper registry");
+        match builder.spawn() {
+            Ok(child) => {
+                let pid = child.id() as i32;
+                let pidfd = Pid::from_raw(pid).and_then(|pid| {
+                    rustix::process::pidfd_open(pid, rustix::process::PidfdFlags::empty()).ok()
+                });
+                waiting.insert(pid, sender);
+                Some((pid, pidfd))
+            }
+            Err(_) => None,
+        }
+    };
+    drop(builder);
+    *reaper.children.lock().expect("reaper count") += 1;
+    reaper.spawned.notify_all();
+    drop(handoff);
+    match spawned {
+        Some((pid, Some(pidfd))) => Some(Detached { pid, pidfd }),
+        Some((pid, None)) => {
+            // Unreachable on supported kernels; the child is still
+            // registered and unreaped, so its pid is still its own.
+            if let Some(pid) = Pid::from_raw(pid) {
+                let _ = rustix::process::kill_process(pid, Signal::KILL);
+            }
+            None
+        }
+        None => None,
     }
 }

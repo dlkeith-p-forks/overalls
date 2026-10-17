@@ -56,6 +56,11 @@ for the component being changed.
 
 ## Verification and implementation
 
+- Inception is known broken and out of scope. Ignore Inception-related
+  failures, including the zfs-guest "Inception retains a separate sparse data
+  drive" subtest and the Inception machine tests: do not investigate or fix
+  them, and do not let them block other work. Report them as known Inception
+  failures.
 - Elixir diagnostic events MUST go through each application's reviewed Events
   catalog (`Marshall.Events`, `Lilly.Events`, `Audi.Events`, `Brady.Events`,
   `Ziggy.Events`, `Porsche.Events`): add a `defevent` entry first, then emit

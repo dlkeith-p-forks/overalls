@@ -38,6 +38,9 @@ const OP_LAUNCH_VM: u8 = 10;
 const OP_TRANSFER_STREAM: u8 = 11;
 const OP_CONNECT_UNIX: u8 = 12;
 const OP_BRIDGE_NETNS_TCP: u8 = 13;
+const OP_BRIDGE_INGRESS: u8 = 14;
+const OP_LIST_INGRESS_BRIDGES: u8 = 15;
+const OP_END_INGRESS_BRIDGE: u8 = 16;
 /// Fixed TransferStream prefix: lease, timeout, rate, producer and consumer kinds.
 const STREAM_FIXED: usize = 8 + 4 + 4 + 1 + 1;
 /// Most NUL-terminated TransferStream fields (an SSH pull into a receive).
@@ -129,6 +132,27 @@ pub enum Request {
         namespace: Vec<u8>,
         device: Vec<u8>,
     },
+    /// Dial TCP inside a VM network namespace exactly as BridgeNetnsTcp and
+    /// bridge it to Audi's connection, which travels with the request, in a
+    /// detached bridge named by `key` that outlives hostd (ADR-0187). hostd
+    /// writes `greeting` to Audi's connection before any guest byte.
+    BridgeIngress {
+        key: [u8; crate::ingress::KEY],
+        greeting: Vec<u8>,
+        mark: u32,
+        destination: [u8; 4],
+        port: u16,
+        source: [u8; 4],
+        timeout_ms: u32,
+        namespace: Vec<u8>,
+        device: Vec<u8>,
+    },
+    /// The keys of every live detached bridge.
+    ListIngressBridges,
+    /// End one detached bridge; an absent one is already ended.
+    EndIngressBridge {
+        key: [u8; crate::ingress::KEY],
+    },
 }
 
 /// A request datagram: the caller's id plus the operation.
@@ -196,19 +220,23 @@ pub enum Reply {
         status: Status,
         bytes: Vec<u8>,
     },
-    /// The caller's socket is now connected (ConnectUnix, BridgeNetnsTcp).
+    /// The caller's socket is now connected (ConnectUnix, BridgeNetnsTcp,
+    /// BridgeIngress).
     Connected,
 }
 
 /// @cc [owner:ghuntley,label:protocol;security] hostd-descriptor-requests-only
-/// Exactly ConnectUnix and BridgeNetnsTcp carry one SCM_RIGHTS descriptor,
-/// the caller's own socket; every other request carries none. hostd never
-/// sends a descriptor: the BEAM cannot release one it did not create
+/// Exactly ConnectUnix, BridgeNetnsTcp and BridgeIngress carry one SCM_RIGHTS
+/// descriptor: the caller's own socket, or for BridgeIngress the Audi
+/// connection the BEAM accepted; every other request carries none. hostd
+/// never sends a descriptor: the BEAM cannot release one it did not create
 /// (ADR-0184).
 pub fn carries_descriptor(request: &Request) -> bool {
     matches!(
         request,
-        Request::ConnectUnix { .. } | Request::BridgeNetnsTcp { .. }
+        Request::ConnectUnix { .. }
+            | Request::BridgeNetnsTcp { .. }
+            | Request::BridgeIngress { .. }
     )
 }
 
@@ -231,8 +259,10 @@ fn u64_at(bytes: &[u8], at: usize) -> Option<u64> {
 /// whose rate exceeds 1073741824, whose producer or consumer kind is unknown,
 /// or whose NUL-terminated field count differs from those kinds' count, a
 /// ConnectUnix or BridgeNetnsTcp whose timeout is outside 1..30000 ms, a
-/// ConnectUnix path that is not a valid directory, or a BridgeNetnsTcp with
-/// port 0 or an empty namespace or device.
+/// ConnectUnix path that is not a valid directory, a BridgeNetnsTcp with
+/// port 0 or an empty namespace or device, a BridgeIngress whose greeting
+/// exceeds 256 bytes or whose target fails BridgeNetnsTcp's rules, or a
+/// ListIngressBridges or EndIngressBridge with any other body length.
 /// The caller never names an executable: the utility is an index into the
 /// closed table that hostd resolves itself.
 pub fn decode(bytes: &[u8]) -> Option<Envelope> {
@@ -308,26 +338,45 @@ pub fn decode(bytes: &[u8]) -> Option<Envelope> {
                 path: body[4..].to_vec(),
             }
         }
-        OP_BRIDGE_NETNS_TCP if body.len() >= 20 => {
-            let namespace_length = usize::from(body[18]);
-            let rest = &body[19..];
-            if namespace_length == 0 || namespace_length >= rest.len() || port_zero(body) {
-                return None;
-            }
-            let timeout_ms = u32_at(body, 14)?;
-            if !(1..=30_000).contains(&timeout_ms) {
-                return None;
-            }
+        OP_BRIDGE_NETNS_TCP => {
+            let target = netns_target(body)?;
             Request::BridgeNetnsTcp {
-                mark: u32_at(body, 0)?,
-                destination: body[4..8].try_into().ok()?,
-                port: u16::from_be_bytes([body[8], body[9]]),
-                source: body[10..14].try_into().ok()?,
-                timeout_ms,
-                namespace: rest[..namespace_length].to_vec(),
-                device: rest[namespace_length..].to_vec(),
+                mark: target.mark,
+                destination: target.destination,
+                port: target.port,
+                source: target.source,
+                timeout_ms: target.timeout_ms,
+                namespace: target.namespace,
+                device: target.device,
             }
         }
+        OP_BRIDGE_INGRESS if body.len() >= crate::ingress::KEY + 2 => {
+            let key: [u8; crate::ingress::KEY] = body[..crate::ingress::KEY].try_into().ok()?;
+            let length = usize::from(u16::from_be_bytes([
+                body[crate::ingress::KEY],
+                body[crate::ingress::KEY + 1],
+            ]));
+            let rest = &body[crate::ingress::KEY + 2..];
+            if length > crate::ingress::MAX_GREETING || length > rest.len() {
+                return None;
+            }
+            let target = netns_target(&rest[length..])?;
+            Request::BridgeIngress {
+                key,
+                greeting: rest[..length].to_vec(),
+                mark: target.mark,
+                destination: target.destination,
+                port: target.port,
+                source: target.source,
+                timeout_ms: target.timeout_ms,
+                namespace: target.namespace,
+                device: target.device,
+            }
+        }
+        OP_LIST_INGRESS_BRIDGES if body.is_empty() => Request::ListIngressBridges,
+        OP_END_INGRESS_BRIDGE if body.len() == crate::ingress::KEY => Request::EndIngressBridge {
+            key: body.try_into().ok()?,
+        },
         OP_LAUNCH_VM if body.len() >= LAUNCH_FIXED + 3 => {
             let flags = body[LAUNCH_FIXED - 3];
             let state_length = usize::from(body[LAUNCH_FIXED - 2]);
@@ -400,6 +449,44 @@ fn port_zero(body: &[u8]) -> bool {
     body[8] == 0 && body[9] == 0
 }
 
+/// A namespace TCP target as BridgeNetnsTcp and BridgeIngress carry it.
+struct NetnsTarget {
+    mark: u32,
+    destination: [u8; 4],
+    port: u16,
+    source: [u8; 4],
+    timeout_ms: u32,
+    namespace: Vec<u8>,
+    device: Vec<u8>,
+}
+
+/// Parse mark, destination, port, source, timeout, the namespace length,
+/// the namespace and the device; port 0, an empty namespace or device, or a
+/// timeout outside 1..=30000 ms is None.
+fn netns_target(body: &[u8]) -> Option<NetnsTarget> {
+    if body.len() < 20 {
+        return None;
+    }
+    let namespace_length = usize::from(body[18]);
+    let rest = &body[19..];
+    if namespace_length == 0 || namespace_length >= rest.len() || port_zero(body) {
+        return None;
+    }
+    let timeout_ms = u32_at(body, 14)?;
+    if !(1..=30_000).contains(&timeout_ms) {
+        return None;
+    }
+    Some(NetnsTarget {
+        mark: u32_at(body, 0)?,
+        destination: body[4..8].try_into().ok()?,
+        port: u16::from_be_bytes([body[8], body[9]]),
+        source: body[10..14].try_into().ok()?,
+        timeout_ms,
+        namespace: rest[..namespace_length].to_vec(),
+        device: rest[namespace_length..].to_vec(),
+    })
+}
+
 /// Parse the shared Run layout: lease, timeout, output limit, utility and
 /// NUL-terminated arguments.
 fn run_body(body: &[u8]) -> Option<RunBody> {
@@ -457,6 +544,9 @@ pub fn encode_request(envelope: &Envelope) -> Vec<u8> {
         Request::Attach { .. } => OP_ATTACH,
         Request::ConnectUnix { .. } => OP_CONNECT_UNIX,
         Request::BridgeNetnsTcp { .. } => OP_BRIDGE_NETNS_TCP,
+        Request::BridgeIngress { .. } => OP_BRIDGE_INGRESS,
+        Request::ListIngressBridges => OP_LIST_INGRESS_BRIDGES,
+        Request::EndIngressBridge { .. } => OP_END_INGRESS_BRIDGE,
         Request::LaunchVm { .. } => OP_LAUNCH_VM,
         Request::TransferStream { .. } => OP_TRANSFER_STREAM,
     };
@@ -570,6 +660,31 @@ pub fn encode_request(envelope: &Envelope) -> Vec<u8> {
             out.extend(namespace);
             out.extend(device);
         }
+        Request::BridgeIngress {
+            key,
+            greeting,
+            mark,
+            destination,
+            port,
+            source,
+            timeout_ms,
+            namespace,
+            device,
+        } => {
+            out.extend(key);
+            out.extend((greeting.len() as u16).to_be_bytes());
+            out.extend(greeting);
+            out.extend(mark.to_be_bytes());
+            out.extend(destination);
+            out.extend(port.to_be_bytes());
+            out.extend(source);
+            out.extend(timeout_ms.to_be_bytes());
+            out.push(namespace.len() as u8);
+            out.extend(namespace);
+            out.extend(device);
+        }
+        Request::ListIngressBridges => {}
+        Request::EndIngressBridge { key } => out.extend(key),
     }
     out
 }

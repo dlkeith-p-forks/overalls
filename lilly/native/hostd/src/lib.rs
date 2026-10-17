@@ -4,6 +4,7 @@
 pub mod descriptors;
 pub mod exec;
 pub mod files;
+pub mod ingress;
 pub mod leases;
 pub mod mounts;
 pub mod nft_policy;
@@ -41,6 +42,9 @@ pub struct Options {
     pub file_roots: Vec<PathBuf>,
     /// Executables and the VM state directory for typed VM launches.
     pub vm_tools: Option<vm_launch::Tools>,
+    /// Detached ingress bridges: Audi's user name and the slice their scopes
+    /// run in (ADR-0187); both or neither.
+    pub ingress: Option<(String, String)>,
 }
 
 /// @cc [owner:ghuntley,label:security] hostd-options-absolute
@@ -48,7 +52,9 @@ pub struct Options {
 /// at least one root, numeric peer and service uids, absolute peer cgroup paths and the
 /// bare `--stdin-lifetime` flag, and either all five absolute `--vm-*`
 /// paths or none of them, and either no `--pool-dataset` or exactly one per
-/// `--socket-root` (paired in order), and
+/// `--socket-root` (paired in order), and either both or neither of
+/// `--ingress-peer-user` (a system user name) and `--ingress-slice` (a
+/// top-level slice, ingress-slice-name), and
 /// return None for any unknown, repeated singular or malformed argument.
 pub fn parse_options(arguments: &[OsString]) -> Option<Options> {
     let mut socket = None;
@@ -62,6 +68,8 @@ pub fn parse_options(arguments: &[OsString]) -> Option<Options> {
     let mut file_roots = Vec::new();
     let mut pool_datasets = Vec::new();
     let mut vm: [Option<PathBuf>; 5] = Default::default();
+    let mut ingress_user: Option<String> = None;
+    let mut ingress_slice: Option<String> = None;
     let mut iterator = arguments.iter();
     while let Some(flag) = iterator.next() {
         if flag.as_bytes() == b"--stdin-lifetime" && !stdin_lifetime {
@@ -88,6 +96,20 @@ pub fn parse_options(arguments: &[OsString]) -> Option<Options> {
             b"--file-root" if absolute => file_roots.push(PathBuf::from(value)),
             b"--pool-dataset" if !absolute && !value.is_empty() => {
                 pool_datasets.push(value.as_bytes().to_vec())
+            }
+            b"--ingress-peer-user" if ingress_user.is_none() => {
+                let name = value.to_str()?;
+                if !valid_user(name) {
+                    return None;
+                }
+                ingress_user = Some(name.to_owned());
+            }
+            b"--ingress-slice" if ingress_slice.is_none() => {
+                let name = value.to_str()?;
+                if !ingress::valid_slice(name) {
+                    return None;
+                }
+                ingress_slice = Some(name.to_owned());
             }
             flag if absolute && VM_FLAGS.contains(&flag) => {
                 let slot = &mut vm[VM_FLAGS.iter().position(|known| *known == flag)?];
@@ -116,6 +138,11 @@ pub fn parse_options(arguments: &[OsString]) -> Option<Options> {
         }
         _ => return None,
     };
+    let ingress = match (ingress_user, ingress_slice) {
+        (None, None) => None,
+        (Some(user), Some(slice)) => Some((user, slice)),
+        _ => return None,
+    };
     Some(Options {
         socket: socket?,
         roots,
@@ -128,7 +155,41 @@ pub fn parse_options(arguments: &[OsString]) -> Option<Options> {
         file_roots,
         pool_datasets,
         vm_tools,
+        ingress,
     })
+}
+
+/// A system user name: 1 to 32 lowercase letters, digits, `_` or `-`,
+/// starting with a letter or `_`.
+fn valid_user(name: &str) -> bool {
+    let bytes = name.as_bytes();
+    !bytes.is_empty()
+        && bytes.len() <= 32
+        && (bytes[0].is_ascii_lowercase() || bytes[0] == b'_')
+        && bytes.iter().all(|byte| {
+            byte.is_ascii_lowercase() || byte.is_ascii_digit() || *byte == b'_' || *byte == b'-'
+        })
+}
+
+/// @cc [owner:ghuntley,label:security] ingress-peer-uid-from-passwd
+/// passwd_uid MUST return the uid of exactly the line whose first field is
+/// `name` in passwd(5) text, and None when no line or more than one line
+/// names it, or the uid field is not a decimal u32. hostd resolves Audi's
+/// dynamic uid this way once at startup.
+pub fn passwd_uid(passwd: &[u8], name: &str) -> Option<u32> {
+    let mut found = None;
+    for line in passwd.split(|byte| *byte == b'\n') {
+        let mut fields = line.split(|byte| *byte == b':');
+        if fields.next() != Some(name.as_bytes()) {
+            continue;
+        }
+        let uid = fields.nth(1)?;
+        if found.is_some() || uid.is_empty() || !uid.iter().all(u8::is_ascii_digit) {
+            return None;
+        }
+        found = Some(std::str::from_utf8(uid).ok()?.parse().ok()?);
+    }
+    found
 }
 
 impl Options {
@@ -167,6 +228,8 @@ pub fn own_cgroup() -> Option<PathBuf> {
 mod descriptor_tests;
 #[cfg(test)]
 mod files_tests;
+#[cfg(test)]
+mod ingress_tests;
 #[cfg(test)]
 mod policy_tests;
 #[cfg(test)]

@@ -1269,12 +1269,12 @@
         "isolation",
         "recovery"
       ],
-      "boundary": "The BEAM holds only sockets it created (ADR-0184). lilly-hostd connects Lilly's own socket to api.sock or v.sock beneath pool roots, or bridges it to a namespace connection through lilly-ingress-bridge running as lilly; hostd sends no descriptor and Lilly closes each socket after its gen_tcp port is down.",
+      "boundary": "The BEAM holds only sockets it created (ADR-0184). lilly-hostd connects Lilly's own socket to api.sock or v.sock beneath pool roots, or bridges it to a namespace connection through lilly-ingress-bridge running as lilly (editor and nested HTTPS); guest SSH and plain web instead send Audi's accepted connection to a detached bridge (ADR-0187). hostd sends no descriptor and Lilly closes each socket after its gen_tcp port is down.",
       "denial": "hostd refuses a received descriptor that is not an unconnected, non-listening AF_UNIX stream socket and paths outside its socket roots, and ends the session on a descriptor with any other request, a missing descriptor or more than one.",
       "scope": "hostd fixture tests and Hegel decoding models, bridge process fixtures (privilege drop under sudo), and a Lilly custody property test with a negative control. No VM namespace or Firecracker process.",
       "status": "partial",
-      "gaps": "Fleet and user-SSH journey runs on df94ad026/b55b4e1ad record the namespace dial, guest SSH through lilly-ingress-bridge and the flat descriptor count. A hostd restart still drops live ingress bridges; the subtest asserting that loss and reconnection is present but not yet run.",
-      "preferred_gap": "Record a passing user-ssh-journey-fleet run including the lilly-hostd restart subtest.",
+      "gaps": "Fleet and user-SSH journey runs on df94ad026/b55b4e1ad record the namespace dial, guest SSH through lilly-ingress-bridge and the flat descriptor count. Op 13 bridges (editor and nested HTTPS) still end on a hostd or Lilly restart; guest SSH survival is the detached-ingress-bridge-survival scenario.",
+      "preferred_gap": "Record a passing user-ssh-journey-fleet run on the detached bridge path.",
       "evidence": [
         {
           "kind": "property",
@@ -1311,12 +1311,58 @@
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-17-lilly-owns-every-socket.md",
           "record_assertion": "user-ssh-journey-fleet passed all 15 subtests"
+        }
+      ]
+    },
+    {
+      "id": "detached-ingress-bridge-survival",
+      "journey": "Keep a live guest SSH session through lilly-hostd and Lilly restarts while Lilly can still end it",
+      "layers": [
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "recovery"
+      ],
+      "boundary": "ADR-0187. After guardian admission the BEAM sends Audi's accepted connection to hostd (op 14). hostd accepts only a connected AF_UNIX stream whose peer uid is Audi's, dials the guest in the VM namespace, and starts lilly-ingress-bridge --detached as lilly in its own lilly-ingress-<key>.scope in lilly_ingress.slice, outside lilly-hostd.service and lilly.service; the ready frame is written before any guest byte. Lilly records the binding under the key first, keeps an ingress guardian per bridge, and ends the bridge through hostd (op 16) when that guardian dies.",
+      "denial": "hostd refuses a BridgeIngress descriptor that is not Audi's connected, non-listening AF_UNIX stream, a 1025th bridge or a reused key, and lists or kills only lilly-ingress-<32 hex>.scope cgroups in its slice. A restarted Lilly ends a live bridge without a readable record at once and a recorded one whose execution is not current within 30 s; a bridge hostd abandons before GO moves no byte.",
+      "scope": "hostd Hegel decoding and scope-name models, fake-cgroup list/end, the client check and the start handshake with a fake helper; bridge Hegel command-line oracle and handshake process fixture; Lilly connector tests with a fake host for handoff, guardian-death fencing and re-adoption. No scope, VM namespace or real restart.",
+      "status": "partial",
+      "gaps": "The user-SSH journey subtest that restarts lilly-hostd and Lilly under a live session, checks the same bridge process, bytes in both directions, adoption past the 30 s grace and the end of an unrecorded bridge is present but not yet run. While Lilly is down no keeper runs, so a revoked execution's live session can last the downtime plus 30 s (Audi's key revocation is unaffected).",
+      "preferred_gap": "Record a passing user-ssh-journey-fleet run including the detached bridge restart subtest.",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "lilly/native/hostd/src/ingress_tests.rs",
+          "assertion": "ingress_decoding_matches_model",
+          "scope": "Ops 14 to 16 against an independent decoding model, scope names round-trip, list and end over fake cgroups, Audi-only client check and the READY/greeting/GO start with a fake helper.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-17-detached-ingress-bridges.md",
+          "record_assertion": "`lilly-hostd`: `cargo test` 53 passed, including 7 new ingress tests"
+        },
+        {
+          "kind": "property",
+          "path": "lilly/native/ingress-bridge/src/tests.rs",
+          "assertion": "command_line_matches_the_independent_oracle",
+          "scope": "The --detached command line against an independent oracle; the process fixture shows no guest byte before GO and an abandoned bridge moving none.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-17-detached-ingress-bridges.md",
+          "record_assertion": "`cargo test` 2 unit (Hegel) and 6 process-fixture"
+        },
+        {
+          "kind": "unit",
+          "path": "lilly/test/ingress_bridges_test.exs",
+          "assertion": "a restarted connector re-adopts recorded bridges and ends unknown ones",
+          "scope": "Connector handoff, record before start, keeper fencing on guardian death, re-adoption, unknown and unadoptable bridges against a fake host.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-17-detached-ingress-bridges.md",
+          "record_assertion": "the new `ingress_bridges_test.exs` (handoff, guardian-death fencing,"
         },
         {
           "kind": "machine",
           "path": "nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py",
-          "assertion": "a lilly-hostd restart ends live guest SSH and new sessions reconnect",
-          "scope": "Restart lilly-hostd under a live guest SSH session: the session ends, no lilly-ingress-bridge remains, Lilly stays active, the guest keeps its boot and a new session reaches it.",
+          "assertion": "live guest SSH survives lilly-hostd and Lilly restarts until its bridge is fenced",
+          "scope": "Restart lilly-hostd, then Lilly, under a live guest SSH session: the same lilly-ingress-bridge process in its lilly-ingress-<key>.scope, a new hostd, echoed lines both ways, adoption logged and the session alive past the 30 s grace; then remove the record and restart Lilly: the session and scope end, the guest keeps its boot and a new session reconnects.",
           "execution": "present"
         }
       ]

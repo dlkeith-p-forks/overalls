@@ -395,6 +395,70 @@ defmodule Lilly.Host.Hostd do
     :exit, _ -> {:error, :connect_failed}
   end
 
+  @typedoc "A detached ingress bridge's key (ADR-0187)."
+  @type bridge_key :: <<_::128>>
+
+  # @cc [owner:ghuntley,label:security;recovery] hostd-detached-ingress-client
+  # bridge_ingress/4 MUST send `client`, the Audi connection this BEAM
+  # accepted (a socket it created and later closes itself), with the request,
+  # reading its descriptor number from the live port just before sending, and
+  # return :ok only when hostd answered Connected: the guest was dialled, the
+  # greeting written and a detached bridge named by `key` is running. Any
+  # refusal or a lost session is :connect_failed. ingress_bridges/0 lists the
+  # live keys and end_ingress_bridge/1 returns :ok only once hostd confirmed
+  # the bridge's scope empty.
+  @spec bridge_ingress(:gen_tcp.socket(), bridge_key(), binary(), netns_tcp()) ::
+          :ok | {:error, :connect_failed}
+  def bridge_ingress(client, <<_::128>> = key, greeting, request)
+      when byte_size(greeting) <= 256 do
+    {a, b, c, d} = request.destination
+    {e, f, g, h} = request.source || {0, 0, 0, 0}
+
+    body = [
+      key,
+      <<byte_size(greeting)::16>>,
+      greeting,
+      <<request.mark::32, a, b, c, d, request.port::16, e, f, g, h, request.timeout::32,
+        byte_size(request.namespace)>>,
+      request.namespace,
+      request.device
+    ]
+
+    with {:ok, session} <- session(),
+         :ok <-
+           GenServer.call(session, {:connect_port, 14, body, client}, request.timeout + 10_000) do
+      :ok
+    else
+      _ -> {:error, :connect_failed}
+    end
+  catch
+    :exit, _ -> {:error, :connect_failed}
+  end
+
+  @spec ingress_bridges() :: {:ok, [bridge_key()]} | {:error, :hostd_unavailable}
+  def ingress_bridges do
+    with {:ok, session} <- session(),
+         {:ok, keys} <- GenServer.call(session, {:ingress_bridges}, 10_000) do
+      {:ok, for(<<key::binary-size(16) <- keys>>, do: key)}
+    else
+      _ -> {:error, :hostd_unavailable}
+    end
+  catch
+    :exit, _ -> {:error, :hostd_unavailable}
+  end
+
+  @spec end_ingress_bridge(bridge_key()) :: :ok | {:error, :bridge_end_unconfirmed}
+  def end_ingress_bridge(<<_::128>> = key) do
+    with {:ok, session} <- session(),
+         :ok <- GenServer.call(session, {:end_ingress_bridge, key}, 20_000) do
+      :ok
+    else
+      _ -> {:error, :bridge_end_unconfirmed}
+    end
+  catch
+    :exit, _ -> {:error, :bridge_end_unconfirmed}
+  end
+
   @impl true
   def init(nil) do
     Process.flag(:trap_exit, true)
@@ -489,6 +553,24 @@ defmodule Lilly.Host.Hostd do
         {:reply, {:error, :connect_failed}, state}
     end
   end
+
+  # A port's descriptor, read the same way as a socket's: a port closed
+  # meanwhile is refused rather than its reused number sent.
+  def handle_call({:connect_port, op, body, port}, from, state) do
+    case :inet.getfd(port) do
+      {:ok, fd} when is_integer(fd) and fd >= 0 ->
+        send_request(state, op, body, {:connect, from}, fd)
+
+      _ ->
+        {:reply, {:error, :connect_failed}, state}
+    end
+  end
+
+  def handle_call({:ingress_bridges}, from, state),
+    do: send_request(state, 15, <<>>, {:keys, from})
+
+  def handle_call({:end_ingress_bridge, key}, from, state),
+    do: send_request(state, 16, key, {:end_bridge, from})
 
   def handle_call({:attach, key, wait_ms}, from, state),
     do: send_request(state, 7, [key, <<wait_ms::32>>], {:run, from})
@@ -724,6 +806,18 @@ defmodule Lilly.Host.Hostd do
 
       {3, {:connect, from}, _} ->
         GenServer.reply(from, {:error, :connect_failed})
+        {:ok, state}
+
+      {6, {:keys, from}, <<0, keys::binary>>} when rem(byte_size(keys), 16) == 0 ->
+        GenServer.reply(from, {:ok, keys})
+        {:ok, state}
+
+      {6, {:end_bridge, from}, <<0>>} ->
+        GenServer.reply(from, :ok)
+        {:ok, state}
+
+      {3, {waiter, from}, _} when waiter in [:keys, :end_bridge] ->
+        GenServer.reply(from, {:error, :hostd_refused})
         {:ok, state}
 
       {2, {:acquire, from, caller, tag}, <<lease::64>>} ->

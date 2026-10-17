@@ -88,7 +88,7 @@ impl Utility {
     /// @cc [owner:ghuntley,label:security] typed-only-utilities
     /// systemd-run, lilly-transfer-stream, ssh, cmp and lilly-ingress-bridge
     /// MUST be reachable only through the typed LaunchVm, TransferStream and
-    /// BridgeNetnsTcp requests, whose command lines hostd derives itself; a
+    /// BridgeNetnsTcp and BridgeIngress requests, whose command lines hostd derives itself; a
     /// generic Run or RunDurable naming one is malformed. Lilly's own utility
     /// list therefore omits them.
     pub const fn typed_only(self) -> bool {

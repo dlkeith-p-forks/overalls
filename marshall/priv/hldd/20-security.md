@@ -406,10 +406,32 @@ decision 4). Its boundary:
   Unix stream socket. hostd connects it only to `api.sock` or `v.sock`
   beneath pool roots, without symbolic links. For ingress, hostd dials the
   guest inside the VM namespace (tap-bound, marked) and hands that connection
-  and Lilly's socket to `lilly-ingress-bridge`. That helper runs as `lilly`
-  with no supplementary groups and `no_new_privs`, splices bytes without
-  reading or logging them, and ends when Lilly closes. Guest bytes therefore
-  never pass through a root process.
+  to `lilly-ingress-bridge`. That helper runs as `lilly` with no
+  supplementary groups and `no_new_privs`, splices bytes without reading or
+  logging them, and ends when its client closes. Guest bytes therefore never
+  pass through a root process.
+
+  The bridge's client depends on the service
+  ([ADR-0187](repo:docs/architecture/decisions/0187-detached-ingress-bridges.md)).
+  Editor and nested HTTPS use Lilly's own socket (op 13); the BEAM relays
+  Audi's bytes, and a hostd or Lilly restart ends the connection. Guest SSH
+  and plain web use Audi's connection itself (op 14). hostd accepts it only
+  as a connected AF_UNIX stream whose peer uid is Audi's, so it never bridges
+  a guest to another local service. The bridge runs detached in its own
+  `lilly-ingress-<key>.scope` in `lilly_ingress.slice`, with no parent-death
+  signal, so it and the session survive restarts of hostd and Lilly. It
+  moves no byte until hostd has written Lilly's ready frame to Audi.
+
+  Lilly keeps the execution fence for detached bridges. Before the bridge
+  starts, it records the binding under a random key in a private 0700
+  directory beside its connector socket. A keeper process then holds an
+  ingress guardian for that binding and ends the bridge through hostd
+  (`cgroup.kill` on its scope) as soon as the guardian dies. A restarted
+  Lilly lists the live scopes. It ends any bridge with no readable record at
+  once, and any recorded bridge whose execution is not current within 30
+  seconds. While Lilly is down nothing fences, so a revoked execution's live
+  session can last the downtime plus 30 seconds. Audi's own account-key
+  revocation is unaffected.
 
   hostd sends Lilly no descriptor. It refuses a received descriptor that is
   not an unconnected, non-listening AF_UNIX stream socket, and it ends the

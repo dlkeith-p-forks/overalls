@@ -28,6 +28,16 @@ defmodule Lilly.VM.Executor do
   @callback open_ingress(term(), Execution.command(), map()) ::
               {:ok, :gen_tcp.socket()} | {:error, atom()}
   @optional_callbacks open_ingress: 3
+  @callback bridge_ingress(
+              term(),
+              Execution.command(),
+              map(),
+              :gen_tcp.socket(),
+              binary(),
+              binary()
+            ) ::
+              :ok | {:error, atom()}
+  @optional_callbacks bridge_ingress: 6
 
   @callback boot_proof(term(), Execution.command()) ::
               {:ok, %{pid: pos_integer(), cgroup: Path.t()}} | {:error, atom()}
@@ -98,6 +108,43 @@ defmodule Lilly.VM.Executor do
          {:ok, guest} <-
            Lilly.Network.Guest.new(command.placement_id, command.profile, command.slot) do
       Lilly.Network.Ingress.connect(config.execution.network, guest, binding)
+    else
+      _ -> {:error, :ingress_unavailable}
+    end
+  end
+
+  # @cc [owner:ghuntley,label:security] executor-detached-ingress-command-derived
+  # bridge_ingress/6 MUST apply exactly open_ingress/3's command checks and
+  # derive the target only from the command, then bridge Audi's connection
+  # through a detached hostd bridge (ADR-0187). Callers MUST hold a live
+  # ingress guardian for this command until a bridge keeper takes over.
+  @spec bridge_ingress(
+          Config.t(),
+          Execution.command(),
+          map(),
+          :gen_tcp.socket(),
+          binary(),
+          binary()
+        ) ::
+          :ok | {:error, :ingress_unavailable}
+  def bridge_ingress(config, command, binding, client, key, greeting) do
+    with true <- OverallsProtocol.IngressConnect.valid_for_profile?(binding, command.profile),
+         true <-
+           Enum.all?(
+             [:host_id, :vm_id, :placement_id, :execution_epoch, :generation],
+             &(Map.fetch!(command, &1) == Map.fetch!(binding, &1))
+           ),
+         true <- command.kind in [:provision, :start],
+         {:ok, guest} <-
+           Lilly.Network.Guest.new(command.placement_id, command.profile, command.slot) do
+      Lilly.Network.Ingress.bridge(
+        config.execution.network,
+        guest,
+        binding,
+        client,
+        key,
+        greeting
+      )
     else
       _ -> {:error, :ingress_unavailable}
     end
