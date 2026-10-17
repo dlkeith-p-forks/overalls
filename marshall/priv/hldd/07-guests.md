@@ -803,18 +803,23 @@ The shared protocol also defines native FreeBSD and OmniOS contracts. Both use
 `os = freebsd` or `os = illumos`, a version-6 firmware manifest, a complete
 raw-GPT disk and the matching native agent set. FreeBSD's pinned disk retains
 its EFI and UFS partitions; OmniOS carries its ZFS root. Bundle version 3
-carries the OS, matching agent set, firmware byte length and bounded artifact
-metadata. Lilly emits firmware launch metadata, attaches vsock only for a
-protocol-speaking agent set and applies the Hyper-V CPU template only to
-Windows firmware. Preliminary FreeBSD and OmniOS builder/catalog entries
-exist, but the rolling FreeBSD 14.3 source endpoint is retired and replaced by
-a checksum-pinned archive capture. Local Nix realization is recorded for both
-builders; no signed production artifact, guest agent, machine boot, readiness,
-terminal, workspace, relocation or fleet evidence is recorded. OmniOS's
-`illumos` wire label remains an open naming decision.
+carries the OS, matching agent set, firmware byte length, bounded artifact
+metadata and a kernel provenance descriptor (bytes, digest, source revision,
+patch/configuration hashes and compiler). Lilly verifies that descriptor over a
+jail-local kernel probe before credentials or readiness; a missing, placeholder,
+stale or mismatched result refuses admission. Preliminary FreeBSD and OmniOS
+builder/catalog entries exist, but the rolling FreeBSD 14.3 source endpoint is
+retired and replaced by a checksum-pinned archive capture. The
+`native-kernels` derivation emits source/contract receipts with
+`artifact.available = false`, and the image builders stop before unpacking a
+stock disk. No signed production artifact, cross-built kernel, native agent or
+`terminald`, machine boot, readiness, terminal, workspace, relocation or fleet
+evidence is recorded. OmniOS's `illumos` wire label remains an open naming
+decision.
 
-See [ADR-0180](repo:docs/architecture/decisions/0180-multi-os-guest-image-contract.md)
-and the [multi-OS architecture review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md).
+See [ADR-0180](repo:docs/architecture/decisions/0180-multi-os-guest-image-contract.md),
+the [multi-OS architecture review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md)
+and the [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
 
 ## Windows guests (experimental)
 

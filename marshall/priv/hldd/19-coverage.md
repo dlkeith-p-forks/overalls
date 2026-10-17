@@ -3059,18 +3059,20 @@ Coverage: **partial**. Layers: identity, authorization, transport, execution, is
 
 Boundary: Version-6 manifests and version-3 bundles explicitly bind FreeBSD or illumos (the OmniOS wire family) to its matching agent set, firmware boot kind, raw-GPT root and bounded artifacts. Lilly emits firmware launch metadata, attaches vsock only for protocol-speaking agents and leaves the Windows Hyper-V CPU template off native guests.
 
-Required refusal: Unknown OS values, cross-OS agent sets, extra keys, malformed boot arguments and out-of-bound artifacts are refused. A metadata or focused jail test must not be treated as a native guest boot or fleet result.
+Required refusal: Unknown OS values, cross-OS agent sets, extra keys, malformed boot arguments, incomplete kernel provenance and out-of-bound artifacts are refused. A missing, placeholder, stale or mismatched boot-bound kernel attestation refuses before credentials or readiness. Metadata, source receipts or focused jail tests must not be treated as a native guest boot or fleet result.
 
-Tested scope: Protocol validation, the native builder evaluation, local Nix realization, the focused Lilly firmware jail test and host image artifact tests cover bounded native metadata, FreeBSD CloudHv firmware configuration, preservation of the pinned FreeBSD EFI/GPT/UFS disk and manifest-declared disk.raw selection. Preliminary FreeBSD and OmniOS builders/catalog entries exist; the rolling FreeBSD 14.3 source endpoint is retired and replaced by a checksum-pinned archive capture, but no signed rollout, agent, machine boot, readiness, terminal, workspace, relocation or fleet execution exists.
+Tested scope: Protocol validation, the native builder evaluation, the fail-closed native-kernel source receipt, focused Lilly firmware/attestation tests and host image artifact tests cover bounded metadata, FreeBSD CloudHv firmware configuration, preservation of the pinned FreeBSD EFI/GPT/UFS disk and manifest-declared disk.raw selection. Preliminary FreeBSD and OmniOS builders/catalog entries exist; the rolling FreeBSD 14.3 source endpoint is retired and replaced by a checksum-pinned archive capture, but no cross-built kernel, signed rollout, native agent or terminald, machine boot, readiness, terminal, workspace, relocation or fleet execution exists.
 
 - **unit, present**: [native FreeBSD firmware bundles use PVH firmware and keep the vsock transport](repo:lilly/test/vm/jail_test.exs) — Focused configuration evidence; no Firecracker process or guest.
 - **unit, present**: [FreeBSD uses its complete GPT disk as the source root artifact](repo:lilly/test/host/image_test.exs) — FreeBSD selects disk.raw and illumos selects disk.raw while Lilly retains its internal rootfs.ext4 destination; this does not realize an image or boot a guest..
 - **property, present**: [FreeBSD firmware shape validates for Firecracker's PVH loader](repo:protocol/test/image_manifest_test.exs) — Protocol property/unit evidence only; no image or runtime acceptance.
-- **unit, present**: [native-os-guest-evaluation](repo:nix/tests/evaluation/native-os-guests.nix) — Builder source and command-shape evaluation plus local realization of the pinned preliminary artifacts; no guest is booted.
+- **unit, present**: [native-os-guest-evaluation](repo:nix/tests/evaluation/native-os-guests.nix) — Builder source and command-shape evaluation plus fail-closed native-kernel source/contract receipt; artifact.available is false and no guest is booted.
+- **unit, present**: [closed native response verifies every boot and kernel identity](repo:protocol/test/kernel_attestation_test.exs) — Pure bounded response parsing and identity correlation; no native vsock or kernel execution.
+- **unit, present**: [native probe verifies host CID-bound response and allows fragmentation](repo:lilly/test/vm/kernel_attestation_test.exs) — Local jail-socket framing and mismatch checks; no Firecracker guest or host-CID transport.
 
-**Gaps:** No signed production image output, guest agents, nested-KVM boot, isolation, storage growth, restart/recovery or Marshall fleet evidence. The local realization is not a runtime acceptance result; OmniOS versus illumos naming remains open.
+**Gaps:** The kernel patches are ABI/configuration scaffolds rather than AF_VSOCK/virtio-vsock implementations. No cross toolchain, positive kernel artifact, signed production image, native terminald, guest agent closure, nested-KVM boot, host-CID/vsock transport, isolation, storage growth, restart/recovery or Marshall fleet evidence exists. The local source receipt is not a runtime acceptance result; OmniOS versus illumos naming remains open.
 
-**Preferred test work:** Choose the OmniOS wire name, build signed images and add nested-KVM and Marshall-driven scenarios for boot, capability earning, isolation and recovery.
+**Preferred test work:** Choose the OmniOS wire name, implement and cross-build the patched kernels and native terminald/agent closure, then add nested-KVM and Marshall-driven scenarios for attestation, boot, capability earning, isolation and recovery.
 
 ## Share a thread and use its current work machine
 
@@ -3197,6 +3199,24 @@ Tested scope: Rust local-file tests for precedence, worktrees, chunk verificatio
 **Gaps:** Native Windows SID/profile lookup, Linux account resolution through authenticated operations, changed-file retry histories, complete skill selection across compaction and transport revocation remain unverified. Local temporary-file tests do not establish VM or host filesystem isolation.
 
 **Preferred test work:** Execute generated file/chunk/parser histories and Linux/Windows native guest discovery through the full fenced control path, including changed content, oversized skills, duplicate identities and current-authority loss.
+
+## Admit a native FreeBSD or illumos guest only after its booted kernel proves the image identity
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.
+
+Boundary: The v6 image and v3 workload bundle carry immutable kernel provenance. Lilly uses the caller-owned jail-local /v.sock and a fixed probe port to compare the native OS, placement, execution epoch, boot challenge, boot ID and kernel digest before credentials or readiness. Native source receipts and placeholder kernels remain outside fleet admission.
+
+Required refusal: Refuse incomplete provenance, unavailable or placeholder kernel receipts, malformed or oversized probe frames, foreign CID responses, stale boot identity, digest mismatch and any native image without a recorded cross-built kernel and agent closure.
+
+Tested scope: Protocol and Lilly unit tests cover closed schemas, framing and stale evidence through local sockets. Nix evaluation covers pinned source receipts and fail-closed image admission. No FreeBSD/illumos kernel build, Firecracker boot, host-CID transport, terminald, agent, recovery or fleet execution is recorded.
+
+- **unit, present**: [closed native response verifies every boot and kernel identity](repo:protocol/test/kernel_attestation_test.exs) — Pure protocol validation compares every expected field and refuses unknown, malformed and unsupported responses; it does not establish a guest or transport..
+- **unit, present**: [native probe verifies host CID-bound response and allows fragmentation](repo:lilly/test/vm/kernel_attestation_test.exs) — A local Unix socket fixture checks the bounded CONNECT exchange and stale-frame refusal; it does not prove Firecracker vsock peer CID enforcement..
+- **unit, present**: [FreeBSD rejects an artifact outside its firmware/disk file set](repo:lilly/test/host/image_test.exs) — Image loading refuses stray files and incomplete native kernel descriptors before an image is usable..
+
+**Gaps:** The vendored kernel patches are ABI contract scaffolds rather than AF_VSOCK/virtio-vsock implementations. Cross toolchains, image assembly, native terminald and nested-KVM machine evidence remain required before either capability row can be admitted.
+
+**Preferred test work:** Build and boot both patched kernels under Firecracker, exercise malformed and wrong-CID traffic plus restart and recovery, then record readiness, trust, workspace, terminal, SSH and flush journeys with the exact image provenance.
 
 ## Install and manage a pinned public skill, then restore it when reopening a thread
 

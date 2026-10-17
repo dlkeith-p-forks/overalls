@@ -717,13 +717,19 @@ does not establish runtime isolation or distribution-native security behavior.
 The protocol's native FreeBSD and OmniOS rows (`freebsd-v1` and `illumos-v1`)
 are contract declarations only. Preliminary image packages and catalog entries
 exist, but the rolling FreeBSD source endpoint is retired and replaced by a
-checksum-pinned archive capture; no successful native output has been recorded.
-They currently expose the same capability flags as Windows
-agents, but no native agent, boot, readiness, terminal, workspace, SSH, recovery
-or fleet result exists. Lilly must select transport
-from validated metadata, reject cross-OS agent sets and preserve the jailer,
-seccomp, per-tap guard and ZFS boundaries. OmniOS's `illumos` wire name remains
-unsettled and must not be treated as production support.
+checksum-pinned archive capture; the native-kernel receipt currently marks its
+artifact unavailable, so the image builders refuse before copying a stock disk.
+Every v6/v3 native descriptor binds positive kernel bytes, digest, source
+revision, patch/configuration hashes and compiler. Lilly verifies the native OS,
+placement, execution epoch, boot challenge, boot ID and kernel digest over the
+jail-local probe before credentials or readiness. A missing, placeholder, stale
+or mismatched response refuses. The native capability rows are currently all
+false, including readiness, trust, terminal, workspace, SSH and agents, because
+no native cross-built kernel, complete agent closure or `terminald` exists. Lilly
+must select transport from validated metadata, reject cross-OS agent sets and
+preserve the jailer, seccomp, per-tap guard and ZFS boundaries.
+OmniOS's `illumos` wire name remains unsettled and must not be treated as
+production support. See the [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
 
 ## Windows guest boundaries
 

@@ -12,6 +12,7 @@ defmodule Lilly.VM.Driver do
     GuestTrust,
     Intent,
     Jail,
+    KernelAttestation,
     Observation,
     Provisioning,
     Readiness,
@@ -607,11 +608,10 @@ defmodule Lilly.VM.Driver do
   @spec ready(Config.t(), Pool.t(), Spec.t(), keyword()) :: result()
   def ready(config, pool, spec, options) do
     with {:ok, agents} <- guest_agents(pool, spec),
-         true <- OverallsProtocol.GuestAgents.capabilities(agents).readiness,
+         :ok <- readiness_capability(agents),
          {:ok, _} <- ready_boot(config, pool, spec, options) do
       :ok
     else
-      false -> {:error, :guest_agents_unavailable}
       error -> error
     end
   end
@@ -1206,11 +1206,20 @@ defmodule Lilly.VM.Driver do
     expected = revision(options)
     deadline = System.monotonic_time(:millisecond) + Keyword.get(options, :timeout, 120_000)
 
-    with :ok <-
+    with {:ok, agents} <- guest_agents(pool, spec),
+         :ok <- readiness_capability(agents),
+         :ok <-
            locked(config, spec, min(remaining(deadline), 2000), fn ->
              readiness_claim(config, pool, spec, expected)
            end),
          {:ok, boot} <- Boot.current(directory(config, spec), spec.id, expected),
+         :ok <-
+           verify_native_kernel(
+             pool,
+             spec,
+             boot,
+             min(remaining(deadline), native_attestation_timeout(config, spec))
+           ),
          :ok <- deliver_credentials(config, pool, spec, boot, min(remaining(deadline), 600_000)),
          {:ok, boot_id} <-
            Readiness.wait(
@@ -1234,6 +1243,46 @@ defmodule Lilly.VM.Driver do
       error -> error
     end
   end
+
+  @spec readiness_capability(OverallsProtocol.GuestAgents.t()) ::
+          :ok | {:error, :guest_agents_unavailable}
+  defp readiness_capability(agents) do
+    if OverallsProtocol.GuestAgents.capabilities(agents).readiness,
+      do: :ok,
+      else: {:error, :guest_agents_unavailable}
+  end
+
+  # Native guests expose a kernel identity probe before the ordinary readiness
+  # exchange. A missing or mismatched descriptor/evidence fails closed; Linux
+  # and agentless firmware retain their existing readiness paths.
+  @spec verify_native_kernel(Pool.t(), Spec.t(), Boot.t(), pos_integer()) ::
+          :ok | {:error, atom()}
+  defp verify_native_kernel(pool, spec, boot, timeout) do
+    with {:ok, bundle} <- guest_bundle(pool, spec),
+         {:ok, os} <- native_os(bundle),
+         kernel when is_map(kernel) <- Map.get(bundle, :kernel),
+         digest when is_binary(digest) <- Map.get(kernel, :sha256),
+         true <- timeout > 0,
+         {:ok, _boot_id} <-
+           KernelAttestation.verify(
+             Path.join(Lilly.VM.Jail.root(pool, spec), "v.sock"),
+             Map.merge(Boot.expectation(boot), %{os: os, kernel_sha256: digest}),
+             timeout
+           ) do
+      :ok
+    else
+      {:error, :not_native} -> :ok
+      _ -> {:error, :kernel_attestation_unconfirmed}
+    end
+  end
+
+  defp guest_bundle(pool, spec),
+    do: Lilly.VM.WorkloadBundle.load(Lilly.Host.ZFSDataset.directory(pool, spec), spec)
+
+  defp native_os(%{os: os}) when os in [:freebsd, :illumos], do: {:ok, os}
+  defp native_os(_), do: {:error, :not_native}
+
+  defp native_attestation_timeout(_config, _spec), do: 120_000
 
   # @cc [owner:ghuntley,label:security;recovery] inception-smtp-current-execution
   # configure/4 MUST derive the destination from the owned placement and recheck

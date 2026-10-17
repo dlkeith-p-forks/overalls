@@ -257,6 +257,7 @@ defmodule Lilly.Host.ImageTest do
       "architecture" => "x86_64",
       "boot" => %{"kind" => "firmware", "pci" => true, "firmware" => firmware},
       "root" => Map.put(root, "format", "raw-gpt"),
+      "kernel" => native_kernel(),
       "minimum_memory_bytes" => 536_870_912,
       "minimum_disk_bytes" => 8_589_934_592,
       "guest_agents" => "freebsd-v1",
@@ -279,6 +280,7 @@ defmodule Lilly.Host.ImageTest do
       "architecture" => "x86_64",
       "boot" => %{"kind" => "firmware", "pci" => true, "firmware" => firmware},
       "root" => Map.put(root, "format", "raw-gpt"),
+      "kernel" => native_kernel(),
       "guest_agents" => "illumos-v1",
       "minimum_memory_bytes" => 536_870_912,
       "minimum_disk_bytes" => 8_589_934_592,
@@ -297,6 +299,17 @@ defmodule Lilly.Host.ImageTest do
     %{
       "bytes" => byte_size(data),
       "sha256" => :crypto.hash(:sha256, data) |> Base.encode16(case: :lower)
+    }
+  end
+
+  defp native_kernel do
+    %{
+      "bytes" => 1_048_576,
+      "sha256" => String.duplicate("d", 64),
+      "source_revision" => String.duplicate("1", 40),
+      "patch_hash" => String.duplicate("2", 64),
+      "configuration_hash" => String.duplicate("3", 64),
+      "compiler" => "clang-19.1.7"
     }
   end
 

@@ -237,6 +237,7 @@ rec {
   # by the firmware launcher, so OmniOS receives the identical PCI contract.
   nativeGuestAgents = import ./guest/native-agents.nix { inherit pkgs lyra; };
   nativeGuests = import ./guest/native.nix { inherit pkgs; firmware = windowsFirmware.fd; };
+  nativeKernels = nativeGuests.nativeKernels;
   mkFreeBSDGuest = import ./guest/freebsd { inherit pkgs; firmware = windowsFirmware.fd; };
   freebsdGuest = mkFreeBSDGuest { agentPackage = nativeGuestAgents.freebsd; };
   mkOmniOSGuest = import ./guest/omnios { inherit pkgs; firmware = windowsFirmware.fd; };

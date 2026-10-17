@@ -13,7 +13,7 @@ mod daemon {
 
     const GIT: &str = "/usr/bin/git";
     const FREEBSD_CA: &str = "/etc/ssl/cert.pem";
-    const ILLUMOS_CA: &str = "/etc/openssl/certs/ca-certificates.crt";
+    const ILLUMOS_CA: &str = "/etc/ssl/cacert.pem";
 
     fn spawn_clone(
         state: &Arc<Receiver>,

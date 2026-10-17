@@ -1,5 +1,25 @@
 # Agent threads and tools
 
+## Native agent sets and kernel identity
+
+FreeBSD and OmniOS (`illumos` on the wire) use the explicit v6/v3 native image
+contract from [ADR-0180](repo:docs/architecture/decisions/0180-multi-os-guest-image-contract.md).
+Their bundle carries kernel provenance and the native guest package names the
+kernel probe, agent, flush, readiness, trust, workspace and SSH helper
+daemons. Lilly sends no credentials and does not publish readiness until the
+jail-local probe returns an `attested` response matching the current placement,
+execution epoch, boot challenge, native OS and kernel digest. The response is
+boot-bound and bounded; stale, malformed, placeholder or mismatched evidence
+refuses.
+
+The current `native-kernels` derivation is a source/contract receipt only and
+sets `artifact.available = false`. The image builders therefore refuse before
+copying a stock kernel or root disk. The daemons have not been cross-built for
+FreeBSD or illumos, and the shared Linux `terminald` package has no native
+target. The capability table remains contract surface only: no native terminal,
+workspace, SSH, trust, readiness, boot or fleet result is implied. See the
+[native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
+
 The separately installed `codex` and `claude` commands are user-run guest
 processes with native client sessions and guest-local files. Their Ziggy settings
 do not attach their history, approvals or tool execution to this Marshall-owned

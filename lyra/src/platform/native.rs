@@ -291,10 +291,7 @@ pub fn writable_root() -> io::Result<()> {
 pub fn trust_paths(os: &str) -> io::Result<(&'static str, &'static str)> {
     match os {
         "freebsd" => Ok(("/etc/ssl/cert.pem", "/etc/ssl/cert.pem")),
-        "illumos" => Ok((
-            "/etc/openssl/certs/ca-certificates.crt",
-            "/etc/openssl/certs/ca-certificates.crt",
-        )),
+        "illumos" => Ok(("/etc/ssl/cacert.pem", "/etc/ssl/cacert.pem")),
         _ => Err(io::Error::other("unsupported native trust layout")),
     }
 }
@@ -316,10 +313,7 @@ mod tests {
     #[test]
     fn trust_layout_is_closed() {
         assert_eq!(trust_paths("freebsd").unwrap().0, "/etc/ssl/cert.pem");
-        assert_eq!(
-            trust_paths("illumos").unwrap().0,
-            "/etc/openssl/certs/ca-certificates.crt"
-        );
+        assert_eq!(trust_paths("illumos").unwrap().0, "/etc/ssl/cacert.pem");
         assert!(trust_paths("linux").is_err());
     }
 }

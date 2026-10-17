@@ -37,6 +37,7 @@ defmodule Lilly.VM.Provisioning do
   # Called only after physical confined authority has been confirmed. A running
   # boot whose logical generation advanced acquires that generation's journal
   # from the same proof, superseding the previous generation's record.
+
   # @cc [owner:ghuntley,label:recovery] awaiting-trust-preserves-agent-budget
   # awaiting_trust/4 MUST pass the validated placement agent-set budget through
   # when a first launch has not persisted a deadline. Re-entry MUST retain the

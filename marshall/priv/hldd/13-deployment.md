@@ -321,8 +321,12 @@ staging. This is structural evidence only; neither distribution has a native
 boot, recovery or independent-host acceptance claim here. Preliminary FreeBSD
 and OmniOS/illumos version-6 image packages and catalog entries exist without
 standby metadata, but the rolling FreeBSD source endpoint is retired and
-replaced by a checksum-pinned archive capture; no successful native build is
-recorded, and bundle version 3 remains protocol work in progress.
+replaced by a checksum-pinned archive capture. The native-kernel derivation
+currently emits immutable source/contract receipts with `artifact.available =
+false`; image construction stops before copying a stock disk. No successful
+cross-built kernel, native agent or `terminald`, signed image, boot, recovery
+or independent-host acceptance is recorded, and bundle version 3 remains
+runtime work in progress.
 
 The Windows guest spike ([ADR-0169](repo:docs/architecture/decisions/0169-firmware-booted-windows-guests.md))
 adds build-time requirements without touching fleet activation. The builder

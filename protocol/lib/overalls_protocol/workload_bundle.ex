@@ -34,7 +34,8 @@ defmodule OverallsProtocol.WorkloadBundle do
           os: :illumos,
           guest_agents: :illumos_v1,
           pci: true,
-          firmware_bytes: pos_integer()
+          firmware_bytes: pos_integer(),
+          kernel: OverallsProtocol.ImageManifest.kernel_provenance()
         }
 
   @type native_freebsd_firmware_bundle :: %{
@@ -44,7 +45,8 @@ defmodule OverallsProtocol.WorkloadBundle do
           os: :freebsd,
           guest_agents: :freebsd_v1,
           pci: true,
-          firmware_bytes: pos_integer()
+          firmware_bytes: pos_integer(),
+          kernel: OverallsProtocol.ImageManifest.kernel_provenance()
         }
 
   @type firmware_bundle :: %{
@@ -67,10 +69,11 @@ defmodule OverallsProtocol.WorkloadBundle do
 
   # @cc [owner:ghuntley,label:protocol;security] workload-bundle-closed-metadata
   # validate/1 MUST accept only the versioned image identity, architecture and, for
-  # version 1, boot arguments with bounded kernel/initrd byte lengths or, for version 2,
+  # version 1, boot arguments with bounded kernel/initrd byte lengths; for version 2,
   # the firmware boot kind with PCI transport, a declared guest agent set (`none` or
-  # `windows-v1`) and a bounded firmware byte length. Portable metadata MUST NOT
-  # contain artifact paths, digests, credentials or host-local authority.
+  # `windows-v1`) and a bounded firmware byte length; or for version 3, the closed
+  # native firmware identity with matching OS, agent set and kernel provenance.
+  # Portable metadata MUST NOT contain artifact paths, credentials or host-local authority.
   @spec validate(term()) :: {:ok, t()} | {:error, :invalid_workload_bundle}
   def validate(
         %{
@@ -155,21 +158,24 @@ defmodule OverallsProtocol.WorkloadBundle do
           "boot" => "firmware",
           "pci" => true,
           "guest_agents" => "freebsd-v1",
-          "firmware_bytes" => firmware_bytes
+          "firmware_bytes" => firmware_bytes,
+          "kernel" => kernel
         } = value
       )
-      when map_size(value) == 8 do
+      when map_size(value) == 9 do
     if native_keys?(value, [
          "architecture",
          "boot",
          "firmware_bytes",
          "guest_agents",
          "image_id",
+         "kernel",
          "os",
          "pci",
          "version"
        ]) and
          OverallsProtocol.ImageManifest.id?(image_id) and
+         kernel_provenance?(kernel) and
          is_integer(firmware_bytes) and firmware_bytes in 1..@firmware_maximum_bytes do
       {:ok,
        %{
@@ -179,7 +185,8 @@ defmodule OverallsProtocol.WorkloadBundle do
          os: :freebsd,
          guest_agents: :freebsd_v1,
          pci: true,
-         firmware_bytes: firmware_bytes
+         firmware_bytes: firmware_bytes,
+         kernel: kernel_provenance(kernel)
        }}
     else
       {:error, :invalid_workload_bundle}
@@ -195,21 +202,24 @@ defmodule OverallsProtocol.WorkloadBundle do
           "boot" => "firmware",
           "pci" => true,
           "guest_agents" => "illumos-v1",
-          "firmware_bytes" => firmware_bytes
+          "firmware_bytes" => firmware_bytes,
+          "kernel" => kernel
         } = value
       )
-      when map_size(value) == 8 do
+      when map_size(value) == 9 do
     if native_keys?(value, [
          "architecture",
          "boot",
          "firmware_bytes",
          "guest_agents",
          "image_id",
+         "kernel",
          "os",
          "pci",
          "version"
        ]) and
          OverallsProtocol.ImageManifest.id?(image_id) and
+         kernel_provenance?(kernel) and
          is_integer(firmware_bytes) and firmware_bytes in 1..@firmware_maximum_bytes do
       {:ok,
        %{
@@ -219,7 +229,8 @@ defmodule OverallsProtocol.WorkloadBundle do
          os: :illumos,
          guest_agents: :illumos_v1,
          pci: true,
-         firmware_bytes: firmware_bytes
+         firmware_bytes: firmware_bytes,
+         kernel: kernel_provenance(kernel)
        }}
     else
       {:error, :invalid_workload_bundle}
@@ -253,7 +264,8 @@ defmodule OverallsProtocol.WorkloadBundle do
       "boot" => "firmware",
       "pci" => true,
       "guest_agents" => OverallsProtocol.GuestAgents.wire(bundle.guest_agents),
-      "firmware_bytes" => bundle.firmware_bytes
+      "firmware_bytes" => bundle.firmware_bytes,
+      "kernel" => encode_kernel(bundle.kernel)
     }
   end
 
@@ -282,4 +294,23 @@ defmodule OverallsProtocol.WorkloadBundle do
   def file_sets, do: [["kernel", "initrd"], ["kernel"], ["firmware"]]
 
   defp native_keys?(value, expected), do: Map.keys(value) |> Enum.sort() == Enum.sort(expected)
+
+  defp kernel_provenance?(value),
+    do: match?({:ok, _}, OverallsProtocol.ImageManifest.kernel_provenance(value))
+
+  defp kernel_provenance(value) do
+    {:ok, normalized} = OverallsProtocol.ImageManifest.kernel_provenance(value)
+    normalized
+  end
+
+  defp encode_kernel(value) do
+    %{
+      "bytes" => value.bytes,
+      "sha256" => value.sha256,
+      "source_revision" => value.source_revision,
+      "patch_hash" => value.patch_hash,
+      "configuration_hash" => value.configuration_hash,
+      "compiler" => value.compiler
+    }
+  end
 end

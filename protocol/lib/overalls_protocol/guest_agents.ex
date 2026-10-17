@@ -41,8 +41,12 @@ defmodule OverallsProtocol.GuestAgents do
   def capabilities(:linux), do: @all
   def capabilities(:none), do: @none
   def capabilities(:windows_v1), do: %{@all | inception: false, editor: false}
-  def capabilities(:freebsd_v1), do: %{@all | inception: false, editor: false}
-  def capabilities(:illumos_v1), do: %{@all | inception: false, editor: false}
+  # Native rows remain transport declarations while the cross-built kernel,
+  # complete agent closure and machine evidence are unavailable. Keep every
+  # user-facing capability false so a directly registered native manifest
+  # cannot earn readiness, trust, workspace, SSH, agent or terminal authority.
+  def capabilities(:freebsd_v1), do: @none
+  def capabilities(:illumos_v1), do: @none
 
   @spec wire(t()) :: String.t()
   def wire(:linux), do: "linux"
@@ -62,10 +66,16 @@ defmodule OverallsProtocol.GuestAgents do
   @doc "Whether any protocol of the set is spoken over the jail vsock device."
   @spec vsock?(t()) :: boolean()
   def vsock?(agents) do
-    capabilities = capabilities(agents)
+    if agents in [:freebsd_v1, :illumos_v1] do
+      # The jail must retain the host-only transport shape for native bundles,
+      # even while capability admission is fail-closed.
+      true
+    else
+      capabilities = capabilities(agents)
 
-    capabilities.readiness or capabilities.trust or capabilities.terminal or
-      capabilities.workspace or capabilities.flush
+      capabilities.readiness or capabilities.trust or capabilities.terminal or
+        capabilities.workspace or capabilities.flush
+    end
   end
 
   # @cc [owner:ghuntley,label:recovery] readiness-budget-by-agent-set

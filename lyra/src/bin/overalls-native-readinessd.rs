@@ -24,6 +24,16 @@ mod daemon {
     }
 
     pub fn run() -> i32 {
+        let os = if cfg!(target_os = "freebsd") {
+            "freebsd"
+        } else {
+            "illumos"
+        };
+        // Refuse readiness when the image's declared boot kernel is absent or
+        // unreadable. Lilly performs the matching digest check on port 1098.
+        if lyra::guest::kernel_probe::kernel_sha256(os).is_err() {
+            return 1;
+        }
         let (boot, address, gateway) = match native::identity() {
             Ok(identity) => identity,
             Err(_) => return 1,

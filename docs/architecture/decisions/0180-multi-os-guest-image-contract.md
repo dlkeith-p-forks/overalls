@@ -20,10 +20,13 @@ The branch also extends the shared protocol for native FreeBSD and OmniOS
 (represented by the `illumos` protocol family). Both use CloudHv firmware and
 version-6 raw-GPT images; FreeBSD's published GPT disk contains the EFI system
 partition and UFS root, while OmniOS carries its ZFS root. Pinned builders and
-catalog entries now exist. FreeBSD
-14.3 is fetched from a checksum-pinned archive capture because the rolling
-`Latest` endpoint was retired. Local Nix realization now succeeds for both
-native builders, but neither family has a recorded runtime result.
+catalog entries now exist. FreeBSD 14.3 is fetched from a checksum-pinned
+archive capture because the rolling `Latest` endpoint was retired. The new
+native-kernel package currently evaluates immutable source, patch and
+configuration receipts only: its artifact is explicitly unavailable until the
+OS-specific cross builds provide kernel bytes. The image builders fail closed
+before copying a stock disk, so neither family has a launchable image or a
+recorded runtime result.
 
 The existing NixOS, Ubuntu and Windows contracts must remain intact. OS names,
 root formats, boot artifacts and agent capabilities must come from validated
@@ -44,18 +47,25 @@ image contains a tool.
   `guest_agents = freebsd-v1`. A version-6 OmniOS/illumos manifest declares
   `os = illumos`, firmware boot, virtio-pci, raw GPT root and
   `guest_agents = illumos-v1`. Unknown OS values, cross-OS agent sets, extra
-   keys and invalid artifact bounds are refused.
+   keys and invalid artifact bounds are refused. Every native manifest also
+   carries a kernel provenance descriptor containing the positive byte count,
+   SHA-256 digest, full source revision, patch and configuration hashes, and
+   compiler identity. A descriptor is admission evidence only when a real
+   cross-built kernel supplies the bytes; a source receipt or placeholder cannot
+   make the image launchable.
 3. **Bundle version 3 is closed.** Native FreeBSD and illumos firmware bundles
   carry the validated image ID, OS, matching agent set and firmware size.
   Artifact file lists come from
    the protocol. Version-1 Linux and version-2 Windows firmware encodings
    remain byte-compatible.
 4. **Capabilities stay explicit.** The protocol's capability table is the sole
-   source for Lilly and Marshall. `freebsd-v1` and `illumos-v1` currently have
-   the same capability flags as `windows-v1` (readiness, trust, terminal,
-   workspace, SSH and agents; no editor or Inception) and a 600-second readiness
-   budget. This is a contract definition, not evidence that those guests or
-   agents exist yet.
+   source for Lilly and Marshall. `freebsd-v1` and `illumos-v1` preserve the
+   native transport and readiness-budget shape, but their current capability
+   rows are all false until a cross-built kernel, complete agent closure and
+   machine evidence exist. This is a contract definition, not evidence that
+   those guests or agents exist yet. In particular, the current native image
+   rows do not imply that a native `terminald` or complete agent closure has
+   been built.
 5. **Lilly preserves shared boundaries.** Kernel bundles include an initrd only
    when the validated bundle declares one. Firmware bundles select the default
    CPU model for illumos and retain Hyper-V configuration only for Windows.
@@ -68,6 +78,13 @@ image contains a tool.
    kernel configuration only. No native FreeBSD or OmniOS boot, readiness,
    trust, terminal, workspace, relocation or Marshall fleet acceptance is
    implied by those checks.
+7. **Native admission is boot-bound and fail-closed.** Lilly verifies the
+   manifest kernel digest, native OS, placement, execution epoch, boot
+   challenge and boot ID over the jail-local probe before delivering
+   credentials or waiting for readiness. The probe uses a fixed host-only
+   vsock path and bounded frames. Missing, placeholder, stale or mismatched
+   kernel evidence refuses admission; native capabilities remain unavailable
+   until the kernel and the corresponding agent implementation are recorded.
 
 Authorization: the multi-OS guest-image implementation plan of 2026-10-16.
 The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.md),
@@ -107,7 +124,12 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
 - Arch and Alma builder commands contain the reviewed version-4 kernel/root
   shape and their own deterministic distribution marker.
 - Version-6 manifests and version-3 bundles reject unknown keys, OS/agent
-  mismatches, malformed boot arguments and out-of-bound artifact sizes.
+  mismatches, malformed boot arguments, incomplete kernel provenance and
+  out-of-bound artifact sizes.
+- Kernel provenance binds every native image to positive kernel bytes, a digest,
+  source revision, patch hash, configuration hash and compiler. The current
+  receipt deliberately marks the artifact unavailable; image construction and
+  native admission must refuse it.
 - Native FreeBSD and illumos firmware bundles receive a vsock only for their
   declared protocol-speaking agent set and never receive the Windows Hyper-V
   CPU template.
@@ -142,9 +164,10 @@ guest image. The fleet's `OmniOS r151050` row consumes the explicit
 evaluation remains structural, while local Nix realization of both pinned
 native artifacts is recorded below.
 
-Native metadata and bundle validation are in
+Native metadata, bundle and kernel-attestation validation are in
 [`image_manifest.ex`](../../../protocol/lib/overalls_protocol/image_manifest.ex),
-[`workload_bundle.ex`](../../../protocol/lib/overalls_protocol/workload_bundle.ex)
+[`workload_bundle.ex`](../../../protocol/lib/overalls_protocol/workload_bundle.ex),
+[`kernel_attestation.ex`](../../../protocol/lib/overalls_protocol/kernel_attestation.ex)
 and [`guest_agents.ex`](../../../protocol/lib/overalls_protocol/guest_agents.ex).
 Lilly's conditional initrd, vsock and CPU configuration is in
 [`jail.ex`](../../../lilly/lib/lilly/vm/jail.ex), with the focused
@@ -154,12 +177,16 @@ Lilly's conditional initrd, vsock and CPU configuration is in
 are selected as sources while Lilly retains its internal persistent destination
 name; it does not realize an image or boot a guest.
 
-The pinned FreeBSD and OmniOS builders now have successful local Nix
-realization checks, including preservation of FreeBSD's complete EFI/GPT/UFS
-disk. No
-signed production artifact, machine test, native guest agent implementation or
-runtime execution record exists yet. The catalog entries do not carry standby
-metadata and must not be treated as launchable support.
+The native-kernel receipt and source pins are in
+[`native-kernels/default.nix`](../../../nix/packages/guest/native-kernels/default.nix),
+with the reviewed configuration and patch contracts beside it. The receipt
+records complete identity inputs but sets `artifact.available = false`; the
+FreeBSD and OmniOS image builders therefore stop before unpacking their stock
+disks. The native agent package now names the intended cross-built daemons and
+SSH helpers, but no successful cross build, signed production artifact, native
+`terminald`, machine test or runtime execution record exists. The catalog
+entries do not carry standby metadata and must not be treated as launchable
+support.
 
 ## Open questions
 
@@ -169,6 +196,9 @@ metadata and must not be treated as launchable support.
   identifies OmniOS, OpenIndiana and Tribblix as downstream distributions.
 - Whether native guests can support the declared vsock protocols and the
   600-second readiness budget.
+- Which OS-specific cross toolchains and kernel implementations will replace the
+  current source/contract scaffolds, and how the native `terminald` target will
+  be built and tested.
 - Which native machine tests can establish boot, isolation, storage growth and
   recovery before either family is staged.
 

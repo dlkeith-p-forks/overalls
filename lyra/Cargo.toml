@@ -27,6 +27,18 @@ path = "src/bin/overalls-native-trustd.rs"
 name = "overalls-native-workspaced"
 path = "src/bin/overalls-native-workspaced.rs"
 
+[[bin]]
+name = "overalls-native-kernel-probed"
+path = "src/bin/overalls-native-kernel-probed.rs"
+
+[[bin]]
+name = "overalls-native-agentd"
+path = "src/bin/overalls-native-agentd.rs"
+
+[[bin]]
+name = "overalls-native-flushd"
+path = "src/bin/overalls-native-flushd.rs"
+
 [dependencies]
 clap = { version = "4.5", features = ["derive"] }
 fs2 = "0.4"

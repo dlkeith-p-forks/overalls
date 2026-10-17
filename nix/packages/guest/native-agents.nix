@@ -1,12 +1,22 @@
 { pkgs, lyra }:
 let
+  # @cc [owner:ghuntley,label:security] native-agent-set-complete
+  # Every binary listed here MUST be cross-built for the selected native OS;
+  # the image builder MUST never copy the Linux Lyra closure into a native
+  # root. Services start trust, roster and identity prerequisites before
+  # readiness can answer on the host-only vsock channel.
   # The release derivation type-checks and cross-builds the same protocol
   # daemons for both libc families. Keep the image package explicit so a
   # FreeBSD image cannot accidentally receive an illumos service manifest.
   binaries = [
+    "overalls-native-kernel-probed"
+    "overalls-native-agentd"
+    "overalls-native-flushd"
     "overalls-native-readinessd"
     "overalls-native-trustd"
     "overalls-native-workspaced"
+    "overalls-ssh-authorize"
+    "overalls-host-certificate"
   ];
   copy = os: pkgs.runCommand "overalls-${os}-guest-agent-binaries" { } ''
     mkdir -p "$out/bin"
@@ -45,17 +55,36 @@ let
     set -eu
     : "''${overalls_native_agents_enable:=NO}"
     [ "$overalls_native_agents_enable" = YES ] || exit 0
+    export OVERALLS_SSH_CA_BUNDLE=/etc/ssl/cert.pem
     mkdir -p /var/run/overalls
+    ${freebsdBinaries}/bin/overalls-native-kernel-probed &
+    ${freebsdBinaries}/bin/overalls-native-agentd &
+    ${freebsdBinaries}/bin/overalls-native-flushd &
     ${freebsdBinaries}/bin/overalls-native-readinessd &
     ${freebsdBinaries}/bin/overalls-native-trustd &
     ${freebsdBinaries}/bin/overalls-native-workspaced &
+    # SSH remains closed until the private roster and per-boot host
+    # certificate have both been reconciled. The helpers emit only their
+    # reviewed fixed event names; their request and key bytes never enter logs.
+    if ${freebsdBinaries}/bin/overalls-ssh-authorize sync &&
+       ${freebsdBinaries}/bin/overalls-host-certificate; then
+      /usr/sbin/sshd 2>/dev/null || true
+    fi
   '';
   illumosService = pkgs.writeShellScript "overalls-native-agents-start" ''
     set -eu
+    export OVERALLS_SSH_CA_BUNDLE=/etc/ssl/cacert.pem
     mkdir -p /var/run/overalls
+    ${illumosBinaries}/bin/overalls-native-kernel-probed &
+    ${illumosBinaries}/bin/overalls-native-agentd &
+    ${illumosBinaries}/bin/overalls-native-flushd &
     ${illumosBinaries}/bin/overalls-native-readinessd &
     ${illumosBinaries}/bin/overalls-native-trustd &
     ${illumosBinaries}/bin/overalls-native-workspaced &
+    if ${illumosBinaries}/bin/overalls-ssh-authorize sync &&
+       ${illumosBinaries}/bin/overalls-host-certificate; then
+      /usr/lib/ssh/sshd -f /etc/ssh/sshd_config 2>/dev/null || true
+    fi
   '';
   freebsd = pkgs.runCommand "overalls-freebsd-guest-agents" {} ''
     mkdir -p "$out/bin" "$out/etc/rc.d" "$out/etc/rc.conf.d"
@@ -75,6 +104,10 @@ in
   manifest = {
     version = 1;
     agents = binaries;
+    # Terminal support is deliberately omitted until a FreeBSD/illumos
+    # terminald target is built and exercised.  Keep the native capability row
+    # fail-closed rather than letting the presence of the other daemons imply
+    # an unimplemented PTY service.
     capabilities = [ "readiness" "trust" "workspace" "flush" "ssh" "agents" ];
   };
 }

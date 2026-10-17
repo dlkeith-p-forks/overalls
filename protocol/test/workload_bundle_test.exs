@@ -152,6 +152,17 @@ defmodule OverallsProtocol.WorkloadBundleTest do
   end
 
   describe "version 3 native bundles" do
+    defp kernel do
+      %{
+        "bytes" => 1_048_576,
+        "sha256" => String.duplicate("d", 64),
+        "source_revision" => String.duplicate("1", 40),
+        "patch_hash" => String.duplicate("2", 64),
+        "configuration_hash" => String.duplicate("3", 64),
+        "compiler" => "clang-19.1.7"
+      }
+    end
+
     defp illumos_bundle do
       %{
         "version" => 3,
@@ -161,7 +172,8 @@ defmodule OverallsProtocol.WorkloadBundleTest do
         "boot" => "firmware",
         "pci" => true,
         "guest_agents" => "illumos-v1",
-        "firmware_bytes" => 4_194_304
+        "firmware_bytes" => 4_194_304,
+        "kernel" => kernel()
       }
     end
 
@@ -174,7 +186,8 @@ defmodule OverallsProtocol.WorkloadBundleTest do
         "boot" => "firmware",
         "pci" => true,
         "guest_agents" => "freebsd-v1",
-        "firmware_bytes" => 4_194_304
+        "firmware_bytes" => 4_194_304,
+        "kernel" => kernel()
       }
     end
 
@@ -207,7 +220,15 @@ defmodule OverallsProtocol.WorkloadBundleTest do
                os: :illumos,
                guest_agents: :illumos_v1,
                pci: true,
-               firmware_bytes: 4_194_304
+               firmware_bytes: 4_194_304,
+               kernel: %{
+                 bytes: 1_048_576,
+                 sha256: String.duplicate("d", 64),
+                 source_revision: String.duplicate("1", 40),
+                 patch_hash: String.duplicate("2", 64),
+                 configuration_hash: String.duplicate("3", 64),
+                 compiler: "clang-19.1.7"
+               }
              }
 
       assert WorkloadBundle.encode(bundle) == illumos_bundle()

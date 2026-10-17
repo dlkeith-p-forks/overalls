@@ -14,6 +14,12 @@
   mapping. Builder evaluation and focused unit evidence are recorded; native
   FreeBSD/OmniOS boot, agents, recovery and fleet claims remain open.
 
+- [Native kernel provenance and attestation (2026-10-17)](2026-10-17-native-kernel-attestation.md):
+  ADR-0180's kernel provenance descriptor, fail-closed native-kernel receipts,
+  jail-local boot-bound attestation and guest daemon packaging. Source and
+  focused tests exist; cross-built kernels, native `terminald`, boot, agents,
+  recovery and fleet evidence remain open.
+
 - [Thread sharing review (2026-10-16)](2026-10-16-thread-sharing.md): ADR-0175's
   durable thread grants, current bound-machine authority, additive VM/team roles,
   replay and revocation boundaries. The focused 111-case suite and synthetic

@@ -18,6 +18,7 @@ defmodule OverallsProtocol.GuestAgentsTest do
              GuestAgents.capabilities(:windows_v1)
 
     assert GuestAgents.capabilities(:freebsd_v1) == GuestAgents.capabilities(:illumos_v1)
+    refute GuestAgents.capabilities(:freebsd_v1) |> Map.values() |> Enum.any?()
 
     for value <- ["Linux", "windows", "windows-v2", "", nil, :linux, 1] do
       assert :error = GuestAgents.parse(value)

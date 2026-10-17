@@ -110,6 +110,11 @@ let
     "overalls-native-readinessd"
     "overalls-native-trustd"
     "overalls-native-workspaced"
+    "overalls-native-kernel-probed"
+    "overalls-native-agentd"
+    "overalls-native-flushd"
+    "overalls-ssh-authorize"
+    "overalls-host-certificate"
   ];
   # @cc [owner:ghuntley,label:build;guest] lyra-windows-cross-build
   # Windows guest agents MUST be cross-built from the shared Lyra crate for

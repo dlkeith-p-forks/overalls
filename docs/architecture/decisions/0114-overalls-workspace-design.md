@@ -100,7 +100,7 @@ and browser probe that implemented the presentation were removed by ADR-0161;
 their last revision is commit `235cd9df`. [Overview tests](../../../marshall/test/marshall_web/overview_live_test.exs)
 cover actor visibility, boundedness and revocation. The historical owner-accounting
 panel and its test were removed by ADR-0116. The
-[completion review](../reviews/2026-09-24-overalls-nekomo-redesign.md) records the
+[completion review](../reviews/2026-09-24-kittens-nekomo-redesign.md) records the
 passing Marshall precommit, browser and Python checks and the functionality map
 at that revision. Synthetic browser data does not establish live guest execution.
 

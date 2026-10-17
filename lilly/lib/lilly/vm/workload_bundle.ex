@@ -129,6 +129,22 @@ defmodule Lilly.VM.WorkloadBundle do
     |> BundleMetadata.encode()
   end
 
+  defp metadata(%Image{manifest: %{boot_kind: :firmware, os: os} = manifest} = image)
+       when os in [:freebsd, :illumos] do
+    {_, firmware} = image.files["firmware"]
+
+    BundleMetadata.encode(%{
+      image_id: image.id,
+      architecture: manifest.architecture,
+      boot_kind: :firmware,
+      guest_agents: manifest.guest_agents,
+      os: os,
+      pci: true,
+      firmware_bytes: firmware.size,
+      kernel: manifest.kernel
+    })
+  end
+
   defp metadata(%Image{manifest: %{boot_kind: :firmware} = manifest} = image) do
     {_, firmware} = image.files["firmware"]
 

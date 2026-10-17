@@ -1,0 +1,13 @@
+# FreeBSD 14.3 native guest kernel contract.
+# Keep the full GENERIC device set; these options make the transport explicit so
+# a future cross build cannot accidentally fall back to a stock kernel.
+include GENERIC
+ident OVERALLS_NATIVE
+options VSOCK
+device virtio
+device virtio_pci
+device virtio_vsock
+options VSOCK_GUEST_CID=3
+options VSOCK_HOST_CID=2
+options VSOCK_MAX_SOCKETS=128
+options VSOCK_MAX_FRAME=65536

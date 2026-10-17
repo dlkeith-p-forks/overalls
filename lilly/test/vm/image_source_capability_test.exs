@@ -54,6 +54,7 @@ defmodule Lilly.VM.ImageSourceCapabilityTest do
         "os" => "freebsd",
         "architecture" => "x86_64",
         "boot" => %{"kind" => "firmware", "pci" => true, "firmware" => artifact},
+        "kernel" => native_kernel(),
         "root" => Map.put(artifact, "format", "raw-gpt"),
         "minimum_memory_bytes" => 536_870_912,
         "minimum_disk_bytes" => 2_147_483_648,
@@ -137,6 +138,17 @@ defmodule Lilly.VM.ImageSourceCapabilityTest do
     }
 
     {image, spec}
+  end
+
+  defp native_kernel do
+    %{
+      "bytes" => 1_048_576,
+      "sha256" => String.duplicate("d", 64),
+      "source_revision" => String.duplicate("1", 40),
+      "patch_hash" => String.duplicate("2", 64),
+      "configuration_hash" => String.duplicate("3", 64),
+      "compiler" => "clang-19.1.7"
+    }
   end
 
   @spec config(Path.t()) :: Config.t()

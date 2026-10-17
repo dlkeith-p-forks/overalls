@@ -39,12 +39,14 @@ version-6 manifests and version-3 bundles. The illumos constructor records
 illumos.org as the upstream source project and selects pinned OmniOS as the
 installable downstream. Artifact names, OS facts and
 capabilities come from the protocol; Lilly keeps its jailer, network and storage
-boundaries while selecting the validated boot path. The implementation is
-partial: foreign-Linux and preliminary native-builder evaluations plus focused
-protocol/Lilly tests exist; the FreeBSD source endpoint is retired, and no
-successful native FreeBSD or OmniOS image, boot, agent, recovery or fleet
-evidence is recorded. The detailed Windows choices remain in ADR-0169 through
-ADR-0173.
+boundaries while selecting the validated boot path. Native manifests now bind
+kernel provenance and Lilly verifies a boot-bound kernel attestation before
+credentials or readiness. The implementation is partial and fail-closed:
+foreign-Linux evaluation, native source receipts and focused protocol/Lilly
+tests exist, while the kernel receipts explicitly have no artifact bytes and no
+successful native FreeBSD or OmniOS image, boot, agent, terminal, recovery or
+fleet evidence is recorded. The detailed Windows choices remain in ADR-0169
+through ADR-0173.
 
 [ADR-0174](0174-user-threads.md) adds the user-level Threads domain. Threads
 persist a pending task and typed machine specification, then bind the existing

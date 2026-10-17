@@ -52,6 +52,7 @@
       lib.mkFreeBSDGuest = built.mkFreeBSDGuest;
       lib.mkOmniOSGuest = built.mkOmniOSGuest;
       lib.mkIllumosGuest = built.mkIllumosGuest;
+      lib.nativeKernels = built.nativeKernels;
       packages.${system} = {
         nix-compact = nix-compact.lib.mkPackage { inherit pkgs; };
         nix-compact-host = nix-compact.lib.mkPackage { pkgs = nixpkgs.legacyPackages.${system}; };
@@ -60,6 +61,9 @@
         freebsd-guest = built.freebsdGuest;
         omnios-guest = built.omniosGuest;
         illumos-guest = built.illumosGuest;
+        freebsd-kernel-receipt = built.nativeKernels.freebsdKernel;
+        illumos-kernel-receipt = built.nativeKernels.illumosKernel;
+        illumos-sdk-receipt = built.nativeKernels.illumosSdk;
         arch-guest = built.archGuest;
         archlinux-guest = built.archLinuxGuest;
         alma-linux-guest = built.almaLinuxGuest;

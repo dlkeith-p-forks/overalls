@@ -43,6 +43,15 @@ defmodule OverallsProtocol.ImageManifest do
           manifest: map()
         }
 
+  @type kernel_provenance :: %{
+          bytes: pos_integer(),
+          sha256: String.t(),
+          source_revision: String.t(),
+          patch_hash: String.t(),
+          configuration_hash: String.t(),
+          compiler: String.t()
+        }
+
   @type native_image :: %{
           id: String.t(),
           architecture: :x86_64,
@@ -54,6 +63,7 @@ defmodule OverallsProtocol.ImageManifest do
           minimum_memory_bytes: pos_integer(),
           minimum_disk_bytes: pos_integer(),
           workspace_source_version: workspace_source_version(),
+          kernel: kernel_provenance(),
           manifest: map()
         }
 
@@ -205,7 +215,8 @@ defmodule OverallsProtocol.ImageManifest do
   # @cc [owner:ghuntley,label:protocol;security] image-native-manifest-closed
   # Version 6 admits only the explicit FreeBSD or illumos native image shapes;
   # each OS is bound to its agent set, boot transport and root format. Unknown
-  # keys, source versions on agentless images, and cross-OS substitutions refuse.
+  # keys, source versions on agentless images, cross-OS substitutions and native
+  # manifests without complete kernel provenance refuse.
   @spec validate_native(term()) :: {:ok, native_image()} | {:error, :invalid_image_manifest}
   def validate_native(%{"version" => 6, "os" => "freebsd"} = manifest),
     do: validate_freebsd(manifest)
@@ -214,6 +225,15 @@ defmodule OverallsProtocol.ImageManifest do
     do: validate_illumos(manifest)
 
   def validate_native(_), do: {:error, :invalid_image_manifest}
+
+  @doc "Validate and normalize the immutable native kernel provenance descriptor."
+  @spec kernel_provenance(term()) ::
+          {:ok, kernel_provenance()} | {:error, :invalid_kernel_provenance}
+  def kernel_provenance(value) do
+    if kernel_provenance?(value),
+      do: {:ok, kernel_provenance_map(value)},
+      else: {:error, :invalid_kernel_provenance}
+  end
 
   @spec encode(t()) :: map()
   def encode(%{manifest: manifest}), do: manifest
@@ -331,6 +351,7 @@ defmodule OverallsProtocol.ImageManifest do
            "os" => "freebsd",
            "architecture" => "x86_64",
            "boot" => %{"kind" => "firmware", "pci" => true, "firmware" => firmware} = boot,
+           "kernel" => kernel,
            "root" => %{"format" => "raw-gpt"} = root,
            "guest_agents" => "freebsd-v1",
            "minimum_memory_bytes" => memory,
@@ -338,11 +359,12 @@ defmodule OverallsProtocol.ImageManifest do
            "workspace_source_version" => source
          } = manifest
        )
-       when map_size(manifest) == 9 and map_size(boot) == 3 and map_size(root) == 3 do
+       when map_size(manifest) == 10 and map_size(boot) == 3 and map_size(root) == 3 do
     root_artifact = Map.delete(root, "format")
 
     with true <- source in [nil, 2],
          true <- minima?(memory, disk),
+         true <- kernel_provenance?(kernel),
          true <- artifact?(firmware, @firmware_maximum_bytes),
          true <- artifact?(root_artifact, @root_maximum_bytes) and disk >= root_artifact["bytes"] do
       identity = [
@@ -355,6 +377,7 @@ defmodule OverallsProtocol.ImageManifest do
         memory,
         disk,
         source,
+        kernel_identity(kernel),
         [firmware["bytes"], firmware["sha256"]],
         [root_artifact["bytes"], root_artifact["sha256"]]
       ]
@@ -371,6 +394,7 @@ defmodule OverallsProtocol.ImageManifest do
          minimum_memory_bytes: memory,
          minimum_disk_bytes: disk,
          workspace_source_version: source,
+         kernel: kernel_provenance_map(kernel),
          manifest: manifest
        }}
     else
@@ -386,6 +410,7 @@ defmodule OverallsProtocol.ImageManifest do
            "os" => "illumos",
            "architecture" => "x86_64",
            "boot" => %{"kind" => "firmware", "pci" => true, "firmware" => firmware} = boot,
+           "kernel" => kernel,
            "root" => %{"format" => "raw-gpt"} = root,
            "guest_agents" => "illumos-v1",
            "minimum_memory_bytes" => memory,
@@ -393,11 +418,12 @@ defmodule OverallsProtocol.ImageManifest do
            "workspace_source_version" => source
          } = manifest
        )
-       when map_size(manifest) == 9 and map_size(boot) == 3 and map_size(root) == 3 do
+       when map_size(manifest) == 10 and map_size(boot) == 3 and map_size(root) == 3 do
     root_artifact = Map.delete(root, "format")
 
     with true <- source in [nil, 2],
          true <- minima?(memory, disk),
+         true <- kernel_provenance?(kernel),
          true <- artifact?(firmware, @firmware_maximum_bytes),
          true <- artifact?(root_artifact, @root_maximum_bytes) and disk >= root_artifact["bytes"] do
       identity = [
@@ -410,6 +436,7 @@ defmodule OverallsProtocol.ImageManifest do
         memory,
         disk,
         source,
+        kernel_identity(kernel),
         [firmware["bytes"], firmware["sha256"]],
         [root_artifact["bytes"], root_artifact["sha256"]]
       ]
@@ -426,6 +453,7 @@ defmodule OverallsProtocol.ImageManifest do
          minimum_memory_bytes: memory,
          minimum_disk_bytes: disk,
          workspace_source_version: source,
+         kernel: kernel_provenance_map(kernel),
          manifest: manifest
        }}
     else
@@ -454,6 +482,56 @@ defmodule OverallsProtocol.ImageManifest do
        do: is_integer(size) and size > 0 and size <= maximum and digest?(digest)
 
   defp artifact?(_, _), do: false
+
+  defp kernel_provenance?(
+         %{
+           "bytes" => bytes,
+           "sha256" => sha256,
+           "source_revision" => source_revision,
+           "patch_hash" => patch_hash,
+           "configuration_hash" => configuration_hash,
+           "compiler" => compiler
+         } = value
+       )
+       when map_size(value) == 6 do
+    artifact?(%{"bytes" => bytes, "sha256" => sha256}, @boot_artifact_maximum_bytes) and
+      git_revision?(source_revision) and digest?(patch_hash) and digest?(configuration_hash) and
+      compiler_identity?(compiler)
+  end
+
+  defp kernel_provenance?(_), do: false
+
+  defp kernel_provenance_map(value) do
+    %{
+      bytes: value["bytes"],
+      sha256: value["sha256"],
+      source_revision: value["source_revision"],
+      patch_hash: value["patch_hash"],
+      configuration_hash: value["configuration_hash"],
+      compiler: value["compiler"]
+    }
+  end
+
+  defp kernel_identity(value) do
+    [
+      value["bytes"],
+      value["sha256"],
+      value["source_revision"],
+      value["patch_hash"],
+      value["configuration_hash"],
+      value["compiler"]
+    ]
+  end
+
+  defp git_revision?(value) when is_binary(value) and byte_size(value) in [40, 64],
+    do: Regex.match?(~r/\A[0-9a-f]+\z/, value)
+
+  defp git_revision?(_), do: false
+
+  defp compiler_identity?(value) when is_binary(value) and byte_size(value) in 1..256,
+    do: String.valid?(value) and not String.contains?(value, [<<0>>, "\n", "\r"])
+
+  defp compiler_identity?(_), do: false
 
   defp digest?(value) when is_binary(value) and byte_size(value) == 64,
     do: Regex.match?(~r/\A[0-9a-f]{64}\z/, value)

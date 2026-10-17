@@ -41,6 +41,15 @@ defmodule OverallsProtocol.ImageManifestTest do
   end
 
   defp illumos_manifest do
+    kernel = %{
+      "bytes" => 1_048_576,
+      "sha256" => String.duplicate("d", 64),
+      "source_revision" => String.duplicate("1", 40),
+      "patch_hash" => String.duplicate("2", 64),
+      "configuration_hash" => String.duplicate("3", 64),
+      "compiler" => "clang-19.1.7"
+    }
+
     %{
       "version" => 6,
       "os" => "illumos",
@@ -55,6 +64,7 @@ defmodule OverallsProtocol.ImageManifestTest do
         "bytes" => 8_589_934_592,
         "sha256" => String.duplicate("f", 64)
       },
+      "kernel" => kernel,
       "guest_agents" => "illumos-v1",
       "minimum_memory_bytes" => 536_870_912,
       "minimum_disk_bytes" => 8_589_934_592,
@@ -404,6 +414,32 @@ defmodule OverallsProtocol.ImageManifestTest do
           ] do
         assert {:error, :invalid_image_manifest} = ImageManifest.validate(invalid)
       end
+    end
+
+    test "kernel provenance is required, bounded and identity-bearing" do
+      base = illumos_manifest()
+      assert {:ok, image} = ImageManifest.validate(base)
+      assert image.kernel.source_revision == String.duplicate("1", 40)
+      assert {:ok, normalized_kernel} = ImageManifest.kernel_provenance(base["kernel"])
+      assert normalized_kernel == image.kernel
+
+      for invalid <- [
+            Map.delete(base, "kernel"),
+            put_in(base, ["kernel", "source_revision"], String.duplicate("A", 40)),
+            put_in(base, ["kernel", "patch_hash"], String.duplicate("a", 63)),
+            put_in(base, ["kernel", "compiler"], "clang\n19"),
+            put_in(base, ["kernel", "bytes"], 8_589_934_593),
+            put_in(base, ["kernel", "unexpected"], true)
+          ] do
+        assert {:error, :invalid_image_manifest} = ImageManifest.validate(invalid)
+      end
+
+      {:ok, changed} =
+        base
+        |> put_in(["kernel", "configuration_hash"], String.duplicate("4", 64))
+        |> ImageManifest.validate()
+
+      refute changed.id == image.id
     end
   end
 end

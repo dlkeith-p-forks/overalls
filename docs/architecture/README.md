@@ -59,12 +59,14 @@ the version-4 Linux image shape with distinct deterministic markers. Native
 FreeBSD and OmniOS use explicit version-6 manifests and version-3 bundles;
 the illumos constructor records illumos.org as the upstream source project and
 selects OmniOS as its pinned installable downstream;
-protocol-owned artifact names, OS facts and capability rows prevent filename
-inference. Lilly keeps the jailer, per-tap guard, ZFS ownership and recovery
-boundary while selecting the validated boot path. Foreign-Linux and preliminary
-native-builder evaluations plus focused protocol/Lilly tests exist; the
-FreeBSD source endpoint is retired and native FreeBSD/OmniOS boots, agents,
-recovery and fleet acceptance remain unverified.
+protocol-owned artifact names, OS facts, capability rows and kernel provenance
+prevent filename inference or stock-kernel substitution. Lilly keeps the
+jailer, per-tap guard, ZFS ownership and recovery boundary while selecting the
+validated boot path, and verifies a boot-bound native kernel attestation before
+credentials or readiness. Foreign-Linux evaluation, native source receipts and
+focused protocol/Lilly tests exist, but the native kernel receipts deliberately
+contain no artifact bytes; native FreeBSD/OmniOS image builds, agent and
+`terminald` execution, recovery and fleet acceptance remain unverified.
 
 [ADR-0149](decisions/0149-independent-observability.md) separates control and
 observability: Lilly v4 carries capacity and physical readiness receipts, Ziggy v2
@@ -477,7 +479,7 @@ records the structural gate, the Playwright probe in both themes and the gaps.
 Overview entry and complete workspace/control-room navigation under the Overalls
 name together with the historical Nekomo visual system, now replaced by
 ADR-0161. Existing domain authority, machine routes and terminal capabilities
-remained in place. The [redesign review](reviews/2026-09-24-overalls-nekomo-redesign.md)
+remained in place. The [redesign review](reviews/2026-09-24-kittens-nekomo-redesign.md)
 records the application, browser, type and contract gates at that revision.
 
 [ADR-0112](decisions/0112-zfs-namespace-delete.md) extends Lilly's fenced ZFS

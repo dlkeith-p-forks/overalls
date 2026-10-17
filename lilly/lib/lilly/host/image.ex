@@ -168,6 +168,7 @@ defmodule Lilly.Host.Image do
          {:ok, value} <- JSON.decode(body),
          {:ok, manifest} <- ImageManifest.validate(value),
          {:ok, files} <- artifacts(path, manifest, verification),
+         true <- closed_directory?(path, manifest),
          image = %__MODULE__{
            id: manifest.id,
            path: path,
@@ -183,6 +184,36 @@ defmodule Lilly.Host.Image do
   end
 
   defp inspect_image(_, _), do: {:error, :invalid_local_image}
+
+  # @cc [owner:ghuntley,label:security] image-directory-closed
+  # A staged image directory MUST contain exactly the manifest and artifacts
+  # named by its validated manifest. The Windows/native build may include one
+  # directory named `evidence`; an evidence file or any other entry refuses.
+  @spec closed_directory?(Path.t(), ImageManifest.t()) :: boolean()
+  defp closed_directory?(path, manifest) do
+    allowed = MapSet.new(ImageManifest.file_names(manifest) ++ ["evidence"])
+
+    with {:ok, names} <- File.ls(path),
+         true <- Enum.all?(names, &MapSet.member?(allowed, &1)),
+         true <-
+           Enum.all?(
+             names -- ImageManifest.file_names(manifest),
+             &safe_evidence_directory?(path, &1)
+           ) do
+      Enum.sort(names -- ["evidence"]) == Enum.sort(ImageManifest.file_names(manifest))
+    else
+      _ -> false
+    end
+  end
+
+  defp safe_evidence_directory?(path, "evidence") do
+    case File.lstat(Path.join(path, "evidence")) do
+      {:ok, %File.Stat{type: :directory, mode: mode}} -> band(mode, 0o002) == 0
+      _ -> false
+    end
+  end
+
+  defp safe_evidence_directory?(_, _), do: false
 
   @doc "Cheap availability check. The VM driver must call load again before copying/launching."
   # @cc [owner:ghuntley,label:assumption;security] availability-does-not-authorize-launch
