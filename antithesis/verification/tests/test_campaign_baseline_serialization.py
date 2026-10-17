@@ -105,6 +105,61 @@ class BaselineSerializationTests(unittest.TestCase):
                 1,
             )
 
+    def test_submitted_attempt_completes_after_identity_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "ledger.json"
+            modify(path, "init", "identity-old", ["safety"])
+            attempt = modify(
+                path,
+                "reserve",
+                "identity-old",
+                ["safety"],
+                purpose="bootstrap",
+                duration_minutes=15,
+            )
+            attempt_id = str(attempt["attempt_id"])
+            modify(
+                path,
+                "submitted",
+                "identity-old",
+                ["safety"],
+                attempt_id=attempt_id,
+                run_id="run-1",
+                duration_minutes=15,
+            )
+            with self.assertRaisesRegex(EvidenceError, "in-flight attempt"):
+                modify(path, "init", "identity-new", ["safety"])
+            with self.assertRaisesRegex(EvidenceError, "campaign identity differs"):
+                modify(
+                    path,
+                    "reserve",
+                    "identity-new",
+                    ["safety"],
+                    purpose="bootstrap",
+                    duration_minutes=15,
+                )
+            completed = modify(
+                path,
+                "completed",
+                "identity-new",
+                ["safety"],
+                attempt_id=attempt_id,
+                result="red",
+                duration_minutes=15,
+            )
+            self.assertEqual(completed["identity_sha256"], "identity-old")
+            self.assertEqual(completed["result"], "red")
+            modify(path, "init", "identity-new", ["safety"])
+            fresh = modify(
+                path,
+                "reserve",
+                "identity-new",
+                ["safety"],
+                purpose="bootstrap",
+                duration_minutes=15,
+            )
+            self.assertEqual(fresh["identity_sha256"], "identity-new")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -109,7 +109,9 @@ while retaining all attempt expenditure. A reserved attempt stays spent after a 
 launch or crash. Use `abandoned --attempt-id ID` only for a reservation known
 never to have reached remote submission. Once a run ID is submitted, retain its
 concurrency slot until triage records completion, including an `unknown` result
-if the run ended without a usable verdict. The global admission gate allows up to five active attempts so independent hosted profiles can be smoke-tested concurrently; the per-profile baseline, mutant and identity rules remain unchanged.
+if the run ended without a usable verdict. Completion is bound to the identity recorded on the
+attempt, so it remains possible after source drift; a green result updates the
+config baseline only while that config is still initialized at the attempt's identity. The global admission gate allows up to five active attempts so independent hosted profiles can be smoke-tested concurrently; the per-profile baseline, mutant and identity rules remain unchanged.
 
 For a mutant, reserve with `--purpose mutant --property-message 'literal SDK
 message'`. Only one mutant may remain between selection and submission; at most

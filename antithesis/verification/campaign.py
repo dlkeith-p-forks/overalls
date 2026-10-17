@@ -470,11 +470,11 @@ def transition(
                 ).encode()
             )
             item["execution_scope"] = field(receipt, "execution_scope")
-        if item.get("purpose") == "baseline":
-            configs = obj(field(ledger, "configurations"), "configurations")
-            selected = obj(
-                configs[string(field(item, "config"), "attempt config")], "configuration"
-            )
+        configs = obj(field(ledger, "configurations"), "configurations")
+        selected = obj(configs[string(field(item, "config"), "attempt config")], "configuration")
+        if item.get("purpose") == "baseline" and selected.get("identity_sha256") == item.get(
+            "identity_sha256"
+        ):
             selected["green_baseline"] = item["identity_sha256"] if result == "green" else None
             selected["baseline_run_id"] = item["run_id"] if result == "green" else None
     elif action == "abandoned":
@@ -531,7 +531,13 @@ def modify(
             if old is None:
                 raise EvidenceError("initialize campaign before reserving attempts")
             ledger = obj(old, "campaign ledger")
-            configuration(ledger, config, identity)
+            if operation == "completed":
+                # A submitted attempt is bound to the identity it was reserved
+                # under; later source drift must not strand its concurrency slot.
+                if config not in obj(field(ledger, "configurations"), "configurations"):
+                    raise EvidenceError("initialize this Compose config before reserving attempts")
+            else:
+                configuration(ledger, config, identity)
             if operation == "reserve":
                 outcome = reserve(
                     ledger,
