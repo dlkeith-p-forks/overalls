@@ -1,6 +1,7 @@
 defmodule Porsche.SSH.OutputTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Porsche.SSH.Output
 
   test "exec context preserves pending JSON but gives human users a usable next step" do

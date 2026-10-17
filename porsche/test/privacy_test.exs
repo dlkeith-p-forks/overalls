@@ -1,6 +1,7 @@
 defmodule Porsche.PrivacyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   defmodule Handler do
     def log(event, %{config: owner}) do
