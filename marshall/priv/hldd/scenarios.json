@@ -1328,8 +1328,8 @@
       "denial": "hostd refuses a BridgeIngress descriptor that is not Audi's connected, non-listening AF_UNIX stream, a 1025th bridge or a reused key, and lists or kills only lilly-ingress-<32 hex>.scope cgroups in its slice. A restarted Lilly ends a live bridge without a readable record at once and a recorded one whose execution is not current within 30 s; a bridge hostd abandons before GO moves no byte.",
       "scope": "hostd Hegel decoding and scope-name models, fake-cgroup list/end, the client check and the start handshake with a fake helper; bridge Hegel command-line oracle and handshake process fixture; Lilly connector tests with a fake host for handoff, guardian-death fencing and re-adoption. No scope, VM namespace or real restart.",
       "status": "partial",
-      "gaps": "The user-SSH journey subtest that restarts lilly-hostd and Lilly under a live session, checks the same bridge process, bytes in both directions, adoption past the 30 s grace and the end of an unrecorded bridge is present but not yet run. While Lilly is down no keeper runs, so a revoked execution's live session can last the downtime plus 30 s (Audi's key revocation is unaffected).",
-      "preferred_gap": "Record a passing user-ssh-journey-fleet run including the detached bridge restart subtest.",
+      "gaps": "Editor and nested HTTPS connections still use op 13 and end on a hostd or Lilly restart. While Lilly is down no keeper runs, so a revoked execution's live session can last the downtime plus 30 s (Audi's key revocation is unaffected). The adoption grace is measured only on the test host.",
+      "preferred_gap": "Measure the adoption grace on a loaded production host and decide whether editor and nested HTTPS should leave op 13.",
       "evidence": [
         {
           "kind": "property",
@@ -1363,7 +1363,9 @@
           "path": "nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py",
           "assertion": "live guest SSH survives lilly-hostd and Lilly restarts until its bridge is fenced",
           "scope": "Restart lilly-hostd, then Lilly, under a live guest SSH session: the same lilly-ingress-bridge process in its lilly-ingress-<key>.scope, a new hostd, echoed lines both ways, adoption logged and the session alive past the 30 s grace; then remove the record and restart Lilly: the session and scope end, the guest keeps its boot and a new session reconnects.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-17-detached-ingress-bridges.md",
+          "record_assertion": "passed in 64.99 seconds"
         }
       ]
     },

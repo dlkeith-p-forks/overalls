@@ -87,12 +87,25 @@ gap while Lilly is down (finding 3).
   the slice.
 - Machine tests: not run. The coordinator runs `user-ssh-journey-fleet`.
 
+## Machine record (2026-10-17, `user-ssh-journey-fleet`)
+
+`nix build .#checks.x86_64-linux.user-ssh-journey-fleet` passed on the
+native host: 16 subtests in 1140.01 seconds, none failed. The subtest "live
+guest SSH survives lilly-hostd and Lilly restarts until its bridge is fenced"
+passed in 64.99 seconds. Under a live session it saw the same bridge
+process in `lilly_ingress.slice/lilly-ingress-<key>.scope`, a new hostd
+MainPID, echoed lines after both restarts and past the 30-second grace, and
+the adoption event. With the record removed and Lilly restarted, the bridge,
+its scope and the session ended while the guest kept its boot. The first
+attempt hung before reaching any bridge: the fixture's FIFO holder blocked
+on a write-open. The fixture now opens the FIFO read-write after detaching
+stdio.
+
 ## Remaining gaps
 
-- No recorded machine run. Systemd's migration of the bridge from hostd's
-  delegated cgroup into its scope, survival across a real hostd and Lilly
-  restart, the adoption grace on a loaded host and the namespace dial are
-  established only by that run.
+- One recorded machine run covers the scope placement, survival across real
+  hostd and Lilly restarts, the namespace dial and the adoption grace on that
+  test host. The grace on a heavily loaded production host is not measured.
 - Editor and nested HTTPS still use op 13 and end on a hostd or Lilly
   restart; their clients reconnect.
 - If the connector never runs again, bridges persist until Audi closes them

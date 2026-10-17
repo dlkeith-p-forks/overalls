@@ -190,12 +190,11 @@ decisions stand.
 - Machine test: the user-SSH journey subtest "live guest SSH survives
   lilly-hostd and Lilly restarts until its bridge is fenced"
   ([`user-ssh-journey.py`](../../../nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py))
-  is present and has not run yet.
+  passed in a native `user-ssh-journey-fleet` run on 2026-10-17 (64.99 s
+  within 16 passing subtests).
 
-Remaining: no recorded machine run; the scope placement, survival across a
-real `systemctl restart lilly-hostd.service`, systemd's migration of a
-process out of hostd's delegated cgroup into the scope, and the namespace
-dial are proved only by that run. The review is
+Remaining: editor and nested HTTPS still use op 13, and the adoption grace
+is unmeasured on a heavily loaded production host. The review is
 [2026-10-17 detached ingress bridges](../reviews/2026-10-17-detached-ingress-bridges.md).
 
 ## Open questions
