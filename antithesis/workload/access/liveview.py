@@ -39,7 +39,9 @@ class _LivePageParser(HTMLParser):
         fields = dict(attrs)
         if tag == "meta" and fields.get("name") == "csrf-token":
             self.csrf = fields.get("content")
-        if fields.get("data-phx-main") is not None:
+        # Phoenix renders data-phx-main as a bare boolean attribute, which
+        # HTMLParser reports with a None value.
+        if "data-phx-main" in fields:
             self.session = fields.get("data-phx-session")
             self.static = fields.get("data-phx-static")
             self.node_id = fields.get("id")

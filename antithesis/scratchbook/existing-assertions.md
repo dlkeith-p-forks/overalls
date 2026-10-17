@@ -16,18 +16,18 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 
 | File:line | Kind | Literal message | Catalog primary |
 | --- | --- | --- | --- |
-| `antithesis/workload/access/browser.py:286` | `always` | Magic-link preview and pending MFA cannot grant browser work authority | `magic-link-preview-post-mfa-boundary` |
-| `antithesis/workload/access/browser.py:305` | `reachable` | Magic-link CSRF POST created one stored login before MFA | support / startup |
-| `antithesis/workload/access/browser.py:314` | `always` | Replayed magic-link POST creates no second stored browser login | support / startup |
-| `antithesis/workload/access/browser.py:338` | `always` | Magic-link pending MFA login serves ordinary reads on another replica without elevation | support / startup |
-| `antithesis/workload/access/browser.py:348` | `always` | Magic-link pending MFA login cannot change a passkey on another replica before step-up | support / startup |
-| `antithesis/workload/access/browser.py:356` | `reachable` | Same-login WebAuthn verification completed after pending-MFA probes | support / startup |
-| `antithesis/workload/access/browser.py:409` | `reachable` | Remembered cookie exchanged through second Marshall before sign-out | support / startup |
-| `antithesis/workload/access/browser.py:426` | `always` | Revoked remembered cookie cannot mint or use browser authority across Marshall replicas | `remembered-cookie-revocation-cross-replica` |
-| `antithesis/workload/access/browser.py:432` | `reachable` | Copied remembered cookie was refused on second Marshall after sign-out | support / startup |
-| `antithesis/workload/access/browser.py:546` | `reachable` | Authorized Control room set-role committed target and audit before demotion | support / startup |
-| `antithesis/workload/access/browser.py:559` | `always` | Stale Control room tab cannot commit an admin mutation after authority withdrawal | `stale-admin-tab-current-mutation-authority` |
-| `antithesis/workload/access/browser.py:565` | `reachable` | Stale admin LiveView event was processed after committed demotion | support / startup |
+| `antithesis/workload/access/browser.py:288` | `always` | Magic-link preview and pending MFA cannot grant browser work authority | `magic-link-preview-post-mfa-boundary` |
+| `antithesis/workload/access/browser.py:307` | `reachable` | Magic-link CSRF POST created one stored login before MFA | support / startup |
+| `antithesis/workload/access/browser.py:316` | `always` | Replayed magic-link POST creates no second stored browser login | support / startup |
+| `antithesis/workload/access/browser.py:340` | `always` | Magic-link pending MFA login serves ordinary reads on another replica without elevation | support / startup |
+| `antithesis/workload/access/browser.py:350` | `always` | Magic-link pending MFA login cannot change a passkey on another replica before step-up | support / startup |
+| `antithesis/workload/access/browser.py:358` | `reachable` | Same-login WebAuthn verification completed after pending-MFA probes | support / startup |
+| `antithesis/workload/access/browser.py:411` | `reachable` | Remembered cookie exchanged through second Marshall before sign-out | support / startup |
+| `antithesis/workload/access/browser.py:432` | `always` | Revoked remembered cookie cannot mint or use browser authority across Marshall replicas | `remembered-cookie-revocation-cross-replica` |
+| `antithesis/workload/access/browser.py:439` | `reachable` | Copied remembered cookie was refused on second Marshall after sign-out | support / startup |
+| `antithesis/workload/access/browser.py:553` | `reachable` | Authorized Control room set-role committed target and audit before demotion | support / startup |
+| `antithesis/workload/access/browser.py:566` | `always` | Stale Control room tab cannot commit an admin mutation after authority withdrawal | `stale-admin-tab-current-mutation-authority` |
+| `antithesis/workload/access/browser.py:572` | `reachable` | Stale admin LiveView event was processed after committed demotion | support / startup |
 | `antithesis/workload/admission/physical_scenario.py:69` | `always` | marshall placement fits fresh measured physical headroom and all outstanding holds | `marshall-admission-measured-physical-capacity` |
 | `antithesis/workload/admission/physical_scenario.py:74` | `reachable` | Marshall admitted against independently sampled live ZFS capacity | support / startup |
 | `antithesis/workload/admission/scenarios.py:212` | `always` | Marshall acknowledged admission has one joined allocation and dispatch job | `marshall-admission-atomic-allocation` |

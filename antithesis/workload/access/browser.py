@@ -8,6 +8,7 @@ import logging
 import os
 import stat
 import time
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
@@ -57,12 +58,13 @@ def _jwt_jti(token: str) -> str | None:
     return None
 
 
-def _token_path(link: str, expected_origin: str) -> tuple[str, str] | None:
+def _token_path(link: str, marshall_origins: Sequence[str]) -> tuple[str, str] | None:
+    """The delivering Oban node may be either replica, so the link's host may be
+    any configured Marshall origin; the token path is replayed on the requester."""
     parsed = urlparse(link)
-    expected = urlparse(expected_origin)
     if (
         parsed.scheme != "https"
-        or parsed.netloc != expected.netloc
+        or parsed.netloc not in {urlparse(origin).netloc for origin in marshall_origins}
         or not parsed.path.startswith("/magic_link/")
     ):
         return None
@@ -110,7 +112,7 @@ def _request_and_page(
     link = _value(links.wait_link(email, cursor, 30))
     if link is None:
         return None
-    parsed = _token_path(link, origin)
+    parsed = _token_path(link, config.marshall_urls)
     if parsed is None:
         return None
     path, token = parsed
@@ -416,18 +418,23 @@ def run_remembered_revocation(config: Config, links: LinkSource) -> int:
     after_replay = _value(oracle.tokens(account.user_id))
     if replay is None or after_replay is None:
         return 0
-    blocked = (
+    unchanged = after_replay.user == fenced.user and after_replay.remember == fenced.remember
+    redirected = (
         replay.status in (302, 303)
         and replay.location is not None
         and replay.location.startswith("/sign-in")
-        and after_replay.user == fenced.user
-        and after_replay.remember == fenced.remember
     )
+    # A 5xx (B cannot reach PostgreSQL under a partition) is Marshall's
+    # inconclusive refusal (live_user_auth.ex revoked-login-halts-operation
+    # raises on mount when the Repo does not answer): it must commit nothing,
+    # but it cannot redirect.
+    refused = (redirected or replay.status >= 500) and unchanged
     always(
-        blocked,
+        refused,
         "Revoked remembered cookie cannot mint or use browser authority across Marshall replicas",
-        {"fence": "ordinary_sign_out", "replica": "b"},
+        {"fence": "ordinary_sign_out", "replica": "b", "status_class": replay.status // 100},
     )
+    blocked = redirected and unchanged
     if blocked:
         reachable("Copied remembered cookie was refused on second Marshall after sign-out")
     return 0

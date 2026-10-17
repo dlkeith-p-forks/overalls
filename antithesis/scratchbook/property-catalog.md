@@ -1837,7 +1837,7 @@ These properties test browser sign-in and current administrative authority acros
 
 **Proof boundary:** Draft selection: `access`. real-hosted-browser-identity-or-DNS-packets; physical guest route separate; independent witness: actual public callback/DNS packet plus consistent PostgreSQL authority rows. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-17 UTC):** Primary `always` message is present at `antithesis/workload/access/browser.py:286`. Marshall HTTPS/SQL token and login receipts after two preview GETs; then, per ADR-0160 (the earlier read-redirect expectation came from superseded ADR-0123/ADR-0131), the pending-MFA login on replica B is served an ordinary `/overview` read without verification or extra login, and a SecurityLive passkey rename on B is refused with no stored effect. Same-login WebAuthn positive is optional; Control room administrator step-up, guest bytes, same-origin failover and hosted execution remain unverified. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-17 UTC):** Primary `always` message is present at `antithesis/workload/access/browser.py:288`. Marshall HTTPS/SQL token and login receipts after two preview GETs; then, per ADR-0160 (the earlier read-redirect expectation came from superseded ADR-0123/ADR-0131), the pending-MFA login on replica B is served an ordinary `/overview` read without verification or extra login, and a SecurityLive passkey rename on B is refused with no stored effect. Same-login WebAuthn positive is optional; Control room administrator step-up, guest bytes, same-origin failover and hosted execution remain unverified. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -1859,7 +1859,7 @@ These properties test browser sign-in and current administrative authority acros
 
 **Proof boundary:** Draft selection: `access`. real-hosted-browser-identity-or-DNS-packets; physical guest route separate; independent witness: actual public callback/DNS packet plus consistent PostgreSQL authority rows. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/access/browser.py:426`. Replica B exchange, replica A sign-out, replica B refusal, and exact SQL JTI sets; no guest byte witness, ordinary same-origin failover, or hosted execution. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/access/browser.py:432`. Replica B exchange, replica A sign-out, replica B refusal, and exact SQL JTI sets; no guest byte witness, ordinary same-origin failover, or hosted execution. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -1881,7 +1881,7 @@ These properties test browser sign-in and current administrative authority acros
 
 **Proof boundary:** Draft selection: `access`. real-hosted-browser-identity-or-DNS-packets; physical guest route separate; independent witness: actual public callback/DNS packet plus consistent PostgreSQL authority rows. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/access/browser.py:559`. Replica B mounted LiveView, real pre-fence set-role target/audit pair, closed Ash demotion, and processed post-fence event with unchanged inventory; hosted execution and guest effects remain unverified. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/access/browser.py:566`. Replica B mounted LiveView, real pre-fence set-role target/audit pair, closed Ash demotion, and processed post-fence event with unchanged inventory; hosted execution and guest effects remain unverified. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 

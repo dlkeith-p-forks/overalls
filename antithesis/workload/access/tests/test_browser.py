@@ -10,7 +10,7 @@ import subprocess
 import unittest
 from urllib.request import Request
 
-from access.browser import pending_mutation_refused, pending_read_ok
+from access.browser import _token_path, pending_mutation_refused, pending_read_ok
 from access.http import _pinned, hidden_form
 from access.liveview import parse_live_page
 from access.mail import _message_link
@@ -109,7 +109,7 @@ class BrowserHelpersTest(unittest.TestCase):
     def test_csrf_form_and_liveview_session_are_tied_to_rendered_page(self) -> None:
         page = b"""
         <meta name="csrf-token" content="csrf123">
-        <div id="phx-main" data-phx-main="true" data-phx-session="signed-session"
+        <div id="phx-main" data-phx-main data-phx-session="signed-session"
              data-phx-static="static-session"></div>
         <form action="/auth/user/magic_link" method="post">
           <input type="hidden" name="_csrf_token" value="csrf456">
@@ -163,6 +163,18 @@ class BrowserHelpersTest(unittest.TestCase):
         self.assertEqual(sent(copied, "https://marshall-b/overview"), "_marshall_key=session")
         self.assertEqual(sent(copied, "https://marshall-a/overview"), "")
         self.assertEqual(original.domain, "marshall-a.local")
+
+    def test_magic_link_from_either_replica_is_accepted(self) -> None:
+        origins = ("https://marshall-a", "https://marshall-b")
+        self.assertEqual(
+            _token_path("https://marshall-b/magic_link/tok", origins), ("/magic_link/tok", "tok")
+        )
+        self.assertEqual(
+            _token_path("https://marshall-a/magic_link/tok", origins), ("/magic_link/tok", "tok")
+        )
+        self.assertIsNone(_token_path("https://elsewhere/magic_link/tok", origins))
+        self.assertIsNone(_token_path("http://marshall-a/magic_link/tok", origins))
+        self.assertIsNone(_token_path("https://marshall-a/magic_link/tok?x=1", origins))
 
     def test_pending_mfa_read_follows_adr_0160_signed_in_boundary(self) -> None:
         self.assertTrue(pending_read_ok(200, True, False, True))
