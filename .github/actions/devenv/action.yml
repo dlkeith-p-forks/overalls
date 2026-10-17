@@ -11,9 +11,12 @@ inputs:
     required: false
     default: ""
   system-features:
-    description: Nix system features this runner provides (machine tests add kvm and nested-kvm).
+    description: >-
+      Nix system features this runner provides. Every privileged Namespace
+      runner exposes /dev/kvm, which evaluation needs for import-from-derivation
+      image builds (vmTools); machine tests add nested-kvm.
     required: false
-    default: nixos-test benchmark big-parallel
+    default: nixos-test benchmark big-parallel kvm
   install-devenv:
     description: Whether to install the devenv CLI.
     required: false
@@ -91,7 +94,11 @@ runs:
         rm -f "$conf"
         # A socket restored from the cache volume would end the wait early.
         sudo rm -f /nix/var/nix/daemon-socket/socket
-        sudo sh -c 'nohup /nix/var/nix/profiles/default/bin/nix-daemon > /tmp/nix-daemon.log 2>&1 &'
+        # NixOS's nix-daemon unit sets LimitNOFILE=1048576. VM image builds
+        # need it: virtiofsd holds a descriptor per inode when it cannot
+        # open file handles, and copying a system closure exceeds the
+        # container's default limit (the build VM panics with ENFILE).
+        sudo sh -c 'ulimit -n 1048576 && nohup /nix/var/nix/profiles/default/bin/nix-daemon > /tmp/nix-daemon.log 2>&1 &'
         for _ in $(seq 1 30); do
           [ -S /nix/var/nix/daemon-socket/socket ] && break
           sleep 1
