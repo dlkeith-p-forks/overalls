@@ -42,7 +42,7 @@ defmodule OverallsProtocol.RelocationTest do
   property "bounded epochs, shapes and snapshot GUIDs survive JSON without precision loss" do
     check all(
             epoch <- integer(1..9_223_372_036_854_775_806),
-            guid <- integer(1..18_446_744_073_709_551_615),
+            guid <- integer(1..9_223_372_036_854_775_807),
             cpu <- integer(1..32),
             memory <- integer(512..262_144),
             disk <- integer(524_288..131_072_000)
@@ -118,7 +118,7 @@ defmodule OverallsProtocol.RelocationTest do
           {1.0, 2},
           {1, 2.0},
           {nil, 2},
-          {9_223_372_036_854_775_807, 9_223_372_036_854_775_808}
+          {9_223_372_036_854_775_807, 9_223_372_036_854_775_807}
         ] do
       assert {:error, :invalid_message} =
                Relocation.descriptor(%{

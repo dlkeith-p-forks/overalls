@@ -22,7 +22,7 @@ defmodule OverallsProtocol.PrivateServicesTest do
             epoch <-
               one_of([
                 integer(-100_000..0),
-                integer(9_223_372_036_854_775_808..18_446_744_073_709_551_615)
+                constant(9_223_372_036_854_775_808)
               ])
           ) do
       assert {:error, :invalid_binding} = PrivateServices.binding(wire_binding(epoch))

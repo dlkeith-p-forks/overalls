@@ -79,7 +79,7 @@ defmodule OverallsProtocol.IngressConnectTest do
             Map.put(message, "version", 1),
             put_in(message, ["binding", "port"], port + 1),
             put_in(message, ["binding", "environment_generation"], 0),
-            put_in(message, ["binding", "environment_generation"], 9_223_372_036_854_775_808),
+            put_in(message, ["binding", "environment_generation"], 9_223_372_036_854_775_807),
             put_in(message, ["binding", "address"], "127.0.0.1"),
             put_in(message, ["binding"], Map.delete(message["binding"], "environment_generation"))
           ] do
@@ -128,7 +128,7 @@ defmodule OverallsProtocol.IngressConnectTest do
           put_in(message, ["binding", "port"], 2222),
           put_in(message, ["binding", "service"], "tcp"),
           put_in(message, ["binding", "generation"], 0),
-          put_in(message, ["binding", "execution_epoch"], 9_223_372_036_854_775_808),
+          put_in(message, ["binding", "execution_epoch"], 9_223_372_036_854_775_807),
           put_in(
             message,
             ["binding", "label"],

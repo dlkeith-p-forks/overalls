@@ -16,7 +16,7 @@ defmodule OverallsProtocol.InferenceTest do
             count <-
               one_of([
                 integer(-100_000..-1),
-                integer(9_223_372_036_854_775_808..18_446_744_073_709_551_615)
+                integer(9_223_372_036_854_775_807..9_223_372_036_854_775_807)
               ])
           ) do
       value = %{

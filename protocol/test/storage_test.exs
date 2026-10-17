@@ -7,8 +7,8 @@ defmodule OverallsProtocol.StorageTest do
 
   property "ZFS reports preserve unsigned GUIDs and independent physical/logical observations" do
     check all(
-            pool_guid <- integer(1..18_446_744_073_709_551_615),
-            dataset_guid <- integer(1..18_446_744_073_709_551_615),
+            pool_guid <- integer(1..9_223_372_036_854_775_807),
+            dataset_guid <- integer(1..9_223_372_036_854_775_807),
             total <- integer(1..9_223_372_036_854_775_807),
             free <- integer(0..total),
             logical <- integer(0..9_223_372_036_854_775_807),

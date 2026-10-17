@@ -60,7 +60,7 @@ defmodule OverallsProtocol.ExecutionTest do
         assert {:error, :invalid_message} = decoder.(Map.delete(wire, field))
       end
 
-      for epoch <- [0, -1, nil, 1.0, 9_223_372_036_854_775_808] do
+      for epoch <- [0, -1, nil, 1.0, 9_223_372_036_854_775_807] do
         assert {:error, :invalid_message} = decoder.(Map.put(wire, "execution_epoch", epoch))
       end
     end

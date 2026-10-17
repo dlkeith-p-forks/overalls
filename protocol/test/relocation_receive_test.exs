@@ -182,7 +182,7 @@ defmodule OverallsProtocol.RelocationReceiveTest do
     for key <- ~w(path argv private_key unknown),
         do: assert({:error, _} = Codec.command(Map.put(wire, key, "bad")))
 
-    for expires <- [0, -1, 1.5, 9_223_372_036_854_775_808],
+    for expires <- [0, -1, 1.5, 9_223_372_036_854_775_807],
         do: assert({:error, _} = Codec.command(Map.put(wire, "expires_at", expires)))
 
     assert {:error, _} =

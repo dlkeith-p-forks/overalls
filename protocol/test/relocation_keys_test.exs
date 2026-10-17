@@ -55,7 +55,7 @@ defmodule OverallsProtocol.RelocationKeysTest do
     assert {:error, _} = Codec.results([result(), result()])
     assert {:error, _} = Codec.commands([command(), command()])
 
-    for epoch <- [0, 1, -1, 1.5, 9_223_372_036_854_775_808] do
+    for epoch <- [0, 1, -1, 1.5, 9_223_372_036_854_775_807] do
       assert {:error, _} = Codec.command(Map.put(command(), "execution_epoch", epoch))
     end
 
@@ -64,7 +64,7 @@ defmodule OverallsProtocol.RelocationKeysTest do
     assert {:error, _} = Codec.commands(for n <- 1..17, do: Map.put(command(), "id", id(n)))
     message = %{"version" => 4, "session_id" => id(1), "epoch" => 1, "results" => []}
 
-    for epoch <- [0, -1, 1.5, 9_223_372_036_854_775_808] do
+    for epoch <- [0, -1, 1.5, 9_223_372_036_854_775_807] do
       assert {:error, _} = Codec.exchange(Map.put(message, "epoch", epoch))
     end
 

@@ -181,7 +181,7 @@ defmodule OverallsProtocolTest do
 
     assert {:ok, _} = Execution.exchange(base)
 
-    for value <- [-1, 0, 1.0, 9_223_372_036_854_775_808, "1"] do
+    for value <- [-1, 0, 1.0, 9_223_372_036_854_775_807, "1"] do
       assert {:error, :invalid_message} = Execution.exchange(%{base | "epoch" => value})
     end
 

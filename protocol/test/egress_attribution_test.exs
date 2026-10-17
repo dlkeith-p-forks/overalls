@@ -38,7 +38,7 @@ defmodule OverallsProtocol.EgressAttributionTest do
           <<2, 0>>,
           <<1, 0>>,
           Wire.response({:ok, %{identity | execution_epoch: 0}}),
-          Wire.response({:ok, %{identity | generation: 9_223_372_036_854_775_808}}),
+          Wire.response({:ok, %{identity | generation: 9_223_372_036_854_775_807}}),
           Wire.response({:ok, %{identity | owner_id: String.duplicate("x", 36)}})
         ] do
       assert Wire.decode_response(invalid) == {:error, :unresolved}

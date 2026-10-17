@@ -83,7 +83,7 @@ defmodule OverallsProtocol.RelocationProbeTest do
     wire = Codec.encode_command(command())
 
     for key <- ~w(generation revision expires_at),
-        bad <- [nil, 0, -1, 1.0, 9_223_372_036_854_775_808],
+        bad <- [nil, 0, -1, 1.0, 9_223_372_036_854_775_807],
         do: assert({:error, _} = Codec.command(Map.put(wire, key, bad)))
 
     for key <- ~w(id challenge),

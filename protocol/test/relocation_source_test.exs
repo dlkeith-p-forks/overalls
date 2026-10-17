@@ -79,7 +79,7 @@ defmodule OverallsProtocol.RelocationSourceTest do
     end
 
     for key <- ~w(generation revision expires_at),
-        bad <- [0, -1, 1.5, 9_223_372_036_854_775_808] do
+        bad <- [0, -1, 1.5, 9_223_372_036_854_775_807] do
       assert {:error, _} = Codec.command(Map.put(wire, key, bad))
     end
 

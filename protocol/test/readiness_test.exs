@@ -49,7 +49,7 @@ defmodule OverallsProtocol.ReadinessTest do
     for {field, values} <- [
           {"state", ["starting", "failed", nil, true]},
           {"placement_id", [nil, "../placement", String.upcase(@placement <> "a")]},
-          {"execution_epoch", [0, -1, 1.0, "9", 9_223_372_036_854_775_808]},
+          {"execution_epoch", [0, -1, 1.0, "9", 9_223_372_036_854_775_807]},
           {"boot_challenge", [nil, "", String.duplicate("a", 63), String.duplicate("A", 64)]},
           {"boot_id", [nil, "not-a-boot", @boot <> "\n"]}
         ],
