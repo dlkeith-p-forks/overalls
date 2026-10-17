@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.SSHOnboardingTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.SSHOnboarding, as: Help
 
   property "terminal conversion is idempotent and preserves non-PTY bytes" do

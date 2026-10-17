@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.InceptionExchangeTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.InceptionExchange
   @id "11111111-1111-4111-8111-111111111111"
   @boot %{placement_id: @id, execution_epoch: 1, boot_challenge: String.duplicate("a", 64)}

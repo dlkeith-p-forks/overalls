@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.IngressConnectTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.IngressConnect, as: Wire
   @id "11111111-1111-4111-8111-111111111111"
   defp connector_binding do

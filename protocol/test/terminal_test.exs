@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.TerminalTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.Terminal
 
   @id "8f14e45f-ceea-4267-af66-d3f99b7f0b6f"

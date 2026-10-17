@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.IntegrationTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.Integration
 
   property "names accept only closed lowercase labels" do

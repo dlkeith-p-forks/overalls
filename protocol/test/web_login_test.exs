@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.WebLoginTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.WebLogin
 
   property "redemption fields require independent canonical bearer purposes" do

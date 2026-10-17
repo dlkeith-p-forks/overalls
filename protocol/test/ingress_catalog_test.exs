@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.IngressCatalogTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.IngressCatalog
   @id "00000000-0000-4000-8000-000000000001"
 

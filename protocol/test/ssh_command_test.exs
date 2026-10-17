@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.SSHCommandTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.SSHCommand
 
   property "advertised peer flag parses as a boolean regardless of option ordering" do

@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.MachineNameTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.{MachineName, SSHCommand}
 
   property "generated names are valid, deterministic and preserve UUID uniqueness" do

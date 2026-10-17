@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.ImageManifestTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.ImageManifest
 
   defp manifest do

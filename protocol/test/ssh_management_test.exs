@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.SSHManagementTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   test "command envelopes preserve the closed grammar and reject injected authority" do
     {:ok, command} = OverallsProtocol.SSHCommand.parse("new --name example --request-id retry-1")

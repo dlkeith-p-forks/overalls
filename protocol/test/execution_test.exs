@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.ExecutionTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.{Execution, VMShape}
   @id "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1"
 
