@@ -120,3 +120,9 @@ for the component being changed.
   native-language annotation conventions and discovery limits. All three
   `mix precommit` gates include `mix contracts.check`; syntax success is not
   semantic verification.
+
+## Covenant contract verification
+
+Use the [Covenant skill](.agents/skills/covenant/SKILL.md) when adding or maintaining Covenant contracts in any Elixir application. Keep Covenant development/test-only (`only: [:dev, :test]`, `runtime: false`) and preserve existing test-helper behavior while including `Covenant.Formatter`. Contract obligations belong under each application's `contracts/` tree and tagged executable tests under `test/contract/`, with stable IDs `<mix_app>.<component>.I<n>`. Run static and runtime Covenant checks plus the application's normal precommit gate; protocol changes also require Marshall and Lilly consumer checks.
+
+Covenant evidence is limited to behavior observable in the BEAM test VM. Do not use it to claim native Rust/KVM, physical isolation, multi-host recovery, browser, or production deployment guarantees. Preserve the existing `CONTRACTS`, ADR, HLDD, native, machine, and integration evidence, and update architecture/HLDD records when verification scope changes.
