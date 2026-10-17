@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** malformed certificates, keys, roots, or hostnames return a fixed invalid result without raising.
 - **kind:** security
 - **status:** active
+
+### audi.ssh_tls.I4 — Stream guards fence owned resources
+- **scope:** `Audi.Authority.StreamGuard`
+- **must:** Revocation, expiry, guard failure, or an authenticated binding change MUST kill the dedicated owner process and close its resources; stale renewals MUST leave the current lease unchanged.
+- **kind:** security
+- **status:** active

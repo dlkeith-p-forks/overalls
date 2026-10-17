@@ -38,4 +38,39 @@ defmodule EnricoMirrorContractTest do
     refute Enrico.Git.valid_source?("", "repo")
   end
 
+  @tag obligation: "enrico.mirror.I4"
+  test "manager rejects malformed refresh requests before admission" do
+    config = %Enrico.Config{
+      bind: {127, 0, 0, 1},
+      port: 1,
+      state_dir: System.tmp_dir!(),
+      token: String.duplicate("t", 32),
+      certificate: "/tmp/cert",
+      key: "/tmp/key",
+      status_socket: "/tmp/status.sock"
+    }
+
+    {:ok, state} = Enrico.Manager.init(config)
+
+    assert {:reply, {:error, :invalid_request}, ^state} =
+             Enrico.Manager.handle_call({:refresh, "bad", "bad", "owner", "repo"}, self(), state)
+
+    assert {:reply, {:error, :invalid_request}, ^state} =
+             Enrico.Manager.handle_call(
+               {:refresh, "11111111-1111-4111-8111-111111111111",
+                "22222222-2222-4222-8222-222222222222", "../owner", "repo"},
+               self(),
+               state
+             )
+  end
+
+  @tag obligation: "enrico.mirror.I5"
+  test "configuration rejects non-string bind without raising" do
+    path =
+      Path.join(System.tmp_dir!(), "enrico-invalid-#{System.unique_integer([:positive])}.json")
+
+    File.write!(path, JSON.encode!(%{"bind" => 123}))
+    on_exit(fn -> File.rm(path) end)
+    assert {:error, :invalid_configuration} = Enrico.Config.load(path)
+  end
 end
