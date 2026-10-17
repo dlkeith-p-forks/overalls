@@ -1,9 +1,9 @@
 {
   "apps": {
     "audi": {
-      "active": 8,
+      "active": 10,
       "coverage": 1.0,
-      "covered": 8
+      "covered": 10
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "audi.dns_authority": {
-      "active": 2,
+      "active": 3,
       "app": "audi",
       "coverage": 1.0,
-      "covered": 2,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "audi.dns_authority.I1": {
@@ -37,6 +37,16 @@
           "testable": true,
           "tests": [
             "test wire decoder rejects responses and clamps EDNS"
+          ]
+        },
+        "audi.dns_authority.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test oversized UDP replies truncate and keep unsafe flags clear"
           ]
         }
       }
@@ -81,10 +91,10 @@
       }
     },
     "audi.ssh_tls": {
-      "active": 3,
+      "active": 4,
       "app": "audi",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "audi.ssh_tls.I1": {
@@ -116,6 +126,16 @@
           "tests": [
             "test TLS material validation fails closed for malformed input"
           ]
+        },
+        "audi.ssh_tls.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test stream guard fences the owner on revocation and rejects stale renewal"
+          ]
         }
       }
     },
@@ -130,8 +150,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 8,
+    "active": 10,
     "coverage": 1.0,
-    "covered": 8
+    "covered": 10
   }
 }

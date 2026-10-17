@@ -113,6 +113,10 @@ release and origin. Unsafe HTTP and WebSocket requests require the exact origin;
 same-site sibling origins cannot use the credential. Missing/mismatched capability,
 retired accounts, stale logins, changed execution and expired leases refuse without
 fallback. Generic guest-web visibility or port settings cannot grant editor access.
+An upgraded editor or guest-web WebSocket ends with its lease, either peer's close
+or 60 s without a browser frame; the gateway listener's 5 s HTTP read timeout does
+not apply to it, so a client with a 5 s keepalive is not cut off
+([regression test](repo:audi/test/http_proxy_test.exs)).
 
 The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant's
 source commit permits same-origin framing for the upstream browser extension host.
