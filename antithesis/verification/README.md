@@ -30,16 +30,32 @@ unexercised because the controlled pool has no capacity. Stage the chosen
 command selection immediately before building its workload image.
 
 Staging also writes the hosted Python assertion catalog. The workload image
-copies `selected-test/catalog/` to `/opt/antithesis/catalog`, and that tree
-holds exactly the manifest's runtime dependencies (the traced imports of the
-selected commands and bootstrap, including executed package initializers) as
-one `workload` module. The Antithesis Python instrumentor therefore declares
-every assertion reachable from the selected commands, including ones a run
-never evaluates, and no assertion from an unselected package; a zero-hit
-property in a hosted report is a selected-scope gap, not an artifact of an
-unselected template. Test commands carry no SDK assertions of their own, and
-staging refuses one that does. The catalog has a single top-level entry on
-purpose: the Python SDK registers one instrumentation module per process.
+copies `selected-test/catalog/` to `/opt/overalls-antithesis/catalog/`, and
+that tree holds exactly the manifest's runtime dependencies (the traced
+imports of the selected commands and bootstrap, including executed package
+initializers) as one `workload` module. The Nix rootfs links
+`/opt/antithesis/catalog` to that `workload` tree, so the Antithesis Python
+instrumentor (`antithesis-python-instrumentor 0.1.4`) resolves one cataloged
+root and writes one catalog subdirectory; the SDK (`antithesis` 0.4.0)
+registers exactly one subdirectory per process, choosing the single one when
+only one exists. Every workload process therefore declares every assertion
+reachable from the selected commands, including ones a run never evaluates,
+and no assertion from an unselected package; a zero-hit property in a hosted
+report is a selected-scope gap, not an artifact of an unselected template.
+Test commands carry no SDK assertions of their own, and staging refuses one
+that does. The link matters: when the image held the packages under a real
+`/opt/antithesis/catalog/workload/` directory, the instrumentor cataloged each
+package as a separate root ("Paths found for Antithesis instrumentation"
+listed five package paths), the SDK's importability vote registered only
+`core`'s catalog, and unhit assertions in the other selected packages were
+absent from the report rather than shown as zero-hit
+(run `8e582f650dd7092cda983705eb7b0e05-65-0`). `identity.py freeze` refuses a
+staged workload rootfs whose `/opt/antithesis/catalog` is not that one link.
+On the next run, "Paths found for Antithesis instrumentation" should list the
+single resolved path `/opt/overalls-antithesis/catalog/workload`, "Software
+was instrumented" should name module `workload`, and every selected assertion
+that no command reaches should appear with zero examples (for example the
+`admission-stub` profile's `Always` properties when its commands are blocked).
 
 After the selected Nix contexts are built and staged, stage the commands, build
 Compose images, then materialize the selected graph as a standalone Snouty

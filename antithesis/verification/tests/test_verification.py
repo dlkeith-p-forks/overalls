@@ -32,6 +32,7 @@ from identity import (
     docker_copies,
     selected_stages,
     sha256,
+    verify_catalog_link,
     verify_current_context,
     verify_image_contexts,
     verify_image_copies,
@@ -204,8 +205,16 @@ class VerificationTests(unittest.TestCase):
             copies["workload"],
         )
         # The selection-scoped catalog is a direct COPY, so its lineage is
-        # checked like every other workload input.
+        # checked like every other workload input. It lands beside the
+        # workload source; the rootfs link /opt/antithesis/catalog resolves to
+        # its single ``workload`` module tree.
         self.assertIn(
+            CopyInput(
+                "antithesis/build/selected-test/catalog/", "/opt/overalls-antithesis/catalog/", None
+            ),
+            copies["workload"],
+        )
+        self.assertNotIn(
             CopyInput("antithesis/build/selected-test/catalog/", "/opt/antithesis/catalog/", None),
             copies["workload"],
         )
@@ -692,6 +701,42 @@ class VerificationTests(unittest.TestCase):
             with self.assertRaisesRegex(EvidenceError, "exactly one workload module tree"):
                 verify_staged_catalog(staged_root, data)
             (replica / "catalog/second").rmdir()
+            # The manifest binds both the copied tree and the rootfs link the
+            # instrumentor resolves; a drifted path in either fails closed.
+            self.assertEqual(
+                string(field(data, "image_catalog_root"), "catalog root"),
+                "/opt/overalls-antithesis/catalog/workload",
+            )
+            self.assertEqual(
+                string(field(data, "image_catalog_link"), "catalog link"),
+                "/opt/antithesis/catalog",
+            )
+            drifted = dict(data)
+            drifted["image_catalog_link"] = "/opt/antithesis/catalog/workload"
+            with self.assertRaisesRegex(EvidenceError, "unexpected image catalog link"):
+                verify_staged_catalog(staged_root, drifted)
+            drifted = dict(data)
+            drifted["image_catalog_root"] = "/opt/antithesis/catalog/workload"
+            with self.assertRaisesRegex(EvidenceError, "unexpected image catalog root"):
+                verify_staged_catalog(staged_root, drifted)
+            # The staged workload rootfs must present /opt/antithesis/catalog
+            # as one link to the copied tree: a real directory of packages is
+            # split into one instrumentor root per package and the SDK then
+            # registers only one package's catalog per process.
+            link = staged_root / "antithesis/build/contexts/workload/rootfs/opt/antithesis/catalog"
+            with self.assertRaisesRegex(EvidenceError, "lacks the single-root catalog link"):
+                verify_catalog_link(staged_root)
+            link.parent.mkdir(parents=True)
+            (link / "workload").mkdir(parents=True)
+            with self.assertRaisesRegex(EvidenceError, "lacks the single-root catalog link"):
+                verify_catalog_link(staged_root)
+            shutil.rmtree(link)
+            link.symlink_to("/opt/overalls-antithesis/catalog")
+            with self.assertRaisesRegex(EvidenceError, "unexpected tree"):
+                verify_catalog_link(staged_root)
+            link.unlink()
+            link.symlink_to("/opt/overalls-antithesis/catalog/workload")
+            verify_catalog_link(staged_root)
             command = replica / "v1/control/serial_driver_smoke.py"
             command.write_text("stale command", encoding="utf-8")
             with self.assertRaises(EvidenceError):

@@ -298,7 +298,16 @@ prove hosted ingestion. BEAM fallback assertions provide no BEAM branch
 coverage. The harness-only Marshall hint relay `Reachable` marks an observed
 notifier recovery from `:isolated`; it is a search anchor, not evidence that a
 lost hint was reconciled or a committed host command progressed. Python catalog scanning provides no source coverage; the C helper is
-assertion transport, not SUT instrumentation. Native Rust coverage remains
+assertion transport, not SUT instrumentation. The workload image presents the
+selection-scoped Python catalog as one `/opt/antithesis/catalog` link to a
+single `workload` module tree, so the hosted instrumentor catalogs one root and
+every workload process registers every selected assertion; a selected
+assertion no command reaches then appears as a zero-example property. A run
+whose "Paths found for Antithesis instrumentation" lists more than one Python
+path has split the catalog per package: the Python SDK registers one root's
+catalog per process, and unreached assertions in the other packages are
+absent from the report rather than passing (admission-stub run
+`8e582f650dd7092cda983705eb7b0e05-65-0`). Native Rust coverage remains
 pending. A local control-core setup completed on diagnostic4 image bytes, but
 the selected manifest's four stale dependency hashes prevent a frozen local
 or remote baseline claim for that image.

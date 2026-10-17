@@ -109,10 +109,17 @@ STAGES = frozenset(
     }
 )
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
-# The staged catalog is one Python module tree; the workload Dockerfile copies
-# ``selected-test/catalog/`` to ``/opt/antithesis/catalog/``.
+# The staged catalog is one Python module tree. The workload Dockerfile copies
+# ``selected-test/catalog/`` to ``/opt/overalls-antithesis/catalog/`` and the
+# Nix rootfs links ``/opt/antithesis/catalog`` to that tree's ``workload``
+# module. The hosted Python instrumentor catalogs each entry of
+# ``/opt/antithesis/catalog`` (or its resolved link target) as one root with
+# its own catalog subdirectory, and the Python SDK registers exactly one
+# subdirectory per process, so one resolved root is what declares every
+# selected assertion in every workload process.
 STAGED_CATALOG = "catalog/workload"
-IMAGE_CATALOG_ROOT = "/opt/antithesis/catalog/workload"
+IMAGE_CATALOG_ROOT = "/opt/overalls-antithesis/catalog/workload"
+IMAGE_CATALOG_LINK = "/opt/antithesis/catalog"
 STORE = re.compile(r"^/nix/store/[a-z0-9]{32}-[^\s]+$")
 RUNTIME_IMAGE_PATHS = frozenset(
     {
@@ -705,6 +712,8 @@ def verify_staged_catalog(root: Path, expected: dict[str, Json]) -> None:
     catalog = root / "antithesis/build/selected-test" / STAGED_CATALOG
     if field(expected, "image_catalog_root") != IMAGE_CATALOG_ROOT:
         raise EvidenceError("selected manifest names an unexpected image catalog root")
+    if field(expected, "image_catalog_link") != IMAGE_CATALOG_LINK:
+        raise EvidenceError("selected manifest names an unexpected image catalog link")
     expected_files: set[str] = set()
     for value in arr(field(expected, "runtime_dependencies"), "runtime dependencies"):
         record = obj(value, "runtime dependency")
@@ -728,6 +737,21 @@ def verify_staged_catalog(root: Path, expected: dict[str, Json]) -> None:
     }
     if actual_files != expected_files:
         raise EvidenceError("staged catalog contains extra or missing modules")
+
+
+def verify_catalog_link(root: Path) -> None:
+    """@cc [owner:ghuntley,label:verification] single-root-catalog-link
+    The staged workload rootfs MUST expose ``/opt/antithesis/catalog`` as one
+    symlink whose target is the copied selection-scoped ``workload`` module
+    tree, so the hosted instrumentor resolves a single cataloged root and every
+    workload process registers that root's catalog. A missing path, a real
+    directory or a link with another target MUST prevent an identity freeze.
+    """
+    link = root / "antithesis/build/contexts/workload/rootfs" / IMAGE_CATALOG_LINK.lstrip("/")
+    if not link.is_symlink():
+        raise EvidenceError("staged workload rootfs lacks the single-root catalog link")
+    if os.readlink(link) != IMAGE_CATALOG_ROOT:
+        raise EvidenceError("staged workload catalog link targets an unexpected tree")
 
 
 def verify_image_selection(
@@ -920,6 +944,7 @@ def freeze(
     )
     context = [context_record(root, stage) for stage in stages]
     verify_staged_catalog(root, selected_manifest)
+    verify_catalog_link(root)
     image_data = images(root, stages, engine)
     verify_image_contexts(root, engine, context, image_data)
     verify_image_copies(root, engine, stages, image_data)

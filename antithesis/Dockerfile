@@ -89,7 +89,7 @@ COPY antithesis/build/contexts/workload/rootfs/ /
 COPY antithesis/workload/ /opt/overalls-antithesis/workload/
 COPY antithesis/control_peer/ /opt/overalls-antithesis/control-peer/
 COPY --chmod=0755 antithesis/build/selected-test/v1/ /opt/antithesis/test/v1/
-COPY antithesis/build/selected-test/catalog/ /opt/antithesis/catalog/
+COPY antithesis/build/selected-test/catalog/ /opt/overalls-antithesis/catalog/
 COPY antithesis/build/selected-test/command-manifest.json /opt/overalls-antithesis/command-manifest.json
 ENV PATH=/opt/overalls/python/bin:/opt/overalls/control-peer-tools/bin:/usr/bin:/bin NO_COLOR=1 SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
     PYTHONPATH=/opt/overalls-antithesis/workload:/opt/overalls/python-deps/lib/python3.13/site-packages \
