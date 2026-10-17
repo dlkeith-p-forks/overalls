@@ -1,5 +1,7 @@
 # Architecture decision records
 
+[ADR-0191](0191-elixir-hegel-property-verification.md) standardizes test-only Hegel property verification in Elixir applications, with deterministic replay, redacted diagnostics, isolated fixtures and explicit limits on BEAM evidence.
+
 [ADR-0189](0189-cachix-watch-store-publishing.md) enables the Cachix watch-store
 agent on Overalls and Dungarees with a host-delivered SOPS token.
 
