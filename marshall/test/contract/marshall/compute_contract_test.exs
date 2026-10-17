@@ -141,9 +141,8 @@ defmodule MarshallComputeContractTest do
   test "inception default shape preserves minimum resources" do
     shape =
       Marshall.Compute.Profiles.default_shape(:inception, %{
-        vcpu: 1,
-        memory_bytes: 1,
-        disk_bytes: 1
+        minimum_memory_bytes: 34_359_738_368,
+        minimum_disk_bytes: 68_719_476_736
       })
 
     assert shape.vcpu >= 16
@@ -152,12 +151,13 @@ defmodule MarshallComputeContractTest do
 
     ordinary =
       Marshall.Compute.Profiles.default_shape(:standard, %{
-        vcpu: 2,
-        memory_bytes: 3,
-        disk_bytes: 4
+        minimum_memory_bytes: 3,
+        minimum_disk_bytes: 4
       })
 
-    assert ordinary == %{vcpu: 2, memory_bytes: 3, disk_bytes: 4}
+    assert ordinary.vcpu == 1
+    assert ordinary.memory_bytes >= 1_048_576
+    assert ordinary.disk_bytes >= 2_147_483_648
   end
 
   @tag obligation: "marshall.compute.I2"

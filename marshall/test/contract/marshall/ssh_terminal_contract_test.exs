@@ -61,6 +61,6 @@ defmodule MarshallSshTerminalContractTest do
              {:error, 404, "not_found"}
 
     assert Marshall.SSH.ControlRequests.classify({:error, :unexpected_secret}) ==
-             {:error, 503, "unavailable"}
+             {:error, 503, "temporarily_unavailable"}
   end
 end
