@@ -25,7 +25,10 @@ RUN apt-get update \
 # Install a single-user Nix profile. The scanner's later layer supplies the
 # package manager, compilers and debugger tools it uses during analysis.
 RUN groupadd --system nixbld \
-    && for builder in $(seq 1 10); do useradd --system --no-create-home --gid nixbld "nixbld${builder}"; done \
+    && for builder in $(seq 1 10); do \
+         useradd --system --no-create-home --gid nixbld "nixbld${builder}"; \
+         usermod --append --groups nixbld "nixbld${builder}"; \
+       done \
     && mkdir -m 0755 /nix \
     && curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install \
     | sh -s -- --no-daemon \
