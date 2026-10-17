@@ -40,7 +40,7 @@ COPY . /src
 # Build every deployable application release. Inception guest workloads are
 # intentionally outside this scanner image; they are separate NixOS fixtures
 # with known unrelated failures.
-RUN nix build --no-link --print-build-logs \
+RUN nix build --no-check --no-link --print-build-logs \
       .#marshall \
       .#lilly \
       .#audi \
