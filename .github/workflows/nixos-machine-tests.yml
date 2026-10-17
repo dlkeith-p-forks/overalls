@@ -1,0 +1,72 @@
+name: "nixos machine tests"
+
+# Fans out one job per NixOS machine test. The matrix is derived by evaluating
+# meta.ci on the flake checks (nix/verification/tests/ci.nix): every check with
+# ci.enable and ci.machine runs here; nothing is listed by hand.
+on:
+  schedule:
+    # Daily at 14:00 UTC
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+    inputs:
+      checks:
+        description: Space-separated check names to run instead of every CI machine test.
+        required: false
+        default: ""
+
+concurrency:
+  group: nixos-machine-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: namespace-profile-cached-amd64-xl
+    timeout-minutes: 60
+    outputs:
+      checks: ${{ steps.select.outputs.checks }}
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          install-devenv: "false"
+      - name: Select machine tests
+        id: select
+        env:
+          REQUESTED: ${{ inputs.checks }}
+        run: |
+          set -euo pipefail
+          all=$(nix eval --json .#checks.x86_64-linux --apply 'cs: builtins.filter (n: cs.${n}.meta.ci.enable && cs.${n}.meta.ci.machine) (builtins.attrNames cs)')
+          if [ -n "${REQUESTED:-}" ]; then
+            checks=$(jq -cn --argjson all "$all" --arg req "$REQUESTED" '$req | split(" ") | map(select(. != "")) as $r | ($r - $all) as $unknown | if ($unknown | length) > 0 then error("not CI machine tests: \($unknown | join(", "))") else $r end')
+          else
+            checks=$all
+          fi
+          echo "Selected $(jq length <<<"$checks") machine tests: $checks"
+          echo "checks=$checks" >> "$GITHUB_OUTPUT"
+
+  machine:
+    needs: discover
+    name: ${{ matrix.check }}
+    runs-on: namespace-profile-cached-amd64-xl
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        check: ${{ fromJSON(needs.discover.outputs.checks) }}
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          install-devenv: "false"
+          system-features: nixos-test benchmark big-parallel kvm nested-kvm
+      - name: Report virtualization
+        run: |
+          ls -l /dev/kvm
+          grep -c -w -E 'vmx|svm' /proc/cpuinfo || echo "no vmx/svm CPU flag exposed"
+      - name: Run ${{ matrix.check }}
+        run: nix build -L --no-link .#checks.x86_64-linux.${{ matrix.check }}

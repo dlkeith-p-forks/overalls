@@ -1,5 +1,6 @@
 [![build and publish: cache](https://github.com/ghuntley/overalls/actions/workflows/publish-cache.yml/badge.svg)](https://github.com/ghuntley/overalls/actions/workflows/publish-cache.yml)
 [![automatic nix upgrades](https://github.com/ghuntley/overalls/actions/workflows/nix-upgrades.yml/badge.svg)](https://github.com/ghuntley/overalls/actions/workflows/nix-upgrades.yml)
+[![nixos machine tests](https://github.com/ghuntley/overalls/actions/workflows/nixos-machine-tests.yml/badge.svg)](https://github.com/ghuntley/overalls/actions/workflows/nixos-machine-tests.yml)
 
 # Overalls
 

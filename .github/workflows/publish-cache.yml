@@ -79,10 +79,12 @@ jobs:
       - name: Verify precommit left no changes
         run: git diff --exit-code
 
-  # Nix flake evaluation plus the non-machine flake checks.
+  # Builds every CI-enabled flake check that is not a NixOS machine test
+  # (meta.ci, nix/verification/tests/ci.nix) and publishes it to Cachix.
+  # Machine tests run in nixos-machine-tests.yml.
   nix:
     runs-on: namespace-profile-cached-amd64-xl
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v9
         with:
@@ -90,15 +92,17 @@ jobs:
       - uses: ./.github/actions/devenv
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: Report KVM availability
+          install-devenv: "false"
+      - name: Select checks
+        id: select
         run: |
-          ls -l /dev/kvm || echo "no /dev/kvm on this runner"
-          cat /sys/module/kvm_intel/parameters/nested /sys/module/kvm_amd/parameters/nested 2>/dev/null || true
-      - name: Evaluate flake
-        run: nix flake check --no-build --keep-going
-      - name: Build static checks
+          checks=$(nix eval --raw .#checks.x86_64-linux --apply 'cs: builtins.concatStringsSep " " (builtins.filter (n: cs.${n}.meta.ci.enable && !cs.${n}.meta.ci.machine) (builtins.attrNames cs))')
+          echo "Selected: $checks"
+          echo "checks=$checks" >> "$GITHUB_OUTPUT"
+      - name: Build checks
+        env:
+          CHECKS: ${{ steps.select.outputs.checks }}
         run: |
-          nix build -L --no-link \
-            .#checks.x86_64-linux.hldd \
-            .#checks.x86_64-linux.conflict-markers \
-            .#checks.x86_64-linux.python-static
+          targets=()
+          for check in $CHECKS; do targets+=(".#checks.x86_64-linux.$check"); done
+          nix build -L --no-link --keep-going "${targets[@]}"

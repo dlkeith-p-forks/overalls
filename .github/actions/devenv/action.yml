@@ -1,5 +1,5 @@
 name: devenv
-description: Mount caches from the Namespace cache volume, install Nix, configure Cachix and install the locked devenv CLI.
+description: Mount caches from the Namespace cache volume, install Nix, configure Cachix and optionally install the locked devenv CLI.
 
 inputs:
   cachix-auth-token:
@@ -10,6 +10,14 @@ inputs:
     description: Extra workspace-relative or absolute paths to keep on the cache volume.
     required: false
     default: ""
+  system-features:
+    description: Nix system features this runner provides (machine tests add kvm and nested-kvm).
+    required: false
+    default: nixos-test benchmark big-parallel
+  install-devenv:
+    description: Whether to install the devenv CLI.
+    required: false
+    default: "true"
 
 runs:
   using: composite
@@ -32,7 +40,7 @@ runs:
       with:
         extra_nix_config: |
           access-tokens = github.com=${{ github.token }}
-          system-features = nixos-test benchmark big-parallel
+          system-features = ${{ inputs.system-features }}
           max-jobs = auto
           cores = 0
 
@@ -50,6 +58,7 @@ runs:
     # Install the CLI from the devenv revision pinned in devenv.lock so it
     # matches the modules it evaluates; devenv.cachix.org serves the build.
     - name: Install devenv
+      if: inputs.install-devenv == 'true'
       shell: bash
       run: |
         rev=$(jq -r '.nodes.devenv.locked.rev' devenv.lock)

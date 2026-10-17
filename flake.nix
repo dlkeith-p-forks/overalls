@@ -159,7 +159,7 @@
           && host.git.knownHosts != "" && nixpkgs.lib.any (document: document.name == "${name}-git") host.credentials) inventory.hosts)
         // nixpkgs.lib.mapAttrs' (name: _: nixpkgs.lib.nameValuePair "${name}-base" (hostSystem name false)) inventory.hosts;
 
-      checks.${system} = (import ./nix/verification/tests/catalog.nix {
+      checks.${system} = import ./nix/verification/tests/ci.nix { inherit (pkgs) lib; checks = (import ./nix/verification/tests/catalog.nix {
         buildPkgs = pkgs;
         testPkgs = nixpkgs.legacyPackages.${system};
         inherit nixpkgs;
@@ -206,6 +206,6 @@
         overalls-install-ps1 = import ./nix/verification/tests/overalls-install-ps1.nix { inherit pkgs; };
         lyra = built.lyra.tests;
         marvin = built.marvin.tests;
-      };
+      }; };
     };
 }
