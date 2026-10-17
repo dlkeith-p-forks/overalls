@@ -16,7 +16,10 @@ class MachineProcess(Protocol):
 
 
 class MachineLike(Protocol):
-    process: MachineProcess
+    # Read-only, so the driver's `subprocess.Popen | None` attribute satisfies
+    # it; the NixOS test driver leaves it None until the machine starts.
+    @property
+    def process(self) -> MachineProcess | None: ...
 
     def succeed(self, *commands: str, timeout: int | None = None) -> str: ...
 
@@ -32,10 +35,10 @@ key.chmod(0o600)
 tarball = str(next(pathlib.Path(kexec_image).glob("*.tar.gz")))
 
 
-def call(args: Sequence[str], **kwargs: object) -> str:
+def call(args: Sequence[str], input: str | None = None) -> str:
     try:
         return subprocess.run(
-            args, check=True, capture_output=True, text=True, timeout=1200, **kwargs
+            args, check=True, capture_output=True, text=True, timeout=1200, input=input
         ).stdout.strip()
     except subprocess.CalledProcessError as error:
         print(error.stderr[-8000:])
@@ -287,6 +290,7 @@ for source in sources:
             ],
             "root",
         )
+        assert vm.process is not None
         vm.process.wait(timeout=120)
         vm.wait_for_shutdown()
         known.write_text(f"[127.0.0.1]:{port} {installed_key}\n")
@@ -307,5 +311,6 @@ for source in sources:
             # The process wait below must still prove that poweroff completed.
             if error.returncode != 255:
                 raise
+        assert installed.process is not None
         installed.process.wait(timeout=120)
         installed.wait_for_shutdown()
