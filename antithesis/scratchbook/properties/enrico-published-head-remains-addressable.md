@@ -37,4 +37,4 @@ The fixture records A's SHA and blob hash before refresh. Independent PostgreSQL
 
 ## Authored assertion snapshot
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:138`. Fixed native Git origin/blob plus Marshall worker and SQL head/audit; hosted origin/worker campaign unexecuted. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:143`. Fixed native Git origin/blob plus Marshall worker and SQL head/audit; hosted origin/worker campaign unexecuted. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.

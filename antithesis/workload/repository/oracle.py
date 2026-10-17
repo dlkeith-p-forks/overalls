@@ -1,5 +1,6 @@
 """Independent SQL and fixed native Git observations for Enrico properties."""
 
+import logging
 import os
 import re
 import subprocess
@@ -10,7 +11,10 @@ from uuid import UUID
 from core.outcome import Observation, State
 from core.sql import SqlOracle
 
+LOG = logging.getLogger(__name__)
 SHA = re.compile(r"[0-9a-f]{40,64}\Z")
+# The workload image links Git here; it is not on PATH (run 30a420d501d5d6d22527e679a7f00005-65-0).
+GIT = Path("/opt/overalls/git/bin/git")
 
 
 @dataclass(frozen=True)
@@ -72,7 +76,7 @@ class RepositoryOracle:
         environment.update({"GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": "/dev/null"})
         try:
             healthy = subprocess.run(
-                ["git", f"--git-dir={root}", "rev-parse", "--is-bare-repository"],
+                [str(GIT), f"--git-dir={root}", "rev-parse", "--is-bare-repository"],
                 capture_output=True,
                 check=False,
                 timeout=5,
@@ -81,13 +85,14 @@ class RepositoryOracle:
             if healthy.returncode != 0 or healthy.stdout.strip() != b"true":
                 return Observation.unavailable()
             result = subprocess.run(
-                ["git", f"--git-dir={root}", "cat-file", "blob", f"{head}:README.md"],
+                [str(GIT), f"--git-dir={root}", "cat-file", "blob", f"{head}:README.md"],
                 capture_output=True,
                 check=False,
                 timeout=5,
                 env=environment,
             )
-        except (OSError, subprocess.TimeoutExpired):
+        except (OSError, subprocess.TimeoutExpired) as error:
+            LOG.info("Enrico native Git read unavailable: %s", type(error).__name__)
             return Observation.unavailable()
         if result.returncode != 0:
             return Observation.refused(404)

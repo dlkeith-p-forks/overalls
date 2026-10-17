@@ -42,4 +42,4 @@ Open question: Can the 1,025-receipt boundary be exercised in a dedicated native
 
 ## Authored assertion snapshot
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:213`. Direct Enrico native Git receipt/origin journal, including separate 1025-attempt cap; hosted campaign unexecuted. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:220`. Direct Enrico native Git receipt/origin journal, including separate 1025-attempt cap; hosted campaign unexecuted. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.

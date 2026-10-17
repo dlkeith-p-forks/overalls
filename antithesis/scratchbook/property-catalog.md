@@ -587,7 +587,7 @@ These properties exercise the external effects and caches boundaries and their f
 
 **Proof boundary:** Draft selection: `repository`. real-hosted-git-and-native-helper; independent witness: fixed-origin Git request log, bare mirror SHA/blob and original flock inode. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:213`. Direct Enrico native Git receipt/origin journal, including separate 1025-attempt cap; hosted campaign unexecuted. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:220`. Direct Enrico native Git receipt/origin journal, including separate 1025-attempt cap; hosted campaign unexecuted. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R8`: Keep exact production-capacity saturation in a measured campaign. Use lower-cost bounded replay or refusal histories for routine search; do not claim the full 4,096-worker or 1,025-receipt cap without reaching it. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -609,7 +609,7 @@ These properties exercise the external effects and caches boundaries and their f
 
 **Proof boundary:** Draft selection: `repository`. real-hosted-git-and-native-helper; independent witness: fixed-origin Git request log, bare mirror SHA/blob and original flock inode. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:395`. Native Git slot-inode and passive /proc lock snapshot across an exact Enrico service restart; no hosted campaign or general descendant-custody acceptance. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:428`. Native Git slot-inode and passive /proc lock snapshot across an exact Enrico service restart; no hosted campaign or general descendant-custody acceptance. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R5`: Add a unique SUT-side `Reachable` or `Sometimes` at the observed intermediate commit/effect before uncertain reply. Requested faults alone are not reached checkpoints; retain the independent final `Always` oracle. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -631,7 +631,7 @@ These properties exercise the external effects and caches boundaries and their f
 
 **Proof boundary:** Draft selection: `repository`. real-hosted-git-and-native-helper; independent witness: fixed-origin Git request log, bare mirror SHA/blob and original flock inode. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:138`. Fixed native Git origin/blob plus Marshall worker and SQL head/audit; hosted origin/worker campaign unexecuted. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/repository/scenarios.py:143`. Fixed native Git origin/blob plus Marshall worker and SQL head/audit; hosted origin/worker campaign unexecuted. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 

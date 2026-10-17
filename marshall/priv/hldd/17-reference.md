@@ -222,6 +222,12 @@ manifest and served path never matched the committed row, and Marshall's own
 refresh failed against the origin, so setup stayed incomplete. The probe now
 reports each distinct unmet prerequisite once per process by condition token,
 observation state, HTTP status or phase, never by credential or payload.
+The failed-refresh published-head case was never exercised in hosted runs:
+the workload image linked Git into its closure but not onto a fixed path, so
+the native blob oracle could not run Git and every attempt stopped before the
+force push (run `30a420d501d5d6d22527e679a7f00005-65-0`). The image now links
+`/opt/overalls/git`, the oracle calls it explicitly, and each early stop logs a
+fixed `Enrico published-head case unexercised` reason.
 The optional `recorder-host` profile selects the TCG NixOS recorder VM and the
 three recorder commands. The workload waits for the VM health check, then its
 own read-only probe requires a fresh all-active unit sample, producer and spool

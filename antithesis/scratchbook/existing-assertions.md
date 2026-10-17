@@ -130,21 +130,21 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `antithesis/workload/recorder/scenarios.py:500` | `reachable` | Trace spool reached real archive or pending quota refusal | support / startup |
 | `antithesis/workload/recorder/scenarios.py:503` | `reachable` | Trace spool storage unavailable and refused further intake | support / startup |
 | `antithesis/workload/recorder/scenarios.py:510` | `always_or_unreachable` | Trace spool uncertain storage refuses later admission without evicting custody | support / startup |
-| `antithesis/workload/repository/scenarios.py:138` | `always` | Enrico published Git head remains addressable through failed refresh | `enrico-published-head-remains-addressable` |
-| `antithesis/workload/repository/scenarios.py:146` | `always` | Enrico explicit published SHA returns the original sentinel blob | support / startup |
-| `antithesis/workload/repository/scenarios.py:151` | `reachable` | Enrico retained prior published head across force push | support / startup |
-| `antithesis/workload/repository/scenarios.py:154` | `reachable` | Marshall settled failed Enrico refresh without replacing head | support / startup |
-| `antithesis/workload/repository/scenarios.py:208` | `always` | Enrico retained attempt replay returns its completed receipt | support / startup |
-| `antithesis/workload/repository/scenarios.py:213` | `always` | Enrico retained attempt replay starts no second fetch | `enrico-attempt-replay-bounded-receipts` |
-| `antithesis/workload/repository/scenarios.py:217` | `reachable` | Enrico returned retained attempt receipt without new fetch | support / startup |
-| `antithesis/workload/repository/scenarios.py:273` | `always` | Enrico oldest completed receipt evicts after 1,025 native Git attempts | support / startup |
-| `antithesis/workload/repository/scenarios.py:278` | `reachable` | Enrico evicted oldest completed attempt receipt at cap | support / startup |
-| `antithesis/workload/repository/scenarios.py:290` | `always` | Enrico newest receipt remains replayable at the bounded cap | support / startup |
-| `antithesis/workload/repository/scenarios.py:295` | `always` | Enrico retained attempt replay starts no second fetch at receipt cap | support / startup |
-| `antithesis/workload/repository/scenarios.py:364` | `reachable` | Enrico restart retired prior native Git slot owners | support / startup |
-| `antithesis/workload/repository/scenarios.py:395` | `always` | Enrico native Git ownership bounds physical concurrent refreshes | `enrico-native-git-admission-after-manager-restart` |
-| `antithesis/workload/repository/scenarios.py:416` | `always` | Enrico ninth refresh receives admission refusal while eight native slots remain held | support / startup |
-| `antithesis/workload/repository/scenarios.py:421` | `reachable` | Enrico observed ninth-admission refusal with eight physical slots held | support / startup |
+| `antithesis/workload/repository/scenarios.py:143` | `always` | Enrico published Git head remains addressable through failed refresh | `enrico-published-head-remains-addressable` |
+| `antithesis/workload/repository/scenarios.py:151` | `always` | Enrico explicit published SHA returns the original sentinel blob | support / startup |
+| `antithesis/workload/repository/scenarios.py:156` | `reachable` | Enrico retained prior published head across force push | support / startup |
+| `antithesis/workload/repository/scenarios.py:161` | `reachable` | Marshall settled failed Enrico refresh without replacing head | support / startup |
+| `antithesis/workload/repository/scenarios.py:215` | `always` | Enrico retained attempt replay returns its completed receipt | support / startup |
+| `antithesis/workload/repository/scenarios.py:220` | `always` | Enrico retained attempt replay starts no second fetch | `enrico-attempt-replay-bounded-receipts` |
+| `antithesis/workload/repository/scenarios.py:224` | `reachable` | Enrico returned retained attempt receipt without new fetch | support / startup |
+| `antithesis/workload/repository/scenarios.py:280` | `always` | Enrico oldest completed receipt evicts after 1,025 native Git attempts | support / startup |
+| `antithesis/workload/repository/scenarios.py:285` | `reachable` | Enrico evicted oldest completed attempt receipt at cap | support / startup |
+| `antithesis/workload/repository/scenarios.py:297` | `always` | Enrico newest receipt remains replayable at the bounded cap | support / startup |
+| `antithesis/workload/repository/scenarios.py:302` | `always` | Enrico retained attempt replay starts no second fetch at receipt cap | support / startup |
+| `antithesis/workload/repository/scenarios.py:371` | `reachable` | Enrico restart retired prior native Git slot owners | support / startup |
+| `antithesis/workload/repository/scenarios.py:428` | `always` | Enrico native Git ownership bounds physical concurrent refreshes | `enrico-native-git-admission-after-manager-restart` |
+| `antithesis/workload/repository/scenarios.py:456` | `always` | Enrico ninth refresh receives admission refusal while eight native slots remain held | support / startup |
+| `antithesis/workload/repository/scenarios.py:461` | `reachable` | Enrico observed ninth-admission refusal with eight physical slots held | support / startup |
 | `antithesis/workload/satellite/editor.py:280` | `reachable` | Editor login code committed while its only callback reply was lost | support / startup |
 | `antithesis/workload/satellite/editor.py:287` | `always` | Editor login code creates at most one credential after reply loss | `editor-login-code-single-use-after-reply-loss` |
 | `antithesis/workload/satellite/editor.py:291` | `sometimes` | Editor login code exchange issued one session through Audi | support / startup |

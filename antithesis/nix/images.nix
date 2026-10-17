@@ -269,6 +269,7 @@ let
         "opt/overalls/control-peer-tools" = toString controlPeerTools;
         "opt/overalls/control-peer" = toString controlPeerProtocol;
         "opt/overalls/restic" = toString pkgs.restic;
+        "opt/overalls/git" = toString pkgs.git;
         "opt/overalls/backup-modules" = toString backupModules;
         "opt/overalls/trace-spool" = toString traceSpool;
         "opt/antithesis/catalog" = "/opt/overalls-antithesis/catalog/workload";
