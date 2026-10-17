@@ -156,7 +156,7 @@ preservation of the last healthy revision and corrective-update recovery while
 preserving the guest process. Recovery uses a new corrective revision; it does
 not automatically roll back code or schema migrations.
 
-The exported `nixosModules.audi` module provides `services.audi`. Configure the
+The exported `nixosModules.services.audi` module provides `services.audi`. Configure the
 local Lilly `hostId`, verified HTTPS `controlPlane`, private `credentialFile`, and
 restricted local `connectorPath`/`connectorUid`. Audi runs as its own user. The
 credential is supplied through systemd credentials, and its SSH host key persists

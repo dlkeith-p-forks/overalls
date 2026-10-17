@@ -55,27 +55,34 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Runs `devenv update` against the current checkout and commits the
-          # result. Returns non-zero when the lock file is unchanged.
+          # Runs `devenv update`, pins flake.lock's buildNixpkgs to the same
+          # devenv-nixpkgs revision (flake-package-inputs; enforced by the
+          # package-input-lock check) and commits both locks. Returns non-zero
+          # when neither lock file changed.
           update_and_commit() {
             devenv update
 
-            if [ -z "$(git status --porcelain -- devenv.lock)" ]; then
+            node=$(jq -r '.nodes.root.inputs.nixpkgs' devenv.lock)
+            pin=$(jq -r --arg node "$node" '.nodes[$node].locked | "github:\(.owner)/\(.repo)/\(.rev)"' devenv.lock)
+            nix flake lock --override-input buildNixpkgs "$pin"
+
+            if [ -z "$(git status --porcelain -- devenv.lock flake.lock)" ]; then
               return 1
             fi
 
-            echo "Changes detected in devenv.lock:"
-            git --no-pager diff -- devenv.lock || true
+            echo "Changes detected in the lock files:"
+            git --no-pager diff -- devenv.lock flake.lock || true
 
             summary=$(git diff -- devenv.lock | grep -E '^\+.*"(devenv|git-hooks|nixpkgs)".*github:' | sed 's/^+/- Updated: /' || true)
             [ -n "$summary" ] || summary="- Updated devenv dependencies"
 
-            git add devenv.lock
+            git add devenv.lock flake.lock
             git commit -F - <<EOF
           chore(deps): update devenv dependencies
 
           Automated update of development environment dependencies:
           $summary
+          - Pinned flake.lock buildNixpkgs to $pin
 
           🤖 Generated automatically by the automatic nix upgrades workflow
           EOF
@@ -96,7 +103,7 @@ jobs:
             git fetch origin "$TARGET_BRANCH"
 
             if ! git rebase "origin/$TARGET_BRANCH"; then
-              echo "Rebase conflicted; regenerating devenv.lock on top of origin/$TARGET_BRANCH"
+              echo "Rebase conflicted; regenerating the locks on top of origin/$TARGET_BRANCH"
               git rebase --abort
               git reset --hard "origin/$TARGET_BRANCH"
               if ! update_and_commit; then

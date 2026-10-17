@@ -64,11 +64,13 @@ defmodule Overalls.HLDDTest do
     end
   end
 
-  test "devenv pin updates do not enter the reviewed inventory", %{root: root} do
+  test "devenv and flake pin updates do not enter the reviewed inventory", %{root: root} do
     write(root, "source.ex", "reviewed source")
     write(root, "devenv.lock", "pinned inputs")
+    write(root, "flake.lock", "pinned inputs")
     write(root, "devenv.yaml", "inputs")
-    assert HLDDGate.files(root) == ["devenv.yaml", "source.ex"]
+    write(root, "flake.nix", "inputs")
+    assert HLDDGate.files(root) == ["devenv.yaml", "flake.nix", "source.ex"]
   end
 
   test "CI workflows and scripts do not enter the reviewed inventory", %{root: root} do

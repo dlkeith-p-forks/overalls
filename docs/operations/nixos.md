@@ -44,8 +44,8 @@ format in the [deployment guide](deployment.md).
 
 ## Service options
 
-Import `overalls.nixosModules.default`, or only `nixosModules.marshall` or
-`nixosModules.lilly`, from a locked Overalls flake input. Neither service enables
+Import `overalls.nixosModules.default`, or only `nixosModules.services.marshall` or
+`nixosModules.services.lilly`, from a locked Overalls flake input. Neither service enables
 the other. A host may run one local Marshall instance when the declared fleet
 contains at least three, or several instances with unique identities and ports.
 
@@ -149,12 +149,12 @@ for executed machine evidence and outstanding acceptance.
 
 ## Opt-in host TCP profile
 
-Import `overalls.nixosModules.sysctl` (also included by `nixosModules.default`)
+Import `overalls.nixosModules.platform.sysctl` (also included by `nixosModules.default`)
 and enable the profile explicitly:
 
 ```nix
 {
-  imports = [ overalls.nixosModules.sysctl ];
+  imports = [ overalls.nixosModules.platform.sysctl ];
   overalls.sysctl.enable = true;
 }
 ```
@@ -262,7 +262,7 @@ module imports do not receive these host-profile settings.
 ## TLS proxy
 
 `nixosModules.default` also includes `services.marshallProxy`; a proxy-only host
-can import `nixosModules.proxy`. It does not enable Marshall or Lilly. Configure
+can import `nixosModules.network.proxy`. It does not enable Marshall or Lilly. Configure
 `publicHost`, `certificateFile`, `backendCAFile` and named `backends` with
 `address`, `port` and `serverName`. A local proxy can reach loopback Marshall
 listeners; remote proxies require explicitly reachable backend addresses.
@@ -284,7 +284,7 @@ revocation and recovery across Marshall machine loss.
 
 ## ACME: HTTP-01 or Route 53
 
-Import the default module or `nixosModules.acme`. With the proxy configured as
+Import the default module or `nixosModules.network.acme`. With the proxy configured as
 above, omit `certificateFile`. HTTP-01 is the default and needs no AWS credentials:
 
 ```nix
@@ -429,7 +429,7 @@ real CA issuance and physical power-loss recovery remain separate acceptance.
 
 ## SSH-derived secrets
 
-Import `nixosModules.secrets` or the default module and enable
+Import `nixosModules.security.secrets` or the default module and enable
 `services.overallsSecrets`. This generates a persistent Ed25519 host key when
 absent, without enabling human SSH access. Enable `overalls.access.enable` for
 named fleet accounts from `nix/policy/identity/users.nix`; see the [fleet user and recovery

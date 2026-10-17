@@ -23,7 +23,7 @@ a BSD setting. These settings do not supply useful increased limits here.
 
 ## Decision
 
-Export `nixosModules.sysctl`, also imported by the default module, with
+Export `nixosModules.platform.sysctl`, also imported by the default module, with
 `overalls.sysctl.enable = false`. Enabling it loads tcp_bbr and sch_fq and provides
 `lib.mkDefault` values of bbr for net.ipv4.tcp_congestion_control and fq for
 net.core.default_qdisc. Ordinary native NixOS assignments override either value.
