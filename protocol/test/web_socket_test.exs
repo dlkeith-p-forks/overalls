@@ -7,7 +7,7 @@ defmodule OverallsProtocol.WebSocketTest do
 
   @limit 70_000
 
-  @spec frame() :: StreamData.t(Frame.frame())
+  @spec frame() :: Hegel.Gen.t(Frame.frame())
   defp frame do
     one_of([
       map(string(:printable, max_length: 300), &{:text, &1}),

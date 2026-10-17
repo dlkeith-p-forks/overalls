@@ -59,7 +59,7 @@ defmodule Marshall.TeamsHistoryTest do
     end
   end
 
-  @spec command() :: StreamData.t(command())
+  @spec command() :: Hegel.Gen.t(command())
   defp command do
     actor = integer(0..3)
 

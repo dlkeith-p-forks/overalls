@@ -136,7 +136,7 @@ defmodule Lilly.VM.WorkspaceSourceTest do
     }
   end
 
-  @spec source_gen() :: StreamData.t(OverallsProtocol.WorkspaceSource.t())
+  @spec source_gen() :: Hegel.Gen.t(OverallsProtocol.WorkspaceSource.t())
   defp source_gen do
     alnum = Enum.concat([?a..?z, ?A..?Z, ?0..?9])
 

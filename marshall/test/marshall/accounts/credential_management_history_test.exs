@@ -104,7 +104,7 @@ defmodule Marshall.Accounts.CredentialManagementHistoryTest do
     :ok
   end
 
-  @spec operations() :: StreamData.t([atom()])
+  @spec operations() :: Hegel.Gen.t([atom()])
   defp operations do
     map(
       list_of(

@@ -314,7 +314,7 @@ defmodule OverallsProtocol.TerminalTest do
   end
 
   @spec recovery_query_gen(:creation_query | :creation_cancel) ::
-          StreamData.t(Terminal.control_message())
+          Hegel.Gen.t(Terminal.control_message())
   defp recovery_query_gen(type) do
     gen all(
           request_id <- uuid_gen(),
@@ -336,7 +336,7 @@ defmodule OverallsProtocol.TerminalTest do
     control_message_generators() |> Map.values() |> one_of()
   end
 
-  @spec consumption_gen(:input_ack | :output_ack) :: StreamData.t(Terminal.control_message())
+  @spec consumption_gen(:input_ack | :output_ack) :: Hegel.Gen.t(Terminal.control_message())
   defp consumption_gen(type) do
     gen all(
           channel <- positive_integer(),

@@ -7,7 +7,7 @@ defmodule Marshall.Accounts.CredentialHistoryTest do
 
   alias Marshall.Accounts.{Login, Passkey, PasskeyChallenge, Security}
   alias Marshall.Compute.Ledger
-  alias StreamData, as: Gen
+  alias Hegel.Gen, as: Gen
 
   @bogus "00000000-0000-0000-0000-000000000000"
 

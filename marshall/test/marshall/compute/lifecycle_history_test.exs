@@ -121,7 +121,7 @@ defmodule Marshall.Compute.LifecycleHistoryTest do
     :ok
   end
 
-  @spec commands() :: StreamData.t(command())
+  @spec commands() :: Hegel.Gen.t(command())
   defp commands do
     one_of([
       tuple(

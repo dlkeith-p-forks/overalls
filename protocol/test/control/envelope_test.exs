@@ -16,10 +16,10 @@ defmodule OverallsProtocol.Control.EnvelopeTest do
     end)
   end
 
-  @spec name() :: StreamData.t(String.t())
+  @spec name() :: Hegel.Gen.t(String.t())
   defp name, do: map(string(?a..?z, min_length: 1, max_length: 20), & &1)
 
-  @spec message() :: StreamData.t(Envelope.message())
+  @spec message() :: Hegel.Gen.t(Envelope.message())
   defp message do
     id = integer(0..1_000_000)
     body = map_of(string(:alphanumeric, max_length: 8), integer(), max_length: 3)

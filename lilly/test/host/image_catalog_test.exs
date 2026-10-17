@@ -69,7 +69,7 @@ defmodule Lilly.Host.ImageCatalogTest do
     GenServer.stop(pid)
   end
 
-  @spec command(pos_integer()) :: StreamData.t(command())
+  @spec command(pos_integer()) :: Hegel.Gen.t(command())
   defp command(count) do
     index = integer(0..(count - 1))
 
