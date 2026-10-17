@@ -1,7 +1,8 @@
 defmodule MarshallWeb.RepositoryLaunchHistoryTest do
   use MarshallWeb.ConnCase, async: false
   @moduletag :capture_log
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Phoenix.LiveViewTest
   import Marshall.ComputeFixtures
   alias OverallsProtocol.{Execution, WorkspaceSource}

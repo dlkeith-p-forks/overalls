@@ -1,6 +1,7 @@
 defmodule Marshall.Administration.JobHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Accounts.{Security, User}
   alias Marshall.Administration
   alias Marshall.Compute.Ledger

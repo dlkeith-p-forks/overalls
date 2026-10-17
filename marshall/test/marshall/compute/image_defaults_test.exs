@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.ImageDefaultsTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   property "defaults round upward to input units and satisfy every executable image minimum" do
     check all(

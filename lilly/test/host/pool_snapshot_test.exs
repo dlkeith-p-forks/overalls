@@ -7,7 +7,8 @@ defmodule Lilly.Host.PoolSnapshotTest do
   behavior remains the `image-template` and `zfs-guest-clone` machine tests.
   """
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{ImageTemplate, Lock, Pool, PoolSnapshot, ZFS, ZFSDataset}
   @moduletag :tmp_dir
 

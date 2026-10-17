@@ -1,6 +1,7 @@
 defmodule MarshallWeb.ControlAPITest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias OverallsProtocol.Control.{Close, Envelope}
   alias Marshall.Control.Socket

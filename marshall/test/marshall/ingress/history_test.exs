@@ -1,6 +1,7 @@
 defmodule Marshall.Ingress.HistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @moduletag capture_log: true
   @moduletag timeout: 180_000
   alias Marshall.Compute.Ledger

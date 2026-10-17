@@ -9,7 +9,8 @@ defmodule Marshall.SSH.GuestRosterMigrationHistoryTest do
   covered by the authorization and team suites.
   """
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Accounts.{GuestAccount, User}
   alias Marshall.Authorization.SystemActor

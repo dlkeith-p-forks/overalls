@@ -1,6 +1,7 @@
 defmodule Audi.InvalidBootPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @moduletag :tmp_dir
   # The three complete role/mutation menus start 126 fresh VMs. Keep this

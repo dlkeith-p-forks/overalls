@@ -1,6 +1,7 @@
 defmodule MarshallWeb.TeamsSSHAPITest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.Ledger
   alias Marshall.SSH
   import Marshall.PorscheSocket, only: [reply: 2]

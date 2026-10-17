@@ -1,6 +1,7 @@
 defmodule Audi.HTTP.ProxyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Plug.Conn
   alias Audi.Control.Client
   @fixtures Path.expand("../../marshall/test/fixtures/tls", __DIR__)

@@ -1,6 +1,7 @@
 defmodule Marshall.Ingress.RoutesTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.{Host, Ledger, VirtualMachine}
   alias Marshall.Ingress

@@ -1,6 +1,7 @@
 defmodule Marshall.Enrico.HistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.Ledger
   alias Marshall.Enrico.{AuditEvent, Catalog, Repository, Worker}
   alias Marshall.EnricoHistoryService, as: Service

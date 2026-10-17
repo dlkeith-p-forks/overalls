@@ -1,6 +1,7 @@
 defmodule Marshall.Access.SharingTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias Marshall.{Access, Compute}
   alias Marshall.Access.{Authorization, Change, Grant}

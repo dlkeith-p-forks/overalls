@@ -1,6 +1,7 @@
 defmodule Lilly.VM.ActorFailureSettledTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Control.Store
   alias Lilly.VM.Actor
   @moduletag :tmp_dir

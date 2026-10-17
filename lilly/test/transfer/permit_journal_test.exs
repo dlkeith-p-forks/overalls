@@ -1,6 +1,7 @@
 defmodule Lilly.Transfer.PermitJournalTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Transfer.PermitJournal, as: Journal
   @moduletag :tmp_dir
   defp uuid(n), do: "00000000-0000-0000-0000-" <> String.pad_leading(to_string(n), 12, "0")

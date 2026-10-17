@@ -1,6 +1,7 @@
 defmodule Lilly.Transfer.ImportJournalTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Lock, PrivateFiles}
   alias Lilly.Transfer.ImportJournal, as: Journal
   @moduletag :tmp_dir

@@ -1,6 +1,7 @@
 defmodule Marshall.Ingress.PropagationTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Ingress.ACME.Propagation
 
   @owner "apps.example.test"

@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.StateMachineTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.{CloneRequest, Operation, ReadinessRequest, ResizeRequest}
   alias Marshall.Authorization.SystemActor
 

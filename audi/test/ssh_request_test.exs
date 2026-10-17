@@ -1,6 +1,7 @@
 defmodule Audi.SSH.RequestTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.SSH.Request
 
   property "every accepted command is a bounded label or fixed nested selector" do

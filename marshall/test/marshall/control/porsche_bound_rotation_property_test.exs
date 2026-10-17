@@ -1,6 +1,7 @@
 defmodule Marshall.Control.PorscheBoundRotationPropertyTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
 
   alias OverallsProtocol.Control.Client

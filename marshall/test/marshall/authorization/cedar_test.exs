@@ -1,6 +1,7 @@
 defmodule Marshall.Authorization.CedarTest do
   use Marshall.DataCase, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Accounts.User
   alias Marshall.Authorization.{Cedar, SystemActor}
 

@@ -1,6 +1,7 @@
 defmodule MarshallWeb.AgentCLIHistoryTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Phoenix.LiveViewTest
   alias Marshall.Accounts.User
   alias Marshall.Agents.{CLISession, Root, Thread, Turn}

@@ -1,6 +1,7 @@
 defmodule Marshall.Agents.AgentRevocationHistoryTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Accounts.User
   alias Marshall.AgentRevocationFixture, as: Fixture

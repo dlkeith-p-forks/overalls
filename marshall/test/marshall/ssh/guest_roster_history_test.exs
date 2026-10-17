@@ -1,6 +1,7 @@
 defmodule Marshall.SSH.GuestRosterHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Accounts.{GuestAccount, User}
   alias Marshall.Authorization.SystemActor

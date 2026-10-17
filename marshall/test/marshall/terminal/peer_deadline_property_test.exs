@@ -1,6 +1,7 @@
 defmodule Marshall.Terminal.PeerDeadlinePropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Terminal.PeerSocket
   alias Marshall.Terminal.Remote
 

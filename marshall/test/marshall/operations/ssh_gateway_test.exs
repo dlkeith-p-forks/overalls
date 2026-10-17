@@ -1,6 +1,7 @@
 defmodule Marshall.Operations.SSHGatewayTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.Ledger
   alias Marshall.Operations.{CLI, PrivateFiles}

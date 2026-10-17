@@ -1,6 +1,7 @@
 defmodule Marshall.Accounts.SecurityTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.PasskeyFixture
   alias Marshall.Accounts.{Security, User, Verification, PasskeyChallenge}
   alias Marshall.Compute.Ledger

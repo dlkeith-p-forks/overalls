@@ -1,6 +1,7 @@
 defmodule Ziggy.SpoolTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @id "01234567-89ab-4def-8123-456789abcdef"
 
   setup do

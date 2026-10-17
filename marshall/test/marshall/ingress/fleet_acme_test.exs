@@ -1,6 +1,7 @@
 defmodule Marshall.Ingress.FleetACMETest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Ingress.ACME.{AccountKey, Request}
   alias Marshall.Ingress.FleetACMEConfig
 

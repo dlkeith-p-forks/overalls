@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias OverallsProtocol.{Execution, WorkspaceSource}
   alias Marshall.Compute

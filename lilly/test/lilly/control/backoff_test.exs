@@ -1,6 +1,7 @@
 defmodule Lilly.Control.RuntimeBackoffTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   # @cc [owner:ghuntley,label:verification;recovery] control-backoff-bounded-property
   # Every failure count MUST yield a delay that starts at one second, never

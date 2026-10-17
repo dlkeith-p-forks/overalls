@@ -2,7 +2,8 @@ Code.require_file("../../../scripts/adr_validator.ex", __DIR__)
 
 defmodule Overalls.ADRValidatorTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Overalls.ADRValidator
 

@@ -1,6 +1,7 @@
 defmodule Audi.DNS.ServerTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Bitwise
   alias Audi.DNS.{Authority, Directory, Server, Wire}
 

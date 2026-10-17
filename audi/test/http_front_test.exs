@@ -1,6 +1,7 @@
 defmodule Audi.HTTP.FrontTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Plug.Conn
   alias Audi.Control.Client
   @zone "apps.example"

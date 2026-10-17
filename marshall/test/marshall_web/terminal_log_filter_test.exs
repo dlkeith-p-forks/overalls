@@ -1,6 +1,7 @@
 defmodule MarshallWeb.TerminalLogFilterTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import ExUnit.CaptureLog
 
   property "only the closed viewer refusal reasons survive tagged process redaction" do

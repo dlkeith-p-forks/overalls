@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.EnrollmentRequestTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.EnrollmentRequest
 
   property "bounded requests preserve overheads and reject duplicate filesystems or extra fields" do

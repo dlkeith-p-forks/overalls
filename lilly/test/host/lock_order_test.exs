@@ -1,7 +1,8 @@
 defmodule Lilly.Host.LockOrderTest do
   # The recorded pairs are BEAM-global, so these tests run alone.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Lilly.Host.LockOrder
 

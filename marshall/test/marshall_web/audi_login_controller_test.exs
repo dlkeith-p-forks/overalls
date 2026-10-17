@@ -1,6 +1,7 @@
 defmodule MarshallWeb.AudiLoginControllerTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.TerminalFixtures
   import ExUnit.CaptureLog
   alias Marshall.Authorization.SystemActor

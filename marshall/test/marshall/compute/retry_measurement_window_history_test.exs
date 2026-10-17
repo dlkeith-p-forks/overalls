@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias Marshall.Compute
 

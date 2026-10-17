@@ -1,6 +1,7 @@
 defmodule Lilly.Host.EmptyDirectoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.EmptyDirectory
 
   setup do

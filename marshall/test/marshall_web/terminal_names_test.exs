@@ -1,6 +1,7 @@
 defmodule MarshallWeb.TerminalNamesTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias MarshallWeb.TerminalNames
 
   property "names are deterministic, lower-case adjective-noun pairs" do

@@ -1,6 +1,7 @@
 defmodule Marshall.Terminal.PeerBudgetTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Terminal.PeerBudget
 
   test "one process owns one slot and another caller is refused at capacity" do

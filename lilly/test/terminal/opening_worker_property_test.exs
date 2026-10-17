@@ -1,6 +1,7 @@
 defmodule Lilly.Terminal.OpeningWorkerPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Lilly.Terminal.Stream
   alias OverallsProtocol.Terminal, as: Codec

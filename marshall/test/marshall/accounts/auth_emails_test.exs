@@ -1,6 +1,7 @@
 defmodule Marshall.Accounts.AuthEmailsTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import ExUnit.CaptureLog
   alias Marshall.Accounts.{AuthEmail, AuthEmails, User}
   alias Marshall.Compute.Ledger

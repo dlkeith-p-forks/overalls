@@ -1,6 +1,7 @@
 defmodule Audi.PrivateDNSTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Bitwise
   alias Audi.DNS.Wire
 

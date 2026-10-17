@@ -1,6 +1,7 @@
 defmodule Audi.HTTP.EditorAssetsTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Plug.Conn
   alias Audi.HTTP.EditorAssets
   @moduletag :tmp_dir

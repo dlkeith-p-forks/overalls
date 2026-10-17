@@ -1,6 +1,7 @@
 defmodule MarshallWeb.SSHAPITest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @endpoint MarshallWeb.FleetEndpoint
   import Marshall.ComputeFixtures, only: [user: 0]
   import ExUnit.CaptureLog

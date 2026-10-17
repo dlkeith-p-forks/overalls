@@ -1,6 +1,7 @@
 defmodule Marshall.TeamsResourceHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @moduletag capture_log: true
   alias Marshall.Accounts.User
   alias Marshall.Authorization.SystemActor

@@ -1,6 +1,7 @@
 defmodule Lilly.Lifecycle.JournalTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Lock, PrivateFiles}
   alias Lilly.Lifecycle.{Dataset, Journal}
   @moduletag :tmp_dir

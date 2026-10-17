@@ -1,7 +1,8 @@
 defmodule Lilly.VM.ActorWatchTest do
   # The ordered observation/exit regression captures the global Logger stream.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.Machine
   alias Lilly.Control.Store
   alias Lilly.Execution

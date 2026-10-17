@@ -1,6 +1,7 @@
 defmodule MarshallWeb.PendingLaunchTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias MarshallWeb.PendingLaunch
 
   @url "https://github.com/antithesishq/weaver"

@@ -1,6 +1,7 @@
 defmodule Lilly.Host.ImageCatalogTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Image, ImageCatalog}
   @moduletag :tmp_dir
   @moduletag :capture_log

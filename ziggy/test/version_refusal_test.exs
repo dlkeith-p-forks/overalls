@@ -1,6 +1,7 @@
 defmodule Ziggy.VersionRefusalTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @id "01234567-89ab-4def-8123-456789abcdef"
   @fixtures Path.expand("../../marshall/test/fixtures/tls", __DIR__)

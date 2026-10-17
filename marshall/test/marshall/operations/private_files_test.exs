@@ -1,6 +1,7 @@
 defmodule Marshall.Operations.PrivateFilesTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Operations.{PrivateFiles, Privacy}
   @moduletag :tmp_dir
 

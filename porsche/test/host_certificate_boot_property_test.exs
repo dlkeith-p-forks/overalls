@@ -1,6 +1,7 @@
 defmodule Porsche.HostCertificateBootPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Bitwise
   alias OverallsProtocol.{SSHHostCertificate, SSHKey}
   @moduletag timeout: 240_000

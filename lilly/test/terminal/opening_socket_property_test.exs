@@ -1,6 +1,7 @@
 defmodule Lilly.Terminal.OpeningSocketPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Terminal.Stream
   alias OverallsProtocol.WebSocket.{Connection, Frame, Handshake}
 

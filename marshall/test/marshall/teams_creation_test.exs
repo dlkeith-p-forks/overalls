@@ -1,6 +1,7 @@
 defmodule Marshall.TeamsCreationTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Accounts.{AdminEvent, User}
   alias Marshall.Compute.Ledger

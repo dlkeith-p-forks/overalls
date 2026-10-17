@@ -1,6 +1,7 @@
 defmodule Marshall.Accounts.AccountLifecycleHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Accounts.{AdminEvent, AuthEmail, Passkey, Security, User, UserDeletion}
   alias Marshall.Authorization.SystemActor

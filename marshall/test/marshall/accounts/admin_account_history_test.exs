@@ -1,6 +1,7 @@
 defmodule Marshall.Accounts.AdminAccountHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Accounts.{AdminEvent, Passkey, Security, User, UserDeletion}
   alias Marshall.Compute.Ledger
   alias Marshall.AdminAccountFixture, as: Fixture

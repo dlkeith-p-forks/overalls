@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.ServiceLevelsTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Compute.{
     Ledger,

@@ -1,6 +1,7 @@
 defmodule Marshall.Control.ZiggyPorscheServiceTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
 
   alias Marshall.Authorization.SystemActor

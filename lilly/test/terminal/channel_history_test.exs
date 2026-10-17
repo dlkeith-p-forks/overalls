@@ -1,6 +1,7 @@
 defmodule Lilly.Terminal.ChannelHistoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias OverallsProtocol.Terminal, as: Codec
   alias OverallsProtocol.TerminalWindow, as: Window

@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.LifecycleHistoryTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   import ExUnit.Assertions
 

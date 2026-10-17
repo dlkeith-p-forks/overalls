@@ -6,7 +6,8 @@ defmodule Marshall.CommittedCredentialInventoryTest do
   complete prior public-table inventory (029 pattern).
   """
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.PasskeyFixture
   alias Marshall.Accounts.{Security, User}
   alias Marshall.CommittedFixtureCleanup, as: Cleanup

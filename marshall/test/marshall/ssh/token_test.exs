@@ -1,6 +1,7 @@
 defmodule Marshall.SSH.TokenTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.SSH.Token
 
   property "tokens are purpose bound and their canonical digest is stable" do

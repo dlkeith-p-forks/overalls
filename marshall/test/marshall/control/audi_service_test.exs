@@ -1,6 +1,7 @@
 defmodule Marshall.Control.AudiServiceTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @endpoint MarshallWeb.FleetEndpoint
   import ExUnit.CaptureLog
 

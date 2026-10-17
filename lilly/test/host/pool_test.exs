@@ -1,6 +1,7 @@
 defmodule Lilly.Host.PoolTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Pool
 
   property "ZFS siblings and backing extent overlaps cannot duplicate capacity" do

@@ -1,6 +1,7 @@
 defmodule Audi.Authority.LeaseTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.Authority.Lease
   @binding %{session_id: "s", placement_id: "p", execution_epoch: 3}
 

@@ -1,7 +1,8 @@
 defmodule Lilly.Host.CommandTest do
   # CaptureLog observes the shared Logger stream; isolate silence/redaction checks.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Command, Lock}
   @moduletag :tmp_dir
   @metadata [:event, :utility, :reason, :duration_ms, :lease_id]

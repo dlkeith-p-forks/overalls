@@ -1,6 +1,7 @@
 defmodule Marshall.GalileoTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import ExUnit.CaptureLog
   alias Marshall.Compute.Ledger
   alias Marshall.Accounts.AdminEvent

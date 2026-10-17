@@ -1,6 +1,7 @@
 defmodule Lilly.Transfer.CloneCopyJournalTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.DiskTransfer
   alias Lilly.Host.Lock
   alias Lilly.Transfer.CloneCopyJournal, as: Journal

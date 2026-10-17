@@ -1,6 +1,7 @@
 defmodule Lilly.VM.ActorTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Control.{Runtime, Store}
   alias Lilly.Execution
   alias Lilly.Network.Attribution

@@ -1,6 +1,7 @@
 defmodule Audi.SSH.StateTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.SSH.State
 
   property "arbitrary request histories cannot acquire authority twice or escape diagnostics" do

@@ -1,6 +1,7 @@
 defmodule MarshallWeb.HealthTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Operations.Health
 
   test "live and ready probes have fixed responses and no session cookies", %{conn: conn} do

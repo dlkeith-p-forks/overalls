@@ -8,7 +8,8 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   system under test's Budget arithmetic is never consulted.
   """
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   require Marshall.CommittedFixtureCleanup, as: Cleanup
   import Marshall.ComputeFixtures

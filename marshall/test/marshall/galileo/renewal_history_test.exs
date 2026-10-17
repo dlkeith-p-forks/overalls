@@ -1,6 +1,7 @@
 defmodule Marshall.Galileo.RenewalHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.{HostReports, Ledger}
   alias Marshall.Galileo
   alias Marshall.Galileo.{Authorizations, Credentials, Integration, PeerTokens}

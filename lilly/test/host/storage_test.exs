@@ -1,6 +1,7 @@
 defmodule Lilly.Host.StorageTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Lock, Pool, Storage}
   @moduletag :tmp_dir
 

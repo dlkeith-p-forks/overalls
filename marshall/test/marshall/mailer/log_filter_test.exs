@@ -1,6 +1,7 @@
 defmodule Marshall.Mailer.LogFilterTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   # @cc [owner:ghuntley,label:security;verification] galileo-refusal-private-diagnostics
   # Only the exact authorization-denied event and its reviewed reason atoms may

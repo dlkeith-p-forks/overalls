@@ -1,6 +1,7 @@
 defmodule MarshallWeb.DocsControllerTest do
   use MarshallWeb.ConnCase
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Documentation
   alias OverallsProtocol.SSHCommand
 

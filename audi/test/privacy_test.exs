@@ -1,6 +1,7 @@
 defmodule Audi.PrivacyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @catalog Audi.Events.__catalog__()
   @uuid "11111111-1111-4111-8111-111111111111"

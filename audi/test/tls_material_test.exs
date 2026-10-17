@@ -1,6 +1,7 @@
 defmodule Audi.TLS.FleetMaterialTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.TLS.FleetMaterial
   @host "demo-0123456789abcdef0123456789abcdef.apps.example"
 

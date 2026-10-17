@@ -1,6 +1,7 @@
 defmodule Lilly.VM.DeleteRetryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.VM.DeleteRetry
 
   # @cc [owner:ghuntley,label:verification] delete-retry-bounded-and-monotonic

@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.CloneRestorationHistoryTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias Marshall.Compute
   alias Marshall.Compute.{CloneCoordinator, CloneRequest, Ledger, Operation, Reservation}

@@ -1,6 +1,7 @@
 defmodule Marshall.Ingress.AccessTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.{Host, Ledger}
   alias Marshall.Ingress

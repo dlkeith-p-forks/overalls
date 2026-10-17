@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.ViewTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.View
 
   @keys [:k1, :k2, :k3]

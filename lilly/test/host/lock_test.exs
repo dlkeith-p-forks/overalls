@@ -1,6 +1,7 @@
 defmodule Lilly.Host.LockTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Lock
   @moduletag :tmp_dir
 

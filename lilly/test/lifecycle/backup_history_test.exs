@@ -1,6 +1,7 @@
 defmodule Lilly.Lifecycle.BackupHistoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Lock
   alias Lilly.Lifecycle.{BackupHistory, BackupSnapshot, Journal}
   @moduletag :tmp_dir

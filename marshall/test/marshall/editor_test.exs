@@ -1,6 +1,7 @@
 defmodule Marshall.EditorTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import ExUnit.CaptureLog
   alias Marshall.Accounts.GuestAccount
   alias Marshall.Authorization.SystemActor

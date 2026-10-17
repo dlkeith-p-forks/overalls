@@ -1,6 +1,7 @@
 defmodule Lilly.VM.ProvisioningTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Lock
   alias Lilly.Lifecycle.Journal
   alias Lilly.VM.{Config, Provisioning, Spec}

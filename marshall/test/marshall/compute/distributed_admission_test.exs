@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.DistributedAdmissionTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   require Marshall.CommittedFixtureCleanup, as: Cleanup
   import Marshall.ComputeFixtures
 

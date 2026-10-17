@@ -1,6 +1,7 @@
 defmodule Lilly.VM.IntentTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Lock
   alias Lilly.VM.Intent
   @placement "11111111-1111-4111-8111-111111111111"

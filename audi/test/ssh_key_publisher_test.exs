@@ -1,6 +1,7 @@
 defmodule Audi.SSH.KeyPublisherTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @host "11111111-1111-4111-8111-111111111111"
   @fixtures Path.expand("../../marshall/test/fixtures/tls", __DIR__)

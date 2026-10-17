@@ -3,7 +3,8 @@ defmodule Lilly.Clone.RuntimeFailuresTest do
   # fixed for every emitting module, so counting assertions need exclusive
   # execution.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Clone.{Reason, Runtime}
 
   @clone "00000000-0000-4000-8000-000000000001"

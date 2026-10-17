@@ -1,6 +1,7 @@
 defmodule Marshall.Administration.JobsTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import ExUnit.CaptureLog
   alias Marshall.Administration
   alias Marshall.Administration.{AuditEvent, JobEvent, JobSnapshot}

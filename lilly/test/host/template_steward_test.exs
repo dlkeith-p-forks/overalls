@@ -1,6 +1,7 @@
 defmodule Lilly.Host.TemplateStewardTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Image, Pool, TemplateSteward}
 
   defp pool,

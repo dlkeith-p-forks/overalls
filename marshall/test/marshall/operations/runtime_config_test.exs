@@ -1,6 +1,7 @@
 defmodule Marshall.Operations.RuntimeConfigTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Operations.RuntimeConfig
 
   test "public Inception startup reads a bounded public file and fails closed" do

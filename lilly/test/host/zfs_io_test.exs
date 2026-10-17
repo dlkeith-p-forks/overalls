@@ -1,6 +1,7 @@
 defmodule Lilly.Host.ZFSIOTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.ZFSIO
 
   property "native rate rows preserve measured zero and ignore space columns" do

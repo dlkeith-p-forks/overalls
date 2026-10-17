@@ -1,6 +1,7 @@
 defmodule MarshallWeb.CloneComponentsTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Phoenix.LiveViewTest
   alias MarshallWeb.CloneComponents
 

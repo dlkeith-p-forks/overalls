@@ -1,6 +1,7 @@
 defmodule Audi.ConfigTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @token "audi_service_" <> Base.url_encode64(<<0::256>>, padding: false)
 
   test "control clients reject IPv6 literals for both service roles" do

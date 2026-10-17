@@ -5,7 +5,8 @@ Code.require_file("hldd_helper.exs", __DIR__)
 
 defmodule Overalls.HLDDViewsTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Overalls.{HLDDGate, HLDDViews}
   import Overalls.HLDDViewFixture, only: [fixture: 1, snapshot: 0]
 

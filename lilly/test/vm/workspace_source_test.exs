@@ -1,6 +1,7 @@
 defmodule Lilly.VM.WorkspaceSourceTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import ExUnit.CaptureLog
   alias Lilly.VM.WorkspaceSource
 

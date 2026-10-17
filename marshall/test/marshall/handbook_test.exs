@@ -1,6 +1,7 @@
 defmodule Marshall.HandbookTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Handbook
 
   test "contents contains metadata only and every identifier selects one compiled body" do
