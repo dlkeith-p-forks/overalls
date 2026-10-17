@@ -81,4 +81,13 @@ defmodule OverallsDiagnosticsTelemetryContractTest do
 
     assert :ignore = Overalls.Diagnostics.Privacy.filter(:not_an_event, state)
   end
+
+  @tag obligation: "overalls_diagnostics.telemetry.I6"
+  test "schema predicates reject malformed and unknown values" do
+    assert Overalls.Diagnostics.Schema.uuid?("123e4567-e89b-12d3-a456-426614174000")
+    assert Overalls.Diagnostics.Schema.uuid?("123E4567-e89b-12d3-a456-426614174000")
+    refute Overalls.Diagnostics.Schema.uuid?("123e4567-e89b-12d3-a456-42661417400")
+    refute Overalls.Diagnostics.Schema.uuid?(:not_a_uuid)
+    refute Overalls.Diagnostics.Schema.enum?(:not_in_trace_schema)
+  end
 end

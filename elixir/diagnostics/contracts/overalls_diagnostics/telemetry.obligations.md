@@ -37,3 +37,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Inputs outside the reviewed event map shape MUST be ignored without raising or emitting payload data.
 - **kind:** security
 - **status:** active
+
+### overalls_diagnostics.telemetry.I6 — Schema predicates are strict and schema-bound
+- **scope:** `Overalls.Diagnostics.Schema.uuid?/1`, `enum?/1`
+- **must:** UUID validation accepts only five correctly sized hexadecimal groups, and enum validation accepts only atoms present in the reviewed trace schema; malformed terms and unknown values are rejected without conversion side effects.
+- **kind:** security
+- **status:** active
