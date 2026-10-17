@@ -81,22 +81,76 @@ def _refused(result: RequestResult, names: frozenset[str]) -> bool:
     )
 
 
+# A syntactically valid synthetic ed25519 key: Audi's decoder accepts its shape.
+_SYNTHETIC_SSH_KEY = (
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcH"
+)
+FOREIGN_VARIANTS = ("foreign_audi", "foreign_porsche", "foreign_ziggy", "foreign_galileo")
+
+
+def _foreign_request(fixture: DispatchFixture, variant: str) -> tuple[str, dict[str, object]]:
+    """A document that the named foreign service's own decoder accepts.
+
+    Sources: Audi ``Ingress.ControlRequests`` ssh-open (v1 key and label),
+    Porsche ``SSHManagement.request("commands", ...)`` with a valid
+    ``SSHCommand`` mutation, Ziggy v2 ``agent_next`` (empty after the version is
+    removed) and Galileo ``authorize`` (a four-field private binding and an
+    integration name). Each would reach its domain action if routed there.
+    """
+    if variant == "foreign_audi":
+        return "audi.ssh_open", {
+            "version": 1,
+            "public_key": _SYNTHETIC_SSH_KEY,
+            "label": "antithesis-probe",
+        }
+    if variant == "foreign_porsche":
+        return "porsche.commands", {
+            "version": 1,
+            "session_token": "antithesis-probe-session",
+            "command": {
+                "version": 1,
+                "command": "stop",
+                "arguments": ["antithesis-probe"],
+                "options": {"request-id": str(session_id())},
+            },
+        }
+    if variant == "foreign_ziggy":
+        return "ziggy.agent_next", {"version": 2}
+    if variant == "foreign_galileo":
+        return "galileo.authorize", {
+            "binding": {
+                "host_id": str(fixture.host_id),
+                "vm_id": str(session_id()),
+                "placement_id": str(session_id()),
+                "execution_epoch": 1,
+            },
+            "name": "antithesis-probe",
+        }
+    raise ValueError("unknown foreign dispatch variant")
+
+
 def _negative(
     fixture: DispatchFixture, session: ControlSession, variant: str, identifier: int
 ) -> None:
     """@cc [owner:ghuntley,label:verification;security] dispatch-independent-effect
-    A negative attempt MUST use a fresh UUID whose absence was established by SQL.
-    A positive refusal requires a correlated response and an observed absent row;
-    lost responses or SQL failures MUST remain unknown. Any observed forbidden
-    row MUST fail safety even if the response was lost.
+    A negative attempt MUST use a fresh UUID whose absence was established by SQL
+    and an observed foreign-effect snapshot taken before the request. A positive
+    refusal requires a correlated response, an observed absent session row and
+    unchanged foreign-effect counts; lost responses or SQL failures MUST remain
+    unknown. Any observed forbidden row or changed foreign-effect count MUST fail
+    safety even if the response was lost. A foreign document MUST be valid for
+    its own service so that only the bound service's dispatch can refuse it.
     """
     nonce = session_id()
     before = fixture.oracle.session_exists(fixture.host_id, nonce)
     if before.state is not State.OBSERVED or before.value is not False:
         return
+    effects_before = fixture.oracle.foreign_effects()
+    if effects_before.state is not State.OBSERVED or effects_before.value is None:
+        return
     body = _body(fixture, nonce)
-    if variant == "foreign_prefix":
-        op = "audi.ssh_open"
+    if variant in FOREIGN_VARIANTS:
+        op, body = _foreign_request(fixture, variant)
         expected = frozenset({"invalid_request"})
     elif variant == "unknown_own_route":
         op = "lilly.unknown"
@@ -124,19 +178,29 @@ def _negative(
             raise ValueError("unknown Lilly dispatch variant")
     result = session.exchange(identifier, op, body)
     after = fixture.oracle.session_exists(fixture.host_id, nonce)
-    if after.state is not State.OBSERVED or after.value is None:
+    effects_after = fixture.oracle.foreign_effects()
+    if (
+        after.state is not State.OBSERVED
+        or after.value is None
+        or effects_after.state is not State.OBSERVED
+        or effects_after.value is None
+    ):
         return
+    effect_changed = effects_after.value != effects_before.value
     positively_refused = _refused(result, expected)
     unexpected_success = (
         result.acknowledged and result.response is not None and result.response.get("ok") is True
     )
-    if positively_refused or unexpected_success or after.value:
+    if positively_refused or unexpected_success or after.value or effect_changed:
         always(
-            not after.value and positively_refused,
-            "Bound Lilly invalid requests do not create a durable execution session",
+            positively_refused and not after.value and not effect_changed,
+            "Control rejects cross-service and invalid documents before domain effects",
         )
-    if positively_refused and not after.value:
-        reachable("Control bound Lilly request reached a closed service or document refusal")
+    if positively_refused and not after.value and not effect_changed:
+        if variant in FOREIGN_VARIANTS:
+            reachable("Control bound Lilly socket refused a valid foreign-service document")
+        else:
+            reachable("Control bound Lilly request reached a closed service or document refusal")
 
 
 def run_dispatch() -> int:
@@ -166,10 +230,11 @@ def run_dispatch() -> int:
             return 0
         reachable("Control bound Lilly v4 session has a durable positive witness")
 
-        # Source: Lilly service prefix and ProvisionerRequests route table;
+        # Source: each service's prefix match, Lilly's ProvisionerRequests route
+        # table and foreign route decoders;
         # Execution.session/1 is closed at v4 with exactly three fields.
         variants = (
-            "foreign_prefix",
+            *FOREIGN_VARIANTS,
             "unknown_own_route",
             "old_version",
             "future_version",
@@ -178,7 +243,8 @@ def run_dispatch() -> int:
             "wrong_type",
             "wrong_machine",
         )
-        for variant in ("foreign_prefix", choice(variants), choice(variants)):
+        # One valid foreign-service document is guaranteed per invocation.
+        for variant in (choice(FOREIGN_VARIANTS), choice(variants), choice(variants)):
             _negative(fixture, session, variant, choice((0, 1, MAX_ID - 1, MAX_ID)))
     finally:
         session.close()
@@ -216,8 +282,11 @@ def run_legacy_request() -> int:
     """@cc [owner:ghuntley,label:verification] legacy-request-scope
     A legacy request MUST be judged only after a valid v4 session succeeded on
     the same bound service and SQL confirmed the legacy nonce absent before
-    dispatch. This request-side probe MUST NOT claim Lilly's response parser,
-    Store, Journal or physical launch marker as observed.
+    dispatch. The durable command witness is Marshall's committed host session
+    and epoch read before and after each legacy request; a concurrent change
+    not attributable to the request MUST remain unknown. This request-side
+    probe MUST NOT claim Lilly's response parser, Store, Journal or physical
+    launch marker as observed.
     """
     fixture = _fixture()
     if fixture is None:
@@ -249,22 +318,41 @@ def run_legacy_request() -> int:
             before = fixture.oracle.session_exists(fixture.host_id, nonce)
             if before.state is not State.OBSERVED or before.value is not False:
                 continue
+            command_before = fixture.oracle.current_host_session(fixture.host_id)
+            if command_before.state is not State.OBSERVED:
+                continue
             result = session.exchange(index, "lilly.sessions", _body(fixture, nonce, version))
             after = fixture.oracle.session_exists(fixture.host_id, nonce)
-            if after.state is not State.OBSERVED or after.value is None:
+            command_after = fixture.oracle.current_host_session(fixture.host_id)
+            if (
+                after.state is not State.OBSERVED
+                or after.value is None
+                or command_after.state is not State.OBSERVED
+            ):
                 continue
+            # The legacy request itself would install its nonce or erase the
+            # committed session. Any other change is the live Lilly runtime
+            # reconnecting and leaves the unchanged-command check inconclusive.
+            probe_changed = (command_after.value is None and command_before.value is not None) or (
+                command_after.value is not None and command_after.value.session_id == nonce
+            )
+            unchanged = command_after.value == command_before.value
             positively_refused = _refused(result, frozenset({"unsupported_version"}))
             unexpected_success = (
                 result.acknowledged
                 and result.response is not None
                 and result.response.get("ok") is True
             )
-            if positively_refused or unexpected_success or after.value:
+            forbidden = unexpected_success or after.value or probe_changed
+            if not unchanged and not forbidden:
+                LOG.info("Execution legacy durable command changed concurrently; unexercised")
+                continue
+            if positively_refused or forbidden:
                 always_or_unreachable(
-                    not after.value and positively_refused,
-                    "Execution legacy session request cannot create durable v4 authority",
+                    positively_refused and not after.value and unchanged,
+                    "Execution v4 refuses legacy authority without changing durable command",
                 )
-            if positively_refused and not after.value:
+            if positively_refused and not after.value and unchanged:
                 reachable("Execution legacy inner session reaches authenticated decoder refusal")
     finally:
         session.close()

@@ -53,7 +53,8 @@ sockets and compares read-only PostgreSQL snapshots before and after an old
 session is superseded. Its `lilly.exchange` requests contain no fabricated
 capacity, acknowledgements or physical outcomes. The `host_rotation` singleton
 rotates authority once and is terminal for the same cached-credential reason.
-These two templates are outside the selected `control-core` command roster.
+Both are one-command singleton templates in the selected `control-core`
+command roster; each timeline runs at most one singleton.
 
 The private request channel also accepts a fixed `compute.*` namespace for
 the three synthetic fixture accounts. `compute.catalog` reports currently
@@ -79,7 +80,13 @@ fresh explicit sentinel call. The separate
 authenticated Marshall Control request with a unique Lilly session ID, closes
 before reading its reply, and queries that exact session in PostgreSQL; the
 following fresh session uses a different ID. This SQL-effect command is
-terminal for its timeline because a new session may fence Lilly's live session.
+terminal for its timeline because a new session may fence Lilly's live session;
+it is selected in `control-core` as the `control_delivery` singleton template.
+The `control/serial_driver_version_refusal.py` command runs the same shared
+client against the loopback peer's `version_refusal` mode: a welcomed 4001
+close with one held call must keep the `unsupported_version` class, retire the
+call as unproven and open no new transport for a bounded 5,000 ms window. It
+does not observe Marshall emitting 4001 or a service adapter stopping.
 The peer can establish transport non-redelivery; the SQL receipt can show that
 reply loss concealed a committed effect. Neither witness implies native
 execution. Missing peer output, failed SQL reads and uncertain writes remain

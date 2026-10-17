@@ -617,7 +617,15 @@ class VerificationTests(unittest.TestCase):
         data = manifest(root, selection)
         self.assertEqual(
             selection.templates,
-            ("control", "control_rotation", "control_dispatch", "control_legacy_request"),
+            (
+                "control",
+                "control_rotation",
+                "control_dispatch",
+                "control_legacy_request",
+                "control_delivery",
+                "host_sessions",
+                "host_rotation",
+            ),
         )
         self.assertTrue(
             all(
@@ -654,8 +662,10 @@ class VerificationTests(unittest.TestCase):
             self.assertEqual(staged_modules, runtime_modules)
             self.assertIn("core/__init__.py", staged_modules)
             self.assertIn("core/bootstrap.py", staged_modules)
-            # Same package, untraced module: only the host_sessions template imports it.
-            self.assertNotIn("control/host_sessions.py", staged_modules)
+            self.assertIn("control/host_sessions.py", staged_modules)
+            self.assertIn("control/version_refusal.py", staged_modules)
+            # Same package, untraced module: only the repository-origin commands import it.
+            self.assertNotIn("repository/scenarios.py", staged_modules)
             self.assertFalse(any(name.startswith("backup/") for name in staged_modules))
             extra = catalog / "backup/scenarios.py"
             extra.parent.mkdir()

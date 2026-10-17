@@ -35,4 +35,4 @@ Add a branch checkpoint after durable commit and before socket reply, then repla
 
 ## Authored assertion snapshot
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/delivery.py:126`. Real BEAM Control client with independent frame ledger; separate terminal Marshall SQL receipt command is authored but unexecuted in hosted Compose. It is in current staged control-core command/dependency set. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/delivery.py:126`. Real BEAM Control client with independent frame ledger; the separate terminal Marshall SQL receipt command (`control_delivery` singleton) is selected in control-core since 2026-10-17 but unexecuted in hosted Compose. It is in current staged control-core command/dependency set. This records source presence, not a passing hosted or native result.

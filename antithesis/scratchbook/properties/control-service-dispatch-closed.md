@@ -4,7 +4,7 @@ Priority: P1. Confidence: high for service prefix isolation; domain-body coverag
 
 ## Guarantee and proposed assertions
 
-A welcomed socket dispatches only operations for its authenticated service, with the route's current document version and validated body; a wrong-service or malformed request cannot cause a durable or external effect. Proposed `Always(wrong_service_or_invalid_document_has_no_effect, "Control rejects cross-service and invalid documents before domain effects")` checks each negative attempt against a separately inventoried effect ledger. It is missing per `../existing-assertions.md`. This is a stateful authorization test across a valid connection, not a pure envelope decoder test.
+A welcomed socket dispatches only operations for its authenticated service, with the route's current document version and validated body; a wrong-service or malformed request cannot cause a durable or external effect. Proposed `Always(wrong_service_or_invalid_document_has_no_effect, "Control rejects cross-service and invalid documents before domain effects")` checks each negative attempt against a separately inventoried effect ledger. Per `../existing-assertions.md` (2026-10-17) it is authored for a Lilly-bound socket only; see the snapshot below. This is a stateful authorization test across a valid connection, not a pure envelope decoder test.
 
 ## Evidence and failure history
 
@@ -34,6 +34,6 @@ Parameter menu: five bound services × four foreign prefixes; body version curre
 
 **Evaluation follow-up:** `R4`: Keep exhaustive fixed decoder/version/migration matrices in ordinary tests. In Antithesis, race representative invalid input with a real restart, authority change or valid effect and observe the independent outcome. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
-## Supporting assertion snapshot
+## Authored assertion snapshot
 
-**Supporting assertion snapshot (2026-10-13 15:03 UTC):** Narrower assertion messages are present at `antithesis/workload/control/dispatch.py:134`. A Lilly-v4 invalid-request check and independent Lilly session-row witness cover a narrower route. The proposed full cross-service dispatch primary is absent because the Audi request used a Lilly-v4 body and could be rejected by either decoder. All listed support callsites are in the current staged control-core command/dependency set. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-17):** Primary `always` message is present at `antithesis/workload/control/dispatch.py:195`. A Lilly-bound socket sends one valid foreign-service document per invocation (Audi `ssh_open`, Porsche `commands`, Ziggy v2 `agent_next` or Galileo `authorize`, each accepted by its own decoder) plus drawn invalid Lilly documents. The verdict requires a correlated refusal, an absent fresh Lilly session row and unchanged read-only counts of `ingress_sessions`, `ssh_requests`, claimed `agent_model_calls` and `galileo_peer_tokens`; a lost reply without an effect stays unknown. Scope: the bound service is Lilly only; Audi, Porsche, Ziggy and Galileo sockets, native effects and external upstreams are not bound or observed. The `control_dispatch` singleton is in the staged control-core selection. This records source presence, not a passing hosted or native result.

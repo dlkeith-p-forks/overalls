@@ -7,8 +7,10 @@ execution directory; they contain file paths, hashes, run IDs and public fixture
 identifiers, but no credential values.
 
 The default `control-core` selection includes only the `control`,
-`control_rotation`, `control_dispatch`, and `control_legacy_request` command
-templates. The latter three each contain one terminal singleton command. The
+`control_rotation`, `control_dispatch`, `control_legacy_request`,
+`control_delivery`, `host_sessions` and `host_rotation` command templates. The
+latter six each contain one terminal singleton command; a timeline runs at most
+one of them. The
 separate `repository-origin` profile selects four repository commands with the
 origin and Enrico overlays; `access-smtp` selects three access commands with
 the SMTP overlay; `recorder-host` selects the three recorder commands with the

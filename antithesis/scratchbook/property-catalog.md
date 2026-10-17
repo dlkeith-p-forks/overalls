@@ -8,7 +8,7 @@ scope_answer: "Repository only (Recommended)"
 
 # Property catalog
 
-This catalog synthesizes 113 source-grounded candidates into 104 canonical properties. The current as-of [assertion scan](existing-assertions.md) records 153 authored callsites and 26 primary catalog messages; the source is moving and no hosted baseline or mutation result is claimed. Source contracts and ADRs state intended behavior to test; a timeout or lost reply is an unproven effect until independently reconciled.
+This catalog synthesizes 113 source-grounded candidates into 104 canonical properties. The current as-of [assertion scan](existing-assertions.md) records 162 authored callsites and 30 primary catalog messages; the source is moving and no hosted baseline or mutation result is claimed. Source contracts and ADRs state intended behavior to test; a timeout or lost reply is an unproven effect until independently reconciled.
 
 Each entry gives one primary SDK assertion with a unique literal message. Evidence files retain source paths, independent oracles, value menus, environment limits, and any supplementary branch or progress assertions. P0/P1 and confidence rate importance and source grounding, not passing execution.
 
@@ -149,7 +149,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/delivery.py:126`. Real BEAM Control client with independent frame ledger; separate terminal Marshall SQL receipt command is authored but unexecuted in hosted Compose. It is in current staged control-core command/dependency set. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/delivery.py:126`. Real BEAM Control client with independent frame ledger; the separate terminal Marshall SQL receipt command (`control_delivery` singleton) is selected in control-core since 2026-10-17 but unexecuted in hosted Compose. It is in current staged control-core command/dependency set. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -184,7 +184,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 | | |
 |---|---|
 | **Type** | Safety (`Always` primary) |
-| **Priority / Confidence / Status** | P1 / high / partially instrumented; primary unimplemented |
+| **Priority / Confidence / Status** | P1 / high / authored primary; hosted unexecuted; scope partial |
 | **Property** | a valid bound socket cannot use another service's op or invalid domain document to cause an effect. |
 | **Invariant** | `Always` on independently inventoried effects after wrong-prefix, version and body probes; race valid and invalid calls. Planned literal SDK message: **"Control rejects cross-service and invalid documents before domain effects"**. |
 | **Antithesis Angle** | `Always` on independently inventoried effects after wrong-prefix, version and body probes; race valid and invalid calls. |
@@ -193,7 +193,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Supporting assertion snapshot (2026-10-13 15:03 UTC):** Narrower assertion messages are present at `antithesis/workload/control/dispatch.py:134`. A Lilly-v4 invalid-request check and independent Lilly session-row witness cover a narrower route. The proposed full cross-service dispatch primary is absent because the Audi request used a Lilly-v4 body and could be rejected by either decoder. All listed support callsites are in the current staged control-core command/dependency set. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-17):** Primary `always` message is present at `antithesis/workload/control/dispatch.py:195`. A Lilly-bound socket sends one valid foreign-service document per invocation (Audi `ssh_open`, Porsche `commands`, Ziggy v2 `agent_next` or Galileo `authorize`, each accepted by its own decoder) plus drawn invalid Lilly documents. The verdict requires a correlated refusal, an absent fresh Lilly session row and unchanged read-only counts of `ingress_sessions`, `ssh_requests`, claimed `agent_model_calls` and `galileo_peer_tokens`; a lost reply without an effect stays unknown. Scope: the bound service is Lilly only; Audi, Porsche, Ziggy and Galileo sockets, native effects and external upstreams are not bound or observed. The `control_dispatch` singleton is in the staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R4`: Keep exhaustive fixed decoder/version/migration matrices in ordinary tests. In Antithesis, race representative invalid input with a real restart, authority change or valid effect and observe the independent outcome. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -206,16 +206,16 @@ These properties exercise the control, credentials, and leases boundaries and th
 | | |
 |---|---|
 | **Type** | Safety (`Always` primary) |
-| **Priority / Confidence / Status** | P0 / high / researched; primary unimplemented |
+| **Priority / Confidence / Status** | P0 / high / authored primary; hosted unexecuted; scope partial |
 | **Property** | 426/4001 stops the Control owner with a distinct version class, including pending calls; wrong service-document version remains a request refusal. |
 | **Invariant** | `Always` on adapter class and transport handshake count; separate `Always` for document refusal; `Sometimes(recoverable_socket_reestablished)` only after a healthy recoverable loss. Planned literal SDK message: **"Control transport version refusal stops its owner without losing its class"**. |
 | **Antithesis Angle** | `Always` on adapter class and transport handshake count; separate `Always` for document refusal; `Sometimes(recoverable_socket_reestablished)` only after a healthy recoverable loss. |
 | **Why It Matters** | Unsupported peers must fail distinctly so owners do not silently retry incompatible authority. |
 | **Evidence** | [Source and oracle](properties/control-version-refusal-remains-terminal.md); discovery focus 04, 10. |
 
-**Existing instrumentation:** The current Python Control smoke checks observed 426 responses only; this property’s owner-stop, 4001, pending-retirement and no-retry assertion remains unimplemented.
-
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Authored assertion snapshot (2026-10-17):** Primary `always` message is present at `antithesis/workload/control/version_refusal.py:54`. `control/serial_driver_version_refusal.py` runs the real shared `OverallsProtocol.Control.Client` against the loopback peer's `version_refusal` mode: after welcome the peer holds one observed request, sends close 4001, then counts TCP accepts for 5,000 ms (beyond the 4,000 ms backoff ceiling). The verdict requires the `unsupported_version` disconnect class, the held call retired as `unproven`, retained status, zero handshakes and an immediate `disconnected` refusal for a new call. Scope: 4001 on the shared client only; the bounded quiet window is not proof of no later retry, and Marshall's 4001/426 emission, service-adapter owner stop and the recoverable reconnect `Sometimes` are not observed here (426 pre-upgrade refusal is the separate outer-version support check). It is in the staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R9`: Use distinct command/branch IDs for permanent 426/4001 refusal and recoverable outage reconnect. A healthy reconnect does not satisfy permanent-refusal coverage. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -257,7 +257,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:348`. Current Lilly old-socket/new-credential route only; other services and physical effects are separate. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:348`. Current Lilly old-socket/new-credential route only; other services and physical effects are separate. It is in the staged control-core selection as a terminal singleton template (selected 2026-10-17). This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -279,7 +279,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:272`. Current Lilly host-session/successor route only; physical guest/execution authority is separate. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:272`. Current Lilly host-session/successor route only; physical guest/execution authority is separate. It is in the staged control-core selection as a terminal singleton template (selected 2026-10-17). This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -768,7 +768,7 @@ These properties exercise the placement, execution, and physical ownership bound
 | | |
 |---|---|
 | **Type** | Safety (`AlwaysOrUnreachable` primary) |
-| **Priority / Confidence / Status** | P0 / high / researched; primary unimplemented |
+| **Priority / Confidence / Status** | P0 / high / authored primary; hosted unexecuted; scope partial |
 | **Property** | An unsupported inner Execution document cannot create executable Lilly intent, acknowledge an outcome, or erase the last durable command. |
 | **Invariant** | `AlwaysOrUnreachable` checks each optional incompatible-document refusal against Store, Journal, and physical launch marker; the path may be absent in a run. Planned literal SDK message: **"Execution v4 refuses legacy authority without changing durable command"**. |
 | **Antithesis Angle** | Vary inner versions inside a valid Control v1 socket, lose a response, and reconnect with a compatible peer. |
@@ -776,6 +776,8 @@ These properties exercise the placement, execution, and physical ownership bound
 | **Evidence** | [Source and oracle](properties/execution-v4-refuses-legacy-document.md); discovery focus 10. |
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Authored assertion snapshot (2026-10-17):** Primary `always_or_unreachable` message is present at `antithesis/workload/control/dispatch.py:351`. After a valid v4 session, inner Execution v1/v3/v5 session documents on an authenticated Control v1 socket must receive `unsupported_version`, leave their fresh session row absent and leave Marshall's committed host session and epoch unchanged; a concurrent change by the live Lilly runtime leaves that request unexercised. The distinct danger-branch `Reachable` is `Execution legacy inner session reaches authenticated decoder refusal`. Scope: Marshall's request decoder and durable host row only; Lilly's response parser, Store, Journal and physical launch marker are not observed. The `control_legacy_request` singleton is in the staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R2`: The focused command must also emit a distinct `Reachable` at the actual incompatible/corrupt/restart/negative-status danger branch. Optional-path safety can pass without that branch; positive compatible traffic is insufficient. `R4`: Keep exhaustive fixed decoder/version/migration matrices in ordinary tests. In Antithesis, race representative invalid input with a real restart, authority change or valid effect and observe the independent outcome. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 

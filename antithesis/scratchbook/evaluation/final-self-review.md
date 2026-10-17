@@ -63,12 +63,13 @@ not system facts. The retired harness and history were excluded.
 
 ## Current assertion and execution evidence
 
-The [inventory](../existing-assertions.md) records **153 authored SDK
-callsites and 26 of 104 catalog primary literals** in its dated snapshot.
+The [inventory](../existing-assertions.md) records **162 authored SDK
+callsites and 30 of 104 catalog primary literals** in its dated snapshot.
 The companion roster records each source hash; the fresh scanner found no
 duplicate literal or primary-kind mismatch. Other authored messages are
 support, startup or additional checks; source presence does not establish a
-full property. In particular, `control-service-dispatch-closed`,
+full property. `control-service-dispatch-closed` now has its primary literal,
+scoped to a Lilly-bound socket. In particular,
 `ziggy-completion-once-accounted`,
 `galileo-named-origin-credential-and-revocation-bound`,
 `terminal-input-frame-replay-once`, and
@@ -77,14 +78,19 @@ but no full primary literal. Neither an authored literal nor a static
 scanner match is a declared, evaluated or passing hosted property. Rerun the
 inventory if the source changes again.
 
-`selection.py inspect` traces nine commands in four default `control-core`
-templates and 25 Python callsites in their runtime imports. Exactly five
-catalog primaries are on that selected Python source path:
+`selection.py inspect` traces 13 commands in seven default `control-core`
+templates (2026-10-17) and 33 Python callsites in their runtime imports.
+Exactly ten catalog primaries are on that selected Python source path:
 `control-bind-before-domain-effects`,
 `control-bound-credential-revalidated`,
 `control-inflight-limit-and-retirement`,
-`control-no-hidden-redelivery`, and
-`control-pending-response-retirement`. The separately configured access and
+`control-no-hidden-redelivery`,
+`control-pending-response-retirement`,
+`control-service-dispatch-closed`,
+`control-version-refusal-remains-terminal`,
+`execution-v4-refuses-legacy-document`,
+`host-credential-rotation-fences-old-socket`, and
+`host-session-successor-fences-old-exchanges`. The separately configured access and
 repository profiles trace three primaries each, but they are not the default
 selection. This is an inspected source graph, not proof of a staged image,
 compiled BEAM instrumentation, SDK sink ingestion, required reach states or a

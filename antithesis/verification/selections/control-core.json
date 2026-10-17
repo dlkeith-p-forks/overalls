@@ -8,7 +8,10 @@
     "control",
     "control_rotation",
     "control_dispatch",
-    "control_legacy_request"
+    "control_legacy_request",
+    "control_delivery",
+    "host_sessions",
+    "host_rotation"
   ],
   "runtime_packages": [
     "core",
@@ -39,6 +42,9 @@
   "singleton_templates": [
     "control_rotation",
     "control_dispatch",
-    "control_legacy_request"
+    "control_legacy_request",
+    "control_delivery",
+    "host_sessions",
+    "host_rotation"
   ]
 }

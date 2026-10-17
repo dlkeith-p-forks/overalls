@@ -277,10 +277,17 @@ emitted setup and passed six serial Control commands; the selected manifest
 has four stale runtime-dependency hashes, so no frozen hosted baseline follows.
 
 The static researched catalog contains 104 primary properties. The current
-literal scanner finds 153 SDK callsites, 26 matching primary messages and 78
+literal scanner finds 162 SDK callsites, 30 matching primary messages and 74
 missing primaries, with no duplicate callsite or kind mismatch; none
 of the 104 properties is complete as a workload plus independent oracle and
-hosted result. Local SDK writer probes and unit tests show bounded JSONL
+hosted result. The default `control-core` selection now stages 13 commands in
+seven templates, six of them one-command terminal singletons: credential
+revalidation, dispatch, legacy request, SQL reply loss, host-session successor
+and host rotation. Its cross-service dispatch primary binds only a Lilly socket
+and counts foreign effect tables; its legacy-document primary observes
+Marshall's durable host session, not Lilly's Store or Journal; its 4001
+refusal primary drives the shared client against a loopback peer for a bounded
+quiet window. None has a hosted run. Local SDK writer probes and unit tests show bounded JSONL
 behavior, including short-write refusal across helper restart, but they do not
 prove hosted ingestion. BEAM fallback assertions provide no BEAM branch
 coverage. Python catalog scanning provides no source coverage; the C helper is
