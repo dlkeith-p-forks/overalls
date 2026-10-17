@@ -823,13 +823,174 @@ and agent execution remain unavailable; the host-only transport is a schema
 boundary. The
 rolling FreeBSD 14.3 source endpoint is retired and replaced by a checksum-pinned
 archive capture; Nix evaluates the pinned receipts, but the placeholder kernel
-artifacts make image construction stop before a stock disk is copied. No
-cross-built kernel, complete native agent closure, native `terminald`, machine
-boot, readiness, terminal, workspace, relocation or fleet evidence is recorded.
+artifacts make image construction stop before a stock disk is copied. The separate FreeBSD candidate now cross-builds a complete GENERIC kernel;
+the recorded native Lyra package linked eighteen production target executables using the pinned
+FreeBSD libraries and official OmniOS SDK. The illumos sources include a modern
+virtio backport, public socket ABI and bounded transport/socket wrappers.
+Both native terminal daemons now cross-link as separate outputs. These
+experimental outputs do not enter admitted image construction. FreeBSD's separate
+two-boot QEMU candidate assembly and scoped nested-KVM transport gate have passed.
+OmniOS full-kit pool import/clone/install/export and diagnostic Firecracker
+file/token/host-CID transport checks have passed; final reproducible-image
+replay, complete service execution, isolation, recovery and fleet
+acceptance remain unrecorded.
 
-See [ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md),
+See [ADR-0190](repo:docs/architecture/decisions/0190-native-kernel-provenance-and-admission.md),
 the [multi-OS architecture review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md)
 and the [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
+
+### Native kernel candidates and socket ABI
+
+[Native kernel inputs](repo:nix/domains/artifacts/guest/native-kernels/README.md)
+pin the exact release sources. FreeBSD uses vendor family 45 with BSD length and
+family bytes; illumos uses private family 40 with a 16-bit family. Both publish
+`sys/vsock.h`, a 16-byte `sockaddr_vm`, port/CID at offsets 4/8 and the standard
+CID/port constants. Only passive host-initiated streams are implemented.
+Binding/creation requires root authority (global-zone system configuration on
+illumos), guest CID 3 or ANY, and accepted peer CID 2. Invalid CIDs, reserved
+bytes, port zero, frame lengths, flags, transition/credit state and resource
+exhaustion refuse. Each wrapper caps sockets at 128 and receive windows at
+64 KiB; queue pools are fixed and control traffic retains transmit capacity.
+FreeBSD also refuses buffer/low-watermark setters so generic socket options
+cannot enlarge that budget. Test-only native assertions check four option
+refusals, exact buffer size, socket-129 refusal and full capacity reuse; their
+final-candidate machine execution remains separate from test presence.
+
+The FreeBSD static driver retains interrupt-visible resources until VM disposal,
+refuses runtime detach/unload and requires a new VM after reset/configuration
+change. Illumos has separate `drv/viosock` and `socketmod/sockvsock` modules plus
+an opt-in sockfs listener failure path: reset fences listeners and idle sockets,
+wakes accepts, and prevents reuse. Its modern virtio ABI requires rebuilding
+all five consumers with the framework. Cross-compiled objects do not establish
+native module linkage, native boot or reset safety. The native
+[link/install helper](repo:nix/domains/artifacts/guest/native-kernels/illumos/native_candidate.py)
+subsequently linked all nine modules in the matching OmniOS guest, verified them
+before installing into a separate scratch ZFS boot environment and rebuilt its
+boot archive. The original boot environment was preserved and the guest shut
+down cleanly. Its actual linked-hash and installation receipts retain runtime
+validation and native admission false. Reproducible full-disk assembly and
+loaded-module acceptance remain open. Native loading exposed Clang's default
+userland syscall renaming; the corrected build undefines `_XOPEN_SOURCE`, checks
+actual ordinary syscall exports and binds the build recipe into its token. The
+corrected clone boots QEMU and passes a native TCP bind and seven helper tests.
+The common C frame/credit
+properties and sanitizers execute on Linux and do not execute these wrappers.
+
+The current illumos driver allocates fallible worker/queue resources before
+`DRIVER_OK` and refuses runtime detach. Activated DMA, queue, interrupt and worker
+storage remains until VM disposal; a late activation failure withholds readiness
+and retains a bounded unavailable attachment. Firecracker's refused device reset
+cannot authorize reclaiming backend-visible storage. This is an independently
+reviewed source correction to the existing lifetime contract. The corrected
+`76b8c1ad` 26-object cross-build and all four host-test gates passed; native replay
+is still required.
+This does not establish the cause of the earlier ZFS I/O errors.
+Host extraction/fault injection covers 236 preactivation failures, both late
+activated failures and three rejected lifetime mutants, retaining all 65 DMA/
+chain pairs after activation. The block driver separately reserves worst-case
+data plus two metadata descriptors per concurrent direct request, with 265,596
+generated helper vectors passing sanitizers. These remain host/source evidence;
+native DMA safety and the original ZFS EIO cause are not established.
+Completion recycles its bounded request/descriptors before blkdev can
+synchronously resubmit, preserves the original callback error and never touches
+the old request after callback entry. Completed external transfers return
+submission success after one callback, including polled errors; internal
+transfers retain direct errors. The five-function host regression passed 161
+sanitized histories and rejected four actual-source mutants; this remains mock
+ownership evidence.
+
+The [FreeBSD transport machine gate](repo:nix/verification/tests/machines/native-transport/default.nix)
+now exists: it boots the source-built candidate under patched Firecracker in
+nested KVM, checks the executing build token and CID2/3, rejects oversized
+length/disconnected histories, reconnects and compares nine payload sizes from
+zero through 1 MiB across the credit-window boundary. It records exact disk,
+firmware and VMM digests while keeping admission false. The newer recorded
+139-second execution passed token/CID, native ABI and immutable buffer/capacity
+refusals. The final ordinary catalog gate subsequently passed in 246 seconds
+with exact image `19658a4a`, token, firmware and VMM receipts in the review.
+It does not test the complete native
+services, wrong-CID injection, device reset, physical isolation or recovery.
+A separate test-only FreeBSD image passed one actual Firecracker pause,
+full-snapshot and resume transport event: idle socket identity refused with
+`ECONNRESET`, pending accept/read/write calls woke with errors and fresh sockets
+refused until a new VM. Exact test image/token/firmware/VMM evidence is in the
+native review. This is separate from the final service image and does not
+establish reset-race stress, DMA reclamation, physical or OmniOS behavior.
+The persisted `native-freebsd-reset` nested-KVM gate subsequently passed in
+232 seconds with the same socket outcomes and exact image/kernel/probe/firmware/
+VMM receipts in the review. Both native test probes cross-compile; only FreeBSD
+has recorded event execution. Its private fixture Unix API adds no production
+control or ordinary guest TCP surface.
+
+Native boot now includes a root-only mounted-root growth helper before MMDS
+identity and network. It verifies both GPT copies/CRCs, exact disk/partition
+identities and actual capacity before native resize commands, then requires a
+fresh volatile success receipt. Twelve pure checks and three native FreeBSD
+QEMU boots passed one unchanged root and two expansions, retaining home bytes,
+nonroot GPT entries and a foreign disk. The later exact canonical-roots/SSH
+FreeBSD image passed 334-second Firecracker composition through three clean
+boots/two expansions with complete service oracles, preserved data and strict
+EFI inventories (only bounded root `NvVars` mutable). The final reviewed
+blocking-flush image passed all five services/growth/policy/daemon-recovery/
+same-disk SIGKILL-recovery variants, with exact image and immutable receipt paths
+in the native review. OmniOS growth still requires execution.
+This adds a tenth production executable
+per OS beyond the recorded eighteen-executable package. OmniOS's offline SMF
+profile disables all four stock cloud-init instances and stock SSH; only
+Overalls bootstrap and the roster supervisor own those startup authorities.
+Seed-fixed native assembly and fresh-boot resolver/disabled-service checks
+passed. A diagnostic Firecracker boot also passed the complete AF40/file
+verifier and nine transport echo sizes through 1 MiB after a debugger-only stock
+`pseudo_isa` override. The assembler now preserves stock files and binds
+persistent pseudo ISA plus loader/kernel serial settings; final exact-image
+replay remains required. No diagnostic override grants production authority.
+The first formal persistent-console boot reached ordinary login but refused
+services: the remaining plumb-only stock vioif0 file blocked physical networking,
+and all three Overalls manifests used an invalid stability enum. The correction
+removes only the four fixed stock vioif0 address/DHCP files, preserves unrelated
+interfaces and binds their absence into assembly and boot verification.
+The corrected manifests pass actual native `svccfg validate`; the old-enum mutant
+is rejected. Assembly and verification now require that native schema check.
+Actual service import/methods and the separate ZFS I/O failure require replay;
+decoded FMD errors precede the later reset attempts.
+The final corrected token `985301b4` kit passed native clean-export assembly
+with nine linked modules, 764 exact payload entries, all three native manifest
+validations and the four recorded network removals. A read-only receipt import
+and clean administration shutdown sealed disk `24318238`; its exact hashes and
+test-only artifact are in the native review. Normal boot and complete services
+for that disk remain separate machine gates. Native assembly is recorded manual
+execution, not a reproducibly Nix-built disk or admitted fleet artifact.
+Its first service, ordinary-transport and reset attempts all failed early with
+blank serial and Firecracker `Shutdown(GenericError)` before fixtures or probes.
+The cause remains under investigation; none establishes native runtime success.
+The later completion-corrected `76b8c1ad` kit passed a separate pristine native
+assembly with the same nine-module/764-entry/schema/network checks, read-only
+receipt extraction and clean shutdown. Sealed disk `a49255bd` and its exact
+receipt are recorded in the native review. A paired direct-only QEMU diagnostic
+reaches console login on `76b8` under the same no-vsock settings where `9853`
+panics mounting root. Its growth service enters maintenance; corrected
+Firecracker service/transport/reset acceptance remains a separate gate. The
+earlier failed `9853` disk remains preserved. The first corrected-image
+Firecracker service run stays alive but misses its 240-second first-boot
+deadline, with blank serial and no kernel/service response; boot diagnosis
+remains open.
+
+Native trust composes the current host roots with the separate pinned vendor
+snapshot `/etc/overalls/system-ca.pem`, then durably replaces the effective
+bundle at the standard FreeBSD/OmniOS trust path. Reusing that managed path as
+the next boot's vendor base is refused by the reviewed contract: previous host
+roots must be removable. A real second boot exposed the earlier accumulation;
+the corrected filesystem regressions are separate from final two-boot service
+acceptance.
+
+OmniOS runtime image verification permits the effective CA file to become only
+the designated root-owned managed link, with a regular mode0644 target containing
+the exact immutable vendor prefix and one to 32 bounded public PEM roots. Static
+payload hashes/modes and the regular vendor snapshot remain exact. The final 21
+helper boundary tests include foreign/traversal links, writable or nested-link
+targets, vendor substitution, unrelated payload changes and malformed/oversized
+roots. This structural verification grants no current-boot trust authority;
+the trust protocol receipt must still match the current boot.
 
 ## Windows guests (experimental)
 
@@ -1042,7 +1203,7 @@ engine, framing, scrollback ring and boot-bound HELLO, with only sockets, the
 PTY and the boot identity chosen by target
 ([ConPTY layer](repo:nix/domains/artifacts/terminald/src/pty_windows.rs),
 [viosock sockets](repo:nix/domains/artifacts/terminald/src/conn_windows.rs),
-[MMDS identity](repo:nix/domains/artifacts/terminald/src/identity_windows.rs)). It
+[MMDS identity](repo:nix/domains/artifacts/terminald/src/identity_mmds.rs)). It
 listens on vsock port 1075 as a SYSTEM task, accepts only the host CID and
 derives its HELLO key from the MMDS boot challenge, so Lilly's terminal
 client is unchanged. Each session is a PowerShell in ConPTY inside a
@@ -1139,7 +1300,7 @@ rises to 96 GiB so the 64 GiB Windows template fits beside the Linux templates
 Like every image, Windows root disks are copied on demand (ADR-0177). The
 Windows image is staged only after the code converges. The multi-OS review
 records the Arch/Alma builder evidence and the explicit absence of native
-FreeBSD/OmniOS boot, agent, recovery and fleet evidence.
+FreeBSD/OmniOS accepted boot, host-CID transport, agent, recovery and fleet evidence.
 
 Verification: `firecracker-vmm` (version, `--enable-pci`, static pair),
 `windows-firmware` (PVH note, patched aperture), `windows-guest-unit`

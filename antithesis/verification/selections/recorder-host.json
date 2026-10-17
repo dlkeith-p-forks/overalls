@@ -6,7 +6,7 @@
     "antithesis/config/compose.recorder-host.yaml"
   ],
   "templates": ["recorder"],
-  "runtime_packages": ["core", "recorder", "access", "repository"],
+  "runtime_packages": ["core", "recorder", "access", "repository", "guest_lifecycle"],
   "services": [
     "pg", "migrate", "marshall-a", "marshall-b", "lilly-a", "enrollment",
     "workload", "recorder-host-vmm"

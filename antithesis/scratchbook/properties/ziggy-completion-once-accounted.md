@@ -40,6 +40,8 @@ Use a real credential-backed isolated aggregate bucket, external provider effect
 
 **Proof boundary:** Draft selection: `integrated-zfs-satellite`. proposed-real-inner-zfs-backed-current-VM-plus-satellite; unbuilt; independent witness: durable Ziggy spool ID, independent provider accept log and Marshall aggregate; current real placement/execution authority required. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
+**Selected profile (2026-10-17):** `satellite-standin` selects this command with the origin and satellite overlays and a labelled guest stand-in. The command still needs a current running VM; the hosted controlled Lilly pool reports unavailable capacity, so it records unexercised in that graph. The stand-in is not a guest and supplies no VM binding. No hosted run exists.
+
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
 ## Supporting assertion snapshot

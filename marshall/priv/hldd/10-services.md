@@ -11,18 +11,66 @@ custody and delivery. Grafana presents both boundaries.
 ## Native FreeBSD and illumos guest services
 
 The `freebsd-v1` and `illumos-v1` image families reserve the existing jail-local
-virtio-vsock transport. Their native package describes kernel probe, agent,
-flush, readiness, trust, workspace and SSH helper binaries with rc.d/SMF
-supervision, but it has no linked target-native closure or integrated image.
+virtio-vsock transport. `lyra.native` now packages nine bootstrap, kernel-probe,
+agent, flush, readiness, trust, workspace and SSH helper binaries per OS. The separate
+`terminald.native` package cross-links the shared terminal daemon for both OSes.
+Their manifests identify all eighteen production Lyra executables and both terminal daemons
+by exact bytes, SHA-256, guest interpreter and reviewed native shared libraries;
+Linux dependencies, runtime search paths and executable stacks refuse packaging.
+FreeBSD uses `/libexec/ld-elf.so.1`; illumos uses `/usr/lib/amd64/ld.so.1`.
+The immutable official OmniOS r151050 userland SDK verifies pinned manifests,
+compressed/plain payload digests and its final NAR hash. Its build-time fetch
+has the documented public fixed-output TLS authentication limitation;
+runtime TLS verification remains required.
+
+The [native bootstrap](repo:lyra/src/native_bootstrap.rs) and
+[rc.d/SMF definitions](repo:nix/domains/artifacts/guest/native-bootstrap.nix)
+configure networking before the native agent supervisor. Root temporarily reaches
+MMDS through a link-local address, obtains a fresh MMDSv2 identity, validates its
+actual interface MAC, profile, address slot and gateway, then removes temporary
+IPv4 state and disables IPv6. It installs the validated /32 address, paired
+Inception address where required, and explicit gateway, MMDS, private and default
+routes. Only verified resulting interface/netmask/routes permit a mode-0600
+volatile identity receipt under a root-owned mode-0700 directory. DNS uses
+1.1.1.1 and 9.9.9.9; native TLS uses the OS CA bundle. Three bounded refusal
+tests passed. The eighteen-helper Linux/Windows/native tests and native Clippy
+build passed in 297 seconds. Actual bootstrap/service execution remains pending.
+
+The rc.d/SMF service definitions describe the complete daemon closure. Linked
+executables and service definitions do not establish an integrated native image.
 The supervisor starts local listeners before bounded SSH bootstrap retries so
 trust installation can unblock roster/certificate HTTPS. No sshd PID marker
 exists before bootstrap succeeds, withholding readiness.
-The shared Linux `terminald` has no native target. Placeholder kernel receipts
-stop image assembly before copying a stock disk, and all native capabilities
-remain false under [ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md).
+Native account utilities follow each OS: FreeBSD uses `pw` and pinned Bash/sudo;
+illumos uses `useradd`/`usermod`, `/bin/bash`, `passwd -N` and `/export/home`.
+Helpers validate fresh MMDS on every invocation. Host keys, locks, sshd PID and
+the fresh SSH-ready marker live under `/var/run/overalls`. Managed sshd uses
+`/etc/overalls/sshd_config`, refuses root/password login and forces the current
+authorization session helper; stock sshd stays disabled. A two-second roster and
+certificate refresh removes readiness on failure. Nine live supervisor PID
+markers and the fresh SSH-ready marker are required. A disposable OmniOS QEMU
+probe using the production account adapter passed create/retire/reactivate with
+exact UID/GID/home/Bash, unusable password authentication, clear active expiry,
+retired local lock/noninteractive shell and retained home bytes. OmniOS explicitly
+prepares the safe `/export/home` parent, prevents implicit user ZFS datasets,
+uses local atomic lock/shell retirement and restores the files repository's
+non-password state on activation. This does not execute the complete MMDS-bound
+helper or authenticated SSH journey. Actual authentication and expiry journeys
+remain separate runtime requirements.
+Terminald retains one session engine and boot-bound HELLO protocol; native
+adapters supply the MMDS identity, socket ABI and Unix PTY system calls. illumos
+PTY creation refuses an infinite or larger-than-1048576 hard descriptor limit
+and checks STREAMS terminal setup before exec. A stock OmniOS native probe passed
+controlling-terminal identity, shell execution, resize to 101x41 and inherited
+descriptor closure after opening the STREAMS slave following `setsid`. This is
+isolated PTY adapter evidence; the complete boot-bound terminal protocol remains
+pending. Unavailable image-facing kernel
+receipts stop image assembly before copying a stock disk, and all native capabilities
+remain false under [ADR-0190](repo:docs/architecture/decisions/0190-native-kernel-provenance-and-admission.md).
 The intended services must accept only host CID 2 for guest CID 3 and refuse
 foreign, malformed or stale boot bindings. Protocol, Marshall and daemon units
-are source evidence; native startup, CID enforcement, restart, storage and
+are source evidence; cross-link checks prove userland linkage. Native startup,
+authenticated terminal journeys, CID enforcement, restart, storage and
 network isolation require the pending nested-KVM matrix.
 
 ## Audi browser editor and guest workers

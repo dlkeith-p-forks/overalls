@@ -115,4 +115,56 @@ defmodule MarshallThreadsAgentsContractTest do
     assert {:error, :invalid_questions} =
              Marshall.Agents.Planning.validate_questions(List.duplicate(question, 4))
   end
+
+  @tag obligation: "marshall.threads_agents.I5"
+  test "machine specifications fail closed and enforce profile and shape rules" do
+    base = %{
+      architecture: :x86_64,
+      image_id: "img-1",
+      profile: :standard,
+      vcpu: 2,
+      memory_bytes: 2_147_483_648,
+      disk_bytes: 10_737_418_240
+    }
+
+    assert {:ok, spec} = Marshall.Threads.MachineSpec.from_map(base)
+    assert spec.architecture == :x86_64
+    assert spec.profile == :standard
+
+    assert {:error, :invalid_profile} =
+             Marshall.Threads.MachineSpec.from_map(%{base | profile: :customer})
+
+    assert {:error, :invalid_machine_spec} =
+             Marshall.Threads.MachineSpec.from_map(%{base | architecture: :aarch64})
+
+    assert {:error, :invalid_machine_spec} =
+             Marshall.Threads.MachineSpec.from_map(%{base | vcpu: 0})
+
+    assert {:error, :invalid_machine_spec} =
+             Marshall.Threads.MachineSpec.from_map(Map.put(base, :team_id, "not-a-uuid"))
+  end
+
+  @tag obligation: "marshall.threads_agents.I6"
+  test "thread title generation is bounded and falls back safely" do
+    previous = Application.get_env(:marshall, :thread_title_generator)
+
+    on_exit(fn ->
+      if previous == nil,
+        do: Application.delete_env(:marshall, :thread_title_generator),
+        else: Application.put_env(:marshall, :thread_title_generator, previous)
+    end)
+
+    Application.put_env(:marshall, :thread_title_generator, fn _ -> {:ok, "  hello\n world  "} end)
+
+    assert Marshall.Threads.Title.generate("objective") == "hello world"
+
+    Application.put_env(:marshall, :thread_title_generator, fn _ -> {:error, :timeout} end)
+    assert Marshall.Threads.Title.generate("first sentence. second sentence") == "first sentence"
+
+    Application.put_env(:marshall, :thread_title_generator, fn _ ->
+      {:ok, String.duplicate("x", 200)}
+    end)
+
+    assert byte_size(Marshall.Threads.Title.generate("objective")) == 120
+  end
 end

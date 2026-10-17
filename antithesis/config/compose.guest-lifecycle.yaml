@@ -1,0 +1,11 @@
+# Guest-lifecycle profile overlay. Select it after compose.guest-vmm.yaml; the
+# workload bootstrap completes setup only after the guest-vmm identity, the
+# registered image and the STUB-storage capacity catalog are all observed.
+services:
+  workload:
+    environment:
+      ANTITHESIS_BOOTSTRAP_PROFILE: guest-lifecycle
+      ANTITHESIS_BOOTSTRAP_TIMEOUT_SECONDS: "900"
+    depends_on:
+      guest-vmm:
+        condition: service_healthy

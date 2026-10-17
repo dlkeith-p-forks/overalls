@@ -53,7 +53,8 @@ sockets and compares read-only PostgreSQL snapshots before and after an old
 session is superseded. Its `lilly.exchange` requests contain no fabricated
 capacity, acknowledgements or physical outcomes. The `host_rotation` singleton
 rotates authority once and is terminal for the same cached-credential reason.
-These two templates are outside the selected `control-core` command roster.
+Both are one-command singleton templates in the selected `control-core`
+command roster; each timeline runs at most one singleton.
 
 The private request channel also accepts a fixed `compute.*` namespace for
 the three synthetic fixture accounts. `compute.catalog` reports currently
@@ -79,13 +80,25 @@ fresh explicit sentinel call. The separate
 authenticated Marshall Control request with a unique Lilly session ID, closes
 before reading its reply, and queries that exact session in PostgreSQL; the
 following fresh session uses a different ID. This SQL-effect command is
-terminal for its timeline because a new session may fence Lilly's live session.
+terminal for its timeline because a new session may fence Lilly's live session;
+it is selected in `control-core` as the `control_delivery` singleton template.
+The `control/serial_driver_version_refusal.py` command runs the same shared
+client against the loopback peer's `version_refusal` mode: a welcomed 4001
+close with one held call must keep the `unsupported_version` class, retire the
+call as unproven and open no new transport for a bounded 5,000 ms window. It
+does not observe Marshall emitting 4001 or a service adapter stopping.
 The peer can establish transport non-redelivery; the SQL receipt can show that
 reply loss concealed a committed effect. Neither witness implies native
 execution. Missing peer output, failed SQL reads and uncertain writes remain
 unexercised rather than passing evidence.
 
 The hint-loss property remains unexercised and has no selected test command.
+A harness-built Marshall release declares and emits only a BEAM `Reachable`
+anchor, `Marshall notifier recovered after losing a host command hint`, when
+its hint relay observes the Oban notifier leave `:isolated`. That anchor marks
+the window in which hints may have been dropped; it does not observe a lost
+hint, a committed command, a reader re-read or Lilly progress, and it does not
+satisfy either hint-loss catalog primary.
 The default graph has no targeted notifier isolation or reviewed action that
 commits a uniquely identified host command while PostgreSQL and Lilly's reader
 remain healthy. A session receipt and a generic socket disconnect do not
@@ -128,6 +141,46 @@ Optional satellite, guest-emulator and storage-router scenarios must be selected
 by focused override files when their source-built images, adapters, fixtures and
 oracles are implemented. The default graph makes no claims for those paths.
 
+The `backup-restic` profile adds `config/compose.backup.yaml` to the base graph
+and selects the five `backup` commands. The workload image already carries the
+production backup operator and pinned Restic; the overlay mounts a dedicated
+private named volume where each command creates a disposable encrypted Restic
+file repository. Bootstrap requires the operator, Restic, a private root and a
+real probe repository that initializes and enumerates empty before setup. A
+file backend keeps raw Restic reads free of network uncertainty, because the
+operator returns one failure status for an unavailable repository and for a
+validator refusal. No ZFS host capture, S3 bucket or recovery target is used.
+
+The `satellite-standin` profile renders the base graph with
+`config/compose.origin.yaml`, `config/compose.satellites.yaml` and
+`config/compose.satellite-standin.yaml`. The last overlay adds a labelled
+**guest stand-in**: a process from the workload image that shares only
+`lilly-a`'s network namespace and speaks the guest-side protocol to private
+Audi at `169.254.254.1` with the private root and an internal-service SNI. It is
+not a guest and has no VM, boot, tap, placement or execution authority; Lilly
+binds no VM to its address, so private Audi must refuse it. It mounts only the
+public private-Audi root and a fixed request/result channel. Bootstrap requires
+the origin fixture's authenticated state, the private root and the stand-in's
+verified-TLS receipt. The `satellite` template's unbound-source command checks
+that a forged guest-side request produces no origin receipt. The Ziggy, Galileo
+and editor login-code commands need a current running VM; the controlled Lilly
+pool reports unavailable capacity and no editor gateway, release or wildcard is
+configured, so those commands record unexercised in this graph.
+
+The `guest-lifecycle` profile
+([selection](verification/selections/guest-lifecycle.json)) selects the one
+`guest_lifecycle` command with `config/compose.guest-vmm.yaml` and
+`config/compose.guest-lifecycle.yaml`. Build and stage the `pg`, `marshall`,
+`lilly-guest`, `guest-vmm` and `workload` contexts for it. Hosted Antithesis has
+no KVM, so the guest runs under QEMU TCG. The container `lilly-guest` release
+uses **STUB storage**: a fixed synthetic pool with no ZFS, plus compute
+headroom for one free guest-vmm slot. It exists only so Marshall can admit one
+emulated guest and is not native ZFS, KVM, Firecracker or capacity evidence. The
+bootstrap completes setup only after it observes the guest-vmm image identity
+through the enrollment witness bridge and a Marshall catalog offering that
+image with known capacity. See the
+[guest lifecycle scope](workload/guest_lifecycle/README.md).
+
 `config/compose.origin.yaml` and `config/compose.smtp.yaml` are optional fixture
 overrides for local upstream and SMTP scenarios. They add separate containers,
 private persistent state, generated runtime CA material, and read-only oracle
@@ -136,12 +189,14 @@ fixture values to an `origin-shared` volume mounted read-only in enrollment;
 the values do not appear in Compose environment values. Their admin health
 checks show only that the fixture server is accepting requests.
 `config/compose.guest-vmm.yaml` selects the
-source-built guest Lilly variant and a separate QEMU TCG server with a private
-Unix control socket and retained emulator state. A distinct, sanitized witness
-socket is mounted read-only only in enrollment for the closed operator bridge;
-neither the mutating control socket nor raw guest boot state reaches workload.
-Its health check confirms the server's inventory interface, not a booted or
-ready guest. `config/compose.enrico.yaml` adds the source-built Enrico release
+source-built STUB-storage guest Lilly variant and a separate QEMU TCG server
+with a private Unix control socket and retained emulator state. A distinct,
+sanitized witness socket is mounted read-only only in enrollment for the closed
+operator bridge; neither the mutating control socket nor raw guest boot state
+reaches workload. Lilly publishes its baked guest image manifest to a
+`guest-catalog` share mounted read-only in enrollment, which registers it
+through `Marshall.Compute.Images.register`. Its health check confirms the
+server's inventory interface, not a booted or ready guest. `config/compose.enrico.yaml` adds the source-built Enrico release
 and origin fixture, private Git state and restart request/result volumes, and a
 passive inode observer. The observer publishes all eight native Git admission
 lock identities and bounded repository lock holders; incomplete or stale
@@ -154,6 +209,21 @@ share. A separate private fault-control share links only the host and enrollment
 operator for bounded guest crash requests. The host health check requires the
 inner host's current authenticated Control readiness. It is measured emulation
 evidence, not native KVM evidence.
+`config/compose.admission-stub.yaml` is the `admission-stub` profile. It
+selects a harness **stub** storage substrate on the controlled Lilly release:
+`entrypoints/lilly.sh` writes a fixed private substrate file and a tiny
+non-bootable image, the harness collector reports configured stub pool totals
+for the enrolled pool identity plus measured cgroup CPU/memory headroom, and
+Lilly digest-verifies the stub image before advertising it. The enrollment
+operator registers that image through Marshall's reviewed catalog action. A
+fully stub-backed report advertises placement readiness, so Marshall's real
+admission transaction can place the atomic-allocation and key-replay
+commands; the controlled executor still never launches a guest. The workload
+probe requires the committed execution-ready report, measured compute, a fresh
+stub pool row and an enabled advertised image in SQL before setup. This is
+admission-logic evidence only: not ZFS, physical capacity, KVM or isolation.
+The measured-capacity command is a separate unselected `admission_physical`
+template that needs the host-vmm overlay.
 `config/compose.recorder-host.yaml` adds an independent TCG NixOS recorder
 host for exact service UID and cgroup authority, retained recorder state, and
 bounded archive filesystem tests. Workload can submit private fixed requests

@@ -1,5 +1,48 @@
 # Backup and recovery
 
+## Experimental native daemon recovery
+
+The optional FreeBSD/OmniOS recovery fixture observes one real flush-daemon
+failure within the same boot. Managed SSH verifies the root-owned PID marker,
+saved executable mode/hash and live process. The fixture removes execute
+permission, kills and confirms the daemon reaped, then requires three refusals
+over the still-live readiness channel. A finally block restores the saved mode;
+the supervisor must create a different PID with identical bytes/mode and boot
+identity before real flush/refusal and readiness checks resume.
+
+Four host snapshot-parser/failure-cleanup tests and Ruff/ty pass. The exact
+vendor-base FreeBSD candidate completed both clean boots with real daemon death,
+three live-channel refusals, exact executable restoration, a new supervised PID
+and current-boot flush restored. The review binds the image, firmware/VMM hashes
+and per-boot receipts. The final reviewed canonical-roots/SSH/blocking-flush image
+also passed the same complete two-boot boundary. OmniOS requires its own replay;
+admission remains false. This scope cannot establish
+guest-crash durability, storage recovery, relocation, host failure or fleet
+availability. A clean service restart is separate from a guest crash.
+
+Evidence: [native recovery oracle](repo:nix/verification/tests/support/native_recovery.py),
+[machine variant](repo:nix/verification/tests/machines/native-services/default.nix),
+[native review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
+
+The separate [abrupt-crash fixture](repo:nix/verification/tests/support/native_crash_recovery.py)
+flushes and reads back retained home bytes, observes actual VMM SIGKILL, then
+boots the same disk under new MMDS identity. It requires a new boot ID, exact
+retained bytes, old flush/workspace/terminal authority refusal, a native UFS
+snapshot check or completed zero-error ZFS scrub, and final clean shutdown.
+Seven host boundary checks passed. The first actual FreeBSD crash run exposed
+scheduled-only UFS sync: after an acknowledged flush and SIGKILL, fsck discarded
+managed-home and marker bytes. The correction uses `/dev/ufssuspend` to wait for
+UFS suspension and soft-dependency drains, then immediately resumes before
+acknowledgement. The final reviewed FreeBSD image passed all eight crash checks:
+complete service oracles before/after observed SIGKILL, same-disk restart with
+fresh MMDS/boot identity, exact retained marker/home bytes, stale-authority
+refusal, native UFS snapshot background fsck and final clean exit. The review
+binds exact image/kernel/firmware/VMM hashes and immutable crash/service receipts.
+Pinned OmniOS ZFS sync already
+blocks on `spa_sync_allpools`, but its crash scenario still needs execution.
+This does not establish physical stable-media/host power-loss durability,
+interrupted expansion or fleet recovery.
+
 ## Durable guest identity reservations
 
 GuestAccount UUIDs and the noncycling UID range are permanent reservations,

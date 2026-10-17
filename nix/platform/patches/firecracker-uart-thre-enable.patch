@@ -1,0 +1,25 @@
+--- a/src/serial.rs
++++ b/src/serial.rs
+@@ -620,7 +620,21 @@
+                 }
+             }
+             // We want to enable only the interrupts that are available for 16550A (and below).
+-            IER_OFFSET => self.interrupt_enable = value & IER_UART_VALID_BITS,
++            IER_OFFSET => {
++                let was_enabled = self.is_thr_interrupt_enabled();
++                self.interrupt_enable = value & IER_UART_VALID_BITS;
++                // A driver can fill the TX FIFO before enabling its interrupt.
++                // This emulation drains writes immediately, so enabling THRE
++                // while empty must assert the pending interrupt. A new enable
++                // edge must also reassert an unacknowledged pending interrupt.
++                if !was_enabled
++                    && self.is_thr_interrupt_enabled()
++                    && self.line_status & LSR_EMPTY_THR_BIT != 0
++                {
++                    self.add_interrupt(IIR_THR_EMPTY_BIT);
++                    self.trigger_interrupt().map_err(Error::Trigger)?;
++                }
++            }
+             LCR_OFFSET => self.line_control = value,
+             MCR_OFFSET => self.modem_control = value,
+             SCR_OFFSET => self.scratch = value,

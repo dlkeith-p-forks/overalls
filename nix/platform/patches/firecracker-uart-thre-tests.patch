@@ -1,0 +1,50 @@
+--- a/src/vmm/src/devices/legacy/serial.rs
++++ b/src/vmm/src/devices/legacy/serial.rs
+@@ -450,6 +450,47 @@
+     }
+ 
+     #[test]
++    fn test_native_uart_thre_enable_after_fifo() {
++        let event = EventFd::new(libc::EFD_NONBLOCK).unwrap();
++        let mut serial = Serial::new(
++            EventFdTrigger::new(event.try_clone().unwrap()),
++            std::io::sink(),
++        );
++        // FreeBSD fills one 16-byte FIFO before enabling ETXRDY.
++        for byte in b"Setting hostuuid" {
++            serial.write(0, *byte).unwrap();
++        }
++        assert_eq!(serial.read(5) & 0x20, 0x20);
++        assert_eq!(event.read().unwrap_err().kind(), io::ErrorKind::WouldBlock);
++        serial.write(1, 2).unwrap();
++        assert_eq!(event.read().unwrap(), 1);
++        assert_eq!(serial.read(2) & 0x0f, 2);
++
++        // An unchanged enable bit must not produce duplicate IRQ edges.
++        serial.write(1, 2).unwrap();
++        assert_eq!(event.read().unwrap_err().kind(), io::ErrorKind::WouldBlock);
++        serial.write(0, b'X').unwrap();
++        assert_eq!(event.read().unwrap(), 1);
++        assert_eq!(serial.read(2) & 0x0f, 2);
++
++        // Disable/re-enable must assert even an unacknowledged pending THRE.
++        for _ in 0..2 {
++            serial.write(1, 0).unwrap();
++            serial.write(1, 2).unwrap();
++            assert_eq!(event.read().unwrap(), 1);
++        }
++        assert_eq!(serial.read(2) & 0x0f, 2);
++
++        // DLAB redirects offset 1 to the divisor, never the interrupt enable.
++        serial.write(1, 0).unwrap();
++        serial.write(3, 0x80).unwrap();
++        serial.write(1, 2).unwrap();
++        assert_eq!(serial.read(1), 2);
++        assert_eq!(serial.state().interrupt_enable, 0);
++        assert_eq!(event.read().unwrap_err().kind(), io::ErrorKind::WouldBlock);
++    }
++
++    #[test]
+     fn test_serial_bus_read() {
+         let intr_evt = EventFdTrigger::new(EventFd::new(libc::EFD_NONBLOCK).unwrap());
+ 

@@ -16,6 +16,7 @@ defmodule Marshall.Agents.AgentContextRecoveryDistributedTest do
   alias Marshall.AgentContextRecoveryFixture, as: Recovery
   alias Marshall.Agents.{Compaction, Planning, Skills}
   alias Marshall.Compute.{Ledger, VirtualMachine}
+  alias Marshall.CommittedFixtureCleanup, as: Cleanup
   alias Marshall.Repo
 
   @moduletag :distributed
@@ -26,17 +27,37 @@ defmodule Marshall.Agents.AgentContextRecoveryDistributedTest do
   # by a distinct Marshall process after the process which admitted or dispatched
   # the operation is stopped. This suite observes committed PostgreSQL state only;
   # it does not claim native guest or provider completion.
+
+  # @cc [owner:ghuntley,label:verification] agent-context-committed-inventory
+  # Every recovery test MUST restore the complete pre-test public row inventory,
+  # including historical rows and existing image records, on success or failure.
+  # Fixture teardown MUST stop all peers before any owned records are removed.
   setup do
+    {before, images_before} =
+      Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
+        assert [] = Enum.filter(Ledger.read!(Marshall.Compute.Host), & &1.enabled)
+        {Marshall.CommittedFixtureInventory.snapshot(), Cleanup.fixture_image_ids()}
+      end)
+
     peers = Enum.map(1..3, &start_peer/1)
-    on_exit(fn -> Enum.each(peers, &stop_peer/1) end)
+
+    on_exit(fn ->
+      Enum.each(peers, &stop_peer/1)
+
+      Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
+        Cleanup.images!(Cleanup.fixture_image_ids() -- images_before)
+        Marshall.CommittedFixtureInventory.assert_restored!(before)
+      end)
+    end)
+
     %{peers: peers}
   end
 
   test "pending planning questions survive the admitting process loss", %{
-    peers: [writer, reader, _]
+    peers: [writer, reader, _] = peers
   } do
     Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
-      %{actor: actor, thread: thread, turn: turn} = planning_fixture()
+      %{actor: actor, thread: thread, turn: turn} = planning_fixture(peers)
       call = question_call()
 
       assert %PlanningQuestion{id: question_id} =
@@ -63,10 +84,10 @@ defmodule Marshall.Agents.AgentContextRecoveryDistributedTest do
   end
 
   test "a compacted context checkpoint is projected after its writer process loss", %{
-    peers: [writer, reader, _]
+    peers: [writer, reader, _] = peers
   } do
     Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
-      %{thread: thread, turn: turn} = context_fixture()
+      %{thread: thread, turn: turn} = context_fixture(peers)
 
       assert %ContextCheckpoint{generation: 1} =
                remote(writer, Recovery, :install_checkpoint, [turn.id])
@@ -98,10 +119,10 @@ defmodule Marshall.Agents.AgentContextRecoveryDistributedTest do
   end
 
   test "queued managed skill installation is dispatched and completed by another process", %{
-    peers: [writer, dispatcher, completer]
+    peers: [writer, dispatcher, completer] = peers
   } do
     Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
-      %{owner: owner, thread: thread} = skill_fixture()
+      %{owner: owner, thread: thread} = skill_fixture(peers)
 
       arguments = %{
         thread_id: thread.id,
@@ -208,15 +229,21 @@ defmodule Marshall.Agents.AgentContextRecoveryDistributedTest do
   defp unwrap_remote!({:completed, {:raised, kind, reason, stacktrace}}),
     do: :erlang.raise(kind, reason, stacktrace)
 
-  @spec planning_fixture() :: %{
+  @spec planning_fixture([pid()]) :: %{
           actor: Marshall.Accounts.User.t(),
           thread: Thread.t(),
           turn: Turn.t()
         }
-  defp planning_fixture do
-    host_fixture()
-    actor = user()
-    {:ok, vm} = Marshall.Compute.provision(request(), actor: actor)
+  defp planning_fixture(peers) do
+    {:ok, {actor, vm}} =
+      Ledger.transaction(fn ->
+        host_fixture()
+        actor = user()
+        {:ok, vm} = Marshall.Compute.provision(request(), actor: actor)
+        {actor, vm}
+      end)
+
+    owned_cleanup(peers, vm, [actor])
     [root] = Ledger.read!(Marshall.Agents.Root, vm_id: vm.id)
     [thread] = Ledger.read!(Thread, root_id: root.id)
 
@@ -241,41 +268,62 @@ defmodule Marshall.Agents.AgentContextRecoveryDistributedTest do
     %{actor: actor, thread: thread, turn: turn}
   end
 
-  @spec context_fixture() :: %{
+  @spec context_fixture([pid()]) :: %{
           owner: Marshall.Accounts.User.t(),
           vm: VirtualMachine.t(),
           thread: Thread.t(),
           turn: Turn.t()
         }
-  defp context_fixture do
-    fixture = Marshall.AgentRevocationFixture.setup()
+  defp context_fixture(peers) do
+    {:ok, fixture} = Ledger.transaction(fn -> Marshall.AgentRevocationFixture.setup() end)
     owner = fixture.owner
     vm = fixture.vm
+    owned_cleanup(peers, vm, [owner, fixture.member])
     thread = fixture.thread
 
     turn = Marshall.AgentRevocationFixture.submit!(fixture)
     %{owner: owner, vm: vm, thread: thread, turn: turn}
   end
 
-  @spec skill_fixture() :: %{
+  @spec skill_fixture([pid()]) :: %{
           owner: Marshall.Accounts.User.t(),
           thread: Marshall.Threads.Thread.t()
         }
-  defp skill_fixture do
-    %{owner: owner, vm: vm} = Marshall.TerminalFixtures.terminal_fixture(%{profile: :standard})
+  defp skill_fixture(peers) do
+    {:ok, %{owner: owner, vm: vm}} =
+      Ledger.transaction(fn ->
+        Marshall.TerminalFixtures.terminal_fixture(%{profile: :standard})
+      end)
 
-    thread =
-      Ledger.create!(Marshall.Threads.Thread, :open, %{
-        creator_id: owner.id,
-        objective: "Review the project",
-        mode: :medium,
-        machine_spec: request(),
-        idempotency_key: Ash.UUID.generate(),
-        machine_key: Ash.UUID.generate()
-      })
+    owned_cleanup(peers, vm, [owner])
 
-    thread = Ledger.update!(thread, :bind_machine, %{machine_id: vm.id, status: :ready})
+    {:ok, thread} =
+      Ledger.transaction(fn ->
+        thread =
+          Ledger.create!(Marshall.Threads.Thread, :open, %{
+            creator_id: owner.id,
+            objective: "Review the project",
+            mode: :medium,
+            machine_spec: request(),
+            idempotency_key: Ash.UUID.generate(),
+            machine_key: Ash.UUID.generate()
+          })
+
+        Ledger.update!(thread, :bind_machine, %{machine_id: vm.id, status: :ready})
+      end)
+
     %{owner: owner, thread: thread}
+  end
+
+  @spec owned_cleanup([pid()], VirtualMachine.t(), [Marshall.Accounts.User.t()]) :: :ok
+  defp owned_cleanup(peers, vm, users) do
+    on_exit(fn ->
+      Enum.each(peers, &stop_peer/1)
+
+      Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
+        Recovery.cleanup!(vm.id, vm.host_id, users)
+      end)
+    end)
   end
 
   @spec question_call() :: map()

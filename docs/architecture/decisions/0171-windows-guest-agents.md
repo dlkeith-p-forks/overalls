@@ -325,7 +325,7 @@ implemented with unit tests and no Windows fleet test. Gate 4 (terminal: the
 [ConPTY layer](../../../nix/domains/artifacts/terminald/src/pty_windows.rs),
 [viosock sockets](../../../nix/domains/artifacts/terminald/src/conn_windows.rs),
 [listener](../../../nix/domains/artifacts/terminald/src/vsock_windows.rs),
-[MMDS identity](../../../nix/domains/artifacts/terminald/src/identity_windows.rs) and
+[MMDS identity](../../../nix/domains/artifacts/terminald/src/identity_mmds.rs) and
 [packaging](../../../nix/domains/artifacts/infrastructure/terminald-windows.nix)) is implemented and
 asserted by the same machine test. Gate 5's workspace receiver
 ([Windows transport](../../../lyra/src/bin/overalls-workspaced-windows.rs) around

@@ -18,7 +18,15 @@ let
   # Checks that run NixOS machine tests without being one themselves.
   machineAggregates = [ "host-conversion" ];
 
-  features = check: check.requiredSystemFeatures or [ ];
+  # @cc [owner:ghuntley,label:verification] ci-lazy-required-features
+  # Feature discovery MUST preserve enabled NixOS tester requirements, including
+  # nested-kvm, without forcing a lazy driver's derivation or guest-image build.
+  # The tester exposes requirements through config instead of its lazy wrapper.
+  features = check:
+    if check ? requiredSystemFeatures then check.requiredSystemFeatures
+    else if check ? config && builtins.isAttrs check.config then
+      lib.attrNames (lib.filterAttrs (_: enabled: enabled) (check.config.requiredFeatures or { }))
+    else [ ];
 
   ciMeta = name: check: {
     enable = !(builtins.elem name excluded);

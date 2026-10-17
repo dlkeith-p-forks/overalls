@@ -1,5 +1,6 @@
 //! Guest account reconciler and sshd key callback over Audi's private TLS route.
 
+use lyra::guest::ssh_platform::{Invocation, Platform};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::HashSet;
@@ -12,7 +13,6 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode, Stdio};
 
 const STATE: &str = "/var/lib/overalls-ssh/accounts.json";
-const SUDOERS: &str = "/etc/sudoers.d";
 const MAX_ROSTER: usize = 64 * 1024;
 const ORIGIN: &str = "https://ssh.integration.internal/ssh/v1/";
 
@@ -138,7 +138,7 @@ fn run(program: &str, args: &[&str]) -> io::Result<()> {
     }
 }
 
-fn existing(name: &str) -> io::Result<Option<(u32, String)>> {
+fn existing(name: &str) -> io::Result<Option<(u32, u32, String)>> {
     let output = Command::new("getent")
         .args(["passwd", name])
         .stdin(Stdio::null())
@@ -155,7 +155,8 @@ fn existing(name: &str) -> io::Result<Option<(u32, String)>> {
         return Err(io::Error::other("invalid existing account"));
     }
     let uid = fields[2].parse::<u32>().map_err(io::Error::other)?;
-    Ok(Some((uid, fields[5].to_owned())))
+    let gid = fields[3].parse::<u32>().map_err(io::Error::other)?;
+    Ok(Some((uid, gid, fields[5].to_owned())))
 }
 
 fn existing_group(name: &str) -> io::Result<Option<u32>> {
@@ -178,7 +179,7 @@ fn existing_group(name: &str) -> io::Result<Option<u32>> {
 }
 
 fn home(account: &Account) -> PathBuf {
-    Path::new("/home").join(&account.username)
+    Platform::current().home(&account.username)
 }
 
 // @cc [owner:ghuntley,label:security] guest-sudo-policy-filename
@@ -186,7 +187,7 @@ fn home(account: &Account) -> PathBuf {
 // including for usernames containing dots. Retiring an account removes its
 // uid-named policy.
 fn sudo_policy(account: &Account) -> PathBuf {
-    Path::new(SUDOERS).join(format!("overalls_uid_{}", account.uid))
+    Path::new(Platform::current().sudoers()).join(format!("overalls_uid_{}", account.uid))
 }
 
 fn remove_policy(path: &Path) -> io::Result<()> {
@@ -199,13 +200,14 @@ fn remove_policy(path: &Path) -> io::Result<()> {
 
 /// @cc [owner:ghuntley,label:product] guest-default-bash-shell
 /// The managed shell MUST be /run/current-system/sw/bin/bash on NixOS and
-/// /bin/bash on other supported guests. Missing or non-executable Bash MUST
+/// /usr/local/bin/bash on FreeBSD and /bin/bash on other supported guests.
+/// Missing or non-executable Bash MUST
 /// fail selection without falling back to another shell or distribution path.
 fn guest_shell(root: &Path) -> io::Result<PathBuf> {
     let shell = root.join(if root.join("etc/NIXOS").exists() {
         "run/current-system/sw/bin/bash"
     } else {
-        "bin/bash"
+        Platform::current().shell()
     });
     let metadata = fs::metadata(&shell)?;
     if !metadata.is_file() || metadata.permissions().mode() & 0o111 == 0 {
@@ -215,6 +217,8 @@ fn guest_shell(root: &Path) -> io::Result<PathBuf> {
 }
 
 fn activate(account: &Account, shell: &str) -> io::Result<()> {
+    let platform = Platform::current();
+    prepare_home_root(Path::new(platform.home_root()))?;
     let directory = home(account);
     let expected = directory
         .to_str()
@@ -222,33 +226,15 @@ fn activate(account: &Account, shell: &str) -> io::Result<()> {
     match existing(&account.username)
         .inspect_err(|_| emit("ssh.account_lookup_failed", "warning"))?
     {
-        Some((uid, path)) if uid == account.uid && path == expected => {}
+        Some((uid, gid, path)) if uid == account.uid && gid == account.uid && path == expected => {}
         Some(_) => return Err(io::Error::other("conflicting guest account")),
         None => {
             match existing_group(&account.username)? {
                 Some(gid) if gid == account.uid => {}
                 Some(_) => return Err(io::Error::other("conflicting guest group")),
-                None => run(
-                    "groupadd",
-                    &["--gid", &account.uid.to_string(), "--", &account.username],
-                )?,
+                None => invoke(platform.create_group(&account.username, account.uid))?,
             }
-            run(
-                "useradd",
-                &[
-                    "--create-home",
-                    "--home-dir",
-                    expected,
-                    "--uid",
-                    &account.uid.to_string(),
-                    "--gid",
-                    &account.username,
-                    "--shell",
-                    shell,
-                    "--",
-                    &account.username,
-                ],
-            )?
+            invoke(platform.create_user(&account.username, account.uid, expected, shell))?
         }
     }
     let metadata = fs::symlink_metadata(&directory)
@@ -256,23 +242,10 @@ fn activate(account: &Account, shell: &str) -> io::Result<()> {
     if !metadata.file_type().is_dir() {
         return Err(io::Error::other("invalid guest home"));
     }
-    fs::set_permissions(&directory, fs::Permissions::from_mode(0o700))
-        .inspect_err(|_| emit("ssh.home_permissions_failed", "warning"))?;
-    run(
-        "chown",
-        &[&format!("{}:{}", account.uid, account.uid), "--", expected],
-    )?;
-    run(
-        "usermod",
-        &[
-            "--expiredate",
-            "",
-            "--shell",
-            shell,
-            "--",
-            &account.username,
-        ],
-    )?;
+    prepare_home(&directory, account.uid, account.uid)?;
+    for action in platform.activate(&account.username, shell) {
+        invoke(action)?;
+    }
     let body = format!("{} ALL=(ALL:ALL) NOPASSWD: ALL\n", account.username);
     write_atomic(&sudo_policy(account), body.as_bytes(), 0o440)
         .inspect_err(|_| emit("ssh.sudo_policy_failed", "warning"))?;
@@ -289,19 +262,56 @@ fn deactivate(account: &Account) -> io::Result<()> {
         } else {
             "/bin/sh"
         };
-        run(
-            "usermod",
-            &[
-                "--expiredate",
-                "1",
-                "--shell",
-                nologin,
-                "--",
-                &account.username,
-            ],
-        )?;
+        for action in Platform::current().deactivate(&account.username, nologin) {
+            invoke(action)?;
+        }
     }
     Ok(())
+}
+
+fn invoke(action: Invocation) -> io::Result<()> {
+    let arguments: Vec<&str> = action.arguments.iter().map(String::as_str).collect();
+    run(action.program, &arguments)
+}
+
+/// @cc [owner:ghuntley,label:security] guest-managed-home-parent
+/// The managed home parent MUST exist as a root-owned directory without group
+/// or other write access before account creation. A trusted system symlink
+/// such as FreeBSD's /home may resolve to that directory; managed user homes
+/// themselves MUST still be opened without following a final symlink.
+fn prepare_home_root(path: &Path) -> io::Result<()> {
+    use std::os::unix::fs::MetadataExt;
+    fs::create_dir_all(path)?;
+    let directory = fs::OpenOptions::new()
+        .read(true)
+        .custom_flags(libc::O_DIRECTORY | libc::O_CLOEXEC)
+        .open(path)?;
+    let metadata = directory.metadata()?;
+    if metadata.uid() != 0 || metadata.permissions().mode() & 0o022 != 0 {
+        return Err(io::Error::other("invalid managed home parent"));
+    }
+    Ok(())
+}
+
+/// @cc [owner:ghuntley,label:security] guest-home-descriptor-ownership
+/// Home ownership and mode changes MUST operate on the same opened directory,
+/// refuse a final symlink/non-directory and retain mode 0700. They MUST NOT
+/// follow a substituted home or recursively change user-owned contents.
+fn prepare_home(path: &Path, uid: u32, gid: u32) -> io::Result<()> {
+    use std::os::fd::AsRawFd;
+    let directory = fs::OpenOptions::new()
+        .read(true)
+        .custom_flags(libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC)
+        .open(path)?;
+    // SAFETY: this is the live, no-follow directory descriptor, and the
+    // validated roster UID is also its dedicated primary GID.
+    if unsafe { libc::fchown(directory.as_raw_fd(), uid, gid) } != 0 {
+        emit("ssh.home_ownership_failed", "warning");
+        return Err(io::Error::last_os_error());
+    }
+    directory
+        .set_permissions(fs::Permissions::from_mode(0o700))
+        .inspect_err(|_| emit("ssh.home_permissions_failed", "warning"))
 }
 
 fn write_atomic(path: &Path, bytes: &[u8], mode: u32) -> io::Result<()> {
@@ -334,7 +344,7 @@ fn account_lock() -> io::Result<File> {
         .write(true)
         .mode(0o600)
         .custom_flags(libc::O_NOFOLLOW | libc::O_CLOEXEC)
-        .open("/run/overalls-accounts.lock")?;
+        .open(Platform::current().lock())?;
     fs2::FileExt::lock_exclusive(&lock)?;
     Ok(lock)
 }
@@ -574,6 +584,10 @@ fn login() -> io::Result<()> {
     }
     let info = std::env::var("SSH_AUTH_INFO_0").map_err(io::Error::other)?;
     let public_key = pam_key(&info)?;
+    report_login(&username, &public_key)
+}
+
+fn report_login(username: &str, public_key: &str) -> io::Result<()> {
     let request = serde_json::to_vec(&serde_json::json!({
         "username": username,
         "public_key": public_key,
@@ -586,9 +600,75 @@ fn login() -> io::Result<()> {
     Ok(())
 }
 
+/// @cc [owner:ghuntley,label:security] native-ssh-session-authority-before-shell
+/// A native forced SSH session MUST validate its real roster UID and private
+/// regular OpenSSH authentication-info file, obtain a fresh successful private
+/// login receipt for the exact offered public key, then replace itself with
+/// the validated Bash. Failure MUST NOT launch a shell. Original SSH command
+/// bytes MUST remain opaque arguments to a nonlogin Bash and MUST NOT enter
+/// diagnostics. Sessions without an original command MUST use a login Bash.
+#[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+fn native_session() -> io::Result<()> {
+    use std::os::unix::fs::MetadataExt;
+    use std::os::unix::process::CommandExt;
+
+    let username = std::env::var("USER").map_err(|_| io::Error::other("missing SSH identity"))?;
+    if !valid_name(&username) {
+        return Err(io::Error::other("invalid SSH identity"));
+    }
+    // SAFETY: obtaining the current effective UID has no pointer arguments.
+    let uid = unsafe { libc::geteuid() };
+    let (account_uid, _, _) =
+        existing(&username)?.ok_or_else(|| io::Error::other("missing SSH account"))?;
+    if uid != account_uid || !(200_000..=999_999).contains(&uid) {
+        return Err(io::Error::other("invalid SSH account"));
+    }
+    let path = std::env::var_os("SSH_USER_AUTH")
+        .map(PathBuf::from)
+        .ok_or_else(|| io::Error::other("missing SSH authentication proof"))?;
+    let file = fs::OpenOptions::new()
+        .read(true)
+        .custom_flags(libc::O_NOFOLLOW | libc::O_NONBLOCK | libc::O_CLOEXEC)
+        .open(path)?;
+    let metadata = file.metadata()?;
+    if !metadata.is_file() || metadata.uid() != uid || metadata.mode() & 0o077 != 0 {
+        return Err(io::Error::other("invalid SSH authentication proof"));
+    }
+    let bytes = bounded_body(file, 8192)?;
+    let info = std::str::from_utf8(&bytes)
+        .map_err(|_| io::Error::other("invalid SSH authentication proof"))?;
+    report_login(&username, &pam_key(info)?)?;
+    emit("ssh.login_recorded", "info");
+    let shell = guest_shell(Path::new("/"))?;
+    let mut command = Command::new(shell);
+    // sshd protects its initial Bash -c against startup files before this
+    // receipt. The actual Bash can now apply the user's startup files. Match
+    // OpenSSH's nonlogin -c command semantics so login profiles cannot corrupt
+    // command output; interactive sessions retain their login profile.
+    command
+        .env_remove("SHLVL")
+        .env_remove("BASH_ENV")
+        .env_remove("ENV");
+    if let Some(original) =
+        std::env::var_os("SSH_ORIGINAL_COMMAND").filter(|value| !value.is_empty())
+    {
+        command.arg("-c").arg(original);
+    } else {
+        command.arg("-l");
+    }
+    Err(command.exec())
+}
+
 fn execute() -> io::Result<()> {
+    // Native callbacks cannot reuse a previous boot's local account state as
+    // authority. Every invocation obtains fresh validated MMDSv2 identity;
+    // Audi still supplies the current VM/account/key authorization over TLS.
+    #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+    lyra::guest::mmds::fetch(std::time::Duration::from_secs(3))?;
     let args: Vec<String> = std::env::args().skip(1).collect();
     match args.as_slice() {
+        #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+        [command] if command == "session" => return native_session(),
         [command] if command == "sync" => return sync_roster(None),
         [command, user] if command == "ensure" => return sync_roster(Some(user)),
         [command] if command == "login" => return login(),
@@ -644,7 +724,7 @@ fn main() -> ExitCode {
         Err(_) => {
             let event = match command.as_deref() {
                 Some("authorize") => "ssh.key_denied",
-                Some("login") => "ssh.login_denied",
+                Some("login" | "session") => "ssh.login_denied",
                 _ => "ssh.roster_rejected",
             };
             emit(event, "warning");
@@ -660,6 +740,28 @@ mod tests {
     use std::io::Cursor;
     use std::net::TcpListener;
     use std::thread;
+
+    #[test]
+    fn home_preparation_uses_real_directory_descriptor_and_rejects_symlinks() {
+        use std::os::unix::fs::MetadataExt;
+        let root = tempfile::tempdir().unwrap();
+        let directory = root.path().join("home");
+        fs::create_dir(&directory).unwrap();
+        fs::write(directory.join("retained"), b"retained").unwrap();
+        let metadata = directory.metadata().unwrap();
+        prepare_home(&directory, metadata.uid(), metadata.gid()).unwrap();
+        let prepared = directory.metadata().unwrap();
+        assert_eq!(prepared.permissions().mode() & 0o777, 0o700);
+        assert_eq!(
+            (prepared.uid(), prepared.gid()),
+            (metadata.uid(), metadata.gid())
+        );
+        assert_eq!(fs::read(directory.join("retained")).unwrap(), b"retained");
+        let link = root.path().join("substituted");
+        std::os::unix::fs::symlink(&directory, &link).unwrap();
+        assert!(prepare_home(&link, metadata.uid(), metadata.gid()).is_err());
+        assert!(prepare_home(&directory.join("retained"), metadata.uid(), metadata.gid()).is_err());
+    }
 
     #[test]
     fn nixos_requires_current_system_bash_without_distribution_fallback() {

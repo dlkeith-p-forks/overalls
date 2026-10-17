@@ -8,8 +8,8 @@
 //! `installed` receipt bound to the same boot, nonce and digest. A failed or
 //! partial installation never acknowledges.
 
-use rustls_pki_types::pem::PemObject;
 use rustls_pki_types::CertificateDer;
+use rustls_pki_types::pem::PemObject;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::io::{self, Read, Write};
@@ -102,8 +102,10 @@ pub fn validate(request: &Request, boot: &Boot) -> io::Result<Vec<Vec<u8>>> {
     Ok(ders)
 }
 
-/// The PEM bundle Git and HTTP clients read: the image's base bundle followed
-/// by every delivered root, each terminated by one newline.
+/// @cc [owner:ghuntley,label:security;recovery] guest-trust-canonical-bundle
+/// Effective trust MUST contain the vendor base followed by exactly the current
+/// roots in canonical order. Permuting a validated root set with the same digest
+/// MUST produce identical bytes; each root MUST end with a newline.
 pub fn bundle(base: &[u8], roots: &[String]) -> io::Result<Vec<u8>> {
     if base.len() > MAX_FRAME {
         return Err(io::Error::other("system trust unavailable"));
@@ -112,7 +114,9 @@ pub fn bundle(base: &[u8], roots: &[String]) -> io::Result<Vec<u8>> {
     if !bytes.ends_with(b"\n") {
         bytes.push(b'\n');
     }
-    for root in roots {
+    let mut ordered: Vec<&String> = roots.iter().collect();
+    ordered.sort_unstable();
+    for root in ordered {
         bytes.extend_from_slice(root.as_bytes());
         if !root.ends_with('\n') {
             bytes.push(b'\n');
@@ -229,18 +233,22 @@ mod tests {
         assert!(validate(&wrong_digest, &boot).is_err());
         assert!(validate(&request(vec![ROOT.to_string(), ROOT.to_string()]), &boot).is_err());
         assert!(validate(&request(vec![]), &boot).is_err());
-        assert!(validate(
-            &request(vec![
-                ROOT.replace("CERTIFICATE-----\nMIIB", "CERTIFICATE-----\n!!IB")
-            ]),
-            &boot
-        )
-        .is_err());
-        assert!(validate(
-            &request(vec![format!("{ROOT}-----BEGIN PRIVATE KEY-----\n")]),
-            &boot
-        )
-        .is_err());
+        assert!(
+            validate(
+                &request(vec![
+                    ROOT.replace("CERTIFICATE-----\nMIIB", "CERTIFICATE-----\n!!IB")
+                ]),
+                &boot
+            )
+            .is_err()
+        );
+        assert!(
+            validate(
+                &request(vec![format!("{ROOT}-----BEGIN PRIVATE KEY-----\n")]),
+                &boot
+            )
+            .is_err()
+        );
         let bundle = bundle(
             b"-----BEGIN CERTIFICATE-----\nbase\n-----END CERTIFICATE-----",
             &good.roots,
@@ -250,5 +258,69 @@ mod tests {
             b"-----BEGIN CERTIFICATE-----\nbase\n-----END CERTIFICATE-----\n-----BEGIN"
         ));
         assert!(bundle.ends_with(b"-----END CERTIFICATE-----\n"));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn native_filesystem_reinstall_uses_vendor_base_and_replaces_previous_roots() {
+        use crate::native_guest::install_trust;
+        use std::fs;
+
+        const REPLACEMENT: &str = "-----BEGIN CERTIFICATE-----\nMIIBrTCCAVOgAwIBAgIUerYIAlEw75EY8TgN78vx2f5NUnMwCgYIKoZIzj0EAwIw\nLDEqMCgGA1UEAwwhb3ZlcmFsbHMtbmF0aXZlLXRydXN0LXJlcGxhY2VtZW50MB4X\nDTI2MTAxNzE1NTkzMFoXDTM2MTAxNDE1NTkzMFowLDEqMCgGA1UEAwwhb3ZlcmFs\nbHMtbmF0aXZlLXRydXN0LXJlcGxhY2VtZW50MFkwEwYHKoZIzj0CAQYIKoZIzj0D\nAQcDQgAEGoAEe+5E8YuFshovO+IiKcSJtr1C5ntY5vaAxwHK9nnO4QgfD59RGICK\n+U2kxcFhCmijYNkfx1Z0TNlq0biYDqNTMFEwHQYDVR0OBBYEFMirqB/DiwBB/mAh\njIzInjicVsoFMB8GA1UdIwQYMBaAFMirqB/DiwBB/mAhjIzInjicVsoFMA8GA1Ud\nEwEB/wQFMAMBAf8wCgYIKoZIzj0EAwIDSAAwRQIhALq3jIwd/NcLOLnpHi+C7BnY\nZoEMEa0j/CxAp1/7TlCIAiAjKLIR46Ik+AnXT6gqyq1cdZbT4bLP5wEJXNv89bhW\nlA==\n-----END CERTIFICATE-----\n";
+        let root = tempfile::tempdir().unwrap();
+        let base = root.path().join("vendor.pem");
+        let destination = root.path().join("ssl/cert.pem");
+        let state = root.path().join("state");
+        let vendor = b"pinned distribution trust\n";
+        fs::write(&base, vendor).unwrap();
+        let first = request(vec![ROOT.to_string(), REPLACEMENT.to_string()]);
+        install_trust(&base, &destination, &state, &first, &boot()).unwrap();
+        let expected = bundle(vendor, &first.roots).unwrap();
+        assert_eq!(fs::read(&destination).unwrap(), expected);
+        assert!(
+            fs::symlink_metadata(&destination)
+                .unwrap()
+                .file_type()
+                .is_symlink()
+        );
+
+        let mut next_boot = boot();
+        next_boot.execution_epoch += 1;
+        next_boot.boot_challenge = "d".repeat(64);
+        next_boot.boot_id = "11111111-2222-4333-8444-555555555555".into();
+        let mut repeated = request(vec![REPLACEMENT.to_string(), ROOT.to_string()]);
+        assert_eq!(first.bundle_digest, repeated.bundle_digest);
+        repeated.execution_epoch = next_boot.execution_epoch;
+        repeated.boot_challenge = next_boot.boot_challenge.clone();
+        install_trust(&base, &destination, &state, &repeated, &next_boot).unwrap();
+        assert_eq!(fs::read(&destination).unwrap(), expected);
+        assert_eq!(fs::read_dir(&state).unwrap().count(), 1);
+        assert_eq!(fs::read(&base).unwrap(), vendor);
+
+        let mut replacement = request(vec![REPLACEMENT.to_string()]);
+        replacement.execution_epoch = next_boot.execution_epoch;
+        replacement.boot_challenge = next_boot.boot_challenge.clone();
+        install_trust(&base, &destination, &state, &replacement, &next_boot).unwrap();
+        assert_eq!(
+            fs::read(&destination).unwrap(),
+            bundle(vendor, &replacement.roots).unwrap()
+        );
+        assert!(!fs::read_to_string(&destination).unwrap().contains(ROOT));
+        install_trust(&base, &destination, &state, &repeated, &next_boot).unwrap();
+        assert_eq!(fs::read(&destination).unwrap(), expected);
+
+        assert!(install_trust(&base, &destination, &state, &first, &next_boot).is_err());
+        fs::write(
+            state.join(format!("bundle-{}.pem", repeated.bundle_digest)),
+            b"corrupted",
+        )
+        .unwrap();
+        let prior_link = fs::read_link(&destination).unwrap();
+        assert!(install_trust(&base, &destination, &state, &repeated, &next_boot).is_err());
+        assert_eq!(fs::read_link(&destination).unwrap(), prior_link);
+        fs::remove_file(&base).unwrap();
+        assert!(install_trust(&base, &destination, &state, &replacement, &next_boot).is_err());
+        assert_eq!(fs::read_link(&destination).unwrap(), prior_link);
+        assert!(!state.join(".overalls-ca.next").exists());
     }
 }

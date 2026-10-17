@@ -56,6 +56,46 @@ defmodule OverallsAntithesis.ControlPeer do
     :ok
   end
 
+  # @cc [owner:ghuntley,label:verification] control-peer-close-code
+  # A coded close MUST send one server close frame carrying exactly that code on
+  # the current socket. The peer keeps reading until the client closes, so the
+  # client observes the code rather than a bare transport loss.
+  @spec close_with(connection(), 4000..4008) :: :ok
+  def close_with(server, code) do
+    send(server, {:close_with, code})
+    :ok
+  end
+
+  @doc "Discards transport accepts already recorded for earlier connections."
+  @spec flush_accepted() :: :ok
+  def flush_accepted do
+    receive do
+      {:peer_accepted, _acceptor} -> flush_accepted()
+    after
+      0 -> :ok
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification] control-peer-handshake-ledger
+  # Every TCP accept on the loopback listener counts as a transport handshake
+  # attempt, whether or not it completes an upgrade. The count covers only the
+  # elapsed window; a quiet window is not evidence beyond its length.
+  @spec handshakes_within(non_neg_integer()) :: non_neg_integer()
+  def handshakes_within(window) do
+    count_accepts(System.monotonic_time(:millisecond) + window, 0)
+  end
+
+  @spec count_accepts(integer(), non_neg_integer()) :: non_neg_integer()
+  defp count_accepts(deadline, count) do
+    remaining = max(deadline - System.monotonic_time(:millisecond), 0)
+
+    receive do
+      {:peer_accepted, _acceptor} -> count_accepts(deadline, count + 1)
+    after
+      remaining -> count
+    end
+  end
+
   @spec barrier(connection(), non_neg_integer()) :: boolean()
   def barrier(server, nonce) do
     send(server, {:send, {:ping, nonce}})
@@ -120,6 +160,15 @@ defmodule OverallsAntithesis.ControlPeer do
     end
   end
 
+  @spec await_disconnect_reason(pid(), non_neg_integer()) :: {:ok, term()} | :unavailable
+  def await_disconnect_reason(client, timeout \\ 3_000) do
+    receive do
+      {:control, ^client, {:disconnected, reason}} -> {:ok, reason}
+    after
+      timeout -> :unavailable
+    end
+  end
+
   @spec await_hello(connection(), non_neg_integer()) ::
           {:wire, connection(), {:hello, map()}} | :unavailable
   defp await_hello(server, timeout) do
@@ -134,6 +183,7 @@ defmodule OverallsAntithesis.ControlPeer do
   defp accept(listener, owner) do
     case :gen_tcp.accept(listener) do
       {:ok, socket} ->
+        send(owner, {:peer_accepted, self()})
         serve(socket, owner)
         accept(listener, owner)
 
@@ -226,6 +276,11 @@ defmodule OverallsAntithesis.ControlPeer do
 
       :drop ->
         :gen_tcp.close(socket)
+
+      {:close_with, code} ->
+        {:ok, data} = Frame.encode({:close, code, ""}, :server, 1_048_576)
+        :ok = :gen_tcp.send(socket, data)
+        loop(socket, owner, buffer)
     after
       10 ->
         case :gen_tcp.recv(socket, 0, 10) do

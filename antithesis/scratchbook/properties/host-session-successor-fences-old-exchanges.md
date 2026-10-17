@@ -32,4 +32,4 @@ Open questions: None for the safe fixture choice. Native physical evidence for B
 
 ## Authored assertion snapshot
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:272`. Current Lilly host-session/successor route only; physical guest/execution authority is separate. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:272`. Current Lilly host-session/successor route only; physical guest/execution authority is separate. It is in the staged control-core selection as a terminal singleton template (selected 2026-10-17). This records source presence, not a passing hosted or native result.

@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:build;verification] freebsd-candidate-installation
+The candidate assembler MUST use a scratch copy of the pinned GPT/UFS image and
+immutable installation media. Both installation and kernel verification boots
+MUST have no network, bounded execution and clean guest poweroff. The second boot
+MUST run without installation media and verify the compiled kernel build token,
+the installed kernel digest, root-owned expectation and complete native payload.
+
+@cc [owner:ghuntley,label:security;verification] freebsd-candidate-admission
+An assembled candidate MAY publish exact disk and kernel provenance, but MUST
+retain nativeAdmission=false and distinguish installed files and kernel boot
+from Firecracker transport, service, isolation, recovery and catalog acceptance.
+Test-only extra root files and runtime hooks MUST NOT enter the default image.
+
+@cc [owner:ghuntley,label:security] freebsd-native-sudo-installation
+The assembler MUST restore set-ID mode only on the regular, root-owned
+`/usr/local/bin/sudo` whose bytes match the pinned verified package closure.
+The second boot MUST verify its digest, ownership and exact mode 4755. The stock
+sshd service MUST remain disabled so the managed Lyra SSH listener owns port 22.
+The reviewed regular, root-owned sudoers policy MUST receive exact mode 0440.

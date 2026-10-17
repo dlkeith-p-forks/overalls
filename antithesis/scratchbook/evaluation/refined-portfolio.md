@@ -63,19 +63,27 @@ Do not satisfy that journey with a pre-seeded session.
 
 The roster has one entry per canonical ID, a unique planned literal primary
 message for each, and explicit hosted/native limits. The [assertion
-inventory](../existing-assertions.md) now records 153 authored callsites and
-26 catalog primary literals in its dated source snapshot; the companion
+inventory](../existing-assertions.md) now records 162 authored callsites and
+30 catalog primary literals in its dated source snapshot; the companion
 roster gives exact source hashes. The standalone scanner found no duplicated
 literal or primary-kind mismatch in that snapshot. Source presence only
 establishes that an assertion call is written. Many calls are support or
 startup checks; none establishes a full property result. Recheck the snapshot
 if source changes before freezing a run identity.
 
-The default `control-core` selection names nine commands in four templates.
-`selection.py inspect` traces 25 Python SDK callsites in their runtime imports,
-including five catalog primaries: `control-bind-before-domain-effects`,
-`control-bound-credential-revalidated`, `control-inflight-limit-and-retirement`,
-`control-no-hidden-redelivery`, and `control-pending-response-retirement`.
+The default `control-core` selection names 13 commands in seven templates
+(2026-10-17). `selection.py inspect` traces 33 Python SDK callsites in their
+runtime imports, including ten catalog primaries:
+`control-bind-before-domain-effects`,
+`control-bound-credential-revalidated`,
+`control-inflight-limit-and-retirement`,
+`control-no-hidden-redelivery`,
+`control-pending-response-retirement`,
+`control-service-dispatch-closed`,
+`control-version-refusal-remains-terminal`,
+`execution-v4-refuses-legacy-document`,
+`host-credential-rotation-fences-old-socket`, and
+`host-session-successor-fences-old-exchanges`.
 Marshall and Lilly also contain harness-gated startup calls; the selection
 inspection does not prove a compiled image or SDK ingestion. The separately
 configured `access-smtp` and `repository-origin` profiles trace three catalog
@@ -110,8 +118,8 @@ The earlier two-Control-callsite correction remains valid as history, but the
 current worktree is much larger. A repeated terminal literal was consolidated
 in the latest source snapshot; the inventory now reports no duplicate
 messages. The scanner itself did not establish hosted declaration or
-evaluation. `control-service-dispatch-closed`,
-`ziggy-completion-once-accounted`,
+evaluation. `control-service-dispatch-closed` now has a Lilly-bound primary
+literal; `ziggy-completion-once-accounted`,
 `galileo-named-origin-credential-and-revocation-bound`,
 `terminal-input-frame-replay-once`, and
 `terminal-kill-progress-under-pty-backpressure` still have narrower authored

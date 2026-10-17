@@ -3,6 +3,14 @@ use std::io::{self, Read};
 use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
 use std::time::Duration;
 const MAX_CA_BUNDLE: usize = 2 * 1024 * 1024;
+/// The reviewed native system trust location; Linux retains its existing path.
+pub const SYSTEM_CA_BUNDLE: &str = if cfg!(target_os = "freebsd") {
+    "/etc/ssl/cert.pem"
+} else if cfg!(any(target_os = "illumos", target_os = "solaris")) {
+    "/etc/ssl/cacert.pem"
+} else {
+    "/etc/ssl/certs/ca-certificates.crt"
+};
 const PRIVATE_ENDPOINT: SocketAddr =
     SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::new(169, 254, 254, 1), 443));
 pub fn read_bounded(reader: impl Read, maximum: usize) -> io::Result<Vec<u8>> {
@@ -32,13 +40,22 @@ pub fn telemetry_client() -> io::Result<reqwest::blocking::Client> {
     )
 }
 
+// @cc [owner:ghuntley,label:security;deployment] native-executor-private-tls
+// Native executor RPCs MUST use the bounded image trust bundle and verify the
+// exact llm.internal hostname at the fixed private endpoint, with no proxy or
+// redirects. A malformed or missing bundle MUST refuse before any request.
+#[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+pub(crate) fn executor_client(timeout: Duration) -> io::Result<reqwest::blocking::Client> {
+    client_for("llm.internal", timeout, timeout.min(Duration::from_secs(2)))
+}
+
 fn client_for(
     hostname: &'static str,
     timeout: Duration,
     connect_timeout: Duration,
 ) -> io::Result<reqwest::blocking::Client> {
-    let path = std::env::var("OVERALLS_SSH_CA_BUNDLE")
-        .unwrap_or_else(|_| "/etc/ssl/certs/ca-certificates.crt".to_owned());
+    let path =
+        std::env::var("OVERALLS_SSH_CA_BUNDLE").unwrap_or_else(|_| SYSTEM_CA_BUNDLE.to_owned());
     let pem = read_bounded(File::open(path)?, MAX_CA_BUNDLE)?;
     let certificates = reqwest::Certificate::from_pem_bundle(&pem)
         .map_err(|_| io::Error::other("invalid private TLS trust bundle"))?;

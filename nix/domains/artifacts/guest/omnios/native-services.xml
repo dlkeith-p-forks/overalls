@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+<service_bundle type="profile" name="overalls-native-services">
+  <service name="system/cloud-init" version="1" type="service">
+    <instance name="initlocal" enabled="false"/>
+    <instance name="init" enabled="false"/>
+    <instance name="modules" enabled="false"/>
+    <instance name="final" enabled="false"/>
+  </service>
+  <service name="network/ssh" version="1" type="service">
+    <instance name="default" enabled="false"/>
+  </service>
+</service_bundle>

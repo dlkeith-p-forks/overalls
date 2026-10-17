@@ -63,4 +63,24 @@ defmodule MarshallSshTerminalContractTest do
     assert Marshall.SSH.ControlRequests.classify({:error, :unexpected_secret}) ==
              {:error, 503, "temporarily_unavailable"}
   end
+
+  @tag obligation: "marshall.ssh_terminal.I3"
+  test "viewer authority clears, propagates, and bounds inconclusive episodes" do
+    assert Marshall.Terminal.ViewerAuthority.step(123, :ok, 10_000) == {:ok, nil}
+
+    assert Marshall.Terminal.ViewerAuthority.step(nil, {:error, :forbidden}, 10_000) ==
+             {:refuse, :forbidden}
+
+    assert Marshall.Terminal.ViewerAuthority.step(nil, :inconclusive, 1_000) == {:ok, 1_000}
+
+    assert Marshall.Terminal.ViewerAuthority.step(1_000, :inconclusive, 1_000 + 29_999) ==
+             {:ok, 1_000}
+
+    assert Marshall.Terminal.ViewerAuthority.step(1_000, :inconclusive, 1_000 + 30_000) ==
+             {:refuse, :authority_unconfirmed}
+
+    # The episode's original start is retained; a later check cannot extend it.
+    assert Marshall.Terminal.ViewerAuthority.step(1_000, :inconclusive, 1_000 + 30_001) ==
+             {:refuse, :authority_unconfirmed}
+  end
 end

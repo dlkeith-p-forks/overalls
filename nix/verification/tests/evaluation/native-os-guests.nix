@@ -32,11 +32,14 @@ assert illumosFleetImage == null;
 assert !freebsd.passthru.kernelReady;
 assert !omnios.passthru.kernelReady;
 assert !freebsd.passthru.imageAssemblyReady;
+assert !freebsd.passthru.stagingOnly;
+assert !packages.freebsdImageCandidate.nativeAdmission;
+assert !packages.freebsdImageCandidate.runtimeValidated;
 assert !omnios.passthru.imageAssemblyReady;
 assert !freebsd.passthru.nativeAdmission;
 assert !omnios.passthru.nativeAdmission;
 assert freebsd.passthru.kernelSourceRevision == "833d39bd2e38421a14ea489a956261a0fa993fbc";
-assert omnios.passthru.kernelSourceRevision == "edfc22bf3262825b4b63c15d0415f58f1ca34f1f";
+assert omnios.passthru.kernelSourceRevision == "6f87d0b5d63b957991dc9d4a01a7e6c95483282c";
 assert freebsd.passthru.kernelSourceHash == packages.nativeKernels.pins.freebsd.hash;
 assert omnios.passthru.kernelSourceHash == packages.nativeKernels.pins.illumos.hash;
 assert builtins.match "[0-9a-f]{64}" freebsd.passthru.kernelPatchHash != null;
@@ -76,8 +79,8 @@ assert lib.hasInfix "guest_agents:\"freebsd-v1\"" freebsdCommand;
 assert lib.hasInfix "evidence/native-agents/freebsd" freebsdCommand;
 assert lib.hasInfix "evidence/native-services/freebsd" freebsdCommand;
 assert lib.hasInfix "overalls-native-readinessd" freebsdCommand;
-# FreeBSD's immutable UFS root receives native agents through its writable EFI
-# payload and the reserved nuageinit cidata drive during first boot.
+# FreeBSD's immutable UFS root receives the complete installation payload from
+# an offline ISO, with nuageinit configuration in the reserved cidata drive.
 assert lib.hasInfix "mcopy -i" freebsdCommand;
 assert lib.hasInfix "mformat -i \"$config_drive\" -v cidata ::" freebsdCommand;
 assert lib.hasInfix "::user-data" freebsdCommand;
@@ -85,6 +88,11 @@ assert lib.hasInfix "/dev/gpt/efiesp" freebsdCommand;
 assert lib.hasInfix "config-drive" freebsdCommand;
 assert lib.hasInfix "mcopy" freebsdCommand;
 assert lib.hasInfix "freebsd-user-data" freebsdCommand;
+assert lib.hasInfix "xorriso -as mkisofs" freebsdCommand;
+assert lib.hasInfix "freebsd-root.tar" freebsdCommand;
+assert lib.hasInfix "/dev/iso9660/OVERALLS_NATIVE" freebsdCommand;
+assert lib.hasInfix "/etc/overalls/kernel-build-id" freebsdCommand;
+assert lib.hasInfix "/usr/local/etc/rc.d/overalls-native-agents" freebsdCommand;
 assert lib.hasInfix "version:6" omniosCommand;
 assert lib.hasInfix "os:\"illumos\"" omniosCommand;
 assert lib.hasInfix "kind:\"firmware\",pci:true" omniosCommand;
@@ -109,6 +117,7 @@ assert lib.hasInfix "printf '%s\\n'" packages.nativeGuestAgents.freebsdSuperviso
 assert lib.hasInfix "/usr/local/libexec/overalls-native-kernel-probed" packages.nativeGuestAgents.freebsdSupervisor.text;
 assert lib.hasInfix "/opt/overalls/libexec/overalls-native-kernel-probed" packages.nativeGuestAgents.illumosSupervisor.text;
 assert lib.hasInfix "supervise sshd" packages.nativeGuestAgents.freebsdSupervisor.text;
+assert lib.hasInfix "supervise lilly-terminald" packages.nativeGuestAgents.freebsdSupervisor.text;
 assert !(lib.hasInfix "/nix/store/" (plain packages.nativeGuestAgents.freebsdSupervisor.text));
 pkgs.runCommand "native-os-guest-evaluation" { } ''
   test ${lib.escapeShellArg freebsd.name} = freebsd-evaluation

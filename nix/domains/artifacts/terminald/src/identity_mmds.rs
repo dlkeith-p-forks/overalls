@@ -1,13 +1,13 @@
-//! Boot identity for firmware-booted Windows guests, read from Firecracker's
-//! MMDS version 2 (ADR-0170, ADR-0171).
+//! Boot identity for firmware-booted Windows, FreeBSD and illumos guests, read
+//! from Firecracker's MMDS version 2 (ADR-0170, ADR-0171, ADR-0190).
 //!
 //! Kernel guests read `lilly.boot_challenge`, `lilly.placement` and
-//! `lilly.execution_epoch` from the command line; Windows guests read the same
+//! `lilly.execution_epoch` from the command line; firmware guests read the same
 //! values from the `lilly` document Lilly seeds into MMDS. This mirrors Lyra's
 //! `guest::mmds` client: one bounded HTTP/1.1 exchange per request, a fresh
 //! session token per fetch, and `GET /lilly` answered with the subtree itself.
 //! Only std networking is used, so the decoder is unit tested on Linux too.
-#![cfg_attr(not(windows), allow(dead_code))]
+#![cfg_attr(not(any(windows, target_os = "freebsd", target_os = "illumos")), allow(dead_code))]
 use serde::Deserialize;
 use std::io::{self, Read, Write};
 use std::net::{Ipv4Addr, SocketAddrV4, TcpStream};
@@ -27,7 +27,7 @@ struct Document {
 }
 
 /// @cc [owner:ghuntley,label:security] windows-terminald-mmds-identity
-/// The identity MUST come only from a version-1 `lilly` document that MMDS
+/// Firmware guest identity MUST come only from a version-1 `lilly` document that MMDS
 /// serves for `GET /lilly` (the subtree, not an envelope) after a fresh
 /// version-2 session token; the token MUST NOT be logged or retained, and the
 /// result is still checked by `validate_boot_identity` before any key derives.

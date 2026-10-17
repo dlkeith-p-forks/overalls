@@ -33,6 +33,10 @@ let
     url = "https://static.rust-lang.org/dist/rustc-${rustVersion}-x86_64-unknown-linux-gnu.tar.xz";
     hash = "sha256-mBnQoy1WvTOVhTGcgCYOMyd59VQf1mg4q34BbWyBSBk=";
   };
+  clippyArchive = pkgs.fetchurl {
+    url = "https://static.rust-lang.org/dist/clippy-${rustVersion}-x86_64-unknown-linux-gnu.tar.xz";
+    hash = "sha256-NEHfj7VNuYX4yKPoNWuIdKP5LMjMqFZc/jbx3BWTXnI=";
+  };
   toolchain = pkgs.stdenvNoCC.mkDerivation {
     pname = "lyra-rust-toolchain";
     version = rustVersion;
@@ -51,6 +55,8 @@ let
       mkdir -p "$out" "$TMPDIR/rust-dist"
       tar -xJf ${rustcArchive} -C "$TMPDIR/rust-dist"
       cp -a "$TMPDIR/rust-dist/rustc-1.97.1-x86_64-unknown-linux-gnu/rustc/." "$out/"
+      tar -xJf ${clippyArchive} -C "$TMPDIR/rust-dist"
+      cp -a "$TMPDIR/rust-dist/clippy-1.97.1-x86_64-unknown-linux-gnu/clippy-preview/." "$out/"
       chmod u+w "$out/lib/rustlib"
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (target: archive: ''
         tar -xJf ${archive} -C "$TMPDIR/rust-dist"
@@ -68,7 +74,7 @@ let
   # MUST type-check the crate for `x86_64-pc-windows-gnu` so Unix-only code
   # cannot creep into the shared modules the Windows agents link. The native
   # library and agent binaries MUST also type-check for both FreeBSD and illumos;
-  # that evidence MUST NOT establish native runtime acceptance (ADR-0186).
+  # that evidence MUST NOT establish native runtime acceptance (ADR-0190).
   tests = pkgs.stdenv.mkDerivation {
     pname = "lyra-tests";
     version = "0.1.0";
@@ -99,11 +105,20 @@ let
         cargo check --locked --offline --target x86_64-pc-windows-gnu --lib --bin overalls \
           ${lib.concatMapStringsSep " " (binary: "--bin ${binary}") windowsBinaries}
       # These checks require target Rust metadata only. FreeBSD also has a
-      # supported Zig libc target; illumos linking still needs its own SDK.
+      # supported Zig libc target; the separate native package links illumos
+      # against its immutable OmniOS userland sysroot.
       for target in x86_64-unknown-freebsd x86_64-unknown-illumos; do
         RUSTC="${toolchain}/bin/rustc" CARGO_TARGET_DIR="$TMPDIR/native-$target" \
           cargo check --locked --offline --target "$target" --lib \
             ${lib.concatMapStringsSep " " (binary: "--bin ${binary}") nativeBinaries}
+        # Official target std metadata and Clippy must come from the same
+        # compiler distribution; Nixpkgs's source-built Clippy has a different
+        # compiler identity even when its release version is identical.
+        PATH="${toolchain}/bin:$PATH" RUSTC="${toolchain}/bin/rustc" \
+          CARGO_TARGET_DIR="$TMPDIR/native-$target" \
+          ${toolchain}/bin/cargo-clippy clippy --locked --offline --target "$target" --lib \
+            ${lib.concatMapStringsSep " " (binary: "--bin ${binary}") nativeBinaries} \
+            --bin overalls-native-transport-probe -- -D warnings
       done
     '';
     installPhase = ''
@@ -120,6 +135,8 @@ let
     "overalls-agentd-windows"
   ];
   nativeBinaries = [
+    "overalls-native-bootstrap"
+    "overalls-native-grow-root"
     "overalls-native-readinessd"
     "overalls-native-trustd"
     "overalls-native-workspaced"
@@ -222,13 +239,6 @@ pkgs.stdenv.mkDerivation {
     cargo zigbuild --release --locked --offline --target x86_64-unknown-linux-musl --bin overalls-host-certificate
     cargo zigbuild --release --locked --offline --target x86_64-unknown-linux-musl --bin overalls-trustd
     cargo zigbuild --release --locked --offline --target x86_64-unknown-linux-musl --bin overalls-workspaced
-    # Native FreeBSD binaries are cross-linked here.  An illumos libc SDK is
-    # not available to this Linux builder, so illumos stays metadata-only.
-    for target in x86_64-unknown-freebsd; do
-      for binary in ${lib.concatStringsSep " " nativeBinaries}; do
-        cargo zigbuild --release --locked --offline --target "$target" --bin "$binary"
-      done
-    done
     runHook postBuild
   '';
   installPhase = ''
@@ -239,11 +249,6 @@ pkgs.stdenv.mkDerivation {
     cp "$CARGO_TARGET_DIR/x86_64-unknown-linux-musl/release/overalls-host-certificate" "$out/bin/overalls-host-certificate"
     cp "$CARGO_TARGET_DIR/x86_64-unknown-linux-musl/release/overalls-trustd" "$out/bin/overalls-trustd"
     cp "$CARGO_TARGET_DIR/x86_64-unknown-linux-musl/release/overalls-workspaced" "$out/bin/overalls-workspaced"
-    for target in x86_64-unknown-freebsd; do
-      for binary in ${lib.concatStringsSep " " nativeBinaries}; do
-        install -D -m 0755 "$CARGO_TARGET_DIR/$target/release/$binary" "$out/bin/$target-$binary"
-      done
-    done
     cp "$CARGO_TARGET_DIR/aarch64-unknown-linux-musl/release/overalls" "$out/bin/linux-arm64"
     cp "$CARGO_TARGET_DIR/x86_64-apple-darwin/release/overalls" "$out/bin/darwin-amd64"
     cp "$CARGO_TARGET_DIR/aarch64-apple-darwin/release/overalls" "$out/bin/darwin-arm64"
@@ -260,7 +265,7 @@ import pathlib
 import sys
 
 root: pathlib.Path = pathlib.Path(sys.argv[1])
-names: tuple[str, ...] = ("linux-amd64", "linux-arm64", "darwin-amd64", "darwin-arm64", "windows-amd64", "x86_64-unknown-freebsd-overalls-native-readinessd", "x86_64-unknown-freebsd-overalls-native-trustd", "x86_64-unknown-freebsd-overalls-native-workspaced")
+names: tuple[str, ...] = ("linux-amd64", "linux-arm64", "darwin-amd64", "darwin-arm64", "windows-amd64")
 artifacts: dict[str, dict[str, str | int]] = {
     name: {
         "path": "/bin/" + name,
@@ -281,4 +286,7 @@ PY
   passthru.windows = windows;
   passthru.toolchain = toolchain;
   passthru.nativeBinaries = nativeBinaries;
+  passthru.native = import ./lyra-native.nix {
+    inherit pkgs source vendor toolchain nativeBinaries;
+  };
 }

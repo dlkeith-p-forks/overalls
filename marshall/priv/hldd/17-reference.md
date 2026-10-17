@@ -184,7 +184,7 @@ derivations and source hashes.
 The [foundation review](repo:docs/architecture/reviews/2026-10-13-antithesis-harness-foundation.md)
 describes an isolated control fixture. The graph below is its proposed Compose
 layout, not the deployed fleet or evidence that all containers have started.
-The hosted bootstrap campaign admits five active attempts so the selected Compose profiles can be validated concurrently; this operational limit does not establish a production deployment or a passing property result.
+The hosted campaign admits up to 32 active attempts so every selected Compose profile and its replicas can run concurrently; this operational limit does not establish a production deployment or a passing property result.
 
 ```mermaid
 flowchart LR
@@ -230,8 +230,33 @@ checkpoint whose pending admissions name only the current producer PID and
 start ticks, a readable SQLite archive and writable request and ledger volumes.
 Missing or stale evidence leaves setup incomplete. The profile is selectable,
 but no local or hosted run is recorded; its evidence is emulated, not native.
-The host report has unavailable pool capacity and false execution readiness,
-so a successful Control connection cannot authorize a guest placement. The
+The optional `admission-stub` profile runs the atomic-allocation and key-replay
+admission commands on a harness **stub** storage substrate, which is not ZFS.
+Only in that profile does the controlled Lilly release report configured stub
+pool totals for its enrolled pool identity, measured cgroup CPU and memory
+headroom, and a tiny non-bootable image it digest-verifies before advertising;
+the enrollment operator registers that image through Marshall's catalog action.
+A fully stub-backed report advertises placement readiness, so Marshall's real
+admission transaction commits VM, placement, reservation and dispatch rows,
+but the controlled executor never launches a guest and a delete never
+completes. Setup requires those committed report, pool and image rows in SQL.
+The results are admission-logic evidence only, never ZFS, physical-capacity,
+KVM or isolation evidence; the measured-capacity command stays in a separate,
+unselected template for the measured host graph.
+The optional `guest-lifecycle` profile selects the guest lifecycle command with
+the guest VMM overlay. Its container Lilly is a separate STUB-storage release:
+it reports a fixed synthetic pool with no ZFS and compute headroom for one free
+guest-vmm slot, capped by measured cgroup limits, and sets execution readiness
+only after a guest-vmm health check and a verified advertised image. The
+enrollment operator registers that image manifest through the catalog action.
+Bootstrap adds a third gate: the guest-vmm image identity, read through the
+read-only witness bridge, and a Marshall catalog offering that image with known
+capacity for its shape. The stub admits one emulated QEMU TCG guest only; it is
+not native ZFS, KVM, Firecracker, isolation or capacity evidence, and no local
+or hosted run of this profile is recorded.
+In every other profile the host report has unavailable pool capacity and false
+execution readiness, so a successful Control connection cannot authorize a
+guest placement. The
 controlled executor records requests without claiming physical effects; its
 default guest callbacks remain unavailable. An optional integrated TCG adapter
 is authored with a measured inner ZFS host and emulated guest observation, but
@@ -252,13 +277,22 @@ emitted setup and passed six serial Control commands; the selected manifest
 has four stale runtime-dependency hashes, so no frozen hosted baseline follows.
 
 The static researched catalog contains 104 primary properties. The current
-literal scanner finds 153 SDK callsites, 26 matching primary messages and 78
+literal scanner finds 163 SDK callsites, 30 matching primary messages and 74
 missing primaries, with no duplicate callsite or kind mismatch; none
 of the 104 properties is complete as a workload plus independent oracle and
-hosted result. Local SDK writer probes and unit tests show bounded JSONL
+hosted result. The default `control-core` selection now stages 13 commands in
+seven templates, six of them one-command terminal singletons: credential
+revalidation, dispatch, legacy request, SQL reply loss, host-session successor
+and host rotation. Its cross-service dispatch primary binds only a Lilly socket
+and counts foreign effect tables; its legacy-document primary observes
+Marshall's durable host session, not Lilly's Store or Journal; its 4001
+refusal primary drives the shared client against a loopback peer for a bounded
+quiet window. None has a hosted run. Local SDK writer probes and unit tests show bounded JSONL
 behavior, including short-write refusal across helper restart, but they do not
 prove hosted ingestion. BEAM fallback assertions provide no BEAM branch
-coverage. Python catalog scanning provides no source coverage; the C helper is
+coverage. The harness-only Marshall hint relay `Reachable` marks an observed
+notifier recovery from `:isolated`; it is a search anchor, not evidence that a
+lost hint was reconciled or a committed host command progressed. Python catalog scanning provides no source coverage; the C helper is
 assertion transport, not SUT instrumentation. Native Rust coverage remains
 pending. A local control-core setup completed on diagnostic4 image bytes, but
 the selected manifest's four stale dependency hashes prevent a frozen local
@@ -272,6 +306,29 @@ Their presence does not establish that selected images, migration, credentials,
 health, independent oracles and one setup owner ran together. The local guest
 and router TCG records each have their own artifact identity and never count as
 the default control graph's hosted baseline.
+
+| Profile | Overlays after the base | Selected commands | Setup gate beyond the base | Reachable claim |
+| --- | --- | --- | --- | --- |
+| `backup-restic` | `compose.backup.yaml` | five `backup` commands | production backup operator and pinned Restic present; private fixture volume; a probe Restic file repository initializes and enumerates empty | production prune, inspect, backup and restore against disposable encrypted file repositories, checked by raw Restic and restored hashes; no ZFS capture, S3 or recovery target |
+| `satellite-standin` | `compose.origin.yaml`, `compose.satellites.yaml`, `compose.satellite-standin.yaml` | four `satellite` commands | origin fixture state; private-Audi root; guest stand-in receipt of a verified TLS handshake to private Audi | private Audi forwards nothing for a forged request from a source Lilly never bound; VM-dependent commands record unexercised |
+
+The `backup-restic` repository uses Restic's local file backend because the
+production operator reports one failure status for an unavailable repository
+and for a validator refusal; a network backend would let a fault read as a
+refusal. The `satellite-standin` **guest stand-in** is a labelled harness process
+from the workload image that shares only `lilly-a`'s network namespace and
+speaks the guest-side TLS protocol to `169.254.254.1`. It is not a guest: it has
+no VM, boot, tap, placement or execution authority and mounts no secret. Its
+assertions test only private Audi's transport-only attribution with the origin
+fixture as effect witness; they say nothing about guest routing or isolation.
+The overlay also corrects the private Audi start script, which omitted the
+required `connector_uid` and so could not load its configuration. Ziggy
+completion, Galileo named origin and the editor login-code race need a current
+running VM; the controlled Lilly pool reports unavailable capacity and no Audi
+editor gateway, editor release or wildcard is configured, so their primary and
+`Sometimes` assertions stay unevaluated. Both profiles have rendered Compose
+graphs that pass the selection validators and unit tests; neither has a local
+`compose up` or hosted run.
 The [integrated-host record](repo:antithesis/verification/integrated-host-boot.json)
 captures two unavailable-health TCG boots and one corrected third-image boot
 with actual ZFS and cgroup sampling. A fourth built private-service image
@@ -325,14 +382,18 @@ files explicitly report incomplete coverage and never authorize VM cleanup.
 
 ## Developer verification
 
-The repository's GitHub Actions `devenv` job runs on pushes to `main`. It installs
-Nix and devenv, enables the `overalls` Cachix cache, then runs `devenv test`
-inside the pinned shell. Local devenv evaluations pull from and publish to the
-`overalls` cache. The workflow uses `devenv shell -- bash -e {0}` as its
-default command shell so additional checked-in commands can share the same
-environment. Hosted execution proves only the configured devenv hooks and shell
-build on the GitHub runner; component-specific precommit suites and native fleet
-acceptance remain separate.
+GitHub Actions runs on privileged, cached Namespace runners so Nix builds keep
+their sandbox. Every job installs single-user Nix and the devenv revision pinned
+by `devenv.lock`, and publishes what it builds to the `overalls` Cachix cache.
+`publish-cache.yml` runs on trunk pushes and pull requests: repository gates,
+`mix precommit` for each Elixir project, and every enabled non-machine flake
+check. `nixos-machine-tests.yml` runs daily or on dispatch and fans out one job
+per NixOS machine test selected from `meta.ci` (Inception is excluded); its
+discovery evaluates only that metadata, and each matrix job builds its test.
+`nix-upgrades.yml` updates `devenv.lock` weekly and pins the flake's
+`buildNixpkgs` to the same nixpkgs. A run is execution evidence only for the
+commit it ran; a selected matrix entry is not a passing result, and nested-KVM
+availability on the hosted runners is unverified.
 
 `elixir/request_accounting/` is the shared typed request-accounting library.
 `Overalls.RequestAccounting.Producer` performs private quality-marker and local
@@ -479,8 +540,100 @@ source revision, patch/configuration hashes and compiler; unavailable receipts
 and placeholder kernels cannot enter image construction. A declaration of
 `workspace_source_version` 2 does not grant source delivery. Lilly's added probe
 path binds kernel-file identity to the current boot fields and requires the
-same boot ID from readiness, but native boot and running-kernel evidence remain
-absent. See [ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md).
+same boot ID from readiness. The read-only `AF_VSOCK` option
+`VSOCK_SO_BUILD_ID` (1) returns exactly 65 bytes: 64 lowercase hex build-input
+bytes and NUL. The probe compares that loaded token to a root-owned bounded
+expected-token file before answering; the separate kernel file hash is still
+required. Separate FreeBSD kernel and native userland
+cross-builds now pass; illumos has a modern virtio backport and custom socket
+sources with object checks. `sys/vsock.h` exposes family 45 on FreeBSD and 40 on
+illumos, with the same 16-byte port/CID layout and passive host-only streams.
+`overalls-illumos-candidate link OBJECT_BUNDLE BUILD_ID NEW_OUTPUT` performs
+target-native nine-module linkage; `install ALTERNATE_ZFS_ROOT LINKED_BUNDLE BUILD_ID`
+verifies bytes and rebuilds an alternate root's boot archive. The actual scratch
+link/install passed; the command refuses the running root and retains closed
+admission. The `native-freebsd-transport` nested-KVM gate passed a scoped
+139-second run for exact token/CID, native ABI/buffer/capacity refusals, bounded-refusal/reconnect
+and credit-window exchanges. The final ordinary catalog gate passed again in
+246 seconds for image `19658a4a`, with immutable receipt and exact token/firmware/
+VMM hashes recorded in the native review. The
+separate FreeBSD candidate performs two offline QEMU boots and installed-byte,
+Git/trust and executing-token verification. `omnios-image-candidate-kit` emits
+immutable inputs for native pool assembly and fresh-boot verification as
+described in its [operator guide](repo:nix/domains/artifacts/guest/omnios/README.md);
+native pool import/clone/link/install/boot-archive/export passed with all nine
+modules and payload entries. Seed-fixed QEMU file/Git/trust/resolver/stock-service
+checks and diagnostic Firecracker executing-AF40/native Rust transport checks
+passed. Final corrected token `985301b4` clean-export assembly passed all nine
+native links and 764 payload checks, native validation of three manifests and
+the exact four stock-network removals. Read-only receipt extraction and clean
+shutdown sealed disk `24318238`; normal persistent-image replay remains pending.
+This is a recorded target-native assembly, not a reproducibly Nix-built image.
+The completion-corrected `76b8c1ad` object build passed all four host gates,
+including 161 source-extracted completion histories and four rejected mutants.
+Its separate pristine native assembly passed the same nine-module/764-entry/
+schema/network checks and sealed disk `a49255bd`; exact hashes are in the native
+review. A paired direct-only QEMU diagnostic reaches console login on `76b8`
+under the same no-vsock settings where `9853` panics mounting root. Growth enters
+maintenance in this diagnostic; corrected Firecracker service/transport/reset
+acceptance remains separate, and the earlier `9853` boot failures stay recorded.
+The first corrected-image Firecracker service run stays alive but misses its
+240-second first-boot deadline, with blank serial and no kernel/service response.
+The vendor-base FreeBSD
+candidate passed complete services and same-boot daemon recovery over two clean
+boots each; later canonical-roots/SSH inputs passed full service oracles in the
+growth/isolation runs below. The final reviewed blocking-flush image passed all
+five scoped service/growth/policy/daemon-recovery/SIGKILL-recovery variants.
+These outputs remain outside admitted images; the FreeBSD results do not
+establish OmniOS, physical power-loss or fleet acceptance.
+See [ADR-0190](repo:docs/architecture/decisions/0190-native-kernel-provenance-and-admission.md).
+
+Native growth runs only `overalls-native-grow-root` without arguments. It derives
+the mounted root, checks pinned dual-GPT identity/capacity, applies native grow
+commands and writes `/var/run/overalls/root-growth.json` before bootstrap may
+publish identity. Twelve pure checks and three native FreeBSD QEMU boots passed
+one unchanged root plus two expansions with retained home/GPT/foreign-disk checks;
+the later exact canonical-roots/SSH image passed 334-second Firecracker growth
+with three clean boots, two expansions and full service oracles. OmniOS growth
+and interrupted expansion remain pending; final blocking-flush FreeBSD replay
+passed the same three-boot/two-expansion boundary. The
+OmniOS kit's offline SMF profile disables stock cloud-init's four instances and
+stock SSH; exact-profile database-copy validation passed without touching the
+live repository. Assembly removes the fixed four stock vioif0 address/DHCP files
+and binds continued absence into verification. Assembly and booted verification
+validate all three exact manifests with native `svccfg validate` before receipts.
+The corrected `Unstable` manifests pass actual native validation; the old-enum
+mutant refuses. Schema validity does not establish methods or service readiness.
+A new assembled image must pass fresh-boot disabled-state and immutable payload
+checks. The native isolation fixture's composed driver and
+Linux nft smoke pass; the exact canonical-roots/SSH FreeBSD image also passed
+two clean native policy boots with sink controls, actual guard drops and source
+recovery. OmniOS, direct native peer-VM, jail and host isolation remain gaps.
+
+`native-fixture-unit` executes the host parser/refusal/cleanup/Git/FAT boundary
+suite with pinned Python, Git, OpenSSH, OpenSSL, FAT and block tools. The recorded
+Nix gate passed 59 tests in a four-second build. This is host verification
+evidence; no native boot, isolation, growth or recovery follows from it. The
+shared service machine accepts an explicit FreeBSD/illumos test image, preserving
+the same service/growth/isolation/recovery/crash scenario boundaries without
+constructing an admitted production manifest.
+
+`native-reset-probes` cross-builds isolated C probes for FreeBSD and illumos.
+`native-freebsd-reset` passed its nested-KVM gate in 232 seconds: a peerless
+identity socket fenced and pending accept/read/write operations woke with errors
+after a real pause/full-snapshot/resume sequence, with fresh sockets refused until
+a new VM. Exact test image/kernel/probe/firmware/VMM receipts are in the native
+review. The private Unix fixture API and disposable snapshot/memory do not grant
+production authority; this does not establish DMA/race stress, OmniOS, physical,
+service or recovery acceptance.
+
+CI metadata reads enabled `config.requiredFeatures` from a lazy NixOS tester when
+its wrapper lacks `requiredSystemFeatures`, preserving explicit metadata and
+avoiding evaluation of the driver/derivation/image merely to select a builder.
+The throw-on-forcing regression and actual metadata checks passed. Native
+service/transport/reset tests remain enabled nested-KVM machine checks; the host
+fixture remains nonmachine. This corrects test scheduling without changing the
+actual nested-KVM requirement or adding runtime acceptance.
 
 ## Elixir contract verification
 

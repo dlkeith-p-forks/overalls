@@ -12,3 +12,33 @@ initializing with device status zero MUST be accepted when they form a valid
 queue configuration. Invalid queue indices, sizes, addresses or writes after
 the device has entered a disallowed state MUST retain the existing refusal and
 MUST NOT create ioevents or expose an unconfigured queue.
+
+@cc [owner:ghuntley,label:protocol;recovery] firecracker-pci-config-notification
+Virtio queue notifications through the PCI configuration access capability MUST
+signal the same queue event as its MMIO doorbell. Only 16-bit or 32-bit writes
+whose queue value matches the aligned notification offset and an existing queue
+MAY signal an event. Malformed writes MUST leave every queue event untouched.
+
+@cc [owner:ghuntley,label:protocol;recovery] firecracker-msix-reset-state
+The guest-visible MSI-X Enable and Function Mask bits MUST reset to zero and
+match the internal disabled/unmasked state. Individual vector entries MUST
+remain masked until programmed. Queue interrupts MUST NOT inject while MSI-X
+is disabled; a guest's conditional enable write MUST activate the same state
+used to route subsequent interrupts.
+
+@cc [owner:ghuntley,label:isolation;recovery] firecracker-net-reset-allocation
+Network reset in a vCPU thread MUST discard abandoned ring references while
+retaining the preallocated receive mapping. Reset MUST NOT require memfd_create
+or broaden the existing seccomp filter to allocate replacement buffers.
+
+@cc [owner:ghuntley,label:protocol;recovery] firecracker-uart-thre-enable
+Enabling UART transmit-empty interrupts while THR is empty MUST set the pending
+THRE identification and signal its interrupt, including re-enabling an existing
+pending interrupt. An unchanged enable bit MUST NOT signal again. DLAB divisor
+writes MUST NOT change interrupt enable or emit this interrupt.
+
+@cc [owner:ghuntley,label:protocol;recovery] firecracker-cloudhv-poweroff
+The fixed CloudHv firmware port 0x600 MUST signal the existing VMM exit event
+only for a single-byte value 0x34 at offset zero. Reads, malformed writes and other
+values MUST remain inert. Native clean-shutdown evidence MUST require the real
+guest to sync and power off with VMM exit zero; timeout termination cannot count.

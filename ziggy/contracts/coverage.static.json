@@ -6,9 +6,9 @@
       "covered": 0
     },
     "ziggy": {
-      "active": 6,
+      "active": 10,
       "coverage": 1.0,
-      "covered": 6
+      "covered": 10
     }
   },
   "components": {
@@ -21,10 +21,10 @@
       "obligations": {}
     },
     "ziggy.accounting": {
-      "active": 3,
+      "active": 5,
       "app": "ziggy",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "ziggy.accounting.I1": {
@@ -56,14 +56,34 @@
           "tests": [
             "test completion wire keeps only accounting fields"
           ]
+        },
+        "ziggy.accounting.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test completion validation rejects unknown fields and out of range values"
+          ]
+        },
+        "ziggy.accounting.I5": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test version fence backoff doubles and caps"
+          ]
         }
       }
     },
     "ziggy.inference_authority": {
-      "active": 3,
+      "active": 5,
       "app": "ziggy",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "ziggy.inference_authority.I1": {
@@ -95,6 +115,26 @@
           "tests": [
             "test provider errors classify into closed reasons"
           ]
+        },
+        "ziggy.inference_authority.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test lease rejects unsafe authority parameters before starting"
+          ]
+        },
+        "ziggy.inference_authority.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test streamed responses require a complete contiguous terminal output"
+          ]
         }
       }
     }
@@ -102,8 +142,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 6,
+    "active": 10,
     "coverage": 1.0,
-    "covered": 6
+    "covered": 10
   }
 }

@@ -22,6 +22,21 @@ class HostSession:
     epoch: int
 
 
+@dataclass(frozen=True)
+class ForeignEffects:
+    """Durable effect counts of the foreign Control routes the dispatch probe uses.
+
+    ``audi.ssh_open`` creates an ingress session, ``porsche.commands`` a pinned
+    SSH request receipt, ``ziggy.agent_next`` claims a model call and
+    ``galileo.authorize`` mints a peer token.
+    """
+
+    ingress_sessions: int
+    ssh_requests: int
+    claimed_model_calls: int
+    galileo_peer_tokens: int
+
+
 class ControlOracle:
     def __init__(self, sql: SqlOracle) -> None:
         self._sql = sql
@@ -62,6 +77,30 @@ class ControlOracle:
         if not isinstance(value, UUID) or value != session_id:
             return Observation.unavailable()
         return Observation.observed(True)
+
+    def foreign_effects(self) -> Observation[ForeignEffects]:
+        """@cc [owner:ghuntley,label:verification] control-foreign-effect-witness
+        One consistent read-only snapshot MUST count every foreign route's
+        durable effect table. A failed query or a non-integer count MUST remain
+        unknown; it MUST NOT be treated as an unchanged or empty table.
+        """
+        rows = self._sql.select(
+            "SELECT (SELECT count(*) FROM ingress_sessions), "
+            "(SELECT count(*) FROM ssh_requests), "
+            "(SELECT count(*) FROM agent_model_calls WHERE claim_id IS NOT NULL), "
+            "(SELECT count(*) FROM galileo_peer_tokens)",
+            maximum_rows=1,
+        )
+        if rows.state is not State.OBSERVED or rows.value is None:
+            return Observation.unavailable()
+        if len(rows.value) != 1 or len(rows.value[0]) != 4:
+            return Observation.unavailable()
+        counts: list[int] = []
+        for value in rows.value[0]:
+            if type(value) is not int or value < 0:
+                return Observation.unavailable()
+            counts.append(value)
+        return Observation.observed(ForeignEffects(counts[0], counts[1], counts[2], counts[3]))
 
     def current_host_session(self, host_id: UUID) -> Observation[HostSession | None]:
         rows = self._sql.select(

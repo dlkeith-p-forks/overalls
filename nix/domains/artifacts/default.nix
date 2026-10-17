@@ -41,20 +41,15 @@ let
   windowsBoot = import ./guest/windows/boot.nix { inherit pkgs vmm; };
   lyra = import ./infrastructure/lyra.nix { inherit pkgs; };
   lyraWindows = lyra.windows;
-  # Native guest daemons use the portable Unix vsock ABI and are shipped
+  nativeAgentPayload = import ./guest/native-agents.nix { inherit pkgs lyra terminald; };
+  # Native guest daemons use each OS's reviewed vsock ABI and are shipped
   # separately from the workstation CLI for native image assembly.
   lyraNative = pkgs.runCommand "overalls-native-agents" {} ''
-    # FreeBSD has a reproducible Linux cross-linker path.  The illumos
-    # protocol and image contract are present, but its native libc SDK is not
-    # available in this Linux build environment yet; keep that image
-    # evidence-only rather than shipping a non-runnable placeholder.
-    for os in freebsd; do
-      mkdir -p "$out/$os/bin"
-      for binary in readinessd trustd workspaced; do
-        install -D -m 0755 "${lyra}/bin/x86_64-unknown-$os-overalls-native-$binary" "$out/$os/bin/overalls-native-$binary"
-      done
-    done
-    cp ${lyra}/manifest.json "$out/lyra-manifest.json"
+    mkdir -p "$out/freebsd" "$out/illumos"
+    cp -a ${nativeAgentPayload.freebsd}/. "$out/freebsd/"
+    cp -a ${nativeAgentPayload.illumos}/. "$out/illumos/"
+    cp ${lyra.native}/manifest.json "$out/lyra-manifest.json"
+    cp ${terminald.native}/manifest.json "$out/terminald-manifest.json"
   '';
   # ConPTY terminal daemon for windows-v1 guests (ADR-0171 gate 4).
   terminaldWindows = import ./infrastructure/terminald-windows.nix { inherit pkgs; inherit (lyra) toolchain; };
@@ -250,11 +245,42 @@ rec {
   # Native non-Linux guests use the v6 manifest and never reuse the Linux
   # rootfs assembly. The CloudHv firmware is the same pinned PVH artifact used
   # by the firmware launcher, so OmniOS receives the identical PCI contract.
-  nativeGuestAgents = import ./guest/native-agents.nix { inherit pkgs lyra; };
+  nativeGuestAgents = nativeAgentPayload;
   nativeKernels = nativeGuests.nativeKernels;
   nativeGuests = import ./guest/native.nix { inherit pkgs lyra; firmware = windowsFirmware.fd; };
   mkFreeBSDGuest = import ./guest/freebsd { inherit pkgs; firmware = windowsFirmware.fd; nativeAgents = lyraNative; };
   freebsdGuest = mkFreeBSDGuest { };
+  # Candidate assembly is an explicit build target. The ordinary constructor
+  # and catalog remain closed until the full native machine evidence passes.
+  mkFreeBSDImageCandidate = extraArgs: import ./guest/freebsd/candidate.nix ({
+    inherit pkgs;
+    kernel = nativeKernels.freebsdCandidate;
+    agentNames = nativeAgentPayload.manifest.agents;
+    stagedImage = mkFreeBSDGuest {
+      imageName = "overalls-freebsd-native-staging";
+      kernel = nativeKernels.freebsdCandidate;
+      stagingOnly = true;
+    };
+  } // extraArgs);
+  freebsdImageCandidate = mkFreeBSDImageCandidate { };
+  omniosImageCandidateKit = import ./guest/omnios/candidate.nix {
+    inherit pkgs;
+    kernel = nativeKernels.illumosCandidate;
+    agents = nativeAgentPayload.illumos;
+    git = (import ./guest/native-git.nix { inherit pkgs; }).illumos;
+    source = nativeGuests.mkOmniOSSource;
+  };
+  freebsdTransportProbeImage = mkFreeBSDImageCandidate {
+    extraRoot = pkgs.runCommand "overalls-freebsd-transport-probe-root" {} ''
+      install -D -m 0555 \
+        ${lyra.native.probes}/bin/x86_64-unknown-freebsd-overalls-native-transport-probe \
+        "$out/usr/local/libexec/overalls-native-transport-probe"
+    '';
+    runtimeRcLocal = pkgs.writeText "overalls-freebsd-transport-probe-rc.local" ''
+      #!/bin/sh
+      exec /usr/local/libexec/overalls-native-transport-probe
+    '';
+  };
   # OmniOS has no offline ZFS mutation hook in the Linux builder. Keep its
   # pinned bootable image independent of the FreeBSD daemon payload until an
   # illumos libc SDK and SMF installation path are both available.

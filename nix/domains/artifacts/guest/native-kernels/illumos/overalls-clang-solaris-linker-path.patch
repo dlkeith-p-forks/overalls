@@ -1,0 +1,14 @@
+--- a/lib/Driver/ToolChains/Solaris.cpp
++++ b/lib/Driver/ToolChains/Solaris.cpp
+@@ -55,6 +55,11 @@
+ // FIXME: Need to handle CLANG_DEFAULT_LINKER here?
+ std::string solaris::Linker::getLinkerPath(const ArgList &Args) const {
+   const ToolChain &ToolChain = getToolChain();
++  // Keep -fuse-ld=bfd's GNU argument semantics while selecting an explicit
++  // cross-linker path through the common driver's validated override.
++  if (Args.hasArg(options::OPT_ld_path_EQ))
++    return ToolChain.GetLinkerPath();
++
+   if (const Arg *A = Args.getLastArg(options::OPT_fuse_ld_EQ)) {
+     StringRef UseLinker = A->getValue();
+     if (!UseLinker.empty()) {

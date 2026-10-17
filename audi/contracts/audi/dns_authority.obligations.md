@@ -1,5 +1,5 @@
 ---
-modules: [Audi.Authority.HintRenewal, Audi.Authority.Lease, Audi.Authority.Renewal, Audi.Authority.StreamGuard, Audi.DNS.Authority, Audi.DNS.Challenge, Audi.DNS.Directory, Audi.DNS.Replica, Audi.DNS.Server, Audi.DNS.Snapshot, Audi.DNS.Wire, Audi.Private.DNS, Audi.Private.Guard]
+modules: [Audi.Authority.HintRenewal, Audi.Authority.Lease, Audi.Authority.Renewal, Audi.Authority.StreamGuard, Audi.DNS.Authority, Audi.DNS.Challenge, Audi.DNS.Directory, Audi.DNS.Replica, Audi.DNS.Server, Audi.DNS.Snapshot, Audi.DNS.Wire, Audi.Private.DNS, Audi.Private.Guard, Audi.Private.Listener]
 ---
 
 # Dns Authority obligations
@@ -17,5 +17,11 @@ The component's declared Elixir modules remain present, compilable, and owned by
 ### audi.dns_authority.I2 — DNS framing rejects responses and bounds EDNS
 - **scope:** the component behavior exercised by the tagged contract test
 - **must:** `Audi.DNS.Wire.decode/1` MUST reject response packets and clamp EDNS UDP size to 1232.
+- **kind:** security
+- **status:** active
+
+### audi.dns_authority.I3 — Oversized UDP replies truncate without unsafe flags
+- **scope:** `Audi.DNS.Wire.reply/6`
+- **must:** UDP replies that exceed the advertised EDNS limit MUST set the truncation bit and omit oversized records; replies MUST NOT advertise recursion or DNSSEC validation.
 - **kind:** security
 - **status:** active

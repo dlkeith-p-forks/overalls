@@ -77,9 +77,11 @@ Lilly over virtio-vsock using the same jail-local endpoint and fixed port
 protocols as Linux agents. Windows discovers the address family through the
 virtio-win `viosock` provider. Native FreeBSD/illumos rows reserve that transport
 shape, but stock kernels lack the required AF_VSOCK/virtio-vsock support.
-Custom kernels, native adapters and host-CID enforcement remain unverified,
+The custom socket/virtio wrappers and shared bounded frame/credit core now
+exist, with target compilation and Linux property evidence. Native host-CID
+transport and reset acceptance remain unverified,
 and every native capability stays false under
-[ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md).
+[ADR-0190](repo:docs/architecture/decisions/0190-native-kernel-provenance-and-admission.md).
 The firmware jail adds the vsock device only for an agent set that speaks these
 protocols, and the agentless image keeps none. Every guest response remains
 bound to host CID 2, guest CID 3 and the current boot identity.

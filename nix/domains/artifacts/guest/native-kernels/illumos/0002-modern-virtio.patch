@@ -1,0 +1,3140 @@
+diff --git a/usr/src/man/man4d/vioblk.4d b/usr/src/man/man4d/vioblk.4d
+index c8a751e..a05e53d 100644
+--- a/usr/src/man/man4d/vioblk.4d
++++ b/usr/src/man/man4d/vioblk.4d
+@@ -9,9 +9,9 @@
+ .\" http://www.illumos.org/license/CDDL.
+ .\"
+ .\"
+-.\" Copyright 2020 Oxide Computer Company
++.\" Copyright 2025 Oxide Computer Company
+ .\"
+-.Dd June 14, 2022
++.Dd December 11, 2025
+ .Dt VIOBLK 4D
+ .Os
+ .Sh NAME
+@@ -27,9 +27,6 @@ driver is a
+ .Xr blkdev 4D
+ based device that supports the virtio para-virtualization block device
+ specification which is commonly used by many hypervisors and emulators.
+-The device supports what the specification calls the more commonly found
+-.Sq legacy
+-interface for devices.
+ .Pp
+ The driver supports the following features, if offered by the device:
+ .Bl -dash
+diff --git a/usr/src/man/man4d/vioif.4d b/usr/src/man/man4d/vioif.4d
+index 70ad019..02b4a98 100644
+--- a/usr/src/man/man4d/vioif.4d
++++ b/usr/src/man/man4d/vioif.4d
+@@ -9,9 +9,9 @@
+ .\" http://www.illumos.org/license/CDDL.
+ .\"
+ .\"
+-.\" Copyright 2020 Oxide Computer Company
++.\" Copyright 2025 Oxide Computer Company
+ .\"
+-.Dd October 3, 2020
++.Dd December 11, 2025
+ .Dt VIOIF 4D
+ .Os
+ .Sh NAME
+@@ -24,9 +24,6 @@ The
+ .Nm
+ driver is a GLDv3 NIC driver that supports the virtio para-virtualization
+ specification which is commonly used by many hypervisors and emulators.
+-The device supports what the specification calls the more commonly found
+-.Sq legacy
+-interface for devices.
+ .Pp
+ The driver supports the following networking features, if offered by the
+ device:
+diff --git a/usr/src/pkg/manifests/driver-crypto-viorand.p5m b/usr/src/pkg/manifests/driver-crypto-viorand.p5m
+index 78e0c96..6f1c2ac 100644
+--- a/usr/src/pkg/manifests/driver-crypto-viorand.p5m
++++ b/usr/src/pkg/manifests/driver-crypto-viorand.p5m
+@@ -11,6 +11,7 @@
+ 
+ #
+ # Copyright 2023 Toomas Soome <tsoome@me.com>
++# Copyright 2025 Oxide Computer Company
+ #
+ 
+ <include global_zone_only_component>
+@@ -24,5 +25,7 @@ dir  path=kernel group=sys
+ dir  path=kernel/drv group=sys
+ dir  path=kernel/drv/$(ARCH64) group=sys
+ file path=kernel/drv/$(ARCH64)/viorand group=sys
+-driver name=viorand alias=pci1af4,1005
++driver name=viorand \
++    alias=pci1af4,1005 \
++    alias=pci1af4,1044,p
+ license lic_CDDL license=lic_CDDL
+diff --git a/usr/src/pkg/manifests/driver-network-vioif.p5m b/usr/src/pkg/manifests/driver-network-vioif.p5m
+index e165f64..2f27cd6 100644
+--- a/usr/src/pkg/manifests/driver-network-vioif.p5m
++++ b/usr/src/pkg/manifests/driver-network-vioif.p5m
+@@ -16,6 +16,7 @@
+ #
+ # Copyright (c) 2013, Nexenta Systems Inc. All rights reserved.
+ # Copyright 2022 MNX Cloud, Inc.
++# Copyright 2025 Oxide Computer Company
+ #
+ 
+ #
+@@ -39,7 +40,8 @@ dir  path=usr/share/man/man4d
+ file path=usr/share/man/man4d/vioif.4d
+ driver name=vioif perms="* 0666 root sys" \
+     alias=pci1af4,1 \
+-    alias=pci1af4,1000,p
++    alias=pci1af4,1000,p \
++    alias=pci1af4,1041,p
+ legacy pkg=SUNWvioif desc="VirtIO network driver" name="VirtIO network driver"
+ license cr_Sun license=cr_Sun
+ license lic_CDDL license=lic_CDDL
+diff --git a/usr/src/pkg/manifests/driver-storage-vio9p.p5m b/usr/src/pkg/manifests/driver-storage-vio9p.p5m
+index f4ce42c..46f0b9c 100644
+--- a/usr/src/pkg/manifests/driver-storage-vio9p.p5m
++++ b/usr/src/pkg/manifests/driver-storage-vio9p.p5m
+@@ -14,7 +14,7 @@
+ #
+ 
+ #
+-# Copyright 2022 Oxide Computer Company
++# Copyright 2025 Oxide Computer Company
+ #
+ 
+ #
+@@ -36,5 +36,7 @@ file path=usr/include/sys/vio9p.h
+ dir  path=usr/share/man
+ dir  path=usr/share/man/man4d
+ file path=usr/share/man/man4d/vio9p.4d
+-driver name=vio9p perms="* 0600 root root" alias=pci1af4,9
++driver name=vio9p perms="* 0600 root root" \
++    alias=pci1af4,9 \
++    alias=pci1af4,1049,p
+ license lic_CDDL license=lic_CDDL
+diff --git a/usr/src/pkg/manifests/driver-storage-vioblk.p5m b/usr/src/pkg/manifests/driver-storage-vioblk.p5m
+index a39adba..0e9bea0 100644
+--- a/usr/src/pkg/manifests/driver-storage-vioblk.p5m
++++ b/usr/src/pkg/manifests/driver-storage-vioblk.p5m
+@@ -21,6 +21,7 @@
+ 
+ #
+ # Copyright 2012 Nexenta Systems, Inc. All rights reserved.
++# Copyright 2025 Oxide Computer Company
+ #
+ 
+ #
+@@ -42,5 +43,6 @@ dir  path=usr/share/man
+ dir  path=usr/share/man/man4d
+ file path=usr/share/man/man4d/vioblk.4d
+ driver name=vioblk perms="* 0666 root sys" clone_perms="vioblk 0666 root sys" \
+-    alias=pci1af4,1001
++    alias=pci1af4,1001 \
++    alias=pci1af4,1042,p
+ license lic_CDDL license=lic_CDDL
+diff --git a/usr/src/pkg/manifests/driver-storage-vioscsi.p5m b/usr/src/pkg/manifests/driver-storage-vioscsi.p5m
+index 9693a13..86f4aab 100644
+--- a/usr/src/pkg/manifests/driver-storage-vioscsi.p5m
++++ b/usr/src/pkg/manifests/driver-storage-vioscsi.p5m
+@@ -12,6 +12,7 @@
+ #
+ # Copyright 2019 Nexenta by DDN, Inc. All rights reserved.
+ # Copyright 2022 RackTop Systems, Inc.
++# Copyright 2025 Oxide Computer Company
+ #
+ 
+ #
+@@ -32,5 +33,7 @@ file path=kernel/drv/$(ARCH64)/vioscsi group=sys
+ dir  path=usr/share/man
+ dir  path=usr/share/man/man4d
+ file path=usr/share/man/man4d/vioscsi.4d
+-driver name=vioscsi class=scsi-self-identifying alias=pci1af4,1004
++driver name=vioscsi class=scsi-self-identifying \
++    alias=pci1af4,1004 \
++    alias=pci1af4,1048,p
+ license lic_CDDL license=lic_CDDL
+diff --git a/usr/src/uts/common/Makefile.files b/usr/src/uts/common/Makefile.files
+index 4abac61..28980b4 100644
+--- a/usr/src/uts/common/Makefile.files
++++ b/usr/src/uts/common/Makefile.files
+@@ -2124,7 +2124,7 @@ NXGE_HCALL_OBJS =	\
+ #
+ 
+ # Virtio core
+-VIRTIO_OBJS = virtio_main.o virtio_dma.o
++VIRTIO_OBJS = virtio_main.o virtio_legacy.o virtio_modern.o virtio_dma.o
+ 
+ # Virtio block driver
+ VIOBLK_OBJS = vioblk.o
+diff --git a/usr/src/uts/common/crypto/io/viorand.c b/usr/src/uts/common/crypto/io/viorand.c
+index fc61cb6..86d67b8 100644
+--- a/usr/src/uts/common/crypto/io/viorand.c
++++ b/usr/src/uts/common/crypto/io/viorand.c
+@@ -11,6 +11,7 @@
+ 
+ /*
+  * Copyright 2023 Toomas Soome <tsoome@me.com>
++ * Copyright 2025 Oxide Computer Company
+  */
+ 
+ /*
+@@ -303,11 +304,16 @@ viorand_attach(dev_info_t *dip, ddi_attach_cmd_t cmd)
+ 	if (ddi_soft_state_zalloc(viorand_statep, instance) != DDI_SUCCESS)
+ 		return (DDI_FAILURE);
+ 
+-	vio = virtio_init(dip, VIORAND_FEATURES, B_TRUE);
++	vio = virtio_init(dip);
+ 	if (vio == NULL) {
+ 		ddi_soft_state_free(viorand_statep, instance);
+ 		return (DDI_FAILURE);
+ 	}
++	if (!virtio_init_features(vio, VIORAND_FEATURES, B_TRUE)) {
++		virtio_fini(vio, B_TRUE);
++		ddi_soft_state_free(viorand_statep, instance);
++		return (DDI_FAILURE);
++	}
+ 
+ 	state = ddi_get_soft_state(viorand_statep, instance);
+ 	state->vio_dip = dip;
+diff --git a/usr/src/uts/common/io/vio9p/vio9p.c b/usr/src/uts/common/io/vio9p/vio9p.c
+index 5302043..0d9cca1 100644
+--- a/usr/src/uts/common/io/vio9p/vio9p.c
++++ b/usr/src/uts/common/io/vio9p/vio9p.c
+@@ -20,7 +20,7 @@
+  */
+ 
+ /*
+- * Copyright 2022 Oxide Computer Company
++ * Copyright 2025 Oxide Computer Company
+  */
+ 
+ /*
+@@ -386,12 +386,16 @@ vio9p_attach(dev_info_t *dip, ddi_attach_cmd_t cmd)
+ 		return (DDI_FAILURE);
+ 	}
+ 
+-	if ((vio = virtio_init(dip, VIRTIO_9P_WANTED_FEATURES, B_TRUE)) ==
+-	    NULL) {
++	if ((vio = virtio_init(dip)) == NULL) {
+ 		ddi_soft_state_free(vio9p_state, instance);
+ 		dev_err(dip, CE_WARN, "failed to start Virtio init");
+ 		return (DDI_FAILURE);
+ 	}
++	if (!virtio_init_features(vio, VIRTIO_9P_WANTED_FEATURES, B_TRUE)) {
++		virtio_fini(vio, B_TRUE);
++		ddi_soft_state_free(vio9p_state, instance);
++		return (DDI_FAILURE);
++	}
+ 
+ 	vio9p_t *vin = ddi_get_soft_state(vio9p_state, instance);
+ 	vin->vin_dip = dip;
+diff --git a/usr/src/uts/common/io/vioblk/vioblk.c b/usr/src/uts/common/io/vioblk/vioblk.c
+index 1c00d67..41e9f78 100644
+--- a/usr/src/uts/common/io/vioblk/vioblk.c
++++ b/usr/src/uts/common/io/vioblk/vioblk.c
+@@ -24,7 +24,7 @@
+  * Copyright (c) 2012, Alexey Zaytsev <alexey.zaytsev@gmail.com>
+  * Copyright 2020 Joyent Inc.
+  * Copyright 2019 Western Digital Corporation.
+- * Copyright 2020 Oxide Computer Company
++ * Copyright 2025 Oxide Computer Company
+  * Copyright 2022 OmniOS Community Edition (OmniOSce) Association.
+  */
+ 
+@@ -907,11 +907,14 @@ vioblk_attach(dev_info_t *dip, ddi_attach_cmd_t cmd)
+ 		return (DDI_FAILURE);
+ 	}
+ 
+-	if ((vio = virtio_init(dip, VIRTIO_BLK_WANTED_FEATURES, B_TRUE)) ==
+-	    NULL) {
++	if ((vio = virtio_init(dip)) == NULL) {
+ 		dev_err(dip, CE_WARN, "failed to start Virtio init");
+ 		return (DDI_FAILURE);
+ 	}
++	if (!virtio_init_features(vio, VIRTIO_BLK_WANTED_FEATURES, B_TRUE)) {
++		virtio_fini(vio, B_TRUE);
++		return (DDI_FAILURE);
++	}
+ 
+ 	vib = kmem_zalloc(sizeof (*vib), KM_SLEEP);
+ 	vib->vib_dip = dip;
+diff --git a/usr/src/uts/common/io/vioif/vioif.c b/usr/src/uts/common/io/vioif/vioif.c
+index 09ef3d4..8cbc759 100644
+--- a/usr/src/uts/common/io/vioif/vioif.c
++++ b/usr/src/uts/common/io/vioif/vioif.c
+@@ -14,6 +14,7 @@
+  * Copyright (c) 2014, 2016 by Delphix. All rights reserved.
+  * Copyright 2021 Joyent, Inc.
+  * Copyright 2019 Joshua M. Clulow <josh@sysmgr.org>
++ * Copyright 2025 Oxide Computer Company
+  */
+ 
+ /* Based on the NetBSD virtio driver by Minoura Makoto. */
+@@ -808,11 +809,11 @@ vioif_add_rx(vioif_t *vif)
+ 		/*
+ 		 * For legacy devices, and those that have not negotiated
+ 		 * VIRTIO_F_ANY_LAYOUT, the virtio net header must appear in a
+-		 * separate descriptor entry to the rest of the buffer.
++		 * separate descriptor entry to the rest of the buffer. We do
++		 * the same for modern devices too.
+ 		 */
+ 		if (virtio_chain_append(rb->rb_chain,
+-		    virtio_dma_cookie_pa(rb->rb_dma, 0),
+-		    sizeof (struct virtio_net_hdr),
++		    virtio_dma_cookie_pa(rb->rb_dma, 0), vif->vif_rxbuf_hdrlen,
+ 		    VIRTIO_DIR_DEVICE_WRITES) != DDI_SUCCESS) {
+ 			goto fail;
+ 		}
+@@ -879,13 +880,13 @@ vioif_process_rx(vioif_t *vif)
+ 			continue;
+ 		}
+ 
+-		if (len < sizeof (struct virtio_net_hdr)) {
++		if (len < vif->vif_rxbuf_hdrlen) {
+ 			vif->vif_rxfail_chain_undersize++;
+ 			vif->vif_ierrors++;
+ 			vioif_rxbuf_free(vif, rb);
+ 			continue;
+ 		}
+-		len -= sizeof (struct virtio_net_hdr);
++		len -= vif->vif_rxbuf_hdrlen;
+ 
+ 		/*
+ 		 * We copy small packets that happen to fit into a single
+@@ -1264,13 +1265,20 @@ vioif_send(vioif_t *vif, mblk_t *mp)
+ 	vnh = virtio_dma_va(tb->tb_dma, 0);
+ 	bzero(vnh, VIOIF_HEADER_SKIP);
+ 
++	/* We do not support VIRTIO_NET_F_MRG_RXBUF so always pass one buffer */
++	if (vif->vif_rxbuf_hdrlen >
++	    offsetof(struct virtio_net_hdr, vnh_num_buffers)) {
++		vnh->vnh_num_buffers = 1;
++	}
++
+ 	/*
+ 	 * For legacy devices, and those that have not negotiated
+ 	 * VIRTIO_F_ANY_LAYOUT, the virtio net header must appear in a separate
+-	 * descriptor entry to the rest of the buffer.
++	 * descriptor entry to the rest of the buffer. We do that for modern
++	 * devices too.
+ 	 */
+ 	if (virtio_chain_append(tb->tb_chain,
+-	    virtio_dma_cookie_pa(tb->tb_dma, 0), sizeof (struct virtio_net_hdr),
++	    virtio_dma_cookie_pa(tb->tb_dma, 0), vif->vif_rxbuf_hdrlen,
+ 	    VIRTIO_DIR_DEVICE_READS) != DDI_SUCCESS) {
+ 		mutex_enter(&vif->vif_mutex);
+ 		vif->vif_notxbuf++;
+@@ -1771,12 +1779,16 @@ vioif_get_mac(vioif_t *vif)
+ 	VERIFY(MUTEX_HELD(&vif->vif_mutex));
+ 
+ 	if (vioif_has_feature(vif, VIRTIO_NET_F_MAC)) {
+-		for (uint_t i = 0; i < ETHERADDRL; i++) {
+-			vif->vif_mac[i] = virtio_dev_get8(vif->vif_virtio,
+-			    VIRTIO_NET_CONFIG_MAC + i);
+-		}
+-		vif->vif_mac_from_host = 1;
++		uint8_t gen = virtio_dev_getgen(vif->vif_virtio);
++		do {
++			for (uint_t i = 0; i < ETHERADDRL; i++) {
++				vif->vif_mac[i] =
++				    virtio_dev_get8(vif->vif_virtio,
++				    VIRTIO_NET_CONFIG_MAC + i);
++			}
++		} while (gen != virtio_dev_getgen(vif->vif_virtio));
+ 
++		vif->vif_mac_from_host = 1;
+ 		return;
+ 	}
+ 
+@@ -1941,13 +1953,18 @@ vioif_attach(dev_info_t *dip, ddi_attach_cmd_t cmd)
+ 	vioif_t *vif;
+ 	virtio_t *vio;
+ 	mac_register_t *macp = NULL;
++	uint64_t features = VIRTIO_NET_WANTED_FEATURES;
+ 
+ 	if (cmd != DDI_ATTACH) {
+ 		return (DDI_FAILURE);
+ 	}
+ 
+-	if ((vio = virtio_init(dip, VIRTIO_NET_WANTED_FEATURES, B_TRUE)) ==
+-	    NULL) {
++	if ((vio = virtio_init(dip)) == NULL) {
++		return (DDI_FAILURE);
++	}
++
++	if (!virtio_init_features(vio, features, B_TRUE)) {
++		virtio_fini(vio, B_TRUE);
+ 		return (DDI_FAILURE);
+ 	}
+ 
+@@ -1989,6 +2006,7 @@ vioif_attach(dev_info_t *dip, ddi_attach_cmd_t cmd)
+ 
+ 	vif->vif_rxcopy_thresh = VIOIF_MACPROP_RXCOPY_THRESH_DEF;
+ 	vif->vif_txcopy_thresh = VIOIF_MACPROP_TXCOPY_THRESH_DEF;
++	vif->vif_rxbuf_hdrlen = VIRTIO_NET_HDR_LEN(virtio_modern(vio));
+ 
+ 	if (vioif_has_feature(vif, VIRTIO_NET_F_MTU)) {
+ 		vif->vif_mtu_max = virtio_dev_get16(vio, VIRTIO_NET_CONFIG_MTU);
+diff --git a/usr/src/uts/common/io/vioif/vioif.h b/usr/src/uts/common/io/vioif/vioif.h
+index ff7007d..8284d1f 100644
+--- a/usr/src/uts/common/io/vioif/vioif.h
++++ b/usr/src/uts/common/io/vioif/vioif.h
+@@ -11,6 +11,7 @@
+ 
+ /*
+  * Copyright 2021 Joyent, Inc.
++ * Copyright 2025 Oxide Computer Company
+  */
+ 
+ /*
+@@ -175,7 +176,11 @@ extern "C" {
+  * VIRTIO NETWORK HEADER
+  *
+  * This structure appears at the start of each transmit or receive packet
+- * buffer.
++ * buffer. When using the legacy interface, the `vnh_num_buffers` field only
++ * appears when VIRTIO_NET_F_MRG_RXBUF is negotiated, whereas it is always
++ * present with the modern interface. We use a common struct since it is always
++ * constructed in a buffer of at least this size, and then only put the
++ * requisite number of bytes (VIRTIO_NET_HDR_LEN()) into the descriptor.
+  */
+ struct virtio_net_hdr {
+ 	uint8_t				vnh_flags;
+@@ -184,7 +189,11 @@ struct virtio_net_hdr {
+ 	uint16_t			vnh_gso_size;
+ 	uint16_t			vnh_csum_start;
+ 	uint16_t			vnh_csum_offset;
++	uint16_t			vnh_num_buffers;
+ } __packed;
++#define	VIRTIO_NET_HDR_LEN(modern) \
++	((modern) ? sizeof (struct virtio_net_hdr) : \
++	offsetof(struct virtio_net_hdr, vnh_num_buffers))
+ 
+ /*
+  * VIRTIO NETWORK HEADER: FLAGS (vnh_flags)
+@@ -438,6 +447,7 @@ struct vioif {
+ 	uint_t				vif_nrxbufs_onloan_max;
+ 	uint_t				vif_rxbufs_capacity;
+ 	vioif_rxbuf_t			*vif_rxbufs_mem;
++	size_t				vif_rxbuf_hdrlen;
+ 
+ 	/*
+ 	 * Transmit buffer free list and accounting:
+diff --git a/usr/src/uts/common/io/vioscsi/vioscsi.c b/usr/src/uts/common/io/vioscsi/vioscsi.c
+index 6d3d1e3..3dec483 100644
+--- a/usr/src/uts/common/io/vioscsi/vioscsi.c
++++ b/usr/src/uts/common/io/vioscsi/vioscsi.c
+@@ -12,6 +12,7 @@
+ /*
+  * Copyright 2019 Nexenta by DDN, Inc. All rights reserved.
+  * Copyright 2022 RackTop Systems, Inc.
++ * Copyright 2025 Oxide Computer Company
+  */
+ 
+ #include "vioscsi.h"
+@@ -1223,12 +1224,16 @@ vioscsi_attach(dev_info_t *dip, ddi_attach_cmd_t cmd)
+ 	 * reattaching a child iport once it is removed -- the entire driver
+ 	 * will need to be reset for that.
+ 	 */
+-	vio = virtio_init(dip, VIOSCSI_WANTED_FEATURES, B_TRUE);
++	vio = virtio_init(dip);
+ 	if ((sc->vs_virtio = vio) == NULL) {
+ 		dev_err(dip, CE_WARN, "failed to init virtio");
+ 		vioscsi_teardown(sc, B_TRUE);
+ 		return (DDI_FAILURE);
+ 	}
++	if (!virtio_init_features(vio, VIOSCSI_WANTED_FEATURES, B_TRUE)) {
++		vioscsi_teardown(sc, B_TRUE);
++		return (DDI_FAILURE);
++	}
+ 
+ 	/*
+ 	 * Get virtio parameters:
+diff --git a/usr/src/uts/common/io/virtio/virtio.h b/usr/src/uts/common/io/virtio/virtio.h
+index 820bc3b..2558a6e 100644
+--- a/usr/src/uts/common/io/virtio/virtio.h
++++ b/usr/src/uts/common/io/virtio/virtio.h
+@@ -12,6 +12,7 @@
+ /*
+  * Copyright 2019 Joyent, Inc.
+  * Copyright 2022 OmniOS Community Edition (OmniOSce) Association.
++ * Copyright 2025 Oxide Computer Company
+  */
+ 
+ #ifndef _VIRTIO_H
+@@ -22,32 +23,34 @@
+  *
+  * This framework handles the initialisation and operation common to all Virtio
+  * device types; e.g., Virtio Block (vioblk), Virtio Network (vioif), etc.  The
+- * framework presently provides for what is now described as a "legacy" driver
+- * in the current issue of the "Virtual I/O Device (VIRTIO) Version 1.1"
+- * specification.  Though several new specifications have been released, legacy
+- * devices are still the most widely available on current hypervisor platforms.
+- * Legacy devices make use of the native byte order of the host system.
++ * framework provides a driver for what is known as a "legacy", "modern" or
++ * "transitional" device and will use the modern VirtIO interface when talking
++ * to modern or transitional devices.
+  *
+  * FRAMEWORK INITIALISATION: STARTING
+  *
+  * Client drivers will, in their attach(9E) routine, make an early call to
+  * virtio_init().  This causes the framework to allocate some base resources
+- * and begin initialising the device.  This routine confirms that the device
+- * will operate in the supported legacy mode as per the specification.  A
+- * failure here means that we cannot presently support this device.
++ * and begin initialising the device.  This routine determine which mode the
++ * device will operate in. A failure here means that we cannot presently
++ * support this device.
+  *
+  * Once virtio_init() returns, the initialisation phase has begun and the
+- * driver can examine negotiated features and set up virtqueues.  The
+- * initialisation phase ends when the driver calls either
++ * driver can examine the features advertised by the device and may read (but
++ * NOT write) the device-specific configuration to determine which features it
++ * wishes to advertise, or whether it wants to support the device at all. When
++ * ready, the driver will call virtio_init_features() to complete feature
++ * negotiation. The initialisation phase ends when the driver calls either
+  * virtio_init_complete() or virtio_fini().
+  *
+  * FRAMEWORK INITIALISATION: FEATURE NEGOTIATION
+  *
+- * The virtio_init() call accepts a bitmask of desired features that the driver
+- * supports.  The framework will negotiate the common set of features supported
+- * by both the driver and the device.  The presence of any individual feature
+- * can be tested after the initialisation phase has begun using
+- * virtio_feature_present().
++ * The virtio_init_features() call accepts a bitmask of desired features that
++ * the driver supports.  The framework will negotiate the common set of
++ * features supported by both the driver and the device.  The presence of any
++ * individual feature can be tested after the initialisation phase has begun
++ * using virtio_feature_present(). Feature negotiation may fail, indicated by
++ * virtio_init_features() returning false.
+  *
+  * The framework will additionally negotiate some set of features that are not
+  * specific to a device type on behalf of the client driver; e.g., support for
+@@ -56,7 +59,10 @@
+  * Some features allow the driver to read additional configuration values from
+  * the device-specific regions of the device register space.  These can be
+  * accessed via the virtio_dev_get*() and virtio_dev_put*() family of
+- * functions.
++ * functions. The modern interface also provides a configuration generation
++ * number which can be retrieved via virtio_dev_getgen(). This allows drivers
++ * to check if something in the configuration space has changed while reading
++ * values in separate transactions.
+  *
+  * FRAMEWORK INITIALISATION: VIRTQUEUE CONFIGURATION
+  *
+@@ -67,9 +73,10 @@
+  *
+  * When configuring a queue, the driver must know the queue index number.  This
+  * generally comes from the section of the specification describing the
+- * specific device type; e.g., Virtio Network devices have a receive queue at
+- * index 0, and a transmit queue at index 1.  The name given to the queue is
+- * informational and has no impact on device operation.
++ * specific device type; e.g., Unless they negotiate multi-queue, virtio
++ * Network devices have a receive queue at index 0, and a transmit queue at
++ * index 1.  The name given to the queue is informational and has no impact on
++ * device operation.
+  *
+  * Most queues will require an interrupt handler function.  When a queue
+  * notification interrupt is received, the provided handler will be called with
+@@ -289,7 +296,8 @@ typedef enum virtio_direction {
+ } virtio_direction_t;
+ 
+ void virtio_fini(virtio_t *, boolean_t);
+-virtio_t *virtio_init(dev_info_t *, uint64_t, boolean_t);
++virtio_t *virtio_init(dev_info_t *);
++boolean_t virtio_init_features(virtio_t *, uint64_t, boolean_t);
+ int virtio_init_complete(virtio_t *, int);
+ int virtio_quiesce(virtio_t *);
+ void virtio_shutdown(virtio_t *);
+@@ -301,6 +309,7 @@ void *virtio_intr_pri(virtio_t *);
+ 
+ void virtio_device_reset(virtio_t *);
+ 
++uint8_t virtio_dev_getgen(virtio_t *);
+ uint8_t virtio_dev_get8(virtio_t *, uintptr_t);
+ uint16_t virtio_dev_get16(virtio_t *, uintptr_t);
+ uint32_t virtio_dev_get32(virtio_t *, uintptr_t);
+@@ -311,6 +320,7 @@ void virtio_dev_put16(virtio_t *, uintptr_t, uint16_t);
+ void virtio_dev_put32(virtio_t *, uintptr_t, uint32_t);
+ 
+ boolean_t virtio_feature_present(virtio_t *, uint64_t);
++boolean_t virtio_modern(virtio_t *);
+ 
+ virtio_queue_t *virtio_queue_alloc(virtio_t *, uint16_t, const char *,
+     ddi_intr_handler_t *, void *, boolean_t, uint_t);
+diff --git a/usr/src/uts/common/io/virtio/virtio_endian.h b/usr/src/uts/common/io/virtio/virtio_endian.h
+new file mode 100644
+index 0000000..1f7aae5
+--- /dev/null
++++ b/usr/src/uts/common/io/virtio/virtio_endian.h
+@@ -0,0 +1,124 @@
++/*
++ * This file and its contents are supplied under the terms of the
++ * Common Development and Distribution License ("CDDL"), version 1.0.
++ * You may only use this file in accordance with the terms of version
++ * 1.0 of the CDDL.
++ *
++ * A full copy of the text of the CDDL should have accompanied this
++ * source.  A copy of the CDDL is also available via the Internet at
++ * http://www.illumos.org/license/CDDL.
++ */
++
++/*
++ * Copyright 2025 Oxide Computer Company
++ */
++
++#ifndef _VIRTIO_ENDIAN_H
++#define	_VIRTIO_ENDIAN_H
++
++/*
++ * VIRTIO FRAMEWORK: Helpers to convert between guest and host
++ *
++ * For design and usage documentation, see the comments in "virtio.h".
++ *
++ * NOTE: Client drivers should not use definitions from this file.
++ */
++
++#include <sys/types.h>
++#include <sys/byteorder.h>
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++/*
++ * Modern VirtIO uses little endian whereas legacy VirtIO uses the guest's
++ * native endianess. We must therefore convert multi-byte values in the modern
++ * interface.
++ */
++
++static inline uint16_t
++virtio_le16toh(uint16_t val)
++{
++	return (LE_16(val));
++}
++
++static inline uint32_t
++virtio_le32toh(uint32_t val)
++{
++	return (LE_32(val));
++}
++
++static inline uint64_t
++virtio_le64toh(uint64_t val)
++{
++	return (LE_64(val));
++}
++
++static inline uint16_t
++virtio_htole16(uint16_t val)
++{
++	return (LE_16(val));
++}
++
++static inline uint32_t
++virtio_htole32(uint32_t val)
++{
++	return (LE_32(val));
++}
++
++static inline uint64_t
++virtio_htole64(uint64_t val)
++{
++	return (LE_64(val));
++}
++
++static inline uint16_t
++virtio_gtoh16(uint16_t val, bool modern)
++{
++	return (modern ? LE_16(val) : val);
++}
++
++static inline uint32_t
++virtio_gtoh32(uint32_t val, bool modern)
++{
++	return (modern ? LE_32(val) : val);
++}
++
++static inline uint64_t
++virtio_gtoh64(uint64_t val, bool modern)
++{
++	return (modern ? LE_64(val) : val);
++}
++
++static inline uint16_t
++virtio_htog16(uint16_t val, bool modern)
++{
++	return (modern ? LE_16(val) : val);
++}
++
++static inline uint32_t
++virtio_htog32(uint32_t val, bool modern)
++{
++	return (modern ? LE_32(val) : val);
++}
++
++static inline uint64_t
++virtio_htog64(uint64_t val, bool modern)
++{
++	return (modern ? LE_64(val) : val);
++}
++
++#define	viq_modern(q) ((q)->viq_virtio->vio_mode != VIRTIO_MODE_LEGACY)
++#define	viq_htog16(q, x) virtio_htog16((x), viq_modern(q))
++#define	viq_htog32(q, x) virtio_htog32((x), viq_modern(q))
++#define	viq_htog64(q, x) virtio_htog64((x), viq_modern(q))
++#define	viq_gtoh16(q, x) virtio_gtoh16((x), viq_modern(q))
++#define	viq_gtoh32(q, x) virtio_gtoh32((x), viq_modern(q))
++#define	viq_gtoh64(q, x) virtio_gtoh64((x), viq_modern(q))
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif /* _VIRTIO_ENDIAN_H */
+diff --git a/usr/src/uts/common/io/virtio/virtio_impl.h b/usr/src/uts/common/io/virtio/virtio_impl.h
+index ef5f433..dcd0263 100644
+--- a/usr/src/uts/common/io/virtio/virtio_impl.h
++++ b/usr/src/uts/common/io/virtio/virtio_impl.h
+@@ -12,6 +12,7 @@
+ /*
+  * Copyright 2019 Joyent, Inc.
+  * Copyright 2022 OmniOS Community Edition (OmniOSce) Association.
++ * Copyright 2026 Oxide Computer Company
+  */
+ 
+ #ifndef _VIRTIO_IMPL_H
+@@ -29,8 +30,10 @@
+ #include <sys/dditypes.h>
+ #include <sys/list.h>
+ #include <sys/ccompile.h>
++#include <sys/stdbool.h>
+ 
+ #include "virtio.h"
++#include "virtio_spec.h"
+ 
+ #ifdef __cplusplus
+ extern "C" {
+@@ -39,17 +42,13 @@ extern "C" {
+ extern ddi_device_acc_attr_t virtio_acc_attr;
+ extern ddi_dma_attr_t virtio_dma_attr;
+ 
+-typedef struct virtio_vq_desc virtio_vq_desc_t;
+-typedef struct virtio_vq_driver virtio_vq_driver_t;
+-typedef struct virtio_vq_device virtio_vq_device_t;
+-typedef struct virtio_vq_elem virtio_vq_elem_t;
++extern void virtio_acquireq(virtio_t *, uint16_t);
++extern void virtio_releaseq(virtio_t *);
+ 
+ int virtio_dma_init(virtio_t *, virtio_dma_t *, size_t, const ddi_dma_attr_t *,
+     int, int);
+ void virtio_dma_fini(virtio_dma_t *);
+ 
+-
+-
+ typedef enum virtio_dma_level {
+ 	VIRTIO_DMALEVEL_HANDLE_ALLOC =	(1ULL << 0),
+ 	VIRTIO_DMALEVEL_MEMORY_ALLOC =	(1ULL << 1),
+@@ -78,6 +77,58 @@ typedef enum virtio_initlevel {
+ 	VIRTIO_INITLEVEL_SHUTDOWN =	(1ULL << 5),
+ } virtio_initlevel_t;
+ 
++typedef struct virtio_pci_cap {
++	virtio_pci_cap_type_t		vpc_type;
++	uint8_t				vpc_baridx;
++	uint64_t			vpc_offset;
++	uint64_t			vpc_size;
++
++	ddi_acc_handle_t		vpc_barh;
++	caddr_t				vpc_bar;
++} virtio_pci_cap_t;
++
++typedef enum virtio_mode {
++	VIRTIO_MODE_LEGACY		= 1,	/* A pure "legacy" device */
++	VIRTIO_MODE_TRANSITIONAL	= 2,	/* A "transitional" device */
++	VIRTIO_MODE_MODERN		= 3,	/* A pure "modern" device */
++} virtio_mode_t;
++
++typedef struct virtio_ops {
++	uint64_t	(*vop_device_get_features)(virtio_t *);
++	bool		(*vop_device_set_features)(virtio_t *, uint64_t);
++	void		(*vop_set_status_locked)(virtio_t *, uint8_t);
++	uint8_t		(*vop_get_status)(virtio_t *);
++	void		(*vop_device_reset_locked)(virtio_t *);
++	uint8_t		(*vop_isr_status)(virtio_t *);
++	void		(*vop_msix_config_set)(virtio_t *, uint16_t);
++	uint16_t	(*vop_msix_config_get)(virtio_t *);
++	void		(*vop_queue_notify)(virtio_queue_t *);
++
++	void		(*vop_queue_select)(virtio_t *, uint16_t);
++	uint16_t	(*vop_queue_size_get)(virtio_t *, uint16_t);
++	void		(*vop_queue_size_set)(virtio_t *, uint16_t, uint16_t);
++	uint64_t	(*vop_queue_noff_get)(virtio_t *, uint16_t);
++	bool		(*vop_queue_enable_get)(virtio_t *, uint16_t);
++	void		(*vop_queue_enable_set)(virtio_t *, uint16_t, bool);
++	void		(*vop_queue_addr_set)(virtio_t *, uint16_t, uint64_t,
++			    uint64_t, uint64_t);
++	void		(*vop_msix_queue_set)(virtio_t *, uint16_t, uint16_t);
++	uint16_t	(*vop_msix_queue_get)(virtio_t *, uint16_t);
++
++	uint8_t		(*vop_device_cfg_gen)(virtio_t *);
++	uint8_t		(*vop_device_cfg_get8)(virtio_t *, uintptr_t);
++	uint16_t	(*vop_device_cfg_get16)(virtio_t *, uintptr_t);
++	uint32_t	(*vop_device_cfg_get32)(virtio_t *, uintptr_t);
++	uint64_t	(*vop_device_cfg_get64)(virtio_t *, uintptr_t);
++	void		(*vop_device_cfg_put8)(virtio_t *, uintptr_t, uint8_t);
++	void		(*vop_device_cfg_put16)(virtio_t *, uintptr_t,
++			    uint16_t);
++	void		(*vop_device_cfg_put32)(virtio_t *, uintptr_t,
++			    uint32_t);
++} virtio_ops_t;
++
++extern virtio_ops_t virtio_legacy_ops, virtio_modern_ops;
++
+ struct virtio {
+ 	dev_info_t			*vio_dip;
+ 
+@@ -85,14 +136,27 @@ struct virtio {
+ 
+ 	virtio_initlevel_t		vio_initlevel;
+ 
++	virtio_mode_t			vio_mode;
++	virtio_ops_t			*vio_ops;
++
+ 	list_t				vio_queues;
++	kmutex_t			vio_qlock;
++	uint16_t			vio_qcur;
++
++	virtio_pci_cap_t		vio_cap_common;
++	virtio_pci_cap_t		vio_cap_notify;
++	virtio_pci_cap_t		vio_cap_isr;
++	virtio_pci_cap_t		vio_cap_device;
++
++	/* Notification multiplier used with the modern interface */
++	uint32_t			vio_multiplier;
+ 
+ 	ddi_acc_handle_t		vio_barh;
+ 	caddr_t				vio_bar;
+-	uint_t				vio_config_offset;
++	uint_t				vio_legacy_cfg_offset;
+ 
+-	uint32_t			vio_features;
+-	uint32_t			vio_features_device;
++	uint64_t			vio_features;
++	uint64_t			vio_features_device;
+ 
+ 	ddi_intr_handle_t		*vio_interrupts;
+ 	int				vio_ninterrupts;
+@@ -126,6 +190,13 @@ struct virtio_queue {
+ 	 */
+ 	uint16_t			viq_index;
+ 
++	/*
++	 * Modern devices use a BAR region for notifications with each queue
++	 * potentially having its own offset within that region. We store the
++	 * offset for this queue here.
++	 */
++	uint64_t			viq_noff;
++
+ 	/*
+ 	 * For legacy Virtio devices, the size and shape of the queue is
+ 	 * determined entirely by the number of queue entries.
+@@ -180,177 +251,34 @@ struct virtio_chain {
+ };
+ 
+ /*
+- * PACKED STRUCTS FOR DEVICE ACCESS
++ * When laying out queues for use over the modern interface we choose to align
++ * all queue components using the most restrictive alignment requirement, that
++ * of the descriptor part of the ring.
+  */
+-
+-struct virtio_vq_desc {
+-	/*
+-	 * Buffer physical address and length.
+-	 */
+-	uint64_t			vqd_addr;
+-	uint32_t			vqd_len;
+-
+-	/*
+-	 * Flags.  Use with the VIRTQ_DESC_F_* family of constants.  See below.
+-	 */
+-	uint16_t			vqd_flags;
+-
+-	/*
+-	 * If VIRTQ_DESC_F_NEXT is set in flags, this refers to the next
+-	 * descriptor in the chain by table index.
+-	 */
+-	uint16_t			vqd_next;
+-} __packed;
+-
+-/*
+- * VIRTIO DESCRIPTOR FLAGS (vqd_flags)
+- */
+-
+-/*
+- * NEXT:
+- *	Signals that this descriptor (direct or indirect) is part of a chain.
+- *	If populated, "vqd_next" names the next descriptor in the chain by its
+- *	table index.
+- */
+-#define	VIRTQ_DESC_F_NEXT		(1 << 0)
+-
+-/*
+- * WRITE:
+- *	Determines whether this buffer is to be written by the device (WRITE is
+- *	set) or by the driver (WRITE is not set).
+- */
+-#define	VIRTQ_DESC_F_WRITE		(1 << 1)
+-
+-/*
+- * INDIRECT:
+- *	This bit signals that a direct descriptor refers to an indirect
+- *	descriptor list, rather than directly to a buffer.  This bit may only
+- *	be used in a direct descriptor; indirect descriptors are not allowed to
+- *	refer to additional layers of indirect tables.  If this bit is set,
+- *	NEXT must be clear; indirect descriptors may not be chained.
+- */
+-#define	VIRTQ_DESC_F_INDIRECT		(1 << 2)
++#define	MODERN_VQ_ALIGN			MODERN_VQ_ALIGN_DESC
+ 
+ /*
+- * This structure is variously known as the "available" or "avail" ring, or the
+- * driver-owned portion of the queue structure.  It is used by the driver to
+- * submit descriptor chains to the device.
+- */
+-struct virtio_vq_driver {
+-	uint16_t			vqdr_flags;
+-	uint16_t			vqdr_index;
+-	uint16_t			vqdr_ring[];
+-} __packed;
+-
+-#define	VIRTQ_AVAIL_F_NO_INTERRUPT	(1 << 0)
+-
+-/*
+- * We use the sizeof operator on this packed struct to calculate the offset of
+- * subsequent structs.  Ensure the compiler is not adding any padding to the
+- * end of the struct.
+- */
+-CTASSERT(sizeof (virtio_vq_driver_t) ==
+-    offsetof(virtio_vq_driver_t, vqdr_ring));
+-
+-struct virtio_vq_elem {
+-	/*
+-	 * The device returns chains of descriptors by specifying the table
+-	 * index of the first descriptor in the chain.
+-	 */
+-	uint32_t			vqe_start;
+-	uint32_t			vqe_len;
+-} __packed;
+-
+-/*
+- * This structure is variously known as the "used" ring, or the device-owned
+- * portion of the queue structure.  It is used by the device to return
+- * completed descriptor chains to the driver.
+- */
+-struct virtio_vq_device {
+-	uint16_t			vqde_flags;
+-	uint16_t			vqde_index;
+-	virtio_vq_elem_t		vqde_ring[];
+-} __packed;
+-
+-#define	VIRTQ_USED_F_NO_NOTIFY		(1 << 0)
+-
+-/*
+- * BASIC CONFIGURATION
+- *
+- * Legacy devices expose both their generic and their device-specific
+- * configuration through PCI BAR0.  This is the second entry in the register
+- * address space set for these devices.
+- */
+-#define	VIRTIO_LEGACY_PCI_BAR0		1
+-
+-/*
+- * These are offsets into the base configuration space available through the
+- * virtio_get*() and virtio_put*() family of functions.  These offsets are for
+- * what the specification describes as the "legacy" mode of device operation.
+- */
+-#define	VIRTIO_LEGACY_FEATURES_DEVICE	0x00	/* 32 R   */
+-#define	VIRTIO_LEGACY_FEATURES_DRIVER	0x04	/* 32 R/W */
+-#define	VIRTIO_LEGACY_QUEUE_ADDRESS	0x08	/* 32 R/W */
+-#define	VIRTIO_LEGACY_QUEUE_SIZE	0x0C	/* 16 R   */
+-#define	VIRTIO_LEGACY_QUEUE_SELECT	0x0E	/* 16 R/W */
+-#define	VIRTIO_LEGACY_QUEUE_NOTIFY	0x10	/* 16 R/W */
+-#define	VIRTIO_LEGACY_DEVICE_STATUS	0x12	/* 8  R/W */
+-#define	VIRTIO_LEGACY_ISR_STATUS	0x13	/* 8  R   */
+-
+-#define	VIRTIO_LEGACY_MSIX_CONFIG	0x14	/* 16 R/W */
+-#define	VIRTIO_LEGACY_MSIX_QUEUE	0x16	/* 16 R/W */
+-
+-#define	VIRTIO_LEGACY_CFG_OFFSET	(VIRTIO_LEGACY_ISR_STATUS + 1)
+-#define	VIRTIO_LEGACY_CFG_OFFSET_MSIX	(VIRTIO_LEGACY_MSIX_QUEUE + 2)
+-
+-#define	VIRTIO_LEGACY_MSI_NO_VECTOR	0xFFFF
+-
+-/*
+- * Bits in the Device Status byte (VIRTIO_LEGACY_DEVICE_STATUS):
+- */
+-#define	VIRTIO_STATUS_RESET		0
+-#define	VIRTIO_STATUS_ACKNOWLEDGE	(1 << 0)
+-#define	VIRTIO_STATUS_DRIVER		(1 << 1)
+-#define	VIRTIO_STATUS_DRIVER_OK		(1 << 2)
+-#define	VIRTIO_STATUS_FAILED		(1 << 7)
+-
+-/*
+- * Bits in the Interrupt Service Routine Status byte
+- * (VIRTIO_LEGACY_ISR_STATUS):
+- */
+-#define	VIRTIO_ISR_CHECK_QUEUES		(1 << 0)
+-#define	VIRTIO_ISR_CHECK_CONFIG		(1 << 1)
+-
+-/*
+- * Bits in the Features fields (VIRTIO_LEGACY_FEATURES_DEVICE,
+- * VIRTIO_LEGACY_FEATURES_DRIVER):
+- */
+-#define	VIRTIO_F_RING_INDIRECT_DESC	(1ULL << 28)
+-
+-/*
+- * For devices operating in the legacy mode, virtqueues must be aligned on a
+- * "page size" of 4096 bytes; this is also called the "Queue Align" value in
+- * newer versions of the specification.
++ * DMA SYNCHRONISATION WRAPPERS
+  */
+-#define	VIRTIO_PAGE_SHIFT		12
+-#define	VIRTIO_PAGE_SIZE		(1 << VIRTIO_PAGE_SHIFT)
+-CTASSERT(VIRTIO_PAGE_SIZE == 4096);
+-CTASSERT(ISP2(VIRTIO_PAGE_SIZE));
+ 
+ /*
+- * DMA SYNCHRONISATION WRAPPERS
++ * The offset of the device-owned portion within the queue DMA allocation,
++ * which also serves as the length of the driver-owned portion that precedes
++ * it.
+  */
++#define	VIRTQ_DMA_DEVICE_OFFSET(viq)	\
++					((uintptr_t)(viq)->viq_dma_device - \
++					(uintptr_t)(viq)->viq_dma_descs)
+ 
+ /*
+  * Synchronise the driver-owned portion of the queue so that the device can see
+  * our writes.  This covers the memory accessed via the "viq_dma_descs" and
+- * "viq_dma_device" members.
++ * "viq_dma_driver" members.
+  */
+ #define	VIRTQ_DMA_SYNC_FORDEV(viq)	VERIFY0(ddi_dma_sync( \
+ 					    (viq)->viq_dma.vidma_dma_handle, \
+ 					    0, \
+-					    (uintptr_t)(viq)->viq_dma_device - \
+-					    (uintptr_t)(viq)->viq_dma_descs, \
++					    VIRTQ_DMA_DEVICE_OFFSET(viq), \
+ 					    DDI_DMA_SYNC_FORDEV))
+ 
+ /*
+@@ -360,11 +288,9 @@ CTASSERT(ISP2(VIRTIO_PAGE_SIZE));
+  */
+ #define	VIRTQ_DMA_SYNC_FORKERNEL(viq)	VERIFY0(ddi_dma_sync( \
+ 					    (viq)->viq_dma.vidma_dma_handle, \
+-					    (uintptr_t)(viq)->viq_dma_device - \
+-					    (uintptr_t)(viq)->viq_dma_descs, \
++					    VIRTQ_DMA_DEVICE_OFFSET(viq), \
+ 					    (viq)->viq_dma.vidma_size - \
+-					    (uintptr_t)(viq)->viq_dma_device - \
+-					    (uintptr_t)(viq)->viq_dma_descs, \
++					    VIRTQ_DMA_DEVICE_OFFSET(viq), \
+ 					    DDI_DMA_SYNC_FORKERNEL))
+ 
+ #ifdef __cplusplus
+diff --git a/usr/src/uts/common/io/virtio/virtio_legacy.c b/usr/src/uts/common/io/virtio/virtio_legacy.c
+new file mode 100644
+index 0000000..ffafd5c
+--- /dev/null
++++ b/usr/src/uts/common/io/virtio/virtio_legacy.c
+@@ -0,0 +1,335 @@
++/*
++ * This file and its contents are supplied under the terms of the
++ * Common Development and Distribution License ("CDDL"), version 1.0.
++ * You may only use this file in accordance with the terms of version
++ * 1.0 of the CDDL.
++ *
++ * A full copy of the text of the CDDL should have accompanied this
++ * source.  A copy of the CDDL is also available via the Internet at
++ * http://www.illumos.org/license/CDDL.
++ */
++
++/*
++ * Copyright 2019 Joyent, Inc.
++ * Copyright 2022 OmniOS Community Edition (OmniOSce) Association.
++ * Copyright 2025 Oxide Computer Company
++ */
++
++/*
++ * VIRTIO FRAMEWORK: Operations via the legacy interface.
++ *
++ * For design and usage documentation, see the comments in "virtio.h".
++ */
++
++#include <sys/conf.h>
++#include <sys/kmem.h>
++#include <sys/debug.h>
++#include <sys/types.h>
++#include <sys/inttypes.h>
++#include <sys/ddi_impldefs.h>
++#include <sys/ddi.h>
++#include <sys/sunddi.h>
++#include <sys/sysmacros.h>
++
++#include "virtio.h"
++#include "virtio_impl.h"
++
++/*
++ * Reads and writes to the legacy BAR.
++ */
++
++static inline uint8_t
++virtio_get_leg8(virtio_t *vio, uintptr_t offset)
++{
++	return (ddi_get8(vio->vio_barh, (uint8_t *)(vio->vio_bar + offset)));
++}
++
++static inline uint16_t
++virtio_get_leg16(virtio_t *vio, uintptr_t offset)
++{
++	return (ddi_get16(vio->vio_barh, (uint16_t *)(vio->vio_bar + offset)));
++}
++
++static inline uint32_t
++virtio_get_leg32(virtio_t *vio, uintptr_t offset)
++{
++	return (ddi_get32(vio->vio_barh, (uint32_t *)(vio->vio_bar + offset)));
++}
++
++static inline void
++virtio_put_leg8(virtio_t *vio, uintptr_t offset, uint8_t value)
++{
++	ddi_put8(vio->vio_barh, (uint8_t *)(vio->vio_bar + offset), value);
++}
++
++static inline void
++virtio_put_leg16(virtio_t *vio, uintptr_t offset, uint16_t value)
++{
++	ddi_put16(vio->vio_barh, (uint16_t *)(vio->vio_bar + offset), value);
++}
++
++static inline void
++virtio_put_leg32(virtio_t *vio, uintptr_t offset, uint32_t value)
++{
++	ddi_put32(vio->vio_barh, (uint32_t *)(vio->vio_bar + offset), value);
++}
++
++/*
++ * Reads and writes to the device configuration area.
++ * Note that these functions take vio_mutex to avoid racing with interrupt
++ * enable/disable, when the device-specific offset can potentially change.
++ */
++
++uint8_t
++virtio_legacy_devcfg_get8(virtio_t *vio, uintptr_t offset)
++{
++	mutex_enter(&vio->vio_mutex);
++	uint8_t r = virtio_get_leg8(vio, vio->vio_legacy_cfg_offset + offset);
++	mutex_exit(&vio->vio_mutex);
++
++	return (r);
++}
++
++uint16_t
++virtio_legacy_devcfg_get16(virtio_t *vio, uintptr_t offset)
++{
++	mutex_enter(&vio->vio_mutex);
++	uint16_t r = virtio_get_leg16(vio, vio->vio_legacy_cfg_offset + offset);
++	mutex_exit(&vio->vio_mutex);
++
++	return (r);
++}
++
++uint32_t
++virtio_legacy_devcfg_get32(virtio_t *vio, uintptr_t offset)
++{
++	mutex_enter(&vio->vio_mutex);
++	uint32_t r = virtio_get_leg32(vio, vio->vio_legacy_cfg_offset + offset);
++	mutex_exit(&vio->vio_mutex);
++
++	return (r);
++}
++
++uint64_t
++virtio_legacy_devcfg_get64(virtio_t *vio, uintptr_t offset)
++{
++	mutex_enter(&vio->vio_mutex);
++	/*
++	 * On at least some systems, a 64-bit read or write to this BAR is not
++	 * possible.  For legacy devices, there is no generation number to use
++	 * to determine if configuration may have changed half-way through a
++	 * read.  We need to continue to read both halves of the value until we
++	 * read the same value at least twice.
++	 */
++	uintptr_t o_lo = vio->vio_legacy_cfg_offset + offset;
++	uintptr_t o_hi = o_lo + 4;
++
++	uint64_t val = virtio_get_leg32(vio, o_lo) |
++	    ((uint64_t)virtio_get_leg32(vio, o_hi) << 32);
++
++	for (;;) {
++		uint64_t tval = virtio_get_leg32(vio, o_lo) |
++		    ((uint64_t)virtio_get_leg32(vio, o_hi) << 32);
++
++		if (tval == val) {
++			break;
++		}
++
++		val = tval;
++	}
++
++	mutex_exit(&vio->vio_mutex);
++	return (val);
++}
++
++void
++virtio_legacy_devcfg_put8(virtio_t *vio, uintptr_t offset, uint8_t value)
++{
++	mutex_enter(&vio->vio_mutex);
++	virtio_put_leg8(vio, vio->vio_legacy_cfg_offset + offset, value);
++	mutex_exit(&vio->vio_mutex);
++}
++
++void
++virtio_legacy_devcfg_put16(virtio_t *vio, uintptr_t offset, uint16_t value)
++{
++	mutex_enter(&vio->vio_mutex);
++	virtio_put_leg16(vio, vio->vio_legacy_cfg_offset + offset, value);
++	mutex_exit(&vio->vio_mutex);
++}
++
++void
++virtio_legacy_devcfg_put32(virtio_t *vio, uintptr_t offset, uint32_t value)
++{
++	mutex_enter(&vio->vio_mutex);
++	virtio_put_leg32(vio, vio->vio_legacy_cfg_offset + offset, value);
++	mutex_exit(&vio->vio_mutex);
++}
++
++/* Legacy devices have no configuration generation number */
++uint8_t
++virtio_legacy_devcfg_getgen(virtio_t *vio)
++{
++	return (0);
++}
++
++uint64_t
++virtio_legacy_device_get_features(virtio_t *vio)
++{
++	return (virtio_get_leg32(vio, VIRTIO_LEGACY_FEATURES_DEVICE));
++}
++
++static bool
++virtio_legacy_device_set_features(virtio_t *vio, uint64_t features)
++{
++	/* The legacy interface only supports 32 feature bits */
++	VERIFY0(features >> 32);
++	virtio_put_leg32(vio, VIRTIO_LEGACY_FEATURES_DRIVER, features);
++	return (true);
++}
++
++static void
++virtio_legacy_set_status_locked(virtio_t *vio, uint8_t status)
++{
++	VERIFY3U(status, !=, 0);
++	VERIFY(MUTEX_HELD(&vio->vio_mutex));
++
++	uint8_t old = virtio_get_leg8(vio, VIRTIO_LEGACY_DEVICE_STATUS);
++	virtio_put_leg8(vio, VIRTIO_LEGACY_DEVICE_STATUS, status | old);
++}
++
++static uint8_t
++virtio_legacy_get_status(virtio_t *vio)
++{
++	return (virtio_get_leg8(vio, VIRTIO_LEGACY_DEVICE_STATUS));
++}
++
++static void
++virtio_legacy_device_reset_locked(virtio_t *vio)
++{
++	VERIFY(MUTEX_HELD(&vio->vio_mutex));
++	virtio_put_leg8(vio, VIRTIO_LEGACY_DEVICE_STATUS, VIRTIO_STATUS_RESET);
++}
++
++static uint8_t
++virtio_legacy_isr_status(virtio_t *vio)
++{
++	uint8_t val;
++
++	val = virtio_get_leg8(vio, VIRTIO_LEGACY_ISR_STATUS);
++
++	return (val);
++}
++
++static uint16_t
++virtio_legacy_msix_config_get(virtio_t *vio)
++{
++	return (virtio_get_leg16(vio, VIRTIO_LEGACY_MSIX_CONFIG));
++}
++
++static void
++virtio_legacy_msix_config_set(virtio_t *vio, uint16_t msi)
++{
++	virtio_put_leg16(vio, VIRTIO_LEGACY_MSIX_CONFIG, msi);
++}
++
++static void
++virtio_legacy_queue_notify(virtio_queue_t *viq)
++{
++	virtio_put_leg16(viq->viq_virtio, VIRTIO_LEGACY_QUEUE_NOTIFY,
++	    viq->viq_index);
++}
++
++static void
++virtio_legacy_queue_select(virtio_t *vio, uint16_t qidx)
++{
++	virtio_put_leg16(vio, VIRTIO_LEGACY_QUEUE_SELECT, qidx);
++}
++
++static uint16_t
++virtio_legacy_queue_size_get(virtio_t *vio, uint16_t qidx)
++{
++	uint16_t val;
++
++	virtio_acquireq(vio, qidx);
++	val = virtio_get_leg16(vio, VIRTIO_LEGACY_QUEUE_SIZE);
++	virtio_releaseq(vio);
++
++	return (val);
++}
++
++static bool
++virtio_legacy_queue_enable_get(virtio_t *vio, uint16_t qidx)
++{
++	/* Legacy queues are always enabled */
++	return (true);
++}
++
++static void
++virtio_legacy_queue_enable_set(virtio_t *vio, uint16_t qidx, bool enable)
++{
++	/* Legacy queues are always enabled */
++}
++
++static void
++virtio_legacy_queue_addr_set(virtio_t *vio, uint16_t qidx, uint64_t descaddr,
++    uint64_t availaddr __unused, uint64_t usedaddr __unused)
++{
++	virtio_acquireq(vio, qidx);
++	virtio_put_leg32(vio, VIRTIO_LEGACY_QUEUE_ADDRESS,
++	    descaddr >> VIRTIO_PAGE_SHIFT);
++	virtio_releaseq(vio);
++}
++
++static uint16_t
++virtio_legacy_msix_queue_get(virtio_t *vio, uint16_t qidx)
++{
++	uint16_t val;
++
++	virtio_acquireq(vio, qidx);
++	val = virtio_get_leg16(vio, VIRTIO_LEGACY_MSIX_QUEUE);
++	virtio_releaseq(vio);
++
++	return (val);
++}
++
++static void
++virtio_legacy_msix_queue_set(virtio_t *vio, uint16_t qidx, uint16_t msi)
++{
++	virtio_acquireq(vio, qidx);
++	virtio_put_leg16(vio, VIRTIO_LEGACY_MSIX_QUEUE, msi);
++	virtio_releaseq(vio);
++}
++
++virtio_ops_t virtio_legacy_ops = {
++	.vop_device_get_features = virtio_legacy_device_get_features,
++	.vop_device_set_features = virtio_legacy_device_set_features,
++	.vop_set_status_locked = virtio_legacy_set_status_locked,
++	.vop_get_status = virtio_legacy_get_status,
++	.vop_device_reset_locked = virtio_legacy_device_reset_locked,
++	.vop_isr_status = virtio_legacy_isr_status,
++	.vop_msix_config_get = virtio_legacy_msix_config_get,
++	.vop_msix_config_set = virtio_legacy_msix_config_set,
++	.vop_queue_notify = virtio_legacy_queue_notify,
++
++	.vop_queue_select = virtio_legacy_queue_select,
++	.vop_queue_size_get = virtio_legacy_queue_size_get,
++	/* There is no way to set the queue size in the legacy interface */
++	.vop_queue_size_set = NULL,
++	/* The legacy interface doesn't use notification offsets */
++	.vop_queue_noff_get = NULL,
++	.vop_queue_enable_get = virtio_legacy_queue_enable_get,
++	.vop_queue_enable_set = virtio_legacy_queue_enable_set,
++	.vop_queue_addr_set = virtio_legacy_queue_addr_set,
++	.vop_msix_queue_get = virtio_legacy_msix_queue_get,
++	.vop_msix_queue_set = virtio_legacy_msix_queue_set,
++
++	.vop_device_cfg_gen = virtio_legacy_devcfg_getgen,
++	.vop_device_cfg_get8 = virtio_legacy_devcfg_get8,
++	.vop_device_cfg_get16 = virtio_legacy_devcfg_get16,
++	.vop_device_cfg_get32 = virtio_legacy_devcfg_get32,
++	.vop_device_cfg_get64 = virtio_legacy_devcfg_get64,
++	.vop_device_cfg_put8 = virtio_legacy_devcfg_put8,
++	.vop_device_cfg_put16 = virtio_legacy_devcfg_put16,
++	.vop_device_cfg_put32 = virtio_legacy_devcfg_put32,
++};
+diff --git a/usr/src/uts/common/io/virtio/virtio_main.c b/usr/src/uts/common/io/virtio/virtio_main.c
+index c72b9dd..3d95cc6 100644
+--- a/usr/src/uts/common/io/virtio/virtio_main.c
++++ b/usr/src/uts/common/io/virtio/virtio_main.c
+@@ -12,6 +12,7 @@
+ /*
+  * Copyright 2019 Joyent, Inc.
+  * Copyright 2022 OmniOS Community Edition (OmniOSce) Association.
++ * Copyright 2026 Oxide Computer Company
+  */
+ 
+ /*
+@@ -27,6 +28,7 @@
+ #include <sys/autoconf.h>
+ #include <sys/ddi_impldefs.h>
+ #include <sys/ddi.h>
++#include <sys/inttypes.h>
+ #include <sys/sunddi.h>
+ #include <sys/sunndi.h>
+ #include <sys/avintr.h>
+@@ -37,9 +39,11 @@
+ #include <sys/bootsvcs.h>
+ #include <sys/sysmacros.h>
+ #include <sys/pci.h>
++#include <sys/pci_cap.h>
+ 
+ #include "virtio.h"
+ #include "virtio_impl.h"
++#include "virtio_endian.h"
+ 
+ 
+ /*
+@@ -73,17 +77,24 @@ _info(struct modinfo *modinfop)
+ 	return (mod_info(&virtio_modlinkage, modinfop));
+ }
+ 
+-
+-
++static void virtio_unmap_cap(virtio_t *, virtio_pci_cap_t *);
++static boolean_t virtio_map_cap(virtio_t *, virtio_pci_cap_t *);
++static void virtio_discover_pci_caps(virtio_t *, ddi_acc_handle_t);
+ static void virtio_set_status(virtio_t *, uint8_t);
+-static void virtio_set_status_locked(virtio_t *, uint8_t);
+ static int virtio_chain_append_impl(virtio_chain_t *, uint64_t, size_t,
+     uint16_t);
+ static int virtio_interrupts_setup(virtio_t *, int);
+ static void virtio_interrupts_teardown(virtio_t *);
+ static void virtio_interrupts_disable_locked(virtio_t *);
+ static void virtio_queue_free(virtio_queue_t *);
+-static void virtio_device_reset_locked(virtio_t *);
++static int virtio_bar_to_rnumber(virtio_t *, uint8_t);
++
++/*
++ * Tuneable that forces use of the legacy interface even if the hypervisor
++ * presents transitional devices. It has no effect if only a modern device is
++ * presented.
++ */
++int virtio_force_legacy = 0;
+ 
+ /*
+  * We use the same device access attributes for BAR mapping and access to the
+@@ -142,42 +153,6 @@ ddi_dma_attr_t virtio_dma_attr_indirect = {
+ };
+ 
+ 
+-uint8_t
+-virtio_get8(virtio_t *vio, uintptr_t offset)
+-{
+-	return (ddi_get8(vio->vio_barh, (uint8_t *)(vio->vio_bar + offset)));
+-}
+-
+-uint16_t
+-virtio_get16(virtio_t *vio, uintptr_t offset)
+-{
+-	return (ddi_get16(vio->vio_barh, (uint16_t *)(vio->vio_bar + offset)));
+-}
+-
+-uint32_t
+-virtio_get32(virtio_t *vio, uintptr_t offset)
+-{
+-	return (ddi_get32(vio->vio_barh, (uint32_t *)(vio->vio_bar + offset)));
+-}
+-
+-void
+-virtio_put8(virtio_t *vio, uintptr_t offset, uint8_t value)
+-{
+-	ddi_put8(vio->vio_barh, (uint8_t *)(vio->vio_bar + offset), value);
+-}
+-
+-void
+-virtio_put16(virtio_t *vio, uintptr_t offset, uint16_t value)
+-{
+-	ddi_put16(vio->vio_barh, (uint16_t *)(vio->vio_bar + offset), value);
+-}
+-
+-void
+-virtio_put32(virtio_t *vio, uintptr_t offset, uint32_t value)
+-{
+-	ddi_put32(vio->vio_barh, (uint32_t *)(vio->vio_bar + offset), value);
+-}
+-
+ void
+ virtio_fini(virtio_t *vio, boolean_t failed)
+ {
+@@ -190,14 +165,15 @@ virtio_fini(virtio_t *vio, boolean_t failed)
+ 		virtio_queue_free(viq);
+ 	}
+ 	list_destroy(&vio->vio_queues);
++	mutex_destroy(&vio->vio_qlock);
+ 
+ 	if (failed) {
+ 		/*
+ 		 * Signal to the host that device setup failed.
+ 		 */
+-		virtio_set_status_locked(vio, VIRTIO_STATUS_FAILED);
++		vio->vio_ops->vop_set_status_locked(vio, VIRTIO_STATUS_FAILED);
+ 	} else {
+-		virtio_device_reset_locked(vio);
++		vio->vio_ops->vop_device_reset_locked(vio);
+ 	}
+ 
+ 	/*
+@@ -208,9 +184,15 @@ virtio_fini(virtio_t *vio, boolean_t failed)
+ 
+ 	if (vio->vio_initlevel & VIRTIO_INITLEVEL_REGS) {
+ 		/*
+-		 * Unmap PCI BAR0.
++		 * Unmap PCI BARs
+ 		 */
+-		ddi_regs_map_free(&vio->vio_barh);
++		if (vio->vio_bar != NULL)
++			ddi_regs_map_free(&vio->vio_barh);
++
++		virtio_unmap_cap(vio, &vio->vio_cap_common);
++		virtio_unmap_cap(vio, &vio->vio_cap_notify);
++		virtio_unmap_cap(vio, &vio->vio_cap_isr);
++		virtio_unmap_cap(vio, &vio->vio_cap_device);
+ 
+ 		vio->vio_initlevel &= ~VIRTIO_INITLEVEL_REGS;
+ 	}
+@@ -228,16 +210,13 @@ virtio_fini(virtio_t *vio, boolean_t failed)
+ }
+ 
+ /*
+- * Early device initialisation for legacy (pre-1.0 specification) virtio
+- * devices.
++ * Early device initialisation for virtio devices.
+  */
+ virtio_t *
+-virtio_init(dev_info_t *dip, uint64_t driver_features, boolean_t allow_indirect)
++virtio_init(dev_info_t *dip)
+ {
+-	int r;
+-
+ 	/*
+-	 * First, confirm that this is a legacy device.
++	 * First, let's see what kind of device this is.
+ 	 */
+ 	ddi_acc_handle_t pci;
+ 	if (pci_config_setup(dip, &pci) != DDI_SUCCESS) {
+@@ -245,37 +224,110 @@ virtio_init(dev_info_t *dip, uint64_t driver_features, boolean_t allow_indirect)
+ 		return (NULL);
+ 	}
+ 
++	uint16_t devid;
++	if ((devid = pci_config_get16(pci, PCI_CONF_DEVID)) == PCI_EINVAL16) {
++		dev_err(dip, CE_WARN, "could not read config space devid");
++		pci_config_teardown(&pci);
++		return (NULL);
++	}
++
+ 	uint8_t revid;
+ 	if ((revid = pci_config_get8(pci, PCI_CONF_REVID)) == PCI_EINVAL8) {
+-		dev_err(dip, CE_WARN, "could not read config space");
++		dev_err(dip, CE_WARN, "could not read config space revid");
+ 		pci_config_teardown(&pci);
+ 		return (NULL);
+ 	}
+ 
++	virtio_t *vio = kmem_zalloc(sizeof (*vio), KM_SLEEP);
++	vio->vio_dip = dip;
++
++	virtio_discover_pci_caps(vio, pci);
+ 	pci_config_teardown(&pci);
+ 
+ 	/*
+-	 * The legacy specification requires that the device advertise as PCI
+-	 * Revision 0.
++	 * In order to operate over the modern interface we must have found a
++	 * minimum set of capabiities.
+ 	 */
+-	if (revid != 0) {
+-		dev_err(dip, CE_WARN, "PCI Revision %u incorrect for "
+-		    "legacy virtio device", (uint_t)revid);
+-		return (NULL);
++	boolean_t found_modern_caps =
++	    (vio->vio_cap_common.vpc_type != 0 &&
++	    vio->vio_cap_notify.vpc_type != 0 &&
++	    vio->vio_cap_isr.vpc_type != 0 &&
++	    vio->vio_cap_device.vpc_type != 0);
++
++	if (devid >= VIRTIO_MIN_MODERN_DEVID) {
++		/*
++		 * This is a purely "modern" device. If we haven't found the
++		 * required PCI capabilities then we can't proceed.
++		 */
++		if (!found_modern_caps) {
++			dev_err(dip, CE_WARN,
++			    "Did not find required PCI capabilities for a "
++			    " modern VirtIO device");
++			kmem_free(vio, sizeof (*vio));
++			return (NULL);
++		}
++
++		/*
++		 * There is nothing else that is mandatory for a modern device
++		 * that we can check.
++		 */
++		vio->vio_mode = VIRTIO_MODE_MODERN;
++		vio->vio_ops = &virtio_modern_ops;
++	} else {
++		/*
++		 * This could be a pure "legacy" or a "transitional" device.
++		 * In either case the specification requires that the device
++		 * advertise as PCI Revision 0.
++		 */
++		if (revid != 0) {
++			dev_err(dip, CE_WARN, "PCI Revision %u incorrect for "
++			    "transitional or legacy virtio device",
++			    (uint_t)revid);
++			kmem_free(vio, sizeof (*vio));
++			return (NULL);
++		}
++
++		/*
++		 * If we found the modern PCI capabilities then we're
++		 * transitional, otherwise we're legacy. We will always
++		 * choose to use the modern interfaces on a transitional
++		 * device. Ostensibly the VIRTIO_F_VERSION_1 flag is intended
++		 * to help with this decision, but it is only visible through
++		 * the modern interface!
++		 */
++		if (found_modern_caps && virtio_force_legacy == 0) {
++			vio->vio_mode = VIRTIO_MODE_TRANSITIONAL;
++			vio->vio_ops = &virtio_modern_ops;
++		} else {
++			vio->vio_mode = VIRTIO_MODE_LEGACY;
++			vio->vio_ops = &virtio_legacy_ops;
++		}
+ 	}
+ 
+-	virtio_t *vio = kmem_zalloc(sizeof (*vio), KM_SLEEP);
+-	vio->vio_dip = dip;
++	if (vio->vio_mode == VIRTIO_MODE_LEGACY) {
++		int rnumber = virtio_bar_to_rnumber(vio, VIRTIO_LEGACY_BAR);
+ 
+-	/*
+-	 * Map PCI BAR0 for legacy device access.
+-	 */
+-	if ((r = ddi_regs_map_setup(dip, VIRTIO_LEGACY_PCI_BAR0,
+-	    (caddr_t *)&vio->vio_bar, 0, 0, &virtio_acc_attr,
+-	    &vio->vio_barh)) != DDI_SUCCESS) {
+-		dev_err(dip, CE_WARN, "ddi_regs_map_setup failure (%d)", r);
+-		kmem_free(vio, sizeof (*vio));
+-		return (NULL);
++		/*
++		 * Map PCI BAR0 for legacy device access.
++		 */
++		if (rnumber == -1 || ddi_regs_map_setup(dip, rnumber,
++		    (caddr_t *)&vio->vio_bar, 0, 0, &virtio_acc_attr,
++		    &vio->vio_barh) != DDI_SUCCESS) {
++			dev_err(dip, CE_WARN, "Failed to map BAR0");
++			kmem_free(vio, sizeof (*vio));
++			return (NULL);
++		}
++	} else {
++		/*
++		 * Map the BAR regions required for the modern interface.
++		 */
++		if (!virtio_map_cap(vio, &vio->vio_cap_common) ||
++		    !virtio_map_cap(vio, &vio->vio_cap_notify) ||
++		    !virtio_map_cap(vio, &vio->vio_cap_isr) ||
++		    !virtio_map_cap(vio, &vio->vio_cap_device)) {
++			kmem_free(vio, sizeof (*vio));
++			return (NULL);
++		}
+ 	}
+ 	vio->vio_initlevel |= VIRTIO_INITLEVEL_REGS;
+ 
+@@ -291,36 +343,56 @@ virtio_init(dev_info_t *dip, uint64_t driver_features, boolean_t allow_indirect)
+ 
+ 	list_create(&vio->vio_queues, sizeof (virtio_queue_t),
+ 	    offsetof(virtio_queue_t, viq_link));
++	mutex_init(&vio->vio_qlock, NULL, MUTEX_DRIVER, NULL);
++	vio->vio_qcur = UINT16_MAX;
+ 
+ 	/*
+-	 * Legacy virtio devices require a few common steps before we can
+-	 * negotiate device features.
++	 * Virtio devices require a few common steps before we can negotiate
++	 * device features.
+ 	 */
+ 	virtio_device_reset(vio);
+ 	virtio_set_status(vio, VIRTIO_STATUS_ACKNOWLEDGE);
+ 	virtio_set_status(vio, VIRTIO_STATUS_DRIVER);
+ 
+-	/*
+-	 * Negotiate features with the device.  Record the original supported
+-	 * feature set for debugging purposes.
+-	 */
+-	vio->vio_features_device = virtio_get32(vio,
+-	    VIRTIO_LEGACY_FEATURES_DEVICE);
+-	if (allow_indirect) {
++	vio->vio_features_device = vio->vio_ops->vop_device_get_features(vio);
++	vio->vio_features = vio->vio_features_device;
++
++	return (vio);
++}
++
++boolean_t
++virtio_init_features(virtio_t *vio, uint64_t driver_features,
++    boolean_t allow_indirect)
++{
++	if (!virtio_modern(vio) && driver_features >> 32 != 0) {
++		dev_err(vio->vio_dip, CE_WARN,
++		    "driver programming error; high bits set in features");
++		return (B_FALSE);
++	}
++
++	if (allow_indirect)
+ 		driver_features |= VIRTIO_F_RING_INDIRECT_DESC;
++	if (virtio_modern(vio))
++		driver_features |= VIRTIO_F_VERSION_1;
++
++	vio->vio_features &= driver_features;
++
++	if (!vio->vio_ops->vop_device_set_features(vio, vio->vio_features)) {
++		dev_err(vio->vio_dip, CE_WARN, "feature negotiation failed");
++		return (B_FALSE);
+ 	}
+-	vio->vio_features = vio->vio_features_device & driver_features;
+-	virtio_put32(vio, VIRTIO_LEGACY_FEATURES_DRIVER, vio->vio_features);
+ 
+ 	/*
+-	 * The device-specific configuration begins at an offset into the BAR
+-	 * that depends on whether we have enabled MSI-X interrupts or not.
+-	 * Start out with the offset for pre-MSI-X operation so that we can
+-	 * read device configuration space prior to configuring interrupts.
++	 * With the legacy interface the device-specific configuration begins
++	 * at an offset into the BAR that depends on whether we have enabled
++	 * MSI-X interrupts or not. Start out with the offset for pre-MSI-X
++	 * operation so that we can read device configuration space prior to
++	 * configuring interrupts.
+ 	 */
+-	vio->vio_config_offset = VIRTIO_LEGACY_CFG_OFFSET;
++	if (!virtio_modern(vio))
++		vio->vio_legacy_cfg_offset = VIRTIO_LEGACY_CFG_OFFSET;
+ 
+-	return (vio);
++	return (B_TRUE);
+ }
+ 
+ /*
+@@ -378,6 +450,14 @@ virtio_init_complete(virtio_t *vio, int allowed_interrupt_types)
+ 		    virtio_intr_pri(vio));
+ 	}
+ 
++	/*
++	 * Enable the queues.
++	 */
++	for (virtio_queue_t *viq = list_head(&vio->vio_queues); viq != NULL;
++	    viq = list_next(&vio->vio_queues, viq)) {
++		vio->vio_ops->vop_queue_enable_set(vio, viq->viq_index, true);
++	}
++
+ 	virtio_set_status(vio, VIRTIO_STATUS_DRIVER_OK);
+ 
+ 	return (DDI_SUCCESS);
+@@ -389,6 +469,28 @@ virtio_feature_present(virtio_t *vio, uint64_t feature_mask)
+ 	return ((vio->vio_features & feature_mask) != 0);
+ }
+ 
++boolean_t
++virtio_modern(virtio_t *vio)
++{
++	return (vio->vio_mode != VIRTIO_MODE_LEGACY);
++}
++
++void
++virtio_acquireq(virtio_t *vio, uint16_t qidx)
++{
++	mutex_enter(&vio->vio_qlock);
++	if (vio->vio_qcur != qidx) {
++		vio->vio_ops->vop_queue_select(vio, qidx);
++		vio->vio_qcur = qidx;
++	}
++}
++
++void
++virtio_releaseq(virtio_t *vio)
++{
++	mutex_exit(&vio->vio_qlock);
++}
++
+ void *
+ virtio_intr_pri(virtio_t *vio)
+ {
+@@ -397,41 +499,149 @@ virtio_intr_pri(virtio_t *vio)
+ 	return (DDI_INTR_PRI(vio->vio_interrupt_priority));
+ }
+ 
++static void
++virtio_unmap_cap(virtio_t *vio, virtio_pci_cap_t *cap)
++{
++	if (cap->vpc_type != 0 && cap->vpc_bar != NULL)
++		ddi_regs_map_free(&cap->vpc_barh);
++}
++
++static boolean_t
++virtio_map_cap(virtio_t *vio, virtio_pci_cap_t *cap)
++{
++	int rnumber;
++
++	VERIFY(cap->vpc_type);
++
++	rnumber = virtio_bar_to_rnumber(vio, cap->vpc_baridx);
++
++	if (rnumber == -1 || ddi_regs_map_setup(vio->vio_dip, rnumber,
++	    (caddr_t *)&cap->vpc_bar, cap->vpc_offset, cap->vpc_size,
++	    &virtio_acc_attr, &cap->vpc_barh) != DDI_SUCCESS) {
++		dev_err(vio->vio_dip, CE_WARN,
++		    "Failed to map CAP %u @ "
++		    "BAR%u 0x%" PRIx64 "+%" PRIx64,
++		    cap->vpc_type, cap->vpc_baridx,
++		    cap->vpc_offset, cap->vpc_size);
++		return (B_FALSE);
++	}
++
++	return (B_TRUE);
++}
++
+ /*
+- * Enable a bit in the device status register.  Each bit signals a level of
+- * guest readiness to the host.  Use the VIRTIO_CONFIG_DEVICE_STATUS_*
+- * constants for "status".  To zero the status field use virtio_device_reset().
++ * Devices which are capable of operating via the "modern" VirtIO interface,
++ * which includes "transitional" devices, present a number of PCI capabilities
++ * of the vendor-specific type.
+  */
+ static void
+-virtio_set_status_locked(virtio_t *vio, uint8_t status)
++virtio_discover_pci_caps(virtio_t *vio, ddi_acc_handle_t pci)
+ {
+-	VERIFY3U(status, !=, 0);
+-	VERIFY(MUTEX_HELD(&vio->vio_mutex));
++	uint16_t idx;
++
++	for (idx = 0; ; idx++) {
++		virtio_pci_cap_t *cap;
++		uint16_t base;
++		uint32_t id;
++
++		if (pci_cap_probe(pci, idx, &id, &base) != DDI_SUCCESS)
++			break;
++
++		/* The VirtIO caps are all of the "vendor-specific" type */
++		if (id != PCI_CAP_ID_VS)
++			continue;
++
++		uint8_t type = pci_cap_get(pci, PCI_CAP_CFGSZ_8, idx, base,
++		    VIRTIO_PCI_CAP_TYPE);
++
++		uint8_t min_len = VIRTIO_PCI_CAP_BARLEN + sizeof (uint32_t);
++
++		/* We are currently only interested in the following types */
++		switch (type) {
++		case VPC_COMMON_CFG:
++			cap = &vio->vio_cap_common;
++			break;
++		case VPC_NOTIFY_CFG:
++			cap = &vio->vio_cap_notify;
++			/* The notify capability has an extra field */
++			min_len += sizeof (uint32_t);
++			break;
++		case VPC_ISR_CFG:
++			cap = &vio->vio_cap_isr;
++			break;
++		case VPC_DEVICE_CFG:
++			cap = &vio->vio_cap_device;
++			break;
++		default:
++			/* Not interested in this cap */
++			continue;
++		}
++
++		uint8_t caplen = pci_cap_get(pci, PCI_CAP_CFGSZ_8, idx, base,
++		    VIRTIO_PCI_CAP_LEN);
++
++		/* Skip short capabilities */
++		if (caplen == PCI_EINVAL8 || caplen < min_len)
++			continue;
+ 
+-	uint8_t old = virtio_get8(vio, VIRTIO_LEGACY_DEVICE_STATUS);
+-	virtio_put8(vio, VIRTIO_LEGACY_DEVICE_STATUS, status | old);
++		/*
++		 * Devices can provide multiple versions of the same capability
++		 * type which should be in order of preference. We skip
++		 * duplicates and use the first instance of each type we find.
++		 */
++		if (cap->vpc_type != 0)
++			continue;
++
++		cap->vpc_baridx = pci_cap_get(pci, PCI_CAP_CFGSZ_8, idx, base,
++		    VIRTIO_PCI_CAP_BAR);
++		if (cap->vpc_type == PCI_EINVAL8)
++			continue;
++		cap->vpc_offset = pci_cap_get(pci, PCI_CAP_CFGSZ_32, idx, base,
++		    VIRTIO_PCI_CAP_BAROFF);
++		if (cap->vpc_offset == PCI_EINVAL32)
++			continue;
++		cap->vpc_size = pci_cap_get(pci, PCI_CAP_CFGSZ_32, idx, base,
++		    VIRTIO_PCI_CAP_BARLEN);
++		if (cap->vpc_size == PCI_EINVAL32)
++			continue;
++
++		/*
++		 * The NOTIFY_CFG capability has an additional field which is
++		 * the multiplier to use to find the correct offset in the BAR
++		 * for each queue. It is permissable for this to be 0, in which
++		 * case notifications for all queues are written to the start
++		 * of the region.
++		 */
++		if (type == VPC_NOTIFY_CFG) {
++			vio->vio_multiplier = pci_cap_get(pci, PCI_CAP_CFGSZ_32,
++			    idx, base, VIRTIO_PCI_CAP_MULTIPLIER);
++			if (vio->vio_multiplier == PCI_EINVAL32)
++				continue;
++		}
++
++		/* Assigning the type marks this entry as valid */
++		cap->vpc_type = type;
++	}
+ }
+ 
++/*
++ * Enable a bit in the device status register.  Each bit signals a level of
++ * guest readiness to the host.  Use the VIRTIO_CONFIG_DEVICE_STATUS_*
++ * constants for "status".  To zero the status field use virtio_device_reset().
++ */
+ static void
+ virtio_set_status(virtio_t *vio, uint8_t status)
+ {
+ 	mutex_enter(&vio->vio_mutex);
+-	virtio_set_status_locked(vio, status);
++	vio->vio_ops->vop_set_status_locked(vio, status);
+ 	mutex_exit(&vio->vio_mutex);
+ }
+ 
+-static void
+-virtio_device_reset_locked(virtio_t *vio)
+-{
+-	VERIFY(MUTEX_HELD(&vio->vio_mutex));
+-	virtio_put8(vio, VIRTIO_LEGACY_DEVICE_STATUS, VIRTIO_STATUS_RESET);
+-}
+-
+ void
+ virtio_device_reset(virtio_t *vio)
+ {
+ 	mutex_enter(&vio->vio_mutex);
+-	virtio_device_reset_locked(vio);
++	vio->vio_ops->vop_device_reset_locked(vio);
+ 	mutex_exit(&vio->vio_mutex);
+ }
+ 
+@@ -470,7 +680,7 @@ virtio_shutdown(virtio_t *vio)
+ 	 * Now, reset the device.  This removes any queue configuration on the
+ 	 * device side.
+ 	 */
+-	virtio_device_reset_locked(vio);
++	vio->vio_ops->vop_device_reset_locked(vio);
+ 	vio->vio_initlevel |= VIRTIO_INITLEVEL_SHUTDOWN;
+ 	mutex_exit(&vio->vio_mutex);
+ }
+@@ -493,7 +703,7 @@ virtio_quiesce(virtio_t *vio)
+ 	 * memory we've previously passed to it.  All queue configuration is
+ 	 * discarded.  This is good enough for quiesce(9E).
+ 	 */
+-	virtio_device_reset_locked(vio);
++	vio->vio_ops->vop_device_reset_locked(vio);
+ 
+ 	return (DDI_SUCCESS);
+ }
+@@ -506,89 +716,51 @@ virtio_quiesce(virtio_t *vio)
+  */
+ 
+ uint8_t
+-virtio_dev_get8(virtio_t *vio, uintptr_t offset)
++virtio_dev_getgen(virtio_t *vio)
+ {
+-	mutex_enter(&vio->vio_mutex);
+-	uint8_t r = virtio_get8(vio, vio->vio_config_offset + offset);
+-	mutex_exit(&vio->vio_mutex);
++	return (vio->vio_ops->vop_device_cfg_gen(vio));
++}
+ 
+-	return (r);
++uint8_t
++virtio_dev_get8(virtio_t *vio, uintptr_t offset)
++{
++	return (vio->vio_ops->vop_device_cfg_get8(vio, offset));
+ }
+ 
+ uint16_t
+ virtio_dev_get16(virtio_t *vio, uintptr_t offset)
+ {
+-	mutex_enter(&vio->vio_mutex);
+-	uint16_t r = virtio_get16(vio, vio->vio_config_offset + offset);
+-	mutex_exit(&vio->vio_mutex);
+-
+-	return (r);
++	return (vio->vio_ops->vop_device_cfg_get16(vio, offset));
+ }
+ 
+ uint32_t
+ virtio_dev_get32(virtio_t *vio, uintptr_t offset)
+ {
+-	mutex_enter(&vio->vio_mutex);
+-	uint32_t r = virtio_get32(vio, vio->vio_config_offset + offset);
+-	mutex_exit(&vio->vio_mutex);
+-
+-	return (r);
++	return (vio->vio_ops->vop_device_cfg_get32(vio, offset));
+ }
+ 
+ uint64_t
+ virtio_dev_get64(virtio_t *vio, uintptr_t offset)
+ {
+-	mutex_enter(&vio->vio_mutex);
+-	/*
+-	 * On at least some systems, a 64-bit read or write to this BAR is not
+-	 * possible.  For legacy devices, there is no generation number to use
+-	 * to determine if configuration may have changed half-way through a
+-	 * read.  We need to continue to read both halves of the value until we
+-	 * read the same value at least twice.
+-	 */
+-	uintptr_t o_lo = vio->vio_config_offset + offset;
+-	uintptr_t o_hi = o_lo + 4;
+-
+-	uint64_t val = virtio_get32(vio, o_lo) |
+-	    ((uint64_t)virtio_get32(vio, o_hi) << 32);
+-
+-	for (;;) {
+-		uint64_t tval = virtio_get32(vio, o_lo) |
+-		    ((uint64_t)virtio_get32(vio, o_hi) << 32);
+-
+-		if (tval == val) {
+-			break;
+-		}
+-
+-		val = tval;
+-	}
+-
+-	mutex_exit(&vio->vio_mutex);
+-	return (val);
++	return (vio->vio_ops->vop_device_cfg_get64(vio, offset));
+ }
+ 
+ void
+ virtio_dev_put8(virtio_t *vio, uintptr_t offset, uint8_t value)
+ {
+-	mutex_enter(&vio->vio_mutex);
+-	virtio_put8(vio, vio->vio_config_offset + offset, value);
+-	mutex_exit(&vio->vio_mutex);
++	vio->vio_ops->vop_device_cfg_put8(vio, offset, value);
+ }
+ 
+ void
+ virtio_dev_put16(virtio_t *vio, uintptr_t offset, uint16_t value)
+ {
+-	mutex_enter(&vio->vio_mutex);
+-	virtio_put16(vio, vio->vio_config_offset + offset, value);
+-	mutex_exit(&vio->vio_mutex);
++	vio->vio_ops->vop_device_cfg_put16(vio, offset, value);
+ }
+ 
+ void
+ virtio_dev_put32(virtio_t *vio, uintptr_t offset, uint32_t value)
+ {
+-	mutex_enter(&vio->vio_mutex);
+-	virtio_put32(vio, vio->vio_config_offset + offset, value);
+-	mutex_exit(&vio->vio_mutex);
++	vio->vio_ops->vop_device_cfg_put32(vio, offset, value);
+ }
+ 
+ /*
+@@ -615,8 +787,9 @@ virtio_queue_alloc(virtio_t *vio, uint16_t qidx, const char *name,
+     ddi_intr_handler_t *func, void *funcarg, boolean_t force_direct,
+     uint_t max_segs)
+ {
+-	uint16_t qsz;
+ 	char space_name[256];
++	uint64_t noff = 0;
++	uint16_t qsz;
+ 
+ 	if (max_segs < 1) {
+ 		/*
+@@ -641,12 +814,8 @@ virtio_queue_alloc(virtio_t *vio, uint16_t qidx, const char *name,
+ 		return (NULL);
+ 	}
+ 
+-	/*
+-	 * There is no way to negotiate a different queue size for legacy
+-	 * devices.  We must read and use the native queue size of the device.
+-	 */
+-	virtio_put16(vio, VIRTIO_LEGACY_QUEUE_SELECT, qidx);
+-	if ((qsz = virtio_get16(vio, VIRTIO_LEGACY_QUEUE_SIZE)) == 0) {
++	qsz = vio->vio_ops->vop_queue_size_get(vio, qidx);
++	if (qsz == 0) {
+ 		/*
+ 		 * A size of zero means the device does not have a queue with
+ 		 * this index.
+@@ -656,6 +825,28 @@ virtio_queue_alloc(virtio_t *vio, uint16_t qidx, const char *name,
+ 		mutex_exit(&vio->vio_mutex);
+ 		return (NULL);
+ 	}
++	/*
++	 * There is no way to negotiate a different queue size for legacy
++	 * devices.  We must read and use the native queue size of the device.
++	 * For devices using the modern interface we could choose to reduce
++	 * the queue size; for now we write back the value advertised by the
++	 * device unchanged.
++	 */
++	if (vio->vio_ops->vop_queue_size_set != NULL)
++		vio->vio_ops->vop_queue_size_set(vio, qidx, qsz);
++
++	if (virtio_modern(vio)) {
++		noff = vio->vio_ops->vop_queue_noff_get(vio, qidx);
++		if (noff > vio->vio_cap_notify.vpc_size - sizeof (uint32_t)) {
++			dev_err(vio->vio_dip, CE_WARN, "queue \"%s\" (%u) "
++			    "invalid notification offset 0x%" PRIx64 " "
++			    "for notify region of size 0x%" PRIx64,
++			    name, (uint_t)qidx,
++			    noff, vio->vio_cap_notify.vpc_size);
++			mutex_exit(&vio->vio_mutex);
++			return (NULL);
++		}
++	}
+ 
+ 	mutex_exit(&vio->vio_mutex);
+ 
+@@ -664,6 +855,7 @@ virtio_queue_alloc(virtio_t *vio, uint16_t qidx, const char *name,
+ 	viq->viq_name = name;
+ 	viq->viq_index = qidx;
+ 	viq->viq_size = qsz;
++	viq->viq_noff = noff;
+ 	viq->viq_func = func;
+ 	viq->viq_funcarg = funcarg;
+ 	viq->viq_max_segs = max_segs;
+@@ -702,16 +894,22 @@ virtio_queue_alloc(virtio_t *vio, uint16_t qidx, const char *name,
+ 
+ 	/*
+ 	 * For legacy devices, memory for the queue has a strict layout
+-	 * determined by the queue size.
++	 * determined by the queue size, and with the device region
++	 * starting on a fresh page. Modern and transitional devices have less
++	 * stringent alignment requirements and virtqueues are more compact as
++	 * a result.
+ 	 */
+-	size_t sz_descs = sizeof (virtio_vq_desc_t) * qsz;
+-	size_t sz_driver = P2ROUNDUP_TYPED(sz_descs +
++	const uint_t align = virtio_modern(vio) ? MODERN_VQ_ALIGN :
++	    VIRTIO_PAGE_SIZE;
++
++	const size_t sz_descs = sizeof (virtio_vq_desc_t) * qsz;
++	const size_t sz_driver = P2ROUNDUP_TYPED(sz_descs +
+ 	    sizeof (virtio_vq_driver_t) +
+ 	    sizeof (uint16_t) * qsz,
+-	    VIRTIO_PAGE_SIZE, size_t);
+-	size_t sz_device = P2ROUNDUP_TYPED(sizeof (virtio_vq_device_t) +
++	    align, size_t);
++	const size_t sz_device = P2ROUNDUP_TYPED(sizeof (virtio_vq_device_t) +
+ 	    sizeof (virtio_vq_elem_t) * qsz,
+-	    VIRTIO_PAGE_SIZE, size_t);
++	    align, size_t);
+ 
+ 	if (virtio_dma_init(vio, &viq->viq_dma, sz_driver + sz_device,
+ 	    &virtio_dma_attr_queue, DDI_DMA_RDWR | DDI_DMA_CONSISTENT,
+@@ -757,9 +955,9 @@ virtio_queue_alloc(virtio_t *vio, uint16_t qidx, const char *name,
+ 	membar_producer();
+ 	VIRTQ_DMA_SYNC_FORDEV(viq);
+ 
+-	virtio_put16(vio, VIRTIO_LEGACY_QUEUE_SELECT, qidx);
+-	virtio_put32(vio, VIRTIO_LEGACY_QUEUE_ADDRESS,
+-	    virtio_dma_cookie_pa(&viq->viq_dma, 0) >> VIRTIO_PAGE_SHIFT);
++	const uint64_t pa = virtio_dma_cookie_pa(&viq->viq_dma, 0);
++	vio->vio_ops->vop_queue_addr_set(vio, qidx,
++	    pa, pa + sz_descs, pa + sz_driver);
+ 
+ 	mutex_exit(&vio->vio_mutex);
+ 	return (viq);
+@@ -783,8 +981,8 @@ virtio_queue_free(virtio_queue_t *viq)
+ 	 * detach the queue from the device now.
+ 	 */
+ 	if (!viq->viq_shutdown) {
+-		virtio_put16(vio, VIRTIO_LEGACY_QUEUE_SELECT, viq->viq_index);
+-		virtio_put32(vio, VIRTIO_LEGACY_QUEUE_ADDRESS, 0);
++		vio->vio_ops->vop_queue_enable_set(vio, viq->viq_index, false);
++		vio->vio_ops->vop_queue_addr_set(vio, viq->viq_index, 0, 0, 0);
+ 	}
+ 
+ 	virtio_dma_fini(&viq->viq_dma);
+@@ -807,9 +1005,11 @@ virtio_queue_no_interrupt(virtio_queue_t *viq, boolean_t stop_interrupts)
+ 	mutex_enter(&viq->viq_mutex);
+ 
+ 	if (stop_interrupts) {
+-		viq->viq_dma_driver->vqdr_flags |= VIRTQ_AVAIL_F_NO_INTERRUPT;
++		viq->viq_dma_driver->vqdr_flags |=
++		    viq_gtoh16(viq, VIRTQ_AVAIL_F_NO_INTERRUPT);
+ 	} else {
+-		viq->viq_dma_driver->vqdr_flags &= ~VIRTQ_AVAIL_F_NO_INTERRUPT;
++		viq->viq_dma_driver->vqdr_flags &=
++		    viq_gtoh16(viq, ~VIRTQ_AVAIL_F_NO_INTERRUPT);
+ 	}
+ 	VIRTQ_DMA_SYNC_FORDEV(viq);
+ 
+@@ -866,7 +1066,8 @@ virtio_queue_poll(virtio_queue_t *viq)
+ 	}
+ 
+ 	VIRTQ_DMA_SYNC_FORKERNEL(viq);
+-	if (viq->viq_device_index == viq->viq_dma_device->vqde_index) {
++	uint16_t dindex = viq_htog16(viq, viq->viq_dma_device->vqde_index);
++	if (viq->viq_device_index == dindex) {
+ 		/*
+ 		 * If the device index has not changed since the last poll,
+ 		 * there are no new chains to process.
+@@ -883,8 +1084,10 @@ virtio_queue_poll(virtio_queue_t *viq)
+ 	membar_consumer();
+ 
+ 	uint16_t index = (viq->viq_device_index++) % viq->viq_size;
+-	uint16_t start = viq->viq_dma_device->vqde_ring[index].vqe_start;
+-	uint32_t len = viq->viq_dma_device->vqde_ring[index].vqe_len;
++	uint16_t start = viq_htog16(viq,
++	    viq->viq_dma_device->vqde_ring[index].vqe_start);
++	uint32_t len = viq_htog32(viq,
++	    viq->viq_dma_device->vqde_ring[index].vqe_len);
+ 
+ 	virtio_chain_t *vic;
+ 	if ((vic = virtio_queue_complete(viq, start)) == NULL) {
+@@ -1147,8 +1350,9 @@ virtio_chain_append_impl(virtio_chain_t *vic, uint64_t pa, size_t len,
+ 			 * Chain the current last indirect descriptor to the
+ 			 * new one.
+ 			 */
+-			vqd[index - 1].vqd_flags |= VIRTQ_DESC_F_NEXT;
+-			vqd[index - 1].vqd_next = index;
++			vqd[index - 1].vqd_flags |=
++			    viq_gtoh16(viq, VIRTQ_DESC_F_NEXT);
++			vqd[index - 1].vqd_next = viq_gtoh16(viq, index);
+ 		}
+ 
+ 	} else {
+@@ -1172,15 +1376,16 @@ virtio_chain_append_impl(virtio_chain_t *vic, uint64_t pa, size_t len,
+ 			 */
+ 			uint16_t p = vic->vic_direct[vic->vic_direct_used - 1];
+ 
+-			vqd[p].vqd_flags |= VIRTQ_DESC_F_NEXT;
+-			vqd[p].vqd_next = index;
++			vqd[p].vqd_flags |=
++			    viq_gtoh16(viq, VIRTQ_DESC_F_NEXT);
++			vqd[p].vqd_next = viq_gtoh16(viq, index);
+ 		}
+ 		vic->vic_direct[vic->vic_direct_used++] = index;
+ 	}
+ 
+-	vqd[index].vqd_addr = pa;
+-	vqd[index].vqd_len = len;
+-	vqd[index].vqd_flags = flags;
++	vqd[index].vqd_addr = viq_gtoh64(viq, pa);
++	vqd[index].vqd_len = viq_gtoh32(viq, len);
++	vqd[index].vqd_flags = viq_gtoh16(viq, flags);
+ 	vqd[index].vqd_next = 0;
+ 
+ 	return (DDI_SUCCESS);
+@@ -1215,6 +1420,8 @@ virtio_chain_append(virtio_chain_t *vic, uint64_t pa, size_t len,
+ static void
+ virtio_queue_flush_locked(virtio_queue_t *viq)
+ {
++	virtio_t *vio = viq->viq_virtio;
++
+ 	VERIFY(MUTEX_HELD(&viq->viq_mutex));
+ 
+ 	/*
+@@ -1223,17 +1430,23 @@ virtio_queue_flush_locked(virtio_queue_t *viq)
+ 	 * pointer (vqdr_index).
+ 	 */
+ 	membar_producer();
+-	viq->viq_dma_driver->vqdr_index = viq->viq_driver_index;
++	viq->viq_dma_driver->vqdr_index =
++	    viq_gtoh16(viq, viq->viq_driver_index);
+ 	VIRTQ_DMA_SYNC_FORDEV(viq);
+ 
+ 	/*
+ 	 * Determine whether the device expects us to notify it of new
+-	 * descriptors.
++	 * descriptors. This requires store-load ordering. The store publishing
++	 * the new ring index above must be globally visible before the load of
++	 * the suppression state that the device maintains, or each side could
++	 * see a stale view of the other and a notification the device is relying
++	 * on would never be sent.
+ 	 */
++	membar_enter();
+ 	VIRTQ_DMA_SYNC_FORKERNEL(viq);
+-	if (!(viq->viq_dma_device->vqde_flags & VIRTQ_USED_F_NO_NOTIFY)) {
+-		virtio_put16(viq->viq_virtio, VIRTIO_LEGACY_QUEUE_NOTIFY,
+-		    viq->viq_index);
++	if (!(viq->viq_dma_device->vqde_flags &
++	    viq_gtoh16(viq, VIRTQ_USED_F_NO_NOTIFY))) {
++		vio->vio_ops->vop_queue_notify(viq);
+ 	}
+ }
+ 
+@@ -1262,8 +1475,8 @@ virtio_chain_submit(virtio_chain_t *vic, boolean_t flush)
+ 		 * of the descriptor must extend to cover the populated
+ 		 * indirect descriptor entries.
+ 		 */
+-		vqd[vic->vic_direct[0]].vqd_len =
+-		    sizeof (virtio_vq_desc_t) * vic->vic_indirect_used;
++		vqd[vic->vic_direct[0]].vqd_len = viq_gtoh32(viq,
++		    sizeof (virtio_vq_desc_t) * vic->vic_indirect_used);
+ 
+ 		virtio_dma_sync(&vic->vic_indirect_dma, DDI_DMA_SYNC_FORDEV);
+ 	}
+@@ -1274,7 +1487,8 @@ virtio_chain_submit(virtio_chain_t *vic, boolean_t flush)
+ 	 * the device until a subsequent queue flush.
+ 	 */
+ 	uint16_t index = (viq->viq_driver_index++) % viq->viq_size;
+-	viq->viq_dma_driver->vqdr_ring[index] = vic->vic_direct[0];
++	viq->viq_dma_driver->vqdr_ring[index] =
++	    viq_gtoh16(viq, vic->vic_direct[0]);
+ 
+ 	vic->vic_head = vic->vic_direct[0];
+ 	avl_add(&viq->viq_inflight, vic);
+@@ -1371,7 +1585,7 @@ virtio_shared_isr(caddr_t arg0, caddr_t arg1)
+ 	 * Check the ISR status to see if the interrupt applies to us.  Reading
+ 	 * this field resets it to zero.
+ 	 */
+-	isr = virtio_get8(vio, VIRTIO_LEGACY_ISR_STATUS);
++	isr = vio->vio_ops->vop_isr_status(vio);
+ 
+ 	if ((isr & VIRTIO_ISR_CHECK_QUEUES) != 0) {
+ 		r = DDI_INTR_CLAIMED;
+@@ -1681,14 +1895,12 @@ virtio_interrupts_unwind(virtio_t *vio)
+ 				continue;
+ 			}
+ 
+-			virtio_put16(vio, VIRTIO_LEGACY_QUEUE_SELECT,
+-			    viq->viq_index);
+-			virtio_put16(vio, VIRTIO_LEGACY_MSIX_QUEUE,
++			vio->vio_ops->vop_msix_queue_set(vio, viq->viq_index,
+ 			    VIRTIO_LEGACY_MSI_NO_VECTOR);
+ 		}
+ 
+ 		if (vio->vio_cfgchange_handler_added) {
+-			virtio_put16(vio, VIRTIO_LEGACY_MSIX_CONFIG,
++			vio->vio_ops->vop_msix_config_set(vio,
+ 			    VIRTIO_LEGACY_MSI_NO_VECTOR);
+ 		}
+ 	}
+@@ -1704,9 +1916,10 @@ virtio_interrupts_unwind(virtio_t *vio)
+ 
+ 	/*
+ 	 * Disabling the interrupts makes the MSI-X fields disappear from the
+-	 * BAR once more.
++	 * BAR once more in the legacy interface.
+ 	 */
+-	vio->vio_config_offset = VIRTIO_LEGACY_CFG_OFFSET;
++	if (!virtio_modern(vio))
++		vio->vio_legacy_cfg_offset = VIRTIO_LEGACY_CFG_OFFSET;
+ }
+ 
+ int
+@@ -1750,9 +1963,12 @@ virtio_interrupts_enable(virtio_t *vio)
+ 		 * MSI-X in the PCI configuration for the device.  While
+ 		 * enabled, the extra MSI-X configuration table fields appear
+ 		 * between the general and the device-specific regions of the
+-		 * BAR.
++		 * BAR in the legacy interface.
+ 		 */
+-		vio->vio_config_offset = VIRTIO_LEGACY_CFG_OFFSET_MSIX;
++		if (!virtio_modern(vio)) {
++			vio->vio_legacy_cfg_offset =
++			    VIRTIO_LEGACY_CFG_OFFSET_MSIX;
++		}
+ 
+ 		for (virtio_queue_t *viq = list_head(&vio->vio_queues);
+ 		    viq != NULL; viq = list_next(&vio->vio_queues, viq)) {
+@@ -1767,8 +1983,7 @@ virtio_interrupts_enable(virtio_t *vio)
+ 			 * Route interrupts for this queue to the assigned
+ 			 * MSI-X vector number.
+ 			 */
+-			virtio_put16(vio, VIRTIO_LEGACY_QUEUE_SELECT, qi);
+-			virtio_put16(vio, VIRTIO_LEGACY_MSIX_QUEUE, msi);
++			vio->vio_ops->vop_msix_queue_set(vio, qi, msi);
+ 
+ 			/*
+ 			 * The device may not actually accept the vector number
+@@ -1776,8 +1991,7 @@ virtio_interrupts_enable(virtio_t *vio)
+ 			 * that configuration was successful by re-reading the
+ 			 * configuration we just wrote.
+ 			 */
+-			if (virtio_get16(vio, VIRTIO_LEGACY_MSIX_QUEUE) !=
+-			    msi) {
++			if (vio->vio_ops->vop_msix_queue_get(vio, qi) != msi) {
+ 				dev_err(vio->vio_dip, CE_WARN,
+ 				    "failed to configure MSI-X vector %u for "
+ 				    "queue \"%s\" (#%u)", (uint_t)msi,
+@@ -1790,11 +2004,11 @@ virtio_interrupts_enable(virtio_t *vio)
+ 		}
+ 
+ 		if (vio->vio_cfgchange_handler_added) {
+-			virtio_put16(vio, VIRTIO_LEGACY_MSIX_CONFIG,
++			vio->vio_ops->vop_msix_config_set(vio,
+ 			    vio->vio_cfgchange_handler_index);
+ 
+ 			/* Verify the value was accepted. */
+-			if (virtio_get16(vio, VIRTIO_LEGACY_MSIX_CONFIG) !=
++			if (vio->vio_ops->vop_msix_config_get(vio) !=
+ 			    vio->vio_cfgchange_handler_index) {
+ 				dev_err(vio->vio_dip, CE_WARN,
+ 				    "failed to configure MSI-X vector for "
+@@ -1834,3 +2048,41 @@ virtio_interrupts_disable(virtio_t *vio)
+ 	virtio_interrupts_disable_locked(vio);
+ 	mutex_exit(&vio->vio_mutex);
+ }
++
++/*
++ * Map a PCI BAR (0-5) to a regset number.
++ */
++static int
++virtio_bar_to_rnumber(virtio_t *vio, uint8_t bar)
++{
++	pci_regspec_t *regs;
++	uint_t bar_offset, regs_length, rcount;
++	int rnumber = -1;
++
++	if (bar > 5)
++		return (-1);
++
++	/*
++	 * PCI_CONF_BASE0 is 0x10; each BAR is 4 bytes apart.
++	 */
++	bar_offset = PCI_CONF_BASE0 + sizeof (uint32_t) * bar;
++
++	if (ddi_prop_lookup_int_array(DDI_DEV_T_ANY, vio->vio_dip,
++	    DDI_PROP_DONTPASS, "reg", (int **)&regs, &regs_length) !=
++	    DDI_PROP_SUCCESS) {
++		return (-1);
++	}
++
++	rcount = regs_length * sizeof (int) / sizeof (pci_regspec_t);
++
++	for (int i = 0; i < rcount; i++) {
++		if (PCI_REG_REG_G(regs[i].pci_phys_hi) == bar_offset) {
++			rnumber = i;
++			break;
++		}
++	}
++
++	ddi_prop_free(regs);
++
++	return ((rnumber < rcount) ? rnumber : -1);
++}
+diff --git a/usr/src/uts/common/io/virtio/virtio_modern.c b/usr/src/uts/common/io/virtio/virtio_modern.c
+new file mode 100644
+index 0000000..662eb9f
+--- /dev/null
++++ b/usr/src/uts/common/io/virtio/virtio_modern.c
+@@ -0,0 +1,401 @@
++/*
++ * This file and its contents are supplied under the terms of the
++ * Common Development and Distribution License ("CDDL"), version 1.0.
++ * You may only use this file in accordance with the terms of version
++ * 1.0 of the CDDL.
++ *
++ * A full copy of the text of the CDDL should have accompanied this
++ * source.  A copy of the CDDL is also available via the Internet at
++ * http://www.illumos.org/license/CDDL.
++ */
++
++/*
++ * Copyright 2019 Joyent, Inc.
++ * Copyright 2022 OmniOS Community Edition (OmniOSce) Association.
++ * Copyright 2025 Oxide Computer Company
++ */
++
++/*
++ * VIRTIO FRAMEWORK: Operations via the modern interface.
++ *
++ * For design and usage documentation, see the comments in "virtio.h".
++ */
++
++#include <sys/conf.h>
++#include <sys/kmem.h>
++#include <sys/debug.h>
++#include <sys/types.h>
++#include <sys/inttypes.h>
++#include <sys/ddi_impldefs.h>
++#include <sys/ddi.h>
++#include <sys/sunddi.h>
++#include <sys/sysmacros.h>
++
++#include "virtio.h"
++#include "virtio_impl.h"
++#include "virtio_endian.h"
++
++static void virtio_modern_set_status_locked(virtio_t *, uint8_t);
++static uint8_t virtio_modern_get_status(virtio_t *);
++
++/*
++ * Reads and writes to the modern common configuration area.
++ */
++
++static inline uint8_t
++virtio_get_cmn8(virtio_t *vio, uintptr_t offset)
++{
++	return (ddi_get8(vio->vio_cap_common.vpc_barh,
++	    (uint8_t *)(vio->vio_cap_common.vpc_bar + offset)));
++}
++
++static inline uint16_t
++virtio_get_cmn16(virtio_t *vio, uintptr_t offset)
++{
++	return virtio_le16toh((ddi_get16(vio->vio_cap_common.vpc_barh,
++	    (uint16_t *)(vio->vio_cap_common.vpc_bar + offset))));
++}
++
++static inline uint32_t
++virtio_get_cmn32(virtio_t *vio, uintptr_t offset)
++{
++	return virtio_le32toh((ddi_get32(vio->vio_cap_common.vpc_barh,
++	    (uint32_t *)(vio->vio_cap_common.vpc_bar + offset))));
++}
++
++static inline void
++virtio_put_cmn8(virtio_t *vio, uintptr_t offset, uint8_t value)
++{
++	ddi_put8(vio->vio_cap_common.vpc_barh,
++	    (uint8_t *)(vio->vio_cap_common.vpc_bar + offset), value);
++}
++
++static inline void
++virtio_put_cmn16(virtio_t *vio, uintptr_t offset, uint16_t value)
++{
++	ddi_put16(vio->vio_cap_common.vpc_barh,
++	    (uint16_t *)(vio->vio_cap_common.vpc_bar + offset),
++	    virtio_htole16(value));
++}
++
++static inline void
++virtio_put_cmn32(virtio_t *vio, uintptr_t offset, uint32_t value)
++{
++	ddi_put32(vio->vio_cap_common.vpc_barh,
++	    (uint32_t *)(vio->vio_cap_common.vpc_bar + offset),
++	    virtio_htole32(value));
++}
++
++/*
++ * Reads and writes to the modern device configuration area.
++ */
++
++static uint8_t
++virtio_modern_devcfg_getgen(virtio_t *vio)
++{
++	return (virtio_get_cmn8(vio, VIRTIO_MODERN_COMMON_CFGGENERATION));
++}
++
++static uint8_t
++virtio_modern_devcfg_get8(virtio_t *vio, uintptr_t offset)
++{
++	return (ddi_get8(vio->vio_cap_device.vpc_barh,
++	    (uint8_t *)(vio->vio_cap_device.vpc_bar + offset)));
++}
++
++static uint16_t
++virtio_modern_devcfg_get16(virtio_t *vio, uintptr_t offset)
++{
++	return (virtio_le16toh(ddi_get16(vio->vio_cap_device.vpc_barh,
++	    (uint16_t *)(vio->vio_cap_device.vpc_bar + offset))));
++}
++
++static uint32_t
++virtio_modern_devcfg_get32(virtio_t *vio, uintptr_t offset)
++{
++	return (virtio_le32toh(ddi_get32(vio->vio_cap_device.vpc_barh,
++	    (uint32_t *)(vio->vio_cap_device.vpc_bar + offset))));
++}
++
++static uint64_t
++virtio_modern_devcfg_get64(virtio_t *vio, uintptr_t offset)
++{
++	uint64_t val;
++	uint8_t gen;
++
++	/*
++	 * On at least some systems, a 64-bit read or write to this BAR is not
++	 * possible. Modern devices have a generation number that can be
++	 * inspected to determine if configuration may have changed half-way
++	 * through a read. We need to continue to read both halves of the
++	 * value until we read the same generation value either side.
++	 */
++	do {
++		gen = virtio_modern_devcfg_getgen(vio);
++		val = (uint64_t)virtio_le32toh(virtio_modern_devcfg_get32(vio,
++		    offset + sizeof (uint32_t))) << 32;
++		val |= virtio_le32toh(virtio_modern_devcfg_get32(vio, offset));
++	} while (virtio_modern_devcfg_getgen(vio) != gen);
++
++	return (val);
++}
++
++static void
++virtio_modern_devcfg_put8(virtio_t *vio, uintptr_t offset, uint8_t value)
++{
++	ddi_put8(vio->vio_cap_device.vpc_barh,
++	    (uint8_t *)(vio->vio_cap_device.vpc_bar + offset), value);
++}
++
++static void
++virtio_modern_devcfg_put16(virtio_t *vio, uintptr_t offset, uint16_t value)
++{
++	ddi_put16(vio->vio_cap_device.vpc_barh,
++	    (uint16_t *)(vio->vio_cap_device.vpc_bar + offset),
++	    virtio_htole16(value));
++}
++
++static void
++virtio_modern_devcfg_put32(virtio_t *vio, uintptr_t offset, uint32_t value)
++{
++	ddi_put32(vio->vio_cap_device.vpc_barh,
++	    (uint32_t *)(vio->vio_cap_device.vpc_bar + offset),
++	    virtio_htole32(value));
++}
++
++/*
++ * Reads and writes to the modern notification area.
++ */
++
++static inline void
++virtio_put_nfy16(virtio_t *vio, uintptr_t offset, uint16_t value)
++{
++	ddi_put16(vio->vio_cap_notify.vpc_barh,
++	    (uint16_t *)(vio->vio_cap_notify.vpc_bar + offset),
++	    virtio_htole16(value));
++}
++
++/*
++ * Reads from the modern ISR area.
++ */
++
++static inline uint8_t
++virtio_get_isr8(virtio_t *vio, uintptr_t offset)
++{
++	return (ddi_get8(vio->vio_cap_isr.vpc_barh,
++	    (uint8_t *)(vio->vio_cap_isr.vpc_bar + offset)));
++}
++
++static uint64_t
++virtio_modern_device_get_features(virtio_t *vio)
++{
++	uint64_t features = 0;
++
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_DFSELECT, 1);
++	features = virtio_get_cmn32(vio, VIRTIO_MODERN_COMMON_DF);
++	features <<= 32;
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_DFSELECT, 0);
++	features |= virtio_get_cmn32(vio, VIRTIO_MODERN_COMMON_DF);
++
++	return (features);
++}
++
++static bool
++virtio_modern_device_set_features(virtio_t *vio, uint64_t features)
++{
++	uint8_t status;
++
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_GFSELECT, 1);
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_GF, features >> 32);
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_GFSELECT, 0);
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_GF, features & 0xffffffff);
++	/* Signal that we are finished setting guest features */
++	mutex_enter(&vio->vio_mutex);
++	virtio_modern_set_status_locked(vio, VIRTIO_STATUS_FEAT_OK);
++	/*
++	 * We now need to check that this bit is still set in the status. If
++	 * it is not, then feature negotiation has failed and the device is
++	 * unusable.
++	 */
++	status = virtio_modern_get_status(vio);
++	mutex_exit(&vio->vio_mutex);
++	return ((status & VIRTIO_STATUS_FEAT_OK) != 0);
++}
++
++static void
++virtio_modern_set_status_locked(virtio_t *vio, uint8_t status)
++{
++	VERIFY3U(status, !=, 0);
++	VERIFY(MUTEX_HELD(&vio->vio_mutex));
++
++	uint8_t old = virtio_get_cmn8(vio, VIRTIO_MODERN_COMMON_STATUS);
++	virtio_put_cmn8(vio, VIRTIO_MODERN_COMMON_STATUS, status | old);
++}
++
++static uint8_t
++virtio_modern_get_status(virtio_t *vio)
++{
++	return (virtio_get_cmn8(vio, VIRTIO_MODERN_COMMON_STATUS));
++}
++
++static void
++virtio_modern_device_reset_locked(virtio_t *vio)
++{
++	VERIFY(MUTEX_HELD(&vio->vio_mutex));
++	virtio_put_cmn8(vio, VIRTIO_MODERN_COMMON_STATUS, VIRTIO_STATUS_RESET);
++}
++
++static uint8_t
++virtio_modern_isr_status(virtio_t *vio)
++{
++	return (virtio_get_isr8(vio, 0));
++}
++
++static uint16_t
++virtio_modern_msix_config_get(virtio_t *vio)
++{
++	return (virtio_get_cmn16(vio, VIRTIO_MODERN_COMMON_MSIX));
++}
++
++static void
++virtio_modern_msix_config_set(virtio_t *vio, uint16_t msi)
++{
++	virtio_put_cmn16(vio, VIRTIO_MODERN_COMMON_MSIX, msi);
++}
++
++static void
++virtio_modern_queue_notify(virtio_queue_t *viq)
++{
++	virtio_put_nfy16(viq->viq_virtio, viq->viq_noff, viq->viq_index);
++}
++
++static void
++virtio_modern_queue_select(virtio_t *vio, uint16_t qidx)
++{
++	virtio_put_cmn16(vio, VIRTIO_MODERN_COMMON_Q_SELECT, qidx);
++}
++
++static uint16_t
++virtio_modern_queue_size_get(virtio_t *vio, uint16_t qidx)
++{
++	uint16_t val;
++
++	virtio_acquireq(vio, qidx);
++	val = virtio_get_cmn16(vio, VIRTIO_MODERN_COMMON_Q_SIZE);
++	virtio_releaseq(vio);
++
++	return (val);
++}
++
++static void
++virtio_modern_queue_size_set(virtio_t *vio, uint16_t qidx, uint16_t qsz)
++{
++	virtio_acquireq(vio, qidx);
++	virtio_put_cmn16(vio, VIRTIO_MODERN_COMMON_Q_SIZE, qsz);
++	virtio_releaseq(vio);
++}
++
++static uint64_t
++virtio_modern_queue_noff_get(virtio_t *vio, uint16_t qidx)
++{
++	uint64_t noff;
++
++	virtio_acquireq(vio, qidx);
++	noff = (uint64_t)virtio_get_cmn16(vio, VIRTIO_MODERN_COMMON_Q_NOFF);
++	virtio_releaseq(vio);
++
++	noff *= vio->vio_multiplier;
++
++	return (noff);
++}
++
++static bool
++virtio_modern_queue_enable_get(virtio_t *vio, uint16_t qidx)
++{
++	bool val;
++
++	virtio_acquireq(vio, qidx);
++	val = (virtio_get_cmn16(vio, VIRTIO_MODERN_COMMON_Q_ENABLE) != 0);
++	virtio_releaseq(vio);
++
++	return (val);
++}
++
++static void
++virtio_modern_queue_enable_set(virtio_t *vio, uint16_t qidx, bool enable)
++{
++	virtio_acquireq(vio, qidx);
++	virtio_put_cmn16(vio, VIRTIO_MODERN_COMMON_Q_ENABLE, enable);
++	virtio_releaseq(vio);
++}
++
++static void
++virtio_modern_queue_addr_set(virtio_t *vio, uint16_t qidx, uint64_t descaddr,
++    uint64_t availaddr, uint64_t usedaddr)
++{
++	virtio_acquireq(vio, qidx);
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_Q_DESCLO,
++	    descaddr & 0xffffffff);
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_Q_DESCHI,
++	    descaddr >> 32);
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_Q_AVAILLO,
++	    availaddr & 0xffffffff);
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_Q_AVAILHI,
++	    availaddr >> 32);
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_Q_USEDLO,
++	    usedaddr & 0xffffffff);
++	virtio_put_cmn32(vio, VIRTIO_MODERN_COMMON_Q_USEDHI,
++	    usedaddr >> 32);
++	virtio_releaseq(vio);
++}
++
++static uint16_t
++virtio_modern_msix_queue_get(virtio_t *vio, uint16_t qidx)
++{
++	uint16_t val;
++
++	virtio_acquireq(vio, qidx);
++	val = virtio_get_cmn16(vio, VIRTIO_MODERN_COMMON_Q_MSIX);
++	virtio_releaseq(vio);
++
++	return (val);
++}
++
++static void
++virtio_modern_msix_queue_set(virtio_t *vio, uint16_t qidx, uint16_t msi)
++{
++	virtio_acquireq(vio, qidx);
++	virtio_put_cmn16(vio, VIRTIO_MODERN_COMMON_Q_MSIX, msi);
++	virtio_releaseq(vio);
++}
++
++virtio_ops_t virtio_modern_ops = {
++	.vop_device_get_features = virtio_modern_device_get_features,
++	.vop_device_set_features = virtio_modern_device_set_features,
++	.vop_set_status_locked = virtio_modern_set_status_locked,
++	.vop_get_status = virtio_modern_get_status,
++	.vop_device_reset_locked = virtio_modern_device_reset_locked,
++	.vop_isr_status = virtio_modern_isr_status,
++	.vop_msix_config_get = virtio_modern_msix_config_get,
++	.vop_msix_config_set = virtio_modern_msix_config_set,
++	.vop_queue_notify = virtio_modern_queue_notify,
++
++	.vop_queue_select = virtio_modern_queue_select,
++	.vop_queue_size_get = virtio_modern_queue_size_get,
++	.vop_queue_size_set = virtio_modern_queue_size_set,
++	.vop_queue_noff_get = virtio_modern_queue_noff_get,
++	.vop_queue_enable_get = virtio_modern_queue_enable_get,
++	.vop_queue_enable_set = virtio_modern_queue_enable_set,
++	.vop_queue_addr_set = virtio_modern_queue_addr_set,
++	.vop_msix_queue_get = virtio_modern_msix_queue_get,
++	.vop_msix_queue_set = virtio_modern_msix_queue_set,
++
++	.vop_device_cfg_gen = virtio_modern_devcfg_getgen,
++	.vop_device_cfg_get8 = virtio_modern_devcfg_get8,
++	.vop_device_cfg_get16 = virtio_modern_devcfg_get16,
++	.vop_device_cfg_get32 = virtio_modern_devcfg_get32,
++	.vop_device_cfg_get64 = virtio_modern_devcfg_get64,
++	.vop_device_cfg_put8 = virtio_modern_devcfg_put8,
++	.vop_device_cfg_put16 = virtio_modern_devcfg_put16,
++	.vop_device_cfg_put32 = virtio_modern_devcfg_put32,
++};
+diff --git a/usr/src/uts/common/io/virtio/virtio_spec.h b/usr/src/uts/common/io/virtio/virtio_spec.h
+new file mode 100644
+index 0000000..06bc934
+--- /dev/null
++++ b/usr/src/uts/common/io/virtio/virtio_spec.h
+@@ -0,0 +1,264 @@
++/*
++ * This file and its contents are supplied under the terms of the
++ * Common Development and Distribution License ("CDDL"), version 1.0.
++ * You may only use this file in accordance with the terms of version
++ * 1.0 of the CDDL.
++ *
++ * A full copy of the text of the CDDL should have accompanied this
++ * source.  A copy of the CDDL is also available via the Internet at
++ * http://www.illumos.org/license/CDDL.
++ */
++
++/*
++ * Copyright 2019 Joyent, Inc.
++ * Copyright 2022 OmniOS Community Edition (OmniOSce) Association.
++ * Copyright 2025 Oxide Computer Company
++ */
++
++#ifndef _VIRTIO_SPEC_H
++#define	_VIRTIO_SPEC_H
++
++/*
++ * VIRTIO FRAMEWORK: DEFINITIONS from the VirtIO specification
++ *
++ * For design and usage documentation, see the comments in "virtio.h".
++ *
++ * NOTE: Client drivers should not use definitions from this file.
++ */
++
++#include <sys/types.h>
++#include <sys/dditypes.h>
++#include <sys/list.h>
++#include <sys/ccompile.h>
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++typedef struct virtio_vq_desc virtio_vq_desc_t;
++typedef struct virtio_vq_driver virtio_vq_driver_t;
++typedef struct virtio_vq_device virtio_vq_device_t;
++typedef struct virtio_vq_elem virtio_vq_elem_t;
++
++#define	VIRTIO_MIN_MODERN_DEVID		0x1040
++
++/*
++ * PCI capability types as defined by the specification.
++ */
++typedef enum virtio_pci_cap_type {
++	VPC_COMMON_CFG =		1,
++	VPC_NOTIFY_CFG =		2,
++	VPC_ISR_CFG =			3,
++	VPC_DEVICE_CFG =		4,
++	VPC_PCI_CFG =			5,
++} virtio_pci_cap_type_t;
++
++/*
++ * PACKED STRUCTS FOR DEVICE ACCESS
++ */
++
++struct virtio_vq_desc {
++	/*
++	 * Buffer physical address and length.
++	 */
++	uint64_t			vqd_addr;
++	uint32_t			vqd_len;
++
++	/*
++	 * Flags.  Use with the VIRTQ_DESC_F_* family of constants.  See below.
++	 */
++	uint16_t			vqd_flags;
++
++	/*
++	 * If VIRTQ_DESC_F_NEXT is set in flags, this refers to the next
++	 * descriptor in the chain by table index.
++	 */
++	uint16_t			vqd_next;
++} __packed;
++
++/*
++ * VIRTIO DESCRIPTOR FLAGS (vqd_flags)
++ */
++
++/*
++ * NEXT:
++ *	Signals that this descriptor (direct or indirect) is part of a chain.
++ *	If populated, "vqd_next" names the next descriptor in the chain by its
++ *	table index.
++ */
++#define	VIRTQ_DESC_F_NEXT		(1 << 0)
++
++/*
++ * WRITE:
++ *	Determines whether this buffer is to be written by the device (WRITE is
++ *	set) or by the driver (WRITE is not set).
++ */
++#define	VIRTQ_DESC_F_WRITE		(1 << 1)
++
++/*
++ * INDIRECT:
++ *	This bit signals that a direct descriptor refers to an indirect
++ *	descriptor list, rather than directly to a buffer.  This bit may only
++ *	be used in a direct descriptor; indirect descriptors are not allowed to
++ *	refer to additional layers of indirect tables.  If this bit is set,
++ *	NEXT must be clear; indirect descriptors may not be chained.
++ */
++#define	VIRTQ_DESC_F_INDIRECT		(1 << 2)
++
++/*
++ * This structure is variously known as the "available" or "avail" ring, or the
++ * driver-owned portion of the queue structure.  It is used by the driver to
++ * submit descriptor chains to the device.
++ */
++struct virtio_vq_driver {
++	uint16_t			vqdr_flags;
++	uint16_t			vqdr_index;
++	uint16_t			vqdr_ring[];
++} __packed;
++
++#define	VIRTQ_AVAIL_F_NO_INTERRUPT	(1 << 0)
++
++/*
++ * We use the sizeof operator on this packed struct to calculate the offset of
++ * subsequent structs.  Ensure the compiler is not adding any padding to the
++ * end of the struct.
++ */
++CTASSERT(sizeof (virtio_vq_driver_t) ==
++    offsetof(virtio_vq_driver_t, vqdr_ring));
++
++struct virtio_vq_elem {
++	/*
++	 * The device returns chains of descriptors by specifying the table
++	 * index of the first descriptor in the chain.
++	 */
++	uint32_t			vqe_start;
++	uint32_t			vqe_len;
++} __packed;
++
++/*
++ * This structure is variously known as the "used" ring, or the device-owned
++ * portion of the queue structure.  It is used by the device to return
++ * completed descriptor chains to the driver.
++ */
++struct virtio_vq_device {
++	uint16_t			vqde_flags;
++	uint16_t			vqde_index;
++	virtio_vq_elem_t		vqde_ring[];
++} __packed;
++
++#define	VIRTQ_USED_F_NO_NOTIFY		(1 << 0)
++
++/*
++ * BASIC CONFIGURATION
++ *
++ * Legacy devices expose both their generic and their device-specific
++ * configuration through PCI BAR0.
++ */
++#define	VIRTIO_LEGACY_BAR		0
++
++/*
++ * These are offsets into the base configuration space available through the
++ * virtio_lget*() and virtio_lput*() family of functions.  These offsets are for
++ * what the specification describes as the "legacy" mode of device operation.
++ */
++#define	VIRTIO_LEGACY_FEATURES_DEVICE	0x00	/* 32 R   */
++#define	VIRTIO_LEGACY_FEATURES_DRIVER	0x04	/* 32 R/W */
++#define	VIRTIO_LEGACY_QUEUE_ADDRESS	0x08	/* 32 R/W */
++#define	VIRTIO_LEGACY_QUEUE_SIZE	0x0C	/* 16 R   */
++#define	VIRTIO_LEGACY_QUEUE_SELECT	0x0E	/* 16 R/W */
++#define	VIRTIO_LEGACY_QUEUE_NOTIFY	0x10	/* 16 R/W */
++#define	VIRTIO_LEGACY_DEVICE_STATUS	0x12	/* 8  R/W */
++#define	VIRTIO_LEGACY_ISR_STATUS	0x13	/* 8  R   */
++
++#define	VIRTIO_LEGACY_MSIX_CONFIG	0x14	/* 16 R/W */
++#define	VIRTIO_LEGACY_MSIX_QUEUE	0x16	/* 16 R/W */
++
++#define	VIRTIO_LEGACY_CFG_OFFSET	(VIRTIO_LEGACY_ISR_STATUS + 1)
++#define	VIRTIO_LEGACY_CFG_OFFSET_MSIX	(VIRTIO_LEGACY_MSIX_QUEUE + 2)
++
++#define	VIRTIO_LEGACY_MSI_NO_VECTOR	0xFFFF
++
++/*
++ * These are offsets into the common configuration space available through the
++ * virtio_cmnget*() and virtio_cmnput*() family of functions. These offsets are
++ * for what the specification describes as the "modern" mode of device
++ * operation.
++ */
++#define	VIRTIO_MODERN_COMMON_DFSELECT		0x00	/* 32 R/W */
++#define	VIRTIO_MODERN_COMMON_DF			0x04	/* 32 R   */
++#define	VIRTIO_MODERN_COMMON_GFSELECT		0x08	/* 32 R/W */
++#define	VIRTIO_MODERN_COMMON_GF			0x0C	/* 32 R/W */
++#define	VIRTIO_MODERN_COMMON_MSIX		0x10	/* 16 R/W */
++#define	VIRTIO_MODERN_COMMON_NUMQ		0x12	/* 16 R   */
++#define	VIRTIO_MODERN_COMMON_STATUS		0x14	/* 8  R/W */
++#define	VIRTIO_MODERN_COMMON_CFGGENERATION	0x15	/* 8  R   */
++#define	VIRTIO_MODERN_COMMON_Q_SELECT		0x16	/* 16 R/W */
++#define	VIRTIO_MODERN_COMMON_Q_SIZE		0x18	/* 16 R/W */
++#define	VIRTIO_MODERN_COMMON_Q_MSIX		0x1a	/* 16 R/W */
++#define	VIRTIO_MODERN_COMMON_Q_ENABLE		0x1c	/* 16 R/W */
++#define	VIRTIO_MODERN_COMMON_Q_NOFF		0x1e	/* 16 R   */
++#define	VIRTIO_MODERN_COMMON_Q_DESCLO		0x20	/* 32 R/W */
++#define	VIRTIO_MODERN_COMMON_Q_DESCHI		0x24	/* 32 R/W */
++#define	VIRTIO_MODERN_COMMON_Q_AVAILLO		0x28	/* 32 R/W */
++#define	VIRTIO_MODERN_COMMON_Q_AVAILHI		0x2c	/* 32 R/W */
++#define	VIRTIO_MODERN_COMMON_Q_USEDLO		0x30	/* 32 R/W */
++#define	VIRTIO_MODERN_COMMON_Q_USEDHI		0x34	/* 32 R/W */
++
++/*
++ * Offsets into a VirtIO PCI capability:
++ */
++#define	VIRTIO_PCI_CAP_LEN		2	/* 8  R   */
++#define	VIRTIO_PCI_CAP_TYPE		3	/* 8  R   */
++#define	VIRTIO_PCI_CAP_BAR		4	/* 8  R   */
++#define	VIRTIO_PCI_CAP_ID		5	/* 32 R   */
++#define	VIRTIO_PCI_CAP_BAROFF		8	/* 32 R   */
++#define	VIRTIO_PCI_CAP_BARLEN		12	/* 32 R   */
++#define	VIRTIO_PCI_CAP_MULTIPLIER	16	/* 32 R  ; NOTIFY CFG ONLY */
++
++/*
++ * Bits in the Device Status byte:
++ */
++#define	VIRTIO_STATUS_RESET		0
++#define	VIRTIO_STATUS_ACKNOWLEDGE	(1 << 0)
++#define	VIRTIO_STATUS_DRIVER		(1 << 1)
++#define	VIRTIO_STATUS_DRIVER_OK		(1 << 2)
++#define	VIRTIO_STATUS_FEAT_OK		(1 << 3)
++#define	VIRTIO_STATUS_DEV_NEEDS_RESET	(1 << 6)
++#define	VIRTIO_STATUS_FAILED		(1 << 7)
++
++/*
++ * Bits in the Interrupt Service Routine Status byte:
++ */
++#define	VIRTIO_ISR_CHECK_QUEUES		(1 << 0)
++#define	VIRTIO_ISR_CHECK_CONFIG		(1 << 1)
++
++/*
++ * Bits in the Features fields:
++ */
++#define	VIRTIO_F_ANY_LAYOUT		(1ULL << 27)	/* Legacy only */
++#define	VIRTIO_F_RING_INDIRECT_DESC	(1ULL << 28)
++#define	VIRTIO_F_VERSION_1		(1ULL << 32)
++
++/*
++ * For devices operating in the legacy mode, virtqueues must be aligned on a
++ * "page size" of 4096 bytes; this is also called the "Queue Align" value in
++ * newer versions of the specification.
++ */
++#define	VIRTIO_PAGE_SHIFT		12
++#define	VIRTIO_PAGE_SIZE		(1 << VIRTIO_PAGE_SHIFT)
++CTASSERT(VIRTIO_PAGE_SIZE == 4096);
++CTASSERT(ISP2(VIRTIO_PAGE_SIZE));
++
++/*
++ * For devices operating via the modern interface, the virtqueue layout is more
++ * flexible with each component having different alignment requirements.
++ */
++#define	MODERN_VQ_ALIGN_DESC		16
++#define	MODERN_VQ_ALIGN_DRIVER		2
++#define	MODERN_VQ_ALIGN_DEVICE		4
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif /* _VIRTIO_SPEC_H */

@@ -1,5 +1,5 @@
 ---
-modules: [Ziggy.Control, Ziggy.Control.Link, Ziggy.Credential, Ziggy.HTTP, Ziggy.Lease, Ziggy.Route, Ziggy.Upstream]
+modules: [Ziggy.AgentError, Ziggy.AgentStream, Ziggy.AgentWorker, Ziggy.Control, Ziggy.Control.Link, Ziggy.Credential, Ziggy.HTTP, Ziggy.Lease, Ziggy.Route, Ziggy.Upstream]
 ---
 
 # Inference Authority obligations
@@ -24,4 +24,16 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **scope:** `Ziggy.AgentError`
 - **must:** Known provider statuses map to closed reason atoms and unrecognized payloads remain `:upstream_failed`.
 - **kind:** functional
+- **status:** active
+
+### ziggy.inference_authority.I4 — Lease actor rejects unsafe authority parameters
+- **scope:** `Ziggy.Lease.init/1`
+- **must:** Lease startup MUST refuse non-positive or overlong TTLs, renewal intervals that are not shorter than TTL, and malformed request identifiers.
+- **kind:** security
+- **status:** active
+
+### ziggy.inference_authority.I5 — Streamed model output is complete and bounded
+- **scope:** `Ziggy.AgentStream.feed/2` and `finish/1`
+- **must:** Only a completed response with contiguous output items may finish successfully; duplicate terminal frames and oversized output MUST be rejected without forwarding partial content.
+- **kind:** security
 - **status:** active

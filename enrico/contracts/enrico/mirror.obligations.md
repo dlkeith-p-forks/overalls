@@ -20,8 +20,21 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **kind:** security
 - **status:** active
 
+
 ### enrico.mirror.I2 — Git source and path validation rejects traversal
 - **scope:** the component behavior exercised by the tagged contract test
 - **must:** source, ref, and path validators MUST reject unsafe names, traversal, and absolute paths.
+- **kind:** security
+- **status:** active
+
+### enrico.mirror.I4 — Refresh admission fails closed before task creation
+- **scope:** `Enrico.Manager` refresh admission
+- **must:** Invalid repository or attempt identifiers and invalid Git sources MUST return `{:error, :invalid_request}` without changing manager state or creating refresh work.
+- **kind:** security
+- **status:** active
+
+### enrico.mirror.I5 — Configuration rejects malformed bind values safely
+- **scope:** `Enrico.Config.load/1`
+- **must:** Configuration documents with non-string bind values MUST return `{:error, :invalid_configuration}` without raising or creating state directories.
 - **kind:** security
 - **status:** active

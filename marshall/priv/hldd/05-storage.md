@@ -448,6 +448,71 @@ Evidence: [capacity model](repo:docs/operations/storage-capacity.md),
 [disk limit](repo:docs/architecture/decisions/0053-vm-disk-limit.md),
 [multi-disk transfer](repo:docs/architecture/decisions/0072-multi-disk-workload-transfer.md).
 
+## Experimental FreeBSD and OmniOS mounted-root growth
+
+The native root helper accepts no target argument and runs only as root before
+MMDS identity/network initialization. It derives the actual mounted root and
+checks physical capacity, both GPT headers/arrays and CRCs, exact pinned disk
+and partition GUIDs, partition starts and nonoverlap before mutation. FreeBSD
+recovers the backup GPT, enlarges partition5 and runs UFS growfs; it preserves
+the root UUID/start and every nonroot entry. OmniOS additionally requires the
+assembly receipt's dataset/pool GUID and exactly one whole-disk ZFS vdev, then
+uses `zpool online -e`, preserving loader and reserved-tail identities.
+
+The exclusive root-owned lock and postflight precede atomic publication of a
+typed numeric receipt in volatile `/var/run/overalls/root-growth.json`.
+Bootstrap refuses without a current valid receipt; errors expose no utility
+output. Native commands have120-second/output64-KiB bounds. FreeBSD vendor
+firstboot growth is disabled so this is the only growth authority. Twelve pure
+checks and cross-target Clippy passed after native4-KiB alignment correction.
+Three native FreeBSD QEMU boots passed one unchanged root and two2-GiB
+expansions, increasing UFS capacity5,061,628 →7,098,392 →9,135,160KiB while
+preserving root UUID/start, nonroot GPT entries, retained home bytes and an
+independent foreign disk. The later exact canonical-roots/SSH FreeBSD image
+passed the full Firecracker service/growth composition in 334 seconds: three
+clean boots, two 2-GiB increases and root bytes 5,183,107,072 →7,268,753,408
+→9,354,403,840, preserving those authorities and data. The final reviewed image
+with blocking UFS suspension/resume passed the same three-boot growth boundary,
+with exact receipts in the native review. OmniOS and interrupted expansion
+require their own runs. This does not
+change Lilly's physical pool/quota admission accounting or enable native images.
+
+The illumos direct block queue now reserves data plus header/status descriptors
+for every concurrent request and clamps DMA scatter before publication. A ring
+too small for one request refuses; negotiated indirect depth remains bounded.
+The extracted production helper passed 265,596 generated arithmetic vectors with
+sanitizers. This source correction preserves physical pool/quota policy; no
+trace or native A/B record establishes it as the cause of the initial ZFS EIO,
+and the corrected exact image still requires service/storage replay.
+Completion also returns the request/descriptors before notifying blkdev, whose
+callback may immediately submit another DMA window or queued request. It caches
+the original result and never touches the recycled request after callback entry.
+An external completion returns submission success after exactly one callback,
+including polled errors; internal transfers retain their direct error result.
+The extracted five-function host regression passed 161 histories under strict
+C11 and sanitizers; four actual-source mutants were rejected. This source/mock
+evidence checks bounded-pool starvation, replacement ownership and duplicate
+error completion. A paired direct-only QEMU diagnostic reaches console login on
+corrected disk `a49255bd` under the same no-vsock device settings where disk
+`24318238` panics mounting root. This supports the completion correction for
+that failure. Growth enters maintenance in the diagnostic configuration;
+Firecracker storage/service replay and original ZFS EIO causality remain open.
+
+The Firecracker growth fixtures compare exact EFI directory/file inventories
+instead of the whole FAT partition hash: pinned CloudHv creates the root regular
+`/NvVars` firmware store on first boot. Only that exact regular file, bounded to
+1 MiB, may differ. Boot/configuration file paths, sizes and bytes remain exact;
+unrelated entries or an `NvVars` directory refuse. Other protected partitions
+retain whole-partition digests, and GPT identities/geometry remain exact. The
+recorded retained FreeBSD ESP comparison and 21 host boundary tests establish
+this oracle's scope; the separate 334-second machine result above establishes
+the stated native growth history.
+
+Evidence: [native root helper](repo:lyra/src/native_growth.rs),
+[GPT preflight](repo:lyra/src/native_growth/gpt.rs),
+[native service order](repo:nix/domains/artifacts/guest/native-growth.nix),
+[review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
+
 ## Native utility descendant custody
 
 Every Lilly lease is held by `lilly-hostd` ([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)

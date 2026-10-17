@@ -7,8 +7,11 @@ arguments and repository output out of diagnostics; closed event names and
 bounded numeric outcomes are the only persistent diagnostics.
 
 @cc [owner:ghuntley,label:recovery] native-agent-readiness-gate
-Native readiness, trust, terminal, workspace, SSH and execution services MUST
-start only after they have bound the current boot identity and verified their
-guest-local network and storage probes. A peer or probe failure MUST withhold
-the corresponding ready/authorized response without granting a later service
-through a stale socket or prior boot receipt.
+Native services MUST bind the current boot identity before authorizing any
+request. Readiness MUST additionally verify guest-local network, writable storage
+and the complete live service set before returning ready. Host-only probe/trust
+listeners MAY bind before SSH bootstrap so current-boot trust can authorize its
+HTTPS dependencies; binding alone MUST NOT grant readiness or user authority.
+A failed peer, identity or required probe MUST withhold the corresponding
+ready/authorized response; stale sockets and prior-boot receipts MUST NOT grant
+later service authority.

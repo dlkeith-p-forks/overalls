@@ -6,16 +6,22 @@
 #   machine  enabled NixOS machine tests
 #   build    enabled checks that are not machine tests
 #
-# Each check is evaluated in isolation with nix-eval-jobs, so one check that
-# fails to evaluate does not hide the others. Writes `checks` (JSON array of
-# names) and `errors` (count) to $GITHUB_OUTPUT and records evaluation errors
-# in the job summary. Exits non-zero only when no result can be produced.
+# Build selection evaluates each check's derivation in isolation with
+# nix-eval-jobs, so one check that fails to evaluate does not hide the others
+# from the build. Machine selection evaluates only each check's meta.ci:
+# forcing a machine test's derivation runs its import-from-derivation guest
+# builds, which belong to the matrix job that tests it, not to choosing the
+# matrix. All meta.ci values are evaluated together first and, if that fails,
+# each check in isolation. Writes `checks` (JSON array of names) and `errors`
+# (count) to $GITHUB_OUTPUT and records evaluation errors in the job summary.
+# Exits non-zero only when no result can be produced.
 set -euo pipefail
 
 # @cc [owner:ghuntley,label:build] ci-check-selection-isolated
-# Selection MUST evaluate each check in isolation, select only checks whose
-# meta.ci enables them for the requested kind, and report every evaluation
-# error by attribute instead of letting one hide the others or the selection.
+# Selection MUST select only checks whose meta.ci enables them for the
+# requested kind, MUST NOT force machine-test derivations to choose the matrix,
+# and MUST report every evaluation error by attribute instead of letting one
+# hide the others or the selection.
 kind=${1:?usage: select-checks.sh machine|build}
 case "$kind" in
   machine) want=true ;;
@@ -23,12 +29,31 @@ case "$kind" in
   *) echo "unknown selection: $kind" >&2; exit 2 ;;
 esac
 
-results=$(mktemp)
-# Workers share the runner's memory with the guest-image builds that machine
-# tests trigger at evaluation time (import-from-derivation), so cap them.
-nix shell --inputs-from . nixpkgs#nix-eval-jobs --command \
-  nix-eval-jobs --flake '.#checks.x86_64-linux' --meta \
-    --workers 8 --max-memory-size 4096 > "$results"
+work=$(mktemp -d)
+results="$work/results"
+flake_checks='.#checks.x86_64-linux'
+
+if [ "$kind" = build ]; then
+  # Workers share the runner's memory with import-from-derivation builds.
+  nix shell --inputs-from . nixpkgs#nix-eval-jobs --command \
+    nix-eval-jobs --flake "$flake_checks" --meta \
+      --workers 8 --max-memory-size 4096 > "$results"
+elif nix eval --json "$flake_checks" --apply 'builtins.mapAttrs (_: check: check.meta.ci)' \
+    > "$work/all.json" 2> "$work/all.err"; then
+  jq -c 'to_entries[] | {attr: .key, meta: {ci: .value}}' "$work/all.json" > "$results"
+else
+  echo "Combined meta.ci evaluation failed; evaluating each check in isolation" >&2
+  tail -n 5 "$work/all.err" >&2
+  nix eval --json "$flake_checks" --apply builtins.attrNames > "$work/names.json"
+  jq -r '.[]' "$work/names.json" \
+    | xargs -P 8 -I{} bash -c '
+        attr=$1 work=$2 flake_checks=$3
+        if ci=$(nix eval --json "$flake_checks.\"$attr\".meta.ci" 2> "$work/$attr.err"); then
+          jq -c --arg attr "$attr" "{attr: \$attr, meta: {ci: .}}" <<<"$ci"
+        else
+          jq -cn --arg attr "$attr" --rawfile error "$work/$attr.err" "{attr: \$attr, error: \$error}"
+        fi' _ {} "$work" "$flake_checks" > "$results"
+fi
 
 # Every line must be a JSON object naming its attribute.
 jq -e -s 'all(type == "object" and (.attr | type == "string"))' "$results" > /dev/null

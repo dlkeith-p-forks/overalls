@@ -5,8 +5,13 @@
 # the ACPI PM timer advances within 24 bits and refuses partial access, the
 # legacy port manager registers the timer, the `hyperv` template installs
 # the Hyper-V leaves while relocating the KVM leaves, the CMOS clock encodes
-# the host time, a BAR reprogrammed by the guest moves on the MMIO bus together
-# with its queue notification ioeventfds, the block and net devices reset
+# the host time, the fixed firmware shutdown port
+# signals exit only for the exact CloudHv byte request and rejects malformed
+# writes through both the device and registered I/O bus, a BAR reprogrammed by
+# the guest moves on the MMIO bus with its queue notification ioeventfds, PCI configuration capability queue
+# notifications signal only valid matching queue events, MSI-X capability and
+# routing reset states agree and disabled MSI-X cannot inject queue interrupts,
+# the block and net devices reset
 # and re-activate, block requests spanning several descriptors are
 # transferred whole by both I/O engines (the upstream parser, engine and
 # property tests run again against the changed request shape), and the vsock
@@ -19,18 +24,27 @@ packages.vmm.overrideAttrs (previous: {
   pname = "firecracker-patch-tests";
   requiredSystemFeatures = [ "kvm" ];
   cargoTestFlags = [ "--package" "vmm" ];
+  # Upstream MSI-X tests assert deltas in process-global metric counters.
+  # Serialize this unit-test binary so other PCI tests cannot change a delta.
+  dontUseCargoParallelTests = true;
   checkFlags = [
     "test_system_configuration"
     "acpi_pm_timer::tests"
     "test_register_legacy_devices"
     "test_apply_hyperv_leaves"
     "cmos_rtc::tests"
+    "cloudhv_power::tests"
+    "test_native_uart_thre_enable_after_fifo"
     "bar_tests"
     "test_bar_relocation_follows_config_write"
     "test_bar_relocation_moves_notification_ioevents"
     "test_bar_relocation_defers_until_high_half"
     "test_hotplug_block"
     "test_queue_setup_in_init_status"
+    "test_pci_configuration_notification"
+    "msix::tests"
+    "test_native_msix_disabled_refuses_queue_interrupt"
+    "test_native_rx_reset_reuses_mapping_without_memfd"
     # The net variant of this test needs /dev/net/tun, which the sandbox lacks;
     # it is run outside the sandbox and recorded in the spike review.
     "block::virtio::device::tests::test_reset_returns_interrupt_and_deactivates"

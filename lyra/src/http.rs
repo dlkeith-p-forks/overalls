@@ -19,6 +19,48 @@ fn accepted_status(status: StatusCode, expected: Option<StatusCode>) -> bool {
     expected.map_or_else(|| status.is_success(), |required| status == required)
 }
 
+#[cfg(any(
+    test,
+    target_os = "freebsd",
+    target_os = "illumos",
+    target_os = "solaris"
+))]
+fn native_executor_url(url: &str) -> bool {
+    valid_https(url)
+        && Url::parse(url).is_ok_and(|parsed| {
+            parsed.host_str() == Some("llm.internal")
+                && parsed.port_or_known_default() == Some(443)
+                && parsed.query().is_none()
+                && matches!(
+                    parsed.path(),
+                    "/agent/v1/register"
+                        | "/agent/v1/heartbeat"
+                        | "/agent/v1/claim"
+                        | "/agent/v1/transition"
+                )
+        })
+}
+
+fn client(url: &str, timeout: Duration) -> io::Result<Client> {
+    #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+    if Url::parse(url).is_ok_and(|parsed| parsed.host_str() == Some("llm.internal")) {
+        if !native_executor_url(url) {
+            return Err(io::Error::other("invalid private executor request"));
+        }
+        return crate::private_http::executor_client(timeout);
+    }
+    #[cfg(not(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris")))]
+    let _ = url;
+    Client::builder()
+        .use_rustls_tls()
+        .no_proxy()
+        .redirect(Policy::none())
+        .connect_timeout(timeout)
+        .timeout(timeout)
+        .build()
+        .map_err(|_| io::Error::other("HTTPS client unavailable"))
+}
+
 // @cc [owner:ghuntley,label:security] lyra-bounded-verified-https
 // Private and public control fetches MUST verify HTTPS, ignore proxy settings,
 // refuse redirects, enforce a deadline and cap bytes while streaming. Secret
@@ -63,14 +105,7 @@ fn request_with_status(
     if !valid_https(url) || maximum == 0 || timeout.is_zero() {
         return Err(io::Error::other("invalid HTTPS request"));
     }
-    let client = Client::builder()
-        .use_rustls_tls()
-        .no_proxy()
-        .redirect(Policy::none())
-        .connect_timeout(timeout)
-        .timeout(timeout)
-        .build()
-        .map_err(|_| io::Error::other("HTTPS client unavailable"))?;
+    let client = client(url, timeout)?;
     let mut outbound = client.request(method, url);
     if let Some(secret) = bearer {
         outbound = outbound
@@ -125,6 +160,26 @@ mod tests {
             "file:///etc/passwd",
         ] {
             assert!(!valid_https(invalid));
+        }
+    }
+
+    #[test]
+    fn native_executor_requires_exact_private_origin_and_closed_routes() {
+        for route in ["register", "heartbeat", "claim", "transition"] {
+            assert!(native_executor_url(&format!(
+                "https://llm.internal/agent/v1/{route}"
+            )));
+        }
+        for url in [
+            "http://llm.internal/agent/v1/register",
+            "https://llm.internal:444/agent/v1/register",
+            "https://llm.internal.evil/agent/v1/register",
+            "https://llm.internal/agent/v1/foreign",
+            "https://llm.internal/agent/v1/register?other=1",
+            "https://user@llm.internal/agent/v1/register",
+            "https://llm.internal/agent/v1/register#other",
+        ] {
+            assert!(!native_executor_url(url));
         }
     }
 

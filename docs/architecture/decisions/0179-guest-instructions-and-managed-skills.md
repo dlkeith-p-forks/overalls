@@ -151,6 +151,15 @@ Linux account database or Windows SID profile registration.
 [Managed skill operations](../../../lyra/src/agent/managed_skills.rs) implement
 bounded public Git fetching, ordinary-blob extraction, durable guest receipts,
 content digests and local-edit refusal. These sources add no standalone service.
+The installation lock explicitly unlocks on every completed invocation,
+including error returns, before its descriptor closes. This preserves progress
+when another process inherited the same open file description. The colocated
+`completed_lock_is_released_even_while_an_inherited_descriptor_remains` regression
+keeps a duplicate alive, verifies concurrent refusal, then verifies that a
+completed owner releases the lock without releasing a subsequent owner's lock.
+All twelve focused managed-skill tests passed on October 17, 2026. This is local
+lock-lifetime evidence; native installation and recovery acceptance remain
+separate.
 The [skill maintenance loop](../../../marshall/lib/marshall/agents/skill_maintenance.ex)
 round-robins bounded replacement-machine scans, skips generations with an
 existing restoration receipt, and records rejected restorations as catalogued

@@ -1,0 +1,122 @@
+[
+  {
+    "name": "developer/versioning/git",
+    "version": "2.44.3,5.11-151050.0:20250114T183733Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/developer%2Fversioning%2Fgit%402.44.3%2C5.11-151050.0%3A20250114T183733Z",
+    "sha256": "f017e6a83127eff6a745233bcd3e1871b18e2ee26011e6f0da95f24766a1104e"
+  },
+  {
+    "name": "web/curl",
+    "version": "8.9.1,5.11-151050.0:20240731T095800Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/web%2Fcurl%408.9.1%2C5.11-151050.0%3A20240731T095800Z",
+    "sha256": "8c07308d82a4606b79294d0ef56ec8a84441033fcf09d836a9caffb1be989060"
+  },
+  {
+    "name": "web/ca-bundle",
+    "version": "5.11,5.11-151050.0:20240426T125438Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/web%2Fca-bundle%405.11%2C5.11-151050.0%3A20240426T125438Z",
+    "sha256": "568f8f4255c453a7359460c220a7a7455510927cbc24894a6ddf710752d6f8ed"
+  },
+  {
+    "name": "library/expat",
+    "version": "2.7.1,5.11-151050.0:20250327T201357Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/library%2Fexpat%402.7.1%2C5.11-151050.0%3A20250327T201357Z",
+    "sha256": "32c32d6de99cf211771ad751df31b16cbaf0f042763faea387fdde920aa4d545"
+  },
+  {
+    "name": "library/pcre2",
+    "version": "10.43,5.11-151050.0:20240426T115711Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/library%2Fpcre2%4010.43%2C5.11-151050.0%3A20240426T115711Z",
+    "sha256": "b0f663cbf4243a2992ade7e083b72b484ccf73048840cedba7d188f8269307ad"
+  },
+  {
+    "name": "library/security/openssl-3",
+    "version": "3.1.8,5.11-151050.0:20250211T155647Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/library%2Fsecurity%2Fopenssl-3%403.1.8%2C5.11-151050.0%3A20250211T155647Z",
+    "sha256": "69dece8b96989b9dccf92d52513f07276d46dd61663403c0da93848de0feeb3e"
+  },
+  {
+    "name": "library/zlib",
+    "version": "1.3.1,5.11-151050.0:20240426T120809Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/library%2Fzlib%401.3.1%2C5.11-151050.0%3A20240426T120809Z",
+    "sha256": "c7cdd5910598fed4aa1b6ecbde864c78664434b62e0ba2feda6afd3baca36603"
+  },
+  {
+    "name": "library/libidn",
+    "version": "1.42,5.11-151050.0:20240426T115149Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/library%2Flibidn%401.42%2C5.11-151050.0%3A20240426T115149Z",
+    "sha256": "440fa802bbd3444b3792d310d0bde428b36cdb3196d3b0519a13734cfe5c4626"
+  },
+  {
+    "name": "library/libpsl",
+    "version": "0.21.5,5.11-151050.0:20240426T114833Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/library%2Flibpsl%400.21.5%2C5.11-151050.0%3A20240426T114833Z",
+    "sha256": "92a3e997c762d91bc225ed5f2f29fe8ae6841f2a6f4e35b71a6acedb30b3a564"
+  },
+  {
+    "name": "library/nghttp2",
+    "version": "1.60.0,5.11-151050.0:20240426T115301Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/library%2Fnghttp2%401.60.0%2C5.11-151050.0%3A20240426T115301Z",
+    "sha256": "b9bc27fbad433dd993fe56537e51721b24b2c7cf01cec73531221a8b8e52e6b0"
+  },
+  {
+    "name": "compress/brotli",
+    "version": "1.1.0,5.11-151050.0:20240426T104343Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/compress%2Fbrotli%401.1.0%2C5.11-151050.0%3A20240426T104343Z",
+    "sha256": "533473d27d59df23a33b7bdc693c69b67bf149abff59f5d203236d33c985bc7e"
+  },
+  {
+    "name": "compress/zstd",
+    "version": "1.5.5,5.11-151050.0:20240426T104639Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/compress%2Fzstd%401.5.5%2C5.11-151050.0%3A20240426T104639Z",
+    "sha256": "7466b1199ca7b60b54137e1b346652cf7fb5ef788514bfc8f6323db2002c187b"
+  },
+  {
+    "name": "system/library",
+    "version": "0.5.11,5.11-151050.0:20240426T120154Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/system%2Flibrary%400.5.11%2C5.11-151050.0%3A20240426T120154Z",
+    "sha256": "00b07a2526d266da3e38d39f924c04f79b18099f1c121b91249997d55382cf70"
+  },
+  {
+    "name": "system/library/c-runtime",
+    "version": "0.5.11,5.11-151050.0:20240426T120145Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/system%2Flibrary%2Fc-runtime%400.5.11%2C5.11-151050.0%3A20240426T120145Z",
+    "sha256": "1c9151dbabd184138ce0fd6529119973f309cb1709dc0ebe5e51aa70bfbed7c9"
+  },
+  {
+    "name": "system/library/gcc-runtime",
+    "version": "13,5.11-151050.0:20240426T124318Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/system%2Flibrary%2Fgcc-runtime%4013%2C5.11-151050.0%3A20240426T124318Z",
+    "sha256": "b83ea5d7db9333c25a90779b3888e60ef7e1ada9c58186820e7ae5f92bba0c4e"
+  },
+  {
+    "name": "system/library/math",
+    "version": "0.5.11,5.11-151050.0:20240426T120149Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/system%2Flibrary%2Fmath%400.5.11%2C5.11-151050.0%3A20240426T120149Z",
+    "sha256": "a341e36f4005d6f0ed7907977bc3c2b8377bc165bb32de53d1078a1350c89e21"
+  },
+  {
+    "name": "system/library/security/libsasl",
+    "version": "0.5.11,5.11-151050.0:20240426T120152Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/system%2Flibrary%2Fsecurity%2Flibsasl%400.5.11%2C5.11-151050.0%3A20240426T120152Z",
+    "sha256": "3220f84d8888e71ec80c5087aff81fb7bec824c4419414bac5b199174d196ad6"
+  },
+  {
+    "name": "library/nspr",
+    "version": "4.35,5.11-151050.0:20240426T115325Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/library%2Fnspr%404.35%2C5.11-151050.0%3A20240426T115325Z",
+    "sha256": "88463b1e995b32e1b13449900b7547a6cfef3f94a1704495727be1f28378a8f5"
+  },
+  {
+    "name": "system/library/mozilla-nss",
+    "version": "3.99,5.11-151050.0:20240426T124657Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/system%2Flibrary%2Fmozilla-nss%403.99%2C5.11-151050.0%3A20240426T124657Z",
+    "sha256": "2be81e70a5aa3f184b17efc75b59399a9708642d837bd0ec9d77a70813717e49"
+  },
+  {
+    "name": "system/library/security/gss",
+    "version": "0.5.11,5.11-151050.0:20240426T120151Z",
+    "url": "https://pkg.omnios.org/r151050/core/manifest/0/system%2Flibrary%2Fsecurity%2Fgss%400.5.11%2C5.11-151050.0%3A20240426T120151Z",
+    "sha256": "f0fb3a81499f1234539e5ec6573599753bde2bb341d8b3bf903d9ff76ec2a08e"
+  }
+]

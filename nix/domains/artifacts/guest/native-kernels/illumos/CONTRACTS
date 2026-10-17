@@ -1,0 +1,42 @@
+@cc [owner:ghuntley,label:security;protocol] illumos-host-only-socket-boundary
+The illumos socket module MUST require global-zone system-configuration privilege,
+use public AF_VSOCK 40 and the reviewed 16-byte address, and accept only incoming
+host CID 2 streams on guest CID 3. Payload and socket allocations MUST remain
+bounded. Guest-initiated streams and unused socket options MUST be refused.
+
+@cc [owner:ghuntley,label:security;recovery] illumos-transport-lifetime
+Transport reset or configuration change MUST fence existing sockets, including
+listeners and unbound sockets. A fenced socket MUST NOT bind or listen again.
+Callback unsubscription MUST prevent replacement until existing callbacks drain;
+queue DMA MUST outlive interrupt and worker drainage. Syscall copies MUST hold
+references, preserve exclusive buffer ownership, and revalidate credit/shutdown
+before publishing bytes copied without the socket lock.
+An activated transport MUST NOT reclaim queues, interrupts or DMA without a
+proven backend reset. The static driver MUST refuse runtime detach and retain an
+unavailable attachment after any post-activation failure until VM disposal.
+
+@cc [owner:ghuntley,label:capacity;recovery] illumos-block-request-budget
+Without negotiated indirect descriptors, the block driver MUST bound concurrent
+requests by each request's maximum data segments plus its header and status
+descriptors. Data DMA scatter limits MUST fit the direct ring; a ring unable to
+hold one request MUST refuse attachment. Indirect request depth MUST remain
+bounded by the ring and the fixed request pool.
+Completion MUST return the request and its descriptors before notifying blkdev,
+which can synchronously submit a new DMA window or queued request. The original
+completion error MUST survive immediate request reuse, and the completed request
+MUST NOT be touched after the callback begins.
+Completed blkdev transfers MUST return submission success after notifying the
+framework exactly once, including polled errors. Internal transfers without a
+blkdev callback MUST return their original completion error directly.
+
+@cc [owner:ghuntley,label:verification] illumos-module-evidence-boundary
+Cross-compiled ELF objects MUST NOT be described as native linked kernel modules,
+a bootable kernel or image admission. Module integration requires the matching
+modern virtio framework and all five consumer drivers, the opt-in sockfs listener
+failure changes, a native Solaris kernel-module link and native machine evidence.
+
+@cc [owner:ghuntley,label:build;verification] illumos-kernel-syscall-symbols
+The cross build MUST undefine userland feature-test macros that rename kernel
+sockfs syscall definitions. Actual socksyscalls.o exports MUST include ordinary
+bind, connect, getsockopt, recvmsg, sendmsg and sendto, and MUST NOT define renamed
+__xnet_* symbols. Native linkage MUST require the corresponding verified receipt.

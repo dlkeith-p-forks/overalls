@@ -16,6 +16,14 @@ name = "overalls-workspaced"
 path = "src/bin/overalls-workspaced.rs"
 
 [[bin]]
+name = "overalls-native-bootstrap"
+path = "src/bin/overalls-native-bootstrap.rs"
+
+[[bin]]
+name = "overalls-native-grow-root"
+path = "src/bin/overalls-native-grow-root.rs"
+
+[[bin]]
 name = "overalls-native-readinessd"
 path = "src/bin/overalls-native-readinessd.rs"
 
@@ -30,6 +38,10 @@ path = "src/bin/overalls-native-workspaced.rs"
 [[bin]]
 name = "overalls-native-kernel-probed"
 path = "src/bin/overalls-native-kernel-probed.rs"
+
+[[bin]]
+name = "overalls-native-transport-probe"
+path = "src/bin/overalls-native-transport-probe.rs"
 
 [[bin]]
 name = "overalls-native-agentd"

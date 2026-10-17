@@ -1,5 +1,5 @@
 ---
-modules: [Lilly.Lifecycle, Lilly.Lifecycle.BackupHistory, Lilly.Lifecycle.BackupSnapshot, Lilly.Lifecycle.CloneCopy, Lilly.Lifecycle.Dataset, Lilly.Lifecycle.Execution, Lilly.Lifecycle.GuestTrust, Lilly.Lifecycle.ImageTemplate, Lilly.Lifecycle.Import, Lilly.Lifecycle.Journal, Lilly.Lifecycle.Observability, Lilly.Lifecycle.Permit, Lilly.Lifecycle.Persist, Lilly.Lifecycle.Provisioning, Lilly.Lifecycle.PublicationDiagnostics, Lilly.Lifecycle.Resize, Lilly.Lifecycle.Resource, Lilly.Lifecycle.SnapshotPointer, Lilly.Lifecycle.SnapshotSet, Lilly.Lifecycle.WorkspaceSource, Lilly.VM.API, Lilly.VM.Actor, Lilly.VM.Boot, Lilly.VM.Config, Lilly.VM.Credentials, Lilly.VM.DeleteRetry, Lilly.VM.Disk, Lilly.VM.Driver, Lilly.VM.Executable, Lilly.VM.Executor, Lilly.VM.Flush, Lilly.VM.GuestTrust, Lilly.VM.InceptionExchange, Lilly.VM.Intent, Lilly.VM.Jail, Lilly.VM.Journal, Lilly.VM.Logging, Lilly.VM.Observation, Lilly.VM.Provisioning, Lilly.VM.Readiness, Lilly.VM.Spec, Lilly.VM.Unit, Lilly.VM.WorkloadBundle, Lilly.VM.WorkspaceSource]
+modules: [Lilly.Control.Runtime, Lilly.Control.Store, Lilly.Inception.Runtime, Lilly.Lifecycle, Lilly.Lifecycle.BackupHistory, Lilly.Lifecycle.BackupSnapshot, Lilly.Lifecycle.CloneCopy, Lilly.Lifecycle.Dataset, Lilly.Lifecycle.Execution, Lilly.Lifecycle.GuestTrust, Lilly.Lifecycle.ImageTemplate, Lilly.Lifecycle.Import, Lilly.Lifecycle.Journal, Lilly.Lifecycle.Observability, Lilly.Lifecycle.Permit, Lilly.Lifecycle.Persist, Lilly.Lifecycle.Provisioning, Lilly.Lifecycle.PublicationDiagnostics, Lilly.Lifecycle.Resize, Lilly.Lifecycle.Resource, Lilly.Lifecycle.SnapshotPointer, Lilly.Lifecycle.SnapshotSet, Lilly.Lifecycle.WorkspaceSource, Lilly.Observability, Lilly.VM.API, Lilly.VM.Actor, Lilly.VM.Boot, Lilly.VM.Config, Lilly.VM.Credentials, Lilly.VM.DeleteRetry, Lilly.VM.Disk, Lilly.VM.Driver, Lilly.VM.Executable, Lilly.VM.Executor, Lilly.VM.Flush, Lilly.VM.GuestTrust, Lilly.VM.InceptionExchange, Lilly.VM.Intent, Lilly.VM.Jail, Lilly.VM.Journal, Lilly.VM.Logging, Lilly.VM.Observation, Lilly.VM.Provisioning, Lilly.VM.Readiness, Lilly.VM.Spec, Lilly.VM.Unit, Lilly.VM.WorkloadBundle, Lilly.VM.WorkspaceSource]
 ---
 
 # Vm Lifecycle obligations
@@ -24,4 +24,10 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **scope:** `Lilly.VM.Spec.storage/1`
 - **must:** Storage identity MUST clear optional workspace delivery data while preserving the validated VM specification fields.
 - **kind:** persisted-format
+- **status:** active
+
+### lilly.vm_lifecycle.I4 — Liveness evidence fails closed and owns rows
+- **scope:** `Lilly.Execution.Liveness.step/2` and `rows/1`
+- **must:** A fresh liveness state MUST hold no rows; boot evidence MUST publish only the boot row, running evidence MUST hold both rows, inconclusive evidence MUST have no effects, and invalid events MUST be rejected.
+- **kind:** security
 - **status:** active

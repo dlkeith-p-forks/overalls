@@ -235,13 +235,19 @@ let
   # @cc [owner:ghuntley,label:build] harness-release-variants
   # Container releases MUST use maintained source, production Mix mode and the
   # explicit harness selector. The guest executor has its own Lilly derivation.
+  # The container guest variant uses STUB storage (no ZFS); it carries the same
+  # immutable TCG guest image as guest-vmm so its catalog can verify and
+  # advertise exactly that image ID.
   contexts = lib.genAttrs otpNames otpContext // {
     lilly-guest = closure.mkContext {
       name = "lilly-guest";
       application = "lilly";
       release = guestPackages.lilly;
-      extraRoots = [ sdkWriter guestPackages.hostTools pkgs.pkgsStatic.firecracker ];
-      extraLinks."opt/antithesis/sdk_writer" = "${sdkWriter}/bin/sdk_writer";
+      extraRoots = [ sdkWriter guestPackages.hostTools pkgs.pkgsStatic.firecracker guest.image ];
+      extraLinks = {
+        "opt/antithesis/sdk_writer" = "${sdkWriter}/bin/sdk_writer";
+        "opt/overalls/guest-vmm/image" = toString guest.image;
+      };
     };
     # The Python assertion catalog is not a Nix input: ``selection.py stage``
     # writes the selection-scoped tree under antithesis/build/selected-test and

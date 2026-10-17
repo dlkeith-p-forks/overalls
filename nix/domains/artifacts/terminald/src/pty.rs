@@ -244,18 +244,9 @@ pub fn spawn(user: &UserInfo, term: &str, cols: u16, rows: u16) -> io::Result<Sp
     let error = io::Error::last_os_error();
     return Err(error);
   }
-  let mut path_buffer = [0u8; 128];
-  if unsafe { libc::ptsname_r(master, path_buffer.as_mut_ptr() as *mut libc::c_char, path_buffer.len()) } != 0 {
-    let error = io::Error::last_os_error();
-    return Err(error);
-  }
-  let slave_path = unsafe {
-    std::ffi::CStr::from_ptr(path_buffer.as_ptr() as *const libc::c_char)
-      .to_string_lossy()
-      .into_owned()
-  };
+  let slave = slave_name(master)?;
+  #[cfg(not(target_os = "illumos"))]
   set_winsize(&master, cols, rows)?;
-  let slave = CString::new(slave_path).map_err(|_| io::Error::new(io::ErrorKind::InvalidInput, "slave path"))?;
   let argv0 = login_name(&user.shell);
   let home = user.home.clone();
   let args = [argv0.clone()];
@@ -275,6 +266,12 @@ pub fn spawn(user: &UserInfo, term: &str, cols: u16, rows: u16) -> io::Result<Sp
   let argv: Vec<*const libc::c_char> = args.iter().map(|a| a.as_ptr()).chain(std::iter::once(std::ptr::null())).collect();
   let envp: Vec<*const libc::c_char> = env_c.iter().map(|e| e.as_ptr()).chain(std::iter::once(std::ptr::null())).collect();
   let groups = user.groups.clone();
+  #[cfg(target_os = "linux")]
+  let group_count = groups.len();
+  #[cfg(any(target_os = "freebsd", target_os = "illumos"))]
+  let group_count: libc::c_int = groups.len().try_into()
+    .map_err(|_| io::Error::new(io::ErrorKind::InvalidInput, "too many supplementary groups"))?;
+  let descriptor_bound = child_descriptor_bound()?;
   let gid = user.gid;
   let uid = user.uid;
   let mut status_pipe = [0; 2];
@@ -296,7 +293,7 @@ pub fn spawn(user: &UserInfo, term: &str, cols: u16, rows: u16) -> io::Result<Sp
       libc::close(status_pipe[0]);
       // The child may not inherit another session's transport or future daemon
       // descriptors, even if a library opened one without O_CLOEXEC.
-      if libc::syscall(libc::SYS_close_range, 3u32, u32::MAX, libc::CLOSE_RANGE_CLOEXEC) != 0
+      if protect_child_descriptors(descriptor_bound) != 0
         || libc::setsid() < 0 {
         child_failed(status_pipe[1]);
       }
@@ -304,7 +301,8 @@ pub fn spawn(user: &UserInfo, term: &str, cols: u16, rows: u16) -> io::Result<Sp
       if slave_fd < 0 {
         child_failed(status_pipe[1]);
       }
-      if libc::ioctl(slave_fd, libc::TIOCSCTTY, 0 as libc::c_ulong) < 0
+      if !prepare_slave(slave_fd, cols, rows)
+        || !controlling_terminal(slave_fd)
         || libc::dup2(slave_fd, 0) < 0 || libc::dup2(slave_fd, 1) < 0 || libc::dup2(slave_fd, 2) < 0 {
         child_failed(status_pipe[1]);
       }
@@ -322,7 +320,7 @@ pub fn spawn(user: &UserInfo, term: &str, cols: u16, rows: u16) -> io::Result<Sp
         }
       }
       if libc::geteuid() == 0 {
-        if libc::setgroups(groups.len(), groups.as_ptr()) != 0
+        if libc::setgroups(group_count, groups.as_ptr()) != 0
           || libc::setgid(gid) != 0
           || libc::setuid(uid) != 0
         {
@@ -364,8 +362,112 @@ pub fn spawn(user: &UserInfo, term: &str, cols: u16, rows: u16) -> io::Result<Sp
   Ok(Spawned { master: owned_master.into_raw_fd(), pid })
 }
 
+/// The illumos STREAMS slave is acquired by opening it after setsid without
+/// O_NOCTTY; TIOCSCTTY is unsupported. Every native child MUST verify that the
+/// slave belongs to its own session before applying credentials or executing.
+unsafe fn controlling_terminal(fd: RawFd) -> bool {
+  #[cfg(not(target_os = "illumos"))]
+  if libc::ioctl(fd, libc::TIOCSCTTY, 0 as libc::c_ulong) < 0 {
+    return false;
+  }
+  libc::tcgetsid(fd) == libc::getpid()
+}
+
+#[cfg(not(target_os = "illumos"))]
+fn slave_name(master: RawFd) -> io::Result<CString> {
+  let mut buffer = [0_u8; 128];
+  let status = unsafe { libc::ptsname_r(master, buffer.as_mut_ptr().cast(), buffer.len()) };
+  if status > 0 { return Err(io::Error::from_raw_os_error(status)); }
+  if status != 0 { return Err(io::Error::last_os_error()); }
+  Ok(unsafe { std::ffi::CStr::from_ptr(buffer.as_ptr().cast()) }.to_owned())
+}
+
+/// @cc [owner:ghuntley,label:security] illumos-terminal-slave-name
+/// The pinned illumos libc lacks ptsname_r. Its ptsname buffer MUST be copied
+/// while holding the daemon's shared ptsname mutex before fork; no other daemon
+/// call site may use ptsname without that same lock.
+#[cfg(target_os = "illumos")]
+fn slave_name(master: RawFd) -> io::Result<CString> {
+  static LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+  let _guard = LOCK.lock().map_err(|_| io::Error::other("slave name lock unavailable"))?;
+  let pointer = unsafe { libc::ptsname(master) };
+  if pointer.is_null() { return Err(io::Error::last_os_error()); }
+  Ok(unsafe { std::ffi::CStr::from_ptr(pointer) }.to_owned())
+}
+
+#[cfg(not(target_os = "illumos"))]
+fn child_descriptor_bound() -> io::Result<i32> { Ok(0) }
+
+/// @cc [owner:ghuntley,label:security] illumos-terminal-descriptor-limit
+/// illumos PTY creation MUST reject an infinite or larger-than-1048576 hard
+/// descriptor limit before fork. The child MUST mark every descriptor below
+/// the inherited hard limit close-on-exec using async-signal-safe calls only;
+/// libc closefrom/fdwalk MUST NOT run in a multithreaded post-fork child.
+#[cfg(target_os = "illumos")]
+fn child_descriptor_bound() -> io::Result<i32> {
+  let mut limit: libc::rlimit = unsafe { std::mem::zeroed() };
+  if unsafe { libc::getrlimit(libc::RLIMIT_NOFILE, &mut limit) } != 0 {
+    return Err(io::Error::last_os_error());
+  }
+  if limit.rlim_max > 1_048_576 {
+    return Err(io::Error::new(io::ErrorKind::Unsupported, "unbounded descriptor limit"));
+  }
+  i32::try_from(limit.rlim_max)
+    .map_err(|_| io::Error::new(io::ErrorKind::Unsupported, "invalid descriptor limit"))
+}
+
+#[cfg(target_os = "linux")]
+unsafe fn protect_child_descriptors(_bound: i32) -> libc::c_int {
+  libc::syscall(libc::SYS_close_range, 3u32, u32::MAX, libc::CLOSE_RANGE_CLOEXEC) as libc::c_int
+}
+
+#[cfg(target_os = "freebsd")]
+unsafe fn protect_child_descriptors(_bound: i32) -> libc::c_int {
+  libc::close_range(3, u32::MAX, libc::CLOSE_RANGE_CLOEXEC as libc::c_int)
+}
+
+#[cfg(target_os = "illumos")]
+unsafe fn protect_child_descriptors(bound: i32) -> libc::c_int {
+  for fd in 3..bound {
+    let flags = libc::fcntl(fd, libc::F_GETFD);
+    if flags < 0 {
+      if child_errno() == libc::EBADF { continue; }
+      return -1;
+    }
+    if libc::fcntl(fd, libc::F_SETFD, flags | libc::FD_CLOEXEC) != 0 { return -1; }
+  }
+  0
+}
+
+#[cfg(not(target_os = "illumos"))]
+unsafe fn prepare_slave(_fd: RawFd, _cols: u16, _rows: u16) -> bool { true }
+
+/// @cc [owner:ghuntley,label:security] illumos-terminal-streams-setup
+/// The illumos slave MUST have ptem, ldterm and ttcompat pushed once, with the
+/// requested window size set after those modules exist. Every ioctl failure
+/// MUST refuse the session before credentials change or exec occurs.
+#[cfg(target_os = "illumos")]
+unsafe fn prepare_slave(fd: RawFd, cols: u16, rows: u16) -> bool {
+  for module in [c"ptem", c"ldterm", c"ttcompat"] {
+    match libc::ioctl(fd, libc::I_FIND, module.as_ptr()) {
+      1 => {},
+      0 if libc::ioctl(fd, libc::I_PUSH, module.as_ptr()) == 0 => {},
+      _ => return false,
+    }
+  }
+  let size = libc::winsize { ws_row: rows, ws_col: cols, ws_xpixel: 0, ws_ypixel: 0 };
+  libc::ioctl(fd, libc::TIOCSWINSZ, &size) == 0
+}
+
+#[cfg(target_os = "linux")]
+unsafe fn child_errno() -> libc::c_int { *libc::__errno_location() }
+#[cfg(target_os = "freebsd")]
+unsafe fn child_errno() -> libc::c_int { *libc::__error() }
+#[cfg(target_os = "illumos")]
+unsafe fn child_errno() -> libc::c_int { *libc::___errno() }
+
 unsafe fn child_failed(fd: RawFd) -> ! {
-  let errno = *libc::__errno_location();
+  let errno = child_errno();
   child_failed_with(fd, errno)
 }
 

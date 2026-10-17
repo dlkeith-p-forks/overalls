@@ -1,14 +1,49 @@
 # Guest lifecycle workload scope
 
-`serial_driver_physical_boot_cycle.py` is a draft test command for the unselected
-`integrated-zfs-guest` template. It uses the private fixture operator for real
-Marshall Compute provision/stop/start operations, keeps every request in an
+`serial_driver_physical_boot_cycle.py` is the one command of the launchable
+`guest-lifecycle` selection
+([selection](../../verification/selections/guest-lifecycle.json)). It remains a
+draft for the separate `integrated-zfs-guest` template. It uses the private
+fixture operator for real Marshall Compute provision/stop/start operations, keeps every request in an
 attempt/acknowledgment ledger, and joins committed `compute.operation` outcomes
 with a separate read-only guest witness. The witness reads actual QEMU/backend
 PID and process start ticks, port-1024 boot ID and challenge digest, and a stopped
 qcow2 hash. A lost operator reply or missing witness is unexercised. A completed
 outcome that contradicts the current VM state or execution tuple fires a failing
 assertion.
+
+## Guest-lifecycle profile and its STUB storage
+
+The `guest-lifecycle` profile renders the base graph plus
+`config/compose.guest-vmm.yaml` and `config/compose.guest-lifecycle.yaml`. Its
+images are the base `pg`, `marshall` and `workload` stages plus `lilly-guest`
+and `guest-vmm`. Hosted Antithesis has no KVM, so the guest boots under QEMU
+TCG. The container `lilly-guest` release has no ZFS: its
+`OverallsAntithesis.Lilly.StubStorageCollector` reports each configured pool as
+a **fixed synthetic 1 TiB STUB** with zero usage and no allocation credit, and
+limits compute headroom to one free guest-vmm slot (1 vCPU, 2 GiB) capped by
+the container's measured cgroup limits. `StubStorageHealth` sets
+`execution_ready` only with that stub report, the verified advertised image and
+a passing guest-vmm health check. The enrollment operator registers the
+guest-vmm image manifest through `Marshall.Compute.Images.register`. None of
+this is native ZFS, KVM, Firecracker or capacity evidence.
+
+The bootstrap emits `setup_complete` only after the base checks and
+`guest_lifecycle.readiness.substrate_gap` observe the guest-vmm image identity
+through the read-only witness bridge and a Marshall catalog that offers that
+image with known capacity for its shape. Each unmet condition is logged once
+per process with a fixed reason token. The command ends with an unsampled stop
+attempt so a later cycle can find the slot free; that stop proves nothing.
+
+Which catalog properties the profile can exercise:
+
+| Property | Profile exercise |
+| --- | --- |
+| `guest-readiness-binds-current-physical-boot` | Support only: guest-ready outcomes joined to the current tuple, live QEMU/backend identity and port-1024 readiness; fresh start needs a new boot UUID. |
+| `stop-retains-disk-until-restart` | Support only: accepted stop has no QEMU/backend and a retained qcow2 hash. No ZFS dataset, content, address or detach evidence. |
+| `guest-ready-does-not-claim-workspace-checkout` | Not exercised. |
+| `continuing-boot-advances-generation-without-second-boot` | Not exercised. |
+| `runtime-restart-requires-fresh-readiness` | Not exercised. |
 
 The draft currently emits narrower physical boot and stop assertions. The five
 catalog properties remain **unexercised as full properties** until these joins
@@ -26,5 +61,5 @@ The pure oracle functions in `oracle.py` return `UNEXERCISED` when those proofs
 are missing. Tests cover stale generation/PID reuse, absent source capability,
 and unknown disk content. This harness code changes no product protocol, domain
 boundary or accepted architecture decision. It is not a native Firecracker or
-ZFS acceptance result; no `/hldd` behavior or verification status changes until
-a selected, measured run supplies the missing evidence.
+ZFS acceptance result. The HLDD verification reference records the selected
+profile and its stub boundary; no hosted run is recorded yet.

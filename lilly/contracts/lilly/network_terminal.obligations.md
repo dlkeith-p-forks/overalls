@@ -1,5 +1,5 @@
 ---
-modules: [Lilly.Ingress.Backend, Lilly.Ingress.Guardian, Lilly.Ingress.Server, Lilly.Ingress.SocketCustody, Lilly.Network, Lilly.Network.Attribution, Lilly.Network.AttributionServer, Lilly.Network.Config, Lilly.Network.FlowLabel, Lilly.Network.FlowLookup, Lilly.Network.Guest, Lilly.Network.Ingress, Lilly.Network.Policy, Lilly.Network.ProxyRouting, Lilly.Terminal.Channel, Lilly.Terminal.Guest, Lilly.Terminal.Metrics, Lilly.Terminal.Stream, Lilly.Terminal.Vsock]
+modules: [Lilly.Ingress.Backend, Lilly.Ingress.Guardian, Lilly.Ingress.Server, Lilly.Ingress.SocketCustody, Lilly.Network, Lilly.Network.Attribution, Lilly.Network.AttributionServer, Lilly.Network.Config, Lilly.Network.FlowLabel, Lilly.Network.FlowLookup, Lilly.Network.Guest, Lilly.Network.Ingress, Lilly.Network.Policy, Lilly.Network.ProxyRouting, Lilly.Private.Server, Lilly.Terminal.Channel, Lilly.Terminal.Guest, Lilly.Terminal.Metrics, Lilly.Terminal.Stream, Lilly.Terminal.Vsock]
 ---
 
 # Network Terminal obligations

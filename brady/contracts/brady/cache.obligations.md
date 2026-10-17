@@ -1,5 +1,5 @@
 ---
-modules: [Brady.Attribution, Brady.Cache, Brady.Cache.Archive, Brady.Cache.Budget, Brady.Cache.Policy, Brady.Cache.Pressure, Brady.Cache.Range, Brady.Cache.Recovery, Brady.Cache.Runtime, Brady.Cache.Store]
+modules: [Brady.Attribution, Brady.Cache, Brady.Cache.Archive, Brady.Cache.Budget, Brady.Cache.Policy, Brady.Cache.Pressure, Brady.Cache.Range, Brady.Cache.Recovery, Brady.Cache.Runtime, Brady.Cache.Store, Brady.Metrics]
 ---
 
 # Cache obligations

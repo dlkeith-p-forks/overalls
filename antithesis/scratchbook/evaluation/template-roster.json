@@ -4,7 +4,7 @@
   "updated": "2026-10-13",
   "external_references": [],
   "scope_answer": "Repository only (Recommended)",
-  "status": "as-of authored source inventory: 153 callsites, 26 primary catalog matches; no hosted catalog baseline",
+  "status": "as-of authored source inventory: 162 callsites, 30 primary catalog matches; no hosted catalog baseline",
   "catalog_snapshot_count": 104,
   "safety_count_frozen": false,
   "control_core_limit": "A hosted controlled pool supplies only ZFS identity; Lilly must report execution_ready=false and pool unavailable. Marshall requires execution_ready=true and a fresh measured available pool. Control alone can prove handshake/report/auth/refusal/reconnect, never accepted placement. No seeded fake admission or bypass.",
@@ -99,7 +99,8 @@
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Retained backup manifest references restorable component snapshots",
       "hosted_templates": [
-        "storage"
+        "storage",
+        "backup-restic"
       ],
       "limited_support_templates": [],
       "requires_integrated_zfs_host": false,
@@ -109,7 +110,7 @@
       "support_semantics": [
         "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
       ],
-      "selection_state": "draft-unexercised",
+      "selection_state": "selected-unexecuted",
       "required_variant_axes": [
         "guest_family:NixOS|Ubuntu when applicable",
         "release_image_digest",
@@ -367,7 +368,7 @@
           "file": "antithesis/workload/control/scenarios.py",
           "line": 149,
           "kind": "always",
-          "sha256": "bf5bc2c57da430f46322a89a60f0fa8cdc850961874b74faafadaacbd62a61cd"
+          "sha256": "364fbe9220c30e4e06f715685fd253f656aca0e2ab273f754eee2e186625f8e6"
         }
       ],
       "implementation_scope": "Current real Marshall first-frame/Lilly session refusal path; separate client-only pre-welcome send assertion and full service matrix remain missing.",
@@ -403,9 +404,9 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/control/scenarios.py",
-          "line": 246,
+          "line": 251,
           "kind": "always",
-          "sha256": "bf5bc2c57da430f46322a89a60f0fa8cdc850961874b74faafadaacbd62a61cd"
+          "sha256": "364fbe9220c30e4e06f715685fd253f656aca0e2ab273f754eee2e186625f8e6"
         }
       ],
       "implementation_scope": "Lilly credential rotation through a live old Control socket and durable session oracle; Audi/Porsche/Ziggy/Galileo mutation routes remain outside this authored scenario.",
@@ -514,7 +515,7 @@
           "sha256": "1c169ac6eca568af29e9ab416c491f240b601bed31ef1e8e3c76be25786a383a"
         }
       ],
-      "implementation_scope": "Real BEAM Control client with independent frame ledger; separate terminal Marshall SQL receipt command is authored but unexecuted in hosted Compose.",
+      "implementation_scope": "Real BEAM Control client with independent frame ledger; the separate terminal Marshall SQL receipt command is selected as the control_delivery singleton but unexecuted in hosted Compose.",
       "selected_control_core_intent": true,
       "selected_control_core_hash_current": true,
       "authored_support_callsites": [],
@@ -562,7 +563,7 @@
       "property_id": "control-service-dispatch-closed",
       "priority": "P1",
       "confidence": "high",
-      "status": "partially instrumented; primary unimplemented",
+      "status": "authored primary; hosted unexecuted; scope partial",
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Control rejects cross-service and invalid documents before domain effects",
       "hosted_templates": [
@@ -580,26 +581,26 @@
       "required_variant_axes": [],
       "selected_variants": [],
       "variant_coverage_state": "unselected; record exact values before claiming evaluation",
-      "authored_primary_callsites": [],
-      "implementation_scope": "A Lilly-v4 invalid-request check and independent Lilly session-row witness cover a narrower route. The proposed full cross-service dispatch primary is absent because the Audi request used a Lilly-v4 body and could be rejected by either decoder.",
-      "selected_control_core_intent": false,
-      "selected_control_core_hash_current": false,
-      "authored_support_callsites": [
+      "authored_primary_callsites": [
         {
           "file": "antithesis/workload/control/dispatch.py",
-          "line": 134,
+          "line": 195,
           "kind": "always",
-          "sha256": "283fc77c160f8322fcb9f13705057063e8dcdd32773175f3d9ca2fd8c96d5c92"
+          "sha256": "868327ae8d33ff9cf4e13354200cd0843a1ce7452f046a74d159e0d77228ec25"
         }
       ],
-      "selected_control_core_support_intent": true,
-      "selected_control_core_support_hash_current": true
+      "implementation_scope": "Lilly-bound socket only: valid Audi/Porsche/Ziggy/Galileo documents and invalid Lilly documents, judged by correlated refusal, fresh Lilly session-row absence and unchanged foreign effect-table counts. Foreign service sockets, native effects and upstreams are not bound or observed.",
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
     },
     {
       "property_id": "control-version-refusal-remains-terminal",
       "priority": "P0",
       "confidence": "high",
-      "status": "researched; primary unimplemented",
+      "status": "authored primary; hosted unexecuted; scope partial",
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Control transport version refusal stops its owner without losing its class",
       "hosted_templates": [
@@ -619,10 +620,17 @@
       ],
       "selected_variants": [],
       "variant_coverage_state": "unselected; record exact values before claiming evaluation",
-      "authored_primary_callsites": [],
-      "implementation_scope": "No authored primary; research target only.",
-      "selected_control_core_intent": false,
-      "selected_control_core_hash_current": false,
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/control/version_refusal.py",
+          "line": 54,
+          "kind": "always",
+          "sha256": "4a5deb19498687081c8104a91b9fcc216e8781ef35a29a7a8a925319677afd9a"
+        }
+      ],
+      "implementation_scope": "Real shared BEAM Control client against a loopback peer that welcomes, holds one request and closes 4001; class, held-call retirement, retained status and a bounded 5,000 ms zero-handshake window. Marshall 426/4001 emission, service-adapter owner stop and recoverable reconnect are not observed here.",
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
       "authored_support_callsites": [],
       "selected_control_core_support_intent": false,
       "selected_control_core_support_hash_current": false
@@ -811,7 +819,7 @@
       "property_id": "execution-v4-refuses-legacy-document",
       "priority": "P0",
       "confidence": "high",
-      "status": "researched; primary unimplemented",
+      "status": "authored primary; hosted unexecuted; scope partial",
       "primary_assertion_kind": "AlwaysOrUnreachable",
       "primary_literal_message": "Execution v4 refuses legacy authority without changing durable command",
       "hosted_templates": [
@@ -829,10 +837,17 @@
       "required_variant_axes": [],
       "selected_variants": [],
       "variant_coverage_state": "unselected; record exact values before claiming evaluation",
-      "authored_primary_callsites": [],
-      "implementation_scope": "No authored primary; research target only.",
-      "selected_control_core_intent": false,
-      "selected_control_core_hash_current": false,
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/control/dispatch.py",
+          "line": 351,
+          "kind": "always_or_unreachable",
+          "sha256": "868327ae8d33ff9cf4e13354200cd0843a1ce7452f046a74d159e0d77228ec25"
+        }
+      ],
+      "implementation_scope": "Marshall request decoder plus durable host session/epoch and fresh session-row witnesses only; Lilly response parser, Store, Journal and physical launch marker are not observed. Concurrent live-Lilly session changes stay unexercised.",
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
       "authored_support_callsites": [],
       "selected_control_core_support_intent": false,
       "selected_control_core_support_hash_current": false
@@ -983,7 +998,9 @@
       "hosted_templates": [
         "integrated-zfs-guest"
       ],
-      "limited_support_templates": [],
+      "limited_support_templates": [
+        "guest_lifecycle (guest-lifecycle profile): STUB-storage container Lilly plus real QEMU TCG guest; support tuple/live-QEMU/port-1024 readiness witness only, no Lilly boot-journal join, ZFS or native claim"
+      ],
       "requires_integrated_zfs_host": true,
       "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
       "native_campaign": true,
@@ -1178,8 +1195,8 @@
         }
       ],
       "implementation_scope": "Current Lilly old-socket/new-credential route only; other services and physical effects are separate.",
-      "selected_control_core_intent": false,
-      "selected_control_core_hash_current": false,
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
       "authored_support_callsites": [],
       "selected_control_core_support_intent": false,
       "selected_control_core_support_hash_current": false
@@ -1215,8 +1232,8 @@
         }
       ],
       "implementation_scope": "Current Lilly host-session/successor route only; physical guest/execution authority is separate.",
-      "selected_control_core_intent": false,
-      "selected_control_core_hash_current": false,
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
       "authored_support_callsites": [],
       "selected_control_core_support_intent": false,
       "selected_control_core_support_hash_current": false
@@ -1579,7 +1596,8 @@
         "integrated-zfs-host"
       ],
       "limited_support_templates": [
-        "control: authenticated report/refusal only; no accepted allocation"
+        "control: authenticated report/refusal only; no accepted allocation",
+        "admission-stub: real Marshall admission on a harness STUB storage substrate (configured pool totals, measured cgroup compute, non-bootable digest-verified stub image); no ZFS, physical capacity, KVM or isolation claim"
       ],
       "requires_integrated_zfs_host": true,
       "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
@@ -1599,9 +1617,9 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/admission/scenarios.py",
-          "line": 144,
+          "line": 140,
           "kind": "always",
-          "sha256": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3"
+          "sha256": "467d99aa4f9fa5b2ecdf1c07d0ba52532f40861e897deb06f2e4a2feaeb30720"
         }
       ],
       "implementation_scope": "One serial trusted-operator admission joins a terminal domain receipt to one-statement PostgreSQL VM, placement, reservation, address, provision-operation and dispatch-job rows; no cross-node same-key race, commit-cut run, or positive integrated-host checkpoint.",
@@ -1621,7 +1639,9 @@
       "hosted_templates": [
         "integrated-zfs-host"
       ],
-      "limited_support_templates": [],
+      "limited_support_templates": [
+        "admission-stub: real Marshall admission on a harness STUB storage substrate (configured pool totals, measured cgroup compute, non-bootable digest-verified stub image); no ZFS, physical capacity, KVM or isolation claim"
+      ],
       "requires_integrated_zfs_host": true,
       "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
       "native_campaign": true,
@@ -1640,9 +1660,9 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/admission/scenarios.py",
-          "line": 176,
+          "line": 172,
           "kind": "always",
-          "sha256": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3"
+          "sha256": "467d99aa4f9fa5b2ecdf1c07d0ba52532f40861e897deb06f2e4a2feaeb30720"
         }
       ],
       "implementation_scope": "Observed first-key SQL contradictions fail, identical replay and exact idempotency conflict are checked, and archived replay waits for real delete plus SQL archival; integrated physical cleanup and hosted execution remain unverified.",
@@ -1682,10 +1702,10 @@
       "variant_coverage_state": "unselected; record exact values before claiming evaluation",
       "authored_primary_callsites": [
         {
-          "file": "antithesis/workload/admission/scenarios.py",
-          "line": 310,
+          "file": "antithesis/workload/admission/physical_scenario.py",
+          "line": 69,
           "kind": "always",
-          "sha256": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3"
+          "sha256": "4fc2cab60d0f74376da546f6cf3f9aa262b5955f2ffe1f4545f43a0c4fc8e4f8"
         }
       ],
       "implementation_scope": "Dedicated host/pool brackets unchanged SQL report and holds, waits for a newer independent inner-ZFS sample, and checks shape/overhead arithmetic; changing frames and physical free disagreement remain unknown without commit-time and CPU/memory interval correlation. No live admission has run.",
@@ -1931,7 +1951,7 @@
           "file": "antithesis/workload/recorder/scenarios.py",
           "line": 145,
           "kind": "always",
-          "sha256": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099"
+          "sha256": "6501ac6cb22d661d2a4a41b77ca8d057ac7143fd73ff2773efb5e928f83d92e3"
         }
       ],
       "implementation_scope": "Real Producer 4096/4097 admission boundary and fsynced fixture effect; exact UID/systemd cgroup and hosted/native saturation run remain absent.",
@@ -1972,7 +1992,7 @@
           "file": "antithesis/workload/recorder/scenarios.py",
           "line": 219,
           "kind": "always",
-          "sha256": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099"
+          "sha256": "6501ac6cb22d661d2a4a41b77ca8d057ac7143fd73ff2773efb5e928f83d92e3"
         }
       ],
       "implementation_scope": "Checkpoint conservation and conditional socket-inode restart witness; independent forced-restart orchestration and shared /proc producer identity remain incomplete.",
@@ -2168,7 +2188,9 @@
       "hosted_templates": [
         "integrated-zfs-guest"
       ],
-      "limited_support_templates": [],
+      "limited_support_templates": [
+        "guest_lifecycle (guest-lifecycle profile): STUB-storage container Lilly plus real QEMU TCG guest; support absent-QEMU and retained-qcow2-hash witness only, no ZFS dataset GUID, address or network detach claim"
+      ],
       "requires_integrated_zfs_host": true,
       "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
       "native_campaign": true,
@@ -2258,7 +2280,7 @@
           "file": "antithesis/workload/terminal/scenarios.py",
           "line": 96,
           "kind": "always",
-          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+          "sha256": "7f0e4bace8c38938b4116606670b7956b7c34160a201ab8329e17695b8d0d88a"
         }
       ],
       "implementation_scope": "Browser LiveView create-reply loss and same-ID duplicate deliveries join SQL opening/session receipt with guest terminald PTY birth and live PID/start; internal guest-create reply loss and hosted physical result remain unverified.",
@@ -2304,13 +2326,13 @@
           "file": "antithesis/workload/terminal/scenarios.py",
           "line": 226,
           "kind": "reachable",
-          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+          "sha256": "7f0e4bace8c38938b4116606670b7956b7c34160a201ab8329e17695b8d0d88a"
         },
         {
           "file": "antithesis/workload/terminal/scenarios.py",
           "line": 249,
           "kind": "always",
-          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+          "sha256": "7f0e4bace8c38938b4116606670b7956b7c34160a201ab8329e17695b8d0d88a"
         }
       ],
       "selected_control_core_support_intent": false,
@@ -2355,13 +2377,13 @@
           "file": "antithesis/workload/terminal/scenarios.py",
           "line": 460,
           "kind": "reachable",
-          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+          "sha256": "7f0e4bace8c38938b4116606670b7956b7c34160a201ab8329e17695b8d0d88a"
         },
         {
           "file": "antithesis/workload/terminal/scenarios.py",
           "line": 497,
           "kind": "sometimes",
-          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+          "sha256": "7f0e4bace8c38938b4116606670b7956b7c34160a201ab8329e17695b8d0d88a"
         }
       ],
       "selected_control_core_support_intent": false,
@@ -2399,7 +2421,7 @@
           "file": "antithesis/workload/terminal/scenarios.py",
           "line": 296,
           "kind": "always",
-          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+          "sha256": "7f0e4bace8c38938b4116606670b7956b7c34160a201ab8329e17695b8d0d88a"
         }
       ],
       "implementation_scope": "Real guest PTY output checks deque allocation against reserved ring backing; full-budget failed create does not independently identify refusal reason, and no integrated guest or hosted result exists.",
@@ -2443,7 +2465,7 @@
           "file": "antithesis/workload/terminal/scenarios.py",
           "line": 398,
           "kind": "sometimes",
-          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+          "sha256": "7f0e4bace8c38938b4116606670b7956b7c34160a201ab8329e17695b8d0d88a"
         }
       ],
       "implementation_scope": "Observer-confirmed blocked write and viewer queue beyond the high-water mark, with nonce bytes on a second real viewer while pressure remains; no hosted physical result exists.",
@@ -2484,7 +2506,7 @@
           "file": "antithesis/workload/recorder/scenarios.py",
           "line": 269,
           "kind": "always",
-          "sha256": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099"
+          "sha256": "6501ac6cb22d661d2a4a41b77ca8d057ac7143fd73ff2773efb5e928f83d92e3"
         }
       ],
       "implementation_scope": "Reviewed OTLP, SQLite body/digest, discarded intake ACK/retry, and conditional production replay; no hosted outage/replay or native identity result.",
@@ -2525,7 +2547,7 @@
           "file": "antithesis/workload/recorder/scenarios.py",
           "line": 494,
           "kind": "always",
-          "sha256": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099"
+          "sha256": "6501ac6cb22d661d2a4a41b77ca8d057ac7143fd73ff2773efb5e928f83d92e3"
         }
       ],
       "implementation_scope": "Retained SQLite bytes, logical 429 and guarded physical ENOSPC branch; dedicated bounded archive filesystem and hosted/native exhaustion run remain absent.",
@@ -2784,11 +2806,11 @@
       "property_id": "editor-login-code-single-use-after-reply-loss",
       "priority": "P0",
       "confidence": "source-grounded",
-      "status": "researched; primary unimplemented",
+      "status": "authored primary; hosted unexecuted; positive path precondition-blocked",
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Editor login code creates at most one credential after reply loss",
       "hosted_templates": [
-        "access"
+        "satellite-standin"
       ],
       "limited_support_templates": [],
       "requires_integrated_zfs_host": false,
@@ -2798,7 +2820,7 @@
       "support_semantics": [
         "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
       ],
-      "selection_state": "draft-unexercised",
+      "selection_state": "selected-precondition-blocked",
       "required_variant_axes": [
         "guest_family:NixOS|Ubuntu when applicable",
         "release_image_digest",
@@ -2807,11 +2829,25 @@
       ],
       "selected_variants": [],
       "variant_coverage_state": "unselected; record exact values before claiming evaluation",
-      "authored_primary_callsites": [],
-      "implementation_scope": "No authored primary; research target only.",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/satellite/editor.py",
+          "line": 287,
+          "kind": "always",
+          "sha256": "d0521d184df0b8bcb830673cb01697493118325d9efdbc313d109f45472e62d2"
+        }
+      ],
+      "implementation_scope": "Real browser login, Marshall editor launch and approval, then two raced Audi public callbacks (one optionally reply-lost) classified by committed editor_logins and editor_credentials rows keyed by the ticket digest; same-state replay and a wrong-state callback follow. Selected in satellite-standin, which has no current running VM, editor release, editor wildcard or Audi editor gateway, so the command records unexercised and evaluates no assertion there. Wrong-actor and wrong-hostname replays are not authored.",
       "selected_control_core_intent": false,
       "selected_control_core_hash_current": false,
-      "authored_support_callsites": [],
+      "authored_support_callsites": [
+        {
+          "file": "antithesis/workload/satellite/editor.py",
+          "line": 280,
+          "kind": "reachable",
+          "sha256": "d0521d184df0b8bcb830673cb01697493118325d9efdbc313d109f45472e62d2"
+        }
+      ],
       "selected_control_core_support_intent": false,
       "selected_control_core_support_hash_current": false
     },
@@ -3115,7 +3151,7 @@
           "file": "antithesis/workload/access/browser.py",
           "line": 216,
           "kind": "always",
-          "sha256": "d05ae97418bbd6f5eb51c4667022d1efaa68fdb4de917035a68d44b5046c0fbd"
+          "sha256": "9b40c54f9fe1011bf211da84746ffdd6c3a85b5eaade5a94c503245b3c8f10b6"
         }
       ],
       "implementation_scope": "Marshall HTTPS/SQL token and login receipts after two preview GETs, then pending-MFA protected GET on replica B; same-login WebAuthn positive is optional and guest bytes, same-origin failover, and hosted execution remain unverified.",
@@ -3156,7 +3192,7 @@
           "file": "antithesis/workload/access/browser.py",
           "line": 346,
           "kind": "always",
-          "sha256": "d05ae97418bbd6f5eb51c4667022d1efaa68fdb4de917035a68d44b5046c0fbd"
+          "sha256": "9b40c54f9fe1011bf211da84746ffdd6c3a85b5eaade5a94c503245b3c8f10b6"
         }
       ],
       "implementation_scope": "Replica B exchange, replica A sign-out, replica B refusal, and exact SQL JTI sets; no guest byte witness, ordinary same-origin failover, or hosted execution.",
@@ -3197,7 +3233,7 @@
           "file": "antithesis/workload/access/browser.py",
           "line": 479,
           "kind": "always",
-          "sha256": "d05ae97418bbd6f5eb51c4667022d1efaa68fdb4de917035a68d44b5046c0fbd"
+          "sha256": "9b40c54f9fe1011bf211da84746ffdd6c3a85b5eaade5a94c503245b3c8f10b6"
         }
       ],
       "implementation_scope": "Replica B mounted LiveView, real pre-fence set-role target/audit pair, closed Ash demotion, and processed post-fence event with unchanged inventory; hosted execution and guest effects remain unverified.",
@@ -3728,7 +3764,8 @@
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Interrupted backup restore leaves its partial target unpublished",
       "hosted_templates": [
-        "storage"
+        "storage",
+        "backup-restic"
       ],
       "limited_support_templates": [],
       "requires_integrated_zfs_host": false,
@@ -3738,7 +3775,7 @@
       "support_semantics": [
         "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
       ],
-      "selection_state": "draft-unexercised",
+      "selection_state": "selected-unexecuted",
       "required_variant_axes": [
         "guest_family:NixOS|Ubuntu when applicable",
         "release_image_digest",
@@ -3771,7 +3808,8 @@
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Newly published backup point passes its retention manifest validator",
       "hosted_templates": [
-        "storage"
+        "storage",
+        "backup-restic"
       ],
       "limited_support_templates": [],
       "requires_integrated_zfs_host": false,
@@ -3781,7 +3819,7 @@
       "support_semantics": [
         "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
       ],
-      "selection_state": "draft-unexercised",
+      "selection_state": "selected-unexecuted",
       "required_variant_axes": [
         "guest_family:NixOS|Ubuntu when applicable",
         "release_image_digest",
@@ -3806,35 +3844,39 @@
     }
   ],
   "authored_snapshot": {
-    "as_of_utc": "2026-10-13 15:03 UTC",
-    "source_callsite_count": 153,
-    "catalog_primary_matches": 26,
+    "as_of_utc": "2026-10-17 UTC",
+    "source_callsite_count": 162,
+    "catalog_primary_matches": 30,
     "duplicate_callsite_messages": [],
     "source_sha256": {
-      "antithesis/workload/access/browser.py": "d05ae97418bbd6f5eb51c4667022d1efaa68fdb4de917035a68d44b5046c0fbd",
-      "antithesis/workload/admission/scenarios.py": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3",
+      "antithesis/workload/access/browser.py": "9b40c54f9fe1011bf211da84746ffdd6c3a85b5eaade5a94c503245b3c8f10b6",
+      "antithesis/workload/admission/physical_scenario.py": "4fc2cab60d0f74376da546f6cf3f9aa262b5955f2ffe1f4545f43a0c4fc8e4f8",
+      "antithesis/workload/admission/scenarios.py": "467d99aa4f9fa5b2ecdf1c07d0ba52532f40861e897deb06f2e4a2feaeb30720",
       "antithesis/workload/backup/scenarios.py": "c037cd1d31e4ea171caf7d7de5b02342a6e110763229359d10893911ccb931d4",
       "antithesis/workload/control/bounds.py": "7afd25bd08c5369ac2c10d73147a2cc240929a8f249db0ff83ed3b4725b8350d",
       "antithesis/workload/control/delivery.py": "1c169ac6eca568af29e9ab416c491f240b601bed31ef1e8e3c76be25786a383a",
-      "antithesis/workload/control/dispatch.py": "283fc77c160f8322fcb9f13705057063e8dcdd32773175f3d9ca2fd8c96d5c92",
+      "antithesis/workload/control/dispatch.py": "868327ae8d33ff9cf4e13354200cd0843a1ce7452f046a74d159e0d77228ec25",
       "antithesis/workload/control/host_sessions.py": "f49d22486b396f02dfe78b488d0c20386366bbf5d03545ffbdb199aa4fa2950c",
       "antithesis/workload/control/pending.py": "34701054cf3c1476cb11cdbcb313f8b63627d5be57e48727da33fb1fd0c05770",
-      "antithesis/workload/control/scenarios.py": "bf5bc2c57da430f46322a89a60f0fa8cdc850961874b74faafadaacbd62a61cd",
-      "antithesis/workload/core/bootstrap.py": "92c849db8ca82610d7b09d8b96d79bee152943c28a88e47787953958db2cd308",
-      "antithesis/workload/core/smoke.py": "057aa276e82d589362b64108924c3fcf36c5397e5cca138742d356dc33b11d8c",
-      "antithesis/workload/guest_lifecycle/scenarios.py": "8405339b780443a2ff28ef48a99a51b91ecb5ea554922f9883dce15e65bde3b6",
-      "antithesis/workload/recorder/scenarios.py": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099",
+      "antithesis/workload/control/scenarios.py": "364fbe9220c30e4e06f715685fd253f656aca0e2ab273f754eee2e186625f8e6",
+      "antithesis/workload/control/version_refusal.py": "4a5deb19498687081c8104a91b9fcc216e8781ef35a29a7a8a925319677afd9a",
+      "antithesis/workload/core/bootstrap.py": "8712b2b235920b98653ddfa30a81d115fa9e47ef75ad3afddc463f47ceb07567",
+      "antithesis/workload/core/smoke.py": "af9b46570f86ad0df8810434afbcf53b8ad18e74b2cf0a146e8eb306eaa4b34b",
+      "antithesis/workload/guest_lifecycle/scenarios.py": "ff9fbe9f72d9ac29dbf9f137ec5badc4a00b455c1fe771229fbf4e1847da3877",
+      "antithesis/workload/recorder/scenarios.py": "6501ac6cb22d661d2a4a41b77ca8d057ac7143fd73ff2773efb5e928f83d92e3",
       "antithesis/workload/repository/scenarios.py": "fcd75125a1c20fcd3bb11a67dc6b1fbdfa8f0e09ca415d03f98f45644ea1686c",
+      "antithesis/workload/satellite/editor.py": "d0521d184df0b8bcb830673cb01697493118325d9efdbc313d109f45472e62d2",
+      "antithesis/workload/satellite/private_ingress.py": "721ed82147b3499a8c6668522da2d11fc96977a37b27ccaf4e74c1b1851e77e3",
       "antithesis/workload/satellite/scenarios.py": "31e9787da957b10c2eacc71d08111096f1b8299a3d801f5739460386373d6f5e",
-      "antithesis/workload/terminal/scenarios.py": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c",
-      "audi/lib/audi/application.ex": "fa000ef3c4cf38726e9a54d021c4921fe25379e54a85c62a8097a469fed3ca55",
-      "brady/lib/brady/application.ex": "17588a241b696f57540bf3e232a71715a011a890f25e0aeeadd297b13f161459",
-      "enrico/lib/enrico/application.ex": "5d578dd9400ca65b28b403cfa0fdd74bcf623ef75016945cf228d76c031d5f1e",
-      "galileo/lib/galileo/application.ex": "fd796859968bf9c7b03b80470e620ec8616e374c0a043b9fb3774045b9a52516",
-      "lilly/lib/lilly/application.ex": "b53aba3d75fb8f867cc93715ed3c963e9d1de55380d4a9cd1feface3e2aff709",
-      "marshall/lib/marshall/application.ex": "2899dac1a9d0bad64296672dfb4b76234d16dca636ff0c2b028a6ece8683e7e0",
-      "porsche/lib/porsche/application.ex": "817cf0f357d44d15785570021c82832270553f2acf3224fee5039ee750da700b",
-      "ziggy/lib/ziggy/application.ex": "27a415e2d9be7de0e3ff12ecf122c86bcab5f29faa4eaef284b79e2bce1bc403"
+      "antithesis/workload/terminal/scenarios.py": "7f0e4bace8c38938b4116606670b7956b7c34160a201ab8329e17695b8d0d88a",
+      "audi/lib/audi/application.ex": "6678c50279d22ad1cafa84a5984616c33acf2504e42208f0ac1031df24ad9cf4",
+      "brady/lib/brady/application.ex": "22bfa153459c577075443eef32cd76afd66a5b3ad0c7fcd57d26e6641d8d734e",
+      "enrico/lib/enrico/application.ex": "e1a3efca1d0d84997f1bb233fd2d3315d0fe768e7025a8a8b0c9341ad24f56db",
+      "galileo/lib/galileo/application.ex": "77bfca7afd982a72a56139ddb7a94c55215487ae51b1b0086b102cd81602a47c",
+      "lilly/lib/lilly/application.ex": "6cd831987ad9c9fdfe0e6e933a96b6c4a671e7f5acece6ddd3bb3b2a4b98011e",
+      "marshall/lib/marshall/application.ex": "0011c05fcd8677a04974bd787a74b38dd2287da261818142c95e56f8247dade0",
+      "porsche/lib/porsche/application.ex": "77f02fcbbc02c6000dd8b3dac50b1cc53c7181f944181561ea117aa2942a8bb4",
+      "ziggy/lib/ziggy/application.ex": "493d280a1ccec0e554430881e547d89d9bd633bbde686c4badbb42a8a1a7c3ef"
     },
     "selected_profile_source": "antithesis/verification/selections/control-core.json",
     "selected_profile_name": "control-core",
@@ -3842,14 +3884,17 @@
       "control",
       "control_rotation",
       "control_dispatch",
-      "control_legacy_request"
+      "control_legacy_request",
+      "control_delivery",
+      "host_sessions",
+      "host_rotation"
     ],
     "selection_stage_command": "python3.13 antithesis/verification/selection.py stage --output antithesis/build/selected-test",
-    "selected_manifest_sha256": "4d61bfc148a2ef13529417fbfeab8723ae589e1e62ffff34c84aef87618bdfe4",
+    "selected_manifest_sha256": "0d48b340435a19f45b73c2e7d0bf043fca178606179bf682104afb21a96772c0",
     "selected_manifest_source_hashes_current": true,
     "selected_manifest_stale_paths": [],
-    "selected_command_count": 9,
-    "selected_runtime_dependency_count": 30,
+    "selected_command_count": 13,
+    "selected_runtime_dependency_count": 40,
     "identity_freeze_requirement": "identity.py binds selected command manifest and assertion roster to selected commands/dependencies and compiled selected app files; source inventory is not a frozen hosted identity"
   }
 }

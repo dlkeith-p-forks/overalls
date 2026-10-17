@@ -365,17 +365,33 @@ def run_native_admission_after_restart() -> int:
         if not _fill_eight_slots(runtime, "after"):
             LOG.info("Enrico admission case unexercised: eight post-restart slots did not overlap")
             return 0
+        observer = Path(os.environ["ANTITHESIS_ENRICO_OBSERVER_FILE"])
         ninth_id = uuid5(NAMESPACE_URL, f"enrico-native/{runtime.fixture.repository_id}/ninth")
         ninth_attempt = uuid4()
+        # Bracket the ninth admission with holder-identity witnesses: a slot
+        # freed and retaken between the status read and the later witness
+        # (for example by the ninth itself) must not satisfy the premise.
+        before = read_snapshot(observer, receipt.generation)
+        before_slots = occupied_slots(runtime.mirror_root)
+        if not (
+            before.state is State.OBSERVED
+            and before.value is not None
+            and before_slots.state is State.OBSERVED
+            and before_slots.value is not None
+            and len(before_slots.value) == 8
+            and snapshot_matches_inodes(before.value, runtime.mirror_root)
+            and {slot.slot for slot in before.value.slots if slot.holder_pids} == before_slots.value
+        ):
+            LOG.info("Enrico ninth-admission case unexercised: eight slots not witnessed first")
+            return 0
+        before_holders = {(slot.slot, slot.holder_pids) for slot in before.value.slots}
         runtime.enrico.refresh(ninth_id, ninth_attempt, runtime.fixture.owner, runtime.fixture.name)
         ninth = runtime.enrico.status(ninth_id, ninth_attempt)
         witness_deadline = time.monotonic() + 5
         snapshot_valid = False
         while time.monotonic() < witness_deadline:
             after = occupied_slots(runtime.mirror_root)
-            snapshot = read_snapshot(
-                Path(os.environ["ANTITHESIS_ENRICO_OBSERVER_FILE"]), receipt.generation
-            )
+            snapshot = read_snapshot(observer, receipt.generation)
             after_snapshot = occupied_slots(runtime.mirror_root)
             snapshot_valid = (
                 snapshot.state is State.OBSERVED
@@ -410,6 +426,12 @@ def run_native_admission_after_restart() -> int:
             and after.state is State.OBSERVED
             and after.value is not None
             and len(after.value) == 8
+            and snapshot.value is not None
+            and {(slot.slot, slot.holder_pids) for slot in snapshot.value.slots} == before_holders
+            and all(
+                repository.repository_id != ninth_id or not repository.holder_pids
+                for repository in snapshot.value.repositories
+            )
             and ninth.state is State.OBSERVED
             and ninth.value is not None
         ):

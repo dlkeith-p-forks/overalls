@@ -11,17 +11,21 @@ fn main() -> ! {
     use std::io::{self, Write};
     use std::net::Ipv4Addr;
 
-    struct Live {
+    struct Live<'a> {
         address: Ipv4Addr,
         gateway: Ipv4Addr,
         os: &'static str,
         kernel_digest: String,
+        kernel_build_id: String,
+        listener: &'a Listener,
     }
-    impl Probe for Live {
+    impl Probe for Live<'_> {
         fn ready(&mut self) -> io::Result<bool> {
             Ok(native_guest::network_ready(self.address, self.gateway)?
                 && native_guest::writable_root().is_ok()
                 && native_guest::services_ready()?
+                && kernel_probe::verified_build_id(self.listener)
+                    .is_ok_and(|current| current == self.kernel_build_id)
                 && kernel_probe::kernel_sha256(self.os)
                     .is_ok_and(|current| current == self.kernel_digest))
         }
@@ -44,11 +48,17 @@ fn main() -> ! {
         Ok(digest) => digest,
         Err(_) => std::process::exit(3),
     };
+    let kernel_build_id = match kernel_probe::verified_build_id(&listener) {
+        Ok(build_id) => build_id,
+        Err(_) => std::process::exit(4),
+    };
     let mut probe = Live {
         address,
         gateway,
         os,
         kernel_digest,
+        kernel_build_id,
+        listener: &listener,
     };
     loop {
         let mut connection = match listener.accept() {

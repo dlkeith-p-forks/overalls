@@ -17,6 +17,15 @@ not inject a controlled backward clock step. The mixed-time fixture contains
 synthetic host and guest bytes; it has no activation or reentry receipt and makes
 no claim about live fleet authority or UID reconciliation.
 
+The `backup-restic` selection runs these commands with `ANTITHESIS_BACKUP_ROOT`
+pointing at a dedicated private named volume from `config/compose.backup.yaml`;
+`fixture_root()` refuses a relative, linked or group/other-writable root rather
+than falling back elsewhere. Without that variable the process temporary
+directory is used. The repository is a local file backend on purpose: the
+production operator's single failure exit status cannot distinguish network
+unavailability from a validator refusal, so a remote backend would weaken the
+oracle under network faults.
+
 `backup-interrupted-cleanup-owned-only` still needs a disposable native ZFS
 fixture that runs the production `HostCapture` with read-only independent GUID,
 nonce, mount, and journal observations. The workload container has no ZFS

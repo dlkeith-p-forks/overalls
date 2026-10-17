@@ -104,6 +104,8 @@ publication behavior. No live S3, production clock or credentials are involved.
 
 **Proof boundary:** Draft selection: `storage`. real-Restic-isolated-target; native-guest-ZFS-companion; independent witness: actual Restic tag/manifest parser, target publication marker and independent restored component hash. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
+**Selected profile (2026-10-17):** `backup-restic` selects the five `backup` commands with `compose.backup.yaml`, which gives each command a disposable encrypted Restic file repository on a dedicated private named volume. Bootstrap requires the production operator, pinned Restic and a real probe repository that initializes and enumerates empty there. A local file backend is deliberate: the production operator returns one failure status for repository unavailability and validator refusal, so a network-attached repository would make unavailable reads look like refusals. This profile exercises no ZFS, host capture, S3 or live recovery target and has no hosted run or baseline yet.
+
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
 ## Authored assertion snapshot

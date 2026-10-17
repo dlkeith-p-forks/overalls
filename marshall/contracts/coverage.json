@@ -1,0 +1,324 @@
+{
+  "apps": {
+    "marshall": {
+      "active": 24,
+      "coverage": 1.0,
+      "covered": 24
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "marshall.compute": {
+      "active": 3,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 3,
+      "form": "light",
+      "obligations": {
+        "marshall.compute.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "marshall.compute.I2": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test inception admission enforces its configured image and resource minima"
+          ]
+        },
+        "marshall.compute.I3": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test inception default shape preserves minimum resources"
+          ]
+        }
+      }
+    },
+    "marshall.identity_authorization": {
+      "active": 4,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 4,
+      "form": "light",
+      "obligations": {
+        "marshall.identity_authorization.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "marshall.identity_authorization.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the compute actor is a typed, non-user principal"
+          ]
+        },
+        "marshall.identity_authorization.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test account boundary validators reject unsafe identity input"
+          ]
+        },
+        "marshall.identity_authorization.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test security proof freshness is bounded in both directions"
+          ]
+        }
+      }
+    },
+    "marshall.integrations_persistence": {
+      "active": 2,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 2,
+      "form": "light",
+      "obligations": {
+        "marshall.integrations_persistence.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "marshall.integrations_persistence.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test registered Git sources accept safe names and reject traversal or URL suffixes"
+          ]
+        }
+      }
+    },
+    "marshall.ssh_terminal": {
+      "active": 3,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 3,
+      "form": "light",
+      "obligations": {
+        "marshall.ssh_terminal.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "marshall.ssh_terminal.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test classifies gateway refusals without exposing details"
+          ]
+        },
+        "marshall.ssh_terminal.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test viewer authority clears, propagates, and bounds inconclusive episodes"
+          ]
+        }
+      }
+    },
+    "marshall.threads_agents": {
+      "active": 6,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 6,
+      "form": "light",
+      "obligations": {
+        "marshall.threads_agents.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "marshall.threads_agents.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test accepts only registered thread commands and modes"
+          ]
+        },
+        "marshall.threads_agents.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test keeps executor capabilities finite"
+          ]
+        },
+        "marshall.threads_agents.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test planning questions reject duplicates and out of bounds input"
+          ]
+        },
+        "marshall.threads_agents.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test machine specifications fail closed and enforce profile and shape rules"
+          ]
+        },
+        "marshall.threads_agents.I6": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test thread title generation is bounded and falls back safely"
+          ]
+        }
+      }
+    },
+    "marshall.web_surface": {
+      "active": 6,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 6,
+      "form": "light",
+      "obligations": {
+        "marshall.web_surface.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "marshall.web_surface.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test live health probe is fixed and uncached"
+          ]
+        },
+        "marshall.web_surface.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test readiness refusal is fixed and uncached"
+          ]
+        },
+        "marshall.web_surface.I4": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test readiness backstop decisions are bounded"
+          ]
+        },
+        "marshall.web_surface.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test pending launch records require canonical bounded inputs and expire"
+          ]
+        },
+        "marshall.web_surface.I6": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test terminal names are deterministic and vocabulary bounded"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "totals": {
+    "active": 24,
+    "coverage": 1.0,
+    "covered": 24
+  }
+}

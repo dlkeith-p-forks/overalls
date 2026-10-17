@@ -39,7 +39,18 @@ from schema import (
 
 TEMPLATE = re.compile(r"^[a-z][a-z0-9_]*$")
 CONFIG = re.compile(r"^[a-z][a-z0-9-]*$")
-REVIEWED_PROFILES = frozenset({"control-core", "repository-origin", "access-smtp", "recorder-host"})
+REVIEWED_PROFILES = frozenset(
+    {
+        "control-core",
+        "repository-origin",
+        "access-smtp",
+        "recorder-host",
+        "admission-stub",
+        "backup-restic",
+        "satellite-standin",
+        "guest-lifecycle",
+    }
+)
 COMMAND = re.compile(r"^(?:serial_driver|singleton_driver|first|helper)_[a-z][a-z0-9_]*\.py$")
 
 
@@ -406,8 +417,46 @@ def validate_compose(selection: Selection, rendered: dict[str, Json]) -> None:
                 raise EvidenceError(f"SMTP fixture {key} lacks a mounted volume")
     elif selection.name == "recorder-host":
         validate_recorder_host(services, workload, environment, depends, targets)
+    elif selection.name == "admission-stub":
+        validate_admission_stub(services, environment, targets)
+    elif selection.name == "backup-restic":
+        validate_backup_restic(environment, targets)
+    elif selection.name == "satellite-standin":
+        validate_satellite_standin(services, workload, environment, targets)
+    elif selection.name == "guest-lifecycle":
+        validate_guest_lifecycle(services, workload, environment, depends)
     else:
         raise EvidenceError("selection has no reviewed bootstrap prerequisite validator")
+
+
+def validate_admission_stub(
+    services: dict[str, Json], environment: dict[str, Json], targets: set[str]
+) -> None:
+    """@cc [owner:ghuntley,label:verification;capacity] admission-stub-selection-boundary
+    The admission-stub profile MUST select the stub substrate on exactly the
+    controlled Lilly release and the enrollment operator, select the
+    admission bootstrap probe, and add no measured host, guest or physical
+    observation share: its workload MUST NOT receive a physical ZFS sample.
+    """
+    if environment.get("ANTITHESIS_BOOTSTRAP_PROFILE") != "admission-stub":
+        raise EvidenceError("admission bootstrap profile differs from selected commands")
+    if "ANTITHESIS_PHYSICAL_SAMPLE_FILE" in environment:
+        raise EvidenceError("stub admission profile must not claim a physical ZFS sample")
+    for name in ("lilly-a", "enrollment"):
+        service = obj(field(services, name), f"{name} service")
+        service_environment = obj(field(service, "environment"), f"{name} environment")
+        if service_environment.get("OVERALLS_ANTITHESIS_STORAGE_STUB") != "1":
+            raise EvidenceError(f"stub storage substrate is not selected on {name}")
+    lilly = obj(field(services, "lilly-a"), "lilly-a service")
+    if lilly.get("image") != "overalls-antithesis/lilly:local":
+        raise EvidenceError("stub storage requires the controlled Lilly release")
+    fixture = string(field(environment, "ANTITHESIS_REPOSITORY_FIXTURE_FILE"), "admission fixture")
+    if not any(fixture.startswith(target.rstrip("/") + "/") for target in targets):
+        raise EvidenceError("admission fixture lacks a mounted volume")
+    if field(environment, "ANTITHESIS_CONTROL_OPERATOR_ROOT") != field(
+        environment, "ANTITHESIS_CONTROL_REQUEST_DIR"
+    ):
+        raise EvidenceError("admission operator root differs from the Control request handoff")
 
 
 def validate_recorder_host(
@@ -457,6 +506,152 @@ def validate_recorder_host(
             raise EvidenceError(f"recorder share has the wrong access mode: {target}")
     if any(target.startswith("/var/lib/recorder-hostvm") for target in targets):
         raise EvidenceError("workload mounts recorder VM state")
+
+
+def _mounted(path: str, targets: set[str]) -> bool:
+    return any(path == target or path.startswith(target.rstrip("/") + "/") for target in targets)
+
+
+def validate_backup_restic(environment: dict[str, Json], targets: set[str]) -> None:
+    """@cc [owner:ghuntley,label:verification] backup-restic-profile-graph
+    The backup profile MUST select its bootstrap probe and a dedicated named
+    fixture volume mounted exactly at ``ANTITHESIS_BACKUP_ROOT``; disposable
+    repositories MUST NOT fall back to an unselected or shared location.
+    """
+    if environment.get("ANTITHESIS_BOOTSTRAP_PROFILE") != "backup-restic":
+        raise EvidenceError("backup bootstrap profile differs from selected commands")
+    root = string(field(environment, "ANTITHESIS_BACKUP_ROOT"), "backup fixture root")
+    if root != "/var/lib/overalls-backup-fixture" or root not in targets:
+        raise EvidenceError("backup fixture root lacks its dedicated mounted volume")
+
+
+def validate_satellite_standin(
+    services: dict[str, Json],
+    workload: dict[str, Json],
+    environment: dict[str, Json],
+    targets: set[str],
+) -> None:
+    """@cc [owner:ghuntley,label:verification;security] satellite-standin-profile-graph
+    The satellite profile MUST health-gate the workload on every satellite, the
+    origin fixture and the labelled guest stand-in. The stand-in MUST share only
+    Lilly's network namespace, read the public private-Audi root read-only, and
+    exchange fixed requests through separate request/result volumes the workload
+    can respectively write and only read. It MUST NOT mount secrets.
+    """
+    if environment.get("ANTITHESIS_BOOTSTRAP_PROFILE") != "satellite-standin":
+        raise EvidenceError("satellite bootstrap profile differs from selected commands")
+    depends = obj(field(workload, "depends_on"), "workload dependencies")
+    for name in ("ziggy", "galileo", "audi-private", "porsche", "origin", "guest-standin"):
+        dependency = obj(field(depends, name), f"workload dependency {name}")
+        if field(dependency, "condition") != "service_healthy":
+            raise EvidenceError(f"satellite prerequisite is not health-gated: {name}")
+    for key in (
+        "ANTITHESIS_PRIVATE_ROOT_CA",
+        "ANTITHESIS_ORIGIN_ADMIN_TOKEN_FILE",
+        "ANTITHESIS_ACCESS_FIXTURE_FILE",
+    ):
+        if not _mounted(string(field(environment, key), key), targets):
+            raise EvidenceError(f"satellite fixture {key} lacks a mounted volume")
+    root = string(field(environment, "ANTITHESIS_GUEST_STANDIN_ROOT"), "stand-in root").rstrip("/")
+    standin = obj(field(services, "guest-standin"), "guest stand-in service")
+    if field(standin, "network_mode") != "service:lilly-a":
+        raise EvidenceError("guest stand-in must share only Lilly's network namespace")
+    mounts = {
+        string(field(item, "target"), "stand-in mount"): item
+        for item in (obj(value, "stand-in volume") for value in arr(field(standin, "volumes"), "v"))
+    }
+    expected = {
+        "/run/overalls-satellite-public": True,
+        root + "/requests": True,
+        root + "/results": False,
+    }
+    if set(mounts) != set(expected) or any(
+        bool(mounts[path].get("read_only", False)) != read_only
+        for path, read_only in expected.items()
+    ):
+        raise EvidenceError("guest stand-in mounts differ from the reviewed channel")
+    workload_mounts = {
+        string(field(item, "target"), "workload mount"): item
+        for item in (
+            obj(value, "workload volume") for value in arr(field(workload, "volumes"), "v")
+        )
+    }
+    request = workload_mounts.get(root + "/requests")
+    result = workload_mounts.get(root + "/results")
+    if (
+        request is None
+        or result is None
+        or bool(request.get("read_only", False))
+        or not bool(result.get("read_only", False))
+        or request.get("source") != mounts[root + "/requests"].get("source")
+        or result.get("source") != mounts[root + "/results"].get("source")
+    ):
+        raise EvidenceError("guest stand-in request/result handoff volumes are incomplete")
+
+
+def validate_guest_lifecycle(
+    services: dict[str, Json],
+    workload: dict[str, Json],
+    environment: dict[str, Json],
+    depends: dict[str, Json],
+) -> None:
+    """@cc [owner:ghuntley,label:verification;security] guest-lifecycle-compose-boundary
+    The guest-lifecycle profile MUST health-gate the workload and the
+    STUB-storage lilly-guest release on guest-vmm, give only Lilly the mutating
+    guest control socket and only enrollment the read-only witness socket and
+    image catalog share. Workload MUST NOT mount guest-vmm state, control,
+    witness or catalog volumes; its evidence arrives through the operator.
+    """
+    if environment.get("ANTITHESIS_BOOTSTRAP_PROFILE") != "guest-lifecycle":
+        raise EvidenceError("guest bootstrap profile differs from selected commands")
+    dependency = obj(field(depends, "guest-vmm"), "guest-vmm dependency")
+    if field(dependency, "condition") != "service_healthy":
+        raise EvidenceError("guest-vmm is not health-gated for workload")
+    lilly = obj(field(services, "lilly-a"), "lilly-a service")
+    if field(lilly, "image") != "overalls-antithesis/lilly-guest:local":
+        raise EvidenceError("guest profile must run the stub-storage lilly-guest release")
+    lilly_depends = obj(field(lilly, "depends_on"), "lilly-a dependencies")
+    if field(obj(field(lilly_depends, "guest-vmm"), "guest-vmm"), "condition") != (
+        "service_healthy"
+    ):
+        raise EvidenceError("guest-vmm is not health-gated for lilly-a")
+    lilly_environment = obj(field(lilly, "environment"), "lilly-a environment")
+    if lilly_environment.get("OVERALLS_ANTITHESIS_GUEST_SOCKET") != (
+        "/run/overalls-guest-vmm/control.sock"
+    ) or lilly_environment.get("OVERALLS_ANTITHESIS_GUEST_IMAGE") != (
+        "/opt/overalls/guest-vmm/image"
+    ):
+        raise EvidenceError("lilly-guest control socket or image selection differs")
+    enrollment = obj(field(services, "enrollment"), "enrollment service")
+    enrollment_environment = obj(field(enrollment, "environment"), "enrollment environment")
+    if (
+        enrollment_environment.get("OVERALLS_ANTITHESIS_GUEST_WITNESS_SOCKET")
+        != ("/run/overalls-guest-witness/witness.sock")
+        or enrollment_environment.get("OVERALLS_ANTITHESIS_GUEST_CATALOG") != "1"
+    ):
+        raise EvidenceError("enrollment guest witness or catalog bridge differs")
+
+    def sources(service: dict[str, Json], name: str) -> dict[str, bool]:
+        mounted: dict[str, bool] = {}
+        for value in arr(service.get("volumes", []), f"{name} volumes"):
+            volume = obj(value, f"{name} volume")
+            source = volume.get("source")
+            if isinstance(source, str):
+                mounted[source] = volume.get("read_only") is True
+        return mounted
+
+    guest_volumes = {"guest-vmm-state", "guest-vmm-control", "guest-vmm-witness", "guest-catalog"}
+    if set(sources(workload, "workload")) & guest_volumes:
+        raise EvidenceError("workload mounts private guest-vmm state or sockets")
+    enrollment_volumes = sources(enrollment, "enrollment")
+    if (
+        enrollment_volumes.get("guest-vmm-witness") is not True
+        or enrollment_volumes.get("guest-catalog") is not True
+        or {"guest-vmm-control", "guest-vmm-state"} & set(enrollment_volumes)
+    ):
+        raise EvidenceError("enrollment guest bridge is not read-only witness and catalog")
+    if {"guest-vmm-witness", "guest-vmm-state"} & set(sources(lilly, "lilly-a")):
+        raise EvidenceError("lilly-a mounts guest witness or emulator state")
 
 
 def rendered_compose(root: Path, selection: Selection) -> dict[str, Json]:

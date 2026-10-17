@@ -1,9 +1,9 @@
 {
   "apps": {
     "overalls_protocol": {
-      "active": 11,
+      "active": 14,
       "coverage": 1.0,
-      "covered": 11
+      "covered": 14
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "overalls_protocol.codecs": {
-      "active": 4,
+      "active": 6,
       "app": "overalls_protocol",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 6,
       "form": "light",
       "obligations": {
         "overalls_protocol.codecs.I1": {
@@ -58,14 +58,34 @@
           "tests": [
             "test reports reject contradictory or duplicate pool observations"
           ]
+        },
+        "overalls_protocol.codecs.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test capacity observations require bounded complete proofs"
+          ]
+        },
+        "overalls_protocol.codecs.I6": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test address pool rejects reserved slots and pairs inception"
+          ]
         }
       }
     },
     "overalls_protocol.state_view": {
-      "active": 4,
+      "active": 5,
       "app": "overalls_protocol",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "overalls_protocol.state_view.I1": {
@@ -106,6 +126,16 @@
           "testable": true,
           "tests": [
             "test view index and subscribers track deletion"
+          ]
+        },
+        "overalls_protocol.state_view.I5": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test owner death revokes rows and notifies subscribers"
           ]
         }
       }
@@ -161,8 +191,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 11,
+    "active": 14,
     "coverage": 1.0,
-    "covered": 11
+    "covered": 14
   }
 }

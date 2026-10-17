@@ -1,7 +1,7 @@
 //! Portable AF_VSOCK transport for the firmware guest agents.
 //!
 //! Stock FreeBSD and illumos kernels do not implement this transport. This
-//! adapter describes ADR-0186's proposed custom kernel socket ABI; compiling
+//! adapter describes ADR-0190's reviewed custom kernel socket ABI; compiling
 //! it does not establish native kernel or Firecracker transport support.
 
 use std::fs::File;
@@ -21,6 +21,8 @@ pub const GUEST_CID: u32 = 3;
 /// Bind a listener on any local CID.
 pub const CID_ANY: u32 = u32::MAX;
 const SOCKADDR_VM_SIZE: usize = 16;
+const VSOCK_SO_BUILD_ID: libc::c_int = 1;
+const BUILD_ID_BYTES: usize = 65;
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default)]
@@ -122,8 +124,35 @@ impl Write for Connection {
 }
 
 impl Listener {
+    /// @cc [owner:ghuntley,label:security;verification] native-running-transport-identity
+    /// The read-only kernel identity MUST be exactly 64 lower-case hexadecimal
+    /// bytes followed by NUL. Missing, truncated, oversized or malformed kernel
+    /// output MUST refuse; a userspace environment variable cannot supply it.
+    pub fn kernel_build_id(&self) -> io::Result<String> {
+        let mut bytes = [0_u8; BUILD_ID_BYTES];
+        let mut length = BUILD_ID_BYTES as libc::socklen_t;
+        // SAFETY: the listener owns fd; bytes and length are writable for this
+        // synchronous custom-kernel getsockopt call.
+        if unsafe {
+            libc::getsockopt(
+                self.fd,
+                AF_VSOCK,
+                VSOCK_SO_BUILD_ID,
+                bytes.as_mut_ptr().cast(),
+                &raw mut length,
+            )
+        } < 0
+        {
+            return Err(io::Error::last_os_error());
+        }
+        if length != BUILD_ID_BYTES as libc::socklen_t {
+            return Err(io::Error::other("invalid kernel build identity length"));
+        }
+        decode_build_id(&bytes)
+    }
+
     /// @cc [owner:ghuntley,label:security;protocol] native-proposed-vsock-abi
-    /// Binding MUST use ADR-0186's reviewed 16-byte custom-kernel ABI with socket
+    /// Binding MUST use ADR-0190's reviewed 16-byte custom-kernel ABI with socket
     /// family 45 and BSD length/family bytes on FreeBSD, or the proposed
     /// flat illumos layout. Its use assumes the patched kernel assigns guest
     /// CID 3; successful compilation MUST NOT establish that runtime evidence.
@@ -182,6 +211,19 @@ impl Listener {
     }
 }
 
+fn decode_build_id(bytes: &[u8]) -> io::Result<String> {
+    if bytes.len() != BUILD_ID_BYTES
+        || bytes[64] != 0
+        || !bytes[..64]
+            .iter()
+            .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(byte))
+    {
+        return Err(io::Error::other("invalid kernel build identity"));
+    }
+    String::from_utf8(bytes[..64].to_vec())
+        .map_err(|_| io::Error::other("invalid kernel build identity"))
+}
+
 impl Drop for Listener {
     fn drop(&mut self) {
         // SAFETY: fd is owned by this listener and closed once.
@@ -226,6 +268,21 @@ fn set_timeouts(fd: RawFd) -> io::Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn kernel_build_identity_requires_exact_kernel_abi() {
+        let mut bytes = [b'a'; BUILD_ID_BYTES];
+        bytes[64] = 0;
+        assert_eq!(decode_build_id(&bytes).unwrap(), "a".repeat(64));
+        assert!(decode_build_id(&bytes[..64]).is_err());
+        bytes[64] = b'\n';
+        assert!(decode_build_id(&bytes).is_err());
+        bytes[64] = 0;
+        bytes[17] = b'A';
+        assert!(decode_build_id(&bytes).is_err());
+        bytes[17] = 0;
+        assert!(decode_build_id(&bytes).is_err());
+    }
 
     #[test]
     fn constants_match_guest_launch_contract() {

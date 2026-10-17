@@ -13,27 +13,34 @@ defmodule Lilly.Control.Runtime do
   if System.get_env("ANTITHESIS_HARNESS") == "1" and
        System.get_env("ANTITHESIS_INTEGRATED_HOST") == "1" and
        System.get_env("ANTITHESIS_GUEST") == "1" do
-    @integrated_guest true
+    @guest_health_gate :integrated
     @native_execution_ready false
     @collector Collector
     @zfs_io Lilly.Host.ZFSIO
     @ownership OverallsAntithesis.Lilly.IntegratedOwnership
     @executor OverallsAntithesis.Lilly.GuestExecutor
   else
-    @integrated_guest false
-
     if System.get_env("ANTITHESIS_HARNESS") == "1" do
       @native_execution_ready false
-      @collector OverallsAntithesis.Lilly.Collector
       @zfs_io OverallsAntithesis.Lilly.ZFSIO
       @ownership OverallsAntithesis.Lilly.Ownership
 
+      # The container guest variant has no ZFS. Its STUB storage collector
+      # reports a fixed synthetic pool and guest-vmm slot headroom so Marshall
+      # can admit one emulated guest; nothing native is claimed.
       if System.get_env("ANTITHESIS_GUEST") == "1" do
+        @guest_health_gate :stub_storage
+        @collector OverallsAntithesis.Lilly.StubStorageCollector
         @executor OverallsAntithesis.Lilly.GuestExecutor
       else
+        @guest_health_gate nil
+        @collector OverallsAntithesis.Lilly.Collector
         @executor OverallsAntithesis.Lilly.ControlledExecutor
+        @stub_storage true
       end
     else
+      @guest_health_gate nil
+      @stub_storage false
       @native_execution_ready true
       @collector Collector
       @zfs_io Lilly.Host.ZFSIO
@@ -42,13 +49,21 @@ defmodule Lilly.Control.Runtime do
     end
   end
 
-  if @integrated_guest do
+  if @guest_health_gate != nil do
     # @cc [owner:ghuntley,label:capacity;verification] integrated-guest-health-before-admission
     # Only a measured guest-vmm preflight joined to this complete native sample
     # MAY set integrated execution_ready. Unknown evidence MUST remain false.
-    @spec guest_health?(Config.t(), OverallsProtocol.report()) :: boolean()
-    defp guest_health?(config, report),
-      do: OverallsAntithesis.Lilly.IntegratedHealth.ready?(config, report)
+    # The container stub-storage variant MUST instead require its own labelled
+    # stub report and guest-vmm preflight; it never claims native ZFS.
+    if @guest_health_gate == :integrated do
+      @spec guest_health?(Config.t(), OverallsProtocol.report()) :: boolean()
+      defp guest_health?(config, report),
+        do: OverallsAntithesis.Lilly.IntegratedHealth.ready?(config, report)
+    else
+      @spec guest_health?(Config.t(), OverallsProtocol.report()) :: boolean()
+      defp guest_health?(config, report),
+        do: OverallsAntithesis.Lilly.StubStorageHealth.ready?(config, report)
+    end
 
     @spec mode_ready?(map()) :: boolean()
     defp mode_ready?(state) do
@@ -61,8 +76,18 @@ defmodule Lilly.Control.Runtime do
       end
     end
   else
-    @spec guest_health?(Config.t(), OverallsProtocol.report()) :: boolean()
-    defp guest_health?(_config, _report), do: @native_execution_ready
+    if @stub_storage do
+      # @cc [owner:ghuntley,label:capacity;verification] stub-storage-placement-readiness
+      # The controlled harness release MAY advertise placement readiness only
+      # from a report the selected stub substrate fully backed (measured host
+      # headroom, stub pool totals, a digest-verified stub image). Its executor
+      # still records requests without any execution claim.
+      @spec guest_health?(Config.t(), OverallsProtocol.report()) :: boolean()
+      defp guest_health?(_config, report), do: OverallsAntithesis.Lilly.StubStorage.ready?(report)
+    else
+      @spec guest_health?(Config.t(), OverallsProtocol.report()) :: boolean()
+      defp guest_health?(_config, _report), do: @native_execution_ready
+    end
 
     if @native_execution_ready do
       @spec mode_ready?(map()) :: boolean()
@@ -1055,7 +1080,7 @@ defmodule Lilly.Control.Runtime do
   # this runtime within fifteen seconds of sampling, terminal stream authority and a
   # completed observation of every current placement/epoch/generation. Collection alone,
   # stale actor messages and pre-restart journals MUST NOT establish readiness.
-  if {@integrated_guest, @native_execution_ready} != {false, false} do
+  if @native_execution_ready or @guest_health_gate != nil do
     @spec readiness(map(), DateTime.t()) :: boolean()
     def readiness(state, now \\ DateTime.utc_now()) do
       age =

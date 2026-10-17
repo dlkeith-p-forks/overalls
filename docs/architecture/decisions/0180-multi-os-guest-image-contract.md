@@ -6,12 +6,12 @@
 - Implementation: partial
 - Components: Nix guest builders, Protocol, Lilly, Marshall, guest-images
 - Supersedes: none
-- Superseded by: ADR-0188
+- Superseded by: ADR-0190
 
 ## Context
 
 Historical decision and implementation evidence are retained below.
-[ADR-0188](0188-native-kernel-provenance-and-admission.md) replaces this
+[ADR-0190](0190-native-kernel-provenance-and-admission.md) replaces this
 decision, retaining its foreign Linux and native metadata choices while
 requiring real kernel artifacts and native evidence before capability
 admission. Current native capability rows are all false and image assembly

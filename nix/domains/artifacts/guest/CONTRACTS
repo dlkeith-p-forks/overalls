@@ -44,7 +44,8 @@ and Lilly's boot-bound vsock gate. Serial output MUST remain read-only without
 root autologin. Guest SSH MUST deny root login, require a current per-user account
 roster from the private Audi service before sshd starts, and authorize each
 offered key against the current VM, account and Cedar grant. SSH MUST be
-public-key only, use certified per-boot host keys kept only in /run, and remain behind Audi's VM-bound
+public-key only, use certified per-boot host keys kept only in volatile runtime
+storage (/run on Linux and /var/run/overalls on native guests), and remain behind Audi's VM-bound
 authorization. User homes MUST survive account deactivation.
 
 @cc [owner:ghuntley,label:security] guest-network-address-scope

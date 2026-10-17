@@ -11,11 +11,7 @@ fn run() -> std::io::Result<()> {
             Err(_) => continue,
         };
         // Malformed input, a rejected peer and a reset affect one connection.
-        let _ = flush::answer(&mut connection, &boot, || {
-            // SAFETY: sync takes no input and cannot execute request data.
-            unsafe { libc::sync() };
-            Ok(())
-        });
+        let _ = flush::answer(&mut connection, &boot, native_guest::flush_root);
     }
 }
 

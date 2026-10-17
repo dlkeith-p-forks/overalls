@@ -7,4 +7,25 @@ unhashed archive, or host compiler path MUST NOT enter a native image identity.
 The metadata derivation MAY produce a source/build receipt before a cross kernel
 toolchain is available, but it MUST mark the kernel artifact as unavailable rather
 than inventing a bootable image. Native admission remains closed until a built
-kernel provides a verified byte count and digest for the receipt under ADR-0188.
+kernel provides a verified byte count/digest and the matching image has recorded
+boot, CID, malformed-input, reset, isolation and recovery evidence under ADR-0190.
+
+@cc [owner:ghuntley,label:security;recovery] freebsd-static-transport-boundary
+FreeBSD socket creation and bind MUST require root privilege and use the reviewed vendor family
+45, guest CID 3 and peer host CID 2. Socket and queue allocations MUST remain
+bounded. The static driver MUST refuse runtime detach and unload after interrupt
+setup; reset and shutdown MUST fence sockets while retaining interrupt-visible
+resources until VM disposal. Guest-initiated streams and hardware hot unplug MUST
+NOT be claimed without separate implementation and machine evidence.
+
+@cc [owner:ghuntley,label:protocol;recovery] native-peer-reset-error
+A validated peer reset MUST close the matching native stream and report
+ECONNRESET to the socket user. Directional shutdown MUST preserve its separate
+read/write semantics instead of being treated as a transport reset.
+
+@cc [owner:ghuntley,label:verification;security] native-booted-build-identity
+Both native socket families MUST expose read-only level-AF_VSOCK option 1 as
+exactly 64 lowercase hexadecimal build-input digest bytes and one NUL. Short
+buffers, sets, fenced sockets and unavailable transports MUST refuse. The token
+MUST bind full source, patch, configuration, build-recipe and compiler inputs independently of
+the kernel file digest, and MUST NOT be called cryptographic guest attestation.

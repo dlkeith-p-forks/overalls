@@ -54,7 +54,7 @@ VM-only access does not expose the task transcript. Focused database/UI and
 synthetic browser checks passed for persisted grants and authority integration;
 native transport revocation and physical recovery remain unverified.
 
-[ADR-0188](0188-native-kernel-provenance-and-admission.md) replaces ADR-0180 and records the cross-OS guest
+[ADR-0190](0190-native-kernel-provenance-and-admission.md) replaces ADR-0180 and records the cross-OS guest
 image contract: Arch Linux and AlmaLinux retain the version-4 Linux shape with
 distinct distribution markers, while native FreeBSD and OmniOS use explicit
 version-6 manifests and version-3 bundles. The illumos constructor records
@@ -65,10 +65,22 @@ boundaries while selecting the validated boot path. Native manifests bind
 kernel provenance, and Lilly requires a boot-bound kernel response before
 credentials or readiness. The implementation remains partial: native capability
 rows are all false, source receipts contain no artifact bytes, and image
-construction refuses before copying a stock disk. Focused protocol/Lilly tests
-and native receipt evaluation are source evidence; cross-built kernels,
-complete native agents, `terminald`, boot, recovery and fleet evidence remain
-absent. The detailed Windows choices remain in ADR-0169 through ADR-0173.
+construction refuses before copying a stock disk. Pinned builds link the complete
+FreeBSD kernel, twenty native Lyra executables and both terminal daemons.
+OmniOS native nine-module/full-payload clean-export assembly, QEMU file/runtime
+checks and diagnostic Firecracker executing-token/transport checks passed.
+FreeBSD has source-qualified transport, complete-service, same-boot daemon
+recovery, three-boot mounted-root growth and two-boot IPv4/router/TAP policy
+results. The final reviewed image, including blocking UFS suspension/resume,
+passed all five scoped service/growth/policy/daemon-recovery/SIGKILL-recovery
+variants. OmniOS complete services, direct native peer-VM/jail/host isolation,
+physical stable-media/power-loss durability, reset/DMA and fleet acceptance remain open.
+The completion-corrected OmniOS image reaches console login in the paired
+direct-only QEMU diagnostic, while its first Firecracker service run misses
+the boot deadline without a kernel or service response.
+The [review](../reviews/2026-10-17-native-kernel-attestation.md) records exact
+artifacts and limits; candidate evidence grants no catalog admission. The
+detailed Windows choices remain in ADR-0169 through ADR-0173.
 
 [ADR-0174](0174-user-threads.md) adds the user-level Threads domain. Threads
 persist a pending task and typed machine specification, then bind the existing
@@ -381,7 +393,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
 | [ADR-0186](0186-covenant-contract-verification.md) | accepted | partial | Covenant contract verification across Elixir applications |
 | [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |
-| [ADR-0188](0188-native-kernel-provenance-and-admission.md) | accepted | partial | Native kernel provenance and fail-closed multi-OS admission |
+| [ADR-0190](0190-native-kernel-provenance-and-admission.md) | accepted | partial | Native kernel provenance and fail-closed multi-OS admission |
 | [ADR-0180](0180-multi-os-guest-image-contract.md) | superseded | partial | Multi-OS guest image families on the Firecracker fleet |
 | [ADR-0174](0174-user-threads.md) | superseded | partial | User threads own isolated work machines |
 | [ADR-0175](0175-thread-sharing-and-bound-machine-authority.md) | accepted | partial | Thread sharing and bound machine authority |

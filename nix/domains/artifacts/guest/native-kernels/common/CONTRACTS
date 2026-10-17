@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:security;protocol] native-vsock-core-boundary
+The shared stream core MUST remain allocation-free and independent of OS socket
+and queue APIs. Its wrappers MUST serialize transitions, bound queues and socket
+counts, validate buffer lengths, and fence callbacks before releasing memory.
+Parser and state-machine tests MUST NOT be presented as native driver acceptance.

@@ -33,4 +33,30 @@ defmodule ZiggyAccountingContractTest do
     assert Ziggy.Completion.wire(%{"outcome" => :ok, "tokens" => 2, "ignored" => :secret}) ==
              %{"outcome" => :ok, "tokens" => 2}
   end
+
+  @tag obligation: "ziggy.accounting.I4"
+  test "completion validation rejects unknown fields and out of range values" do
+    valid = %{
+      "outcome" => "completed",
+      "tokens" => %{"total_tokens" => 2},
+      "completeness" => "complete",
+      "duration_ms" => 10,
+      "request_bytes" => 1,
+      "response_bytes" => 2,
+      "provider_request_id" => "req-1",
+      "http_status" => 200
+    }
+
+    assert {:ok, ^valid} = Ziggy.Completion.validate(valid)
+    assert {:error, :invalid_request} = Ziggy.Completion.validate(Map.put(valid, "secret", "x"))
+    assert {:error, :invalid_request} =
+             Ziggy.Completion.validate(%{valid | "duration_ms" => -1})
+  end
+
+  @tag obligation: "ziggy.accounting.I5"
+  test "version fence backoff doubles and caps" do
+    fence = Ziggy.VersionFence.new(fence_backoff_ms: 30_000)
+    {fence, 30_000, _} = Ziggy.VersionFence.refused(fence)
+    {_fence, 60_000, _} = Ziggy.VersionFence.refused(fence)
+  end
 end

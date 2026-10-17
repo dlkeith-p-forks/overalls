@@ -1,0 +1,100 @@
+diff --git a/usr/src/uts/common/fs/sockfs/sockcommon_sops.c b/usr/src/uts/common/fs/sockfs/sockcommon_sops.c
+index 768a001..cb77302 100644
+--- a/usr/src/uts/common/fs/sockfs/sockcommon_sops.c
++++ b/usr/src/uts/common/fs/sockfs/sockcommon_sops.c
+@@ -1017,6 +1017,13 @@ so_connected(sock_upper_handle_t sock_handle, sock_connid_t id,
+ 	so_notify_connected(so);
+ }
+ 
++/**
++ * @cc [owner:ghuntley,label:security;recovery] opt-in-listener-disconnect
++ * Only SM_LISTENERR listeners opt into permanent accept failure. Disconnect
++ * MUST publish a sticky ECONNRESET fence and wake accept waiters under
++ * so_acceptq_lock before releasing so_lock. Ordinary protocols MUST retain
++ * existing behavior.
++ */
+ int
+ so_disconnected(sock_upper_handle_t sock_handle, sock_connid_t id, int error)
+ {
+@@ -1033,6 +1040,13 @@ so_disconnected(sock_upper_handle_t sock_handle, sock_connid_t id, int error)
+ 
+ 	so->so_proto_connid = id;
+ 	soisdisconnected(so, error);
++	if ((so->so_mode & SM_LISTENERR) != 0 &&
++	    (so->so_state & SS_ACCEPTCONN) != 0 && error != 0) {
++		mutex_enter(&so->so_acceptq_lock);
++		so->so_state |= SS_LISTENERR;
++		cv_broadcast(&so->so_acceptq_cv);
++		mutex_exit(&so->so_acceptq_lock);
++	}
+ 	so_notify_disconnected(so, connect_failed, error);
+ 
+ 	return (0);
+@@ -1131,7 +1145,8 @@ so_newconn(sock_upper_handle_t parenthandle,
+ 	*sock_upcallsp = &so_upcalls;
+ 
+ 	mutex_enter(&so->so_acceptq_lock);
+-	if (so->so_state & (SS_CLOSING|SS_FALLBACK_PENDING|SS_FALLBACK_COMP)) {
++	if (so->so_state &
++	    (SS_CLOSING|SS_FALLBACK_PENDING|SS_FALLBACK_COMP|SS_LISTENERR)) {
+ 		mutex_exit(&so->so_acceptq_lock);
+ 		ASSERT(nso->so_count == 1);
+ 		nso->so_count--;
+diff --git a/usr/src/uts/common/fs/sockfs/sockcommon_subr.c b/usr/src/uts/common/fs/sockfs/sockcommon_subr.c
+index 0cd682e..39cce44 100644
+--- a/usr/src/uts/common/fs/sockfs/sockcommon_subr.c
++++ b/usr/src/uts/common/fs/sockfs/sockcommon_subr.c
+@@ -63,6 +63,12 @@ boolean_t so_debug_length = B_FALSE;
+ static boolean_t so_check_length(sonode_t *so);
+ #endif
+ 
++/**
++ * @cc [owner:ghuntley,label:security;recovery] listener-error-before-dequeue
++ * A protocol-fenced listener MUST return ECONNRESET before returning any queued
++ * child or sleeping. SO_ERROR consumption MUST NOT clear
++ * this fence. The accept-queue mutex MUST serialize error checks and waiting.
++ */
+ static int
+ so_acceptq_dequeue_locked(struct sonode *so, boolean_t dontblock,
+     struct sonode **nsop)
+@@ -71,14 +77,11 @@ so_acceptq_dequeue_locked(struct sonode *so, boolean_t dontblock,
+ 
+ 	*nsop = NULL;
+ 	ASSERT(MUTEX_HELD(&so->so_acceptq_lock));
+-	while ((nso = list_remove_head(&so->so_acceptq_list)) == NULL) {
+-		/*
+-		 * No need to check so_error here, because it is not
+-		 * possible for a listening socket to be reset or otherwise
+-		 * disconnected.
+-		 *
+-		 * So now we just need check if it's ok to wait.
+-		 */
++	for (;;) {
++		if ((so->so_state & SS_LISTENERR) != 0)
++			return (ECONNRESET);
++		if ((nso = list_remove_head(&so->so_acceptq_list)) != NULL)
++			break;
+ 		if (dontblock)
+ 			return (EWOULDBLOCK);
+ 		if (so->so_state & (SS_CLOSING | SS_FALLBACK_PENDING))
+diff --git a/usr/src/uts/common/sys/socketvar.h b/usr/src/uts/common/sys/socketvar.h
+index 1e48b00..0d6fca4 100644
+--- a/usr/src/uts/common/sys/socketvar.h
++++ b/usr/src/uts/common/sys/socketvar.h
+@@ -297,7 +297,7 @@ struct sonode {
+ 
+ #define	SS_ASYNC		0x00000100 /* async i/o notify */
+ #define	SS_ACCEPTCONN		0x00000200 /* listen done */
+-/*	unused			0x00000400 */	/* was SS_HASCONNIND */
++#define	SS_LISTENERR		0x00000400 /* sticky protocol listener failure */
+ #define	SS_SAVEDEOR		0x00000800 /* Saved MSG_EOR rcv side state */
+ 
+ #define	SS_RCVATMARK		0x00001000 /* at mark on input */
+@@ -396,6 +396,7 @@ struct sonode {
+ #define	SM_ACCEPTSUPP		0x400	/* can handle accept() */
+ #define	SM_SENDFILESUPP		0x800	/* Private: proto supp sendfile  */
+ #define	SM_DEFERERR		0x1000	/* Private: defer so_error delivery */
++#define	SM_LISTENERR		0x2000	/* protocol can fence a listener */
+ 
+ /*
+  * Socket versions. Used by the socket library when calling _so_socket().

@@ -33,6 +33,8 @@ Open question: Can a hosted integration fixture retain Audi's actual pre-NAT sou
 
 **Proof boundary:** Draft selection: `integrated-zfs-satellite`. proposed-real-guest-attached-named-integration; unbuilt; independent witness: actual pre-NAT guest identity, current attachment, exact origin/header and upstream effect. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
+**Selected profile (2026-10-17):** `satellite-standin` selects this command with the origin and satellite overlays and a labelled guest stand-in. The command still needs a current running VM; the hosted controlled Lilly pool reports unavailable capacity, so it records unexercised in that graph. The stand-in is not a guest and supplies no VM binding. No hosted run exists.
+
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
 ## Supporting assertion snapshot

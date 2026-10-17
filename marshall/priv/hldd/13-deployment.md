@@ -329,10 +329,59 @@ before a stock disk is copied. The OmniOS row uses the explicit `illumosGuest`
 constructor. Bundle version 3 is implemented and structurally tested, but
 signed rollout and launch remain unrecorded.
 
-The native service package is also incomplete. Its rc.d/SMF supervisor and
-readiness PID checks are source evidence; the cross-built Lyra closure,
-native `terminald` and OS-native SSH configuration remain unavailable on the
-Linux release builder. Service files alone cannot confer fleet admission.
+`freebsd-kernel-candidate` is a separate complete cross-built kernel, while
+`illumos-kernel-object-check` compiles the modern framework, all consumers and
+the custom socket/transport code. The latter emits ELF object and input/hash
+evidence; it does not emit natively linked kernel modules or a bootable image.
+The separate native link/install helper verified and linked all nine illumos
+modules in the matching scratch guest, installed them into an alternate ZFS boot
+environment and rebuilt its boot archive. The original was preserved and the
+guest shut down cleanly. That helper refuses the running root and cannot grant
+native admission. The corrected clone passes QEMU boot and a native TCP bind;
+Firecracker virtio-vsock execution remains open.
+The recorded native Lyra package linked eighteen production executables for both libc families,
+with separate test-only probes.
+Its exact interpreters, non-executable stacks and absence of Nix/Linux runtime
+references are checked. The official OmniOS SDK carries explicit content hashes
+and archived-source TLS acquisition limits. None of these artifacts replaces
+the unavailable receipts selected by the image builders.
+
+Both native terminal daemons also cross-link with native interpreters and
+verified manifests. The integrated closure remains incomplete: OS-native
+SSH/service execution and the full boot/recovery scenarios
+are missing. The rc.d/SMF supervisor, readiness PID checks and linked binaries
+provide packaging evidence only; they cannot confer fleet admission.
+The new nested-KVM `native-freebsd-transport` gate and its separate test-only
+listener bind credit-window exchanges to the executing token and exact
+disk/firmware/VMM hashes. A scoped 139-second run passed; subsequent candidate
+inputs require a fresh recorded execution. It does not enable the production
+services or catalog.
+
+The separate [FreeBSD candidate](repo:nix/domains/artifacts/guest/freebsd/candidate.nix)
+passed two offline QEMU boots with all installed file hashes, native Git/trust,
+kernel digest and executing sysctl token checks. The
+[OmniOS kit](repo:nix/domains/artifacts/guest/omnios/README.md) packages exact base
+GPT, interpreter, kernel objects, complete service/bootstrap and Git roots. Its
+root-only helper verifies a separately identified unimported pool, preserves the
+base BE, installs into a clone and exports before fresh-boot verification. An
+export failure retains the mounted workspace for recovery. Nine helper safety
+tests passed for the recorded kit. Eleven updated helper regressions and pinned
+Ruff/ty checks pass with the offline vendor-service profile. Native execution on the matching image imported the
+separate pool, linked/installed all nine modules and 758 payload entries into a
+clone, rebuilt its boot archive, selected its bootfs and cleanly exported. A
+separate QEMU boot reached that clone; fresh-boot verification and loader/cache
+persistence remain pending. Both outputs retain native admission false.
+
+The new growth service runs after local filesystems and before native bootstrap
+on every boot, with a mandatory volatile mounted-root receipt. Its production
+binary expands the target set to ten per OS; the exact twenty-executable native
+package cross-build passed. Three native FreeBSD QEMU boots passed unchanged
+root plus two expansions and retained-data/GPT/foreign-disk checks. Final
+Firecracker composition and OmniOS growth remain pending. The native isolation
+machine driver builds and uses actual packaged
+Lilly router/TAP rules; a Linux nft smoke passed, while the native two-boot
+scenario remains unexecuted. These are disposable verification programs, not new
+deployed hosts or application domains.
 
 The Windows guest spike ([ADR-0169](repo:docs/architecture/decisions/0169-firmware-booted-windows-guests.md))
 adds build-time requirements without touching fleet activation. The builder

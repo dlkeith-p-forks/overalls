@@ -31,3 +31,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Reports reject pools whose free capacity exceeds total, whose allocation credit exceeds used bytes, or whose identities are duplicated.
 - **kind:** security
 - **status:** active
+
+### overalls_protocol.codecs.I5 — Capacity observations are bounded and explicit
+- **scope:** `OverallsProtocol.Capacity.valid?/1`, `proof?/1`
+- **must:** Nil remains the only unknown value; known observations require bounded non-negative headroom, finite coverage, and complete epoch/generation/outcome proofs, while malformed or oversized proofs are rejected.
+- **kind:** security
+- **status:** active
+
+### overalls_protocol.codecs.I6 — Address profiles cannot escape reserved ranges
+- **scope:** `OverallsProtocol.AddressPool.address/2`, `addresses/2`
+- **must:** Only supported profiles and allocatable slots produce addresses; network and broadcast slots are rejected, and inception receives its paired address without changing ordinary profile allocation.
+- **kind:** security
+- **status:** active

@@ -1,0 +1,201 @@
+--- a/src/vmm/src/device_manager/legacy.rs
++++ b/src/vmm/src/device_manager/legacy.rs
+@@ -12,8 +12,9 @@
+ use acpi_tables::{Aml, aml};
+ 
+ use crate::devices::legacy::acpi_pm_timer::{ACPI_PM_TIMER_PORT, ACPI_PM_TIMER_SIZE};
++use crate::devices::legacy::cloudhv_power::{CLOUDHV_POWER_PORT, CLOUDHV_POWER_SIZE};
+ use crate::devices::legacy::cmos_rtc::{CMOS_RTC_PORT, CMOS_RTC_SIZE};
+-use crate::devices::legacy::{AcpiPmTimer, CmosRtc, I8042Device, SerialDevice};
++use crate::devices::legacy::{AcpiPmTimer, CloudHvPower, CmosRtc, I8042Device, SerialDevice};
+ use crate::vstate::bus::BusError;
+ use crate::vstate::vm::KvmVm;
+ 
+@@ -38,6 +39,8 @@
+     pub acpi_pm_timer: Arc<Mutex<AcpiPmTimer>>,
+     // Read-only CMOS wall clock for firmware and Windows guests.
+     pub cmos_rtc: Arc<Mutex<CmosRtc>>,
++    // Fixed CloudHv firmware shutdown port.
++    pub cloudhv_power: Arc<Mutex<CloudHvPower>>,
+ }
+ 
+ impl PortIODeviceManager {
+@@ -76,6 +79,12 @@
+             ACPI_PM_TIMER_SIZE,
+         )?;
+         io_bus.insert(self.cmos_rtc.clone(), CMOS_RTC_PORT, CMOS_RTC_SIZE)?;
++
++        io_bus.insert(
++            self.cloudhv_power.clone(),
++            CLOUDHV_POWER_PORT,
++            CLOUDHV_POWER_SIZE,
++        )?;
+ 
+         vm.register_irq(
+             self.stdio_serial
+@@ -169,6 +178,7 @@
+     fn test_register_legacy_devices() {
+         let vm = setup_vm_with_memory(0x1000);
+         vm.setup_irqchip().unwrap();
++        let shutdown = EventFd::new(libc::EFD_NONBLOCK).unwrap();
+         let mut ldm = PortIODeviceManager {
+             stdio_serial: Arc::new(Mutex::new(SerialDevice {
+                 serial: Serial::with_events(
+@@ -185,8 +195,16 @@
+             )),
+             acpi_pm_timer: Arc::new(Mutex::new(AcpiPmTimer::new())),
+             cmos_rtc: Arc::new(Mutex::new(CmosRtc::new())),
++            cloudhv_power: Arc::new(Mutex::new(CloudHvPower::new(shutdown.try_clone().unwrap()))),
+         };
+         ldm.register_devices(&vm).unwrap();
++        vm.pio_bus.write(CLOUDHV_POWER_PORT, &[2]).unwrap();
++        assert_eq!(
++            shutdown.read().unwrap_err().kind(),
++            std::io::ErrorKind::WouldBlock
++        );
++        vm.pio_bus.write(CLOUDHV_POWER_PORT, &[0x34]).unwrap();
++        assert_eq!(shutdown.read().unwrap(), 1);
+         let mut status_d = [0u8; 1];
+         vm.pio_bus.write(CMOS_RTC_PORT, &[0x0d]).unwrap();
+         vm.pio_bus.read(CMOS_RTC_PORT + 1, &mut status_d).unwrap();
+--- a/src/vmm/src/device_manager/mod.rs
++++ b/src/vmm/src/device_manager/mod.rs
+@@ -25,12 +25,12 @@
+ 
+ use crate::EventManager;
+ use crate::device_manager::acpi::ACPIDeviceError;
+-#[cfg(target_arch = "x86_64")]
+-use crate::devices::legacy::{AcpiPmTimer, CmosRtc, I8042Device};
+ #[cfg(target_arch = "aarch64")]
+ use crate::devices::legacy::RTCDevice;
+ use crate::devices::legacy::SerialDevice;
+ use crate::devices::legacy::serial::{SerialOut, SerialOutInner};
++#[cfg(target_arch = "x86_64")]
++use crate::devices::legacy::{AcpiPmTimer, CloudHvPower, CmosRtc, I8042Device};
+ use crate::devices::pseudo::BootTimer;
+ use crate::devices::virtio::ActivateError;
+ use crate::devices::virtio::balloon::BalloonError;
+@@ -223,6 +223,11 @@
+             i8042,
+             acpi_pm_timer: Arc::new(Mutex::new(AcpiPmTimer::new())),
+             cmos_rtc: Arc::new(Mutex::new(CmosRtc::new())),
++            cloudhv_power: Arc::new(Mutex::new(CloudHvPower::new(
++                vcpus_exit_evt
++                    .try_clone()
++                    .map_err(DeviceManagerCreateError::EventFd)?,
++            ))),
+         };
+         legacy_devices.register_devices(vm)?;
+         Ok(legacy_devices)
+@@ -822,6 +827,9 @@
+             )),
+             acpi_pm_timer: Arc::new(Mutex::new(AcpiPmTimer::new())),
+             cmos_rtc: Arc::new(Mutex::new(CmosRtc::new())),
++            cloudhv_power: Arc::new(Mutex::new(CloudHvPower::new(
++                EventFd::new(libc::EFD_NONBLOCK).unwrap(),
++            ))),
+         };
+ 
+         DeviceManager {
+--- a/src/vmm/src/devices/legacy/mod.rs
++++ b/src/vmm/src/devices/legacy/mod.rs
+@@ -8,6 +8,8 @@
+ //! Implements legacy devices (UART, RTC etc).
+ #[cfg(target_arch = "x86_64")]
+ pub mod acpi_pm_timer;
++#[cfg(target_arch = "x86_64")]
++pub mod cloudhv_power;
+ #[cfg(target_arch = "x86_64")]
+ pub mod cmos_rtc;
+ mod i8042;
+@@ -25,6 +27,8 @@
+ 
+ #[cfg(target_arch = "x86_64")]
+ pub use self::acpi_pm_timer::AcpiPmTimer;
++#[cfg(target_arch = "x86_64")]
++pub use self::cloudhv_power::CloudHvPower;
+ #[cfg(target_arch = "x86_64")]
+ pub use self::cmos_rtc::CmosRtc;
+ pub use self::i8042::{I8042Device, I8042Error as I8042DeviceError};
+--- a/src/vmm/src/devices/legacy/cloudhv_power.rs
++++ b/src/vmm/src/devices/legacy/cloudhv_power.rs
+@@ -0,0 +1,79 @@
++// Copyright 2026 Overalls contributors.
++// SPDX-License-Identifier: Apache-2.0
++
++//! The fixed CloudHv firmware shutdown port, separate from ACPI PM registers.
++
++use std::sync::{Arc, Barrier};
++
++use vmm_sys_util::eventfd::EventFd;
++
++use crate::logger::error;
++use crate::vstate::bus::BusDevice;
++
++/// edk2 CloudHv ResetSystemLib's fixed shutdown port.
++pub const CLOUDHV_POWER_PORT: u64 = 0x600;
++/// The firmware uses one byte at this port.
++pub const CLOUDHV_POWER_SIZE: u64 = 1;
++
++/// A firmware poweroff request using the existing VMM exit event.
++#[derive(Debug)]
++pub struct CloudHvPower {
++    exit_evt: EventFd,
++}
++
++impl CloudHvPower {
++    /// Bind the same event which stops the VMM for a guest i8042 reset.
++    pub fn new(exit_evt: EventFd) -> Self {
++        Self { exit_evt }
++    }
++}
++
++/// @cc [owner:ghuntley,label:protocol;recovery] cloudhv-shutdown-exact-request
++/// Only the single-byte S5 value 0x34 at the fixed port and offset zero MUST
++/// signal the VMM exit event. Reads and malformed, partial, reset or unknown
++/// writes MUST NOT signal exit. No guest payload bytes may enter diagnostics.
++impl BusDevice for CloudHvPower {
++    fn read(&mut self, _base: u64, _offset: u64, data: &mut [u8]) {
++        data.fill(0xff);
++    }
++
++    fn write(&mut self, base: u64, offset: u64, data: &[u8]) -> Option<Arc<Barrier>> {
++        if base == CLOUDHV_POWER_PORT && offset == 0 && data == [0x34] {
++            if self.exit_evt.write(1).is_err() {
++                error!("Failed to signal firmware shutdown event");
++            }
++        }
++        None
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use std::io::ErrorKind;
++
++    use super::*;
++
++    #[test]
++    fn test_cloudhv_shutdown_exact_request_and_refusals() {
++        let event = EventFd::new(libc::EFD_NONBLOCK).unwrap();
++        let mut device = CloudHvPower::new(event.try_clone().unwrap());
++        let mut data = [0];
++        device.read(CLOUDHV_POWER_PORT, 0, &mut data);
++        assert_eq!(data, [0xff]);
++        for (base, offset, bytes) in [
++            (CLOUDHV_POWER_PORT, 0, &[][..]),
++            (CLOUDHV_POWER_PORT, 0, &[0x34, 0][..]),
++            (CLOUDHV_POWER_PORT, 1, &[0x34][..]),
++            (CLOUDHV_POWER_PORT + 1, 0, &[0x34][..]),
++            (CLOUDHV_POWER_PORT, 0, &[0][..]),
++            (CLOUDHV_POWER_PORT, 0, &[1][..]),
++            (CLOUDHV_POWER_PORT, 0, &[2][..]),
++            (CLOUDHV_POWER_PORT, 0, &[0xff][..]),
++        ] {
++            assert!(device.write(base, offset, bytes).is_none());
++            assert_eq!(event.read().unwrap_err().kind(), ErrorKind::WouldBlock);
++        }
++        assert!(device.write(CLOUDHV_POWER_PORT, 0, &[0x34]).is_none());
++        assert_eq!(event.read().unwrap(), 1);
++    }
++}

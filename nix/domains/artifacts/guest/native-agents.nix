@@ -1,5 +1,7 @@
-{ pkgs, lyra }:
+{ pkgs, lyra, terminald }:
 let
+  bootstrap = import ./native-bootstrap.nix { inherit pkgs lyra; };
+  nativeGit = import ./native-git.nix { inherit pkgs; };
   # @cc [owner:ghuntley,label:security] native-agent-set-complete
   # Every binary listed here MUST be cross-built for the selected native OS;
   # the image builder MUST never copy the Linux Lyra closure into a native
@@ -7,6 +9,8 @@ let
   # bootstrap; readiness MUST remain false until the complete live service set,
   # including sshd, exists on the host-only vsock channel.
   binaries = [
+    "overalls-native-bootstrap"
+    "overalls-native-grow-root"
     "overalls-native-kernel-probed"
     "overalls-native-agentd"
     "overalls-native-flushd"
@@ -29,15 +33,85 @@ let
     "overalls-native-readinessd"
     "overalls-native-trustd"
     "overalls-native-workspaced"
+    "lilly-terminald"
   ];
   copy = os: assert builtins.elem os [ "freebsd" "illumos" ]; pkgs.runCommand "overalls-${os}-guest-agent-binaries" { } ''
     mkdir -p "$out/bin"
     ${pkgs.lib.concatMapStringsSep "\n" (binary: ''
-      install -D -m 0755 ${lyra}/bin/x86_64-unknown-${if os == "freebsd" then "freebsd" else "illumos"}-${binary} "$out/bin/${binary}"
+      install -D -m 0755 ${lyra.native}/bin/x86_64-unknown-${if os == "freebsd" then "freebsd" else "illumos"}-${binary} "$out/bin/${binary}"
     '') binaries}
+    install -D -m 0755 ${terminald.native}/bin/x86_64-unknown-${os}-lilly-terminald "$out/bin/lilly-terminald"
   '';
   freebsdBinaries = copy "freebsd";
   illumosBinaries = copy "illumos";
+  # @cc [owner:ghuntley,label:security] native-sshd-current-authority-only
+  # Native SSH MUST use certified volatile host keys, deny root/password/file
+  # key access, authorize each offered key through the current private
+  # authority and obtain a login receipt before launching a user shell/command.
+  # System PAM remains enabled for native account/expiry checks.
+  # Unavailable reverse DNS MUST NOT delay the SSH handshake; hostnames do not
+  # participate in managed-key or login-receipt authority.
+  sshdConfiguration = os: let
+    binariesPath = if os == "freebsd" then "/usr/local/libexec" else "/opt/overalls/libexec";
+  in pkgs.writeText "overalls-${os}-sshd-config" ''
+    Port 22
+    AddressFamily inet
+    PidFile /var/run/overalls/sshd-native.pid
+    HostKey /var/run/overalls/ssh-host/ssh_host_ed25519_key
+    HostCertificate /var/run/overalls/ssh-host/ssh_host_ed25519_key-cert.pub
+    HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com
+    PermitRootLogin no
+    PubkeyAuthentication yes
+    PasswordAuthentication no
+    PermitEmptyPasswords no
+    KbdInteractiveAuthentication no
+    AuthenticationMethods publickey
+    UsePAM yes
+    UseDNS no
+    AllowAgentForwarding no
+    AllowTcpForwarding no
+    AllowStreamLocalForwarding no
+    X11Forwarding no
+    PermitTunnel no
+    GatewayPorts no
+    PermitUserEnvironment no
+    PermitUserRC no
+    # sshd invokes ForceCommand through the account's Bash -c. Prevent Bash
+    # from reading user startup files until the helper obtains a login receipt.
+    # OpenSSH applies SetEnv after client/PAM environment variables.
+    SetEnv SHLVL=2 BASH_ENV=/dev/null ENV=/dev/null
+    AuthorizedKeysFile none
+    AuthorizedKeysCommand ${binariesPath}/overalls-ssh-authorize authorize %u %t %k
+    AuthorizedKeysCommandUser overalls-ssh
+    ExposeAuthInfo yes
+    ForceCommand ${binariesPath}/overalls-ssh-authorize session
+    LogLevel QUIET
+  '';
+  sshRefresh = os: let
+    binariesPath = if os == "freebsd" then "/usr/local/libexec" else "/opt/overalls/libexec";
+  in pkgs.writeTextFile {
+    name = "overalls-${os}-ssh-refresh";
+    executable = true;
+    text = ''
+      #!/bin/sh
+      set -eu
+      export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      while :; do
+        if ${binariesPath}/overalls-ssh-authorize sync >/dev/null 2>&1 &&
+           ${binariesPath}/overalls-host-certificate >/dev/null 2>&1; then
+          : > /var/run/overalls/ssh-ready
+        else
+          rm -f /var/run/overalls/ssh-ready
+        fi
+        sleep 2
+      done
+    '';
+  };
+  sudoConfiguration = os: pkgs.writeText "overalls-${os}-sudoers" ''
+    Defaults env_reset
+    root ALL=(ALL:ALL) ALL
+    @includedir ${if os == "freebsd" then "/usr/local/etc/sudoers.d" else "/etc/sudoers.d"}
+  '';
   freebsdRc = pkgs.writeText "overalls-native-agents-freebsd.rc" ''
     # The rc.d supervisor is enabled only after the image's network bootstrap.
     overalls_native_agents_enable="YES"
@@ -52,12 +126,15 @@ let
         <dependency name="network" grouping="require_all" restart_on="error" type="service">
           <service_fmri value="svc:/network/physical:default"/>
         </dependency>
+        <dependency name="bootstrap" grouping="require_all" restart_on="error" type="service">
+          <service_fmri value="svc:/site/overalls-native-bootstrap:default"/>
+        </dependency>
         <dependency name="multi-user" grouping="require_all" restart_on="error" type="service">
           <service_fmri value="svc:/milestone/multi-user:default"/>
         </dependency>
         <exec_method type="method" name="start" exec="/opt/overalls/libexec/native-agents-start" timeout_seconds="30"/>
         <exec_method type="method" name="stop" exec=":kill" timeout_seconds="30"/>
-        <stability value="Uncommitted"/>
+        <stability value="Unstable"/>
         <template>
           <common_name><loctext xml:lang="C">Overalls native guest agents</loctext></common_name>
         </template>
@@ -70,18 +147,31 @@ let
   # together with the supervisor. SSH is part of the declared capability set;
   # roster/certificate or sshd failure therefore fails service startup and
   # withholds readiness instead of being hidden by an ignored exit status.
+
+  # @cc [owner:ghuntley,label:security] native-callback-home-safe-preservation
+  # An existing /var/empty MUST be a root-owned real directory without group
+  # or other write permission. Safe existing permissions and native immutable
+  # flags MUST remain unchanged; only a missing directory may be initialized.
   supervisor = os: let
     # Native roots do not contain the Linux builder's Nix store or shell.
     binariesPath = if os == "freebsd" then "/usr/local/libexec" else "/opt/overalls/libexec";
     sshd = if os == "freebsd" then "/usr/sbin/sshd" else "/usr/lib/ssh/sshd";
-    sshdConfig = if os == "freebsd" then "" else "-f /etc/ssh/sshd_config";
+    sshdConfig = "-f /etc/overalls/sshd_config";
   in pkgs.writeTextFile {
     name = "overalls-native-agents-${os}-supervisor";
     executable = true;
     text = ''
     #!/bin/sh
     set -eu
+    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    # Public trust must remain readable by the unprivileged SSH callback.
+    # Private keys/state set their own 0600 modes in root-only runtime dirs.
+    umask 022
     run_dir=/var/run/overalls
+    # The bootstrap publishes this volatile receipt only after validated MMDS
+    # identity and exact routes are installed. rc ordering alone cannot prove
+    # that its start method succeeded.
+    [ -f "$run_dir/bootstrap.json" ] || exit 1
     stop_file="$run_dir/agents.stop"
     mkdir -p "$run_dir"
     rm -f "$stop_file" "$run_dir/ssh-ready"
@@ -108,6 +198,40 @@ let
     }
     trap cleanup EXIT
     trap 'exit 0' HUP INT TERM
+
+    # sshd's public-key callback is unprivileged. Account reconciliation and
+    # per-boot certificate installation remain privileged supervisor work.
+    if [ ! -e /var/empty ] && [ ! -L /var/empty ]; then
+      mkdir /var/empty
+      chown 0:0 /var/empty
+      chmod 0755 /var/empty
+    fi
+    test -d /var/empty
+    test ! -L /var/empty
+    # POSIX numeric ls keeps these owner/mode fields portable across both native
+    # utilities. /var and this fixed path are root controlled throughout startup.
+    empty_metadata=$(LC_ALL=C /bin/ls -ldn /var/empty)
+    set -- $empty_metadata
+    [ "$3" = 0 ]
+    case "$1" in
+      d????-??-?) ;;
+      *) exit 1 ;;
+    esac
+    ${if os == "freebsd" then ''
+    if ! /usr/sbin/pw groupshow overalls-ssh >/dev/null 2>&1; then
+      /usr/sbin/pw groupadd overalls-ssh
+    fi
+    if ! /usr/sbin/pw usershow overalls-ssh >/dev/null 2>&1; then
+      /usr/sbin/pw useradd overalls-ssh -g overalls-ssh -d /var/empty -s /usr/sbin/nologin -w no
+    fi
+    '' else ''
+    if ! /usr/bin/getent group overalls-ssh >/dev/null 2>&1; then
+      /usr/sbin/groupadd overalls-ssh
+    fi
+    if ! /usr/bin/getent passwd overalls-ssh >/dev/null 2>&1; then
+      /usr/sbin/useradd -g overalls-ssh -d /var/empty -s /usr/bin/false overalls-ssh
+    fi
+    ''}
 
     supervise() {
       service_name="$1"
@@ -165,6 +289,9 @@ let
 
     supervise sshd ${sshd} -D ${sshdConfig} &
     supervisor_pids="$supervisor_pids $!"
+    : > "$run_dir/ssh-ready"
+    supervise overalls-native-ssh-refresh ${binariesPath}/native-ssh-refresh &
+    supervisor_pids="$supervisor_pids $!"
 
     # Keep the parent in the foreground for rc.d and svc.startd. The process
     # markers are health evidence, not readiness by themselves; the native
@@ -176,13 +303,21 @@ let
   };
   freebsdSupervisor = supervisor "freebsd";
   illumosSupervisor = supervisor "illumos";
+  # @cc [owner:ghuntley,label:security] native-workspace-system-git-ownership
+  # Native Git MUST permit managed accounts to use the root-owned shared
+  # checkouts under /workspace only. Repository-owned configuration MUST NOT
+  # supply this ownership exception and unrelated paths MUST remain protected.
+  gitConfiguration = pkgs.writeText "overalls-native-shared-workspace-gitconfig" ''
+    [safe]
+      directory = /workspace/*
+  '';
   freebsdService = pkgs.writeTextFile {
     name = "overalls-native-agents-freebsd";
     executable = true;
     text = ''
     #!/bin/sh
     # PROVIDE: overalls_native_agents
-    # REQUIRE: NETWORKING netif routing
+    # REQUIRE: NETWORKING netif routing overalls_native_bootstrap
     # KEYWORD: shutdown
     . /etc/rc.subr
     name=overalls_native_agents
@@ -205,32 +340,55 @@ let
     exit 0
     '';
   };
+  # @cc [owner:ghuntley,label:security;build] native-freebsd-vendor-trust-snapshot
+  # The immutable native trust base MUST be copied from the pinned official
+  # Git runtime bundle, independently of the mutable system CA destination.
   freebsd = pkgs.runCommand "overalls-freebsd-guest-agents" {} ''
-    mkdir -p "$out/bin" "$out/usr/local/libexec" "$out/etc/rc.d" "$out/etc/rc.conf.d"
+    mkdir -p "$out/bin" "$out/usr/local/libexec" "$out/usr/local/etc/rc.d" "$out/etc/rc.conf.d" "$out/etc/overalls"
     cp -a ${freebsdBinaries}/bin/. "$out/bin/"
     cp -a ${freebsdBinaries}/bin/. "$out/usr/local/libexec/"
+    chmod u+w "$out/bin" "$out/usr/local/libexec"
     install -m 0755 ${freebsdSupervisor} "$out/usr/local/libexec/native-agents-supervisor"
-    install -m 0755 ${freebsdService} "$out/etc/rc.d/overalls-native-agents"
-    install -m 0644 ${freebsdRc} "$out/etc/rc.conf.d/overalls-native-agents"
+    install -m 0755 ${freebsdService} "$out/usr/local/etc/rc.d/overalls-native-agents"
+    install -m 0644 ${freebsdRc} "$out/etc/rc.conf.d/overalls_native_agents"
+    install -m 0644 ${sshdConfiguration "freebsd"} "$out/etc/overalls/sshd_config"
+    install -m 0644 ${nativeGit.freebsd}/etc/ssl/cert.pem "$out/etc/overalls/system-ca.pem"
+    install -m 0644 ${gitConfiguration} "$out/usr/local/etc/gitconfig"
+    install -m 0755 ${sshRefresh "freebsd"} "$out/usr/local/libexec/native-ssh-refresh"
+    install -D -m 0440 ${sudoConfiguration "freebsd"} "$out/usr/local/etc/sudoers"
+    mkdir -p "$out/usr/local/etc/sudoers.d"
+    chmod -R u+w "$out"
+    cp -a ${bootstrap.freebsd}/. "$out/"
   '';
+  # @cc [owner:ghuntley,label:security;build] native-illumos-vendor-trust-snapshot
+  # The immutable native trust base MUST be copied from the pinned official
+  # Git runtime bundle, independently of the mutable system CA destination.
   illumos = pkgs.runCommand "overalls-illumos-guest-agents" {} ''
-    mkdir -p "$out/bin" "$out/lib/svc/manifest/site" "$out/opt/overalls/libexec"
+    mkdir -p "$out/bin" "$out/lib/svc/manifest/site" "$out/opt/overalls/libexec" "$out/etc/overalls"
     cp -a ${illumosBinaries}/bin/. "$out/bin/"
     cp -a ${illumosBinaries}/bin/. "$out/opt/overalls/libexec/"
+    chmod u+w "$out/bin" "$out/opt/overalls/libexec"
     install -m 0755 ${illumosSupervisor} "$out/opt/overalls/libexec/native-agents-supervisor"
     install -m 0644 ${illumosManifest} "$out/lib/svc/manifest/site/overalls-native-agents.xml"
     install -m 0755 ${illumosService} "$out/opt/overalls/libexec/native-agents-start"
+    install -m 0644 ${sshdConfiguration "illumos"} "$out/etc/overalls/sshd_config"
+    install -m 0644 ${nativeGit.illumos}/etc/ssl/cacert.pem "$out/etc/overalls/system-ca.pem"
+    install -m 0644 ${gitConfiguration} "$out/etc/gitconfig"
+    install -m 0755 ${sshRefresh "illumos"} "$out/opt/overalls/libexec/native-ssh-refresh"
+    install -m 0440 ${sudoConfiguration "illumos"} "$out/etc/sudoers"
+    mkdir -p "$out/etc/sudoers.d"
+    chmod -R u+w "$out"
+    cp -a ${bootstrap.illumos}/. "$out/"
   '';
 in
 {
   inherit freebsd illumos freebsdRc freebsdService illumosManifest illumosService freebsdSupervisor illumosSupervisor;
   manifest = {
     version = 1;
-    agents = binaries;
-    # Terminal support is deliberately omitted until a FreeBSD/illumos
-    # terminald target is built and exercised. Keep the native capability row
-    # fail-closed rather than letting the presence of the other daemons imply
-    # an unimplemented PTY service.
-    capabilities = [ "readiness" "trust" "workspace" "flush" "ssh" "agents" ];
+    agents = binaries ++ [ "lilly-terminald" ];
+    # This is the installed service set. Runtime acceptance remains separate
+    # from cross-building a native ELF or declaring an rc.d/SMF supervisor.
+    native_admission = false;
+    capabilities = [ "readiness" "trust" "workspace" "flush" "ssh" "agents" "terminal" ];
   };
 }

@@ -10,7 +10,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 
 # Existing Antithesis assertions
 
-As-of source scan: **2026-10-13 15:03 UTC**. The repository scanner found **153 executable assertion callsites**, with **26 of 104 planned primary literal messages authored**. Source presence is not hosted declaration, evaluation, baseline or physical acceptance. This moving shared worktree is distinct from the pinned provenance commit. The duplicate-message list below must be resolved before immutable selection.
+As-of source scan: **2026-10-17 UTC**. The repository scanner found **163 executable assertion callsites** (including the Marshall hint-relay `Reachable` anchor, which adds no catalog primary), with **30 of 104 planned primary literal messages authored**. Source presence is not hosted declaration, evaluation, baseline or physical acceptance. This moving shared worktree is distinct from the pinned provenance commit. The duplicate-message list below must be resolved before immutable selection.
 
 The source scanner is `python3.13 antithesis/verification/assertions.py`, covering executable Antithesis Python and selected application Elixir files. It excludes unit-test fixture strings and research prose. The [template roster](evaluation/template-roster.json) records each primary match and its proof boundary.
 
@@ -27,14 +27,14 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `antithesis/workload/access/browser.py:466` | `reachable` | Authorized Control room set-role committed target and audit before demotion | support / startup |
 | `antithesis/workload/access/browser.py:479` | `always` | Stale Control room tab cannot commit an admin mutation after authority withdrawal | `stale-admin-tab-current-mutation-authority` |
 | `antithesis/workload/access/browser.py:485` | `reachable` | Stale admin LiveView event was processed after committed demotion | support / startup |
-| `antithesis/workload/admission/scenarios.py:144` | `always` | Marshall acknowledged admission has one joined allocation and dispatch job | `marshall-admission-atomic-allocation` |
-| `antithesis/workload/admission/scenarios.py:146` | `reachable` | Marshall admission reached joined dispatch enqueue | support / startup |
-| `antithesis/workload/admission/scenarios.py:176` | `always` | Marshall replayed admission key never allocates a second VM | `marshall-admission-key-survives-archive` |
-| `antithesis/workload/admission/scenarios.py:218` | `reachable` | Marshall admission reused durable idempotency history | support / startup |
-| `antithesis/workload/admission/scenarios.py:237` | `reachable` | Marshall admission rejected changed same-key request | support / startup |
-| `antithesis/workload/admission/scenarios.py:259` | `reachable` | Marshall admission replay found archived idempotency history | support / startup |
-| `antithesis/workload/admission/scenarios.py:310` | `always` | marshall placement fits fresh measured physical headroom and all outstanding holds | `marshall-admission-measured-physical-capacity` |
-| `antithesis/workload/admission/scenarios.py:315` | `reachable` | Marshall admitted against independently sampled live ZFS capacity | support / startup |
+| `antithesis/workload/admission/physical_scenario.py:69` | `always` | marshall placement fits fresh measured physical headroom and all outstanding holds | `marshall-admission-measured-physical-capacity` |
+| `antithesis/workload/admission/physical_scenario.py:74` | `reachable` | Marshall admitted against independently sampled live ZFS capacity | support / startup |
+| `antithesis/workload/admission/scenarios.py:140` | `always` | Marshall acknowledged admission has one joined allocation and dispatch job | `marshall-admission-atomic-allocation` |
+| `antithesis/workload/admission/scenarios.py:142` | `reachable` | Marshall admission reached joined dispatch enqueue | support / startup |
+| `antithesis/workload/admission/scenarios.py:172` | `always` | Marshall replayed admission key never allocates a second VM | `marshall-admission-key-survives-archive` |
+| `antithesis/workload/admission/scenarios.py:214` | `reachable` | Marshall admission reused durable idempotency history | support / startup |
+| `antithesis/workload/admission/scenarios.py:233` | `reachable` | Marshall admission rejected changed same-key request | support / startup |
+| `antithesis/workload/admission/scenarios.py:255` | `reachable` | Marshall admission replay found archived idempotency history | support / startup |
 | `antithesis/workload/backup/scenarios.py:55` | `always` | Backup retention keeps exactly the newest complete manifest points | support / startup |
 | `antithesis/workload/backup/scenarios.py:73` | `always` | Retained backup manifest references restorable component snapshots | `backup-retained-manifest-closure` |
 | `antithesis/workload/backup/scenarios.py:80` | `always` | Retained backup point passes the production manifest validator | support / startup |
@@ -60,14 +60,15 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `antithesis/workload/control/delivery.py:126` | `always` | Control transport never redelivers an uncertain application call | `control-no-hidden-redelivery` |
 | `antithesis/workload/control/delivery.py:241` | `reachable` | Control delivery sentinel has a distinct committed session receipt | support / startup |
 | `antithesis/workload/control/delivery.py:243` | `reachable` | Control lost reply may conceal a committed domain effect | support / startup |
-| `antithesis/workload/control/dispatch.py:134` | `always` | Bound Lilly invalid requests do not create a durable execution session | support / startup |
-| `antithesis/workload/control/dispatch.py:139` | `reachable` | Control bound Lilly request reached a closed service or document refusal | support / startup |
-| `antithesis/workload/control/dispatch.py:167` | `reachable` | Control bound Lilly v4 session has a durable positive witness | support / startup |
-| `antithesis/workload/control/dispatch.py:206` | `always_or_unreachable` | Control wrong outer version is refused before socket upgrade | support / startup |
-| `antithesis/workload/control/dispatch.py:211` | `reachable` | Control wrong-version upgrade reaches permanent HTTP 426 | support / startup |
-| `antithesis/workload/control/dispatch.py:244` | `reachable` | Execution v4 accepted matching machine-bound session | support / startup |
-| `antithesis/workload/control/dispatch.py:263` | `always_or_unreachable` | Execution legacy session request cannot create durable v4 authority | support / startup |
-| `antithesis/workload/control/dispatch.py:268` | `reachable` | Execution legacy inner session reaches authenticated decoder refusal | support / startup |
+| `antithesis/workload/control/dispatch.py:195` | `always` | Control rejects cross-service and invalid documents before domain effects | `control-service-dispatch-closed` |
+| `antithesis/workload/control/dispatch.py:201` | `reachable` | Control bound Lilly socket refused a valid foreign-service document | support / startup |
+| `antithesis/workload/control/dispatch.py:203` | `reachable` | Control bound Lilly request reached a closed service or document refusal | support / startup |
+| `antithesis/workload/control/dispatch.py:231` | `reachable` | Control bound Lilly v4 session has a durable positive witness | support / startup |
+| `antithesis/workload/control/dispatch.py:272` | `always_or_unreachable` | Control wrong outer version is refused before socket upgrade | support / startup |
+| `antithesis/workload/control/dispatch.py:277` | `reachable` | Control wrong-version upgrade reaches permanent HTTP 426 | support / startup |
+| `antithesis/workload/control/dispatch.py:313` | `reachable` | Execution v4 accepted matching machine-bound session | support / startup |
+| `antithesis/workload/control/dispatch.py:351` | `always_or_unreachable` | Execution v4 refuses legacy authority without changing durable command | `execution-v4-refuses-legacy-document` |
+| `antithesis/workload/control/dispatch.py:356` | `reachable` | Execution legacy inner session reaches authenticated decoder refusal | support / startup |
 | `antithesis/workload/control/host_sessions.py:270` | `reachable` | Successor host session made progress after old nonce replay | support / startup |
 | `antithesis/workload/control/host_sessions.py:272` | `always` | Superseded Lilly host session cannot change exchange state or dispatch work | `host-session-successor-fences-old-exchanges` |
 | `antithesis/workload/control/host_sessions.py:348` | `always` | Committed host credential rotation fences old Control request authority | `host-credential-rotation-fences-old-socket` |
@@ -77,21 +78,23 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `antithesis/workload/control/pending.py:48` | `reachable` | Control late retired response is ignored while fresh work completes | support / startup |
 | `antithesis/workload/control/scenarios.py:149` | `always` | Control domain effects require the authenticated service hello | `control-bind-before-domain-effects` |
 | `antithesis/workload/control/scenarios.py:159` | `reachable` | Control first-request refusal is observed before any domain dispatch | support / startup |
-| `antithesis/workload/control/scenarios.py:236` | `reachable` | Bound control current credential completes a new session after rotation | support / startup |
-| `antithesis/workload/control/scenarios.py:246` | `always` | Bound control sockets revalidate current credentials before each domain effect | `control-bound-credential-revalidated` |
-| `antithesis/workload/control/scenarios.py:257` | `reachable` | Bound control credential rotation is refused on the next request | support / startup |
-| `antithesis/workload/core/bootstrap.py:91` | `reachable` | Overalls bootstrap observed Control connection and independent oracle | support / startup |
+| `antithesis/workload/control/scenarios.py:241` | `reachable` | Bound control current credential completes a new session after rotation | support / startup |
+| `antithesis/workload/control/scenarios.py:251` | `always` | Bound control sockets revalidate current credentials before each domain effect | `control-bound-credential-revalidated` |
+| `antithesis/workload/control/scenarios.py:262` | `reachable` | Bound control credential rotation is refused on the next request | support / startup |
+| `antithesis/workload/control/version_refusal.py:54` | `always` | Control transport version refusal stops its owner without losing its class | `control-version-refusal-remains-terminal` |
+| `antithesis/workload/control/version_refusal.py:60` | `reachable` | Control 4001 refusal retired a held call and stayed stopped past backoff | support / startup |
+| `antithesis/workload/core/bootstrap.py:104` | `reachable` | Overalls bootstrap observed Control connection and independent oracle | support / startup |
 | `antithesis/workload/core/smoke.py:34` | `always_or_unreachable` | Control smoke wrong outer version receives terminal 426 | support / startup |
 | `antithesis/workload/core/smoke.py:41` | `always_or_unreachable` | Control smoke invalid credential refused before upgrade | support / startup |
 | `antithesis/workload/core/smoke.py:46` | `reachable` | Control smoke observed authentication refusal on fleet listener | support / startup |
-| `antithesis/workload/core/smoke.py:56` | `reachable` | Control smoke observed durable v4 host report | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:41` | `always` | Completed guest lifecycle outcome matches current VM state and execution identity | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:216` | `always` | Guest ready outcome has current tuple and independent live QEMU guest readiness | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:222` | `reachable` | Accepted provision reached a real QEMU guest boot and port 1024 readiness | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:239` | `always` | Accepted stop has no QEMU process and retains the measured guest overlay | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:245` | `reachable` | Accepted stop has independently absent QEMU and retained qcow2 hash | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:273` | `always` | Fresh start reaches a new physical boot on the retained guest placement | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:275` | `reachable` | Stopped retained guest restarted with a new kernel boot UUID | support / startup |
+| `antithesis/workload/core/smoke.py:57` | `reachable` | Control smoke observed fresh connected host report | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:42` | `always` | Completed guest lifecycle outcome matches current VM state and execution identity | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:192` | `always` | Guest ready outcome has current tuple and independent live QEMU guest readiness | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:198` | `reachable` | Accepted provision reached a real QEMU guest boot and port 1024 readiness | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:215` | `always` | Accepted stop has no QEMU process and retains the measured guest overlay | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:221` | `reachable` | Accepted stop has independently absent QEMU and retained qcow2 hash | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:249` | `always` | Fresh start reaches a new physical boot on the retained guest placement | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:251` | `reachable` | Stopped retained guest restarted with a new kernel boot UUID | support / startup |
 | `antithesis/workload/recorder/scenarios.py:124` | `always` | Request recorder exact capacity holds 4096 real worker admissions | support / startup |
 | `antithesis/workload/recorder/scenarios.py:129` | `reachable` | Request recorder reached 4096 live authenticated producer workers | support / startup |
 | `antithesis/workload/recorder/scenarios.py:145` | `always` | request recorder saturation cannot fabricate admitted tickets or a clean quality interval | `request-recorder-capacity-does-not-admit-phantom-work` |
@@ -141,6 +144,12 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `antithesis/workload/repository/scenarios.py:395` | `always` | Enrico native Git ownership bounds physical concurrent refreshes | `enrico-native-git-admission-after-manager-restart` |
 | `antithesis/workload/repository/scenarios.py:416` | `always` | Enrico ninth refresh receives admission refusal while eight native slots remain held | support / startup |
 | `antithesis/workload/repository/scenarios.py:421` | `reachable` | Enrico observed ninth-admission refusal with eight physical slots held | support / startup |
+| `antithesis/workload/satellite/editor.py:280` | `reachable` | Editor login code committed while its only callback reply was lost | support / startup |
+| `antithesis/workload/satellite/editor.py:287` | `always` | Editor login code creates at most one credential after reply loss | `editor-login-code-single-use-after-reply-loss` |
+| `antithesis/workload/satellite/editor.py:291` | `sometimes` | Editor login code exchange issued one session through Audi | support / startup |
+| `antithesis/workload/satellite/private_ingress.py:72` | `reachable` | Guest stand-in reached private Audi over verified TLS | support / startup |
+| `antithesis/workload/satellite/private_ingress.py:74` | `always` | Private Audi forwards nothing for a guest source Lilly never bound | support / startup |
+| `antithesis/workload/satellite/private_ingress.py:79` | `reachable` | Private Audi refused an unbound guest-side source | support / startup |
 | `antithesis/workload/satellite/scenarios.py:72` | `reachable` | Ziggy admitted real guest inference with provider acceptance | support / startup |
 | `antithesis/workload/satellite/scenarios.py:73` | `always` | Ziggy settled guest inference conserves one Marshall Daily update | support / startup |
 | `antithesis/workload/satellite/scenarios.py:142` | `reachable` | Galileo named request reached the independent origin | support / startup |
@@ -167,6 +176,7 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `galileo/lib/galileo/application.ex:17` | `reachable` | Overalls Galileo application started | support / startup |
 | `lilly/lib/lilly/application.ex:19` | `reachable` | Overalls Lilly application started | support / startup |
 | `marshall/lib/marshall/application.ex:20` | `reachable` | Overalls Marshall application started | support / startup |
+| `marshall/lib/marshall/control/hints/relay.ex:37` | `reachable` | Marshall notifier recovered after losing a host command hint | support / hint-loss anchor (no primary) |
 | `porsche/lib/porsche/application.ex:17` | `reachable` | Overalls Porsche application started | support / startup |
 | `ziggy/lib/ziggy/application.ex:17` | `reachable` | Overalls Ziggy application started | support / startup |
 
@@ -174,8 +184,31 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 
 - Exact SHA-256 for every listed callsite source is in [the as-of roster snapshot](evaluation/template-roster.json), under `authored_snapshot.source_sha256`; it shares this scan timestamp.
 - Duplicated authored literal messages: `[]`.
-- Selected `control-core` manifest has 9 commands and 30 runtime dependencies; its manifest hash is `4d61bfc148a2ef13529417fbfeab8723ae589e1e62ffff34c84aef87618bdfe4`. It is current for scanned selected sources; source selection must be staged again before identity freeze.
+- Selected `control-core` manifest has 13 commands and 40 runtime dependencies; its manifest hash is `0d48b340435a19f45b73c2e7d0bf043fca178606179bf682104afb21a96772c0`. It is current for scanned selected sources; source selection must be staged again before identity freeze.
 - This scan does not freeze `N`, choose a hosted template, or claim any selected assertion evaluated.
+
+## Addendum: backup-restic and satellite-standin profiles (2026-10-17)
+
+A later scan added six callsites (159 total; 27 of 104 primary messages authored).
+Line numbers are omitted because the files are new and moving; the template roster
+records the editor primary's current line and hash. None has a hosted run.
+
+| File | Kind | Literal message | Catalog primary |
+| --- | --- | --- | --- |
+| `antithesis/workload/satellite/editor.py` | `reachable` | Editor login code committed while its only callback reply was lost | support |
+| `antithesis/workload/satellite/editor.py` | `always` | Editor login code creates at most one credential after reply loss | `editor-login-code-single-use-after-reply-loss` |
+| `antithesis/workload/satellite/editor.py` | `sometimes` | Editor login code exchange issued one session through Audi | support (positive control) |
+| `antithesis/workload/satellite/private_ingress.py` | `reachable` | Guest stand-in reached private Audi over verified TLS | support / stand-in channel |
+| `antithesis/workload/satellite/private_ingress.py` | `always` | Private Audi forwards nothing for a guest source Lilly never bound | support / stand-in refusal |
+| `antithesis/workload/satellite/private_ingress.py` | `reachable` | Private Audi refused an unbound guest-side source | support / stand-in refusal |
+
+The private-ingress checks use the labelled guest stand-in, which is not a guest:
+they test private Audi's transport-only attribution for a source Lilly never bound,
+with the independent origin fixture as effect witness. They make no guest, tap,
+pre-NAT routing or isolation claim. The editor callsites are selected in
+`satellite-standin` but cannot be reached there: Marshall's editor login needs a
+current running VM and editor release that the hosted controlled pool cannot supply.
+The `backup-restic` profile selects the existing backup callsites unchanged.
 
 ## Open Questions
 

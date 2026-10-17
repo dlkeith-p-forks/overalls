@@ -19,7 +19,8 @@ from guest_lifecycle.domain import (
     vm_view,
 )
 from guest_lifecycle.operation import ComputeLifecycleOperator, OperationLedger, OperatorReply
-from guest_lifecycle.witness import GuestIdentity, GuestSpec, GuestWitness, GuestWitnessClient
+from guest_lifecycle.readiness import capacity_ready
+from guest_lifecycle.witness import GuestSpec, GuestWitness, GuestWitnessClient
 
 LOG = logging.getLogger(__name__)
 
@@ -46,31 +47,6 @@ def _reject_mismatch() -> None:
 
 def _object(reply: OperatorReply) -> dict[str, object] | None:
     return reply.value if reply.status == "ok" and isinstance(reply.value, dict) else None
-
-
-def _capacity_ready(reply: OperatorReply, identity: GuestIdentity) -> bool:
-    value = _object(reply)
-    if value is None or value.get("capacity_known") is not True:
-        return False
-    images = value.get("images")
-    available = value.get("available")
-    if not isinstance(images, list) or not isinstance(available, dict):
-        return False
-    if not any(
-        isinstance(image, dict) and image.get("id") == identity.image_id for image in images
-    ):
-        return False
-    vcpu = available.get("vcpu")
-    memory = available.get("memory_bytes")
-    disk = available.get("disk_bytes")
-    return (
-        type(vcpu) is int
-        and vcpu >= identity.vcpu
-        and type(memory) is int
-        and memory >= identity.memory_bytes
-        and type(disk) is int
-        and disk >= identity.minimum_disk_bytes
-    )
 
 
 def _operation_id(reply: OperatorReply, vm_id: UUID) -> UUID:
@@ -185,7 +161,7 @@ def run_physical_boot_cycle() -> int:
         or identity_result.value is None
         or catalog_result.state is not State.OBSERVED
         or catalog_result.value is None
-        or not _capacity_ready(catalog_result.value, identity_result.value)
+        or not capacity_ready(catalog_result.value, identity_result.value)
     ):
         LOG.info("Guest lifecycle unexercised: image or measured capacity unavailable")
         return 0
@@ -273,4 +249,15 @@ def run_physical_boot_cycle() -> int:
     always(fresh, "Fresh start reaches a new physical boot on the retained guest placement")
     if fresh:
         reachable("Stopped retained guest restarted with a new kernel boot UUID")
+    _release_slot(operator, vm_id)
     return 0 if fresh else 1
+
+
+def _release_slot(operator: ComputeLifecycleOperator, vm_id: UUID) -> None:
+    """Submit a final stop so a later cycle can find the single guest slot free.
+
+    The stop is an attempt only: its outcome is not sampled and proves nothing.
+    """
+    reply = operator.lifecycle(vm_id, "stop", uuid4())
+    if reply.state is not State.OBSERVED or reply.value is None:
+        LOG.info("Guest lifecycle final stop uncertain")

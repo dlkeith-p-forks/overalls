@@ -1,15 +1,12 @@
 name: "project glasswing oss scanner"
 
-# Builds the Project Glasswing (Anthropic OSS Scanner) offline-analysis image
-# from .oss-scanner/Dockerfile and, on trunk, publishes it to the workspace's
-# private Namespace registry.
+# Rebuilds the Project Glasswing (Anthropic OSS Scanner) offline-analysis
+# image from .oss-scanner/Dockerfile daily, or on demand, and publishes it from
+# trunk to the workspace's private Namespace registry.
 on:
-  push:
-    branches: [trunk]
-  pull_request:
-    paths:
-      - .oss-scanner/**
-      - .github/workflows/oss-scanner.yml
+  schedule:
+    # Daily at 16:00 UTC
+    - cron: "0 16 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -38,12 +35,11 @@ jobs:
         with:
           context: .
           file: .oss-scanner/Dockerfile
-          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/trunk' }}
+          push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: |
             ${{ env.NSC_CONTAINER_REGISTRY }}/overalls-oss-scanner:${{ github.sha }}
             ${{ env.NSC_CONTAINER_REGISTRY }}/overalls-oss-scanner:trunk
           # Every stage's layers are cached in the registry (mode=max), on top
-          # of the remote builder's own cache; pull requests read but never
-          # write the shared cache.
+          # of the remote builder's own cache; only trunk writes the cache.
           cache-from: type=registry,ref=${{ env.NSC_CONTAINER_REGISTRY }}/overalls-oss-scanner:buildcache
-          cache-to: ${{ (github.event_name != 'pull_request' && github.ref == 'refs/heads/trunk') && format('type=registry,ref={0}/overalls-oss-scanner:buildcache,mode=max,image-manifest=true', env.NSC_CONTAINER_REGISTRY) || '' }}
+          cache-to: ${{ github.ref == 'refs/heads/trunk' && format('type=registry,ref={0}/overalls-oss-scanner:buildcache,mode=max,image-manifest=true', env.NSC_CONTAINER_REGISTRY) || '' }}

@@ -1,5 +1,5 @@
 ---
-modules: [Porsche.Client, Porsche.Connection, Porsche.Control.Link, Porsche.Runner]
+modules: [Porsche.Client, Porsche.Connection, Porsche.Control.Link, Porsche.Observability, Porsche.Runner, Porsche.StatusServer]
 ---
 
 # Control Transport obligations

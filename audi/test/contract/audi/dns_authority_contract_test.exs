@@ -36,4 +36,26 @@ defmodule AudiDnsAuthorityContractTest do
     assert q.udp_size == 1232
     assert {:error, :malformed} = Audi.DNS.Wire.decode(String.duplicate("x", 65_536))
   end
+
+  @tag obligation: "audi.dns_authority.I3"
+  test "oversized UDP replies truncate and keep unsafe flags clear" do
+    question = %{
+      id: 7,
+      flags: 0,
+      wire_labels: ["example", "com"],
+      type: 1,
+      class: 1,
+      udp_size: 512,
+      edns: true
+    }
+
+    answer = {["example", "com"], 1, 60, String.duplicate("x", 600)}
+    packet = Audi.DNS.Wire.reply(question, 0, [answer], [], false, :udp)
+    <<_id::16, flags::16, _rest::binary>> = packet
+
+    assert byte_size(packet) <= 512
+    assert Bitwise.band(flags, 0x0200) == 0x0200
+    assert Bitwise.band(flags, 0x0100) == 0
+    assert Bitwise.band(flags, 0x0020) == 0
+  end
 end

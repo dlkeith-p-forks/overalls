@@ -17,8 +17,12 @@ from core.config import Config, read_fixture
 from core.outcome import State
 from core.profile_readiness import (
     access_smtp_ready,
+    admission_stub_ready,
+    backup_restic_ready,
+    guest_lifecycle_ready,
     recorder_host_ready,
     repository_origin_ready,
+    satellite_standin_ready,
 )
 from core.sql import SqlOracle
 
@@ -68,7 +72,15 @@ class BootstrapTests(unittest.TestCase):
 
     def test_optional_profiles_emit_exactly_one_selected_tag(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            for profile in ("repository-origin", "access-smtp", "recorder-host"):
+            for profile in (
+                "repository-origin",
+                "access-smtp",
+                "recorder-host",
+                "admission-stub",
+                "backup-restic",
+                "satellite-standin",
+                "guest-lifecycle",
+            ):
                 with self.subTest(profile=profile):
                     config = replace(self.config(Path(directory)), profile=profile)
                     stop = Event()
@@ -91,6 +103,78 @@ class BootstrapTests(unittest.TestCase):
                 self.assertFalse(repository_origin_ready(config, "fixture-a"))
                 self.assertFalse(access_smtp_ready(config, "fixture-a"))
                 self.assertFalse(recorder_host_ready(config))
+                self.assertFalse(backup_restic_ready())
+                self.assertFalse(satellite_standin_ready())
+                self.assertFalse(guest_lifecycle_ready())
+
+    def test_guest_probe_requires_observed_substrate_and_reports_once(self) -> None:
+        environment = {"ANTITHESIS_CONTROL_REQUEST_DIR": "/run/overalls-control-requests"}
+        with (
+            patch.dict(os.environ, environment),
+            patch("core.profile_readiness.substrate_gap") as gap,
+        ):
+            gap.return_value = "guest_identity_unavailable"
+            with self.assertLogs("core.profile_readiness", level="WARNING") as logs:
+                self.assertFalse(guest_lifecycle_ready())
+                self.assertFalse(guest_lifecycle_ready())
+            self.assertEqual(len(logs.records), 1)
+            self.assertIn("guest_identity_unavailable", logs.output[0])
+            gap.side_effect = PermissionError("requests")
+            with self.assertLogs("core.profile_readiness", level="WARNING") as logs:
+                self.assertFalse(guest_lifecycle_ready())
+            self.assertIn("operator_channel (PermissionError)", logs.output[0])
+            gap.side_effect = None
+            gap.return_value = None
+            self.assertTrue(guest_lifecycle_ready())
+            gap.assert_called_with(Path("/run/overalls-control-requests"))
+
+    def test_backup_probe_refuses_shared_or_toolless_root(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "fixture"
+            root.mkdir()
+            root.chmod(0o777)
+            with patch.dict(os.environ, {"ANTITHESIS_BACKUP_ROOT": str(root)}, clear=True):
+                # Absent image tools refuse before any repository is created.
+                self.assertFalse(backup_restic_ready())
+                with (
+                    patch("core.profile_readiness.BACKUP_MODULES", Path(__file__)),
+                    patch("core.profile_readiness.RESTIC", Path(__file__)),
+                ):
+                    self.assertFalse(backup_restic_ready())
+            self.assertEqual(list(root.iterdir()), [])
+
+    def test_satellite_probe_requires_verified_standin_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "results").mkdir()
+            token = root / "admin-token"
+            token.write_text("t" * 40, encoding="ascii")
+            environment = {
+                "ANTITHESIS_ORIGIN_ADMIN_URL": "http://origin-fixture:8080",
+                "ANTITHESIS_ORIGIN_ADMIN_TOKEN_FILE": str(token),
+                "ANTITHESIS_PRIVATE_ROOT_CA": str(root / "missing.pem"),
+                "ANTITHESIS_GUEST_STANDIN_ROOT": str(root),
+            }
+            observed = MagicMock()
+            observed.state = State.OBSERVED
+            with (
+                patch.dict(os.environ, environment, clear=True),
+                patch("core.profile_readiness.ssl.create_default_context"),
+                patch("core.profile_readiness.GitOrigin.state", return_value=observed),
+            ):
+                self.assertFalse(satellite_standin_ready())
+                receipt: dict[str, object] = {
+                    "version": 1,
+                    "role": "guest-standin",
+                    "private_tls_verified": False,
+                    "server_name": "llm.internal",
+                }
+                ready = root / "results/ready.json"
+                ready.write_text(json.dumps(receipt), encoding="utf-8")
+                self.assertFalse(satellite_standin_ready())
+                receipt["private_tls_verified"] = True
+                ready.write_text(json.dumps(receipt), encoding="utf-8")
+                self.assertTrue(satellite_standin_ready())
 
     def test_unknown_profile_is_rejected_before_setup(self) -> None:
         environment = {
@@ -215,6 +299,33 @@ class BootstrapTests(unittest.TestCase):
                 ]
                 receipt.state = State.UNAVAILABLE
                 self.assertFalse(access_smtp_ready(config, "fixture-a"))
+
+    def test_admission_stub_probe_requires_committed_stub_backed_report(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config = self.config(Path(directory))
+            host = uuid4()
+            with patch("core.profile_readiness.SqlOracle") as sql:
+                select = sql.return_value.select
+                select.return_value = MagicMock(
+                    state=State.OBSERVED, value=((True, True, True, 1, 1),)
+                )
+                self.assertTrue(admission_stub_ready(config, (host,)))
+                self.assertEqual(select.call_args.args[1][-1], str(host))
+                self.assertFalse(admission_stub_ready(config, (host, uuid4())))
+                for row in (
+                    (False, True, True, 1, 1),
+                    (True, None, True, 1, 1),
+                    (True, True, False, 1, 1),
+                    (True, True, True, 0, 1),
+                    (True, True, True, 1, 0),
+                ):
+                    with self.subTest(row=row):
+                        select.return_value = MagicMock(state=State.OBSERVED, value=(row,))
+                        self.assertFalse(admission_stub_ready(config, (host,)))
+                select.return_value = MagicMock(state=State.OBSERVED, value=())
+                self.assertFalse(admission_stub_ready(config, (host,)))
+                select.return_value = MagicMock(state=State.UNAVAILABLE, value=None)
+                self.assertFalse(admission_stub_ready(config, (host,)))
 
     def test_recorder_probe_requires_fresh_independent_witnesses(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -19,3 +19,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Known authorization and resource refusals MUST map to stable HTTP classes and closed names; arbitrary failures MUST remain unavailable without exposing details.
 - **kind:** security
 - **status:** active
+
+### marshall.ssh_terminal.I3 — Viewer authority uses a bounded inconclusive backstop
+- **scope:** `Marshall.Terminal.ViewerAuthority.step/3`
+- **must:** Conclusive success MUST clear the episode, refusal MUST propagate immediately, and inconclusive checks MUST refuse at the fixed backstop without extending the episode.
+- **kind:** security
+- **status:** active

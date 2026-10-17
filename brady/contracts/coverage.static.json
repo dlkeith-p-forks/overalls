@@ -1,9 +1,9 @@
 {
   "apps": {
     "brady": {
-      "active": 5,
+      "active": 8,
       "coverage": 1.0,
-      "covered": 5
+      "covered": 8
     },
     "system": {
       "active": 0,
@@ -52,10 +52,10 @@
       }
     },
     "brady.proxy": {
-      "active": 2,
+      "active": 5,
       "app": "brady",
       "coverage": 1.0,
-      "covered": 2,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "brady.proxy.I1": {
@@ -77,6 +77,36 @@
           "tests": [
             "test HTTP framing rejects ambiguous requests and preserves remainder"
           ]
+        },
+        "brady.proxy.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test response serialization strips hop-by-hop and stale framing headers"
+          ]
+        },
+        "brady.proxy.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test destination admission and authority matching fail closed"
+          ]
+        },
+        "brady.proxy.I5": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test transport reports closed sockets and close remains safe after peer closure"
+          ]
         }
       }
     },
@@ -92,8 +122,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 5,
+    "active": 8,
     "coverage": 1.0,
-    "covered": 5
+    "covered": 8
   }
 }

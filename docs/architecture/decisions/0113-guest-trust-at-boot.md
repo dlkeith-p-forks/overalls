@@ -4,7 +4,7 @@
 - Date: 2026-09-24
 - Status: accepted
 - Implementation: partial
-- Components: Lilly, NixOS guest, Ubuntu guest, Brady, shared protocol
+- Components: Lilly, NixOS guest, Ubuntu guest, native guests, Brady, shared protocol
 - Supersedes: ADR-0109
 - Superseded by: none
 
@@ -125,6 +125,21 @@ state withdraws the marker, replaces the set and rebuilds the store with
 covers the identical, added and retired sets on both distributions, checking
 bundle membership and Ubuntu CApath verification. The bounded journey does not
 replace the fleet relocation acceptance above.
+
+The native FreeBSD/OmniOS implementation under
+[ADR-0190](0190-native-kernel-provenance-and-admission.md) uses a separate
+recipe-pinned regular vendor snapshot at `/etc/overalls/system-ca.pem`, while
+publishing the effective bundle at each OS's standard trust path. A real
+FreeBSD second boot exposed the earlier adapter reading its previously managed
+destination as the vendor base, which accumulated platform roots and prevented
+idempotent replacement. The corrected
+[native installer](../../../lyra/src/native_guest.rs) validates current boot
+authority before writes, composes only the immutable vendor base plus current
+roots, refuses missing bases or conflicting staged bytes, and durably publishes
+the managed link. Real-filesystem regressions cover new-boot reinstallation,
+root addition/removal/rollback and stale-boot refusal. Full final native
+two-boot service acceptance remains pending; this correction preserves the
+accepted replacement semantics and does not widen native admission.
 
 ## Open questions
 

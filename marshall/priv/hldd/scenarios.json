@@ -736,7 +736,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/default.nix",
           "assertion": "worker loss starts a fresh personal process without deleting data",
-          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334–3357, legitimate origin replacement L3358–3389 and worker loss with saved data L3390–3407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
+          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334\u20133357, legitimate origin replacement L3358\u20133389 and worker loss with saved data L3390\u20133407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-browser-editor.md",
           "record_assertion": "The corrected final-package standalone native check passed, exit 0, in 342 seconds"
@@ -4779,7 +4779,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/database-recovery/driver.py",
           "assertion": "expected_holder_state",
-          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432–27.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
+          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432\u201327.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-02-database-loss-histories.md",
           "record_assertion": "All six cases preserved the twenty-second holder and thirty-five-second\nall-connection assertions and reacquired the row after reclamation."
@@ -5948,7 +5948,7 @@
       ],
       "boundary": "Complete manifest, matching keyring, native ownership and isolated restoration.",
       "denial": "Reject unrelated decryption keys, malformed manifests, unavailable retained references, busy operator locks and unsafe or nonempty restore targets; keep historical authority isolated.",
-      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore→decrypt→repository-access composition with the historical-generation refusal in synthetic fixtures.",
+      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore\u2192decrypt\u2192repository-access composition with the historical-generation refusal in synthetic fixtures.",
       "status": "partial",
       "gaps": "No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation.",
       "preferred_gap": "Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.",
@@ -10596,10 +10596,10 @@
       ],
       "boundary": "Version-6 manifests and version-3 bundles explicitly bind FreeBSD or illumos (the OmniOS wire family) to its matching agent set, firmware boot kind, raw-GPT root and bounded artifacts. The native capability rows are currently all-false; the jail-local host-only vsock shape remains a transport contract, while readiness, trust, terminal, workspace, flush, SSH and agent execution stay unavailable. Editor and Inception remain disabled, and Lilly keeps the Windows Hyper-V CPU template off native guests.",
       "denial": "Unknown OS values, cross-OS agent sets, extra keys, malformed boot arguments and out-of-bound artifacts are refused. A metadata or focused jail test must not be treated as a native guest boot or fleet result.",
-      "scope": "Protocol validation, native builder evaluation, focused Lilly firmware jail tests, Marshall capability projection and host image artifact tests cover bounded native metadata, FreeBSD/illumos CloudHv firmware configuration, guest-CID 3 transport setup, the expected FreeBSD EFI/GPT/UFS layout and manifest-declared disk.raw selection. Preliminary builders/catalog entries exist; the rolling FreeBSD 14.3 source endpoint is retired and replaced by a checksum-pinned archive capture, while placeholder kernel receipts make image construction stop before a stock disk is copied. The shared attestation/transport units are source evidence only; no machine boot, readiness, terminal, workspace, relocation or fleet execution exists.",
+      "scope": "Protocol validation, builder evaluation and focused Lilly/Marshall tests cover closed native metadata, firmware/CID configuration and complete GPT disk selection. Unavailable kernel receipts still stop admitted image construction. Pinned builds link a complete FreeBSD kernel, the current twenty-executable production Lyra package and both terminal daemons, with two test-only transport probes kept separate. The corrected illumos 26-object bundle passed native nine-module linking/alternate-ZFS installation, QEMU boot and a TCP bind; seven helper tests also passed natively. FreeBSD two-boot QEMU candidate assembly and a scoped 139-second nested-KVM transport gate passed. Common C malformed-frame/credit properties execute on Linux. The seed-fixed OmniOS kit passed native clean-export assembly and QEMU file/Git/trust/resolver/disabled-service checks. A diagnostic Firecracker boot passed the complete executing-AF40 verifier and real native Rust token/CID2/3/refusal/credit-window transport checks after a debugger-only stock pseudo_isa override. The final reviewed FreeBSD image 5022d714 passed all five service/growth/policy/daemon-recovery/SIGKILL-recovery variants with complete per-boot service oracles. The corrected OmniOS network handoff and three manifests pass host boundary checks and actual native schema validation with an old-enum mutant refused; corrected normal-boot services and storage replay remain pending. None grants fleet admission. A separate exact test-only FreeBSD probe passed one actual pause/full-snapshot/resume transport event, fencing idle identity and pending socket calls; its formal repeatable nested-KVM gate passed in 232 seconds with exact immutable receipts. Illumos post-DRIVER_OK static DMA lifetime correction has independent source review, with build/native replay pending.",
       "status": "partial",
-      "gaps": "No signed production image output, cross-built kernel or packaged trust/terminal/workspace/flush/SSH/agent services, nested-KVM boot, isolation, storage growth, restart/recovery or Marshall fleet evidence. Receipt evaluation and all-false capability rows are contract evidence, not runtime acceptance; OmniOS remains the installable downstream image under the illumos protocol family.",
-      "preferred_gap": "Implement and cross-build both native kernels, complete target-native daemons and image assembly, then add nested-KVM and Marshall-driven scenarios for boot, capability earning, isolation, storage growth and recovery.",
+      "gaps": "No signed admitted production image or complete corrected OmniOS service/growth/policy/recovery/crash matrix. Wrong-CID injection, reset/DMA safety, direct native peer-VM/TAP, jail/physical-host isolation and Marshall fleet acceptance remain open. FreeBSD process-SIGKILL recovery does not establish physical stable-media or host power-loss durability; all native capability rows remain false.",
+      "preferred_gap": "Complete the exact corrected OmniOS image and storage replay under Firecracker, retain schema-only validation separately from service-method execution, then run Marshall-driven capabilities, wrong-CID/reset, direct native-peer isolation and physical recovery against exact image/kernel provenance.",
       "evidence": [
         {
           "kind": "unit",
@@ -10656,6 +10656,78 @@
           "path": "lyra/src/bin/overalls-native-readinessd.rs",
           "assertion": "Listener::bind(readiness::PORT, 4)",
           "scope": "The native readiness daemon binds the shared readiness port after fetching current MMDS boot identity and probes the native /32 and writable root; no guest or vsock runtime is exercised."
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-transport/driver.py",
+          "assertion": "and .malformed_length_refused and .disconnected_history_recovered",
+          "scope": "Captured FreeBSD token 5e1fd7cf inputs passed in 139 seconds under nested KVM/Firecracker: executing token, CID2/3, native ABI and immutable buffer/capacity refusals, malformed-length/disconnected/reconnect histories and exact sizes 0, 1, 44, 4096, 65535, 65536, 65537, 262144, 1048576. Receipt binds exact image, firmware and VMM digests. No production service closure, wrong-CID injection, device reset, physical isolation or recovery; later inputs require a fresh run.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The newer gate passed in 139 seconds"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": ".boot_ids | unique | length",
+          "scope": "Protocol validation, builder evaluation and focused Lilly/Marshall tests cover closed native metadata, firmware/CID configuration and complete GPT disk selection. Unavailable kernel receipts still stop admitted image construction. Pinned builds link a complete FreeBSD kernel, the current twenty-executable production Lyra package and both terminal daemons, with two test-only transport probes kept separate. The corrected illumos 26-object bundle passed native nine-module linking/alternate-ZFS installation, QEMU boot and a TCP bind; seven helper tests also passed natively. FreeBSD two-boot QEMU candidate assembly and a scoped 139-second nested-KVM transport gate passed. Common C malformed-frame/credit properties execute on Linux. The seed-fixed OmniOS kit passed native clean-export assembly and QEMU file/Git/trust/resolver/disabled-service checks. A diagnostic Firecracker boot passed the complete executing-AF40 verifier and real native Rust token/CID2/3/refusal/credit-window transport checks after a debugger-only stock pseudo_isa override. The final reviewed FreeBSD image 5022d714 passed all five service/growth/policy/daemon-recovery/SIGKILL-recovery variants with complete per-boot service oracles. The corrected OmniOS network handoff and three manifests pass host boundary checks and actual native schema validation with an old-enum mutant refused; corrected normal-boot services and storage replay remain pending. None grants fleet admission.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The final reviewed FreeBSD image subsequently passed all five native machine"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_transport.py",
+          "assertion": "def exercise(",
+          "scope": "A diagnostic OmniOS Firecracker boot ran the actual separately packaged Rust listener: executing token4b1627f1, CID3/2, native malformed bind/connect/token/privilege/buffer/capacity refusals, malformed-length/disconnect recovery and all nine exact sizes through 1 MiB passed. The boot required a debugger-only stock pseudo_isa override and disposable loader settings; it is separate from the final reproducible image or service gate, reset and admission.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "That same boot ran the separately packaged native Rust transport probe"
+        },
+        {
+          "kind": "unit",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/test_native_candidate.py",
+          "assertion": "test_digest_size_and_regular_file_boundary",
+          "scope": "All seven helper boundary tests passed on the host and natively under the pinned OmniOS image Python 3.12.3: exact 26-object/nine-module layout, digest/size/regular-file/FIFO/symlink and alternate-root/ownership/configuration refusals. Separate native linkage and boot archive execution do not establish Firecracker virtio-vsock, reset or isolation.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "helper linked/installed the corrected objects natively and all seven tests"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/native_image.py",
+          "assertion": "def assemble(",
+          "scope": "The seed-fixed exact4b1627f1 kit imported a separately identified pinned-image pool, cloned its root, linked/installed all nine modules and payload, rebuilt the archive, selected bootfs and exported cleanly. QEMU checked installed files, Git, trust, exact resolver persistence and five disabled stock services. A separate diagnostic Firecracker boot passed the complete executing-AF40/file verifier after a debugger-only stock pseudo_isa override. Final persistent-image replay, complete services, isolation and admission remain pending.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "Assembly exited 0"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/omnios/native-services.xml",
+          "assertion": "service_bundle type=\"profile\"",
+          "scope": "The stock SMF seed lacked imported cloud-init services. Binding SVCCFG_REPOSITORY to the validated clone repository before native import/apply passed without changing the live repository. Seed-fixed native assembly and fresh QEMU verification confirmed all four cloud-init instances and stock SSH disabled plus exact resolver persistence. This establishes startup authority configuration, not complete Overalls service acceptance.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "passed native `svccfg` against a root-only scratch copy of stock"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/native_image.py",
+          "assertion": "def validate_native_services(root: Path) -> None:",
+          "scope": "All three exact corrected manifests pass actual native svccfg validation; a deliberate Uncommitted mutant fails with the expected enum error. Assembly and booted verification now require this schema-only gate. No method/import/readiness or corrected normal-boot claim.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "A deliberate `Uncommitted` mutant failed native validation with exit 1"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/viosock.c",
+          "assertion": "illumos-static-device-lifetime",
+          "scope": "Independent control-flow review confirms fallible resources precede DRIVER_OK, runtime detach refuses, and unavoidable postactivation failures retain bounded DMA/interrupt-visible resources while withholding this device readiness. Source evidence only; build/native replay pending, and initial ZFS EIO cause remains unestablished.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The corrected illumos transport now has static lifetime after `DRIVER_OK`."
         }
       ]
     },
@@ -11271,9 +11343,9 @@
       ],
       "boundary": "The v6 image and v3 workload bundle carry immutable kernel provenance. Lilly uses the caller-owned jail-local /v.sock and a fixed probe port to compare the native OS, placement, execution epoch, boot challenge and kernel digest, requiring a canonical boot ID before credentials or readiness. Readiness must return the same boot ID. Native source receipts and placeholder kernels remain outside fleet admission; every native capability is false.",
       "denial": "Refuse incomplete provenance, unavailable or placeholder kernel artifacts, malformed or oversized probe frames, stale boot identity and digest mismatch. Wrong-CID peers must be refused by the native transport, but this has no recorded machine evidence.",
-      "scope": "Protocol and Lilly unit tests cover closed schemas, framing and stale evidence through local sockets. Nix evaluation covers pinned source receipts and fail-closed image construction. Lyra hashes the configured kernel file rather than measuring the running kernel. No FreeBSD/illumos kernel build, Firecracker boot, host-CID transport, terminald, agent, recovery or fleet execution is recorded.",
+      "scope": "Protocol/Lilly units cover closed schemas and stale framing through local sockets. Image admission remains closed despite separate native candidates. Lyra compares a read-only executing transport token with a bounded root-owned expected file and separately hashes the kernel file. FreeBSD two-boot candidate assembly checks actual installed bytes/Git/trust and executing sysctl identity. A scoped 139-second nested-KVM run checked the actual FreeBSD socket token/CID2/3, native ABI refusals, oversized/disconnected refusal/recovery and nine exact echo sizes through 1 MiB. Corrected illumos objects passed native nine-module link/install, QEMU file/runtime checks and seven native helper safety tests. The seed-fixed clean-export OmniOS candidate then passed the complete executing-AF40 verifier and native Rust token/CID2/3/refusal/nine-size transport checks under Firecracker with a debugger-only stock pseudo_isa override. The assembler now binds persistent pseudo ISA and serial configuration; exact final-image replay remains required. The final reviewed FreeBSD image 5022d714 passed all five native variants with actual current-boot kernel responses, complete per-boot service oracles and exact image/kernel/firmware/VMM receipts. Linux shared-core properties and extracted listener harnesses retain model scope. A separate exact test-only FreeBSD probe passed one actual pause/full-snapshot/resume transport event, fencing idle identity and pending socket calls; its formal repeatable nested-KVM gate passed in 232 seconds with exact immutable receipts. The earlier 9853 illumos static-lifetime/direct-budget build passed all 26 objects and three host-test gates, then native nine-module linkage and 764-entry clean-export assembly with three native SMF validations and four exact stock-network removals. The sealed disk 24318238 first service/ordinary/reset attempts failed in early boot with blank serial and Firecracker Shutdown(GenericError), before fixtures, native probes or reset API calls; no cause or runtime success is established. The final ordinary FreeBSD catalog transport gate separately passed in 246 seconds on exact image 19658a4a, preserving the ordinary/reset/service image distinctions. The completion-corrected 76b8c1ad build passed all 26 objects and four host gates, including 161 five-function completion histories and four rejected actual-source mutants. Separate pristine native assembly passed nine-module/764-entry/schema/network checks, read-only receipt extraction and clean shutdown, sealing disk a49255bd. A paired direct-only QEMU diagnostic reaches console login on 76b8 under identical no-vsock settings where 9853 panics mounting root; growth enters maintenance, so corrected Firecracker services/transport/reset and original ZFS EIO causality remain separate. The first corrected-image Firecracker service run stays alive but misses its 240-second first-boot deadline, with blank serial and no kernel/service response; the boot failure is unlocated.",
       "status": "partial",
-      "gaps": "Vendored kernel patches are ABI contract scaffolds rather than AF_VSOCK/virtio-vsock implementations. Cross toolchains, real kernel bytes, image assembly, native terminald and nested-KVM machine evidence remain required. File hashing alone cannot establish which kernel booted.",
+      "gaps": "Corrected persistent OmniOS image replay and complete native service/growth/policy/recovery/crash evidence remain required. Wrong-CID injection, DMA/socket lifetime, reset, direct native peer-VM/jail/host isolation and integrated fleet admission remain open. FreeBSD process-SIGKILL evidence does not establish physical stable-media or host power-loss durability; no native capabilities are enabled.",
       "preferred_gap": "Build and boot both patched kernels under Firecracker, bind the reported digest to the running kernel, exercise malformed and wrong-CID traffic plus reset, restart and recovery, then record readiness, trust, workspace, terminal, SSH and flush journeys with exact image provenance.",
       "evidence": [
         {
@@ -11296,6 +11368,132 @@
           "path": "lilly/test/host/image_test.exs",
           "assertion": "FreeBSD rejects an artifact outside its firmware/disk file set",
           "scope": "Image loading refuses stray files and incomplete native kernel descriptors before an image is usable."
+        },
+        {
+          "kind": "property",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/common/ov_vsock_test.c",
+          "assertion": "state_properties",
+          "scope": "The actual shared C parser/credit core passed 400000 generated transitions plus malformed headers, unchanged-on-refusal, credit/counter-wrap and directional shutdown checks with address/undefined-behavior sanitizers. This executes on Linux and does not cover either native wrapper, DMA, kernel scheduling, host CID enforcement or guest isolation.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "Generated malformed frame/state/credit/counter-wrap and directional-shutdown"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-transport/driver.py",
+          "assertion": "and .malformed_length_refused and .disconnected_history_recovered",
+          "scope": "Captured FreeBSD token 5e1fd7cf inputs passed in 139 seconds under nested KVM/Firecracker: executing token, CID2/3, native ABI and immutable buffer/capacity refusals, malformed-length/disconnected/reconnect histories and exact sizes 0, 1, 44, 4096, 65535, 65536, 65537, 262144, 1048576. Receipt binds exact image, firmware and VMM digests. No production service closure, wrong-CID injection, device reset, physical isolation or recovery; later inputs require a fresh run.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The newer gate passed in 139 seconds"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": ".boot_ids | unique | length",
+          "scope": "Protocol/Lilly units cover closed schemas and stale framing through local sockets. Image admission remains closed despite separate native candidates. Lyra compares a read-only executing transport token with a bounded root-owned expected file and separately hashes the kernel file. FreeBSD two-boot candidate assembly checks actual installed bytes/Git/trust and executing sysctl identity. A scoped 139-second nested-KVM run checked the actual FreeBSD socket token/CID2/3, native ABI refusals, oversized/disconnected refusal/recovery and nine exact echo sizes through 1 MiB. Corrected illumos objects passed native nine-module link/install, QEMU file/runtime checks and seven native helper safety tests. The seed-fixed clean-export OmniOS candidate then passed the complete executing-AF40 verifier and native Rust token/CID2/3/refusal/nine-size transport checks under Firecracker with a debugger-only stock pseudo_isa override. The assembler now binds persistent pseudo ISA and serial configuration; exact final-image replay remains required. The final reviewed FreeBSD image 5022d714 passed all five native variants with actual current-boot kernel responses, complete per-boot service oracles and exact image/kernel/firmware/VMM receipts. Linux shared-core properties and extracted listener harnesses retain model scope.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The final reviewed FreeBSD image subsequently passed all five native machine"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_transport.py",
+          "assertion": "def exercise(",
+          "scope": "A diagnostic OmniOS Firecracker boot ran the actual separately packaged Rust listener: executing token4b1627f1, CID3/2, native malformed bind/connect/token/privilege/buffer/capacity refusals, malformed-length/disconnect recovery and all nine exact sizes through 1 MiB passed. The boot required a debugger-only stock pseudo_isa override and disposable loader settings; it is separate from the final reproducible image or service gate, reset and admission.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "That same boot ran the separately packaged native Rust transport probe"
+        },
+        {
+          "kind": "unit",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/test_native_candidate.py",
+          "assertion": "test_digest_size_and_regular_file_boundary",
+          "scope": "All seven helper boundary tests passed on the host and natively under the pinned OmniOS image Python 3.12.3: exact 26-object/nine-module layout, digest/size/regular-file/FIFO/symlink and alternate-root/ownership/configuration refusals. Separate native linkage and boot archive execution do not establish Firecracker virtio-vsock, reset or isolation.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "helper linked/installed the corrected objects natively and all seven tests"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/native_image.py",
+          "assertion": "def assemble(",
+          "scope": "The seed-fixed exact4b1627f1 kit imported a separately identified pinned-image pool, cloned its root, linked/installed all nine modules and payload, rebuilt the archive, selected bootfs and exported cleanly. QEMU checked installed files, Git, trust, exact resolver persistence and five disabled stock services. A separate diagnostic Firecracker boot passed the complete executing-AF40/file verifier after a debugger-only stock pseudo_isa override. Final persistent-image replay, complete services, isolation and admission remain pending.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "Assembly exited 0"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/omnios/native-services.xml",
+          "assertion": "service_bundle type=\"profile\"",
+          "scope": "The stock SMF seed lacked imported cloud-init services. Binding SVCCFG_REPOSITORY to the validated clone repository before native import/apply passed without changing the live repository. Seed-fixed native assembly and fresh QEMU verification confirmed all four cloud-init instances and stock SSH disabled plus exact resolver persistence. This establishes startup authority configuration, not complete Overalls service acceptance.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "passed native `svccfg` against a root-only scratch copy of stock"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/native_image.py",
+          "assertion": "def validate_native_services(root: Path) -> None:",
+          "scope": "All three exact corrected manifests pass actual native svccfg validation; a deliberate Uncommitted mutant fails with the expected enum error. Assembly and booted verification now require this schema-only gate. No method/import/readiness or corrected normal-boot claim.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "A deliberate `Uncommitted` mutant failed native validation with exit 1"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/viosock.c",
+          "assertion": "illumos-static-device-lifetime",
+          "scope": "Independent control-flow review confirms fallible resources precede DRIVER_OK, runtime detach refuses, and unavoidable postactivation failures retain bounded DMA/interrupt-visible resources while withholding this device readiness. The final 26-object/three-host-test build and native nine-module/764-entry assembly passed. All first corrected-disk service/ordinary/reset boots failed before fixtures or probes; native reset/DMA safety and initial ZFS EIO cause remain unestablished.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The corrected illumos transport now has static lifetime after `DRIVER_OK`."
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-transport/driver.py",
+          "assertion": "and .malformed_length_refused and .disconnected_history_recovered",
+          "scope": "The final ordinary FreeBSD catalog gate passed in 246 seconds with exact image 19658a4a, token 5e1fd7cf, firmware/VMM receipts, guest/peer CIDs 3/2, malformed-length/disconnected-history refusal/recovery and all nine byte-equal echoes through 1 MiB. This ordinary test image is distinct from reset/service images; no wrong-CID injection, DMA/race, physical or admission claim.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The final ordinary FreeBSD transport catalog gate passed in 246 seconds"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/native_image.py",
+          "assertion": "def assemble(",
+          "scope": "Final 985301b4 kit assembly of the pristine pinned disk passed native nine-module linkage,764 payload checks, actual svccfg validation of three exact manifests,four fixed network removals, archive/bootfs and clean export. Read-only receipt extraction and clean admin shutdown sealed disk 24318238. First service/ordinary/reset attempts failed early before fixtures/probes; no runtime acceptance or reproducibly Nix-built disk claim.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "Native assembly of the pristine pinned disk passed with final token"
+        },
+        {
+          "kind": "unit",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/block_completion_test.c",
+          "assertion": "assert(vioblk_complete(current, request) == (framework ? 0 : expected));",
+          "scope": "The source-extracted actual alloc/free/complete/submit/poll functions and pinned request layout passed 161 deterministic host histories with strict C11 and ASan/UBSan: immediate one-request/descriptor reuse, preserved replacement and original result, external/internal and polled/nonpolled outcomes, four statuses, flush, panic/cv and append failure. Four actual-source mutants were rejected. Mocked ownership evidence only; no native DMA, scheduling, storage or boot claim.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "sanitizers passed 161 histories:"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/native_image.py",
+          "assertion": "def assemble(",
+          "scope": "Completion-corrected 76b8c1ad kit passed separate pristine native nine-module linkage, 764 payload checks, three exact native SMF validations, four stock-network removals, archive/bootfs update and clean export. Read-only receipt extraction and native shutdown sealed disk a49255bd. This is target-native assembly with runtime/admission false, not a reproducibly Nix-built image or corrected native runtime acceptance.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "A separate pristine disk passed native nine-module linkage, 764 exact payload"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/0004-block-direct-budget.patch",
+          "assertion": "bd_xfer_done(xfer, error);",
+          "scope": "Paired disposable QEMU 10.2.4 KVM/default-BIOS clones use identical host CPU, 2048 MiB, 2 vCPU, modern direct-only 256-entry virtio-blk and no vsock device. Old 9853 disk 24318238 panics mounting root; corrected 76b8 disk a49255bd mounts root and reaches console login, then clean ACPI shutdown with QEMU exit 0. The sealed baseline hash was rechecked unchanged. Growth enters maintenance; no Firecracker service, reset, DMA, isolation, original ZFS EIO cause or admission claim.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The paired direct-only QEMU diagnostic subsequently reached console login"
         }
       ]
     },
@@ -11361,6 +11559,201 @@
           "scope": "The distributed fixture stops writer and dispatcher peers, then completes the queued operation through a replacement peer using committed PostgreSQL state; no guest installation is involved.",
           "record": "docs/architecture/reviews/2026-10-16-agent-context-and-planning.md",
           "record_assertion": "distributed recovery suite passed"
+        }
+      ]
+    },
+    {
+      "id": "native-transport-reset-fencing",
+      "journey": "Fence native socket identity and wake blocked operations after an actual Firecracker transport event",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "recovery"
+      ],
+      "boundary": "A disposable test-only guest retains one peerless identity socket and pending accept/read/write operations before a real pause/full-snapshot/resume sequence. Only the fixture owns the private Unix API socket and disposable snapshot/memory files; production native controls and ordinary TCP exposure are unchanged.",
+      "denial": "Idle identity must fail ECONNRESET after the event, blocked calls must wake with errors, and FreeBSD must refuse new sockets until VM replacement. Ordinary host peer disconnect alone cannot satisfy the peerless-socket oracle; incomplete histories cannot emit a receipt.",
+      "scope": "Actual preliminary and formal FreeBSD nested-KVM execution passed all three API responses 204, idle/accept/read ECONNRESET 54, write EPIPE 32 after send accepted 327680 bytes, and fresh-socket ENXIO until a new VM. The persisted gate passed in 232 seconds and records exact test image 69144fa6, kernel 5d6ea5f9, probe a67b8973, transport token 5e1fd7cf and firmware/VMM hashes. This test image is distinct from final service image 5022d714; both-OS isolated probe cross-compilation passed.",
+      "status": "partial",
+      "gaps": "No recorded corrected OmniOS event oracle, repeated/racing reset stress, malformed DMA, DMA reclamation or physical/multi-host safety. This one transport event does not establish service recovery or production admission; native_admission remains false.",
+      "preferred_gap": "Run the corrected OmniOS probe, then add repeated/racing events and independently bounded DMA/lifetime fault scenarios without widening admission from isolated socket-fencing histories.",
+      "evidence": [
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_reset_probe.c",
+          "assertion": "native-reset-live-socket-oracle",
+          "scope": "Exact executed C source SHA256 28ec0091affd30baddc3cd6e2f6a0c42ba233f582a125ff212ad0e2afde0f4ce passed one actual FreeBSD pause/full-snapshot/resume event with peerless-identity fencing, blocked-call errors and fresh-socket refusal. Test image differs from final service image; no DMA, physical, service-recovery or admission claim.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "A separate test-only FreeBSD probe passed one real Firecracker pause,"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-reset/default.nix",
+          "assertion": "native-reset-machine-scope",
+          "scope": "The repeatable nested-KVM gate passed in 232 seconds on exact test image 69144fa6 with kernel/probe/firmware/VMM receipts. It proved idle identity fencing, blocked-call errors and fresh-socket refusal after one private fixture API pause/full-snapshot/resume. No DMA, physical, service/recovery or admission claim.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The persisted `native-freebsd-reset` nested-KVM gate subsequently passed in"
+        }
+      ]
+    },
+    {
+      "id": "native-mounted-root-growth",
+      "journey": "Expand a retained native root without changing foreign disks or nonroot partitions",
+      "layers": [
+        "identity",
+        "authorization",
+        "execution",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "A no-argument root helper derives the actual mounted pinned root and checks both GPT copies/CRCs, physical capacity, disk/partition GUIDs and starts before mutation. OmniOS additionally binds the assembly dataset/pool GUID and exactly one whole-disk vdev. Bootstrap requires a current volatile success receipt before network or identity.",
+      "denial": "Refuse nonroot execution, caller-selected disks, foreign or shrinking layouts, invalid CRCs, extra partitions, substituted pool identity and failed native commands. Failure must withhold the root-growth receipt and bootstrap authority.",
+      "scope": "Twelve pure authority/GPT/receipt checks passed, with cross-target Clippy and twenty-binary linkage. Earlier offline QEMU and canonical-roots/SSH FreeBSD Firecracker growth passed. The final reviewed image 5022d714, including blocking UFS flush, also passed three distinct clean boots with complete service oracles, two 2-GiB expansions, root bytes 5183107072 to 7268753408 to 9354403840, retained home data, exact GPT/nonroot identities, strict EFI inventories except bounded root NvVars, foreign-disk preservation and caller/nonroot refusals. OmniOS raw alignment correction has a strict host regression; native replay remains pending.",
+      "status": "partial",
+      "gaps": "No corrected OmniOS no-op/expansion, interrupted expansion or physical recovery acceptance. Native admission remains false.",
+      "preferred_gap": "Run the corrected exact OmniOS image through three Firecracker boots with two expansions and retained data/nonroot/foreign-disk checks, then add interrupted-growth histories for both OS families.",
+      "evidence": [
+        {
+          "kind": "unit",
+          "execution": "recorded",
+          "path": "lyra/src/native_growth.rs",
+          "assertion": "fn mounted_root_must_be_unique_and_exact()",
+          "scope": "Pure fixtures check mounted-root uniqueness, target derivation, assembly pool/dataset authority and typed receipt refusals. They do not execute native ioctl, partition or filesystem mutation.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "Twelve pure parser/authority/GPT tests"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "lyra/src/native_growth.rs",
+          "assertion": "pub fn run(os: Os) -> io::Result<()>",
+          "scope": "Three offline QEMU boots execute the native FreeBSD helper, no-op and two expansions, UFS capacity, retained home bytes, nonroot/foreign-disk preservation and caller/nonroot refusals. Separate from final Firecracker services, interrupted expansion or OmniOS growth.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "Three clean offline QEMU boots passed"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/default.nix",
+          "assertion": "The growth variant MUST retain one root through three verified clean exits,",
+          "scope": "Twelve pure authority/GPT/receipt checks passed, with cross-target Clippy and twenty-binary linkage. Earlier offline QEMU and canonical-roots/SSH FreeBSD Firecracker growth passed. The final reviewed image 5022d714, including blocking UFS flush, also passed three distinct clean boots with complete service oracles, two 2-GiB expansions, root bytes 5183107072 to 7268753408 to 9354403840, retained home data, exact GPT/nonroot identities, strict EFI inventories except bounded root NvVars, foreign-disk preservation and caller/nonroot refusals. OmniOS raw alignment correction has a strict host regression; native replay remains pending.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The final reviewed FreeBSD image subsequently passed all five native machine"
+        }
+      ]
+    },
+    {
+      "id": "native-network-policy-isolation",
+      "journey": "Keep native guest public access while refusing private targets and foreign source addresses",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation"
+      ],
+      "boundary": "The disposable native guest uses actual packaged Lilly router and TAP source-guard rules under validated synthetic identity. Every fixed TCP target is proven reachable before rules. Real guard drop counters distinguish source refusal from an unrelated connection failure.",
+      "denial": "Under policy refuse sibling, private, protected-uplink, gateway and unregistered fixed-service TCP targets and foreign-source traffic while preserving public access and current private SSH authority. Require assigned-source recovery after the foreign-source test.",
+      "scope": "The earlier canonical-roots/SSH FreeBSD policy run passed in 280 seconds. The final reviewed image 5022d714 also passed two clean boots with complete service oracles and independent policy receipts. Real fixed sinks were reachable before policy; afterward public traffic and current SSH worked, forbidden targets refused, actual TAP guard drop counters proved foreign-source refusal and assigned-source traffic recovered. Packaged policy was unchanged; host rule/parser checks remain separately scoped.",
+      "status": "partial",
+      "gaps": "No recorded OmniOS native policy run. The sibling target is a Linux TCP sink behind the test peer uplink, not another native VM/TAP. Direct native-VM peer, jail, physical-host and multi-host isolation or recovery remain unproven; native admission remains false.",
+      "preferred_gap": "Run the same two-boot fixture against the corrected exact OmniOS input, retain positive-control sink counts, actual foreign-source guard drops and assigned-source recovery, then add a direct second native VM/TAP and host/jail boundaries.",
+      "evidence": [
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-isolation/driver.py",
+          "assertion": "native-isolation-prepare",
+          "scope": "The earlier canonical-roots/SSH FreeBSD policy run passed in 280 seconds. The final reviewed image 5022d714 also passed two clean boots with complete service oracles and independent policy receipts. Real fixed sinks were reachable before policy; afterward public traffic and current SSH worked, forbidden targets refused, actual TAP guard drop counters proved foreign-source refusal and assigned-source traffic recovered. Packaged policy was unchanged; host rule/parser checks remain separately scoped.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The final reviewed FreeBSD image subsequently passed all five native machine"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_isolation.py",
+          "assertion": "def guard_drops(guard: str) -> int:",
+          "scope": "Linux namespace smoke installed actual packaged Lilly rules and exercised the exact five-drop inventory/counter parser. No native guest was booted.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "five-drop guard inventory/counter parser passed."
+        }
+      ]
+    },
+    {
+      "id": "native-same-boot-daemon-recovery",
+      "journey": "Withhold native readiness during a real daemon failure and restore the exact supervised process",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "recovery"
+      ],
+      "boundary": "Actual managed SSH observes the root-owned flush marker, executable mode/hash and live PID. Within one boot the oracle kills/reaps that process while executable permission prevents restart, then restores exact mode and requires a different supervised PID with the same bytes and boot identity.",
+      "denial": "Require three refusals over the still-live readiness channel while the flush daemon cannot restart. Refuse malformed snapshot/mode/PID/hash framing and incomplete restoration; only the full sequence may publish a receipt.",
+      "scope": "Four host snapshot-parser and failure-cleanup tests passed with Ruff/ty. The vendor-base and final reviewed FreeBSD image 5022d714 both passed two clean boots with actual flush-daemon kill/reap, three live-channel readiness refusals, exact mode/bytes restoration, a new supervised PID and same-boot flush/refusals restored. Final per-boot recovery and service receipts bind exact image/kernel/firmware/VMM inputs.",
+      "status": "partial",
+      "gaps": "No complete OmniOS same-boot daemon recovery receipt. Storage power-loss durability, relocation, host failure and fleet availability remain separate; native admission is false.",
+      "preferred_gap": "Run the fixture on the exact corrected OmniOS image, observe real daemon death, readiness refusal, exact supervised replacement and restored current-boot flush, then test physical host failure and fleet recovery separately.",
+      "evidence": [
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/default.nix",
+          "assertion": "The recovery variant MUST kill an actual native daemon, keep readiness",
+          "scope": "Four host snapshot-parser and failure-cleanup tests passed with Ruff/ty. The vendor-base and final reviewed FreeBSD image 5022d714 both passed two clean boots with actual flush-daemon kill/reap, three live-channel readiness refusals, exact mode/bytes restoration, a new supervised PID and same-boot flush/refusals restored. Final per-boot recovery and service receipts bind exact image/kernel/firmware/VMM inputs.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The final reviewed FreeBSD image subsequently passed all five native machine"
+        },
+        {
+          "kind": "unit",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_recovery_test.py",
+          "assertion": "snapshot",
+          "scope": "Four host checks exercise canonical snapshot parsing, malformed input refusals and finally restoration without receipt on failure. They do not kill a native daemon.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "Four host parser/failure-cleanup tests passed with Ruff/ty."
+        }
+      ]
+    },
+    {
+      "id": "native-abrupt-guest-crash-recovery",
+      "journey": "Restart the same native disk under fresh authority after an observed abrupt VMM process failure",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "The fixture flushes and reads back exact home bytes, requires actual Firecracker SIGKILL, then boots the same disk with fresh MMDS authority. Native filesystem verification and retained bytes are required after recovery; final shutdown must be observed cleanly.",
+      "denial": "Refuse old flush, workspace and terminal authority after restart. Refuse incomplete filesystem checks, corrupt or missing retained bytes, an unobserved SIGKILL, reused boot identity or unclean final exit; incomplete histories cannot publish a receipt.",
+      "scope": "Seven host boundary checks and the composed NixOS driver passed. An initial FreeBSD crash run exposed scheduled-only libc sync and lost acknowledged home/marker bytes. The corrected native UFS suspension/resume flush passed the final reviewed image 5022d714 crash variant in 224 seconds: observed SIGKILL, same-disk/new-MMDS/new-boot restart, exact retained bytes, stale-authority refusal, native UFS snapshot background fsck, all eight crash checks, both complete service oracles and final clean exit. Exact image/kernel/firmware/VMM and immutable receipts are recorded in the review.",
+      "status": "partial",
+      "gaps": "No complete OmniOS abrupt-crash native machine receipt. Interrupted writes, interrupted expansion, physical stable-media/host power loss and fleet recovery remain unproven; native admission remains false.",
+      "preferred_gap": "Run the exact corrected OmniOS crash variant with complete service oracles, observed SIGKILL, new boot authority, retained bytes, zero-error ZFS scrub and old-authority refusal, then test interrupted writes and physical recovery separately.",
+      "evidence": [
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/default.nix",
+          "assertion": "The crash variant MUST observe a first-boot VMM SIGKILL, restart the same",
+          "scope": "Seven host boundary checks and the composed NixOS driver passed. An initial FreeBSD crash run exposed scheduled-only libc sync and lost acknowledged home/marker bytes. The corrected native UFS suspension/resume flush passed the final reviewed image 5022d714 crash variant in 224 seconds: observed SIGKILL, same-disk/new-MMDS/new-boot restart, exact retained bytes, stale-authority refusal, native UFS snapshot background fsck, all eight crash checks, both complete service oracles and final clean exit. Exact image/kernel/firmware/VMM and immutable receipts are recorded in the review.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The final reviewed FreeBSD image subsequently passed all five native machine"
+        },
+        {
+          "kind": "unit",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_crash_recovery_test.py",
+          "assertion": "class",
+          "scope": "Seven host checks validate retained data, filesystem-result and source/mode boundaries without crashing or recovering a native guest.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "Seven host boundary checks passed."
         }
       ]
     }

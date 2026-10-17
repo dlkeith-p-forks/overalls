@@ -21,7 +21,7 @@ Sessions persist until an explicit kill, child exit, daemon stop, or idle
 deadline. Viewer disconnects and dial errors MUST NOT terminate sessions.
 
 @cc [owner:ghuntley,label:security] guest-execution-credentials
-On Linux guests, session programs execute with resolved passwd identities: uid,
+On Unix guests, session programs execute with resolved passwd identities: uid,
 gid and supplementary groups MUST be fully applied and every transition checked
 before exec, and the exec environment MUST set TERM from the creating client,
 COLORTERM=truecolor and a UTF-8 locale. Group membership is resolved before
@@ -30,7 +30,8 @@ fork. On Windows guests the `windows-terminal-session-identity` and
 instead (ADR-0171).
 
 @cc [owner:ghuntley,label:architecture] one-session-engine
-Linux and Windows builds MUST share one session engine, framing, ring and HELLO
+Linux, Windows, FreeBSD and illumos builds MUST share one session engine, framing, ring and HELLO
 implementation; operating-system differences live only in the `conn`, `pty`,
 `vsock` and boot-identity modules selected by target, so the wire protocol and
-the capacity, fidelity and recovery contracts above hold on both.
+the capacity, fidelity and recovery contracts above hold on every supported target. Native linking MUST NOT establish kernel transport or
+image admission (ADR-0190).

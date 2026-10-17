@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import multiprocessing
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -15,7 +16,15 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from assertions import roster
-from campaign import initialize, modify, policy_duration, reserve, transition, verify_manifest
+from campaign import (
+    MAX_ACTIVE_ATTEMPTS,
+    initialize,
+    modify,
+    policy_duration,
+    reserve,
+    transition,
+    verify_manifest,
+)
 from identity import (
     CopyInput,
     _image_hashes,
@@ -39,6 +48,7 @@ from selection import (
     manifest,
     materialization,
     read_selection,
+    rendered_compose,
     selected_files,
     stage,
     validate_compose,
@@ -615,7 +625,15 @@ class VerificationTests(unittest.TestCase):
         data = manifest(root, selection)
         self.assertEqual(
             selection.templates,
-            ("control", "control_rotation", "control_dispatch", "control_legacy_request"),
+            (
+                "control",
+                "control_rotation",
+                "control_dispatch",
+                "control_legacy_request",
+                "control_delivery",
+                "host_sessions",
+                "host_rotation",
+            ),
         )
         self.assertTrue(
             all(
@@ -652,8 +670,10 @@ class VerificationTests(unittest.TestCase):
             self.assertEqual(staged_modules, runtime_modules)
             self.assertIn("core/__init__.py", staged_modules)
             self.assertIn("core/bootstrap.py", staged_modules)
-            # Same package, untraced module: only the host_sessions template imports it.
-            self.assertNotIn("control/host_sessions.py", staged_modules)
+            self.assertIn("control/host_sessions.py", staged_modules)
+            self.assertIn("control/version_refusal.py", staged_modules)
+            # Same package, untraced module: only the repository-origin commands import it.
+            self.assertNotIn("repository/scenarios.py", staged_modules)
             self.assertFalse(any(name.startswith("backup/") for name in staged_modules))
             extra = catalog / "backup/scenarios.py"
             extra.parent.mkdir()
@@ -917,6 +937,10 @@ class VerificationTests(unittest.TestCase):
             ("repository-origin", "repository", 4),
             ("access-smtp", "access", 3),
             ("recorder-host", "recorder", 3),
+            ("admission-stub", "admission", 2),
+            ("backup-restic", "backup", 5),
+            ("satellite-standin", "satellite", 4),
+            ("guest-lifecycle", "guest_lifecycle", 1),
         ):
             with self.subTest(profile=name):
                 selection = read_selection(
@@ -1037,32 +1061,216 @@ class VerificationTests(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(EvidenceError):
                 validate_compose(selection, rendered(**change))
 
-    def test_global_budget_and_five_inflight_limit_across_configs(self) -> None:
+    def test_admission_stub_profile_selects_stub_without_physical_claims(self) -> None:
+        root = Path(__file__).resolve().parents[3]
+        selection = read_selection(root / "antithesis/verification/selections/admission-stub.json")
+        data = manifest(root, selection)
+        runtime = {
+            string(field(obj(item, "dependency"), "path"), "path")
+            for item in arr(field(data, "runtime_dependencies"), "runtime dependencies")
+        }
+        # The stub profile never declares the live-ZFS physical assertions.
+        for module in ("physical_scenario.py", "physical.py", "verdict.py", "capacity.py"):
+            self.assertNotIn(f"antithesis/workload/admission/{module}", runtime)
+
+        def rendered(**changes: object) -> dict[str, Json]:
+            environment: dict[str, object] = {
+                key: "/run/overalls-secrets/fixture.json" for key in selection.workload_environment
+            }
+            environment.update(
+                {
+                    "ANTITHESIS_DB_HOST": "pg",
+                    "ANTITHESIS_MARSHALL_URLS": "https://marshall-a,https://marshall-b",
+                    "ANTITHESIS_CONTROL_CREDENTIAL_FILE": (
+                        "/run/overalls-control-secrets/lilly-a-credential.json"
+                    ),
+                    "ANTITHESIS_CONTROL_REQUEST_DIR": "/run/overalls-control-requests",
+                    "ANTITHESIS_CONTROL_OPERATOR_ROOT": "/run/overalls-control-requests",
+                    "ANTITHESIS_REPOSITORY_FIXTURE_FILE": (
+                        "/run/overalls-control-secrets/fixture.json"
+                    ),
+                    "ANTITHESIS_BOOTSTRAP_PROFILE": "admission-stub",
+                }
+            )
+            stub = {"OVERALLS_ANTITHESIS_STORAGE_STUB": "1"}
+            services: dict[str, object] = {name: {} for name in selection.services}
+            services["lilly-a"] = {
+                "image": "overalls-antithesis/lilly:local",
+                "environment": dict(stub),
+            }
+            services["enrollment"] = {"environment": dict(stub)}
+            services["workload"] = {
+                "environment": environment,
+                "depends_on": {
+                    name: {"condition": "service_healthy"}
+                    for name in ("pg", "marshall-a", "marshall-b", "enrollment", "lilly-a")
+                },
+                "volumes": [
+                    {"target": "/run/overalls-secrets"},
+                    {"target": "/run/overalls-control-secrets"},
+                    {"target": "/run/overalls-control-requests/requests"},
+                    {"target": "/run/overalls-control-requests/results"},
+                ],
+            }
+            if changes.get("physical"):
+                environment["ANTITHESIS_PHYSICAL_SAMPLE_FILE"] = "/run/physical.json"
+            if changes.get("no_stub"):
+                services["lilly-a"] = {"image": "overalls-antithesis/lilly:local"}
+            if changes.get("guest_lilly"):
+                services["lilly-a"] = {
+                    "image": "overalls-antithesis/lilly-guest:local",
+                    "environment": dict(stub),
+                }
+            if changes.get("profile"):
+                environment["ANTITHESIS_BOOTSTRAP_PROFILE"] = "control-core"
+            return obj(narrow_json({"services": services}), "admission Compose")
+
+        validate_compose(selection, rendered())
+        for change in ("physical", "no_stub", "guest_lilly", "profile"):
+            with self.subTest(change=change), self.assertRaises(EvidenceError):
+                validate_compose(selection, rendered(**{change: True}))
+
+    @unittest.skipUnless(shutil.which("docker-compose"), "Compose CLI unavailable")
+    def test_guest_lifecycle_compose_keeps_guest_sockets_out_of_workload(self) -> None:
+        root = Path(__file__).resolve().parents[3]
+        selection = read_selection(root / "antithesis/verification/selections/guest-lifecycle.json")
+        healthy = {"condition": "service_healthy"}
+
+        def volume(source: str, target: str, read_only: bool = False) -> dict[str, object]:
+            return {"type": "volume", "source": source, "target": target, "read_only": read_only}
+
+        def graph(mutation: str = "") -> dict[str, Json]:
+            environment = {
+                key: "/run/overalls-secrets/fixture.json" for key in selection.workload_environment
+            }
+            environment.update(
+                {
+                    "ANTITHESIS_DB_HOST": "pg",
+                    "ANTITHESIS_MARSHALL_URLS": "https://marshall-a,https://marshall-b",
+                    "ANTITHESIS_CONTROL_CREDENTIAL_FILE": (
+                        "/run/overalls-control-secrets/lilly-a-credential.json"
+                    ),
+                    "ANTITHESIS_CONTROL_REQUEST_DIR": "/run/overalls-control-requests",
+                    "ANTITHESIS_BOOTSTRAP_PROFILE": (
+                        "control-core" if mutation == "profile" else "guest-lifecycle"
+                    ),
+                }
+            )
+            gated = ["pg", "marshall-a", "marshall-b", "enrollment", "lilly-a"]
+            if mutation != "ungated":
+                gated.append("guest-vmm")
+            workload_volumes = [
+                volume("oracle-credentials", "/run/overalls-secrets", True),
+                volume("control-credentials", "/run/overalls-control-secrets", True),
+                volume("control-requests", "/run/overalls-control-requests/requests"),
+                volume("control-results", "/run/overalls-control-requests/results", True),
+            ]
+            if mutation == "workload_witness":
+                workload_volumes.append(
+                    volume("guest-vmm-witness", "/run/overalls-guest-witness", True)
+                )
+            enrollment_volumes = [
+                volume("guest-vmm-witness", "/run/overalls-guest-witness", True),
+                volume("guest-catalog", "/run/overalls-guest-catalog", True),
+            ]
+            if mutation == "enrollment_control":
+                enrollment_volumes.append(volume("guest-vmm-control", "/run/overalls-guest-vmm"))
+            services: dict[str, object] = {name: {} for name in selection.services}
+            services["workload"] = {
+                "environment": environment,
+                "depends_on": {name: healthy for name in gated},
+                "volumes": workload_volumes,
+            }
+            services["lilly-a"] = {
+                "image": (
+                    "overalls-antithesis/lilly:local"
+                    if mutation == "lilly_image"
+                    else "overalls-antithesis/lilly-guest:local"
+                ),
+                "depends_on": {"guest-vmm": healthy},
+                "environment": {
+                    "OVERALLS_ANTITHESIS_GUEST_SOCKET": "/run/overalls-guest-vmm/control.sock",
+                    "OVERALLS_ANTITHESIS_GUEST_IMAGE": "/opt/overalls/guest-vmm/image",
+                },
+                "volumes": [
+                    volume("guest-vmm-control", "/run/overalls-guest-vmm"),
+                    volume("guest-catalog", "/run/overalls-guest-catalog"),
+                ],
+            }
+            services["enrollment"] = {
+                "environment": {
+                    "OVERALLS_ANTITHESIS_GUEST_WITNESS_SOCKET": (
+                        "/run/overalls-guest-witness/witness.sock"
+                    ),
+                    "OVERALLS_ANTITHESIS_GUEST_CATALOG": "1",
+                },
+                "volumes": enrollment_volumes,
+            }
+            return obj(narrow_json({"services": services}), "guest Compose")
+
+        validate_compose(selection, graph())
+        for mutation in (
+            "workload_witness",
+            "ungated",
+            "lilly_image",
+            "enrollment_control",
+            "profile",
+        ):
+            with self.subTest(mutation=mutation), self.assertRaises(EvidenceError):
+                validate_compose(selection, graph(mutation))
+
+    def test_backup_and_satellite_profiles_refuse_weakened_fixtures(self) -> None:
+        root = Path(__file__).resolve().parents[3]
+        backup = read_selection(root / "antithesis/verification/selections/backup-restic.json")
+        rendered = rendered_compose(root, backup)
+        workload = obj(field(obj(field(rendered, "services"), "s"), "workload"), "w")
+        workload["volumes"] = [
+            item
+            for item in arr(field(workload, "volumes"), "v")
+            if field(obj(item, "v"), "target") != "/var/lib/overalls-backup-fixture"
+        ]
+        with self.assertRaises(EvidenceError):
+            validate_compose(backup, rendered)
+
+        satellite = read_selection(
+            root / "antithesis/verification/selections/satellite-standin.json"
+        )
+        for weaken in ("network", "results", "secret"):
+            with self.subTest(weaken=weaken):
+                rendered = rendered_compose(root, satellite)
+                services = obj(field(rendered, "services"), "services")
+                standin = obj(field(services, "guest-standin"), "stand-in")
+                if weaken == "network":
+                    standin["network_mode"] = "service:workload"
+                elif weaken == "results":
+                    workload = obj(field(services, "workload"), "workload")
+                    for item in arr(field(workload, "volumes"), "v"):
+                        mount = obj(item, "v")
+                        if field(mount, "target") == "/run/overalls-guest-standin/results":
+                            mount["read_only"] = False
+                else:
+                    arr(field(standin, "volumes"), "v").append(
+                        {"type": "volume", "source": "x", "target": "/run/overalls-secrets"}
+                    )
+                with self.assertRaises(EvidenceError):
+                    validate_compose(satellite, rendered)
+
+    def test_global_budget_across_configs(self) -> None:
         ledger = initialize(
             None, "identity-a", ["safety", "safety-two"], "antithesis/config/a.yaml"
         )
         initialize(ledger, "identity-b", ["safety", "safety-two"], "antithesis/config/b.yaml")
         self.assertEqual(ledger["ceiling"], 10)
-        for config, identity in (
-            ("antithesis/config/a.yaml", "identity-a"),
-            ("antithesis/config/b.yaml", "identity-b"),
-            ("antithesis/config/a.yaml", "identity-a"),
-            ("antithesis/config/b.yaml", "identity-b"),
-            ("antithesis/config/a.yaml", "identity-a"),
-        ):
+        for index in range(10):
+            config, identity = (
+                ("antithesis/config/a.yaml", "identity-a")
+                if index % 2 == 0
+                else ("antithesis/config/b.yaml", "identity-b")
+            )
             reserve(ledger, identity, "bootstrap", None, config)
-        with self.assertRaises(EvidenceError):
-            reserve(ledger, "identity-b", "bootstrap", None, "antithesis/config/b.yaml")
-        for item in arr(field(ledger, "attempts"), "attempts"):
-            transition(ledger, str(obj(item, "attempt")["attempt_id"]), "abandoned")
-        for config, identity in (
-            ("antithesis/config/b.yaml", "identity-b"),
-            ("antithesis/config/a.yaml", "identity-a"),
-            ("antithesis/config/b.yaml", "identity-b"),
-            ("antithesis/config/a.yaml", "identity-a"),
-            ("antithesis/config/b.yaml", "identity-b"),
-        ):
-            reserve(ledger, identity, "bootstrap", None, config)
+            if index == 4:
+                for item in arr(field(ledger, "attempts"), "attempts"):
+                    transition(ledger, str(obj(item, "attempt")["attempt_id"]), "abandoned")
         with self.assertRaises(EvidenceError):
             reserve(ledger, "identity-a", "bootstrap", None, "antithesis/config/a.yaml")
         initialize(ledger, "identity-c", ["new safety"], "antithesis/config/c.yaml")
@@ -1174,9 +1382,10 @@ class VerificationTests(unittest.TestCase):
         with self.assertRaises(EvidenceError):
             initialize(narrow_json(old), "identity", ["safety"])
 
-    def test_five_inflight_limit_and_config_binding(self) -> None:
-        ledger = initialize(None, "identity", ["safety", "safety-two"], "antithesis/config/a.yaml")
-        for _ in range(5):
+    def test_inflight_limit_and_config_binding(self) -> None:
+        messages = [f"safety-{index}" for index in range(8)]
+        ledger = initialize(None, "identity", messages, "antithesis/config/a.yaml")
+        for _ in range(MAX_ACTIVE_ATTEMPTS):
             reserve(ledger, "identity", "bootstrap", None, "antithesis/config/a.yaml")
         with self.assertRaises(EvidenceError):
             reserve(ledger, "identity", "bootstrap", None, "antithesis/config/a.yaml")

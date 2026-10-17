@@ -26,6 +26,7 @@ defmodule OverallsAntithesis.ControlPeer.Runner do
             "capacity" -> capacity(limit)
             "pending" -> pending(limit, timeout)
             "delivery" -> delivery(limit)
+            "version_refusal" -> version_refusal(limit, timeout)
             _ -> throw(:unavailable)
           end
 
@@ -220,6 +221,43 @@ defmodule OverallsAntithesis.ControlPeer.Runner do
       "uncertain" => uncertain,
       "sentinel_ack" => acknowledged,
       "distinct_ids" => first_id != sentinel_id
+    }
+  end
+
+  # @cc [owner:ghuntley,label:verification] control-peer-version-refusal
+  # The version refusal mode MUST hold one peer-observed request across a
+  # welcomed 4001 close, then count transport accepts for longer than the
+  # client's maximum reconnect backoff. The quiet window is finite evidence of
+  # no retry; it MUST NOT be reported as a proof that the client never retries.
+  # Quiet window: the client's backoff ceiling is 4_000 ms and its first
+  # recoverable retry fires within 1_000 ms.
+  @version_refusal_quiet_ms 5_000
+
+  @spec version_refusal(integer(), pos_integer()) :: result()
+  defp version_refusal(advertised, hold) do
+    {client, server} = open(advertised)
+
+    held =
+      Task.async(fn -> Client.request(client, "galileo.renew", %{"nonce" => 301}, 30_000) end)
+
+    {:ok, _held_id, 301} = Peer.await_request(server)
+    Process.sleep(hold)
+    Peer.flush_accepted()
+    Peer.close_with(server, 4001)
+    {:ok, reason} = Peer.await_disconnect_reason(client, 5_000)
+    held_result = task_result(held, 2_000)
+    handshakes = Peer.handshakes_within(@version_refusal_quiet_ms)
+    status = Client.status(client)
+    post = Client.request(client, "galileo.renew", %{"nonce" => 302}, 500)
+
+    %{
+      "close_class" => reason == :unsupported_version,
+      "pending_unproven" => held_result == {:error, :unproven},
+      "status_retained" => status == {:disconnected, :unsupported_version},
+      "handshakes_after_refusal" => handshakes,
+      "quiet_ms" => @version_refusal_quiet_ms,
+      "post_refusal_disconnected" => post == {:error, :disconnected},
+      "client_alive" => Process.alive?(client)
     }
   end
 

@@ -102,12 +102,63 @@ defmodule OverallsProtocolCodecsContractTest do
 
   @tag obligation: "overalls_protocol.codecs.I4"
   test "reports reject contradictory or duplicate pool observations" do
-    base = %{"sequence" => 1, "sampled_at" => "2026-01-01T00:00:00Z", "effective_cores" => 1,
-      "effective_memory_bytes" => 1, "inventory" => %{}, "pools" => []}
-    pool = %{"id" => "123e4567-e89b-12d3-a456-426614174000", "total_bytes" => 10,
-      "free_bytes" => 11, "allocations" => %{}, "storage" => %{}}
+    base = %{
+      "sequence" => 1,
+      "sampled_at" => "2026-01-01T00:00:00Z",
+      "effective_cores" => 1,
+      "effective_memory_bytes" => 1,
+      "inventory" => %{},
+      "pools" => []
+    }
+
+    pool = %{
+      "id" => "123e4567-e89b-12d3-a456-426614174000",
+      "total_bytes" => 10,
+      "free_bytes" => 11,
+      "allocations" => %{},
+      "storage" => %{}
+    }
+
     assert {:error, :invalid_message} = OverallsProtocol.report(%{base | "pools" => [pool]})
     pool2 = %{pool | "free_bytes" => 5}
-    assert {:error, :invalid_message} = OverallsProtocol.report(%{base | "pools" => [pool2, pool2]})
+
+    assert {:error, :invalid_message} =
+             OverallsProtocol.report(%{base | "pools" => [pool2, pool2]})
+  end
+
+  @tag obligation: "overalls_protocol.codecs.I5"
+  test "capacity observations require bounded complete proofs" do
+    assert OverallsProtocol.Capacity.valid?(nil)
+    refute OverallsProtocol.Capacity.valid?(%{"version" => 1, "cpu_headroom_millicores" => -1})
+
+    proof = %{
+      "execution_epoch" => 1,
+      "generation" => 1,
+      "outcome_id" => "123e4567-e89b-12d3-a456-426614174000",
+      "compute" => true,
+      "disk" => false
+    }
+
+    valid = %{
+      "version" => 1,
+      "cpu_headroom_millicores" => 0,
+      "memory_headroom_bytes" => 0,
+      "interval_us" => 1,
+      "covered" => %{"123e4567-e89b-12d3-a456-426614174000" => proof}
+    }
+
+    assert OverallsProtocol.Capacity.valid?(valid)
+    invalid = put_in(valid["covered"]["123e4567-e89b-12d3-a456-426614174000"]["generation"], 0)
+    refute OverallsProtocol.Capacity.valid?(invalid)
+  end
+
+  @tag obligation: "overalls_protocol.codecs.I6"
+  test "address pool rejects reserved slots and pairs inception" do
+    assert {:error, :invalid_address} = OverallsProtocol.AddressPool.address(:customer, 1)
+    assert {:error, :invalid_address} = OverallsProtocol.AddressPool.address(:customer, 65_535)
+    assert {:ok, [control, paired]} = OverallsProtocol.AddressPool.addresses(:inception, 42)
+    assert control == "10.40.0.42"
+    assert paired == "10.41.0.42"
+    assert {:ok, ["10.10.0.42"]} = OverallsProtocol.AddressPool.addresses(:customer, 42)
   end
 end

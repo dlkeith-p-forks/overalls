@@ -917,13 +917,141 @@ Native manifests and workload bundles bind kernel bytes, digest, source
 revision, patch/configuration hashes and compiler. Lilly's jail-local probe
 compares the native OS, placement, execution epoch, boot challenge and digest,
 and requires a canonical boot ID before credentials or readiness. Missing,
-stale, malformed, oversized or mismatched responses refuse. Lyra currently
-hashes the configured kernel file; that result cannot prove it is the running
-kernel. The readiness boot ID must equal the earlier kernel response's boot
-ID. Independent native boot, wrong-CID, malformed-packet, reset, storage,
-isolation and recovery evidence remains absent. The
+stale, malformed, oversized or mismatched responses refuse. Lyra compares a
+read-only loaded transport build token with a bounded root-owned expected-token
+file, then separately hashes the configured kernel file. Symlinks, group/world-writable or
+foreign-owned expected files, malformed tokens and module-token mismatch refuse.
+A compiled-input token and a file digest do not substitute for native evidence
+that the intended kernel/module set booted. The readiness boot ID must equal the
+earlier kernel response's boot ID. A scoped FreeBSD nested-KVM run binds actual
+host-CID transport to the executing token, checks native ABI refusals, and crosses
+the credit window with exact synthetic-data comparisons. Wrong-CID injection,
+malformed DMA, reset, native crash durability and broader isolation evidence
+remain gaps; scoped growth/recovery and IPv4/router/TAP results are recorded
+separately below. The
 [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md)
 records these limits.
+
+The native isolation fixture uses the packaged Lilly router and TAP source guard
+with validated synthetic identities. Public, sibling, private, protected-uplink,
+gateway and unregistered-service TCP sinks must all be reachable before rule
+installation. Under policy, public traffic and private SSH authority must remain
+usable, forbidden targets must refuse, and a foreign-source attempt must
+increment the actual TAP guard's drop counter before the assigned source
+recovers. The composed NixOS driver, Linux rule installation/counter smoke,
+Ruff/ty and three parser boundary tests passed. The exact canonical-roots/SSH
+FreeBSD candidate then passed two clean boots with independent policy receipts,
+real sink controls, guard drop counters and assigned-source recovery. This
+establishes the stated native IPv4/router/TAP scope; OmniOS, jail, physical-host
+and multi-host isolation remain unproven.
+The sibling target is a Linux TCP sink behind the test peer uplink; direct
+native-VM peer isolation is also unexecuted.
+
+Native root mutation is confined to the actual mounted root and pinned GPT
+identities, after read-only dual-header/CRC/capacity validation. OmniOS additionally
+binds the assembly dataset/pool GUID and single whole-disk vdev. Root-only
+no-argument invocation, an exclusive root-owned lock, bounded utility output and
+postflight precede the volatile success receipt required by bootstrap. Pure
+parser tests do not establish filesystem growth or interruption recovery.
+
+OmniOS vendor cloud-init and SSH are disabled in the clone's offline SMF
+repository so runtime network/SSH authority remains with Overalls. Exact-profile
+validation on a scratch stock repository passed without changing the live
+repository. Fresh-boot verification must observe those five instances disabled
+and every immutable payload unchanged; it continues to refuse resolver changes.
+Fresh seed-image assembly and QEMU boot passed those file/service checks after
+binding the offline repository environment and importing the exact clone
+manifests. Diagnostic Firecracker AF40/file/token verification subsequently
+passed under a debugger-only pseudo ISA override. Final persistent-image service
+and storage replay remains required. Assembly now removes only the fixed four
+stock vioif0 address/DHCP files, preflights every destination and refuses any
+restoration during verification. All three corrected manifests pass native
+`svccfg validate`, while the old-enum mutant refuses; the same native validator
+now gates assembly and verification. These checks preserve MMDS-only network
+authority and establish schema validity, not actual service method execution.
+No profile validation or installation receipt enables native admission.
+
+Native trust keeps pinned vendor roots in the separate regular
+`/etc/overalls/system-ca.pem` and composes only those bytes plus the current
+boot-authorized host set. Its managed system destination is never the vendor
+base on later boots. Missing or conflicting base/staged bytes and stale
+authority refuse before changing the effective bundle; root replacement/removal
+must remain idempotent across boots under ADR-0113.
+
+The optional same-boot daemon-recovery fixture must observe the real flush
+process killed/reaped and readiness withheld while restart is disabled, then
+restore exact mode/bytes under a new supervised PID before current-boot flush
+and readiness resume. Four host boundary tests passed. The vendor-base and final
+reviewed FreeBSD images both passed the complete two-boot failure/refusal/
+restoration boundary with exact per-boot receipts. The distinct abrupt-crash fixture must
+observe VMM SIGKILL, new identity, retained bytes, native filesystem checking and
+old-authority refusal; its seven host checks pass. Actual crash execution exposed
+scheduled-only UFS sync. The corrected native suspension/resume flush passed the
+final FreeBSD observed-SIGKILL/same-disk restart boundary with exact retained bytes,
+native UFS snapshot fsck and complete service oracles before/after the crash.
+OmniOS recovery remains unexecuted. Neither fixture establishes physical
+stable-media/host power-loss durability or fleet recovery.
+
+A separate test-only FreeBSD probe passed one actual Firecracker pause,
+full-snapshot and resume transport event. An idle socket with no peer lost its
+identity authority with `ECONNRESET`; pending accept/read/write operations woke
+with errors and fresh sockets refused until a new VM. The native review binds
+its distinct test image and transport token. This establishes that one live
+socket-fencing history, without granting reset-race/DMA/physical safety,
+OmniOS, production-service or fleet acceptance.
+The persisted `native-freebsd-reset` nested-KVM gate subsequently passed in
+232 seconds with exact test image/kernel/probe/firmware/VMM receipts and the
+same observed socket outcomes. The API remains a private fixture Unix socket;
+no ordinary guest TCP or production control authority is added.
+
+Illumos activated queue/interrupt/DMA storage now has static lifetime until VM
+disposal. Fallible allocations precede `DRIVER_OK`; runtime detach refuses and
+unavoidable later activation failures fence readiness, drain workers and retain
+the bounded unavailable attachment. A refused VMM device reset cannot authorize
+resource reclamation. Independent source review confirms this control flow;
+native DMA/reset acceptance remains separate from the correction and from the
+unexplained initial ZFS I/O errors.
+Source-extracted host fault injection and three rejected lifetime mutants cover
+236 preactivation failures and both retained late failures. Separately, direct
+block requests are bounded by each request's worst-case data plus two metadata
+descriptors, with scatter clamped before DMA attributes; 265,596 extracted-helper
+arithmetic/sanitizer vectors passed. These do not establish native DMA safety
+or prove the initial disk failure's cause.
+
+The shared C core validates the complete 44-byte little-endian frame, exact
+used length, stream type, host/guest CID, nonzero ports, flags and bounded
+payload before publication. Credit counters reject acknowledgement of unsent
+bytes and data beyond the receive window. Invalid transitions do not mutate
+core state; the wrapper must refuse/reset. Generated malformed-frame/state
+checks and sanitizers passed for this core on Linux. They do not cover DMA,
+socket lifetimes, host hardware isolation or either native kernel wrapper.
+
+FreeBSD root authority and illumos global-zone system-configuration authority
+guard the custom socket families. Both wrappers bound sockets/windows/queues,
+refuse guest-initiated connections, and fence old sockets on device reset or
+configuration changes. Illumos callback unsubscription drains before replacement;
+reads retain buffer ownership across user copies and sends recheck shutdown and
+credit before publication. Its opt-in listener failure changes preserve ordinary
+TCP behavior and prevent blocked accepts from surviving transport failure.
+Native stress, malformed DMA, callback races, listener wakeups and recovery
+remain machine-test gaps. FreeBSD reset retains static interrupt resources and
+requires VM replacement. Neither source inspection nor cross-compilation closes
+these security boundaries.
+
+FreeBSD validates accepted-child state before allocation and publishes only
+after its bounded response resources exist; failed children are detached and
+deallocated before joining listener ownership. Illumos uses preallocated
+interrupt-work dispatch so allocation failure cannot strand a completion or
+reset fence. Scoped host regressions and native compilation cover these source
+repairs; memory-pressure and reset behavior still need native machine evidence.
+
+Native SSH helpers obtain fresh MMDS authority per invocation and keep host keys,
+locks and readiness volatile. Separate managed sshd configuration refuses root
+and password login and forces the current-authorization session helper. Exact
+pinned sudo bytes alone may regain setuid mode during image assembly; extraction
+does not activate package privilege. Periodic roster/certificate refresh removes
+readiness on failure. Actual authorized SSH, expiry, retained-home and current
+session refusal still require target-native journeys.
 
 ## Windows guest boundaries
 

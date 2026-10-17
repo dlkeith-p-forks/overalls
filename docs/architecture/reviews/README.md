@@ -22,10 +22,16 @@
   FreeBSD/OmniOS boot, agents, recovery and fleet claims remain open.
 
 - [Native kernel provenance and attestation (2026-10-17)](2026-10-17-native-kernel-attestation.md):
-  ADR-0188 replaces ADR-0180 with a kernel provenance descriptor, fail-closed native-kernel receipts,
+  ADR-0190 replaces ADR-0180 with a kernel provenance descriptor, fail-closed native-kernel receipts,
   jail-local boot-bound attestation and guest daemon packaging. Source and
-  focused tests exist; cross-built kernels, native `terminald`, boot, agents,
-  recovery and fleet evidence remain open.
+  focused tests are joined by a complete FreeBSD candidate, native userland
+  linkage, native illumos module assembly, two-boot FreeBSD candidate assembly
+  and recorded FreeBSD service/growth/policy/daemon-recovery/process-crash,
+  ordinary-transport and reset-event gates. Corrected OmniOS native assembly
+  and paired direct-only QEMU boot pass; the first corrected-image Firecracker
+  service run misses its boot deadline. OmniOS complete services, native peer-VM
+  isolation, physical recovery and fleet acceptance remain open. Capabilities
+  and catalog admission stay disabled.
 
 - [Thread sharing review (2026-10-16)](2026-10-16-thread-sharing.md): ADR-0175's
   durable thread grants, current bound-machine authority, additive VM/team roles,
@@ -568,4 +574,5 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [Windows images with pinned winget packages (2026-10-15)](2026-10-15-windows-images-winget.md): ADR-0173's Desktop Experience image installs pinned winget packages and WSL features through an offline file server; image and fleet checks passed, with interactive winget registration and nested virtualization gaps recorded.
 - [Windows workstation client (2026-10-15)](2026-10-15-windows-workstation-client.md): ADR-0172's cross-platform Overalls CLI adds Windows packaging, SSH and update paths; Linux checks, Windows cross-build and fleet guest-agent validation passed, with real Windows workstation use remaining.
 - [Antithesis five-attempt bootstrap admission (2026-10-16)](2026-10-16-antithesis-five-attempt-admission.md): verification campaign ledger admits five concurrent hosted attempts and refuses a sixth; no production architecture boundary changes.
+- [Antithesis guest-lifecycle profile (2026-10-17)](2026-10-17-antithesis-guest-lifecycle-profile.md): launchable QEMU TCG guest-lifecycle selection with a labelled stub-storage container Lilly; harness-only, no ADR change and no recorded run.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)

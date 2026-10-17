@@ -1,9 +1,9 @@
 {
   "apps": {
     "overalls_request_accounting": {
-      "active": 8,
+      "active": 9,
       "coverage": 1.0,
-      "covered": 8
+      "covered": 9
     },
     "system": {
       "active": 0,
@@ -72,10 +72,10 @@
       }
     },
     "overalls_request_accounting.recorder": {
-      "active": 3,
+      "active": 4,
       "app": "overalls_request_accounting",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "overalls_request_accounting.recorder.I1": {
@@ -107,6 +107,16 @@
           "tests": [
             "test recorder replies are closed and bounded"
           ]
+        },
+        "overalls_request_accounting.recorder.I4": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test producer admission and malformed completion fail closed"
+          ]
         }
       }
     },
@@ -122,8 +132,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 8,
+    "active": 9,
     "coverage": 1.0,
-    "covered": 8
+    "covered": 9
   }
 }

@@ -15,6 +15,16 @@ use std::time::{Duration, Instant};
 
 mod context;
 mod managed_skills;
+#[cfg(all(
+    unix,
+    any(
+        target_os = "freebsd",
+        target_os = "illumos",
+        target_os = "solaris",
+        test
+    )
+))]
+mod native_command;
 mod web_fetch;
 
 const ORIGIN: &str = "https://llm.internal/agent/v1/";
@@ -260,10 +270,12 @@ fn platform_absolute(path: &str) -> bool {
     std::path::Path::new(path).is_absolute()
 }
 
-/// The command runner: Linux runs the text through `/bin/sh -lc` under
-/// coreutils `timeout`; Windows runs it through Windows PowerShell 5.1 inside a
-/// kill-on-close Job Object and terminates the whole tree at the deadline.
-#[cfg(unix)]
+/// Linux uses coreutils `timeout`; native Unix uses a bounded process group
+/// and nonblocking pipes. Windows uses a kill-on-close Job Object.
+#[cfg(all(
+    unix,
+    not(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))
+))]
 fn shell(text: &str) -> Command {
     let mut command = Command::new("timeout");
     command.args([
@@ -273,6 +285,13 @@ fn shell(text: &str) -> Command {
         "-lc",
         text,
     ]);
+    command
+}
+
+#[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+fn shell(text: &str) -> Command {
+    let mut command = Command::new("/bin/sh");
+    command.args(["-lc", text]);
     command
 }
 
@@ -292,7 +311,10 @@ fn shell(text: &str) -> Command {
     command
 }
 
-#[cfg(unix)]
+#[cfg(all(
+    unix,
+    not(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))
+))]
 fn wait_bounded(child: &mut std::process::Child) -> io::Result<std::process::ExitStatus> {
     // coreutils `timeout` enforces the deadline inside the child.
     child.wait()
@@ -334,6 +356,31 @@ fn run_command(arguments: &Value) -> (&'static str, Value) {
         .stderr(Stdio::piped())
         .stdin(Stdio::null());
 
+    execute_command(command)
+}
+
+#[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+fn execute_command(mut command: Command) -> (&'static str, Value) {
+    let Ok(output) = native_command::run(
+        &mut command,
+        OUTPUT_LIMIT,
+        Duration::from_secs(COMMAND_SECONDS),
+    ) else {
+        return ("failed", json!({"reason": "spawn_failed"}));
+    };
+    let code = output.status.code().unwrap_or(-1);
+    (
+        if code == 0 { "completed" } else { "failed" },
+        json!({
+            "exit_code": code,
+            "stdout": String::from_utf8_lossy(&output.stdout),
+            "stderr": String::from_utf8_lossy(&output.stderr),
+        }),
+    )
+}
+
+#[cfg(not(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris")))]
+fn execute_command(mut command: Command) -> (&'static str, Value) {
     let Ok(mut child) = command.spawn() else {
         return ("failed", json!({"reason": "spawn_failed"}));
     };

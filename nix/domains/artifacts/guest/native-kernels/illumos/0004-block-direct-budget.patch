@@ -1,0 +1,79 @@
+--- a/usr/src/uts/common/io/vioblk/vioblk.c
++++ b/usr/src/uts/common/io/vioblk/vioblk.c
+@@ -94,0 +95 @@
++#include "virtio_spec.h"
+@@ -199 +200,8 @@
+-static void
++/** @cc [owner:ghuntley,label:recovery;capacity] illumos-block-completion-reentrancy
++ * Return the completed request and its descriptors before notifying blkdev,
++ * which can synchronously submit a new DMA window or queued request. Preserve
++ * the original completion error and MUST NOT touch the reused request afterward.
++ * Completed blkdev transfers MUST return submission success; only internal
++ * transfers return their completion error directly.
++ */
++static int
+@@ -201,0 +210,3 @@
++	bd_xfer_t *xfer = vbr->vbr_xfer;
++	int error = vbr->vbr_error;
++
+@@ -211,4 +222,3 @@
+-	if (vbr->vbr_xfer != NULL) {
+-		/*
+-		 * This is a blkdev framework request.
+-		 */
++	/* bd_xfer_done() may reenter the driver before it returns. */
++	vioblk_req_free(vib, vbr);
++	if (xfer != NULL) {
+@@ -216 +226 @@
+-		bd_xfer_done(vbr->vbr_xfer, vbr->vbr_error);
++		bd_xfer_done(xfer, error);
+@@ -218,2 +228,4 @@
+-		vbr->vbr_xfer = NULL;
+-	}
++		/* blkdev owns the completed result, including polled errors. */
++		return (0);
++	}
++	return (error);
+@@ -316,3 +328 @@
+-	vioblk_complete(vib, vbr);
+-	r = vbr->vbr_error;
+-	vioblk_req_free(vib, vbr);
++	r = vioblk_complete(vib, vbr);
+@@ -727,3 +737 @@
+-		vioblk_complete(vib, vbr);
+-
+-		vioblk_req_free(vib, vbr);
++		(void) vioblk_complete(vib, vbr);
+@@ -818,0 +827,19 @@
++/** @cc [owner:ghuntley,label:capacity;recovery] illumos-block-direct-descriptor-budget
++ * Every concurrent direct request MUST own its worst-case data descriptors plus
++ * its header and status descriptors. Clamp the data scatter limit before DMA
++ * setup and bound the request pool by the shared ring. Indirect requests retain
++ * one ring descriptor each; rings too small for a direct request MUST refuse.
++ */
++static uint_t
++vioblk_request_capacity(uint_t qsize, uint_t *segments, boolean_t indirect)
++{
++	if (qsize == 0 || *segments == 0)
++		return (0);
++	if (indirect)
++		return (MIN(qsize, VIRTIO_BLK_REQ_BUFS));
++	if (qsize < 3)
++		return (0);
++	*segments = MIN(*segments, qsize - 2);
++	return (MIN(qsize / (*segments + 2), VIRTIO_BLK_REQ_BUFS));
++}
++
+@@ -822,2 +849,3 @@
+-	vib->vib_reqs_capacity = MIN(virtio_queue_size(vib->vib_vq),
+-	    VIRTIO_BLK_REQ_BUFS);
++	vib->vib_reqs_capacity = vioblk_request_capacity(
++	    virtio_queue_size(vib->vib_vq), &vib->vib_seg_max,
++	    virtio_feature_present(vib->vib_virtio, VIRTIO_F_RING_INDIRECT_DESC));
+@@ -983,0 +1012,6 @@
++
++	/* Clamp DMA scatter limits before publishing them to blkdev. */
++	if (vioblk_request_capacity(virtio_queue_size(vib->vib_vq),
++	    &vib->vib_seg_max,
++	    virtio_feature_present(vio, VIRTIO_F_RING_INDIRECT_DESC)) == 0)
++		goto fail;

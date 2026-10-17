@@ -17,6 +17,37 @@ archived branch after SQL observes `archived_at`. The operator serializes these
 requests, so this template does not cover cross-node simultaneous first admits
 or a cut at the actual commit boundary.
 
+## Stub storage substrate (`admission-stub` profile)
+
+The `admission-stub` selection profile
+(`verification/selections/admission-stub.json`, overlay
+`config/compose.admission-stub.yaml`) runs the atomic-allocation and
+key-replay commands on the base graph with a harness **stub** storage
+substrate. It is not ZFS. The controlled Lilly release reads a fixed private
+substrate file written by `entrypoints/lilly.sh` and reports configured stub
+pool totals for the enrolled pool identity, with no allocation credit. Host CPU
+and memory headroom remain measured by Lilly's real usage sampler over the
+container's cgroup subtree. Lilly digest-verifies a tiny non-bootable stub
+image (`Lilly.Host.Image.load/1`), and the enrollment operator registers its
+manifest through Marshall's reviewed `Images.register` action. A fully
+stub-backed report advertises placement readiness so Marshall's real
+admission transaction can choose the host; the controlled executor still only
+publishes requested work and never launches a guest. The bootstrap probe
+requires the committed execution-ready report, measured compute headroom, a
+fresh stub pool row and an enabled advertised image in SQL before setup.
+
+Admission decisions, idempotency history, rows and dispatch jobs are all real
+Marshall effects; only the storage substrate (and the image artifacts) are
+stubbed. Results from this profile are admission-logic evidence. They are not
+ZFS, physical-capacity, KVM, Firecracker or isolation evidence. Because the
+controlled executor never completes a delete, the archived-replay branch of the
+key command stays unexercised under the stub.
+
+## Measured physical capacity
+
+The capacity command lives in its own `test/v1/admission_physical` template
+and `admission/physical_scenario.py` module, so the stub profile never declares
+its live-ZFS assertions. No profile selects it yet.
 The capacity command needs the `compose.host-vmm.yaml` overlay and a fresh
 read-only `/run/overalls-host-observation/physical.json` sample from inner Linux
 and OpenZFS. It waits up to four seconds for a sample newer than the SQL

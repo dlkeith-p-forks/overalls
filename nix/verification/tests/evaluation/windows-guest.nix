@@ -228,11 +228,17 @@ assert firmwarePatches == [
   "firecracker-hyperv-cpuid.patch"
   "firecracker-pci-decode-enabled.patch"
   "firecracker-cmos-rtc.patch"
+  "firecracker-cloudhv-poweroff.patch"
+  "firecracker-uart-thre-tests.patch"
   "firecracker-pci-bar-relocation.patch"
   "firecracker-virtio-init-queue.patch"
+  "firecracker-pci-config-notify.patch"
+  "firecracker-msix-reset-state.patch"
   "firecracker-virtio-reset.patch"
+  "firecracker-net-reset-reuse.patch"
   "firecracker-virtio-blk-sg.patch"
   "firecracker-vsock-indirect-desc.patch"
+  "firecracker-uart-thre-enable.patch"
 ];
 # Builder argument validation stays in Nix evaluation.
 assert accepts { wimImageName = "Windows Server 2025 SERVERDATACENTERCORE"; };

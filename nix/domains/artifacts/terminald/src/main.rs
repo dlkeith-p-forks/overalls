@@ -5,15 +5,19 @@
 mod conn;
 mod crypto;
 mod frame;
-#[cfg(any(windows, test))]
-mod identity_windows;
+#[cfg(any(windows, target_os = "freebsd", target_os = "illumos", test))]
+mod identity_mmds;
 mod log;
 #[cfg_attr(windows, path = "pty_windows.rs")]
 mod pty;
 mod ring;
 mod session;
 #[cfg_attr(windows, path = "vsock_windows.rs")]
+#[cfg_attr(any(target_os = "freebsd", target_os = "illumos"), path = "vsock_native.rs")]
 mod vsock;
+#[cfg(all(test, target_os = "linux"))]
+#[path = "vsock_native.rs"]
+mod native_vsock_layout_tests;
 #[cfg(feature = "antithesis-observer")]
 mod observer;
 
@@ -60,13 +64,21 @@ fn main() {
   handle_connections(daemon, listener);
 }
 
-/// Linux guests reconcile personal accounts through the shared helper before
+/// Unix guests reconcile personal accounts through the shared helper before
 /// a PTY opens (`terminal-account-before-passwd`).
 #[cfg(unix)]
 fn account_helper() -> Option<std::path::PathBuf> {
   Some(std::env::var_os("LILLY_TERMINALD_ACCOUNT_HELPER")
     .map(std::path::PathBuf::from)
-    .unwrap_or_else(|| "/usr/local/bin/overalls-ssh-authorize".into()))
+    .unwrap_or_else(|| {
+      #[cfg(target_os = "freebsd")]
+      let path = "/usr/local/libexec/overalls-ssh-authorize";
+      #[cfg(target_os = "illumos")]
+      let path = "/opt/overalls/libexec/overalls-ssh-authorize";
+      #[cfg(target_os = "linux")]
+      let path = "/usr/local/bin/overalls-ssh-authorize";
+      path.into()
+    }))
 }
 
 /// Windows guests have no helper: the roster agent owns accounts and only an
@@ -240,8 +252,8 @@ fn control_message(daemon: Arc<Daemon>, fd: Conn, message: frame::Frame) -> bool
     wire.is_ok()
 }
 
-/// Kernel guests read the boot identity from the command line Lilly set.
-#[cfg(unix)]
+/// Linux kernel guests read the boot identity from Lilly's command line.
+#[cfg(target_os = "linux")]
 fn boot_identity() -> Option<(String, String, String)> {
   let challenge = cmdline_value("lilly.boot_challenge")?;
   let placement = cmdline_value("lilly.placement")?;
@@ -267,14 +279,14 @@ fn validate_boot_identity(challenge: String, placement: String, epoch: String) -
   Some((challenge, placement, epoch))
 }
 
-/// Firmware guests read the same identity from Firecracker's MMDS (ADR-0171).
-#[cfg(windows)]
+/// Firmware guests read the same identity from Firecracker's MMDS (ADR-0171, ADR-0190).
+#[cfg(any(windows, target_os = "freebsd", target_os = "illumos"))]
 fn boot_identity() -> Option<(String, String, String)> {
-  let (challenge, placement, epoch) = identity_windows::fetch(std::time::Duration::from_secs(600))?;
+  let (challenge, placement, epoch) = identity_mmds::fetch(std::time::Duration::from_secs(600))?;
   validate_boot_identity(challenge, placement, epoch)
 }
 
-#[cfg(unix)]
+#[cfg(target_os = "linux")]
 fn cmdline_value(key: &str) -> Option<String> {
   let body = std::fs::read_to_string("/proc/cmdline").ok()?;
   for token in body.split(' ') {

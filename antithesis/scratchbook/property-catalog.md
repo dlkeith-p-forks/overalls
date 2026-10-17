@@ -8,7 +8,7 @@ scope_answer: "Repository only (Recommended)"
 
 # Property catalog
 
-This catalog synthesizes 113 source-grounded candidates into 104 canonical properties. The current as-of [assertion scan](existing-assertions.md) records 153 authored callsites and 26 primary catalog messages; the source is moving and no hosted baseline or mutation result is claimed. Source contracts and ADRs state intended behavior to test; a timeout or lost reply is an unproven effect until independently reconciled.
+This catalog synthesizes 113 source-grounded candidates into 104 canonical properties. The current as-of [assertion scan](existing-assertions.md) records 163 authored callsites and 30 primary catalog messages; the source is moving and no hosted baseline or mutation result is claimed. Source contracts and ADRs state intended behavior to test; a timeout or lost reply is an unproven effect until independently reconciled.
 
 Each entry gives one primary SDK assertion with a unique literal message. Evidence files retain source paths, independent oracles, value menus, environment limits, and any supplementary branch or progress assertions. P0/P1 and confidence rate importance and source grounding, not passing execution.
 
@@ -105,6 +105,8 @@ These properties exercise the control, credentials, and leases boundaries and th
 | **Why It Matters** | Hint loss must neither grant authority nor permanently strand committed work. |
 | **Evidence** | [Source and oracle](properties/control-hint-loss-reconciles-authority.md); discovery focus 04. |
 
+**Supporting assertion snapshot (2026-10-17):** The harness-only BEAM `Reachable` **"Marshall notifier recovered after losing a host command hint"** at `marshall/lib/marshall/control/hints/relay.ex:37` marks an observed notifier `:isolated` to connected transition followed by local `resync_local`. It does not observe a reader's full re-read, a committed authority change or reconciliation, so the `Sometimes` primary **"Control reader reconciles committed authority after lost hint"** and the effect-boundary `Always` remain unimplemented. This records source presence, not a hosted result.
+
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
 **Evaluation follow-up:** `R1`: `Sometimes` witnesses one designated recovered history. Track its exact operation ID, observed preconditions and dependency restoration; separately check that operation’s terminal state after a measured quiet interval. Missing oracle/precondition is unexercised, not a pass or a liveness violation. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
@@ -149,7 +151,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/delivery.py:126`. Real BEAM Control client with independent frame ledger; separate terminal Marshall SQL receipt command is authored but unexecuted in hosted Compose. It is in current staged control-core command/dependency set. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/delivery.py:126`. Real BEAM Control client with independent frame ledger; the separate terminal Marshall SQL receipt command (`control_delivery` singleton) is selected in control-core since 2026-10-17 but unexecuted in hosted Compose. It is in current staged control-core command/dependency set. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -184,7 +186,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 | | |
 |---|---|
 | **Type** | Safety (`Always` primary) |
-| **Priority / Confidence / Status** | P1 / high / partially instrumented; primary unimplemented |
+| **Priority / Confidence / Status** | P1 / high / authored primary; hosted unexecuted; scope partial |
 | **Property** | a valid bound socket cannot use another service's op or invalid domain document to cause an effect. |
 | **Invariant** | `Always` on independently inventoried effects after wrong-prefix, version and body probes; race valid and invalid calls. Planned literal SDK message: **"Control rejects cross-service and invalid documents before domain effects"**. |
 | **Antithesis Angle** | `Always` on independently inventoried effects after wrong-prefix, version and body probes; race valid and invalid calls. |
@@ -193,7 +195,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Supporting assertion snapshot (2026-10-13 15:03 UTC):** Narrower assertion messages are present at `antithesis/workload/control/dispatch.py:134`. A Lilly-v4 invalid-request check and independent Lilly session-row witness cover a narrower route. The proposed full cross-service dispatch primary is absent because the Audi request used a Lilly-v4 body and could be rejected by either decoder. All listed support callsites are in the current staged control-core command/dependency set. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-17):** Primary `always` message is present at `antithesis/workload/control/dispatch.py:195`. A Lilly-bound socket sends one valid foreign-service document per invocation (Audi `ssh_open`, Porsche `commands`, Ziggy v2 `agent_next` or Galileo `authorize`, each accepted by its own decoder) plus drawn invalid Lilly documents. The verdict requires a correlated refusal, an absent fresh Lilly session row and unchanged read-only counts of `ingress_sessions`, `ssh_requests`, claimed `agent_model_calls` and `galileo_peer_tokens`; a lost reply without an effect stays unknown. Scope: the bound service is Lilly only; Audi, Porsche, Ziggy and Galileo sockets, native effects and external upstreams are not bound or observed. The `control_dispatch` singleton is in the staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R4`: Keep exhaustive fixed decoder/version/migration matrices in ordinary tests. In Antithesis, race representative invalid input with a real restart, authority change or valid effect and observe the independent outcome. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -206,16 +208,16 @@ These properties exercise the control, credentials, and leases boundaries and th
 | | |
 |---|---|
 | **Type** | Safety (`Always` primary) |
-| **Priority / Confidence / Status** | P0 / high / researched; primary unimplemented |
+| **Priority / Confidence / Status** | P0 / high / authored primary; hosted unexecuted; scope partial |
 | **Property** | 426/4001 stops the Control owner with a distinct version class, including pending calls; wrong service-document version remains a request refusal. |
 | **Invariant** | `Always` on adapter class and transport handshake count; separate `Always` for document refusal; `Sometimes(recoverable_socket_reestablished)` only after a healthy recoverable loss. Planned literal SDK message: **"Control transport version refusal stops its owner without losing its class"**. |
 | **Antithesis Angle** | `Always` on adapter class and transport handshake count; separate `Always` for document refusal; `Sometimes(recoverable_socket_reestablished)` only after a healthy recoverable loss. |
 | **Why It Matters** | Unsupported peers must fail distinctly so owners do not silently retry incompatible authority. |
 | **Evidence** | [Source and oracle](properties/control-version-refusal-remains-terminal.md); discovery focus 04, 10. |
 
-**Existing instrumentation:** The current Python Control smoke checks observed 426 responses only; this property’s owner-stop, 4001, pending-retirement and no-retry assertion remains unimplemented.
-
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Authored assertion snapshot (2026-10-17):** Primary `always` message is present at `antithesis/workload/control/version_refusal.py:54`. `control/serial_driver_version_refusal.py` runs the real shared `OverallsProtocol.Control.Client` against the loopback peer's `version_refusal` mode: after welcome the peer holds one observed request, sends close 4001, then counts TCP accepts for 5,000 ms (beyond the 4,000 ms backoff ceiling). The verdict requires the `unsupported_version` disconnect class, the held call retired as `unproven`, retained status, zero handshakes and an immediate `disconnected` refusal for a new call. Scope: 4001 on the shared client only; the bounded quiet window is not proof of no later retry, and Marshall's 4001/426 emission, service-adapter owner stop and the recoverable reconnect `Sometimes` are not observed here (426 pre-upgrade refusal is the separate outer-version support check). It is in the staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R9`: Use distinct command/branch IDs for permanent 426/4001 refusal and recoverable outage reconnect. A healthy reconnect does not satisfy permanent-refusal coverage. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -257,7 +259,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:348`. Current Lilly old-socket/new-credential route only; other services and physical effects are separate. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:348`. Current Lilly old-socket/new-credential route only; other services and physical effects are separate. It is in the staged control-core selection as a terminal singleton template (selected 2026-10-17). This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -279,7 +281,7 @@ These properties exercise the control, credentials, and leases boundaries and th
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:272`. Current Lilly host-session/successor route only; physical guest/execution authority is separate. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:272`. Current Lilly host-session/successor route only; physical guest/execution authority is separate. It is in the staged control-core selection as a terminal singleton template (selected 2026-10-17). This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -318,6 +320,8 @@ These properties exercise the control, credentials, and leases boundaries and th
 | **Antithesis Angle** | Drop the cross-replica hint during notifier isolation and allow relay resync and Lilly's periodic exchange to race after healing. |
 | **Why It Matters** | Hints are latency aids; losing one must not strand durable work. |
 | **Evidence** | [Source and oracle](properties/lost-host-hint-eventually-delivers-command.md); discovery focus 07. |
+
+**Supporting assertion snapshot (2026-10-17):** A harness-only BEAM `Reachable` **"Marshall notifier recovered after losing a host command hint"** is authored at `marshall/lib/marshall/control/hints/relay.ex:37`, behind the `ANTITHESIS_HARNESS` compile guard and declared through `declare_catalog`. It fires on every observed Oban notifier `:isolated` to `:solitary`/`:clustered` transition, which is the window in which hints can be dropped; it does not observe that a host command hint was actually lost, that any command was committed, or that Lilly accepted or physically resolved it. It is a search anchor only. The `Sometimes` primary below remains unimplemented, and no workload cuts only the notifier while a committed command and Lilly witness are tracked. This records source presence, not a hosted result.
 
 **Proof boundary:** Draft selection: `integrated-zfs-host`. proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated; independent witness: caller key/committed rows correlated with exact physical boot, disk or capacity sample; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
@@ -384,6 +388,8 @@ These properties exercise the recovery and independent custody boundaries and th
 | **Evidence** | [Source and oracle](properties/backup-retained-manifest-closure.md); discovery focus 01, 03. |
 
 **Proof boundary:** Draft selection: `storage`. hosted-restic-or-tcg-zfs-limited; independent witness: owned ZFS GUID/marker, independent Restic enumeration/isolated restore hash and fenced target. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Selected profile (2026-10-17):** `backup-restic` selects the five `backup` commands with `compose.backup.yaml`, which gives each command a disposable encrypted Restic file repository on a dedicated private named volume. Bootstrap requires the production operator, pinned Restic and a real probe repository that initializes and enumerates empty there. A local file backend is deliberate: the production operator returns one failure status for repository unavailability and validator refusal, so a network-attached repository would make unavailable reads look like refusals. This profile exercises no ZFS, host capture, S3 or live recovery target and has no hosted run or baseline yet.
 
 **Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/backup/scenarios.py:73`. Real Restic IDs, production prune/inspect and independent per-reference restore hashes; selected guest/ZFS capture completeness is separate. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
@@ -647,6 +653,8 @@ These properties exercise the external effects and caches boundaries and their f
 
 **Proof boundary:** Draft selection: `integrated-zfs-satellite`. proposed-real-inner-zfs-backed-current-VM-plus-satellite; unbuilt; independent witness: durable Ziggy spool ID, independent provider accept log and Marshall aggregate; current real placement/execution authority required. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
+**Selected profile (2026-10-17):** `satellite-standin` selects this command with the origin and satellite overlays and a labelled guest stand-in. The command still needs a current running VM; the hosted controlled Lilly pool reports unavailable capacity, so it records unexercised in that graph. The stand-in is not a guest and supplies no VM binding. No hosted run exists.
+
 **Supporting assertion snapshot (2026-10-13 15:03 UTC):** Narrower assertion messages are present at `antithesis/workload/satellite/scenarios.py:73`. A normal admitted guest inference joins one private provider acceptance to one settled Request and a Daily delta. Exact ACK-loss/replay and restart witnesses are absent, and the hosted guest-to-Audi graph is not ready. At least one listed support callsite is outside the current staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
@@ -764,7 +772,7 @@ These properties exercise the placement, execution, and physical ownership bound
 | | |
 |---|---|
 | **Type** | Safety (`AlwaysOrUnreachable` primary) |
-| **Priority / Confidence / Status** | P0 / high / researched; primary unimplemented |
+| **Priority / Confidence / Status** | P0 / high / authored primary; hosted unexecuted; scope partial |
 | **Property** | An unsupported inner Execution document cannot create executable Lilly intent, acknowledge an outcome, or erase the last durable command. |
 | **Invariant** | `AlwaysOrUnreachable` checks each optional incompatible-document refusal against Store, Journal, and physical launch marker; the path may be absent in a run. Planned literal SDK message: **"Execution v4 refuses legacy authority without changing durable command"**. |
 | **Antithesis Angle** | Vary inner versions inside a valid Control v1 socket, lose a response, and reconnect with a compatible peer. |
@@ -772,6 +780,8 @@ These properties exercise the placement, execution, and physical ownership bound
 | **Evidence** | [Source and oracle](properties/execution-v4-refuses-legacy-document.md); discovery focus 10. |
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Authored assertion snapshot (2026-10-17):** Primary `always_or_unreachable` message is present at `antithesis/workload/control/dispatch.py:351`. After a valid v4 session, inner Execution v1/v3/v5 session documents on an authenticated Control v1 socket must receive `unsupported_version`, leave their fresh session row absent and leave Marshall's committed host session and epoch unchanged; a concurrent change by the live Lilly runtime leaves that request unexercised. The distinct danger-branch `Reachable` is `Execution legacy inner session reaches authenticated decoder refusal`. Scope: Marshall's request decoder and durable host row only; Lilly's response parser, Store, Journal and physical launch marker are not observed. The `control_legacy_request` singleton is in the staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R2`: The focused command must also emit a distinct `Reachable` at the actual incompatible/corrupt/restart/negative-status danger branch. Optional-path safety can pass without that branch; positive compatible traffic is insufficient. `R4`: Keep exhaustive fixed decoder/version/migration matrices in ordinary tests. In Antithesis, race representative invalid input with a real restart, authority change or valid effect and observe the independent outcome. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -792,6 +802,8 @@ These properties exercise the placement, execution, and physical ownership bound
 | **Evidence** | [Source and oracle](properties/guest-readiness-binds-current-physical-boot.md); discovery focus 08. |
 
 **Proof boundary:** Draft selection: `integrated-zfs-guest`. proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof; independent witness: retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Guest-lifecycle profile (2026-10-17):** The launchable `guest-lifecycle` selection runs `guest_lifecycle/serial_driver_physical_boot_cycle.py` against a real QEMU TCG guest with a STUB-storage container Lilly (fixed synthetic pool, no ZFS). Its support `Always` joins each guest-ready outcome to the current tuple, live QEMU/backend start ticks and port-1024 readiness, and a fresh start must show a new kernel boot UUID. The primary stays unimplemented: there is no Lilly boot-journal join, delayed or replaced boot, ZFS pool or native evidence, and no hosted run is recorded.
 
 **Evaluation follow-up:** `R1`: `Sometimes` witnesses one designated recovered history. Track its exact operation ID, observed preconditions and dependency restoration; separately check that operation’s terminal state after a measured quiet interval. Missing oracle/precondition is unexercised, not a pass or a liveness violation. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -974,7 +986,7 @@ These properties exercise the placement, execution, and physical ownership bound
 
 **Proof boundary:** Draft selection: `integrated-zfs-host`. proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger; current measured ZFS pool required for accepted placement. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/admission/scenarios.py:144`. One serial trusted-operator admission joins a terminal domain receipt to one-statement PostgreSQL VM, placement, reservation, address, provision-operation and dispatch-job rows; no cross-node same-key race, commit-cut run, or positive integrated-host checkpoint. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/admission/scenarios.py:140`. One serial trusted-operator admission joins a terminal domain receipt to one-statement PostgreSQL VM, placement, reservation, address, provision-operation and dispatch-job rows; no cross-node same-key race, commit-cut run, or positive integrated-host checkpoint. It is outside the currently staged control-core selection. The separate `admission-stub` selection profile runs this command against real Marshall admission on a harness **stub** storage substrate (configured pool totals, measured container cgroup compute, a non-bootable digest-verified stub image); a stub-backed result is admission-logic evidence only, never ZFS, physical-capacity, KVM or isolation evidence. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R5`: Add a unique SUT-side `Reachable` or `Sometimes` at the observed intermediate commit/effect before uncertain reply. Requested faults alone are not reached checkpoints; retain the independent final `Always` oracle. `R14`: Accepted placement requires a real current measured inner-ZFS-backed Lilly pool and execution readiness, or native KVM. The current Control-only hosted pool reports unavailable and cannot establish admission, guest or satellite effects; never seed fake admission. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -996,7 +1008,7 @@ These properties exercise the placement, execution, and physical ownership bound
 
 **Proof boundary:** Draft selection: `integrated-zfs-host`. proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated; independent witness: caller key/committed rows correlated with exact physical boot, disk or capacity sample; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/admission/scenarios.py:176`. Observed first-key SQL contradictions fail, identical replay and exact idempotency conflict are checked, and archived replay waits for real delete plus SQL archival; integrated physical cleanup and hosted execution remain unverified. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/admission/scenarios.py:172`. Observed first-key SQL contradictions fail, identical replay and exact idempotency conflict are checked, and archived replay waits for real delete plus SQL archival; integrated physical cleanup and hosted execution remain unverified. It is outside the currently staged control-core selection. The separate `admission-stub` selection profile runs this command against real Marshall admission on a harness **stub** storage substrate (configured pool totals, measured container cgroup compute, a non-bootable digest-verified stub image); a stub-backed result is admission-logic evidence only, never ZFS, physical-capacity, KVM or isolation evidence. The stub's controlled executor never completes a delete, so the archived-replay branch stays unexercised there. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R14`: Accepted placement requires a real current measured inner-ZFS-backed Lilly pool and execution readiness, or native KVM. The current Control-only hosted pool reports unavailable and cannot establish admission, guest or satellite effects; never seed fake admission. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -1018,7 +1030,7 @@ These properties exercise the placement, execution, and physical ownership bound
 
 **Proof boundary:** Draft selection: `integrated-zfs-host`. proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated; independent witness: exact locked report revision and holds correlated with independent CPU/memory/ZFS sample; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/admission/scenarios.py:310`. Dedicated host/pool brackets unchanged SQL report and holds, waits for a newer independent inner-ZFS sample, and checks shape/overhead arithmetic; changing frames and physical free disagreement remain unknown without commit-time and CPU/memory interval correlation. No live admission has run. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/admission/physical_scenario.py:69` (template `test/v1/admission_physical`, selected by no profile; the stub profile deliberately excludes it because a stub sample is not an independent ZFS witness). Dedicated host/pool brackets unchanged SQL report and holds, waits for a newer independent inner-ZFS sample, and checks shape/overhead arithmetic; changing frames and physical free disagreement remain unknown without commit-time and CPU/memory interval correlation. No live admission has run. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** `R14`: Accepted placement requires a real current measured inner-ZFS-backed Lilly pool and execution readiness, or native KVM. The current Control-only hosted pool reports unavailable and cannot establish admission, guest or satellite effects; never seed fake admission. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -1120,6 +1132,8 @@ These properties exercise the placement, execution, and physical ownership bound
 | **Evidence** | [Source and oracle](properties/stop-retains-disk-until-restart.md); discovery focus 08. |
 
 **Proof boundary:** Draft selection: `integrated-zfs-guest`. proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof; independent witness: retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Guest-lifecycle profile (2026-10-17):** The launchable `guest-lifecycle` selection's support `Always` requires an accepted stop to show no QEMU/backend process and a retained qcow2 overlay hash in the separate guest-vmm container. The pool is a STUB, so ZFS dataset GUID, retained guest content, address and network detach remain unexercised; the primary stays unimplemented and no hosted run is recorded.
 
 **Evaluation follow-up:** `R1`: `Sometimes` witnesses one designated recovered history. Track its exact operation ID, observed preconditions and dependency restoration; separately check that operation’s terminal state after a measured quiet interval. Missing oracle/precondition is unexercised, not a pass or a liveness violation. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -1640,7 +1654,7 @@ These properties join public route authority to real DNS, SSH and editor outcome
 | | |
 |---|---|
 | **Type** | Safety (`Always` primary) |
-| **Priority / Confidence / Status** | P0 / source-grounded / researched; primary unimplemented |
+| **Priority / Confidence / Status** | P0 / source-grounded / authored primary; hosted unexecuted; positive path precondition-blocked |
 | **Property** | One approved editor code and browser state create at most one personal credential despite duplicate callbacks or a lost reply. |
 | **Invariant** | `Always` with unique planned SDK message **"Editor login code creates at most one credential after reply loss"**; each reached effect or settled observation must satisfy the invariant. |
 | **Antithesis Angle** | Lose responses, change current route or credential authority, and verify real DNS, SSH or editor effects. |
@@ -1648,6 +1662,8 @@ These properties join public route authority to real DNS, SSH and editor outcome
 | **Evidence** | [Source, values and oracle](properties/editor-login-code-single-use-after-reply-loss.md); evaluation gap access-routes. |
 
 **Proof boundary:** Draft selection: `access`. real-hosted-browser-identity-or-DNS-packets; physical guest route separate; independent witness: actual public callback/DNS packet plus consistent PostgreSQL authority rows. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Selected profile (2026-10-17):** The primary `Always`, a `Sometimes` positive exchange witness and a reply-loss `Reachable` are authored in `antithesis/workload/satellite/editor.py` and selected through `antithesis/test/v1/satellite/serial_driver_editor_login_reply_loss.py` in `satellite-standin`. The history uses a real browser login, Marshall launch and approval, two raced Audi callbacks (one optionally reply-lost), same-state replay and a wrong-state callback, and classifies only committed `editor_logins` and `editor_credentials` rows keyed by the ticket digest. Marshall's `begin_login` requires a current running VM on the Audi gateway's host and an editor-capable image release. The hosted controlled Lilly pool reports unavailable capacity, and that profile configures no editor release, editor wildcard or Audi editor gateway, so the command records unexercised and evaluates no assertion. The `Sometimes` witness will therefore show zero hits until an integrated host and editor gateway exist. Wrong-actor and wrong-hostname replays are not authored. No hosted run exists.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -1792,6 +1808,8 @@ These properties cover tool dispatch, renewable work and approved external origi
 | **Evidence** | [Source, values and oracle](properties/galileo-named-origin-credential-and-revocation-bound.md); evaluation gap agent-integration. |
 
 **Proof boundary:** Draft selection: `integrated-zfs-satellite`. proposed-real-guest-attached-named-integration; unbuilt; independent witness: actual pre-NAT guest identity, current attachment, exact origin/header and upstream effect. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Selected profile (2026-10-17):** `satellite-standin` selects this command with the origin and satellite overlays and a labelled guest stand-in. The command still needs a current running VM; the hosted controlled Lilly pool reports unavailable capacity, so it records unexercised in that graph. The stand-in is not a guest and supplies no VM binding. No hosted run exists.
 
 **Supporting assertion snapshot (2026-10-13 15:03 UTC):** Narrower assertion messages are present at `antithesis/workload/satellite/scenarios.py:143`, `antithesis/workload/satellite/scenarios.py:207`, `antithesis/workload/satellite/scenarios.py:232`, `antithesis/workload/satellite/scenarios.py:270`. Separate checks cover origin A/headers, detached held-stream EOF, fresh no-effect refusal, and reattach progress. The canonical composed primary is absent without the exact aged-grant, recorder-delay and refused-renewal witnesses; the hosted guest-to-Audi graph is not ready. At least one listed support callsite is outside the current staged control-core selection. This records source presence, not a passing hosted or native result.
 
@@ -2218,6 +2236,8 @@ These properties compare actual Restic publication and isolated target markers u
 
 **Proof boundary:** Draft selection: `storage`. real-Restic-isolated-target; native-guest-ZFS-companion; independent witness: actual Restic tag/manifest parser, target publication marker and independent restored component hash. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
+**Selected profile (2026-10-17):** `backup-restic` selects the five `backup` commands with `compose.backup.yaml`, which gives each command a disposable encrypted Restic file repository on a dedicated private named volume. Bootstrap requires the production operator, pinned Restic and a real probe repository that initializes and enumerates empty there. A local file backend is deliberate: the production operator returns one failure status for repository unavailability and validator refusal, so a network-attached repository would make unavailable reads look like refusals. This profile exercises no ZFS, host capture, S3 or live recovery target and has no hosted run or baseline yet.
+
 **Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/backup/scenarios.py:172`. Production restore CLI with fixed Restic interruption gate, marker/prefix and fresh retry; no hosted run. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
@@ -2239,6 +2259,8 @@ These properties compare actual Restic publication and isolated target markers u
 | **Evidence** | [Source, values and oracle](properties/backup-published-manifest-retention-compatible.md); evaluation gap restore-publication. |
 
 **Proof boundary:** Draft selection: `storage`. real-Restic-isolated-target; native-guest-ZFS-companion; independent witness: actual Restic tag/manifest parser, target publication marker and independent restored component hash. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Selected profile (2026-10-17):** `backup-restic` selects the five `backup` commands with `compose.backup.yaml`, which gives each command a disposable encrypted Restic file repository on a dedicated private named volume. Bootstrap requires the production operator, pinned Restic and a real probe repository that initializes and enumerates empty there. A local file backend is deliberate: the production operator returns one failure status for repository unavailability and validator refusal, so a network-attached repository would make unavailable reads look like refusals. This profile exercises no ZFS, host capture, S3 or live recovery target and has no hosted run or baseline yet.
 
 **Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/backup/scenarios.py:235`. Actual coordinator publication plus raw Restic/production inspect; backward wall-clock step remains unimplemented. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 

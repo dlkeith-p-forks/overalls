@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 17,
+      "active": 24,
       "coverage": 1.0,
-      "covered": 17
+      "covered": 24
     },
     "system": {
       "active": 0,
@@ -52,10 +52,10 @@
       }
     },
     "marshall.identity_authorization": {
-      "active": 2,
+      "active": 4,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 2,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "marshall.identity_authorization.I1": {
@@ -76,6 +76,26 @@
           "testable": true,
           "tests": [
             "test the compute actor is a typed, non-user principal"
+          ]
+        },
+        "marshall.identity_authorization.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test account boundary validators reject unsafe identity input"
+          ]
+        },
+        "marshall.identity_authorization.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test security proof freshness is bounded in both directions"
           ]
         }
       }
@@ -110,10 +130,10 @@
       }
     },
     "marshall.ssh_terminal": {
-      "active": 2,
+      "active": 3,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 2,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "marshall.ssh_terminal.I1": {
@@ -135,14 +155,24 @@
           "tests": [
             "test classifies gateway refusals without exposing details"
           ]
+        },
+        "marshall.ssh_terminal.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test viewer authority clears, propagates, and bounds inconclusive episodes"
+          ]
         }
       }
     },
     "marshall.threads_agents": {
-      "active": 4,
+      "active": 6,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 6,
       "form": "light",
       "obligations": {
         "marshall.threads_agents.I1": {
@@ -184,14 +214,34 @@
           "tests": [
             "test planning questions reject duplicates and out of bounds input"
           ]
+        },
+        "marshall.threads_agents.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test machine specifications fail closed and enforce profile and shape rules"
+          ]
+        },
+        "marshall.threads_agents.I6": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test thread title generation is bounded and falls back safely"
+          ]
         }
       }
     },
     "marshall.web_surface": {
-      "active": 4,
+      "active": 6,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 6,
       "form": "light",
       "obligations": {
         "marshall.web_surface.I1": {
@@ -233,6 +283,26 @@
           "tests": [
             "test readiness backstop decisions are bounded"
           ]
+        },
+        "marshall.web_surface.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test pending launch records require canonical bounded inputs and expire"
+          ]
+        },
+        "marshall.web_surface.I6": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test terminal names are deterministic and vocabulary bounded"
+          ]
         }
       }
     },
@@ -248,8 +318,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 17,
+    "active": 24,
     "coverage": 1.0,
-    "covered": 17
+    "covered": 24
   }
 }

@@ -7,7 +7,7 @@
     "antithesis/config/compose.enrico.yaml"
   ],
   "templates": ["repository"],
-  "runtime_packages": ["core", "repository", "access"],
+  "runtime_packages": ["core", "repository", "access", "guest_lifecycle"],
   "services": [
     "pg", "migrate", "marshall-a", "marshall-b", "lilly-a", "enrollment",
     "workload", "origin", "enrico"

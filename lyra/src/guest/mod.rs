@@ -7,5 +7,6 @@ pub mod kernel_probe;
 pub mod mmds;
 pub mod readiness;
 pub mod ssh_login;
+pub mod ssh_platform;
 pub mod ssh_roster;
 pub mod trust;

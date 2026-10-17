@@ -70,7 +70,7 @@ case "$role" in
     chmod 0700 /run/audi-private
     ip address show dev lo | grep -q '169[.]254[.]254[.]1' || ip address add 169.254.254.1/32 dev lo
     jq -n --arg host "$host" --arg satellite "$satellite" \
-      '{version:1,role:"private",host_id:$host,connector_path:"/run/lilly-ingress/audi.sock",ziggy_socket:"/run/ziggy/proxy.sock",galileo_socket:"/run/galileo/proxy.sock",certificate_file:($satellite+"/private-leaf.pem"),key_file:($satellite+"/private-leaf.key"),roots_file:($satellite+"/private-root.pem"),status_socket:"/run/audi-private/status.sock"}' > "$runtime/audi.json"
+      '{version:1,role:"private",host_id:$host,connector_path:"/run/lilly-ingress/audi.sock",connector_uid:0,ziggy_socket:"/run/ziggy/proxy.sock",galileo_socket:"/run/galileo/proxy.sock",certificate_file:($satellite+"/private-leaf.pem"),key_file:($satellite+"/private-leaf.key"),roots_file:($satellite+"/private-root.pem"),status_socket:"/run/audi-private/status.sock"}' > "$runtime/audi.json"
     chmod 0600 "$runtime/audi.json"
     export AUDI_CONFIG_FILE="$runtime/audi.json" RELEASE_TMP="$runtime"
     exec /opt/overalls/audi/bin/audi start

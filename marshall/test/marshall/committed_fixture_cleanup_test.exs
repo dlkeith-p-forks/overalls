@@ -81,6 +81,61 @@ defmodule Marshall.CommittedFixtureCleanupTest do
     assert [{__MODULE__, _, _, _} | _] = cleanup_stack
   end
 
+  for fail? <- [false, true] do
+    @recovery_failure fail?
+    test "rich recovery fixture preserves unrelated history after failure=#{fail?}" do
+      unboxed(fn ->
+        original = inventory()
+        dispose_control = control_fixture!(:vm)
+
+        Cleanup.run(
+          fn ->
+            protected = inventory()
+            images_before = Cleanup.fixture_image_ids()
+
+            {:ok, {fixture, turn}} =
+              Ledger.transaction(fn ->
+                fixture = Marshall.AgentRevocationFixture.setup()
+                {fixture, Marshall.AgentRevocationFixture.submit!(fixture)}
+              end)
+
+            cleanup = fn ->
+              Marshall.AgentContextRecoveryFixture.cleanup!(
+                fixture.vm.id,
+                fixture.vm.host_id,
+                [fixture.owner, fixture.member]
+              )
+
+              Cleanup.images!(Cleanup.fixture_image_ids() -- images_before)
+            end
+
+            body = fn ->
+              Marshall.AgentContextRecoveryFixture.install_checkpoint(turn.id)
+              refute inventory() == protected
+
+              if @recovery_failure,
+                do: flunk("intentional recovery fixture failure"),
+                else: :completed
+            end
+
+            if @recovery_failure do
+              assert_raise ExUnit.AssertionError, ~r/intentional recovery fixture failure/, fn ->
+                Cleanup.run(body, cleanup)
+              end
+            else
+              assert Cleanup.run(body, cleanup) == :completed
+            end
+
+            Marshall.CommittedFixtureInventory.assert_restored!(protected)
+          end,
+          dispose_control
+        )
+
+        Marshall.CommittedFixtureInventory.assert_restored!(original)
+      end)
+    end
+  end
+
   test "failure stops an outstanding independent peer before deleting its fixture" do
     peer =
       start_supervised!(%{

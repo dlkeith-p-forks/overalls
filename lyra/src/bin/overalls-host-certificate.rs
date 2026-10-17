@@ -1,6 +1,7 @@
 //! One certificate installation path for ephemeral guest and persistent gateway keys.
 use fs2::FileExt;
 use lyra::{
+    guest::ssh_platform::Platform,
     private_http,
     ssh_certificate::{self, Issued, RENEWAL_WINDOW},
     ssh_files,
@@ -146,9 +147,12 @@ fn post(
 }
 // @cc [owner:ghuntley,label:security;recovery] host-certificate-atomic-installation
 // Installation MUST validate an authenticated response before replacing the
-// certificate. Guest private keys MUST remain in /run and never enter disks.
+// certificate. Guest private keys MUST remain in volatile runtime storage
+// (/run on Linux, /var/run/overalls on native guests), never persistent disks.
 // Failed renewal MUST retain a still-valid installed generation for retry.
 fn run() -> io::Result<()> {
+    #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+    lyra::guest::mmds::fetch(Duration::from_secs(3))?;
     let args: Vec<_> = std::env::args_os().skip(1).collect();
     let gateway: Option<Gateway> = match args.as_slice() {
         [] => None,
@@ -161,7 +165,7 @@ fn run() -> io::Result<()> {
     let directory = gateway
         .as_ref()
         .map(|c| c.key_dir.clone())
-        .unwrap_or_else(|| PathBuf::from("/run/overalls-ssh-host"));
+        .unwrap_or_else(|| PathBuf::from(Platform::current().host_keys()));
     if !directory.try_exists()? {
         fs::create_dir(&directory)?;
         fs::set_permissions(&directory, fs::Permissions::from_mode(0o700))?;

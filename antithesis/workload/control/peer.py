@@ -8,7 +8,7 @@ from typing import Literal
 
 from core.outcome import Observation
 
-Mode = Literal["capacity", "pending", "delivery"]
+Mode = Literal["capacity", "pending", "delivery", "version_refusal"]
 
 
 @dataclass(frozen=True)
@@ -55,7 +55,7 @@ def parse_result(output: str) -> Observation[PeerResult]:
 def run_peer(mode: Mode, limit: int, timeout_ms: int) -> Observation[PeerResult]:
     """Run compiled OverallsProtocol.Control.Client without passing credentials."""
     if (
-        mode not in ("capacity", "pending", "delivery")
+        mode not in ("capacity", "pending", "delivery", "version_refusal")
         or limit
         not in (
             0,

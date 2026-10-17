@@ -150,6 +150,16 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   # offline image assembly rules, without installing or booting Windows.
   firecracker-vmm = import ./evaluation/firecracker-vmm.nix { pkgs = buildPkgs; inherit packages; };
   firecracker-patch-tests = import ./evaluation/firecracker-patch-tests.nix { pkgs = buildPkgs; inherit packages; };
+  native-vsock-core = import ../../domains/artifacts/guest/native-kernels/common { pkgs = buildPkgs; };
+  native-fixture-unit = import ./evaluation/native-fixtures.nix { pkgs = buildPkgs; };
+  native-reset-probes = import ./evaluation/native-reset-probes.nix { pkgs = buildPkgs; inherit packages; };
+  native-freebsd-reset = import ./machines/native-reset { pkgs = testPkgs; inherit packages; };
+  native-freebsd-transport = import ./machines/native-transport { pkgs = testPkgs; inherit packages; };
+  native-freebsd-services = import ./machines/native-services { pkgs = testPkgs; inherit packages; };
+  native-freebsd-isolation = import ./machines/native-services { pkgs = testPkgs; inherit packages; isolation = true; };
+  native-freebsd-growth = import ./machines/native-services { pkgs = testPkgs; inherit packages; growth = true; };
+  native-freebsd-recovery = import ./machines/native-services { pkgs = testPkgs; inherit packages; recovery = true; };
+  native-freebsd-crash-recovery = import ./machines/native-services { pkgs = testPkgs; inherit packages; crash = true; };
   windows-firmware = packages.windowsFirmware;
   windows-guest-unit = import ./evaluation/windows-guest.nix { pkgs = buildPkgs; inherit packages; };
   # Long-running: builds the evaluation-ISO Windows image (unattended install

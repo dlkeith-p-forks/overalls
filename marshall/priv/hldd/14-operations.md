@@ -76,9 +76,83 @@ commits 64-bit relocation only after the high-half write and moves queue
 ioevents only after successful registration. Hot-unplug removes both BARs and
 all ioevents. During illumos initialization, valid queue size/address writes are
 accepted while status is zero; malformed queue state and writes after a
-forbidden transition remain refused. The evaluation checks inspect the selected
-patch set, while nested FreeBSD/OmniOS boot and recovery remain separate
-acceptance evidence.
+forbidden transition remain refused. Firmware may notify a queue through
+PCI configuration space before BAR MMIO registration; the reviewed handler now
+signals the same queue eventfd as ordinary MMIO, with bounds and write-width
+checks. Firecracker's selected patch tests and common vsock property checks
+passed independently of native guest acceptance. Exploratory OmniOS boots with
+the modern virtio modules reach userspace in QEMU; the Firecracker scratch boot
+and native CID-bound transport remain unresolved. These disposable console
+experiments do not establish reproducible image construction, target service
+startup, reset safety or recovery.
+
+MSI-X reset state must agree between guest-visible PCI capability and internal
+interrupt routing: MSI-X disabled, function mask clear, individual vectors
+masked. A pre-enabled capability previously made illumos skip the enable write
+while internal routing remained disabled/masked, so completed block requests
+never interrupted. The correction retains ordinary enable/mask semantics and
+refuses interrupt delivery while MSI-X is disabled. Disposable numeric tracing
+and polling identified this fault; neither diagnostic variant belongs in an
+accepted guest or VMM artifact.
+
+Native boot diagnostics also exposed a UART transmit-empty interrupt boundary.
+FreeBSD fills the16-byte FIFO before enabling transmit interrupts; the pinned
+UART previously failed to signal when THR was already empty. The reviewed patch
+sets pending THRE and signals only on the disabled-to-enabled transition,
+including re-enabling a pending interrupt; an unchanged enable bit and DLAB
+divisor writes preserve their existing semantics. A regression through the
+production UART API fails on the original dependency and passes the patch.
+The production VMM, identity and selected patch gates passed in173seconds;
+that source/build evidence requires separate native guest boot and transport
+replays. Console silence alone does not identify a blocked guest kernel stack.
+
+The newer FreeBSD transport replay passed in139seconds against the UART-patched
+production VMM, retaining exact image/firmware/VMM hashes and admissionfalse.
+This establishes token/CID/ABI/refusal/credit-window scope; full services and
+OmniOS transport remain separate acceptance work.
+
+Native root growth is an automatic no-argument service before identity/network
+bootstrap on every boot. A failed preflight or native command withholds the
+volatile root-growth receipt, preventing bootstrap even if rcorder continues.
+Do not bypass the receipt or select another disk to repair a refusal. Preserve
+the disposable disk and compare its mounted root, assembly pool identity,
+physical capacity and both GPT copies before another experiment. Twelve pure
+checks and cross-target Clippy passed. Three native FreeBSD QEMU boots passed one
+unchanged root followed by two expansions with retained-data, GPT and foreign-disk
+verification. The exact canonical-roots/SSH FreeBSD image later passed full
+Firecracker service/growth composition over three clean boots and two expansions.
+The final reviewed blocking-flush image passed that boundary and all five scoped
+services/growth/policy/daemon-recovery/SIGKILL-recovery variants. OmniOS and
+interrupted expansion remain unexecuted.
+
+OmniOS assembly applies a stock cloud-init/SSH disabling profile to only the
+cloned root's offline SMF repository. The exact profile passed native validation
+against a scratch stock database, with five false enabled properties and no
+live repository mutation. The previous full-kit fresh-boot verifier correctly
+refused cloud-init's resolver changes; retain this failure. A newly assembled
+image must verify both disabled service state and exact immutable payload before
+Firecracker service acceptance. Scoped FreeBSD native IPv4/router/TAP policy
+passed two clean boots after the native SSH `UseDNS no` fix; complete OmniOS,
+direct peer-VM, jail, physical-host and multi-host isolation remain pending.
+The seed-fixed image passed those checks and diagnostic Firecracker transport
+after a debugger-only stock pseudo ISA setting restored late serial output.
+Persistent assembly now preserves `/etc/system` and `/boot/loader.conf.local`,
+appends reviewed pseudo ISA and loader/kernel serial settings, and binds both
+complete files/modes for second-boot verification. The first formal normal boot
+reached ordinary login with persistent serial but
+stock physical networking entered maintenance and withheld the required
+bootstrap dependency because the remaining plumb-only stock vioif0 file conflicted
+with interface initialization. All three Overalls manifests also failed import
+on the invalid `Uncommitted` stability enum. Assembly now removes only the four
+fixed stock vioif0 address/DHCP files, preserves unrelated interfaces and requires
+continued absence in boot verification. The corrected `Unstable` manifests pass
+actual native `svccfg validate`; a deliberate old-enum mutant is rejected.
+The same native check now gates assembly and booted verification before receipts.
+This establishes schema validity, not imported methods or startup ordering.
+Decoded native FMD records show ZFS EIO before the later unsupported VMM resets;
+the disk-I/O cause remains under investigation. No service receipt exists
+for that attempt. Replay the corrected exact image; debugger changes and
+diagnostic success cannot replace that evidence.
 
 ## Browser editor package and image updates
 

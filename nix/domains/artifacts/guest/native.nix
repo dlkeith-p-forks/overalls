@@ -4,7 +4,7 @@ let
   nativeKernels = import ./native-kernels { inherit pkgs; };
   # Source/patch receipts do not establish a bootable kernel or installed service
   # closure. Keep admission closed until target-native assembly and machine
-  # evidence are reviewed together under ADR-0188.
+  # evidence are reviewed together under ADR-0190.
   nativeImageAssemblyReady = false;
   # Native guests are deliberately assembled from immutable upstream release
   # artifacts.  The source derivations are separate so a source refresh cannot
@@ -29,32 +29,46 @@ let
   # images; the pinned OmniOS artifact below is therefore the concrete illumos
   # image source used by this builder.
   illumosUpstreamUrl = "https://illumos.org/";
-  nativeFreeBSDSource =
-    if nativeAgents != null then "${nativeAgents}/freebsd/bin"
-    else if lyra != null then "${lyra}/bin"
-    else null;
-  nativeFreeBSDPrefix =
-    if nativeAgents != null then "overalls-native-"
-    else "x86_64-unknown-freebsd-overalls-native-";
+  nativeServices = import ./native-agents.nix {
+    inherit pkgs lyra;
+    terminald = import ../infrastructure/terminald.nix { inherit pkgs; };
+  };
+  nativePayload = if nativeAgents != null then nativeAgents
+    else if lyra == null then null
+    else pkgs.runCommand "overalls-native-agent-payload" {} ''
+      mkdir -p "$out/freebsd" "$out/illumos"
+      cp -a ${nativeServices.freebsd}/. "$out/freebsd/"
+      cp -a ${nativeServices.illumos}/. "$out/illumos/"
+    '';
+  nativeAgentNames = nativeServices.manifest.agents;
+  nativeGit = import ./native-git.nix { inherit pkgs; };
   # @cc [owner:ghuntley,label:build;protocol] freebsd-native-image-pinned
   # The FreeBSD builder MUST use the reviewed 14.3 source pin, preserve its
   # complete GPT/EFI/UFS disk for the CloudHv firmware boot path, and bind
   # every emitted artifact's exact byte length and SHA-256 in the v6 manifest.
   mkFreeBSD = { imageName ? "lilly-freebsd-14_3-x86_64", minimumMemoryBytes ? 1073741824
     , minimumDiskBytes ? 68719476736, workspaceSourceVersion ? 2
-    , kernel ? nativeKernels.freebsd, kernelProvenance ? kernel.provenance }:
+    , kernel ? nativeKernels.freebsd
+    , kernelProvenance ? (if kernel ? provenance then kernel.provenance else null)
+    , stagingOnly ? false }:
     assert workspaceSourceVersion == null || nativeAgents != null || lyra != null;
-    pkgs.runCommand imageName { nativeBuildInputs = [ pkgs.coreutils pkgs.jq pkgs.mtools pkgs.util-linux pkgs.xz ]; preferLocalBuild = true;
+    let
+      kernelDescriptor = if kernelProvenance == null
+        then "${kernel}/share/overalls/native-kernel/provenance.json"
+        else pkgs.writeText "freebsd-kernel-provenance.json" (builtins.toJSON kernelProvenance);
+      kernelReady = if kernelProvenance == null then kernel ? buildId else kernelProvenance.bytes > 1;
+    in
+    pkgs.runCommand imageName { nativeBuildInputs = [ pkgs.coreutils pkgs.jq pkgs.mtools pkgs.util-linux pkgs.xz pkgs.gnutar pkgs.xorriso ]; preferLocalBuild = true;
       passthru = {
         os = "freebsd";
         release = "14.3-RELEASE";
-        inherit firmware kernel kernelProvenance;
+        inherit firmware kernel kernelProvenance stagingOnly;
         kernelSourceRevision = kernel.sourceRevision;
         kernelSourceHash = kernel.sourceHash;
         kernelPatchHash = kernel.patchHash;
         kernelConfigurationHash = kernel.configurationHash;
-        kernelCompiler = kernelProvenance.compiler;
-        kernelReady = kernelProvenance.bytes > 1;
+        kernelCompiler = if kernelProvenance == null then kernel.compiler else kernelProvenance.compiler;
+        inherit kernelReady;
         imageAssemblyReady = nativeImageAssemblyReady;
         nativeAdmission = false;
         source = mkFreeBSDSource;
@@ -64,58 +78,46 @@ let
       set -euo pipefail
       # A source receipt cannot replace the stock kernel in this disk. Fail
       # before unpacking it until both kernel and native assembly are attested.
-      test ${if kernelProvenance.bytes > 1 then "true" else "false"} = true
-      test ${if nativeImageAssemblyReady then "true" else "false"} = true
+      test ${if kernelReady then "true" else "false"} = true
+      test ${if nativeImageAssemblyReady || stagingOnly then "true" else "false"} = true
       mkdir -p "$out"
       # Keep the source disk sparse while retaining GPT backup metadata and the
       # EFI system partition. A direct FreeBSD ELF kernel cannot be consumed by
       # Firecracker's Linux kernel loader.
       xz -dc ${mkFreeBSDSource} | dd of="$out/disk.raw" bs=1M conv=sparse status=none
-      ${lib.optionalString (nativeAgents != null) ''
-        mkdir -p "$out/evidence/native-agents/freebsd"
-        for agent in overalls-native-readinessd overalls-native-trustd overalls-native-workspaced; do
-          test -x ${nativeAgents}/freebsd/bin/"$agent"
+      ${lib.optionalString (nativePayload != null) ''
+        mkdir -p "$out/evidence/native-agents/freebsd" "$out/evidence/native-services/freebsd"
+        for agent in ${lib.escapeShellArgs nativeAgentNames}; do
+          test -x ${nativePayload}/freebsd/bin/"$agent"
         done
-        cp -a ${nativeAgents}/freebsd/bin/. "$out/evidence/native-agents/freebsd/"
-      ''}
-      ${lib.optionalString (nativeAgents == null && lyra != null) ''
-        mkdir -p "$out/evidence/native-agents/freebsd"
-        for binary in readinessd trustd workspaced; do
-          install -m 0755 ${lyra}/bin/x86_64-unknown-freebsd-overalls-native-$binary "$out/evidence/native-agents/freebsd/overalls-native-$binary"
-        done
-      ''}
-      ${lib.optionalString (nativeAgents != null || lyra != null) ''
-        mkdir -p "$out/evidence/native-services/freebsd"
-        for service in readiness trust workspace; do
-          cat > "$out/evidence/native-services/freebsd/overalls-$service" <<EOF
-#!/bin/sh
-# Native Overalls service definition; install into /usr/local/etc/rc.d by the
-# image installer after the payload has been copied to /usr/local/libexec.
-# PROVIDE: overalls_$service
-# REQUIRE: NETWORKING
-# KEYWORD: shutdown
-. /etc/rc.subr
-name=overalls_$service
-rcvar=overalls_''${service}_enable
-command=/usr/local/libexec/overalls-native-''${service}d
-load_rc_config "\$name"
-: \''${overalls_''${service}_enable:=NO}
-run_rc_command "\$1"
-EOF
-          chmod 0755 "$out/evidence/native-services/freebsd/overalls-$service"
-        done
-      ''}
-      ${lib.optionalString (nativeAgents != null || lyra != null) ''
-        # The UFS root cannot be edited by the Linux builder. Stage native
-        # agents on the writable EFI FAT filesystem and let nuageinit's
-        # first-boot user-data installer copy them into /usr/local/libexec.
+        cp -a ${nativePayload}/freebsd/bin/. "$out/evidence/native-agents/freebsd/"
+        cp ${nativePayload}/freebsd/usr/local/libexec/native-agents-supervisor \
+          ${nativePayload}/freebsd/usr/local/etc/rc.d/overalls-native-agents \
+          ${nativePayload}/freebsd/etc/rc.conf.d/overalls_native_agents \
+          "$out/evidence/native-services/freebsd/"
+        # Linux cannot mutate UFS, and the pinned ESP cannot hold all native
+        # binaries. Use a separate, read-only installation ISO for the target
+        # assembler; the final installed disk must boot without this media.
         esp_start=$(sfdisk --json "$out/disk.raw" | jq -r '.partitiontable.partitions[] | select(.name == "efiesp") | .start')
         mmd -i "$out/disk.raw@@$((esp_start * 512))" ::overalls
-        for binary in readinessd trustd workspaced; do
-          mcopy -i "$out/disk.raw@@$((esp_start * 512))" \
-            "${nativeFreeBSDSource}/${nativeFreeBSDPrefix}$binary" \
-            "::overalls/overalls-native-$binary"
-        done
+        payload="$TMPDIR/freebsd-payload"
+        mkdir -p "$payload"
+        tar --format=ustar --owner=0 --group=0 --numeric-owner \
+          -C ${nativePayload}/freebsd -cf "$payload/freebsd-root.tar" etc usr
+        tar --format=ustar --owner=0 --group=0 --numeric-owner \
+          -C ${nativeGit.freebsd} -cf "$payload/git-root.tar" .
+        test -f ${nativeGit.freebsd}/usr/local/bin/sudo
+        test ! -L ${nativeGit.freebsd}/usr/local/bin/sudo
+        sha256sum ${nativeGit.freebsd}/usr/local/bin/sudo | cut -d ' ' -f1 > "$payload/sudo-sha256"
+        cp ${./native-kernels/freebsd/vsock.h} "$payload/vsock.h"
+        test -n '${lib.optionalString (kernel ? buildId) kernel.buildId}'
+        test -f ${kernel}/kernel
+        test "$(stat -Lc %s ${kernel}/kernel)" -eq "$(jq -er .bytes ${kernelDescriptor})"
+        test "$(sha256sum ${kernel}/kernel | cut -d ' ' -f1)" = "$(jq -er .sha256 ${kernelDescriptor})"
+        cp ${kernel}/kernel "$payload/kernel"
+        printf '%s\n' '${lib.optionalString (kernel ? buildId) kernel.buildId}' > "$payload/kernel-build-id"
+        cp ${kernelDescriptor} "$payload/kernel-provenance.json"
+        xorriso -as mkisofs -quiet -R -J -V OVERALLS_NATIVE -o "$out/payload.iso" "$payload"
         config_start=$(sfdisk --json "$out/disk.raw" | jq -r '.partitiontable.partitions[] | select(.name == "config-drive") | .start')
         config_size=$(sfdisk --json "$out/disk.raw" | jq -r '.partitiontable.partitions[] | select(.name == "config-drive") | .size')
         config_drive="$TMPDIR/freebsd-config-drive.img"
@@ -130,39 +132,27 @@ EOF
 #!/bin/sh
 set -eu
 esp=/boot/efi
-if ! mount -p | grep -q ' /boot/efi '; then
+if ! mount -p | grep -q '[[:space:]]/boot/efi[[:space:]]'; then
   mount -t msdosfs /dev/gpt/efiesp "$esp"
 fi
-install -d -m 0755 /usr/local/libexec /usr/local/etc/rc.d
-for service in readiness trust workspace; do
-  install -m 0755 "$esp/overalls/overalls-native-$service"d \
-    "/usr/local/libexec/overalls-native-$service"d
-done
-for service in readiness trust workspace; do
-  cat > "/usr/local/etc/rc.d/overalls-$service" <<RC
-#!/bin/sh
-# PROVIDE: overalls_$service
-# REQUIRE: NETWORKING
-# KEYWORD: shutdown
-. /etc/rc.subr
-name=overalls_$service
-rcvar=overalls_''${service}_enable
-command=/usr/local/libexec/overalls-native-''${service}d
-load_rc_config "\$name"
-[ -n "\$overalls_''${service}_enable" ] || overalls_''${service}_enable=NO
-run_rc_command "\$1"
-RC
-  chmod 0755 "/usr/local/etc/rc.d/overalls-$service"
-done
-cat > /etc/rc.conf.d/overalls <<'RC'
-overalls_readiness_enable=YES
-overalls_trust_enable=YES
-overalls_workspace_enable=YES
-RC
-for service in readiness trust workspace; do
-  service "overalls-$service" start || true
-done
+payload=/mnt/overalls-installer
+mkdir -p "$payload"
+mount -t cd9660 /dev/iso9660/OVERALLS_NATIVE "$payload"
+tar -xpf "$payload/freebsd-root.tar" -C /
+tar -xpf "$payload/git-root.tar" -C /
+install -d -o root -g wheel -m 0755 /usr/local/libexec /usr/local/etc/rc.d /etc/rc.conf.d /etc/overalls
+install -o root -g wheel -m 0644 "$payload/vsock.h" /usr/include/sys/vsock.h
+install -o root -g wheel -m 0644 "$payload/kernel-build-id" /etc/overalls/kernel-build-id
+install -o root -g wheel -m 0644 "$payload/kernel-provenance.json" /etc/overalls/kernel-provenance.json
+install -o root -g wheel -m 0555 "$payload/kernel" /boot/kernel/kernel
+# The pinned Firecracker microVM supplies MSI-X and no chipset capability list.
+# Enable MSI for this platform; generic FreeBSD blacklist policy is unchanged.
+printf '\nhw.pci.honor_msi_blacklist="0"\n' >> /boot/loader.conf.local
+sync
+# Services start through rc.d after the target assembler reboots into the new
+# kernel. Running them against the stock first-boot kernel cannot prove support.
 EOF
+        cp "$TMPDIR/freebsd-user-data" "$out/evidence/freebsd-user-data"
         mcopy -i "$config_drive" "$TMPDIR/freebsd-user-data" ::user-data
         dd if="$config_drive" of="$out/disk.raw" bs=512 seek="$config_start" conv=notrunc status=none
       ''}
@@ -176,10 +166,10 @@ EOF
       jq -n \
         --argjson memory ${toString minimumMemoryBytes} --argjson disk ${toString minimumDiskBytes} \
         --argjson source ${lib.optionalString (workspaceSourceVersion == null) "null"}${lib.optionalString (workspaceSourceVersion != null) (toString workspaceSourceVersion)} \
-        --argjson kernel '${builtins.toJSON kernelProvenance}' \
+        --slurpfile kernel ${kernelDescriptor} \
         --argjson firmware_bytes "$firmware_bytes" --arg firmware_sha256 "$firmware_sha256" \
         --argjson root_bytes "$root_bytes" --arg root_sha256 "$root_sha256" \
-        '{version:6,os:"freebsd",architecture:"x86_64",boot:{kind:"firmware",pci:true,firmware:{bytes:$firmware_bytes,sha256:$firmware_sha256}},kernel:$kernel,root:{format:"raw-gpt",bytes:$root_bytes,sha256:$root_sha256},guest_agents:"freebsd-v1",minimum_memory_bytes:$memory,minimum_disk_bytes:$disk,workspace_source_version:$source}' > "$out/manifest.json"
+        '{version:6,os:"freebsd",architecture:"x86_64",boot:{kind:"firmware",pci:true,firmware:{bytes:$firmware_bytes,sha256:$firmware_sha256}},kernel:$kernel[0],root:{format:"raw-gpt",bytes:$root_bytes,sha256:$root_sha256},guest_agents:"freebsd-v1",minimum_memory_bytes:$memory,minimum_disk_bytes:$disk,workspace_source_version:$source}' > "$out/manifest.json"
     '';
   # @cc [owner:ghuntley,label:build;protocol] omnios-native-image-pinned
   # The OmniOS builder MUST use the immutable r151050 cloud raw pin and emit
@@ -217,38 +207,19 @@ EOF
       test ${if nativeImageAssemblyReady then "true" else "false"} = true
       mkdir -p "$out"
       zstd -dc ${mkOmniOSSource} > "$out/disk.raw"
-      ${lib.optionalString (nativeAgents != null) ''
-        mkdir -p "$out/evidence/native-agents/illumos"
-        for agent in overalls-native-readinessd overalls-native-trustd overalls-native-workspaced; do
-          test -x ${nativeAgents}/illumos/bin/"$agent"
+      ${lib.optionalString (nativePayload != null) ''
+        mkdir -p "$out/evidence/native-agents/illumos" "$out/evidence/native-services/illumos"
+        for agent in ${lib.escapeShellArgs nativeAgentNames}; do
+          test -x ${nativePayload}/illumos/bin/"$agent"
         done
-        cp -a ${nativeAgents}/illumos/bin/. "$out/evidence/native-agents/illumos/"
-      ''}
-      ${lib.optionalString (nativeAgents == null && lyra != null) ''
-        mkdir -p "$out/evidence/native-agents/illumos"
-        for binary in readinessd trustd workspaced; do
-          install -m 0755 ${lyra}/bin/x86_64-unknown-illumos-overalls-native-$binary "$out/evidence/native-agents/illumos/overalls-native-$binary"
-        done
-      ''}
-      ${lib.optionalString (nativeAgents != null || lyra != null) ''
-        mkdir -p "$out/evidence/native-services/illumos"
-        for service in readiness trust workspace; do
-          cat > "$out/evidence/native-services/illumos/overalls-$service.xml" <<EOF
-<?xml version="1.0"?>
-<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
-<service_bundle type="manifest" name="overalls-$service">
-  <service name="site/overalls-$service" type="service" version="1">
-    <create_default_instance enabled="true"/>
-    <single_instance/>
-    <exec_method type="method" name="start" exec="/opt/overalls/libexec/overalls-native-''${service}d" timeout_seconds="0"/>
-    <exec_method type="method" name="stop" exec=":kill" timeout_seconds="30"/>
-    <property_group name="startd" type="framework">
-      <propval name="duration" type="astring" value="contract"/>
-    </property_group>
-  </service>
-</service_bundle>
-EOF
-        done
+        cp -a ${nativePayload}/illumos/bin/. "$out/evidence/native-agents/illumos/"
+        cp ${nativePayload}/illumos/opt/overalls/libexec/native-agents-supervisor \
+          ${nativePayload}/illumos/opt/overalls/libexec/native-agents-start \
+          ${nativePayload}/illumos/lib/svc/manifest/site/overalls-native-agents.xml \
+          "$out/evidence/native-services/illumos/"
+        # These are installation inputs only. The Linux builder cannot replace
+        # the ZFS root's kernel/modules or import SMF services. Target-native
+        # assembly and a subsequent verified boot remain mandatory.
       ''}
       # Keep the complete OmniOS GPT layout.  The loader and ZFS partitions
       # are required by CloudHv firmware; accepting an arbitrary raw disk here

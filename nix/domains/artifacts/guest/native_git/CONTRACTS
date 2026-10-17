@@ -1,0 +1,15 @@
+@cc [owner:ghuntley,label:build;security] native-git-fixed-runtime
+Native Git payloads MUST use hash-pinned official packages compatible with the
+pinned guest release. The selected Git builtins, HTTPS helpers, templates, trust
+bundles and their complete runtime dependency graph MUST be installed offline.
+Optional Perl/shell frontends MUST NOT be claimed when excluded. Package scripts MUST NOT
+execute during extraction. Guest runtime and HTTPS clone evidence remain separate
+from archive and ELF inspection.
+
+@cc [owner:ghuntley,label:build;security] native-git-safe-extraction
+Package extraction MUST refuse noncanonical paths, escaping links, special files,
+conflicting regular files and set-ID modes, except the exact pinned sudo archive's
+root-owned /usr/local/bin/sudo mode 04755, which MUST be stripped to 0755 and recorded
+for explicit root-owned 04755 activation during guest image assembly. Original package identities and
+payload digests MUST be retained. Guest-relative symlinks MUST resolve within the
+assembled root tree or to an explicitly recorded path supplied by the pinned base.

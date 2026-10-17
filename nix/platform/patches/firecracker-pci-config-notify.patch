@@ -1,0 +1,62 @@
+--- a/src/vmm/src/devices/virtio/transport/pci/device.rs
++++ b/src/vmm/src/devices/virtio/transport/pci/device.rs
+@@ -906,8 +906,27 @@
+                 ..u64::from(NOTIFICATION_BAR_OFFSET + NOTIFICATION_SIZE))
+                 .contains(&o) =>
+             {
+-                // Handled with ioeventfds.
+-                warn!("pci: unexpected write to notification BAR. Offset {o:#x}");
++                // MMIO doorbells normally use KVM ioeventfds, but a driver may
++                // also notify through the PCI configuration access capability.
++                // That path reaches this method without an MMIO exit and must
++                // signal the same queue event explicitly.
++                let queue_offset = o - u64::from(NOTIFICATION_BAR_OFFSET);
++                let queue = match data {
++                    [a, b] => u32::from(u16::from_le_bytes([*a, *b])),
++                    [a, b, c, d] => u32::from_le_bytes([*a, *b, *c, *d]),
++                    _ => return None,
++                };
++                if queue_offset != u64::from(queue) * u64::from(NOTIFY_OFF_MULTIPLIER) {
++                    return None;
++                }
++                let device = self.device.lock().unwrap();
++                if let Some(event) = usize::try_from(queue)
++                    .ok()
++                    .and_then(|index| device.queue_events().get(index))
++                    && let Err(error) = event.write(1)
++                {
++                    error!("pci: cannot signal queue notification event: {error}");
++                }
+             }
+             o if (u64::from(MSIX_TABLE_BAR_OFFSET)
+                 ..u64::from(MSIX_TABLE_BAR_OFFSET + MSIX_TABLE_SIZE))
+@@ -1433,6 +1452,29 @@
+     }
+
+     #[test]
++    fn test_pci_configuration_notification() {
++        let vmm = create_vmm_with_virtio_pci_device();
++        let device = get_virtio_device(&vmm);
++        let mut device = device.lock().unwrap();
++        for length in [2, 4] {
++            cap_pci_cfg_write(&mut device, NOTIFICATION_BAR_OFFSET, length, &[0; 4]);
++            assert_eq!(device.device.lock().unwrap().queue_events()[0].read().unwrap(), 1);
++        }
++        for (offset, length, bytes) in [
++            (NOTIFICATION_BAR_OFFSET, 1, [0; 4]),
++            (NOTIFICATION_BAR_OFFSET, 3, [0; 4]),
++            (NOTIFICATION_BAR_OFFSET + 1, 2, [0; 4]),
++            (NOTIFICATION_BAR_OFFSET, 2, [1, 0, 0, 0]),
++            (NOTIFICATION_BAR_OFFSET + NOTIFY_OFF_MULTIPLIER, 2, [1, 0, 0, 0]),
++            (NOTIFICATION_BAR_OFFSET, 4, [0, 0, 1, 0]),
++        ] {
++            cap_pci_cfg_write(&mut device, offset, length, &bytes);
++            assert_eq!(device.device.lock().unwrap().queue_events()[0].read().unwrap_err().kind(),
++                std::io::ErrorKind::WouldBlock);
++        }
++    }
++
++    #[test]
+     fn test_pci_configuration_cap() {
+         let mut vmm = create_vmm_with_virtio_pci_device();
+         let device = get_virtio_device(&vmm);

@@ -1,5 +1,5 @@
 ---
-modules: [Porsche.SSH.Channel, Porsche.SSH.Display, Porsche.SSH.Input, Porsche.SSH.Output, Porsche.SSH.Proof]
+modules: [Porsche.Listener, Porsche.SSH.Channel, Porsche.SSH.Display, Porsche.SSH.Input, Porsche.SSH.Output, Porsche.SSH.Proof]
 ---
 
 # Ssh obligations

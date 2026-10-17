@@ -9,6 +9,20 @@ pub mod http;
     target_os = "solaris",
     all(test, unix)
 ))]
+pub mod native_bootstrap;
+#[cfg(any(
+    target_os = "freebsd",
+    target_os = "illumos",
+    target_os = "solaris",
+    all(test, unix)
+))]
+pub mod native_growth;
+#[cfg(any(
+    target_os = "freebsd",
+    target_os = "illumos",
+    target_os = "solaris",
+    all(test, unix)
+))]
 pub mod native_guest;
 #[cfg(any(
     target_os = "freebsd",

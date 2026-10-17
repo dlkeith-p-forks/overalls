@@ -15,23 +15,47 @@ nested-KVM or Marshall fleet result is implied by the capability table.
 ## Native agent sets and kernel identity
 
 FreeBSD and OmniOS (`illumos` on the wire) use the explicit v6/v3 native image
-contract from [ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md).
+contract from [ADR-0190](repo:docs/architecture/decisions/0190-native-kernel-provenance-and-admission.md).
 Their bundle carries kernel provenance and the native guest package names the
 kernel probe, agent, flush, readiness, trust, workspace and SSH helper
-daemons. Lilly sends no credentials and does not publish readiness until the
+daemons, plus a separately packaged native terminal daemon. Lilly sends no
+credentials and does not publish readiness until the
 jail-local probe returns an `attested` response matching the current placement,
 execution epoch, boot challenge, native OS and kernel digest. The response is
 boot-bound and bounded; stale, malformed, placeholder or mismatched evidence
-refuses, as does readiness with a different boot ID. The current probe hashes
-the configured kernel file and cannot by
-itself establish that the file is the running kernel.
+refuses, as does readiness with a different boot ID. The probe binds its
+listener, reads the executing transport's read-only build-input token and
+compares `/etc/overalls/kernel-build-id` before hashing the configured kernel
+file. The expected token must be bounded, root-owned and not a symlink.
+FreeBSD embeds the token in the static kernel; illumos checks matching socket
+and transport module tokens. This separates loaded build identity from file
+bytes, but native boot evidence must still establish the installed kernel/module
+set and accepted host-CID path.
 
-The current `native-kernels` derivation is a source/contract receipt only and
-sets `artifact.available = false`. The image builders therefore refuse before
-copying a stock kernel or root disk. FreeBSD and illumos daemon target type
-checks pass, but linked installable closures and integrated native images are
-absent. The shared Linux `terminald` package has no native target. The capability
-table remains contract surface only: no native terminal,
+The image-facing `native-kernels` receipts retain `artifact.available = false`.
+The image builders therefore refuse before copying a stock kernel or root disk.
+The FreeBSD and illumos builds link eighteen Lyra production helpers, including
+root-only MMDS/network bootstrap, and both native terminal daemons. A separate
+output packages two target-specific test transport probes. The complete Linux/Windows/native tests and native
+Clippy build passed in 297 seconds. Their manifests
+validate bounded ELF64 AMD64 executables with the target guest's interpreter,
+reviewed shared libraries and a non-executable stack; each records exact output
+digests and pinned Rust/compiler/linker/SDK inputs. The illumos SDK is a
+userland linker sysroot, not a kernel-module linker or runtime attestation.
+Readiness additionally requires live supervisor PID markers for every daemon,
+including terminald, sshd and the roster/certificate refresh worker, plus a fresh
+volatile SSH-ready marker; marker presence alone cannot grant readiness.
+
+Complete integrated acceptance remains pending. A scoped FreeBSD nested-KVM
+service gate passed eight bootstrap/network, current-boot identity, withheld
+readiness, trust, flush, workspace-refusal and terminal HELLO/PING checks in
+197 seconds. It used a historical candidate before the final kernel/account
+payload, and does not establish checkout, SSH, execution, PTY, isolation or
+recovery acceptance. A separate FreeBSD transport gate passed with
+token/CID/credit-window and ABI refusal assertions. A stock
+OmniOS probe passed native PTY shell/controlling-terminal,
+resize and inherited-descriptor checks; it does not execute the full terminal
+session protocol. The capability table remains contract surface only: no accepted native terminal,
 workspace, SSH, trust, readiness, boot or fleet result is implied. See the
 [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
 
@@ -330,6 +354,14 @@ fingerprints, identifiers, digests, paths and closed outcomes, not source URLs,
 command arguments, provider bodies or Git streams. Status rereads verify current
 content; `local_changes` preserves an edited revision. A pending receipt is an
 uncertain operation and does not authorize repeating installation.
+
+Every completed installation invocation explicitly releases its local file lock,
+including error returns. A process that inherited the same open file description
+cannot retain that completed invocation's lock. A deterministic descriptor-lifetime
+regression verifies active-owner refusal, subsequent acquisition while the old
+duplicate remains open, and continued refusal while the new owner holds its lock.
+All twelve focused managed-skill tests passed; this establishes local lock
+lifetime and does not establish native Git installation or physical recovery.
 
 Installation extracts ordinary Git blobs without checkout. It rejects symbolic
 links, submodules, reparse points, hardlinks, traversal, reserved Windows names

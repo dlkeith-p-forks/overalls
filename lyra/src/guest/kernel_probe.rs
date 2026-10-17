@@ -1,9 +1,10 @@
-//! Native kernel-file identity over the host-only vsock channel.
+//! Native kernel and transport identity over the host-only vsock channel.
 //!
 //! This probe is deliberately separate from the six-key readiness response.
-//! This identifies the kernel file selected by the image layout. It does not
-//! prove that the file is the running kernel; native admission remains closed
-//! until independent boot and transport evidence exists.
+//! The kernel transport reports its compiled build-input identity, which must
+//! match the image's root-owned expectation before a kernel-file digest is sent.
+//! This is guest-local identity checking, not cryptographic measured boot.
+//! Native admission also requires independent boot and transport evidence.
 
 use crate::guest::readiness::Boot;
 use serde::Serialize;
@@ -51,6 +52,82 @@ pub fn kernel_path(os: &str) -> io::Result<PathBuf> {
 /// Hash the image's kernel file, without claiming measured boot evidence.
 pub fn kernel_sha256(os: &str) -> io::Result<String> {
     hash_kernel(&kernel_path(os)?)
+}
+
+/// @cc [owner:ghuntley,label:security;verification] native-build-expectation-file
+/// The immutable build expectation MUST be a bounded regular file containing
+/// exactly 64 lower-case hex bytes and an optional LF. Symlinks, special files,
+/// extra bytes and malformed values MUST refuse before native attestation.
+#[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+fn expected_build_id(path: &Path) -> io::Result<String> {
+    read_build_id(path, 0)
+}
+
+#[cfg(any(
+    target_os = "freebsd",
+    target_os = "illumos",
+    target_os = "solaris",
+    test
+))]
+fn read_build_id(path: &Path, expected_owner: u32) -> io::Result<String> {
+    let mut options = fs::OpenOptions::new();
+    options.read(true);
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::OpenOptionsExt;
+        options.custom_flags(libc::O_NOFOLLOW | libc::O_NONBLOCK);
+    }
+    let mut file = options.open(path)?;
+    let metadata = file.metadata()?;
+    if !metadata.is_file() || !(64..=65).contains(&metadata.len()) {
+        return Err(io::Error::other("invalid kernel build expectation"));
+    }
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::MetadataExt;
+        let parent = fs::symlink_metadata(
+            path.parent()
+                .ok_or_else(|| io::Error::other("invalid kernel build expectation"))?,
+        )?;
+        if metadata.uid() != expected_owner
+            || metadata.mode() & 0o022 != 0
+            || !parent.is_dir()
+            || parent.uid() != expected_owner
+            || parent.mode() & 0o022 != 0
+        {
+            return Err(io::Error::other("untrusted kernel build expectation"));
+        }
+    }
+    let mut bytes = [0_u8; 66];
+    let mut length = 0;
+    while length < bytes.len() {
+        let count = file.read(&mut bytes[length..])?;
+        if count == 0 {
+            break;
+        }
+        length += count;
+    }
+    if !(length == 64 || (length == 65 && bytes[64] == b'\n'))
+        || !bytes[..64]
+            .iter()
+            .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(byte))
+    {
+        return Err(io::Error::other("invalid kernel build expectation"));
+    }
+    String::from_utf8(bytes[..64].to_vec())
+        .map_err(|_| io::Error::other("invalid kernel build expectation"))
+}
+
+/// Require the executing transport's identity to match the installed image.
+/// On illumos this identifies the patched transport/module inputs, with the
+/// separately hashed artifact retaining the complete installed module set.
+#[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+pub fn verified_build_id(listener: &crate::native_vsock::Listener) -> io::Result<String> {
+    let observed = listener.kernel_build_id()?;
+    if observed != expected_build_id(Path::new("/etc/overalls/kernel-build-id"))? {
+        return Err(io::Error::other("kernel build identity mismatch"));
+    }
+    Ok(observed)
 }
 
 /// @cc [owner:ghuntley,label:security;verification] native-kernel-file-bounded
@@ -124,9 +201,10 @@ pub fn response(os: &str, boot: &Boot, kernel_sha256: &str) -> io::Result<Vec<u8
 #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
 pub fn run(os: &str) -> io::Result<()> {
     let (boot, _, _) = crate::native_guest::identity()?;
+    let listener = crate::native_vsock::Listener::bind(PORT, 4)?;
+    let build_id = verified_build_id(&listener)?;
     let digest = kernel_sha256(os)?;
     let line = response(os, &boot, &digest)?;
-    let listener = crate::native_vsock::Listener::bind(PORT, 4)?;
     loop {
         // A rejected peer or reset must consume only that connection; it must
         // not take the attestation service down for the rest of the boot.
@@ -134,7 +212,9 @@ pub fn run(os: &str) -> io::Result<()> {
             Ok(connection) => connection,
             Err(_) => continue,
         };
-        if kernel_sha256(os).is_ok_and(|current| current == digest) {
+        if verified_build_id(&listener).is_ok_and(|current| current == build_id)
+            && kernel_sha256(os).is_ok_and(|current| current == digest)
+        {
             // A host disconnect consumes only this connection. A reset must
             // not retire the listener or change the boot identity.
             let _ = connection
@@ -192,5 +272,46 @@ mod tests {
         let file = fs::File::create(&path).unwrap();
         file.set_len(MAX_KERNEL_BYTES + 1).unwrap();
         assert!(hash_kernel(&path).is_err());
+    }
+
+    #[test]
+    fn build_expectation_refuses_unbounded_or_malformed_files() {
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("build-id");
+        #[cfg(unix)]
+        let owner = {
+            use std::os::unix::fs::MetadataExt;
+            fs::metadata(directory.path()).unwrap().uid()
+        };
+        #[cfg(not(unix))]
+        let owner = 0;
+        for value in ["a".repeat(64), format!("{}\n", "0".repeat(64))] {
+            fs::write(&path, &value).unwrap();
+            assert_eq!(read_build_id(&path, owner).unwrap(), value.trim_end());
+        }
+        for value in [
+            "a".repeat(63),
+            "a".repeat(66),
+            "A".repeat(64),
+            format!("{} ", "a".repeat(64)),
+        ] {
+            fs::write(&path, value).unwrap();
+            assert!(read_build_id(&path, owner).is_err());
+        }
+        assert!(read_build_id(directory.path(), owner).is_err());
+        #[cfg(unix)]
+        {
+            let link = directory.path().join("link");
+            fs::write(&path, "a".repeat(64)).unwrap();
+            std::os::unix::fs::symlink(&path, &link).unwrap();
+            assert!(read_build_id(&link, owner).is_err());
+            assert!(read_build_id(&path, owner.wrapping_add(1)).is_err());
+            use std::os::unix::fs::PermissionsExt;
+            fs::set_permissions(&path, fs::Permissions::from_mode(0o666)).unwrap();
+            assert!(read_build_id(&path, owner).is_err());
+            fs::set_permissions(&path, fs::Permissions::from_mode(0o644)).unwrap();
+            fs::set_permissions(directory.path(), fs::Permissions::from_mode(0o777)).unwrap();
+            assert!(read_build_id(&path, owner).is_err());
+        }
     }
 }

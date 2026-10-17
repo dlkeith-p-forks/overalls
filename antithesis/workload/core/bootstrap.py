@@ -9,13 +9,17 @@ from time import monotonic
 from antithesis.assertions import reachable
 from antithesis.lifecycle import setup_complete
 
-from core.config import Config, read_fixture
+from core.config import PROFILES, Config, read_fixture
 from core.http import HttpClient
 from core.outcome import State
 from core.profile_readiness import (
     access_smtp_ready,
+    admission_stub_ready,
+    backup_restic_ready,
+    guest_lifecycle_ready,
     recorder_host_ready,
     repository_origin_ready,
+    satellite_standin_ready,
 )
 from core.sql import SqlOracle
 
@@ -64,7 +68,7 @@ def probe(config: Config) -> Probe:
         host = observed.value
         if host.report_sequence < 1 or not host.connected or not host.report_fresh:
             return Probe(False, "host_connection_or_report")
-    if config.profile not in ("control-core", "repository-origin", "access-smtp", "recorder-host"):
+    if config.profile not in PROFILES:
         return Probe(False, "invalid_profile")
     if config.profile == "repository-origin" and not repository_origin_ready(
         config, fixture.fixture_id
@@ -74,6 +78,14 @@ def probe(config: Config) -> Probe:
         return Probe(False, "access_smtp")
     if config.profile == "recorder-host" and not recorder_host_ready(config):
         return Probe(False, "recorder_host")
+    if config.profile == "admission-stub" and not admission_stub_ready(config, fixture.host_ids):
+        return Probe(False, "admission_stub")
+    if config.profile == "backup-restic" and not backup_restic_ready():
+        return Probe(False, "backup_restic")
+    if config.profile == "satellite-standin" and not satellite_standin_ready():
+        return Probe(False, "satellite_standin")
+    if config.profile == "guest-lifecycle" and not guest_lifecycle_ready():
+        return Probe(False, "guest_lifecycle")
     return Probe(True, "complete")
 
 
@@ -96,6 +108,14 @@ def run(config: Config, stop: Event) -> int:
                 setup_complete({"template": "access-smtp"})
             elif config.profile == "recorder-host":
                 setup_complete({"template": "recorder-host"})
+            elif config.profile == "admission-stub":
+                setup_complete({"template": "admission-stub"})
+            elif config.profile == "backup-restic":
+                setup_complete({"template": "backup-restic"})
+            elif config.profile == "satellite-standin":
+                setup_complete({"template": "satellite-standin"})
+            elif config.profile == "guest-lifecycle":
+                setup_complete({"template": "guest-lifecycle"})
             elif config.profile == "control-core":
                 setup_complete({"template": "control-core"})
             else:

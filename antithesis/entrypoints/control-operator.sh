@@ -87,6 +87,32 @@ case "${OVERALLS_ANTITHESIS_SATELLITES:-0}" in
   1) /opt/overalls/entrypoints/satellite-enroll.sh ;;
   *) echo 'Invalid satellite fixture mode' >&2; exit 1 ;;
 esac
+# @cc [owner:ghuntley,label:verification;security] stub-image-registration
+# Only the admission-stub profile registers Lilly's published stub image, and
+# only a version-4 manifest carrying the fixed stub boot marker, through
+# Marshall's reviewed Images.register action. Marshall still validates the
+# manifest and derives its identity; no admission row is written here.
+stub_image_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); [path] = System.argv(); {:ok, _} = Marshall.Compute.Images.register(path |> File.read!() |> JSON.decode!(), "Antithesis admission stub (not bootable)")'
+case "${OVERALLS_ANTITHESIS_STORAGE_STUB:-0}" in
+  0) ;;
+  1)
+    stub_manifest="$secrets/lilly-a-stub-image.json"
+    if [[ -L "$stub_manifest" || ! -f "$stub_manifest" ]] ||
+        ! jq -e '
+          type == "object" and .version == 4 and .architecture == "x86_64" and
+          .boot_args == "console=ttyS0 overalls.antithesis.storage_stub=1" and
+          .rootfs.bytes == 4096 and .workspace_source_version == null
+        ' "$stub_manifest" >/dev/null 2>&1; then
+      echo 'Stub image manifest unavailable' >&2
+      exit 1
+    fi
+    "$release" eval "$stub_image_eval" "$stub_manifest" >/dev/null 2>&1 || {
+      echo 'Stub image registration failed' >&2
+      exit 1
+    }
+    ;;
+  *) echo 'Invalid storage stub fixture mode' >&2; exit 1 ;;
+esac
 touch /tmp/enrollment-ready
 
 # Optional inner host enrollment is a distinct one-shot action. The marker
@@ -176,6 +202,29 @@ enroll_optional_host() {
   mv -T "$control/.host-fixture.json.new" "$control/host-fixture.json"
   rm -f "$public"
   host_verified=1
+}
+
+guest_catalog_enabled=${OVERALLS_ANTITHESIS_GUEST_CATALOG:-0}
+guest_image_registered=0
+case "$guest_catalog_enabled" in
+  0|1) ;;
+  *) echo 'Invalid guest catalog mode' >&2; exit 1 ;;
+esac
+# @cc [owner:ghuntley,label:security;verification] guest-image-operator-registration
+# The guest-lifecycle profile's image MUST enter Marshall's catalog only through
+# the operator's Images.register action, which derives the image ID from the
+# manifest content. A missing, linked, oversized or invalid manifest MUST leave
+# the image unregistered; registration grants no capacity or execution claim.
+register_guest_image() {
+  [[ "$guest_catalog_enabled" == 1 && "$guest_image_registered" == 0 ]] || return 0
+  local manifest=/run/overalls-guest-catalog/manifest.json
+  [[ -f "$manifest" && ! -L "$manifest" ]] || return 0
+  (( $(stat -c '%s' "$manifest") <= 65536 )) || { echo 'Guest image manifest oversized' >&2; return 0; }
+  if "$release" eval 'Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); [path] = System.argv(); {:ok, manifest} = path |> File.read!() |> JSON.decode(); {:ok, _} = Marshall.Compute.Images.register(manifest, "NixOS TCG guest")' "$manifest" >/dev/null 2>&1; then
+    guest_image_registered=1
+  else
+    echo 'Guest image registration unavailable' >&2
+  fi
 }
 
 publish_refusal() {
@@ -531,6 +580,7 @@ process_request() {
 
 while true; do
   enroll_optional_host
+  register_guest_image
   # @cc [owner:ghuntley,label:security;verification] inner-satellites-after-host
   # Inner service credentials MUST be issued only after the measured host's
   # credential, committed pool and private fixture have been verified.

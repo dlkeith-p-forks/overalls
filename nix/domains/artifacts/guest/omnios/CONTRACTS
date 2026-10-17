@@ -1,0 +1,37 @@
+@cc [owner:ghuntley,label:build;security;verification] omnios-offline-candidate
+The native candidate kit MUST bind every installed file and symlink, the exact
+pinned stock raw image and native interpreter. Native installation MUST require
+a separate unimported scratch pool, clone the original BE, preserve its loader
+and GPT/ZFS disk, and attempt clean export. A refused export MUST preserve the
+workspace for recovery. The running root MUST never be a target.
+The exact regular sudoers kit bytes MUST be installed root:root mode0440 with
+non-symlink target and ancestors, and the secondboot payload receipt MUST bind
+that target mode independently of immutable Nix source permissions.
+The kit manifest MUST bind final Nix-published regular-file modes0444/0555,
+never temporary builder write permissions that disappear at publication.
+Assembly MUST apply the reviewed site profile only to the scratch clone's SMF
+repository, disabling all four stock cloud-init instances and stock SSH. The
+clone's two fixed stock manifests MUST enter a seed repository before profile
+application. SVCCFG_REPOSITORY and the repository command MUST bind the same
+validated clone repository, so offline imports never await the live restarter.
+The second boot MUST verify each instance remains disabled; Overalls MMDS bootstrap
+owns the static network and the roster-bound supervisor owns native SSH.
+The scratch clone MUST preserve its stock configuration and append pseudo_isa=1
+in /etc/system plus console/os_console=ttya and 115200,8,n,1,- ttya mode in the
+pinned loader's /boot/loader.conf.local. Exact final configuration digests and
+modes MUST enter the payload receipt and secondboot verification. This serial
+handoff MUST NOT add debugger, singleuser, verbose boot or root autologin defaults.
+Offline assembly MUST bind every initial CA file exactly. After boot, only
+/etc/ssl/cacert.pem MAY transition to the reviewed root-owned managed bundle
+link; its target MUST be a regular root:root mode0644 file in the fixed trust
+directory with exact vendor prefix and one to 32 bounded public PEM roots.
+/etc/overalls/system-ca.pem and all other static payloads MUST retain their exact
+digests and modes. This structural verification MUST NOT claim current-boot trust
+authority; the daemon's boot-bound installation receipt establishes that boundary.
+
+@cc [owner:ghuntley,label:verification] omnios-candidate-acceptance
+Installation and second-boot kernel/module/getter verification MUST remain
+distinct from complete native service, isolation, recovery and catalog evidence.
+Neither the kit nor its receipts MAY open nativeAdmission or emit a production
+manifest. The unchanged unix digest and the nine installed module digests MUST
+remain separate identities; the eventual raw image digest binds their placement.

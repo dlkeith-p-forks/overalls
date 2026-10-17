@@ -19,7 +19,10 @@ pkgs.rustPlatform.buildRustPackage {
   buildPhase = ''
     runHook preBuild
     cargo clippy --offline --all-targets -- -D warnings
-    cargo test --offline
+    # Each generated PTY history owns concurrent sessions and workers. Isolate
+    # those histories from other top-level properties so their finite CPU/process
+    # budgets and generator health checks measure their own declared workload.
+    cargo test --offline -- --test-threads=1
     runHook postBuild
   '';
   installPhase = ''

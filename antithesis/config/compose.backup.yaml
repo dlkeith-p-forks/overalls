@@ -1,0 +1,17 @@
+# Optional Restic fixture for the backup template. The workload image already
+# carries the production backup operator and pinned Restic. This overlay gives
+# each command a private, disposable, encrypted Restic file repository on a
+# dedicated named volume. A local file backend keeps raw Restic reads and the
+# production operator's exit status free of network uncertainty, which its
+# single failure exit code cannot distinguish from validator refusal. No host
+# ZFS, S3 bucket, production credential or live recovery target is mounted.
+services:
+  workload:
+    environment:
+      ANTITHESIS_BOOTSTRAP_PROFILE: backup-restic
+      ANTITHESIS_BACKUP_ROOT: /var/lib/overalls-backup-fixture
+    volumes:
+      - backup-fixture:/var/lib/overalls-backup-fixture
+
+volumes:
+  backup-fixture:

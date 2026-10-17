@@ -53,7 +53,7 @@ winget's pinned Git for Windows and the shared agent executor; images are
 Desktop Experience with pinned winget packages and WSL features (ADR-0173). The fleet proofs and the image
 staging are pending.
 
-[ADR-0188](decisions/0188-native-kernel-provenance-and-admission.md) records the
+[ADR-0190](decisions/0190-native-kernel-provenance-and-admission.md) records the
 cross-OS contract behind these detailed choices. Arch Linux and AlmaLinux retain
 the version-4 Linux image shape with distinct deterministic markers. Native
 FreeBSD and OmniOS use explicit version-6 manifests and version-3 bundles;
@@ -64,8 +64,37 @@ inference and stock-kernel substitution. Lilly preserves the jailer, per-tap
 guard, ZFS ownership and recovery boundaries, and requires a boot-bound native
 kernel response before credentials or readiness. Native capability rows remain
 all false. The kernel source receipts contain no artifact bytes, so image
-assembly refuses before copying a stock disk. Cross-built kernels, complete
-native agents, `terminald`, boot, recovery and fleet acceptance remain absent.
+assembly refuses before copying a stock disk. The FreeBSD kernel candidate,
+all twenty native Lyra executables and both terminal daemons cross-link in
+pinned Nix builds. Native OmniOS assembly links all nine modules, installs the
+full payload and exports cleanly; QEMU file/runtime checks and diagnostic
+Firecracker executing-token/transport checks passed. Persistent console
+configuration is installed; final exact-image services remain a separate gate.
+The scoped FreeBSD transport gate passed token/CID/refusal/credit-window checks.
+Vendor-base FreeBSD candidates passed complete services and same-boot daemon
+recovery over two clean boots. The later canonical-roots/SSH image passed
+full service oracles with three-boot/two-expansion mounted-root growth and
+separate two-boot IPv4/router/TAP policy checks. The policy sibling is a Linux
+sink; direct native peer-VM/TAP, jail and physical isolation remain gaps.
+The final reviewed FreeBSD image passed all five service, growth, policy,
+daemon-recovery and same-disk SIGKILL/recovery variants with complete service
+oracles and exact source-qualified receipts.
+
+Mounted-root growth requires dual-GPT/capacity preflight and a fresh volatile
+receipt before network/identity. The EFI oracle preserves exact file inventories
+except bounded root firmware `NvVars`. OmniOS assembly disables vendor cloud-init
+and SSH in the clone's offline SMF repository, and native trust keeps an immutable
+vendor CA separate from the effective managed bundle. Actual FreeBSD crash
+execution exposed scheduled-only UFS sync; native UFS suspension/resume corrected
+the defect and passed the final scoped crash replay. OmniOS complete
+services/growth/crash, wrong-CID
+injection, reset/DMA safety, physical recovery and fleet acceptance remain open.
+The completion-corrected OmniOS image reaches console login in the paired
+direct-only QEMU diagnostic; its first Firecracker service run misses the
+first-boot deadline without a kernel or service response.
+The [native review](reviews/2026-10-17-native-kernel-attestation.md) records exact
+source-qualified artifacts and results. Every native capability and catalog
+admission remains false.
 
 [ADR-0149](decisions/0149-independent-observability.md) separates control and
 observability: Lilly v4 carries capacity and physical readiness receipts, Ziggy v2

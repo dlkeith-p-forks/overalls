@@ -32,4 +32,4 @@ Open questions: None for fixture design. The actual open-socket rotation race re
 
 ## Authored assertion snapshot
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:348`. Current Lilly old-socket/new-credential route only; other services and physical effects are separate. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/control/host_sessions.py:348`. Current Lilly old-socket/new-credential route only; other services and physical effects are separate. It is in the staged control-core selection as a terminal singleton template (selected 2026-10-17). This records source presence, not a passing hosted or native result.

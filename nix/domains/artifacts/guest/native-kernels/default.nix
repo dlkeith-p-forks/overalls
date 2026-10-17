@@ -6,7 +6,7 @@ let
   # complete revisions here: an abbreviated revision in a manifest would permit
   # two different archives to acquire the same image identity.
   freebsdRevision = "833d39bd2e38421a14ea489a956261a0fa993fbc";
-  illumosRevision = "edfc22bf3262825b4b63c15d0415f58f1ca34f1f";
+  illumosRevision = "6f87d0b5d63b957991dc9d4a01a7e6c95483282c";
   omniosBuildRevision = "595bfdc217ae3cc19f982bc483701cdb89649a2d";
 
   freebsdSource = pkgs.fetchFromGitHub {
@@ -16,10 +16,10 @@ let
     hash = "sha256-UM1Imo9/iER87f7VPAI0R6I1UxHROkHyeUxQhgk1/AA=";
   };
   illumosSource = pkgs.fetchFromGitHub {
-    owner = "illumos";
-    repo = "illumos-gate";
+    owner = "omniosorg";
+    repo = "illumos-omnios";
     rev = illumosRevision;
-    hash = "sha256-KIix6WCA7YjpoVXn2rf7u1sPWccaKqrBf7KgY7wWh1I=";
+    hash = "sha256-IxfplFwqet+VvZkrKCnkxSOPNbv2l29VJ7a1b96WLqQ=";
   };
   omniosBuildSource = pkgs.fetchFromGitHub {
     owner = "omniosorg";
@@ -152,12 +152,30 @@ let
     os = "illumos";
     source = illumosSource;
     sourceRevision = illumosRevision;
-    sourceHash = "sha256-KIix6WCA7YjpoVXn2rf7u1sPWccaKqrBf7KgY7wWh1I=";
+    sourceHash = "sha256-IxfplFwqet+VvZkrKCnkxSOPNbv2l29VJ7a1b96WLqQ=";
     patch = illumosPatch;
     patchHash = illumosPatchHash;
     configuration = illumosConfig;
     configurationHash = illumosConfigurationHash;
     buildSystem = "omnios-build-r151050";
+  };
+
+  freebsdCandidate = import ./freebsd {
+    inherit pkgs;
+    source = freebsdSource;
+    sourceRevision = freebsdRevision;
+    sourceHash = "sha256-UM1Imo9/iER87f7VPAI0R6I1UxHROkHyeUxQhgk1/AA=";
+    abiPatch = freebsdPatch;
+  };
+  vsockCoreCheck = import ./common { inherit pkgs; };
+  illumosToolchain = import ./illumos/sdk.nix { inherit pkgs; };
+  illumosCandidate = import ./illumos {
+    inherit pkgs;
+    source = illumosSource;
+    sourceRevision = illumosRevision;
+    sourceHash = "sha256-IxfplFwqet+VvZkrKCnkxSOPNbv2l29VJ7a1b96WLqQ=";
+    abiPatch = illumosPatch;
+    toolchain = illumosToolchain;
   };
 
   # The SDK source is kept as a separate fixed-output input. It is intentionally not
@@ -198,7 +216,7 @@ let
     };
     illumos = {
       revision = illumosRevision;
-      hash = "sha256-KIix6WCA7YjpoVXn2rf7u1sPWccaKqrBf7KgY7wWh1I=";
+      hash = "sha256-IxfplFwqet+VvZkrKCnkxSOPNbv2l29VJ7a1b96WLqQ=";
     };
     omniosBuild = {
       revision = omniosBuildRevision;
@@ -207,7 +225,8 @@ let
   };
 in
 {
-  inherit freebsdSource illumosSource omniosBuildSource illumosSdk freebsd illumos pins;
+  inherit freebsdSource illumosSource omniosBuildSource illumosSdk freebsd illumos pins
+    freebsdCandidate vsockCoreCheck illumosToolchain illumosCandidate;
   freebsdKernel = freebsd;
   illumosKernel = illumos;
   freebsdRevision = freebsdRevision;

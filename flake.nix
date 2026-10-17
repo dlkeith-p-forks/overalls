@@ -54,6 +54,7 @@
       lib.mkAlmaGuest = built.mkAlmaGuest;
       lib.nativeKernels = built.nativeKernels;
       lib.mkFreeBSDGuest = built.mkFreeBSDGuest;
+      lib.mkFreeBSDImageCandidate = built.mkFreeBSDImageCandidate;
       lib.mkOmniOSGuest = built.mkOmniOSGuest;
       lib.mkIllumosGuest = built.mkIllumosGuest;
       packages.${system} = {
@@ -71,7 +72,14 @@
         guest-arch = built.archGuest;
         guest-alma = built.almaLinuxGuest;
         freebsd-kernel-receipt = built.nativeKernels.freebsdKernel;
+        freebsd-kernel-candidate = built.nativeKernels.freebsdCandidate;
+        freebsd-image-candidate = built.freebsdImageCandidate;
+        omnios-image-candidate-kit = built.omniosImageCandidateKit;
+        freebsd-transport-probe-image = built.freebsdTransportProbeImage;
+        native-vsock-core-check = built.nativeKernels.vsockCoreCheck;
+        illumos-sdk = built.nativeKernels.illumosToolchain.sysroot;
         illumos-kernel-receipt = built.nativeKernels.illumosKernel;
+        illumos-kernel-candidate-objects = built.nativeKernels.illumosCandidate;
         illumos-sdk-receipt = built.nativeKernels.illumosSdk;
         guest-freebsd = built.freebsdGuest;
         guest-omnios = built.omniosGuest;

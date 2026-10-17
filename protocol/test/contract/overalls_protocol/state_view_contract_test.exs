@@ -50,4 +50,33 @@ defmodule OverallsProtocolStateViewContractTest do
     assert_receive {:view_changed, ^name, :key}
     assert [] = OverallsProtocol.View.lookup(name, :tag)
   end
+
+  @tag obligation: "overalls_protocol.state_view.I5"
+  test "owner death revokes rows and notifies subscribers" do
+    name = :covenant_view_owner_down
+    {:ok, pid} = OverallsProtocol.View.start_link(name: name)
+    on_exit(fn -> if Process.alive?(pid), do: GenServer.stop(pid) end)
+    assert :ok = OverallsProtocol.View.subscribe(name, [:key])
+    parent = self()
+
+    owner =
+      spawn(fn ->
+        send(parent, OverallsProtocol.View.claim(name, :key))
+
+        receive do
+          :publish ->
+            send(parent, OverallsProtocol.View.put(name, :key, :value))
+            Process.sleep(:infinity)
+        end
+      end)
+
+    assert_receive :ok
+    send(owner, :publish)
+
+    assert_receive {:ok, _version}
+    assert_receive {:view_changed, ^name, :key}
+    Process.exit(owner, :kill)
+    assert_receive {:view_changed, ^name, :key}, 1_000
+    assert :error = OverallsProtocol.View.fetch(name, :key)
+  end
 end

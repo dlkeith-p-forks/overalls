@@ -52,10 +52,7 @@ mod daemon {
     }
 
     pub fn run() -> i32 {
-        match agent::run(&Native) {
-            Ok(code) => code,
-            Err(_) => 1,
-        }
+        agent::run(&Native).unwrap_or(1)
     }
 }
 

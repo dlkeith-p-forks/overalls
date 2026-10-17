@@ -30,7 +30,7 @@ integrates current main, resolves conflicts, checks the integrated candidate,
 merges and pushes main, and verifies the remote revision. Failed gates prevent
 integration. Branch protection is respected. Destructive scenarios use disposable
 machines only.
-Hosted Antithesis bootstrap validation admits up to five active attempts globally; each attempt remains bound to its immutable identity, exact policy duration and triage receipt.
+Hosted Antithesis bootstrap validation admits up to 32 active attempts globally; each attempt remains bound to its immutable identity, exact policy duration and triage receipt.
 
 ## Delivery queue
 
