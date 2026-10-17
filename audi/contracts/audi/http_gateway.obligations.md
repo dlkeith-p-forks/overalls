@@ -1,5 +1,5 @@
 ---
-modules: [Audi.Connector, Audi.HTTP.Authority, Audi.HTTP.Browser, Audi.HTTP.Editor, Audi.HTTP.EditorAssets, Audi.HTTP.EditorAssetsProbe, Audi.HTTP.EditorAssetsPublisher, Audi.HTTP.EditorBrowser, Audi.HTTP.Front, Audi.HTTP.Headers, Audi.HTTP.Listener, Audi.HTTP.Proxy, Audi.HTTP.TLSTransport, Audi.HTTP.WebSocket, Audi.HTTP.WebSocketFrame, Audi.HTTP.WebSocketUpgrade, Audi.Inception.Authority, Audi.Inception.ClientHello, Audi.Inception.Front, Audi.Inception.Peer]
+modules: [Audi.Connector, Audi.HTTP.Authority, Audi.HTTP.Browser, Audi.HTTP.Editor, Audi.HTTP.EditorAssets, Audi.HTTP.EditorAssetsProbe, Audi.HTTP.EditorAssetsPublisher, Audi.HTTP.EditorBrowser, Audi.HTTP.Front, Audi.HTTP.Headers, Audi.HTTP.Listener, Audi.HTTP.Proxy, Audi.HTTP.TLSTransport, Audi.HTTP.WebSocket, Audi.HTTP.WebSocketFrame, Audi.HTTP.WebSocketUpgrade, Audi.Inception.Authority, Audi.Inception.ClientHello, Audi.Inception.Front, Audi.Inception.Peer, Audi.StatusServer]
 ---
 
 # Http Gateway obligations

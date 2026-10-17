@@ -1,5 +1,5 @@
 ---
-modules: [Audi.Authority.HintRenewal, Audi.Authority.Lease, Audi.Authority.Renewal, Audi.Authority.StreamGuard, Audi.DNS.Authority, Audi.DNS.Challenge, Audi.DNS.Directory, Audi.DNS.Replica, Audi.DNS.Server, Audi.DNS.Snapshot, Audi.DNS.Wire, Audi.Private.DNS, Audi.Private.Guard]
+modules: [Audi.Authority.HintRenewal, Audi.Authority.Lease, Audi.Authority.Renewal, Audi.Authority.StreamGuard, Audi.DNS.Authority, Audi.DNS.Challenge, Audi.DNS.Directory, Audi.DNS.Replica, Audi.DNS.Server, Audi.DNS.Snapshot, Audi.DNS.Wire, Audi.Private.DNS, Audi.Private.Guard, Audi.Private.Listener]
 ---
 
 # Dns Authority obligations
