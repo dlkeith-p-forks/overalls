@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.NativeAdmissionTest do
   use ExUnit.Case, async: true
-  use Hegel
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.{GuestAgents, ImageManifest, NativeAdmission, WorkloadBundle}
 
   # @cc [owner:ghuntley,label:verification;security] native-admission-refuses-substituted-identity
