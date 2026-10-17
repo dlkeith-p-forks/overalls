@@ -1,11 +1,13 @@
 """Single-owner TCG supervisor for the real NixOS recorder fixture."""
 
 import argparse
+import errno
 import hashlib
 import json
 import os
 import sqlite3
 import subprocess
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -146,12 +148,41 @@ def prepare(config: Config, top: str) -> None:
     identity.write_text(json.dumps(selected, sort_keys=True) + "\n", encoding="ascii")
 
 
+def drive_cache(paths: tuple[Path, ...]) -> str:
+    """@cc [owner:ghuntley,label:verification;recovery] vmm-drive-cache-mode
+    Disks MUST use QEMU cache=none when every image file, including the qcow2
+    backing image, accepts O_DIRECT. A filesystem that refuses O_DIRECT (the
+    Antithesis container filesystem) MUST fall back to cache=writeback, which
+    still turns each guest flush into a host fsync; never cache=unsafe. The
+    effective mode is printed so a run records which durability backend it had.
+    """
+    mode = "none"
+    for path in paths:
+        try:
+            descriptor = os.open(path, os.O_RDONLY | os.O_DIRECT)
+        except OSError as error:
+            if error.errno != errno.EINVAL:
+                raise
+            mode = "writeback"
+            break
+        os.close(descriptor)
+    print(f"overalls vmm drive cache={mode}", file=sys.stderr, flush=True)
+    return mode
+
+
 def start(config: Config) -> None:
     """Exec the VM as container main process so container loss kills QEMU."""
     top = manifest(config)
     prepare(config, top)
     pidfile = config.state_dir / "qemu.pid"
     pidfile.write_text(str(os.getpid()) + "\n", encoding="ascii")
+    cache = drive_cache(
+        (
+            config.state_dir / "root.qcow2",
+            config.state_dir / "archive.raw",
+            (config.image_dir / "root.qcow2").resolve(strict=True),
+        )
+    )
     argv = [
         str(config.qemu),
         "-machine",
@@ -182,11 +213,11 @@ def start(config: Config) -> None:
         # /run bind into the real root fails and the guest enters emergency mode.
         f"init={top}/init console=ttyS0 panic=1",
         "-drive",
-        f"if=none,id=root,file={config.state_dir / 'root.qcow2'},format=qcow2,cache=none",
+        f"if=none,id=root,file={config.state_dir / 'root.qcow2'},format=qcow2,cache={cache}",
         "-device",
         "virtio-blk-pci,drive=root,serial=KTR-ROOT",
         "-drive",
-        f"if=none,id=archive,file={config.state_dir / 'archive.raw'},format=raw,cache=none",
+        f"if=none,id=archive,file={config.state_dir / 'archive.raw'},format=raw,cache={cache}",
         "-device",
         "virtio-blk-pci,drive=archive,serial=KTR-ARCHIVE",
     ]

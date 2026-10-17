@@ -233,9 +233,14 @@ stopped in initrd emergency mode: the runner's `root=` argument duplicated the
 image's own root fstab entry and, without `rw`, left the real root read-only,
 so the `/run` bind into it failed. The runner now relies on the image fstab
 alone; a direct local QEMU TCG boot of the rebuilt context, outside any
-container, reached the runner's health check in 66–96 s. The profile is
-selectable, but no hosted validation or run is recorded; its evidence is
-emulated, not native.
+container, reached the runner's health check in 66–96 s. Its first hosted run
+(`bbb308949ab76c0f1ce04fd209f1f091-65-0`) failed container setup because the
+Antithesis container filesystem refuses O_DIRECT, which QEMU `cache=none`
+needs to open the qcow2 backing image. The recorder, host and storage VMM
+runners now probe O_DIRECT on every disk and its backing image and fall back to
+flush-respecting `cache=writeback` (never `cache=unsafe`), printing the
+effective mode. The profile is selectable, but no hosted run has completed
+setup; its evidence is emulated, not native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub

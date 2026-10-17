@@ -1,12 +1,14 @@
 """Single-owner TCG supervisor for the measured Lilly/ZFS NixOS host."""
 
 import argparse
+import errno
 import fcntl
 import hashlib
 import json
 import os
 import signal
 import subprocess
+import sys
 import tempfile
 import time
 from dataclasses import dataclass
@@ -176,6 +178,28 @@ def live(config: Config) -> tuple[int, int] | None:
     return None
 
 
+def drive_cache(paths: tuple[Path, ...]) -> str:
+    """@cc [owner:ghuntley,label:verification;recovery] vmm-drive-cache-mode
+    Disks MUST use QEMU cache=none when every image file, including the qcow2
+    backing image, accepts O_DIRECT. A filesystem that refuses O_DIRECT (the
+    Antithesis container filesystem) MUST fall back to cache=writeback, which
+    still turns each guest flush into a host fsync; never cache=unsafe. The
+    effective mode is printed so a run records which durability backend it had.
+    """
+    mode = "none"
+    for path in paths:
+        try:
+            descriptor = os.open(path, os.O_RDONLY | os.O_DIRECT)
+        except OSError as error:
+            if error.errno != errno.EINVAL:
+                raise
+            mode = "writeback"
+            break
+        os.close(descriptor)
+    print(f"overalls vmm drive cache={mode}", file=sys.stderr, flush=True)
+    return mode
+
+
 def start(config: Config) -> None:
     """@cc [owner:ghuntley,label:verification;recovery] host-vmm-single-owner
     One locked runner MUST own QEMU for its lifetime. A retained live PID MUST
@@ -195,6 +219,13 @@ def start(config: Config) -> None:
         qmp = config.runtime_dir / "qmp.sock"
         if qmp.exists():
             qmp.unlink()
+        cache = drive_cache(
+            (
+                config.state_dir / "root.qcow2",
+                config.state_dir / "data.raw",
+                (config.image_dir / "root.qcow2").resolve(strict=True),
+            )
+        )
         argv = [
             str(config.qemu),
             "-machine",
@@ -221,11 +252,11 @@ def start(config: Config) -> None:
             "-append",
             "init=" + selected["toplevel"] + "/init root=LABEL=nixos rw console=ttyS0 panic=1",
             "-drive",
-            f"if=none,id=root,file={config.state_dir / 'root.qcow2'},format=qcow2,cache=none",
+            f"if=none,id=root,file={config.state_dir / 'root.qcow2'},format=qcow2,cache={cache}",
             "-device",
             "virtio-blk-pci,drive=root,serial=KTLILLY-ROOT",
             "-drive",
-            f"if=none,id=data,file={config.state_dir / 'data.raw'},format=raw,cache=none",
+            f"if=none,id=data,file={config.state_dir / 'data.raw'},format=raw,cache={cache}",
             "-device",
             "virtio-blk-pci,drive=data,serial=KTLILLY-DATA",
             "-netdev",
