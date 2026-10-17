@@ -28,6 +28,10 @@ Parameter menu: commit/rollback; dropped/duplicated/reordered hint; notifier res
 
 - Examined: `Lilly.Control.Runtime`, `Ziggy.AgentWorker`, `Audi.TLS.FleetWorker`, `Audi.DNS.Replica`, `Audi.Authority.HintRenewal`, and `Audi.Control.Link`. Found: Lilly, Ziggy claim, gateway catalog, and DNS refresh are scheduled at 1,000 ms; short Audi stream leases renew by at most 1,000 ms and long leases at half remaining lifetime. Not found: one cross-service hard elapsed-time guarantee. Conclusion: use each reader cadence as the workload backstop expectation and add connection/operation latency plus fair scheduling; do not assert a universal one-second delivery deadline.
 
+## Supporting assertion snapshot
+
+**Supporting assertion snapshot (2026-10-17):** The harness-only BEAM `Reachable` **"Marshall notifier recovered after losing a host command hint"** at `marshall/lib/marshall/control/hints/relay.ex:37` marks an observed notifier `:isolated` to connected transition followed by local `resync_local`. It does not observe a reader's full re-read, a committed authority change or reconciliation, so the `Sometimes` primary **"Control reader reconciles committed authority after lost hint"** and the effect-boundary `Always` remain unimplemented. This records source presence, not a hosted result.
+
 ## Evaluation and proof boundary
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.

@@ -10,7 +10,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 
 # Existing Antithesis assertions
 
-As-of source scan: **2026-10-17 UTC**. The repository scanner found **162 executable assertion callsites**, with **30 of 104 planned primary literal messages authored**. Source presence is not hosted declaration, evaluation, baseline or physical acceptance. This moving shared worktree is distinct from the pinned provenance commit. The duplicate-message list below must be resolved before immutable selection.
+As-of source scan: **2026-10-17 UTC**. The repository scanner found **163 executable assertion callsites** (including the Marshall hint-relay `Reachable` anchor, which adds no catalog primary), with **30 of 104 planned primary literal messages authored**. Source presence is not hosted declaration, evaluation, baseline or physical acceptance. This moving shared worktree is distinct from the pinned provenance commit. The duplicate-message list below must be resolved before immutable selection.
 
 The source scanner is `python3.13 antithesis/verification/assertions.py`, covering executable Antithesis Python and selected application Elixir files. It excludes unit-test fixture strings and research prose. The [template roster](evaluation/template-roster.json) records each primary match and its proof boundary.
 
@@ -176,6 +176,7 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `galileo/lib/galileo/application.ex:17` | `reachable` | Overalls Galileo application started | support / startup |
 | `lilly/lib/lilly/application.ex:19` | `reachable` | Overalls Lilly application started | support / startup |
 | `marshall/lib/marshall/application.ex:20` | `reachable` | Overalls Marshall application started | support / startup |
+| `marshall/lib/marshall/control/hints/relay.ex:37` | `reachable` | Marshall notifier recovered after losing a host command hint | support / hint-loss anchor (no primary) |
 | `porsche/lib/porsche/application.ex:17` | `reachable` | Overalls Porsche application started | support / startup |
 | `ziggy/lib/ziggy/application.ex:17` | `reachable` | Overalls Ziggy application started | support / startup |
 

@@ -277,7 +277,7 @@ emitted setup and passed six serial Control commands; the selected manifest
 has four stale runtime-dependency hashes, so no frozen hosted baseline follows.
 
 The static researched catalog contains 104 primary properties. The current
-literal scanner finds 162 SDK callsites, 30 matching primary messages and 74
+literal scanner finds 163 SDK callsites, 30 matching primary messages and 74
 missing primaries, with no duplicate callsite or kind mismatch; none
 of the 104 properties is complete as a workload plus independent oracle and
 hosted result. The default `control-core` selection now stages 13 commands in
@@ -290,7 +290,9 @@ refusal primary drives the shared client against a loopback peer for a bounded
 quiet window. None has a hosted run. Local SDK writer probes and unit tests show bounded JSONL
 behavior, including short-write refusal across helper restart, but they do not
 prove hosted ingestion. BEAM fallback assertions provide no BEAM branch
-coverage. Python catalog scanning provides no source coverage; the C helper is
+coverage. The harness-only Marshall hint relay `Reachable` marks an observed
+notifier recovery from `:isolated`; it is a search anchor, not evidence that a
+lost hint was reconciled or a committed host command progressed. Python catalog scanning provides no source coverage; the C helper is
 assertion transport, not SUT instrumentation. Native Rust coverage remains
 pending. A local control-core setup completed on diagnostic4 image bytes, but
 the selected manifest's four stale dependency hashes prevent a frozen local

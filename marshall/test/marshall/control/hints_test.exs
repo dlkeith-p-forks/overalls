@@ -103,7 +103,9 @@ defmodule Marshall.Control.HintsTest do
     assert_receive {:control_hint, :vm, ^id}, 1_000
     send(relay, {:notifier_status, :isolated})
     refute_receive :control_resync, 100
+    assert :sys.get_state(relay).notifier == :isolated
     send(relay, {:notifier_status, :clustered})
     assert_receive :control_resync, 1_000
+    assert :sys.get_state(relay).notifier == :clustered
   end
 end

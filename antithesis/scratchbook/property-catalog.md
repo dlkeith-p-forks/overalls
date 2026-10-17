@@ -8,7 +8,7 @@ scope_answer: "Repository only (Recommended)"
 
 # Property catalog
 
-This catalog synthesizes 113 source-grounded candidates into 104 canonical properties. The current as-of [assertion scan](existing-assertions.md) records 162 authored callsites and 30 primary catalog messages; the source is moving and no hosted baseline or mutation result is claimed. Source contracts and ADRs state intended behavior to test; a timeout or lost reply is an unproven effect until independently reconciled.
+This catalog synthesizes 113 source-grounded candidates into 104 canonical properties. The current as-of [assertion scan](existing-assertions.md) records 163 authored callsites and 30 primary catalog messages; the source is moving and no hosted baseline or mutation result is claimed. Source contracts and ADRs state intended behavior to test; a timeout or lost reply is an unproven effect until independently reconciled.
 
 Each entry gives one primary SDK assertion with a unique literal message. Evidence files retain source paths, independent oracles, value menus, environment limits, and any supplementary branch or progress assertions. P0/P1 and confidence rate importance and source grounding, not passing execution.
 
@@ -104,6 +104,8 @@ These properties exercise the control, credentials, and leases boundaries and th
 | **Antithesis Angle** | `Always` at effect checks plus `Sometimes(reader_reconciled_after_hint_loss)` in a specific restored-fault scenario. Drop/duplicate hints and restart notifier. |
 | **Why It Matters** | Hint loss must neither grant authority nor permanently strand committed work. |
 | **Evidence** | [Source and oracle](properties/control-hint-loss-reconciles-authority.md); discovery focus 04. |
+
+**Supporting assertion snapshot (2026-10-17):** The harness-only BEAM `Reachable` **"Marshall notifier recovered after losing a host command hint"** at `marshall/lib/marshall/control/hints/relay.ex:37` marks an observed notifier `:isolated` to connected transition followed by local `resync_local`. It does not observe a reader's full re-read, a committed authority change or reconciliation, so the `Sometimes` primary **"Control reader reconciles committed authority after lost hint"** and the effect-boundary `Always` remain unimplemented. This records source presence, not a hosted result.
 
 **Proof boundary:** Draft selection: `control`. real-hosted-db-and-control; independent witness: consistent PostgreSQL rows plus independent caller/wire ledger. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
@@ -318,6 +320,8 @@ These properties exercise the control, credentials, and leases boundaries and th
 | **Antithesis Angle** | Drop the cross-replica hint during notifier isolation and allow relay resync and Lilly's periodic exchange to race after healing. |
 | **Why It Matters** | Hints are latency aids; losing one must not strand durable work. |
 | **Evidence** | [Source and oracle](properties/lost-host-hint-eventually-delivers-command.md); discovery focus 07. |
+
+**Supporting assertion snapshot (2026-10-17):** A harness-only BEAM `Reachable` **"Marshall notifier recovered after losing a host command hint"** is authored at `marshall/lib/marshall/control/hints/relay.ex:37`, behind the `ANTITHESIS_HARNESS` compile guard and declared through `declare_catalog`. It fires on every observed Oban notifier `:isolated` to `:solitary`/`:clustered` transition, which is the window in which hints can be dropped; it does not observe that a host command hint was actually lost, that any command was committed, or that Lilly accepted or physically resolved it. It is a search anchor only. The `Sometimes` primary below remains unimplemented, and no workload cuts only the notifier while a committed command and Lilly witness are tracked. This records source presence, not a hosted result.
 
 **Proof boundary:** Draft selection: `integrated-zfs-host`. proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated; independent witness: caller key/committed rows correlated with exact physical boot, disk or capacity sample; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 

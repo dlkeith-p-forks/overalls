@@ -93,6 +93,12 @@ execution. Missing peer output, failed SQL reads and uncertain writes remain
 unexercised rather than passing evidence.
 
 The hint-loss property remains unexercised and has no selected test command.
+A harness-built Marshall release declares and emits only a BEAM `Reachable`
+anchor, `Marshall notifier recovered after losing a host command hint`, when
+its hint relay observes the Oban notifier leave `:isolated`. That anchor marks
+the window in which hints may have been dropped; it does not observe a lost
+hint, a committed command, a reader re-read or Lilly progress, and it does not
+satisfy either hint-loss catalog primary.
 The default graph has no targeted notifier isolation or reviewed action that
 commits a uniquely identified host command while PostgreSQL and Lilly's reader
 remain healthy. A session receipt and a generic socket disconnect do not
