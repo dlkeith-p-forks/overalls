@@ -260,7 +260,12 @@ but the controlled executor never launches a guest and a delete never
 completes. Setup requires the enabled normal-mode host and those committed report, pool
 and image rows in SQL; hosted runs before this check never enabled the host,
 so every admission probe stopped at unknown capacity
-(`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`).
+(`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`). With the host enabled, the next run
+still submitted nothing: the pre-submission SQL witness read host and pool from
+the VM row, which the placement migration had moved to
+`compute_workload_placements`, so every query failed and was reported as
+unavailable (`379970e17a2d5312bff3e5c5e2c17369-65-0`). The witness now joins the
+current placement, and oracle queries log each failing SQLSTATE class once.
 Catalog headroom below the request shape no longer withholds a request: a
 definite `insufficient_capacity` refusal is Marshall's real decision, checked
 for absent rows and a bounded one-VM replay. Every stop before a settled

@@ -89,12 +89,12 @@ class AdmissionOracle:
             raise ValueError("invalid admission key")
         rows = self._sql.select(
             "SELECT vm.id, vm.owner_id, vm.idempotency_key, vm.archived_at IS NOT NULL, "
-            "vm.generation, vm.current_placement_id, vm.host_id, vm.pool_id, "
+            "vm.generation, vm.current_placement_id, pl.host_id, pl.pool_id, "
             "(SELECT count(*) FROM compute_workload_placements p WHERE p.vm_id = vm.id "
             "AND p.id = vm.current_placement_id), "
             "(SELECT count(*) FROM compute_reservations r WHERE r.vm_id = vm.id "
-            "AND r.placement_id = vm.current_placement_id AND r.host_id = vm.host_id "
-            "AND r.pool_id = vm.pool_id), "
+            "AND r.placement_id = vm.current_placement_id AND r.host_id = pl.host_id "
+            "AND r.pool_id = pl.pool_id), "
             "(SELECT count(*) FROM compute_network_addresses a WHERE a.vm_id = vm.id), "
             "(SELECT count(*) FROM compute_operations o WHERE o.vm_id = vm.id "
             "AND o.kind = 'provision' AND o.generation = 1 "
@@ -107,7 +107,10 @@ class AdmissionOracle:
             "AND j.worker = 'Marshall.Compute.Workers.Dispatch'), "
             "(SELECT count(*) FROM compute_virtual_machines_versions v "
             "WHERE v.version_source_id = vm.id) "
-            "FROM compute_virtual_machines vm WHERE vm.owner_id = %s::uuid "
+            "FROM compute_virtual_machines vm "
+            # Host and pool moved to the placement row; VirtualMachine only calculates them.
+            "LEFT JOIN compute_workload_placements pl ON pl.id = vm.current_placement_id "
+            "AND pl.vm_id = vm.id WHERE vm.owner_id = %s::uuid "
             "AND vm.idempotency_key = %s ORDER BY vm.id",
             (str(owner_id), key),
             maximum_rows=8,
