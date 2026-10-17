@@ -27,12 +27,16 @@ runs:
           max-jobs = auto
           cores = 0
 
+    # Push in the post-job step rather than through the cachix daemon: the
+    # daemon holds a read lock on the local Nix database for the whole job,
+    # which deadlocks devenv when it needs the write lock.
     - name: Configure Cachix
       uses: cachix/cachix-action@ee79db531bfb851a7cf47035057b7cca88d26449
       with:
         name: overalls
         extraPullNames: devenv
         authToken: ${{ inputs.cachix-auth-token }}
+        useDaemon: false
 
     - name: Install devenv
       shell: bash
