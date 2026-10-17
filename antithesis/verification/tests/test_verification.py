@@ -28,15 +28,18 @@ from identity import (
     verify_image_copies,
     verify_image_copy,
     verify_image_selection,
+    verify_staged_catalog,
     verify_staged_selection,
     walk_inputs,
 )
 from schema import EvidenceError, Json, arr, atomic_json, field, integer, narrow_json, obj, string
 from selection import (
+    Selection,
     hosted_compose,
     manifest,
     materialization,
     read_selection,
+    selected_files,
     stage,
     validate_compose,
     verify_materialization,
@@ -188,6 +191,12 @@ class VerificationTests(unittest.TestCase):
         copies = docker_copies(repository)
         self.assertIn(
             CopyInput("antithesis/control_peer/", "/opt/overalls-antithesis/control-peer/", None),
+            copies["workload"],
+        )
+        # The selection-scoped catalog is a direct COPY, so its lineage is
+        # checked like every other workload input.
+        self.assertIn(
+            CopyInput("antithesis/build/selected-test/catalog/", "/opt/antithesis/catalog/", None),
             copies["workload"],
         )
         with tempfile.TemporaryDirectory() as directory:
@@ -629,10 +638,86 @@ class VerificationTests(unittest.TestCase):
 
             shutil.copytree(output, replica)
             verify_staged_selection(staged_root, data)
+            verify_staged_catalog(staged_root, data)
+            catalog = replica / "catalog/workload"
+            staged_modules = {
+                str(path.relative_to(catalog)) for path in catalog.rglob("*") if path.is_file()
+            }
+            runtime_modules = {
+                string(field(obj(item, "dependency"), "path"), "path").removeprefix(
+                    "antithesis/workload/"
+                )
+                for item in arr(field(data, "runtime_dependencies"), "runtime dependencies")
+            }
+            self.assertEqual(staged_modules, runtime_modules)
+            self.assertIn("core/__init__.py", staged_modules)
+            self.assertIn("core/bootstrap.py", staged_modules)
+            # Same package, untraced module: only the host_sessions template imports it.
+            self.assertNotIn("control/host_sessions.py", staged_modules)
+            self.assertFalse(any(name.startswith("backup/") for name in staged_modules))
+            extra = catalog / "backup/scenarios.py"
+            extra.parent.mkdir()
+            extra.write_text("unselected module", encoding="utf-8")
+            with self.assertRaisesRegex(EvidenceError, "extra or missing modules"):
+                verify_staged_catalog(staged_root, data)
+            shutil.rmtree(extra.parent)
+            module = catalog / "core/bootstrap.py"
+            original = module.read_bytes()
+            module.write_text("stale module", encoding="utf-8")
+            with self.assertRaisesRegex(EvidenceError, "differs from source"):
+                verify_staged_catalog(staged_root, data)
+            module.write_bytes(original)
+            verify_staged_catalog(staged_root, data)
+            (replica / "catalog/second").mkdir()
+            with self.assertRaisesRegex(EvidenceError, "exactly one workload module tree"):
+                verify_staged_catalog(staged_root, data)
+            (replica / "catalog/second").rmdir()
             command = replica / "v1/control/serial_driver_smoke.py"
             command.write_text("stale command", encoding="utf-8")
             with self.assertRaises(EvidenceError):
                 verify_staged_selection(staged_root, data)
+            command.write_bytes(
+                (root / "antithesis/test/v1/control/serial_driver_smoke.py").read_bytes()
+            )
+            shutil.rmtree(replica / "catalog")
+            with self.assertRaisesRegex(EvidenceError, "extra or missing entries"):
+                verify_staged_selection(staged_root, data)
+
+    def test_selected_commands_keep_assertions_in_traced_modules(self) -> None:
+        selection = Selection(
+            name="probe",
+            compose_files=("antithesis/config/docker-compose.yaml",),
+            templates=("probe",),
+            runtime_packages=("core",),
+            singleton_templates=(),
+            services=("workload",),
+            workload_environment=("ANTITHESIS_DB_HOST",),
+            bootstrap_template="probe",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            core = root / "antithesis/workload/core"
+            core.mkdir(parents=True)
+            (core / "__init__.py").write_text('"""core"""\n', encoding="utf-8")
+            (core / "bootstrap.py").write_text("READY = True\n", encoding="utf-8")
+            (core / "config.py").write_text("VALUE = 1\n", encoding="utf-8")
+            command = root / "antithesis/test/v1/probe/serial_driver_probe.py"
+            command.parent.mkdir(parents=True)
+            command.write_text("from core.config import VALUE\nprint(VALUE)\n", encoding="utf-8")
+            files, dependencies = selected_files(root, selection)
+            self.assertEqual(files, [command])
+            # Importing ``core.config`` executes ``core/__init__.py`` too, so the
+            # initializer is a traced runtime dependency and catalog member.
+            self.assertEqual(
+                dependencies,
+                [core / "__init__.py", core / "bootstrap.py", core / "config.py"],
+            )
+            command.write_text(
+                'from antithesis.assertions import reachable\nreachable("probe ran")\n',
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(EvidenceError, "declares SDK assertions"):
+                selected_files(root, selection)
 
     def test_image_selection_rejects_broad_command_tree(self) -> None:
         root = Path(__file__).resolve().parents[3]

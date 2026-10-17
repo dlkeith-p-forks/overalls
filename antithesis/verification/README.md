@@ -17,6 +17,18 @@ selection immediately before building its workload image. Guest, recorder,
 backup and satellite commands remain unselected until each has a complete
 profile and readiness gate.
 
+Staging also writes the hosted Python assertion catalog. The workload image
+copies `selected-test/catalog/` to `/opt/antithesis/catalog`, and that tree
+holds exactly the manifest's runtime dependencies (the traced imports of the
+selected commands and bootstrap, including executed package initializers) as
+one `workload` module. The Antithesis Python instrumentor therefore declares
+every assertion reachable from the selected commands, including ones a run
+never evaluates, and no assertion from an unselected package; a zero-hit
+property in a hosted report is a selected-scope gap, not an artifact of an
+unselected template. Test commands carry no SDK assertions of their own, and
+staging refuses one that does. The catalog has a single top-level entry on
+purpose: the Python SDK registers one instrumentation module per process.
+
 After the selected Nix contexts are built and staged, stage the commands, build
 Compose images, then materialize the selected graph as a standalone Snouty
 config directory. The materializer rejects local bind mounts and removes build
@@ -128,7 +140,9 @@ patch bytes and identities; it does not prove the patch's semantic effect.
 The source inventory intentionally includes compiled `marshall/priv/hldd` and
 the executable `antithesis/test` tree. The frozen assertion roster is scoped to
 selected commands, their traced runtime imports, and compiled selected services;
-the standalone assertion scan remains a full source discovery report. It excludes research scratchbooks, root
+the standalone assertion scan remains a full source discovery report. The freeze
+checks that the staged catalog tree equals those runtime imports byte for byte
+and that the workload image copied it unchanged. It excludes research scratchbooks, root
 architecture reviews, execution ledgers and local build outputs. It records
 file bytes and modes plus symlink targets. Staged Nix closure trees, context
 identities and actual Nix root derivation/requisite queries are captured, along

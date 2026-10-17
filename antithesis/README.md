@@ -101,7 +101,8 @@ before running Compose. The Compose build context is the repository root.
 The local CLI and engine paths are recorded in
 `.devenv/antithesis-environment.json`; set its `DOCKER_HOST` and
 `SNOUTY_CONTAINER_ENGINE=podman` for local checks. Stage the chosen command
-selection before building the workload image, then materialize that selection
+selection before building the workload image (staging also writes the image's
+selection-scoped Python assertion catalog), then materialize that selection
 with `antithesis/verification/selection.py materialize --engine podman`. Freeze
 its image and config identity as described in
 [the campaign guide](verification/README.md). Validate the resulting standalone

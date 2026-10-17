@@ -13,7 +13,10 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
+from assertions import python_calls
 from identity import (
+    IMAGE_CATALOG_ROOT,
+    STAGED_CATALOG,
     command,
     file_record,
     images,
@@ -159,7 +162,25 @@ def module_dependencies(path: Path, workload: Path, packages: tuple[str, ...]) -
     return found
 
 
+def package_initializers(module: Path, workload: Path) -> tuple[Path, ...]:
+    """Ancestor ``__init__.py`` files that importing ``module`` also executes."""
+    parts = module.relative_to(workload).parts[:-1]
+    if module.name == "__init__.py":
+        parts = parts[:-1]
+    return tuple(
+        initializer
+        for depth in range(1, len(parts) + 1)
+        if (initializer := workload.joinpath(*parts[:depth], "__init__.py")).is_file()
+    )
+
+
 def selected_files(root: Path, selection: Selection) -> tuple[list[Path], list[Path]]:
+    """@cc [owner:ghuntley,label:verification] thin-selected-commands
+    A selected test command or helper MUST NOT contain an SDK assertion
+    callsite of its own; assertions live in traced workload modules so the
+    staged catalog covers every selected callsite, including ones that never
+    run. Staging MUST refuse a command that declares one.
+    """
     tests = root / "antithesis/test/v1"
     workload = root / "antithesis/workload"
     selected: list[Path] = []
@@ -184,20 +205,29 @@ def selected_files(root: Path, selection: Selection) -> tuple[list[Path], list[P
                 commands.append(path)
     if not commands:
         raise EvidenceError("selection has no test commands")
-    dependencies: set[Path] = set()
+    for path in selected:
+        if python_calls(path, root):
+            raise EvidenceError(f"selected test command declares SDK assertions: {path}")
     bootstrap = workload / "core/bootstrap.py"
     if not bootstrap.is_file():
         raise EvidenceError("selected bootstrap source is missing")
-    dependencies.add(bootstrap)
-    pending = [*commands, bootstrap]
+    dependencies: set[Path] = set()
+    pending: list[Path] = []
+
+    def require(module: Path) -> None:
+        for candidate in (module, *package_initializers(module, workload)):
+            if candidate not in dependencies:
+                dependencies.add(candidate)
+                pending.append(candidate)
+
+    require(bootstrap)
+    pending.extend(commands)
     while pending:
         path = pending.pop()
         for dependency in module_dependencies(path, workload, selection.runtime_packages):
-            if dependency not in dependencies:
-                dependencies.add(dependency)
-                pending.append(dependency)
-    # Every runtime package used by selected commands needs a selected Nix
-    # catalog source. The actual staged store catalog is checked during freeze.
+            require(dependency)
+    # Every runtime package used by selected commands needs a selected catalog
+    # source. The staged catalog tree itself is checked during freeze.
     for dependency in dependencies:
         if dependency.relative_to(workload).parts[0] not in selection.runtime_packages:
             raise EvidenceError(f"unselected runtime dependency {dependency}")
@@ -207,10 +237,11 @@ def selected_files(root: Path, selection: Selection) -> tuple[list[Path], list[P
 def manifest(root: Path, selection: Selection) -> dict[str, Json]:
     """@cc [owner:ghuntley,label:verification] selected-command-closure
     A selected image MUST expose exactly its named command templates and bind
-    the traced local runtime imports to their source hashes. Missing source or
-    unsupported template members MUST stop staging; unselected optional test
-    commands MUST stay outside the image. Other workload modules may be bundled
-    but do not enter the selected assertion roster without a traced import.
+    the traced local runtime imports, including executed package initializers,
+    to their source hashes. Missing source or unsupported template members MUST
+    stop staging; unselected optional test commands MUST stay outside the image.
+    Other workload modules may be bundled but enter neither the selected
+    assertion roster nor the image's assertion catalog without a traced import.
     """
     files, dependencies = selected_files(root, selection)
     tests = root / "antithesis/test"
@@ -259,6 +290,7 @@ def manifest(root: Path, selection: Selection) -> dict[str, Json]:
                 "commands": commands,
                 "runtime_dependencies": [file_record(path, root) for path in dependencies],
                 "image_command_root": "/opt/antithesis/test/v1",
+                "image_catalog_root": IMAGE_CATALOG_ROOT,
             }
         ),
         "command manifest",
@@ -470,6 +502,14 @@ def verify_materialization(
 
 
 def stage(root: Path, selection: Selection, output: Path) -> dict[str, Json]:
+    """@cc [owner:ghuntley,label:verification] selection-scoped-catalog
+    The staged Antithesis catalog MUST contain exactly the manifest's runtime
+    dependencies, as one ``workload`` module tree, so the hosted Python
+    instrumentor declares every assertion reachable from the selected commands
+    and bootstrap and none from an unselected package. The tree MUST have one
+    top-level entry: the SDK registers a single instrumentation module per
+    process and would otherwise load only one of several catalogs.
+    """
     data = manifest(root, selection)
     temporary = Path(tempfile.mkdtemp(prefix=f".{output.name}.", dir=output.parent))
     try:
@@ -478,6 +518,13 @@ def stage(root: Path, selection: Selection, output: Path) -> dict[str, Json]:
             source = root / string(field(record, "path"), "source path")
             relative = source.relative_to(root / "antithesis/test")
             destination = temporary / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
+        for item in arr(field(data, "runtime_dependencies"), "runtime dependencies"):
+            record = obj(item, "runtime dependency")
+            source = root / string(field(record, "path"), "runtime source")
+            relative = source.relative_to(root / "antithesis/workload")
+            destination = temporary / STAGED_CATALOG / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, destination)
         atomic_json(temporary / "command-manifest.json", data)
