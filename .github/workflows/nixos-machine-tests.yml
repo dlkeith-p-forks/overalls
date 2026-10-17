@@ -27,29 +27,33 @@ jobs:
     timeout-minutes: 60
     outputs:
       checks: ${{ steps.select.outputs.checks }}
+      errors: ${{ steps.discover.outputs.errors }}
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v9
       - uses: ./.github/actions/devenv
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
           install-devenv: "false"
-      - name: Select machine tests
+      - name: Discover machine tests
+        id: discover
+        run: .github/scripts/select-checks.sh machine
+      - name: Apply requested subset
         id: select
         env:
+          ALL: ${{ steps.discover.outputs.checks }}
           REQUESTED: ${{ inputs.checks }}
         run: |
           set -euo pipefail
-          all=$(nix eval --json .#checks.x86_64-linux --apply 'cs: builtins.filter (n: cs.${n}.meta.ci.enable && cs.${n}.meta.ci.machine) (builtins.attrNames cs)')
-          if [ -n "${REQUESTED:-}" ]; then
-            checks=$(jq -cn --argjson all "$all" --arg req "$REQUESTED" '$req | split(" ") | map(select(. != "")) as $r | ($r - $all) as $unknown | if ($unknown | length) > 0 then error("not CI machine tests: \($unknown | join(", "))") else $r end')
-          else
-            checks=$all
+          if [ -z "${REQUESTED:-}" ]; then
+            echo "checks=$ALL" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
-          echo "Selected $(jq length <<<"$checks") machine tests: $checks"
+          checks=$(jq -cn --argjson all "$ALL" --arg req "$REQUESTED" '$req | split(" ") | map(select(. != "")) as $r | ($r - $all) as $unknown | if ($unknown | length) > 0 then error("not evaluable CI machine tests: \($unknown | join(", "))") else $r end')
           echo "checks=$checks" >> "$GITHUB_OUTPUT"
 
   machine:
     needs: discover
+    if: needs.discover.outputs.checks != '[]'
     name: ${{ matrix.check }}
     runs-on: namespace-profile-cached-amd64-xl
     timeout-minutes: 240
@@ -70,3 +74,19 @@ jobs:
           grep -c -w -E 'vmx|svm' /proc/cpuinfo || echo "no vmx/svm CPU flag exposed"
       - name: Run ${{ matrix.check }}
         run: nix build -L --no-link .#checks.x86_64-linux.${{ matrix.check }}
+
+  # Fails the run when any check did not evaluate, after every check that did
+  # evaluate has had its machine run.
+  evaluation:
+    needs: [discover, machine]
+    if: always() && needs.discover.result == 'success'
+    runs-on: namespace-profile-cached-amd64
+    steps:
+      - name: Require every check to evaluate
+        env:
+          ERRORS: ${{ needs.discover.outputs.errors }}
+        run: |
+          if [ "${ERRORS:-0}" -gt 0 ]; then
+            echo "::error::$ERRORS checks failed to evaluate; see the discover job summary"
+            exit 1
+          fi

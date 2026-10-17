@@ -95,14 +95,20 @@ jobs:
           install-devenv: "false"
       - name: Select checks
         id: select
-        run: |
-          checks=$(nix eval --raw .#checks.x86_64-linux --apply 'cs: builtins.concatStringsSep " " (builtins.filter (n: cs.${n}.meta.ci.enable && !cs.${n}.meta.ci.machine) (builtins.attrNames cs))')
-          echo "Selected: $checks"
-          echo "checks=$checks" >> "$GITHUB_OUTPUT"
+        run: .github/scripts/select-checks.sh build
       - name: Build checks
         env:
           CHECKS: ${{ steps.select.outputs.checks }}
         run: |
-          targets=()
-          for check in $CHECKS; do targets+=(".#checks.x86_64-linux.$check"); done
-          nix build -L --no-link --keep-going "${targets[@]}"
+          set -euo pipefail
+          mapfile -t names < <(jq -r '.[]' <<<"$CHECKS")
+          nix build -L --no-link --keep-going "${names[@]/#/.#checks.x86_64-linux.}"
+      - name: Require every check to evaluate
+        if: always() && steps.select.outcome == 'success'
+        env:
+          ERRORS: ${{ steps.select.outputs.errors }}
+        run: |
+          if [ "${ERRORS:-0}" -gt 0 ]; then
+            echo "::error::$ERRORS checks failed to evaluate; see the job summary"
+            exit 1
+          fi
