@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.WorkspaceSourceTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.{Execution, WorkspaceSource}
 
   # Shared with Lyra's Rust parser so both sides refuse and accept the same URLs.
