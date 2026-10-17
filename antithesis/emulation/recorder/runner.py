@@ -176,7 +176,11 @@ def start(config: Config) -> None:
         "-initrd",
         str(config.image_dir / "initrd"),
         "-append",
-        f"init={top}/init root=LABEL=nixos console=ttyS0 panic=1",
+        # The systemd initrd mounts / read-write from the image's own
+        # x-initrd.mount fstab entry. A root= argument would duplicate
+        # sysroot.mount and, without rw, leave /sysroot read-only so the
+        # /run bind into the real root fails and the guest enters emergency mode.
+        f"init={top}/init console=ttyS0 panic=1",
         "-drive",
         f"if=none,id=root,file={config.state_dir / 'root.qcow2'},format=qcow2,cache=none",
         "-device",

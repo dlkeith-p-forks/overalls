@@ -228,8 +228,14 @@ own read-only probe requires a fresh all-active unit sample, producer and spool
 identities in their reviewed cgroups, a distinct 32–64 MiB archive device, a
 checkpoint whose pending admissions name only the current producer PID and
 start ticks, a readable SQLite archive and writable request and ledger volumes.
-Missing or stale evidence leaves setup incomplete. The profile is selectable,
-but no local or hosted run is recorded; its evidence is emulated, not native.
+Missing or stale evidence leaves setup incomplete. Its first hosted validation
+stopped in initrd emergency mode: the runner's `root=` argument duplicated the
+image's own root fstab entry and, without `rw`, left the real root read-only,
+so the `/run` bind into it failed. The runner now relies on the image fstab
+alone; a direct local QEMU TCG boot of the rebuilt context, outside any
+container, reached the runner's health check in 66–96 s. The profile is
+selectable, but no hosted validation or run is recorded; its evidence is
+emulated, not native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
