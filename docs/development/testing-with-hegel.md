@@ -221,3 +221,36 @@ secrets into the serial log, keep `assert` messages value-free.
   = 1`); the ABI supports concurrency groups and that is a planned extension.
 - nixpkgs pin compatibility is proven at test-eval time: the composed driver
   runs `ty` and `ruff` over the script including the Hegel epilogue.
+
+## Elixir and BEAM properties
+
+Elixir properties use the same native Hegel engine but run inside the Mix test VM.
+Use them for pure functions, protocol codecs, Ash changesets, lifecycle models,
+authorization decisions, bounded retry/reconciliation models, and BEAM-visible
+process or socket behavior. Keep NixOS, native Rust/KVM, physical isolation,
+filesystem durability, and multi-host recovery claims in their dedicated suites.
+
+The Elixir frontend should expose an explicit typed test case and generator API. A
+property draws with `Hegel.draw(test_case, label, generator)` and returns an ordinary
+ExUnit result; labels and locations make a minimized replay actionable. Generated
+values must be bounded and typed, and options should set a deterministic seed/profile
+when the property is used in CI. A replay must recreate the same setup, draws, and
+cleanup sequence.
+
+Every generated case owns its mutable fixtures. Start SQL sandboxes, processes,
+sockets, temporary directories, registries, and node connections in per-case setup;
+release them in teardown even when the body raises or a command is rejected. Cleanup
+failures remain visible. Do not let process-dictionary convenience hide ownership or
+make a replay depend on another case's state.
+
+Stateful properties separate command generation, model transition, system action,
+postconditions, and invariants. Concurrent properties use controlled schedules and
+check the resulting history against a reference model or linearizability oracle.
+Rejected commands are discarded as assumptions; assertion failures and cleanup
+failures fail the case. Redact drawn values, exception terms, payloads, terminal bytes,
+credentials, and replay blobs by default; report only safe labels, locations, seeds,
+and bounded structural metadata unless a test explicitly opts in.
+
+Run a focused property or replay before the application's `mix precommit`. Protocol
+changes require both Marshall and Lilly consumer gates. Preserve contract, ADR, HLDD,
+logging, and machine-test evidence boundaries when reporting results.

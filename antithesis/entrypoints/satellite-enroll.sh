@@ -21,8 +21,38 @@ private_file() {
   [[ -s "$1" && -f "$1" && ! -L "$1" && "$(stat -c '%a:%u:%h' "$1")" == '600:0:1' ]]
 }
 
+# @cc [owner:ghuntley,label:verification;security] satellite-operator-failure-reason
+# A failed operator command MUST surface only the CLI's fixed status line, whose
+# reason is an atom; never other output, command arguments, tokens or contents.
 operator() {
-  "$release" eval 'Marshall.Operations.CLI.main()' "$@" >/dev/null 2>&1
+  local diagnostic
+  diagnostic=$("$release" eval 'Marshall.Operations.CLI.main()' "$@" 2>&1 >/dev/null) && return 0
+  grep -E -m 1 -x 'Operator (command failed: [a-z0-9_]+|application startup failed)' \
+    <<< "$diagnostic" >&2 || echo 'Operator command failed without a status line' >&2
+  return 1
+}
+
+# @cc [owner:ghuntley,label:security;verification] satellite-host-administrative-stub
+# Ziggy and Galileo issue and authenticate credentials only for an enabled host,
+# but Marshall's reviewed enable action requires a fresh execution-ready report
+# and the controlled hosted lilly-a always reports execution_ready=false. This
+# harness STUB sets only lilly-a's administrative enabled flag through the Host
+# :configure action, idempotently and only for a normal-mode host. It fabricates
+# no readiness, capacity, pool credit or VM binding, so admission still refuses.
+enable_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); [id] = System.argv(); alias Marshall.Compute.{Host, Ledger}; {:ok, %{enabled: true}} = Ledger.transaction(fn -> host = Ledger.lock!(Host, id) || Ledger.rollback(:unknown_host); unless host.maintenance_mode == :normal, do: Ledger.rollback(:host_in_maintenance); if host.enabled, do: host, else: Ledger.update!(host, :configure, %{enabled: true}) end, :operator)'
+"$release" eval "$enable_eval" "$host" >/dev/null 2>&1 || {
+  echo 'Satellite host administrative enablement failed' >&2
+  exit 1
+}
+host_public=$("$release" eval 'Marshall.Operations.CLI.main()' show lilly-a 2>/dev/null) || {
+  echo 'Satellite host public authority unavailable' >&2
+  exit 1
+}
+jq -e --arg host "$host" \
+  'type == "object" and .host_id == $host and .enabled == true and .maintenance_mode == "normal"' \
+  <<< "$host_public" >/dev/null || {
+  echo 'Satellite host enablement unverified' >&2
+  exit 1
 }
 
 issue_host_token() {

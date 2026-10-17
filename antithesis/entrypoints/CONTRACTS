@@ -13,6 +13,12 @@ Entrypoints MUST use fixed, validated synthetic host and storage identities and
 the reviewed Marshall enrollment API. They MUST NOT insert enrollment rows or
 fabricate physical capacity or Lilly readiness.
 
+@cc [owner:ghuntley,label:security;verification] satellite-host-enablement-stub
+Only satellite enrollment MAY set the hosted lilly-a administrative enabled flag
+without Marshall's readiness gate, through the Host :configure action and only
+for a normal-mode host, so Ziggy and Galileo credentials can be issued. It MUST
+NOT alter readiness, capacity, pools or VM bindings, and MUST be labelled a stub.
+
 @cc [owner:ghuntley,label:security;verification] closed-control-operator
 The enrollment operator MUST accept only exact private request schemas for its
 named fixture actions. Host rotation MUST use Marshall's reviewed rotate and

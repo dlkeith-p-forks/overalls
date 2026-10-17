@@ -18,3 +18,9 @@ Commands selected with the stub storage substrate MUST NOT emit assertions
 whose messages claim measured ZFS, physical headroom, KVM or isolation, and
 MUST NOT read a stub-derived file as an independent physical witness. Their
 assertions may claim only Marshall admission effects observed in PostgreSQL.
+
+@cc [owner:ghuntley,label:verification] admission-unexercised-is-logged
+A command that stops before a settled Marshall decision MUST log one fixed,
+nonsecret `Compute admission unexercised: <reason>` INFO line per reason and
+process and exit 0 without an assertion. A definite Marshall refusal is a
+settled decision, not an unexercised one; an operator precheck refusal is not.

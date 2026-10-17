@@ -240,6 +240,11 @@ A fully stub-backed report advertises placement readiness, so Marshall's real
 admission transaction commits VM, placement, reservation and dispatch rows,
 but the controlled executor never launches a guest and a delete never
 completes. Setup requires those committed report, pool and image rows in SQL.
+Catalog headroom below the request shape no longer withholds a request: a
+definite `insufficient_capacity` refusal is Marshall's real decision, checked
+for absent rows and a bounded one-VM replay. Every stop before a settled
+decision logs a fixed `Compute admission unexercised` reason; the first hosted
+run reached no admission assertion because those lines were never emitted.
 The results are admission-logic evidence only, never ZFS, physical-capacity,
 KVM or isolation evidence; the measured-capacity command stays in a separate,
 unselected template for the measured host graph.
@@ -326,7 +331,16 @@ required `connector_uid` and so could not load its configuration. Ziggy
 completion, Galileo named origin and the editor login-code race need a current
 running VM; the controlled Lilly pool reports unavailable capacity and no Audi
 editor gateway, editor release or wildcard is configured, so their primary and
-`Sometimes` assertions stay unevaluated. Both profiles have rendered Compose
+`Sometimes` assertions stay unevaluated. Ziggy and Galileo issue and
+authenticate credentials only for an enabled host, and Marshall's reviewed
+enable action requires a fresh execution-ready report that the controlled
+`lilly-a` never sends, so satellite enrollment applies a labelled harness
+**STUB**: it sets only `lilly-a`'s administrative `enabled` flag through the
+Host `:configure` action and verifies it with the operator `show` command. The
+stub fabricates no readiness, capacity, pool credit or VM binding, so Marshall
+admission still refuses the host; it is not evidence for the readiness gate on
+host enablement. A failed satellite operator command reports only the CLI's
+fixed atom status line. Both profiles have rendered Compose
 graphs that pass the selection validators and unit tests; neither has a local
 `compose up` or hosted run.
 The [integrated-host record](repo:antithesis/verification/integrated-host-boot.json)

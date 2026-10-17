@@ -24,18 +24,24 @@ child = "tank/lilly/vm-" + vm
 request: dict[str, object] = {"id": vm, "pool_id": pool, "run_id": str(uuid.uuid4())}
 
 
-def backup(operation: str, value: dict[str, object]) -> dict[str, object]:
-    body = shlex.quote(json.dumps(value))
-    storage.succeed("umask 077; printf '%s' " + body + " > /run/backup-request.json")
-    response: object = json.loads(
-        storage.succeed("zfs-backup " + operation + " /run/backup-request.json", timeout=60)
-    )
-    assert isinstance(response, dict)
+def mapping(value: object) -> dict[str, object]:
+    """Narrow parsed JSON to a string-keyed object, failing on anything else."""
+    assert isinstance(value, dict)
     result: dict[str, object] = {}
-    for key, item in response.items():
+    for key, item in value.items():
         assert isinstance(key, str)
         result[key] = item
     return result
+
+
+def backup(operation: str, value: dict[str, object]) -> dict[str, object]:
+    body = shlex.quote(json.dumps(value))
+    storage.succeed("umask 077; printf '%s' " + body + " > /run/backup-request.json")
+    return mapping(
+        json.loads(
+            storage.succeed("zfs-backup " + operation + " /run/backup-request.json", timeout=60)
+        )
+    )
 
 
 def snapshot_audit(phase: str) -> str:
@@ -44,19 +50,19 @@ def snapshot_audit(phase: str) -> str:
     and placement-bound events; private nonce and payload fields MUST stay absent
     from events. This assertion supplements, never replaces, native data checks.
     """
-    value: object = json.loads(
-        storage.succeed("cat /pool/.lilly-zfs/active/" + vm + "/backup.json")
+    value = mapping(
+        json.loads(storage.succeed("cat /pool/.lilly-zfs/active/" + vm + "/backup.json"))
     )
-    assert isinstance(value, dict) and value.get("phase") == phase
-    metadata: object = value.get("_lifecycle")
-    assert isinstance(metadata, dict)
+    assert value.get("phase") == phase
+    metadata = mapping(value.get("_lifecycle"))
     assert metadata.get("resource") == "BackupSnapshot" and metadata.get("state") == phase
     identifier: object = metadata.get("id")
     assert isinstance(identifier, str) and str(uuid.UUID(identifier)) == identifier
     events: object = metadata.get("events")
     assert isinstance(events, list) and len(events) > 0
-    for event in events:
-        assert isinstance(event, dict) and event.get("placement_id") == vm
+    for item in events:
+        event = mapping(item)
+        assert event.get("placement_id") == vm
         assert event.get("workflow_id") is None
         assert not any(key in event for key in ("nonce", "payload", "run_id", "snapshot_guid"))
     return identifier

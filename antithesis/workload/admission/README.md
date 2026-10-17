@@ -36,6 +36,20 @@ publishes requested work and never launches a guest. The bootstrap probe
 requires the committed execution-ready report, measured compute headroom, a
 fresh stub pool row and an enabled advertised image in SQL before setup.
 
+Each command logs a fixed `Compute admission unexercised: <reason>` INFO line,
+once per reason and process, whenever it stops before a settled Marshall
+decision (catalog reply unavailable, capacity unknown, no advertised image, SQL
+snapshot or operator reply unavailable, operator image precheck, or a delete
+that was never observed archived). The catalog's unlocked headroom only
+prefers a fitting image: when measured CPU or memory headroom is below the
+request shape the request is still submitted, because Marshall's serialized
+admission transaction decides placement. A definite `insufficient_capacity`
+refusal is a real admission decision: the atomic command asserts it left no
+rows, and the key command replays the refused key once and asserts it admits
+at most one VM. The hosted run `8e582f650dd7092cda983705eb7b0e05-65-0` returned
+before any of this silently, because these INFO lines were never configured
+and the old catalog fit check withheld submission.
+
 Admission decisions, idempotency history, rows and dispatch jobs are all real
 Marshall effects; only the storage substrate (and the image artifacts) are
 stubbed. Results from this profile are admission-logic evidence. They are not

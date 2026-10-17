@@ -1090,6 +1090,7 @@ let
       '')
       (pkgs.writeShellScriptBin "fleet-brady-guest" ''
         export RELEASE_COOKIE=isolated-brady-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${./brady-guest.exs}")' "$@"
       '')
     ] ++ [ config.boot.zfs.package pkgs.util-linux pkgs.git pkgs.nix pkgs.python3
@@ -1099,6 +1100,7 @@ let
       '')
       (pkgs.writeShellScriptBin "fleet-host-probe" ''
         export RELEASE_COOKIE=isolated-host-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.eval_file("${./host-probe.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-seal-ziggy" ''
@@ -1115,28 +1117,34 @@ let
       (pkgs.writeShellScriptBin "fleet-network" ''
         export PATH="${config.boot.zfs.package}/bin:/run/current-system/sw/bin:${packages.lilly}/host-tools/bin"
         export RELEASE_COOKIE=isolated-network-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${./network.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-relocation-guest" ''
         export PATH="${config.boot.zfs.package}/bin:/run/current-system/sw/bin:${packages.lilly}/host-tools/bin"
         export RELEASE_COOKIE=isolated-relocation-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${./relocation-guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-resize-guest" ''
         export RELEASE_COOKIE=isolated-resize-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${../resize/guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-guest-trust" ''
         export PATH="${config.boot.zfs.package}/bin:/run/current-system/sw/bin:${packages.lilly}/host-tools/bin"
         export RELEASE_COOKIE=isolated-trust-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${../fleet-guest-trust/guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-repository-launch-guest" ''
         export RELEASE_COOKIE=isolated-launch-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${../repository-launch/guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-default-oss-guest" ''
         export RELEASE_COOKIE=isolated-profile-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${../default-oss/guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-editor-guest" ''
@@ -1145,11 +1153,13 @@ let
           export FLEET_EDITOR_NODE="${pkgs.nodejs_24}/bin/node" FLEET_EDITOR_COMMIT="${packages.vscodeWeb.sourceCommit}"
         ''}
         export ERL_FLAGS="+S 2:2" RELEASE_DISTRIBUTION=none RELEASE_COOKIE=isolated-editor-guest
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${../vscode-web/guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-galileo-guest" ''
         export FLEET_GUEST_PYTHON=${pkgs.python3}/bin/python3
         export RELEASE_COOKIE=isolated-galileo-guest RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${./galileo-guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-processes" ''
@@ -1162,6 +1172,7 @@ let
         set -euo pipefail
         export PATH="${config.boot.zfs.package}/bin:/run/current-system/sw/bin:${packages.lilly}/host-tools/bin"
         export RELEASE_COOKIE=isolated-host-observation RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval '
           {:ok, machine} = Lilly.Host.Identity.read()
           {:ok, pool} = Lilly.Host.ZFS.inspect_path("/var/lib/lilly/pool")
@@ -1180,6 +1191,7 @@ let
         test "$#" -eq 3
         export PROBE_PLACEMENT="$1" PROBE_BOOT_SHA256="$2" PROBE_HOST="$3"
         export RELEASE_COOKIE=isolated-host-observation RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval '
           placement = System.fetch_env!("PROBE_PLACEMENT")
           boot_digest = System.fetch_env!("PROBE_BOOT_SHA256")
@@ -1213,6 +1225,7 @@ let
     ] ++ lib.optionals codingClis [
       (pkgs.writeShellScriptBin "fleet-coding-clis-guest" ''
         export RELEASE_COOKIE=isolated-coding-clis-guest RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${./coding-clis-guest.exs}")' "$@"
       '')
     ] ++ lib.optionals editor [

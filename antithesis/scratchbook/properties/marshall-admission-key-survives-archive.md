@@ -35,4 +35,4 @@ Open questions: Can a hosted TCG fixture complete the native physical cleanup an
 
 ## Authored assertion snapshot
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/admission/scenarios.py:176`. Observed first-key SQL contradictions fail, identical replay and exact idempotency conflict are checked, and archived replay waits for real delete plus SQL archival; integrated physical cleanup and hosted execution remain unverified. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/admission/scenarios.py:244`. Observed first-key SQL contradictions fail, identical replay and exact idempotency conflict are checked, and archived replay waits for real delete plus SQL archival; integrated physical cleanup and hosted execution remain unverified. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
