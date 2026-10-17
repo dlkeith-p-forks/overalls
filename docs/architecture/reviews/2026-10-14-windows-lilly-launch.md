@@ -69,7 +69,7 @@ Executed on 2026-10-14 (host with nested KVM, `system-features` includes
 - `checks.x86_64-linux.windows-guest` (operator launcher, nested KVM) on the
   spike commit `66052b340`: passed; firmware banner after 252.9 s of guest time,
   `SAC>` 6.2 s later, 273.9 s in total
-  (`/nix/store/kz6azps22rydza1vyywssxk97kwbdp2p-vm-test-run-kittens-windows-guest`).
+  (`/nix/store/kz6azps22rydza1vyywssxk97kwbdp2p-vm-test-run-overalls-windows-guest`).
   This is the first recorded execution of that check.
 - `checks.x86_64-linux.ubuntu-guest` on the merge commit `4fe9033fc` (patched
   VMM, no Phase 2 code yet): the Ubuntu guest booted, delivered trust, survived
@@ -83,7 +83,7 @@ Executed on 2026-10-14 (host with nested KVM, `system-features` includes
 - `checks.x86_64-linux.zfs-guest` (NixOS guest, real Lilly, nested KVM) on the
   merge commit `4fe9033fc` with the patched VMM: passed, all fifteen subtests
   including the post-import template subtest, in 4446 s of script time
-  (`/nix/store/bv5s38m3nvjdy1jk2zb4750h9m9q315s-vm-test-run-kittens-zfs-guest`).
+  (`/nix/store/bv5s38m3nvjdy1jk2zb4750h9m9q315s-vm-test-run-overalls-zfs-guest`).
 - Local reproduction of Lilly's firmware launch on bare KVM (patched
   Firecracker with `--enable-pci --metadata`, the rebuilt image
   `/nix/store/za61xzjas5kymm80fbdx64yrgfwkvhx7-lilly-windows-server-2025-x86_64`,
@@ -114,7 +114,7 @@ Executed on 2026-10-14 (host with nested KVM, `system-features` includes
   reads the guest's bootstrap log from the live disk and probes through a
   test-only accept for the one `/32`, with the tap guard untouched.
   Final execution on the committed tree (2026-10-14, 2688 s of script time,
-  `/nix/store/nrpkvzk1g85bvj0a4594pi7dyap8w2j4-vm-test-run-kittens-windows-lilly-guest`):
+  `/nix/store/nrpkvzk1g85bvj0a4594pi7dyap8w2j4-vm-test-run-overalls-windows-lilly-guest`):
   passed. Inception refused before any dataset (306 s, dominated by hashing the
   32 GiB sparse image); placement 791 s (two digest passes over the sparse
   template plus the copy); `boot-bundle.json`, `firmware` and `rootfs.ext4` on

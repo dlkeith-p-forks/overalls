@@ -17,7 +17,7 @@ placement; production activation remains pending. Database sources stay separate
 
 The actual Marshall integration check passed in **371 seconds**, with **101.76
 seconds** of test-script execution. Archive: `1790985929916-1268329-0.jsonl`;
-log: `/tmp/kittens-request-marshall-durable-native-catalog-fixed.log`.
+log: `/tmp/overalls-request-marshall-durable-native-catalog-fixed.log`.
 It exercises real HTTPS admission and collector export, independent reader
 custody, recorder SIGKILL without restarting Marshall, clean Marshall restart
 preserving lifetime/totals/coverage, and an admitted incomplete browser request
@@ -80,7 +80,7 @@ unchanged broader journey verifies body preservation, execution fencing, peer
 provenance and cross-host physical relocation. Its source assertion took 9.31
 seconds. This establishes actual source/collector transport; counter continuity
 through every later fault and seven days of production observation remain
-separate. Log: `/tmp/kittens-request-galileo-durable-native.log`.
+separate. Log: `/tmp/overalls-request-galileo-durable-native.log`.
 
 The implemented Rust core holds permanent source identity, bounded numeric
 admissions, immutable per-admission deadlines and exact producer identity.
@@ -98,8 +98,8 @@ properties and six filesystem/refusal tests. The generated real-checkpoint
 history property runs 32 cases, preserving each committed state across reopen
 and counting unresolved dead-producer work once without duration fabrication.
 Library Clippy with warnings denied passed in 0.81 seconds. Rustfmt formatted
-the new module. Logs: `/tmp/kittens-durable-request-core-final.log` and
-`/tmp/kittens-durable-request-core-clippy.log`.
+the new module. Logs: `/tmp/overalls-durable-request-core-final.log` and
+`/tmp/overalls-durable-request-core-clippy.log`.
 These are process-local properties and filesystem tests, not native SIGKILL or
 power-loss acceptance. No socket credential/cgroup validation, application hooks,
 freshness publication or NixOS runtime exists yet. Those are required before
@@ -186,8 +186,8 @@ The pinned quality Rust run passed 35 library and three receiver tests in
 New properties preserve all state except coverage across generated gaps and
 reject regressing or future export clocks. A filesystem test upgrades a synthetic
 legacy checkpoint while preserving counters, admissions and permanent lifetime.
-Logs: `/tmp/kittens-request-quality-rust.log` and
-`/tmp/kittens-request-quality-clippy.log`.
+Logs: `/tmp/overalls-request-quality-rust.log` and
+`/tmp/overalls-request-quality-clippy.log`.
 
 The Prometheus rule check passed in **142 seconds**; archive
 `1790980540704-2337192-0.jsonl`. Synthetic rule histories prove missing/gapped
@@ -214,7 +214,7 @@ Nix checks; no encoding failure occurred in these validations.
 The separate producer library performs private marker and bounded Unix RPC I/O
 without adding I/O to protocol. In the captured revision it was named
 `slo_client/`; the current breaking rename is
-`elixir/request_accounting/` (`Kittens.RequestAccounting`). Its staged quality
+`elixir/request_accounting/` (`Overalls.RequestAccounting`). Its staged quality
 writes fsync both file and directory. Clean/running/gap markers distinguish
 clean deployment from unclean SDK/application restart. Dirty storage stays
 dirty; only durable recorder gap acknowledgment permits completion of older
@@ -235,8 +235,8 @@ contract checks and forced Dialyzer with zero findings. The new DNS admission
 properties passed separately (two properties, 0.1 seconds), proving classified
 public outcomes require pre-resolution eligibility and invalid packets cannot
 enter it. These are property/code evidence, not actual application transport
-acceptance. Logs: `/tmp/kittens-slo-producers-slo_client-precommit.log` and
-`/tmp/kittens-dns-admission-properties.log`.
+acceptance. Logs: `/tmp/overalls-slo-producers-slo_client-precommit.log` and
+`/tmp/overalls-dns-admission-properties.log`.
 
 The first correct BEAM/Rust native fixture passed in **58 seconds**, script
 **45.54 seconds**, archive `1790981297097-2765909-0.jsonl`. It proves worker death
@@ -285,12 +285,12 @@ in **0.58/0.13 seconds**, with all-target Clippy passing in **1.00 seconds**.
 The new property covers successful, failed, dead-producer, deadline and excluded
 gap-crossing settlements while later work cannot extend coverage. Filesystem
 tests verify version-two pending upgrade and current missing-metadata refusal.
-Log: `/tmp/kittens-slo-producers-rust-gap-settlement-final.log`.
+Log: `/tmp/overalls-slo-producers-rust-gap-settlement-final.log`.
 
 The final non-Marshall consumer gates passed, including forced Dialyzer with zero
 findings: Galileo 27 tests (9 properties), Enrico 6 (3 properties), Brady 80 (29
 properties), Porsche 91 (15 properties), Audi 167 (43 properties), and producer
-library 6 (3 properties). Logs are `/tmp/kittens-slo-producers-APP-precommit-final.log`.
+library 6 (3 properties). Logs are `/tmp/overalls-slo-producers-APP-precommit-final.log`.
 The NixOS HLDD browser check passed in **322 seconds**, script **60.48 seconds**,
 archive `1790982350878-3379079-0.jsonl`, exercising the maintained diagram and
 section-delivery renderer. It does not establish SLO producer transport acceptance.
@@ -299,11 +299,11 @@ The extended version-three native check passed in **56 seconds**, script
 preceding assertions, a gap with pending work followed by deadline expiry advances
 coverage through settlement. This proves the real recorder's delayed-settlement
 guard in the isolated fixture; it does not establish application or exporter
-transport acceptance. Log: `/tmp/kittens-slo-client-native-late-gap-final.log`.
+transport acceptance. Log: `/tmp/overalls-slo-client-native-late-gap-final.log`.
 Marshall's isolated test phase passed **1,417 checks**: **216 properties** and
 **1,201 tests**, with two exclusions, in **1,054.2 seconds**. A fresh partition
 isolated the run from unrelated/default-database test activity; no shared
-database was deleted. Log: `/tmp/kittens-slo-producers-marshall-precommit-isolated.log`.
+database was deleted. Log: `/tmp/overalls-slo-producers-marshall-precommit-isolated.log`.
 Forced Dialyzer passed with **zero errors and zero skips**, completing the full
 consumer gate. Passing native execution precedes production activation.
 
@@ -313,7 +313,7 @@ The explicit Rust `--recorder-group-source` mode accepts only the eight request
 sources and enforces existing read-only group-file custody without a legacy
 fallback. Its pinned run passed **39 library tests and three receiver tests**
 in **0.60/0.11 seconds**, with all-target Clippy passing in **0.77 seconds**.
-Log: `/tmp/kittens-slo-exporter-custody-rust-final.log`.
+Log: `/tmp/overalls-slo-exporter-custody-rust-final.log`.
 
 The Nix module separates RPC and publication groups/directories and configures
 the producer's private quality directory. Its inner marker directory avoids
@@ -323,7 +323,7 @@ checkpoints; producer accounts must also be unable to read publication.
 The repaired native check passed in **64 seconds**, script **49.50 seconds**,
 archive `1790983608060-4126836-0.jsonl`, including these permissions assertions
 and the preceding BEAM/crash/gap/deadline assertions. Log:
-`/tmp/kittens-slo-exporter-custody-native-repaired.log`. Two diagnostic attempts
+`/tmp/overalls-slo-exporter-custody-native-repaired.log`. Two diagnostic attempts
 proved systemd resets RuntimeDirectory ownership/mode before later commands,
 undoing the attempted RPC group setup. RPC directory custody now uses explicit
 tmpfiles while publication retains systemd's separate primary reader group.
@@ -340,7 +340,7 @@ uses the recorder module's environment and private marker directory, completes
 an admission and cleanly restarts while preserving lifetime, totals and coverage.
 The other permission/crash/gap assertions remain in the same run. This establishes
 the configured SDK storage/startup path, not actual Marshall HTTP or collector
-transport. Log: `/tmp/kittens-request-dynamic-native.log`.
+transport. Log: `/tmp/overalls-request-dynamic-native.log`.
 
 Full deployment evaluation found that readable generated account/group names
 exceeded NixOS's 31-character limit for several real instances. The recorder,
@@ -353,10 +353,10 @@ instance name with a DynamicUser producer and retains all custody/crash assertio
 A preceding attempt reached checkpoint-loss recovery but failed because the
 fixture restore hardcoded an obsolete account; the fixture now preserves the
 actual checkpoint owner and mode on its private backup and restore.
-Log: `/tmp/kittens-request-bounded-identities-native-final.log`.
+Log: `/tmp/overalls-request-bounded-identities-native-final.log`.
 
 Complete Overalls system-derivation evaluation of the draft source bindings
-passed at `/tmp/kittens-request-bindings-overalls-toplevel-fixed.log`. The
+passed at `/tmp/overalls-request-bindings-overalls-toplevel-fixed.log`. The
 allowlisted configuration projections contain eight Overalls sources and five
 Dungarees sources, with distinct exporter accounts, reader/collector groups and
 producer marker configuration. This establishes declared configuration, not
@@ -368,7 +368,7 @@ is committed and source acceptance is prepared.
 
 The Audi SSH serial rerun passed overall in **777 seconds**, archive
 `1790987742609-2398126-0.jsonl`, log
-`/tmp/kittens-request-audi-ssh-durable-native-serial.log`. Its registered-key native
+`/tmp/overalls-request-audi-ssh-durable-native-serial.log`. Its registered-key native
 OpenSSH and durable collector source assertion passed in 17.14 seconds; enrollment,
 separate DNS/gateway authority, guest HTTP readiness and private owner/browser
 HTTP/WebSocket assertions also passed. Earlier failed runs remain separate;
@@ -381,13 +381,13 @@ another Mix command shared `_build/test`. The merged-main focused suite separate
 passed **20 checks: eight properties and twelve tests** in 168 seconds. Final
 serial toolchain, architecture, HLDD, contracts, logging, forced warning-free
 compile and forced Dialyzer passed; Dialyzer took **49.56 seconds** with zero
-errors or skips. Logs: `/tmp/kittens-request-rollout-marshall-precommit.log`,
-`/tmp/kittens-request-main-merged-properties.log`, and
-`/tmp/kittens-request-merged-final-static-dialyzer.log`. The original full
+errors or skips. Logs: `/tmp/overalls-request-rollout-marshall-precommit.log`,
+`/tmp/overalls-request-main-merged-properties.log`, and
+`/tmp/overalls-request-merged-final-static-dialyzer.log`. The original full
 precommit invocation remains failed; the repaired final gates are separate evidence.
 
 The next serial Brady rerun failed overall in **611 seconds**, archive
-`1790989053338-3207505-0.jsonl`, log `/tmp/kittens-brady-grafana-rollout.log`.
+`1790989053338-3207505-0.jsonl`, log `/tmp/overalls-brady-grafana-rollout.log`.
 The actual guest HTTP/TLS requests succeeded, but the fresh authoritative
 attribution retry timed out before the new durable source assertions. The
 allowlisted event summary contains nine HTTP 200 requests, all explicitly
@@ -401,4 +401,4 @@ seconds**, archive `1790989872881-3670363-0.jsonl`. The composed driver's mandat
 type/syntax gate found two statements joined across the split-marker boundary.
 The fixture now inserts an explicit newline; production SSH, eligibility and
 accounting behavior are unchanged. The gate remains enabled and native rerun is
-required. Log: `/tmp/kittens-porsche-grafana-rollout.log`.
+required. Log: `/tmp/overalls-porsche-grafana-rollout.log`.

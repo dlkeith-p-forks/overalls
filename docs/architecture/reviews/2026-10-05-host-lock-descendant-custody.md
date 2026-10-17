@@ -36,14 +36,14 @@ No architectural decision or inherited deadline is changed by this draft.
 ## First native baseline
 
 Targeted native baseline exited1, archive `1791223904445-747886-0.jsonl`, log
-`/tmp/kittens-host-lock-descendant-baseline1.log`. The property failed0.07seconds
+`/tmp/overalls-host-lock-descendant-baseline1.log`. The property failed0.07seconds
 on count1: its reply-channel observation occurred while the independently
 witnessed escaped descendant remained live. This first oracle did not distinguish
 reply bytes from EOF/other channel errors; refinement now retries EINTR and
 reports closed byte-count/status or error-kind witnesses separately. It also
 requires an independent exact inherited-lock device/inode descriptor witness.
 Production remains unchanged. A refined baseline is required before repair.
-Failed source patch retained at `/tmp/kittens-host-lock-descendant-baseline1-failed.patch`.
+Failed source patch retained at `/tmp/overalls-host-lock-descendant-baseline1-failed.patch`.
 
 ## Refined baseline and repair draft
 
@@ -52,7 +52,7 @@ Refined baseline failed0.07seconds on count1, archive
 witnessed escaped descendant remained live and retained the exact inherited
 lock device/inode descriptor. EINTR and EOF are now separate observations.
 This confirms premature success, not merely a channel error.
-Failed source patch retained at `/tmp/kittens-host-lock-descendant-baseline2-failed.patch`.
+Failed source patch retained at `/tmp/overalls-host-lock-descendant-baseline2-failed.patch`.
 
 The repair draft makes the helper a subreaper before spawn, polls leaders with
 waitid NOWAIT, signals while their PID identity remains pinned, and reaps all
@@ -68,7 +68,7 @@ custody requirements; native cgroup/storage and failure-path coverage remain ope
 
 Repaired full native package passed exit0,92seconds, archive
 `1791224597697-1187032-0.jsonl`, log
-`/tmp/kittens-host-lock-descendant-repair-package3.log`. Three library checks
+`/tmp/overalls-host-lock-descendant-repair-package3.log`. Three library checks
 and13integration checks passed, six executable fixtures ignored; integration
 1.75seconds. Rustfmt and all-target Clippy passed. The strengthened property
 observed inherited lock identity, withheld success during actual descendant
@@ -86,7 +86,7 @@ failed0.06seconds on count1 with bytes1/status0 before descendant death, directl
 attributing the failure to premature confirmation. Patch SHA256 is
 `0f3fcae7003e584dc6cdb0a543e2a47650d56166fd213d5b19ccdc932f86e75a`.
 Fork source/tests were restored and compared byte-for-byte, then retained at
-`/tmp/kittens-host-lock-selector-restored-cqv6b1dp`. No mutation remains in the
+`/tmp/overalls-host-lock-selector-restored-cqv6b1dp`. No mutation remains in the
 working source. This is local native evidence, not a hosted Antithesis result.
 Full Lilly, final publication gates and escaped caller-failure histories remain
 pending. Architecture impact remains implementation of existing ADR-0015/0017
@@ -110,7 +110,7 @@ and native process scope remain explicit limitations.
 
 The expanded full native package passed exit0 in108seconds, archive
 `1791227940300-3071556-0.jsonl`, log
-`/tmp/kittens-host-lock-escaped-failures-package4.log`. Three library checks
+`/tmp/overalls-host-lock-escaped-failures-package4.log`. Three library checks
 and14integration checks passed, seven executable fixtures ignored; integration
 35.07seconds. Both completion and failure custody properties passed. Rustfmt
 and all-target locked/offline Clippy passed. Every case includes caller EOF,
@@ -138,7 +138,7 @@ publication, newer-main and physical/hosted acceptance remain open. Self-review.
 
 The owned native source/test diff passes `git apply --check` against the
 origin98aff42a-merged control worktree. Temporary patch
-`/tmp/kittens-host-lock-custody-integration.patch` has SHA256
+`/tmp/overalls-host-lock-custody-integration.patch` has SHA256
 `a61c9f250f854fc2ab039deb7794b8f067ef58f44e5540122cde2ed9162cb588`.
 No native source was applied during the merged Marshall gate. This establishes
 patch compatibility only; exact-helper-PATH Lilly execution, final documentation
@@ -185,7 +185,7 @@ Full MIX_ENV=test mix precommit completed exit0 with the exact verified native
 helpers first on PATH. Tests:506checks (95properties,411tests),seed712576,
 130.8seconds. Forced Dialyzer:15.06seconds,zero errors,skips or unnecessary
 skips; PLT rebuild79.18seconds. Log
-`/tmp/kittens-mail-native-origin-integrated-lilly-precommit2.log`.
+`/tmp/overalls-mail-native-origin-integrated-lilly-precommit2.log`.
 The earlier pending statements describe their checkpoints. Other consumers,
 current handbook receipts, evaluated publication and physical/hosted acceptance
 remain open. This component gate does not establish native fleet isolation.

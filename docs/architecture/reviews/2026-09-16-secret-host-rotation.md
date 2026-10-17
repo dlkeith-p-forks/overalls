@@ -43,7 +43,7 @@ Lilly's durable host ownership.
 ## Validation
 
 The complete expanded machine suite passed in **135.90 seconds**, using
-`qznzhiy5msbanzza00ci46mpr54gc6rd-vm-test-run-kittens-secret-custody.drv`.
+`qznzhiy5msbanzza00ci46mpr54gc6rd-vm-test-run-overalls-secret-custody.drv`.
 The host-recipient rotation case passed in 22.75 seconds and separately keyed
 replacement recovery in 1.42 seconds. Earlier wrong-host, missing-value,
 permission, interrupted-publication, application-credential rotation and NixOS

@@ -14,7 +14,7 @@ SUT viewer threads still held the retired session. Its backing deque retained
 1,048,576 bytes of allocation. The regression failed that exact allocation
 assertion; the other46 tests passed. Native test duration4.34seconds, Nix40seconds,
 terminal exit1, archive `1791188361047-1115718-0.jsonl`. Log:
-`/tmp/kittens-terminald-retired-ring-baseline2.log`.
+`/tmp/overalls-terminald-retired-ring-baseline2.log`.
 
 The initial draft used an unavailable external helper and failed to reach viewer
 pressure. The corrected fixture uses Bash's own printf and counts NUL bytes;
@@ -47,8 +47,8 @@ decision is required.
 The corrected generated native/Clippy gate passed47 tests in4.72seconds; Nix
 passed36seconds, archive `1791188532516-1236826-0.jsonl`. The static production
 factory build passed22seconds, archive `1791188556071-1253503-0.jsonl`. Logs:
-`/tmp/kittens-terminald-retired-ring-fixed2.log` and
-`/tmp/kittens-terminald-retired-ring-static.log`.
+`/tmp/overalls-terminald-retired-ring-fixed2.log` and
+`/tmp/overalls-terminald-retired-ring-static.log`.
 
 These runs precede adding the oracle's explanatory contract; final structural
 and documentation verification remain pending. This is local Linux allocation
@@ -65,9 +65,9 @@ checks and all static hooks passed. Evaluated HLDD passed22seconds, archive
 `1791188940720-1500238-0.jsonl`. The first hook wrapper reported a concurrent
 index update as a modified-file failure while the logging checker itself passed;
 a stable rerun passed every hook. Logs:
-`/tmp/kittens-terminald-retired-ring-docs3.log`,
-`/tmp/kittens-terminald-retired-ring-final-hooks.log` and
-`/tmp/kittens-terminald-retired-ring-hldd.log`.
+`/tmp/overalls-terminald-retired-ring-docs3.log`,
+`/tmp/overalls-terminald-retired-ring-final-hooks.log` and
+`/tmp/overalls-terminald-retired-ring-hldd.log`.
 
 Main67de1f74 was merged, preserving its corrected native Lilly recovery evidence.
 Terminald runtime and this property are unchanged by that merge; final integrated
@@ -79,13 +79,13 @@ Main `a03a606d0e71183f913cee946dd59b600d4963c4` was merged, preserving
 the shared admission and neighbor-pressure properties. Combined native execution
 passed all 50 tests in 4.72 seconds and Clippy; the static production build also
 passed. Nix completed in 34 seconds, archive `1791190829965-2601775-0.jsonl`;
-log `/tmp/kittens-terminald-four-properties-native.log`.
+log `/tmp/overalls-terminald-four-properties-native.log`.
 
 The complete Marshall gate passed 1451 checks (237 properties, 1214 tests), two
 exclusions, seed 931780, in 1585.0 seconds. Forced Dialyzer passed in 57.24 seconds
 with zero errors, skips or unnecessary skips; its PLT rebuild took 3m39.3s.
-Log `/tmp/kittens-terminald-allocation-fixes-marshall.log`.
+Log `/tmp/overalls-terminald-allocation-fixes-marshall.log`.
 Evaluated HLDD passed in 19 seconds, archive `1791192580474-3694198-0.jsonl`;
-log `/tmp/kittens-terminald-allocation-fixes-evaluated-hldd.log`.
+log `/tmp/overalls-terminald-allocation-fixes-evaluated-hldd.log`.
 Final source review preserves the retirement ordering and independent queued-tail
 drain. No authenticated guest or dynamic-growth claim is added by these gates.

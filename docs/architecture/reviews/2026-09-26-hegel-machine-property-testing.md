@@ -19,7 +19,7 @@ No architecture impact and no HLDD chapter change: the change touches
 verification tooling only. It adds no NixOS module options — `properties` is
 consumed by the test composer and is removed before the upstream
 `nixosTest` module class sees the test (`scripts/hldd/options.nix` evaluates
-`kittens.*`/`services.*` declarations from the production module; its input is
+`overalls.*`/`services.*` declarations from the production module; its input is
 unchanged). It adds no hosts, roles or services, so the public topology
 projection (`scripts/hldd/topology.nix` over `nix/platform/hosts/inventory.nix`) is
 unchanged. No domain, protocol, persistence, authorization or deployment

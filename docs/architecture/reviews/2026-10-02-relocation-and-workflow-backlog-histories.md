@@ -53,18 +53,18 @@ fixture rows under sandbox isolation.
 
 The combined focused run passed two properties, seed `281508`, in 49.7 seconds.
 The complete pinned command exited0 with warnings-as-errors; log:
-`/tmp/kittens-relocation-workflow-focused.log`. Full batch precommit exited0: 1,418 checks (217 properties, 1,201 tests), two exclusions, seed981745,1055.5seconds; forced Dialyzer36.71seconds with zero errors, skips or unnecessary skips.
-Log: `/tmp/kittens-relocation-workflow-full-gates.log`.
+`/tmp/overalls-relocation-workflow-focused.log`. Full batch precommit exited0: 1,418 checks (217 properties, 1,201 tests), two exclusions, seed981745,1055.5seconds; forced Dialyzer36.71seconds with zero errors, skips or unnecessary skips.
+Log: `/tmp/overalls-relocation-workflow-full-gates.log`.
 This full collection precedes the final exact-bucket assertion strengthening;
 the focused follow-up passed two properties, seed `437252`, in 48.7 seconds
 with warnings-as-errors and terminal exit0. Log:
-`/tmp/kittens-relocation-workflow-exact-buckets-focused.log`. Fresh review verified
+`/tmp/overalls-relocation-workflow-exact-buckets-focused.log`. Fresh review verified
 the complete eight-bucket vector independently from fixture duration/count. The earlier operation-only result retains its original
 revision and scope; it does not establish workflow backlog coverage. The running
 integrated Marshall gate started before these extensions and is a separate result:
 1,417 checks (216 properties, 1,201 tests), two exclusions, seed505231,
 1006.0seconds; forced Dialyzer43.99seconds with zero errors and terminal exit0.
-Log: `/tmp/kittens-namespace-clone-integrated-full-gates.log`.
+Log: `/tmp/overalls-namespace-clone-integrated-full-gates.log`.
 That earlier collection excludes both extensions; their separate focused result
 above covers the reviewed current oracles.
 

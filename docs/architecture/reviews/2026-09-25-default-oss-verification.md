@@ -119,7 +119,7 @@ machine execution after the policy-response defect and the browser login route
 were corrected.
 
 The next immutable attempt used
-`/nix/store/isnxr65ylhkazsfnynq0m02047syvn27-vm-test-run-kittens-default-oss-creation.drv`
+`/nix/store/isnxr65ylhkazsfnynq0m02047syvn27-vm-test-run-overalls-default-oss-creation.drv`
 and reached browser admission, but guest trust delivery repeatedly timed out.
 The selected base check image was built with empty `privateServiceRoots`, while
 the fleet's Lilly configuration requires nonempty boot-time trust delivery. The
@@ -133,9 +133,9 @@ not upgraded.
 seconds and Nix exit 0. The strict composed-driver type and lint checks passed.
 The immutable source snapshot is
 `/nix/store/wvqzn780iix5bzvdjhb0nlp3if490xjf-source`; the executed derivation is
-`/nix/store/2czpvqhb6v28sd1fl9v94xxvr7szn35l-vm-test-run-kittens-default-oss-creation.drv`
+`/nix/store/2czpvqhb6v28sd1fl9v94xxvr7szn35l-vm-test-run-overalls-default-oss-creation.drv`
 and its output is
-`/nix/store/2zdq0bi26dvip3vq26jsz2jmf8v48i88-vm-test-run-kittens-default-oss-creation`.
+`/nix/store/2zdq0bi26dvip3vq26jsz2jmf8v48i88-vm-test-run-overalls-default-oss-creation`.
 It contains integrated `00343832`, the Customer response correction and the
 complete private-service fixture. All six subtests passed: fleet startup,
 authenticated native capacity and private-service prerequisites, ordinary browser

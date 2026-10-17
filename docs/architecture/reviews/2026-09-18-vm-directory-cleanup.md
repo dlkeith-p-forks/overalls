@@ -50,7 +50,7 @@ seconds, including every cleanup, retry, sync-failure and neighbor-preservation
 probe. After integrating current main, Lilly's full gate passed 284
 tests/properties (31 properties and 253 tests), forced Dialyzer and ADR validation.
 Later upstream fleet/browser/documentation changes left the native lifecycle derivation
-unchanged: `/nix/store/iv5szph2vbxm00hssqpw5himwdx0a3fg-vm-test-run-kittens-zfs-lifecycle.drv`.
+unchanged: `/nix/store/iv5szph2vbxm00hssqpw5himwdx0a3fg-vm-test-run-overalls-zfs-lifecycle.drv`.
 
 ## Host reconciliation
 

@@ -89,7 +89,7 @@ and foreground-timeout changes. Source review is not runtime acceptance.
 ## Integrated evidence at 7333a043
 
 The integrated Protocol/Lilly/Ziggy pipeline passed, exit 0:
-`/tmp/kittens-cli-integrated-core-precommit.log`.
+`/tmp/overalls-cli-integrated-core-precommit.log`.
 
 | Application | Passing checks | Test seconds | Forced Dialyzer seconds |
 | --- | --- | ---: | ---: |
@@ -105,17 +105,17 @@ native isolation or deployed-provider acceptance.
 The subsequent `c5747868` checkpoint passed all-files prek, including Ruff
 format/check, ty and fleet logging, plus generated options, architecture views,
 conflict markers and the evaluated Nix `hldd` gate (6 seconds).
-Captures: `/tmp/kittens-cli-prek-c5747868.log` and
-`/tmp/kittens-cli-hldd-c5747868.log`. Root reviewed the corresponding source and
+Captures: `/tmp/overalls-cli-prek-c5747868.log` and
+`/tmp/overalls-cli-hldd-c5747868.log`. Root reviewed the corresponding source and
 handbook changes before recording receipts; this documentation task did not
 refresh them. Later evidence updates still require their reviewed documentation
 checks, without changing these captured executable results.
 
 The final pre-publication checkpoint separately passed all-files prek, including
 Ruff format/check, ty, logging, conflict and reviewed HLDD receipts, and the Nix
-`hldd` gate. Captures: `/tmp/kittens-cli-final-prek.log` and
-`/tmp/kittens-cli-final-hldd.log`; the latter built
-`/nix/store/4wf7yd979pjby9gfn3qyaqqixfnc31nj-kittens-hldd-check.drv` and confirmed
+`hldd` gate. Captures: `/tmp/overalls-cli-final-prek.log` and
+`/tmp/overalls-cli-final-hldd.log`; the latter built
+`/nix/store/4wf7yd979pjby9gfn3qyaqqixfnc31nj-overalls-hldd-check.drv` and confirmed
 current receipts, references, Ash and evaluated deployment views. Normal commit
 hooks passed before publishing `8930a70f`. These captured structural results
 precede the later operational evidence prose and establish neither live client
@@ -147,10 +147,10 @@ cross-host publication and retained-disk upgrades.
 
 Both complete integrated coding-client fleets passed with no source changes
 during their runs: NixOS 352.54 seconds and Ubuntu 432.98 seconds of driver
-execution. Captures are `/tmp/kittens-coding-clis-nixos-fleet-final.log` and
-`/tmp/kittens-coding-clis-ubuntu-fleet-final.log`; runtime derivations are
-`/nix/store/6x1388ks83i5pzdsqp3fpxybha5dbllp-vm-test-run-kittens-coding-clis-nixos-fleet.drv`
-and `/nix/store/39cxcw6zdvdd6450696j2bjd47b057b0-vm-test-run-kittens-coding-clis-ubuntu-fleet.drv`.
+execution. Captures are `/tmp/overalls-coding-clis-nixos-fleet-final.log` and
+`/tmp/overalls-coding-clis-ubuntu-fleet-final.log`; runtime derivations are
+`/nix/store/6x1388ks83i5pzdsqp3fpxybha5dbllp-vm-test-run-overalls-coding-clis-nixos-fleet.drv`
+and `/nix/store/39cxcw6zdvdd6450696j2bjd47b057b0-vm-test-run-overalls-coding-clis-ubuntu-fleet.drv`.
 Both executed actual pinned clients with unchanged native settings in genuine
 canonical-account PTYs, verified Audi/private/provider TLS, current real Marshall
 admission, independent provider counters, native guest GC and registered verified
@@ -179,8 +179,8 @@ check passed, exit 0, with its original fourteen subtests and no script override
 The script summary reports 3,699.75 seconds (VM script timing 3,699.72 seconds),
 followed by 0.78-second cleanup; no matching task QEMU or runtime sockets remained.
 Derivation:
-`/nix/store/sdwc7pl5sx1dl0zf0izqq4zlgjpwndpb-vm-test-run-kittens-zfs-guest.drv`;
-output: `/nix/store/syl71pavc0fpbzrk51x08z81dfz39npb-vm-test-run-kittens-zfs-guest`;
+`/nix/store/sdwc7pl5sx1dl0zf0izqq4zlgjpwndpb-vm-test-run-overalls-zfs-guest.drv`;
+output: `/nix/store/syl71pavc0fpbzrk51x08z81dfz39npb-vm-test-run-overalls-zfs-guest`;
 capture: `/tmp/guest-native-zfs-7333a043.log`. Evaluation at `c5747868` selects this
 exact same derivation as the running `7333a043` check: intervening changes affect
 only Marshall's test fixture and documentation, not native executable inputs.
@@ -199,7 +199,7 @@ The serialized full Ubuntu check failed, exit 1, when starting fresh neighbour
 102 after reboot: `{:error, :template_quarantined}`, with image-template revision
 5 changing from ready to quarantined. Capture:
 `/tmp/guest-native-ubuntu-7333a043.log`; derivation of both original full captures:
-`/nix/store/fnr30w0vrxkgfs0s6xz55zhzzfd3hryn-vm-test-run-kittens-ubuntu-guest.drv`.
+`/nix/store/fnr30w0vrxkgfs0s6xz55zhzzfd3hryn-vm-test-run-overalls-ubuntu-guest.drv`.
 Cleanup finished in 0.68 seconds. Before this failure, the current native
 client/settings/login-CA/GC checks passed in 13.86 seconds, including the explicit
 plugin-update assertion; the isolated typed-source probe passed in 71.22 seconds,
@@ -283,8 +283,8 @@ The complete corrected packaged Ubuntu suite passed, exit 0, with all twelve
 completed subtests (ten outer and two nested). VM script timing was 2,203.21
 seconds, the driver summary 2,203.23 seconds, followed by 0.75-second cleanup.
 Derivation:
-`/nix/store/gf2zw4xfa337z8zl6qnw5zsjc5zdny7f-vm-test-run-kittens-ubuntu-guest.drv`;
-output: `/nix/store/fly7rc3ippg6hqr7l63a24vd8afwqx57-vm-test-run-kittens-ubuntu-guest`.
+`/nix/store/gf2zw4xfa337z8zl6qnw5zsjc5zdny7f-vm-test-run-overalls-ubuntu-guest.drv`;
+output: `/nix/store/fly7rc3ippg6hqr7l63a24vd8afwqx57-vm-test-run-overalls-ubuntu-guest`.
 Capture: `/tmp/guest-native-ubuntu-corrected-33800c7f.log`, SHA256
 `f3a0feea43167e6977bb3b0d55043ad712c2ab8efa2ebaf73fb07689f75a06d4`.
 The helper source remained unchanged, SHA256
@@ -314,8 +314,8 @@ packaged prefix. It completed six subtests (four outer and two nested), through
 the original VM 102 full deletion, export, retirement, refusal and zero-allocation
 cleanup. VM script timing was 1,246.93 seconds, the driver summary 1,246.95
 seconds, followed by 0.72-second cleanup. Derivation:
-`/nix/store/pj4z7h7i2g6cq7bjmk6r8sk6663zz36m-vm-test-run-kittens-zfs-guest-post-import-focused.drv`;
-output: `/nix/store/982my2h8w5cyxyfxds8x0nbbmcmxmwhd-vm-test-run-kittens-zfs-guest-post-import-focused`.
+`/nix/store/pj4z7h7i2g6cq7bjmk6r8sk6663zz36m-vm-test-run-overalls-zfs-guest-post-import-focused.drv`;
+output: `/nix/store/982my2h8w5cyxyfxds8x0nbbmcmxmwhd-vm-test-run-overalls-zfs-guest-post-import-focused`.
 Capture: `/tmp/guest-native-nixos-post-import-focused-33800c7f.log`, SHA256
 `59657a3aebac0f78a6263dc425f93a043a3ec31615f432c2cd95ca0fee8271a5`.
 The helper retained the exact SHA256 recorded above. Host-loss persistence took
@@ -355,7 +355,7 @@ It passed 1,475 of 1,476 checks (238 of 239 properties and all 1,237 tests), wit
 four excluded, no invalids, in 1,596.9 seconds. Forced Dialyzer reported zero errors
 or skips in 49.99 seconds; all 32 terminal tests, eight workspace tests and
 Monospace checks passed, and task peers were cleaned up. Capture:
-`/tmp/kittens-guest-marshall-precommit-merged.log`.
+`/tmp/overalls-guest-marshall-precommit-merged.log`.
 No MFA assertion failed. The twenty-history property and its complete operation
 matrix/oracles remain intact. The two-file repair adds a 240,000ms owner tag to
 that module, matching its existing test timeout; `DataCase.setup_sandbox/1`
@@ -365,7 +365,7 @@ cleanup. This has no architecture impact on production authentication, MFA
 lifetimes, refusal or authorization. The same-seed MFA targeted retry passed,
 exit 0, in 91.7 seconds: one property, all twenty histories/oracles, seed `922579`,
 pinned `MIX_ENV=test` with `+S 4:4`. Capture:
-`/tmp/kittens-guest-marshall-mfa-owner-retry-test-env.log`. It finished below the
+`/tmp/overalls-guest-marshall-mfa-owner-retry-test-env.log`. It finished below the
 original 120-second owner budget, so it does not establish stress or owner-expiry
 boundary execution. The failed full run identifies the mismatch and source review
 verifies the finite override. The first interrupted target capture from a
@@ -377,7 +377,7 @@ failures, in 1,400.4 seconds, seed `81323`. Forced Dialyzer reported zero errors
 skips or unnecessary skips in 49.94 seconds. All nineteen contract-validator
 regressions, 32 terminal tests, eight workspace tests and Monospace checks passed;
 task peer `575520` was verified absent and diff checks were clean. Capture:
-`/tmp/kittens-guest-marshall-precommit-owner-final.log`. This verifies the complete
+`/tmp/overalls-guest-marshall-precommit-owner-final.log`. This verifies the complete
 application gate with the bounded fixture fix, separately from the targeted
 retry's limited timing scope. No local compilation was performed by this
 documentation task.
@@ -423,7 +423,7 @@ completed in 5.61 seconds with zero errors/skips.
 Capture: `/tmp/ziggy-codex-claude-precommit.log`.
 The feature Lilly gate passed 540 checks (106 properties, 434 tests) in 62.8
 seconds, with zero-error/skip forced Dialyzer in 12.36 seconds after the 132.5-second
-PLT build. Capture: `/tmp/kittens-guest-lilly-precommit.log`.
+PLT build. Capture: `/tmp/overalls-guest-lilly-precommit.log`.
 Neither gate establishes incoming-main integration or native isolation.
 
 The earlier Marshall gate passed 1,433 checks (237 properties, 1,196 tests),
@@ -431,13 +431,13 @@ with 42 invalid and four excluded, and zero-error/skip forced Dialyzer. Concurre
 synthetic-browser setup compiled 109 files into shared `_build/test` during
 admission-peer startup. A serialized same-seed retry passed all 42 admission
 checks (two properties, 40 tests), seed `677149`, in 104.6 seconds; peers were
-cleaned. Capture: `/tmp/kittens-guest-marshall-admission-retry.log`. The original
+cleaned. Capture: `/tmp/overalls-guest-marshall-admission-retry.log`. The original
 full gate did not pass; the complete integrated gate remains required.
 
 ## Earlier packaged service and scoped guest evidence
 
 The packaged `ziggy-service` check passed, exit 0, with 86.48 seconds of driver execution.
-Derivation: `/nix/store/6yk9jrff4dly9jkd3lsrlpfm7sbr0ypb-vm-test-run-kittens-ziggy-service.drv`;
+Derivation: `/nix/store/6yk9jrff4dly9jkd3lsrlpfm7sbr0ypb-vm-test-run-overalls-ziggy-service.drv`;
 capture: `/tmp/ziggy-codex-claude-machine-streaming.log`.
 Real beta Messages SSE/JSON and native/prefixed token counting reached exact
 upstream `beta=true` URLs, preserved native bytes and Anthropic headers, stripped
@@ -495,7 +495,7 @@ Ubuntu execution is separately established by the corrected full pass above;
 its two earlier template-quarantine failures remain recorded.
 
 The NixOS packaged fleet capture
-`/tmp/kittens-coding-clis-nixos-fleet-public-ca.log` passed its native terminal
+`/tmp/overalls-coding-clis-nixos-fleet-public-ca.log` passed its native terminal
 inference/token-counting subtest in 13.71 seconds, TLS-refusal subtest in 2.50
 seconds, and root post-GC version/help helper in 1.91 seconds. Actual image
 Codex/Claude used unchanged settings in the reconciled personal-account PTY,
@@ -527,7 +527,7 @@ bounded `timeout --foreground` control succeeded. These are test-scaffolding
 corrections, without native provider/configuration changes.
 
 One captured host-side Ziggy startup OOM at its 512 MiB fleet override is recorded
-in `/tmp/kittens-coding-cli-ssh-live/driver.log`, lines 15713–15795. Only the selected
+in `/tmp/overalls-coding-cli-ssh-live/driver.log`, lines 15713–15795. Only the selected
 coding-client fixture now permits 1,024 MiB. Production Ziggy's 4,096 MiB default,
 other fleet variants and guest terminald's shared 512 MiB ceiling are unchanged.
 Retained guest inference reached that terminal ceiling with 538 reclaim events,
@@ -538,7 +538,7 @@ execution, not a sustained-capacity result or a production tuning recommendation
 
 `8930a70f488effb152d8ec2787b5728094548f74` was pushed to `origin/main` and
 activated healthy on both hosts by 2026-10-14 00:53:46 UTC. The safe operational
-capture is `/tmp/kittens-cli-production-8930a70f-20261014-005346`.
+capture is `/tmp/overalls-cli-production-8930a70f-20261014-005346`.
 `deployment.json` records the exact revision and active systems:
 
 | Host | Active system |
@@ -576,12 +576,12 @@ Independent offline validation with WebPKI 0.103.13 and PKI types 1.14.0 returne
 `llm.internal` name validation. The critical DNS name-constrained issuer exposes
 the old extra wildcard during chain validation. This proves the captured public
 chain's strict rejection, without reconstructing the timed-out guest's stderr.
-The verifier `/tmp/kittens-webpki10313-diag` was pinned and separately identified:
+The verifier `/tmp/overalls-webpki10313-diag` was pinned and separately identified:
 binary SHA256 `b7f2b396a750e4a45b803f7e96b524bcf63ef2c150b32bb1c0c5b5c6fb59303c`,
 source `a23ecd4fba32ec3dc036c667d378683bc07b95b31776523b7ce7e1684502967e`,
 lock `25626dc1f53371137b9344896d2717f111ade3acce971cdb2d5365fc2d01e92c`.
 
-`/tmp/kittens-codex-san-repro-rustls/results.json` records separate local Codex
+`/tmp/overalls-codex-san-repro-rustls/results.json` records separate local Codex
 0.149.0 HTTPS tests with TLS verification enabled throughout. Unconstrained
 issuers accepted both the exact names and the old extra name; the constrained
 issuer accepted the exact names in 0.14 seconds with one HTTP admission and
@@ -591,7 +591,7 @@ chain in 0.30 seconds, while wrong-root and wrong-name controls refused; the
 `SSL_CERT_FILE`-only case refused. These are isolated responder counts, not
 Marshall inference admissions or a production trust/configuration change.
 
-Sanitized `proof.json` in `/tmp/kittens-private-leaf-20261014-oyA52hLo` records
+Sanitized `proof.json` in `/tmp/overalls-private-leaf-20261014-oyA52hLo` records
 the subsequent preparation checkpoint: the committed/live/recovered root bytes
 are identical, retaining fingerprint
 `f9e560a52a4dcbb6ccd308ca46f80f3a43b1e2d47f40ea65653d5c34dfe05292`,
@@ -645,8 +645,8 @@ The initial mobile handbook failure was confined to existing diagram overflow:
 width, while the independent 576px readability assertion still required the SVG
 minimum repair. The unchanged packaged `hldd-browser` assertions subsequently
 passed in 58.71 seconds of driver execution (browser subtest 25.40 seconds).
-Derivation: `/nix/store/yqajasblwk13n6ia4fm1s4xab5qnisbm-vm-test-run-kittens-hldd-browser.drv`;
-capture: `/tmp/kittens-guest-hldd-browser-fixed.log`.
+Derivation: `/nix/store/yqajasblwk13n6ia4fm1s4xab5qnisbm-vm-test-run-overalls-hldd-browser.drv`;
+capture: `/tmp/overalls-guest-hldd-browser-fixed.log`.
 Every captured section/domain/topology diagram, hook cleanup, desktop/dark,
 mobile/print, unknown/public route and revoked ordinary-reader refusal passed.
 This retains that packaged source scope, before the final checkpoint/integration.
@@ -655,8 +655,8 @@ The corrected/refrozen packaged handbook browser check passed, exit 0, on
 2026-10-14: the driver summary was 47.18 seconds, VM script 47.14 seconds,
 ordinary-reader subtest 22.15 seconds and cleanup 0.49 seconds.
 Derivation:
-`/nix/store/zydlqlwnii30siqp87wxf3jpsi4zqlqb-vm-test-run-kittens-hldd-browser.drv`;
-output: `/nix/store/fm164r2vaa7dlb3vk63yc59lnjhkbk9l-vm-test-run-kittens-hldd-browser`.
+`/nix/store/zydlqlwnii30siqp87wxf3jpsi4zqlqb-vm-test-run-overalls-hldd-browser.drv`;
+output: `/nix/store/fm164r2vaa7dlb3vk63yc59lnjhkbk9l-vm-test-run-overalls-hldd-browser`.
 Exact packaged source: `/nix/store/13mjsznzzvavzm3qiy48dv25db99sh0m-source`,
 NAR `sha256:0k92kd7rkh132j894wbd77ydjiyq3bdx5501fkb8q7sfw09i4c9l`.
 Capture: `/tmp/hldd-browser-final-20261014/native-refrozen.log`, SHA256
@@ -676,7 +676,7 @@ and does not replace the corrected/refrozen result.
 The separate synthetic presentation probe passed in 39.014 seconds against the
 final CSS: both themes, 390px mobile layouts, grid, font, contrast, navigation,
 drafts, public documentation and no external requests.
-Capture: `/tmp/kittens-monospace-browser-final/probe.log`. Presentation/contract
+Capture: `/tmp/overalls-monospace-browser-final/probe.log`. Presentation/contract
 checks and 19 validator regressions passed. The synthetic probe does not establish
 guest execution, real inference or deployment.
 

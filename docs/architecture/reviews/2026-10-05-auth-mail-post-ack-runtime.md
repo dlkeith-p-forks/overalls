@@ -30,7 +30,7 @@ Duplicates across lost commit are permitted; SMTP acceptance is not inbox delive
 The corrected full file passed exit0, seed0,70.4seconds: three properties,
 including the unchanged pre-ACK crash and successful serialization histories.
 Warnings-as-errors compiler and formatting checks passed before execution.
-Log `/tmp/kittens-mail-post-ack-baseline2.log`. The new history passed all three
+Log `/tmp/overalls-mail-post-ack-baseline2.log`. The new history passed all three
 generated draws; this record does not assert every random ordering was selected.
 The open-transaction/delivered/erased gate assertion establishes the tested hook
 boundary; it is not inferred from successful SMTP alone.
@@ -40,7 +40,7 @@ new property received no parent-PID gate notification after the SMTP reply.
 Standard-I/O peer RPC does not provide that assumed delivery channel. This was
 a fixture observation failure, not a product rollback counterexample. Replacing
 the notification with the closed peer-local RPC observation produced the green
-baseline. Log `/tmp/kittens-mail-post-ack-baseline.log`; no passing claim credits it.
+baseline. Log `/tmp/overalls-mail-post-ack-baseline.log`; no passing claim credits it.
 
 The payload-retirement mutant failed all three properties in53.1seconds; the
 new gate observed open transaction and delivered status but false payload
@@ -62,7 +62,7 @@ comparison. The production payload-retirement mutant patch matches its recorded
 SHA256. The retained fixture/property diff applies cleanly with `git apply --check`
 to the origin98aff42a-merged control worktree; it has not been applied while that
 tree's full Marshall gate is running. The temporary integration patch is
-`/tmp/kittens-mail-post-ack-integration.patch`, SHA256
+`/tmp/overalls-mail-post-ack-integration.patch`, SHA256
 `7ad2190df6dd628a2c2280828e8040a703108a2c729591b2a19bb080d17012b9`.
 This preflight proves patch compatibility only. Full merged execution, Dialyzer,
 handbook/scenario integration and publication remain required. The untracked
@@ -84,8 +84,8 @@ configuration, then retains the existing lock/committed-snapshot/crash/retry
 identity oracle. The original three properties and their tags are preserved.
 Pinned formatting passed, and the native contract structure gate plus all19
 checker regression tests passed after installing the pinned checker with npm ci
-and scripts disabled. Logs `/tmp/kittens-mail-sender-rotation-format.log` and
-`/tmp/kittens-mail-sender-rotation-contracts2.log`. The first structural attempt
+and scripts disabled. Logs `/tmp/overalls-mail-sender-rotation-format.log` and
+`/tmp/overalls-mail-sender-rotation-contracts2.log`. The first structural attempt
 failed because this separate worktree lacked its checker installation; it is
 not credited as a pass. At that draft checkpoint execution and typing were pending; the runtime
 counterexample and focused repair result are recorded below. The earlier temporary integration patch and its clean-apply
@@ -97,7 +97,7 @@ any needed persistence/configuration repair still requires design review.
 
 Focused sender_rotation execution exited2,seed0,21.0seconds: zero of one property
 passed, three excluded. Compiler warnings-as-errors passed before execution.
-Log `/tmp/kittens-mail-sender-rotation-baseline.log`. The independently observed
+Log `/tmp/overalls-mail-sender-rotation-baseline.log`. The independently observed
 retry retained token/text/HTML digests but changed the same delivery's Message-ID
 domain from example.test to retry.example.test after the successor configuration
 changed. Thus the stable-Message-ID contract mismatch is reproduced over actual
@@ -110,7 +110,7 @@ gates remain required.
 ### Repair and first focused result
 
 send_bounded now constructs the Message-ID from the immutable delivery UUID and
-the fixed kittens.invalid application namespace; the current configured sender
+the fixed overalls.invalid application namespace; the current configured sender
 still supplies From. The namespace is an identifier component, not an SMTP
 recipient or a DNS/TLS endpoint. This preserves ADR-0024/0040's stable identity
 requirement without adding mutable state or a database migration. Existing test
@@ -120,13 +120,13 @@ added; no new diagnostic event or credential-bearing metadata was introduced.
 
 The first repaired sender_rotation selection passed exit0,seed0,22.9seconds:
 one property, three excluded; warnings-as-errors compilation passed. Log
-`/tmp/kittens-mail-sender-rotation-repaired.log`. Its initial exact namespace
+`/tmp/overalls-mail-sender-rotation-repaired.log`. Its initial exact namespace
 assertion was then refined only for rotation histories to compare actual first
 and retry identities independently of the repair's chosen namespace; original
 nonrotation histories retain their exact format expectation. Combined current-source mail execution passed exit0,seed0,266.0seconds:
 19checks (9properties,10tests), including all four distributed properties,
 waiting-authority, mail adapter and SMTP files. Log
-`/tmp/kittens-mail-stable-identity-combined.log`. Full typing/integration gates
+`/tmp/overalls-mail-stable-identity-combined.log`. Full typing/integration gates
 remain pending. The contract checker subsequently rejected contiguous @cc
 blocks; a blank line separates them before rechecking. This is structural
 formatting, not a runtime repair.
@@ -148,10 +148,10 @@ digests with differing example.test/retry.example.test Message-ID domains. Its
 namespace-independent initial assertion therefore does not mask the regression.
 Other histories failed earlier fixed-format assertions and are not credited as
 rotation sensitivity. Later terminal observations after the targeted failure
-are not credited. See the mutation ledger (`antithesis/scratchbook/mutation-testing/local-mail-sender-domain-identity.md` at kittens revision `9fe1e493`, repository deleted).
+are not credited. See the mutation ledger (`antithesis/scratchbook/mutation-testing/local-mail-sender-domain-identity.md` at overalls revision `9fe1e493`, repository deleted).
 Source restoration was compared byte-for-byte. Restored focused execution
 passed exit0,seed0,28.1seconds:one property,three exclusions, warnings-as-errors
-compilation; `/tmp/kittens-mail-sender-rotation-restored.log`. Full forced
+compilation; `/tmp/overalls-mail-sender-rotation-restored.log`. Full forced
 typing/integrated publication remain pending.
 
 ## Current integration preflight
@@ -160,7 +160,7 @@ The complete tracked mail diff does not apply cleanly to verified control
 255a2346: the property research, review index and scenario ledger have concurrent
 edits. This is a documentation reconciliation requirement, not a source merge
 failure. Production and test changes alone pass git apply --check against that
-clean tree. Code patch `/tmp/kittens-mail-stable-identity-code.patch`, SHA256
+clean tree. Code patch `/tmp/overalls-mail-stable-identity-code.patch`, SHA256
 `0b88d60f1cc90bef8535f65c77549d23abf6fbf06e0e6497b022d9f8d9535462`.
 These checks do not establish integrated execution. The tracked patch excludes
 untracked ledgers/review and the dependency symlink; it is not a complete
@@ -171,6 +171,6 @@ publication artifact. Latest main is also newer and must be integrated.
 Pinned format --check-formatted and forced MIX_ENV=test Dialyzer passed exit0
 on the corrected mail worktree. PLT rebuild passed in3m16.34s; analysis passed
 in54.24seconds with zero errors, skips or unnecessary skips. Log
-`/tmp/kittens-mail-stable-identity-dialyzer.log`. This covers the mail tree
+`/tmp/overalls-mail-stable-identity-dialyzer.log`. This covers the mail tree
 before origin's later Lilly/Ziggy/Porsche changes and is not a full integrated
 consumer gate. The source remained fixed during execution.

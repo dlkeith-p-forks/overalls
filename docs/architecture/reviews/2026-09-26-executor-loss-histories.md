@@ -121,9 +121,9 @@ The strict native fixture then ran. Staged source tree
 `c25da191fe0abb8551cad372ddb1be062b878655` on base `ddf1d05a` evaluates to test
 driver derivation `1qvr1b46zfqkk7z8lg0mif52ia438add` and runtime derivation
 `787xdlyiqwca4iwlkp81rn475a6iaszq`; the run wrapper pinned that exact runtime
-derivation. `vm-test-run-kittens-executor-loss` passed in 675 seconds, exit 0,
+derivation. `vm-test-run-overalls-executor-loss` passed in 675 seconds, exit 0,
 producing store output
-`/nix/store/myjbx6dv74k87xy21r67agz9bmll0w6r-vm-test-run-kittens-executor-loss`
+`/nix/store/myjbx6dv74k87xy21r67agz9bmll0w6r-vm-test-run-overalls-executor-loss`
 (build log `1790402343794-2452316-0.jsonl`, driver log
 `/tmp/verify030-native1.log`). Its typed installed artifacts match current source
 hashes for the driver, browser, observer, provider catalog and Galileo guest
@@ -149,7 +149,7 @@ executor-session and model-call suites (`/tmp/verify030-final-focused.log`).
 Scoped result records:
 
 - Full Marshall gate 1,171 checks (133 properties, 1,038 tests), seed 536772; final focused suite 26 checks (2 properties, 24 tests), seed 799844
-- vm-test-run-kittens-executor-loss passed in 675 seconds at output myjbx6dv74k87xy21r67agz9bmll0w6r; staged-tree strict rebuild reuses the identical output path
+- vm-test-run-overalls-executor-loss passed in 675 seconds at output myjbx6dv74k87xy21r67agz9bmll0w6r; staged-tree strict rebuild reuses the identical output path
 
 Final ADR, HLDD receipt, generated coverage/options/views, Nix HLDD and all-file
 prek governance gates pass on the same staged tree; exact commands are retained

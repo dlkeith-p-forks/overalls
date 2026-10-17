@@ -75,7 +75,7 @@ test fixture that assumed the historical 2 GiB guest disk floor.
 ## Checks actually run
 
 - `nix build .#guest .#ubuntu-guest`; manifests validate through
-  `KittensProtocol.ImageManifest.validate` (the registry list
+  `OverallsProtocol.ImageManifest.validate` (the registry list
   `fleet/guest-images.nix` needs no edit — it references derivations).
 - `nix build --rebuild` determinism on both rootfs derivations.
 - Evaluation checks: `guest-toolset`, `ubuntu-guest-unit`,

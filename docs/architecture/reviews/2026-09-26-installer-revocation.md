@@ -26,10 +26,10 @@ ADR-0110 Cedar accounts, ADR-0104/0113 update and platform trust rules unchanged
   manifest digest from the actual bytes; the `mismatched` fixture appends one
   byte and intentionally keeps the stale packaged manifest (build-time
   assertion guarantees the disagreement). The driver selects the served release
-  through a runtime systemd drop-in for `KITTENS_LYRA_RELEASE`; only
+  through a runtime systemd drop-in for `OVERALLS_LYRA_RELEASE`; only
   `/nix/store` paths satisfy the controller.
 - Whole-tree refusal snapshots compare type, mode, symlink target and file byte
-  digest for `~/.ssh`, `~/.local/bin` and `~/.config/kittens` around every
+  digest for `~/.ssh`, `~/.local/bin` and `~/.config/overalls` around every
   refusal; the Lyra trust writer atomically rewrites identical bytes, so modes
   and digests (not mtimes) are the compared content.
 - Refusal probes run the real `install.sh` without a pty and capture complete
@@ -47,7 +47,7 @@ ADR-0110 Cedar accounts, ADR-0104/0113 update and platform trust rules unchanged
 1. **Trust-before-proof asymmetry** (`lyra/src/ssh_config.rs:218` before
    `:220`): reproduced and pinned, no reorder. A first-contact account-proof
    refusal natively leaves CA trust installed (`known_hosts` block and
-   `kittens-trust.json`, mode 600) while the executable, managed SSH block,
+   `overalls-trust.json`, mode 600) while the executable, managed SSH block,
    proved identity file and CLI configuration stay absent or byte-identical.
    The existing `installer-refusal-retains-client` contract requires only the
    executable/configuration preservation, so the asymmetry is asserted and
@@ -56,7 +56,7 @@ ADR-0110 Cedar accounts, ADR-0104/0113 update and platform trust rules unchanged
    (installed client: full byte retention) and "revoked key at first contact
    installs trust but no account binding" (fresh client: exact `.ssh` delta is
    precisely the trust pair).
-2. **Mismatched-digest stderr-only distinction** (`kittens-install.sh:68-76`):
+2. **Mismatched-digest stderr-only distinction** (`overalls-install.sh:68-76`):
    pinned by assertion. The mismatched-digest refusal is distinguished only by
    the stderr text `Binary checksum mismatch`; the installer shares exit
    status 1 and emits no structured refusal. Asserted by the "mismatched
@@ -81,8 +81,8 @@ both (same fingerprint, new key row identity).
 
 ## Evidence (exact results)
 
-Native NixOS `installer-trust` (`vm-test-run-kittens-installer-trust`,
-output `/nix/store/3dy8vnh4zc5lsca8dgssq21r3gkxza13-vm-test-run-kittens-installer-trust`)
+Native NixOS `installer-trust` (`vm-test-run-overalls-installer-trust`,
+output `/nix/store/3dy8vnh4zc5lsca8dgssq21r3gkxza13-vm-test-run-overalls-installer-trust`)
 passed in 173 seconds of build time under the campaign HEAVY lock. Subtest
 durations: first installation 1.00s; repeated installation 0.56s;
 conflicting/revoked trust refusals 0.89s; fresh account install with four-way

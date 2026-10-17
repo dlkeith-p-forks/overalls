@@ -37,17 +37,17 @@ trailing generated data and a fixed u16 maximum witness.
 
 The pinned local Cargo run passed four properties in 4.69 seconds, with 38 tests
 filtered, exit 0. Compilation took 47.90 seconds. Log:
-`/tmp/kittens-terminald-history-local-tests.log`.
+`/tmp/overalls-terminald-history-local-tests.log`.
 Before adding explicit zero-capacity witnesses, the five-property sandboxed native gate passed Clippy with warnings as
 errors and all 43 tests (five properties and 38 examples), zero failures,
 in 4.90 seconds. Nix completed in 33 seconds, exit 0, archive
 `1790997012191-195082-0.jsonl`. Log:
-`/tmp/kittens-terminald-five-history-native-repaired.log`.
+`/tmp/overalls-terminald-five-history-native-repaired.log`.
 The static production factory built successfully from the same locked sources
 in 21 seconds, exit 0, archive `1790997057393-228913-0.jsonl`. The expression
 imports the actual factory with this worktree's pinned flake Nixpkgs input; it
 does not add a new package export. Log:
-`/tmp/kittens-terminald-five-history-static-build.log`. An earlier Nix invocation selected an unexported package
+`/tmp/overalls-terminald-five-history-static-build.log`. An earlier Nix invocation selected an unexported package
 attribute and failed before compiling; it provides no build evidence.
 
 ## Remaining work
@@ -61,7 +61,7 @@ with fixed new(0)/set_capacity(0) witnesses. Final documentation gates remain pe
 gate including zero-capacity witnesses passed Clippy and all 43 tests in 4.09
 seconds, with zero failures; Nix completed in 46 seconds, exit 0, archive
 `1790997306664-319364-0.jsonl`. Log:
-`/tmp/kittens-terminald-zero-capacity-final-native.log`. Earlier gates
+`/tmp/overalls-terminald-zero-capacity-final-native.log`. Earlier gates
 retain their stated revision scope and do not establish physical delivery.
 An initial fifth-property draft used an
 unsupported generator method and failed compilation. That failure provides no
@@ -69,4 +69,4 @@ passing evidence for the fifth property.
 
 The final static production factory including zero-capacity witnesses passed
 in 34 seconds, exit 0, archive `1790997359789-359499-0.jsonl`. Log:
-`/tmp/kittens-terminald-zero-capacity-final-static.log`.
+`/tmp/overalls-terminald-zero-capacity-final-static.log`.

@@ -49,7 +49,7 @@ native runtime acceptance remains limited by the results below.
 The follow-up request restores the original repository and `main` branch and
 publishes to `origin/main`. `origin` itself was never changed; the first push used
 the other repository's URL. Source links, deployment repository declarations,
-clone/enrollment probes and updater defaults now retain `antithesishq/kittens`
+clone/enrollment probes and updater defaults now retain `antithesishq/overalls`
 and `main`. These repository references are an explicit cleanup exception. The
 Standard profile, safe open-domain registration, MIT notice and preserved testing
 integration remain.
@@ -95,7 +95,7 @@ lint and typing; Lilly passed 518 cases (103 properties, 415 tests), with zero-e
 forced Dialyzer. Nix `hldd`, `host-planning`, `module-configuration` and the complete
 native `hldd-browser` passed together in 311 seconds. The browser script passed in
 48.80 seconds, including source links, individual chapters/diagrams and ordinary
-and remembered login revocation. Logs are `/tmp/kittens-standard-origin-latest-`
+and remembered login revocation. Logs are `/tmp/overalls-standard-origin-latest-`
 `python.log`, `lilly.log` and `nix.log`. Protocol subsequently passed 257 cases
 (101 properties, 156 tests) and forced Dialyzer in `latest-protocol.log`.
 
@@ -104,7 +104,7 @@ block-clone copies and thirty-two standby disks in fleet source, increases the
 option/parser bound to thirty-two and removes a stale testing helper build step.
 These incoming changes are preserved; this cleanup performs no live activation.
 Lilly's rerun passed all 518 cases with forced Dialyzer in
-`/tmp/kittens-standard-origin-publish-lilly.log`. The first Nix rerun captured a
+`/tmp/overalls-standard-origin-publish-lilly.log`. The first Nix rerun captured a
 deployment receipt before its refresh and failed stale-review validation; current
 local receipts pass and the final evaluated gate is rerun after recording.
 
@@ -123,9 +123,9 @@ cases passed (five properties, six tests) in 50.8 seconds with distributed tests
 enabled and warnings treated as errors. The full run's JavaScript gates and forced
 Dialyzer passed. The fresh-schema migration check passed after the focused rerun.
 These combined results are not a single uninterrupted full-suite pass. Logs are
-`/tmp/kittens-standard-origin-latest-marshall.log`,
-`/tmp/kittens-standard-origin-boot-test.log` and
-`/tmp/kittens-standard-origin-marshall-recheck.log`.
+`/tmp/overalls-standard-origin-latest-marshall.log`,
+`/tmp/overalls-standard-origin-boot-test.log` and
+`/tmp/overalls-standard-origin-marshall-recheck.log`.
 
 Later ordinary merges preserve `891cf5c0`'s healthy standby lock correction and
 `e203bbc78617d941988292e8174b02b6e46c196e`'s claims-first exhaustive sweep,
@@ -133,7 +133,7 @@ slow-remount custody, single-listing audit, one-hundred-twenty-eight standby
 configuration and benchmark materialization handling. The cleanup introduces no
 net changes to those implementations. The final Lilly precommit passed 518 cases
 (103 properties, 415 tests) and zero-error forced Dialyzer in
-`/tmp/kittens-standard-origin-tip-lilly.log`; all Python hooks passed there too.
+`/tmp/overalls-standard-origin-tip-lilly.log`; all Python hooks passed there too.
 SDK/header/skills and environment wiring still match the upstream parent, apart
 from the runnable harness's Standard product fixture. ADR, contract, conflict and
 generated handbook checks pass. Final evaluated HLDD and configuration checks run
@@ -149,31 +149,31 @@ Checks use the pinned Elixir 1.20.4 / OTP 29.0.6 environment in the separate
 cluster and fresh `standard_branding` test partition. No live fleet was changed.
 
 - Protocol `mix precommit` passed: 221 cases (82 properties, 139 tests), including
-  forced Dialyzer; `/tmp/kittens-standard-protocol.log`.
+  forced Dialyzer; `/tmp/overalls-standard-protocol.log`.
 - Lilly `mix precommit` passed: 468 cases (78 properties, 390 tests), including
-  forced Dialyzer; `/tmp/kittens-standard-lilly.log`.
+  forced Dialyzer; `/tmp/overalls-standard-lilly.log`.
 - Marshall's initial complete run passed 1394 of 1395 cases, including all 200
   properties. Its only failure was a stale invitation assertion rejecting a valid
   external domain. The corrected invitation suite passed all 10 tests in
-  `/tmp/kittens-standard-invitations.log`. The full suite rerun passed all 1395
+  `/tmp/overalls-standard-invitations.log`. The full suite rerun passed all 1395
   cases (200 properties, 1195 tests; two excluded) in 973.7 seconds;
-  `/tmp/kittens-standard-marshall-final.log`. The complete `mix precommit` gate
+  `/tmp/overalls-standard-marshall-final.log`. The complete `mix precommit` gate
   passed, including JavaScript checks and forced Dialyzer (47.5 seconds).
 - The open-domain registration, distinct cross-domain guest identities and
   same-user domain-only identity tests passed in that complete run. The generated
   safe-local-part round-trip property passed across valid domains. These are local
   Ash/PostgreSQL and property results, not native cross-domain home acceptance.
 - `MIX_ENV=test mix ash_postgres.generate_migrations --check` passed against the
-  fresh schema; `/tmp/kittens-standard-schema.log`.
+  fresh schema; `/tmp/overalls-standard-schema.log`.
 - Python format, lint and type hooks passed, including the corrected updater
-  fixtures; `/tmp/kittens-standard-python-final.log`.
+  fixtures; `/tmp/overalls-standard-python-final.log`.
 - Nix `hldd`, `host-planning` and `module-configuration` passed together;
-  `/tmp/kittens-standard-nix.log`. ADR, contract syntax/coverage and generated
+  `/tmp/overalls-standard-nix.log`. ADR, contract syntax/coverage and generated
   handbook option, coverage and architecture-view checks passed.
 - The isolated SDK smoke passed with emission inert when `ANTITHESIS_OUTPUT_DIR`
   was absent and exact setup/declaration/assertion JSONL shapes when set. SDK
   class/file metadata was retained. SDK and Hegel header bytes match the baseline;
-  `/tmp/kittens-standard-sdk.log`.
+  `/tmp/overalls-standard-sdk.log`.
 
 Native results include passing profile/updater checks and three incomplete journeys:
 
@@ -186,11 +186,11 @@ Native results include passing profile/updater checks and three incomplete journ
   denial, real release upgrades retaining guests, encrypted credential-only
   reconnection, Lilly daemon-death recovery and Customer denial after guest
   stop/start on both hosts. The combined Nix build exited zero in 1380 seconds;
-  `/tmp/kittens-standard-native-updater.log`.
+  `/tmp/overalls-standard-native-updater.log`.
 - Agent CLI passed the fresh approved invocation's Standard child-agent refusal
   before a later owner-withdrawal inventory equality assertion failed. The failed
   assertion is outside the profile naming/permission changes; no complete agent
-  journey pass is claimed; `/tmp/kittens-standard-native-core.log`.
+  journey pass is claimed; `/tmp/overalls-standard-native-core.log`.
 - Handbook source-link checks passed in both Workspace and Control room before
   the revocation assertion failed. All individual chapters and diagrams were
   visited before that failure. The expected sign-in redirect instead reached the
@@ -199,7 +199,7 @@ Native results include passing profile/updater checks and three incomplete journ
   claimed.
 - Host enrollment failed before exercising the changed Git branch at the isolated
   `nix copy` SSH connection (reset during key exchange on loopback port 2222);
-  `/tmp/kittens-standard-native.log`. Enrollment activation remains unverified.
+  `/tmp/overalls-standard-native.log`. Enrollment activation remains unverified.
 
 The source-link assertion's execution record now points here, rather than attributing
 the changed destination to the September capture. Historical native results retain

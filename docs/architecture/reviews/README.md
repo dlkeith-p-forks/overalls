@@ -49,7 +49,7 @@
 - [Legacy compatibility removal (2026-10-11)](2026-10-11-legacy-compatibility-removal.md): ADR-0159 inventory-driven removal of every backward-compatibility path in ordered converged pushes; read-only host and database preflight facts, exports and per-push results.
 - [Durable guest identities (2026-10-10)](2026-10-10-durable-guest-identities.md): ADR-0158 replaces email-based allocation and editor checks with immutable generated logins/homes and permanent retired reservations. Original feature and incoming `d4499c4c` merged captures remain distinct: merged Protocol259/Lilly555/Marshall1429 gates and both eight-subtest lifecycles passed. Native inventory passed8.22s within a complete native-zfs run failing unrelated resource receipts. Complete Ubuntu SSH/native editor and later incoming integration remain separate scopes. Authorized live guest deletion does not establish migration/deployment.
 - [Stopped-only relocation (2026-10-10)](2026-10-10-stopped-only-relocation.md): ADR-0155 deletes live pre-copy; stopped path traced end to end, production history (18 complete pre-copy moves) validated against the new codecs after the migration transform. Incoming native relocation passed 20 subtests in 4018 seconds; the journal enumeration bound remains a documented contract gap and current merged execution is separate.
-- [Shared request-accounting library (2026-10-10)](2026-10-10-request-accounting-library.md): breaking internal rename to `Kittens.RequestAccounting`, shared aggregate arithmetic, preserved recorder boundaries and explicit separation from diagnostics.
+- [Shared request-accounting library (2026-10-10)](2026-10-10-request-accounting-library.md): breaking internal rename to `Overalls.RequestAccounting`, shared aggregate arithmetic, preserved recorder boundaries and explicit separation from diagnostics.
 
 - [Shared Elixir observability library (2026-10-10)](2026-10-10-observability-library.md): shared canonical logging, privacy and bounded metrics review.
 
@@ -270,7 +270,7 @@
 
 - [2026-09-24: SSH roster bootstrap](2026-09-24-ssh-roster-bootstrap.md)
 
-- [2026-09-24: Kittens Nekomo redesign](2026-09-24-kittens-nekomo-redesign.md)
+- [2026-09-24: Overalls Nekomo redesign](2026-09-24-overalls-nekomo-redesign.md)
 - [2026-09-24: Guest trust bootstrap](2026-09-24-guest-trust-bootstrap.md)
 - [2026-09-24: Fenced ZFS namespace deletion](2026-09-24-zfs-namespace-delete.md)
 - [2026-09-24: macOS agent-backed guest SSH](2026-09-24-macos-agent-ssh.md)
@@ -375,7 +375,7 @@
 
 - [2026-09-18: Porsche live acceptance](2026-09-18-porsche-live-acceptance.md)
 
-- [2026-09-17: Kittens web redesign](2026-09-17-web-redesign.md)
+- [2026-09-17: Overalls web redesign](2026-09-17-web-redesign.md)
 - [Usage-based overcommit](2026-09-17-usage-based-overcommit.md): ADR-0050 resource-update and admission implementation evidence.
 
 - [2026-09-17: Email registration](2026-09-17-email-registration.md)
@@ -560,6 +560,6 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [Integration name-custody fencing (2026-09-28)](2026-09-28-integration-faults.md): archived integration names now refuse replay and team liveness binds authority to membership; focused histories and contract annotations passed.
 - [Windows guest agents (2026-10-14)](2026-10-14-windows-guest-agents.md): ADR-0171's `windows-v1` capability table, vsock endpoint, readiness and Rust guest agents; unit, image and fleet validation are recorded with native workstation and scheduler gaps.
 - [Windows images with pinned winget packages (2026-10-15)](2026-10-15-windows-images-winget.md): ADR-0173's Desktop Experience image installs pinned winget packages and WSL features through an offline file server; image and fleet checks passed, with interactive winget registration and nested virtualization gaps recorded.
-- [Windows workstation client (2026-10-15)](2026-10-15-windows-workstation-client.md): ADR-0172's cross-platform Kittens CLI adds Windows packaging, SSH and update paths; Linux checks, Windows cross-build and fleet guest-agent validation passed, with real Windows workstation use remaining.
+- [Windows workstation client (2026-10-15)](2026-10-15-windows-workstation-client.md): ADR-0172's cross-platform Overalls CLI adds Windows packaging, SSH and update paths; Linux checks, Windows cross-build and fleet guest-agent validation passed, with real Windows workstation use remaining.
 - [Antithesis five-attempt bootstrap admission (2026-10-16)](2026-10-16-antithesis-five-attempt-admission.md): verification campaign ledger admits five concurrent hosted attempts and refuses a sixth; no production architecture boundary changes.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)

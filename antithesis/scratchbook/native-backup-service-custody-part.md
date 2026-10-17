@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Native backup service and custody source inventory
 
-Source tree: `/home/ghuntley/src/kittens-antithesis-reset`. Read-only inventory on 2026-10-13; no evaluation, builds, tests, external references, production secrets or retired harness were inspected. Source presence is not a new passing execution result. Only this report was written outside the repository.
+Source tree: `/home/ghuntley/src/overalls-antithesis-reset`. Read-only inventory on 2026-10-13; no evaluation, builds, tests, external references, production secrets or retired harness were inspected. Source presence is not a new passing execution result. Only this report was written outside the repository.
 
 ## Export and dependency boundaries
 

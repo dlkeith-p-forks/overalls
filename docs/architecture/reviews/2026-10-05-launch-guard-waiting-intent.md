@@ -33,7 +33,7 @@ ADR statuses remain unchanged; broader source/research review remains active.
 
 Full native package passed exit0,99seconds, archive
 `1791224011241-817796-0.jsonl`, log
-`/tmp/kittens-launch-guard-waiting-intent-package1.log`. Three library properties
+`/tmp/overalls-launch-guard-waiting-intent-package1.log`. Three library properties
 and six integration checks passed; two executable fixtures were ignored.
 Integration completed2.33seconds. Rustfmt and all-target Clippy passed.
 All nine fixed post-wait variants and the unchanged exec control ran in each
@@ -48,11 +48,11 @@ unchanged property: the first Stopped case returned0 instead of stale75 after
 the independently observed lock wait and coordinator update. Targeted property
 failed14.68seconds; package exit1,100seconds, archive
 `1791224482099-1115709-0.jsonl`, log
-`/tmp/kittens-launch-guard-prelock-intent-mutant.log`. Patch SHA256
+`/tmp/overalls-launch-guard-prelock-intent-mutant.log`. Patch SHA256
 `9a2f98905dc38ef1f6fa1aa384a8116c6ae69e4729c474eeb936864208fba533`.
 This is the predicted stale pre-lock-read failure; later variants are not credited.
 Source/tests were restored byte-for-byte and the fork retained at
-`/tmp/kittens-launch-prelock-intent-restored-vcc97d6f`. User tree carries no
+`/tmp/overalls-launch-prelock-intent-restored-vcc97d6f`. User tree carries no
 mutation. Final handbook receipts/hooks and publication remain pending.
 
 ## Recorded publication and verified export/audit integration
@@ -81,7 +81,7 @@ publication remain pending; no full merged execution is claimed.
 ### Fresh integrated package execution
 
 Forced rebuild on main29ad6228 integration passed exit0,127seconds,archive
-`1791249752091-3869524-0.jsonl`, log `/tmp/kittens-integrated-launch-guard-rebuild2.log`.
+`1791249752091-3869524-0.jsonl`, log `/tmp/overalls-integrated-launch-guard-rebuild2.log`.
 Three library properties and six integration checks passed; two executable
 fixtures ignored. Waiting property passed; integration2.32seconds, rustfmt and
 all-target Clippy passed. Package `/nix/store/44jmjfp7xcxf8j36fc5pj7pyxbl5dq9c-lilly-launch-guard-0.1.0`.

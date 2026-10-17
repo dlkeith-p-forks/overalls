@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Brady and OTEL recorder native inventory
 
-Read-only source inventory on 2026-10-13 from `/home/ghuntley/src/kittens-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`. References below are repository-relative `path:line`. No tests, evaluations, builds, secret material, or retired `antithesis/` harness were accessed. Historical documentation is evidence of its recorded revision/scope, not fresh execution. Architecture/HLDD impact: none; this report changes no repository implementation, configuration, contracts, or documentation.
+Read-only source inventory on 2026-10-13 from `/home/ghuntley/src/overalls-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`. References below are repository-relative `path:line`. No tests, evaluations, builds, secret material, or retired `antithesis/` harness were accessed. Historical documentation is evidence of its recorded revision/scope, not fresh execution. Architecture/HLDD impact: none; this report changes no repository implementation, configuration, contracts, or documentation.
 
 ## Brady check classification and resources
 
@@ -60,7 +60,7 @@ Contract boundaries inspected: repository `repository-test-claim-boundary`; `nix
 Current decision chain detail: ADR-0069 is superseded/implemented (`0069-brady-egress-cache.md:5-9`), ADR-0135 superseded/partial (`0135-streaming-public-artifact-cache.md:5-9`), and ADR-0153 is itself superseded by accepted/partial ADR-0158. ADR-0158 replaces only email-derived guest identity rules and carries the other decisions forward (`0153-official-source-browser-editor.md:13-17`; `0158-durable-guest-identities.md:26-30`). These status labels do not upgrade native or production historical evidence.
 # Native OpenTelemetry request recorder source inventory
 
-Inspected read-only in `/home/ghuntley/src/kittens-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`; no builds or native runs were launched, no repository source was changed, and no retired harness was inspected. Architecture impact: none for this inventory. Read root/Nix/module/test/fixture contracts and the code-contracts skill. References below are repository-relative `path:line` anchors.
+Inspected read-only in `/home/ghuntley/src/overalls-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`; no builds or native runs were launched, no repository source was changed, and no retired harness was inspected. Architecture impact: none for this inventory. Read root/Nix/module/test/fixture contracts and the code-contracts skill. References below are repository-relative `path:line` anchors.
 
 ## Classification, fixture and resources
 

@@ -29,7 +29,7 @@ current explicit resource budgets. DNS and both gateways match rescue state.
 Host-planning and storage-configuration checks passed. Physical installation,
 worker enrollment, guest execution and automatic-update health checks succeeded.
 Public receipts are retained outside Git under the operator's private
-`~/.local/state/kittens/provisioning/dungarees` directory. Private keys and
+`~/.local/state/overalls/provisioning/dungarees` directory. Private keys and
 plaintext credentials must not appear in this report or the repository.
 
 ## Installation and enrollment progress

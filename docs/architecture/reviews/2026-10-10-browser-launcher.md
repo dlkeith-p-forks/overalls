@@ -1,6 +1,6 @@
 # Browser launcher and source2 architecture review
 
-Date: 2026-10-10. Worktree: `/home/ghuntley/src/kittens-browser`, branch
+Date: 2026-10-10. Worktree: `/home/ghuntley/src/overalls-browser`, branch
 `feature/browser-launcher`, base `63a1443c`, feature `a3d2b69c`, merged main
 `bee03919`. This review covers the committed
 browser port, public distribution, source2/manifest4 cutover, authentication resume
@@ -21,7 +21,7 @@ Weaver was cloned at `b211e71b9c86aeca507323baab7650218688e9c9` in
 Its browser implementation uses native shared modules,
 generated Chrome/Firefox assets, Node tests, Chromium smoke and web-ext lint.
 Upstream Cargo version synchronization and Git/build-time metadata are separate
-from Kittens' package.json authority, maintained-source digest and fixed ZIP epoch.
+from Overalls' package.json authority, maintained-source digest and fixed ZIP epoch.
 The port preserves explicit toolbar configuration, supported-provider state,
 fragment launch, configuration context menu and developer archive installation.
 It adds strict native JSDoc checking, hash-verified offline Nix build inputs,
@@ -187,8 +187,8 @@ the actual extension in Chromium 151, exercised options persistence and all four
 provider action fragments, and refused an unsupported page. The check pins its
 DejaVu fontconfig so Chromium requires no ambient fonts. A separate local smoke
 also passed in Chromium 153. Output roots are
-`/nix/store/jr42nx8lqlfffximx660xyhdgryjzk18-kittens-browser-0.1.0` and
-`/nix/store/8dsdyg53463fwalbr90dlqhy6im95a4d-kittens-browser-check-0.1.0`.
+`/nix/store/jr42nx8lqlfffximx660xyhdgryjzk18-overalls-browser-0.1.0` and
+`/nix/store/8dsdyg53463fwalbr90dlqhy6im95a4d-overalls-browser-check-0.1.0`.
 
 Firefox 155.0.1 temporary installation, settings persistence and metadata passed
 with pinned geckodriver 0.36.0 and the same immutable XPI. The manual script installed
@@ -360,7 +360,7 @@ A real Firefox action probe exposed a permission deadlock: before granting
 provider-origin access, Firefox can withhold `tab.url`; disabling the unknown
 action prevented the click that would grant activeTab. The reviewed correction
 keeps unknown state enabled without transmission, retains disabled known
-unsupported state and validates the click's observed URL before opening Kittens.
+unsupported state and validates the click's observed URL before opening Overalls.
 An unsupported explicit click retains Weaver's fixed red `!` and **Unsupported
 page** feedback, then clears after three seconds and refreshes the actual tab
 state. No page URL enters feedback or diagnostics.
@@ -377,7 +377,7 @@ The current local Firefox four-provider toolbar probe passed with exit 0
 version metadata, and received actual WebDriver clicks on each provider's action
 button after foregrounding its source tab. Fixed local TLS pages used
 `acceptInsecureCerts=true`; this does not establish public provider network,
-Kittens authentication, guest checkout, signing or Android. The scratch procedure
+Overalls authentication, guest checkout, signing or Android. The scratch procedure
 passed Ruff and ty. The current Nix package and browser sandbox check also passed,
 exit 0 in 11 seconds (`artifacts/browser-active-tab-nix.log`); the final provenance
 package was rebuilt after the README correction, with its final result below.
@@ -417,8 +417,8 @@ fencing. Component and current native reruns must establish their own result.
 
 The pre-minimization final immutable browser package and sandbox check passed in 13 seconds,
 exit 0 (`artifacts/browser-final-nix.log`). Outputs are
-`/nix/store/vz6gs8685n20j7ajf7pqnw31pqx3jbn2-kittens-browser-0.1.0` and
-`/nix/store/srbq9d3ws30hjhhf1fq94ap38xwqwrv4-kittens-browser-check-0.1.0`.
+`/nix/store/vz6gs8685n20j7ajf7pqnw31pqx3jbn2-overalls-browser-0.1.0` and
+`/nix/store/srbq9d3ws30hjhhf1fq94ap38xwqwrv4-overalls-browser-check-0.1.0`.
 The sandbox repeats strict typing, all 10 Node tests, deterministic packaging,
 zero-error/warning/notice Mozilla lint and real Chromium four-provider actions
 with withheld-URL unsupported-click refusal. The final maintained source SHA-256
@@ -515,8 +515,8 @@ application evidence remains at the same tested implementation bytes.
 
 The replacement minimized browser package and sandbox check passed in 10 seconds,
 exit 0 (`artifacts/browser-private-source-nix.log`), with outputs
-`/nix/store/i5syrkrzq1b7lz0bwnid0chmkglazjlz-kittens-browser-0.1.0` and
-`/nix/store/hcz8wwg0qnhrrv1rs779fv0rmsd0cqkd-kittens-browser-check-0.1.0`.
+`/nix/store/i5syrkrzq1b7lz0bwnid0chmkglazjlz-overalls-browser-0.1.0` and
+`/nix/store/hcz8wwg0qnhrrv1rs779fv0rmsd0cqkd-overalls-browser-check-0.1.0`.
 Maintained source SHA-256 is
 `169e6262de73efa3659cdcd6eb0084f4f09171f017df73ba4772400987e9b2c9`.
 Actual Chromium actions on all four provider tabs carried fixed query/hash
@@ -564,7 +564,7 @@ Safe probe records are `artifacts/codeberg-dns-gnu-existing.log` (exit 0),
 assertion in 0.04 seconds). All musl bundle-read, bundle-parse and client-build
 predicates passed in both cases; only production-head acceptance changed. The
 ignored production-code adapter built at
-`/nix/store/vc10sqbg5mdaspxbv771zwx4r2w4hvby-kittens-native-api-probe-0.1.0`
+`/nix/store/vc10sqbg5mdaspxbv771zwx4r2w4hvby-overalls-native-api-probe-0.1.0`
 (`1791647290893-554447-0.jsonl`); its source and namespace configuration are
 retained under `artifacts/codeberg-dns-probe/`. These observations establish
 bounded namespace DNS/TLS/client behavior, not a completed Firecracker guest.
@@ -583,7 +583,7 @@ no production boundary or new decision is introduced.
 The final exact minimized-package download repeat passed all five tests with
 `--include host`, seed `735823`, in 0.2 seconds, exit 0
 (`artifacts/browser-controller-minimized-immutable.log`). The selected release was
-`/nix/store/i5syrkrzq1b7lz0bwnid0chmkglazjlz-kittens-browser-0.1.0`.
+`/nix/store/i5syrkrzq1b7lz0bwnid0chmkglazjlz-overalls-browser-0.1.0`.
 The tests compare public bytes, manifest and SHA-256 responses without login
 cookies; they refuse missing releases, mutable/traversing roots, unknown selectors,
 root/bin/artifact/manifest symlinks, malformed/oversized manifests and empty or
@@ -595,7 +595,7 @@ its temporary profile, so the build preserves inherited HOME. The sandbox check
 passed again in 9 seconds, exit 0 (`artifacts/browser-final-profile.log`), including
 fresh Chromium sentinel actions, all ten Node tests, strict types, lint and package
 checks. Its final output is
-`/nix/store/iryvjvgv3j89j9wl8f2nby23y65m7h5y-kittens-browser-check-0.1.0`.
+`/nix/store/iryvjvgv3j89j9wl8f2nby23y65m7h5y-overalls-browser-check-0.1.0`.
 The immutable release remains `i5syrkrzq1b7lz0bwnid0chmkglazjlz`; archive bytes and
 maintained-source provenance are unchanged, so the exact XPI/controller evidence
 above applies to the same release. This check-only correction changes no runtime
@@ -611,7 +611,7 @@ checks follow the remaining fixture/evidence reconciliation.
 
 The final frozen-fixture NixOS native journey completed successfully: wrapper
 exit 0 in 1,352 seconds, output
-`/nix/store/71w1nsvkkv7qdb6hdx7kk0kn7rkc09f1-vm-test-run-kittens-repository-launch`,
+`/nix/store/71w1nsvkkv7qdb6hdx7kk0kn7rkc09f1-vm-test-run-overalls-repository-launch`,
 log `1791647331524-577956-0.jsonl`. Its test script completed in 854.61 seconds;
 all twelve subtests passed:
 
@@ -636,7 +636,7 @@ Codeberg and Bitbucket change cases also passed installed-CA TLS, exact API
 schema/head and fork Git probes. The NixOS retained restart preserved checkout,
 done marker and its local probe without re-cloning. Public downloads passed fixed
 HTTPS artifact/manifest/checksum byte equality and no-cookie assertions. Packaged
-`kittens open` reached the real checkout, executed its fixed command and verified
+`overalls open` reached the real checkout, executed its fixed command and verified
 the working directory. Normal fragment capture, clean sign-in navigation, shared
 cookie resume and required MFA composed through the final privacy-fixed frontend;
 browser assertions for query/hash sentinels, storage contents and sanitized POST
@@ -729,11 +729,11 @@ restored that single atom without changing diagnostic or storage authority.
 
 Focused merged Lilly execution passed 34 checks (11 properties, 23 tests) in
 1.4 seconds, the 104-event logging gate and structural contracts
-(`artifacts/kittens-browser-merge-lilly.log`). Observability passed the exact merged
+(`artifacts/overalls-browser-merge-lilly.log`). Observability passed the exact merged
 schema check and ten formatter/shared-library tests, seed `957221`, in
-0.07 seconds (`artifacts/kittens-browser-merge-observability-regenerated.log`).
+0.07 seconds (`artifacts/overalls-browser-merge-observability-regenerated.log`).
 Marshall's 164-event logging gate, structural contracts and all nineteen contract
-regressions passed (`artifacts/kittens-browser-merge-contract-logging.log`).
+regressions passed (`artifacts/overalls-browser-merge-contract-logging.log`).
 These are scoped integration results, not full merged component gates. NixOS and
 the continuing Ubuntu native captures retain their captured browser feature source
 scope; neither establishes merged-main native or production acceptance. ADR-0156
@@ -746,7 +746,7 @@ corrects the stale editor-reference summary to their exact captured scopes.
 The final complete Ubuntu capture passed, exit 0, in 1,713 seconds total build
 plus execution. Its driver reported `test script finished in 1422.20s`; this is
 distinct from the wrapper duration. The immutable result is
-`/nix/store/bsw54221aw5n4s5js6d81ar780bzcm08-vm-test-run-kittens-repository-launch-ubuntu-fleet`,
+`/nix/store/bsw54221aw5n4s5js6d81ar780bzcm08-vm-test-run-overalls-repository-launch-ubuntu-fleet`,
 log `/home/ghuntley/.local/state/nix/build-logs/1791650057300-1044641-0.jsonl`,
 terminal completion status 0 after all twelve successful subtests. It captured
 frozen browser feature `a3d2b69c` before the worktree fast-forward to merged main
@@ -788,7 +788,7 @@ earlier failure or a new retry entitlement. No readiness, capacity, identity gua
 or retry behavior was patched. All failed captures retain their original scope.
 
 The separate NixOS complete result remains
-`/nix/store/71w1nsvkkv7qdb6hdx7kk0kn7rkc09f1-vm-test-run-kittens-repository-launch`,
+`/nix/store/71w1nsvkkv7qdb6hdx7kk0kn7rkc09f1-vm-test-run-overalls-repository-launch`,
 log `1791647331524-577956-0.jsonl`, exit 0 in 1,352 seconds total build/execution,
 script 854.61 seconds, all twelve subtests/twenty cases. It predates the
 diagnostic-only addition; the reviewed source/checkout/authentication guards are

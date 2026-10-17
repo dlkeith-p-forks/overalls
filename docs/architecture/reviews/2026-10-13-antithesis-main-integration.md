@@ -108,7 +108,7 @@ declared `20261013161738`. The retained-fixture equality check in the
 [Marshall entrypoint](../../../antithesis/entrypoints/marshall.sh) correctly
 refused this drift before publishing readiness. Existing volumes were
 preserved and the same images were rematerialized under fresh project
-`kittens-antithesis-main-control-core-20261013`. The next validation was stopped
+`overalls-antithesis-main-control-core-20261013`. The next validation was stopped
 after diagnosing a missing SQL column: migration `20261011180200` had retired
 `compute_hosts.protocol_version` under ADR-0159, but the harness still queried
 it. The corrected SQL witness uses a positive report sequence, a fresh report

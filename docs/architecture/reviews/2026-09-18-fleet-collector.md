@@ -11,14 +11,14 @@ ADR-0017's execution guards and physical outcome authority are unchanged.
 
 ## Findings and evidence
 
-The measurement library (`nix/domains/system/fleet-monitor/metrics.py` at kittens revision `a99f74f0`, repository deleted) separates
+The measurement library (`nix/domains/system/fleet-monitor/metrics.py` at overalls revision `a99f74f0`, repository deleted) separates
 host/CPU/device/interface/workload/ZFS records, omits unavailable values and uses
 context-bound counter deltas. CPU guest time is removed from user/nice before
 displaying a breakdown. ZFS GUIDs retain the full unsigned 64-bit identity range;
 they are strings, not floating-point metrics. Dataset recursion and physical pool
 use remain separate. Unlimited cgroup and dataset limits are explicit.
 
-The runtime (`nix/domains/system/fleet-monitor/runtime.py` at kittens revision `a99f74f0`, repository deleted) bounds subprocess
+The runtime (`nix/domains/system/fleet-monitor/runtime.py` at overalls revision `a99f74f0`, repository deleted) bounds subprocess
 output/time and checks systemd invocation metadata before and after cgroup
 collection. VM namespace TAP names derive from physical placement, not guest input.
 Only selected unit properties are read; guest processes and terminal contents are

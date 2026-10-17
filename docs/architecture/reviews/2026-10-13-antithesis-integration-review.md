@@ -15,9 +15,9 @@ during this review. Recheck changed hashes before using it as a run receipt.
 | Source | SHA-256 at inspection |
 | --- | --- |
 | `lilly/lib/lilly/control/runtime.ex` | `9a92886599809440583f5fc80dd1106d60438f890c98f9a3e8f99b4a0787c65b` (earlier snapshots `c2dfab6f…`, `bdcd2675…`) |
-| `antithesis/lilly/lib/kittens_antithesis/lilly/guest_executor.ex` | `82961f953034b9bd20d87d97747a3cd90727cce22f08346c6fb918c45e83faf8` |
-| `antithesis/lilly/lib/kittens_antithesis/lilly/integrated_health.ex` | `8557214c0fc25a966fcfa81ce2974062a90aa1f0f0ea294b35c65bc24ff4ac8d` |
-| `antithesis/lilly/lib/kittens_antithesis/lilly/integrated_ownership.ex` | `7e07b31bd6c7d9d3d2437ba42ac4dbcb0dedf699c17b6a5d2b82b3e401a0d943` |
+| `antithesis/lilly/lib/overalls_antithesis/lilly/guest_executor.ex` | `82961f953034b9bd20d87d97747a3cd90727cce22f08346c6fb918c45e83faf8` |
+| `antithesis/lilly/lib/overalls_antithesis/lilly/integrated_health.ex` | `8557214c0fc25a966fcfa81ce2974062a90aa1f0f0ea294b35c65bc24ff4ac8d` |
+| `antithesis/lilly/lib/overalls_antithesis/lilly/integrated_ownership.ex` | `7e07b31bd6c7d9d3d2437ba42ac4dbcb0dedf699c17b6a5d2b82b3e401a0d943` |
 | `antithesis/emulation/host/bootstrap.py` | `62cf3e2b7757f60274f7a3543a5452ca4a930b61f7990e0bee9db99505f5a54b` |
 | `antithesis/emulation/guest/server.py` | `baf55df72f070bacd236e431fdd347bb4540ad61e344b657844f1c5bcb3686c4` |
 | `antithesis/entrypoints/control-operator.sh` | `8c9915ad15ca09c7d0676dbf982011ed85a80ddf040f6a78f93e003a0f9568a6` |

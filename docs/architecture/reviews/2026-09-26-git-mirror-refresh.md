@@ -32,7 +32,7 @@ work. This record was written before any implementation or native run.
   fixture and the service-owned bare mirror — exact blob contents, exact
   40-hex head SHAs, old-commit survivability after pruning and attempt status
   transitions — independent of the service's own claims.
-- Native boundary: the recorded run of `vm-test-run-kittens-enrico-service`
+- Native boundary: the recorded run of `vm-test-run-overalls-enrico-service`
   itself: one QEMU NixOS VM, the packaged Enrico release, a verified local
   HTTPS Git fixture and real Git clone/fetch/gc. Store path, duration,
   per-stage results and cleanup/process drain are recorded below. Physical
@@ -40,7 +40,7 @@ work. This record was written before any implementation or native run.
   production rollout stay outside this boundary.
 - Dependencies: `nix/verification/tests/machines/enrico-service/`, the `enrico` NixOS
   module, the packaged Enrico release and the serialized native-build lock
-  `/tmp/kittens-native-build.lock`.
+  `/tmp/overalls-native-build.lock`.
 - Required checks: all-file prek (Ruff/ty cover the driver), ADR, HLDD
   receipt/generated-reference and views gates, the Nix `hldd` check, and the
   Marshall precommit gate because `marshall/priv/hldd/scenarios.json` changes.
@@ -99,9 +99,9 @@ root documentation contracts bind the scoped claims below.
 
 **Run of the as-merged driver on current source** `c14ae27dc0fbbca400e73ae5c6f1567104ab9801`
 (tree `77375008a893f80ca4b8094c965e03e85e44980a`): derivation
-`/nix/store/2msldk28n3xs8s9ki8jdi60nfmlg3lmq-vm-test-run-kittens-enrico-service.drv`,
-result `/nix/store/5hgvqsl9m7465aaknizp6b0qgzr7m6yb-vm-test-run-kittens-enrico-service`.
-Built under the serialized `/tmp/kittens-native-build.lock`; wall 1,872 seconds
+`/nix/store/2msldk28n3xs8s9ki8jdi60nfmlg3lmq-vm-test-run-overalls-enrico-service.drv`,
+result `/nix/store/5hgvqsl9m7465aaknizp6b0qgzr7m6yb-vm-test-run-overalls-enrico-service`.
+Built under the serialized `/tmp/overalls-native-build.lock`; wall 1,872 seconds
 including lock queueing behind another campaign machine run. The test script
 finished in **22.77 seconds** and cleanup in **0.00 seconds**. All five existing
 stages passed: unauthorized refusal (0.04 s), clone and read (1.21 s), update
@@ -113,13 +113,13 @@ init, first seen 11:57) was explicitly left untouched and never entered the VM
 boundary.
 
 **Amended-driver runtime.** The strict composed driver
-`/nix/store/b5fbvs1354jc8xbx9q4572q6hizsrgaj-nixos-test-driver-kittens-enrico-service`
+`/nix/store/b5fbvs1354jc8xbx9q4572q6hizsrgaj-nixos-test-driver-overalls-enrico-service`
 passed the framework lint and pinned `ty` checks ("All checks passed!") after
 the intermediate `Never`-key narrowing failure described above; that failed
 attempt (`a9369wx2` run derivation) never executed a runtime. The corrected
 native run under the same lock: derivation
-`/nix/store/a99n9r6ay23zkydjazwm2knhs4zwisp0-vm-test-run-kittens-enrico-service.drv`,
-result `/nix/store/09cbhcyy8d12xblm5qj1a4nh2hx7wdan-vm-test-run-kittens-enrico-service`,
+`/nix/store/a99n9r6ay23zkydjazwm2knhs4zwisp0-vm-test-run-overalls-enrico-service.drv`,
+result `/nix/store/09cbhcyy8d12xblm5qj1a4nh2hx7wdan-vm-test-run-overalls-enrico-service`,
 wall 30 seconds with dependencies cached.
 The complete amended journey passed in 23.85 seconds with cleanup in 0.14 seconds.
 Per-stage: unauthorized
@@ -129,7 +129,7 @@ retention after pruning 1.36 s; repeated attempt replaying its recorded
 succeeded head without a new fetch 0.03 s; source-outage preservation with the
 attempt settling `failed` 1.21 s; recovery after the source returned publishing
 a distinct force-pushed head 1.34 s. After exit, the only test driver on the
-host was another session's `kittens-brady-fleet` run; no driver or QEMU process
+host was another session's `overalls-brady-fleet` run; no driver or QEMU process
 of this run remained.
 
 The independent oracle held at every stage: Git-level assertions compared exact

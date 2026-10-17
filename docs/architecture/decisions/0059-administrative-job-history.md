@@ -69,7 +69,7 @@ captures snapshots/transitions in the raw job transaction. The
 [domain coordinator](../../../marshall/lib/marshall/administration/jobs.ex)
 projects safe fields, checks authority and commits retries with audit receipts.
 [Retention](../../../marshall/lib/marshall/administration/expire_job_history.ex)
-and backfill (`marshall/lib/marshall/administration/backfill_job_history.ex` at kittens revision `9fe1e493`, repository deleted)
+and backfill (`marshall/lib/marshall/administration/backfill_job_history.ex` at overalls revision `9fe1e493`, repository deleted)
 process at most 1000 rows per table per transaction. The
 [Jobs LiveView](../../../marshall/lib/marshall_web/live/admin/jobs_live.ex)
 implements filters, detail, transition history and retries. The

@@ -122,7 +122,7 @@ public browser cancellation, then failed a fixture expectation of a 4 GiB source
 temporary hold. The accepted portable-bundle reservation contract requires the
 4 GiB guest disk plus the fixed 1 GiB boot bundle: the corrected expectation is
 5 GiB on source temporary and destination disk reservations. The failed derivation
-`/nix/store/nnnzlqapc0jvyrnxgk4c0k622gjy3wz7-vm-test-run-kittens-clone-cancellation.drv`
+`/nix/store/nnnzlqapc0jvyrnxgk4c0k622gjy3wz7-vm-test-run-overalls-clone-cancellation.drv`
 and archive `1790368370890-1840200-0.jsonl` remain failed evidence; cleanup took
 3.98 seconds and all owned Nix/driver/nine QEMU processes were confirmed absent.
 No physical cleanup or successful-control acceptance is inferred from this run.
@@ -211,10 +211,10 @@ also passed. Final bookkeeping checks after the inventory delta are tracked in
 the native-ready handoff; normal commit hooks and native acceptance remain pending.
 
 The second native capture **failed** as described above:
-`/nix/store/2q2yn8vpd767rs14g84dbg7128z8q52h-vm-test-run-kittens-clone-cancellation.drv`.
+`/nix/store/2q2yn8vpd767rs14g84dbg7128z8q52h-vm-test-run-overalls-clone-cancellation.drv`.
 Its separately typed browser and strictly composed driver built successfully;
 the exact captured driver build took 283 seconds. Driver output:
-`/nix/store/84pb7jpir6jxfn2w9rnkafwwh8a3j0wy-nixos-test-driver-kittens-clone-cancellation`.
+`/nix/store/84pb7jpir6jxfn2w9rnkafwwh8a3j0wy-nixos-test-driver-overalls-clone-cancellation`.
 Script SHA-256: `09fffa8bd6bc31ffc9217b2170a8c176687107c4982de5e3780de4647783a3dc`.
 Neither failed capture is upgraded by these builds. The next capture and its
 serialized runtime slot remain pending.
@@ -237,7 +237,7 @@ earlier full gates retain their captured source scopes.
 The new candidate uses the integrated runtime and the diagnostic-only driver
 delta. Its captured source tree is `cbb53bf4a89da6c71c2227e9e6906385f5f7dc26`;
 runtime derivation:
-`/nix/store/34ndh26jvb9742arbvgmn15an3n11mvq-vm-test-run-kittens-clone-cancellation.drv`.
+`/nix/store/34ndh26jvb9742arbvgmn15an3n11mvq-vm-test-run-overalls-clone-cancellation.drv`.
 The evaluated script differs from run2 only in the closed phase/failure
 diagnostics and their contract; success conditions remain unchanged. The strict
 driver build passed in 280 seconds, with script SHA-256
@@ -264,7 +264,7 @@ advisory locks. Log: `/tmp/verify020-terminal-integrated.log`.
 
 The fourth native candidate captures the corrected oracle on `5af65d3f`, source
 tree `b2e339caf661a6414434823fa87e4af6ca237b5f`:
-`/nix/store/3ypvrigqh7y7sgaf51bbdyarlg26z79r-vm-test-run-kittens-clone-cancellation.drv`.
+`/nix/store/3ypvrigqh7y7sgaf51bbdyarlg26z79r-vm-test-run-overalls-clone-cancellation.drv`.
 Its evaluated script SHA-256 is
 `a35ec9a24bfc1c84081a44ace73fbd41c86e242a1b794aa098f453a4583f18bf`.
 The script differs from the third capture only in the reviewed cancellation
@@ -342,9 +342,9 @@ ADR/contracts/generated coverage/views/options, reviewed HLDD receipts and
 all-file logging/HLDD/ruff/format/ty passed. Nix `hldd` and `python-static` passed
 in 12 seconds. The fifth capture on `e3072688`, source tree
 `046a05ce09c8ced7545b7af93bff33cbab4845ca`, is
-`/nix/store/ra9k9sj2pg8l4ablq3r2cl6b2y731pmy-vm-test-run-kittens-clone-cancellation.drv`.
+`/nix/store/ra9k9sj2pg8l4ablq3r2cl6b2y731pmy-vm-test-run-overalls-clone-cancellation.drv`.
 Its strict driver derivation is
-`/nix/store/mpds69r6xdk39c45sng2f73qq89y2v3j-nixos-test-driver-kittens-clone-cancellation.drv`.
+`/nix/store/mpds69r6xdk39c45sng2f73qq89y2v3j-nixos-test-driver-overalls-clone-cancellation.drv`.
 The evaluated script is byte-identical to run4, retaining SHA-256
 `a35ec9a24bfc1c84081a44ace73fbd41c86e242a1b794aa098f453a4583f18bf`.
 Later review/receipt/campaign changes preserve this capture's scope. The strict
@@ -495,8 +495,8 @@ no new residue and unrelated preservation, not a globally empty historical DB.
 
 The generalized oracle candidate was captured on `e3072688` as source tree
 `697fe5405e52151e1f53577d3dc443f18b365ac8`. Its runtime was
-`3cj7kmscxwga5i1ly2s49095d0b35mfk-vm-test-run-kittens-clone-cancellation.drv`,
-driver `nsr4z360a8xcbw66xmycb2cq2rydaxk3-nixos-test-driver-kittens-clone-cancellation.drv`,
+`3cj7kmscxwga5i1ly2s49095d0b35mfk-vm-test-run-overalls-clone-cancellation.drv`,
+driver `nsr4z360a8xcbw66xmycb2cq2rydaxk3-nixos-test-driver-overalls-clone-cancellation.drv`,
 and evaluated script SHA-256
 `101ff47276b0d10e1c37477c4cce413f18e3cca02c69049c34a32c6500a53eb4`.
 The strict driver passed in 265 seconds and its built script matched byte-for-byte.
@@ -543,8 +543,8 @@ above are not relabeled as this integrated source.
 
 The readiness-stage candidate was frozen on `73a3a96c` as tree
 `98001c6021efce74de7c0514a15a93ea6d2620dd`, runtime
-`b9dj4v1qrqyyz77y5fqyhijriwbpx9mq-vm-test-run-kittens-clone-cancellation.drv`
-and driver `l87lva4lb8m7a3s70idfkbx4aqkq7pdy-nixos-test-driver-kittens-clone-cancellation.drv`.
+`b9dj4v1qrqyyz77y5fqyhijriwbpx9mq-vm-test-run-overalls-clone-cancellation.drv`
+and driver `l87lva4lb8m7a3s70idfkbx4aqkq7pdy-nixos-test-driver-overalls-clone-cancellation.drv`.
 Its strict driver passed in 320 seconds. The evaluated and built scripts matched
 SHA-256 `8f0c233d2dceff2aff29fc09bfc5b4d099f830373ed5256a6d07b87556c98e7e`.
 The captured script contains no Inception scenario. Source, generated-reference,
@@ -623,8 +623,8 @@ gaps remain intact and separately scoped.
 
 Before this integration, diagnostic-only source `dc29b2568070f2e6bf0f2b7d6d48183b19377410`
 on `8a575060` built the strict driver in 278 seconds. Driver
-`axfy47h78yfvkdqhwlbg0qvdh7d483dq-nixos-test-driver-kittens-clone-cancellation.drv`
-and runtime `b2yzz45x7ca4pbs2jjzq5p8mbmzqsprr-vm-test-run-kittens-clone-cancellation.drv`
+`axfy47h78yfvkdqhwlbg0qvdh7d483dq-nixos-test-driver-overalls-clone-cancellation.drv`
+and runtime `b2yzz45x7ca4pbs2jjzq5p8mbmzqsprr-vm-test-run-overalls-clone-cancellation.drv`
 were captured; evaluated and built scripts matched SHA-256
 `8f0c233d2dceff2aff29fc09bfc5b4d099f830373ed5256a6d07b87556c98e7e`.
 Session `39147` drained with status 0. **That runtime was never executed and is
@@ -740,8 +740,8 @@ in `/tmp/verify020-context-types.log` and establishes no type-check success.
 
 The first instrumented strict build captured tree
 `7d62a46d33e40961e56063ac9f70b8e81db03332` on `2d66e76`, driver
-`l7ns4jjw3ys2x4637ynmy300gmddv12g-nixos-test-driver-kittens-clone-cancellation.drv`
-and runtime `4b5iz63dxy54i3gdiamcqvnimfw3i9rx-vm-test-run-kittens-clone-cancellation.drv`.
+`l7ns4jjw3ys2x4637ynmy300gmddv12g-nixos-test-driver-overalls-clone-cancellation.drv`
+and runtime `4b5iz63dxy54i3gdiamcqvnimfw3i9rx-vm-test-run-overalls-clone-cancellation.drv`.
 Its evaluated script hash was
 `b3d44c59f990e7b902f594442b2467539ec239126f450a7d65172aa66601990c`, with no Inception
 scenario. Source/reference/all-file gates and Nix HLDD/Python checks passed, but
@@ -754,8 +754,8 @@ archive `/home/ghuntley/.local/state/nix/build-logs/1790395953655-876433-0.jsonl
 
 The corrected-config build captured tree
 `09fe41254c43bd9f2cca3436228d2703a2b220d7` on the same base, driver
-`2sbffsj487kwnap3873pyxr3prjyxiq4-nixos-test-driver-kittens-clone-cancellation.drv`
-and runtime `9r82qkl1kwqmcll7xvlk5n4k1k8r0jqy-vm-test-run-kittens-clone-cancellation.drv`.
+`2sbffsj487kwnap3873pyxr3prjyxiq4-nixos-test-driver-overalls-clone-cancellation.drv`
+and runtime `9r82qkl1kwqmcll7xvlk5n4k1k8r0jqy-vm-test-run-overalls-clone-cancellation.drv`.
 The evaluated script retained the same hash and excluded Inception. **This strict
 build also failed before application compilation in 9 seconds**: Ruff passed, but
 the isolated package type check exposed four dictionary-narrowing errors and two
@@ -771,8 +771,8 @@ the seven native failures and pending instrumented acceptance remain unchanged.
 
 The corrected instrumented candidate captured tree
 `fc22f9cdf3f9f1bbca8eb49fef52fdd1d49d0d1b` on `2d66e76`, driver
-`srwdrxmifg3r3mal5i6qkbc6dx4pf8fh-nixos-test-driver-kittens-clone-cancellation.drv`
-and runtime `bf57vvksi24v7vpp2ysrb3d5rrzxihg9-vm-test-run-kittens-clone-cancellation.drv`.
+`srwdrxmifg3r3mal5i6qkbc6dx4pf8fh-nixos-test-driver-overalls-clone-cancellation.drv`
+and runtime `bf57vvksi24v7vpp2ysrb3d5rrzxihg9-vm-test-run-overalls-clone-cancellation.drv`.
 Its strict driver build passed in 318 seconds. The installed test script matched
 the evaluated SHA256
 `b3d44c59f990e7b902f594442b2467539ec239126f450a7d65172aa66601990c`, with no Inception
@@ -867,8 +867,8 @@ stash `71fbca267c79c938f096c9d60eb14e768b277a0e`.
 The integrated candidate captured tree
 `5dce161c81829c403f249f74064af5136b4af5cc` on
 `fff6587e48b91897484dd9aa6a6ad769d26eb8f4`, driver
-`aqvz2g869x4czmkjf0w6d47c7vzq1z6b-nixos-test-driver-kittens-clone-cancellation.drv`
-and runtime `iq1vhb1gr2qc6n46aqrdrq5il4fmwzfn-vm-test-run-kittens-clone-cancellation.drv`.
+`aqvz2g869x4czmkjf0w6d47c7vzq1z6b-nixos-test-driver-overalls-clone-cancellation.drv`
+and runtime `iq1vhb1gr2qc6n46aqrdrq5il4fmwzfn-vm-test-run-overalls-clone-cancellation.drv`.
 ADR/contracts/HLDD/generated options, scenarios and views, all-file prek and Nix
 HLDD/Python checks passed. The strict driver build passed in **409 seconds**;
 session `3361` drained with status 0. The exact installed script matched evaluated
@@ -905,7 +905,7 @@ exact PostgreSQL 18.6 executable recovered WAL and queried finite predicates in
 single-user mode without listeners, preloads or external recovery commands. The
 working copy shut down cleanly and the original image hash still matched.
 Private evidence is retained outside the repository and Nix outputs under
-`/home/ghuntley/.local/state/kittens-verification/020-run13-forensics`.
+`/home/ghuntley/.local/state/overalls-verification/020-run13-forensics`.
 
 Both hosts had accepted protocol-3 x86_64 execution-ready reports containing one
 image, correct enrolled pool/dataset GUIDs and logical budget, and empty allocation
@@ -1028,7 +1028,7 @@ row and 138 migration rows. No complete pre-run inventory was captured, so this
 whole-suite remainder is retained and unattributed; no reset or deletion was used.
 There were zero other database connections, advisory locks or worktree BEAMs,
 and only the four expected production triggers. Private payload-free row hashes
-remain under `~/.local/state/kittens-verification/020-gate-186/`; the original
+remain under `~/.local/state/overalls-verification/020-gate-186/`; the original
 historical detached-agent residue and all native builders/evidence remain untouched.
 
 After that drain and audit, published `1db02e1d` integrated campaigns 029 and 034.
@@ -1047,7 +1047,7 @@ and final static/build qualification are recorded below.
 
 All commands ran from this worktree in the pinned `devenv shell` with
 `ERL_FLAGS='+S 4:4'`, `PGHOST=/run/user/1000/devenv-0e19ff2/postgres` and
-`TMPDIR=/tmp/kittens-verify020fin`. The reconciled final tree is the staged
+`TMPDIR=/tmp/overalls-verify020fin`. The reconciled final tree is the staged
 `1db02e1d` integration plus documentation-only review/ADR/campaign prose; the
 previously unstaged edits contained no source or debug changes.
 
@@ -1081,9 +1081,9 @@ previously unstaged edits contained no source or debug changes.
   its concrete rationale, after which `elixir scripts/check_hldd.exs` passed.
 - **Nix evaluation and HLDD gate:** the final tree's clone-cancellation
   composition evaluates to
-  `/nix/store/nlbb6zr3smskd87pn0s3c7cs2fpd9w2d-vm-test-run-kittens-clone-cancellation.drv`
+  `/nix/store/nlbb6zr3smskd87pn0s3c7cs2fpd9w2d-vm-test-run-overalls-clone-cancellation.drv`
   with strict driver
-  `/nix/store/78xrsbc7jqhkyh4yp8iij0qawq8fpar2-nixos-test-driver-kittens-clone-cancellation.drv`;
+  `/nix/store/78xrsbc7jqhkyh4yp8iij0qawq8fpar2-nixos-test-driver-overalls-clone-cancellation.drv`;
   the longstanding `network-online.target` ordering evaluation warning is
   unchanged. `nix build .#checks.x86_64-linux.hldd` passed.
 

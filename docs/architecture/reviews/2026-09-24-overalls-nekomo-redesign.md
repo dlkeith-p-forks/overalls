@@ -1,9 +1,9 @@
-# Kittens Nekomo redesign review
+# Overalls Nekomo redesign review
 
 ## Scope and architecture impact
 
 The user authorized the complete Marshall presentation redesign in a new
-worktree, retained the **Kittens** name, and selected Overview as the authenticated
+worktree, retained the **Overalls** name, and selected Overview as the authenticated
 home. The implementation is on `codex/marshall-nekomo`, based on `2070058b`.
 
 [ADR-0114](../decisions/0114-overalls-workspace-design.md) records the new home,

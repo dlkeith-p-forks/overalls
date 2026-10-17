@@ -73,7 +73,7 @@ counters have not moved since the ARC budget took effect. No
 
 The Marshall-only push `282bd8084` (43 units retained on overalls) still
 restarted Lilly on overalls at 18:45: `switch-to-configuration` restarted
-`kittens-resource-policy.service`, whose command line names the per-release
+`overalls-resource-policy.service`, whose command line names the per-release
 manifest, and Lilly requires it; dungarees' Lilly stayed up. With the oneshot
 `restartIfChanged = false` (ADR-0165 decision 5), the next push `dba649c6e`
 restarted Marshall on overalls at 18:54 while `lilly.service` kept its 18:45

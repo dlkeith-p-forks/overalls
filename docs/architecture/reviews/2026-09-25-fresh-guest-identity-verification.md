@@ -291,14 +291,14 @@ zero skips, zero unnecessary skips; analysis took 1m1.35s. The complete
 All-file `prek run --all-files` passed all logging, HLDD, ruff formatting/lint and
 ty hooks (`/tmp/verify018-prek.log`). ADR, generated options/coverage/views and Nix
 HLDD checks passed; Nix output:
-`/nix/store/lfarfzrjbwhh8cqsh5iaahhdfki01i0j-kittens-hldd-check`.
+`/nix/store/lfarfzrjbwhh8cqsh5iaahhdfki01i0j-overalls-hldd-check`.
 
 The original native driver build passed in 314 seconds, including browser `ty`
 and strict composed-driver type/lint checks:
 
-- Driver: `/nix/store/csp8r0lwhrfqlknfs8zrc20f1rxhpyzr-nixos-test-driver-kittens-account-lifecycle`
-- Driver derivation: `/nix/store/l1xpg0p8dqcip06bv15g9c76cjmqgnca-nixos-test-driver-kittens-account-lifecycle.drv`
-- Matching execution derivation: `/nix/store/j8bd4klijypnyz789fic7ndqg28xqwk1-vm-test-run-kittens-account-lifecycle.drv`
+- Driver: `/nix/store/csp8r0lwhrfqlknfs8zrc20f1rxhpyzr-nixos-test-driver-overalls-account-lifecycle`
+- Driver derivation: `/nix/store/l1xpg0p8dqcip06bv15g9c76cjmqgnca-nixos-test-driver-overalls-account-lifecycle.drv`
+- Matching execution derivation: `/nix/store/j8bd4klijypnyz789fic7ndqg28xqwk1-vm-test-run-overalls-account-lifecycle.drv`
 - Build log: `/tmp/verify018-native-build-corrected.log`.
 
 The first browser type check rejected direct dict lookup after an object boundary;
@@ -361,7 +361,7 @@ campaign merge resolutions preserve 011's recorded execution separately from
 ## Second native execution and systemd-state correction
 
 The coordinator ran frozen retry
-`/nix/store/fyg014c4bx0cq43i6h8rl33blmcr5kr1-vm-test-run-kittens-account-lifecycle.drv`,
+`/nix/store/fyg014c4bx0cq43i6h8rl33blmcr5kr1-vm-test-run-overalls-account-lifecycle.drv`,
 capturing tree `322403cf208ba98c0d40df3066d396d094503a59` on `8773b1b4`.
 Its strict driver build passed in 269 seconds. Integrated focused tests passed
 13 checks (3 properties, 10 tests), followed by all five explicitly selected
@@ -437,7 +437,7 @@ fixture users, VMs, hosts, guest accounts, teams, members or identity gate funct
 
 The coordinator executed frozen tree `6f4a40e7d9112d8dc83cbc7b19ce40e2cca98232`
 on `daa8491d`, runtime derivation
-`/nix/store/l99bkxpfni1ndj309smmxl135229vwbi-vm-test-run-kittens-account-lifecycle.drv`.
+`/nix/store/l99bkxpfni1ndj309smmxl135229vwbi-vm-test-run-overalls-account-lifecycle.drv`.
 Its strictly typed driver build passed in 279 seconds. The native attempt ran
 506 seconds and exited one only at the final managed-profile SSH command.
 Cleanup completed in 4.48 seconds; the coordinator independently verified the
@@ -471,9 +471,9 @@ evidence that runtime setup failed to write them.
 The recovered directory inode establishes that the fixture's root-run
 `install -d .../.local/bin` left `.local` owned by root with mode 0755. Staged
 installer setup skips normal CLI startup. Ordinary proxy startup creates
-`.local/state/kittens/update`; the tester cannot create that missing state path
+`.local/state/overalls/update`; the tester cannot create that missing state path
 inside the fixture's root-owned parent. The exact packaged CLI
-`/nix/store/796fzfvwncag0sc7l0rkg15248pfcr6y-kittens-linux-cli/bin/kittens`
+`/nix/store/796fzfvwncag0sc7l0rkg15248pfcr6y-overalls-linux-cli/bin/overalls`
 was exercised in a disposable local directory with the equivalent unwritable
 parent: `version` exited one with the fixed `CLI startup failed` error and no
 state directory. Supplying the owned state directory and explicit XDG paths
@@ -526,10 +526,10 @@ The complete fourth native journey passed in **494.85 seconds** (the driver
 reports 495.09 seconds including its outer overhead); Nix completed in 501
 seconds and nine-machine cleanup took **3.84 seconds**. This executed frozen tree
 `f9d9525edad257ad8b27a7928a4c9ef18ef6edef` on `f4de549a`, runtime derivation
-`/nix/store/p839kx6xq10bmzx6cv1dpqg4n916hl5p-vm-test-run-kittens-account-lifecycle.drv`.
+`/nix/store/p839kx6xq10bmzx6cv1dpqg4n916hl5p-vm-test-run-overalls-account-lifecycle.drv`.
 The strict composed driver and browser helper build passed in 309 seconds before
 execution. Output:
-`/nix/store/whrinjds8a8qbsk6qkgxb8zscm1klyv7-vm-test-run-kittens-account-lifecycle`.
+`/nix/store/whrinjds8a8qbsk6qkgxb8zscm1klyv7-vm-test-run-overalls-account-lifecycle`.
 
 | Executed stage | Seconds |
 | --- | ---: |

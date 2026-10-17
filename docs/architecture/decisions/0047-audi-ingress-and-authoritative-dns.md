@@ -319,7 +319,7 @@ This does not discover current issuance IDs after startup, persist store revisio
 tombstones, establish placement authority or publish routes; those require the
 outstanding control-plane coordinator and deployment wiring.
 
-Marshall now models issuance work (`marshall/lib/marshall/ingress/issuance.ex` at kittens revision `9fe1e493`, repository deleted)
+Marshall now models issuance work (`marshall/lib/marshall/ingress/issuance.ex` at overalls revision `9fe1e493`, repository deleted)
 through Ash/PostgreSQL with transactional audit history, positive execution
 bindings and a partial unique index allowing one pending record per VM.
 The historical admission action authenticated the

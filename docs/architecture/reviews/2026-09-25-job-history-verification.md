@@ -100,7 +100,7 @@ after its PLT update. Log: `/tmp/verify019-full-gates-2.log`. The earlier refine
 focused run on this base passed 12 checks, seed `19004`, 16.9 seconds.
 
 The corresponding strict native driver built successfully in 94 seconds. Runtime
-`/nix/store/xa3c1ibsjkh255qfjcmz752ain22pgbs-vm-test-run-kittens-job-history-browser.drv`
+`/nix/store/xa3c1ibsjkh255qfjcmz752ain22pgbs-vm-test-run-overalls-job-history-browser.drv`
 failed at the first public request feedback assertion. At VM time 32.4 seconds
 the real SMTP relay returned 451 and the packaged worker reported failure; five
 seconds later the fixture timed out waiting for application `#flash-info`.
@@ -120,9 +120,9 @@ Captured tree `5a24fd04bf8439bf9bc9df7ee4cb10d0b125488e`, based on published
 seconds, including pinned typing of the actual standalone helper with its
 Python/Playwright closure. These artifacts identify the executed source:
 
-- Runtime: `/nix/store/rfimmkwyd7x827pspyq3fl990954v68y-vm-test-run-kittens-job-history-browser.drv`.
-- Result: `/nix/store/30q0zh3416kps6v3dm4rcx3c7d9jr9nq-vm-test-run-kittens-job-history-browser`.
-- Driver: `/nix/store/1mjx77qa5lfx04927vfr5cnd5ky5h95y-nixos-test-driver-kittens-job-history-browser.drv`.
+- Runtime: `/nix/store/rfimmkwyd7x827pspyq3fl990954v68y-vm-test-run-overalls-job-history-browser.drv`.
+- Result: `/nix/store/30q0zh3416kps6v3dm4rcx3c7d9jr9nq-vm-test-run-overalls-job-history-browser`.
+- Driver: `/nix/store/1mjx77qa5lfx04927vfr5cnd5ky5h95y-nixos-test-driver-overalls-job-history-browser.drv`.
 - Typed helper: `/nix/store/mbg7ylb6laddcbqs3cl5y6xfbw5chbpw-job-history-browser-typed/browser.py`.
 - Log: `/tmp/verify019-native-retry.log`; the immutable runtime retains its Nix log.
 
@@ -176,7 +176,7 @@ no remaining source or contract blocker. No new decision or production dependenc
 is introduced. The typed fixture change does not enter the release allowlist.
 
 The final pinned Nix Python gate passed at
-`/nix/store/jh71bh2yskhhgdbmy7kgsy7zyp5gm3l1-kittens-python-static`.
+`/nix/store/jh71bh2yskhhgdbmy7kgsy7zyp5gm3l1-overalls-python-static`.
 
 All-file `prek`, ADR structure/links, HLDD receipts/references, generated options,
 scenario coverage, Ash/deployment views, contract syntax/coverage and its nineteen

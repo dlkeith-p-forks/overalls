@@ -101,8 +101,8 @@ yielding to announced pool-lock waiters, after a production image rebuild
 retired and filled about 260 standbys each under the pool lock.
 
 **Historical diagnostic readers before ADR-0149:**
-- the protocol lifecycle allowlist (`protocol/lib/overalls_protocol/lifecycle_audit.ex` at kittens revision `a99f74f0`, repository deleted);
-- Marshall ingestion (`marshall/lib/marshall/compute/lifecycle_ingestion.ex` at kittens revision `a99f74f0`, repository deleted);
+- the protocol lifecycle allowlist (`protocol/lib/overalls_protocol/lifecycle_audit.ex` at overalls revision `a99f74f0`, repository deleted);
+- Marshall ingestion (`marshall/lib/marshall/compute/lifecycle_ingestion.ex` at overalls revision `a99f74f0`, repository deleted);
 
 [ADR-0149](0149-independent-observability.md) retires those diagnostic-wire
 readers. Current compatibility and authority remain in state-only native

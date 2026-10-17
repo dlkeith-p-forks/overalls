@@ -44,7 +44,7 @@ review independently confirmed terminal success and found no blocker.
 ## Execution
 
 The final `backup-types` check passed in 18 seconds, exit 0; archive
-`1791013244912-1886145-0.jsonl`, log `/tmp/kittens-native-backup-types-final.log`.
+`1791013244912-1886145-0.jsonl`, log `/tmp/overalls-native-backup-types-final.log`.
 Ruff format/lint and ty analyze the copied native fixture beside the real backup
 modules using pinned Python 3.13/Hypothesis. Existing state/workflow/status tests
 also execute; this check does not execute native fixture actions. An earlier
@@ -52,7 +52,7 @@ formatting failure preceded successful type analysis and is not product defect
 or native runtime evidence.
 
 The native cleanup check passed in 98 seconds, exit 0; archive
-`1791013269708-1902661-0.jsonl`, log `/tmp/kittens-native-backup-machine.log`.
+`1791013269708-1902661-0.jsonl`, log `/tmp/overalls-native-backup-machine.log`.
 The actual cleanup property command took 28.37 seconds; VM script 45.77 seconds.
 Native mount histories reached case `0d` (thirteen fixed/generated histories).
 Composed driver validation passed. Contract structural checks passed separately;

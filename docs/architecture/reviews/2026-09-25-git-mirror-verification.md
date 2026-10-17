@@ -132,14 +132,14 @@ Nix typing/linting (`h8ql5hcc` driver, output `03dmrkqc`; browser artifact
 environment. All-file prek, contracts, ADR, options, coverage and views checks
 passed. Nix HLDD initially rejected a formatter-only inventory-oracle delta;
 after reviewing that change and recording its no-impact rationale it passed as
-`/nix/store/vx2fmy5ahb2rm8x9rir226mc0ijg57sd-kittens-hldd-check`.
+`/nix/store/vx2fmy5ahb2rm8x9rir226mc0ijg57sd-overalls-hldd-check`.
 
 The initial native candidate was
-`/nix/store/1clwpivgdh2w9j37lndk5g6kx7sc0lwl-vm-test-run-kittens-git-mirrors-browser.drv`,
+`/nix/store/1clwpivgdh2w9j37lndk5g6kx7sc0lwl-vm-test-run-overalls-git-mirrors-browser.drv`,
 with tree `39678bf05b190c0cc9e7cdef8864bd89a0a622a7` on `f4de549a`.
 It includes the reviewed history/remote-completion refinements. Its driver
 `vjsv6z67` passed strict typing/linting and built
-`/nix/store/ggnqgrryhf6vfsfwgg7vpp19p22qnyn4-nixos-test-driver-kittens-git-mirrors-browser`.
+`/nix/store/ggnqgrryhf6vfsfwgg7vpp19p22qnyn4-nixos-test-driver-overalls-git-mirrors-browser`.
 The full Marshall suite passed **1,059 (104 properties, 955 tests)** with two
 explicit exclusions, seed `910622`, in 444.1 seconds. Browser-state gates passed.
 Forced test-environment Dialyzer passed with **zero errors, zero skips and zero
@@ -169,18 +169,18 @@ with **zero errors, zero skips and zero unnecessary skips**, 59.44 seconds.
 The subsequent database audit again found no fixtures, gates or sessions.
 All-file prek, final contracts, ADR/options/coverage/views and Nix HLDD passed;
 the final Nix HLDD output was
-`/nix/store/jznx3lwbjh4z97zclxq9m80c8k6lpw2m-kittens-hldd-check`.
+`/nix/store/jznx3lwbjh4z97zclxq9m80c8k6lpw2m-overalls-hldd-check`.
 
 The corrected native retry is captured at tree
 `89e03703a4db2bbe9fc8add3e329262d9f46651c`, base `f4de549a`, with derivation
-`/nix/store/kajhias57qm7icallpx5wkdnd12g8m20-vm-test-run-kittens-git-mirrors-browser.drv`.
+`/nix/store/kajhias57qm7icallpx5wkdnd12g8m20-vm-test-run-overalls-git-mirrors-browser.drv`.
 Its strict driver `glkrvx3s` passed pinned typing/linting and built
-`/nix/store/g8gzv8ps5k0qhsampfw0zl8k7qzkyiwi-nixos-test-driver-kittens-git-mirrors-browser`.
+`/nix/store/g8gzv8ps5k0qhsampfw0zl8k7qzkyiwi-nixos-test-driver-overalls-git-mirrors-browser`.
 The standalone browser artifact is `qa3b0151`.
 
 The complete native browser journey passed in **53.43 seconds**, with cleanup in
 **0.49 seconds**. The result is
-`/nix/store/7w5bhgimzlw8blwaadblkp876jz0d2w9-vm-test-run-kittens-git-mirrors-browser`.
+`/nix/store/7w5bhgimzlw8blwaadblkp876jz0d2w9-vm-test-run-overalls-git-mirrors-browser`.
 The owner command exited zero and its session drained. Agent and coordinator
 independently confirmed driver `992635` and QEMU `993306` absent before releasing
 the runtime slot. This establishes the assertions above on the captured tree;

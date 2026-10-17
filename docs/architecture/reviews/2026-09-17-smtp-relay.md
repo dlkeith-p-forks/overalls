@@ -18,7 +18,7 @@ changes are outside this review.
 - Serving and migration paths both load production mail configuration. They now
   share the local-mail environment fragment so migrations need no provider secrets.
 - The updater's shared-key comparison treats `marshall-*` health units as BEAM
-  processes. Naming the relay `kittens-smtprelay` avoids accidental comparison;
+  processes. Naming the relay `overalls-smtprelay` avoids accidental comparison;
   generic descriptor staging and dependency discovery remain the secret mechanism.
 - Loopback submission intentionally trusts host-local users. The managed listener
   and metrics are not public, and the sender restriction does not claim per-user

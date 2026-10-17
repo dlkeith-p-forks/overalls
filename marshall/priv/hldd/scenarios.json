@@ -5578,7 +5578,7 @@
           "scope": "Ordinary marvin/packaged CLI, real Standard guest effect, external cgroup observer, exact executor/child fault and actual replacement fence, explicit retry and UI revocation. Pre-start native loss is excluded.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-09-26-executor-loss-histories.md",
-          "record_assertion": "vm-test-run-kittens-executor-loss passed in 675 seconds at output myjbx6dv74k87xy21r67agz9bmll0w6r; staged-tree strict rebuild reuses the identical output path"
+          "record_assertion": "vm-test-run-overalls-executor-loss passed in 675 seconds at output myjbx6dv74k87xy21r67agz9bmll0w6r; staged-tree strict rebuild reuses the identical output path"
         }
       ]
     },
@@ -9907,7 +9907,7 @@
           "scope": "Temporary-store receiver cases with an update-ca-certificates emulator: identical delivery is a no-op, rotation and five drift kinds rebuild, a failed rebuild withdraws the marker. Does not run the real Ubuntu tool.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-guest-boot-profile.md",
-          "record_assertion": "kittens-trustd receiver tests 8 passed"
+          "record_assertion": "overalls-trustd receiver tests 8 passed"
         },
         {
           "kind": "machine",

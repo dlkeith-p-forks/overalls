@@ -132,7 +132,7 @@ tables, purge retired rows and refuse port 4444 while the serving release still
 maps the remaining objects. Ziggy always maintains its durable SLO checkpoint
 in [the spool](../../../ziggy/lib/ziggy/spool.ex); Marshall compares inference
 completions exactly in [the request ledger](../../../marshall/lib/marshall/inference/requests.ex)
-and the purge migration (`marshall/priv/repo/migrations/20261011210000_purge_legacy_inference_completions.exs` at kittens revision `033c8eef`, repository deleted)
+and the purge migration (`marshall/priv/repo/migrations/20261011210000_purge_legacy_inference_completions.exs` at overalls revision `033c8eef`, repository deleted)
 deleted legacy-shaped rows before adding the
 [exact-shape CHECK](../../../marshall/priv/repo/migrations/20261011210000_inference_completion_exact_shape.exs). Lilly has no
 provisioning rollout switches: readiness is unconditional in

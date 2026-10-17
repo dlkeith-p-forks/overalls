@@ -97,7 +97,7 @@ or memory minima exceed those fixture requests before native boot. Resize retain
 that disk and grows memory from 512 MiB to 768 MiB.
 
 The first native execution used derivation
-`/nix/store/bvzgyhnw6xpibikbghkw24i04rc29v3c-vm-test-run-kittens-account-lifecycle.drv`.
+`/nix/store/bvzgyhnw6xpibikbghkw24i04rc29v3c-vm-test-run-overalls-account-lifecycle.drv`.
 Fleet boot, authenticated capacity, browser invitation/signup, ordinary authority,
 WebAuthn, SSH registration and positive remembered resume passed. Both real guests
 reached running. The transient resize fixture then exited 127 because its systemd
@@ -108,7 +108,7 @@ now supplies the installed-system PATH and fails promptly if the fixture service
 fails before dispatch.
 
 The next native candidate, derivation
-`/nix/store/y5rg9z4snfs9zmdrgmxzyjdv831k67ca-vm-test-run-kittens-account-lifecycle.drv`,
+`/nix/store/y5rg9z4snfs9zmdrgmxzyjdv831k67ca-vm-test-run-overalls-account-lifecycle.drv`,
 passed boot (54.79 seconds), authenticated capacity/private services (131.63 seconds)
 and the browser registration/remembered phase (30.14 seconds). Both guests ran and
 the corrected resize fixture reached its real dispatch barrier. The driver then
@@ -135,9 +135,9 @@ Marshall `mix precommit` passed: **1,042 passed (100 properties, 942 tests),
 two excluded**, seed `637918`, 470.5 seconds. Forced Dialyzer reported **0 errors,
 0 skipped and 0 unnecessary skips** in 1m4.06s. All-file prek passed, including
 Ruff format/check, ty, logging and handbook review. The combined native driver
-`/nix/store/20i7m9kn8s31lj5i1i181pmlc4p5l2f6-nixos-test-driver-kittens-account-lifecycle.drv`
+`/nix/store/20i7m9kn8s31lj5i1i181pmlc4p5l2f6-nixos-test-driver-overalls-account-lifecycle.drv`
 passed its composed type and lint checks. The third native run used captured derivation
-`/nix/store/ipq22rp9kjmja16a4ri9ny1v1m1zhkqg-vm-test-run-kittens-account-lifecycle.drv`.
+`/nix/store/ipq22rp9kjmja16a4ri9ny1v1m1zhkqg-vm-test-run-overalls-account-lifecycle.drv`.
 It passed fleet boot (65.62 seconds), authenticated service setup (101.78 seconds),
 browser invitation/registration/remembered resume (26.40 seconds), offline busy
 resize plus typed retirement and stale browser authority refusals (87.99 seconds),
@@ -174,11 +174,11 @@ private frontend, independently of l2's username collision.
 Native account lifecycle passed in 470.00 seconds; nine-machine cleanup completed in 3.56 seconds.
 
 The immutable run derivation was
-`/nix/store/99gak2mx2igljakm8jw1fhlxhpxdsg6r-vm-test-run-kittens-account-lifecycle.drv`,
+`/nix/store/99gak2mx2igljakm8jw1fhlxhpxdsg6r-vm-test-run-overalls-account-lifecycle.drv`,
 with strict driver
-`/nix/store/wgmjmvvd8za2gnnvl79apgg55czbxkwq-nixos-test-driver-kittens-account-lifecycle.drv`
+`/nix/store/wgmjmvvd8za2gnnvl79apgg55czbxkwq-nixos-test-driver-overalls-account-lifecycle.drv`
 and output
-`/nix/store/hqj83d5fzqqxfw9gn58jyvrx95kasdab-vm-test-run-kittens-account-lifecycle`.
+`/nix/store/hqj83d5fzqqxfw9gn58jyvrx95kasdab-vm-test-run-overalls-account-lifecycle`.
 The Nix command exited zero. The driver recorded all nine QEMU terminations.
 
 The complete run passed installed bootstrap, ordinary invitation and explicit

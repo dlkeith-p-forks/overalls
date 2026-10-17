@@ -20,7 +20,7 @@ archive/publication behavior; broader migration acceptance remains unresolved.
 ## Findings
 
 1. **High — raw lifecycle claim rewrite violates archive/publication custody.**
-   ProfileRename (`lilly/lib/lilly/control/profile_rename.ex` at kittens revision `9fe1e493`, repository deleted) initially
+   ProfileRename (`lilly/lib/lilly/control/profile_rename.ex` at overalls revision `9fe1e493`, repository deleted) initially
    applies `PrivateFiles.write` directly to `claim.json`, recursively changing its
    profile while leaving `_lifecycle` revision unchanged.
    [ZFSDataset](../../../lilly/lib/lilly/host/zfs_dataset.ex) normally publishes that
@@ -75,7 +75,7 @@ records reject unexpected lifecycle envelopes; execution `vm.json` and matching
 
 The combined focused Lilly selection passes 31 checks (five properties and 26
 tests) in 3.5 seconds, seed 957907, with exit 0, recorded at
-`/tmp/kittens-profile-migration-custody-focused.log`. It covers exact whitespace and
+`/tmp/overalls-profile-migration-custody-focused.log`. It covers exact whitespace and
 accepted v1 diagnostic bytes, one same-state revision increment, existing exact
 archive recovery, conflicting archive/schema refusals, missing host lock, foreign
 Store binding, pool contention, v2 deleted-state poisoned-archive independence,
@@ -83,12 +83,12 @@ execution binding/tombstone migration and native-journal byte preservation.
 Loading the original incoming `76c6ce42` importer in a disposable VM fails the
 exact-v1 regression: exit 2, zero of one passing and nine excluded, 0.4 seconds,
 seed 414888. The original archive is absent, as recorded in
-`/tmp/kittens-profile-migration-raw-baseline-witness.log`. This falsifies the raw
+`/tmp/overalls-profile-migration-raw-baseline-witness.log`. This falsifies the raw
 rewrite against the corrected fixture without modifying the production source.
 
-The actual Marshall migration test (`marshall/test/marshall/profile_rename_migration_test.exs` at kittens revision `9fe1e493`, repository deleted)
+The actual Marshall migration test (`marshall/test/marshall/profile_rename_migration_test.exs` at overalls revision `9fe1e493`, repository deleted)
 passes one check in 0.3 seconds, seed 551224 (`seed551224` ledger reference), at
-`/tmp/kittens-observability-profile-marshall-focused-fixed.log`. It uses populated
+`/tmp/overalls-observability-profile-marshall-focused-fixed.log`. It uses populated
 disposable PostgreSQL tables, runs the real migration twice under distinct fixture
 versions, preserves historical/unrelated values and checks the final address
 constraint and down refusal. This is an actual SQL migration check on its minimal
@@ -102,7 +102,7 @@ not establish abrupt migrating-host recovery. The frozen complete Lilly precommi
 passes with exit 0: 541 checks (104 properties and 437 tests) in 75.3 seconds, seed
 95084, and forced Dialyzer with zero errors, skips and unnecessary skips in
 14.82 seconds. The complete shell is 149.526942544 seconds, recorded at
-`/tmp/kittens-lilly-profile-custody-final-precommit.log`; runtime, 149-ADR,
+`/tmp/overalls-lilly-profile-custody-final-precommit.log`; runtime, 149-ADR,
 contracts, logging, compiler and formatting gates also pass. No source/assertion
 changes occur during that gate. The frozen current Marshall precommit exits 0:
 1387 passing checks (235 properties and 1152 tests), two excluded, seed 922173,
@@ -110,7 +110,7 @@ in 1510.0 seconds (40.1 asynchronous and 1469.9 synchronous). Its 32
 terminal/accessibility checks, four dashboard checks and workspace TypeScript
 gate pass. Forced Dialyzer has zero errors, skips and unnecessary skips in
 61.94 seconds, after PLT preparation of 13.38 and 324.95 seconds. The raw log is
-`/tmp/kittens-observability-profile-marshall-final-precommit.log`.
+`/tmp/overalls-observability-profile-marshall-final-precommit.log`.
 These component checks do not establish a legacy native upgrade or physical
 isolation.
 
@@ -124,10 +124,10 @@ not establish them. Earlier completed native captures precede this profile
 migration and incoming guest source. The corrected full relocation gate now exits
 0 with all 19 subtests against the incoming profile implementation and guest
 source, at
-`/nix/store/11ibfwp2xv1jdf53vn3gr3q22mhdc3hg-vm-test-run-kittens-relocation-fleet`.
+`/nix/store/11ibfwp2xv1jdf53vn3gr3q22mhdc3hg-vm-test-run-overalls-relocation-fleet`.
 The VM-run footer is 3,643.75 seconds, the following script footer 3,643.99 seconds
 and the Bash wrapper 3,654.445 seconds, recorded at
-`/tmp/kittens-relocation-trust-native-final.log`. Its exact derivation, unchanged
+`/tmp/overalls-relocation-trust-native-final.log`. Its exact derivation, unchanged
 physical/audit/fault/deadline oracles and preserved earlier failure are documented
 in [ADR-0149](../decisions/0149-independent-observability.md). Later description,
 fleet-comment, separate image-template-fixture and decision-status edits change

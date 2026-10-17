@@ -20,14 +20,14 @@ property verifies `plan` inputs, not the separate native `/proc` scan counters.
 
 Final pinned Cargo execution passed eight checks in 0.48 seconds. Cargo fmt and
 Clippy across all targets with warnings denied passed. Log:
-`/tmp/kittens-namespace-final-properties.log`.
+`/tmp/overalls-namespace-final-properties.log`.
 
 Two isolated mutants copied into `/tmp` failed the targeted new property:
 dropping the last target failed expected 511 versus observed 510 cardinality
 (0.54 seconds); refusing one target before the configured cap failed the
 bounded exact-inventory witness (2.89 seconds). Logs:
-`/tmp/kittens-namespace-omission-mutant.log` and
-`/tmp/kittens-namespace-cap-mutant.log`. Both failures were assertion failures
+`/tmp/overalls-namespace-omission-mutant.log` and
+`/tmp/overalls-namespace-cap-mutant.log`. Both failures were assertion failures
 in `exact_namespace_cap_preserves_all_targets`; compiler failure alone would
 not establish mutant detection. Production source was not mutated.
 
@@ -36,7 +36,7 @@ oracle gap, now closed by exact cardinality. Pinned Lilly `mix precommit` passed
 474 checks (84 properties and 390 tests) in 65.8 seconds with seed 637027;
 forced Dialyzer passed with zero errors in 15.31 seconds. Runtime, ADR and
 structural contract checks passed in the same execution. Log:
-`/tmp/kittens-namespace-lilly-precommit.log`. Final handbook and repository
+`/tmp/overalls-namespace-lilly-precommit.log`. Final handbook and repository
 publication gates remain pending.
 
 ## Remaining evidence

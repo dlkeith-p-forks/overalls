@@ -77,9 +77,9 @@ The native `team-ssh` check passed in **60.61 seconds**, followed by 0.39 second
 of VM cleanup; the Nix build exited zero. The composed framework type and lint
 checks passed with both gates enabled.
 
-- Test derivation: `/nix/store/p9qkmps56bmnjk5wyvxclksc7zfv7g9i-vm-test-run-kittens-team-ssh.drv`.
-- Result: `/nix/store/6ihprd0pkaqskmxf5jwdcg7zv8h78gb1-vm-test-run-kittens-team-ssh`.
-- Typed driver: `/nix/store/1nvb8yi844rblpi824i88zsx3j1wz0kv-nixos-test-driver-kittens-team-ssh`.
+- Test derivation: `/nix/store/p9qkmps56bmnjk5wyvxclksc7zfv7g9i-vm-test-run-overalls-team-ssh.drv`.
+- Result: `/nix/store/6ihprd0pkaqskmxf5jwdcg7zv8h78gb1-vm-test-run-overalls-team-ssh`.
+- Typed driver: `/nix/store/1nvb8yi844rblpi824i88zsx3j1wz0kv-nixos-test-driver-overalls-team-ssh`.
 
 This captured artifact includes the final production fixes, name constraints,
 redacted failure diagnostics and canonical UUID validation. Subsequent evidence

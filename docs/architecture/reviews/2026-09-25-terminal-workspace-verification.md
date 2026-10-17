@@ -37,7 +37,7 @@ NixOS VM in 16.5 seconds. One context-loss sample had an internal-buffer marker
 but no accessibility marker; a later sample had both.
 
 The separate native DOM-renderer experiment
-`/nix/store/53cvbpp0lxmha0ijbmqaddxcba6a8jbz-vm-test-run-kittens-terminal-fleet.drv`
+`/nix/store/53cvbpp0lxmha0ijbmqaddxcba6a8jbz-vm-test-run-overalls-terminal-fleet.drv`
 also failed at graphics after passing fifty shells. It received 145,595 bytes,
 no completion marker, and bounded DOM reads failed. WebGL-specific failure is
 therefore not established. The prior authority-sampling run reported host age
@@ -87,7 +87,7 @@ the earlier explicit-path invocation did check the helper.
   fixtures use synthetic output and establish no native transport claim.
 - Diagnostic native baseline failed graphics after personal identity, home,
   passwordless sudo, account restoration, geometry, clipboard and fifty shells:
-  `/nix/store/3vw0syjaby2qwl3519h3mncgd5frcbs4-vm-test-run-kittens-terminal-fleet.drv`.
+  `/nix/store/3vw0syjaby2qwl3519h3mncgd5frcbs4-vm-test-run-overalls-terminal-fleet.drv`.
   It retains pre-fix published source `7681806b` and unchanged native acceptance,
   adding phase timestamps, browser cgroup metrics and host/session metadata.
   The driver lint passed; the legacy composed terminal driver skips type checking.
@@ -104,7 +104,7 @@ the earlier explicit-path invocation did check the helper.
   bytes, network payloads or credentials.
 
 - The corrected pre-CA profiling candidate
-  `/nix/store/srm22am9rw0vm8dli76qlima2q7dfzfb-vm-test-run-kittens-terminal-fleet.drv`
+  `/nix/store/srm22am9rw0vm8dli76qlima2q7dfzfb-vm-test-run-overalls-terminal-fleet.drv`
   used source tree `38fd9c425182fb172f1c9a360bc7ec020ac36369`.
   Identity/home and passwordless-sudo attachment assertions passed. Account
   removal then lost its connection before completion; DOM reads still worked,
@@ -121,7 +121,7 @@ the earlier explicit-path invocation did check the helper.
 
 The frozen candidate based on `0cfa6302`, staged tree
 `23f1def992ca159a628d2559d2198a5e7dcfd5bf`, ran as
-`/nix/store/wbgp8pav8j4cy89wpwh7b5wl2yh9hb0m-vm-test-run-kittens-terminal-fleet.drv`.
+`/nix/store/wbgp8pav8j4cy89wpwh7b5wl2yh9hb0m-vm-test-run-overalls-terminal-fleet.drv`.
 Personal identity/home, sudo, missing-account restoration, title/search/geometry,
 clipboard and fifty persistent shells passed, including active attachment checks.
 Graphics began at VM monotonic 393.146 seconds and failed visible completion.
@@ -137,7 +137,7 @@ A sanitized CPU profile contains 29,840 samples spanning 157,747.928 ms.
 path is sixel image `unhook` → `addImage` → scroll/line feed → accessibility
 `_refreshRows` → `_renderRows` → `_alignRowWidth`. The shipped asset is
 `app-03930d7234b72aff0142c6562cb95b38.js` in
-`/nix/store/j1zvwamxynwkzrkw9v3j00bahhlz82rs-kittens-marshall-0.1.0`.
+`/nix/store/j1zvwamxynwkzrkw9v3j00bahhlz82rs-overalls-marshall-0.1.0`.
 Inspection of the pinned xterm 6.0.0 source confirms that row text/style writes
 alternate with forced geometry reads. Its accessibility debouncer records time
 before the synchronous refresh: a refresh lasting at least one second can let
@@ -229,7 +229,7 @@ journeys must run against the integrated source.
   Forced Dialyzer passed with zero errors, skips or unnecessary skips (52.82
   seconds after its PLT addition phase). Contracts, ADR/HLDD/options/coverage/views,
   all-file prek and Nix HLDD passed. The Nix HLDD artifact was
-  `/nix/store/1xa61588qa7s007dj5vy0kk69a0qys04-kittens-hldd-check`.
+  `/nix/store/1xa61588qa7s007dj5vy0kk69a0qys04-overalls-hldd-check`.
   These checks precede the later `8773b1b4` integration and any graphics fix.
 
 - Marshall `mix precommit` passed: 1,042 checks (100 properties and 942 tests),
@@ -253,9 +253,9 @@ passed. Forced Dialyzer reported zero errors, skips or unnecessary skips in
 `python-static` and Nix `hldd` also passed on this captured source.
 
 The first corrected native NixOS run was
-`/nix/store/9i6hd9fqk0ppcj6kz3jaw93zbyv7s3kc-vm-test-run-kittens-terminal-fleet.drv`.
+`/nix/store/9i6hd9fqk0ppcj6kz3jaw93zbyv7s3kc-vm-test-run-overalls-terminal-fleet.drv`.
 Its packaged asset was `app-804a1a1a18dddde7b15aec41c4d96ec1.js` in
-`/nix/store/9zcq6yynjm8m143rrp5iva8csn70q572-kittens-marshall-0.1.0`, SHA-256
+`/nix/store/9zcq6yynjm8m143rrp5iva8csn70q572-overalls-marshall-0.1.0`, SHA-256
 `3d39230a4351b3053c78ce1dbc86fec49358e80211546ec50c4b686d10b68b40`.
 The batch method and both callers were checked in that actual release.
 
@@ -281,7 +281,7 @@ absent. The browser log was recovered read-only from its preserved stopped disk
 because the coordinator exception preceded its ordinary log collection.
 
 A diagnostic run of the same application tree,
-`/nix/store/n0sgyclm51j62j5pjvg26gvm31jv4ddk-vm-test-run-kittens-terminal-fleet.drv`,
+`/nix/store/n0sgyclm51j62j5pjvg26gvm31jv4ddk-vm-test-run-overalls-terminal-fleet.drv`,
 retained the original assertions and collected connection state/query ages and
 the browser log on failure. This schedule had idle connections, with no sampled
 lock waiters, and reclaimed all captured connections after 30.848 seconds.
@@ -327,7 +327,7 @@ only intended startup-setting change is `client_connection_check_interval=1s`,
 which the native fixture reads back from PostgreSQL alongside every existing GUC.
 
 The corrected baseline fixture
-`/nix/store/vlzh77215zr73kd8jb3x19yb00ifcpal-vm-test-run-kittens-database-recovery.drv`
+`/nix/store/vlzh77215zr73kd8jb3x19yb00ifcpal-vm-test-run-overalls-database-recovery.drv`
 verified the healthy two-second query, effective production parameters, distinct
 holder/three queued waiters and ten Repo connections before machine loss. The
 holder met its 20-second bound. The all-connection assertion failed at its
@@ -340,7 +340,7 @@ connections at 43.050 seconds after client loss; it did not turn the failed
 confirmed absent. This reproduces the lock-convoy gap independently of the UI.
 
 The first candidate,
-`/nix/store/hmndpwb4x3dc48xixddbngcv7j5z59ck-vm-test-run-kittens-database-recovery.drv`,
+`/nix/store/hmndpwb4x3dc48xixddbngcv7j5z59ck-vm-test-run-overalls-database-recovery.drv`,
 read back one-second disconnect polling and all unchanged production settings.
 It passed the healthy query and required lock schedule, but still failed the
 35-second reclamation bound. Polling removed an active waiter; another had
@@ -357,8 +357,8 @@ candidate network limit; earlier runs used two seconds. The lock schedule and
 20-second holder/35-second connection assertions are unchanged.
 
 The second candidate passed in 68.07 seconds:
-`/nix/store/53mi80rgxpwnxd86rs02ky0ic4m7ma11-vm-test-run-kittens-database-recovery.drv`.
-Its release was `/nix/store/g5nw67wgxng6ch3hm00pyphx39da0w3y-kittens-marshall-0.1.0`,
+`/nix/store/53mi80rgxpwnxd86rs02ky0ic4m7ma11-vm-test-run-overalls-database-recovery.drv`.
+Its release was `/nix/store/g5nw67wgxng6ch3hm00pyphx39da0w3y-overalls-marshall-0.1.0`,
 built from the same stored source as the polling-only candidate with only the
 additional TCP setting change. The actual helper SHA-256 was
 `5b33ba9054b6eab1a96ceeb19039d5d0e502feb9ec0ebab72654b0cc6510c8ab`.
@@ -409,8 +409,8 @@ and review receipts; they do not change the exercised executable sources.
 
 | Guest | Exact test derivation | VM-script context | Driver summary | Browser journey | Cleanup |
 | --- | --- | --- | --- | --- | --- |
-| NixOS | `/nix/store/z9qyy2a1hdlwh56rj5ak54n0nxapc3g6-vm-test-run-kittens-terminal-fleet.drv` | 702.42 s | 702.66 s | 462.50 s | 3.59 s |
-| Ubuntu | `/nix/store/pij9l2xf6g2vcg4k5l7qx3gbpcaqmn08-vm-test-run-kittens-terminal-ubuntu-fleet.drv` | 683.84 s | 684.10 s | 379.78 s | 4.76 s |
+| NixOS | `/nix/store/z9qyy2a1hdlwh56rj5ak54n0nxapc3g6-vm-test-run-overalls-terminal-fleet.drv` | 702.42 s | 702.66 s | 462.50 s | 3.59 s |
+| Ubuntu | `/nix/store/pij9l2xf6g2vcg4k5l7qx3gbpcaqmn08-vm-test-run-overalls-terminal-ubuntu-fleet.drv` | 683.84 s | 684.10 s | 379.78 s | 4.76 s |
 
 The VM-script context is the driver's `finished: run the VM test script` timer;
 the slightly longer summary is its separate `test script finished` timer.
@@ -421,7 +421,7 @@ drivers were confirmed absent, with an independent cleanup review before the
 next native run. No production resource was used.
 
 Both used release
-`/nix/store/bg8gyn0ach9gi478bgipjkgdlqg3dx17-kittens-marshall-0.1.0` and browser
+`/nix/store/bg8gyn0ach9gi478bgipjkgdlqg3dx17-overalls-marshall-0.1.0` and browser
 helper `/nix/store/smzq6vwrr97p0z9ld6fwdr4d49aqwcxh-terminal-browser-typed/browser.py`.
 The helper SHA-256 `383f2abcd628a2b2287f8bfff61f8bd5c6e0feb4ac27b99edb47c2ee1a61d4c7`
 matches the reviewed source. No synthetic terminal replies, weakened deadlines

@@ -18,8 +18,8 @@ Verified local TLS returned 426, but the client returned `http_error` rather tha
 control request after 426. The first two-property run failed both properties;
 the strengthened retry-only run failed with an actual subsequent request, seed
 `751543`, in 6.5 seconds. Logs:
-`/tmp/kittens-audi426-initial-reproduction.log` and
-`/tmp/kittens-audi426-retry-reproduction.log`.
+`/tmp/overalls-audi426-initial-reproduction.log` and
+`/tmp/overalls-audi426-retry-reproduction.log`.
 
 Fresh read-only review found synchronous readiness cancellation before Fleet's
 terminal latch. A suspended scheduler could time out, converting refusal back
@@ -65,12 +65,12 @@ and refused reopening. The three-stage Fleet TLS property passed in 25.3 seconds
 covering fixed fetch/ack/catalog refusal with suspended readiness, a prior
 recoverable 503 and unchanged installed certificate metadata.
 
-Logs: `/tmp/kittens-audi426-dns-repaired.log`,
-`/tmp/kittens-audi426-configured-tls-focused.log`,
-`/tmp/kittens-audi426-owners-existing-focused.log`,
-`/tmp/kittens-audi426-key-publisher-focused.log`,
-`/tmp/kittens-audi426-readiness-focused.log`,
-`/tmp/kittens-audi426-fleet-suspended-focused-repaired.log`.
+Logs: `/tmp/overalls-audi426-dns-repaired.log`,
+`/tmp/overalls-audi426-configured-tls-focused.log`,
+`/tmp/overalls-audi426-owners-existing-focused.log`,
+`/tmp/overalls-audi426-key-publisher-focused.log`,
+`/tmp/overalls-audi426-readiness-focused.log`,
+`/tmp/overalls-audi426-fleet-suspended-focused-repaired.log`.
 
 The expanded five-stage Fleet property passed in 39.9 seconds, seed `751543`.
 Fixed fetch/ack/catalog/route-ready/catalog-with-active-job histories plus a
@@ -78,7 +78,7 @@ generated stage use actual verified TLS, validated wildcard installation and
 listener probes. The active-job stage independently witnesses an Installation
 job blocked on route readiness, suspends its scheduler at the next catalog
 refusal and observes actual job death. Log:
-`/tmp/kittens-audi426-fleet-active-job-focused.log`.
+`/tmp/overalls-audi426-fleet-active-job-focused.log`.
 
 The focused changed-owner and Health suite passed 24 checks (nine properties,
 fifteen tests) in 32.7 seconds, seed `751543`; this preceded the latest active-job
@@ -98,12 +98,12 @@ is unchanged, but this execution predates that annotation revision.
 
 The full Audi precommit gate passed 172 checks (48 properties, 124 tests),
 seed `484316`, in 149.3 seconds; forced Dialyzer passed in 6.01 seconds with
-zero errors and skips. Log: `/tmp/kittens-audi426-full-precommit.log`.
+zero errors and skips. Log: `/tmp/overalls-audi426-full-precommit.log`.
 The formatter allowlist correction was made during this gate; subsequent
 all-file logging checks verified it, together with Ruff format/check and ty.
 The final source-built packaged DNS rerun passed in 105 seconds, archive
 `1791001845760-3780571-0.jsonl`, including the final `Literal` annotation and
-formatter allowlist. Log: `/tmp/kittens-audi426-final-static-native-repeat.log`.
+formatter allowlist. Log: `/tmp/overalls-audi426-final-static-native-repeat.log`.
 ADR/HLDD/options/coverage/views checks passed. Evaluated Nix HLDD passed in
 21 seconds, archive `1791001729269-3692749-0.jsonl`; final documentation
 receipt reconciliation is checked again before commit. Fresh independent
@@ -126,7 +126,7 @@ is now bounded at 600 seconds, retaining all three complete mutation menus,
 all refusal/privacy/immutability assertions and each probe's trace deadlines.
 The final component run passed all 172 checks (48 properties, 124 tests),
 seed `383978`, in 162.4 seconds; forced Dialyzer passed in 6.33 seconds with
-zero errors/skips. Log: `/tmp/kittens-audi426-budget-final-precommit.log`.
+zero errors/skips. Log: `/tmp/overalls-audi426-budget-final-precommit.log`.
 The passing run covers the final formatter and test-budget revisions. Earlier logs:
-`/tmp/kittens-audi426-final-precommit.log` and
-`/tmp/kittens-audi426-invalid-boot-same-seed.log`.
+`/tmp/overalls-audi426-final-precommit.log` and
+`/tmp/overalls-audi426-invalid-boot-same-seed.log`.

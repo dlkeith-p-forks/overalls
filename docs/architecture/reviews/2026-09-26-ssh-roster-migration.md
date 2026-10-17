@@ -42,7 +42,7 @@ bounded cleanup archives grants/keys.
 bypassing the Cedar writer step entirely.
 
 **Discovery (c), low: no native pin for stale roster feeds — CLOSED** by the
-matrix's live-guest `kittens-ssh-authorize reconcile` refusal checks.
+matrix's live-guest `overalls-ssh-authorize reconcile` refusal checks.
 
 **Evidence refresh (d):** the retained-image matrix re-executes per-user SSH
 identity after relocation and clone legs on sources current with ADR-0124/0125.

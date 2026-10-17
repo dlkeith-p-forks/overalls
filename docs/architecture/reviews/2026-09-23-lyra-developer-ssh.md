@@ -33,7 +33,7 @@ Marshall precommit gate (including forced Dialyzer), ADR structure and code
 contract checks all passed.
 
 Live acceptance on 2026-09-23 used the published
-`https://overalls.dev/kittens/install.sh` script against the retained
+`https://overalls.dev/overalls/install.sh` script against the retained
 `guest-ssh-nixos-0922` VM. The installer fetched the Linux AMD64 artifact,
 verified its SHA-256 against the live manifest, installed the wildcard SSH
 profile, and opened an interactive root shell through Lyra and Audi. The guest

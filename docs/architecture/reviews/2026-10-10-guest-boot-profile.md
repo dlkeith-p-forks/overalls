@@ -92,7 +92,7 @@ Other measured facts:
   comment edits.
 - `cargo test` in `lilly/native/boot-log`: 7 unit/property tests and 6 process
   tests passed (lilly-boot-log: 13 passed).
-- `cargo test --bin kittens-trustd`: kittens-trustd receiver tests 8 passed,
+- `cargo test --bin overalls-trustd`: overalls-trustd receiver tests 8 passed,
   including the three verified-current, rotation/drift and failed-rebuild cases.
   Clippy for all Lyra targets was clean.
 - The `guest-readiness`, `private-services-guest`, `guest-ssh` and

@@ -59,7 +59,7 @@ Nix `backup-operators` passed six methods in **686.622 seconds**, with zero
 failures. Captured source tree
 `37c2e3a5573ec6fc1c746acca88ad286e6d9948f`, based on `08ae4faa`, ran the six
 methods with Python 3.13.15 and Restic 0.19.1 in the isolated Nix derivation
-`/nix/store/1afrg8g1a8zv9li5bfzqxfq3m0f0c6v4-kittens-backup-operator-histories.drv`.
+`/nix/store/1afrg8g1a8zv9li5bfzqxfq3m0f0c6v4-overalls-backup-operator-histories.drv`.
 Its resolved-module Ruff and ty checks passed before runtime execution. The
 normal test process and Nix session exited zero; code/check files remain identical
 to this capture, with only documentation/evidence changes afterward.
@@ -87,7 +87,7 @@ The first isolated Nix attempt stopped at two fixture-only invariant-list typing
 errors before running the histories. Those were corrected by narrowing fixture
 JSON with the existing typed boundary. No production defect was reproduced.
 The first four-method runtime capture
-(`/nix/store/3vff82p6xzk91hz332ydk2d5kj2lsyyf-kittens-backup-operator-histories.drv`)
+(`/nix/store/3vff82p6xzk91hz332ydk2d5kj2lsyyf-overalls-backup-operator-histories.drv`)
 finished in 660.814 seconds with one failure: a fixture precondition error in the
 first lock schedule. Runner initializes its private `host-snapshots` directory before acquiring the host lock. Repository and source
 inventories were unchanged. A focused run reproduced that exact directory-only

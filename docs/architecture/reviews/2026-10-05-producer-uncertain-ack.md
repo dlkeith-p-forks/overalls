@@ -9,8 +9,8 @@ and partial implementation status remain unchanged. This extends local boundary
 verification; native durable checkpoint and per-source journeys remain separate.
 
 The captured baseline called the producer project `slo_client/` and exposed
-`KittensSLOClient.Client`. The current breaking rename is
-`elixir/request_accounting/` with `Kittens.RequestAccounting.Producer`,
+`OverallsSLOClient.Client`. The current breaking rename is
+`elixir/request_accounting/` with `Overalls.RequestAccounting.Producer`,
 `QualityMarker` and `RecorderRPC`; the histories and execution scope below
 remain evidence for the same boundary.
 
@@ -43,7 +43,7 @@ Fixture resources have nested cleanup and actual server-death observation.
 
 Initial acknowledgment property passed seed244091 in0.8seconds. The combined
 two-property file passed seed211549 in1.1seconds, exit0, warnings-as-errors;
-log `/tmp/kittens-producer-uncertain-ack-focused2.log`. Pinned formatter passed.
+log `/tmp/overalls-producer-uncertain-ack-focused2.log`. Pinned formatter passed.
 Component precommit, forced Dialyzer, governance, integration and mutation
 validation remain pending. No standalone test-module type result is claimed.
 
@@ -59,7 +59,7 @@ Full SLO-client precommit passed11checks (8properties,3tests), seed759065,
 1.7seconds, exit0. Forced project Dialyzer passed3.2seconds with zero errors,
 skips or unnecessary skips; PLT update51.9seconds. Toolchain,138-ADR structural
 check, contract gate, compiler and formatter passed. Log
-`/tmp/kittens-producer-uncertain-ack-precommit.log`. Project Dialyzer analyzes
+`/tmp/overalls-producer-uncertain-ack-precommit.log`. Project Dialyzer analyzes
 the three production client modules; dedicated test-module analysis is separate.
 
 An isolated single mutant changes the uncertainty handler's state from gaptrue
@@ -67,9 +67,9 @@ to gapfalse. Patch SHA256
 `2852b807562e2b1d733fd4419e62f912dfd9c55fc6341dc2eff17868f1e95ad7`.
 At the same seed211549, both generated properties fail on dropped admission
 acknowledgment because the Client no longer retains its gap. Run exited2 in
-0.3seconds, log `/tmp/kittens-producer-uncertain-ack-mutant.log`. The mutant
+0.3seconds, log `/tmp/overalls-producer-uncertain-ack-mutant.log`. The mutant
 production file was restored; the same two properties then passed1.2seconds,
-exit0, same seed, log `/tmp/kittens-producer-uncertain-ack-restored.log`. This
+exit0, same seed, log `/tmp/overalls-producer-uncertain-ack-restored.log`. This
 is bounded local sensitivity, not a hosted sweep or native durable-commit test.
 
 Dedicated test-module typing initially hit a missing Elixir debug backend, then
@@ -82,7 +82,7 @@ at this stage. Final receipts, hooks and evaluated HLDD are still pending.
 
 The compiled new test module and all three production client modules passed
 dedicated Dialyzer analysis in0.41seconds, exit0, with no diagnostics. Log
-`/tmp/kittens-producer-uncertain-ack-own-test-types.log`. Its copied project PLT
+`/tmp/overalls-producer-uncertain-ack-own-test-types.log`. Its copied project PLT
 includes ExUnit, Logger, IEx and Mix metadata. Dependency construction reports
 unknown optional Mix/OTP/EEx/Hex calls; those are outside the analyzed source
 scope and are not credited as warning-free dependency verification. The source
@@ -103,10 +103,10 @@ Final reviewed receipts, hooks and evaluated HLDD results are recorded below.
 
 All-file hooks passed, including reviewed HLDD receipts, Ruff and ty. Evaluated
 Nix HLDD passed38seconds, exit0, archive `1791206411200-2444339-0.jsonl`, log
-`/tmp/kittens-producer-uncertain-ack-final-hooks2.log`. Source-derived views,
+`/tmp/overalls-producer-uncertain-ack-final-hooks2.log`. Source-derived views,
 generated options and ADR138 structural validation passed. The first Nix HLDD
 snapshot omitted the newly added test/review before staging and failed references;
-it is retained in `/tmp/kittens-producer-uncertain-ack-final-hooks.log`, archive
+it is retained in `/tmp/overalls-producer-uncertain-ack-final-hooks.log`, archive
 `1791206221871-2291961-0.jsonl`. Reviewing and staging the complete file set and
 refreshing only the affected receipts resolved that snapshot failure. No hook
 was bypassed. Existing library/marker/RPC implementations are unchanged.

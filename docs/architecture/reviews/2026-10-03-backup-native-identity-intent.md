@@ -58,12 +58,12 @@ with no blocking finding.
 
 The final copied fixture and production backup modules passed pinned Python 3.13
 Ruff format/lint and ty in `backup-types`, exit 0, in 10 seconds; archive
-`1791015173465-2786229-0.jsonl`, log `/tmp/kittens-backup-native-identity-types.log`.
+`1791015173465-2786229-0.jsonl`, log `/tmp/overalls-backup-native-identity-types.log`.
 Existing state/workflow/status tests execute too; this is typing evidence, not
 native fixture execution.
 
 The combined native suite passed in 169 seconds, exit 0; archive
-`1791015235097-2825945-0.jsonl`, log `/tmp/kittens-backup-native-identity-machine.log`.
+`1791015235097-2825945-0.jsonl`, log `/tmp/overalls-backup-native-identity-machine.log`.
 The actual property command/subtest took 101.13 seconds; VM script 120.28 seconds.
 All thirty-seven histories completed: thirteen original ownership, eight worker
 death, eight actual identity replacement and eight pre-GUID intent histories.

@@ -17,7 +17,7 @@ graceful sender shutdown. The zero-acknowledgment fairness oracle used the total
 actor count as its completion target even after one journal's sole event had
 been acknowledged. A legitimate repeated offer from the remaining journal
 therefore failed the disjointness assertion. The failure is retained in
-`/tmp/kittens-native-beam-lilly-precommit.log`; its forced Dialyzer subsequently
+`/tmp/overalls-native-beam-lilly-precommit.log`; its forced Dialyzer subsequently
 passed in 13.34 seconds with zero errors or skips, which does not make that
 precommit successful (terminal exit two).
 
@@ -47,17 +47,17 @@ the explicit assertion that the fixed witness leaves exactly one event. The
 final typed-list representation passed the complete Lilly precommit: 475 checks
 (85 properties and 390 tests), seed279043, in 98.0 seconds. The final forced
 Dialyzer passed in 12.83 seconds with zero errors or skips; wrapper exit zero.
-Log: `/tmp/kittens-audit-roster-precommit-final.log`. Standalone test-module Dialyzer now reports zero warnings
+Log: `/tmp/overalls-audit-roster-precommit-final.log`. Standalone test-module Dialyzer now reports zero warnings
 using an isolated copy of the dependency PLT extended with pinned ExUnit modules.
 The initial analysis omitted ExUnit and reported unknown framework functions;
 after adding them, MapSet opaque-representation warnings remained. The helper
 now stores at most three unique resource IDs as a typed list and validates
 resource IDs as strings before collection. Membership, equality, disjointness
 and uniqueness requirements are unchanged. No warning exclusion was added.
-Log: `/tmp/kittens-audit-roster-types-list.log`.
+Log: `/tmp/overalls-audit-roster-types-list.log`.
 Logs:
-`/tmp/kittens-audit-roster-focused.log` and
-`/tmp/kittens-audit-roster-final-focused.log`.
+`/tmp/overalls-audit-roster-focused.log` and
+`/tmp/overalls-audit-roster-final-focused.log`.
 
 The handbook already requires exact pending-event drain before actor activation
 and distinguishes this local sender fixture from Runtime/native/authenticated

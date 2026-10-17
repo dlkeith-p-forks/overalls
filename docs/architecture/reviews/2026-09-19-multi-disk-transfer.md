@@ -55,7 +55,7 @@
   warnings-as-errors tests, format, Dialyzer with forced recheck) passed for
   protocol, Lilly, Marshall and Porsche; `elixir scripts/check_adrs.exs`
   passed with 70 decisions.
-- Native `kittens-zfs-transfer`: passed in 233.55 s; the new
+- Native `overalls-zfs-transfer`: passed in 233.55 s; the new
   "inception two-drive adoption publishes every drive and refuses incomplete
   sets" subtest exercises real `zfs send | zfs receive` of a
   `rootfs.ext4` + 256 GiB `data.raw` dataset through production
@@ -70,7 +70,7 @@
   plain-adoption retained-disk refusal, so "refuses incomplete sets" tests
   an actually incomplete set; verification of the corrected subtest is
   recorded in the lifecycle integration review.
-- Native `kittens-zfs-guest`: passed in 1373.10 s; the new
+- Native `overalls-zfs-guest`: passed in 1373.10 s; the new
   "inception clone copies both drives into an independent placement" subtest
   clones a real confined Inception Firecracker guest through production
   `Lilly.Clone.Effects`: both drives publish under the destination identity,

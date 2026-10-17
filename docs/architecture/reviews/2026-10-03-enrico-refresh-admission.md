@@ -38,7 +38,7 @@ clone call or temporary clone directory. Release of one actual worker permits
 the previously refused attempt exactly once. Final settlement conserves nine
 outcomes, including exactly one failure for the death case, and retires monitors
 and generations. Focused execution passed one property, seed `751543`, in 1.1
-seconds, exit 0. Log: `/tmp/kittens-enrico-real-saturation-focused.log`.
+seconds, exit 0. Log: `/tmp/overalls-enrico-real-saturation-focused.log`.
 The callback refusal property separately passed in 0.4 seconds at that seed.
 
 These tests exercise actual task ownership with controlled Git, and authenticated
@@ -61,17 +61,17 @@ A fixed six-case matrix (Manager or Task.Supervisor death, each with 1/7/8 held
 workers) followed by three generated histories passed one focused property,
 seed `751543`, in 1.4 seconds, exit 0. It independently monitors the old Manager,
 task supervisor and all BEAM workers down before replacement admission.
-Log: `/tmp/kittens-enrico-restart-fixed-matrix.log`. Expanded steady-state
+Log: `/tmp/overalls-enrico-restart-fixed-matrix.log`. Expanded steady-state
 success/Git-failure/death release and retained replay at saturation passed one
 property at that seed in 1.3 seconds, exit 0. Log:
-`/tmp/kittens-enrico-three-outcome-saturation.log`.
+`/tmp/overalls-enrico-three-outcome-saturation.log`.
 
 An independent native PID probe then failed the first fixed restart witness:
 the controlled Git shell remained runnable after all old BEAM owners terminated.
 The fixture records validated numeric native PIDs and checks their /proc states
 before admitting replacement work. The regression failed after 5.7 seconds,
 seed `751543`, exit 2. Log:
-`/tmp/kittens-enrico-native-owner-retirement-probe.log`. BEAM retirement alone
+`/tmp/overalls-enrico-native-owner-retirement-probe.log`. BEAM retirement alone
 therefore does not fence native Git writes. The new failing regression must remain
 until native command ownership is repaired; this change is not ready to commit.
 The superseded full component gate was deliberately cancelled for this repair;
@@ -109,7 +109,7 @@ The Rust prototype passed compilation and all-target Clippy with warnings as
 errors. The formerly failing native PID restart probe passed the same seed
 `751543`, one property in 2.0 seconds, exit 0, across the fixed six-case matrix
 and three generated histories. Log:
-`/tmp/kittens-enrico-native-owner-repaired-restart.log`. This result precedes the
+`/tmp/overalls-enrico-native-owner-repaired-restart.log`. This result precedes the
 read-lock refinement and does not establish final source or packaged acceptance.
 Helper-specific properties, native read/write coexistence, packaging, final
 component/Dialyzer and documentation gates remain required. No commit is ready.
@@ -119,8 +119,8 @@ caller EOF with actual PID retirement and stable-inode successor; eight-slot
 saturation with one-slot recovery; write contention with retained read access;
 timeout and exact/overflow output; linked/nonprivate lock refusal before child
 execution. All-target Clippy passed with warnings as errors. Logs:
-`/tmp/kittens-enrico-native-owner-final-five-tests.log` and
-`/tmp/kittens-enrico-native-owner-final-five-clippy.log`. An earlier fixture run
+`/tmp/overalls-enrico-native-owner-final-five-tests.log` and
+`/tmp/overalls-enrico-native-owner-final-five-clippy.log`. An earlier fixture run
 assumed absent `/bin/bash` and failed before useful witnesses; the shell now
 requires an explicit existing pinned path. An earlier Clippy run also rejected
 two unused fixture items. Neither failure is passing evidence.
@@ -147,8 +147,8 @@ claims are limited to remaining command capacity.
 
 The final local ten native properties passed in 10.41 seconds, zero failures.
 All-target Clippy passed with warnings as errors in 0.38 seconds. Logs:
-`/tmp/kittens-enrico-native-owner-ten-tests-repaired.log` and
-`/tmp/kittens-enrico-native-owner-ten-clippy.log`. These add exact/overflow
+`/tmp/overalls-enrico-native-owner-ten-tests-repaired.log` and
+`/tmp/overalls-enrico-native-owner-ten-clippy.log`. These add exact/overflow
 16 MiB and 64 MiB production output families with concurrent byte checking, and
 helper SIGKILL with independently witnessed surviving-descendant lock retention,
 refusal and explicit retirement/recovery. An initial SIGKILL fixture falsely
@@ -181,7 +181,7 @@ reviewer performed no extra execution; passing evidence is recorded above.
 
 Final focused application execution against the source-built native helper passed
 all eight Manager history properties, seed `751543`, in 254.6 seconds, exit 0.
-Log: `/tmp/kittens-enrico-native-final-focused.log`. This includes exact native
+Log: `/tmp/overalls-enrico-native-final-focused.log`. This includes exact native
 writer refusal before clone cleanup/removal effects, the Manager/Tasks restart
 matrix, fixed success/Git-failure/death saturation release and prior generation
 histories. Complete component precommit and final documentation gates follow.
@@ -191,7 +191,7 @@ histories. Complete component precommit and final documentation gates follow.
 Complete Enrico precommit passed fourteen checks (eleven properties, three tests),
 seed `775108`, in 358.0 seconds. Forced Dialyzer passed in 5.03 seconds with zero
 errors, skips or unnecessary skips. Compiler, formatting, contracts and catalogued
-logging passed. Log: `/tmp/kittens-enrico-native-final-precommit.log`.
+logging passed. Log: `/tmp/overalls-enrico-native-final-precommit.log`.
 
 All-file prek, Ruff format/lint and ty, ADR structure, handbook receipts,
 generated options/coverage/views and Nix HLDD passed. The Nix handbook archive is

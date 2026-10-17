@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Native ZFS I/O subinventory
 
-Read-only source inventory on 2026-10-13, checkout `/home/ghuntley/src/kittens-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`. Scope: `nix/verification/tests/machines/zfs-io/{default.nix,driver.py,probe.exs}` plus called-source contracts and repository review evidence. No builds, evaluations, test executions, repository changes, secret reads, or retired Antithesis harness reads. `external_references=[]`.
+Read-only source inventory on 2026-10-13, checkout `/home/ghuntley/src/overalls-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`. Scope: `nix/verification/tests/machines/zfs-io/{default.nix,driver.py,probe.exs}` plus called-source contracts and repository review evidence. No builds, evaluations, test executions, repository changes, secret reads, or retired Antithesis harness reads. `external_references=[]`.
 
 ## Present-source incompatibility
 

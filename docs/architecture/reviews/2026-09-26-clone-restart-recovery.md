@@ -170,7 +170,7 @@ Native `cloning-fleet` passed in 1177.65 seconds. This includes the injected
 failed source restoration, retained slots and blocked admission, public Porsche
 retry, preserved destination, subsequent clones, bidirectional relocation,
 independent contents and clone audit after source deletion. The output is
-`/nix/store/hmv9whs65ihxsqaplzl6v85naw7d3ila-vm-test-run-kittens-cloning-fleet`.
+`/nix/store/hmv9whs65ihxsqaplzl6v85naw7d3ila-vm-test-run-overalls-cloning-fleet`.
 Its captured source precedes the unrelated Underclass and agent CLI integration;
 the relevant runtime and selected fleet behavior are unchanged by that integration.
 The evaluated `2d66e76d` fleet script differs only by a final blank line from
@@ -181,7 +181,7 @@ The owned-staging candidate passed Lilly `mix precommit`: 410 checks
 skips or unnecessary skips. The focused journal/received-dataset/ZFS/actor group
 passed 41 checks (six properties, 35 examples). All-file Python/logging/contracts
 and ADR/HLDD options, scenario and topology checks passed; Nix HLDD produced
-`/nix/store/w67n5g6653cr81y2ywzb5hf83vjw622w-kittens-hldd-check`.
+`/nix/store/w67n5g6653cr81y2ywzb5hf83vjw622w-overalls-hldd-check`.
 
 The isolated native owned-staging journey passed in 528.34 seconds. It used the
 actual source-built ZFS VM and unchanged clone block extracted from the full
@@ -189,12 +189,12 @@ driver, with a bounded 1800-second driver deadline. It verified quiet deferral,
 unchanged boot/launch evidence, malformed journal/GUID/nonce and bundle refusal,
 same-generation restart after adoption, independent writes, source deletion and
 surviving-copy reads. Its driver is
-`/nix/store/kw9wxrv6d1cs695m16q91y5yfr0rrgvi-nixos-test-driver-kittens-zfs-guest`;
+`/nix/store/kw9wxrv6d1cs695m16q91y5yfr0rrgvi-nixos-test-driver-overalls-zfs-guest`;
 the captured Lilly/protocol source at
 `/nix/store/wgypz31fhh8q3wmnpsakksqxz5vkb8ls-source` matched that candidate at
 execution, before the subsequent prepared-receive correction.
 This is scoped native evidence, not a full ZFS-suite pass. The full staging-candidate cloning-fleet passed in 1176.44 seconds at
-`/nix/store/8axpfash4fzicf7a6cpij3nc1hb51i3x-vm-test-run-kittens-cloning-fleet`. The ZFS candidate was interrupted after about
+`/nix/store/8axpfash4fzicf7a6cpij3nc1hb51i3x-vm-test-run-overalls-cloning-fleet`. The ZFS candidate was interrupted after about
 24 minutes to include the prepared-receive timing correction found during final
 review. Both native checks were relaunched for that final correction; their
 results remain pending at this checkpoint.
@@ -207,7 +207,7 @@ recognition, without clone/runtime changes. The integrated component and
 governance recheck is recorded separately.
 
 The final prepared-receive native journey passed in 854.79 seconds. It used
-`/nix/store/8jihvnkh912pxy1wkp0n4m2cqysplgqb-nixos-test-driver-kittens-zfs-guest`
+`/nix/store/8jihvnkh912pxy1wkp0n4m2cqysplgqb-nixos-test-driver-overalls-zfs-guest`
 and captured source `/nix/store/wgv2b62j2852rf1xr9d5kk6x1amkm37z-source`.
 The exact extracted customer-clone block passed the pre-native deferral and
 missing-bound refusal, owned-staging and malformed journal/GUID/nonce/bundle
@@ -218,7 +218,7 @@ the complete ZFS and fleet runs remain pending.
 Final Lilly precommit passed 410 checks (50 properties, 360 examples) in
 13.8 seconds, with forced Dialyzer reporting zero errors or skips. ADR, HLDD
 reference/scenario/topology checks and all-file prek passed. Nix HLDD produced
-`/nix/store/ijvgyhb65ip4h0l169amchp91a3hcwwf-kittens-hldd-check`.
+`/nix/store/ijvgyhb65ip4h0l169amchp91a3hcwwf-overalls-hldd-check`.
 Integration of `fff6587e` adds guest CLI candidate-start recovery and a separate
 native fixture; it leaves Lilly, Marshall and protocol runtime code unchanged.
 The running native checks retain their captured pre-integration guest package.
@@ -231,7 +231,7 @@ two excluded, in 872.5 seconds with the final Lilly dependency compiled first.
 Forced Dialyzer reported zero errors, skips or unnecessary skips. The integrated
 all-file Python/logging/contracts and ADR/HLDD reference/scenario/topology gates
 passed again after `4bd7d237`. Nix HLDD on the preceding integrated candidate
-produced `/nix/store/rvlncgixnzx1581amad85i30srmlk44f-kittens-hldd-check`.
+produced `/nix/store/rvlncgixnzx1581amad85i30srmlk44f-overalls-hldd-check`.
 
 The follow-up is published as an authorized checkpoint with these component and
 isolated native results. Complete ZFS, captured fleet and integrated fleet runs
@@ -239,13 +239,13 @@ are still running; their pending status does not constitute a full-suite pass.
 Production retry requires confirmed normal activation of this follow-up first.
 
 The captured prepared-receive `cloning-fleet` subsequently passed in 1487.16
-seconds at `/nix/store/p93kq3h26pbvap7n1zfcpsq3i1l8a2wj-vm-test-run-kittens-cloning-fleet`.
+seconds at `/nix/store/p93kq3h26pbvap7n1zfcpsq3i1l8a2wj-vm-test-run-overalls-cloning-fleet`.
 The integrated guest-package fleet also passed at
-`/nix/store/f65hqczbi7ixak34v2j67dv6y8k2z21p-vm-test-run-kittens-cloning-fleet`.
+`/nix/store/f65hqczbi7ixak34v2j67dv6y8k2z21p-vm-test-run-overalls-cloning-fleet`.
 These executions precede the parent-accounting boundary repair. That repair's
 focused Lilly group passed 14 checks (three properties, 11 examples).
 The full native `zfs-guest` journey then passed in 3589.48 seconds at
-`/nix/store/fv43wh8bbs25kbbnvadypl58af4l7dmr-vm-test-run-kittens-zfs-guest`,
+`/nix/store/fv43wh8bbs25kbbnvadypl58af4l7dmr-vm-test-run-overalls-zfs-guest`,
 covering the parent-incoherent fixture: strict inspection refused the incoherent
 parent, identity-only probing deferred restart three times without a launch
 attempt or intent change, the malformed journal stayed terminal, and the same

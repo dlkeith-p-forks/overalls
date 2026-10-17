@@ -73,7 +73,7 @@ the packages it installs, WSL features, and how the offline build reaches them.
 8. **Installers may add per-account PATH entries.** The .NET SDK that Visual
    Studio installs adds `%USERPROFILE%\.dotnet\tools` for the installing
    account; that entry alone is allowed (the SDK is on the machine PATH), and
-   the image now also requires `KITTENS-WINGET-INSTALLED`, so a failed install
+   the image now also requires `OVERALLS-WINGET-INSTALLED`, so a failed install
    phase can no longer hide behind a passing verify phase.
 
 ## Validation performed
@@ -89,7 +89,7 @@ the packages it installs, WSL features, and how the offline build reaches them.
 | Offline Visual Studio install on `win-dx-1` from the recorded layout | exit 0 in 571 s, `vswhere` reports Visual Studio Community 2026 18.11.12306.390 |
 | Image build with Visual Studio (first attempt) | layout rebuilt from the file server in 108 s (1 057 files, 5.95 GB, digests checked); all nine packages installed (Visual Studio 801 s); verify passed; install phase refused the `.dotnet\tools` PATH entry (finding 8) |
 | Fleet proof of the Visual Studio image | Fleet deploy of `ecdede1af` healthy on dungarees 15:38:06 Z and overalls 15:41:07 Z; new VM `win-vs-1` (catalog image `sha256:625787ae…`, default 1 vCPU, 2 GiB, 64 GiB) over SSH as the roster user: git 2.55.0.windows.5, gh 2.102.0, Claude Code 2.1.292, codex-cli 0.161.0, ripgrep 15.2.0, `vswhere` Visual Studio Community 2026 with both workloads, `cl` 19.51.36260 for x64 through VsDevCmd, `dotnet` 10.0.402, no layout left, 30 GiB free |
-| Image `hd2bvg1n…-lilly-windows-server-2025-x86_64` | pass, 1 491 s; 64 GiB disk, 22.0 GB used; all nine packages (Visual Studio 756 s), `KITTENS-WINGET-INSTALLED`, every command on the machine PATH, `vswhere` both workloads, autologon cleared |
+| Image `hd2bvg1n…-lilly-windows-server-2025-x86_64` | pass, 1 491 s; 64 GiB disk, 22.0 GB used; all nine packages (Visual Studio 756 s), `OVERALLS-WINGET-INSTALLED`, every command on the machine PATH, `vswhere` both workloads, autologon cleared |
 
 ## Remaining gaps
 

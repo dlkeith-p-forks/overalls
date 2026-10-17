@@ -115,7 +115,7 @@ Native execution **passed all eight stages in 413.94 seconds** on the captured
 source below. Nix elapsed time was 424 seconds; cleanup completed in 4.13 seconds.
 The coordinator independently confirmed driver PID 538702 and all nine QEMU
 PIDs 539046–539054 had exited. Output:
-`/nix/store/gn7g31vnsp36kkpah2zjzv4i4y2cs5ir-vm-test-run-kittens-integration-renewals`.
+`/nix/store/gn7g31vnsp36kkpah2zjzv4i4y2cs5ir-vm-test-run-overalls-integration-renewals`.
 
 | Executed stage | Seconds |
 | --- | ---: |
@@ -138,9 +138,9 @@ improvement.
 
 Captured native tree: `901d7fd45a0436f6b2e1991302a47c81fb51a78e`, base `f4de549a`.
 Native derivation:
-`/nix/store/4sdl4kiha4sgli3r7lcdr0p4fbxjvajc-vm-test-run-kittens-integration-renewals.drv`.
+`/nix/store/4sdl4kiha4sgli3r7lcdr0p4fbxjvajc-vm-test-run-overalls-integration-renewals.drv`.
 Its strict composed driver passed typing and lint and produced
-`/nix/store/zw8bhwx9kk7q4dwb4kfb5qp4qin04y0p-nixos-test-driver-kittens-integration-renewals`.
+`/nix/store/zw8bhwx9kk7q4dwb4kfb5qp4qin04y0p-nixos-test-driver-overalls-integration-renewals`.
 Earlier candidates `xl50xyzh` (redundant logger) and `9d8lk8hj` (authorized request
 counter only) were superseded without native execution. The final candidate
 inherits one logger and separately counts all accepted TLS connections before
@@ -149,7 +149,7 @@ HTTP parsing. Failed TLS handshakes are not counted.
 ## Type and captured-source boundaries
 
 The property fixture is projected into concrete Host/User/VirtualMachine,
-connection and `KittensProtocol.report()` fields. Elixir cannot express literal
+connection and `OverallsProtocol.report()` fields. Elixir cannot express literal
 binary map keys in typespecs; bounded binary-key value types accompany real
 closed-binding parser validation in the request constructor. The compiler first
 rejected a literal-binary-key annotation; the corrected interface does not rely
@@ -174,7 +174,7 @@ separately; a passing old native driver is not execution of its replacement.
   active connections in dedicated partition `verify016` after the owner exited.
 - All-file prek, ADR, code-contract syntax/discovery, HLDD review, generated
   option/coverage/view checks and `git diff --check` passed. Nix HLDD passed at
-  `/nix/store/zn6dsi0xklxj5h5v048xwqxn7n0s56r9-kittens-hldd-check` before this
+  `/nix/store/zn6dsi0xklxj5h5v048xwqxn7n0s56r9-overalls-hldd-check` before this
   final evidence-only record update; its recapture is checked separately.
 - The captured `integration-renewals` native run passed all eight stages as
   recorded above. Final evidence updates change documentation only; application

@@ -35,11 +35,11 @@ untracked files. Before committing, a second snapshot contained only the staged
 sysctl change on top of the committed tree, excluding unrelated relocation work.
 
 - Module evaluation passed, including all six new sysctl cases:
-  `/nix/store/f39lqz6b5fz1apmij3bf79jbcq2w6zfc-kittens-module-configuration-check.json.drv`.
+  `/nix/store/f39lqz6b5fz1apmij3bf79jbcq2w6zfc-overalls-module-configuration-check.json.drv`.
 - The two-node KVM suite passed in 62 seconds, checking BBR on outgoing and
   accepted IPv4 TCP sockets, fq on eth1, inherited file/inotify/PID/buffer and
   forwarding values, disabled configuration, and retained policy after reboot:
-  `/nix/store/2vaymfh06rjbvf07i8vl2682x2gl9jwd-vm-test-run-kittens-sysctl.drv`.
+  `/nix/store/2vaymfh06rjbvf07i8vl2682x2gl9jwd-vm-test-run-overalls-sysctl.drv`.
 - Full `nix flake check --no-build` passed. This evaluates the other suites;
   it does not execute them.
 - `devenv shell` ADR and contract format/discovery checks passed (39 ADRs,
@@ -47,7 +47,7 @@ sysctl change on top of the committed tree, excluding unrelated relocation work.
 - The four-node service-role regression passed with the real source-built
   Marshall/Lilly packages, checking independent roles, effective service limits,
   restarts and proxy TLS/failover:
-  `/nix/store/x0gymycjr1jmivavrgkhpvqrn2a5q9l0-vm-test-run-kittens-service-roles.drv`.
+  `/nix/store/x0gymycjr1jmivavrgkhpvqrn2a5q9l0-vm-test-run-overalls-service-roles.drv`.
 - The isolated staged tree also passed module-configuration, sysctl and
   service-role checks, reusing successful immutable results where unchanged.
   Its ADR gate passed with 38 decisions and its contract gate passed with

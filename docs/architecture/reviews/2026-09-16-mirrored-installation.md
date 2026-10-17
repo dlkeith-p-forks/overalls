@@ -11,7 +11,7 @@ in the worktree; their location has been requested. Generic bootstrap inputs
 are explicitly identified and are not claimed to preserve that host's inventory.
 No physical host has been partitioned, installed or activated.
 
-The storage module (`nix/domains/system/mirrored-zfs.nix` at kittens revision `16e8dbe4`, repository deleted) imports locked disko,
+The storage module (`nix/domains/system/mirrored-zfs.nix` at overalls revision `16e8dbe4`, repository deleted) imports locked disko,
 requires two distinct declared disks and a persistent nonzero host ID, and
 separates root and Lilly datasets. It declares a mirror, LZ4, zero reservations,
 dedup off, standard sync, a quota and the reference ARC cap. Two EFI filesystems
@@ -19,8 +19,8 @@ receive removable-path GRUB loaders. Missing EFI devices do not block normal
 mount completion; root import is not forced. Numerical tuning in ADR-0034 stays
 proposed.
 
-The generic QEMU target (`nix/machines/bootstrap.nix` at kittens revision `16e8dbe4`, repository deleted) reaches pinned-key
-SSH with both applications disabled. The installer (`nix/machines/installer.nix` at kittens revision `16e8dbe4`, repository deleted)
+The generic QEMU target (`nix/machines/bootstrap.nix` at overalls revision `16e8dbe4`, repository deleted) reaches pinned-key
+SSH with both applications disabled. The installer (`nix/machines/installer.nix` at overalls revision `16e8dbe4`, repository deleted)
 contains the full target closure for offline installation and requires its
 explicit destructive flag. Disk formatting remains outside activation. New
 private SSH identities are generated at boot, and no private credentials or
@@ -34,7 +34,7 @@ loaders, root identity, storage policy, new/persistent SSH identity, data and
 actual SSH key authentication on both the healthy mirror and each degraded
 surviving-disk branch. Forks are never rejoined after independent writes.
 
-The exported-image suite (`nix/verification/tests/machines/bootstrap-images/default.nix` at kittens revision `16e8dbe4`, repository deleted) separately
+The exported-image suite (`nix/verification/tests/machines/bootstrap-images/default.nix` at overalls revision `16e8dbe4`, repository deleted) separately
 boots the exact public QCOW2 artifacts through OVMF. It attaches no direct kernel
 or shared store and injects no credentials or test-console service. It observes
 the public SSH identity through a loopback-only QEMU port forward: independent
@@ -99,7 +99,7 @@ the instrumented installation suite above.
    unmounts the installed target but does not export its pool, and Nixpkgs's
    minimal builder init powers off forcibly. The installer fixture had explicitly
    exported its pool, so its passing result did not cover this distinct path.
-   The module now exposes `system.build.kittensMirroredImages`, extending the
+   The module now exposes `system.build.overallsMirroredImages`, extending the
    in-VM build command with a clean root-pool export; the public flake output
    selects it. Normal `forceImportRoot = false` behavior remains required.
    The locked VM wrapper returns a plain derivation; `lib.overrideDerivation`

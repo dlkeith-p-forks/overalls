@@ -40,7 +40,7 @@ See [ADR-0143](../decisions/0143-faster-create-clone-delete.md):
   11 passed, including 3 new Hegel properties.
 - Focused Lilly suites: 257 passed (39 properties), covering config, zfs,
   image-copy, vm, transfer and clone.
-- Native `kittens-image-copy` NixOS test, test script finished in 19.28s:
+- Native `overalls-image-copy` NixOS test, test script finished in 19.28s:
   - a same-pool source behind a separate read-only bind mount (the production
     `/nix/store` shape) refused `cp --reflink=always`;
   - the helper reported `offload`, with `bcloneused_delta=8388608`, i.e. all
@@ -48,7 +48,7 @@ See [ADR-0143](../decisions/0143-faster-create-clone-delete.md):
   - the destination stayed independent after writes and source destruction;
   - plain cross-dataset materialization also reported `offload`;
   - the quota-exhaustion refusal still failed as required.
-- Native `kittens-zfs-lifecycle` NixOS test at `3bf5c1cf`, test script finished
+- Native `overalls-zfs-lifecycle` NixOS test at `3bf5c1cf`, test script finished
   in 3624.76s (`globalTimeout` raised to 7200 s after two load-induced timeouts at
   load about 30):
   - the neighbor delete refused a quota change injected between its two
@@ -61,12 +61,12 @@ See [ADR-0143](../decisions/0143-faster-create-clone-delete.md):
   - one run under load hit the unchanged exact-observation `busy-prepare` check
     with `incoherent_zfs_observation` (accounting resampling exhausted); the next
     runs passed it.
-- Native `kittens-zfs-guest-clone` NixOS test at `b83e3924`, test script finished
+- Native `overalls-zfs-guest-clone` NixOS test at `b83e3924`, test script finished
   in 1641.22s: both real same-host clone subtests (clone after resize, and a
   received copy as the next source) passed with compressed exports and the
   1 GiB/s local rate. The suite is dominated by guest boots, so its duration is
   not a copy-speed measurement.
-- Native `kittens-porsche-lifecycle-fleet` NixOS test at `54a3c8e2`, test script
+- Native `overalls-porsche-lifecycle-fleet` NixOS test at `54a3c8e2`, test script
   finished in 793.83s: Porsche browser keys and native SSH ran the real guest
   lifecycle (create, restart, clone, relocation and delete), and the clone audit
   survived source deletion.
@@ -128,7 +128,7 @@ exited.
 `nix-daemon` in a slave namespace whose start wrapper unmounts every pool, and
 routes root and auto-update builds through it.
 
-Native `kittens-zfs-namespace-cleanup` passed, with test script finished in
+Native `overalls-zfs-namespace-cleanup` passed, with test script finished in
 1652.69s:
 - with a sandboxed build running, `nix-daemon`'s namespace held no `/pool`
   mount, and the guest delete completed while the build kept running;

@@ -1,5 +1,5 @@
 {
-  "sut_path": "/home/ghuntley/src/kittens-antithesis-reset",
+  "sut_path": "/home/ghuntley/src/overalls-antithesis-reset",
   "updated": "2026-10-13",
   "external_references": [],
   "scope": "Current repository source and tests only; no retired harness, hosted run, or native execution claimed",

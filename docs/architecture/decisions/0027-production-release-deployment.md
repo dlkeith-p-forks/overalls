@@ -102,11 +102,11 @@ runs independently of the serving application.
 [Packaging](../../../scripts/package_release.sh) and its
 [Nix closure](../../../nix/domains/artifacts/applications/release-bundle.nix) produce immutable releases with
 runtime dependencies and Lilly's canonical launcher paths. The
-Marshall service (`scripts/test/fixtures/legacy-deployment/systemd/marshall@.service` at kittens revision `9fe1e493`, repository deleted),
-Lilly service (`scripts/test/fixtures/legacy-deployment/systemd/lilly.service` at kittens revision `9fe1e493`, repository deleted),
-guest slice (`scripts/test/fixtures/legacy-deployment/systemd/lilly.slice` at kittens revision `9fe1e493`, repository deleted),
-HAProxy example (`scripts/test/fixtures/legacy-deployment/haproxy.cfg.example` at kittens revision `9fe1e493`, repository deleted) and
-historical harness guide (`scripts/test/fixtures/legacy-deployment/README.md` at kittens revision `9fe1e493`, repository deleted)
+Marshall service (`scripts/test/fixtures/legacy-deployment/systemd/marshall@.service` at overalls revision `9fe1e493`, repository deleted),
+Lilly service (`scripts/test/fixtures/legacy-deployment/systemd/lilly.service` at overalls revision `9fe1e493`, repository deleted),
+guest slice (`scripts/test/fixtures/legacy-deployment/systemd/lilly.slice` at overalls revision `9fe1e493`, repository deleted),
+HAProxy example (`scripts/test/fixtures/legacy-deployment/haproxy.cfg.example` at overalls revision `9fe1e493`, repository deleted) and
+historical harness guide (`scripts/test/fixtures/legacy-deployment/README.md` at overalls revision `9fe1e493`, repository deleted)
 record the earlier topology. These four definitions are retained only as test
 fixtures after removal of the manual deployment examples. Current installation
 and rollout use the NixOS modules under ADR-0030.

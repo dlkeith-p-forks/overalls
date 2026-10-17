@@ -79,7 +79,7 @@ Both source-built release checks passed (`marshall-release` and `lilly-release`)
 The full `checks.x86_64-linux.zfs-guest` test passed on 2026-09-17 in 1,838 seconds,
 including its 419-second resize scenario. It used the source-built Lilly release,
 real ZFS datasets and nested Firecracker guests. The native output is
-`/nix/store/h6wh2n62107s3avaw2f833rjsj2gx775-vm-test-run-kittens-zfs-guest`.
+`/nix/store/h6wh2n62107s3avaw2f833rjsj2gx775-vm-test-run-overalls-zfs-guest`.
 The builder exposed `/dev/kvm` with nesting enabled; the local build explicitly
 advertised `kvm nested-kvm nixos-test big-parallel` and used root because the
 configured Nix build users lacked KVM device access. This does not establish

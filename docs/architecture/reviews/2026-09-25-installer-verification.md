@@ -32,7 +32,7 @@ profile and registered identity directly and independently performs strict proof
 
 ## Validation
 
-- `MIX_TEST_PARTITION=verify002 mix test test/marshall_web/kittens_installer_test.exs`
+- `MIX_TEST_PARTITION=verify002 mix test test/marshall_web/overalls_installer_test.exs`
   passed 15 checks (3 properties, 12 tests), seed 381931, in the pinned
   development shell. The generated trust-refusal properties passed.
 - `nix eval .#checks.x86_64-linux.installer-trust.drvPath --raw` passed.
@@ -40,7 +40,7 @@ profile and registered identity directly and independently performs strict proof
   passed, including the composed driver's type and lint checks. The two-machine
   Linux installer-trust check passed in 45.93 seconds with actual KVM-backed NixOS
   machines. The exact tested derivation is
-  `/nix/store/wg7x10axwz93al61rbhj1121mjn87hfw-vm-test-run-kittens-installer-trust.drv`.
+  `/nix/store/wg7x10axwz93al61rbhj1121mjn87hfw-vm-test-run-overalls-installer-trust.drv`.
   It tested this improvement on base
   `253cdcaa1e7b3c8e7a2039583cbc30d8f6ba1e14`; subsequent evidence/receipt edits do
   not change its runtime assertions.

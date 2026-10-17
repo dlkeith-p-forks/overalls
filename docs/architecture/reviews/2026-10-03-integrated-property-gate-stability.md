@@ -17,7 +17,7 @@ The retry proof-window property reached its 300-second whole-history budget whil
 waiting on admission SQL. Two relocation cleanup histories expected positive
 Start but received `insufficient_capacity`. Forced Dialyzer passed in 42.92
 seconds with zero errors/skips. Log:
-`/tmp/kittens-enrico-terminald-final-main-gates.log`.
+`/tmp/overalls-enrico-terminald-final-main-gates.log`.
 
 Inspection of RestartCapacity confirms that stale pool telemetry also rejects
 Start with insufficient capacity. Long successful cleanup histories supplied
@@ -39,8 +39,8 @@ The preliminary six selected relocation checks using host-only refresh passed
 in 37.1 seconds, seed `630207`. The final host-and-pool fixture plus retry budget
 passed ten checks (four properties and six examples) in 132.4 seconds, same seed;
 29 unrelated cases were excluded. Logs:
-`/tmp/kittens-relocation-healthy-fixture-focused.log` and
-`/tmp/kittens-marshall-gate-failures-repaired-focused.log`. The helper's explicit
+`/tmp/overalls-relocation-healthy-fixture-focused.log` and
+`/tmp/overalls-marshall-gate-failures-repaired-focused.log`. The helper's explicit
 return and typespec/contract were added afterward without changing assertions;
 the final integrated compiler/type/test gates below cover that revision.
 
@@ -52,7 +52,7 @@ evaluated Nix HLDD and Marshall precommit. Marshall passed **1428 checks
 (227 properties, 1201 tests), two excluded**, seed `728068`, in **1631.1 seconds**.
 Its 28 browser-state checks passed. Forced Dialyzer passed in **49.04 seconds**
 with zero errors, skips or unnecessary skips. Log:
-`/tmp/kittens-audi-terminald-stability-final-main-gates.log`.
+`/tmp/overalls-audi-terminald-stability-final-main-gates.log`.
 The evaluated HLDD archive is `1791003686509-680552-0.jsonl` (14 seconds).
 
 This records passing integration of the typed host/pool fixture and complete
@@ -75,7 +75,7 @@ generated options/coverage/views, and evaluated Nix HLDD in **17 seconds**,
 archive `1791005753366-1878007-0.jsonl`. Galileo precommit passed **31 checks
 (12 properties, 19 tests)**, seed `350026`, in **109.6 seconds**. Forced Dialyzer
 passed in **5.07 seconds** with zero errors, skips or unnecessary skips. Log:
-`/tmp/kittens-antithesis-origin-integration-gates.log`.
+`/tmp/overalls-antithesis-origin-integration-gates.log`.
 
 Architecture boundaries and decision statuses remain unchanged. Incoming
 ADR0080/0134 refusal semantics, ADR0135 cache acceptance and ADR0136 request
@@ -92,7 +92,7 @@ HLDD/options/coverage/views. The source-built `enrico-service` rerun passed in
 the producer alive; producer SIGKILL settles a blocked admitted refresh once
 without inventing duration or replacing the published mirror. Evaluated HLDD
 passed in **17 seconds**, archive `1791007979037-3146026-0.jsonl`. Log:
-`/tmp/kittens-antithesis-enrico-origin-native-hldd.log`. Production Enrico,
+`/tmp/overalls-antithesis-enrico-origin-native-hldd.log`. Production Enrico,
 Marshall and Galileo source did not change in this second merge; the native
 check verifies composition with the earlier local Enrico repair.
 
@@ -104,6 +104,6 @@ check passed in **101 seconds**, including **77.39 seconds** of machine script,
 archive `1791008502526-3552358-0.jsonl`. Evaluated HLDD passed in **19 seconds**,
 archive `1791008603832-3526660-0.jsonl`; all-file Ruff/ty/logging and reviewed
 ADR/HLDD/options/coverage/views passed. Log:
-`/tmp/kittens-antithesis-dns-origin-integration.log`. Source-built native DNS
+`/tmp/overalls-antithesis-dns-origin-integration.log`. Source-built native DNS
 fault scope remains distinct from real Marshall/Firecracker publication,
 in-flight producer loss, overload/storage faults and physical acceptance.

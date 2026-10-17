@@ -12,8 +12,8 @@ Reviewed [runtime validation](../../../marshall/lib/marshall/operations/runtime_
 [migration entry point](../../../marshall/lib/marshall/operations/migrate.ex),
 [release packaging](../../../scripts/package_release.sh),
 [Nix closure](../../../nix/domains/artifacts/applications/release-bundle.nix),
-Marshall (`scripts/test/fixtures/legacy-deployment/systemd/marshall@.service` at kittens revision `9fe1e493`, repository deleted) and
-Lilly (`scripts/test/fixtures/legacy-deployment/systemd/lilly.service` at kittens revision `9fe1e493`, repository deleted) service units, and the
+Marshall (`scripts/test/fixtures/legacy-deployment/systemd/marshall@.service` at overalls revision `9fe1e493`, repository deleted) and
+Lilly (`scripts/test/fixtures/legacy-deployment/systemd/lilly.service` at overalls revision `9fe1e493`, repository deleted) service units, and the
 [deployment guide](../../operations/deployment.md).
 
 ## Findings and disposition

@@ -89,18 +89,18 @@ Missing metrics, limits and historical samples must not be replaced by zero.
 ## Implementation evidence
 
 Ziggy extends this existing monitoring path through
-bounded local numeric probes (`nix/domains/system/fleet-monitor/runtime.py` at kittens revision `a99f74f0`, repository deleted),
-proxy chart specifications (`marshall/lib/marshall/fleet/dashboard_catalog.ex` at kittens revision `a99f74f0`, repository deleted)
+bounded local numeric probes (`nix/domains/system/fleet-monitor/runtime.py` at overalls revision `a99f74f0`, repository deleted),
+proxy chart specifications (`marshall/lib/marshall/fleet/dashboard_catalog.ex` at overalls revision `a99f74f0`, repository deleted)
 and [per-Lilly links](../../../marshall/lib/marshall_web/live/admin/lilly_nodes_live.ex).
 Proxy monitoring remains observational; unknown/stale data grants no inference or
 compute authority. See [ADR-0063](0063-private-services-and-ziggy.md) and the
 [verification ledger](../../services/ziggy.md) for its separate implementation gaps.
 
 
-Dashboard actions (`marshall/lib/marshall/fleet/dashboard.ex` at kittens revision `a99f74f0`, repository deleted),
-entity discovery (`marshall/lib/marshall/fleet/dashboard_entities.ex` at kittens revision `a99f74f0`, repository deleted),
-cache (`marshall/lib/marshall/fleet/dashboard_cache.ex` at kittens revision `a99f74f0`, repository deleted),
-LiveView (`marshall/lib/marshall_web/live/admin/dashboard_live.ex` at kittens revision `a99f74f0`, repository deleted) and
+Dashboard actions (`marshall/lib/marshall/fleet/dashboard.ex` at overalls revision `a99f74f0`, repository deleted),
+entity discovery (`marshall/lib/marshall/fleet/dashboard_entities.ex` at overalls revision `a99f74f0`, repository deleted),
+cache (`marshall/lib/marshall/fleet/dashboard_cache.ex` at overalls revision `a99f74f0`, repository deleted),
+LiveView (`marshall/lib/marshall_web/live/admin/dashboard_live.ex` at overalls revision `a99f74f0`, repository deleted) and
 [chart hooks](../../../marshall/assets/js/dashboard.js) implement the projection
 and presentation boundaries. See the
 [review](../reviews/2026-09-18-interactive-dashboards.md) for executed validation and

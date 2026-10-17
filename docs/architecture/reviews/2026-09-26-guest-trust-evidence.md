@@ -42,9 +42,9 @@ or failure-variant sweep was recorded. This improvement reuses that fixture
 topology as a bounded stage of the same probe; it does not rerun the seven
 legacy feature matrices listed there.
 
-The failure-side addition exercises only the receiver (`kittens-trustd`)
+The failure-side addition exercises only the receiver (`overalls-trustd`)
 terminal boundary: each mutated request violates exactly one validation
-(checks in `lyra/src/bin/kittens-trustd.rs` `validate/2`) and must reach a
+(checks in `lyra/src/bin/overalls-trustd.rs` `validate/2`) and must reach a
 completed terminal refusal — peer EOF with no response bytes — before the
 probe verifies the unchanged durable journal receipt, the installed guest
 bundle, guest services, and a still-accepted final positive delivery.
@@ -73,12 +73,12 @@ kernel, vsock or guest-native claim.
 ## Native execution record
 
 The composed native candidate
-`/nix/store/f62qs50m55h68z2lhjrn06qnz2sc1hah-vm-test-run-kittens-fleet-guest-trust.drv`
+`/nix/store/f62qs50m55h68z2lhjrn06qnz2sc1hah-vm-test-run-overalls-fleet-guest-trust.drv`
 on worktree base `40c1e73b` (branch delta: probe stage and directory contract
 prose only) ran under the serialized native lock from **17:41:58 UTC on
 2026-09-26**, returned exit 0 at **18:41:14 UTC** (wall 59m16s, including first
 realization of this worktree's guest images) with output
-`/nix/store/lh92cxb1jffz1y2sxmjcy4hkxdnnspln-vm-test-run-kittens-fleet-guest-trust`.
+`/nix/store/lh92cxb1jffz1y2sxmjcy4hkxdnnspln-vm-test-run-overalls-fleet-guest-trust`.
 Fleet bootstrap passed in 56.88 seconds and authenticated storage/service setup
 in 144.87 seconds; the test script finished in 976.44 seconds and cleanup
 drained all nine machines in 3.99 seconds, with no fleet-guest-trust driver or
@@ -118,7 +118,7 @@ VM. The seven legacy feature matrices were evaluated, not rerun.
 
 ## Mutation record
 
-One mutant cycle targeted the new stage: `kittens-trustd` `validate/2` was
+One mutant cycle targeted the new stage: `overalls-trustd` `validate/2` was
 relaxed to additionally accept an expired execution epoch
 (`request.execution_epoch == boot.execution_epoch - 1`), i.e. accept expired
 trust once. Rebuilt under the same native lock, the mutated candidate ran

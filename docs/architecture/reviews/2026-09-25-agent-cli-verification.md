@@ -127,7 +127,7 @@ lint, Nix `hldd` and `python-static` in 311 seconds. The built driver and browse
 were compared byte-for-byte with the source before the captured native run.
 
 Native attempt one used
-`/nix/store/98dkbwxq1vwq5nla2yail9kcankpy33v-vm-test-run-kittens-agent-cli-journey.drv`
+`/nix/store/98dkbwxq1vwq5nla2yail9kcankpy33v-vm-test-run-overalls-agent-cli-journey.drv`
 on that same frozen tree. It failed after 55 seconds during Marshall startup,
 before any CLI journey, because the dedicated fixture omitted the existing
 agent-enabled fleet's `serper.key` transfer. The isolated key now follows the
@@ -139,7 +139,7 @@ Log: `/tmp/verify023-native1.log`; archive:
 
 Driver build four passed composed typing/lint, Nix `hldd` and `python-static`
 in 47 seconds. Native attempt two used
-`/nix/store/5avxm90qy0xwvavmbqwj74mhm29g5gim-vm-test-run-kittens-agent-cli-journey.drv`
+`/nix/store/5avxm90qy0xwvavmbqwj74mhm29g5gim-vm-test-run-overalls-agent-cli-journey.drv`
 on frozen tree `9592f6c9a9b2be2d118db3d6cefc5f563fe58593`.
 Boot (65.22 seconds), authenticated capacity/service enrollment (167.15 seconds),
 and ordinary browser sharing of the stopped real guest (60.05 seconds) passed.
@@ -187,7 +187,7 @@ six stages in 337.46 seconds**, with 3.98-second cleanup (Nix build 346 seconds)
 
 This captured frozen tree `c071d5d3ac10cf6ea48de04f938f7520f02c451c` on
 `e3072688`, exact derivation
-`/nix/store/hbm4iyy60lvazllk1gkg6l9ss4scvr7h-vm-test-run-kittens-agent-cli-journey.drv`.
+`/nix/store/hbm4iyy60lvazllk1gkg6l9ss4scvr7h-vm-test-run-overalls-agent-cli-journey.drv`.
 The built driver and helper matched source byte-for-byte; complete test-script
 SHA-256 was `136d8ccf8b9ecfa74f00ca4e55fe2d93157d3bd763c5273bfb067e5f50af3d7e`.
 The owner drained with exit zero. All captured Nix, builder, driver, nine QEMU
@@ -230,7 +230,7 @@ passed typing and lint. Its transfer/driver suffix and typed browser match
 source exactly. The complete script differs from native attempt three only in
 the evaluated `storage_images` store binding; integrated script SHA-256 is
 `3c08ef69891c3232e2582e673d7394fe9d91cbfdaa9a0e812abaae7b9ae36981`.
-Driver: `/nix/store/w42izvkvwpfhf87falh4qzxffsbf6wi2-nixos-test-driver-kittens-agent-cli-journey`.
+Driver: `/nix/store/w42izvkvwpfhf87falh4qzxffsbf6wi2-nixos-test-driver-overalls-agent-cli-journey`.
 This built the integrated source packages but did not boot another fleet or
 extend native acceptance to the Underclass pin. Log:
 `/tmp/verify023-final-driver-build.log`; archive:

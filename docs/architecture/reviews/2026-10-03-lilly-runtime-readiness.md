@@ -45,7 +45,7 @@ overall**, archive `1791006040414-2019544-0.jsonl`; its machine script passed in
 **897.72 seconds**, including **248.40 seconds** for the generated/fixed readiness
 histories. The six-guest setup passed in **450.94 seconds**. The composed driver
 Ruff/ty gate passed before native execution. Log:
-`/tmp/kittens-lilly-runtime-readiness-native.log`.
+`/tmp/overalls-lilly-runtime-readiness-native.log`.
 No hosted Antithesis result is claimed.
 
 The watch samples at 100-millisecond intervals and does not establish every
@@ -68,7 +68,7 @@ The final integration retains all 83 unique scenario IDs from both source branch
 All-file pinned Ruff/ty/logging and ADR/HLDD/options/coverage/views passed on the
 combined main tree. Evaluated Nix HLDD passed in **18 seconds**, archive
 `1791008240246-3386194-0.jsonl`; log
-`/tmp/kittens-lilly-readiness-primary-integration.log`. The integration changes
+`/tmp/overalls-lilly-readiness-primary-integration.log`. The integration changes
 no Lilly/Marshall production code or native scenario code from the passing run.
 Research provenance names the canonical local worktree and its inspected base
 `764ee09b`; physical/updater/hosted and individual gate-fault gaps remain open.

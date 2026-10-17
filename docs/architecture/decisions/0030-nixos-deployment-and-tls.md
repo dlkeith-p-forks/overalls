@@ -210,14 +210,14 @@ budget under ADR-0031. They require a correctly mounted existing parent and use
 the host's kernel-matched ZFS userspace. Activation does not create/import pools
 or modify dataset properties. The [storage lifecycle review](../reviews/2026-09-16-owned-zfs-lifecycle.md)
 records module rejection cases, role regression and native storage checks.
-The mirrored storage module (`nix/domains/system/mirrored-zfs.nix` at kittens revision `16e8dbe4`, repository deleted) now declares
+The mirrored storage module (`nix/domains/system/mirrored-zfs.nix` at overalls revision `16e8dbe4`, repository deleted) now declares
 two explicit disks, ZFS root/Lilly datasets and independent removable-path EFI
 loaders using locked disko. It retains LZ4, no reservations, the reference ARC
 cap and a separate dataset quota. Formatting remains an explicit build artifact;
 normal activation never invokes it. The
-bootstrap target (`nix/machines/bootstrap.nix` at kittens revision `16e8dbe4`, repository deleted) is a generic QEMU target,
+bootstrap target (`nix/machines/bootstrap.nix` at overalls revision `16e8dbe4`, repository deleted) is a generic QEMU target,
 not an adapter for the existing physical host. Its
-installer (`nix/machines/installer.nix` at kittens revision `16e8dbe4`, repository deleted) contains the complete target
+installer (`nix/machines/installer.nix` at overalls revision `16e8dbe4`, repository deleted) contains the complete target
 closure and requires an explicit destructive flag before installing on its
 declared disks. The flake exports QCOW2 disk and ISO artifacts.
 The module's `system.build.overallsMirroredImages` wraps the locked disko image
@@ -256,7 +256,7 @@ The manual deployment examples have been retired. The maintained
 [Marshall](../../../nix/domains/system/marshall.nix), [Lilly](../../../nix/domains/system/lilly.nix)
 and [proxy](../../../nix/domains/system/proxy.nix) modules now supply the service boundary.
 Four historical definitions remain only as
-isolated harness fixtures (`scripts/test/fixtures/legacy-deployment/README.md` at kittens revision `9fe1e493`, repository deleted),
+isolated harness fixtures (`scripts/test/fixtures/legacy-deployment/README.md` at overalls revision `9fe1e493`, repository deleted),
 preserving complementary database recovery and local fault/load checks.
 Historical validation remains in ADR-0027. See the [deployment guide](../../operations/deployment.md)
 and [refactor review](../reviews/2026-09-16-nix-layout-and-test-refactor.md).

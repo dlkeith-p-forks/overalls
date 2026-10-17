@@ -69,10 +69,10 @@ transferred. The cross-application integration test uses Marshall's exported
 file through Lilly's real client and a verified local TLS listener.
 The built Lilly release also loaded a separate credential file through its actual
 startup-configuration module without exposing the token. Logs in this development
-environment are `/tmp/kittens-enrollment-final-gate.log`,
-`/tmp/kittens-enrollment-lilly-gate.log`,
-`/tmp/kittens-enrollment-release-smoke.log` and
-`/tmp/kittens-enrollment-lilly-smoke.log`.
+environment are `/tmp/overalls-enrollment-final-gate.log`,
+`/tmp/overalls-enrollment-lilly-gate.log`,
+`/tmp/overalls-enrollment-release-smoke.log` and
+`/tmp/overalls-enrollment-lilly-smoke.log`.
 
 Review inspected source, configuration, tests and generated release behavior.
 The current repository has no commits and its files are untracked, so historical

@@ -120,7 +120,7 @@ from newly authorized sudo-capable writers on a shared VM.
 
 The [allocator](../../../marshall/lib/marshall/accounts/guest_accounts.ex),
 [resource](../../../marshall/lib/marshall/accounts/guest_account.ex),
-migration (`marshall/priv/repo/migrations/20260925172905_guest_identity_localpart.exs` at kittens revision `9fe1e493`, repository deleted),
+migration (`marshall/priv/repo/migrations/20260925172905_guest_identity_localpart.exs` at overalls revision `9fe1e493`, repository deleted),
 [roster](../../../marshall/lib/marshall/ssh/guest_access.ex) and
 [SSH discovery](../../../marshall/lib/marshall/ssh/commands.ex) implement the new
 assignment and existing caller boundaries. Generated

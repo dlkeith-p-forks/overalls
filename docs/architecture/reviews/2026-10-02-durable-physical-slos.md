@@ -98,7 +98,7 @@ the distributed tests requested by precommit. The full precommit gate returned
 exit 0, including compiler, formatting and frontend checks. Forced Dialyzer
 reported **zero errors, zero skips and zero unnecessary skips** in **107.11
 seconds**, after a 28.45-second PLT check. Log:
-`/tmp/kittens-slo-workflow-precommit.log`.
+`/tmp/overalls-slo-workflow-precommit.log`.
 
 ## Workflow production activation
 
@@ -265,7 +265,7 @@ physical/readiness measurement, Marshall restart, identical permanent source
 identities/counters/buckets and repeated reconciliation without double counting.
 All six capacity samples were fresh. This proves the NixOS agent variant only;
 it does not establish Ubuntu, Porsche, live-provider or seven-day acceptance.
-Log: `/tmp/kittens-service-level-guest-serial.log`.
+Log: `/tmp/overalls-service-level-guest-serial.log`.
 Archive: `/home/ghuntley/.local/state/nix/build-logs/1790960797383-2930550-0.jsonl`.
 The subsequently moved helper contract is documentation only; runtime assertions
 and production implementation are unchanged.
@@ -294,13 +294,13 @@ any pending deadline is overdue at its database sampling time. A sandbox-owned
 102-admission regression passed: the first 100-attempt scan withheld freshness,
 the next drained the backlog, totals and buckets conserved all 102 failures,
 and execution operations remained pending. Focused execution passed **six checks
-(two properties, four tests)** in `/tmp/kittens-service-level-backlog-tests.log`.
+(two properties, four tests)** in `/tmp/overalls-service-level-backlog-tests.log`.
 This preserves ADR-0133 measurement authority and deadline semantics; it changes
 publication availability during backlog. The full Marshall precommit passed
 **1,409 checks: 210 properties and 1,199 tests, with two exclusions**, in 1385.6
 seconds. Forced Dialyzer passed with zero errors/skips in 62.16 seconds.
 Compiler, contracts, logging, terminal, workspace and dashboard gates passed.
-Log: `/tmp/kittens-service-level-backlog-precommit.log`.
+Log: `/tmp/overalls-service-level-backlog-precommit.log`.
 
 The merge preserves current main's Galileo ownership, namespace cleanup and
 terminal history changes. Focused merged execution passed **10 checks (six
@@ -308,9 +308,9 @@ properties, four tests)** covering SLO backlog, Galileo archival and terminal
 takeover. Forced test-environment Dialyzer passed with zero errors/skips in
 52.25 seconds. Nix handbook/conflict gates passed in 24 seconds; all-file static
 hooks and generated views/options passed. Logs:
-`/tmp/kittens-service-level-merged-focused.log`,
-`/tmp/kittens-service-level-merged-dialyzer.log` and
-`/tmp/kittens-service-level-merged-nix-governance.log`.
+`/tmp/overalls-service-level-merged-focused.log`,
+`/tmp/overalls-service-level-merged-dialyzer.log` and
+`/tmp/overalls-service-level-merged-nix-governance.log`.
 
 Enable verified provisioning readiness only after its reader and native acceptance
 requirements are met. Complete native NixOS/Ubuntu Porsche measurements and
@@ -334,7 +334,7 @@ Ubuntu evidence, not a passing full Ubuntu journey. The rejection did not report
 a status or workflow phase, so its cause remains unknown. The fixture now adds
 only allowlisted status/error/phase categories and preserves its strict success
 and timeout requirements. No response payload or stderr is printed on rejection.
-Log: `/tmp/kittens-service-level-ssh-diagnostic-rerun.log`.
+Log: `/tmp/overalls-service-level-ssh-diagnostic-rerun.log`.
 Archive: `/home/ghuntley/.local/state/nix/build-logs/1790963669485-536344-0.jsonl`.
 The subsequent serial Ubuntu check with the earlier merged descriptor cleanup
 failed in 283 seconds at the unchanged idle capacity freshness precondition,
@@ -342,7 +342,7 @@ before SSH/SLO or clone assertions. Twelve capacity-age observations ranged
 from 1.632844 to 5.606897 seconds, including two above the five-second limit.
 The archive contains DBConnection error reports, but no causal connection to
 this freshness failure has been established. This run does not diagnose the
-prior clone rejection. Log: `/tmp/kittens-service-level-ubuntu-merged.log`.
+prior clone rejection. Log: `/tmp/overalls-service-level-ubuntu-merged.log`.
 Archive: `/home/ghuntley/.local/state/nix/build-logs/1790967332238-2649422-0.jsonl`.
 Later main changes, merged as `456e76a3`, include proc-less namespace inspection
 and complete-pass audit recovery gating; they were not in this native snapshot.
@@ -383,7 +383,7 @@ measurement or execution semantics. It does not establish fleet throughput.
 
 With the new migration, focused execution passed **six checks (two properties,
 four tests)** in 4.8 seconds, including the 102-admission backlog conservation
-regression. Log: `/tmp/kittens-service-level-pending-index-tests.log`.
+regression. Log: `/tmp/overalls-service-level-pending-index-tests.log`.
 Full Marshall precommit and packaged migration acceptance subsequently passed
 for this follow-up candidate, as recorded below.
 
@@ -408,7 +408,7 @@ On 2026-10-02, Overalls returned **20 ready legacy boots** and Dungarees returne
 **5 ready legacy boots**, with no not-ready or unconfirmed results. All 25 had
 absent readiness journals and fit the existing confined legacy adoption path.
 This is point-in-time retained-boot evidence, not universal future-boot coverage.
-The temporary script is `/tmp/kittens-retained-ready-probe.exs`; it never prints
+The temporary script is `/tmp/overalls-retained-ready-probe.exs`; it never prints
 commands, configuration, nonce, guest reply or identifiers. It is not a new
 production API or receiver.
 
@@ -441,7 +441,7 @@ It does not establish production readiness activation, live provider behavior,
 seven-day compliance or causal attribution for earlier unexplained failures.
 This native snapshot predates the pending-index migration and production
 readiness declarations; the fixture already enables readiness.
-Log: `/tmp/kittens-service-level-ubuntu-current-main.log`.
+Log: `/tmp/overalls-service-level-ubuntu-current-main.log`.
 Archive: `/home/ghuntley/.local/state/nix/build-logs/1790967824111-2970483-0.jsonl`.
 
 ## Follow-up schema and publication gates
@@ -457,7 +457,7 @@ The packaged **Marshall SLO publication check passed in 384 seconds**, including
 the pending-index migration, three real Rust exporters and collector custody,
 and the signed-in browser projection. Its scope is packaged database/publication
 and UI behavior; guest creation/restart proof is the separate native evidence
-above. Log: `/tmp/kittens-service-level-readiness-final-native-publication.log`.
+above. Log: `/tmp/overalls-service-level-readiness-final-native-publication.log`.
 Archive: `/home/ghuntley/.local/state/nix/build-logs/1790969438071-4038544-0.jsonl`.
 The seven-day burn factors remain derived from two percent of budget in one hour
 (3.36 times) and five percent in six hours (1.4 times), with source history guards.
@@ -466,7 +466,7 @@ passed (1,411 total), with two exclusions**, in 1,327.1 seconds. Forced
 test-environment Dialyzer then passed in **117.12 seconds with zero errors,
 skips or unnecessary skips**. Runtime, ADR, handbook, contracts, logging,
 compiler and browser-state gates passed within that command.
-Log: `/tmp/kittens-service-level-readiness-final-precommit.log`.
+Log: `/tmp/overalls-service-level-readiness-final-precommit.log`.
 All-file static hooks and generated handbook checks passed; the Nix handbook
 and conflict checks passed in 29 seconds. These results cover the uncommitted
 readiness/index candidate based on `456e76a3`, before the later main merge.
@@ -478,7 +478,7 @@ notification delivery is inferred from their presence.
 Merge `bc912cb4` preserves main's audit expiry/unobserved-reply and mixed
 deadline backlog properties alongside the readiness/index candidate. Focused
 execution passed **four properties and eleven tests (15 total)** in 43.6 seconds,
-seed `535697`. Log: `/tmp/kittens-slo-merged-focused.log`.
+seed `535697`. Log: `/tmp/overalls-slo-merged-focused.log`.
 ADR and handbook receipt, generated views/options/coverage checks passed.
 Evaluated Nix handbook and conflict checks passed in 21 seconds; archive:
 `/home/ghuntley/.local/state/nix/build-logs/1790971242216-865845-0.jsonl`.
@@ -486,7 +486,7 @@ These checks do not extend the independently recorded native guest scope.
 
 Forced test-environment Dialyzer on the merged candidate passed in **105.13
 seconds**, with zero errors, skips or unnecessary skips. Log:
-`/tmp/kittens-slo-merged-dialyzer.log`. Candidate `c98a375c` was pushed atomically
+`/tmp/overalls-slo-merged-dialyzer.log`. Candidate `c98a375c` was pushed atomically
 to main and the feature branch, preserving `f3b811e2`, and deployment started on
 both hosts. Dungarees activated it healthy with zero updater failures; the
 installed execution configuration has readiness enabled. The passive exact-boot
@@ -500,7 +500,7 @@ finished after 1,790 seconds. **Galileo's native script passed in 802.72 seconds
 Audi SSH failed before SSH assertions: public guest HTTP returned a curl exit22
 after successful DNS checks. The source/collector SSH outcome remains unverified
 by that invocation. DB connection timeout reports are present, without established
-causal attribution. Log: `/tmp/kittens-service-level-remaining-native-sources.log`.
+causal attribution. Log: `/tmp/overalls-service-level-remaining-native-sources.log`.
 Archive: `/home/ghuntley/.local/state/nix/build-logs/1790969884442-99330-0.jsonl`.
 
 The fixture now bounds public HTTP convergence at 60 seconds, requiring the exact
@@ -550,7 +550,7 @@ success counters under the fixed application/source identity. The SSH subtest
 completed in 22.03 seconds; this is fixture execution time, not a measured latency
 objective. The snapshot uses `c98a375c` application code plus the bounded Audi
 fixture and then-current handbook edits, before the Brady-only merge.
-Log: `/tmp/kittens-slo-audi-ssh-convergence-native.log`.
+Log: `/tmp/overalls-slo-audi-ssh-convergence-native.log`.
 Archive: `/home/ghuntley/.local/state/nix/build-logs/1790971800587-1157504-0.jsonl`.
 
 The earlier pre-SSH HTTP failure remains a separate execution record. This result

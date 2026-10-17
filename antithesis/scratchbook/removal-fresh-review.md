@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Fresh independent Antithesis removal review
 
-Reviewed the staged removal-phase diff and the current working-tree validation update in `/home/ghuntley/src/kittens-antithesis-reset`, against baseline `9fe1e493b2090d44bacd16089049cd12b316d58a`. No blocking architecture, code-contract, or HLDD findings were identified.
+Reviewed the staged removal-phase diff and the current working-tree validation update in `/home/ghuntley/src/overalls-antithesis-reset`, against baseline `9fe1e493b2090d44bacd16089049cd12b316d58a`. No blocking architecture, code-contract, or HLDD findings were identified.
 
 The scope is retirement of the old `antithesis/` tree, preservation of ordinary Lilly generated tests through a fixture relocation, and accurate historical/current evidence descriptions. The review read root/component guidance, architecture-review, code-contracts and hldd-maintenance skills, ancestor contracts, the architecture overview and decision index, ADR-0017, the changed architecture records, lifecycle/reference chapters, scenario entries, and unchanged domain/topology boundaries. Old research, catalog and mutant contents were not inspected; historical target validation used `git cat-file -e` only.
 

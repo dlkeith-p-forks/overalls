@@ -38,11 +38,11 @@ early failure. No payloads or tokens enter diagnostics.
 The initial native check passed all 51 tests in 6.06 seconds and Clippy with
 warnings as errors. Nix completed in 35 seconds, archive
 `1791193476680-62307-0.jsonl`; log
-`/tmp/kittens-terminald-mixed-growth-native.log`.
+`/tmp/overalls-terminald-mixed-growth-native.log`.
 Formatting, the growth callee contract and a clearer refusal diagnostic followed.
 The final native gate passed all 51 tests in 5.47 seconds and Clippy; Nix completed in 79 seconds,
 archive `1791193646259-98527-0.jsonl`; log
-`/tmp/kittens-terminald-mixed-growth-final-native.log`.
+`/tmp/overalls-terminald-mixed-growth-final-native.log`.
 Contract format and discovery passed. Self-review traced production creation,
 grow-before-append, reservation refusal, viewer pressure and owned retirement;
 the oracle permits either legal race winner and uses independent capacity
@@ -56,7 +56,7 @@ intended refusal assertion: healthy retention reached4194304 bytes although that
 growth step could not fit. Counterexample contenders2, boundary32767,
 watermark32767; one failure,50filtered,162.22seconds. Nix207seconds, exit1,
 archive `1791193758229-106975-0.jsonl`; log
-`/tmp/kittens-terminald-mixed-growth-mutant.log`. No inconsistent-outcome
+`/tmp/overalls-terminald-mixed-growth-mutant.log`. No inconsistent-outcome
 diagnostic was reported. At that stage the expanded-source rerun and integrated
 gates remained pending. The production worktree retains the ordinary bound.
 
@@ -79,13 +79,13 @@ must fill exactly the remaining capacity. An 8 MiB healthy growth step cannot
 fit before retirement. Retiring one filler permits full healthy growth and
 exact replacement admission. The default extension's native gate passed all51
 tests in10.24seconds and Clippy, Nix56seconds, archive `1791193885814-120500-0.jsonl`; log
-`/tmp/kittens-terminald-mixed-growth-default-native.log`. The earlier 8 MiB
+`/tmp/overalls-terminald-mixed-growth-default-native.log`. The earlier 8 MiB
 evidence retains its narrower scope.
 
 The expanded-source control failed the same intended refusal with limit4194304,
 contenders2/boundary32767/watermark32767: one failure,50filtered,169.07seconds.
 Nix204seconds, exit1, archive `1791194029064-181559-0.jsonl`; log
-`/tmp/kittens-terminald-mixed-growth-default-mutant.log`. The failure occurs in
+`/tmp/overalls-terminald-mixed-growth-default-mutant.log`. The failure occurs in
 the smaller family before its subsequent default witness; it establishes oracle
 sensitivity for that history, not a separate default-family counterexample.
 The mutation and test filter remained isolated from production worktrees.
@@ -101,19 +101,19 @@ completed after integration with the published standalone growth suite; exact re
 The combined native gate passed52tests in22.00seconds and Clippy with
 warnings as errors. Nix completed63seconds, exit0; archive
 `1791196431220-1589999-0.jsonl`, log
-`/tmp/kittens-terminald-mixed-growth-merged-native.log`. This includes both
+`/tmp/overalls-terminald-mixed-growth-merged-native.log`. This includes both
 standalone actual-growth and mixed-pressure properties against the merged source.
 
 Marshall full precommit passed1451checks (237properties,1214tests), two
 exclusions, seed673050,1780.4seconds. Browser-state gates passed. Forced
 Dialyzer passed with zero errors, skips or unnecessary skips in63.38seconds;
 its PLT rebuild took4m22.37s. The complete command exited0; log
-`/tmp/kittens-terminald-mixed-growth-marshall-precommit.log`.
+`/tmp/overalls-terminald-mixed-growth-marshall-precommit.log`.
 Repository hooks and evaluated HLDD passed before final evidence reconciliation;
 archive `1791196519621-1629361-0.jsonl`,35seconds. Final receipt/hooks and evaluated HLDD
 verification passed, exit0, Nix34seconds, archive
 `1791199276099-3111714-0.jsonl`; log
-`/tmp/kittens-terminald-mixed-growth-publication-hooks.log`. Final source review found no architecture or
+`/tmp/overalls-terminald-mixed-growth-publication-hooks.log`. Final source review found no architecture or
 contract mismatch: only a test module was added, all race workers join before
 assertions, snapshots release locks before asserting, and exact independent
 capacity arithmetic permits each legal scheduling result. Authenticated guest,

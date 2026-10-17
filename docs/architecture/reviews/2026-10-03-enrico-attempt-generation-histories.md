@@ -31,7 +31,7 @@ missing, malformed and unknown generations, requiring exact state retention
 and zero outcomes. Final component precommit passed ten checks (seven properties,
 three tests), seed `10263`, in 278.9 seconds, exit 0. Forced Dialyzer passed in
 4.34 seconds with zero errors, skips or unnecessary skips. Log:
-`/tmp/kittens-enrico-missing-generation-final-precommit.log`.
+`/tmp/overalls-enrico-missing-generation-final-precommit.log`.
 
 The previous unconditional replay prose contradicted fixed receipt retention.
 The contract now states replay for active attempts and retained terminal receipts;
@@ -49,7 +49,7 @@ eviction order, stale generation result/death and single terminal accounting.
 A third property passed with real Manager and Task.Supervisor processes and a
 controlled executable at the Git argument-vector boundary. The three-property
 file passed at the same seed in 1.0 seconds before adding real cap-crossing
-neighbors. Log: `/tmp/kittens-enrico-manager-real-properties.log`.
+neighbors. Log: `/tmp/overalls-enrico-manager-real-properties.log`.
 
 The expanded real history executes neighbor workers at the 1,023/1,024/1,025
 receipt boundaries while the reused task is held, then permits success or kills
@@ -58,7 +58,7 @@ its actual owner. The initial sampled run passed three properties at seed
 Before the missing-generation property was added, execution passed all three properties at the same seed in 155.8
 seconds, exit 0, with fixed witnesses for all six cap/terminal combinations
 before three generated histories. Log:
-`/tmp/kittens-enrico-manager-fixed-matrix-current.log`. Fresh source review found no
+`/tmp/overalls-enrico-manager-fixed-matrix-current.log`. Fresh source review found no
 production logic blocker and required guaranteed PATH restoration; this was
 fixed before that execution. An earlier default-timeout run failed and provides
 no passing evidence. Prior sampled-source component precommit passed nine checks

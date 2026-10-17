@@ -95,7 +95,7 @@ without enrolled authenticators and does not claim new remember-cookie coverage.
 - Browser completion is recorded only after successful Chromium close; the driver
   waits for the subprocess to be dead before requiring its final zero exit status.
 - The first native attempt, derivation
-  `/nix/store/8izw9dwq93rhryh2bp7r719hvgj5vhl9-vm-test-run-kittens-resize-browser.drv`,
+  `/nix/store/8izw9dwq93rhryh2bp7r719hvgj5vhl9-vm-test-run-overalls-resize-browser.drv`,
   completed trust/capacity setup and ordinary browser creation of a running guest,
   then failed a fixture identity query before any resize. Host and pool are
   persisted on the current placement, not the VM row. All three identity reads now
@@ -110,9 +110,9 @@ without enrolled authenticators and does not claim new remember-cookie coverage.
   configuration and the guest independently confirmed CPU/memory; the guest also
   confirmed exact disk lengths and filesystem growth.
   The executed derivation was
-  `/nix/store/9qrpm0mmvqj1j19k9d7g05m2z375msax-vm-test-run-kittens-resize-browser.drv`,
+  `/nix/store/9qrpm0mmvqj1j19k9d7g05m2z375msax-vm-test-run-overalls-resize-browser.drv`,
   with output
-  `/nix/store/c3268280lfj9j9rfabcaimkrj8g3mwid-vm-test-run-kittens-resize-browser`.
+  `/nix/store/c3268280lfj9j9rfabcaimkrj8g3mwid-vm-test-run-overalls-resize-browser`.
   It contains the corrected placement queries on published main `5bce9478` plus
   this improvement. Subsequent scenario/review bookkeeping changes evidence text,
   not the application or fixture behavior exercised by this run.

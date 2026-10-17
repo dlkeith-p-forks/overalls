@@ -1,7 +1,7 @@
 # Shared Elixir observability library review
 
 Review baseline: refreshed `origin/main` `d4499c4c`, isolated worktree
-`kittens-observability`, branch `codex/observability-redesign`.
+`overalls-observability`, branch `codex/observability-redesign`.
 
 ## Architecture impact
 
@@ -16,16 +16,16 @@ redaction and ADR-0138/0136's durable accounting boundaries remain in force.
 
 ## Changes reviewed
 
-- `Kittens.Diagnostics.Events.Catalog` now exposes independent reviewed log and
+- `Overalls.Diagnostics.Events.Catalog` now exposes independent reviewed log and
   trace projections. Catalog emission can select log-only or trace-only events.
-- `Kittens.Diagnostics.Metrics` is supervised with a finite typed registry,
+- `Overalls.Diagnostics.Metrics` is supervised with a finite typed registry,
   fixed ETS storage, validated measurements/metadata, cumulative or interval
   snapshots and explicit overflow-to-`:unknown` behavior. Unknown paths and
   labels are rejected before Telemetry emission.
-- `Kittens.Diagnostics.Privacy` provides a finite OTP/source redaction helper,
+- `Overalls.Diagnostics.Privacy` provides a finite OTP/source redaction helper,
   while existing application filters retain their application-specific
   operational metadata policies.
-- `Kittens.Diagnostics.Formatter` is the canonical JSON Logger formatter for
+- `Overalls.Diagnostics.Formatter` is the canonical JSON Logger formatter for
   all eight applications. It emits a stable envelope and catalog-validated
   metadata, with fixed redacted fallback messages.
 - Audi, Lilly, Marshall and Porsche producers use the typed metric admission

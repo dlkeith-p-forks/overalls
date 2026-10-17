@@ -11,7 +11,7 @@ authentication, guest networking and forwarding rules are unchanged.
 ## Findings and decisions
 
 - **Resolved ownership ambiguity:** the firewall policy is isolated in
-  `kittens.fleetFirewall`; it is not coupled to named SSH account configuration.
+  `overalls.fleetFirewall`; it is not coupled to named SSH account configuration.
 - **Resolved service-rule bypass:** the fleet module force-clears global TCP/UDP
   port and range openings and owns extra input rules, so a service's
   `openFirewall` setting cannot bypass the source boundary.

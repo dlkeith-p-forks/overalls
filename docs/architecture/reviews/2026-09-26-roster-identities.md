@@ -154,7 +154,7 @@ change:
 
 The new sandboxed roster history selection reported
 **3 checks (1 property, 2 tests)** ("3 passed"), seeds `640001`–`640003`, about
-7 seconds each (`/tmp/kittens-verify064/history-run1.log` and seed reruns):
+7 seconds each (`/tmp/overalls-verify064/history-run1.log` and seed reruns):
 
 - The generated property composes 1–4 extra users over unused/operator/viewer/
   revoked grants, team member/admin membership on generated team VMs, and
@@ -179,7 +179,7 @@ The new sandboxed roster history selection reported
 ### Three-BEAM distributed execution
 
 The new distributed schedule file passed **2 passed**, seed `961117`, 10.5
-seconds (`/tmp/kittens-verify064/distributed-run2.log`), and reseeded runs
+seconds (`/tmp/overalls-verify064/distributed-run2.log`), and reseeded runs
 `64021`–`64023` also passed:
 
 1. Contested retirement: the retirement gate holds the grantee's User row
@@ -205,7 +205,7 @@ The combined selection of both new suites plus
 `guest_identity_history_test.exs`, `guest_identity_bounds_test.exs`,
 `guest_identity_distributed_test.exs` and `guest_access_test.exs` reported
 **25 passed (4 properties, 21 tests)**, seed `828216`, 26.4 seconds with
-`--include distributed` (`/tmp/kittens-verify064/combined-run1.log`).
+`--include distributed` (`/tmp/overalls-verify064/combined-run1.log`).
 
 ### Mutation evidence
 
@@ -214,7 +214,7 @@ Bounded mutant: remove the retired-candidate recheck
 `GuestAccounts.lock_user!/1`.
 
 - The new contested-retirement roster schedule detected it: **0/1 passed**,
-  seed `252318` (`/tmp/kittens-verify064/mutant-run.log`). With the recheck
+  seed `252318` (`/tmp/overalls-verify064/mutant-run.log`). With the recheck
   removed, the in-flight roster failed with `{:error, :invalid_guest_username}`
   — the retirement's email tombstone trips the incarnation re-parse — instead
   of the required atomic `{:error, :unauthorized}` refusal at the canonical
@@ -223,16 +223,16 @@ Bounded mutant: remove the retired-candidate recheck
   no executed schedule for this race before this improvement.
 - The existing allocator-level three-BEAM schedules also detect the same mutant
   at the direct `ensure!/1` refusal shape: **16/20 passed**, seed `199184`
-  (`/tmp/kittens-verify064/mutant-existing.log`).
+  (`/tmp/overalls-verify064/mutant-existing.log`).
 - Source restored with `git checkout`; the focused rerun reported **5 passed
   (1 property, 4 tests)**, seed `64010`
-  (`/tmp/kittens-verify064/restored-run.log`).
+  (`/tmp/overalls-verify064/restored-run.log`).
 
 ### Full suite and gates
 
 The standalone full suite — the exact test command `mix precommit` runs —
 reported **1192 passed (139 properties, 1053 tests), 2 excluded**, seed
-`204573`, 14m15.7s wall time (`/tmp/kittens-verify064/full-suite.log`). This
+`204573`, 14m15.7s wall time (`/tmp/overalls-verify064/full-suite.log`). This
 includes the five new checks.
 
 The full `mix precommit` in `marshall/` (toolchain, architecture, HLDD,

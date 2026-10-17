@@ -102,13 +102,13 @@ Inception offers require exactly the 15 keys Marshall sends; roster and guest
 host-certificate requests accept only six-field bindings (Marshall and Ziggy, with
 refusal tests); the `unsupported` creation status, Lilly's guest error-5 mapping
 and `guest_upgrade_required` are removed; Lyra no longer deletes legacy
-`kittens-<username>` sudoers files; Marshall no longer parses
+`overalls-<username>` sudoers files; Marshall no longer parses
 `MARSHALL_INCEPTION_PARENT` and the Inception guest no longer sets it. Gates:
 protocol precommit; every precommit step in marshall, lilly, ziggy, audi, brady,
 porsche and galileo; Nix `inception-runtime`. Enrico (`Enrico.GitTest` and six
 `ManagerHistoryPropertyTest` properties) and Nix `lyra`
 (`workspace_object_format.rs`) fail identically on the unmodified base; the
-`kittens-ssh-authorize` tests pass. Startup-refusal property evidence (now 34
+`overalls-ssh-authorize` tests pass. Startup-refusal property evidence (now 34
 cases) is present but not yet recorded at this revision.
 Native `ssh-roster-matrix-fleet` passed with six-field bindings only. Native
 `terminal-fleet` failed at the browser "terminal boot log" stage; the unmodified
@@ -147,7 +147,7 @@ command-carried owner.
 Marshall no longer sends `logical_budget_bytes`, `terminal_stream` or the catalog
 `certificate_id`; the pool budget attribute is gone (column nullable, CHECK without
 budget clauses); enrollment validates and discards a supplied budget; the
-`egress_owners` route and `KittensProtocol.EgressOwners` are deleted. Migrations
+`egress_owners` route and `OverallsProtocol.EgressOwners` are deleted. Migrations
 drop `compute_lifecycle_cursors`, the host `console_*`/`protocol_version` columns,
 the session `protocol_version` and lifecycle-event `pool_id` columns, set
 `machine_id` NOT NULL, cancel queued backfill jobs again and recreate the job
@@ -173,7 +173,7 @@ Purged per host:
 - retired transfer exports;
 - the retired standby diagnostics;
 - template `*.lifecycle-v1{,.imported}` archives;
-- the stale `kittens-logging/journal.db` and `journal-1.db`;
+- the stale `overalls-logging/journal.db` and `journal-1.db`;
 - on dungarees only, the `lilly-rebind*.json` receipts.
 
 | Host | Entries | Archive bytes | SHA-256 of `lilly-legacy.tar.age` |
@@ -214,7 +214,7 @@ formats. Removed:
   (`retain_terminal/2` and `.lilly-standbys/diagnostics`; terminal records are
   now always removed from the private catalog) and
   `Observability.persist_transition/1`.
-- Shared diagnostics `Kittens.Diagnostics.Custody.persist/3` and the processor
+- Shared diagnostics `Overalls.Diagnostics.Custody.persist/3` and the processor
   and sampler `:persist` branches; only bounded `enqueue/3` remains. No other
   consumer (Marshall, Audi, Brady, Enrico, Galileo, Porsche, Ziggy) called it.
   The library contract now ties the durable-custody meaning to a successful
@@ -372,7 +372,7 @@ SHA-256 `0a970798be68c771ddf4c9fa24d0373f97b2f192594008ad3306c3b9daccbfba`
   `ziggy-configuration` evaluation asserts it is absent. That evaluation also no
   longer sets the fleet-exporter `controlPlane`/`credentialFile` options removed
   in `4d3c651d`, which had broken it on main.
-- **Inference:** `KittensProtocol.Inference.accounting_projection/1` (contract
+- **Inference:** `OverallsProtocol.Inference.accounting_projection/1` (contract
   `inference-accounting-projection`) is deleted. Ziggy keeps its local-to-wire
   field selection as `Ziggy.Completion.wire/1`. Marshall acknowledges a replay
   only when it equals the stored completion exactly.
@@ -420,10 +420,10 @@ carry-forward note; ADR-0159 lists the evidence).
   `service_bounds` fixes exactly one bound set per configured source (lifecycle,
   browser, Underclass or default). The bucket count must be bounds + 1, and it
   cannot change within one incarnation. The `Latency` type, the `latency_v2` field
-  and validation, and the four `kittens.outer.underclass_proxy.latency_v2.*`
+  and validation, and the four `overalls.outer.underclass_proxy.latency_v2.*`
   metrics are deleted.
 - **Rules:** `rules.nix` and `diagnostics.nix` read
-  `kittens_outer_underclass_proxy_duration_seconds` and `_requests_total` like
+  `overalls_outer_underclass_proxy_duration_seconds` and `_requests_total` like
   every other source. The `latency_v2_start_time` and `latency_v2_sample_time`
   gates are removed. The ordinary source-start, sample-clock and coverage gates
   already withhold the window after the journal restart.
@@ -539,7 +539,7 @@ and the updater compare decoded values.
 3. Back up `owner.json`.
 4. Stop Lilly.
 5. Atomically rewrite `owner.json` without budgets, keeping it root-owned, mode 0600 and single-link.
-6. Point the system profile at `$B/system` (`nix-env -p /nix/var/nix/profiles/system --set`) and run its `switch-to-configuration switch`, where `$B` is the updater's already-built `/var/lib/kittens-auto-update/candidate`.
+6. Point the system profile at `$B/system` (`nix-env -p /nix/var/nix/profiles/system --set`) and run its `switch-to-configuration switch`, where `$B` is the updater's already-built `/var/lib/overalls-auto-update/candidate`.
 7. Start Lilly. Confirm `lilly.ownership_acquired` and that the Marshall host is ready.
 8. Restart the updater timer. The identical-closure verify path should then mark the host healthy.
 
@@ -549,7 +549,7 @@ and the updater compare decoded values.
 - **Precommit.** Lilly passed: 531 checks (102 properties, 429 tests) and forced Dialyzer with zero errors. Every Marshall precommit step except the shared HLDD receipt check passed: 1467 checks (237 properties, 1230 tests) and forced Dialyzer with zero errors.
 - **Repository checks.** `prek` passes every hook except the HLDD review receipts. `check_adrs`, the HLDD views check and the HLDD options check pass. The trace schema was regenerated.
 - **Nix checks passed:** `module-configuration`, `storage-configuration`, `enrollment-configuration`, `enrollment-preparation`, `host-planning`, `python-static`, `audi-configuration` and `fleet-guest-trust-configuration`. Both host `toplevel.drvPath` evaluations also succeed.
-- **Pre-existing failures.** `brady-configuration` fails identically on the unmodified base `d98ba27a`, with `services.kittensFleetExporter.controlPlane` not existing (Push 8 repaired `ziggy-configuration`).
+- **Pre-existing failures.** `brady-configuration` fails identically on the unmodified base `d98ba27a`, with `services.overallsFleetExporter.controlPlane` not existing (Push 8 repaired `ziggy-configuration`).
 - **After merging Push 8.** Lilly and Marshall precommit, `prek`, the HLDD check, the configuration, enrollment, host-planning and `python-static` checks and both host evaluations passed again; the trace schema was unchanged.
 - **Native checks (serial).** Passed: `auto-update-compatibility`, `auto-update`, `native-zfs`, `image-template`, `export-endpoint`, `backup-recovery`, `fleet-guest-trust`, `galileo-service`, `ziggy-service`, `clone-cancellation`, `cloning-fleet` and `maintenance-evacuation`. `native-zfs` first failed on a fixture that `e6195a0d` left stale: the updater now requires the `enrollment.json` receipt to carry `revision`, and `native_resources.py` wrote only `storage`. The fixture now writes and re-asserts the revision.
 - **Native failures that are identical on base `0b23aa9e`:** `enrollment-operator` (`galileo.secretsFile` has no value at evaluation), `host-enrollment` (the harness cannot open its SSH connection), `zfs-io` (22 type-check diagnostics in its driver), `zfs-lifecycle` and `source-export` (probe match errors), `zfs-transfer`, `guest-backups`, `executor-loss` (owner-withdrawal retry assertion), `host-replacement` (live Ziggy identity) and `account-lifecycle` (browser invitation).
@@ -671,7 +671,7 @@ possible. On both hosts no process held `slo.sqlite`, `slo.sqlite-shm` or
 `slo.sqlite-wal` open, and their last writes (2026-10-12 06:28) predate Push 9
 activation. Each host's three files were streamed with `tar` into `age` (recovery
 recipient and operator key) to
-`~/kittens-legacy-exports/20261013T024744Z-underclass-m2/`, decrypted, extracted
+`~/overalls-legacy-exports/20261013T024744Z-underclass-m2/`, decrypted, extracted
 and compared byte-for-byte with host-side SHA-256 digests, then deleted.
 
 | Host | File | SHA-256 |
@@ -695,11 +695,11 @@ both hosts and served requests after the deletion.
 
 Verifying the Underclass p95 found that Overalls had never exported Underclass
 proxy metrics. Overalls' collector had accepted no points from any per-source
-socket; only Brady, which uses the shared `kittens-otel-app` socket, reached
+socket; only Brady, which uses the shared `overalls-otel-app` socket, reached
 Prometheus. Dungarees was unaffected. The cause is outside this program: the
 browser probes (`0c730c9e`, 2026-10-10, enabled only on Overalls) added two more
 `ExecStartPost` commands to the collector. systemd re-applies `RuntimeDirectory`
-ownership (the collector user and `kittens-otel-app`) whenever it spawns a unit
+ownership (the collector user and `overalls-otel-app`) whenever it spawns a unit
 command. So the first custody command reset every socket directory the main post-start
 step had just regrouped, and only the last browser socket kept its group.
 Change times on Overalls show this order: post-start regrouping, then one bulk
@@ -725,7 +725,7 @@ other than Brady read unknown.
   application series (Brady's 16 before).
 - **Underclass p95 verified.** With both replicas exporting, the first natural
   Underclass traffic after warmup produced
-  `kittens:underclass_proxy_candidate_duration:p95_5m` = 9.75 s at 2026-10-13
+  `overalls:underclass_proxy_candidate_duration:p95_5m` = 9.75 s at 2026-10-13
   04:47 UTC. This closes the Push 9 production check.
 
 ### Closure

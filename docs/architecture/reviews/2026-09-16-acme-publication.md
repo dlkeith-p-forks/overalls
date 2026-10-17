@@ -32,7 +32,7 @@ Implementation evidence:
 1. **High, implementation recovery defect — resolved.** Initial publication used
    `/run`. A reboot discarded the last validated certificate while native issuer
    output could contain a failed or partial replacement. Publication now uses
-   private `/var/lib/kittens-certificates` state; files, the prepared directory
+   private `/var/lib/overalls-certificates` state; files, the prepared directory
    and its namespace change are fsynced before a reload request. Proxy startup
    revalidates that cache even when a new publication attempt fails. No bootstrap
    self-signed certificate can pass the configured CA/name checks.

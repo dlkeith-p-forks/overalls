@@ -193,7 +193,7 @@ reader/partial response permutations, arbitrary external vendors and physical-ho
 failure acceptance are not established by this controlled origin campaign.
 
 Private receipts and redacted commands are retained in
-`/home/ghuntley/.local/state/kittens/galileo-attachments-20261003`, including
+`/home/ghuntley/.local/state/overalls/galileo-attachments-20261003`, including
 `production-attachments.json`, `production-upload.json`, original terminal VM
 creation/deletion receipts and the bounded cleanup authority/physical projections.
 Both run-owned integrations were removed through Porsche, and both VM deletions

@@ -276,7 +276,7 @@
   },
   "record_type": "overalls.native_prerequisites.v1",
   "recorded_at_utc": "2026-10-13T10:11:21.067034+00:00",
-  "repository": "/home/ghuntley/src/kittens-antithesis-reset",
+  "repository": "/home/ghuntley/src/overalls-antithesis-reset",
   "schema_version": 1,
   "secret_scan": {
     "interpretation": "Pattern scan and selected-line review found no credential material; this is not a proof that arbitrary secret formats are absent.",

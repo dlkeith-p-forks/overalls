@@ -78,8 +78,8 @@ The following completed successfully:
   fleet artifact note; ADR structure/link checks (122 decisions).
 - HLDD receipts, generated option reference, scenario coverage and Ash/topology
   views.
-- Nix `python-static`: `/nix/store/8dqq5a85rvwgawg9rdb4h0qhyrmv6r86-kittens-python-static`.
-- Nix `hldd`: `/nix/store/rzslrvqlgg4i8fsyaii8j3iqksrvgcr8-kittens-hldd-check`.
+- Nix `python-static`: `/nix/store/8dqq5a85rvwgawg9rdb4h0qhyrmv6r86-overalls-python-static`.
+- Nix `hldd`: `/nix/store/rzslrvqlgg4i8fsyaii8j3iqksrvgcr8-overalls-hldd-check`.
 
 These Nix governance outputs precede final execution-summary bookkeeping only;
 source helpers and artifact definitions are identical. Final documentation

@@ -102,7 +102,7 @@ Its existing disk needs replacement or an explicit migration to the new guest
 image before Cedar SSH can work. That replacement is not performed by a host
 release update. Relocation ownership and live share-revocation closure now have
 dedicated machine assertions. A separate user journey check exercises Porsche
-key registration, native VM creation, Kittens CLI setup and an interactive
+key registration, native VM creation, Overalls CLI setup and an interactive
 shell with the email-derived username and home, plus ordinary `whoami` and
 `pwd` remote commands through the same generated profile. The host-key fixture
 only reads the guest's public key; it does not start roster sync or sshd, so
@@ -114,7 +114,7 @@ client setup. The next run exposed an incorrect test expectation about the
 existing `v-` ingress-label prefix; the assertion now matches the persisted
 endpoint name and full immutable VM UUID. The complete fresh NixOS journey
 subsequently passed with Porsche key registration, Porsche VM creation, native
-Kittens CLI setup, `whoami`, `pwd`, mode-0700 home ownership, an interactive
+Overalls CLI setup, `whoami`, `pwd`, mode-0700 home ownership, an interactive
 PTY shell and a durable guest-login row. The fixture obtains the public guest
 host key without starting guest SSH units. The same complete journey passed
 against the Ubuntu guest image.
@@ -150,7 +150,7 @@ A generated Marshall SSH profile now calls Lyra's Rust `host-key` command for
 its current gateway key through the absolute `/usr/bin/env` entry point required
 by OpenSSH, including each nested gateway layer. Its exact HTTP
 status, response size and host binding checks fail closed, and the generated
-profile requires the installed `kittens` CLI on the developer machine.
+profile requires the installed `overalls` CLI on the developer machine.
 A strict live Porsche proof succeeded with this machine's key and the refreshed
 profile selects `geoffrey.huntley` with that key. This preserves ADR-0110's
 authority and audit boundaries without a protocol change. The old VM's missing
@@ -158,7 +158,7 @@ listener remains a guest-disk migration gap, not an Audi authorization failure.
 
 ## 2026-09-24: nondefault client key follow-up
 
-A macOS user configured the Kittens profile successfully but the nested Audi
+A macOS user configured the Overalls profile successfully but the nested Audi
 connection reported `Permission denied (publickey)` for a production Customer
 VM. The installer selected the registered key for the guest `IdentityFile`, but
 Lyra's Rust proxy launched a separate SSH process with `-F /dev/null` and no
@@ -173,7 +173,7 @@ with its absolute path and `IdentitiesOnly=yes`. The inner SSH process retains
 the same selected identity. Rust unit and Hegel tests cover identity filename
 validation and the outer command options. The user journey fixture now uses a
 nondefault private-key filename without a `.pub` sibling, exercising the exact
-failure path through Porsche, fresh Firecracker VM creation, Kittens setup and
+failure path through Porsche, fresh Firecracker VM creation, Overalls setup and
 guest SSH. The revised NixOS and Ubuntu native journey checks passed. Production
 rollout reached `healthy` on both Overalls and Dungarees at revision `d3d63711`;
 the published macOS and Linux artifact digests matched the built Lyra package.

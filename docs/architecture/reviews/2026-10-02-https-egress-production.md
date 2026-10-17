@@ -39,8 +39,8 @@ No shared production service was deliberately interrupted.
 | NixOS Customer | 113b815c-91e9-457d-a3c5-f7e5240192f3 | 1 | 3 |
 
 Both OSS guests used ordinary system trust without `--cacert` or disabled
-verification. Curl reported verification result zero and the `Kittens Brady
-overalls Signer 2026` / `Kittens Brady Fleet Root 2026` chain. The version-pinned
+verification. Curl reported verification result zero and the `Overalls Brady
+overalls Signer 2026` / `Overalls Brady Fleet Root 2026` chain. The version-pinned
 jsDelivr artifact matched the independent reference SHA-256
 `04255e482e181687823a95b207802ddd32e746c65dce4c95a5176fc192735960`.
 The GitHub shallow clone resolved to
@@ -98,14 +98,14 @@ fresh hit counters. It uses production TLS/ZFS helpers with veth guest peers;
 it does not establish Firecracker boot trust or authoritative owner attribution.
 
 The complete extended `brady-native-storage` check passed in 125.42 seconds at
-`/nix/store/16ppakkxm397xa1l74lwjm0h9pgzmz71-vm-test-run-kittens-brady-native-storage`.
+`/nix/store/16ppakkxm397xa1l74lwjm0h9pgzmz71-vm-test-run-overalls-brady-native-storage`.
 The storage driver SHA-256 was
 `6199eb7442953dbc94f02ecc20d80a5139c4a71aba63fc1e93fc9b93e79b8129`.
 Existing real quota, parent headroom and physical 15%/20% pressure cases passed
 alongside the HTTPS extension.
 
 The unmodified `brady-network` check passed in 47.08 seconds at
-`/nix/store/pdj8ywi47fhh8ihpx18g3gm0i1asjjbs-vm-test-run-kittens-brady-network`:
+`/nix/store/pdj8ywi47fhh8ihpx18g3gm0i1asjjbs-vm-test-run-overalls-brady-network`:
 transparent HTTP/TLS, upstream name rejection, exact tunnel exception,
 DNS-disagreement Git clone, Customer/protected refusal, fail-closed outage,
 HTTP/3 fallback and closed journal diagnostics.
@@ -158,11 +158,11 @@ passed **222 checks (83 properties, 139 tests)** and Lilly's full gate passed
 hooks and the evaluated HLDD gate passed on the merged tree.
 
 The merged native network check passed in 47.09 seconds at
-`/nix/store/485jdhjh9500cmxkdwy6mc0pwqw11ymv-vm-test-run-kittens-brady-network`.
+`/nix/store/485jdhjh9500cmxkdwy6mc0pwqw11ymv-vm-test-run-overalls-brady-network`.
 The final storage assertions compare the complete full and range strings,
 including length, rather than matching one output line.
 **The final `brady-native-storage` check passed in 130.19 seconds** at
-`/nix/store/ccbir5cq8sn3l0lllcpsb79pyn6f0pm6-vm-test-run-kittens-brady-native-storage`,
+`/nix/store/ccbir5cq8sn3l0lllcpsb79pyn6f0pm6-vm-test-run-overalls-brady-native-storage`,
 with driver SHA-256
 `49d8994f200980218331219d9557f1768803b019d3abb8153769c464f9b5cc20`.
 Earlier runs above retain their original revision and driver scope.
@@ -232,7 +232,7 @@ cleanup after release.
 
 **The extended `zfs-namespace-cleanup` native check passed in 420.83 seconds**
 on `5c623418`, including the descriptor-only subtest in 91.24 seconds, at
-`/nix/store/xxdwajdk3b54yg0fn27agc9b3k1vvvsy-vm-test-run-kittens-zfs-namespace-cleanup`.
+`/nix/store/xxdwajdk3b54yg0fn27agc9b3k1vvvsy-vm-test-run-overalls-zfs-namespace-cleanup`.
 The initial fixture attempt failed because its transient service could not
 resolve `sh`; that run was cancelled and retained. Absolute NixOS tool paths
 corrected the fixture before the recorded passing runs. Rust tests, format and

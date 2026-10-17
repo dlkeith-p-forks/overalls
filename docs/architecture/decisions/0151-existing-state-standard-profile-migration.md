@@ -90,15 +90,15 @@ and multi-host rollout cannot be established by a pure JSON transformation test.
 
 ## Implementation evidence
 
-The incoming Marshall migration (`marshall/priv/repo/migrations/20261010013000_rename_antithesis_profile.exs` at kittens revision `9fe1e493`, repository deleted)
+The incoming Marshall migration (`marshall/priv/repo/migrations/20261010013000_rename_antithesis_profile.exs` at overalls revision `9fe1e493`, repository deleted)
 updates retained address/VM rows, command snapshots and the address constraint.
 After it was applied on every deployed database, ADR-0159 pruned that file; the
 closed Standard address constraint a fresh installation creates is in the
 [inception profile migration](../../../marshall/priv/repo/migrations/20260918034812_inception_profile.exs).
-ProfileRename (`lilly/lib/lilly/control/profile_rename.ex` at kittens revision `9fe1e493`, repository deleted) and
-Runtime (`lilly/lib/lilly/control/runtime.ex` at kittens revision `9fe1e493`, repository deleted) introduce startup migration
+ProfileRename (`lilly/lib/lilly/control/profile_rename.ex` at overalls revision `9fe1e493`, repository deleted) and
+Runtime (`lilly/lib/lilly/control/runtime.ex` at overalls revision `9fe1e493`, repository deleted) introduce startup migration
 with the reviewed pool-locked journal correction and prior host/version binding.
-The filesystem/property tests (`lilly/test/control/profile_rename_test.exs` at kittens revision `9fe1e493`, repository deleted)
+The filesystem/property tests (`lilly/test/control/profile_rename_test.exs` at overalls revision `9fe1e493`, repository deleted)
 cover exact v1 custody, same-state revision, retained/conflicting archives, envelope
 refusals, host/pool locks and execution tombstones. The focused combined Lilly
 selection passes 31 checks (five properties and 26 tests) in 3.5 seconds, recorded
@@ -107,7 +107,7 @@ at `/tmp/overalls-profile-migration-custody-focused.log`. Loading the original
 2 and zero of one passing in 0.4 seconds; the original archive is absent, recorded
 at `/tmp/overalls-profile-migration-raw-baseline-witness.log`.
 
-The actual Ecto migration test (`marshall/test/marshall/profile_rename_migration_test.exs` at kittens revision `9fe1e493`, repository deleted)
+The actual Ecto migration test (`marshall/test/marshall/profile_rename_migration_test.exs` at overalls revision `9fe1e493`, repository deleted)
 passes one check in 0.3 seconds, seed 551224, recorded at
 `/tmp/overalls-observability-profile-marshall-focused-fixed.log`. It migrates
 populated disposable PostgreSQL tables twice, verifies current profile and nested

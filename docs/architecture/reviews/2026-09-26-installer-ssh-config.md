@@ -3,7 +3,7 @@
 ## Scope and architecture impact
 
 Campaign improvement 060 covers the user operation of installing and
-re-installing the local tooling (`kittens config-ssh`, the staged installer's
+re-installing the local tooling (`overalls config-ssh`, the staged installer's
 final local step) against arbitrary pre-existing local SSH configurations. It
 preserves ADR-0124's unified SSH host CA model and ADR-0118's strict management
 SSH and refusal semantics. The production change is a bounded refusal
@@ -18,7 +18,7 @@ explicit external acceptance boundary, unchanged from the
 The installer writes `$HOME/.ssh/config` through a `NamedTempFile` created in
 the SSH directory, fsynced and renamed into place; a dropped temporary file
 unlinks itself. The pre-existing config passes through an inline marker splice:
-the byte ranges around `# BEGIN KITTENS SSH` and `# END KITTENS SSH` are
+the byte ranges around `# BEGIN OVERALLS SSH` and `# END OVERALLS SSH` are
 removed when one begin precedes one end, the untouched prefix and suffix are
 kept, and a fresh managed block is prepended. A symlinked config is refused
 before any read. Unmatched single markers already refuse. `trust.rs`'s
@@ -78,7 +78,7 @@ the (1,1) splice accepted duplicated marker arrangements and the known-hosts
 fresh append promoted dangling trailing marker text into a real marker on the
 next run — the generated matrix reproduced both:
 
-- `trust.rs merge`: prior `# BEGIN KITTENS SSH TRUST example.test` with no
+- `trust.rs merge`: prior `# BEGIN OVERALLS SSH TRUST example.test` with no
   trailing newline accepted, then the result contained two begin markers and
   the second install refused (`invalid managed SSH trust`) — a self-wedging
   reinstall.
@@ -95,7 +95,7 @@ before any write, so the whole SSH directory stays byte-identical.
 Execution evidence (this worktree, branch `verify/060-installer-ssh-config`):
 
 - `cargo test --locked` (devenv shell, Rust 1.97.1 / Cargo 1.97.0):
-  **85 passed, 0 failed, 0 ignored** — lib 3, `kittens` bin 59 (including
+  **85 passed, 0 failed, 0 ignored** — lib 3, `overalls` bin 59 (including
   `generated_configurations_preserve_unmanaged_bytes` with 64 generated
   cases, `generated_marker_ambiguity_is_refused_and_preserves_every_byte`
   with 64, `generated_known_hosts_configurations_preserve_unrelated_bytes`
@@ -127,7 +127,7 @@ Execution evidence (this worktree, branch `verify/060-installer-ssh-config`):
   `elixir scripts/hldd_coverage.exs --write` regenerated the installer row
   (plus three property evidence links) and `--check` passes.
 - Nix `hldd` gate `.#checks.x86_64-linux.hldd` passed on the receipted staged
-  tree: output `/nix/store/20f97kqsq87bjrh7s5qqx9pyyhn4czfr-kittens-hldd-check`.
+  tree: output `/nix/store/20f97kqsq87bjrh7s5qqx9pyyhn4czfr-overalls-hldd-check`.
   After the final evidence sentences and campaign row the governance receipt
   was re-recorded and this gate rerun on the final tree; both receipts and the
   gate are green at commit time. The gate validates structure and evaluated

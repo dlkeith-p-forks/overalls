@@ -103,7 +103,7 @@ Mutant table (inject → observe → revert):
 ## Native execution
 
 First gated attempt
-(`/nix/store/faiv3q8liwg2403ah4x4qs4ixjwy13dm-vm-test-run-kittens-mfa-login-browser.drv`,
+(`/nix/store/faiv3q8liwg2403ah4x4qs4ixjwy13dm-vm-test-run-overalls-mfa-login-browser.drv`,
 472s): all pre-existing legs and the new expired-ceremony refusal passed — the
 UI refused without elevation — while the first fresh-retry variant never
 completed: the browser-side WebAuthn call was cancelled because a resident
@@ -115,9 +115,9 @@ now deliberately reuses the same browser page (the resident credential holder)
 and rebinds its WebSocket backend observation to the third replica.
 
 Final passing run: derivation
-`/nix/store/aphfmwvmidwg5irl7chhqfh5mgz0yys4-vm-test-run-kittens-mfa-login-browser.drv`,
+`/nix/store/aphfmwvmidwg5irl7chhqfh5mgz0yys4-vm-test-run-overalls-mfa-login-browser.drv`,
 output
-`/nix/store/mdg7dmz5yf8w9804qckwncgkwvr02xrl-vm-test-run-kittens-mfa-login-browser`,
+`/nix/store/mdg7dmz5yf8w9804qckwncgkwvr02xrl-vm-test-run-overalls-mfa-login-browser`,
 exit 0 in 74s wall (cached build) under the MEDIUM native lock; the browser
 subtest "Subsequent MFA and remember-me logins; cross-replica revocation and
 expired-ceremony refusal" finished in 27.77 seconds with the expired ceremony

@@ -41,7 +41,7 @@ network module.
   passed in a clean detached worktree containing only this change.
 - `nix build .#checks.x86_64-linux.module-configuration --no-link` passed in
   the same worktree.
-- Full `kittensDeployment` builds for both `overalls` and `dungarees` passed,
+- Full `overallsDeployment` builds for both `overalls` and `dungarees` passed,
   covering complete host composition and the NixOS firewall assertions.
 - Before the fix, production evidence showed a fresh authenticated WireGuard
   handshake and successful bidirectional ICMP, an active Marshall listener on

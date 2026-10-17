@@ -56,7 +56,7 @@ UUID/numeric keys, resource identity and privacy filters remain unchanged.
 The current complete SDK precommit passes eleven tests in 3.5 seconds, nineteen
 contract regressions and forced Dialyzer with zero errors, skips and unnecessary
 skips in 6.25 seconds, recorded at
-`/tmp/kittens-observability-profile-sdk-final.log`. The current Rust spool checks
+`/tmp/overalls-observability-profile-sdk-final.log`. The current Rust spool checks
 also pass thirteen tests, rustfmt, all-target Clippy with warnings denied and the
 locked release build in 50.72 seconds. These source/schema/type checks do not
 establish native execution of the incoming retained-state profile migration.
@@ -64,7 +64,7 @@ establish native execution of the incoming retained-state profile migration.
 The frozen merged Lilly precommit subsequently passes 541 checks (104 properties
 and 437 tests) in 75.3 seconds, seed 95084, with zero-error/skip/unnecessary-skip
 forced Dialyzer in 14.82 seconds. Its whole shell is 149.526942544 seconds, recorded
-at `/tmp/kittens-lilly-profile-custody-final-precommit.log`; runtime, 149-ADR,
+at `/tmp/overalls-lilly-profile-custody-final-precommit.log`; runtime, 149-ADR,
 contracts, logging, compiler and formatting gates pass without source/assertion
 changes during execution. This current component result is separate from the
 captured 530-check watcher gate and frozen native derivations below. The frozen
@@ -74,7 +74,7 @@ current Marshall precommit exits 0 with 1387 passing checks (235 properties and
 workspace TypeScript gate pass. Forced Dialyzer has zero errors, skips and
 unnecessary skips in 61.94 seconds, after PLT preparation of 13.38 and 324.95
 seconds, recorded at
-`/tmp/kittens-observability-profile-marshall-final-precommit.log`.
+`/tmp/overalls-observability-profile-marshall-final-precommit.log`.
 The corrected current-source native relocation gate now passes all 19 subtests,
 as recorded below. Retained-state native upgrade and physical power-loss
 acceptance remain unverified.
@@ -249,7 +249,7 @@ so these fixture changes do not invalidate the focused or combined native
 runtime snapshots.
 
 The corrected combined native execution passed with exit 0, output
-`/nix/store/84zd12k7zm71fiqynsg0wgq81dyskqxy-vm-test-run-kittens-lilly-observability-recovery`
+`/nix/store/84zd12k7zm71fiqynsg0wgq81dyskqxy-vm-test-run-overalls-lilly-observability-recovery`
 and the final driver footer `test script finished in 686.22s`. Its observer-outage
 subtest passed in 113.04 seconds. It conserves exact native VMM and surviving guest
 identity across Lilly restarts, retains old physical receipt identity, settles
@@ -269,7 +269,7 @@ schedules are intact. The nested VM-script timing is 685.66 seconds; the 686.22
 seconds above is the recorded final driver footer. No exact whole-Nix call timer
 was recorded, and the log file's creation time predates a rejected invocation, so
 it cannot supply that timer. The complete execution log is
-`/tmp/kittens-lilly-observability-native-eager-final.log`. The two prior failed
+`/tmp/overalls-lilly-observability-native-eager-final.log`. The two prior failed
 combined executions remain failed historical evidence. These passing disposable
 native-machine checks do not establish production sizing, independent physical
 host failure or notification receipt; ADR-0149 remains partially implemented.
@@ -280,7 +280,7 @@ log-store fixture still asserted nine operations panels, so its earlier
 58.45-second passing execution predates the current inventory. The corrected
 helper uses an explicit `list[tuple[int, str, str]]` expectation for all fifteen
 panel IDs, titles and visualization types, then checks Grafana's actual response
-with `jq`: every panel has the `kittens-prometheus` datasource/type and at least
+with `jq`: every panel has the `overalls-prometheus` datasource/type and at least
 one nonempty string query expression. The `grafana-operations-provisioned-inventory`
 contract describes this verification obligation. It does not expose credentials
 or add application authority; architecture impact is evidence correction for
@@ -288,13 +288,13 @@ ADR-0149's existing provisioning decision.
 
 The complete current log-store native execution passed with exit 0, driver footer
 `test script finished in 50.56s` and a recorded 68-second Nix invocation, at
-`/nix/store/hl7q3blr08cixnvfsjdygy4hnq0dwxdp-vm-test-run-kittens-log-store`.
+`/nix/store/hl7q3blr08cixnvfsjdygy4hnq0dwxdp-vm-test-run-overalls-log-store`.
 The actual fifteen-panel inventory, pinned VictoriaLogs plugin, verified TLS,
 reader credential custody/API redaction, real log/trace correlation, read-only
 proxy refusal and queued outage backfill all passed. Explicit type checking of
 the Nix-composed driver, Ruff formatting/lint and contract format/discovery also
 passed. The wrapper log is
-`/tmp/kittens-log-store-dashboard-inventory-final.log`; the complete Nix build log
+`/tmp/overalls-log-store-dashboard-inventory-final.log`; the complete Nix build log
 is `/home/ghuntley/.local/state/nix/build-logs/1791596009969-742376-0.jsonl`.
 This supersedes the earlier log-store result for current fixture acceptance;
 production workload sizing, physical-host failure and notification receipt remain
@@ -324,31 +324,31 @@ is byte-identical to the reviewed current fixture.
 
 The complete corrected native gate passed with exit 0 and driver footer
 `test script finished in 63.59s` (nested script 63.55 seconds), at
-`/nix/store/71j99s7x7hdacy7dgvkqnybnddb5csw2-vm-test-run-kittens-control-room-browser`.
+`/nix/store/71j99s7x7hdacy7dgvkqnybnddb5csw2-vm-test-run-overalls-control-room-browser`.
 The actual browser authority subtest passed in 33.60 seconds; the Nix invocation
 took 367 seconds including source-built Marshall. The wrapper log is
-`/tmp/kittens-control-room-retirement-signout-final.log`, and the full build log
+`/tmp/overalls-control-room-retirement-signout-final.log`, and the full build log
 is `/home/ghuntley/.local/state/nix/build-logs/1791597135963-924633-0.jsonl`.
 Earlier failed wrappers remain
-`/tmp/kittens-control-room-retirement-final.log` and
-`/tmp/kittens-control-room-retirement-expiry-final.log`; neither establishes final
+`/tmp/overalls-control-room-retirement-final.log` and
+`/tmp/overalls-control-room-retirement-expiry-final.log`; neither establishes final
 fresh-request refusal. Architecture impact is fixture/evidence correction for
 ADR-0149's retired UI and ADR-0123's retained authentication boundary.
 
 The current Marshall observability gate's browser request client initially
 failed disposable TLS trust before it could evaluate the retired page's 404.
-The fixture now adds `NODE_EXTRA_CA_CERTS=/run/kittens-test/ca.crt`, retaining
+The fixture now adds `NODE_EXTRA_CA_CERTS=/run/overalls-test/ca.crt`, retaining
 Chromium NSS trust and verified TLS. Its reviewed contract names the forty
 Prometheus rules and strict retired-page refusals. The complete current native
 execution passed with exit 0, driver footer `test script finished in 113.32s`
 (nested script 113.26 seconds), at
-`/nix/store/q4qgzxakvmrc90kjg5n3vxh9kddsbvx2-vm-test-run-kittens-otel-marshall`.
+`/nix/store/q4qgzxakvmrc90kjg5n3vxh9kddsbvx2-vm-test-run-overalls-otel-marshall`.
 Recorder loss passed in 4.48 seconds, clean deployment in 14.71 seconds, producer
 loss in 16.95 seconds and the actual browser journey in 12.10 seconds. The
 browser reaches strict removed-page 404 before and after ordinary login, no
 overview navigation links, and current/remembered revoked-authority refusals.
 The wrapper is
-`/tmp/kittens-otel-marshall-retirement-native-trust-fixed.log`. The preceding trust
+`/tmp/overalls-otel-marshall-retirement-native-trust-fixed.log`. The preceding trust
 failure remains historical; no production authentication or transport behavior
 changed, and notification receipt remains deployment acceptance.
 
@@ -368,14 +368,14 @@ unchanged. These fixture corrections preserve ADR-0149's distinction between
 retained application authority/audit and independent diagnostics. Both existing
 full base and Porsche lifecycle driver derivations pass their explicit composed
 `ty` and Ruff lint gates, recorded in
-`/tmp/kittens-fleet-audit-composed-typing-final.log`. Their packaged driver outputs
-are `/nix/store/6qz4c2w63348s3b0h6krycabvfbzm7kf-nixos-test-driver-kittens-fleet`
+`/tmp/overalls-fleet-audit-composed-typing-final.log`. Their packaged driver outputs
+are `/nix/store/6qz4c2w63348s3b0h6krycabvfbzm7kf-nixos-test-driver-overalls-fleet`
 and
-`/nix/store/q445626k7y62wpbgnkz9xw77jvi9bsnv-nixos-test-driver-kittens-porsche-lifecycle-fleet`.
+`/nix/store/q445626k7y62wpbgnkz9xw77jvi9bsnv-nixos-test-driver-overalls-porsche-lifecycle-fleet`.
 The complete captured base runtime passes with exit 0 in 2,324.23 seconds
 (nested script 2,323.94 seconds; whole shell 2,785.364 seconds), at
-`/nix/store/r6n7bdg75gngrblwrpdv63r9r4795p95-vm-test-run-kittens-fleet`.
-The wrapper is `/tmp/kittens-fleet-observability-retirement-final.log`.
+`/nix/store/r6n7bdg75gngrblwrpdv63r9r4795p95-vm-test-run-overalls-fleet`.
+The wrapper is `/tmp/overalls-fleet-observability-retirement-final.log`.
 Physical lifecycle cleanup passes in 59.97 seconds and exact application-audit
 checks for both deleted host victims in 0.46 seconds. The full run also preserves
 capacity-race, network isolation, terminal sharing/reconnect, machine/database
@@ -383,8 +383,8 @@ loss, daemon-death and authority-refusal oracles. This runtime predates the
 subsequent watcher correction and cannot establish that correction's acceptance.
 The complete corrected Porsche lifecycle gate also passes with exit 0 in
 869.30 seconds (nested script 868.92 seconds; whole shell 1,057.869 seconds), at
-`/nix/store/vhq2w5qkr8448q90y240y8vyv5bzmafd-vm-test-run-kittens-porsche-lifecycle-fleet`.
-Its wrapper is `/tmp/kittens-porsche-lifecycle-watcher-native-final.log`; the
+`/nix/store/vhq2w5qkr8448q90y240y8vyv5bzmafd-vm-test-run-overalls-porsche-lifecycle-fleet`.
+Its wrapper is `/tmp/overalls-porsche-lifecycle-watcher-native-final.log`; the
 realized output is independently confirmed by `nix path-info`.
 The real browser/native SSH lifecycle passes in 703.71 seconds, including exact
 independent disk/data, relocation and source/copy deletion oracles. The final
@@ -418,13 +418,13 @@ records and metrics-only payload refusal are covered separately; the other seven
 services' nested health fixtures remain synthetic.
 
 The complete current Fluent Bit process/transport gate passed with exit 0 at
-`/nix/store/h8qj1h046ayniqc1hc36dxv1c6k98ria-kittens-logging-transports`, with a
+`/nix/store/h8qj1h046ayniqc1hc36dxv1c6k98ria-overalls-logging-transports`, with a
 431.15-second whole Nix timer in
-`/tmp/kittens-logging-brady-flat-health-native-final.log`. Actual Brady shape,
+`/tmp/overalls-logging-brady-flat-health-native-final.log`. Actual Brady shape,
 refusals, privacy, trusted source/correlation routing and independent cursor
 custody passed. Actual fixture compilation with warnings denied and pinned
 scoped Dialyzer against the fixture plus unchanged Brady beams pass with zero
-warnings, recorded in `/tmp/kittens-brady-health-fixture-dialyzer-final.log`.
+warnings, recorded in `/tmp/overalls-brady-health-fixture-dialyzer-final.log`.
 This is unit/process evidence; it does not establish NixOS machine acceptance,
 live SDK supervision or fleet throughput. Architecture impact is compatibility
 repair within ADR-0149's accepted finite source/field boundary, with no additional
@@ -446,9 +446,9 @@ the accepted decision without changing its rationale or silently claiming the
 prior settings were durable. The evaluated `collectorTraceCustody` case passes
 with `true`; the first corrected native Collector gate passes with exit 0 and
 footer `test script finished in 432.85s` (nested script 432.74 seconds), at
-`/nix/store/hh20hzz0n8cqa4s87bamwvm9r0nlfyh9-vm-test-run-kittens-otel-fleet`.
+`/nix/store/hh20hzz0n8cqa4s87bamwvm9r0nlfyh9-vm-test-run-overalls-otel-fleet`.
 The combined Nix invocation took 597.34 seconds; its wrapper is
-`/tmp/kittens-collector-fsync-native-final.log`.
+`/tmp/overalls-collector-fsync-native-final.log`.
 
 That passing fixture predates stronger crash synchronization: both worker
 twelve-second waits are removed and all three original queue journeys now
@@ -458,8 +458,8 @@ their exact trace IDs, source separation, refusal/recovery checks and deadlines.
 The strengthened native crash gate passes with exit 0 and footer
 `test script finished in 500.09s` (nested script 500.02 seconds; whole shell
 527.36 seconds), at
-`/nix/store/lc896lmvjjzs72pg8hf88p73ay0yyanr-vm-test-run-kittens-otel-fleet`.
-Its wrapper is `/tmp/kittens-collector-fsync-sigkill-native-final.log`. All three
+`/nix/store/lc896lmvjjzs72pg8hf88p73ay0yyanr-vm-test-run-overalls-otel-fleet`.
+Its wrapper is `/tmp/overalls-collector-fsync-sigkill-native-final.log`. All three
 exact trace journeys recover after HTTP acceptance, immediate SIGKILL and
 restart, without relaxing the original deadlines. This establishes the tested
 process-crash boundary, not physical power-loss durability. Earlier captured
@@ -469,9 +469,9 @@ paths, but cannot prove the corrected Collector settings.
 The final complete real Lilly-to-Tempo recovery gate passes with exit 0 against
 the corrected typed watcher and fsynced Collector configuration in 707.93 seconds
 (nested script 707.60 seconds; whole shell 796.360 seconds), at
-`/nix/store/n30gqwncgn0w9r0j8lahs370x8mb75rp-vm-test-run-kittens-lilly-observability-recovery`.
+`/nix/store/n30gqwncgn0w9r0j8lahs370x8mb75rp-vm-test-run-overalls-lilly-observability-recovery`.
 The wrapper is
-`/tmp/kittens-lilly-observability-watcher-typed-fsync-native-final.log`, with raw
+`/tmp/overalls-lilly-observability-watcher-typed-fsync-native-final.log`, with raw
 JSONL `/home/ghuntley/.local/state/nix/build-logs/1791601944894-1388639-0.jsonl`;
 the realized output is independently confirmed by `nix path-info`.
 The collector/spool outage group passes in 113.51 seconds, preserving exact
@@ -495,7 +495,7 @@ assumption without weakening authority or rewriting accepted rationale. The
 captured full pinned Lilly precommit gate passes 524 checks (103 properties and
 421 tests), seed 232788, in 98.3 seconds; forced Dialyzer has zero errors and zero
 skips in 16.1 seconds. The whole shell timer is 160.09 seconds, separate from the
-log at `/tmp/kittens-lilly-retirement-comments-precommit-final.log`.
+log at `/tmp/overalls-lilly-retirement-comments-precommit-final.log`.
 Captured native execution paths remain unchanged; these component checks do not
 prove physical isolation or the new Collector custody configuration.
 
@@ -511,12 +511,12 @@ than 1 MiB streamed, physical authority and original deadlines are preserved.
 Six isolated procfs regressions pass; the original helper fails the exact
 kernel-thread/native-witness regression with exit 1. Pinned all-files Python
 format/lint/type and standalone helper/test typing pass. Logs are
-`/tmp/kittens-relocation-diagnostic-python-final.log`,
-`/tmp/kittens-relocation-diagnostic-original-failure.log` and
-`/tmp/kittens-relocation-diagnostic-standalone-ty-final.log`.
+`/tmp/overalls-relocation-diagnostic-python-final.log`,
+`/tmp/overalls-relocation-diagnostic-original-failure.log` and
+`/tmp/overalls-relocation-diagnostic-standalone-ty-final.log`.
 The pinned Nix regression gate also passes all six cases in 0.016 seconds, at
-`/nix/store/ndmz5615ld3ib2xa4z9hd5nyplag4sns-kittens-relocation-diagnostics-tests`,
-recorded in `/tmp/kittens-relocation-diagnostic-nix-final.log`.
+`/nix/store/ndmz5615ld3ib2xa4z9hd5nyplag4sns-overalls-relocation-diagnostics-tests`,
+recorded in `/tmp/overalls-relocation-diagnostic-nix-final.log`.
 This repairs verification within ADR-0149's independent fault synchronization;
 it changes no production execution path and does not turn the failed full run
 or isolated parser tests into native relocation acceptance.
@@ -524,8 +524,8 @@ or isolated parser tests into native relocation acceptance.
 The subsequent corrected typed-procfs full relocation capture exits 1 after
 1,958.249 seconds for the whole shell, without a complete output artifact. Its
 exact derivation is
-`/nix/store/pbdc9djqlng5ld8hk4akpkgzdkg16www-vm-test-run-kittens-relocation-fleet.drv`,
-with wrapper `/tmp/kittens-relocation-kernel-thread-native-final.log`.
+`/nix/store/pbdc9djqlng5ld8hk4akpkgzdkg16www-vm-test-run-overalls-relocation-fleet.drv`,
+with wrapper `/tmp/overalls-relocation-kernel-thread-native-final.log`.
 The live move passes in 262.70 seconds, return in 181.98 seconds, stopped move in
 155.72 seconds, pre-handoff cancellation in 41.21 seconds and Delete in
 7.55 seconds. Actual nonempty midstream cancellation now passes in 90.33 seconds
@@ -544,12 +544,12 @@ physical-host power-loss acceptance.
 
 The complete corrected relocation gate exits 0 with all 19 subtest footers,
 using frozen derivation
-`/nix/store/vqmp9ypkb52nnq7w93nl3410wb8vjxkn-vm-test-run-kittens-relocation-fleet.drv`
+`/nix/store/vqmp9ypkb52nnq7w93nl3410wb8vjxkn-vm-test-run-overalls-relocation-fleet.drv`
 and driver
-`/nix/store/hp58jifzd3dzlrwjkc9viif6l22sydcx-nixos-test-driver-kittens-relocation-fleet`.
+`/nix/store/hp58jifzd3dzlrwjkc9viif6l22sydcx-nixos-test-driver-overalls-relocation-fleet`.
 The actual output is
-`/nix/store/11ibfwp2xv1jdf53vn3gr3q22mhdc3hg-vm-test-run-kittens-relocation-fleet`,
-recorded at `/tmp/kittens-relocation-trust-native-final.log`. The VM-run footer is
+`/nix/store/11ibfwp2xv1jdf53vn3gr3q22mhdc3hg-vm-test-run-overalls-relocation-fleet`,
+recorded at `/tmp/overalls-relocation-trust-native-final.log`. The VM-run footer is
 3,643.75 seconds, the following script footer 3,643.99 seconds and the Bash wrapper
 3,654.445 seconds. Independent inspection confirms the realized output and every
 subtest footer:
@@ -604,9 +604,9 @@ This repairs the accepted liveness decision, as recorded in
 The shell fixture's timeout/EOF distinction is corrected before comparing the
 true original actor, which fails the exact port-retention regression. The
 corrected actor watcher suite passes 13 checks (one property and twelve tests)
-in 1.4 seconds, recorded in `/tmp/kittens-brady-watcher-race-fixed.log`.
+in 1.4 seconds, recorded in `/tmp/overalls-brady-watcher-race-fixed.log`.
 The corrected-fixture baseline exits 2 with zero of one passing and seven
-excluded checks, at `/tmp/kittens-brady-watcher-race-baseline.log`; the original
+excluded checks, at `/tmp/overalls-brady-watcher-race-baseline.log`; the original
 watcher port is already absent at the exact retention assertion.
 Source/contract review covers actual exit/error retention, stale/ambiguous target
 and delayed armed refusal, different boot target, command supersession and
@@ -621,16 +621,16 @@ excluded the other actor state fields. The equivalent correction accepts
 precisely typed `Watch.t()` and `Watch.target() | nil` inputs, passing only those
 two fields. Independent source review found no semantic change. The first raw
 wrapper was overwritten; the actual tool transcript and explicitly transcribed
-`/tmp/kittens-lilly-watcher-first-gate-failure-summary.txt` preserve the failure.
+`/tmp/overalls-lilly-watcher-first-gate-failure-summary.txt` preserve the failure.
 That summary is not an original raw execution log.
 The final complete pinned Lilly gate passes with exit 0: 530 checks
 (103 properties and 427 tests) in 66.8 seconds and forced Dialyzer zero errors,
 skips and unnecessary skips in 11.46 seconds, recorded in
-`/tmp/kittens-lilly-watcher-final-precommit.log`.
+`/tmp/overalls-lilly-watcher-final-precommit.log`.
 The current complete typed native Brady gate passes with exit 0 in 359.64 seconds
 (nested script 359.33 seconds; whole Nix 625 seconds), at
-`/nix/store/xy3r24b2qadnwj7w00lsfgpr5j57vc9x-vm-test-run-kittens-brady-fleet`.
-The wrapper is `/tmp/kittens-brady-fleet-watcher-typed-final.log`, with raw JSONL
+`/nix/store/xy3r24b2qadnwj7w00lsfgpr5j57vc9x-vm-test-run-overalls-brady-fleet`.
+The wrapper is `/tmp/overalls-brady-fleet-watcher-typed-final.log`, with raw JSONL
 `/home/ghuntley/.local/state/nix/build-logs/1791601298741-1323264-0.jsonl`.
 The pre-kill count-only witness shows one VMM, one target watcher, one pidfd and
 a valid cursor. Real VMM death produces the actual `exited` event for the exact

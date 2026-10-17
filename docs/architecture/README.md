@@ -480,7 +480,7 @@ records the structural gate, the Playwright probe in both themes and the gaps.
 Overview entry and complete workspace/control-room navigation under the Overalls
 name together with the historical Nekomo visual system, now replaced by
 ADR-0161. Existing domain authority, machine routes and terminal capabilities
-remained in place. The [redesign review](reviews/2026-09-24-kittens-nekomo-redesign.md)
+remained in place. The [redesign review](reviews/2026-09-24-overalls-nekomo-redesign.md)
 records the application, browser, type and contract gates at that revision.
 
 [ADR-0112](decisions/0112-zfs-namespace-delete.md) extends Lilly's fenced ZFS

@@ -48,7 +48,7 @@ shared governance tooling was changed, so application precommit suites were not 
 ## Decisions and follow-up
 
 The user authorized fleet-host Mosh and lingering, excluding guest VMs. Use the
-upstream defaults and existing access switch, without adding another Kittens option.
+upstream defaults and existing access switch, without adding another Overalls option.
 No production activation or provider firewall modification is included. Deployment
 must permit UDP 60000–61000 beyond the host firewall and verify live connectivity;
 local VM checks do not establish provider reachability or Overalls acceptance.

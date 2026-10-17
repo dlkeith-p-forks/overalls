@@ -71,16 +71,16 @@ Execution on 2026-09-25 in `devenv shell`, with `ERL_FLAGS="+S 4:4"`,
   The unconsumed installation latch promoted that first magic-link account.
   That result is withdrawn as evidence for the three-ordinary-account claim.
   Withdrawn artifact:
-  `/nix/store/2q3n3cw0gcvrx86fz5wqc1yvqz1rvx7r-vm-test-run-kittens-teams-browser`.
+  `/nix/store/2q3n3cw0gcvrx86fz5wqc1yvqz1rvx7r-vm-test-run-overalls-teams-browser`.
 - The corrected ordinary-account `teams-browser` check passed in 44.78 seconds:
   `nix build .#checks.x86_64-linux.teams-browser -L --no-link --print-out-paths`.
   It consumes bootstrap with a separate unused administrator and checks persisted
   ordinary roles after login and after team operations. Both observations require
   exactly three users and zero administrators; the final independent SQL query
   requires exactly one committed team owner. Derivation:
-  `/nix/store/hgk301651yyiskf67lxy83diizwprg9w-vm-test-run-kittens-teams-browser.drv`.
+  `/nix/store/hgk301651yyiskf67lxy83diizwprg9w-vm-test-run-overalls-teams-browser.drv`.
   Result:
-  `/nix/store/b56dj7vr2bx9dc493kj9z3arvfkqgn0y-vm-test-run-kittens-teams-browser`.
+  `/nix/store/b56dj7vr2bx9dc493kj9z3arvfkqgn0y-vm-test-run-overalls-teams-browser`.
 - `prek run --all-files`, explicit Python `ty check` with the pinned Playwright
   interpreter, ADR and contract checks, generated options/coverage/views and the
   Nix `hldd` check passed. The ambient-interpreter typing attempt lacked

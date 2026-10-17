@@ -16,7 +16,7 @@ source descriptors. The original finally called killpg only if the direct child
 was still live, so timeout, successful EOF or failed EOF could return with readers
 still alive. An isolated actual-process reproduction confirmed the leak; introduced
 processes were explicitly retired. The first property failed three fixed cases
-in 7.252 seconds, `/tmp/kittens-reader-baseline.log`.
+in 7.252 seconds, `/tmp/overalls-reader-baseline.log`.
 
 An initial unconditional kill exposed two review findings: EOF already reaped the
 leader before numeric group signaling, and asynchronous SIGKILL did not establish
@@ -50,7 +50,7 @@ The actual group-return property passed in 3.723 seconds before the pthread fixt
 addition. No mutant changes entered tracked production source.
 After the two-empty-inventory hardening, all four CommandTest tests passed in
 5.590 seconds with the pinned Python 3.13 environment and native pthread helper;
-local transcript `/tmp/kittens-reader-two-scan-focused.log`. This focused run
+local transcript `/tmp/overalls-reader-two-scan-focused.log`. This focused run
 does not replace the composed Nix gate or packaged cleanup acceptance.
 
 ## Contract limitation

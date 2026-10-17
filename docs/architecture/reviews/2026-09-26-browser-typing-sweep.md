@@ -155,7 +155,7 @@ would break the standalone gate.
   rows — and `deployment` no-impact); `elixir scripts/check_hldd.exs` passes
   ("HLDD review receipts and references are current").
 - `nix build .#checks.x86_64-linux.hldd`:
-  `/nix/store/sx728npsawnva93fz08i4mpr58ngns0b-kittens-hldd-check`.
+  `/nix/store/sx728npsawnva93fz08i4mpr58ngns0b-overalls-hldd-check`.
 - `nix build .#checks.x86_64-linux.fleet-guest-trust-configuration` and
   `python-static` pass against the amended fragments.
 - `marshall` `mix precommit` (run because `marshall/priv/hldd/17-reference.md`
@@ -171,7 +171,7 @@ would break the standalone gate.
   classification, so `19-coverage`/scenarios.json are intentionally unchanged.
 - Pre-existing observation, recorded not repaired: the fleet `name` chain never
   mentions `sshBootstrap`, so the ssh-bootstrap variants report driver names
-  `kittens-audi-relocation-fleet`/`kittens-audi-ubuntu-relocation-fleet`. Their
+  `overalls-audi-relocation-fleet`/`overalls-audi-ubuntu-relocation-fleet`. Their
   composed scripts (and store hashes) remain distinct from the audi-relocation
   variants, which also pass. Renaming a check derivation is out of scope.
 - Guest-side non-browser fixtures (systemd helpers such as `origin.py`,

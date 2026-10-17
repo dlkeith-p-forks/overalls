@@ -2,7 +2,7 @@
 
 ## Scope and architecture impact
 
-The working audit (`antithesis/scratchbook/property-test-audit.md` at kittens revision `9fe1e493`, repository deleted)
+The working audit (`antithesis/scratchbook/property-test-audit.md` at overalls revision `9fe1e493`, repository deleted)
 tracks all 63 research candidates against current source and tests. This batch
 adds generated local checks for the Lilly journal attempt ordering and
 superseded executor results, Marshall host report ordering, CLI approval and
@@ -1070,7 +1070,7 @@ source-review finding was reported.
 
 Host takeover focused checks: 10 passed (3 properties, 7 tests), in 5.9 seconds.
 Focused seed: `794298`. Full gate results are recorded below after execution.
-Log: `/tmp/kittens-host-takeover-focused.log`.
+Log: `/tmp/overalls-host-takeover-focused.log`.
 
 Upstream integration: origin advanced to
 `e1cb9e4f2b11ea21d1a3f39590c794dc8cf380e8` with Galileo/Porsche management
@@ -1125,10 +1125,10 @@ native team refusal expectations and preserves those verification scopes in the
 handbook. This changes Marshall application source, so the final integration needs
 its own Marshall gate rather than treating the e1-based execution as final.
 Protocol and Lilly sources/tests are unchanged by this second advance.
-Logs: `/tmp/kittens-host-takeover-integrated-full.log`,
-`/tmp/kittens-host-takeover-integrated-doc-gates.log`,
-`/tmp/kittens-host-takeover-integrated-nix-hldd.log`,
-`/tmp/kittens-host-takeover-integrated-native-hldd.log`.
+Logs: `/tmp/overalls-host-takeover-integrated-full.log`,
+`/tmp/overalls-host-takeover-integrated-doc-gates.log`,
+`/tmp/overalls-host-takeover-integrated-nix-hldd.log`,
+`/tmp/overalls-host-takeover-integrated-native-hldd.log`.
 
 Second integration captured as `319ee00e434d232a5f73594eee5fc4ddd5d7fb0f` before
 final provenance/receipt review. Again only the receipt JSON conflicted; upstream
@@ -1156,9 +1156,9 @@ Second integration gates passed:
   single-machine sections/navigation/diagrams/theme/mobile and both-credential
   reader revocation, not native host-stream takeover or partition convergence.
   Archive: `/home/ghuntley/.local/state/nix/build-logs/1790956063403-4133161-0.jsonl`.
-Logs: `/tmp/kittens-host-takeover-final-full.log`,
-`/tmp/kittens-host-takeover-final-doc-gates.log`,
-`/tmp/kittens-host-takeover-final-native-hldd.log`.
+Logs: `/tmp/overalls-host-takeover-final-full.log`,
+`/tmp/overalls-host-takeover-final-doc-gates.log`,
+`/tmp/overalls-host-takeover-final-native-hldd.log`.
 
 Origin then advanced to `33b76a25aab03ecc3a9356c6fe6cf8aea45becec` during this gate.
 The only new Marshall application file is IntegrationsLive: every submission
@@ -1198,10 +1198,10 @@ question without changing those sources or accepting a deadline/window design.
 Browser scope remains single-machine packaged handbook/TLS/navigation/diagrams
 and reader revocation, not native host takeover. Archive:
 `/home/ghuntley/.local/state/nix/build-logs/1790957603222-1034490-0.jsonl`.
-Logs: `/tmp/kittens-host-takeover-combined-focused-static.log`,
-`/tmp/kittens-host-takeover-combined-dialyzer.log`,
-`/tmp/kittens-host-takeover-combined-doc-gates.log`,
-`/tmp/kittens-host-takeover-combined-native-hldd.log`.
+Logs: `/tmp/overalls-host-takeover-combined-focused-static.log`,
+`/tmp/overalls-host-takeover-combined-dialyzer.log`,
+`/tmp/overalls-host-takeover-combined-doc-gates.log`,
+`/tmp/overalls-host-takeover-combined-native-hldd.log`.
 
 A further origin advance to `f8dd5632a71b06e9424c7fedf25a7eb5f88f4d99` adds
 ADR0133's partial durable physical service-level accounting, new Ash resources
@@ -1244,9 +1244,9 @@ The captured application/test and chapter/scenario sources match f6408e05;
 only provenance/review receipts were staged. This remains single-machine packaged
 handbook/TLS evidence, not native host takeover or partition convergence.
 Archive: `/home/ghuntley/.local/state/nix/build-logs/1790958326707-1514608-0.jsonl`.
-Logs: `/tmp/kittens-host-takeover-slo-full.log`,
-`/tmp/kittens-host-takeover-slo-doc-gates.log`,
-`/tmp/kittens-host-takeover-slo-native-hldd.log`.
+Logs: `/tmp/overalls-host-takeover-slo-full.log`,
+`/tmp/overalls-host-takeover-slo-doc-gates.log`,
+`/tmp/overalls-host-takeover-slo-native-hldd.log`.
 
 Origin's final documentation-only advance to
 `6cdf0ae3f9fb57a5c164df8501abce394db9c4d8` records deployed Galileo Chromium,
@@ -1266,8 +1266,8 @@ Final publication checks passed after the documentation-only integration:
 HLDD receipts/references, generated options and scenario coverage, Ash/deployment
 views, ADR structure/links and code-contract structural/regression checks
 (19 tests). The evaluated Nix `hldd` check also passed. Logs:
-`/tmp/kittens-host-takeover-publication-gates.log` and
-`/tmp/kittens-host-takeover-publication-nix-hldd.log`.
+`/tmp/overalls-host-takeover-publication-gates.log` and
+`/tmp/overalls-host-takeover-publication-nix-hldd.log`.
 The exact application/test/config, protocol, Lilly, scripts and Nix comparison
 against tested commit `34dbc260` is empty. The earlier native browser chapter
 capture remains explicitly historical. Final architecture impact remains test
@@ -1314,7 +1314,7 @@ verify every test helper typespec. Full component and documentation gates follow
 Channel focused checks passed: **8 passed (5 properties, 3 tests)**, seed
 `110981`, 5.2 seconds, pinned runtime. This includes the final fixed witnesses,
 all five new properties and three existing Channel tests. Log:
-`/tmp/kittens-channel-history-focused.log`. These are local socket/callback
+`/tmp/overalls-channel-history-focused.log`. These are local socket/callback
 results, not native guest acceptance.
 
 The final fresh-context reread found no blocking issue and confirmed the fixed
@@ -1329,7 +1329,7 @@ seed `504220`, 57.0 seconds; forced Dialyzer passed in 12.89 seconds with zero
 errors, skipped warnings or unnecessary skips. Pinned runtime, ADR, contracts,
 catalogued logging, compiler and format gates passed. Capture is base `14a2d6ce`
 plus the final staged channel property and documentation/receipts. Log:
-`/tmp/kittens-channel-history-lilly-full.log`. The evaluated Nix `hldd` gate also
+`/tmp/overalls-channel-history-lilly-full.log`. The evaluated Nix `hldd` gate also
 passed in 13 seconds; archive
 `/home/ghuntley/.local/state/nix/build-logs/1790961106502-3132223-0.jsonl`.
 
@@ -1343,16 +1343,16 @@ executions by this workload. Storage/network chapter and coverage updates requir
 merged handbook receipt/reference/evaluated checks. No terminal or native helper
 contract is weakened. Marshall's required gate follows on the integrated tree.
 
-Marshall integrated full gate on `9d3df7bf` passed: **1,409 passed (211 properties, 1,198 tests), 2 excluded**, seed `892340`, 1275.4 seconds. Forced Dialyzer passed in 40.36 seconds with zero errors, skips or unnecessary skips. Log: `/tmp/kittens-channel-history-marshall-full.log`. Integrated structural/generated checks and evaluated Nix HLDD also passed before the subsequent Galileo integration.
+Marshall integrated full gate on `9d3df7bf` passed: **1,409 passed (211 properties, 1,198 tests), 2 excluded**, seed `892340`, 1275.4 seconds. Forced Dialyzer passed in 40.36 seconds with zero errors, skips or unnecessary skips. Log: `/tmp/overalls-channel-history-marshall-full.log`. Integrated structural/generated checks and evaluated Nix HLDD also passed before the subsequent Galileo integration.
 
 Publication integrates `b96443ffd17c0862d152c4ec24d0e7c019672067`: current Galileo owner liveness and archived-team token refusal are independent of Lilly Channel callbacks. No Lilly Elixir, shared protocol or validator source changed since the recorded full gates. Upstream Galileo full-gate evidence remains scoped to its recorded revision; combined affected Galileo and terminal checks, compiler/static gates and forced Dialyzer follow on this merged tree. ADR-0083 and its authority decisions are unchanged; ADR-0134 is inherited from upstream. Native and hosted fault gaps remain open.
 
-Merged publication checks passed: compiler warnings-as-errors, format, contracts, catalogued logging, structural/generated HLDD/options/coverage/views and ADR checks. Galileo renewal and terminal takeover/host-stream files passed **13 checks (6 properties, 7 tests)**, seed `960408`, 27.9 seconds. Forced Dialyzer passed in 60.56 seconds with zero errors/skips/unnecessary skips. Log: `/tmp/kittens-channel-history-merged-gates.log`. Galileo authorization and real three-node peer-token checks then passed **13 tests**, 8.2 seconds; evaluated Nix HLDD passed in 13 seconds. Log: `/tmp/kittens-channel-history-merged-peer-nix.log`; Nix archive `/home/ghuntley/.local/state/nix/build-logs/1790963181721-250045-0.jsonl`. These affected-file executions supplement separately scoped full gates; they are not a fresh full combined suite or native/hosted acceptance.
+Merged publication checks passed: compiler warnings-as-errors, format, contracts, catalogued logging, structural/generated HLDD/options/coverage/views and ADR checks. Galileo renewal and terminal takeover/host-stream files passed **13 checks (6 properties, 7 tests)**, seed `960408`, 27.9 seconds. Forced Dialyzer passed in 60.56 seconds with zero errors/skips/unnecessary skips. Log: `/tmp/overalls-channel-history-merged-gates.log`. Galileo authorization and real three-node peer-token checks then passed **13 tests**, 8.2 seconds; evaluated Nix HLDD passed in 13 seconds. Log: `/tmp/overalls-channel-history-merged-peer-nix.log`; Nix archive `/home/ghuntley/.local/state/nix/build-logs/1790963181721-250045-0.jsonl`. These affected-file executions supplement separately scoped full gates; they are not a fresh full combined suite or native/hosted acceptance.
 
 
 ## Dirty audit sender recovery
 
-Developed in `/home/ghuntley/src/kittens-antithesis-audit-recovery` from
+Developed in `/home/ghuntley/src/overalls-antithesis-audit-recovery` from
 `9d3df7bf2f68f4ecc3bf50aa7a77c0355aa55c82` while the captured Marshall gate
 continued in the separate local worktree. The existing AuditRuntime property
 scans empty metadata files and the readiness unit's actor map is empty. Neither
@@ -1393,9 +1393,9 @@ offer; a later empty suffix incorrectly established drain. The repair restarts
 configured-root traversal after every successful delivery, including partial or
 zero acknowledgement. Only a complete offer-free scan may report readiness.
 This preserves bounded 128-path/16-event passes and does not grant new execution
-authority. Initial reproduction: `/tmp/kittens-audit-recovery-focused.log`.
+authority. Initial reproduction: `/tmp/overalls-audit-recovery-focused.log`.
 Repaired focused property passed, seed `771441`, 22.7 seconds:
-`/tmp/kittens-audit-recovery-repaired-focused.log`. Full gates remain pending.
+`/tmp/overalls-audit-recovery-repaired-focused.log`. Full gates remain pending.
 
 Fresh review found that the initial root-reset repair could starve later journals
 under repeated zero acknowledgements. The final repair retains traversal progress
@@ -1408,16 +1408,16 @@ waits for the actual delivery task to finish before acquiring the audit lock and
 reading journals, avoiding both rename races and competing with the production
 nonblocking ACK lock. Final focused recovery/OTP/propagation checks passed:
 **10 checks (one property, nine tests)**, seed `310553`, 23.9 seconds. Log:
-`/tmp/kittens-audit-recovery-fair-focused.log`. Initial full-gate Dialyzer passed
+`/tmp/overalls-audit-recovery-fair-focused.log`. Initial full-gate Dialyzer passed
 with zero warnings but does not verify the final revised source; full rerun follows.
 
-Final recovery fresh review found no concrete blocker. Full pinned Lilly gate passed: **474 checks (84 properties, 390 tests)**, seed `929763`, 84.6 seconds; forced Dialyzer passed in 13.04 seconds with zero errors/skips/unnecessary skips. Runtime, ADR, HLDD, contracts, catalogued logging, compiler and format gates passed on the final fair-traversal repair and locked-after-delivery oracle. Log: `/tmp/kittens-audit-recovery-lilly-final-full.log`. Marshall consumer and final documentation/evaluated checks follow.
+Final recovery fresh review found no concrete blocker. Full pinned Lilly gate passed: **474 checks (84 properties, 390 tests)**, seed `929763`, 84.6 seconds; forced Dialyzer passed in 13.04 seconds with zero errors/skips/unnecessary skips. Runtime, ADR, HLDD, contracts, catalogued logging, compiler and format gates passed on the final fair-traversal repair and locked-after-delivery oracle. Log: `/tmp/overalls-audit-recovery-lilly-final-full.log`. Marshall consumer and final documentation/evaluated checks follow.
 
 Recovery integrated Marshall full gate passed: **1,410 checks (212 properties,
 1,198 tests), two exclusions**, seed `977346`, 1437.4 seconds. Forced Dialyzer
 passed in 48.64 seconds with zero errors, skips or unnecessary skips. Compiler,
 contracts, logging, format, terminal, dashboard and workspace gates passed.
-Log: `/tmp/kittens-audit-recovery-marshall-final-full.log`. Structural/generated
+Log: `/tmp/overalls-audit-recovery-marshall-final-full.log`. Structural/generated
 handbook/options/coverage/views and ADR checks passed, and evaluated Nix HLDD
 passed in eight seconds; archive
 `/home/ghuntley/.local/state/nix/build-logs/1790963951270-726208-0.jsonl`.
@@ -1437,7 +1437,7 @@ audit and real provisioner transport files passed **34 checks (four properties,
 contracts and logging checks passed. Forced Dialyzer passed in 50.29 seconds
 with zero errors/skips/unnecessary skips. Structural/generated handbook/options/
 coverage/views and ADR gates passed; evaluated Nix HLDD passed in 12 seconds.
-Log: `/tmp/kittens-audit-recovery-merged-gates.log`; archive
+Log: `/tmp/overalls-audit-recovery-merged-gates.log`; archive
 `/home/ghuntley/.local/state/nix/build-logs/1790965923955-1728570-0.jsonl`.
 Lilly Elixir/test/config/mix, protocol and validator sources compare exactly
 unchanged against the full recovery capture `d7b94acc`. This supplements the
@@ -1447,7 +1447,7 @@ ADR0133 measurement boundaries. The remaining research gaps stay explicit.
 
 ## Audit expiry/reoffer history
 
-Developed in `/home/ghuntley/src/kittens-antithesis-audit-expiry` from
+Developed in `/home/ghuntley/src/overalls-antithesis-audit-expiry` from
 `e002401aad2a3677a15f3f8be41db2d2540e4b15` while the recovery Marshall gate ran
 in the warm worktree. ADR0074 decision and implementation status remain unchanged;
 this extends evidence without production changes. The existing expiry case has
@@ -1484,7 +1484,7 @@ the Client observes temporary unavailability. This does not establish durable
 commit outside the sandbox. Exact physical rows, cursor and operational records are checked
 after every attempt before a successful replay returns the original IDs. This
 is an accepted-but-unobserved reply fixture over real TLS, not a socket drop,
-server crash or independent-service partition. The focused run passed 14 checks (three properties and eleven tests), seed `461284`, in 13.0 seconds; log `/tmp/kittens-audit-expiry-focused.log`. Full Marshall precommit passed 1412 checks (213 properties, 1199 tests), two exclusions, seed `367039`, in 1130.3 seconds; forced Dialyzer passed with zero errors/skips in 38.72 seconds. Structural/generated/reference and evaluated Nix HLDD gates passed before and after upstream integration.
+server crash or independent-service partition. The focused run passed 14 checks (three properties and eleven tests), seed `461284`, in 13.0 seconds; log `/tmp/overalls-audit-expiry-focused.log`. Full Marshall precommit passed 1412 checks (213 properties, 1199 tests), two exclusions, seed `367039`, in 1130.3 seconds; forced Dialyzer passed with zero errors/skips in 38.72 seconds. Structural/generated/reference and evaluated Nix HLDD gates passed before and after upstream integration.
 
 Ownership refusal uses an existing foreign host and an actual allocated retained
 placement for the same VM on that host, alongside an invented placement. The
@@ -1497,7 +1497,7 @@ The full Marshall test stage passed 1412 checks (213 properties, 1199 tests),
 with two exclusions, seed 367039, in 1130.3 seconds. Forced Dialyzer passed with zero errors, skips or unnecessary skips in 38.72
 seconds; the full precommit command exited successfully. Captured application/test
 sources are unchanged by upstream `8d172891`; merged documentation gates remain
-required. Log: `/tmp/kittens-audit-expiry-marshall-full.log`.
+required. Log: `/tmp/overalls-audit-expiry-marshall-full.log`.
 
 ## Expiry publication integration
 
@@ -1514,7 +1514,7 @@ native execution is claimed.
 Merged ADR, HLDD receipts/references, generated coverage/views/options and
 evaluated Nix HLDD gates passed; Nix took10 seconds (archive
 `1790967891809-3014207-0.jsonl`). Normal commit hooks passed. Log:
-`/tmp/kittens-audit-expiry-merged-gates.log`. Architecture impact remains
+`/tmp/overalls-audit-expiry-merged-gates.log`. Architecture impact remains
 additional bounded ADR0074 evidence; decision/status and execution authority
 are unchanged. Independent-service commit/crash and native/hosted gaps remain.
 
@@ -1547,20 +1547,20 @@ comparison after three successful generated runs. Independent comparison of the
 reported 51 left/right records found identical IDs and complete record contents.
 The oracle now maps complete operations by ID; no state fields were removed and
 no production change was made. Formatting/compilation passed; the corrected
-focused run passed. Failure log: `/tmp/kittens-slo-backlog-focused.log`.
+focused run passed. Failure log: `/tmp/overalls-slo-backlog-focused.log`.
 
 The successive-sample SLO oracle passed one property, seed `614922`, in44.3
 seconds, including guaranteed0/99/100/101/102 overdue histories and generated
 0/1/99/100/101/102 mixtures. Every success advances from its immediate prior
 files and all services share one sample clock. Log:
-`/tmp/kittens-slo-backlog-focused-fresh.log`. Full/static and evaluated gates
+`/tmp/overalls-slo-backlog-focused-fresh.log`. Full/static and evaluated gates
 remain pending.
 
 
 The pinned full Marshall test stage passed 1,413 checks (214 properties and
 1,199 tests), with two exclusions, seed `252201`, in 1,289.0 seconds. This
 includes the successive-sample backlog oracle. Log:
-`/tmp/kittens-slo-backlog-marshall-full.log`. Forced Dialyzer passed in 49.65
+`/tmp/overalls-slo-backlog-marshall-full.log`. Forced Dialyzer passed in 49.65
 seconds with zero errors, skips or unnecessary skips; the full precommit command
 exited successfully. Final handbook/evaluated gates remain pending.
 

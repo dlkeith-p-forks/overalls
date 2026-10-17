@@ -170,7 +170,7 @@ wrong bindings, malformed/oversized responses and redirect refusal.
 The Audi full gate passed with 16 checks (three properties) and forced Dialyzer
 with zero errors or skips. Its updated Req dependency closure is fixed-hash
 verified; the source-built `audi-release` check passed again for
-`/nix/store/bmsvr142zfm2n9rhf3c34h5nn4z9lfss-kittens-audi-0.1.0`.
+`/nix/store/bmsvr142zfm2n9rhf3c34h5nn4z9lfss-overalls-audi-0.1.0`.
 Marshall's full gate passed 374 checks (36 properties), six browser-state checks
 and forced Dialyzer, with its existing single upstream exclusion and no unused
 exclusions. The final six-test TLS transport rerun also passed, including trusted
@@ -225,7 +225,7 @@ Seven transport checks use actual OTP/OpenSSH clients, strict fixture host-key
 checking, and an explicit loopback connector fixture. They exercise byte transfer,
 renewal, revoked/stalled authority, wrong-host grants, unsigned probes, disallowed
 commands and both forwarding directions. The Nix source release payload check
-passed for `/nix/store/0dngc04rnfcaakcpk253hxj4a368fxx1-kittens-audi-0.1.0`,
+passed for `/nix/store/0dngc04rnfcaakcpk253hxj4a368fxx1-overalls-audi-0.1.0`,
 including SSH and lease modules. The final full gate passed 37 checks (six
 properties), including privacy canaries, and forced Dialyzer with zero errors
 or exclusions.
@@ -329,7 +329,7 @@ loopback guest backend. These fixtures do not prove guest-network isolation.
 Protocol's full gate passed 78 checks (30 properties), Audi's passed 40 checks
 (six properties), and Lilly's final gate passed 224 checks (30 properties), all
 with zero Dialyzer errors or exclusions. The Nix source release check passed for
-`/nix/store/sywdn83yyx2i847lkmrp6g8xn6p70l5d-kittens-audi-0.1.0`.
+`/nix/store/sywdn83yyx2i847lkmrp6g8xn6p70l5d-overalls-audi-0.1.0`.
 
 Marshall's final isolated test run passed 419 checks (40 properties) with
 warnings-as-errors, including the SSH/HTTPS/Unix handoff and key-revocation case.
@@ -1714,7 +1714,7 @@ five-second durable leases, purpose-bound hashed tickets, current execution and
 stored-login/Cedar web checks, a 1,024-live-stream gateway bound, immutable policy
 revision/app binding, and explicit close. Public access applies only to the primary
 app. Policy changes, expired credentials and closed/expired streams reject renewal.
-The shared `KittensProtocol.WebStream` codec, control API and Audi client carry
+The shared `OverallsProtocol.WebStream` codec, control API and Audi client carry
 these grants; the client starts its deadline before the control request. Property
 tests cover policy changes, alternate-port privacy, expiry/close and reply binding.
 The additive generated migration was reviewed but has not been applied. Compilation

@@ -39,26 +39,26 @@ Six resource inventories include complete records, not just counts or IDs.
 
 The reviewed combined focused suite passed 14 checks (two properties and twelve
 tests), seed `364992`, in 24.9 seconds. Log:
-`/tmp/kittens-clone-competitor-reviewed-focused.log`.
+`/tmp/overalls-clone-competitor-reviewed-focused.log`.
 
 Earlier extension attempts failed: the initial fixture returned
 `insufficient_capacity`, with its exact failing phase not retained; the revised
 attempt returned `source_unavailable` from the enclosing draw transaction.
-Logs: `/tmp/kittens-clone-competitor-focused.log` and
-`/tmp/kittens-clone-competitor-focused-revised.log`. Moving to per-draw checkout
+Logs: `/tmp/overalls-clone-competitor-focused.log` and
+`/tmp/overalls-clone-competitor-focused-revised.log`. Moving to per-draw checkout
 fixed isolation. Fresh contract review then found the newer-intent injection's
 missing transaction; the final focused result includes its repair and immediate
 post-retry inventory checks. Pre-integration full Marshall precommit passed: 1,413 checks (214 properties
 and 1,199 tests), two exclusions, seed `392701`, in 1,236.8 seconds. Forced
 Dialyzer passed in 36.93 seconds with zero errors, skips or unnecessary skips.
-Log: `/tmp/kittens-clone-competitor-full-gates.log`. This captures the tested
+Log: `/tmp/overalls-clone-competitor-full-gates.log`. This captures the tested
 4994a933 base plus this batch.
 
 Integrated Marshall precommit passed after rebasing as `e2a7dfaa` on upstream
 `f4e7e878`, including workflow SLO source `6a0b3c32`: 1,417 checks (216 properties,
 1,201 tests), two exclusions, seed `505231`, in 1,006.0 seconds. Forced Dialyzer
 passed in 43.99 seconds with zero errors, skips or unnecessary skips; the complete
-command exited 0. Log: `/tmp/kittens-namespace-clone-integrated-full-gates.log`.
+command exited 0. Log: `/tmp/overalls-namespace-clone-integrated-full-gates.log`.
 The subsequently added competing relocation and workflow backlog extensions were
 not in this test collection and require their separate checks.
 

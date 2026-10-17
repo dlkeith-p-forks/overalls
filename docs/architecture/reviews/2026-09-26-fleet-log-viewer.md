@@ -43,7 +43,7 @@ delivery of reviewed envelope sources, a read-only Marshall store client, and th
   carries `_credential_files` paths only); entry-stop outage backfilled.
 - **Static gates:** `scripts/check_adrs.exs` passed with ADR-0127 indexed;
   `scripts/hldd_views.exs --write` regenerated placement including
-  `kittensLogging` (both hosts) and `kittensLogStore` (overalls);
+  `overallsLogging` (both hosts) and `overallsLogStore` (overalls);
   `nix run .#secrets -- check` validated recipients/metadata for 40 documents
   including `overalls-logstore`, `dungarees-logstore` and recovery-only
   `logstore-ca-recovery`.
@@ -74,7 +74,7 @@ the crash became the safe failure), and the upstream VictoriaLogs unit's
 DynamicUser state-directory bind mount conflicts with the pre-mounted
 `zroot/logstore` dataset (resolved with the dedicated static user and
 dataset-owned mountpoint). Post-fix host checks: `victorialogs`,
-`logstore-entry` and `kittens-logging` active on overalls and the collector
+`logstore-entry` and `overalls-logging` active on overalls and the collector
 active on dungarees; live row queries over the reader credential return fleet
 entries (dungarees/audi, overalls/marshall); insert credentials are refused on
 `/select/*` (401); the public `/admin/logs` route answers 302 to anonymous

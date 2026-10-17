@@ -38,7 +38,7 @@ evidence or an application retry policy.
 
 The focused distributed suite passed both properties, seed `202304`, in 60.2
 seconds, with warnings-as-errors and terminal exit0. Log:
-`/tmp/kittens-deadlock-oracle-focused.log`.
+`/tmp/overalls-deadlock-oracle-focused.log`.
 This includes the existing generated histories across three independent Marshall
 BEAMs and the new error-wrapper regression. Fresh review of this source found no
 concrete blocker. The full Marshall test phase passed 1,423 checks (222
@@ -46,10 +46,10 @@ properties, 1,201 tests), with two exclusions, seed `59328`, in 1,465.7 seconds.
 Forced Dialyzer passed in 44.48 seconds with zero errors, skips or unnecessary
 skips. The combined all-file, handbook, generated-reference, evaluated Nix HLDD
 and Marshall precommit command exited0. Log:
-`/tmp/kittens-deadlock-oracle-full-gates.log`. After recording this evidence,
+`/tmp/overalls-deadlock-oracle-full-gates.log`. After recording this evidence,
 all-file/static, ADR, handbook, generated-reference and evaluated Nix HLDD
 publication checks passed with terminal exit0. Log:
-`/tmp/kittens-deadlock-oracle-publication-gates.log`.
+`/tmp/overalls-deadlock-oracle-publication-gates.log`.
 
 ## Remaining schedules
 

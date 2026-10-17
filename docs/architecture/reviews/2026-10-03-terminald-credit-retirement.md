@@ -13,7 +13,7 @@ lifetime and bounded-resource decisions; ADR-0082 stays accepted and partial.
 An actual PTY and connected Unix viewer with a small kernel send buffer drove
 its queue above the high watermark. Explicit kill marked the shell dead but the
 pump remained waiting for credit. The original regression failed in 2.08 seconds:
-`/tmp/kittens-terminald-credit-kill-reproduction.log`. Session registration and
+`/tmp/overalls-terminald-credit-kill-reproduction.log`. Session registration and
 ring quota remained held while the peer stayed connected.
 
 The first repair released pressure but did not prove viewer retirement. Fresh
@@ -46,17 +46,17 @@ native test keeps an independent quiet slave descriptor open through retirement.
 
 Three focused checks passed in 6.73 seconds before the fixture's thread-safe
 ptsname lookup and group-membership assertion were added. Log:
-`/tmp/kittens-terminald-credit-kill-poll-final.log`. The final full native suite passed all 46 checks in 20.59 seconds,
+`/tmp/overalls-terminald-credit-kill-poll-final.log`. The final full native suite passed all 46 checks in 20.59 seconds,
 including the existing natural EOF suffix drain, and Clippy passed with warnings
-denied in 1.95 seconds. Logs: `/tmp/kittens-terminald-credit-poll-full-native.log`
-and `/tmp/kittens-terminald-credit-poll-clippy.log`. The source-built Nix
+denied in 1.95 seconds. Logs: `/tmp/overalls-terminald-credit-poll-full-native.log`
+and `/tmp/overalls-terminald-credit-poll-clippy.log`. The source-built Nix
 terminald gate passed in 71 seconds, archive `1791002357505-4100019-0.jsonl`,
 including all tests and warnings-denied Clippy in the pinned derivation.
 Fresh independent review found no remaining concrete blocker in this scope.
 All-file prek passed logging, Ruff format/check, ty and reviewed handbook gates.
 ADR/options/coverage/views checks passed; evaluated Nix HLDD passed in 24 seconds,
 archive `1791002851285-47120-0.jsonl`. Logs:
-`/tmp/kittens-terminald-credit-final-static-hldd.log`. These gates preceded this
+`/tmp/overalls-terminald-credit-final-static-hldd.log`. These gates preceded this
 execution-record append; final receipts are reviewed and checked at commit.
 Integration into main and its final combined checks remain pending.
 

@@ -60,14 +60,14 @@ in 46.58 seconds with zero errors, skipped warnings or unnecessary skips, after
 169.45 seconds of PLT reconciliation. The test module also compiled without
 executing tests; that separate wrapper emitted deprecation warnings for setting
 the compiler's warnings-as-errors option programmatically. It is not runtime
-evidence. Logs: `/tmp/kittens-mail-waiting-static-types.log` and
-`/tmp/kittens-mail-waiting-test-compile.log`.
+evidence. Logs: `/tmp/overalls-mail-waiting-static-types.log` and
+`/tmp/overalls-mail-waiting-test-compile.log`.
 
 The combined focused file run passed all four properties in 80.8 seconds,
 seed63342, with warnings treated as errors. It ran both committed-worker
 properties and both waiting-token properties, checking default SMTP success/crash
 behavior alongside explicit rejection. Log:
-`/tmp/kittens-mail-waiting-focused-serialized.log`.
+`/tmp/overalls-mail-waiting-focused-serialized.log`.
 
 An earlier combined run passed three of four properties but failed peer startup
 after exhausting the private PostgreSQL connection limit. It overlapped the
@@ -77,7 +77,7 @@ serialized rerun. Full waiting-extension precommit passed with terminal exit
 zero: 1,434 checks (233 properties and 1,201 tests), two exclusions, seed559168,
 in 1,724.4 seconds. Its final forced Dialyzer passed in 60.57 seconds with zero
 errors, skipped warnings or unnecessary skips. Log:
-`/tmp/kittens-mail-waiting-precommit-installed.log`.
+`/tmp/overalls-mail-waiting-precommit-installed.log`.
 
 The first wrapper passed all repository hooks and evaluated Nix HLDD in 19
 seconds (archive `1791028044599-1479518-0.jsonl`) but stopped before runtime
@@ -91,7 +91,7 @@ the intended waiter-result assertion: actual `{:ok, :delivered}` versus required
 `{:ok, :expired}`. Each shrank to one replay and ordering `[0, 1, 2]`, with zero
 successful draws. The run completed in 34.0 seconds, seed63342, exit two; no
 fixture-inventory cleanup failure was reported. Log:
-`/tmp/kittens-mail-waiting-mutant.log`. Mutation patch SHA256:
+`/tmp/overalls-mail-waiting-mutant.log`. Mutation patch SHA256:
 `b27230914221c3cb1b540e6e5fd58642e3e78830f15c0f17608b26d59185269f`.
 The tests/helpers matched the passing local baseline. The mutation exists only
 in the isolated disposable fork. This establishes sensitivity to this local

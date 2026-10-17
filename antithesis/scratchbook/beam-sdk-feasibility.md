@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -9,7 +9,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 # BEAM Antithesis SDK fallback feasibility
 
 Research date: 2026-10-13. Repository inspected:
-`/home/ghuntley/src/kittens-antithesis-reset`. This is a design note, not an
+`/home/ghuntley/src/overalls-antithesis-reset`. This is a design note, not an
 implemented SDK, executed harness, or hosted acceptance result. No repository
 source was changed. No retired `antithesis/` source or Git history was read.
 
@@ -511,7 +511,7 @@ checks; no launch or approval is implied by this note.
 
 All Antithesis sources above were retrieved using `snouty docs` on 2026-10-13.
 Copies for the research handoff live under
-`/home/ghuntley/src/kittens-antithesis-reset/antithesis/scratchbook/sdk-docs/`. Documentation uncertainties
+`/home/ghuntley/src/overalls-antithesis-reset/antithesis/scratchbook/sdk-docs/`. Documentation uncertainties
 are preserved explicitly rather than filled with assumptions.
 
 - [SDK index and runtime modes](https://antithesis.com/docs/reference/sdk/)

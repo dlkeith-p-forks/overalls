@@ -10,8 +10,8 @@ identity, gap handling and terminal-once behavior drift. This is a breaking
 internal rename; no compatibility modules are retained.
 
 The library is now the internal Mix package at `elixir/request_accounting/`,
-named `:kittens_request_accounting` under `Kittens.RequestAccounting`. The public
-producer surface is `Kittens.RequestAccounting.Producer`; marker and RPC
+named `:overalls_request_accounting` under `Overalls.RequestAccounting`. The public
+producer surface is `Overalls.RequestAccounting.Producer`; marker and RPC
 modules are implementation-facing. The shared `Aggregate` value model owns
 fixed duration buckets, outcome conservation, optional duration observations
 and the validated snapshot shape. It does not own application eligibility,

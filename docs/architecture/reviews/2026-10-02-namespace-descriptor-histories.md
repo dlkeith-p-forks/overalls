@@ -37,7 +37,7 @@ The original late-copy, single-descriptor, hidden-proc and busy-file cases remai
 ## Validation
 
 Pinned Ruff check/format and ty for both standalone helper scripts passed in
-`/tmp/kittens-namespace-native-static.log`. Fresh source review found no blocker. A second fresh review of the corrected
+`/tmp/overalls-namespace-native-static.log`. Fresh source review found no blocker. A second fresh review of the corrected
 stopped-disk setup found no blocker in fencing, exact descriptor/current-mount
 inventories or survivor assertions; running jail-bind copies and during-sweep
 races remain distinct gaps.
@@ -54,14 +54,14 @@ The original late-copy, descriptor-only and hidden-proc cases passed in
 445.75, 199.99 and 114.60 seconds respectively (capture lines 1938, 2027 and
 2110). The other generated histories and final busy-file case were not reached.
 Structural contract checking and discovery passed in
-`/tmp/kittens-namespace-history-contracts.log`; semantic source review remains
+`/tmp/overalls-namespace-history-contracts.log`; semantic source review remains
 separate from syntax checking. The survivor oracle's
 `nix/verification/tests/support/vm-processes.py` collects actual cgroup PIDs, kernel start times
 and executable device/inode identities, and requires a Firecracker row before
 returning its snapshot.
 
 The focused diagnostic passed in 164.09 seconds, recorded in
-`/tmp/kittens-namespace-focused-isolated.log`. Both retained descriptors saw four
+`/tmp/overalls-namespace-focused-isolated.log`. Both retained descriptors saw four
 exact-target mounts while running: canonical root and kernel/initrd/rootfs jail
 bindings. After normal stop, newly retained namespaces exposed only the canonical
 root through both descriptors. This establishes the precondition mismatch and
@@ -107,10 +107,10 @@ full gate passed1,413checks and forced Dialyzer with zero errors. Integration
 verification subsequently passed: integrated Marshall precommit recorded 1,417
 checks (216 properties, 1,201 tests), two exclusions, seed505231, in1006.0seconds,
 with forced Dialyzer43.99seconds and zero errors. The complete command exited0;
-log `/tmp/kittens-namespace-clone-integrated-full-gates.log`.
+log `/tmp/overalls-namespace-clone-integrated-full-gates.log`.
 
 The integrated native check reused the exact corrected derivation
-`/nix/store/swcl2xhrrf36wrfggrwpswnglvaz2m4m-vm-test-run-kittens-zfs-namespace-cleanup.drv`.
+`/nix/store/swcl2xhrrf36wrfggrwpswnglvaz2m4m-vm-test-run-overalls-zfs-namespace-cleanup.drv`.
 The original native capture names that same derivation at line689. The integrated
 build exited0 in3seconds (capture `1790979436446-1723747-0.jsonl`); this is reuse
 of the recorded native execution, not another VM run. Integrated evaluated HLDD

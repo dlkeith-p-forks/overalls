@@ -37,7 +37,7 @@ the existing registered key and a pinned management host key.
   Repeated probes also observed `execution_unavailable` during reconciliation.
 
 Evidence is retained outside Git under the private operator directory
-`~/.local/state/kittens/porsche-relocation-20260924-recheck/`. No direct database
+`~/.local/state/overalls/porsche-relocation-20260924-recheck/`. No direct database
 lifecycle writes or production service restarts were used for reproduction.
 
 ## Findings and resolution

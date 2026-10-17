@@ -192,10 +192,10 @@ Users access. Real guest reclamation remains credited to its prior native suites
 
 | Captured input/result | Exact artifact |
 | --- | --- |
-| Native derivation | `/nix/store/ymm9lzbm8aavbc416nbwz7kwf61ll15f-vm-test-run-kittens-admin-account-browser.drv` |
-| Native result | `/nix/store/7h86cy0337b66c9qzcja053ds1zawl7n-vm-test-run-kittens-admin-account-browser` |
-| Driver | `/nix/store/5ffpbvn55610gsiqd86w0iq4pmm17kz0-nixos-test-driver-kittens-admin-account-browser` |
-| Packaged Marshall | `/nix/store/ms8ya2dybr8g2qlxg7fi4gi8baiw8bi9-kittens-marshall-0.1.0` |
+| Native derivation | `/nix/store/ymm9lzbm8aavbc416nbwz7kwf61ll15f-vm-test-run-overalls-admin-account-browser.drv` |
+| Native result | `/nix/store/7h86cy0337b66c9qzcja053ds1zawl7n-vm-test-run-overalls-admin-account-browser` |
+| Driver | `/nix/store/5ffpbvn55610gsiqd86w0iq4pmm17kz0-nixos-test-driver-overalls-admin-account-browser` |
+| Packaged Marshall | `/nix/store/ms8ya2dybr8g2qlxg7fi4gi8baiw8bi9-overalls-marshall-0.1.0` |
 | Typed browser artifact | `/nix/store/vv0xw6y7bvn5a74gbwb2n5jhc9ks4s60-admin-account-browser-typed` |
 | Python SHA-256 | `80ae95427c15ec8e963f27a5501a167aad90100dea9d3e874c74d073ed6c0b03` |
 | JavaScript SHA-256 | `9ea00f0f4b9174642809311818b1d051287cd26c9450c331bc21de6fb7bbbc7e` |

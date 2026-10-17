@@ -204,8 +204,8 @@ The [module](../../../nix/domains/system/backups/default.nix),
 [Lilly boundary](../../../lilly/lib/lilly/backup.ex) and
 [owned snapshots](../../../lilly/lib/lilly/host/backup_snapshot.ex) implement the
 initial workflow. [Guest flush](../../../nix/domains/artifacts/guest/flush.py) is installed
-in the NixOS and Ubuntu images. Fleet projection (`nix/domains/system/fleet-monitor/backup_status.py` at kittens revision `a99f74f0`, repository deleted)
-and admin rendering (`marshall/lib/marshall_web/live/admin/dashboard_live.ex` at kittens revision `a99f74f0`, repository deleted)
+in the NixOS and Ubuntu images. Fleet projection (`nix/domains/system/fleet-monitor/backup_status.py` at overalls revision `a99f74f0`, repository deleted)
+and admin rendering (`marshall/lib/marshall_web/live/admin/dashboard_live.ex` at overalls revision `a99f74f0`, repository deleted)
 provide observational status.
 
 [State and credential tests](../../../nix/verification/tests/evaluation/backup-state.py),

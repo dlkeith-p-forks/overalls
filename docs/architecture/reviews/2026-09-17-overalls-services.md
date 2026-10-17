@@ -32,7 +32,7 @@ passed. These checks do not establish physical service readiness.
 Deployment completed on revision c88763edec864dab5bd989e8683a8a78c956ff90.
 The exact published Nix deployment built successfully and the physical updater
 reported healthy. PostgreSQL, marshall-overalls, lilly, haproxy and
-kittens-smtprelay are active, with no failed systemd units.
+overalls-smtprelay are active, with no failed systemd units.
 
 The Marshall database role authenticated with verify-full and negotiated TLS
 1.3. PostgreSQL reports localhost-only listeners, fsync=on,

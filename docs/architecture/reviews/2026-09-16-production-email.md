@@ -73,7 +73,7 @@ loopback SMTP configuration; checks confirmed its verified-TLS adapter, public
 HTTPS URL, redirect policy and empty outbox. A second invocation without SMTP
 credentials rejected startup with sanitized diagnostics. The smoke did not open
 a public endpoint or send external mail. Logs in this development environment
-are `/tmp/kittens-mail-verified.log` and `/tmp/kittens-mail-release-smoke.log`.
+are `/tmp/overalls-mail-verified.log` and `/tmp/overalls-mail-release-smoke.log`.
 
 Focused checks use real loopback implicit-TLS/STARTTLS SMTP sockets and three
 independent Marshall BEAM nodes sharing PostgreSQL. They cover certificate and

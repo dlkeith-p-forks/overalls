@@ -55,19 +55,19 @@ Pinned Elixir formatting parsed both changed files; `git diff --check` passes.
 The standalone contract checker does not support Elixir files, so native
 annotations and directory obligations were reviewed manually. Compilation and distributed-file execution passed: 43 checks (2 properties,
 41 tests), seed837340,108.4seconds, exit0. Log
-`/tmp/kittens-admission-uncertain-focused2.log`. Selection combined `--only
+`/tmp/overalls-admission-uncertain-focused2.log`. Selection combined `--only
 uncertain_admission` with `--include distributed`; include semantics selected
 the entire distributed admission file. Forced Dialyzer, handbook and complete
 project gates were pending at that focused stage. Integrated main `31f133d8`
 full Marshall precommit now passed:1452checks (238properties,1214tests),
 two exclusions, seed617270,1693.2seconds, exit0. Forced Dialyzer passed in
 46.37seconds with zero errors, skips or unnecessary skips; its PLT update took
-2m40.05s. Log `/tmp/kittens-admission-uncertain-main31-precommit.log`.
+2m40.05s. Log `/tmp/overalls-admission-uncertain-main31-precommit.log`.
 The final source review traced the committed inventory oracle and peer-before-row
 cleanup obligations; no contract mismatch was found in that inspected scope.
 Final all-file publication hooks passed, including Python typing. Evaluated
 handbook check passed26seconds,exit0, archive `1791201804147-176444-0.jsonl`;
-log `/tmp/kittens-admission-uncertain-publication-hooks.log`.
+log `/tmp/overalls-admission-uncertain-publication-hooks.log`.
 
 These faults kill the originating caller process or owned BEAM after commit. The observer's
 committed-ID witness is deliberately separate from the withheld result; this
@@ -77,5 +77,5 @@ valuable follow-up work rather than being declared covered by this seam.
 
 The standalone pinned peer probe verified that default controller shutdown
 reports `:normal`, while explicit `peer_down: :crash` exposes `{:exit_status,137}`
-for `:erlang.halt(137)`. Log `/tmp/kittens-admission-owned-peer-exit-probe3.log`.
+for `:erlang.halt(137)`. Log `/tmp/overalls-admission-owned-peer-exit-probe3.log`.
 That platform probe is not execution evidence for the application property.

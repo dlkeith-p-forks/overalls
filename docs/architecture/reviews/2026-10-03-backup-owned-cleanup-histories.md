@@ -41,7 +41,7 @@ Execution passed eight state tests, thirteen workflow tests including the two
 new Hypothesis properties, and two status tests. Workflow execution took
 1.186 seconds. Fixed witnesses accompany generated examples (up to eight generated examples
 for presence/mount/GUID and 24 refusal histories plus two explicit full prefixes).
-Log: `/tmp/kittens-backup-host-properties-nix.log`; archive
+Log: `/tmp/overalls-backup-host-properties-nix.log`; archive
 `1790992985431-1448302-0.jsonl`.
 
 Shared governance, ADR/HLDD references, generated options/coverage/views and Nix
@@ -49,7 +49,7 @@ handbook checks passed. Merged Marshall precommit passed 1,424 checks (223
 properties, 1,201 tests), two exclusions, seed `15254`, in 1,865.6 seconds.
 Forced Dialyzer passed in 69.22 seconds with zero errors, skips or unnecessary
 skips; terminal exit 0. Log:
-`/tmp/kittens-backup-merged-full-gates-repaired.log`. Publication remains pending.
+`/tmp/overalls-backup-merged-full-gates-repaired.log`. Publication remains pending.
 
 ## Remaining gaps
 

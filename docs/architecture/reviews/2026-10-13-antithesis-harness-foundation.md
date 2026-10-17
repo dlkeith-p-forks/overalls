@@ -180,7 +180,7 @@ not a command count or physical capacity. The command outputs and image IDs are
 recorded historically in `antithesis/runtime/diagnostic4-control-commands/README.md`
 and summarized in the tracked [local Compose acceptance record](../../../antithesis/verification/compose-local-acceptance.md);
 the Compose startup log is
-`/tmp/kittens-antithesis-diagnostic4-up-20261013.log`. Four selected-manifest
+`/tmp/overalls-antithesis-diagnostic4-up-20261013.log`. Four selected-manifest
 runtime dependency hashes differ from the actual workload image, so this is a
 passing local control-core execution of identified image bytes, not a frozen
 manifest baseline or hosted SDK ingestion. Its report demonstrates that the
@@ -194,10 +194,10 @@ The selected manifest hashed to
 the mismatched dependencies were `core/bootstrap.py`,
 `core/profile_readiness.py`, `repository/client.py` and
 `repository/runtime.py`. Earlier logs are
-`/tmp/kittens-antithesis-diagnostic3-up-20261013.log`,
-`/tmp/kittens-antithesis-lilly3-rootjournal-20261013.log`,
-`/tmp/kittens-antithesis-marshall-context3-20261013.log` and
-`/tmp/kittens-marshall-corrected-build3-20261013.log`.
+`/tmp/overalls-antithesis-diagnostic3-up-20261013.log`,
+`/tmp/overalls-antithesis-lilly3-rootjournal-20261013.log`,
+`/tmp/overalls-antithesis-marshall-context3-20261013.log` and
+`/tmp/overalls-marshall-corrected-build3-20261013.log`.
 
 Before a baseline, verify all selected source-built contexts, Compose config
 and a full local `compose build`/`up`: real migration, two HTTPS endpoints,

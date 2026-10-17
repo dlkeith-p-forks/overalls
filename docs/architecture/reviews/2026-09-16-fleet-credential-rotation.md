@@ -55,7 +55,7 @@ an actual compromise. Host SSH recipient rotation is covered by the separate
 ## Validation
 
 The complete immutable machine check passed in **249.75 seconds**, using
-`r15aig9bn0xhasbbr6dr031lkyb0p686-vm-test-run-kittens-credential-rotation.drv`.
+`r15aig9bn0xhasbbr6dr031lkyb0p686-vm-test-run-overalls-credential-rotation.drv`.
 Initial cross-node authentication passed in 6.17 seconds, key staging in 33.02,
 writer-key promotion in 44.48, coordinated credential cutover in 45.62, and
 missing-retained-key rejection in 5.66. All four machines used actual source-built

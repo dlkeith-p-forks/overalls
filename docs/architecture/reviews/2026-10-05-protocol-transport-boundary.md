@@ -35,7 +35,7 @@ Galileo31checks (11properties,20tests),seed734392,96.0seconds;
 Marshall1465checks (239properties,1226tests),two exclusions,seed152050,
 1591.6seconds. All forced Dialyzer gates passed with zero errors, skips or
 unnecessary skips; Marshall40.37seconds. Log:
-`/tmp/kittens-control-main-integrated-component-gates.log`.
+`/tmp/overalls-control-main-integrated-component-gates.log`.
 Those results cover unchanged production/test source. This correction still
 requires structural contracts/ADR/HLDD, all-file hooks and evaluated handbook
 checks before commit. It does not establish native rollout or close the separate

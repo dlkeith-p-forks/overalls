@@ -42,20 +42,20 @@ remain unchanged during reconciliation.
 
 The focused run passed one property, seed `405587`, in 38.6 seconds,
 with warnings-as-errors and terminal exit0. Log:
-`/tmp/kittens-retry-window-history-focused.log`.
+`/tmp/overalls-retry-window-history-focused.log`.
 An extension fills missing proofs through authenticated actions after terminal
 failure, then preserves the complete original terminal measurement/total. Fresh
 review required actual ready-state and matching success-audit assertions so an
 acknowledgement alone cannot count as accepted boot evidence. The strengthened
 extension passed one property, seed `768114`, in 44.3 seconds,
 with warnings-as-errors and terminal exit0. Log:
-`/tmp/kittens-retry-window-history-reviewed-focused.log`.
+`/tmp/overalls-retry-window-history-reviewed-focused.log`.
 Full Marshall precommit passed 1,419 checks (218 properties, 1,201 tests), two exclusions, seed404257,1135.7seconds; forced Dialyzer42.61seconds with zero errors, skips or unnecessary skips; terminal exit0.
-Log: `/tmp/kittens-retry-window-history-full-gates.log`.
+Log: `/tmp/overalls-retry-window-history-full-gates.log`.
 All-file hooks and evaluated HLDD passed before the full suite, capture
 `1790982781705-3654295-0.jsonl` (9seconds). Final evidence-only all-file, ADR, handbook/reference/view checks and evaluated
 HLDD passed, capture `1790984109001-205889-0.jsonl` (9seconds), log
-`/tmp/kittens-retry-window-history-final-doc-gates.log`.
+`/tmp/overalls-retry-window-history-final-doc-gates.log`.
 
 ## Remaining gaps
 

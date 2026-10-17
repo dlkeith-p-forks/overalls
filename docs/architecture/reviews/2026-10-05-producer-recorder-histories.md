@@ -44,7 +44,7 @@ without shrinking or repeated execution against changed state.
 
 Final native execution passed:98seconds, exit0, archive
 `1791201680910-110365-0.jsonl`, log
-`/tmp/kittens-producer-recorder-reopen-native.log`. Composed driver lint and type
+`/tmp/overalls-producer-recorder-reopen-native.log`. Composed driver lint and type
 checks passed (events263 and266). The generated history subtest passed in
 10.77seconds; the full machine script passed in74.87seconds, including the
 original corruption refusal and whole-VM hard-stop checks. The pending/failed
@@ -52,7 +52,7 @@ run descriptions below preserve historical evidence. Final repository/handbook
 gates were pending at that stage. Integrated main34daa6b3 all-file hooks passed,
 including Ruff and ty; combined evaluated handbook/native build passed32seconds,
 exit0, archive `1791202105446-363321-0.jsonl`, log
-`/tmp/kittens-producer-recorder-main34-hooks.log`. The unchanged native fixture
+`/tmp/overalls-producer-recorder-main34-hooks.log`. The unchanged native fixture
 result was reused; this is integrated build evidence rather than a new runtime
 history. The full Marshall gate subsequently passed as recorded below;
 final integrated governance gates and publication remain pending.
@@ -62,13 +62,13 @@ final integrated governance gates and publication remain pending.
 Pinned Ruff formatting and lint passed. At the first capture, native NixOS execution, composed-driver
 typing, final contracts, handbook and project gates are pending. Running native
 capture: `1791201099171-3955370-0.jsonl`; log
-`/tmp/kittens-producer-recorder-native.log`. A running capture is not passing
+`/tmp/overalls-producer-recorder-native.log`. A running capture is not passing
 execution evidence.
 
 The first native run exited1 at the first admission after the existing whole-VM
 hard-stop case. Control hello succeeded, but extracting `.id` returned null and
 hid the closed refusal reason. No production defect is established. The initial
-patch is preserved at `/tmp/kittens-producer-recorder-initial-native.patch`,
+patch is preserved at `/tmp/overalls-producer-recorder-initial-native.patch`,
 SHA256 `63e2c15f64d53c16b67d7590518d5d7d6be2119a9567c78b4b11db32ad27ac4a`.
 The refined fixture waits for the client's running recovery marker and exposes
 closed admission refusal data. It additionally monitors the exact worker and
@@ -84,14 +84,14 @@ this source-backed diagnosis while waiting for a running marker; it did not
 time out or pass. The histories now run before intentional corruption. That
 existing refusal test retains the corrupt marker assertion and exact one-request,
 one-success increments relative to its captured preceding totals. Ordered-source
-native verification is running in `/tmp/kittens-producer-recorder-ordered-native.log`.
+native verification is running in `/tmp/overalls-producer-recorder-ordered-native.log`.
 That ordered run exited1 (`1791201589060-45342-0.jsonl`): repeated intentional
 recorder restarts reached systemd's `start-limit-hit`. Generated admissions reached
 the recorder-reopen path; this was not an accounting counterexample. Each deliberate
 reopen now first requires an active healthy recorder, then uses the operator
 `reset-failed` action before restart. Production start limits are unchanged; an
 already failed recorder cannot pass that prerequisite. Refined native execution
-is running in `/tmp/kittens-producer-recorder-reopen-native.log`.
+is running in `/tmp/overalls-producer-recorder-reopen-native.log`.
 Duplicate refusal here is at the fixture's retired-worker map, not a direct
 foreign/duplicate recorder RPC oracle. Recorder acknowledgment loss, racing
 worker completion/death, collector delivery, real application journeys, overload,
@@ -100,7 +100,7 @@ storage failure, hardware power loss and hosted Antithesis remain separate gaps.
 ## Terminal Marshall gate result
 
 The full gate on source baseline34daa6b3 plus this owned batch completed with
-exit0, log `/tmp/kittens-producer-recorder-main34-precommit.log` (session62829).
+exit0, log `/tmp/overalls-producer-recorder-main34-precommit.log` (session62829).
 It passed1452checks:238properties and1214tests,2excluded, seed773639,
 1901.6seconds. PLT construction took7m12.83s and emitted third-party xmerl
 missing-specification warnings; the final forced application Dialyzer analysis
@@ -118,6 +118,6 @@ Integrated ADR, HLDD references/receipts, generated coverage, options and domain
 deployment views passed. All-file hooks, including Ruff and ty, passed, followed
 by evaluated HLDD in26seconds, exit0, archive
 `1791207440532-2930239-0.jsonl`, log
-`/tmp/kittens-producer-recorder-main-d196-hooks.log`.
+`/tmp/overalls-producer-recorder-main-d196-hooks.log`.
 Final evidence-only report/provenance edits require refreshed reviewed receipts
 and commit gates. Native ACK-loss and collector/application gaps remain open.
