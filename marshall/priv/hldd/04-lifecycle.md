@@ -269,6 +269,22 @@ accepted report decides the restart. A late report is not a capacity shortfall
 (ADR-0140). Repeated crashes should be diagnosed,
 not hidden by unlimited restart loops.
 
+A failed placement whose desired state is still `running` keeps its command,
+so the per-VM actor re-drives it on every one-second tick until Marshall sends
+a newer command or a deletion. Each re-drive re-runs the idempotent failure
+fence and cleanup and observes the same failed outcome, which leaves the
+durable outcome journal unchanged. Lilly logs `vm.failed` (VM, placement and
+the closed reason `execution_failed` or `crashed`) only after the journal
+records a new failed outcome: once per generation and reason, again after a
+recorded recovery or for a newer command's failure, and not again after a
+Lilly restart over the same journaled failure. On 2026-10-17 the event was
+emitted by the driver on every re-drive, producing a per-second warning loop
+that stopped only when the VMs were deleted. The
+[actor failure-event property](repo:lilly/test/vm/actor_failure_event_test.exs)
+checks generated failure, recovery, restart and newer-command histories with a
+controlled executor; the per-tick physical re-drive itself is unchanged and is
+not exercised natively by this property.
+
 A launch runs as six steps: begin (claim and running intent), disk, boot
 records, jail, logging and network, and commit
 ([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)

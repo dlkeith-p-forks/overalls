@@ -1663,7 +1663,6 @@ defmodule Lilly.VM.Driver do
   @spec fail(Config.t(), Pool.t(), Spec.t(), keyword()) :: result()
   def fail(config, pool, spec, options) do
     vm_id = Keyword.get(options, :vm_id)
-    reason = Keyword.get(options, :failure_reason, :execution_failed)
 
     locked(config, spec, fn ->
       with :ok <- cleanup_step(fn -> claim(config, pool, spec) end, vm_id, spec.id, :claim),
@@ -1683,9 +1682,7 @@ defmodule Lilly.VM.Driver do
                spec.id,
                :network
              ),
-           :ok <- Provisioning.fail(config, spec, revision(options)) do
-        failed(vm_id, spec.id, reason)
-      end
+           do: Provisioning.fail(config, spec, revision(options))
     end)
   end
 
@@ -1710,14 +1707,6 @@ defmodule Lilly.VM.Driver do
 
         {:error, reason}
     end
-  end
-
-  defp failed(nil, _placement, _reason), do: :ok
-
-  defp failed(vm_id, placement, reason) do
-    Lilly.Events.emit("vm.failed", vm_id: vm_id, placement_id: placement, reason: reason)
-
-    :ok
   end
 
   defp shutdown(pool, spec, vm_id) do
