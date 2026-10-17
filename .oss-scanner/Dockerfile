@@ -9,9 +9,7 @@ FROM debian:bookworm
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    NIX_CONFIG="experimental-features = nix-command flakes
-substituters = https://cache.nixos.org https://overalls.cachix.org
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= overalls.cachix.org-1:ngFF/lz1uZK7apXZuS1j7lJcc7hJfjdGatNrFxu4Sso=" \
+    NIX_CONFIG="experimental-features = nix-command flakes" \
     PATH=/root/.nix-profile/bin:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 RUN apt-get update \
@@ -34,6 +32,10 @@ RUN groupadd --system nixbld \
     && mkdir -m 0755 /nix \
     && curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install \
     | sh -s -- --no-daemon \
+    && printf '%s\n' \
+         'substituters = https://cache.nixos.org https://overalls.cachix.org' \
+         'trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= overalls.cachix.org-1:ngFF/lz1uZK7apXZuS1j7lJcc7hJfjdGatNrFxu4Sso=' \
+         >> /etc/nix/nix.conf \
     && nix --version
 
 WORKDIR /src
