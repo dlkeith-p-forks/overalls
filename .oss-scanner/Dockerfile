@@ -24,7 +24,8 @@ RUN apt-get update \
 
 # Install a single-user Nix profile. The scanner's later layer supplies the
 # package manager, compilers and debugger tools it uses during analysis.
-RUN curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install \
+RUN mkdir -m 0755 /nix \
+    && curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install \
     | sh -s -- --no-daemon \
     && nix --version
 
