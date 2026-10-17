@@ -22,7 +22,7 @@ Next probe: Native fleet helpers can snapshot VMM process custody, and guest SSH
 
 #### Which native observer can identify both VMM custody and guest write authority during handoff?
 
-- Examined: `nix/tests/machines/fleet/scenarios/submission-recovery.py:79-86; nix/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655; marshall/lib/marshall/compute/relocation_coordinator.ex:174-239`.
+- Examined: `nix/verification/tests/machines/fleet/scenarios/submission-recovery.py:79-86; nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655; marshall/lib/marshall/compute/relocation_coordinator.ex:174-239`.
 - Found: Native fleet helpers can snapshot VMM process custody, and guest SSH can produce a boot ID or write sentinel. The inspected relocation scenario does not time-align a source and destination writable sentinel with the handoff commit. Probe per-host VMM PID/start time/cgroup and guest-owned monotonically numbered writes on both hosts while sampling one DB commit identity; absence of a guest response alone is not absence of execution.
 - Not established: No current hosted/native execution was run in this investigation; source and test presence alone do not establish the physical outcome.
 - Conclusion: partial; Keep partial simultaneous physical/writable oracle; DB authority check remains separate.

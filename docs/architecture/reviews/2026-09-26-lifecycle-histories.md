@@ -130,7 +130,7 @@ committed fixture rows through `Marshall.CommittedFixtureCleanup`.
 
 ### Native boundary
 
-`nix/tests/machines/fleet/scenarios/lifecycle.py` composes into the `fleet`
+`nix/verification/tests/machines/fleet/scenarios/lifecycle.py` composes into the `fleet`
 check (`#checks.x86_64-linux.fleet`): real nested Firecracker stop/start
 retaining ZFS dataset GUIDs, reservation hold transitions, and deletion
 releasing storage through the fleet operator, plus the durable audit matrix
@@ -283,7 +283,7 @@ fresh partition `verify037b`:
 
 ### Native lifecycle matrix (`checks.x86_64-linux.fleet` / `vm-test-run-kittens-fleet`)
 
-`nix/tests/machines/fleet/scenarios/lifecycle.py` composes only into the
+`nix/verification/tests/machines/fleet/scenarios/lifecycle.py` composes only into the
 default `fleet` check (ninth of eleven concatenated scenario fragments). Two
 full attempts were made under `flock /tmp/kittens-native-build.lock`, each
 awaited inside one synchronous shell call with a 3600-second budget; load was

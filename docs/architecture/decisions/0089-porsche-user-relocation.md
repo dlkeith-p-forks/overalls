@@ -106,7 +106,7 @@ retain relocation identities. [Porsche's runner](../../../porsche/lib/porsche/ru
 uses the existing receipt wait loop and [client](../../../porsche/lib/porsche/client.ex)
 keeps conflict reasons closed. Focused [Marshall tests](../../../marshall/test/marshall/ssh/commands_test.exs),
 [protocol tests](../../../protocol/test/ssh_command_test.exs), and [Porsche tests](../../../porsche/test/runner_test.exs)
-exercise the application boundaries. The [Porsche fleet scenario](../../../nix/tests/machines/fleet/scenarios/porsche.py)
+exercise the application boundaries. The [Porsche fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/porsche.py)
 executes the real SSH command across two Lilly hosts and verifies idempotent
 replay, automatic different-host placement, retained guest data and source ZFS
 cleanup. The complete 20-case, nine-machine scenario passed on 2026-09-21 in

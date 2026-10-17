@@ -18,14 +18,14 @@ The fixture records A's SHA and blob hash before refresh. Independent PostgreSQL
 
 #### What safe hook can interrupt real Git between atomic fetch and retained-ref update?
 
-- Examined: `enrico/lib/enrico/git.ex:52-115,392-443`, `enrico/native/git-owner/src/main.rs:159-190`, and `nix/tests/machines/enrico-service/driver.py:214-237,275-325`.
+- Examined: `enrico/lib/enrico/git.ex:52-115,392-443`, `enrico/native/git-owner/src/main.rs:159-190`, and `nix/verification/tests/machines/enrico-service/driver.py:214-237,275-325`.
 - Found: `retain_head(previous)` precedes `git fetch --atomic --prune`; `retain_head(new)` follows `symbolic-ref HEAD`. Every Git command is a separate native owner invocation. Existing machine tests cover force-push, `git gc --prune=now`, source outage and paused fetch, but not a deterministic kill at the command boundary after fetch.
 - Not found: a production substep hook or externally recorded boundary event for this exact interval.
 - Conclusion: partial. A hosted observer could trace `execve` of the subsequent `symbolic-ref`/`update-ref` utility and trigger a kill, while checking old H via direct `git cat-file`; validate that such tracing works without altering execution. Broad process kills still test retention, but do not claim the exact window.
 
 #### How can a deterministic local Git fixture preserve Enrico's fixed production source-origin boundary?
 
-- Examined: `enrico/lib/enrico/git.ex:48-70`, `nix/tests/machines/enrico-service/default.nix:12-40`, and `driver.py:17-21,214-237`.
+- Examined: `enrico/lib/enrico/git.ex:48-70`, `nix/verification/tests/machines/enrico-service/default.nix:12-40`, and `driver.py:17-21,214-237`.
 - Found: the existing packaged Nix test resolves fixed `github.com` to its loopback verified HTTPS bare-repo fixture, with a trusted synthetic CA; it force-pushes and verifies an older SHA still resolves after pruning.
 - Conclusion: resolved. Reuse that fixture pattern; do not add a caller-selected origin, protocol or URL.
 

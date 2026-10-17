@@ -1,3 +1,15 @@
+## Native guest agent boundary
+
+FreeBSD and illumos guests use the same closed Lyra protocol surfaces as Linux
+and Windows for readiness, trust, terminal, workspace, flush, SSH and agent
+execution. The protocol's `freebsd-v1` and `illumos-v1` rows disable editor and
+Inception. Lilly attaches a vsock only for these declared agent sets and binds
+host CID 2 to guest CID 3; each daemon validates the current boot challenge
+before responding. Credentials, terminal bytes, command arguments and Git
+output stay outside diagnostics. Native adapters and image assembly are under
+implementation; no nested-KVM or Marshall fleet result is implied by the
+capability table.
+
 # Agent threads and tools
 
 The separately installed `codex` and `claude` commands are user-run guest
@@ -116,7 +128,7 @@ before that refusal and verifies that later poll messages start no model task.
 The local test does not prove a hosted version-skew rollout or the fate of an
 already-active provider task.
 
-Evidence: [agent workflows](repo:docs/agent-threads.md),
+Evidence: [agent workflows](repo:docs/development/agent-threads.md),
 [pulled model work](repo:docs/architecture/decisions/0100-pulled-agent-work-over-ziggy-control.md),
 [profile capability policy](repo:docs/architecture/decisions/0103-profile-scoped-agent-capabilities.md),
 [search](repo:docs/architecture/decisions/0107-marshall-owned-agent-web-search.md).
@@ -188,6 +200,14 @@ The default compactor produces a tool-free summary with progress, decisions,
 constraints, remaining work and references. The summary has generated-context
 provenance and cannot replace trusted application policy. Provider-native
 compaction is enabled only for separately verified provider/model capability.
+The deployment allowlist is `MARSHALL_AGENT_NATIVE_COMPACTION_CAPABILITIES`, a
+JSON array of exact `{provider, model, evidence_digest}` records. Marshall
+currently accepts only the `openai` provider, validates model syntax and a
+lowercase SHA-256 evidence digest, and matches the complete provider/model pair
+at queue and claim time. The legacy global boolean is refused when enabled;
+omitting the allowlist leaves native compaction disabled. A digest records the
+operator's evidence receipt but does not claim live provider acceptance by
+itself, so the decision remains partial until that evidence exists.
 Both maintenance request forms disable tools and tool choice, so compaction
 cannot execute an ordinary side effect while producing continuation state.
 Both paths use durable model calls through the existing Ziggy pull and accounting

@@ -72,18 +72,18 @@ decided by unit identity alone.
   never stopped by activation.
 - A changed unit, a dropped consumer and a consumer of a changed bundle are
   always stopped before the switch.
-- Unit tests `nix/tests/machines/auto-update/unit.py` (`ChangedUnits`); the
+- Unit tests `nix/verification/tests/machines/auto-update/unit.py` (`ChangedUnits`); the
   native `auto-update` test asserts the relay's PID survives a candidate that
   changes other units and that `update.units_retained` is recorded.
 
 ## Implementation evidence
 
-- [runtime.py](../../../nix/modules/auto-update/runtime.py)
+- [runtime.py](../../../nix/domains/system/auto-update/runtime.py)
   (`unit_identity`, `Deployment.changed_units`, `units_to_restart`,
-  `activate`), the [module manifest](../../../nix/modules/auto-update/default.nix)
+  `activate`), the [module manifest](../../../nix/domains/system/auto-update/default.nix)
   (`bundleConsumers`).
-- Tests: [unit.py](../../../nix/tests/machines/auto-update/unit.py),
-  [driver.py](../../../nix/tests/machines/auto-update/driver.py).
+- Tests: [unit.py](../../../nix/verification/tests/machines/auto-update/unit.py),
+  [driver.py](../../../nix/verification/tests/machines/auto-update/driver.py).
 - Fleet evidence (a Marshall-only push leaving `lilly.service`'s
   `ActiveEnterTimestamp` unchanged) is recorded in the
   [storage churn review](../reviews/2026-10-13-storage-churn-and-capacity-damping.md)

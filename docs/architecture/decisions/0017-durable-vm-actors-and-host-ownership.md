@@ -101,7 +101,7 @@ V1 storage is not silently upgraded into executable storage.
 
 The [waiting-intent review](../reviews/2026-10-05-launch-guard-waiting-intent.md) records an exact blocked kernel flock witness, post-wait generation/state/custody refusals and unchanged exec control. Fresh integrated native rebuild passed127seconds (3library properties,6integration checks,rustfmt/Clippy); local ordering mutation is historical and scoped. Consumer and systemd/Firecracker composition remain open. Decision/status unchanged.
 
-The [native worker BEAM extension](../../../nix/tests/machines/zfs-guest/actor-recovery.exs)
+The [native worker BEAM extension](../../../nix/verification/tests/machines/zfs-guest/actor-recovery.exs)
 adds abrupt process-wide release-worker loss after completed Firecracker effect
 and before actor outcome recording, followed by independent Store/lock reopens.
 The [review](../reviews/2026-10-03-lilly-native-beam-recovery.md) records passing
@@ -110,8 +110,8 @@ histories. The production systemd daemon
 is disabled in this storage fixture; authenticated activation, fixed global
 ownership and production daemon restart remain separate verification gaps.
 
-The [native actor completion-window fixture](../../../nix/tests/machines/zfs-guest/actor-recovery.exs)
-and [generated driver](../../../nix/tests/machines/zfs-guest/actor-recovery.py)
+The [native actor completion-window fixture](../../../nix/verification/tests/machines/zfs-guest/actor-recovery.exs)
+and [generated driver](../../../nix/verification/tests/machines/zfs-guest/actor-recovery.py)
 extend the controlled executor history to real Executor/systemd/Firecracker/ZFS
 effects. The combined real lock contention/completion extension passed in
 671 seconds, exit 0, as recorded in the
@@ -248,7 +248,7 @@ retain the partial implementation status.
 
 ## Open questions
 
-Protected enrollment now has an [operator file workflow](../../../docs/provisioner-enrollment.md)
+Protected enrollment now has an [operator file workflow](../../operations/provisioner-enrollment.md)
 under [ADR-0025](0025-protected-provisioner-enrollment.md), with tested SSH-derived
 key custody under ADR-0032. Complete actual replacement deployment operations,
 tombstone retention, independent physical-host acceptance and load validation.

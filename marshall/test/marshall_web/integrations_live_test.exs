@@ -40,6 +40,12 @@ defmodule MarshallWeb.IntegrationsLiveTest do
     {:ok, view, _} = live(signed_in(conn, owner), ~p"/integrations")
 
     assert has_element?(view, "#integration-form")
+
+    assert has_element?(
+             view,
+             "#integration-form input[name='integration[name]'][placeholder='example-integration']"
+           )
+
     assert has_element?(view, "#integration_peer_vm_id")
     assert has_element?(view, "#integration_team_id")
 

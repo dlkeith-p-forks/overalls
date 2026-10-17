@@ -200,7 +200,7 @@ production acceptance. See the
   [receiver](../../../lyra/src/workspace_receiver.rs),
   [overalls open](../../../lyra/src/open_cli.rs),
   [receiver state machine](../../../lyra/tests/workspace_receiver.rs).
-- Native journey: [driver](../../../nix/tests/machines/repository-launch/driver.py);
+- Native journey: [driver](../../../nix/verification/tests/machines/repository-launch/driver.py);
   recorded passing on NixOS and Ubuntu guests, including shallow checkouts,
   restart without re-clone and the `overalls open` CLI.
 

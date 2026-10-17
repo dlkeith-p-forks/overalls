@@ -126,11 +126,14 @@ defmodule Marshall.Compute.ImageAdmissionTest do
 
     assert Image.guest_capabilities(windows) == %{
              available: true,
+             readiness: false,
+             trust: false,
              ssh: false,
              terminal: false,
+             workspace: false,
+             flush: false,
              agents: false,
              editor: false,
-             readiness: false,
              inception: false
            }
 
@@ -218,6 +221,8 @@ defmodule Marshall.Compute.ImageAdmissionTest do
 
     attempts = Ledger.read!(Marshall.Compute.ServiceLevelAttempt, operation_id: operation.id)
     assert Enum.sort(Enum.map(attempts, & &1.service)) == [:lilly_physical, :marshall_ready]
+    [ready] = Enum.filter(attempts, &(&1.service == :marshall_ready))
+    assert DateTime.diff(ready.deadline, ready.admitted_at) == 600
     assert {:ok, projected} = Compute.get_vm(%{vm_id: with_agents.id}, actor: user)
     assert projected.guest_capabilities.ssh and projected.guest_capabilities.terminal
     refute projected.guest_capabilities.editor

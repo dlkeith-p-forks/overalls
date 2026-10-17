@@ -57,7 +57,7 @@ where needed. Root rotation requires overlapping trust and new images.
 ## Implementation evidence
 
 The [public root](../../../secrets/brady-root.pem),
-[secret inventory](../../../nix/secrets.nix),
+[secret inventory](../../../nix/policy/secrets/secret-documents.nix),
 [host configurations](../../../fleet/hosts/overalls/services.nix),
 [shared guest inputs](../../../flake.nix) and
 [Brady TLS adapter](../../../brady/lib/brady/tls/certificates.ex) establish the

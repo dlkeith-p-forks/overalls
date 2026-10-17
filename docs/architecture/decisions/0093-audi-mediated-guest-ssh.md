@@ -77,7 +77,7 @@ session binding and immutable snapshot construction are in
 [admission.ex](../../../marshall/lib/marshall/compute/admission.ex) and
 [command_snapshot.ex](../../../marshall/lib/marshall/compute/command_snapshot.ex).
 Lilly boot delivery was in `jail.ex`, and the shared image validator was
-`nix/packages/guest/ssh.py`; ADR-0110 removed both paths. The
+`nix/domains/artifacts/guest/ssh.py`; ADR-0110 removed both paths. The
 [durable command store](../../../lilly/lib/lilly/control/store.ex) permits only
 the intended one-way removal of bootstrap key material when the first later
 lifecycle command replaces the provision intent; it continues to reject adding,

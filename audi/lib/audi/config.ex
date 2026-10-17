@@ -25,7 +25,7 @@ defmodule Audi.Config do
 
   defp decode(%{"version" => 1, "role" => "private"} = value) do
     expected =
-      ~w(version role host_id connector_path ziggy_socket galileo_socket certificate_file key_file roots_file status_socket)
+      ~w(version role host_id connector_path connector_uid ziggy_socket galileo_socket certificate_file key_file roots_file status_socket)
 
     with true <- Enum.sort(Map.keys(value) -- ["otel_socket"]) == Enum.sort(expected),
          true <- OverallsProtocol.uuid?(value["host_id"]),
@@ -34,6 +34,7 @@ defmodule Audi.Config do
              ~w(connector_path ziggy_socket galileo_socket status_socket),
              &(canonical_path?(value[&1]) and byte_size(value[&1]) <= 107)
            ),
+         true <- is_integer(value["connector_uid"]) and value["connector_uid"] in 0..4_294_967_294,
          true <-
            is_nil(value["otel_socket"]) or
              (canonical_path?(value["otel_socket"]) and
@@ -47,6 +48,7 @@ defmodule Audi.Config do
          role: :private,
          host_id: value["host_id"],
          connector: value["connector_path"],
+         connector_uid: value["connector_uid"],
          ziggy_socket: value["ziggy_socket"],
          galileo_socket: value["galileo_socket"],
          otel_socket: value["otel_socket"],
@@ -169,7 +171,9 @@ defmodule Audi.Config do
 
   # @cc [owner:ghuntley,label:security] audi-status-private-directory
   # Status sockets MUST use canonical absolute paths under trusted nonsymlink
-  # ancestors and a service-owned mode-0700 immediate directory.
+  # ancestors and a service-owned immediate directory of mode 0700, or 0750
+  # (optionally setgid) when one dedicated reader group shares it. A directory
+  # with any other-user permission or group write MUST be refused.
   @spec status_socket(term()) :: :ok | :error
   def status_socket(nil), do: :ok
 
@@ -178,10 +182,25 @@ defmodule Audi.Config do
          :ok <- parents(Path.dirname(path)),
          {:ok, %File.Stat{type: :directory, uid: owner, mode: mode}} <-
            File.lstat(Path.dirname(path)),
-         true <- owner == uid() and band(mode, 0o777) == 0o700 do
+         true <- owner == uid() and band(mode, 0o777) in [0o700, 0o750] do
       :ok
     else
       _ -> :error
+    end
+  end
+
+  # @cc [owner:ghuntley,label:security] audi-status-socket-mode
+  # A status socket MUST be mode 0660 and carry its directory's group only when
+  # that validated directory grants its group read and search (the shared 0750
+  # layout); otherwise it MUST be 0600 with the service's own group.
+  @spec status_socket_access(Path.t()) :: {0o600, nil} | {0o660, non_neg_integer()}
+  def status_socket_access(path) do
+    case File.lstat(Path.dirname(path)) do
+      {:ok, %File.Stat{type: :directory, mode: mode, gid: gid}} when band(mode, 0o777) == 0o750 ->
+        {0o660, gid}
+
+      _ ->
+        {0o600, nil}
     end
   end
 

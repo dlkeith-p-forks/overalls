@@ -26,12 +26,12 @@ the consumer retains its established option defaults and package inputs.
   package/check factories and four checks. Supported Nix/platform combinations
   fail explicitly rather than silently selecting another version.
 - [Consumer flake](../../../flake.nix), [devenv inputs](../../../devenv.yaml),
-  [package adapters](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/packages/nix-compact/default.nix) and
-  [NixOS adapter](../../../nix/modules/nix-compact.nix) use the pinned source.
-- [Lock resolver](../../../nix/packages/nix-compact/source.nix) preserves direct
+  [package adapters](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/nix-compact/default.nix) and
+  [NixOS adapter](../../../nix/domains/system/nix-compact.nix) use the pinned source.
+- [Lock resolver](../../../nix/domains/artifacts/nix-compact/source.nix) preserves direct
   imports used by existing fixtures, resolving the root lock's immutable GitHub
   revision. Normal flake outputs pass the dependency explicitly.
-- [Guide](../../nix-build-logs.md) points to maintained public documentation.
+- [Guide](../../development/nix-build-logs.md) points to maintained public documentation.
   Historical completion-review implementation links remain pinned to their
   original reviewed revision. No logger/archive/classifier/reader/Hegel source
   copy remains in the consumer.

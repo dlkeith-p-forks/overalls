@@ -155,7 +155,7 @@ Podman pause) mirror the current guest set and so receive host unmounts.
 The full controlled baseline at `fcba03e3` (26 creates, all cleaned up)
 measured NixOS sequential median 28.5 s and Ubuntu 14.8 s create to
 authenticated SSH, with `offload` on every create; see the
-[provisioning ledger](../../provisioning-fastpath.md).
+[provisioning ledger](../../history/ledgers/provisioning-fastpath.md).
 
 ## Clone reassessment (2026-10-07)
 

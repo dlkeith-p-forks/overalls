@@ -131,6 +131,33 @@ defmodule Marshall.ThreadsTest do
     assert thread_id == owned.id
   end
 
+  # @cc [owner:ghuntley,label:verification;durability] thread-page-cursor-scope
+  # Keyset pages MUST continue after an authorized cursor in stable newest-first
+  # order, while a foreign cursor returns an empty page without widening scope.
+  test "authorized thread pages use a stable keyset cursor" do
+    actor = user()
+    outsider = user()
+
+    assert {:ok, first} = Marshall.Threads.create_thread(thread_arguments(), actor: actor)
+    assert {:ok, second} = Marshall.Threads.create_thread(thread_arguments(), actor: actor)
+    assert {:ok, third} = Marshall.Threads.create_thread(thread_arguments(), actor: actor)
+
+    assert {:ok, %{items: first_page, next_cursor: cursor}} =
+             Marshall.Threads.list_thread_page(%{limit: 2}, actor: actor)
+
+    assert length(first_page) == 2
+    assert is_binary(cursor)
+    assert Enum.map(first_page, & &1.id) == [third.id, second.id]
+
+    assert {:ok, %{items: second_page, next_cursor: nil}} =
+             Marshall.Threads.list_thread_page(%{limit: 2, after: cursor}, actor: actor)
+
+    assert Enum.map(second_page, & &1.id) == [first.id]
+
+    assert {:ok, %{items: [], next_cursor: nil}} =
+             Marshall.Threads.list_thread_page(%{limit: 2, after: first.id}, actor: outsider)
+  end
+
   test "idempotency replay rejects a changed machine specification" do
     actor = user()
     key = Ash.UUID.generate()
@@ -174,6 +201,7 @@ defmodule Marshall.ThreadsTest do
              )
 
     [ready] = Ledger.read!(Marshall.Threads.Thread, id: thread.id)
+    activity_before = ready.updated_at
     request_key = Ash.UUID.generate()
 
     assert {:ok, %{turn_id: turn_id}} =
@@ -187,6 +215,23 @@ defmodule Marshall.ThreadsTest do
 
     assert agent_thread_id == ready.agent_thread_id
     assert actor_id == actor.id
+
+    [active] = Ledger.read!(Marshall.Threads.Thread, id: ready.id)
+    assert DateTime.compare(active.updated_at, activity_before) == :gt
+
+    [agent] = Ledger.read!(Marshall.Agents.Thread, id: ready.agent_thread_id)
+    event_before = active.updated_at
+
+    _event =
+      Ledger.create!(Marshall.Agents.Event, :append, %{
+        thread_id: agent.id,
+        sequence: agent.next_event_sequence,
+        kind: :assistant,
+        body: %{"text" => "activity receipt"}
+      })
+
+    [event_active] = Ledger.read!(Marshall.Threads.Thread, id: ready.id)
+    assert DateTime.compare(event_active.updated_at, event_before) == :gt
 
     assert {:ok, %{turn_id: ^turn_id}} =
              Marshall.Threads.submit_prompt(

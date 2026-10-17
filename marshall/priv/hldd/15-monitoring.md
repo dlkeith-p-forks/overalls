@@ -270,7 +270,7 @@ history withholds the objective and its burn state.
 | Lilly physical | Committed physical lifecycle completion |
 | Porsche physical, clone, relocate, retry, cancel | Separate durable canonical receipt boundaries |
 
-The [source roster](repo:nix/modules/otel-fleet/objectives.nix) binds each source
+The [source roster](repo:nix/domains/system/otel-fleet/objectives.nix) binds each source
 to all enrolled hosts. Source placement changes must update that roster. The
 baseline retains twenty objective definitions and forty burn evaluators. Fast
 five-minute/one-hour burns consume two percent of a seven-day budget; slow
@@ -351,13 +351,13 @@ passing static check is not recorded execution of the whole boundary.
 
 | Evidence | Scope and remaining limit |
 | --- | --- |
-| [Logging machine](repo:nix/tests/machines/logging/driver.py) | Native journal, outage/restart and unread reboot recovery; isolated provider credentials, no live AWS account |
-| [Log-store machine](repo:nix/tests/machines/log-store/driver.py) | Native TLS insert/read separation, Grafana proxy and credential custody, routing/backfill; production activation remains separate |
-| [Routing/health checks](repo:nix/tests/evaluation/logging.nix) | Pinned Fluent Bit configuration, source/cursor isolation, independent numeric health and checkpoint migration |
-| [Grafana fleet machine](repo:nix/tests/machines/otel-fleet/default.nix) | Collector/store provisioning and authenticated dashboards; seven-day production compliance remains separate |
-| [Marshall telemetry machine](repo:nix/tests/machines/otel-marshall/default.nix) | Business application plus durable recorder and removed diagnostic routes; actual source-specific workflows remain separate |
-| [SLO rule checks](repo:nix/tests/evaluation/otel-slo-rules.nix) | Eligibility, rosters, gaps, burns and production cadence using synthetic time series |
-| [Recorder machine](repo:nix/tests/machines/otel-request-recorder/default.nix) | Kernel producer custody, process/host loss and checkpoint behavior in a disposable VM |
+| [Logging machine](repo:nix/verification/tests/machines/logging/driver.py) | Native journal, outage/restart and unread reboot recovery; isolated provider credentials, no live AWS account |
+| [Log-store machine](repo:nix/verification/tests/machines/log-store/driver.py) | Native TLS insert/read separation, Grafana proxy and credential custody, routing/backfill; production activation remains separate |
+| [Routing/health checks](repo:nix/verification/tests/evaluation/logging.nix) | Pinned Fluent Bit configuration, source/cursor isolation, independent numeric health and checkpoint migration |
+| [Grafana fleet machine](repo:nix/verification/tests/machines/otel-fleet/default.nix) | Collector/store provisioning and authenticated dashboards; seven-day production compliance remains separate |
+| [Marshall telemetry machine](repo:nix/verification/tests/machines/otel-marshall/default.nix) | Business application plus durable recorder and removed diagnostic routes; actual source-specific workflows remain separate |
+| [SLO rule checks](repo:nix/verification/tests/evaluation/otel-slo-rules.nix) | Eligibility, rosters, gaps, burns and production cadence using synthetic time series |
+| [Recorder machine](repo:nix/verification/tests/machines/otel-request-recorder/default.nix) | Kernel producer custody, process/host loss and checkpoint behavior in a disposable VM |
 
 Historical executions remain scoped to the revisions recorded in the
 [physical SLO review](repo:docs/architecture/reviews/2026-10-02-durable-physical-slos.md),

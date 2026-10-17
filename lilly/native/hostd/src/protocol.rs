@@ -34,8 +34,14 @@ const OP_RUN: u8 = 4;
 const OP_CANCEL: u8 = 5;
 const OP_RUN_DURABLE: u8 = 6;
 const OP_ATTACH: u8 = 7;
-const OP_OPEN_UNIX: u8 = 8;
-const OP_OPEN_NETNS_TCP: u8 = 9;
+const OP_LAUNCH_VM: u8 = 10;
+const OP_TRANSFER_STREAM: u8 = 11;
+const OP_CONNECT_UNIX: u8 = 12;
+const OP_BRIDGE_NETNS_TCP: u8 = 13;
+/// Fixed TransferStream prefix: lease, timeout, rate, producer and consumer kinds.
+const STREAM_FIXED: usize = 8 + 4 + 4 + 1 + 1;
+/// Most NUL-terminated TransferStream fields (an SSH pull into a receive).
+const MAX_STREAM_FIELDS: usize = 13;
 /// Length of a durable job key.
 pub const JOB_KEY: usize = 32;
 
@@ -45,7 +51,7 @@ const KIND_REFUSED: u8 = 3;
 const KIND_RELEASED: u8 = 4;
 const KIND_CHUNK: u8 = 5;
 const KIND_RESULT: u8 = 6;
-const KIND_DESCRIPTOR: u8 = 7;
+const KIND_CONNECTED: u8 = 8;
 
 /// How a lease is held.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
@@ -93,12 +99,28 @@ pub enum Request {
         key: [u8; JOB_KEY],
         wait_ms: u32,
     },
-    /// Connect to a Firecracker API or vsock socket and pass the descriptor.
-    OpenUnix {
+    /// Connect the caller's own unconnected Unix stream socket, which
+    /// travels with the request, to a Firecracker API or vsock socket.
+    ConnectUnix {
+        timeout_ms: u32,
         path: Vec<u8>,
     },
-    /// Connect TCP inside a VM network namespace and pass the descriptor.
-    OpenNetnsTcp {
+    /// Start one VM's systemd unit; hostd builds the command line.
+    LaunchVm {
+        lease: u64,
+        launch: crate::vm_launch::Launch,
+    },
+    /// Run one guest dataset stream under the stream lease; hostd builds
+    /// every command line (hostd-transfer-stream-typed).
+    TransferStream {
+        lease: u64,
+        timeout_ms: u32,
+        rate: u32,
+        stream: crate::transfer::Stream,
+    },
+    /// Dial TCP inside a VM network namespace and bridge it to the caller's
+    /// own unconnected Unix stream socket, which travels with the request.
+    BridgeNetnsTcp {
         mark: u32,
         destination: [u8; 4],
         port: u16,
@@ -174,8 +196,20 @@ pub enum Reply {
         status: Status,
         bytes: Vec<u8>,
     },
-    /// The descriptor travels as SCM_RIGHTS with this datagram.
-    Descriptor,
+    /// The caller's socket is now connected (ConnectUnix, BridgeNetnsTcp).
+    Connected,
+}
+
+/// @cc [owner:ghuntley,label:protocol;security] hostd-descriptor-requests-only
+/// Exactly ConnectUnix and BridgeNetnsTcp carry one SCM_RIGHTS descriptor,
+/// the caller's own socket; every other request carries none. hostd never
+/// sends a descriptor: the BEAM cannot release one it did not create
+/// (ADR-0184).
+pub fn carries_descriptor(request: &Request) -> bool {
+    matches!(
+        request,
+        Request::ConnectUnix { .. } | Request::BridgeNetnsTcp { .. }
+    )
 }
 
 fn u32_at(bytes: &[u8], at: usize) -> Option<u32> {
@@ -192,7 +226,13 @@ fn u64_at(bytes: &[u8], at: usize) -> Option<u64> {
 /// unknown operations, trailing bytes, timeouts outside 1000..14400000 ms,
 /// output limits other than 65536 or 4194304, waits above 120000 ms, a
 /// directory that is not absolute or contains NUL or a `..` component, more
-/// than 127 arguments, unterminated arguments, or an unknown utility.
+/// than 127 arguments, unterminated arguments, an unknown or typed-only
+/// utility, or a TransferStream whose timeout is outside 1000..86400000 ms,
+/// whose rate exceeds 1073741824, whose producer or consumer kind is unknown,
+/// or whose NUL-terminated field count differs from those kinds' count, a
+/// ConnectUnix or BridgeNetnsTcp whose timeout is outside 1..30000 ms, a
+/// ConnectUnix path that is not a valid directory, or a BridgeNetnsTcp with
+/// port 0 or an empty namespace or device.
 /// The caller never names an executable: the utility is an index into the
 /// closed table that hostd resolves itself.
 pub fn decode(bytes: &[u8]) -> Option<Envelope> {
@@ -258,10 +298,17 @@ pub fn decode(bytes: &[u8]) -> Option<Envelope> {
                 wait_ms,
             }
         }
-        OP_OPEN_UNIX if valid_directory(body) => Request::OpenUnix {
-            path: body.to_vec(),
-        },
-        OP_OPEN_NETNS_TCP if body.len() >= 20 => {
+        OP_CONNECT_UNIX if body.len() > 4 => {
+            let timeout_ms = u32_at(body, 0)?;
+            if !(1..=30_000).contains(&timeout_ms) || !valid_directory(&body[4..]) {
+                return None;
+            }
+            Request::ConnectUnix {
+                timeout_ms,
+                path: body[4..].to_vec(),
+            }
+        }
+        OP_BRIDGE_NETNS_TCP if body.len() >= 20 => {
             let namespace_length = usize::from(body[18]);
             let rest = &body[19..];
             if namespace_length == 0 || namespace_length >= rest.len() || port_zero(body) {
@@ -271,7 +318,7 @@ pub fn decode(bytes: &[u8]) -> Option<Envelope> {
             if !(1..=30_000).contains(&timeout_ms) {
                 return None;
             }
-            Request::OpenNetnsTcp {
+            Request::BridgeNetnsTcp {
                 mark: u32_at(body, 0)?,
                 destination: body[4..8].try_into().ok()?,
                 port: u16::from_be_bytes([body[8], body[9]]),
@@ -279,6 +326,60 @@ pub fn decode(bytes: &[u8]) -> Option<Envelope> {
                 timeout_ms,
                 namespace: rest[..namespace_length].to_vec(),
                 device: rest[namespace_length..].to_vec(),
+            }
+        }
+        OP_LAUNCH_VM if body.len() >= LAUNCH_FIXED + 3 => {
+            let flags = body[LAUNCH_FIXED - 3];
+            let state_length = usize::from(body[LAUNCH_FIXED - 2]);
+            let namespace_length = usize::from(body[LAUNCH_FIXED - 1]);
+            let rest = &body[LAUNCH_FIXED..];
+            if flags & !0b11 != 0
+                || state_length == 0
+                || namespace_length == 0
+                || state_length + namespace_length >= rest.len()
+            {
+                return None;
+            }
+            Request::LaunchVm {
+                lease: u64_at(body, 0)?,
+                launch: crate::vm_launch::Launch {
+                    placement: body[8..44].try_into().ok()?,
+                    epoch: u64_at(body, 44)?,
+                    generation: u64_at(body, 52)?,
+                    uid: u32_at(body, 60)?,
+                    memory_bytes: u64_at(body, 64)?,
+                    vcpus: body[72],
+                    firmware: flags & 0b01 != 0,
+                    logging: flags & 0b10 != 0,
+                    state_dir: rest[..state_length].to_vec(),
+                    namespace: rest[state_length..state_length + namespace_length].to_vec(),
+                    pool: rest[state_length + namespace_length..].to_vec(),
+                },
+            }
+        }
+        OP_TRANSFER_STREAM if body.len() > STREAM_FIXED => {
+            let timeout_ms = u32_at(body, 8)?;
+            let rate = u32_at(body, 12)?;
+            if !crate::transfer::TIMEOUTS.contains(&timeout_ms)
+                || !crate::transfer::RATES.contains(&rate)
+            {
+                return None;
+            }
+            let mut fields = Vec::new();
+            let mut rest = &body[STREAM_FIXED..];
+            while !rest.is_empty() {
+                if fields.len() == MAX_STREAM_FIELDS {
+                    return None;
+                }
+                let end = rest.iter().position(|byte| *byte == 0)?;
+                fields.push(rest[..end].to_vec());
+                rest = &rest[end + 1..];
+            }
+            Request::TransferStream {
+                lease: u64_at(body, 0)?,
+                timeout_ms,
+                rate,
+                stream: crate::transfer::Stream::decode(body[16], body[17], fields)?,
             }
         }
         OP_CANCEL if body.len() == 8 => Request::Cancel {
@@ -290,6 +391,10 @@ pub fn decode(bytes: &[u8]) -> Option<Envelope> {
 }
 
 type RunBody = (u64, u32, u32, Utility, Vec<CString>);
+
+/// Fixed LaunchVm prefix: lease, placement, epoch, generation, uid, memory,
+/// vCPUs, flags, the state directory length and the namespace length.
+const LAUNCH_FIXED: usize = 8 + 36 + 8 + 8 + 4 + 8 + 1 + 1 + 1 + 1;
 
 fn port_zero(body: &[u8]) -> bool {
     body[8] == 0 && body[9] == 0
@@ -305,6 +410,11 @@ fn run_body(body: &[u8]) -> Option<RunBody> {
     let timeout_ms = u32_at(body, 8)?;
     let output_limit = u32_at(body, 12)?;
     let utility = Utility::from_index(body[16])?;
+    // Reachable only through typed requests whose command lines hostd
+    // builds itself (typed-only-utilities).
+    if utility.typed_only() {
+        return None;
+    }
     if !(MIN_TIMEOUT_MS..=MAX_TIMEOUT_MS).contains(&timeout_ms)
         || (output_limit != DEFAULT_OUTPUT_LIMIT && output_limit != EXTENDED_OUTPUT_LIMIT)
     {
@@ -345,8 +455,10 @@ pub fn encode_request(envelope: &Envelope) -> Vec<u8> {
         Request::Cancel { .. } => OP_CANCEL,
         Request::RunDurable { .. } => OP_RUN_DURABLE,
         Request::Attach { .. } => OP_ATTACH,
-        Request::OpenUnix { .. } => OP_OPEN_UNIX,
-        Request::OpenNetnsTcp { .. } => OP_OPEN_NETNS_TCP,
+        Request::ConnectUnix { .. } => OP_CONNECT_UNIX,
+        Request::BridgeNetnsTcp { .. } => OP_BRIDGE_NETNS_TCP,
+        Request::LaunchVm { .. } => OP_LAUNCH_VM,
+        Request::TransferStream { .. } => OP_TRANSFER_STREAM,
     };
     out.push(op);
     out.extend(envelope.id.to_be_bytes());
@@ -404,8 +516,43 @@ pub fn encode_request(envelope: &Envelope) -> Vec<u8> {
             out.extend(key);
             out.extend(wait_ms.to_be_bytes());
         }
-        Request::OpenUnix { path } => out.extend(path),
-        Request::OpenNetnsTcp {
+        Request::ConnectUnix { timeout_ms, path } => {
+            out.extend(timeout_ms.to_be_bytes());
+            out.extend(path);
+        }
+        Request::LaunchVm { lease, launch } => {
+            out.extend(lease.to_be_bytes());
+            out.extend(launch.placement);
+            out.extend(launch.epoch.to_be_bytes());
+            out.extend(launch.generation.to_be_bytes());
+            out.extend(launch.uid.to_be_bytes());
+            out.extend(launch.memory_bytes.to_be_bytes());
+            out.push(launch.vcpus);
+            out.push(u8::from(launch.firmware) | (u8::from(launch.logging) << 1));
+            out.push(launch.state_dir.len() as u8);
+            out.push(launch.namespace.len() as u8);
+            out.extend(&launch.state_dir);
+            out.extend(&launch.namespace);
+            out.extend(&launch.pool);
+        }
+        Request::TransferStream {
+            lease,
+            timeout_ms,
+            rate,
+            stream,
+        } => {
+            let (producer, consumer, fields) = stream.encode();
+            out.extend(lease.to_be_bytes());
+            out.extend(timeout_ms.to_be_bytes());
+            out.extend(rate.to_be_bytes());
+            out.push(producer);
+            out.push(consumer);
+            for field in fields {
+                out.extend(field);
+                out.push(0);
+            }
+        }
+        Request::BridgeNetnsTcp {
             mark,
             destination,
             port,
@@ -437,7 +584,7 @@ pub fn encode_reply(id: u64, reply: &Reply) -> Vec<u8> {
         Reply::Released => KIND_RELEASED,
         Reply::Chunk { .. } => KIND_CHUNK,
         Reply::Result { .. } => KIND_RESULT,
-        Reply::Descriptor => KIND_DESCRIPTOR,
+        Reply::Connected => KIND_CONNECTED,
     };
     out.push(kind);
     out.extend(id.to_be_bytes());
@@ -451,7 +598,7 @@ pub fn encode_reply(id: u64, reply: &Reply) -> Vec<u8> {
             out.push(*status as u8);
             out.extend(bytes);
         }
-        Reply::Descriptor => {}
+        Reply::Connected => {}
     }
     out
 }
@@ -483,7 +630,7 @@ pub fn decode_reply(bytes: &[u8]) -> Option<(u64, Reply)> {
             },
         },
         KIND_RELEASED if body.is_empty() => Reply::Released,
-        KIND_DESCRIPTOR if body.is_empty() => Reply::Descriptor,
+        KIND_CONNECTED if body.is_empty() => Reply::Connected,
         KIND_CHUNK => Reply::Chunk {
             bytes: body.to_vec(),
         },

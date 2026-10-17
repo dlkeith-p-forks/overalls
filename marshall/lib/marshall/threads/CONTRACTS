@@ -25,6 +25,12 @@ current authenticated creator, thread grant or team authority through Cedar. A
 thread identifier, stale LiveView assign or prior membership alone MUST NOT
 authorize a mutation.
 
+@cc [owner:ghuntley,label:security;durability] thread-authorized-page-bound
+Authorized thread pagination MUST continue past post-query authorization
+refusals so visible pages do not contain holes. It MUST stop after a fixed scan
+budget and return a closed error rather than silently truncating or exposing a
+cursor that could broaden the reader's scope.
+
 @cc [owner:ghuntley,label:durability;recovery] thread-reopen-machine-generation
 Reopening an archived thread MUST clear its retired machine and agent binding,
 retain the original create idempotency key, assign a fresh machine admission
@@ -67,3 +73,7 @@ Thread sharing MUST serialize on the thread before its bound VM and persist the
 grant change, immutable idempotency receipt and user/machine invalidation hints in
 the same transaction. Permission reads from a VM MUST NOT lock the thread. A stale
 replay MUST NOT regrant access after later revocation.
+
+@cc [owner:ghuntley,label:durability;recovery] thread-archive-cancels-planning
+Archiving a user thread MUST cancel its pending agent planning question with
+`cancellation_reason == :archived` before lifecycle deletion or archival commits.

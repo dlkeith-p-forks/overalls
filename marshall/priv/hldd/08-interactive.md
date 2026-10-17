@@ -115,7 +115,7 @@ retired accounts, stale logins, changed execution and expired leases refuse with
 fallback. Generic guest-web visibility or port settings cannot grant editor access.
 
 The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant's
-source commit permits same-origin framing for upstream's browser extension host.
+source commit permits same-origin framing for the upstream browser extension host.
 Other editor responses deny framing. Foreign commits, unversioned paths and
 suffix paths cannot inherit that exception.
 
@@ -359,7 +359,7 @@ socket. Pending kill or a changed execution invalidates the old registry session
 The [attachment-history review](repo:docs/architecture/reviews/2026-09-26-terminal-attachment-verification.md)
 records generated real WebSock processes against SQL-backed authority and synthetic
 relay dispatch; the native guest results below retain their original scope.
-Generated [terminald byte histories](repo:nix/packages/terminald/src/property_tests.rs)
+Generated [terminald byte histories](repo:nix/domains/artifacts/terminald/src/property_tests.rs)
 check exact raw scrollback retention through append, resize and cursor replay,
 including default 1 MiB and maximum 8 MiB rings. Growing capacity cannot recover
 previously discarded bytes. Stream histories preserve frame order across split
@@ -439,8 +439,12 @@ journeys on base `3f679eff`, captured tree `e710ef1e`, passed these checks throu
 graphics, replay and whole-Marshall recovery. The terminal and boot log fill the responsive
 workspace panel. The boot log is the guest's read-only serial console: both NixOS
 and Ubuntu guests disable the getty generator (`systemd.getty_auto=0`) and mask
-the serial and console getty units, so no login prompt is offered there, and the
-console ends with the fixed line `lilly-guest boot complete`. Interactive access
+the serial and console getty units, so no login prompt is offered there. The
+console carries the fixed line `lilly-guest boot complete`, then the bounded boot
+report (ADR-0154), which ends with the fixed line `lilly-boot-report: end`; an
+autoscrolled pane therefore shows the report's end, not the boot-complete line.
+Lilly reads the log as its service user: the root boot-log writer hands the
+private file to that uid. Interactive access
 remains the vsock terminal and Audi-fenced SSH. Personal opening requires compatible guest account helpers and
 terminald; activating a host release does not upgrade an existing guest disk.
 Windows guests with the `windows-v1` agent set run the same terminald source
@@ -497,7 +501,7 @@ configuration symlinks; managed user trust and private key reads reject symlinks
 All these reads are bounded and require regular files. Guest certificates contain
 only the authoritative VM hostname. Host certificates never grant user access.
 
-The focused Linux [installer journey](repo:nix/tests/machines/installer-trust/driver.py)
+The focused Linux [installer journey](repo:nix/verification/tests/machines/installer-trust/driver.py)
 checks HTTPS artifact delivery, CA trust and account configuration with the actual
 Marshall, Porsche and Lyra packages. Trust refusal preserves prior client and SSH
 state. Generated pre-existing local SSH configuration properties check
@@ -606,7 +610,7 @@ For Chrome, extract the ZIP and select **Load unpacked** in Developer mode at
 `about:debugging` → **This Firefox** → **Load Temporary Add-on**. Permanent Firefox
 installation requires signing or managed policy; no store publication is provided.
 The guide remains public when the operator disables downloads with
-`services.marshall.browserPackage = null`; archive routes then return
+`services.marshall.marvinPackage = null`; archive routes then return
 `404 Unavailable`. The guide states this deployment-controlled availability.
 
 Right-click the toolbar and choose **Configure Overalls server…**. Set the HTTPS
@@ -626,10 +630,20 @@ validated before any transmission. The extension sends no page content,
 credentials or telemetry. An unsupported explicit click displays a grey `!` badge
 and fixed **Unsupported page** title for three seconds, then clears the badge and
 refreshes the current tab state; the feedback contains no page URL.
-The toolbar icon is a bordered square with a `K` glyph generated at build time
-(filled on supported pages, outlined grey elsewhere), and the settings page
-follows the Monospace Web presentation with system monospace fonts, the four
-colour tokens in light and dark schemes and no external resources.
+The toolbar icon is the monochrome overalls mark generated at build time. It is
+rendered as an opaque dark mark on supported pages and as a grey outlined mark
+on unsupported pages. The settings page follows the Monospace Web presentation
+with system monospace fonts, the four colour tokens in light and dark schemes
+and no external resources.
+
+After the user saves an origin, the extension requests optional browser access
+to that exact normalized origin and registers its packaged detector there. The
+detector marks the current Overalls document with a local installed attribute.
+Marshall observes that attribute only to hide setup prompts on the home page; it
+does not establish login, machine, thread, terminal, editor or launch authority.
+Missing configuration, denied or withdrawn site access, registration failure and
+detector unavailability keep setup visible. Registration is reconciled on startup
+and origin changes, while a failed change retains the last working configuration.
 
 The capture page stages bounded input without creating a machine. Complete
 ordinary sign-in before automatic OSS admission. A same-browser magic-link tab
@@ -675,7 +689,7 @@ Evidence: [personal workspace](repo:docs/architecture/decisions/0117-personal-te
 [terminal sessions](repo:marshall/lib/marshall/terminal/session.ex),
 [installer trust](repo:docs/architecture/decisions/0124-unified-ssh-host-ca.md),
 [SSH guidance](repo:docs/architecture/decisions/0120-ssh-onboarding-guidance.md),
-[Porsche operations](repo:docs/porsche-operations.md).
+[Porsche operations](repo:docs/operations/porsche-operations.md).
 
 ### Local host-certificate startup evidence
 
@@ -756,7 +770,7 @@ cleanup. See the [review](repo:docs/architecture/reviews/2026-10-03-terminald-cr
 
 ## Shared terminal scrollback admission
 
-Generated [shared-ring histories](repo:nix/packages/terminald/src/budget_property_tests.rs)
+Generated [shared-ring histories](repo:nix/domains/artifacts/terminald/src/budget_property_tests.rs)
 create actual Linux PTYs at the configured 64 MiB aggregate reservation boundary.
 Fixed 1 MiB/8 MiB and generated 2/4/8 MiB initial capacities isolate memory
 admission from the session-count limit. Contending final reservations refuse
@@ -771,7 +785,7 @@ separate. Reservation capacity is not measured resident memory or throughput.
 ## Neighboring terminal under viewer pressure
 
 A terminal waiting for viewer credit cannot retain the shared drain mutex and
-block a distinct session. Generated [neighbor histories](repo:nix/packages/terminald/src/neighbor_property_tests.rs)
+block a distinct session. Generated [neighbor histories](repo:nix/domains/artifacts/terminald/src/neighbor_property_tests.rs)
 require observed live queue pressure, successive fresh executed output from
 another PTY and further progress after explicit retirement of the stalled owner.
 Octal command encoding prevents echoed input from satisfying the output oracle.
@@ -828,8 +842,9 @@ inside a closed disclosure, summarize the selected machine size and use the
 configured defaults unless changed. The thread index lists titles, status, mode,
 updated date and an objective preview. Search matches titles and objectives
 without case sensitivity, and a status selector shows all, active or archived
-threads. These filters apply to the current authorized page of at most 100
-threads; active includes every state except archived. A detail page keeps recent
+threads. These filters apply to the current authorized keyset page of 50
+threads; First page and Next page controls walk older authorized results, and
+active includes every state except archived. A detail page keeps recent
 threads in a secondary rail on wide screens; narrow screens return to the list
 through the Threads tab.
 
@@ -845,7 +860,8 @@ in the conversation. Open VS Code appears alongside it when a fresh authorized
 machine projection reports the editor available, and opens the existing machine
 editor route in a new tab. That route rechecks current editor authority.
 Managers receive Archive and Delete in the Actions disclosure and Reopen on
-archived threads. A viewer receives a read-only notice. Semantic markup, text
+archived threads. Managers can archive or delete pending, provisioning, ready
+and failed threads; a viewer receives a read-only notice. Semantic markup, text
 status labels and streamed thread, activity and transcript collections use the existing monospace themes
 and character grid. List, detail and transcript failures show explicit
 unavailable states instead of appearing empty; missing or unavailable thread
@@ -856,8 +872,12 @@ provisioning offers Retry to current managers. Polling refreshes asynchronous
 provisioning state. A thread becomes ready
 only after Compute reports its VM running and the initial objective is accepted.
 The activity view shows dated rows with a status description and a status filter;
-it summarizes the latest thread state rather than a complete event history.
-Time, user and team/project activity filters remain absent. The manager-only Share
+it summarizes the latest thread state rather than a complete event history. Each
+committed event on the current bound agent thread advances the enclosing thread's
+durable activity clock after the event transaction commits, so agent work moves
+the row even when no user-thread attribute changed. Archived and deleting threads
+are not touched, and a stale or mismatched agent binding cannot advance a row.
+Project filtering remains separate work. The manager-only Share
 disclosure lists the protected owner and a page of at most 50 grants, with controls
 to grant, replace or revoke a registered account's viewer/operator/manager role.
 It loads those details only while open, preserves its request key across failures
@@ -871,8 +891,11 @@ agent identities, and prompt or
 terminal mutations remain unavailable. Current thread managers can reopen
 an archived thread. Reopen provisions a fresh machine and agent binding while
 PaperTrail retains the retired identities. The workspace currently reads only
-the current transcript binding; browsing previous transcript generations after
-reopen remains a gap.
+the current transcript binding by default. Authorized readers can select a
+retained generation from the detail URL and read its transcript through the
+generation's immutable machine/root/agent binding. Retired generations remain
+read-only and do not expose prompt, terminal or editor controls. Native
+archive/reopen continuity and cross-node recovery remain unverified.
 
 One reported failed production thread recovered through its authorized retry and
 remained ready after required-key deployment, with the same running VM and one

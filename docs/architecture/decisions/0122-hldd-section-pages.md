@@ -82,7 +82,7 @@ covers literal declarations, not extension-generated resource versions.
   and stop disposed hooks before further diagram work.
 - [Catalog tests](../../../marshall/test/marshall/handbook_test.exs),
   [web tests](../../../marshall/test/marshall_web/hldd_live_test.exs) and
-  [native browser](../../../nix/tests/machines/hldd/browser.py) test these boundaries.
+  [native browser](../../../nix/verification/tests/machines/hldd/browser.py) test these boundaries.
 - [Maintenance skill](../../../.agents/skills/hldd-maintenance/SKILL.md) preserves
   section delivery and preferred machine/property verification. Passing application,
   native browser, release and deployment results are scoped in the

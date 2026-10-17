@@ -13,11 +13,14 @@ defmodule Marshall.Compute.Image do
   @type editor_image_status :: :available | :unsupported_image | :unavailable
   @type guest_capabilities :: %{
           available: boolean(),
+          readiness: boolean(),
+          trust: boolean(),
           ssh: boolean(),
           terminal: boolean(),
+          workspace: boolean(),
+          flush: boolean(),
           agents: boolean(),
           editor: boolean(),
-          readiness: boolean(),
           inception: boolean()
         }
   @type editor_capability :: %{
@@ -117,6 +120,18 @@ defmodule Marshall.Compute.Image do
 
   def guest_agents_capability(_), do: {:error, :unavailable}
 
+  # @cc [owner:ghuntley,label:capacity;protocol] image-readiness-budget-by-agent-set
+  # readiness_budget_ms/2 MUST derive the readiness deadline from the validated
+  # image row's agent set and profile. Missing, corrupt or mismatched images
+  # MUST return nil so callers retain their existing unknown-image fallback.
+  @spec readiness_budget_ms(term(), atom()) :: pos_integer() | nil
+  def readiness_budget_ms(image, profile) when is_atom(profile) do
+    case guest_agents_capability(image) do
+      {:ok, agents} -> OverallsProtocol.GuestAgents.readiness_budget_ms(agents, profile)
+      {:error, :unavailable} -> nil
+    end
+  end
+
   @doc "Finite per-capability guest facts of an image row for projections and refusals; fails closed."
   # @cc [owner:ghuntley,label:security;product] image-guest-capabilities-from-table
   # guest_capabilities/1 MUST derive every boolean from OverallsProtocol.GuestAgents'
@@ -131,22 +146,28 @@ defmodule Marshall.Compute.Image do
 
         %{
           available: true,
+          readiness: capabilities.readiness,
+          trust: capabilities.trust,
           ssh: capabilities.ssh,
           terminal: capabilities.terminal,
+          workspace: capabilities.workspace,
+          flush: capabilities.flush,
           agents: capabilities.agents,
           editor: capabilities.editor,
-          readiness: capabilities.readiness,
           inception: capabilities.inception
         }
 
       {:error, :unavailable} ->
         %{
           available: false,
+          readiness: false,
+          trust: false,
           ssh: false,
           terminal: false,
+          workspace: false,
+          flush: false,
           agents: false,
           editor: false,
-          readiness: false,
           inception: false
         }
     end

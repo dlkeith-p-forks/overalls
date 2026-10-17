@@ -38,11 +38,11 @@ work is excluded. The user supplied the accepted resize plan.
   drafts keep their expected generation across polling/reload; only an explicit
   review action renews generation/key while retaining requested sizes.
 - **High, native verification passed:** the real
-  [ZFS/KVM test](../../../nix/tests/machines/zfs-guest/driver.py) passed disk-growth
+  [ZFS/KVM test](../../../nix/verification/tests/machines/zfs-guest/driver.py) passed disk-growth
   and metadata-publication interruptions, filesystem expansion, CPU/RAM increases
   and decreases, stopped behavior, data/GUID preservation and neighbor isolation.
 - **Deployment incomplete:** no production deployment has been performed. Follow
-  the [coordinated deployment notes](../../vm-resizing.md), migrating before new
+  the [coordinated deployment notes](../../operations/vm-resizing.md), migrating before new
   resize actions are served and using one revision for both consumers.
 
 ## Requirement audit
@@ -53,9 +53,9 @@ work is excluded. The user supplied the accepted resize plan.
 | Durable phases, exact retry/stale rejection, retained provisioning parameters and immutable operations | [Request](../../../marshall/lib/marshall/compute/resize_request.ex), [coordinator](../../../marshall/lib/marshall/compute/resize.ex), [snapshots](../../../marshall/lib/marshall/compute/command_snapshot.ex) | Implemented; application verification |
 | Full target admission, growth-only hold, current-generation settlement, lifecycle/relocation/maintenance exclusion | [Coordinator tests](../../../marshall/test/marshall/compute/resize_test.exs), [three-node races](../../../marshall/test/marshall/compute/distributed_admission_test.exs) | Implemented; database/distributed verification |
 | Strict wire shapes, recorded resource rebinding, actor restart and receipt replay | [Protocol tests](../../../protocol/test/execution_test.exs), [store tests](../../../lilly/test/lilly/control/store_test.exs), [actor tests](../../../lilly/test/vm/actor_test.exs) | Implemented; physical executor mocked in actor tests |
-| Existing owned disk growth, interruption recovery, failed restart fencing and guest readiness | [Disk](../../../lilly/lib/lilly/vm/disk.ex), [driver](../../../lilly/lib/lilly/vm/driver.ex), [executor](../../../lilly/lib/lilly/vm/executor.ex), [native fixture](../../../nix/tests/machines/zfs-guest/probe.exs) | Implemented; application and native verification |
-| Native data/identity preservation, filesystem growth, CPU/RAM changes, stopped behavior and neighbor isolation | [Native scenario](../../../nix/tests/machines/zfs-guest/driver.py) | Passed real ZFS/KVM scenario |
-| Shared schema and coordinated consumer deployment | Ordinary migrations and common protocol dependency; [deployment notes](../../vm-resizing.md) | Source implemented; deployment pending |
+| Existing owned disk growth, interruption recovery, failed restart fencing and guest readiness | [Disk](../../../lilly/lib/lilly/vm/disk.ex), [driver](../../../lilly/lib/lilly/vm/driver.ex), [executor](../../../lilly/lib/lilly/vm/executor.ex), [native fixture](../../../nix/verification/tests/machines/zfs-guest/probe.exs) | Implemented; application and native verification |
+| Native data/identity preservation, filesystem growth, CPU/RAM changes, stopped behavior and neighbor isolation | [Native scenario](../../../nix/verification/tests/machines/zfs-guest/driver.py) | Passed real ZFS/KVM scenario |
+| Shared schema and coordinated consumer deployment | Ordinary migrations and common protocol dependency; [deployment notes](../../operations/vm-resizing.md) | Source implemented; deployment pending |
 
 ## Contract review
 

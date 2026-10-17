@@ -19,14 +19,14 @@ no schema rollback and independent host scheduling remain in force.
 ## Discovery and implementation
 
 Whole-tree caller search and inspection of the Nix test/package/flake/devenv
-catalog found no executable caller for `nix/tests/machines/auto-update/unit.py`.
+catalog found no executable caller for `nix/verification/tests/machines/auto-update/unit.py`.
 The Python static check validates source but does not execute its assertions.
 `resources_test.py` already executes separately in `host-planning`.
 
-The new exported [check](../../../nix/tests/evaluation/auto-update-compatibility.nix)
-executes the unchanged [fixed assertions](../../../nix/tests/machines/auto-update/unit.py)
+The new exported [check](../../../nix/verification/tests/evaluation/auto-update-compatibility.nix)
+executes the unchanged [fixed assertions](../../../nix/verification/tests/machines/auto-update/unit.py)
 with the supplied actual runtime path, plus two typed
-[Hypothesis properties](../../../nix/tests/machines/auto-update/compatibility_histories.py).
+[Hypothesis properties](../../../nix/verification/tests/machines/auto-update/compatibility_histories.py).
 The new check copies production `runtime.py` as `updater_runtime.py`, allowing
 the generated histories and standalone typing to resolve the actual declarations.
 It uses the supplied pinned Python/Hypothesis/Ruff/ty packages. Standalone

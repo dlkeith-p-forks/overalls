@@ -1,0 +1,6 @@
+@cc [owner:ghuntley,label:security;recovery] firecracker-patch-set
+The Firecracker derivation MUST apply the reviewed PCI BAR relocation and
+native queue-initialization patches together with the existing guest transport
+patches. The evaluation tests MUST inspect the actual patch set selected by the
+derivation; a patch filename or a source-only test is not evidence that the
+running VMM enforces the relocation and queue-state contracts.

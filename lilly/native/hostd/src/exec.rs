@@ -41,6 +41,8 @@ pub struct Spec<'a> {
     pub timeout: Duration,
     pub output_limit: usize,
     pub lease: Option<&'a OwnedFd>,
+    /// Further descriptors the utility inherits at their own numbers.
+    pub inherit: &'a [&'a OwnedFd],
 }
 
 struct Reaper {
@@ -191,6 +193,7 @@ mod peek {
 
 #[allow(unsafe_code)]
 mod child {
+    use super::HANDOFF_LIMIT;
     use rustix::process::{getppid, set_parent_process_death_signal, Pid, Signal};
     use std::os::fd::RawFd;
     use std::os::unix::process::CommandExt;
@@ -200,14 +203,20 @@ mod child {
     /// Before exec a utility MUST: die with its spawning thread (parent-death
     /// signal, verified against the recorded parent), restore default SIGPIPE,
     /// move itself into its command cgroup when one is given, and keep the
-    /// lease descriptor (and only it) across exec. Any failure aborts the
-    /// spawn. `pre_exec` is the only unsafe API; the closure performs only
-    /// async-signal-safe system calls on descriptors opened beforehand.
+    /// lease descriptor and the request's inherited descriptors (and only
+    /// those) across exec. Handed-off descriptors are placed at 3, 4, ... in
+    /// order, through close-on-exec duplicates so no source is overwritten
+    /// before it is copied; a handoff never coexists with a lease or inherited
+    /// descriptors. Any failure aborts the spawn. `pre_exec` is the only
+    /// unsafe API; the closure performs only async-signal-safe system calls on
+    /// descriptors opened beforehand.
     pub(super) fn pin(
         command: &mut Command,
         parent: Pid,
         cgroup_procs: Option<RawFd>,
         lease: Option<RawFd>,
+        inherit: Vec<RawFd>,
+        handoff: Vec<RawFd>,
     ) {
         unsafe {
             command.pre_exec(move || {
@@ -222,8 +231,24 @@ mod child {
                         return Err(std::io::Error::last_os_error());
                     }
                 }
-                if let Some(fd) = lease {
-                    if libc::fcntl(fd, libc::F_SETFD, 0) != 0 {
+                for fd in lease.iter().chain(inherit.iter()) {
+                    if libc::fcntl(*fd, libc::F_SETFD, 0) != 0 {
+                        return Err(std::io::Error::last_os_error());
+                    }
+                }
+                // Copy every source above the targets first: a source that is
+                // itself 3 or 4 must not be overwritten before it is placed.
+                let mut staged = [0; HANDOFF_LIMIT];
+                for (slot, fd) in handoff.iter().enumerate() {
+                    let copy = libc::fcntl(*fd, libc::F_DUPFD_CLOEXEC, 3 + HANDOFF_LIMIT as i32);
+                    if copy < 0 {
+                        return Err(std::io::Error::last_os_error());
+                    }
+                    staged[slot] = copy;
+                }
+                for (slot, copy) in staged.iter().take(handoff.len()).enumerate() {
+                    // dup2 clears close-on-exec on the placed descriptor.
+                    if libc::dup2(*copy, 3 + slot as i32) < 0 {
                         return Err(std::io::Error::last_os_error());
                     }
                 }
@@ -241,11 +266,56 @@ mod child {
 /// TimedOut, OutputLimit or Cancelled with no output. Normal exit still kills
 /// any remaining descendants before reporting.
 pub fn run(spec: &Spec<'_>, custody: &Custody, cancelled: &AtomicBool) -> (Status, Vec<u8>) {
+    let (status, _, output) = run_coded(spec, custody, cancelled);
+    (status, output)
+}
+
+/// run, also returning the leader's exit code when it exited normally
+/// (Succeeded or Failed).
+pub fn run_coded(
+    spec: &Spec<'_>,
+    custody: &Custody,
+    cancelled: &AtomicBool,
+) -> (Status, Option<i32>, Vec<u8>) {
+    run_inner(spec, Vec::new(), custody, cancelled, &|| {})
+}
+
+/// Most descriptors one handoff places in a child.
+pub const HANDOFF_LIMIT: usize = 2;
+
+/// @cc [owner:ghuntley,label:security;recovery] hostd-handoff-sole-owner
+/// run_handoff MUST place the handed-off descriptors at 3, 4, ... in the
+/// child and close hostd's copies as soon as the child is spawned, so the
+/// child holds the only references and sees end of stream when its peers
+/// close. `started` runs once, after that, only when the spawn succeeded.
+/// Otherwise it obeys run: the tree is killed and reaped before it returns.
+/// A spec with a lease or inherited descriptors, or more than HANDOFF_LIMIT
+/// descriptors, is a setup failure.
+pub fn run_handoff(
+    spec: &Spec<'_>,
+    handoff: Vec<OwnedFd>,
+    custody: &Custody,
+    cancelled: &AtomicBool,
+    started: &dyn Fn(),
+) -> (Status, Option<i32>, Vec<u8>) {
+    if spec.lease.is_some() || !spec.inherit.is_empty() || handoff.len() > HANDOFF_LIMIT {
+        return (Status::Setup, None, Vec::new());
+    }
+    run_inner(spec, handoff, custody, cancelled, started)
+}
+
+fn run_inner(
+    spec: &Spec<'_>,
+    handoff: Vec<OwnedFd>,
+    custody: &Custody,
+    cancelled: &AtomicBool,
+    started: &dyn Fn(),
+) -> (Status, Option<i32>, Vec<u8>) {
     let Ok((reader, writer)) = rustix::pipe::pipe_with(rustix::pipe::PipeFlags::CLOEXEC) else {
-        return (Status::Setup, Vec::new());
+        return (Status::Setup, None, Vec::new());
     };
     let Ok(writer_error) = writer.try_clone() else {
-        return (Status::Setup, Vec::new());
+        return (Status::Setup, None, Vec::new());
     };
     let cgroup = match custody {
         Custody::Cgroup(base) => {
@@ -254,7 +324,7 @@ pub fn run(spec: &Spec<'_>, custody: &Custody, cancelled: &AtomicBool) -> (Statu
                 NEXT_CGROUP.fetch_add(1, Ordering::SeqCst)
             ));
             if std::fs::create_dir(&path).is_err() {
-                return (Status::Setup, Vec::new());
+                return (Status::Setup, None, Vec::new());
             }
             match rustix::fs::open(
                 path.join("cgroup.procs"),
@@ -264,7 +334,7 @@ pub fn run(spec: &Spec<'_>, custody: &Custody, cancelled: &AtomicBool) -> (Statu
                 Ok(procs) => Some((path, procs)),
                 Err(_) => {
                     let _ = std::fs::remove_dir(&path);
-                    return (Status::Setup, Vec::new());
+                    return (Status::Setup, None, Vec::new());
                 }
             }
         }
@@ -289,6 +359,8 @@ pub fn run(spec: &Spec<'_>, custody: &Custody, cancelled: &AtomicBool) -> (Statu
         rustix::process::getpid(),
         cgroup.as_ref().map(|(_, procs)| procs.as_raw_fd()),
         spec.lease.map(|fd| fd.as_raw_fd()),
+        spec.inherit.iter().map(|fd| fd.as_raw_fd()).collect(),
+        handoff.iter().map(|fd| fd.as_raw_fd()).collect(),
     );
     let (sender, receiver) = channel();
     let reaper = reaper();
@@ -304,21 +376,24 @@ pub fn run(spec: &Spec<'_>, custody: &Custody, cancelled: &AtomicBool) -> (Statu
         }
     };
     drop(builder);
-    if let Some(lease) = spec.lease {
+    for fd in spec.lease.iter().chain(spec.inherit.iter()) {
         // The parent's copy keeps CLOEXEC; only the child cleared it.
-        let _ = rustix::io::fcntl_setfd(lease.as_fd(), FdFlags::CLOEXEC);
+        let _ = rustix::io::fcntl_setfd(fd.as_fd(), FdFlags::CLOEXEC);
     }
     *reaper.children.lock().expect("reaper count") += 1;
     reaper.spawned.notify_all();
+    // The child has its own copies; hostd's close here (hostd-handoff-sole-owner).
+    drop(handoff);
     let Some(pid) = spawned else {
         if let Some((path, _)) = &cgroup {
             kill_cgroup(path);
         }
-        return (Status::Failed, Vec::new());
+        return (Status::Failed, None, Vec::new());
     };
+    started();
     if rustix::fs::fcntl_setfl(&reader, OFlags::NONBLOCK).is_err() {
         finish(pid, &cgroup, &receiver, true);
-        return (Status::Setup, Vec::new());
+        return (Status::Setup, None, Vec::new());
     }
     let outcome = supervise(spec, &reader, &receiver, cancelled);
     let exited = outcome.1;
@@ -327,12 +402,12 @@ pub fn run(spec: &Spec<'_>, custody: &Custody, cancelled: &AtomicBool) -> (Statu
     if outcome.0 == Status::Succeeded || outcome.0 == Status::Failed {
         // Bytes written between the last read and the exit.
         if drain(&reader, &mut received, spec.output_limit) {
-            return (Status::OutputLimit, Vec::new());
+            return (Status::OutputLimit, None, Vec::new());
         }
     }
     match outcome.0 {
-        Status::Succeeded | Status::Failed => (outcome.0, received),
-        other => (other, Vec::new()),
+        Status::Succeeded | Status::Failed => (outcome.0, outcome.3, received),
+        other => (other, None, Vec::new()),
     }
 }
 
@@ -343,7 +418,7 @@ fn supervise(
     reader: &OwnedFd,
     receiver: &Receiver<WaitStatus>,
     cancelled: &AtomicBool,
-) -> (Status, bool, Vec<u8>) {
+) -> (Status, bool, Vec<u8>, Option<i32>) {
     let deadline = Instant::now() + spec.timeout;
     let mut received = Vec::new();
     loop {
@@ -357,14 +432,15 @@ fn supervise(
                 },
                 true,
                 received,
+                status.exit_status(),
             );
         }
         if cancelled.load(Ordering::SeqCst) {
-            return (Status::Cancelled, false, Vec::new());
+            return (Status::Cancelled, false, Vec::new(), None);
         }
         let remaining = deadline.saturating_duration_since(Instant::now());
         if remaining.is_zero() {
-            return (Status::TimedOut, false, Vec::new());
+            return (Status::TimedOut, false, Vec::new(), None);
         }
         let quantum = remaining.min(Duration::from_millis(20));
         let timeout = rustix::event::Timespec {
@@ -377,10 +453,10 @@ fn supervise(
         )];
         match rustix::event::poll(&mut fds, Some(&timeout)) {
             Ok(_) | Err(Errno::INTR) => {}
-            Err(_) => return (Status::Setup, false, Vec::new()),
+            Err(_) => return (Status::Setup, false, Vec::new(), None),
         }
         if drain(reader, &mut received, spec.output_limit) {
-            return (Status::OutputLimit, false, Vec::new());
+            return (Status::OutputLimit, false, Vec::new(), None);
         }
     }
 }

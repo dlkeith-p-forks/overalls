@@ -152,7 +152,7 @@ user-authority-to-guest path; it was removed with the v1 transport when ADR-0083
 superseded this decision. See the review for executed evidence. Browser access
 is now implemented under [ADR-0022](0022-browser-terminal-and-live-login-checks.md);
 full deployment/load validation remains required work.
-The [three-node production harness](../../../nix/tests/README.md)
+The [three-node production harness](../../../nix/verification/tests/README.md)
 now exercises a fresh guest through the packaged Lilly service, real browsers,
 lost terminal replies, serving-node death, shared writer handoff and revocation.
 Its [review](../reviews/2026-09-16-terminal-failover.md) records the passed checks;

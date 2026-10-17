@@ -8,7 +8,12 @@ defmodule Lilly.Host.Lease do
   """
 
   @enforce_keys [:id, :session, :monitor]
-  defstruct [:id, :session, :monitor]
+  defstruct [:id, :session, :monitor, :directory]
 
-  @type t :: %__MODULE__{id: pos_integer(), session: pid(), monitor: reference()}
+  @type t :: %__MODULE__{
+          id: pos_integer(),
+          session: pid(),
+          monitor: reference(),
+          directory: Path.t() | nil
+        }
 end

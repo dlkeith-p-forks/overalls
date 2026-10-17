@@ -69,11 +69,11 @@ challenge path reveals nothing beyond the public token flow.
 
 ## Implementation evidence
 
-[`nix/modules/acme/http.nix`](../../../nix/modules/acme/http.nix) declares the
+[`nix/domains/system/acme/http.nix`](../../../nix/domains/system/acme/http.nix) declares the
 opt-in and the shared entry, and
-[`public-grafana.nix`](../../../nix/modules/otel-fleet/public-grafana.nix)
+[`public-grafana.nix`](../../../nix/domains/system/otel-fleet/public-grafana.nix)
 joins it. The [Overalls services](../../../fleet/hosts/overalls/services.nix)
-enable it. The [public Grafana evaluation check](../../../nix/tests/evaluation/public-grafana.nix)
+enable it. The [public Grafana evaluation check](../../../nix/verification/tests/evaluation/public-grafana.nix)
 asserts the shared entry and adds HTTP-01 cases (merged with Grafana, default
 off, opt-in alone); the check built successfully on 2026-10-16. Live: after
 activation on Overalls, Let's Encrypt issued `ghuntley.dev` (expiring

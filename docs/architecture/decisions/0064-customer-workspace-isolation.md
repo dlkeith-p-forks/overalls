@@ -86,12 +86,12 @@ stored records cannot override current profile authorization.
 [web admission](../../../marshall/lib/marshall/ingress/execution.ex),
 [actor](../../../lilly/lib/lilly/vm/actor.ex) and
 [firewall](../../../lilly/lib/lilly/network/policy.ex) implement layered checks.
-[Namespace fixture](../../../nix/tests/machines/audi-ingress/driver.py) and
-[Firecracker matrix](../../../nix/tests/machines/fleet/network.exs) exercise
+[Namespace fixture](../../../nix/verification/tests/machines/audi-ingress/driver.py) and
+[Firecracker matrix](../../../nix/verification/tests/machines/fleet/network.exs) exercise
 kernel and guest paths respectively. The dedicated
-[Customer fleet setup](../../../nix/tests/machines/fleet/scenarios/customer-setup.py)
+[Customer fleet setup](../../../nix/verification/tests/machines/fleet/scenarios/customer-setup.py)
 places all three tested profiles on both Lilly hosts;
-[restart probes](../../../nix/tests/machines/fleet/scenarios/customer-recovery.py)
+[restart probes](../../../nix/verification/tests/machines/fleet/scenarios/customer-recovery.py)
 repeat isolation checks after Customer stop/start. Execution results and remaining acceptance
 are recorded in the [review](../reviews/2026-09-18-customer-isolation.md).
 

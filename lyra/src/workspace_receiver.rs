@@ -317,10 +317,22 @@ impl SystemGit {
             .stdin(Stdio::null())
             .stderr(Stdio::null());
         #[cfg(unix)]
-        command
-            .process_group(0)
-            .env("PATH", "/run/current-system/sw/bin:/usr/bin:/bin")
-            .env("GIT_CONFIG_GLOBAL", "/dev/null");
+        {
+            // Keep the fixed system search path, while also making helpers
+            // shipped beside a native guest's git executable discoverable.
+            // FreeBSD installs git under /usr/local/bin; Linux and illumos
+            // continue to resolve through their existing system directories.
+            let mut path = std::ffi::OsString::new();
+            if let Some(parent) = self.program.parent() {
+                path.push(parent);
+                path.push(":");
+            }
+            path.push("/run/current-system/sw/bin:/usr/bin:/bin");
+            command
+                .process_group(0)
+                .env("PATH", path)
+                .env("GIT_CONFIG_GLOBAL", "/dev/null");
+        }
         #[cfg(windows)]
         {
             // Win32-OpenSSH and the CRT need the system root; Git for Windows finds its

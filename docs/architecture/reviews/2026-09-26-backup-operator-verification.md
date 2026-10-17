@@ -23,7 +23,7 @@ reference/inventory oracle. Only the new test and its Nix check call the fixture
 The existing generated retention test replaces `Repository.manifest` and supplies
 only component references. It establishes graph reachability but does not exercise
 the complete manifest parser or public operator dispatch. The new
-[operator histories](../../../nix/tests/evaluation/backup-operators.py) invoke the
+[operator histories](../../../nix/verification/tests/evaluation/backup-operators.py) invoke the
 actual `runtime.py` in child processes with pinned Restic against local encrypted
 repositories. They do not replace Repository methods or copy its validity predicate.
 

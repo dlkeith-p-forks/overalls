@@ -119,8 +119,8 @@ ADR-0010; it is not proof that a disconnected VM stopped.
 disk reservations remain logical ledger commitments, with sparse physical
 allocation and no ZFS reservation/refreservation. Its shared identity/observation
 contract, Marshall budget enforcement and native Lilly sampling now pass
-[real ZFS checks](../../../nix/tests/machines/native-zfs/default.nix) and
-[two-provisioner fleet admission](../../../nix/tests/machines/fleet/default.nix). Physical-device
+[real ZFS checks](../../../nix/verification/tests/machines/native-zfs/default.nix) and
+[two-provisioner fleet admission](../../../nix/verification/tests/machines/fleet/default.nix). Physical-device
 performance and representative concurrent-write/headroom measurements remain
 outstanding. [ADR-0034](0034-mixed-workload-storage-tuning.md) records
 unvalidated numerical headroom/tuning candidates, not additional accepted capacity.

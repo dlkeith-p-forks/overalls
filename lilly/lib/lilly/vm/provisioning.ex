@@ -13,6 +13,8 @@ defmodule Lilly.VM.Provisioning do
   # The driver MUST hold placement ownership before calling mutation functions.
   # Each mutation then acquires only the existing authoritative journal audit-lock.
   # Neither a network wait nor a pool lock may occur inside that journal lock.
+  # The audit-lock wait MUST be bounded at two seconds in hostd's FIFO queue,
+  # as for the outcome journal; only contention past it is provisioning_busy.
   @spec prepare(Config.t(), Spec.t(), revision()) :: result()
   def prepare(config, spec, revision) do
     mutate(config, spec, fn directory ->
@@ -34,16 +36,16 @@ defmodule Lilly.VM.Provisioning do
     end)
   end
 
-  # Called only after physical confined authority has been confirmed. A running
-  # boot whose logical generation advanced acquires that generation's journal
-  # from the same proof, superseding the previous generation's record.
   # @cc [owner:ghuntley,label:recovery] awaiting-trust-preserves-agent-budget
   # awaiting_trust/4 MUST pass the validated placement agent-set budget through
   # when a first launch has not persisted a deadline. Re-entry MUST retain the
   # existing deadline, even when a later caller supplies a different budget.
   # A nil budget is retained for legacy direct callers and uses the Linux
   # profile default only when no durable deadline exists.
-  @spec awaiting_trust(Config.t(), Spec.t(), Boot.t()) :: result()
+  #
+  # Called only after physical confined authority has been confirmed. A running
+  # boot whose logical generation advanced acquires that generation's journal
+  # from the same proof, superseding the previous generation's record.
   @spec awaiting_trust(Config.t(), Spec.t(), Boot.t(), pos_integer() | nil) :: result()
   def awaiting_trust(config, spec, boot, budget \\ nil) do
     mutate(config, spec, fn directory ->
@@ -285,7 +287,7 @@ defmodule Lilly.VM.Provisioning do
     with port when is_struct(port, Lilly.Host.Lease) <- Lock.current(),
          true <- Lock.held?(port),
          directory = directory(config, spec),
-         {:ok, lock} <- Lock.acquire(Path.join(directory, "audit-lock")) do
+         {:ok, lock} <- Lock.acquire(Path.join(directory, "audit-lock"), 2000) do
       try do
         case fun.(directory) do
           :ok -> :ok

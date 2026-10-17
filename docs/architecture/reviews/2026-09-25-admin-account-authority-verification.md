@@ -175,7 +175,7 @@ remained. Earlier failed/mutant partition cleanup is separately recorded above.
 
 ### Captured native browser acceptance
 
-The [native fixture](../../../nix/tests/machines/admin-account/default.nix) uses
+The [native fixture](../../../nix/verification/tests/machines/admin-account/default.nix) uses
 packaged Marshall/PostgreSQL, verified browser TLS and virtual WebAuthn. The
 captured **admin-account-browser passed in 53.97 seconds**, with its browser
 journey taking 25.35 seconds and VM cleanup taking 0.58 seconds; Nix exited zero

@@ -48,48 +48,33 @@ defmodule Lilly.VM.UnitMetadataTest do
       firmware_bytes: 4_194_304
     }
 
-    arguments = Lilly.VM.Unit.arguments(config, pool, spec, intent, kernel)
-    refute "--enable-pci" in arguments
-    refute "--metadata" in arguments
+    # The command line is built by lilly-hostd (vm_launch.rs, whose tests
+    # carry the argument guarantees); Lilly sends only typed fields.
+    launch = Lilly.VM.Unit.launch(config, pool, spec, intent, kernel)
 
-    # A firmware bundle only appends the PCI transport and the MMDS metadata file
-    # right after the Firecracker configuration file; everything else is identical.
-    pci = Lilly.VM.Unit.arguments(config, pool, spec, intent, firmware)
-    assert pci -- ["--enable-pci", "--metadata", "/metadata.json"] == arguments
-    index = Enum.find_index(pci, &(&1 == "/firecracker.json"))
-    assert Enum.slice(pci, index + 1, 3) == ["--enable-pci", "--metadata", "/metadata.json"]
-    assert "--description=Overalls VM v1 placement=#{placement} epoch=7 generation=9" in arguments
-    assert "--parent-cgroup" in arguments
-    assert "lilly.slice/lilly-vm-#{placement}.service" in arguments
-    assert "/tools/boot-log" in arguments
-    assert "/tmp/vms/#{placement}/boot.log" in arguments
-    {_systemd_options, command} = Enum.split_while(arguments, &(&1 != "--"))
+    assert launch == %{
+             placement: placement,
+             epoch: 7,
+             generation: 9,
+             uid: spec.network.uid,
+             memory_bytes: Lilly.VM.Spec.host_memory(spec),
+             vcpus: 2,
+             firmware: false,
+             logging: false,
+             state_dir: "/tmp/vms",
+             namespace: network.namespace,
+             pool: "/tmp/pool"
+           }
 
-    assert [
-             "--",
-             "/tools/boot-log",
-             _,
-             "/tools/unshare",
-             "--fork",
-             "--pid",
-             "--kill-child=KILL",
-             "/tools/unshare",
-             "--mount-proc",
-             "/tools/guard" | _
-           ] = command
+    assert %{firmware: true} = Lilly.VM.Unit.launch(config, pool, spec, intent, firmware)
 
-    refute Enum.any?(arguments, &String.starts_with?(&1, "--property=StandardOutput="))
-
-    next =
-      Lilly.VM.Unit.arguments(
-        config,
-        pool,
-        spec,
-        %{intent | execution_epoch: 8, generation: 1},
-        kernel
-      )
-
-    assert "--description=Overalls VM v1 placement=#{placement} epoch=8 generation=1" in next
-    refute arguments == next
+    assert %{epoch: 8, generation: 1} =
+             Lilly.VM.Unit.launch(
+               config,
+               pool,
+               spec,
+               %{intent | execution_epoch: 8, generation: 1},
+               kernel
+             )
   end
 end

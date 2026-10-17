@@ -80,7 +80,7 @@ retains drafts and renders separate pending targets.
 [driver](../../../lilly/lib/lilly/vm/driver.ex) and
 [owned ZFS transitions](../../../lilly/lib/lilly/host/zfs_dataset.ex) implement
 physical resizing. [Coordinator tests](../../../marshall/test/marshall/compute/resize_test.exs)
-and [native fixture](../../../nix/tests/machines/zfs-guest/driver.py) provide
+and [native fixture](../../../nix/verification/tests/machines/zfs-guest/driver.py) provide
 executable verification cases. Application, release and real ZFS/KVM checks pass; coordinated
 deployment acceptance remains pending; see the [review](../reviews/2026-09-17-vm-resizing.md).
 

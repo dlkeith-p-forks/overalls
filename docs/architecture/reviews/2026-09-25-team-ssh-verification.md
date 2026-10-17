@@ -45,7 +45,7 @@ creation gets a new identity while the original receipt remains pinned and canno
 restore membership. Separate generated name cases cover grammar and length bounds.
 A synthetic audit-write failure exercises rollback and opaque 503 classification.
 
-The [two-VM native driver](../../../nix/tests/machines/team-ssh/driver.py) uses
+The [two-VM native driver](../../../nix/verification/tests/machines/team-ssh/driver.py) uses
 source-built Marshall and packaged Porsche, verified internal HTTPS and strict
 OpenSSH host trust from an operator-read key. A completed bootstrap latch and a
 separate unused administrator keep the three tested identities ordinary; the

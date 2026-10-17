@@ -15,7 +15,7 @@ were checked against the official release APIs on this date:
 [Elixir release](https://github.com/elixir-lang/elixir/releases/tag/v1.20.4) and
 [OTP release](https://github.com/erlang/otp/releases/tag/OTP-29.0.6).
 
-[Nix toolchain](../../../nix/packages/toolchain.nix) pins release source hashes, retains
+[Nix toolchain](../../../nix/domains/artifacts/infrastructure/toolchain.nix) pins release source hashes, retains
 debug information needed by Dialyzer, and uses a headless OTP build.
 [devenv](../../../devenv.nix) selects those runtimes;
 [version file](../../../.tool-versions) records the matching versions for other

@@ -8,7 +8,7 @@ message **"Updater failed activation attempts every prior live role without clai
 Abrupt process death does not execute Python finally; do not conflate it with the
 caught UpdateError path or claim immediate universal restoration after SIGKILL.
 
-Evidence: `nix/modules/auto-update/runtime.py:580-609` (`activate`) snapshots
+Evidence: `nix/domains/system/auto-update/runtime.py:580-609` (`activate`) snapshots
 affected active consumers/sockets; `:622-661` stops sockets before consumers,
 prepares secrets before role restoration, restarts sockets last;
 `:663-677` independent per-unit finally recovery so one failed start cannot mask

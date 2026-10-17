@@ -4,7 +4,7 @@ P0; high source confidence; primary safety assertion `Always`, message **"Retain
 
 ## Evidence and fault history
 
-`nix/modules/backups/runtime.py:122-225` records component IDs, requires owned cleanup, publishes a complete manifest last, then runs retention. `nix/modules/backups/restic.py:213-295` validates manifest shape and retained references before computing forget candidates; `journal.py:157-172` gates terminal state on cleanup. ADR-0070 is an accepted claim, not a fresh passing run. Interrupt component upload, manifest upload or its reply, journal completion, and a 128-item forget batch; retain an older point while a new run fails. Shared component IDs are a conditional branch, since no intentional ID-reuse source path was found. These source observations came independently from [focus 01](../discovery/property-candidates-01/backup-retained-manifest-closure.md) and [focus 03](../discovery/property-candidates-03/backup-recovery-manifest-reference-closure.md).
+`nix/domains/system/backups/runtime.py:122-225` records component IDs, requires owned cleanup, publishes a complete manifest last, then runs retention. `nix/domains/system/backups/restic.py:213-295` validates manifest shape and retained references before computing forget candidates; `journal.py:157-172` gates terminal state on cleanup. ADR-0070 is an accepted claim, not a fresh passing run. Interrupt component upload, manifest upload or its reply, journal completion, and a 128-item forget batch; retain an older point while a new run fails. Shared component IDs are a conditional branch, since no intentional ID-reuse source path was found. These source observations came independently from [focus 01](../discovery/property-candidates-01/backup-retained-manifest-closure.md) and [focus 03](../discovery/property-candidates-03/backup-recovery-manifest-reference-closure.md).
 
 ## Oracle, environment, and instrumentation
 
@@ -26,19 +26,19 @@ A workload ledger stores manifest ID and deterministic sentinel hashes. A separa
 
 2026-10-13 correction:
 
-- Examined: `docs/architecture/decisions/0070-host-recovery-backups.md:29-47,120-125` and `nix/modules/backups/runtime.py:122-225`.
+- Examined: `docs/architecture/decisions/0070-host-recovery-backups.md:29-47,120-125` and `nix/domains/system/backups/runtime.py:122-225`.
 - Found: ADR-0070 explicitly sets a thirty-minute schedule with up to five minutes' jitter and calls RPO “thirty minutes plus jitter and capture runtime”; outages can leave older points. It explicitly says independent captures have different timestamps and require quarantine reconciliation.
 - Conclusion: the earlier “no numeric RPO promise” finding was incorrect. Resolve the policy question with this qualified nominal RPO; do not assert a global instant or hard outage bound.
 
 #### Can a real fixture reuse one Restic component snapshot ID across two retained manifests?
 
-- Examined (2026-10-13): `nix/modules/backups/restic.py:130-176,255-301` and `nix/tests/evaluation/backup-operators.py:510-565`.
+- Examined (2026-10-13): `nix/domains/system/backups/restic.py:130-176,255-301` and `nix/verification/tests/evaluation/backup-operators.py:510-565`.
 - Found: the real Restic operator fixture captures components once, then publishes multiple real `host-manifest` points referring to the same host/guest snapshot IDs. Its generated retention test checks the union of references held by the retained points after real prune. Coordinator-created component uploads carry a distinct `run:` tag, so natural reuse by two separate backup runs is not shown.
 - Conclusion: resolved for the retention property. Shared-ID closure is feasible with real Restic manifests; do not describe it as ordinary coordinator reuse.
 
 #### Which isolated guest, database, and host sentinels can be restored safely?
 
-- Examined (2026-10-13): `nix/tests/machines/backups/driver.py:187-258`, `nix/tests/evaluation/backup-operators.py:860-910,1190-1255`, and `nix/modules/backups/runtime.py:313-345`.
+- Examined (2026-10-13): `nix/verification/tests/machines/backups/driver.py:187-258`, `nix/verification/tests/evaluation/backup-operators.py:860-910,1190-1255`, and `nix/domains/system/backups/runtime.py:313-345`.
 - Found: the NixOS backup machine restores deleted host bytes and a PostgreSQL archive into a separate `isolated` database, including a Cloak digest/keyring verification; the real Restic operator fixture verifies deterministic component bytes in fresh private targets. The restore CLI requires an empty absolute target and uses `--verify`.
 - Not found: this backup machine's isolated real guest-disk sentinel restore. An Antithesis guest content oracle still needs a disposable Lilly/ZFS guest fixture and independent byte/hash ledger.
 - Conclusion: partial for guest content, resolved for host/database sentinel choice. Use a private host file and a fixture-only database row; add a disposable guest disk sentinel only in a native guest fixture.

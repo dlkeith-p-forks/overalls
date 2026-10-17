@@ -100,7 +100,26 @@ Creation admits an immutable image and shape, reserves capacity and an address,
 creates durable placement intent, and dispatches provisioning. Lilly validates
 native storage, builds owned drives, installs isolated networking, and starts the
 jailed VMM. Readiness requires current physical evidence; job completion alone is
-insufficient.
+insufficient. That evidence is the running unit, a single VMM in its cgroup with
+the expected UID/GID, no capabilities, no-new-privileges and seccomp, the same
+jail root, network namespace and executable, the configured CPU, memory and swap
+limits, and a running API answer. When a check fails Lilly logs
+`vm.observation_failed` with the placement and the first failing check's closed
+atom (`unit_not_running`, `cgroup_unreadable`, `vmm_process_ambiguous`,
+`identity_mismatch`, `limits_mismatch`, `api_unavailable` or
+`unit_stopped_during_check`), once per change of failing check and never with
+paths, PIDs or command output; the guest stays unconfirmed. Guest trust delivery
+and its receipt recheck name the first unconfirmed step the same way: the
+executor retries with a closed `trust_*` reason on `vm.execution_deferred`
+(`trust_lock_unavailable`, `trust_claim_mismatch`, `trust_boot_unconfirmed`,
+`trust_boot_changed`, `trust_vmm_unconfirmed`, `trust_provisioning_unconfirmed`,
+`trust_journal_unreadable`, `trust_state_unwritten`, `trust_attempts_invalid` or
+`trust_delivery_failed`). Every stage retries; only three failed deliveries for
+one boot fail the execution. Like the other readiness steps, trust waits up to
+two seconds in lilly-hostd's FIFO queue for the placement and journal leases, so
+the actor's per-tick boot probe and outcome journal writes cannot starve it: a
+single-attempt trust lock once left every guest adopted after a Lilly restart
+deferred indefinitely.
 
 Launches and restarts also require Lilly's private services. Private Audi
 (`audi-private.service`) runs in Lilly's network namespace and is both required by
@@ -184,6 +203,10 @@ table ([ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md)
 Linux guests keep the 120 s budget (2400 s for Inception), `windows-v1` guests
 get 600 s (matching Marshall's provision service level), and the budget is
 recorded once at the first launch of a boot and never extended by a relaunch.
+When a trust or completion transition reaches a boot whose journal has no
+deadline yet, Lilly takes the budget from the validated placement-local
+bundle's agent set, so a FreeBSD or illumos guest never falls back to the Linux
+budget; an unreadable bundle keeps that legacy fallback.
 The two completions are exclusive: the ready commit refuses an agent set
 without readiness, and the `unattested` commit refuses an agent set that
 proves readiness, so an agent guest is never reported running without its
@@ -380,7 +403,7 @@ Launch authority is persisted before native unit submission. A daemon lost befor
 submission must refuse that generation; a new public start can issue a distinct
 authority. Loss after successful submission must adopt the original independent
 VMM and report the original operation through authenticated exchange. The
-[submission recovery scenario](repo:nix/tests/machines/fleet/scenarios/submission-recovery.py)
+[submission recovery scenario](repo:nix/verification/tests/machines/fleet/scenarios/submission-recovery.py)
 contains generated histories for both boundaries and repeated daemon reopens.
 Recorded native execution passed: the submission history took337.69seconds
 within a1036.30-second machine script, with composed driver static checks passed.

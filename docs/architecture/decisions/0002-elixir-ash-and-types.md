@@ -59,7 +59,7 @@ and [User resource](../../../marshall/lib/marshall/accounts/user.ex) establish
 initial Ash modeling. The shared [validator](../../../scripts/adr_validator.ex)
 has boundary specs and [property tests](../../../marshall/test/architecture/adr_validator_test.exs).
 
-[Nix toolchain](../../../nix/packages/toolchain.nix) and
+[Nix toolchain](../../../nix/domains/artifacts/infrastructure/toolchain.nix) and
 [version pins](../../../.tool-versions) select Elixir 1.20.4/OTP 29.0.6;
 [devenv](../../../devenv.nix) uses them. The Mix project requires Elixir 1.20.4,
 includes Dialyxir and invokes both a

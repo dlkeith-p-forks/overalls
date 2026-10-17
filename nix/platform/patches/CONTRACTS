@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:security;recovery] firecracker-pci-bar-relocation
+The patched virtio PCI transport MUST allocate the MSI-X table and PBA in a
+dedicated BAR whose address is tracked independently from the queue BAR. A
+64-bit BAR relocation MUST take effect only after its high-half write, and
+queue ioevents MUST be moved only after the complete relocation succeeds. A
+device removal MUST unregister both BARs and all queue ioevents; a failed or
+partial relocation MUST leave the prior registration usable.
+
+@cc [owner:ghuntley,label:protocol;recovery] firecracker-native-queue-init
+Virtio queue size and address writes made while a native illumos guest is
+initializing with device status zero MUST be accepted when they form a valid
+queue configuration. Invalid queue indices, sizes, addresses or writes after
+the device has entered a disallowed state MUST retain the existing refusal and
+MUST NOT create ioevents or expose an unconfigured queue.

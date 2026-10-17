@@ -80,18 +80,18 @@ Neither evaluated QEMU nor vhost-device-vsock output is realized here.
 Absolute-path `--help`/`--version` probes failed with `No such file or directory`;
 no substitute or build was attempted. Package existence is not runtime evidence.
 
-The application package set comes from `import ./nix/packages { inherit pkgs; }`.
+The application package set comes from `import ./nix/domains/artifacts { inherit pkgs; }`.
 The real guest inputs are `terminald`, `lyraLinux`, `vscodeWeb` and
 `vscodeWebBroker`, also reachable through
 `legacyPackages.x86_64-linux`. `packages.x86_64-linux.guest` is the generic image
 with no private-service roots. Although it contains the editor packages, it
 does not enable the private trust/roster/editor units required for these
 journeys. Import the guest builder with explicit public fixture roots, as
-`nix/tests/machines/fleet/default.nix:153-175` already does for native journeys.
+`nix/verification/tests/machines/fleet/default.nix:153-175` already does for native journeys.
 
 ## Guest variant and successful evaluation
 
-`nix/packages/guest/configuration.nix:13-38` uses Linux 6.12, a lean initrd with
+`nix/domains/artifacts/guest/configuration.nix:13-38` uses Linux 6.12, a lean initrd with
 `virtio_mmio`, `virtio_blk`, `virtio_net`, `ext4`, and `pci=off`.
 `boot.initrd.includeDefaultModules=false` prevents a q35 guest from acquiring
 PCI support implicitly. The original bare ext4 `/dev/vda` root and ordinary
@@ -99,7 +99,7 @@ guest services remain suitable after transport adaptation.
 
 A read-only evaluation of the existing builder succeeded with the following
 additional module and with the real package inputs, fixture certificate
-`nix/tests/fixtures/ubuntu/ca.crt`, image name
+`nix/verification/tests/fixtures/ubuntu/ca.crt`, image name
 `overalls-antithesis-tcg-nixos-x86_64`, and 2 GiB minimum memory:
 
 ```nix
@@ -140,7 +140,7 @@ protocol 1 / commit `2a59476c9bfcb90b3ddc372c36762471b7dfad1c` / release
 `7d2415fecdd209b1cad571f2fd95a22fa4829f5fa4ed50e8688bd08d25f2d9a6`.
 The final rootfs byte count/digests remain build-time outputs. Editor disk floor
 is `(rootfs_bytes + 2 GiB)` rounded upward to a whole GiB
-(`nix/packages/guest/default.nix:214-232`), rather than a guessed 2 GiB disk.
+(`nix/domains/artifacts/guest/default.nix:214-232`), rather than a guessed 2 GiB disk.
 
 The realized kernel configuration explicitly has `CONFIG_PCI=y`,
 `CONFIG_VIRTIO_PCI=m`, `CONFIG_VIRTIO_VSOCKETS=m`, `CONFIG_EXT4_FS=m` and
@@ -239,7 +239,7 @@ Lilly clients first dial a private UDS, send `CONNECT <port>\n`, and validate an
 `lilly/lib/lilly/vm/readiness.ex:67-99` and
 `lilly/lib/lilly/terminal/vsock.ex:365-380`.
 
-`nix/packages/guest/readiness.py:28-64` requires exactly one canonical lowercase
+`nix/domains/artifacts/guest/readiness.py:28-64` requires exactly one canonical lowercase
 UUID placement, positive canonical signed64-bounded epoch, 64 lowercase hex
 challenge, and a `10.{10,20,30,40}` address in slots 2..65534. At readiness it
 checks actual active `multi-user.target`, `lilly-network.service`, optional
@@ -314,7 +314,7 @@ ZFS GUID/stream/resume/accounting semantics.
 
 Use standard/OSS profiles first. Inception's accepted additional drive is
 256 GiB (`protocol/lib/overalls_protocol/disk_layout.ex:4-27`) and its image
-minimum memory is 32 GiB (`nix/packages/default.nix:193-199`); a 2 GiB TCG guest
+minimum memory is 32 GiB (`nix/domains/artifacts/default.nix:193-199`); a 2 GiB TCG guest
 does not establish nested platform behavior.
 
 ## Journeys and decisive assertions
@@ -322,8 +322,8 @@ does not establish nested platform behavior.
 1. **Boot/trust:** deliver exact roots over 1030 before network startup; validate
    trust receipt and 1024 readiness for the current kernel boot. Repeat with
    rotated roots and assert retired roots fail verification. Existing native
-   evidence: `nix/tests/machines/zfs-guest/boot-profile.py` and
-   `nix/tests/machines/fleet-guest-trust/guest.exs`.
+   evidence: `nix/verification/tests/machines/zfs-guest/boot-profile.py` and
+   `nix/verification/tests/machines/fleet-guest-trust/guest.exs`.
 2. **Data:** write a unique synthetic marker and fsync it through a real guest
    tool; request 1026 flush; stop, prove QEMU/backend exit, restart the same
    overlay with a new boot challenge, and read the old marker before any
@@ -335,7 +335,7 @@ does not establish nested platform behavior.
    `/workspace/REPO` on the overlay; unfinished deliveries resume, identical
    sources are idempotent and conflicting sources reject. Workspace delivery
    remains outside readiness. Evidence: `lyra/src/workspace_receiver.rs:198`,
-   `nix/tests/machines/repository-launch/driver.py:273-277`.
+   `nix/verification/tests/machines/repository-launch/driver.py:273-277`.
 4. **Terminal:** enter via Marshall's authenticated current grant and Lilly's
    actual 1075 socket; establish HMAC hello and a personal roster-backed PTY.
    Disconnect/reconnect transport and restart Lilly while the independent
@@ -350,14 +350,14 @@ does not establish nested platform behavior.
    recovery browser flow rewrites before readback, which is insufficient for
    a pre-fault persistence oracle. Refuse mismatched account, gateway, epoch,
    package and origin; revoke/sign out and require stream closure. Evidence:
-   `nix/tests/machines/vscode-web/default.nix:414-438`,
-   `nix/tests/machines/vscode-web/guest.exs:155,337`.
+   `nix/verification/tests/machines/vscode-web/default.nix:414-438`,
+   `nix/verification/tests/machines/vscode-web/guest.exs:155,337`.
 
 The workspace clone command currently runs without a process timeout
 (`lyra/src/workspace_receiver.rs:335`); this is an explicit liveness limit to
 observe, not grounds to claim all clone attempts settle within a bound.
 Existing native NixOS/fleet tests declare mandatory KVM and actual Firecracker/
-ZFS (`nix/tests/support/role-node.nix:8-11`, fleet bootstrap contract). They are
+ZFS (`nix/verification/tests/support/role-node.nix:8-11`, fleet bootstrap contract). They are
 sources for scenarios, not tests that can silently be renamed as TCG acceptance.
 
 ## Proposed implementation files and commands

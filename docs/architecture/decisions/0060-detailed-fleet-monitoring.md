@@ -96,12 +96,12 @@ The [property audit](../reviews/2026-09-29-antithesis-property-audit.md) records
 local scope and retained TLS, native, scale and client-retry gaps.
 
 Ziggy extends this existing monitoring path through
-[bounded local numeric probes](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/runtime.py),
+[bounded local numeric probes](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/runtime.py),
 [proxy chart specifications](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/dashboard_catalog.ex)
 and [per-Lilly links](../../../marshall/lib/marshall_web/live/admin/lilly_nodes_live.ex).
 Proxy monitoring remains observational; unknown/stale data grants no inference or
 compute authority. See [ADR-0063](0063-private-services-and-ziggy.md) and the
-[verification ledger](../../ziggy.md) for its separate implementation gaps.
+[verification ledger](../../services/ziggy.md) for its separate implementation gaps.
 
 Galileo uses the same bounded local-proxy projection. The
 [strict sample validator](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/sample.ex) now
@@ -116,15 +116,15 @@ errors. This fixes schema agreement but does not complete the remaining native
 transport and scale obligations.
 
 
-[Measurements](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/metrics.py) implement bounded
+[Measurements](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/metrics.py) implement bounded
 Linux/ZFS parsing and identity-aware rates. The independent
-[runtime](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/runtime.py) collects allowlisted
+[runtime](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/runtime.py) collects allowlisted
 systemd metadata, rechecks invocation stability, buffers samples and accepts only
-durable acknowledgments. The [NixOS module](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/default.nix)
+durable acknowledgments. The [NixOS module](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/default.nix)
 is opt-in with runtime credential paths and service budgets.
 [Lilly launch metadata](../../../lilly/lib/lilly/vm/unit.ex) binds the actual
 launched revision rather than later intent. Ten
-[isolated collector tests](../../../nix/tests/evaluation/fleet-monitor.py) pass;
+[isolated collector tests](../../../nix/verification/tests/evaluation/fleet-monitor.py) pass;
 these are not native fleet acceptance. HTTP ingestion, deployment enrollment,
 caches, history persistence, dashboards and scale/native acceptance were pending
 at the collector checkpoint below; subsequent server evidence follows.
@@ -196,10 +196,10 @@ not change the acceptance status of the previously implemented monitoring path.
 The terminal master plan adds a passive numeric terminal-service projection:
 Lilly stream readiness, channels, dial failures/proxy errors, and recent
 per-placement/epoch/generation guest dial observations. The
-[collector decoder](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/terminal_metrics.py)
+[collector decoder](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/terminal_metrics.py)
 rejects unknown fields, wrong host identity and oversized responses, while
 failed observation remains absent. The
-[completion ledger](../../terminal-v2-completion.md) tracks current source and
+[completion ledger](../../history/ledgers/terminal-v2-completion.md) tracks current source and
 verification; these metrics must not authorize execution or replace freshness
 gates. End-to-end monitoring acceptance remains pending.
 

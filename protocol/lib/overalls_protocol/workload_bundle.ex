@@ -139,10 +139,10 @@ defmodule OverallsProtocol.WorkloadBundle do
   def validate(_), do: {:error, :invalid_workload_bundle}
 
   # @cc [owner:ghuntley,label:protocol;security] native-workload-bundle-closed
-  # Version 3 metadata MUST contain only bounded native firmware fields,
-  # with an explicit FreeBSD or illumos image and matching agent set. A legacy
-  # kernel bundle is not accepted; published FreeBSD images use the firmware
-  # form because Firecracker cannot direct-boot FreeBSD ELF.
+  # Version 3 metadata MUST contain only bounded native firmware fields, with an
+  # explicit FreeBSD or illumos image and matching agent set. Native images use
+  # the firmware form because Firecracker cannot direct-boot a FreeBSD ELF or
+  # load an illumos ZFS disk through its Linux kernel path.
   @spec validate_native(term()) ::
           {:ok, native_freebsd_firmware_bundle() | native_firmware_bundle()}
           | {:error, :invalid_workload_bundle}

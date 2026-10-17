@@ -5,6 +5,8 @@ defmodule Lilly.Transfer.SourceSnapshots do
   alias Lilly.Transfer.{SnapshotIndex, SnapshotJournal, SnapshotOwnership}
   alias Lilly.VM.Spec
   @type failure :: {:error, :source_snapshot_unconfirmed}
+  @typedoc "Absolute sender argv for the source host's root export worker."
+  @type command :: {Path.t(), [String.t()]}
   @typedoc "Cleanup names the closed stage atom of the check that failed."
   @type cleanup_failure :: {:error, atom()}
 
@@ -54,7 +56,7 @@ defmodule Lilly.Transfer.SourceSnapshots do
   # dataset/snapshot lineage without creating or repairing state. Returned argv
   # is not a permit: the caller MUST own the transfer slot, fence cleanup/launch
   # races and enforce expiry/revocation before and throughout native execution.
-  @spec export(Pool.t(), map()) :: {:ok, Lilly.Transfer.Stream.command()} | failure()
+  @spec export(Pool.t(), map()) :: {:ok, Lilly.Transfer.SourceSnapshots.command()} | failure()
   def export(pool, wire) do
     with {:ok, capture} <- capture(pool, wire),
          executable when is_binary(executable) <- System.find_executable("zfs") do
@@ -142,7 +144,7 @@ defmodule Lilly.Transfer.SourceSnapshots do
   # GUIDs. Returned argv grants no authority and MUST remain subject to the same
   # stream ownership, expiry and revocation supervision as an ordinary export.
   @spec resume_export(Pool.t(), map(), term()) ::
-          {:ok, Lilly.Transfer.Stream.command()} | failure()
+          {:ok, Lilly.Transfer.SourceSnapshots.command()} | failure()
   def resume_export(pool, wire, token) do
     with {:ok, {executable, arguments}} <- export(pool, wire),
          {:ok, descriptor} <- OverallsProtocol.DiskTransfer.descriptor(wire),
@@ -150,6 +152,36 @@ defmodule Lilly.Transfer.SourceSnapshots do
            Lilly.Transfer.ResumeToken.validate(List.last(arguments), descriptor.stream, token),
          do: {:ok, {executable, ["send", "-t", token]}},
          else: (_ -> failure())
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] local-producer-shares-export-lineage
+  # local_producer/3 MUST apply export/2's lineage checks (and, with a token,
+  # resume_export/3's token binding) and return only the typed local send
+  # fields of that verified snapshot, `<dataset>/vm-<placement>@lilly-b`, from
+  # which hostd derives the send (hostd-transfer-stream-typed). It grants no
+  # authority: the caller still owns the permit, slot and effect fences.
+  @spec local_producer(Pool.t(), map(), String.t() | nil) ::
+          {:ok, Lilly.Transfer.Stream.producer()} | failure()
+  def local_producer(pool, wire, token \\ nil) do
+    with {:ok, capture} <- capture(pool, wire),
+         true <- capture.snapshot == ZFSDataset.name(pool, capture.spec) <> "@" <> slot() do
+      fields = %{dataset: pool.storage.dataset, placement: capture.spec.id}
+
+      if is_nil(token) do
+        {:ok, {:local_send, fields}}
+      else
+        with {:ok, descriptor} <- OverallsProtocol.DiskTransfer.descriptor(wire),
+             :ok <-
+               Lilly.Transfer.ResumeToken.validate(capture.snapshot, descriptor.stream, token),
+             do:
+               {:ok,
+                {:local_resume,
+                 Map.merge(fields, %{to_guid: descriptor.stream.to_guid, token: token})}},
+             else: (_ -> failure())
+      end
+    else
+      _ -> failure()
+    end
   end
 
   # Streams are sent compressed (-c): already-lz4 blocks travel as stored rather than

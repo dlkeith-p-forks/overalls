@@ -19,6 +19,32 @@ defmodule OverallsProtocol.GuestAgentsTest do
 
     assert GuestAgents.capabilities(:freebsd_v1) == GuestAgents.capabilities(:illumos_v1)
 
+    assert %{
+             inception: false,
+             editor: false,
+             readiness: true,
+             trust: true,
+             terminal: true,
+             workspace: true,
+             flush: true,
+             ssh: true,
+             agents: true
+           } =
+             GuestAgents.capabilities(:freebsd_v1)
+
+    assert %{
+             inception: false,
+             editor: false,
+             readiness: true,
+             trust: true,
+             terminal: true,
+             workspace: true,
+             flush: true,
+             ssh: true,
+             agents: true
+           } =
+             GuestAgents.capabilities(:illumos_v1)
+
     for value <- ["Linux", "windows", "windows-v2", "", nil, :linux, 1] do
       assert :error = GuestAgents.parse(value)
     end

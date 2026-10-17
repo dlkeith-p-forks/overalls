@@ -110,18 +110,18 @@ ADR-0142 moved Ziggy onto the control WebSocket); generated
 [op tests](../../../marshall/test/marshall/control/satellite_version_test.exs)
 check the closed refusal. These local histories do not establish hosted
 version-skew behavior. The
-[guest module](../../../nix/packages/guest/private-services.nix) supplies explicit
-public trust and split DNS; [service configuration](../../../nix/modules/ziggy.nix)
+[guest module](../../../nix/domains/artifacts/guest/private-services.nix) supplies explicit
+public trust and split DNS; [service configuration](../../../nix/domains/system/ziggy.nix)
 uses existing SOPS bundles and systemd credentials.
 
-The existing [fleet collector](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/runtime.py)
+The existing [fleet collector](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/runtime.py)
 and [Lilly admin page](../../../marshall/lib/marshall_web/live/admin/lilly_nodes_live.ex)
 now expose content-free proxy observations and retained service charts, preserving
 ADRs 0060/0062's separate monitoring authority and freshness rules.
 
-The [kernel integration test](../../../nix/tests/machines/private-services/default.nix)
+The [kernel integration test](../../../nix/verification/tests/machines/private-services/default.nix)
 boots real Audi and Lilly packages and exercises DNS/TLS and nftables isolation.
-The [ledger](../../ziggy.md) distinguishes executed checks from missing native
+The [ledger](../../services/ziggy.md) distinguishes executed checks from missing native
 Firecracker, production provisioning and sustained-load acceptance.
 
 [ADR-0167](0167-native-guest-coding-clis.md) adds native-configured guest Codex

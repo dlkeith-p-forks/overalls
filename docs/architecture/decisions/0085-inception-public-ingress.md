@@ -130,10 +130,10 @@ test results below do not establish acceptance of the current tree.
 [Public settings](../../../protocol/lib/overalls_protocol/inception_public.ex)
 carry only bounded operator issuer/trust/DNS configuration and explicit consent
 through authenticated parent offers and the boot-bound vsock exchange. Nil leaves
-certificate/DNS setup disabled. The [guest validator](../../../nix/packages/guest/inception/public_settings.py)
+certificate/DNS setup disabled. The [guest validator](../../../nix/domains/artifacts/guest/inception/public_settings.py)
 shares a rejection corpus with the protocol library. Changes to this public trust
 configuration require a new guest boot; they cannot silently replace a running
-instance's trust. The [inner DNS unit](../../../nix/packages/guest/inception/dns.nix)
+instance's trust. The [inner DNS unit](../../../nix/domains/artifacts/guest/inception/dns.nix)
 uses its own enrolled DNS token and verified local Marshall snapshots, listens on
 IPv4 loopback, and supplies no public delegation. Its native startup and actual
 UDP/TCP response checks passed in the native fixture. That run also passed nested
@@ -144,7 +144,7 @@ pools preserve the production ownership check; the full run still needs to pass.
 [Parent proof observations](../../../lilly/lib/lilly/inception/propagation.ex)
 query only operator-configured IPv4 authoritative endpoints, checking exact TXT
 sets with bounded concurrency and deadlines. The
-[child receiver and local broker](../../../nix/packages/guest/inception/observations.py)
+[child receiver and local broker](../../../nix/domains/artifacts/guest/inception/observations.py)
 fence evidence to its original boot, generation, single-use offer and publication
 lifetime. The root-owned Unix socket returns remaining duration to
 [inner Audi](../../../audi/lib/audi/acme/observed.ex), which verifies the peer UID
@@ -156,11 +156,11 @@ broker/runtime checks passed. Inner Audi TLS is wired to this evidence, but real
 issuance through two independent replicas, control TLS and the complete public
 native acceptance remain unverified or unfinished.
 
-The [control proof hook](../../../nix/packages/guest/inception/control_proofs.py)
+The [control proof hook](../../../nix/domains/artifacts/guest/inception/control_proofs.py)
 now limits updates to the assigned control DNS-01 owner, a current random job
 nonce and one non-renewable three-minute deadline. Its two-second publication
 heartbeat cannot extend that job; generation/boot changes and delayed cleanup
-fail closed. Five [runtime checks](../../../nix/tests/evaluation/inception-control-proofs.py)
+fail closed. Five [runtime checks](../../../nix/verification/tests/evaluation/inception-control-proofs.py)
 passed, including actual parent evidence reads and expiry. The hook is not yet
 wired to the certificate worker or proxy and does not establish issuance.
 
@@ -175,11 +175,11 @@ all-IPv6 endpoint configurations before creating a client. Nix proxy backend and
 recursive resolver options also reject IPv6 literals.
 
 
-[Listener configuration](../../../nix/modules/audi.nix) now permits explicit
+[Listener configuration](../../../nix/domains/system/audi.nix) now permits explicit
 IPv4 TLS binds and distinct Audi/Porsche addresses on the same SSH port.
-[Firewall rendering](../../../nix/modules/listener-firewall.nix) scopes explicit
+[Firewall rendering](../../../nix/domains/system/listener-firewall.nix) scopes explicit
 listeners by destination, with regression cases in the
-[Nix evaluation](../../../nix/tests/evaluation/audi.nix).
+[Nix evaluation](../../../nix/verification/tests/evaluation/audi.nix).
 [Readiness construction](../../../audi/lib/audi/application.ex) uses the configured
 address, covered by [configuration tests](../../../audi/test/config_test.exs).
 Audi's 137 tests and forced Dialyzer passed. Nix Audi and module evaluations and
@@ -187,7 +187,7 @@ Overalls assertions passed; these are not live listener evidence.
 [Paired allocation](../../../protocol/lib/overalls_protocol/address_pool.ex),
 [TAP route ownership](../../../lilly/lib/lilly/network.ex),
 [source guards](../../../lilly/lib/lilly/network/policy.ex) and
-[guest setup](../../../nix/packages/guest/configuration.nix) derive both addresses
+[guest setup](../../../nix/domains/artifacts/guest/configuration.nix) derive both addresses
 from the same reservation. Protocol (119 tests/properties) and Lilly (296)
 precommit gates, including Dialyzer, passed. Native paired-address verification
 remains outstanding.
@@ -202,9 +202,9 @@ The expanded protocol precommit gate passes 126 tests/properties and Dialyzer.
 The [Lilly poller](../../../lilly/lib/lilly/vm/inception_exchange.ex) now frames
 requests on separate vsock port 1028 (1026 belongs to the guest backup flush
 service), imposes a single deadline and correlates
-replies. Its socket tests and full Lilly gate, including Dialyzer, passed. The [guest receiver](../../../nix/packages/guest/inception/ingress.py) validates
+replies. Its socket tests and full Lilly gate, including Dialyzer, passed. The [guest receiver](../../../nix/domains/artifacts/guest/inception/ingress.py) validates
 CID 2, the kernel boot binding, canonical origins and monotone generation, and
-refuses stale child snapshots. Its [Nix runtime check](../../../nix/tests/evaluation/inception-runtime.nix)
+refuses stale child snapshots. Its [Nix runtime check](../../../nix/verification/tests/evaluation/inception-runtime.nix)
 passes all 21 tests. The [driver entry](../../../lilly/lib/lilly/vm/driver.ex)
 checks the same owned confined boot before and after the exchange. Lilly's 298
 tests/properties and Dialyzer pass. Marshall's full gate passes 665 tests/properties
@@ -276,7 +276,7 @@ retaining test-only profiles in the native fixture. The authenticated SSH downlo
 fixed-service profiles
 for Inception, with independent current HTTPS key checks at both layers, IPv4,
 and no forwarding or multiplexing. The
-[native OpenSSH fixture](../../../nix/tests/machines/audi-openssh/default.nix)
+[native OpenSSH fixture](../../../nix/verification/tests/machines/audi-openssh/default.nix)
 passed generated-profile execution, wrong outer/inner key, HTTPS trust, response
 status and size-limit cases. It uses stock sshd and a fixture key publisher, not
 Firecracker or production Marshall authority. Ordinary inner workload profiles
@@ -292,22 +292,22 @@ The fixture uses stock sshd and a controlled HTTPS publisher; full native
 two-environment acceptance remains outstanding.
 No end-to-end Inception or production deployment is claimed.
 
-The [namespace receiver](../../../nix/packages/guest/inception/ingress.py) now
+The [namespace receiver](../../../nix/domains/artifacts/guest/inception/ingress.py) now
 materializes the assigned control hostname and app zone as private runtime inputs.
-[Marshall's module](../../../nix/modules/marshall.nix) accepts a separately loaded
+[Marshall's module](../../../nix/domains/system/marshall.nix) accepts a separately loaded
 hostname credential, validates canonical DNS syntax, and refuses invalid input
 without static fallback. The inner unit waits for namespace inputs independently
 of certificate issuance. Python/runtime and module configuration checks passed;
 this is not evidence of a completed inner public bootstrap. The ACME HTTP-01
 responder now rejects IPv6 settings using the shared IPv4 type.
 
-The [inner Porsche unit](../../../nix/packages/guest/inception/porsche.nix)
+The [inner Porsche unit](../../../nix/domains/artifacts/guest/inception/porsche.nix)
 loads a local gateway credential and persistent Ed25519 identity into an
 unprivileged IPv4-only application service. Its
-[configuration producer](../../../nix/packages/guest/inception/roles.py) binds the
+[configuration producer](../../../nix/domains/artifacts/guest/inception/roles.py) binds the
 current control address and assigned browser origin while keeping control calls
 on verified local HTTPS. The
-[bootstrap](../../../nix/packages/guest/inception/porsche.exs) uses the dedicated
+[bootstrap](../../../nix/domains/artifacts/guest/inception/porsche.exs) uses the dedicated
 [ensure operation](../../../marshall/lib/marshall/operations/ssh_gateway.ex):
 restart cannot rotate or revive authority. Audi's corresponding
 [service ensure action](../../../marshall/lib/marshall/ingress/services.ex)
@@ -317,13 +317,13 @@ and DNS roles. Porsche's precommit and the Nix runtime check passed; the inner
 image evaluates. Native startup, publication and full public readiness still
 require integration and acceptance testing.
 
-The [inner publication worker](../../../nix/packages/guest/inception/publication.py)
+The [inner publication worker](../../../nix/domains/artifacts/guest/inception/publication.py)
 now projects a bounded current DNS snapshot from verified local IPv4 HTTPS into
 private, monotonic-expiry vsock input. It drops child addresses, rejects recursion
 and overflow, and checks the independent current Porsche/Audi credentials before
 publishing their locally owned canonical host keys. Control-certificate proofs
 have a separate boot/generation/expiry-bound input and may precede readiness.
-[DNS identity bootstrap](../../../nix/packages/guest/inception/dns.exs) uses its own
+[DNS identity bootstrap](../../../nix/domains/artifacts/guest/inception/dns.exs) uses its own
 private token and the non-rotating ensure action. Namespace installation and
 publication replacement share a lock and recheck configuration. The child reply
 carries remaining TTL; parent authority caps it from original offer creation so
@@ -332,11 +332,11 @@ space for the longest DNS-01 challenge name, including a complete workload label
 The worker and bootstrap are included in the inner image. Inner DNS startup and
 UDP/TCP answers passed in the native fixture. Audi TLS is wired to parent proof
 observations but awaits native issuance. The
-[control certificate worker](../../../nix/packages/guest/inception/control_worker.py)
-and [service wiring](../../../nix/packages/guest/inception/control.nix) now connect
+[control certificate worker](../../../nix/domains/artifacts/guest/inception/control_worker.py)
+and [service wiring](../../../nix/domains/artifacts/guest/inception/control.nix) now connect
 independent account state, the bounded parent-proof hook, validated certificate
 custody and a separate unprivileged proxy. Isolated
-[live proxy tests](../../../nix/tests/evaluation/inception-control-tls.py) verify
+[live proxy tests](../../../nix/verification/tests/evaluation/inception-control-tls.py) verify
 original-source enforcement before PROXY parsing, forwarding-header replacement,
 certificate reload and survival of an existing upgraded connection. Nix service
 evaluation passed. Actual public issuance and Firecracker acceptance remain
@@ -349,11 +349,11 @@ exact boot/generation/proof checks; it does not extend publication or observatio
 authority. The runtime gate exercises real-file evidence with less than one
 second remaining. Native issuance remains unverified.
 
-The [inner Audi unit](../../../nix/packages/guest/inception/audi.nix) now has a
+The [inner Audi unit](../../../nix/domains/artifacts/guest/inception/audi.nix) now has a
 separate private credential and persistent Ed25519 identity. Its
-[bootstrap](../../../nix/packages/guest/inception/audi.exs) ensures the inner host
+[bootstrap](../../../nix/domains/artifacts/guest/inception/audi.exs) ensures the inner host
 binding with the paired private Audi address. The
-[inner enrollment](../../../nix/packages/guest/inception/enroll.exs) enables Lilly's
+[inner enrollment](../../../nix/domains/artifacts/guest/inception/enroll.exs) enables Lilly's
 restricted connector for the actual deployed Audi UID; group access alone grants
 no connector authority. This wires SSH startup, not completed public TLS. Child
 DNS addresses remain local to the inner deployment and are discarded by the
@@ -362,28 +362,28 @@ the configured local IPv4 listener, binds its own connection to that address,
 and rejects remote, wildcard and IPv6 destinations. Unprivileged Audi units
 permit local Netlink interface discovery without CAP_NET_ADMIN or IPv6 sockets.
 
-The [independent private PKI bootstrap](../../../nix/packages/guest/inception/private_pki.py)
+The [independent private PKI bootstrap](../../../nix/domains/artifacts/guest/inception/private_pki.py)
 now generates and validates durable, instance-bound root/intermediate custody
 using Audi's existing primitives. Its
-[inner issuer wiring](../../../nix/packages/guest/inception/private.nix) delivers
+[inner issuer wiring](../../../nix/domains/artifacts/guest/inception/private.nix) delivers
 only the intermediate through systemd credentials, without parent keys or an
 encrypted parent bundle. Actual-crypto custody tests and Nix configuration checks
 pass; the inner image evaluates. The
-[inner Ziggy enrollment](../../../nix/packages/guest/inception/ziggy.exs) persists
+[inner Ziggy enrollment](../../../nix/domains/artifacts/guest/inception/ziggy.exs) persists
 its own token before calling the
 [non-rotating coordinator](../../../marshall/lib/marshall/inference/credentials.ex).
 Six database tests verify unchanged expiry on retry and refusal of revoked,
 expired, mismatched or unauthorized authority. Bootstrap runs only after native
 host enrollment enables the inner host. The
-[native enrollment probe](../../../nix/tests/machines/inception/inner_ziggy.exs)
-has not yet run. The [inner Ziggy service](../../../nix/packages/guest/inception/ziggy.nix)
-now uses the [shared hardened unit](../../../nix/modules/ziggy-service.nix), its
+[native enrollment probe](../../../nix/verification/tests/machines/inception/inner_ziggy.exs)
+has not yet run. The [inner Ziggy service](../../../nix/domains/artifacts/guest/inception/ziggy.nix)
+now uses the [shared hardened unit](../../../nix/domains/system/ziggy-service.nix), its
 own SOPS provider document and systemd credential snapshots. Fixed local runtime
 configuration and closed provider selection pass four tests, the Nix runtime
 gate and the physical Ziggy configuration check; the updated inner image
 evaluates. No parent provider keys or placeholder defaults are supplied.
-The [private Audi wiring](../../../nix/packages/guest/inception/private.nix)
-reuses the [physical renewal/frontend services](../../../nix/modules/audi-private-services.nix).
+The [private Audi wiring](../../../nix/domains/artifacts/guest/inception/private.nix)
+reuses the [physical renewal/frontend services](../../../nix/domains/system/audi-private-services.nix).
 It authenticates with the inner Audi identity and issuer and enters only the
 enrolled Lilly namespace through a root-owned runtime link. Five tests verify
 fixed inner authority, stable namespace binding and refusal of foreign links or
@@ -392,20 +392,20 @@ image evaluates. Inner Lilly now enables its private connector/network and
 requires private readiness before new guest execution. Native issuer/frontend
 startup, reproducible nested guest trust and provider acceptance remain open.
 
-The [nested guest image rebuild](../../../nix/packages/guest/inception/image-builder.nix)
+The [nested guest image rebuild](../../../nix/domains/artifacts/guest/inception/image-builder.nix)
 is now wired end to end. Its recipe rejects private-key material before any
-store copy, and a prewarmed [offline cache](../../../nix/packages/default.nix)
+store copy, and a prewarmed [offline cache](../../../nix/domains/artifacts/default.nix)
 retains the full build closure in the inner system. The
-[image rebuild unit](../../../nix/packages/guest/inception/default.nix) rebuilds
+[image rebuild unit](../../../nix/domains/artifacts/guest/inception/default.nix) rebuilds
 the guest image from the instance's public private-service root before
 enrollment, and
-[enrollment](../../../nix/packages/guest/inception/enroll.exs) registers and
+[enrollment](../../../nix/domains/artifacts/guest/inception/enroll.exs) registers and
 selects only that rebuilt image. Inner Marshall receives the rebuilt content
 identity through a validated runtime credential
-([runtime default image](../../../nix/modules/marshall-default-image.py))
+([runtime default image](../../../nix/domains/system/marshall-default-image.py))
 instead of a build-time default; empty input disables the default and invalid
 input prevents startup. The
-[evaluation check](../../../nix/tests/evaluation/inception-image-builder.nix)
+[evaluation check](../../../nix/verification/tests/evaluation/inception-image-builder.nix)
 verifies cache retention and private-key rejection. First-boot rebuild inside
 the environment remains to be exercised by the native acceptance run.
 

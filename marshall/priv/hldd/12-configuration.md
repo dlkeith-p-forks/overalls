@@ -3,7 +3,7 @@
 ## Guest coding CLI configuration
 
 Both image builders use
-[one pinned package/settings source](repo:nix/packages/guest/coding-clis.nix).
+[one pinned package/settings source](repo:nix/domains/artifacts/guest/coding-clis.nix).
 Codex reads `/etc/codex/config.toml`: `model_provider = "ziggy"`, provider
 `base_url = "https://llm.internal/openai/v1"`, `wire_api = "responses"`,
 `requires_openai_auth = false`, `supports_websockets = false`,
@@ -84,22 +84,24 @@ image use runtime PKI and a boot-bound trust receipt. The source-built fourth
 private host image booted directly under TCG, but this Docker variant has not
 started and its private roles lack serving credentials.
 
-## Browser launcher package
+## Browser extension package
 
-`services.marshall.browserPackage` selects the immutable unsigned Chrome/Firefox
+`services.marshall.marvinPackage` selects the immutable unsigned Chrome/Firefox
 launcher package and defaults to the repository's `browser` output. Set it to
 `null` to disable extension downloads. After loading other environment files, the
-wrapper removes any inherited `OVERALLS_BROWSER_RELEASE` and supplies the selected
+wrapper removes any inherited `OVERALLS_MARVIN_RELEASE` and supplies the selected
 Nix-store output, or an explicit empty value for null. Environment files cannot
 override this selection. Public `/bin/chrome.zip`, `/bin/firefox.xpi`,
-`/bin/browser/manifest.json` and `/bin/browser/sha256/ARTIFACT` serve only the fixed
+`/bin/marvin/manifest.json` and `/bin/marvin/sha256/ARTIFACT` serve only the fixed
 package artifacts and their metadata. The CLI's release manifest stays separate.
-The extension server origin is configured by its user, not this server option.
+The extension server origin is configured by its user, not this server option. The
+extension requests optional site access only for that exact saved origin when its
+presence detector is configured; this local marker never changes server authority.
 
-Build with `nix build .#browser`; check with `nix build .#checks.x86_64-linux.browser`.
-In devenv, `browser-build`, `browser-check` and `browser-watch` use the same maintained
+Build with `nix build .#marvin`; check with `nix build .#checks.x86_64-linux.marvin`.
+In devenv, `marvin-build`, `marvin-check` and `marvin-watch` use the same maintained
 native module/build source and lockfile-pinned tools. Release version comes from
-`browser/package.json`; archive timestamps default to the fixed ZIP epoch through
+`marvin/package.json`; archive timestamps default to the fixed ZIP epoch through
 `SOURCE_DATE_EPOCH`. No signing credential or provider credential enters the build.
 See [installation](#interactive) and [verification](#reference).
 
@@ -119,7 +121,7 @@ module and startup guard also refuse it when immutable editor assets are configu
 editor capability disabled retains its existing zone rules.
 
 The gallery and Ed25519 signing-key ring are reviewed build arguments in
-[the package](repo:nix/packages/vscode-web/default.nix), not mutable browser
+[the package](repo:nix/domains/artifacts/vscode-web/default.nix), not mutable browser
 preferences. Changing source, patches, dependencies, gallery settings or keys
 changes release identity. The guest image manifest must declare that exact tuple;
 an old or mismatched image refuses editor admission. Both guest builders embed
@@ -144,9 +146,9 @@ is the current platform. Do not substitute ambient channels.
 | `flake.nix` | Packages, modules, machine configurations, checks |
 | `fleet/hosts/NAME/host.json` | Reviewed hardware, network, storage, identity, budgets (`arcMaxMiB` 24576, `guestMemoryMiB` 95232 and `guestCpuCores` 32 on both fleet hosts, ADR-0164; a ceiling decrease ships in its own push after the updater that permits it, because the compatibility predicate runs in the live updater) and encrypted document inventory |
 | `fleet/hosts/NAME/configuration.nix` | Enrolled host roles and service composition |
-| `nix/users.nix` | Named fleet users, administrative and recovery membership |
-| `nix/allowed-hosts.nix` | Reviewed perimeter source grants |
-| `nix/secrets.nix` | Public secret-document and recipient inventory |
+| `nix/policy/identity/users.nix` | Named fleet users, administrative and recovery membership |
+| `nix/policy/network/allowed-hosts.nix` | Reviewed perimeter source grants |
+| `nix/policy/secrets/secret-documents.nix` | Public secret-document and recipient inventory |
 | `fleet/guest-images.nix` | Guest artifacts selected for the fleet |
 
 The `NAME-base` machine installs host access without enrolled roles or update
@@ -203,6 +205,15 @@ the gate neither fabricates successful replies nor changes stored authority.
 Unlisted ops use normal admission and dispatch. Missing configuration or an
 unreadable file leaves the gate inert. Production does not configure this setting.
 Changes to the file apply to subsequent requests without restarting Marshall.
+
+Native provider compaction is disabled unless
+`MARSHALL_AGENT_NATIVE_COMPACTION_CAPABILITIES` contains a JSON array of exact
+OpenAI provider/model records. Each record requires `provider`, `model` and a
+lowercase 64-character `evidence_digest`; Marshall validates the shape at
+startup and rechecks the complete provider/model pair when queuing and claiming
+maintenance. `MARSHALL_AGENT_NATIVE_COMPACTION_VERIFIED=true` is rejected as a
+global switch. The digest is an operator receipt reference and does not replace
+live provider acceptance evidence.
 
 ## Lilly role
 
@@ -300,8 +311,8 @@ identity and replaces the data key whenever the recipient set changes.
 The [option reference](#options) lists every Overalls option in the default module,
 including nested records. Consult it for types, defaults and required fields.
 
-Evidence: [host profile](repo:nix/hosts/profile.nix), [Marshall module](repo:nix/modules/marshall.nix),
-[Lilly module](repo:nix/modules/lilly.nix), [fleet users](repo:docs/fleet-users.md),
+Evidence: [host profile](repo:nix/platform/hosts/profile.nix), [Marshall module](repo:nix/domains/system/marshall.nix),
+[Lilly module](repo:nix/domains/system/lilly.nix), [fleet users](repo:docs/operations/fleet-users.md),
 [secret custody](repo:secrets/README.md).
 
 ## SSH host CA configuration
@@ -313,8 +324,10 @@ The private key path must be runtime-only; systemd delivers
 it solely to Marshall. Manual deployments use `MARSHALL_SSH_HOST_TRUST` and
 `MARSHALL_SSH_HOST_CA_KEY_FILE`. Missing policy disables public installation.
 The default operational retirement is 2046-09-25. Certificates last 3650 days,
-capped at retirement, with a 30-day renewal window. OpenSSH CA keys themselves
-have no embedded expiry.
+capped at retirement, with a 30-day renewal window. Gateways request their
+certificate from Marshall on every daily run, so changing `publicHost` reissues
+the Porsche and Audi principals within a day; Marshall reuses a generation whose
+principal still matches. OpenSSH CA keys themselves have no embedded expiry.
 
 ## Common runtime startup refusal evidence
 

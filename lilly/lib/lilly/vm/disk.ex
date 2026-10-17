@@ -237,10 +237,12 @@ defmodule Lilly.VM.Disk do
   # Callers of Disk.delete/2 and delete/3 MUST first confirm no VMM process or jail mount can access the disk;
   # deletion must serialize with pool snapshots and reject a mismatched disk identity.
   # An optional bounded acquisition retry MUST NOT replay deletion effects.
-  # Ordinary deletion retains the one-second mutation acquisition default.
+  # Ordinary deletion waits up to 30 s in the pool's FIFO queue, like a
+  # create's sections, instead of giving up after one second and losing its
+  # place behind newer work (ADR-0176 decision 1).
   @spec delete(Pool.t(), Spec.t()) :: :ok | {:error, atom()}
-  @spec delete(Pool.t(), Spec.t(), 0..2000) :: :ok | {:error, atom()}
-  def delete(%{backend: :zfs} = pool, spec, retry_ms \\ 1000) do
+  @spec delete(Pool.t(), Spec.t(), 0..30_000) :: :ok | {:error, atom()}
+  def delete(%{backend: :zfs} = pool, spec, retry_ms \\ 30_000) do
     Storage.locked(pool, fn -> ZFSDataset.delete(pool, spec) end, retry_ms, :delete)
   end
 
@@ -304,7 +306,7 @@ defmodule Lilly.VM.Disk do
                  temporary,
                  {source, template_record_id, template_incarnation}
                ),
-             :ok <- File.chmod(temporary, 0o600),
+             :ok <- Lilly.Host.Privilege.chmod(temporary, 0o600),
              :ok <- extend(pool, temporary, spec),
              :ok <- allocation_shape(pool, temporary, spec),
              {:ok, _} <-
@@ -441,7 +443,7 @@ defmodule Lilly.VM.Disk do
                "--",
                file
              ]),
-           :ok <- File.chmod(file, 0o600),
+           :ok <- Lilly.Host.Privilege.chmod(file, 0o600),
            {:ok, _} <- materialize_command(spec, :sync, ["--", file], pool.image_io_timeout_ms) do
         {:cont, :ok}
       else

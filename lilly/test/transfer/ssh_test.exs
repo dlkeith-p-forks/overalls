@@ -33,10 +33,9 @@ defmodule Lilly.Transfer.SSHTest do
   test "probe command preserves the pinned transport and rejects noncanonical challenges", c do
     {:ok, files} = connection(c)
     challenge = Lilly.UUID.generate()
-    assert {:ok, {ssh, args}} = SSH.command(c.endpoint, c.request, files)
-    assert {:ok, {^ssh, probe}} = SSH.probe_command(c.endpoint, c.request, files, challenge)
-    assert Enum.drop(args, -2) == Enum.drop(probe, -3)
-    assert Enum.take(probe, -3) == ["lilly-probe-v3", c.request.relocation_id, challenge]
+    assert {:ok, {:ssh, export}} = SSH.command(c.endpoint, c.request, files)
+    assert {:ok, {:ssh, probe}} = SSH.probe_command(c.endpoint, c.request, files, challenge)
+    assert probe == %{export | verb: {:probe, challenge}}
 
     for bad <- [nil, "", challenge <> "\n", challenge <> ";id"] do
       assert {:error, _} = SSH.probe_command(c.endpoint, c.request, files, bad)
@@ -61,12 +60,14 @@ defmodule Lilly.Transfer.SSHTest do
   test "resume request preserves transport restrictions and rejects shell syntax", c do
     {:ok, files} = connection(c)
     token = "1-a-10-aabb"
-    assert {:ok, {ssh, normal}} = SSH.command(c.endpoint, c.request, files)
-    assert {:ok, {^ssh, resumed}} = SSH.resume_command(c.endpoint, c.request, files, token)
-    assert Enum.drop(normal, -2) == Enum.drop(resumed, -3)
+    assert {:ok, {:ssh, normal}} = SSH.command(c.endpoint, c.request, files)
+    assert {:ok, {:ssh, resumed}} = SSH.resume_command(c.endpoint, c.request, files, token)
+    assert resumed == %{normal | verb: {:resume, token}}
 
+    # The remote verb hostd sends parses as the endpoint's resume request.
     assert {:ok, %{resume_token: ^token}} =
-             resumed |> Enum.take(-3) |> Enum.join(" ") |> Lilly.Transfer.ExportRequest.parse()
+             Enum.join(["lilly-resume-v4", c.request.relocation_id, token], " ")
+             |> Lilly.Transfer.ExportRequest.parse()
 
     for bad <- [nil, token <> ";id", token <> "\n", String.duplicate("a", 8193)] do
       assert {:error, :invalid_ssh_transfer} =
@@ -121,7 +122,7 @@ defmodule Lilly.Transfer.SSHTest do
     output =
       capture_log([metadata: [:event, :reason, :relocation_id]], fn ->
         assert {:error, :invalid_transfer_connection} =
-                 SSH.pull(c.root, c.request, c.endpoint, {"cat", []}, 1000)
+                 SSH.pull(c.root, c.request, c.endpoint, {:compare, "/nonexistent"}, 1000)
 
         assert {:error, :invalid_transfer_connection} =
                  SSH.probe(c.root, c.request, c.endpoint, Lilly.UUID.generate(), 1000)
@@ -137,42 +138,22 @@ defmodule Lilly.Transfer.SSHTest do
     refute output =~ c.endpoint["host_key"]
   end
 
-  test "real OpenSSH effective configuration disables ambient authentication and forwarding", c do
+  # The fixed OpenSSH options moved to hostd with the command line; their
+  # effective configuration (`ssh -G`) is checked in lilly-hostd's tests.
+  test "the export producer carries only typed connection fields", c do
     {:ok, files} = connection(c)
-    assert {:ok, {ssh, args}} = SSH.command(c.endpoint, c.request, files)
-    {output, 0} = System.cmd(ssh, ["-G" | args], stderr_to_stdout: true)
 
-    configuration =
-      Map.new(String.split(output, "\n", trim: true), fn line ->
-        [key, value] = String.split(line, " ", parts: 2)
-        {key, value}
-      end)
+    assert {:ok, {:ssh, fields}} = SSH.command(c.endpoint, c.request, files)
 
-    for {key, value} <- %{
-          "addressfamily" => "inet",
-          "user" => "lilly-transfer",
-          "identityagent" => "none",
-          "stricthostkeychecking" => "true",
-          "identitiesonly" => "yes",
-          "forwardagent" => "no",
-          "forwardx11" => "no",
-          "controlmaster" => "false",
-          "batchmode" => "yes",
-          "preferredauthentications" => "publickey",
-          "hostkeyalgorithms" => "ssh-ed25519",
-          "userknownhostsfile" => files.known_hosts,
-          "globalknownhostsfile" => "/dev/null",
-          "identityfile" => files.identity_file
-        } do
-      assert configuration[key] == value
-    end
-
-    assert Enum.take(args, -2) == ["lilly-export-v4", c.request.relocation_id]
-
-    assert {:ok, parsed} =
-             args |> Enum.take(-2) |> Enum.join(" ") |> Lilly.Transfer.ExportRequest.parse()
-
-    assert parsed == %{relocation_id: c.request.relocation_id}
+    assert fields == %{
+             address: "127.0.0.1",
+             port: 2222,
+             source_host: c.request.source_host_id,
+             relocation: c.request.relocation_id,
+             identity: files.identity_file,
+             known_hosts: files.known_hosts,
+             verb: :export
+           }
   end
 
   test "paths with SSH expansion syntax and peer command fields are rejected", c do

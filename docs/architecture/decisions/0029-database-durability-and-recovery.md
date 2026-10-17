@@ -99,11 +99,11 @@ commit durability, cancel active statements or turn an uncertain commit into
 proof of rollback.
 [Configuration tests](../../../marshall/test/marshall/operations/runtime_config_test.exs)
 retain the malformed-input and budget properties; the
-[recovery harness](../../../nix/tests/README.md) exercises actual
+[recovery harness](../../../nix/verification/tests/README.md) exercises actual
 role-default override, synchronous waiting, promotion, replacement replication,
 three production services and physical backup restoration. It uses the
-[NixOS deployment checks](../../../nix/tests/README.md). See the
-[recovery guide](../../../docs/database-recovery.md) and
+[NixOS deployment checks](../../../nix/verification/tests/README.md). See the
+[recovery guide](../../../docs/operations/database-recovery.md) and
 [review](../reviews/2026-09-16-database-recovery.md) for executed results and limits.
 
 The 2026-09-26 [historical-authority characterization](../reviews/2026-09-26-historical-authority-characterization.md)

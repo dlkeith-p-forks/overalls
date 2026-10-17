@@ -131,7 +131,7 @@ configured replicas. They do not establish deployed DNS or issuer timing; the
 generation still retries while challenging, and operator escalation policy is
 unresolved.
 The
-[fleet machine scenario](../../../nix/tests/machines/fleet/scenarios/audi.py)
+[fleet machine scenario](../../../nix/verification/tests/machines/fleet/scenarios/audi.py)
 now asserts real wildcard issuance, encrypted SQL columns, gateway installation
 and a CA-offline restart. Native runs issued, activated, installed and
 acknowledged generation 1 on both gateways. A later run passed real guest HTTPS,
@@ -143,7 +143,7 @@ subsequent native run passed independent-key SSH, isolation, outage and failover
 checks, and restarted the gateway twice after stopping the CA, reloading the
 same wildcard generation without certificate files. The full fleet test then
 passed gateway and DNS package-update recovery. The
-[backup machine scenario](../../../nix/tests/machines/backups/driver.py) passes
+[backup machine scenario](../../../nix/verification/tests/machines/backups/driver.py) passes
 with real Marshall AshCloak account and active certificate fields: a fresh
 release rejects an unrelated keyring, then decrypts the restored database rows
 using the matching restored fixture keyring and verifies their saved digests. The

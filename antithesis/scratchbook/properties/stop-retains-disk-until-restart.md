@@ -8,7 +8,7 @@ A completed stop must mean the VMM and network attachment are physically absent 
 
 ## Evidence and failure history
 
-`lilly/lib/lilly/vm/driver.ex:1138-1173` sets non-running intent before shutdown, jail cleanup and network detach, and returns success afterward. `:1397-1435` treats unreadable unit status as `stop_unconfirmed` and waits/forces stop if graceful shutdown exceeds 30 s. `marshall/lib/marshall/compute/outcomes.ex:210-218` releases compute but not disk reservation only when matching stopped outcome is applied. `marshall/lib/marshall/compute/lifecycle.ex:26-30,69-120` advances generation and retains exact-key idempotency; `:54-65` has a narrow fresh-start path for physically stopped VMs. `nix/tests/machines/fleet/scenarios/lifecycle.py:37-60` checks unchanged ZFS GUID across stop/start and compute/disk reservation `false:true` after stop. Accepted ADR-0017 claims durable actor and disk survival. This is evidence of intent and a bounded test, not a blanket guarantee.
+`lilly/lib/lilly/vm/driver.ex:1138-1173` sets non-running intent before shutdown, jail cleanup and network detach, and returns success afterward. `:1397-1435` treats unreadable unit status as `stop_unconfirmed` and waits/forces stop if graceful shutdown exceeds 30 s. `marshall/lib/marshall/compute/outcomes.ex:210-218` releases compute but not disk reservation only when matching stopped outcome is applied. `marshall/lib/marshall/compute/lifecycle.ex:26-30,69-120` advances generation and retains exact-key idempotency; `:54-65` has a narrow fresh-start path for physically stopped VMs. `nix/verification/tests/machines/fleet/scenarios/lifecycle.py:37-60` checks unchanged ZFS GUID across stop/start and compute/disk reservation `false:true` after stop. Accepted ADR-0017 claims durable actor and disk survival. This is evidence of intent and a bounded test, not a blanket guarantee.
 
 Failure history: crash between non-running intent and actual shutdown, unreadable unit status, incomplete network detach, lost stop outcome, and concurrent fresh start or repeated stop request. Early compute release could permit host overcommit while old VMM runs; disk deletion would lose stopped user data.
 
@@ -32,7 +32,7 @@ Next probe: The native fleet lifecycle scenario already checks ZFS dataset GUID 
 
 #### Can the hosted storage/guest fixture inspect disk GUID, network detach, and fresh boot without substituting modeled physical effects?
 
-- Examined: `nix/tests/machines/fleet/scenarios/lifecycle.py:37-60; antithesis/scratchbook/emulated-storage-feasibility.md; antithesis/scratchbook/emulated-guest-feasibility.md`.
+- Examined: `nix/verification/tests/machines/fleet/scenarios/lifecycle.py:37-60; antithesis/scratchbook/emulated-storage-feasibility.md; antithesis/scratchbook/emulated-guest-feasibility.md`.
 - Found: The native fleet lifecycle scenario already checks ZFS dataset GUID across stop/start and unit inactivity, but its stop assertion does not inspect network attachment and the hosted TCG storage/guest design has not executed this composed sequence. Probe actual TCG guest boot UUID, real ZFS GUID, and link/nft attachment across stop/start; keep native fleet result as test presence only.
 - Not established: No current hosted/native execution was run in this investigation; source and test presence alone do not establish the physical outcome.
 - Conclusion: partial; Retain hosted composed-feasibility question partial; cite native scenario without claiming current pass.

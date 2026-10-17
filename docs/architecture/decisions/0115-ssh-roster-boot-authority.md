@@ -113,7 +113,7 @@ The [Marshall regression](../../../marshall/test/marshall/ssh/guest_access_test.
 failed before the fix and passes with bootstrap authorization. The
 [actor tests](../../../lilly/test/roster_bootstrap_test.exs) cover pending boot,
 physical refusal, supersession and disconnection using synthetic evidence.
-The [native scenario](../../../nix/tests/machines/fleet/scenarios/ssh-bootstrap.py)
+The [native scenario](../../../nix/verification/tests/machines/fleet/scenarios/ssh-bootstrap.py)
 passed on real nested Firecracker guests on both NixOS and Ubuntu: customer
 clone/source restoration, resize, a temporary roster outage, full readiness
 timeout with retained private logs, and authorized retry preserving placement,

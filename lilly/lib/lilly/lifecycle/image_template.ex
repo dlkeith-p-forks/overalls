@@ -47,13 +47,16 @@ defmodule Lilly.Lifecycle.ImageTemplate do
 
   defp identities?(value) when value == %{}, do: true
 
-  # Exactly one closed image file set: kernel images (manifest, kernel, initrd,
-  # rootfs.ext4) or firmware images (manifest, firmware, disk.raw).
+  # @cc [owner:ghuntley,label:recovery;security] template-record-outlives-image-kind
+  # A record MUST stay decodable after its image kind leaves
+  # ImageManifest.file_sets/0, so one stale incarnation can be retired and
+  # never makes the pool's catalog unreadable. Identities therefore name 2-4
+  # artifacts including manifest.json, each a single lower-case path component
+  # starting with a letter or digit (never `.`, `..` or containing `/`); the
+  # reader, not the record, refuses a kind this release cannot verify.
   defp identities?(value) when is_map(value) do
-    Enum.any?(
-      OverallsProtocol.ImageManifest.file_sets(),
-      &(Enum.sort(Map.keys(value)) == Enum.sort(&1))
-    ) and
+    map_size(value) in 2..4 and Map.has_key?(value, "manifest.json") and
+      Enum.all?(Map.keys(value), &artifact_name?/1) and
       Enum.all?(value, fn {_, identity} ->
         is_list(identity) and length(identity) == 11 and
           Enum.all?(identity, &(is_integer(&1) and &1 >= 0))
@@ -61,4 +64,7 @@ defmodule Lilly.Lifecycle.ImageTemplate do
   end
 
   defp identities?(_), do: false
+
+  defp artifact_name?(name),
+    do: is_binary(name) and Regex.match?(~r/\A[a-z0-9][a-z0-9._-]{0,63}\z/, name)
 end

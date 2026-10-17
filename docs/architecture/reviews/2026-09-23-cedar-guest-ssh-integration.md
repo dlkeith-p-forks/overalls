@@ -72,7 +72,7 @@ before stopping the old Marshall release; dropping it in this release would
 break old readers during the switch. A later coordinated schema cleanup can
 remove it after every host runs the new code.
 
-The [host recovery facility](../../backups.md) includes the database ciphertext,
+The [host recovery facility](../../operations/backups.md) includes the database ciphertext,
 separately protected Cloak keyring and VM disks, but production backups are not
 enabled on Overalls or Dungarees. Neither host has a backup service or status
 record, and the host declarations have no backup credential. An operator must

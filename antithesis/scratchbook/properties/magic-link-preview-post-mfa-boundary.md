@@ -23,7 +23,7 @@
 
 #### Which exact browser fixture can control JS suppression for GET preview and resume the auto-submit POST without bypassing the real CSRF path?
 
-- Examined `automatic_magic_sign_in_live.ex:7-33`, `magic_link_flow_test.exs:75-137`, `nix/tests/machines/mfa-login/browser.py:132-143`, and current `deployment-topology.md`. Found an HTTP GET/POST regression and a native JS browser visit. No hosted fixture or browser command roster is defined. Conclusion: partial; implementation must choose a real browser runner and explicit JS-disabled preview client.
+- Examined `automatic_magic_sign_in_live.ex:7-33`, `magic_link_flow_test.exs:75-137`, `nix/verification/tests/machines/mfa-login/browser.py:132-143`, and current `deployment-topology.md`. Found an HTTP GET/POST regression and a native JS browser visit. No hosted fixture or browser command roster is defined. Conclusion: partial; implementation must choose a real browser runner and explicit JS-disabled preview client.
 
 #### How will the local SMTP fixture expose accepted DATA and deliberately lost ACK while retaining one immutable message ledger?
 

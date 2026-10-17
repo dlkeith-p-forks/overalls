@@ -23,7 +23,7 @@ including other datasets. The CLI truncates rates to integers. The requested
 interval and collection cost are separate from the unexposed exact timestamp
 delta; unknown latency, queues, in-flight, busy percentage and maxima stay null.
 Ext4 continues using block-device diskstats. History and IOPS never participate
-in admission. The [operator guide](../../storage-capacity.md) documents semantics.
+in admission. The [operator guide](../../operations/storage-capacity.md) documents semantics.
 
 ## Findings and disposition
 

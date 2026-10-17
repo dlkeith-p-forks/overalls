@@ -97,16 +97,16 @@ not a filesystem transaction and may need rerunning after interruption.
 
 ## Implementation evidence
 
-The [registry](../../../nix/users.nix), [typed normalization](../../../nix/lib/registry.nix)
-and [access module](../../../nix/modules/access.nix) implement named-account policy.
-The [inventory](../../../nix/secrets.nix), [public packages](../../../nix/packages/secrets/default.nix)
-and [local tool](../../../nix/packages/secrets/cli.py) implement recipient derivation
-and reconciliation. The [runtime module](../../../nix/modules/secrets/default.nix)
+The [registry](../../../nix/policy/identity/users.nix), [typed normalization](../../../nix/platform/lib/registry.nix)
+and [access module](../../../nix/domains/system/access.nix) implement named-account policy.
+The [inventory](../../../nix/policy/secrets/secret-documents.nix), [public packages](../../../nix/domains/artifacts/secrets/default.nix)
+and [local tool](../../../nix/domains/artifacts/secrets/cli.py) implement recipient derivation
+and reconciliation. The [runtime module](../../../nix/domains/system/secrets/default.nix)
 retains privileged preparation without granting SSH access.
 
-[Evaluation](../../../nix/tests/evaluation/access.nix),
-[cryptographic tests](../../../nix/tests/evaluation/secrets_test.py) and
-[SSH machine tests](../../../nix/tests/machines/access/default.nix) cover these
+[Evaluation](../../../nix/verification/tests/evaluation/access.nix),
+[cryptographic tests](../../../nix/verification/tests/evaluation/secrets_test.py) and
+[SSH machine tests](../../../nix/verification/tests/machines/access/default.nix) cover these
 boundaries. The [review](../reviews/2026-09-17-fleet-users.md) records executed
 verification and limits. Production identities, ciphertext and host rollout
 remain unsupplied, so deployment acceptance stays partial.
@@ -121,4 +121,4 @@ Existing hosts need an account inventory before activating authoritative users.
 [ADR-0032](0032-ssh-derived-age-identities.md),
 [ADR-0033](0033-nixos-machine-verification.md),
 [ADR-0040](0040-host-local-smtp-relay.md),
-[operator guide](../../fleet-users.md).
+[operator guide](../../operations/fleet-users.md).

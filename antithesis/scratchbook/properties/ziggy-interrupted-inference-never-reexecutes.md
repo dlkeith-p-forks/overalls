@@ -44,7 +44,7 @@ Open question: Can the selected hosted fixture preserve a private, durable effec
 
 #### Which safe fixture correlation can witness HTTP and agent provider effects without changing their production request payload semantics?
 
-- Examined: `ziggy/lib/ziggy/upstream.ex:20-80`, `ziggy/lib/ziggy/http.ex:323-420`, `ziggy/lib/ziggy/agent_worker.ex:68-130`, `ziggy/lib/ziggy/config.ex:34-38`, `nix/tests/machines/ziggy-service/default.nix:4-18,94-100`, and `driver.py:135-190`.
+- Examined: `ziggy/lib/ziggy/upstream.ex:20-80`, `ziggy/lib/ziggy/http.ex:323-420`, `ziggy/lib/ziggy/agent_worker.ex:68-130`, `ziggy/lib/ziggy/config.ex:34-38`, `nix/verification/tests/machines/ziggy-service/default.nix:4-18,94-100`, and `driver.py:135-190`.
 - Found: Ziggy generates an internal request ID and passes it to the local spool/diagnostic event, but `Upstream.stream/5` does not forward that ID to the provider. The packaged Nix fixture maps fixed provider hostnames to a local TLS server and counts accepted provider calls; it also exercises one agent claim and one killed unfinished HTTP stream without provider replay. The OpenAI-compatible Underclass loopback is a separately validated origin option; request input cannot select an arbitrary origin.
 - Conclusion: resolved for a single controlled outstanding call: use a unique synthetic payload marker already legal in the ordinary request body, let only one matching HTTP call or one agent claim run in that window, and count provider fixture accepts before/after recovery. Keep the marker in the private fixture ledger only, never in Ziggy diagnostics. For concurrent calls, add a private fixture-side correlation ledger or keep histories serialized; provider-side exactly-once outside the fixture is not established.
 

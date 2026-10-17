@@ -34,6 +34,13 @@ settings. Unsupported hosts show an **Unsupported page** state and do not send a
 URL. Marshall checks the launch request again before staging it and may require
 you to sign in.
 
+When the extension has been configured for this exact Overalls origin and the
+browser has granted site access, it marks the open Overalls page as installed.
+That local marker hides setup prompts on the home page; it does not sign you in,
+grant access to machines, or change launch authorization. If site access is
+withdrawn, configuration is missing, or detection is unavailable, setup remains
+visible.
+
 ## Privacy and availability
 
 The extension opens Overalls with a source URL only after an explicit toolbar
@@ -42,7 +49,5 @@ and path, strips query parameters and fragments, and never collects page
 contents, credentials, history or telemetry.
 
 The Overalls operator chooses whether these immutable archives are available. If
-the deployment has disabled its browser package, the download links return an
-unavailable response.
-See the [full browser distribution notes](https://github.com/antithesishq/kittens/tree/main/browser)
-for package and build details.
+the deployment has disabled its browser extension package, the download links return an unavailable response.
+See the browser distribution notes for package and build details.

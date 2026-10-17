@@ -16,7 +16,7 @@ services:
       context: ../..
       dockerfile: antithesis/Dockerfile
       target: pg
-    entrypoint: ["/opt/overalls/entrypoints/postgres.sh"]
+    entrypoint: ["/opt/kittens/entrypoints/postgres.sh"]
     environment:
       NO_COLOR: "1"
       PGDATA: /var/lib/postgresql/18/docker
@@ -41,7 +41,7 @@ services:
     init: true
     image: overalls-antithesis/marshall:local
     build: *marshall-build
-    entrypoint: ["/opt/overalls/entrypoints/marshall.sh"]
+    entrypoint: ["/opt/kittens/entrypoints/marshall.sh"]
     command: ["migrate"]
     environment:
       NO_COLOR: "1"
@@ -67,7 +67,7 @@ services:
     init: true
     image: overalls-antithesis/marshall:local
     build: *marshall-build
-    entrypoint: ["/opt/overalls/entrypoints/marshall.sh"]
+    entrypoint: ["/opt/kittens/entrypoints/marshall.sh"]
     command: ["serve"]
     environment:
       NO_COLOR: "1"
@@ -81,7 +81,7 @@ services:
       migrate:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "/opt/overalls/entrypoints/health-marshall.sh"]
+      test: ["CMD", "/opt/kittens/entrypoints/health-marshall.sh"]
       interval: 3s
       timeout: 5s
       retries: 40
@@ -97,7 +97,7 @@ services:
     init: true
     image: overalls-antithesis/marshall:local
     build: *marshall-build
-    entrypoint: ["/opt/overalls/entrypoints/marshall.sh"]
+    entrypoint: ["/opt/kittens/entrypoints/marshall.sh"]
     command: ["serve"]
     environment:
       NO_COLOR: "1"
@@ -111,7 +111,7 @@ services:
       migrate:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "/opt/overalls/entrypoints/health-marshall.sh"]
+      test: ["CMD", "/opt/kittens/entrypoints/health-marshall.sh"]
       interval: 3s
       timeout: 5s
       retries: 40
@@ -133,7 +133,7 @@ services:
       context: ../..
       dockerfile: antithesis/Dockerfile
       target: lilly
-    entrypoint: ["/opt/overalls/entrypoints/lilly.sh"]
+    entrypoint: ["/opt/kittens/entrypoints/lilly.sh"]
     environment:
       NO_COLOR: "1"
       OVERALLS_ANTITHESIS_STATE_DIR: /var/lib/overalls-antithesis-sdk
@@ -145,7 +145,7 @@ services:
       marshall-a:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "/opt/overalls/entrypoints/health-lilly.sh"]
+      test: ["CMD", "/opt/kittens/entrypoints/health-lilly.sh"]
       interval: 3s
       timeout: 5s
       retries: 60
@@ -159,7 +159,7 @@ services:
     init: true
     image: overalls-antithesis/marshall:local
     build: *marshall-build
-    entrypoint: ["/opt/overalls/entrypoints/marshall.sh"]
+    entrypoint: ["/opt/kittens/entrypoints/marshall.sh"]
     command: ["enroll"]
     environment:
       NO_COLOR: "1"

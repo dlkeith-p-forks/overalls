@@ -42,7 +42,7 @@ The handbook scenario row stays `partial` with its delegation block preserved.
 ## Characterization pins added
 
 1. **Operator-mode isolation assertion** —
-   [`nix/tests/machines/backups/cloak-probe.exs`](../../../nix/tests/machines/backups/cloak-probe.exs)
+   [`nix/verification/tests/machines/backups/cloak-probe.exs`](../../../nix/verification/tests/machines/backups/cloak-probe.exs)
    sets `operator_mode` and boots the real release against the restore-drill
    databases. The probe now also records a hard guarantee: the supervision tree
    starts **exactly** `Marshall.Repo`, `Marshall.Vault`,
@@ -115,7 +115,7 @@ removed; production `Ownership` and Runtime fencing were unchanged. The original
 24-check capture above remains historical, and its ambient-host result does not
 establish controlled physical-inventory refusal.
 
-The present [native unit-inventory scenario](../../../nix/tests/machines/native-zfs/driver.py)
+The present [native unit-inventory scenario](../../../nix/verification/tests/machines/native-zfs/driver.py)
 creates 56 real sleeping systemd units and cgroups, checks compact ID-only
 inventory beyond the verbose-output frame, rejects omission of a live placement
 from the expected set and rejects an unknown child cgroup. It tests the native

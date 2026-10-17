@@ -91,18 +91,18 @@ runtime authority is introduced.
 
 ## Implementation evidence
 
-The shared [fleet host profile](../../../nix/hosts/profile.nix) and its
-[evaluation](../../../nix/tests/evaluation/storage-configuration.nix) install
+The shared [fleet host profile](../../../nix/platform/hosts/profile.nix) and its
+[evaluation](../../../nix/verification/tests/evaluation/storage-configuration.nix) install
 and check all three packages for every host fixture. The
-[NixOS guest configuration](../../../nix/packages/guest/configuration.nix) and
-[toolset evaluation](../../../nix/tests/evaluation/guest-toolset.nix) do the
+[NixOS guest configuration](../../../nix/domains/artifacts/guest/configuration.nix) and
+[toolset evaluation](../../../nix/verification/tests/evaluation/guest-toolset.nix) do the
 same for the default Nix image.
 
-The [Ubuntu builder](../../../nix/packages/guest/ubuntu/default.nix),
-[required package set](../../../nix/packages/guest/ubuntu/required-packages.json)
-and [authenticated package lock](../../../nix/packages/guest/ubuntu/packages.lock.json)
+The [Ubuntu builder](../../../nix/domains/artifacts/guest/ubuntu/default.nix),
+[required package set](../../../nix/domains/artifacts/guest/ubuntu/required-packages.json)
+and [authenticated package lock](../../../nix/domains/artifacts/guest/ubuntu/packages.lock.json)
 install locked `jq` and `direnv` and embed registered, GC-rooted `devenv`. The
-shared [real guest probe](../../../nix/tests/machines/zfs-guest/probe.exs) checks
+shared [real guest probe](../../../nix/verification/tests/machines/zfs-guest/probe.exs) checks
 all three commands. Evaluation and image-build verification are implemented;
 the updated real guest smoke remains to be executed, so implementation is
 partial.

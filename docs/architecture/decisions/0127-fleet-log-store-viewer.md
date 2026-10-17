@@ -164,8 +164,8 @@ per-input route list.
 
 ## Implementation evidence
 
-[Log-store module](../../../nix/modules/log-store/default.nix) with its
-[entry template and contracts](../../../nix/modules/log-store/haproxy.conf.template)
+[Log-store module](../../../nix/domains/system/log-store/default.nix) with its
+[entry template and contracts](../../../nix/domains/system/log-store/haproxy.conf.template)
 establishes the WG-addressed path-scoped entry (insert/reader/userlist ACLs,
 TLS from runtime credentials) and hardened bounded VictoriaLogs backend;
 [fleet wiring](../../../fleet/fleet-network.nix) binds `logs.fleet.internal`,
@@ -180,7 +180,7 @@ read-only admin surface.
 [Store tests](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/logs/store_test.exs) and
 [viewer tests](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall_web/admin_logs_live_test.exs)
 pass (13 checks including 2 properties); the
-[log-store machine test](../../../nix/tests/machines/log-store/default.nix)
+[log-store machine test](../../../nix/verification/tests/machines/log-store/default.nix)
 executes the full native path including backfill; the
 [review](../reviews/2026-09-26-fleet-log-viewer.md) records exact assertions
 and remaining gaps (browser journey, CA rotation, production acceptance), so

@@ -43,11 +43,11 @@ cover retained connection controls and anonymous/owner requests to the retired
 endpoint. Existing [installer tests](../../../marshall/test/marshall_web/controllers/overalls_controller_test.exs)
 cover public delivery, digest verification and management trust behavior.
 
-The [native OpenSSH check](../../../nix/tests/machines/audi-openssh/default.nix)
+The [native OpenSSH check](../../../nix/verification/tests/machines/audi-openssh/default.nix)
 uses explicit test-only profiles while continuing to execute real OpenSSH and
 Lyra Rust HTTPS lookup. Its assertions retain independent gateway/guest trust,
 stale-key refusal, nested connections, and failed/oversized/untrusted discovery.
-The [fleet operator fixture](../../../nix/tests/machines/fleet/operator.exs)
+The [fleet operator fixture](../../../nix/verification/tests/machines/fleet/operator.exs)
 uses the same standard profile template with a validated endpoint label and fixed
 fixture origins. No production renderer remains. These fixtures are not a new
 public configuration API and do not prove production fleet acceptance.

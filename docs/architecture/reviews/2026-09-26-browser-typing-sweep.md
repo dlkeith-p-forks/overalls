@@ -29,7 +29,7 @@ older variants. This improvement closes both residuals.
 
 1. **Evaluation defect (repaired here):** every fleet check failed `nix eval`
    on base with `error: undefined variable 'executorLoss'` at
-   `nix/tests/machines/fleet/default.nix:13:174`. 030's merged implementation
+   `nix/verification/tests/machines/fleet/default.nix:13:174`. 030's merged implementation
    `426e830f` added `executorLoss ? false` to the formal parameter list; merge
    `f7cdb3c5` ("Merge verification 020") resolved the first-line conflict by
    taking 020's side, dropping the formal parameter while keeping its uses
@@ -47,7 +47,7 @@ older variants. This improvement closes both residuals.
    `audi-ubuntu-fleet`, `audi-ubuntu-relocation-fleet`, `audi-relocation-fleet`,
    `galileo-fleet`, `agent-fleet`, `agent-ubuntu-fleet`, `terminal-fleet`,
    `terminal-ubuntu-fleet`. The carve-out conflicted with
-   `nix/tests/support/CONTRACTS` contract `composed-drivers-statically-checked`
+   `nix/verification/tests/support/CONTRACTS` contract `composed-drivers-statically-checked`
    ("The complete driver MUST pass the NixOS framework's lint and type
    checks").
 3. Three standalone browser helpers executed without a typed artifact:
@@ -79,7 +79,7 @@ diagnostic redaction was added or removed.
 
 ### Contract review
 
-Root and `nix/tests` ancestor contracts were reviewed before implementation.
+Root and `nix/verification/tests` ancestor contracts were reviewed before implementation.
 The change brings the composed legacy drivers back under the
 `composed-drivers-statically-checked` obligation they had silently escaped.
 New contracts: `audi-browser-subprocess-typing`, `porsche-browser-subprocess-typing`
@@ -132,7 +132,7 @@ Intermediate failing derivations retained for the record:
 `26scqq04v597y021hgdv2lpspw0lypc2` (galileo: gauge subscript), plus the
 ssh-bootstrap framework-shadowing failures superseded by the passing builds.
 
-Two `unused-ignore-comment` warnings remain on `nix/tests/support/update.py`'s
+Two `unused-ignore-comment` warnings remain on `nix/verification/tests/support/update.py`'s
 documented `# ty: ignore[unresolved-reference] # driver preamble` guards: they
 are load-bearing in the standalone prek/python-static context (where the
 composed preamble is absent) and warn-only in composed context; removing them

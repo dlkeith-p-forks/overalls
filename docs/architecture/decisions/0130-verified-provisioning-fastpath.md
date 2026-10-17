@@ -109,11 +109,11 @@ a compatible corrective release or feature disable.
 
 ## Implementation evidence
 
-The shared [kernel derivation](../../../nix/packages/guest/kernel.nix) and
-[load-image verifier](../../../nix/packages/guest/verify-kernel.py) implement debug
+The shared [kernel derivation](../../../nix/domains/artifacts/guest/kernel.nix) and
+[load-image verifier](../../../nix/domains/artifacts/guest/verify-kernel.py) implement debug
 separation for both image builders. Remaining template, provisioning, audit,
 native verification and deployment work is tracked in the
-[implementation ledger](../../provisioning-fastpath.md).
+[implementation ledger](../../history/ledgers/provisioning-fastpath.md).
 The [Rust helper](../../../lilly/native/image-copy/src/lib.rs) and
 [Hegel properties](../../../lilly/native/image-copy/src/tests.rs) implement bounded
 independent copies. The [template adapter](../../../lilly/lib/lilly/host/image_template.ex)
@@ -154,7 +154,7 @@ per-create verification dominating materialization; the following release enable
 template producers (32 GiB per pool) on both hosts. The matched enabled
 campaign (2026-10-09) met the ≥30% target for NixOS (28.5 s → 17.9 s) but
 not for Ubuntu (14.8 s → 13.7 s). No warm create reached the under-10-second
-target; see the [provisioning ledger](../../provisioning-fastpath.md). Both hosts activated
+target; see the [provisioning ledger](../../history/ledgers/provisioning-fastpath.md). Both hosts activated
 `c98a375c` healthy; passive exact-boot verification found 17 Overalls and five
 Dungarees current boots with ready journals. Three deletions preceded activation.
 Default switches and original deadlines are preserved; future-boot performance
@@ -214,7 +214,7 @@ Later retained-state inspection after a new pool import found only `st_dev`
 identity changes with matching artifact hashes and native ownership; strict
 `Image.sealed/2` refusal was preserved. This does not prove the failure-instant
 cause, and two successful diagnostic slices did not reproduce either failure.
-The test-only [post-import cache action](../../../nix/tests/machines/zfs-guest/template-post-import.exs)
+The test-only [post-import cache action](../../../nix/verification/tests/machines/zfs-guest/template-post-import.exs)
 covers exact reuse or explicit device-only refusal followed by fenced retirement,
 deletion and full verification of a distinct new incarnation. It changes no
 production identity, authority or recovery policy and cannot restore a quarantined

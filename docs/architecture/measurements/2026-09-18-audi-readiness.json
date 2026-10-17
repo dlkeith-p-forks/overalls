@@ -33,7 +33,7 @@
     "multi-node control-plane deployment",
     "long-running steady-state load"
   ],
-  "reproducibility": "Reusable harness: marshall/scripts/audi_capacity.exs; action mode reproduces this diagnostic method. See docs/audi.md for isolated database setup and cleanup.",
+  "reproducibility": "Reusable harness: marshall/scripts/audi_capacity.exs; action mode reproduces this diagnostic method. See docs/services/audi.md for isolated database setup and cleanup.",
   "https_measurement": {
     "scope": "Actual Audi.Control.Client over loopback TLS/Bandit to MarshallWeb.IngressAPI with committed fixtures",
     "beam_schedulers": 16,

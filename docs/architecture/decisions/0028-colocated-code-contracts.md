@@ -89,12 +89,12 @@ completion and workload materialization as mutation boundaries. Rust terminal
 logging is closed by a typed event enum and Clippy print-macro denies. See the
 [audit hardening review](../reviews/2026-09-22-structured-logging-audit-hardening.md).
 
-[The adoption guide](../../code-contracts.md) documents native limitations,
+[The adoption guide](../../development/code-contracts.md) documents native limitations,
 commands and maintained/generated scope. Local requirements exist across
 [admission](../../../marshall/lib/marshall/compute/admission.ex),
 [VM execution](../../../lilly/lib/lilly/vm/driver.ex),
 [wire validation](../../../protocol/lib/overalls_protocol/execution.ex),
-[guest builds](../../../nix/packages/guest/default.nix) and
+[guest builds](../../../nix/domains/artifacts/guest/default.nix) and
 browser input state, with scoped
 contracts throughout the rest of the repository. All three precommit gates,
 19 checker regression tests, native/JavaScript discovery, Nix parsing and shared
@@ -105,7 +105,7 @@ results and the existing inline-theme-script guidance discrepancy.
 The [skill subtree contract](../../../.agents/skills/CONTRACTS) now covers installed
 development/test assets without changing their implementation or excluding them
 from the validator. It states the existing separation from production runtime
-authority and [release source filesets](../../../nix/packages/source.nix).
+authority and [release source filesets](../../../nix/domains/artifacts/applications/source.nix).
 This repairs the coverage omission introduced when additional skills were
 installed; it does not certify the behavior of those external tools.
 

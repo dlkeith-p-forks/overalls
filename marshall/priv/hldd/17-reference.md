@@ -1,5 +1,20 @@
 # Verification and reference
 
+The multi-OS guest contract keeps native FreeBSD and OmniOS/illumos image
+identities explicit while their capability rows fail closed. Their current
+artifacts are agentless firmware images: Lilly omits vsock and native manifests
+cannot declare a workspace source until a reviewed guest daemon and machine
+evidence exist. Arch and AlmaLinux use the generic Linux runtime closure, with
+offline evaluation assertions for the packaged Lyra, terminal, trust and SSH
+services; those checks do not establish a native boot.
+
+ADR-0179's managed-skill restoration coordinator is implemented in Marshall's
+existing agent loop. It advances a bounded round-robin cursor across replacement
+machine generations, suppresses duplicate active or terminal restoration
+receipts, and emits catalogued failure outcomes before continuing the scan.
+Focused authority and restoration scheduling cases pass; native guest restart,
+physical reopen and independent-host recovery remain separate acceptance gaps.
+
 The [browser launcher review](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md)
 records Weaver source comparison, current source2/manifest4 and authentication
 resume evidence. The replacement minimized immutable browser package/check passed in 10 seconds,
@@ -132,7 +147,7 @@ reconciliation, pre-existing guest image migrations, provider-specific behavior,
 physical failure domains, and unmeasured scale. A newer test count is not a broader
 guarantee. This handbook's own checks validate documentation and presentation.
 
-The [user-operation verification campaign](repo:docs/verification-campaign.md)
+The [user-operation verification campaign](repo:docs/history/ledgers/verification-campaign.md)
 tracks incremental property and native machine improvements, missing capabilities,
 and external acceptance boundaries. Queue entries are planned work; only explicit
 execution records establish passing evidence for their named revision and scope.
@@ -357,7 +372,7 @@ Schema generation orders object keys explicitly. A fresh-VM regression verifies
 that opposing atom-loading orders produce the same reviewed artifact, so the
 gate can distinguish source drift from serialization order.
 
-The opt-in [HTTPS egress acceptance](repo:docs/egress-acceptance.md) uses three
+The opt-in [HTTPS egress acceptance](repo:docs/acceptance/egress-acceptance.md) uses three
 receipt-bound disposable guests on Overalls and records private command, request
 and updater evidence. Its pinned public destination has a positive reachability
 control before Customer refusal. Seven runner safety tests cover ownership,
@@ -417,7 +432,7 @@ and the [sweep review](repo:docs/architecture/reviews/2026-09-26-browser-typing-
 record checker execution separately from historical native runs. Those runs keep
 their original source and assertions; this build gate creates no new property,
 physical isolation or browser-runtime evidence. Commands for building the
-artifacts without machines are in the [test catalog](repo:nix/tests/README.md).
+artifacts without machines are in the [test catalog](repo:nix/verification/tests/README.md).
 
 The browser launcher change passed pinned all-files ruff-format, Ruff and ty.
 Import sorting explicitly classifies the copied native `browser` helper as local,
@@ -433,6 +448,17 @@ invocation being used. Commands operate under current authorization; examples
 never supply credentials as arguments.
 
 {{COMMAND_REFERENCE}}
+
+## Native guest protocol reference
+
+FreeBSD and illumos (the OmniOS downstream image) use version-6 image manifests
+and version-3 firmware bundles. Their closed agent rows are `freebsd-v1` and
+`illumos-v1`; each enables readiness, trust, terminal, workspace, flush, SSH and
+agent execution over the existing vsock framing, while editor and Inception stay
+disabled. A row is a capability contract only: Lilly and Marshall still require
+a validated image ID, current boot binding and a guest response. The image
+builder may set `workspace_source_version` to 2 only when the matching native
+workspace service is present. See [ADR-0180](repo:docs/architecture/decisions/0180-multi-os-guest-image-contract.md).
 
 ## Keeping this handbook current
 
@@ -469,7 +495,7 @@ results require their cited text. Recognition does not upgrade a test to native
 coverage or a passing execution.
 
 Evidence: [command catalog](repo:protocol/lib/overalls_protocol/ssh_command.ex),
-[test catalog](repo:nix/tests/README.md),
+[test catalog](repo:nix/verification/tests/README.md),
 [architecture index](repo:docs/architecture/decisions/README.md),
 [maintenance skill](repo:.agents/skills/hldd-maintenance/SKILL.md).
 
@@ -478,4 +504,4 @@ Certificate-specific verification includes
 `user-ssh-journey` fleet checks, protocol certificate properties and Marshall
 issuance tests. The current decision is
 [unified host CA](repo:docs/architecture/decisions/0124-unified-ssh-host-ca.md);
-[operations](repo:docs/porsche-operations.md) describes trust and renewal.
+[operations](repo:docs/operations/porsche-operations.md) describes trust and renewal.

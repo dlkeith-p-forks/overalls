@@ -40,21 +40,33 @@ fn run() -> u8 {
     if start_reaper().is_err() {
         return EXIT_REAPER;
     }
-    let Ok(leases) = Leases::new(&options.roots) else {
+    // A private daemon (no --peer-uid) serves only its own uid. Lilly's state
+    // belongs to the service uid: the peer's own, or the one a root tool's
+    // private daemon is given (ADR-0182).
+    let peer_uid = options
+        .peer_uid
+        .unwrap_or_else(|| rustix::process::geteuid().as_raw());
+    let service_uid = options.service_uid.unwrap_or(peer_uid);
+    let Ok(leases) = Leases::new(&options.roots).map(|leases| leases.with_owner(service_uid))
+    else {
         return EXIT_SETUP;
     };
     let utilities = Table::resolve(&std::env::var_os("PATH").unwrap_or_default());
     let socket_roots = options.socket_roots.clone();
-    let mut daemon = Daemon::new(
-        leases,
-        utilities,
-        custody,
-        options
-            .peer_uid
-            .unwrap_or_else(|| rustix::process::geteuid().as_raw()),
-        options.peer_cgroups,
-    );
+    let pools = options.pools();
+    let mut daemon = Daemon::new(leases, utilities, custody, peer_uid, options.peer_cgroups);
+    daemon.service_uid = service_uid;
     daemon.socket_roots = socket_roots;
+    daemon.vm_tools = options.vm_tools.clone();
+    daemon.roots = options.roots.clone();
+    daemon.pool_datasets = options.pool_datasets.clone();
+    daemon.pools = pools;
+    daemon.private_dir = options.socket.parent().map(std::path::Path::to_path_buf);
+    daemon.file_roots = if options.file_roots.is_empty() {
+        options.roots.clone()
+    } else {
+        options.file_roots.clone()
+    };
     let daemon = Arc::new(daemon);
     let _ = std::fs::remove_file(&options.socket);
     let Ok(listener) = socket_with(
@@ -68,9 +80,18 @@ fn run() -> u8 {
     let Ok(address) = SocketAddrUnix::new(&options.socket) else {
         return EXIT_SOCKET;
     };
+    // @cc [owner:ghuntley,label:security] hostd-socket-owned-by-peer
+    // The control socket MUST be mode 0600, owned by hostd's own uid or,
+    // when the configured peer uid differs (an unprivileged Lilly, ADR-0182),
+    // by exactly that uid; SO_PEERCRED still authenticates every session.
+    let socket_owner = options
+        .peer_uid
+        .filter(|uid| *uid != rustix::process::geteuid().as_raw());
     if bind(&listener, &address).is_err()
         || std::fs::set_permissions(&options.socket, std::fs::Permissions::from_mode(0o600))
             .is_err()
+        || socket_owner
+            .is_some_and(|uid| std::os::unix::fs::chown(&options.socket, Some(uid), None).is_err())
         || listen(&listener, 64).is_err()
     {
         return EXIT_SOCKET;

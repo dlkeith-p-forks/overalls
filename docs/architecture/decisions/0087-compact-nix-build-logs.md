@@ -119,7 +119,7 @@ one derivation. Log parsing must bound memory, depth and rendering expansion.
   stable references, budgeted presentation and bounded retrieval.
 - The [Hegel properties](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/property-test.cc) pass
   1,000 generated core cases and 50 real-build cases in each pinned-input
-  [native check](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/packages/nix-compact/native-check.nix). Runtime checks
+  [native check](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/nix-compact/native-check.nix). Runtime checks
   cover JSON/path stdout, TTY/raw formats, startup and mid-write capture fallback,
   evaluation diagnostics, quiet-build heartbeat, SIGINT, a Unix-socket daemon and
   both remote builder protocols through Nix's localhost transport fixture. These
@@ -128,22 +128,22 @@ one derivation. Log parsing must bound memory, depth and rendering expansion.
 - One 10,000-line fixture retained every builder line while reducing stderr from
   359,114 to 609 bytes (over 99.8%). This measures console bytes, not tokenizer
   counts, and is not a workload-wide performance guarantee.
-- The [NixOS module](../../../nix/modules/nix-compact.nix),
+- The [NixOS module](../../../nix/domains/system/nix-compact.nix),
   [development shell](../../../devenv.nix) and [flake](../../../flake.nix)
-  select/export the package. The [configuration check](../../../nix/packages/nix-compact/configuration-check.nix)
+  select/export the package. The [configuration check](../../../nix/domains/artifacts/nix-compact/configuration-check.nix)
   verifies default selection, opt-out, explicit overrides and unchanged daemon
   libraries. Both complete packages build with upstream gates retained; the
   development-input functional suite reports 201 passes, zero failures and eight
   upstream skips. Actual development-shell resolution and all enrolled/base host
   configuration selections were checked. Header-only cache invalidation was
   verified by changing a comment, evaluating, restoring it and comparing results.
-- The [guide](../../nix-build-logs.md) documents invocation/reader budgets, local
+- The [guide](../../development/nix-build-logs.md) documents invocation/reader budgets, local
   evidence, opt-outs and retention. The [completion review](../reviews/2026-09-21-compact-nix-build-logs.md)
   maps requirements to tests and records operational boundaries. The
   [upstream contracts](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/CONTRACTS) define the corresponding
   implementation obligations; structural validation alone is not runtime proof.
-- The [consumer adapters](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/packages/nix-compact/default.nix) and
-  [lock resolver](../../../nix/packages/nix-compact/source.nix) delegate to the
+- The [consumer adapters](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/nix-compact/default.nix) and
+  [lock resolver](../../../nix/domains/artifacts/nix-compact/source.nix) delegate to the
   root flake's immutable source revision. The
   [extraction review](../reviews/2026-09-21-standalone-nix-compact.md) records
   standalone publication, cold-store evaluation and consumer migration evidence.

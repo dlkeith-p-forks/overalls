@@ -60,11 +60,11 @@ the production recovery private key in tests.
 
 ## Implementation evidence
 
-- [Inventory](../../../nix/secrets.nix) registers the existing bootstrap ciphertext.
-- [Typed registry](../../../nix/lib/registry.nix) defaults `recoveryOnly` to false.
-- [Secret CLI](../../../nix/packages/secrets/cli.py) enforces document selection
+- [Inventory](../../../nix/policy/secrets/secret-documents.nix) registers the existing bootstrap ciphertext.
+- [Typed registry](../../../nix/platform/lib/registry.nix) defaults `recoveryOnly` to false.
+- [Secret CLI](../../../nix/domains/artifacts/secrets/cli.py) enforces document selection
   and routes both kinds through the existing custody and reconciliation paths.
-- [Cryptographic tests](../../../nix/tests/evaluation/secrets_test.py) exercise
+- [Cryptographic tests](../../../nix/verification/tests/evaluation/secrets_test.py) exercise
   synthetic identities with actual SOPS and SSH-to-age tools.
 - [Operator instructions](../../../secrets/README.md) use the managed commands.
 
@@ -74,7 +74,7 @@ remain as recorded in ADR-0041; this implementation claim covers the new documen
 class, not those inherited deployment capabilities.
 
 The inherited named-host access policy now also provides Mosh and systemd
-lingering for login-enabled users through the [access module](../../../nix/modules/access.nix).
+lingering for login-enabled users through the [access module](../../../nix/domains/system/access.nix).
 Mosh bootstraps through the existing administrative SSH policy, with UDP
 60000–61000 for its terminal transport; existing sessions retain the explicit
 revocation limitation. Recovery-only entries still create no account and guest

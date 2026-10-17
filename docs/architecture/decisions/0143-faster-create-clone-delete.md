@@ -106,13 +106,13 @@ merge-and-push deployment.
 - **Identity observations.** They tolerate only usage-counter drift; changes to
   identity or policy properties and incoherent accounting still fail. Verified by
   the StreamData properties in `lilly/test/host/zfs_test.exs`.
-- **Native ZFS proof of offload: done.** The [image-copy machine test](../../../nix/tests/machines/image-copy/driver.py)
+- **Native ZFS proof of offload: done.** The [image-copy machine test](../../../nix/verification/tests/machines/image-copy/driver.py)
   shows `offload` on a cross-mount, same-pool materialization, with `bcloneused`
   growing by the full 8 MiB and the destination staying independent. The
-  [zfs-lifecycle test](../../../nix/tests/machines/zfs-lifecycle/driver.py)
+  [zfs-lifecycle test](../../../nix/verification/tests/machines/zfs-lifecycle/driver.py)
   shows delete refusing injected quota drift, then completing in 2.01 s despite a
   real pool write between its observations. The
-  [clone matrix](../../../nix/tests/machines/zfs-guest/clone-matrix.py) passes
+  [clone matrix](../../../nix/verification/tests/machines/zfs-guest/clone-matrix.py) passes
   real same-host clones with compressed exports.
 - **Live comparison required.** The same Porsche cycle must be re-run on the
   deployed revision. **Not yet run.**
@@ -124,14 +124,14 @@ merge-and-push deployment.
   - the [disk method mapping](../../../lilly/lib/lilly/vm/disk.ex).
 - **Clone streams:**
   - [compressed send argv](../../../lilly/lib/lilly/transfer/source_snapshots.ex);
-  - the [local clone rate](../../../lilly/lib/lilly/clone/effects.ex) with its [config validation](../../../lilly/lib/lilly/control/config.ex) and [Nix option](../../../nix/modules/lilly.nix);
+  - the [local clone rate](../../../lilly/lib/lilly/clone/effects.ex) with its [config validation](../../../lilly/lib/lilly/control/config.ex) and [Nix option](../../../nix/domains/system/lilly.nix);
   - [prompt clone result reporting](../../../lilly/lib/lilly/clone/runtime.ex).
 - **Deletion:**
   - [identity observation](../../../lilly/lib/lilly/host/zfs.ex) with its [properties](../../../lilly/test/host/zfs_test.exs);
   - [staged deletion](../../../lilly/lib/lilly/host/zfs_dataset.ex) and the [catalogued stage](../../../lilly/lib/lilly/events.ex);
   - [delete contention retry](../../../lilly/lib/lilly/vm/executor.ex).
 
-- **Native:** the [cross-mount offload machine test](../../../nix/tests/machines/image-copy/driver.py)
+- **Native:** the [cross-mount offload machine test](../../../nix/verification/tests/machines/image-copy/driver.py)
   passed, with `bcloneused_delta=8388608`.
 
 - **Native:** zfs-lifecycle passed in 3624.76s, including delete under pool

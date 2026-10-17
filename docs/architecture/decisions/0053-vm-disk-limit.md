@@ -76,7 +76,7 @@ real Ash/PostgreSQL actions, include fixed Inception allocation costs and curren
 manager authority, and keep synthetic physical receipts separate from native
 execution. The resize page now shows exact aligned fractional confirmed disk
 sizes, matching its existing draft and pending-target values. The separate
-[native browser journey](../../../nix/tests/machines/resize/driver.py) retains
+[native browser journey](../../../nix/verification/tests/machines/resize/driver.py) retains
 explicit recorded-execution and platform limits in that review.
 
 ## Open questions

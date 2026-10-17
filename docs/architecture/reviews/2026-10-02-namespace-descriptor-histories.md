@@ -9,7 +9,7 @@ changes. The source-built Lilly release and real Firecracker/ZFS machine fixture
 remain required; pure planner checks do not establish these native effects.
 
 Reviewed fixtures:
-`nix/tests/machines/zfs-guest/hold-namespace.py`, `namespace-inventory.py`,
+`nix/verification/tests/machines/zfs-guest/hold-namespace.py`, `namespace-inventory.py`,
 `namespace-cleanup.py` and their installation in `default.nix`.
 
 ## Generated histories and oracles
@@ -56,7 +56,7 @@ The original late-copy, descriptor-only and hidden-proc cases passed in
 Structural contract checking and discovery passed in
 `/tmp/kittens-namespace-history-contracts.log`; semantic source review remains
 separate from syntax checking. The survivor oracle's
-`nix/tests/support/vm-processes.py` collects actual cgroup PIDs, kernel start times
+`nix/verification/tests/support/vm-processes.py` collects actual cgroup PIDs, kernel start times
 and executable device/inode identities, and requires a Firecracker row before
 returning its snapshot.
 

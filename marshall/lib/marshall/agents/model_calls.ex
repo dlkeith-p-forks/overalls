@@ -5,6 +5,7 @@ defmodule Marshall.Agents.ModelCalls do
     Command,
     Compaction,
     Context,
+    ContextPolicy,
     Event,
     ModelCall,
     ModelProtocol,
@@ -95,7 +96,7 @@ defmodule Marshall.Agents.ModelCalls do
       policy = Application.get_env(:marshall, :agent_context_policy, %{})
 
       native? =
-        Map.get(policy, :native_compaction_verified, false) == true and
+        ContextPolicy.native_compaction_verified?(policy, :openai, model) and
           not Enum.any?(calls, &(&1.purpose == :native and &1.status == :failed))
 
       {purpose, request, metadata} =
@@ -262,7 +263,7 @@ defmodule Marshall.Agents.ModelCalls do
                 Compaction.request_allowed?(call.request, :summary)
 
               :native ->
-                native_compaction_enabled?() and
+                native_compaction_enabled?(call.request) and
                   Compaction.request_allowed?(call.request, :native)
             end
 
@@ -314,11 +315,13 @@ defmodule Marshall.Agents.ModelCalls do
     }
   end
 
-  @spec native_compaction_enabled?() :: boolean()
-  defp native_compaction_enabled? do
+  @spec native_compaction_enabled?(term()) :: boolean()
+  defp native_compaction_enabled?(%{"model" => model}) when is_binary(model) do
     policy = Application.get_env(:marshall, :agent_context_policy, %{})
-    is_map(policy) and Map.get(policy, :native_compaction_verified, false) == true
+    ContextPolicy.native_compaction_verified?(policy, :openai, model)
   end
+
+  defp native_compaction_enabled?(_), do: false
 
   # @cc [owner:ghuntley,label:security;recovery] agent-queued-model-current-capabilities
   # A queued model request created under an earlier policy MUST NOT advertise

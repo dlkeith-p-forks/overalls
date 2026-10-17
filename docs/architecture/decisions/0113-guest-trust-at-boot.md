@@ -92,8 +92,8 @@ recorded native scopes; implementation remains partial.
 The [Rust vsock receiver](../../../lyra/src/bin/overalls-trustd.rs),
 [Lilly sender](../../../lilly/lib/lilly/vm/guest_trust.ex),
 [Ash trust lifecycle](../../../lilly/lib/lilly/lifecycle/guest_trust.ex),
-[NixOS guest wiring](../../../nix/packages/guest/private-services.nix),
-[Ubuntu guest wiring](../../../nix/packages/guest/ubuntu/default.nix),
+[NixOS guest wiring](../../../nix/domains/artifacts/guest/private-services.nix),
+[Ubuntu guest wiring](../../../nix/domains/artifacts/guest/ubuntu/default.nix),
 and [property tests](../../../lilly/test/lifecycle/guest_trust_test.exs)
 implement the initial path. The native Audi NixOS and Ubuntu relocation fleet
 machine tests pass boot-time installation, unprivileged bundle reads and SSH
@@ -121,7 +121,7 @@ the marker equals the delivered digest, the managed files are byte-equal and in
 order, the bundle carries every root and every per-root link resolves. Any other
 state withdraws the marker, replaces the set and rebuilds the store with
 `update-ca-certificates --fresh`. The
-[native boot-profile journey](../../../nix/tests/machines/zfs-guest/boot-profile.py)
+[native boot-profile journey](../../../nix/verification/tests/machines/zfs-guest/boot-profile.py)
 covers the identical, added and retired sets on both distributions, checking
 bundle membership and Ubuntu CApath verification. The bounded journey does not
 replace the fleet relocation acceptance above.

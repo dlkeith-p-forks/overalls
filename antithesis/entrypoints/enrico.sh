@@ -9,7 +9,7 @@ secrets=/run/overalls-enrico-secrets
 client=/run/overalls-enrico-client
 channel=/run/overalls-enrico-control
 runtime=/run/enrico
-release=/opt/overalls/enrico/bin/enrico
+release=/opt/kittens/enrico/bin/enrico
 mkdir -p "$state" "$secrets" "$client" "$channel/requests" "$channel/results" "$runtime"
 chmod 0700 "$state" "$secrets" "$client" "$channel" "$channel/requests" "$channel/results" "$runtime"
 for slot in {0..7}; do
@@ -149,7 +149,7 @@ fi
 
 while true; do
   kill -0 "$child" 2>/dev/null || { echo 'Enrico release exited' >&2; exit 1; }
-  /opt/overalls/entrypoints/observe-enrico.sh || true
+  /opt/kittens/entrypoints/observe-enrico.sh || true
   for request in "$channel"/requests/*.json; do
     [[ -e "$request" || -L "$request" ]] || continue
     name=${request##*/}
@@ -182,7 +182,7 @@ while true; do
     if ((child == before_pid)); then
       publish "$request_id" uncertain pid_reused 0 0 0
     else
-      /opt/overalls/entrypoints/observe-enrico.sh || true
+      /opt/kittens/entrypoints/observe-enrico.sh || true
       publish "$request_id" restarted '' "$before_pid" "$child" "$before_generation"
     fi
     rm -f "$request" "$state/restart-inflight"

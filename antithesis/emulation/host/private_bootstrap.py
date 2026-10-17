@@ -298,6 +298,7 @@ def configure() -> None:
             "role": "private",
             "host_id": host,
             "connector_path": "/run/lilly-ingress/private.sock",
+            "connector_uid": 0,
             "ziggy_socket": "/run/ziggy/proxy.sock",
             "galileo_socket": "/run/galileo/proxy.sock",
             "certificate_file": str(audi / "chain.pem"),

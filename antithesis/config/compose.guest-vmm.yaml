@@ -11,14 +11,14 @@ services:
       context: ../..
       dockerfile: antithesis/Dockerfile
       target: guest-vmm
-    entrypoint: ["/opt/overalls/python/bin/python3.13", "/opt/overalls/guest-vmm/server.py"]
+    entrypoint: ["/opt/kittens/python/bin/python3.13", "/opt/kittens/guest-vmm/server.py"]
     command:
       - --socket
       - /run/overalls-guest-vmm/control.sock
       - --witness-socket
       - /run/overalls-guest-witness/witness.sock
       - --tools
-      - /opt/overalls/guest-vmm/tools.json
+      - /opt/kittens/guest-vmm/tools.json
       - --state-root
       - /var/lib/overalls-tcg
       - --socket-root
@@ -36,7 +36,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     healthcheck:
-      test: ["CMD", "/opt/overalls/python/bin/python3.13", "/opt/overalls/guest-vmm/server.py", "--socket", "/run/overalls-guest-vmm/control.sock", "--healthcheck"]
+      test: ["CMD", "/opt/kittens/python/bin/python3.13", "/opt/kittens/guest-vmm/server.py", "--socket", "/run/overalls-guest-vmm/control.sock", "--healthcheck"]
       interval: 3s
       timeout: 5s
       retries: 40

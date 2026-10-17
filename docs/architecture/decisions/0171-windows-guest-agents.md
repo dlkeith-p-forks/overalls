@@ -43,7 +43,7 @@ Verified facts that shape this decision:
   with a pinned Rust 1.97.1 toolchain; the lock carries `windows-sys` 0.61.
   Its shared modules used Unix-only APIs (`O_NOFOLLOW`, POSIX modes, process
   groups) that the Windows build must not link.
-- `nix/modules/lilly.nix` asserted `standbyDisks.perImage × length images ≤ 64`
+- `nix/domains/system/lilly.nix` asserted `standbyDisks.perImage × length images ≤ 64`
   and both hosts run 32 × 2; `StandbyRefill` planned every configured image
   except Inception; the Windows template (32 GiB plus 4 MiB) exceeded the
   32 GiB template budget, so each pass would have hashed 32 GiB per minute and
@@ -297,19 +297,19 @@ Verified facts that shape this decision:
   [admission](../../../marshall/lib/marshall/compute/admission.ex),
   [workspace components](../../../marshall/lib/marshall_web/components/workspace_components.ex),
   [machines live](../../../marshall/lib/marshall_web/live/machines_live.ex).
-- Module and fleet: [Lilly module](../../../nix/modules/lilly.nix),
+- Module and fleet: [Lilly module](../../../nix/domains/system/lilly.nix),
   [guest images](../../../fleet/guest-images.nix),
   [dungarees](../../../fleet/hosts/dungarees/configuration.nix),
   [overalls image catalog](../../../fleet/hosts/overalls/image-catalog.nix).
-- Agents: [Lyra packaging](../../../nix/packages/lyra.nix),
+- Agents: [Lyra packaging](../../../nix/domains/artifacts/infrastructure/lyra.nix),
   [probe](../../../lyra/src/bin/overalls-winprobe.rs),
   [SSH files](../../../lyra/src/ssh_files.rs),
   [workspace receiver](../../../lyra/src/workspace_receiver.rs).
-- Image: [builder](../../../nix/packages/guest/windows/default.nix),
-  [SetupComplete](../../../nix/packages/guest/windows/SetupComplete.cmd),
-  [launcher](../../../nix/packages/guest/windows/boot.nix).
-- Checks: [unit evaluation](../../../nix/tests/evaluation/windows-guest.nix),
-  [machine test](../../../nix/tests/machines/windows-guest/default.nix).
+- Image: [builder](../../../nix/domains/artifacts/guest/windows/default.nix),
+  [SetupComplete](../../../nix/domains/artifacts/guest/windows/SetupComplete.cmd),
+  [launcher](../../../nix/domains/artifacts/guest/windows/boot.nix).
+- Checks: [unit evaluation](../../../nix/verification/tests/evaluation/windows-guest.nix),
+  [machine test](../../../nix/verification/tests/machines/windows-guest/default.nix).
 - Review: [Windows guest agents review](../reviews/2026-10-14-windows-guest-agents.md).
 
 Gate 2 (readiness and trust daemons: [readiness](../../../lyra/src/bin/overalls-readinessd.rs),
@@ -320,19 +320,19 @@ and [MMDS](../../../lyra/src/guest/mmds.rs) modules and the Windows
 proven by the `windows-lilly-guest-agents` machine test once its execution is
 recorded in the review. Gate 3 (SSH: [roster agent](../../../lyra/src/bin/overalls-ssh-sync-windows.rs),
 [host certificate](../../../lyra/src/bin/overalls-host-certificate-windows.rs),
-[sshd configuration](../../../nix/packages/guest/windows/sshd_config)) is
+[sshd configuration](../../../nix/domains/artifacts/guest/windows/sshd_config)) is
 implemented with unit tests and no Windows fleet test. Gate 4 (terminal: the
-[ConPTY layer](../../../nix/packages/terminald/src/pty_windows.rs),
-[viosock sockets](../../../nix/packages/terminald/src/conn_windows.rs),
-[listener](../../../nix/packages/terminald/src/vsock_windows.rs),
-[MMDS identity](../../../nix/packages/terminald/src/identity_windows.rs) and
-[packaging](../../../nix/packages/terminald-windows.nix)) is implemented and
+[ConPTY layer](../../../nix/domains/artifacts/terminald/src/pty_windows.rs),
+[viosock sockets](../../../nix/domains/artifacts/terminald/src/conn_windows.rs),
+[listener](../../../nix/domains/artifacts/terminald/src/vsock_windows.rs),
+[MMDS identity](../../../nix/domains/artifacts/terminald/src/identity_windows.rs) and
+[packaging](../../../nix/domains/artifacts/infrastructure/terminald-windows.nix)) is implemented and
 asserted by the same machine test. Gate 5's workspace receiver
 ([Windows transport](../../../lyra/src/bin/overalls-workspaced-windows.rs) around
 the shared [receiver](../../../lyra/src/workspace_receiver.rs), the
 [job helper](../../../lyra/src/platform/windows/job.rs) and the
 Git, first a MinGit pin and since [ADR-0173](0173-windows-images-winget-desktop-experience.md)
-Git for Windows from the [winget pins](../../../nix/packages/guest/windows/winget.json)) is implemented;
+Git for Windows from the [winget pins](../../../nix/domains/artifacts/guest/windows/winget.json)) is implemented;
 the machine test asserts its boot-bound acceptance, not a clone (no egress).
 The agent executor is the shared [executor core](../../../lyra/src/agent.rs)
 moved into the Lyra library behind a `Host` trait, run on Windows by

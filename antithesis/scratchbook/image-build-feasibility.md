@@ -36,7 +36,7 @@ documented default Antithesis machine memory of 10 GB.
 
 ## Governing source and contracts
 
-Read `AGENTS.md`, `CONTRACTS`, `nix/CONTRACTS`, `nix/packages/CONTRACTS`, the
+Read `AGENTS.md`, `CONTRACTS`, `nix/CONTRACTS`, `nix/domains/artifacts/CONTRACTS`, the
 architecture overview/index, ADR-0027/0030 inheritance, component guidance and
 the code-contracts/documentation skills. The applicable package contracts require:
 
@@ -58,7 +58,7 @@ and requires architecture/ADR/HLDD and contract reconciliation in the final chan
 
 ## Exact current package interface
 
-`nix/packages/default.nix` takes
+`nix/domains/artifacts/default.nix` takes
 `{ pkgs, encryptedCrashDumps ? false, privateServiceRoots ? [] }`.
 Flake application packages use locked `buildNixpkgs`; host NixOS configurations and
 machine-test kernels use separately locked stable `nixpkgs`. Do not mix them.
@@ -94,14 +94,14 @@ payload probe/check before claiming eight checked releases. The shared probe's
 exported Enrico check therefore has a source-evidenced `CaseClauseError` path,
 not merely absent extra module assertions. Add both real payload branches.
 
-`nix/packages/release-bundle.nix` is a legacy wrapper taking
+`nix/domains/artifacts/release-bundle.nix` is a legacy wrapper taking
 `{ pkgsPath, releaseDirectory, application }`, supporting only
 Marshall/Lilly/Audi/Porsche. It copies an existing release directory. It is absent
 from the current flake build path and should not supply new harness images.
 
 ## Source selection and harness-only compile seams
 
-`nix/packages/source.nix` takes `{ lib, application }`. For each app it selects
+`nix/domains/artifacts/applications/source.nix` takes `{ lib, application }`. For each app it selects
 `mix.exs`, `mix.lock`, `lib`, `config`, plus protocol and diagnostics libraries.
 Request accounting is included for every app except Lilly. Marshall additionally
 includes `assets` and all `priv`; Audi includes `priv`. Generated Marshall asset
@@ -163,10 +163,10 @@ Extra production service requirements are outside some OTP outputs:
 | Runtime | Explicit additional image/sidecar roots |
 | --- | --- |
 | Lilly | The release already references coreutils/diffutils/util-linux/iproute2/nftables/procps/ZFS/OpenSSH and its twelve Rust helpers; these still require supported host kernel/privilege/systemd semantics to function. |
-| Enrico | `pkgs.git`, `pkgs.coreutils`, and `pkgs.callPackage ./nix/packages/enrico-git-owner.nix {}`; the NixOS module adds them on PATH. |
+| Enrico | `pkgs.git`, `pkgs.coreutils`, and `pkgs.callPackage ./nix/domains/artifacts/enrico-git-owner.nix {}`; the NixOS module adds them on PATH. |
 | Audi and Porsche | `pkgs.openssh`, added by their service modules. |
-| Independent trace custody | `pkgs.callPackage ./nix/packages/trace-spool.nix {}` plus its explicit storage/receiver configuration; not silently inside each OTP release. |
-| Guest OTEL/SLO receiver | `pkgs.callPackage ./nix/modules/otel-guest/receiver.nix {}` and its runtime sockets/configuration. |
+| Independent trace custody | `pkgs.callPackage ./nix/domains/artifacts/infrastructure/trace-spool.nix {}` plus its explicit storage/receiver configuration; not silently inside each OTP release. |
+| Guest OTEL/SLO receiver | `pkgs.callPackage ./nix/domains/system/otel-guest/receiver.nix {}` and its runtime sockets/configuration. |
 | Browser workload | Pinned Chromium/Node/Python/Playwright packages, fonts and generated browser artifacts; never a Playwright startup download. |
 
 Use explicit store paths in entrypoints and `PATH` for fixed helper lookup. Supply

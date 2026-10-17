@@ -47,7 +47,7 @@ image is a spike for booting, not yet a Lilly-launchable guest family.
 
 ## Decision
 
-1. **Patched static Firecracker.** `nix/packages/firecracker.nix` applies eight
+1. **Patched static Firecracker.** `nix/domains/artifacts/infrastructure/firecracker.nix` applies eight
    reviewed patches to the pinned nixpkgs static Firecracker 1.16.1 and is the
    only VMM Lilly's release metadata and the development shell reference. The
    patches do not change the version string, `Cargo.toml` or `Cargo.lock`:
@@ -72,12 +72,12 @@ image is a spike for booting, not yet a Lilly-launchable guest family.
    `firecracker-vsock-indirect-desc` (the vsock device walks the indirect
    descriptor tables the virtio-win viosock driver posts), under the same
    rules; this list is otherwise unchanged.
-2. **CloudHv firmware as the PVH payload.** `nix/packages/guest/windows/firmware.nix`
+2. **CloudHv firmware as the PVH payload.** `nix/domains/artifacts/guest/windows/firmware.nix`
    builds `CLOUDHV.fd` from the pinned edk2 with one patch that ends the 32-bit
    PCI aperture at Firecracker's MMCONFIG base; bus enumeration and BAR
    assignment stay the firmware's normal behavior. Firecracker loads it through
    `boot-source.kernel_image_path`; there is no initrd and no boot argument.
-3. **Offline Windows image build.** `nix/packages/guest/windows/default.nix`
+3. **Offline Windows image build.** `nix/domains/artifacts/guest/windows/default.nix`
    installs Windows Server 2025 from the hash-pinned evaluation ISO
    (`iso.json`) inside a KVM Nix sandbox under QEMU/OVMF with restricted
    user networking, an answer file, the pinned virtio-win drivers and a
@@ -147,14 +147,14 @@ Microsoft).
 ## Invariants and verification
 
 - The patched VMM reports `Firecracker v1.16.1`, lists `--enable-pci` and is a
-  static x86-64 pair (`nix/tests/evaluation/firecracker-vmm.nix`).
+  static x86-64 pair (`nix/verification/tests/evaluation/firecracker-vmm.nix`).
 - The firmware is a single PVH ELF with a Xen note and the patched aperture
   (`postInstall` checks in `firmware.nix`; the `windows-firmware` check builds it).
 - Image assembly is offline, KVM-sandboxed, modern-only virtio-pci, with EMS
-  enabled and no autologon (`nix/tests/evaluation/windows-guest.nix`).
+  enabled and no autologon (`nix/verification/tests/evaluation/windows-guest.nix`).
 - Booting the image under the patched Firecracker reaches the `SAC>` prompt
-  (`nix/tests/machines/windows-guest`, nested KVM, long-running).
-- Firecracker unit tests for the patches (`nix/tests/evaluation/firecracker-patch-tests.nix`):
+  (`nix/verification/tests/machines/windows-guest`, nested KVM, long-running).
+- Firecracker unit tests for the patches (`nix/verification/tests/evaluation/firecracker-patch-tests.nix`):
   PVH start info carries the RSDP, the PM timer counter advances within 24
   bits and rejects partial access, the Hyper-V template installs the leaves
   and relocates the KVM leaves, the CMOS clock encodes the host time, a BAR
@@ -171,34 +171,34 @@ MMCONFIG; Windows timekeeping is unstable without synthetic timers.
 ## Implementation evidence
 
 - Firecracker patches:
-  [PVH RSDP address](../../../nix/patches/firecracker-pvh-rsdp-paddr.patch),
-  [ACPI PM timer](../../../nix/patches/firecracker-acpi-pm-timer.patch),
-  [Hyper-V CPUID leaves](../../../nix/patches/firecracker-hyperv-cpuid.patch),
-  [PCI decode enabled](../../../nix/patches/firecracker-pci-decode-enabled.patch),
-  [CMOS RTC](../../../nix/patches/firecracker-cmos-rtc.patch),
-  [BAR relocation](../../../nix/patches/firecracker-pci-bar-relocation.patch),
-  [virtio reset](../../../nix/patches/firecracker-virtio-reset.patch) and
-  [virtio-blk scatter-gather](../../../nix/patches/firecracker-virtio-blk-sg.patch)
-  and, from ADR-0171, [vsock indirect descriptors](../../../nix/patches/firecracker-vsock-indirect-desc.patch),
-  applied by the [patched VMM package](../../../nix/packages/firecracker.nix)
-  and unit-tested by [the patch test check](../../../nix/tests/evaluation/firecracker-patch-tests.nix).
+  [PVH RSDP address](../../../nix/platform/patches/firecracker-pvh-rsdp-paddr.patch),
+  [ACPI PM timer](../../../nix/platform/patches/firecracker-acpi-pm-timer.patch),
+  [Hyper-V CPUID leaves](../../../nix/platform/patches/firecracker-hyperv-cpuid.patch),
+  [PCI decode enabled](../../../nix/platform/patches/firecracker-pci-decode-enabled.patch),
+  [CMOS RTC](../../../nix/platform/patches/firecracker-cmos-rtc.patch),
+  [BAR relocation](../../../nix/platform/patches/firecracker-pci-bar-relocation.patch),
+  [virtio reset](../../../nix/platform/patches/firecracker-virtio-reset.patch) and
+  [virtio-blk scatter-gather](../../../nix/platform/patches/firecracker-virtio-blk-sg.patch)
+  and, from ADR-0171, [vsock indirect descriptors](../../../nix/platform/patches/firecracker-vsock-indirect-desc.patch),
+  applied by the [patched VMM package](../../../nix/domains/artifacts/infrastructure/firecracker.nix)
+  and unit-tested by [the patch test check](../../../nix/verification/tests/evaluation/firecracker-patch-tests.nix).
 - Firmware patch:
-  [MMIO aperture](../../../nix/patches/edk2-cloudhv-firecracker-mmio-hole.patch),
-  applied by the [firmware package](../../../nix/packages/guest/windows/firmware.nix).
-- Image: [builder](../../../nix/packages/guest/windows/default.nix),
-  [QEMU driver](../../../nix/packages/guest/windows/install.py),
-  [answer file](../../../nix/packages/guest/windows/autounattend.xml),
-  [post-setup script](../../../nix/packages/guest/windows/SetupComplete.cmd),
-  [ISO pin](../../../nix/packages/guest/windows/iso.json),
-  [launcher](../../../nix/packages/guest/windows/boot.nix) and
-  [directory contracts](../../../nix/packages/guest/windows/CONTRACTS); wired in
-  [the package set](../../../nix/packages/default.nix), [devenv](../../../devenv.nix)
+  [MMIO aperture](../../../nix/platform/patches/edk2-cloudhv-firecracker-mmio-hole.patch),
+  applied by the [firmware package](../../../nix/domains/artifacts/guest/windows/firmware.nix).
+- Image: [builder](../../../nix/domains/artifacts/guest/windows/default.nix),
+  [QEMU driver](../../../nix/domains/artifacts/guest/windows/install.py),
+  [answer file](../../../nix/domains/artifacts/guest/windows/autounattend.xml),
+  [post-setup script](../../../nix/domains/artifacts/guest/windows/SetupComplete.cmd),
+  [ISO pin](../../../nix/domains/artifacts/guest/windows/iso.json),
+  [launcher](../../../nix/domains/artifacts/guest/windows/boot.nix) and
+  [directory contracts](../../../nix/domains/artifacts/guest/windows/CONTRACTS); wired in
+  [the package set](../../../nix/domains/artifacts/default.nix), [devenv](../../../devenv.nix)
   and [the flake](../../../flake.nix).
-- Checks: [VMM identity](../../../nix/tests/evaluation/firecracker-vmm.nix),
-  [builder rules](../../../nix/tests/evaluation/windows-guest.nix),
-  [SAC boot machine test](../../../nix/tests/machines/windows-guest/default.nix),
-  registered in [the check catalog](../../../nix/tests/default.nix).
-- Operator guide: [Windows guests](../../windows-guests.md).
+- Checks: [VMM identity](../../../nix/verification/tests/evaluation/firecracker-vmm.nix),
+  [builder rules](../../../nix/verification/tests/evaluation/windows-guest.nix),
+  [SAC boot machine test](../../../nix/verification/tests/machines/windows-guest/default.nix),
+  registered in [the check catalog](../../../nix/verification/tests/catalog.nix).
+- Operator guide: [Windows guests](../../guests/windows-guests.md).
 - Review: [Windows Firecracker spike review](../reviews/2026-10-13-windows-firecracker-spike.md)
   records which builds and boots were executed.
 

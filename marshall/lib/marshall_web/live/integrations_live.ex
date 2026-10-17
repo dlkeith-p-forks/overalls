@@ -277,7 +277,7 @@ defmodule MarshallWeb.IntegrationsLive do
             shown again.
           </p>
           <div class="grid">
-            <.input field={@form[:name]} label="Name" placeholder="exedev" />
+            <.input field={@form[:name]} label="Name" placeholder="example-integration" />
             <.input field={@form[:target]} label="HTTPS target" placeholder="https://api.example.com" />
           </div>
           <h3>Credentials</h3>

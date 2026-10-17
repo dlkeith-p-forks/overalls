@@ -1,8 +1,8 @@
 #![deny(unsafe_code)]
-#![doc = "Trusted, non-setuid pipeline owner. Disk bytes stay in kernel pipes."]
+#![doc = "Pipeline owner run by lilly-hostd. Disk bytes stay in kernel pipes."]
 
 use rustix::event::{PollFd, PollFlags};
-use rustix::fs::{flock, open, FlockOperation, Mode as FileMode, OFlags};
+use rustix::fs::OFlags;
 use rustix::io::Errno;
 use rustix::pipe::{pipe_with, splice, PipeFlags, SpliceFlags};
 use rustix::process::{getpid, kill_process, kill_process_group, set_child_subreaper};
@@ -11,13 +11,11 @@ use std::ffi::{OsStr, OsString};
 use std::os::fd::{AsFd, BorrowedFd, OwnedFd};
 use std::os::unix::ffi::OsStrExt;
 use std::os::unix::process::CommandExt as _;
-use std::path::{Path, PathBuf};
 use std::process::{Command as Process, Stdio};
 use std::time::{Duration, Instant};
 
 pub const EXIT_USAGE: u8 = 64;
 pub const EXIT_SETUP: u8 = 70;
-pub const EXIT_INSECURE_LOCK: u8 = 73;
 pub const EXIT_IO: u8 = 74;
 
 /// Byte total cap for the producer + consumer argument vector.
@@ -32,25 +30,22 @@ pub const DIAGNOSTICS_LIMIT: usize = 65536;
 pub const CREDIT_CAP_MS: i64 = 65_536_000;
 /// Per-iteration splice ceiling in bytes.
 pub const SPLICE_WINDOW: usize = 65536;
-/// Maximum number of bounded caller bytes in the startup nonce.
-pub const NONCE_LIMIT: usize = 128;
+/// Largest accepted byte rate.
+pub const RATE_LIMIT: i64 = 1_073_741_824;
 
 /// A validated invocation.
 #[derive(Debug, Eq, PartialEq)]
 pub struct Request {
-    pub lock: PathBuf,
     pub timeout_ms: u64,
+    /// Bytes per second; zero is unthrottled.
+    pub rate: u64,
+    /// An inherited descriptor receiving the progress counter.
+    pub progress: Option<i32>,
+    /// The uid (and equal gid) each side drops to; None keeps the helper's.
+    pub producer_uid: Option<u32>,
+    pub consumer_uid: Option<u32>,
     pub producer: Vec<OsString>,
     pub consumer: Vec<OsString>,
-    pub rate: u64,
-    pub progress: bool,
-}
-
-/// Environment configuration accepted from the caller's explicit settings.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct StreamConfig {
-    pub rate: u64,
-    pub progress: bool,
 }
 
 /// Strict decimal: nonempty, no leading zeros, digits only, then bounds.
@@ -67,38 +62,49 @@ fn number(text: &OsStr, min: i64, max: i64) -> Option<i64> {
     (min..=max).contains(&value).then_some(value)
 }
 
-pub fn parse_env(progress: Option<&str>, rate: Option<&str>) -> Option<StreamConfig> {
-    let progress = match progress {
-        None => false,
-        Some("0") => false,
-        Some("1") => true,
-        Some(_) => return None,
-    };
-    let rate = match rate {
-        None => 0,
-        Some(text) => u64::try_from(number(OsStr::new(text), 0, 1_073_741_824)?).ok()?,
-    };
-    Some(StreamConfig { rate, progress })
+/// `-` or a strict decimal in `min..=max`.
+fn optional(text: &OsStr, min: i64, max: i64) -> Option<Option<i64>> {
+    if text.as_bytes() == b"-" {
+        return Some(None);
+    }
+    number(text, min, max).map(Some)
 }
 
+/// Accepted side uids: never root, never the overflow uid.
+pub const SIDE_UIDS: std::ops::RangeInclusive<i64> = 1..=4_294_967_294;
+/// Accepted inherited progress descriptors.
+pub const PROGRESS_FDS: std::ops::RangeInclusive<i64> = 3..=1023;
+
 /// @cc [owner:ghuntley,label:security] transfer-cli-bounded-absolute
-/// Only trusted absolute argv: lock, timeout, producer count then absolute
-/// producer and consumer argv entries; the byte span never exceeds 65536.
+/// The command line MUST be: timeout (1000..=86400000 ms), rate
+/// (0..=1073741824 bytes/s), progress descriptor (`-` or 3..=1023), producer
+/// uid and consumer uid (`-` or 1..=4294967294, never root), producer count,
+/// then absolute producer argv and absolute consumer argv whose byte span
+/// never exceeds 65536. Anything else is a usage error. The caller (hostd)
+/// derives every argv itself; this helper reads no environment settings.
 pub fn parse_cli(arguments: &[OsString]) -> Option<Request> {
-    let [lock, timeout, producers, rest @ ..] = arguments else {
+    let [timeout, rate, progress, producer_uid, consumer_uid, producers, rest @ ..] = arguments
+    else {
         return None;
     };
     let timeout_ms: u64 = u64::try_from(number(timeout, 1000, 86_400_000)?).ok()?;
+    let rate = u64::try_from(number(rate, 0, RATE_LIMIT)?).ok()?;
+    let progress = optional(progress, *PROGRESS_FDS.start(), *PROGRESS_FDS.end())?
+        .and_then(|fd| i32::try_from(fd).ok());
+    let uid = |text: &OsStr| -> Option<Option<u32>> {
+        match optional(text, *SIDE_UIDS.start(), *SIDE_UIDS.end())? {
+            None => Some(None),
+            Some(uid) => Some(Some(u32::try_from(uid).ok()?)),
+        }
+    };
+    let producer_uid = uid(producer_uid)?;
+    let consumer_uid = uid(consumer_uid)?;
     let producer_count = usize::try_from(number(producers, 1, PRODUCER_ARGS_LIMIT as i64)?).ok()?;
-    // rest covers every producer argv entry followed by every consumer entry;
-    // the C split is 4+producers with an absolute-head check on both sides.
     if rest.len() < producer_count + 1 || rest.len() - producer_count > CONSUMER_ARGS_LIMIT {
         return None;
     }
     let (producer, consumer) = rest.split_at(producer_count);
-    if !lock.as_os_str().as_bytes().starts_with(b"/")
-        || producer.is_empty()
-        || !producer[0].as_os_str().as_bytes().starts_with(b"/")
+    if !producer[0].as_os_str().as_bytes().starts_with(b"/")
         || !consumer[0].as_os_str().as_bytes().starts_with(b"/")
     {
         return None;
@@ -119,92 +125,29 @@ pub fn parse_cli(arguments: &[OsString]) -> Option<Request> {
         return None;
     }
     Some(Request {
-        lock: PathBuf::from(lock),
         timeout_ms,
+        rate,
+        progress,
+        producer_uid,
+        consumer_uid,
         producer: producer.to_vec(),
         consumer: consumer.to_vec(),
-        rate: 0,
-        progress: false,
     })
 }
 
-pub fn with_env(request: &mut Request) -> bool {
-    match parse_env(
-        std::env::var("LILLY_TRANSFER_PROGRESS").ok().as_deref(),
-        std::env::var("LILLY_TRANSFER_BYTES_PER_SECOND")
-            .ok()
-            .as_deref(),
-    ) {
-        None => false,
-        Some(config) => {
-            request.rate = config.rate;
-            request.progress = config.progress;
-            true
-        }
-    }
-}
-
-fn read_nonce(input: BorrowedFd<'_>) -> Option<Vec<u8>> {
-    let mut nonce = Vec::with_capacity(16);
+/// Overwrite the 8-byte big-endian progress counter at offset 0.
+fn report(progress: Option<BorrowedFd<'_>>, total: u64) -> Result<(), ()> {
+    let Some(fd) = progress else {
+        return Ok(());
+    };
+    let bytes = total.to_be_bytes();
     loop {
-        let mut byte = [0_u8; 1];
-        if nonce.len() == NONCE_LIMIT {
-            return None;
-        }
-        match rustix::io::read(input, &mut byte) {
+        match rustix::io::pwrite(fd, &bytes, 0) {
             Err(Errno::INTR) => continue,
-            Err(_) | Ok(0) => return None,
-            Ok(_) => {}
-        }
-        nonce.push(byte[0]);
-        if byte[0] == b'\n' {
-            return Some(nonce);
+            Ok(8) => return Ok(()),
+            _ => return Err(()),
         }
     }
-}
-
-fn write_all(fd: BorrowedFd<'_>, mut buffer: &[u8]) -> Result<(), ()> {
-    while !buffer.is_empty() {
-        match rustix::io::write(fd, buffer) {
-            Err(Errno::INTR) => continue,
-            Err(_) | Ok(0) => return Err(()),
-            Ok(count) => buffer = &buffer[count..],
-        }
-    }
-    Ok(())
-}
-
-/// Held transfer lock custody.
-pub struct Held {
-    #[allow(dead_code)]
-    descriptor: OwnedFd,
-}
-
-fn acquire_lock(path: &Path) -> Result<Held, u8> {
-    let descriptor = open(
-        path,
-        OFlags::RDWR | OFlags::CREATE | OFlags::NOFOLLOW,
-        FileMode::from_raw_mode(0o600),
-    )
-    .map_err(|_| EXIT_INSECURE_LOCK)?;
-    let file: std::fs::File = descriptor.into();
-    let metadata = file.metadata().map_err(|_| EXIT_INSECURE_LOCK)?;
-    let fd: OwnedFd = file.into();
-    {
-        use std::os::unix::fs::MetadataExt as _;
-        let private = metadata.is_file()
-            && metadata.nlink() == 1
-            && metadata.uid() == rustix::process::geteuid().as_raw()
-            && metadata.mode() & 0o022 == 0;
-        if !private {
-            return Err(EXIT_INSECURE_LOCK);
-        }
-    }
-    flock(&fd, FlockOperation::NonBlockingLockExclusive).map_err(|_| EXIT_INSECURE_LOCK)?;
-    if rustix::fs::fchmod(&fd, FileMode::from_raw_mode(0o600)).is_err() {
-        return Err(EXIT_INSECURE_LOCK);
-    }
-    Ok(Held { descriptor: fd })
 }
 
 /// The running register of one side of the pipeline.
@@ -255,7 +198,8 @@ impl Side {
 /// @cc [owner:ghuntley,label:recovery] transfer-reap-before-ownership-release
 /// finish MUST kill both private process groups and reap all adopted children
 /// across every process group/session before
-/// releasing ownership. Leaders remain unreaped until this cleanup, preventing
+/// the helper exits (hostd releases the stream lease only after that exit).
+/// Leaders remain unreaped until this cleanup, preventing
 /// PID reuse while another side still runs. Reap uncertainty never confirms
 /// quiescence.
 fn finish(
@@ -298,19 +242,28 @@ fn finish(
     }
 }
 
+/// Run the pipeline. The progress descriptor, when given, is borrowed from
+/// the process's inherited table.
 pub fn run(request: &Request) -> u8 {
     if set_child_subreaper(Some(getpid())).is_err() {
         return EXIT_SETUP;
     }
-    let input = std::io::stdin();
-    let output = std::io::stdout();
-    let Some(nonce) = read_nonce(input.as_fd()) else {
-        return EXIT_IO;
-    };
-    let _held = match acquire_lock(&request.lock) {
-        Err(code) => return code,
-        Ok(held) => held,
-    };
+    #[allow(unsafe_code)]
+    // SAFETY: the descriptor number came from the trusted caller, which
+    // opened it for this process; it stays open for the whole run and is
+    // only ever borrowed.
+    let progress = request
+        .progress
+        .map(|fd| unsafe { BorrowedFd::borrow_raw(fd) });
+    if let Some(fd) = progress {
+        if rustix::fs::fstat(fd)
+            .map(|stat| stat.st_mode & libc::S_IFMT != libc::S_IFREG)
+            .unwrap_or(true)
+            || report(Some(fd), 0).is_err()
+        {
+            return EXIT_SETUP;
+        }
+    }
     let pipes = pipe_with(PipeFlags::CLOEXEC)
         .and_then(|data| pipe_with(PipeFlags::CLOEXEC).map(|sink| (data, sink)))
         .and_then(|pair| pipe_with(PipeFlags::CLOEXEC).map(|diag| (pair.0, pair.1, diag)));
@@ -323,12 +276,6 @@ pub fn run(request: &Request) -> u8 {
     if rustix::fs::fcntl_setfl(&diag_reader, OFlags::NONBLOCK).is_err() {
         return EXIT_SETUP;
     }
-    if write_all(output.as_fd(), &nonce).is_err() {
-        return EXIT_IO;
-    }
-    if request.progress && rustix::fs::fcntl_setfl(output.as_fd(), OFlags::NONBLOCK).is_err() {
-        return EXIT_SETUP;
-    }
     transfer(
         request,
         data_reader,
@@ -337,17 +284,18 @@ pub fn run(request: &Request) -> u8 {
         sink_writer,
         diag_reader,
         diag_writer,
-        input.as_fd(),
-        output.as_fd(),
+        progress,
     )
 }
 
 fn spawn(
     args: &[OsString],
+    uid: Option<u32>,
     stdin: Stdio,
     stdout: Stdio,
     stderr: Stdio,
 ) -> Result<std::process::Child, ()> {
+    // hostd already gave this process a cleared environment (PATH, LC_ALL).
     let mut builder = Process::new(args[0].clone());
     builder
         .args(&args[1..])
@@ -355,7 +303,7 @@ fn spawn(
         .stdout(stdout)
         .stderr(stderr);
     builder.process_group(0);
-    pin::to_caller(&mut builder, getpid());
+    pin::to_caller(&mut builder, getpid(), uid);
     builder.spawn().map_err(|_| ())
 }
 
@@ -367,11 +315,26 @@ mod pin {
 
     /// @cc [owner:ghuntley,label:security] transfer-pins-children-to-owner
     /// Producer and consumer must not outlive the helper: set the parent-death
-    /// signal and verify the recorded parent before exec; the closure body is
-    /// only safe typed rustix calls with no allocation crossing the fork.
-    pub(super) fn to_caller(command: &mut Command, parent: Pid) {
+    /// signal and verify the recorded parent before exec. A side given a uid
+    /// MUST drop every supplementary group, then its gid and uid (both that
+    /// uid), and set no_new_privs before exec; the parent-death signal MUST be
+    /// set after that credential change (which may clear it). Any failure aborts
+    /// the spawn.
+    /// The closure performs only async-signal-safe system calls.
+    pub(super) fn to_caller(command: &mut Command, parent: Pid, uid: Option<u32>) {
         unsafe {
             command.pre_exec(move || {
+                // Credentials change first, so the death signal is set on the
+                // final credentials (a credential change may clear it).
+                if let Some(uid) = uid {
+                    if libc::setgroups(0, std::ptr::null()) != 0
+                        || libc::setresgid(uid, uid, uid) != 0
+                        || libc::setresuid(uid, uid, uid) != 0
+                        || libc::prctl(libc::PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0) != 0
+                    {
+                        return Err(std::io::Error::last_os_error());
+                    }
+                }
                 if set_parent_process_death_signal(Some(Signal::KILL)).is_err()
                     || getppid() != Some(parent)
                 {
@@ -395,8 +358,7 @@ fn transfer(
     sink_writer: OwnedFd,
     diag_reader: OwnedFd,
     diag_writer: OwnedFd,
-    input: BorrowedFd<'_>,
-    output: BorrowedFd<'_>,
+    progress: Option<BorrowedFd<'_>>,
 ) -> u8 {
     // The C twin-dup2 puts one diag descriptor into both consumer channels.
     let consumer_stdout = match diag_writer.try_clone() {
@@ -410,6 +372,7 @@ fn transfer(
     // Producer: stdin=null, stdout=data pipe, stderr=diag (same channel).
     let mut producer = match spawn(
         &request.producer,
+        request.producer_uid,
         Stdio::null(),
         Stdio::from(data_writer),
         Stdio::from(diag_writer),
@@ -421,6 +384,7 @@ fn transfer(
     // bounded discard, exactly like the C twin-dup2.
     let mut consumer = match spawn(
         &request.consumer,
+        request.consumer_uid,
         Stdio::from(sink_reader),
         Stdio::from(consumer_stdout),
         Stdio::from(consumer_stderr),
@@ -438,12 +402,10 @@ fn transfer(
         data_reader,
         sink_writer,
         diag_reader,
-        input,
-        output,
+        progress,
     )
 }
 
-#[allow(clippy::too_many_arguments)]
 fn sweep(
     request: &Request,
     producer: &mut std::process::Child,
@@ -451,8 +413,7 @@ fn sweep(
     data_reader: OwnedFd,
     sink_writer: OwnedFd,
     diag_reader: OwnedFd,
-    input: BorrowedFd<'_>,
-    output: BorrowedFd<'_>,
+    progress: Option<BorrowedFd<'_>>,
 ) -> u8 {
     let mut last = Instant::now();
     let deadline = last + Duration::from_millis(request.timeout_ms);
@@ -511,18 +472,16 @@ fn sweep(
                 }
             }
         }
-        if request.progress && now.duration_since(reported_at).as_millis() >= 1000 {
-            let mut frame = [b'P'; 9];
-            frame[1..].copy_from_slice(&copied_total.to_be_bytes());
-            if write_all(output, &frame).is_err() {
+        if progress.is_some() && now.duration_since(reported_at).as_millis() >= 1000 {
+            if report(progress, copied_total).is_err() {
                 return finish(producer, Some(consumer), 4);
             }
             reported_at = now;
         }
-        let mut fds = [
-            PollFd::from_borrowed_fd(input, PollFlags::IN | PollFlags::HUP),
-            PollFd::from_borrowed_fd(diag_reader.as_fd(), PollFlags::IN | PollFlags::HUP),
-        ];
+        let mut fds = [PollFd::from_borrowed_fd(
+            diag_reader.as_fd(),
+            PollFlags::IN | PollFlags::HUP,
+        )];
         match rustix::event::poll(
             &mut fds,
             Some(&rustix::event::Timespec {
@@ -533,10 +492,6 @@ fn sweep(
             Err(Errno::INTR) => continue,
             Err(_) => return finish(producer, Some(consumer), 4),
             Ok(_) => {}
-        }
-        // No bytes after the handshake are legal here; caller data cancels.
-        if !fds[0].revents().is_empty() {
-            return finish(producer, Some(consumer), 4);
         }
         loop {
             let mut discard = [0_u8; 4096];
@@ -556,14 +511,9 @@ fn sweep(
         let b = Side::poll(consumer);
         match a.classify(b) {
             Some(0) => {
-                // The completion frame reports the final counter before the
-                // sweep closes; a blocked sink revokes instead of hanging.
-                if request.progress {
-                    let mut frame = [b'P'; 9];
-                    frame[1..].copy_from_slice(&copied_total.to_be_bytes());
-                    if write_all(output, &frame).is_err() {
-                        return finish(producer, Some(consumer), 4);
-                    }
+                // The completion record reports the final counter.
+                if report(progress, copied_total).is_err() {
+                    return finish(producer, Some(consumer), 4);
                 }
                 let status = finish(producer, Some(consumer), 0);
                 // Reaped writers cannot race this final bounded diagnostic drain.

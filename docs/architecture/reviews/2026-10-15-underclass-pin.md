@@ -2,7 +2,7 @@
 
 ## Scope and architecture impact
 
-Advance the [immutable package](../../../nix/packages/underclass/default.nix)
+Advance the [immutable package](../../../nix/domains/artifacts/underclass/default.nix)
 from `d0cb27474464d35bc56f7f06fc632654981d5b4e` to
 `8c1a38c11877d871def92bcdff311d1da26039ed`, the latest upstream GitHub `main`
 revision at review time. Refresh the source archive and Cargo vendor hashes.

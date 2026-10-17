@@ -18,8 +18,8 @@ The existing secret inventory commands check, decrypt and rekey these documents.
 Keep decrypted data in private runtime storage outside the checkout and Nix store;
 rotation must update both encrypted copies, the public key and client trust.
 It must also reissue cached server certificates; a gateway restart retains its
-still-valid certificate. See the [rotation boundary](../docs/porsche-operations.md#installer-host-trust).
-The committed `nix/tests/fixtures/ssh-host-ca` authority is disposable test data
+still-valid certificate. See the [rotation boundary](../docs/operations/porsche-operations.md#installer-host-trust).
+The committed `nix/verification/tests/fixtures/ssh-host-ca` authority is disposable test data
 and must never be selected by production configuration.
 
 ## Brady fleet CA
@@ -68,7 +68,7 @@ check repository access before enrollment or activation. Its SSH fingerprint is
 The SecretSpec payload is `overalls-git.production.GIT_DEPLOY_KEY`.
 
 The current recipient is ghuntley's recovery key from
-[`nix/users.nix`](../nix/users.nix), converted to
+[`nix/policy/identity/users.nix`](../nix/policy/identity/users.nix), converted to
 `age1905rqwspmj7v2gw8yvtl0esw7u44yev5v0hcxt3jlyjx463ztv2q3vqdl4`.
 Repository access alone does not permit decryption. This bootstrap document
 remains recovery-only. `overalls-git.enc.json` separately delivers the shared key
@@ -123,11 +123,11 @@ Extract the PEM from the recovered JSON into a mode-0600 file outside Git, then
 use OTP's `crashdump:pem_decrypt(EncryptedPath, PrivateKeyPath, OutputPath)` in the
 operator's environment. Never deliver this private key in a host secret bundle.
 Retain it while any dump encrypted to its public key must remain recoverable.
-See the [crash-dump guide](../docs/observability.md#encrypted-erlang-crash-dumps).
+See the [crash-dump guide](../docs/operations/observability.md#encrypted-erlang-crash-dumps).
 
 ## Recovery and host enrollment
 
-`git-bootstrap` is registered in [`nix/secrets.nix`](../nix/secrets.nix) with
+`git-bootstrap` is registered in [`nix/policy/secrets/secret-documents.nix`](../nix/policy/secrets/secret-documents.nix) with
 `hosts = []; recoveryOnly = true;`. The standard inventory commands include it:
 
 ```sh
@@ -181,14 +181,14 @@ The supplied operator must remain a recovery recipient and decrypt every changed
 document. Rekeying stages changes, rotates data keys and verifies payload and
 recipient equality before publication. Unchanged documents are left untouched.
 Commit the resulting ciphertext changes with the public policy update. See the
-[fleet recovery guide](../docs/fleet-users.md#local-commands). Changing SOPS
+[fleet recovery guide](../docs/operations/fleet-users.md#local-commands). Changing SOPS
 recipients does not rotate the GitHub deploy key or revoke historical plaintext.
 
 Rotating a stored *value* is a payload replacement through `encrypt --replace`:
 the new payload is sealed to the current recipient set. When the value unlocks
 an external credential store — notably the Restic repository password in a
 `HOST-backup` document — follow the matching ceremony in the
-[backup guide](../docs/backups.md#repository-password-rotation) so the external
+[backup guide](../docs/operations/backups.md#repository-password-rotation) so the external
 store learns the new value first. Deploying the replaced document alone wedges
 every scheduled backup with the documented `repository` failure label until the
 repository key adopts the published value through the documented recovery.
@@ -230,7 +230,7 @@ and DNS service tokens** under `overalls-audi.production.AUDI_GATEWAY_TOKEN` and
 plane, issue real credentials on Overalls with the
 `audi-gateway-rotate` / `audi-dns-rotate` operator CLI actions into private
 storage, then replace these documents through private decrypt/encrypt custody
-following the [rollout runbook](../docs/fleet-network.md#audi-public-plane-rollout).
+following the [rollout runbook](../docs/operations/fleet-network.md#audi-public-plane-rollout).
 Audi services fail closed and never report readiness while a placeholder is
 installed.
 

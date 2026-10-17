@@ -69,9 +69,9 @@ mechanism and does not automatically replace running VM disks.
 
 The [guest updater](../../../lyra/src/update.rs), [private Ziggy route](../../../ziggy/lib/ziggy/http.ex),
 [Marshall authorization](../../../marshall/lib/marshall/inference/requests.ex), and
-[guest image definitions](../../../nix/packages/guest/default.nix) implement the basic path.
+[guest image definitions](../../../nix/domains/artifacts/guest/default.nix) implement the basic path.
 Marshall and Ziggy precommit gates, Lyra Rust tests and Clippy, and both
-[NixOS and Ubuntu Firecracker fleet checks](../../../nix/tests/default.nix)
+[NixOS and Ubuntu Firecracker fleet checks](../../../nix/verification/tests/catalog.nix)
 pass. The fleet checks prove periodic replacement of an old image executable,
 private delivery, continued tool work and prompt wakeup. Live rollout to newly
 created guests remains unobserved.
@@ -81,7 +81,7 @@ records a reproduced exec-format failure that bypassed rollback and its narrow
 repair. Generated isolated real-supervisor histories cover candidate start/early
 exit, active drain and retry; fixed cases include the registration deadline and
 startup reconciliation. Their ready receipts are synthetic. The dedicated strict
-[guest recovery driver](../../../nix/tests/machines/guest-cli-recovery/driver.py)
+[guest recovery driver](../../../nix/verification/tests/machines/guest-cli-recovery/driver.py)
 passed invalid-format and registration-timeout recovery in a real NixOS guest,
 with exact prior inode/digest restoration, fresh Marshall fences and completed
 shared-operator tool work. Direct candidate injection bypasses delivery. Ubuntu

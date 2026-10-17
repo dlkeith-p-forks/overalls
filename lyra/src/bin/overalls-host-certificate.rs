@@ -180,17 +180,25 @@ fn run() -> io::Result<()> {
         .open(directory.join("certificate.lock"))?;
     lock.try_lock_exclusive()?;
     let key = key(&directory, gateway.is_none())?;
-    maintain(&directory, &key, now()?, || {
+    maintain(&directory, &key, now()?, gateway.is_some(), || {
         renew(&directory, &key, gateway.as_ref())
     })
 }
+// @cc [owner:ghuntley,label:security;recovery] gateway-principal-from-authority
+// A gateway (`authority_decides`) MUST ask Marshall on every run even while
+// its installed certificate is valid: the principal is Marshall's (the
+// deployment's management host), and a certificate for a previous name stays
+// cryptographically valid for years. A failed request MUST keep a still-valid
+// installation. Guests skip the request while their per-boot certificate is
+// current.
 fn maintain(
     directory: &Path,
     key: &str,
     time: u64,
+    authority_decides: bool,
     renew: impl FnOnce() -> io::Result<()>,
 ) -> io::Result<()> {
-    if matches!(existing(directory, key, time), Installation::Current) {
+    if !authority_decides && matches!(existing(directory, key, time), Installation::Current) {
         return Ok(());
     }
     match renew() {
@@ -317,24 +325,37 @@ mod tests {
             existing(root.path(), &key, cert.valid_before() - RENEWAL_WINDOW),
             Installation::Renewal
         );
-        maintain(root.path(), &key, now().unwrap(), || {
-            panic!("current certificates need no authority request")
+        maintain(root.path(), &key, now().unwrap(), false, || {
+            panic!("current guest certificates need no authority request")
         })
         .unwrap();
-        maintain(root.path(), &key, cert.valid_before() - 1, || {
+        // A gateway asks even while current (its principal may have moved),
+        // and an unavailable authority keeps the valid installation.
+        let mut asked = false;
+        maintain(root.path(), &key, now().unwrap(), true, || {
+            asked = true;
             Err(ssh_certificate::invalid())
         })
         .unwrap();
-        assert!(maintain(root.path(), &key, cert.valid_before(), || Err(
-            ssh_certificate::invalid()
-        ))
-        .is_err());
+        assert!(asked);
+        for gateway in [false, true] {
+            maintain(root.path(), &key, cert.valid_before() - 1, gateway, || {
+                Err(ssh_certificate::invalid())
+            })
+            .unwrap();
+            assert!(
+                maintain(root.path(), &key, cert.valid_before(), gateway, || Err(
+                    ssh_certificate::invalid()
+                ))
+                .is_err()
+            );
+        }
         assert_eq!(
             fs::read_to_string(root.path().join("ssh_host_ed25519_key-cert.pub")).unwrap(),
             line
         );
         fs::write(root.path().join("ssh_host_ed25519_key-cert.pub"), "broken").unwrap();
-        assert!(maintain(root.path(), &key, now().unwrap(), || Err(
+        assert!(maintain(root.path(), &key, now().unwrap(), false, || Err(
             ssh_certificate::invalid()
         ))
         .is_err());

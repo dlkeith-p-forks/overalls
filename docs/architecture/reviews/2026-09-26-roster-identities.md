@@ -50,7 +50,7 @@ allocator, plus one detected-and-restored mutant.
   Guest-side reconciliation against retained pre-Cedar images is a separate
   capability tracked as pending campaign improvement 048 (native retained-image
   roster migration), which owns the native fleet files such as
-  `nix/tests/machines/fleet/ssh-bootstrap-guest.exs`; this improvement does not
+  `nix/verification/tests/machines/fleet/ssh-bootstrap-guest.exs`; this improvement does not
   touch them. Improvement 018 retains the fourth native NixOS journey evidence
   for fresh NixOS disks; this change does not claim any native run.
 - **Dependencies.** None.
@@ -253,7 +253,7 @@ improvement's final report and are not re-executed by future readers.
   reconciler against retained pre-Cedar images is a separate capability
   scheduled as pending campaign improvement 048 (native retained-image roster
   migration), which owns the native fleet files under
-  `nix/tests/machines/fleet/`; this change touches none of them. The Rust
+  `nix/verification/tests/machines/fleet/`; this change touches none of them. The Rust
   helper's stale-roster/version enforcement (`ssh.roster_stale`) is
   Marshall-version-agnostic and covered by its existing Hegel/unit tests.
 - Improvement 018's retained scopes stand: native Ubuntu fresh identity,

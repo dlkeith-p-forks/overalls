@@ -5,7 +5,7 @@ the packages it installs, WSL features, and how the offline build reaches them.
 
 ## Scope and impact
 
-- Image builder (`nix/packages/guest/windows`): Desktop Experience edition;
+- Image builder (`nix/domains/artifacts/guest/windows`): Desktop Experience edition;
   winget and packages from `winget.json`; the installation guest's only
   reachable endpoint is a QEMU `guestfwd` file server over the staged
   installers; WSL optional features via DISM in specialize; a one-shot
@@ -17,7 +17,7 @@ the packages it installs, WSL features, and how the offline build reaches them.
   `windows-serial-console` ("the finished image MUST NOT autologon"),
   new `windows-winget-pinned-offline`.
 - Governance: ADR-0173 (proposed, partial); ADR-0171 gate 5 evidence points at
-  the replacement; HLDD 07 "Tools in Windows images"; `docs/windows-guests.md`.
+  the replacement; HLDD 07 "Tools in Windows images"; `docs/guests/windows-guests.md`.
 
 ## Findings
 

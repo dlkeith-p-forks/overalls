@@ -71,6 +71,12 @@ defmodule Marshall.Threads.Thread do
       run {Marshall.Threads.Coordinator, operation: :list}
     end
 
+    action :list_page_for_user, :map do
+      argument :after, :uuid
+      argument :limit, :integer, default: 50, constraints: [min: 1, max: 100]
+      run {Marshall.Threads.Coordinator, operation: :list_page}
+    end
+
     action :get_for_user, :struct do
       argument :thread_id, :uuid, allow_nil?: false
       run {Marshall.Threads.Coordinator, operation: :get}
@@ -274,6 +280,13 @@ defmodule Marshall.Threads.Thread do
 
     update :set_collaboration_mode_state do
       accept [:collaboration_mode]
+    end
+
+    # Activity is projected from durable agent events. This action intentionally
+    # accepts no business attributes: the update timestamp is the projection.
+    update :touch_activity do
+      accept []
+      change Marshall.Threads.TouchActivity
     end
 
     destroy :archive

@@ -18,7 +18,7 @@ Pause eight real Git utilities after native admission using a deterministic allo
 
 #### How can real Git pause after slot acquisition without changing production ownership or executable path?
 
-- Examined: `enrico/native/git-owner/src/main.rs:100-190`, `enrico/lib/enrico/git.ex:52-95,392-443`, and `nix/tests/machines/enrico-service/driver.py:300-325`.
+- Examined: `enrico/native/git-owner/src/main.rs:100-190`, `enrico/lib/enrico/git.ex:52-95,392-443`, and `nix/verification/tests/machines/enrico-service/driver.py:300-325`.
 - Found: the owner acquires a stable slot flock and per-repository lock before spawning the real Git executable. The packaged service fixture uses `systemctl kill --signal=SIGSTOP --kill-whom=all nginx.service` to pause a verified-TLS Git fetch while retaining the production executable and owner path.
 - Conclusion: resolved. Start the eight fetches against distinct small fixture repos, pause the fixture HTTPS server before the Git network response, then verify lock holders and refusal. Confirm each helper acquired its lock before declaring saturation.
 
@@ -31,7 +31,7 @@ Pause eight real Git utilities after native admission using a deterministic allo
 
 #### Can a local deterministic fixture satisfy Enrico's fixed source-origin policy without weakening it?
 
-- Examined: `enrico/lib/enrico/git.ex:48-70,410-411`, `nix/tests/machines/enrico-service/default.nix:12-40`, and `driver.py:17-21`.
+- Examined: `enrico/lib/enrico/git.ex:48-70,410-411`, `nix/verification/tests/machines/enrico-service/default.nix:12-40`, and `driver.py:17-21`.
 - Found: production code always forms `https://github.com/<owner>/<repo>.git`; the Nix machine maps `github.com` to loopback and serves a local bare Git repo over TLS with a trusted fixture certificate. No arbitrary URL or runtime source override is used.
 - Conclusion: resolved. Reuse DNS and CA fixture design in the hosted topology, with only synthetic repository labels.
 

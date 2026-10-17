@@ -200,7 +200,7 @@ Observed facts:
 
 - The installation network is `restrict=on`; the only forward is
   `guestfwd=tcp:10.0.2.100:80` to `serve-pinned.py` over the staged installer
-  directory (`nix/tests/evaluation/windows-guest.nix`).
+  directory (`nix/verification/tests/evaluation/windows-guest.nix`).
 - Every winget input is in `winget.json` and fetched by Nix against its
   SHA-256; `stage-winget.py` re-verifies each digest; winget verifies each
   installer again (contract `windows-winget-pinned-offline`).
@@ -212,21 +212,21 @@ Observed facts:
 
 ## Implementation evidence
 
-- Builder: [default.nix](../../../nix/packages/guest/windows/default.nix)
+- Builder: [default.nix](../../../nix/domains/artifacts/guest/windows/default.nix)
   (edition, `wingetPins`, `wingetPayload`, `--serve-command`, marker checks),
-  [winget.json](../../../nix/packages/guest/windows/winget.json),
-  [update-winget-pins.py](../../../nix/packages/guest/windows/update-winget-pins.py),
-  [stage-winget.py](../../../nix/packages/guest/windows/stage-winget.py),
-  [serve-pinned.py](../../../nix/packages/guest/windows/serve-pinned.py),
-  [install.py](../../../nix/packages/guest/windows/install.py) (`guestfwd`),
-  [overalls-winget.ps1](../../../nix/packages/guest/windows/overalls-winget.ps1),
-  [SetupComplete.cmd](../../../nix/packages/guest/windows/SetupComplete.cmd),
-  [FirstLogon.cmd](../../../nix/packages/guest/windows/FirstLogon.cmd),
-  [autounattend.xml](../../../nix/packages/guest/windows/autounattend.xml)
+  [winget.json](../../../nix/domains/artifacts/guest/windows/winget.json),
+  [update-winget-pins.py](../../../nix/domains/artifacts/guest/windows/update-winget-pins.py),
+  [stage-winget.py](../../../nix/domains/artifacts/guest/windows/stage-winget.py),
+  [serve-pinned.py](../../../nix/domains/artifacts/guest/windows/serve-pinned.py),
+  [install.py](../../../nix/domains/artifacts/guest/windows/install.py) (`guestfwd`),
+  [overalls-winget.ps1](../../../nix/domains/artifacts/guest/windows/overalls-winget.ps1),
+  [SetupComplete.cmd](../../../nix/domains/artifacts/guest/windows/SetupComplete.cmd),
+  [FirstLogon.cmd](../../../nix/domains/artifacts/guest/windows/FirstLogon.cmd),
+  [autounattend.xml](../../../nix/domains/artifacts/guest/windows/autounattend.xml)
   (one-shot `AutoLogon`, `FirstLogonCommands`),
-  [specialize.cmd](../../../nix/packages/guest/windows/specialize.cmd).
+  [specialize.cmd](../../../nix/domains/artifacts/guest/windows/specialize.cmd).
 - Git consumer: [overalls-workspaced-windows.rs](../../../lyra/src/bin/overalls-workspaced-windows.rs).
-- Evaluation gate: [windows-guest.nix](../../../nix/tests/evaluation/windows-guest.nix).
+- Evaluation gate: [windows-guest.nix](../../../nix/verification/tests/evaluation/windows-guest.nix).
 - Recorded installation (2026-10-15, `mqj5w29p…-lilly-windows-server-2025-x86_64`,
   500.6 s): features enabled (DISM 3010/3010), the build server's zone
   Intranet for the step, all eight packages installed (Git 24 s, GitHub CLI
@@ -239,8 +239,8 @@ Observed facts:
   [2026-10-15 Windows images with winget](../reviews/2026-10-15-windows-images-winget.md).
 - `checks.windows-lilly-guest-agents` on that image: pass (2026-10-15
   12:36–13:20 UTC).
-- Visual Studio: [vs-layout.json](../../../nix/packages/guest/windows/vs-layout.json),
-  [update-vs-layout.ps1](../../../nix/packages/guest/windows/update-vs-layout.ps1);
+- Visual Studio: [vs-layout.json](../../../nix/domains/artifacts/guest/windows/vs-layout.json),
+  [update-vs-layout.ps1](../../../nix/domains/artifacts/guest/windows/update-vs-layout.ps1);
   offline install on fleet VM `win-dx-1` (exit 0, 571 s); image
   `hd2bvg1n…-lilly-windows-server-2025-x86_64` (64 GiB disk, 22.0 GB used,
   1 491 s installation): layout rebuilt in 110 s (1 057 files, 5.95 GB), nine

@@ -115,8 +115,8 @@ update by renaming over the running binary, which Windows forbids.
   [SSH setup](../../../lyra/src/ssh_config.rs), [proxy](../../../lyra/src/proxy.rs),
   [updater](../../../lyra/src/update.rs), [open](../../../lyra/src/open_cli.rs),
   [logs](../../../lyra/src/log.rs), [trust](../../../lyra/src/trust.rs).
-- Packaging: [Lyra release](../../../nix/packages/lyra.nix),
-  [installer check](../../../nix/tests/overalls-install-ps1.nix).
+- Packaging: [Lyra release](../../../nix/domains/artifacts/infrastructure/lyra.nix),
+  [installer check](../../../nix/verification/tests/overalls-install-ps1.nix).
 - Marshall: [installer](../../../marshall/priv/overalls-install.ps1),
   [rendering](../../../marshall/lib/marshall_web/overalls_installer.ex),
   [controller](../../../marshall/lib/marshall_web/controllers/overalls_controller.ex),

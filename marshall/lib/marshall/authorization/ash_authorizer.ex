@@ -86,11 +86,13 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :reopen,
       :set_title,
       :set_collaboration_mode_state,
+      :touch_activity,
       :archive
     ],
     Marshall.Threads.Grant => [:read, :history, :grant, :mark_revoked, :revoke],
     Marshall.Threads.Grant.Version => [:read, :create],
     Marshall.Threads.AccessChange => [:read, :record],
+    Marshall.Threads.Generation => [:read, :open, :bind, :state],
     Marshall.Compute.LifecycleEvent => [:read, :record, :expire],
     Marshall.Galileo.Credential => [:read, :issue, :revoke],
     Marshall.Galileo.Credential.Version => [:read, :create],
@@ -571,6 +573,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
                     state.action in [
                       :create_thread,
                       :list_for_user,
+                      :list_page_for_user,
                       :get_for_user,
                       :submit_prompt,
                       :retry_provisioning,

@@ -162,7 +162,7 @@ historical actor is inferred. The inventory is protected by an introspection tes
 [Database audit tests](../../../marshall/test/marshall/compute/lifecycle_audit_test.exs)
 have passed; [journal properties](../../../lilly/test/lifecycle/journal_test.exs)
 exercise idempotency, corruption and an independent dataset model.
-[Native crash driver](../../../nix/tests/machines/zfs-lifecycle/driver.py) checks
+[Native crash driver](../../../nix/verification/tests/machines/zfs-lifecycle/driver.py) checks
 audit envelopes alongside actual ZFS recovery.
 The [execution journal threshold regression](../../../lilly/test/vm/journal_test.exs)
 checks that a 48-event backlog warning uses the closed resource atom and allows
@@ -173,7 +173,7 @@ also avoids raising after a committed host event when the action or state has
 no preexisting Marshall atom; the original strings remain durable.
 
 Remaining milestone gates and exact executed results are tracked in the
-[implementation ledger](../../lifecycle-implementation.md). Final native,
+[implementation ledger](../../history/ledgers/lifecycle-implementation.md). Final native,
 distributed, contract and Dialyzer verification is still in progress.
 
 ## Open questions

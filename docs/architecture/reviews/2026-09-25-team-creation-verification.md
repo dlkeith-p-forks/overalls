@@ -76,7 +76,7 @@ and `TMPDIR=/tmp/kittens-verify004`:
   passed 19 checks (1 property, 18 tests); 37 unselected distributed tests were
   excluded. This includes committed same-name creation across three peers.
 
-The extended [native browser fixture](../../../nix/tests/machines/teams/browser.py)
+The extended [native browser fixture](../../../nix/verification/tests/machines/teams/browser.py)
 uses the real packaged Marshall release, PostgreSQL and Chromium over verified
 HTTPS. It checks original-owner retries, foreign creation refusals before
 membership exists, current/former owner refusals after transfer, and recovery by

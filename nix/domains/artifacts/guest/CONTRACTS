@@ -1,0 +1,54 @@
+@cc [owner:ghuntley,label:build] guest-image-identity
+A Linux guest artifact MUST contain an x86-64 uncompressed ELF kernel, its
+matching initrd and a rootfs assembled from the named distribution's pinned
+release inputs. Manifests MUST record SHA-256 and byte lengths of those exact
+artifacts. Linux images use version 4 and declare source protocol 2 only when
+their workspace receiver is enabled at boot, otherwise null. Native FreeBSD and
+illumos images use version 6 with the pinned CloudHv firmware and raw-GPT disk;
+the FreeBSD disk retains its EFI and UFS partitions. Every native manifest MUST
+record exact artifact sizes and digests. Firmware-booted Windows images use
+version 5 under the separate `windows/CONTRACTS` identity contract (ADR-0170).
+Editor-capable images MUST additionally record the immutable protocol/source/patch
+release descriptor and at least 2 GiB writable disk headroom. The immutable rootfs
+is a template for a separate writable VM disk. See ADR-0011 and ADR-0016.
+
+@cc [owner:ghuntley,label:build;security] native-agent-payload
+FreeBSD and illumos image builders MAY copy a reviewed native-agent payload only
+when its binaries are built from the pinned Lyra source and the manifest declares
+the matching native agent set. A workspace source version 2 MUST NOT be emitted
+without that payload and a corresponding guest service definition. Copying a
+binary into an image does not by itself establish readiness, trust, terminal,
+workspace, SSH or execution capability; those claims require boot-bound daemon
+responses and runtime evidence.
+
+@cc [owner:ghuntley,label:build;security] foreign-linux-runtime-closure
+Arch and RPM based foreign Linux images MUST carry the pinned Lyra and terminald
+guest binaries, readiness/network/resize scripts, Python, Git, OpenSSH, sudo,
+certificate bundle and every referenced runtime closure path. Their systemd units
+MUST use explicit FHS links under /usr and /usr/local, and image assembly MUST NOT
+invoke a distribution package manager or fetch network content.
+
+@cc [owner:ghuntley,label:recovery] foreign-linux-service-boundaries
+Foreign Linux images with private service roots MUST enable generic Linux trustd,
+workspaced, roster-bound SSH, private DNS, readiness and terminal units. Trust and
+network ordering MUST precede readiness; workspace cloning MUST remain outside the
+readiness dependency set. Images without private roots MUST leave those listeners
+disabled while retaining the serial-login and root-login fences.
+
+@cc [owner:ghuntley,label:security] guest-console-access-boundary
+Guest PTY access MUST be mediated by Marshall's authenticated terminal authority
+and Lilly's boot-bound vsock gate. Serial output MUST remain read-only without
+root autologin. Guest SSH MUST deny root login, require a current per-user account
+roster from the private Audi service before sshd starts, and authorize each
+offered key against the current VM, account and Cedar grant. SSH MUST be
+public-key only, use certified per-boot host keys kept only in /run, and remain behind Audi's VM-bound
+authorization. User homes MUST survive account deactivation.
+
+@cc [owner:ghuntley,label:security] guest-network-address-scope
+Guest networking MUST accept only one validated `lilly.ipv4` parameter from the
+10.10, 10.20, 10.30 or 10.40 profile ranges, excluding reserved endpoints. It MUST use
+/32 addresses and a host gateway route; DHCP and IPv6 MUST remain disabled.
+Inception MUST also derive its Audi address in 10.41 at exactly the same slot.
+Other profiles MUST NOT receive a secondary address.
+The guest configuration alone MUST NOT be treated as sibling/host isolation;
+the host's routing and nftables policy supply that boundary under ADR-0015.

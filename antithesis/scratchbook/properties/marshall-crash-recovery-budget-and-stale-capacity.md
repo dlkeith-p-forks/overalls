@@ -43,7 +43,7 @@ without replacing `Ledger.now/0` with a fake source? `(partial: a future persist
 
 #### Can current hosted DB-time fault enablement reach backward time without replacing Ledger.now/0?
 
-- Examined: `marshall/lib/marshall/compute/ledger.ex:232-235`, `marshall/test/marshall/compute/lifecycle_test.exs:378-386`, `nix/tests/machines/fleet/scenarios/runtime-readiness.py`, and current hosted topology plan.
+- Examined: `marshall/lib/marshall/compute/ledger.ex:232-235`, `marshall/test/marshall/compute/lifecycle_test.exs:378-386`, `nix/verification/tests/machines/fleet/scenarios/runtime-readiness.py`, and current hosted topology plan.
 - Found: `Ledger.now/0` reads PostgreSQL `clock_timestamp()` directly. The lifecycle test writes three timestamps 60 seconds ahead of that clock and verifies a new crash is refused; this tests the backwards-clock *decision state* without modifying the database clock. The topology proposes a PostgreSQL service but does not declare a controllable clock namespace or a clock-step action.
 - Not found: a current hosted fault mechanism that safely moves PostgreSQL's wall clock backwards while keeping real `Ledger.now/0`; no test in the inspected native fixtures exercises a database clock step for this recovery path.
 - Conclusion: partial. The future-timestamp case is source-backed and immediately testable via persisted state; a true clock rollback needs an explicit supported DB time namespace or clock fault probe and a measured before/after `clock_timestamp()` sample. Do not claim a real clock fault from the existing unit test.

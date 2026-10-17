@@ -156,9 +156,9 @@ manifest to pass the same temporal schema that retention will later apply.
 
 **Evidence:** Backup runtime samples start and completion wall time separately,
 constructs a complete manifest, uploads it, marks the journal completed, and
-only then invokes retention (`nix/modules/backups/runtime.py:208-225`). The
+only then invokes retention (`nix/domains/system/backups/runtime.py:208-225`). The
 retention validator requires `started_at <= completed_at` and validates every
-manifest before forgetting (`nix/modules/backups/restic.py:239-242,272-274`).
+manifest before forgetting (`nix/domains/system/backups/restic.py:239-242,272-274`).
 The assumptions discovery documents an isolated modeled start=2000,
 completion=1000 counterexample to the schema, while explicitly saying that
 full clock-step/Restic/native execution has not run

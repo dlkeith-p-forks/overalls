@@ -1,14 +1,14 @@
 { pkgs, nixpkgs }:
 let
   inherit (pkgs) lib;
-  productionPackages = import ../../nix/packages { inherit pkgs; };
-  packages = import ../../nix/packages { inherit pkgs; antithesisSdk = true; };
-  guestPackages = import ../../nix/packages {
+  productionPackages = import ../../nix/domains/artifacts/default.nix { inherit pkgs; };
+  packages = import ../../nix/domains/artifacts/default.nix { inherit pkgs; antithesisSdk = true; };
+  guestPackages = import ../../nix/domains/artifacts/default.nix {
     inherit pkgs;
     antithesisSdk = true;
     antithesisGuest = true;
   };
-  hostPackages = import ../../nix/packages {
+  hostPackages = import ../../nix/domains/artifacts/default.nix {
     inherit pkgs;
     antithesisSdk = true;
     antithesisGuest = true;
@@ -148,7 +148,7 @@ let
     qemu_img = "${recorderHost.qemu}/bin/qemu-img";
     mkfs_ext4 = "${pkgs.e2fsprogs}/bin/mkfs.ext4";
   });
-  enricoGitOwner = pkgs.callPackage ../../nix/packages/enrico-git-owner.nix {};
+  enricoGitOwner = pkgs.callPackage ../../nix/domains/artifacts/applications/enrico-git-owner.nix {};
   enricoTools = pkgs.buildEnv {
     name = "overalls-antithesis-enrico-tools";
     paths = [ pkgs.git enricoGitOwner ];
@@ -207,7 +207,7 @@ let
     nativeBuildInputs = [ pkgs.coreutils ];
   } ''
     mkdir -p "$out"
-    cp ${../../nix/modules/backups}/*.py "$out/"
+    cp ${../../nix/domains/system/backups}/*.py "$out/"
   '';
   # @cc [owner:ghuntley,label:build;verification] recorder-independent-images
   # The producer, durable recorder and trace spool MUST ship production
@@ -224,11 +224,11 @@ let
   '';
   traceFixtures = pkgs.runCommand "overalls-antithesis-trace-fixtures" {} ''
     mkdir -p "$out"
-    cp ${../../nix/tests/fixtures/trace-spool/request.hex} "$out/request.hex"
-    cp ${../../nix/tests/fixtures/trace-spool/batch.hex} "$out/batch.hex"
+    cp ${../../nix/verification/tests/fixtures/trace-spool/request.hex} "$out/request.hex"
+    cp ${../../nix/verification/tests/fixtures/trace-spool/batch.hex} "$out/batch.hex"
   '';
-  requestRecorder = pkgs.callPackage ../../nix/modules/otel-guest/receiver.nix {};
-  traceSpool = pkgs.callPackage ../../nix/packages/trace-spool.nix {};
+  requestRecorder = pkgs.callPackage ../../nix/domains/system/otel-guest/receiver.nix {};
+  traceSpool = pkgs.callPackage ../../nix/domains/artifacts/infrastructure/trace-spool.nix {};
   otpNames = [ "marshall" "lilly" "audi" "porsche" "ziggy" "galileo" "brady" "enrico" ];
   otpContext = name: closure.mkContext {
     inherit name;

@@ -3,7 +3,7 @@
 ## Scope and architecture impact
 
 This review covers two host updater recovery paths in
-[runtime.py](../../../nix/modules/auto-update/runtime.py): preflight for
+[runtime.py](../../../nix/domains/system/auto-update/runtime.py): preflight for
 `/dev/shm` and a new Git revision that builds the already-active system and
 manifest. It affects ADR-0036's activation and health implementation, carried
 forward by ADR-0038, ADR-0043 and ADR-0048. The existing candidate identity,

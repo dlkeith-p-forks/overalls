@@ -32,133 +32,121 @@ fn outcome_classifier_matches_the_closed_lattice(_tc: TestCase) {
     }
 }
 
+type Selected = (u64, u64, Option<i32>, Option<u32>, Option<u32>);
+
+/// The independent selector specification.
+fn oracle(words: &[OsString]) -> Option<Selected> {
+    let [timeout, rate, progress, producer_uid, consumer_uid, producers, rest @ ..] = words else {
+        return None;
+    };
+    let decimal = |text: &OsString, min: u64, max: u64| -> Option<u64> {
+        let text = text.to_str()?;
+        if text.is_empty()
+            || !text.bytes().all(|b| b.is_ascii_digit())
+            || (text.len() > 1 && text.starts_with('0'))
+        {
+            return None;
+        }
+        text.parse::<u64>().ok().filter(|v| (min..=max).contains(v))
+    };
+    let dash = |text: &OsString, min: u64, max: u64| -> Option<Option<u64>> {
+        if text == "-" {
+            Some(None)
+        } else {
+            decimal(text, min, max).map(Some)
+        }
+    };
+    let t = decimal(timeout, 1000, 86_400_000)?;
+    let r = decimal(rate, 0, 1_073_741_824)?;
+    let progress = dash(progress, 3, 1023)?.map(|fd| fd as i32);
+    let producer_uid = dash(producer_uid, 1, 4_294_967_294)?.map(|uid| uid as u32);
+    let consumer_uid = dash(consumer_uid, 1, 4_294_967_294)?.map(|uid| uid as u32);
+    let split = usize::try_from(decimal(producers, 1, 128)?).ok()?;
+    if rest.len() < split + 1 || rest.len() - split > CONSUMER_ARGS_LIMIT {
+        return None;
+    }
+    let producer = &rest[..split];
+    let consumer = &rest[split..];
+    if !producer[0].as_os_str().as_bytes().starts_with(b"/")
+        || !consumer[0].as_os_str().as_bytes().starts_with(b"/")
+        || producer
+            .iter()
+            .chain(consumer.iter())
+            .any(|a| a.is_empty() || a.as_os_str().as_bytes().contains(&0))
+    {
+        return None;
+    }
+    Some((t, r, progress, producer_uid, consumer_uid))
+}
+
 /// @cc [owner:ghuntley,label:verification] hegel-transfer-selector-oracle
 /// Generated argv vectors MUST classify against the independent selector spec:
-/// absolute lock/producer/consumer heads, bounded counts and byte span.
+/// bounded timeout, rate, progress descriptor and side uids (never root),
+/// absolute producer/consumer heads and bounded counts.
 #[hegel::test]
 fn cli_selector_matches_independent_oracle(tc: TestCase) {
-    let base = ["/lock", "/prod/0", "/cons/0", "1000", "1"];
-    let argc = tc.draw(gs::integers::<usize>().min_value(0).max_value(10));
+    let base = ["1000", "0", "-", "-", "977", "1", "/prod/0", "/cons/0"];
+    let argc = tc.draw(gs::integers::<usize>().min_value(0).max_value(12));
     let mut words: Vec<OsString> = Vec::new();
     for index in 0..argc {
         let candidate = if index < base.len() && tc.draw(gs::booleans()) {
             base[index].to_string()
         } else {
             tc.draw(gs::sampled_from(&[
-                "", "/", "x", "0", "999", "1000", "86400000", "86400001", "129", "/prod", "/cons",
+                "",
+                "-",
+                "/",
+                "x",
+                "0",
+                "1",
+                "2",
+                "3",
+                "999",
+                "1000",
+                "1023",
+                "1024",
+                "86400000",
+                "86400001",
+                "1073741824",
+                "1073741825",
+                "4294967294",
+                "4294967295",
+                "129",
+                "/prod",
+                "/cons",
                 "otra",
+                "01",
             ]))
             .to_string()
         };
         words.push(OsString::from(candidate));
     }
-    let expected: Option<()> = (|| {
-        let [lock, timeout, producers, rest @ ..] = words.as_slice() else {
-            return None;
-        };
-        let t = number(timeout, 1000, 86_400_000)?;
-        let p = number(producers, 1, PRODUCER_ARGS_LIMIT as i64)?;
-        let split = usize::try_from(p).ok()?;
-        if rest.len() < split + 1 || rest.len() - split > CONSUMER_ARGS_LIMIT {
-            return None;
-        }
-        let producer = &rest[..split];
-        let consumer = &rest[split..];
-        if t == 0 || consumer.is_empty() {
-            return None;
-        }
-        if !lock.as_os_str().as_bytes().starts_with(b"/")
-            || !producer[0].as_os_str().as_bytes().starts_with(b"/")
-            || !consumer[0].as_os_str().as_bytes().starts_with(b"/")
-        {
-            return None;
-        }
-        if producer
-            .iter()
-            .chain(consumer.iter())
-            .any(|a| a.is_empty() || a.as_os_str().as_bytes().contains(&0))
-        {
-            return None;
-        }
-        let total: usize = producer
-            .iter()
-            .chain(consumer.iter())
-            .map(|a| a.as_os_str().as_bytes().len() + 1)
-            .sum();
-        if total > ARGV_TOTAL_LIMIT {
-            return None;
-        }
-        Some(())
-    })();
-    match (parse_cli(&words), expected) {
+    match (parse_cli(&words), oracle(&words)) {
         (None, None) => {}
-        (Some(request), Some(())) => {
-            assert_eq!(request.lock.as_os_str(), words[0].as_os_str());
-            assert_eq!(
-                request.timeout_ms,
-                words[1]
-                    .to_string_lossy()
-                    .parse::<u64>()
-                    .expect("drawn timeout")
-            );
+        (Some(request), Some((timeout, rate, progress, producer_uid, consumer_uid))) => {
+            assert_eq!(request.timeout_ms, timeout);
+            assert_eq!(request.rate, rate);
+            assert_eq!(request.progress, progress);
+            assert_eq!(request.producer_uid, producer_uid);
+            assert_eq!(request.consumer_uid, consumer_uid);
             assert_eq!(
                 request.producer.len() + request.consumer.len(),
-                words.len() - 4
+                words.len() - 6
             );
         }
         (parsed, expected) => panic!("diverged: parsed={parsed:?} expected={expected:?}"),
     }
 }
 
-/// @cc [owner:ghuntley,label:verification] hegel-transfer-progress-or-env
-/// Generated env strings MUST classify via the independent env spec:
-/// progress ∈ {absent, "0", "1"}, rate a decimal in 0..=1073741824 with no
-/// leading zero; anything else is rejected (exit 64 through the caller).
-#[hegel::test]
-fn env_config_matches_independent_spec(tc: TestCase) {
-    let progress_opts = ["0", "1", "yes", "", "00"];
-    let rate_candidates = [
-        "0",
-        "1",
-        "00",
-        "1073741824",
-        "1073741825",
-        "x",
-        "18446744073709551616",
-    ];
-    let progress = if tc.draw(gs::booleans()) {
-        Some(tc.draw(gs::sampled_from(&progress_opts)).to_string())
-    } else {
-        None
+/// Root is never an accepted side uid, whatever else is valid.
+#[test]
+fn root_side_uid_is_refused() {
+    let words = |uid: &str| -> Vec<OsString> {
+        ["1000", "0", "-", uid, "-", "1", "/p", "/c"]
+            .iter()
+            .map(OsString::from)
+            .collect()
     };
-    let rate = if tc.draw(gs::booleans()) {
-        Some(tc.draw(gs::sampled_from(&rate_candidates)).to_string())
-    } else {
-        None
-    };
-    let expected_progress = match progress.as_deref() {
-        None => Some(false),
-        Some("0") => Some(false),
-        Some("1") => Some(true),
-        _ => None,
-    };
-    let expected_rate = match rate.as_deref() {
-        None => Some(0),
-        Some(text) if !(text.is_empty() || text.len() > 1 && text.starts_with('0')) => {
-            if text.bytes().all(|b| b.is_ascii_digit()) {
-                text.parse::<u64>().ok().filter(|v| *v <= 1_073_741_824)
-            } else {
-                None
-            }
-        }
-        _ => None,
-    };
-    match (expected_progress, expected_rate) {
-        (Some(p), Some(r)) => {
-            let config = parse_env(progress.as_deref(), rate.as_deref()).expect("accepted");
-            assert_eq!(config.progress, p);
-            assert_eq!(config.rate, r);
-        }
-        _ => assert_eq!(parse_env(progress.as_deref(), rate.as_deref()), None),
-    }
+    assert!(parse_cli(&words("0")).is_none());
+    assert!(parse_cli(&words("977")).is_some());
 }

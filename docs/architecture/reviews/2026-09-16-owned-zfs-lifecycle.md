@@ -23,7 +23,7 @@ backing extents, rejects sibling capacity duplication and mixed ext4/ZFS overlap
 and verifies ready ownership before crediting exclusive physical bytes.
 [Collector](../../../lilly/lib/lilly/host/collector.ex) reports capacity through
 the existing v2 shape. ZFS virtual mount devices do not provide diskstats rates.
-[NixOS options](../../../nix/modules/lilly.nix) require explicit GUIDs and logical
+[NixOS options](../../../nix/domains/system/lilly.nix) require explicit GUIDs and logical
 budget and supply the kernel-matched host ZFS package. Service activation assumes
 an existing mounted parent; it does not import, format or repartition storage.
 

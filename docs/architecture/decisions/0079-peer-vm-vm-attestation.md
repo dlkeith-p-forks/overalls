@@ -75,7 +75,7 @@ token verification to Audi gateways; peer forwarding in
 [Audi control client](../../../audi/lib/audi/control/client.ex) consumes that
 endpoint and the [HTTP proxy](../../../audi/lib/audi/http/proxy.ex) verifies the
 token before opening the target connection and injects trusted provenance. The
-[fleet scenario](../../../nix/tests/machines/fleet/scenarios/galileo.py) verifies
+[fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/galileo.py) verifies
 cross-guest provenance replacement and absence of forwarded peer authorization.
 These NixOS machines share one physical failure domain.
 

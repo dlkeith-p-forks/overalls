@@ -52,7 +52,7 @@ commits**. Counting a commit once per source root it touches gives:
 | Ziggy | 33 | 5 |
 
 Protocol has 74 touching commits and seven matching subjects; Lyra has 31/six;
-Nix has 496/71, including 445/65 under `nix/tests`. Backups has nine/two and
+Nix has 496/71, including 445/65 under `nix/verification/tests`. Backups has nine/two and
 auto-update 33/five. These are overlapping **change and attention indicators**,
 not defect counts or comparable defect rates. Subjects include test repairs;
 large checkpoint commits contain multiple features/fixes; source sizes and
@@ -136,7 +136,7 @@ claiming records while continuing after another record fails. The earlier diff
 halted the entire sweep on its first failure.
 
 `lilly/test/lifecycle/standby_disk_test.exs` covers durable state/binding histories;
-`nix/tests/machines/image-template/probe.exs` and driver supply native standby
+`nix/verification/tests/machines/image-template/probe.exs` and driver supply native standby
 seams. The observability source review explicitly qualifies the newly modified
 slow-claim/interrupted-unmount fixture's author-reported pass and missing exact
 capture. Target interruption before/after owner-property change, rename and
@@ -158,7 +158,7 @@ all-adopted-child completion concern (`lilly/native/*/src/lib.rs`), with separat
 native histories. Backup `f26e0d47` fixes another variant: direct leader exit
 previously skipped group retirement. It pins unreaped PID/PGID identity, signals
 the group, and scans every thread before permitting snapshot cleanup.
-`nix/tests/evaluation/backup-workflow.py` independently verifies leader-exited
+`nix/verification/tests/evaluation/backup-workflow.py` independently verifies leader-exited
 readers and a zombie leader with live worker threads. Same-group backup evidence
 must not be promoted to cleanup of escaped sessions or whole service cgroups.
 This is the strongest cross-language recurring failure pattern in the sample.
@@ -173,7 +173,7 @@ retirement explicitly empties backing. The property independently checks deque
 allocation and the retained weak Session, then drains and counts every queued
 NUL byte. It does not mistake a zero accounting counter for released memory or
 claim process RSS/native guest isolation. Relevant files are `ring.rs`,
-`session.rs` and `retired_ring_tests.rs` under `nix/packages/terminald/src`.
+`session.rs` and `retired_ring_tests.rs` under `nix/domains/artifacts/terminald/src`.
 
 Combine overwrite, ring growth, natural EOF, explicit kill and viewer reconnection
 with concurrent neighboring PTYs. At browser level, `27f4f748` separately fixes

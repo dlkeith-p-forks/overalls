@@ -81,9 +81,9 @@ documents and per-host recipients for the leaf.
 The [PKI authority](../../../audi/priv/private_pki/authority.py) generates
 the wildcard names and lifetimes, mirrored by
 [PrivateServices](../../../protocol/lib/overalls_protocol/private_services.ex).
-The [audi-private module](../../../nix/modules/audi-private.nix) consumes
+The [audi-private module](../../../nix/domains/system/audi-private.nix) consumes
 the static certificate through systemd credentials, and the
-[machines test](../../../nix/tests/machines/private-services/default.nix)
+[machines test](../../../nix/verification/tests/machines/private-services/default.nix)
 exercises the resulting DNS/TLS path. The issuer module and renewal agent
 are removed in this change. The production
 [recovery ciphertext](../../../secrets/private-ca-recovery.enc.json),

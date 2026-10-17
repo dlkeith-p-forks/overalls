@@ -1,5 +1,6 @@
 defmodule Lilly.Host.ImageTest do
   use ExUnit.Case, async: true
+  use ExUnitProperties
   alias Lilly.Host.Image
   @moduletag :tmp_dir
 
@@ -305,6 +306,32 @@ defmodule Lilly.Host.ImageTest do
     manifest_path = Path.join(path, "manifest.json")
     File.write!(manifest_path, JSON.encode!(manifest))
     File.chmod!(manifest_path, 0o444)
+  end
+
+  describe "sealed identities" do
+    # @cc [owner:ghuntley,label:verification;recovery] sealed-identity-remount-tests
+    # A remount's new device number MUST NOT break a seal; any other changed
+    # field, or a missing or extra file, MUST.
+    property "only the device number may differ across a remount" do
+      check all(
+              names <- uniq_list_of(string(:alphanumeric, min_length: 1), min_length: 1),
+              values <- list_of(non_negative_integer(), length: 11),
+              device <- non_negative_integer(),
+              field <- integer(1..10),
+              bump <- positive_integer()
+            ) do
+        expected = Map.new(names, &{&1, values})
+        remounted = Map.new(names, &{&1, List.replace_at(values, 0, device)})
+        assert Image.same_files?(remounted, expected)
+
+        [name | _] = names
+        changed = Map.update!(expected, name, &List.update_at(&1, field, fn v -> v + bump end))
+        refute Image.same_files?(changed, expected)
+        refute Image.same_files?(Map.delete(expected, name), expected)
+        refute Image.same_files?(Map.put(expected, name <> ".extra", values), expected)
+        refute Image.same_files?(Map.put(expected, name, Enum.take(values, 10)), expected)
+      end
+    end
   end
 
   describe "digest cache" do

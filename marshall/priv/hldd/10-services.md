@@ -8,6 +8,21 @@ admission, so trace saturation remains visible without recursive spans. Producer
 restart resets volatile counters; independent spool health records durable
 custody and delivery. Grafana presents both boundaries.
 
+## Native FreeBSD and illumos guest services
+
+The `freebsd-v1` and `illumos-v1` image families use the validated native
+agent contract over the existing jail-local virtio-vsock endpoint. The shared
+Lyra native transport, readiness daemon, trust daemon and workspace receiver
+are implemented and the native builder can copy an optional agent payload;
+terminal, flush, SSH roster/certificate and agent execution remain separate
+boot-bound services to package. The editor and Inception remain
+closed. Each service accepts only host CID 2 for guest CID 3 and refuses a
+foreign, malformed or stale boot binding. The image builders must include the
+matching Lyra native adapters and service definitions before a catalog row is
+staged. Protocol, Marshall and daemon unit rows are contract evidence; they do
+not establish a guest response or fleet acceptance. Native service startup,
+restart, storage and network isolation remain in the pending nested-KVM matrix.
+
 ## Audi browser editor and guest workers
 
 Public Audi handles personal editor HTTPS/WebSocket admission through Marshall's
@@ -70,7 +85,7 @@ revision and separately establishes interception, trust and isolation boundaries
 
 Configure `services.brady`, its private signer custody, roots, dataset, and limits.
 Inspect readiness and bounded cache counters. Cache data is disposable; signing
-identity is not. See [Brady design](repo:docs/brady-design.md).
+identity is not. See [Brady design](repo:docs/services/brady-design.md).
 When fleet OpenTelemetry is enabled, Brady also writes a mode-0600 numeric SLO
 snapshot. Only resolved requests with terminal outcomes enter its denominator;
 malformed requests and policy refusals stay outside it. A separate Rust process
@@ -218,7 +233,7 @@ refresh interval, so an outage at startup cannot keep Ziggy (and the Lilly
 private-services readiness that depends on it) unready for the whole interval.
 Unknown usage remains unknown. Restart recovers accounting receipts without
 replaying model requests. Configure retention through Marshall's inference options.
-See [Ziggy configuration](repo:docs/ziggy.md).
+See [Ziggy configuration](repo:docs/services/ziggy.md).
 
 ## Underclass
 
@@ -275,7 +290,27 @@ stream outcomes and sanitized error codes, retains daily statistics rollups for
 routes. The `underclass stats` command uses the same token boundary. These
 statistics contain no prompts, cache keys or credentials. Source review and an
 offline build only; tests were not run for this pin.
-See [Underclass operations](repo:docs/underclass.md).
+Revision `469aff4` always reselects after the saturation reset attempt, so a
+throttle cooldown that expires while a request waits on the reset lock no longer
+yields a stale 429; requests skip that lock while a Codex account is healthy.
+`request.saturated` logs a relative `retry_after_ms` and an absolute `until_ms`.
+Upstream Rust tests passed; no dedicated regression test covers the race.
+Provider egress can be pinned to a tailnet exit node (ADR-0185).
+`underclass-egress.service` runs a separate unprivileged userspace `tailscaled`
+with its own state and socket, no TUN device and no routes. Its HTTP proxy
+listens only on `127.0.0.1:1055`. The enrolled profile sets
+`services.underclass.egress.exitNode = "mac-mini"`. Each host's node starts
+logged out, and an operator joins it once with `sudo underclass-egress up`.
+The exit-node setting gives Underclass `HTTPS_PROXY`, confines
+the unit to loopback through systemd IP filtering, and adds a privileged start
+gate. The gate selects the exit node with LAN access disabled and refuses to
+start while the node is logged out. Losing the exit node fails provider
+requests instead of falling back to the host's address. Underclass still
+restarts while the exit node is offline, and resolves provider DNS at the exit
+node. The `underclass-egress` machine check verifies these properties on a
+headscale tailnet. Live login of both nodes and a request observed from the
+Mac Mini remain open; root can clear the preference until the next start.
+See [Underclass operations](repo:docs/services/underclass.md).
 
 ## Galileo
 
@@ -332,7 +367,7 @@ live production collection and a measured baseline remain open.
 
 Manage integrations through `/integrations`, `/teams`, or Porsche. Secret values
 are write-only and redacted on read. Configure the independent service credentials
-and private frontend before attaching workloads. See [Galileo](repo:docs/galileo.md).
+and private frontend before attaching workloads. See [Galileo](repo:docs/services/galileo.md).
 
 Live production probes recorded bearer, Basic and static-header injection,
 forged Authorization replacement, query preservation and a digest-checked 1 MiB

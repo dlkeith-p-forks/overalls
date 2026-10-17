@@ -14,16 +14,16 @@ Architecture assessment before and after review: no architecture impact from the
 
 ## Export and classification matrix
 
-`flake.nix:24` selects `x86_64-linux`; `flake.nix:113–124` exports the `nix/tests` result as checks using stable `testPkgs` and source-built application `packages`. All six checks instantiate `pkgs.testers.runNixOSTest` at `nix/tests/machines/database-recovery/default.nix:24`; all are **native NixOS/QEMU machine execution checks**, neither evaluation-only nor package-only checks. Their use of `marshall eval` (`default.nix:17`) starts the real release Repo and dependencies inside a VM; it does not change that classification, nor does it establish whole serving-application recovery.
+`flake.nix:24` selects `x86_64-linux`; `flake.nix:113–124` exports the `nix/verification/tests` result as checks using stable `testPkgs` and source-built application `packages`. All six checks instantiate `pkgs.testers.runNixOSTest` at `nix/verification/tests/machines/database-recovery/default.nix:24`; all are **native NixOS/QEMU machine execution checks**, neither evaluation-only nor package-only checks. Their use of `marshall eval` (`default.nix:17`) starts the real release Repo and dependencies inside a VM; it does not change that classification, nor does it establish whole serving-application recovery.
 
 | Export under `checks.x86_64-linux` | Exact export | Holder/fault | Seed-126 waiter submission order | Recorded final native result |
 | --- | --- | --- | --- | --- |
-| `database-recovery` | `nix/tests/default.nix:54` | Idle in transaction / client VM crash | 1,3,2 | Passed, 71.92s test; 27.882s all-session reclamation |
-| `database-recovery-active` | `nix/tests/default.nix:55` | Active / client VM crash | 2,3,1 | Passed, 62.08s test; 19.527s reclamation |
-| `database-recovery-silent` | `nix/tests/default.nix:56` | Idle in transaction / bidirectional packet DROP | 2,1,3 | Passed, 73.38s test; 27.518s reclamation; outbound DROP 35 |
-| `database-recovery-asymmetric` | `nix/tests/default.nix:57` | Idle in transaction / client-to-server packet DROP | 3,2,1 | Passed, 70.53s test; 27.747s reclamation; inbound DROP 25 |
-| `database-recovery-active-silent` | `nix/tests/default.nix:58` | Active / bidirectional packet DROP | 1,2,3 | Passed, 62.63s test; 19.432s reclamation; outbound DROP 20 |
-| `database-recovery-active-asymmetric` | `nix/tests/default.nix:59` | Active / client-to-server packet DROP | 3,1,2 | Passed, 62.70s test; 19.770s reclamation; inbound DROP 10 |
+| `database-recovery` | `nix/verification/tests/catalog.nix:54` | Idle in transaction / client VM crash | 1,3,2 | Passed, 71.92s test; 27.882s all-session reclamation |
+| `database-recovery-active` | `nix/verification/tests/catalog.nix:55` | Active / client VM crash | 2,3,1 | Passed, 62.08s test; 19.527s reclamation |
+| `database-recovery-silent` | `nix/verification/tests/catalog.nix:56` | Idle in transaction / bidirectional packet DROP | 2,1,3 | Passed, 73.38s test; 27.518s reclamation; outbound DROP 35 |
+| `database-recovery-asymmetric` | `nix/verification/tests/catalog.nix:57` | Idle in transaction / client-to-server packet DROP | 3,2,1 | Passed, 70.53s test; 27.747s reclamation; inbound DROP 25 |
+| `database-recovery-active-silent` | `nix/verification/tests/catalog.nix:58` | Active / bidirectional packet DROP | 1,2,3 | Passed, 62.63s test; 19.432s reclamation; outbound DROP 20 |
+| `database-recovery-active-asymmetric` | `nix/verification/tests/catalog.nix:59` | Active / client-to-server packet DROP | 3,1,2 | Passed, 62.70s test; 19.770s reclamation; inbound DROP 10 |
 
 Submission orders are derived directly from `driver.py:81–88` using permutations and Python `random.Random(126)`. They are six fixed seeded submission schedules, not an established PostgreSQL queue order (`client.exs:82–85`, review `2026-10-02-database-loss-histories.md:16–18`). No Hegel/composed generated loss/reconnect property is attached to these exports. The final results all come from one recorded serial six-case capture, detailed below; they are not current-tree executions.
 
@@ -34,7 +34,7 @@ Submission orders are derived directly from `driver.py:81–88` using permutatio
 | Nodes | `default.nix:27–40`: `db` and `m1`, each explicitly `virtualisation.memorySize = 1024` MiB; 2048 MiB total configured guest RAM. The fixture does not explicitly set vCPU counts, disk sizes or additional disks. Framework defaults were not evaluated in this inventory. |
 | Overall timeout | `default.nix:26`: `globalTimeout = 300` seconds for every variant. |
 | DB | `default.nix:31–35`: shared `fleet-database.nix`, `generationService = recovery-credentials`, `maxConnections = 32`, fixture network `192.168.1.0/24`. |
-| DB implementation | `nix/tests/support/fleet-database.nix:22–40`: PostgreSQL 18, TCP enabled, Marshall DB/user, `hostssl` plus SCRAM, TLS certificate/key paths, maximum connections, SQL/error-statement logging suppressed. Port 5432 opened (`:42`); credential fixture service and initialization precede PostgreSQL (`:10–20`, `:43–49`). No fixture server timeout override is present in this support module. |
+| DB implementation | `nix/verification/tests/support/fleet-database.nix:22–40`: PostgreSQL 18, TCP enabled, Marshall DB/user, `hostssl` plus SCRAM, TLS certificate/key paths, maximum connections, SQL/error-statement logging suppressed. Port 5432 opened (`:42`); credential fixture service and initialization precede PostgreSQL (`:10–20`, `:43–49`). No fixture server timeout override is present in this support module. |
 | Client | `default.nix:5–18`: actual `${packages.marshall}/bin/marshall eval`, production Repo startup environment, `PHX_SERVER=false`, no release distribution, instance `recovery-client`, one planned replica, connection budget 21 and pool size 10, verified DB TLS and fixture CA. Erlang scheduler setting is `+S 2:2` (`:14`), distinct from an explicitly configured VM CPU count. |
 | Client processes | `client.exs:21–27`: diagnostics suppressed, `ash_postgres` started, then `Marshall.Repo` plus a Task.Supervisor. It does not start three Marshall serving nodes, a proxy, workers or a surviving release contender. |
 | Runtime startup timeouts | Actual production source has `connect_timeout: 3000`, `handshake_timeout: 3000`, writable-primary targeting and sensitive connection errors disabled (`marshall/lib/marshall/operations/runtime_config.ex:154–157`). |
@@ -42,7 +42,7 @@ Submission orders are derived directly from `driver.py:81–88` using permutatio
 
 ## Exact executable assertions and controls
 
-Unless otherwise specified, paths in the following table are under `nix/tests/machines/database-recovery/`.
+Unless otherwise specified, paths in the following table are under `nix/verification/tests/machines/database-recovery/`.
 
 | Boundary | Exact source assertions/control |
 | --- | --- |
@@ -69,7 +69,7 @@ The fixture contains no explicit backend termination and does not change product
 
 ## Contracts and architecture obligations reviewed
 
-Read root `CONTRACTS`, `nix/CONTRACTS`, `nix/tests/CONTRACTS`, and support's `nix/tests/support/CONTRACTS`; no intervening CONTRACTS exists under `nix/tests/machines/database-recovery/`. Root rules expressly separate acceptance from accepted ADRs/structural checks and forbid secret diagnostics. Nix/test contracts require pinned input, real source-built release/packages and isolated bounded fixtures. Shared support requires retaining TLS/authentication/resource/failure boundaries and composed driver static checks.
+Read root `CONTRACTS`, `nix/CONTRACTS`, `nix/verification/tests/CONTRACTS`, and support's `nix/verification/tests/support/CONTRACTS`; no intervening CONTRACTS exists under `nix/verification/tests/machines/database-recovery/`. Root rules expressly separate acceptance from accepted ADRs/structural checks and forbid secret diagnostics. Nix/test contracts require pinned input, real source-built release/packages and isolated bounded fixtures. Shared support requires retaining TLS/authentication/resource/failure boundaries and composed driver static checks.
 
 Local source contracts:
 

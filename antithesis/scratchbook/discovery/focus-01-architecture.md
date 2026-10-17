@@ -75,7 +75,7 @@ preserve those mechanisms automatically.
 | Brady | Intercepted public egress; Host/SNI/original-destination validation before bounded cache or upstream | Kernel destination and Lilly attribution are trust inputs; cache cannot create request authority | `brady/lib/brady/proxy.ex:5`, `brady/lib/brady/proxy.ex:84`, `lilly/lib/lilly/application.ex:93` |
 | Enrico | GitHub mirror refresh, bounded reads/search and mirror removal | Marshall owns durable request/audit intent; Enrico owns native Git child and filesystem writes; attempt receipts are local and capped | `enrico/lib/enrico/application.ex:16`, `enrico/lib/enrico/http.ex:11`, `enrico/lib/enrico/manager.ex:58`, `enrico/lib/enrico/git.ex:47` |
 | Protocol | Closed codecs, sizes, identity/placement/execution documents, views/cadence and Control/WebSocket transport | No application domain authority; deserialize before use and retain version boundaries | `protocol/lib/overalls_protocol/control/envelope.ex:68`, `marshall/lib/marshall/compute/provisioner_requests.ex:70` |
-| Diagnostics / request accounting | Reviewed event schema, bounded routine traces, explicit custody, request producer and recorder RPC | Observation confers no execution/access authority; independent process/disk custody has distinct acknowledgements | `elixir/diagnostics/lib/overalls/diagnostics/processor.ex:68`, `elixir/diagnostics/lib/overalls/diagnostics/custody.ex:8`, `nix/modules/otel-guest/receiver/src/request_recorder.rs:208` |
+| Diagnostics / request accounting | Reviewed event schema, bounded routine traces, explicit custody, request producer and recorder RPC | Observation confers no execution/access authority; independent process/disk custody has distinct acknowledgements | `elixir/diagnostics/lib/overalls/diagnostics/processor.ex:68`, `elixir/diagnostics/lib/overalls/diagnostics/custody.ex:8`, `nix/domains/system/otel-guest/receiver/src/request_recorder.rs:208` |
 
 ## Domain ownership and entrypoints
 
@@ -344,18 +344,18 @@ paths and citations. Its key contributions to the topology are:
   state (`lilly/lib/lilly/vm/driver.ex:378`). The editor broker binds exact guest
   address/device and profile gateway, reconciles the permanent account and
   checks worker Unix peer UID; a lease-only oracle omits these effects
-  (`nix/packages/vscode-web-broker/src/main.rs:484`, `:645`, `:747`).
+  (`nix/domains/artifacts/vscode-web-broker/src/main.rs:484`, `:645`, `:747`).
 - Real unprivileged Linux files/processes/pipes/AF_UNIX can exercise substantial
   native helper ownership, child death, stream/descriptor custody and byte-copy
   behavior. KVM/Firecracker, ZFS lineage/mounts, guest CID/UID and nested Inception
   remain independent native machine claims. Some Rust native tests skip when
   vsock/cgroups are unavailable, so a pass aggregate needs reachability/skips
-  recorded (`nix/packages/terminald/src/vsock.rs:118`,
+  recorded (`nix/domains/artifacts/terminald/src/vsock.rs:118`,
   `lilly/native/vm-watch/src/tests.rs:96`).
 - Inception contains its own verified-TLS PostgreSQL/Marshall and nested
   Lilly/KVM/ZFS topology, separate identities and publication authority. Modeling
   it as a standard guest loses a recursive control-plane failure boundary
-  (`nix/packages/guest/inception/default.nix:33`, `:100`).
+  (`nix/domains/artifacts/guest/inception/default.nix:33`, `:100`).
 
 ## Observation and operations are separate failure boundaries
 
@@ -375,15 +375,15 @@ Request accounting has a source-local producer RPC and independent Rust recorder
 Recorder identity comes from Unix UID/cgroup plus PID/start ticks/boot ID; dead
 producer proof and unknown liveness are distinct. Durable state transition
 fsyncs/replaces before ACK and uncertain durability poisons later acknowledgement
-(`nix/modules/otel-guest/receiver/src/request_recorder.rs:208`, `:527`,
-`nix/modules/otel-guest/receiver/src/durable_slo.rs:517`). Simulating source restart
+(`nix/domains/system/otel-guest/receiver/src/request_recorder.rs:208`, `:527`,
+`nix/domains/system/otel-guest/receiver/src/durable_slo.rs:517`). Simulating source restart
 alone cannot prove recorder death attribution or kernel identity checks.
 
 Backup capture has a serialized recovery journal and host manifest referring to
 component snapshots/archives. Completion is behind verified owned cleanup;
 host snapshot cleanup checks native dataset/snapshot GUID and nonce before
-destroying anything (`nix/modules/backups/runtime.py:80`, `:200`,
-`nix/modules/backups/journal.py:158`, `nix/modules/backups/host.py:108`). Backup,
+destroying anything (`nix/domains/system/backups/runtime.py:80`, `:200`,
+`nix/domains/system/backups/journal.py:158`, `nix/domains/system/backups/host.py:108`). Backup,
 secret custody, auto-update activation/health rollback, runtime credentials,
 firewall placement and observation services belong to repository scope even
 though they are not Elixir domains. Native machine checks should retain authority
@@ -406,8 +406,8 @@ or deployed.
 
 The native fleet fixture declares three Marshall replicas, a separate PostgreSQL
 18 instance using TLS/SCRAM and two independent host/gateway planes. It separates
-browser and fleet proxy backends (`nix/tests/machines/fleet/default.nix:604`,
-`:1295`, `:1340`; `nix/tests/support/fleet-database.nix:22`). No PostgreSQL HA/
+browser and fleet proxy backends (`nix/verification/tests/machines/fleet/default.nix:604`,
+`:1295`, `:1340`; `nix/verification/tests/support/fleet-database.nix:22`). No PostgreSQL HA/
 replication was found in this inspected fixture/deployment source; do not claim
 database failover or synchronous replica guarantees. The harness should retain
 one explicit database fault boundary and can exercise multi-Marshall retry and

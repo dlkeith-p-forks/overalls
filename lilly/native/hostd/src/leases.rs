@@ -28,6 +28,8 @@ pub struct Lease {
     pub mode: Mode,
     pub descriptor: Arc<OwnedFd>,
     key: Key,
+    /// The lock directory, as validated at acquisition.
+    directory: PathBuf,
 }
 
 #[derive(Default)]
@@ -57,6 +59,9 @@ pub struct Leases {
     roots: Vec<Root>,
     state: Mutex<State>,
     changed: Condvar,
+    /// The admitted service uid when it is not hostd's own: lock inodes are
+    /// handed to it so Lilly's own helpers can flock them too.
+    owner: Option<u32>,
 }
 
 impl Leases {
@@ -76,15 +81,30 @@ impl Leases {
                 ..State::default()
             }),
             changed: Condvar::new(),
+            owner: None,
         })
+    }
+
+    /// Hand lock inodes to `uid` when it differs from hostd's own uid.
+    pub fn with_owner(mut self, uid: u32) -> Leases {
+        self.owner = (uid != rustix::process::geteuid().as_raw()).then_some(uid);
+        self
     }
 
     /// @cc [owner:ghuntley,label:security] hostd-lock-inode-beneath-root
     /// open_lock MUST resolve `<directory>/owner.lock` beneath one configured
     /// root with RESOLVE_BENEATH and RESOLVE_NO_SYMLINKS, creating it 0600 if
     /// absent, and MUST refuse a non-regular, multiply linked, wrong-owner or
-    /// group/world-writable inode. It never unlinks a lock inode.
+    /// group/world-writable inode; the right owner is hostd's uid or, when a
+    /// distinct service uid is admitted, that uid, to which hostd hands any
+    /// inode it still owns. It never unlinks a lock inode.
     fn open_lock(&self, directory: &Path) -> Result<OwnedFd, Refusal> {
+        self.open_private(directory, "owner.lock", 0o600)
+    }
+
+    /// Open (creating with `mode`) `<directory>/<name>` beneath its root and
+    /// apply open_lock's inode checks and ownership hand-over.
+    fn open_private(&self, directory: &Path, name: &str, mode: u32) -> Result<OwnedFd, Refusal> {
         let root = self
             .roots
             .iter()
@@ -94,7 +114,7 @@ impl Leases {
         let relative = directory
             .strip_prefix(&root.path)
             .map_err(|_| Refusal::Unavailable)?
-            .join("owner.lock");
+            .join(name);
         let base = rustix::fs::open(
             &root.path,
             OFlags::PATH | OFlags::DIRECTORY | OFlags::CLOEXEC,
@@ -105,17 +125,26 @@ impl Leases {
             &base,
             &relative,
             OFlags::RDWR | OFlags::CREATE | OFlags::NOFOLLOW | OFlags::CLOEXEC,
-            FileMode::from_raw_mode(0o600),
+            FileMode::from_raw_mode(mode),
             ResolveFlags::BENEATH | ResolveFlags::NO_SYMLINKS | ResolveFlags::NO_MAGICLINKS,
         )
         .map_err(|_| Refusal::Unavailable)?;
         let stat = fstat(&descriptor).map_err(|_| Refusal::Unavailable)?;
+        let own = rustix::process::geteuid().as_raw();
         if stat.st_mode & libc::S_IFMT != libc::S_IFREG
             || stat.st_nlink != 1
-            || stat.st_uid != rustix::process::geteuid().as_raw()
+            || (stat.st_uid != own && Some(stat.st_uid) != self.owner)
             || stat.st_mode & 0o022 != 0
         {
             return Err(Refusal::Unavailable);
+        }
+        if let (Some(owner), true) = (self.owner, stat.st_uid == own) {
+            rustix::fs::fchown(
+                &descriptor,
+                Some(rustix::process::Uid::from_raw(owner)),
+                Some(rustix::process::Gid::from_raw(owner)),
+            )
+            .map_err(|_| Refusal::Unavailable)?;
         }
         Ok(descriptor)
     }
@@ -177,6 +206,7 @@ impl Leases {
                                 mode,
                                 descriptor: Arc::clone(&descriptor),
                                 key,
+                                directory: directory.to_path_buf(),
                             },
                         );
                         self.changed.notify_all();
@@ -221,6 +251,25 @@ impl Leases {
             .map(|held| Arc::clone(&held.descriptor))
     }
 
+    /// @cc [owner:ghuntley,label:security] lease-progress-file-beneath-root
+    /// progress MUST open only `<lease directory>/progress` of a lease this
+    /// session holds, resolved like the lock inode (beneath its root, no
+    /// symbolic links, regular, singly linked, not group/world-writable,
+    /// handed to the service uid), creating it 0644; anything else is
+    /// Unavailable or UnknownLease.
+    pub fn progress(&self, session: u64, lease: u64) -> Result<OwnedFd, Refusal> {
+        let directory = {
+            let state = self.state.lock().map_err(|_| Refusal::Unavailable)?;
+            state
+                .held
+                .get(&lease)
+                .filter(|held| held.session == session)
+                .map(|held| held.directory.clone())
+                .ok_or(Refusal::UnknownLease)?
+        };
+        self.open_private(&directory, "progress", 0o644)
+    }
+
     /// @cc [owner:ghuntley,label:recovery] lease-release-closes-descriptor
     /// release MUST drop hostd's descriptor (never `LOCK_UN`, which would
     /// also unlock copies inherited by still-running utilities) and wake every
@@ -261,6 +310,15 @@ impl Leases {
                     .collect()
             })
             .unwrap_or_default()
+    }
+
+    /// How many acquisitions are queued on all lock inodes (tests use it to
+    /// establish arrival order without timing assumptions).
+    pub fn waiting(&self) -> usize {
+        self.state
+            .lock()
+            .map(|state| state.inodes.values().map(|inode| inode.queue.len()).sum())
+            .unwrap_or(0)
     }
 
     /// Wake every waiter (a session closed).

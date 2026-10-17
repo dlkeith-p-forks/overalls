@@ -52,5 +52,5 @@ Reviewed Administration's current-authority, allowlisted-projection and bounded
 read contracts against coordinator and LiveView callers; retry, retention and
 backfill notes state atomicity and limits. Contract syntax is a structural check,
 not evidence of semantic correctness. Remaining work stays in the
-[full acceptance ledger](../../admin-implementation.md); this review does not
+[full acceptance ledger](../../history/ledgers/admin-implementation.md); this review does not
 reduce the approved monitoring, operations or evacuation scope.

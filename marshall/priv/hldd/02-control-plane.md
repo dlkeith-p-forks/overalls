@@ -256,7 +256,7 @@ revocations. Marshall's host liveness, and Porsche and the remaining edge
 services, adopt them in later phases.
 
 Evidence: [coordination decision](repo:docs/architecture/decisions/0003-control-plane-coordination.md),
-[control transport](repo:docs/provisioner-transport.md), [runtime configuration](repo:marshall/config/runtime.exs),
+[control transport](repo:docs/operations/provisioner-transport.md), [runtime configuration](repo:marshall/config/runtime.exs),
 [protocol library](repo:protocol/mix.exs),
 [liveness primitives decision](repo:docs/architecture/decisions/0140-event-driven-liveness-and-single-writer-views.md).
 

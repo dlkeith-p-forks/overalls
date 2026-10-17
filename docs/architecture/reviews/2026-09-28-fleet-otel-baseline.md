@@ -36,10 +36,10 @@ Prometheus/Tempo/Grafana placement and initial collection-health baseline.
 
 ## Verification actually run
 
-- `cargo test --manifest-path nix/modules/otel-guest/receiver/Cargo.toml`:
+- `cargo test --manifest-path nix/domains/system/otel-guest/receiver/Cargo.toml`:
   twelve passing tests, including generated binding, metric, rate, trace and chunk
   boundary properties.
-- `cargo clippy --manifest-path nix/modules/otel-guest/receiver/Cargo.toml
+- `cargo clippy --manifest-path nix/domains/system/otel-guest/receiver/Cargo.toml
   --all-targets -- -D warnings`: passed.
 - Both enrolled NixOS `system.build.toplevel` derivations built with collector
   configuration validation enabled.
@@ -193,7 +193,7 @@ latency. No guest or external monitor claim can attest an outer service result.
    timed out, so the full machine gate remains open. A Nix recording rule and Grafana panel show an explicitly labeled
    candidate ratio with no target or burn alert; no SLO compliance rule uses it.
 6. **High:** Brady's original application pipeline fixes `service.name=brady`.
-   [The fleet module](../../../nix/modules/otel-fleet/default.nix) now gives
+   [The fleet module](../../../nix/domains/system/otel-fleet/default.nix) now gives
    Galileo its own Unix intake, peer group and collector-owned identity, so its
    datapoints cannot be mislabeled as Brady's. Every further application must
    gain an equivalently isolated intake or a comparably isolated Rust broker;

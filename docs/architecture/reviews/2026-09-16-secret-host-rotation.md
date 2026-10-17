@@ -6,13 +6,13 @@ Date: 2026-09-16
 
 This closes additional ADR-0032/0033 verification obligations within the authorized
 NixOS plan. Accepted decisions and production modules are unchanged. The
-[secret-custody suite](../../../nix/tests/machines/secret-custody/default.nix) still uses actual
+[secret-custody suite](../../../nix/verification/tests/machines/secret-custody/default.nix) still uses actual
 SecretSpec/SOPS, runtime-generated synthetic identities and the source-built
 Marshall release. No production key or deployed host is changed.
 
 ## Changes and boundaries
 
-The [fixture helper](../../../nix/tests/machines/secret-custody/fixture.py) decrypts the existing
+The [fixture helper](../../../nix/verification/tests/machines/secret-custody/fixture.py) decrypts the existing
 document using an explicitly selected synthetic operator identity, with SSH
 fallback disabled. It re-encrypts that recovered payload rather than regenerating
 values from the fixture's plaintext input.

@@ -1,6 +1,6 @@
 # Backup workload scope
 
-The `backup` template uses the production `nix/modules/backups/*.py` operator and
+The `backup` template uses the production `nix/domains/system/backups/*.py` operator and
 the pinned Restic executable against a private, disposable encrypted repository.
 Raw Restic enumeration and restored file hashes form the independent oracle;
 operator `inspect`, `prune`, `backup`, and `restore` are exercised as the system
@@ -21,5 +21,5 @@ no claim about live fleet authority or UID reconciliation.
 fixture that runs the production `HostCapture` with read-only independent GUID,
 nonce, mount, and journal observations. The workload container has no ZFS
 authority. No hosted SDK assertion for that property is emitted until this
-fixture exists. Native machine tests under `nix/tests/machines/backup-cleanup/`
+fixture exists. Native machine tests under `nix/verification/tests/machines/backup-cleanup/`
 are separate historical evidence.

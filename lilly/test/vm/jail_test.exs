@@ -188,16 +188,16 @@ defmodule Lilly.VM.JailTest do
     refute JSON.encode!(metadata) =~ "generation"
     refute JSON.encode!(metadata) =~ "/"
 
-    # Native FreeBSD images use the same PVH firmware transport. They retain
-    # the vsock endpoint for the declared agent set and must not receive the
-    # Windows-only Hyper-V CPU template.
+    # Native FreeBSD images use the same PVH firmware transport and the shared
+    # guest protocol over vsock; they must also not receive the Windows-only
+    # Hyper-V CPU template.
     freebsd = Map.merge(bundle, %{guest_agents: :freebsd_v1, os: :freebsd})
     freebsd_config = Jail.configuration(freebsd, spec, boot)
     assert freebsd_config["vsock"] == %{"guest_cid" => 3, "uds_path" => "/v.sock"}
     refute Map.has_key?(freebsd_config, "cpu-config")
   end
 
-  test "native FreeBSD firmware bundles use PVH firmware and keep the vsock transport" do
+  test "native FreeBSD firmware bundles use PVH firmware with the shared agent transport" do
     placement = "11111111-1111-4111-8111-111111111111"
 
     {:ok, spec} =
@@ -234,6 +234,44 @@ defmodule Lilly.VM.JailTest do
     assert config["vsock"] == %{"guest_cid" => 3, "uds_path" => "/v.sock"}
     refute Map.has_key?(config, "cpu-config")
     assert config["mmds-config"] == %{"version" => "V2", "network_interfaces" => ["eth0"]}
+  end
+
+  test "native illumos firmware bundles use PVH firmware with the shared agent transport" do
+    placement = "11111111-1111-4111-8111-111111111111"
+
+    {:ok, spec} =
+      Lilly.VM.Spec.new(%{
+        id: placement,
+        image_id: "sha256:" <> String.duplicate("a", 64),
+        pool_id: "22222222-2222-4222-8222-222222222222",
+        profile: :customer,
+        slot: 2,
+        vcpu: 1,
+        memory_bytes: 536_870_912,
+        disk_bytes: 2_147_483_648
+      })
+
+    bundle = %{
+      image_id: spec.image_id,
+      architecture: :x86_64,
+      boot_kind: :firmware,
+      guest_agents: :illumos_v1,
+      os: :illumos,
+      pci: true,
+      firmware_bytes: 4_194_304
+    }
+
+    boot = %{
+      placement_id: placement,
+      execution_epoch: 7,
+      generation: 3,
+      boot_challenge: String.duplicate("b", 64)
+    }
+
+    config = Jail.configuration(bundle, spec, boot)
+    assert config["boot-source"] == %{"kernel_image_path" => "/firmware"}
+    assert config["vsock"] == %{"guest_cid" => 3, "uds_path" => "/v.sock"}
+    refute Map.has_key?(config, "cpu-config")
   end
 
   test "guest boot configuration contains no SSH key" do

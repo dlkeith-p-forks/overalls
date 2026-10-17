@@ -103,15 +103,15 @@ provider readiness.
 
 ## Implementation evidence
 
-The [shared native package/configuration](../../../nix/packages/guest/coding-clis.nix)
+The [shared native package/configuration](../../../nix/domains/artifacts/guest/coding-clis.nix)
 pins the reviewed versions, permits only Claude's unfree package and generates
 system settings and public certificate environment. The
-[NixOS configuration](../../../nix/packages/guest/configuration.nix) and
-[Ubuntu builder](../../../nix/packages/guest/ubuntu/default.nix) own image tools
+[NixOS configuration](../../../nix/domains/artifacts/guest/configuration.nix) and
+[Ubuntu builder](../../../nix/domains/artifacts/guest/ubuntu/default.nix) own image tools
 and offline closure assembly. The
-[toolset evaluation](../../../nix/tests/evaluation/guest-toolset.nix) and
-[Ubuntu evaluation](../../../nix/tests/evaluation/ubuntu-guest.nix) guard image
-contents; the [native guest probe](../../../nix/tests/machines/zfs-guest/probe.exs)
+[toolset evaluation](../../../nix/verification/tests/evaluation/guest-toolset.nix) and
+[Ubuntu evaluation](../../../nix/verification/tests/evaluation/ubuntu-guest.nix) guard image
+contents; the [native guest probe](../../../nix/verification/tests/machines/zfs-guest/probe.exs)
 owns actual installed command checks.
 
 [Ziggy route validation](../../../ziggy/lib/ziggy/route.ex) and
@@ -120,8 +120,8 @@ dispatch. [Route properties](../../../ziggy/test/route_test.exs) guard the exact
 query allowance and unchanged native bodies; the
 [disabled-provider checks](../../../ziggy/test/provider_selection_test.exs) guard
 refusal before authority/spool effects. The actual-client
-[fleet scenario](../../../nix/tests/machines/fleet/scenarios/coding-clis.py) and
-[native account helper](../../../nix/tests/machines/fleet/coding-clis-guest.exs)
+[fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/coding-clis.py) and
+[native account helper](../../../nix/verification/tests/machines/fleet/coding-clis-guest.exs)
 cover real packaged client requests without substitute provider configuration.
 Both native CLI/GC subtests and both complete integrated coding-client fleets
 have recorded passes, including real terminal/SSH inference after GC, limited

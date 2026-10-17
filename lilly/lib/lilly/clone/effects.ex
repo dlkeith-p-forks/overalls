@@ -374,14 +374,11 @@ defmodule Lilly.Clone.Effects do
                        Storage.locked(pool, fn -> local_receiver(pool, descriptor) end),
                      {:ok, producer} <-
                        Storage.locked(source_pool, fn ->
-                         if token,
-                           do:
-                             SourceSnapshots.resume_export(
-                               source_pool,
-                               command["descriptor"],
-                               token
-                             ),
-                           else: SourceSnapshots.export(source_pool, command["descriptor"])
+                         SourceSnapshots.local_producer(
+                           source_pool,
+                           command["descriptor"],
+                           token
+                         )
                        end),
                      :ok <-
                        local_stream(

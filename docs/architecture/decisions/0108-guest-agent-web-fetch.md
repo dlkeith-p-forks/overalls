@@ -65,7 +65,7 @@ The [profile allowlist](../../../marshall/lib/marshall/agents/capabilities.ex),
 [closed CLI events](../../../lyra/src/log.rs) implement the boundaries. The
 [profile property tests](../../../marshall/test/marshall/agents/capabilities_test.exs)
 and Rust unit tests exercise validation. Both NixOS and Ubuntu
-[fleet machine scenarios](../../../nix/tests/machines/fleet/scenarios/agent.py)
+[fleet machine scenarios](../../../nix/verification/tests/machines/fleet/scenarios/agent.py)
 passed the real guest local fetch and content-free audit checks. Production
 rollout remains unverified.
 

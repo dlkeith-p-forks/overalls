@@ -47,14 +47,14 @@ remain retained and later polling cannot dispatch a third command.
 
 ## Native started-loss fixture
 
-The new [driver](../../../nix/tests/machines/executor-loss/driver.py) and
-[browser](../../../nix/tests/machines/executor-loss/browser.py) compose ordinary
+The new [driver](../../../nix/verification/tests/machines/executor-loss/driver.py) and
+[browser](../../../nix/verification/tests/machines/executor-loss/browser.py) compose ordinary
 browser sharing/approval with the packaged CLI, actual Marshall/Ziggy/Audi/Lilly,
 source-built Standard NixOS guest and isolated provider. Only the explicit
 `executor-loss` provider mode admits the two fixed effect prompts. The retry
 answer requires the exact successful tool output.
 
-[The typed observer](../../../nix/tests/machines/executor-loss/observer.py) is
+[The typed observer](../../../nix/verification/tests/machines/executor-loss/observer.py) is
 installed only in this disposable guest. The actual guest tool appends and
 fsyncs an effect, signals a FIFO and blocks. An independently running observer
 outside the target cgroup freezes the executor service and its twenty-second

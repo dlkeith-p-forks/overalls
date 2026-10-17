@@ -23,7 +23,7 @@ write preserves target role and administrative audit count; an allowed
 write changes the target and adds one audit event. Forged or stale role fields do
 not determine current authority. The property also checks the HTTP usage export.
 
-[Native browser scenario](../../../nix/tests/machines/control-room/browser.py)
+[Native browser scenario](../../../nix/verification/tests/machines/control-room/browser.py)
 uses source-built Marshall, HAProxy, PostgreSQL and Chromium in one NixOS VM.
 The browser trusts the fixture CA and uses the configured HTTPS origin; HAProxy
 also verifies its Marshall TLS backend. An ordinary user visits all ten Control
@@ -54,7 +54,7 @@ The real first magic-link sign-in therefore promoted the supposed ordinary reade
 The fixture now represents an installed system with a completed bootstrap latch,
 and asserts the reader's persisted non-administrator role immediately after sign-in.
 Review identified the same unconsumed-latch pattern in the separate
-[HLDD fixture](../../../nix/tests/machines/hldd/seed.exs). Its correction and scoped
+[HLDD fixture](../../../nix/verification/tests/machines/hldd/seed.exs). Its correction and scoped
 ordinary-reader acceptance are tracked separately by the verification campaign.
 
 The browser waits for an actual connected LiveView after full-page transitions

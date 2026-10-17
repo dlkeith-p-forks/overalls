@@ -174,7 +174,7 @@ defmodule Lilly.VM.WorkloadBundle do
              arguments,
              @copy_timeout
            ),
-         :ok <- File.chmod(temporary, 0o444),
+         :ok <- Lilly.Host.Privilege.chmod(temporary, 0o444),
          true <- artifact?(temporary, expected_size),
          {:ok, _} <- Command.run(:sync, ["--", temporary], @copy_timeout),
          {:ok, _} <-

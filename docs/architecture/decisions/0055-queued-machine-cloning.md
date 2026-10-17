@@ -141,9 +141,9 @@ distinguishes copy identity from relocation.
 submissions, queue order, cancellation, revocation and activation with PostgreSQL.
 [Three-node admission tests](../../../marshall/test/marshall/compute/distributed_admission_test.exs)
 verify concurrent distinct submissions and exact retries.
-[Native fixture](../../../nix/tests/machines/zfs-guest/cloning.exs) passes source
+[Native fixture](../../../nix/verification/tests/machines/zfs-guest/cloning.exs) passes source
 restoration, independent copying, replay, cancellation and source deletion.
-[SSH/browser fleet acceptance](../../../nix/tests/machines/fleet/scenarios/porsche.py)
+[SSH/browser fleet acceptance](../../../nix/verification/tests/machines/fleet/scenarios/porsche.py)
 passes cross-host cloning, browser request identity across refresh, distinct
 copies, private ownership and booting both copies after source deletion.
 [Architecture review](../reviews/2026-09-18-machine-cloning.md) records the passing
@@ -169,7 +169,7 @@ the historical native results above retain their original scope.
 [Cancellation and current-authority verification](../reviews/2026-09-25-clone-cancellation-verification.md)
 adds actual-action generated histories and five observed three-independent-BEAM
 schedules, including both publication/cancellation and admission/revocation orders.
-The new [native browser journey](../../../nix/tests/machines/clone-cancellation/driver.py)
+The new [native browser journey](../../../nix/verification/tests/machines/clone-cancellation/driver.py)
 tracks actual cancellation cleanup and queued revocation separately from its build
 and execution status. The proposed three-party account/source lock cycle did not
 reproduce; production lock order is unchanged. Existing native and multi-disk

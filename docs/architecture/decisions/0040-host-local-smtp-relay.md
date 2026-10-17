@@ -98,11 +98,11 @@ separate deployment verification.
 
 ## Implementation evidence
 
-The [relay package and patches](../../../nix/packages/smtprelay/default.nix)
+The [relay package and patches](../../../nix/domains/artifacts/smtprelay/default.nix)
 implement verified bounded forwarding and package tests. The
-[NixOS module](../../../nix/modules/smtp-relay/default.nix) implements service and
+[NixOS module](../../../nix/domains/system/smtp-relay/default.nix) implements service and
 credential boundaries, and [mail configuration](../../../marshall/lib/marshall/mailer/config.ex)
-implements explicit loopback mode. The [machine suite](../../../nix/tests/machines/smtp-relay/default.nix)
+implements explicit loopback mode. The [machine suite](../../../nix/verification/tests/machines/smtp-relay/default.nix)
 uses the real packages, local upstream and existing secret module. Verification
 results and limitations are recorded in the [review](../reviews/2026-09-17-smtp-relay.md).
 

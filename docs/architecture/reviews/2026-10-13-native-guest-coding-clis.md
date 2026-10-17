@@ -249,7 +249,7 @@ two original full failures.
 
 ### Limited post-import cache fixture
 
-The test-only [post-import action](../../../nix/tests/machines/zfs-guest/template-post-import.exs)
+The test-only [post-import action](../../../nix/verification/tests/machines/zfs-guest/template-post-import.exs)
 explicitly tests the public cache before VM 102 startup. Exact identities may
 reuse the ready incarnation. A demonstrated device-only mismatch must retain
 strict sealed refusal without entering the reader callback, quarantine the old

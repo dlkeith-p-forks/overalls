@@ -155,7 +155,7 @@ closed-binding parser validation in the request constructor. The compiler first
 rejected a literal-binary-key annotation; the corrected interface does not rely
 on unchecked casts or a broad `map()` contract.
 
-The native release source allowlist in `nix/packages/source.nix` excludes all
+The native release source allowlist in `nix/domains/artifacts/applications/source.nix` excludes all
 `marshall/test` files. The test-only type correction after the first candidate
 capture changes no native release input. Later fixture captures are recorded
 separately; a passing old native driver is not execution of its replacement.

@@ -173,7 +173,7 @@ observation as one command.
   - a stale snapshot is refused;
   - each property passed and failed a seal mutant; the first also failed a
     mountpoint mutant;
-- the native [`image-template` trace subtest](../../../nix/tests/machines/image-template/driver.py)
+- the native [`image-template` trace subtest](../../../nix/verification/tests/machines/image-template/driver.py)
   bounds the claim at 26 `zfs`/`zpool` commands and 6 whole-pool listings, and
   the resume at 12 and 3;
 - native `image-template` passed on 2026-10-10 at the implementation revision,

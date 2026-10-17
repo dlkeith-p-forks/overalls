@@ -8,13 +8,13 @@ executable check of its exact wedge label, the synthetic restore→decrypt
 composition end to end, and full recovery-recipient turnover histories
 (two-generation ceremonies plus the direct-turnover refusal pair). Transition
 (d), updater recovery after manual rotation, is delegated to the sibling
-improvement and untouched (no `nix/modules/auto-update/` change).
+improvement and untouched (no `nix/domains/system/auto-update/` change).
 
 No production runtime, protocol, authority, option or persistence change is
 made. Production-facing deltas are documentation only: the key ceremony, the
 documented wedge label/status and recovery, turnover planning and the
-retention-window stranding hazard in `docs/backups.md`, `secrets/README.md` and
-`docs/fleet-users.md`. ADR-0070 gains evidence wording only; its accepted
+retention-window stranding hazard in `docs/operations/backups.md`, `secrets/README.md` and
+`docs/operations/fleet-users.md`. ADR-0070 gains evidence wording only; its accepted
 rationale (SOPS-sealed per-host password, recipients never rotating repository
 keys) is preserved. ADR-0041/0044/0067/0086 remain in force; no new decision is
 needed because reconciliation, custody and refusal semantics are unchanged.
@@ -40,7 +40,7 @@ ZFS, PostgreSQL or native claim is made.
   `test_restored_ciphertext_decryption_recovers_repository_access` and
   `test_rotation_without_ceremony_wedges_with_repository_failure_label`.
 - Standalone Ruff format/lint and ty (3.13) pass for
-  `nix/tests/evaluation/backup-custody.py` (run with the isolated backups
+  `nix/verification/tests/evaluation/backup-custody.py` (run with the isolated backups
   module copies, mirroring the derivation) and the modified
   `secret_recipient_histories.py`; the repository-wide `python-static` gate is
   rerun with the final tree (results below).
@@ -100,7 +100,7 @@ restoring the previous policy.
 - (a) Repository password rotation without a documented key ceremony wedging
   all scheduled backups under `failure: repository`: **reproduced and fixed**.
   The wedge is the intended fail-closed behavior; the defect was the missing
-  documented ceremony, label and recovery path. Fixed in `docs/backups.md` with
+  documented ceremony, label and recovery path. Fixed in `docs/operations/backups.md` with
   executable coverage in `backup-custody`. No production source change.
 - (b) Restore drill never composing materialized ciphertext, restore,
   recovery-only decrypt and repository access: **evidence gap closed**; no

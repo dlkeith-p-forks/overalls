@@ -385,6 +385,12 @@ defmodule OverallsProtocol.ImageManifestTest do
       assert image.guest_agents == :freebsd_v1
       assert image.root_format == :raw_gpt
       assert ImageManifest.file_names(image) == ["manifest.json", "firmware", "disk.raw"]
+
+      assert {:ok, sourced} =
+               ImageManifest.validate(Map.put(manifest, "workspace_source_version", 2))
+
+      assert sourced.workspace_source_version == 2
+      assert ImageManifest.workspace_source?(Map.put(manifest, "workspace_source_version", 2))
     end
 
     test "illumos firmware disk shape validates and has closed agent identity" do

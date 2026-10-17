@@ -125,7 +125,7 @@ remain prerequisites; a diagnostic ACK confers no adoption or cleanup authority.
   - the former `block_clone_copies` configuration and `services.lilly.blockCloneCopies`
     Nix option (both removed by ADR-0159),
     and [unit tests](../../../lilly/test/transfer/clone_copy_test.exs);
-  - native coverage in the [`zfs-guest-clone` block-copy subtest](../../../nix/tests/machines/zfs-guest/clone-matrix.py),
+  - native coverage in the [`zfs-guest-clone` block-copy subtest](../../../nix/verification/tests/machines/zfs-guest/clone-matrix.py),
     which passed on 2026-10-09. It covers:
     - `bcloneused` growth and independent origins;
     - a chained block copy;
@@ -151,7 +151,7 @@ establish an independently captured post-cutover clone measurement.
 removed. Every same-host, same-pool clone now block-copies in
 [clone effects](../../../lilly/lib/lilly/clone/effects.ex); adopt and discard
 still follow the durable copy journal. The native
-[`zfs-guest-clone` matrix](../../../nix/tests/machines/zfs-guest/clone-matrix.py)
+[`zfs-guest-clone` matrix](../../../nix/verification/tests/machines/zfs-guest/clone-matrix.py)
 runs in this single mode: the resized and chained clones are block copies too,
 and every run discards a copied, unadopted destination. Same-host clones across
 pools keep the local stream receive, which this matrix no longer exercises.

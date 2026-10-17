@@ -18,10 +18,10 @@ let
           cd ${../../elixir/request_accounting}
           find lib -name '*.ex' -type f -print | sort | xargs elixirc --warnings-as-errors -o "$out/ebin"
         '';
-        spool = pkgs.callPackage ../../nix/packages/trace-spool.nix {};
+        spool = pkgs.callPackage ../../nix/domains/artifacts/infrastructure/trace-spool.nix {};
         traceAccount = "ktr-${builtins.substring 0 16 (builtins.hashString "sha256" "recorder-peer")}";
         traceGroup = "ktp-${builtins.substring 0 16 (builtins.hashString "sha256" "recorder-peer")}";
-        requestIdentities = import ../../nix/modules/otel-fleet/request-identities.nix;
+        requestIdentities = import ../../nix/domains/system/otel-fleet/request-identities.nix;
         traceRuntime = pkgs.writeText "overalls-recorder-peer-trace.json" (builtins.toJSON {
           service = "galileo";
           host = "recorder-host";
@@ -38,7 +38,7 @@ let
           retention_seconds = 7776000;
         });
       in {
-        imports = [ ../../nix/modules/otel-fleet/request-recorder.nix ];
+        imports = [ ../../nix/domains/system/otel-fleet/request-recorder.nix ];
         system.stateVersion = "26.05";
         networking.hostName = "recorder-host";
         networking.useDHCP = true;
@@ -107,8 +107,8 @@ let
             FIXTURE_MARKER = "/var/lib/recorder-peer/marker";
             FIXTURE_EFFECTS = "/var/lib/recorder-peer/effects.log";
             FIXTURE_TRACE_SOCKET = "/run/overalls-trace-recorder/ingest.sock";
-            FIXTURE_TRACE_SMALL = toString ../../nix/tests/fixtures/trace-spool/request.hex;
-            FIXTURE_TRACE_LARGE = toString ../../nix/tests/fixtures/trace-spool/batch.hex;
+            FIXTURE_TRACE_SMALL = toString ../../nix/verification/tests/fixtures/trace-spool/request.hex;
+            FIXTURE_TRACE_LARGE = toString ../../nix/verification/tests/fixtures/trace-spool/batch.hex;
             ERL_FLAGS = "+S 2:2";
           };
           serviceConfig = {

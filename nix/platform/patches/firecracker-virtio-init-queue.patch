@@ -1,0 +1,45 @@
+--- a/src/vmm/src/devices/virtio/transport/pci/common_config.rs
++++ b/src/vmm/src/devices/virtio/transport/pci/common_config.rs
+@@ -243,7 +243,11 @@
+     /// Queue configuration must only be done between FEATURES_OK and DRIVER_OK.
+     fn update_queue_field<F: FnOnce(&mut Queue)>(&mut self, queues: &mut [Queue], f: F) {
+         let status = self.driver_status;
+-        if status == (ACKNOWLEDGE | DRIVER | FEATURES_OK) {
++        // Firmware may preconfigure queue size and addresses before it hands
++        // the device to the operating system. Keep those writes while the
++        // device is in INIT; the normal FEATURES_OK gate still protects all
++        // queue writes after DRIVER negotiation begins.
++        if status == INIT || status == (ACKNOWLEDGE | DRIVER | FEATURES_OK) {
+             self.with_queue_mut(queues, f);
+         } else {
+             warn!(
+@@ -949,6 +953,29 @@
+     }
+
+     #[test]
++    fn test_queue_setup_in_init_status() {
++        let mut config = default_pci_common_config();
++        let device = default_device();
++
++        // CloudHv firmware configures the modern virtio queues before setting
++        // DRIVER/FEATURES_OK. Those writes must survive for the OS driver.
++        config.write(QUEUE_SELECT, 0u16.as_slice(), device.clone(), false);
++        config.write(QUEUE_SIZE, 128u16.as_slice(), device.clone(), false);
++        config.write(
++            QUEUE_DESC_LO,
++            0x0000_1000u32.as_slice(),
++            device.clone(),
++            false,
++        );
++        let mut queue_size = 0u16;
++        config.read(QUEUE_SIZE, queue_size.as_mut_slice(), device.clone());
++        assert_eq!(queue_size, 128);
++        let mut desc_lo = 0u32;
++        config.read(QUEUE_DESC_LO, desc_lo.as_mut_slice(), device);
++        assert_eq!(desc_lo, 0x0000_1000);
++    }
++
++    #[test]
+     fn test_queue_addresses() {
+         let mut config = default_pci_common_config();
+         let device = default_device();

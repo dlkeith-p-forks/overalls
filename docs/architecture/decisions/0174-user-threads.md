@@ -83,6 +83,10 @@ boundaries.
 - A mode cannot change after its agent work begins.
 - Provisioning failures remain recoverable and do not expose raw provider data
   in events or diagnostics.
+- A committed event on the current bound agent thread advances the enclosing
+  user thread's `updated_at` activity clock after commit. The projection locks
+  the user-thread row and skips archived or deleting threads; stale bindings
+  cannot grant lifecycle or machine authority.
 - Unit, LiveView, authorization, worker-replay and lifecycle tests provide
   bounded evidence; native isolation, failure recovery and production
   model-provider acceptance require separate execution evidence.
@@ -126,13 +130,31 @@ through contraction deployment. That case
 does not establish native archive/reopen, cross-node worker-loss recovery or
 broader provider acceptance; those remain pending.
 
+The retained-generation extension adds [`Marshall.Threads.Generation`](../../../marshall/lib/marshall/threads/generation.ex)
+and a migration that backfills one generation for every existing thread. Each
+admission, retry, archive and reopen keeps a durable generation row. Authorized
+readers can call `Marshall.Threads.generations/2` and
+`Marshall.Threads.events/4`, and `/threads/:id?generation=N` renders the
+read-only selector. The transcript test covers a reopened thread whose first
+machine event remains readable while an unknown generation is refused. Native
+reopen and cross-node recovery still require separate execution evidence.
+
+The activity projection adds [`Marshall.Agents.EventActivity`](../../../marshall/lib/marshall/agents/event_activity.ex)
+to event append and [`Marshall.Threads.Activity`](../../../marshall/lib/marshall/threads/activity.ex)
+to advance the enclosing thread's `updated_at` clock after the event transaction
+commits. It resolves the current binding, serializes on the user-thread row and
+leaves archived or deleting threads unchanged. The ready-thread activity assertion
+is covered in [`Marshall.ThreadsTest`](../../../marshall/test/marshall/threads_test.exs).
+
 ## Open questions
 
-The product may later add richer activity filters and machine controls. Reopen
-uses a fresh machine and agent identity. The current transcript helper resolves
-the thread's current binding; browsing prior-generation transcripts after reopen
-remains a gap, although their agent events and retired bindings are retained.
-Changes to retention or authority require a separate decision.
+The product may later add project-scoped activity filters and richer machine
+controls. Reopen uses a fresh machine and agent identity. The transcript helper resolves the
+current binding by default; authorized readers can list retained machine
+generations and select a prior transcript after reopen. Root, machine-owner and
+thread authority checks repeat for every selection, and a retired generation
+never grants machine, prompt or terminal authority. Changes to retention or
+authority require a separate decision.
 
 ## Related decisions
 

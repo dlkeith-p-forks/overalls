@@ -79,14 +79,14 @@ verifies and installs trust. The [installer tests](../../../marshall/test/marsha
 execute the script in isolated homes and exercise native OpenSSH against a local
 SSH server. [Lyra setup](../../../lyra/src/ssh_config.rs) enforces strict ED25519
 management checks; its [integration test](../../../lyra/tests/privacy.rs) checks
-the account-proof invocation. The [Nix option](../../../nix/modules/marshall.nix)
-and [evaluation](../../../nix/tests/evaluation/module-configuration.nix) cover
+the account-proof invocation. The [Nix option](../../../nix/domains/system/marshall.nix)
+and [evaluation](../../../nix/verification/tests/evaluation/module-configuration.nix) cover
 optional configuration, invalid input and all-instance propagation.
 
 The generated properties in the installer tests vary malformed pins, trust-entry
 ordering, hashed hosts and malformed scan position while checking refusal preserves
 trust, the installed client and SSH configuration. The focused
-[NixOS installer journey](../../../nix/tests/machines/installer-trust/driver.py)
+[NixOS installer journey](../../../nix/verification/tests/machines/installer-trust/driver.py)
 uses the actual Marshall HTTPS routes, packaged Lyra and Porsche account proof;
 it intentionally excludes the final guest connection. Its
 [verification review](../reviews/2026-09-25-installer-verification.md)

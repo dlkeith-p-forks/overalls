@@ -29,6 +29,9 @@ fn spec_run(
     (1000..=14_400_000).contains(&timeout)
         && (limit == 65_536 || limit == 4_194_304)
         && usize::from(utility) < Utility::ALL.len()
+        // systemd-run, the stream helper, ssh, cmp and the bridge are reachable only
+        // through LaunchVm, TransferStream and BridgeNetnsTcp.
+        && ![24, 28, 29, 30, 31].contains(&utility)
         && arguments.len() <= 127
         && terminated
         && arguments.iter().all(|argument| !argument.contains(&0))
@@ -138,7 +141,7 @@ fn acquire_decoding_matches_model(tc: TestCase) {
 fn replies_round_trip(tc: TestCase) {
     let id = tc.draw(gs::integers::<u64>());
     let bytes = tc.draw(gs::binary().max_size(64));
-    let reply = match tc.draw(gs::integers::<u8>().min_value(0).max_value(5)) {
+    let reply = match tc.draw(gs::integers::<u8>().min_value(0).max_value(6)) {
         0 => Reply::Hello { version: 1 },
         1 => Reply::Granted {
             lease: tc.draw(gs::integers::<u64>()),
@@ -148,6 +151,7 @@ fn replies_round_trip(tc: TestCase) {
         },
         3 => Reply::Released,
         4 => Reply::Chunk { bytes },
+        5 => Reply::Connected,
         _ => Reply::Result {
             status: Status::Cancelled,
             bytes,
@@ -173,6 +177,7 @@ fn utility_table_is_dense_and_mutations_marked() {
         Utility::Umount,
         Utility::SystemdRun,
         Utility::Chown,
+        Utility::Chmod,
     ] {
         assert!(utility.mutating());
     }
@@ -217,12 +222,12 @@ fn lease_grants_follow_arrival_order(tc: TestCase) {
     let log = Arc::new(Mutex::new(Vec::<(usize, &'static str, Mode)>::new()));
     let mut threads = Vec::new();
     for (index, mode) in modes.iter().copied().enumerate() {
-        let table = Arc::clone(&table);
+        let shared = Arc::clone(&table);
         let log = Arc::clone(&log);
         let never = Arc::clone(&never);
         let path = directory.path().to_path_buf();
         threads.push(std::thread::spawn(move || {
-            let (lease, _) = table
+            let (lease, _) = shared
                 .acquire(
                     index as u64 + 1,
                     mode,
@@ -234,10 +239,15 @@ fn lease_grants_follow_arrival_order(tc: TestCase) {
             log.lock().unwrap().push((index, "granted", mode));
             std::thread::sleep(Duration::from_millis(15));
             log.lock().unwrap().push((index, "released", mode));
-            table.release(index as u64 + 1, lease);
+            shared.release(index as u64 + 1, lease);
         }));
-        // Arrival order is the order threads reach the queue.
-        std::thread::sleep(Duration::from_millis(20));
+        // Arrival order is the order threads reach the queue: wait until this
+        // waiter is queued before the next one starts (no timing assumption).
+        let deadline = Instant::now() + Duration::from_secs(20);
+        while table.waiting() < index + 1 {
+            assert!(Instant::now() < deadline, "waiter {index} never queued");
+            std::thread::sleep(Duration::from_millis(1));
+        }
     }
     assert!(table.release(0, first));
     for thread in threads {
@@ -395,7 +405,7 @@ fn script(directory: &Path, name: &str, body: &str) {
 }
 
 /// A daemon on a private socket whose utility table resolves to test scripts:
-/// `stat` echoes its arguments, `truncate` (mutating) sleeps for $1 seconds
+/// `stat` echoes its arguments, `cp` (mutating, not native) sleeps for $1 seconds
 /// and `realpath` prints $1 bytes.
 fn daemon() -> Fixture {
     start_reaper().expect("subreaper");
@@ -405,8 +415,25 @@ fn daemon() -> Fixture {
     std::fs::create_dir(&bin).unwrap();
     std::fs::create_dir(&root).unwrap();
     script(&bin, "stat", "echo \"$@\"");
-    script(&bin, "truncate", "sleep \"$1\"");
+    script(&bin, "cp", "sleep \"$1\"");
     script(&bin, "realpath", "head -c \"$1\" /dev/zero");
+    // The stream helper records its argv and progress descriptor, then exits
+    // with the code named by its consumer's last argument when numeric.
+    let record = directory.path().join("stream-record");
+    script(
+        &bin,
+        "lilly-transfer-stream",
+        &format!(
+            "printf '%s\\n' \"$@\" > {record}\nfd=$3\n[ \"$fd\" = - ] || printf 'progress' >&\"$fd\" || exit 70\nexit 6",
+            record = record.display()
+        ),
+    );
+    script(&bin, "zfs", "exit 0");
+    script(
+        &bin,
+        "lilly-resume-token",
+        "[ \"$3\" = 1-ab-cd-ef ] && echo ok",
+    );
     let mut path = OsString::from(&bin);
     path.push(":");
     path.push(std::env::var_os("PATH").unwrap_or_default());
@@ -553,7 +580,7 @@ fn commands_capture_output_and_mutations_need_a_lease() {
     let client = Client::connect(&fixture);
     client.run(2, 0, Utility::Stat, &["one", "two"], 5000);
     assert_eq!(client.result(), (Status::Succeeded, b"one two\n".to_vec()));
-    client.run(3, 0, Utility::Truncate, &["0"], 5000);
+    client.run(3, 0, Utility::Cp, &["0"], 5000);
     assert_eq!(
         client.receive(),
         (
@@ -579,10 +606,10 @@ fn timeouts_kill_and_leases_serialize_commands() {
         panic!("lease")
     };
     let started = Instant::now();
-    client.run(3, lease, Utility::Truncate, &["30"], 1000);
+    client.run(3, lease, Utility::Cp, &["30"], 1000);
     // A second command on the same lease is refused while one runs.
     std::thread::sleep(Duration::from_millis(100));
-    client.run(4, lease, Utility::Truncate, &["0"], 1000);
+    client.run(4, lease, Utility::Cp, &["0"], 1000);
     assert_eq!(
         client.receive(),
         (
@@ -607,7 +634,7 @@ fn session_death_kills_commands_and_releases_leases() {
     let Reply::Granted { lease } = first.acquire(2, &fixture.root, 0) else {
         panic!("lease")
     };
-    first.run(3, lease, Utility::Truncate, &["30"], 60_000);
+    first.run(3, lease, Utility::Cp, &["30"], 60_000);
     std::thread::sleep(Duration::from_millis(100));
     let second = Client::connect(&fixture);
     assert_eq!(
@@ -629,7 +656,7 @@ fn session_death_kills_commands_and_releases_leases() {
     let Reply::Granted { lease } = second.acquire(4, &third_root, 0) else {
         panic!("lease")
     };
-    second.run(5, lease, Utility::Truncate, &["30"], 60_000);
+    second.run(5, lease, Utility::Cp, &["30"], 60_000);
     std::thread::sleep(Duration::from_millis(100));
     second.send(6, Request::Release { lease });
     let mut replies = vec![second.receive(), second.receive()];
@@ -663,6 +690,22 @@ fn options_parse_strictly() {
     );
     assert!(parse(&["--socket", "/a", "--socket", "/b", "--root", "/x"]).is_none());
     assert!(parse(&["--socket", "/a", "--root", "/x", "--peer-uid", "nobody"]).is_none());
+    assert!(
+        parse(&["--socket", "/a", "--root", "/x", "--service-uid", "977"])
+            .is_some_and(|options| options.service_uid == Some(977) && options.peer_uid.is_none())
+    );
+    assert!(parse(&["--socket", "/a", "--root", "/x", "--service-uid", "lilly"]).is_none());
+    assert!(parse(&[
+        "--socket",
+        "/a",
+        "--root",
+        "/x",
+        "--service-uid",
+        "1",
+        "--service-uid",
+        "2"
+    ])
+    .is_none());
     assert!(parse(&["--socket", "/a", "--root", "/x", "--bogus", "1"]).is_none());
 }
 
@@ -685,7 +728,7 @@ fn durable_jobs_outlive_their_session() {
             lease,
             timeout_ms: 10_000,
             output_limit: 65_536,
-            utility: Utility::Truncate,
+            utility: Utility::Cp,
             arguments: vec![CString::new("1").unwrap()],
         },
     );
@@ -727,4 +770,304 @@ fn durable_jobs_outlive_their_session() {
             }
         )
     );
+}
+
+// --------------------------------------------------------------- VM launch
+
+fn launch_tools() -> crate::vm_launch::Tools {
+    crate::vm_launch::Tools {
+        boot_log: PathBuf::from("/tools/boot-log"),
+        unshare: PathBuf::from("/tools/unshare"),
+        launch_guard: PathBuf::from("/tools/guard"),
+        jailer: PathBuf::from("/tools/jailer"),
+        firecracker: PathBuf::from("/tools/firecracker"),
+    }
+}
+
+fn launch(firmware: bool) -> crate::vm_launch::Launch {
+    crate::vm_launch::Launch {
+        placement: *b"11111111-2222-4333-8444-555555555555",
+        epoch: 7,
+        generation: 9,
+        uid: 1_000_010,
+        memory_bytes: 1_342_177_280,
+        vcpus: 2,
+        firmware,
+        logging: true,
+        state_dir: b"/var/lib/lilly/vms".to_vec(),
+        namespace: b"lilly-guests".to_vec(),
+        pool: b"/pool".to_vec(),
+    }
+}
+
+fn strings(argv: Vec<CString>) -> Vec<String> {
+    argv.into_iter().map(|a| a.into_string().unwrap()).collect()
+}
+
+/// The launch command line moved from Lilly's `Unit.arguments/5`; these are
+/// that test's guarantees (vm-launch-argv-derived-by-hostd).
+#[test]
+fn vm_launch_builds_the_unit_command_line() {
+    let pools = [PathBuf::from("/pool")];
+    let roots = [PathBuf::from("/var/lib/lilly")];
+    let tools = launch_tools();
+    let kernel =
+        strings(crate::vm_launch::argv(Some(&tools), &roots, &pools, &launch(false), 0).unwrap());
+    let pci =
+        strings(crate::vm_launch::argv(Some(&tools), &roots, &pools, &launch(true), 0).unwrap());
+    let placement = "11111111-2222-4333-8444-555555555555";
+    assert!(!kernel.contains(&"--enable-pci".to_string()));
+    let index = pci.iter().position(|a| a == "/firecracker.json").unwrap();
+    assert_eq!(
+        pci[index + 1..index + 4],
+        ["--enable-pci", "--metadata", "/metadata.json"]
+    );
+    let mut without = pci.clone();
+    without.drain(index + 1..index + 4);
+    assert_eq!(without, kernel);
+    assert!(kernel.contains(&format!(
+        "--description=Overalls VM v1 placement={placement} epoch=7 generation=9"
+    )));
+    assert!(kernel.contains(&format!("lilly.slice/lilly-vm-{placement}.service")));
+    assert!(kernel.contains(&format!("/var/lib/lilly/vms/{placement}/boot.log")));
+    assert!(kernel.contains(&format!("/var/lib/lilly/vms/{placement}/launch/owner.lock")));
+    assert!(kernel.contains(&"/pool/.lilly-jails".to_string()));
+    assert!(kernel.contains(&"/run/netns/lilly-guests".to_string()));
+    assert!(kernel.ends_with(&[
+        "--log-path".into(),
+        "/log-7-9.fifo".into(),
+        "--metrics-path".into(),
+        "/metrics-7-9.fifo".into()
+    ]));
+    let separator = kernel.iter().position(|a| a == "--").unwrap();
+    assert_eq!(
+        kernel[separator..separator + 10],
+        [
+            "--",
+            "/tools/boot-log",
+            &format!("/var/lib/lilly/vms/{placement}/boot.log"),
+            "/tools/unshare",
+            "--fork",
+            "--pid",
+            "--kill-child=KILL",
+            "/tools/unshare",
+            "--mount-proc",
+            "/tools/guard"
+        ]
+    );
+    assert!(!kernel
+        .iter()
+        .any(|a| a.starts_with("--property=StandardOutput=")));
+}
+
+/// An unprivileged service uid reaches exactly the boot-log writer
+/// (`--reader-uid`) and the launch guard (`--owner-uid`); otherwise the
+/// command line is the root one (vm-launch-argv-derived-by-hostd).
+#[test]
+fn vm_launch_hands_an_unprivileged_service_its_files() {
+    let pools = [PathBuf::from("/pool")];
+    let roots = [PathBuf::from("/var/lib/lilly")];
+    let tools = launch_tools();
+    let placement = "11111111-2222-4333-8444-555555555555";
+    let root =
+        strings(crate::vm_launch::argv(Some(&tools), &roots, &pools, &launch(false), 0).unwrap());
+    let service =
+        strings(crate::vm_launch::argv(Some(&tools), &roots, &pools, &launch(false), 377).unwrap());
+    let writer = service.iter().position(|a| a == "/tools/boot-log").unwrap();
+    assert_eq!(
+        service[writer..writer + 4],
+        [
+            "/tools/boot-log",
+            "--reader-uid",
+            "377",
+            &format!("/var/lib/lilly/vms/{placement}/boot.log")
+        ]
+    );
+    let guard = service.iter().position(|a| a == "/tools/guard").unwrap();
+    assert_eq!(service[guard + 1..guard + 3], ["--owner-uid", "377"]);
+    let mut stripped = service.clone();
+    stripped.drain(guard + 1..guard + 3);
+    stripped.drain(writer + 1..writer + 3);
+    assert_eq!(stripped, root);
+    assert!(!root
+        .iter()
+        .any(|a| a == "--reader-uid" || a == "--owner-uid"));
+}
+
+#[test]
+fn vm_launch_refuses_out_of_policy_requests() {
+    let pools = [PathBuf::from("/pool")];
+    let roots = [PathBuf::from("/var/lib/lilly")];
+    let tools = launch_tools();
+    let refused = |change: &dyn Fn(&mut crate::vm_launch::Launch)| {
+        let mut request = launch(false);
+        change(&mut request);
+        crate::vm_launch::argv(Some(&tools), &roots, &pools, &request, 0)
+    };
+    assert_eq!(refused(&|l| l.uid = 0), Err(Refusal::Malformed));
+    assert_eq!(refused(&|l| l.uid = 1_262_143), Err(Refusal::Malformed));
+    assert_eq!(
+        refused(&|l| l.pool = b"/etc".to_vec()),
+        Err(Refusal::Malformed)
+    );
+    assert_eq!(
+        refused(&|l| l.pool = b"/pool/../etc".to_vec()),
+        Err(Refusal::Malformed)
+    );
+    assert_eq!(
+        refused(&|l| l.namespace = b"../../proc/1/ns/net".to_vec()),
+        Err(Refusal::Malformed)
+    );
+    assert_eq!(
+        refused(&|l| l.placement = *b"11111111-2222-4333-8444-55555555555X"),
+        Err(Refusal::Malformed)
+    );
+    assert_eq!(refused(&|l| l.epoch = 0), Err(Refusal::Malformed));
+    assert_eq!(
+        refused(&|l| l.state_dir = b"/etc/lilly".to_vec()),
+        Err(Refusal::Malformed)
+    );
+    assert_eq!(
+        refused(&|l| l.state_dir = b"/var/lib/lilly/../../etc".to_vec()),
+        Err(Refusal::Malformed)
+    );
+    assert_eq!(refused(&|l| l.vcpus = 0), Err(Refusal::Malformed));
+    assert_eq!(refused(&|l| l.memory_bytes = 1), Err(Refusal::Malformed));
+    assert_eq!(
+        crate::vm_launch::argv(None, &roots, &pools, &launch(false), 0),
+        Err(Refusal::Unavailable)
+    );
+}
+
+/// LaunchVm datagrams round-trip, and direct systemd-run requests are refused.
+#[hegel::test]
+fn vm_launch_decoding_round_trips(tc: TestCase) {
+    let mut request = launch(tc.draw(gs::booleans()));
+    request.logging = tc.draw(gs::booleans());
+    request.epoch = tc.draw(gs::integers::<u64>());
+    request.uid = tc.draw(gs::integers::<u32>());
+    let envelope = Envelope {
+        id: tc.draw(gs::integers::<u64>()),
+        request: Request::LaunchVm {
+            lease: tc.draw(gs::integers::<u64>()),
+            launch: request,
+        },
+    };
+    let bytes = encode_request(&envelope);
+    assert_eq!(decode(&bytes), Some(envelope));
+    let direct = encode_request(&Envelope {
+        id: 1,
+        request: Request::Run {
+            lease: 1,
+            timeout_ms: 10_000,
+            output_limit: DEFAULT_OUTPUT_LIMIT,
+            utility: Utility::SystemdRun,
+            arguments: vec![],
+        },
+    });
+    assert_eq!(decode(&direct), None);
+}
+
+// ---------------------------------------------------------- transfer stream
+
+fn local_stream(lease: u64, producer: Option<crate::transfer::Producer>) -> Request {
+    let placement = b"11111111-2222-4333-8444-555555555555".to_vec();
+    Request::TransferStream {
+        lease,
+        timeout_ms: 5_000,
+        rate: 0,
+        stream: crate::transfer::Stream {
+            producer: producer.unwrap_or(crate::transfer::Producer::LocalSend {
+                dataset: b"tank/lilly".to_vec(),
+                placement: placement.clone(),
+            }),
+            consumer: crate::transfer::Consumer::Receive {
+                dataset: b"tank/lilly".to_vec(),
+                pool: b"/pool".to_vec(),
+                placement,
+                host: b"44444444-5555-4666-8777-888888888888".to_vec(),
+                pool_id: b"55555555-6666-4777-8888-999999999999".to_vec(),
+                nonce: b"0123456789abcdef0123456789abcdef".to_vec(),
+            },
+        },
+    }
+}
+
+/// A stream needs a held lease, runs the helper with the derived argv and an
+/// inherited progress descriptor on `<lease directory>/progress`, and returns
+/// exactly the helper's exit code; generic runs of the helper are refused.
+#[test]
+fn transfer_streams_run_the_helper_under_the_lease() {
+    let fixture = daemon();
+    let client = Client::connect(&fixture);
+    client.send(2, local_stream(0, None));
+    assert_eq!(
+        client.receive(),
+        (
+            2,
+            Reply::Refused {
+                reason: Refusal::LeaseRequired
+            }
+        )
+    );
+    let directory = fixture.root.join("stream");
+    std::fs::create_dir(&directory).unwrap();
+    let Reply::Granted { lease } = client.acquire(3, &directory, 0) else {
+        panic!("lease")
+    };
+    client.send(4, local_stream(lease, None));
+    assert_eq!(client.result(), (Status::Failed, vec![6]));
+    let record = std::fs::read_to_string(fixture.root.parent().unwrap().join("stream-record"))
+        .expect("helper ran");
+    let argv: Vec<&str> = record.lines().collect();
+    assert_eq!(&argv[..2], ["5000", "0"]);
+    assert_ne!(argv[2], "-", "a progress descriptor was inherited");
+    assert_eq!(&argv[3..6], ["-", "-", "4"]);
+    assert_eq!(
+        argv[9],
+        "tank/lilly/vm-11111111-2222-4333-8444-555555555555@lilly-b"
+    );
+    assert_eq!(
+        std::fs::read(directory.join("progress")).unwrap(),
+        b"progress"
+    );
+    // The helper is never reachable through a generic Run.
+    let direct = encode_request(&Envelope {
+        id: 5,
+        request: Request::Run {
+            lease,
+            timeout_ms: 10_000,
+            output_limit: DEFAULT_OUTPUT_LIMIT,
+            utility: Utility::TransferStream,
+            arguments: vec![],
+        },
+    });
+    assert_eq!(decode(&direct), None);
+}
+
+/// A local resume runs only after lilly-resume-token confirmed the token.
+#[test]
+fn local_resume_requires_the_token_check() {
+    let fixture = daemon();
+    let client = Client::connect(&fixture);
+    let directory = fixture.root.join("resume");
+    std::fs::create_dir(&directory).unwrap();
+    let Reply::Granted { lease } = client.acquire(2, &directory, 0) else {
+        panic!("lease")
+    };
+    let resume = |token: &[u8]| {
+        local_stream(
+            lease,
+            Some(crate::transfer::Producer::LocalResume {
+                dataset: b"tank/lilly".to_vec(),
+                placement: b"11111111-2222-4333-8444-555555555555".to_vec(),
+                to_guid: b"42".to_vec(),
+                token: token.to_vec(),
+            }),
+        )
+    };
+    client.send(3, resume(b"1-ab-cd-00"));
+    assert_eq!(client.result(), (Status::Setup, vec![]));
+    client.send(4, resume(b"1-ab-cd-ef"));
+    assert_eq!(client.result(), (Status::Failed, vec![6]));
 }

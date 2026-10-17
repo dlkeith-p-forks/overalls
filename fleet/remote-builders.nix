@@ -1,6 +1,6 @@
 { lib }:
 let
-  inventory = (import ../nix/hosts/inventory.nix { inherit lib; }).hosts;
+  inventory = (import ../nix/platform/hosts/inventory.nix { inherit lib; }).hosts;
   keys = builtins.fromJSON (builtins.readFile ./builder-public-keys.json);
   # Both CPU counts were measured with nproc --all over inventory-pinned
   # administrative SSH on 2026-09-18. Guest budgets are not CPU discovery.

@@ -246,7 +246,7 @@ defmodule Lilly.Host.ZFSDataset do
          true <- import_disk_shape?(pool, spec, descriptor),
          {:ok, _} <-
            Command.run(:zfs_set, ["readonly=off", "canmount=on", name(pool, spec)], 30_000),
-         :ok <- File.chmod(directory(pool, spec), 0o700),
+         :ok <- Lilly.Host.Privilege.claim_directory(directory(pool, spec)),
          :ok <- PrivateFiles.directory(directory(pool, spec)),
          :ok <- publish_drives(pool, spec),
          :ok <-
@@ -386,7 +386,7 @@ defmodule Lilly.Host.ZFSDataset do
         disk = Path.join(directory, drive.name)
 
         with {:ok, _} <- Command.run(:chown, [owner, "--", disk]),
-             :ok <- File.chmod(disk, 0o600),
+             :ok <- Lilly.Host.Privilege.chmod(disk, 0o600),
              {:ok, _} <- Command.run(:sync, ["--", disk], 300_000) do
           {:cont, :ok}
         else
@@ -410,6 +410,7 @@ defmodule Lilly.Host.ZFSDataset do
          lock when is_struct(lock, Lilly.Host.Lease) <- Lock.current(),
          expected = Pool.zfs_identity(pool),
          {:ok, ^expected} <- ZFS.inspect_path(pool.path),
+         :ok <- claim_pool_root(pool),
          :ok <- PrivateFiles.directory(base(pool)),
          :ok <- PrivateFiles.directory(active(pool)),
          :ok <- PrivateFiles.directory(retired(pool)),
@@ -422,6 +423,11 @@ defmodule Lilly.Host.ZFSDataset do
       _ -> {:error, :zfs_ownership_unconfirmed}
     end
   end
+
+  # Lilly's service user (ADR-0182) owns the verified pool root so it can
+  # create its .lilly-* directories, even for a pool imported after boot;
+  # hostd hands it over under the pool lease.
+  defp claim_pool_root(pool), do: Lilly.Host.Privilege.claim_directory(pool.path)
 
   # @cc [owner:ghuntley,label:recovery] zfs-create-intent-precedes-dataset
   # prepare/2 MUST persist the immutable binding and unpredictable creation nonce before zfs
@@ -517,7 +523,7 @@ defmodule Lilly.Host.ZFSDataset do
   defp prepare_finish(pool, spec, record, current) do
     with {:ok, current} <- current,
          :ok <- verify_snapshot(pool, spec, record, current),
-         :ok <- File.chmod(directory(pool, spec), 0o700),
+         :ok <- Lilly.Host.Privilege.claim_directory(directory(pool, spec)),
          do: PrivateFiles.directory(directory(pool, spec))
   rescue
     _ -> {:error, :invalid_result}

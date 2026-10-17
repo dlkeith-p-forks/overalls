@@ -651,11 +651,7 @@ defmodule Lilly.Host.ZFS do
     path = Path.join([identity.path, "vms", id])
 
     with true <- OverallsProtocol.uuid?(id),
-         {:ok, output} <-
-           Command.run(:findmnt, ["--json", "--list", "--output", "TARGET,SOURCE,FSTYPE,FSROOT"]),
-         {:ok, %{"filesystems" => mounts}} when is_list(mounts) and length(mounts) <= 32_768 <-
-           JSON.decode(output),
-         true <- Enum.all?(mounts, &(is_binary(&1["source"]) and is_binary(&1["target"]))) do
+         {:ok, mounts} <- Lilly.Host.MountTable.read() do
       relevant =
         Enum.filter(mounts, fn row ->
           source = row["source"]
@@ -683,9 +679,7 @@ defmodule Lilly.Host.ZFS do
     path = Path.join([identity.path, "vms", id])
 
     with true <- OverallsProtocol.uuid?(id),
-         {:ok, output} <- Command.run(:findmnt, ["--json", "--list", "--output", "TARGET,SOURCE"]),
-         {:ok, %{"filesystems" => mounts}} when is_list(mounts) and length(mounts) <= 32_768 <-
-           JSON.decode(output) do
+         {:ok, mounts} <- Lilly.Host.MountTable.read() do
       Enum.all?(mounts, fn
         %{"source" => source, "target" => target} when is_binary(source) and is_binary(target) ->
           source != name and not String.starts_with?(source, name <> "[") and
@@ -1077,15 +1071,7 @@ defmodule Lilly.Host.ZFS do
 
   @doc "The bounded host mount table (target, source, fstype, fsroot) for exclusive-mount checks."
   @spec mounts() :: {:ok, [mount()]} | :error
-  def mounts do
-    with {:ok, output} <-
-           Command.run(:findmnt, ["--json", "--list", "--output", "TARGET,SOURCE,FSTYPE,FSROOT"]),
-         {:ok, %{"filesystems" => mounts}} when is_list(mounts) and length(mounts) <= 32_768 <-
-           JSON.decode(output),
-         true <- Enum.all?(mounts, &is_map/1),
-         do: {:ok, mounts},
-         else: (_ -> :error)
-  end
+  def mounts, do: Lilly.Host.MountTable.read()
 
   # @cc [owner:ghuntley,label:security] zfs-property-parser-bounds
   # parse_datasets/1 MUST reject malformed, duplicate, oversized and noncanonical rows. Values
@@ -1232,18 +1218,9 @@ defmodule Lilly.Host.ZFS do
   end
 
   defp mounted_dataset(path) do
-    with {:ok, output} <-
-           Command.run(:findmnt, [
-             "--json",
-             "--target",
-             path,
-             "--output",
-             "FSTYPE,SOURCE,TARGET,FSROOT,OPTIONS",
-             "--first-only"
-           ]),
-         {:ok, %{"filesystems" => [mount]}} <- JSON.decode(output),
+    with {:ok, mount} <- Lilly.Host.MountTable.at(path),
          %{"fstype" => "zfs", "target" => ^path, "fsroot" => "/", "source" => dataset} <- mount,
-         true <- is_binary(dataset) and byte_size(dataset) <= 200,
+         true <- byte_size(dataset) <= 200,
          true <-
            Regex.match?(~r/\A[a-zA-Z][a-zA-Z0-9_.-]*(\/[a-zA-Z0-9][a-zA-Z0-9_.-]*)+\z/, dataset),
          options when is_binary(options) <- mount["options"],
@@ -1297,10 +1274,7 @@ defmodule Lilly.Host.ZFS do
       with {:ok, canonical} <- canonical(path),
            {:ok, %File.Stat{type: :device, mode: mode}} <- File.stat(canonical),
            true <- Bitwise.band(mode, 0o170000) == 0o060000,
-           {:ok, numbers} <- Command.run(:stat, ["--printf=%t:%T", "--", canonical]),
-           [major, minor] <- String.split(numbers, ":"),
-           {major, ""} <- Integer.parse(major, 16),
-           {minor, ""} <- Integer.parse(minor, 16),
+           {:ok, {major, minor}} <- Lilly.Host.Paths.device_numbers(canonical),
            {:ok, extent} <- Pool.device_extent("/sys", "#{major}:#{minor}") do
         {:cont, {:ok, [extent | acc]}}
       else
@@ -1316,10 +1290,7 @@ defmodule Lilly.Host.ZFS do
     end
   end
 
-  defp canonical(path) do
-    with {:ok, output} <- Command.run(:realpath, ["--canonicalize-existing", "--", path]),
-         do: {:ok, String.trim_trailing(output, "\n")}
-  end
+  defp canonical(path), do: Lilly.Host.Paths.canonical(path)
 
   defp absent_or_empty?(row, key), do: Map.get(row, key, %{}) == %{}
 

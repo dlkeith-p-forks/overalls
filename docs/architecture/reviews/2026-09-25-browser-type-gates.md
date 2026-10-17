@@ -19,7 +19,7 @@ do not change; ADR-0033 gains precise build evidence.
 
 ## Finding and correction
 
-Repository Python source discovery excludes `nix/tests/machines`. The NixOS
+Repository Python source discovery excludes `nix/verification/tests/machines`. The NixOS
 framework checks its composed driver, but cannot check a separate Python
 process merely because the driver invokes it. Teams, Control room, handbook
 and default OSS previously executed raw `browser.py` store paths without a

@@ -1,7 +1,19 @@
 defmodule Lilly.Host.ImageTemplate do
   @moduledoc "Sealed per-pool artifacts with native leases and conservative bounded storage."
   require Lilly.Events
-  alias Lilly.Host.{Command, Image, Lock, Pool, PrivateFiles, Storage, ZFS, ZFSDataset}
+
+  alias Lilly.Host.{
+    Command,
+    Image,
+    Lock,
+    Pool,
+    PrivateFiles,
+    Storage,
+    ZFS,
+    ZFSDataset,
+    ZFSNamespaceMounts
+  }
+
   alias Lilly.Lifecycle.{ImageTemplate, Journal}
   @timeout 300_000
   @catalog_limit 4096
@@ -305,7 +317,7 @@ defmodule Lilly.Host.ImageTemplate do
                        "lilly:nonce=" <> value["nonce"],
                        name(pool, value)
                      ]),
-                   :ok <- File.chmod(directory(pool, value), 0o700),
+                   :ok <- Lilly.Host.Privilege.claim_directory(directory(pool, value)),
                    :ok <- native(pool, value, :off),
                    do: ZFS.template_child(Pool.zfs_identity(pool), name(pool, value), nil, :off)
 
@@ -321,7 +333,7 @@ defmodule Lilly.Host.ImageTemplate do
                      ),
                    {:ok, %{type: :directory, uid: 0}} <-
                      Lilly.Host.Privilege.lstat(directory(pool, value)),
-                   :ok <- File.chmod(directory(pool, value), 0o700),
+                   :ok <- Lilly.Host.Privilege.claim_directory(directory(pool, value)),
                    :ok <- native(pool, value, :off),
                    do: {:ok, owner["guid"]},
                    else: (_ -> {:error, :template_unconfirmed})
@@ -380,7 +392,7 @@ defmodule Lilly.Host.ImageTemplate do
     key = :crypto.hash(:sha256, Enum.join(["template-copy" | arguments], <<0>>))
 
     with {:ok, "copy\n"} <- durable_copy(pending, arguments, timeout, key),
-         :ok <- File.chmod(pending, 0o444),
+         :ok <- Lilly.Host.Privilege.chmod(pending, 0o444),
          :ok <- flush(pending),
          {:ok, _} <- Command.run(:mv, ["--no-target-directory", "--", pending, target]),
          do: flush(Path.dirname(target))
@@ -613,7 +625,7 @@ defmodule Lilly.Host.ImageTemplate do
          :ok <-
            if(Bitwise.band(mode, 0o777) == 0o700,
              do: :ok,
-             else: File.chmod(directory(pool, value), 0o700)
+             else: Lilly.Host.Privilege.claim_directory(directory(pool, value))
            ) do
       :ok
     else
@@ -638,7 +650,7 @@ defmodule Lilly.Host.ImageTemplate do
     with true <- owner?(owner, pool, value),
          :ok <- native(pool, value, :either),
          {:ok, files} <- File.ls(directory(pool, value)),
-         true <- Enum.all?(files, &(&1 in known_files())),
+         true <- Enum.all?(files, &(&1 in known_files(value))),
          true <-
            Enum.all?(files, fn file ->
              case Lilly.Host.Privilege.lstat(Path.join(directory(pool, value), file)) do
@@ -646,17 +658,26 @@ defmodule Lilly.Host.ImageTemplate do
                _ -> false
              end
            end),
+         # Services started while the template was mounted keep copies that
+         # make the destroy busy after the host copy is unmounted.
+         {:ok, _} <- ZFSNamespaceMounts.detach(name(pool, value), directory(pool, value)),
          {:ok, _} <- Command.run(:zfs_destroy, [name(pool, value)], 30_000),
          do: :ok,
          else: (_ -> {:error, :template_retirement_unconfirmed})
   end
 
-  # Every file any supported image kind may leave in a template directory,
-  # including interrupted copies; anything else refuses the destroy.
-  defp known_files do
-    files = Enum.uniq(List.flatten(Image.file_sets()))
-    files ++ Enum.map(files, &(&1 <> ".pending"))
-  end
+  # @cc [owner:ghuntley,label:recovery;security] template-destroy-known-files
+  # A template dataset MUST be destroyed only when every file in its root is
+  # one its record names (or that file's interrupted `.pending` copy): the
+  # sealed identities when the record has any, so a template of an image kind
+  # this release no longer supports can still be retired; otherwise any file
+  # a supported kind may stage. Anything else refuses the destroy.
+  defp known_files(%{"identities" => identities}) when map_size(identities) > 0,
+    do: with_pending(Map.keys(identities))
+
+  defp known_files(_), do: with_pending(Enum.uniq(List.flatten(Image.file_sets())))
+
+  defp with_pending(files), do: files ++ Enum.map(files, &(&1 <> ".pending"))
 
   defp touch(pool, value) do
     with {:ok, lock} <- Lock.acquire(Path.join(record_directory(pool, value), "access-lock")) do

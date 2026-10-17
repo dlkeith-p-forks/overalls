@@ -26,29 +26,29 @@ SDK callsites; these assertions are proposed and missing.
 
 ## Source and existing evidence
 
-`nix/modules/backups/runtime.py:313-345` validates the selected manifest,
+`nix/domains/system/backups/runtime.py:313-345` validates the selected manifest,
 requires an absolute empty private target, restores indexed components with
 `restic restore --verify`, then atomically writes `manifest.json`. This is a
 restore-target publication marker, separate from the repository's uploaded
 `host-manifest` point. `:277-285` holds one owner lock through the operation.
 The generated real-local-Restic test already covers SIGTERM, SIGKILL, timeout,
 verified prefix, absent marker, and fresh-target retry
-(`nix/tests/evaluation/backup-operators.py:858-959`). Other existing histories
+(`nix/verification/tests/evaluation/backup-operators.py:858-959`). Other existing histories
 cover a missing component and explicit retry (`:673-728`), concurrent lock
 contention (`:1261-1341`), and a mid-restore password change (`:1354-1427`).
 These tests are relevant past execution evidence under ADR-0070's review, not
 Antithesis fault coverage or a current rerun. The native backup machine restores
 host bytes and PostgreSQL into an isolated database
-(`nix/tests/machines/backups/driver.py:187-255`); it does not show an interrupted
+(`nix/verification/tests/machines/backups/driver.py:187-255`); it does not show an interrupted
 native guest-disk restore.
 
-`nix/modules/backups/journal.py:113-133` samples backup start from wall time.
-`nix/modules/backups/runtime.py:207-225` separately samples completion,
+`nix/domains/system/backups/journal.py:113-133` samples backup start from wall time.
+`nix/domains/system/backups/runtime.py:207-225` separately samples completion,
 uploads the complete manifest, records completion, then calls retention.
-`nix/modules/backups/restic.py:213-254` rejects `started_at > completed_at`,
+`nix/domains/system/backups/restic.py:213-254` rejects `started_at > completed_at`,
 and `:256-295` validates every manifest before any forget operation. The
 `reversed_time` operator test constructs an invalid manifest and confirms
-inspect/restore/prune refusal (`nix/tests/evaluation/backup-operators.py:580-665`).
+inspect/restore/prune refusal (`nix/verification/tests/evaluation/backup-operators.py:580-665`).
 The assumptions report A12 already records a **modeled** 2000→1000 boundary;
 no controlled clock step through the actual coordinator plus Restic is recorded.
 Thus publication of a retention-poisoning point remains a source-grounded

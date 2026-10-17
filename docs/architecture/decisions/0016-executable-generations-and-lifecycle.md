@@ -164,7 +164,7 @@ Its host lock suppresses new starts and automatic recovery during a drain.
 ## Open questions
 
 Protected enrollment and public lifecycle/sharing/TTY are implemented under
-ADRs 0018–0025. Their [NixOS fleet acceptance](../../../nix/tests/machines/fleet/default.nix) now
+ADRs 0018–0025. Their [NixOS fleet acceptance](../../../nix/verification/tests/machines/fleet/default.nix) now
 passes across three Marshall and two Lilly machines; independent physical-host
 and broader fault/load acceptance remain open.
 Runtime ownership and durable actors/outcomes are implemented under ADR-0017;

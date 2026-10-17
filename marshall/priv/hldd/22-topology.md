@@ -65,6 +65,8 @@ measurement withholds the corresponding setup or guest claim.
 ```mermaid
 flowchart LR
   Extension[Configured Chrome or Firefox launcher] -->|fragment navigation| Browser[Public Marshall capture and signed cookie]
+  Extension -->|exact-origin optional permission| Detector[Packaged detector content script]
+  Detector -->|local installed marker| Setup[Marshall setup affordances]
   Package[Immutable Nix browser package] -->|fixed public bin downloads| Browser
   Browser -->|current stored login and CSRF| Compute[Existing Marshall Compute on Overalls]
   Compute --> DB[(Marshall PostgreSQL)]
@@ -73,10 +75,15 @@ flowchart LR
   Guest -->|guest egress git or bounded API| Provider[Exact public provider origin]
 ```
 
-The extension is installed in the user's browser. Marshall's existing package
-closure and HTTPS service serve its archives; there is no new listener, host role
-or signing service. The cookie holds input only and PostgreSQL owns admitted VM
-and source identity. Lilly's host-local boot boundary mediates inert source delivery;
+The extension is installed in the user's browser. After the user saves a server
+origin, it requests optional access and registers the detector only for that exact
+origin. The detector's document marker is local presentation state: it can hide
+setup affordances but cannot authorize a request, account, thread or machine.
+Missing, denied or withdrawn permission and detector failure leave setup visible.
+Marshall's existing package closure and HTTPS service serve its archives; there is
+no new listener, host role or signing service. The cookie holds input only and
+PostgreSQL owns admitted VM and source identity. Lilly's host-local boot boundary
+mediates inert source delivery;
 only the guest reaches providers. A provider failure changes checkout status without
 failing VM readiness. Cookie expiry/login loss, database admission failure, host
 custody loss and provider availability are separate failure boundaries. Declared
@@ -306,8 +313,10 @@ flowchart TB
     Guests --> Brady[Brady web egress]
     Ziggy --> Underclass[Host-local Underclass pool]
     Underclass -->|read-only local monitor| UnderclassProbe[Rust monitor readiness probe]
+    Underclass -->|loopback HTTP proxy only| UnderclassEgress[Userspace Tailscale egress node]
   end
   Lilly -->|verified TLS polling over fleet network| Marshall
+  UnderclassEgress -->|WireGuard tailnet| AuExit[Operator exit node in Australia]
   Private -->|current authority| Marshall
   Public[Public DNS and application clients] --> Audi[Audi and DNS on both hosts]
   Audi -->|current placement and access| Marshall
@@ -456,6 +465,14 @@ Its source group grants no provider state or credential access; the producer
 lacks the collector group. This service remains separate from the tokenless
 local monitor probe. Isolated native custody passed; production activation remains
 under verification.
+Each host's `underclass-egress` node is a second, unprivileged, userspace
+tailnet identity with its own state and socket. It has no TUN device or routes,
+and the host's own Tailscale node is unchanged. When an exit node is configured,
+Underclass's cgroup can reach only loopback. Provider requests then leave
+through the egress proxy and the operator's Australian exit node, and fail
+rather than fall back when that node is unavailable (ADR-0185). The exit node
+is outside the fleet failure boundary and is a single dependency for both
+hosts' provider traffic.
 Audi private's Rust exporter reads only its mode-0600 numeric snapshot and
 connects through a separate group-restricted collector socket. Nix assigns
 `service.name=audi_private`. Bound transport completions stay distinct from
@@ -467,7 +484,7 @@ authoritative responses after socket send, without query-name labels or
 gateway authority. Its metrics disappear on collection loss and unexported
 counts may disappear on process restart.
 
-[The host profile](repo:nix/hosts/profile.nix) derives Lilly identities, pool GUIDs,
+[The host profile](repo:nix/platform/hosts/profile.nix) derives Lilly identities, pool GUIDs,
 budgets and credential paths from enrollment. Each host owns its ZFS guest data,
 Lilly journals, Underclass pool and service caches. A second worker does not make
 those disks shared or make PostgreSQL highly available. On authority loss, existing
@@ -574,10 +591,11 @@ flowchart LR
   host --> s29["overallsOtelFleet"]
   host --> s30["overallsOtelGuest"]
   host --> s31["underclass"]
-  host --> s32["underclassMonitorProbe"]
-  host --> s33["underclassProxySloExporter"]
-  host --> s34["ziggy"]
-  host --> s35["ziggySloExporter"]
+  host --> s32["underclassEgress"]
+  host --> s33["underclassMonitorProbe"]
+  host --> s34["underclassProxySloExporter"]
+  host --> s35["ziggy"]
+  host --> s36["ziggySloExporter"]
 ```
 
 Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `overalls`. Administrative SSH ports: 2222.
@@ -646,16 +664,17 @@ flowchart LR
   host --> s56["telemetryStorageProbe"]
   host --> s57["tempo"]
   host --> s58["underclass"]
-  host --> s59["underclassMonitorProbe"]
-  host --> s60["underclassProxySloExporter"]
-  host --> s61["vscodeBrowserNixosExporter"]
-  host --> s62["vscodeBrowserNixosProbe"]
-  host --> s63["vscodeBrowserNixosRequestRecorder"]
-  host --> s64["vscodeBrowserUbuntuExporter"]
-  host --> s65["vscodeBrowserUbuntuProbe"]
-  host --> s66["vscodeBrowserUbuntuRequestRecorder"]
-  host --> s67["ziggy"]
-  host --> s68["ziggySloExporter"]
+  host --> s59["underclassEgress"]
+  host --> s60["underclassMonitorProbe"]
+  host --> s61["underclassProxySloExporter"]
+  host --> s62["vscodeBrowserNixosExporter"]
+  host --> s63["vscodeBrowserNixosProbe"]
+  host --> s64["vscodeBrowserNixosRequestRecorder"]
+  host --> s65["vscodeBrowserUbuntuExporter"]
+  host --> s66["vscodeBrowserUbuntuProbe"]
+  host --> s67["vscodeBrowserUbuntuRequestRecorder"]
+  host --> s68["ziggy"]
+  host --> s69["ziggySloExporter"]
 ```
 
 Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`. Administrative SSH ports: 2222.
@@ -683,17 +702,17 @@ and affected scenario evidence. A generated map cannot infer failure semantics.
 
 [The HLDD Nix check](repo:flake.nix) compares evaluated service placement with the
 committed public projection and rendered view. [Properties and units](repo:marshall/test/architecture/hldd_views_test.exs)
-reject host/role drift and missing explanations. The [native browser](repo:nix/tests/machines/hldd/browser.py)
+reject host/role drift and missing explanations. The [native browser](repo:nix/verification/tests/machines/hldd/browser.py)
 checks that the deployed release fixture renders both visual sections individually.
 These checks do not contact or establish the health of either physical host.
 
-[Fleet-network tests](repo:nix/tests/machines/fleet-network/default.nix) exercise
+[Fleet-network tests](repo:nix/verification/tests/machines/fleet-network/default.nix) exercise
 tunnel reachability and forbidden paths in NixOS machines. The
-[host replacement](repo:nix/tests/machines/fleet/scenarios/host-replacement.py)
+[host replacement](repo:nix/verification/tests/machines/fleet/scenarios/host-replacement.py)
 journey retires one test provisioner and enrolls its replacement (fresh machine
 identity, name and storage GUIDs) through the protected SOPS/SSH path on the same
 fixture topology. The
-[fleet scenarios](repo:nix/tests/machines/fleet/default.nix) use a separate test
+[fleet scenarios](repo:nix/verification/tests/machines/fleet/default.nix) use a separate test
 topology, including three Marshall instances; that fixture is not this fleet's
 replica count. Prefer native NixOS allowed/refused traffic tests and generated
 authority histories for changes to these boundaries. Production failure-domain,

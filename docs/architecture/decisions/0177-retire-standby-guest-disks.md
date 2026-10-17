@@ -124,7 +124,7 @@ events, `Storage.contended?/1`, the standby claim in
 the standby class in pool accounting, the standby shape in
 [`ZFS`](../../../lilly/lib/lilly/host/zfs.ex), and the `standby` option and
 `standbyDisks.*` options in
-[`nix/modules/lilly.nix`](../../../nix/modules/lilly.nix) and the fleet hosts.
+[`nix/domains/system/lilly.nix`](../../../nix/domains/system/lilly.nix) and the fleet hosts.
 Evidence:
 - the [ZFS property](../../../lilly/test/host/zfs_test.exs)
   `retired-standby-is-unknown-storage` shows a `standby-*` dataset withholds

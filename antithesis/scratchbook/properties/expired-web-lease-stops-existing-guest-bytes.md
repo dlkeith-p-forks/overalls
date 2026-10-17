@@ -28,7 +28,7 @@ Value menu: web versus editor; blocked versus refused versus lost renewal respon
 
 #### Can a hosted guest fixture expose a post-deadline causal barrier and recorder without synchronized clocks?
 
-- Examined: `audi/lib/audi/authority/lease.ex:18-38`, `stream_guard.ex:17-44,96-155`, `audi/lib/audi/http/proxy.ex:82-140`, and `nix/tests/machines/private-web/guest.py:38-106`.
+- Examined: `audi/lib/audi/authority/lease.ex:18-38`, `stream_guard.ex:17-44,96-155`, `audi/lib/audi/http/proxy.ex:82-140`, and `nix/verification/tests/machines/private-web/guest.py:38-106`.
 - Found: Audi computes expiry on its own monotonic clock. The guard's separate watchdog terminates the socket-owning process even when the guard is suspended or dead. The existing guest origin counts streaming and WebSocket closure, but only in aggregate. A safe probe should await an Audi-local expiry/owner-death acknowledgement, then submit a new synthetic nonce on the retained client handle and inspect a guest-side nonce ledger. Neither guest clock nor closed client socket establishes the byte effect.
 - Not found: a current event or control endpoint that correlates one guard PID's owner death with one retained client handle, or a per-nonce guest recorder.
 - Conclusion: partial; the barrier must be implemented as scoped test instrumentation or a monitored owner-death checkpoint, followed by guest observation.

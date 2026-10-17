@@ -72,6 +72,12 @@ The configured extension transmits only after an explicit toolbar click. A URL
 withheld by browser permissions leaves the action available for that click's
 activeTab grant, then provider validation decides whether to open capture; unknown
 state alone sends nothing and grants no Overalls identity or machine authority.
+The extension also requests optional site access only for its explicitly saved
+normalized Overalls origin. Its packaged detector marks that document with a local
+installed attribute; Marshall uses the attribute only to hide setup affordances.
+A marker is spoofable and never grants identity, machine, thread, terminal, editor
+or launch authority. Missing configuration, denied or withdrawn permission, a
+registration failure or detector outage leaves setup visible.
 The extension removes source queries/fragments before opening capture. Direct
 capture removes them before browser storage or the CSRF POST and refuses URL user
 information; raw authority/path still undergoes strict backend validation.

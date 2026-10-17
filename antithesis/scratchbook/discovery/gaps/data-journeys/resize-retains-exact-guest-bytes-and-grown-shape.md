@@ -11,7 +11,7 @@ No source copy is involved in resize. Byte comparison is against the acknowledge
 ## Source trail and fault interleaving
 
 - ADR-0051 (`docs/architecture/decisions/0051-vm-resizing.md:20-64`) requires journaled stopped-only growth, no image copy/shrink, matching physical evidence before confirmed sizes, preserved guest data and current identity; ADR-0053 carries it forward. `marshall/lib/marshall/compute/resize.ex` and `resize_request.ex` persist phases and request identity. `lilly/lib/lilly/vm/driver.ex:430-474` checks stopped unit/jail/network, writes the exact source/target journal before `Disk.resize`, then writes `vm.json`. Cut before/after each of those boundaries, physical grow, result receipt and restart.
-- `nix/tests/machines/resize/guest.exs:5-42` seeds a synchronized marker and checks it, CPU count, guest `MemTotal`, exact block length and grown root filesystem inside the current Firecracker boot. `nix/tests/machines/resize/driver.py:297-308,382-452` also probes VMM API CPU/RAM, exact persisted target shape, running and stopped variants. The existing fixture marker is a fixed string and uses `sync`; a workload-owned unique fsync/digest ledger would make mutation or accidental wrong-disk reuse discriminate more sharply. Existing fixture source/historical pass statements do not establish this new Antithesis run.
+- `nix/verification/tests/machines/resize/guest.exs:5-42` seeds a synchronized marker and checks it, CPU count, guest `MemTotal`, exact block length and grown root filesystem inside the current Firecracker boot. `nix/verification/tests/machines/resize/driver.py:297-308,382-452` also probes VMM API CPU/RAM, exact persisted target shape, running and stopped variants. The existing fixture marker is a fixed string and uses `sync`; a workload-owned unique fsync/digest ledger would make mutation or accidental wrong-disk reuse discriminate more sharply. Existing fixture source/historical pass statements do not establish this new Antithesis run.
 
 ## Values, boundary, questions
 
@@ -25,7 +25,7 @@ This needs actual guest/VMM and backing disk observations. Marshall rows or a mo
 
 #### Can the composed Antithesis guest fixture expose VMM shape and retained block device across Lilly crash?
 
-- Examined: `nix/tests/machines/resize/driver.py:297-308,382-452`, `nix/tests/machines/resize/guest.exs:5-42`, `antithesis/scratchbook/deployment-topology.md:90-103`, `antithesis/scratchbook/emulated-guest-feasibility.md`.
+- Examined: `nix/verification/tests/machines/resize/driver.py:297-308,382-452`, `nix/verification/tests/machines/resize/guest.exs:5-42`, `antithesis/scratchbook/deployment-topology.md:90-103`, `antithesis/scratchbook/emulated-guest-feasibility.md`.
 - Found: The native fixture reads Firecracker API and guest device/data in a real KVM topology; the hosted plan describes a TCG guest but no executed composed resize acceptance.
 - Not established: A hosted result with retained guest boot, disk and independent source of exact target after injected Lilly crash.
 - Conclusion: partial; keep native as the full physical evidence path and TCG as a separately scoped future probe.

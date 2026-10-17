@@ -1110,14 +1110,14 @@ Default:
 
 ## `services.audi.connectorUid`
 
-Expected Linux peer UID of the privileged Lilly connector.
+Expected Linux peer UID of the Lilly connector: the Lilly service user where Lilly runs.
 
 Type: `integer between 0 and 4294967294 (both inclusive)`.
 
 Default:
 
 ```nix
-0
+config.users.users.lilly.uid
 ```
 
 
@@ -2373,7 +2373,7 @@ Default: Required when its service or enclosing record is selected.
 
 ## `services.lilly.controlPlaneCAFile`
 
-CA bundle authenticating the control-plane endpoint.
+CA bundle authenticating the control-plane endpoint. Lilly reads it through systemd LoadCredential, so the file may be readable by root only.
 
 Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
 
@@ -3184,23 +3184,6 @@ Default:
 ```
 
 
-## `services.lilly.unprivileged`
-
-Run the Lilly BEAM as the unprivileged `lilly` user with no
-capabilities, with lilly-hostd as the only root component (ADR-0182).
-Off until a native machine test covers the full guest lifecycle as
-`lilly`.
-
-
-Type: `boolean`.
-
-Default:
-
-```nix
-false
-```
-
-
 ## `services.lilly.vmStateDirectory`
 
 Durable VM actor directory; maximum 45 bytes for UNIX sockets.
@@ -3317,19 +3300,6 @@ Default:
 
 ```nix
 "/var/lib/lilly/transfers"
-```
-
-
-## `services.marshall.browserPackage`
-
-Immutable unsigned Chrome and Firefox launcher package served at the public /bin routes. Null disables browser extension downloads.
-
-Type: `null or package`.
-
-Default:
-
-```nix
-<derivation overalls-browser-0.1.0>
 ```
 
 
@@ -4061,6 +4031,19 @@ Default:
 
 ```nix
 null
+```
+
+
+## `services.marshall.marvinPackage`
+
+Immutable unsigned Chrome and Firefox browser extension package served at the public /bin routes. Null disables browser extension downloads.
+
+Type: `null or package`.
+
+Default:
+
+```nix
+<derivation overalls-marvin-0.1.0>
 ```
 
 
@@ -7901,6 +7884,63 @@ Default:
 ```
 
 
+## `services.underclass.egress.enable`
+
+Whether to enable a dedicated userspace Tailscale node whose loopback HTTP proxy can carry
+Underclass upstream traffic. The node starts logged out; an operator joins it
+once with `sudo underclass-egress up`.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
+```
+
+Example:
+
+```nix
+true
+```
+
+
+## `services.underclass.egress.exitNode`
+
+Tailnet exit node (MagicDNS name or Tailscale IP) that all Underclass upstream
+traffic leaves through. Null keeps direct upstream egress. When set, Underclass
+reaches only loopback and refuses to start until the egress node is logged in
+and has selected this exit node.
+
+
+Type: `null or string matching the pattern [A-Za-z0-9][A-Za-z0-9.:-]*`.
+
+Default:
+
+```nix
+null
+```
+
+Example:
+
+```nix
+"mac-mini"
+```
+
+
+## `services.underclass.egress.proxyPort`
+
+Loopback port of the egress node's outbound HTTP proxy.
+
+Type: `16 bit unsigned integer; between 0 and 65535 (both inclusive)`.
+
+Default:
+
+```nix
+1055
+```
+
+
 ## `services.underclass.enable`
 
 Whether to enable independent host-local Underclass subscription pool.
@@ -7942,7 +7982,7 @@ Type: `package`.
 Default:
 
 ```nix
-<derivation underclass-0.1.0-8c1a38c>
+<derivation underclass-0.1.0-469aff4>
 ```
 
 

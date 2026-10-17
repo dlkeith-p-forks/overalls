@@ -281,6 +281,55 @@ defmodule Lilly.Transfer.CloneCopy do
          else: (_ -> failure())
   end
 
+  # lilly-image-copy writes the copy as root. A source file the unprivileged
+  # BEAM owned (its own metadata, ADR-0182) is handed back to that service
+  # uid; guest-owned drives are rebound later by adoption, as before.
+  defp own_like_source(path, uid) do
+    if uid != 0 and uid == Lilly.Host.Privilege.service_uid() do
+      case Command.run(:chown, ["#{uid}:#{uid}", "--", path]) do
+        {:ok, _} -> :ok
+        _ -> :error
+      end
+    else
+      :ok
+    end
+  end
+
+  # @cc [owner:ghuntley,label:recovery] clone-copy-durable
+  # durable_copy/3 MUST run a clone file copy as a durable hostd job keyed by
+  # its exact arguments (source, temporary, size, owner uid), so a copy in
+  # flight survives a Lilly restart. It MUST attach to a known job before
+  # touching the temporary or destination file, and remove them only when
+  # hostd knows no job for the key.
+  defp durable_copy(temporary, destination, arguments) do
+    key = :crypto.hash(:sha256, Enum.join(["clone-copy" | arguments], <<0>>))
+
+    case Command.attach(key, 120_000) do
+      {:error, :job_unknown} ->
+        with :ok <- remove_regular(temporary),
+             :ok <- remove_regular(destination),
+             do: Command.run_durable(:image_copy, arguments, @copy_timeout, key)
+
+      {:error, :job_running} ->
+        durable_copy(temporary, destination, arguments)
+
+      # A finished result whose temporary file was already published or
+      # removed belongs to an earlier attempt: copy again.
+      {:ok, _} = result ->
+        case File.lstat(temporary) do
+          {:ok, %File.Stat{type: :regular}} ->
+            result
+
+          _ ->
+            with :ok <- remove_regular(destination),
+                 do: Command.run_durable(:image_copy, arguments, @copy_timeout, key)
+        end
+
+      result ->
+        result
+    end
+  end
+
   defp copy_file(directory, descriptor, identity, mount, target, name) do
     source = Path.join(mount, name)
     temporary = Path.join(target, ".clone-" <> name)
@@ -290,23 +339,18 @@ defmodule Lilly.Transfer.CloneCopy do
 
     with {:ok, before} <- File.lstat(source, time: :posix),
          true <- before.type == :regular,
-         :ok <- remove_regular(temporary),
-         :ok <- remove_regular(destination),
-         {:ok, method} <-
-           Command.run(
-             :image_copy,
-             [
-               "snapshot",
-               source,
-               temporary,
-               Integer.to_string(before.size),
-               Integer.to_string(before.uid)
-             ],
-             @copy_timeout
-           ),
+         arguments = [
+           "snapshot",
+           source,
+           temporary,
+           Integer.to_string(before.size),
+           Integer.to_string(before.uid)
+         ],
+         {:ok, method} <- durable_copy(temporary, destination, arguments),
          true <- method in ["copy\n", "offload\n", "reflink\n"],
          {:ok, ^before} <- File.lstat(source, time: :posix),
-         :ok <- File.chmod(temporary, mode(name)),
+         :ok <- own_like_source(temporary, before.uid),
+         :ok <- Lilly.Host.Privilege.chmod(temporary, mode(name)),
          {:ok, _} <- Command.run(:mv, ["--no-target-directory", "--", temporary, destination]),
          {:ok, _} <-
            CloneCopyJournal.file_copied(
@@ -399,8 +443,7 @@ defmodule Lilly.Transfer.CloneCopy do
   # Only a mount at the exact private path whose source is the exact capture
   # snapshot may be unmounted; any other mount there fails closed.
   defp unmount(mount, snapshot) do
-    with {:ok, body} <- Command.run(:findmnt, ["--json", "--list", "-o", "TARGET,SOURCE"]),
-         {:ok, %{"filesystems" => mounts}} when is_list(mounts) <- JSON.decode(body) do
+    with {:ok, mounts} <- Lilly.Host.MountTable.read() do
       case Enum.filter(mounts, &(&1["target"] == mount)) do
         [] ->
           :ok

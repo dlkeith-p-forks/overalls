@@ -16,9 +16,10 @@ defmodule MarshallWeb.OverviewLiveTest do
     assert has_element?(view, "#overview-create[href='/machines/new']")
     assert has_element?(view, "nav[aria-label=Main] a[href='/git']")
     assert has_element?(view, "nav[aria-label=Main] a[aria-current=page][href='/overview']")
-    assert has_element?(view, "#nav-browser-extension[href='/docs/browser-extension']")
-    assert has_element?(view, "#overview-browser-extension")
-    assert has_element?(view, "#overview-browser-extension-link[href='/docs/browser-extension']")
+    assert has_element?(view, "#nav-marvin-extension[href='/docs/browser-extension']")
+    assert has_element?(view, "li[data-overalls-extension-setup] #nav-marvin-extension")
+    assert has_element?(view, "#overview-marvin-extension[data-overalls-extension-setup]")
+    assert has_element?(view, "#overview-marvin-extension-link[href='/docs/browser-extension']")
     assert has_element?(view, "a[href='/admin/nodes']", "Control room")
     assert has_element?(view, "#overview-capacity-unavailable")
   end
@@ -72,10 +73,10 @@ defmodule MarshallWeb.OverviewLiveTest do
              "Open VS Code ↗"
            )
 
-    refute has_element?(view, "#overview-machine-#{machine_id} a[href='/machines/#{machine_id}/threads']")
     refute has_element?(view, "#overview-machine-#{machine_id}-vscode.console-button")
 
     refute has_element?(view, "#overview-machine-#{machine_id}-vscode-disabled")
+    refute has_element?(view, "a[href='/machines/#{machine_id}/threads']")
   end
 
   test "overview hides VS Code from a viewer", %{conn: conn} do

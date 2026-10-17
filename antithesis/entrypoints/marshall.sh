@@ -6,7 +6,7 @@ mode=${1:-}
 case "$mode" in serve|migrate|enroll) ;; *) echo 'invalid Marshall entrypoint mode' >&2; exit 2 ;; esac
 
 secrets=/run/overalls-secrets
-release=/opt/overalls/marshall/bin/marshall
+release=/opt/kittens/marshall/bin/marshall
 for file in db-password secret-key-base token-signing-secret cloak-keys.json ca.crt; do
   [[ -s "$secrets/$file" ]] || { echo 'Marshall startup credentials unavailable' >&2; exit 1; }
 done
@@ -98,6 +98,6 @@ case "$mode" in
       '{schema_version:1, fixture_id:$fixture, migration_version:$migration, host_ids:[$host]}' > "$oracle/.fixture.json.new"
     chmod 0600 "$oracle/.fixture.json.new"
     mv -f "$oracle/.fixture.json.new" "$oracle/fixture.json"
-    exec /opt/overalls/entrypoints/control-operator.sh
+    exec /opt/kittens/entrypoints/control-operator.sh
     ;;
 esac

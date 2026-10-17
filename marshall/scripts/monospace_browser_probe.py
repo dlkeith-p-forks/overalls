@@ -108,7 +108,12 @@ def sign_in(
     role: Literal["owner", "admin", "empty", "viewer", "operator", "manager"],
     watch: ExternalRequests,
 ) -> BrowserContext:
-    context = browser.new_context(viewport={"width": 1440, "height": 1000})
+    context = browser.new_context(
+        viewport={"width": 1440, "height": 1000},
+        # Keep touch input available for the phone-width composer probe while
+        # retaining the same authenticated context for desktop checks.
+        has_touch=True,
+    )
     context.on("request", watch.observe)
     page = context.new_page()
     login = fixture[role]
@@ -121,7 +126,28 @@ def sign_in(
         page.locator("form button[type=submit]").click(no_wait_after=True)
         page.wait_for_url("**/overview")
     expect(page.locator("#overview")).to_be_visible()
+    check_browser_extension_presence(page)
     return context
+
+
+def check_browser_extension_presence(page: Page) -> None:
+    """@cc [owner:ghuntley,label:product;verification] browser-extension-setup-discovery
+    Setup entry points MUST remain visible without the local extension marker
+    and MUST be hidden after the marker is added. Removing the marker MUST make
+    the entry points visible again; this presentation signal grants no access.
+    """
+    setup = page.locator("[data-overalls-extension-setup]")
+    expect(setup).to_have_count(2)
+    expect(setup.nth(0)).to_be_visible()
+    expect(setup.nth(1)).to_be_visible()
+    page.evaluate(
+        "document.documentElement.setAttribute('data-overalls-browser-extension', 'installed')"
+    )
+    expect(setup.nth(0)).not_to_be_visible()
+    expect(setup.nth(1)).not_to_be_visible()
+    page.evaluate("document.documentElement.removeAttribute('data-overalls-browser-extension')")
+    expect(setup.nth(0)).to_be_visible()
+    expect(setup.nth(1)).to_be_visible()
 
 
 def visit(page: Page, origin: str, route: str) -> None:
@@ -233,12 +259,132 @@ def check_thread_share_details(page: Page, fixture: Context) -> None:
         expect(grant.locator("[data-role]")).to_have_attribute("data-role", role)
 
 
+def check_thread_composer_controls(page: Page, *, mobile: bool) -> None:
+    """@cc [owner:ghuntley,label:product;verification] thread-browser-composer-controls
+    The ready-thread composer MUST open the command palette when a slash is
+    typed at the command position. Palette search MUST autocomplete commands,
+    Arrow keys MUST move the active option, and Tab MUST insert the selected
+    command into the draft without submitting a prompt. LiveView validation
+    patches MUST leave the palette open and keep the current search query.
+    Escape MUST close the palette without losing the draft and restore focus to
+    the invoking control; IME composition MUST defer palette opening until
+    composition ends.
+    The same controls MUST be reachable through a mobile tap. Browser actions
+    MUST not submit a prompt or invoke a machine operation.
+    """
+    composer = page.locator("#thread-prompt-form textarea[data-thread-input]")
+    commands = page.locator("#thread-prompt-form [data-thread-commands-open]")
+    palette = page.locator("#thread-command-palette")
+    search = page.locator("#thread-command-search")
+
+    expect(composer).to_have_count(1)
+    expect(commands).to_have_count(1)
+    expect(composer).to_have_attribute("aria-controls", "thread-command-options")
+    expect(search).to_have_attribute("role", "combobox")
+
+    # A slash at byte zero opens the palette; its search receives the command
+    # prefix while the draft remains in the composer. Tab only inserts the
+    # command and leaves the draft for the user to submit explicitly.
+    composer.fill("/")
+    expect(palette).to_be_visible()
+    expect(search).to_be_focused()
+    expect(composer).to_have_attribute("aria-expanded", "true")
+    expect(page.locator("#thread-command-plan")).to_be_visible()
+    page.keyboard.type("pl")
+    expect(palette).to_be_visible()
+    expect(search).to_have_value("pl")
+    expect(page.locator("#thread-command-plan")).to_be_visible()
+    expect(page.locator("#thread-command-work")).not_to_be_visible()
+    search.fill("")
+    search.press("ArrowDown")
+    expect(page.locator("#thread-command-work")).to_have_attribute("aria-selected", "true")
+    search.press("ArrowDown")
+    expect(page.locator("#thread-command-compact")).to_have_attribute("aria-selected", "true")
+    search.press("ArrowUp")
+    expect(page.locator("#thread-command-work")).to_have_attribute("aria-selected", "true")
+    search.fill("wo")
+    expect(page.locator("#thread-command-work")).to_be_visible()
+    expect(page.locator("#thread-command-plan")).not_to_be_visible()
+    expect(page.locator("#thread-command-work")).to_have_attribute("aria-selected", "true")
+    search.press("Tab")
+    expect(composer).to_have_value("/work ")
+    expect(palette).not_to_be_visible()
+    expect(composer).to_be_focused()
+
+    # A partially typed slash seeds palette search; Escape closes it and
+    # preserves the in-progress composer text.
+    composer.fill("/pla")
+    expect(palette).to_be_visible()
+    expect(search).to_have_value("pla")
+    search.press("Escape")
+    expect(composer).to_have_value("/pla")
+    expect(palette).not_to_be_visible()
+    expect(composer).to_have_attribute("aria-expanded", "false")
+    expect(composer).to_be_focused()
+
+    # A slash after leading whitespace remains ordinary prompt text.
+    composer.fill(" /pla")
+    expect(palette).not_to_be_visible()
+    expect(composer).to_have_value(" /pla")
+
+    # Ctrl/Cmd+K opens the palette from the composer. Escape restores focus to
+    # the composer, while opening from the button restores focus to that button.
+    composer.press("Control+k")
+    expect(palette).to_be_visible()
+    expect(search).to_be_focused()
+    search.fill("terminal")
+    expect(page.locator("#thread-command-terminal")).to_be_visible()
+    expect(page.locator("#thread-command-plan")).not_to_be_visible()
+    search.press("Escape")
+    expect(palette).not_to_be_visible()
+    expect(composer).to_be_focused()
+
+    commands.click()
+    expect(palette).to_be_visible()
+    expect(search).to_be_focused()
+    page.keyboard.press("Escape")
+    expect(palette).not_to_be_visible()
+    expect(commands).to_be_focused()
+
+    # During IME composition the input event must not open the palette. The
+    # follow-up input after compositionend may open it normally.
+    composer.fill("")
+    composer.evaluate(
+        """node => {
+          node.value = "/";
+          node.dispatchEvent(new CompositionEvent("compositionstart", {bubbles: true}));
+          node.dispatchEvent(new Event("input", {bubbles: true}));
+        }"""
+    )
+    expect(palette).not_to_be_visible()
+    composer.evaluate(
+        """node => {
+          node.dispatchEvent(new CompositionEvent("compositionend", {bubbles: true}));
+          node.dispatchEvent(new Event("input", {bubbles: true}));
+        }"""
+    )
+    expect(palette).to_be_visible()
+    search.press("Escape")
+    expect(composer).to_have_value("/")
+    expect(composer).to_be_focused()
+
+    if mobile:
+        # Tap exercises the touch path at the phone viewport without invoking
+        # a command or submitting the prompt.
+        commands.tap()
+        expect(palette).to_be_visible()
+        palette.locator("[data-thread-commands-close]").tap()
+        expect(palette).not_to_be_visible()
+
+
 def check_thread_views(page: Page, fixture: Context, artifacts: Path) -> None:
     """@cc [owner:ghuntley,label:verification] thread-browser-lifecycle-coverage
     The probe MUST check list, new, activity and all five fixture lifecycle views
     in both themes at desktop and mobile widths. Archived and unready views MUST
     expose no prompt, terminal or editor control; ready views MUST expose all three.
-    Browser checks MUST NOT submit prompts or invoke lifecycle mutations.
+    Ready views MUST also cover slash completion, the command palette, draft and
+    focus preservation, IME composition and mobile touch access. Browser checks
+    MUST NOT submit prompts or invoke lifecycle mutations.
     """
     routes = {
         "list": "/threads",
@@ -296,6 +442,7 @@ def check_thread_views(page: Page, fixture: Context, artifacts: Path) -> None:
                     expect(page.locator("#thread-list-items > a")).to_have_count(5)
                 elif name == "ready":
                     check_thread_order(page, composer=True)
+                    check_thread_composer_controls(page, mobile=width <= 500)
                     expect(page.locator("#thread-prompt-form")).to_be_visible()
                     expect(page.locator("#thread-terminal a")).to_have_attribute(
                         "href", f"/machines/{fixture['vm_id']}/terminals"

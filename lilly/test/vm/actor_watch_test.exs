@@ -392,7 +392,8 @@ defmodule Lilly.VM.ActorWatchTest do
     assert port != old_port
     stop_supervised!(Actor)
     assert Port.info(port) == nil
-    refute live?(ctx.view)
+    # The view is cleared after the actor stops, not synchronously with it.
+    eventually(fn -> not live?(ctx.view) end)
   end
 
   # @cc [owner:ghuntley,label:verification;security] watched-backstop-extension

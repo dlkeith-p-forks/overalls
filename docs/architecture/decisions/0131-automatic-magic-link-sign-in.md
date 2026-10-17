@@ -63,7 +63,7 @@ and revocation rules. No database or public route migration is required.
 posts through the [existing authentication routes](../../../marshall/lib/marshall_web/router.ex).
 [Magic-link flow tests](../../../marshall/test/marshall_web/magic_link_flow_test.exs)
 cover the GET boundary, POST and remember cookie. The updated
-[native MFA browser journey](../../../nix/tests/machines/mfa-login/browser.py)
+[native MFA browser journey](../../../nix/verification/tests/machines/mfa-login/browser.py)
 passed automatic navigation, remembered-cookie issuance and pending-MFA routing
 across three colocated replicas, as recorded in the
 [review](../reviews/2026-10-02-automatic-magic-link.md). Actual inbox delivery,

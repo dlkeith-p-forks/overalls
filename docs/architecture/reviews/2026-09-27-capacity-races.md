@@ -51,7 +51,7 @@ including historical rows.
 
 ## Native scenario
 
-[The capacity scenario](../../../nix/tests/machines/fleet/scenarios/capacity.py)
+[The capacity scenario](../../../nix/verification/tests/machines/fleet/scenarios/capacity.py)
 gains a bounded generated race stage alongside the fixed three-way/two-slot
 race: each round confirms a resident VM's stop and physical delete, polls the
 pool until the freed slot is visible, races a measured number of provisions

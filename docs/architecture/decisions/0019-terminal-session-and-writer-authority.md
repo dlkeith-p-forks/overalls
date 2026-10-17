@@ -130,7 +130,7 @@ gate. [ADR-0021](0021-console-relay-connections-and-mailboxes.md) implements the
 wire codec, HTTPS client/server, encrypted mailboxes and VM-actor integration.
 [ADR-0022](0022-browser-terminal-and-live-login-checks.md) now adds the browser UI,
 fixed geometry, bounded input and reconnect behavior.
-The [three-node production browser harness](../../../nix/tests/README.md)
+The [three-node production browser harness](../../../nix/verification/tests/README.md)
 now verifies real guest writer handoff, grant/login revocation and explicit writer
 reacquisition after lost replies and Marshall process death. See the
 [review](../reviews/2026-09-16-terminal-failover.md) for evidence and limits.

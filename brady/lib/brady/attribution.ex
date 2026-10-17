@@ -3,11 +3,12 @@ defmodule Brady.Attribution do
   alias OverallsProtocol.EgressAttribution, as: Wire
   @path "/run/lilly-brady/attribution.sock"
 
-  @spec lookup(String.t(), Wire.flow()) :: map()
-  def lookup(host, flow), do: request(@path, host, flow, 0)
+  @spec lookup(String.t(), non_neg_integer(), Wire.flow()) :: map()
+  def lookup(host, uid, flow), do: request(@path, host, flow, uid)
 
-  # @cc [owner:ghuntley,label:security] brady-attribution-root-peer
-  # Production lookup MUST require UID 0 via kernel peer credentials and an exact
+  # @cc [owner:ghuntley,label:security] brady-attribution-lilly-peer
+  # Production lookup MUST require the configured Lilly UID (the unprivileged
+  # service user, ADR-0182) via kernel peer credentials and an exact
   # configured host match. Closed tuple validation precedes sending. Timeouts,
   # wrong peers and malformed responses MUST return only unresolved host identity.
   # Callers of request/4 MUST supply trusted local path/UID, never guest fields.

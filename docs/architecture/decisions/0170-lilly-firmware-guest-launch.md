@@ -187,7 +187,7 @@ no fleet catalog entry and no merge until the phase is complete.
   `image_guest_agents_capability_test.exs`,
   `marshall/test/marshall_web/editor_workspace_test.exs`).
 - The image carries the bootstrap task and an eight-key manifest
-  (`nix/tests/evaluation/windows-guest.nix`).
+  (`nix/verification/tests/evaluation/windows-guest.nix`).
 - The Lilly-mode machine test places the image through the real driver on
   nested KVM: firmware bundle on the dataset, skipped trust, `unattested`
   provisioning, the SAC prompt on the boot log, the guest's bootstrap log and
@@ -196,7 +196,7 @@ no fleet catalog entry and no merge until the phase is complete.
   the host policy for that address (Lilly's host policy otherwise drops every
   unmarked host-to-guest and guest-to-host packet; the per-tap guard stays
   intact and its accept counter proves the guest sends from its assigned MAC
-  and address) (`nix/tests/machines/windows-lilly-guest`).
+  and address) (`nix/verification/tests/machines/windows-lilly-guest`).
 
 Failure cases that would disprove the design: the guest cannot reach MMDS from
 a link-local address; Windows refuses the on-link gateway route; the sparse
@@ -222,12 +222,12 @@ bundle.
   [service-level admission](../../../marshall/lib/marshall/compute/service_level_admission.ex),
   [terminal authority](../../../marshall/lib/marshall/terminal/authority.ex),
   [workspace components](../../../marshall/lib/marshall_web/components/workspace_components.ex).
-- Image: [bootstrap script](../../../nix/packages/guest/windows/overalls-bootstrap.ps1),
-  [post-setup script](../../../nix/packages/guest/windows/SetupComplete.cmd),
-  [builder](../../../nix/packages/guest/windows/default.nix),
-  [directory contracts](../../../nix/packages/guest/windows/CONTRACTS).
-- Checks: [Lilly-mode machine test](../../../nix/tests/machines/windows-lilly-guest/default.nix)
-  registered in [the check catalog](../../../nix/tests/default.nix).
+- Image: [bootstrap script](../../../nix/domains/artifacts/guest/windows/overalls-bootstrap.ps1),
+  [post-setup script](../../../nix/domains/artifacts/guest/windows/SetupComplete.cmd),
+  [builder](../../../nix/domains/artifacts/guest/windows/default.nix),
+  [directory contracts](../../../nix/domains/artifacts/guest/windows/CONTRACTS).
+- Checks: [Lilly-mode machine test](../../../nix/verification/tests/machines/windows-lilly-guest/default.nix)
+  registered in [the check catalog](../../../nix/verification/tests/catalog.nix).
 - Review: [Windows Lilly launch review](../reviews/2026-10-14-windows-lilly-launch.md)
   records which suites and machine tests were executed.
 

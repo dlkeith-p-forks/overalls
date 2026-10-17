@@ -112,26 +112,26 @@ strict owner/mode/link-count checks used by current private-file readers.
 ## Implementation evidence
 
 [ADR-0040](0040-host-local-smtp-relay.md) adds a separate SMTP bundle consumer
-and [relay machine suite](../../../nix/tests/machines/smtp-relay/default.nix).
+and [relay machine suite](../../../nix/verification/tests/machines/smtp-relay/default.nix).
 Its [review](../reviews/2026-09-17-smtp-relay.md) tracks verification; existing
 secret custody and machine acceptance boundaries remain unchanged.
 
 [ADR-0036](0036-automatic-host-updates.md) adds private candidate staging through
-the same [resolver](../../../nix/modules/secrets/prepare.py), retaining this ADR's
+the same [resolver](../../../nix/domains/system/secrets/prepare.py), retaining this ADR's
 identity and recipient rules. A descriptor-bound handoff makes activation publish
 the exact preflighted files. The [update review](../reviews/2026-09-16-automatic-host-updates.md)
 records passing staged-source consistency, incompatible-authority rejection and
 encrypted Lilly credential delivery checks. This addition does not automate
 shared-authority rotation.
 
-The [NixOS module](../../../nix/modules/secrets/default.nix) pins the supplied operator
+The [NixOS module](../../../nix/domains/system/secrets/default.nix) pins the supplied operator
 public key, enables key-based SSH bootstrap, and orders root-only preparation
-after persistent host-key creation. [Pinned packages](../../../nix/packages/default.nix)
+after persistent host-key creation. [Pinned packages](../../../nix/domains/artifacts/default.nix)
 supply SecretSpec 0.19.1, SOPS 3.13.3, ssh-to-age 1.3.0 and age 1.3.1. The
-[operator recipient package](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/packages/operator-recipient/default.nix) checks the SSH
+[operator recipient package](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/operator-recipient/default.nix) checks the SSH
 fingerprint and converts only the public key; it performs no remote lookup.
 
-[Preparation](../../../nix/modules/secrets/prepare.py) uses explicit provider/project/profile
+[Preparation](../../../nix/domains/system/secrets/prepare.py) uses explicit provider/project/profile
 selection, a private temporary age identity, bounded resolver output/deadlines,
 required-value validation and atomic directory publication. Runtime outputs are
 root-only or readable by a selected declared group. Cleanup removes derived
@@ -140,20 +140,20 @@ identities and abandoned staging directories. Consumers order preparation throug
 controlled rotation explicitly stops consumers, prepares the new bundle, then
 starts consumers and checks readiness.
 
-The [secret custody suite](../../../nix/tests/machines/secret-custody/default.nix) uses actual encrypted
+The [secret custody suite](../../../nix/verification/tests/machines/secret-custody/default.nix) uses actual encrypted
 documents and runtime-generated host/recovery keys. The complete current suite
 passed real Marshall startup, wrong-host rejection, independent operator recovery,
 selected-group access and missing-secret failure while retaining the previous
 bundle. It also passed application credential rotation with an explicit
 stop/prepare/start sequence, journal checks, and a switch to a second NixOS
 generation preserving the SSH identity and decryption. The
-[boundary checks](../../../nix/tests/machines/secret-custody/properties.py) passed actual systemd
+[boundary checks](../../../nix/verification/tests/machines/secret-custody/properties.py) passed actual systemd
 environment properties, interrupted publication, unsafe paths and resolver limits.
 The [implementation review](../reviews/2026-09-16-nixos-releases-and-roles.md)
 records the completed verification scope and remaining work. Existing
 [Marshall private-file handling](../../../marshall/lib/marshall/operations/private_files.ex),
 [Lilly credential reading](../../../lilly/lib/lilly/control/credential_file.ex) and
-[systemd TLS credential delivery](../../../nix/modules/marshall.nix) are
+[systemd TLS credential delivery](../../../nix/domains/system/marshall.nix) are
 compatibility constraints for delivered application credentials.
 
 The expanded [host-rotation review](../reviews/2026-09-16-secret-host-rotation.md)
@@ -162,7 +162,7 @@ continued real Marshall delivery and operator-mediated recovery onto a separatel
 keyed replacement machine. The complete expanded suite passed in 135.90 seconds;
 application credentials already known by an old host require separate rotation.
 
-The [fleet credential-rotation suite](../../../nix/tests/machines/credential-rotation/default.nix)
+The [fleet credential-rotation suite](../../../nix/verification/tests/machines/credential-rotation/default.nix)
 passed staged Cloak keyring promotion across three Marshall machines and a
 coordinated signing/cookie/database credential cutover through actual encrypted
 bundles in 249.75 seconds. Actual HTTPS requests verified retained encrypted
@@ -171,10 +171,10 @@ and fresh logins on all nodes. The
 [rotation review](../reviews/2026-09-16-fleet-credential-rotation.md) records the
 interruption boundary, fail-closed missing-key check and retained-key requirement.
 
-The [ACME client](../../../nix/modules/acme/lego.py) consumes a selected Route 53 credential
+The [ACME client](../../../nix/domains/system/acme/lego.py) consumes a selected Route 53 credential
 bundle through systemd credentials, validates its sole default profile, and
 excludes ambient AWS credentials and instance metadata. The
-[ACME machine check](../../../nix/tests/machines/acme-route53/default.nix) supplies the encrypted document
+[ACME machine check](../../../nix/verification/tests/machines/acme-route53/default.nix) supplies the encrypted document
 through the actual secret module and deliberately injects conflicting ambient
 credentials. Reflected provider errors are included in its journal privacy check.
 See the [ACME review](../reviews/2026-09-16-acme-publication.md).
@@ -183,7 +183,7 @@ The [generic bootstrap](https://github.com/antithesishq/kittens/blob/16e8dbe4a88
 [offline installer](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/machines/installer.nix) reuse the pinned public
 administration key without including a private host key. SSH is available before
 application enrollment and secret delivery. The
-[firmware installation test](../../../nix/tests/machines/mirrored-installation/driver.py) checks absence
+[firmware installation test](../../../nix/verification/tests/machines/mirrored-installation/driver.py) checks absence
 of a private key in the newly installed target, generation on first boot, and
 identity retention on each surviving mirrored disk, with actual key-based SSH.
 The complete check passed with password and keyboard-interactive authentication
@@ -191,7 +191,7 @@ disabled on the installer, healthy mirror and both surviving-disk boots.
 Test-console instrumentation exists only in test variants. The
 [installation review](../reviews/2026-09-16-mirrored-installation.md) records
 executed results and remaining host acceptance. The separate
-[exact exported-image check](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/tests/machines/bootstrap-images/default.nix) also passed
+[exact exported-image check](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/verification/tests/machines/bootstrap-images/default.nix) also passed
 without injected credentials or test-console instrumentation: independent fresh
 copies generated different SSH identities, while reboot and either surviving
 disk retained the original copy's identity.

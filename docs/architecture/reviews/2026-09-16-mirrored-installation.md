@@ -11,7 +11,7 @@ in the worktree; their location has been requested. Generic bootstrap inputs
 are explicitly identified and are not claimed to preserve that host's inventory.
 No physical host has been partitioned, installed or activated.
 
-The [storage module](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/modules/mirrored-zfs.nix) imports locked disko,
+The [storage module](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/domains/system/mirrored-zfs.nix) imports locked disko,
 requires two distinct declared disks and a persistent nonzero host ID, and
 separates root and Lilly datasets. It declares a mirror, LZ4, zero reservations,
 dedup off, standard sync, a quota and the reference ARC cap. Two EFI filesystems
@@ -26,7 +26,7 @@ explicit destructive flag. Disk formatting remains outside activation. New
 private SSH identities are generated at boot, and no private credentials or
 test-console service are included in exported configurations.
 
-The [machine suite](../../../nix/tests/machines/mirrored-installation/default.nix) uses test variants of
+The [machine suite](../../../nix/verification/tests/machines/mirrored-installation/default.nix) uses test variants of
 these actual modules with console instrumentation and reduced disk/ARC/quota
 budgets. It boots from ISO and installed disks through OVMF with forced KVM,
 without a direct kernel or shared host Nix store. It checks independent EFI
@@ -34,7 +34,7 @@ loaders, root identity, storage policy, new/persistent SSH identity, data and
 actual SSH key authentication on both the healthy mirror and each degraded
 surviving-disk branch. Forks are never rejoined after independent writes.
 
-The [exported-image suite](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/tests/machines/bootstrap-images/default.nix) separately
+The [exported-image suite](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/verification/tests/machines/bootstrap-images/default.nix) separately
 boots the exact public QCOW2 artifacts through OVMF. It attaches no direct kernel
 or shared store and injects no credentials or test-console service. It observes
 the public SSH identity through a loopback-only QEMU port forward: independent

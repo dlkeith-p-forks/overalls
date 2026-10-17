@@ -6,11 +6,14 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
 
   @none %{
     available: false,
+    readiness: false,
+    trust: false,
     ssh: false,
     terminal: false,
+    workspace: false,
+    flush: false,
     agents: false,
     editor: false,
-    readiness: false,
     inception: false
   }
 
@@ -38,8 +41,12 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
       assert {:ok, ^set} = Image.guest_agents_capability(%{id: validated.id, manifest: manifest})
       capabilities = Image.guest_capabilities(%{id: validated.id, manifest: manifest})
       assert capabilities.available
+      assert capabilities.readiness == (set == :windows_v1)
+      assert capabilities.trust == (set == :windows_v1)
       assert capabilities.ssh == (set == :windows_v1)
       assert capabilities.terminal == (set == :windows_v1)
+      assert capabilities.workspace == (set == :windows_v1)
+      assert capabilities.flush == (set == :windows_v1)
       assert capabilities.agents == (set == :windows_v1)
       assert capabilities.readiness == (set == :windows_v1)
       refute capabilities.editor
@@ -64,11 +71,14 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
 
     assert Image.guest_capabilities(validated) == %{
              available: true,
+             readiness: true,
+             trust: true,
              ssh: true,
              terminal: true,
+             workspace: true,
+             flush: true,
              agents: true,
              editor: true,
-             readiness: true,
              inception: true
            }
 
@@ -101,5 +111,25 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
     # Registration is idempotent on the content identity for firmware images too.
     assert {:ok, same} = Images.register(windows_image_manifest(), "renamed")
     assert same.id == windows.id and same.name == "Windows Server 2025"
+  end
+
+  test "native FreeBSD and illumos rows expose the shared guest capabilities" do
+    for {os, agents} <- [{"freebsd", "freebsd-v1"}, {"illumos", "illumos-v1"}] do
+      image = native_image_fixture(os, agents)
+      capabilities = Images.guest_capabilities(image.id)
+
+      assert capabilities == %{
+               available: true,
+               readiness: true,
+               trust: true,
+               ssh: true,
+               terminal: true,
+               workspace: true,
+               flush: true,
+               agents: true,
+               editor: false,
+               inception: false
+             }
+    end
   end
 end

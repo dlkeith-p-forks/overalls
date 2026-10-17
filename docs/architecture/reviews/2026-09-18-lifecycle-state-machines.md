@@ -96,7 +96,7 @@ the runtime tests and direct control-flow review provide the supporting evidence
   integrated. The upstream isolated provider fixture and real inference-only
   control credential preserve updater readiness without external providers.
 
-The [implementation ledger](../../lifecycle-implementation.md) tracks completion.
+The [implementation ledger](../../history/ledgers/lifecycle-implementation.md) tracks completion.
 This review remains a checkpoint until final integration and native verification.
 
 ### Integration with origin/main at a4c1e5f

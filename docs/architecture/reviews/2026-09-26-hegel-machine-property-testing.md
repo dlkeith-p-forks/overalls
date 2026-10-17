@@ -3,17 +3,17 @@
 ## Scope and architecture impact
 
 The `hegel-nixos-tests` work adds a verification-only framework under
-[nix/hegel/](../../../nix/hegel/README.md): a pinned `libhegel` engine build
-([libhegel.nix](../../../nix/hegel/libhegel.nix), `libhegel-pin`), its Python
-binding ([hegel-python.nix](../../../nix/hegel/hegel-python.nix),
+[nix/verification/hegel/](../../../nix/verification/hegel/README.md): a pinned `libhegel` engine build
+([libhegel.nix](../../../nix/verification/hegel/libhegel.nix), `libhegel-pin`), its Python
+binding ([hegel-python.nix](../../../nix/verification/hegel/hegel-python.nix),
 `hegel-binding-matches-engine`) and a `hegel.runTest` composer
-([run-test.nix](../../../nix/hegel/run-test.nix),
+([run-test.nix](../../../nix/verification/hegel/run-test.nix),
 `hegel-test-properties-execution`) that wraps `pkgs.testers.runNixOSTest`. The
 check catalog gains no new entry; four existing suites are migrated to the
-wrapper ([nix/tests/default.nix](../../../nix/tests/default.nix),
+wrapper ([nix/verification/tests/catalog.nix](../../../nix/verification/tests/catalog.nix),
 `hegel-framework-packages`; each suite receives `hegel` through its explicit
 argument set). User documentation is
-[docs/testing-with-hegel.md](../../testing-with-hegel.md).
+[docs/development/testing-with-hegel.md](../../development/testing-with-hegel.md).
 
 No architecture impact and no HLDD chapter change: the change touches
 verification tooling only. It adds no NixOS module options — `properties` is
@@ -21,7 +21,7 @@ consumed by the test composer and is removed before the upstream
 `nixosTest` module class sees the test (`scripts/hldd/options.nix` evaluates
 `kittens.*`/`services.*` declarations from the production module; its input is
 unchanged). It adds no hosts, roles or services, so the public topology
-projection (`scripts/hldd/topology.nix` over `nix/hosts/inventory.nix`) is
+projection (`scripts/hldd/topology.nix` over `nix/platform/hosts/inventory.nix`) is
 unchanged. No domain, protocol, persistence, authorization or deployment
 boundary moves; the migrated checks keep their existing synthetic credentials and
 isolated scopes (`nix-test-real-packages`, `nix-test-isolated-inputs`). A survey
@@ -45,7 +45,7 @@ New evidence introduced by the change:
   assertions.
 - Migrated `zfs-transfer`: adoption crash recovery becomes the property-driven
   `AdoptionCrashRecovery` state machine with engine-chosen fault points;
-  [its CONTRACTS](../../../nix/tests/machines/zfs-transfer/CONTRACTS) gains
+  [its CONTRACTS](../../../nix/verification/tests/machines/zfs-transfer/CONTRACTS) gains
   `adoption-crash-recovery-property-driven` bounding that evidence, while the
   suite's `native-transfer-evidence-boundary` scope is unchanged.
 - Migrated `agent-cli`: packaged-CLI journey assertions are extended with
@@ -87,11 +87,11 @@ rationale sentences recorded in `docs/hldd-maintenance.json` (`marshall` and
 `updated` for the doc/review additions); the hldd Nix check passes.
 
 Gate readiness: the repository Python static gate passes on the final tree
-(`ruff format --check`, `ruff check` covering the new `nix/hegel/python/`
+(`ruff format --check`, `ruff check` covering the new `nix/verification/hegel/python/`
 binding and the migrated machine fragments; `ty` over its include list).
 The binding's unpackaged-side detail: initial sweep's `F821` (undefined
 `c_uint8` in `TestCase.note`, a latent runtime failure) was fixed, and the
 `ANN`/`SIM` findings were resolved rather than ignored. `ty` does not cover
-`nix/hegel` (`[tool.ty.src]` include list); hegel-enabled machine drivers are
+`nix/verification/hegel` (`[tool.ty.src]` include list); hegel-enabled machine drivers are
 typed through the composed NixOS test driver with `hegelPython` in
 `extraPythonPackages`.

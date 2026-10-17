@@ -326,8 +326,22 @@ defmodule Marshall.Agents.Skills do
   end
 
   @doc "Bounded current-generation scan for enabled pinned manifests needing restoration."
-  @spec restoration_threads() :: [String.t()]
-  def restoration_threads do
+  # @cc [owner:ghuntley,label:concurrency;recovery] skill-restoration-round-robin
+  # Restoration scans MUST advance past the caller's cursor and wrap when the
+  # end is reached. A blocked thread therefore cannot monopolize the first
+  # batch forever. Current-generation active receipts already own the next
+  # attempt, while terminal failed receipts are not replayed automatically.
+  @spec restoration_threads(String.t() | nil) :: [String.t()]
+  def restoration_threads(cursor \\ nil) do
+    rows = restoration_query(cursor)
+
+    if rows == [] and not is_nil(cursor), do: restoration_query(nil), else: rows
+  end
+
+  @spec restoration_query(String.t() | nil) :: [String.t()]
+  defp restoration_query(cursor) do
+    cursor = if is_nil(cursor), do: nil, else: Ecto.UUID.dump!(cursor)
+
     %{rows: rows} =
       Ecto.Adapters.SQL.query!(
         Marshall.Repo,
@@ -338,9 +352,18 @@ defmodule Marshall.Agents.Skills do
         WHERE t.status = 'ready' AND t.archived_at IS NULL
           AND i.enabled AND i.status = 'ready'
           AND (r.machine_id != t.machine_id OR r.machine_key != t.machine_key)
+          AND ($1::uuid IS NULL OR t.id > $1::uuid)
+          AND NOT EXISTS (
+            SELECT 1 FROM agent_skill_operations o
+            WHERE o.thread_id = t.id
+              AND o.installation_id = i.id
+              AND o.kind = 'restore'
+              AND o.machine_key = t.machine_key
+              AND o.status IN ('queued', 'dispatched', 'uncertain', 'failed')
+          )
         ORDER BY t.id LIMIT 25
         """,
-        [],
+        [cursor],
         log: false
       )
 

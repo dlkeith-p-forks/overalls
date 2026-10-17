@@ -22,7 +22,7 @@ Open questions: Can a hosted TCG fixture complete the native physical cleanup an
 
 #### How does the test reach archived state?
 
-- Examined in the follow-up: `nix/tests/machines/fleet/scenarios/lifecycle.py:41-100` and `nix/tests/machines/fleet/scenarios/capacity.py:227-248`.
+- Examined in the follow-up: `nix/verification/tests/machines/fleet/scenarios/lifecycle.py:41-100` and `nix/verification/tests/machines/fleet/scenarios/capacity.py:227-248`.
 - Found: the native fleet driver issues real lifecycle stop/delete, waits for `compute_virtual_machines.archived_at`, requires held compute/disk flags false, absence of systemd VM service and ZFS dataset/rootfs, then checks the pool allocation disappears. It does not mutate `archived_at` directly.
 - Not found: a built hosted TCG deletion fixture and a combined native test that replays the original admission key *after* this cleanup. Native test structure is not a passing Antithesis result.
 - Conclusion: partial for the hosted plan. Compose the public SSH replay around this native cleanup sequence or build equivalent TCG physical deletion; only then assert the archived-key behavior end to end.

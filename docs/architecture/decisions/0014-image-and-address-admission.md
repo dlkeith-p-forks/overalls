@@ -146,7 +146,7 @@ jailer/network driver and physical outcomes remain required before user launch.
 and transactional placement. [Local image verification](../../../lilly/lib/lilly/host/image.ex),
 [configuration](../../../lilly/lib/lilly/control/config.ex) and
 [collector](../../../lilly/lib/lilly/host/collector.ex) implement availability.
-[Nix artifact](../../../nix/packages/guest/default.nix) now emits integrity descriptors.
+[Nix artifact](../../../nix/domains/artifacts/guest/default.nix) now emits integrity descriptors.
 
 [Manifest properties](../../../protocol/test/image_manifest_test.exs),
 [address properties](../../../protocol/test/address_pool_test.exs),
@@ -154,7 +154,7 @@ and transactional placement. [Local image verification](../../../lilly/lib/lilly
 [admission tests](../../../marshall/test/marshall/compute/image_admission_test.exs),
 [exhaustion test](../../../marshall/test/marshall/compute/address_allocation_test.exs),
 [three-node tests](../../../marshall/test/marshall/compute/distributed_admission_test.exs)
-and [host loop tests](../../../nix/tests/machines/fleet/default.nix)
+and [host loop tests](../../../nix/verification/tests/machines/fleet/default.nix)
 cover these prerequisites. The [review](../reviews/2026-09-15-image-address.md)
 records actual validation. Execution/distribution and physical network isolation
 remain incomplete.

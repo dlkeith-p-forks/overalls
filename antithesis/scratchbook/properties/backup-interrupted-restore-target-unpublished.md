@@ -10,22 +10,22 @@ preserve the invariant. Add a separate `Reachable` marker **"Backup restore inte
 
 ## Source and contract
 
-- `nix/modules/backups/runtime.py:313-345`: `Repository.manifest` validates
+- `nix/domains/system/backups/runtime.py:313-345`: `Repository.manifest` validates
   selected point before target creation; target must be absolute, private and
   empty. Indexed `restic restore --sparse --verify` calls precede the final
   `atomic_json(target / "manifest.json", manifest)`. The marker is a restore
   target publication indicator, not the repository's already uploaded point.
-- `nix/modules/backups/runtime.py:277-285`: all operator operations use the
+- `nix/domains/system/backups/runtime.py:277-285`: all operator operations use the
   host owner lock; a competing restore returns 75 while the first is active.
-  `nix/modules/backups/restic.py:103-125` rechecks credential custody per
-  repository command. `nix/modules/backups/common.py` owns bounded child drain
+  `nix/domains/system/backups/restic.py:103-125` rechecks credential custody per
+  repository command. `nix/domains/system/backups/common.py` owns bounded child drain
   and atomic JSON writes.
-- `nix/tests/evaluation/backup-operators.py:673-728,858-959,1261-1341,1354-1427`
+- `nix/verification/tests/evaluation/backup-operators.py:673-728,858-959,1261-1341,1354-1427`
   supplies real local-Restic tests for missing component, SIGTERM/SIGKILL/timeout,
   concurrent operations and credential change. Those cases inspect partial
   prefixes, assert absent marker, refuse same-target retry and verify a fresh
   target. They are existing focused evidence, not a new Antithesis run.
-- `docs/backups.md:326-340` prescribes preserving partial output and explicit
+- `docs/operations/backups.md:326-340` prescribes preserving partial output and explicit
   fresh-target retry. ADR-0070 requires isolated restoration and reference
   closure; neither permits partial output as a complete recovery point.
 
@@ -66,7 +66,7 @@ The workload can enforce primary `Always` from independent target inventory.
 
 The existing local-Restic fixture covers the Python/Restic ordering. A native
 isolated NixOS machine campaign must add real ZFS guest disk and actual service
-wrapper if claiming complete host recovery; `nix/tests/machines/backups/driver.py:187-255`
+wrapper if claiming complete host recovery; `nix/verification/tests/machines/backups/driver.py:187-255`
 currently proves successful host/database isolated restore, not interruption of
 the native guest-disk leg. No production restore or old-node activation is
 authorized by this property. Historical authority quarantine is the separate
@@ -86,8 +86,8 @@ authorized by this property. Historical authority quarantine is the separate
 
 #### Can the native isolated backup machine inject a kill after verified real guest disk output while preserving an independent target inventory?
 
-- Examined: `nix/tests/evaluation/backup-operators.py:858-959`,
-  `nix/tests/machines/backups/driver.py:187-255`, `runtime.py:313-345` and
+- Examined: `nix/verification/tests/evaluation/backup-operators.py:858-959`,
+  `nix/verification/tests/machines/backups/driver.py:187-255`, `runtime.py:313-345` and
   `deployment-topology.md:96`.
 - Found: generated SIGTERM/SIGKILL/timeout cases already drive real local Restic
   per component; the native machine successfully restores host and DB contents.
@@ -98,7 +98,7 @@ authorized by this property. Historical authority quarantine is the separate
 
 #### Which authorized consumer, if any, reads a restore target before completion?
 
-- Examined: `runtime.py:252-345`, `docs/backups.md:313-350`, ADR-0070 and
+- Examined: `runtime.py:252-345`, `docs/operations/backups.md:313-350`, ADR-0070 and
   ADR-0158. No backup CLI activation or automatic claim command is exposed.
 - Conclusion: the candidate asserts the concrete marker/byte boundary. An
   eventual serving transition needs a separate, defined reconciliation receipt.

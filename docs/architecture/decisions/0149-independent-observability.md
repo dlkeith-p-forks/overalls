@@ -168,8 +168,8 @@ wire accounting from local diagnostics. [Replay tests](../../../marshall/test/ma
 cover retained old receipts. The [credential migration](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/priv/repo/migrations/20261009120000_retire_monitor_credentials.exs)
 revokes monitor authority while preserving tables.
 
-The [infrastructure exporter](../../../nix/modules/fleet-exporter/exporter.py) and
-[freshness tests](../../../nix/tests/evaluation/fleet-exporter.py) cover bounded
+The [infrastructure exporter](../../../nix/domains/system/fleet-exporter/exporter.py) and
+[freshness tests](../../../nix/verification/tests/evaluation/fleet-exporter.py) cover bounded
 aggregate numeric export and unknown health. The
 [retirement property](../../../marshall/test/marshall_web/diagnostic_retirement_test.exs)
 checks closed application ingestion. The [implementation review](../reviews/2026-10-09-observability-decoupling.md)
