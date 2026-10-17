@@ -26,7 +26,7 @@ defmodule Brady.MixProject do
       {:x509, "~> 0.9.2"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:stream_data, "~> 1.4", only: :test},
-      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "6a62795", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
+      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "2446d28", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
     ] ++ antithesis_deps()
   end
 

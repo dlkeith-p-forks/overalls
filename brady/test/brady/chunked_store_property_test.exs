@@ -1,6 +1,7 @@
 defmodule Brady.Cache.ChunkedStorePropertyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.Cache.Store
   @meta %{"stored_at" => 100, "expires_at" => 200}
   @overhead 24_576

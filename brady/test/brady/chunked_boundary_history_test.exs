@@ -1,6 +1,7 @@
 defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.Cache.Store
 
   @overhead 24_576

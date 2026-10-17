@@ -1,6 +1,7 @@
 defmodule Brady.Cache.BudgetTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.Cache.Budget
 
   property "defaults bound both the pool share and each object" do

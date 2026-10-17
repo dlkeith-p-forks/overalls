@@ -1,6 +1,7 @@
 defmodule Brady.Cache.RangeTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.Cache.Range
 
   property "selected ranges remain entirely within the complete object" do

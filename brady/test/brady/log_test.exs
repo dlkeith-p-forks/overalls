@@ -1,6 +1,7 @@
 defmodule Brady.LogTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   property "arbitrary request and crash payloads cannot enter serialized events" do
     check all(payload <- binary()) do

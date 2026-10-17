@@ -1,6 +1,7 @@
 defmodule Brady.HTTP.StreamTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.HTTP.Stream
 
   @spec source(binary(), (Brady.Transport.t() -> term())) :: term()

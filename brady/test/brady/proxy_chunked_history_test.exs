@@ -1,6 +1,7 @@
 defmodule Brady.ProxyChunkedHistoryTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.{Cache, Cache.Store, HTTP.Stream, Proxy}
 
   @type mode :: :complete | :trailer | :truncated | :malformed | :private | :overflow

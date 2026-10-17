@@ -1,6 +1,7 @@
 defmodule Brady.CacheHistoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Brady.Cache
   alias Brady.Cache.{Budget, Policy, Store}

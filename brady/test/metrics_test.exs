@@ -1,6 +1,7 @@
 defmodule Brady.MetricsTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   test "concurrent observations retain only fixed aggregate values" do
     before = Brady.Metrics.snapshot()
