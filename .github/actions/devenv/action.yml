@@ -22,10 +22,24 @@ inputs:
 runs:
   using: composite
   steps:
-    # Must run after checkout (which wipes the workspace) and before Nix is
-    # installed. `nix` mode keeps /nix and ~/.cache/nix (flake, tarball and
+    # The cache mount must run after checkout (which wipes the workspace) and
+    # before Nix is installed. `nix` mode keeps /nix and ~/.cache/nix (flake, tarball and
     # evaluation caches) on the volume; `npm` cannot be used because npm comes
     # from the devenv shell, so its cache directory is listed explicitly.
+    # Cargo builds run outside Nix (for example Enrico's test helper builds
+    # native/git-owner), so every crate's target directory and the Cargo
+    # registry and git checkouts stay on the volume. Nix-built crates are
+    # cached by the Nix store and Cachix instead.
+    - name: List Rust target directories
+      id: rust
+      shell: bash
+      run: |
+        {
+          echo "targets<<EOF"
+          git ls-files -z -- '*Cargo.toml' ':!:**/vendor/**' | xargs -0 -n1 dirname | sort -u | sed 's#$#/target#'
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
+
     - name: Mount caches from cache volume
       uses: namespacelabs/nscloud-cache-action@v1
       with:
@@ -33,6 +47,9 @@ runs:
         path: |
           ~/.npm
           ~/.cache/devenv
+          ~/.cargo/registry
+          ~/.cargo/git
+          ${{ steps.rust.outputs.targets }}
           ${{ inputs.cache-paths }}
 
     - name: Install Nix
