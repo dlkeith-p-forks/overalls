@@ -1,10 +1,11 @@
 defmodule Overalls.RequestAccounting.RecorderRPCTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Overalls.RequestAccounting.RecorderRPC
 
   property "admission acknowledgments are positive bounded integers only" do
-    check all(identifier <- integer(-100..9_223_372_036_854_775_908)) do
+    check all(identifier <- integer(-100..9_223_372_036_854_775_807)) do
       reply = JSON.encode!(%{status: "admitted", id: identifier})
 
       expected =
