@@ -1,6 +1,7 @@
 defmodule Lilly.Host.PoolQueueTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.PoolQueue
 
   @rank %{observe: 0, mutate: 1, upkeep: 2}

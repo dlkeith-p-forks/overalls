@@ -1,6 +1,7 @@
 defmodule Porsche.RunnerTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Porsche.Runner
   @operation "11111111-1111-4111-8111-111111111111"
   @other_operation "22222222-2222-4222-8222-222222222222"

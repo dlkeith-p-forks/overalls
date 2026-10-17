@@ -1,6 +1,7 @@
 defmodule Brady.Cache.ArchivePropertyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.Cache.{Archive, Policy}
   @now 1_600_000_000
   @headers [{"date", "Sun, 13 Sep 2020 12:26:40 GMT"}, {"vary", "Authorization,Accept-Encoding"}]

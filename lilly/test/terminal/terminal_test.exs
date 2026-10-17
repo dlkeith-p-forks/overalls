@@ -1,6 +1,7 @@
 defmodule Lilly.TerminalTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Terminal.Vsock
   alias OverallsProtocol.Terminal, as: Codec
 

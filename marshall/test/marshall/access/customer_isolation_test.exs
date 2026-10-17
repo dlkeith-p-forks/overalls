@@ -1,6 +1,7 @@
 defmodule Marshall.Access.CustomerIsolationTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias Marshall.{Access, Compute, Ingress}
   alias Marshall.Access.{Authorization, Grant}
@@ -11,7 +12,7 @@ defmodule Marshall.Access.CustomerIsolationTest do
     Map.put(c, :member, user())
   end
 
-  property "customer grants cannot be created or confer authority", c do
+  test "customer grants cannot be created or confer authority", c do
     check all(role <- member_of([:web, :viewer, :operator, :manager]), max_runs: 12) do
       assert {:error, _} =
                Access.set_access(
@@ -118,7 +119,7 @@ defmodule Marshall.Access.CustomerIsolationTest do
              length(Ledger.read!(Marshall.Compute.Operation, vm_id: other.id, kind: :stop))
   end
 
-  property "even the owner cannot configure customer web exposure", c do
+  test "even the owner cannot configure customer web exposure", c do
     [before] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
 
     check all(

@@ -1,6 +1,7 @@
 defmodule Lilly.Control.TerminalClosePropertyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.Control.{Client, Close}
   alias Lilly.Control.Client, as: LillyClient
   alias Lilly.Test.ControlClosePeer

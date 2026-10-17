@@ -1,6 +1,7 @@
 defmodule Marshall.Accounts.GuestIdentityHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Accounts.{GuestAccount, GuestAccounts, User}
   alias Marshall.Authorization.SystemActor

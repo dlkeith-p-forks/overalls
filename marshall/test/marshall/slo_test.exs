@@ -1,6 +1,7 @@
 defmodule Marshall.SLOTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.SLO
 

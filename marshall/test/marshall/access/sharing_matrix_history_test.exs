@@ -1,6 +1,7 @@
 defmodule Marshall.Access.SharingMatrixHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @moduletag capture_log: true
   @moduletag timeout: 300_000
 

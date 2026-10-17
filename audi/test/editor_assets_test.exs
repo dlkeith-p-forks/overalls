@@ -1,6 +1,7 @@
 defmodule Audi.HTTP.EditorAssetsTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Plug.Conn
   alias Audi.HTTP.EditorAssets
   @moduletag :tmp_dir
@@ -45,7 +46,7 @@ defmodule Audi.HTTP.EditorAssetsTest do
     assert {:error, :invalid_editor_assets} = EditorAssets.load(c.assets.root)
   end
 
-  property "untrusted paths never select a file outside the three release assets", c do
+  test "untrusted paths never select a file outside the three release assets", c do
     check all(fragment <- string(:alphanumeric, min_length: 1, max_length: 40)) do
       for path <- [
             fragment,

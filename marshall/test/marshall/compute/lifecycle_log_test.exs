@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.LifecycleLogTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.{LifecycleEvent, LifecycleLog}
 
   test "a committed host mark_unknown event logs without requiring a preexisting action atom" do

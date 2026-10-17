@@ -1,6 +1,7 @@
 defmodule Marshall.Operations.InvalidRuntimeBootPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @project Path.expand("../../..", __DIR__)
   @probe Path.join(@project, "scripts/invalid_runtime_boot_probe.exs")

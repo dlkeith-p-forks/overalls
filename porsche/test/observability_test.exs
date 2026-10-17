@@ -1,6 +1,7 @@
 defmodule Porsche.ObservabilityTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Porsche.Observability
 
   defmodule Handler do

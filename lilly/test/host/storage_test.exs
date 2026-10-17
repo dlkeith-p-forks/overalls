@@ -1,6 +1,7 @@
 defmodule Lilly.Host.StorageTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Lock, Pool, Storage}
   @moduletag :tmp_dir
 
@@ -16,7 +17,7 @@ defmodule Lilly.Host.StorageTest do
     %{pool: pool, lock_dir: Path.join(directory, ".lilly-storage")}
   end
 
-  property "brief native contention permits one protected effect after release", c do
+  test "brief native contention permits one protected effect after release", c do
     check all(delay <- integer(20..80), failure <- boolean(), max_runs: 12) do
       {:ok, owner} = Lock.acquire(c.lock_dir)
       parent = self()
@@ -210,7 +211,7 @@ defmodule Lilly.Host.StorageTest do
   # Overlapping combine/5 callers MUST each receive exactly the result computed
   # for their own item, batches MUST run one at a time under the pool lock, and
   # queued callers MUST be combined into batches of more than one item.
-  property "combined callers each get their own result from exclusive batches", c do
+  test "combined callers each get their own result from exclusive batches", c do
     check all(count <- integer(2..12), max_runs: 8) do
       parent = self()
 

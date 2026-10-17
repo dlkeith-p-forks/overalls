@@ -8,7 +8,8 @@ defmodule Lilly.Host.ClaimShapeTest do
   claim layer without native ZFS.
   """
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Lock, Pool, ZFSDataset}
   alias Lilly.Lifecycle.Journal
   alias Lilly.VM.Spec

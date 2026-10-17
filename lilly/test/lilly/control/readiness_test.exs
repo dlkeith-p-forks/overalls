@@ -1,6 +1,7 @@
 defmodule Lilly.Control.ReadinessTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Control.Runtime
 
   # @cc [owner:ghuntley,label:verification;recovery] generated-readiness-fresh-authority

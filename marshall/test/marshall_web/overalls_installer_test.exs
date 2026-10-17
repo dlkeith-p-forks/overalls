@@ -1,6 +1,7 @@
 defmodule MarshallWeb.OverallsInstallerTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias MarshallWeb.OverallsInstaller
 
   @policy %{

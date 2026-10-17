@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.LifecycleHistoryTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   import ExUnit.Assertions
 
@@ -120,7 +121,7 @@ defmodule Marshall.Compute.LifecycleHistoryTest do
     :ok
   end
 
-  @spec commands() :: StreamData.t(command())
+  @spec commands() :: Hegel.Gen.t(command())
   defp commands do
     one_of([
       tuple(

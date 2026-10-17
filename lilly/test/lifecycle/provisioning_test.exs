@@ -1,6 +1,7 @@
 defmodule Lilly.Lifecycle.ProvisioningTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Lock
   alias Lilly.Lifecycle.{Journal, Provisioning}
   @moduletag :tmp_dir
@@ -37,7 +38,7 @@ defmodule Lilly.Lifecycle.ProvisioningTest do
   # The oracle MUST track completed prerequisites and terminal facts independently
   # of Ash's transition table. Reopen after every command; invalid requests MUST
   # preserve state and revision. Duplicate writes MUST NOT change either.
-  property "generated progress, faults and replays preserve prerequisites and bindings", c do
+  test "generated progress, faults and replays preserve prerequisites and bindings", c do
     check all(
             history <-
               list_of(

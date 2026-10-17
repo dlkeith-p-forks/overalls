@@ -1,6 +1,7 @@
 defmodule Lilly.Clone.RuntimeCadenceTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Clone.Runtime
 
   property "only effects first offered in this exchange trigger an immediate follow-up" do

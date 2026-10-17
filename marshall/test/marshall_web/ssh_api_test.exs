@@ -1,6 +1,7 @@
 defmodule MarshallWeb.SSHAPITest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @endpoint MarshallWeb.FleetEndpoint
   import Marshall.ComputeFixtures, only: [user: 0]
   import ExUnit.CaptureLog
@@ -67,7 +68,7 @@ defmodule MarshallWeb.SSHAPITest do
     assert id == c.user.id
   end
 
-  property "Porsche accepts empty and populated integration pages without exposing secrets", c do
+  test "Porsche accepts empty and populated integration pages without exposing secrets", c do
     {:ok, _} = SSH.add_key(%{public_key: c.public_key}, actor: c.user)
     opened = api(c, "sessions", %{version: 1, public_key: c.public_key}) |> reply(200)
     {:ok, client} = Porsche.Client.new("https://control.example.test", c.gateway_token)

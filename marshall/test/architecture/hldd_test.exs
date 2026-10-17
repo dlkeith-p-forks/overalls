@@ -6,7 +6,8 @@ Code.require_file("hldd_helper.exs", __DIR__)
 
 defmodule Overalls.HLDDTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Overalls.{HLDDGate, HLDDCoverage, HLDDOptions}
 
   setup do

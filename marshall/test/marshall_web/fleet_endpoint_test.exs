@@ -1,6 +1,7 @@
 defmodule MarshallWeb.FleetEndpointTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Plug.Conn
   import Plug.Test
 

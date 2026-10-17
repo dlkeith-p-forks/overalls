@@ -1,6 +1,7 @@
 defmodule Marshall.EditorTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import ExUnit.CaptureLog
   alias Marshall.Accounts.GuestAccount
   alias Marshall.Authorization.SystemActor
@@ -70,7 +71,7 @@ defmodule Marshall.EditorTest do
              )
   end
 
-  property "current sharing roles independently decide editor write admission", c do
+  test "current sharing roles independently decide editor write admission", c do
     check all(role <- member_of([:web, :viewer, :operator, :manager, :revoked]), max_runs: 12) do
       F.fresh(c)
       member = Marshall.ComputeFixtures.user()

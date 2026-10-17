@@ -1,6 +1,7 @@
 defmodule Lilly.VM.ActorFailureSettledTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Control.Store
   alias Lilly.VM.Actor
   @moduletag :tmp_dir
@@ -28,7 +29,7 @@ defmodule Lilly.VM.ActorFailureSettledTest do
   # replacement actor re-observes it once without appending a durable outcome,
   # and a newer command or a delete still drives at once. A recorded failure
   # MUST remain the pending outcome Marshall receives.
-  property "a recorded failure is driven once per actor process and command", context do
+  test "a recorded failure is driven once per actor process and command", context do
     check all(
             events <-
               list_of(

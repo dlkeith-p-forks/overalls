@@ -1,6 +1,7 @@
 defmodule Marshall.ThreadsSharingTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
 
   alias Marshall.Accounts.User
@@ -29,7 +30,7 @@ defmodule Marshall.ThreadsSharingTest do
   # @cc [owner:ghuntley,label:verification;security] thread-grants-current-role-matrix
   # Role replacement and revocation MUST be checked against fresh authorization
   # and public reads, including after a previously sufficient grant is removed.
-  property "persisted roles control thread permissions and visibility", context do
+  test "persisted roles control thread permissions and visibility", context do
     check all(
             roles <-
               list_of(member_of([:viewer, :operator, :manager, :revoked]),

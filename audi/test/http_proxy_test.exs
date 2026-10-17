@@ -1,6 +1,7 @@
 defmodule Audi.HTTP.ProxyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Plug.Conn
   alias Audi.Control.Client
   @fixtures Path.expand("../../marshall/test/fixtures/tls", __DIR__)
@@ -70,8 +71,7 @@ defmodule Audi.HTTP.ProxyTest do
     refute hd(get_resp_header(response, "location")) =~ c.client.origin
   end
 
-  property "HTTPS-authorized HTTP streams bytes and removes platform authority from guest headers",
-           c do
+  test "HTTPS-authorized HTTP streams bytes and removes platform authority from guest headers", c do
     check all(payload <- binary(min_length: 1, max_length: 80_000), max_runs: 5) do
       {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
       {:ok, {_, port}} = :inet.sockname(listener)
@@ -157,7 +157,7 @@ defmodule Audi.HTTP.ProxyTest do
     end
   end
 
-  property "binary uploads preserve bytes across bounded upstream chunks", c do
+  test "binary uploads preserve bytes across bounded upstream chunks", c do
     upstream =
       start_supervised!(
         Supervisor.child_spec(
@@ -305,7 +305,7 @@ defmodule Audi.HTTP.ProxyTest do
         conn |> Plug.Conn.put_resp_header("connection", "close") |> Audi.HTTP.Proxy.call(options)
   end
 
-  property "truncated guest bodies cannot become successfully terminated HTTP responses", c do
+  test "truncated guest bodies cannot become successfully terminated HTTP responses", c do
     {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
     on_exit(fn -> :gen_tcp.close(listener) end)
     {:ok, {_, guest_port}} = :inet.sockname(listener)
@@ -380,8 +380,7 @@ defmodule Audi.HTTP.ProxyTest do
     end
   end
 
-  property "WebSocket handshakes and masked messages traverse the authorized guest connection",
-           c do
+  test "WebSocket handshakes and masked messages traverse the authorized guest connection", c do
     {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
     {:ok, {_, guest_port}} = :inet.sockname(listener)
     owner = self()

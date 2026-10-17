@@ -1,6 +1,7 @@
 defmodule Lilly.Host.ZFSTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.ZFS
   @vm "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
   @name "tank/lilly/vm-#{@vm}"

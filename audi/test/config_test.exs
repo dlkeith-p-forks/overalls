@@ -1,6 +1,7 @@
 defmodule Audi.ConfigTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @token "audi_service_" <> Base.url_encode64(<<0::256>>, padding: false)
 
   test "control clients reject IPv6 literals for both service roles" do
@@ -312,8 +313,7 @@ defmodule Audi.ConfigTest do
     assert {:error, :invalid_runtime_configuration} = Audi.Config.load(c.path)
   end
 
-  property "arbitrary configuration bytes produce a fixed error or a secret-free inspected result",
-           c do
+  test "arbitrary configuration bytes produce a fixed error or a secret-free inspected result", c do
     check all(bytes <- binary(max_length: 20_000), max_runs: 40) do
       File.write!(c.path, bytes)
 

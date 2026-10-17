@@ -1,6 +1,7 @@
 defmodule Marshall.Ingress.PrivateHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Accounts.User
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.{HostReports, Ledger, Operation, ProvisionerControl, VirtualMachine}

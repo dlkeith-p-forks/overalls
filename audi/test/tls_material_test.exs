@@ -1,6 +1,7 @@
 defmodule Audi.TLS.FleetMaterialTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.TLS.FleetMaterial
   @host "demo-0123456789abcdef0123456789abcdef.apps.example"
 
@@ -313,7 +314,7 @@ defmodule Audi.TLS.FleetMaterialTest do
     assert :unrecognized = Audi.TLS.Store.sni(store, @host)
   end
 
-  property "arbitrary bytes fail validation without exposing decoder exceptions", c do
+  test "arbitrary bytes fail validation without exposing decoder exceptions", c do
     check all(bytes <- binary(max_length: 2048)) do
       assert {:error, :invalid_tls_material} =
                FleetMaterial.validate(bytes, c.key, c.roots, "apps.example")

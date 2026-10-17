@@ -1,6 +1,7 @@
 defmodule Audi.HTTP.EditorTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Plug.Conn
   alias Audi.HTTP.{Editor, EditorBrowser}
   alias OverallsProtocol.{EditorConnect, EditorName}
@@ -36,8 +37,7 @@ defmodule Audi.HTTP.EditorTest do
     %{client: Audi.Test.DNSControl.connected(client), label: EditorName.label(@vm, @account)}
   end
 
-  property "unsafe requests reject sibling or missing origins before admission or connection",
-           c do
+  test "unsafe requests reject sibling or missing origins before admission or connection", c do
     check all(
             method <- member_of([:post, :put, :delete]),
             suffix <- string(:alphanumeric, min_length: 1, max_length: 20)

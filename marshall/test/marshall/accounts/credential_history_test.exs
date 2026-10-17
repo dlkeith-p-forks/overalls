@@ -1,12 +1,13 @@
 defmodule Marshall.Accounts.CredentialHistoryTest do
   @moduledoc "Generated passkey lifecycle histories with an independent inventory oracle."
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.PasskeyFixture
 
   alias Marshall.Accounts.{Login, Passkey, PasskeyChallenge, Security}
   alias Marshall.Compute.Ledger
-  alias StreamData, as: Gen
+  alias Hegel.Gen, as: Gen
 
   @bogus "00000000-0000-0000-0000-000000000000"
 

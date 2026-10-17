@@ -1,6 +1,7 @@
 defmodule Overalls.RequestAccounting.AggregateTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Overalls.RequestAccounting.Aggregate
 

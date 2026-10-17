@@ -1,6 +1,7 @@
 defmodule Brady.Cache.PolicyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.Cache.Policy
   @now 1_600_000_000
   @headers [{"date", "Sun, 13 Sep 2020 12:26:40 GMT"}, {"cache-control", "public, max-age=600"}]

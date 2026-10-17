@@ -1,6 +1,7 @@
 defmodule Marshall.Inference.RequestsTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.{Ledger, VirtualMachine}
   alias Marshall.Inference.{Credentials, Requests, Request}
 
@@ -103,7 +104,7 @@ defmodule Marshall.Inference.RequestsTest do
     assert {:ok, %{acknowledged: ^id}} = Requests.complete(c.ziggy_token, id, completion())
   end
 
-  property "completion replay and conflict histories count each request once", c do
+  test "completion replay and conflict histories count each request once", c do
     check all(
             attempts <- list_of(member_of([:replay, :conflict]), min_length: 1, max_length: 12),
             max_runs: 12

@@ -17,7 +17,8 @@ defmodule Lilly.Control.HistoricalFenceTest do
   [native-zfs]: ../../../../nix/verification/tests/machines/native-zfs/driver.py
   """
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Control.{Runtime, Store}
   alias Lilly.VM.Actor
   @host "11111111-1111-4111-8111-111111111111"

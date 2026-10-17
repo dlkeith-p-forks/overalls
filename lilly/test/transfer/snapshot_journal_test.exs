@@ -1,6 +1,7 @@
 defmodule Lilly.Transfer.SnapshotJournalTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Lock, PrivateFiles}
   alias Lilly.Transfer.SnapshotJournal, as: Journal
   @moduletag :tmp_dir
@@ -207,7 +208,7 @@ defmodule Lilly.Transfer.SnapshotJournalTest do
     end)
   end
 
-  property "arbitrary journal bytes never crash or rebind identity", c do
+  test "arbitrary journal bytes never crash or rebind identity", c do
     check all(bytes <- binary(max_length: 1024), max_runs: 30) do
       :ok = PrivateFiles.write(c.directory, "snapshots.json", bytes)
 

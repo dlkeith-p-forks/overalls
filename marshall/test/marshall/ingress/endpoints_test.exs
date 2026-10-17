@@ -1,6 +1,7 @@
 defmodule Marshall.Ingress.EndpointsTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias Marshall.{Compute, Ingress}
   alias Marshall.Compute.Ledger
@@ -91,7 +92,7 @@ defmodule Marshall.Ingress.EndpointsTest do
     assert current.policy_revision == 2
   end
 
-  property "generated policy changes preserve identity and count only actual mutations", ctx do
+  test "generated policy changes preserve identity and count only actual mutations", ctx do
     check all(
             changes <-
               list_of(tuple({integer(1..65535), member_of([:private, :public])}),

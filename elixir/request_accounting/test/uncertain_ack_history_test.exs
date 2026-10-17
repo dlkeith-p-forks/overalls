@@ -1,6 +1,7 @@
 defmodule Overalls.RequestAccounting.UncertainAckHistoryTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Overalls.RequestAccounting.{Config, Producer, QualityMarker}
   @name UncertainAckFixture
   @maximum 9_223_372_036_854_775_807

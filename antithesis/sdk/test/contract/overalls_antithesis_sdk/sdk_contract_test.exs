@@ -1,3 +1,5 @@
+import Hegel
+import Hegel.Gen
 defmodule OverallsAntithesisSdkSdkContractTest do
   use Covenant.Case, component: "overalls_antithesis_sdk.sdk"
 

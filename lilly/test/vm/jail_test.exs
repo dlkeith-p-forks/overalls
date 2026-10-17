@@ -1,6 +1,7 @@
 defmodule Lilly.VM.JailTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Pool
   alias Lilly.VM.Jail
 

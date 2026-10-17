@@ -701,7 +701,7 @@ separate obligations. See
 
 ## Elixir property verification
 
-Elixir properties use the test-only Hegel pin under
+Elixir properties use the test-only Hegel frontend pin `2c9f7a4` under
 [ADR-0191](repo:docs/architecture/decisions/0191-elixir-hegel-property-verification.md).
 Protocol properties run once per declared case count with fixed seeds and no
 example database or printed replay blobs. A local draw boundary records literal
@@ -714,7 +714,9 @@ children and fixture messages before another case or replay.
 This verifies BEAM codec, refusal and process/socket behavior. It does not
 establish native guest execution, TLS, physical isolation, storage recovery or
 fleet acceptance. Protocol's workspace-source and View properties still use
-StreamData, and the wider migration remains partial. The
+StreamData, and the wider migration remains partial. The recorded 299-test pass
+used the previous frontend pin `6a62795`; the merged frontend's complete gate
+is pending. Native engine sources are unchanged by that frontend update. The
 [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

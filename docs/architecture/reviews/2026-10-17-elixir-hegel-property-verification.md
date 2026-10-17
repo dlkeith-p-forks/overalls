@@ -33,7 +33,7 @@ repository guidance.
 
 ## Protocol migration repair
 
-The protocol repair retains the reviewed `6a62795` dependency pin and changes
+The initial protocol repair retained the reviewed `6a62795` dependency pin and changed
 test code, test support and test-file discovery only. Production codecs, native
 admission, wire versions, application dependencies and deployment authority are
 unchanged. ADR-0191 remains accepted and partially implemented.
@@ -65,7 +65,8 @@ Recorded focused executions with the pinned native engine:
 - Generator compatibility across eight pure test files: **46 passed**.
 - Failure/replay fixture-cleanup negative control: **1 passed**.
 
-The final protocol `mix precommit` passed on 2026-10-17: **299 passed** (6
+The pre-merge protocol `mix precommit` at frontend `6a62795` passed on
+2026-10-17: **299 passed** (6
 StreamData properties and 293 tests, including the Hegel properties) in 408.3
 seconds; Covenant reported **14/14** obligations covered; Dialyzer reported **0
 errors, 0 skipped and 0 unnecessary skips**. The shared contract validator's
@@ -80,6 +81,21 @@ sha256sum | sha256sum`) stayed
 throughout the final gate.
 The execution log is `/tmp/overalls-native-protocol-hegel-precommit-final.log`;
 it is local execution evidence, not a retained native-guest acceptance artifact.
+
+The upstream merge advances the frontend to
+`2c9f7a4a9f2cf156de063bbc8058bcf297be5cf0`. The reviewed upstream delta changes
+only the Elixir binding's context handling and generator compatibility; the
+native engine and the native library above are unchanged. The merge preserves
+the seeded single runners, redacted draws, complete unsigned GUID generation
+and original out-of-range refusal fixtures. It retains the six StreamData View
+and workspace-source properties with their broad generators and assertions:
+the upstream mechanical migration instead narrowed generated sources and
+integer boundaries, so it did not provide equivalent coverage. The complete
+merged-pin protocol gate is pending at
+`/tmp/overalls-native-protocol-hegel-merged-precommit.log`, against source
+aggregate `c17753a49b4ef02f6243ece724b32ef5aaf87aa8ab129e133754d46b9f9d7987`.
+The historical 299-test result and its exact source hash above apply only to the
+pre-merge frontend pin.
 
 Protocol's workspace-source and View properties still use StreamData. The
 pinned binding does not implement every accepted stateful/concurrent API.

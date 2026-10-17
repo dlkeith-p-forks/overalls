@@ -1,12 +1,13 @@
 defmodule Marshall.Terminal.ViewerAuthorityTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Terminal.ViewerAuthority
 
   @backstop ViewerAuthority.backstop_ms()
 
-  @spec result() :: StreamData.t(ViewerAuthority.result())
+  @spec result() :: Hegel.Gen.t(ViewerAuthority.result())
   defp result do
     one_of([
       constant(:ok),

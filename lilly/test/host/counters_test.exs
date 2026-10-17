@@ -1,6 +1,7 @@
 defmodule Lilly.Host.CountersTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Counters
 
   test "CPU guest counters are not added twice and reset observations stay unknown" do

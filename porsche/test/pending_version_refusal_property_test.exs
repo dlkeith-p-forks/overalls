@@ -2,7 +2,8 @@ Code.require_file("../../protocol/test/support/control_close_peer.ex", __DIR__)
 
 defmodule Porsche.PendingVersionRefusalPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.Control.{Client, Close}
   alias OverallsProtocol.Test.ControlClosePeer
 

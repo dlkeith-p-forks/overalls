@@ -1,6 +1,7 @@
 defmodule Marshall.SSH.KeyTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures, only: [user: 0]
   alias Marshall.SSH
 

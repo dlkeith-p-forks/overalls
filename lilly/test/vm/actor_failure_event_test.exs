@@ -2,7 +2,8 @@ defmodule Lilly.VM.ActorFailureEventTest do
   # Log capture is global, so this module runs alone rather than beside the
   # asynchronous actor tests that also record failed outcomes.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Control.Store
   alias Lilly.VM.Actor
   @moduletag :tmp_dir
@@ -32,7 +33,7 @@ defmodule Lilly.VM.ActorFailureEventTest do
   # failed outcome: once per generation/reason until a recovery or a newer
   # command, never once per reconcile, and a repeated failure MUST NOT append
   # a durable outcome. A reconcile of a settled failure MUST start no work.
-  property "vm.failed follows recorded failed outcomes, not reconcile ticks", context do
+  test "vm.failed follows recorded failed outcomes, not reconcile ticks", context do
     check all(
             steps <-
               list_of(

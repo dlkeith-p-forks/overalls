@@ -8,7 +8,8 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   system under test's Budget arithmetic is never consulted.
   """
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   require Marshall.CommittedFixtureCleanup, as: Cleanup
   import Marshall.ComputeFixtures
@@ -162,12 +163,12 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   @spec shape_for_key(non_neg_integer()) :: shape()
   defp shape_for_key(key_ix), do: Enum.at(@shape_table, rem(key_ix, 3))
 
-  @spec shape_gen() :: StreamData.t(shape())
+  @spec shape_gen() :: Hegel.Gen.t(shape())
   defp shape_gen do
     member_of(@shape_table)
   end
 
-  @spec op_gen() :: StreamData.t(op())
+  @spec op_gen() :: Hegel.Gen.t(op())
   defp op_gen do
     frequency([
       {4,
@@ -198,22 +199,22 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
     ])
   end
 
-  @spec gen_all_relocate() :: StreamData.t(op())
+  @spec gen_all_relocate() :: Hegel.Gen.t(op())
   defp gen_all_relocate do
     gen(all(n <- integer(0..9), do: {:relocate, n}))
   end
 
-  @spec gen_all_clone() :: StreamData.t(op())
+  @spec gen_all_clone() :: Hegel.Gen.t(op())
   defp gen_all_clone do
     gen(all(n <- integer(0..9), do: {:clone, n}))
   end
 
-  @spec gen_all_conflict() :: StreamData.t(op())
+  @spec gen_all_conflict() :: Hegel.Gen.t(op())
   defp gen_all_conflict do
     gen(all(n <- integer(0..3), do: {:conflict, n}))
   end
 
-  @spec schedule_gen() :: StreamData.t([[op()]])
+  @spec schedule_gen() :: Hegel.Gen.t([[op()]])
   defp schedule_gen do
     gen all(sizes <- list_of(integer(2..4), min_length: 4, max_length: 7)) do
       sizes

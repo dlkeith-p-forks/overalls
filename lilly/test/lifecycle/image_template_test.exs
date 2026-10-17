@@ -1,6 +1,7 @@
 defmodule Lilly.Lifecycle.ImageTemplateTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Lock
   alias Lilly.Lifecycle.{ImageTemplate, Journal}
   @moduletag :tmp_dir

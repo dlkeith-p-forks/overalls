@@ -1,6 +1,7 @@
 defmodule Lilly.Host.IdentityTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Identity, UIDReservation}
 
   property "host identity is stable with either allowed line termination and hides the raw ID" do

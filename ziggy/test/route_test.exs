@@ -1,6 +1,7 @@
 defmodule Ziggy.RouteTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @anthropic_paths [
     "/v1/messages",

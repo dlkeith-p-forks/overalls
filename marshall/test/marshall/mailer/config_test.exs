@@ -1,6 +1,7 @@
 defmodule Marshall.Mailer.ConfigTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Accounts.EmailAddress
   alias Marshall.Mailer.Config
 

@@ -1,6 +1,7 @@
 defmodule Porsche.ClientTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Porsche.Client
 
   @token "porsche_gateway_" <> Base.url_encode64(<<0::256>>, padding: false)

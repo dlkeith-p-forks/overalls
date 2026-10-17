@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.HostLivenessTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.HostLiveness
 
   @now ~U[2026-10-02 12:00:00.000Z]

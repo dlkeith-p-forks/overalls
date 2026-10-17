@@ -1,6 +1,7 @@
 defmodule Marshall.Terminal.RemoteTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Terminal.{Directory, PeerBudget, Relay, Remote}
 
   @fixtures Path.expand("../../fixtures/tls", __DIR__)

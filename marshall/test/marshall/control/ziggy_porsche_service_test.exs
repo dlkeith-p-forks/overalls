@@ -1,6 +1,7 @@
 defmodule Marshall.Control.ZiggyPorscheServiceTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
 
   alias Marshall.Authorization.SystemActor
@@ -59,7 +60,7 @@ defmodule Marshall.Control.ZiggyPorscheServiceTest do
   # Independent session creations MUST agree on stable status/user fields and
   # each issued session MUST resolve identically through the opposite adapter.
   # Refusals MUST retain the shared request handler's closed error name.
-  property "Porsche adapters preserve session meaning and refusal names", c do
+  test "Porsche adapters preserve session meaning and refusal names", c do
     {:ok, _} = SSH.add_key(%{public_key: c.public_key}, actor: c.user)
     {:ok, principal} = Porsche.authenticate(c.gateway)
 

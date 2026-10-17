@@ -1,6 +1,7 @@
 defmodule Audi.Authority.StreamGuardTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.Authority.StreamGuard
 
   @binding %{

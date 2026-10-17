@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.LifecycleAuditTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   import ExUnit.CaptureLog
   alias Marshall.Compute
@@ -139,7 +140,7 @@ defmodule Marshall.Compute.LifecycleAuditTest do
   # Each generated expired backlog MUST drain in batches of at most 1000 rows;
   # every full batch MUST enqueue one maintenance continuation, including an
   # exact multiple of 1000, while a partial or empty batch MUST enqueue none.
-  property "generated expired backlogs drain with one continuation per full batch", c do
+  test "generated expired backlogs drain with one continuation per full batch", c do
     check all(offset <- integer(1..200), max_runs: 4) do
       for backlog <- [0, offset, 1000, 1000 + offset, 2000] do
         assert_retention_backlog(backlog, c.vm.id)

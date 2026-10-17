@@ -1,6 +1,7 @@
 defmodule Lilly.VM.BootGenerationAdoptionPropertyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Lilly.Host.{Lock, PrivateFiles}
   alias Lilly.VM.{Boot, Intent}

@@ -1,6 +1,7 @@
 defmodule Porsche.SLOTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Porsche.{Observability, SLO}
 
   property "generated terminal command dispatches keep closed cumulative outcomes and buckets" do

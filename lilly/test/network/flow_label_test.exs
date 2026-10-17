@@ -1,6 +1,7 @@
 defmodule Lilly.Network.FlowLabelTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Network.{Config, FlowLabel, Guest}
   @host "11111111-1111-4111-8111-111111111111"
   @placement "22222222-2222-4222-8222-222222222222"

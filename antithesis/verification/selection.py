@@ -234,6 +234,15 @@ def selected_files(root: Path, selection: Selection) -> tuple[list[Path], list[P
                 pending.append(candidate)
 
     require(bootstrap)
+    # The top-level launcher keeps the staged catalog root a module directory:
+    # the hosted instrumentor splits a root holding only packages into one
+    # catalog per package (run fa561ce56dcaee6935138164c516380f-65-0 registered
+    # only ``core``), while a root with a top-level module stays one catalog,
+    # as the pre-scoping tree did (run 6e938dc6c604fe77c4f28dbce74f7748-65-0).
+    launcher = workload / "bootstrap.py"
+    if not launcher.is_file():
+        raise EvidenceError("workload catalog launcher is missing")
+    dependencies.add(launcher)
     pending.extend(commands)
     while pending:
         path = pending.pop()
@@ -242,6 +251,8 @@ def selected_files(root: Path, selection: Selection) -> tuple[list[Path], list[P
     # Every runtime package used by selected commands needs a selected catalog
     # source. The staged catalog tree itself is checked during freeze.
     for dependency in dependencies:
+        if dependency == launcher:
+            continue
         if dependency.relative_to(workload).parts[0] not in selection.runtime_packages:
             raise EvidenceError(f"unselected runtime dependency {dependency}")
     return selected, sorted(dependencies)

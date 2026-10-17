@@ -5,7 +5,8 @@ defmodule Marshall.Compute.RelocationStateMachinePropertyTest do
   # only before the handoff commit, terminal phases are sinks, every phase can
   # still finish, and no pre-copy phase remains declared.
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
 
   alias Marshall.Compute.{Host, Ledger, Operation, Relocation, RelocationCapacity}

@@ -1,6 +1,7 @@
 defmodule Marshall.SSH.GuestAccessTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.Ledger
@@ -186,7 +187,7 @@ defmodule Marshall.SSH.GuestAccessTest do
              )
   end
 
-  property "any changed physical binding denies roster, key eligibility, and login", c do
+  test "any changed physical binding denies roster, key eligibility, and login", c do
     {:ok, _session} =
       Ingress.open_ssh(
         %{service_token: c.gateway_token, public_key: c.key, label: c.label},

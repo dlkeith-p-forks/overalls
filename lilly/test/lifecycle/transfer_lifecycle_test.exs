@@ -1,6 +1,7 @@
 defmodule Lilly.Lifecycle.TransferLifecycleTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Lifecycle.{Import, Journal, SnapshotSet}
 
   # ADR-0155: one stopped full copy means one source snapshot and one receive

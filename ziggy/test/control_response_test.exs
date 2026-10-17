@@ -1,6 +1,7 @@
 defmodule Ziggy.ControlResponseTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   setup do
     control =

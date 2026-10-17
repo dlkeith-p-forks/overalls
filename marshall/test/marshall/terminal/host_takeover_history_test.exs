@@ -1,6 +1,7 @@
 defmodule Marshall.Terminal.HostTakeoverHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias OverallsProtocol.Terminal, as: Codec
   alias Marshall.Terminal.{Directory, Relay}

@@ -1,6 +1,7 @@
 defmodule Marshall.SSH.CommandsTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias Marshall.{Compute, SSH}
 
@@ -285,7 +286,7 @@ defmodule Marshall.SSH.CommandsTest do
   # acceptance MUST add exactly one operation, one request and one dispatch.
   # Receipts MUST replay only for their accepted actor; a changed kind with a
   # used request key MUST conflict without new durable work.
-  property "lifecycle commands across profiles admit only current authority", c do
+  test "lifecycle commands across profiles admit only current authority", c do
     check all(
             profile <- member_of(["oss", "customer"]),
             performers <-
@@ -437,7 +438,7 @@ defmodule Marshall.SSH.CommandsTest do
   # Generated retries MUST preserve the admitted profile and one VM/operation.
   # An omitted profile and any explicit profile are different semantic inputs,
   # even explicit OSS; changing that input MUST refuse without new durable work.
-  property "omitted and explicit profiles stay pinned through retry histories", c do
+  test "omitted and explicit profiles stay pinned through retry histories", c do
     check all(
             selection <- member_of([nil, "oss", "customer", "standard"]),
             attempts <-
@@ -726,7 +727,7 @@ defmodule Marshall.SSH.CommandsTest do
            ) == 1
   end
 
-  property "retries, acknowledgement and reordered evidence preserve one physical result", c do
+  test "retries, acknowledgement and reordered evidence preserve one physical result", c do
     check all(succeeded? <- boolean(), retries <- integer(1..4), max_runs: 8) do
       id = Ash.UUID.generate()
       {:ok, receipt} = command(c, "new --request-id #{id}")

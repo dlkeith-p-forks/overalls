@@ -1,6 +1,7 @@
 defmodule Brady.HTTP.HeadTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.HTTP.Head
 
   test "body bytes are preserved and hop-by-hop fields cannot escape" do

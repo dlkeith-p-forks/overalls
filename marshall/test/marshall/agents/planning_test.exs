@@ -1,6 +1,7 @@
 defmodule Marshall.Agents.PlanningTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Agents.Planning
 
   @spec questions() :: [map()]

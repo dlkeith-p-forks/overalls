@@ -1316,6 +1316,45 @@ remain false. This native assembly result does not establish the complete
 normal-boot service/growth/recovery matrix. Later executor lease/stop changes
 require another kit; their bytes are outside this record.
 
+## Final executor and native SSH correction assembly
+
+The replacement kit
+`/nix/store/wz4rkmvzima04zdgql3z6x90ha09l260-overalls-omnios-native-image-candidate-kit`
+includes current executor lease cancellation, `/usr/sbin/sshd` on both native
+targets and omission of explicit `UsePAM yes` only on OmniOS, whose PAM policy
+is always on. The stock OmniOS executable passed `sshd -t` and `sshd -T` with
+synthetic volatile host-key/certificate prerequisites and unchanged public-key
+authentication/authorization policy; those keys were removed. This parser
+proof starts no daemon or session; exact evidence is in the
+[admission review](2026-10-17-native-image-admission.md).
+
+The final `wz4r` assembly passed nine-module/764-payload installation, all three
+native SMF validations, the safe root-owned native SSH executable guard, five
+stock service disables and four exact stock network removals. Assembly exited
+0, and GUID-only read-only receipt extraction/export passed. Its 158,319-byte
+receipt SHA256 is
+`512a112f910a3ce65c5f3f791a91aecbdcc20c8e428af6f9f9702ee904320180`;
+kit manifest SHA256 is
+`6db105276ba24eebc5fe87b3e961ee9dc01e18243db2c1c493bbe897420a2d73`.
+Only administration pool GUID `9985174500187493668` remained imported and both
+private workspaces were absent before filesystem synchronization and clean
+shutdown at 19:57:07 UTC; QEMU exited 0.
+
+The sealed 8,589,934,592-byte disk SHA256 is
+`e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41`.
+The read-only baseline, assembly receipt, firmware link and test-only manifest
+are `/tmp/overalls-omnios-native-ssh-config-final-artifact/`; manifest SHA256 is
+`4cf5828573cdc1d77d4ff2ab8136217ba616e935287ddf81c759aae8c2231fd2`.
+Runtime checks must clone this baseline. Token `76b8c1ad` and unix SHA256
+`c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21`
+are unchanged. Logs `admin-ssh-config-final-assembly.log`,
+`admin-ssh-config-final-receipt.log`,
+`admin-ssh-config-final-export-state.log` and
+`admin-ssh-config-final-shutdown.log` are under
+`/tmp/overalls-omnios-native-probe/`. Runtime, complete service and admission
+flags remain false; exact-image boot/service, lease withdrawal, growth,
+transport/reset, isolation and recovery replay remain pending.
+
 ## Verification boundary and follow-up
 
 Protocol, Lilly and Rust unit tests plus Nix evaluation provide typed, bounded
@@ -1326,7 +1365,9 @@ and establish only those nested-KVM histories. OmniOS has target-native
 assembly, scoped diagnostic transport and paired direct-only QEMU boot evidence;
 the preceding corrected-block Firecracker service attempt reaches login but
 times out before service oracles with growth in maintenance. Corrected growth
-payload `bea32fe6` has fresh native assembly evidence; runtime replay is open.
+payloads retain their own assembly evidence. Final `wz4r` disk `e7fc0c04` has
+fresh native assembly evidence including executor and SSH corrections; its
+complete runtime replay remains open.
 Neither family's record establishes wrong-CID injection, DMA/race stress,
 direct native peer-VM isolation, physical power-loss durability, relocation or
 fleet availability.

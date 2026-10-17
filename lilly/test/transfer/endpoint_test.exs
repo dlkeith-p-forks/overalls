@@ -2,7 +2,8 @@ defmodule Lilly.Transfer.EndpointTest do
   # capture_log observes global Logger traffic, including other tests' transfer
   # effects. Serialize this module so silence and reason assertions are isolated.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Transfer.Endpoint
   @moduletag :tmp_dir
   @host "00000000-0000-0000-0000-000000000004"

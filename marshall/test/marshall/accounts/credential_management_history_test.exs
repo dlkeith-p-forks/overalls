@@ -7,7 +7,8 @@ defmodule Marshall.Accounts.CredentialManagementHistoryTest do
   from `Security.recent?/1` or `Security.passkey_verified?/2` alone.
   """
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.PasskeyFixture
   alias Marshall.Accounts.{Security, User}
   alias Marshall.SSH
@@ -103,7 +104,7 @@ defmodule Marshall.Accounts.CredentialManagementHistoryTest do
     :ok
   end
 
-  @spec operations() :: StreamData.t([atom()])
+  @spec operations() :: Hegel.Gen.t([atom()])
   defp operations do
     map(
       list_of(

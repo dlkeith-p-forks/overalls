@@ -1,6 +1,7 @@
 defmodule Lilly.Network.IdentityTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Network.{Config, Guest, Ingress, Policy}
   @host "af4bdc65-e17f-49ae-9bfb-cbe4cf0a4071"
   @vm "fb8f7045-82cb-4a05-afdf-e10eb405dc6f"

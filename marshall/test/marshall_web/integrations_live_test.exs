@@ -1,6 +1,7 @@
 defmodule MarshallWeb.IntegrationsLiveTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Phoenix.LiveViewTest
   alias Marshall.Compute.Ledger
 

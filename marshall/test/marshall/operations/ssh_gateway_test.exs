@@ -1,6 +1,7 @@
 defmodule Marshall.Operations.SSHGatewayTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.Ledger
   alias Marshall.Operations.{CLI, PrivateFiles}
@@ -55,7 +56,7 @@ defmodule Marshall.Operations.SSHGatewayTest do
              )
   end
 
-  property "malformed private credential contents never alter gateway authority", c do
+  test "malformed private credential contents never alter gateway authority", c do
     check all(bytes <- binary(max_length: 256)) do
       File.write!(c.first, "invalid:" <> bytes)
       File.chmod!(c.first, 0o600)

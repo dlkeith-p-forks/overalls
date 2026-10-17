@@ -1032,6 +1032,21 @@ nine modules, 764 payload entries, native schema checks, clean export and
 shutdown. Sealed disk `bea32fe6` retains token `76b8c1ad`; exact-image
 service/growth/transport/reset replay remains open.
 
+The final `wz4r` kit includes current executor lease cancellation and the
+corrected `/usr/sbin/sshd` path/OmniOS always-on PAM config. Fresh native
+assembly passed nine modules, 764 payload records, all three SMF validations,
+the safe native SSH executable guard, stock startup/network removals, read-only
+receipt extraction/export and clean administration shutdown. The sealed
+8,589,934,592-byte disk SHA256 is
+`e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41`,
+at `/tmp/overalls-omnios-native-ssh-config-final-artifact/`; exact kit/receipt
+identities and logs are in the native review. Clone this read-only baseline
+before runtime checks. Runtime, complete services and admission remain false;
+exact-image boot/service, lease withdrawal, growth, transport/reset, isolation
+and recovery replay remain pending. Native `sshd -t/-T` separately passed with
+synthetic volatile host-key prerequisites, preserving PAM and public-key-only
+authentication; parser acceptance proves no running SSH session or readiness.
+
 Native trust composes the current host roots with the separate pinned vendor
 snapshot `/etc/overalls/system-ca.pem`, then durably replaces the effective
 bundle at the standard FreeBSD/OmniOS trust path. Reusing that managed path as

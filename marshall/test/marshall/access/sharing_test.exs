@@ -1,6 +1,7 @@
 defmodule Marshall.Access.SharingTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias Marshall.{Access, Compute}
   alias Marshall.Access.{Authorization, Change, Grant}
@@ -14,7 +15,7 @@ defmodule Marshall.Access.SharingTest do
     %{owner: owner, member: member, vm: vm, fixture: fixture}
   end
 
-  property "persisted role replacement drives the real Cedar permission matrix", context do
+  test "persisted role replacement drives the real Cedar permission matrix", context do
     check all(
             roles <-
               list_of(member_of([:web, :viewer, :operator, :manager, :revoked]),

@@ -1,6 +1,7 @@
 defmodule Audi.Inception.ClientHelloTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.Inception.ClientHello
 
   defp body(extensions) do

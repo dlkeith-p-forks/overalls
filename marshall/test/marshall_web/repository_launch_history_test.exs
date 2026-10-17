@@ -1,7 +1,8 @@
 defmodule MarshallWeb.RepositoryLaunchHistoryTest do
   use MarshallWeb.ConnCase, async: false
   @moduletag :capture_log
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Phoenix.LiveViewTest
   import Marshall.ComputeFixtures
   alias OverallsProtocol.{Execution, WorkspaceSource}
@@ -206,7 +207,7 @@ defmodule MarshallWeb.RepositoryLaunchHistoryTest do
     assert [_] = Ledger.read!(VirtualMachine, owner_id: owner.id)
   end
 
-  @spec command() :: StreamData.t(command())
+  @spec command() :: Hegel.Gen.t(command())
   defp command do
     one_of([
       tuple({constant(:visit), member_of(@valid_sources), nonce()}),
@@ -220,7 +221,7 @@ defmodule MarshallWeb.RepositoryLaunchHistoryTest do
     ])
   end
 
-  @spec nonce() :: StreamData.t(nonce())
+  @spec nonce() :: Hegel.Gen.t(nonce())
   defp nonce, do: map(binary(length: 16), &Base.encode16(&1, case: :lower))
 
   @spec run(command(), model(), Plug.Conn.t(), Marshall.Accounts.User.t()) :: model()

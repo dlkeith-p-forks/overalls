@@ -1,6 +1,7 @@
 defmodule Lilly.Host.LimitsTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Inventory, Limits}
   @moduletag :tmp_dir
 

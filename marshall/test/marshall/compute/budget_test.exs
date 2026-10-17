@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.BudgetTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.Budget
 
   property "temporary snapshots remain charged beyond pending disk credit" do

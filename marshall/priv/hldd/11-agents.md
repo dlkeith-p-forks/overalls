@@ -81,13 +81,30 @@ requests. A stock native boot and its SMF method confirmed `/usr/sbin/sshd`, now
 used by both native supervisors. OmniOS assembly and booted verification check
 that exact path is a bounded root-owned regular executable ELF with safe modes;
 `native_ssh_executable_checked` records only that file check. The corrected path
-and config need a fresh kit, assembly and full service replay; those partial
-diagnostics grant no SSH, terminal or image qualification. OmniOS's downstream
+and config are in the final assembled `wz4r` kit; complete service replay remains
+pending. Those partial diagnostics grant no SSH, terminal or image qualification.
+OmniOS's downstream
 PAM policy is always on and its parser rejects explicit `UsePAM yes`; generated
 OmniOS config omits that directive while FreeBSD retains it. Native `sshd -t`
 and `sshd -T` passed with synthetic volatile host-key/certificate prerequisites,
 retaining effective PAM, public-key-only authentication and the authorization
 helper/forced command. That check starts no daemon or SSH session.
+
+Final `wz4r` disk SHA256
+`e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41`
+passed native nine-module/764-payload assembly, all three SMF validations, the
+safe native SSH executable check, read-only receipt extraction/export and clean
+shutdown. Its read-only baseline is
+`/tmp/overalls-omnios-native-ssh-config-final-artifact/`; clone it before booting.
+The [native admission review](repo:docs/architecture/reviews/2026-10-17-native-image-admission.md)
+records exact kit/receipt hashes. Runtime, complete services and admission
+remain false; exact-image boot/service, lease withdrawal, growth, transport/reset,
+isolation and recovery replay remain pending.
+
+Application release source now includes `protocol/priv` alongside Protocol's
+library and Mix files so its compile-time exact native registry input enters
+the release closure. A fresh application release build remains pending; source
+inclusion alone grants no native capability or runtime readiness.
 
 Native `exec_command` passes the executor's existing lease/stop callback into
 the bounded process runner. It checks before spawning and during every polling

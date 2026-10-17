@@ -1,6 +1,7 @@
 defmodule Porsche.HostCertificateNegotiationPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @algorithm "ssh-ed25519-cert-v01@openssh.com"
   @type trust_case :: :trusted | :foreign_ca | :foreign_name | :absent

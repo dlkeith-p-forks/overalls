@@ -1,7 +1,8 @@
 defmodule Lilly.Host.CommandTest do
   # CaptureLog observes the shared Logger stream; isolate silence/redaction checks.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Command, Lock}
   @moduletag :tmp_dir
   @metadata [:event, :utility, :reason, :duration_ms, :lease_id]
@@ -14,7 +15,7 @@ defmodule Lilly.Host.CommandTest do
     %{directory: directory, fixture_path: file, owner: owner}
   end
 
-  property "bounded utility failures never log private arguments or output", c do
+  test "bounded utility failures never log private arguments or output", c do
     check all(bytes <- binary(min_length: 1, max_length: 64), max_runs: 8) do
       secret = "private-utility-" <> Base.encode16(bytes)
       format = String.duplicate(secret, div(20_000, byte_size(secret)) + 1)

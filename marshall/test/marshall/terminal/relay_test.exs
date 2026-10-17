@@ -1,6 +1,7 @@
 defmodule Marshall.Terminal.RelayTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Terminal.Relay
 
   property "completed controls isolate duplicate and stale replies without consuming other messages" do

@@ -1,6 +1,7 @@
 defmodule Audi.HTTP.AuthorityTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.HTTP.Authority
 
   property "a suspended renewer cannot preserve the owner or its guest socket" do

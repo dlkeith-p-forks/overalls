@@ -1,6 +1,7 @@
 defmodule Marshall.SSH.HostCertificatesTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.Ledger
   alias Marshall.SSH
@@ -43,7 +44,7 @@ defmodule Marshall.SSH.HostCertificatesTest do
     %{token: token, actor: actor, ca: ca, gateway: gateway}
   end
 
-  property "retries converge and replaced keys cannot resurrect an earlier generation", c do
+  test "retries converge and replaced keys cannot resurrect an earlier generation", c do
     check all(count <- integer(2..6), max_runs: 6) do
       keys =
         Enum.map(1..count, fn _ ->

@@ -1,6 +1,7 @@
 defmodule Marshall.TeamsHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Accounts.User
   alias Marshall.Compute.Ledger
@@ -58,7 +59,7 @@ defmodule Marshall.TeamsHistoryTest do
     end
   end
 
-  @spec command() :: StreamData.t(command())
+  @spec command() :: Hegel.Gen.t(command())
   defp command do
     actor = integer(0..3)
 

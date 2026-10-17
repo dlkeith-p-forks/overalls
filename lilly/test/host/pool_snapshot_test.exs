@@ -7,7 +7,8 @@ defmodule Lilly.Host.PoolSnapshotTest do
   behavior remains the `image-template` and `zfs-guest-clone` machine tests.
   """
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{ImageTemplate, Lock, Pool, PoolSnapshot, ZFS, ZFSDataset}
   @moduletag :tmp_dir
 
@@ -45,7 +46,7 @@ defmodule Lilly.Host.PoolSnapshotTest do
 
   # ---- Generators: native trees with templates, VMs and strays ----
 
-  @spec child(child_identity()) :: StreamData.t(native_child())
+  @spec child(child_identity()) :: Hegel.Gen.t(native_child())
   defp child({kind, identity}) do
     # Biased toward rows the observation accepts, so accepted trees routinely
     # hold several artifacts; every refusal shape still occurs.
@@ -99,7 +100,7 @@ defmodule Lilly.Host.PoolSnapshotTest do
   end
 
   @spec children([{pos_integer(), child_identity()}], non_neg_integer()) ::
-          StreamData.t([native_child()])
+          Hegel.Gen.t([native_child()])
   defp children(_available, 0), do: constant([])
 
   defp children(available, count) do
@@ -121,7 +122,7 @@ defmodule Lilly.Host.PoolSnapshotTest do
     end
   end
 
-  @spec tree() :: StreamData.t(ZFS.tree())
+  @spec tree() :: Hegel.Gen.t(ZFS.tree())
   defp tree do
     gen all(
           count <- sized(fn size -> integer(0..min(size, 6)) end),

@@ -1,6 +1,7 @@
 defmodule Marshall.Operations.OperatorBootPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @project Path.expand("../../..", __DIR__)
   @type projection :: %{

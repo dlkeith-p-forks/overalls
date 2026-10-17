@@ -1,6 +1,7 @@
 defmodule Overalls.RequestAccounting.ProducerHistoryTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Overalls.RequestAccounting.{Config, Producer, QualityMarker}
   @name ClientHistoryFixture
   @type fixture :: %{client: pid(), owner: pid(), recorder: pid()}

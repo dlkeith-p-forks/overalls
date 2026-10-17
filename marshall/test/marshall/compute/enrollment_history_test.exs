@@ -1,7 +1,8 @@
 defmodule Marshall.Compute.EnrollmentHistoryTest do
   @moduledoc "Generated enrollment/credential/maintenance histories against a pure model oracle."
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Accounts.AdminEvent
   alias Marshall.Compute

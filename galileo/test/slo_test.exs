@@ -1,6 +1,7 @@
 defmodule Galileo.SLOTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   setup do
     start_supervised!({Galileo.SLO, []})

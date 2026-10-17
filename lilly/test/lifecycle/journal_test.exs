@@ -1,6 +1,7 @@
 defmodule Lilly.Lifecycle.JournalTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Lock, PrivateFiles}
   alias Lilly.Lifecycle.{Dataset, Journal}
   @moduletag :tmp_dir
@@ -43,7 +44,7 @@ defmodule Lilly.Lifecycle.JournalTest do
   # @cc [owner:ghuntley,label:verification;recovery;observability] diagnostics-outage-state-only
   # More than the old 64-event bound MUST commit without a collector
   # acknowledgement. Reopening MUST retain the same authority and no event queue.
-  property "collector outage cannot bound state history", c do
+  test "collector outage cannot bound state history", c do
     check all(count <- integer(65..96), max_runs: 8) do
       directory = Path.join(c.root, Lilly.UUID.generate())
 
@@ -99,7 +100,7 @@ defmodule Lilly.Lifecycle.JournalTest do
     end)
   end
 
-  property "arbitrary histories cannot skip materialization or resurrect deleted datasets", c do
+  test "arbitrary histories cannot skip materialization or resurrect deleted datasets", c do
     check all(
             targets <-
               list_of(member_of(~w(creating bound ready deleting deleted)), max_length: 15),

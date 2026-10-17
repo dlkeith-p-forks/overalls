@@ -1,6 +1,7 @@
 defmodule Lilly.Lifecycle.WorkspaceSourceTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Lock
   alias Lilly.Lifecycle.{Journal, WorkspaceSource}
   @moduletag :tmp_dir
@@ -26,7 +27,7 @@ defmodule Lilly.Lifecycle.WorkspaceSourceTest do
     %{root: root, host: Lilly.UUID.generate(), boot: boot}
   end
 
-  property "journal transitions match the delivery edge table", c do
+  test "journal transitions match the delivery edge table", c do
     check all(history <- list_of(member_of(@states), max_length: 30), max_runs: 25) do
       directory = Path.join(c.root, Lilly.UUID.generate())
       {:ok, lock} = Lock.acquire(directory)

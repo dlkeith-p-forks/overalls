@@ -175,6 +175,46 @@ link gates passed together in 193 seconds at
 This validates local process cancellation and typed packaging, not native
 lease withdrawal. That kit predates the separate SSH-path correction.
 
+The final replacement kit
+`/nix/store/wz4rkmvzima04zdgql3z6x90ha09l260-overalls-omnios-native-image-candidate-kit`
+includes the collector, corrected native SSH path and OmniOS PAM config. Its
+build passed in 26 seconds at
+`/tmp/overalls-native-omnios-ssh-path-kit-final.log`. Fresh native assembly
+passed with nine linked modules, 764 exact payload records, all three actual
+SMF validations, the safe SSH executable check, five stock service disables
+and four stock network removals. GUID-only read-only receipt extraction and
+export passed. Only administration pool `9985174500187493668` remained imported,
+both private workspaces were absent, filesystem synchronization completed and
+QEMU exited 0 after `init 5`.
+
+| Final OmniOS assembly identity | Value |
+| --- | --- |
+| Read-only test artifact | `/tmp/overalls-omnios-native-ssh-config-final-artifact` |
+| Raw bytes / SHA256 | 8,589,934,592 / `e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41` |
+| Assembly receipt bytes / SHA256 | 158,319 / `512a112f910a3ce65c5f3f791a91aecbdcc20c8e428af6f9f9702ee904320180` |
+| Kit manifest SHA256 | `6db105276ba24eebc5fe87b3e961ee9dc01e18243db2c1c493bbe897420a2d73` |
+| Test-only manifest SHA256 | `4cf5828573cdc1d77d4ff2ab8136217ba616e935287ddf81c759aae8c2231fd2` |
+| Installed SSH config SHA256 | `276c98c072f6907ce3d669306969422c44ccc3cc3a16e0dbcccfe77bbd7d2904` |
+| Transport build ID | `76b8c1ad4ba2e25f87768bbf8a1c55ed0f8d1b9fb973f776799c0b68eda98809` |
+
+The disk and receipts are read-only; runtime checks must clone the baseline.
+Assembly, extraction, export-state and shutdown logs are respectively
+`admin-ssh-config-final-assembly.log`, `admin-ssh-config-final-receipt.log`,
+`admin-ssh-config-final-export-state.log` and
+`admin-ssh-config-final-shutdown.log` under
+`/tmp/overalls-omnios-native-probe/`. The assembly receipt retains
+`runtime_validated=false` and `native_admission=false`; the test-only manifest
+also retains `native_services_validated=false`. Complete native boot/service,
+lease withdrawal, growth, transport/reset, isolation and recovery replay remain
+pending for this disk. Its successful assembly and the separate synthetic SSH
+config proof grant no runtime capability or production v6 manifest authority.
+
+The trunk integration also adds `protocol/priv` to the application release
+[source allowlist](../../../nix/domains/artifacts/applications/source.nix),
+so the compile-time exact native registry input ships alongside Protocol's
+library and Mix files. This fixes release input closure under the existing
+ADR-0190 decision; a fresh application release build remains pending.
+
 ## Validation and remaining gaps
 
 The [native kernel review](2026-10-17-native-kernel-attestation.md) records all

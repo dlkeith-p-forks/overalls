@@ -1,6 +1,7 @@
 defmodule Lilly.VM.ProvisioningTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Lock
   alias Lilly.Lifecycle.Journal
   alias Lilly.VM.{Config, Provisioning, Spec}
@@ -122,7 +123,7 @@ defmodule Lilly.VM.ProvisioningTest do
     end
   end
 
-  property "foreign journals and stale cancellation cannot alter durable progress", c do
+  test "foreign journals and stale cancellation cannot alter durable progress", c do
     check all(epoch <- integer(1..100), generation <- integer(2..100), max_runs: 20) do
       spec = %{c.spec | id: Lilly.UUID.generate()}
       directory = Path.join(c.config.state_dir, spec.id)

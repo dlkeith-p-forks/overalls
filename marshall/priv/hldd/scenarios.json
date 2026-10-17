@@ -10785,6 +10785,15 @@
         {
           "kind": "manual",
           "execution": "recorded",
+          "path": "nix/domains/artifacts/guest/native-kernels/illumos/native_image.py",
+          "assertion": "def assemble(",
+          "scope": "Final wz4r kit includes executor lease cancellation, corrected /usr/sbin/sshd and OmniOS always-on PAM configuration. Native assembly passed nine modules, 764 payload records, all three SMF validations, the safe native SSH executable guard, five stock service disables, four network removals, read-only receipt extraction/export and clean shutdown. Sealed disk e7fc0c04 retains false runtime, complete-service and admission flags. Separate native sshd -t/-T configuration proof used synthetic volatile host-key prerequisites; no daemon or session was started. Exact-image boot/service, lease withdrawal, growth, transport/reset, isolation and recovery replay remain pending.",
+          "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
+          "record_assertion": "The final `wz4r` assembly passed nine-module/764-payload installation"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
           "path": "nix/domains/artifacts/guest/omnios/native-services.xml",
           "assertion": "service_bundle type=\"profile\"",
           "scope": "The stock SMF seed lacked imported cloud-init services. Binding SVCCFG_REPOSITORY to the validated clone repository before native import/apply passed without changing the live repository. Seed-fixed native assembly and fresh QEMU verification confirmed all four cloud-init instances and stock SSH disabled plus exact resolver persistence. This establishes startup authority configuration, not complete Overalls service acceptance.",

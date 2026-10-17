@@ -1,6 +1,7 @@
 defmodule Ziggy.ReporterHistoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @moduletag timeout: 300_000
 
   @identity "01234567-89ab-4def-8123-456789abcdef"

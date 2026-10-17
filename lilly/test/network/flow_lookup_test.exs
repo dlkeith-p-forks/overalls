@@ -1,6 +1,7 @@
 defmodule Lilly.Network.FlowLookupTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Network.FlowLookup
 
   property "kernel endpoints retain every tuple component in fixed argv" do

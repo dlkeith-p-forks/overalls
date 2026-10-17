@@ -2,7 +2,8 @@ defmodule Lilly.VM.ActorDeferralTest do
   # Log capture is global, so this module runs alone rather than beside the
   # asynchronous actor tests that also produce retryable results.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Control.Store
   alias Lilly.VM.Actor
   @moduletag :tmp_dir

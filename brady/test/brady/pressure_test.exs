@@ -1,6 +1,7 @@
 defmodule Brady.Cache.PressureTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.Cache.{Pressure, Store}
   @host "11111111-2222-3333-4444-555555555555"
   @boot "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"

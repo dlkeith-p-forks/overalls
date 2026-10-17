@@ -1,6 +1,7 @@
 defmodule Brady.DestinationTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.Destination
 
   property "all guest/private sources remain denied as proxy destinations" do

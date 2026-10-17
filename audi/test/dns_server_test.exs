@@ -1,6 +1,7 @@
 defmodule Audi.DNS.ServerTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Bitwise
   alias Audi.DNS.{Authority, Directory, Server, Wire}
 
@@ -104,7 +105,7 @@ defmodule Audi.DNS.ServerTest do
   # Generated ordinary in-zone questions MUST be candidate successes when an
   # authoritative NXDOMAIN is produced; out-of-zone and transfer questions
   # MUST stay excluded, independent of UDP or TCP framing.
-  property "candidate DNS outcomes distinguish authoritative completion from refusal", ctx do
+  test "candidate DNS outcomes distinguish authoritative completion from refusal", ctx do
     check all(
             label <- string(:alphanumeric, min_length: 1, max_length: 20),
             transport <- member_of([:udp, :tcp])
@@ -194,7 +195,7 @@ defmodule Audi.DNS.ServerTest do
     assert {2, 0, 0} = result(query("p3000-#{@vm}.apps.example", 1), ctx)
   end
 
-  property "only the accepted alternate port interval inherits a base publication", ctx do
+  test "only the accepted alternate port interval inherits a base publication", ctx do
     entries = %{
       "#{@vm}.apps.example" => %{
         addresses: [{192, 0, 2, 9}],

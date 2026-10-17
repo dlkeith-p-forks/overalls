@@ -1,6 +1,7 @@
 defmodule Marshall.Agents.CapabilitiesTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Marshall.Agents.{Capabilities, Event, Executor, ExecutorSession, ModelProtocol}
 

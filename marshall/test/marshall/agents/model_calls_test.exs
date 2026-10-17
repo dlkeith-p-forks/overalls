@@ -1,6 +1,7 @@
 defmodule Marshall.Agents.ModelCallsTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias Marshall.Agents
 
@@ -123,7 +124,7 @@ defmodule Marshall.Agents.ModelCallsTest do
     assert {:error, _} = ModelCalls.complete(c.token, call.id, Ash.UUID.generate(), response)
   end
 
-  property "repeated host polls never claim the same model attempt twice", c do
+  test "repeated host polls never claim the same model attempt twice", c do
     check all(extra_polls <- integer(1..8), max_runs: 8) do
       turn = start_turn(c)
       assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
@@ -588,7 +589,7 @@ defmodule Marshall.Agents.ModelCallsTest do
     assert {:ok, %{call: nil}} = ModelCalls.claim(c.token)
   end
 
-  property "claimed model work never requeues across the expiry boundary", c do
+  test "claimed model work never requeues across the expiry boundary", c do
     check all(extra_polls <- integer(1..4), max_runs: 8) do
       for age <- [590, 601] do
         assert {:ok, thread} = Conversation.spawn_child(c.thread.id, "claim history", c.actor)

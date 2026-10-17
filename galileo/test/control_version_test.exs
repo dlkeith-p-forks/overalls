@@ -1,6 +1,7 @@
 defmodule Galileo.ControlVersionTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   # @cc [owner:ghuntley,label:verification;recovery] galileo-version-refusal-class
   # A refused control upgrade with HTTP 426 MUST keep the permanent

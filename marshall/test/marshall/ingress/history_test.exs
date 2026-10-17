@@ -1,6 +1,7 @@
 defmodule Marshall.Ingress.HistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @moduletag capture_log: true
   @moduletag timeout: 180_000
   alias Marshall.Compute.Ledger
@@ -24,7 +25,7 @@ defmodule Marshall.Ingress.HistoryTest do
   # refusal class; durable PaperTrail rows MUST match the model's mutation counts
   # and never carry token material. Backdating and intent injection are synthetic
   # faults; everything else drives public or gateway actions.
-  property "publication, lease and withdrawal histories follow one authority model", c do
+  test "publication, lease and withdrawal histories follow one authority model", c do
     check all(
             tail <-
               list_of(operations(),

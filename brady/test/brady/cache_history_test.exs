@@ -1,6 +1,7 @@
 defmodule Brady.CacheHistoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Brady.Cache
   alias Brady.Cache.{Budget, Policy, Store}
@@ -218,7 +219,7 @@ defmodule Brady.CacheHistoryTest do
     end
   end
 
-  @spec command() :: StreamData.t(command())
+  @spec command() :: Hegel.Gen.t()
   defp command do
     frequency([
       {5,

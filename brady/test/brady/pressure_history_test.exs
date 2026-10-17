@@ -1,6 +1,7 @@
 defmodule Brady.Cache.PressureHistoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Brady.Cache.{Recovery, Store}
 
   @meta %{"stored_at" => 100, "expires_at" => 200}

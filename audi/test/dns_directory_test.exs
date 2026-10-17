@@ -1,6 +1,7 @@
 defmodule Audi.DNS.DirectoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.DNS.Directory
 
   property "publication order cannot roll back the highest accepted revision" do

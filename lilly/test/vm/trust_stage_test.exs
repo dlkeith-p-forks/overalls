@@ -1,6 +1,7 @@
 defmodule Lilly.VM.TrustStageTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias Lilly.VM.Driver
 

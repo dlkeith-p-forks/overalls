@@ -1,6 +1,7 @@
 defmodule Marshall.TeamsResourceHistoryTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   @moduletag capture_log: true
   alias Marshall.Accounts.User
   alias Marshall.Authorization.SystemActor
@@ -241,7 +242,7 @@ defmodule Marshall.TeamsResourceHistoryTest do
 
   @spec fresh_fixture(:standard | :oss | :customer) :: map()
   defp fresh_fixture(profile) do
-    # StreamData samples share this sandbox; prevent a later sample's scheduler
+    # Hegel samples share this sandbox; prevent a later sample's scheduler
     # selecting an earlier sample's enrolled host and mismatching its boot proof.
     for host <- Ledger.read!(Marshall.Compute.Host),
         do: Ledger.update!(host, :configure, %{enabled: false})

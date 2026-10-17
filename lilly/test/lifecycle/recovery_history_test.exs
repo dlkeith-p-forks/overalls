@@ -1,6 +1,7 @@
 defmodule Lilly.Lifecycle.RecoveryHistoryTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Control.{Client, Config, Runtime, Store}
   alias Lilly.Host.{Lock, PrivateFiles}
   alias Lilly.VM.{Actor, Journal}

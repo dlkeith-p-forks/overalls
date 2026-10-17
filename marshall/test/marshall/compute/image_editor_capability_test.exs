@@ -1,6 +1,7 @@
 defmodule Marshall.Compute.ImageEditorCapabilityTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.Image
 
   @type descriptor :: %{
@@ -54,7 +55,7 @@ defmodule Marshall.Compute.ImageEditorCapabilityTest do
     end
   end
 
-  @spec descriptor_gen() :: StreamData.t(descriptor())
+  @spec descriptor_gen() :: Hegel.Gen.t(descriptor())
   defp descriptor_gen do
     gen all(commit <- binary(length: 20), release <- binary(length: 32)) do
       %{

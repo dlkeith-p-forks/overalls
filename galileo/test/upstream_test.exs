@@ -1,6 +1,7 @@
 defmodule Galileo.UpstreamTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Galileo.Upstream
   @fixtures Path.expand("../../marshall/test/fixtures/tls", __DIR__)
 

@@ -1,6 +1,7 @@
 defmodule Porsche.HostCertificateBootPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Bitwise
   alias OverallsProtocol.{SSHHostCertificate, SSHKey}
   @moduletag timeout: 240_000
@@ -95,7 +96,7 @@ defmodule Porsche.HostCertificateBootPropertyTest do
   # baseline. Refusal MUST occur in the first listener child, before ssh.daemon,
   # status or observability, with no surviving service state and unchanged owned
   # fixtures. Original/mutated private material and paths MUST stay out of output.
-  property "invalid host certificates refuse Porsche startup before the SSH daemon", context do
+  test "invalid host certificates refuse Porsche startup before the SSH daemon", context do
     check all(order <- shuffle(@cases), max_runs: 3) do
       for kind <- order do
         f = fixture(context.root, context.template)

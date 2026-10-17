@@ -1,6 +1,7 @@
 defmodule Audi.HTTP.HeadersTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.HTTP.Headers
 
   @context %{

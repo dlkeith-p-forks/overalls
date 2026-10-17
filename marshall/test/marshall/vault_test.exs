@@ -1,6 +1,7 @@
 defmodule Marshall.VaultTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   test "an ordered keyring encrypts with the first key and decrypts retained keys" do
     old = entry("old")

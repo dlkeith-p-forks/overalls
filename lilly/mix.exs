@@ -46,10 +46,9 @@ defmodule Lilly.MixProject do
       {:req, "~> 0.7.4"},
       {:telemetry, "~> 1.4"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:stream_data, "~> 1.4"},
       {:hegel_ex,
        git: "https://github.com/ghuntley/hegel-erlang.git",
-       ref: "6a62795",
+       ref: "2c9f7a4",
        subdir: "packages/hegel_ex",
        only: [:dev, :test],
        runtime: false}

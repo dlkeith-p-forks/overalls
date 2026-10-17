@@ -1,6 +1,7 @@
 defmodule MarshallWeb.ProvisionerAPITest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
   import Marshall.LillySocket, only: [reply: 2]
   alias Marshall.LillySocket

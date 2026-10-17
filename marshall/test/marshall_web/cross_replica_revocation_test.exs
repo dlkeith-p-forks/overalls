@@ -1,6 +1,7 @@
 defmodule MarshallWeb.CrossReplicaRevocationTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   require Marshall.CommittedFixtureCleanup, as: Cleanup
 
   alias Marshall.Accounts.{Security, User}

@@ -1,6 +1,7 @@
 defmodule Audi.DNS.AdmissionPropertyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.DNS.{Authority, Wire}
 
   property "every countable public outcome had pre-resolution admission eligibility" do

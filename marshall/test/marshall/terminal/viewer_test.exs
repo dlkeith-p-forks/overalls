@@ -1,6 +1,7 @@
 defmodule Marshall.Terminal.ViewerTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.TerminalWindow, as: Window
 
   test "read-only viewers cannot change PTY geometry or send input" do

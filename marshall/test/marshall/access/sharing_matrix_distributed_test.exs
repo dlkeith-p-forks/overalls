@@ -1,6 +1,7 @@
 defmodule Marshall.Access.SharingMatrixDistributedTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   require Marshall.CommittedFixtureCleanup, as: Cleanup
   alias Marshall.Access
   alias Marshall.Authorization.SystemActor

@@ -1,6 +1,7 @@
 defmodule Audi.DNS.SnapshotTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.DNS.{Directory, Snapshot}
   @label "demo-0123456789abcdef0123456789abcdef"
   @zone "apps.example"

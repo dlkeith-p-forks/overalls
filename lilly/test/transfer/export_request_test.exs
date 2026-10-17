@@ -1,6 +1,7 @@
 defmodule Lilly.Transfer.ExportRequestTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Transfer.ExportRequest
   @relocation "00000000-0000-0000-0000-000000000001"
   @command "lilly-export-v4 #{@relocation}"

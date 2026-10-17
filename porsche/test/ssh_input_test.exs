@@ -1,6 +1,7 @@
 defmodule Porsche.SSH.InputTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Porsche.SSH.Input
 
   property "line normalization is independent of packet boundaries" do

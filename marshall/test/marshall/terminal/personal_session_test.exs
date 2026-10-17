@@ -1,6 +1,7 @@
 defmodule Marshall.Terminal.PersonalSessionTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Accounts.GuestAccounts
   alias Marshall.Compute.Ledger
   alias Marshall.Terminal.Authority

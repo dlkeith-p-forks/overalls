@@ -1,6 +1,7 @@
 defmodule MarshallWeb.ControlAPITest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias OverallsProtocol.Control.{Close, Envelope}
   alias Marshall.Control.Socket
@@ -116,7 +117,7 @@ defmodule MarshallWeb.ControlAPITest do
   # Every valid non-hello envelope, including heartbeat messages, MUST close an
   # unbound upgraded socket with protocol_violation without identity or tasks.
   # The same heartbeat counters MUST work after a valid identity-binding hello.
-  property "every non-hello first envelope is refused before identity binding", context do
+  test "every non-hello first envelope is refused before identity binding", context do
     check all(drawn <- integer(0..9_007_199_254_740_991), max_runs: 10) do
       for counter <- [0, 1, 9_007_199_254_740_991, drawn] do
         messages = [

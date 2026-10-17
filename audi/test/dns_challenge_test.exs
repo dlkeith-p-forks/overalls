@@ -1,6 +1,7 @@
 defmodule Audi.DNS.ChallengeTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.DNS.{Challenge, Directory}
   @name "_acme-challenge.demo-0123456789abcdef0123456789abcdef.apps.example"
 

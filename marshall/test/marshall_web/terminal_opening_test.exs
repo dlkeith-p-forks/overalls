@@ -1,6 +1,7 @@
 defmodule MarshallWeb.TerminalOpeningTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias MarshallWeb.TerminalOpening, as: Opening
 
   property "transient failure histories preserve execution and never resurrect closed shells" do

@@ -1,6 +1,7 @@
 defmodule MarshallWeb.MFALoginHistoryTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Phoenix.LiveViewTest
 
   alias Marshall.Accounts.{Login, Security, User, Verification}

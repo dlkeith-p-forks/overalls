@@ -1,6 +1,7 @@
 defmodule Marshall.Control.LillyServiceTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Marshall.ComputeFixtures
 
   alias OverallsProtocol.Control.Envelope

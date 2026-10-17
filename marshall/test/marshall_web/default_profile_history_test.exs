@@ -1,6 +1,7 @@
 defmodule MarshallWeb.DefaultProfileHistoryTest do
   use MarshallWeb.ConnCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Phoenix.LiveViewTest
   import Marshall.ComputeFixtures
   alias Marshall.Compute.{Ledger, Operation, Reservation, VirtualMachine}

@@ -1,6 +1,7 @@
 defmodule Lilly.VM.ImageSourceCapabilityTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.ImageManifest
   alias Lilly.Host.{Image, Pool}
   alias Lilly.VM.{Config, Driver, Spec}

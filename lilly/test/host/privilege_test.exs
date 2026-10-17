@@ -1,7 +1,8 @@
 defmodule Lilly.Host.PrivilegeTest do
   # The service uid is a process-wide persistent term, so these tests own it.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.Privilege
   @moduletag :tmp_dir
   @key {Privilege, :service_uid}

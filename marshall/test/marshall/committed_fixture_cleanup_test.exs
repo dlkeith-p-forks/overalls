@@ -1,6 +1,7 @@
 defmodule Marshall.CommittedFixtureCleanupTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.CommittedFixtureCleanup, as: Cleanup
   alias Marshall.Compute.Ledger
   alias Marshall.GalileoPeerFixture

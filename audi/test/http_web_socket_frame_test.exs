@@ -1,6 +1,7 @@
 defmodule Audi.HTTP.WebSocketFrameTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.HTTP.WebSocketFrame, as: Frame
 
   property "client encoding masks every payload and canonical length boundary" do

@@ -1,6 +1,7 @@
 defmodule Lilly.Host.ImageCatalogTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Host.{Image, ImageCatalog}
   @moduletag :tmp_dir
   @moduletag :capture_log
@@ -68,7 +69,7 @@ defmodule Lilly.Host.ImageCatalogTest do
     GenServer.stop(pid)
   end
 
-  @spec command(pos_integer()) :: StreamData.t(command())
+  @spec command(pos_integer()) :: Hegel.Gen.t(command())
   defp command(count) do
     index = integer(0..(count - 1))
 

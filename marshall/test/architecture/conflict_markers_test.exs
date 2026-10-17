@@ -2,7 +2,8 @@ Code.require_file("../../../scripts/conflict_markers.ex", __DIR__)
 
 defmodule Overalls.ConflictMarkersTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Overalls.ConflictMarkers
 
   @markers ["<<<<<<< HEAD", "<<<<<<<", "||||||| base", ">>>>>>> origin/main", ">>>>>>>"]

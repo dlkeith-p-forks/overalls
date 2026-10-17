@@ -1,6 +1,7 @@
 defmodule Marshall.Operations.AudiTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Compute.Ledger
   alias Marshall.ComputeFixtures
   alias Marshall.Ingress.{Service, Token}
@@ -133,7 +134,7 @@ defmodule Marshall.Operations.AudiTest do
     assert {:error, :audi_credential_failed} = CLI.run(["audi-gateway-verify", c.gateway])
   end
 
-  property "malformed address lists never create authority", c do
+  test "malformed address lists never create authority", c do
     check all(
             parts <-
               list_of(string(:alphanumeric, min_length: 1, max_length: 12),

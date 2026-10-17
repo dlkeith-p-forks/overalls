@@ -1,6 +1,7 @@
 defmodule Audi.SSH.KeyPublisherTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @host "11111111-1111-4111-8111-111111111111"
   @fixtures Path.expand("../../marshall/test/fixtures/tls", __DIR__)
@@ -8,7 +9,7 @@ defmodule Audi.SSH.KeyPublisherTest do
   # @cc [owner:ghuntley,label:verification;protocol] audi-host-key-version-halt-history
   # Transient publication failures may retry; verified 426 MUST halt queued
   # publication while preserving the exact local key-file digests.
-  property "host key publisher halts after version refusal and preserves key files", context do
+  test "host key publisher halts after version refusal and preserves key files", context do
     server =
       start_supervised!(
         {Bandit,

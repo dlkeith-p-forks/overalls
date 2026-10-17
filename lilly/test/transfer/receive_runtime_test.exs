@@ -3,7 +3,8 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
   # message is fixed for every emitting module, so counting assertions here are
   # only reliable with exclusive execution.
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Lilly.Transfer.ReceiveRuntime
 
   test "effect failures expose a closed reason once without publishing receipts" do

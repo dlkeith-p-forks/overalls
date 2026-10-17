@@ -461,8 +461,16 @@ or runtime readiness claim. OmniOS also rejects explicit `UsePAM yes` because
 its downstream PAM policy is always on. Omitting that directive only for
 OmniOS passed native `sshd -t` and `sshd -T` with synthetic volatile host-key
 prerequisites, retaining effective PAM and public-key-only authentication.
-The corrected kit still requires fresh assembly and complete native service
-replay, as recorded in the admission review.
+The final `wz4r` kit subsequently passed fresh native assembly and clean
+shutdown, sealing the 8,589,934,592-byte disk SHA256
+`e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41`.
+Its 158,319-byte assembly receipt SHA256 is
+`512a112f910a3ce65c5f3f791a91aecbdcc20c8e428af6f9f9702ee904320180`.
+The receipt binds nine modules, 764 payload records, all three native SMF
+validations and the safe native SSH executable check. The final kit includes
+the executor lease/stop correction and both SSH fixes. Runtime, complete
+services, growth, recovery and admission remain false or pending for these
+exact bytes; the admission review records their separate replay requirements.
 
 ## Open questions
 

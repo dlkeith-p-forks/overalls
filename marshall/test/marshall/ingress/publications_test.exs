@@ -1,6 +1,7 @@
 defmodule Marshall.Ingress.PublicationsTest do
   use Marshall.DataCase, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.{Host, Ledger, Operation, VirtualMachine}
   alias Marshall.Ingress
@@ -125,7 +126,7 @@ defmodule Marshall.Ingress.PublicationsTest do
     assert {:ok, %{routes: [_], proofs: []}} = snapshot(c)
   end
 
-  property "stale execution generations never publish retained route rows", c do
+  test "stale execution generations never publish retained route rows", c do
     [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
 
     check all(increment <- integer(1..10_000), max_runs: 20) do
