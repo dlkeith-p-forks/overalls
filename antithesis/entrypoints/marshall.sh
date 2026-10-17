@@ -18,6 +18,12 @@ export MARSHALL_DB_TLS=verify MARSHALL_DB_CA_CERTFILE="$secrets/ca.crt"
 export SECRET_KEY_BASE="$(<"$secrets/secret-key-base")"
 export TOKEN_SIGNING_SECRET="$(<"$secrets/token-signing-secret")"
 export MARSHALL_CLOAK_KEYS="$(<"$secrets/cloak-keys.json")"
+# Synthetic SSH host CA trust, shaped like nix/domains/system/marshall.nix;
+# runtime.exs replaces management_host with PHX_HOST.
+export MARSHALL_SSH_HOST_CA_KEY_FILE="$secrets/ssh-host-ca"
+MARSHALL_SSH_HOST_TRUST=$(jq -cn --arg ca "$(cut -d' ' -f1,2 "$secrets/ssh-host-ca.pub")" \
+  '{version:1,ca:$ca,management_host:"marshall-a",zone:"apps.antithesis.test",retirement:2421446400}')
+export MARSHALL_SSH_HOST_TRUST
 export MARSHALL_REPLICA_COUNT=2 POOL_SIZE=5 MARSHALL_DB_CONNECTION_BUDGET=40
 export MARSHALL_MAIL_TRANSPORT=local_relay MARSHALL_SMTP_HOST=127.0.0.1
 export MARSHALL_SMTP_PORT=2525 MARSHALL_MAIL_FROM=antithesis@example.invalid

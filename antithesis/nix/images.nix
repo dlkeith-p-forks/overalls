@@ -307,10 +307,14 @@ let
       extraRoots = [ traceSpool ];
       extraLinks."opt/overalls/trace-spool" = toString traceSpool;
     };
+    # OpenSSH generates the synthetic Marshall SSH host CA with the other secrets.
     pg = closure.mkContext {
       name = "pg";
-      extraRoots = [ pkgs.postgresql_18 ];
-      extraLinks."opt/overalls/postgresql" = toString pkgs.postgresql_18;
+      extraRoots = [ pkgs.postgresql_18 pkgs.openssh ];
+      extraLinks = {
+        "opt/overalls/postgresql" = toString pkgs.postgresql_18;
+        "opt/overalls/openssh" = toString pkgs.openssh;
+      };
     };
     guest-vmm = closure.mkContext {
       name = "guest-vmm";

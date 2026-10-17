@@ -51,13 +51,17 @@ if [[ ! -f "$secrets/db-password" ]]; then
     rm -f "$secrets/.$name.csr" "$secrets/.$name.ext"
   done
   rm -f "$secrets/.ca.key" "$secrets/ca.srl"
+  # Synthetic SSH host CA for Marshall's host-certificate API (production: a
+  # systemd credential). Shared by both replicas; never a production key.
+  /opt/overalls/openssh/bin/ssh-keygen -q -t ed25519 -N '' -C '' -f "$secrets/ssh-host-ca" >/dev/null
+  chmod 0600 "$secrets/ssh-host-ca"
   # Publish the database password last. Its presence marks a complete
   # credential set; interruption before this point may regenerate it safely.
   openssl rand -hex 32 > "$secrets/.db-password.new"
   mv "$secrets/.db-password.new" "$secrets/db-password"
 fi
 
-for file in db-password oracle-password secret-key-base token-signing-secret cloak-keys.json ca.crt pg.key pg.crt marshall-a.key marshall-a.crt marshall-b.key marshall-b.crt; do
+for file in db-password oracle-password secret-key-base token-signing-secret cloak-keys.json ca.crt ssh-host-ca ssh-host-ca.pub pg.key pg.crt marshall-a.key marshall-a.crt marshall-b.key marshall-b.crt; do
   [[ -s "$secrets/$file" ]] || { echo 'incomplete synthetic credential volume' >&2; exit 1; }
 done
 cp "$secrets/ca.crt" "$oracle/ca.crt"

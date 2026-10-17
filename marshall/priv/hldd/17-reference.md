@@ -367,7 +367,11 @@ on the disabled ordinary `audi.sock` instead of Lilly's private-services
 `private.sock`. Porsche refuses to listen without a Marshall-signed host
 certificate, which Lyra fetches in production; the stand-in start script makes
 the same reviewed `/api/ssh/v1/host-certificate` request with the gateway token
-held in a private header file. Ziggy
+held in a private header file. The harness Marshall had no SSH host CA, so that
+request returned the opaque unavailable reply; the synthetic secret volume now
+carries a generated ed25519 SSH host CA, and both replicas receive
+`MARSHALL_SSH_HOST_TRUST` shaped like the NixOS module's. It is test-only key
+material, never a production CA. Ziggy
 completion, Galileo named origin and the editor login-code race need a current
 running VM; the controlled Lilly pool reports unavailable capacity and no Audi
 editor gateway, editor release or wildcard is configured, so their primary and
