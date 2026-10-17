@@ -57,7 +57,7 @@ defmodule Ziggy.AgentStreamTest do
 
   property "SSE failures are terminal closed classes across arbitrary chunks" do
     check all(
-            {event, expected} <-
+            pair <-
               member_of([
                 {%{
                    "type" => "error",
@@ -80,6 +80,7 @@ defmodule Ziggy.AgentStreamTest do
             size <- integer(1..31),
             max_runs: 60
           ) do
+      {event, expected} = pair
       # A later success cannot turn a known failed stream into executable output.
       bytes =
         frame(event) <>
