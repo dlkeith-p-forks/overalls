@@ -477,7 +477,7 @@ records the structural gate, the Playwright probe in both themes and the gaps.
 Overview entry and complete workspace/control-room navigation under the Overalls
 name together with the historical Nekomo visual system, now replaced by
 ADR-0161. Existing domain authority, machine routes and terminal capabilities
-remained in place. The [redesign review](reviews/2026-09-24-overalls-nekomo-redesign.md)
+remained in place. The [redesign review](reviews/2026-09-24-kittens-nekomo-redesign.md)
 records the application, browser, type and contract gates at that revision.
 
 [ADR-0112](decisions/0112-zfs-namespace-delete.md) extends Lilly's fenced ZFS
@@ -552,10 +552,12 @@ PaperTrail. Both hosts converged on the machine-key expansion, and one reported
 failed production thread recovered to ready with one running VM and one completed
 initial objective turn. Both hosts subsequently converged on the required-key
 contraction; SQL confirmed `NOT NULL`, zero null keys and the recovered thread's
-unchanged running VM and completed initial turn. Native archive/reopen and
-cross-node recovery acceptance, broader
-provider acceptance, and browsing transcripts from previous reopened generations
-remain gaps in the [thread review](reviews/2026-10-15-user-threads.md).
+unchanged running VM and completed initial turn. Browsing transcripts from
+previous reopened generations is available through the authorized
+retained-generation selector described in the [thread
+review](reviews/2026-10-15-user-threads.md). Native archive/reopen and
+cross-node recovery acceptance, and broader provider acceptance remain separate
+gaps.
 
 [ADR-0175](decisions/0175-thread-sharing-and-bound-machine-authority.md)
 supersedes only ADR-0174's creator/team-only authority. Canonical thread grants

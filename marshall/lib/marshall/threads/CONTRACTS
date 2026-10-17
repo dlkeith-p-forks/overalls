@@ -67,3 +67,7 @@ Thread sharing MUST serialize on the thread before its bound VM and persist the
 grant change, immutable idempotency receipt and user/machine invalidation hints in
 the same transaction. Permission reads from a VM MUST NOT lock the thread. A stale
 replay MUST NOT regrant access after later revocation.
+
+@cc [owner:ghuntley,label:durability;recovery] thread-archive-cancels-planning
+Archiving a user thread MUST cancel its pending agent planning question with
+`cancellation_reason == :archived` before lifecycle deletion or archival commits.

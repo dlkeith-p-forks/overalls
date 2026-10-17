@@ -51,9 +51,10 @@ persist a pending task and typed machine specification, then bind the existing
 Compute VM and Agents root through an idempotent worker. Readiness requires the
 running VM and initial objective; archive waits for Compute deletion, and reopen
 uses a fresh machine admission key while preserving the create request and
-retired binding history. The implementation is partial pending native lifecycle,
-cross-node recovery, prior-generation transcript browsing and broader provider
-acceptance.
+retired binding history. Authorized prior-generation transcript browsing is
+implemented through durable generation rows and a read-only selector. The
+implementation remains partial pending native lifecycle, cross-node recovery
+and broader provider acceptance.
 
 Both hosts converged healthy on the machine-key expansion at
 `d5e03c080204a33a11b8c136e983593630e4fccf` on 2026-10-15. The dependent contraction

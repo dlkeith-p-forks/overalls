@@ -258,17 +258,20 @@ The machine navigation drops its Agents tab. Direct machine-agent routes and
 their existing backend authority remain available; global Threads becomes the
 primary visible entry point for agent tasks.
 
-The terminal remains a link to the bound machine's terminal page, rather than
-the embedded terminal requested in the original plan. The recent-thread rail
-appears on wide thread detail pages; a persistent global thread rail and
-time/user/team/project activity filters remain unimplemented.
-Previous-generation transcript browsing and native lifecycle/recovery acceptance
-retain their existing gaps. This presentation pass does not close those
-requirements.
+The terminal remains available as a link to the bound machine's terminal page
+and now also has an opt-in, lazy embedded terminal disclosure. The activity
+route keeps the recent-thread rail visible and supports bounded status, time,
+owner, team and text filters over the current authorized page. A persistent
+global rail, project-specific filtering and pagination beyond the bounded page
+remain separate work. Previous-generation transcript browsing is addressed by
+the retained-generation selector below; native lifecycle/recovery acceptance
+retains its separate gap.
 
 The focused thread suite passed 111 cases on 2026-10-16, including the new
-presentation and sharing LiveView assertions. Its exact command and bounded
-scope are recorded in the [sharing review](2026-10-16-thread-sharing.md).
+presentation and sharing LiveView assertions. The follow-up generation,
+planning-cancellation and activity-filter cases pass in the isolated focused
+run described by the current source. Its exact command and bounded scope are
+recorded in the [sharing review](2026-10-16-thread-sharing.md).
 The maintained browser probe passed all 32 thread route/theme/viewport
 combinations, four expanded settings views, four expanded sharing views and
 36 collaborator role/state/theme/viewport combinations. Newest-first reading,
@@ -276,3 +279,17 @@ top composer, terminal/editor role gating, filters, live viewer revoke/restore,
 unrelated-account refusal and presentation checks passed on synthetic fixtures.
 The sharing review records exact source hashes and the native acceptance limits.
 Earlier browser and test results above retain their original revision and scope.
+
+## Retained generation transcript retrieval
+
+The previous-generation browsing finding is addressed in the source tree. The
+`thread_generations` migration backfills one durable row per existing thread;
+provision, retry, archive and reopen keep that row synchronized and allocate a
+new ordinal for each replacement machine. `Marshall.Threads.generations/2`
+rechecks current thread authority, while `Marshall.Threads.events/4` resolves
+the selected generation and validates the paired agent root, machine identity
+and creator before reading retained events. `/threads/:id?generation=N` exposes
+the same read-only selection in the workspace; prompt, terminal and editor
+controls remain tied to the current generation. The transcript test covers
+reopen continuity and unknown-generation refusal. Native archive/reopen,
+cross-node recovery and physical isolation remain separate acceptance gaps.

@@ -431,12 +431,6 @@ in
         RestrictAddressFamilies = [ "AF_UNIX" ];
       };
     };
-    # @cc [owner:ghuntley,label:security;recovery] hostd-unit-custody
-    # lilly-hostd MUST be ready (Type=notify) before Lilly starts, resolve
-    # utilities from Lilly's exact PATH, keep command custody in its delegated
-    # cgroup, permit lock directories only beneath Lilly's runtime, state and
-    # pool roots, admit only root peers from the configured cgroups, and stop
-    # Lilly whenever it stops (ADR-0176 decision 4).
     # @cc [owner:ghuntley,label:security] lilly-unprivileged-mode
     # With services.lilly.unprivileged the BEAM MUST run as the `lilly` system
     # user with an empty capability set; lilly-hostd MUST admit exactly that
@@ -479,6 +473,12 @@ in
       '') cfg.pools;
     };
 
+    # @cc [owner:ghuntley,label:security;recovery] hostd-unit-custody
+    # lilly-hostd MUST be ready (Type=notify) before Lilly starts, resolve
+    # utilities from Lilly's exact PATH, keep command custody in its delegated
+    # cgroup, permit lock directories only beneath Lilly's runtime, state and
+    # pool roots, admit only root peers from the configured cgroups, and stop
+    # Lilly whenever it stops (ADR-0176 decision 4).
     systemd.services.lilly-hostd = {
       description = "Lilly host-effects engine";
       wantedBy = [ "multi-user.target" ];

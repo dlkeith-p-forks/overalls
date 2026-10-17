@@ -69,8 +69,9 @@ the production trust boundary.
 ## How to exercise the source
 
 The checkout is at `/src` and retains its Git history, pinned flake inputs,
-Nix store and release closures. The image builds the currently compilable
-Lilly, Audi, Brady, Enrico, Galileo, Porsche and Ziggy releases. Their source
+Nix store and release closures. The image builds the Marshall, Lilly, Audi,
+Brady, Enrico, Galileo, Porsche and Ziggy releases. Inception guest workloads
+are separate NixOS fixtures and remain outside this qualification image. Their source
 tests are under each component's `test/` directory; shared Protocol tests are
 under `protocol/test/`, and Rust guest/host tests are under `lyra/tests/` and
 the relevant `native/` directories.
@@ -81,10 +82,9 @@ guests, external services or Internet access. A test that only demonstrates a
 unit failure, a missing optional native prerequisite or a controlled denial is
 not evidence of a runtime vulnerability without a supported attack path.
 
-The current source drop has a known build limitation: the Marshall release
-references missing generation helpers in `MarshallWeb.ThreadsLive`. That is a
-qualification/build issue and should be reported separately from a security
-finding; do not infer that Marshall's unbuilt release has passed validation.
+The inception NixOS workloads have known unrelated evaluation failures and are
+intentionally excluded from this scanner image. Do not infer that those
+fixtures have passed validation from the application release builds.
 
 ## Severity guidance
 

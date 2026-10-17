@@ -131,6 +131,33 @@ defmodule Marshall.ThreadsTest do
     assert thread_id == owned.id
   end
 
+  # @cc [owner:ghuntley,label:verification;durability] thread-page-cursor-scope
+  # Keyset pages MUST continue after an authorized cursor in stable newest-first
+  # order, while a foreign cursor returns an empty page without widening scope.
+  test "authorized thread pages use a stable keyset cursor" do
+    actor = user()
+    outsider = user()
+
+    assert {:ok, first} = Marshall.Threads.create_thread(thread_arguments(), actor: actor)
+    assert {:ok, second} = Marshall.Threads.create_thread(thread_arguments(), actor: actor)
+    assert {:ok, third} = Marshall.Threads.create_thread(thread_arguments(), actor: actor)
+
+    assert {:ok, %{items: first_page, next_cursor: cursor}} =
+             Marshall.Threads.list_thread_page(%{limit: 2}, actor: actor)
+
+    assert length(first_page) == 2
+    assert is_binary(cursor)
+    assert Enum.map(first_page, & &1.id) == [third.id, second.id]
+
+    assert {:ok, %{items: second_page, next_cursor: nil}} =
+             Marshall.Threads.list_thread_page(%{limit: 2, after: cursor}, actor: actor)
+
+    assert Enum.map(second_page, & &1.id) == [first.id]
+
+    assert {:ok, %{items: [], next_cursor: nil}} =
+             Marshall.Threads.list_thread_page(%{limit: 2, after: first.id}, actor: outsider)
+  end
+
   test "idempotency replay rejects a changed machine specification" do
     actor = user()
     key = Ash.UUID.generate()

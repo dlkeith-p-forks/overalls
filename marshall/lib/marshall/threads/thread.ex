@@ -71,6 +71,12 @@ defmodule Marshall.Threads.Thread do
       run {Marshall.Threads.Coordinator, operation: :list}
     end
 
+    action :list_page_for_user, :map do
+      argument :after, :uuid
+      argument :limit, :integer, default: 50, constraints: [min: 1, max: 100]
+      run {Marshall.Threads.Coordinator, operation: :list_page}
+    end
+
     action :get_for_user, :struct do
       argument :thread_id, :uuid, allow_nil?: false
       run {Marshall.Threads.Coordinator, operation: :get}

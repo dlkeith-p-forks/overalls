@@ -31,11 +31,11 @@ RUN curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install \
 WORKDIR /src
 COPY . /src
 
-# Build the release outputs that are currently self-consistent on the source
-# drop. Marshall is intentionally excluded here: the checked-in source calls
-# missing generation helpers in MarshallWeb.ThreadsLive, so claiming a full
-# platform build would hide a real qualification blocker.
+# Build every deployable application release. Inception guest workloads are
+# intentionally outside this scanner image; they are separate NixOS fixtures
+# with known unrelated failures.
 RUN nix build --no-link --print-build-logs \
+      .#marshall \
       .#lilly \
       .#audi \
       .#brady \
@@ -43,7 +43,7 @@ RUN nix build --no-link --print-build-logs \
       .#galileo \
       .#porsche \
       .#ziggy \
-    && for output in lilly audi brady enrico galileo porsche ziggy; do \
+    && for output in marshall lilly audi brady enrico galileo porsche ziggy; do \
          nix path-info ".#$output"; \
        done
 
@@ -52,6 +52,7 @@ RUN nix build --no-link --print-build-logs \
 RUN set -eu; \
     test -d /src/.git; \
     test -f /src/flake.lock; \
+    test -x "$(nix path-info .#marshall)/bin/marshall"; \
     test -x "$(nix path-info .#lilly)/bin/lilly"; \
     test -x "$(nix path-info .#audi)/bin/audi"; \
     test -x "$(nix path-info .#brady)/bin/brady"; \

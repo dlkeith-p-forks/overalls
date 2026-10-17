@@ -126,13 +126,24 @@ through contraction deployment. That case
 does not establish native archive/reopen, cross-node worker-loss recovery or
 broader provider acceptance; those remain pending.
 
+The retained-generation extension adds [`Marshall.Threads.Generation`](../../../marshall/lib/marshall/threads/generation.ex)
+and a migration that backfills one generation for every existing thread. Each
+admission, retry, archive and reopen keeps a durable generation row. Authorized
+readers can call `Marshall.Threads.generations/2` and
+`Marshall.Threads.events/4`, and `/threads/:id?generation=N` renders the
+read-only selector. The transcript test covers a reopened thread whose first
+machine event remains readable while an unknown generation is refused. Native
+reopen and cross-node recovery still require separate execution evidence.
+
 ## Open questions
 
 The product may later add richer activity filters and machine controls. Reopen
-uses a fresh machine and agent identity. The current transcript helper resolves
-the thread's current binding; browsing prior-generation transcripts after reopen
-remains a gap, although their agent events and retired bindings are retained.
-Changes to retention or authority require a separate decision.
+uses a fresh machine and agent identity. The transcript helper resolves the
+current binding by default; authorized readers can list retained machine
+generations and select a prior transcript after reopen. Root, machine-owner and
+thread authority checks repeat for every selection, and a retired generation
+never grants machine, prompt or terminal authority. Changes to retention or
+authority require a separate decision.
 
 ## Related decisions
 

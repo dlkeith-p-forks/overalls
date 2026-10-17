@@ -528,9 +528,14 @@ Archive/delete requests record deleting intent and use Compute's lifecycle
 coordinator. The thread remains deleting until retained VM history reports
 physical archival; a desired deleted state alone is insufficient. An authorized
 reopen clears the retired binding, retains the original create request key,
-assigns a fresh machine key and queues admission atomically. PaperTrail retains
-the old identities; archived transcript reads use the current retained binding.
-Browsing transcripts from earlier reopened generations remains separate work.
+assigns a fresh machine key and queues admission atomically. Durable
+`ThreadGeneration` rows retain each machine/root/thread identity. PaperTrail and
+generation rows preserve the old identities; authorized archived transcript
+reads can select an earlier generation through the read-only workspace selector.
+The selected generation repeats root, owner and thread checks and cannot prompt,
+open a terminal or mutate a machine.
+Archiving also cancels any pending human planning question with an `archived`
+reason before deletion intent or retained archival is committed.
 
 Thread sharing has its own durable grant and immutable request result. Sharing
 serializes on the thread and then its bound VM, with current authority checked

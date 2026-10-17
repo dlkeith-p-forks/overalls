@@ -104,6 +104,25 @@ function activate(hook, command, complete) {
   if (palette(hook)?.open) closePalette(hook);
 }
 
+/** @param {ComposerHook} hook @returns {void} */
+function bindTerminalDisclosure(hook) {
+  hook.el.querySelectorAll("details[data-thread-terminal]").forEach(details => {
+    if (!(details instanceof HTMLDetailsElement)) return;
+    const load = () => {
+      if (!details.open) return;
+      const frame = details.querySelector("iframe[data-thread-terminal-src]");
+      if (!(frame instanceof HTMLIFrameElement) || frame.hasAttribute("src")) return;
+      const source = frame.dataset.threadTerminalSrc;
+      if (source) frame.src = source;
+    };
+    if (details.dataset.threadTerminalBound !== "true") {
+      details.dataset.threadTerminalBound = "true";
+      details.addEventListener("toggle", load, {signal: hook.controller?.signal});
+    }
+    load();
+  });
+}
+
 /**
  * @cc [owner:ghuntley,label:product;security] composer-browser-controls
  * Keyboard shortcuts MUST be scoped to the composer or its dialog, preserve
@@ -117,6 +136,7 @@ export const ThreadComposer = {
     this.choice = 0;
     this.composing = false;
     refreshCommandAvailability(this);
+    bindTerminalDisclosure(this);
     const signal = this.controller.signal;
     this.el.addEventListener("compositionstart", () => { this.composing = true; }, {signal});
     this.el.addEventListener("compositionend", () => { this.composing = false; }, {signal});
@@ -198,6 +218,7 @@ export const ThreadComposer = {
   /** @this {ComposerHook} @returns {void} */
   updated() {
     refreshCommandAvailability(this);
+    bindTerminalDisclosure(this);
     const dialog = this.el.querySelector("dialog[data-thread-dialog]");
     if (dialog instanceof HTMLDialogElement && !dialog.open) {
       this.returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : this.composer;

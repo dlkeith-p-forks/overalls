@@ -2,6 +2,9 @@ defmodule Marshall.ThreadsLifecycleTest do
   use Marshall.DataCase, async: false
   import Marshall.ComputeFixtures
 
+  alias Marshall.Agents.{Planning, PlanningQuestion}
+  alias Marshall.Agents.Thread, as: AgentThread
+  alias Marshall.Agents.Turn, as: AgentTurn
   alias Marshall.Compute.{Host, Ledger, Operation, Outcomes, VirtualMachine}
   alias Marshall.Threads
   alias Marshall.Threads.{ArchiveWorker, ProvisionWorker, Thread}
@@ -76,6 +79,49 @@ defmodule Marshall.ThreadsLifecycleTest do
     assert archived.machine_id == vm.id
     assert :ok = provision(thread)
     assert current(thread).status == :archived
+  end
+
+  test "archiving a thread cancels its pending planning question" do
+    host_fixture()
+    actor = user()
+    assert {:ok, thread} = Threads.create_thread(arguments(), actor: actor)
+    assert {:snooze, _} = provision(thread)
+    bound = current(thread)
+    assert [%VirtualMachine{} = vm] = Ledger.history!(VirtualMachine, id: bound.machine_id)
+    assert [%Operation{} = operation] = Ledger.read!(Operation, vm_id: vm.id, kind: :provision)
+    assert {:ok, _} = observe(vm, operation, :running)
+    assert :ok = provision(bound)
+
+    ready = current(thread)
+    assert ready.status == :ready
+    assert is_binary(ready.agent_thread_id)
+
+    {:ok, question} =
+      Ledger.transaction(fn ->
+        agent_thread = Ledger.lock!(AgentThread, ready.agent_thread_id)
+
+        turn =
+          Ledger.create!(AgentTurn, :enqueue, %{
+            thread_id: agent_thread.id,
+            actor_id: actor.id,
+            request_key: Ash.UUID.generate(),
+            ordinal: 2,
+            prompt: "Choose the implementation approach.",
+            collaboration_mode: :plan
+          })
+
+        turn = Ledger.update!(turn, :transition, %{status: :running, started_at: Ledger.now()})
+        agent_thread = Ledger.update!(agent_thread, :set_context, %{collaboration_mode: :plan})
+        agent_thread = Ledger.update!(agent_thread, :advance, %{active_turn_id: turn.id})
+        Planning.request_questions_locked!(agent_thread, turn, planning_call())
+      end)
+
+    assert [%PlanningQuestion{status: :pending}] = Ledger.read!(PlanningQuestion, id: question.id)
+    assert {:ok, deleting} = Threads.archive_thread(%{thread_id: ready.id}, actor: actor)
+    assert deleting.status == :deleting
+
+    assert [%PlanningQuestion{status: :cancelled, cancellation_reason: :archived}] =
+             Ledger.read!(PlanningQuestion, id: question.id)
   end
 
   test "an existing delete intent is not proof of physical deletion" do
@@ -195,6 +241,26 @@ defmodule Marshall.ThreadsLifecycleTest do
       mode: :medium,
       machine_spec: request(),
       idempotency_key: Ash.UUID.generate()
+    }
+  end
+
+  @spec planning_call() :: map()
+  defp planning_call do
+    %{
+      id: "archive-question",
+      arguments: %{
+        "questions" => [
+          %{
+            "id" => "approach",
+            "header" => "Approach",
+            "question" => "Which approach should the plan use?",
+            "options" => [
+              %{"label" => "First", "description" => "Keep the current interface."},
+              %{"label" => "Second", "description" => "Add a new interface."}
+            ]
+          }
+        ]
+      }
     }
   end
 

@@ -72,7 +72,11 @@ defmodule MarshallWeb.OverviewLiveTest do
              "Open VS Code ↗"
            )
 
-    refute has_element?(view, "#overview-machine-#{machine_id} a[href='/machines/#{machine_id}/threads']")
+    refute has_element?(
+             view,
+             "#overview-machine-#{machine_id} a[href='/machines/#{machine_id}/threads']"
+           )
+
     refute has_element?(view, "#overview-machine-#{machine_id}-vscode.console-button")
 
     refute has_element?(view, "#overview-machine-#{machine_id}-vscode-disabled")

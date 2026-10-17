@@ -818,7 +818,11 @@ the transcript helper validates that the retained agent thread belongs to the
 bound root before reading events. Archive, delete and reopen require current
 thread-management authority, including manager grants. Reopen clears the retired binding and
 uses a fresh machine key; stale provision jobs cannot mutate that generation.
-Previous transcript generations remain retained but lack a user-facing retrieval
-path after reopen. Thread diagnostics contain only thread identifiers and closed
+Previous transcript generations remain retained and an authorized reader can
+select their generation through the read-only `/threads/:id?generation=N` path;
+the selected binding repeats root, owner and thread checks and never grants
+machine mutation. Thread diagnostics contain only thread identifiers and closed
 outcome atoms; objective text, model content,
 terminal bytes, machine payloads and credentials remain in authorized data.
+Archival invalidates a pending planning barrier with the durable `archived`
+reason before lifecycle deletion completes.

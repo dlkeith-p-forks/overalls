@@ -22,6 +22,10 @@ defmodule MarshallWeb.ThreadsLive do
         threads_available: true,
         activity_empty: true,
         selected: nil,
+        generations: [],
+        generations_available: true,
+        selected_generation: nil,
+        generation_current: true,
         events_empty: true,
         events_available: true,
         catalog: %{images: []},
@@ -29,6 +33,11 @@ defmodule MarshallWeb.ThreadsLive do
         error: nil,
         detail_error: nil,
         activity_filter: "all",
+        activity_time_filter: "all",
+        activity_owner_filter: "all",
+        activity_team_filter: "all",
+        activity_query: "",
+        activity_team_options: [],
         thread_query: "",
         thread_filter: "all",
         thread_matches_empty: true,
@@ -77,7 +86,13 @@ defmodule MarshallWeb.ThreadsLive do
   @impl true
   @spec handle_params(map(), String.t(), socket()) :: {:noreply, socket()}
   def handle_params(params, _uri, socket) do
-    {:noreply, socket |> assign(selected_id: params["id"]) |> refresh()}
+    {:noreply,
+     socket
+     |> assign(
+       selected_id: params["id"],
+       selected_generation_ordinal: parse_generation_ordinal(params["generation"])
+     )
+     |> refresh()}
   end
 
   @impl true
@@ -374,7 +389,10 @@ defmodule MarshallWeb.ThreadsLive do
       when is_binary(query) and status in ["all", "active", "archived"] do
     {:noreply,
      socket
-     |> assign(thread_query: String.slice(query, 0, 200), thread_filter: status)
+     |> assign(
+       thread_query: String.slice(query, 0, 200),
+       thread_filter: status
+     )
      |> refresh()}
   end
 
@@ -431,9 +449,32 @@ defmodule MarshallWeb.ThreadsLive do
   def handle_event("grants_first", _params, socket),
     do: {:noreply, socket |> assign(grant_cursor: nil) |> refresh()}
 
-  def handle_event("activity_filter", %{"filter" => %{"status" => status}}, socket)
+  def handle_event(
+        "activity_filter",
+        %{"filter" => %{"status" => status} = filters},
+        socket
+      )
       when status in ["all", "pending", "provisioning", "ready", "failed", "deleting", "archived"] do
-    {:noreply, socket |> assign(activity_filter: status) |> refresh()}
+    time = Map.get(filters, "time", socket.assigns.activity_time_filter)
+    owner = Map.get(filters, "owner", socket.assigns.activity_owner_filter)
+    team = Map.get(filters, "team", socket.assigns.activity_team_filter)
+    query = Map.get(filters, "query", socket.assigns.activity_query)
+
+    if time in ["all", "today", "week", "month"] and owner in ["all", "mine", "shared"] and
+         is_binary(team) and is_binary(query) do
+      {:noreply,
+       socket
+       |> assign(
+         activity_filter: status,
+         activity_time_filter: time,
+         activity_owner_filter: owner,
+         activity_team_filter: team,
+         activity_query: String.slice(query, 0, 200)
+       )
+       |> refresh()}
+    else
+      {:noreply, socket}
+    end
   end
 
   def handle_event(
@@ -443,7 +484,9 @@ defmodule MarshallWeb.ThreadsLive do
       )
       when is_binary(ordinal) do
     case parse_generation_ordinal(ordinal) do
-      nil -> {:noreply, assign(socket, error: error_message(:not_found))}
+      nil ->
+        {:noreply, assign(socket, error: error_message(:not_found))}
+
       selected ->
         {:noreply,
          socket
@@ -697,7 +740,9 @@ defmodule MarshallWeb.ThreadsLive do
   @spec refresh(socket()) :: socket()
   defp refresh(socket) do
     actor = socket.assigns.current_user
+
     {all_threads, threads_available} = list_threads(actor)
+
     {selected, detail_error} = selected_thread(socket.assigns[:selected_id], all_threads, actor)
 
     permissions =
@@ -713,7 +758,16 @@ defmodule MarshallWeb.ThreadsLive do
         {selected, detail_error, all_threads, permissions}
       end
 
-    activity_threads = activity_threads(all_threads, socket.assigns[:activity_filter])
+    activity_threads =
+      activity_threads(
+        all_threads,
+        socket.assigns[:activity_filter],
+        socket.assigns[:activity_time_filter],
+        socket.assigns[:activity_owner_filter],
+        socket.assigns[:activity_team_filter],
+        socket.assigns[:activity_query],
+        actor.id
+      )
 
     visible_threads =
       filter_threads(all_threads, socket.assigns.thread_query, socket.assigns.thread_filter)
@@ -732,12 +786,15 @@ defmodule MarshallWeb.ThreadsLive do
         else: nil
 
     generation_current =
-      selected && selected_generation && selected_generation.machine_key == selected.machine_key
+      not is_nil(selected) and not is_nil(selected_generation) and
+        selected_generation.machine_key == selected.machine_key
 
     {events, events_available} =
-      if selected && selected_generation && selected_generation.agent_thread_id,
-        do: events_for(selected, actor, selected_generation),
-        else: {[], true}
+      if selected && selected_generation &&
+           (selected_generation.agent_thread_id ||
+              (generation_current && selected.agent_thread_id)),
+         do: events_for(selected, actor, selected_generation),
+         else: {[], true}
 
     catalog = catalog(actor)
 
@@ -758,7 +815,8 @@ defmodule MarshallWeb.ThreadsLive do
       events_empty: events == [],
       events_available: events_available,
       catalog: catalog,
-      detail_error: detail_error
+      detail_error: detail_error,
+      activity_team_options: activity_team_options(all_threads)
     )
     |> stream(:threads, visible_threads, reset: true)
     |> stream(:activity_threads, activity_threads, reset: true)
@@ -874,18 +932,114 @@ defmodule MarshallWeb.ThreadsLive do
     end)
   end
 
-  @spec activity_threads([thread()], String.t()) :: [thread()]
-  defp activity_threads(threads, "all"), do: threads
+  # @cc [owner:ghuntley,label:product;security] activity-filter-scope
+  # Activity status, time, owner, team and text filters MUST narrow only the
+  # already authorized bounded page. Filtering MUST NOT query or reveal a
+  # thread outside that page; selecting a row still performs a fresh read check.
+  @spec activity_threads(
+          [thread()],
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t()
+        ) :: [thread()]
+  defp activity_threads(threads, status, time, owner, team, query, actor_id) do
+    Enum.filter(threads, fn thread ->
+      status_matches = status == "all" or Atom.to_string(thread.status) == status
+      time_matches = time_matches?(thread.updated_at, time)
+      owner_matches = owner_matches?(thread, owner, actor_id)
+      team_matches = team == "all" or to_string(thread.team_id) == team
+      query = String.downcase(String.trim(query))
+      text = String.downcase((thread.title || "") <> " " <> thread.objective)
+      query_matches = query == "" or String.contains?(text, query)
+      status_matches and time_matches and owner_matches and team_matches and query_matches
+    end)
+  end
 
-  defp activity_threads(threads, status),
-    do: Enum.filter(threads, &(Atom.to_string(&1.status) == status))
+  @spec time_matches?(DateTime.t(), String.t()) :: boolean()
+  defp time_matches?(_updated_at, "all"), do: true
 
-  @spec events_for(thread(), user()) :: {[Marshall.Agents.Event.t()], boolean()}
-  defp events_for(thread, actor) do
-    case Threads.events(thread.id, actor) do
+  defp time_matches?(%DateTime{} = updated_at, filter)
+       when filter in ["today", "week", "month"] do
+    age_seconds = DateTime.diff(DateTime.utc_now(), updated_at, :second)
+
+    case filter do
+      "today" -> age_seconds >= 0 and age_seconds < 86_400
+      "week" -> age_seconds >= 0 and age_seconds < 604_800
+      "month" -> age_seconds >= 0 and age_seconds < 2_592_000
+    end
+  end
+
+  defp time_matches?(_, _), do: true
+
+  @spec owner_matches?(thread(), String.t(), String.t()) :: boolean()
+  defp owner_matches?(_thread, "all", _actor_id), do: true
+  defp owner_matches?(%{creator_id: actor_id}, "mine", actor_id), do: true
+  defp owner_matches?(%{creator_id: creator_id}, "shared", actor_id), do: creator_id != actor_id
+  defp owner_matches?(_, _, _), do: false
+
+  @spec activity_team_options([thread()]) :: [{String.t(), String.t()}]
+  defp activity_team_options(threads) do
+    teams =
+      threads
+      |> Enum.map(& &1.team_id)
+      |> Enum.filter(&is_binary/1)
+      |> Enum.uniq()
+      |> Enum.sort()
+
+    [{"All teams", "all"} | Enum.map(teams, &{"Team " <> &1, &1})]
+  end
+
+  @spec events_for(thread(), user(), Marshall.Threads.Generation.t() | nil) ::
+          {[Marshall.Agents.Event.t()], boolean()}
+  defp events_for(thread, actor, generation) do
+    result =
+      if generation && generation.machine_key != thread.machine_key,
+        do: Threads.events(thread.id, actor, generation.ordinal, 100),
+        else: Threads.events(thread.id, actor)
+
+    case result do
       {:ok, events} -> {events, true}
       _ -> {[], false}
     end
+  end
+
+  @spec list_generations(thread(), user()) ::
+          {[Marshall.Threads.Generation.t()], boolean()}
+  defp list_generations(thread, actor) do
+    case Threads.generations(thread.id, actor) do
+      {:ok, generations} -> {generations, true}
+      _ -> {[], false}
+    end
+  end
+
+  @spec choose_generation([Marshall.Threads.Generation.t()], thread(), integer() | nil) ::
+          Marshall.Threads.Generation.t() | nil
+  defp choose_generation([], _thread, _requested), do: nil
+
+  defp choose_generation(generations, thread, requested) do
+    Enum.find(generations, &(&1.ordinal == requested)) ||
+      Enum.find(generations, &(&1.machine_key == thread.machine_key)) || List.first(generations)
+  end
+
+  @spec parse_generation_ordinal(term()) :: pos_integer() | nil
+  defp parse_generation_ordinal(value) when is_integer(value) and value >= 1, do: value
+
+  defp parse_generation_ordinal(value) when is_binary(value) do
+    case Integer.parse(value) do
+      {ordinal, ""} when ordinal >= 1 -> ordinal
+      _ -> nil
+    end
+  end
+
+  defp parse_generation_ordinal(_), do: nil
+
+  @spec generation_option(Marshall.Threads.Generation.t()) :: {String.t(), integer()}
+  defp generation_option(generation) do
+    status = Atom.to_string(generation.status)
+    {"Generation #{generation.ordinal} (#{status})", generation.ordinal}
   end
 
   defp maybe_seed_image(socket, %{images: [image | _]}) do
@@ -1009,6 +1163,8 @@ defmodule MarshallWeb.ThreadsLive do
   # Thread views MUST keep the objective and authorized transcript primary. Machine
   # settings MUST remain optional disclosure, and pending/failed/archived states
   # MUST explain the available next action without exposing provider diagnostics.
+  # The embedded terminal MUST load lazily through the existing machine route,
+  # preserving that route's current authorization and terminal session checks.
 
   # @cc [owner:ghuntley,label:product] thread-newest-first-reading-order
   # The ready-thread composer MUST precede its transcript in DOM order. Authorized
@@ -1152,12 +1308,20 @@ defmodule MarshallWeb.ThreadsLive do
             </div>
           </div>
         <% else %>
-          <div class={["threads-layout", @live_action == :show && "threads-layout-detail"]}>
+          <div class={[
+            "threads-layout",
+            @live_action == :show && "threads-layout-detail",
+            @live_action == :activity && "threads-layout-activity"
+          ]}>
             <nav
-              :if={@live_action != :activity}
               id="thread-list"
               aria-label="Threads"
-              class={["thread-list", "threads-navigation", @live_action == :index && "threads-index"]}
+              class={[
+                "thread-list",
+                "threads-navigation",
+                @live_action == :index && "threads-index",
+                @live_action == :activity && "threads-activity-navigation"
+              ]}
             >
               <header class="thread-list-heading">
                 <h1 :if={@live_action == :index}>Your threads</h1>
@@ -1234,6 +1398,13 @@ defmodule MarshallWeb.ThreadsLive do
                   >{thread.objective}</span>
                 </.link>
               </div>
+              <.link
+                navigate={~p"/threads/activity"}
+                class="thread-navigation-activity-link"
+                aria-current={@live_action == :activity && "page"}
+              >
+                View activity <.glyph name="arrow_up_right" />
+              </.link>
             </nav>
 
             <%= if @live_action == :activity do %>
@@ -1243,12 +1414,25 @@ defmodule MarshallWeb.ThreadsLive do
                     <h1>Activity</h1><p class="muted">The latest state of your threads.</p>
                   </div>
                   <.form
-                    for={to_form(%{"status" => @activity_filter}, as: :filter)}
+                    for={
+                      to_form(
+                        %{
+                          "status" => @activity_filter,
+                          "time" => @activity_time_filter,
+                          "owner" => @activity_owner_filter,
+                          "team" => @activity_team_filter,
+                          "query" => @activity_query
+                        },
+                        as: :filter
+                      )
+                    }
                     id="thread-activity-filter"
                     phx-change="activity_filter"
                   >
                     <.input
-                      field={to_form(%{"status" => @activity_filter}, as: :filter)[:status]}
+                      name="filter[status]"
+                      id="thread-activity-status-filter"
+                      value={@activity_filter}
                       type="select"
                       label="Status"
                       options={[
@@ -1260,6 +1444,49 @@ defmodule MarshallWeb.ThreadsLive do
                         {"Deleting", "deleting"},
                         {"Archived", "archived"}
                       ]}
+                    />
+                    <.input
+                      name="filter[time]"
+                      id="thread-activity-time-filter"
+                      value={@activity_time_filter}
+                      type="select"
+                      label="Updated"
+                      options={[
+                        {"Any time", "all"},
+                        {"Today", "today"},
+                        {"Past 7 days", "week"},
+                        {"Past 30 days", "month"}
+                      ]}
+                    />
+                    <.input
+                      name="filter[owner]"
+                      id="thread-activity-owner-filter"
+                      value={@activity_owner_filter}
+                      type="select"
+                      label="Scope"
+                      options={[
+                        {"All visible", "all"},
+                        {"Mine", "mine"},
+                        {"Shared with me", "shared"}
+                      ]}
+                    />
+                    <.input
+                      name="filter[team]"
+                      id="thread-activity-team-filter"
+                      value={@activity_team_filter}
+                      type="select"
+                      label="Team"
+                      options={@activity_team_options}
+                    />
+                    <.input
+                      name="filter[query]"
+                      id="thread-activity-query"
+                      value={@activity_query}
+                      type="search"
+                      label="Search"
+                      placeholder="Find a task…"
+                      phx-debounce="200"
+                      maxlength="200"
                     />
                   </.form>
                 </header>
@@ -1362,6 +1589,24 @@ defmodule MarshallWeb.ThreadsLive do
                             class="console-button ghost"
                           >Open terminal <.glyph name="arrow_up_right" /></.link>
                         </div>
+                        <details
+                          :if={@can_write and @selected.status == :ready and @selected.machine_id}
+                          id="thread-terminal-embed"
+                          class="thread-terminal-embed"
+                          data-thread-terminal
+                        >
+                          <summary class="console-button ghost">Open terminal here</summary>
+                          <div class="thread-terminal-frame">
+                            <iframe
+                              id="thread-terminal-frame"
+                              data-thread-terminal-src={
+                                ~p"/machines/#{@selected.machine_id}/terminals"
+                              }
+                              title="Thread terminal"
+                              loading="lazy"
+                            ></iframe>
+                          </div>
+                        </details>
                         <.link
                           :if={@editor_available}
                           id="thread-vscode"
@@ -1498,7 +1743,11 @@ defmodule MarshallWeb.ThreadsLive do
                         phx-change="generation_select"
                       >
                         <.input
-                          field={to_form(%{"ordinal" => @selected_generation.ordinal}, as: :generation)[:ordinal]}
+                          field={
+                            to_form(%{"ordinal" => @selected_generation.ordinal}, as: :generation)[
+                              :ordinal
+                            ]
+                          }
                           type="select"
                           label="Transcript"
                           options={Enum.map(@generations, &generation_option/1)}

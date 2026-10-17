@@ -73,8 +73,9 @@ deleting and delegates teardown to Compute; retained physical archival history
 permits the final archived state. Authorized archived transcript reads validate
 the paired root/thread binding. Reopen retains the create request identity,
 clears the retired binding and queues a fresh machine admission in one
-transaction. PaperTrail retains retired bindings; browsing previous transcript
-generations after reopen remains a gap.
+transaction. PaperTrail and durable generation rows retain retired bindings;
+authorized readers can browse previous transcript generations after reopen
+through the read-only generation selector.
 
 The accepted [context and guidance decisions](repo:docs/architecture/decisions/0178-durable-agent-context-and-planning.md)
 add persisted model context, planning interaction and managed skill state to
@@ -158,7 +159,7 @@ flowchart LR
 | [`Marshall.SSH`](repo:marshall/lib/marshall/ssh.ex) | `Marshall.SSH.Approval`, `Marshall.SSH.Gateway`, `Marshall.SSH.GuestLogin`, `Marshall.SSH.HostCertificate`, `Marshall.SSH.Key`, `Marshall.SSH.Request`, `Marshall.SSH.Session` |
 | [`Marshall.Teams`](repo:marshall/lib/marshall/teams.ex) | `Marshall.Teams.Team`, `Marshall.Teams.TeamMember`, `Marshall.Teams.Transfer` |
 | [`Marshall.Terminal`](repo:marshall/lib/marshall/terminal.ex) | `Marshall.Terminal.Event`, `Marshall.Terminal.Grant`, `Marshall.Terminal.Location`, `Marshall.Terminal.Opening`, `Marshall.Terminal.Session`, `Marshall.Terminal.Ticket` |
-| [`Marshall.Threads`](repo:marshall/lib/marshall/threads.ex) | `Marshall.Threads.AccessChange`, `Marshall.Threads.Grant`, `Marshall.Threads.Thread` |
+| [`Marshall.Threads`](repo:marshall/lib/marshall/threads.ex) | `Marshall.Threads.AccessChange`, `Marshall.Threads.Generation`, `Marshall.Threads.Grant`, `Marshall.Threads.Thread` |
 <!-- hldd:view:end -->
 
 ## Verification and gaps
