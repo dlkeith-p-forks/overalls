@@ -170,11 +170,13 @@ def run_credential_revalidation() -> int:
         choice(runtime.config.marshall_urls), runtime.config.ca_file, runtime.credential
     ).open()
     if opening.session is None:
+        LOG.info("Control credential property unexercised: old credential socket unavailable")
         return 0
     old = opening.session
     try:
         welcome = old.bind_lilly(str(runtime.host_id))
         if welcome.state is not WireState.MESSAGE or not old.welcomed:
+            LOG.info("Control credential property unexercised: old credential bind unwelcomed")
             return 0
         # This read-only request exercises domain reauthentication before the
         # fence when Lilly has a current execution session.
@@ -195,6 +197,7 @@ def run_credential_revalidation() -> int:
         )
         receipt = coordinator.rotate(session_id(), runtime.host_id)
         if receipt is None or receipt.credential.credential_id == runtime.credential.credential_id:
+            LOG.info("Control credential property unexercised: no issued rotation receipt")
             return 0
         authority = runtime.oracle.credential_authority(
             runtime.host_id, runtime.credential.credential_id
@@ -205,10 +208,12 @@ def run_credential_revalidation() -> int:
             or not authority.value.old_archived
             or authority.value.active_id != receipt.credential.credential_id
         ):
+            LOG.info("Control credential property unexercised: rotation authority unobserved")
             return 0
         stale_nonce = session_id()
         before = runtime.oracle.session_exists(runtime.host_id, stale_nonce)
         if before.state is not State.OBSERVED or before.value is not False:
+            LOG.info("Control credential property unexercised: stale session baseline unobserved")
             return 0
         stale = old.exchange(1, "lilly.sessions", _session_body(runtime, stale_nonce))
         # A current credential must remain usable. Its own distinct durable
