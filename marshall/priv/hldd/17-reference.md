@@ -241,11 +241,15 @@ admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
 pool totals for its enrolled pool identity, measured cgroup CPU and memory
 headroom, and a tiny non-bootable image it digest-verifies before advertising;
-the enrollment operator registers that image through Marshall's catalog action.
-A fully stub-backed report advertises placement readiness, so Marshall's real
+the enrollment operator registers that image through Marshall's catalog action
+and then enables lilly-a through the reviewed CLI `enable` action, which
+refuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real
 admission transaction commits VM, placement, reservation and dispatch rows,
 but the controlled executor never launches a guest and a delete never
-completes. Setup requires those committed report, pool and image rows in SQL.
+completes. Setup requires the enabled normal-mode host and those committed report, pool
+and image rows in SQL; hosted runs before this check never enabled the host,
+so every admission probe stopped at unknown capacity
+(`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`).
 Catalog headroom below the request shape no longer withholds a request: a
 definite `insufficient_capacity` refusal is Marshall's real decision, checked
 for absent rows and a bounded one-VM replay. Every stop before a settled

@@ -327,8 +327,8 @@ _STUB_POOL_IDENTITY = ("10001", "10002", "overalls/antithesis")
 def admission_stub_ready(config: Config, host_ids: tuple[UUID, ...]) -> bool:
     """@cc [owner:ghuntley,label:verification;capacity] bootstrap-admission-stub-authority
     Admission-stub setup MUST observe, through the SELECT-only oracle, that
-    Marshall committed for the single fixture host a fresh execution-ready
-    report with measured v1 compute headroom, a fresh pool observation with
+    Marshall committed for the single fixture host an administrative enable in
+    normal maintenance mode, a fresh execution-ready report with measured v1 compute headroom, a fresh pool observation with
     positive free bytes under the stub's configured pool identity, and an
     enabled catalog image that the host advertises. These rows show only that
     Marshall can make a real admission decision on stub storage; they are not
@@ -339,7 +339,8 @@ def admission_stub_ready(config: Config, host_ids: tuple[UUID, ...]) -> bool:
     if len(host_ids) != 1:
         return _incomplete(profile, "fixture_host_count")
     observed = SqlOracle(config).select(
-        "SELECT h.inventory -> 'execution_ready' = 'true'::jsonb, "
+        "SELECT h.enabled AND h.maintenance_mode = 'normal', "
+        "h.inventory -> 'execution_ready' = 'true'::jsonb, "
         "h.capacity ->> 'version' = '1', "
         "h.reported_at >= now() - interval '5 seconds', "
         "(SELECT count(*) FROM compute_storage_pools p WHERE p.host_id = h.id "
@@ -355,8 +356,13 @@ def admission_stub_ready(config: Config, host_ids: tuple[UUID, ...]) -> bool:
         return _incomplete(profile, f"sql_host_{observed.state.value}")
     if len(observed.value) != 1:
         return _incomplete(profile, "sql_host_missing")
-    ready, capacity, fresh, pools, images = observed.value[0]
-    for name, value in (("execution_ready", ready), ("capacity", capacity), ("fresh", fresh)):
+    enabled, ready, capacity, fresh, pools, images = observed.value[0]
+    for name, value in (
+        ("enabled", enabled),
+        ("execution_ready", ready),
+        ("capacity", capacity),
+        ("fresh", fresh),
+    ):
         if value is not True:
             return _incomplete(profile, f"host_{name}_not_observed")
     if type(pools) is not int or pools < 1:

@@ -307,17 +307,19 @@ class BootstrapTests(unittest.TestCase):
             with patch("core.profile_readiness.SqlOracle") as sql:
                 select = sql.return_value.select
                 select.return_value = MagicMock(
-                    state=State.OBSERVED, value=((True, True, True, 1, 1),)
+                    state=State.OBSERVED, value=((True, True, True, True, 1, 1),)
                 )
                 self.assertTrue(admission_stub_ready(config, (host,)))
                 self.assertEqual(select.call_args.args[1][-1], str(host))
                 self.assertFalse(admission_stub_ready(config, (host, uuid4())))
                 for row in (
-                    (False, True, True, 1, 1),
-                    (True, None, True, 1, 1),
-                    (True, True, False, 1, 1),
-                    (True, True, True, 0, 1),
-                    (True, True, True, 1, 0),
+                    (False, True, True, True, 1, 1),
+                    (None, True, True, True, 1, 1),
+                    (True, False, True, True, 1, 1),
+                    (True, True, None, True, 1, 1),
+                    (True, True, True, False, 1, 1),
+                    (True, True, True, True, 0, 1),
+                    (True, True, True, True, 1, 0),
                 ):
                     with self.subTest(row=row):
                         select.return_value = MagicMock(state=State.OBSERVED, value=(row,))
