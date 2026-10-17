@@ -46,8 +46,8 @@ defmodule Overalls.HLDDGate do
   end
 
   # @cc [owner:ghuntley,label:verification] hldd-devenv-pin-exempt
-  # devenv.lock MUST NOT be a reviewed source: the scheduled devenv update
-  # workflow rewrites its pins unattended, and a pin bump alone changes no
+  # devenv.lock MUST NOT be a reviewed source: the scheduled automatic nix
+  # upgrades workflow rewrites its pins unattended; a pin bump alone changes no
   # documented behavior. devenv.yaml and devenv.nix remain covered.
   @spec excluded?(String.t()) :: boolean()
   defp excluded?(path) do
