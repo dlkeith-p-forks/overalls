@@ -26,4 +26,11 @@ defmodule GalileoAuthorizedProxyContractTest do
     assert Galileo.Strip.apply("/api/v3", "/api/v3") == "/"
     assert Galileo.Strip.apply("/api/v3", "/api/v3x/users") == "/api/v3x/users"
   end
+
+  @tag obligation: "galileo.authorized_proxy.I3"
+  test "prefix stripping handles absent and wildcard prefixes" do
+    assert Galileo.Strip.apply(nil, "/users") == "/users"
+    assert Galileo.Strip.apply("/api", "*") == "*"
+    assert Galileo.Strip.apply("/api", "/apiary") == "/apiary"
+  end
 end

@@ -99,4 +99,15 @@ defmodule OverallsProtocolCodecsContractTest do
     refute OverallsProtocol.uuid?("not-a-uuid")
     assert {:ok, nil} = OverallsProtocol.report(nil)
   end
+
+  @tag obligation: "overalls_protocol.codecs.I4"
+  test "reports reject contradictory or duplicate pool observations" do
+    base = %{"sequence" => 1, "sampled_at" => "2026-01-01T00:00:00Z", "effective_cores" => 1,
+      "effective_memory_bytes" => 1, "inventory" => %{}, "pools" => []}
+    pool = %{"id" => "123e4567-e89b-12d3-a456-426614174000", "total_bytes" => 10,
+      "free_bytes" => 11, "allocations" => %{}, "storage" => %{}}
+    assert {:error, :invalid_message} = OverallsProtocol.report(%{base | "pools" => [pool]})
+    pool2 = %{pool | "free_bytes" => 5}
+    assert {:error, :invalid_message} = OverallsProtocol.report(%{base | "pools" => [pool2, pool2]})
+  end
 end

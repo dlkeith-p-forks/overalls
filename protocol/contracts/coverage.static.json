@@ -1,9 +1,9 @@
 {
   "apps": {
     "overalls_protocol": {
-      "active": 8,
+      "active": 11,
       "coverage": 1.0,
-      "covered": 8
+      "covered": 11
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "overalls_protocol.codecs": {
-      "active": 3,
+      "active": 4,
       "app": "overalls_protocol",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "overalls_protocol.codecs.I1": {
@@ -48,14 +48,24 @@
           "tests": [
             "test UUID validation is strict and report nil remains unknown"
           ]
+        },
+        "overalls_protocol.codecs.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test reports reject contradictory or duplicate pool observations"
+          ]
         }
       }
     },
     "overalls_protocol.state_view": {
-      "active": 3,
+      "active": 4,
       "app": "overalls_protocol",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "overalls_protocol.state_view.I1": {
@@ -87,14 +97,24 @@
           "tests": [
             "test view ownership and versions are enforced"
           ]
+        },
+        "overalls_protocol.state_view.I4": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test view index and subscribers track deletion"
+          ]
         }
       }
     },
     "overalls_protocol.transport": {
-      "active": 2,
+      "active": 3,
       "app": "overalls_protocol",
       "coverage": 1.0,
-      "covered": 2,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "overalls_protocol.transport.I1": {
@@ -116,6 +136,16 @@
           "tests": [
             "test control envelope accepts closed valid messages and rejects unknown fields"
           ]
+        },
+        "overalls_protocol.transport.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test control envelope rejects arbitrary names and malformed JSON"
+          ]
         }
       }
     },
@@ -131,8 +161,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 8,
+    "active": 11,
     "coverage": 1.0,
-    "covered": 8
+    "covered": 11
   }
 }

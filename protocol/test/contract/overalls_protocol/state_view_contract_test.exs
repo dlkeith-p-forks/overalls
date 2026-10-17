@@ -35,4 +35,19 @@ defmodule OverallsProtocolStateViewContractTest do
     assert :ok = OverallsProtocol.View.release(name, :key)
     assert :error = OverallsProtocol.View.fetch(name, :key)
   end
+
+  @tag obligation: "overalls_protocol.state_view.I4"
+  test "view index and subscribers track deletion" do
+    name = :covenant_view_notify
+    {:ok, pid} = OverallsProtocol.View.start_link(name: name)
+    on_exit(fn -> if Process.alive?(pid), do: GenServer.stop(pid) end)
+    assert :ok = OverallsProtocol.View.claim(name, :key)
+    assert :ok = OverallsProtocol.View.subscribe(name, [:key])
+    assert {:ok, _} = OverallsProtocol.View.put(name, :key, :value, [:tag])
+    assert_receive {:view_changed, ^name, :key}
+    assert [{:key, _, :value}] = OverallsProtocol.View.lookup(name, :tag)
+    assert :ok = OverallsProtocol.View.delete(name, :key)
+    assert_receive {:view_changed, ^name, :key}
+    assert [] = OverallsProtocol.View.lookup(name, :tag)
+  end
 end

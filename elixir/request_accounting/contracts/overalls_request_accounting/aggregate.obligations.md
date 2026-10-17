@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Produced snapshots validate, while inconsistent counts are rejected.
 - **kind:** security
 - **status:** active
+
+### overalls_request_accounting.aggregate.I4 — Duration accounting is bounded and conservative
+- **scope:** `Overalls.RequestAccounting.Aggregate.record/3`, `bucket_index/1`
+- **must:** Excluded outcomes do not mutate state, missing durations remain unmeasured, and bucket boundaries are deterministic and bounded.
+- **kind:** functional
+- **status:** active

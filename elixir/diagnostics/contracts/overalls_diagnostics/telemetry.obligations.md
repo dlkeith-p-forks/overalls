@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** OTP reports map to the reviewed finite category vocabulary.
 - **kind:** non-functional
 - **status:** active
+
+### overalls_diagnostics.telemetry.I4 — Catalog projections reject unknown metadata
+- **scope:** `Overalls.Diagnostics.Events.Catalog.validate/3`
+- **must:** Unknown events, undeclared keys, missing required fields, duplicate keys, and invalid values are rejected as a whole.
+- **kind:** security
+- **status:** active

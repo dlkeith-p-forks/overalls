@@ -27,4 +27,11 @@ defmodule EnricoMirrorContractTest do
     refute Enrico.Git.valid_path?("/etc/passwd")
     refute Enrico.Git.valid_path?("a/../b")
   end
+
+  @tag obligation: "enrico.mirror.I3"
+  test "validations reject shell and git metacharacters" do
+    refute Enrico.Git.valid_source?("owner;touch", "repo")
+    refute Enrico.Git.valid_ref?("refs/heads/main~1")
+    refute Enrico.Git.valid_path?("docs/secret\n")
+  end
 end

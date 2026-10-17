@@ -27,4 +27,10 @@ defmodule ZiggyAccountingContractTest do
     refute Ziggy.VersionFence.probe?(fenced, make_ref())
     refute Ziggy.VersionFence.fenced?(Ziggy.VersionFence.accepted(fenced))
   end
+
+  @tag obligation: "ziggy.accounting.I3"
+  test "completion wire keeps only accounting fields" do
+    assert Ziggy.Completion.wire(%{outcome: :ok, tokens: 2, ignored: :secret}) ==
+             %{outcome: :ok, tokens: 2}
+  end
 end

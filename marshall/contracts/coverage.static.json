@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 16,
+      "active": 17,
       "coverage": 1.0,
-      "covered": 16
+      "covered": 17
     },
     "system": {
       "active": 0,
@@ -139,10 +139,10 @@
       }
     },
     "marshall.threads_agents": {
-      "active": 3,
+      "active": 4,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "marshall.threads_agents.I1": {
@@ -173,6 +173,16 @@
           "testable": true,
           "tests": [
             "test keeps executor capabilities finite"
+          ]
+        },
+        "marshall.threads_agents.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test planning questions reject duplicates and out of bounds input"
           ]
         }
       }
@@ -238,8 +248,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 16,
+    "active": 17,
     "coverage": 1.0,
-    "covered": 16
+    "covered": 17
   }
 }

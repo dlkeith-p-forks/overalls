@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Nil reports remain unknown and UUID validation is strict.
 - **kind:** functional
 - **status:** active
+
+### overalls_protocol.codecs.I4 — Capacity observations reject contradictory pools
+- **scope:** `OverallsProtocol.report/1`
+- **must:** Reports reject pools whose free capacity exceeds total, whose allocation credit exceeds used bytes, or whose identities are duplicated.
+- **kind:** security
+- **status:** active

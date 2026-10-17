@@ -14,6 +14,12 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **kind:** non-functional
 - **status:** active
 
+### enrico.mirror.I3 — Git names reject command metacharacters
+- **scope:** `Enrico.Git` validators
+- **must:** source, ref, and path inputs containing shell, control, or revision metacharacters MUST be rejected.
+- **kind:** security
+- **status:** active
+
 ### enrico.mirror.I2 — Git source and path validation rejects traversal
 - **scope:** the component behavior exercised by the tagged contract test
 - **must:** source, ref, and path validators MUST reject unsafe names, traversal, and absolute paths.

@@ -19,3 +19,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** A mode-0700 directory accepts valid quality states and round-trips them; invalid states and non-private directories are refused.
 - **kind:** security
 - **status:** active
+
+### overalls_request_accounting.recorder.I3 — Recorder replies are closed and bounded
+- **scope:** `Overalls.RequestAccounting.RecorderRPC.decode/1`
+- **must:** Only exact bounded acknowledgements and allowlisted refusal reasons decode; malformed, oversized, or unknown replies are unavailable.
+- **kind:** security
+- **status:** active

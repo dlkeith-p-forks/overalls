@@ -27,4 +27,16 @@ defmodule OverallsRequestAccountingAggregateContractTest do
     tampered = Map.put(snapshot, :requests, 1)
     assert {:error, _} = Overalls.RequestAccounting.Aggregate.validate_snapshot(tampered)
   end
+
+  @tag obligation: "overalls_request_accounting.aggregate.I4"
+  test "duration accounting remains bounded and excluded outcomes are inert" do
+    state = Overalls.RequestAccounting.Aggregate.new("marshall_web")
+    assert state == Overalls.RequestAccounting.Aggregate.record(state, :exclude, 100)
+    state = Overalls.RequestAccounting.Aggregate.record(state, :success, nil)
+    assert state.requests == 1 and state.duration_count == 0
+    assert Overalls.RequestAccounting.Aggregate.bucket_index(0) == 0
+    assert Overalls.RequestAccounting.Aggregate.bucket_index(10_000) == 0
+    assert Overalls.RequestAccounting.Aggregate.bucket_index(10_001) == 1
+    assert Overalls.RequestAccounting.Aggregate.bucket_index(10_000_001) == 7
+  end
 end

@@ -6,9 +6,9 @@
       "covered": 0
     },
     "ziggy": {
-      "active": 5,
+      "active": 6,
       "coverage": 1.0,
-      "covered": 5
+      "covered": 6
     }
   },
   "components": {
@@ -21,10 +21,10 @@
       "obligations": {}
     },
     "ziggy.accounting": {
-      "active": 2,
+      "active": 3,
       "app": "ziggy",
       "coverage": 1.0,
-      "covered": 2,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "ziggy.accounting.I1": {
@@ -45,6 +45,16 @@
           "testable": true,
           "tests": [
             "test version fences require the current probe and recover on acceptance"
+          ]
+        },
+        "ziggy.accounting.I3": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test completion wire keeps only accounting fields"
           ]
         }
       }
@@ -92,8 +102,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 5,
+    "active": 6,
     "coverage": 1.0,
-    "covered": 5
+    "covered": 6
   }
 }

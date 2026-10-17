@@ -14,6 +14,12 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **kind:** non-functional
 - **status:** active
 
+### brady.cache.I3 — Range validators fail closed
+- **scope:** `Brady.Cache.Range`
+- **must:** unmatched validators MUST route upstream and ranges outside the representation MUST be unsatisfiable.
+- **kind:** security
+- **status:** active
+
 ### brady.cache.I2 — Range selection never serves invalid ranges
 - **scope:** the component behavior exercised by the tagged contract test
 - **must:** malformed or multi-range requests MUST route upstream; valid bounded ranges return partial selections.

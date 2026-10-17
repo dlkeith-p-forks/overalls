@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Only the claimant may publish, versions increase, and released rows disappear.
 - **kind:** security
 - **status:** active
+
+### overalls_protocol.state_view.I4 — View index and notifications track removal
+- **scope:** `OverallsProtocol.View.subscribe/2`, `lookup/2`, `delete/2`
+- **must:** Published terms are discoverable, deletion removes indexed rows, and subscribers receive a change notification without row payloads.
+- **kind:** functional
+- **status:** active

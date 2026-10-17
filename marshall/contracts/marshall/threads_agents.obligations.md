@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Unknown, duplicate, or excessive capabilities and unsupported tools MUST be rejected.
 - **kind:** security
 - **status:** active
+
+### marshall.threads_agents.I4 — Planning questions are bounded and uniquely identified
+- **scope:** `Marshall.Agents.Planning.validate_questions/1`
+- **must:** Planning input MUST contain one to three well formed questions with bounded text and unique identifiers; malformed or duplicate entries MUST be rejected deterministically.
+- **kind:** security
+- **status:** active

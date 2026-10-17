@@ -1,9 +1,9 @@
 {
   "apps": {
     "galileo": {
-      "active": 2,
+      "active": 3,
       "coverage": 1.0,
-      "covered": 2
+      "covered": 3
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "galileo.authorized_proxy": {
-      "active": 2,
+      "active": 3,
       "app": "galileo",
       "coverage": 1.0,
-      "covered": 2,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "galileo.authorized_proxy.I1": {
@@ -38,6 +38,16 @@
           "tests": [
             "test strip only removes complete path segments"
           ]
+        },
+        "galileo.authorized_proxy.I3": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test prefix stripping handles absent and wildcard prefixes"
+          ]
         }
       }
     },
@@ -53,8 +63,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 2,
+    "active": 3,
     "coverage": 1.0,
-    "covered": 2
+    "covered": 3
   }
 }

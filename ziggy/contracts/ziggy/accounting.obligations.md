@@ -14,6 +14,12 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **kind:** non-functional
 - **status:** active
 
+### ziggy.accounting.I3 — Completion wire output is bounded
+- **scope:** `Ziggy.Completion`
+- **must:** wire output MUST contain only the documented accounting fields and omit unrelated data.
+- **kind:** functional
+- **status:** active
+
 ### ziggy.accounting.I2 — Version fence probe recovery
 - **scope:** `Ziggy.VersionFence`
 - **must:** Refusals create a tagged probe and acceptance clears the fence; unrelated tokens cannot probe.

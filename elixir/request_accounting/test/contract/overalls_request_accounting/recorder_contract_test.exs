@@ -23,4 +23,25 @@ defmodule OverallsRequestAccountingRecorderContractTest do
     assert :ok = Overalls.RequestAccounting.QualityMarker.write(dir, :clean)
     assert {:ok, :clean} = Overalls.RequestAccounting.QualityMarker.read(dir)
   end
+
+  @tag obligation: "overalls_request_accounting.recorder.I3"
+  test "recorder replies are closed and bounded" do
+    assert :ok = Overalls.RequestAccounting.RecorderRPC.decode(~s({"status":"ok"}))
+
+    assert {:admitted, 4} =
+             Overalls.RequestAccounting.RecorderRPC.decode(~s({"status":"admitted","id":4}))
+
+    assert {:error, :refused} =
+             Overalls.RequestAccounting.RecorderRPC.decode(
+               ~s({"status":"refused","reason":"schema"})
+             )
+
+    assert {:error, :unavailable} =
+             Overalls.RequestAccounting.RecorderRPC.decode(~s({"status":"admitted","id":0}))
+
+    assert {:error, :unavailable} = Overalls.RequestAccounting.RecorderRPC.decode("not-json")
+
+    assert {:error, :unavailable} =
+             Overalls.RequestAccounting.RecorderRPC.decode(String.duplicate("x", 513))
+  end
 end

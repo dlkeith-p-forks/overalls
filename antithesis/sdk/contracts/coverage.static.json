@@ -1,9 +1,9 @@
 {
   "apps": {
     "overalls_antithesis_sdk": {
-      "active": 3,
+      "active": 4,
       "coverage": 1.0,
-      "covered": 3
+      "covered": 4
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "overalls_antithesis_sdk.sdk": {
-      "active": 3,
+      "active": 4,
       "app": "overalls_antithesis_sdk",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "overalls_antithesis_sdk.sdk.I1": {
@@ -48,6 +48,16 @@
           "tests": [
             "test property wire preserves assertion kind and omits details on misses"
           ]
+        },
+        "overalls_antithesis_sdk.sdk.I4": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test details reject values beyond wire bounds"
+          ]
         }
       }
     },
@@ -63,8 +73,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 3,
+    "active": 4,
     "coverage": 1.0,
-    "covered": 3
+    "covered": 4
   }
 }

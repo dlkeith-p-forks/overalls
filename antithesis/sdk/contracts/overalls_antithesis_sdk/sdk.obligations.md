@@ -14,6 +14,12 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **kind:** non-functional
 - **status:** active
 
+### overalls_antithesis_sdk.sdk.I4 — Details reject out-of-range integers
+- **scope:** `OverallsAntithesis.SDK.Details`
+- **must:** negative and values beyond the signed 64-bit wire bound MUST be rejected.
+- **kind:** functional
+- **status:** active
+
 ### overalls_antithesis_sdk.sdk.I2 — Bounded numeric details
 - **scope:** `OverallsAntithesis.SDK.Details`
 - **must:** Details accept only bounded non-negative integers and wire only present fields.

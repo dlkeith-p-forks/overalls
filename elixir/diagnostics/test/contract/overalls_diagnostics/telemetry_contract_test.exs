@@ -54,4 +54,12 @@ defmodule OverallsDiagnosticsTelemetryContractTest do
     assert "marshall.runtime_report" =
              Overalls.Diagnostics.Privacy.category_event(:marshall, :runtime_report)
   end
+
+  @tag obligation: "overalls_diagnostics.telemetry.I4"
+  test "catalog validation is closed over events and metadata" do
+    catalog = Overalls.Diagnostics.Events.Catalog
+    assert {:error, :invalid} = Overalls.Diagnostics.Events.Catalog.validate(catalog, "unknown.event", %{})
+    assert {:error, :invalid} = Overalls.Diagnostics.Events.Catalog.validate(catalog, "marshall.runtime_report", %{password: "x"})
+    assert {:error, :invalid} = Overalls.Diagnostics.Events.Catalog.validate(catalog, "marshall.runtime_report", [event: "x", event: "y"])
+  end
 end

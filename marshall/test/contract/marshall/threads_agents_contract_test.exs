@@ -92,4 +92,27 @@ defmodule MarshallThreadsAgentsContractTest do
              :exec_command
            )
   end
+
+  @tag obligation: "marshall.threads_agents.I4"
+  test "planning questions reject duplicates and out of bounds input" do
+    question = %{
+      "id" => "q1",
+      "header" => "Choose",
+      "question" => "Which?",
+      "options" => [
+        %{"label" => "A", "description" => "first"},
+        %{"label" => "B", "description" => "second"}
+      ]
+    }
+
+    assert {:ok, [^question]} = Marshall.Agents.Planning.validate_questions([question])
+
+    assert {:error, :invalid_questions} =
+             Marshall.Agents.Planning.validate_questions([question, question])
+
+    assert {:error, :invalid_questions} = Marshall.Agents.Planning.validate_questions([])
+
+    assert {:error, :invalid_questions} =
+             Marshall.Agents.Planning.validate_questions(List.duplicate(question, 4))
+  end
 end

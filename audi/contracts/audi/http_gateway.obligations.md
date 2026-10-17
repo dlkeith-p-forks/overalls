@@ -19,3 +19,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** `Audi.HTTP.Headers.response/1` MUST remove Domain attributes and reserved platform cookies.
 - **kind:** security
 - **status:** active
+
+### audi.http_gateway.I3 — WebSocket frames preserve payloads and bound controls
+- **scope:** `Audi.HTTP.WebSocketFrame`
+- **must:** encoded text frames MUST decode losslessly; control frames larger than 125 bytes MUST be rejected.
+- **kind:** security
+- **status:** active

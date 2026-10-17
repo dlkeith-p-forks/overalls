@@ -39,4 +39,15 @@ defmodule AudiHttpGatewayContractTest do
 
     assert headers == [{"set-cookie", "sid=x; Path=/"}]
   end
+
+  @tag obligation: "audi.http_gateway.I3"
+  test "websocket frames round trip and reject oversized control payloads" do
+    assert {:ok, encoded} = Audi.HTTP.WebSocketFrame.encode(:text, "hello")
+    assert byte_size(encoded) > 0
+
+    assert {:ok, %{opcode: 1, payload: "hello"}, <<>>} =
+             Audi.HTTP.WebSocketFrame.decode(<<0x81, 5, "hello">>)
+
+    assert :error = Audi.HTTP.WebSocketFrame.encode(:ping, String.duplicate("x", 126))
+  end
 end

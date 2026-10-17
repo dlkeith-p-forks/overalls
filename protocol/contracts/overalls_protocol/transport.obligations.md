@@ -19,3 +19,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Valid versioned messages decode, while unknown kinds, extra fields, invalid names, and unsupported versions are rejected without creating atoms.
 - **kind:** security
 - **status:** active
+
+### overalls_protocol.transport.I3 — Envelope decoding never creates atoms
+- **scope:** `OverallsProtocol.Control.Envelope.decode/1`
+- **must:** Arbitrary unknown operation names and malformed JSON return closed errors without dynamically creating atoms.
+- **kind:** security
+- **status:** active
