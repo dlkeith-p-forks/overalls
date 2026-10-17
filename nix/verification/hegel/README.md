@@ -123,6 +123,11 @@ from hegel import _run_registered
 _run_registered(profile="development")
 ```
 
+The catalog exports `hegel-framework-packages` as a standalone check. It builds
+the pinned native engine and Python binding and runs the binding smoke suite,
+including shrinking, replay, replay-mismatch rejection, state machines, and a
+concurrent schedule.
+
 ## Versioning
 
 `libhegel.nix` pins tag and hashes; the binding refuses to load a mismatched

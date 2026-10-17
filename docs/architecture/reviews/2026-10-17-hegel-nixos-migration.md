@@ -43,9 +43,11 @@ shrinkable replay blob.
 ## Evidence and limits
 
 Structural validation passed for Python compilation, Nix parsing and diff
-whitespace. The Hegel package smoke suite covers passing and failing value
-properties, shrinking, replay, state machines, and a concurrent worker
-schedule. Full KVM execution of every migrated suite remains an execution task
+whitespace. The explicit `hegel-framework-packages` check now builds the pinned
+native engine and binding and passed the smoke suite: value properties,
+shrinking, replay, cross-property and malformed-blob rejection, state
+machines, and a concurrent worker schedule. Full KVM execution of every
+migrated suite remains an execution task
 for the target environment; no unrun machine is described as passing here.
 Guest-side Hypothesis helpers used by evaluation/packaged fixture runners are
 not silently relabeled as native Hegel machine evidence. Inception failures

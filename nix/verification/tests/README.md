@@ -73,6 +73,14 @@ counterexample and fail the check; the
 [framework README](../hegel/README.md) lists the `properties` options
 (`profile`, `testCases`, `statefulStepCount`, `redact`, replay blobs).
 
+The catalog exports `hegel-framework-packages` as a direct build check. It
+executes the binding's shrink, replay, mismatch, state-machine and concurrency
+smoke suite before any machine-specific evidence is considered. The remaining
+Hypothesis references are confined to evaluation `runCommand` checks or helper
+programs that run inside a guest namespace (backup cleanup and auto-update
+history fixtures); they are not composed NixOS driver properties and therefore
+are not mislabeled as Hegel machine evidence.
+
 A check declares `properties` beside its ordinary `testScript` assertions:
 
 ```nix
