@@ -1,0 +1,29 @@
+# BuildKit uses this file instead of the repository .dockerignore when building
+# .oss-scanner/Dockerfile. The offline-analysis image MUST keep the Git history,
+# documentation, handbook and fleet configuration an auditor reads; only local
+# build outputs and caches are excluded.
+.devenv
+.direnv
+result
+result-*
+**/_build
+**/deps
+**/.elixir_ls
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/.pytest_cache/
+**/.ruff_cache/
+**/.mypy_cache/
+**/.hypothesis/
+**/.venv/
+**/.tox/
+**/node_modules/
+**/target/
+**/*.egg-info/
+**/.coverage
+**/.coverage.*
+**/htmlcov/
+antithesis/scratchbook
+# Nix runtime closures may contain required bytecode and are copied verbatim.
+!antithesis/build/contexts/**

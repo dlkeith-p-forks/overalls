@@ -69,9 +69,11 @@ the production trust boundary.
 ## How to exercise the source
 
 The checkout is at `/src` and retains its Git history, pinned flake inputs,
-Nix store and release closures. The image builds the Marshall, Lilly, Audi,
-Brady, Enrico, Galileo, Porsche and Ziggy releases. Inception guest workloads
-are separate NixOS fixtures and remain outside this qualification image. Their source
+Nix store and release closures. The image builds the Marshall release; the
+repository's Nix checks build and test the Lilly, Audi, Brady, Enrico, Galileo,
+Porsche and Ziggy releases, whose source and pinned inputs are also present.
+Inception guest workloads are separate NixOS fixtures and remain outside this
+qualification image. Their source
 tests are under each component's `test/` directory; shared Protocol tests are
 under `protocol/test/`, and Rust guest/host tests are under `lyra/tests/` and
 the relevant `native/` directories.
