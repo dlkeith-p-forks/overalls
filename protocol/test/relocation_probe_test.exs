@@ -1,9 +1,12 @@
 defmodule OverallsProtocol.RelocationProbeTest do
   use ExUnit.Case, async: true
-  import Hegel
-  import Hegel.Gen
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   alias OverallsProtocol.RelocationProbe, as: Codec
-  defp id(n), do: "00000000-0000-4000-8000-" <> String.pad_leading(to_string(n), 12, "0")
+
+  defp id(n) do
+    "00000000-0000-4000-8000-" <> String.pad_leading(to_string(n), 12, "0")
+  end
 
   defp command do
     %{
@@ -40,8 +43,9 @@ defmodule OverallsProtocol.RelocationProbeTest do
       c = command()
 
       endpoint =
-        if phase == :probe,
-          do: %{"address" => "source.example", "port" => 2222, "host_key" => c.public_key}
+        if phase == :probe do
+          %{"address" => "source.example", "port" => 2222, "host_key" => c.public_key}
+        end
 
       c = %{c | phase: phase, source_endpoint: endpoint}
 
@@ -57,7 +61,12 @@ defmodule OverallsProtocol.RelocationProbeTest do
 
       for {key, value} <- [
             id: id(99),
-            phase: if(phase == :grant, do: :probe, else: :grant),
+            phase:
+              if(phase == :grant) do
+                :probe
+              else
+                :grant
+              end,
             challenge: id(99),
             revision: 2,
             expires_at: c.expires_at + 1
@@ -66,14 +75,19 @@ defmodule OverallsProtocol.RelocationProbeTest do
       end
 
       wire = Codec.encode_command(c)
-      for key <- Map.keys(wire), do: assert({:error, _} = Codec.command(Map.delete(wire, key)))
 
-      for key <- ~w(path argv private_key stream extra),
-          do: assert({:error, _} = Codec.command(Map.put(wire, key, "forbidden")))
+      for key <- Map.keys(wire) do
+        assert({:error, _} = Codec.command(Map.delete(wire, key)))
+      end
+
+      for key <- ~w(path argv private_key stream extra) do
+        assert({:error, _} = Codec.command(Map.put(wire, key, "forbidden")))
+      end
 
       bad_endpoint =
-        if phase == :grant,
-          do: %{"address" => "source.example", "port" => 2222, "host_key" => c.public_key}
+        if phase == :grant do
+          %{"address" => "source.example", "port" => 2222, "host_key" => c.public_key}
+        end
 
       assert {:error, _} = Codec.command(Map.put(wire, "source_endpoint", bad_endpoint))
     end
@@ -83,22 +97,44 @@ defmodule OverallsProtocol.RelocationProbeTest do
     wire = Codec.encode_command(command())
 
     for key <- ~w(generation revision expires_at),
-        bad <- [nil, 0, -1, 1.0, 9_223_372_036_854_775_808],
-        do: assert({:error, _} = Codec.command(Map.put(wire, key, bad)))
+        bad <- [nil, 0, -1, 1.0, 9_223_372_036_854_775_808] do
+      assert({:error, _} = Codec.command(Map.put(wire, key, bad)))
+    end
 
     for key <- ~w(id challenge),
-        bad <- [nil, "", id(1) <> "\n"],
-        do: assert({:error, _} = Codec.command(Map.put(wire, key, bad)))
+        bad <- [nil, "", id(1) <> "\n"] do
+      assert({:error, _} = Codec.command(Map.put(wire, key, bad)))
+    end
 
     assert {:error, _} = Codec.command(Map.put(wire, "public_key", "private material"))
     assert {:error, _} = Codec.command(Map.put(wire, "phase", "stop"))
     assert {:error, _} = Codec.command(put_in(wire, ["intent", "version"], 2))
     assert {:error, _} = Codec.commands([wire, wire])
-    assert {:ok, _} = Codec.commands(for n <- 1..16, do: Map.put(wire, "id", id(n)))
-    assert {:error, _} = Codec.commands(for n <- 1..17, do: Map.put(wire, "id", id(n)))
+
+    assert {:ok, _} =
+             Codec.commands(
+               for n <- 1..16 do
+                 Map.put(wire, "id", id(n))
+               end
+             )
+
+    assert {:error, _} =
+             Codec.commands(
+               for n <- 1..17 do
+                 Map.put(wire, "id", id(n))
+               end
+             )
+
     r = Map.take(wire, ~w(id phase challenge revision expires_at))
     assert {:error, _} = Codec.results([r, r])
-    assert {:error, _} = Codec.results(for n <- 1..17, do: Map.put(r, "id", id(n)))
+
+    assert {:error, _} =
+             Codec.results(
+               for n <- 1..17 do
+                 Map.put(r, "id", id(n))
+               end
+             )
+
     message = %{"version" => 4, "session_id" => id(20), "epoch" => 1, "results" => [r]}
     assert {:ok, _} = Codec.exchange(message)
     assert {:error, :unsupported_version} = Codec.exchange(%{message | "version" => 2})
@@ -106,10 +142,13 @@ defmodule OverallsProtocol.RelocationProbeTest do
     assert {:error, _} = Codec.exchange(%{message | "epoch" => 0})
   end
 
-  property "arbitrary terms never produce probe authority or raise" do
-    check all(value <- term()) do
-      assert Codec.command(value) == {:error, :invalid_message}
-      assert Codec.result(value) == {:error, :invalid_message}
-    end
+  property "arbitrary terms never produce probe authority or raise",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 185_934_331 do
+    value = draw("value", OverallsProtocol.TestGenerators.peer_term())
+    assert Codec.command(value) == {:error, :invalid_message}
+    assert Codec.result(value) == {:error, :invalid_message}
   end
 end

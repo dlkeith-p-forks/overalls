@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.TerminalTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.Terminal
 
@@ -8,51 +9,51 @@ defmodule OverallsProtocol.TerminalTest do
   @id2 "9c83b4a1-1f7a-4bd2-9c4a-64c69fd3ba2e"
   @id3 "0dd0e1a2-6bd6-4a45-9db2-5de49a7e8b3c"
   @hex_chars Enum.concat(?a..?f, ?0..?9)
+  @alphanumeric_chars Enum.concat([?a..?z, ?A..?Z, ?0..?9])
   @control_types ~w(hello hello_response heartbeat heartbeat_reply input_ack output_ack users users_listed create created attach attached channel_close listing listed kill killed resize closed boot_log boot_log_data creation_query creation_status creation_cancel creation_cancelled)a
 
-  property "data frames round trip exactly" do
-    check all(
-            triplet <-
-              gen all(
-                    channel <- positive_integer(),
-                    sequence <- positive_integer(),
-                    length <- integer(0..4096),
-                    bytes <- binary(length: length)
-                  ) do
-                {channel, sequence, bytes}
-              end,
-            max_runs: 300
-          ) do
-      {channel, sequence, bytes} = triplet
-      wire = Terminal.encode_data_frame(channel, sequence, bytes)
+  property "data frames round trip exactly",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 300,
+    seed: 20_261_101 do
+    channel = draw("channel", integer(1, 1_000_000))
+    sequence = draw("sequence", integer(1, 1_000_000))
+    bytes = draw("payload", binary(0, 4096))
+    wire = Terminal.encode_data_frame(channel, sequence, bytes)
 
-      assert {:ok, %{channel: ^channel, sequence: ^sequence, bytes: ^bytes}} =
-               Terminal.decode_frame(wire)
+    assert {:ok, %{channel: ^channel, sequence: ^sequence, bytes: ^bytes}} =
+             Terminal.decode_frame(wire)
 
-      assert Terminal.frame_consumed(wire) == byte_size(wire)
-    end
+    assert Terminal.frame_consumed(wire) == byte_size(wire)
   end
 
-  property "control messages round trip through frames" do
-    check all(message <- control_message_gen(), max_runs: 300) do
-      wire = Terminal.encode_control_frame(message)
-      assert {:ok, %{channel: 0, message: decoded}} = Terminal.decode_frame(wire)
-      assert decoded == message
-    end
+  property "control messages round trip through frames",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 300,
+    seed: 20_261_102 do
+    message = draw("control message", control_message_gen())
+    wire = Terminal.encode_control_frame(message)
+    assert {:ok, %{channel: 0, message: decoded}} = Terminal.decode_frame(wire)
+    assert decoded == message
   end
 
   test "control generators cover every closed schema" do
     assert Enum.sort(Map.keys(control_message_generators())) == Enum.sort(@control_types)
   end
 
-  property "closed control schemas reject unknown fields" do
-    check all(message <- control_message_gen(), max_runs: 300) do
-      wire = Terminal.encode_control_frame(message)
-      <<0::32, 2, 0::64, length::16, payload::binary-size(length)>> = wire
-      value = payload |> JSON.decode!() |> Map.put("unknown", true)
+  property "closed control schemas reject unknown fields",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 300,
+    seed: 20_261_103 do
+    message = draw("control message", control_message_gen())
+    wire = Terminal.encode_control_frame(message)
+    <<0::32, 2, 0::64, length::16, payload::binary-size(length)>> = wire
+    value = payload |> JSON.decode!() |> Map.put("unknown", true)
 
-      assert {:error, :invalid_message} = control_json(value)
-    end
+    assert {:error, :invalid_message} = control_json(value)
   end
 
   test "prefix decoding preserves coalesced following frames" do
@@ -68,34 +69,28 @@ defmodule OverallsProtocol.TerminalTest do
     assert {:error, :invalid_message} = Terminal.decode_frame(first <> second)
   end
 
-  property "truncated frames are partial, never invalid" do
-    check all(
-            triplet <-
-              gen all(
-                    channel <- integer(1..100),
-                    sequence <- positive_integer(),
-                    bytes <- binary(min_length: 1, max_length: 512)
-                  ) do
-                {channel, sequence, bytes}
-              end,
-            cut <- integer(0..14),
-            max_runs: 200
-          ) do
-      {channel, sequence, bytes} = triplet
-      wire = Terminal.encode_data_frame(channel, sequence, bytes)
-      assert :partial = Terminal.decode_frame(binary_part(wire, 0, cut))
-    end
+  property "truncated frames are partial, never invalid",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 200,
+    seed: 20_261_104 do
+    channel = draw("channel", integer(1, 100))
+    sequence = draw("sequence", integer(1, 1_000_000))
+    bytes = draw("payload", binary(1, 512))
+    cut = draw("cut", integer(0, 14))
+    wire = Terminal.encode_data_frame(channel, sequence, bytes)
+    assert :partial = Terminal.decode_frame(binary_part(wire, 0, cut))
   end
 
-  property "oversized declared lengths are rejected" do
-    check all(
-            channel <- integer(1..100),
-            sequence <- positive_integer(),
-            max_runs: 20
-          ) do
-      bad = <<channel::32, 1, sequence::64, 65_536::16>> <> :binary.copy(<<0>>, 65_536)
-      assert {:error, :invalid_message} = Terminal.decode_frame(bad)
-    end
+  property "oversized declared lengths are rejected",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 20,
+    seed: 20_261_105 do
+    channel = draw("channel", integer(1, 100))
+    sequence = draw("sequence", integer(1, 1_000_000))
+    bad = <<channel::32, 1, sequence::64, 65_536::16>> <> :binary.copy(<<0>>, 65_536)
+    assert {:error, :invalid_message} = Terminal.decode_frame(bad)
   end
 
   test "control frames require channel zero and sequence zero" do
@@ -265,7 +260,9 @@ defmodule OverallsProtocol.TerminalTest do
              control_json(%{base | "term" => String.duplicate("t", 33)})
   end
 
-  defp hex(length), do: string(@hex_chars, length: length)
+  @spec hex(pos_integer()) :: :hegel_gen.t(String.t())
+  defp hex(length),
+    do: map(list(member_of(@hex_chars), min: length, max: length), &List.to_string/1)
 
   defp uuid_gen do
     gen all(
@@ -279,26 +276,20 @@ defmodule OverallsProtocol.TerminalTest do
     end
   end
 
-  defp bounded_string(max) do
-    gen all(
-          length <- integer(1..max),
-          value <- string(:alphanumeric, length: length),
-          max_tries: 20
-        ) do
-      value
-    end
-  end
+  @spec bounded_string(pos_integer()) :: :hegel_gen.t(String.t())
+  defp bounded_string(max),
+    do: map(list(member_of(@alphanumeric_chars), min: 1, max: max), &List.to_string/1)
 
   defp guest_session_gen do
     gen all(
-          id <- positive_integer(),
+          id <- integer(1, 1_000_000),
           user <- bounded_string(64),
           cols <- integer(1..4096),
           rows <- integer(1..512),
           viewers <- integer(0..64),
           alive <- boolean(),
-          created_ms <- non_negative_integer(),
-          last_ms <- non_negative_integer()
+          created_ms <- integer(0, 1_000_000),
+          last_ms <- integer(0, 1_000_000)
         ) do
       %{
         guest_session_id: id,
@@ -314,13 +305,13 @@ defmodule OverallsProtocol.TerminalTest do
   end
 
   @spec recovery_query_gen(:creation_query | :creation_cancel) ::
-          StreamData.t(Terminal.control_message())
+          :hegel_gen.t(Terminal.control_message())
   defp recovery_query_gen(type) do
     gen all(
           request_id <- uuid_gen(),
           vm <- uuid_gen(),
           placement <- uuid_gen(),
-          epoch <- positive_integer()
+          epoch <- integer(1, 1_000_000)
         ) do
       %{
         type: type,
@@ -336,12 +327,12 @@ defmodule OverallsProtocol.TerminalTest do
     control_message_generators() |> Map.values() |> one_of()
   end
 
-  @spec consumption_gen(:input_ack | :output_ack) :: StreamData.t(Terminal.control_message())
+  @spec consumption_gen(:input_ack | :output_ack) :: :hegel_gen.t(Terminal.control_message())
   defp consumption_gen(type) do
     gen all(
-          channel <- positive_integer(),
-          frames <- non_negative_integer(),
-          bytes <- non_negative_integer()
+          channel <- integer(1, 1_000_000),
+          frames <- integer(0, 1_000_000),
+          bytes <- integer(0, 1_000_000)
         ) do
       %{type: type, channel: channel, frames: frames, bytes: bytes}
     end
@@ -354,11 +345,11 @@ defmodule OverallsProtocol.TerminalTest do
       input_ack: consumption_gen(:input_ack),
       output_ack: consumption_gen(:output_ack),
       heartbeat:
-        gen all(sequence <- positive_integer()) do
+        gen all(sequence <- integer(1, 1_000_000)) do
           %{type: :heartbeat, sequence: sequence}
         end,
       heartbeat_reply:
-        gen all(sequence <- positive_integer()) do
+        gen all(sequence <- integer(1, 1_000_000)) do
           %{type: :heartbeat_reply, sequence: sequence}
         end,
       creation_query: recovery_query_gen(:creation_query),
@@ -367,7 +358,7 @@ defmodule OverallsProtocol.TerminalTest do
         gen all(
               request_id <- uuid_gen(),
               state <- member_of([:unknown, :running, :exited]),
-              id <- positive_integer()
+              id <- integer(1, 1_000_000)
             ) do
           %{
             type: :creation_status,
@@ -384,8 +375,8 @@ defmodule OverallsProtocol.TerminalTest do
         gen all(
               vm <- uuid_gen(),
               placement <- uuid_gen(),
-              epoch <- positive_integer(),
-              id <- positive_integer(),
+              epoch <- integer(1, 1_000_000),
+              id <- integer(1, 1_000_000),
               ok <- boolean()
             ) do
           %{
@@ -413,7 +404,7 @@ defmodule OverallsProtocol.TerminalTest do
               term <- bounded_string(32),
               cols <- integer(1..4096),
               rows <- integer(1..512),
-              channel <- positive_integer()
+              channel <- integer(1, 1_000_000)
             ) do
           %{
             type: :create,
@@ -432,9 +423,9 @@ defmodule OverallsProtocol.TerminalTest do
       created:
         gen all(
               request_id <- uuid_gen(),
-              channel <- positive_integer(),
+              channel <- integer(1, 1_000_000),
               ok <- boolean(),
-              guest_session_id <- positive_integer(),
+              guest_session_id <- integer(1, 1_000_000),
               reason <- member_of([:dial_failed, :rejected, :limit])
             ) do
           if ok do
@@ -462,10 +453,10 @@ defmodule OverallsProtocol.TerminalTest do
               vm_id <- uuid_gen(),
               placement_id <- uuid_gen(),
               execution_epoch <- integer(1..1000),
-              guest_session_id <- positive_integer(),
+              guest_session_id <- integer(1, 1_000_000),
               mode <- member_of([:rw, :ro]),
-              cursor <- non_negative_integer(),
-              channel <- positive_integer()
+              cursor <- integer(0, 1_000_000),
+              channel <- integer(1, 1_000_000)
             ) do
           %{
             type: :attach,
@@ -482,10 +473,10 @@ defmodule OverallsProtocol.TerminalTest do
         end,
       attached:
         gen all(
-              channel <- positive_integer(),
+              channel <- integer(1, 1_000_000),
               ok <- boolean(),
-              guest_session_id <- positive_integer(),
-              from <- non_negative_integer(),
+              guest_session_id <- integer(1, 1_000_000),
+              from <- integer(0, 1_000_000),
               reason <- member_of([:dial_failed, :rejected, :not_found, :fenced])
             ) do
           if ok do
@@ -511,7 +502,7 @@ defmodule OverallsProtocol.TerminalTest do
           end
         end,
       channel_close:
-        gen all(channel <- positive_integer()) do
+        gen all(channel <- integer(1, 1_000_000)) do
           %{type: :channel_close, channel: channel}
         end,
       listing:
@@ -530,8 +521,8 @@ defmodule OverallsProtocol.TerminalTest do
       listed:
         gen all(
               vm_id <- uuid_gen(),
-              ids <- uniq_list_of(positive_integer(), max_length: 4),
-              sessions <- list_of(guest_session_gen(), max_length: 4)
+              ids <- uniq_list_of(integer(1, 1_000_000), max: 4),
+              sessions <- list(guest_session_gen(), max: 4)
             ) do
           sessions =
             ids
@@ -545,7 +536,7 @@ defmodule OverallsProtocol.TerminalTest do
               vm_id <- uuid_gen(),
               placement_id <- uuid_gen(),
               execution_epoch <- integer(1..1000),
-              guest_session_id <- positive_integer()
+              guest_session_id <- integer(1, 1_000_000)
             ) do
           %{
             type: :kill,
@@ -560,7 +551,7 @@ defmodule OverallsProtocol.TerminalTest do
               vm_id <- uuid_gen(),
               placement_id <- uuid_gen(),
               execution_epoch <- integer(1..1000),
-              guest_session_id <- positive_integer(),
+              guest_session_id <- integer(1, 1_000_000),
               cols <- integer(1..4096),
               rows <- integer(1..512)
             ) do
@@ -576,7 +567,7 @@ defmodule OverallsProtocol.TerminalTest do
         end,
       closed:
         gen all(
-              channel <- positive_integer(),
+              channel <- integer(1, 1_000_000),
               reason <- member_of([:session_exit, :dial_failed, :killed, :fenced])
             ) do
           %{type: :closed, channel: channel, reason: reason}
@@ -586,7 +577,7 @@ defmodule OverallsProtocol.TerminalTest do
               vm_id <- uuid_gen(),
               placement_id <- uuid_gen(),
               execution_epoch <- integer(1..1000),
-              cursor <- non_negative_integer()
+              cursor <- integer(0, 1_000_000)
             ) do
           %{
             type: :boot_log,
@@ -599,7 +590,7 @@ defmodule OverallsProtocol.TerminalTest do
       boot_log_data:
         gen all(
               vm_id <- uuid_gen(),
-              next <- non_negative_integer(),
+              next <- integer(0, 1_000_000),
               bytes <- binary(max_length: 2048)
             ) do
           %{type: :boot_log_data, vm_id: vm_id, next: next, bytes: bytes}

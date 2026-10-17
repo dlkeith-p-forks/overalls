@@ -245,6 +245,52 @@ class NativeImageTest(unittest.TestCase):
                     image.check_stock_network_absent(root)
                 path.unlink()
 
+    def test_native_ssh_requires_safe_installed_executable(self) -> None:
+        for mutation in (
+            "valid",
+            "missing",
+            "symlink",
+            "directory",
+            "mode",
+            "writable",
+            "privileged",
+            "bytes",
+        ):
+            with (
+                self.subTest(mutation=mutation),
+                tempfile.TemporaryDirectory() as temporary,
+                mock.patch("native_candidate.check_ownership"),
+                mock.patch.object(Path, "lstat", root_metadata),
+            ):
+                root = Path(temporary).resolve()
+                executable = root / image.NATIVE_SSHD
+                executable.parent.mkdir(parents=True)
+                if mutation == "symlink":
+                    executable.symlink_to("/usr/sbin/sshd")
+                elif mutation == "directory":
+                    executable.mkdir()
+                elif mutation != "missing":
+                    executable.write_bytes(b"foreign" if mutation == "bytes" else b"\x7fELFnative")
+                    modes = {"mode": 0o644, "writable": 0o775}
+                    executable.chmod(modes.get(mutation, 0o755))
+
+                def checked_metadata(
+                    path: Path, *, selected: str = mutation, target: Path = executable
+                ) -> os.stat_result:
+                    metadata = root_metadata(path)
+                    if selected == "privileged" and path == target:
+                        return os.stat_result((metadata.st_mode | 0o4000, *metadata[1:]))
+                    return metadata
+
+                # The build sandbox forbids creating setuid files; model only
+                # that stat bit while checking actual bytes and executable modes.
+                with mock.patch.object(Path, "lstat", checked_metadata):
+                    if mutation == "valid":
+                        image.check_native_ssh_executable(root)
+                    else:
+                        with self.assertRaises((ValueError, FileNotFoundError)):
+                            image.check_native_ssh_executable(root)
+
     def test_exact_kit_cannot_reintroduce_stock_network_authority(self) -> None:
         for relative in image.STOCK_NETWORK_FILES:
             with self.subTest(relative=relative), tempfile.TemporaryDirectory() as temporary:

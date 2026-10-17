@@ -4,13 +4,16 @@
 
 FreeBSD and illumos guests have a closed Lyra protocol shape for readiness,
 trust, terminal, workspace, flush, SSH and agent execution. The protocol's
-`freebsd-v1` and `illumos-v1` rows currently disable every user-facing
-capability, retaining only the host-only transport declaration. If a later
-reviewed rollout enables a row, Lilly must bind host CID 2 to guest CID 3 and
-each daemon must validate the current boot challenge before responding.
+unqualified `freebsd-v1` and `illumos-v1` rows disable every user-facing
+capability. The qualified capability function enables those seven capabilities
+only for the complete reviewed FreeBSD image identity in the
+[compiled registry](repo:protocol/lib/overalls_protocol/native_admission.ex).
+OmniOS and changed or incomplete native identities remain refused; editor and
+Inception remain false. Lilly still binds host CID 2 to guest CID 3, and each
+daemon validates the current boot challenge before responding.
 Credentials, terminal bytes, command arguments and Git output stay outside
-diagnostics. Native adapters and image assembly are under implementation; no
-nested-KVM or Marshall fleet result is implied by the capability table.
+diagnostics. The capability table does not establish current-boot readiness or
+a Marshall fleet result; exact-image runtime evidence remains separate.
 
 ## Native agent sets and kernel identity
 
@@ -32,12 +35,14 @@ and transport module tokens. This separates loaded build identity from file
 bytes, but native boot evidence must still establish the installed kernel/module
 set and accepted host-CID path.
 
-The image-facing `native-kernels` receipts retain `artifact.available = false`.
-The image builders therefore refuse before copying a stock kernel or root disk.
-The FreeBSD and illumos builds link eighteen Lyra production helpers, including
-root-only MMDS/network bootstrap, and both native terminal daemons. A separate
-output packages two target-specific test transport probes. The complete Linux/Windows/native tests and native
-Clippy build passed in 297 seconds. Their manifests
+The stock native constructors still consume unavailable artifact receipts and
+refuse before copying a stock kernel or root disk. Separate candidate builders
+carry the complete FreeBSD kernel or the nine linked illumos modules. The
+current native userland build links twenty Lyra production helpers, ten per OS
+including root-only MMDS/network bootstrap and mounted-root growth, plus both
+native terminal daemons. Separate outputs contain the two transport test probes.
+The earlier eighteen-helper Linux/Windows/native build passed in 297 seconds;
+that historical result does not validate a later payload. Native manifests
 validate bounded ELF64 AMD64 executables with the target guest's interpreter,
 reviewed shared libraries and a non-executable stack; each records exact output
 digests and pinned Rust/compiler/linker/SDK inputs. The illumos SDK is a
@@ -46,8 +51,15 @@ Readiness additionally requires live supervisor PID markers for every daemon,
 including terminald, sshd and the roster/certificate refresh worker, plus a fresh
 volatile SSH-ready marker; marker presence alone cannot grant readiness.
 
-Complete integrated acceptance remains pending. A scoped FreeBSD nested-KVM
-service gate passed eight bootstrap/network, current-boot identity, withheld
+The sealed reviewed FreeBSD disk `5022d714` passed all five native service,
+growth, IPv4/router/TAP policy, daemon-recovery and process-SIGKILL recovery
+variants with complete service oracles, including workspace, PTY, roster-bound
+SSH and guest execution. Its separate immutable promotion and exact registry
+entry grant only that image's reviewed subset. Rebuilding changed current
+userland does not inherit the sealed image's qualification.
+
+An earlier scoped FreeBSD nested-KVM service gate passed eight
+bootstrap/network, current-boot identity, withheld
 readiness, trust, flush, workspace-refusal and terminal HELLO/PING checks in
 197 seconds. It used a historical candidate before the final kernel/account
 payload, and does not establish checkout, SSH, execution, PTY, isolation or
@@ -55,9 +67,42 @@ recovery acceptance. A separate FreeBSD transport gate passed with
 token/CID/credit-window and ABI refusal assertions. A stock
 OmniOS probe passed native PTY shell/controlling-terminal,
 resize and inherited-descriptor checks; it does not execute the full terminal
-session protocol. The capability table remains contract surface only: no accepted native terminal,
-workspace, SSH, trust, readiness, boot or fleet result is implied. See the
+session protocol. Corrected OmniOS assembly has passed, but complete native
+services, growth, recovery and image qualification remain pending. Neither the
+capability table nor the historical partial candidates establish fleet
+acceptance. See the
 [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
+
+Direct `sis8` diagnostics reached current-boot kernel/network/trust responses
+and one executor command, then failed complete readiness. The supervisor's
+former `/usr/lib/ssh/sshd` path does not exist in the pinned OmniOS root, so its
+configuration check returned 127 despite successful roster and host-certificate
+requests. A stock native boot and its SMF method confirmed `/usr/sbin/sshd`, now
+used by both native supervisors. OmniOS assembly and booted verification check
+that exact path is a bounded root-owned regular executable ELF with safe modes;
+`native_ssh_executable_checked` records only that file check. The corrected path
+and config need a fresh kit, assembly and full service replay; those partial
+diagnostics grant no SSH, terminal or image qualification. OmniOS's downstream
+PAM policy is always on and its parser rejects explicit `UsePAM yes`; generated
+OmniOS config omits that directive while FreeBSD retains it. Native `sshd -t`
+and `sshd -T` passed with synthetic volatile host-key/certificate prerequisites,
+retaining effective PAM, public-key-only authentication and the authorization
+helper/forced command. That check starts no daemon or SSH session.
+
+Native `exec_command` passes the executor's existing lease/stop callback into
+the bounded process runner. It checks before spawning and during every polling
+turn; the callback checks host stop requests immediately and renews the lease
+at its five-second cadence. A refusal kills the command's process group, reaps
+the direct child and discards its result. A scoped collector enforces the child
+deadline independently of a blocking lease RPC. Output remains bounded to 4 KiB
+per stream and command duration to 20 seconds. This enforces
+[ADR-0100](repo:docs/architecture/decisions/0100-pulled-agent-work-over-ziggy-control.md)'s
+fenced execution on the native path; a fresh image replay must still prove
+lease withdrawal during a running native command. Descendants that deliberately
+leave the process group are outside this cleanup guarantee.
+All six local process regression tests and the pinned Rust/type/link gates
+passed for this collector, including callback refusal and a blocked lease RPC.
+Those Linux process tests remain separate from native guest lease withdrawal.
 
 The separately installed `codex` and `claude` commands are user-run guest
 processes with native client sessions and guest-local files. Their Ziggy settings

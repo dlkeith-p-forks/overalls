@@ -1,11 +1,14 @@
 defmodule OverallsProtocol.RelocationTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
 
   alias OverallsProtocol.Relocation
 
-  defp uuid(n), do: "00000000-0000-0000-0000-" <> String.pad_leading("#{n}", 12, "0")
+  defp uuid(n) do
+    "00000000-0000-0000-0000-" <> String.pad_leading("#{n}", 12, "0")
+  end
 
   defp descriptor do
     %{
@@ -28,47 +31,50 @@ defmodule OverallsProtocol.RelocationTest do
     }
   end
 
-  defp wire, do: Relocation.encode_descriptor(descriptor())
-
-  property "arbitrary peer terms return a bounded validation result without raising" do
-    check all(value <- term()) do
-      assert Relocation.descriptor(value) in [
-               {:error, :invalid_message},
-               {:error, :unsupported_version}
-             ]
-    end
+  defp wire do
+    Relocation.encode_descriptor(descriptor())
   end
 
-  property "bounded epochs, shapes and snapshot GUIDs survive JSON without precision loss" do
-    check all(
-            epoch <- integer(1..9_223_372_036_854_775_806),
-            guid <- integer(1..18_446_744_073_709_551_615),
-            cpu <- integer(1..32),
-            memory <- integer(512..262_144),
-            disk <- integer(524_288..131_072_000)
-          ) do
-      value = descriptor()
+  property "arbitrary peer terms return a bounded validation result without raising",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_293_297_050 do
+    value = draw("value", OverallsProtocol.TestGenerators.peer_term())
+    assert Relocation.descriptor(value) in [error: :invalid_message, error: :unsupported_version]
+  end
 
-      value = %{
-        value
-        | source_epoch: epoch,
-          destination_epoch: epoch + 1,
-          workload: %{
-            value.workload
-            | vcpu: cpu,
-              memory_bytes: memory * 1_048_576,
-              disk_bytes: disk * 4096
-          },
-          stream: %{value.stream | to_guid: to_string(guid)}
-      }
+  property "bounded epochs, shapes and snapshot GUIDs survive JSON without precision loss",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_151_982_771 do
+    epoch = draw("epoch", integer(1..9_223_372_036_854_775_806))
+    guid = draw("guid", OverallsProtocol.TestGenerators.positive_uint64())
+    cpu = draw("cpu", integer(1..32))
+    memory = draw("memory", integer(512..262_144))
+    disk = draw("disk", integer(524_288..131_072_000))
+    value = descriptor()
 
-      assert {:ok, ^value} =
-               value
-               |> Relocation.encode_descriptor()
-               |> JSON.encode!()
-               |> JSON.decode!()
-               |> Relocation.descriptor()
-    end
+    value = %{
+      value
+      | source_epoch: epoch,
+        destination_epoch: epoch + 1,
+        workload: %{
+          value.workload
+          | vcpu: cpu,
+            memory_bytes: memory * 1_048_576,
+            disk_bytes: disk * 4096
+        },
+        stream: %{value.stream | to_guid: to_string(guid)}
+    }
+
+    assert {:ok, ^value} =
+             value
+             |> Relocation.encode_descriptor()
+             |> JSON.encode!()
+             |> JSON.decode!()
+             |> Relocation.descriptor()
   end
 
   test "every object is closed and every field is required" do

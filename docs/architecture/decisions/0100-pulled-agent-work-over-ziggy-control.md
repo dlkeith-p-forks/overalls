@@ -131,6 +131,18 @@ requests on one connection bound to its host.
 - Error classes are unchanged: unauthorized, version refusal and completion
   conflict, with everything else an authority outage.
 
+The native FreeBSD/illumos
+[command runner](../../../lyra/src/agent/native_command.rs) now receives the
+existing executor lease/stop callback before spawn and while the command is
+running. Refusal cancels its separate process group, reaps the direct child and
+discards output. A scoped collector enforces the command deadline independently
+of a blocking lease RPC. The
+[native admission review](../reviews/2026-10-17-native-image-admission.md)
+records this correction and its verification boundary: local process regression
+tests are separate from current-boot native lease-withdrawal and image replay.
+The existing accepted fencing decision and partial implementation status remain
+unchanged.
+
 ## Open questions
 
 The [reporter receipt history review](../reviews/2026-10-03-ziggy-reporter-histories.md)

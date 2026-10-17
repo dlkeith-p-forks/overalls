@@ -882,8 +882,10 @@ closed.
 Native bootstrap canonicalizes only local `ifconfig` MAC output: exactly six
 one- or two-digit ASCII hexadecimal octets become lowercase two-digit octets
 before comparison. External MMDS remains strictly canonical, and malformed or
-foreign values refuse. The regression/type/build gates passed; corrected OmniOS
-assembly and service replay remain pending and grant no admission.
+foreign values refuse. The regression/type/build gates and corrected `sis8`
+native clean-export assembly passed, sealing disk `1e095659`. Complete service
+replay remains pending and grants no admission. Later executor lease/stop
+callback changes require another kit and exact-image replay.
 
 See [ADR-0190](repo:docs/architecture/decisions/0190-native-kernel-provenance-and-admission.md),
 the [multi-OS architecture review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md)

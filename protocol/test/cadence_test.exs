@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.CadenceTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.Cadence
 
@@ -8,26 +9,30 @@ defmodule OverallsProtocol.CadenceTest do
   # run started. A run that finishes with a pending request must be followed at
   # once by another run; a tick during a run never starts or schedules one, and
   # requests during a run never start more than one follow-up.
-  property "single flight, no lost request, no back-to-back periodic run, no backlog" do
-    check all(events <- list_of(member_of([:tick, :request, :done]), max_length: 200)) do
-      {_cadence, _model} =
-        Enum.reduce(events, {Cadence.new(), %{in_flight: 0, pending: false}}, fn event,
-                                                                                 {cadence, model} ->
-          case Cadence.step(cadence, event) do
-            {:ok, next, effects} ->
-              starts = Enum.count(effects, &(&1 == :start))
-              model = apply_model(model, event, starts)
-              assert model.in_flight <= 1
-              assert Cadence.running?(next) == (model.in_flight == 1)
-              {next, model}
+  property "single flight, no lost request, no back-to-back periodic run, no backlog",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_544_934_115 do
+    events = draw("events", list(member_of([:tick, :request, :done]), min: 0, max: 200))
 
-            {:error, :invalid_transition} ->
-              # Only a completion with nothing in flight may be refused.
-              assert event == :done and model.in_flight == 0
-              {cadence, model}
-          end
-        end)
-    end
+    {_cadence, _model} =
+      Enum.reduce(events, {Cadence.new(), %{in_flight: 0, pending: false}}, fn event,
+                                                                               {cadence, model} ->
+        case Cadence.step(cadence, event) do
+          {:ok, next, effects} ->
+            starts = Enum.count(effects, &(&1 == :start))
+            model = apply_model(model, event, starts)
+            assert model.in_flight <= 1
+            assert Cadence.running?(next) == (model.in_flight == 1)
+            {next, model}
+
+          {:error, :invalid_transition} ->
+            # Only a completion with nothing in flight may be refused.
+            assert event == :done and model.in_flight == 0
+            {cadence, model}
+        end
+      end)
   end
 
   test "ticks during a run are dropped: completion rests until the next tick" do

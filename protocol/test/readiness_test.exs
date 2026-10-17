@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.ReadinessTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.Readiness
 
@@ -19,16 +20,17 @@ defmodule OverallsProtocol.ReadinessTest do
     }
   end
 
-  defp expectation,
-    do: %{placement_id: @placement, execution_epoch: 9, boot_challenge: @challenge}
+  defp expectation do
+    %{placement_id: @placement, execution_epoch: 9, boot_challenge: @challenge}
+  end
 
   test "the guest response verifies only the entire expected boot identity" do
     assert {:ok, @boot} = Readiness.verify(response(), expectation())
 
     for {field, value} <- [
-          {:placement_id, @boot},
-          {:execution_epoch, 10},
-          {:boot_challenge, String.duplicate("b", 64)}
+          placement_id: @boot,
+          execution_epoch: 10,
+          boot_challenge: String.duplicate("b", 64)
         ] do
       assert {:error, :stale_readiness} =
                Readiness.verify(response(), Map.put(expectation(), field, value))
@@ -63,21 +65,25 @@ defmodule OverallsProtocol.ReadinessTest do
     end
   end
 
-  property "arbitrary peer terms never raise or become readiness" do
-    check all(value <- term()) do
-      assert Readiness.response(value) in [
-               {:error, :invalid_message},
-               {:error, :unsupported_version}
-             ]
-    end
+  property "arbitrary peer terms never raise or become readiness",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_338_177_931 do
+    value = draw("value", OverallsProtocol.TestGenerators.peer_term())
+    assert Readiness.response(value) in [error: :invalid_message, error: :unsupported_version]
   end
 
-  property "bounded epochs and binary challenges survive JSON and exact verification" do
-    check all(epoch <- integer(1..9_223_372_036_854_775_807), bytes <- binary(length: 32)) do
-      challenge = Base.encode16(bytes, case: :lower)
-      wire = %{response() | "execution_epoch" => epoch, "boot_challenge" => challenge}
-      expected = %{expectation() | execution_epoch: epoch, boot_challenge: challenge}
-      assert {:ok, @boot} = Readiness.verify(wire |> JSON.encode!() |> JSON.decode!(), expected)
-    end
+  property "bounded epochs and binary challenges survive JSON and exact verification",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 794_373_420 do
+    epoch = draw("epoch", integer(1..9_223_372_036_854_775_807))
+    bytes = draw("bytes", binary(length: 32))
+    challenge = Base.encode16(bytes, case: :lower)
+    wire = %{response() | "execution_epoch" => epoch, "boot_challenge" => challenge}
+    expected = %{expectation() | execution_epoch: epoch, boot_challenge: challenge}
+    assert {:ok, @boot} = Readiness.verify(wire |> JSON.encode!() |> JSON.decode!(), expected)
   end
 end

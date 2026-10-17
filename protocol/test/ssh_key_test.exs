@@ -1,30 +1,46 @@
 defmodule OverallsProtocol.SSHKeyTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.SSHKey
 
-  property "public key identity ignores comments and whitespace but binds every key byte" do
-    check all(bytes <- binary(length: 32), comment <- string(:alphanumeric, max_length: 80)) do
-      blob = <<11::32, "ssh-ed25519", 32::32, bytes::binary>>
-      text = "ssh-ed25519 " <> Base.encode64(blob)
-      assert {:ok, key} = SSHKey.parse(text)
-      assert {:ok, ^key} = SSHKey.parse("  " <> text <> "\t" <> comment <> "\n")
-      assert key.public_key == text
+  property "public key identity ignores comments and whitespace but binds every key byte",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 947_037_655 do
+    bytes = draw("bytes", binary(length: 32))
 
-      assert key.fingerprint ==
-               "SHA256:" <> Base.encode64(:crypto.hash(:sha256, blob), padding: false)
+    comment =
+      draw("comment", OverallsProtocol.TestGenerators.string(:alphanumeric, max_length: 80))
 
-      assert {:ok, ^key} = SSHKey.from_blob(blob)
-    end
+    blob = <<11::32, "ssh-ed25519", 32::32, bytes::binary>>
+    text = "ssh-ed25519 " <> Base.encode64(blob)
+    assert {:ok, key} = SSHKey.parse(text)
+    assert {:ok, ^key} = SSHKey.parse("  " <> text <> "\t" <> comment <> "\n")
+    assert key.public_key == text
+
+    assert key.fingerprint ==
+             "SHA256:" <> Base.encode64(:crypto.hash(:sha256, blob), padding: false)
+
+    assert {:ok, ^key} = SSHKey.from_blob(blob)
   end
 
-  property "arbitrary terms and bytes return bounded fixed errors" do
-    check all(value <- one_of([term(), binary(max_length: 5000)])) do
-      for result <- [SSHKey.parse(value), SSHKey.from_blob(value)] do
-        assert match?({:ok, %{public_key: _, fingerprint: _, algorithm: _}}, result) or
-                 result == {:error, :invalid_public_key}
-      end
+  property "arbitrary terms and bytes return bounded fixed errors",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 944_767_808 do
+    value =
+      draw(
+        "value",
+        one_of([OverallsProtocol.TestGenerators.peer_term(), binary(max_length: 5000)])
+      )
+
+    for result <- [SSHKey.parse(value), SSHKey.from_blob(value)] do
+      assert match?({:ok, %{public_key: _, fingerprint: _, algorithm: _}}, result) or
+               result == {:error, :invalid_public_key}
     end
   end
 

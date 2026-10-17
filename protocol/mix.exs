@@ -6,7 +6,11 @@ defmodule OverallsProtocol.MixProject do
       app: :overalls_protocol,
       version: "0.1.0",
       elixir: "== 1.20.4",
-      test_ignore_filters: ["test/support/control_close_peer.ex"],
+      test_ignore_filters: [
+        "test/support/control_close_peer.ex",
+        "test/support/test_generators.ex",
+        "test/support/test_properties.ex"
+      ],
       deps: [
         {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
         {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},

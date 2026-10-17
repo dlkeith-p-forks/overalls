@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.Control.OpeningWorkerPropertyTest do
   use ExUnit.Case, async: false
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
 
   alias OverallsProtocol.Control.Client
@@ -11,104 +12,111 @@ defmodule OverallsProtocol.Control.OpeningWorkerPropertyTest do
   # Worker death MUST follow an actual peer-observed handshake. Recovery MUST
   # create a new worker/request without making the client ready prematurely.
   # Plain loopback evidence MUST NOT establish domain authorization or TLS.
-  property "opening worker death permits a fresh control handshake" do
-    check all(deaths <- integer(1..3), max_runs: 2, max_shrinking_steps: 0) do
-      for shutdown <- [:orderly, :killed] do
-        {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
-        {:ok, port} = :inet.port(listener)
-        observer = self()
-        reference = make_ref()
+  property "opening worker death permits a fresh control handshake",
+    profile: :ci,
+    database: :disabled,
+    print_blob: false,
+    test_cases: 2,
+    seed: 178_601_373 do
+    deaths = draw("deaths", integer(1..3))
 
-        {:ok, client} =
-          Client.start_link(
-            url: "http://127.0.0.1:#{port}",
-            allow_insecure_loopback: true,
-            service: "galileo",
-            owner: observer,
-            bind: fn -> %{"generation" => 1} end,
-            credential: fn ->
-              send(observer, {:opening_worker, reference, self()})
-              {:ok, "fixture-token"}
-            end
-          )
+    for shutdown <- [:orderly, :killed] do
+      {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
+      {:ok, port} = :inet.port(listener)
+      observer = self()
+      reference = make_ref()
 
-        try do
-          for _ <- 1..deaths do
-            assert_receive {:opening_worker, ^reference, worker}, 4_500
-            {:ok, socket} = :gen_tcp.accept(listener, 1_000)
-
-            try do
-              assert {:ok, _head} = read_head(socket, <<>>)
-              refute Client.ready?(client)
-              assert Client.request(client, "galileo.renew", %{}) == {:error, :disconnected}
-              monitor = Process.monitor(worker)
-              Process.exit(worker, :kill)
-              assert_receive {:DOWN, ^monitor, :process, ^worker, :killed}, 1_000
-              assert {:error, :closed} = :gen_tcp.recv(socket, 0, 1_000)
-            after
-              :gen_tcp.close(socket)
-            end
+      {:ok, client} =
+        Client.start_link(
+          url: "http://127.0.0.1:#{port}",
+          allow_insecure_loopback: true,
+          service: "galileo",
+          owner: observer,
+          bind: fn -> %{"generation" => 1} end,
+          credential: fn ->
+            send(observer, {:opening_worker, reference, self()})
+            {:ok, "fixture-token"}
           end
+        )
 
-          assert_receive {:opening_worker, ^reference, _worker}, 4_500
-          {:ok, socket} = :gen_tcp.accept(listener, 1_000)
-
-          try do
-            assert {:ok, head} = read_head(socket, <<>>)
-            [_, key] = Regex.run(~r/sec-websocket-key:\s*([^\r]+)/i, head)
-
-            :ok =
-              :gen_tcp.send(socket, [
-                "HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ",
-                Handshake.accept(key),
-                "\r\n\r\n"
-              ])
-
-            {:ok, {:text, hello}, <<>>} = read_frame(socket, <<>>)
-
-            assert Envelope.decode(hello) ==
-                     {:ok,
-                      {:hello, %{version: 1, service: "galileo", bind: %{"generation" => 1}}}}
-
-            refute Client.ready?(client)
-
-            welcome =
-              Envelope.encode({:welcome, %{conn: "fixture", heartbeat_ms: 5_000, limits: %{}}})
-
-            {:ok, wire} = Frame.encode({:text, welcome}, :server, 1_048_576)
-            :ok = :gen_tcp.send(socket, wire)
-            assert_receive {:control, ^client, {:connected, _}}, 1_000
-            assert Client.ready?(client)
-          after
-            :gen_tcp.close(socket)
-          end
-
-          assert_receive {:control, ^client, {:disconnected, :lost}}, 1_000
-          assert_receive {:opening_worker, ^reference, worker}, 4_500
-          {:ok, socket} = :gen_tcp.accept(listener, 1_000)
+      try do
+        for _ <- 1..deaths do
+          assert_receive {:opening_worker, ^reference, worker}, 4500
+          {:ok, socket} = :gen_tcp.accept(listener, 1000)
 
           try do
             assert {:ok, _head} = read_head(socket, <<>>)
+            refute Client.ready?(client)
+            assert Client.request(client, "galileo.renew", %{}) == {:error, :disconnected}
             monitor = Process.monitor(worker)
-
-            case shutdown do
-              :orderly ->
-                GenServer.stop(client)
-
-              :killed ->
-                Process.unlink(client)
-                Process.exit(client, :kill)
-            end
-
-            assert_receive {:DOWN, ^monitor, :process, ^worker, _}, 1_000
-            assert {:error, :closed} = :gen_tcp.recv(socket, 0, 1_000)
+            Process.exit(worker, :kill)
+            assert_receive {:DOWN, ^monitor, :process, ^worker, :killed}, 1000
+            assert {:error, :closed} = :gen_tcp.recv(socket, 0, 1000)
           after
             :gen_tcp.close(socket)
           end
-        after
-          if Process.alive?(client), do: GenServer.stop(client)
-          :gen_tcp.close(listener)
         end
+
+        assert_receive {:opening_worker, ^reference, _worker}, 4500
+        {:ok, socket} = :gen_tcp.accept(listener, 1000)
+
+        try do
+          assert {:ok, head} = read_head(socket, <<>>)
+          [_, key] = Regex.run(~r/sec-websocket-key:\s*([^\r]+)/i, head)
+
+          :ok =
+            :gen_tcp.send(socket, [
+              "HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ",
+              Handshake.accept(key),
+              "\r\n\r\n"
+            ])
+
+          {:ok, {:text, hello}, <<>>} = read_frame(socket, <<>>)
+
+          assert Envelope.decode(hello) ==
+                   {:ok, {:hello, %{version: 1, service: "galileo", bind: %{"generation" => 1}}}}
+
+          refute Client.ready?(client)
+
+          welcome =
+            Envelope.encode({:welcome, %{conn: "fixture", heartbeat_ms: 5000, limits: %{}}})
+
+          {:ok, wire} = Frame.encode({:text, welcome}, :server, 1_048_576)
+          :ok = :gen_tcp.send(socket, wire)
+          assert_receive {:control, ^client, {:connected, _}}, 1000
+          assert Client.ready?(client)
+        after
+          :gen_tcp.close(socket)
+        end
+
+        assert_receive {:control, ^client, {:disconnected, :lost}}, 1000
+        assert_receive {:opening_worker, ^reference, worker}, 4500
+        {:ok, socket} = :gen_tcp.accept(listener, 1000)
+
+        try do
+          assert {:ok, _head} = read_head(socket, <<>>)
+          monitor = Process.monitor(worker)
+
+          case shutdown do
+            :orderly ->
+              GenServer.stop(client)
+
+            :killed ->
+              Process.unlink(client)
+              Process.exit(client, :kill)
+          end
+
+          assert_receive {:DOWN, ^monitor, :process, ^worker, _}, 1000
+          assert {:error, :closed} = :gen_tcp.recv(socket, 0, 1000)
+        after
+          :gen_tcp.close(socket)
+        end
+      after
+        if Process.alive?(client) do
+          GenServer.stop(client)
+        end
+
+        :gen_tcp.close(listener)
       end
     end
   end
@@ -118,7 +126,7 @@ defmodule OverallsProtocol.Control.OpeningWorkerPropertyTest do
   defp read_frame(socket, buffer) do
     case Frame.decode(buffer, :server, 1_048_576) do
       :more ->
-        case :gen_tcp.recv(socket, 0, 1_000) do
+        case :gen_tcp.recv(socket, 0, 1000) do
           {:ok, bytes} -> read_frame(socket, buffer <> bytes)
           {:error, reason} -> {:error, reason}
         end
@@ -133,7 +141,7 @@ defmodule OverallsProtocol.Control.OpeningWorkerPropertyTest do
     if String.contains?(buffer, "\r\n\r\n") do
       {:ok, buffer}
     else
-      case :gen_tcp.recv(socket, 0, 1_000) do
+      case :gen_tcp.recv(socket, 0, 1000) do
         {:ok, bytes} -> read_head(socket, buffer <> bytes)
         {:error, reason} -> {:error, reason}
       end

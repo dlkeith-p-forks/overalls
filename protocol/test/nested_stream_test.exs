@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.NestedStreamTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.{IngressName, NestedStream}
   @id "11111111-1111-4111-8111-111111111111"
@@ -61,7 +62,7 @@ defmodule OverallsProtocol.NestedStreamTest do
 
     for changed <- [
           put_in(renewal, ["grant", "binding", "environment_generation"], 2),
-          put_in(renewal, ["grant", "ttl"], 30_001),
+          put_in(renewal, ["grant", "ttl"], 30001),
           put_in(renewal, ["grant", "ttl"], 0),
           put_in(renewal, ["grant", "host_key"], "ssh-ed25519 invalid"),
           put_in(renewal, ["grant", "binding", "port"], 22)
@@ -74,10 +75,13 @@ defmodule OverallsProtocol.NestedStreamTest do
              NestedStream.response("nested-open", wire, %{expected | label: "wrong"})
   end
 
-  property "unstructured peer values never become requests or credentials" do
-    check all(value <- binary(max_length: 8192)) do
-      assert {:error, :invalid_message} = NestedStream.request("nested-open", value)
-      refute NestedStream.ticket?(value)
-    end
+  property "unstructured peer values never become requests or credentials",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 374_986_797 do
+    value = draw("value", binary(max_length: 8192))
+    assert {:error, :invalid_message} = NestedStream.request("nested-open", value)
+    refute NestedStream.ticket?(value)
   end
 end

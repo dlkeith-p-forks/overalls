@@ -1,70 +1,76 @@
 defmodule OverallsProtocol.StorageTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.Storage
   @id "11111111-1111-4111-8111-111111111111"
 
-  property "ZFS reports preserve unsigned GUIDs and independent physical/logical observations" do
-    check all(
-            pool_guid <- integer(1..18_446_744_073_709_551_615),
-            dataset_guid <- integer(1..18_446_744_073_709_551_615),
-            total <- integer(1..9_223_372_036_854_775_807),
-            free <- integer(0..total),
-            logical <- integer(0..9_223_372_036_854_775_807),
-            ratio <- integer(1..100_000),
-            quota? <- boolean()
-          ) do
-      storage = %{
-        backend: :zfs,
-        zpool_guid: to_string(pool_guid),
-        dataset_guid: to_string(dataset_guid),
-        dataset: "tank/lilly",
-        used_bytes: total - free,
-        logical_used_bytes: logical,
-        quota_bytes: if(quota?, do: total),
-        compression_ratio: ratio / 100
-      }
+  property "ZFS reports preserve unsigned GUIDs and independent physical/logical observations",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_264_044_877 do
+    pool_guid = draw("pool_guid", OverallsProtocol.TestGenerators.positive_uint64())
+    dataset_guid = draw("dataset_guid", OverallsProtocol.TestGenerators.positive_uint64())
+    total = draw("total", integer(1..9_223_372_036_854_775_807))
+    free = draw("free", integer(0..total))
+    logical = draw("logical", integer(0..9_223_372_036_854_775_807))
+    ratio = draw("ratio", integer(1..100_000))
+    quota? = draw("quota?", boolean())
 
-      sample = report(storage, total, free)
-      wire = sample |> OverallsProtocol.encode_report() |> JSON.encode!() |> JSON.decode!()
-      [pool] = sample.pools
+    storage = %{
+      backend: :zfs,
+      zpool_guid: to_string(pool_guid),
+      dataset_guid: to_string(dataset_guid),
+      dataset: "tank/lilly",
+      used_bytes: total - free,
+      logical_used_bytes: logical,
+      quota_bytes:
+        if(quota?) do
+          total
+        end,
+      compression_ratio: ratio / 100
+    }
 
-      expected = %{
-        sample
-        | pools: [%{pool | storage: Map.drop(storage, [:logical_used_bytes, :compression_ratio])}]
-      }
+    sample = report(storage, total, free)
+    wire = sample |> OverallsProtocol.encode_report() |> JSON.encode!() |> JSON.decode!()
+    [pool] = sample.pools
 
-      assert {:ok, ^expected} = OverallsProtocol.report(wire)
+    expected = %{
+      sample
+      | pools: [%{pool | storage: Map.drop(storage, [:logical_used_bytes, :compression_ratio])}]
+    }
 
-      assert {:ok, identity} =
-               storage
-               |> Map.take([:backend, :zpool_guid, :dataset_guid, :dataset])
-               |> Storage.encode()
-               |> Storage.identity()
+    assert {:ok, ^expected} = OverallsProtocol.report(wire)
 
-      assert Storage.filesystem_id(identity) == "zfs:#{pool_guid}:#{dataset_guid}"
+    assert {:ok, identity} =
+             storage
+             |> Map.take([:backend, :zpool_guid, :dataset_guid, :dataset])
+             |> Storage.encode()
+             |> Storage.identity()
 
-      # Admission observations use v4; native diagnostics remain local.
-      assert {:error, :unsupported_version} =
-               OverallsProtocol.Execution.exchange(%{
-                 "version" => 1,
-                 "session_id" => @id,
-                 "epoch" => 1,
-                 "report" => wire,
-                 "acknowledgements" => []
-               })
+    assert Storage.filesystem_id(identity) == "zfs:#{pool_guid}:#{dataset_guid}"
 
-      assert {:ok, %{report: ^expected}} =
-               OverallsProtocol.Execution.exchange(%{
-                 "version" => 4,
-                 "session_id" => @id,
-                 "epoch" => 1,
-                 "report" => wire,
-                 "acknowledgements" => [],
-                 "outcomes" => []
-               })
-    end
+    # Admission observations use v4; native diagnostics remain local.
+    assert {:error, :unsupported_version} =
+             OverallsProtocol.Execution.exchange(%{
+               "version" => 1,
+               "session_id" => @id,
+               "epoch" => 1,
+               "report" => wire,
+               "acknowledgements" => []
+             })
+
+    assert {:ok, %{report: ^expected}} =
+             OverallsProtocol.Execution.exchange(%{
+               "version" => 4,
+               "session_id" => @id,
+               "epoch" => 1,
+               "report" => wire,
+               "acknowledgements" => [],
+               "outcomes" => []
+             })
   end
 
   test "wrong identity, quotas, unaccounted bytes and unknown fields fail closed" do
@@ -106,12 +112,15 @@ defmodule OverallsProtocol.StorageTest do
     assert {:error, :invalid_message} = OverallsProtocol.report(%{wire | "pools" => [excessive]})
   end
 
-  property "arbitrary values never decode into identities or observations" do
-    check all(value <- one_of([binary(), integer(), list_of(integer())])) do
-      assert :error == Storage.identity(value)
-      assert :error == Storage.observation(value)
-      refute Storage.valid_observation?(value)
-    end
+  property "arbitrary values never decode into identities or observations",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 155_774_327 do
+    value = draw("value", one_of([binary(), integer(), list_of(integer())]))
+    assert :error == Storage.identity(value)
+    assert :error == Storage.observation(value)
+    refute Storage.valid_observation?(value)
   end
 
   defp report(storage, total, free) do

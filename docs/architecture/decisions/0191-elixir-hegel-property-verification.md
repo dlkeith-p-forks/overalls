@@ -62,6 +62,14 @@ storage durability, physical recovery or deployed fleet behavior.
 - [Protocol terminal properties](../../../protocol/test/hegel_terminal_test.exs)
   define bounded frame round trips and truncation cases with deterministic seeds.
   Their presence does not record execution or completion of the wider migration.
+- [Protocol bounded generators](../../../protocol/test/support/test_generators.ex)
+  retain exact alphabets, collection bounds, malformed peer shapes and unsigned
+  64-bit values within the pinned engine's signed integer interface.
+- [Protocol draw boundary](../../../protocol/test/support/test_properties.ex) and
+  its [native failure replay test](../../../protocol/test/hegel_support_test.exs)
+  keep generated values out of draw diagnostics while preserving the original
+  exception. Control transport cases clean up owned listeners and supervised
+  children before another generated case or replay.
 
 Migration status is tracked by the test inventory and review record; properties
 are only marked migrated after the new test has executed successfully with the
@@ -73,6 +81,8 @@ implicit result of adding the dependency.
 Remaining application migrations need an inventory, executed property and replay
 results, and verified fixture cleanup before their existing engines are removed.
 Native Hegel smoke and full consumer gates retain their own execution records.
+Protocol still retains StreamData for its workspace-source and View properties;
+the pinned frontend does not provide every accepted stateful/concurrent API.
 
 ## Related decisions
 

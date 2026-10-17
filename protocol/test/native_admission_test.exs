@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.NativeAdmissionTest do
   use ExUnit.Case, async: true
-  use Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   alias OverallsProtocol.{GuestAgents, ImageManifest, NativeAdmission, WorkloadBundle}
 
   # @cc [owner:ghuntley,label:verification;security] native-admission-refuses-substituted-identity
@@ -9,6 +10,7 @@ defmodule OverallsProtocol.NativeAdmissionTest do
   # tests establish policy only, not kernel or production execution evidence.
   property "a codec-valid root substitution cannot inherit reviewed capabilities",
     database: :disabled,
+    print_blob: false,
     test_cases: 64,
     seed: 20_261_017 do
     digest = draw("root_digest", Hegel.Gen.binary(32, 32))

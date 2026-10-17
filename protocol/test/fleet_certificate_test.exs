@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.FleetCertificateTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.FleetCertificate
 
@@ -24,17 +25,21 @@ defmodule OverallsProtocol.FleetCertificateTest do
              })
   end
 
-  property "malformed acknowledgement fingerprints never become typed requests" do
-    check all(bytes <- binary(min_length: 0, max_length: 90), max_runs: 100) do
-      unless byte_size(bytes) == 64 and String.valid?(bytes) and
-               Regex.match?(~r/\A[0-9a-f]{64}\z/, bytes) do
-        assert {:error, :invalid_message} =
-                 FleetCertificate.request("fleet-certificate-ack", %{
-                   "version" => 1,
-                   "generation" => 1,
-                   "fingerprint" => bytes
-                 })
-      end
+  property "malformed acknowledgement fingerprints never become typed requests",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_765_597_799 do
+    bytes = draw("bytes", binary(min_length: 0, max_length: 90))
+
+    unless byte_size(bytes) == 64 and String.valid?(bytes) and
+             Regex.match?(~r/\A[0-9a-f]{64}\z/, bytes) do
+      assert {:error, :invalid_message} =
+               FleetCertificate.request("fleet-certificate-ack", %{
+                 "version" => 1,
+                 "generation" => 1,
+                 "fingerprint" => bytes
+               })
     end
   end
 
@@ -70,7 +75,7 @@ defmodule OverallsProtocol.FleetCertificateTest do
                "fleet-certificate",
                %{
                  "version" => 1,
-                 "bundle" => %{bundle | "private_key_pem" => String.duplicate("x", 16_385)}
+                 "bundle" => %{bundle | "private_key_pem" => String.duplicate("x", 16385)}
                },
                @host,
                @zone

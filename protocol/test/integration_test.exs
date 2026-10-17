@@ -1,34 +1,41 @@
 defmodule OverallsProtocol.IntegrationTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.Integration
 
-  property "names accept only closed lowercase labels" do
-    check all(name <- string(:alphanumeric, min_length: 1, max_length: 40)) do
-      letter_start = name =~ ~r/\A[a-z]/
-      lowercase = name == String.downcase(name)
+  @alphanumeric_chars Enum.concat([48..57, 65..90, 97..122])
 
-      case Integration.name?(name) do
-        true ->
-          assert letter_start and lowercase
-          composed = name <> ".integration.internal"
-          assert {:ok, ^composed} = Integration.hostname(name)
+  property "names accept only closed lowercase labels",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_313_659_727 do
+    name = draw("name", alphanumeric_string(1, 40))
+    letter_start = name =~ ~r/\A[a-z]/
+    lowercase = name == String.downcase(name)
 
-        false ->
-          assert not letter_start or not lowercase or name == "ssh"
-      end
+    case Integration.name?(name) do
+      true ->
+        assert letter_start and lowercase
+        composed = name <> ".integration.internal"
+        assert {:ok, ^composed} = Integration.hostname(name)
+
+      false ->
+        assert not letter_start or not lowercase or name == "ssh"
     end
   end
 
-  property "hostnames with multiple labels, uppercase or off-zone never address an integration" do
-    check all(
-            prefix <- member_of([".", "A.", "a.b.", "-.", "a-."]),
-            suffix <- member_of(["", ".attacker.com", ".integration.internal.evil.com"])
-          ) do
-      value = prefix <> "exedev.integration.internal" <> suffix
-      assert {:error, :invalid_hostname} = Integration.label(value)
-    end
+  property "hostnames with multiple labels, uppercase or off-zone never address an integration",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 921_798_668 do
+    prefix = draw("prefix", member_of([".", "A.", "a.b.", "-.", "a-."]))
+    suffix = draw("suffix", member_of(["", ".attacker.com", ".integration.internal.evil.com"]))
+    value = prefix <> "exedev.integration.internal" <> suffix
+    assert {:error, :invalid_hostname} = Integration.label(value)
   end
 
   test "valid labels round-trip through hostname composition" do
@@ -43,34 +50,37 @@ defmodule OverallsProtocol.IntegrationTest do
     assert {:error, :invalid_hostname} = Integration.label("ssh.integration.internal")
   end
 
-  property "targets must be fixed https origins without paths, users or queries" do
-    check all(
-            host <- string(:alphanumeric, min_length: 1, max_length: 32),
-            path <- member_of(["", "/", "/x", "?q=1"]),
-            scheme <- member_of(["https", "http"])
-          ) do
-      value = scheme <> "://" <> host <> ".example.test" <> path
+  property "targets must be fixed https origins without paths, users or queries",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 646_038_397 do
+    host = draw("host", alphanumeric_string(1, 32))
+    path = draw("path", member_of(["", "/", "/x", "?q=1"]))
+    scheme = draw("scheme", member_of(["https", "http"]))
+    value = scheme <> "://" <> host <> ".example.test" <> path
 
-      case Integration.target(value) do
-        {:ok, ^value} -> assert scheme == "https" and path == ""
-        {:error, :invalid_target} -> assert scheme == "http" or path != ""
-      end
+    case Integration.target(value) do
+      {:ok, ^value} -> assert scheme == "https" and path == ""
+      {:error, :invalid_target} -> assert scheme == "http" or path != ""
     end
   end
 
-  property "strip prefixes are absolute segment-aligned paths" do
-    check all(
-            segments <-
-              list_of(string(:alphanumeric, min_length: 1, max_length: 8),
-                min_length: 1,
-                max_length: 8
-              )
-          ) do
-      path = "/" <> Enum.join(segments, "/")
+  property "strip prefixes are absolute segment-aligned paths",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_428_207_923 do
+    segments =
+      draw(
+        "segments",
+        list(alphanumeric_string(1, 8), min: 1, max: 8)
+      )
 
-      assert {:ok, ^path} = Integration.strip_prefix(path)
-      assert {:error, :invalid_strip_prefix} = Integration.strip_prefix(path <> "//x")
-    end
+    path = "/" <> Enum.join(segments, "/")
+
+    assert {:ok, ^path} = Integration.strip_prefix(path)
+    assert {:error, :invalid_strip_prefix} = Integration.strip_prefix(path <> "//x")
   end
 
   test "strip prefix boundaries" do
@@ -83,31 +93,39 @@ defmodule OverallsProtocol.IntegrationTest do
     assert {:error, :invalid_strip_prefix} = Integration.strip_prefix("/api;drop")
   end
 
-  property "header injection rejects transport impersonation and line smuggling" do
-    check all(
-            name <-
-              member_of([
-                "host",
-                "transfer-encoding",
-                "x-overalls-binding",
-                "x-overalls-source-vm",
-                "x-forwarded-for"
-              ]),
-            value <- string(:printable, min_length: 1, max_length: 64)
-          ) do
-      assert {:error, :invalid_header} = Integration.header([name, value])
-      assert {:error, :invalid_header} = Integration.static_header([name, value])
-    end
+  property "header injection rejects transport impersonation and line smuggling",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 799_585_711 do
+    name =
+      draw(
+        "name",
+        member_of([
+          "host",
+          "transfer-encoding",
+          "x-overalls-binding",
+          "x-overalls-source-vm",
+          "x-forwarded-for"
+        ])
+      )
+
+    value = draw("value", utf8(1, 64))
+    assert {:error, :invalid_header} = Integration.header([name, value])
+    assert {:error, :invalid_header} = Integration.static_header([name, value])
   end
 
-  property "header values cannot smuggle CR, LF or NUL" do
-    check all(value <- string(:printable, min_length: 1, max_length: 64)) do
-      smuggled = value <> "\r\nX-Smuggled: 1"
+  property "header values cannot smuggle CR, LF or NUL",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_648_097_373 do
+    value = draw("value", utf8(1, 64))
+    smuggled = value <> "\r\nX-Smuggled: 1"
 
-      assert {:error, :invalid_header} = Integration.header(["x-custom"])
-      assert {:error, :invalid_header} = Integration.header(["x-custom", smuggled])
-      assert {:error, :invalid_header} = Integration.header(["x-custom", value <> "\0"])
-    end
+    assert {:error, :invalid_header} = Integration.header(["x-custom"])
+    assert {:error, :invalid_header} = Integration.header(["x-custom", smuggled])
+    assert {:error, :invalid_header} = Integration.header(["x-custom", value <> "\0"])
   end
 
   test "bounded valid headers are accepted and authorization stays platform-computed" do
@@ -194,11 +212,15 @@ defmodule OverallsProtocol.IntegrationTest do
     end
   end
 
-  property "peer attestations bind exactly source, name and bounded expiry" do
-    check all(expires <- integer(-100_000..0)) do
-      assert {:error, :invalid_attestation} =
-               Integration.peer_attestation(attestation(expires))
-    end
+  property "peer attestations bind exactly source, name and bounded expiry",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 2_020_729_568 do
+    expires = draw("expires", integer(-100_000..0))
+
+    assert {:error, :invalid_attestation} =
+             Integration.peer_attestation(attestation(expires))
   end
 
   test "valid peer attestation" do
@@ -275,5 +297,10 @@ defmodule OverallsProtocol.IntegrationTest do
       "name" => "exedev",
       "expires_at" => expires
     }
+  end
+
+  @spec alphanumeric_string(pos_integer(), pos_integer()) :: :hegel_gen.t(String.t())
+  defp alphanumeric_string(min, max) do
+    map(list(member_of(@alphanumeric_chars), min: min, max: max), &List.to_string/1)
   end
 end

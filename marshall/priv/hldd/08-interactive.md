@@ -487,6 +487,13 @@ The machine navigation's `Boot log` link opens
 `/machines/:id/terminals?view=boot-log` directly. This diagnostic view selects
 the read-only serial pane and skips guest-session listing and automatic shell
 creation, so pending and failed boots do not depend on a guest terminal.
+A local browser fixture passed desktop/mobile and both themes, grid, contrast,
+origin-only resources, repeated EOF polling, disconnect/reconnect and
+hide/destroy lifecycle. It exercises the actual browser view against a local
+WebSocket fixture; a complete NixOS journey through a pending/failed native
+guest and real Lilly log authority remains unrecorded. The
+[diagnostic review](repo:docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md)
+keeps those scopes separate.
 Interactive access
 remains the vsock terminal and Audi-fenced SSH. Personal opening requires compatible guest account helpers and
 terminald; activating a host release does not upgrade an existing guest disk.

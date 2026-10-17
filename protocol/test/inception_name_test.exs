@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.InceptionNameTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.{InceptionName, IngressName}
   @environment IngressName.label("dev", "11111111-1111-4111-8111-111111111111")
@@ -82,7 +83,8 @@ defmodule OverallsProtocol.InceptionNameTest do
     for command <- [
           "inception #{@environment} root@127.0.0.1",
           "inception #{@environment} audi 22",
-          "inception #{@environment} audi\n",
+          "inception #{@environment} audi
+",
           "inception  #{@environment} audi",
           "inception #{@environment} audi;id"
         ] do
@@ -90,10 +92,13 @@ defmodule OverallsProtocol.InceptionNameTest do
     end
   end
 
-  property "arbitrary names and commands fail without raising" do
-    check all(value <- binary(max_length: 512)) do
-      assert InceptionName.route(value, "apps.example") == :error
-      assert InceptionName.ssh_selector(value) == :error
-    end
+  property "arbitrary names and commands fail without raising",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_132_453_569 do
+    value = draw("value", binary(max_length: 512))
+    assert InceptionName.route(value, "apps.example") == :error
+    assert InceptionName.ssh_selector(value) == :error
   end
 end

@@ -1,10 +1,13 @@
 defmodule OverallsProtocol.DiskTransferTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.{CloneControl, DiskLayout, DiskTransfer, Relocation}
 
-  defp id(n), do: "00000000-0000-4000-8000-" <> String.pad_leading(Integer.to_string(n), 12, "0")
+  defp id(n) do
+    "00000000-0000-4000-8000-" <> String.pad_leading(Integer.to_string(n), 12, "0")
+  end
 
   defp intent do
     %{
@@ -63,37 +66,42 @@ defmodule OverallsProtocol.DiskTransferTest do
              DiskLayout.drives(parsed.workload.profile, parsed.workload.disk_bytes)
   end
 
-  property "every profile's clone workload derives the full drive footprint" do
-    check all(
-            profile <- member_of([:customer, :standard, :oss, :inception]),
-            disk <- member_of([2_147_483_648, 68_719_476_736, 536_870_912_000]),
-            max_runs: 40
-          ) do
-      wire =
-        intent()
-        |> put_in(["workload", "profile"], Atom.to_string(profile))
-        |> put_in(["workload", "disk_bytes"], disk)
+  property "every profile's clone workload derives the full drive footprint",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 40,
+    seed: 139_663_114 do
+    profile = draw("profile", member_of([:customer, :standard, :oss, :inception]))
+    disk = draw("disk", member_of([2_147_483_648, 68_719_476_736, 536_870_912_000]))
 
-      assert {:ok, parsed} = DiskTransfer.intent(wire)
-      assert parsed.workload.profile == profile
-      assert DiskLayout.bytes(profile, disk) >= disk
-      assert Enum.all?(DiskLayout.drives(profile, disk), &(&1.bytes > 0))
-    end
+    wire =
+      intent()
+      |> put_in(["workload", "profile"], Atom.to_string(profile))
+      |> put_in(["workload", "disk_bytes"], disk)
+
+    assert {:ok, parsed} = DiskTransfer.intent(wire)
+    assert parsed.workload.profile == profile
+    assert DiskLayout.bytes(profile, disk) >= disk
+    assert Enum.all?(DiskLayout.drives(profile, disk), &(&1.bytes > 0))
   end
 
-  property "independent epochs and bounded sizes round trip without losing snapshot lineage" do
-    check all(epoch <- integer(1..10000), cpu <- integer(1..32), max_runs: 60) do
-      wire = intent() |> Map.put("source_epoch", epoch) |> put_in(["workload", "vcpu"], cpu)
+  property "independent epochs and bounded sizes round trip without losing snapshot lineage",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 60,
+    seed: 971_707_743 do
+    epoch = draw("epoch", integer(1..10000))
+    cpu = draw("cpu", integer(1..32))
+    wire = intent() |> Map.put("source_epoch", epoch) |> put_in(["workload", "vcpu"], cpu)
 
-      wire =
-        Map.put(wire, "stream", %{"source_dataset_guid" => "12", "to_guid" => "14"})
+    wire =
+      Map.put(wire, "stream", %{"source_dataset_guid" => "12", "to_guid" => "14"})
 
-      assert {:ok, parsed} = DiskTransfer.descriptor(wire)
-      assert DiskTransfer.encode_descriptor(parsed) == wire
+    assert {:ok, parsed} = DiskTransfer.descriptor(wire)
+    assert DiskTransfer.encode_descriptor(parsed) == wire
 
-      for {field, value} <- [{"kind", "full"}, {"from_guid", nil}] do
-        assert {:error, _} = DiskTransfer.descriptor(put_in(wire, ["stream", field], value))
-      end
+    for {field, value} <- [{"kind", "full"}, {"from_guid", nil}] do
+      assert {:error, _} = DiskTransfer.descriptor(put_in(wire, ["stream", field], value))
     end
   end
 

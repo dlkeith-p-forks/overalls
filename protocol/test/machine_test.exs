@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.MachineTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.{Cadence, Machine}
 
@@ -15,36 +16,36 @@ defmodule OverallsProtocol.MachineTest do
     assert length(Machine.cases(Cadence)) == length(Cadence.states()) * length(Cadence.events())
   end
 
-  property "check/2 accepts exactly closed, unique, reachable tables" do
-    check all(
-            initial <- member_of(@states),
-            edges <-
-              list_of(tuple({member_of(@states), member_of(@events), member_of(@states)}),
-                max_length: 12
-              )
-          ) do
-      duplicate? =
-        edges
-        |> Enum.frequencies_by(fn {f, e, _} -> {f, e} end)
-        |> Enum.any?(fn {_, n} -> n > 1 end)
+  property "check/2 accepts exactly closed, unique, reachable tables",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 379_894_754 do
+    initial = draw("initial", member_of(@states))
 
-      states = Machine.states_of(initial, edges)
-      reached = reach(initial, edges)
+    edges =
+      draw(
+        "edges",
+        list(tuple([member_of(@states), member_of(@events), member_of(@states)]), min: 0, max: 12)
+      )
 
-      expected_ok =
-        not duplicate? and (edges == [] or Enum.any?(edges, &(elem(&1, 0) == initial))) and
-          Enum.all?(states, &(&1 in reached))
+    duplicate? =
+      edges
+      |> Enum.frequencies_by(fn {f, e, _} -> {f, e} end)
+      |> Enum.any?(fn {_, n} -> n > 1 end)
 
-      assert Machine.check(initial, edges) == :ok == expected_ok
-    end
+    states = Machine.states_of(initial, edges)
+    reached = reach(initial, edges)
+
+    expected_ok =
+      not duplicate? and (edges == [] or Enum.any?(edges, &(elem(&1, 0) == initial))) and
+        Enum.all?(states, &(&1 in reached))
+
+    assert Machine.check(initial, edges) == :ok == expected_ok
   end
 
   test "a malformed table fails compilation instead of producing a permissive machine" do
-    for edges <- [
-          "[a: [x: :b], a: [x: :c]]",
-          "[a: [x: :a], b: [x: :a]]",
-          "[b: [x: :a]]"
-        ] do
+    for edges <- ["[a: [x: :b], a: [x: :c]]", "[a: [x: :a], b: [x: :a]]", "[b: [x: :a]]"] do
       source = """
       defmodule OverallsProtocol.MachineTest.Bad#{System.unique_integer([:positive])} do
         use OverallsProtocol.Machine, initial: :a, edges: #{edges}
@@ -55,8 +56,13 @@ defmodule OverallsProtocol.MachineTest do
     end
   end
 
-  defp reach(initial, edges), do: reach([initial], MapSet.new([initial]), edges)
-  defp reach([], seen, _edges), do: seen
+  defp reach(initial, edges) do
+    reach([initial], MapSet.new([initial]), edges)
+  end
+
+  defp reach([], seen, _edges) do
+    seen
+  end
 
   defp reach([state | rest], seen, edges) do
     next = for {^state, _, to} <- edges, not MapSet.member?(seen, to), uniq: true, do: to

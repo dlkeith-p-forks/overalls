@@ -1,10 +1,13 @@
 defmodule OverallsProtocol.RelocationSourceTest do
   use ExUnit.Case, async: true
-  import Hegel
-  import Hegel.Gen
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   alias OverallsProtocol.RelocationSource, as: Codec
   alias OverallsProtocol.Relocation
-  defp id(n), do: "00000000-0000-4000-8000-" <> String.pad_leading(to_string(n), 12, "0")
+
+  defp id(n) do
+    "00000000-0000-4000-8000-" <> String.pad_leading(to_string(n), 12, "0")
+  end
 
   defp command do
     %{
@@ -34,21 +37,22 @@ defmodule OverallsProtocol.RelocationSourceTest do
     }
   end
 
-  defp result(c),
-    do: %{
+  defp result(c) do
+    %{
       id: c.id,
       descriptor: Map.put(c.intent, :stream, %{source_dataset_guid: "100", to_guid: "200"})
     }
+  end
 
-  property "arbitrary peer terms cannot raise or become source authority" do
-    check all(value <- term()) do
-      assert Codec.command(value) == {:error, :invalid_message}
+  property "arbitrary peer terms cannot raise or become source authority",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_333_234_577 do
+    value = draw("value", OverallsProtocol.TestGenerators.peer_term())
+    assert Codec.command(value) == {:error, :invalid_message}
 
-      assert Relocation.intent(value) in [
-               {:error, :invalid_message},
-               {:error, :unsupported_version}
-             ]
-    end
+    assert Relocation.intent(value) in [error: :invalid_message, error: :unsupported_version]
   end
 
   test "intent does not fabricate snapshot GUIDs and source results bind every request field" do
@@ -91,8 +95,21 @@ defmodule OverallsProtocol.RelocationSourceTest do
     assert {:error, _} = Codec.command(Map.put(wire, "to_guid", "01"))
     assert {:error, _} = Codec.command(Map.put(wire, "public_key", "private material"))
     assert {:error, _} = Codec.commands([wire, wire])
-    assert {:ok, _} = Codec.commands(for n <- 1..16, do: Map.put(wire, "id", id(n)))
-    assert {:error, _} = Codec.commands(for n <- 1..17, do: Map.put(wire, "id", id(n)))
+
+    assert {:ok, _} =
+             Codec.commands(
+               for n <- 1..16 do
+                 Map.put(wire, "id", id(n))
+               end
+             )
+
+    assert {:error, _} =
+             Codec.commands(
+               for n <- 1..17 do
+                 Map.put(wire, "id", id(n))
+               end
+             )
+
     message = %{"version" => 4, "session_id" => id(2), "epoch" => 1, "results" => []}
     assert {:ok, _} = Codec.exchange(message)
     assert {:error, :unsupported_version} = Codec.exchange(Map.put(message, "version", 2))

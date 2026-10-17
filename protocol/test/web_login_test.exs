@@ -1,37 +1,41 @@
 defmodule OverallsProtocol.WebLoginTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.WebLogin
 
-  property "redemption fields require independent canonical bearer purposes" do
-    check all(bytes <- binary(length: 32)) do
-      state = Base.url_encode64(bytes, padding: false)
+  property "redemption fields require independent canonical bearer purposes",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 17_798_158 do
+    bytes = draw("bytes", binary(length: 32))
+    state = Base.url_encode64(bytes, padding: false)
 
-      request = %{
-        "version" => 1,
-        "ticket" => "audi_web_login_" <> state,
-        "code" => "audi_web_code_" <> state,
-        "state" => state
-      }
+    request = %{
+      "version" => 1,
+      "ticket" => "audi_web_login_" <> state,
+      "code" => "audi_web_code_" <> state,
+      "state" => state
+    }
 
-      assert {:ok, :exchange_web_login, _} = WebLogin.request("web-login-exchange", request)
+    assert {:ok, :exchange_web_login, _} = WebLogin.request("web-login-exchange", request)
 
-      assert {:error, :invalid_request} =
-               WebLogin.request("web-login-exchange", %{request | "code" => request["ticket"]})
+    assert {:error, :invalid_request} =
+             WebLogin.request("web-login-exchange", %{request | "code" => request["ticket"]})
 
-      assert {:error, :invalid_request} =
-               WebLogin.request("web-login-exchange", Map.put(request, "user_id", "forged"))
+    assert {:error, :invalid_request} =
+             WebLogin.request("web-login-exchange", Map.put(request, "user_id", "forged"))
 
-      assert {:error, :invalid_request} =
-               WebLogin.request("web-login-exchange", %{request | "state" => state <> "="})
+    assert {:error, :invalid_request} =
+             WebLogin.request("web-login-exchange", %{request | "state" => state <> "="})
 
-      for key <- Map.keys(request),
-          do:
-            assert(
-              {:error, :invalid_request} ==
-                WebLogin.request("web-login-exchange", Map.delete(request, key))
-            )
+    for key <- Map.keys(request) do
+      assert(
+        {:error, :invalid_request} ==
+          WebLogin.request("web-login-exchange", Map.delete(request, key))
+      )
     end
   end
 

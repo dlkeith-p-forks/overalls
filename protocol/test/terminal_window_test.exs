@@ -1,35 +1,40 @@
 defmodule OverallsProtocol.TerminalWindowTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.TerminalWindow, as: Window
 
-  property "cumulative consumption replenishes exactly once and preserves both bounds" do
-    check all(sizes <- list_of(integer(0..65_535), min_length: 1, max_length: 200)) do
-      Enum.reduce(sizes, Window.new(), fn bytes, window ->
-        window =
-          case Window.take(window, bytes) do
-            {:ok, next} ->
-              next
+  property "cumulative consumption replenishes exactly once and preserves both bounds",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_727_984_801 do
+    sizes = draw("sizes", list(integer(0..65535), min: 1, max: 200))
 
-            {:error, :exhausted} ->
-              {:ok, drained} = Window.acknowledge(window, window.sent_frames, window.sent_bytes)
-              {:ok, next} = Window.take(drained, bytes)
-              next
-          end
+    Enum.reduce(sizes, Window.new(), fn bytes, window ->
+      window =
+        case Window.take(window, bytes) do
+          {:ok, next} ->
+            next
 
-        assert window.sent_bytes - window.acknowledged_bytes <= Window.byte_limit()
-        assert length(window.pending) <= Window.frame_limit()
+          {:error, :exhausted} ->
+            {:ok, drained} = Window.acknowledge(window, window.sent_frames, window.sent_bytes)
+            {:ok, next} = Window.take(drained, bytes)
+            next
+        end
 
-        assert {:ok, ^window} =
-                 Window.acknowledge(window, window.acknowledged_frames, window.acknowledged_bytes)
+      assert window.sent_bytes - window.acknowledged_bytes <= Window.byte_limit()
+      assert length(window.pending) <= Window.frame_limit()
 
-        assert {:error, :invalid_receipt} =
-                 Window.acknowledge(window, window.sent_frames + 1, window.sent_bytes)
+      assert {:ok, ^window} =
+               Window.acknowledge(window, window.acknowledged_frames, window.acknowledged_bytes)
 
-        window
-      end)
-    end
+      assert {:error, :invalid_receipt} =
+               Window.acknowledge(window, window.sent_frames + 1, window.sent_bytes)
+
+      window
+    end)
   end
 
   test "tiny frames cannot bypass the frame budget and fabricated byte counts grant nothing" do

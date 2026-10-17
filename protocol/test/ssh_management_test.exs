@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.SSHManagementTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
 
   test "command envelopes preserve the closed grammar and reject injected authority" do
@@ -28,33 +29,37 @@ defmodule OverallsProtocol.SSHManagementTest do
 
   alias OverallsProtocol.SSHManagement
 
-  property "arbitrary envelopes never raise or accept client-selected authority" do
-    check all(
-            value <- term(),
-            route <- member_of(["ready", "sessions", "session", "close", "commands", "unknown"])
-          ) do
-      case SSHManagement.request(route, value) do
-        {:ok, decoded} ->
-          refute Map.has_key?(decoded, :actor)
-          refute Map.has_key?(decoded, :user_id)
+  property "arbitrary envelopes never raise or accept client-selected authority",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_859_064_213 do
+    value = draw("value", OverallsProtocol.TestGenerators.peer_term())
 
-          expected =
-            case route do
-              "ready" -> 0
-              "commands" -> 2
-              _ -> 1
-            end
+    route =
+      draw("route", member_of(["ready", "sessions", "session", "close", "commands", "unknown"]))
 
-          assert map_size(decoded) == expected
+    case SSHManagement.request(route, value) do
+      {:ok, decoded} ->
+        refute Map.has_key?(decoded, :actor)
+        refute Map.has_key?(decoded, :user_id)
 
-        {:error, reason} ->
-          assert reason in [
-                   :invalid_request,
-                   :invalid_public_key,
-                   :invalid_command,
-                   :unsupported_version
-                 ]
-      end
+        expected =
+          case route do
+            "ready" -> 0
+            "commands" -> 2
+            _ -> 1
+          end
+
+        assert map_size(decoded) == expected
+
+      {:error, reason} ->
+        assert reason in [
+                 :invalid_request,
+                 :invalid_public_key,
+                 :invalid_command,
+                 :unsupported_version
+               ]
     end
   end
 

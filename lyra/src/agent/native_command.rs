@@ -4,6 +4,8 @@ use std::io::{self, Read};
 use std::os::fd::AsRawFd;
 use std::os::unix::process::CommandExt;
 use std::process::{Command, ExitStatus, Stdio};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::mpsc;
 use std::thread;
 use std::time::{Duration, Instant};
 
@@ -82,7 +84,55 @@ impl<R: Read + AsRawFd> Pipe<R> {
 /// most `limit` bytes per stream. At completion, deadline or failure it MUST
 /// kill that group and reap the direct child. Descendants that explicitly
 /// escape that group MUST NOT keep the executor blocked on inherited pipes.
-pub(super) fn run(command: &mut Command, limit: usize, budget: Duration) -> io::Result<Output> {
+/// The current lease/stop callback MUST authorize spawning and every authority
+/// polling turn; refusal MUST kill and reap without returning command output.
+/// Child collection MUST enforce the deadline even while a lease RPC blocks.
+pub(super) fn run(
+    command: &mut Command,
+    limit: usize,
+    budget: Duration,
+    heartbeat: &mut impl FnMut() -> bool,
+) -> io::Result<Output> {
+    if !heartbeat() {
+        return Err(io::ErrorKind::PermissionDenied.into());
+    }
+    let cancelled = AtomicBool::new(false);
+    let (sender, receiver) = mpsc::sync_channel(1);
+    thread::scope(|scope| {
+        let cancellation = &cancelled;
+        // Start the child only inside a successfully created scoped worker.
+        // Joining that worker also guarantees cleanup before this call returns.
+        let _worker = thread::Builder::new()
+            .name("native-command".to_owned())
+            .spawn_scoped(scope, move || {
+                let _ = sender.send(collect(command, limit, budget, cancellation));
+            })?;
+        loop {
+            if !heartbeat() {
+                cancelled.store(true, Ordering::Release);
+                return Err(io::ErrorKind::PermissionDenied.into());
+            }
+            match receiver.recv_timeout(Duration::from_millis(5)) {
+                Ok(result) => return result,
+                Err(mpsc::RecvTimeoutError::Timeout) => {}
+                Err(mpsc::RecvTimeoutError::Disconnected) => {
+                    return Err(io::Error::other("native command worker unavailable"));
+                }
+            }
+        }
+    })
+}
+
+fn collect(
+    command: &mut Command,
+    limit: usize,
+    budget: Duration,
+    cancelled: &AtomicBool,
+) -> io::Result<Output> {
+    if cancelled.load(Ordering::Acquire) {
+        return Err(io::ErrorKind::PermissionDenied.into());
+    }
+    let deadline = Instant::now() + budget;
     command
         .process_group(0)
         .stdin(Stdio::null())
@@ -111,9 +161,11 @@ pub(super) fn run(command: &mut Command, limit: usize, budget: Duration) -> io::
                 .take()
                 .ok_or_else(|| io::Error::other("missing native stderr"))?,
         )?;
-        let deadline = Instant::now() + budget;
         let mut status = None;
         loop {
+            if cancelled.load(Ordering::Acquire) {
+                return Err(io::ErrorKind::PermissionDenied.into());
+            }
             stdout.drain(limit)?;
             stderr.drain(limit)?;
             if status.is_none() {
@@ -154,6 +206,7 @@ pub(super) fn run(command: &mut Command, limit: usize, budget: Duration) -> io::
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::fs;
 
     #[test]
     fn drains_both_pipes_and_bounds_retained_output() {
@@ -164,6 +217,7 @@ mod tests {
             ]),
             31,
             Duration::from_secs(5),
+            &mut || true,
         )
         .unwrap();
         assert!(output.status.success());
@@ -178,6 +232,7 @@ mod tests {
             Command::new("/bin/sh").args(["-c", "sleep 30 & wait"]),
             32,
             Duration::from_millis(100),
+            &mut || true,
         )
         .unwrap();
         assert!(!output.status.success());
@@ -191,9 +246,94 @@ mod tests {
             Command::new("/bin/sh").args(["-c", "sleep 30 & exit 0"]),
             32,
             Duration::from_secs(2),
+            &mut || true,
         )
         .unwrap();
         assert!(output.status.success());
         assert!(start.elapsed() < Duration::from_secs(3));
+    }
+
+    #[test]
+    fn refused_authority_never_spawns_a_command() {
+        let directory = tempfile::tempdir().unwrap();
+        let marker = directory.path().join("started");
+        let error = run(
+            Command::new("/bin/sh")
+                .args(["-c", "touch \"$1\"", "fixture"])
+                .arg(&marker),
+            32,
+            Duration::from_secs(5),
+            &mut || false,
+        )
+        .err()
+        .unwrap();
+        assert_eq!(error.kind(), io::ErrorKind::PermissionDenied);
+        assert!(!marker.exists());
+    }
+
+    #[test]
+    fn lost_authority_kills_and_reaps_the_running_group_without_returning_output() {
+        let directory = tempfile::tempdir().unwrap();
+        let marker = directory.path().join("started");
+        let start = Instant::now();
+        let error = run(
+            Command::new("/bin/sh")
+                .args([
+                    "-c",
+                    "sleep 30 & printf '%s\\n%s\\n' \"$$\" \"$!\" > \"$1.tmp\"; mv \"$1.tmp\" \"$1\"; printf private-fixture-output; wait",
+                    "fixture",
+                ])
+                .arg(&marker),
+            32,
+            Duration::from_secs(5),
+            &mut || !marker.exists(),
+        )
+        .err()
+        .unwrap();
+        assert_eq!(error.kind(), io::ErrorKind::PermissionDenied);
+        assert!(start.elapsed() < Duration::from_secs(3));
+        let pids: Vec<libc::pid_t> = fs::read_to_string(marker)
+            .unwrap()
+            .lines()
+            .map(|value| value.parse().unwrap())
+            .collect();
+        assert_eq!(pids.len(), 2);
+        // SAFETY: signal zero checks only the owned fixture's direct child.
+        assert_eq!(unsafe { libc::kill(pids[0], 0) }, -1);
+        assert_eq!(io::Error::last_os_error().raw_os_error(), Some(libc::ESRCH));
+        // The direct child has already been reaped by the command runner.
+        assert_eq!(
+            unsafe { libc::waitpid(pids[0], std::ptr::null_mut(), libc::WNOHANG) },
+            -1
+        );
+        assert_eq!(
+            io::Error::last_os_error().raw_os_error(),
+            Some(libc::ECHILD)
+        );
+    }
+
+    #[test]
+    fn a_blocked_lease_check_cannot_extend_the_child_deadline() {
+        let directory = tempfile::tempdir().unwrap();
+        let completed = directory.path().join("completed");
+        let mut initial = true;
+        let output = run(
+            Command::new("/bin/sh")
+                .args(["-c", "sleep 1; touch \"$1\"", "fixture"])
+                .arg(&completed),
+            32,
+            Duration::from_millis(100),
+            &mut || {
+                if initial {
+                    initial = false;
+                } else {
+                    thread::sleep(Duration::from_millis(1200));
+                }
+                true
+            },
+        )
+        .unwrap();
+        assert!(!output.status.success());
+        assert!(!completed.exists());
     }
 }

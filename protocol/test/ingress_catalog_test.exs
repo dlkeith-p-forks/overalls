@@ -1,35 +1,37 @@
 defmodule OverallsProtocol.IngressCatalogTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.IngressCatalog
   @id "00000000-0000-4000-8000-000000000001"
 
-  property "catalog entries bind complete VM identities and positive execution numbers" do
-    check all(
-            epoch <- integer(1..9_223_372_036_854_775_807),
-            generation <- integer(1..9_223_372_036_854_775_807)
-          ) do
-      item = entry(epoch, generation)
+  property "catalog entries bind complete VM identities and positive execution numbers",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 236_966_880 do
+    epoch = draw("epoch", integer(1..9_223_372_036_854_775_807))
+    generation = draw("generation", integer(1..9_223_372_036_854_775_807))
+    item = entry(epoch, generation)
 
-      assert {:ok, %{entries: [%{execution_epoch: ^epoch, generation: ^generation}]}} =
-               IngressCatalog.decode(envelope([item]))
+    assert {:ok, %{entries: [%{execution_epoch: ^epoch, generation: ^generation}]}} =
+             IngressCatalog.decode(envelope([item]))
 
-      assert {:error, :invalid_message} = IngressCatalog.decode(envelope([item, item]))
+    assert {:error, :invalid_message} = IngressCatalog.decode(envelope([item, item]))
 
-      for key <- Map.keys(item) do
-        assert {:error, :invalid_message} =
-                 IngressCatalog.decode(envelope([Map.delete(item, key)]))
-      end
-
+    for key <- Map.keys(item) do
       assert {:error, :invalid_message} =
-               IngressCatalog.decode(envelope([%{item | "execution_epoch" => 0}]))
-
-      assert {:error, :invalid_message} =
-               IngressCatalog.decode(
-                 envelope([%{item | "label" => "vm-00000000000040008000000000000002"}])
-               )
+               IngressCatalog.decode(envelope([Map.delete(item, key)]))
     end
+
+    assert {:error, :invalid_message} =
+             IngressCatalog.decode(envelope([%{item | "execution_epoch" => 0}]))
+
+    assert {:error, :invalid_message} =
+             IngressCatalog.decode(
+               envelope([%{item | "label" => "vm-00000000000040008000000000000002"}])
+             )
   end
 
   test "entries carrying any extra key fail, including a retired certificate_id" do
@@ -45,37 +47,38 @@ defmodule OverallsProtocol.IngressCatalogTest do
     assert {:ok, %{entries: []}} = IngressCatalog.decode(envelope([]))
 
     assert {:error, :invalid_message} =
-             IngressCatalog.decode(envelope(List.duplicate(entry(1, 1), 10_001)))
+             IngressCatalog.decode(envelope(List.duplicate(entry(1, 1), 10001)))
 
     assert {:error, :invalid_message} =
              IngressCatalog.decode(Map.put(envelope([]), "authority", true))
 
-    for ttl <- [0, 30_001, nil, "5000"] do
+    for ttl <- [0, 30001, nil, "5000"] do
       assert {:error, :invalid_message} =
                IngressCatalog.decode(put_in(envelope([]), ["catalog", "ttl"], ttl))
     end
   end
 
   test "catalog freshness accepts five seconds but refuses longer replies" do
-    assert {:ok, %{ttl: 5_000}} = IngressCatalog.decode(envelope([]))
+    assert {:ok, %{ttl: 5000}} = IngressCatalog.decode(envelope([]))
 
-    for ttl <- [5_001, 30_000] do
+    for ttl <- [5001, 30000] do
       assert {:error, :invalid_message} =
                IngressCatalog.decode(put_in(envelope([]), ["catalog", "ttl"], ttl))
     end
   end
 
-  defp entry(epoch, generation),
-    do: %{
+  defp entry(epoch, generation) do
+    %{
       "vm_id" => @id,
       "placement_id" => @id,
       "execution_epoch" => epoch,
       "generation" => generation,
       "label" => "vm-00000000000040008000000000000001"
     }
+  end
 
-  defp envelope(entries),
-    do: %{
+  defp envelope(entries) do
+    %{
       "version" => 1,
       "catalog" => %{
         "service_id" => @id,
@@ -85,4 +88,5 @@ defmodule OverallsProtocol.IngressCatalogTest do
         "entries" => entries
       }
     }
+  end
 end

@@ -1,47 +1,57 @@
 defmodule OverallsProtocol.WebSocketTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
 
   alias OverallsProtocol.WebSocket.{Frame, Handshake}
 
   @limit 70_000
 
-  @spec frame() :: StreamData.t(Frame.frame())
+  @spec frame() :: :hegel_gen.t(Frame.frame())
   defp frame do
     one_of([
-      map(string(:printable, max_length: 300), &{:text, &1}),
+      map(utf8(0, 300), &{:text, &1}),
       map(binary(max_length: 70_000), &{:binary, &1}),
       map(binary(max_length: 125), &{:ping, &1}),
       map(binary(max_length: 125), &{:pong, &1}),
-      map({integer(1000..4999), string(:alphanumeric, max_length: 100)}, fn {code, reason} ->
+      map(tuple([integer(1000, 4999), utf8(0, 100)]), fn {code, reason} ->
         {:close, code, reason}
       end)
     ])
   end
 
-  property "every frame round-trips in both directions, also when split" do
-    check all(frame <- frame(), cut <- integer(0..200), max_runs: 200) do
-      for {sender, receiver} <- [client: :server, server: :client] do
-        {:ok, data} = Frame.encode(frame, sender, @limit)
-        data = IO.iodata_to_binary(data)
-        assert {:ok, ^frame, "tail"} = Frame.decode(data <> "tail", receiver, @limit)
-        prefix = binary_part(data, 0, min(cut, byte_size(data) - 1))
-        assert Frame.decode(prefix, receiver, @limit) == :more
-      end
+  property "every frame round-trips in both directions, also when split",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 200,
+    seed: 20_261_106 do
+    frame = draw("frame", frame())
+    cut = draw("cut", integer(0, 200))
+
+    for {sender, receiver} <- [client: :server, server: :client] do
+      {:ok, data} = Frame.encode(frame, sender, @limit)
+      data = IO.iodata_to_binary(data)
+      assert {:ok, ^frame, "tail"} = Frame.decode(data <> "tail", receiver, @limit)
+      prefix = binary_part(data, 0, min(cut, byte_size(data) - 1))
+      assert Frame.decode(prefix, receiver, @limit) == :more
     end
   end
 
-  property "arbitrary input never raises and never yields a frame from the wrong role" do
-    check all(input <- binary(max_length: 300), max_runs: 500) do
-      for role <- [:client, :server] do
-        assert match?({:ok, _, _}, Frame.decode(input, role, @limit)) or
-                 Frame.decode(input, role, @limit) in [
-                   :more,
-                   {:error, :protocol_error},
-                   {:error, :frame_too_large}
-                 ]
-      end
+  property "arbitrary input never raises and never yields a frame from the wrong role",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 500,
+    seed: 20_261_107 do
+    input = draw("input", binary(0, 300))
+
+    for role <- [:client, :server] do
+      assert match?({:ok, _, _}, Frame.decode(input, role, @limit)) or
+               Frame.decode(input, role, @limit) in [
+                 :more,
+                 {:error, :protocol_error},
+                 {:error, :frame_too_large}
+               ]
     end
   end
 

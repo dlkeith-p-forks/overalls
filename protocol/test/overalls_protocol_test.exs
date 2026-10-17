@@ -1,81 +1,86 @@
 defmodule OverallsProtocolTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol, as: Protocol
   alias OverallsProtocol.Execution
   @id "11111111-1111-4111-8111-111111111111"
 
-  property "command encoding preserves supported intent, sizes and generation" do
-    check all(
-            generation <- integer(1..9_223_372_036_854_775_807),
-            kind <- member_of([:provision, :start, :stop, :delete]),
-            profile <- member_of([:customer, :standard, :oss]),
-            cores <- integer(1..32)
-          ) do
-      command = %{
-        id: @id,
-        owner_id: @id,
-        vm_id: @id,
-        placement_id: @id,
-        execution_epoch: 1,
-        host_id: @id,
-        pool_id: @id,
-        generation: generation,
-        kind: kind,
-        profile: profile,
-        architecture: :x86_64,
-        vcpu: cores,
-        memory_bytes: 536_870_912,
-        disk_bytes: 2_147_483_648,
-        image_id: "sha256:" <> String.duplicate("a", 64),
-        slot: 2
-      }
+  property "command encoding preserves supported intent, sizes and generation",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 966_314_123 do
+    generation = draw("generation", integer(1..9_223_372_036_854_775_807))
+    kind = draw("kind", member_of([:provision, :start, :stop, :delete]))
+    profile = draw("profile", member_of([:customer, :standard, :oss]))
+    cores = draw("cores", integer(1..32))
 
-      wire = Execution.encode_command(command) |> JSON.encode!() |> JSON.decode!()
-      assert {:ok, [^command]} = Execution.commands([wire])
-    end
+    command = %{
+      id: @id,
+      owner_id: @id,
+      vm_id: @id,
+      placement_id: @id,
+      execution_epoch: 1,
+      host_id: @id,
+      pool_id: @id,
+      generation: generation,
+      kind: kind,
+      profile: profile,
+      architecture: :x86_64,
+      vcpu: cores,
+      memory_bytes: 536_870_912,
+      disk_bytes: 2_147_483_648,
+      image_id: "sha256:" <> String.duplicate("a", 64),
+      slot: 2
+    }
+
+    wire = Execution.encode_command(command) |> JSON.encode!() |> JSON.decode!()
+    assert {:ok, [^command]} = Execution.commands([wire])
   end
 
-  property "capacity samples round trip without losing large integer precision" do
-    check all(
-            total <- integer(1..9_223_372_036_854_775_807),
-            free <- integer(0..total),
-            allocated <- integer(0..(total - free))
-          ) do
-      report = %{
-        sequence: 1,
-        sampled_at: ~U[2026-09-15 12:00:00.000000Z],
-        effective_cores: 4,
-        effective_memory_bytes: 8_589_934_592,
-        inventory: %{
-          "architecture" => "x86_64",
-          "images" => [],
-          "execution_ready" => false,
-          "terminal_protocol" => 0,
-          "inception_image_id" => nil
-        },
-        pools: [
-          %{
-            id: @id,
-            total_bytes: total,
-            free_bytes: free,
-            allocations: %{@id => allocated},
-            storage: %{
-              backend: :zfs,
-              zpool_guid: "1",
-              dataset_guid: "2",
-              dataset: "tank/lilly",
-              used_bytes: total - free,
-              quota_bytes: total
-            }
-          }
-        ]
-      }
+  property "capacity samples round trip without losing large integer precision",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 988_864_127 do
+    total = draw("total", integer(1..9_223_372_036_854_775_807))
+    free = draw("free", integer(0..total))
+    allocated = draw("allocated", integer(0..(total - free)))
 
-      wire = report |> Protocol.encode_report() |> JSON.encode!() |> JSON.decode!()
-      assert {:ok, ^report} = Protocol.report(wire)
-    end
+    report = %{
+      sequence: 1,
+      sampled_at: ~U[2026-09-15 12:00:00.000000Z],
+      effective_cores: 4,
+      effective_memory_bytes: 8_589_934_592,
+      inventory: %{
+        "architecture" => "x86_64",
+        "images" => [],
+        "execution_ready" => false,
+        "terminal_protocol" => 0,
+        "inception_image_id" => nil
+      },
+      pools: [
+        %{
+          id: @id,
+          total_bytes: total,
+          free_bytes: free,
+          allocations: %{@id => allocated},
+          storage: %{
+            backend: :zfs,
+            zpool_guid: "1",
+            dataset_guid: "2",
+            dataset: "tank/lilly",
+            used_bytes: total - free,
+            quota_bytes: total
+          }
+        }
+      ]
+    }
+
+    wire = report |> Protocol.encode_report() |> JSON.encode!() |> JSON.decode!()
+    assert {:ok, ^report} = Protocol.report(wire)
   end
 
   test "unavailable pools round trip without invented counters or credit" do
@@ -153,11 +158,14 @@ defmodule OverallsProtocolTest do
     end
   end
 
-  property "arbitrary bytes have a bounded decode result without creating peer atoms" do
-    check all(bytes <- binary(max_length: 2048)) do
-      result = Protocol.decode(bytes)
-      assert match?({:ok, %{}}, result) or result == {:error, :invalid_message}
-    end
+  property "arbitrary bytes have a bounded decode result without creating peer atoms",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_009_087_762 do
+    bytes = draw("bytes", binary(max_length: 2048))
+    result = Protocol.decode(bytes)
+    assert match?({:ok, %{}}, result) or result == {:error, :invalid_message}
   end
 
   test "unknown versions, fields, oversized input and duplicate IDs are rejected" do

@@ -1,4 +1,4 @@
-//! Guest agent tool executor shared by Linux and Windows guests.
+//! Guest agent tool executor shared by Linux, Windows and native Unix guests.
 //!
 //! The control loop, fencing, the closed wire shapes and the tools live here;
 //! the operating system supplies only what differs through [`Host`] (the
@@ -206,7 +206,7 @@ fn execute(
         lease_valid
     };
     let (status, result) = match command.tool.as_str() {
-        "exec_command" => run_command(&command.arguments),
+        "exec_command" => run_command(&command.arguments, &mut heartbeat),
         "read_file" => read_file(&command.arguments),
         "web_fetch" => web_fetch::run(host, &command.arguments),
         "context_inventory" => {
@@ -336,7 +336,7 @@ fn wait_bounded(child: &mut std::process::Child) -> io::Result<std::process::Exi
     }
 }
 
-fn run_command(arguments: &Value) -> (&'static str, Value) {
+fn run_command(arguments: &Value, heartbeat: &mut impl FnMut() -> bool) -> (&'static str, Value) {
     let Ok(arguments) = serde_json::from_value::<ExecArguments>(arguments.clone()) else {
         return ("failed", json!({"reason": "invalid_arguments"}));
     };
@@ -356,15 +356,19 @@ fn run_command(arguments: &Value) -> (&'static str, Value) {
         .stderr(Stdio::piped())
         .stdin(Stdio::null());
 
-    execute_command(command)
+    execute_command(command, heartbeat)
 }
 
 #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
-fn execute_command(mut command: Command) -> (&'static str, Value) {
+fn execute_command(
+    mut command: Command,
+    heartbeat: &mut impl FnMut() -> bool,
+) -> (&'static str, Value) {
     let Ok(output) = native_command::run(
         &mut command,
         OUTPUT_LIMIT,
         Duration::from_secs(COMMAND_SECONDS),
+        heartbeat,
     ) else {
         return ("failed", json!({"reason": "spawn_failed"}));
     };
@@ -380,7 +384,10 @@ fn execute_command(mut command: Command) -> (&'static str, Value) {
 }
 
 #[cfg(not(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris")))]
-fn execute_command(mut command: Command) -> (&'static str, Value) {
+fn execute_command(
+    mut command: Command,
+    _heartbeat: &mut impl FnMut() -> bool,
+) -> (&'static str, Value) {
     let Ok(mut child) = command.spawn() else {
         return ("failed", json!({"reason": "spawn_failed"}));
     };

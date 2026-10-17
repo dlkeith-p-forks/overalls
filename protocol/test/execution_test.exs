@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.ExecutionTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.{Execution, VMShape}
   @id "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1"
@@ -52,9 +53,11 @@ defmodule OverallsProtocol.ExecutionTest do
   test "v4 rejects missing placement authority, invalid epochs and earlier control versions" do
     for decoder <- [&Execution.command/1, &Execution.outcome/1] do
       wire =
-        if decoder == (&Execution.command/1),
-          do: Execution.encode_command(command()),
-          else: Execution.encode_outcome(outcome())
+        if decoder == (&Execution.command/1) do
+          Execution.encode_command(command())
+        else
+          Execution.encode_outcome(outcome())
+        end
 
       for field <- ["placement_id", "execution_epoch"] do
         assert {:error, :invalid_message} = decoder.(Map.delete(wire, field))
@@ -187,58 +190,60 @@ defmodule OverallsProtocol.ExecutionTest do
     }
   end
 
-  property "aligned execution shapes round-trip and preserve complete host reservation cost" do
-    check all(
-            cpu <- integer(1..32),
-            mib <- integer(512..262_144),
-            pages <- integer(524_288..div(VMShape.maximum_disk_bytes(), 4096)),
-            slot <- integer(2..65534),
-            generation <- integer(1..9_223_372_036_854_775_807)
-          ) do
-      command = %{
-        command()
-        | vcpu: cpu,
-          memory_bytes: mib * 1_048_576,
-          disk_bytes: pages * 4096,
-          slot: slot,
-          generation: generation
-      }
+  property "aligned execution shapes round-trip and preserve complete host reservation cost",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_900_512_932 do
+    cpu = draw("cpu", integer(1..32))
+    mib = draw("mib", integer(512..262_144))
+    pages = draw("pages", integer(524_288..div(VMShape.maximum_disk_bytes(), 4096)))
+    slot = draw("slot", integer(2..65534))
+    generation = draw("generation", integer(1..9_223_372_036_854_775_807))
 
-      assert {:ok, ^command} = Execution.command(Execution.encode_command(command))
-      assert VMShape.reservation(command).memory_bytes == command.memory_bytes + 67_108_864
+    command = %{
+      command()
+      | vcpu: cpu,
+        memory_bytes: mib * 1_048_576,
+        disk_bytes: pages * 4096,
+        slot: slot,
+        generation: generation
+    }
 
-      assert {:error, :invalid_message} =
-               Execution.commands([
-                 Map.drop(Execution.encode_command(command), ["image_id", "slot"])
-               ])
-    end
+    assert {:ok, ^command} = Execution.command(Execution.encode_command(command))
+    assert VMShape.reservation(command).memory_bytes == command.memory_bytes + 67_108_864
+
+    assert {:error, :invalid_message} =
+             Execution.commands([
+               Map.drop(Execution.encode_command(command), ["image_id", "slot"])
+             ])
   end
 
-  property "unknown and failed outcomes cannot claim completed deletion" do
-    check all(
-            state <- member_of([:unknown, :failed]),
-            empty <- boolean(),
-            disk <- boolean(),
-            reason <-
-              member_of([
-                :unknown,
-                :crashed,
-                :execution_failed,
-                :cleanup_failed,
-                :identity_mismatch
-              ])
-          ) do
-      value = %{
-        outcome()
-        | state: state,
-          compute_empty: empty,
-          disk_present: disk,
-          cleanup_complete: true,
-          reason: reason
-      }
+  property "unknown and failed outcomes cannot claim completed deletion",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 2_067_158_505 do
+    state = draw("state", member_of([:unknown, :failed]))
+    empty = draw("empty", boolean())
+    disk = draw("disk", boolean())
 
-      assert {:error, :invalid_message} = Execution.outcome(Execution.encode_outcome(value))
-    end
+    reason =
+      draw(
+        "reason",
+        member_of([:unknown, :crashed, :execution_failed, :cleanup_failed, :identity_mismatch])
+      )
+
+    value = %{
+      outcome()
+      | state: state,
+        compute_empty: empty,
+        disk_present: disk,
+        cleanup_complete: true,
+        reason: reason
+    }
+
+    assert {:error, :invalid_message} = Execution.outcome(Execution.encode_outcome(value))
   end
 
   test "physical outcomes retain JSON booleans and reject contradictory observations" do

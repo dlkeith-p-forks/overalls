@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.SSHBootstrapTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.PrivateServices
 
@@ -27,11 +28,21 @@ defmodule OverallsProtocol.SSHBootstrapTest do
              PrivateServices.roster_binding(Map.put(@binding, "scope", "all"))
   end
 
-  property "invalid generations and operation identifiers fail closed" do
-    check all(generation <- one_of([integer(-100..0), string(:alphanumeric)])) do
+  property "invalid generations and operation identifiers fail closed",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_828_801_506 do
+    (
+      generation =
+        draw(
+          "generation",
+          one_of([integer(-100..0), OverallsProtocol.TestGenerators.string(:alphanumeric)])
+        )
+
       assert {:error, :invalid_binding} =
                PrivateServices.roster_binding(Map.put(@binding, "generation", generation))
-    end
+    )
 
     assert {:error, :invalid_binding} =
              PrivateServices.roster_binding(Map.put(@binding, "operation_id", "unknown"))

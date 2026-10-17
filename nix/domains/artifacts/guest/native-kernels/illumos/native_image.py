@@ -62,6 +62,7 @@ NATIVE_SERVICE_MANIFESTS = (
     "lib/svc/manifest/site/overalls-native-bootstrap.xml",
     "lib/svc/manifest/site/overalls-native-agents.xml",
 )
+NATIVE_SSHD = "usr/sbin/sshd"
 
 
 @dataclass(frozen=True)
@@ -543,6 +544,25 @@ def validate_native_services(root: Path) -> None:
         kernel.command(["/usr/sbin/svccfg", "validate", str(path)])
 
 
+def check_native_ssh_executable(root: Path) -> None:
+    """@cc [owner:ghuntley,label:build;verification] native-ssh-executable-closure
+    Assembly and booted verification MUST require the supervisor's native sshd
+    path to be a root-owned regular executable ELF within the checked guest
+    root. Missing, linked, group/other-writable or privileged executables MUST refuse.
+    This file check MUST NOT establish SSH configuration or runtime readiness.
+    """
+    path = kernel.destination(root, NATIVE_SSHD)
+    metadata = path.lstat()
+    if (
+        not stat.S_ISREG(metadata.st_mode)
+        or metadata.st_uid != 0
+        or not metadata.st_mode & stat.S_IXUSR
+        or metadata.st_mode & 0o7022
+        or not kernel.read_file(path, MAX_PAYLOAD).startswith(b"\x7fELF")
+    ):
+        raise ValueError("native sshd must be a safe root-owned executable ELF")
+
+
 def configure_console(root: Path) -> list[Entry]:
     """@cc [owner:ghuntley,label:build;verification] native-image-serial-handoff
     Only the scratch clone MUST receive the reviewed pseudo ISA nexus and ttya
@@ -657,6 +677,7 @@ def assemble(kit: Path, device: Path, guid: str, expected: str) -> None:
         check_installed(ROOT, installed)
         check_console_configuration(ROOT, installed)
         validate_native_services(ROOT)
+        check_native_ssh_executable(ROOT)
         disable_stock_services()
         remove_stock_network(ROOT)
         check_stock_network_absent(ROOT)
@@ -677,6 +698,7 @@ def assemble(kit: Path, device: Path, guid: str, expected: str) -> None:
             "disabled_stock_services": list(STOCK_SERVICES),
             "removed_stock_network_files": list(STOCK_NETWORK_FILES),
             "native_service_manifests_validated": True,
+            "native_ssh_executable_checked": True,
             "native_admission": False,
             "runtime_validated": False,
         }
@@ -710,6 +732,7 @@ def verify(expected: str) -> None:
         or parsed.get("disabled_stock_services") != list(STOCK_SERVICES)
         or parsed.get("removed_stock_network_files") != list(STOCK_NETWORK_FILES)
         or parsed.get("native_service_manifests_validated") is not True
+        or parsed.get("native_ssh_executable_checked") is not True
         or parsed.get("native_admission") is not False
     ):
         raise ValueError("expected closed candidate assembly receipt")
@@ -741,6 +764,7 @@ def verify(expected: str) -> None:
     check_stock_services_disabled()
     check_stock_network_absent(Path("/"))
     validate_native_services(Path("/"))
+    check_native_ssh_executable(Path("/"))
     kernel.command(["/usr/bin/git", "--version"])
     with socket.socket(40, socket.SOCK_STREAM, 0) as stream:
         if stream.getsockopt(40, 1, 65) != expected.encode("ascii") + b"\0":
@@ -766,6 +790,7 @@ def verify(expected: str) -> None:
                     "stock_automation_and_ssh_disabled": True,
                     "stock_network_configuration_absent": True,
                     "native_service_manifests_validated": True,
+                    "native_ssh_executable_checked": True,
                     "compiled_socket_token_checked": True,
                     "native_services_validated": False,
                     "isolation_validated": False,

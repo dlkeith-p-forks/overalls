@@ -1289,6 +1289,33 @@ Logs `admin-growth-operand-assembly-result.log`,
 `/tmp/overalls-omnios-native-probe/`. Exact-image Firecracker service/growth/
 transport/reset acceptance remains separate from this assembly result.
 
+## Corrected local MAC normalization assembly
+
+The later `sis8` kit manifest SHA256 is
+`3e9256d9291ad218744117454e87574a20eec918fc53e12f57a1f375507c83b9`.
+It normalizes only local one- or two-digit hexadecimal MAC octets; external MMDS
+remains canonical. Its bootstrap executable SHA256 is
+`8e53bdf2070ab61adf4fe5058b9e2bca7a43380138c8e6932625192c79289614`.
+A separately decompressed pinned 8-GiB disk passed exact base-digest preflight,
+native nine-module/764-entry assembly, all three SMF validations, the five stock
+service disables and four exact network removals. Assembly exited 0. Explicit
+GUID-only read-only import/extraction/export returned the 158,278-byte receipt
+SHA256 `f6d9f0be3bb8170c3d2b78aa31babb28f3a7e2070de68198df8d475fd90152d4`.
+Only the administration pool remained imported and both private workspaces were
+absent before clean shutdown; QEMU exited 0.
+
+The sealed raw SHA256 is
+`1e095659319faae2a2e7a8af6172fba056f02f4ac5e0c3b5a0f57cc570b99a60`.
+The read-only baseline, assembly receipt, firmware link and explicitly test-only
+manifest are `/tmp/overalls-omnios-native-bootstrap-fixed-artifact/`; manifest
+SHA256 is `e550cef6d7541e0bcd8037ee98363dfa40bee116e0074d0c6be510a06a438312`.
+Logs `admin-bootstrap-fixed-assembly.log`,
+`admin-bootstrap-fixed-receipt.log` and `admin-bootstrap-fixed-shutdown.log`
+are under `/tmp/overalls-omnios-native-probe/`. Runtime and admission flags
+remain false. This native assembly result does not establish the complete
+normal-boot service/growth/recovery matrix. Later executor lease/stop changes
+require another kit; their bytes are outside this record.
+
 ## Verification boundary and follow-up
 
 Protocol, Lilly and Rust unit tests plus Nix evaluation provide typed, bounded
@@ -1304,10 +1331,12 @@ Neither family's record establishes wrong-CID injection, DMA/race stress,
 direct native peer-VM isolation, physical power-loss durability, relocation or
 fleet availability.
 
-Before either family is admitted, finish the missing native and reproducible
-image gates, then run Marshall-driven capability and recovery journeys. Keep
-the current unavailable production receipts and all capability rows fail-closed
-until the required source-qualified evidence exists for both families.
+The separate [exact-image approval](2026-10-17-native-image-admission.md)
+qualifies only the reviewed sealed FreeBSD image after its five native scenario
+sets. Unqualified capability rows, changed candidates and OmniOS remain closed.
+Historical candidate receipts retain false admission flags. Reproducible native
+assembly and Marshall-driven capability/recovery journeys remain separate
+requirements; exact immutable artifact promotion does not claim either.
 
 Checks for this review are `elixir scripts/check_adrs.exs`,
 `elixir scripts/check_hldd.exs`, `elixir scripts/hldd_coverage.exs --check`,

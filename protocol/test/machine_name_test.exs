@@ -1,25 +1,29 @@
 defmodule OverallsProtocol.MachineNameTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.{MachineName, SSHCommand}
 
-  property "generated names are valid, deterministic and preserve UUID uniqueness" do
-    check all(bytes <- binary(length: 16)) do
-      hex = Base.encode16(bytes, case: :lower)
+  property "generated names are valid, deterministic and preserve UUID uniqueness",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_219_228_216 do
+    bytes = draw("bytes", binary(length: 16))
+    hex = Base.encode16(bytes, case: :lower)
 
-      <<a::binary-size(8), b::binary-size(4), c::binary-size(4), d::binary-size(4), e::binary>> =
-        hex
+    <<a::binary-size(8), b::binary-size(4), c::binary-size(4), d::binary-size(4), e::binary>> =
+      hex
 
-      id = Enum.join([a, b, c, d, e], "-")
-      name = MachineName.generated(id)
-      assert MachineName.valid?(name)
-      assert "vm-" <> ^hex = name
-      refute MachineName.valid?(id)
-      assert {:ok, %{arguments: [^id]}} = SSHCommand.parse("show #{id}")
-      assert {:ok, %{arguments: [^name]}} = SSHCommand.parse("show #{name}")
-      assert {:error, _} = SSHCommand.parse("new --name #{id}")
-    end
+    id = Enum.join([a, b, c, d, e], "-")
+    name = MachineName.generated(id)
+    assert MachineName.valid?(name)
+    assert "vm-" <> ^hex = name
+    refute MachineName.valid?(id)
+    assert {:ok, %{arguments: [^id]}} = SSHCommand.parse("show #{id}")
+    assert {:ok, %{arguments: [^name]}} = SSHCommand.parse("show #{name}")
+    assert {:error, _} = SSHCommand.parse("new --name #{id}")
   end
 
   test "image selection accepts the immutable digest used by Marshall" do

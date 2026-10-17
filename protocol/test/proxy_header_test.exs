@@ -1,23 +1,29 @@
 defmodule OverallsProtocol.ProxyHeaderTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.{IngressConnect, ProxyHeader}
   @id "11111111-1111-4111-8111-111111111111"
 
-  property "IPv4 metadata has fixed framing and exact endpoints" do
-    check all(a <- integer(0..255), b <- integer(0..255), port <- integer(1..65535)) do
-      peer = %{address: "192.0.#{a}.#{b}", port: port}
-      assert {:ok, bytes} = ProxyHeader.encode(peer, "10.41.0.2", 443)
-      assert byte_size(bytes) == 28
+  property "IPv4 metadata has fixed framing and exact endpoints",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 595_284_563 do
+    a = draw("a", integer(0..255))
+    b = draw("b", integer(0..255))
+    port = draw("port", integer(1..65535))
+    peer = %{address: "192.0.#{a}.#{b}", port: port}
+    assert {:ok, bytes} = ProxyHeader.encode(peer, "10.41.0.2", 443)
+    assert byte_size(bytes) == 28
 
-      assert {:ok, %{source: {{192, 0, ^a, ^b}, ^port}, destination: {{10, 41, 0, 2}, 443}}} =
-               ProxyHeader.decode(bytes)
+    assert {:ok, %{source: {{192, 0, ^a, ^b}, ^port}, destination: {{10, 41, 0, 2}, 443}}} =
+             ProxyHeader.decode(bytes)
 
-      assert {:error, _} = ProxyHeader.decode(bytes <> <<0>>)
-      assert {:error, _} = ProxyHeader.encode(%{peer | address: "::1"}, "10.41.0.2", 443)
-      assert {:error, _} = ProxyHeader.encode(peer, "10.041.0.2", 443)
-    end
+    assert {:error, _} = ProxyHeader.decode(bytes <> <<0>>)
+    assert {:error, _} = ProxyHeader.encode(%{peer | address: "::1"}, "10.41.0.2", 443)
+    assert {:error, _} = ProxyHeader.encode(peer, "10.041.0.2", 443)
   end
 
   test "metadata is separate from the nested lease and cannot widen destinations" do

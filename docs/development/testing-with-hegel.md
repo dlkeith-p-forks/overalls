@@ -230,12 +230,26 @@ authorization decisions, bounded retry/reconciliation models, and BEAM-visible
 process or socket behavior. Keep NixOS, native Rust/KVM, physical isolation,
 filesystem durability, and multi-host recovery claims in their dedicated suites.
 
-The Elixir frontend should expose an explicit typed test case and generator API. A
-property draws with `Hegel.draw(test_case, label, generator)` and returns an ordinary
-ExUnit result; labels and locations make a minimized replay actionable. Generated
-values must be bounded and typed, and options should set a deterministic seed/profile
-when the property is used in CI. A replay must recreate the same setup, draws, and
-cleanup sequence.
+The current protocol suite uses one `property` runner with explicit `test_cases`,
+`seed`, `database: :disabled` and `print_blob: false` options. Do not nest the
+frontend's `check all` compatibility runner inside a property: the pinned frontend
+discards its StreamData options and creates another native run. Draw labelled values
+once at the property boundary instead. Protocol's
+[`TestProperties.draw/2`](../../protocol/test/support/test_properties.ex) obtains
+the native test case, records only the literal label and a redaction marker, and
+uses `:hegel.draw_silent/2`. Shrinking and the original exception remain native;
+[`hegel_support_test.exs`](../../protocol/test/hegel_support_test.exs) verifies
+failure replay without printing the synthetic payload. A fixed seed reproduces
+the same setup, draws and cleanup sequence without exposing a replay blob.
+
+Generators must be bounded and typed. The pinned native integer primitive accepts
+signed 64-bit bounds; protocol's
+[`TestGenerators`](../../protocol/test/support/test_generators.ex) composes 32-bit
+halves to retain unsigned GUIDs and upper-half refusal cases. Its strings preserve
+explicit alphabets and character counts, including Unicode controls for sanitizer
+tests. Its peer terms retain bounded scalar, nil, list, map and tuple shapes without
+arbitrary atoms or BEAM resources. Use native `list(generator, min: ..., max: ...)`
+and `tuple([...])` forms rather than assuming StreamData options are implemented.
 
 Every generated case owns its mutable fixtures. Start SQL sandboxes, processes,
 sockets, temporary directories, registries, and node connections in per-case setup;
@@ -254,3 +268,7 @@ and bounded structural metadata unless a test explicitly opts in.
 Run a focused property or replay before the application's `mix precommit`. Protocol
 changes require both Marshall and Lilly consumer gates. Preserve contract, ADR, HLDD,
 logging, and machine-test evidence boundaries when reporting results.
+
+Protocol's `workspace_source_test.exs` and `view_test.exs` still use StreamData.
+The application migration remains partial until these properties and the wider
+native-engine obligations have passing execution records.

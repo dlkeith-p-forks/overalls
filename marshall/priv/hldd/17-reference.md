@@ -699,6 +699,26 @@ Existing `CONTRACTS`, ADRs and scenario-specific native/machine records remain
 separate obligations. See
 [ADR-0186](repo:docs/architecture/decisions/0186-covenant-contract-verification.md).
 
+## Elixir property verification
+
+Elixir properties use the test-only Hegel pin under
+[ADR-0191](repo:docs/architecture/decisions/0191-elixir-hegel-property-verification.md).
+Protocol properties run once per declared case count with fixed seeds and no
+example database or printed replay blobs. A local draw boundary records literal
+labels and redaction markers; generated terminal bytes and payloads do not enter
+the native replay printer. Bounded generators retain exact string/collection
+constraints, malformed peer shapes and unsigned 64-bit GUIDs through the engine's
+signed integer interface. Transport cases release their own listeners, supervised
+children and fixture messages before another case or replay.
+
+This verifies BEAM codec, refusal and process/socket behavior. It does not
+establish native guest execution, TLS, physical isolation, storage recovery or
+fleet acceptance. Protocol's workspace-source and View properties still use
+StreamData, and the wider migration remains partial. The
+[testing guide](repo:docs/development/testing-with-hegel.md) and
+[verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
+describe the current API, exact execution evidence and remaining gaps.
+
 ## Keeping this handbook current
 
 `/hldd` lists sections. Each `/hldd/SECTION` page loads one chapter; previous and

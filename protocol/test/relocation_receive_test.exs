@@ -1,9 +1,12 @@
 defmodule OverallsProtocol.RelocationReceiveTest do
   use ExUnit.Case, async: true
-  import Hegel
-  import Hegel.Gen
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   alias OverallsProtocol.RelocationReceive, as: Codec
-  defp id(n), do: "00000000-0000-4000-8000-" <> String.pad_leading(to_string(n), 12, "0")
+
+  defp id(n) do
+    "00000000-0000-4000-8000-" <> String.pad_leading(to_string(n), 12, "0")
+  end
 
   defp source do
     %{
@@ -89,9 +92,9 @@ defmodule OverallsProtocol.RelocationReceiveTest do
     wire = RelocationReadiness.encode_command(ready)
     assert {:ok, ^ready} = RelocationReadiness.command(wire)
 
-    for timeout <- [0, -1, 600_001, "120000"],
-        do:
-          assert({:error, _} = RelocationReadiness.command(Map.put(wire, "timeout_ms", timeout)))
+    for timeout <- [0, -1, 600_001, "120000"] do
+      assert({:error, _} = RelocationReadiness.command(Map.put(wire, "timeout_ms", timeout)))
+    end
 
     assert {:error, _} = RelocationReadiness.command(Map.put(wire, "path", "/v.sock"))
 
@@ -157,11 +160,14 @@ defmodule OverallsProtocol.RelocationReceiveTest do
     assert {:error, :unsupported_version} = Codec.exchange(%{message | "version" => 3})
   end
 
-  property "arbitrary terms cannot become receive commands or receipts" do
-    check all(value <- term()) do
-      assert Codec.command(value) == {:error, :invalid_message}
-      assert Codec.result(value) == {:error, :invalid_message}
-    end
+  property "arbitrary terms cannot become receive commands or receipts",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_281_258_641 do
+    value = draw("value", OverallsProtocol.TestGenerators.peer_term())
+    assert Codec.command(value) == {:error, :invalid_message}
+    assert Codec.result(value) == {:error, :invalid_message}
   end
 
   test "streams retain exact endpoints, pin, expiry and local GUID through JSON" do
@@ -179,24 +185,40 @@ defmodule OverallsProtocol.RelocationReceiveTest do
   test "unknown fields, unsafe endpoints, noncanonical GUIDs and excess batches fail closed" do
     wire = Codec.encode_command(command())
 
-    for key <- ~w(path argv private_key unknown),
-        do: assert({:error, _} = Codec.command(Map.put(wire, key, "bad")))
+    for key <- ~w(path argv private_key unknown) do
+      assert({:error, _} = Codec.command(Map.put(wire, key, "bad")))
+    end
 
-    for expires <- [0, -1, 1.5, 9_223_372_036_854_775_808],
-        do: assert({:error, _} = Codec.command(Map.put(wire, "expires_at", expires)))
+    for expires <- [0, -1, 1.5, 9_223_372_036_854_775_808] do
+      assert({:error, _} = Codec.command(Map.put(wire, "expires_at", expires)))
+    end
 
     assert {:error, _} =
              Codec.command(put_in(wire["source_endpoint"]["address"], "-oProxyCommand=bad"))
 
     r = %{"id" => wire["id"], "descriptor" => wire["descriptor"], "dataset_guid" => "300"}
 
-    for guid <- [nil, "0", "0300", "18446744073709551616", 300],
-        do: assert({:error, _} = Codec.result(Map.put(r, "dataset_guid", guid)))
+    for guid <- [nil, "0", "0300", "18446744073709551616", 300] do
+      assert({:error, _} = Codec.result(Map.put(r, "dataset_guid", guid)))
+    end
 
     assert {:error, _} = Codec.result(Map.put(r, "private_key", "bad"))
     assert {:error, _} = Codec.commands([wire, wire])
-    assert {:ok, _} = Codec.commands(for n <- 1..16, do: Map.put(wire, "id", id(n)))
-    assert {:error, _} = Codec.commands(for n <- 1..17, do: Map.put(wire, "id", id(n)))
+
+    assert {:ok, _} =
+             Codec.commands(
+               for n <- 1..16 do
+                 Map.put(wire, "id", id(n))
+               end
+             )
+
+    assert {:error, _} =
+             Codec.commands(
+               for n <- 1..17 do
+                 Map.put(wire, "id", id(n))
+               end
+             )
+
     assert {:error, _} = Codec.results([r, r])
     message = %{"version" => 4, "session_id" => id(2), "epoch" => 1, "results" => [r]}
     assert {:ok, _} = Codec.exchange(message)

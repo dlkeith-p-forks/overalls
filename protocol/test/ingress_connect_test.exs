@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.IngressConnectTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.IngressConnect, as: Wire
   @id "11111111-1111-4111-8111-111111111111"
@@ -18,43 +19,54 @@ defmodule OverallsProtocol.IngressConnectTest do
     }
   end
 
-  property "arbitrary bytes never produce a partial or unvalidated binding" do
-    check all(bytes <- binary(max_length: 4096)) do
-      case Wire.decode(bytes) do
-        {:ok, binding} -> assert Wire.valid?(binding)
-        error -> assert error == {:error, :invalid_connector_request}
-      end
+  property "arbitrary bytes never produce a partial or unvalidated binding",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_265_108_061 do
+    bytes = draw("bytes", binary(max_length: 4096))
+
+    case Wire.decode(bytes) do
+      {:ok, binding} -> assert Wire.valid?(binding)
+      error -> assert error == {:error, :invalid_connector_request}
     end
   end
 
-  property "all bounded execution identities round trip" do
-    check all(
-            epoch <- integer(1..9_223_372_036_854_775_807),
-            generation <- integer(1..9_223_372_036_854_775_807)
-          ) do
-      value = %{connector_binding() | execution_epoch: epoch, generation: generation}
+  property "all bounded execution identities round trip",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 71_418_162 do
+    epoch = draw("epoch", integer(1..9_223_372_036_854_775_807))
+    generation = draw("generation", integer(1..9_223_372_036_854_775_807))
+    value = %{connector_binding() | execution_epoch: epoch, generation: generation}
+    assert {:ok, bytes} = Wire.encode(value)
+    assert byte_size(bytes) < Wire.maximum()
+    assert {:ok, ^value} = Wire.decode(bytes)
+  end
+
+  property "web ports preserve exact execution binding and do not widen SSH",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_615_355_768 do
+    port = draw("port", integer(1..65535))
+    value = %{connector_binding() | service: :web, port: port}
+
+    if port == 4444 do
+      refute Wire.valid?(value)
+      assert {:error, :invalid_connector_request} = Wire.encode(value)
+    else
       assert {:ok, bytes} = Wire.encode(value)
-      assert byte_size(bytes) < Wire.maximum()
       assert {:ok, ^value} = Wire.decode(bytes)
     end
-  end
 
-  property "web ports preserve exact execution binding and do not widen SSH" do
-    check all(port <- integer(1..65535)) do
-      value = %{connector_binding() | service: :web, port: port}
-
-      if port == 4444 do
-        refute Wire.valid?(value)
-        assert {:error, :invalid_connector_request} = Wire.encode(value)
-      else
-        assert {:ok, bytes} = Wire.encode(value)
-        assert {:ok, ^value} = Wire.decode(bytes)
-      end
-
-      if port != 22, do: refute(Wire.valid?(%{value | service: :ssh}))
-      refute Wire.valid?(Map.put(value, :address, "127.0.0.1"))
-      refute Wire.valid?(%{value | service: :tcp})
+    if port != 22 do
+      refute(Wire.valid?(%{value | service: :ssh}))
     end
+
+    refute Wire.valid?(Map.put(value, :address, "127.0.0.1"))
+    refute Wire.valid?(%{value | service: :tcp})
   end
 
   test "nested bindings use a distinct closed version with fixed ports and profile" do
@@ -88,17 +100,20 @@ defmodule OverallsProtocol.IngressConnectTest do
     end
   end
 
-  property "ordinary connector admission preserves Customer isolation" do
-    check all(port <- integer(1..65535)) do
-      binding = connector_binding()
-      assert Wire.valid_for_profile?(binding, :customer)
-      web = %{binding | service: :web, port: port}
-      refute Wire.valid_for_profile?(web, :customer)
-      refute Wire.valid_for_profile?(web, :unknown)
+  property "ordinary connector admission preserves Customer isolation",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 2_089_867_876 do
+    port = draw("port", integer(1..65535))
+    binding = connector_binding()
+    assert Wire.valid_for_profile?(binding, :customer)
+    web = %{binding | service: :web, port: port}
+    refute Wire.valid_for_profile?(web, :customer)
+    refute Wire.valid_for_profile?(web, :unknown)
 
-      for profile <- [:standard, :oss, :inception] do
-        assert Wire.valid_for_profile?(web, profile) == (port != 4444)
-      end
+    for profile <- [:standard, :oss, :inception] do
+      assert Wire.valid_for_profile?(web, profile) == (port != 4444)
     end
   end
 

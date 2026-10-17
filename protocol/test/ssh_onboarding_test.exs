@@ -1,17 +1,21 @@
 defmodule OverallsProtocol.SSHOnboardingTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.SSHOnboarding, as: Help
 
-  property "terminal conversion is idempotent and preserves non-PTY bytes" do
-    check all(bytes <- binary(max_length: 5000)) do
-      assert Help.terminal_lines(bytes, false) == bytes
-      pty = Help.terminal_lines(bytes, true)
-      assert Help.terminal_lines(pty, true) == pty
-      refute Regex.match?(~r/(?<!\r)\n/, pty)
-      assert byte_size(pty) <= byte_size(bytes) * 2
-    end
+  property "terminal conversion is idempotent and preserves non-PTY bytes",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_646_967_545 do
+    bytes = draw("bytes", binary(max_length: 5000))
+    assert Help.terminal_lines(bytes, false) == bytes
+    pty = Help.terminal_lines(bytes, true)
+    assert Help.terminal_lines(pty, true) == pty
+    refute Regex.match?(~r/(?<!\r)\n/, pty)
+    assert byte_size(pty) <= byte_size(bytes) * 2
   end
 
   test "status schema is closed and versioned" do
@@ -23,28 +27,44 @@ defmodule OverallsProtocol.SSHOnboardingTest do
     end
   end
 
-  property "unrecognized status values cannot become valid statuses or atoms" do
-    check all(value <- string(:utf8), value not in ["recognized", "unknown"]) do
-      assert {:error, :invalid_message} =
-               Help.decode_status(%{"version" => 1, "result" => %{"status" => value}})
-    end
+  property "unrecognized status values cannot become valid statuses or atoms",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 2_102_461_088 do
+    value = draw("value", OverallsProtocol.TestGenerators.string(:utf8))
+    Hegel.assume(value not in ["recognized", "unknown"])
+
+    assert {:error, :invalid_message} =
+             Help.decode_status(%{"version" => 1, "result" => %{"status" => value}})
   end
 
-  property "untrusted text is bounded and never emits terminal controls" do
-    check all(value <- one_of([binary(max_length: 4096), string(:utf8, max_length: 1000)])) do
-      rendered = Help.approval(value, value)
-      assert byte_size(rendered) < 25_000
-      assert String.valid?(rendered)
+  property "untrusted text is bounded and never emits terminal controls",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 636_631_856 do
+    value =
+      draw(
+        "value",
+        one_of([
+          binary(max_length: 4096),
+          OverallsProtocol.TestGenerators.string(:utf8, max_length: 1000)
+        ])
+      )
 
-      refute Regex.match?(
-               ~r/[\x{0000}-\x{0009}\x{000b}-\x{001f}\x{007f}-\x{009f}\x{2028}\x{2029}]/u,
-               rendered
-             )
-    end
+    rendered = Help.approval(value, value)
+    assert byte_size(rendered) < 25000
+    assert String.valid?(rendered)
+
+    refute Regex.match?(
+             ~r/[\x{0000}-\x{0009}\x{000b}-\x{001f}\x{007f}-\x{009f}\x{2028}\x{2029}]/u,
+             rendered
+           )
   end
 
   test "Unicode C1 and line separator controls are escaped explicitly" do
-    for point <- Enum.to_list(0..31) ++ Enum.to_list(127..159) ++ [0x2028, 0x2029] do
+    for point <- Enum.to_list(0..31) ++ Enum.to_list(127..159) ++ [8232, 8233] do
       text = <<point::utf8>>
       refute Help.safe(text) =~ text
       assert Help.safe(text) =~ "\\u"

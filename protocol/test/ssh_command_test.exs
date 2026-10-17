@@ -1,52 +1,67 @@
 defmodule OverallsProtocol.SSHCommandTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.SSHCommand
 
-  property "advertised peer flag parses as a boolean regardless of option ordering" do
-    check all(suffix <- integer(1..999_999), peer_first? <- boolean()) do
-      machine = "vm-#{suffix}"
+  property "advertised peer flag parses as a boolean regardless of option ordering",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 2_142_110_225 do
+    suffix = draw("suffix", integer(1..999_999))
+    peer_first? = draw("peer_first?", boolean())
+    machine = "vm-#{suffix}"
 
-      options =
-        if peer_first?, do: "--peer --peer-vm #{machine}", else: "--peer-vm #{machine} --peer"
+    options =
+      if peer_first? do
+        "--peer --peer-vm #{machine}"
+      else
+        "--peer-vm #{machine} --peer"
+      end
 
-      assert {:ok, command} = SSHCommand.parse("integration add peer-api #{options} --json")
-      assert command.options["peer"] == true
-      assert command.options["peer-vm"] == machine
+    assert {:ok, command} = SSHCommand.parse("integration add peer-api #{options} --json")
+    assert command.options["peer"] == true
+    assert command.options["peer-vm"] == machine
 
-      assert {:ok, ^command} =
-               SSHCommand.validate(%{
-                 "version" => command.version,
-                 "command" => command.command,
-                 "arguments" => command.arguments,
-                 "options" => command.options
-               })
+    assert {:ok, ^command} =
+             SSHCommand.validate(%{
+               "version" => command.version,
+               "command" => command.command,
+               "arguments" => command.arguments,
+               "options" => command.options
+             })
 
-      assert {:error, :invalid_command} = SSHCommand.parse("new --peer")
+    assert {:error, :invalid_command} = SSHCommand.parse("new --peer")
 
-      assert {:error, :invalid_command} =
-               SSHCommand.parse("integration add peer-api --peer=false")
-    end
+    assert {:error, :invalid_command} =
+             SSHCommand.parse("integration add peer-api --peer=false")
   end
 
-  property "quoted machine names and option ordering preserve command meaning" do
-    check all(
-            suffix <- string(:alphanumeric, min_length: 1, max_length: 30),
-            cpu <- integer(1..256)
-          ) do
-      name = "vm-" <> String.downcase(suffix)
-      assert {:ok, expected} = SSHCommand.parse("new --name #{name} --cpu #{cpu} --json")
-      assert {:ok, ^expected} = SSHCommand.parse("new --json --cpu=#{cpu} --name '#{name}'")
+  property "quoted machine names and option ordering preserve command meaning",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 246_578_205 do
+    suffix =
+      draw(
+        "suffix",
+        OverallsProtocol.TestGenerators.string(:alphanumeric, min_length: 1, max_length: 30)
+      )
 
-      assert {:ok, ^expected} =
-               SSHCommand.validate(%{
-                 "version" => expected.version,
-                 "command" => expected.command,
-                 "arguments" => expected.arguments,
-                 "options" => expected.options
-               })
-    end
+    cpu = draw("cpu", integer(1..256))
+    name = "vm-" <> String.downcase(suffix)
+    assert {:ok, expected} = SSHCommand.parse("new --name #{name} --cpu #{cpu} --json")
+    assert {:ok, ^expected} = SSHCommand.parse("new --json --cpu=#{cpu} --name '#{name}'")
+
+    assert {:ok, ^expected} =
+             SSHCommand.validate(%{
+               "version" => expected.version,
+               "command" => expected.command,
+               "arguments" => expected.arguments,
+               "options" => expected.options
+             })
   end
 
   test "new accepts closed sources from all four providers" do
@@ -71,10 +86,20 @@ defmodule OverallsProtocol.SSHCommandTest do
              SSHCommand.parse("clone vm-a --source https://github.com/o/r")
   end
 
-  property "arbitrary input never raises or produces a command outside the catalog" do
+  property "arbitrary input never raises or produces a command outside the catalog",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_360_564_909 do
     names = Enum.map(SSHCommand.catalog(), & &1.name)
 
-    check all(value <- one_of([term(), binary(max_length: 9000)])) do
+    (
+      value =
+        draw(
+          "value",
+          one_of([OverallsProtocol.TestGenerators.peer_term(), binary(max_length: 9000)])
+        )
+
       case SSHCommand.parse(value) do
         {:ok, command} -> assert command.command in names
         {:error, reason} -> assert reason in [:invalid_command, :command_too_large]
@@ -84,7 +109,7 @@ defmodule OverallsProtocol.SSHCommandTest do
         {:ok, command} -> assert command.command in names
         {:error, :invalid_command} -> :ok
       end
-    end
+    )
   end
 
   test "disk limit applies to text commands and structured API commands" do

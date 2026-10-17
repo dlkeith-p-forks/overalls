@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.EditorTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
 
   alias OverallsProtocol.{
@@ -16,77 +17,92 @@ defmodule OverallsProtocol.EditorTest do
   @account "00000000-0000-4000-8000-000000000002"
   @host "00000000-0000-4000-8000-000000000003"
 
-  property "origins retain complete independent identities and reject noncanonical spellings" do
-    check all(vm <- binary(length: 16), account <- binary(length: 16)) do
-      vm_id = uuid(vm)
-      guest_account_id = uuid(account)
-      label = EditorName.label(vm_id, guest_account_id)
-      assert byte_size(label) == 55
+  property "origins retain complete independent identities and reject noncanonical spellings",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 90_418_071 do
+    vm = draw("vm", binary(length: 16))
+    account = draw("account", binary(length: 16))
+    vm_id = uuid(vm)
+    guest_account_id = uuid(account)
+    label = EditorName.label(vm_id, guest_account_id)
+    assert byte_size(label) == 55
 
-      assert {:ok, %{vm_id: ^vm_id, guest_account_id: ^guest_account_id}} =
-               EditorName.parse(label)
+    assert {:ok, %{vm_id: ^vm_id, guest_account_id: ^guest_account_id}} =
+             EditorName.parse(label)
 
-      refute EditorName.valid_label?(String.upcase(label))
-      refute EditorName.valid_label?(label <> "=")
-      refute EditorName.valid_label?(label <> ".example.test")
-      if vm != account, do: refute(label == EditorName.label(guest_account_id, vm_id))
+    refute EditorName.valid_label?(String.upcase(label))
+    refute EditorName.valid_label?(label <> "=")
+    refute EditorName.valid_label?(label <> ".example.test")
+
+    if vm != account do
+      refute(label == EditorName.label(guest_account_id, vm_id))
     end
   end
 
-  property "unknown or missing principal and release fields never become connector authority" do
-    check all(field <- member_of(Map.keys(editor_binding())), epoch <- integer(1..100_000)) do
-      value = %{editor_binding() | execution_epoch: epoch}
-      assert {:ok, encoded} = EditorConnect.encode(value)
-      assert {:ok, ^value} = EditorConnect.decode(encoded)
-      assert {:ok, ^value} = IngressConnect.decode(encoded)
-      refute EditorConnect.valid?(Map.delete(value, field))
-      refute EditorConnect.valid?(Map.put(value, :address, "127.0.0.1"))
-      assert {:error, :invalid_connector_request} = IngressConnect.encode(%{value | port: 22})
-    end
+  property "unknown or missing principal and release fields never become connector authority",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 820_644_257 do
+    field = draw("field", member_of(Map.keys(editor_binding())))
+    epoch = draw("epoch", integer(1..100_000))
+    value = %{editor_binding() | execution_epoch: epoch}
+    assert {:ok, encoded} = EditorConnect.encode(value)
+    assert {:ok, ^value} = EditorConnect.decode(encoded)
+    assert {:ok, ^value} = IngressConnect.decode(encoded)
+    refute EditorConnect.valid?(Map.delete(value, field))
+    refute EditorConnect.valid?(Map.put(value, :address, "127.0.0.1"))
+    assert {:error, :invalid_connector_request} = IngressConnect.encode(%{value | port: 22})
   end
 
-  property "renewal cannot change account, execution, package or origin" do
-    check all(
-            ttl <- integer(1..30_000),
-            field <- member_of([:uid, :username, :generation, :editor_release, :editor_origin])
-          ) do
-      previous = %{binding: editor_binding(), user_id: @account}
-      wire = JSON.decode!(JSON.encode!(editor_binding()))
+  property "renewal cannot change account, execution, package or origin",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 324_183_851 do
+    ttl = draw("ttl", integer(1..30000))
 
-      response = %{
-        "version" => 1,
-        "grant" => %{"binding" => wire, "ttl" => ttl, "user_id" => @account}
-      }
+    field =
+      draw("field", member_of([:uid, :username, :generation, :editor_release, :editor_origin]))
 
-      assert {:ok, _} =
-               EditorStream.response(
-                 "editor-renew",
-                 response,
-                 @host,
-                 editor_binding().label,
-                 previous
-               )
+    previous = %{binding: editor_binding(), user_id: @account}
+    wire = JSON.decode!(JSON.encode!(editor_binding()))
 
-      changed =
-        case field do
-          :uid -> 200_001
-          :username -> "another"
-          :generation -> 2
-          :editor_release -> String.duplicate("c", 64)
-          :editor_origin -> "https://" <> editor_binding().label <> ".foreign.test"
-        end
+    response = %{
+      "version" => 1,
+      "grant" => %{"binding" => wire, "ttl" => ttl, "user_id" => @account}
+    }
 
-      changed_response = put_in(response, ["grant", "binding", Atom.to_string(field)], changed)
+    assert {:ok, _} =
+             EditorStream.response(
+               "editor-renew",
+               response,
+               @host,
+               editor_binding().label,
+               previous
+             )
 
-      assert {:error, :invalid_message} =
-               EditorStream.response(
-                 "editor-renew",
-                 changed_response,
-                 @host,
-                 editor_binding().label,
-                 previous
-               )
-    end
+    changed =
+      case field do
+        :uid -> 200_001
+        :username -> "another"
+        :generation -> 2
+        :editor_release -> String.duplicate("c", 64)
+        :editor_origin -> "https://" <> editor_binding().label <> ".foreign.test"
+      end
+
+    changed_response = put_in(response, ["grant", "binding", Atom.to_string(field)], changed)
+
+    assert {:error, :invalid_message} =
+             EditorStream.response(
+               "editor-renew",
+               changed_response,
+               @host,
+               editor_binding().label,
+               previous
+             )
   end
 
   test "token purposes are separate and caller approval authority is refused" do

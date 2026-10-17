@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.PrivateServicesWatchTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.PrivateServices
 
@@ -14,29 +15,42 @@ defmodule OverallsProtocol.PrivateServicesWatchTest do
   }
   @roster Map.merge(@binding, %{"generation" => 2, "operation_id" => @uuid})
 
-  property "requests round-trip exactly for canonical addresses and fixed purposes" do
-    check all(
-            octets <- list_of(integer(0..255), length: 4),
-            purpose <- member_of(@purposes)
-          ) do
-      address = Enum.join(octets, ".")
-      request = PrivateServices.watch_request(address, purpose)
-      assert PrivateServices.decode_watch_request(request) == {:ok, address, purpose}
-    end
+  property "requests round-trip exactly for canonical addresses and fixed purposes",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_563_821_426 do
+    octets = draw("octets", list(integer(0..255), min: 4, max: 4))
+    purpose = draw("purpose", member_of(@purposes))
+    address = Enum.join(octets, ".")
+    request = PrivateServices.watch_request(address, purpose)
+    assert PrivateServices.decode_watch_request(request) == {:ok, address, purpose}
   end
 
-  property "hostile requests are refused" do
-    check all(
-            address <-
-              member_of(["010.0.0.1", "1.2.3", "1.2.3.4.5", "256.1.1.1", "::1", " 1.2.3.4", ""]),
-            purpose <- member_of(["services", "roster", "SSH_ROSTER", "", "ssh_roster "]),
-            extra <- boolean(),
-            version <- member_of([1, 2, 3, 4, "3"])
-          ) do
-      request = %{"version" => version, "address" => address, "purpose" => purpose}
-      request = if extra, do: Map.put(request, "watch", true), else: request
-      assert PrivateServices.decode_watch_request(request) == {:error, :invalid_request}
-    end
+  property "hostile requests are refused",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_187_656_019 do
+    address =
+      draw(
+        "address",
+        member_of(["010.0.0.1", "1.2.3", "1.2.3.4.5", "256.1.1.1", "::1", " 1.2.3.4", ""])
+      )
+
+    purpose = draw("purpose", member_of(["services", "roster", "SSH_ROSTER", "", "ssh_roster "]))
+    extra = draw("extra", boolean())
+    version = draw("version", member_of([1, 2, 3, 4, "3"]))
+    request = %{"version" => version, "address" => address, "purpose" => purpose}
+
+    request =
+      if extra do
+        Map.put(request, "watch", true)
+      else
+        request
+      end
+
+    assert PrivateServices.decode_watch_request(request) == {:error, :invalid_request}
   end
 
   test "grants validate per purpose and revocation is one fixed frame" do

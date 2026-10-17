@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.InceptionExchangeTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.InceptionExchange
   @id "11111111-1111-4111-8111-111111111111"
@@ -84,9 +85,12 @@ defmodule OverallsProtocol.InceptionExchangeTest do
     end
   end
 
-  property "arbitrary bounded bytes cannot escape the decoder" do
-    check all(bytes <- binary(max_length: 300_000), max_runs: 30) do
-      assert {:error, :invalid_inception_publication} = InceptionExchange.decode(bytes)
-    end
+  property "arbitrary bounded bytes cannot escape the decoder",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 30,
+    seed: 1_930_175_973 do
+    bytes = draw("bytes", binary(max_length: 300_000))
+    assert {:error, :invalid_inception_publication} = InceptionExchange.decode(bytes)
   end
 end

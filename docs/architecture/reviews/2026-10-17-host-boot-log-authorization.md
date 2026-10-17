@@ -13,7 +13,8 @@ This is an authorization and execution-fencing correction under
 existing `boot_log` controls read bounded host diagnostics.
 [ADR-0082](../decisions/0082-guest-terminal-multiplexer.md) continues to govern
 interactive guest sessions. [ADR-0190](../decisions/0190-native-kernel-provenance-and-admission.md)
-keeps native capabilities and catalog admission disabled. The change adds no
+keeps unqualified native capabilities disabled and qualifies only the separately
+reviewed exact FreeBSD image. This diagnostic change adds no
 wire schema, guest endpoint, domain, deployment role or guest capability.
 
 ## Findings and required boundaries
@@ -109,9 +110,9 @@ The machine navigation offers a distinct `Boot log` link to
 `/machines/:id/terminals?view=boot-log`. Diagnostic mode selects the existing
 read-only serial pane without listing guest sessions or automatically opening
 a guest terminal. This makes the retained host diagnostics reachable for a
-pending or failed guest whose terminal capability is disabled. Real browser
-execution is tracked separately. These local checks do not establish a complete
-NixOS or browser journey through a pending or failed guest, production activation
+pending or failed guest whose terminal capability is disabled. These local
+checks do not establish a complete NixOS journey through a pending or failed
+guest, production activation
 or native-image acceptance.
 
 The final presentation uses a typed
@@ -125,7 +126,29 @@ byte-length cursor advance; rewind resets and refetches zero. These controls
 bound browser work and preserve host authority. The responsive navigation uses
 natural row height and existing grid tokens without new colours, resources or
 interactive guest authority. Node tests passed 31 checks and strict TypeScript
-passed; final pinned presentation/LiveView execution is tracked separately.
+passed. The later complete Marshall gate below records the final JavaScript,
+TypeScript, Monospace and LiveView source together.
+
+The final targeted browser probe passed desktop 1440-pixel and mobile 390-pixel
+layouts in both light and dark themes, contained tabs, character/line grid,
+contrast, origin-only resources, repeated EOF polling, disconnect/reconnect and
+hide/destroy lifecycle. The command used the disposable local Phoenix and
+WebSocket fixture with `/tmp/overalls-boot-log-ui-targeted.py`; its record is
+`/tmp/overalls-boot-log-ui-browser-final.log`, with four screenshots under
+`/tmp/overalls-native-boot-log-browser/final-artifacts/`. The probe exercises the
+actual read-only boot-log browser view and transport lifecycle, but does not
+compose a native pending/failed guest, Lilly's file authority or a NixOS journey.
+
+At clean revision `589ff7fe5`, complete Marshall `mix precommit` passed 1,690
+checks (244 properties and 1,446 tests), with four exclusions, all 24 Covenant
+obligations, terminal JavaScript 36/36, workspace 9/9 plus strict TypeScript,
+Monospace and forced Dialyzer with zero errors or skips. The source hashes
+remained unchanged throughout that run. Its record is
+`/tmp/overalls-native-integration-marshall-precommit-589ff7fe5-final.log`.
+The matching Lilly gate passed 610 checks (115 properties and 495 tests),
+Covenant and forced Dialyzer with zero errors or skips, recorded at
+`/tmp/overalls-native-lilly-589ff7fe5-precommit.log`. Later source changes need
+their own checks; these local gates do not establish guest or fleet acceptance.
 
 The final complete Lilly `mix precommit` passed all 608 checks (115 properties
 and 493 tests), Covenant coverage and forced Dialyzer with zero errors or skips.

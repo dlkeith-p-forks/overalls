@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.ImageManifestTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.ImageManifest
 
@@ -73,22 +74,27 @@ defmodule OverallsProtocol.ImageManifestTest do
     }
   end
 
-  property "identity survives serialization and changes with artifact bytes or boot requirements" do
-    check all(bytes <- integer(1..536_870_912), memory <- integer(536_870_912..274_877_906_943)) do
-      value =
-        manifest()
-        |> put_in(["kernel", "bytes"], bytes)
-        |> Map.put("minimum_memory_bytes", memory)
+  property "identity survives serialization and changes with artifact bytes or boot requirements",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 565_971_739 do
+    bytes = draw("bytes", integer(1..536_870_912))
+    memory = draw("memory", integer(536_870_912..274_877_906_943))
 
-      assert {:ok, image} = ImageManifest.validate(value)
-      assert {:ok, ^image} = value |> JSON.encode!() |> JSON.decode!() |> ImageManifest.validate()
+    value =
+      manifest()
+      |> put_in(["kernel", "bytes"], bytes)
+      |> Map.put("minimum_memory_bytes", memory)
 
-      assert {:ok, changed} =
-               ImageManifest.validate(%{value | "minimum_memory_bytes" => memory + 1})
+    assert {:ok, image} = ImageManifest.validate(value)
+    assert {:ok, ^image} = value |> JSON.encode!() |> JSON.decode!() |> ImageManifest.validate()
 
-      refute image.id == changed.id
-      assert ImageManifest.id?(image.id)
-    end
+    assert {:ok, changed} =
+             ImageManifest.validate(%{value | "minimum_memory_bytes" => memory + 1})
+
+    refute image.id == changed.id
+    assert ImageManifest.id?(image.id)
   end
 
   test "malformed manifests, unsupported architecture, unsafe arguments and insufficient disk fail" do
@@ -178,26 +184,38 @@ defmodule OverallsProtocol.ImageManifestTest do
            ]
   end
 
-  property "source capability is explicit, survives encoding and changes immutable identity" do
-    check all(bytes <- integer(1..536_870_912), capability <- member_of([nil, 2])) do
-      value =
-        manifest()
-        |> put_in(["rootfs", "bytes"], bytes)
-        |> Map.put("workspace_source_version", capability)
+  property "source capability is explicit, survives encoding and changes immutable identity",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_478_275_591 do
+    bytes = draw("bytes", integer(1..536_870_912))
+    capability = draw("capability", member_of([nil, 2]))
 
-      assert {:ok, image} = ImageManifest.validate(value)
-      assert image.workspace_source_version == capability
-      assert ImageManifest.workspace_source?(value) == (capability == 2)
-      assert ImageManifest.encode(image) == value
+    value =
+      manifest()
+      |> put_in(["rootfs", "bytes"], bytes)
+      |> Map.put("workspace_source_version", capability)
 
-      assert {:ok, changed} =
-               value
-               |> Map.put("workspace_source_version", if(capability == 2, do: nil, else: 2))
-               |> ImageManifest.validate()
+    assert {:ok, image} = ImageManifest.validate(value)
+    assert image.workspace_source_version == capability
+    assert ImageManifest.workspace_source?(value) == (capability == 2)
+    assert ImageManifest.encode(image) == value
 
-      refute image.id == changed.id
-      assert {:ok, ^image} = image |> ImageManifest.encode() |> ImageManifest.validate()
-    end
+    assert {:ok, changed} =
+             value
+             |> Map.put(
+               "workspace_source_version",
+               if(capability == 2) do
+                 nil
+               else
+                 2
+               end
+             )
+             |> ImageManifest.validate()
+
+    refute image.id == changed.id
+    assert {:ok, ^image} = image |> ImageManifest.encode() |> ImageManifest.validate()
   end
 
   test "source capability never comes from malformed or obsolete manifests" do
@@ -346,40 +364,47 @@ defmodule OverallsProtocol.ImageManifestTest do
                |> ImageManifest.validate()
     end
 
-    property "identity survives serialization, changes with every bound input and never collides with v4" do
-      check all(
-              firmware_bytes <- integer(1..67_108_864),
-              root_bytes <- integer(1..137_438_953_472),
-              memory <- integer(536_870_912..274_877_906_943),
-              digest <- string(Enum.concat(?0..?9, ?a..?f), length: 64)
-            ) do
-        value =
-          firmware_manifest()
-          |> put_in(["boot", "firmware", "bytes"], firmware_bytes)
-          |> put_in(["root", "bytes"], root_bytes)
-          |> put_in(["root", "sha256"], digest)
-          |> Map.put("minimum_disk_bytes", root_bytes)
-          |> Map.put("minimum_memory_bytes", memory)
+    property "identity survives serialization, changes with every bound input and never collides with v4",
+      database: :disabled,
+      print_blob: false,
+      test_cases: 100,
+      seed: 913_195_392 do
+      firmware_bytes = draw("firmware_bytes", integer(1..67_108_864))
+      root_bytes = draw("root_bytes", integer(1..137_438_953_472))
+      memory = draw("memory", integer(536_870_912..274_877_906_943))
 
-        assert {:ok, image} = ImageManifest.validate(value)
+      digest =
+        draw(
+          "digest",
+          OverallsProtocol.TestGenerators.string(Enum.concat(48..57, 97..102), length: 64)
+        )
 
-        assert {:ok, ^image} =
-                 value |> JSON.encode!() |> JSON.decode!() |> ImageManifest.validate()
+      value =
+        firmware_manifest()
+        |> put_in(["boot", "firmware", "bytes"], firmware_bytes)
+        |> put_in(["root", "bytes"], root_bytes)
+        |> put_in(["root", "sha256"], digest)
+        |> Map.put("minimum_disk_bytes", root_bytes)
+        |> Map.put("minimum_memory_bytes", memory)
 
-        for changed <- [
-              %{value | "minimum_memory_bytes" => memory + 1},
-              put_in(value, ["boot", "firmware", "bytes"], rem(firmware_bytes, 67_108_864) + 1),
-              put_in(value, ["root", "sha256"], String.duplicate("f", 64))
-            ] do
-          {:ok, other} = ImageManifest.validate(changed)
-          refute other.id == image.id or changed == value
-        end
+      assert {:ok, image} = ImageManifest.validate(value)
 
-        {:ok, kernel} = ImageManifest.validate(manifest())
-        refute kernel.id == image.id
-        assert ImageManifest.guest_agents(image) == :none
-        assert ImageManifest.root_artifact(image) == "disk.raw"
+      assert {:ok, ^image} =
+               value |> JSON.encode!() |> JSON.decode!() |> ImageManifest.validate()
+
+      for changed <- [
+            %{value | "minimum_memory_bytes" => memory + 1},
+            put_in(value, ["boot", "firmware", "bytes"], rem(firmware_bytes, 67_108_864) + 1),
+            put_in(value, ["root", "sha256"], String.duplicate("f", 64))
+          ] do
+        {:ok, other} = ImageManifest.validate(changed)
+        refute other.id == image.id or changed == value
       end
+
+      {:ok, kernel} = ImageManifest.validate(manifest())
+      refute kernel.id == image.id
+      assert ImageManifest.guest_agents(image) == :none
+      assert ImageManifest.root_artifact(image) == "disk.raw"
     end
   end
 

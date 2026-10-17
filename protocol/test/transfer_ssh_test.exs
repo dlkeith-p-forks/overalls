@@ -1,22 +1,27 @@
 defmodule OverallsProtocol.TransferSSHTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.TransferSSH
 
-  property "canonical public keys and endpoints round trip without interpretation" do
-    check all(key <- binary(length: 32), port <- integer(1..65_535)) do
-      public = "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, key::binary>>)
-      assert TransferSSH.public_key?(public)
+  property "canonical public keys and endpoints round trip without interpretation",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 713_640_502 do
+    key = draw("key", binary(length: 32))
+    port = draw("port", integer(1..65535))
+    public = "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, key::binary>>)
+    assert TransferSSH.public_key?(public)
 
-      for address <- ["lilly-1.example.net", "192.0.2.1"] do
-        endpoint = %{"address" => address, "port" => port, "host_key" => public}
-        assert {:ok, ^endpoint} = TransferSSH.endpoint(endpoint)
-      end
+    for address <- ["lilly-1.example.net", "192.0.2.1"] do
+      endpoint = %{"address" => address, "port" => port, "host_key" => public}
+      assert {:ok, ^endpoint} = TransferSSH.endpoint(endpoint)
+    end
 
-      for invalid <- [public <> "\n", public <> " comment", "restrict " <> public, key] do
-        refute TransferSSH.public_key?(invalid)
-      end
+    for invalid <- [public <> "\n", public <> " comment", "restrict " <> public, key] do
+      refute TransferSSH.public_key?(invalid)
     end
   end
 
@@ -53,7 +58,7 @@ defmodule OverallsProtocol.TransferSSHTest do
           Map.put(endpoint, "user", "root"),
           Map.delete(endpoint, "host_key"),
           %{endpoint | "port" => 0},
-          %{endpoint | "port" => 65_536},
+          %{endpoint | "port" => 65536},
           %{endpoint | "port" => "22"},
           %{endpoint | "host_key" => key <> " x"}
         ] do

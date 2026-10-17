@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.WorkloadBundleTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.WorkloadBundle
 
@@ -141,14 +142,17 @@ defmodule OverallsProtocol.WorkloadBundleTest do
       end
     end
 
-    property "every bounded firmware length round-trips and never encodes as version 1" do
-      check all(bytes <- integer(1..67_108_864)) do
-        value = Map.put(firmware_bundle(), "firmware_bytes", bytes)
-        assert {:ok, bundle} = WorkloadBundle.validate(value)
-        assert WorkloadBundle.encode(bundle) == value
-        assert WorkloadBundle.encode(bundle)["version"] == 2
-        refute Map.has_key?(WorkloadBundle.encode(bundle), "boot_args")
-      end
+    property "every bounded firmware length round-trips and never encodes as version 1",
+      database: :disabled,
+      print_blob: false,
+      test_cases: 100,
+      seed: 563_997_434 do
+      bytes = draw("bytes", integer(1..67_108_864))
+      value = Map.put(firmware_bundle(), "firmware_bytes", bytes)
+      assert {:ok, bundle} = WorkloadBundle.validate(value)
+      assert WorkloadBundle.encode(bundle) == value
+      assert WorkloadBundle.encode(bundle)["version"] == 2
+      refute Map.has_key?(WorkloadBundle.encode(bundle), "boot_args")
     end
   end
 

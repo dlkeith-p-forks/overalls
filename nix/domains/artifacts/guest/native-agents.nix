@@ -66,7 +66,7 @@ let
     PermitEmptyPasswords no
     KbdInteractiveAuthentication no
     AuthenticationMethods publickey
-    UsePAM yes
+    ${pkgs.lib.optionalString (os == "freebsd") "UsePAM yes"}
     UseDNS no
     AllowAgentForwarding no
     AllowTcpForwarding no
@@ -155,7 +155,7 @@ let
   supervisor = os: let
     # Native roots do not contain the Linux builder's Nix store or shell.
     binariesPath = if os == "freebsd" then "/usr/local/libexec" else "/opt/overalls/libexec";
-    sshd = if os == "freebsd" then "/usr/sbin/sshd" else "/usr/lib/ssh/sshd";
+    sshd = "/usr/sbin/sshd";
     sshdConfig = "-f /etc/overalls/sshd_config";
   in pkgs.writeTextFile {
     name = "overalls-native-agents-${os}-supervisor";

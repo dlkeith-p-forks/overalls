@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.PrivateServicesTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.PrivateServices
   @host "01234567-89ab-4def-8123-456789abcdef"
@@ -11,29 +12,39 @@ defmodule OverallsProtocol.PrivateServicesTest do
     assert PrivateServices.integration_zone() == "integration.internal"
     assert PrivateServices.lifetimes() == %{root: 20, intermediate: 10, server: 10}
 
-    assert PrivateServices.certificate_names() == [
-             "llm.internal",
-             "*.integration.internal"
-           ]
+    assert PrivateServices.certificate_names() == ["llm.internal", "*.integration.internal"]
   end
 
-  property "execution epochs cannot be missing, negative or unbounded" do
-    check all(
-            epoch <-
-              one_of([
-                integer(-100_000..0),
-                integer(9_223_372_036_854_775_808..18_446_744_073_709_551_615)
-              ])
-          ) do
-      assert {:error, :invalid_binding} = PrivateServices.binding(wire_binding(epoch))
-    end
+  property "execution epochs cannot be missing, negative or unbounded",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_343_478_771 do
+    epoch =
+      draw(
+        "epoch",
+        one_of([
+          integer(-100_000..0),
+          OverallsProtocol.TestGenerators.above_int64()
+        ])
+      )
+
+    assert {:error, :invalid_binding} = PrivateServices.binding(wire_binding(epoch))
   end
 
-  property "extra peer fields never become authority" do
-    check all(suffix <- string(:alphanumeric, min_length: 1, max_length: 32)) do
-      assert {:error, :invalid_binding} =
-               PrivateServices.binding(Map.put(wire_binding(1), "untrusted_" <> suffix, @host))
-    end
+  property "extra peer fields never become authority",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 987_135_544 do
+    suffix =
+      draw(
+        "suffix",
+        OverallsProtocol.TestGenerators.string(:alphanumeric, min_length: 1, max_length: 32)
+      )
+
+    assert {:error, :invalid_binding} =
+             PrivateServices.binding(Map.put(wire_binding(1), "untrusted_" <> suffix, @host))
   end
 
   test "closed valid binding retains execution identity" do
@@ -41,11 +52,12 @@ defmodule OverallsProtocol.PrivateServicesTest do
              PrivateServices.binding(wire_binding(7))
   end
 
-  defp wire_binding(epoch),
-    do: %{
+  defp wire_binding(epoch) do
+    %{
       "host_id" => @host,
       "vm_id" => @host,
       "placement_id" => @host,
       "execution_epoch" => epoch
     }
+  end
 end

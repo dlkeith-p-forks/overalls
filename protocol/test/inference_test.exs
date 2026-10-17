@@ -1,32 +1,46 @@
 defmodule OverallsProtocol.InferenceTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [draw: 2]
+  import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
   alias OverallsProtocol.Inference
 
-  property "content and arbitrary fields never cross the completion boundary" do
-    check all(field <- string(:alphanumeric, min_length: 1, max_length: 64)) do
-      assert {:error, :invalid_request} =
-               Inference.completion(Map.put(completion(), "extra_" <> field, "synthetic content"))
-    end
+  property "content and arbitrary fields never cross the completion boundary",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_464_411_972 do
+    field =
+      draw(
+        "field",
+        OverallsProtocol.TestGenerators.string(:alphanumeric, min_length: 1, max_length: 64)
+      )
+
+    assert {:error, :invalid_request} =
+             Inference.completion(Map.put(completion(), "extra_" <> field, "synthetic content"))
   end
 
-  property "out of range token counts fail before persistence" do
-    check all(
-            count <-
-              one_of([
-                integer(-100_000..-1),
-                integer(9_223_372_036_854_775_808..18_446_744_073_709_551_615)
-              ])
-          ) do
-      value = %{
-        completion()
-        | "completeness" => "partial",
-          "tokens" => %{"input_tokens" => count}
-      }
+  property "out of range token counts fail before persistence",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 1_472_778_185 do
+    count =
+      draw(
+        "count",
+        one_of([
+          integer(-100_000..-1),
+          OverallsProtocol.TestGenerators.above_int64()
+        ])
+      )
 
-      assert {:error, :invalid_request} = Inference.completion(value)
-    end
+    value = %{
+      completion()
+      | "completeness" => "partial",
+        "tokens" => %{"input_tokens" => count}
+    }
+
+    assert {:error, :invalid_request} = Inference.completion(value)
   end
 
   test "unknown cannot contain fabricated zero counts and complete requires counts" do
@@ -64,10 +78,11 @@ defmodule OverallsProtocol.InferenceTest do
              )
   end
 
-  defp completion,
-    do: %{
+  defp completion do
+    %{
       "outcome" => "interrupted",
       "tokens" => %{},
       "completeness" => "unknown"
     }
+  end
 end

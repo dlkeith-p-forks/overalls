@@ -441,6 +441,29 @@ passed 59 parser/refusal/cleanup/Git/FAT tests with pinned tools. It is host
 verification, separate from all native machine results above. Exact image,
 kernel, firmware, VMM hashes and execution records remain in the linked review.
 
+The local MAC-normalization `sis8` kit subsequently passed fresh native
+nine-module/764-entry assembly, native SMF validation, clean export, read-only
+receipt extraction and administration shutdown, sealing disk `1e095659`.
+It retains false runtime/admission flags; complete services and recovery remain
+unqualified. A later native command lease/stop correction changes the current
+userland again. Its source and pending exact-image replay are recorded in the
+[admission review](../reviews/2026-10-17-native-image-admission.md); neither the
+prior OmniOS assembly nor the sealed admitted FreeBSD image covers those new
+executable bytes.
+
+Direct `sis8` diagnostics identified a separate supervisor path error:
+`/usr/lib/ssh/sshd` is absent in the pinned OmniOS root. A live stock boot and
+the native SMF method confirmed `/usr/sbin/sshd`; both native supervisors now
+use that path. OmniOS assembly and booted verification additionally require its
+safe root-owned regular executable ELF and record
+`native_ssh_executable_checked`. This closure check grants no SSH configuration
+or runtime readiness claim. OmniOS also rejects explicit `UsePAM yes` because
+its downstream PAM policy is always on. Omitting that directive only for
+OmniOS passed native `sshd -t` and `sshd -T` with synthetic volatile host-key
+prerequisites, retaining effective PAM and public-key-only authentication.
+The corrected kit still requires fresh assembly and complete native service
+replay, as recorded in the admission review.
+
 ## Open questions
 
 - Which further signed FreeBSD and OmniOS/illumos inputs should be accepted. OmniOS is
