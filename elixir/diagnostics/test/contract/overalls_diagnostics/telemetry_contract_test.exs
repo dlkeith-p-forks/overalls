@@ -58,8 +58,27 @@ defmodule OverallsDiagnosticsTelemetryContractTest do
   @tag obligation: "overalls_diagnostics.telemetry.I4"
   test "catalog validation is closed over events and metadata" do
     catalog = Overalls.Diagnostics.Events.Catalog
-    assert {:error, :invalid} = Overalls.Diagnostics.Events.Catalog.validate(catalog, "unknown.event", %{})
-    assert {:error, :invalid} = Overalls.Diagnostics.Events.Catalog.validate(catalog, "marshall.runtime_report", %{password: "x"})
-    assert {:error, :invalid} = Overalls.Diagnostics.Events.Catalog.validate(catalog, "marshall.runtime_report", [event: "x", event: "y"])
+
+    assert {:error, :invalid} =
+             Overalls.Diagnostics.Events.Catalog.validate(catalog, "unknown.event", %{})
+
+    assert {:error, :invalid} =
+             Overalls.Diagnostics.Events.Catalog.validate(catalog, "marshall.runtime_report", %{
+               password: "x"
+             })
+
+    assert {:error, :invalid} =
+             Overalls.Diagnostics.Events.Catalog.validate(catalog, "marshall.runtime_report",
+               event: "x",
+               event: "y"
+             )
+  end
+
+  @tag obligation: "overalls_diagnostics.telemetry.I5"
+  test "untyped filter input is ignored" do
+    state =
+      Overalls.Diagnostics.Privacy.install_state(Overalls.Diagnostics.Events.Catalog, :marshall)
+
+    assert :ignore = Overalls.Diagnostics.Privacy.filter(:not_an_event, state)
   end
 end

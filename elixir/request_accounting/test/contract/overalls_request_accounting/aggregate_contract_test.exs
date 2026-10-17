@@ -39,4 +39,15 @@ defmodule OverallsRequestAccountingAggregateContractTest do
     assert Overalls.RequestAccounting.Aggregate.bucket_index(10_001) == 1
     assert Overalls.RequestAccounting.Aggregate.bucket_index(10_000_001) == 7
   end
+
+  @tag obligation: "overalls_request_accounting.aggregate.I5"
+  test "invalid services and durations fail closed" do
+    assert_raise ArgumentError, fn -> Overalls.RequestAccounting.Aggregate.new("") end
+
+    state = Overalls.RequestAccounting.Aggregate.new("marshall_web")
+
+    assert_raise FunctionClauseError, fn ->
+      Overalls.RequestAccounting.Aggregate.record(state, :success, -1)
+    end
+  end
 end

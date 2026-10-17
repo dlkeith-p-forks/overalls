@@ -34,5 +34,6 @@ defmodule AudiDnsAuthorityContractTest do
 
     assert {:ok, q} = Audi.DNS.Wire.decode(packet)
     assert q.udp_size == 1232
+    assert {:error, :malformed} = Audi.DNS.Wire.decode(String.duplicate("x", 65_536))
   end
 end

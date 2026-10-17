@@ -1,0 +1,167 @@
+{
+  "apps": {
+    "overalls_protocol": {
+      "active": 11,
+      "coverage": 1.0,
+      "covered": 11
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "overalls_protocol.codecs": {
+      "active": 4,
+      "app": "overalls_protocol",
+      "coverage": 1.0,
+      "covered": 4,
+      "form": "light",
+      "obligations": {
+        "overalls_protocol.codecs.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "overalls_protocol.codecs.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test wire decoder bounds input and accepts only JSON objects"
+          ]
+        },
+        "overalls_protocol.codecs.I3": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test UUID validation is strict and report nil remains unknown"
+          ]
+        },
+        "overalls_protocol.codecs.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test reports reject contradictory or duplicate pool observations"
+          ]
+        }
+      }
+    },
+    "overalls_protocol.state_view": {
+      "active": 4,
+      "app": "overalls_protocol",
+      "coverage": 1.0,
+      "covered": 4,
+      "form": "light",
+      "obligations": {
+        "overalls_protocol.state_view.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "overalls_protocol.state_view.I2": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test cadence coalesces requests while running"
+          ]
+        },
+        "overalls_protocol.state_view.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test view ownership and versions are enforced"
+          ]
+        },
+        "overalls_protocol.state_view.I4": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test view index and subscribers track deletion"
+          ]
+        }
+      }
+    },
+    "overalls_protocol.transport": {
+      "active": 3,
+      "app": "overalls_protocol",
+      "coverage": 1.0,
+      "covered": 3,
+      "form": "light",
+      "obligations": {
+        "overalls_protocol.transport.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "overalls_protocol.transport.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test control envelope accepts closed valid messages and rejects unknown fields"
+          ]
+        },
+        "overalls_protocol.transport.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test control envelope rejects arbitrary names and malformed JSON"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "totals": {
+    "active": 11,
+    "coverage": 1.0,
+    "covered": 11
+  }
+}

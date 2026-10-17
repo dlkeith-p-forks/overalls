@@ -26,5 +26,8 @@ defmodule PorscheControlTransportContractTest do
                "https://[::1]",
                "porsche_gateway_" <> Base.url_encode64(<<0::256>>, padding: false)
              )
+
+    assert {:error, :invalid_configuration} =
+             Porsche.Client.new("https://control.example/path", "token")
   end
 end

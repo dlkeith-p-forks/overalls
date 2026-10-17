@@ -28,10 +28,16 @@ defmodule BradyCacheContractTest do
 
   @tag obligation: "brady.cache.I3"
   test "range validators fail closed and unsatisfiable ranges are explicit" do
-    assert Brady.Cache.Range.select([{"range", "bytes=0-1"}], [{"etag", "\"v1\""}], 10) ==
-             :upstream
+    assert Brady.Cache.Range.select(
+             [{"range", "bytes=0-1"}, {"if-range", "\"stale\""}],
+             [{"etag", "\"v1\""}],
+             10
+           ) == :upstream
 
     assert Brady.Cache.Range.select([{"range", "bytes=99-100"}], [], 10) == :unsatisfiable
     assert Brady.Cache.Range.select([], [], 10) == :full
+    assert Brady.Cache.Range.select([{"range", "bytes=0-"}], [], 0) == :unsatisfiable
+    assert Brady.Cache.Range.select([{"range", "bytes=5-2"}], [], 10) == :upstream
+    assert Brady.Cache.Range.select([{"range", String.duplicate("x", 129)}], [], 10) == :upstream
   end
 end

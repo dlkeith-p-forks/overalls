@@ -1,0 +1,137 @@
+{
+  "apps": {
+    "audi": {
+      "active": 8,
+      "coverage": 1.0,
+      "covered": 8
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "audi.dns_authority": {
+      "active": 2,
+      "app": "audi",
+      "coverage": 1.0,
+      "covered": 2,
+      "form": "light",
+      "obligations": {
+        "audi.dns_authority.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "audi.dns_authority.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test wire decoder rejects responses and clamps EDNS"
+          ]
+        }
+      }
+    },
+    "audi.http_gateway": {
+      "active": 3,
+      "app": "audi",
+      "coverage": 1.0,
+      "covered": 3,
+      "form": "light",
+      "obligations": {
+        "audi.http_gateway.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "audi.http_gateway.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test response cookies lose domain and reserved cookies"
+          ]
+        },
+        "audi.http_gateway.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test websocket frames round trip and reject oversized control payloads"
+          ]
+        }
+      }
+    },
+    "audi.ssh_tls": {
+      "active": 3,
+      "app": "audi",
+      "coverage": 1.0,
+      "covered": 3,
+      "form": "light",
+      "obligations": {
+        "audi.ssh_tls.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "audi.ssh_tls.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test SSH request grammar is closed and bounded"
+          ]
+        },
+        "audi.ssh_tls.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test TLS material validation fails closed for malformed input"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "totals": {
+    "active": 8,
+    "coverage": 1.0,
+    "covered": 8
+  }
+}

@@ -49,5 +49,7 @@ defmodule AudiHttpGatewayContractTest do
              Audi.HTTP.WebSocketFrame.decode(<<0x81, 5, "hello">>)
 
     assert :error = Audi.HTTP.WebSocketFrame.encode(:ping, String.duplicate("x", 126))
+    assert :error = Audi.HTTP.WebSocketFrame.decode(<<0x09, 0>>)
+    assert :more = Audi.HTTP.WebSocketFrame.decode(<<0x81, 126, 0>>)
   end
 end

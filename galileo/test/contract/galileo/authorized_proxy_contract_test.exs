@@ -32,5 +32,7 @@ defmodule GalileoAuthorizedProxyContractTest do
     assert Galileo.Strip.apply(nil, "/users") == "/users"
     assert Galileo.Strip.apply("/api", "*") == "*"
     assert Galileo.Strip.apply("/api", "/apiary") == "/apiary"
+    assert Galileo.Strip.apply("", "/users") == "/users"
+    assert Galileo.Strip.apply("/api/", "/api/users") == "/users"
   end
 end

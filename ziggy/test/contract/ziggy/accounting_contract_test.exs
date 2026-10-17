@@ -30,7 +30,7 @@ defmodule ZiggyAccountingContractTest do
 
   @tag obligation: "ziggy.accounting.I3"
   test "completion wire keeps only accounting fields" do
-    assert Ziggy.Completion.wire(%{outcome: :ok, tokens: 2, ignored: :secret}) ==
-             %{outcome: :ok, tokens: 2}
+    assert Ziggy.Completion.wire(%{"outcome" => :ok, "tokens" => 2, "ignored" => :secret}) ==
+             %{"outcome" => :ok, "tokens" => 2}
   end
 end

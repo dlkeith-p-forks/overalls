@@ -31,3 +31,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Unknown events, undeclared keys, missing required fields, duplicate keys, and invalid values are rejected as a whole.
 - **kind:** security
 - **status:** active
+
+### overalls_diagnostics.telemetry.I5 — Unstructured filter input is ignored
+- **scope:** `Overalls.Diagnostics.Privacy.filter/2`
+- **must:** Inputs outside the reviewed event map shape MUST be ignored without raising or emitting payload data.
+- **kind:** security
+- **status:** active

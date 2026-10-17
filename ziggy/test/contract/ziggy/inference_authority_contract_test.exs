@@ -26,6 +26,8 @@ defmodule ZiggyInferenceAuthorityContractTest do
 
     assert {:error, :invalid_request} =
              Ziggy.Route.resolve("POST", "/v1/responses", "", ~s({"model":"bad model"}))
+    assert {:error, :unsupported_route} =
+             Ziggy.Route.resolve("POST", "/v1/responses", "", String.duplicate("x", 16_777_217))
   end
 
   @tag obligation: "ziggy.inference_authority.I3"

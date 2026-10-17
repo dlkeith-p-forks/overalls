@@ -31,3 +31,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Excluded outcomes do not mutate state, missing durations remain unmeasured, and bucket boundaries are deterministic and bounded.
 - **kind:** functional
 - **status:** active
+
+### overalls_request_accounting.aggregate.I5 — Invalid inputs fail closed
+- **scope:** `new/2`, `record/3`
+- **must:** Invalid service identities and negative durations MUST be rejected rather than creating or mutating accounting state.
+- **kind:** security
+- **status:** active
