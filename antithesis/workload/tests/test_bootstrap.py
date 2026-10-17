@@ -2,7 +2,9 @@
 
 import json
 import os
+import sqlite3
 import tempfile
+import time
 import unittest
 from dataclasses import replace
 from pathlib import Path
@@ -13,7 +15,11 @@ from uuid import uuid4
 from core.bootstrap import Probe, probe, run
 from core.config import Config, read_fixture
 from core.outcome import State
-from core.profile_readiness import access_smtp_ready, repository_origin_ready
+from core.profile_readiness import (
+    access_smtp_ready,
+    recorder_host_ready,
+    repository_origin_ready,
+)
 from core.sql import SqlOracle
 
 
@@ -62,7 +68,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_optional_profiles_emit_exactly_one_selected_tag(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            for profile in ("repository-origin", "access-smtp"):
+            for profile in ("repository-origin", "access-smtp", "recorder-host"):
                 with self.subTest(profile=profile):
                     config = replace(self.config(Path(directory)), profile=profile)
                     stop = Event()
@@ -84,6 +90,7 @@ class BootstrapTests(unittest.TestCase):
             with patch.dict(os.environ, {}, clear=True):
                 self.assertFalse(repository_origin_ready(config, "fixture-a"))
                 self.assertFalse(access_smtp_ready(config, "fixture-a"))
+                self.assertFalse(recorder_host_ready(config))
 
     def test_unknown_profile_is_rejected_before_setup(self) -> None:
         environment = {
@@ -208,6 +215,105 @@ class BootstrapTests(unittest.TestCase):
                 ]
                 receipt.state = State.UNAVAILABLE
                 self.assertFalse(access_smtp_ready(config, "fixture-a"))
+
+    def test_recorder_probe_requires_fresh_independent_witnesses(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            requests, results, observation, ledger = (
+                root / "requests",
+                root / "results",
+                root / "observation",
+                root / "ledger",
+            )
+            for path in (requests, results, observation, ledger):
+                path.mkdir()
+            producer = {"pid": 41, "uid": 990, "start_ticks": 7, "cgroup": ""}
+
+            def write(name: str, value: object) -> None:
+                (observation / name).write_text(json.dumps(value), encoding="utf-8")
+
+            def publish(**changes: object) -> None:
+                status: dict[str, object] = {
+                    "sample_ns": time.time_ns(),
+                    "producer": True,
+                    "recorder": True,
+                    "spool": True,
+                    "archive": True,
+                }
+                if changes.get("stale"):
+                    status["sample_ns"] = time.time_ns() - 60_000_000_000
+                if changes.get("inactive"):
+                    status["spool"] = False
+                write("status.json", status)
+                write(
+                    "identity.json",
+                    producer
+                    | {
+                        "cgroup": "0::/system.slice/foreign.service"
+                        if changes.get("foreign")
+                        else "0::/fixture.slice/recorder-peer.service"
+                    },
+                )
+                write(
+                    "spool_identity.json",
+                    {
+                        "pid": 52,
+                        "uid": 991,
+                        "start_ticks": 9,
+                        "cgroup": "0::/system.slice/overalls-trace-recorder.service",
+                    },
+                )
+                write(
+                    "filesystem.json",
+                    {
+                        "archive_device": 2049,
+                        "root_device": 2049 if changes.get("same_device") else 2050,
+                        "free_bytes": 1024,
+                        "total_bytes": 64 * 1024 * 1024,
+                    },
+                )
+                owner_pid = 40 if changes.get("other_producer") else 41
+                write(
+                    "state.json",
+                    {
+                        "incarnation": "a" * 32,
+                        "pending": {
+                            "1": {
+                                "deadline_ns": 1,
+                                "producer": {"pid": owner_pid, "start_ticks": 7, "boot_id": "b"},
+                            }
+                        },
+                    },
+                )
+
+            archive = observation / "archive.sqlite"
+            with sqlite3.connect(archive) as database:
+                database.execute("CREATE TABLE batches (id TEXT PRIMARY KEY)")
+                database.execute("CREATE TABLE pending (id TEXT PRIMARY KEY)")
+            database.close()
+            environment = {
+                "ANTITHESIS_RECORDER_REQUESTS": str(requests),
+                "ANTITHESIS_RECORDER_RESULTS": str(results),
+                "ANTITHESIS_RECORDER_OBSERVATION": str(observation),
+                "ANTITHESIS_RECORDER_LEDGER": str(ledger / "ledger.sqlite"),
+            }
+            config = self.config(root)
+            with patch.dict(os.environ, environment):
+                publish()
+                self.assertTrue(recorder_host_ready(config))
+                for change in (
+                    "stale",
+                    "inactive",
+                    "foreign",
+                    "same_device",
+                    "other_producer",
+                ):
+                    with self.subTest(change=change):
+                        publish(**{change: True})
+                        self.assertFalse(recorder_host_ready(config))
+                publish()
+                archive.unlink()
+                self.assertFalse(recorder_host_ready(config))
 
     @staticmethod
     def _account_observation(user_id: object) -> MagicMock:

@@ -988,7 +988,7 @@ def main() -> int:
     parser.add_argument("--compose", type=Path)
     parser.add_argument(
         "--selection",
-        choices=("control-core", "repository-origin", "access-smtp"),
+        choices=("control-core", "repository-origin", "access-smtp", "recorder-host"),
         default="control-core",
     )
     parser.add_argument("--engine", choices=("podman", "docker"), default="podman")

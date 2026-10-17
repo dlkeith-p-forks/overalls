@@ -1,9 +1,13 @@
 """Read-only prerequisites for optional Antithesis setup profiles."""
 
+import json
 import logging
 import os
+import sqlite3
 import ssl
+import time
 from pathlib import Path
+from typing import TypeGuard
 from uuid import UUID
 
 from access.fixture import read_access_fixture
@@ -142,4 +146,142 @@ def access_smtp_ready(config: Config, expected_fixture_id: str) -> bool:
     receipt = mail.sequence()
     if receipt.state is not State.OBSERVED or receipt.value is None:
         return _incomplete(profile, f"smtp_receipt_{receipt.state.value}")
+    return True
+
+
+_RECORDER_IDENTITIES = (
+    ("identity.json", "0::/fixture.slice/recorder-peer.service"),
+    ("spool_identity.json", "0::/system.slice/overalls-trace-recorder.service"),
+)
+_RECORDER_ARCHIVE_MIN = 32 * 1024 * 1024
+_RECORDER_ARCHIVE_MAX = 64 * 1024 * 1024
+
+
+def _json_record(path: Path) -> dict[str, object]:
+    info = path.lstat()
+    if not path.is_file() or path.is_symlink() or info.st_size > 1_048_576:
+        raise ValueError("recorder witness is not a bounded regular file")
+    parsed: object = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(parsed, dict) or not all(isinstance(key, str) for key in parsed):
+        raise ValueError("recorder witness is not an object")
+    return parsed
+
+
+def _positive(value: object) -> TypeGuard[int]:
+    return type(value) is int and value > 0
+
+
+def _recorder_paths() -> tuple[Path, Path, Path, Path]:
+    paths = tuple(
+        Path(_required(name))
+        for name in (
+            "ANTITHESIS_RECORDER_REQUESTS",
+            "ANTITHESIS_RECORDER_RESULTS",
+            "ANTITHESIS_RECORDER_OBSERVATION",
+            "ANTITHESIS_RECORDER_LEDGER",
+        )
+    )
+    if any(not path.is_absolute() or ".." in path.parts for path in paths):
+        raise ValueError("recorder paths must be absolute without traversal")
+    requests, results, observation, ledger = paths
+    return requests, results, observation, ledger
+
+
+def recorder_host_ready(config: Config) -> bool:
+    """@cc [owner:ghuntley,label:verification] bootstrap-recorder-host-authority
+    Recorder setup MUST independently read, through the workload's read-only
+    observation share, a fresh all-active unit sample, both exact kernel
+    service identities in their reviewed cgroups, a distinct 32-64 MiB archive
+    device, a parseable recorder checkpoint whose pending admissions name only
+    the current producer PID and start ticks, and a readable SQLite archive.
+    The private request directory MUST be writable and its result share
+    present. Missing, stale or malformed evidence MUST leave setup incomplete;
+    VM health alone is not this probe.
+    """
+    del config
+    profile = "recorder-host"
+    try:
+        requests, results, observation, ledger = _recorder_paths()
+    except ValueError as error:
+        return _incomplete(profile, f"configuration ({type(error).__name__})")
+    if not requests.is_dir() or not os.access(requests, os.W_OK | os.X_OK):
+        return _incomplete(profile, "request_share_unwritable")
+    if not results.is_dir():
+        return _incomplete(profile, "result_share_missing")
+    if not ledger.parent.is_dir() or not os.access(ledger.parent, os.W_OK | os.X_OK):
+        return _incomplete(profile, "ledger_volume_unwritable")
+    try:
+        status = _json_record(observation / "status.json")
+    except (OSError, UnicodeError, ValueError) as error:
+        return _incomplete(profile, f"status_unavailable ({type(error).__name__})")
+    sample = status.get("sample_ns")
+    if set(status) != {"sample_ns", "producer", "recorder", "spool", "archive"}:
+        return _incomplete(profile, "status_malformed")
+    if not _positive(sample):
+        return _incomplete(profile, "status_malformed")
+    if not 0 <= time.time_ns() - sample < 10_000_000_000:
+        return _incomplete(profile, "status_stale")
+    for unit in ("producer", "recorder", "spool", "archive"):
+        if status[unit] is not True:
+            return _incomplete(profile, f"unit_inactive_{unit}")
+    producer: dict[str, object] = {}
+    for name, cgroup in _RECORDER_IDENTITIES:
+        try:
+            identity = _json_record(observation / name)
+        except (OSError, UnicodeError, ValueError) as error:
+            return _incomplete(profile, f"identity_unavailable ({type(error).__name__})")
+        if (
+            set(identity) != {"pid", "uid", "start_ticks", "cgroup"}
+            or identity["cgroup"] != cgroup
+            or not all(_positive(identity[key]) for key in ("pid", "uid", "start_ticks"))
+        ):
+            return _incomplete(profile, "identity_malformed_or_foreign_cgroup")
+        if name == "identity.json":
+            producer = identity
+    try:
+        filesystem = _json_record(observation / "filesystem.json")
+    except (OSError, UnicodeError, ValueError) as error:
+        return _incomplete(profile, f"filesystem_unavailable ({type(error).__name__})")
+    if set(filesystem) != {"archive_device", "root_device", "free_bytes", "total_bytes"} or any(
+        type(value) is not int for value in filesystem.values()
+    ):
+        return _incomplete(profile, "filesystem_malformed")
+    total = filesystem["total_bytes"]
+    free = filesystem["free_bytes"]
+    if (
+        type(total) is not int
+        or type(free) is not int
+        or filesystem["archive_device"] == filesystem["root_device"]
+        or not _RECORDER_ARCHIVE_MIN <= total <= _RECORDER_ARCHIVE_MAX
+        or not 0 <= free <= total
+    ):
+        return _incomplete(profile, "archive_device_not_distinct_or_bounded")
+    try:
+        checkpoint = _json_record(observation / "state.json")
+    except (OSError, UnicodeError, ValueError) as error:
+        return _incomplete(profile, f"checkpoint_unavailable ({type(error).__name__})")
+    incarnation = checkpoint.get("incarnation")
+    pending = checkpoint.get("pending")
+    if not isinstance(incarnation, str) or len(incarnation) != 32 or not isinstance(pending, dict):
+        return _incomplete(profile, "checkpoint_malformed")
+    for admission in pending.values():
+        owner = admission.get("producer") if isinstance(admission, dict) else None
+        if (
+            not isinstance(owner, dict)
+            or owner.get("pid") != producer["pid"]
+            or owner.get("start_ticks") != producer["start_ticks"]
+        ):
+            return _incomplete(profile, "checkpoint_pending_producer_mismatch")
+    archive = observation / "archive.sqlite"
+    try:
+        if not archive.is_file():
+            return _incomplete(profile, "archive_missing")
+        connection = sqlite3.connect(f"file:{archive}?mode=ro", uri=True, timeout=1)
+        try:
+            connection.execute("SELECT count(*) FROM batches").fetchone()
+            connection.execute("SELECT count(*) FROM pending").fetchone()
+        finally:
+            connection.close()
+    except (OSError, sqlite3.Error) as error:
+        return _incomplete(profile, f"archive_unreadable ({type(error).__name__})")
     return True

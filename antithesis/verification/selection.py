@@ -39,6 +39,7 @@ from schema import (
 
 TEMPLATE = re.compile(r"^[a-z][a-z0-9_]*$")
 CONFIG = re.compile(r"^[a-z][a-z0-9-]*$")
+REVIEWED_PROFILES = frozenset({"control-core", "repository-origin", "access-smtp", "recorder-host"})
 COMMAND = re.compile(r"^(?:serial_driver|singleton_driver|first|helper)_[a-z][a-z0-9_]*\.py$")
 
 
@@ -267,7 +268,7 @@ def manifest(root: Path, selection: Selection) -> dict[str, Json]:
                     and isinstance(value.value, str)
                 ):
                     declared.append(value.value)
-    if set(declared) != {"control-core", "repository-origin", "access-smtp"} or len(declared) != 3:
+    if set(declared) != REVIEWED_PROFILES or len(declared) != len(REVIEWED_PROFILES):
         raise EvidenceError("bootstrap must declare exactly the reviewed setup templates")
     if selection.bootstrap_template not in declared:
         raise EvidenceError("bootstrap completion template differs from selected config")
@@ -403,8 +404,59 @@ def validate_compose(selection: Selection, rendered: dict[str, Json]) -> None:
                 path == target or path.startswith(target.rstrip("/") + "/") for target in targets
             ):
                 raise EvidenceError(f"SMTP fixture {key} lacks a mounted volume")
+    elif selection.name == "recorder-host":
+        validate_recorder_host(services, workload, environment, depends, targets)
     else:
         raise EvidenceError("selection has no reviewed bootstrap prerequisite validator")
+
+
+def validate_recorder_host(
+    services: dict[str, Json],
+    workload: dict[str, Json],
+    environment: dict[str, Json],
+    depends: dict[str, Json],
+    targets: set[str],
+) -> None:
+    """@cc [owner:ghuntley,label:verification;security] recorder-host-selection-boundary
+    The recorder profile MUST health-gate the workload on the recorder VM,
+    select the recorder bootstrap probe, give the workload a writable request
+    share and read-only result/observation shares, and keep VM state, the
+    serial console and QEMU control out of the workload.
+    """
+    if environment.get("ANTITHESIS_BOOTSTRAP_PROFILE") != "recorder-host":
+        raise EvidenceError("recorder bootstrap profile differs from selected commands")
+    dependency = obj(field(depends, "recorder-host-vmm"), "recorder VM dependency")
+    if field(dependency, "condition") != "service_healthy":
+        raise EvidenceError("recorder VM is not health-gated")
+    vm = obj(field(services, "recorder-host-vmm"), "recorder VM service")
+    obj(field(vm, "healthcheck"), "recorder VM health check")
+    expected = {
+        "ANTITHESIS_RECORDER_REQUESTS": "/run/overalls-recorder-requests",
+        "ANTITHESIS_RECORDER_RESULTS": "/run/overalls-recorder-results",
+        "ANTITHESIS_RECORDER_OBSERVATION": "/run/overalls-recorder-observation",
+        "ANTITHESIS_RECORDER_LEDGER": "/var/lib/overalls-antithesis-recorder/ledger.sqlite",
+    }
+    for key, value in expected.items():
+        if environment.get(key) != value:
+            raise EvidenceError(f"recorder fixture path mismatch: {key}")
+    mounts = {
+        string(field(obj(value, "workload volume"), "target"), "workload volume target"): obj(
+            value, "workload volume"
+        )
+        for value in arr(field(workload, "volumes"), "workload volumes")
+    }
+    for target, read_only in (
+        ("/run/overalls-recorder-requests", False),
+        ("/run/overalls-recorder-results", True),
+        ("/run/overalls-recorder-observation", True),
+        ("/var/lib/overalls-antithesis-recorder", False),
+    ):
+        if target not in targets:
+            raise EvidenceError(f"recorder share lacks a mounted volume: {target}")
+        if bool(mounts[target].get("read_only", False)) is not read_only:
+            raise EvidenceError(f"recorder share has the wrong access mode: {target}")
+    if any(target.startswith("/var/lib/recorder-hostvm") for target in targets):
+        raise EvidenceError("workload mounts recorder VM state")
 
 
 def rendered_compose(root: Path, selection: Selection) -> dict[str, Json]:

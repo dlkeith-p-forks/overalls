@@ -12,7 +12,11 @@ from antithesis.lifecycle import setup_complete
 from core.config import Config, read_fixture
 from core.http import HttpClient
 from core.outcome import State
-from core.profile_readiness import access_smtp_ready, repository_origin_ready
+from core.profile_readiness import (
+    access_smtp_ready,
+    recorder_host_ready,
+    repository_origin_ready,
+)
 from core.sql import SqlOracle
 
 LOG = logging.getLogger(__name__)
@@ -60,7 +64,7 @@ def probe(config: Config) -> Probe:
         host = observed.value
         if host.report_sequence < 1 or not host.connected or not host.report_fresh:
             return Probe(False, "host_connection_or_report")
-    if config.profile not in ("control-core", "repository-origin", "access-smtp"):
+    if config.profile not in ("control-core", "repository-origin", "access-smtp", "recorder-host"):
         return Probe(False, "invalid_profile")
     if config.profile == "repository-origin" and not repository_origin_ready(
         config, fixture.fixture_id
@@ -68,6 +72,8 @@ def probe(config: Config) -> Probe:
         return Probe(False, "repository_origin")
     if config.profile == "access-smtp" and not access_smtp_ready(config, fixture.fixture_id):
         return Probe(False, "access_smtp")
+    if config.profile == "recorder-host" and not recorder_host_ready(config):
+        return Probe(False, "recorder_host")
     return Probe(True, "complete")
 
 
@@ -88,6 +94,8 @@ def run(config: Config, stop: Event) -> int:
                 setup_complete({"template": "repository-origin"})
             elif config.profile == "access-smtp":
                 setup_complete({"template": "access-smtp"})
+            elif config.profile == "recorder-host":
+                setup_complete({"template": "recorder-host"})
             elif config.profile == "control-core":
                 setup_complete({"template": "control-core"})
             else:

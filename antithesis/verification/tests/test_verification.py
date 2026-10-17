@@ -916,6 +916,7 @@ class VerificationTests(unittest.TestCase):
         for name, family, expected_count in (
             ("repository-origin", "repository", 4),
             ("access-smtp", "access", 3),
+            ("recorder-host", "recorder", 3),
         ):
             with self.subTest(profile=name):
                 selection = read_selection(
@@ -962,6 +963,79 @@ class VerificationTests(unittest.TestCase):
         services["origin"] = {}
         with self.assertRaises(EvidenceError):
             validate_compose(selection, obj(narrow_json({"services": services}), "overlay Compose"))
+
+    def test_recorder_profile_requires_gated_vm_and_read_only_witnesses(self) -> None:
+        root = Path(__file__).resolve().parents[3]
+        selection = read_selection(root / "antithesis/verification/selections/recorder-host.json")
+
+        def rendered(**changes: object) -> dict[str, Json]:
+            environment: dict[str, object] = {
+                key: "/run/overalls-secrets/fixture.json" for key in selection.workload_environment
+            }
+            environment.update(
+                {
+                    "ANTITHESIS_DB_HOST": "pg",
+                    "ANTITHESIS_MARSHALL_URLS": "https://marshall-a,https://marshall-b",
+                    "ANTITHESIS_CONTROL_CREDENTIAL_FILE": (
+                        "/run/overalls-control-secrets/lilly-a-credential.json"
+                    ),
+                    "ANTITHESIS_CONTROL_REQUEST_DIR": "/run/overalls-control-requests",
+                    "ANTITHESIS_BOOTSTRAP_PROFILE": "recorder-host",
+                    "ANTITHESIS_RECORDER_REQUESTS": "/run/overalls-recorder-requests",
+                    "ANTITHESIS_RECORDER_RESULTS": "/run/overalls-recorder-results",
+                    "ANTITHESIS_RECORDER_OBSERVATION": "/run/overalls-recorder-observation",
+                    "ANTITHESIS_RECORDER_LEDGER": (
+                        "/var/lib/overalls-antithesis-recorder/ledger.sqlite"
+                    ),
+                }
+            )
+            volumes: list[dict[str, object]] = [
+                {"target": "/run/overalls-secrets"},
+                {"target": "/run/overalls-control-secrets"},
+                {"target": "/run/overalls-control-requests/requests"},
+                {"target": "/run/overalls-control-requests/results"},
+                {"target": "/run/overalls-recorder-requests"},
+                {"target": "/run/overalls-recorder-results", "read_only": True},
+                {"target": "/run/overalls-recorder-observation", "read_only": True},
+                {"target": "/var/lib/overalls-antithesis-recorder"},
+            ]
+            depends = {
+                name: {"condition": "service_healthy"}
+                for name in (
+                    "pg",
+                    "marshall-a",
+                    "marshall-b",
+                    "enrollment",
+                    "lilly-a",
+                    "recorder-host-vmm",
+                )
+            }
+            services: dict[str, object] = {name: {} for name in selection.services}
+            services["recorder-host-vmm"] = {"healthcheck": {"test": ["CMD", "true"]}}
+            services["workload"] = {
+                "environment": environment,
+                "depends_on": depends,
+                "volumes": volumes,
+            }
+            if "profile" in changes:
+                environment["ANTITHESIS_BOOTSTRAP_PROFILE"] = changes["profile"]
+            if changes.get("writable_observation"):
+                volumes[6] = {"target": "/run/overalls-recorder-observation"}
+            if changes.get("ungated"):
+                depends["recorder-host-vmm"] = {"condition": "service_started"}
+            if changes.get("vm_state"):
+                volumes.append({"target": "/var/lib/recorder-hostvm/state"})
+            return obj(narrow_json({"services": services}), "recorder Compose")
+
+        validate_compose(selection, rendered())
+        for change in (
+            {"profile": "control-core"},
+            {"writable_observation": True},
+            {"ungated": True},
+            {"vm_state": True},
+        ):
+            with self.subTest(change=change), self.assertRaises(EvidenceError):
+                validate_compose(selection, rendered(**change))
 
     def test_global_budget_and_five_inflight_limit_across_configs(self) -> None:
         ledger = initialize(

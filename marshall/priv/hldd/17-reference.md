@@ -222,6 +222,14 @@ manifest and served path never matched the committed row, and Marshall's own
 refresh failed against the origin, so setup stayed incomplete. The probe now
 reports each distinct unmet prerequisite once per process by condition token,
 observation state, HTTP status or phase, never by credential or payload.
+The optional `recorder-host` profile selects the TCG NixOS recorder VM and the
+three recorder commands. The workload waits for the VM health check, then its
+own read-only probe requires a fresh all-active unit sample, producer and spool
+identities in their reviewed cgroups, a distinct 32–64 MiB archive device, a
+checkpoint whose pending admissions name only the current producer PID and
+start ticks, a readable SQLite archive and writable request and ledger volumes.
+Missing or stale evidence leaves setup incomplete. The profile is selectable,
+but no local or hosted run is recorded; its evidence is emulated, not native.
 The host report has unavailable pool capacity and false execution readiness,
 so a successful Control connection cannot authorize a guest placement. The
 controlled executor records requests without claiming physical effects; its
