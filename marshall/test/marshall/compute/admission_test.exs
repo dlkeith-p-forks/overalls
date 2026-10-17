@@ -6,16 +6,95 @@ defmodule Marshall.Compute.AdmissionTest do
 
   alias Marshall.Compute.{
     Host,
+    HostReports,
+    Image,
+    Images,
     Ledger,
     NetworkAddress,
     Operation,
     Reservation,
+    ServiceLevelAttempt,
     VirtualMachine,
     WorkloadPlacement
   }
 
   setup do
     Map.put(host_fixture(), :user, user())
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] native-admission-exact-image-oracle
+  # A valid native manifest with unreviewed bytes MUST refuse admission with
+  # image_requirements_not_met before creating any VM, placement, reservation,
+  # address, operation, audit version or dispatch job, including source-bearing
+  # requests whose unreviewed manifests declare source protocol 2.
+  test "unapproved native identities refuse before address and host allocation", %{user: user} do
+    reviewed = OverallsProtocol.NativeAdmission.reviewed_manifest()
+
+    manifests = [
+      native_image_manifest("freebsd", "freebsd-v1"),
+      native_image_manifest("illumos", "illumos-v1"),
+      put_in(reviewed, ["root", "sha256"], String.duplicate("e", 64)),
+      Map.put(reviewed, "workspace_source_version", nil)
+    ]
+
+    before = admission_inventory()
+    assert Enum.all?(Map.values(before), &(&1 == []))
+
+    assert {:ok, source} =
+             OverallsProtocol.WorkspaceSource.parse_url("https://github.com/overalls/demo")
+
+    for manifest <- manifests, source <- [nil, source] do
+      assert {:ok, image} = Images.register(manifest, "unreviewed native")
+
+      params =
+        Image.default_shape(image)
+        |> Map.merge(%{image_id: image.id, workspace_source: source})
+        |> request()
+
+      assert {:error, %{errors: [%Compute.Error{reason: :image_requirements_not_met}]}} =
+               Compute.provision(params, actor: user)
+
+      assert admission_inventory() == before
+    end
+  end
+
+  test "the exact reviewed native image admits through ordinary capacity and readiness accounting",
+       c do
+    assert {:ok, image} =
+             Images.register(
+               OverallsProtocol.NativeAdmission.reviewed_manifest(),
+               "reviewed FreeBSD"
+             )
+
+    pool_bytes = 128 * 1_073_741_824
+    [pool_report] = c.report.pools
+
+    pool_report = %{
+      pool_report
+      | total_bytes: pool_bytes,
+        free_bytes: pool_bytes,
+        storage: storage_observation(c.pool, pool_bytes, pool_bytes)
+    }
+
+    report = %{
+      c.report
+      | sequence: 2,
+        inventory: Map.put(c.report.inventory, "images", [image_id(), image.id]),
+        pools: [pool_report]
+    }
+
+    assert {:ok, :ok} = HostReports.ingest(c.host.id, c.epoch, report)
+    params = request(Map.put(Image.default_shape(image), :image_id, image.id))
+    assert {:ok, vm} = Compute.provision(params, actor: c.user)
+    assert vm.image_id == image.id
+    assert vm.host_id == c.host.id
+    assert [%{vm_id: vm_id}] = Ledger.read!(Reservation)
+    assert vm_id == vm.id
+    assert [%{vm_id: ^vm_id, id: operation_id}] = Ledger.read!(Operation)
+
+    assert Ledger.read!(ServiceLevelAttempt, operation_id: operation_id)
+           |> Enum.map(& &1.service)
+           |> Enum.sort() == [:lilly_physical, :marshall_ready]
   end
 
   test "exactly 500 GiB is admitted when physical capacity is available", c do

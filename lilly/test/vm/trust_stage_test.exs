@@ -36,8 +36,9 @@ defmodule Lilly.VM.TrustStageTest do
   end
 
   # @cc [owner:ghuntley,label:verification;observability] trust-stage-closed-set
-  # Whatever revision is asked for, trust/4 without the placement lock MUST
-  # return the named trust_lock_unavailable stage, a member of trust_stages/0,
+  # Whatever revision is asked for, trust/4 without a valid boot bundle MUST
+  # return trust_boot_unconfirmed before any placement mutation or delivery,
+  # a member of trust_stages/0,
   # never the former collapsed trust_unconfirmed atom; with no trust roots it
   # MUST succeed without touching the placement.
   property "unconfirmed trust always names a closed stage" do
@@ -49,8 +50,8 @@ defmodule Lilly.VM.TrustStageTest do
       {config, pool, spec} = fixture(roots)
       options = [execution_epoch: epoch, generation: generation, vm_id: spec.id]
 
-      assert {:error, :trust_lock_unavailable} = Driver.trust(config, pool, spec, options)
-      assert :trust_lock_unavailable in Driver.trust_stages()
+      assert {:error, :trust_boot_unconfirmed} = Driver.trust(config, pool, spec, options)
+      assert :trust_boot_unconfirmed in Driver.trust_stages()
       refute :trust_unconfirmed in Driver.trust_stages()
 
       {untrusted, pool, spec} = fixture([])

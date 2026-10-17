@@ -31,9 +31,10 @@ catalog entries now exist. FreeBSD 14.3 is fetched from a checksum-pinned
 archive capture because the rolling `Latest` endpoint was retired. The native-kernel package keeps source receipts separate from experimental
 outputs: the FreeBSD candidate now cross-builds a complete kernel, while the
 illumos implementation includes a modern virtio backport and bounded socket
-and transport sources. Image builders still consume unavailable receipts and
-refuse before copying a stock disk. Candidate builds and exploratory boots do
-not grant either family a launchable catalog image or runtime acceptance.
+and transport sources. Stock-image constructors still consume unavailable
+receipts and refuse before copying a stock disk. The reviewed FreeBSD candidate
+now has exact five-scenario native evidence and a separate immutable promotion
+path; unrelated candidate builds and exploratory boots grant no admission.
 
 The existing NixOS, Ubuntu and Windows contracts must remain intact. OS names,
 root formats, boot artifacts and agent capabilities must come from validated
@@ -63,18 +64,21 @@ image contains a tool.
    firmware size. Artifact file lists come from the protocol. Version-1 Linux
    and version-2 Windows firmware encodings remain byte-compatible.
 4. **Capabilities stay explicit and fail closed.** The protocol's capability
-   table is the sole source for Lilly and Marshall. `freebsd-v1` and
+   functions are the sole source for Lilly and Marshall. `freebsd-v1` and
    `illumos-v1` retain their OS-specific wire identities and host-only vsock
-   transport shape, but their current capability rows are all false. Readiness,
-   trust, terminal, workspace, flush, SSH and agent-control surfaces remain
-   unavailable until a cross-built kernel, complete agent closure and native
-   machine evidence are recorded. A native manifest may carry
-   `workspace_source_version = 2` as schema, but that declaration does not
-   grant source delivery. A missing or mismatched manifest remains refused.
+   transport shape. Their unqualified `capabilities/1` rows remain all false.
+   `capabilities/2` may grant the reviewed FreeBSD subset only when its agent
+   set, image ID and complete normalized manifest or portable boot descriptor
+   match the immutable native admission registry. Readiness, trust, terminal,
+   workspace, flush, SSH and agent control are enabled for that exact image;
+   editor and Inception remain false. The registry requires a cross-built
+   kernel, complete agent closure and recorded native machine evidence.
+   OmniOS, retained stock images, changed descriptors and an image ID alone
+   remain refused. `workspace_source_version = 2` alone grants no delivery.
    Reading the host's bounded serial boot log is a separately authorized
    diagnostic under [ADR-0083](0083-terminal-host-stream-and-registry.md), not
    a guest terminal capability or readiness claim. It may remain available for
-   an exact current pending/failed boot while all native capabilities stay false.
+   an exact current pending/failed boot even when guest capabilities are false.
 5. **Lilly preserves shared boundaries.** Kernel bundles include an initrd only
    when the validated bundle declares one. Firmware bundles select the default
    CPU model for illumos and retain Hyper-V configuration only for Windows.
@@ -116,9 +120,22 @@ image contains a tool.
    managed directory, with an exact vendor prefix and bounded public roots.
    Other payload hashes and modes remain exact; file structure alone does not
    establish current-boot trust authority.
+10. **Promotion binds immutable artifacts and evidence.** A separate constructor
+    verifies the exact native manifest/image ID, disk and firmware bytes, VMM
+    digest, assembly receipt and all five service/growth/policy/daemon-recovery/
+    SIGKILL-recovery evidence sets before publishing `manifest.json`. A manually
+    assembled candidate enters Nix by a reviewed recursive NAR hash through the
+    existing signature-verified cache; a cache miss refuses with publication
+    instructions. Candidate constructors retain false admission flags. The
+    published image contains only its declared artifacts and manifest, while
+    the protocol registry independently controls runtime admission. This
+    authorizes the reviewed FreeBSD image without claiming reproducible native
+    assembly, physical recovery, fleet rollout or OmniOS acceptance.
 
 Authorization: the multi-OS guest-image implementation plan of 2026-10-16 and
-the custom native-kernel plan of 2026-10-17.
+the custom native-kernel plan of 2026-10-17, followed by the explicit instruction
+to enable admission. Activation is per reviewed immutable image; OmniOS remains
+closed while its exact service matrix is incomplete.
 The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.md),
 [ADR-0170](0170-lilly-firmware-guest-launch.md),
 [ADR-0171](0171-windows-guest-agents.md) and
@@ -142,15 +159,15 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
   while their identities remain distinct.
 - Version-6 metadata and bundle version 3 provide a stable extension point for
   native FreeBSD and OmniOS without changing existing wire encodings.
-- Native families add protocol, Lilly and Marshall branches. Preliminary image
-  builders and catalog entries exist, but successful reproducible builds,
-  machine tests, security scenarios and fleet rollout evidence are required
-  before staging.
+- Native families add protocol, Lilly and Marshall branches. The reviewed
+  FreeBSD image can enter the catalog through immutable artifact promotion.
+  Reproducible native assembly and fleet rollout retain separate evidence gaps;
+  neither is implied by the exact-image activation.
 - The FreeBSD and illumos rows define a versioned transport contract only. The
-  implementation keeps every native capability false until the kernel, daemon
-  closure and machine evidence are recorded; callers must preserve the partial
-  status and must not treat metadata as proof of readiness, trust or user
-  access.
+  unqualified rows remain false. Callers must provide the complete validated
+  identity to obtain the reviewed image's subset and must not treat an agent
+  name, kernel digest or retained catalog row as authority. The implementation
+  remains partial for the broader native and fleet requirements.
 
 ## Invariants and verification
 
@@ -169,6 +186,11 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
   If native capabilities are enabled in a later reviewed rollout, each daemon
   must bind host CID 2 to guest CID 3 and every response to the current boot
   before Lilly or Marshall grants the corresponding operation.
+- Admission compares complete normalized identities, including the manifest's
+  root and firmware descriptors or the portable descriptor's exact image ID.
+  Missing, altered, foreign or unapproved native identities refuse before new
+  Marshall allocation or Lilly launch effects. Linux and Windows keep their
+  existing capability behavior.
 - The current `foreign-linux-guests`, `native-os-guest-unit`, protocol
   validation, `Lilly.VM.JailTest` and `Lilly.Host.ImageTest` checks are
   structural evidence. Separate recorded FreeBSD execution covers the scoped
@@ -215,21 +237,27 @@ Lilly's conditional initrd, vsock and CPU configuration is in
 are selected as sources while Lilly retains its internal persistent destination
 name; it does not realize an image or boot a guest.
 
-The pinned FreeBSD and OmniOS builders and
+The stock-input FreeBSD and OmniOS builders and
 [`kernel receipts`](../../../nix/domains/artifacts/guest/native-kernels/default.nix)
 evaluate in Nix, but the receipts mark kernel artifacts unavailable and image
-builders stop before copying a stock disk. The protocol and Marshall projections define the native
-rows and permit workspace source version 2; this proves only the versioned
-contract. Lilly's bounded kernel-attestation path and Lyra's source adapters
+builders stop before copying a stock disk. The protocol and Marshall projections
+define the native rows and permit workspace source version 2; those declarations
+alone prove only the versioned contract. Lilly's bounded kernel-attestation path and Lyra's source adapters
 are covered by unit/type checks, while the FreeBSD candidate and native Lyra userland closure now link in Nix.
 Separate target-native candidate assembly and scoped FreeBSD transport,
 complete-service, growth, IPv4 policy and daemon-recovery execution have passed.
 The exact source-qualified receipts are recorded in the
 [review](../reviews/2026-10-17-native-kernel-attestation.md). The final reviewed
 FreeBSD image also passed the scoped same-disk SIGKILL/recovery boundary;
-OmniOS complete-service acceptance still needs its own machine runs. No signed
-production artifact, physical power-loss acceptance or fleet execution record
-exists; catalog entries must not be treated as accepted fleet support.
+OmniOS complete-service acceptance still needs its own machine runs. The
+reviewed FreeBSD image has a separate
+[promotion constructor](../../../nix/domains/artifacts/guest/native-promotion/freebsd.nix),
+[artifact/evidence verifier](../../../nix/domains/artifacts/guest/native-promotion/verify.ex),
+[reviewed manifest](../../../protocol/priv/native/freebsd-14.3.json) and
+[runtime registry](../../../protocol/lib/overalls_protocol/native_admission.ex).
+The [activation review](../reviews/2026-10-17-native-image-admission.md) records
+its exact publication and validation scope. Physical power-loss acceptance and
+Marshall-driven fleet execution remain unrecorded.
 
 The [FreeBSD candidate](../../../nix/domains/artifacts/guest/native-kernels/freebsd/default.nix)
 builds a static GENERIC amd64 kernel using pinned Clang 19.1.7. Its public
@@ -390,7 +418,8 @@ forbidden targets refused, foreign-source guard drops observed and assigned
 source recovered. Its sibling is a Linux sink behind the peer uplink; direct
 native peer-VM/TAP, OmniOS, jail, physical-host and multi-host isolation remain
 gaps. The final blocking-flush image also passed that same two-boot policy
-boundary. These scopes grant no native admission.
+boundary. The original candidate receipts retain admission false; the later
+exact-image approval is recorded separately from those execution results.
 
 The [daemon-recovery oracle](../../../nix/verification/tests/support/native_recovery.py)
 records actual kill/reap, three live readiness refusals, exact executable
@@ -414,17 +443,18 @@ kernel, firmware, VMM hashes and execution records remain in the linked review.
 
 ## Open questions
 
-- Which signed FreeBSD and OmniOS/illumos inputs should be accepted. OmniOS is
+- Which further signed FreeBSD and OmniOS/illumos inputs should be accepted. OmniOS is
   the installable downstream image and `illumos` is the stable protocol label.
   A direct illumos.org image source is unavailable: the upstream project
   identifies OmniOS, OpenIndiana and Tribblix as downstream distributions.
 - Whether the corrected exact OmniOS payload passes the complete current
   boot/service/restart matrix, including the 600-second readiness budget.
-- Which signed artifacts and reproducible native assembly records satisfy the
-  complete admission gate; test-only candidate manifests remain insufficient.
-- Whether OmniOS native crash, wrong-CID injection, reset/DMA and broader
-  isolation scenarios close their remaining boundaries before either family
-  is staged.
+- Reproducible native full-disk assembly remains unrecorded. The exact FreeBSD
+  artifact is promoted by reviewed immutable bytes and hash-bound native
+  evidence; candidate manifests alone remain insufficient.
+- OmniOS native crash, wrong-CID injection, reset/DMA and broader isolation
+  scenarios retain their separate gaps. Enabling the reviewed FreeBSD image
+  does not close them or activate the OmniOS family.
 
 ## Related decisions
 

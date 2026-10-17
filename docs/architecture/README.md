@@ -72,9 +72,13 @@ selects OmniOS as its pinned installable downstream;
 protocol-owned artifact names, OS facts and kernel provenance prevent filename
 inference and stock-kernel substitution. Lilly preserves the jailer, per-tap
 guard, ZFS ownership and recovery boundaries, and requires a boot-bound native
-kernel response before credentials or readiness. Native capability rows remain
-all false. The kernel source receipts contain no artifact bytes, so image
-assembly refuses before copying a stock disk. The FreeBSD kernel candidate,
+kernel response before credentials or readiness. Unqualified native capability
+rows remain all false. A separate exact-image registry and immutable promotion
+path activate only the reviewed FreeBSD image's readiness, trust, terminal,
+workspace, flush, SSH and agent controls; editor and Inception remain false.
+Retained stock images, altered identities and OmniOS refuse new admission.
+Stock-input kernel receipts contain no artifact bytes, so those constructors
+refuse before copying a stock disk. The FreeBSD kernel candidate,
 all twenty native Lyra executables and both terminal daemons cross-link in
 pinned Nix builds. Native OmniOS assembly links all nine modules, installs the
 full payload and exports cleanly; QEMU file/runtime checks and diagnostic
@@ -99,12 +103,15 @@ execution exposed scheduled-only UFS sync; native UFS suspension/resume correcte
 the defect and passed the final scoped crash replay. OmniOS complete
 services/growth/crash, wrong-CID
 injection, reset/DMA safety, physical recovery and fleet acceptance remain open.
-The completion-corrected OmniOS image reaches console login in the paired
-direct-only QEMU diagnostic; its first Firecracker service run misses the
-first-boot deadline without a kernel or service response.
+The completion-corrected OmniOS image reaches console login in both the paired
+direct-only QEMU diagnostic and retained nested Firecracker serial; growth
+maintenance prevents kernel/service responses. The corrected growth operand
+has a fresh sealed assembly, while local MAC normalization and exact service
+replay remain separate evidence.
 The [native review](reviews/2026-10-17-native-kernel-attestation.md) records exact
-source-qualified artifacts and results. Every native capability and catalog
-admission remains false.
+source-qualified artifacts and results. The
+[activation review](reviews/2026-10-17-native-image-admission.md) separates the
+reviewed FreeBSD promotion from pending OmniOS, physical and fleet acceptance.
 
 [ADR-0149](decisions/0149-independent-observability.md) separates control and
 observability: Lilly v4 carries capacity and physical readiness receipts, Ziggy v2

@@ -190,17 +190,43 @@ fn output(program: &str, arguments: &[&str]) -> io::Result<String> {
 
 fn interface_mac(os: Os) -> io::Result<String> {
     let interface = output(os.ifconfig(), &[os.interface()])?;
-    interface
-        .lines()
-        .find_map(|line| {
-            let mut fields = line.split_whitespace();
-            (fields.next() == Some("ether"))
-                .then(|| fields.next())
-                .flatten()
-                .filter(|value| mac(value).is_some())
-                .map(str::to_owned)
-        })
+    interface_mac_value(&interface)
         .ok_or_else(|| io::Error::other("native interface MAC unavailable"))
+}
+
+/// @cc [owner:ghuntley,label:security] native-interface-mac-normalization
+/// A local ifconfig ether row MAY use one or two hexadecimal digits per octet.
+/// Exactly six valid octets MUST normalize to the canonical two-digit form
+/// before comparison with MMDS; malformed local output MUST refuse. External
+/// metadata MUST retain its strict canonical MAC validation.
+fn interface_mac_value(interface: &str) -> Option<String> {
+    interface.lines().find_map(|line| {
+        let mut fields = line.split_whitespace();
+        if fields.next() != Some("ether") {
+            return None;
+        }
+        let mut octets = fields.next()?.split(':');
+        let mut bytes = [0_u8; 6];
+        for byte in &mut bytes {
+            let octet = octets.next()?;
+            if !(1..=2).contains(&octet.len())
+                || !octet.bytes().all(|value| value.is_ascii_hexdigit())
+            {
+                return None;
+            }
+            *byte = u8::from_str_radix(octet, 16).ok()?;
+        }
+        if octets.next().is_some() {
+            return None;
+        }
+        Some(
+            bytes
+                .iter()
+                .map(|byte| format!("{byte:02x}"))
+                .collect::<Vec<_>>()
+                .join(":"),
+        )
+    })
 }
 
 fn clear_ipv4(os: Os) -> io::Result<()> {
@@ -490,6 +516,43 @@ mod tests {
         bad = good.clone();
         bad.prefix_length = 24;
         assert!(network(&bad, &good.mac).is_err());
+    }
+
+    #[test]
+    fn native_interface_mac_normalizes_actual_omnios_output_before_authority_check() {
+        let interface =
+            "vioif0: flags=1000843<UP,BROADCAST,RUNNING,MULTICAST,IPv4> mtu 1500 index 4\n\
+                         inet 169.254.169.1 netmask ffff0000 broadcast 169.254.255.255\n\
+                         ether 2:fc:a:0:0:cb \n";
+        let observed = interface_mac_value(interface).unwrap();
+        assert_eq!(observed, "02:fc:0a:00:00:cb");
+        let mut document = document();
+        assert!(network(&document, &observed).is_ok());
+        document.mac = "02:fc:0a:00:00:cc".into();
+        assert!(network(&document, &observed).is_err());
+        document.mac = "2:fc:a:0:0:cb".into();
+        assert!(network(&document, &observed).is_err());
+        assert_eq!(
+            interface_mac_value("vtnet0: flags=UP\n ether 02:FC:0A:00:00:CB\n"),
+            Some(observed)
+        );
+    }
+
+    #[test]
+    fn native_interface_mac_refuses_malformed_local_octets() {
+        for value in [
+            "",
+            "2:fc:a:0:cb",
+            "2:fc:a:0:0:cb:1",
+            "2:fc::0:0:cb",
+            "002:fc:a:0:0:cb",
+            "2:100:a:0:0:cb",
+            "2:fc:a:0:0:cg",
+            "2:fc:a:0:0:-1",
+        ] {
+            assert_eq!(interface_mac_value(&format!(" ether {value}\n")), None);
+        }
+        assert_eq!(interface_mac_value(" inet 2:fc:a:0:0:cb\n"), None);
     }
 
     #[test]

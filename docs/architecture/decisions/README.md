@@ -73,9 +73,12 @@ installable downstream. Artifact names, OS facts and
 capabilities come from the protocol; Lilly keeps its jailer, network and storage
 boundaries while selecting the validated boot path. Native manifests bind
 kernel provenance, and Lilly requires a boot-bound kernel response before
-credentials or readiness. The implementation remains partial: native capability
-rows are all false, source receipts contain no artifact bytes, and image
-construction refuses before copying a stock disk. Pinned builds link the complete
+credentials or readiness. The implementation remains partial: unqualified native
+rows are false, while complete image-qualified identity activates only the
+reviewed FreeBSD subset through a separate immutable promotion and runtime
+registry. Editor and Inception remain false; stock/altered identities and
+OmniOS remain refused. Stock source receipts contain no artifact bytes, and
+those constructors refuse before copying a stock disk. Pinned builds link the complete
 FreeBSD kernel, twenty native Lyra executables and both terminal daemons.
 OmniOS native nine-module/full-payload clean-export assembly, QEMU file/runtime
 checks and diagnostic Firecracker executing-token/transport checks passed.
@@ -86,10 +89,13 @@ passed all five scoped service/growth/policy/daemon-recovery/SIGKILL-recovery
 variants. OmniOS complete services, direct native peer-VM/jail/host isolation,
 physical stable-media/power-loss durability, reset/DMA and fleet acceptance remain open.
 The completion-corrected OmniOS image reaches console login in the paired
-direct-only QEMU diagnostic, while its first Firecracker service run misses
-the boot deadline without a kernel or service response.
+direct-only QEMU diagnostic and retained nested Firecracker serial, with growth
+maintenance before bootstrap authority. Exact corrected service replay remains
+pending.
 The [review](../reviews/2026-10-17-native-kernel-attestation.md) records exact
-artifacts and limits; candidate evidence grants no catalog admission. The
+artifacts and limits; the [activation review](../reviews/2026-10-17-native-image-admission.md)
+records the separate exact FreeBSD promotion. Candidate evidence alone grants
+no catalog admission. The
 detailed Windows choices remain in ADR-0169 through ADR-0173.
 
 [ADR-0174](0174-user-threads.md) adds the user-level Threads domain. Threads

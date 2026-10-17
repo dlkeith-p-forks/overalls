@@ -248,10 +248,14 @@ rec {
   nativeGuestAgents = nativeAgentPayload;
   nativeKernels = nativeGuests.nativeKernels;
   nativeGuests = import ./guest/native.nix { inherit pkgs lyra; firmware = windowsFirmware.fd; };
+  nativeImagePromotion = import ./guest/native-promotion { inherit pkgs; elixir = toolchain.elixir; };
+  mkPromotedNativeGuest = nativeImagePromotion.promote;
+  mkPublishedNativeCandidate = nativeImagePromotion.publishedCandidate;
+  nativeImagePromotionChecks = nativeImagePromotion.checks;
   mkFreeBSDGuest = import ./guest/freebsd { inherit pkgs; firmware = windowsFirmware.fd; nativeAgents = lyraNative; };
-  freebsdGuest = mkFreeBSDGuest { };
-  # Candidate assembly is an explicit build target. The ordinary constructor
-  # and catalog remain closed until the full native machine evidence passes.
+  freebsdGuest = import ./guest/native-promotion/freebsd.nix { inherit pkgs; elixir = toolchain.elixir; };
+  # Candidate assembly is an explicit build target. The staging constructor
+  # stays closed; the catalog consumes only the separately promoted identity.
   mkFreeBSDImageCandidate = extraArgs: import ./guest/freebsd/candidate.nix ({
     inherit pkgs;
     kernel = nativeKernels.freebsdCandidate;

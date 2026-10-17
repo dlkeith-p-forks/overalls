@@ -43,7 +43,7 @@ defmodule Lilly.VM.ImageSourceCapabilityTest do
     end
   end
 
-  test "native v6 source protocol is accepted before launch effects", %{tmp_dir: directory} do
+  test "source protocol alone cannot admit an unreviewed native image", %{tmp_dir: directory} do
     artifact_data = :binary.copy(<<0>>, 1024)
     artifact_digest = :crypto.hash(:sha256, artifact_data) |> Base.encode16(case: :lower)
     artifact = %{"bytes" => 1024, "sha256" => artifact_digest}
@@ -98,8 +98,22 @@ defmodule Lilly.VM.ImageSourceCapabilityTest do
       workspace_source: source
     }
 
-    result = Driver.start(config(directory), pool(directory, spec), image, spec)
-    refute result == {:error, :workspace_source_unavailable}
+    before = File.ls!(directory)
+
+    for validated <- [manifest, illumos] do
+      candidate = %{image | id: validated.id, manifest: validated}
+      candidate_spec = %{spec | image_id: validated.id}
+
+      assert {:error, :guest_agents_unavailable} =
+               Driver.start(
+                 config(directory),
+                 pool(directory, candidate_spec),
+                 candidate,
+                 candidate_spec
+               )
+
+      assert File.ls!(directory) == before
+    end
   end
 
   @spec fixture(Path.t()) :: {Image.t(), Spec.t()}

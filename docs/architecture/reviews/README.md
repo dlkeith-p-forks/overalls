@@ -23,6 +23,10 @@
   mapping. Builder evaluation and focused unit evidence are recorded; native
   FreeBSD/OmniOS boot, agents, recovery and fleet claims remain open.
 
+- [Exact native image admission (2026-10-17)](2026-10-17-native-image-admission.md):
+  qualifies only the reviewed FreeBSD image by complete immutable identity,
+  verifies promotion artifacts and five native evidence sets, and preserves
+  OmniOS, physical recovery and fleet gaps.
 - [Native kernel provenance and attestation (2026-10-17)](2026-10-17-native-kernel-attestation.md):
   ADR-0190 replaces ADR-0180 with a kernel provenance descriptor, fail-closed native-kernel receipts,
   jail-local boot-bound attestation and guest daemon packaging. Source and

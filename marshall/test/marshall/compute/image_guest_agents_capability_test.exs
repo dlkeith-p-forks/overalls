@@ -114,15 +114,49 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
   end
 
   # @cc [owner:ghuntley,label:verification;security] native-image-capabilities-fail-closed
-  # Registered native image identities MUST remain available as catalog records
+  # Unapproved native image identities MUST remain available as catalog records
   # while every guest service capability is false, including when their valid
-  # manifests declare workspace source version 2.
-  test "native FreeBSD and illumos rows with provenance keep guest capabilities disabled" do
+  # manifests declare kernel provenance and workspace source version 2.
+  test "unapproved native FreeBSD and illumos rows with provenance keep guest capabilities disabled" do
     for {os, agents} <- [{"freebsd", "freebsd-v1"}, {"illumos", "illumos-v1"}] do
       image = native_image_fixture(os, agents)
       capabilities = Images.guest_capabilities(image.id)
 
       assert capabilities == %{@none | available: true}
     end
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] reviewed-native-capability-identity
+  # Only the complete reviewed native image identity bound to its durable row ID
+  # MUST grant the reviewed service capabilities. Changed root, firmware or kernel
+  # identities MUST remain all-false; corrupt, retained stock and mismatched rows
+  # MUST be unavailable. Editor and Inception MUST remain disabled.
+  test "reviewed FreeBSD capabilities require the complete exact row-bound manifest" do
+    manifest = OverallsProtocol.NativeAdmission.reviewed_manifest()
+    assert {:ok, image} = Images.register(manifest, "reviewed FreeBSD")
+
+    assert Images.guest_capabilities(image.id) == %{
+             available: true,
+             readiness: true,
+             trust: true,
+             ssh: true,
+             terminal: true,
+             workspace: true,
+             flush: true,
+             agents: true,
+             editor: false,
+             inception: false
+           }
+
+    for path <- [["root", "sha256"], ["boot", "firmware", "sha256"], ["kernel", "sha256"]] do
+      changed = put_in(manifest, path, String.duplicate("e", 64))
+      assert {:ok, changed_image} = Images.register(changed, "changed native identity")
+      refute changed_image.id == image.id
+      assert Images.guest_capabilities(changed_image.id) == %{@none | available: true}
+    end
+
+    assert Image.guest_capabilities(%{image | id: image_id()}) == @none
+    assert Image.guest_capabilities(%{image | manifest: Map.delete(manifest, "kernel")}) == @none
+    assert Image.guest_capabilities(%{image | manifest: %{}}) == @none
   end
 end

@@ -297,7 +297,8 @@ defmodule OverallsProtocol.ImageManifest do
   # carry Linux, version 5 declares `none`/`windows-v1`, and version 6 declares
   # the matching native OS agent set.
   # Installed guest software, package presence or caller hints MUST NOT grant or
-  # remove agent capability; what a set can do is OverallsProtocol.GuestAgents' table.
+  # remove agent capability; what a set can do is OverallsProtocol.GuestAgents'
+  # table, qualified by exact reviewed native image identity for capabilities/2.
   @spec guest_agents(t()) :: guest_agents()
   def guest_agents(%{guest_agents: agents})
       when agents in [:linux, :none, :windows_v1, :freebsd_v1, :illumos_v1],

@@ -9,10 +9,9 @@
   { name = "Arch Linux"; package = overallsPackages.archGuest; }
   { name = "AlmaLinux"; package = overallsPackages.almaLinuxGuest; }
 ]
-# Native entries stay out of the catalog until their cross-built kernel and
-# agent package have a positive admission receipt.  Keeping the constructors
-# available in `nix/domains/artifacts` lets evaluation and source-pin checks run without
-# making an unavailable image launchable through the fleet catalog.
+# Only separately promoted native packages enter the catalog. Source receipts,
+# staging images and assembly kits retain false admission flags; the promoted
+# package binds exact reviewed artifacts and native machine evidence.
  ++ builtins.filter (entry: entry.package.passthru.nativeAdmission or false) [
   { name = "FreeBSD 14.3"; package = overallsPackages.freebsdGuest; }
   # The installable image is OmniOS, while its protocol family is illumos.

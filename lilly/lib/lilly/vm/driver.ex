@@ -358,7 +358,8 @@ defmodule Lilly.VM.Driver do
   # subsequent start.
   @spec start(Config.t(), Pool.t(), Image.t(), Spec.t(), keyword()) :: result()
   def start(config, pool, image, spec, options \\ []) do
-    with :ok <- agents_profile(image, spec),
+    with :ok <- native_admission(image.manifest),
+         :ok <- agents_profile(image, spec),
          :ok <- source_capability(image, spec) do
       launch(config, pool, spec, options, fn -> Disk.prepare(pool, image, spec) end)
     end
@@ -369,15 +370,27 @@ defmodule Lilly.VM.Driver do
   # Inception profile before disk preparation or any other host effect: Inception
   # depends on vsock credential delivery, terminals and workspace exchanges.
   @spec agents_profile(Image.t(), Spec.t()) :: :ok | {:error, :guest_agents_unavailable}
-  defp agents_profile(%Image{manifest: %{guest_agents: agents}}, %{
+  defp agents_profile(%Image{manifest: %{guest_agents: agents} = manifest}, %{
          network: %{profile: :inception}
        }) do
-    if OverallsProtocol.GuestAgents.capabilities(agents).inception,
+    if OverallsProtocol.GuestAgents.capabilities(agents, manifest).inception,
       do: :ok,
       else: {:error, :guest_agents_unavailable}
   end
 
   defp agents_profile(_image, _spec), do: :ok
+
+  # @cc [owner:ghuntley,label:security] native-launch-reviewed-image-only
+  # Fresh and retained native launches MUST refuse an unreviewed immutable
+  # image identity before disk preparation, boot identity or launch intent.
+  # Existing stock manifests remain readable for diagnostics and cleanup.
+  @spec native_admission(OverallsProtocol.ImageManifest.t() | OverallsProtocol.WorkloadBundle.t()) ::
+          :ok | {:error, :guest_agents_unavailable}
+  defp native_admission(identity) do
+    if OverallsProtocol.NativeAdmission.admitted?(identity),
+      do: :ok,
+      else: {:error, :guest_agents_unavailable}
+  end
 
   # @cc [owner:ghuntley,label:security;protocol] source-capability-before-start
   # A fresh source-bearing execution MUST use a validated current image that
@@ -408,7 +421,10 @@ defmodule Lilly.VM.Driver do
   # only the existing executor/actor reconciliation may retry that authority.
   @spec restart(Config.t(), Pool.t(), Spec.t(), keyword()) :: result()
   def restart(config, pool, spec, options \\ []) do
-    launch(config, pool, spec, options, fn -> Disk.ready(pool, spec) end)
+    with {:ok, bundle} <- guest_bundle(pool, spec),
+         :ok <- native_admission(bundle) do
+      launch(config, pool, spec, options, fn -> Disk.ready(pool, spec) end)
+    end
   end
 
   # @cc [owner:ghuntley,label:recovery;concurrency] launch-steps-fenced
@@ -607,8 +623,8 @@ defmodule Lilly.VM.Driver do
   # lock across the guest wait or grant source cleanup authority on its own.
   @spec ready(Config.t(), Pool.t(), Spec.t(), keyword()) :: result()
   def ready(config, pool, spec, options) do
-    with {:ok, agents} <- guest_agents(pool, spec),
-         :ok <- readiness_capability(agents),
+    with {:ok, capabilities} <- guest_capabilities(pool, spec),
+         :ok <- readiness_capability(capabilities),
          {:ok, _} <- ready_boot(config, pool, spec, options) do
       :ok
     else
@@ -620,7 +636,8 @@ defmodule Lilly.VM.Driver do
   # @cc [owner:ghuntley,label:security] guest-agents-from-portable-bundle
   # guest_agents/2 MUST read the agent set only from the validated placement-local
   # boot bundle, never from the image catalog, the guest or peer input, so launch,
-  # restart and adoption decide trust, readiness and terminals from one durable authority.
+  # restart and adoption derive identity from one durable authority. Guest
+  # operations MUST additionally apply guest_capabilities/2's native review gate.
   @spec guest_agents(Pool.t(), Spec.t()) ::
           {:ok, OverallsProtocol.WorkloadBundle.guest_agents()}
           | {:error, :invalid_workload_bundle}
@@ -628,6 +645,18 @@ defmodule Lilly.VM.Driver do
     with {:ok, bundle} <-
            Lilly.VM.WorkloadBundle.load(Lilly.Host.ZFSDataset.directory(pool, spec), spec),
          do: {:ok, bundle.guest_agents}
+  end
+
+  # @cc [owner:ghuntley,label:security] guest-capabilities-from-reviewed-bundle
+  # Guest operations MUST derive capabilities from the validated placement-local
+  # bundle and exact native admission identity. An agent-set name alone MUST NOT
+  # activate retained stock or unreviewed native images.
+  @spec guest_capabilities(Pool.t(), Spec.t()) ::
+          {:ok, OverallsProtocol.GuestAgents.capabilities()} | {:error, :invalid_workload_bundle}
+  def guest_capabilities(pool, spec) do
+    with {:ok, bundle} <- guest_bundle(pool, spec) do
+      {:ok, OverallsProtocol.GuestAgents.capabilities(bundle.guest_agents, bundle)}
+    end
   end
 
   # @cc [owner:ghuntley,label:recovery] readiness-budget-from-bundle
@@ -656,9 +685,9 @@ defmodule Lilly.VM.Driver do
   # committed as running without its ready line.
   @spec unattested(Config.t(), Pool.t(), Spec.t(), keyword()) :: result()
   def unattested(config, pool, spec, options) do
-    case guest_agents(pool, spec) do
-      {:ok, agents} ->
-        if OverallsProtocol.GuestAgents.capabilities(agents).readiness,
+    case guest_capabilities(pool, spec) do
+      {:ok, capabilities} ->
+        if capabilities.readiness,
           do: {:error, :guest_agents_unavailable},
           else: commit_unattested(config, pool, spec, options)
 
@@ -747,14 +776,14 @@ defmodule Lilly.VM.Driver do
   def trust(%{guest_trust_roots: []}, _pool, _spec, _options), do: :ok
 
   def trust(config, pool, spec, options) do
-    case guest_agents(pool, spec) do
-      {:ok, agents} ->
-        if OverallsProtocol.GuestAgents.capabilities(agents).trust,
+    case guest_capabilities(pool, spec) do
+      {:ok, capabilities} ->
+        if capabilities.trust,
           do: deliver_trust(config, pool, spec, options),
           else: skip_trust(config, pool, spec, options)
 
       _ ->
-        deliver_trust(config, pool, spec, options)
+        {:error, :trust_boot_unconfirmed}
     end
   end
 
@@ -1078,9 +1107,9 @@ defmodule Lilly.VM.Driver do
   def deliver_workspace_source(_config, _pool, %{workspace_source: nil}, _options), do: :ok
 
   def deliver_workspace_source(config, pool, spec, options) do
-    case guest_agents(pool, spec) do
-      {:ok, agents} ->
-        if OverallsProtocol.GuestAgents.capabilities(agents).workspace,
+    case guest_capabilities(pool, spec) do
+      {:ok, capabilities} ->
+        if capabilities.workspace,
           do: deliver_workspace_source_to_guest(config, pool, spec, options),
           else: {:error, :workspace_source_unavailable}
 
@@ -1263,8 +1292,8 @@ defmodule Lilly.VM.Driver do
     expected = revision(options)
     deadline = System.monotonic_time(:millisecond) + Keyword.get(options, :timeout, 120_000)
 
-    with {:ok, agents} <- guest_agents(pool, spec),
-         :ok <- readiness_capability(agents),
+    with {:ok, capabilities} <- guest_capabilities(pool, spec),
+         :ok <- readiness_capability(capabilities),
          :ok <-
            locked(config, spec, min(remaining(deadline), 2000), fn ->
              readiness_claim(config, pool, spec, expected)
@@ -1302,10 +1331,10 @@ defmodule Lilly.VM.Driver do
     end
   end
 
-  @spec readiness_capability(OverallsProtocol.GuestAgents.t()) ::
+  @spec readiness_capability(OverallsProtocol.GuestAgents.capabilities()) ::
           :ok | {:error, :guest_agents_unavailable}
-  defp readiness_capability(agents) do
-    if OverallsProtocol.GuestAgents.capabilities(agents).readiness,
+  defp readiness_capability(capabilities) do
+    if capabilities.readiness,
       do: :ok,
       else: {:error, :guest_agents_unavailable}
   end

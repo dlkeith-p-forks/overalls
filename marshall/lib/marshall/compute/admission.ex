@@ -284,22 +284,28 @@ defmodule Marshall.Compute.Admission do
 
   # @cc [owner:ghuntley,label:security;protocol] admission-workspace-image-capability
   # Every new admission MUST require a current (version 4, 5 or 6) manifest bound to
-  # its catalog ID. A source-bearing admission MUST additionally declare source
-  # protocol 2. Missing, obsolete, mismatched or absent capabilities MUST refuse
-  # before address/host allocation with the fixed workspace_source_unavailable
-  # reason. An Inception admission MUST refuse an image without guest agents with
-  # image_requirements_not_met, because Inception depends on guest exchanges.
+  # its catalog ID. Native images MUST match the exact reviewed admission identity
+  # or refuse with image_requirements_not_met before address/host allocation.
+  # A source-bearing admission MUST additionally declare source protocol 2;
+  # missing, obsolete, mismatched or absent source capabilities MUST refuse with
+  # workspace_source_unavailable. An Inception admission MUST derive its capability
+  # from that complete validated identity and refuse with image_requirements_not_met
+  # when absent, because Inception depends on guest exchanges.
   @spec source_image_admissible!(map(), Image.t()) :: :ok
   defp source_image_admissible!(request, image) do
     sourced? = Map.get(request, :workspace_source) != nil
 
     case OverallsProtocol.ImageManifest.validate(image.manifest) do
       {:ok, %{id: id, workspace_source_version: capability} = validated} when id == image.id ->
+        unless OverallsProtocol.NativeAdmission.admitted?(validated),
+          do: Ledger.rollback(:image_requirements_not_met)
+
         if sourced? and capability != 2, do: Ledger.rollback(:workspace_source_unavailable)
 
         if request.profile == :inception and
              not OverallsProtocol.GuestAgents.capabilities(
-               OverallsProtocol.ImageManifest.guest_agents(validated)
+               OverallsProtocol.ImageManifest.guest_agents(validated),
+               validated
              ).inception,
            do: Ledger.rollback(:image_requirements_not_met)
 

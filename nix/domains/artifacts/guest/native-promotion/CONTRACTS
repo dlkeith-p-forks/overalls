@@ -1,0 +1,15 @@
+@cc [owner:ghuntley,label:security;build;verification] native-promotion-exact-reviewed-artifacts
+Promotion MUST verify the shared protocol's exact native image ID, positive
+kernel provenance, actual firmware and raw disk bytes, the reviewed VMM digest,
+and hash-bound assembly and five native scenario evidence sets before writing
+manifest.json. Missing, foreign, stale or incomplete evidence MUST refuse.
+Candidate and kit constructors MUST retain their own false admission flags.
+Promotion MUST NOT imply physical isolation, power-loss durability or fleet
+acceptance beyond the explicitly reviewed machine evidence.
+
+@cc [owner:ghuntley,label:security;deployment] native-published-candidate-custody
+A manually assembled candidate MUST enter Nix through a reviewed recursive NAR
+hash and be published through the existing signature-verified Overalls cache.
+A cache miss MUST refuse with publication instructions, never read an ephemeral
+host path, rebuild a stock disk or disable signature checks. No cache credential
+or private signing key may enter the constructor or guest artifact.

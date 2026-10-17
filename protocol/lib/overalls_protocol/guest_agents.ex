@@ -33,22 +33,39 @@ defmodule OverallsProtocol.GuestAgents do
   @none Map.new(@all, fn {key, _} -> {key, false} end)
 
   # @cc [owner:ghuntley,label:protocol;security] guest-agents-capability-table-closed
-  # capabilities/1 is the only authority for what a guest agent set can do. A
+  # capabilities/1 and capabilities/2 are the only authority for what a guest agent set can do. A
   # new agent set MUST be a new value with its own row. Existing rows MUST NOT
   # be widened or repurposed; a reviewed fail-closed narrowing is permitted
   # when an earlier row overclaimed an implementation that does not exist.
   # parse/1 MUST accept exactly the wire names of this table and MUST NOT create
-  # atoms.
+  # atoms. Native capabilities/1 rows MUST remain false: capabilities/2 may
+  # activate only an exact NativeAdmission-reviewed image or portable bundle,
+  # without widening any retained stock-image identity or changing wire names.
   @spec capabilities(t()) :: capabilities()
   def capabilities(:linux), do: @all
   def capabilities(:none), do: @none
   def capabilities(:windows_v1), do: %{@all | inception: false, editor: false}
-  # Native images are admitted only as fail-closed capability rows until their
-  # cross-built agents and runtime evidence exist. Their transport remains
+  # A native agent-set name alone remains fail-closed. Reviewed image context
+  # is required by capabilities/2. Native transport remains
   # discoverable through vsock?/1 so the setup path cannot accidentally fall
   # back to a non-native transport.
   def capabilities(:freebsd_v1), do: @none
   def capabilities(:illumos_v1), do: @none
+
+  # @cc [owner:ghuntley,label:security;protocol] guest-agents-native-context-required
+  # Native capabilities MUST require a validated exact reviewed image or bundle
+  # with the matching agent set; missing or mismatched context MUST return the
+  # all-false row. FreeBSD admission MUST NOT grant editor or Inception support.
+  @spec capabilities(t(), term()) :: capabilities()
+  def capabilities(agents, %{guest_agents: agents} = identity)
+      when agents in [:freebsd_v1, :illumos_v1] do
+    if OverallsProtocol.NativeAdmission.admitted?(identity),
+      do: %{@all | inception: false, editor: false},
+      else: @none
+  end
+
+  def capabilities(agents, %{guest_agents: agents}), do: capabilities(agents)
+  def capabilities(_, _), do: @none
 
   @spec wire(t()) :: String.t()
   def wire(:linux), do: "linux"

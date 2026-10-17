@@ -163,8 +163,8 @@ defmodule Lilly.VM.Executor do
   def terminal_options(config, command) do
     with {:ok, spec} <- specification(command),
          pool when not is_nil(pool) <- Enum.find(config.pools, &(&1.id == command.pool_id)),
-         {:ok, agents} <- Driver.guest_agents(pool, spec),
-         true <- OverallsProtocol.GuestAgents.capabilities(agents).terminal,
+         {:ok, capabilities} <- Driver.guest_capabilities(pool, spec),
+         true <- capabilities.terminal,
          true <- Observation.running?(config.execution, pool, spec),
          expected = {command.execution_epoch, command.generation},
          {:ok, boot} <-
@@ -486,9 +486,9 @@ defmodule Lilly.VM.Executor do
   end
 
   defp after_trust(config, pool, spec, command, history) do
-    case Driver.guest_agents(pool, spec) do
-      {:ok, agents} ->
-        if OverallsProtocol.GuestAgents.capabilities(agents).readiness,
+    case Driver.guest_capabilities(pool, spec) do
+      {:ok, capabilities} ->
+        if capabilities.readiness,
           do: provisioned_running(config, pool, spec, command, history),
           else: unattested_running(config, pool, spec, command, history)
 

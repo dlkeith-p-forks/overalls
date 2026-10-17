@@ -1,0 +1,148 @@
+# Exact native image admission (2026-10-17)
+
+## Scope and architectural impact
+
+This review covers activation of the exact reviewed FreeBSD 14.3 image through
+the protocol capability authority, Marshall admission, Lilly launch and a
+separate immutable Nix promotion constructor. The explicit instruction to enable
+admission authorizes per-image activation under
+[ADR-0190](../decisions/0190-native-kernel-provenance-and-admission.md). That
+decision remains accepted with partial implementation. Its original requirement
+for kernel provenance, complete service closure and scoped native evidence is
+preserved; an OS name or candidate manifest still grants no capability.
+
+There is no new Ash domain, persistence format, protocol wire identity or deployed
+host/service role. The reviewed authority changes from an unavailable native
+implementation to one approved immutable image. The unqualified `freebsd-v1`
+and `illumos-v1` capability rows remain false. Complete image-qualified identity
+is required, and editor and Inception remain false. OmniOS remains closed while
+its exact service matrix is incomplete. This activation does not claim physical
+isolation, power-loss durability, reproducible native full-disk assembly or
+Marshall-driven fleet acceptance.
+
+## Exact artifact and authority
+
+| Identity | Reviewed value |
+| --- | --- |
+| Image ID | `sha256:d141e4266c29da00a1378157b1d39369b1d48e577bca4ce7375e8ff6d399557b` |
+| Raw disk SHA-256 | `5022d714b94032253bc44b706b37426f8a247debd155fbe223fde28000228f55` |
+| Kernel SHA-256 | `5d6ea5f9ba4caa0c30dc048eac56af2c6cfa4d9121fde6a859113373e736784f` |
+| Firmware SHA-256 | `261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2` |
+| Firecracker SHA-256 | `5dc9a44417e758c94fd70cb78113bd55f04f3d9170307215a9ff2e88aabd6c90` |
+| Sealed candidate NAR hash | `sha256-jnULElxnAk9yzcohR6SPgdr8AprHiv1Oa9OTU6Va06E=` |
+
+The [reviewed manifest](../../../protocol/priv/native/freebsd-14.3.json) is
+compiled into the pure
+[native registry](../../../protocol/lib/overalls_protocol/native_admission.ex).
+There is no runtime file lookup. After ordinary versioned validation, admission
+requires the complete normalized native image or portable boot descriptor to
+equal the approved identity. The descriptor's image ID binds the published
+manifest; matching only a kernel, agent set, row ID or OS does not suffice.
+
+[GuestAgents](../../../protocol/lib/overalls_protocol/guest_agents.ex) preserves
+the existing all-false native `capabilities/1` rows and adds qualified
+`capabilities/2`. The approved FreeBSD image enables readiness, trust, workspace,
+terminal, flush, SSH and agents. Editor and Inception remain false. Linux and
+Windows retain their existing behavior. Callers must supply validated complete
+identity; they cannot substitute a capability name or a detached catalog ID.
+
+Marshall checks the normalized manifest against the durable image row ID and
+refuses unapproved native requests before address or host allocation. Existing
+stock native rows remain readable for diagnostics, with capabilities false.
+Lilly independently refuses an unapproved native identity before a new launch;
+neither a Marshall request nor a portable descriptor bypasses that boundary.
+After launch, the existing boot-bound kernel attestation, host CID 2 / guest
+CID 3 transport, placement/epoch/challenge fences, trust and readiness checks
+remain required. Exact artifact approval is not current-boot readiness.
+
+## Promotion and cache custody
+
+The [promotion constructor](../../../nix/domains/artifacts/guest/native-promotion/default.nix)
+and [verifier](../../../nix/domains/artifacts/guest/native-promotion/verify.ex)
+are separate from the candidate builders. Version-1 approval binds the complete
+manifest/image ID, actual disk and firmware sizes/hashes, the reviewed VMM,
+hash-bound native assembly receipt and exactly five scenario sets: services,
+growth, isolation, daemon recovery and crash recovery. Each service receipt
+must cover the same artifacts, distinct boot IDs and all 22 service checks.
+Growth requires three clean boots; ordinary two-boot scenarios require clean
+exits; crash recovery requires observed SIGKILL followed by a clean boot.
+Supporting evidence must name those same boots. Missing, altered, foreign,
+replayed or incomplete evidence refuses publication.
+
+The [FreeBSD approval](../../../nix/domains/artifacts/guest/native-promotion/freebsd.nix)
+uses the sealed source
+`/nix/store/qr4n7d7f8iwv3pial7glygy2y8jk3fdi-overalls-native-freebsd-14-3-5022d714`.
+It contains the disk, regular dereferenced firmware and public evidence. Pinned
+recursive fixed-output derivation binds its NAR hash and uses the existing signed
+Overalls Cachix substitution policy. Its fallback builder only refuses with publication
+instructions; it never reads a temporary path, disables signature checks or
+reconstructs a stock image. No token or signing key enters evaluation or the
+guest. Public availability, trusted signature and exact fetched contents need
+their own publication record, separately from artifact verification.
+
+Promotion writes `manifest.json` only after verification and publishes exactly
+`disk.raw`, `firmware` and that manifest. Evidence, installation media and debug
+hooks stay outside the launchable directory. Candidate and historical machine
+receipts retain `native_admission=false`; the separate approval and runtime
+registry establish the new authority without rewriting those past results.
+
+The current source's local interface-MAC normalization rebuilds a different
+FreeBSD userland candidate, including changed executable bytes. That candidate
+remains unadmitted. Production promotion continues to consume the sealed reviewed
+`5022d714` closure; no byte-identical-current-rebuild claim is made.
+
+The realized production output is
+`/nix/store/gshb3mlah1wfl7kx8xr1div8dxih0837-lilly-freebsd-14_3-x86_64-promoted`.
+It contains exactly the 6,477,687,296-byte disk, 4,194,304-byte firmware and
+831-byte manifest. Its recursive NAR hash is
+`sha256-wcEv0jqRuJRZHRuTDi1IRQQhvQ+2NVOxVoHLFMaDl5Q=` with no store references.
+
+The [bootstrap correction](../../../lyra/src/native_bootstrap.rs) accepts exactly
+six local `ifconfig` octets containing one or two ASCII hexadecimal digits and
+normalizes them before equality with MMDS. External metadata remains strict;
+foreign identity and malformed local output refuse. The pinned Rust tests,
+Clippy, native/Windows type checks and new OmniOS kit build passed at
+`/tmp/overalls-native-bootstrap-fixed-build.log`. Fresh native assembly and
+service replay remain pending for this changed kit.
+
+## Validation and remaining gaps
+
+The [native kernel review](2026-10-17-native-kernel-attestation.md) records all
+five passing exact-image native scenarios. Their scope remains the same after
+promotion: complete native service oracles, mounted-root growth, the packaged
+IPv4/router/TAP policy against a Linux sibling sink, same-boot daemon recovery
+and same-disk process-SIGKILL recovery. Ordinary transport and reset test images
+have different disk hashes and retain their separate evidence. Wrong-CID
+injection, reset/DMA stress, direct native peer-VM/TAP isolation, physical host
+or power loss, relocation and fleet acceptance remain gaps.
+
+The final focused Marshall suite passed 33 checks (5 properties and 28 tests),
+recorded at `/tmp/overalls-native-admission-marshall-focused-final.log`. It
+executed all eight sourced/unsourced unapproved-native refusals with unchanged
+allocation inventory, exact reviewed admission through ordinary capacity and
+readiness accounting, and row-bound capability projection with altered or
+corrupt manifest refusal. The source review confirmed the native identity gate
+precedes source-version checking and host/address allocation.
+
+The focused Lilly source/launch suite passed 18 checks. Protocol Hegel/native
+engine execution and complete consumer gates retain separate results. A host
+verifier or SQL fixture can establish exact-identity refusal and
+absence of allocation effects; it cannot establish native isolation or a
+Marshall-driven guest journey. The scenario ledger keeps this activation
+partial until the missing preferred machine/property coverage is recorded.
+
+The final production FreeBSD package, `native-image-promotion` 12-test gate and
+`native-os-guest-unit` gate passed together in 18 seconds at
+`/tmp/overalls-native-promoted-freebsd-build.log`. Isolated verifier Dialyzer
+passed without warnings at `/tmp/overalls-native-promotion-dialyzer-final.log`.
+The publication check verified the public remote NAR and trusted signature,
+then substituted into a fresh store and verified its complete NAR contents and
+signature. This establishes immutable signed publication and host-side artifact
+verification, not a new guest or fleet runtime result. Complete consumer and
+browser gates still running at this review remain pending, not passing claims.
+
+The source review must inspect every native capability consumer and each fresh
+launch boundary. Code-contract syntax and discovery checks remain separate from
+that semantic review. Final governance receipts are recorded after the source
+and handbook freeze; generated inventories establish no new domain or deployed
+role from this change.

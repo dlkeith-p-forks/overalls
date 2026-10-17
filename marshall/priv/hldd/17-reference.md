@@ -610,8 +610,17 @@ candidate passed complete services and same-boot daemon recovery over two clean
 boots each; later canonical-roots/SSH inputs passed full service oracles in the
 growth/isolation runs below. The final reviewed blocking-flush image passed all
 five scoped service/growth/policy/daemon-recovery/SIGKILL-recovery variants.
-These outputs remain outside admitted images; the FreeBSD results do not
-establish OmniOS, physical power-loss or fleet acceptance.
+Those original candidate receipts retain false admission flags. A separate
+reviewed promotion now activates only the sealed FreeBSD disk `5022d714` and
+manifest-derived image `d141e426`; complete image-qualified capability lookup
+enables readiness, trust, workspace, terminal, flush, SSH and agents, while
+editor and Inception remain false. Unqualified rows, stock or altered images,
+the latest rebuilt FreeBSD candidate and all OmniOS identities remain closed.
+The promotion verifier binds artifact bytes, the reviewed VMM and all five
+scenario receipts. Its recursive NAR input uses signed Overalls substitution;
+cache publication has a separate availability/signature/content record. The
+FreeBSD results do not establish OmniOS, physical power-loss or fleet acceptance.
+See the [activation review](repo:docs/architecture/reviews/2026-10-17-native-image-admission.md).
 See [ADR-0190](repo:docs/architecture/decisions/0190-native-kernel-provenance-and-admission.md).
 
 Native growth runs only `overalls-native-grow-root` without arguments. It derives

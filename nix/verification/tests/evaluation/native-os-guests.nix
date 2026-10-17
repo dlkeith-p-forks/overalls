@@ -26,8 +26,11 @@ assert illumos.passthru.distribution == "OmniOS";
 assert illumos.passthru.release == "r151050";
 assert toString illumos.passthru.firmware == toString packages.windowsFirmware.fd;
 assert illumos.passthru.upstreamUrl == "https://illumos.org/";
-# Receipts are not native kernels; neither OS may enter the fleet catalog.
-assert freebsdFleetImage == null;
+# The reviewed FreeBSD artifact is promoted separately from the stock/staging
+# constructor. OmniOS remains excluded until its exact runtime evidence passes.
+assert freebsdFleetImage != null;
+assert freebsdFleetImage.package.nativeAdmission;
+assert freebsdFleetImage.package.imageId == "sha256:d141e4266c29da00a1378157b1d39369b1d48e577bca4ce7375e8ff6d399557b";
 assert illumosFleetImage == null;
 assert !freebsd.passthru.kernelReady;
 assert !omnios.passthru.kernelReady;

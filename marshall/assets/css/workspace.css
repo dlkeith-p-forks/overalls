@@ -552,8 +552,7 @@ button.machine-editor-link {
   }
   .machine-terminal-display {
     grid-row: 1;
-    height: 65dvh;
-    min-height: 24rem;
+    height: round(up, max(24rem, 65dvh), var(--line-height));
   }
 }
 

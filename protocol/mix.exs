@@ -10,7 +10,13 @@ defmodule OverallsProtocol.MixProject do
       deps: [
         {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
         {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-        {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "5d60a11", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
+        {:stream_data, "~> 1.1", only: [:dev, :test], runtime: false},
+        {:hegel_ex,
+         git: "https://github.com/ghuntley/hegel-erlang.git",
+         ref: "5d60a11",
+         subdir: "packages/hegel_ex",
+         only: [:dev, :test],
+         runtime: false}
       ],
       aliases: [
         "toolchain.check": [fn _ -> Code.eval_file("../scripts/check_toolchain.exs", __DIR__) end],

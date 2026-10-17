@@ -822,13 +822,15 @@ credentials or readiness; the file digest alone does not prove which kernel
 booted. Linux kernel bundles emit `initrd_path` only
 when an initrd is declared; native FreeBSD and illumos bundles are firmware-only.
 Lilly retains the jail-local vsock transport shape for the native wire sets and
-applies the Hyper-V CPU template only to Windows firmware. The native capability
-rows are currently all-false, so no user-facing guest operation is advertised.
-Preliminary FreeBSD and OmniOS builder/catalog entries exist; the OmniOS
+applies the Hyper-V CPU template only to Windows firmware. Unqualified native
+capability rows remain all-false. A separate complete-image qualification enables
+only the reviewed FreeBSD image's readiness, trust, terminal, workspace, flush,
+SSH and agent control; editor and Inception stay false. Unapproved native images
+cannot enter new Marshall admission or Lilly launch. FreeBSD and OmniOS
+builder/catalog entries exist; the OmniOS
 catalog row consumes the explicit `illumosGuest` constructor while retaining
-its downstream display name. Readiness, trust, terminal, workspace, flush, SSH
-and agent execution remain unavailable; the host-only transport is a schema
-boundary. The
+its downstream display name. OmniOS and retained stock FreeBSD identities retain
+false capabilities; the host-only transport alone grants no guest operation. The
 rolling FreeBSD 14.3 source endpoint is retired and replaced by a checksum-pinned
 archive capture; Nix evaluates the pinned receipts, but the placeholder kernel
 artifacts make image construction stop before a stock disk is copied. The separate FreeBSD candidate now cross-builds a complete GENERIC kernel;
@@ -842,6 +844,46 @@ OmniOS full-kit pool import/clone/install/export and diagnostic Firecracker
 file/token/host-CID transport checks have passed; final reproducible-image
 replay, complete service execution, isolation, recovery and fleet
 acceptance remain unrecorded.
+
+### Reviewed FreeBSD admission and publication
+
+The approved FreeBSD image ID is
+`sha256:d141e4266c29da00a1378157b1d39369b1d48e577bca4ce7375e8ff6d399557b`,
+with disk SHA-256
+`5022d714b94032253bc44b706b37426f8a247debd155fbe223fde28000228f55`.
+The [compiled registry](repo:protocol/lib/overalls_protocol/native_admission.ex)
+compares a complete validated manifest or portable boot descriptor with that
+reviewed identity. Marshall also binds the manifest-derived image ID to the
+durable catalog row; Lilly repeats admission before launching. Missing identity,
+an altered artifact/provenance field, a row-ID mismatch or an unapproved native
+family refuses. The ordinary capacity, current-boot kernel attestation, trust
+and readiness gates still apply after image qualification.
+
+The [promotion constructor](repo:nix/domains/artifacts/guest/native-promotion/freebsd.nix)
+verifies disk/firmware sizes and hashes plus hash-bound assembly and five native
+scenario evidence sets before publishing exactly `disk.raw`, `firmware` and
+`manifest.json`. Candidate receipts retain false admission flags. The sealed
+candidate enters Nix with a reviewed recursive NAR hash through ordinary signed
+Overalls Cachix substitution. A cache miss fails with publication instructions;
+there is no temporary-path fallback, signing secret in evaluation or automatic
+stock-image reconstruction. See the
+[publication procedure](repo:nix/domains/artifacts/guest/native-promotion/README.md).
+
+This activates the previously tested sealed image. Rebuilding current native
+userland after local MAC normalization yields a different FreeBSD candidate,
+which remains unadmitted; it does not replace the sealed closure. The
+[activation review](repo:docs/architecture/reviews/2026-10-17-native-image-admission.md)
+separates artifact verification, cache publication, SQL/host refusal tests and
+native scenario evidence. Reproducible native assembly, direct native peer-VM
+isolation, physical recovery, relocation and Marshall-driven fleet acceptance
+remain gaps. OmniOS service acceptance is incomplete and its admission remains
+closed.
+
+Native bootstrap canonicalizes only local `ifconfig` MAC output: exactly six
+one- or two-digit ASCII hexadecimal octets become lowercase two-digit octets
+before comparison. External MMDS remains strictly canonical, and malformed or
+foreign values refuse. The regression/type/build gates passed; corrected OmniOS
+assembly and service replay remain pending and grant no admission.
 
 See [ADR-0190](repo:docs/architecture/decisions/0190-native-kernel-provenance-and-admission.md),
 the [multi-OS architecture review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md)
@@ -1126,14 +1168,15 @@ that understands the shapes.
 third agent set. [`OverallsProtocol.GuestAgents`](repo:protocol/lib/overalls_protocol/guest_agents.ex)
 names the closed set (`linux`, `none`, `windows-v1`, `freebsd-v1` and
 `illumos-v1`) and a pure capability table. Linux has everything, `none` has
-nothing, Windows has its reviewed firmware subset, and the current FreeBSD and
-illumos rows are all-false transport declarations. Lilly's driver, executor and
+nothing, Windows has its reviewed firmware subset, and unqualified FreeBSD and
+illumos rows remain all-false transport declarations. Qualified `capabilities/2`
+requires the exact approved image identity for FreeBSD's reviewed subset;
+editor and Inception stay false. Lilly's driver, executor and
 jail and Marshall's surfaces branch on these capabilities, never on the set's
 name. Version-5 Windows and version-6 native manifests may declare
-`workspace_source_version` 2 as metadata, but native source delivery remains
-refused while the capability rows are false. A readiness budget for a native row
-does not establish readiness evidence; the first native launch still requires a
-recorded kernel attestation and machine result.
+`workspace_source_version` 2 as metadata, but that field alone grants no source
+delivery. A readiness budget for a native row does not establish readiness;
+each approved native launch still requires current-boot kernel attestation.
 
 The transport is virtio-vsock through the virtio-win `viosock` driver and
 Winsock provider, shipped in the image beside the other drivers and bound
@@ -1312,8 +1355,9 @@ rises to 96 GiB so the 64 GiB Windows template fits beside the Linux templates
 (a size check with no hashing) decides whether an image gets a sealed template.
 Like every image, Windows root disks are copied on demand (ADR-0177). The
 Windows image is staged only after the code converges. The multi-OS review
-records the Arch/Alma builder evidence and the explicit absence of native
-FreeBSD/OmniOS accepted boot, host-CID transport, agent, recovery and fleet evidence.
+records the Arch/Alma builder evidence. The later native and activation reviews
+record exact FreeBSD service/transport/recovery and image qualification scopes;
+OmniOS complete services and native fleet acceptance remain open.
 
 Verification: `firecracker-vmm` (version, `--enable-pci`, static pair),
 `windows-firmware` (PVH note, patched aperture), `windows-guest-unit`

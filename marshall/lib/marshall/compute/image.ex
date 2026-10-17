@@ -135,29 +135,36 @@ defmodule Marshall.Compute.Image do
   @doc "Finite per-capability guest facts of an image row for projections and refusals; fails closed."
   # @cc [owner:ghuntley,label:security;product] image-guest-capabilities-from-table
   # guest_capabilities/1 MUST derive every boolean from OverallsProtocol.GuestAgents'
-  # table for the validated, row-bound agent set and MUST return all-false
-  # (available: false) for a missing, corrupt or mismatched manifest. Surfaces
-  # branch on these booleans, never on the agent set name.
+  # table using the complete validated, row-bound image identity. Native images
+  # MUST additionally match the exact reviewed admission identity; an agent-set
+  # name or kernel provenance alone grants no capability. Missing, corrupt or
+  # mismatched manifests MUST return all-false (available: false). Valid but
+  # unapproved native identities remain available with all capabilities false.
+  # Surfaces branch on these booleans, never on the agent set name.
   @spec guest_capabilities(term()) :: guest_capabilities()
   def guest_capabilities(image) do
-    case guest_agents_capability(image) do
-      {:ok, agents} ->
-        capabilities = OverallsProtocol.GuestAgents.capabilities(agents)
+    with %{id: id, manifest: manifest} <- image,
+         {:ok, %{id: ^id} = validated} <- OverallsProtocol.ImageManifest.validate(manifest) do
+      capabilities =
+        OverallsProtocol.GuestAgents.capabilities(
+          OverallsProtocol.ImageManifest.guest_agents(validated),
+          validated
+        )
 
-        %{
-          available: true,
-          readiness: capabilities.readiness,
-          trust: capabilities.trust,
-          ssh: capabilities.ssh,
-          terminal: capabilities.terminal,
-          workspace: capabilities.workspace,
-          flush: capabilities.flush,
-          agents: capabilities.agents,
-          editor: capabilities.editor,
-          inception: capabilities.inception
-        }
-
-      {:error, :unavailable} ->
+      %{
+        available: true,
+        readiness: capabilities.readiness,
+        trust: capabilities.trust,
+        ssh: capabilities.ssh,
+        terminal: capabilities.terminal,
+        workspace: capabilities.workspace,
+        flush: capabilities.flush,
+        agents: capabilities.agents,
+        editor: capabilities.editor,
+        inception: capabilities.inception
+      }
+    else
+      _ ->
         %{
           available: false,
           readiness: false,

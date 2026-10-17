@@ -910,17 +910,35 @@ network guard, storage ownership or recovery boundary. The builder evaluation
 does not establish runtime isolation or distribution-native security behavior.
 
 The protocol's native FreeBSD and OmniOS rows (`freebsd-v1` and `illumos-v1`)
-are explicit, currently all-false capability contracts. Preliminary image
+are explicit, unqualified all-false capability contracts. Native image
 packages and catalog entries exist, and the rolling FreeBSD source endpoint is
 retired and replaced by a checksum-pinned archive capture; Nix evaluates the
 receipt inputs, but placeholder kernels stop image construction before any
-stock disk can be admitted. The rows retain only the existing host-only vsock
-transport shape; readiness, trust, terminal, workspace, flush, SSH and agent
-execution remain unavailable until cross-built kernels, complete native service
-closure and machine evidence exist. Lilly selects transport from validated
+stock disk can be admitted. Complete image qualification separately enables
+readiness, trust, terminal, workspace, flush, SSH and agents only for the reviewed
+sealed FreeBSD manifest or its exact portable descriptor. Editor and Inception
+remain false. A matching kernel, agent name or retained row cannot qualify an
+image; altered/missing identity and every OmniOS image refuse new admission.
+Lilly selects transport from validated
 metadata, rejects cross-OS agent sets and preserves the jailer, seccomp,
 per-tap guard and ZFS boundaries. OmniOS remains the installable downstream
 image while `illumos` is the protocol family.
+
+| Layer | Exact native-image admission boundary |
+| --- | --- |
+| Identity | Versioned validation plus complete equality to the compiled reviewed manifest or portable descriptor; Marshall also checks its durable row ID. |
+| Authorization | Existing user, profile and VM authority remains required. Image qualification grants a bounded capability subset, not user permission. |
+| Transport | Existing jail-local vsock and CID 2/3 framing; publication uses ordinary signature-verified cache substitution. |
+| Execution | Lilly repeats image admission before fresh launch, then requires current placement, epoch, boot challenge, kernel attestation and readiness. |
+| Isolation | Jailer, per-TAP/router policy and ZFS boundaries remain. The native policy evidence uses a Linux sibling sink and does not prove direct native-peer or physical isolation. |
+| Storage | Promotion hashes actual disk/firmware and five scenario evidence sets before writing the manifest. Cache input is bound by recursive NAR hash; missing publication fails closed. |
+| Recovery | Exact FreeBSD same-disk SIGKILL evidence retains its scope; native physical power loss, relocation and fleet recovery remain separate. Retained stock records remain readable with false capabilities. |
+
+The [activation review](repo:docs/architecture/reviews/2026-10-17-native-image-admission.md)
+records the sealed artifact and publication boundary. Current rebuilt native
+payloads do not inherit admission from that image. Missing, foreign, replayed or
+incomplete promotion evidence refuses; evidence and debugging hooks stay outside
+the published image. The candidate's original false admission flags are retained.
 
 Native manifests and workload bundles bind kernel bytes, digest, source
 revision, patch/configuration hashes and compiler. Lilly's jail-local probe
