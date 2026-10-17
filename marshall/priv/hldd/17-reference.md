@@ -383,7 +383,8 @@ files explicitly report incomplete coverage and never authorize VM cleanup.
 ## Developer verification
 
 GitHub Actions runs on privileged, cached Namespace runners so Nix builds keep
-their sandbox. Every job installs single-user Nix and the devenv revision pinned
+their sandbox. Every job installs multi-user Nix, starts `nix-daemon` so builds
+run as `nixbld` build users as on the fleet, installs the devenv revision pinned
 by `devenv.lock`, and publishes what it builds to the `overalls` Cachix cache.
 `publish-cache.yml` runs on trunk pushes and pull requests: repository gates,
 `mix precommit` for each Elixir project, and every enabled non-machine flake
