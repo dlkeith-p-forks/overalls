@@ -25,10 +25,7 @@ let
         issuerCertificateFile = "/run/test-credentials/ca.pem";
         issuerKeyFile = "/run/test-credentials/ca.key";
       };
-      services.overallsFleetExporter = {
-        enable = true; controlPlane = "https://control.example.test";
-        credentialFile = "/run/test-credentials/monitor";
-      };
+      services.overallsFleetExporter.enable = true;
     } extra ];
   }).config;
   ready = evaluate {};
@@ -39,7 +36,7 @@ assert valid ready;
 assert !valid (evaluate { services.brady.httpsPorts = [ 80 ]; });
 assert !valid (evaluate { services.brady.poolId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc"; });
 assert service.serviceConfig.User == "brady";
-assert builtins.elem "d /run/lilly-brady 0750 root brady - -" ready.systemd.tmpfiles.rules;
+assert builtins.elem "d /run/lilly-brady 2750 lilly brady - -" ready.systemd.tmpfiles.rules;
 assert ready.systemd.services.brady-pressure.serviceConfig.Group == "brady";
 assert ready.systemd.services.brady-pressure.serviceConfig.RuntimeDirectoryMode == "0750";
 assert ready.systemd.services.brady-pressure.serviceConfig.ReadWritePaths == [ "/var/cache/brady" "/var/lib/lilly-pool" ];

@@ -11,9 +11,12 @@ inputs:
     required: false
     default: ""
   system-features:
-    description: Nix system features this runner provides (machine tests add kvm and nested-kvm).
+    description: >-
+      Nix system features this runner provides. Every privileged Namespace
+      runner exposes /dev/kvm, which evaluation needs for import-from-derivation
+      image builds (vmTools); machine tests add nested-kvm.
     required: false
-    default: nixos-test benchmark big-parallel
+    default: nixos-test benchmark big-parallel kvm
   install-devenv:
     description: Whether to install the devenv CLI.
     required: false
