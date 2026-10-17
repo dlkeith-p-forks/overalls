@@ -137,6 +137,29 @@ defmodule MarshallComputeContractTest do
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
 
+  @tag obligation: "marshall.compute.I3"
+  test "inception default shape preserves minimum resources" do
+    shape =
+      Marshall.Compute.Profiles.default_shape(:inception, %{
+        vcpu: 1,
+        memory_bytes: 1,
+        disk_bytes: 1
+      })
+
+    assert shape.vcpu >= 16
+    assert shape.memory_bytes >= 34_359_738_368
+    assert shape.disk_bytes >= 68_719_476_736
+
+    ordinary =
+      Marshall.Compute.Profiles.default_shape(:standard, %{
+        vcpu: 2,
+        memory_bytes: 3,
+        disk_bytes: 4
+      })
+
+    assert ordinary == %{vcpu: 2, memory_bytes: 3, disk_bytes: 4}
+  end
+
   @tag obligation: "marshall.compute.I2"
   test "inception admission enforces its configured image and resource minima" do
     previous = Application.get_env(:marshall, :inception_image_id)

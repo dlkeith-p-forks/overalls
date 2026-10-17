@@ -19,3 +19,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Reject invalid identities or resource shapes and clear delivery-only workspace data from persisted storage shape.
 - **kind:** security
 - **status:** active
+
+### lilly.vm_lifecycle.I3 — Persisted storage shape excludes delivery sources
+- **scope:** `Lilly.VM.Spec.storage/1`
+- **must:** Storage identity MUST clear optional workspace delivery data while preserving the validated VM specification fields.
+- **kind:** persisted-format
+- **status:** active

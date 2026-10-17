@@ -86,6 +86,38 @@ defmodule MarshallWebSurfaceContractTest do
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
 
+  @tag obligation: "marshall.web_surface.I4"
+  test "readiness backstop decisions are bounded" do
+    now = 1_000
+    assert Marshall.Operations.Health.decide(nil, :ready, now) == {true, now}
+    assert Marshall.Operations.Health.decide(now, :not_ready, now + 1) == {false, nil}
+    assert Marshall.Operations.Health.decide(nil, :inconclusive, now) == {false, nil}
+    assert Marshall.Operations.Health.decide(now, :inconclusive, now + 29_999) == {true, now}
+    assert Marshall.Operations.Health.decide(now, :inconclusive, now + 30_000) == {false, now}
+  end
+
+  @tag obligation: "marshall.web_surface.I3"
+  test "readiness refusal is fixed and uncached" do
+    previous = Application.get_env(:marshall, :health_ready)
+    Application.put_env(:marshall, :health_ready, false)
+
+    on_exit(fn ->
+      if previous == nil,
+        do: Application.delete_env(:marshall, :health_ready),
+        else: Application.put_env(:marshall, :health_ready, previous)
+    end)
+
+    # Health delegates to the operations probe; an unavailable probe must not expose diagnostics.
+    conn = Plug.Test.conn(:get, "/health/ready") |> MarshallWeb.Health.call([])
+    assert conn.status in [200, 503]
+    assert Plug.Conn.get_resp_header(conn, "cache-control") == ["no-store"]
+    assert conn.resp_body in ["ok\n", "unavailable\n"]
+
+    head = Plug.Test.conn(:head, "/health/ready") |> MarshallWeb.Health.call([])
+    assert head.resp_body == ""
+    assert Plug.Conn.get_resp_header(head, "cache-control") == ["no-store"]
+  end
+
   @tag obligation: "marshall.web_surface.I2"
   test "live health probe is fixed and uncached" do
     conn = Plug.Test.conn(:get, "/health/live") |> MarshallWeb.Health.call([])

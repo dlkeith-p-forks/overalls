@@ -19,3 +19,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Inception requests MUST use the configured image, satisfy minimum resources, and require matching host inventory evidence.
 - **kind:** functional
 - **status:** active
+
+### marshall.compute.I3 — Inception shape preserves service minima
+- **scope:** `Marshall.Compute.Profiles.default_shape/2`
+- **must:** Inception defaults MUST retain at least the configured vCPU, memory, and disk minima regardless of image-provided values; ordinary profiles MUST retain the image shape.
+- **kind:** functional
+- **status:** active

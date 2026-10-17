@@ -19,3 +19,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Live health responses MUST be fixed, uncached text; HEAD responses MUST have an empty body.
 - **kind:** security
 - **status:** active
+
+### marshall.web_surface.I3 — Readiness reports unavailable state without leaking diagnostics
+- **scope:** `MarshallWeb.Health` `/health/ready`
+- **must:** Readiness MUST return `503` with the fixed `unavailable` body when the operations health check is false, preserve `no-store`, and emit an empty body for HEAD.
+- **kind:** security
+- **status:** active
+
+### marshall.web_surface.I4 — Readiness backstop is bounded
+- **scope:** `Marshall.Operations.Health.decide/3`
+- **must:** Ready observations are recorded, definite failures clear readiness, and inconclusive observations are accepted only within the configured backstop window.
+- **kind:** functional
+- **status:** active

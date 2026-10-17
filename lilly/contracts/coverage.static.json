@@ -1,9 +1,9 @@
 {
   "apps": {
     "lilly": {
-      "active": 11,
+      "active": 12,
       "coverage": 1.0,
-      "covered": 11
+      "covered": 12
     },
     "system": {
       "active": 0,
@@ -130,10 +130,10 @@
       }
     },
     "lilly.vm_lifecycle": {
-      "active": 2,
+      "active": 3,
       "app": "lilly",
       "coverage": 1.0,
-      "covered": 2,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "lilly.vm_lifecycle.I1": {
@@ -155,6 +155,16 @@
           "tests": [
             "test VM specs validate identities and resource shape before execution"
           ]
+        },
+        "lilly.vm_lifecycle.I3": {
+          "failing": 0,
+          "kind": "persisted_format",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test storage identity clears delivery-only workspace source"
+          ]
         }
       }
     },
@@ -170,8 +180,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 11,
+    "active": 12,
     "coverage": 1.0,
-    "covered": 11
+    "covered": 12
   }
 }
