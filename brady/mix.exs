@@ -25,7 +25,7 @@ defmodule Brady.MixProject do
       {:overalls_request_accounting, path: "../elixir/request_accounting"},
       {:x509, "~> 0.9.2"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "998c2a9", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
+      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "dbe9e9a", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
     ] ++ antithesis_deps()
   end
 
