@@ -1,3 +1,5 @@
+[![Update DevEnv Dependencies](https://github.com/ghuntley/overalls/actions/workflows/update-devenv.yml/badge.svg)](https://github.com/ghuntley/overalls/actions/workflows/update-devenv.yml)
+
 # Overalls
 
 **An AI-first developer platform that you own.**
