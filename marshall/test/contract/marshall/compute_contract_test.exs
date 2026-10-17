@@ -136,4 +136,43 @@ defmodule MarshallComputeContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "marshall.compute.I2"
+  test "inception admission enforces its configured image and resource minima" do
+    previous = Application.get_env(:marshall, :inception_image_id)
+    Application.put_env(:marshall, :inception_image_id, "sha256:" <> String.duplicate("a", 64))
+
+    on_exit(fn ->
+      if previous,
+        do: Application.put_env(:marshall, :inception_image_id, previous),
+        else: Application.delete_env(:marshall, :inception_image_id)
+    end)
+
+    request = %{
+      profile: :inception,
+      image_id: "sha256:" <> String.duplicate("a", 64),
+      vcpu: 16,
+      memory_bytes: 34_359_738_368,
+      disk_bytes: 68_719_476_736
+    }
+
+    assert :ok = Marshall.Compute.Profiles.validate(request)
+
+    assert {:error, :profile_image_mismatch} =
+             Marshall.Compute.Profiles.validate(%{
+               request
+               | image_id: "sha256:" <> String.duplicate("b", 64)
+             })
+
+    assert {:error, :image_requirements_not_met} =
+             Marshall.Compute.Profiles.validate(%{request | vcpu: 1})
+
+    assert Marshall.Compute.Profiles.host_ready?(request, %{
+             "inception_image_id" => request.image_id
+           })
+
+    refute Marshall.Compute.Profiles.host_ready?(request, %{
+             "inception_image_id" => "sha256:" <> String.duplicate("b", 64)
+           })
+  end
 end

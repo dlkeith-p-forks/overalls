@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### marshall.ssh_terminal.I2 — Gateway refusals remain opaque and classified
+- **scope:** `Marshall.SSH.ControlRequests.classify/1`
+- **must:** Known authorization and resource refusals MUST map to stable HTTP classes and closed names; arbitrary failures MUST remain unavailable without exposing details.
+- **kind:** security
+- **status:** active

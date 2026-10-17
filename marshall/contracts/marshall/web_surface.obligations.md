@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### marshall.web_surface.I2 — Health probes disclose no session data
+- **scope:** `MarshallWeb.Health`
+- **must:** Live health responses MUST be fixed, uncached text; HEAD responses MUST have an empty body.
+- **kind:** security
+- **status:** active

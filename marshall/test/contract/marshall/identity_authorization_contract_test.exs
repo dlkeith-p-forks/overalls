@@ -63,4 +63,17 @@ defmodule MarshallIdentityAuthorizationContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "marshall.identity_authorization.I2"
+  test "the compute actor is a typed, non-user principal" do
+    actor = Marshall.Authorization.SystemActor.compute()
+    assert %Marshall.Authorization.SystemActor{purpose: :compute} = actor
+    refute Map.has_key?(actor, :id)
+
+    assert Marshall.Authorization.Cedar.allowed?(
+             actor,
+             "read",
+             Marshall.Authorization.Cedar.entity("VM", "vm-1")
+           ) == false
+  end
 end

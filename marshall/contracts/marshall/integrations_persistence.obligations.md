@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### marshall.integrations_persistence.I2 — Registered Git source names are bounded
+- **scope:** `Marshall.Enrico.EnricoSource.valid?/2`
+- **must:** Repository owner and name validation MUST reject traversal, `.git` suffixes, and malformed names before persistence or fetch.
+- **kind:** security
+- **status:** active

@@ -112,4 +112,15 @@ defmodule MarshallIntegrationsPersistenceContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "marshall.integrations_persistence.I2"
+  test "registered Git sources accept safe names and reject traversal or URL suffixes" do
+    assert Marshall.Enrico.EnricoSource.valid?("agentjido", "jido_action")
+    assert Marshall.Enrico.EnricoSource.valid?("tools4imps", "covenant")
+    refute Marshall.Enrico.EnricoSource.valid?("../owner", "repo")
+    refute Marshall.Enrico.EnricoSource.valid?("owner", "../repo")
+    refute Marshall.Enrico.EnricoSource.valid?("owner", "repo.git")
+    refute Marshall.Enrico.EnricoSource.valid?("owner", ".")
+    refute Marshall.Enrico.EnricoSource.valid?("owner", "..")
+  end
 end

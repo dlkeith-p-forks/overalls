@@ -13,3 +13,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### marshall.threads_agents.I2 — Thread commands and modes reject invalid input
+- **scope:** `MarshallWeb.ThreadCommands` and `Marshall.Threads.Mode`
+- **must:** Only registered slash commands and supported modes are accepted; malformed commands and modes MUST be refused deterministically.
+- **kind:** security
+- **status:** active
+
+### marshall.threads_agents.I3 — Executor capabilities are finite
+- **scope:** `Marshall.Agents.ExecutorSession.valid_capabilities?/1` and `supported?/2`
+- **must:** Unknown, duplicate, or excessive capabilities and unsupported tools MUST be rejected.
+- **kind:** security
+- **status:** active

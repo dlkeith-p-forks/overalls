@@ -85,4 +85,16 @@ defmodule MarshallWebSurfaceContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "marshall.web_surface.I2"
+  test "live health probe is fixed and uncached" do
+    conn = Plug.Test.conn(:get, "/health/live") |> MarshallWeb.Health.call([])
+    assert conn.status == 200
+    assert Plug.Conn.get_resp_header(conn, "cache-control") == ["no-store"]
+    assert conn.resp_body == "ok\n"
+
+    head = Plug.Test.conn(:head, "/health/live") |> MarshallWeb.Health.call([])
+    assert head.status == 200
+    assert head.resp_body == ""
+  end
 end

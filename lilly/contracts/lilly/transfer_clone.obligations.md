@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### lilly.transfer_clone.I2 — Invalid transfer identity fails closed
+- **scope:** `Lilly.Transfer.Key.ensure/4`
+- **must:** Reject malformed transfer identity inputs without creating key state.
+- **kind:** security
+- **status:** active

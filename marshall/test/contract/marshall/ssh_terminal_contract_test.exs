@@ -51,4 +51,16 @@ defmodule MarshallSshTerminalContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "marshall.ssh_terminal.I2"
+  test "classifies gateway refusals without exposing details" do
+    assert Marshall.SSH.ControlRequests.classify({:error, :forbidden}) ==
+             {:error, 403, "forbidden"}
+
+    assert Marshall.SSH.ControlRequests.classify({:error, :unknown_team}) ==
+             {:error, 404, "not_found"}
+
+    assert Marshall.SSH.ControlRequests.classify({:error, :unexpected_secret}) ==
+             {:error, 503, "unavailable"}
+  end
 end

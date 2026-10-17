@@ -13,3 +13,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### lilly.network_terminal.I2 — Network text is validated and canonicalized
+- **scope:** `Lilly.Network.Config.new/4` and `cidr?/1`
+- **must:** Reject shell-significant interface names and non-canonical CIDRs; successful configs deduplicate and sort protected ranges.
+- **kind:** security
+- **status:** active
+
+### lilly.network_terminal.I3 — Flow labels bind execution identity
+- **scope:** `Lilly.Network.FlowLabel.token/2`
+- **must:** Valid host, placement, epoch and generation produce a token; changing generation changes the token and malformed identities are rejected.
+- **kind:** security
+- **status:** active

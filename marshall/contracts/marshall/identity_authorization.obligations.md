@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### marshall.identity_authorization.I2 — Compute authority is a typed internal principal
+- **scope:** `Marshall.Authorization.SystemActor.compute/0` and Cedar evaluation
+- **must:** The compute actor MUST carry only its explicit purpose and authorization MUST fail closed when policy state or a recognized user principal is absent.
+- **kind:** security
+- **status:** active

@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### lilly.vm_lifecycle.I2 — VM specifications validate before effects
+- **scope:** `Lilly.VM.Spec.new/1` and `storage/1`
+- **must:** Reject invalid identities or resource shapes and clear delivery-only workspace data from persisted storage shape.
+- **kind:** security
+- **status:** active

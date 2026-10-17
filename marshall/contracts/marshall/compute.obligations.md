@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### marshall.compute.I2 — Inception admission is bound to configured image and capacity
+- **scope:** `Marshall.Compute.Profiles.validate/1` and `host_ready?/2`
+- **must:** Inception requests MUST use the configured image, satisfy minimum resources, and require matching host inventory evidence.
+- **kind:** functional
+- **status:** active

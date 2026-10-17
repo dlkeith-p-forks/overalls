@@ -66,4 +66,30 @@ defmodule MarshallThreadsAgentsContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "marshall.threads_agents.I2"
+  test "accepts only registered thread commands and modes" do
+    assert MarshallWeb.ThreadCommands.parse("/plan next") == {:command, :plan, "next"}
+    assert MarshallWeb.ThreadCommands.parse("/terminal now") == {:error, :command_arguments}
+    assert MarshallWeb.ThreadCommands.parse(" /plan") == {:prompt, " /plan"}
+    assert Marshall.Threads.Mode.parse("high") == {:ok, :high}
+    assert Marshall.Threads.Mode.parse("invalid") == {:error, :invalid_mode}
+  end
+
+  @tag obligation: "marshall.threads_agents.I3"
+  test "keeps executor capabilities finite" do
+    assert Marshall.Agents.ExecutorSession.valid_capabilities?(["context-v1", "skills-v1"])
+    refute Marshall.Agents.ExecutorSession.valid_capabilities?(["context-v1", "context-v1"])
+    refute Marshall.Agents.ExecutorSession.valid_capabilities?(["unknown"])
+
+    refute Marshall.Agents.ExecutorSession.supported?(
+             %Marshall.Agents.Executor{capabilities: []},
+             :context_inventory
+           )
+
+    assert Marshall.Agents.ExecutorSession.supported?(
+             %Marshall.Agents.Executor{capabilities: []},
+             :exec_command
+           )
+  end
 end
