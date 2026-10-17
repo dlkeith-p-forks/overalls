@@ -12,6 +12,10 @@
 # in the job summary. Exits non-zero only when no result can be produced.
 set -euo pipefail
 
+# @cc [owner:ghuntley,label:build] ci-check-selection-isolated
+# Selection MUST evaluate each check in isolation, select only checks whose
+# meta.ci enables them for the requested kind, and report every evaluation
+# error by attribute instead of letting one hide the others or the selection.
 kind=${1:?usage: select-checks.sh machine|build}
 case "$kind" in
   machine) want=true ;;
