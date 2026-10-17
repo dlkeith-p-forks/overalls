@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.PrivateServicesWatchTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.PrivateServices
 
   @purposes [:services, :ssh_roster, :ssh_host_certificate]

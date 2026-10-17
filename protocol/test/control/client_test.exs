@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.Control.ClientTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias OverallsProtocol.Control.{Client, Close, Envelope}
   alias OverallsProtocol.WebSocket.{Frame, Handshake}

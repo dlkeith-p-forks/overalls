@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.PrivateServicesTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.PrivateServices
   @host "01234567-89ab-4def-8123-456789abcdef"
 

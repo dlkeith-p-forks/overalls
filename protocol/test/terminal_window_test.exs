@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.TerminalWindowTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.TerminalWindow, as: Window
 
   property "cumulative consumption replenishes exactly once and preserves both bounds" do

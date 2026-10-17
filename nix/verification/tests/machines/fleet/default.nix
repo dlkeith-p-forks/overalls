@@ -370,6 +370,7 @@ let
     mkdir -p "$out" config
     cp ${../vscode-web/prepare.py} "$out/prepare.py"
     cp ${../vscode-web/authorization.py} "$out/authorization.py"
+    cp ${../vscode-web/restart.py} "$out/restart.py"
     cp ${../vscode-web/fleet_policy.py} "$out/fleet_policy.py"
     cp ${../vscode-web/policy.py} "$out/policy.py"
     cp ${../vscode-web/browser.py} "$out/browser.py"
@@ -1135,6 +1136,8 @@ let
         export PATH="${config.boot.zfs.package}/bin:/run/current-system/sw/bin:${packages.lilly}/host-tools/bin"
         export RELEASE_COOKIE=isolated-trust-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
         export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
+        # Config.load reads the control credential as lilly.service's systemd credential.
+        export CREDENTIALS_DIRECTORY=/run/credentials/lilly.service
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${../fleet-guest-trust/guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-repository-launch-guest" ''
@@ -1154,6 +1157,8 @@ let
         ''}
         export ERL_FLAGS="+S 2:2" RELEASE_DISTRIBUTION=none RELEASE_COOKIE=isolated-editor-guest
         export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
+        # Config.load reads the control credential as lilly.service's systemd credential.
+        export CREDENTIALS_DIRECTORY=/run/credentials/lilly.service
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${../vscode-web/guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-galileo-guest" ''

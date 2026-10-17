@@ -135,10 +135,16 @@ pub enum Request {
     /// Dial TCP inside a VM network namespace exactly as BridgeNetnsTcp and
     /// bridge it to Audi's connection, which travels with the request, in a
     /// detached bridge named by `key` that outlives hostd (ADR-0187). hostd
-    /// writes `greeting` to Audi's connection before any guest byte.
+    /// first writes `preface` to the guest and, when `expect` is not empty,
+    /// requires the guest's next `expect.len()` bytes to equal it within
+    /// `ready_ms` (ADR-0192); it then writes `greeting` to Audi's connection
+    /// before any guest byte.
     BridgeIngress {
         key: [u8; crate::ingress::KEY],
         greeting: Vec<u8>,
+        preface: Vec<u8>,
+        expect: Vec<u8>,
+        ready_ms: u32,
         mark: u32,
         destination: [u8; 4],
         port: u16,
@@ -261,7 +267,10 @@ fn u64_at(bytes: &[u8], at: usize) -> Option<u64> {
 /// ConnectUnix or BridgeNetnsTcp whose timeout is outside 1..30000 ms, a
 /// ConnectUnix path that is not a valid directory, a BridgeNetnsTcp with
 /// port 0 or an empty namespace or device, a BridgeIngress whose greeting
-/// exceeds 256 bytes or whose target fails BridgeNetnsTcp's rules, or a
+/// exceeds 256 bytes, whose preface exceeds 4096 bytes, whose expected guest
+/// frame exceeds 256 bytes, whose ready wait is not 0 for an empty expected
+/// frame and 1..=30000 ms otherwise, or whose target fails BridgeNetnsTcp's
+/// rules, or a
 /// ListIngressBridges or EndIngressBridge with any other body length.
 /// The caller never names an executable: the utility is an index into the
 /// closed table that hostd resolves itself.
@@ -350,20 +359,28 @@ pub fn decode(bytes: &[u8]) -> Option<Envelope> {
                 device: target.device,
             }
         }
-        OP_BRIDGE_INGRESS if body.len() >= crate::ingress::KEY + 2 => {
+        OP_BRIDGE_INGRESS if body.len() >= crate::ingress::KEY => {
             let key: [u8; crate::ingress::KEY] = body[..crate::ingress::KEY].try_into().ok()?;
-            let length = usize::from(u16::from_be_bytes([
-                body[crate::ingress::KEY],
-                body[crate::ingress::KEY + 1],
-            ]));
-            let rest = &body[crate::ingress::KEY + 2..];
-            if length > crate::ingress::MAX_GREETING || length > rest.len() {
+            let rest = &body[crate::ingress::KEY..];
+            let (greeting, rest) = sized(rest, crate::ingress::MAX_GREETING)?;
+            let (preface, rest) = sized(rest, crate::ingress::MAX_PREFACE)?;
+            let (expect, rest) = sized(rest, crate::ingress::MAX_EXPECT)?;
+            let ready_ms = u32_at(rest, 0)?;
+            let ready_valid = if expect.is_empty() {
+                ready_ms == 0
+            } else {
+                (1..=crate::ingress::MAX_READY_MS).contains(&ready_ms)
+            };
+            if !ready_valid {
                 return None;
             }
-            let target = netns_target(&rest[length..])?;
+            let target = netns_target(&rest[4..])?;
             Request::BridgeIngress {
                 key,
-                greeting: rest[..length].to_vec(),
+                greeting: greeting.to_vec(),
+                preface: preface.to_vec(),
+                expect: expect.to_vec(),
+                ready_ms,
                 mark: target.mark,
                 destination: target.destination,
                 port: target.port,
@@ -447,6 +464,17 @@ const LAUNCH_FIXED: usize = 8 + 36 + 8 + 8 + 4 + 8 + 1 + 1 + 1 + 1;
 
 fn port_zero(body: &[u8]) -> bool {
     body[8] == 0 && body[9] == 0
+}
+
+/// A u16 big-endian length, at most `maximum`, and that many bytes; the
+/// field and what follows it, or None.
+fn sized(body: &[u8], maximum: usize) -> Option<(&[u8], &[u8])> {
+    let length = usize::from(u16::from_be_bytes([*body.first()?, *body.get(1)?]));
+    let rest = &body[2..];
+    if length > maximum || length > rest.len() {
+        return None;
+    }
+    Some(rest.split_at(length))
 }
 
 /// A namespace TCP target as BridgeNetnsTcp and BridgeIngress carry it.
@@ -663,6 +691,9 @@ pub fn encode_request(envelope: &Envelope) -> Vec<u8> {
         Request::BridgeIngress {
             key,
             greeting,
+            preface,
+            expect,
+            ready_ms,
             mark,
             destination,
             port,
@@ -672,8 +703,11 @@ pub fn encode_request(envelope: &Envelope) -> Vec<u8> {
             device,
         } => {
             out.extend(key);
-            out.extend((greeting.len() as u16).to_be_bytes());
-            out.extend(greeting);
+            for field in [greeting, preface, expect] {
+                out.extend((field.len() as u16).to_be_bytes());
+                out.extend(field);
+            }
+            out.extend(ready_ms.to_be_bytes());
             out.extend(mark.to_be_bytes());
             out.extend(destination);
             out.extend(port.to_be_bytes());

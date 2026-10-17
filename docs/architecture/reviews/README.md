@@ -1,5 +1,6 @@
 # Architecture reviews
 
+- [Staged detached ingress (2026-10-17)](2026-10-17-staged-detached-ingress.md): ADR-0192 finds that the editor and nested HTTPS needed the BEAM only for setup (a Lilly-derived preface and the editor's ready frame), not TLS, HTTP inspection, per-request authorization or multiplexing, and moves them onto ADR-0187's detached bridges with a hostd-executed stage. Rust and Elixir tests passed; the editor-fleet restart subtest has not run.
 - [Hegel NixOS property migration (2026-10-17)](2026-10-17-hegel-nixos-migration.md): selected live machine drivers use Hegel for generated histories and stateful schedules; evaluation, guest-side and exact acceptance checks retain their evidence boundaries.
 
 - [Detached ingress bridges (2026-10-17)](2026-10-17-detached-ingress-bridges.md): ADR-0187 moves guest SSH and plain web bridges out of lilly-hostd and the BEAM relay into per-connection `lilly-ingress-<key>.scope` units that survive hostd and Lilly restarts; Lilly records each binding and keeps the execution fence through keepers and re-adoption. Unit and property tests passed; the user-SSH journey machine run is pending.

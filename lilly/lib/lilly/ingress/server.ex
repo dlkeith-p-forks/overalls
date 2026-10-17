@@ -376,6 +376,8 @@ defmodule Lilly.Ingress.Server do
   # Only a validated editor binding may receive the bounded cold-start budget.
   # Its independent execution guardian MUST exist before worker preparation;
   # successful readiness MUST remove the setup timer before opaque relay.
+  # On a detached backend the budget also covers hostd's bounded wait for the
+  # guest's ready frame, and the worker ends once the bridge is kept.
   defp serve_bound(socket, options, binding) do
     {:ok, timer} = :timer.exit_after(setup_budget(options, binding), self(), :kill)
 
@@ -431,7 +433,10 @@ defmodule Lilly.Ingress.Server do
   defp open(_, _), do: {:error, :connector_unavailable}
 
   # A detached start adds a durable record, the namespace dial and a scope
-  # start to the 2 s guardian and connect budget.
+  # start to the 2 s guardian and connect budget; a detached editor also
+  # waits up to 20 s in hostd for the guest's ready frame (ADR-0192), within
+  # hostd's call bound of dial + ready + 10 s.
+  defp setup_budget(%{detached: true}, %{service: :editor}), do: 32_000
   defp setup_budget(_, %{service: :editor}), do: 22_000
 
   defp setup_budget(%{detached: true}, binding),

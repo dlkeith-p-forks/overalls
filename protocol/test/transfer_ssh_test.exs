@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.TransferSSHTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.TransferSSH
 
   property "canonical public keys and endpoints round trip without interpretation" do

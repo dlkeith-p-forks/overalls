@@ -1,5 +1,12 @@
 # Architecture decision records
 
+[ADR-0192](0192-staged-detached-ingress.md) moves the browser editor and
+nested HTTPS onto ADR-0187's detached ingress bridges. The BEAM's only
+essential role for them was setup: hostd now writes the preface Lilly derives
+and compares the guest's reply with Lilly's exact ready frame before starting
+the bridge, so live editor and nested HTTPS connections also survive
+lilly-hostd and Lilly restarts, amending ADR-0187 decision 1.
+
 [ADR-0191](0191-elixir-hegel-property-verification.md) standardizes test-only Hegel property verification in Elixir applications, with deterministic replay, redacted diagnostics, isolated fixtures and explicit limits on BEAM evidence.
 
 [ADR-0189](0189-cachix-watch-store-publishing.md) enables the Cachix watch-store
@@ -408,6 +415,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0184](0184-lilly-owns-every-socket.md) | accepted | partial | Lilly owns every socket it uses |
 | [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
 | [ADR-0186](0186-covenant-contract-verification.md) | accepted | partial | Covenant contract verification across Elixir applications |
+| [ADR-0192](0192-staged-detached-ingress.md) | accepted | partial | Editor and nested HTTPS use staged detached ingress bridges |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
 | [ADR-0188](0188-signed-overalls-cachix-substitution.md) | accepted | partial | Use the signed Overalls Cachix cache across Nix machines |
 | [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |

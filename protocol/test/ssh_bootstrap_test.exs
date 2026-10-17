@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.SSHBootstrapTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.PrivateServices
 
   @id "11111111-1111-4111-8111-111111111111"

@@ -13,7 +13,7 @@ defmodule OverallsProtocol.MixProject do
         {:stream_data, "~> 1.1", only: [:dev, :test], runtime: false},
         {:hegel_ex,
          git: "https://github.com/ghuntley/hegel-erlang.git",
-         ref: "5d60a11",
+         ref: "6a62795",
          subdir: "packages/hegel_ex",
          only: [:dev, :test],
          runtime: false}

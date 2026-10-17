@@ -1,8 +1,11 @@
 //! Detached ingress bridges (ADR-0187).
 //!
-//! An SSH or other preface-free ingress connection is bridged straight from
-//! Audi's connection to the guest by `lilly-ingress-bridge`, which runs in its
-//! own transient `lilly-ingress-<key>.scope` in Lilly's slice. The scope is
+//! Every ingress connection (SSH, web, nested SSH and HTTPS, and, since
+//! ADR-0192, the editor) is bridged straight from Audi's connection to the
+//! guest by `lilly-ingress-bridge`, which runs in its own transient
+//! `lilly-ingress-<key>.scope` in `lilly_ingress.slice`. A preface Lilly
+//! derived and the exact ready frame Lilly requires are exchanged with the
+//! guest by hostd before the bridge starts (`stage`). The scope is
 //! not part of hostd's unit or of Lilly's, so the bridge, and the guest
 //! session inside it, survive a restart of either. hostd starts it, lists the
 //! live ones and ends one by killing its scope's cgroup; Lilly decides which
@@ -22,6 +25,14 @@ use std::time::{Duration, Instant};
 pub const KEY: usize = 16;
 /// Largest greeting hostd writes to the client before the bridge moves bytes.
 pub const MAX_GREETING: usize = 256;
+/// Largest preface hostd writes to the guest before the bridge starts: the
+/// editor's length-framed binding (at most 2048 + 4 bytes) or a 28-byte
+/// PROXY v2 header (ADR-0192).
+pub const MAX_PREFACE: usize = 4096;
+/// Largest frame hostd requires from the guest before the bridge starts.
+pub const MAX_EXPECT: usize = 256;
+/// Longest wait for that frame: the editor's bounded cold start.
+pub const MAX_READY_MS: u32 = 30_000;
 /// Most live detached bridges on a host; further requests are Unavailable.
 pub const MAX_BRIDGES: usize = 1024;
 /// How long a bridge may take to report READY after it is spawned.
@@ -202,6 +213,54 @@ pub fn command(
     }
 }
 
+/// What hostd exchanges with the guest before a detached bridge starts
+/// (ADR-0192): bytes Lilly derived for the guest and the exact frame Lilly
+/// requires back. Both are empty for preface-free services.
+#[derive(Clone, Copy, Debug)]
+pub struct Stage<'a> {
+    pub preface: &'a [u8],
+    pub expect: &'a [u8],
+    pub ready: Duration,
+}
+
+/// @cc [owner:ghuntley,label:security;protocol] ingress-guest-stage
+/// stage MUST write the whole preface to the guest within START_TIMEOUT and
+/// then, when an expected frame is given, read exactly its length from the
+/// guest within `ready` and require byte equality. It MUST NOT read one byte
+/// past the expected frame, so every later guest byte reaches the client
+/// through the bridge; it interprets nothing and decides nothing beyond that
+/// comparison. A short write, a closed guest, a timeout or any other byte is
+/// Unavailable.
+pub fn stage(guest: &OwnedFd, stage: &Stage<'_>) -> Result<(), Refusal> {
+    if !write_all(guest, stage.preface, Instant::now() + START_TIMEOUT) {
+        return Err(Refusal::Unavailable);
+    }
+    if stage.expect.is_empty() {
+        return Ok(());
+    }
+    let deadline = Instant::now() + stage.ready;
+    let mut got = vec![0_u8; stage.expect.len()];
+    let mut filled = 0;
+    while filled < got.len() {
+        match rustix::net::recv(guest, &mut got[filled..], rustix::net::RecvFlags::DONTWAIT) {
+            Ok((0, _)) => return Err(Refusal::Unavailable),
+            Ok((count, _)) => filled += count,
+            Err(Errno::INTR) => {}
+            Err(Errno::AGAIN) => {
+                if !wait(guest, PollFlags::IN, deadline) {
+                    return Err(Refusal::Unavailable);
+                }
+            }
+            Err(_) => return Err(Refusal::Unavailable),
+        }
+    }
+    if got == stage.expect {
+        Ok(())
+    } else {
+        Err(Refusal::Unavailable)
+    }
+}
+
 /// Wait until `fd` is ready for `flags` or the deadline passes.
 fn wait(fd: &OwnedFd, flags: PollFlags, deadline: Instant) -> bool {
     loop {
@@ -242,7 +301,11 @@ pub fn await_ready(control: &OwnedFd, deadline: Instant) -> bool {
 /// client's description is shared with Lilly's port), before the deadline.
 pub fn write_all(socket: &OwnedFd, mut bytes: &[u8], deadline: Instant) -> bool {
     while !bytes.is_empty() {
-        match rustix::net::send(socket, bytes, rustix::net::SendFlags::NOSIGNAL) {
+        match rustix::net::send(
+            socket,
+            bytes,
+            rustix::net::SendFlags::NOSIGNAL | rustix::net::SendFlags::DONTWAIT,
+        ) {
             Ok(count) => bytes = &bytes[count..],
             Err(Errno::INTR) => {}
             Err(Errno::AGAIN) => {

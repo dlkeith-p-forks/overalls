@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.InceptionNameTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.{InceptionName, IngressName}
   @environment IngressName.label("dev", "11111111-1111-4111-8111-111111111111")
   @workload IngressName.label("web", "22222222-2222-4222-8222-222222222222")

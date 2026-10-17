@@ -398,19 +398,38 @@ defmodule Lilly.Host.Hostd do
   @typedoc "A detached ingress bridge's key (ADR-0187)."
   @type bridge_key :: <<_::128>>
 
+  @typedoc """
+  What hostd exchanges with the guest before a detached bridge starts
+  (ADR-0192): the preface Lilly derived, written to the guest, and the exact
+  frame Lilly requires back within `ready` milliseconds. Both are empty and
+  `ready` is 0 for preface-free services.
+  """
+  @type bridge_stage :: %{preface: binary(), expect: binary(), ready: 0..30_000}
+
   # @cc [owner:ghuntley,label:security;recovery] hostd-detached-ingress-client
-  # bridge_ingress/4 MUST send `client`, the Audi connection this BEAM
+  # bridge_ingress/5 MUST send `client`, the Audi connection this BEAM
   # accepted (a socket it created and later closes itself), with the request,
   # reading its descriptor number from the live port just before sending, and
   # return :ok only when hostd answered Connected: the guest was dialled, the
-  # greeting written and a detached bridge named by `key` is running. Any
+  # stage's preface written and its expected frame matched exactly, the
+  # greeting written and a detached bridge named by `key` is running. A stage
+  # is sent only within hostd's bounds (preface 4096 bytes, frame 256, a ready
+  # wait of 0 exactly when no frame is expected, else 1..30000 ms). Any
   # refusal or a lost session is :connect_failed. ingress_bridges/0 lists the
   # live keys and end_ingress_bridge/1 returns :ok only once hostd confirmed
   # the bridge's scope empty.
-  @spec bridge_ingress(:gen_tcp.socket(), bridge_key(), binary(), netns_tcp()) ::
+  @spec bridge_ingress(:gen_tcp.socket(), bridge_key(), binary(), bridge_stage(), netns_tcp()) ::
           :ok | {:error, :connect_failed}
-  def bridge_ingress(client, <<_::128>> = key, greeting, request)
-      when byte_size(greeting) <= 256 do
+  def bridge_ingress(
+        client,
+        <<_::128>> = key,
+        greeting,
+        %{preface: preface, expect: expect, ready: ready},
+        request
+      )
+      when byte_size(greeting) <= 256 and is_binary(preface) and byte_size(preface) <= 4096 and
+             is_binary(expect) and byte_size(expect) <= 256 and is_integer(ready) and
+             ((expect == <<>> and ready == 0) or (expect != <<>> and ready in 1..30_000)) do
     {a, b, c, d} = request.destination
     {e, f, g, h} = request.source || {0, 0, 0, 0}
 
@@ -418,6 +437,11 @@ defmodule Lilly.Host.Hostd do
       key,
       <<byte_size(greeting)::16>>,
       greeting,
+      <<byte_size(preface)::16>>,
+      preface,
+      <<byte_size(expect)::16>>,
+      expect,
+      <<ready::32>>,
       <<request.mark::32, a, b, c, d, request.port::16, e, f, g, h, request.timeout::32,
         byte_size(request.namespace)>>,
       request.namespace,
@@ -426,7 +450,11 @@ defmodule Lilly.Host.Hostd do
 
     with {:ok, session} <- session(),
          :ok <-
-           GenServer.call(session, {:connect_port, 14, body, client}, request.timeout + 10_000) do
+           GenServer.call(
+             session,
+             {:connect_port, 14, body, client},
+             request.timeout + ready + 10_000
+           ) do
       :ok
     else
       _ -> {:error, :connect_failed}
@@ -434,6 +462,8 @@ defmodule Lilly.Host.Hostd do
   catch
     :exit, _ -> {:error, :connect_failed}
   end
+
+  def bridge_ingress(_, _, _, _, _), do: {:error, :connect_failed}
 
   @spec ingress_bridges() :: {:ok, [bridge_key()]} | {:error, :hostd_unavailable}
   def ingress_bridges do

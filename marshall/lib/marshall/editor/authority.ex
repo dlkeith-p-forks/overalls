@@ -200,19 +200,22 @@ defmodule Marshall.Editor.Authority do
 
   # @cc [owner:ghuntley,label:security] editor-renewal-cannot-migrate
   # Renewal MUST recheck live stored login, current write authority, permanent account,
-  # host session and image descriptor before extending only expires_at. Expired,
-  # closed or changed bindings MUST refuse, without allocating another identity.
+  # current execution on a live host and image descriptor before extending only
+  # expires_at. Expired, closed or changed bindings MUST refuse, without allocating
+  # another identity. The provisioner's control session is not part of the binding:
+  # a Lilly or lilly-hostd restart opens a new session while the execution, and the
+  # detached bridge carrying the stream, stay current (ADR-0192); a reconnecting
+  # host is inconclusive (ingress-renewal-host-reconnecting).
   defp perform(:renew_editor, request, _) do
     service = Services.authenticate!(request.service_token, :exclusive)
     candidate = candidate!(Lease, request.stream_token, :lease)
     service_binding!(candidate, service)
-    {vm, host, now} = execution!(service, candidate)
+    {vm, host, now} = execution!(service, candidate, :renew)
     {user, account} = current_account!(candidate.guest_account_id)
     credential = credential!(candidate.credential_id, service, vm, account, user, candidate.label)
     lease = Ledger.lock!(Lease, candidate.id) || deny!()
 
     unless is_nil(lease.closed_at) and DateTime.compare(lease.expires_at, now) == :gt and
-             lease.connection_session_id == host.connection_session_id and
              lease.user_id == user.id and
              lease.uid == account.uid and lease.username == account.username and
              Map.take(lease, [:editor_protocol, :editor_commit, :editor_release]) ==
@@ -220,7 +223,10 @@ defmodule Marshall.Editor.Authority do
              lease.editor_origin == origin!(lease.label),
            do: deny!()
 
-    lease |> Ledger.update!(:renew, %{expires_at: deadline!(vm, user, credential, now)}) |> view()
+    expires_at = deadline!(vm, user, credential, now)
+    # Conclusive checks are done; a reconnecting provisioner is inconclusive.
+    Execution.renewable!(host, now)
+    lease |> Ledger.update!(:renew, %{expires_at: expires_at}) |> view()
   end
 
   defp perform(:close_editor, request, _) do
@@ -274,9 +280,10 @@ defmodule Marshall.Editor.Authority do
     Authorization.require!(vm, actor, "write")
   end
 
-  @spec execution!(Service.t(), map()) :: {VirtualMachine.t(), struct(), DateTime.t()}
-  defp execution!(service, binding) do
-    {vm, _, _} = result = Execution.current!(service, binding, :exclusive)
+  @spec execution!(Service.t(), map(), :admit | :renew) ::
+          {VirtualMachine.t(), struct(), DateTime.t()}
+  defp execution!(service, binding, purpose \\ :admit) do
+    {vm, _, _} = result = Execution.current!(service, binding, :exclusive, purpose)
 
     unless OverallsProtocol.ProfilePolicy.allows?(vm.profile, :editor),
       do: Ledger.rollback(:forbidden)

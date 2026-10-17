@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.CadenceTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.Cadence
 
   # Model: `in_flight` runs, and whether a request arrived after the current

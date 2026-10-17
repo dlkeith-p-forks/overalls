@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.AddressPoolTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.AddressPool
 
   property "valid slots map injectively into their profile's /16" do

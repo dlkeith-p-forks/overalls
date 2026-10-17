@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.InferenceTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.Inference
 
   property "content and arbitrary fields never cross the completion boundary" do

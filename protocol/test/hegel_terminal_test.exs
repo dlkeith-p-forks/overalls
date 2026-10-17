@@ -1,6 +1,6 @@
 defmodule OverallsProtocol.HegelTerminalTest do
   use ExUnit.Case, async: true
-  use Hegel
+  import Hegel
 
   alias OverallsProtocol.Terminal
 

@@ -227,6 +227,70 @@ defmodule Marshall.Ingress.SessionsTest do
     assert {:error, _} = open(c)
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] ssh-renewal-across-lilly-restart
+  # While Lilly reconnects (no session, or a new one without its first report),
+  # SSH renewal MUST be temporarily_unavailable and admission MUST be refused;
+  # once the new session reports, renewal MUST keep the exact binding.
+  test "SSH renewal across a Lilly restart is inconclusive, then keeps the binding", c do
+    {:ok, grant} = open(c)
+    request = %{"version" => 1, "session_token" => grant.ticket}
+    disconnect!(c)
+
+    assert {:error, :temporarily_unavailable} =
+             Ingress.ControlRequests.handle("ssh-renew", c.service_token, request)
+
+    assert {:error, :unauthorized} = control_open(c)
+    [host] = Ledger.read!(Host, id: c.vm.host_id)
+
+    Ledger.update!(host, :connect, %{
+      connection_session_id: Ash.UUID.generate(),
+      connection_epoch: host.connection_epoch + 1,
+      report_sequence: 0,
+      reported_at: nil
+    })
+
+    assert {:error, :temporarily_unavailable} =
+             Ingress.ControlRequests.handle("ssh-renew", c.service_token, request)
+
+    assert {:error, :unauthorized} = control_open(c)
+    report!(c)
+    assert {:ok, renewed} = renew(c, grant)
+    assert renewed.binding == grant.binding
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] ssh-renewal-revocation-stays-conclusive
+  # Key removal, write revocation, and a stop with a newer generation MUST stay
+  # conclusive refusals while Lilly reconnects.
+  test "real revocations stay conclusive for SSH renewal while Lilly reconnects", c do
+    {:ok, grant} = open(c)
+    member = Marshall.ComputeFixtures.user()
+    public_key = key_text()
+    {:ok, _} = Marshall.SSH.add_key(%{public_key: public_key}, actor: member)
+    {:ok, _} = Marshall.TerminalFixtures.grant(c, member, :operator)
+    member_context = %{c | public_key: public_key}
+    {:ok, member_grant} = open(member_context)
+    other_key = key_text()
+    {:ok, other} = Marshall.SSH.add_key(%{public_key: other_key}, actor: c.owner)
+    {:ok, other_grant} = open(%{c | public_key: other_key, key: other})
+    disconnect!(c)
+
+    renew =
+      &Ingress.ControlRequests.handle("ssh-renew", c.service_token, %{
+        "version" => 1,
+        "session_token" => &1.ticket
+      })
+
+    assert {:error, :temporarily_unavailable} = renew.(grant)
+    assert {:ok, _} = Marshall.SSH.remove_key(%{id: other.id}, actor: c.owner)
+    assert {:error, :unauthorized} = renew.(other_grant)
+    assert {:ok, _} = Marshall.TerminalFixtures.grant(c, member, :viewer)
+    assert {:error, reason} = renew.(member_grant)
+    assert reason in [:unauthorized, :forbidden]
+    [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
+    Ledger.intent!(vm, %{generation: vm.generation + 1, desired_state: :stopped})
+    assert {:error, :unauthorized} = renew.(grant)
+  end
+
   test "downgrading an operator to viewer stops an existing session", c do
     member = Marshall.ComputeFixtures.user()
     public_key = key_text()
@@ -422,4 +486,22 @@ defmodule Marshall.Ingress.SessionsTest do
   defp open(c), do: Ingress.open_ssh(open_params(c), actor: SystemActor.compute())
   defp params(c, grant), do: %{service_token: c.service_token, session_token: grant.ticket}
   defp renew(c, grant), do: Ingress.renew_ssh(params(c, grant), actor: SystemActor.compute())
+
+  defp control_open(c),
+    do:
+      Ingress.ControlRequests.handle("ssh-open", c.service_token, %{
+        "version" => 1,
+        "public_key" => c.public_key,
+        "label" => c.label
+      })
+
+  defp disconnect!(c) do
+    [host] = Ledger.read!(Host, id: c.vm.host_id)
+    {:ok, :ok} = Marshall.Compute.HostReports.disconnect(host.id, host.connection_epoch)
+  end
+
+  defp report!(c) do
+    [host] = Ledger.read!(Host, id: c.vm.host_id)
+    Ledger.update!(host, :report, %{reported_at: Ledger.now()})
+  end
 end

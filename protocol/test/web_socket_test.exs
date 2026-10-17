@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.WebSocketTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias OverallsProtocol.WebSocket.{Frame, Handshake}
 

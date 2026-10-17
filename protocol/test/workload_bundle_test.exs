@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.WorkloadBundleTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.WorkloadBundle
 
   @image_id "sha256:" <> String.duplicate("a", 64)

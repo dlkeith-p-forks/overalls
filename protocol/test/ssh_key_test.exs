@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.SSHKeyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.SSHKey
 
   property "public key identity ignores comments and whitespace but binds every key byte" do

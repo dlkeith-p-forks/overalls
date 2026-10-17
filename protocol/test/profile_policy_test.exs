@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.ProfilePolicyTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.ProfilePolicy
 
   property "customer capabilities form a closed set" do

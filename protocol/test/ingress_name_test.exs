@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.IngressNameTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias OverallsProtocol.IngressName
 
   property "full immutable IDs survive name truncation within DNS label limits" do

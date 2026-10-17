@@ -297,12 +297,80 @@ defmodule Marshall.EditorTest do
     assert renewed.binding == grant.binding
   end
 
-  test "a replaced host connection refuses existing editor lease renewal", c do
+  # @cc [owner:ghuntley,label:verification;recovery] editor-renewal-across-lilly-restart
+  # A Lilly restart (disconnect, then a new control session that has not yet
+  # reported) MUST make renewal inconclusive, never a revocation; once the new
+  # session reports, renewal MUST succeed with the unchanged binding. The
+  # reconnect window MUST NOT open new admissions.
+  test "renewal across a Lilly restart is inconclusive while reconnecting, then keeps the binding",
+       c do
     cookie = F.cookie(c, c.owner)
     assert {:ok, grant} = F.open(c, cookie)
+    renew = %{"version" => 1, "stream_token" => grant.ticket}
+    [host] = Ledger.read!(Marshall.Compute.Host, id: c.vm.host_id)
+    assert {:ok, :ok} = Marshall.Compute.HostReports.disconnect(host.id, host.connection_epoch)
+
+    assert {:error, :temporarily_unavailable} =
+             Marshall.Ingress.ControlRequests.handle("editor-renew", c.service_token, renew)
+
+    open = %{"version" => 1, "label" => cookie.label, "cookie" => cookie.cookie}
+
+    assert {:error, :unauthorized} =
+             Marshall.Ingress.ControlRequests.handle("editor-open", c.service_token, open)
+
+    [host] = Ledger.read!(Marshall.Compute.Host, id: c.vm.host_id)
+
+    Ledger.update!(host, :connect, %{
+      connection_session_id: Ash.UUID.generate(),
+      connection_epoch: host.connection_epoch + 1,
+      report_sequence: 0,
+      reported_at: nil
+    })
+
+    assert {:error, :temporarily_unavailable} =
+             Marshall.Ingress.ControlRequests.handle("editor-renew", c.service_token, renew)
+
+    :ok = F.fresh(c)
+    assert {:ok, renewed} = F.renew(c, grant.ticket)
+    assert renewed.binding == grant.binding
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] editor-renewal-revocation-stays-conclusive
+  # Real revocations MUST stay conclusive even while Lilly reconnects: a newer
+  # generation or stop, sign-out, and an aged-out report on a live session.
+  test "real revocations still end editor renewal conclusively, even while reconnecting", c do
+    cookie = F.cookie(c, c.owner)
+    assert {:ok, grant} = F.open(c, cookie)
+    renew = %{"version" => 1, "stream_token" => grant.ticket}
+    [host] = Ledger.read!(Marshall.Compute.Host, id: c.vm.host_id)
+    Ledger.update!(host, :report, %{reported_at: DateTime.add(Ledger.now(), -60)})
+
+    assert {:error, :unauthorized} =
+             Marshall.Ingress.ControlRequests.handle("editor-renew", c.service_token, renew)
+
+    :ok = F.fresh(c)
+    assert {:ok, _} = F.renew(c, grant.ticket)
+    [host] = Ledger.read!(Marshall.Compute.Host, id: c.vm.host_id)
+    assert {:ok, :ok} = Marshall.Compute.HostReports.disconnect(host.id, host.connection_epoch)
+    :ok = AshAuthentication.TokenResource.Actions.revoke(Marshall.Accounts.Token, cookie.token)
+
+    assert {:error, :authentication_required} =
+             Marshall.Ingress.ControlRequests.handle("editor-renew", c.service_token, renew)
+
     [host] = Ledger.read!(Marshall.Compute.Host, id: c.vm.host_id)
     Ledger.update!(host, :connect, %{connection_session_id: Ash.UUID.generate()})
-    assert {:error, _} = F.renew(c, grant.ticket)
+    :ok = F.fresh(c)
+    other = F.cookie(%{c | token: Marshall.TerminalFixtures.user_token(c.owner)}, c.owner)
+    assert {:ok, next} = F.open(c, other)
+    [host] = Ledger.read!(Marshall.Compute.Host, id: c.vm.host_id)
+    assert {:ok, :ok} = Marshall.Compute.HostReports.disconnect(host.id, host.connection_epoch)
+    Ledger.intent!(c.vm, %{desired_state: :stopped, generation: c.vm.generation + 1})
+
+    assert {:error, :unauthorized} =
+             Marshall.Ingress.ControlRequests.handle("editor-renew", c.service_token, %{
+               "version" => 1,
+               "stream_token" => next.ticket
+             })
   end
 
   test "a changed gateway generation refuses existing cookie and lease authority", c do

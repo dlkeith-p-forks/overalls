@@ -1,6 +1,7 @@
 defmodule OverallsProtocol.Control.OpeningWorkerPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   alias OverallsProtocol.Control.Client
   alias OverallsProtocol.Control.Envelope

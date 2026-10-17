@@ -8,14 +8,20 @@ public visibility and peer identities MUST NOT authorize editor access.
 Missing, stale or revoked cookie/login identity MUST return authentication_required
 so a fresh real sign-in can replace the personal host cookie. Current account,
 profile, Customer owner or write denial MUST remain forbidden; missing route or
-execution authority MUST remain unauthorized. Reauthentication MUST NOT revive
+execution authority MUST remain unauthorized, except an already admitted renewal
+blocked only by a reconnecting provisioner MUST return temporarily_unavailable
+after every conclusive identity, policy and execution check (ADR-0192). That
+outcome MUST NOT extend the existing lease. Reauthentication MUST NOT revive
 the old cookie or lease.
 
 @cc [owner:ghuntley,label:security;concurrency] editor-account-execution-binding
 Admission and renewal MUST retain the permanent GuestAccount UUID and UID,
-gateway generation, host session, VM execution and
+gateway generation, host identity, VM execution and
 immutable image editor descriptor. Retired accounts and expired leases MUST NOT
 renew. Email changes MUST NOT replace the account or invalidate its editor origin.
+Admission MUST require a live reported host session. Renewal MAY cross its
+replacement only for the same current execution under ADR-0192; reconnecting
+renewal MUST remain inconclusive inside the unchanged lease until a fresh report.
 Lock order MUST remain service, host, VM, User, GuestAccount, credential,
 lease. Initial launch allocation MUST use GuestAccounts' serialized allocator.
 
