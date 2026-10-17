@@ -101,6 +101,20 @@ attempt hung before reaching any bridge: the fixture's FIFO holder blocked
 on a write-open. The fixture now opens the FIFO read-write after detaching
 stdio.
 
+## Production record (2026-10-17, `overalls`)
+
+On the `overalls` host, running a revision that contains ADR-0187, a
+temporary VM `bridge-proof` was created through Porsche and reached over
+Audi with an ordinary guest SSH session. The bridge was the expected
+`lilly-ingress-bridge --detached` process, running as `lilly` in
+`0::/lilly_ingress.slice/lilly-ingress-<key>.scope`. A live session printed
+a line every 5 seconds for 120 seconds while
+`systemctl restart lilly-hostd.service` ran on the host. hostd's MainPID
+changed, Lilly restarted with it, and both live bridge processes kept their
+PIDs. Lilly logged `lilly.ingress_bridges_adopted` with `adopting` 2 and
+`ended` 0. The session printed all 24 lines past the 30-second grace,
+reported the same guest boot and exited 0. The VM was then deleted.
+
 ## Remaining gaps
 
 - One recorded machine run covers the scope placement, survival across real
