@@ -38,7 +38,7 @@ done
 host_id=$(jq -er '.host_id | select(type == "string" and test("^[0-9a-f-]{36}$"))' "$secrets/lilly-a-credential.json")
 pool_id=$(<"$secrets/lilly-a-pool-id")
 [[ "$pool_id" =~ ^[0-9a-f-]{36}$ ]] || { echo 'invalid enrolled Lilly pool identity' >&2; exit 1; }
-metadata=/opt/kittens/lilly/overalls-release.json
+metadata=/opt/overalls/lilly/overalls-release.json
 [[ -s "$metadata" ]] || { echo 'Lilly release metadata unavailable' >&2; exit 1; }
 firecracker=$(jq -er '.firecracker | select(type == "string" and startswith("/nix/store/"))' "$metadata")
 jailer=$(jq -er '.jailer | select(type == "string" and startswith("/nix/store/"))' "$metadata")
@@ -65,4 +65,4 @@ mv "$runtime/config.json.new" "$runtime/config.json"
 export LILLY_CONFIG_FILE="$runtime/config.json" LILLY_STATUS_SOCKET="$runtime/status.sock"
 export RELEASE_DISTRIBUTION=none ERL_CRASH_DUMP=/dev/null
 export RELEASE_COOKIE="$(openssl rand -hex 32)"
-exec /opt/kittens/lilly/bin/lilly start
+exec /opt/overalls/lilly/bin/lilly start

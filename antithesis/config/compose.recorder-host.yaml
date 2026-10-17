@@ -22,7 +22,7 @@ services:
     mem_limit: 3g
     shm_size: 256m
     healthcheck:
-      test: ["CMD", "/opt/kittens/python/bin/python3.13", "/opt/kittens/recorder-hostvm/runner.py", "status", "--config", "/etc/recorder-hostvm/config.json"]
+      test: ["CMD", "/opt/overalls/python/bin/python3.13", "/opt/overalls/recorder-hostvm/runner.py", "status", "--config", "/etc/recorder-hostvm/config.json"]
       interval: 5s
       timeout: 10s
       retries: 60

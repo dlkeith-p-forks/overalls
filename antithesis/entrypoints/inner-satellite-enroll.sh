@@ -16,7 +16,7 @@ host_dir=/run/overalls-host-secrets
 control=/run/overalls-control-secrets
 outer=/run/overalls-secrets
 oracle=/run/overalls-oracle/fixture.json
-release=/opt/kittens/marshall/bin/marshall
+release=/opt/overalls/marshall/bin/marshall
 [[ -d "$host_dir" && -d "$control" ]] || {
   echo 'Inner satellite private volume unavailable' >&2
   exit 1

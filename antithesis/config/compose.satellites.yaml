@@ -32,7 +32,7 @@ services:
       context: ../..
       dockerfile: antithesis/Dockerfile
       target: ziggy
-    entrypoint: ["/opt/kittens/entrypoints/satellite-start.sh", "ziggy"]
+    entrypoint: ["/opt/overalls/entrypoints/satellite-start.sh", "ziggy"]
     environment:
       NO_COLOR: "1"
     volumes:
@@ -50,7 +50,7 @@ services:
       marshall-a:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "/opt/kittens/entrypoints/health-satellite.sh", "ziggy"]
+      test: ["CMD", "/opt/overalls/entrypoints/health-satellite.sh", "ziggy"]
       interval: 3s
       timeout: 5s
       retries: 60
@@ -67,7 +67,7 @@ services:
       context: ../..
       dockerfile: antithesis/Dockerfile
       target: galileo
-    entrypoint: ["/opt/kittens/entrypoints/satellite-start.sh", "galileo"]
+    entrypoint: ["/opt/overalls/entrypoints/satellite-start.sh", "galileo"]
     environment:
       NO_COLOR: "1"
     volumes:
@@ -84,7 +84,7 @@ services:
       marshall-a:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "/opt/kittens/entrypoints/health-satellite.sh", "galileo"]
+      test: ["CMD", "/opt/overalls/entrypoints/health-satellite.sh", "galileo"]
       interval: 3s
       timeout: 5s
       retries: 60
@@ -101,7 +101,7 @@ services:
       context: ../..
       dockerfile: antithesis/Dockerfile
       target: audi
-    entrypoint: ["/opt/kittens/entrypoints/satellite-start.sh", "audi-private"]
+    entrypoint: ["/opt/overalls/entrypoints/satellite-start.sh", "audi-private"]
     environment:
       NO_COLOR: "1"
     volumes:
@@ -124,7 +124,7 @@ services:
       galileo:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "/opt/kittens/entrypoints/health-satellite.sh", "audi-private"]
+      test: ["CMD", "/opt/overalls/entrypoints/health-satellite.sh", "audi-private"]
       interval: 3s
       timeout: 5s
       retries: 60
@@ -140,7 +140,7 @@ services:
       context: ../..
       dockerfile: antithesis/Dockerfile
       target: porsche
-    entrypoint: ["/opt/kittens/entrypoints/satellite-start.sh", "porsche"]
+    entrypoint: ["/opt/overalls/entrypoints/satellite-start.sh", "porsche"]
     environment:
       NO_COLOR: "1"
     volumes:
@@ -154,7 +154,7 @@ services:
       marshall-a:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "/opt/kittens/entrypoints/health-satellite.sh", "porsche"]
+      test: ["CMD", "/opt/overalls/entrypoints/health-satellite.sh", "porsche"]
       interval: 3s
       timeout: 5s
       retries: 60

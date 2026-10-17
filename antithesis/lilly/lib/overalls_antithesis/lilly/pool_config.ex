@@ -7,8 +7,9 @@ defmodule OverallsAntithesis.Lilly.PoolConfig do
   # @cc [owner:ghuntley,label:capacity;security] controlled-pool-has-no-native-credit
   # The harness may bind a configured identity for Control negotiation, but it
   # MUST mark the backend controlled and require live capacity evidence elsewhere.
-  # Only current Pool configuration keys and positive template/standby bounds
-  # are accepted; retired logical budgets MUST be refused (ADR-0159).
+  # Only current Pool configuration keys and the production template budget and
+  # image I/O deadline bounds are accepted; retired logical budgets (ADR-0159)
+  # and standby keys (ADR-0177) MUST be refused.
   @spec decode([map()], OverallsProtocol.uuid()) :: {:ok, [Pool.t()]} | :error
   def decode(values, host) when is_list(values) and length(values) <= 64 do
     with true <- OverallsProtocol.uuid?(host),
@@ -52,12 +53,8 @@ defmodule OverallsAntithesis.Lilly.PoolConfig do
          true <- fs == OverallsProtocol.Storage.filesystem_id(storage),
          template = Map.get(value, "template_budget_bytes", 34_359_738_368),
          true <- is_integer(template) and template in 1..1_099_511_627_776,
-         standby = Map.get(value, "standby_per_image", 1),
-         true <- is_integer(standby) and standby in 1..32,
-         fills = Map.get(value, "standby_fills_per_pass", 4),
-         true <- is_integer(fills) and fills in 1..32,
-         retirements = Map.get(value, "standby_retirements_per_pass", 4),
-         true <- is_integer(retirements) and retirements in 1..32,
+         io_timeout = Map.get(value, "image_io_timeout_ms", 300_000),
+         true <- is_integer(io_timeout) and io_timeout in 1_000..14_400_000,
          {:ok, max_iops, source} <- max_iops(value) do
       {:ok,
        %Pool{
@@ -69,9 +66,7 @@ defmodule OverallsAntithesis.Lilly.PoolConfig do
          storage: storage,
          host_id: host,
          template_budget_bytes: template,
-         standby_per_image: standby,
-         standby_fills_per_pass: fills,
-         standby_retirements_per_pass: retirements,
+         image_io_timeout_ms: io_timeout,
          backend: :controlled,
          extents: []
        }}

@@ -7,7 +7,7 @@ umask 077
 secrets=/run/overalls-secrets
 control=/run/overalls-control-secrets
 channel=/run/overalls-control-requests
-release=/opt/kittens/marshall/bin/marshall
+release=/opt/overalls/marshall/bin/marshall
 mkdir -p "$control" "$channel/requests" "$channel/results"
 mkdir -p "$channel/state"
 chmod 0700 "$control" "$channel" "$channel/requests" "$channel/results" "$channel/state"
@@ -23,11 +23,11 @@ if [[ ! -e "$control/lilly-a-credential.json" ]]; then
   mv "$control/.lilly-a-credential.json.new" "$control/lilly-a-credential.json"
 fi
 fixture="$control/fixture.json"
-fixture_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/kittens/operator/fixture.ex"); OverallsAntithesis.Fixture.main(System.argv())'
-compute_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/kittens/operator/fixture.ex"); Code.require_file("/opt/kittens/operator/compute.ex"); OverallsAntithesis.Compute.main(System.argv())'
-terminal_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/kittens/operator/fixture.ex"); Code.require_file("/opt/kittens/operator/terminal.ex"); OverallsAntithesis.Terminal.main(System.argv())'
-integration_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/kittens/operator/fixture.ex"); Code.require_file("/opt/kittens/operator/integrations.ex"); OverallsAntithesis.Integrations.main(System.argv())'
-guest_witness_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/kittens/operator/fixture.ex"); Code.require_file("/opt/kittens/operator/guest_witness.ex"); OverallsAntithesis.GuestWitness.main(System.argv())'
+fixture_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); OverallsAntithesis.Fixture.main(System.argv())'
+compute_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/compute.ex"); OverallsAntithesis.Compute.main(System.argv())'
+terminal_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/terminal.ex"); OverallsAntithesis.Terminal.main(System.argv())'
+integration_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/integrations.ex"); OverallsAntithesis.Integrations.main(System.argv())'
+guest_witness_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/guest_witness.ex"); OverallsAntithesis.GuestWitness.main(System.argv())'
 bootstrap_marker="$control/fixture-bootstrap.started"
 if [[ ! -e "$fixture" ]]; then
   [[ ! -e "$bootstrap_marker" ]] || {
@@ -84,7 +84,7 @@ case "$inner_satellites_enabled" in
 esac
 case "${OVERALLS_ANTITHESIS_SATELLITES:-0}" in
   0) ;;
-  1) /opt/kittens/entrypoints/satellite-enroll.sh ;;
+  1) /opt/overalls/entrypoints/satellite-enroll.sh ;;
   *) echo 'Invalid satellite fixture mode' >&2; exit 1 ;;
 esac
 touch /tmp/enrollment-ready
@@ -533,7 +533,7 @@ while true; do
   # Inner service credentials MUST be issued only after the measured host's
   # credential, committed pool and private fixture have been verified.
   if [[ "$inner_satellites_enabled" == 1 && "$host_verified" == 1 && "$inner_satellites_verified" == 0 ]]; then
-    /opt/kittens/entrypoints/inner-satellite-enroll.sh
+    /opt/overalls/entrypoints/inner-satellite-enroll.sh
     inner_satellites_verified=1
   fi
   for request in "$channel"/requests/*.json; do
