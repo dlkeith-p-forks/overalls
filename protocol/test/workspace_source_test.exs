@@ -29,7 +29,6 @@ defmodule OverallsProtocol.WorkspaceSourceTest do
   property "canonical URLs and wire encodings round-trip" do
     check all(source <- source()) do
       assume WorkspaceSource.valid?(source)
-      assume Enum.all?([source.repository | source.namespace], &(is_binary(&1) and String.printable?(&1)))
       assert {:ok, ^source} = source |> WorkspaceSource.to_url() |> WorkspaceSource.parse_url()
       assert {:ok, ^source} = source |> WorkspaceSource.encode() |> WorkspaceSource.decode()
       encoded = source |> WorkspaceSource.encode() |> JSON.encode!() |> JSON.decode!()
@@ -89,7 +88,6 @@ defmodule OverallsProtocol.WorkspaceSourceTest do
             owned <- boolean()
           ) do
       assume WorkspaceSource.valid?(source)
-      assume Enum.all?([source.repository | source.namespace], &(is_binary(&1) and String.printable?(&1)))
       command = %{command() | kind: kind, profile: profile}
       command = if owned, do: Map.put(command, :owner_id, @id), else: command
       sourced = Map.put(command, :workspace_source, source)
@@ -112,8 +110,8 @@ defmodule OverallsProtocol.WorkspaceSourceTest do
   defp source do
     gen all(
           provider <- member_of([:github, :gitlab, :codeberg, :bitbucket]),
-          owner <- owner(),
-          repo <- repo(),
+          owner <- member_of(["owner", "org"]),
+          repo <- member_of(["repo", "source", "project"]),
           revision <-
             one_of([
               constant(%{kind: :default}),
