@@ -12,6 +12,7 @@ import {
   osc52Read,
   clipboardPayload,
   relativeActivity,
+  BootLogPoller,
 } from "../../assets/js/terminals.js";
 
 test("LiveView recovery keeps attached sockets and retries tickets only for detached panes", (t) => {
@@ -94,8 +95,8 @@ test("boot logs preserve terminal control and UTF-8 bytes", () => {
   assert.deepEqual(decodeBase64Bytes(bytes.toString("base64")), new Uint8Array(bytes));
 });
 
-test("boot-log cursor rewind resets xterm and refetches from zero", () => {
-  const requests = [];
+test("boot-log cursor rewind resets xterm before the next correlated request", () => {
+  const completions = [];
   const boot = { dataset: { next: "4096" }, classList: { contains: () => false } };
   const pane = { cursor: 4096, reset() { this.cursor = 0; } };
   const originalDocument = globalThis.document;
@@ -104,19 +105,17 @@ test("boot-log cursor rewind resets xterm and refetches from zero", () => {
     TerminalWorkspace.renderBootLog.call({
       liveConnected: true,
       ensureBootPane: () => pane,
-      push: TerminalWorkspace.push,
-      pushEvent(event, payload) { requests.push({ event, payload }); },
-    }, "", 1024);
+    }, "", 1024, (more) => completions.push(more));
   } finally {
     globalThis.document = originalDocument;
   }
   assert.equal(pane.cursor, 0);
   assert.equal(boot.dataset.next, "0");
-  assert.deepEqual(requests, [{ event: "terminal_boot_log", payload: { cursor: "0" } }]);
+  assert.deepEqual(completions, [true]);
 });
 
 test("boot-log chunks are written to xterm as bytes before requesting the next chunk", () => {
-  const requests = [];
+  const completions = [];
   const writes = [];
   const boot = { dataset: { next: "0" }, classList: { contains: () => false } };
   const pane = {
@@ -134,14 +133,116 @@ test("boot-log chunks are written to xterm as bytes before requesting the next c
       liveConnected: true,
       el: { querySelector: () => ({ checked: true }) },
       ensureBootPane: () => pane,
-      push: TerminalWorkspace.push,
-      pushEvent(event, payload) { requests.push({ event, payload }); },
-    }, bytes.toString("base64"), bytes.length);
+    }, bytes.toString("base64"), bytes.length, (more) => completions.push(more));
   } finally {
     globalThis.document = originalDocument;
   }
   assert.deepEqual(writes, [{ bytes: new Uint8Array(bytes), follow: true }]);
-  assert.deepEqual(requests, [{ event: "terminal_boot_log", payload: { cursor: String(bytes.length) } }]);
+  assert.deepEqual(completions, [true]);
+});
+
+test("boot-log EOF and refusal keep polling at a bounded rate without DOM updates", (t) => {
+  t.mock.timers.enable({apis: ["setTimeout"]});
+  const requests = [];
+  const poller = new BootLogPoller(
+    () => true,
+    () => 0,
+    (cursor, receive) => { requests.push({cursor, receive}); return true; },
+    (_reply, finished) => finished(false),
+  );
+  poller.start();
+  poller.start();
+  assert.equal(requests.length, 1);
+  requests[0].receive({ok: true, next: 0, text: ""});
+  poller.start();
+  t.mock.timers.tick(1999);
+  assert.equal(requests.length, 1);
+  t.mock.timers.tick(1);
+  assert.equal(requests.length, 2);
+  requests[1].receive({ok: false});
+  t.mock.timers.tick(2000);
+  assert.equal(requests.length, 3);
+  poller.destroy();
+  t.mock.timers.tick(20_000);
+  assert.equal(requests.length, 3);
+});
+
+test("boot-log pause discards late replies and never overlaps an emulator write", (t) => {
+  t.mock.timers.enable({apis: ["setTimeout"]});
+  let active = true;
+  const requests = [];
+  const consumed = [];
+  const writes = [];
+  const poller = new BootLogPoller(
+    () => active,
+    () => 7,
+    (cursor, receive) => { requests.push({cursor, receive}); return true; },
+    (reply, finished) => { consumed.push(reply); writes.push(finished); },
+  );
+  poller.start();
+  active = false;
+  poller.pause(true);
+  t.mock.timers.tick(20_000);
+  assert.equal(requests.length, 1);
+  active = true;
+  poller.start();
+  requests[0].receive("stale");
+  assert.deepEqual(consumed, []);
+  requests[1].receive("current");
+  assert.deepEqual(consumed, ["current"]);
+  poller.pause();
+  poller.start();
+  assert.equal(requests.length, 2);
+  writes[0](true);
+  t.mock.timers.tick(0);
+  assert.equal(requests.length, 3);
+  poller.destroy();
+  requests[2].receive("destroyed");
+  assert.deepEqual(consumed, ["current"]);
+});
+
+test("boot-log visibility toggles retain the outstanding request fence until its cancelled reply", (t) => {
+  t.mock.timers.enable({apis: ["setTimeout"]});
+  let active = true;
+  const requests = [];
+  const poller = new BootLogPoller(
+    () => active,
+    () => 0,
+    (_cursor, receive) => { requests.push(receive); return true; },
+    () => assert.fail("cancelled hidden reply reached the emulator"),
+  );
+  poller.start();
+  for (let count = 0; count < 10; count++) {
+    active = false;
+    poller.pause();
+    active = true;
+    poller.start();
+  }
+  assert.equal(requests.length, 1);
+  requests[0]({ok: true, next: 7, text: "cHJpdmF0ZQ=="});
+  t.mock.timers.tick(1999);
+  assert.equal(requests.length, 1);
+  t.mock.timers.tick(1);
+  assert.equal(requests.length, 2);
+  poller.destroy();
+});
+
+test("malformed boot-log chunks cannot move the cursor or write bytes", () => {
+  const originalDocument = globalThis.document;
+  const boot = {dataset: {next: "0"}};
+  const pane = {cursor: 0, write() { assert.fail("invalid bytes reached xterm"); }};
+  globalThis.document = {getElementById: () => boot};
+  try {
+    for (const [text, next] of [["%%%", 3], ["YQ==", 2], ["", 1], [Buffer.alloc(16_385).toString("base64"), 16_385]]) {
+      let more = null;
+      TerminalWorkspace.renderBootLog.call({ensureBootPane: () => pane}, text, next, (value) => { more = value; });
+      assert.equal(more, false);
+      assert.equal(pane.cursor, 0);
+      assert.equal(boot.dataset.next, "0");
+    }
+  } finally {
+    globalThis.document = originalDocument;
+  }
 });
 
 test("fullscreen state updates its accessible control and refits the visible terminal", () => {
@@ -422,7 +523,7 @@ test("pushes are dropped, never thrown, while LiveView is not connected", () => 
   assert.equal(workspace.liveConnected, false);
 });
 
-test("a hidden boot view writes its chunk but does not pull the next one", () => {
+test("a hidden boot view finishes its current byte write without directly pulling another chunk", () => {
   const requests = [];
   const boot = { dataset: { next: "0" }, classList: { contains: (name) => name === "hidden" } };
   const pane = { cursor: 0, write(_bytes, _follow, finished) { finished(); } };
@@ -436,7 +537,7 @@ test("a hidden boot view writes its chunk but does not pull the next one", () =>
       ensureBootPane: () => pane,
       push: TerminalWorkspace.push,
       pushEvent(event, payload) { requests.push({ event, payload }); },
-    }, bytes.toString("base64"), bytes.length);
+    }, bytes.toString("base64"), bytes.length, () => {});
   } finally {
     globalThis.document = originalDocument;
   }

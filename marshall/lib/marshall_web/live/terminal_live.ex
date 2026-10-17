@@ -24,6 +24,7 @@ defmodule MarshallWeb.TerminalLive do
         notice: nil,
         opening_notice: nil,
         boot_log_cursor: 0,
+        boot_log?: false,
         boot_log_text: ""
       )
       |> stream(:terminal_sessions, [])
@@ -48,7 +49,9 @@ defmodule MarshallWeb.TerminalLive do
   end
 
   @impl true
-  def handle_params(_params, _uri, socket) do
+  def handle_params(params, _uri, socket) do
+    socket = assign(socket, boot_log?: params["view"] == "boot-log")
+
     if connected?(socket) do
       {:noreply, refresh_sessions(socket)}
     else
@@ -152,6 +155,10 @@ defmodule MarshallWeb.TerminalLive do
     end
   end
 
+  # @cc [owner:ghuntley,label:security;recovery] boot-log-replies-correlate-request
+  # Boot-log results MUST return through the originating hook request's reply,
+  # including refusal, so a paused browser can discard its obsolete callback.
+  # Payload bytes MUST NOT enter LiveView assigns or unsolicited pushed events.
   def handle_event("terminal_boot_log", %{"cursor" => cursor}, socket) do
     cursor = parse_cursor(cursor, socket.assigns.boot_log_cursor)
 
@@ -161,15 +168,17 @@ defmodule MarshallWeb.TerminalLive do
            cursor
          ) do
       {:ok, %{next: next, bytes: bytes}} ->
-        {:noreply,
+        {:reply, %{ok: true, next: next, text: Base.encode64(bytes)},
          socket
-         |> assign(boot_log_cursor: next)
-         |> push_event("terminal_boot_log", %{next: next, text: Base.encode64(bytes)})}
+         |> assign(
+           boot_log_cursor: next,
+           notice: if(socket.assigns.boot_log?, do: nil, else: socket.assigns.notice)
+         )}
 
       {:error, _reason} ->
-        {:noreply,
+        {:reply, %{ok: false},
          assign(socket,
-           notice: "The boot log is unavailable while the host terminal stream is offline."
+           notice: "The boot log is unavailable for the current machine execution."
          )}
     end
   end
@@ -223,6 +232,13 @@ defmodule MarshallWeb.TerminalLive do
   # Non-running executions MUST NOT query guest sessions. Retryable listing
   # failures MUST show preparation or reconnection while preserving existing
   # sessions and any definitive opening failure; they MUST NOT imply shell exit.
+
+  # @cc [owner:ghuntley,label:security;product] boot-log-view-skips-guest-opening
+  # The explicit Boot log view MUST refresh current VM read authority without
+  # listing or automatically opening guest sessions. Its bytes MUST still use
+  # the independently authorized bounded host boot-log operation.
+  defp refresh_current_sessions(%{assigns: %{boot_log?: true}} = socket), do: socket
+
   defp refresh_current_sessions(socket) do
     socket =
       if socket.assigns.opening.execution == socket.assigns.vm.execution_ref,
@@ -406,10 +422,10 @@ defmodule MarshallWeb.TerminalLive do
           vm={@vm}
           connection={@machine_connection}
           power_key={@machine_power_key}
-          active="terminal"
+          active={if @boot_log?, do: "boot-log", else: "terminal"}
         />
         <div
-          :if={@vm.desired_state != :running || @vm.observed_state != :running}
+          :if={!@boot_log? && (@vm.desired_state != :running || @vm.observed_state != :running)}
           id="terminal-machine-state"
           role="status"
         >
@@ -427,11 +443,13 @@ defmodule MarshallWeb.TerminalLive do
           id="terminal-client"
           phx-hook="TerminalWorkspace"
           data-vm-id={@vm.id}
+          data-view={if @boot_log?, do: "boot-log", else: "terminal"}
           class="machine-terminal-grid"
         >
           <aside class="machine-terminal-sidebar">
             <div class="row">
               <button
+                :if={!@boot_log?}
                 id="terminal-create"
                 disabled={
                   !@vm.permissions.write || @vm.desired_state != :running ||
@@ -491,6 +509,8 @@ defmodule MarshallWeb.TerminalLive do
             </div>
             <div id="terminal-empty" class={[!@sessions_empty? && "hidden"]}>
               <%= cond do %>
+                <% @boot_log? -> %>
+                  Read-only host boot log. Guest terminal readiness is not required.
                 <% !@vm.permissions.write -> %>
                   No shared terminals are available to view.
                 <% @opening.phase in [:waiting, :opening] -> %>

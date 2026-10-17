@@ -51,6 +51,15 @@ viewers. Lilly applies input deduplication and reports dial failures,
 fencing and session exit as fixed reasons. The VM boot log is readable through
 bounded `boot_log` controls.
 
+Host boot-log reads are independent of the image's guest terminal capability
+and guest readiness. They still require current Cedar VM read authority and
+the current fresh, authenticated protocol-2 host stream. Lilly authorizes the
+exact current runnable placement and execution before returning a bounded page
+of the private host file. That diagnostic permission grants no guest dial,
+terminal session, input, boot challenge or readiness authority. Pending and
+failed boots may therefore expose their retained host diagnostics while guest
+terminal operations remain unavailable.
+
 ## Alternatives
 
 Continuing HTTPS polling keeps a stateless server but preserves the latency
@@ -75,6 +84,10 @@ user, terminal type and title stay in the guest/browser listing path.
   channel or control is accepted; stale hellos close the connection.
 - Every VM-scoped control names the exact placement and execution epoch;
   Lilly revalidates through the VM actor before dialing the guest.
+- Boot-log controls independently validate host-file incarnation and the
+  newest stored runnable command. A changed placement, epoch, generation,
+  launch witness or assigned stream owner refuses; the response contains at
+  most 16 KiB and a cursor, with no guest dial identity.
 - Input dedup by strictly increasing per-channel sequence prevents double
   execution across stream reconnects.
 - Viewer tickets are single-use, short-lived and mode-bound; authority is
@@ -84,6 +97,12 @@ user, terminal type and title stay in the guest/browser listing path.
   registry tests cover capability gating, limits and audit receipts.
 
 ## Implementation evidence
+
+The [host boot-log authorization review](../reviews/2026-10-17-host-boot-log-authorization.md)
+records the correction that separates read-only host diagnostics from guest
+terminal admission, including pending/failed execution and log-incarnation
+fencing. It preserves the existing control schema and native capability refusal;
+its focused execution and remaining machine/browser gaps are tracked separately.
 
 The [attachment-history review](../reviews/2026-09-26-terminal-attachment-verification.md)
 adds generated [real WebSock lifetimes](../../../marshall/test/marshall/terminal/attachment_history_test.exs)

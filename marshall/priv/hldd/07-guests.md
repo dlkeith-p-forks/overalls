@@ -708,6 +708,14 @@ Every guest boot leaves its own timing record in the bounded host boot log
 create spends its boot and trust time; it is observation only and never gates
 readiness.
 
+The host log is read separately from guest terminal admission. Current Cedar
+read authority, a fresh authenticated host stream and Lilly's exact current
+placement/execution fences still apply when bootstrap is pending or failed.
+This read neither requires nor enables a guest terminal capability, and sparse
+serial bytes cannot establish native kernel, agent, readiness or service support.
+Each page is bounded to 16 KiB; guest socket and boot-challenge authority remain
+private. See [the diagnostic read boundary](#interactive).
+
 | Layer | Source | What it shows |
 | --- | --- | --- |
 | Host line offsets | `lilly-boot-log` writer | `[+S.mmm] ` host monotonic time since the writer started, on every console line |
@@ -971,9 +979,14 @@ reaches console login on `76b8` under the same no-vsock settings where `9853`
 panics mounting root. Its growth service enters maintenance; corrected
 Firecracker service/transport/reset acceptance remains a separate gate. The
 earlier failed `9853` disk remains preserved. The first corrected-image
-Firecracker service run stays alive but misses its 240-second first-boot
-deadline, with blank serial and no kernel/service response; boot diagnosis
-remains open.
+Firecracker service run stays alive and reaches login but misses its 240-second
+first-boot deadline because growth enters maintenance and bootstrap withholds
+network/identity. Retained serial corrects an earlier wrapper-rendered
+blank-output impression; the sliced expansion operand is separately diagnosed.
+The corrected growth-operand kit `d0rd` passed a fresh native assembly with
+nine modules, 764 payload entries, native schema checks, clean export and
+shutdown. Sealed disk `bea32fe6` retains token `76b8c1ad`; exact-image
+service/growth/transport/reset replay remains open.
 
 Native trust composes the current host roots with the separate pinned vendor
 snapshot `/etc/overalls/system-ca.pem`, then durably replaces the effective

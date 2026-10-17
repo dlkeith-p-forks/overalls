@@ -251,8 +251,15 @@ let
     };
     # The Python assertion catalog is not a Nix input: ``selection.py stage``
     # writes the selection-scoped tree under antithesis/build/selected-test and
-    # the Dockerfile copies it to /opt/antithesis/catalog, so the hosted
+    # the Dockerfile copies it to /opt/overalls-antithesis/catalog, so the hosted
     # instrumentor declares only assertions reachable from the selected commands.
+    # /opt/antithesis/catalog is a single symlink to that tree's ``workload``
+    # module: the instrumentor catalogs each item under /opt/antithesis/catalog
+    # (or the resolved link target) as one root, and the Python SDK registers
+    # one root's catalog per process. One resolved root therefore declares every
+    # selected assertion in every workload process; a real directory holding
+    # the packages was split into one root per package and only the voted
+    # package's catalog registered (run 8e582f650dd7092cda983705eb7b0e05-65-0).
     workload = closure.mkContext {
       name = "workload";
       extraRoots = [ pkgs.python313 pythonWheels pkgs.git controlPeerTools controlPeerProtocol pkgs.restic backupModules traceSpool ];
@@ -264,6 +271,7 @@ let
         "opt/overalls/restic" = toString pkgs.restic;
         "opt/overalls/backup-modules" = toString backupModules;
         "opt/overalls/trace-spool" = toString traceSpool;
+        "opt/antithesis/catalog" = "/opt/overalls-antithesis/catalog/workload";
       };
     };
     origin = closure.mkContext {

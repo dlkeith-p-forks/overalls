@@ -38,6 +38,15 @@ defmodule Lilly.VM.Actor do
   @spec terminal_identity(pid(), OverallsProtocol.uuid()) :: {:ok, map()} | {:error, atom()}
   def terminal_identity(pid, vm_id), do: call(pid, {:terminal_identity, vm_id})
 
+  # @cc [owner:ghuntley,label:security;recovery] boot-log-assigned-stream-current-command
+  # Only the assigned stream MAY read diagnostics for the active actor's exact
+  # current runnable VM command. The durable command MUST be unchanged before
+  # and after the bounded read. Pending or failed outcomes MAY expose the
+  # current boot log, but MUST NOT grant terminal identity or guest dialing.
+  @spec boot_log(pid(), OverallsProtocol.uuid(), non_neg_integer()) ::
+          {:ok, Lilly.VM.BootLog.page()} | {:error, atom()}
+  def boot_log(pid, vm_id, cursor), do: call(pid, {:boot_log, vm_id, cursor})
+
   @impl true
   def init(options) do
     Process.flag(:trap_exit, true)
@@ -142,6 +151,20 @@ defmodule Lilly.VM.Actor do
         }}, state}
     else
       _ -> {:reply, {:error, :terminal_unavailable}, state}
+    end
+  end
+
+  def handle_call({:boot_log, vm_id, cursor}, {caller, _}, %{terminal_owner: caller} = state) do
+    with true <- state.active and state.command.vm_id == vm_id,
+         {:ok, command} <- Store.read(state.store, state.command.placement_id),
+         true <- command == state.command and command.kind in [:provision, :start],
+         {executor, context} = state.executor,
+         true <- function_exported?(executor, :boot_log, 3),
+         {:ok, page} <- executor.boot_log(context, command, cursor),
+         {:ok, ^command} <- Store.read(state.store, command.placement_id) do
+      {:reply, {:ok, page}, state}
+    else
+      _ -> {:reply, {:error, :boot_log_unavailable}, state}
     end
   end
 

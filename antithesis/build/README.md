@@ -45,11 +45,16 @@ booted through the direct runner; the Docker variant has not yet been started.
 The OTP images contain the fallback Antithesis assertion SDK and a pinned C
 single-write helper. This supplies assertion/lifecycle messages and does not
 instrument BEAM execution for coverage. The workload image carries Python 3.13
-and hash-pinned Python SDK and PostgreSQL wheels. Its `/opt/antithesis/catalog`
-is not part of the Nix context: `selection.py stage` writes the selection-scoped
+and hash-pinned Python SDK and PostgreSQL wheels. Its assertion catalog is not
+part of the Nix context: `selection.py stage` writes the selection-scoped
 Python catalog under `antithesis/build/selected-test/catalog/` and the
-Dockerfile copies it, so the hosted instrumentor declares only the assertions
-reachable from the selected commands and bootstrap. QEMU, the NixOS guests and
+Dockerfile copies it to `/opt/overalls-antithesis/catalog/`, so the hosted
+instrumentor declares only the assertions reachable from the selected commands
+and bootstrap. The Nix rootfs carries `/opt/antithesis/catalog` as one symlink
+to `/opt/overalls-antithesis/catalog/workload`, which the instrumentor resolves
+as a single cataloged root; the Python SDK registers one root's catalog per
+process, so the single root is what makes every selected assertion appear in
+hosted reports even when no command reaches it. QEMU, the NixOS guests and
 Enrico's native Git owner are presently uninstrumented; these images make no
 Rust/LLVM coverage or `/symbols` claim.
 Emulated guest and router observations are scoped to QEMU TCG. Native KVM,

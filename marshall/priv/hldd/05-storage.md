@@ -458,6 +458,14 @@ recovers the backup GPT, enlarges partition5 and runs UFS growfs; it preserves
 the root UUID/start and every nonroot entry. OmniOS additionally requires the
 assembly receipt's dataset/pool GUID and exactly one whole-disk ZFS vdev, then
 uses `zpool online -e`, preserving loader and reserved-tail identities.
+For a whole-disk OmniOS vdev, the validated `s1` partition remains the authority
+identity, `p0` is the raw GPT preflight device, and the expansion operand is the
+unsliced disk. The pinned libzfs lookup strips `s1` for whole-disk vdevs.
+A host-direct Firecracker diagnostic on a disposable `76b8` clone reproduced
+`s1` refusal and unsliced success. The typed operand regression and fresh
+corrected-kit native assembly passed; disk `bea32fe6` and its assembly receipt
+are bound in the native review. Exact-image replay is still required before
+claiming automatic growth or service acceptance.
 
 The exclusive root-owned lock and postflight precede atomic publication of a
 typed numeric receipt in volatile `/var/run/overalls/root-growth.json`.

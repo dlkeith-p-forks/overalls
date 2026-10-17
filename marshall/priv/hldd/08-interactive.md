@@ -421,6 +421,13 @@ within about fifteen seconds instead of waiting for the proxy to give up.
 The boot-log view pulls further chunks only while it is visible and resumes
 from its cursor when shown again, so a page remounted on another node does not
 replay a whole boot log into a hidden screen-reader emulator and stall.
+It holds one correlated request or emulator write at a time. EOF and temporary
+refusals retry after two seconds while the selected page remains visible and
+connected; hiding the document, switching panes or disconnecting pauses reads
+and discards stale replies. Reconnecting resumes at the retained cursor. Each
+decoded chunk is at most 16 KiB and must advance that cursor by its byte length;
+a rewind resets the emulator and refetches from zero. Disposing the page removes
+its timers and visibility listener.
 
 Creating a terminal selects its pane once. Switching to another pane is retained
 across session-list refreshes. A delayed ticket reply can attach only the currently
@@ -448,7 +455,20 @@ console carries the fixed line `lilly-guest boot complete`, then the bounded boo
 report (ADR-0154), which ends with the fixed line `lilly-boot-report: end`; an
 autoscrolled pane therefore shows the report's end, not the boot-complete line.
 Lilly reads the log as its service user: the root boot-log writer hands the
-private file to that uid. Interactive access
+private file to that uid. Reading that host file has its own authority path:
+current Cedar VM read, a fresh authenticated protocol-2 host stream and the
+exact current runnable placement/execution. It does not require the image's
+guest terminal capability or a ready/running guest outcome. A pending or failed
+boot can expose retained diagnostics while guest session operations remain
+disabled. Each response holds at most 16 KiB plus a cursor; it returns no guest
+socket path or boot challenge and never dials the guest. A newer command or
+changed boot/log incarnation refuses the read. Sparse serial output remains
+observation, not proof of the failed guest stage.
+The machine navigation's `Boot log` link opens
+`/machines/:id/terminals?view=boot-log` directly. This diagnostic view selects
+the read-only serial pane and skips guest-session listing and automatic shell
+creation, so pending and failed boots do not depend on a guest terminal.
+Interactive access
 remains the vsock terminal and Audi-fenced SSH. Personal opening requires compatible guest account helpers and
 terminald; activating a host release does not upgrade an existing guest disk.
 Windows guests with the `windows-v1` agent set run the same terminald source

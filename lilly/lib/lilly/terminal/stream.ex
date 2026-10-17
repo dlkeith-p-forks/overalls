@@ -677,10 +677,18 @@ defmodule Lilly.Terminal.Stream do
   end
 
   defp control(state, %{type: :boot_log} = message) do
-    case terminal_identity(state, message) do
-      {:ok, identity} ->
-        tail = boot_log_tail(identity[:boot_log_path] || identity.boot_log_path, message.cursor)
+    result =
+      with {:ok, actor} <-
+             Lilly.Control.Runtime.terminal_actor(
+               state.runtime,
+               message.vm_id,
+               message.placement_id,
+               message.execution_epoch
+             ),
+           do: Lilly.VM.Actor.boot_log(actor, message.vm_id, message.cursor)
 
+    case result do
+      {:ok, tail} ->
         reply(state, %{
           type: :boot_log_data,
           vm_id: message.vm_id,
@@ -703,31 +711,6 @@ defmodule Lilly.Terminal.Stream do
   end
 
   defp control(state, _unknown), do: state
-
-  defp boot_log_tail(nil, cursor), do: %{next: cursor, bytes: ""}
-
-  defp boot_log_tail(path, cursor) do
-    cap = 16_384
-
-    case File.stat(path) do
-      {:ok, %{size: size}} when size > cursor ->
-        length = min(size - cursor, cap)
-
-        with {:ok, device} <- File.open(path, [:read, :raw]),
-             {:ok, data} <- :file.pread(device, cursor, length),
-             :ok <- :file.close(device) do
-          %{next: cursor + byte_size(data), bytes: data}
-        else
-          _ -> %{next: cursor, bytes: ""}
-        end
-
-      {:ok, %{size: size}} ->
-        %{next: min(cursor, size), bytes: ""}
-
-      _ ->
-        %{next: cursor, bytes: ""}
-    end
-  end
 
   defp created_reason(:rejected), do: :rejected
   defp created_reason(:limit), do: :limit

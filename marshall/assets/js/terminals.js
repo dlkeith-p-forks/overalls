@@ -6,6 +6,8 @@ import { SearchAddon } from "../vendor/xterm/addons/addon-search.mjs";
 import { ImageAddon } from "../vendor/xterm/addons/addon-image.mjs";
 import { CreditWindow } from "./terminals/window.js";
 import { deliverTicket } from "./terminals/tickets.js";
+import { BootLogPoller } from "./terminals/boot_log.js";
+export { BootLogPoller };
 
 const MAX_OSC52_BYTES = 64 * 1024;
 // Live emulators a workspace keeps; less recently selected panes hibernate.
@@ -635,6 +637,12 @@ class Pane {
   }
 }
 
+/**
+ * @cc [owner:ghuntley,label:product;security] browser-explicit-host-boot-log-view
+ * The explicit Boot log page MUST select the read-only boot emulator on mount
+ * and retain it across LiveView updates. It MUST request bytes through the
+ * existing authorized boot-log control, never a writable guest attachment.
+ */
 export const TerminalWorkspace = {
   mounted() {
     this.vmId = this.el.dataset.vmId;
@@ -649,6 +657,27 @@ export const TerminalWorkspace = {
     this.originalTitle = document.title;
     this.bootPane = null;
     this.sessionSnapshot = [];
+    this.bootLogPoller = new BootLogPoller(
+      () => this.liveConnected && this.el.isConnected && !document.hidden &&
+        document.getElementById("terminal-boot-view")?.classList.contains("hidden") === false,
+      () => this.bootPane?.cursor || 0,
+      (cursor, receive) => this.push("terminal_boot_log", {cursor: String(cursor)}, receive),
+      (reply, finished) => {
+        if (typeof reply !== "object" || reply === null ||
+            !("ok" in reply) || reply.ok !== true ||
+            !("next" in reply) || typeof reply.next !== "number" ||
+            !("text" in reply) || typeof reply.text !== "string") {
+          finished(false);
+          return;
+        }
+        this.renderBootLog(reply.text, reply.next, finished);
+      },
+    );
+    this.bootVisibilityChanged = () => {
+      if (document.hidden) this.bootLogPoller.pause();
+      else this.bootLogPoller.start();
+    };
+    document.addEventListener("visibilitychange", this.bootVisibilityChanged);
 
     this.handleEvent("terminal_ticket", (reply) => deliverTicket(this, reply));
 
@@ -657,10 +686,6 @@ export const TerminalWorkspace = {
       this.sessionSnapshot = sessions;
       this.renderSessions(sessions);
       if (this.activeId) this.requestTicket(this.activeId);
-    });
-
-    this.handleEvent("terminal_boot_log", ({ next, text }) => {
-      this.renderBootLog(text, next);
     });
 
     this.observer = new ResizeObserver(() => {
@@ -816,14 +841,18 @@ export const TerminalWorkspace = {
     this.el.querySelector("#terminal-search-query")?.addEventListener("input", () => this.find(false));
 
     this.renderSessions([]);
+    if (this.el.dataset.view === "boot-log") this.showBootLog();
   },
 
   updated() {
     this.renderSessions(this.sessionSnapshot);
+    if (this.el.dataset.view === "boot-log") this.showBootLog();
   },
 
   destroyed() {
     this.liveConnected = false;
+    this.bootLogPoller?.destroy();
+    document.removeEventListener("visibilitychange", this.bootVisibilityChanged);
     clearTimeout(this.openingTimer);
     clearTimeout(this.activityTimer);
     this.opening = null;
@@ -848,6 +877,7 @@ export const TerminalWorkspace = {
    */
   disconnected() {
     this.liveConnected = false;
+    this.bootLogPoller?.pause(true);
     clearTimeout(this.openingTimer);
     for (const timer of this.ticketTimers.values()) clearTimeout(timer);
     this.ticketTimers.clear();
@@ -855,6 +885,7 @@ export const TerminalWorkspace = {
 
   reconnected() {
     this.liveConnected = true;
+    this.bootLogPoller?.start();
     this.retryOpening();
     if (this.activeId) this.requestTicket(this.activeId);
   },
@@ -1021,6 +1052,7 @@ export const TerminalWorkspace = {
     document.getElementById(`terminal-item-${sessionId}`)?.querySelector(".terminal-unread-dot")?.classList.remove("unread");
     const boot = document.getElementById("terminal-boot-view");
     if (boot) boot.classList.add("hidden");
+    this.bootLogPoller?.pause();
     const holder = document.getElementById("terminal-pane-holder");
     if (holder) holder.classList.remove("hidden");
     for (const [id, pane] of this.panes) {
@@ -1163,7 +1195,7 @@ export const TerminalWorkspace = {
       const pane = this.ensureBootPane();
       pane?.fitToView();
       this.setStatus("boot-log");
-      this.push("terminal_boot_log", { cursor: String(pane?.cursor || 0) });
+      this.bootLogPoller.start();
     }
   },
 
@@ -1172,35 +1204,37 @@ export const TerminalWorkspace = {
    * Boot-log chunks MUST reach a read-only xterm as their decoded bytes in cursor
    * order, never as HTML or decoded text. A cursor rewind MUST reset the emulator
    * and refetch from zero. Boot output MUST NOT receive an input, clipboard or
-   * unrestricted-link capability.
+   * unrestricted-link capability. Chunks MUST contain at most 16384 bytes and
+   * their cursor advance MUST equal their decoded byte length.
+   * @param {string} text @param {number} next @param {(more: boolean) => void} finished
    */
-  renderBootLog(text, next) {
+  renderBootLog(text, next, finished) {
     const boot = document.getElementById("terminal-boot-view");
-    if (!boot) return;
+    if (!boot) { finished(false); return; }
     const pane = this.ensureBootPane();
-    if (!pane || !Number.isSafeInteger(next) || next < 0) return;
+    if (!pane || !Number.isSafeInteger(next) || next < 0 || text.length > 21848) {
+      finished(false);
+      return;
+    }
     const previous = pane.cursor;
-    // Pull further chunks only while the boot view is visible: a hidden,
-    // screen-reader-mode emulator replaying a whole boot log (for example after
-    // a LiveView remount on another node) can starve the page's main thread.
-    // showBootLog() resumes from the pane's cursor.
-    const visible = !boot.classList.contains("hidden");
     if (next < previous) {
       pane.reset();
       boot.dataset.next = "0";
-      if (this.liveConnected && visible) this.push("terminal_boot_log", { cursor: "0" });
+      finished(true);
       return;
     }
-    const bytes = decodeBase64Bytes(text || "");
+    let bytes;
+    try { bytes = decodeBase64Bytes(text); }
+    catch { finished(false); return; }
+    if (bytes.length > 16384 || next - previous !== bytes.length) {
+      finished(false);
+      return;
+    }
     pane.cursor = next;
     boot.dataset.next = String(next);
-    if (!bytes.length || next <= previous) return;
+    if (!bytes.length) { finished(false); return; }
     const follow = this.el.querySelector("#terminal-boot-autoscroll")?.checked === true;
-    pane.write(bytes, follow, () => {
-      if (this.liveConnected && !boot.classList.contains("hidden")) {
-        this.push("terminal_boot_log", { cursor: String(next) });
-      }
-    });
+    pane.write(bytes, follow, () => finished(true));
   },
 
   ensureBootPane() {

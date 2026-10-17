@@ -25,6 +25,9 @@ defmodule Lilly.VM.Executor do
   @callback reconcile(term(), Execution.command(), history()) :: result()
   @callback terminal_options(term(), Execution.command()) :: {:ok, keyword()} | {:error, atom()}
   @optional_callbacks terminal_options: 2
+  @callback boot_log(term(), Execution.command(), non_neg_integer()) ::
+              {:ok, Lilly.VM.BootLog.page()} | {:error, atom()}
+  @optional_callbacks boot_log: 3
   @callback open_ingress(term(), Execution.command(), map()) ::
               {:ok, :gen_tcp.socket()} | {:error, atom()}
   @optional_callbacks open_ingress: 3
@@ -181,6 +184,28 @@ defmodule Lilly.VM.Executor do
        ]}
     else
       _ -> {:error, :terminal_unavailable}
+    end
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] boot-log-command-derived
+  # Diagnostics MUST derive the private log directory only from the validated
+  # command's placement and local configuration. BootLog's incarnation proof
+  # MUST remain independent of image capabilities and guest readiness; its
+  # adopted-generation fallback MUST use the existing full VMM observation.
+  @spec boot_log(Config.t(), Execution.command(), non_neg_integer()) ::
+          {:ok, Lilly.VM.BootLog.page()} | {:error, atom()}
+  def boot_log(config, command, cursor) do
+    with {:ok, spec} <- specification(command),
+         pool when not is_nil(pool) <- Enum.find(config.pools, &(&1.id == command.pool_id)) do
+      Lilly.VM.BootLog.read(
+        Path.join(config.execution.state_dir, spec.id),
+        spec.id,
+        {command.execution_epoch, command.generation},
+        cursor,
+        fn -> Observation.running?(config.execution, pool, spec) end
+      )
+    else
+      _ -> {:error, :boot_log_unavailable}
     end
   end
 

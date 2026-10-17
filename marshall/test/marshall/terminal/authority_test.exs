@@ -4,6 +4,51 @@ defmodule Marshall.Terminal.AuthorityTest do
   alias Marshall.Terminal.Authority
   alias Marshall.Compute.{HostLiveness, Ledger}
 
+  # @cc [owner:ghuntley,label:verification;security] native-diagnostics-retained-placement-fixture
+  # The synthetic retained placement MUST exercise the durable native image's
+  # disabled capabilities even when the caller holds a previous VM snapshot.
+  # Seeding its image identity MUST NOT establish native admission or execution.
+  test "pending and failed native images permit boot-log reads while terminals stay disabled" do
+    image = Marshall.ComputeFixtures.native_image_fixture()
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    [vm] = Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    vm = Ash.Seed.update!(vm, %{image_id: image.id})
+
+    refute Marshall.Compute.Images.guest_capabilities(image.id).terminal
+
+    for state <- [:pending, :failed] do
+      Ledger.update!(vm, :observe, %{observed_state: state})
+      assert {:ok, %{next: 0, bytes: ""}} = Authority.boot_log(fixture.vm, fixture.owner, 0)
+      assert {:error, :terminal_unavailable} = Authority.list_sessions(fixture.vm, fixture.owner)
+
+      assert {:error, :terminal_unavailable} =
+               Authority.open_session(fixture.vm, fixture.owner, "root", "xterm-256color")
+    end
+  end
+
+  test "boot-log reads still refuse foreign actors and stale or unsupported host streams" do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    stranger = Marshall.ComputeFixtures.user()
+    assert {:error, :forbidden} = Authority.boot_log(fixture.vm, stranger, 0)
+
+    [host] = Ledger.read!(Marshall.Compute.Host, id: fixture.host.id)
+    inventory = host.inventory
+
+    for attributes <- [
+          %{inventory: Map.put(inventory, "terminal_protocol", 1)},
+          %{
+            inventory: inventory,
+            reported_at:
+              DateTime.add(Ledger.now(), -(HostLiveness.authority_ms() + 1), :millisecond)
+          }
+        ] do
+      Ledger.update!(host, :report, attributes)
+      assert {:error, :terminal_unavailable} = Authority.boot_log(fixture.vm, fixture.owner, 0)
+    end
+  end
+
   test "one owner can create fifty persistent terminals up to the VM limit" do
     fixture = Marshall.TerminalFixtures.terminal_fixture()
     stream = Marshall.TerminalFixtures.stream_fixture(fixture.host.id)

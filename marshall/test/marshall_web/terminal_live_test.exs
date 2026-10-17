@@ -2,6 +2,30 @@ defmodule MarshallWeb.TerminalLiveTest do
   use MarshallWeb.ConnCase, async: false
   import Phoenix.LiveViewTest
 
+  test "the Boot log entry reads host diagnostics without automatically opening a guest terminal",
+       %{
+         conn: conn
+       } do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    actor = Ash.Resource.put_metadata(fixture.owner, :token, fixture.token)
+
+    conn =
+      conn |> init_test_session(%{}) |> AshAuthentication.Plug.Helpers.store_in_session(actor)
+
+    assert {:ok, view, _} = live(conn, "/machines/#{fixture.vm.id}/terminals?view=boot-log")
+    assert has_element?(view, "#machine-boot-log[aria-current='page']")
+    assert has_element?(view, "#terminal-client[data-view='boot-log']")
+    refute has_element?(view, "#terminal-create")
+    assert Marshall.Compute.Ledger.read!(Marshall.Terminal.Session, vm_id: fixture.vm.id) == []
+
+    render_hook(view, "terminal_boot_log", %{"cursor" => "0"})
+    assert_reply(view, %{ok: true, next: 0, text: ""})
+    send(view.pid, :refresh_terminals)
+    assert has_element?(view, "#machine-boot-log[aria-current='page']")
+    assert Marshall.Compute.Ledger.read!(Marshall.Terminal.Session, vm_id: fixture.vm.id) == []
+  end
+
   test "connected workspace initializes and renders a newly created registry session", %{
     conn: conn
   } do

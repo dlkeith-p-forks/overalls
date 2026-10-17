@@ -3,7 +3,18 @@
 - ID: ADR-0191
 - Status: accepted
 - Date: 2026-10-17
+- Implementation: partial
+- Components: protocol, marshall, lilly, verification
 - Supersedes: none
+- Superseded by: none
+
+## Context
+
+Elixir applications already use generated tests alongside fixed examples,
+contracts and machine verification. Their property engine needs bounded input
+generation, deterministic replay, isolated fixtures and redacted diagnostics.
+The existing suite is not yet fully migrated, and a test dependency alone cannot
+establish either migration completion or native acceptance.
 
 ## Decision
 
@@ -28,17 +39,45 @@ one engine shared with the native verification stack while preserving the
 separation between BEAM and machine evidence. Redacted traces avoid leaking
 credentials, terminal bytes, command arguments, or payloads into CI artifacts.
 
+## Alternatives
+
+Retaining StreamData alone would preserve the current generator APIs but would
+not establish the shared replay and diagnostic policy. Replacing machine tests
+with BEAM properties would lose native isolation and recovery evidence. Hegel is
+therefore test-only and complements the existing verification layers.
+
+## Invariants and verification
+
+Generators remain bounded and typed; fixed seeds and replay metadata reproduce
+failures without exposing drawn secrets. Every generated fixture is cleaned up
+on success, refusal and failure. Application compiler, contract, Dialyzer and
+ExUnit gates remain required. Passing BEAM properties never establishes KVM,
+storage durability, physical recovery or deployed fleet behavior.
+
 ## Implementation evidence
 
 - [Elixir Hegel testing guide](../../development/testing-with-hegel.md)
 - [Hegel Elixir skill](../../../.agents/skills/hegel-elixir-tests/SKILL.md)
-- `hegel_ex` test-only dependency declarations in each migrated Mix project
-- property tests under each application's `test/` tree
+- [Protocol test-only dependency pin](../../../protocol/mix.exs)
+- [Protocol terminal properties](../../../protocol/test/hegel_terminal_test.exs)
+  define bounded frame round trips and truncation cases with deterministic seeds.
+  Their presence does not record execution or completion of the wider migration.
 
 Migration status is tracked by the test inventory and review record; properties
 are only marked migrated after the new test has executed successfully with the
 pinned native engine. StreamData removal is a completion criterion, not an
 implicit result of adding the dependency.
+
+## Open questions
+
+Remaining application migrations need an inventory, executed property and replay
+results, and verified fixture cleanup before their existing engines are removed.
+Native Hegel smoke and full consumer gates retain their own execution records.
+
+## Related decisions
+
+- [ADR-0186: Covenant contract verification](0186-covenant-contract-verification.md)
+- [Elixir Hegel verification review](../reviews/2026-10-17-elixir-hegel-property-verification.md)
 
 ## Consequences
 
