@@ -31,3 +31,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Ready observations are recorded, definite failures clear readiness, and inconclusive observations are accepted only within the configured backstop window.
 - **kind:** functional
 - **status:** active
+
+### marshall.web_surface.I5 — Pending launches are bounded and expire
+- **scope:** `MarshallWeb.PendingLaunch.new/3` and `validate/2`
+- **must:** Pending launch records MUST require canonical sources and 128-bit visit nonces, expire within the configured lifetime, and reject malformed or expired records.
+- **kind:** security
+- **status:** active
+
+### marshall.web_surface.I6 — Terminal names are deterministic and bounded
+- **scope:** `MarshallWeb.TerminalNames.display_name/1`
+- **must:** The same session identifier MUST always produce the same adjective-noun label, and labels MUST remain within the fixed vocabularies.
+- **kind:** functional
+- **status:** active

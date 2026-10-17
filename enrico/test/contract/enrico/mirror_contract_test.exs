@@ -37,4 +37,5 @@ defmodule EnricoMirrorContractTest do
     refute Enrico.Git.valid_path?(String.duplicate("a", 1025))
     refute Enrico.Git.valid_source?("", "repo")
   end
+
 end

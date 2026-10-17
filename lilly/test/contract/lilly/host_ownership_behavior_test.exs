@@ -21,4 +21,23 @@ defmodule LillyHostOwnershipBehaviorContractTest do
     assert {:error, :invalid_cpu_inventory} =
              Lilly.Host.Inventory.parse_cpu("processor: 0\n\nprocessor: 0\n")
   end
+
+  @tag obligation: "lilly.host_ownership.I4"
+  test "ZFS parsers reject incomplete, duplicate, and overflowing native rows" do
+    good = "tank\t1\t2\t3\t4\t5\t6\n"
+    assert {:ok, %{"tank" => values}} = Lilly.Host.ZFSIO.parse_rates(good, ["tank"])
+    assert values["read_iops"] == 3
+    refute match?({:ok, _}, Lilly.Host.ZFSIO.parse_rates(good <> good, ["tank"]))
+    refute match?({:ok, _}, Lilly.Host.ZFSIO.parse_rates("tank\t1\t2\t3\t4\t5\n", ["tank"]))
+
+    refute match?(
+             {:ok, _},
+             Lilly.Host.ZFSIO.parse_identities("tank\tguid\t0\ntank\tload_guid\t2\n", ["tank"])
+           )
+
+    refute match?(
+             {:ok, _},
+             Lilly.Host.ZFSIO.parse_identities("tank\tguid\t1\ntank\tguid\t2\n", ["tank"])
+           )
+  end
 end

@@ -34,4 +34,20 @@ defmodule BradyProxyContractTest do
 
     assert {:error, :invalid_http} = Brady.HTTP.Head.parse(ambiguous, :request)
   end
+
+  @tag obligation: "brady.proxy.I3"
+  test "response serialization strips hop-by-hop and stale framing headers" do
+    head = %{
+      status: 200,
+      headers: [{"connection", "upgrade"}, {"content-length", "999"}, {"x-ok", "yes"}],
+      body: {:length, 2}
+    }
+
+    output = IO.iodata_to_binary(Brady.HTTP.Head.response_bytes(head))
+    assert output =~ "x-ok: yes"
+    refute output =~ "upgrade"
+    refute output =~ "content-length: 999"
+    assert output =~ "content-length: 2"
+    assert output =~ "connection: close"
+  end
 end

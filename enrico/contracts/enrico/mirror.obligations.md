@@ -20,6 +20,7 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **kind:** security
 - **status:** active
 
+
 ### enrico.mirror.I2 — Git source and path validation rejects traversal
 - **scope:** the component behavior exercised by the tagged contract test
 - **must:** source, ref, and path validators MUST reject unsafe names, traversal, and absolute paths.

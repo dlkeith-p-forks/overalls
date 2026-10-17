@@ -19,3 +19,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** `Audi.DNS.Wire.decode/1` MUST reject response packets and clamp EDNS UDP size to 1232.
 - **kind:** security
 - **status:** active
+
+### audi.dns_authority.I3 — Oversized UDP replies truncate without unsafe flags
+- **scope:** `Audi.DNS.Wire.reply/6`
+- **must:** UDP replies that exceed the advertised EDNS limit MUST set the truncation bit and omit oversized records; replies MUST NOT advertise recursion or DNSSEC validation.
+- **kind:** security
+- **status:** active

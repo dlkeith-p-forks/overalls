@@ -36,9 +36,13 @@ defmodule OverallsProtocolTransportContractTest do
   @tag obligation: "overalls_protocol.transport.I3"
   test "control envelope rejects arbitrary names and malformed JSON" do
     assert {:error, :invalid_message} =
-             OverallsProtocol.Control.Envelope.decode(~s({"k":"req","id":1,"op":"Bad Name","body":{}}))
+             OverallsProtocol.Control.Envelope.decode(
+               ~s({"k":"req","id":1,"op":"Bad Name","body":{}})
+             )
+
     assert {:error, :invalid_message} =
              OverallsProtocol.Control.Envelope.decode("not-json")
+
     assert {:error, :invalid_message} =
              OverallsProtocol.Control.Envelope.decode(~s({"k":"unknown","payload":{}}))
   end

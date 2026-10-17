@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Count unique logical processors while returning nil physical topology when source fields are absent; duplicate processors are rejected.
 - **kind:** functional
 - **status:** active
+
+### lilly.host_ownership.I4 — ZFS observations are complete and bounded
+- **scope:** `Lilly.Host.ZFSIO.parse_rates/2` and `parse_identities/2`
+- **must:** Native rows MUST be complete, unique, bounded, and tied to requested pool names; malformed, duplicate, overflowing, or extra rows MUST remain unavailable.
+- **kind:** security
+- **status:** active

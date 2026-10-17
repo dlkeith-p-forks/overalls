@@ -1,9 +1,9 @@
 {
   "apps": {
     "brady": {
-      "active": 5,
+      "active": 6,
       "coverage": 1.0,
-      "covered": 5
+      "covered": 6
     },
     "system": {
       "active": 0,
@@ -52,10 +52,10 @@
       }
     },
     "brady.proxy": {
-      "active": 2,
+      "active": 3,
       "app": "brady",
       "coverage": 1.0,
-      "covered": 2,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "brady.proxy.I1": {
@@ -77,6 +77,16 @@
           "tests": [
             "test HTTP framing rejects ambiguous requests and preserves remainder"
           ]
+        },
+        "brady.proxy.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test response serialization strips hop-by-hop and stale framing headers"
+          ]
         }
       }
     },
@@ -92,8 +102,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 5,
+    "active": 6,
     "coverage": 1.0,
-    "covered": 5
+    "covered": 6
   }
 }

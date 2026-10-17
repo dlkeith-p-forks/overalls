@@ -25,3 +25,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Refusals create a tagged probe and acceptance clears the fence; unrelated tokens cannot probe.
 - **kind:** functional
 - **status:** active
+
+### ziggy.accounting.I4 — Completion validation is closed and bounded
+- **scope:** `Ziggy.Completion.validate/1`
+- **must:** Unknown fields, negative durations, and malformed completion records MUST be rejected before wire projection.
+- **kind:** security
+- **status:** active
+
+### ziggy.accounting.I5 — Version fence backoff doubles
+- **scope:** `Ziggy.VersionFence.refused/1`
+- **must:** Repeated refusals MUST increase probe delay exponentially within the configured cap.
+- **kind:** functional
+- **status:** active

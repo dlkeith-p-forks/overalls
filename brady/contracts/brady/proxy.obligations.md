@@ -19,3 +19,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Requests MUST require exactly one Host header and reject conflicting or duplicate body framing; valid bounded requests preserve the remaining bytes.
 - **kind:** security
 - **status:** active
+
+### brady.proxy.I3 — Response serialization strips hop-by-hop framing
+- **scope:** `Brady.HTTP.Head.response_bytes/1`
+- **must:** serialized responses MUST remove hop-by-hop and caller supplied content-length headers and emit one authoritative connection/framing policy.
+- **kind:** security
+- **status:** active

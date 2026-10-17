@@ -6,9 +6,9 @@
       "covered": 0
     },
     "ziggy": {
-      "active": 6,
+      "active": 8,
       "coverage": 1.0,
-      "covered": 6
+      "covered": 8
     }
   },
   "components": {
@@ -21,10 +21,10 @@
       "obligations": {}
     },
     "ziggy.accounting": {
-      "active": 3,
+      "active": 5,
       "app": "ziggy",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "ziggy.accounting.I1": {
@@ -55,6 +55,26 @@
           "testable": true,
           "tests": [
             "test completion wire keeps only accounting fields"
+          ]
+        },
+        "ziggy.accounting.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test completion validation rejects unknown fields and out of range values"
+          ]
+        },
+        "ziggy.accounting.I5": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test version fence backoff doubles and caps"
           ]
         }
       }
@@ -102,8 +122,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 6,
+    "active": 8,
     "coverage": 1.0,
-    "covered": 6
+    "covered": 8
   }
 }
