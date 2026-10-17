@@ -18,7 +18,7 @@ defmodule Overalls.Diagnostics.MixProject do
         {:req, "~> 0.7.4"},
         {:jason, "~> 1.4"},
         {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-        {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "bf5c18d", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false},
+        {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "6dae450", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false},
       ],
       aliases: [
         "toolchain.check": [
