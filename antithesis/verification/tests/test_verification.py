@@ -766,17 +766,24 @@ class VerificationTests(unittest.TestCase):
             (core / "__init__.py").write_text('"""core"""\n', encoding="utf-8")
             (core / "bootstrap.py").write_text("READY = True\n", encoding="utf-8")
             (core / "config.py").write_text("VALUE = 1\n", encoding="utf-8")
+            launcher = root / "antithesis/workload/bootstrap.py"
+            launcher.write_text("from core.bootstrap import READY\n", encoding="utf-8")
             command = root / "antithesis/test/v1/probe/serial_driver_probe.py"
             command.parent.mkdir(parents=True)
             command.write_text("from core.config import VALUE\nprint(VALUE)\n", encoding="utf-8")
             files, dependencies = selected_files(root, selection)
             self.assertEqual(files, [command])
             # Importing ``core.config`` executes ``core/__init__.py`` too, so the
-            # initializer is a traced runtime dependency and catalog member.
+            # initializer is a traced runtime dependency and catalog member. The
+            # top-level launcher keeps the staged catalog root a module directory.
             self.assertEqual(
                 dependencies,
-                [core / "__init__.py", core / "bootstrap.py", core / "config.py"],
+                [launcher, core / "__init__.py", core / "bootstrap.py", core / "config.py"],
             )
+            launcher.unlink()
+            with self.assertRaisesRegex(EvidenceError, "catalog launcher is missing"):
+                selected_files(root, selection)
+            launcher.write_text("from core.bootstrap import READY\n", encoding="utf-8")
             command.write_text(
                 'from antithesis.assertions import reachable\nreachable("probe ran")\n',
                 encoding="utf-8",
