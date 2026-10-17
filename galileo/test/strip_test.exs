@@ -1,6 +1,7 @@
 defmodule Galileo.StripTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Galileo.Strip
 
   property "prefix removal is segment-aligned and never rewrites unmatched paths" do

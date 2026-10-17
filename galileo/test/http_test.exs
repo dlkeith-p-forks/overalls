@@ -1,6 +1,7 @@
 defmodule Galileo.HTTPTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   import Plug.Conn
 
   @host_id "01234567-89ab-4def-8123-456789abcdef"

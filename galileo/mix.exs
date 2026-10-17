@@ -37,7 +37,7 @@ defmodule Galileo.MixProject do
       {:telemetry, "~> 1.4"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:stream_data, "~> 1.4", only: :test},
-      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "6a62795", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
+      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "bcec6e3", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
     ] ++ antithesis_deps()
   end
 
