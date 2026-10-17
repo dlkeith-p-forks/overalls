@@ -474,7 +474,10 @@ defmodule ZFSGuestFixture do
             spec,
             Enum.map(coding_cli_steps(), fn {name, command} ->
               {"#{phase} root #{name}", "bash -lc " <> shell_quote(command)}
-            end) ++ [{"#{phase} new-user", manually_created_user_coding_cli_commands()}]
+            end) ++
+              Enum.map(manually_created_user_coding_cli_steps(), fn {name, command} ->
+                {"#{phase} new-user #{name}", command}
+              end)
           )
         end
 
@@ -938,20 +941,21 @@ defmodule ZFSGuestFixture do
     ]
   end
 
-  @spec coding_cli_commands() :: String.t()
-  defp coding_cli_commands, do: Enum.map_join(coding_cli_steps(), " && ", &elem(&1, 1))
-
   # @cc [owner:ghuntley,label:verification] guest-coding-cli-user-login
   # A plain useradd account MUST execute both native clients with inherited
   # system configuration and CA trust. The fixture MUST remove its account and
   # home, including any client state created by the smoke commands.
-  @spec manually_created_user_coding_cli_commands() :: String.t()
-  defp manually_created_user_coding_cli_commands do
-    "(useradd -m coding-clis-fixture && " <>
-      "trap \"userdel -f -r coding-clis-fixture >/dev/null 2>&1 || exit 1\" EXIT && " <>
-      "su - coding-clis-fixture -c " <>
-      shell_quote(coding_cli_commands()) <>
-      ") && ! getent passwd coding-clis-fixture >/dev/null && test ! -e /home/coding-clis-fixture"
+  @spec manually_created_user_coding_cli_steps() :: [{String.t(), String.t()}]
+  defp manually_created_user_coding_cli_steps do
+    [{"create", "useradd -m coding-clis-fixture"}] ++
+      Enum.map(coding_cli_steps(), fn {name, command} ->
+        {name, "su - coding-clis-fixture -c " <> shell_quote(command)}
+      end) ++
+      [
+        {"remove",
+         "userdel -f -r coding-clis-fixture >/dev/null 2>&1 && " <>
+           "! getent passwd coding-clis-fixture >/dev/null && test ! -e /home/coding-clis-fixture"}
+      ]
   end
 
   # @cc [owner:ghuntley,label:verification] guest-root-starship-startup
