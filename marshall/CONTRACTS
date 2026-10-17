@@ -1,0 +1,16 @@
+@cc [owner:ghuntley,label:architecture] marshall-durable-authority
+Marshall instances MUST use shared PostgreSQL as durable authority for VM intent,
+reservations, access and terminal leases. Local processes, caches and PubSub
+notifications MUST NOT independently authorize mutations after database authority
+has expired or changed.
+
+@cc [owner:ghuntley,label:build] marshall-independent-release
+The production Marshall release MUST NOT depend on Lilly's or Porsche's application runtime.
+Test-only dependencies MAY exercise real client/server boundaries; shared
+production wire types and validation belong in protocol/.
+
+@cc [owner:ghuntley,label:verification] marshall-gate-preservation
+Marshall precommit MUST retain the pinned-runtime, ADR, contract, compiler,
+formatting, distributed-test, browser-state and forced Dialyzer checks. Any
+upstream typespec exclusion MUST NOT suppress application findings, and unused
+exclusions MUST be reported.

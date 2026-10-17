@@ -1,0 +1,4 @@
+@cc [owner:ghuntley,label:verification] enrollment-machine-private-fixtures
+The machine suite MUST use generated SSH and application credentials, the actual
+source-built Marshall operator and verified database TLS. Assertions MUST NOT
+print issued envelopes, credentials or raw private command diagnostics.

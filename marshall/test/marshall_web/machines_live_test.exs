@@ -1,0 +1,941 @@
+defmodule MarshallWeb.MachinesLiveTest do
+  use MarshallWeb.ConnCase, async: false
+  import Phoenix.LiveViewTest
+  import Marshall.ComputeFixtures
+  alias Marshall.{Access, Compute, Teams}
+  alias Marshall.Compute.{Ledger, Operation, VirtualMachine}
+  alias Marshall.EditorFixture
+
+  setup do
+    fixture = host_fixture()
+    owner = user()
+    %{owner: owner, fixture: fixture}
+  end
+
+  test "machine connection keeps installer and SSH commands without a profile download", %{
+    conn: conn,
+    owner: owner
+  } do
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}")
+
+    assert has_element?(view, "#machine-install-command", "/bin/install.sh")
+    assert has_element?(view, "#machine-ssh-command", "ssh ")
+    assert has_element?(view, "#machine-connect-windows summary", "Windows (PowerShell)")
+    assert has_element?(view, "#machine-install-command-windows", "/bin/install.ps1")
+    assert has_element?(view, "#machine-install-command-windows", "-ExecutionPolicy Bypass")
+    assert has_element?(view, "#machine-ssh-command-windows", "overalls ssh ")
+    refute has_element?(view, "#download-ssh-config")
+    refute has_element?(view, "a[href$='/ssh-config']")
+  end
+
+  test "Customer hides sharing but retains owner lifecycle controls", %{conn: conn, owner: owner} do
+    {:ok, vm} = Compute.provision(request(%{profile: :customer}), actor: owner)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}/settings")
+    assert has_element?(view, "#customer-isolation")
+    refute has_element?(view, "#sharing-form")
+    assert has_element?(view, "#lifecycle-actions")
+    assert has_element?(view, "#clone-form")
+    assert has_element?(view, "#resize-machine")
+
+    assert {:error, {:live_redirect, %{to: to}}} =
+             live(signed_in(build_conn(), owner), ~p"/machines/#{vm.id}/resources")
+
+    assert to == ~p"/machines/#{vm.id}/settings"
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery] power-key-refusal-reuse
+  # A refused power event records no operation, so its request key MUST remain
+  # usable: the same key with a different kind submits the fresh intent exactly
+  # once. Accepted intent MUST rotate the rendered key for the next click.
+  test "a refused power event keeps its key usable for a fresh different kind", %{
+    conn: conn,
+    owner: owner,
+    fixture: fixture
+  } do
+    {:ok, vm} = Compute.provision(request(%{profile: :customer}), actor: owner)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}/settings")
+    stop_key = power_key(view, "#stop-machine")
+    dispatches = dispatch_count()
+
+    view |> element("#stop-machine") |> render_click()
+    assert [%{kind: :stop}] = Ledger.read!(Operation, vm_id: vm.id, kind: :stop)
+    assert [%{desired_state: :stopped}] = Ledger.read!(VirtualMachine, id: vm.id)
+    assert has_element?(view, "#start-machine")
+    start_key = power_key(view, "#start-machine")
+    refute start_key == stop_key
+
+    Ledger.update!(fixture.host, :report, %{capacity: capacity(0, 0)})
+    render_click(view, "machine-power", %{"kind" => "start", "key" => start_key})
+    assert has_element?(view, "#flash-group", "could not be updated")
+    assert [] = Ledger.read!(Operation, vm_id: vm.id, kind: :start)
+    assert 1 == length(Ledger.read!(Operation, vm_id: vm.id, kind: :stop))
+    assert [%{desired_state: :stopped}] = Ledger.read!(VirtualMachine, id: vm.id)
+    assert dispatch_count() == dispatches + 1
+    assert power_key(view, "#start-machine") == start_key
+
+    render_click(view, "machine-power", %{"kind" => "stop", "key" => start_key})
+
+    assert [%{request_key: ^start_key}] =
+             Ledger.read!(Operation, vm_id: vm.id, kind: :stop, request_key: start_key)
+
+    assert 2 == length(Ledger.read!(Operation, vm_id: vm.id, kind: :stop))
+    assert [%{desired_state: :stopped}] = Ledger.read!(VirtualMachine, id: vm.id)
+    assert dispatch_count() == dispatches + 2
+    refute power_key(view, "#start-machine") == start_key
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery] power-key-kind-conflict
+  # A request key bound to an accepted kind MUST refuse a changed kind through
+  # either power entry without enqueueing another operation or changing durable
+  # intent; the flash uses only a fixed public message.
+  test "an accepted key refuses a changed kind without enqueueing new intent", %{
+    conn: conn,
+    owner: owner
+  } do
+    {:ok, vm} = Compute.provision(request(%{profile: :customer}), actor: owner)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}/settings")
+    stop_key = power_key(view, "#stop-machine")
+    dispatches = dispatch_count()
+    view |> element("#stop-machine") |> render_click()
+    assert [%{kind: :stop}] = Ledger.read!(Operation, vm_id: vm.id, kind: :stop)
+
+    render_click(view, "machine-power", %{"kind" => "start", "key" => stop_key})
+    assert has_element?(view, "#flash-group", "could not be updated")
+    assert [] = Ledger.read!(Operation, vm_id: vm.id, kind: :start)
+    assert [%{desired_state: :stopped}] = Ledger.read!(VirtualMachine, id: vm.id)
+    assert dispatch_count() == dispatches + 1
+
+    render_click(view, "lifecycle", %{"kind" => "delete", "key" => stop_key})
+    assert has_element?(view, "#flash-group", "already been used")
+    assert [] = Ledger.read!(Operation, vm_id: vm.id, kind: :delete)
+
+    assert [%{desired_state: :stopped, archived_at: nil}] =
+             Ledger.read!(VirtualMachine, id: vm.id)
+
+    assert dispatch_count() == dispatches + 1
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] customer-browser-entry-refusal
+  # Non-owner browser reads of a Customer machine MUST redirect to /machines
+  # without lifecycle work, including one seeded stale manager grant and an
+  # elevated administrator; the machine remains untouched through every denied
+  # direct URL.
+  test "customer detail refuses member, stranger and elevated administrator reads", %{
+    owner: owner
+  } do
+    {:ok, vm} = Compute.provision(request(%{profile: :customer}), actor: owner)
+    grant_member = user()
+
+    Ledger.create!(Marshall.Access.Grant, :grant, %{
+      vm_id: vm.id,
+      user_id: grant_member.id,
+      granted_by_id: owner.id,
+      role: :manager
+    })
+
+    admin = Marshall.PasskeyFixture.user(true) |> Marshall.PasskeyFixture.verified_session()
+    operations = Ledger.read!(Operation, vm_id: vm.id)
+
+    for actor <- [grant_member, user(), admin] do
+      for {path, notice} <- [
+            {"/machines/#{vm.id}", "Machine not found."},
+            {"/machines/#{vm.id}/settings", "unavailable"}
+          ] do
+        assert {:error, redirect} = live(signed_in_current(build_conn(), actor), path)
+        assert redirect_location(redirect) == "/machines"
+        assert %{"error" => flash} = redirect_flash(redirect)
+        assert flash =~ notice
+      end
+    end
+
+    assert Ledger.read!(Operation, vm_id: vm.id) == operations
+
+    assert [%{desired_state: :running, archived_at: nil}] =
+             Ledger.read!(VirtualMachine, id: vm.id)
+  end
+
+  test "creation form compares available profile capabilities", %{conn: conn, owner: owner} do
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+
+    assert has_element?(view, "#machine_profile option[selected][value='oss']")
+    assert has_element?(view, "#machine_profile[aria-describedby='profile-guide']")
+    assert has_element?(view, "#profile-help-customer", "owner-only")
+    assert has_element?(view, "#profile-help-customer", "no outbound connections")
+    assert has_element?(view, "#profile-help-standard", "cannot start child agents")
+    assert has_element?(view, "#profile-help-oss", "can start child agents")
+    refute has_element?(view, "#profile-help-inception")
+  end
+
+  test "clone form queues additional copies and retains duplicate submission identity", %{
+    conn: conn,
+    owner: owner
+  } do
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}/settings")
+    assert has_element?(view, "#clone-form")
+    assert has_element?(view, "#clone-empty")
+    params = %{"clone" => %{"name" => "", "request_key" => "browser-copy-one"}}
+    render_submit(view, "clone", params)
+    render_submit(view, "clone", params)
+    assert length(Ledger.read!(Marshall.Compute.CloneRequest)) == 1
+
+    render_submit(view, "clone", %{
+      "clone" => %{"name" => "", "request_key" => "browser-copy-two"}
+    })
+
+    assert length(Ledger.read!(Marshall.Compute.CloneRequest)) == 2
+    assert has_element?(view, "#clone-requests article", "Queue position 2")
+    refute has_element?(view, "#clone-empty")
+  end
+
+  test "clone cards refresh through snapshot, recovery, publication and completion", %{
+    conn: conn,
+    owner: owner
+  } do
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    {:ok, clone} = Compute.clone(%{vm_id: vm.id, idempotency_key: "progress-card"}, actor: owner)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}/settings")
+    card = "#clones-#{clone.id}"
+    assert has_element?(view, card <> "-status", "Queued")
+    [record] = Ledger.read!(Marshall.Compute.CloneRequest, id: clone.id)
+
+    record =
+      Enum.reduce(
+        [
+          {:prepare, %{active: true, original_power_state: :running}, "Preparing clone"},
+          {:stop_source, %{}, "Stopping source for snapshot"},
+          {:capture, %{}, "Taking snapshot"},
+          {:confirm_capture, %{}, "Copying files"}
+        ],
+        record,
+        fn {action, attrs, label}, record ->
+          next = Ledger.update!(record, action, attrs)
+          send(view.pid, :refresh)
+          assert has_element?(view, card <> "-status", label)
+          assert has_element?(view, "#clone-announcement", label)
+          next
+        end
+      )
+
+    record = Ledger.update!(record, :record_progress, %{failure: "source_restart_failed"})
+    send(view.pid, :refresh)
+    assert has_element?(view, card <> "-status", "Needs attention")
+    view |> element(card <> "-retry") |> render_click()
+    assert has_element?(view, card <> " .clone-source", "Source recovery retry requested")
+
+    record =
+      Ledger.update!(record, :record_progress, %{
+        source_restored_at: DateTime.utc_now(),
+        failure: nil
+      })
+
+    send(view.pid, :refresh)
+
+    assert has_element?(
+             view,
+             card <> " .clone-source",
+             "Source returned to its original power state"
+           )
+
+    assert has_element?(view, card <> "-status", "Copying files")
+    refute has_element?(view, card <> "-open")
+
+    record = Ledger.update!(record, :confirm_copy, %{})
+    send(view.pid, :refresh)
+    assert has_element?(view, card <> "-status", "Creating cloned machine")
+    record = Ledger.update!(record, :publish, %{published_at: DateTime.utc_now()})
+    send(view.pid, :refresh)
+    assert has_element?(view, card <> "-status", "Finishing up")
+    assert has_element?(view, card <> "-open[href='/machines/#{clone.destination_vm_id}']")
+    refute has_element?(view, card <> "-cancel")
+
+    Ledger.update!(record, :complete, %{active: false, finished_at: DateTime.utc_now()})
+    send(view.pid, :refresh)
+    assert has_element?(view, card <> "-status", "Clone complete")
+
+    assert Enum.count(
+             view
+             |> render()
+             |> LazyHTML.from_fragment()
+             |> LazyHTML.query(card <> " [data-state='done']")
+           ) == 5
+
+    announcement = view |> element("#clone-announcement") |> render()
+    send(view.pid, :refresh)
+    assert view |> element("#clone-announcement") |> render() == announcement
+  end
+
+  test "clone cancellation and failed admission retain truthful recovery controls", %{
+    conn: conn,
+    owner: owner
+  } do
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    {:ok, clone} = Compute.clone(%{vm_id: vm.id, idempotency_key: "cancel-card"}, actor: owner)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}/settings")
+    card = "#clones-#{clone.id}"
+    [record] = Ledger.read!(Marshall.Compute.CloneRequest, id: clone.id)
+
+    record =
+      Ledger.update!(record, :fail, %{
+        failure: "insufficient_capacity",
+        finished_at: DateTime.utc_now()
+      })
+
+    send(view.pid, :refresh)
+    assert has_element?(view, card <> "-status", "Clone needs attention")
+    assert has_element?(view, card <> " .clone-failure", "not enough capacity")
+    view |> element(card <> "-retry") |> render_click()
+    assert has_element?(view, card <> "-status", "Queued")
+    [record] = Ledger.read!(Marshall.Compute.CloneRequest, id: record.id)
+    record = Ledger.update!(record, :prepare, %{active: true, original_power_state: :running})
+    send(view.pid, :refresh)
+    view |> element(card <> "-cancel") |> render_click()
+    assert has_element?(view, card <> "-status", "Cancelling clone")
+    [record] = Ledger.read!(Marshall.Compute.CloneRequest, id: record.id)
+    Ledger.update!(record, :cancel, %{active: false, finished_at: DateTime.utc_now()})
+    send(view.pid, :refresh)
+    assert has_element?(view, card <> "-status", "Clone cancelled")
+    refute has_element?(view, card <> "-open")
+    refute has_element?(view, card <> "-cancel")
+  end
+
+  test "Ubuntu is selectable beside the configured NixOS default and provisions its image", %{
+    conn: conn,
+    owner: owner,
+    fixture: fixture
+  } do
+    ubuntu = ubuntu_image_fixture(fixture)
+    previous = Application.get_env(:marshall, :default_image_id)
+    Application.put_env(:marshall, :default_image_id, image_id())
+    on_exit(fn -> Application.put_env(:marshall, :default_image_id, previous) end)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+    assert has_element?(view, "#machine_image_id option[selected][value='#{image_id()}']")
+
+    assert has_element?(
+             view,
+             "#machine_image_id option[value='#{ubuntu.id}']",
+             "Ubuntu 26.04 LTS"
+           )
+
+    view |> form("#provision-form", machine: %{image_id: ubuntu.id}) |> render_change()
+    assert_patch(view)
+    view |> form("#provision-form", machine: %{}) |> render_submit()
+    assert [%{image_id: selected}] = Ledger.read!(VirtualMachine, owner_id: owner.id)
+    assert selected == ubuntu.id
+  end
+
+  defp larger_image(fixture) do
+    manifest =
+      image_manifest()
+      |> Map.put("minimum_memory_bytes", 805_306_369)
+      |> Map.put("minimum_disk_bytes", 2_147_487_744)
+
+    {:ok, image} = Marshall.Compute.Images.register(manifest, "zz-larger-image")
+
+    report = %{
+      fixture.report
+      | sequence: 2,
+        inventory: Map.put(fixture.report.inventory, "images", [image_id(), image.id])
+    }
+
+    {:ok, :ok} = Marshall.Compute.HostReports.ingest(fixture.host.id, fixture.epoch, report)
+    image
+  end
+
+  test "Inception selection binds its image and defaults while retaining the request identity", %{
+    conn: conn,
+    owner: owner,
+    fixture: fixture
+  } do
+    image = larger_image(fixture)
+    previous = Application.get_env(:marshall, :inception_image_id)
+    Application.put_env(:marshall, :inception_image_id, image.id)
+    on_exit(fn -> Application.put_env(:marshall, :inception_image_id, previous) end)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+    assert has_element?(view, "#machine_profile option[value='inception']")
+    assert has_element?(view, "#profile-help-inception", "256 GiB data disk")
+
+    key =
+      view
+      |> element("#machine_request_key")
+      |> render()
+      |> LazyHTML.from_fragment()
+      |> LazyHTML.query("input")
+      |> LazyHTML.attribute("value")
+      |> hd()
+
+    view |> form("#provision-form", machine: %{profile: "inception"}) |> render_change()
+    assert_patch(view)
+    assert has_element?(view, "#inception-image-id[value='#{image.id}']")
+    assert has_element?(view, "#machine_vcpu[value='16']")
+    assert has_element?(view, "#machine_memory_mib[value='32768']")
+    assert has_element?(view, "#machine_disk_gib[value='64']")
+    assert has_element?(view, "#machine_request_key[value='#{key}']")
+    assert has_element?(view, "#profile-help-inception", "higher resource minimums")
+    refute has_element?(view, "select#machine_image_id")
+    view |> form("#provision-form", machine: %{disk_gib: "65"}) |> render_change()
+    assert_patch(view)
+    send(view.pid, :refresh)
+    assert has_element?(view, "#machine_disk_gib[value='65']")
+    view |> form("#provision-form", machine: %{}) |> render_submit()
+    assert Ledger.read!(VirtualMachine, owner_id: owner.id) == []
+    assert has_element?(view, "#provision-form")
+  end
+
+  test "an unconfigured Inception image is not offered as a working profile", %{
+    conn: conn,
+    owner: owner
+  } do
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+    refute has_element?(view, "#machine_profile option[value='inception']")
+    refute has_element?(view, "#profile-help-inception")
+  end
+
+  test "configured image supplies rounded defaults and still provisions through Ash", %{
+    conn: conn,
+    owner: owner,
+    fixture: fixture
+  } do
+    image = larger_image(fixture)
+    previous = Application.get_env(:marshall, :default_image_id)
+    Application.put_env(:marshall, :default_image_id, image.id)
+    on_exit(fn -> Application.put_env(:marshall, :default_image_id, previous) end)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+    assert has_element?(view, "#machine_image_id option[selected][value='#{image.id}']")
+    assert has_element?(view, "#machine_memory_mib[value='769']")
+    assert has_element?(view, "#machine_disk_gib[value='3']")
+    view |> form("#provision-form", machine: %{}) |> render_submit()
+
+    assert [%{image_id: id, profile: :oss, memory_bytes: 806_354_944, disk_bytes: 3_221_225_472}] =
+             Ledger.read!(VirtualMachine, owner_id: owner.id)
+
+    assert id == image.id
+  end
+
+  # @cc [owner:ghuntley,label:verification;product] creation-draft-image-change-resets-sizes
+  # Changing the image in the creation form MUST reset the size fields to the
+  # selected image's rounded minima, including a size the user edited for the
+  # previous image, while the profile and request identity stay untouched.
+  test "an image change resets the size defaults to the selected image's minima", %{
+    conn: conn,
+    owner: owner,
+    fixture: fixture
+  } do
+    larger = larger_image(fixture)
+    previous = Application.get_env(:marshall, :default_image_id)
+    Application.put_env(:marshall, :default_image_id, image_id())
+    on_exit(fn -> Application.put_env(:marshall, :default_image_id, previous) end)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+    assert has_element?(view, "#machine_image_id option[selected][value='#{image_id()}']")
+    refute has_element?(view, "#machine_memory_mib[value='769']")
+
+    view |> form("#provision-form", machine: %{image_id: larger.id}) |> render_change()
+    assert_patch(view)
+    assert has_element?(view, "#machine_memory_mib[value='769']")
+    assert has_element?(view, "#machine_disk_gib[value='3']")
+
+    # A size edit survives further validation of the same image...
+    view |> form("#provision-form", machine: %{disk_gib: "7"}) |> render_change()
+    assert_patch(view)
+    assert has_element?(view, "#machine_disk_gib[value='7']")
+    assert has_element?(view, "#machine_memory_mib[value='769']")
+
+    # ...and is reset with the memory default when the image changes again.
+    view |> form("#provision-form", machine: %{image_id: image_id()}) |> render_change()
+    assert_patch(view)
+    refute has_element?(view, "#machine_disk_gib[value='7']")
+    refute has_element?(view, "#machine_memory_mib[value='769']")
+    assert has_element?(view, "#machine_profile option[selected][value='oss']")
+  end
+
+  test "explicit undersized drafts remain unchanged and Ash rejects admission", %{
+    conn: conn,
+    owner: owner,
+    fixture: fixture
+  } do
+    image = larger_image(fixture)
+    draft = %{image_id: image.id, memory_mib: "512", disk_gib: "2"}
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new?#{%{machine: draft}}")
+    assert has_element?(view, "#machine_memory_mib[value='512']")
+    assert has_element?(view, "#machine_disk_gib[value='2']")
+    view |> form("#provision-form", machine: %{}) |> render_submit()
+    assert Ledger.read!(VirtualMachine, owner_id: owner.id) == []
+    assert has_element?(view, "#provision-form")
+  end
+
+  test "machine routes require sign in", %{conn: conn} do
+    for route <- [~p"/machines", ~p"/machines/new"] do
+      assert {:error, {:redirect, %{to: "/sign-in"}}} = live(conn, route)
+    end
+  end
+
+  test "machine list exposes terminal and VS Code actions for an eligible owner", %{conn: conn} do
+    put_editor_release()
+    fixture = EditorFixture.new()
+    machine_id = fixture.vm.id
+
+    {:ok, view, _} = live(signed_in(conn, fixture.owner), ~p"/machines")
+
+    assert has_element?(view, "th", "Connect")
+
+    assert has_element?(
+             view,
+             "#machine-terminal-#{machine_id}[href='/machines/#{machine_id}/terminals']"
+           )
+
+    assert has_element?(
+             view,
+             "#machine-#{machine_id}-vscode.console-button[href='/machines/#{machine_id}/code'][target='_blank'][rel='noopener noreferrer']",
+             "Open VS Code"
+           )
+
+    refute has_element?(view, "#machine-#{machine_id}-vscode-disabled")
+  end
+
+  test "machine list hides VS Code from a viewer", %{conn: conn} do
+    put_editor_release()
+    fixture = EditorFixture.new()
+    viewer = user()
+    assert {:ok, _} = Marshall.TerminalFixtures.grant(fixture, viewer, :viewer)
+
+    {:ok, view, _} = live(signed_in(conn, viewer), ~p"/machines")
+
+    assert has_element?(view, "#machines-#{fixture.vm.id}")
+    refute has_element?(view, "#machine-#{fixture.vm.id}-vscode")
+    refute has_element?(view, "#machine-#{fixture.vm.id}-vscode-disabled")
+  end
+
+  test "machine list disables VS Code with stopped and unavailable reasons", %{conn: conn} do
+    put_editor_release()
+    fixture = EditorFixture.new()
+    machine_id = fixture.vm.id
+    {:ok, view, _} = live(signed_in(conn, fixture.owner), ~p"/machines")
+
+    Ledger.intent!(fixture.vm, %{desired_state: :stopped, generation: fixture.vm.generation + 1})
+    send(view.pid, :refresh)
+    assert has_element?(view, "#machine-#{machine_id}-vscode-disabled[disabled]")
+
+    assert has_element?(
+             view,
+             "#machine-#{machine_id}-vscode-reason",
+             "requires a running machine"
+           )
+
+    Application.delete_env(:marshall, :ingress_editor_release)
+    send(view.pid, :refresh)
+    assert has_element?(view, "#machine-#{machine_id}-vscode-disabled[disabled]")
+    assert has_element?(view, "#machine-#{machine_id}-vscode-reason", "temporarily unavailable")
+  end
+
+  test "machine list explains unsupported images without an editor link", %{conn: conn} do
+    put_editor_release()
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    machine_id = fixture.vm.id
+    {:ok, view, _} = live(signed_in(conn, fixture.owner), ~p"/machines")
+
+    refute has_element?(view, "#machine-#{machine_id}-vscode")
+    assert has_element?(view, "#machine-#{machine_id}-vscode-disabled[disabled]")
+
+    assert has_element?(
+             view,
+             "#machine-#{machine_id}-vscode-reason",
+             "new machine using the current image"
+           )
+  end
+
+  test "current headroom distinguishes unknown telemetry from measured zero", %{
+    conn: conn,
+    owner: owner,
+    fixture: c
+  } do
+    conn = signed_in(conn, owner)
+    {:ok, view, _} = live(conn, ~p"/machines")
+    assert has_element?(view, "#available-capacity", "Current headroom")
+    Ledger.update!(c.host, :report, %{capacity: nil})
+    send(view.pid, :refresh)
+    assert has_element?(view, "#available-capacity", "temporarily unavailable")
+    Ledger.update!(c.host, :report, %{capacity: capacity(0, 0)})
+    send(view.pid, :refresh)
+    assert has_element?(view, "#available-capacity", "0 vCPU")
+    refute has_element?(view, "#available-capacity", "temporarily unavailable")
+  end
+
+  test "signed-in user can provision and request lifecycle changes", %{
+    conn: conn,
+    owner: owner,
+    fixture: fixture
+  } do
+    conn = signed_in(conn, owner)
+    {:ok, view, _} = live(conn, ~p"/machines")
+    assert has_element?(view, "#available-capacity")
+    assert has_element?(view, "#machines-empty")
+    refute has_element?(view, "#provision-form")
+    assert has_element?(view, "#create-machine[href='/machines/new']")
+    {:ok, view, _} = live(conn, ~p"/machines/new")
+    assert has_element?(view, "#provision-submit:not([disabled])")
+
+    view
+    |> form("#provision-form",
+      machine: %{
+        image_id: image_id(),
+        profile: "standard",
+        vcpu: "1",
+        memory_mib: "512",
+        disk_gib: "2"
+      }
+    )
+    |> render_submit()
+
+    [vm] = Ledger.read!(VirtualMachine, owner_id: owner.id)
+    assert vm.profile == :standard
+    assert_redirect(view, ~p"/machines/#{vm.id}")
+    {:ok, detail, _} = live(conn, ~p"/machines/#{vm.id}/settings")
+    assert has_element?(detail, "#machine-detail")
+    assert has_element?(detail, "#machine-detail h1", vm.name)
+    assert has_element?(detail, "#machine-host", fixture.host.name)
+    refute has_element?(detail, "#sharing-form")
+    detail |> element("#stop-machine") |> render_click()
+    assert [%{desired_state: :stopped}] = Ledger.read!(VirtualMachine, id: vm.id)
+    assert has_element?(detail, "#start-machine")
+  end
+
+  test "team selection provisions a machine visible in bounded lists to current members", %{
+    conn: conn,
+    owner: owner
+  } do
+    member = user()
+
+    {:ok, team} =
+      Teams.create_team(
+        %{
+          name: "web-team-" <> binary_part(Ash.UUID.generate(), 0, 8),
+          idempotency_key: Ash.UUID.generate()
+        },
+        actor: owner
+      )
+
+    assert {:ok, _} =
+             Teams.set_team_member(
+               %{
+                 team_id: team.id,
+                 email: to_string(member.email),
+                 role: :member,
+                 idempotency_key: Ash.UUID.generate()
+               },
+               actor: owner
+             )
+
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+    assert has_element?(view, "#machine_team_id option[value='#{team.id}']", team.name)
+
+    view
+    |> form("#provision-form",
+      machine: %{
+        image_id: image_id(),
+        profile: "standard",
+        team_id: team.id,
+        vcpu: "1",
+        memory_mib: "512",
+        disk_gib: "2"
+      }
+    )
+    |> render_submit()
+
+    [vm] = Ledger.read!(VirtualMachine, owner_id: owner.id)
+    assert vm.team_id == team.id
+
+    {:ok, list, _} = live(signed_in(build_conn(), member), ~p"/machines")
+    assert has_element?(list, "#machines-#{vm.id}")
+
+    {:ok, member_form, _} = live(signed_in(build_conn(), member), ~p"/machines/new")
+    refute has_element?(member_form, "#machine_team_id option[value='#{team.id}']")
+  end
+
+  test "sharing is usable from the detail page and a viewer cannot forge lifecycle events", %{
+    conn: conn,
+    owner: owner
+  } do
+    member = user()
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}/access")
+
+    assert has_element?(view, "#access-people h2", "Direct machine grants")
+    assert has_element?(view, "#grants-empty", "No direct machine grants")
+
+    assert has_element?(
+             view,
+             "#access-people p",
+             "Team membership and thread sharing can also grant machine access."
+           )
+
+    view
+    |> form("#sharing-form", access: %{email: to_string(member.email), role: "viewer"})
+    |> render_submit()
+
+    {:ok, viewer, _} = live(signed_in(build_conn(), member), ~p"/machines/#{vm.id}/settings")
+    assert has_element?(viewer, "#machine-host")
+    refute has_element?(viewer, "#sharing-form")
+    refute has_element?(viewer, "#lifecycle-actions")
+    render_click(viewer, "lifecycle", %{"kind" => "delete", "key" => Ash.UUID.generate()})
+    assert [%{desired_state: :running}] = Ledger.read!(VirtualMachine, id: vm.id)
+    {:ok, list, _} = live(signed_in(build_conn(), member), ~p"/machines")
+    assert has_element?(list, "#machines-#{vm.id}")
+  end
+
+  test "revocation affects an already connected manager before its next event", %{
+    conn: conn,
+    owner: owner
+  } do
+    manager = user()
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+
+    request = %{
+      vm_id: vm.id,
+      email: to_string(manager.email),
+      role: :manager,
+      idempotency_key: Ash.UUID.generate()
+    }
+
+    assert {:ok, _} = Access.set_access(request, actor: owner)
+    {:ok, view, _} = live(signed_in(conn, manager), ~p"/machines/#{vm.id}/settings")
+    assert has_element?(view, "#delete-machine")
+
+    assert {:ok, _} =
+             Access.set_access(%{request | role: :revoked, idempotency_key: Ash.UUID.generate()},
+               actor: owner
+             )
+
+    render_click(view, "lifecycle", %{"kind" => "delete", "key" => Ash.UUID.generate()})
+    assert [%{desired_state: :running}] = Ledger.read!(VirtualMachine, id: vm.id)
+    send(view.pid, :refresh)
+    assert_redirect(view, ~p"/machines")
+  end
+
+  test "exhaustion is shown without accepting another machine", %{conn: conn, owner: owner} do
+    for _ <- 1..2, do: assert({:ok, _} = Compute.provision(request(), actor: owner))
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+
+    view
+    |> form("#provision-form",
+      machine: %{
+        image_id: image_id(),
+        profile: "customer",
+        vcpu: "1",
+        memory_mib: "512",
+        disk_gib: "2"
+      }
+    )
+    |> render_submit()
+
+    assert length(Ledger.read!(VirtualMachine, owner_id: owner.id)) == 2
+    assert has_element?(view, "#flash-group [id^=flash-][id$=-error]")
+  end
+
+  test "login-token revocation blocks an already connected owner's lifecycle event", %{
+    conn: conn,
+    owner: owner
+  } do
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    conn = signed_in(conn, owner)
+    token = get_session(conn, "user_token")
+    {:ok, view, _} = live(conn, ~p"/machines/#{vm.id}/settings")
+    :ok = AshAuthentication.TokenResource.Actions.revoke(Marshall.Accounts.Token, token)
+    render_click(view, "lifecycle", %{"kind" => "delete", "key" => Ash.UUID.generate()})
+    assert_redirect(view, "/sign-in")
+    assert [%{desired_state: :running}] = Ledger.read!(VirtualMachine, id: vm.id)
+  end
+
+  test "creation draft survives invalid input, polling and reload with the same request identity",
+       %{conn: conn, owner: owner} do
+    conn = signed_in(conn, owner)
+    {:ok, view, _} = live(conn, ~p"/machines/new")
+
+    key =
+      view
+      |> element("#machine_request_key")
+      |> render()
+      |> LazyHTML.from_fragment()
+      |> LazyHTML.query("input")
+      |> LazyHTML.attribute("value")
+      |> hd()
+
+    values = %{image_id: image_id(), profile: "oss", vcpu: "3", memory_mib: "768", disk_gib: "4"}
+    view |> form("#provision-form", machine: values) |> render_change()
+    url = assert_patch(view)
+    assert Plug.Conn.Query.decode(URI.parse(url).query)["machine"]["request_key"] == key
+    send(view.pid, :refresh)
+    assert has_element?(view, "#machine_memory_mib[value='768']")
+
+    render_submit(view, "provision", %{
+      "machine" =>
+        Map.new(values, fn {k, v} -> {Atom.to_string(k), v} end)
+        |> Map.merge(%{"vcpu" => "invalid", "request_key" => key})
+    })
+
+    assert has_element?(view, "#machine_vcpu[value='invalid']")
+    assert has_element?(view, "#machine_request_key[value='#{key}']")
+    {:ok, reloaded, _} = live(conn, url)
+    assert has_element?(reloaded, "#machine_memory_mib[value='768']")
+    assert has_element?(reloaded, "#machine_request_key[value='#{key}']")
+    assert Ledger.read!(VirtualMachine, owner_id: owner.id) == []
+  end
+
+  test "creation shows unavailable images and recovers on refresh", %{
+    conn: conn,
+    owner: owner,
+    fixture: fixture
+  } do
+    host = Ledger.update!(fixture.host, :configure, %{enabled: false})
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/new")
+    assert has_element?(view, "#no-ready-images")
+    assert has_element?(view, "#provision-submit[disabled]")
+    Ledger.update!(host, :configure, %{enabled: true})
+    send(view.pid, :refresh)
+    assert has_element?(view, "#provision-submit:not([disabled])")
+  end
+
+  test "creation events honor login revocation", %{conn: conn, owner: owner} do
+    conn = signed_in(conn, owner)
+    {:ok, view, _} = live(conn, ~p"/machines/new")
+
+    :ok =
+      AshAuthentication.TokenResource.Actions.revoke(
+        Marshall.Accounts.Token,
+        get_session(conn, "user_token")
+      )
+
+    render_change(view, "validate", %{"machine" => %{"vcpu" => "2"}})
+    assert_redirect(view, "/sign-in")
+    assert Ledger.read!(VirtualMachine, owner_id: owner.id) == []
+  end
+
+  test "manager can request and cancel relocation while status exposes durable phases", %{
+    conn: conn,
+    owner: owner
+  } do
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    [operation] = Ledger.read!(Marshall.Compute.Operation, vm_id: vm.id)
+    Ledger.update!(operation, :complete, %{})
+    Ledger.update!(vm, :observe, %{observed_state: :running})
+    host_fixture()
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}/settings")
+    assert has_element?(view, "#relocate-machine")
+    assert has_element?(view, "#relocation-network-note", "1 Gbit/s")
+    view |> element("#relocate-machine") |> render_click()
+    [relocation] = Ledger.read!(Marshall.Compute.Relocation, vm_id: vm.id)
+    assert has_element?(view, "#relocation-status")
+    assert has_element?(view, "#relocation-phase", "Preparing transfer")
+    refute has_element?(view, "#relocate-machine")
+    assert has_element?(view, "#cancel-relocation")
+    refute has_element?(view, "#relocation-downtime")
+
+    send(view.pid, :refresh)
+    refute has_element?(view, "#relocation-progress")
+    assert {:ok, detail} = Compute.get_vm(%{vm_id: vm.id}, actor: owner)
+
+    assert Enum.sort(Map.keys(detail.relocation)) ==
+             Enum.sort([
+               :id,
+               :phase,
+               :active,
+               :cancellable,
+               :retryable,
+               :downtime
+             ])
+
+    view |> element("#cancel-relocation") |> render_click()
+    assert has_element?(view, "#relocation-phase", "Cancelling and restoring the source")
+    refute has_element?(view, "#cancel-relocation")
+    [cancelled] = Ledger.read!(Marshall.Compute.Relocation, id: relocation.id)
+    assert cancelled.cancellation_requested_at != nil
+    assert cancelled.finished_at == nil
+  end
+
+  test "revoked manager cannot request relocation from a stale page", %{conn: conn, owner: owner} do
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    manager = user()
+
+    grant = %{
+      vm_id: vm.id,
+      email: to_string(manager.email),
+      role: :manager,
+      idempotency_key: Ash.UUID.generate()
+    }
+
+    assert {:ok, _} = Access.set_access(grant, actor: owner)
+    {:ok, view, _} = live(signed_in(conn, manager), ~p"/machines/#{vm.id}/settings")
+    assert has_element?(view, "#relocate-machine")
+    assert has_element?(view, "#relocation-network-note", "1 Gbit/s")
+
+    assert {:ok, _} =
+             Access.set_access(%{grant | role: :viewer, idempotency_key: Ash.UUID.generate()},
+               actor: owner
+             )
+
+    render_click(view, "relocate", %{})
+    assert Ledger.read!(Marshall.Compute.Relocation, vm_id: vm.id) == []
+    send(view.pid, :refresh)
+    refute has_element?(view, "#relocation-controls")
+    assert {:ok, %{relocation: nil}} = Compute.get_vm(%{vm_id: vm.id}, actor: manager)
+  end
+
+  defp signed_in(conn, user) do
+    {:ok, token, _} = AshAuthentication.Jwt.token_for_user(user)
+    user = Ash.Resource.put_metadata(user, :token, token)
+    conn |> init_test_session(%{}) |> AshAuthentication.Plug.Helpers.store_in_session(user)
+  end
+
+  # Sign in with the actor's existing login token so a verified session keeps
+  # its recorded elevation instead of minting a fresh unverified login.
+  defp signed_in_current(conn, user) do
+    {:ok, token, _} =
+      if user.__metadata__[:token],
+        do: {:ok, user.__metadata__.token, %{}},
+        else: AshAuthentication.Jwt.token_for_user(user)
+
+    user = Ash.Resource.put_metadata(user, :token, token)
+    conn |> init_test_session(%{}) |> AshAuthentication.Plug.Helpers.store_in_session(user)
+  end
+
+  @spec put_editor_release() :: :ok
+  defp put_editor_release do
+    previous = Application.fetch_env(:marshall, :ingress_editor_release)
+    Application.put_env(:marshall, :ingress_editor_release, Marshall.EditorFixture.descriptor())
+    on_exit(fn -> restore_editor_release(previous) end)
+    :ok
+  end
+
+  @spec restore_editor_release({:ok, map()} | :error) :: :ok
+  defp restore_editor_release({:ok, value}) do
+    Application.put_env(:marshall, :ingress_editor_release, value)
+    :ok
+  end
+
+  defp restore_editor_release(:error) do
+    Application.delete_env(:marshall, :ingress_editor_release)
+    :ok
+  end
+
+  defp power_key(view, id) do
+    view
+    |> element(id)
+    |> render()
+    |> LazyHTML.from_fragment()
+    |> LazyHTML.query("[phx-value-key]")
+    |> LazyHTML.attribute("phx-value-key")
+    |> hd()
+  end
+
+  defp dispatch_count do
+    length(
+      Oban.Testing.all_enqueued(repo: Marshall.Repo, worker: Marshall.Compute.Workers.Dispatch)
+    )
+  end
+
+  defp redirect_location({:live_redirect, %{to: to}}), do: to
+  defp redirect_location({:redirect, %{to: to}}), do: to
+
+  defp redirect_flash({_kind, options}) when is_map(options),
+    do: Map.get(options, :flash) || %{}
+end

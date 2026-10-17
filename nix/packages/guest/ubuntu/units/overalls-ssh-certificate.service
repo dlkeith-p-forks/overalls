@@ -1,0 +1,6 @@
+[Unit]
+Description=Reload renewed Overalls SSH host certificate
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl try-reload-or-restart ssh.service

@@ -1,0 +1,42 @@
+@cc [owner:ghuntley,label:build] asset-bundle-boundary
+Runtime JavaScript and CSS dependencies MUST enter through the esbuild
+`js/app.js` and `css/app.css` entry points. Terminal rendering MUST NOT depend
+on a runtime CDN, external script tag or inline template script. The CSS entry
+MUST import every stylesheet the templates and hooks depend on.
+
+@cc [owner:ghuntley,label:security;product] no-external-resources
+Every stylesheet, script, font and image the application serves MUST come from
+the application origin. Stylesheets and templates MUST NOT reference external
+URLs for resources; vendored upstream files keep their notices but are never
+loaded from a remote host. The browser probe fails on any cross-origin request.
+
+@cc [owner:ghuntley,label:product] four-token-theme
+Presentation colour MUST derive only from `--text-color`, `--text-color-alt`,
+`--background-color` and `--background-color-alt`, each defined for the light
+and dark themes in `css/tokens.css`. State and severity MUST be conveyed by
+text, weight or inverse video, never by colour alone. Canvas consumers
+(terminal, diagrams, progress bar) MUST read the same tokens.
+
+@cc [owner:ghuntley,label:product] grid-alignment
+Layout MUST use the character grid: horizontal sizes in `ch`, vertical sizes
+in multiples of `--line-height`, borders of `--border-thickness`. Renderer-owned
+DOM (xterm, SVG diagrams) and overlays are the only elements allowed off the
+grid; the probe asserts zero off-grid elements on the workspace routes.
+
+@cc [owner:ghuntley,label:product] handbook-diagram-scroll-containment
+Handbook SVG diagrams MUST retain a minimum readable width of 576 CSS pixels.
+When that width exceeds the chapter body, the diagram container MUST permit
+horizontal scrolling without creating horizontal page overflow.
+
+@cc [owner:ghuntley,label:security] terminal-browser-untrusted-bytes
+Guest output MUST reach xterm as bytes, never HTML. The terminal integration
+MUST refuse guest clipboard reads (there is no opt-in), bound and consent-gate
+clipboard writes, copy selections only to the user's own clipboard, and open
+only confirmed HTTP/HTTPS links through supported xterm APIs. Titles remain
+browser-local. Rendering an escape sequence is not authorization to invoke a
+browser capability. See ADR-0084.
+
+@cc [owner:ghuntley,label:protocol] terminal-browser-authorized-geometry
+Terminal v2 MUST send actual visible-pane geometry through its versioned resize
+control only after read/write attachment acknowledgement. Read-only viewers MUST
+NOT resize another user's PTY. See ADR-0082 and ADR-0084.

@@ -1,0 +1,17 @@
+@cc [owner:ghuntley,label:security] galileo-secret-custody
+Injected credential values exist only inside per-request authorization
+responses. They MUST NOT be persisted, logged, cached or exposed on any
+status surface. Guests can use integrations but never read their secrets.
+
+@cc [owner:ghuntley,label:security] galileo-authority-boundary
+Galileo MUST obtain current Marshall authorization before every upstream
+effect and retain it through a bounded renewable lease while that effect is
+open. Failed, invalid or late renewal MUST close the existing attempt without
+retrying it. Guest headers cannot confer VM identity. Galileo MUST NOT access
+Marshall's database.
+
+@cc [owner:ghuntley,label:architecture] galileo-closed-routing
+Guest input selects only the integration name, method and path. The target
+origin, strip prefix, injected headers and peer endpoints come exclusively
+from the closed Marshall authorization response validated by the shared
+protocol library.

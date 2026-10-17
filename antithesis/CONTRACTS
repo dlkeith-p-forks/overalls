@@ -1,0 +1,11 @@
+@cc [owner:ghuntley,label:architecture] antithesis-proof-boundaries
+Harness-only adapters MUST identify controlled, emulated and native effects separately. A successful adapter response MUST NOT establish a physical effect that its independent oracle has not observed. Unknown or unavailable observations MUST NOT be interpreted as absence, success or expected refusal.
+
+@cc [owner:ghuntley,label:security] antithesis-runtime-secret-custody
+Runtime credentials, keys, tokens and user payloads MUST NOT enter images, source manifests or diagnostics. Synthetic credentials MUST be generated or installed into private runtime state and passed through the reviewed service interfaces.
+
+@cc [owner:ghuntley,label:verification] antithesis-immutable-run-identity
+Every submitted configuration MUST bind its source selection, dependencies, executable artifacts, image digests, test commands and assertion roster to an immutable manifest. A passing result MUST retain that identity and its actual execution scope.
+
+@cc [owner:ghuntley,label:verification] antithesis-setup-owner
+Exactly one workload bootstrap owner MUST signal setup completion after the selected services, fixture identities and independent oracles are ready. Test commands MUST NOT signal setup completion. Failed prerequisites MUST leave setup incomplete.

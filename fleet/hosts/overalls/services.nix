@@ -1,0 +1,316 @@
+{ config, overallsPackages, pkgs, ... }:
+{
+  imports = [ ./image-catalog.nix ./porsche-authority.nix ./private-services.nix ];
+
+  services.overallsSecrets.bundles = {
+    ssh-host-ca = {
+      encryptedFile = "${../../../secrets/overalls-ssh-host-ca.enc.json}";
+      outputs.key = { format = "raw"; secrets = [ "SSH_HOST_CA_KEY" ]; };
+    };
+    brady = {
+      encryptedFile = "${../../../secrets/overalls-brady.enc.json}";
+      outputs = {
+        "issuer.pem" = { format = "raw"; secrets = [ "BRADY_ISSUER_CERTIFICATE" ]; };
+        "issuer.key" = { format = "raw"; secrets = [ "BRADY_ISSUER_KEY" ]; };
+      };
+    };
+    porsche = {
+      encryptedFile = "${../../../secrets/overalls-porsche.enc.json}";
+      outputs.token = { format = "raw"; secrets = [ "PORSCHE_GATEWAY_TOKEN" ]; };
+    };
+    audi = {
+      encryptedFile = "${../../../secrets/overalls-audi.enc.json}";
+      outputs.token = { format = "raw"; secrets = [ "AUDI_GATEWAY_TOKEN" ]; };
+    };
+    audi-dns = {
+      encryptedFile = "${../../../secrets/overalls-audi-dns.enc.json}";
+      outputs.token = { format = "raw"; secrets = [ "AUDI_DNS_TOKEN" ]; };
+    };
+    marshall = {
+      encryptedFile = "${../../../secrets/overalls-marshall.enc.json}";
+      outputs.environment = {
+        format = "environment";
+        secrets = [ "DATABASE_URL" "SECRET_KEY_BASE" "TOKEN_SIGNING_SECRET" "MARSHALL_CLOAK_KEYS" ];
+      };
+      outputs."serper.key" = { format = "raw"; secrets = [ "SERPER_API_KEY" ]; };
+    };
+    enrico = {
+      encryptedFile = "${../../../secrets/overalls-enrico.enc.json}";
+      outputs = {
+        token = { format = "raw"; secrets = [ "ENRICO_TOKEN" ]; };
+        "tls.crt" = { format = "raw"; secrets = [ "TLS_CERT" ]; };
+        "tls.key" = { format = "raw"; secrets = [ "TLS_KEY" ]; };
+      };
+    };
+    backend-tls = {
+      encryptedFile = "${../../../secrets/overalls-backend-tls.enc.json}";
+      outputs = {
+        "tls.crt" = { format = "raw"; secrets = [ "TLS_CERT" ]; };
+        "tls.key" = { format = "raw"; secrets = [ "TLS_KEY" ]; };
+      };
+    };
+    smtp = {
+      encryptedFile = "${../../../secrets/overalls-smtp.enc.json}";
+      outputs = {
+        username = { format = "raw"; secrets = [ "SMTP_USERNAME" ]; };
+        password = { format = "raw"; secrets = [ "SMTP_PASSWORD" ]; };
+      };
+    };
+    logstore = {
+      encryptedFile = "${../../../secrets/overalls-logstore.enc.json}";
+      outputs = {
+        "tls.crt" = { format = "raw"; secrets = [ "TLS_CERT" ]; };
+        "tls.key" = { format = "raw"; secrets = [ "TLS_KEY" ]; };
+        "insert.password" = { format = "raw"; secrets = [ "INSERT_PASSWORD" ]; };
+        "reader.password" = { format = "raw"; secrets = [ "READER_PASSWORD" ]; };
+      };
+    };
+  };
+  # @cc [owner:ghuntley,label:security;deployment] overalls-logstore-fleet-only
+  # The fleet log store entry MUST bind the WireGuard control-plane address,
+  # admit only peer traffic on its port, and keep insert/reader authority split.
+  # Collector sources MUST exclude audit, firecracker and guest content.
+  services.overallsLogStore = {
+    enable = true;
+    address = "10.90.0.1";
+    certificateFile = "/run/overalls-secrets/logstore/tls.crt";
+    keyFile = "/run/overalls-secrets/logstore/tls.key";
+    insertPasswordFile = "/run/overalls-secrets/logstore/insert.password";
+    readerPasswordFile = "/run/overalls-secrets/logstore/reader.password";
+    stateDataset = "zroot/logstore";
+    stateQuotaGiB = 20;
+    secretUnits = [ "overalls-secrets-logstore.service" ];
+  };
+  systemd.services.logstore-entry = {
+    after = [ "wireguard-fleet0.service" ];
+    requires = [ "wireguard-fleet0.service" ];
+    partOf = [ "wireguard-fleet0.service" ];
+  };
+  services.overallsLogging = {
+    enable = true;
+    secretUnits = [ "overalls-secrets-logstore.service" ];
+    outputs.logstore = {
+      type = "native";
+      plugin = "http";
+      sources = [
+        "marshall" "lilly" "porsche" "audi" "ziggy" "enrico" "brady" "galileo" "underclass"
+        "haproxy" "auth" "kernel" "storage" "mail" "operations" "system"
+      ];
+      queueBytes = 50331648;
+      credentialFiles.http_passwd = "/run/overalls-secrets/logstore/insert.password";
+      settings = {
+        host = "logs.fleet.internal";
+        port = 8443;
+        uri = "/insert/jsonline?_msg_field=message";
+        format = "json_lines";
+        http_user = "insert";
+        tls = true;
+        "tls.verify" = true;
+        "tls.verify_hostname" = true;
+        "tls.ca_file" = "/etc/overalls/logstore-ca.crt";
+      };
+    };
+  };
+  # @cc [owner:ghuntley,label:security;deployment] overalls-brady-signer
+  # Brady MUST start only with this host's encrypted signer bundle. The public
+  # root is the guest trust anchor; its signing key stays recovery-only.
+  services.brady = {
+    enable = true;
+    issuerCertificateFile = "/run/overalls-secrets/brady/issuer.pem";
+    issuerKeyFile = "/run/overalls-secrets/brady/issuer.key";
+    secretUnits = [ "overalls-secrets-brady.service" ];
+  };
+
+  # @cc [owner:ghuntley,label:deployment] overalls-single-control-plane
+  # This deployment MUST declare and start exactly one Marshall instance using
+  # the local verified-TLS database. Schema migration MUST precede activation;
+  # no serving startup command may migrate or bypass database/TLS validation.
+  services.marshall = {
+    enable = true;
+    replicaCount = 1;
+    publicHost = "ghuntley.dev";
+    sshHostCa = {
+      publicKey = pkgs.lib.removeSuffix "\n" (builtins.readFile ../../../secrets/ssh-host-ca.pub);
+      keyFile = "/run/overalls-secrets/ssh-host-ca/key";
+      retirement = 2421446400;
+    };
+    ingress.zone = "apps.ghuntley.dev";
+    ingress.wildcardAcme = {
+      issuerInstance = "overalls";
+      directory = "https://acme-v02.api.letsencrypt.org/directory";
+      issuerCaFile = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+      certificateRootsFile = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+      acceptTerms = true;
+      nameservers = [
+        { address = "136.243.69.37"; }
+        { address = "136.243.69.32"; }
+      ];
+    };
+    poolSize = 10;
+    databaseConnectionBudget = 64;
+    databaseCAFile = "/etc/overalls/service-ca.crt";
+    environmentFile = "/run/overalls-secrets/marshall/environment";
+    serperKeyFile = "/run/overalls-secrets/marshall/serper.key";
+    secretUnits = [
+      "overalls-secrets-marshall.service"
+      "overalls-secrets-ssh-host-ca.service"
+      "overalls-secrets-backend-tls.service"
+      "overalls-database-password.service"
+    ];
+    cpuCores = 2;
+    memoryMiB = 4096;
+    instances.overalls = {
+      bindAddress = "127.0.0.1";
+      port = 4443;
+      terminalPeerUrl = "https://ghuntley.dev:5443";
+      terminalPeerCAFile = "/etc/overalls/service-ca.crt";
+      fleetBindAddress = "10.90.0.1";
+      fleetLoopback = true;
+      certificateFile = "/run/overalls-secrets/backend-tls/tls.crt";
+      keyFile = "/run/overalls-secrets/backend-tls/tls.key";
+    };
+    smtpRelay = {
+      enable = true;
+      from = "noreply@ghuntley.dev";
+      upstream = {
+        provider = "resend";
+        host = "smtp.resend.com";
+        port = 587;
+        tls = "starttls";
+        usernameFile = "/run/overalls-secrets/smtp/username";
+        passwordFile = "/run/overalls-secrets/smtp/password";
+      };
+      secretUnits = [ "overalls-secrets-smtp.service" ];
+    };
+  };
+  services.enrico = {
+    enable = true;
+    bindAddress = "10.90.0.1";
+    port = 5445;
+    cacheDataset = "zroot/enrico";
+    cacheQuotaGiB = 100;
+    tokenFile = "/run/overalls-secrets/enrico/token";
+    certificateFile = "/run/overalls-secrets/enrico/tls.crt";
+    keyFile = "/run/overalls-secrets/enrico/tls.key";
+    secretUnits = [ "overalls-secrets-enrico.service" ];
+  };
+  systemd.services.enrico = {
+    after = [ "wireguard-fleet0.service" ];
+    requires = [ "wireguard-fleet0.service" ];
+    partOf = [ "wireguard-fleet0.service" ];
+  };
+  networking.hosts."10.90.0.1" = [ "enrico.fleet.internal" ];
+  environment.etc."overalls/enrico-ca.crt".source = ./enrico-ca.crt;
+  systemd.services.marshall-overalls = {
+    after = [ "enrico.service" "wireguard-fleet0.service" ];
+    wants = [ "enrico.service" ];
+    requires = [ "wireguard-fleet0.service" ];
+    partOf = [ "wireguard-fleet0.service" ];
+    environment = {
+      MARSHALL_ENRICO_URL = "https://enrico.fleet.internal:5445";
+      MARSHALL_ENRICO_TOKEN_FILE = "/run/credentials/marshall-overalls.service/enrico-token";
+      MARSHALL_ENRICO_CA_FILE = "/run/credentials/marshall-overalls.service/enrico-ca.crt";
+    };
+    serviceConfig.LoadCredential = [
+      "enrico-token:/run/overalls-secrets/enrico/token"
+      "enrico-ca.crt:/etc/overalls/enrico-ca.crt"
+    ];
+  };
+  services.overallsAutoUpdate.marshallHealth.overalls = {
+    serverName = "ghuntley.dev";
+    caFile = "/etc/overalls/service-ca.crt";
+  };
+  # @cc [owner:ghuntley,label:deployment;security] overalls-porsche-authority
+  # Porsche MUST use verified backend HTTPS and separately encrypted gateway
+  # authority. Startup MUST wait for idempotent Ash authority registration.
+  services.porsche = {
+    enable = true;
+    bindAddress = "136.243.69.55";
+    openFirewall = true;
+    controlPlane = "https://ghuntley.dev:5443";
+    publicOrigin = "https://ghuntley.dev";
+    caFile = "/etc/overalls/service-ca.crt";
+    credentialFile = "/run/overalls-secrets/porsche/token";
+    secretUnits = [ "overalls-secrets-porsche.service" "overalls-porsche-authority.service" ];
+  };
+
+  services.marshallProxy = {
+    enable = true;
+    bindAddress = "136.243.69.55";
+    publicHost = "ghuntley.dev";
+    backendCAFile = "/etc/overalls/service-ca.crt";
+    backends.overalls = {
+      address = "127.0.0.1";
+      port = 4443;
+      serverName = "ghuntley.dev";
+    };
+    acme = {
+      enable = true;
+      email = "noreply@ghuntley.dev";
+      # ADR-0181: the public CA must reach HTTP-01 on .55:80 through the perimeter.
+      http01.publicIngress = true;
+    };
+  };
+  security.acme.acceptTerms = true;
+
+  # Host enrollment supplies Lilly's instance identity, credential and pool GUIDs.
+
+  # @cc [owner:ghuntley,label:deployment;recovery] fastpath-template-producer-overalls
+  # Sealed templates (ADR-0130) keep a 48 GiB per-pool budget that covers every
+  # configured image (two Linux templates plus a 32 GiB firmware disk) and grant
+  # no VM capacity credit or execution authority; root disks are block-cloned
+  # from them on demand (ADR-0177).
+  services.lilly = {
+    # 96 GiB: the Linux templates plus the 64 GiB Windows disk (ADR-0173).
+    imageTemplates.budgetBytes = 96 * 1024 * 1024 * 1024;
+    controlPlaneCAFile = "/etc/overalls/service-ca.crt";
+    protectedCidrs = [ "136.243.69.55/32" "136.243.69.37/32" ];
+    ingress.enable = true;
+  };
+
+  # @cc [owner:ghuntley,label:security;deployment] overalls-audi-public-plane
+  # Audi gateway and DNS listeners MUST bind the reserved explicit address
+  # 136.243.69.37 and remain reachable from the public internet through the
+  # reviewed fleet-perimeter public service entry (TCP 22/80/443 and UDP/TCP
+  # 53); ordinary per-service firewall openings stay suppressed by ADR-0075.
+  # Wildcard binds MUST fail evaluation against Porsche's shared port. The
+  # delegated zone MUST remain a strict subzone of ghuntley.dev; the apex keeps
+  # serving the proxy's HTTP-01 issuance and Porsche's public origin, so it
+  # MUST never be delegated to Audi DNS.
+  overalls.fleetFirewall.publicServices.audi = {
+    address = "136.243.69.37";
+    tcpPorts = [ 22 53 80 443 ];
+    udpPorts = [ 53 ];
+    comment = "Audi public gateway and DNS";
+  };
+
+  services.audiDns = {
+    enable = true;
+    openFirewall = true;
+    controlPlane = "https://ghuntley.dev:5443";
+    caFile = "/etc/overalls/service-ca.crt";
+    credentialFile = "/run/overalls-secrets/audi-dns/token";
+    secretUnits = [ "overalls-secrets-audi-dns.service" ];
+    zone = "apps.ghuntley.dev";
+    nameservers = [ "ns1.ghuntley.dev" "ns2.ghuntley.dev" ];
+    mailbox = "hostmaster.ghuntley.dev";
+    bindAddress = "136.243.69.37";
+  };
+
+  services.audi = {
+    enable = true;
+    hostId = config.services.lilly.hostId;
+    controlPlane = "https://ghuntley.dev:5443";
+    caFile = "/etc/overalls/service-ca.crt";
+    credentialFile = "/run/overalls-secrets/audi/token";
+    secretUnits = [ "overalls-secrets-audi.service" ];
+    bindAddress = "136.243.69.37";
+    openFirewall = true;
+    tls = {
+      enable = true;
+      zone = "apps.ghuntley.dev";
+      browserOrigin = "https://ghuntley.dev";
+      certificateRootsFile = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+    };
+  };
+}

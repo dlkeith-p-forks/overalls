@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:verification] installed-export-native-proof
+This fixture MUST exercise the installed restricted SSH module and source-built
+channel, endpoint, permit and SSH client across separate NixOS machines using real
+ZFS data. Synthetic enrollment and public-key distribution MUST NOT be reported
+as Marshall coordination, destination adoption, guest migration or independent
+physical-host acceptance. Listener interruption MUST prove the actual sender PID
+is absent after source revocation succeeds; data EOF alone is not quiescence.
+
+
+@cc [owner:ghuntley,label:verification] source-revocation-live-listener
+The typed source revocation effect MUST also be exercised while the SSH listener
+remains active. Its receipt requires absence of the captured native sender PIDs;
+subsequent use of the revoked credential MUST fail without yielding disk bytes.
+
+@cc [owner:ghuntley,label:verification] destination-fence-not-stream-receipt
+Destination cancellation MUST erase/fence its key while a blocked native stream
+still prevents a quiescence receipt. The fixture MUST distinguish this from source
+sender revocation, then require stream lock release before accepting the destination
+receipt. This check MUST NOT claim destination disk reclamation or guest migration.

@@ -1,0 +1,13 @@
+[Unit]
+Description=Route private service DNS to local Audi
+Requires=lilly-network.service systemd-resolved.service
+After=lilly-network.service systemd-resolved.service
+Before=lilly-readiness.service
+ConditionKernelCommandLine=lilly.ipv4
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/resolvectl dns eth0 169.254.254.1
+ExecStart=/usr/bin/resolvectl domain eth0 ~internal
+ExecStart=/usr/bin/resolvectl default-route eth0 no

@@ -1,0 +1,4 @@
+@cc [owner:ghuntley,label:isolation] firecracker-collector-independent
+The collector MUST read only declared native FIFO channels, never guest consoles.
+It MUST NOT signal VM processes or own their lifecycle. FIFO reads and output
+storage MUST remain bounded even when exporters fail or writers flood records.

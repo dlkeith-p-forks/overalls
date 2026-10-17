@@ -1,0 +1,249 @@
+name: overalls-antithesis
+
+x-marshall-build: &marshall-build
+  context: ../..
+  dockerfile: antithesis/Dockerfile
+  target: marshall
+
+services:
+  pg:
+    container_name: overalls-pg
+    hostname: overalls-pg
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/pg:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: pg
+    entrypoint: ["/opt/overalls/entrypoints/postgres.sh"]
+    environment:
+      NO_COLOR: "1"
+      PGDATA: /var/lib/postgresql/18/docker
+    volumes:
+      - pg-data:/var/lib/postgresql
+      - synthetic-credentials:/run/overalls-secrets
+      - oracle-credentials:/run/overalls-oracle
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U overalls -d overalls >/dev/null"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+      start_period: 15s
+    networks:
+      control:
+        ipv4_address: 10.87.0.10
+
+  migrate:
+    container_name: overalls-migrate
+    hostname: overalls-migrate
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/marshall:local
+    build: *marshall-build
+    entrypoint: ["/opt/overalls/entrypoints/marshall.sh"]
+    command: ["migrate"]
+    environment:
+      NO_COLOR: "1"
+      OVERALLS_ANTITHESIS_STATE_DIR: /var/lib/overalls-antithesis-sdk
+    volumes:
+      - synthetic-credentials:/run/overalls-secrets:ro
+      - migrate-sdk-state:/var/lib/overalls-antithesis-sdk
+    depends_on:
+      pg:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "test", "-f", "/tmp/migrations-ready"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+      start_period: 15s
+    networks: [control]
+
+  marshall-a:
+    container_name: marshall-a
+    hostname: marshall-a
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/marshall:local
+    build: *marshall-build
+    entrypoint: ["/opt/overalls/entrypoints/marshall.sh"]
+    command: ["serve"]
+    environment:
+      NO_COLOR: "1"
+      MARSHALL_INSTANCE_ID: marshall-a
+      OVERALLS_ANTITHESIS_STATE_DIR: /var/lib/overalls-antithesis-sdk
+    volumes:
+      - synthetic-credentials:/run/overalls-secrets:ro
+      - marshall-a-state:/var/lib/marshall
+      - marshall-a-sdk-state:/var/lib/overalls-antithesis-sdk
+    depends_on:
+      migrate:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/overalls/entrypoints/health-marshall.sh"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+      start_period: 20s
+    networks:
+      control:
+        ipv4_address: 10.87.0.11
+
+  marshall-b:
+    container_name: marshall-b
+    hostname: marshall-b
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/marshall:local
+    build: *marshall-build
+    entrypoint: ["/opt/overalls/entrypoints/marshall.sh"]
+    command: ["serve"]
+    environment:
+      NO_COLOR: "1"
+      MARSHALL_INSTANCE_ID: marshall-b
+      OVERALLS_ANTITHESIS_STATE_DIR: /var/lib/overalls-antithesis-sdk
+    volumes:
+      - synthetic-credentials:/run/overalls-secrets:ro
+      - marshall-b-state:/var/lib/marshall
+      - marshall-b-sdk-state:/var/lib/overalls-antithesis-sdk
+    depends_on:
+      migrate:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/overalls/entrypoints/health-marshall.sh"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+      start_period: 20s
+    networks:
+      control:
+        ipv4_address: 10.87.0.12
+
+  lilly-a:
+    container_name: lilly-a
+    hostname: lilly-a
+    platform: linux/amd64
+    init: true
+    # Rootless Podman's private cgroup namespace omits cpuset. The hosted
+    # collector reads this container's measured subtree from the host view.
+    cgroup: host
+    image: overalls-antithesis/lilly:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: lilly
+    entrypoint: ["/opt/overalls/entrypoints/lilly.sh"]
+    environment:
+      NO_COLOR: "1"
+      OVERALLS_ANTITHESIS_STATE_DIR: /var/lib/overalls-antithesis-sdk
+    volumes:
+      - synthetic-credentials:/run/overalls-secrets
+      - lilly-a-state:/var/lib/lilly
+      - lilly-a-sdk-state:/var/lib/overalls-antithesis-sdk
+    depends_on:
+      marshall-a:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/overalls/entrypoints/health-lilly.sh"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+    networks: [control]
+
+  enrollment:
+    container_name: overalls-enrollment
+    hostname: overalls-enrollment
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/marshall:local
+    build: *marshall-build
+    entrypoint: ["/opt/overalls/entrypoints/marshall.sh"]
+    command: ["enroll"]
+    environment:
+      NO_COLOR: "1"
+      OVERALLS_ANTITHESIS_STATE_DIR: /var/lib/overalls-antithesis-sdk
+    volumes:
+      - synthetic-credentials:/run/overalls-secrets
+      - oracle-credentials:/run/overalls-oracle
+      - enrollment-sdk-state:/var/lib/overalls-antithesis-sdk
+      - control-credentials:/run/overalls-control-secrets
+      - control-requests:/run/overalls-control-requests/requests
+      - control-results:/run/overalls-control-requests/results
+      - control-state:/run/overalls-control-requests/state
+    depends_on:
+      marshall-a:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "test", "-f", "/tmp/enrollment-ready"]
+      interval: 3s
+      timeout: 3s
+      retries: 70
+      start_period: 20s
+    networks: [control]
+
+  workload:
+    container_name: overalls-workload
+    hostname: overalls-workload
+    platform: linux/amd64
+    init: true
+    restart: "no"
+    image: overalls-antithesis/workload:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: workload
+    environment:
+      NO_COLOR: "1"
+      ANTITHESIS_MARSHALL_URLS: https://marshall-a,https://marshall-b
+      ANTITHESIS_CA_FILE: /run/overalls-secrets/ca.crt
+      ANTITHESIS_FIXTURE_MANIFEST: /run/overalls-secrets/fixture.json
+      ANTITHESIS_DB_HOST: pg
+      ANTITHESIS_DB_PORT: "5432"
+      ANTITHESIS_DB_USER: overalls_oracle
+      ANTITHESIS_DB_NAME: overalls
+      ANTITHESIS_DB_PASSWORD_FILE: /run/overalls-secrets/oracle-password
+      ANTITHESIS_CONTROL_CREDENTIAL_FILE: /run/overalls-control-secrets/lilly-a-credential.json
+      ANTITHESIS_CONTROL_REQUEST_DIR: /run/overalls-control-requests
+      ANTITHESIS_BOOTSTRAP_TIMEOUT_SECONDS: "180"
+    volumes:
+      - oracle-credentials:/run/overalls-secrets:ro
+      - control-credentials:/run/overalls-control-secrets:ro
+      - control-requests:/run/overalls-control-requests/requests
+      - control-results:/run/overalls-control-requests/results:ro
+    depends_on:
+      pg:
+        condition: service_healthy
+      marshall-a:
+        condition: service_healthy
+      marshall-b:
+        condition: service_healthy
+      enrollment:
+        condition: service_healthy
+      lilly-a:
+        condition: service_healthy
+    networks: [control]
+
+volumes:
+  pg-data:
+  synthetic-credentials:
+  oracle-credentials:
+  marshall-a-state:
+  marshall-b-state:
+  lilly-a-state:
+  migrate-sdk-state:
+  marshall-a-sdk-state:
+  marshall-b-sdk-state:
+  lilly-a-sdk-state:
+  enrollment-sdk-state:
+  control-credentials:
+  control-requests:
+  control-results:
+  control-state:
+
+networks:
+  control:
+    ipam:
+      config:
+        - subnet: 10.87.0.0/24

@@ -1,0 +1,59 @@
+# @cc [owner:ghuntley,label:verification] zfs-io-real-collector
+# This fixture MUST sample capacity through the source-built Collector and real
+# native I/O independently through ZFSIO. Diagnostic counters MUST NOT enter the
+# control report. Utility faults follow native identity binding and MUST NOT
+# invent successful counters. Reload faults MUST actually export/import the pool.
+defmodule Overalls.ZFSIOFixture do
+  alias Lilly.Host.{Collector, Pool, ZFS, ZFSIO}
+
+  @type observation :: %{capacity: map(), io: map()}
+
+  @spec sample() :: [observation()]
+  def sample do
+    pools =
+      Enum.map(
+        [
+          {"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "/pool"},
+          {"cccccccc-cccc-4ccc-8ccc-cccccccccccc", "/otherpool"}
+        ],
+        fn {id, path} ->
+          {:ok, identity} = ZFS.inspect_path(path)
+
+          {:ok, pool} =
+            Pool.new(id, path, identity.filesystem_id,
+              storage: OverallsProtocol.Storage.encode(identity.storage),
+              host_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+            )
+
+          pool
+        end
+      )
+
+    if System.get_env("ZFS_IO_FAULT") do
+      System.put_env("PATH", "/run/zfs-io-fault/bin:" <> System.fetch_env!("PATH"))
+      "/run/zfs-io-fault/bin/zpool" = System.find_executable("zpool")
+    end
+
+    {:ok, report, _previous} = Collector.sample(pools, "/sys/fs/cgroup", nil, 1)
+    encoded = OverallsProtocol.encode_report(report)
+    {:ok, decoded} = OverallsProtocol.report(encoded)
+    ^encoded = OverallsProtocol.encode_report(decoded)
+
+    io =
+      case ZFSIO.sample(pools) do
+        {:ok, measured} -> measured
+        {:error, :zfs_io_unavailable} -> Map.new(pools, &{&1.id, ZFSIO.unavailable(&1)})
+      end
+
+    Enum.map(report.pools, fn capacity ->
+      false = Map.has_key?(capacity, :io)
+
+      %{
+        capacity: Map.take(capacity, [:id, :total_bytes, :free_bytes, :allocations]),
+        io: Map.fetch!(io, capacity.id)
+      }
+    end)
+  end
+end
+
+IO.puts(JSON.encode!(Overalls.ZFSIOFixture.sample()))

@@ -1,0 +1,15 @@
+{
+  "slug": "updater-failed-activation-recovers-live-roles",
+  "evidence_file": "antithesis/scratchbook/properties/updater-failed-activation-recovers-live-roles.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Which source-built native fixture can record every restoration action and serving effect while updater/migrator processes die independently?",
+      "answer": "One-host native updater exercises real switch/socket behavior; fleet updates check native guest survival. No combined per-role restore fault matrix with independent updater/migrator death was found.",
+      "status": "partial",
+      "proposed_catalog_edit": "Tag partial; preserve caught-failure scope and require combined native role/socket/systemd/guest probe."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

@@ -1,0 +1,15 @@
+@cc [owner:ghuntley,label:verification] scripts-structural-validation-boundary
+ADR, runtime-version and contract checkers MUST exit nonzero for failed checks.
+Structural validation MUST NOT be reported as proof of design soundness,
+contract compliance, physical execution or production availability.
+
+@cc [owner:ghuntley,label:security] scripts-fixture-resource-ownership
+Acceptance scripts MUST isolate destructive operations to their explicitly
+identified fixture databases, services, guest resources and temporary paths.
+They MUST verify fixture ownership before deleting persistent VM or database
+state, and MUST preserve failure diagnostics without leaking generated secrets.
+
+@cc [owner:ghuntley,label:verification] scripts-reproducible-releases
+Release packaging MUST use the pinned development runtime and include its Nix
+runtime closure. Configuration and credentials MUST remain outside the immutable
+release artifact; an artifact build alone MUST NOT claim deployment acceptance.

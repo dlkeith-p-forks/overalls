@@ -1,0 +1,184 @@
+{
+  "sut_path": "/home/ghuntley/src/kittens-antithesis-reset",
+  "commit": "c835eb1017d24a001215c319373fa4204d64269b",
+  "updated": "2026-10-13",
+  "external_references": [],
+  "scope_answer": "Repository only (Recommended)",
+  "source_note": "Current working tree includes concurrent source edits; catalog TTL finding reflects the current protocol file and test, not the base commit. No hosted Antithesis run or new source test was performed by this investigator.",
+  "resolutions": [
+    {
+      "slug": "audi-authority-request-start-deadline",
+      "old_question": "- Which composed Audi reader installs and consumes gateway catalog after a crafted 5,001-ms reply, and does it independently cap freshness? The decoder mismatch is confirmed; the end-to-end effect is unproven.",
+      "status": "resolved",
+      "answer": "Audi.TLS.FleetWorker.refresh_catalog is the composed reader. It calls Client.gateway_catalog, which decodes IngressCatalog and sets expires_at from request start; Readiness.refresh uses that expiry and stops expired jobs. The current decoder accepts only 1..5000 ms, so a crafted 5001-ms reply cannot reach installation. Readiness independently checks expiry but does not impose a second TTL cap.",
+      "evidence": [
+        "protocol/lib/overalls_protocol/ingress_catalog.ex:23",
+        "protocol/test/ingress_catalog_test.exs:55-63",
+        "audi/lib/audi/control/client.ex:182-203",
+        "audi/lib/audi/tls/fleet_worker.ex:251-280",
+        "audi/lib/audi/tls/readiness.ex:135-148"
+      ],
+      "proposed_catalog_change": "- None for the current source: the decoder refuses a 5,001-ms catalog before Audi can install it. Hosted effect coverage remains unrun."
+    },
+    {
+      "slug": "control-bound-credential-revalidated",
+      "old_question": "- Does each mutation-capable Audi, Porsche, Ziggy and Galileo route authenticate the credential under the appropriate current-domain lock before an effect? The service forwarding path is confirmed; route-by-route audit remains.",
+      "status": "resolved",
+      "answer": "All five service adapters forward the original token. Audi action implementations call Services.authenticate! inside transactions with share or exclusive service-row locks; Porsche commands use Authority.with_actor!/gateway! in a transaction with gateway share lock; Ziggy inference/agent actions call Credentials.authenticate_locked! in their transaction with host share lock; Galileo authorize/renew use Credentials.authenticate_locked! in transaction with host share lock; Lilly uses Credentials.with_host with host update lock. Each is revalidated before the cited domain effect, subject to hosted race verification.",
+      "evidence": [
+        "marshall/lib/marshall/ingress/services.ex:186-205",
+        "marshall/lib/marshall/ssh/commands.ex:21-42",
+        "marshall/lib/marshall/ssh/authority.ex:260-270,347-367",
+        "marshall/lib/marshall/inference/credentials.ex:146-174",
+        "marshall/lib/marshall/agents/model_calls.ex:90-112",
+        "marshall/lib/marshall/galileo/authorizations.ex:22-78,160-168",
+        "marshall/lib/marshall/galileo/credentials.ex:85-117",
+        "marshall/lib/marshall/compute/credentials.ex:100-131"
+      ],
+      "proposed_catalog_change": "- None in the inspected route families; a hosted cross-node rotation race remains unrun."
+    },
+    {
+      "slug": "control-hint-loss-reconciles-authority",
+      "old_question": "- What exact cadence bound should each reader use after a lost hint? The links confirm a backstop exists, but this candidate does not assign one shared timeout across components.",
+      "status": "resolved",
+      "answer": "Lilly Runtime ticks at 1000 ms and coalesces exchange; Ziggy AgentWorker polls at 1000 ms; Audi gateway FleetWorker and DNS Replica refresh at 1000 ms; Audi stream renewals use min(1000, max(remaining/2,1)) for <=5000-ms grants and remaining/2 for longer grants. A hint is not authority. These are scheduling cadences, not hard end-to-end delivery guarantees.",
+      "evidence": [
+        "lilly/lib/lilly/control/runtime.ex:400-429",
+        "ziggy/lib/ziggy/agent_worker.ex:6-17,305-320",
+        "audi/lib/audi/tls/fleet_worker.ex:70-85",
+        "audi/lib/audi/dns/replica.ex:42-90",
+        "audi/lib/audi/authority/hint_renewal.ex:24-37"
+      ],
+      "proposed_catalog_change": "- None for the scoped readers. Progress windows must include request duration, reconnect/backoff and fair scheduling in addition to the source cadence."
+    },
+    {
+      "slug": "control-inflight-limit-and-retirement",
+      "old_question": "Open questions: Can the chosen proxy retain an exact outbound frame history across forced half-close without changing TCP ordering? Which server operation yields a safely observable postcommit lost-reply case?",
+      "status": "resolved",
+      "answer": "Use a single forwarding WebSocket recorder that records each complete client req frame and sequence before forwarding; preserve order per TCP direction and drop only the selected server response after Marshall commit. A PostgreSQL-backed Porsche commands mutation with a unique request-id and Request/Operation row is the observable postcommit lost-reply case. The proxy must be validated against a no-fault sequence and half-close smoke check in the eventual harness.",
+      "evidence": [
+        "protocol/lib/overalls_protocol/control/client.ex:116-145,175-185,347-376,403-430",
+        "marshall/lib/marshall/control/socket.ex:118-142",
+        "marshall/lib/marshall/ssh/commands.ex:21-48,87-120",
+        "marshall/lib/marshall/ssh/request.ex"
+      ],
+      "proposed_catalog_change": "Open questions: None for fixture design. Actual proxy correctness and postcommit timing require a hosted setup check before a result is claimed."
+    },
+    {
+      "slug": "control-service-dispatch-closed",
+      "old_question": "- Which mutation-capable route in each service offers the cheapest independently observable negative probe, without relying on an internal refusal response?",
+      "status": "resolved",
+      "answer": "Choose Audi ssh-open (Session row), Lilly sessions (HostSession/current host session row), Porsche commands with a synthetic request-id and an administrative mutation (SSH Request row), Ziggy agent_next (ModelCall queued->claimed row), and Galileo authorize for a peer integration (PeerToken digest row minted). The latter is a durable authority mint, not an external upstream mutation. Cross-service op refusal can also be asserted by absence of those rows.",
+      "evidence": [
+        "marshall/lib/marshall/ingress/sessions.ex:48-98",
+        "marshall/lib/marshall/compute/provisioner_control.ex:97-151",
+        "marshall/lib/marshall/ssh/commands.ex:21-42,87-120",
+        "marshall/lib/marshall/agents/model_calls.ex:89-130",
+        "marshall/lib/marshall/galileo/authorizations.ex:22-52",
+        "marshall/lib/marshall/galileo/peer_tokens.ex:1-36"
+      ],
+      "proposed_catalog_change": "- None for route selection. Each selected negative probe still needs a positive valid control and durable-row check in the hosted workload."
+    },
+    {
+      "slug": "control-version-refusal-remains-terminal",
+      "old_question": "- Which supervised socket/task inventory can attribute a refused upgrade without confusing unrelated concurrent clients? The database-only no-effect oracle is already feasible.",
+      "status": "resolved",
+      "answer": "A 426 is emitted by ControlAPI before WebSockAdapter.upgrade, so an isolated fixture with a single uniquely identified client can prove the specific attempt received 426 and no 101/hello/welcome frame. Pair that with Control.Client status unsupported_version, no retry over >4s normal ceiling, and no matching durable row. Do not use an aggregate socket/task count as the primary oracle; unrelated clients can change it.",
+      "evidence": [
+        "marshall/lib/marshall_web/control_api.ex:22-81",
+        "protocol/lib/overalls_protocol/control/client.ex:327-330,401-447",
+        "protocol/lib/overalls_protocol/control/close.ex:33-53",
+        "marshall/test/marshall_web/control_api_test.exs:36-79"
+      ],
+      "proposed_catalog_change": "- None for the refusal oracle. A dedicated client/Marshall fixture and wire handshake capture attribute the attempted upgrade; task inventory is optional diagnostics."
+    },
+    {
+      "slug": "galileo-accounting-delay-does-not-renew-old-grant",
+      "old_question": "Open questions: Is the grant TTL contract anchored at Marshall's response or deliberately at upstream lease creation? Does an existing tested path subtract elapsed authorization/accounting time in an enclosing adapter not visible in `Http.proxy/4`? If not, a timed reproduction can settle the suspected gap.",
+      "status": "partial",
+      "answer": "No enclosing path subtracts elapsed time: Http.proxy receives authorization, blocks in Producer.admit (up to 5000 ms), then calls Upstream.stream with the same authorization; Upstream.start_lease creates a new deadline from the full TTL. ADR-0080 says Galileo converts the relative lease to a local monotonic deadline, but does not explicitly settle whether the start is grant receipt or upstream use. A controlled-origin/blocked-recorder run must decide whether an effect occurs after original grant age >2000 ms and before renewal; source ordering alone establishes the age window, not hosted effect.",
+      "evidence": [
+        "marshall/lib/marshall/galileo/authorizations.ex:11,22-52",
+        "galileo/lib/galileo/http.ex:98-133",
+        "elixir/request_accounting/lib/overalls/request_accounting/producer.ex:49-64",
+        "galileo/lib/galileo/upstream.ex:65-100,411-428",
+        "docs/architecture/decisions/0080-named-edge-integrations.md:34-44"
+      ],
+      "proposed_catalog_change": "Open questions: Does a controlled end-to-end request produce an upstream effect after accounting delay exceeds the original 2,000-ms grant without a successful renewal? `(partial: source proves the full TTL restarts after accounting; effect and intended start point need a timed controlled-upstream probe)`"
+    },
+    {
+      "slug": "host-credential-rotation-fences-old-socket",
+      "old_question": "Open questions: Can the hosted fixture hold a Control socket open while an operator rotation commits, or must the stale request be driven through the service handler? The latter still covers authorization but less transport behavior.",
+      "status": "resolved",
+      "answer": "The Control client and socket are long-lived GenServers/WebSock processes; the operator Credentials.rotate/revoke transaction is independent of socket lifetime. Use one existing Lilly Control connection through Marshall B, commit rotation through Marshall A, then send old-token lilly.execution on the same socket and check host/session/report/outcome rows. This is feasible without two Lilly owners: pause only the client request producer or use one raw protocol client carrying the old credential.",
+      "evidence": [
+        "marshall/lib/marshall/control/socket.ex:20-35,118-142",
+        "marshall/lib/marshall/compute/credentials.ex:26-55,74-131",
+        "marshall/lib/marshall/control/services/lilly.ex:26-54",
+        "marshall/lib/marshall/compute/provisioner_requests.ex:63-75"
+      ],
+      "proposed_catalog_change": "Open questions: None for fixture design. The actual open-socket rotation race remains a hosted test target."
+    },
+    {
+      "slug": "host-session-successor-fences-old-exchanges",
+      "old_question": "Open questions: Which safe host fixture lets two real Lilly clients deliberately hold A and B without violating Lilly's single-owner host lock? If unavailable, use a protocol-level stale client and limit the physical claim to B.",
+      "status": "resolved",
+      "answer": "Use one real Lilly owner for successor B, with a protocol-level stale A client that replays only its previously issued session ID/nonce. Seed A through authenticated Marshall Control before B takes over; leave A inert after B opens. The stale client has no local Store/Runtime and cannot issue a physical command, so durable DB fencing is the A oracle; B alone may carry the physical effect witness.",
+      "evidence": [
+        "marshall/lib/marshall/compute/provisioner_control.ex:97-175",
+        "marshall/lib/marshall/compute/host_session.ex:1-30",
+        "lilly/lib/lilly/control/client.ex:206-284",
+        "lilly/lib/lilly/host/lock.ex"
+      ],
+      "proposed_catalog_change": "Open questions: None for the safe fixture choice. Native physical evidence for B remains a separate verification layer."
+    },
+    {
+      "slug": "lease-expiry-independent-of-blocked-renewal",
+      "old_question": "Open question: for each service, which exact irreversible effect-admission timestamp is observable independently of a byte already buffered before expiry?",
+      "status": "partial",
+      "answer": "Define the observed event at a fresh service-side admission call, not remote delivery of previously buffered bytes: Audi guarded SSH/channel or web socket send after StreamGuard/active? check; Ziggy provider HTTP request dispatch in the owner process; Galileo Mint.HTTP request/header/chunk or frontend consume immediately after lease_open? checks. Pair a monotonic, sequence-only SUT checkpoint with controlled endpoint receipt. A remote byte arrival alone cannot timestamp its admission; native guest effects and real provider billing need their own physical witness.",
+      "evidence": [
+        "audi/lib/audi/authority/stream_guard.ex:125-153",
+        "audi/lib/audi/ssh/channel.ex:136-150,370-374",
+        "ziggy/lib/ziggy/lease.ex:12-29,42-77",
+        "ziggy/lib/ziggy/upstream.ex",
+        "galileo/lib/galileo/upstream.ex:145-160,227-274,575-638"
+      ],
+      "proposed_catalog_change": "Open question: native guest/provider billing timestamps remain outside the hosted service oracle. `(partial: source-side forwarding/admission points and controlled endpoint receipts can distinguish new calls from buffered bytes; physical billing/guest effects need separate witnesses)`"
+    },
+    {
+      "slug": "lost-host-hint-eventually-delivers-command",
+      "old_question": "Open questions: What fixture can isolate one Marshall notifier without blocking its Repo connection, while leaving the second replica and Lilly live? If only whole-container isolation is available, the scenario can test the periodic backstop but cannot separately attribute relay recovery.",
+      "status": "partial",
+      "answer": "Relay subscribes to Oban notifier switch telemetry and sends resync when status returns solitary/clustered; Lilly retains a 1000-ms periodic exchange. The existing two-BEAM test proves normal PG hint delivery, not notifier isolation. A specific hosted probe must identify the notifier connection/process (or fault only its PG socket), verify Repo sentinel queries still work on that Marshall instance, observe isolated then recovered notifier status and resync, and distinguish that from periodic exchange.",
+      "evidence": [
+        "marshall/lib/marshall/control/hints/relay.ex:20-59",
+        "marshall/lib/marshall/control/hints.ex:60-106,145-148",
+        "marshall/test/marshall/control/hints_distributed_test.exs:1-80",
+        "lilly/lib/lilly/control/runtime.ex:400-429"
+      ],
+      "proposed_catalog_change": "Open questions: Which Oban notifier connection or process can the hosted fixture cut independently while a same-node Repo sentinel query succeeds? `(partial: Relay watches notifier status and two-node tests prove ordinary delivery; notifier-only fault mechanism needs a runtime isolation probe)`"
+    },
+    {
+      "slug": "porsche-wait-never-resubmits-mutation",
+      "old_question": "Open questions: Which Marshall ingress capture can count actual mutation submissions without recording secret command fields? Can the chosen physical command complete within a controlled no-fault tail and the CLI timeout in hosted TCG?",
+      "status": "partial",
+      "answer": "Capture sanitized operation metadata at Marshall.Control.Socket request dispatch after decoding: service, closed op, request ID extracted only from a validated Porsche SSHManagement/SSHCommand document, and a monotonically assigned ingress sequence. Never retain arguments/options beyond the opaque request-id. Compare this ingress count with durable SSH Request rows. A controlled durable mutation can prove one-submit safety; physical command completion in TCG is environment-dependent and needs a timed no-fault tail run.",
+      "evidence": [
+        "marshall/lib/marshall/control/socket.ex:118-142",
+        "marshall/lib/marshall/ssh/control_requests.ex:15-38",
+        "marshall/lib/marshall/ssh/commands.ex:21-42,87-120",
+        "porsche/lib/porsche/runner.ex:58-89,108-164",
+        "porsche/test/runner_test.exs"
+      ],
+      "proposed_catalog_change": "Open questions: Can a selected real physical command reach a matching terminal receipt before the configured CLI timeout in hosted TCG? `(partial: source permits a 120-second wait and controlled fixture can prove safety; physical TCG progress requires measured tail)`"
+    }
+  ],
+  "proven_defects": [],
+  "source_findings_needing_runtime_confirmation": [
+    {
+      "slug": "galileo-accounting-delay-does-not-renew-old-grant",
+      "finding": "Accounting can outlast the fixed 2000-ms authorization TTL before Upstream starts a fresh full-length lease; the absence of elapsed subtraction is source-confirmed, but an upstream effect and the intended authority anchor need a timed witness."
+    }
+  ]
+}

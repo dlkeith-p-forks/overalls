@@ -1,0 +1,77 @@
+[package]
+name = "lyra"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "overalls"
+path = "src/main.rs"
+
+[[bin]]
+name = "overalls-ssh-authorize"
+path = "src/bin/overalls-ssh-authorize.rs"
+
+[[bin]]
+name = "overalls-workspaced"
+path = "src/bin/overalls-workspaced.rs"
+
+[[bin]]
+name = "overalls-native-readinessd"
+path = "src/bin/overalls-native-readinessd.rs"
+
+[[bin]]
+name = "overalls-native-trustd"
+path = "src/bin/overalls-native-trustd.rs"
+
+[[bin]]
+name = "overalls-native-workspaced"
+path = "src/bin/overalls-native-workspaced.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+fs2 = "0.4"
+hex = "0.4"
+libc = "0.2"
+opentelemetry-proto = { version = "0.31", default-features = false, features = ["gen-tonic-messages", "metrics", "trace"] }
+prost = "0.14"
+reqwest = { version = "0.12.28", default-features = false, features = ["blocking", "rustls-tls-native-roots"] }
+rustls-pki-types = { version = "1", features = ["std"] }
+base64 = "0.22"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+ssh-key = { version = "0.6.7", features = ["ed25519"] }
+tempfile = "3"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+reqwest = { version = "0.12.28", default-features = false, features = ["native-tls-vendored"] }
+
+[target.'cfg(windows)'.dependencies]
+# Native TLS is schannel on Windows: the private client verifies the deployed
+# private leaf the same way Linux guests do (see private_http).
+reqwest = { version = "0.12.28", default-features = false, features = ["native-tls"] }
+windows-sys = { version = "0.61", features = [
+  "Win32_Foundation",
+  "Win32_NetworkManagement_IpHelper",
+  "Win32_NetworkManagement_NetManagement",
+  "Win32_NetworkManagement_Ndis",
+  "Win32_Networking_WinSock",
+  "Win32_Security_Cryptography",
+  "Win32_Security_Authorization",
+  "Win32_Storage_FileSystem",
+  "Win32_System_IO",
+  "Win32_System_JobObjects",
+  "Win32_System_Registry",
+  "Win32_System_Services",
+  "Win32_System_Threading",
+  "Win32_UI_Shell",
+] }
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[dev-dependencies]
+hegeltest = "0.28.6"

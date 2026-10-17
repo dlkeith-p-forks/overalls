@@ -1,0 +1,8 @@
+@cc [owner:ghuntley,label:verification] nix-test-real-packages
+Release and machine checks MUST exercise the actual source-built packages and
+modules. Synthetic credentials belong only to isolated fixtures; skipped KVM
+execution MUST NOT be reported as machine or Firecracker acceptance.
+
+@cc [owner:ghuntley,label:verification] nix-test-isolated-inputs
+Checks MUST run with local, bounded fixtures and prefetched dependencies, without
+production credentials, live cloud providers or public network services.

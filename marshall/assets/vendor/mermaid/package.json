@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "esbuild": "0.25.5",
+    "mermaid": "11.12.0"
+  }
+}

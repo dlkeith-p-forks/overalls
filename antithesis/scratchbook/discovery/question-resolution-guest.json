@@ -1,0 +1,129 @@
+{
+  "sut_path": "/home/ghuntley/src/kittens-antithesis-reset",
+  "updated": "2026-10-13",
+  "external_references": [],
+  "scope": "Current repository source and tests only; no retired harness, hosted run, or native execution claimed",
+  "entries": [
+    {
+      "slug": "current-membership-gates-new-private-web",
+      "old_questions": ["Which minimal private guest app and browser-login fixture can issue and record unique non-sensitive request nonces through the full Audi route in the replacement harness?"],
+      "answer": "The existing private-web native fixture has a disposable Python HTTP/stream/WebSocket origin, Playwright HTTPS login with an Audi host-only cookie, an open-stream removal journey, and owner-SSH guest counter inspection. It lacks per-request nonce capture; extend that origin with a bounded synthetic nonce ledger and preserve the real route.",
+      "status": "partial",
+      "proposed_catalog_edits": "Replace the open question with the bounded nonce-ledger harness gap; do not claim fresh-request guest effect from aggregate counters.",
+      "evidence": ["nix/tests/machines/private-web/guest.py:38", "nix/tests/machines/private-web/browser.py:66", "nix/tests/machines/private-web/driver.py:42"]
+    },
+    {
+      "slug": "expired-web-lease-stops-existing-guest-bytes",
+      "old_questions": ["Can the hosted guest streaming fixture expose a post-deadline causal barrier and recorder without relying on synchronized clocks across Audi and guest?", "Which fault controller can suspend Audi's guard in hosted Antithesis while preserving the production owner/guard relation?"],
+      "answer": "Audi's local monotonic deadline and independent watchdog can provide the time authority, but a per-stream owner-death acknowledgement and guest nonce ledger are missing. A targeted PID controller must suspend only the real guard, leaving its socket owner and watchdog scheduled; no such hosted mapping/controller is assembled.",
+      "status": "partial",
+      "proposed_catalog_edits": "Tag both questions partial; state the expiry oracle as owner-death barrier followed by a post-barrier guest nonce check, never a cross-node clock comparison or client-socket closure alone.",
+      "evidence": ["audi/lib/audi/authority/lease.ex:18", "audi/lib/audi/authority/stream_guard.ex:17", "nix/tests/machines/private-web/guest.py:38"]
+    },
+    {
+      "slug": "guest-identity-cutover-preserves-uid-custody",
+      "old_questions": ["Which existing migration test fixture retains pre-cutover rows and an independent sequence snapshot, rather than constructing post-migration Ash resources only?"],
+      "answer": "GuestIdentityCanonicalMigrationTest uses a disposable PostgreSQL database, migrates to the immediately preceding version, seeds conflicting/retired/deleted rows and editor leases, snapshots UUID/UID/history/audit and sequence state, applies the real cutover migration, then compares them and checks the next UID.",
+      "status": "resolved",
+      "proposed_catalog_edits": "Remove this open question; cite the populated scratch-database migration fixture, with physical guest home custody still a separate test scope.",
+      "evidence": ["marshall/test/marshall/accounts/guest_identity_canonical_migration_test.exs:30", "marshall/test/marshall/accounts/guest_identity_canonical_migration_test.exs:78"]
+    },
+    {
+      "slug": "guest-identity-never-transfers-on-email-reuse",
+      "old_questions": ["Which guest test configuration can exercise SSH, browser terminal and editor on one retained identity across both guest families, and which checks require separate capability-specific cases?"],
+      "answer": "The account-lifecycle native fixture retains an old home and checks SSH and browser terminal identities; the editor fixture is separate and needs an editor-enabled image with at least 2 GiB. No single existing same-email retirement fixture covers all three surfaces across both guest families. ADR-0158 explicitly limits UID/home separation to preventing accidental inheritance: a newly authorized sudo-capable writer is not promised confidentiality from the old home.",
+      "status": "partial",
+      "proposed_catalog_edits": "Replace the broad question with a tagged image-capability matrix gap; count each surface and guest family only when its real fixture runs. Narrow the property and oracle to distinct GuestAccount UUID/UID/u<uid>/home, no inherited credentials or grant, and unchanged numeric file custody; remove blanket old-home read/write denial after an explicit grant.",
+      "evidence": ["nix/tests/machines/account-lifecycle/driver.py:790", "nix/tests/machines/account-lifecycle/driver.py:1297", "nix/packages/guest/default.nix:197"]
+    },
+    {
+      "slug": "guest-ready-does-not-claim-workspace-checkout",
+      "old_questions": ["Which current user-facing API or page, if any, actually labels checkout complete rather than merely VM ready or source delivered? If none, keep the invariant at the guest marker and treat UI wording as an investigation lead."],
+      "answer": "LaunchLive's complete state is a Compute.provision admission receipt and navigation; its text explicitly says the machine will clone after boot. The native guest probe separately waits for done and checks Git HEAD. No checkout-complete claim was found in that launch path.",
+      "status": "resolved",
+      "proposed_catalog_edits": "Remove the UI-completion question and scope the safety oracle to guest ready versus durable done/HEAD; do not interpret launch admission as checkout completion.",
+      "evidence": ["marshall/lib/marshall_web/live/launch_live.ex:50", "marshall/lib/marshall_web/live/launch_live.ex:175", "nix/tests/machines/repository-launch/guest.exs:35"]
+    },
+    {
+      "slug": "guest-workspace-restart-publication-no-clobber",
+      "old_questions": ["How does the selected TCG restart action preserve guest filesystem and independently witness rename durability without relying on receiver status?"],
+      "answer": "Lyra renames a completed partial checkout, syncs the workspace directory, then writes done; restart recognizes a directory at the checkout path without recloning. Native guest verification checks retained HEAD, local marker, done and no partial path. A hosted TCG executor must retain one qcow2 overlay, record boot/overlay identity, power-cut after a witnessed rename boundary and inspect bytes after remount; it is not assembled. Source hypothesis only: any unrelated pre-existing directory at that path may be treated as finished because the branch does not validate HEAD or source binding.",
+      "status": "partial",
+      "proposed_catalog_edits": "Tag the TCG restart/overlay probe partial and distinguish source test presence from a recorded hosted durability run. Add a foreign pre-existing checkout-directory value with independent HEAD/content validation as an unconfirmed source hypothesis, not a confirmed defect.",
+      "evidence": ["lyra/src/workspace_receiver.rs:613", "nix/tests/machines/repository-launch/guest.exs:35", "antithesis/scratchbook/deployment-topology.md"]
+    },
+    {
+      "slug": "guest-workspace-source-replay-once",
+      "old_questions": ["Which guest inspection channel can report Git clone count and source hash without exposing the source itself?", "Does Lilly redelivery reuse the exact source reference after its receipt reply is lost?"],
+      "answer": "Lilly resends spec.workspace_source for the same boot/digest and increments unsettled attempts; each exchange uses a fresh nonce. Lyra accepts the identical persisted source and, after done, avoids further Git work. A bounded guest digest/done/HEAD observer and independent local Git origin request ledger are still missing. Pre-done clone retries are allowed.",
+      "status": "partial",
+      "question_statuses": ["partial", "resolved"],
+      "proposed_catalog_edits": "Remove the exact-reference question; retain a tagged sanitized guest/origin observer question. State one accepted source per boot and no post-done Git replay, not exactly one pre-done clone attempt.",
+      "evidence": ["lilly/lib/lilly/vm/driver.ex:776", "lilly/lib/lilly/vm/driver.ex:828", "lyra/src/workspace_receiver.rs:570"]
+    },
+    {
+      "slug": "source-v2-capability-gates-admission",
+      "old_questions": ["Which image-registration path safely seeds malformed or obsolete catalog manifests for end-to-end refusal, rather than bypassing catalog validation with a test-only in-memory image?"],
+      "answer": "Normal Images.register handles valid/null-capability images; malformed or obsolete manifests cannot be registered by design. The existing Marshall test mutates an owned disposable compute_images.manifest row and then calls normal admission, verifying refusal and unchanged allocations. Lilly's driver test checks refusal before host files are created.",
+      "status": "resolved",
+      "proposed_catalog_edits": "Remove the question; describe direct disposable persisted-row mutation as a catalog-corruption case, not normal image registration.",
+      "evidence": ["marshall/test/marshall/compute/workspace_source_admission_test.exs:98", "marshall/test/marshall/compute/workspace_source_admission_test.exs:118", "lilly/test/vm/image_source_capability_test.exs:12"]
+    },
+    {
+      "slug": "source-v2-delivery-envelope-v1-boot-bound",
+      "old_questions": ["Where can a controlled guest responder inject a wrong envelope while still using the actual vsock broker and boot challenge path?"],
+      "answer": "Lilly's jailed v.sock request and Lyra's port-1031 responder both validate the v1 envelope with nested source-v2 and boot binding. No composed QEMU/vsock mutation seam exists. A one-shot in-path reply-field mutator would retain the real receiver for positive cases; a substituted responder would cover a narrower validator case and must be labeled so.",
+      "status": "partial",
+      "proposed_catalog_edits": "Tag the in-path reply mutation seam partial and require unmodified real Lyra/boot evidence for positive acceptance.",
+      "evidence": ["lilly/lib/lilly/vm/workspace_source.ex:68", "lyra/src/workspace_receiver.rs:112", "antithesis/scratchbook/deployment-topology.md"]
+    },
+    {
+      "slug": "stale-local-execution-cannot-forward-guest-bytes",
+      "old_questions": ["How can the composed workload observe the old guardian's death independently of its SUT-side replay marker while retaining the old client stream handle?", "Can hosted TCG retain two distinguishable boot recorders long enough to observe stale bytes without changing production guest lifetime semantics?"],
+      "answer": "Lilly's server monitors the guardian and exits the relay on DOWN after local execution authority changes; there is no external per-stream DOWN receipt. A scoped monitor must correlate the old client handle, guardian DOWN and relay close before injecting the new nonce. The old boot's effect ledger must survive outside its process; sequential boot IDs and retained overlay preserve stopped-only semantics without inventing two live owners.",
+      "status": "partial",
+      "proposed_catalog_edits": "Keep both questions tagged partial. Define the safety barrier as local execution withdrawal plus old guardian death/relay close, followed by an independent old-guest effect check; Marshall commit alone is insufficient.",
+      "evidence": ["lilly/lib/lilly/ingress/guardian.ex:31", "lilly/lib/lilly/ingress/server.ex:203", "lilly/lib/lilly/ingress/server.ex:260"]
+    },
+    {
+      "slug": "terminal-create-reply-loss-one-pty",
+      "old_questions": ["Which guest terminald query exposes creation count versus only currently live PTYs?", "Does the TCG harness carry the production terminal protocol and real host stream without a test-only registry shortcut?"],
+      "answer": "Terminald CREATION_STATUS reports one request-to-session ID and live flag; LIST reports current PTYs. Neither counts PTYs born and exited between samples. The real path is Marshall authority through Lilly's authenticated stream and guest vsock HELLO to CREATE_ONCE, but no TCG composition or lost-reply run exists.",
+      "status": "partial",
+      "proposed_catalog_edits": "Tag both questions partial; require a bounded guest PTY birth observer as the independent at-most-one effect oracle, and label direct daemon tests separately from the composed stream.",
+      "evidence": ["nix/packages/terminald/src/main.rs:150", "nix/packages/terminald/src/session.rs:137", "lilly/lib/lilly/terminal/vsock.ex:121"]
+    },
+    {
+      "slug": "terminal-input-frame-replay-once",
+      "old_questions": ["What protocol-level fault seam can repeat a frame on an authenticated same channel without bypassing Marshall's authorization?", "Which guest test program can fsync a receipt per input token without altering terminal protocol timing enough to hide the race?"],
+      "answer": "The public viewer cannot choose Lilly's input sequence: PeerSocket checks its own monotonic sequence and HostStream allocates the host-to-Lilly sequence. Duplication must occur in path after authenticated HostStream encoding and before Lilly data/4. Lilly drops duplicates before Channel.input; host ACK follows Vsock.write, not guest fsync. No in-path seam or packaged bounded guest token-ledger program exists.",
+      "status": "partial",
+      "proposed_catalog_edits": "Tag both questions partial; phrase safety as at-most-once guest effect for duplicated same-channel sequence, with a separate positive guest-fsynced progress witness. Do not claim every accepted frame reached the guest from host ACK alone.",
+      "evidence": ["marshall/lib/marshall/terminal/peer_socket.ex:88", "marshall/lib/marshall/terminal/host_stream.ex:100", "lilly/lib/lilly/terminal/stream.ex:427", "lilly/lib/lilly/terminal/channel.ex:102"]
+    },
+    {
+      "slug": "terminal-kill-progress-under-pty-backpressure",
+      "old_questions": ["Can the actual PTY buffer be saturated with a non-reading child under the deployed daemon and the blocked write independently witnessed?"],
+      "answer": "The master is opened without O_NONBLOCK and reader_loop holds SessionInner during write_all, so lock contention is source plausible. The existing kill test proves output viewer-credit pressure only; it does not witness blocked PTY input. No runtime defect is confirmed.",
+      "status": "partial",
+      "proposed_catalog_edits": "Retain a tagged blocked-input precondition and require independent thread/PTY observation before classifying a kill deadline failure as a product defect; do not cite the output-credit test as that proof.",
+      "evidence": ["nix/packages/terminald/src/pty.rs:157", "nix/packages/terminald/src/session.rs:506", "nix/packages/terminald/src/session.rs:1145"]
+    },
+    {
+      "slug": "terminal-physical-scrollback-budget",
+      "old_questions": ["Can hosted TCG expose exact ring backing snapshots without changing allocator behavior?", "Which guest-vsock path can preserve concurrent PTYs under outer faults?"],
+      "answer": "Ring::allocated_capacity is cfg(test) only; production LIST has live IDs but no backing or ring_total. A coherent guest-local snapshot under daemon locks is needed. Authenticated guest vsock can maintain concurrent sessions if guest-vmm lives through outer faults, but no composed fixture exists.",
+      "status": "partial",
+      "proposed_catalog_edits": "Tag both questions partial; require actual VecDeque capacity summed over live rings, not logical limit or RSS. Separate local Rust allocator evidence from hosted guest/vsock execution.",
+      "evidence": ["nix/packages/terminald/src/ring.rs:21", "nix/packages/terminald/src/session.rs:729", "nix/packages/terminald/src/main.rs:150"]
+    },
+    {
+      "slug": "terminal-stalled-viewer-neighbor-progress",
+      "old_questions": ["What quiet interval is justified by a measured native/TCG baseline?", "Can an output-stalled viewer retain a socket through the chosen hosted fault mechanism?"],
+      "answer": "The local real-PTY/Unix-socket property test confirms actual queue pressure, holds both sockets open, requires successive neighbor byte markers within five seconds each, then checks retirement and further progress. This gives a local baseline only. No TCG quiet interval or hosted socket-retention fault action exists.",
+      "status": "partial",
+      "proposed_catalog_edits": "Tag both questions partial; use the local five-second marker checks as design evidence, measure a TCG-specific quiet interval, and exclude whole-guest pauses from the liveness precondition.",
+      "evidence": ["nix/packages/terminald/src/neighbor_property_tests.rs:26", "nix/packages/terminald/src/neighbor_property_tests.rs:66", "nix/packages/terminald/src/neighbor_property_tests.rs:82"]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+@cc [owner:ghuntley,label:architecture] lilly-independent-guest-lifetime
+Stopping or restarting the Lilly application, its VM actors, or its console clients MUST
+NOT terminate an already running VM or its guest-local terminald PTYs
+(ADR-0004, ADR-0017, ADR-0082).
+
+@cc [owner:ghuntley,label:protocol] lilly-v4-only-execution
+Only version 4 provisioner control documents MUST be accepted. Native version 3
+intent stores remain independently versioned and MUST preserve existing identity. Execution requires
+physical host ownership, image/address validation and confirmed outcomes; durable
+receipt alone MUST NOT release resources (ADR-0037, ADR-0017).
+
+@cc [owner:ghuntley,label:security] lilly-host-utilities-use-argv
+Host utility invocations MUST use fixed executable names or validated operator-owned
+absolute executables with argument arrays. Peer or guest data MUST NOT become shell
+program text (ADR-0013, ADR-0015).
+
+@cc [owner:ghuntley,label:security] lilly-diagnostics-exclude-secrets
+Logs, telemetry metadata, Inspect output and process diagnostic callbacks MUST exclude
+provisioner credentials and terminal input/output bytes (ADR-0009, ADR-0020, ADR-0021).
+
+@cc [owner:ghuntley,label:security;recovery] lilly-no-agent-guests-unattested
+A placement whose boot bundle declares `guest_agents` `none` MUST never report a
+`guest_ready` fact, MUST record trust as skipped with a receipt bound to the exact
+boot instead of delivering trust material, and MUST refuse terminals, workspace
+source delivery and the Inception profile. Its running observation comes from the
+confined VMM alone (ADR-0170).
+
+@cc [owner:ghuntley,label:security;recovery] lilly-workspace-source-reference-only
+Lilly MUST only hand a validated workspace source reference to the current boot over
+its jail vsock socket; the guest runs git. Lilly MUST NOT fetch repositories, write
+guest disks, log the reference, or let delivery delay, fail or fence running (ADR-0128).

@@ -1,0 +1,38 @@
+# stopped-relocation-retains-bytes-and-routes-to-destination
+
+**Candidate:** P0 safety for acknowledged data and old-source refusal, with a conditional P1 progress witness. Proposed primary `Always` message **"Stopped relocation serves retained guest bytes at destination and refuses former source route"**. Instrumentation is missing per `antithesis/scratchbook/existing-assertions.md`. Evaluate `Always` at every post-cutover probe after a committed handoff, independent destination readiness, authoritative DNS answers on both replicas and a successful strict destination SSH/HTTPS connection. It then compares destination bytes and requires forced old-source transport refusal. Prior transfer failure, temporary DNS lag and inconclusive observation are not false data-loss verdicts. `Sometimes(condition)` message **"Stopped relocation reached verified destination DNS SSH and HTTPS after finite faults"** requires one admitted move, healed dependencies, fresh route publication and actual successful client traffic, preventing a vacuous run with no cutover probe. It is progress, not proof of the safety invariant on every move. A SUT-side `Reachable` at accepted final import/readiness could aid search, but neither event proves guest bytes or route traffic.
+
+## Invariant and sequence
+
+For a running source, write unique, fsynced markers on each profile drive and capture digest/length, source boot ID, placement/epoch and dataset GUID. Confirm the stable markers through a second source read. Admit one stopped-only relocation: destination connectivity probe; recorded physical source stop; one `lilly-b` snapshot/full stream; fenced receive/adopt; committed placement/epoch handoff; destination activation/readiness; then source cleanup. A stopped source starts at the same full-copy stage after skipping the running stop. At the first safe post-readiness point, compare both destination guest markers to the captured baseline and the destination dataset GUID/drive shapes to native observations. If the source disk is still held, verify it remains until readiness and cleanup proof, then independently witness its eventual retirement. A later move back may use a new placement and must retain the same data.
+
+From a separate client, ask both authoritative Audi DNS replicas for the real VM hostname; both must return the destination host address. Use the unchanged strict client identity to SSH into the destination, read the same marker and physical boot ID, and fetch a known HTTPS response over verified TLS at the original hostname. Resolve/pin the *old source transport address* while retaining the original hostname/TLS verification and assert HTTPS refusal and strict SSH refusal with no old-source guest effect. Do not accept `ingress_routes` rows, SQL status, DNS strings or `curl` exit alone as the entire oracle; record actual destination response content, certificate/host-key validation and old endpoint negative observation. A transient timeout on old source before the new route is authoritative is inconclusive.
+
+## Source trail and fault interleaving
+
+- ADR-0155 (`docs/architecture/decisions/0155-stopped-only-relocation.md:43-70,125-158`) replaces pre-copy with one stopped full stream; source cleanup follows destination readiness. The earlier ADR-0072 multi-drive requirement is carried forward, so check both `rootfs.ext4` and `data.raw` for Inception, with one dataset GUID per placement. `marshall/lib/marshall/compute/relocation_coordinator.ex:123-166,174-239` records probe-bound stop and commits successor placement/epoch/activation; `relocation_readiness_state.ex:94-143` requires exact activation outcome; `relocation_cleanup.ex:19-27,63-80` retains source disk until proof. Race lost effects/receipts and coordinator restart around these commits; never impose live pre-copy timing.
+- `nix/tests/machines/fleet/scenarios/relocation.py:44-84,139-177` tests running and stopped real moves and guest assertions. `nix/tests/machines/fleet/scenarios/audi-relocation.py:50-81,110-145,130-313` tests DNS answers from both replicas, strict SSH, HTTPS, retained home marker and old-source forced transport refusal. `nix/tests/machines/fleet/scenarios/user-ssh-journey.py:991-1085` reads a home marker and new boot/host key after relocation. These source tests have overlapping but different fixture contexts; none is evidence of a newly executed composed two-drive byte-plus-route Antithesis history.
+
+## Values, boundary, questions
+
+Vary source originally running/stopped; one-drive OSS versus two-drive Inception; probe unavailable before stop; full stream interrupted/resumed; final import missing/present; coordinator death immediately before/after handoff; destination readiness delay/failure; two DNS replicas converging at different times; client cached old address; source cleanup delayed. Keep exact VM hostname and strict TLS/SSH validation when forcing old transport, so refusal is about stale route rather than changing identity. Compare a pre-move fsynced marker; guest writes during the stopped window are impossible by the intended fence, and an unacknowledged write before stop is not a baseline.
+
+Full evidence needs two real Lilly hosts, actual ZFS full stream/Firecracker destination guest and Audi/Porsche client path. The hosted topology's `control-core` emulator can test handoff rows only. A single hosted TCG guest or one-pool storage router cannot establish cross-host route convergence or source refusal. No current combined run was performed.
+
+**Open questions:** Can the native fixture hold the source disk at a documented point after destination readiness but before cleanup and read the destination then? `(partial: ADR/cleanup ordering is explicit; inspected scenario awaits completion rather than pausing that interval)` Which Inception guest paths expose distinct fsynced markers on both drives for the combined route test? `(partial: two-drive transfer and clone fixtures exist; fleet Audi move uses a home marker)`
+
+### Investigation Log
+
+#### Can the native fixture hold source disk after readiness and before cleanup for a destination read?
+
+- Examined: `docs/architecture/decisions/0155-stopped-only-relocation.md:43-70`, `marshall/lib/marshall/compute/relocation_readiness_state.ex:94-143`, `marshall/lib/marshall/compute/relocation_cleanup.ex:19-27,63-80`, `nix/tests/machines/fleet/scenarios/relocation.py:44-84`, `nix/tests/machines/fleet/scenarios/audi-relocation.py:110-145`.
+- Found: Source deletion is gated after readiness; the inspected fixtures wait for the move rather than exposing a stable post-readiness pre-cleanup pause.
+- Not established: A harness control point that delays cleanup without modifying production authority. If none exists, report the narrower completed-move destination byte result and separately observe the custody rule at native state boundaries.
+- Conclusion: partial; do not claim this intermediate read is already proven.
+
+#### Which Inception guest paths expose distinct fsynced markers for the combined route test?
+
+- Examined: `nix/tests/machines/zfs-guest/driver.py:250-271`, `nix/tests/machines/zfs-transfer/driver.py:360-450`, `nix/tests/machines/fleet/scenarios/audi-relocation.py:50-81,130-313`.
+- Found: Native two-drive copy/adoption probes exist separately from the Audi move, which uses a persistent home marker and actual client routes.
+- Not established: One combined fleet scenario that fsyncs and rereads distinct root and data-drive markers through destination SSH/HTTPS; do not substitute host-side prefix hashing or SQL for guest reads.
+- Conclusion: partial; retain this as a proposed composed workload, not an executed acceptance claim.

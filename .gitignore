@@ -1,0 +1,29 @@
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# Locally built deployment artifacts and exported Nix closures
+/artifacts/
+__pycache__/
+
+# Repository-local, lockfile-pinned contract tooling
+/tools/code-contracts/node_modules/
+/browser/node_modules/
+/browser/dist/
+result
+
+# Erlang VM crash dumps from local runs
+erl_crash.dump
+
+# Property runner replay/shrink cache
+/lyra/.hegel/
+
+# NixOS interactive test-driver REPL history
+.nixos-test-history

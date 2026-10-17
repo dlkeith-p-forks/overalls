@@ -1,0 +1,20 @@
+# guest-boot-report-observation-only: starts after readiness, is never a
+# dependency of another unit, and Type=exec lets the boot transaction finish
+# while the report waits (bounded) for it. Failures are ignored.
+[Unit]
+Description=Report bounded guest boot timing on the serial console
+After=lilly-readiness.service
+
+[Service]
+Type=exec
+StandardOutput=tty
+StandardError=null
+TTYPath=/dev/ttyS0
+NoNewPrivileges=yes
+ProtectKernelTunables=yes
+TasksMax=8
+MemoryMax=64M
+ExecStart=-/usr/bin/python3 /usr/local/lib/lilly-boot-report.py /usr/bin/systemd-analyze /usr/bin/systemctl /usr/bin/journalctl
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+@cc [owner:ghuntley,label:verification] native-ssh-transfer-evidence-boundary
+This fixture MUST exercise the production SSH client and native stream helper
+against real OpenSSH with disposable keys, including wrong-host-key and
+wrong-client-key rejection. Source authentication MUST consult production permit
+lookup and bind the forced command to the authenticated key. Revoked permits MUST
+refuse new sessions. This does not establish active-channel termination, native
+ZFS source ownership/receipt, Oban coordination or physical-host acceptance.

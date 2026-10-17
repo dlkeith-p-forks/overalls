@@ -1,0 +1,24 @@
+# guest-identity-cutover-preserves-uid-custody
+
+P0; medium-high confidence; safety. Planned `Always` message: **"Guest identity cutover preserves UUID and UID custody across mailbox history"**. Across the one-way name migration and later same-user email changes, every existing GuestAccount keeps its UUID and UID and gains canonical stored `u<uid>` name; the current guest home path is derived from that identity, while historical UID reservations remain unavailable to a new User UUID. Existing editor leases close during cutover without rewriting their immutable account/name binding. The [fresh assertion scan](../existing-assertions.md) finds this SDK assertion **missing**. `Always` compares every settled identity allocation and migration snapshot to a workload-owned pre-cutover ledger.
+
+Source: ADR-0158 `docs/architecture/decisions/0158-durable-guest-identities.md:28-61` accepts immutable UUID/UID, noncycling range 200000–999999 and one-way name cutover, while explicitly recording that historical guest disks and restore identity reconciliation have limits. `marshall/priv/repo/migrations/20261010110000_durable_guest_identities.exs:4-58` rewrites `username` to `u || uid`, retires deleted users' accounts, closes editor leases and leaves sequence values/UUID/UID untouched. `marshall/lib/marshall/accounts/guest_accounts.ex:11-107` locks current User UUID and reuses current account despite email edits, while the sequence refuses exhaustion. A migration commit is a database claim; native guest home reconciliation is separate.
+
+Workload and independent oracle: seed users with colliding legacy mailbox-local names, retired/current guest accounts and leases; record UUID, UID, ownership and immutable lease bindings in an external ledger. Apply the actual migration once, restart Marshall, edit one email, retire another user and register the same email anew, then query base tables and sequence. A separate fresh guest fixture can verify current `u<uid>` home derivation, but this database migration does not move an existing guest disk. Check no old UID is reassigned; an interrupted migration needs PostgreSQL transaction reconciliation, not a fabricated half-migrated state. SUT `Reachable` **"Guest identity migration preserved historical UID while canonicalizing name"** marks a meaningful cutover.
+
+Value menu: no accounts/one/many; same or colliding old names; active/deleted User; leases open/closed; same-user email edit versus new User with reused email; UID near 999999; migration once/retry/transaction abort. Hosted PostgreSQL proves database migration and allocation; TCG/native guest proves actual UID/home behavior. Historical restored backups and two physical hosts require additional reconciliation evidence and are not promised by this candidate. The populated scratch-database migration fixture below supplies the pre-cutover row and sequence oracle.
+
+### Investigation Log
+
+#### Which existing migration test fixture retains pre-cutover rows and an independent sequence snapshot?
+
+- Examined: `marshall/test/marshall/accounts/guest_identity_canonical_migration_test.exs:1-160` and `marshall/priv/repo/migrations/20261010110000_durable_guest_identities.exs`.
+- Found: the disposable PostgreSQL test runs the real migration chain to the immediately preceding version, inserts conflicting historical names, retired/deleted accounts and editor leases, snapshots UUID/UID/timestamps/audit rows and `account_guest_uid_seq` last value/call state, applies the target migration, and compares all snapshots. It also checks the next UID after cutover.
+- Not found: this fixture making a physical guest home or historical restore claim; those remain separate scopes.
+- Conclusion: resolved. Reuse the scratch-database pattern for the migration property and keep guest disk custody as a distinct oracle.
+
+## Evaluation and proof boundary
+
+**Proof boundary:** Draft selection: `integrated-zfs-guest`. proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof; independent witness: pre-cutover UUID/UID ledger and guest home owner/read effect; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Evaluation follow-up:** `R4`: Keep exhaustive fixed decoder/version/migration matrices in ordinary tests. In Antithesis, race representative invalid input with a real restart, authority change or valid effect and observe the independent outcome. `R10`: Treat pre/post GuestAccount migration conversion as native/integration acceptance. Antithesis races post-cutover same-user email edit with retirement, reuse, lost reply and real guest identity effects. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.

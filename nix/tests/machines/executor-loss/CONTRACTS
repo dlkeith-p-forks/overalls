@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:verification;recovery] executor-loss-native-boundary
+The native scenario MUST observe a real fsynced guest effect and its durable
+started command before targeted interruption. It MUST retain the old command
+as uncertain, observe a new real executor fence, and require a new ordinary
+browser-approved CLI invocation before a second effect. SQL mutations MUST NOT
+manufacture execution, registration, permission or completion receipts.
+
+@cc [owner:ghuntley,label:verification;security] executor-loss-fixture-custody
+The process observer MUST be installed only in this disposable guest profile,
+run outside the target cgroup and select victims by captured PID/start identity.
+Captured process fields and closed status observations MUST exclude command
+arguments, prompts, credentials and tool output. Browser subprocess files MUST
+remain private and every subprocess MUST be drained.
+
+@cc [owner:ghuntley,label:verification] executor-loss-evidence-scope
+Generated sandbox histories MUST distinguish claimed cancellation from started
+uncertainty and synthetic expiry from native time. The native capture covers
+started loss only; pre-start native loss and the earlier unexplained CLI failure
+MUST remain explicit gaps. No Inception validation belongs to this scenario.

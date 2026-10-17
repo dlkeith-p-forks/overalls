@@ -1,0 +1,263 @@
+{ pkgs, lib, config, inputs, ... }:
+
+let
+  # @cc [owner:ghuntley,label:build] development-toolchain-source
+  # The development shell MUST import the same pinned runtime derivation used
+  # by release packaging; enabling Elixir MUST NOT select a second OTP build.
+  toolchain = import ./nix/packages/toolchain.nix { inherit pkgs; };
+  hostLock = import ./nix/packages/host-tools.nix { inherit pkgs; };
+  compactNix = inputs.nix-compact.lib.mkPackage { inherit pkgs; };
+  # The same patched Firecracker the release metadata points Lilly at.
+  inherit (import ./nix/packages/firecracker.nix { inherit pkgs; }) vmm;
+
+  # @cc [owner:ghuntley,label:build] python-static-toolchain
+  # The Python gate MUST use the same pinned ruff and ty as the python-static
+  # Nix check, and third-party imports MUST resolve against this pinned
+  # interpreter closure instead of any ambient Python environment.
+  tyPython = pkgs.python313.withPackages (p: [
+    p.aiohttp
+    p.boto3
+    p.cryptography
+    p.dnslib
+    p.hypothesis
+    p.playwright
+    p.pyyaml
+    p.websockets
+  ]);
+  harnessPython = pkgs.python313.withPackages (p: [ p.cryptography ]);
+  antithesisWheels = import ./antithesis/nix/python-wheels.nix { inherit pkgs; };
+in
+{
+  outputs.guest = import ./nix/packages/guest { inherit pkgs; };
+  outputs.ubuntuGuest = (import ./nix/packages/guest/ubuntu { inherit pkgs; }) { };
+  # @cc [owner:ghuntley,label:isolation] jailed-vmm-static-runtime
+  # outputs.vmm MUST supply a static Firecracker/jailer pair that can run inside
+  # the prepared chroot without copying host dynamic libraries into each jail.
+  outputs.vmm = vmm;
+  outputs.hostTools = pkgs.buildEnv {
+    name = "lilly-host-tools";
+    paths = [ pkgs.coreutils pkgs.util-linux pkgs.iproute2 pkgs.nftables
+      pkgs.procps pkgs.dtach pkgs.openssh toolchain.elixir toolchain.erlang hostLock ];
+  };
+
+  # https://devenv.sh/basics/
+  env.GREET = "devenv";
+  env.OVERALLS_TEST_VMM_DIR = "${vmm}/bin";
+  env.OVERALLS_NIXPKGS_PATH = "${pkgs.path}";
+
+  # Pull the repository's shared binary cache before evaluating the shell.
+  cachix.pull = [ "overalls" ];
+  cachix.push = "overalls";
+
+  # https://devenv.sh/packages/
+  packages = [
+    compactNix
+    hostLock
+    pkgs.dtach
+    pkgs.openssh
+    pkgs.openssl
+    vmm
+    pkgs.git
+    pkgs.coreutils
+    pkgs.util-linux
+    pkgs.iproute2
+    pkgs.nftables
+    pkgs.procps
+    pkgs.prek
+    pkgs.nodejs
+    pkgs.chromium
+    pkgs.watchexec
+    pkgs.python3
+    pkgs.ruff
+    pkgs.ty
+    toolchain.erlang
+  ];
+
+  # https://devenv.sh/languages/
+  languages.elixir.enable = true;
+  languages.elixir.package = toolchain.elixir;
+  languages.rust.enable = true;
+
+  # @cc [owner:ghuntley,label:build] development-shell-prompt
+  # Interactive devenv shells MUST initialize the Starship prompt.
+  starship.enable = true;
+
+  # https://devenv.sh/processes/
+  # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
+
+  # https://devenv.sh/services/
+  services.postgres.enable = true;
+
+  # https://devenv.sh/scripts/
+  scripts.hello.exec = ''
+    echo hello from $GREET
+  '';
+  # @cc [owner:ghuntley,label:build] browser-development-commands
+  # Development commands MUST install only lockfile-pinned tools, with install
+  # scripts disabled, and invoke the same build/check source as release packaging.
+  scripts.browser-build.exec = ''
+    cd "$DEVENV_ROOT/browser"
+    npm ci --ignore-scripts
+    npm run build
+    npm run package
+  '';
+  scripts.browser-check.exec = ''
+    cd "$DEVENV_ROOT/browser"
+    npm ci --ignore-scripts
+    export CHROME="${lib.getExe pkgs.chromium}"
+    npm run check
+    npm run smoke:chrome
+  '';
+  scripts.browser-watch.exec = ''
+    cd "$DEVENV_ROOT/browser"
+    npm ci --ignore-scripts
+    ${lib.getExe pkgs.watchexec} --watch common --watch scripts --watch types --watch package.json --watch package-lock.json --watch tsconfig.json --watch README.md --watch CONTRACTS -- npm run build
+  '';
+
+  # https://devenv.sh/basics/
+  enterShell = ''
+    hello         # Run scripts directly
+    git --version # Use packages
+  '';
+
+  # https://devenv.sh/tasks/
+  # tasks = {
+  #   "myproj:setup".exec = "mytool build";
+  #   "devenv:enterShell".after = [ "myproj:setup" ];
+  # };
+
+  # https://devenv.sh/tests/
+  enterTest = ''
+    echo "Running tests"
+    git --version | grep --color=auto "${pkgs.git.version}"
+  '';
+
+  # https://devenv.sh/git-hooks/
+  # The Python gates run through prek with the pinned ruff and ty; the same
+  # checks run in CI as the python-static Nix check. The structured-event
+  # logging gate runs per application through the same pinned Elixir as the
+  # releases, matching each project's logging.check precommit alias.
+  git-hooks = {
+    enable = true;
+    hooks = {
+      # Merge commits skip ordinary pre-commit hooks, so this guard also runs
+      # at pre-merge-commit; the conflict-markers Nix check covers CI.
+      conflict-markers = {
+        enable = true;
+        name = "conflict-markers";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_conflict_markers.exs";
+        language = "system";
+        always_run = true;
+        pass_filenames = false;
+        stages = [ "pre-commit" "pre-merge-commit" ];
+      };
+      hldd = {
+        enable = true;
+        name = "hldd-review";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_hldd.exs";
+        language = "system";
+        always_run = true;
+        pass_filenames = false;
+      };
+      python-ruff-format = {
+        enable = true;
+        name = "ruff-format";
+        description = "Check Python formatting with ruff";
+        entry = "${pkgs.ruff}/bin/ruff format --check --force-exclude";
+        language = "system";
+        files = "\\.py$";
+      };
+      python-ruff = {
+        enable = true;
+        name = "ruff";
+        description = "Lint Python with ruff";
+        entry = "${pkgs.ruff}/bin/ruff check --force-exclude";
+        language = "system";
+        files = "\\.py$";
+      };
+      python-ty = {
+        enable = true;
+        name = "ty";
+        description = "Type-check Python with ty";
+        entry = "${pkgs.bash}/bin/bash antithesis/verification/static-check.sh ${pkgs.ty}/bin/ty ${tyPython}/bin/python3 ${harnessPython}/bin/python3 ${antithesisWheels}";
+        language = "system";
+        files = "\\.py$";
+        pass_filenames = false;
+      };
+      elixir-logging-marshall = {
+        enable = true;
+        name = "logging-check-marshall";
+        description = "Enforce the Marshall structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs marshall";
+        language = "system";
+        files = "^(marshall/(lib|config)/.*\\.exs?$|marshall/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
+      elixir-logging-lilly = {
+        enable = true;
+        name = "logging-check-lilly";
+        description = "Enforce the Lilly structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs lilly";
+        language = "system";
+        files = "^(lilly/(lib|config)/.*\\.exs?$|lilly/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
+      elixir-logging-audi = {
+        enable = true;
+        name = "logging-check-audi";
+        description = "Enforce the Audi structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs audi";
+        language = "system";
+        files = "^(audi/(lib|config)/.*\\.exs?$|audi/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
+      elixir-logging-galileo = {
+        enable = true;
+        name = "logging-check-galileo";
+        description = "Enforce the Galileo structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs galileo";
+        language = "system";
+        files = "^(galileo/(lib|config)/.*\\.exs?$|galileo/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
+      elixir-logging-enrico = {
+        enable = true;
+        name = "logging-check-enrico";
+        description = "Enforce the Enrico structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs enrico";
+        language = "system";
+        files = "^(enrico/(lib|config)/.*\\.exs?$|enrico/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
+      elixir-logging-brady = {
+        enable = true;
+        name = "logging-check-brady";
+        description = "Enforce the Brady structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs brady";
+        language = "system";
+        files = "^(brady/(lib|config)/.*\\.exs?$|brady/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
+      elixir-logging-ziggy = {
+        enable = true;
+        name = "logging-check-ziggy";
+        description = "Enforce the Ziggy structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs ziggy";
+        language = "system";
+        files = "^(ziggy/(lib|config)/.*\\.exs?$|ziggy/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
+      elixir-logging-porsche = {
+        enable = true;
+        name = "logging-check-porsche";
+        description = "Enforce the Porsche structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs porsche";
+        language = "system";
+        files = "^(porsche/(lib|config)/.*\\.exs?$|porsche/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
+    };
+  };
+
+  # See full reference at https://devenv.sh/reference/options/
+}

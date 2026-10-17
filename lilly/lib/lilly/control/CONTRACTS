@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:architecture] lilly-durable-receipt-is-not-lifecycle-authority
+The local command store is a durable delivery cache of Marshall intent. Neither receipt
+success, transport timeout nor connection loss establishes physical stop, frees
+allocations, or authorizes a new recovery generation (ADR-0013, ADR-0016).
+
+@cc [owner:ghuntley,label:security] lilly-operator-owned-execution-paths
+Runtime, credential, image and executable paths MUST originate from validated local
+operator configuration or be derived from validated identities; a remote VM command
+must never choose a local path (ADR-0017, ADR-0021).

@@ -1,0 +1,21 @@
+{
+  "slug": "marshall-admission-atomic-allocation",
+  "evidence_file": "antithesis/scratchbook/properties/marshall-admission-atomic-allocation.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Can the harness correlate the AshOban job to operation ID from persisted job args across the pinned AshOban version without relying on transient in-process state?",
+      "answer": "Distributed admission tests query oban_jobs.args->'primary_key'->>'id' against committed operation IDs and assert cardinality two.",
+      "status": "resolved",
+      "proposed_catalog_edit": "Remove job-correlation question; qualify the admission-time query by worker/queue and job-retention window."
+    },
+    {
+      "old_question": "Which audit table/version row should be mandatory for a newly created VM when PaperTrail evolves?",
+      "answer": "compute_virtual_machines_versions.version_source_id is a VM foreign key and VM has PaperTrail. Admission-specific lifecycle event cardinality is not proved by a current committed-row probe.",
+      "status": "partial",
+      "proposed_catalog_edit": "Replace broad audit question with specific lifecycle-event cardinality question; keep VM version as cross-check, not mandatory atomic core until execution probe."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

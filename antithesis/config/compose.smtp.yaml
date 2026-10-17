@@ -1,0 +1,74 @@
+# Optional synthetic SMTP receiver. Select only with a workload that verifies
+# the receiver's current durable receipt before setup completion.
+services:
+  marshall-a:
+    environment:
+      MARSHALL_ANTITHESIS_SMTP: fixture
+    volumes:
+      - smtp-ca:/run/overalls-smtp-ca:ro
+      - smtp-credentials:/run/overalls-smtp-credentials:ro
+    depends_on:
+      smtp:
+        condition: service_healthy
+
+  marshall-b:
+    environment:
+      MARSHALL_ANTITHESIS_SMTP: fixture
+    volumes:
+      - smtp-ca:/run/overalls-smtp-ca:ro
+      - smtp-credentials:/run/overalls-smtp-credentials:ro
+    depends_on:
+      smtp:
+        condition: service_healthy
+
+  smtp:
+    container_name: overalls-smtp
+    hostname: overalls-smtp
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/smtp:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: smtp
+    environment:
+      NO_COLOR: "1"
+      SMTP_STATE_DIR: /var/lib/overalls-smtp
+      SMTP_CA_OUT: /run/overalls-smtp-ca/ca.pem
+      SMTP_PASSWORD_OUT: /run/overalls-smtp-credentials/smtp-password
+      SMTP_ADMIN_TOKEN_OUT: /run/overalls-smtp-admin/admin-token
+    volumes:
+      - smtp-state:/var/lib/overalls-smtp
+      - smtp-ca:/run/overalls-smtp-ca
+      - smtp-credentials:/run/overalls-smtp-credentials
+      - smtp-admin:/run/overalls-smtp-admin
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--show-error", "--fail", "--output", "/dev/null", "http://127.0.0.1:8081/healthz"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+      start_period: 15s
+    networks:
+      control:
+        aliases:
+          - smtp.fixture.test
+
+  workload:
+    environment:
+      ANTITHESIS_BOOTSTRAP_PROFILE: access-smtp
+      ANTITHESIS_SMTP_CA_FILE: /run/overalls-smtp-ca/ca.pem
+      ANTITHESIS_SMTP_ADMIN_TOKEN_FILE: /run/overalls-smtp-admin/admin-token
+      ANTITHESIS_SMTP_ADMIN_ORIGIN: https://smtp.fixture.test:8444
+      ANTITHESIS_ACCESS_FIXTURE_FILE: /run/overalls-control-secrets/fixture.json
+    volumes:
+      - smtp-ca:/run/overalls-smtp-ca:ro
+      - smtp-admin:/run/overalls-smtp-admin:ro
+    depends_on:
+      smtp:
+        condition: service_healthy
+
+volumes:
+  smtp-state:
+  smtp-ca:
+  smtp-credentials:
+  smtp-admin:

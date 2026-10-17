@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:verification] smtp-real-private-fixture
+This suite MUST exercise the source-built relay and Marshall against local TLS
+SMTP fixtures and actual SecretSpec/SOPS preparation. Synthetic credentials and
+message bodies MUST stay in private guest files and never enter retained test
+output. Fixture failures MUST report only fixed messages, not values or traces.

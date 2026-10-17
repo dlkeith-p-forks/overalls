@@ -1,0 +1,15 @@
+@cc [owner:ghuntley,label:security] terminal-bytes-never-at-rest
+Terminal input/output bytes MUST NOT enter the database, logs, audit versions
+or job arguments. The registry stores identity fields only; the audit events
+store actor, session and kind receipts only.
+
+@cc [owner:ghuntley,label:security] terminal-authority-per-operation
+Terminal capability MUST be rechecked for every open and ticket: a fresh host
+report advertising terminal protocol 2, current Cedar read (write for rw),
+and a registry session bound to the current placement and execution epoch.
+Tickets are single-use, short-lived and mode-bound.
+
+@cc [owner:ghuntley,label:protocol] stream-controls-require-placement
+Every VM-scoped control sent to a host stream MUST carry the exact placement
+and execution epoch; input frames MUST carry strictly increasing per-channel
+sequences so replays cannot execute twice.

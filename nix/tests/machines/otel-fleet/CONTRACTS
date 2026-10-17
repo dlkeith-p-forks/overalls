@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:verification] otel-machine-boundary
+The NixOS test MUST boot the configured collector and central stores, observe
+real host metric collection through Prometheus, and exercise the receiver's
+Unix peer permission boundary. It MUST NOT claim guest TLS or Firecracker
+coverage from this host-only composition.

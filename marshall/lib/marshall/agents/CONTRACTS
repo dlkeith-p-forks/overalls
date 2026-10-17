@@ -1,0 +1,20 @@
+@cc [owner:ghuntley,label:architecture;security] agents-postgres-authority
+PostgreSQL is the authority for thread order, turn claims, executor fences and
+tool outcomes. A live process, network connection or guest-supplied ID alone
+MUST NOT authorize a state transition.
+
+@cc [owner:ghuntley,label:security] agents-audit-content-free
+Agent audit receipts and diagnostic events MUST contain only identifiers,
+closed action kinds and outcomes. Prompts, titles, model content, command
+arguments, tool output and credentials belong only in authorized thread data.
+
+@cc [owner:ghuntley,label:recovery] agents-ambiguous-effect-no-replay
+An issued tool command with an ambiguous result MUST become uncertain after
+executor loss or VM execution change. It MUST NOT be dispatched again.
+
+@cc [owner:ghuntley,label:security] agents-cli-browser-approval
+CLI prompt authority MUST originate from an explicit authenticated browser
+approval of a hash of the CLI's random secret. Marshall MUST store only that
+hash, bind it to one VM and actor for a short lifetime, and recheck current VM
+write access before every CLI mutation. An approval URL alone MUST NOT act as
+a bearer credential.

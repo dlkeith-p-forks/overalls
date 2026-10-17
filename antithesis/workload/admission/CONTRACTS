@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:verification] admission-evidence-boundary
+Admission assertions MUST use a committed result or an independent PostgreSQL
+snapshot as their antecedent. A submitted request, lost reply, missing oracle,
+or stale report MUST NOT establish success, refusal, or absence of an effect.
+
+@cc [owner:ghuntley,label:capacity;verification] admission-physical-boundary
+Capacity assertions MUST identify the real measured host and pool report used,
+account for all startup, temporary-copy, and resize holds, and disclose when
+later mutable reports cannot reconstruct the exact admission-time budget.
+
+@cc [owner:ghuntley,label:security] admission-closed-operator
+Mutation clients MUST invoke only reviewed fixed synthetic fixture actions.
+Neither an Antithesis draw nor an external request may select arbitrary actor,
+source, command, SQL mutation, or runtime code.

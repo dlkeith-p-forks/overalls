@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:security] audi-private-signing-boundary
+Private PKI helpers MUST issue only the exact fleet wildcard subject and names
+during offline operator bootstrap. Root and intermediate keys MUST remain
+recovery-only; private keys and certificate requests MUST NOT enter diagnostics
+or production image inputs.

@@ -1,0 +1,681 @@
+--- a/config.go
++++ b/config.go
+@@ -3,9 +3,7 @@
+ import (
+ 	"flag"
+ 	"fmt"
+-	"log/slog"
+ 	"net"
+-	"os"
+ 	"strings"
+ 	"time"
+ 
+@@ -14,6 +12,10 @@
+ 
+ //nolint:govet
+ type config struct {
++	remoteTLS         string
++	remoteCA          string
++	remoteUserFile    string
++	remotePassFile    string
+ 	logFormat         string
+ 	hostName          string
+ 	welcomeMsg        string
+@@ -75,19 +77,6 @@
+ 
+ 	setupLogger(cfg.logFormat, cfg.logLevel)
+ 
+-	logger := slog.With(slog.String("component", "config"))
+-
+-	// if remotePass is not set, try reading it from env var
+-	if cfg.remotePass == "" {
+-		logger.Debug("remote_pass not set, trying REMOTE_PASS env var")
+-		cfg.remotePass = os.Getenv("REMOTE_PASS")
+-		if cfg.remotePass != "" {
+-			logger.Debug("found data in REMOTE_PASS env var")
+-		} else {
+-			logger.Debug("no data found in REMOTE_PASS env var")
+-		}
+-	}
+-
+ 	allowedNets, err := setupAllowedNetworks(cfg.allowedNetsStr)
+ 	if err != nil {
+ 		return nil, fmt.Errorf("setupAllowedNetworks: %w", err)
+@@ -96,10 +85,17 @@
+ 
+ 	cfg.logHeaders = parseLogHeaders(cfg.logHeadersStr)
+ 
++	if err := configureRemote(&cfg); err != nil {
++		return nil, err
++	}
+ 	return &cfg, nil
+ }
+ 
+ func registerFlags(f *flag.FlagSet, cfg *config) {
++	f.StringVar(&cfg.remoteTLS, "remote_tls", "starttls", "Required upstream TLS: starttls or implicit")
++	f.StringVar(&cfg.remoteCA, "remote_ca", "", "Upstream CA bundle")
++	f.StringVar(&cfg.remoteUserFile, "remote_user_file", "", "Systemd username credential path")
++	f.StringVar(&cfg.remotePassFile, "remote_pass_file", "", "Systemd password credential path")
+ 	f.StringVar(&cfg.logFormat, "log_format", "json", "Log format - json or logfmt")
+ 	f.StringVar(&cfg.hostName, "hostname", "localhost.localdomain", "Server hostname")
+ 	f.StringVar(&cfg.welcomeMsg, "welcome_msg", "", "Welcome message for SMTP session")
+--- a/relay.go
++++ b/relay.go
+@@ -7,7 +7,6 @@
+ 	"fmt"
+ 	"log/slog"
+ 	"net"
+-	"net/smtp"
+ 	"net/textproto"
+ 	"regexp"
+ 	"strconv"
+@@ -16,10 +15,7 @@
+ 
+ 	"github.com/google/uuid"
+ 	"github.com/grafana/smtprelay/v2/internal/smtpd"
+-	"github.com/grafana/smtprelay/v2/internal/traceutil"
+-	"go.opentelemetry.io/otel"
+ 	"go.opentelemetry.io/otel/codes"
+-	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
+ 	"go.opentelemetry.io/otel/trace"
+ )
+ 
+@@ -148,8 +144,6 @@
+ 	if err != nil {
+ 		slog.WarnContext(ctx, "auth error",
+ 			slog.String("component", "auth_checker"),
+-			slog.String("username", username),
+-			slog.Any("error", err),
+ 		)
+ 
+ 		return observeErr(ctx, smtpd.ErrAuthInvalid)
+@@ -212,7 +206,7 @@
+ 		// TODO: precompile this regexp and reject it at config time
+ 		re, err := regexp.Compile(allowedSender)
+ 		if err != nil {
+-			log.WarnContext(ctx, "allowed_sender invalid", slog.Any("error", err), slog.String("allowed_sender", allowedSender))
++			log.WarnContext(ctx, "allowed_sender invalid", slog.String("allowed_sender", allowedSender))
+ 			return observeErr(ctx, smtpd.ErrSenderDenied)
+ 		}
+ 
+@@ -267,103 +261,21 @@
+ 	}
+ }
+ 
+-func (r *relay) mailHandler(cfg *config) func(ctx context.Context, peer smtpd.Peer, env smtpd.Envelope) error {
++// Forwarding success means the upstream accepted DATA, never local queueing.
++func (r *relay) mailHandler(cfg *config) func(context.Context, smtpd.Peer, smtpd.Envelope) error {
+ 	return func(ctx context.Context, peer smtpd.Peer, env smtpd.Envelope) error {
+-		// save upstream span as a link, we're going to re-parent this span to
+-		// the extrated propagated trace
+-		link := trace.LinkFromContext(ctx)
+-
+-		tprop := otel.GetTextMapPropagator()
+-		ctx = tprop.Extract(ctx, traceutil.MIMEHeaderCarrier(env.Header))
+-		ctx, span := tracer.Start(ctx, "relay.mailHandler",
+-			trace.WithSpanKind(trace.SpanKindServer),
+-			trace.WithLinks(link),
+-			trace.WithAttributes(
+-				semconv.ClientAddress(peer.Addr.String()),
+-				traceutil.Sender(env.Sender),
+-				traceutil.Recipients(env.Recipients),
+-				traceutil.DataSize(int64(len(env.Data))),
+-			),
+-		)
+-		defer span.End()
+-
+-		uniqueID := generateUUID()
+-
+-		logger := slog.With(slog.String("component", "mail_handler"), slog.String("uuid", uniqueID))
+-
+-		// parse headers from data if we need to log any of them
+-		var err error
+-		deliveryLog := logger.With(
+-			slog.String("from", env.Sender),
+-			slog.Any("to", env.Recipients),
+-			slog.String("host", cfg.remoteHost),
+-		)
+-		deliveryLog = addLogHeaderFields(cfg.logHeaders, deliveryLog, env.Header)
+-
+-		deliveryLog.InfoContext(ctx, "delivering mail from peer using smarthost")
+-
+-		var auth smtp.Auth
+-		host, _, _ := net.SplitHostPort(cfg.remoteHost)
+-
+-		if cfg.remoteUser != "" && cfg.remotePass != "" {
+-			switch cfg.remoteAuth {
+-			case "plain":
+-				auth = smtp.PlainAuth("", cfg.remoteUser, cfg.remotePass, host)
+-			default:
+-				return observeErr(ctx, smtpd.ErrUnsupportedAuthMethod)
+-			}
+-		}
+-
++		started := time.Now()
+ 		env.AddReceivedLine(peer)
+-
+-		var sender string
+-
+-		if cfg.remoteSender == "" {
+-			sender = env.Sender
+-		} else {
+-			sender = cfg.remoteSender
+-		}
+-
++		err := forward(ctx, cfg, env)
++		status := 250
++		if err != nil {
++			status = 451
++			slog.Error("delivery failed", "category", "upstream_delivery_failed", "status_code", status)
++			observeDuration(ctx, status, time.Since(started))
++			return observeErr(ctx, &textproto.Error{Code: status, Msg: "Upstream delivery failed"})
++		}
+ 		msgSizeHistogram.Observe(float64(len(env.Data)))
+-
+-		// successful status is always 250
+-		statusCode := 250
+-		start := time.Now()
+-
+-		defer func() {
+-			span.SetAttributes(traceutil.StatusCode(statusCode))
+-
+-			observeDuration(ctx, statusCode, time.Since(start))
+-		}()
+-
+-		err = smtp.SendMail(
+-			cfg.remoteHost,
+-			auth,
+-			sender,
+-			env.Recipients,
+-			env.Data,
+-		)
+-		if err != nil {
+-			err = fmt.Errorf("sendMail: %w", err)
+-
+-			var tperr *textproto.Error
+-
+-			if errors.As(err, &tperr) {
+-				logger.ErrorContext(ctx, "delivery failed",
+-					slog.Int("err_code", tperr.Code), slog.String("err_msg", tperr.Msg))
+-			} else {
+-				tperr = smtpd.ErrForwardingFailed
+-
+-				logger.ErrorContext(ctx, "delivery failed", slog.Any("error", err))
+-			}
+-
+-			statusCode = tperr.Code
+-
+-			return observeErr(ctx, tperr)
+-		}
+-
+-		deliveryLog.InfoContext(ctx, "delivery successful", slog.Int("status_code", statusCode))
+-
++		observeDuration(ctx, status, time.Since(started))
+ 		return nil
+ 	}
+ }
+--- /dev/null
++++ b/transport.go
+@@ -0,0 +1,189 @@
++package main
++
++import (
++	"context"
++	"crypto/tls"
++	"crypto/x509"
++	"errors"
++	"io"
++	"net"
++	"net/smtp"
++	"os"
++	"strings"
++	"time"
++
++	"github.com/grafana/smtprelay/v2/internal/smtpd"
++)
++
++var errRemote = errors.New("invalid upstream configuration")
++
++// Credentials are bounded opaque values read only from private runtime files.
++func readCredential(path string) (string, error) {
++	f, err := os.Open(path)
++	if err != nil {
++		return "", errRemote
++	}
++	defer f.Close()
++	b, err := io.ReadAll(io.LimitReader(f, 4097))
++	if err != nil || len(b) == 0 || len(b) > 4096 || strings.ContainsAny(string(b), "\r\n\x00") {
++		return "", errRemote
++	}
++	return string(b), nil
++}
++
++func configureRemote(cfg *config) error {
++	var err error
++	if cfg.remoteUserFile != "" {
++		cfg.remoteUser, err = readCredential(cfg.remoteUserFile)
++		if err != nil {
++			return errRemote
++		}
++	}
++	if cfg.remotePassFile == "" {
++		return errRemote
++	}
++	cfg.remotePass, err = readCredential(cfg.remotePassFile)
++	if err != nil {
++		return errRemote
++	}
++	if cfg.remoteTLS != "starttls" && cfg.remoteTLS != "implicit" {
++		return errRemote
++	}
++	if cfg.remoteAuth != "plain" && cfg.remoteAuth != "login" {
++		return errRemote
++	}
++	host, port, err := net.SplitHostPort(cfg.remoteHost)
++	if err != nil || host == "" || port == "" || cfg.remoteUser == "" {
++		return errRemote
++	}
++	_, err = upstreamTLS(cfg, host)
++	return err
++}
++
++func upstreamTLS(cfg *config, host string) (*tls.Config, error) {
++	var roots *x509.CertPool
++	if cfg.remoteCA != "" {
++		data, err := os.ReadFile(cfg.remoteCA)
++		if err != nil {
++			return nil, errRemote
++		}
++		roots = x509.NewCertPool()
++		if !roots.AppendCertsFromPEM(data) {
++			return nil, errRemote
++		}
++	}
++	return &tls.Config{MinVersion: tls.VersionTLS12, ServerName: host, RootCAs: roots}, nil
++}
++
++// The entire upstream exchange has a deadline, including DNS, TLS, AUTH and DATA.
++// No success is returned until DATA's final acceptance; no retry or disk spool exists.
++func forward(parent context.Context, cfg *config, env smtpd.Envelope) error {
++	ctx, cancel := context.WithTimeout(parent, 8*time.Second)
++	defer cancel()
++	host, _, err := net.SplitHostPort(cfg.remoteHost)
++	if err != nil {
++		return errRemote
++	}
++	tc, err := upstreamTLS(cfg, host)
++	if err != nil {
++		return err
++	}
++	conn, err := (&net.Dialer{Timeout: 3 * time.Second}).DialContext(ctx, "tcp", cfg.remoteHost)
++	if err != nil {
++		return err
++	}
++	defer conn.Close()
++	stop := context.AfterFunc(ctx, func() { _ = conn.Close() })
++	defer stop()
++	deadline, _ := ctx.Deadline()
++	if err = conn.SetDeadline(deadline); err != nil {
++		return err
++	}
++	var wire net.Conn = conn
++	if cfg.remoteTLS == "implicit" {
++		secure := tls.Client(conn, tc)
++		if err = secure.HandshakeContext(ctx); err != nil {
++			return err
++		}
++		wire = secure
++	} else if cfg.remoteTLS != "starttls" {
++		return errRemote
++	}
++	client, err := smtp.NewClient(wire, host)
++	if err != nil {
++		return err
++	}
++	defer client.Close()
++	if err = client.Hello(cfg.hostName); err != nil {
++		return err
++	}
++	if cfg.remoteTLS == "starttls" {
++		if ok, _ := client.Extension("STARTTLS"); !ok {
++			return errRemote
++		}
++		if err = client.StartTLS(tc); err != nil {
++			return err
++		}
++	}
++	var auth smtp.Auth
++	switch cfg.remoteAuth {
++	case "plain":
++		auth = smtp.PlainAuth("", cfg.remoteUser, cfg.remotePass, host)
++	case "login":
++		auth = &loginAuth{username: cfg.remoteUser, password: cfg.remotePass, host: host}
++	default:
++		return errRemote
++	}
++	if cfg.remoteUser == "" || cfg.remotePass == "" {
++		return errRemote
++	}
++	if err = client.Auth(auth); err != nil {
++		return err
++	}
++	sender := env.Sender
++	if cfg.remoteSender != "" {
++		sender = cfg.remoteSender
++	}
++	if err = client.Mail(sender); err != nil {
++		return err
++	}
++	for _, recipient := range env.Recipients {
++		if err = client.Rcpt(recipient); err != nil {
++			return err
++		}
++	}
++	data, err := client.Data()
++	if err != nil {
++		return err
++	}
++	if _, err = data.Write(env.Data); err != nil {
++		return err
++	}
++	return data.Close()
++}
++
++type loginAuth struct {
++	username, password, host string
++	step                     int
++}
++
++func (a *loginAuth) Start(server *smtp.ServerInfo) (string, []byte, error) {
++	if !server.TLS || server.Name != a.host {
++		return "", nil, errRemote
++	}
++	a.step = 0
++	return "LOGIN", nil, nil
++}
++func (a *loginAuth) Next(_ []byte, more bool) ([]byte, error) {
++	if !more {
++		return nil, nil
++	}
++	a.step++
++	switch a.step {
++	case 1:
++		return []byte(a.username), nil
++	case 2:
++		return []byte(a.password), nil
++	}
++	return nil, errRemote
++}
+--- /dev/null
++++ b/transport_test.go
+@@ -0,0 +1,213 @@
++package main
++
++import (
++	"bufio"
++	"bytes"
++	"context"
++	"crypto/rand"
++	"crypto/rsa"
++	"crypto/tls"
++	"crypto/x509"
++	"crypto/x509/pkix"
++	"encoding/pem"
++	"fmt"
++	"github.com/grafana/smtprelay/v2/internal/smtpd"
++	"log/slog"
++	"math/big"
++	"net"
++	"net/textproto"
++	"os"
++	"path/filepath"
++	"strings"
++	"testing"
++	"time"
++)
++
++func fixtureTLS(t *testing.T) (*tls.Config, string) {
++	t.Helper()
++	key, err := rsa.GenerateKey(rand.Reader, 2048)
++	if err != nil {
++		t.Fatal(err)
++	}
++	cert := &x509.Certificate{SerialNumber: big.NewInt(1), Subject: pkix.Name{CommonName: "localhost"}, DNSNames: []string{"localhost"}, IPAddresses: []net.IP{net.ParseIP("127.0.0.1")}, NotBefore: time.Now().Add(-time.Hour), NotAfter: time.Now().Add(time.Hour), KeyUsage: x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign, ExtKeyUsage: []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}, IsCA: true, BasicConstraintsValid: true}
++	der, err := x509.CreateCertificate(rand.Reader, cert, cert, &key.PublicKey, key)
++	if err != nil {
++		t.Fatal(err)
++	}
++	crt := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: der})
++	ca := filepath.Join(t.TempDir(), "ca.pem")
++	if err = os.WriteFile(ca, crt, 0600); err != nil {
++		t.Fatal(err)
++	}
++	return &tls.Config{MinVersion: tls.VersionTLS12, Certificates: []tls.Certificate{{Certificate: [][]byte{der}, PrivateKey: key}}}, ca
++}
++
++func TestOverallsTransport(t *testing.T) {
++	for _, mode := range []string{"implicit", "starttls"} {
++		for _, auth := range []string{"plain", "login"} {
++			t.Run(mode+"-"+auth, func(t *testing.T) {
++				tc, ca := fixtureTLS(t)
++				received := make(chan string, 1)
++				srv := &smtpd.Server{Hostname: "localhost", TLSConfig: tc, Authenticator: func(_ context.Context, _ smtpd.Peer, u, p string) error {
++					if u != "fixture" || p != "private" {
++						return fmt.Errorf("invalid auth")
++					}
++					return nil
++				}, Handler: func(_ context.Context, _ smtpd.Peer, e smtpd.Envelope) error { received <- string(e.Data); return nil }}
++				ln, err := net.Listen("tcp", "127.0.0.1:0")
++				if err != nil {
++					t.Fatal(err)
++				}
++				var listener net.Listener = ln
++				if mode == "implicit" {
++					listener = tls.NewListener(ln, tc)
++				}
++				ctx, cancel := context.WithCancel(context.Background())
++				defer cancel()
++				defer srv.Shutdown(false)
++				go srv.Serve(ctx, listener)
++				cfg := &config{remoteHost: ln.Addr().String(), remoteTLS: mode, remoteCA: ca, remoteAuth: auth, remoteUser: "fixture", remotePass: "private", hostName: "localhost"}
++				envelope := smtpd.Envelope{Sender: "from@example.test", Recipients: []string{"to@example.test"}, Data: []byte("Message-ID: <stable@example.test>\r\n\r\nprivate-link\r\n")}
++				if err = forward(ctx, cfg, envelope); err != nil {
++					t.Fatal(err)
++				}
++				select {
++				case body := <-received:
++					if !strings.Contains(body, "stable@example.test") {
++						t.Fatal("message altered")
++					}
++				case <-time.After(time.Second):
++					t.Fatal("missing message")
++				}
++				cfg.remotePass = "wrong"
++				if forward(ctx, cfg, envelope) == nil {
++					t.Fatal("wrong password accepted")
++				}
++				cfg.remoteCA = ""
++				if forward(ctx, cfg, envelope) == nil {
++					t.Fatal("untrusted certificate accepted")
++				}
++			})
++		}
++	}
++}
++
++func TestOverallsNoSTARTTLS(t *testing.T) {
++	ln, err := net.Listen("tcp", "127.0.0.1:0")
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer ln.Close()
++	done := make(chan string, 1)
++	go func() {
++		c, e := ln.Accept()
++		if e != nil {
++			return
++		}
++		defer c.Close()
++		c.SetDeadline(time.Now().Add(time.Second))
++		fmt.Fprint(c, "220 fixture\r\n")
++		r := bufio.NewReader(c)
++		r.ReadString('\n')
++		fmt.Fprint(c, "250 fixture\r\n")
++		line, _ := r.ReadString('\n')
++		done <- line
++	}()
++	cfg := &config{remoteHost: ln.Addr().String(), remoteTLS: "starttls", remoteAuth: "plain", remoteUser: "fixture", remotePass: "private", hostName: "localhost"}
++	if forward(context.Background(), cfg, smtpd.Envelope{}) == nil {
++		t.Fatal("plaintext accepted")
++	}
++	if line := <-done; line != "" {
++		t.Fatal("sent data without TLS")
++	}
++}
++
++func TestOverallsCancellationAndDeadline(t *testing.T) {
++	for _, cancelEarly := range []bool{true, false} {
++		t.Run(fmt.Sprint(cancelEarly), func(t *testing.T) {
++			ln, err := net.Listen("tcp", "127.0.0.1:0")
++			if err != nil {
++				t.Fatal(err)
++			}
++			defer ln.Close()
++			closed := make(chan struct{})
++			go func() {
++				c, e := ln.Accept()
++				if e != nil {
++					return
++				}
++				defer c.Close()
++				c.SetDeadline(time.Now().Add(10 * time.Second))
++				bufio.NewReader(c).ReadByte()
++				close(closed)
++			}()
++			ctx, cancel := context.WithCancel(context.Background())
++			defer cancel()
++			if cancelEarly {
++				time.AfterFunc(100*time.Millisecond, cancel)
++			}
++			start := time.Now()
++			err = forward(ctx, &config{remoteHost: ln.Addr().String(), remoteTLS: "starttls"}, smtpd.Envelope{})
++			if err == nil || time.Since(start) > 9*time.Second {
++				t.Fatal("unbounded forwarding")
++			}
++			select {
++			case <-closed:
++			case <-time.After(time.Second):
++				t.Fatal("upstream connection retained")
++			}
++		})
++	}
++}
++
++func TestOverallsCredentialFiles(t *testing.T) {
++	file := filepath.Join(t.TempDir(), "credential")
++	for _, value := range []string{"", "line\nbreak", "nul\x00byte", strings.Repeat("a", 4097), "valid"} {
++		os.WriteFile(file, []byte(value), 0600)
++		got, err := readCredential(file)
++		if value == "valid" {
++			if err != nil || got != value {
++				t.Fatal("valid credential rejected")
++			}
++		} else if err == nil {
++			t.Fatal("invalid credential accepted")
++		}
++	}
++}
++
++func TestOverallsPrivateFailureAndHostname(t *testing.T) {
++	tc, ca := fixtureTLS(t)
++	ctx, cancel := context.WithCancel(context.Background())
++	defer cancel()
++	srv := &smtpd.Server{TLSConfig: tc, Authenticator: func(context.Context, smtpd.Peer, string, string) error { return nil }, Handler: func(context.Context, smtpd.Peer, smtpd.Envelope) error {
++		return &textproto.Error{Code: 451, Msg: "private-token-provider-reflection"}
++	}}
++	ln, err := net.Listen("tcp", "127.0.0.2:0")
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer srv.Shutdown(false)
++	go srv.Serve(ctx, tls.NewListener(ln, tc))
++	cfg := &config{remoteHost: ln.Addr().String(), remoteTLS: "implicit", remoteCA: ca, remoteAuth: "plain", remoteUser: "fixture", remotePass: "private", hostName: "localhost"}
++	if forward(ctx, cfg, smtpd.Envelope{}) == nil {
++		t.Fatal("wrong hostname accepted")
++	}
++	// localhost resolves to 127.0.0.1, so use a second listener for the trusted case.
++	srv2 := &smtpd.Server{TLSConfig: tc, Authenticator: srv.Authenticator, Handler: srv.Handler}
++	ln2, err := net.Listen("tcp", "127.0.0.1:0")
++	if err != nil {
++		t.Fatal(err)
++	}
++	defer srv2.Shutdown(false)
++	go srv2.Serve(ctx, tls.NewListener(ln2, tc))
++	cfg.remoteHost = ln2.Addr().String()
++	var logs bytes.Buffer
++	previous := slog.Default()
++	slog.SetDefault(slog.New(slog.NewJSONHandler(&logs, nil)))
++	defer slog.SetDefault(previous)
++	relay := &relay{cfg: cfg}
++	err = relay.mailHandler(cfg)(ctx, smtpd.Peer{Addr: &net.TCPAddr{IP: net.ParseIP("127.0.0.1"), Port: 1234}}, smtpd.Envelope{Sender: "from@example.test", Recipients: []string{"to@example.test"}, Data: []byte("Subject: private-token\r\n\r\nprivate-token\r\n")})
++	if err == nil || strings.Contains(err.Error()+logs.String(), "private-token") {
++		t.Fatal("unsafe provider failure")
++	}
++}
+--- a/integration_test.go
++++ b/integration_test.go
+@@ -20,13 +20,17 @@
+ type testSMTPServer struct {
+ 	msgs *[]smtpd.Envelope
+ 	addr string
++	ca   string
+ }
+ 
+ func startTestSMTPServer(ctx context.Context, t *testing.T) *testSMTPServer {
+ 	t.Helper()
+ 
+ 	msgs := &[]smtpd.Envelope{}
++	tc, ca := fixtureTLS(t)
+ 	srv := &smtpd.Server{
++		TLSConfig:     tc,
++		Authenticator: func(context.Context, smtpd.Peer, string, string) error { return nil },
+ 		ConnectionChecker: func(_ context.Context, peer smtpd.Peer) error {
+ 			t.Logf("Connection from %s", peer.HeloName)
+ 			return nil
+@@ -62,7 +66,7 @@
+ 		_ = srv.Shutdown(false)
+ 	})
+ 
+-	return &testSMTPServer{addr: l.Addr().String(), msgs: msgs}
++	return &testSMTPServer{addr: l.Addr().String(), msgs: msgs, ca: ca}
+ }
+ 
+ func sendMsg(t *testing.T, addr string, to []string, from, subject string, hdrs textproto.MIMEHeader, body string) error {
+@@ -85,7 +89,7 @@
+ //
+ // TODO: refactor smtprelay to be more testable (allow passing in the logger and
+ // metrics registry, provide a good way to shut down the server, etc...)
+-func startRelay(ctx context.Context, t *testing.T, srvAddr string) string {
++func startRelay(ctx context.Context, t *testing.T, srvAddr, ca string) string {
+ 	t.Helper()
+ 
+ 	addr := ""
+@@ -103,7 +107,8 @@
+ 			listen:        addr,
+ 			metricsListen: "127.0.0.1:0",
+ 			remoteHost:    srvAddr,
+-			logLevel:      "debug",
++			remoteTLS:     "starttls", remoteCA: ca, remoteAuth: "plain", remoteUser: "fixture", remotePass: "private", hostName: "localhost",
++			logLevel: "debug",
+ 		}
+ 
+ 		_ = run(ctx, cfg)
+@@ -131,7 +136,7 @@
+ 
+ 	srv := startTestSMTPServer(ctx, t)
+ 
+-	addr := startRelay(ctx, t, srv.addr)
++	addr := startRelay(ctx, t, srv.addr, srv.ca)
+ 
+ 	err := sendMsg(t, addr, []string{"alice@example.com"},
+ 		"bob@example.com", "test message", textproto.MIMEHeader{}, "hello world")

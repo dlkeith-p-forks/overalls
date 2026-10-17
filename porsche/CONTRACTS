@@ -1,0 +1,11 @@
+@cc [owner:ghuntley,label:architecture] porsche-domain-authority
+Porsche MUST submit management actions through Marshall's verified-TLS control
+WebSocket and retained HTTPS bootstrap APIs (ADR-0142). Account authority, SSH-key ownership, durable receipts and machine mutations
+MUST remain in Marshall's Ash domains. Connection processes MUST NOT become
+account actors or write directly to PostgreSQL or Oban.
+
+@cc [owner:ghuntley,label:security] porsche-transport-secrets
+Transport errors and inspected configuration MUST NOT expose gateway credentials,
+session tokens, approval links or raw commands. Control WebSockets and retained
+HTTPS requests MUST verify the configured peer and MUST NOT follow redirects,
+queue while disconnected or retry implicitly.

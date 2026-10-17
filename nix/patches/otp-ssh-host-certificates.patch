@@ -1,0 +1,183 @@
+--- a/lib/ssh/src/ssh_transport.erl
++++ b/lib/ssh/src/ssh_transport.erl
+@@ -196,6 +196,7 @@
+ 
+ default_algorithms1(public_key) ->
+     supported_algorithms(public_key, [
++                                      'ssh-ed25519-cert-v01@openssh.com',
+                                       'ssh-rsa',
+                                       %% Gone in OpenSSH 7.3.p1:
+                                       'ssh-dss'
+@@ -231,6 +232,7 @@
+ supported_algorithms(public_key) ->
+     select_crypto_supported(
+       [
++       {'ssh-ed25519-cert-v01@openssh.com', [{public_keys,eddsa}, {curves,ed25519}]},
+        {'ssh-ed25519',          [{public_keys,eddsa}, {curves,ed25519}                    ]},
+        {'ssh-ed448',            [{public_keys,eddsa}, {curves,ed448}                      ]},
+        {'ecdsa-sha2-nistp521',  [{public_keys,ecdsa}, {hashs,sha512}, {curves,secp521r1}]},
+@@ -632,7 +634,7 @@
+             if
+                 1<K, K<(P-1) ->
+                     MyPrivHostKey = get_host_key(SignAlg, Opts),
+-                    MyPubHostKey = ssh_file:extract_public_key(MyPrivHostKey),
++                    MyPubHostKey = host_public_key(MyPrivHostKey, SignAlg, Opts),
+                     H = kex_hash(Ssh0, MyPubHostKey, sha(Kex), {E,Public,K}),
+                     case sign(H, SignAlg, MyPrivHostKey, Ssh0) of
+                         {ok,H_SIG} ->
+@@ -808,7 +810,7 @@
+ 	    if
+ 		1<K, K<(P-1) ->
+ 		    MyPrivHostKey = get_host_key(SignAlg, Opts),
+-		    MyPubHostKey = ssh_file:extract_public_key(MyPrivHostKey),
++		    MyPubHostKey = host_public_key(MyPrivHostKey, SignAlg, Opts),
+                     H = kex_hash(Ssh0, MyPubHostKey, sha(Kex), {Min,NBits,Max,P,G,E,Public,K}),
+                     case sign(H, SignAlg, MyPrivHostKey, Ssh0) of
+                         {ok,H_SIG} ->
+@@ -892,7 +894,7 @@
+     of
+ 	K ->
+ 	    MyPrivHostKey = get_host_key(SignAlg, Opts),
+-	    MyPubHostKey = ssh_file:extract_public_key(MyPrivHostKey),
++	    MyPubHostKey = host_public_key(MyPrivHostKey, SignAlg, Opts),
+             H = kex_hash(Ssh0, MyPubHostKey, sha(Curve), {PeerPublic, MyPublic, K}),
+             case sign(H, SignAlg, MyPrivHostKey, Ssh0) of
+                 {ok,H_SIG} ->
+@@ -971,7 +973,7 @@
+     of
+         {S_ciphertext2, K_enc} ->
+             MyPrivHostKey = get_host_key(SignAlg, Opts),
+-            MyPubHostKey = ssh_file:extract_public_key(MyPrivHostKey),
++            MyPubHostKey = host_public_key(MyPrivHostKey, SignAlg, Opts),
+             S_reply = <<S_ciphertext2/binary, S_publickey1/binary>>,
+             H = kex_hash(Ssh0, MyPubHostKey, sha(Curve),
+                          {mlkem, C_init, S_reply, K_enc}),
+@@ -1108,6 +1110,20 @@
+ %%
+ %% The host key should be read from storage
+ %%
++%% Certificate support is server-only and opt-in. The application key callback
++%% must validate certificate custody, issuer, principals and validity before
++%% making it available. Bind the certificate's key to the actual signing key.
++-spec host_public_key(public_key:private_key(), atom(), map()) -> term().
++host_public_key(Private, 'ssh-ed25519-cert-v01@openssh.com' = Alg, Opts) ->
++    Public = ssh_file:extract_public_key(Private),
++    {ok, Blob} = call_KeyCb(host_certificate, [Alg], Opts),
++    <<32:32, "ssh-ed25519-cert-v01@openssh.com", N:32, _:N/binary,
++      32:32, Key:32/binary, _/binary>> = Blob,
++    <<11:32, "ssh-ed25519", 32:32, Key:32/binary>> = ssh_message:ssh2_pubkey_encode(Public),
++    {openssh_host_certificate, Blob, Public};
++host_public_key(Private, _, _) ->
++    ssh_file:extract_public_key(Private).
++
+ get_host_key(SignAlg, Opts) ->
+     case call_KeyCb(host_key, [SignAlg], Opts) of
+ 	{ok, PrivHostKey} ->
+@@ -2346,6 +2362,8 @@
+ 
+ %%%----------------------------------------------------------------
+ 
++valid_key_sha_alg(private, Key, 'ssh-ed25519-cert-v01@openssh.com') ->
++    valid_key_sha_alg(private, Key, 'ssh-ed25519');
+ valid_key_sha_alg(_, #{engine:=_, key_id:=_}, _Alg) -> true; % Engine key
+ 
+ valid_key_sha_alg(public, #'RSAPublicKey'{}, 'rsa-sha2-512') -> true;
+@@ -2390,6 +2408,7 @@
+ sha('ecdsa-sha2-nistp256') -> sha(secp256r1);
+ sha('ecdsa-sha2-nistp384') -> sha(secp384r1);
+ sha('ecdsa-sha2-nistp521') -> sha(secp521r1);
++sha('ssh-ed25519-cert-v01@openssh.com') -> undefined;
+ sha('ssh-ed25519') -> undefined; % Included in the spec of ed25519
+ sha('ssh-ed448') -> undefined; % Included in the spec of ed448
+ sha(secp256r1) -> sha256;
+--- a/lib/ssh/src/ssh_message.erl
++++ b/lib/ssh/src/ssh_message.erl
+@@ -647,6 +647,7 @@
+ %%%
+ 
+ %%%-------- public key --------
++ssh2_pubkey_encode({openssh_host_certificate, Blob, _}) -> Blob;
+ ssh2_pubkey_encode(#'RSAPublicKey'{modulus = N, publicExponent = E}) ->
+     <<?STRING(<<"ssh-rsa">>), ?Empint(E), ?Empint(N)>>;
+ 
+@@ -943,6 +944,8 @@
+     {binary_to_list(Alg), Signature}.
+ 
+ 
++encode_signature({openssh_host_certificate, _, Public}, _, Signature) ->
++    encode_signature(Public, 'ssh-ed25519', Signature);
+ encode_signature(#'RSAPublicKey'{}, SigAlg, Signature) ->
+     SignName = list_to_binary(atom_to_list(SigAlg)),
+     <<?Ebinary(SignName), ?Ebinary(Signature)>>;
+--- a/lib/ssh/src/ssh_file.erl
++++ b/lib/ssh/src/ssh_file.erl
+@@ -189,7 +189,7 @@
+ 
+ %%%--------------------- server exports ---------------------------
+ -behaviour(ssh_server_key_api).
+--export([host_key/2, is_auth_key/3]).
++-export([host_key/2, host_certificate/2, is_auth_key/3]).
+ -export_type([system_dir_daemon_option/0]).
+ -doc "Sets the [system directory](`m:ssh_file#SYSDIR`).".
+ -doc(#{group => <<"Options">>}).
+@@ -228,6 +228,24 @@
+ -type user_dir_common_option()     :: {user_dir,  string()}.
+ -doc(#{group => <<"Options">>}).
+ -type user_dir_fun_common_option() :: {user_dir_fun, user2dir()}.
++%% Local server certificate reader; user-key decoding deliberately stays unchanged.
++-spec host_certificate(atom(), list()) -> {ok, binary()} | {error, invalid_host_certificate}.
++host_certificate('ssh-ed25519-cert-v01@openssh.com', Opts) ->
++    Path = filename:join(proplists:get_value(system_dir, Opts, "/etc/ssh"),
++                         "ssh_host_ed25519_key-cert.pub"),
++    try
++        {ok, File} = file:open(Path, [read, binary, raw]),
++        Result = try file:read(File, 16385) after file:close(File) end,
++        {ok, Bytes} = Result,
++        true = byte_size(Bytes) =< 16384,
++        [<<"ssh-ed25519-cert-v01@openssh.com">>, Encoded | _] =
++            string:lexemes(Bytes, " \t\r\n"),
++        Blob = base64:decode(Encoded),
++        {ok, Blob}
++    catch _:_ -> {error, invalid_host_certificate}
++    end;
++host_certificate(_, _) -> {error, invalid_host_certificate}.
++
+ -doc """
+ Sets the [user directory](`m:ssh_file#USERDIR`) dynamically by evaluating the
+ `user2dir` function.
+@@ -289,6 +307,8 @@
+       Result :: {ok, public_key:private_key()} | {error, term()},
+       Options :: ssh_server_key_api:daemon_key_cb_options(none()).
+ 
++host_key('ssh-ed25519-cert-v01@openssh.com', Opts) ->
++    host_key('ssh-ed25519', Opts);
+ host_key(Algorithm, Opts) ->
+     read_ssh_key_file(system, private, Algorithm, Opts).
+ 
+--- a/lib/ssh/src/ssh.hrl
++++ b/lib/ssh/src/ssh.hrl
+@@ -256,6 +256,7 @@
+ 
+ -doc(#{group => <<"Common Options">>}).
+ -type pubkey_alg()  ::
++        'ssh-ed25519-cert-v01@openssh.com' |
+         'ecdsa-sha2-nistp256' |
+         'ecdsa-sha2-nistp384' |
+         'ecdsa-sha2-nistp521' |
+--- a/lib/ssh/src/ssh_server_key_api.erl
++++ b/lib/ssh/src/ssh_server_key_api.erl
+@@ -64,6 +64,14 @@
+     {ok, PrivateKey :: public_key:private_key()} | {error, term()}.
+ 
+ %%%****************************************************************
++%%% Opt-in native OpenSSH host certificate serving.
++-doc "Fetches a validated host certificate wire blob for the selected private key.".
++-callback host_certificate('ssh-ed25519-cert-v01@openssh.com',
++                           daemon_key_cb_options(term())) ->
++    {ok, binary()} | {error, term()}.
++-optional_callbacks([host_certificate/2]).
++
++%%%****************************************************************
+ %%% Check that PublicKey is known to be a public key for the User
+ 
+ -doc "Checks if the user key is authorized.".

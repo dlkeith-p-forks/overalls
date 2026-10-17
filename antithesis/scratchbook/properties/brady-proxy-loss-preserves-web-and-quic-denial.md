@@ -1,0 +1,25 @@
+# brady-proxy-loss-preserves-web-and-quic-denial
+
+**Type/priority/status:** Safety, P0; proposed, unimplemented, unexecuted. Primary `Always(condition, "Proxy loss never opens direct guest web or QUIC egress")`. `Always` checks forbidden origin effects throughout proxy absence and rule transitions. `Sometimes(recovered_intercepted_response, "Recovered Brady serves an intercepted TCP request")` is a conditional progress witness after the process and rules heal.
+
+**Property:** For egress-enabled guests, TCP on intercepted HTTP/HTTPS ports must remain delivered only to Brady, never directly forwarded when Brady is absent; arbitrary UDP except configured DNS to approved resolvers must be denied, including QUIC on UDP 443 and alternate ports. Customer remains denied. The failure mode may be refused/timeout to the client; no direct origin effect is allowed. An HTTP/3-capable client may fall back to intercepted TCP when Brady is healthy.
+
+**Primary source:** `lilly/lib/lilly/network/policy.ex:100-118,130-157` emits TPROXY pre-NAT, separate Brady UID output, explicit TCP forward drop and UDP reject with DNS exception. `docs/architecture/decisions/0069-brady-egress-cache.md` requires no direct fallback, QUIC denial and proxy-outage refusal. `nix/tests/machines/brady-network/driver.py:107-141` defines veth Customer/protected, stopped-proxy, HTTP/3 fallback and actual reject-counter probes. `brady/lib/brady/connection.ex:5-18` and `brady/lib/brady/proxy.ex:84-106` keep the proxy admission path separate from firewall packet routing.
+
+**Independent oracle and action/fault recipe:** Stand up a namespace-local origin recording every TCP accept and UDP datagram with a synthetic nonce, plus controlled DNS resolver. From two veth clients (egress-enabled and Customer), establish positive intercepted HTTP/TLS and DNS observations, then stop/kill Brady while retaining Lilly's live nftables rules. Try HTTP/HTTPS, raw TCP to every configured intercepted port, UDP 443 and an alternate QUIC port, arbitrary UDP, and allowed DNS. Race rule reapply and Brady restart; sample actual `nft -j` chain/counter snapshots and origin effects before/after each attempt. During absence, no origin TCP web accept or non-DNS UDP datagram may appear; reject/drop counters should advance for blocked routes. After recovery, fresh intercepted TCP succeeds and HTTP/3 fallback must be explainable by UDP rejection followed by TCP at Brady and origin. A client timeout or `curl` exit alone cannot prove the origin saw nothing. For static firewall ownership claims, inspect the active kernel rules, not only `Policy.router/1` text.
+
+**Value menu:** Brady healthy/stopped/crashed/restarting; before/after Lilly rule reload; Customer versus permitted profile; TCP 80/443/custom ports; UDP 53 approved/wrong resolver, 443/alternate/random port; fresh/existing flow; HTTP/3-capable versus QUIC-only client. Use separate origin nonces and a real UDP listener; never contact public providers.
+
+**Topology/proof limit:** The TCG `storage-router` runs the actual inner Linux nftables/TPROXY/Brady path and is the minimum credible mechanism test. Outer container network faults do not partition clients inside the router VM, so loss must be injected as an explicit inner systemd/process action. The veth topology does not establish native Firecracker source isolation; rerun the selected behavior from real guests under `native-kvm` for that claim. The existing test source is historical/test-presence evidence only.
+
+**Open questions:** Can the TCG router expose origin TCP/UDP effect logs and nft counters as one monotonic private oracle during crash/reload? `(partial: existing brady-network driver checks curl results and QUIC reject counters, but lacks a joined per-attempt effect ledger)`; which inner fault method reproduces abrupt Brady death without removing router networking? `(partial: topology requires typed inner actions, no assembled template)`.
+
+### Investigation log
+
+- Examined generated Policy, ADR-0069, `brady-network/driver.py`, deployment topology and Brady connection path. Found separate drop/reject rules and a stopped-proxy fixture design. Did not run any rule or socket; whether a particular interleaving bypasses the proxy remains a hypothesis to test.
+
+## Evaluation and proof boundary
+
+**Proof boundary:** Draft selection: `storage`. standalone-real-TPROXY-router-and-TCG-ZFS; does-not-prove-Lilly-backing; independent witness: real guest packet/origin/cache-object/connection ledger and independent flow labels. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.

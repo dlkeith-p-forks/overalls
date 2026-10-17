@@ -1,0 +1,10 @@
+@cc [owner:ghuntley,label:verification] job-history-native-real-worker
+Native worker outcomes MUST come from the packaged DeliverAuthEmail worker and
+isolated SMTP transport. Fixtures MAY defer scheduled retries only after observing
+a real first failure; they MUST NOT manufacture failure/success state. Browser
+manual retry MUST commit its exact audit receipt before counting a later success.
+
+@cc [owner:ghuntley,label:security;verification] job-history-private-mail-custody
+Disposable tokens, SMTP credentials and message contents MUST stay in private VM
+files and MUST NOT enter test output. Browser and retained projection checks MUST
+compare secret absence without printing values. SMTP acceptance proves no inbox delivery.

@@ -1,0 +1,24 @@
+[Unit]
+Description=Lilly guest terminal multiplexer
+Wants=lilly-readiness.service
+After=lilly-readiness.service
+ConditionKernelCommandLine=lilly.placement
+ConditionKernelCommandLine=lilly.execution_epoch
+ConditionKernelCommandLine=lilly.boot_challenge
+ConditionKernelCommandLine=lilly.ipv4
+
+[Service]
+Type=simple
+ExecStart=/usr/local/lib/lilly/lilly-terminald
+Environment=LILLY_TERMINALD_PORT=1075
+Environment=LILLY_TERMINALD_ACCOUNT_HELPER=/usr/local/bin/overalls-ssh-authorize
+Environment=OVERALLS_SSH_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+StateDirectory=overalls-ssh
+StateDirectoryMode=0700
+Restart=on-failure
+RestartSec=2
+# Login shells inherit service sandbox restrictions. Guest VM confinement and
+# host network policy provide isolation; shells retain their guest-user powers.
+TasksMax=512
+MemoryMax=512M
+StandardOutput=journal

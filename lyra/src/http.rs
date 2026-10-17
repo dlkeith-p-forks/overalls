@@ -1,0 +1,179 @@
+use reqwest::blocking::Client;
+use reqwest::header::{ACCEPT, CONTENT_TYPE};
+use reqwest::{redirect::Policy, Method, StatusCode, Url};
+use std::io::{self, Read};
+use std::time::Duration;
+
+fn valid_https(url: &str) -> bool {
+    let Ok(parsed) = Url::parse(url) else {
+        return false;
+    };
+    parsed.scheme() == "https"
+        && parsed.host().is_some()
+        && parsed.username().is_empty()
+        && parsed.password().is_none()
+        && parsed.fragment().is_none()
+}
+
+fn accepted_status(status: StatusCode, expected: Option<StatusCode>) -> bool {
+    expected.map_or_else(|| status.is_success(), |required| status == required)
+}
+
+// @cc [owner:ghuntley,label:security] lyra-bounded-verified-https
+// Private and public control fetches MUST verify HTTPS, ignore proxy settings,
+// refuse redirects, enforce a deadline and cap bytes while streaming. Secret
+// headers and response bodies MUST never enter process arguments or diagnostics.
+pub fn request(
+    url: &str,
+    method: Method,
+    body: Option<&[u8]>,
+    bearer: Option<&str>,
+    maximum: usize,
+    timeout: Duration,
+) -> io::Result<Vec<u8>> {
+    request_with_status(url, method, body, bearer, maximum, timeout, None)
+}
+
+pub fn request_exact(
+    url: &str,
+    expected: StatusCode,
+    maximum: usize,
+    timeout: Duration,
+) -> io::Result<Vec<u8>> {
+    request_with_status(
+        url,
+        Method::GET,
+        None,
+        None,
+        maximum,
+        timeout,
+        Some(expected),
+    )
+}
+
+fn request_with_status(
+    url: &str,
+    method: Method,
+    body: Option<&[u8]>,
+    bearer: Option<&str>,
+    maximum: usize,
+    timeout: Duration,
+    expected: Option<StatusCode>,
+) -> io::Result<Vec<u8>> {
+    if !valid_https(url) || maximum == 0 || timeout.is_zero() {
+        return Err(io::Error::other("invalid HTTPS request"));
+    }
+    let client = Client::builder()
+        .use_rustls_tls()
+        .no_proxy()
+        .redirect(Policy::none())
+        .connect_timeout(timeout)
+        .timeout(timeout)
+        .build()
+        .map_err(|_| io::Error::other("HTTPS client unavailable"))?;
+    let mut outbound = client.request(method, url);
+    if let Some(secret) = bearer {
+        outbound = outbound
+            .bearer_auth(secret)
+            .header(ACCEPT, "application/json");
+    }
+    if let Some(bytes) = body {
+        outbound = outbound
+            .header(CONTENT_TYPE, "application/json")
+            .body(bytes.to_vec());
+    }
+    let response = outbound
+        .send()
+        .map_err(|_| io::Error::other("HTTPS request failed"))?;
+    if !accepted_status(response.status(), expected)
+        || response
+            .content_length()
+            .is_some_and(|length| length > maximum as u64)
+    {
+        return Err(io::Error::other("HTTPS response unavailable"));
+    }
+    bounded_body(response, maximum)
+}
+
+fn bounded_body(reader: impl Read, maximum: usize) -> io::Result<Vec<u8>> {
+    let limit = maximum
+        .checked_add(1)
+        .ok_or_else(|| io::Error::other("invalid HTTPS response limit"))?;
+    let mut bytes = Vec::new();
+    reader.take(limit as u64).read_to_end(&mut bytes)?;
+    if bytes.len() > maximum {
+        return Err(io::Error::other("HTTPS response too large"));
+    }
+    Ok(bytes)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use hegel::{generators as gs, TestCase};
+
+    #[test]
+    fn only_verified_https_origins_are_accepted() {
+        assert!(valid_https(
+            "https://ghuntley.dev/api/audi/v1/known-hosts/vm-123"
+        ));
+        for invalid in [
+            "http://ghuntley.dev/",
+            "https://user@ghuntley.dev/",
+            "https://ghuntley.dev/#key",
+            "https://",
+            "file:///etc/passwd",
+        ] {
+            assert!(!valid_https(invalid));
+        }
+    }
+
+    #[hegel::test]
+    fn arbitrary_url_acceptance_preserves_https_and_no_credentials(tc: TestCase) {
+        let bytes = tc.draw(gs::vecs(gs::integers::<u8>()));
+        let value = String::from_utf8_lossy(&bytes);
+        if valid_https(&value) {
+            let parsed = Url::parse(&value).expect("accepted URL parses");
+            assert_eq!(parsed.scheme(), "https");
+            assert!(parsed.username().is_empty());
+            assert!(parsed.password().is_none());
+            assert!(parsed.fragment().is_none());
+        }
+    }
+
+    #[hegel::test]
+    fn generated_control_urls_reject_scheme_credential_and_fragment_mutations(tc: TestCase) {
+        let path = tc.draw(gs::integers::<u128>());
+        let url = format!("https://ghuntley.dev/api/{path:x}");
+        assert!(valid_https(&url));
+        assert!(!valid_https(&url.replacen("https:", "http:", 1)));
+        assert!(!valid_https(&url.replacen(
+            "ghuntley.dev",
+            "user@ghuntley.dev",
+            1
+        )));
+        assert!(!valid_https(&format!("{url}#fragment")));
+    }
+
+    #[hegel::test]
+    fn arbitrary_response_is_accepted_exactly_within_limit(tc: TestCase) {
+        let bytes = tc.draw(gs::vecs(gs::integers::<u8>()));
+        assert_eq!(bounded_body(bytes.as_slice(), bytes.len()).unwrap(), bytes);
+        assert_eq!(
+            bounded_body(bytes.as_slice(), bytes.len() + 1).unwrap(),
+            bytes
+        );
+        if !bytes.is_empty() {
+            assert!(bounded_body(bytes.as_slice(), bytes.len() - 1).is_err());
+        }
+    }
+
+    #[hegel::test]
+    fn generated_statuses_only_match_the_required_success_code(tc: TestCase) {
+        let code = tc.draw(gs::integers::<u16>());
+        if let Ok(status) = StatusCode::from_u16(code) {
+            assert_eq!(accepted_status(status, Some(StatusCode::OK)), code == 200);
+            assert_eq!(accepted_status(status, None), (200..300).contains(&code));
+        }
+    }
+}

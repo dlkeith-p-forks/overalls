@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href={~p"/images/overalls.svg"} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{@page.title} · Overalls</title>
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href={~p"/fonts/jetbrains-mono-500.woff2"}
+    />
+    <script defer src={~p"/assets/js/app.js"}>
+    </script>
+    <link rel="stylesheet" href={~p"/assets/css/app.css"} />
+    <link
+      rel="alternate"
+      type="text/markdown"
+      href={if @page.slug == "index", do: "/docs.md", else: "/docs/#{@page.slug}.md"}
+    />
+  </head>
+  <body>
+    <div class="public-page">
+      <a href="#main-content" class="skip-link">Skip to content</a>
+      <div class="docs-shell">
+        <aside class="docs-nav">
+          <nav aria-label="Documentation">
+            <ul class="tree">
+              <li>
+                <strong><a href={~p"/"}>Overalls</a></strong>
+                <ul>
+                  <li><a href={~p"/sign-in"}>Sign in</a></li>
+                  <li>
+                    <a href="https://github.com/antithesishq/kittens">Source code
+                    <span aria-hidden="true">↗</span></a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Field notes</strong>
+                <ul>
+                  <li :for={page <- @pages}>
+                    <a
+                      href={if page.slug == "index", do: "/docs", else: "/docs/#{page.slug}"}
+                      aria-current={if page.slug == @page.slug, do: "page"}
+                    >{page.title}</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Machine readable</strong>
+                <ul>
+                  <li><a href={~p"/llms.txt"}>LLM index</a></li>
+                  <li>
+                    <a href={
+                      if @page.slug == "index", do: "/docs.md", else: "/docs/#{@page.slug}.md"
+                    }>
+                      Markdown for this page
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <div class="docs-appearance"><span>Appearance</span><Layouts.theme_toggle /></div>
+        </aside>
+        <main id="main-content" data-public-documentation class="docs-content prose">
+          <article id="public-documentation">{raw(@page.html)}</article>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:security] authorization-system-actor-origin
+SystemActor MUST be created only by trusted in-process coordinators and jobs.
+HTTP parameters, socket payloads and claimed user roles MUST NOT be converted
+into a SystemActor; external host credentials require separate authentication.
+
+@cc [owner:ghuntley,label:security] authorization-explicit-action-access
+Adding an Ash action MUST NOT implicitly authorize it. Public entry actions need
+explicit admission and fresh record-specific checks in their coordinators;
+internal actions require both the resource/action allowlist and Cedar permission.

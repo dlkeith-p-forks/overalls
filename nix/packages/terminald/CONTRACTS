@@ -1,0 +1,36 @@
+@cc [owner:ghuntley,label:security] host-only-vsock-audience
+Every accepted connection MUST have vsock peer CID 2 and present a valid HMAC
+proof bound to this boot's challenge, placement and execution epoch before any
+control or attachment operation. Attach tokens are 128-bit random values scoped
+to one session.
+
+@cc [owner:ghuntley,label:security] no-terminal-bytes-in-state-or-logs
+Terminal bytes MUST NOT appear in logs, error strings, or any structure other
+than a session ring buffer or an in-flight socket write. Titles and sequences
+observed in output are guest data and share this rule.
+
+@cc [owner:ghuntley,label:recovery] fidelity-passthrough
+The live path MUST NOT drop, reorder, sanitize, or interpret terminal bytes.
+Memory bounds are enforced exclusively through per-viewer high-water marks that
+pause the PTY pump, never through truncation of live output. Scrollback rings
+are raw bytes; a reattach older than retained history replays from the ring
+start and reports the skipped cursor explicitly.
+
+@cc [owner:ghuntley,label:recovery] sessions-outlive-connections
+Sessions persist until an explicit kill, child exit, daemon stop, or idle
+deadline. Viewer disconnects and dial errors MUST NOT terminate sessions.
+
+@cc [owner:ghuntley,label:security] guest-execution-credentials
+On Linux guests, session programs execute with resolved passwd identities: uid,
+gid and supplementary groups MUST be fully applied and every transition checked
+before exec, and the exec environment MUST set TERM from the creating client,
+COLORTERM=truecolor and a UTF-8 locale. Group membership is resolved before
+fork. On Windows guests the `windows-terminal-session-identity` and
+`windows-terminal-roster-accounts` contracts in `src/pty_windows.rs` apply
+instead (ADR-0171).
+
+@cc [owner:ghuntley,label:architecture] one-session-engine
+Linux and Windows builds MUST share one session engine, framing, ring and HELLO
+implementation; operating-system differences live only in the `conn`, `pty`,
+`vsock` and boot-identity modules selected by target, so the wire protocol and
+the capacity, fidelity and recovery contracts above hold on both.

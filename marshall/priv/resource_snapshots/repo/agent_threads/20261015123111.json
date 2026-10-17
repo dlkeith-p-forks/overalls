@@ -1,0 +1,153 @@
+{
+  "attributes": [
+    {
+      "default": "fragment(\"uuidv7()\")",
+      "size": null,
+      "type": "uuid",
+      "source": "id",
+      "references": null,
+      "primary_key?": true,
+      "allow_nil?": false,
+      "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "root_id",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": false,
+      "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "parent_thread_id",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": true,
+      "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "text",
+      "source": "title",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": false,
+      "generated?": false
+    },
+    {
+      "default": "\"medium\"",
+      "size": null,
+      "type": "text",
+      "source": "mode",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": false,
+      "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "created_by_id",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": false,
+      "generated?": false
+    },
+    {
+      "default": "1",
+      "size": null,
+      "type": "bigint",
+      "source": "next_event_sequence",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": false,
+      "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "active_turn_id",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": true,
+      "generated?": false
+    },
+    {
+      "default": "fragment(\"(now() AT TIME ZONE 'utc')\")",
+      "size": null,
+      "type": "utc_datetime_usec",
+      "source": "inserted_at",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": false,
+      "generated?": false
+    }
+  ],
+  "table": "agent_threads",
+  "hash": "A49101C28190A8BA4313FFFB9F8F3D2EF0E6D7A4A394CAC95A6084C09152F3B9",
+  "repo": "Elixir.Marshall.Repo",
+  "multitenancy": {
+    "global": null,
+    "attribute": null,
+    "strategy": null
+  },
+  "identities": [],
+  "schema": null,
+  "check_constraints": [],
+  "base_filter": null,
+  "custom_indexes": [
+    {
+      "message": null,
+      "name": null,
+      "table": null,
+      "include": null,
+      "prefix": null,
+      "where": null,
+      "fields": [
+        "root_id",
+        "parent_thread_id"
+      ],
+      "unique": false,
+      "error_fields": [
+        "root_id",
+        "parent_thread_id"
+      ],
+      "all_tenants?": false,
+      "concurrently": false,
+      "nulls_distinct": true,
+      "include_base_filter?": true,
+      "using": null
+    },
+    {
+      "message": null,
+      "name": null,
+      "table": null,
+      "include": null,
+      "prefix": null,
+      "where": "parent_thread_id IS NULL",
+      "fields": [
+        "root_id"
+      ],
+      "unique": true,
+      "error_fields": [
+        "root_id"
+      ],
+      "all_tenants?": false,
+      "concurrently": false,
+      "nulls_distinct": true,
+      "include_base_filter?": true,
+      "using": null
+    }
+  ],
+  "custom_statements": [],
+  "create_table_options": null,
+  "has_create_action": true
+}

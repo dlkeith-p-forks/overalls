@@ -1,0 +1,13 @@
+@cc [owner:ghuntley,label:security] resume-token-no-elevation-no-diagnostics
+The validator MUST not be setuid and MUST NOT print tokens, arguments or library
+diagnostics; stderr redirects to /dev/null before the library runs. Stdout is
+a fixed result word (`ok\n`) only. Operational events stay with the caller's
+Lilly.Events catalog.
+
+@cc [owner:ghuntley,label:verification] resume-token-hegel-properties
+Hegel properties MUST cover the bounded token envelope (version, sizes, even
+lowercase hex, declared-size bounds) and the lineage matrix (exact name/
+toguid/fromguid, key allowlist, duplicate/unknown rejection, boolean-only
+capability flags) via an independent spec. Typed FFI to libzfs MUST be the only
+unsafe surface; real-token acceptance evidence belongs to the disposable ZFS
+transfer fixtures.

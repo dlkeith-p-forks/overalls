@@ -1,0 +1,181 @@
+"""Ordinary installed-system owner creates a machine with the visible OSS default."""
+
+import json
+import sys
+import uuid
+from pathlib import Path
+from urllib.parse import urlsplit
+
+from playwright.sync_api import Page, expect, sync_playwright
+
+ROOT = Path("/var/lib/fleet-default-oss")
+ORIGIN = "https://control.example.test"
+stage = "launch"
+
+
+def fields() -> dict[str, str]:
+    """@cc [owner:ghuntley,label:verification] default-oss-fixture-field-types
+    Fixture JSON MUST provide string owner/member/stranger tokens and image ID
+    before browser use; missing or non-string required fields MUST fail the
+    journey.
+    """
+    value: object = json.loads((ROOT / "users.json").read_text())
+    assert isinstance(value, dict)
+    fields: dict[str, object] = {}
+    for name, item in value.items():
+        assert isinstance(name, str)
+        fields[name] = item
+    result: dict[str, str] = {}
+    for key in ("owner_token", "member_token", "stranger_token", "image_id"):
+        field = fields.get(key)
+        assert isinstance(field, str)
+        result[key] = field
+    return result
+
+
+def connected(page: Page) -> None:
+    expect(page.locator("[data-phx-main].phx-connected")).to_be_visible(timeout=20000)
+
+
+def run() -> None:
+    """@cc [owner:ghuntley,label:verification;security] default-oss-browser-entry
+    The browser MUST leave the default profile untouched, preserve its request
+    across reload, and submit through the real form. Registered keys MUST use
+    the actual key settings UI. Login tokens and failure URLs stay private.
+    """
+    global stage
+    users = fields()
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(
+            executable_path="/run/current-system/sw/bin/chromium", headless=True
+        )
+        try:
+            for role in ("owner", "member", "stranger"):
+                stage = role + " login"
+                context = browser.new_context()
+                page = context.new_page()
+                page.goto(ORIGIN + "/magic_link/" + users[role + "_token"])
+                connected(page)
+                page.wait_for_url("**/overview")
+                stage = role + " key registration"
+                page.goto(ORIGIN + "/settings/ssh-keys")
+                connected(page)
+                page.get_by_label("Public key", exact=True).fill(
+                    (ROOT / (role + ".pub")).read_text()
+                )
+                page.get_by_label("Label (optional)", exact=True).fill("default-profile-" + role)
+                page.locator("#add-ssh-key").click()
+                expect(page.locator("article")).to_contain_text("default-profile-" + role)
+                if role == "owner":
+                    stage = "default OSS form"
+                    page.goto(ORIGIN + "/machines/new")
+                    connected(page)
+                    expect(page.locator("#machine_profile")).to_have_value("oss")
+                    expect(page.locator("#machine_image_id")).to_have_value(users["image_id"])
+                    key = page.locator("#machine_request_key").input_value()
+                    stage = "draft reload"
+                    page.reload()
+                    connected(page)
+                    expect(page.locator("#machine_profile")).to_have_value("oss")
+                    # The initial draft receives its key in the URL on mount.
+                    expect(page.locator("#machine_request_key")).to_have_value(key)
+                    stage = "default OSS admission"
+                    page.locator("#provision-submit").click()
+                    page.wait_for_url(
+                        lambda url: (
+                            urlsplit(url).path.startswith("/machines/")
+                            and urlsplit(url).path != "/machines/new"
+                        )
+                    )
+                    vm_id = urlsplit(page.url).path.split("/")[-1]
+                    assert str(uuid.UUID(vm_id)) == vm_id
+                    (ROOT / "browser-vm").write_text(vm_id)
+                context.close()
+        finally:
+            browser.close()
+
+
+def refusal() -> None:
+    """@cc [owner:ghuntley,label:verification;security] default-oss-member-refusal
+    The member's real browser login MUST NOT list the Customer machine and
+    direct detail URLs MUST land on the machines index with the fixed
+    unavailable notice. Login tokens and page HTML stay inside this helper.
+    """
+    global stage
+    users = fields()
+    customer = (ROOT / "customer-vm").read_text().strip()
+    assert str(uuid.UUID(customer)) == customer
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(
+            executable_path="/run/current-system/sw/bin/chromium", headless=True
+        )
+        page: Page | None = None
+        try:
+            stage = "member refusal login"
+            context = browser.new_context()
+            page = context.new_page()
+            page.goto(ORIGIN + "/magic_link/" + users["member_token"])
+            connected(page)
+            page.wait_for_url("**/overview")
+            stage = "member list exclusion"
+            page.goto(ORIGIN + "/machines")
+            connected(page)
+            expect(page.locator("#machines-empty")).to_be_visible(timeout=20000)
+            expect(page.locator("#machines-" + customer)).to_have_count(0)
+            stage = "member customer detail refusal"
+            for path, notice in (
+                ("/machines/" + customer, "Machine not found"),
+                ("/machines/" + customer + "/settings", "unavailable"),
+            ):
+                page.goto(ORIGIN + path)
+                page.wait_for_url("**/machines", timeout=60000)
+                connected(page)
+                expect(page.locator("#flash-group")).not_to_be_empty(timeout=20000)
+                flash_text = page.locator("#flash-group").inner_text()
+                detail_count = page.locator("#machine-detail").count()
+                assert notice in flash_text and detail_count == 0, json.dumps(
+                    {
+                        "notice_seen": notice in flash_text,
+                        "detail_count": detail_count,
+                        "on_machines_index": page.url.rstrip("/").endswith("/machines"),
+                        "path_kind": "settings" if path.endswith("/settings") else "detail",
+                    }
+                )
+            context.close()
+        except Exception as error:
+            # Failure diagnostics expose only booleans and the fixed stage
+            # marker; the page URL path and texts stay inside the VM.
+            detail: dict[str, object] = {
+                "stage": stage,
+                "category": type(error).__name__,
+            }
+            if page is not None:
+                detail["on_machines_index"] = bool(page.url.rstrip("/").endswith("/machines"))
+                detail["flash_present"] = page.locator("#flash-group").count() > 0
+                detail["detail_present"] = page.locator("#machine-detail").count() > 0
+            print(json.dumps(detail), file=sys.stderr)
+            raise
+        finally:
+            browser.close()
+
+
+mode = sys.argv[1] if len(sys.argv) > 1 else "create"
+
+try:
+    if mode == "refusal":
+        refusal()
+    else:
+        run()
+except Exception as error:
+    print(
+        json.dumps(
+            {
+                "event": "default_profile_browser_failed",
+                "mode": mode,
+                "stage": stage,
+                "category": type(error).__name__,
+            }
+        ),
+        file=sys.stderr,
+    )
+    sys.exit(1)

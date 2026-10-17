@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:architecture] observability-independent-authority
+This library MUST emit only reviewed observability data and MUST NOT acquire
+application, database, VM, guest or control-protocol authority. Exporter failure
+MUST NOT change application work results, locks, receipts or recovery decisions.
+
+@cc [owner:ghuntley,label:security] observability-reviewed-data
+Span names and attributes MUST have a reviewed schema. Credentials, command
+arguments, URLs, terminal or disk bytes, payloads and exception messages MUST NOT
+reach spans, exporters or diagnostics. Exporter error bodies MUST remain private.
+
+@cc [owner:ghuntley,label:recovery] observability-custody-ack
+A successful export MUST mean its spans reached the independent spool's
+reviewed SQLite FULL WAL fsync boundary. Queue admission inside the SDK MUST NOT be
+described as durable.
+
+@cc [owner:ghuntley,label:capacity] observability-bounded-producers
+Routine emission MUST use a bounded queue and fail open under unavailable or
+full observability storage. No observer I/O MAY occur inside native ownership,
+fork, pre-exec, signal, disk-stream or terminal-byte critical regions.

@@ -1,0 +1,28 @@
+/* Marshall stylesheet entry (ADR-0161). esbuild bundles this file with the
+   JavaScript bundle; every import resolves inside the repository. */
+@import "./fonts.css";
+@import "./tokens.css";
+@import "./monospace.css";
+@import "../vendor/xterm/xterm.css";
+@import "./shell.css";
+@import "./components.css";
+@import "./workspace.css";
+@import "./print.css";
+
+/* LiveView wrapper elements must not take part in layout. */
+[data-phx-session], [data-phx-teleported-src] { display: contents }
+
+.phx-submit-loading button, .phx-click-loading { color: var(--text-color-alt); pointer-events: none }
+
+#terminal-display:fullscreen {
+  width: 100dvw;
+  height: 100dvh;
+  min-height: 100dvh;
+  outline: 0;
+  padding: 0;
+}
+
+#terminal-display:fullscreen #terminal-pane-holder,
+#terminal-display:fullscreen #terminal-boot-view {
+  height: calc(100dvh - var(--line-height) * 2);
+}

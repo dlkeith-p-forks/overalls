@@ -1,0 +1,15 @@
+@cc [owner:ghuntley,label:security] launch-guard-no-elevation-or-diagnostics
+The guard MUST run without setuid bits or file capabilities, accept only fixed
+absolute argv, keep stdout silent and record no logs. Operational events belong
+to the caller's Lilly.Events catalog; intent bytes and paths never become
+diagnostics from this process.
+
+@cc [owner:ghuntley,label:recovery] launch-guard-custody-boundaries
+Only private, single-link, zero-size intent lock files and exactly-53-byte
+private intent payloads may authorize jailer exec: placement UUID, epoch and
+generation must equal the requested values and the state byte must mark a
+running generation. Exec MUST fail closed (71) and the shared intent lock MUST
+survive exec so jailer's eventual descriptor close cannot leave an unfenced
+process outside unit cleanup. Hegel properties cover the argument selector,
+frame oracle and file refusal matrix; lock-across-exec is verified with real
+processes in the sandbox.

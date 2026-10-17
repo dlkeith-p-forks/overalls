@@ -1,0 +1,488 @@
+{
+  "sut_path": "/home/ghuntley/src/kittens-antithesis-reset",
+  "commit": "c835eb1017d24a001215c319373fa4204d64269b",
+  "updated": "2026-10-13",
+  "external_references": [],
+  "scope_answer": "Repository only (Recommended)",
+  "method": "Current source and repository test inspection; no tests or native campaign executed",
+  "entries": [
+    {
+      "slug": "cancelled-relocation-restores-after-revocation",
+      "old_questions": [
+        "Can the native fixture cut between source revocation and stop without breaking the owner lock?"
+      ],
+      "status": "partial",
+      "answer": "Revocation is a committed receipt gate before a fresh source epoch and stop outbox. The inspected native scenarios expose no pause between those two coordinator steps while retaining the production host owner. Probe by pausing the coordinator after the revocation receipt commit, then verify host lock continuity and exact physical stop; until then use response loss as the narrower schedule.",
+      "examined": [
+        "marshall/lib/marshall/compute/relocation_restoration.ex:16-51",
+        "marshall/lib/marshall/compute/relocation_coordinator.ex:243-255",
+        "nix/tests/machines/fleet/scenarios/audi-relocation.py"
+      ],
+      "proposed_catalog_edit": "Keep an open partial question about a lock-preserving coordinator pause; scope current oracle to response loss and receipts.",
+      "remaining_question": [
+        "Can the native fixture cut between source revocation and stop without breaking the owner lock?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Can the native fixture cut between source revocation and stop without breaking the owner lock?",
+          "status": "partial",
+          "answer": "Revocation is a committed receipt gate before a fresh source epoch and stop outbox. The inspected native scenarios expose no pause between those two coordinator steps while retaining the production host owner. Probe by pausing the coordinator after the revocation receipt commit, then verify host lock continuity and exact physical stop; until then use response loss as the narrower schedule.",
+          "proposed_catalog_edit": "Keep an open partial question about a lock-preserving coordinator pause; scope current oracle to response loss and receipts."
+        }
+      ]
+    },
+    {
+      "slug": "continuing-boot-advances-generation-without-second-boot",
+      "old_questions": [
+        "Which native fixture can delay a guest workspace reply through a committed generation advance while retaining the VMM?"
+      ],
+      "status": "partial",
+      "answer": "Boot.adopt_generation and the property test preserve the journal boot challenge across a newer generation, but the inspected native fleet scenarios provide no guest workspace reply barrier. Probe a protected workspace-source reply delay while observing unchanged VMM PID/start time and guest boot ID, then commit generation N+1 and release N reply.",
+      "examined": [
+        "lilly/lib/lilly/vm/boot.ex:64-86",
+        "lilly/lib/lilly/vm/driver.ex:776-875",
+        "lilly/test/vm/boot_generation_adoption_property_test.exs:12-65",
+        "nix/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655"
+      ],
+      "proposed_catalog_edit": "Retain partial; separate journal adoption from a future native delayed-reply result.",
+      "remaining_question": [
+        "Which native fixture can delay a guest workspace reply through a committed generation advance while retaining the VMM?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Which native fixture can delay a guest workspace reply through a committed generation advance while retaining the VMM?",
+          "status": "partial",
+          "answer": "Boot.adopt_generation and the property test preserve the journal boot challenge across a newer generation, but the inspected native fleet scenarios provide no guest workspace reply barrier. Probe a protected workspace-source reply delay while observing unchanged VMM PID/start time and guest boot ID, then commit generation N+1 and release N reply.",
+          "proposed_catalog_edit": "Retain partial; separate journal adoption from a future native delayed-reply result."
+        }
+      ]
+    },
+    {
+      "slug": "delete-release-follows-physical-retirement",
+      "old_questions": [
+        "Which native observer establishes VMM, network, and ZFS absence before Marshall releases reservation/address?"
+      ],
+      "status": "partial",
+      "answer": "The native lifecycle scenario checks systemd unit inactivity, ZFS dataset and rootfs absence, and DB reservation release after archive. It does not inspect network attachment in that same delete assertion or sample every pre-release transition. Add a host-side network attachment query and synchronized pre/post DB snapshots around the accepted deleted outcome.",
+      "examined": [
+        "nix/tests/machines/fleet/scenarios/lifecycle.py:68-96",
+        "lilly/lib/lilly/vm/driver.ex:1280-1327",
+        "marshall/lib/marshall/compute/outcomes.ex:210-229"
+      ],
+      "proposed_catalog_edit": "Name existing unit/ZFS observers; retain network and pre-release timing as partial.",
+      "remaining_question": [
+        "Which native observer establishes VMM, network, and ZFS absence before Marshall releases reservation/address?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Which native observer establishes VMM, network, and ZFS absence before Marshall releases reservation/address?",
+          "status": "partial",
+          "answer": "The native lifecycle scenario checks systemd unit inactivity, ZFS dataset and rootfs absence, and DB reservation release after archive. It does not inspect network attachment in that same delete assertion or sample every pre-release transition. Add a host-side network attachment query and synchronized pre/post DB snapshots around the accepted deleted outcome.",
+          "proposed_catalog_edit": "Name existing unit/ZFS observers; retain network and pre-release timing as partial."
+        }
+      ]
+    },
+    {
+      "slug": "execution-v4-refuses-legacy-document",
+      "old_questions": [
+        "Can a test peer inject malformed inner documents over the real authenticated Control transport?"
+      ],
+      "status": "partial",
+      "answer": "Client.exchange_execution validates inner v4 response fields and command documents after a Control request; malformed inner data produces invalid_message or codec error before Runtime accepts commands. Existing test peers show controlled responses, but inspection does not establish a TLS/WebSocket service-bound malformed peer fixture. Probe an authenticated test peer through the actual Control endpoint with inner v1/v3/v5 documents.",
+      "examined": [
+        "lilly/lib/lilly/control/client.ex:244-295",
+        "protocol/lib/overalls_protocol/execution.ex:367-385",
+        "lilly/test/control/terminal_close_property_test.exs:36-80"
+      ],
+      "proposed_catalog_edit": "Retain partial transport-fixture question; state the parser refusal separately.",
+      "remaining_question": [
+        "Can a test peer inject malformed inner documents over the real authenticated Control transport?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Can a test peer inject malformed inner documents over the real authenticated Control transport?",
+          "status": "partial",
+          "answer": "Client.exchange_execution validates inner v4 response fields and command documents after a Control request; malformed inner data produces invalid_message or codec error before Runtime accepts commands. Existing test peers show controlled responses, but inspection does not establish a TLS/WebSocket service-bound malformed peer fixture. Probe an authenticated test peer through the actual Control endpoint with inner v1/v3/v5 documents.",
+          "proposed_catalog_edit": "Retain partial transport-fixture question; state the parser refusal separately."
+        }
+      ]
+    },
+    {
+      "slug": "guest-readiness-binds-current-physical-boot",
+      "old_questions": [
+        "Which boot witness distinguishes stale and current vsock readiness after physical VMM replacement?"
+      ],
+      "status": "resolved",
+      "answer": "The distinguishing witness is the protected boot challenge in the persisted Boot journal plus the authenticated guest boot UUID (read from /proc/sys/kernel/random/boot_id), joined to VMM PID/start time. ready_boot rereads Boot.current after the vsock wait. The native SSH scenario already compares guest boot UUID to its journal digest and rejects a stale digest; this identifies a witness, not a completed replacement race.",
+      "examined": [
+        "lilly/lib/lilly/vm/driver.ex:941-975",
+        "lilly/lib/lilly/vm/boot.ex:64-86",
+        "nix/tests/machines/fleet/scenarios/user-ssh-journey.py:626-657"
+      ],
+      "proposed_catalog_edit": "Remove the witness-selection question; retain physical replacement execution as an unrun workload.",
+      "remaining_question": null,
+      "question_resolutions": [
+        {
+          "old_question": "Which boot witness distinguishes stale and current vsock readiness after physical VMM replacement?",
+          "status": "resolved",
+          "answer": "The distinguishing witness is the protected boot challenge in the persisted Boot journal plus the authenticated guest boot UUID (read from /proc/sys/kernel/random/boot_id), joined to VMM PID/start time. ready_boot rereads Boot.current after the vsock wait. The native SSH scenario already compares guest boot UUID to its journal digest and rejects a stale digest; this identifies a witness, not a completed replacement race.",
+          "proposed_catalog_edit": "Remove the witness-selection question; retain physical replacement execution as an unrun workload."
+        }
+      ]
+    },
+    {
+      "slug": "lilly-async-result-keeps-command-identity",
+      "old_questions": [
+        "Which existing executor pause seam preserves production actor/journal timing?"
+      ],
+      "status": "resolved",
+      "answer": "The existing ActorTest executor reports the command and Task PID to the test owner, then waits for a release message. Tests commit a replacement while the old reconcile task remains held and assert only the replacement generation is published. This preserves the production Actor Task and journal path, though the executor is a test double and establishes no native effect.",
+      "examined": [
+        "lilly/test/vm/actor_test.exs:10-28,434-470",
+        "lilly/lib/lilly/vm/actor.ex:222-242,272-312"
+      ],
+      "proposed_catalog_edit": "Remove pause-seam question; cite actor test as model-level schedule only.",
+      "remaining_question": null,
+      "question_resolutions": [
+        {
+          "old_question": "Which existing executor pause seam preserves production actor/journal timing?",
+          "status": "resolved",
+          "answer": "The existing ActorTest executor reports the command and Task PID to the test owner, then waits for a release message. Tests commit a replacement while the old reconcile task remains held and assert only the replacement generation is published. This preserves the production Actor Task and journal path, though the executor is a test double and establishes no native effect.",
+          "proposed_catalog_edit": "Remove pause-seam question; cite actor test as model-level schedule only."
+        }
+      ]
+    },
+    {
+      "slug": "lilly-corrupt-intent-never-becomes-receipt",
+      "old_questions": [
+        "Which Runtime exchange response exposes existing-placement corruption?",
+        "What owner pause/stop seam permits corruption seeding without violating lock custody?"
+      ],
+      "status": "resolved",
+      "answer": "There is no per-command wire refusal in the current exchange: receive_commands halts and fences Runtime with command_store_failed, so the independent peer observes lack of ACK with Runtime phase fenced; socket closure is not a guaranteed response, and no positive corrupt-file response is sent. Existing intent corruption must be seeded after stopping the owning Runtime and releasing its host lock, before supervised restart; never modify a file while live ownership holds.",
+      "examined": [
+        "lilly/lib/lilly/control/runtime.ex:863-915,565-573,791-815",
+        "lilly/lib/lilly/control/store.ex:29-54,71-119",
+        "lilly/lib/lilly/host/lock.ex:41-113"
+      ],
+      "proposed_catalog_edit": "Remove both questions; correct expected response to local fence/no ACK and describe stop/restart seeding.",
+      "remaining_question": null,
+      "question_resolutions": [
+        {
+          "old_question": "Which Runtime exchange response exposes existing-placement corruption?",
+          "status": "resolved",
+          "answer": "There is no per-command wire refusal in the current exchange: receive_commands halts and fences Runtime with command_store_failed, so the independent peer observes lack of ACK with Runtime phase fenced; socket closure is not a guaranteed response, and no positive corrupt-file response is sent. Existing intent corruption must be seeded after stopping the owning Runtime and releasing its host lock, before supervised restart; never modify a file while live ownership holds.",
+          "proposed_catalog_edit": "Remove both questions; correct expected response to local fence/no ACK and describe stop/restart seeding."
+        },
+        {
+          "old_question": "What owner pause/stop seam permits corruption seeding without violating lock custody?",
+          "status": "resolved",
+          "answer": "There is no per-command wire refusal in the current exchange: receive_commands halts and fences Runtime with command_store_failed, so the independent peer observes lack of ACK with Runtime phase fenced; socket closure is not a guaranteed response, and no positive corrupt-file response is sent. Existing intent corruption must be seeded after stopping the owning Runtime and releasing its host lock, before supervised restart; never modify a file while live ownership holds.",
+          "proposed_catalog_edit": "Remove both questions; correct expected response to local fence/no ACK and describe stop/restart seeding."
+        }
+      ]
+    },
+    {
+      "slug": "lilly-finite-obstruction-recovery-progress",
+      "old_questions": [
+        "What measured baseline interval supplies the workload budget? `(partial: cadence/retries found, no universal SLA)`"
+      ],
+      "status": "partial",
+      "answer": "Runtime cadence and Actor retries provide no universal recovery SLA. No measured baseline on the selected hosted topology is recorded here. Probe each eligible operation after restoring services and record P95/P99 baseline and a bounded budget with the actual topology; retain quiet-period and eligibility preconditions.",
+      "examined": [
+        "lilly/lib/lilly/control/runtime.ex:400-429,824-856,925-932",
+        "lilly/lib/lilly/vm/actor.ex:178-181,345-395"
+      ],
+      "proposed_catalog_edit": "Retain partial measured-budget question; no guessed deadline.",
+      "remaining_question": [
+        "What measured baseline interval supplies the workload budget? `(partial: cadence/retries found, no universal SLA)`"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "What measured baseline interval supplies the workload budget? `(partial: cadence/retries found, no universal SLA)`",
+          "status": "partial",
+          "answer": "Runtime cadence and Actor retries provide no universal recovery SLA. No measured baseline on the selected hosted topology is recorded here. Probe each eligible operation after restoring services and record P95/P99 baseline and a bounded budget with the actual topology; retain quiet-period and eligibility preconditions.",
+          "proposed_catalog_edit": "Retain partial measured-budget question; no guessed deadline."
+        }
+      ]
+    },
+    {
+      "slug": "lilly-interrupted-launch-at-most-once",
+      "old_questions": [
+        "Can the hosted adapter retain independently durable submission witnesses with production marker semantics?"
+      ],
+      "status": "partial",
+      "answer": "The production launch path persists launch-attempt.bin before privileged start, and the native submission-recovery scenario has a real barrier on either side of submission plus marker hash and VMM snapshot checks. A hosted executor adapter with an independently durable submission ledger is not present in inspected source. Probe adapter marker-before-effect ordering under process death; do not equate adapter success with systemd acceptance.",
+      "examined": [
+        "lilly/lib/lilly/vm/driver.ex:336-421,1474-1492",
+        "nix/tests/machines/fleet/scenarios/submission-recovery.py:21-105,190-191"
+      ],
+      "proposed_catalog_edit": "Name native barrier as existing test presence; keep hosted adapter question partial.",
+      "remaining_question": [
+        "Can the hosted adapter retain independently durable submission witnesses with production marker semantics?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Can the hosted adapter retain independently durable submission witnesses with production marker semantics?",
+          "status": "partial",
+          "answer": "The production launch path persists launch-attempt.bin before privileged start, and the native submission-recovery scenario has a real barrier on either side of submission plus marker hash and VMM snapshot checks. A hosted executor adapter with an independently durable submission ledger is not present in inspected source. Probe adapter marker-before-effect ordering under process death; do not equate adapter success with systemd acceptance.",
+          "proposed_catalog_edit": "Name native barrier as existing test presence; keep hosted adapter question partial."
+        }
+      ]
+    },
+    {
+      "slug": "lilly-outcome-replay-exact-ack",
+      "old_questions": [
+        "Can the observer take lock-respecting snapshots without masking the crash window?"
+      ],
+      "status": "resolved",
+      "answer": "A lock-respecting observer can snapshot after a controlled boundary or owner death, not while holding the live Store/Journal lock during the crash interval. Use external exchange/DB commit timestamps as the in-window history; reopen the journal only after owner release and compare exact pending IDs. That avoids moving the crash boundary with inspection.",
+      "examined": [
+        "lilly/lib/lilly/vm/journal.ex:95-158",
+        "lilly/lib/lilly/vm/actor.ex:345-459",
+        "lilly/lib/lilly/host/lock.ex:41-113"
+      ],
+      "proposed_catalog_edit": "Remove observer-lock question; specify post-boundary snapshots and external in-window ledger.",
+      "remaining_question": null,
+      "question_resolutions": [
+        {
+          "old_question": "Can the observer take lock-respecting snapshots without masking the crash window?",
+          "status": "resolved",
+          "answer": "A lock-respecting observer can snapshot after a controlled boundary or owner death, not while holding the live Store/Journal lock during the crash interval. Use external exchange/DB commit timestamps as the in-window history; reopen the journal only after owner release and compare exact pending IDs. That avoids moving the crash boundary with inspection.",
+          "proposed_catalog_edit": "Remove observer-lock question; specify post-boundary snapshots and external in-window ledger."
+        }
+      ]
+    },
+    {
+      "slug": "lilly-pool-sampling-does-not-starve-mutation",
+      "old_questions": [
+        "Which measured post-release interval is sufficient for each selected operation?",
+        "Can hosted TCG maintain two independent real pools with genuine contention under faults?"
+      ],
+      "status": "partial",
+      "answer": "Storage.locked permits bounded mutation acquisition and Runtime drops or defers samples while one is in flight, but neither supplies an end-to-end post-release completion bound. The repository has multi-host ZFS native fixtures; the hosted TCG design does not yet prove two independently mounted real pools. Probe each operation under a measured quiet interval and two actual pools before assigning a physical-neighbor oracle.",
+      "examined": [
+        "lilly/lib/lilly/host/storage.ex:9-30",
+        "lilly/lib/lilly/control/runtime.ex:252-313,445-478",
+        "nix/tests/machines/fleet/scenarios/capacity.py:114-155",
+        "antithesis/scratchbook/emulated-storage-feasibility.md"
+      ],
+      "proposed_catalog_edit": "Keep both measured interval and hosted two-pool feasibility partial.",
+      "remaining_question": [
+        "Which measured post-release interval is sufficient for each selected operation?",
+        "Can hosted TCG maintain two independent real pools with genuine contention under faults?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Which measured post-release interval is sufficient for each selected operation?",
+          "status": "partial",
+          "answer": "Storage.locked permits bounded mutation acquisition and Runtime drops or defers samples while one is in flight, but neither supplies an end-to-end post-release completion bound. The repository has multi-host ZFS native fixtures; the hosted TCG design does not yet prove two independently mounted real pools. Probe each operation under a measured quiet interval and two actual pools before assigning a physical-neighbor oracle.",
+          "proposed_catalog_edit": "Keep both measured interval and hosted two-pool feasibility partial."
+        },
+        {
+          "old_question": "Can hosted TCG maintain two independent real pools with genuine contention under faults?",
+          "status": "partial",
+          "answer": "Storage.locked permits bounded mutation acquisition and Runtime drops or defers samples while one is in flight, but neither supplies an end-to-end post-release completion bound. The repository has multi-host ZFS native fixtures; the hosted TCG design does not yet prove two independently mounted real pools. Probe each operation under a measured quiet interval and two actual pools before assigning a physical-neighbor oracle.",
+          "proposed_catalog_edit": "Keep both measured interval and hosted two-pool feasibility partial."
+        }
+      ]
+    },
+    {
+      "slug": "lilly-receipt-survives-control-loss",
+      "old_questions": [
+        "Which hosted filesystem faults exercise directory fsync uncertainty?"
+      ],
+      "status": "partial",
+      "answer": "PrivateFiles.write syncs the temporary file, renames it, then invokes sync on the containing directory before success. A process kill only exercises control/process loss; it does not model loss of a successfully acknowledged directory sync. Probe an owned block-backed filesystem with power-cut or fault injection around rename/sync, retaining raw image and ACK transcript, before claiming directory durability under crash.",
+      "examined": [
+        "lilly/lib/lilly/host/private_files.ex:36-58,65-90",
+        "lilly/lib/lilly/control/runtime.ex:863-914",
+        "antithesis/scratchbook/emulated-storage-feasibility.md"
+      ],
+      "proposed_catalog_edit": "Retain partial for real fsync/power-loss fault; scope hosted process faults precisely.",
+      "remaining_question": [
+        "Which hosted filesystem faults exercise directory fsync uncertainty?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Which hosted filesystem faults exercise directory fsync uncertainty?",
+          "status": "partial",
+          "answer": "PrivateFiles.write syncs the temporary file, renames it, then invokes sync on the containing directory before success. A process kill only exercises control/process loss; it does not model loss of a successfully acknowledged directory sync. Probe an owned block-backed filesystem with power-cut or fault injection around rename/sync, retaining raw image and ACK transcript, before claiming directory durability under crash.",
+          "proposed_catalog_edit": "Retain partial for real fsync/power-loss fault; scope hosted process faults precisely."
+        }
+      ]
+    },
+    {
+      "slug": "lilly-view-restart-withdraws-stream-authority",
+      "old_questions": [
+        "Which forwarding seam provides a post-restart byte witness synchronized with connector and command identity?"
+      ],
+      "status": "resolved",
+      "answer": "Use the production Lilly.Ingress.Server socket path to send a tagged guest byte before/after killing the Execution child, and record socket/guardian/connector PIDs with Runtime and command identity. The root rest_for_one tree places Execution before Runtime and ingress. Ingress.Server.terminate closes the listener and kills linked workers; its guardian separately monitors the stream owner and actor. A stand-alone View test with surviving subscribers would observe a topology that production does not run.",
+      "examined": [
+        "lilly/lib/lilly/application.ex:45-72",
+        "lilly/lib/lilly/ingress/server.ex:88-139,182-252",
+        "lilly/lib/lilly/ingress/guardian.ex:13-70",
+        "lilly/lib/lilly/execution.ex:106-117"
+      ],
+      "proposed_catalog_edit": "Remove forwarding-seam question; prescribe production ingress byte witness and real rest_for_one restart.",
+      "remaining_question": null,
+      "question_resolutions": [
+        {
+          "old_question": "Which forwarding seam provides a post-restart byte witness synchronized with connector and command identity?",
+          "status": "resolved",
+          "answer": "Use the production Lilly.Ingress.Server socket path to send a tagged guest byte before/after killing the Execution child, and record socket/guardian/connector PIDs with Runtime and command identity. The root rest_for_one tree places Execution before Runtime and ingress. Ingress.Server.terminate closes the listener and kills linked workers; its guardian separately monitors the stream owner and actor. A stand-alone View test with surviving subscribers would observe a topology that production does not run.",
+          "proposed_catalog_edit": "Remove forwarding-seam question; prescribe production ingress byte witness and real rest_for_one restart."
+        }
+      ]
+    },
+    {
+      "slug": "native-utility-descendant-custody",
+      "old_questions": [
+        "Does hosted Linux preserve subreaper and inherited-descriptor behavior with stable pidfd/inode evidence after helper death?"
+      ],
+      "status": "partial",
+      "answer": "The helper explicitly sets itself as Linux child subreaper, inherits the lock descriptor across utility exec, and reaps adopted descendants after direct-child wait. Hosted Linux can run these kernel primitives, but source alone cannot establish the exact hosted container pid namespace/capabilities or stable pidfd observation after helper death. Probe a forked setsid descendant holding the original inode, kill caller/helper, and observe flock denial until confirmed descendant exit; distinguish direct-child exit from descendant retirement.",
+      "examined": [
+        "lilly/native/host-lock/src/lib.rs:223-295,342-378",
+        "lilly/native/source-export/src/lib.rs:209-210,415-441",
+        "lilly/lib/lilly/host/lock.ex:41-113"
+      ],
+      "proposed_catalog_edit": "Retain hosted environment probe; explicitly reject direct child exit as retirement proof.",
+      "remaining_question": [
+        "Does hosted Linux preserve subreaper and inherited-descriptor behavior with stable pidfd/inode evidence after helper death?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Does hosted Linux preserve subreaper and inherited-descriptor behavior with stable pidfd/inode evidence after helper death?",
+          "status": "partial",
+          "answer": "The helper explicitly sets itself as Linux child subreaper, inherits the lock descriptor across utility exec, and reaps adopted descendants after direct-child wait. Hosted Linux can run these kernel primitives, but source alone cannot establish the exact hosted container pid namespace/capabilities or stable pidfd observation after helper death. Probe a forked setsid descendant holding the original inode, kill caller/helper, and observe flock denial until confirmed descendant exit; distinguish direct-child exit from descendant retirement.",
+          "proposed_catalog_edit": "Retain hosted environment probe; explicitly reject direct child exit as retirement proof."
+        }
+      ]
+    },
+    {
+      "slug": "relocation-handoff-one-current-execution",
+      "old_questions": [
+        "Which native observer can identify both VMM custody and guest write authority during handoff?"
+      ],
+      "status": "partial",
+      "answer": "Native fleet helpers can snapshot VMM process custody, and guest SSH can produce a boot ID or write sentinel. The inspected relocation scenario does not time-align a source and destination writable sentinel with the handoff commit. Probe per-host VMM PID/start time/cgroup and guest-owned monotonically numbered writes on both hosts while sampling one DB commit identity; absence of a guest response alone is not absence of execution.",
+      "examined": [
+        "nix/tests/machines/fleet/scenarios/submission-recovery.py:79-86",
+        "nix/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655",
+        "marshall/lib/marshall/compute/relocation_coordinator.ex:174-239"
+      ],
+      "proposed_catalog_edit": "Keep partial simultaneous physical/writable oracle; DB authority check remains separate.",
+      "remaining_question": [
+        "Which native observer can identify both VMM custody and guest write authority during handoff?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Which native observer can identify both VMM custody and guest write authority during handoff?",
+          "status": "partial",
+          "answer": "Native fleet helpers can snapshot VMM process custody, and guest SSH can produce a boot ID or write sentinel. The inspected relocation scenario does not time-align a source and destination writable sentinel with the handoff commit. Probe per-host VMM PID/start time/cgroup and guest-owned monotonically numbered writes on both hosts while sampling one DB commit identity; absence of a guest response alone is not absence of execution.",
+          "proposed_catalog_edit": "Keep partial simultaneous physical/writable oracle; DB authority check remains separate."
+        }
+      ]
+    },
+    {
+      "slug": "source-stop-after-committed-placement-holds",
+      "old_questions": [
+        "Which physical stop event and reservation fields best witness the clone transition?"
+      ],
+      "status": "resolved",
+      "answer": "The physical stop witness is systemd unit inactivity plus process_snapshot absence for the source placement, tied to the exact stopped outcome ID rather than a request or Control timeout. Immediately before that event sample clone destination WorkloadPlacement and Reservation, source Reservation.temporary_disk_bytes, and source/destination transfer slot records in one repeatable-read PostgreSQL transaction. ClonePlacement persists these before CloneCoordinator proceeds to stop.",
+      "examined": [
+        "marshall/lib/marshall/compute/clone_placement.ex:69-155",
+        "marshall/lib/marshall/compute/clone_coordinator.ex:47-65",
+        "nix/tests/machines/fleet/scenarios/lifecycle.py:37-60"
+      ],
+      "proposed_catalog_edit": "Remove witness-selection question; add exact DB fields and physical stop observer.",
+      "remaining_question": null,
+      "question_resolutions": [
+        {
+          "old_question": "Which physical stop event and reservation fields best witness the clone transition?",
+          "status": "resolved",
+          "answer": "The physical stop witness is systemd unit inactivity plus process_snapshot absence for the source placement, tied to the exact stopped outcome ID rather than a request or Control timeout. Immediately before that event sample clone destination WorkloadPlacement and Reservation, source Reservation.temporary_disk_bytes, and source/destination transfer slot records in one repeatable-read PostgreSQL transaction. ClonePlacement persists these before CloneCoordinator proceeds to stop.",
+          "proposed_catalog_edit": "Remove witness-selection question; add exact DB fields and physical stop observer."
+        }
+      ]
+    },
+    {
+      "slug": "stop-retains-disk-until-restart",
+      "old_questions": [
+        "Can the hosted storage/guest fixture inspect disk GUID, network detach, and fresh boot without substituting modeled physical effects?"
+      ],
+      "status": "partial",
+      "answer": "The native fleet lifecycle scenario already checks ZFS dataset GUID across stop/start and unit inactivity, but its stop assertion does not inspect network attachment and the hosted TCG storage/guest design has not executed this composed sequence. Probe actual TCG guest boot UUID, real ZFS GUID, and link/nft attachment across stop/start; keep native fleet result as test presence only.",
+      "examined": [
+        "nix/tests/machines/fleet/scenarios/lifecycle.py:37-60",
+        "antithesis/scratchbook/emulated-storage-feasibility.md",
+        "antithesis/scratchbook/emulated-guest-feasibility.md"
+      ],
+      "proposed_catalog_edit": "Retain hosted composed-feasibility question partial; cite native scenario without claiming current pass.",
+      "remaining_question": [
+        "Can the hosted storage/guest fixture inspect disk GUID, network detach, and fresh boot without substituting modeled physical effects?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Can the hosted storage/guest fixture inspect disk GUID, network detach, and fresh boot without substituting modeled physical effects?",
+          "status": "partial",
+          "answer": "The native fleet lifecycle scenario already checks ZFS dataset GUID across stop/start and unit inactivity, but its stop assertion does not inspect network attachment and the hosted TCG storage/guest design has not executed this composed sequence. Probe actual TCG guest boot UUID, real ZFS GUID, and link/nft attachment across stop/start; keep native fleet result as test presence only.",
+          "proposed_catalog_edit": "Retain hosted composed-feasibility question partial; cite native scenario without claiming current pass."
+        }
+      ]
+    },
+    {
+      "slug": "store-v3-host-binding-survives-upgrade",
+      "old_questions": [
+        "Which seam changes host/version across complete Runtime lifetimes while retaining real ownership?"
+      ],
+      "status": "partial",
+      "answer": "Runtime passes Store version 3 as a literal. A whole-root stop/restart with another configured host can probe host binding; persisted version refusal requires changing the identity version only while ownership is released. No production Runtime version switch exists. The full-root host-rebinding fixture remains unproven.",
+      "examined": [
+        "lilly/lib/lilly/control/runtime.ex:149-170,231-251,791-815",
+        "lilly/lib/lilly/control/store.ex:11-26,75-101",
+        "lilly/lib/lilly/application.ex:14-57"
+      ],
+      "proposed_catalog_edit": "Retain complete-lifetime ownership/config seam partial; local Store.open refusal remains source-backed.",
+      "remaining_question": [
+        "Which seam changes host/version across complete Runtime lifetimes while retaining real ownership?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Which seam changes host/version across complete Runtime lifetimes while retaining real ownership?",
+          "status": "partial",
+          "answer": "Runtime passes Store version 3 as a literal. A whole-root stop/restart with another configured host can probe host binding; persisted version refusal requires changing the identity version only while ownership is released. No production Runtime version switch exists. The full-root host-rebinding fixture remains unproven.",
+          "proposed_catalog_edit": "Retain complete-lifetime ownership/config seam partial; local Store.open refusal remains source-backed."
+        }
+      ]
+    },
+    {
+      "slug": "transient-observation-is-not-absence",
+      "old_questions": [
+        "Which hosted probe faults preserve real production observation?"
+      ],
+      "status": "partial",
+      "answer": "Hosted Linux can exercise real flock contention and transport interruption, but TCG-only VMM/storage adapters do not run the production systemd/ZFS observer stack. Probe production Unit.status, Network and ZFS observation faults in a native machine while preserving a separately witnessed guest boot; hosted results must be labeled to the actual implementation reached.",
+      "examined": [
+        "lilly/lib/lilly/vm/executor.ex:134-218,247-266,315-318",
+        "lilly/lib/lilly/vm/driver.ex:1397-1435",
+        "antithesis/scratchbook/emulated-storage-feasibility.md"
+      ],
+      "proposed_catalog_edit": "Retain partial production-observer feasibility; do not infer physical absence from hosted adapter errors.",
+      "remaining_question": [
+        "Which hosted probe faults preserve real production observation?"
+      ],
+      "question_resolutions": [
+        {
+          "old_question": "Which hosted probe faults preserve real production observation?",
+          "status": "partial",
+          "answer": "Hosted Linux can exercise real flock contention and transport interruption, but TCG-only VMM/storage adapters do not run the production systemd/ZFS observer stack. Probe production Unit.status, Network and ZFS observation faults in a native machine while preserving a separately witnessed guest boot; hosted results must be labeled to the actual implementation reached.",
+          "proposed_catalog_edit": "Retain partial production-observer feasibility; do not infer physical absence from hosted adapter errors."
+        }
+      ]
+    }
+  ]
+}

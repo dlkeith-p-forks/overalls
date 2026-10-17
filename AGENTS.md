@@ -1,0 +1,130 @@
+# Overalls repository guidance
+
+Overalls is the monorepo for Marshall (control plane), Lilly (provisioner), and
+their shared protocol library. Read the [architecture overview](docs/architecture/README.md) and
+relevant [ADRs](docs/architecture/decisions/README.md) before changing a component.
+Also read [Marshall guidance](marshall/AGENTS.md) or [Lilly guidance](lilly/AGENTS.md)
+for the component being changed.
+
+## Architecture maintenance
+
+- Assess architecture impact for **every change**, before implementation and
+  again against the final diff. A brief “no architecture impact” explanation
+  suffices for changes that preserve existing decisions and contracts.
+- Use the [architecture-review skill](.agents/skills/architecture-review/SKILL.md)
+  for changes to domain boundaries, APIs/protocols, persistence, authorization,
+  isolation, capacity, recovery, or significant dependencies, and at milestone
+  completion. Record substantive reviews in `docs/architecture/reviews/`.
+- Use the [adr-maintenance skill](.agents/skills/adr-maintenance/SKILL.md) to update
+  affected decisions in the same change. Update the overview and index when
+  their descriptions or statuses change.
+- Distinguish an accepted decision from its implementation. Link actual
+  code/configuration/tests as evidence for `partial` or `implemented`; dependency
+  installation alone does not establish that an architectural capability works.
+- Reconcile discrepancies explicitly: fix code that violates the decision, or
+  propose a replacement decision with its rationale. Do not silently rewrite
+  accepted decisions to match accidental behavior.
+- Preserve accepted rationale. Corrections, evidence and implementation status
+  updates can edit an ADR; material changes require a new ADR with reciprocal
+  supersession links. Use authorization already provided by the task or plan;
+  leave unresolved new decisions proposed without stopping independent work.
+- Summaries and PR descriptions state architecture impact, affected ADR IDs,
+  validation performed, and any remaining gaps. Cosmetic changes do not need an
+  empty ADR or review report.
+
+## Mandatory HLDD maintenance
+
+- Use [hldd-maintenance](.agents/skills/hldd-maintenance/SKILL.md) for every change
+  affecting documented behavior, configuration, protocols, architecture,
+  operations or verification. Update `/hldd` in the same change; otherwise record
+  a specific reviewed no-impact rationale. This is mandatory, not optional advice.
+- Keep `/hldd` as contents and `/hldd/SECTION` as one section per page. The index
+  must not preload chapter bodies; navigation must remove previous diagram hooks.
+- Maintain visual Ash domain/resource ownership and deployment topology, with
+  concise responsibility, interaction, authority and failure-boundary explanations.
+  Run `elixir scripts/hldd_views.exs --check`; the Nix `hldd` gate checks evaluated
+  placement. New domains, resources, hosts and services must enter these views.
+- Maintain user-facing scenario coverage and explicit security boundaries through
+  identity, authorization, transport, execution fencing, isolation, storage and
+  recovery. Document sensitive operations, expected refusals and untested gaps.
+- Prefer NixOS machine integration tests and property-based tests above other
+  evidence. Distinguish test presence from recorded passing execution and explain
+  missing preferred coverage. Unit tests cannot establish native isolation.
+- Run `elixir scripts/check_hldd.exs`, generated-reference checks and the Nix
+  `hldd` check. Precommit/prek reject stale review receipts; never refresh receipts
+  without reviewing the source and corresponding handbook/scenario changes.
+
+## Verification and implementation
+
+- Elixir diagnostic events MUST go through each application's reviewed Events
+  catalog (`Marshall.Events`, `Lilly.Events`, `Audi.Events`, `Brady.Events`,
+  `Ziggy.Events`, `Porsche.Events`): add a `defevent` entry first, then emit
+  with catalogued metadata keys only. Never log credentials, authentication
+  tokens, terminal bytes, command arguments or payloads; the catalogs have no
+  string metadata type on purpose. Outcome events follow the outer transaction
+  commit. The `logging.check` precommit gate enforces this structurally, and the
+  per-application prek commit hooks enforce it on changed Elixir files; see
+  the [fleet logging review](docs/architecture/reviews/2026-09-19-structured-logging-fleet.md).
+- Use types in every programming language, for production code, scripts and
+  tests. Use the language's native type system, annotations or typespecs; define
+  explicit input/output types at interfaces and structured types for domain data.
+  Use inference where it preserves precise types. Validate external data before
+  treating it as typed, and avoid unrestricted escape hatches such as `Any` or
+  unchecked casts. For languages without static typing, use the available schema,
+  option types and runtime validation to make contracts explicit. Run the relevant
+  type checker when available; do not claim typing is verified from syntax alone.
+- Python targets Python 3.13 and is gated by the pinned Rust toolchain in
+  `pyproject.toml`: ruff format and ruff check (including required annotations)
+  and ty type checking. Run all three with `prek run --all-files` inside
+  `devenv shell`; the hooks install automatically and CI enforces the same gate
+  as the `python-static` check. Machine-test driver fragments under
+  `nix/tests/machines` are formatted, linted and annotation-checked standalone;
+  their type checking happens on the Nix-composed driver inside the NixOS test
+  framework. Narrow parsed JSON through `object`-typed boundaries or TypedDict
+  validators (`nix/modules/backups/schema.py` is the pattern), and document any
+  runtime-only import with a targeted `ty: ignore` naming its source.
+- Many sessions share this repository through `git worktree`, and the stash is
+  shared by all of them. Do not use `git stash`: a failed `stash push` followed
+  by `stash pop` applies another session's work. To compare against a baseline,
+  use a separate detached worktree (`git worktree add --detach <dir> <rev>`) or
+  copy files aside instead.
+- Committed merge-conflict markers are refused by `elixir scripts/check_conflict_markers.exs`,
+  which runs as a prek hook at commit and merge-commit time (merge commits skip
+  ordinary pre-commit hooks) and as the `conflict-markers` Nix check. Resolve
+  every conflict before committing a merge; never commit with hooks bypassed.
+- Run `elixir scripts/check_adrs.exs` from the repository root for architecture
+  changes. From Marshall, use `elixir ../scripts/check_adrs.exs`. The checker
+  validates structure and links, not whether the design is sound or implemented.
+- Enter `devenv shell` for the pinned Elixir/OTP runtime. Run `mix precommit` in
+  each changed project (`marshall/`, `lilly/`, `protocol/`); all enforce the runtime,
+  ADR, compiler, test and Dialyzer gates. For shared governance tooling, run
+  Marshall's suite too because it contains the shared validator regression tests.
+- Shared protocol changes require checks in both consumers as well as the
+  library. Marshall's test-only Lilly dependency exercises the real client
+  against its API; neither production release depends on the other application.
+  Keep `dialyzer --force-check` in both consumer gates: local dependency changes
+  do not necessarily change `mix.lock`, so Dialyxir's quick cache check can miss
+  new or changed protocol modules.
+- Use Ash domains and resources for domain modeling. Follow the accepted ADRs
+  for typespecs, Dialyzer, structured logging, property tests and Ash extensions.
+  Record unmet requirements honestly; do not claim tools are enforced before
+  they run. Keep unrelated existing work intact.
+- Marshall's web presentation follows The Monospace Web (ADR-0161). Use the
+  [monospace-web skill](.agents/skills/monospace-web/SKILL.md) for every
+  template, stylesheet, presentation JavaScript or browser-probe change.
+- Use the `code-contracts` skill for every code change and code review. Follow its
+  contract discovery, writing, and enforcement procedures before submitting commits
+  or pull requests.
+- Read ancestor `CONTRACTS` files and local source notes before edits. See the
+  [contract guide](docs/code-contracts.md) for the pinned tool installation,
+  native-language annotation conventions and discovery limits. All three
+  `mix precommit` gates include `mix contracts.check`; syntax success is not
+  semantic verification.
+
+## exe.dev environment
+
+You are running in an exe.dev VM.
+
+https://exe.dev/docs/proxy.md documents the exe.dev HTTPS proxy.
+Only use documented exe.dev features (https://exe.dev/docs.md). Undocumented
+local endpoints are internal infrastructure—unstable and unsupported.

@@ -1,0 +1,53 @@
+namespace Marshall {
+  entity User = { administrator: Bool, elevated: Bool };
+  entity System;
+  entity ControlPlane;
+  entity Internal;
+  action "admin_read", "admin_accounts", "admin_operate", "admin_configure", "admin_jobs" appliesTo {
+    principal: [User], resource: [ControlPlane], context: {}
+  };
+  entity VM = {
+    owner: User,
+    web_users: Set<User>,
+    viewers: Set<User>,
+    operators: Set<User>,
+    managers: Set<User>,
+    team_admins: Set<User>,
+    team_members: Set<User>
+  };
+  entity Team = {
+    owner: User,
+    admins: Set<User>,
+    members: Set<User>
+  };
+  entity Thread = {
+    owner: User,
+    viewers: Set<User>,
+    operators: Set<User>,
+    managers: Set<User>,
+    team_admins: Set<User>,
+    team_members: Set<User>
+  };
+  entity Integration = {
+    owner: User,
+    managers: Set<User>
+  };
+  action "provision" appliesTo {
+    principal: [User], resource: [ControlPlane], context: {}
+  };
+  action "coordinate" appliesTo {
+    principal: [System], resource: [Internal], context: {}
+  };
+  action "read", "write", "manage" appliesTo {
+    principal: [User], resource: [VM, Thread], context: {}
+  };
+  action "web" appliesTo {
+    principal: [User], resource: [VM], context: {}
+  };
+  action "team_read", "team_manage_members", "team_transfer" appliesTo {
+    principal: [User], resource: [Team], context: {}
+  };
+  action "integration_read", "integration_manage" appliesTo {
+    principal: [User], resource: [Integration], context: {}
+  };
+}

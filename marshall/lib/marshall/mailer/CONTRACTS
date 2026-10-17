@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:security] mailer-verified-relay
+Remote production SMTP MUST use an explicitly configured authenticated relay
+with peer and hostname verification. Only explicit local_relay mode to literal
+127.0.0.1 may omit local authentication and TLS; its managed relay MUST enforce
+authenticated verified TLS upstream. Remote failures MUST NOT fall back to plaintext.

@@ -1,0 +1,18 @@
+@cc [owner:ghuntley,label:capacity] fleet-monitor-independent-budget
+Detailed collection MUST NOT call compute admission or mutate Lilly execution
+state. Inputs, entity counts, subprocess duration and retry storage MUST be
+bounded. Collection/export failure MUST NOT stop guests or authorize capacity.
+
+@cc [owner:ghuntley,label:product] fleet-monitor-measurement-identity
+Counter rates MUST require matching host boot and entity incarnation, increasing
+monotonic time and nondecreasing counters. Missing/reset/stale observations MUST
+remain unknown; zero MUST remain a valid observation. Fleet totals MUST separate
+physical capacity from logical allocations and nested workload consumption.
+
+@cc [owner:ghuntley,label:security] fleet-monitor-safe-host-projection
+Only allowlisted numeric resource and aggregate proxy metrics, bounded infrastructure identities and
+the updater's validated intended/observed revision, phase and failure labels and
+allowlisted backup states, timestamps, durations and counts may
+leave the host. Guest
+processes, command lines, environments, raw machine ID, credential contents and
+arbitrary unit properties MUST NOT enter samples or logs.

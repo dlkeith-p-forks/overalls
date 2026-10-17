@@ -1,0 +1,12 @@
+@cc [owner:ghuntley,label:security] enrico-public-source-only
+Enrico MUST construct remote URLs solely from validated GitHub owner/repository
+labels. Requests MUST NOT select arbitrary hosts, protocols, credentials, shell
+commands or local filesystem paths.
+
+@cc [owner:ghuntley,label:recovery] enrico-last-published-mirror
+Failed or interrupted fetches MUST leave the last successfully published Git
+refs browsable. A refresh attempt MUST have one owner and an idempotent outcome.
+
+@cc [owner:ghuntley,label:capacity] enrico-bounded-reads
+Git reads, result bodies, request bodies, operation time and concurrent refreshes
+MUST be bounded. The production cache MUST have an enforced 100 GiB quota.

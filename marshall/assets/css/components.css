@@ -1,0 +1,397 @@
+/* Shared components: buttons, status labels, panels, fields, key/value lists,
+   dialogs, layout helpers and the utility classes hooks and tests rely on. */
+.console-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1ch;
+  text-decoration: none;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  border: var(--border-thickness) solid var(--text-color);
+  background: var(--background-color);
+  color: var(--text-color);
+  height: calc(var(--line-height) * 2);
+  padding: calc(var(--line-height) / 2 - var(--border-thickness)) calc(1ch - var(--border-thickness));
+  line-height: normal;
+}
+a.console-button {
+  line-height: calc(var(--line-height) * 2 - var(--border-thickness) * 2);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.console-button:hover {
+  background: var(--background-color-alt);
+}
+.console-button.primary {
+  background: var(--text-color);
+  color: var(--background-color);
+}
+.console-button.primary:hover {
+  background: var(--text-color-alt);
+  border-color: var(--text-color-alt);
+}
+.console-button.ghost {
+  border-color: transparent;
+}
+.console-button.ghost:hover {
+  border-color: var(--text-color);
+}
+.console-button.danger {
+  font-weight: var(--font-weight-bold);
+  border-style: double;
+  border-width: calc(var(--border-thickness) * 3);
+  padding-left: calc(1ch - var(--border-thickness) * 3);
+  padding-right: calc(1ch - var(--border-thickness) * 3);
+}
+.console-button:disabled, .console-button[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--text-color-alt);
+  border-color: var(--text-color-alt);
+  background: var(--background-color);
+}
+.console-button.compact {
+  height: var(--line-height);
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-thickness);
+}
+
+/* Status is text: [state]. The brackets are decoration; DOM text stays exact. */
+.status-label {
+  display: inline-block;
+  white-space: nowrap;
+}
+.status-label::before {
+  content: "[";
+}
+.status-label::after {
+  content: "]";
+}
+.status-label[data-state="running"],
+.status-label[data-tone="success"] {
+  font-weight: var(--font-weight-bold);
+}
+.status-label[data-state="failed"],
+.status-label[data-tone="danger"],
+.status-label[data-tone="warning"] {
+  background: var(--text-color);
+  color: var(--background-color);
+  font-weight: var(--font-weight-bold);
+}
+.status-label[data-state="stopped"],
+.status-label[data-state="pending"],
+.status-label[data-tone="muted"] {
+  color: var(--text-color-alt);
+}
+
+.panel {
+  border: var(--border-thickness) solid var(--text-color);
+  padding: calc(var(--line-height) - var(--border-thickness)) calc(2ch - var(--border-thickness));
+  margin: 0 0 var(--line-height);
+  min-width: 0;
+}
+.panel > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0 2ch;
+  margin-bottom: var(--line-height);
+}
+.panel > header h2, .panel > header h3 {
+  margin: 0;
+}
+.panel-body > :last-child,
+.panel > :last-child {
+  margin-bottom: 0;
+}
+.panel.dashed, .empty-state {
+  border-style: dashed;
+}
+.panel.danger {
+  border-style: double;
+  border-width: calc(var(--border-thickness) * 3);
+  padding: calc(var(--line-height) - var(--border-thickness) * 3) calc(2ch - var(--border-thickness) * 3);
+}
+.empty-state {
+  border: var(--border-thickness) dashed var(--text-color-alt);
+  padding: calc(var(--line-height) - var(--border-thickness)) calc(2ch - var(--border-thickness));
+  margin: 0 0 var(--line-height);
+  color: var(--text-color-alt);
+}
+.empty-state h2 {
+  margin-top: 0;
+  color: var(--text-color);
+}
+.empty-state > :last-child {
+  margin-bottom: 0;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0 2ch;
+  margin-bottom: var(--line-height);
+}
+.page-heading h1 {
+  margin: 0 0 var(--line-height);
+}
+.page-heading p {
+  color: var(--text-color-alt);
+  margin: 0 0 var(--line-height);
+}
+.heading-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--line-height) 1ch;
+  margin-bottom: var(--line-height);
+}
+
+/* Form fields */
+.field {
+  margin: 0 0 var(--line-height);
+  min-width: 0;
+}
+.field > label > span.field-label, .field-label {
+  display: block;
+  line-height: var(--line-height);
+}
+.field .select {
+  display: block;
+}
+.field.inline label {
+  display: flex;
+  gap: 1ch;
+  align-items: flex-start;
+  width: auto;
+}
+.field.inline input[type=checkbox] {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+.error {
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+}
+.error::before {
+  content: "! ";
+}
+.hint {
+  color: var(--text-color-alt);
+  margin: 0;
+}
+input.invalid, select.invalid, textarea.invalid {
+  border-style: double;
+  border-width: calc(var(--border-thickness) * 3);
+}
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--line-height) 1ch;
+  align-items: flex-end;
+}
+.field-row > .field {
+  flex: 1 1 20ch;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+.field-row > .console-button, .field-row > button {
+  margin-bottom: 0;
+}
+
+/* Key/value lists */
+dl {
+  margin: 0 0 var(--line-height);
+}
+dl.kv > div {
+  display: grid;
+  grid-template-columns: minmax(12ch, max-content) minmax(0, 1fr);
+  gap: 0 2ch;
+}
+dl.kv dt {
+  color: var(--text-color-alt);
+  font-weight: var(--font-weight-medium);
+}
+dl.kv dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+dl.kv.stacked > div {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Tables sit in the page flow and are never scroll containers. Cells wrap;
+   below 800px every column may wrap, and a table with four or more columns
+   becomes one block per row with optional data-label prefixes. */
+.table-flow, .machine-table {
+  margin: 0 0 var(--line-height);
+}
+.table-flow > table, .machine-table > table {
+  margin-bottom: 0;
+  table-layout: auto;
+}
+.table-flow td, .machine-table td {
+  overflow-wrap: anywhere;
+}
+.machine-table th.width-min {
+  white-space: normal;
+}
+@media (max-width: 800px) {
+  .table-flow th.width-min,
+  .table-flow td.nowrap,
+  .table-flow .status-label {
+    white-space: normal;
+  }
+  .table-flow table:has(thead th:nth-child(4)) thead,
+  .machine-table thead {
+    display: none;
+  }
+  .table-flow table:has(thead th:nth-child(4)),
+  .table-flow table:has(thead th:nth-child(4)) tbody,
+  .table-flow table:has(thead th:nth-child(4)) tr,
+  .table-flow table:has(thead th:nth-child(4)) td,
+  .machine-table table,
+  .machine-table tbody,
+  .machine-table tr,
+  .machine-table td {
+    display: block;
+    width: 100%;
+    border: 0;
+  }
+  .table-flow table:has(thead th:nth-child(4)),
+  .machine-table table {
+    border-top: var(--border-thickness) solid var(--text-color);
+  }
+  .table-flow table:has(thead th:nth-child(4)) tr,
+  .machine-table tr {
+    border-bottom: var(--border-thickness) solid var(--text-color);
+    padding: calc(var(--line-height) - var(--border-thickness)) 0 var(--line-height);
+  }
+  .table-flow table:has(thead th:nth-child(4)) td,
+  .machine-table td {
+    padding: 0;
+    white-space: normal;
+  }
+  .table-flow td[data-label]::before,
+  .machine-table td[data-label]::before {
+    content: attr(data-label);
+    display: inline-block;
+    width: 11ch;
+    color: var(--text-color-alt);
+  }
+}
+table .console-button, a.console-button.compact {
+  height: var(--line-height);
+  line-height: var(--line-height);
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-thickness);
+}
+td > .console-button + .console-button {
+  margin-left: 1ch;
+}
+td pre, th pre {
+  margin: 0;
+}
+td.break code {
+  overflow-wrap: anywhere;
+}
+
+/* Dialogs */
+dialog {
+  border: var(--border-thickness) solid var(--text-color);
+  background: var(--background-color);
+  color: var(--text-color);
+  width: calc(min(60ch, 100% - 4ch));
+  max-width: calc(100% - 4ch);
+  margin: auto;
+  padding: calc(var(--line-height) - var(--border-thickness)) calc(2ch - var(--border-thickness));
+}
+dialog::backdrop {
+  /* ::backdrop cannot read page custom properties in every engine; this is the
+     one literal outside tokens.css and conveys no information. */
+  background: rgba(0, 0, 0, .6);
+}
+dialog h2 {
+  margin-top: 0;
+}
+dialog > :last-child, dialog form > :last-child {
+  margin-bottom: 0;
+}
+dialog .dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--line-height) 1ch;
+  justify-content: flex-end;
+  margin-top: var(--line-height);
+}
+
+/* Layout helpers */
+.stack > :last-child {
+  margin-bottom: 0;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0 1ch;
+}
+.row.between {
+  justify-content: space-between;
+}
+.row.actions {
+  gap: var(--line-height) 1ch;
+  margin-bottom: var(--line-height);
+}
+.cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(32ch, 1fr));
+  gap: var(--line-height) 2ch;
+  margin-bottom: var(--line-height);
+}
+.cols > .panel {
+  margin-bottom: 0;
+}
+.muted {
+  color: var(--text-color-alt);
+}
+.inverse {
+  background: var(--text-color);
+  color: var(--background-color);
+}
+.glyph {
+  display: inline;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.break {
+  overflow-wrap: anywhere;
+}
+.hidden {
+  display: none !important;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+[hidden] {
+  display: none;
+}

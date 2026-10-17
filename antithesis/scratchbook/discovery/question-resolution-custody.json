@@ -1,0 +1,119 @@
+{
+  "updated": "2026-10-13",
+  "scope": "Repository source and current tests only; no hosted run or retired harness evidence",
+  "external_references": [],
+  "entries": [
+    {
+      "slug": "backup-interrupted-cleanup-owned-only",
+      "questions": [
+        {
+          "old": "Can hosted storage observation stay independent through pool inspection faults?",
+          "status": "partial",
+          "answer": "Host cleanup reads real ZFS/findmnt state and retains its journal on failed inspection. The generated proof test covers unavailable inspection, and the NixOS backup test covers real interrupted cleanup. A hosted split-view pool fault with a separate read-only observer is not demonstrated.",
+          "exact_probe": "In a disposable NixOS/ZFS VM, fault only the cleanup unit's zfs/findmnt read, independently enumerate GUIDs/local properties and journal bytes, then remove the fault and verify owned-only retry.",
+          "proposed_catalog_open_questions": ["Can hosted storage observation stay independent through pool inspection faults? `(partial: native source/proof histories exist; hosted split-view fault unproven)`"]
+        }
+      ]
+    },
+    {
+      "slug": "backup-retained-manifest-closure",
+      "questions": [
+        {
+          "old": "Can a real fixture reuse one Restic component snapshot ID across two retained manifests?",
+          "status": "resolved",
+          "answer": "Yes for a constructed real Restic repository fixture: backup-operators.py captures a component once and publishes multiple real manifests referring to it, then verifies retained union after prune. Separate coordinator runs have distinct run tags and are not shown to reuse a component ID.",
+          "proposed_catalog_open_questions": []
+        },
+        {
+          "old": "Which isolated guest, database, and host sentinels can be restored safely?",
+          "status": "partial",
+          "answer": "The backup NixOS machine restores a private host sentinel and PostgreSQL into an isolated database; real Restic operator tests verify byte-exact files in fresh private targets. A guest disk sentinel needs a disposable Lilly/ZFS guest fixture.",
+          "exact_probe": "Write deterministic bytes to a disposable guest disk before capture; restore into an isolated target and compare its hash without attaching it to a live guest.",
+          "proposed_catalog_open_questions": ["Which disposable guest-disk sentinel can be restored independently? `(partial: isolated host/database sentinels already exist)`"]
+        },
+        {
+          "old": "What policy, if any, defines cross-component consistency or RPO? `(partial: sequential capture is confirmed; no global point-in-time or RPO promise was found)`",
+          "status": "resolved",
+          "answer": "ADR-0070 explicitly states nominal RPO of thirty minutes plus jitter and capture runtime, with older last-good points possible during outages. It explicitly states independent components have different timestamps and require quarantine reconciliation; there is no global point-in-time guarantee.",
+          "proposed_catalog_open_questions": [],
+          "proposed_catalog_prose": "Describe nominal RPO only with the outage qualification. Keep the property scoped to retained graph/content closure, not cross-component transactional consistency."
+        }
+      ]
+    },
+    {
+      "slug": "backup-time-skew-never-activates-historical-authority",
+      "questions": [
+        {
+          "old": "Is there a repository-provided historical activation/claim command, or can this run only prove isolated restore and a separately staged drill?",
+          "status": "resolved",
+          "answer": "The backup CLI has list/inspect/restore and no activation/claim operation. Restore requires an empty private target; the NixOS test restores an isolated database and launches an operator probe. ADR-0070 requires fencing/reconciliation before serving traffic; ADR-0158 leaves historical UID repair unsupported.",
+          "proposed_catalog_open_questions": [],
+          "proposed_catalog_prose": "State the directly observable safety boundary as private restore with no automatic historical authority activation. Treat a fenced mixed-time activation/reconciliation drill as a separate unimplemented scenario, not proof from this CLI."
+        }
+      ]
+    },
+    {
+      "slug": "request-recorder-capacity-does-not-admit-phantom-work",
+      "questions": [
+        {
+          "old": "Is a full 4096-worker hosted run feasible without unrelated OS limits?",
+          "status": "partial",
+          "answer": "Both BEAM producer and Rust state cap pending admissions at 4096; a Rust unit test checks the exact boundary. The native VM fixture has a real BEAM producer but no 4096-worker memory/FD measurement or hosted budget.",
+          "exact_probe": "Keep 4096 BEAM owners alive in the native two-unit fixture, measure memory/FD headroom, independently witness effects, and compare 4097th :unrecorded result to durable IDs and gap marker; repeat hosted only after resource budget is known.",
+          "proposed_catalog_open_questions": ["Is a full 4096-worker hosted run feasible without unrelated OS limits? `(partial: exact Rust bound tested; BEAM/hosted resource envelope unmeasured)`"]
+        },
+        {
+          "old": "Which fixture retains systemd producer identity while faulting recorder?",
+          "status": "resolved_for_native_partial_for_hosted",
+          "answer": "nix/tests/machines/otel-request-recorder runs separate sdk-producer.service and overalls-request-sdk.service with real UID/cgroup/process attribution and independent restarts. No equivalent hosted topology is established.",
+          "exact_probe": "In the proposed hosted topology, check real peer UID, unit cgroup and start identity via authenticated RPC before independently killing either service.",
+          "proposed_catalog_open_questions": ["Can hosted deployment preserve the native fixture's exact systemd producer identity? `(partial: native two-unit fixture exists; hosted equivalent unproven)`"]
+        }
+      ]
+    },
+    {
+      "slug": "request-recorder-restart-conserves-custody",
+      "questions": [
+        {
+          "old": "Which hosted deployment preserves exact systemd producer authentication while faulting parties independently?",
+          "status": "partial",
+          "answer": "The NixOS machine fixture exercises real separate units, recorder/producer/VM death, checkpoint reopen and a source-built commit-before-reply cut. Its authentication semantics cannot be inferred for a hosted container topology.",
+          "exact_probe": "Run authenticated producer RPC under the intended hosted unit/cgroup, independently fault recorder and producer, and verify boot/start identity plus the same durable checkpoint across recovery.",
+          "proposed_catalog_open_questions": ["Which hosted topology preserves exact systemd producer authentication while faulting parties independently? `(partial: native NixOS fixture passes this shape; hosted equivalent unproven)`"]
+        }
+      ]
+    },
+    {
+      "slug": "trace-archive-ack-loss-preserves-replay",
+      "questions": [
+        {
+          "old": "Which hosted fault reaches actual SQLite commit uncertainty beyond process restart?",
+          "status": "partial",
+          "answer": "SQLite WAL FULL commit precedes intake ACK. Current property/native tests cover duplicate intake, SIGKILL/reopen, delivery ACK/replay and poison, but no demonstrated torn or power-loss commit fault.",
+          "exact_probe": "Use a supported disposable block-backed VM power cut at SQLite commit and reopen, or use a source-built post-commit/pre-ACK cut only for ACK uncertainty; label those scopes separately.",
+          "proposed_catalog_open_questions": ["Which hosted fault reaches actual SQLite commit uncertainty beyond process restart? `(partial: SIGKILL/reopen and ACK replay covered; media fault unproven)`"]
+        }
+      ]
+    },
+    {
+      "slug": "trace-spool-physical-quota-with-retained-custody",
+      "questions": [
+        {
+          "old": "What exact transient SQLite/WAL footprint envelope applies?",
+          "status": "partial",
+          "answer": "The code uses body+512 logical accounting, a 2 MiB reserve, max_page_count on the main DB, 64-page WAL auto-checkpoint, bounded replay/deletion chunks. One 8 MiB native quota stress test measured less than 12 MiB physical footprint; this is not a general physical cap.",
+          "exact_probe": "Measure allocated DB/WAL/journal blocks through minimum/default quota ingress, replay, expiry, checkpoint and restart; separate observed maximum from any proved bound.",
+          "proposed_catalog_open_questions": ["What exact transient SQLite/WAL footprint envelope applies? `(partial: one 8 MiB native run measured below 12 MiB; no general bound)`"],
+          "proposed_catalog_prose": "Do not claim that physical bytes always fit quotaBytes; the Nix option calls it a logical archive/SQLite budget. Keep accepted-custody/refusal invariant and measured footprint as separate evidence."
+        },
+        {
+          "old": "Can hosted storage enforce recoverable real ENOSPC?",
+          "status": "partial",
+          "answer": "The spool poisons on SQLite write error and logical saturation has real-ingress native coverage. No trace-spool hosted real-ENOSPC test or reopen-after-space-restoration evidence was found.",
+          "exact_probe": "Place a disposable spool StateDirectory on a small quota-limited filesystem, fill via authenticated ingress, restore space, reopen, and compare all pre-ENOSPC accepted IDs/bytes. Verify hosted storage can reproduce this before transferring the claim.",
+          "proposed_catalog_open_questions": ["Can hosted storage enforce recoverable real ENOSPC? `(partial: no hosted trace-spool ENOSPC fixture found)`"]
+        }
+      ]
+    }
+  ]
+}

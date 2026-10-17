@@ -1,0 +1,13 @@
+@cc [owner:ghuntley,label:security;recovery] namespace-sweep-privilege-scope
+The helper MUST run in PID 1's mount namespace and requires CAP_SYS_ADMIN in
+the initial user namespace; it is never setuid. Only ordinary unmounts of the
+exact ZFS root at the canonical path are allowed; aliases, nested mounts,
+unreadable inventories, live users and detected races fail closed. It never
+forces, lazily detaches, kills a process or exposes path diagnostics: stdout
+carries exactly one fixed outcome line consumed by Lilly.
+
+@cc [owner:ghuntley,label:verification] namespace-unmount-hegel-properties
+Hegel properties MUST cover the dataset/path validators, octal mount-field
+decoding, mountinfo classification (exact/alias/descendant/duplicate/malformed)
+and sweep plan dedup/caps. Namespace-entering and real unmount authority remain
+with the disposable NixOS storage fixtures that drive production cleanup paths.

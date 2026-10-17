@@ -1,0 +1,15 @@
+{
+  "slug": "healthy-revision-requires-live-candidate",
+  "evidence_file": "antithesis/scratchbook/properties/healthy-revision-requires-live-candidate.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Can a native fixture vary status-socket documents through each real service health implementation? If only a parser shim can do so, split parser refusal evidence from the full promotion run.",
+      "answer": "Native updater promotion and per-role parser/socket tests exist separately. No combined real Ziggy/Enrico/Audi/Porsche status fault matrix through a source-built switch was found.",
+      "status": "partial",
+      "proposed_catalog_edit": "Tag the question partial; keep parser refusal separate from native promotion until live role socket variants run."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

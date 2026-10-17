@@ -1,0 +1,51 @@
+let
+  prometheus = { type = "prometheus"; uid = "overalls-prometheus"; };
+  timeseries = id: title: y: expr: unit: {
+    inherit id title;
+    type = "timeseries"; datasource = prometheus;
+    gridPos = { h = 8; w = 12; x = if id - 2 * (builtins.div id 2) == 0 then 12 else 0; inherit y; };
+    targets = [{ refId = "A"; inherit expr; }];
+    fieldConfig.defaults = { inherit unit; };
+  };
+  table = id: title: y: expr: {
+    inherit id title;
+    type = "table"; datasource = prometheus;
+    gridPos = { h = 10; w = 24; x = 0; inherit y; };
+    targets = [{ refId = "A"; inherit expr; instant = true; format = "table"; }];
+  };
+in {
+  uid = "overalls-fleet-operations";
+  title = "Overalls fleet operations";
+  tags = [ "overalls" "fleet" "operations" ];
+  schemaVersion = 41; version = 1; refresh = "30s";
+  time = { from = "now-6h"; to = "now"; };
+  description = "Host, pool, guest and infrastructure diagnostics. Missing or invalid source data stays unavailable. Infrastructure alerts are operational signals, separate from seven-day objectives.";
+  panels = [
+    (table 1 "Fleet measurements · numeric observations with bounded dimensions" 0
+      ''{__name__=~"overalls_fleet_gauge|overalls_fleet_rate"} and on(host_name) (overalls_fleet_collection_valid == 1) and on(host_name) (time() - overalls_fleet_sampled_at_seconds < 45)'')
+    (table 2 "Backup and updater state · unknown and failures remain visible" 10
+      ''{__name__=~"overalls_fleet_.*state_info|overalls_fleet_.*valid|overalls_fleet_.*sample_time.*"}'')
+    (timeseries 3 "Logging queue bytes" 20 "overalls_logging_queue_bytes" "bytes")
+    (timeseries 4 "Oldest pending log chunk" 20 "overalls_logging_oldest_chunk_seconds" "s")
+    (timeseries 5 "Log records dropped by destination" 28 "sum by(instance,output) (increase(overalls_logging_output_dropped_records_total[5m]))" "short")
+    (timeseries 6 "Logging delivery retries" 28 "sum by(instance,output) (increase(overalls_logging_output_retries_total[5m]))" "short")
+    (table 7 "Logging source validity and output budgets" 36
+      ''{__name__=~"overalls_logging_.*valid|overalls_logging_.*budget_bytes|overalls_logging_shard_cursor_present"}'')
+    (table 8 "Current infrastructure alerts" 46
+        ''ALERTS{alertname=~"OverallsLogging.*|OverallsFleet.*|OverallsBackup.*|OverallsUpdate.*|OverallsTelemetry.*|OverallsTrace.*|OverallsMetrics.*|OverallsLogStore.*|OverallsSDK.*"}'')
+    (table 9 "Trace custody · source validity, backlog and retained storage" 56
+      ''{__name__=~"overalls_trace_spool_.*"}'')
+    (table 10 "SDK producer health · fresh local counters by host and unit" 66
+      ''{__name__=~"overalls_gauge_trace_available|overalls_gauge_trace_pending|overalls_gauge_trace_queue_dropped|overalls_gauge_trace_export_failed"} and on(host_name,unit) (time() - overalls_gauge_trace_observed_at_seconds >= 0) and on(host_name,unit) (time() - overalls_gauge_trace_observed_at_seconds < 90)'')
+    (timeseries 11 "SDK health observation age · stale remains visible" 76
+      "time() - overalls_gauge_trace_observed_at_seconds" "s")
+    (timeseries 12 "SDK queue refusals" 76
+      ''sum by(host_name,service,unit) (increase(overalls_gauge_trace_queue_dropped[5m]))'' "short")
+    (timeseries 13 "SDK export failures" 84
+      ''sum by(host_name,service,unit) (increase(overalls_gauge_trace_export_failed[5m]))'' "short")
+    (timeseries 14 "BEAM memory · fresh runtime observations" 84
+      ''overalls_gauge_beam_memory_bytes and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds >= 0) and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds < 90)'' "bytes")
+    (timeseries 15 "BEAM run queue · fresh runtime observations" 92
+      ''overalls_gauge_beam_run_queue and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds >= 0) and on(host_name,unit) (time() - overalls_gauge_runtime_observed_at_seconds < 90)'' "short")
+  ];
+}

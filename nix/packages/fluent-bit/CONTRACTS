@@ -1,0 +1,24 @@
+@cc [owner:ghuntley,label:recovery] fluent-bit-pinned-delivery
+Fluent Bit MUST derive from the pinned host package input. Delivery fixes MUST
+retain explicit rejection accounting and MUST NOT acknowledge a journal cursor
+before its buffered records have been accepted by the input engine.
+
+@cc [owner:ghuntley,label:security] fluent-bit-explicit-aws-identity
+Managed collectors MUST select exactly their declared AWS identity provider.
+File credentials MUST NOT fall back to EC2, container or ambient identities;
+EC2 credentials MUST require IMDSv2. Provider response bodies MUST NOT enter
+managed collector diagnostics.
+
+@cc [owner:ghuntley,label:recovery;security] fluent-bit-backlog-route-identity
+Startup backlog discovery MUST assign persisted chunks to their recorded output
+identities before applying per-output queue limits. Restart MUST NOT discard
+conditional routes or substitute a different output solely by numeric position.
+
+@cc [owner:ghuntley,label:security] cloudwatch-verified-tls
+CloudWatch MUST advertise TLS support and propagate configured hostname verification
+to its separately allocated transport and credential TLS contexts. Managed presets
+MUST enable certificate and hostname verification.
+
+@cc [owner:ghuntley,label:recovery] native-metric-storage
+Managed metric emitters MUST use filesystem chunks, with the same per-destination
+queue bounds as logs. In-progress aggregation is resettable diagnostic state.

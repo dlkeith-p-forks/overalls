@@ -1,0 +1,19 @@
+[project]
+name = "overalls-antithesis-workload"
+version = "0.1.0"
+requires-python = "==3.13.*"
+dependencies = ["antithesis==0.4.0", "psycopg[binary]==3.2.10", "websockets==17.2"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "ANN", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.ty.environment]
+python-version = "3.13"
+
+[tool.ty.src]
+include = ["**/*.py"]

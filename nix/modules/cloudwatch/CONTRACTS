@@ -1,0 +1,4 @@
+@cc [owner:ghuntley,label:security] cloudwatch-management-boundary
+AWS resource management MUST be explicit and independent of log delivery.
+Reconciliation MUST preserve unrelated tags and MUST NOT delete groups, streams
+or alarms. Failure messages MUST NOT contain credentials or provider bodies.

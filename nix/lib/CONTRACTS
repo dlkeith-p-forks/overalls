@@ -1,0 +1,4 @@
+@cc [owner:ghuntley,label:security] registry-public-policy
+Registry normalization MUST accept only public Ed25519 keys and explicit permissions.
+Host login and recovery selection MUST be independent. Document recipients MUST
+include only selected hosts and all recovery-enabled users.

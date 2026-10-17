@@ -1,0 +1,7 @@
+@cc [owner:ghuntley,label:verification] protocol-tests-untrusted-boundaries
+Protocol tests MUST exercise malformed and boundary-sized peer values as well as
+valid round trips. Unsupported versions, unknown fields and integer/collection
+limits MUST be tested without accepting arbitrary atoms. Codec/value tests MUST
+remain free of host I/O. ADR-0142 transport tests MAY use owned nonprivileged
+loopback sockets and disposable TLS fixtures, but MUST NOT perform live fleet,
+database or privileged host operations or claim physical isolation from them.

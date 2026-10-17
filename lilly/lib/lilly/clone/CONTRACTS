@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:security;recovery] clone-effects-authenticated-and-owned
+Clone effects MUST originate in authenticated current host control, validate the
+closed command schema and match local placement/epoch ownership. Snapshot and
+import journals MUST precede native effects. Neither transfer nor adoption grants
+execution authority. Cleanup MUST never delete the source disk.

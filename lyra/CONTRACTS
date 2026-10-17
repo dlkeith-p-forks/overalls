@@ -1,0 +1,38 @@
+@cc [owner:ghuntley,label:security] lyra-opaque-ssh-payload
+Lyra MUST NOT inspect, format, persist or log SSH command arguments, environment
+values, stdin, stdout, stderr or relayed bytes. Proxy stdout MUST contain only
+the SSH relay stream. Child process diagnostics MUST never be copied into logs.
+
+@cc [owner:ghuntley,label:security] lyra-closed-diagnostics
+Persistent diagnostics MUST use only reviewed event names and fixed or numeric
+fields. Arbitrary error text, URLs, hostnames, labels and process arguments MUST
+NOT enter diagnostic files or update status.
+
+@cc [owner:ghuntley,label:security] lyra-current-gateway-key
+Every outer Audi SSH connection MUST pin the key returned for its exact current
+route by verified HTTPS. Lookup failure MUST prevent connecting; persistent or
+automatically accepted host keys MUST NOT substitute for the current key.
+
+@cc [owner:ghuntley,label:security;recovery] lyra-agent-fenced-execution
+The guest agent executor MUST use only the private verified TLS endpoint, report
+started before any tool side effect, bound tool output and duration, and stop
+executing when its lease or result RPC fails. It MUST NOT persist or log command
+arguments, response bodies, transient tool output or credentials. Authorized
+managed skill files and bounded installation receipts containing only request
+digests, identifiers, content digests, paths and closed outcomes MAY be persisted
+under the managed skill root. Those artifacts MUST NOT enter diagnostics.
+
+@cc [owner:ghuntley,label:security] lyra-workspace-closed-events
+overalls-workspaced MUST emit only closed guest_workspace event names. Repository
+URLs, owners, names, refs, nonces and git stdout/stderr MUST NOT enter the
+journal or any other diagnostic. Bounded advertised-ref output MAY be parsed
+inside the guest; it MUST never enter diagnostics. Other git output is discarded.
+
+@cc [owner:ghuntley,label:security;recovery] lyra-guest-telemetry-best-effort
+Guest tool telemetry MUST be emitted only after the terminal transition is
+acknowledged, use fixed metric and span names without command data or user labels,
+and fail independently of guest tool execution. Diagnostic network I/O MUST run
+on one bounded observer worker; executor admission MUST remain nonblocking even
+when the receiver is unavailable or the fixed queue is full. Trace identifiers may be derived
+from a one-way hash of the command ID, but the ID itself MUST NOT enter OTLP.
+Guest telemetry MUST remain diagnostic and MUST NOT determine outer fleet SLO compliance.

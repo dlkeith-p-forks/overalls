@@ -1,0 +1,21 @@
+# revoked-ssh-key-refuses-fresh-guest-login
+
+**Type / priority:** Safety, P0. **Primary SDK assertion:** `Always` **"Revoked SSH key cannot open a fresh guest login"**; refusal must be checked for each completed fresh signed attempt after the removal commit. A distinct `Sometimes` message should witness a successful login with a surviving key.
+
+**Property:** After the owner removes an SSH public key, possession of its private key cannot open a new Audi-to-guest login, even if a preexisting gateway session or known_hosts material remains. The revoked attempt must produce neither a guest command marker nor a new guest-login row for that key. This targets SSH's user-proof path, not broad current-membership or same-email identity behavior.
+
+**Source trail:** `marshall/lib/marshall/ssh/CONTRACTS:7-10` requires removal to revoke subsequent authorization including existing sessions. `marshall/lib/marshall/ssh/key_actions.ex:86-98` archives the owned key on removal. `audi/lib/audi/ssh/proof.ex:36-85` keeps key probes separate from signature proof; `audi/lib/audi/ssh/control_backend.ex:14-29` asks Marshall for current SSH authority. `marshall/lib/marshall/ssh/guest_access.ex:169-215,317-323` requires an exact registered key and current Audi session, and `:login` records the guest-reported row at `:104-134`. `nix/tests/machines/fleet/scenarios/user-ssh-journey.py:533-556` demonstrates a real strict SSH path; the driver source alone is not a passing assertion here.
+
+**Real actions and oracle:** Register two synthetic keys for one current writer via the public key action/browser, establish a strict SSH baseline, then remove key A through that same public route. Attempt a new signed SSH connection with A and a marker-writing command while reusing any retained outer SSH session where possible. Query guest filesystem for absence of the marker and current `ssh_guest_logins` rows for key A; compare counts after the removal commit, allowing pre-commit rows. Key B must still open a fresh guest shell and write its independent marker. Record the signed-key fingerprint and remote UID privately; do not infer refusal from a connection timeout or public key probe alone. Guest root can forge its reported login row, so the no-command effect and trusted Audi connectivity audit are separate witnesses.
+
+**Fault/interesting values:** Race removal with an already-open gateway session and a new inner guest-auth request; interrupt Marshall after key archive commit but before client reply; restart Audi and attempt again. Distinguish accepted in-flight work before the removal commit from a genuinely fresh post-commit login. Re-registering the same public key must not revive the old session, but that can be a separate variation after this core refusal is reachable.
+
+**Environment proof:** Real refusal can be tested at Audi/Marshall without a guest, but the no-guest-command claim needs TCG `guest-journey` or current native KVM. The guest path requires exact VM/host/placement/epoch/generation/session and boot UUID evidence; CID 2 is only the observed host peer for vsock, never a surrogate guest identity. This property makes no Firecracker isolation claim.
+
+**Questions / investigation log:** How to retain a live outer SSH session across key removal while forcing a genuinely new inner authentication is a fixture design question; a second new connection is the minimum case. Examined the key action, key proof, current guest decision and source test path above. No composed current execution or confirmed defect found; report a race as a hypothesis until the commit order and guest effect reproduce it.
+
+## Evaluation and proof boundary
+
+**Proof boundary:** Draft selection: `integrated-zfs-guest`. proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt; independent witness: current authority and boot tuple plus independent guest editor/SSH/file/PTY effect. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.

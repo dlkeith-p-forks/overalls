@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:build] source-release-inputs
+Application releases MUST compile maintained source using the pinned runtime,
+hash-verified dependency sources and sandboxed native builds. Working-tree deps,
+_build, credentials and generated frontend bundles MUST NOT enter release inputs.
+
+@cc [owner:ghuntley,label:security] source-release-secrets
+Building and checking a release MUST require no production credentials. Runtime
+configuration MUST remain deferred until application startup and packaged release
+cookies MUST NOT be usable shared fleet secrets.
+
+@cc [owner:ghuntley,label:build] native-and-assets-offline
+Cedar MUST compile from its locked Rust sources. Dependency compilation and
+asset generation MUST use prefetched inputs and MUST NOT download binaries or
+dependencies during the ordinary application build.

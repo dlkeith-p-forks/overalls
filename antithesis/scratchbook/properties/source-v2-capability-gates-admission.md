@@ -1,0 +1,24 @@
+# source-v2-capability-gates-admission
+
+P0; high confidence; safety. Planned `Always` message: **"Workspace source admission requires matching image v4 source-v2 capability"**. A sourced VM admission or first launch may allocate/effect only when its catalog image ID equals a validated content-bound v4 manifest explicitly declaring workspace source protocol 2. Missing, obsolete, malformed or mismatched capability must refuse before new address/host allocation and host disk preparation. The [fresh assertion scan](../existing-assertions.md) marks the SDK assertion **missing**. `Always` checks each definite admission/launch result against independently sampled durable rows and host effects.
+
+Evidence: `protocol/lib/overalls_protocol/image_manifest.ex:1-76,101-105` computes v4 identity from artifact descriptors and capability, allowing only nil or source2. `protocol/lib/overalls_protocol/workspace_source.ex:1-7,117-160` uses a separate closed source-v2 document. `marshall/lib/marshall/compute/admission.ex:281-298` checks image ID/capability before placement allocation; `lilly/lib/lilly/vm/driver.ex:339-365` checks again before disk preparation/launch intent. `nix/packages/guest/default.nix:230-232` advertises capability conditionally. Package presence or a stale image row is not a capability. These contracts are claims to test.
+
+Workload and independent oracle: register controlled image manifests that differ in exactly one declared capability/artifact byte, issue sourced/unsourced admissions, and compare HTTP result with PostgreSQL VM/address/placement/reservation rows plus direct host dataset/launch markers. For valid source2, require a real committed allocation and later delivery attempt; if a call times out, reconcile by idempotency key before declaring absence. SUT `Reachable` **"Workspace source-v2 admitted matching image-v4 capability"** marks the meaningful supported branch, while a refusal marker should identify stale capability without logging the source URL.
+
+Value menu: source absent/present; manifest v3/v4/v5; source capability absent/null/1/2/3/wrong type; catalog ID matching/mismatched; artifact hash same/changed; retry same/different idempotency key; image enabled/disabled. Hosted real Marshall/PG and a scoped executor can establish admission; real disk/guest effects need TCG/native storage and guest. Valid and nil-capability images can use normal registration; obsolete or corrupt persisted rows require a disposable catalog-row mutation because registration correctly refuses them.
+
+### Investigation Log
+
+#### Which image-registration path safely seeds malformed or obsolete catalog manifests for end-to-end refusal?
+
+- Examined: `marshall/test/marshall/compute/workspace_source_admission_test.exs:98-151`, `lilly/test/vm/image_source_capability_test.exs:8-45`, `marshall/lib/marshall/compute/admission.ex:281-298`, and `lilly/lib/lilly/vm/driver.ex:339-365`.
+- Found: Marshall's test registers a valid image with nil source capability through `Images.register`, then mutates a disposable persisted `compute_images.manifest` row to simulate obsolete versions, wrong capability and image identity drift. It checks sourced admission refusal and unchanged allocation counts. Lilly's driver test checks malformed/obsolete manifests before host files are created. Registration cannot be expected to accept malformed rows solely for a refusal probe.
+- Not found: a legitimate production registration path that stores malformed catalog manifests; that absence is the desired validation boundary.
+- Conclusion: resolved. For hosted end-to-end refusal, corrupt only an owned disposable row through a typed test setup, query its content-bound ID, and then call normal admission. Label this as persisted-catalog corruption, not ordinary registration.
+
+## Evaluation and proof boundary
+
+**Proof boundary:** Draft selection: `integrated-zfs-guest`. proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof; independent witness: catalog image digest/capability, committed allocation and physical disk/launch marker; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Evaluation follow-up:** `R4`: Keep exhaustive fixed decoder/version/migration matrices in ordinary tests. In Antithesis, race representative invalid input with a real restart, authority change or valid effect and observe the independent outcome. `R14`: Accepted placement requires a real current measured inner-ZFS-backed Lilly pool and execution readiness, or native KVM. The current Control-only hosted pool reports unavailable and cannot establish admission, guest or satellite effects; never seed fake admission. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.

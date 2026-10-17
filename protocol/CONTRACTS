@@ -1,0 +1,26 @@
+@cc [owner:ghuntley,label:architecture] protocol-pure-shared-boundary
+The shared protocol library MUST remain independent of Ash, database access and
+durable credential storage. Versioned codecs, state machines, Cadence and the
+single-writer View MUST remain free of socket/filesystem I/O (ADR-0012/0140).
+ADR-0142 permits outbound WebSocket socket I/O only through
+OverallsProtocol.WebSocket.Connection and OverallsProtocol.Control.Client;
+credential callbacks and configured TLS trust are supplied by the application.
+Those transport modules MUST NOT perform host mutations, domain authorization
+or credential persistence. Marshall and Lilly remain independent production
+applications consuming shared types and transport.
+
+@cc [owner:ghuntley,label:security] protocol-peer-values-never-create-atoms
+Decoding peer-controlled fields MUST NOT create atoms from peer strings; accepted keys
+and enum atoms must come from a finite schema owned by the library.
+
+@cc [owner:ghuntley,label:protocol] protocol-explicit-version-compatibility
+Provisioner v4 is the only supported execution control version under ADR-0037/0149.
+Every envelope MUST reject unsupported versions, never reinterpret them. Commands
+and outcomes MUST bind placement and execution epoch. Relocation descriptors MUST
+NOT grant execution authority. Credential format versions remain
+independent. Contract changes require coordinated consumer tests.
+
+@cc [owner:ghuntley,label:assumption] protocol-encoders-require-validated-values
+Callers of encode functions MUST supply values already validated against the matching
+schema or constructed from trusted typed application state. Encoding alone MUST NOT be
+used as evidence that untrusted data is valid.

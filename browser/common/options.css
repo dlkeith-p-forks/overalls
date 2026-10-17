@@ -1,0 +1,90 @@
+/* The Monospace Web presentation (ADR-0161) for the extension settings page.
+   System monospace fonts only: the extension loads nothing from the network. */
+:root {
+  --font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --line-height: 1.25rem;
+  --border-thickness: 2px;
+  --text-color: #000;
+  --text-color-alt: #666;
+  --background-color: #fff;
+  --background-color-alt: #eee;
+  color-scheme: light dark;
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #fff;
+    --text-color-alt: #aaa;
+    --background-color: #000;
+    --background-color-alt: #111;
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--background-color); color: var(--text-color); }
+body { margin: 0; line-height: var(--line-height); }
+main {
+  width: 100%;
+  max-width: calc(min(80ch, round(down, 100%, 1ch)));
+  margin: 0 auto;
+  padding: var(--line-height) 2ch;
+}
+h1, h2 { font-weight: 800; text-transform: uppercase; line-height: var(--line-height); }
+h1 { font-size: 2rem; line-height: calc(2 * var(--line-height)); margin: 0; }
+h2 { font-size: 1rem; margin: calc(var(--line-height) * 2) 0 var(--line-height); }
+p, ol { margin: 0 0 var(--line-height); }
+ol { padding: 0 0 0 3ch; }
+li { padding: 0; }
+code { font-weight: 600; }
+.muted { color: var(--text-color-alt); }
+table {
+  position: relative;
+  top: calc(var(--line-height) / 2);
+  width: calc(round(down, 100%, 1ch));
+  border-collapse: collapse;
+  margin: 0 0 calc(var(--line-height) * 2);
+}
+th, td {
+  border: var(--border-thickness) solid var(--text-color);
+  padding: calc(var(--line-height) / 2) calc(1ch - var(--border-thickness) / 2) calc(var(--line-height) / 2 - var(--border-thickness));
+  line-height: var(--line-height);
+  vertical-align: top;
+  text-align: left;
+}
+table tbody tr:first-child > * { padding-top: calc(var(--line-height) / 2 - var(--border-thickness)); }
+th { font-weight: 600; }
+.width-min { width: 0%; white-space: nowrap; }
+.width-auto { width: 100%; }
+.header td p { margin: 0; }
+.header td:last-child { text-align: right; }
+form { margin: 0 0 var(--line-height); }
+label { display: block; font-weight: 600; line-height: var(--line-height); }
+input, button {
+  display: block;
+  border: var(--border-thickness) solid var(--text-color);
+  padding: calc(var(--line-height) / 2 - var(--border-thickness)) calc(1ch - var(--border-thickness));
+  margin: 0;
+  font: inherit;
+  height: calc(var(--line-height) * 2);
+  background: var(--background-color);
+  color: var(--text-color);
+  line-height: normal;
+  border-radius: 0;
+  appearance: none;
+}
+input { width: 100%; }
+input:focus, button:focus { --border-thickness: 3px; outline: none; }
+::placeholder { color: var(--text-color-alt); opacity: 1; }
+button { text-transform: uppercase; font-weight: 600; cursor: pointer; background: var(--text-color); color: var(--background-color); }
+button:hover { background: var(--text-color-alt); border-color: var(--text-color-alt); }
+@media (prefers-reduced-motion: no-preference) { button:active { transform: translate(2px, 2px); } }
+.row { display: flex; align-items: flex-start; gap: 0 2ch; margin-top: var(--line-height); }
+#status { margin: 0; line-height: calc(var(--line-height) * 2); }
+#status:not(:empty)::before { content: "[ok] "; font-weight: 800; }
+#status[data-error="true"]::before { content: "[error] "; }
+dl { margin: 0 0 var(--line-height); }
+dl > div { display: grid; grid-template-columns: 16ch minmax(0, 1fr); gap: 0 2ch; }
+dt { color: var(--text-color-alt); font-weight: 600; }
+dd { margin: 0; overflow-wrap: anywhere; }

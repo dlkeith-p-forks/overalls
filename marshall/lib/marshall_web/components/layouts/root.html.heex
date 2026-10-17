@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {Application.get_env(:live_debugger, :live_debugger_tags)}
+
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href={~p"/images/overalls.svg"} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title
+      default="Overalls"
+      suffix={if assigns[:page_title], do: " · Overalls", else: ""}
+      phx-no-format
+    >{assigns[:page_title]}</.live_title>
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href={~p"/fonts/jetbrains-mono-500.woff2"}
+    />
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
+    </script>
+  </head>
+  <body>
+    <%= if String.starts_with?(@conn.request_path, ["/sign-", "/auth/", "/magic_link/", "/register", "/reset", "/confirm"]) do %>
+      <div class="public-page">
+        <a href="#main-content" class="skip-link">Skip to content</a>
+        <main id="main-content">
+          <div class="auth-welcome">
+            <h1>A little space for your next big idea.</h1>
+            <p>Welcome to Overalls. Make yourself at home.</p>
+          </div>
+          {@inner_content}
+        </main>
+      </div>
+    <% else %>
+      {@inner_content}
+    <% end %>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:maintenance] generated-schema-snapshots
+Snapshots MUST remain generated evidence of Ash resource schema state and be
+updated together with the corresponding resources and migration. Contract
+annotations MUST NOT be injected into the JSON snapshots; schema obligations
+belong at the resource, migration or directory boundary.

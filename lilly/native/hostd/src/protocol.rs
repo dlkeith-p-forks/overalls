@@ -1,0 +1,505 @@
+//! The closed binary protocol between Lilly and `lilly-hostd`.
+//!
+//! Every message is one `SOCK_SEQPACKET` datagram. Integers are big-endian.
+//! A request starts with an operation byte and a caller-chosen request id;
+//! every reply names the request id it answers.
+
+use crate::utilities::Utility;
+use std::ffi::CString;
+
+/// Protocol version exchanged by `Hello`. A mismatch refuses the session.
+pub const PROTOCOL_VERSION: u32 = 1;
+/// Largest request datagram accepted (the old helper's frame bound).
+pub const REQUEST_LIMIT: usize = 65_536;
+/// Output bytes carried by one reply datagram; longer output is chunked.
+pub const CHUNK_SIZE: usize = 32_768;
+/// Standard captured-output bound in bytes.
+pub const DEFAULT_OUTPUT_LIMIT: u32 = 65_536;
+/// The only allowed extended captured-output bound in bytes.
+pub const EXTENDED_OUTPUT_LIMIT: u32 = 4 * 1024 * 1024;
+/// Maximum argv entries excluding the executable, which hostd chooses.
+pub const MAX_ARGUMENTS: usize = 127;
+/// Accepted utility timeout range in milliseconds.
+pub const MIN_TIMEOUT_MS: u32 = 1000;
+pub const MAX_TIMEOUT_MS: u32 = 14_400_000;
+/// Longest a lease acquisition may wait in its queue.
+pub const MAX_WAIT_MS: u32 = 120_000;
+/// Longest accepted lock directory path in bytes.
+pub const MAX_PATH: usize = 4096;
+
+const OP_HELLO: u8 = 1;
+const OP_ACQUIRE: u8 = 2;
+const OP_RELEASE: u8 = 3;
+const OP_RUN: u8 = 4;
+const OP_CANCEL: u8 = 5;
+const OP_RUN_DURABLE: u8 = 6;
+const OP_ATTACH: u8 = 7;
+const OP_OPEN_UNIX: u8 = 8;
+const OP_OPEN_NETNS_TCP: u8 = 9;
+/// Length of a durable job key.
+pub const JOB_KEY: usize = 32;
+
+const KIND_HELLO: u8 = 1;
+const KIND_GRANTED: u8 = 2;
+const KIND_REFUSED: u8 = 3;
+const KIND_RELEASED: u8 = 4;
+const KIND_CHUNK: u8 = 5;
+const KIND_RESULT: u8 = 6;
+const KIND_DESCRIPTOR: u8 = 7;
+
+/// How a lease is held.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+pub enum Mode {
+    Exclusive,
+    Shared,
+}
+
+/// One decoded client request.
+#[derive(Debug, Eq, PartialEq)]
+pub enum Request {
+    Hello {
+        version: u32,
+    },
+    Acquire {
+        mode: Mode,
+        wait_ms: u32,
+        directory: Vec<u8>,
+    },
+    Release {
+        lease: u64,
+    },
+    Run {
+        lease: u64,
+        timeout_ms: u32,
+        output_limit: u32,
+        utility: Utility,
+        arguments: Vec<CString>,
+    },
+    Cancel {
+        target: u64,
+    },
+    /// A command that outlives its session: it keeps its lease until it
+    /// finishes, and any later session may attach to its result by key.
+    RunDurable {
+        key: [u8; JOB_KEY],
+        lease: u64,
+        timeout_ms: u32,
+        output_limit: u32,
+        utility: Utility,
+        arguments: Vec<CString>,
+    },
+    /// Wait at most wait_ms for a durable job's result.
+    Attach {
+        key: [u8; JOB_KEY],
+        wait_ms: u32,
+    },
+    /// Connect to a Firecracker API or vsock socket and pass the descriptor.
+    OpenUnix {
+        path: Vec<u8>,
+    },
+    /// Connect TCP inside a VM network namespace and pass the descriptor.
+    OpenNetnsTcp {
+        mark: u32,
+        destination: [u8; 4],
+        port: u16,
+        source: [u8; 4],
+        timeout_ms: u32,
+        namespace: Vec<u8>,
+        device: Vec<u8>,
+    },
+}
+
+/// A request datagram: the caller's id plus the operation.
+#[derive(Debug, Eq, PartialEq)]
+pub struct Envelope {
+    pub id: u64,
+    pub request: Request,
+}
+
+/// Closed refusal reasons. Native error strings never cross the socket.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u8)]
+pub enum Refusal {
+    /// The queue wait ended without the lease (contention).
+    Contended = 1,
+    /// The lock inode or its directory is unsafe or unavailable.
+    Unavailable = 2,
+    /// The request was malformed or out of bounds.
+    Malformed = 3,
+    /// The named lease is not held by this session.
+    UnknownLease = 4,
+    /// The lease already has a command in flight.
+    LeaseBusy = 5,
+    /// A mutating utility requires a lease.
+    LeaseRequired = 6,
+    /// The protocol version differs.
+    Version = 7,
+    /// No durable job has this key (never started, or its result expired).
+    UnknownJob = 8,
+    /// The attach wait ended while the job was still running.
+    JobRunning = 9,
+}
+
+/// Command outcome, matching the old helper's status byte.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u8)]
+pub enum Status {
+    Succeeded = 0,
+    Failed = 1,
+    TimedOut = 2,
+    OutputLimit = 3,
+    Setup = 4,
+    /// The command was cancelled, its lease released or its session ended;
+    /// it was killed and reaped before this reply.
+    Cancelled = 5,
+}
+
+/// One reply datagram.
+#[derive(Debug, Eq, PartialEq)]
+pub enum Reply {
+    Hello {
+        version: u32,
+    },
+    Granted {
+        lease: u64,
+    },
+    Refused {
+        reason: Refusal,
+    },
+    Released,
+    Chunk {
+        bytes: Vec<u8>,
+    },
+    Result {
+        status: Status,
+        bytes: Vec<u8>,
+    },
+    /// The descriptor travels as SCM_RIGHTS with this datagram.
+    Descriptor,
+}
+
+fn u32_at(bytes: &[u8], at: usize) -> Option<u32> {
+    Some(u32::from_be_bytes(bytes.get(at..at + 4)?.try_into().ok()?))
+}
+
+fn u64_at(bytes: &[u8], at: usize) -> Option<u64> {
+    Some(u64::from_be_bytes(bytes.get(at..at + 8)?.try_into().ok()?))
+}
+
+/// @cc [owner:ghuntley,label:protocol;security] hostd-request-decoding-total
+/// decode MUST return a request only for a datagram of at most 65536 bytes
+/// that exactly matches one operation layout, and None for anything else:
+/// unknown operations, trailing bytes, timeouts outside 1000..14400000 ms,
+/// output limits other than 65536 or 4194304, waits above 120000 ms, a
+/// directory that is not absolute or contains NUL or a `..` component, more
+/// than 127 arguments, unterminated arguments, or an unknown utility.
+/// The caller never names an executable: the utility is an index into the
+/// closed table that hostd resolves itself.
+pub fn decode(bytes: &[u8]) -> Option<Envelope> {
+    if bytes.len() > REQUEST_LIMIT || bytes.len() < 9 {
+        return None;
+    }
+    let op = bytes[0];
+    let id = u64_at(bytes, 1)?;
+    let body = &bytes[9..];
+    let request = match op {
+        OP_HELLO if body.len() == 4 => Request::Hello {
+            version: u32_at(body, 0)?,
+        },
+        OP_ACQUIRE if body.len() >= 6 => {
+            let mode = match body[0] {
+                0 => Mode::Exclusive,
+                1 => Mode::Shared,
+                _ => return None,
+            };
+            let wait_ms = u32_at(body, 1)?;
+            let directory = body[5..].to_vec();
+            if wait_ms > MAX_WAIT_MS || !valid_directory(&directory) {
+                return None;
+            }
+            Request::Acquire {
+                mode,
+                wait_ms,
+                directory,
+            }
+        }
+        OP_RELEASE if body.len() == 8 => Request::Release {
+            lease: u64_at(body, 0)?,
+        },
+        OP_RUN if body.len() >= 17 => {
+            let (lease, timeout_ms, output_limit, utility, arguments) = run_body(body)?;
+            Request::Run {
+                lease,
+                timeout_ms,
+                output_limit,
+                utility,
+                arguments,
+            }
+        }
+        OP_RUN_DURABLE if body.len() >= JOB_KEY + 17 => {
+            let key: [u8; JOB_KEY] = body[..JOB_KEY].try_into().ok()?;
+            let (lease, timeout_ms, output_limit, utility, arguments) = run_body(&body[JOB_KEY..])?;
+            Request::RunDurable {
+                key,
+                lease,
+                timeout_ms,
+                output_limit,
+                utility,
+                arguments,
+            }
+        }
+        OP_ATTACH if body.len() == JOB_KEY + 4 => {
+            let wait_ms = u32_at(body, JOB_KEY)?;
+            if wait_ms > MAX_WAIT_MS {
+                return None;
+            }
+            Request::Attach {
+                key: body[..JOB_KEY].try_into().ok()?,
+                wait_ms,
+            }
+        }
+        OP_OPEN_UNIX if valid_directory(body) => Request::OpenUnix {
+            path: body.to_vec(),
+        },
+        OP_OPEN_NETNS_TCP if body.len() >= 20 => {
+            let namespace_length = usize::from(body[18]);
+            let rest = &body[19..];
+            if namespace_length == 0 || namespace_length >= rest.len() || port_zero(body) {
+                return None;
+            }
+            let timeout_ms = u32_at(body, 14)?;
+            if !(1..=30_000).contains(&timeout_ms) {
+                return None;
+            }
+            Request::OpenNetnsTcp {
+                mark: u32_at(body, 0)?,
+                destination: body[4..8].try_into().ok()?,
+                port: u16::from_be_bytes([body[8], body[9]]),
+                source: body[10..14].try_into().ok()?,
+                timeout_ms,
+                namespace: rest[..namespace_length].to_vec(),
+                device: rest[namespace_length..].to_vec(),
+            }
+        }
+        OP_CANCEL if body.len() == 8 => Request::Cancel {
+            target: u64_at(body, 0)?,
+        },
+        _ => return None,
+    };
+    Some(Envelope { id, request })
+}
+
+type RunBody = (u64, u32, u32, Utility, Vec<CString>);
+
+fn port_zero(body: &[u8]) -> bool {
+    body[8] == 0 && body[9] == 0
+}
+
+/// Parse the shared Run layout: lease, timeout, output limit, utility and
+/// NUL-terminated arguments.
+fn run_body(body: &[u8]) -> Option<RunBody> {
+    if body.len() < 17 {
+        return None;
+    }
+    let lease = u64_at(body, 0)?;
+    let timeout_ms = u32_at(body, 8)?;
+    let output_limit = u32_at(body, 12)?;
+    let utility = Utility::from_index(body[16])?;
+    if !(MIN_TIMEOUT_MS..=MAX_TIMEOUT_MS).contains(&timeout_ms)
+        || (output_limit != DEFAULT_OUTPUT_LIMIT && output_limit != EXTENDED_OUTPUT_LIMIT)
+    {
+        return None;
+    }
+    let mut arguments = Vec::new();
+    let mut rest = &body[17..];
+    while !rest.is_empty() {
+        if arguments.len() == MAX_ARGUMENTS {
+            return None;
+        }
+        let end = rest.iter().position(|byte| *byte == 0)?;
+        arguments.push(CString::new(&rest[..end]).ok()?);
+        rest = &rest[end + 1..];
+    }
+    Some((lease, timeout_ms, output_limit, utility, arguments))
+}
+
+/// Whether a lock directory is absolute, NUL-free, bounded and free of `.`,
+/// `..` and empty components.
+pub fn valid_directory(directory: &[u8]) -> bool {
+    directory.len() <= MAX_PATH
+        && directory.first() == Some(&b'/')
+        && !directory.contains(&0)
+        && directory[1..]
+            .split(|byte| *byte == b'/')
+            .all(|part| !part.is_empty() && part != b"." && part != b"..")
+}
+
+/// Encode a request (used by tests and by documentation of the layout).
+pub fn encode_request(envelope: &Envelope) -> Vec<u8> {
+    let mut out = Vec::new();
+    let op = match envelope.request {
+        Request::Hello { .. } => OP_HELLO,
+        Request::Acquire { .. } => OP_ACQUIRE,
+        Request::Release { .. } => OP_RELEASE,
+        Request::Run { .. } => OP_RUN,
+        Request::Cancel { .. } => OP_CANCEL,
+        Request::RunDurable { .. } => OP_RUN_DURABLE,
+        Request::Attach { .. } => OP_ATTACH,
+        Request::OpenUnix { .. } => OP_OPEN_UNIX,
+        Request::OpenNetnsTcp { .. } => OP_OPEN_NETNS_TCP,
+    };
+    out.push(op);
+    out.extend(envelope.id.to_be_bytes());
+    match &envelope.request {
+        Request::Hello { version } => out.extend(version.to_be_bytes()),
+        Request::Acquire {
+            mode,
+            wait_ms,
+            directory,
+        } => {
+            out.push(match mode {
+                Mode::Exclusive => 0,
+                Mode::Shared => 1,
+            });
+            out.extend(wait_ms.to_be_bytes());
+            out.extend(directory);
+        }
+        Request::Release { lease } => out.extend(lease.to_be_bytes()),
+        Request::Run {
+            lease,
+            timeout_ms,
+            output_limit,
+            utility,
+            arguments,
+        } => {
+            out.extend(lease.to_be_bytes());
+            out.extend(timeout_ms.to_be_bytes());
+            out.extend(output_limit.to_be_bytes());
+            out.push(utility.index());
+            for argument in arguments {
+                out.extend(argument.as_bytes());
+                out.push(0);
+            }
+        }
+        Request::Cancel { target } => out.extend(target.to_be_bytes()),
+        Request::RunDurable {
+            key,
+            lease,
+            timeout_ms,
+            output_limit,
+            utility,
+            arguments,
+        } => {
+            out.extend(key);
+            out.extend(lease.to_be_bytes());
+            out.extend(timeout_ms.to_be_bytes());
+            out.extend(output_limit.to_be_bytes());
+            out.push(utility.index());
+            for argument in arguments {
+                out.extend(argument.as_bytes());
+                out.push(0);
+            }
+        }
+        Request::Attach { key, wait_ms } => {
+            out.extend(key);
+            out.extend(wait_ms.to_be_bytes());
+        }
+        Request::OpenUnix { path } => out.extend(path),
+        Request::OpenNetnsTcp {
+            mark,
+            destination,
+            port,
+            source,
+            timeout_ms,
+            namespace,
+            device,
+        } => {
+            out.extend(mark.to_be_bytes());
+            out.extend(destination);
+            out.extend(port.to_be_bytes());
+            out.extend(source);
+            out.extend(timeout_ms.to_be_bytes());
+            out.push(namespace.len() as u8);
+            out.extend(namespace);
+            out.extend(device);
+        }
+    }
+    out
+}
+
+/// Encode one reply datagram answering request `id`.
+pub fn encode_reply(id: u64, reply: &Reply) -> Vec<u8> {
+    let mut out = Vec::with_capacity(16);
+    let kind = match reply {
+        Reply::Hello { .. } => KIND_HELLO,
+        Reply::Granted { .. } => KIND_GRANTED,
+        Reply::Refused { .. } => KIND_REFUSED,
+        Reply::Released => KIND_RELEASED,
+        Reply::Chunk { .. } => KIND_CHUNK,
+        Reply::Result { .. } => KIND_RESULT,
+        Reply::Descriptor => KIND_DESCRIPTOR,
+    };
+    out.push(kind);
+    out.extend(id.to_be_bytes());
+    match reply {
+        Reply::Hello { version } => out.extend(version.to_be_bytes()),
+        Reply::Granted { lease } => out.extend(lease.to_be_bytes()),
+        Reply::Refused { reason } => out.push(*reason as u8),
+        Reply::Released => {}
+        Reply::Chunk { bytes } => out.extend(bytes),
+        Reply::Result { status, bytes } => {
+            out.push(*status as u8);
+            out.extend(bytes);
+        }
+        Reply::Descriptor => {}
+    }
+    out
+}
+
+/// Decode a reply datagram (used by tests; Lilly has its own decoder).
+pub fn decode_reply(bytes: &[u8]) -> Option<(u64, Reply)> {
+    let kind = *bytes.first()?;
+    let id = u64_at(bytes, 1)?;
+    let body = bytes.get(9..)?;
+    let reply = match kind {
+        KIND_HELLO if body.len() == 4 => Reply::Hello {
+            version: u32_at(body, 0)?,
+        },
+        KIND_GRANTED if body.len() == 8 => Reply::Granted {
+            lease: u64_at(body, 0)?,
+        },
+        KIND_REFUSED if body.len() == 1 => Reply::Refused {
+            reason: match body[0] {
+                1 => Refusal::Contended,
+                2 => Refusal::Unavailable,
+                3 => Refusal::Malformed,
+                4 => Refusal::UnknownLease,
+                5 => Refusal::LeaseBusy,
+                6 => Refusal::LeaseRequired,
+                7 => Refusal::Version,
+                8 => Refusal::UnknownJob,
+                9 => Refusal::JobRunning,
+                _ => return None,
+            },
+        },
+        KIND_RELEASED if body.is_empty() => Reply::Released,
+        KIND_DESCRIPTOR if body.is_empty() => Reply::Descriptor,
+        KIND_CHUNK => Reply::Chunk {
+            bytes: body.to_vec(),
+        },
+        KIND_RESULT if !body.is_empty() => Reply::Result {
+            status: match body[0] {
+                0 => Status::Succeeded,
+                1 => Status::Failed,
+                2 => Status::TimedOut,
+                3 => Status::OutputLimit,
+                4 => Status::Setup,
+                5 => Status::Cancelled,
+                _ => return None,
+            },
+            bytes: body[1..].to_vec(),
+        },
+        _ => return None,
+    };
+    Some((id, reply))
+}

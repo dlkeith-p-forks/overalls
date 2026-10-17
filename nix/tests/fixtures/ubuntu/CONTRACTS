@@ -1,0 +1,3 @@
+@cc [owner:ghuntley,label:verification] ubuntu-customization-fixture
+The fixture MUST exercise the public Ubuntu builder with an extra package, file
+and disposable public CA certificate. Production images MUST NOT trust this CA.

@@ -1,0 +1,523 @@
+{
+  "measurement": "audi_committed_readiness_diagnostic",
+  "date": "2026-09-18",
+  "scope": "authenticated Ash readiness actions with committed synthetic fixtures and independent database connections",
+  "gateways": 100,
+  "routes": 10000,
+  "beam_schedulers": 16,
+  "database_pool_size": 32,
+  "database_pool": "Ecto.Adapters.SQL.Sandbox with unboxed_run per request",
+  "simulated_host_heartbeat_interval_ms": 1000,
+  "rounds": [
+    {
+      "microseconds": 4688791,
+      "successful": 10000,
+      "fresh_routes": 10000
+    },
+    {
+      "microseconds": 4715606,
+      "successful": 10000,
+      "fresh_routes": 10000
+    },
+    {
+      "microseconds": 4724320,
+      "successful": 10000,
+      "fresh_routes": 10000
+    }
+  ],
+  "excludes": [
+    "local certificate validation",
+    "TLS/HTTP transport",
+    "DNS transport",
+    "guest traffic",
+    "multi-node control-plane deployment",
+    "long-running steady-state load"
+  ],
+  "reproducibility": "Reusable harness: marshall/scripts/audi_capacity.exs; action mode reproduces this diagnostic method. See docs/audi.md for isolated database setup and cleanup.",
+  "https_measurement": {
+    "scope": "Actual Audi.Control.Client over loopback TLS/Bandit to MarshallWeb.IngressAPI with committed fixtures",
+    "beam_schedulers": 16,
+    "database_pool_size": 32,
+    "rounds": [
+      {
+        "microseconds": 5428124,
+        "successful": 10000,
+        "fresh_routes": 9642,
+        "passed": false
+      },
+      {
+        "microseconds": 5326227,
+        "successful": 10000,
+        "fresh_routes": 9373,
+        "passed": false
+      },
+      {
+        "microseconds": 5196004,
+        "successful": 10000,
+        "fresh_routes": 9641,
+        "passed": false
+      }
+    ],
+    "result": "Failed the unchanged five-second round and complete-freshness target.",
+    "excludes": [
+      "local certificate validation",
+      "DNS transport",
+      "guest traffic",
+      "multi-node control-plane deployment",
+      "long-running steady-state load"
+    ]
+  },
+  "https_allocation_comparison": [
+    {
+      "beam_schedulers": 32,
+      "database_pool_size": 64,
+      "rounds": [
+        {
+          "round": 1,
+          "microseconds": 6077558,
+          "transport": "https",
+          "measurement": "audi_capacity_round",
+          "successful": 10000,
+          "passed": false,
+          "fresh_routes": 8491
+        },
+        {
+          "round": 2,
+          "microseconds": 6307177,
+          "transport": "https",
+          "measurement": "audi_capacity_round",
+          "successful": 10000,
+          "passed": false,
+          "fresh_routes": 7924
+        },
+        {
+          "round": 3,
+          "microseconds": 5761021,
+          "transport": "https",
+          "measurement": "audi_capacity_round",
+          "successful": 10000,
+          "passed": false,
+          "fresh_routes": 8727
+        }
+      ],
+      "result": "Failed unchanged five-second and complete-freshness bounds; three-round allocation diagnostic only."
+    },
+    {
+      "beam_schedulers": 8,
+      "database_pool_size": 16,
+      "rounds": [
+        {
+          "round": 1,
+          "microseconds": 9499874,
+          "transport": "https",
+          "measurement": "audi_capacity_round",
+          "successful": 10000,
+          "passed": false,
+          "fresh_routes": 5428
+        },
+        {
+          "round": 2,
+          "microseconds": 8950646,
+          "transport": "https",
+          "measurement": "audi_capacity_round",
+          "successful": 10000,
+          "passed": false,
+          "fresh_routes": 5532
+        },
+        {
+          "round": 3,
+          "microseconds": 9243144,
+          "transport": "https",
+          "measurement": "audi_capacity_round",
+          "successful": 10000,
+          "passed": false,
+          "fresh_routes": 5294
+        }
+      ],
+      "result": "Failed unchanged five-second and complete-freshness bounds; three-round allocation diagnostic only."
+    }
+  ],
+  "https_database_timing_diagnostic": {
+    "beam_schedulers": 16,
+    "database_pool_size": 32,
+    "method": "Temporary telemetry handler aggregates Marshall.Repo query timing counters only; resets before each round. Includes one final freshness-count query. Instrumentation overhead is included. No SQL or parameters retained.",
+    "rounds": [
+      {
+        "round": 1,
+        "microseconds": 5544075,
+        "database": {
+          "queries": 120001,
+          "total_us": 61893893,
+          "queue_us": 3617875,
+          "query_us": 58129210,
+          "decode_us": 93378
+        },
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": false,
+        "fresh_routes": 9451
+      },
+      {
+        "round": 2,
+        "microseconds": 6633220,
+        "database": {
+          "queries": 120001,
+          "total_us": 95128796,
+          "queue_us": 3836091,
+          "query_us": 91143513,
+          "decode_us": 95940
+        },
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": false,
+        "fresh_routes": 9159
+      },
+      {
+        "round": 3,
+        "microseconds": 4927768,
+        "database": {
+          "queries": 120001,
+          "total_us": 52764596,
+          "queue_us": 3679842,
+          "query_us": 48943299,
+          "decode_us": 87723
+        },
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      }
+    ],
+    "interpretation": "120001 queries per round: about twelve SQL statements per readiness update plus freshness inspection. Summed concurrent database durations are not wall-clock durations. Queue time was a small share of aggregate database timing; this does not identify the dominant application bottleneck. Two rounds failed and one passed; capacity remains unproven."
+  },
+  "single_locked_route_read": {
+    "beam_schedulers": 16,
+    "database_pool_size": 32,
+    "change": "Replace preliminary route read plus primary-key lock with one Ash FOR UPDATE lookup by unique VM identity. Existing exclusive VM lock still serializes creation.",
+    "profiled_rounds": [
+      {
+        "round": 1,
+        "microseconds": 4872165,
+        "database": {
+          "queries": 110001,
+          "total_us": 48975971,
+          "queue_us": 3991419,
+          "query_us": 44862229,
+          "decode_us": 73261
+        },
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 2,
+        "microseconds": 4774115,
+        "database": {
+          "queries": 110001,
+          "total_us": 52301935,
+          "queue_us": 3650412,
+          "query_us": 48527877,
+          "decode_us": 74540
+        },
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 3,
+        "microseconds": 4747517,
+        "database": {
+          "queries": 110001,
+          "total_us": 50819927,
+          "queue_us": 3734640,
+          "query_us": 46962803,
+          "decode_us": 73695
+        },
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      }
+    ],
+    "interpretation": "Three profiled rounds passed at 4.75\u20134.87 seconds, with 110001 query events per round. This removes one SQL statement per update; three rounds with narrow margin do not establish sustained fleet capacity.",
+    "unprofiled_twelve_rounds": [
+      {
+        "round": 1,
+        "microseconds": 5187293,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": false,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 2,
+        "microseconds": 4753087,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 3,
+        "microseconds": 4707980,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 4,
+        "microseconds": 4622960,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 5,
+        "microseconds": 4691085,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 6,
+        "microseconds": 4894387,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 7,
+        "microseconds": 4889731,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 8,
+        "microseconds": 4739835,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 9,
+        "microseconds": 4681580,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 10,
+        "microseconds": 4714872,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 11,
+        "microseconds": 4684296,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 12,
+        "microseconds": 4736741,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      }
+    ],
+    "twelve_round_result": "Failed: first round took 5.187 seconds; the following eleven passed at 4.623\u20134.894 seconds. All 10000 updates succeeded and all routes were fresh after every round. No warm-up exclusion or deadline relaxation was applied."
+  },
+  "execution_history_exists": {
+    "beam_schedulers": 16,
+    "database_pool_size": 32,
+    "change": "Ash existence query with unchanged exact execution and completed start/provision predicates; avoids materializing operation records. Includes the earlier single locked route read.",
+    "rounds": [
+      {
+        "round": 1,
+        "microseconds": 4998463,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 2,
+        "microseconds": 4671157,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 3,
+        "microseconds": 4761747,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 4,
+        "microseconds": 4896692,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 5,
+        "microseconds": 4867646,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 6,
+        "microseconds": 4888179,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 7,
+        "microseconds": 4734545,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 8,
+        "microseconds": 4817161,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 9,
+        "microseconds": 4709118,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 10,
+        "microseconds": 4821704,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 11,
+        "microseconds": 4815957,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      },
+      {
+        "round": 12,
+        "microseconds": 4856577,
+        "transport": "https",
+        "measurement": "audi_capacity_round",
+        "successful": 10000,
+        "passed": true,
+        "fresh_routes": 10000
+      }
+    ],
+    "result": "All twelve rounds passed with 10000 successful updates and fresh routes. First round was 4998463 microseconds, leaving about 1.5 ms margin. This single loopback run does not establish stable deployment capacity or a statistically significant timing improvement."
+  },
+  "sampled_freshness_diagnostic": {
+    "base_commit": "5daf089",
+    "local_changes": "Periodic independent freshness sampler in marshall/scripts/audi_capacity.exs",
+    "scope": "Loopback HTTPS, 100 synthetic gateways and 10000 routes, 16 schedulers, 32 request database connections, separate heartbeat and sampler connections",
+    "concurrent_load": "Native Audi fleet test and Marshall precommit compilation/tests shared this machine. Timings are not comparable to isolated earlier measurements.",
+    "sample_wait_ms": 100,
+    "rounds": [
+      {
+        "round": 1,
+        "bootstrap": true,
+        "microseconds": 5614706,
+        "successful": 10000,
+        "fresh_routes": 9202,
+        "freshness_samples": 54,
+        "minimum_sampled_fresh_routes": 0,
+        "maximum_sample_gap_ms": 113,
+        "passed": false
+      },
+      {
+        "round": 2,
+        "bootstrap": false,
+        "microseconds": 5533226,
+        "successful": 10000,
+        "fresh_routes": 8965,
+        "freshness_samples": 53,
+        "minimum_sampled_fresh_routes": 8919,
+        "maximum_sample_gap_ms": 112,
+        "passed": false
+      },
+      {
+        "round": 3,
+        "bootstrap": false,
+        "microseconds": 5594374,
+        "successful": 10000,
+        "fresh_routes": 8864,
+        "freshness_samples": 53,
+        "minimum_sampled_fresh_routes": 8761,
+        "maximum_sample_gap_ms": 112,
+        "passed": false
+      }
+    ],
+    "exit_status": 1,
+    "result": "Sampler executed and observed lower freshness during rounds than at their endpoints. All updates succeeded, but freshness and the unchanged five-second deadline failed. This is instrumentation evidence under concurrent load, not fleet capacity acceptance."
+  }
+}

@@ -1,0 +1,49 @@
+@cc [owner:ghuntley,label:security] isolated-synthetic-secrets
+Entrypoints MUST generate all database, TLS, signing, encryption and host credentials
+at container startup into private runtime volumes. They MUST NOT print secret values,
+put them in command arguments, or copy production credentials into images.
+
+@cc [owner:ghuntley,label:verification] truthful-readiness
+Entrypoint health checks MUST require the real serving interface or reviewed
+readiness socket. Marker files may only report completion of the specific
+one-shot migration or enrollment action that created them.
+
+@cc [owner:ghuntley,label:security] closed-fixture-inputs
+Entrypoints MUST use fixed, validated synthetic host and storage identities and
+the reviewed Marshall enrollment API. They MUST NOT insert enrollment rows or
+fabricate physical capacity or Lilly readiness.
+
+@cc [owner:ghuntley,label:security;verification] closed-control-operator
+The enrollment operator MUST accept only exact private request schemas for its
+named fixture actions. Host rotation MUST use Marshall's reviewed rotate and
+verify CLI and publish an issued result only after verifying the private output
+and reading committed host generation. Fixture actions MUST use their reviewed
+Ash coordinators with a fresh stored synthetic login and real passkey assertion.
+A failed or ambiguous operation MUST NOT be retried automatically or reported
+as applied. Fixture bootstrap MUST mark its start durably before the first
+account mutation; if it fails before manifest publication, restart MUST refuse
+the partial fixture rather than silently create more credentials.
+
+@cc [owner:ghuntley,label:verification] enrollment-control-readiness
+Enrollment health MUST be published only after the real lilly-a enrollment,
+fixture publication and separate read-only workload credential copy complete.
+The optional measured lilly-host enrollment MUST publish its own private host
+fixture only after CLI credential verification and committed pool observation;
+the inner host's health remains a separate gate. The operator process MUST
+remain the enrollment container's main process so its failure terminates the
+container.
+
+@cc [owner:ghuntley,label:recovery;security] enrico-fixed-release-restart
+The Enrico container supervisor MUST accept only a private restart_enrico
+request for its one immutable release child. It MUST confirm that child's
+termination and new private health before issuing a result with distinct PIDs
+and a higher durable launch generation. An interrupted or unconfirmed restart
+MUST remain uncertain and MUST NOT be replayed automatically.
+
+@cc [owner:ghuntley,label:verification;security] enrico-passive-inode-observer
+The Enrico observer MUST publish only the eight fixed native Git slot lock
+identities, bounded UUID repository lock identities and their current
+in-container /proc fd holders to a private read-only workload volume. It MUST
+mark incomplete scans explicitly;
+missing or stale evidence MUST NOT prove absence of descendants. It MUST NOT
+accept a command, signal a process, or expose arguments or payload bytes.

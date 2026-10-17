@@ -1,0 +1,10 @@
+@cc [owner:ghuntley,label:security] smtp-local-service-boundary
+SMTP and metrics MUST bind only to literal IPv4 loopback without opening firewall
+ports. Only the relay may receive its upstream credentials through systemd;
+Marshall receives local transport settings, not provider credentials. Upstream
+TLS and authentication MUST remain mandatory.
+
+@cc [owner:ghuntley,label:deployment] smtp-shared-launch-settings
+Serving and migration launchers MUST use the same module-owned mail transport,
+sender and port in relay mode, overriding conflicting environment-file settings.
+Direct SMTP deployments MUST retain their previous configuration when disabled.

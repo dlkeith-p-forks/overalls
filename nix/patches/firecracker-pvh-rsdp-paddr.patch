@@ -1,0 +1,33 @@
+diff -ruN a/src/vmm/src/arch/x86_64/mod.rs b1/src/vmm/src/arch/x86_64/mod.rs
+--- a/src/vmm/src/arch/x86_64/mod.rs	2026-10-13 16:12:20.997907426 +0000
++++ b1/src/vmm/src/arch/x86_64/mod.rs	2026-10-13 16:23:03.344965109 +0000
+@@ -315,6 +315,9 @@
+         magic: XEN_HVM_START_MAGIC_VALUE,
+         version: 1,
+         cmdline_paddr: cmdline_addr.raw_value(),
++        // Firmware payloads (edk2 CloudHv) locate the ACPI tables only through
++        // this field; Linux PVH kernels fall back to scanning for the RSDP.
++        rsdp_paddr: layout::RSDP_ADDR,
+         memmap_paddr: layout::MEMMAP_START,
+         memmap_entries: memmap.len() as u32,
+         nr_modules: modules.len() as u32,
+@@ -539,6 +542,7 @@
+     use crate::arch::x86_64::layout::FIRST_ADDR_PAST_32BITS;
+     use crate::test_utils::{arch_mem, single_region_mem};
+     use crate::utils::mib_to_bytes;
++    use crate::vstate::memory::Bytes;
+     use crate::vstate::resources::ResourceAllocator;
+ 
+     #[test]
+@@ -585,6 +589,11 @@
+         mptable::setup_mptable(&gm, &mut resource_allocator, no_vcpus).unwrap();
+         configure_64bit_boot(&gm, GuestAddress(0), 0, &None).unwrap();
+         configure_pvh(&gm, GuestAddress(0), &None).unwrap();
++        let start_info: hvm_start_info = gm
++            .read_obj(GuestAddress(layout::PVH_INFO_START))
++            .unwrap();
++        assert_eq!(start_info.rsdp_paddr, layout::RSDP_ADDR);
++        assert_eq!(start_info.memmap_paddr, layout::MEMMAP_START);
+ 
+         // Now assigning some memory that is equal to the start of the 32bit memory hole.
+         let mem_size = mib_to_bytes(3328);

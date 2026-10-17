@@ -1,0 +1,34 @@
+@cc [owner:ghuntley,label:verification;security] fleet-native-trust-evidence
+Native trust acceptance MUST inspect both actual guest distributions and their
+current host roots, durable boot receipts and trust/network/SSH ordering. A
+wrong-boot request carrying a different valid root set MUST complete with peer
+EOF and no response bytes before inspecting installed trust; sender timeout MUST
+fail rather than count as refusal. Wrong, forged and expired delivery mutations
+(a legacy protocol version, a foreign placement, an expired execution epoch, a
+malformed nonce, a forged digest claim and forged certificate material, including
+a duplicate root and private-key-bearing PEM) MUST each terminate in the same
+completed refusal before the receipt-unchanged check, with the durable receipt,
+installed guest bundle and guest services untouched. Successful current-boot
+deliveries and confinement checks MUST bound the exchange; exact guest trust and
+retained data MUST be checked before the last positive exchange, which the
+receiver MUST still accept after the refusal sweep. No fixture may write a
+successful host receipt or replace observed physical capacity. Guest terminal
+bytes and boot challenges MUST remain private even when the check fails.
+Failure diagnostics MUST use a closed stage vocabulary without exception values
+or command output. Installed trust MUST be inspected using tools actually
+present in both immutable guest images; this is not a live TLS handshake claim.
+Every shell input including completion markers MUST fit within 3072 bytes;
+bundle reconstruction MUST append bounded pieces and compare the complete bytes
+before any positive delivery can repair changed trust.
+The existing bounded service-readiness observation MUST require the actual SSH
+ready marker and a successful roster sync together with active required units;
+periodic marker replacement MUST NOT be mistaken for persistent unavailability.
+The fixture MUST NOT create markers or restart services to satisfy this check.
+
+@cc [owner:ghuntley,label:verification;capacity] fleet-native-physical-refusal
+Three usable NixOS guests MUST retain exactly three disk ownership holds totaling
+15 GiB. Settled virtual promises MUST NOT be treated as a physical admission cap.
+The refusal control MUST keep the successful actor, image, profile and compute
+shape, request a valid root larger than the independently read actual pool quota,
+and observe insufficient_capacity without adding a VM or changing those holds.
+The fixture MUST NOT derive this expectation from production Budget arithmetic.

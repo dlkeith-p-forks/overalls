@@ -1,0 +1,131 @@
+--- a/plugins/out_cloudwatch_logs/cloudwatch_api.c
++++ b/plugins/out_cloudwatch_logs/cloudwatch_api.c
+@@ -1765,8 +1765,7 @@
+         /* Check error */
+         if (c->resp.payload_size > 0) {
+             /* some error occurred; notify user */
+-            flb_aws_print_error(c->resp.payload, c->resp.payload_size,
+-                                               "PutRetentionPolicy", ctx->ins);
++            flb_plg_error(ctx->ins, "cloudwatch.request_failed (response redacted)");
+         }
+     }
+ 
+@@ -1869,8 +1868,7 @@
+                     return ret;
+                 }
+                 /* some other error occurred; notify user */
+-                flb_aws_print_error(c->resp.payload, c->resp.payload_size,
+-                                    "CreateLogGroup", ctx->ins);
++                flb_plg_error(ctx->ins, "cloudwatch.request_failed (response redacted)");
+                 flb_sds_destroy(error);
+             }
+             else {
+@@ -1984,8 +1982,7 @@
+                     return -1;
+                 }
+                 /* some other error occurred; notify user */
+-                flb_aws_print_error(c->resp.payload, c->resp.payload_size,
+-                                    "CreateLogStream", ctx->ins);
++                flb_plg_error(ctx->ins, "cloudwatch.request_failed (response redacted)");
+                 flb_sds_destroy(error);
+             }
+             else {
+@@ -2006,6 +2003,72 @@
+ /*
+  * Returns -1 on failure, 0 on success
+  */
++
++/* A 200 may reject individual events. Never log the provider's response text.
++ * Future events are retried (accepted siblings may repeat); expired events are
++ * permanent rejection observations, not successful deliveries. */
++static int overalls_rejections(struct flb_cloudwatch *ctx, const char *body, size_t size, int count)
++{
++    char *packed = NULL;
++    size_t packed_size = 0;
++    int root_type;
++    int ret;
++    int future = 0;
++    int permanent = 0;
++    int index;
++    struct flb_time now;
++    msgpack_unpacked result;
++    msgpack_object root;
++    msgpack_object key;
++    msgpack_object info;
++    msgpack_object field;
++    unsigned int i, j;
++    if (!body || size == 0) { return -1; }
++    ret = flb_pack_json(body, size, &packed, &packed_size, &root_type, NULL);
++    if (ret != 0) { return -1; }
++    msgpack_unpacked_init(&result);
++    ret = msgpack_unpack_next(&result, packed, packed_size, NULL);
++    if (ret != MSGPACK_UNPACK_SUCCESS || result.data.type != MSGPACK_OBJECT_MAP) {
++        msgpack_unpacked_destroy(&result);
++        flb_free(packed);
++        return -1;
++    }
++    root = result.data;
++    for (i = 0; i < root.via.map.size; i++) {
++        key = root.via.map.ptr[i].key;
++        if (key.type != MSGPACK_OBJECT_STR || key.via.str.size != 21 ||
++            memcmp(key.via.str.ptr, "rejectedLogEventsInfo", 21) != 0) { continue; }
++        info = root.via.map.ptr[i].val;
++        if (info.type != MSGPACK_OBJECT_MAP) { future = 1; break; }
++        for (j = 0; j < info.via.map.size; j++) {
++            field = info.via.map.ptr[j].key;
++            if (info.via.map.ptr[j].val.type != MSGPACK_OBJECT_POSITIVE_INTEGER ||
++                info.via.map.ptr[j].val.via.u64 >= (uint64_t) count) {
++                future = 1;
++                continue;
++            }
++            index = (int) info.via.map.ptr[j].val.via.u64;
++            if (field.type == MSGPACK_OBJECT_STR && field.via.str.size == 24 &&
++                memcmp(field.via.str.ptr, "tooNewLogEventStartIndex", 24) == 0) { future = 1; }
++            else if (field.type == MSGPACK_OBJECT_STR &&
++                ((field.via.str.size == 23 && memcmp(field.via.str.ptr, "expiredLogEventEndIndex", 23) == 0) ||
++                 (field.via.str.size == 22 && memcmp(field.via.str.ptr, "tooOldLogEventEndIndex", 22) == 0))) {
++                if (index + 1 > permanent) { permanent = index + 1; }
++            }
++            else { future = 1; }
++        }
++        flb_plg_warn(ctx->ins, "cloudwatch.partial_rejection retry_future=%i", future);
++    }
++    msgpack_unpacked_destroy(&result);
++    flb_free(packed);
++    if (!future && permanent > 0) {
++        flb_time_get(&now);
++        cmt_counter_add(ctx->ins->cmt_dropped_records, flb_time_to_nanosec(&now),
++                        permanent, 1, (char *[]) {(char *) flb_output_name(ctx->ins)});
++    }
++    return future ? -1 : 0;
++}
++
+ int put_log_events(struct flb_cloudwatch *ctx, struct cw_flush *buf,
+                    struct log_stream *stream, size_t payload_size)
+ {
+@@ -2014,6 +2077,7 @@
+     struct flb_aws_client *cw_client;
+     int num_headers = 1;
+     int retry = FLB_TRUE;
++    int rejection_result;
+ 
+     flb_plg_debug(ctx->ins, "Sending log events to log stream %s", stream->name);
+ 
+@@ -2060,14 +2124,14 @@
+                 return -1;
+             }
+ 
++            rejection_result = overalls_rejections(ctx, c->resp.payload, c->resp.payload_size, buf->event_index);
+             flb_http_client_destroy(c);
+-            return 0;
++            return rejection_result;
+         }
+ 
+         /* Check error */
+         if (c->resp.payload_size > 0) {
+-            flb_aws_print_error(c->resp.payload, c->resp.payload_size,
+-                                                  "PutLogEvents", ctx->ins);
++            flb_plg_error(ctx->ins, "cloudwatch.request_failed (response redacted)");
+         }
+     }
+ 

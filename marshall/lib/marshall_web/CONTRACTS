@@ -1,0 +1,27 @@
+@cc [owner:ghuntley,label:security] web-domain-authority
+User-visible machine and terminal operations MUST call the corresponding Ash
+domain with the authenticated actor. Hidden controls, client-supplied roles or
+cached permission flags MUST NOT replace current domain/Cedar authorization.
+Provisioner requests use the separate authenticated host coordinators.
+
+@cc [owner:ghuntley,label:security] web-current-login
+Authenticated machine and terminal LiveViews MUST verify the stored login at
+mount and before every event, parameter change and refresh. Revoked or expired
+logins MUST halt the operation and redirect to sign-in. A mounted actor alone
+MUST NOT remain sufficient authority. See ADR-0022.
+
+@cc [owner:ghuntley,label:security] web-sensitive-diagnostics
+Authentication paths and terminal processes MUST be tagged for privacy before
+diagnostics can expose tokens, terminal bytes or process state. Error replies
+MUST NOT include credentials, raw database errors or terminal payloads.
+
+@cc [owner:ghuntley,label:architecture] web-bounded-domain-views
+Machine and sharing lists MUST consume bounded domain pages and replace the
+displayed LiveView streams on refresh. Web code MUST NOT bypass pagination with
+unbounded resource reads or retain every previously visited page in assigns.
+
+@cc [owner:ghuntley,label:product] installer-only-ssh-setup
+Machine connection controls MUST retain the Overalls installation and SSH commands
+for eligible machines. Marshall Web MUST NOT offer or serve per-machine SSH
+configuration downloads; the public installer and Lyra's local setup remain the
+supported configuration path.

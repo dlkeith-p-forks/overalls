@@ -1,0 +1,11 @@
+@cc [owner:ghuntley,label:security;capacity] native-flow-read-only-bounded
+The helper MUST issue only a single exact conntrack GET in its inherited
+namespace, with canonical tuple arguments and a two-second process deadline.
+It MUST NOT dump, create, update or delete conntrack entries or change
+namespace. No setuid or capabilities; stdout carries only the 128-bit label.
+
+@cc [owner:ghuntley,label:verification] flow-label-hegel-properties
+Hegel properties MUST cover canonical IPv4/port parsing, label bit endianness
+and the match/reject matrix with an independent spec. The kernel GET sits
+behind a typed FFI shim; stale-flow acceptance evidence stays with the
+networking machine tests.

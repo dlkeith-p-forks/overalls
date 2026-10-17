@@ -1,0 +1,8 @@
+@cc [owner:ghuntley,label:build] browser-offline-tools
+Browser builds and checks MUST use the locked hash-verified npm input with
+install scripts disabled and no network access during the ordinary build.
+
+@cc [owner:ghuntley,label:security] browser-download-package
+The installed bin directory MUST contain only chrome.zip and firefox.xpi;
+manifest.json MUST describe their SHA-256 digests, lengths and unsigned status.
+Unpacked extension assets MUST remain in a separate share directory.

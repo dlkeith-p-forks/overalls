@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh current Overalls SSH guest accounts
+
+[Timer]
+OnBootSec=3s
+OnUnitActiveSec=2s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

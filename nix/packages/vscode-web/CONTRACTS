@@ -1,0 +1,69 @@
+@cc [owner:ghuntley,label:build] editor-official-source
+The editor MUST compile the reviewed Microsoft Code OSS source commit with the
+maintained patch stack. Microsoft product binaries, downstream editor runtimes,
+Microsoft Marketplace product add-ons and unpinned dependencies MUST NOT enter
+the shipped output. Only the declared signed, hash-pinned Open VSX defaults may
+be added as third-party builtin extensions.
+
+@cc [owner:ghuntley,label:build;security] editor-bundled-extension-inputs
+The builtin defaults MUST be exactly elixir-lsp.elixir-ls,
+EditorConfig.EditorConfig, rust-lang.rust-analyzer and cab404.vscode-direnv at
+stable, engine-compatible universal versions in extensions.lock.json. Whole
+VSIX signatures MUST be verified by the packaged verifier/key ring before
+publication; hashes, archive paths, identities, platform and undeclared
+dependencies/packs MUST also be checked. Payload bytes and notices MUST remain
+unchanged, and shared extension code MUST remain immutable.
+
+@cc [owner:ghuntley,label:product] editor-builtin-personal-control
+Builtin defaults MUST preserve upstream personal disable and newer-version
+override behavior. They MUST NOT create a shared writable extension/data
+directory or repeatedly seed a personal installation. Upstream builtin
+extensions are not uninstallable; independently installed extensions remain
+under the user's install, disable and uninstall controls.
+
+@cc [owner:ghuntley,label:build] editor-project-language-tools
+The shipped language defaults MUST delegate to project PATH tools without
+running bundled language bootstrap installers or adding global language
+toolchain/server packages. Missing Elixir adapter commands MUST refuse with fixed
+stderr and exit 127. Elixir adapters MUST preserve all caller arguments.
+The Rust default MUST resolve rust-analyzer directly from project PATH;
+an absent executable retains the native ENOENT refusal.
+User-supplied server overrides remain project choices under existing egress.
+
+@cc [owner:ghuntley,label:product] editor-bundled-ai-disabled
+Bundled Copilot and core AI/chat MUST remain disabled after conflicting settings,
+restored state and direct command invocation. Generic completion and independently
+installed extensions MUST retain their independent user controls.
+
+@cc [owner:ghuntley,label:product;security] editor-all-folder-trust
+Editor workers MUST disable workspace trust for all guest folders; settings MUST
+NOT restore Restricted Mode. This choice MUST NOT automatically allow .envrc or
+change Marshall authorization, personal identity or guest isolation boundaries.
+
+@cc [owner:ghuntley,label:build;security] editor-extension-pin-maintenance
+Maintenance MUST update only the four declared extension pins, selecting
+explicit stable compatible metadata across bounded consistent pages. It MUST
+reuse packaged signature/engine validation and MUST NOT trust registry keys,
+expand dependency scope, execute language bootstrap, install on the host,
+update the editor baseline or commit/deploy. Complete validation precedes atomic
+lock replacement and file/parent synchronization; failures before replacement
+and observed concurrent lock edits MUST preserve the existing lock. A parent
+synchronization failure after replacement MUST report durability_unknown with
+publication_durability_unknown; the complete new lock may already be visible.
+
+@cc [owner:ghuntley,label:security] editor-gallery-signatures
+User Open VSX gallery installation, including browser extensions and dependencies,
+MUST verify the entire VSIX against reviewed packaged Ed25519 keys before extraction.
+Missing, malformed, oversized or untrusted signatures MUST fail regardless of user
+signature settings. Explicit local VSIX imports remain a separate unverified path.
+
+@cc [owner:ghuntley,label:security] editor-isolated-assets
+The served workbench MUST use the broker-provided HTTPS editor origin and separate
+HTTPS hash webview origins. Missing or invalid trusted configuration MUST fail;
+Microsoft CDN URLs MUST NOT be used as asset fallbacks.
+
+@cc [owner:ghuntley,label:build] editor-release-identity
+The editor and webview assets MUST be published from the same source build. The
+release descriptor MUST identify the source commit, protocol version and all
+maintained patches, trusted keys, product settings and pinned dependency inputs,
+including the extension lock and maintained validation/extraction/adapters.

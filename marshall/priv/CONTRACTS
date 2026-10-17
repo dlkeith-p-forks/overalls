@@ -1,0 +1,6 @@
+@cc [owner:ghuntley,label:build] deployed-static-artifacts
+Under `static/`, generated bundles, compressed copies and digest manifests MUST
+be rebuilt from their source assets together. Behavioral changes MUST NOT be
+applied only to a generated static file. Public assets MUST NOT contain
+deployment credentials, account tokens, terminal captures or private runtime
+artifacts. Contract annotations belong outside the generated static tree.

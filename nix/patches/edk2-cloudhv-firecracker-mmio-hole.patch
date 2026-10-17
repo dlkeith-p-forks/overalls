@@ -1,0 +1,34 @@
+diff -ruN a/OvmfPkg/Include/IndustryStandard/CloudHv.h b/OvmfPkg/Include/IndustryStandard/CloudHv.h
+--- a/OvmfPkg/Include/IndustryStandard/CloudHv.h	2026-10-13 16:18:16.155725662 +0000
++++ b/OvmfPkg/Include/IndustryStandard/CloudHv.h	2026-10-13 16:20:44.381521490 +0000
+@@ -30,7 +30,12 @@
+ //
+ // 32-bit MMIO memory hole size
+ //
+-#define CLOUDHV_MMIO_HOLE_SIZE  0x38000000
++// Firecracker places its PCI MMCONFIG window at 0xdec00000 (256 MiB below the
++// IOAPIC minus 1 MiB per segment). Cloud Hypervisor's 896 MiB aperture would
++// let the PCI bus driver assign BARs inside that window, so the aperture ends
++// where Firecracker's 32-bit device window ends.
++//
++#define CLOUDHV_MMIO_HOLE_SIZE  0x1ec00000
+ 
+ //
+ // SMBIOS address
+diff -ruN a/OvmfPkg/Library/PlatformInitLib/Platform.c b/OvmfPkg/Library/PlatformInitLib/Platform.c
+--- a/OvmfPkg/Library/PlatformInitLib/Platform.c	2026-10-13 18:34:11.469392153 +0000
++++ b/OvmfPkg/Library/PlatformInitLib/Platform.c	2026-10-13 18:34:11.748403035 +0000
+@@ -182,6 +182,13 @@
+     ASSERT (PlatformInfoHob->LowMemory <= PciExBarBase);
+     ASSERT (PciExBarBase <= MAX_UINT32 - SIZE_256MB);
+     PciSize = (UINT32)(PciExBarBase - PciBase);
++  } else if (PlatformInfoHob->HostBridgeDevId == CLOUDHV_DEVICE_ID) {
++    //
++    // Firecracker keeps its PCI MMCONFIG window inside the hole; the
++    // aperture must stop where CLOUDHV_MMIO_HOLE_SIZE says it does.
++    //
++    ASSERT (PlatformInfoHob->LowMemory <= PlatformInfoHob->Uc32Base);
++    PciSize = CLOUDHV_MMIO_HOLE_SIZE;
+   } else {
+     ASSERT (PlatformInfoHob->LowMemory <= PlatformInfoHob->Uc32Base);
+     PciSize = 0xFC000000 - PciBase;

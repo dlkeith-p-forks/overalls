@@ -1,0 +1,76 @@
+defmodule Marshall.Compute.Images do
+  @moduledoc "Trusted operator catalog registration. Content and minimum sizes are immutable."
+  alias Marshall.Compute.{Image, Ledger}
+  # @cc [owner:ghuntley,label:product] images-content-identity-immutable
+  # Registration MUST validate the manifest's content-derived identity before
+  # writing. Re-registering that ID MUST return the existing catalog entry without
+  # changing its manifest, minimum sizes, name or enabled state.
+  @spec register(map(), String.t()) :: {:ok, Image.t()} | {:error, term()}
+  def register(manifest, name) do
+    with {:ok, image} <- OverallsProtocol.ImageManifest.validate(manifest) do
+      Ledger.transaction(fn ->
+        Ecto.Adapters.SQL.query!(
+          Marshall.Repo,
+          "SELECT pg_advisory_xact_lock(hashtextextended($1, 0))",
+          [image.id],
+          log: false
+        )
+
+        case Ledger.read!(Image, id: image.id) do
+          [] -> Ledger.create!(Image, :register, %{manifest: manifest, name: name})
+          [existing] -> existing
+        end
+      end)
+    end
+  end
+
+  # @cc [owner:ghuntley,label:product;capacity] images-durable-launch-minima
+  # Launch sizing MUST come from the durable enabled catalog entry, never from a
+  # host's transient inventory observation, so a replayed launch derives the same
+  # request shape. Disabled or unknown images are unavailable.
+  @spec enabled(String.t()) ::
+          {:ok,
+           %{
+             id: String.t(),
+             minimum_memory_bytes: pos_integer(),
+             minimum_disk_bytes: pos_integer()
+           }}
+          | {:error, :image_unavailable}
+  def enabled(id) when is_binary(id) do
+    case Ledger.read!(Image, id: id, enabled: true) do
+      [image] -> {:ok, Map.take(image, [:id, :minimum_memory_bytes, :minimum_disk_bytes])}
+      [] -> {:error, :image_unavailable}
+    end
+  end
+
+  # @cc [owner:ghuntley,label:security] images-guest-capabilities-by-id
+  # guest_capabilities/1 MUST derive the capabilities from the durable catalog
+  # row's validated manifest and MUST return all-false for an unknown ID, so every
+  # terminal, agent and SSH refusal reads one authority.
+  @spec guest_capabilities(term()) :: Image.guest_capabilities()
+  def guest_capabilities(id) when is_binary(id) do
+    case Ledger.read!(Image, id: id) do
+      [image] -> Image.guest_capabilities(image)
+      _ -> Image.guest_capabilities(nil)
+    end
+  end
+
+  def guest_capabilities(_), do: Image.guest_capabilities(nil)
+
+  @doc "The guest operating system family agents should be told about."
+  # @cc [owner:ghuntley,label:product] images-guest-platform-by-id
+  # guest_platform/1 MUST be :windows exactly when the catalog row's validated
+  # manifest declares the windows-v1 agent set, and :unix otherwise (including
+  # unknown or invalid images); it grants no authority.
+  @spec guest_platform(term()) :: :unix | :windows
+  def guest_platform(id) when is_binary(id) do
+    with [image] <- Ledger.read!(Image, id: id),
+         {:ok, :windows_v1} <- Image.guest_agents_capability(image) do
+      :windows
+    else
+      _ -> :unix
+    end
+  end
+
+  def guest_platform(_), do: :unix
+end

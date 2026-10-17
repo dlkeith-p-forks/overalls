@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:security] marshall-probes-fixture-authority
+Probe-only authorization bypasses and magic-link token creation MUST NOT be
+exposed through production HTTP actions. Operators MUST direct smoke/probe
+scripts only at the disposable test database.
+
+@cc [owner:ghuntley,label:verification] marshall-probes-observed-outcomes
+Browser/guest probes MUST distinguish terminal echo from executed guest output,
+VMM running state from guest shell readiness, and delivered commands from observed
+physical outcomes. Success claims MUST reflect these observations.
+
+@cc [owner:ghuntley,label:security] marshall-probes-sensitive-output
+Probe login links, credentials and guest terminal bytes MUST stay out of printed
+diagnostics. Temporary context files containing tokens MUST be private and
+removed by the owning fixture's cleanup.

@@ -1,0 +1,337 @@
+diff -ruN b2/src/vmm/src/device_manager/legacy.rs b5/src/vmm/src/device_manager/legacy.rs
+--- a/src/vmm/src/device_manager/legacy.rs	2026-10-13 16:50:45.990850591 +0000
++++ b/src/vmm/src/device_manager/legacy.rs	2026-10-13 18:24:51.006511600 +0000
+@@ -12,7 +12,8 @@
+ use acpi_tables::{Aml, aml};
+ 
+ use crate::devices::legacy::acpi_pm_timer::{ACPI_PM_TIMER_PORT, ACPI_PM_TIMER_SIZE};
+-use crate::devices::legacy::{AcpiPmTimer, I8042Device, SerialDevice};
++use crate::devices::legacy::cmos_rtc::{CMOS_RTC_PORT, CMOS_RTC_SIZE};
++use crate::devices::legacy::{AcpiPmTimer, CmosRtc, I8042Device, SerialDevice};
+ use crate::vstate::bus::BusError;
+ use crate::vstate::vm::KvmVm;
+ 
+@@ -35,6 +36,8 @@
+     pub i8042: Arc<Mutex<I8042Device>>,
+     // Read-only ACPI PM timer required by PVH-booted UEFI firmware.
+     pub acpi_pm_timer: Arc<Mutex<AcpiPmTimer>>,
++    // Read-only CMOS wall clock for firmware and Windows guests.
++    pub cmos_rtc: Arc<Mutex<CmosRtc>>,
+ }
+ 
+ impl PortIODeviceManager {
+@@ -72,6 +75,7 @@
+             ACPI_PM_TIMER_PORT,
+             ACPI_PM_TIMER_SIZE,
+         )?;
++        io_bus.insert(self.cmos_rtc.clone(), CMOS_RTC_PORT, CMOS_RTC_SIZE)?;
+ 
+         vm.register_irq(
+             self.stdio_serial
+@@ -180,8 +184,13 @@
+                 I8042Device::new(EventFd::new(libc::EFD_NONBLOCK).unwrap()).unwrap(),
+             )),
+             acpi_pm_timer: Arc::new(Mutex::new(AcpiPmTimer::new())),
++            cmos_rtc: Arc::new(Mutex::new(CmosRtc::new())),
+         };
+         ldm.register_devices(&vm).unwrap();
++        let mut status_d = [0u8; 1];
++        vm.pio_bus.write(CMOS_RTC_PORT, &[0x0d]).unwrap();
++        vm.pio_bus.read(CMOS_RTC_PORT + 1, &mut status_d).unwrap();
++        assert_eq!(status_d, [0x80]);
+         let mut ticks = [0u8; 4];
+         vm.pio_bus.read(ACPI_PM_TIMER_PORT, &mut ticks).unwrap();
+         assert_ne!(ticks, [0xff; 4]);
+diff -ruN b2/src/vmm/src/device_manager/mod.rs b5/src/vmm/src/device_manager/mod.rs
+--- a/src/vmm/src/device_manager/mod.rs	2026-10-13 16:50:45.991850629 +0000
++++ b/src/vmm/src/device_manager/mod.rs	2026-10-13 18:24:51.006511600 +0000
+@@ -26,7 +26,7 @@
+ use crate::EventManager;
+ use crate::device_manager::acpi::ACPIDeviceError;
+ #[cfg(target_arch = "x86_64")]
+-use crate::devices::legacy::{AcpiPmTimer, I8042Device};
++use crate::devices::legacy::{AcpiPmTimer, CmosRtc, I8042Device};
+ #[cfg(target_arch = "aarch64")]
+ use crate::devices::legacy::RTCDevice;
+ use crate::devices::legacy::SerialDevice;
+@@ -222,6 +222,7 @@
+             stdio_serial: serial,
+             i8042,
+             acpi_pm_timer: Arc::new(Mutex::new(AcpiPmTimer::new())),
++            cmos_rtc: Arc::new(Mutex::new(CmosRtc::new())),
+         };
+         legacy_devices.register_devices(vm)?;
+         Ok(legacy_devices)
+@@ -816,6 +817,7 @@
+                 I8042Device::new(EventFd::new(libc::EFD_NONBLOCK).unwrap()).unwrap(),
+             )),
+             acpi_pm_timer: Arc::new(Mutex::new(AcpiPmTimer::new())),
++            cmos_rtc: Arc::new(Mutex::new(CmosRtc::new())),
+         };
+ 
+         DeviceManager {
+diff -ruN b2/src/vmm/src/devices/legacy/cmos_rtc.rs b5/src/vmm/src/devices/legacy/cmos_rtc.rs
+--- a/src/vmm/src/devices/legacy/cmos_rtc.rs	1970-01-01 00:00:00.000000000 +0000
++++ b/src/vmm/src/devices/legacy/cmos_rtc.rs	2026-10-13 18:24:51.005511560 +0000
+@@ -0,0 +1,240 @@
++// Copyright 2026 Overalls contributors.
++// SPDX-License-Identifier: Apache-2.0
++
++//! Minimal CMOS real-time clock on the legacy I/O ports `0x70` and `0x71`.
++//!
++//! Firecracker's Linux guests take their time from kvmclock and never touch
++//! the CMOS. UEFI firmware (edk2 `PcRtc`) and Windows read the wall clock
++//! from these ports at boot; without a device the reads return all ones,
++//! `PcRtc` asserts and Windows starts with an invalid date. The clock is
++//! read-only and follows the host's UTC time; the remaining CMOS RAM bytes
++//! are plain storage so status-register writes by the guest are retained.
++
++use std::sync::{Arc, Barrier};
++use std::time::{SystemTime, UNIX_EPOCH};
++
++use crate::vstate::bus::BusDevice;
++
++/// First CMOS port: the index register.
++pub const CMOS_RTC_PORT: u64 = 0x70;
++/// Index register plus data register.
++pub const CMOS_RTC_SIZE: u64 = 0x2;
++
++const REG_SECONDS: u8 = 0x00;
++const REG_MINUTES: u8 = 0x02;
++const REG_HOURS: u8 = 0x04;
++const REG_WEEKDAY: u8 = 0x06;
++const REG_DAY: u8 = 0x07;
++const REG_MONTH: u8 = 0x08;
++const REG_YEAR: u8 = 0x09;
++const REG_STATUS_A: u8 = 0x0a;
++const REG_STATUS_B: u8 = 0x0b;
++const REG_STATUS_C: u8 = 0x0c;
++const REG_STATUS_D: u8 = 0x0d;
++const REG_CENTURY: u8 = 0x32;
++/// Status A: 32.768 kHz time base, 1024 Hz periodic rate, update not in progress.
++const STATUS_A_DEFAULT: u8 = 0x26;
++/// Status B: 24-hour mode, BCD data, no interrupts enabled.
++const STATUS_B_DEFAULT: u8 = 0x02;
++/// Status B bit: binary instead of BCD data.
++const STATUS_B_BINARY: u8 = 0x04;
++/// Status D: battery and RAM contents valid.
++const STATUS_D_VALID: u8 = 0x80;
++
++/// Calendar fields of a UTC time stamp.
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub struct Calendar {
++    /// Seconds since the epoch split into fields below.
++    pub year: u32,
++    /// 1..=12
++    pub month: u8,
++    /// 1..=31
++    pub day: u8,
++    /// 1 (Sunday) ..= 7 (Saturday), as the CMOS weekday register counts.
++    pub weekday: u8,
++    /// 0..=23
++    pub hour: u8,
++    /// 0..=59
++    pub minute: u8,
++    /// 0..=59
++    pub second: u8,
++}
++
++impl Calendar {
++    /// Convert seconds since the Unix epoch (UTC) into calendar fields.
++    pub fn from_unix(secs: u64) -> Self {
++        let days = secs / 86_400;
++        let rem = secs % 86_400;
++        // 1970-01-01 was a Thursday; CMOS counts Sunday as 1.
++        let weekday = ((days + 4) % 7 + 1) as u8;
++        // Civil-from-days algorithm (Howard Hinnant), valid for the Gregorian calendar.
++        let z = days as i64 + 719_468;
++        let era = z.div_euclid(146_097);
++        let doe = z.rem_euclid(146_097);
++        let yoe = (doe - doe / 1460 + doe / 36_524 - doe / 146_096) / 365;
++        let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
++        let mp = (5 * doy + 2) / 153;
++        let day = (doy - (153 * mp + 2) / 5 + 1) as u8;
++        let month = if mp < 10 { mp + 3 } else { mp - 9 } as u8;
++        let year = (yoe + era * 400 + i64::from(month <= 2)) as u32;
++        Self {
++            year,
++            month,
++            day,
++            weekday,
++            hour: (rem / 3600) as u8,
++            minute: ((rem % 3600) / 60) as u8,
++            second: (rem % 60) as u8,
++        }
++    }
++}
++
++fn bcd(value: u8) -> u8 {
++    ((value / 10) << 4) | (value % 10)
++}
++
++/// Read-only wall clock plus 128 bytes of CMOS RAM.
++#[derive(Debug)]
++pub struct CmosRtc {
++    index: u8,
++    ram: [u8; 128],
++}
++
++impl Default for CmosRtc {
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
++impl CmosRtc {
++    /// Create a clock with default status registers and empty RAM.
++    pub fn new() -> Self {
++        let mut ram = [0u8; 128];
++        ram[REG_STATUS_A as usize] = STATUS_A_DEFAULT;
++        ram[REG_STATUS_B as usize] = STATUS_B_DEFAULT;
++        ram[REG_STATUS_D as usize] = STATUS_D_VALID;
++        Self { index: 0, ram }
++    }
++
++    fn now() -> Calendar {
++        let secs = SystemTime::now()
++            .duration_since(UNIX_EPOCH)
++            .map(|d| d.as_secs())
++            .unwrap_or(0);
++        Calendar::from_unix(secs)
++    }
++
++    fn encode(&self, value: u8) -> u8 {
++        if self.ram[REG_STATUS_B as usize] & STATUS_B_BINARY != 0 {
++            value
++        } else {
++            bcd(value)
++        }
++    }
++
++    /// Value of CMOS register `index` at calendar time `now`.
++    pub fn register(&self, index: u8, now: Calendar) -> u8 {
++        match index {
++            REG_SECONDS => self.encode(now.second),
++            REG_MINUTES => self.encode(now.minute),
++            REG_HOURS => self.encode(now.hour),
++            REG_WEEKDAY => self.encode(now.weekday),
++            REG_DAY => self.encode(now.day),
++            REG_MONTH => self.encode(now.month),
++            REG_YEAR => self.encode((now.year % 100) as u8),
++            REG_CENTURY => self.encode((now.year / 100) as u8),
++            // Reading status C acknowledges interrupts; none are ever raised.
++            REG_STATUS_C => 0,
++            REG_STATUS_D => STATUS_D_VALID,
++            other => self.ram[usize::from(other & 0x7f)],
++        }
++    }
++}
++
++impl BusDevice for CmosRtc {
++    fn read(&mut self, _base: u64, offset: u64, data: &mut [u8]) {
++        if data.len() != 1 {
++            data.fill(0xff);
++            return;
++        }
++        data[0] = match offset {
++            0 => self.index,
++            1 => self.register(self.index, Self::now()),
++            _ => 0xff,
++        };
++    }
++
++    fn write(&mut self, _base: u64, offset: u64, data: &[u8]) -> Option<Arc<Barrier>> {
++        if data.len() != 1 {
++            return None;
++        }
++        match offset {
++            // Bit 7 is the NMI mask, not part of the index.
++            0 => self.index = data[0] & 0x7f,
++            1 => match self.index {
++                // The clock itself is read-only; status C and D are hardware-owned.
++                REG_SECONDS..=REG_YEAR | REG_CENTURY | REG_STATUS_C | REG_STATUS_D => {}
++                index => self.ram[usize::from(index)] = data[0],
++            },
++            _ => {}
++        }
++        None
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn test_calendar_from_unix() {
++        // 2026-10-13T16:05:30Z is a Tuesday.
++        let calendar = Calendar::from_unix(1_791_907_530);
++        assert_eq!(
++            calendar,
++            Calendar {
++                year: 2026,
++                month: 10,
++                day: 13,
++                weekday: 3,
++                hour: 16,
++                minute: 5,
++                second: 30,
++            }
++        );
++        assert_eq!(Calendar::from_unix(0).weekday, 5);
++        assert_eq!(Calendar::from_unix(951_782_400).day, 29); // 2000-02-29
++    }
++
++    #[test]
++    fn test_registers_are_bcd_by_default_and_binary_on_request() {
++        let mut rtc = CmosRtc::new();
++        let now = Calendar::from_unix(1_791_907_530);
++        assert_eq!(rtc.register(REG_YEAR, now), 0x26);
++        assert_eq!(rtc.register(REG_CENTURY, now), 0x20);
++        assert_eq!(rtc.register(REG_HOURS, now), 0x16);
++        rtc.write(0, 0, &[REG_STATUS_B]);
++        rtc.write(0, 1, &[STATUS_B_DEFAULT | STATUS_B_BINARY]);
++        assert_eq!(rtc.register(REG_YEAR, now), 26);
++        assert_eq!(rtc.register(REG_STATUS_B, now), STATUS_B_DEFAULT | STATUS_B_BINARY);
++    }
++
++    #[test]
++    fn test_port_protocol() {
++        let mut rtc = CmosRtc::new();
++        let mut byte = [0u8; 1];
++        rtc.write(0, 0, &[REG_STATUS_D | 0x80]);
++        rtc.read(0, 0, &mut byte);
++        assert_eq!(byte, [REG_STATUS_D]);
++        rtc.read(0, 1, &mut byte);
++        assert_eq!(byte, [STATUS_D_VALID]);
++        // The clock is read-only.
++        rtc.write(0, 0, &[REG_SECONDS]);
++        rtc.write(0, 1, &[0x59]);
++        rtc.read(0, 1, &mut byte);
++        assert!(byte[0] <= 0x59);
++        let mut wide = [0u8; 2];
++        rtc.read(0, 0, &mut wide);
++        assert_eq!(wide, [0xff, 0xff]);
++    }
++}
+diff -ruN b2/src/vmm/src/devices/legacy/mod.rs b5/src/vmm/src/devices/legacy/mod.rs
+--- a/src/vmm/src/devices/legacy/mod.rs	2026-10-13 16:50:45.988850515 +0000
++++ b/src/vmm/src/devices/legacy/mod.rs	2026-10-13 18:24:51.006511600 +0000
+@@ -8,6 +8,8 @@
+ //! Implements legacy devices (UART, RTC etc).
+ #[cfg(target_arch = "x86_64")]
+ pub mod acpi_pm_timer;
++#[cfg(target_arch = "x86_64")]
++pub mod cmos_rtc;
+ mod i8042;
+ #[cfg(target_arch = "aarch64")]
+ pub mod rtc_pl031;
+@@ -23,6 +25,8 @@
+ 
+ #[cfg(target_arch = "x86_64")]
+ pub use self::acpi_pm_timer::AcpiPmTimer;
++#[cfg(target_arch = "x86_64")]
++pub use self::cmos_rtc::CmosRtc;
+ pub use self::i8042::{I8042Device, I8042Error as I8042DeviceError};
+ #[cfg(target_arch = "aarch64")]
+ pub use self::rtc_pl031::RTCDevice;

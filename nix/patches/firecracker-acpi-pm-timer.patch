@@ -1,0 +1,219 @@
+diff -ruN a/src/vmm/src/device_manager/legacy.rs b2/src/vmm/src/device_manager/legacy.rs
+--- a/src/vmm/src/device_manager/legacy.rs	2026-10-13 16:12:21.042909168 +0000
++++ b2/src/vmm/src/device_manager/legacy.rs	2026-10-13 16:50:45.990850591 +0000
+@@ -11,7 +11,8 @@
+ use acpi_tables::aml::AmlError;
+ use acpi_tables::{Aml, aml};
+ 
+-use crate::devices::legacy::{I8042Device, SerialDevice};
++use crate::devices::legacy::acpi_pm_timer::{ACPI_PM_TIMER_PORT, ACPI_PM_TIMER_SIZE};
++use crate::devices::legacy::{AcpiPmTimer, I8042Device, SerialDevice};
+ use crate::vstate::bus::BusError;
+ use crate::vstate::vm::KvmVm;
+ 
+@@ -25,13 +26,15 @@
+ }
+ 
+ /// The `PortIODeviceManager` is a wrapper that is used for registering legacy devices
+-/// on an I/O Bus. It currently manages the uart and i8042 devices.
++/// on an I/O Bus. It currently manages the uart, i8042 and ACPI PM timer devices.
+ #[derive(Debug)]
+ pub struct PortIODeviceManager {
+     // BusDevice::Serial
+     pub stdio_serial: Arc<Mutex<SerialDevice>>,
+     // BusDevice::I8042Device
+     pub i8042: Arc<Mutex<I8042Device>>,
++    // Read-only ACPI PM timer required by PVH-booted UEFI firmware.
++    pub acpi_pm_timer: Arc<Mutex<AcpiPmTimer>>,
+ }
+ 
+ impl PortIODeviceManager {
+@@ -64,6 +67,11 @@
+             Self::I8042_KDB_DATA_REGISTER_ADDRESS,
+             Self::I8042_KDB_DATA_REGISTER_SIZE,
+         )?;
++        io_bus.insert(
++            self.acpi_pm_timer.clone(),
++            ACPI_PM_TIMER_PORT,
++            ACPI_PM_TIMER_SIZE,
++        )?;
+ 
+         vm.register_irq(
+             self.stdio_serial
+@@ -171,7 +179,11 @@
+             i8042: Arc::new(Mutex::new(
+                 I8042Device::new(EventFd::new(libc::EFD_NONBLOCK).unwrap()).unwrap(),
+             )),
++            acpi_pm_timer: Arc::new(Mutex::new(AcpiPmTimer::new())),
+         };
+         ldm.register_devices(&vm).unwrap();
++        let mut ticks = [0u8; 4];
++        vm.pio_bus.read(ACPI_PM_TIMER_PORT, &mut ticks).unwrap();
++        assert_ne!(ticks, [0xff; 4]);
+     }
+ }
+diff -ruN a/src/vmm/src/device_manager/mod.rs b2/src/vmm/src/device_manager/mod.rs
+--- a/src/vmm/src/device_manager/mod.rs	2026-10-13 16:12:21.042909168 +0000
++++ b2/src/vmm/src/device_manager/mod.rs	2026-10-13 16:50:45.991850629 +0000
+@@ -26,7 +26,7 @@
+ use crate::EventManager;
+ use crate::device_manager::acpi::ACPIDeviceError;
+ #[cfg(target_arch = "x86_64")]
+-use crate::devices::legacy::I8042Device;
++use crate::devices::legacy::{AcpiPmTimer, I8042Device};
+ #[cfg(target_arch = "aarch64")]
+ use crate::devices::legacy::RTCDevice;
+ use crate::devices::legacy::SerialDevice;
+@@ -221,6 +221,7 @@
+         let mut legacy_devices = PortIODeviceManager {
+             stdio_serial: serial,
+             i8042,
++            acpi_pm_timer: Arc::new(Mutex::new(AcpiPmTimer::new())),
+         };
+         legacy_devices.register_devices(vm)?;
+         Ok(legacy_devices)
+@@ -814,6 +815,7 @@
+             i8042: Arc::new(Mutex::new(
+                 I8042Device::new(EventFd::new(libc::EFD_NONBLOCK).unwrap()).unwrap(),
+             )),
++            acpi_pm_timer: Arc::new(Mutex::new(AcpiPmTimer::new())),
+         };
+ 
+         DeviceManager {
+diff -ruN a/src/vmm/src/devices/legacy/acpi_pm_timer.rs b2/src/vmm/src/devices/legacy/acpi_pm_timer.rs
+--- a/src/vmm/src/devices/legacy/acpi_pm_timer.rs	1970-01-01 00:00:00.000000000 +0000
++++ b2/src/vmm/src/devices/legacy/acpi_pm_timer.rs	2026-10-13 16:50:45.987850477 +0000
+@@ -0,0 +1,112 @@
++// Copyright 2026 Overalls contributors.
++// SPDX-License-Identifier: Apache-2.0
++
++//! ACPI power management timer exposed on a fixed x86 I/O port.
++//!
++//! Firecracker publishes hardware-reduced ACPI tables, so Linux guests never
++//! look for this timer. UEFI firmware built for Cloud Hypervisor (edk2
++//! `OvmfPkg/CloudHv`) does not consult the FADT: its `AcpiTimerLib` reads the
++//! 24-bit counter at the fixed port `0x608` and busy-waits on it for every
++//! delay. Without a device there the firmware spins forever before it can
++//! enumerate PCI devices or load a boot manager.
++
++use std::sync::{Arc, Barrier};
++use std::time::Instant;
++
++use crate::vstate::bus::BusDevice;
++
++/// ACPI PM timer frequency in Hz (ACPI specification, section 4.8.3.3).
++pub const ACPI_PM_TIMER_FREQUENCY_HZ: u128 = 3_579_545;
++/// I/O port used by the edk2 CloudHv platform (`CLOUDHV_ACPI_TIMER_IO_ADDRESS`).
++pub const ACPI_PM_TIMER_PORT: u64 = 0x608;
++/// The timer is a single 32-bit register.
++pub const ACPI_PM_TIMER_SIZE: u64 = 0x4;
++/// The counter is 24 bits wide; bits 24..32 always read as zero.
++pub const ACPI_PM_TIMER_MASK: u32 = 0x00FF_FFFF;
++
++/// Read-only ACPI PM timer derived from the host monotonic clock.
++#[derive(Debug)]
++pub struct AcpiPmTimer {
++    start: Instant,
++}
++
++impl Default for AcpiPmTimer {
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
++impl AcpiPmTimer {
++    /// Create a timer whose counter starts at zero now.
++    pub fn new() -> Self {
++        Self {
++            start: Instant::now(),
++        }
++    }
++
++    /// Current 24-bit counter value.
++    pub fn ticks(&self) -> u32 {
++        let elapsed_ns = self.start.elapsed().as_nanos();
++        let ticks = elapsed_ns * ACPI_PM_TIMER_FREQUENCY_HZ / 1_000_000_000;
++        // The mask keeps the value inside 24 bits, so the cast cannot truncate.
++        #[allow(clippy::cast_possible_truncation)]
++        let value = (ticks & u128::from(ACPI_PM_TIMER_MASK)) as u32;
++        value
++    }
++}
++
++impl BusDevice for AcpiPmTimer {
++    fn read(&mut self, _base: u64, offset: u64, data: &mut [u8]) {
++        // Only a 32-bit read of the whole register is meaningful. Anything
++        // else reads as all ones, like an unpopulated port.
++        if offset != 0 || data.len() != 4 {
++            data.fill(0xff);
++            return;
++        }
++        data.copy_from_slice(&self.ticks().to_le_bytes());
++    }
++
++    fn write(&mut self, _base: u64, _offset: u64, _data: &[u8]) -> Option<Arc<Barrier>> {
++        // The counter is read-only.
++        None
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use std::thread::sleep;
++    use std::time::Duration;
++
++    use super::*;
++
++    #[test]
++    fn test_counter_advances_within_24_bits() {
++        let mut timer = AcpiPmTimer::new();
++        let mut first = [0u8; 4];
++        timer.read(0, 0, &mut first);
++        sleep(Duration::from_millis(5));
++        let mut second = [0u8; 4];
++        timer.read(0, 0, &mut second);
++        let first = u32::from_le_bytes(first);
++        let second = u32::from_le_bytes(second);
++        assert!(first <= ACPI_PM_TIMER_MASK);
++        assert!(second <= ACPI_PM_TIMER_MASK);
++        // 5 ms is about 17 898 ticks; well below the 24-bit wrap of ~4.69 s.
++        assert!(second > first, "counter did not advance: {first} -> {second}");
++    }
++
++    #[test]
++    fn test_partial_reads_and_writes_are_inert() {
++        let mut timer = AcpiPmTimer::new();
++        let mut byte = [0u8; 1];
++        timer.read(0, 0, &mut byte);
++        assert_eq!(byte, [0xff]);
++        let mut misaligned = [0u8; 4];
++        timer.read(0, 2, &mut misaligned);
++        assert_eq!(misaligned, [0xff; 4]);
++        assert!(timer.write(0, 0, &[1, 2, 3, 4]).is_none());
++        let mut after = [0u8; 4];
++        timer.read(0, 0, &mut after);
++        assert_ne!(after, [0xff; 4]);
++    }
++}
+diff -ruN a/src/vmm/src/devices/legacy/mod.rs b2/src/vmm/src/devices/legacy/mod.rs
+--- a/src/vmm/src/devices/legacy/mod.rs	2026-10-13 16:12:21.007907813 +0000
++++ b2/src/vmm/src/devices/legacy/mod.rs	2026-10-13 16:50:45.988850515 +0000
+@@ -6,6 +6,8 @@
+ // found in the THIRD-PARTY file.
+ 
+ //! Implements legacy devices (UART, RTC etc).
++#[cfg(target_arch = "x86_64")]
++pub mod acpi_pm_timer;
+ mod i8042;
+ #[cfg(target_arch = "aarch64")]
+ pub mod rtc_pl031;
+@@ -19,6 +21,8 @@
+ use vm_superio::Trigger;
+ use vmm_sys_util::eventfd::EventFd;
+ 
++#[cfg(target_arch = "x86_64")]
++pub use self::acpi_pm_timer::AcpiPmTimer;
+ pub use self::i8042::{I8042Device, I8042Error as I8042DeviceError};
+ #[cfg(target_arch = "aarch64")]
+ pub use self::rtc_pl031::RTCDevice;

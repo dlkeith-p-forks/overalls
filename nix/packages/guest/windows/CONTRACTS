@@ -1,0 +1,64 @@
+@cc [owner:ghuntley,label:build] firmware-image-offline-assembly
+Windows guest images MUST be assembled from a hash-pinned installation ISO
+recorded in iso.json, the pinned nixpkgs virtio-win driver tree and the
+source-built CloudHv firmware, inside a KVM-enabled Nix sandbox whose guest
+network is restricted. Guest agents come only from the source-built
+`lyraWindows` and `terminaldWindows` derivations, and winget and every
+winget package (Git among them) only from winget.json, fetched by Nix against
+the recorded SHA-256 digests. No build step may fetch anything at build time;
+the installation guest's only reachable endpoint is the guestfwd file server
+serving exactly the staged installers, and the installation MUST bind
+modern-only virtio-pci devices (ADR-0169, ADR-0171, ADR-0173).
+
+@cc [owner:ghuntley,label:security] windows-serial-console
+A Windows guest image MUST boot headless with Emergency Management Services on
+COM1 at 115200 baud (boot manager, loader and SAC), MUST NOT autologon (the
+build's single interactive logon, AutoLogon LogonCount 1 for the winget step of
+ADR-0173, MUST leave no AutoAdminLogon, DefaultPassword or AutoLogonCount
+behind, and the image is refused without OVERALLS-AUTOLOGON-CLEARED), and MUST
+carry only the documented bootstrap Administrator credential until the roster
+agent retires it: on a `windows-v1` guest the agent MUST give the Administrator
+a random unrecorded password and disable it as soon as a roster account is
+active (ADR-0171), after which the SAC prompt offers no usable login. On the
+agentless image the SAC login shell on serial remains an explicit difference
+from the Linux no-serial-login-shell contract and MUST stay recorded as a
+security gap while it exists.
+
+@cc [owner:ghuntley,label:build] windows-image-identity-separate
+Windows images MUST use manifest version 5 with `boot.kind = firmware`,
+`root.format = raw-gpt` and `guest_agents` of `none` or `windows-v1` (the
+builder's `guestAgents` argument, `windows-v1` only when the agents are
+supplied), with `workspace_source_version` 2 exactly for `windows-v1`. They
+MUST NOT be presented as version-4 kernel images, and the Linux
+`guest-image-identity` contract in the parent directory MUST NOT be weakened to
+admit them.
+
+@cc [owner:ghuntley,label:security;network] windows-guest-agents-vsock
+Windows guest agents MUST reach Lilly only over virtio-vsock through the pinned
+virtio-win `viosock` driver and Winsock provider shipped in the image, speaking
+the existing Lilly guest protocols unchanged; the address family MUST be
+discovered at runtime, never assumed. The spike probe `overalls-winprobe` MAY
+ship only while the real agents do not exist, MUST carry no identity or
+credential material and MUST publish only its own log (ADR-0171).
+
+@cc [owner:ghuntley,label:security;network] windows-bootstrap-network-from-mmds
+A Windows guest MUST learn its placement identity and network only from
+Firecracker's MMDS (version 2 session tokens) at boot, through a SYSTEM task
+carried in the image: it MUST configure exactly the delivered /32 with an
+on-link route to the delivered gateway and a default route through it, route
+the private endpoint 169.254.254.1 through the gateway (never on-link), only
+the `.internal` namespace to its resolver and every other name to the Linux
+guests' public resolvers (1.1.1.1, 9.9.9.9), keep
+DHCP and IPv6 disabled, refuse any document whose fields fail validation or
+whose MAC is not the adapter's, never log the token or boot challenge, and
+grow C: only into space the host added. Nothing about the Administrator
+credential, EMS or SAC may change (ADR-0170).
+
+@cc [owner:ghuntley,label:verification] windows-install-observability
+Every Windows installation MUST be observable after the fact without rerunning
+it: the build keeps a timestamped timeline of QEMU lifecycle events and guest
+serial checkpoints, change-triggered screenshots, the raw serial log, the
+driver summary and the Windows Setup and driver-binding logs published by the
+guest on its EFI system partition. Guest-side checkpoints MUST be emitted in
+every unattend pass that runs code (Windows PE, specialize, SetupComplete) so a
+stalled installation can be placed between two known steps.

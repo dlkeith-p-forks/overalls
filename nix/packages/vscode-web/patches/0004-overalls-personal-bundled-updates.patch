@@ -1,0 +1,141 @@
+diff --git a/src/vs/base/common/product.ts b/src/vs/base/common/product.ts
+--- a/src/vs/base/common/product.ts
++++ b/src/vs/base/common/product.ts
+@@ -96,11 +96,18 @@
+ 	readonly urlTemplate: string;
+ }
+ 
++export type OverallsBundledExtensionId =
++	| 'editorconfig.editorconfig'
++	| 'cab404.vscode-direnv'
++	| 'elixir-lsp.elixir-ls'
++	| 'rust-lang.rust-analyzer';
++
+ export interface IProductConfiguration {
+ 	readonly overallsEditor?: {
+ 		readonly releaseId: string;
+ 		readonly protocol: 1;
+ 		readonly extensionSigningKeys: readonly string[];
++		readonly userUpdatableBundledExtensions?: readonly OverallsBundledExtensionId[];
+ 		readonly policy?: {
+ 			readonly builtInAI: 'disabled';
+ 			readonly workspaceTrust: 'disabled';
+diff --git a/src/vs/platform/extensionManagement/node/extensionManagementService.ts b/src/vs/platform/extensionManagement/node/extensionManagementService.ts
+--- a/src/vs/platform/extensionManagement/node/extensionManagementService.ts
++++ b/src/vs/platform/extensionManagement/node/extensionManagementService.ts
+@@ -49,6 +49,7 @@
+ import { IInstantiationService, refineServiceDecorator } from '../../instantiation/common/instantiation.js';
+ import { ILogService } from '../../log/common/log.js';
+ import { IProductService } from '../../product/common/productService.js';
++import { canUserUpdateOverallsBundledExtension } from '../common/overallsBundledExtensions.js';
+ import { ITelemetryService } from '../../telemetry/common/telemetry.js';
+ import { IUriIdentityService } from '../../uriIdentity/common/uriIdentity.js';
+ import { IUserDataProfilesService } from '../../userDataProfile/common/userDataProfile.js';
+@@ -1077,7 +1078,7 @@
+ 		const system = await this.extensionsScanner.scanExtensions(ExtensionType.System, this.options.profileLocation, this.options.productVersion);
+ 		const existingSystemExtension = system.find(i => areSameExtensions(i.identifier, this.identifier));
+ 		if (existingSystemExtension) {
+-			if (!existingSystemExtension.forceAutoUpdate) {
++			if (!existingSystemExtension.forceAutoUpdate && !canUserUpdateOverallsBundledExtension(existingSystemExtension.identifier.id, this.productService)) {
+ 				throw new ExtensionManagementError(nls.localize('builtinAutoUpdate', "Extension '{0}' is a built-in extension and not allowed to be updated in the current product quality '{1}'.", existingSystemExtension.identifier.id, this.productService.quality), ExtensionManagementErrorCode.Incompatible);
+ 			}
+ 			if (semver.gt(existingSystemExtension.manifest.version, this.manifest.version)) {
+diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsWorkbenchService.ts b/src/vs/workbench/contrib/extensions/browser/extensionsWorkbenchService.ts
+--- a/src/vs/workbench/contrib/extensions/browser/extensionsWorkbenchService.ts
++++ b/src/vs/workbench/contrib/extensions/browser/extensionsWorkbenchService.ts
+@@ -48,6 +48,7 @@
+ import { IExtensionManifest, ExtensionType, IExtension as IPlatformExtension, TargetPlatform, ExtensionIdentifier, IExtensionIdentifier, IExtensionDescription, isApplicationScopedExtension } from '../../../../platform/extensions/common/extensions.js';
+ import { ILanguageService } from '../../../../editor/common/languages/language.js';
+ import { IProductService } from '../../../../platform/product/common/productService.js';
++import { canUserUpdateOverallsBundledExtension } from '../../../../platform/extensionManagement/common/overallsBundledExtensions.js';
+ import { FileAccess } from '../../../../base/common/network.js';
+ import { IIgnoredExtensionsManagementService } from '../../../../platform/userDataSync/common/ignoredExtensions.js';
+ import { IUserDataAutoSyncService, IUserDataSyncEnablementService, SyncResource } from '../../../../platform/userDataSync/common/userDataSync.js';
+@@ -340,7 +341,9 @@
+ 				return false;
+ 			}
+ 			// Do not allow updating system extensions in stable
+-			if (this.type === ExtensionType.System && this.productService.quality === 'stable' && !this.productService.builtInExtensionsEnabledWithAutoUpdates?.some(id => id.toLowerCase() === this.identifier.id.toLowerCase())) {
++			if (this.type === ExtensionType.System && this.productService.quality === 'stable'
++				&& !canUserUpdateOverallsBundledExtension(this.identifier.id, this.productService)
++				&& !this.productService.builtInExtensionsEnabledWithAutoUpdates?.some(id => id.toLowerCase() === this.identifier.id.toLowerCase())) {
+ 				return false;
+ 			}
+ 			if (!this.local.preRelease && this.gallery.properties.isPreReleaseVersion) {
+@@ -2049,12 +2052,14 @@
+ 		}
+ 		const infos: IExtensionInfo[] = [];
+ 		for (const installed of this.local) {
+-			if (onlyBuiltin && !installed.isBuiltin) {
+-				// Skip if check updates only for builtin extensions and current extension is not builtin.
++			if (onlyBuiltin && (!installed.isBuiltin || canUserUpdateOverallsBundledExtension(installed.identifier.id, this.productService))) {
++				// The forced web builtin update path excludes ordinary user-managed bundles.
+ 				continue;
+ 			}
+-			if (!installed.local?.forceAutoUpdate && installed.isBuiltin && !installed.local?.pinned && (installed.type === ExtensionType.System || !installed.local?.identifier.uuid)) {
+-				// Skip checking updates for a builtin extension if it is a system extension or if it does not have a Marketplace identifier
++			if (!installed.local?.forceAutoUpdate && installed.isBuiltin
++				&& !canUserUpdateOverallsBundledExtension(installed.identifier.id, this.productService)
++				&& !installed.local?.pinned && (installed.type === ExtensionType.System || !installed.local?.identifier.uuid)) {
++				// Core builtin update restrictions do not prevent ordinary user-managed bundle updates.
+ 				continue;
+ 			}
+ 			if (installed.local?.source === 'resource') {
+@@ -2245,7 +2250,7 @@
+ 			return;
+ 		}
+ 		await this.checkForUpdates(undefined, true);
+-		const toUpdate = this.outdated.filter(e => e.isBuiltin);
++		const toUpdate = this.outdated.filter(e => e.isBuiltin && !canUserUpdateOverallsBundledExtension(e.identifier.id, this.productService));
+ 		await Promises.settled(toUpdate.map(e => this.install(e, e.local?.preRelease ? { installPreReleaseVersion: true } : undefined)));
+ 	}
+ 
+@@ -2634,7 +2639,7 @@
+ 			// Install by id
+ 			if (isString(arg)) {
+ 				extension = this.local.find(e => areSameExtensions(e.identifier, { id: arg }));
+-				if (extension?.isBuiltin) {
++				if (extension?.isBuiltin && !canUserUpdateOverallsBundledExtension(extension.identifier.id, this.productService)) {
+ 					if (this.productService.builtInExtensionsEnabledWithAutoUpdates?.some(id => id.toLowerCase() === arg.toLowerCase())) {
+ 						return extension;
+ 					}
+diff --git a/src/vs/platform/extensionManagement/common/overallsBundledExtensions.ts b/src/vs/platform/extensionManagement/common/overallsBundledExtensions.ts
+new file mode 100644
+--- /dev/null
++++ b/src/vs/platform/extensionManagement/common/overallsBundledExtensions.ts
+@@ -0,0 +1,35 @@
++/*---------------------------------------------------------------------------------------------
++ *  Copyright (c) Overalls contributors. All rights reserved.
++ *  Licensed under the MIT License. See License.txt in the project root for license information.
++ *--------------------------------------------------------------------------------------------*/
++
++import type { OverallsBundledExtensionId } from '../../../base/common/product.js';
++
++export interface IOverallsBundledExtensionUpdateConfiguration {
++	readonly overallsEditor?: {
++		readonly userUpdatableBundledExtensions?: unknown;
++	};
++}
++
++const userUpdatableBundledExtensions: readonly OverallsBundledExtensionId[] = [
++	'editorconfig.editorconfig',
++	'cab404.vscode-direnv',
++	'elixir-lsp.elixir-ls',
++	'rust-lang.rust-analyzer',
++];
++
++/** @cc [owner:ghuntley,label:security] overalls-personal-bundled-extension-updates
++ * Only the exact third-party bundle IDs explicitly enabled by immutable product
++ * metadata MAY use ordinary personal update paths. This MUST NOT grant core
++ * builtin install rights, force automatic updates or change signed bundle bytes.
++ */
++export function canUserUpdateOverallsBundledExtension(id: string, configuration: IOverallsBundledExtensionUpdateConfiguration): boolean {
++	const configured: unknown = configuration.overallsEditor?.userUpdatableBundledExtensions;
++	if (!Array.isArray(configured)) {
++		return false;
++	}
++	const normalized = id.toLowerCase();
++	return configured.some((entry: unknown) => typeof entry === 'string'
++		&& entry === normalized
++		&& userUpdatableBundledExtensions.some(bundledId => bundledId === entry));
++}

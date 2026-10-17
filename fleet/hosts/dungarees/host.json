@@ -1,0 +1,334 @@
+{
+  "budgets": {
+    "arcMaxMiB": 24576,
+    "guestCpuCores": 32,
+    "guestMemoryMiB": 95232
+  },
+  "credentials": [
+    {
+      "name": "dungarees-git",
+      "path": "secrets/dungarees-git.enc.json"
+    },
+    {
+      "name": "dungarees-lilly",
+      "path": "secrets/dungarees-lilly.enc.json"
+    },
+    {
+      "name": "dungarees-brady",
+      "path": "secrets/dungarees-brady.enc.json"
+    },
+    {
+      "name": "dungarees-ziggy",
+      "path": "secrets/dungarees-ziggy.enc.json"
+    },
+    {
+      "name": "dungarees-audi-private",
+      "path": "secrets/dungarees-audi-private.enc.json"
+    },
+    {
+      "name": "dungarees-logstore",
+      "path": "secrets/dungarees-logstore.enc.json"
+    },
+    {
+      "name": "dungarees-remote-builders",
+      "path": "secrets/dungarees-remote-builders.enc.json"
+    },
+    {
+      "name": "dungarees-fleet-network",
+      "path": "secrets/dungarees-fleet-network.enc.json"
+    },
+    {
+      "name": "dungarees-galileo",
+      "path": "secrets/dungarees-galileo.enc.json"
+    },
+    {
+      "name": "dungarees-underclass",
+      "path": "secrets/dungarees-underclass.enc.json"
+    },
+    {
+      "name": "dungarees-audi",
+      "path": "secrets/dungarees-audi.enc.json"
+    },
+    {
+      "name": "dungarees-audi-dns",
+      "path": "secrets/dungarees-audi-dns.enc.json"
+    }
+  ],
+  "discovery": {
+    "routes": [
+      {
+        "dev": "eth0",
+        "dst": "default",
+        "flags": [],
+        "gateway": "136.243.69.1"
+      },
+      {
+        "dev": "eth0",
+        "dst": "136.243.69.0/26",
+        "flags": [],
+        "gateway": "136.243.69.1"
+      },
+      {
+        "dev": "eth0",
+        "dst": "136.243.69.1",
+        "flags": [],
+        "scope": "link"
+      },
+      {
+        "dev": "lo",
+        "dst": "127.0.0.0/8",
+        "flags": [],
+        "prefsrc": "127.0.0.1",
+        "protocol": "kernel",
+        "scope": "host",
+        "table": "local",
+        "type": "local"
+      },
+      {
+        "dev": "lo",
+        "dst": "127.0.0.1",
+        "flags": [],
+        "prefsrc": "127.0.0.1",
+        "protocol": "kernel",
+        "scope": "host",
+        "table": "local",
+        "type": "local"
+      },
+      {
+        "dev": "lo",
+        "dst": "127.255.255.255",
+        "flags": [],
+        "prefsrc": "127.0.0.1",
+        "protocol": "kernel",
+        "scope": "link",
+        "table": "local",
+        "type": "broadcast"
+      },
+      {
+        "dev": "eth0",
+        "dst": "136.243.69.35",
+        "flags": [],
+        "prefsrc": "136.243.69.35",
+        "protocol": "kernel",
+        "scope": "host",
+        "table": "local",
+        "type": "local"
+      },
+      {
+        "dev": "eth0",
+        "dst": "136.243.69.63",
+        "flags": [],
+        "prefsrc": "136.243.69.35",
+        "protocol": "kernel",
+        "scope": "link",
+        "table": "local",
+        "type": "broadcast"
+      },
+      {
+        "dev": "eth0",
+        "dst": "2a01:4f8:212:231f::/64",
+        "flags": [],
+        "metric": 256,
+        "pref": "medium",
+        "protocol": "kernel"
+      },
+      {
+        "dev": "eth0",
+        "dst": "fe80::/64",
+        "flags": [],
+        "metric": 256,
+        "pref": "medium",
+        "protocol": "kernel"
+      },
+      {
+        "dev": "eth0",
+        "dst": "default",
+        "flags": [],
+        "gateway": "fe80::1",
+        "metric": 1024,
+        "pref": "medium"
+      },
+      {
+        "dev": "lo",
+        "dst": "::1",
+        "flags": [],
+        "metric": 0,
+        "pref": "medium",
+        "protocol": "kernel",
+        "table": "local",
+        "type": "local"
+      },
+      {
+        "dev": "eth0",
+        "dst": "2a01:4f8:212:231f::2",
+        "flags": [],
+        "metric": 0,
+        "pref": "medium",
+        "protocol": "kernel",
+        "table": "local",
+        "type": "local"
+      },
+      {
+        "dev": "eth0",
+        "dst": "fe80::9e6b:ff:fedc:7062",
+        "flags": [],
+        "metric": 0,
+        "pref": "medium",
+        "protocol": "kernel",
+        "table": "local",
+        "type": "local"
+      },
+      {
+        "dev": "eth0",
+        "dst": "ff00::/8",
+        "flags": [],
+        "metric": 256,
+        "pref": "medium",
+        "protocol": "kernel",
+        "table": "local",
+        "type": "multicast"
+      }
+    ],
+    "sourceKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMtfutt4THjYXg9SXARzcr+fL9ylsx/gSWGm01ZqoOpl"
+  },
+  "firmware": "uefi",
+  "git": {
+    "knownHosts": "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl\n",
+    "repository": "ssh://git@github.com/antithesishq/kittens"
+  },
+  "identity": {
+    "hostId": "5ffb4252",
+    "sshKeys": [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7YqQClUFnB1POZHExl0fqKLqXmEUlBzKtMD6/knJ+M"
+    ]
+  },
+  "inventory": {
+    "arch": "x86_64",
+    "disks": [
+      {
+        "active": false,
+        "aliases": [
+          "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117850",
+          "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117850_1",
+          "/dev/disk/by-id/nvme-eui.363447304c1178500025385400000003"
+        ],
+        "device": "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117850",
+        "id": "disk-24f1c97dc9627e0111145f2e",
+        "kind": "physical",
+        "model": "SAMSUNG MZQL21T9HCJR-00A07",
+        "path": "/dev/nvme1n1",
+        "serial": "S64GNT0L117850",
+        "size": 1920383410176,
+        "transport": "nvme"
+      },
+      {
+        "active": false,
+        "aliases": [
+          "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117831",
+          "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117831_1",
+          "/dev/disk/by-id/nvme-eui.363447304c1178310025385400000003"
+        ],
+        "device": "/dev/disk/by-id/nvme-SAMSUNG_MZQL21T9HCJR-00A07_S64GNT0L117831",
+        "id": "disk-9b1c2d011b9a645d293b69c2",
+        "kind": "physical",
+        "model": "SAMSUNG MZQL21T9HCJR-00A07",
+        "path": "/dev/nvme0n1",
+        "serial": "S64GNT0L117831",
+        "size": 1920383410176,
+        "transport": "nvme"
+      }
+    ],
+    "machine": "1e47fcf0-ac62-11f1-8420-5cffb9e15600"
+  },
+  "lilly": {
+    "binding": {
+      "credential_id": "7a53542b-981c-4d6a-b44a-b4b3894c09de",
+      "expires_at": "2031-09-21T10:09:51.389382Z",
+      "host_id": "585ccc67-1631-4d6c-84b2-fc06a3cd085a",
+      "machine_id": "sha256:bfeafb2e02f39e32d19e8ae7829871ba65f28dfaf8f79302f7fbc97cb7b6ef95",
+      "pools": [
+        {
+          "filesystem_id": "zfs:10079321893273699629:1297516200523506477",
+          "id": "ee45ac6d-e264-43e0-adce-57d14dafb19e",
+          "name": "guests",
+          "storage": {
+            "backend": "zfs",
+            "dataset": "zroot/lilly",
+            "dataset_guid": "1297516200523506477",
+            "zpool_guid": "10079321893273699629"
+          }
+        }
+      ]
+    },
+    "controlPlane": "https://ghuntley.dev:5443",
+    "credentialTtlSeconds": 157680000,
+    "egressInterface": "enp5s0",
+    "overheads": {
+      "cores": 0,
+      "memoryBytes": 0,
+      "storageBytes": 0
+    },
+    "transferEndpoint": {
+      "address": "136.243.69.35",
+      "host_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP7YqQClUFnB1POZHExl0fqKLqXmEUlBzKtMD6/knJ+M",
+      "port": 2223
+    }
+  },
+  "name": "dungarees",
+  "network": {
+    "10-eth0": {
+      "matchConfig": {
+        "MACAddress": "9c:6b:00:dc:70:62"
+      },
+      "networkConfig": {
+        "Address": [
+          "136.243.69.35/26",
+          "136.243.69.32/26"
+        ],
+        "DNS": [
+          "185.12.64.1",
+          "185.12.64.2"
+        ],
+        "IPv6AcceptRA": false,
+        "LinkLocalAddressing": "no"
+      },
+      "routes": [
+        {
+          "Destination": "136.243.69.1/32",
+          "Scope": "link"
+        },
+        {
+          "Destination": "0.0.0.0/0",
+          "Gateway": "136.243.69.1",
+          "GatewayOnLink": true
+        },
+        {
+          "Destination": "136.243.69.0/26",
+          "Gateway": "136.243.69.1",
+          "GatewayOnLink": true
+        },
+        {
+          "Destination": "136.243.69.55/32",
+          "Gateway": "136.243.69.1",
+          "GatewayOnLink": true
+        },
+        {
+          "Destination": "136.243.69.37/32",
+          "Gateway": "136.243.69.1",
+          "GatewayOnLink": true
+        }
+      ]
+    }
+  },
+  "platform": "hetzner",
+  "reviewed": true,
+  "storage": {
+    "ashift": 12,
+    "guests": [],
+    "quotaBytes": 1710470725632,
+    "system": [
+      "disk-24f1c97dc9627e0111145f2e",
+      "disk-9b1c2d011b9a645d293b69c2"
+    ]
+  }
+}

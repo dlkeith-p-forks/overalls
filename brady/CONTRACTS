@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:security] brady-secret-free-diagnostics
+Brady diagnostics MUST emit only closed, validated event fields. Raw URLs,
+headers, bodies, certificates, keys, peer error text and arbitrary process state
+MUST NOT reach logs, including runtime crash reports.
+
+@cc [owner:ghuntley,label:security] brady-public-cache-only
+Only complete explicitly public responses, or responses satisfying the reviewed
+public commit-pinned GitHub archive policy, to eligible anonymous GET requests
+MUST enter shared storage. Credentials, cookies, signed URLs and ambiguous
+cache policy MUST bypass storage and reuse.
+
+@cc [owner:ghuntley,label:capacity] brady-disposable-bounded-cache
+Cached objects and in-progress writes MUST share a bounded budget. Cache storage
+failure MUST preserve proxied streaming where possible, without permitting a
+direct guest bypass. Unconfirmed deletion MUST NOT count as reclaimed space.
+
+@cc [owner:ghuntley,label:verification] brady-native-evidence
+Unit and property tests MUST NOT establish physical interception, TLS trust,
+ZFS behavior or Firecracker isolation; native acceptance MUST verify those paths.

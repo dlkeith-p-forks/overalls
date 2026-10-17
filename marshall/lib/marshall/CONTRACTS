@@ -1,0 +1,4 @@
+@cc [owner:ghuntley,label:architecture] marshall-domain-resource-boundaries
+Domain records MUST be modeled through Ash domains and resources. Direct SQL for
+coordination, database time, bounded retention and readiness MUST remain inside
+trusted coordinators; it MUST NOT create a user-accessible mutation bypass.

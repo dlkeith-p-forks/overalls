@@ -1,0 +1,33 @@
+/* The Monospace Web tokens (ADR-0161). Every colour the application renders
+   derives from these four tokens per theme; no other file may declare one. */
+:root {
+  --font-family: "JetBrains Mono", ui-monospace, monospace;
+  /* 1.2rem, declared as 1.203125rem (19.25px at 16px, 16.84375px at 14px) so
+     browser layout units of 1/64 px stay exact and lines never drift. */
+  --line-height: 1.203125rem;
+  --border-thickness: 2px;
+  --font-weight-normal: 500;
+  --font-weight-medium: 600;
+  --font-weight-bold: 800;
+  --text-color: #000;
+  --text-color-alt: #666;
+  --background-color: #fff;
+  --background-color-alt: #eee;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --text-color: #fff;
+  --text-color-alt: #aaa;
+  --background-color: #000;
+  --background-color-alt: #111;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --text-color: #fff;
+    --text-color-alt: #aaa;
+    --background-color: #000;
+    --background-color-alt: #111;
+    color-scheme: dark;
+  }
+}

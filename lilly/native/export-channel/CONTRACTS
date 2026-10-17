@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:security] export-channel-no-elevation-or-shell
+The bridge runs only as the dedicated SSH account with a server-selected key
+argv; SSH_ORIGINAL_COMMAND is validated into a fixed record and remote text is
+never executed. The serve side verifies SO_PEERCRED against the dedicated
+account, accepts exactly one writable descriptor with the bounded frame, and
+exposes only the selected key/request to the fixed worker argv. No setuid or
+capabilities on either side; worker stderr and data paths never become helper
+diagnostics.
+
+@cc [owner:ghuntley,label:verification] export-channel-hegel-properties
+Hegel properties MUST cover the record encode/decode roundtrip, the selector
+lattice and the charset/bound rules with an independent spec; process fixtures
+cover peercred refusal, listener/socket custody, descriptor forwarding,
+disconnect cancellation and completion authentication.

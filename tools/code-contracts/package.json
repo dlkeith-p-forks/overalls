@@ -1,0 +1,8 @@
+{
+  "name": "overalls-code-contracts",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Pinned development-only code contract validation",
+  "engines": { "node": ">=24.16.0", "npm": ">=11.11.0" },
+  "devDependencies": { "@spolu/cc-check": "0.2.0" }
+}

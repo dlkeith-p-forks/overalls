@@ -1,0 +1,276 @@
+diff -ruN a/src/vmm/src/devices/virtio/queue.rs b/src/vmm/src/devices/virtio/queue.rs
+--- a/src/vmm/src/devices/virtio/queue.rs	2026-10-14 21:50:44.858039052 +0000
++++ b/src/vmm/src/devices/virtio/queue.rs	2026-10-14 21:50:44.861039170 +0000
+@@ -14,6 +14,7 @@
+ 
+ pub const VIRTQ_DESC_F_NEXT: u16 = 0x1;
+ pub const VIRTQ_DESC_F_WRITE: u16 = 0x2;
++pub const VIRTQ_DESC_F_INDIRECT: u16 = 0x4;
+ 
+ /// Max size of virtio queues offered by firecracker's virtio devices.
+ pub(super) const FIRECRACKER_MAX_QUEUE_SIZE: u16 = 256;
+@@ -38,6 +39,8 @@
+     NotReady,
+     /// Virtio queue with invalid size: {0}
+     InvalidSize(u16),
++    /// Indirect descriptor table at {0:#x} with {1} bytes is malformed
++    InvalidIndirectTable(u64, u32),
+ }
+ 
+ /// Error type indicating the guest configured a virtio queue such that the avail_idx field would
+@@ -154,6 +157,50 @@
+         self.flags & VIRTQ_DESC_F_WRITE != 0
+     }
+ 
++    /// If the driver placed this chain's descriptors in an indirect table
++    /// (`VIRTQ_DESC_F_INDIRECT`). The virtio-win drivers do so for every
++    /// multi-descriptor buffer whenever they hold a table, whether or not the
++    /// feature was negotiated.
++    pub fn is_indirect(&self) -> bool {
++        self.flags & VIRTQ_DESC_F_INDIRECT != 0
++    }
++
++    /// Follows an indirect head into its table. The returned chain starts at the
++    /// table's first entry and walks the table, but keeps the head's ring `index`,
++    /// which is what `add_used` needs. A head that is not indirect is returned
++    /// unchanged. A head that also chains onward, a table that is empty, not a
++    /// whole number of descriptors, misaligned for a descriptor (viosock keeps
++    /// its tables 8-byte aligned inside its packet structures, so only the
++    /// descriptor's own alignment is required) or larger than the queue, and a
++    /// table entry that is itself indirect are refused.
++    pub fn resolve_indirect<M: GuestMemory>(self, mem: &M) -> Result<Self, QueueError> {
++        if !self.is_indirect() {
++            return Ok(self);
++        }
++        let entry = std::mem::size_of::<Descriptor>();
++        let len = u64_to_usize(u64::from(self.len));
++        let invalid = || QueueError::InvalidIndirectTable(self.addr.0, self.len);
++        if self.flags & VIRTQ_DESC_F_NEXT != 0
++            || len == 0
++            || len % entry != 0
++            || len / entry > usize::from(self.queue_size)
++            || self.addr.0 % std::mem::align_of::<Descriptor>() as u64 != 0
++        {
++            return Err(invalid());
++        }
++        let table = mem
++            .get_slice(self.addr, len)
++            .map_err(QueueError::MemoryError)?;
++        let table_ptr = table.ptr_guard_mut().as_ptr().cast::<Descriptor>();
++        let count = u16::try_from(len / entry).map_err(|_| invalid())?;
++        let mut chain = DescriptorChain::checked_new(table_ptr, count, 0).ok_or_else(invalid)?;
++        chain.index = self.index;
++        if chain.into_iter().any(|desc| desc.is_indirect()) {
++            return Err(invalid());
++        }
++        Ok(chain)
++    }
++
+     /// Gets the next descriptor in this descriptor chain, if there is one.
+     ///
+     /// Note that this is distinct from the next descriptor chain returned by `AvailIter`, which is
+diff -ruN a/src/vmm/src/devices/virtio/vsock/mod.rs b/src/vmm/src/devices/virtio/vsock/mod.rs
+--- a/src/vmm/src/devices/virtio/vsock/mod.rs	2026-10-14 21:50:44.859039091 +0000
++++ b/src/vmm/src/devices/virtio/vsock/mod.rs	2026-10-14 21:50:44.861039170 +0000
+@@ -32,6 +32,7 @@
+ use super::iov_deque::IovDequeError;
+ use crate::devices::virtio::iovec::IoVecError;
+ use crate::devices::virtio::persist::PersistError as VirtioStateError;
++use crate::devices::virtio::queue::QueueError;
+ 
+ mod defs {
+     use crate::devices::virtio::queue::FIRECRACKER_MAX_QUEUE_SIZE;
+@@ -112,6 +113,8 @@
+     DescChainOverflow,
+     /// The vsock header `len` field holds an invalid value: {0}
+     InvalidPktLen(u32),
++    /// Malformed indirect descriptor table: {0}
++    IndirectDescriptor(QueueError),
+     /// A data fetch was attempted when no data was available.
+     NoData,
+     /// A data buffer was expected for the provided packet, but it is missing.
+diff -ruN a/src/vmm/src/devices/virtio/vsock/packet.rs b/src/vmm/src/devices/virtio/vsock/packet.rs
+--- a/src/vmm/src/devices/virtio/vsock/packet.rs	2026-10-14 21:50:44.859039091 +0000
++++ b/src/vmm/src/devices/virtio/vsock/packet.rs	2026-10-14 21:50:44.862039209 +0000
+@@ -214,6 +214,11 @@
+         mem: &GuestMemoryMmap,
+         chain: DescriptorChain,
+     ) -> Result<(), VsockError> {
++        // The virtio-win viosock driver hands every packet over through an
++        // indirect table, negotiated or not; walk the table instead of the head.
++        let chain = chain
++            .resolve_indirect(mem)
++            .map_err(VsockError::IndirectDescriptor)?;
+         // SAFETY: This descriptor chain is only loaded once
+         // virtio requests are handled sequentially so no two IoVecBuffers
+         // are live at the same time, meaning this has exclusive ownership over the memory
+@@ -309,6 +314,11 @@
+         mem: &GuestMemoryMmap,
+         chain: DescriptorChain,
+     ) -> Result<(), VsockError> {
++        // The virtio-win viosock driver posts every receive buffer through an
++        // indirect table, negotiated or not; walk the table instead of the head.
++        let chain = chain
++            .resolve_indirect(mem)
++            .map_err(VsockError::IndirectDescriptor)?;
+         // SAFETY: This descriptor chain is only loaded once
+         // virtio requests are handled sequentially so no two IoVecBuffers
+         // are live at the same time, meaning this has exclusive ownership over the memory
+@@ -376,7 +386,9 @@
+     use vm_memory::Bytes;
+ 
+     use super::*;
+-    use crate::devices::virtio::queue::VIRTQ_DESC_F_WRITE;
++    use crate::devices::virtio::queue::{
++        Descriptor, VIRTQ_DESC_F_INDIRECT, VIRTQ_DESC_F_NEXT, VIRTQ_DESC_F_WRITE,
++    };
+     use crate::devices::virtio::test_utils::VirtqDesc as GuestQDesc;
+     use crate::devices::virtio::vsock::defs::MAX_PKT_BUF_SIZE;
+     use crate::devices::virtio::vsock::device::{RXQ_INDEX, TXQ_INDEX};
+@@ -578,6 +590,146 @@
+         }
+     }
+ 
++    // Overalls: the virtio-win viosock driver posts its header and data buffer
++    // through an indirect table whether or not the feature was negotiated.
++    const INDIRECT_TABLE: GuestAddress = GuestAddress(0x0050_0000);
++
++    fn write_indirect_table(mem: &GuestMemoryMmap, flags: u16, entries: &[(u64, u32, u16)]) -> u32 {
++        for (position, (addr, len, extra)) in entries.iter().enumerate() {
++            let last = position + 1 == entries.len();
++            let desc = Descriptor {
++                addr: *addr,
++                len: *len,
++                flags: flags | extra | if last { 0 } else { VIRTQ_DESC_F_NEXT },
++                next: if last { 0 } else { (position + 1) as u16 },
++            };
++            mem.write_obj(desc, GuestAddress(INDIRECT_TABLE.0 + (position * 16) as u64))
++                .unwrap();
++        }
++        (entries.len() * 16) as u32
++    }
++
++    #[test]
++    fn test_rx_packet_indirect_chain() {
++        create_context!(test_ctx, handler_ctx);
++        let bytes = write_indirect_table(
++            &test_ctx.mem,
++            VIRTQ_DESC_F_WRITE,
++            &[(0x0040_0000, VSOCK_PKT_HDR_SIZE, 0), (0x0040_1000, 4096, 0)],
++        );
++        handler_ctx.guest_rxvq.dtable[0].set(INDIRECT_TABLE.0, bytes, VIRTQ_DESC_F_INDIRECT, 0);
++        let head = handler_ctx.device.queues[RXQ_INDEX].pop().unwrap().unwrap();
++        assert_eq!(head.index, 0);
++        let mut pkt = VsockPacketRx::new().unwrap();
++        pkt.parse(&test_ctx.mem, head).unwrap();
++        assert_eq!(pkt.buf_size(), 4096);
++        // The header written through the packet lands in the table's first buffer.
++        pkt.hdr.set_len(7);
++        pkt.commit_hdr().unwrap();
++        let written: VsockPacketHeader = test_ctx.mem.read_obj(GuestAddress(0x0040_0000)).unwrap();
++        assert_eq!(written.len(), 7);
++    }
++
++    #[test]
++    fn test_tx_packet_indirect_chain() {
++        create_context!(test_ctx, handler_ctx);
++        let mut hdr = VsockPacketHeader::default();
++        hdr.set_len(4096);
++        test_ctx.mem.write_obj(hdr, GuestAddress(0x0040_0000)).unwrap();
++        let bytes = write_indirect_table(
++            &test_ctx.mem,
++            0,
++            &[(0x0040_0000, VSOCK_PKT_HDR_SIZE, 0), (0x0040_1000, 4096, 0)],
++        );
++        handler_ctx.guest_txvq.dtable[0].set(INDIRECT_TABLE.0, bytes, VIRTQ_DESC_F_INDIRECT, 0);
++        let mut pkt = VsockPacketTx::default();
++        pkt.parse(
++            &test_ctx.mem,
++            handler_ctx.device.queues[TXQ_INDEX].pop().unwrap().unwrap(),
++        )
++        .unwrap();
++        assert_eq!(pkt.hdr.len(), 4096);
++        assert_eq!(pkt.buf_size(), 4096);
++    }
++
++    #[test]
++    fn test_indirect_chain_refusals() {
++        // A head that chains onward, a table that is not whole descriptors, an
++        // empty table, a misaligned table and a nested indirect entry are refused;
++        // an 8-byte aligned table (viosock's) and a direct chain are accepted.
++        let cases: [(u64, u32, u16, u16); 4] = [
++            (INDIRECT_TABLE.0, 32, VIRTQ_DESC_F_INDIRECT | VIRTQ_DESC_F_NEXT, 0),
++            (INDIRECT_TABLE.0, 24, VIRTQ_DESC_F_INDIRECT, 0),
++            (INDIRECT_TABLE.0, 0, VIRTQ_DESC_F_INDIRECT, 0),
++            (INDIRECT_TABLE.0 + 4, 32, VIRTQ_DESC_F_INDIRECT, 0),
++        ];
++        for (addr, len, flags, extra) in cases {
++            create_context!(test_ctx, handler_ctx);
++            write_indirect_table(
++                &test_ctx.mem,
++                VIRTQ_DESC_F_WRITE,
++                &[(0x0040_0000, VSOCK_PKT_HDR_SIZE, extra), (0x0040_1000, 4096, 0)],
++            );
++            handler_ctx.guest_rxvq.dtable[0].set(addr, len, flags, 0);
++            let head = handler_ctx.device.queues[RXQ_INDEX].pop().unwrap().unwrap();
++            assert!(matches!(
++                VsockPacketRx::new().unwrap().parse(&test_ctx.mem, head),
++                Err(VsockError::IndirectDescriptor(_))
++            ));
++        }
++        {
++            create_context!(test_ctx, handler_ctx);
++            let bytes = write_indirect_table(
++                &test_ctx.mem,
++                VIRTQ_DESC_F_WRITE,
++                &[
++                    (0x0040_0000, VSOCK_PKT_HDR_SIZE, 0),
++                    (0x0040_1000, 4096, VIRTQ_DESC_F_INDIRECT),
++                ],
++            );
++            handler_ctx.guest_rxvq.dtable[0].set(INDIRECT_TABLE.0, bytes, VIRTQ_DESC_F_INDIRECT, 0);
++            let head = handler_ctx.device.queues[RXQ_INDEX].pop().unwrap().unwrap();
++            assert!(matches!(
++                VsockPacketRx::new().unwrap().parse(&test_ctx.mem, head),
++                Err(VsockError::IndirectDescriptor(_))
++            ));
++        }
++        {
++            // viosock's table lives at an 8-byte boundary inside its packet struct.
++            create_context!(test_ctx, handler_ctx);
++            let shifted = GuestAddress(INDIRECT_TABLE.0 + 8);
++            for (position, (addr, len)) in [(0x0040_0000u64, VSOCK_PKT_HDR_SIZE), (0x0040_1000, 4096)]
++                .into_iter()
++                .enumerate()
++            {
++                let last = position == 1;
++                let desc = Descriptor {
++                    addr,
++                    len,
++                    flags: VIRTQ_DESC_F_WRITE | if last { 0 } else { VIRTQ_DESC_F_NEXT },
++                    next: if last { 0 } else { 1 },
++                };
++                test_ctx
++                    .mem
++                    .write_obj(desc, GuestAddress(shifted.0 + (position * 16) as u64))
++                    .unwrap();
++            }
++            handler_ctx.guest_rxvq.dtable[0].set(shifted.0, 32, VIRTQ_DESC_F_INDIRECT, 0);
++            let head = handler_ctx.device.queues[RXQ_INDEX].pop().unwrap().unwrap();
++            let mut pkt = VsockPacketRx::new().unwrap();
++            pkt.parse(&test_ctx.mem, head).unwrap();
++            assert_eq!(pkt.buf_size(), 4096);
++        }
++        {
++            create_context!(test_ctx, handler_ctx);
++            let head = handler_ctx.device.queues[RXQ_INDEX].pop().unwrap().unwrap();
++            let resolved = head.resolve_indirect(&test_ctx.mem).unwrap();
++            assert_eq!(resolved.index, head.index);
++            assert_eq!(resolved.addr, head.addr);
++            assert_eq!(resolved.len, head.len);
++        }
++    }
++
+     #[test]
+     #[allow(clippy::cognitive_complexity)]
+     fn test_packet_hdr_accessors() {

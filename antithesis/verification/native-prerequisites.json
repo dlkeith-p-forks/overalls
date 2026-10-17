@@ -1,0 +1,294 @@
+{
+  "attempts": [
+    {
+      "assertions_observed": [
+        "Pinned Elixir, OTP 29, ERTS, release metadata and absence of packaged cookie; shared protocol module loads.",
+        "Galileo executable and required service modules load; other service/domain runtimes and privileged host tools are absent.",
+        "Missing runtime configuration returns invalid_configuration without service startup.",
+        "Unconfigured supervision children are empty; strip prefix matches whole path segments and preserves nonmatching paths.",
+        "Nix log ends with galileo: source release payload verified."
+      ],
+      "check_attr": "checks.x86_64-linux.galileo-release",
+      "derivation": "/nix/store/aapannmcgm84dw0jv014pyvq8lryjiag-galileo-source-release-check.drv",
+      "ended_utc": "2026-10-13T08:44:02.146Z",
+      "failure": null,
+      "id": "galileo-release-2026-10-13-0844",
+      "kind": "source_release_payload",
+      "limitations": [
+        "Release eval only; no listener, network, guest, or NixOS service startup."
+      ],
+      "nix_log": {
+        "bytes": 651,
+        "path": "nix log /nix/store/aapannmcgm84dw0jv014pyvq8lryjiag-galileo-source-release-check.drv",
+        "sha256": "f5eaf399821399096b6c78bb842646326dabadf92bf0c02fefdb470f4ad915ec"
+      },
+      "output": "/nix/store/gkx5srfc1ma60cg3jsl4iiha1lhhh3dx-galileo-source-release-check",
+      "output_valid": true,
+      "package_derivation": "/nix/store/bjx8m2b2j0nvnrbgrhdadkykwzzmg74r-overalls-galileo-0.1.0.drv",
+      "package_output": "/nix/store/cj323b5rqd6rw9s5f7yy3gd2cbw6m90p-overalls-galileo-0.1.0",
+      "sources": [
+        {
+          "path": "/nix/store/wfbc62d9lsy4k53fbpwyra9k7q2bx70z-probe.exs",
+          "role": "executed_release_probe",
+          "sha256": "68a46bc8ea9e82cc61e89181523a9809f211769be87f97487079df92bc55ddb7"
+        }
+      ],
+      "started_utc": "2026-10-13T08:44:00.840Z",
+      "status": "passed",
+      "test_driver_derivation": null,
+      "wrapper_log": {
+        "bytes": 7044,
+        "path": "/home/ghuntley/.local/state/nix/build-logs/1791881040840-4138061-0.jsonl",
+        "sha256": "e87b2acacf814023c95c24076ce4b274f3f876fd36820fc7108640b8e7be8b20"
+      }
+    },
+    {
+      "assertions_observed": [
+        "Pinned Elixir, OTP 29, ERTS, release metadata and absence of packaged cookie; shared protocol module loads.",
+        "Enrico executable and required service modules load; other service/domain runtimes and privileged host tools are absent.",
+        "Missing runtime configuration returns invalid_configuration without service startup.",
+        "Git source validation accepts a public owner/repository and rejects a traversal-shaped owner.",
+        "Nix log ends with enrico: source release payload verified."
+      ],
+      "check_attr": "checks.x86_64-linux.enrico-release",
+      "derivation": "/nix/store/apbi9sn6c9izczz2f3gdz8ckgk8vdmry-enrico-source-release-check.drv",
+      "ended_utc": "2026-10-13T08:44:02.146Z",
+      "failure": null,
+      "id": "enrico-release-2026-10-13-0844",
+      "kind": "source_release_payload",
+      "limitations": [
+        "Release eval only; no TLS listener, remote Git fetch, or NixOS service startup."
+      ],
+      "nix_log": {
+        "bytes": 650,
+        "path": "nix log /nix/store/apbi9sn6c9izczz2f3gdz8ckgk8vdmry-enrico-source-release-check.drv",
+        "sha256": "0c48327f715882aaec027a9db1717d2f963e3c3e38728d217f10f0245516d2b0"
+      },
+      "output": "/nix/store/lfg0p5xsl79y84wd9jv97r8gkvm48cma-enrico-source-release-check",
+      "output_valid": true,
+      "package_derivation": "/nix/store/g7ki908z9x9qvvppz2wjw8w4prbvj4h6-overalls-enrico-0.1.0.drv",
+      "package_output": "/nix/store/fmdx9bg5625fdzcpbiap80afnv7h3w48-overalls-enrico-0.1.0",
+      "sources": [
+        {
+          "path": "/nix/store/wfbc62d9lsy4k53fbpwyra9k7q2bx70z-probe.exs",
+          "role": "executed_release_probe",
+          "sha256": "68a46bc8ea9e82cc61e89181523a9809f211769be87f97487079df92bc55ddb7"
+        }
+      ],
+      "started_utc": "2026-10-13T08:44:00.840Z",
+      "status": "passed",
+      "test_driver_derivation": null,
+      "wrapper_log": {
+        "bytes": 7044,
+        "path": "/home/ghuntley/.local/state/nix/build-logs/1791881040840-4138061-0.jsonl",
+        "sha256": "e87b2acacf814023c95c24076ce4b274f3f876fd36820fc7108640b8e7be8b20"
+      }
+    },
+    {
+      "assertions_observed": [
+        "NixOS guest booted and created mirrored tank plus archive pools.",
+        "First zfs-io command failed before the driver completed measured(sample())."
+      ],
+      "check_attr": "checks.x86_64-linux.zfs-io",
+      "derivation": "/nix/store/2q193i3b3gnwgv29vfiqpqrhsyvvqv2w-vm-test-run-overalls-zfs-io.drv",
+      "ended_utc": "2026-10-13T08:27:07.333Z",
+      "failure": "Guest probe matched decoded protocol report to the original struct; the decode returned a normalized value and raised MatchError. The driver then raised RequestedAssertionFailed for zfs-io exit 1. No fault branches ran.",
+      "id": "zfs-io-first-2026-10-13-0826",
+      "kind": "nixos_machine",
+      "limitations": [
+        "Failed output is not valid; this attempt does not establish native I/O behavior."
+      ],
+      "nix_log": {
+        "bytes": 90743,
+        "path": "nix log /nix/store/2q193i3b3gnwgv29vfiqpqrhsyvvqv2w-vm-test-run-overalls-zfs-io.drv",
+        "sha256": "8f1c8f35b1ba46c81ca333d75a2df9446a05aa3de5d9c9dca5c9a69816827f3e"
+      },
+      "output": "/nix/store/z89g7aldrl8l93jbn141hxyw2bqgrmnv-vm-test-run-overalls-zfs-io",
+      "output_valid": false,
+      "package_derivation": null,
+      "package_output": null,
+      "sources": [
+        {
+          "path": "nix/tests/machines/zfs-io/driver.py",
+          "role": "embedded_test_script_from_driver_py",
+          "sha256": "43f26d3e2c13d7ac3de49a3778e145099bb8793fa22d3f0282fb5774c616dbff"
+        },
+        {
+          "path": "/nix/store/0hg9pzamhkssa3cizagf04pc5j7a8xak-probe.exs",
+          "role": "executed_guest_probe",
+          "sha256": "c48ad0d7c6771acf176f1772ef5de526a12d58b8667d1aa9211694241d6beed4"
+        }
+      ],
+      "started_utc": "2026-10-13T08:26:17.882Z",
+      "status": "failed",
+      "test_driver_derivation": "/nix/store/4j4zqd81w6jfnxrav34prij3xal046xp-nixos-test-driver-overalls-zfs-io.drv",
+      "wrapper_log": {
+        "bytes": 469267,
+        "path": "/home/ghuntley/.local/state/nix/build-logs/1791879977881-3909692-0.jsonl",
+        "sha256": "000718dbb25d4dfc4e0e4effdbfc4a98938604cbf7741db13f520e39f6c67693"
+      }
+    },
+    {
+      "assertions_observed": [
+        "Real accelerated NixOS guest created mirrored tank and independent archive ZFS pools and exercised the packaged source-built Lilly release.",
+        "Capacity traveled through Collector and protocol encode/decode; I/O came independently from ZFSIO, with no I/O field in the capacity report.",
+        "Two measured pool observations asserted logical zpool scope, OpenZFS timestamp rate clock, load GUID identity, one-second collection, nonnegative rates, absent unsupported latency/queue/busy fields, and bounded free capacity.",
+        "Outside-Lilly-dataset read/write workload produced positive pool-level tank I/O counters.",
+        "Malformed, timeout, and actual export/import reload faults each produced unavailable I/O counters while measured capacity remained usable; reload changed load GUID while preserving pool GUID; later samples recovered.",
+        "Nix log records all three fault invocations and test script finished in 45.77 seconds; output path is valid."
+      ],
+      "check_attr": "checks.x86_64-linux.zfs-io",
+      "derivation": "/nix/store/hnv4wkrcrzxklbm7lywcgqnnpf1wyxd6-vm-test-run-overalls-zfs-io.drv",
+      "ended_utc": "2026-10-13T08:41:20.546Z",
+      "failure": null,
+      "id": "zfs-io-retry-2026-10-13-0840",
+      "kind": "nixos_machine",
+      "limitations": [
+        "One local KVM/NixOS execution; no production host or Antithesis run.",
+        "The Python driver uses runtime shape checks and annotations, but this evidence does not establish composed-driver static type checking."
+      ],
+      "nix_log": {
+        "bytes": 95794,
+        "path": "nix log /nix/store/hnv4wkrcrzxklbm7lywcgqnnpf1wyxd6-vm-test-run-overalls-zfs-io.drv",
+        "sha256": "5ffd3a3807819001d7e4ede9396a0d7a6ed729b0f908aaada79ed1760026eae0"
+      },
+      "output": "/nix/store/bw38rhyyv75vm6rlz5wizwgpdaa39h6p-vm-test-run-overalls-zfs-io",
+      "output_valid": true,
+      "package_derivation": "/nix/store/8vync1wz04g8cz9sh7p60pd8q3ff66ad-overalls-lilly-0.1.0.drv",
+      "package_output": "/nix/store/hszc8j1k80gyr30ajd15bgx03fgw9lvg-overalls-lilly-0.1.0",
+      "sources": [
+        {
+          "path": "nix/tests/machines/zfs-io/driver.py",
+          "role": "embedded_test_script_from_driver_py",
+          "sha256": "43f26d3e2c13d7ac3de49a3778e145099bb8793fa22d3f0282fb5774c616dbff"
+        },
+        {
+          "path": "/nix/store/jrkn6w3159rw9r1qcsii16a6k7ill71a-probe.exs",
+          "role": "executed_guest_probe",
+          "sha256": "47adcccb3fa0e6b2f45d115259496eb4d2fc37d8d98bbf6594849e33e5229176"
+        }
+      ],
+      "started_utc": "2026-10-13T08:40:13.739Z",
+      "status": "passed",
+      "test_driver_derivation": "/nix/store/5w7fi3v3l54iakr385kw2f2f1myplxkg-nixos-test-driver-overalls-zfs-io.drv",
+      "wrapper_log": {
+        "bytes": 466153,
+        "path": "/home/ghuntley/.local/state/nix/build-logs/1791880813738-4092999-0.jsonl",
+        "sha256": "fa2ca65b10748e8ff99b841abc89d68f7b28e6c6afc3096cf885171887aeed3b"
+      }
+    },
+    {
+      "assertions_observed": [
+        "Test reached the combined Marshall release-cookie process-environment check.",
+        "The shell pipeline checking a 64-character uppercase hex cookie exited 1 under pipefail; the log also records tr broken pipe."
+      ],
+      "check_attr": "checks.x86_64-linux.service-roles",
+      "derivation": "/nix/store/vx5wm4yd9vhfzdssczr34hhijvd8h2r4-vm-test-run-overalls-service-roles.drv",
+      "ended_utc": "2026-10-13T08:54:26.968Z",
+      "failure": "RequestedAssertionFailed at the cookie pipeline; no valid machine-check output or completed test script. A changed local driver is not evidence of a passing retry.",
+      "id": "service-roles-failed-2026-10-13-0847",
+      "kind": "nixos_machine",
+      "limitations": [
+        "Native service-roles acceptance remains unverified until a later actual passing derivation and log are recorded."
+      ],
+      "nix_log": {
+        "bytes": 1284908,
+        "path": "nix log /nix/store/vx5wm4yd9vhfzdssczr34hhijvd8h2r4-vm-test-run-overalls-service-roles.drv",
+        "sha256": "67f3e6562ac0388c8418bd556a4b24381e078700a182dac4d69bfb01a4b96093"
+      },
+      "output": "/nix/store/vpbw4rs9h66s32r7ysxv58fh895fczkc-vm-test-run-overalls-service-roles",
+      "output_valid": false,
+      "package_derivation": null,
+      "package_output": null,
+      "sources": [
+        {
+          "path": "nix/tests/machines/service-roles/driver.py",
+          "role": "embedded_test_script_from_driver_py_at_failed_derivation",
+          "sha256": "eb1f3f3bb0f598c2d5af3c2791014e85811ec5d92fd95dc42ea053dc11df3322"
+        },
+        {
+          "path": "/nix/store/zism8bc2m5g59d0sgbh3xvxxl7q7hk7n-seal.py",
+          "role": "executed_seal_fixture",
+          "sha256": "a842a10035102cfe0789bc284b66558bc769ea9c82f271d724fa201cad6c5327"
+        }
+      ],
+      "started_utc": "2026-10-13T08:47:58.067Z",
+      "status": "failed",
+      "test_driver_derivation": "/nix/store/z4bcqg2qv5wjmhi28i2b3j6crx3xr45y-nixos-test-driver-overalls-service-roles.drv",
+      "wrapper_log": {
+        "bytes": 3766589,
+        "path": "/home/ghuntley/.local/state/nix/build-logs/1791881278067-4185088-0.jsonl",
+        "sha256": "d2e7709061ec370057e496fd2d5deeac88b570c0bb4c02b7273bcbf4a6be8b7e"
+      }
+    },
+    {
+      "assertions_observed": [
+        "Marshall health checks and process-environment release-cookie assertions reached and completed.",
+        "The test then waited for /var/lib/lilly/owner.json on the Lilly node.",
+        "The log shows repeated lilly.service exit-code failures and a start-limit-hit; the ownership-file wait timed out after 900.64 seconds."
+      ],
+      "check_attr": "checks.x86_64-linux.service-roles",
+      "derivation": "/nix/store/9prabnjpm6frqnwdlbcn3cjfcnlrshb2-vm-test-run-overalls-service-roles.drv",
+      "ended_utc": "2026-10-13T09:59:16.399Z",
+      "failure": "RequestedAssertionFailed: waiting for /var/lib/lilly/owner.json timed out after 900.64 seconds. Lilly service startup failed during the wait; the underlying startup cause is still under investigation.",
+      "id": "service-roles-retry-failed-2026-10-13-0936",
+      "kind": "nixos_machine",
+      "limitations": [
+        "The machine-check output is invalid and this attempt does not establish service-roles acceptance.",
+        "The observed unit failures and missing ownership file do not by themselves identify the Lilly startup root cause.",
+        "No later passing service-roles derivation has been recorded in this evidence."
+      ],
+      "nix_log": {
+        "bytes": 3978038,
+        "path": "nix log /nix/store/9prabnjpm6frqnwdlbcn3cjfcnlrshb2-vm-test-run-overalls-service-roles.drv",
+        "sha256": "45a2d949080cded6ff55ae5378e76691b650ad6fc3aa7ded982b1f7f007a3511"
+      },
+      "output": "/nix/store/dcrii811cg7p448x19fzw8q25szq9b2b-vm-test-run-overalls-service-roles",
+      "output_valid": false,
+      "package_derivation": null,
+      "package_output": null,
+      "sources": [
+        {
+          "path": "nix/tests/machines/service-roles/driver.py",
+          "role": "embedded_test_script_from_driver_py_at_failed_derivation",
+          "sha256": "a6b2ffbc434280eceed48d8c216de47f9a574925079e89b95a30f97c19424230"
+        },
+        {
+          "path": "/nix/store/zism8bc2m5g59d0sgbh3xvxxl7q7hk7n-seal.py",
+          "role": "executed_seal_fixture",
+          "sha256": "a842a10035102cfe0789bc284b66558bc769ea9c82f271d724fa201cad6c5327"
+        }
+      ],
+      "started_utc": "2026-10-13T09:36:37.884Z",
+      "status": "failed",
+      "test_driver_derivation": "/nix/store/nzsw62a93j2xjv78z76c84xw97gx556s-nixos-test-driver-overalls-service-roles.drv",
+      "wrapper_log": {
+        "bytes": 9741642,
+        "path": "/home/ghuntley/.local/state/nix/build-logs/1791884197883-629051-0.jsonl",
+        "sha256": "2102c4bdd3499e4f3fa5253f08c24fad12a55994c03540466ae48bddd992142b"
+      }
+    }
+  ],
+  "git_head_at_recording": "c835eb1017d24a001215c319373fa4204d64269b",
+  "python_static_typing": {
+    "reason": "ZFS machine driver fragments have annotations and runtime validation, but no Nix-composed Python driver type-check result is present in these logs.",
+    "status": "not_claimed"
+  },
+  "record_type": "overalls.native_prerequisites.v1",
+  "recorded_at_utc": "2026-10-13T10:11:21.067034+00:00",
+  "repository": "/home/ghuntley/src/kittens-antithesis-reset",
+  "schema_version": 1,
+  "secret_scan": {
+    "interpretation": "Pattern scan and selected-line review found no credential material; this is not a proof that arbitrary secret formats are absent.",
+    "log_count": 11,
+    "patterns": [
+      "private_key_pem_header",
+      "authorization_basic_or_bearer_header",
+      "long_credential_assignment",
+      "url_userinfo"
+    ],
+    "scope": "Five direct Nix logs and four local JSONL wrapper logs named by attempts; no raw log bodies copied into this record.",
+    "sensitive_value_matches": 0
+  },
+  "source_identity_note": "Shared worktree is dirty and changed between attempts. Each derivation, embedded script hash, and store source path is the identity of the corresponding executed attempt; current flake evaluation may differ."
+}

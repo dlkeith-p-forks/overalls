@@ -1,0 +1,34 @@
+@cc [owner:ghuntley,label:security] cedar-role-matrix
+Cedar MUST grant VM read to owner, manager, operator and viewer; write to
+owner, manager and operator; and manage to owner and manager. Persisted
+administrators additionally receive read/write/manage/web authority under ADR-0058.
+No matching
+current principal membership MUST deny access. Only the trusted compute system
+principal may coordinate internal resources. See ADR-0008 and ADR-0018.
+
+@cc [owner:ghuntley,label:security] cedar-control-room-read-only
+Every current user may perform admin_read on the Marshall ControlPlane. This
+permission MUST NOT grant administrative mutations, VM override, terminal or SSH
+access. Administrative mutations MUST continue to require persisted administrator
+membership and recent passkey elevation. See ADR-0119.
+
+@cc [owner:ghuntley,label:security] cedar-web-only-role
+The web action MUST allow owner, manager, operator, viewer, web-only grants and
+current team members/admins on team machines; team use creates no per-machine grant.
+Web-only grants MUST NOT allow read, write or manage; terminal and SSH authority
+MUST continue to use their existing VM actions. See ADR-0047.
+
+@cc [owner:ghuntley,label:security] cedar-schema-policy-alignment
+Policy entity/action names and VM owner/web/viewer/operator/manager fields MUST
+remain consistent with the Cedar schema and the entity construction in
+Marshall.Access.Authorization and Marshall.Authorization.Cedar. A schema or
+policy change MUST preserve their fail-closed authorization behavior.
+
+@cc [owner:ghuntley,label:security;product] cedar-team-member-use
+Current team members MUST receive VM read, write and web for team machines; only
+team owners/admins receive manage through team membership. Write admits guest
+SSH, personal terminal and profile-permitted agent use, including its existing
+narrow prompt wake. Web admits private guest HTTP and WebSockets under the
+existing current-login and bounded lease checks. These use rights MUST NOT grant ordinary lifecycle, resize, clone,
+relocation or per-machine grant management. The Access boundary MUST retain
+Customer owner-only access before applying Cedar. See ADR-0077 and ADR-0110.

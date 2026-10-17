@@ -1,0 +1,69 @@
+# Optional real QEMU TCG guest boundary. This overlay is not selected by the
+# control-core bootstrap; a guest workload must verify native guest evidence.
+services:
+  guest-vmm:
+    container_name: overalls-guest-vmm
+    hostname: overalls-guest-vmm
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/guest-vmm:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: guest-vmm
+    entrypoint: ["/opt/overalls/python/bin/python3.13", "/opt/overalls/guest-vmm/server.py"]
+    command:
+      - --socket
+      - /run/overalls-guest-vmm/control.sock
+      - --witness-socket
+      - /run/overalls-guest-witness/witness.sock
+      - --tools
+      - /opt/overalls/guest-vmm/tools.json
+      - --state-root
+      - /var/lib/overalls-tcg
+      - --socket-root
+      - /run/overalls-tcg
+    environment:
+      NO_COLOR: "1"
+    volumes:
+      - guest-vmm-state:/var/lib/overalls-tcg
+      - guest-vmm-control:/run/overalls-guest-vmm
+      - guest-vmm-witness:/run/overalls-guest-witness
+    tmpfs:
+      - /run/overalls-tcg:mode=0700
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    healthcheck:
+      test: ["CMD", "/opt/overalls/python/bin/python3.13", "/opt/overalls/guest-vmm/server.py", "--socket", "/run/overalls-guest-vmm/control.sock", "--healthcheck"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+      start_period: 20s
+    networks: [control]
+
+  lilly-a:
+    image: overalls-antithesis/lilly-guest:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: lilly-guest
+    environment:
+      OVERALLS_ANTITHESIS_GUEST_SOCKET: /run/overalls-guest-vmm/control.sock
+    volumes:
+      - guest-vmm-control:/run/overalls-guest-vmm
+    depends_on:
+      guest-vmm:
+        condition: service_healthy
+
+  enrollment:
+    environment:
+      OVERALLS_ANTITHESIS_GUEST_WITNESS_SOCKET: /run/overalls-guest-witness/witness.sock
+    volumes:
+      - guest-vmm-witness:/run/overalls-guest-witness:ro
+
+volumes:
+  guest-vmm-state:
+  guest-vmm-control:
+  guest-vmm-witness:

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "name": "control-core",
+  "compose_files": [
+    "antithesis/config/docker-compose.yaml"
+  ],
+  "templates": [
+    "control",
+    "control_rotation",
+    "control_dispatch",
+    "control_legacy_request"
+  ],
+  "runtime_packages": [
+    "core",
+    "control",
+    "access",
+    "repository"
+  ],
+  "services": [
+    "pg",
+    "migrate",
+    "marshall-a",
+    "marshall-b",
+    "lilly-a",
+    "enrollment",
+    "workload"
+  ],
+  "workload_environment": [
+    "ANTITHESIS_MARSHALL_URLS",
+    "ANTITHESIS_CA_FILE",
+    "ANTITHESIS_FIXTURE_MANIFEST",
+    "ANTITHESIS_DB_HOST",
+    "ANTITHESIS_DB_PASSWORD_FILE",
+    "ANTITHESIS_CONTROL_CREDENTIAL_FILE",
+    "ANTITHESIS_CONTROL_REQUEST_DIR"
+  ],
+  "bootstrap_template": "control-core",
+  "singleton_templates": [
+    "control_rotation",
+    "control_dispatch",
+    "control_legacy_request"
+  ]
+}

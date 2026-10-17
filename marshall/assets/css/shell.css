@@ -1,0 +1,365 @@
+/* Application shell: sidebar navigation, mobile drawer, public header,
+   breadcrumb, footer, flash group. Units are 1ch and var(--line-height). */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1ch;
+  z-index: 100;
+  padding: 0 1ch;
+  line-height: calc(var(--line-height) * 2);
+  background: var(--background-color);
+  border: var(--border-thickness) solid var(--text-color);
+}
+.skip-link:focus {
+  top: 0;
+}
+
+.workspace-shell {
+  display: grid;
+  grid-template-columns: 34ch minmax(0, 1fr);
+  min-height: 100dvh;
+  position: relative;
+}
+.workspace-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--line-height) 2ch;
+  border-right: var(--border-thickness) solid var(--text-color);
+  background: var(--background-color);
+}
+/* A sidebar taller than the window scrolls with the page instead of inside itself. */
+@media (max-height: 52rem) {
+  .workspace-sidebar {
+    position: static;
+  }
+}
+.sidebar-brand {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1ch;
+  margin-bottom: var(--line-height);
+}
+.console-brand {
+  display: inline-block;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: var(--line-height);
+}
+.console-brand .brand-dot {
+  color: var(--text-color-alt);
+}
+.brand-caption {
+  color: var(--text-color-alt);
+  margin-bottom: var(--line-height);
+}
+.workspace-switch {
+  display: flex;
+  gap: 1ch;
+  margin-bottom: var(--line-height);
+}
+.workspace-switch a {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: var(--border-thickness) solid var(--text-color);
+  line-height: calc(var(--line-height) * 2 - var(--border-thickness) * 2);
+  padding: 0;
+  text-transform: uppercase;
+  font-weight: var(--font-weight-medium);
+}
+.workspace-switch a[aria-current="true"] {
+  background: var(--text-color);
+  color: var(--background-color);
+}
+.sidebar-links {
+  flex: 0 0 auto;
+}
+.sidebar-links section {
+  margin: 0 0 var(--line-height);
+}
+.sidebar-links h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+.sidebar-links .tree a {
+  display: block;
+  text-decoration: none;
+  padding: 0 1ch;
+  margin: 0 0 0 -1ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-links .tree a:hover {
+  background: var(--background-color-alt);
+}
+.sidebar-links .tree a[aria-current="page"] {
+  background: var(--text-color);
+  color: var(--background-color);
+  font-weight: var(--font-weight-bold);
+}
+.sidebar-links .nav-hint {
+  color: var(--text-color-alt);
+  font-weight: var(--font-weight-normal);
+}
+.sidebar-links .tree a[aria-current="page"] .nav-hint {
+  color: var(--background-color);
+}
+.sidebar-bottom {
+  margin-top: var(--line-height);
+  padding-top: calc(var(--line-height) - var(--border-thickness));
+  border-top: var(--border-thickness) solid var(--text-color);
+}
+.sidebar-appearance {
+  display: grid;
+  gap: 0;
+  margin-bottom: var(--line-height);
+}
+.sidebar-appearance > span {
+  color: var(--text-color-alt);
+  line-height: var(--line-height);
+}
+.appearance-control {
+  width: 100%;
+}
+.account-menu {
+  margin: 0;
+}
+.account-menu summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.account-menu p {
+  overflow-wrap: anywhere;
+  color: var(--text-color-alt);
+}
+
+.workspace-body {
+  min-width: 0;
+  align-self: start;
+}
+.console-main {
+  width: 100%;
+  max-width: calc(round(down, 100%, 1ch));
+  padding: var(--line-height) 2ch;
+  min-width: 0;
+}
+.console-narrow {
+  max-width: calc(min(100ch, round(down, 100%, 1ch)));
+}
+.workspace-breadcrumb {
+  display: flex;
+  gap: 1ch;
+  margin-bottom: var(--line-height);
+  color: var(--text-color-alt);
+}
+.workspace-breadcrumb a {
+  color: var(--text-color);
+}
+.mobile-header, .mobile-only, .console-button.mobile-only {
+  display: none;
+}
+.navigation-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  border: 0;
+  padding: 0;
+  height: auto;
+  background: var(--background-color);
+  opacity: .6;
+}
+.navigation-backdrop[hidden] {
+  display: none;
+}
+
+/* Public pages (docs, sign-in, launch) use the reference header table. */
+.public-page {
+  padding: var(--line-height) 2ch;
+  max-width: calc(min(100ch, round(down, 100%, 1ch)));
+  margin: 0 auto;
+}
+.public-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2ch;
+  align-items: center;
+}
+.public-header .title {
+  margin: 0;
+}
+.public-header .title .console-brand {
+  font-size: 2rem;
+  line-height: calc(2 * var(--line-height));
+}
+
+.auth-shell {
+  display: flex;
+  justify-content: center;
+}
+.auth-shell > div, .auth-shell > section {
+  width: 100%;
+}
+.auth-panel {
+  width: 100%;
+  max-width: calc(min(60ch, round(down, 100%, 1ch)));
+  margin: 0 auto;
+  border: var(--border-thickness) solid var(--text-color);
+  padding: calc(var(--line-height) - var(--border-thickness)) calc(2ch - var(--border-thickness));
+}
+.auth-panel > * + *, .auth-panel form > * + * {
+  margin-top: var(--line-height);
+}
+/* Sign-in feedback sits in the panel column, not the page-wide flow. */
+.auth-flash {
+  max-width: calc(min(60ch, round(down, 100%, 1ch)));
+  margin: 0 auto var(--line-height);
+  cursor: pointer;
+}
+.auth-welcome {
+  max-width: calc(min(60ch, round(down, 100%, 1ch)));
+  margin: 0 auto var(--line-height);
+}
+.auth-welcome h1 {
+  margin-top: 0;
+}
+.auth-welcome p {
+  color: var(--text-color-alt);
+}
+
+/* Flash group: fixed, top-right, bordered boxes. */
+#flash-group {
+  position: fixed;
+  top: var(--line-height);
+  right: 2ch;
+  z-index: 60;
+  width: min(50ch, calc(100vw - 4ch));
+  display: grid;
+  gap: var(--line-height);
+  pointer-events: none;
+}
+.overalls-toast {
+  pointer-events: auto;
+}
+.overalls-toast[hidden] {
+  display: none;
+}
+.flash {
+  display: flex;
+  gap: 1ch;
+  align-items: flex-start;
+  border: var(--border-thickness) solid var(--text-color);
+  background: var(--background-color);
+  color: var(--text-color);
+  padding: calc(var(--line-height) - var(--border-thickness)) calc(1ch - var(--border-thickness));
+}
+.flash[data-kind="error"] {
+  border-width: calc(var(--border-thickness) * 3);
+  border-style: double;
+  padding: calc(var(--line-height) - var(--border-thickness) * 3) calc(1ch - var(--border-thickness) * 3);
+}
+.flash > div {
+  flex: 1;
+  min-width: 0;
+}
+.flash p {
+  margin: 0;
+}
+.flash button {
+  height: var(--line-height);
+  padding: 0 calc(1ch - var(--border-thickness));
+  border-width: 0;
+  flex-shrink: 0;
+}
+.flash-tag {
+  font-weight: var(--font-weight-bold);
+}
+
+@media (max-width: 800px) {
+  .workspace-shell {
+    display: block;
+  }
+  .workspace-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    width: min(44ch, 85vw);
+    min-height: 100%;
+    visibility: hidden;
+    transform: translateX(-100%);
+  }
+  .workspace-sidebar[data-open] {
+    visibility: visible;
+    transform: translateX(0);
+  }
+  .mobile-only {
+    display: block;
+  }
+  .console-button.mobile-only {
+    display: inline-flex;
+  }
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2ch;
+    padding: var(--line-height) 2ch 0;
+  }
+  #flash-group {
+    top: auto;
+    bottom: var(--line-height);
+    left: 2ch;
+    right: 2ch;
+    width: auto;
+  }
+  /* The public header table stacks into labelled lines on narrow screens. */
+  .public-header .header,
+  .public-header .header tbody,
+  .public-header .header tr {
+    display: block;
+    width: auto;
+    top: 0;
+  }
+  .public-header .header th,
+  .public-header .header td {
+    display: block;
+    width: auto;
+    border: 0;
+    padding: 0;
+  }
+  .public-header .header th {
+    color: var(--text-color-alt);
+  }
+  .public-header .header tr td:last-child {
+    text-align: left;
+  }
+  .public-header .header td + th {
+    margin-top: var(--line-height);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* Only the transform animates: a visibility transition would leave the
+     drawer hidden at time zero and defeat the hook's focus() call. */
+  .workspace-sidebar {
+    transition: transform .15s;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

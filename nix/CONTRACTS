@@ -1,0 +1,21 @@
+@cc [owner:ghuntley,label:build] pinned-package-input
+Guest, host-tool and release derivations MUST use the supplied pinned Nixpkgs
+input. They MUST NOT fetch an unpinned channel or use host-installed runtime
+libraries as build inputs. See ADR-0011 and ADR-0030.
+
+@cc [owner:ghuntley,label:build] runtime-version-consistency
+The exported Elixir and Erlang packages MUST match `.tool-versions` and every
+project's runtime gate, including OTP patch level. Both packages MUST retain
+the debug information required by Dialyzer. See ADR-0002.
+
+@cc [owner:ghuntley,label:deployment] release-runtime-closure
+A release bundle MUST include the application's release executable and metadata
+identifying its pinned platform and runtime. Lilly bundles MUST also retain Nix
+references to host tools, unshare and the static Firecracker/jailer pair
+so exporting the recursive closure supplies those runtime dependencies.
+
+@cc [owner:ghuntley,label:storage] zfs-only-provisioner-pools
+Provisionable Lilly pools MUST require native ZFS GUID identity and MUST NOT
+accept the retired logical budget (ADR-0159). Missing configuration MUST NOT
+select ext4 or another backend.
+Guest ext4 image generation and unrelated host root filesystems remain independent.

@@ -1,0 +1,68 @@
+--- a/src/aws/flb_aws_credentials.c
++++ b/src/aws/flb_aws_credentials.c
+@@ -532,6 +532,18 @@
+     struct flb_aws_provider *sub_provider;
+     struct flb_aws_provider *provider;
+     struct flb_aws_provider_chain *implementation;
++
++    /* Managed collectors use exactly one explicitly selected identity source. */
++    const char *overalls_mode = getenv("OVERALLS_AWS_MODE");
++    if (overalls_mode) {
++        if (strcmp(overalls_mode, "file") == 0) {
++            return flb_profile_provider_create("default");
++        }
++        if (strcmp(overalls_mode, "ec2") == 0) {
++            return flb_ec2_provider_create(config, generator);
++        }
++        return NULL;
++    }
+ 
+     provider = flb_calloc(1, sizeof(struct flb_aws_provider));
+ 
+--- a/src/aws/flb_aws_imds.c
++++ b/src/aws/flb_aws_imds.c
+@@ -68,7 +68,7 @@
+      * Set IMDS version to whatever is specified in config
+      * Version may be evaluated later if set to FLB_AWS_IMDS_VERSION_EVALUATE
+      */
+-    ctx->imds_version = imds_config->use_imds_version;
++    ctx->imds_version = getenv("OVERALLS_AWS_MODE") ? FLB_AWS_IMDS_VERSION_2 : imds_config->use_imds_version;
+     ctx->imds_v2_token = flb_sds_create_len("INVALID_TOKEN", 13);
+     ctx->imds_v2_token_len = 13;
+ 
+@@ -339,8 +339,7 @@
+ 
+     if (c->resp.status != 200) {
+         if (c->resp.payload_size > 0) {
+-            flb_error("[imds] IMDSv2 token retrieval failure response\n%s",
+-                      c->resp.payload);
++            flb_error("[imds] IMDSv2 token retrieval failed (response redacted)");
+         }
+ 
+         flb_http_client_destroy(c);
+--- a/src/aws/flb_aws_util.c
++++ b/src/aws/flb_aws_util.c
+@@ -677,6 +677,11 @@
+     flb_sds_t error;
+     flb_sds_t message;
+ 
++    if (getenv("OVERALLS_AWS_MODE")) {
++        flb_error("[aws] request failed (response redacted)");
++        return;
++    }
++
+     error = flb_json_get_val(response, response_len, "__type");
+     if (!error) {
+         /* error can not be parsed, print raw response */
+@@ -707,6 +712,11 @@
+ {
+     flb_sds_t error;
+     flb_sds_t message;
++
++    if (getenv("OVERALLS_AWS_MODE")) {
++        flb_error("[aws] request failed (response redacted)");
++        return;
++    }
+ 
+     error = flb_json_get_val(response, response_len, "Code");
+     if (!error) {

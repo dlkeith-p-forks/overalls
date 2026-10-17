@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:verification] platform-firmware-and-loss
+Installation tests MUST boot through the declared firmware without a shared host
+store or direct kernel. Hetzner survivor branches MUST retain identity and data;
+EC2 system-only branches MUST retain authenticated SSH without creating a pool.
+Authorization fixtures MUST use the declared access policy across reboot.

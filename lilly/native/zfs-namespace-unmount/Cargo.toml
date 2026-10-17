@@ -1,0 +1,18 @@
+[package]
+name = "lilly-zfs-namespace-unmount"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libc = "=0.2.189"
+rustix = { version = "=1.1.5", features = ["fs", "mount", "process"] }
+
+[dev-dependencies]
+hegeltest = "=0.28.8"
+tempfile = "3"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+panic = "abort"

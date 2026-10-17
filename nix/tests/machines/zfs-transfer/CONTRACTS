@@ -1,0 +1,13 @@
+@cc [owner:ghuntley,label:verification] native-transfer-evidence-boundary
+This suite MUST exercise native streams between separate block-backed pools,
+interrupted receive/resume, snapshot lineage and actual ext4 contents. It MUST
+NOT be reported as Lilly/Oban orchestration, SSH authentication, guest readiness
+or acceptance across independent physical hosts.
+
+@cc [owner:ghuntley,label:verification] adoption-crash-recovery-property-driven
+Adoption crash recovery (kills after committed native effects, durable claim
+automaton states, guid stability, foreign-nonce refusal, readonly/mount policy
+bits, cancellation tombstones) is property-driven by the Hegel state machine
+AdoptionCrashRecovery with engine-chosen fault points and rule orderings
+against the unchanged guest fixtures. Invariants: claim_states_are_legal,
+dataset_guids_stable, foreign_nonce_still_rejected, received_policy_bits.

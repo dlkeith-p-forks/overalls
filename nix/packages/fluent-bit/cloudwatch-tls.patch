@@ -1,0 +1,34 @@
+--- a/plugins/out_cloudwatch_logs/cloudwatch_logs.c
++++ b/plugins/out_cloudwatch_logs/cloudwatch_logs.c
+@@ -272,6 +272,11 @@
+         goto error;
+     }
+ 
++    if (flb_tls_set_verify_hostname(ctx->client_tls, ins->tls_verify_hostname) != 0 ||
++        flb_tls_set_verify_hostname(ctx->cred_tls, ins->tls_verify_hostname) != 0) {
++        goto error;
++    }
++
+     ctx->aws_provider = flb_standard_chain_provider_create(config,
+                                                            ctx->cred_tls,
+                                                            (char *) ctx->region,
+@@ -305,6 +310,10 @@
+                                       ins->tls_key_passwd);
+         if (!ctx->sts_tls) {
+             flb_errno();
++            goto error;
++        }
++
++        if (flb_tls_set_verify_hostname(ctx->sts_tls, ins->tls_verify_hostname) != 0) {
+             goto error;
+         }
+ 
+@@ -740,7 +749,7 @@
+     .cb_init      = cb_cloudwatch_init,
+     .cb_flush     = cb_cloudwatch_flush,
+     .cb_exit      = cb_cloudwatch_exit,
+-    .flags        = 0,
++    .flags        = FLB_OUTPUT_NET | FLB_IO_TLS,
+     .workers      = 1,
+     .event_type   = FLB_OUTPUT_LOGS | FLB_OUTPUT_METRICS,
+ 

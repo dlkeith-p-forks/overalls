@@ -1,0 +1,12 @@
+@cc [owner:ghuntley,label:security] boot-log-no-elevation-or-payload-diagnostics
+The logger MUST run without setuid bits or file capabilities, invoke the command
+directly without a shell, and persist only the bounded boot log file. Child
+payload bytes reach the private log file only; they never become messages on
+the helper's own stdout, stderr or any diagnostic stream.
+
+@cc [owner:ghuntley,label:verification] boot-log-hegel-properties
+Hegel properties MUST cover selector refusal, the output-custody refusal
+matrix, exact bounded retention across generated sizes, chunking-independent
+line timestamps against an independent oracle, child exit/signal
+mapping and nonblocking discard under flood. Real custody invariants keep
+process-level fixtures; no root or KVM is required.

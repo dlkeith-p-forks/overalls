@@ -1,0 +1,10 @@
+@cc [owner:ghuntley,label:verification] lilly-tests-unprivileged-default
+Ordinary Lilly unit/property tests MUST run without root or KVM. Host state and
+process fixtures MUST use isolated temporary resources and clean their own
+children and files without altering enrolled host or guest resources.
+
+@cc [owner:ghuntley,label:verification] lilly-tests-uncertainty
+Tests for durable receipts, intent, terminal input and outcomes MUST include
+duplicates, stale generations and restart/uncertain-result cases. A mocked
+executor success MUST NOT count as real jail, networking or persistent-disk
+acceptance.

@@ -1,0 +1,96 @@
+"""Independent SQL and fixed native Git observations for Enrico properties."""
+
+import os
+import re
+import subprocess
+from dataclasses import dataclass
+from pathlib import Path
+from uuid import UUID
+
+from core.outcome import Observation, State
+from core.sql import SqlOracle
+
+SHA = re.compile(r"[0-9a-f]{40,64}\Z")
+
+
+@dataclass(frozen=True)
+class Published:
+    repository_id: UUID
+    phase: str
+    head: str | None
+    attempt_id: UUID | None
+
+
+class RepositoryOracle:
+    def __init__(self, sql: SqlOracle, mirror_root: Path) -> None:
+        self._sql = sql
+        self._mirror_root = mirror_root
+
+    def published(self, repository_id: UUID) -> Observation[Published | None]:
+        rows = self._sql.select(
+            "SELECT phase, head, attempt_id FROM enrico_repositories WHERE id = %s::uuid",
+            (str(repository_id),),
+            maximum_rows=1,
+        )
+        if rows.state is not State.OBSERVED or rows.value is None:
+            return Observation.unavailable()
+        if not rows.value:
+            return Observation.observed(None)
+        phase, head, attempt = rows.value[0]
+        if (
+            not isinstance(phase, str)
+            or phase not in ("pending", "refreshing", "ready", "failed", "removing")
+            or (head is not None and (not isinstance(head, str) or SHA.fullmatch(head) is None))
+            or (attempt is not None and not isinstance(attempt, UUID))
+        ):
+            return Observation.unavailable()
+        return Observation.observed(Published(repository_id, phase, head, attempt))
+
+    def failure_audit(self, repository_id: UUID, attempt_id: UUID) -> Observation[bool]:
+        rows = self._sql.select(
+            "SELECT kind FROM enrico_audit_events WHERE repository_id = %s::uuid "
+            "AND attempt_id = %s::uuid AND kind = 'refresh_failed' LIMIT 1",
+            (str(repository_id), str(attempt_id)),
+            maximum_rows=1,
+        )
+        if rows.state is not State.OBSERVED or rows.value is None:
+            return Observation.unavailable()
+        return Observation.observed(bool(rows.value))
+
+    def blob(self, repository_id: UUID, head: str) -> Observation[bytes]:
+        """@cc [owner:ghuntley,label:verification] enrico-native-object-witness
+        Only the validated fixture SHA and fixed README blob may be read from the
+        service-owned bare mirror. A missing mirror, failed Git read or timeout
+        MUST remain unknown unless the mirror path is confirmed mounted and ready.
+        """
+        if SHA.fullmatch(head) is None:
+            raise ValueError("invalid commit SHA")
+        root = self._mirror_root / f"{repository_id}.git"
+        if not root.is_dir():
+            return Observation.unavailable()
+        environment = os.environ.copy()
+        environment.update({"GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": "/dev/null"})
+        try:
+            healthy = subprocess.run(
+                ["git", f"--git-dir={root}", "rev-parse", "--is-bare-repository"],
+                capture_output=True,
+                check=False,
+                timeout=5,
+                env=environment,
+            )
+            if healthy.returncode != 0 or healthy.stdout.strip() != b"true":
+                return Observation.unavailable()
+            result = subprocess.run(
+                ["git", f"--git-dir={root}", "cat-file", "blob", f"{head}:README.md"],
+                capture_output=True,
+                check=False,
+                timeout=5,
+                env=environment,
+            )
+        except (OSError, subprocess.TimeoutExpired):
+            return Observation.unavailable()
+        if result.returncode != 0:
+            return Observation.refused(404)
+        if len(result.stdout) > 1024:
+            return Observation.unavailable()
+        return Observation.observed(result.stdout)

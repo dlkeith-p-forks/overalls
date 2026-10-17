@@ -1,0 +1,17 @@
+@cc [owner:ghuntley,label:security] native-git-owner-authority
+The helper MUST execute only trusted caller-supplied absolute executables and
+argument vectors without a shell, with no setuid or file capabilities. Its stdout
+is private command output, never diagnostics. It MUST emit no argv, paths,
+credentials or raw native errors as diagnostics.
+
+@cc [owner:ghuntley,label:recovery;capacity] native-git-lifetime
+Caller EOF, command timeout, output overflow and normal command exit MUST kill
+and reap the private process group before releasing repository/admission locks.
+At most eight native commands may own global admission slots. Stable lock inodes
+MUST NOT be unlinked, and descendants MUST retain locks until they terminate.
+
+@cc [owner:ghuntley,label:verification] native-git-owner-proof
+Native owner-death, timeout, output bounds, contention and successor admission
+MUST have generated tests with independent process and lock witnesses. Local
+process checks MUST NOT establish remote TLS, physical quotas or fleet service
+acceptance.

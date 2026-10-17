@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:verification] checker-tests-negative-cases
+Contract-checker tests MUST exercise rejected malformed directives and duplicate
+IDs, inherited directory scope, source location preservation and non-mutating
+checks. Intentionally invalid contracts MUST remain temporary fixture data,
+not repository production contract declarations.

@@ -1,0 +1,20 @@
+@cc [owner:ghuntley,label:verification] marshall-tests-database-isolation
+Ordinary database tests MUST use SQL sandbox ownership. Tests exercising separate
+BEAM nodes or committed transactions MUST clean only their own fixture rows and
+MUST NOT rely on the parent process's uncommitted sandbox transaction.
+
+@cc [owner:ghuntley,label:verification] marshall-tests-real-distribution
+Distributed admission/authority tests MUST use at least three independently
+started Marshall BEAM instances sharing PostgreSQL. The coordinating test node
+MUST NOT count as one of those three instances.
+
+@cc [owner:ghuntley,label:verification] marshall-tests-opt-in-host
+Tests requiring Linux host fixtures MUST remain explicitly tagged and excluded
+from ordinary tests. Assertions about failure/revocation MUST inspect resulting
+state or access, not merely successful request delivery.
+
+@cc [owner:ghuntley,label:security] marshall-tests-public-tls-fixtures
+Committed TLS keys and certificates MUST remain disposable test fixtures for
+loopback transport tests; production configuration MUST NOT select them. Negative
+TLS tests MUST retain wrong-authority, plaintext and hostname failure coverage
+where the transport claims those guarantees.

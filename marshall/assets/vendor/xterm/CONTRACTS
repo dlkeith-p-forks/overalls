@@ -1,0 +1,8 @@
+@cc [owner:ghuntley,label:supply-chain] xterm-provenance
+The renderer JavaScript and CSS MUST derive from the same official xterm
+release and recorded integrity in README.md, with its license retained. A local
+upstream-defect correction MUST retain verifiable original provenance, explicit
+before/after bundle hashes, a reproducible patch and shipped-artifact regression;
+it MUST NOT be represented as an unmodified official release. Any
+upgrade MUST rerun browser rendering/security and terminal input-state checks;
+replacing the ESM alone is insufficient.

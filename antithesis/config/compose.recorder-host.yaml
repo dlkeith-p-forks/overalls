@@ -1,0 +1,52 @@
+# Optional NixOS recorder host. Exact service UID/cgroup authority and the
+# bounded archive filesystem live inside this guest; selection requires a
+# separate bootstrap probe and recorded runtime evidence.
+services:
+  recorder-host-vmm:
+    container_name: overalls-recorder-host-vmm
+    hostname: overalls-recorder-host-vmm
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/recorder-host-vmm:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: recorder-host-vmm
+    environment:
+      NO_COLOR: "1"
+    volumes:
+      - recorder-host-state:/var/lib/recorder-hostvm/state
+      - recorder-host-requests:/run/overalls-recorder-requests
+      - recorder-host-results:/run/overalls-recorder-results
+      - recorder-host-observation:/run/overalls-recorder-observation
+    mem_limit: 3g
+    shm_size: 256m
+    healthcheck:
+      test: ["CMD", "/opt/overalls/python/bin/python3.13", "/opt/overalls/recorder-hostvm/runner.py", "status", "--config", "/etc/recorder-hostvm/config.json"]
+      interval: 5s
+      timeout: 10s
+      retries: 60
+      start_period: 180s
+    networks: [control]
+
+  workload:
+    environment:
+      ANTITHESIS_RECORDER_REQUESTS: /run/overalls-recorder-requests
+      ANTITHESIS_RECORDER_RESULTS: /run/overalls-recorder-results
+      ANTITHESIS_RECORDER_OBSERVATION: /run/overalls-recorder-observation
+      ANTITHESIS_RECORDER_LEDGER: /var/lib/overalls-antithesis-recorder/ledger.sqlite
+    volumes:
+      - recorder-host-requests:/run/overalls-recorder-requests
+      - recorder-host-results:/run/overalls-recorder-results:ro
+      - recorder-host-observation:/run/overalls-recorder-observation:ro
+      - recorder-workload-ledger:/var/lib/overalls-antithesis-recorder
+    depends_on:
+      recorder-host-vmm:
+        condition: service_healthy
+
+volumes:
+  recorder-host-state:
+  recorder-host-requests:
+  recorder-host-results:
+  recorder-host-observation:
+  recorder-workload-ledger:

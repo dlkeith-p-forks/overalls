@@ -1,0 +1,11 @@
+@cc [owner:ghuntley,label:verification;security] guest-cli-recovery-native-authority
+Candidate injection MUST be restricted to the disposable Firecracker guest's
+managed executable and updater state. It MUST NOT forge registration, current
+VM bindings, executor fences or command results. Recovery requires an actual
+new Marshall executor and completed guest tool work under that fence. Direct
+candidate injection does not establish private artifact delivery acceptance.
+
+@cc [owner:ghuntley,label:verification] guest-cli-recovery-independent-oracle
+The recovery journey MUST compare the prior executable digest and inode,
+candidate digest, supervisor lifetime, current executor identity and persisted
+command fence. A service being active or a local ready file alone is insufficient.

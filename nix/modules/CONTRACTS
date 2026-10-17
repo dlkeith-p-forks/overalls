@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:deployment] independent-service-roles
+Marshall and Lilly MUST be independently enabled. Enabled services MUST reject
+incomplete configuration. Neither serving role may run database migrations at
+startup; ADR-0036's separate updater may migrate before activating a candidate.
+
+@cc [owner:ghuntley,label:security] module-runtime-secrets
+Plaintext credential options MUST name private runtime files outside the Nix
+store, never literal secret values. Marshall MUST run unprivileged and receive
+only its application credentials, without access to the host SSH or age private
+identities.
+
+@cc [owner:ghuntley,label:recovery] module-guest-lifetime
+Lilly MUST retain host mount visibility. VM units MUST occupy a separate slice
+from the daemon and survive its restart. Service activation MUST NOT repartition,
+destroy storage, replace host identity or kill independently running guests.
+
+@cc [owner:ghuntley,label:security] module-ipv4-service-sandboxes
+Maintained service address-family allowlists MUST NOT permit AF_INET6. Local
+Unix, vsock and Netlink families remain independent of IPv4 network transport.

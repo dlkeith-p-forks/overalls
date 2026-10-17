@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "skills": {
+    "antithesis-agent-browser": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-agent-browser/SKILL.md",
+      "computedHash": "2910e1836e32dde15d2259ee5f7bf1df7748e6ae8d4a49efae62386b7cbd726d"
+    },
+    "antithesis-debug": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-debug/SKILL.md",
+      "computedHash": "ed50d1865f9111daa693162b8a2e0cf02964c52fab0605a6f96f7da859bace3a"
+    },
+    "antithesis-documentation": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-documentation/SKILL.md",
+      "computedHash": "ac4f82498195c0e8485528519f2b555dd97f8767d8cb5ddf8e75b2940c9ab6f7"
+    },
+    "antithesis-launch": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-launch/SKILL.md",
+      "computedHash": "ab43f15b87dcf9e87430393355cbe012f2ca8b8c9201d63177cd592b112a5b19"
+    },
+    "antithesis-mutation-testing": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-mutation-testing/SKILL.md",
+      "computedHash": "a77e7b285d6f3753c1c8cbf60010618fb40d14f9bd573e770cf40ace067e814d"
+    },
+    "antithesis-query-logs": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-query-logs/SKILL.md",
+      "computedHash": "8352fd0322a1d1366811f27955ef2834ee82f32641901fb3ad878170b04dd3a3"
+    },
+    "antithesis-research": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-research/SKILL.md",
+      "computedHash": "e82e99bf38f0d80ac562799690ce1800c2bc3318c655f9cb9e5ac889e3c0c139"
+    },
+    "antithesis-setup": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-setup/SKILL.md",
+      "computedHash": "29e3ca985b8fe53bde906e7bfe888f9b8623cf0900869ef7570779cec141caf4"
+    },
+    "antithesis-setup-k8s": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-setup-k8s/SKILL.md",
+      "computedHash": "d41e3d38616a276ebb771af171674fbea3a8365453b31066e7a503742e82c868"
+    },
+    "antithesis-skills-feedback": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-skills-feedback/SKILL.md",
+      "computedHash": "bb674e9685f0fdf3a9047becac92074627bd0e197b727f4927a13f23f7d5ac18"
+    },
+    "antithesis-triage": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-triage/SKILL.md",
+      "computedHash": "1f58bf6da51cdd8bbb71fb57e53511d9b5b9348cd172b15dc53852fc1114903d"
+    },
+    "antithesis-workload": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": "antithesis-workload/SKILL.md",
+      "computedHash": "670c6379b7728d5a1fc0a8c69c478cae5dea62fae530697d04ed8423af90a3b2"
+    },
+    "code-contracts": {
+      "source": "spolu/code-contracts",
+      "sourceType": "github",
+      "skillPath": "skills/code-contracts/SKILL.md",
+      "computedHash": "a0245a9eac5a4546fed43921e154d4972d520da8fa6276f0e4ce73100462e5ae"
+    },
+    "security-audit": {
+      "source": "cloudflare/security-audit-skill",
+      "sourceType": "github",
+      "skillPath": "skills/security-audit/SKILL.md",
+      "computedHash": "98b97aad2873b3b9a8e064007c25e7827b493ba27fda8bfbdb41dab586767973"
+    },
+    "test:triage": {
+      "source": "antithesishq/antithesis-skills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/test-triage/SKILL.md",
+      "computedHash": "c8b699368b1e4d434b7b2df9d7d6d2c167280e176a53020a88f98507c1844fb8"
+    }
+  }
+}

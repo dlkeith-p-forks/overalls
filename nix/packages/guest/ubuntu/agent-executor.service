@@ -1,0 +1,21 @@
+[Unit]
+Description=Overalls guest agent tool executor
+Requires=lilly-private-dns.service
+After=lilly-private-dns.service network-online.target
+ConditionKernelCommandLine=lilly.ipv4
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/overalls agent-supervisor
+StateDirectory=overalls
+StateDirectoryMode=0700
+RuntimeDirectory=overalls-agent
+RuntimeDirectoryMode=0700
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target

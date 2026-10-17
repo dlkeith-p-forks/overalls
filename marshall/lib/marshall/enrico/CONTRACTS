@@ -1,0 +1,23 @@
+@cc [owner:ghuntley,label:security] mirror-admin-and-reader-boundary
+Repository registration, removal and manual refresh MUST recheck current
+administrator authority and recent passkey elevation. Browser reads MUST
+require a current stored login and a registered mirror.
+
+@cc [owner:ghuntley,label:recovery] mirror-durable-state-and-audit
+PostgreSQL MUST hold registration, refresh state and append-only audit outcomes.
+Enrico cache state MUST NOT independently grant browser access. Failed refreshes
+MUST retain the previous published head and be reconciled by Oban. An interrupted
+worker MUST resume a still-running Enrico attempt; transient status failures
+MUST NOT start a competing fetch. Manual refresh MUST reject a repository
+already refreshing, and Oban job uniqueness MUST cover the entire job timeout.
+
+@cc [owner:ghuntley,label:recovery] mirror-removal-independent-reconciliation
+Removal intent MUST have a distinct durable job identity from refresh work and
+MUST be reconciled while the repository is removing, regardless of its next
+refresh deadline.
+
+@cc [owner:ghuntley,label:security] mirror-verified-private-transport
+Marshall MUST verify Enrico's hostname against a dedicated CA certificate.
+TLS, timeout and service errors MUST be reduced to a fixed reason vocabulary
+before entering audit records or structured events. Credentials and raw
+transport errors MUST NOT enter the audit trail.

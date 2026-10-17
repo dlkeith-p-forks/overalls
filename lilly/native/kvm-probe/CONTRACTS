@@ -1,0 +1,13 @@
+@cc [owner:ghuntley,label:security] kvm-probe-no-elevation-or-output
+The probe MUST run without setuid bits or file capabilities, MUST accept and
+print nothing (arguments and environment cannot influence the verdict), and
+MUST retain no state. Operational events belong to the caller's Lilly.Events
+catalog, never to a helper-side diagnostic stream.
+
+@cc [owner:ghuntley,label:assurance] kvm-probe-requires-real-vm-creation
+The probe MUST report success only after opening /dev/kvm, observing API
+version 12 and creating an empty VM; device-file existence or open permission
+alone must not establish execution capability. The probe must run no guest
+code. Real-device equivalence with the C predecessor is verified during
+conversion; NixOS fixtures that boot the Lilly service on nested KVM exercise
+the shipped probe through the ownership startup boundary.

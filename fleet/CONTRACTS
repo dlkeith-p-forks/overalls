@@ -1,0 +1,11 @@
+@cc [owner:ghuntley,label:deployment] authoritative-reviewed-hosts
+Each machine MUST have one public host.json declaration under hosts/NAME.
+Discovery candidates MUST remain separate until reviewed. Production declarations
+MUST specify authenticated identity, stable disk membership and resource budgets;
+private keys and plaintext credentials MUST NOT enter this tree.
+
+@cc [owner:ghuntley,label:deployment] public-service-peer-routing
+Public fleet service names MUST resolve through DNS rather than loopback or fleet
+overlay aliases. A physical host MUST route every remote host or service address
+on its provider subnet through the provider gateway instead of relying on direct
+neighbour discovery.

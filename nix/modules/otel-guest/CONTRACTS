@@ -1,0 +1,12 @@
+@cc [owner:ghuntley,label:security] guest-telemetry-untrusted
+Guest OTLP payloads MUST NOT assign outer host, VM, placement or execution
+identity. The receiver MUST replace resource identity from Audi's Lilly-derived
+binding and MUST NOT forward arbitrary attributes, events, links or log records.
+
+@cc [owner:ghuntley,label:capacity] guest-telemetry-bounded
+The receiver MUST bound each body, protobuf object count and concurrent request.
+It MUST accept only a fixed metric name vocabulary and enforce per-VM and
+host-wide request/byte budgets so guests cannot create unbounded series or
+trace volume across repeated accepted requests.
+An invalid or oversized request MUST NOT reach the local collector. Receiver
+failure MUST NOT stop Audi, Lilly or guest execution.

@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:security;recovery] source-export-native-lease
+Only trusted absolute argv accepted; a stable private lock is acquired before
+starting the sender. FD 4 acknowledges only after sender registration; disk
+bytes flow directly to inherited stdout, never into the control protocol. EOF,
+malformed control, cancellation, excessive diagnostics or the monotonic lease
+deadline kill and reap the sender before exit. Only valid L<millis> frames may
+renew a lease, bounded to 300 seconds; X revokes it. No utility diagnostics
+escape. Success requires a successful sender exit and confirmed reaping.
+
+@cc [owner:ghuntley,label:verification] source-export-hegel-properties
+Hegel properties MUST cover duration/refusal bounds, control-frame renewal
+semantics, reaping order and diagnostics bounds. Real transport behavior stays
+with the disposable NixOS transfer fixtures that drive a sender process on a
+real pool, and with differential wire sessions against the C helper.

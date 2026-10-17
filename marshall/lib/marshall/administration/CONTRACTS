@@ -1,0 +1,13 @@
+@cc [owner:ghuntley,label:security] administrative-domain-authority
+Administrative actions MUST recheck persisted Cedar permissions before projecting
+data or mutating state. Internal system authority MUST remain confined to trusted
+coordinators; web callers MUST supply their own authenticated account actor.
+
+@cc [owner:ghuntley,label:security] administrative-safe-projections
+Administrative projections and audit MUST allowlist their fields. Raw Oban
+arguments/errors, authentication tokens, credentials and terminal contents MUST
+NOT enter browser replies or retained administrative job history.
+
+@cc [owner:ghuntley,label:capacity] administrative-bounded-reads
+Administrative collections MUST use bounded pages and indexed expiry filters.
+Expired history MUST be excluded even before physical retention cleanup runs.

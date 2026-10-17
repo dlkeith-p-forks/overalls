@@ -1,0 +1,6 @@
+interface:
+  display_name: "ADR Maintenance"
+  short_description: "Keep architecture decisions and evidence current"
+  default_prompt: "Use $adr-maintenance to update the affected ADRs, implementation evidence, and decision index."
+policy:
+  allow_implicit_invocation: true

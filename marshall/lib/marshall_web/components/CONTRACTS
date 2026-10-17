@@ -1,0 +1,13 @@
+@cc [owner:ghuntley,label:product] monospace-component-boundary
+Components MUST emit semantic HTML styled by the Monospace Web stylesheet:
+sizes in character cells and line heights, colours only through the four
+presentation tokens, state conveyed by text, weight or inverse video, and icons
+as text glyphs. Components MUST NOT reference external resources or utility
+class frameworks. Element ids, data attributes, ARIA names and hook names that
+tests and browser probes consume MUST stay stable across presentation changes;
+presentation code MUST NOT acquire domain mutation authority.
+
+@cc [owner:ghuntley,label:security] component-untrusted-content
+Components MUST render user and guest text through HEEx escaping. A caller
+MUST NOT pass untrusted strings to raw HTML or executable JavaScript slots.
+Terminal bytes belong only in the terminal renderer, never a component's HTML.

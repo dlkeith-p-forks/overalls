@@ -1,0 +1,371 @@
+{
+  "winget": {
+    "release": "v1.29.380",
+    "bundle": {
+      "url": "https://github.com/microsoft/winget-cli/releases/download/v1.29.380/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle",
+      "sha256": "65dea9c01ce08ee7b763366b27c0e651f97db857c11ca9b9c301826c10092f2e"
+    },
+    "license": {
+      "url": "https://github.com/microsoft/winget-cli/releases/download/v1.29.380/e53e159d00e04f729cc2180cffd1c02e_License1.xml",
+      "sha256": "bcb15118ec47df24e3e6013a7006147c3a15b3a8104ed660fe87c8b4ed01f485"
+    },
+    "dependencies": {
+      "url": "https://github.com/microsoft/winget-cli/releases/download/v1.29.380/DesktopAppInstaller_Dependencies.zip",
+      "sha256": "ba875afe9d190f61218985ac0292a99d1db710bf93e13c68944ca9d89f0d82d1"
+    }
+  },
+  "source": {
+    "repository": "microsoft/winget-pkgs",
+    "commit": "14d155750d204a7a1c45f98bcb1f31fd63e01d96"
+  },
+  "packages": [
+    {
+      "id": "Git.Git",
+      "version": "2.55.0.5",
+      "manifests": {
+        "Git.Git.installer.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/g/Git/Git/2.55.0.5/Git.Git.installer.yaml",
+          "sha256": "e1e697c6ba4793ef4a17da3f31fb44617a9f8a31a9055d3ecdb2e9b97b06c76b"
+        },
+        "Git.Git.locale.en-US.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/g/Git/Git/2.55.0.5/Git.Git.locale.en-US.yaml",
+          "sha256": "5fbc1b2ac4d412b182f3094c3ae8888cb7bc8fbd0d1fad5e92a8ec5ca512e727"
+        },
+        "Git.Git.locale.zh-CN.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/g/Git/Git/2.55.0.5/Git.Git.locale.zh-CN.yaml",
+          "sha256": "5d710d60445a860ffc51cbd63715714d3bb4f4e2bebf2fad25d902087741dd89"
+        },
+        "Git.Git.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/g/Git/Git/2.55.0.5/Git.Git.yaml",
+          "sha256": "b2f34c5f78bb5fc23ccbb47f4a2b184053d8f3844ac02a17f59d5e488f3d4bb8"
+        }
+      },
+      "installer": {
+        "url": "https://github.com/git-for-windows/git/releases/download/v2.55.0.windows.5/Git-2.55.0.5-64-bit.exe",
+        "sha256": "d065a4e23c3d9a6b5073d609b5be0830227ec3ca053c083ba385061ddfaf94c6",
+        "type": "inno",
+        "scope": "machine"
+      },
+      "depends_on": []
+    },
+    {
+      "id": "GitHub.cli",
+      "version": "2.102.0",
+      "manifests": {
+        "GitHub.cli.installer.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/g/GitHub/cli/2.102.0/GitHub.cli.installer.yaml",
+          "sha256": "cb825dda2077938df7dd4fe6c2068d535d471493a041b32b2fd5eba0f9b7139b"
+        },
+        "GitHub.cli.locale.en-US.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/g/GitHub/cli/2.102.0/GitHub.cli.locale.en-US.yaml",
+          "sha256": "35eb28d094622777e8ade11eda8abeb713cd3952ca8105e03ba020e8eb9fab84"
+        },
+        "GitHub.cli.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/g/GitHub/cli/2.102.0/GitHub.cli.yaml",
+          "sha256": "1738430ea3397eb61b6e139e24336fa49ef11c05c10a0c7c03d5ff68bd22a5dc"
+        }
+      },
+      "installer": {
+        "url": "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_windows_amd64.msi",
+        "sha256": "7944b579d76359e5b859a263bf63583e271ae3fbd427ae46e133c1f348b46371",
+        "type": "wix",
+        "scope": "machine"
+      },
+      "depends_on": []
+    },
+    {
+      "id": "Anthropic.ClaudeCode",
+      "version": "2.1.292",
+      "manifests": {
+        "Anthropic.ClaudeCode.installer.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/a/Anthropic/ClaudeCode/2.1.292/Anthropic.ClaudeCode.installer.yaml",
+          "sha256": "68e996ce7d79eafac7d702f692f2acbd35e6b1a70a3fa2edd1dbcdb54d939b2e"
+        },
+        "Anthropic.ClaudeCode.locale.en-US.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/a/Anthropic/ClaudeCode/2.1.292/Anthropic.ClaudeCode.locale.en-US.yaml",
+          "sha256": "19a5b24a829da163ffc16bcb0016dadd3f196b5a12d9e382d9dbf8a6e92f944e"
+        },
+        "Anthropic.ClaudeCode.locale.zh-CN.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/a/Anthropic/ClaudeCode/2.1.292/Anthropic.ClaudeCode.locale.zh-CN.yaml",
+          "sha256": "e2e501865ba3aad4d3dfd17aa0e8d4480f06a693d3bcfee7aa6fca3dfe186d3b"
+        },
+        "Anthropic.ClaudeCode.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/a/Anthropic/ClaudeCode/2.1.292/Anthropic.ClaudeCode.yaml",
+          "sha256": "ee4180f0ac572869e6ecdb19757241bc38b0750be24dda1dd29bcb0c37c1c86e"
+        }
+      },
+      "installer": {
+        "url": "https://downloads.claude.ai/claude-code-releases/2.1.292/win32-x64/claude.exe",
+        "sha256": "eb95bb65955f8b1702e800815f9a2c0388a5de0f196c354c7ee1dd5cb9a2ba23",
+        "type": "portable",
+        "scope": null
+      },
+      "depends_on": []
+    },
+    {
+      "id": "BurntSushi.ripgrep.MSVC",
+      "version": "15.2.0",
+      "manifests": {
+        "BurntSushi.ripgrep.MSVC.installer.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/b/BurntSushi/ripgrep/MSVC/15.2.0/BurntSushi.ripgrep.MSVC.installer.yaml",
+          "sha256": "482d3283436f57c3616ec99ddb434bb7544eb476a11b245820ebeae76756f502"
+        },
+        "BurntSushi.ripgrep.MSVC.locale.en-US.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/b/BurntSushi/ripgrep/MSVC/15.2.0/BurntSushi.ripgrep.MSVC.locale.en-US.yaml",
+          "sha256": "118454462ec66dc5f9450d7c04f25d0afc75553dd684b5f9ddb8677d1f0bd73b"
+        },
+        "BurntSushi.ripgrep.MSVC.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/b/BurntSushi/ripgrep/MSVC/15.2.0/BurntSushi.ripgrep.MSVC.yaml",
+          "sha256": "ae54644510e3aa66b81476debae416115287ff4426e2ee25c1902e29583d022a"
+        }
+      },
+      "installer": {
+        "url": "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-x86_64-pc-windows-msvc.zip",
+        "sha256": "71b2fef860abe467217a538ff31de02f5258807c0129f771846f87bd029aafc5",
+        "type": "zip",
+        "scope": null
+      },
+      "depends_on": []
+    },
+    {
+      "id": "Microsoft.VCRedist.2015+.x64",
+      "version": "14.51.36247.0",
+      "manifests": {
+        "Microsoft.VCRedist.2015+.x64.installer.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.installer.yaml",
+          "sha256": "896ef532ec380818cdfcf249d1f589e897215b31cd64195e68568db6852bf4f8"
+        },
+        "Microsoft.VCRedist.2015+.x64.locale.cs-CZ.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.locale.cs-CZ.yaml",
+          "sha256": "033a3e5200d013e73dc4f6a2b839667ddd6887dd48bf8d225f748ac64a6de9a8"
+        },
+        "Microsoft.VCRedist.2015+.x64.locale.en-US.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.locale.en-US.yaml",
+          "sha256": "4012c3e06301a98a6efddd93e128b0d6f52989583f7536d0ce69acbf0d8143a3"
+        },
+        "Microsoft.VCRedist.2015+.x64.locale.ja-JP.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.locale.ja-JP.yaml",
+          "sha256": "8053a78183e1a7867118679f995e0974e19212b045e07912574933428233e39c"
+        },
+        "Microsoft.VCRedist.2015+.x64.locale.ko-KR.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.locale.ko-KR.yaml",
+          "sha256": "2bd1dcccb27c5b1d757e444b25896e684a7428d1fbfc9b82441a832d2edfa00d"
+        },
+        "Microsoft.VCRedist.2015+.x64.locale.pt-BR.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.locale.pt-BR.yaml",
+          "sha256": "c54a8391900a25f7251649ec1bea474e0713ffa3c97c39c0f9337b2593416f76"
+        },
+        "Microsoft.VCRedist.2015+.x64.locale.tr-TR.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.locale.tr-TR.yaml",
+          "sha256": "85dc73118efae36daf28378a793623b0fc620509f701c49c2559a75142431dc6"
+        },
+        "Microsoft.VCRedist.2015+.x64.locale.zh-CN.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.locale.zh-CN.yaml",
+          "sha256": "69b77d3eea4df3caa851f495a15b7099a1c2009171d70dfb491198ad22ccf2a4"
+        },
+        "Microsoft.VCRedist.2015+.x64.locale.zh-TW.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.locale.zh-TW.yaml",
+          "sha256": "17a4eef9910d6a04fc37e7a9fb4dc5b8fce272ed904cbe4caa41ca5795cd4095"
+        },
+        "Microsoft.VCRedist.2015+.x64.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VCRedist/2015+/x64/14.51.36247.0/Microsoft.VCRedist.2015+.x64.yaml",
+          "sha256": "9d426ab2969c33d21f80e6b5320832ddbef1b943981610d6dce15bcde4b8b1f9"
+        }
+      },
+      "installer": {
+        "url": "https://download.visualstudio.microsoft.com/download/pr/ebdab8e5-1d7b-4d9f-a11b-cbb1720c3b12/843068991DAAA1F73AD9F6239BCE4D0F6A07A51F18C37EA2A867E9BECA71295C/VC_redist.x64.exe",
+        "sha256": "843068991daaa1f73ad9f6239bce4d0f6a07a51f18c37ea2a867e9beca71295c",
+        "type": "burn",
+        "scope": "machine"
+      },
+      "depends_on": []
+    },
+    {
+      "id": "OpenAI.Codex",
+      "version": "0.161.0",
+      "manifests": {
+        "OpenAI.Codex.installer.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/o/OpenAI/Codex/0.161.0/OpenAI.Codex.installer.yaml",
+          "sha256": "f8459cedf99414ec547e5a3dc7205921a752fa965aa93960245634d00954b961"
+        },
+        "OpenAI.Codex.locale.en-US.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/o/OpenAI/Codex/0.161.0/OpenAI.Codex.locale.en-US.yaml",
+          "sha256": "ad96484b94cdb0e8014cbfb289404a73ee93de9ecce7a0b3595b68d1cb06029a"
+        },
+        "OpenAI.Codex.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/o/OpenAI/Codex/0.161.0/OpenAI.Codex.yaml",
+          "sha256": "3006b3ae2195a74269c852df0c0b6ab0459497fbc0d4ac9842c246e48fa45cd6"
+        }
+      },
+      "installer": {
+        "url": "https://github.com/openai/codex/releases/download/rust-v0.161.0/codex-x86_64-pc-windows-msvc.exe.zip",
+        "sha256": "a7493348634867c905f7298211923c57eb01dfe45400207a423c5453b190b11a",
+        "type": "zip",
+        "scope": null
+      },
+      "depends_on": [
+        "BurntSushi.ripgrep.MSVC",
+        "Microsoft.VCRedist.2015+.x64"
+      ]
+    },
+    {
+      "id": "Microsoft.WSL",
+      "version": "2.7.13",
+      "manifests": {
+        "Microsoft.WSL.installer.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.installer.yaml",
+          "sha256": "0612e34ebb982c37883a37893f2ac8ef4b9fc7f12b3e027ee566b5ae9c409688"
+        },
+        "Microsoft.WSL.locale.cs-CZ.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.cs-CZ.yaml",
+          "sha256": "4e4d2be793b782f17c6c878216794219a378202de199d6442d850861e1b965ef"
+        },
+        "Microsoft.WSL.locale.da-DK.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.da-DK.yaml",
+          "sha256": "79f49bc425c93250e0879551694e464b678a669054cc78e4331e1cc885af7d0b"
+        },
+        "Microsoft.WSL.locale.de-DE.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.de-DE.yaml",
+          "sha256": "05332617c6a7f260d26be7d1a6a9d6151a2e548a9813aa53d88ea1a3928303e6"
+        },
+        "Microsoft.WSL.locale.en-US.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.en-US.yaml",
+          "sha256": "bc5eec6c2a1e097ddd77f7855abbc3160e881c145b854642ee39b20adf938d09"
+        },
+        "Microsoft.WSL.locale.es-ES.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.es-ES.yaml",
+          "sha256": "0e62400a353cbb78139bcb7ca7fe4c72888dbd6abf32ef4e580aaabedb59c33a"
+        },
+        "Microsoft.WSL.locale.fi-FI.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.fi-FI.yaml",
+          "sha256": "d524c0bca096805454de7f208b26e826253f8d23834b7d11c87505d5504525f7"
+        },
+        "Microsoft.WSL.locale.fr-FR.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.fr-FR.yaml",
+          "sha256": "9543c4bfb8e8a2b1b4a5f8dba27b4674a5b8fb3eb8e8bd2c2b39a5a49fd10f04"
+        },
+        "Microsoft.WSL.locale.hu-HU.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.hu-HU.yaml",
+          "sha256": "6b429b7c43b669edd4d0800626db5ad722395e6941812c87627179bee76f2695"
+        },
+        "Microsoft.WSL.locale.it-IT.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.it-IT.yaml",
+          "sha256": "a94c4b18136266bbdd0ec043755aa85857e3c025781f4f3ee38742d01f7d3ad9"
+        },
+        "Microsoft.WSL.locale.ja-JP.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.ja-JP.yaml",
+          "sha256": "c06f2b73f28d56978b5110e2f58919867b346521163d84a583ef06745729d9d7"
+        },
+        "Microsoft.WSL.locale.ko-KR.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.ko-KR.yaml",
+          "sha256": "d62cb81ec21d3689698c00104a6d599ffbbc63ea773968398fcc6a6f1151a843"
+        },
+        "Microsoft.WSL.locale.nb-NO.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.nb-NO.yaml",
+          "sha256": "808eedbc0467cb2e9f2376248887d50a6c02d2fceed03bb520cc36eef2ede031"
+        },
+        "Microsoft.WSL.locale.nl-NL.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.nl-NL.yaml",
+          "sha256": "bb6b1ce3bd901cdd87401a37dd44f77b5210cf18cb64fbb4a17c61cdf073c512"
+        },
+        "Microsoft.WSL.locale.pl-PL.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.pl-PL.yaml",
+          "sha256": "cf6b131254b4721166e3c04795727050562704408a562e8816dab48d5eac22d4"
+        },
+        "Microsoft.WSL.locale.pt-BR.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.pt-BR.yaml",
+          "sha256": "a79611add1dc2d5673acc5873917714a6dc17a3a6536cfcf1ebdf274034e6e36"
+        },
+        "Microsoft.WSL.locale.pt-PT.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.pt-PT.yaml",
+          "sha256": "1cab6669c805df44e29b1786fff0c020d96ddfd2dc8f71f4c258918d781c478e"
+        },
+        "Microsoft.WSL.locale.ru-RU.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.ru-RU.yaml",
+          "sha256": "ae50e139e80f763930914355ead562f7e8b054990d5839dc21f957b6ced06167"
+        },
+        "Microsoft.WSL.locale.sv-SE.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.sv-SE.yaml",
+          "sha256": "09bc64b94d51476e75070071681fdcdf33752073e7dd3b2fdcc1d9e4fc4177c1"
+        },
+        "Microsoft.WSL.locale.tr-TR.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.tr-TR.yaml",
+          "sha256": "5cfd75d6325f7410b00ac1f1c8ee45824f828e634c007e32f98b12b9d7fe8888"
+        },
+        "Microsoft.WSL.locale.zh-CN.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.zh-CN.yaml",
+          "sha256": "fe5ddadcac8b5928177112ef49657282f4560d372c968e84c29a895c12b1772b"
+        },
+        "Microsoft.WSL.locale.zh-TW.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.locale.zh-TW.yaml",
+          "sha256": "1a9bb6ae979f0bf288264e09445070574199102918b65a3ea116e9ef0991c31a"
+        },
+        "Microsoft.WSL.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/WSL/2.7.13/Microsoft.WSL.yaml",
+          "sha256": "8e6c340f2fe813c21927a3b11b5a297560c8eed3d957be17657400b1e425446d"
+        }
+      },
+      "installer": {
+        "url": "https://github.com/microsoft/WSL/releases/download/2.7.13/wsl.2.7.13.0.x64.msi",
+        "sha256": "a3505a50f4cc585551d11d9de824ba4375448d7a68f2e71d3fb315fa986fc754",
+        "type": "wix",
+        "scope": null
+      },
+      "depends_on": []
+    },
+    {
+      "id": "RedHat.Podman",
+      "version": "5.8.3",
+      "manifests": {
+        "RedHat.Podman.installer.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/r/RedHat/Podman/5.8.3/RedHat.Podman.installer.yaml",
+          "sha256": "63c61a000a1848f5bf6b5ce95bf4b0368999128970bd7ce323d892b4f39c79ad"
+        },
+        "RedHat.Podman.locale.en-US.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/r/RedHat/Podman/5.8.3/RedHat.Podman.locale.en-US.yaml",
+          "sha256": "0c892803d2db81ff3ac82dd6ea5144557a4bd6e1abb0ff53718a4f113c4022d7"
+        },
+        "RedHat.Podman.locale.zh-CN.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/r/RedHat/Podman/5.8.3/RedHat.Podman.locale.zh-CN.yaml",
+          "sha256": "5f544070b831316816e34586d7d4ab95630eff1778e0880b9dfbcbda2f0a6b53"
+        },
+        "RedHat.Podman.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/r/RedHat/Podman/5.8.3/RedHat.Podman.yaml",
+          "sha256": "6a8013161ad8937edbe97a60ce15a9b37f55e847d1000734e62fa535f43b4f3a"
+        }
+      },
+      "installer": {
+        "url": "https://github.com/podman-container-tools/podman/releases/download/v5.8.3/podman-installer-windows-amd64.exe",
+        "sha256": "b87fe41c112062b3f598574ed4aa3fb82aaa4bc150b29eb4915400e59b0b6b55",
+        "type": "burn",
+        "scope": "machine"
+      },
+      "depends_on": []
+    },
+    {
+      "id": "Microsoft.VisualStudio.Community",
+      "version": "18.11.0",
+      "manifests": {
+        "Microsoft.VisualStudio.Community.installer.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VisualStudio/Community/18.11.0/Microsoft.VisualStudio.Community.installer.yaml",
+          "sha256": "b9a70e6c9d864b9ff58a26a8cd0ffb0ba71e0707744bce7668cd1c03deeb6fa8"
+        },
+        "Microsoft.VisualStudio.Community.locale.en-US.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VisualStudio/Community/18.11.0/Microsoft.VisualStudio.Community.locale.en-US.yaml",
+          "sha256": "0522292375e751dd19fd699a6c4c1e641a1591e4838e359715cdb049d1785878"
+        },
+        "Microsoft.VisualStudio.Community.yaml": {
+          "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/14d155750d204a7a1c45f98bcb1f31fd63e01d96/manifests/m/Microsoft/VisualStudio/Community/18.11.0/Microsoft.VisualStudio.Community.yaml",
+          "sha256": "d2fd2704c52f255c21354e95bb7c25e1f6fcb335371b267386c6d0043b7911c2"
+        }
+      },
+      "installer": {
+        "url": "https://download.visualstudio.microsoft.com/download/pr/4ee8a2e7-bc71-435a-8180-6703ab4d2017/c44a7222e7cda357fc1024add386e9eba69fbbe436a9ef7176bac5022d7aa2a5/vs_Community.exe",
+        "sha256": "c44a7222e7cda357fc1024add386e9eba69fbbe436a9ef7176bac5022d7aa2a5",
+        "type": "exe",
+        "scope": "machine"
+      },
+      "depends_on": []
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:deployment] machine-inputs-not-invented
+Reference host adapters MUST preserve the actual reviewed hardware, network and
+persistent identity inputs. Generic examples MUST remain identified as examples;
+their disk paths and DNS names MUST NOT be presented as an existing host's values.
+
+@cc [owner:ghuntley,label:security] images-generate-private-host-identity
+Reusable installation and QEMU images MUST contain no private host keys or
+application credentials. New machines MUST generate their own persistent SSH
+Ed25519 key. Test instrumentation MUST remain confined to test variants.

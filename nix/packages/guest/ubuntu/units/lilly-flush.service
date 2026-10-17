@@ -1,0 +1,21 @@
+[Unit]
+Description=Lilly best-effort guest backup flush
+ConditionKernelCommandLine=lilly.placement
+ConditionKernelCommandLine=lilly.execution_epoch
+ConditionKernelCommandLine=lilly.boot_challenge
+ConditionKernelCommandLine=lilly.ipv4
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/local/lib/lilly-flush.py /usr/local/lib/lilly-readiness.py /usr/bin/sync
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_VSOCK
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+PrivateDevices=yes
+TasksMax=4
+MemoryMax=64M
+StandardOutput=null
+StandardError=null

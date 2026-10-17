@@ -1,0 +1,20 @@
+@cc [owner:ghuntley,label:security] ziggy-provider-key-custody
+Provider keys MUST come from private runtime files. Keys, prompts, responses,
+tool payloads and raw upstream errors MUST NOT enter logs or durable accounting.
+
+@cc [owner:ghuntley,label:security;deployment] ziggy-underclass-origin
+The OpenAI-compatible origin MUST be either the fixed public provider origin
+or enrolled host-local Underclass loopback. The latter MUST receive only its
+proxy credential, never its administrative UI token. Request input MUST NOT
+select an upstream origin.
+
+@cc [owner:ghuntley,label:architecture] ziggy-authority-boundary
+Ziggy MUST obtain current Marshall authority before provider effects and MUST
+stop streaming when request authority expires. Guest headers cannot confer VM
+identity. Ziggy MUST NOT directly access Marshall's database or repeat inference
+on recovery. A persisted admission is not evidence of provider completion.
+
+@cc [owner:ghuntley,label:recovery] ziggy-accounting-unknown
+Absent provider usage MUST remain unknown, never zero. Durable events MUST have
+stable IDs; retransmission MUST NOT duplicate counted usage. Full spool or failed
+admission persistence MUST prevent new provider effects.

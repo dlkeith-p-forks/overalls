@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:security] certificate-publication-validation
+Only a CA-verified, currently valid server certificate for the configured hostname
+with its matching private key may replace the published proxy certificate.
+Validation or issuance failure MUST preserve the previously published certificate.
+
+@cc [owner:ghuntley,label:security] certificate-secret-diagnostics
+DNS credentials, private keys and raw ACME/provider diagnostics MUST NOT enter
+logs, process arguments or the Nix store. DNS-01 credentials MUST come from the
+selected private credential file, without an ambient or instance-role fallback.
+HTTP-01 MUST NOT load DNS credentials. Neither mode may emit challenge tokens.
+
+@cc [owner:ghuntley,label:recovery] certificate-retry-and-reload
+Publication MUST verify that the certificate is served or request a validated
+HAProxy reload or initial start.
+Publication MUST be retried independently of whether the next ACME run issues
+another certificate. Reload MUST preserve active WebSocket connections.
+The last validated certificate MUST be persisted before requesting a reload.
+Proxy startup MUST revalidate that certificate and MAY use it when issuance or
+publication fails; an expired, untrusted or missing cache MUST fail startup.

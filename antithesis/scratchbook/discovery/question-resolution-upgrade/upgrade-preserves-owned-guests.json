@@ -1,0 +1,15 @@
+{
+  "slug": "upgrade-preserves-owned-guests",
+  "evidence_file": "antithesis/scratchbook/properties/upgrade-preserves-owned-guests.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Which native fixture can retain and independently identify guest VMM/cgroup and disk across the release switch?",
+      "answer": "Fleet updates compare real Firecracker cgroup PID/start-time and guest traffic through release and credential updates. Dataset GUID and persistent disk challenge are present in other fleet paths but not integrated into upgrade; faulted switch absent.",
+      "status": "partial",
+      "proposed_catalog_edit": "Tag partial and narrow present evidence to successful VMM preservation; add disk GUID/challenge and interrupted switch probe."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

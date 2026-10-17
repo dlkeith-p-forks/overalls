@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Unattended Windows Server 2025 installation for the Overalls Firecracker guest.
+
+  The build substitutes @WIM_IMAGE_NAME@ and @ADMIN_PASSWORD@. Drivers and the
+  post-setup script live on the same ISO as this file, so %configsetroot%
+  resolves to the configuration media regardless of drive letters.
+-->
+<unattend xmlns="urn:schemas-microsoft-com:unattend"
+          xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+  <settings pass="windowsPE">
+    <component name="Microsoft-Windows-PnpCustomizationsWinPE" processorArchitecture="amd64"
+               publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      @WINPE_DRIVER_PATHS@
+    </component>
+    <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64"
+               publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <SetupUILanguage>
+        <UILanguage>en-US</UILanguage>
+      </SetupUILanguage>
+      <InputLocale>en-US</InputLocale>
+      <SystemLocale>en-US</SystemLocale>
+      <UILanguage>en-US</UILanguage>
+      <UserLocale>en-US</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Setup" processorArchitecture="amd64"
+               publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <RunSynchronous>
+        <!-- Checkpoint: Windows PE reached the answer file. Windows PE has no
+             COM1 device, so the marker goes to the RAM disk where the
+             forensics copy picks it up; the command must never fail, or Setup
+             aborts the pass with "could not apply the Windows PE bootstrap
+             setting". -->
+        <RunSynchronousCommand wcm:action="add">
+          <Order>1</Order>
+          <Description>overalls WinPE checkpoint</Description>
+          <Path>cmd /c (echo OVERALLS-WINPE-START &gt; X:\overalls-winpe-start.txt) &amp; exit /b 0</Path>
+        </RunSynchronousCommand>
+        <!-- Bring the installation disk online and writable before Setup
+             applies DiskConfiguration. Windows PE's default SAN policy can leave
+             a freshly attached virtio disk offline, which fails the pass with
+             "could not apply the <DiskConfiguration> setting". The output is
+             kept on the RAM disk for forensics; the command never fails.
+             Order values MUST stay consecutive from 1: a gap makes Setup fail
+             parsing the RunSynchronousCommand elements (0x8007000d). -->
+        <RunSynchronousCommand wcm:action="add">
+          <Order>2</Order>
+          <Description>overalls online installation disk</Description>
+          <Path>cmd /c (echo select disk 0&amp; echo online disk noerr&amp; echo attributes disk clear readonly noerr&amp; echo detail disk&amp; echo exit) &gt; X:\overalls-online.txt &amp; (diskpart /s X:\overalls-online.txt &gt; X:\overalls-winpe-disk.txt 2&gt;&amp;1) &amp; exit /b 0</Path>
+        </RunSynchronousCommand>
+        @WINPE_DRVLOAD@
+      </RunSynchronous>
+      <DiskConfiguration>
+        <WillShowUI>OnError</WillShowUI>
+        <Disk wcm:action="add">
+          <DiskID>0</DiskID>
+          <WillWipeDisk>true</WillWipeDisk>
+          <CreatePartitions>
+            <CreatePartition wcm:action="add">
+              <Order>1</Order>
+              <Type>EFI</Type>
+              <Size>260</Size>
+            </CreatePartition>
+            <CreatePartition wcm:action="add">
+              <Order>2</Order>
+              <Type>MSR</Type>
+              <Size>16</Size>
+            </CreatePartition>
+            <CreatePartition wcm:action="add">
+              <Order>3</Order>
+              <Type>Primary</Type>
+              <Extend>true</Extend>
+            </CreatePartition>
+          </CreatePartitions>
+          <ModifyPartitions>
+            <ModifyPartition wcm:action="add">
+              <Order>1</Order>
+              <PartitionID>1</PartitionID>
+              <Format>FAT32</Format>
+              <Label>System</Label>
+            </ModifyPartition>
+            <ModifyPartition wcm:action="add">
+              <Order>2</Order>
+              <PartitionID>2</PartitionID>
+            </ModifyPartition>
+            <ModifyPartition wcm:action="add">
+              <Order>3</Order>
+              <PartitionID>3</PartitionID>
+              <Format>NTFS</Format>
+              <Label>Windows</Label>
+              <Letter>C</Letter>
+            </ModifyPartition>
+          </ModifyPartitions>
+        </Disk>
+      </DiskConfiguration>
+      <ImageInstall>
+        <OSImage>
+          <InstallFrom>
+            <MetaData wcm:action="add">
+              <Key>/IMAGE/NAME</Key>
+              <Value>@WIM_IMAGE_NAME@</Value>
+            </MetaData>
+          </InstallFrom>
+          <InstallTo>
+            <DiskID>0</DiskID>
+            <PartitionID>3</PartitionID>
+          </InstallTo>
+          <WillShowUI>OnError</WillShowUI>
+        </OSImage>
+      </ImageInstall>
+      <UserData>
+        <AcceptEula>true</AcceptEula>
+        <FullName>overalls</FullName>
+        <Organization>overalls</Organization>
+      </UserData>
+    </component>
+  </settings>
+  <settings pass="offlineServicing">
+    <!-- Inject the virtio drivers into the installed image so the first boot
+         under Firecracker finds viostor (boot-critical) and NetKVM in the
+         driver store. X: is the Windows PE RAM disk, still mounted while
+         Setup services the offline image. -->
+    <component name="Microsoft-Windows-PnpCustomizationsNonWinPE" processorArchitecture="amd64"
+               publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <DriverPaths>
+        <PathAndCredentials wcm:action="add" wcm:keyValue="1">
+          <Path>X:\overalls\drivers\viostor</Path>
+        </PathAndCredentials>
+        <PathAndCredentials wcm:action="add" wcm:keyValue="2">
+          <Path>X:\overalls\drivers\NetKVM</Path>
+        </PathAndCredentials>
+      </DriverPaths>
+    </component>
+  </settings>
+  <settings pass="specialize">
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64"
+               publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <ComputerName>overalls</ComputerName>
+      <TimeZone>UTC</TimeZone>
+    </component>
+    <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64"
+               publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <RunSynchronous>
+        <!-- Serial checkpoint: the specialize pass runs in the installed OS. -->
+        <RunSynchronousCommand wcm:action="add">
+          <Order>1</Order>
+          <Description>overalls specialize checkpoint</Description>
+          <Path>cmd /c echo OVERALLS-SPECIALIZE-START &gt; COM1</Path>
+        </RunSynchronousCommand>
+        <!-- Copy the boot media payload before the media detaches. The Path
+             value is limited to 259 characters, so the work is in
+             specialize.cmd on the media, called with its drive letter. -->
+        <RunSynchronousCommand wcm:action="add">
+          <Order>2</Order>
+          <Description>Copy overalls setup payload</Description>
+          <Path>cmd /c for %d in (D E F G H I J K) do if exist %d:\overalls\setup\specialize.cmd call %d:\overalls\setup\specialize.cmd %d</Path>
+        </RunSynchronousCommand>
+      </RunSynchronous>
+    </component>
+  </settings>
+  <settings pass="oobeSystem">
+    <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64"
+               publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <InputLocale>en-US</InputLocale>
+      <SystemLocale>en-US</SystemLocale>
+      <UILanguage>en-US</UILanguage>
+      <UserLocale>en-US</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64"
+               publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+      <!-- One build-time interactive logon (ADR-0173): winget installs its
+           packages only there. LogonCount 1 ends the autologon after this
+           logon, and FirstLogon.cmd removes and verifies every autologon value
+           before power-off; the finished image never logs on by itself. -->
+      <AutoLogon>
+        <Enabled>true</Enabled>
+        <LogonCount>1</LogonCount>
+        <Username>Administrator</Username>
+        <Password>
+          <Value>@ADMIN_PASSWORD@</Value>
+          <PlainText>true</PlainText>
+        </Password>
+      </AutoLogon>
+      <FirstLogonCommands>
+        <SynchronousCommand wcm:action="add">
+          <Order>1</Order>
+          <Description>overalls build final stage</Description>
+          <CommandLine>cmd /c C:\overalls\setup\FirstLogon.cmd</CommandLine>
+        </SynchronousCommand>
+      </FirstLogonCommands>
+      <OOBE>
+        <HideEULAPage>true</HideEULAPage>
+        <HideLocalAccountScreen>true</HideLocalAccountScreen>
+        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+        <ProtectYourPC>3</ProtectYourPC>
+        <SkipMachineOOBE>true</SkipMachineOOBE>
+        <SkipUserOOBE>true</SkipUserOOBE>
+      </OOBE>
+      <UserAccounts>
+        <AdministratorPassword>
+          <Value>@ADMIN_PASSWORD@</Value>
+          <PlainText>true</PlainText>
+        </AdministratorPassword>
+      </UserAccounts>
+      <TimeZone>UTC</TimeZone>
+    </component>
+  </settings>
+</unattend>

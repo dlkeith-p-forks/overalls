@@ -1,0 +1,105 @@
+defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
+  use Marshall.DataCase, async: false
+  use ExUnitProperties
+  import Marshall.ComputeFixtures
+  alias Marshall.Compute.{Image, Images}
+
+  @none %{
+    available: false,
+    ssh: false,
+    terminal: false,
+    agents: false,
+    editor: false,
+    readiness: false,
+    inception: false
+  }
+
+  # @cc [owner:ghuntley,label:verification;security] image-guest-agents-identity-property
+  # Generated firmware manifests MUST report their declared agent set only with
+  # their own content-bound ID; kernel manifests MUST report the Linux agent set;
+  # any mismatched ID or malformed manifest MUST fail closed as unavailable, with
+  # every capability false.
+  property "guest agent capability is bound to the validated manifest and its exact image ID" do
+    check all(
+            root_bytes <- integer(1..137_438_953_472),
+            firmware_bytes <- integer(1..67_108_864),
+            agents <- member_of(["none", "windows-v1"]),
+            max_runs: 25
+          ) do
+      manifest =
+        windows_image_manifest()
+        |> put_in(["root", "bytes"], root_bytes)
+        |> put_in(["boot", "firmware", "bytes"], firmware_bytes)
+        |> Map.put("minimum_disk_bytes", root_bytes)
+        |> Map.put("guest_agents", agents)
+
+      {:ok, validated} = OverallsProtocol.ImageManifest.validate(manifest)
+      {:ok, set} = OverallsProtocol.GuestAgents.parse(agents)
+      assert {:ok, ^set} = Image.guest_agents_capability(%{id: validated.id, manifest: manifest})
+      capabilities = Image.guest_capabilities(%{id: validated.id, manifest: manifest})
+      assert capabilities.available
+      assert capabilities.ssh == (set == :windows_v1)
+      assert capabilities.terminal == (set == :windows_v1)
+      assert capabilities.agents == (set == :windows_v1)
+      assert capabilities.readiness == (set == :windows_v1)
+      refute capabilities.editor
+      refute capabilities.inception
+
+      assert {:error, :unavailable} =
+               Image.guest_agents_capability(%{id: image_id(), manifest: manifest})
+
+      assert Image.guest_capabilities(%{id: image_id(), manifest: manifest}) == @none
+
+      assert {:error, :unavailable} =
+               Image.guest_agents_capability(%{
+                 id: validated.id,
+                 manifest: Map.put(manifest, "name", "Windows")
+               })
+    end
+  end
+
+  test "kernel images carry the Linux agent set and malformed rows fail closed" do
+    {:ok, validated} = OverallsProtocol.ImageManifest.validate(image_manifest())
+    assert {:ok, :linux} = Image.guest_agents_capability(validated)
+
+    assert Image.guest_capabilities(validated) == %{
+             available: true,
+             ssh: true,
+             terminal: true,
+             agents: true,
+             editor: true,
+             readiness: true,
+             inception: true
+           }
+
+    for image <- [nil, %{}, %{id: validated.id, manifest: nil}, %{validated | id: "wrong"}] do
+      assert {:error, :unavailable} = Image.guest_agents_capability(image)
+      assert Image.guest_capabilities(image) == @none
+    end
+  end
+
+  test "catalog lookups derive the capabilities from the durable row and refuse unknown IDs" do
+    linux = image_fixture()
+    windows = windows_image_fixture()
+    agents = windows_v1_image_fixture()
+    assert windows.id == windows_image_id()
+    refute agents.id == windows.id
+    assert windows.minimum_memory_bytes == 2_147_483_648
+    assert windows.minimum_disk_bytes == 34_359_738_368
+    assert Images.guest_capabilities(linux.id).terminal
+    assert Images.guest_capabilities(linux.id).inception
+    assert Images.guest_capabilities(windows.id) == %{@none | available: true}
+
+    assert %{available: true, ssh: true, terminal: true, agents: true, readiness: true} =
+             Images.guest_capabilities(agents.id)
+
+    refute Images.guest_capabilities(agents.id).editor
+    refute Images.guest_capabilities(agents.id).inception
+    assert Images.guest_capabilities("sha256:" <> String.duplicate("0", 64)) == @none
+    assert Images.guest_capabilities(nil) == @none
+
+    # Registration is idempotent on the content identity for firmware images too.
+    assert {:ok, same} = Images.register(windows_image_manifest(), "renamed")
+    assert same.id == windows.id and same.name == "Windows Server 2025"
+  end
+end

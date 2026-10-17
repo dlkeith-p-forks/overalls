@@ -1,0 +1,11 @@
+[Unit]
+Description=Lilly validated guest networking
+Wants=systemd-udev-settle.service
+After=systemd-udev-settle.service
+Before=network-online.target
+ConditionKernelCommandLine=lilly.ipv4
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/python3 /usr/local/lib/lilly-network.py /usr/sbin/ip

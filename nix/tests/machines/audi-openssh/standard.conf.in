@@ -1,0 +1,5 @@
+Host @label@.@zone@
+  HostName @label@.@zone@
+  Port 22
+  AddressFamily inet
+  ProxyCommand ssh -4 -F /dev/null -T -p @port@ -l audi -o BatchMode=yes -o ConnectTimeout=5 -o ConnectionAttempts=1 -o ControlMaster=no -o ControlPath=none -o ClearAllForwardings=yes -o ForwardAgent=no -o StrictHostKeyChecking=yes -o HostKeyAlgorithms=ssh-ed25519 -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null -o CheckHostIP=no -o UpdateHostKeys=no -o VerifyHostKeyDNS=no -o HostKeyAlias=@label@.@zone@ -o 'KnownHostsCommand=/usr/bin/env overalls host-key --url @origin@/api/audi/v1/known-hosts/@label@ --host @label@.@zone@' -- @label@.@zone@ connect @label@

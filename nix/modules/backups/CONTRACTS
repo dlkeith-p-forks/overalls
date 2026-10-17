@@ -1,0 +1,16 @@
+@cc [owner:ghuntley,label:security] backup-runtime-custody
+Passwords and connection strings MUST come from private runtime credentials,
+never Nix values, argv, status, manifests or diagnostics. Only fixed executables
+and validated argument arrays may execute; secret environment files are never
+sourced as shell programs.
+
+@cc [owner:ghuntley,label:recovery] backup-completion-and-cleanup
+A complete host recovery point MUST reference successful captures of every
+required component. Flush failure or a stopped guest MUST NOT exclude its disks.
+Every owned snapshot MUST have durable cleanup intent before creation; uncertain
+cleanup remains visible and retryable. Foreign snapshots MUST never be destroyed.
+
+@cc [owner:ghuntley,label:recovery] backup-retention-reachability
+Retention MUST preserve all component snapshots referenced by retained completed
+host manifests. Failed runs MUST NOT advance successful retention or erase the
+last good recovery points. All repository mutations MUST share the host lock.

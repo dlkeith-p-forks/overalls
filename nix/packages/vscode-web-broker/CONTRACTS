@@ -1,0 +1,30 @@
+@cc [owner:ghuntley,label:security] editor-broker-trusted-preface
+The guest broker MUST accept only the exact Lilly gateway on the guest's fixed
+eth0 address and port 4444. A bounded, closed, boot-bound account preface and
+current account reconciliation MUST precede worker startup or forwarding bytes.
+
+@cc [owner:ghuntley,label:security] editor-worker-account-custody
+Editor workers MUST run as the ensured account in independent systemd units.
+Runtime directories MUST have mode 0700, sockets mode 0600, and accepted Unix
+connections MUST have the expected kernel peer UID. The broker MUST NOT launch
+a shell, construct caller-controlled executable paths or relay authentication
+preface fields into editor HTTP requests.
+
+@cc [owner:ghuntley,label:product] editor-all-workspaces-trusted
+Every editor worker MUST pass the upstream disable-workspace-trust flag so all
+folders are trusted, including outside HOME and under conflicting personal
+settings. Per-user trust storage MUST NOT be required for editor startup.
+
+@cc [owner:ghuntley,label:recovery] editor-worker-independent-lifetime
+A guest broker restart MUST NOT stop editor workers or delete their runtime
+directories. Readiness MUST inspect the existing socket, kernel peer UID, source
+commit and root systemd launch identity for the exact UID/name, protocol, commit,
+release and origin before reusing a worker. A mismatched legitimate worker MUST
+be stopped successfully before recreation, preserving personal files; metadata
+failure and foreign socket custody MUST refuse without stopping that worker.
+Startup MUST be single-flight per account. Upstream grace and
+shutdown behavior MUST retire idle workers without an independent broker timer.
+
+@cc [owner:ghuntley,label:security] editor-broker-closed-diagnostics
+Broker diagnostics MUST contain only fixed event and reason enums. They MUST NOT
+contain incoming frames, paths, account identities, origins, arguments or bytes.

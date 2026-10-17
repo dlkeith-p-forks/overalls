@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:verification;protocol] guest-fixture-execution-owner
+Synthetic executable commands submitted to the real control store MUST carry
+canonical owner_id metadata required by the current strict execution codec.
+That metadata MUST NOT be presented as real account authority or cross-host
+control evidence, and MUST survive fixture command updates unchanged.

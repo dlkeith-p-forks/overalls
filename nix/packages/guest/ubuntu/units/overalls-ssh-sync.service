@@ -1,0 +1,16 @@
+[Unit]
+Description=Reconcile current Overalls SSH guest accounts
+Requires=lilly-private-dns.service
+After=lilly-private-dns.service network-online.target
+Before=ssh.service
+# A later successful timer run reopens SSH after an early authority outage.
+OnSuccess=ssh.service
+
+[Service]
+Type=oneshot
+StateDirectory=overalls-ssh
+StateDirectoryMode=0700
+ExecStartPre=/usr/bin/rm -f /run/overalls-ssh-ready
+ExecStart=/usr/local/bin/overalls-host-certificate
+ExecStart=/usr/local/bin/overalls-ssh-authorize sync
+ExecStartPost=/usr/bin/touch /run/overalls-ssh-ready

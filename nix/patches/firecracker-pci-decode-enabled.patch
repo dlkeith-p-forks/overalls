@@ -1,0 +1,37 @@
+diff -ruN a/src/vmm/src/devices/virtio/transport/pci/device.rs b4/src/vmm/src/devices/virtio/transport/pci/device.rs
+--- a/src/vmm/src/devices/virtio/transport/pci/device.rs	2026-10-13 16:12:21.011907968 +0000
++++ b4/src/vmm/src/devices/virtio/transport/pci/device.rs	2026-10-13 18:10:31.409440738 +0000
+@@ -335,7 +335,14 @@
+         )
+     }
+ 
+-    /// Allocate the PCI BAR for the VirtIO device and its associated capabilities.
++    /// Status/command register index in PCI configuration space.
++const COMMAND_REG: u16 = 1;
++/// PCI command register bit: respond to memory space accesses.
++const COMMAND_MEMORY_SPACE: u16 = 1 << 1;
++/// PCI command register bit: the device may act as a bus master.
++const COMMAND_BUS_MASTER: u16 = 1 << 2;
++
++/// Allocate the PCI BAR for the VirtIO device and its associated capabilities.
+     ///
+     /// This must happen only during the creation of a brand new VM. When a VM is restored from a
+     /// known state, the BARs are already created with the right content, therefore we don't need
+@@ -361,6 +368,17 @@
+             BarPrefetchable::No,
+         );
+         self.add_pci_capabilities();
++        // Firecracker assigns every BAR itself and cannot relocate one, so
++        // the device leaves the VMM in the state a firmware would leave it
++        // after enumeration: memory decoding and bus mastering enabled.
++        // Firmware that consumes pre-assigned BARs (edk2's scanning host
++        // bridge library) only counts devices that already decode, and a
++        // guest OS re-programs the register anyway.
++        self.configuration.write_config_register(
++            Self::COMMAND_REG,
++            0,
++            &(Self::COMMAND_MEMORY_SPACE | Self::COMMAND_BUS_MASTER).to_le_bytes(),
++        );
+     }
+ 
+     /// Constructs a new PCI transport for the given virtio device.

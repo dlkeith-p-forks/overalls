@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:build] compact-external-source
+These files MUST remain thin adapters to the pinned ghuntley/nix-compact flake.
+The logger, classifier, archive, reader and Hegel implementation MUST NOT be
+duplicated or independently modified here.
+
+@cc [owner:ghuntley,label:build] compact-consumer-inputs
+The configuration check MUST evaluate the module against the supplied stable
+host package set, and the exported package/check names in `flake.nix` MUST
+remain usable.

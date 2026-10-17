@@ -1,0 +1,546 @@
+# Architecture reviews
+
+- [lilly-hostd core review (2026-10-16)](2026-10-16-lilly-hostd-core.md): ADR-0176 decision 4, first stage. One `lilly-hostd` daemon replaces a `lilly-host-lock` process per held lock: FIFO leases on the same inodes, a closed utility table, per-command cgroup custody released only after a confirmed empty cgroup, root-only peers in `lilly.service`, and Lilly bound to the unit.
+- [Agent context and planning (2026-10-16)](2026-10-16-agent-context-and-planning.md):
+  ADR-0178/0179's checkpoint coverage, instruction trust, durable question/proposal
+  flow and guest skill custody. Initial architecture assessment; final source,
+  native execution and deployment verification remain pending.
+
+- [Host concurrency review (2026-10-16)](2026-10-16-host-concurrency.md): ADR-0176. Lilly has no host-wide lock. Production create latency on dungarees (p95 149 s) comes from bursts of creates serialized through pool-locked preparation that polls instead of queueing, and from per-second re-adoption through the mutation path, not from copies, which are block-cloned in about 0.1 s. Records six decisions: pool single writer with group commit, reconciler actors, native template digests, a `lilly-hostd` effects engine, durable jobs and evidence-gated standbys; ADR-0173 decision 10 corrected.
+
+- [Multi-OS guest images (2026-10-16)](2026-10-16-multi-os-guest-images.md): ADR-0180's
+  Arch/Alma Linux reuse of the version-4 contract, explicit FreeBSD/illumos
+  version-6 and bundle-v3 metadata, and Lilly's conditional initrd/vsock/CPU
+  mapping. Builder evaluation and focused unit evidence are recorded; native
+  FreeBSD/OmniOS boot, agents, recovery and fleet claims remain open.
+
+- [Thread sharing review (2026-10-16)](2026-10-16-thread-sharing.md): ADR-0175's
+  durable thread grants, current bound-machine authority, additive VM/team roles,
+  replay and revocation boundaries. The focused 111-case suite and synthetic
+  browser matrix passed; native transport and cross-node recovery remain separate.
+
+- [User threads architecture review (2026-10-15)](2026-10-15-user-threads.md): ADR-0174's Threads boundary, running-VM readiness, idempotent initial objective, archive deletion confirmation, reopen machine keys and retained-transcript authority. The working integration snapshot passed 31 focused tests and presentation checks; native recovery, cross-node replay and browsing previous transcript generations remain gaps.
+
+- [Underclass manual reset redemption pin (2026-10-14)](2026-10-14-underclass-pin.md): fleet package `3e35c3b` to `d0cb274` adds an admin-token-gated manual Codex reset endpoint, CLI and page button, a `gpt-6-sol` catalog entry and body-based stream classification. ADR-0102 keeps its accepted decision and partial status; hashes and an offline package build were validated, tests were not run.
+- [Underclass stream statistics pin (2026-10-15)](2026-10-15-underclass-pin.md): fleet package `d0cb274` to `8c1a38c` adds bounded stream outcomes and admin-token-gated long-range capacity statistics while preserving the independent pool and monitor boundaries. Hashes and an offline package build were validated; tests were not run.
+- [Native guest coding CLIs (2026-10-13)](2026-10-13-native-guest-coding-clis.md): ADR-0167 adds pinned Codex and Claude Code with native Ziggy settings in both images, an offline Ubuntu closure exception and exact Anthropic beta Messages/token-counting query support. Execution and deployment evidence are recorded as they complete; production Anthropic remains disabled.
+- [Resize hardening (2026-10-13)](2026-10-13-resize-hardening.md): ADR-0166 adds the Porsche `resize` command with durable receipts, logs every refusal with its reason, records a stop confirmed without its disk for retry instead of aborting the host exchange, and allows cancellation while the machine is still stopping. Coordinator, SSH, page and parser tests pass; full gates and the Porsche acceptance are recorded as they happen.
+- [Storage churn and capacity damping (2026-10-13)](2026-10-13-storage-churn-and-capacity-damping.md): ADR-0163, ADR-0164 and ADR-0165 after a production image rebuild retired and filled about 260 standby disks under the pool lock and capacity snapshots were withheld hundreds of times an hour. Standby refill becomes a planned, budgeted pass that yields to pool-lock waiters with at most 32 standbys per image and 64 per pool, usage-counter drift is resampled instead of withholding, and a busy pool entry extends a recent measurement's freshness for at most fifteen seconds. Unit and property gates recorded; native reruns and fleet activation are recorded as they happen.
+- [Windows Lilly launch (2026-10-14)](2026-10-14-windows-lilly-launch.md): ADR-0170 admits manifest v5 and bundle v2, routes firmware bundles through Lilly's jail with MMDS identity and `--enable-pci`, records agentless guests as `unattested` running without `guest_ready`, adds the MMDS bootstrap task to the Windows image and Marshall's guest-agents gating. Records the merge of origin/main (ADR renumbered to 0168), the first recorded execution of the `windows-guest` machine test, Linux guest regressions on the patched VMM with a pre-existing post-import fixture failure reproduced on untouched main, the unit and property suites, and the Lilly-mode `windows-lilly-guest` machine test.
+- [Windows Firecracker spike (2026-10-13)](2026-10-13-windows-firecracker-spike.md): ADR-0169 bootable Windows Server 2025 guest under the patched static Firecracker 1.16.1 with edk2 CloudHv UEFI as the PVH payload and the opt-in virtio-pci transport. Records the four platform-contract fixes, the offline KVM image build from Microsoft's pinned evaluation ISO, which builds and checks ran, and the serial-console boot result; manifest v5 admission, Lilly launch and guest agents remain gaps.
+- [Clone cleanup liveness (2026-10-13)](2026-10-13-clone-cleanup-liveness.md): ADR-0162 after a production clone held its host's transfer slot for ninety minutes with a silently failing prune. Unconfirmed clone effects carry a closed reason on both sides (clone protocol v5), slots release at stream quiescence, a published copy completes at a cleanup deadline while the source snapshot hold, exclusion and prune offer are retained, transient refusals defer in the queue, and a failed source stop is recorded. Generated histories passed; native clone reruns and production acceptance are recorded as they happen.
+- [Monospace Web presentation (2026-10-13)](2026-10-13-monospace-web-presentation.md): ADR-0161 replaces the Nekomo presentation with The Monospace Web: character grid, four colour tokens per theme, vendored JetBrains Mono, text glyphs, no external resources, Tailwind/daisyUI/Mishka/Cinder removed. Structural gate and Playwright probe in both themes recorded; synthetic fixture and no assistive-technology audit remain explicit gaps.
+- [Antithesis harness foundation (2026-10-13)](2026-10-13-antithesis-harness-foundation.md): optional SDK and controlled/integrated variants, disposable control graph, local TCG guest/router and measured-host evidence, and static property roster; no composed or hosted baseline or native guest acceptance is claimed.
+- [Antithesis integration architecture review (2026-10-13)](2026-10-13-antithesis-integration-review.md): source-level ownership, enrollment, readiness and operator boundaries, with composed execution still pending.
+- [Antithesis current-main integration (2026-10-13)](2026-10-13-antithesis-main-integration.md): nine merge conflicts resolved around strict pool shape, controlled decoding, separate capacity and I/O verification, replay fixture revisions and five-second ingress; fresh image and hosted evidence remain pending.
+
+- [Antithesis native prerequisites (2026-10-13)](2026-10-13-antithesis-prerequisites.md): captured Galileo/Enrico release and ZFS I/O passes, two failed service-role attempts (cookie pipeline, then Lilly startup), fixture-only custody/replay changes and five-second catalog decoder correction; current hosted harness and remaining native/consumer gates stay separate.
+
+- [Antithesis harness reset (2026-10-13)](2026-10-13-antithesis-reset.md): retires the old tree before a fresh whole-repository rebuild, preserves baseline-pinned historical evidence and ordinary Lilly generated tests, and leaves fresh hosted/mutation/native coverage pending. ADR-0017's accepted decision and partial implementation status remain unchanged.
+
+- [Privileged administrator step-up (2026-10-11)](2026-10-11-privileged-administrator-step-up.md): ADR-0160 replaces inherited five-minute/redirect step-up with fixed fifteen-minute elevation, exact inline pending-action continuation and no-key Security setup followed by explicit retry. Final merged packaged browser checks passed ordinary access, no-key return/retry, inline continuation/cancellation and colocated replica revocation. Native timed expiry, machine-page recovery and physical-host/hardware acceptance remain separate gaps.
+- [Legacy compatibility removal (2026-10-11)](2026-10-11-legacy-compatibility-removal.md): ADR-0159 inventory-driven removal of every backward-compatibility path in ordered converged pushes; read-only host and database preflight facts, exports and per-push results.
+- [Durable guest identities (2026-10-10)](2026-10-10-durable-guest-identities.md): ADR-0158 replaces email-based allocation and editor checks with immutable generated logins/homes and permanent retired reservations. Original feature and incoming `d4499c4c` merged captures remain distinct: merged Protocol259/Lilly555/Marshall1429 gates and both eight-subtest lifecycles passed. Native inventory passed8.22s within a complete native-zfs run failing unrelated resource receipts. Complete Ubuntu SSH/native editor and later incoming integration remain separate scopes. Authorized live guest deletion does not establish migration/deployment.
+- [Stopped-only relocation (2026-10-10)](2026-10-10-stopped-only-relocation.md): ADR-0155 deletes live pre-copy; stopped path traced end to end, production history (18 complete pre-copy moves) validated against the new codecs after the migration transform. Incoming native relocation passed 20 subtests in 4018 seconds; the journal enumeration bound remains a documented contract gap and current merged execution is separate.
+- [Shared request-accounting library (2026-10-10)](2026-10-10-request-accounting-library.md): breaking internal rename to `Kittens.RequestAccounting`, shared aggregate arithmetic, preserved recorder boundaries and explicit separation from diagnostics.
+
+- [Shared Elixir observability library (2026-10-10)](2026-10-10-observability-library.md): shared canonical logging, privacy and bounded metrics review.
+
+- [Browser launcher and source2 (2026-10-10)](2026-10-10-browser-launcher.md): Weaver browser comparison, unsigned Nix packages/public downloads, source2/manifest4 cutover and signed-cookie authentication resume under ADR-0157/0156; focused evidence and current native/production gaps.
+
+- [Existing-state profile migration custody (2026-10-10)](2026-10-10-profile-migration-custody.md): incoming raw lifecycle rewrite conflicts with exact legacy archives; reviewed correction passes scoped custody/database regressions, while proposed ADR-0151 preserves the accepted fresh-only decision and retained-state native acceptance remains pending.
+
+- [Guest boot profile (2026-10-10)](2026-10-10-guest-boot-profile.md): ADR-0154 host line offsets and boot report, measured NixOS build-time Nix registration, Ubuntu verified-current trust, lean initrd and quiet console; rejected reorderings and remaining fleet/no-initrd gaps.
+
+- [Default guest Starship (2026-10-10)](2026-10-10-guest-starship.md): ADR-0150 stock Bash/Starship defaults, passing merged NixOS/Ubuntu personal SSH/browser journeys, historical root-image results and explicit property/custom-configuration gaps.
+
+- [Independent observability (2026-10-09)](2026-10-09-observability-decoupling.md): ADR-0149 removes diagnostic authority and transport from the application protocol; independent SDK, durable trace custody, fleet exporter and provisioned Grafana evidence, with deployment acceptance boundaries.
+- [Elixir and Rust observability source review (2026-10-09)](2026-10-09-observability-source-review.md): source inventory, emitter searches and semantic review of production boundaries; retained native authority protocols and payload privacy.
+
+- [2026-10-10: Official-source browser editor](2026-10-10-browser-editor.md) - official Code OSS patch/package, personal Editor authority, immutable guest capability and scoped component/native gaps under ADR-0153.
+
+- [2026-10-09: Standard branding and open-domain eligibility](2026-10-09-standard-branding.md) - fresh-install profile naming, preserved testing integration and safe cross-domain identity.
+
+- [Terminal peer silence scheduling (2026-10-06)](2026-10-06-terminal-peer-silence.md): incoming timer drift reproduced and callback repair/mutation checks passed; generated TLS silence history is under fixture review, integration and full gates remain pending.
+
+- [Opening socket custody (2026-10-06)](2026-10-06-opening-socket-custody.md): post-handoff worker death reproduced an untracked socket; provisional custody repairs and scoped properties passed, both cleanup mutants caught; current full Protocol/consumer gates pending.
+
+- [Launch-guard waiting intent](2026-10-05-launch-guard-waiting-intent.md): preserved kernel-witnessed property,99-second native package and ordering mutant; fresh combined verification pending.
+- [Source-export adopted children](2026-10-05-source-export-adopted-children.md): preserved all-child custody repair, completion/failure properties and scoped selector mutants; fresh combined verification pending.
+
+- [transfer-stream-adopted-child-custody (2026-10-05)](2026-10-05-transfer-stream-adopted-children.md): scoped native baseline and selector mutation evidence; source/test identity verified after integration, exact-helper consumer and publication gates pending.
+
+- [host-lock-descendant-completion-custody (2026-10-05)](2026-10-05-host-lock-descendant-custody.md): scoped native baseline and selector mutation evidence; source/test identity verified after integration, exact-helper consumer and publication gates pending.
+
+- [Audi pending version close (2026-10-05)](2026-10-05-audi-pending-version-close.md): actual close4001 reproduced permanent-class loss for pending reads; repair and real upgrade/body/DNS expiry properties passed focused checks; full typing/mutation/integration remain open.
+- [Control transport properties (2026-10-05)](2026-10-05-control-first-envelope.md): reproduced first-hello, terminal-retry and heartbeat ownership bugs repaired; Protocol249, Lilly503, Marshall1466 and Galileo31-check gates passed, scoped mutants caught; incoming-main and native integration remain open.
+- [Auth mail post-acknowledgement design (2026-10-05)](2026-10-05-auth-mail-post-ack-design.md): typed three-peer draft parks the real delivery action after SMTP success and before commit, then checks owner death, identical retry and terminal replay; syntax/format only, runtime pending.
+- [Protocol transport boundary (2026-10-05)](2026-10-05-protocol-transport-boundary.md): reconciles stale blanket no-I/O guidance with accepted ADR-0142 named transport modules; pure codecs/state and domain/storage boundaries retained, full component integration gates passed.
+- [Auth mail post-ACK loss and sender rotation (2026-10-05)](2026-10-05-auth-mail-post-ack-runtime.md): committed three-peer crash evidence, payload-retirement mutation and reproduced sender-derived Message-ID instability; combined19check execution and rotation mutation/restored selection passed; full typing/integration gates pending.
+
+- [Native recorder commit/reply loss design (2026-10-05)](2026-10-05-recorder-commit-reply-loss.md): accepted commit and preserved Unix identity with Client timeout/gap; native verification pending.
+
+- [Enrico escaped-session ownership (2026-10-05)](2026-10-05-enrico-escaped-session-ownership.md): actual separate-session cleanup counterexample, corrected all-child wait selector and eleven-property native package passed; local reversion mutant caught, integrated gates pending.
+
+- [Producer acknowledgment uncertainty (2026-10-05)](2026-10-05-producer-uncertain-ack.md): two local generated Client/marker/Unix-RPC histories,11check component gate, dedicated source typing, mutant control and reviewed hooks/HLDD passed; native uncertainty remains open.
+- [Generated native producer and recorder histories (2026-10-05)](2026-10-05-producer-recorder-histories.md): production Elixir client and authenticated durable Rust recorder; pending admission conservation through reopens and generated completion/death mixtures. Native subtest passed10.77seconds within74.87-second full script, with composed driver lint and typing; final publication gates pending.
+
+- [Terminald actual growth backing (2026-10-05)](2026-10-05-terminald-growth-backing.md): real PTY two-phase growth and full64MiB backing accounting; native51tests and Clippy passed; original-append control caught128MiB backing against64MiB reserved. Marshall1451checks, zero-error forced Dialyzer, hooks and evaluated HLDD passed. Simultaneous mixed-pressure and authenticated composition remain separate.
+
+- [Terminald mixed growth and admission (2026-10-05)](2026-10-05-terminald-mixed-growth.md): stalled real viewer, healthy output/growth and competing creates preserve exact backing/inventory and replacement capacity, including default64MiB; combined native52tests and Clippy passed22.00s. Expanded control caught the smaller-family growth violation; Marshall1451checks and zero-error forced Dialyzer passed.
+
+- [Terminald shared ring admission (2026-10-03)](2026-10-03-terminald-shared-ring-budget.md): real PTY64MiB admission, contending final reservations and exact retirement/replacement; native47tests and Clippy passed; quota mutant caught; reviewed hooks and HLDD22s passed; Marshall integration pending.
+- [Terminald neighboring session pressure (2026-10-03)](2026-10-03-terminald-neighbor-pressure.md): actual PTY/socket pressure and fresh executed neighbor output before/after owned retirement; refined zero/configured/read-boundary native47tests and Clippy passed4.66s; integration pending.
+
+- [Create, clone and delete latency (2026-10-05)](2026-10-05-create-clone-delete-latency.md): production timings plus live Porsche cycle; create spent 25.4s of 33.8s in a userspace copy (FICLONE EXDEV across mounts), same-host clone 46.9s in a throttled uncompressed send, delete p90 679s from usage-exact whole-pool observation; image-copy 11 tests and 257 focused Lilly checks passed; native and post-deploy evidence pending.
+- [Private burn notification delivery (2026-10-03)](2026-10-03-private-burn-delivery.md): actual upstream TLS delivery, eighty generated route histories and final native check with build validation passed in97.55s; handbook browser61.88s; production destination acceptance pending.
+- [Waiting mail token authority (2026-10-03)](2026-10-03-mail-waiting-token-authority.md): three-peer committed token removal/expiry while a worker actually waits on the outbox lock; combined four-property run passed80.8s; full precommit passed1434checks,seed559168,1724.4s; forced Dialyzer60.57s passed with zero errors or skips.
+- [Pending audit roster oracle (2026-10-03)](2026-10-03-audit-pending-roster-oracle.md): corrects a local dirty-sender test that demanded offers from completely acknowledged journals; fixed small witness and focused property passed25.1s, final Lilly precommit passed475checks,seed279043,98.0s; forced Dialyzer12.83s and standalone test-module typing passed with zero warnings.
+- [Native worker BEAM recovery (2026-10-03)](2026-10-03-lilly-native-beam-recovery.md): generated completed-effect/before-record abrupt whole-worker loss, independent Store/lock reopens and exact Firecracker/outcome replay; native check passed1037s; pending-journal oracle correction integrated; merged Lilly475checks and zero-error Dialyzer passed; Marshall gate pending, production daemon and authenticated exchange remain separate.
+
+- [Committed mail worker histories (2026-10-03)](2026-10-03-mail-committed-worker-histories.md): independent PostgreSQL contention and abrupt post-DATA peer death; final focused two-property run passed63.7s with replacement-peer verification; forced Dialyzer passed74.84s; full precommit passed1,432checks,seed612345,1525.2s; forced Dialyzer passed50.9s with zero errors or skips.
+
+- [SMTP post-DATA timeout histories (2026-10-03)](2026-10-03-mail-smtp-timeout-histories.md): generated verified-TLS owner timeout, connection retirement, stable payload and terminal replay; focused postmerge execution passed eight checks in 114.6 seconds.
+
+- [Uploaded backup publication histories (2026-10-03)](2026-10-03-backup-upload-publication-histories.md): generated real-Restic manifest interruption, exact restore and retention reference survival; full13-test suite1418s passed.
+
+- [Backup reader group retirement (2026-10-03)](2026-10-03-backup-reader-group-retirement.md): actual leader-exit leak, thread death proof and production repair; pinned runtime8s and packaged121s passed; inherited termination-bound gap explicit.
+
+- [Interrupted publishing recovery (2026-10-03)](2026-10-03-backup-publication-recovery.md): installed cleanup preserves seeded journal references and last success; combined native execution passed in 155 seconds.
+
+- [Packaged backup cleanup recovery (2026-10-03)](2026-10-03-backup-packaged-cleanup.md): installed unit/operator ownership refusal, interrupted-run reconciliation and terminal replay; native execution passed in 138 seconds, exit 0.
+
+- [Native backup identity replacement and pre-GUID intent (2026-10-03)](2026-10-03-backup-native-identity-intent.md): actual replacement-object refusal and native precreation cleanup; combined thirty-seven-history native check passed in 169 seconds; mutation during cleanup and full orchestration remain open.
+
+- [Native host cleanup worker death (2026-10-03)](2026-10-03-backup-cleanup-worker-death.md): real worker/helper SIGKILL around native destroy; combined native execution passed in 134 seconds; full packaged orchestration and power loss remain open.
+
+- [Native host snapshot cleanup ownership (2026-10-03)](2026-10-03-native-backup-cleanup.md): real ZFS/mount proof refusals and post-destroy inspection outage; native execution passed in 98 seconds; process/power-loss and concurrent replacement remain open.
+
+- [Native Lilly completed effect recovery (2026-10-03)](2026-10-03-lilly-native-actor-recovery.md): real Executor/Firecracker completion before actor outcome recording; combined contention/completion native check passed in 671 seconds; full daemon/start/submission and hosted boundaries remain open.
+
+- [Enrico aggregate refresh admission (2026-10-03)](2026-10-03-enrico-refresh-admission.md): bounded admission, real controlled-worker saturation, success/death release and same-attempt retry; ten native histories, complete component and packaged HTTPS machine gates passed; saturated native recovery remains open.
+
+- [Terminald byte histories (2026-10-03)](2026-10-03-terminald-byte-histories.md): five generated ring/stream/refusal properties; full native Clippy and 43 tests passed, static production factory also passed.
+
+- [Backup owned cleanup histories (2026-10-03)](2026-10-03-backup-owned-cleanup-histories.md): generated exact refusal inventories, pre-GUID intent and uncertain cleanup retries; pinned Python 3.13 Nix check passed, publication checks pending.
+- [Telemetry retention and diagnostics (2026-10-03)](2026-10-03-telemetry-retention-and-diagnostics.md) records ninety-day retention, prioritized missing-data states and additive Underclass latency migration under ADR-0138.
+- [Lilly completed launch recovery (2026-10-03)](2026-10-03-lilly-completed-launch-recovery.md): completed executor result held before outcome recording; actor replacement and exact replay passed, native boundaries remain open.
+
+- [Enrico attempt generation histories (2026-10-03)](2026-10-03-enrico-attempt-generation-histories.md): real supervised refresh reuse across bounded receipt retention; focused properties passed, component and integrated gates pending.
+
+- [Producer worker completion histories (2026-10-03)](2026-10-03-producer-worker-completion-histories.md): live-worker ticket custody and once-only actual death/completion races; component and handbook checks passed, integrated publication gates pending.
+
+- [Public Grafana access (2026-10-03)](2026-10-03-public-grafana.md) reviews authenticated HTTPS, certificate reuse, and destination-scoped firewall access under ADR-0137.
+
+- [Durable request SLO accounting (2026-10-02)](2026-10-02-durable-request-slos.md) records ADR-0136's Rust recorder, producer hooks, declared fleet bindings, native Marshall recovery and remaining source/deployment acceptance.
+
+- [Distributed host-lock reach (2026-10-03)](2026-10-03-distributed-host-lock-reach.md): three independent peers reach held host-lock chains before release; focused, complete-file and full pre-integration gates passed; merged checks remain required.
+
+- [Ziggy reporter receipt histories (2026-10-03)](2026-10-03-ziggy-reporter-histories.md): exact controlled batch attempts, immutable refusals, neighbor drain and restart totals; focused, full Ziggy and publication gates passed.
+
+- [Distributed race error oracles (2026-10-03)](2026-10-03-distributed-race-error-oracles.md) records stricter clone error acceptance and passing focused three-node histories; full gates passed; additional lock schedules remain open.
+
+- [Competing relocation and workflow backlog histories (2026-10-02)](2026-10-02-relocation-and-workflow-backlog-histories.md) records passing focused actual admission and workflow publication properties; full batch gates remain pending.
+
+- [Clone competing activation histories (2026-10-02)](2026-10-02-clone-competing-activation.md) records queued acceptance, allocation-free activation refusal, recovery after release and first-release timestamp preservation.
+
+- [Namespace sweep planner properties (2026-10-02)](2026-10-02-namespace-plan-properties.md) records exact target conservation, configured cap boundaries and isolated mutant detection without native unmount claims.
+
+- [Database client-loss histories (2026-10-02)](2026-10-02-database-loss-histories.md) records active-holder execution, generated submission orders and pending silent/asymmetric recovery verification under ADR-0126.
+
+- [Large-file streaming cache (2026-10-02)](2026-10-02-large-egress-cache.md) records ADR-0135, native/property execution and live pinned archive acceptance separately.
+
+- [2026-10-02: Durable physical SLO accounting](2026-10-02-durable-physical-slos.md)
+- [HTTPS egress production acceptance (2026-10-02)](2026-10-02-https-egress-production.md) records live NixOS/Ubuntu interception, caching and restart, Customer refusal, native HTTPS/ZFS recovery, and descriptor-pinned namespace cleanup repair.
+- [Galileo production acceptance (2026-10-02)](2026-10-02-galileo-production.md) records live management failures, repairs, generated evidence and remaining production acceptance.
+
+- [Underclass durable proxy SLO (2026-10-02)](2026-10-02-underclass-proxy-slo.md) reviews durable Rust admission, terminal-stream accounting, independent exporter custody and native/deployment gaps.
+
+- [Ziggy durable SLO accounting (2026-10-02)](2026-10-02-ziggy-durable-slo.md) records private checkpoints, crash accounting, reader-first rollout and verified two-host producer activation.
+
+- [Provisional seven-day fleet objectives (2026-10-02)](2026-10-02-provisional-seven-day-slos.md) reviews ADR-0132's source, coverage, read-authority and alert-delivery boundaries, seven-day burn arithmetic and actual rule-state projection.
+- [Automatic magic-link browser sign-in (2026-10-02)](2026-10-02-automatic-magic-link.md) records the one-step browser handoff, preserved GET boundary, remembered credential and current verification limits.
+
+- [Satellite version refusal recovery (2026-09-29)](2026-09-29-satellite-version-refusal.md) records Ziggy and Galileo terminal 426 classification, stopped Ziggy loops, local TLS evidence and remaining restart/Audi/WebSocket gaps.
+
+- [Antithesis property test audit (2026-09-29)](2026-09-29-antithesis-property-audit.md) tracks the 63-candidate source review and records generated actor and host report evidence.
+
+- [2026-09-28: Local Antithesis actor harness](2026-09-28-antithesis-local-harness.md) — durable Store/actor/journal replay test seam, explicit fake-effect and native-execution boundaries.
+
+- [2026-09-26: Lifecycle operation histories](2026-09-26-lifecycle-histories.md) — generated durable transition-oracle histories and bounded restart-limit mutant evidence; native lifecycle recording blocked by a reproduced terminal-stage failure in the composed fleet check.
+- [2026-09-26: Customer owner controls and entry refusals](2026-09-26-customer-controls.md)
+
+- [2026-09-26: Cross-replica revocation propagation](2026-09-26-cross-replica-revocation.md) — generated three-BEAM schedules proving committed session revocation refuses non-login read surfaces on every replica; commit boundary, partition fail-closed and rejoin enforcement.
+- [2026-09-26: Legacy browser typing sweep](2026-09-26-browser-typing-sweep.md) — remaining raw browser helpers typed through pinned artifacts; the fleet composed-driver exclusion closed; executor-loss evaluation repaired.
+- [2026-09-26: Installer revocation and upgrade trust preservation](2026-09-26-installer-revocation.md) — late account-key revocation refusal, appended-byte upgrade digest agreement, served-digest mismatch, platform/checksum selection refusals, and the fleet revoke→probe→re-register cycle.
+- [2026-09-26: Handbook scenario close-out](2026-09-26-handbook-closeout.md) — review-only reconciliation of the handbook scenario row with merged 005/007/015/033 records.
+- [2026-09-26: Enrico git-mirror native service refresh](2026-09-26-git-mirror-refresh.md)
+- [2026-09-26: Custody backup key ceremony and turnover](2026-09-26-custody-backup-key.md) — Restic key ceremony, exact wedge label/recovery, restore-decrypt composition and recipient turnover histories.
+- [2026-09-26: Guest roster name/UID binding and bounds](2026-09-26-roster-identities.md)
+- [2026-09-26: Composed sharing matrix verification](2026-09-26-sharing-matrix.md)
+- [2026-09-26: Credential management histories](2026-09-26-credential-management-histories.md) — generated passkey/SSH-key histories against a raw-SQL oracle, bounds and session effects; both defect candidates adjudicated as accepted behavior without production change.
+- [2026-09-26: Historical-authority characterization](2026-09-26-historical-authority-characterization.md)
+- [2026-09-26: Credential self-service lifecycle verification](2026-09-26-credential-self-service.md)
+
+- [2026-09-27: Capacity admission race verification](2026-09-27-capacity-races.md) — generated three-peer admission/outcome mixes with a committed-ledger accounting oracle and a bounded generated native race stage.
+- [2026-09-27: Host enrollment and replacement authority](2026-09-27-host-replacement.md): generated enrollment/credential/retirement histories with a shared readiness oracle, three-BEAM races, seeded lock/fence mutants and the native SSH/SOPS replacement journey.
+
+- [2026-09-26: Combined sharing authority across terminal, SSH and web renewal surfaces](2026-09-26-sharing-surfaces.md)
+- [2026-09-26: Updater compatibility histories](2026-09-26-updater-compatibility-histories.md)
+- [2026-09-26: Updater custody recovery histories](2026-09-26-custody-updater.md)
+- [2026-09-26: Executor loss and explicit user retry](2026-09-26-executor-loss-histories.md)
+- [2026-09-26: Clone matrix — image/profile/shape coverage, native permutations](2026-09-26-clone-matrix.md)
+
+- [2026-09-26: SSH roster migration verification](2026-09-26-ssh-roster-migration.md)
+
+- [Committed test fixture history](2026-09-26-committed-fixture-history.md) — scoped history teardown and complete-row preservation controls.
+- [Authority fixture history teardown](2026-09-26-authority-fixture-history.md) — exact owned job history disposal in catalog and retirement fixtures with unrelated-history controls.
+
+- [2026-09-26: Operator secret recipient histories](2026-09-26-secret-recipient-histories.md)
+
+- [Configured Hegel evidence recognition](2026-09-26-hldd-hegel-attributes.md) — exact runner attributes and retained structural evidence limits.
+- [2026-09-26: Guest CLI supervisor recovery](2026-09-26-guest-cli-recovery.md)
+- [2026-09-26: Provisioning performance implementation](2026-09-26-provisioning-fastpath.md)
+- [2026-09-26: Porsche provisioning baseline investigation](2026-09-26-porsche-provisioning-performance.md)
+
+- [2026-09-26: CLI lifetime history generator repair](2026-09-26-cli-history-generator.md)
+- [2026-09-26: Shared download cache histories](2026-09-26-cache-history-verification.md)
+- [2026-09-26: Terminal attachment authority histories](2026-09-26-terminal-attachment-verification.md)
+
+- [2026-09-26: Underclass token rotation and recovery pin](2026-09-26-underclass-pin.md)
+- [Browser-approved agent CLI verification](2026-09-25-agent-cli-verification.md): generated authority histories and ordinary browser consent joined to packaged CLI and real guest work; execution scope recorded in the review.
+
+- [2026-09-26: Clone restart recovery](2026-09-26-clone-restart-recovery.md)
+- [2026-09-26: Guest trust evidence verification](2026-09-26-guest-trust-evidence.md): recorded lifecycle/digest property executions and native wrong/forged/expired trust-failure exhaustion with a caught accept-expired mutant.
+
+- [2026-09-25: Production clone and relocation acceptance](2026-09-25-production-clone-relocation.md)
+
+- [2026-09-25: Terminal startup recovery](2026-09-25-terminal-startup-recovery.md)
+- [2026-09-25: Private guest browser authority verification](2026-09-25-private-web-verification.md)
+- [2026-09-25: Clone cancellation and current authority](2026-09-25-clone-cancellation-verification.md)
+
+- [2026-09-25: Integration renewal and peer-consumption verification](2026-09-25-integration-renewal-verification.md)
+- [2026-09-25: Git mirror user-operation verification](2026-09-25-git-mirror-verification.md)
+
+- [2026-09-25: Team shared resources and distributed retirement](2026-09-25-team-resource-verification.md)
+- [2026-09-25: Standalone browser type gates](2026-09-25-browser-type-gates.md)
+- [2026-09-25: Fresh guest identity verification](2026-09-25-fresh-guest-identity-verification.md)
+
+- [2026-09-25: Credential registration and retirement verification](2026-09-25-credential-lifecycle-verification.md)
+- [2026-09-25: Resize user-journey verification](2026-09-25-resize-verification.md)
+- [Fleet guest trust verification](2026-09-25-fleet-guest-trust-verification.md): shared fixture compatibility and bounded NixOS/Ubuntu native trust evidence.
+
+- [2026-09-25: Teams SSH verification](2026-09-25-team-ssh-verification.md)
+
+- [2026-09-25: Default OSS creation verification](2026-09-25-default-oss-verification.md)
+- [2026-09-25: Handbook reader authority verification](2026-09-25-handbook-reader-verification.md)
+- [2026-09-25: Team creation verification](2026-09-25-team-creation-verification.md)
+
+- [2026-09-25: Team authority verification](2026-09-25-team-authority-verification.md)
+- [2026-09-25: Installer verification improvement 002](2026-09-25-installer-verification.md)
+
+- [2026-09-25: Default OSS machine creation](2026-09-25-default-oss-creation.md)
+
+- [2026-09-25: Handbook section pages](2026-09-25-hldd-sections.md)
+
+- [SSH onboarding guidance](2026-09-25-ssh-onboarding-guidance.md)
+- [2026-09-25: Authenticated handbook](2026-09-25-hldd.md)
+- [2026-09-25: Mandatory Ash domain and deployment views](2026-09-25-hldd-views.md)
+
+- [2026-09-25: SSH configuration download retirement](2026-09-25-ssh-config-download-retirement.md)
+
+- [2026-09-25: Control room read access](2026-09-25-control-room-read-access.md)
+
+- [2026-09-25: Installer management SSH trust](2026-09-25-installer-management-ssh-trust.md)
+
+- [2026-09-25: Personal terminal workspace](2026-09-25-personal-terminal-workspace.md)
+
+- [2026-09-25: Magic-link request regression](2026-09-25-magic-link-request.md)
+
+- [2026-09-25: Public CLI delivery routes](2026-09-25-public-cli-bin-routes.md)
+
+- [2026-09-24: Relocation readiness contention](2026-09-24-relocation-readiness-contention.md)
+
+- [2026-09-24: SSH roster bootstrap](2026-09-24-ssh-roster-bootstrap.md)
+
+- [2026-09-24: Kittens Nekomo redesign](2026-09-24-kittens-nekomo-redesign.md)
+- [2026-09-24: Guest trust bootstrap](2026-09-24-guest-trust-bootstrap.md)
+- [2026-09-24: Fenced ZFS namespace deletion](2026-09-24-zfs-namespace-delete.md)
+- [2026-09-24: macOS agent-backed guest SSH](2026-09-24-macos-agent-ssh.md)
+- [2026-09-24: Private SSH TLS verification](2026-09-24-private-ssh-tls.md)
+- [2026-09-24: Running VM adoption retry](2026-09-24-running-vm-adoption-retry.md)
+- [2026-09-23: Lilly audit backlog recovery](2026-09-23-lilly-audit-backlog-recovery.md)
+- [2026-09-23: Cedar guest SSH integration](2026-09-23-cedar-guest-ssh-integration.md)
+- [2026-09-23: Cedar guest SSH foundation](2026-09-23-cedar-guest-ssh-foundation.md)
+- [2026-09-23: Guest web fetch and fleet Brady CA](2026-09-23-guest-fetch-brady-ca.md)
+- [2026-09-23: Marshall agent web search](2026-09-23-marshall-web-search.md)
+- [2026-09-23: Private guest CLI updates](2026-09-23-private-guest-cli-updates.md)
+- [2026-09-23: Agent capabilities](2026-09-23-agent-capabilities.md)
+- [2026-09-23: Underclass quota deadline pin](2026-09-23-underclass-quota-deadline-pin.md)
+- [2026-09-23: Underclass local monitor socket pin](2026-09-23-underclass-monitor-socket-pin.md)
+- [2026-09-23: Underclass utop pin](2026-09-23-underclass-utop-pin.md)
+- [2026-09-23: Underclass usage and monitor pin](2026-09-23-underclass-usage-pin.md)
+- [2026-09-23: Ziggy Underclass Responses](2026-09-23-ziggy-underclass-responses.md)
+- [2026-09-23: Automatic update identical-system recovery](2026-09-23-auto-update-identical-system.md)
+- [2026-09-23: Automatic update dependent-stop recovery](2026-09-23-auto-update-dependent-stop.md)
+- [2026-09-23: Underclass banked-reset pin](2026-09-23-underclass-banked-reset-pin.md)
+- [2026-09-23: Enrico Git mirrors](2026-09-23-enrico-git-mirrors.md)
+
+- [2026-09-23: Lyra developer SSH](2026-09-23-lyra-developer-ssh.md)
+
+- [2026-09-22: DNS-resolved fleet control and production Audi certificates](2026-09-22-dns-resolved-fleet-control.md)
+
+- [2026-09-22: Structured logging and audit hardening](2026-09-22-structured-logging-audit-hardening.md)
+
+- [2026-09-22: Audi-mediated guest SSH](2026-09-22-guest-ssh.md)
+
+- [2026-09-22: Default development environments](2026-09-22-default-development-environments.md)
+
+- [2026-09-22: Inception completion audit](2026-09-22-inception-completion-audit.md)
+
+- [2026-09-22: Underclass pin advancement](2026-09-22-underclass-pin.md)
+
+- [2026-09-22: Overalls fresh installation](2026-09-22-overalls-rebuild.md)
+
+- [2026-09-22: Portable workload relocation](2026-09-22-portable-workload-relocation.md)
+
+- [2026-09-22: Serial-console rendering](2026-09-22-serial-console-rendering.md)
+- [2026-09-22: Audi fleet enablement](2026-09-22-audi-fleet-enablement.md)
+
+- [2026-09-21: Porsche user relocation](2026-09-21-porsche-user-relocation.md)
+- [2026-09-21: Standalone nix-compact extraction](2026-09-21-standalone-nix-compact.md)
+
+- [2026-09-21: Compact Nix build logs](2026-09-21-compact-nix-build-logs.md)
+- [2026-09-21: Fleet firewall composition recovery](2026-09-21-fleet-firewall-composition.md)
+
+- [2026-09-21: Legacy VM journal import](2026-09-21-legacy-vm-journal-import.md)
+- [2026-09-21: Private-services PKI rotation](2026-09-21-private-services-pki-rotation.md)
+- [2026-09-21: Terminal original-plan reconciliation](2026-09-21-terminal-original-plan.md)
+
+- [2026-09-20: Terminal integration follow-up](2026-09-20-terminal-integration-follow-up.md)
+
+- [2026-09-20: Terminal host audit remediation](2026-09-20-terminal-host-audit.md)
+- [2026-09-20: Browser terminal audit remediation](2026-09-20-browser-terminal-audit.md)
+- [2026-09-19: Terminal v2](2026-09-19-terminal-v2.md)
+- [2026-09-20: Independent Underclass fleet rollout](2026-09-20-underclass-fleet-rollout.md)
+- [2026-09-20: Fleet overlay and firewall perimeter](2026-09-20-fleet-overlay-firewall.md)
+- [2026-09-20: Galileo milestone](2026-09-20-galileo.md)
+- [2026-09-19: Default guest toolset](2026-09-19-guest-toolset.md)
+
+- [2026-09-19: Fleet structured logging](2026-09-19-structured-logging-fleet.md)
+- [2026-09-19: Bounded Nix store garbage collection](2026-09-19-nix-store-gc.md)
+- [2026-09-19: Python typing and static-analysis gate](2026-09-19-python-toolchain.md)
+- [2026-09-19: Multi-disk workload transfer](2026-09-19-multi-disk-transfer.md)
+
+- [2026-09-18: Required Lilly transfer](2026-09-18-required-lilly-transfer.md)
+
+- [2026-09-18: Porsche interactive input](2026-09-18-porsche-interactive-input.md)
+
+- [2026-09-18: Nix-built Ubuntu guests](2026-09-18-ubuntu-guests.md)
+- [2026-09-18: Reciprocal Nix builders](2026-09-18-remote-builders.md)
+
+- [2026-09-18: Dungarees worker provisioning](2026-09-18-dungarees-provisioning.md)
+
+- [2026-09-18: Ziggy private services](2026-09-18-ziggy-private-services.md)
+- [2026-09-18: Passkey administration and account retirement](2026-09-18-passkey-administration.md)
+
+- [2026-09-18: Administrator operational status](2026-09-18-admin-operations.md)
+
+- [2026-09-18: Administrator workload console](2026-09-18-admin-workloads.md)
+
+- [2026-09-18: Maintenance console and re-planning](2026-09-18-maintenance-console.md)
+
+- [2026-09-18: Evacuation foundation](2026-09-18-evacuation-foundation.md)
+
+- [2026-09-18: Fleet dashboard foundation](2026-09-18-fleet-dashboards.md)
+
+- [2026-09-18: Fleet ingestion and history](2026-09-18-fleet-ingestion.md)
+
+- [2026-09-18: Detailed fleet collector](2026-09-18-fleet-collector.md)
+
+- [2026-09-18: Administrative jobs](2026-09-18-admin-jobs.md)
+
+- [2026-09-18: Administrative authority foundation](2026-09-18-admin-foundation.md)
+
+- [2026-09-18: Queued machine cloning](2026-09-18-machine-cloning.md)
+
+- [2026-09-18: VM directory cleanup](2026-09-18-vm-directory-cleanup.md)
+
+- [2026-09-18: Porsche live acceptance](2026-09-18-porsche-live-acceptance.md)
+
+- [2026-09-17: Kittens web redesign](2026-09-17-web-redesign.md)
+- [Usage-based overcommit](2026-09-17-usage-based-overcommit.md): ADR-0050 resource-update and admission implementation evidence.
+
+- [2026-09-17: Email registration](2026-09-17-email-registration.md)
+
+- [2026-09-17: Audi ingress implementation](2026-09-17-audi-ingress.md)
+
+- [2026-09-17: Porsche SSH management](2026-09-17-porsche-ssh-management.md)
+
+- [2026-09-17: fleet users and recipient reconciliation](2026-09-17-fleet-users.md)
+
+- [2026-09-17: host-local SMTP relay](2026-09-17-smtp-relay.md)
+
+- [2026-09-17: opt-in host TCP profile](2026-09-17-host-tcp-profile.md)
+
+- [2026-09-17: HTTP-01 validation and three-frontend routing](2026-09-17-http01-validation.md)
+
+- [2026-09-16: automatic host updates](2026-09-16-automatic-host-updates.md)
+
+- [2026-09-16: workload relocation feasibility](2026-09-16-workload-relocation.md)
+
+- [2026-09-16: Nix layout and test refactor](2026-09-16-nix-layout-and-test-refactor.md)
+
+- [2026-09-16: plan completion audit](2026-09-16-plan-completion-audit.md)
+
+- [2026-09-16: coordinated Marshall credential rotation](2026-09-16-fleet-credential-rotation.md)
+
+- [2026-09-16: SSH host identity rotation and replacement recovery](2026-09-16-secret-host-rotation.md)
+
+- [2026-09-16: NixOS fleet coordination and independent execution](2026-09-16-nixos-fleet.md)
+
+- [2026-09-16: mirrored ZFS installation and UEFI](2026-09-16-mirrored-installation.md)
+
+- [2026-09-16: native ZFS I/O observations](2026-09-16-native-zfs-io.md)
+
+- [2026-09-16: owned sparse ZFS lifecycle](2026-09-16-owned-zfs-lifecycle.md)
+- [2026-09-16: native ZFS observations and lock release](2026-09-16-native-zfs-observations.md)
+
+- [2026-09-16: ZFS identity and capacity contract](2026-09-16-zfs-capacity-contract.md)
+
+- [2026-09-16: ACME issuance and persistent certificate publication](2026-09-16-acme-publication.md)
+
+- [2026-09-16: NixOS releases, roles, TLS and secret custody](2026-09-16-nixos-releases-and-roles.md)
+
+- [2026-09-16: NixOS deployment and sparse ZFS decisions](2026-09-16-nixos-and-sparse-zfs.md)
+
+- [2026-09-16: colocated code contracts and structural gates](2026-09-16-code-contracts.md)
+
+Persist reviews for substantive architectural changes and milestone audits.
+Ordinary changes still need an impact assessment in the task/PR summary; do not
+create empty review files for changes with no architecture impact.
+
+- [2026-09-15: governance milestone and platform baseline](2026-09-15-governance-baseline.md)
+- [2026-09-15: runtime and type-analysis implementation](2026-09-15-toolchain.md)
+
+- [2026-09-15: capacity admission and Cedar](2026-09-15-capacity-admission.md)
+
+- [2026-09-15: NixOS guest and local console](2026-09-15-guest-console.md)
+
+- [2026-09-15: authenticated provisioner transport](2026-09-15-provisioner-transport.md)
+
+- [2026-09-15: continuous capacity and durable Lilly receipt](2026-09-15-capacity-loop.md)
+- [2026-09-15: immutable image and profile address admission](2026-09-15-image-address.md)
+
+- [2026-09-15: jailed execution and host networking](2026-09-15-jailed-execution.md)
+- [2026-09-15: executable generations and lifecycle outcomes](2026-09-15-execution-lifecycle.md)
+
+- [2026-09-15: durable VM actors and physical host ownership](2026-09-15-durable-vm-actors.md)
+
+- [2026-09-15: persisted sharing and machine pages](2026-09-15-sharing-and-machine-pages.md)
+- [2026-09-15: terminal session and writer authority](2026-09-15-terminal-authority.md)
+- [2026-09-15: local console fences and bounded streams](2026-09-15-local-console-gate.md)
+- [2026-09-15: console relay connections and encrypted mailboxes](2026-09-15-console-relay.md)
+- [2026-09-16: browser terminal and fresh login checks](2026-09-16-browser-terminal.md)
+- [2026-09-16: retained capacity telemetry](2026-09-16-retained-telemetry.md)
+- [2026-09-16: production authentication email](2026-09-16-production-email.md)
+- [2026-09-16: protected provisioner enrollment](2026-09-16-provisioner-enrollment.md)
+
+- [2026-09-16: host maintenance and retirement](2026-09-16-host-maintenance.md)
+- [2026-09-16: production release deployment](2026-09-16-production-deployment.md)
+- [2026-09-16: three-node production terminal failover](2026-09-16-terminal-failover.md)
+- [2026-09-16: database durability and isolated recovery](2026-09-16-database-recovery.md)
+
+- [2026-09-16: ZFS-only provisioning and provisioner v2](2026-09-16-zfs-only-provisioning.md)
+
+- [2026-09-17: host observability](2026-09-17-host-observability.md)
+
+Use `YYYY-MM-DD-topic.md` with: scope and evidence, affected ADRs, findings
+(severity, evidence, consequence, recommendation), decisions/open questions,
+verification performed and follow-up work. Say whether each discrepancy is an
+implementation defect, a documented unimplemented requirement, or a design that
+needs replacement. Keep checks that were run separate from future test plans.
+
+- [Agent threads foundation](2026-09-23-agent-threads-foundation.md): ADR-0100 boundaries, passing fleet acceptance and remaining gaps.
+
+- [Declarative host provisioning](2026-09-17-host-provisioning.md): ADR-0043, installation/enrollment boundaries and acceptance evidence.
+
+- [2026-09-17: recovery-only secret inventory](2026-09-17-recovery-secret-inventory.md)
+
+- [Declarative enrollment](2026-09-17-declarative-enrollment.md): durable operator retries, host bindings and five-year credential policy.
+
+- [2026-09-17: overalls physical Hetzner provisioning](2026-09-17-overalls-provisioning.md)
+
+- [2026-09-17: overalls service deployment](2026-09-17-overalls-services.md)
+
+- [2026-09-18: Porsche on overalls](2026-09-18-porsche-overalls.md)
+- [2026-09-22: empty Lilly authority rebind](2026-09-22-empty-lilly-rebind.md): bounded explicit recovery after control-plane database replacement.
+- [VM resizing](2026-09-17-vm-resizing.md): durable resource transitions and validation.
+
+- [2026-09-18: Main branch integration](2026-09-18-main-integration.md): preserved branch work, ADR identities and validation limits.
+
+- [VM disk limit](2026-09-18-vm-disk-limit.md): 500 GiB shared boundary, UI, API and Porsche enforcement.
+
+- [Fleet Mosh and lingering](2026-09-18-fleet-mosh.md): host terminal transport, named-user lifecycle and verification.
+- [Inception development profile (in progress)](2026-09-18-inception-profile.md)
+
+- [Interactive monitoring dashboards](2026-09-18-interactive-dashboards.md): graphical monitoring, bounded projections, chart lifecycle and authorization.
+
+- [Lifecycle state machines and audit](2026-09-18-lifecycle-state-machines.md): named transitions, durable local/central audit, retention and recovery verification.
+- [Customer isolation](2026-09-18-customer-isolation.md): owner-only access, blocked egress, layered web denial and native verification.
+- [IPv4 separation and public Inception (in progress)](2026-09-18-inception-public-ingress.md)
+- [Brady egress cache (in progress)](2026-09-18-brady-egress-cache.md): transparent proxy, cache and logging boundaries with remaining native acceptance.
+
+- [Host recovery backups (in progress)](2026-09-18-host-recovery-backups.md): short retention, snapshot ownership, flush-only guests, database recovery and admin status.
+- [Public Audi wildcard custody (in progress)](2026-09-23-audi-wildcard-custody.md): encrypted database custody, gateway delivery, recovery and nested-name gaps.
+
+- [2026-09-25: Control room verification](2026-09-25-control-room-verification.md): generated current-authority histories and focused packaged browser acceptance.
+
+- [2026-09-25: Subsequent MFA login and cross-replica revocation](2026-09-25-mfa-login-verification.md)
+
+- [Account lifecycle verification](2026-09-25-account-lifecycle-verification.md): repeated identity generations, invitations, retired authority and real physical cleanup; exact execution scope recorded separately.
+
+- [Unified SSH host CA](2026-09-25-unified-ssh-host-ca.md): issuance, custody, native certificates and installer verification.
+- [Administrative job history verification](2026-09-25-job-history-verification.md) — generated retained histories, retry/authority ordering and packaged worker/browser acceptance scope.
+- [Terminal workspace verification](2026-09-25-terminal-workspace-verification.md): delayed-ticket attachment, accessibility layout and bounded database client recovery corrections; both complete integrated NixOS and Ubuntu terminal journeys passed with scoped application and native evidence.
+
+- [Administrative account authority verification](2026-09-25-admin-account-authority-verification.md): current mutation authority through audit commit, ordered participants and scoped generated/distributed/browser evidence.
+
+- [Backup operator verification](2026-09-26-backup-operator-verification.md): generated complete manifests, real local Restic retention, host-lock refusals and explicit partial-output recovery.
+
+- [Maintenance evacuation verification](2026-09-25-maintenance-evacuation-verification.md): generated consent/readiness histories, actor control ordering and bounded browser/two-Lilly evidence.
+
+- [Installer SSH configuration verification](2026-09-26-installer-ssh-config.md): generated pre-existing local SSH configuration preservation/refusal properties with an independent byte-level inventory oracle; marker-count and glue-promotion defect repairs; native macOS remains outside.
+- [2026-09-29: Open problem resolution](2026-09-29-open-problem-resolution.md) — Lilly startup off image hashing (Brady restart attribution), conflict-marker guard, Brady resolver-disagreement and clone coverage, fleet monitor fixture port, test oracle fixes.
+- [2026-09-28: Repository launch links](2026-09-28-repository-launch.md) — ADR-0128 protocol, persistence, vsock delivery and guest-clone review with gate evidence.
+- [2026-09-28: Browser probe failure diagnostics](2026-09-28-browser-probe-diagnostics.md) — rendezvous-published bounded diagnostics; triage evidence for the recorded fleet browser acceptance defect.
+- [2026-09-28: Fleet OpenTelemetry baseline](2026-09-28-fleet-otel-baseline.md) — guest intake, collector/store placement, NixOS evidence and remaining SLO gaps.
+- [2026-09-26: Update failure matrix verification](2026-09-26-update-failure-matrix.md) — update authorization/artifact refusal semantics plus native drift-reconvergence, interrupted-fetch and failed-activation legs.
+- [Login race verification](2026-09-26-login-races.md): fenced magic-link issuance and raced callback refusal repairs, committed three-node sign-in/revocation and sign-out/exchange schedules, challenge retention bounds, and the native expired-ceremony refusal with cross-replica fresh retry.
+
+- [Native namespace descriptor histories](2026-10-02-namespace-descriptor-histories.md): generated retained namespaces, duplicate/original-descriptor lifecycle and independent real mount inventory; native focused postmerge execution passed eight checks in 114.6 seconds.
+
+- [Retry measurement window histories](2026-10-02-retry-measurement-window-histories.md): authenticated retry fixture, two-proof boundary composition and exact immutable accounting inventories; focused and full precommit execution recorded.
+
+- [Retry proof binding histories](2026-10-02-retry-proof-binding-histories.md): exact refused inventories, valid delayed historical receipts and unchanged-window crossing; reviewed focused execution recorded, full gates pending.
+
+- [Explicit Galileo attachments and fault validation](2026-10-03-galileo-attachments-and-faults.md)
+- [Multi-GiB cache acceptance (2026-10-03)](2026-10-03-multi-gib-egress-cache.md) records 4 GiB boundary coverage and separate live checkpoint reuse.
+
+- [Audi terminal version refusal (2026-10-03)](2026-10-03-audi-terminal-version-refusal.md) records stopped DNS, SSH and certificate work, suspended scheduler retirement, packaged DNS expiry and operator recovery.
+- [Terminald credit retirement (2026-10-03)](2026-10-03-terminald-credit-retirement.md) records native PTY/socket explicit cancellation, returned ring/viewer permits and preserved natural EOF draining.
+- [Integrated property gate stability (2026-10-03)](2026-10-03-integrated-property-gate-stability.md) records failed full-suite budgets, healthy host/pool positive restart fixtures and scoped same-seed repair evidence.
+
+- [Lilly runtime readiness (2026-10-03)](2026-10-03-lilly-runtime-readiness.md) records passing native incarnation histories, the corrected complete-reply oracle and remaining physical/updater/hosted gaps.
+
+- [Terminald retired ring release](2026-10-05-terminald-retired-ring.md): native retained-allocation counterexample, bounded repair and exact stalled tail drain.
+
+- [Terminald overwrite backing allocation](2026-10-05-terminald-ring-overwrite.md): full-ring allocation counterexample, pre-append eviction and independent newest-byte/cursor model.
+
+- [Committed admission reply loss](2026-10-05-admission-lost-reply.md): observed worker and whole-BEAM loss, three-node retries and unchanged committed allocation inventory.
+- [Lilly submission recovery](2026-10-05-lilly-submission-recovery.md): generated native submission/daemon-loss and authenticated settlement passed337.69seconds within the1036.30-second machine script; static driver checks passed. Mutation sensitivity and final gates pending.
+
+- [2026-10-05 audit scan-boundary fairness](2026-10-05-audit-scan-fairness.md) — local generated real-journal scan geometry; focused properties passed, full gates pending.
+
+- [Terminal peer budget incarnation](2026-10-06-terminal-peer-budget-incarnation.md): generated authenticated TLS peer-pair restart and exact successor admission; synthetic host/native gap and mutation validation are explicit.
+- [Transient pool contention and capacity freshness](2026-10-09-transient-pool-contention.md): withheld-pool diagnostics, `busy` report entry keeping the previous observation, server-first rollout.

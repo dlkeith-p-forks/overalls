@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:verification] shared-fixtures-preserve-boundaries
+Shared fixtures MUST retain the consuming suites' TLS, authentication, explicit
+migration, resource and failure checks. Moving setup into support MUST NOT make
+guest execution optional or silently broaden trusted networks.
+
+@cc [owner:ghuntley,label:verification] composed-drivers-statically-checked
+Python driver fragments MUST be composed in an explicit order during Nix
+evaluation. The complete driver MUST pass the NixOS framework's lint and type
+checks; runtime exec or disabling checks MUST NOT hide fragments from validation.

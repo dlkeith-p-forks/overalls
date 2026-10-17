@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:assumption] lilly-dedicated-host-identity-range
+Executable deployments MUST reserve UID/GID 1,000,002 through 1,262,142 and lilly.slice
+exclusively for Lilly. Local account checks cannot establish absence of external
+identity-service allocations; operators must coordinate that range (ADR-0017).
+
+@cc [owner:ghuntley,label:recovery] lilly-lock-inode-remains-stable
+No code or recovery procedure may unlink or replace a live owner.lock inode while an
+owner or its utility child may still hold it. A successor must contend on the same OS
+lock before mutating the protected resources (ADR-0017).

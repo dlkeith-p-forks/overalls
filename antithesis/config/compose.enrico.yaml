@@ -1,0 +1,94 @@
+# Optional repository mirror boundary. Combine with compose.origin.yaml; a
+# repository-specific setup probe must verify the fixture and mirror authority.
+services:
+  enrico:
+    container_name: overalls-enrico
+    hostname: overalls-enrico
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/enrico:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: enrico
+    entrypoint: ["/opt/overalls/entrypoints/enrico.sh"]
+    environment:
+      NO_COLOR: "1"
+      OVERALLS_ANTITHESIS_STATE_DIR: /var/lib/overalls-antithesis-sdk
+    volumes:
+      - enrico-state:/var/lib/enrico
+      - enrico-secrets:/run/overalls-enrico-secrets
+      - enrico-client:/run/overalls-enrico-client
+      - origin-ca:/run/overalls-origin-ca:ro
+      - enrico-sdk-state:/var/lib/overalls-antithesis-sdk
+      - enrico-requests:/run/overalls-enrico-control/requests
+      - enrico-results:/run/overalls-enrico-control/results
+      - enrico-observer:/run/overalls-enrico-observer
+    depends_on:
+      origin:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/overalls/entrypoints/health-enrico.sh"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+      start_period: 20s
+    networks:
+      control:
+        ipv4_address: 10.87.0.20
+        aliases:
+          - enrico.fleet.internal
+
+  marshall-a:
+    environment:
+      MARSHALL_ENRICO_URL: https://enrico.fleet.internal:5445
+      MARSHALL_ENRICO_TOKEN_FILE: /run/overalls-enrico-client/token
+      MARSHALL_ENRICO_CA_FILE: /run/overalls-enrico-client/ca.pem
+    volumes:
+      - enrico-client:/run/overalls-enrico-client:ro
+    depends_on:
+      enrico:
+        condition: service_healthy
+
+  marshall-b:
+    environment:
+      MARSHALL_ENRICO_URL: https://enrico.fleet.internal:5445
+      MARSHALL_ENRICO_TOKEN_FILE: /run/overalls-enrico-client/token
+      MARSHALL_ENRICO_CA_FILE: /run/overalls-enrico-client/ca.pem
+    volumes:
+      - enrico-client:/run/overalls-enrico-client:ro
+    depends_on:
+      enrico:
+        condition: service_healthy
+
+  workload:
+    environment:
+      ANTITHESIS_BOOTSTRAP_PROFILE: repository-origin
+      ANTITHESIS_ENRICO_URL: https://enrico.fleet.internal:5445
+      ANTITHESIS_ENRICO_CA_FILE: /run/overalls-enrico-client/ca.pem
+      ANTITHESIS_ENRICO_TOKEN_FILE: /run/overalls-enrico-client/token
+      ANTITHESIS_ENRICO_MIRROR_ROOT: /run/overalls-enrico-state
+      ANTITHESIS_ENRICO_CONTROL_ROOT: /run/overalls-enrico-control
+      ANTITHESIS_ENRICO_OBSERVER_FILE: /run/overalls-enrico-observer/snapshot.json
+      ANTITHESIS_ORIGIN_ADMIN_URL: http://origin-fixture:8080
+      ANTITHESIS_ORIGIN_CA_FILE: /run/overalls-origin-ca/ca.pem
+      ANTITHESIS_ORIGIN_ADMIN_TOKEN_FILE: /run/overalls-origin-admin/admin-token
+      ANTITHESIS_REPOSITORY_FIXTURE_FILE: /run/overalls-control-secrets/fixture.json
+    volumes:
+      - enrico-client:/run/overalls-enrico-client:ro
+      - enrico-state:/run/overalls-enrico-state:ro
+      - enrico-requests:/run/overalls-enrico-control/requests
+      - enrico-results:/run/overalls-enrico-control/results:ro
+      - enrico-observer:/run/overalls-enrico-observer:ro
+    depends_on:
+      enrico:
+        condition: service_healthy
+
+volumes:
+  enrico-state:
+  enrico-secrets:
+  enrico-client:
+  enrico-sdk-state:
+  enrico-requests:
+  enrico-results:
+  enrico-observer:

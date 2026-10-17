@@ -1,0 +1,15 @@
+{
+  "slug": "migration-finishes-before-upgrade-activation",
+  "evidence_file": "antithesis/scratchbook/properties/migration-finishes-before-upgrade-activation.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Which native fixture can fault the real migrator and observe advisory-lock custody across two Marshall hosts?",
+      "answer": "Updater uses a fixed awaited migrator unit; Marshall serving startup does not migrate. Existing one-host updater and multi-host fleet fixtures do not combine two live migrators, pg_locks and schema_migrations under faults.",
+      "status": "partial",
+      "proposed_catalog_edit": "Tag partial; require two-host native migrator lock/ledger/closure probe before claiming concurrency evidence."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

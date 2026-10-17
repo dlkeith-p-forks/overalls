@@ -1,0 +1,141 @@
+--- a/plugins/in_systemd/systemd.c
++++ b/plugins/in_systemd/systemd.c
+@@ -247,6 +247,30 @@
+     flb_sds_destroy(list_key);
+ 
+     return -1;
++}
++
++/* Replay from the durable checkpoint on enqueue failure. Duplicate delivery is
++ * preferable to advancing the journal past records that never entered storage. */
++static int overalls_systemd_retry(struct flb_systemd_config *ctx)
++{
++    char *checkpoint = NULL;
++    flb_log_event_encoder_reset(ctx->log_encoder);
++#ifdef FLB_HAVE_SQLDB
++    if (ctx->db) {
++        checkpoint = flb_systemd_db_get_cursor(ctx);
++    }
++#endif
++    if (checkpoint) {
++        sd_journal_seek_cursor(ctx->j, checkpoint);
++        sd_journal_next_skip(ctx->j, 1);
++        flb_free(checkpoint);
++    }
++    else {
++        sd_journal_seek_head(ctx->j);
++    }
++    ctx->pending_records = FLB_TRUE;
++    flb_plg_warn(ctx->ins, "journal enqueue failed; replaying durable checkpoint");
++    return FLB_SYSTEMD_BUSY;
+ }
+ 
+ static int in_systemd_collect(struct flb_input_instance *ins,
+@@ -365,10 +389,11 @@
+         if (ctx->log_encoder->output_length > 0 &&
+             ((last_tag_len != tag_len) ||
+              (strncmp(last_tag, tag, tag_len) != 0))) {
+-            flb_input_log_append(ctx->ins,
++            ret = flb_input_log_append(ctx->ins,
+                                  last_tag, last_tag_len,
+                                  ctx->log_encoder->output_buffer,
+                                  ctx->log_encoder->output_length);
++            if (ret != 0) { return overalls_systemd_retry(ctx); }
+ 
+             flb_log_event_encoder_reset(ctx->log_encoder);
+ 
+@@ -423,6 +448,13 @@
+ 
+             entries++;
+         }
++#ifdef FLB_HAVE_SQLDB
++        if (sd_journal_get_cursor(ctx->j, &cursor) == 0 && cursor) {
++            cfl_kvlist_insert_string_s(kvlist, "__CURSOR", 8, cursor, strlen(cursor), FLB_FALSE);
++            flb_free(cursor);
++            cursor = NULL;
++        }
++#endif
+         rows++;
+ 
+         /* Interpret cfl_kvlist as logs type of events later. */
+@@ -438,6 +470,10 @@
+ 
+         if (ret == FLB_EVENT_ENCODER_SUCCESS) {
+             ret = flb_log_event_encoder_commit_record(ctx->log_encoder);
++        }
++
++        if (ret != FLB_EVENT_ENCODER_SUCCESS) {
++            return overalls_systemd_retry(ctx);
+         }
+ 
+         /*
+@@ -445,10 +481,11 @@
+          * more than 1MB. Journal will resume later.
+          */
+         if (ctx->log_encoder->output_length > 1024000) {
+-            flb_input_log_append(ctx->ins,
++            ret = flb_input_log_append(ctx->ins,
+                                  tag, tag_len,
+                                  ctx->log_encoder->output_buffer,
+                                  ctx->log_encoder->output_length);
++            if (ret != 0) { return overalls_systemd_retry(ctx); }
+ 
+             flb_log_event_encoder_reset(ctx->log_encoder);
+ 
+@@ -461,6 +498,17 @@
+         if (rows >= ctx->max_entries) {
+             break;
+         }
++    }
++
++    /* Write any pending data into the buffer */
++    if (ctx->log_encoder->output_length > 0) {
++        ret = flb_input_log_append(ctx->ins,
++                             tag, tag_len,
++                             ctx->log_encoder->output_buffer,
++                             ctx->log_encoder->output_length);
++        if (ret != 0) { return overalls_systemd_retry(ctx); }
++
++        flb_log_event_encoder_reset(ctx->log_encoder);
+     }
+ 
+ #ifdef FLB_HAVE_SQLDB
+@@ -473,16 +521,6 @@
+         }
+     }
+ #endif
+-
+-    /* Write any pending data into the buffer */
+-    if (ctx->log_encoder->output_length > 0) {
+-        flb_input_log_append(ctx->ins,
+-                             tag, tag_len,
+-                             ctx->log_encoder->output_buffer,
+-                             ctx->log_encoder->output_length);
+-
+-        flb_log_event_encoder_reset(ctx->log_encoder);
+-    }
+ 
+     /* the journal is empty, no more records */
+     if (ret_j == 0) {
+--- a/plugins/in_systemd/systemd_config.c
++++ b/plugins/in_systemd/systemd_config.c
+@@ -259,6 +259,19 @@
+             flb_free(cursor);
+         }
+         else {
++            /* Overalls opts into current-boot bootstrap only without a saved cursor.
++             * A process restart with a cursor must still replay previous boots. */
++            if (getenv("OVERALLS_JOURNAL_INITIAL_BOOT")) {
++                sd_id128_t boot_id;
++                char boot_string[SD_ID128_STRING_MAX];
++                char boot_match[64];
++                if (sd_id128_get_boot(&boot_id) == 0) {
++                    sd_id128_to_string(boot_id, boot_string);
++                    snprintf(boot_match, sizeof(boot_match), "_BOOT_ID=%s", boot_string);
++                    sd_journal_add_match(ctx->j, boot_match, 0);
++                    sd_journal_seek_head(ctx->j);
++                }
++            }
+             /* Insert the first row */
+             cursor = NULL;
+             flb_systemd_db_init_cursor(ctx, cursor);

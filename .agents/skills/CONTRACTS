@@ -1,0 +1,6 @@
+@cc [owner:ghuntley,label:architecture] skills-remain-development-tooling
+Skill instructions and assets are development and test tooling. Production Overalls
+applications MUST NOT import them or depend on them for runtime authority or
+admission. Application release source filesets MUST exclude this subtree; installing
+or running a skill MUST NOT by itself establish a repository gate or machine
+acceptance result.

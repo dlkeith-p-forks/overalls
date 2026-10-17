@@ -1,0 +1,66 @@
+# Optional measured Lilly/ZFS host. Its TCG guest runs production Lilly and
+# publishes a separate physical observation; this is not native KVM evidence.
+services:
+  marshall-a:
+    volumes:
+      - terminal-replay-control:/run/overalls-terminal-replay
+
+  marshall-b:
+    volumes:
+      - terminal-replay-control:/run/overalls-terminal-replay
+
+  lilly-host-vmm:
+    container_name: overalls-lilly-host-vmm
+    hostname: overalls-lilly-host-vmm
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/host-vmm:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: host-vmm
+    environment:
+      NO_COLOR: "1"
+    volumes:
+      - lilly-host-state:/var/lib/lilly-hostvm/state
+      - lilly-host-secrets:/run/overalls-secrets
+      - lilly-host-observation:/run/overalls-host-observation
+      - guest-fault-control:/run/overalls-fault-control
+    shm_size: 1g
+    mem_limit: 8g
+    depends_on:
+      marshall-a:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/overalls/python/bin/python3.13", "/opt/overalls/lilly-hostvm/runner.py", "status", "--config", "/etc/lilly-hostvm/config.json"]
+      interval: 5s
+      timeout: 10s
+      retries: 80
+      start_period: 240s
+    networks: [control]
+
+  enrollment:
+    environment:
+      OVERALLS_ANTITHESIS_HOST_ENROLL: "1"
+      OVERALLS_ANTITHESIS_GUEST_FAULT_ROOT: /run/overalls-faults
+      OVERALLS_ANTITHESIS_GUEST_WITNESS_ROOT: /run/overalls-faults
+    volumes:
+      - lilly-host-secrets:/run/overalls-host-secrets
+      - guest-fault-control:/run/overalls-faults
+      - terminal-replay-control:/run/overalls-terminal-replay
+
+  workload:
+    environment:
+      ANTITHESIS_PHYSICAL_SAMPLE_FILE: /run/overalls-host-observation/physical.json
+    volumes:
+      - lilly-host-observation:/run/overalls-host-observation:ro
+    depends_on:
+      lilly-host-vmm:
+        condition: service_healthy
+
+volumes:
+  lilly-host-state:
+  lilly-host-secrets:
+  lilly-host-observation:
+  guest-fault-control:
+  terminal-replay-control:

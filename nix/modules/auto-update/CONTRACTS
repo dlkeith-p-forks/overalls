@@ -1,0 +1,29 @@
+@cc [owner:ghuntley,label:deployment] updater-candidate-identity
+The updater MUST build one fixed Git revision with committed locks, use that
+candidate's secret descriptors and migrator, and activate its exact system
+closure. Only successful activation followed by bounded role health checks, or
+verification of an identical already-active system and manifest, may advance
+lastHealthy. Every candidate secret-preparation service MUST also be
+active before marking a deployment healthy, including when its unit definition
+is unchanged. No updater path may automatically roll back database state.
+
+@cc [owner:ghuntley,label:security] updater-private-staging
+Secret staging MUST remain root-only and separate from live bundles until
+compatibility and migrations succeed. Process arguments, status and journals
+MUST exclude secret values. Existing consumers MUST stop before bundle changes.
+
+@cc [owner:ghuntley,label:recovery] updater-guest-and-identity-preservation
+Updates MUST preserve enrolled Lilly identity bindings and independently supervised
+guests. Reviewed ADR-0050 resource tuning MAY increase guest CPU/RAM/quota limits
+in place and change the ARC target. The updater MUST NOT open a competing Lilly session, rotate authority,
+format storage, reboot, or destroy unrelated checkout/state paths.
+
+@cc [owner:ghuntley,label:recovery] updater-socket-activation-order
+Declared socket activators MUST stop before their consumers during activation
+and return to their prior active state afterward. A failed activation MUST
+attempt to restore the consumer roles that were active before stopping them.
+
+@cc [owner:ghuntley,label:recovery] updater-installation-binding
+Ordinary updates MUST reject installationBinding changes except ADR-0050's exact
+quota allowlist, verified against unchanged native GUIDs and journaled original
+receipts. Removal, introduction and topology/identity changes require maintenance.

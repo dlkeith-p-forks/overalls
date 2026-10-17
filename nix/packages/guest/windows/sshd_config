@@ -1,0 +1,28 @@
+# Overalls Windows guest sshd configuration (ADR-0171). Installed by
+# SetupComplete.cmd over Win32-OpenSSH's default %ProgramData%\ssh\sshd_config.
+# Public-key logins only: Win32-OpenSSH has no AuthorizedKeysCommand, so the
+# roster agent (overalls-ssh-sync-windows) writes one key file per account from
+# Audi's authorized-keys route; host identity from the per-boot certificate;
+# no administrators_authorized_keys.
+Port 22
+HostKey __PROGRAMDATA__/ssh/ssh_host_ed25519_key
+HostCertificate __PROGRAMDATA__/ssh/ssh_host_ed25519_key-cert.pub
+HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-ed25519
+AuthenticationMethods publickey
+PubkeyAuthentication yes
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PermitEmptyPasswords no
+AuthorizedKeysFile C:/overalls/ssh/authorized_keys/%u
+StrictModes yes
+AllowAgentForwarding no
+AllowTcpForwarding no
+X11Forwarding no
+PermitTunnel no
+GatewayPorts no
+PermitUserEnvironment no
+LogLevel VERBOSE
+# File logging (%ProgramData%\ssh\logs\sshd.log) so the roster agent can post
+# login receipts from the Accepted publickey lines; ETW stays off.
+SyslogFacility LOCAL0
+Subsystem sftp sftp-server.exe

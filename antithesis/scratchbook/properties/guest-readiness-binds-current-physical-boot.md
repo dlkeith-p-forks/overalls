@@ -1,0 +1,42 @@
+# guest-readiness-binds-current-physical-boot
+
+Priority: P0. Confidence: high for intended contract and call order; composed fault behavior untested.
+
+## Claim and assertion
+
+A running/guest-ready result after start, provision, resize or clone must be tied to the current placement, execution epoch, generation and physical boot, with current launch authority rechecked after guest waiting. Proposed missing `Always`: **`lifecycle.guest_ready_receipt_matches_current_physical_boot_and_execution`**. This is safety and must be checked when a positive physical outcome is recorded/accepted. Proposed missing `Sometimes(cond)`: **`lifecycle.new_boot_reaches_current_guest_readiness_after_recovery`**, where `cond` means a new boot with authenticated current authority receives its matching readiness receipt and reaches accepted running state after an injected interruption; this is meaningful progress, not `Sometimes(true)`.
+
+## Evidence and failure history
+
+`lilly/lib/lilly/vm/driver.ex:491-545` checks current authority and `Boot.current` before using cached readiness or waiting, then checks the same boot again before committing readiness. `:550-714` requires a trust receipt for exact placement/epoch/generation/challenge; `:940-975` rechecks current claim and `Boot.current` around credential delivery and bounded guest vsock readiness. `:1222-1259` requires physical running confinement and preserves boot challenge when logical generation advances. `lilly/lib/lilly/vm/executor.ex:388-465` reports running only after trust and required provisioning/Inception readiness, with failed or timed-out paths separately handled. `lilly/lib/lilly/vm/actor.ex:345-391` journals the observed result before publication; `marshall/lib/marshall/compute/outcomes.ex:86-103,129-160,210-213` checks operation placement/epoch/generation before applying it. This is an accepted source claim, not a verified guarantee. Ordinary native readiness testing appears in `nix/tests/machines/fleet/scenarios/runtime-readiness.py`; it is not Antithesis instrumentation.
+
+Failure history: crash Lilly during vsock wait, rotate execution generation or replace VMM after the pre-wait boot read, replay an old guest response or cached trust receipt, and recover while database/control delivery is delayed. A stale readiness success would grant current-running status to an obsolete boot.
+
+## Independent oracle and workload
+
+Run the real pinned guest under QEMU TCG with vsock or native KVM, authenticated Marshall/Lilly transport, and persistent placement directories. From outside Lilly capture VMM PID/start time/cgroup and guest boot UUID/challenge response; query current operation, accepted outcome, and guest-ready status. Force a second physical boot and generation change across a blocked readiness response. On every accepted positive result compare the durable boot receipt and challenge with the independently observed current guest response and placement/epoch/generation. After releasing faults, require at least one exact new-boot readiness success. A response timeout is inconclusive until durable operation and physical identity reconcile.
+
+Configured limit menu: readiness default 120,000 ms (`driver.ex:946`), lock reacquisition at most 2,000 ms (`:949,:961`), Inception 2,400,000 ms (`executor.ex:445`); test just-before/after deadline and one versus two physical boots; legacy `provisioning_readiness: false` is a separate weaker scope and must not be claimed to have provisioning proof.
+
+## Branch/replay guidance and scope
+
+SUT-side missing assertion at `Driver.ready_boot/4` after final `Boot.current` and at `Provisioning.ready` commit, plus a replay anchor for stale boot refusal and successful new-boot commit. Compare opaque IDs/challenge hashes only. All Antithesis assertions are **missing** per `antithesis/scratchbook/existing-assertions.md`; ordinary ExUnit/native assertions are separate. Hosted TCG can test guest protocol and boot identity but cannot establish Firecracker jail/cgroup isolation; native KVM is needed for that physical claim.
+
+Open questions: None.
+
+Answer: The distinguishing witness is the protected boot challenge in the persisted Boot journal plus the authenticated guest boot UUID (read from /proc/sys/kernel/random/boot_id), joined to VMM PID/start time. ready_boot rereads Boot.current after the vsock wait. The native SSH scenario already compares guest boot UUID to its journal digest and rejects a stale digest; this identifies a witness, not a completed replacement race.
+
+### Investigation Log
+
+#### Which boot witness distinguishes stale and current vsock readiness after physical VMM replacement?
+
+- Examined: `lilly/lib/lilly/vm/driver.ex:941-975; lilly/lib/lilly/vm/boot.ex:64-86; nix/tests/machines/fleet/scenarios/user-ssh-journey.py:626-657`.
+- Found: The distinguishing witness is the protected boot challenge in the persisted Boot journal plus the authenticated guest boot UUID (read from /proc/sys/kernel/random/boot_id), joined to VMM PID/start time. ready_boot rereads Boot.current after the vsock wait. The native SSH scenario already compares guest boot UUID to its journal digest and rejects a stale digest; this identifies a witness, not a completed replacement race.
+- Not established: No current hosted/native execution was run in this investigation; source and test presence alone do not establish the physical outcome.
+- Conclusion: resolved; Remove the witness-selection question; retain physical replacement execution as an unrun workload.
+
+## Evaluation and proof boundary
+
+**Proof boundary:** Draft selection: `integrated-zfs-guest`. proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof; independent witness: retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Evaluation follow-up:** `R1`: `Sometimes` witnesses one designated recovered history. Track its exact operation ID, observed preconditions and dependency restoration; separately check that operation’s terminal state after a measured quiet interval. Missing oracle/precondition is unexercised, not a pass or a liveness violation. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.

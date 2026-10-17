@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:architecture] request-accounting-local-measurement-only
+This library MUST perform only source-local numeric measurement and private
+recording-quality I/O. It MUST NOT acquire application, database or guest authority.
+The shared protocol library MUST remain independent of this runtime library.
+
+@cc [owner:ghuntley,label:security] request-accounting-secret-free
+Producer RPC and persistence MUST contain only closed numeric accounting data
+and quality states. Request identities, payloads, credentials and exception text
+MUST NOT enter the recorder, persisted markers or diagnostics.
+
+@cc [owner:ghuntley,label:reliability;security] request-accounting-aggregate-boundary
+The aggregate MUST expose only the reviewed service roster, fixed duration
+bounds, terminal outcomes and stable v1 snapshot fields. It MUST NOT retain
+request identifiers, payloads, credentials, exception text or arbitrary labels.
+
+@cc [owner:ghuntley,label:verification] request-accounting-aggregate-conservation
+For every aggregate snapshot, requests MUST equal successes plus failures and
+duration bucket totals MUST equal duration count. Missing durations MUST remain
+unmeasured; excluded outcomes MUST not alter the denominator.

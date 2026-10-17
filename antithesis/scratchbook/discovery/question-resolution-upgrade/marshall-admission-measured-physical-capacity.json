@@ -1,0 +1,21 @@
+{
+  "slug": "marshall-admission-measured-physical-capacity",
+  "evidence_file": "antithesis/scratchbook/properties/marshall-admission-measured-physical-capacity.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Which hosted adapter can supply independent host usage and ZFS samples without changing the production Collector's freshness semantics?",
+      "answer": "Native zfs-check observe/headroom and fleet reservation/report probes exist. A hosted TCG adapter with correlated independent sample at admission commit is not built.",
+      "status": "partial",
+      "proposed_catalog_edit": "Tag partial; retain native versus hosted evidence distinction and specify timestamped read-only probes."
+    },
+    {
+      "old_question": "Can a fault hold the real pool mutation lock long enough to exercise busy samples?",
+      "answer": "Pool.report takes a zero-wait .lilly-storage lock; contention maps to busy:true and Marshall preserves the prior pool timestamp. Native usage-moving busy is tested, but no held-lock admission scenario was found.",
+      "status": "partial",
+      "proposed_catalog_edit": "Tag partial; require actual lock hold across Collector cycle and before/after freshness admission probe."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

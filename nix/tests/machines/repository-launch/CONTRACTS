@@ -1,0 +1,15 @@
+@cc [owner:ghuntley,label:verification;security] repository-launch-fixture-refs
+Repository-launch fixtures MUST expose a default branch, a named branch, an older
+commit reachable through history, a tag and change refs outside refs/heads. Native
+guest assertions MUST compare the requested revision with the fixture's exact HEAD.
+
+@cc [owner:ghuntley,label:verification;capacity] repository-provider-native-matrix
+Each supported provider/revision MUST reach its expected HEAD through guest-owned
+Git and validated provider API resolution. Matrix machines MUST be deleted between
+cases; enlarged fixture capacity MUST NOT substitute for admission evidence.
+
+@cc [owner:ghuntley,label:verification;security] repository-launch-cli-journey
+The packaged CLI MUST create through Porsche with the registered user key, wait
+for the guest-owned clone and execute the command inside /workspace/REPO through
+the generated Audi ProxyCommand. An invalid URL MUST be refused locally without
+creating a machine.

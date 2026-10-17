@@ -1,0 +1,7 @@
+@cc [owner:ghuntley,label:verification] authenticated-kexec-conversion
+Conversion tests MUST boot the actual source OS, enter the pinned kexec image,
+retain strict SSH authentication across that transition, then boot the installed
+disks with a distinct authenticated identity. The production inventory guard,
+formatter, storage receipt and KVM readiness check MUST execute on the actual
+serial-numbered fixture hardware. Synthetic operator keys MUST remain
+confined to the test composition. A fixture result MUST NOT imply provider acceptance.

@@ -1,0 +1,3855 @@
+{
+  "sut_path": "/home/ghuntley/src/kittens-antithesis-reset",
+  "commit": "c835eb1017d24a001215c319373fa4204d64269b",
+  "updated": "2026-10-13",
+  "external_references": [],
+  "scope_answer": "Repository only (Recommended)",
+  "status": "as-of authored source inventory: 153 callsites, 26 primary catalog matches; no hosted catalog baseline",
+  "catalog_snapshot_count": 104,
+  "safety_count_frozen": false,
+  "control_core_limit": "A hosted controlled pool supplies only ZFS identity; Lilly must report execution_ready=false and pool unavailable. Marshall requires execution_ready=true and a fresh measured available pool. Control alone can prove handshake/report/auth/refusal/reconnect, never accepted placement. No seeded fake admission or bypass.",
+  "integrated_zfs_prerequisite": "Accepted placement/effect rows need a real inner-ZFS-backed Lilly host integrated with Marshall (and TCG guest/satellite where selected), or native KVM. The standalone storage-router VM is not this backing pool; integration is prospective and unbuilt.",
+  "proof_boundary_definitions": {
+    "real-hosted-db-and-control": "Real release, PostgreSQL and transport; no accepted placement without integrated ZFS",
+    "proposed-real-inner-zfs-backed-lilly": "Prospective hosted real measured ZFS-backed Lilly host; no built template or baseline",
+    "hosted-tcg-guest-limited": "Real software-emulated guest behavior after integrated backing; no Firecracker jail/cgroup/KVM proof",
+    "hosted-tcg-zfs-limited": "Standalone real Linux/ZFS router; no production Lilly backing-pool or independent host proof",
+    "native-only-currently": "Repository NixOS/KVM machine acceptance outside hosted Antithesis; do not count as SDK evaluation"
+  },
+  "assertion_semantics": {
+    "Always": "safety at every reached settled observation; unavailable oracle is not empty/zero",
+    "AlwaysOrUnreachable": "optional-path safety; selected focused run also needs distinct dangerous-path Reachable",
+    "Sometimes": "existential semantic state/replay anchor only; selected designated-operation progress needs separate measured post-heal per-operation terminal check",
+    "Reachable": "support branch or physical-precondition witness; never a substitute for safety"
+  },
+  "entries": [
+    {
+      "property_id": "audi-authority-request-start-deadline",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Audi authority never extends beyond request-start TTL or changes its binding",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "post-fence guest nonce and current authority/lease/boot ledger; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "backup-interrupted-cleanup-owned-only",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Backup recovery destroys only positively owned snapshots and retains uncertain cleanup",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "hosted-restic-or-tcg-zfs-limited",
+      "native_campaign": true,
+      "decisive_witness": "owned ZFS GUID/marker, independent Restic enumeration/isolated restore hash and fenced target",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "backup-retained-manifest-closure",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Retained backup manifest references restorable component snapshots",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "hosted-restic-or-tcg-zfs-limited",
+      "native_campaign": true,
+      "decisive_witness": "owned ZFS GUID/marker, independent Restic enumeration/isolated restore hash and fenced target",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/backup/scenarios.py",
+          "line": 73,
+          "kind": "always",
+          "sha256": "c037cd1d31e4ea171caf7d7de5b02342a6e110763229359d10893911ccb931d4"
+        }
+      ],
+      "implementation_scope": "Real Restic IDs, production prune/inspect and independent per-reference restore hashes; selected guest/ZFS capture completeness is separate.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "backup-time-skew-never-activates-historical-authority",
+      "priority": "P1",
+      "confidence": "medium",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Restored mixed-time backup remains isolated from live fleet authority",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "hosted-restic-or-tcg-zfs-limited",
+      "native_campaign": true,
+      "decisive_witness": "owned ZFS GUID/marker, independent Restic enumeration/isolated restore hash and fenced target",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "brady-cache-complete-publication",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Brady cache hit serves a complete committed object",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "hosted-tcg-router-limited",
+      "native_campaign": true,
+      "decisive_witness": "real TPROXY/origin count, cache object digest, ZFS pressure and socket inode",
+      "support_semantics": [
+        "SUT-side Reachable/Sometimes anchor at independently observed commit-before-reply or effect-before-receipt state"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "brady-cache-physical-headroom-and-leases",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "brady cache writes fit fresh physical headroom and retain leased objects on uncertainty",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "hosted-tcg-router-limited",
+      "native_campaign": true,
+      "decisive_witness": "real TPROXY/origin count, cache object digest, ZFS pressure and socket inode",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "brady-listener-socket-worker-bound",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "brady listener overload never creates an extra live worker or leaked accepted FD",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "hosted-tcg-router-limited",
+      "native_campaign": true,
+      "decisive_witness": "real TPROXY/origin count, cache object digest, ZFS pressure and socket inode",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "cancelled-relocation-restores-after-revocation",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Cancelled relocation restores source only after revocation and retains cleanup custody",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "no-hosted-full-claim-currently",
+      "native_campaign": true,
+      "decisive_witness": "two real Lilly boundaries with source/destination VMM, ZFS, network and committed handoff receipts",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "continuing-boot-advances-generation-without-second-boot",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Logical generation adoption retains one physical boot and fences old delivery",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "control-bind-before-domain-effects",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Control domain effects require the authenticated service hello",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "authored Control scenario; hosted result unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "existing_assertion_scope": "primary Always plus branch Reachable in Control workload; broader service/client contract remains missing",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/control/scenarios.py",
+          "line": 149,
+          "kind": "always",
+          "sha256": "bf5bc2c57da430f46322a89a60f0fa8cdc850961874b74faafadaacbd62a61cd"
+        }
+      ],
+      "implementation_scope": "Current real Marshall first-frame/Lilly session refusal path; separate client-only pre-welcome send assertion and full service matrix remain missing.",
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "control-bound-credential-revalidated",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Bound control sockets revalidate current credentials before each domain effect",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "authored Control scenario; hosted result unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "existing_assertion_scope": "primary Always plus branch Reachable in Control workload; broader service/client contract remains missing",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/control/scenarios.py",
+          "line": 246,
+          "kind": "always",
+          "sha256": "bf5bc2c57da430f46322a89a60f0fa8cdc850961874b74faafadaacbd62a61cd"
+        }
+      ],
+      "implementation_scope": "Lilly credential rotation through a live old Control socket and durable session oracle; Audi/Porsche/Ziggy/Galileo mutation routes remain outside this authored scenario.",
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "control-hint-loss-reconciles-authority",
+      "priority": "P1",
+      "confidence": "medium",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Sometimes",
+      "primary_literal_message": "Control reader reconciles committed authority after lost hint",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "meaningful designated-operation/combined-state witness",
+        "record precondition and dependency restoration",
+        "per-operation terminal check after measured fault-free window; do not infer universal liveness from one Sometimes"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "control-inflight-limit-and-retirement",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "control client pending requests fit negotiated window and busy calls send no frame",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/control/bounds.py",
+          "line": 44,
+          "kind": "always",
+          "sha256": "7afd25bd08c5369ac2c10d73147a2cc240929a8f249db0ff83ed3b4725b8350d"
+        }
+      ],
+      "implementation_scope": "Real BEAM Control client against an independent controlled WebSocket frame ledger; Marshall domain effects are outside the peer fixture.",
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "control-no-hidden-redelivery",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Control transport never redelivers an uncertain application call",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/control/delivery.py",
+          "line": 126,
+          "kind": "always",
+          "sha256": "1c169ac6eca568af29e9ab416c491f240b601bed31ef1e8e3c76be25786a383a"
+        }
+      ],
+      "implementation_scope": "Real BEAM Control client with independent frame ledger; separate terminal Marshall SQL receipt command is authored but unexecuted in hosted Compose.",
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "control-pending-response-retirement",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Control responses settle only their live pending request",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/control/pending.py",
+          "line": 42,
+          "kind": "always",
+          "sha256": "34701054cf3c1476cb11cdbcb313f8b63627d5be57e48727da33fb1fd0c05770"
+        }
+      ],
+      "implementation_scope": "Real BEAM Control client and independent held/late response peer ledger; no hosted execution recorded.",
+      "selected_control_core_intent": true,
+      "selected_control_core_hash_current": true,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "control-service-dispatch-closed",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "partially instrumented; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Control rejects cross-service and invalid documents before domain effects",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "A Lilly-v4 invalid-request check and independent Lilly session-row witness cover a narrower route. The proposed full cross-service dispatch primary is absent because the Audi request used a Lilly-v4 body and could be rejected by either decoder.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [
+        {
+          "file": "antithesis/workload/control/dispatch.py",
+          "line": 134,
+          "kind": "always",
+          "sha256": "283fc77c160f8322fcb9f13705057063e8dcdd32773175f3d9ca2fd8c96d5c92"
+        }
+      ],
+      "selected_control_core_support_intent": true,
+      "selected_control_core_support_hash_current": true
+    },
+    {
+      "property_id": "control-version-refusal-remains-terminal",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Control transport version refusal stops its owner without losing its class",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "separate 426/4001 permanent refusal from healthy recoverable-outage command"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "current-membership-gates-new-private-web",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Revoked membership cannot deliver a newly admitted private web request to the guest",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "post-fence guest nonce and current authority/lease/boot ledger; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "delete-release-follows-physical-retirement",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "lifecycle.delete_release_requires_current_physical_retirement",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "exact current outcome plus VMM/network/overlay absence; native ZFS GUID retirement separately required; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "enrico-attempt-replay-bounded-receipts",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Enrico retained attempt replay starts no second fetch",
+      "hosted_templates": [
+        "repository"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-git-and-native-helper",
+      "native_campaign": false,
+      "decisive_witness": "fixed-origin Git request log, bare mirror SHA/blob and original flock inode",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/repository/scenarios.py",
+          "line": 213,
+          "kind": "always",
+          "sha256": "fcd75125a1c20fcd3bb11a67dc6b1fbdfa8f0e09ca415d03f98f45644ea1686c"
+        }
+      ],
+      "implementation_scope": "Direct Enrico native Git receipt/origin journal, including separate 1025-attempt cap; hosted campaign unexecuted.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "enrico-native-git-admission-after-manager-restart",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Enrico native Git ownership bounds physical concurrent refreshes",
+      "hosted_templates": [
+        "repository"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-git-and-native-helper",
+      "native_campaign": false,
+      "decisive_witness": "fixed-origin Git request log, bare mirror SHA/blob and original flock inode",
+      "support_semantics": [
+        "SUT-side Reachable/Sometimes anchor at independently observed commit-before-reply or effect-before-receipt state"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/repository/scenarios.py",
+          "line": 395,
+          "kind": "always",
+          "sha256": "fcd75125a1c20fcd3bb11a67dc6b1fbdfa8f0e09ca415d03f98f45644ea1686c"
+        }
+      ],
+      "implementation_scope": "Native Git slot-inode and passive /proc lock snapshot across an exact Enrico service restart; no hosted campaign or general descendant-custody acceptance.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "enrico-published-head-remains-addressable",
+      "priority": "P1",
+      "confidence": "medium-high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Enrico published Git head remains addressable through failed refresh",
+      "hosted_templates": [
+        "repository"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-git-and-native-helper",
+      "native_campaign": false,
+      "decisive_witness": "fixed-origin Git request log, bare mirror SHA/blob and original flock inode",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/repository/scenarios.py",
+          "line": 138,
+          "kind": "always",
+          "sha256": "fcd75125a1c20fcd3bb11a67dc6b1fbdfa8f0e09ca415d03f98f45644ea1686c"
+        }
+      ],
+      "implementation_scope": "Fixed native Git origin/blob plus Marshall worker and SQL head/audit; hosted origin/worker campaign unexecuted.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "execution-v4-refuses-legacy-document",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "AlwaysOrUnreachable",
+      "primary_literal_message": "Execution v4 refuses legacy authority without changing durable command",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "Reachable: actual incompatible inner document on authenticated Control v1 socket"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "expired-web-lease-stops-existing-guest-bytes",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Expired Audi web authority cannot forward new guest bytes",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "post-fence guest nonce and current authority/lease/boot ledger; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "galileo-accounting-delay-does-not-renew-old-grant",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Galileo accounting delay cannot start an upstream effect on an aged grant",
+      "hosted_templates": [
+        "integrated-zfs-satellite"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-current-VM-plus-satellite; unbuilt",
+      "native_campaign": false,
+      "decisive_witness": "original grant/renewal order and controlled integration first accept/read; current real placement/execution authority required",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "guest-identity-cutover-preserves-uid-custody",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Guest identity cutover preserves UUID and UID custody across mailbox history",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "pre-cutover UUID/UID ledger and guest home owner/read effect; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "guest-identity-never-transfers-on-email-reuse",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Retired guest identity and home never transfer to a replacement account",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "pre-cutover UUID/UID ledger and guest home owner/read effect; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "guest-readiness-binds-current-physical-boot",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "lifecycle.guest_ready_receipt_matches_current_physical_boot_and_execution",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "guest-ready-does-not-claim-workspace-checkout",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Guest readiness does not claim repository checkout completed",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "guest boot/source/HEAD/done marker and independent Git or file bytes; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "guest-workspace-restart-publication-no-clobber",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Guest workspace recovery preserves its accepted source and published developer checkout",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "guest boot/source/HEAD/done marker and independent Git or file bytes; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "SUT-side Reachable/Sometimes anchor at independently observed commit-before-reply or effect-before-receipt state"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "guest-workspace-source-replay-once",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Guest workspace source replay preserves one boot-bound source",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "guest boot/source/HEAD/done marker and independent Git or file bytes; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "healthy-revision-requires-live-candidate",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "lifecycle.update_healthy_requires_active_closure_current_secrets_and_role_health",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "native-only-currently",
+      "native_campaign": true,
+      "decisive_witness": "actual Nix closure, migrator/systemd/secret and enabled role health; surviving guest VMM/cgroup/disk where applicable",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "host-credential-rotation-fences-old-socket",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Committed host credential rotation fences old Control request authority",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/control/host_sessions.py",
+          "line": 348,
+          "kind": "always",
+          "sha256": "f49d22486b396f02dfe78b488d0c20386366bbf5d03545ffbdb199aa4fa2950c"
+        }
+      ],
+      "implementation_scope": "Current Lilly old-socket/new-credential route only; other services and physical effects are separate.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "host-session-successor-fences-old-exchanges",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Superseded Lilly host session cannot change exchange state or dispatch work",
+      "hosted_templates": [
+        "control"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-db-and-control",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/control/host_sessions.py",
+          "line": 272,
+          "kind": "always",
+          "sha256": "f49d22486b396f02dfe78b488d0c20386366bbf5d03545ffbdb199aa4fa2950c"
+        }
+      ],
+      "implementation_scope": "Current Lilly host-session/successor route only; physical guest/execution authority is separate.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lease-expiry-independent-of-blocked-renewal",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Expired service lease cannot forward a new upstream effect",
+      "hosted_templates": [
+        "integrated-zfs-satellite"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-current-VM-plus-satellite; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "Audi post-deadline guest nonce plus Ziggy/Galileo first upstream accept, each with own grant clock and renewal; current real placement/execution authority required",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lilly-async-result-keeps-command-identity",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Lilly asynchronous result retains its original command generation",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": true,
+      "decisive_witness": "caller key/committed rows correlated with exact physical boot, disk or capacity sample; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lilly-corrupt-intent-never-becomes-receipt",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "AlwaysOrUnreachable",
+      "primary_literal_message": "Lilly refuses receipt when stored placement intent is unreadable",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "Reachable: corrupt existing-placement Store read under real owner restart"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lilly-finite-obstruction-recovery-progress",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Sometimes",
+      "primary_literal_message": "Lilly retained eligible intent progresses after finite obstruction and restart",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": true,
+      "decisive_witness": "real ZFS GUID/content plus original lock holder and sampled pool state; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "meaningful designated-operation/combined-state witness",
+        "record precondition and dependency restoration",
+        "per-operation terminal check after measured fault-free window; do not infer universal liveness from one Sometimes"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lilly-interrupted-launch-at-most-once",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Lilly recovery never resubmits one physical launch authority",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": true,
+      "decisive_witness": "caller key/committed rows correlated with exact physical boot, disk or capacity sample; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "SUT-side Reachable/Sometimes anchor at independently observed commit-before-reply or effect-before-receipt state"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lilly-outcome-replay-exact-ack",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Lilly recovery preserves outcome identity until its exact acknowledgment",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "SUT-side Reachable/Sometimes anchor at independently observed commit-before-reply or effect-before-receipt state"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lilly-pool-sampling-does-not-starve-mutation",
+      "priority": "P1",
+      "confidence": "medium-high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Sometimes",
+      "primary_literal_message": "Lilly independent pool mutation completes during sustained sampling pressure",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": true,
+      "decisive_witness": "real ZFS GUID/content plus original lock holder and sampled pool state; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "Reachable: contested lock acquisition and release for designated operation",
+        "meaningful designated-operation/combined-state witness",
+        "record precondition and dependency restoration",
+        "per-operation terminal check after measured fault-free window; do not infer universal liveness from one Sometimes"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lilly-receipt-survives-control-loss",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Lilly command receipt remains backed by matching durable intent after restart",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lilly-view-restart-withdraws-stream-authority",
+      "priority": "P0",
+      "confidence": "medium",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "AlwaysOrUnreachable",
+      "primary_literal_message": "Lilly View restart withdraws stale stream authority before forwarding",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "Reachable: real rest_for_one View restart with retained old stream"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lost-host-hint-eventually-delivers-command",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Sometimes",
+      "primary_literal_message": "Committed host command reached Lilly after notifier isolation healed",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": true,
+      "decisive_witness": "caller key/committed rows correlated with exact physical boot, disk or capacity sample; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "meaningful designated-operation/combined-state witness",
+        "record precondition and dependency restoration",
+        "per-operation terminal check after measured fault-free window; do not infer universal liveness from one Sometimes"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "marshall-admission-atomic-allocation",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Marshall acknowledged admission has one joined allocation and dispatch job",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [
+        "control: authenticated report/refusal only; no accepted allocation"
+      ],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "SUT-side Reachable/Sometimes anchor at independently observed commit-before-reply or effect-before-receipt state"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/admission/scenarios.py",
+          "line": 144,
+          "kind": "always",
+          "sha256": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3"
+        }
+      ],
+      "implementation_scope": "One serial trusted-operator admission joins a terminal domain receipt to one-statement PostgreSQL VM, placement, reservation, address, provision-operation and dispatch-job rows; no cross-node same-key race, commit-cut run, or positive integrated-host checkpoint.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "marshall-admission-key-survives-archive",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Marshall replayed admission key never allocates a second VM",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": true,
+      "decisive_witness": "caller key/committed rows correlated with exact physical boot, disk or capacity sample; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/admission/scenarios.py",
+          "line": 176,
+          "kind": "always",
+          "sha256": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3"
+        }
+      ],
+      "implementation_scope": "Observed first-key SQL contradictions fail, identical replay and exact idempotency conflict are checked, and archived replay waits for real delete plus SQL archival; integrated physical cleanup and hosted execution remain unverified.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "marshall-admission-measured-physical-capacity",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "marshall placement fits fresh measured physical headroom and all outstanding holds",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [
+        "control: unavailable pool refusal only; no measured placement"
+      ],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": true,
+      "decisive_witness": "exact locked report revision and holds correlated with independent CPU/memory/ZFS sample; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/admission/scenarios.py",
+          "line": 310,
+          "kind": "always",
+          "sha256": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3"
+        }
+      ],
+      "implementation_scope": "Dedicated host/pool brackets unchanged SQL report and holds, waits for a newer independent inner-ZFS sample, and checks shape/overhead arithmetic; changing frames and physical free disagreement remain unknown without commit-time and CPU/memory interval correlation. No live admission has run.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "marshall-crash-recovery-budget-and-stale-capacity",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Marshall crash recovery preserves its budget and waits for fresh capacity proof",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": true,
+      "decisive_witness": "caller key/committed rows correlated with exact physical boot, disk or capacity sample; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "migration-finishes-before-upgrade-activation",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "lifecycle.candidate_activation_follows_successful_explicit_migration",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "native-only-currently",
+      "native_campaign": true,
+      "decisive_witness": "actual Nix closure, migrator/systemd/secret and enabled role health; surviving guest VMM/cgroup/disk where applicable",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "native-utility-descendant-custody",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Native utility descendant custody blocks a second mutation until retirement",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "hosted-tcg-zfs-limited",
+      "native_campaign": true,
+      "decisive_witness": "real ZFS GUID/content plus original lock holder and sampled pool state",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "porsche-wait-never-resubmits-mutation",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Porsche wait submits one mutation and only polls its receipt",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [
+        "control/access: transport and read-only polling only until a real mutation is available"
+      ],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": false,
+      "decisive_witness": "single CLI mutation ingress ID and exact terminal receipt; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "private-readiness-v1-gates-new-execution",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "AlwaysOrUnreachable",
+      "primary_literal_message": "Private readiness v1 must match role and host before new guest execution",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "Reachable: negative or malformed private readiness response on enabled start path"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "relocation-handoff-one-current-execution",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Relocation handoff has one current placement epoch and one activation outbox",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "no-hosted-full-claim-currently",
+      "native_campaign": true,
+      "decisive_witness": "two real Lilly boundaries with source/destination VMM, ZFS, network and committed handoff receipts",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "request-recorder-capacity-does-not-admit-phantom-work",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "request recorder saturation cannot fabricate admitted tickets or a clean quality interval",
+      "hosted_templates": [
+        "recorder"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-measurement-with-native-systemd-companion",
+      "native_campaign": true,
+      "decisive_witness": "producer PID/start and effect vs durable recorder/SQLite ticket or trace digest",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/recorder/scenarios.py",
+          "line": 145,
+          "kind": "always",
+          "sha256": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099"
+        }
+      ],
+      "implementation_scope": "Real Producer 4096/4097 admission boundary and fsynced fixture effect; exact UID/systemd cgroup and hosted/native saturation run remain absent.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "request-recorder-restart-conserves-custody",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Request recorder recovery conserves admissions without inventing producer death",
+      "hosted_templates": [
+        "recorder"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-measurement-with-native-systemd-companion",
+      "native_campaign": true,
+      "decisive_witness": "producer PID/start and effect vs durable recorder/SQLite ticket or trace digest",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/recorder/scenarios.py",
+          "line": 219,
+          "kind": "always",
+          "sha256": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099"
+        }
+      ],
+      "implementation_scope": "Checkpoint conservation and conditional socket-inode restart witness; independent forced-restart orchestration and shared /proc producer identity remain incomplete.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "runtime-restart-requires-fresh-readiness",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "lifecycle.restored_journal_cannot_authorize_fresh_runtime_readiness",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "source-stop-after-committed-placement-holds",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "AlwaysOrUnreachable",
+      "primary_literal_message": "Clone source interruption follows committed placement and capacity holds",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "no-hosted-full-claim-currently",
+      "native_campaign": true,
+      "decisive_witness": "two real Lilly boundaries with source/destination VMM, ZFS, network and committed handoff receipts",
+      "support_semantics": [
+        "Reachable: source-stop action after committed destination holds"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "source-v2-capability-gates-admission",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Workspace source admission requires matching image v4 source-v2 capability",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [
+        "control: invalid-capability refusal only"
+      ],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "catalog image digest/capability, committed allocation and physical disk/launch marker; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "source-v2-delivery-envelope-v1-boot-bound",
+      "priority": "P1",
+      "confidence": "medium-high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Workspace source-v2 delivery accepts only matching v1 boot envelope",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "guest boot/source/HEAD/done marker and independent Git or file bytes; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "stale-local-execution-cannot-forward-guest-bytes",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Retired local execution cannot receive new Audi guest bytes",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "post-fence guest nonce and current authority/lease/boot ledger; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "stop-retains-disk-until-restart",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "lifecycle.completed_stop_has_no_vmm_and_retains_disk_identity",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "store-v3-host-binding-survives-upgrade",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Lilly Store v3 refuses foreign or changed host binding without reinterpretation",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": false,
+      "decisive_witness": "consistent PostgreSQL rows plus independent caller/wire ledger; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "Reachable: bound legacy profile rewrite branch if selected"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "terminal-create-reply-loss-one-pty",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Terminal create replay retains one guest PTY and one opened receipt",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "guest PTY birth/token/deque/process/nonce observed independently of host reply; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "SUT-side Reachable/Sometimes anchor at independently observed commit-before-reply or effect-before-receipt state"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/terminal/scenarios.py",
+          "line": 96,
+          "kind": "always",
+          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+        }
+      ],
+      "implementation_scope": "Browser LiveView create-reply loss and same-ID duplicate deliveries join SQL opening/session receipt with guest terminald PTY birth and live PID/start; internal guest-create reply loss and hosted physical result remain unverified.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "terminal-input-frame-replay-once",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "status": "partially instrumented; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Terminal replayed input sequence reaches guest once",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "guest PTY birth/token/deque/process/nonce observed independently of host reply; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "Authenticated HostStream duplication, Lilly cumulative ACK, and a stable guest daemon fsynced digest ledger cover one same-channel duplicate. The planned gap/order branch is absent and no integrated VM or hosted execution exists.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [
+        {
+          "file": "antithesis/workload/terminal/scenarios.py",
+          "line": 226,
+          "kind": "reachable",
+          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+        },
+        {
+          "file": "antithesis/workload/terminal/scenarios.py",
+          "line": 249,
+          "kind": "always",
+          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+        }
+      ],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "terminal-kill-progress-under-pty-backpressure",
+      "priority": "P1",
+      "confidence": "medium",
+      "status": "partially instrumented; primary unimplemented",
+      "primary_assertion_kind": "Sometimes",
+      "primary_literal_message": "Terminal explicit kill retires session under blocked PTY input",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "guest PTY birth/token/deque/process/nonce observed independently of host reply; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "Reachable: actual blocked PTY master write while authorized kill requested",
+        "meaningful designated-operation/combined-state witness",
+        "record precondition and dependency restoration",
+        "per-operation terminal check after measured fault-free window; do not infer universal liveness from one Sometimes"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "An independent input-stall witness precedes kill and a 30-second retired-process/quota Sometimes check. The planned input/output-pressure breadth and measured TCG quiet bound remain absent; no integrated VM run exists.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [
+        {
+          "file": "antithesis/workload/terminal/scenarios.py",
+          "line": 460,
+          "kind": "reachable",
+          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+        },
+        {
+          "file": "antithesis/workload/terminal/scenarios.py",
+          "line": 497,
+          "kind": "sometimes",
+          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+        }
+      ],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "terminal-physical-scrollback-budget",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "terminal physical scrollback backing stays within reserved aggregate budget",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "guest PTY birth/token/deque/process/nonce observed independently of host reply; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/terminal/scenarios.py",
+          "line": 296,
+          "kind": "always",
+          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+        }
+      ],
+      "implementation_scope": "Real guest PTY output checks deque allocation against reserved ring backing; full-budget failed create does not independently identify refusal reason, and no integrated guest or hosted result exists.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "terminal-stalled-viewer-neighbor-progress",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Sometimes",
+      "primary_literal_message": "terminal neighbor completes create attach and byte delivery while another viewer is credit stalled",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
+      "native_campaign": true,
+      "decisive_witness": "guest PTY birth/token/deque/process/nonce observed independently of host reply; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "meaningful designated-operation/combined-state witness",
+        "record precondition and dependency restoration",
+        "per-operation terminal check after measured fault-free window; do not infer universal liveness from one Sometimes"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/terminal/scenarios.py",
+          "line": 398,
+          "kind": "sometimes",
+          "sha256": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c"
+        }
+      ],
+      "implementation_scope": "Observer-confirmed blocked write and viewer queue beyond the high-water mark, with nonce bytes on a second real viewer while pressure remains; no hosted physical result exists.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "trace-archive-ack-loss-preserves-replay",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Trace archive recovery preserves accepted immutable custody through acknowledgment loss",
+      "hosted_templates": [
+        "recorder"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-measurement-with-native-systemd-companion",
+      "native_campaign": true,
+      "decisive_witness": "producer PID/start and effect vs durable recorder/SQLite ticket or trace digest",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/recorder/scenarios.py",
+          "line": 269,
+          "kind": "always",
+          "sha256": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099"
+        }
+      ],
+      "implementation_scope": "Reviewed OTLP, SQLite body/digest, discarded intake ACK/retry, and conditional production replay; no hosted outage/replay or native identity result.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "trace-spool-physical-quota-with-retained-custody",
+      "priority": "P1",
+      "confidence": "medium-high",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "trace spool saturation preserves accepted archive bytes and refuses on exhausted backing",
+      "hosted_templates": [
+        "recorder"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-measurement-with-native-systemd-companion",
+      "native_campaign": true,
+      "decisive_witness": "producer PID/start and effect vs durable recorder/SQLite ticket or trace digest",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/recorder/scenarios.py",
+          "line": 494,
+          "kind": "always",
+          "sha256": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099"
+        }
+      ],
+      "implementation_scope": "Retained SQLite bytes, logical 429 and guarded physical ENOSPC branch; dedicated bounded archive filesystem and hosted/native exhaustion run remain absent.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "transient-observation-is-not-absence",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Lilly temporary observation failure never fabricates physical absence",
+      "hosted_templates": [
+        "integrated-zfs-host"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-lilly; unbuilt, native physical companion where indicated",
+      "native_campaign": true,
+      "decisive_witness": "caller key/committed rows correlated with exact physical boot, disk or capacity sample; current measured ZFS pool required for accepted placement",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "updater-failed-activation-recovers-live-roles",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Updater failed activation attempts every prior live role without claiming unverified health",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "native-only-currently",
+      "native_campaign": true,
+      "decisive_witness": "actual Nix closure, migrator/systemd/secret and enabled role health; surviving guest VMM/cgroup/disk where applicable",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "upgrade-preserves-owned-guests",
+      "priority": "P1",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "lifecycle.upgrade_preserves_owned_vmm_and_disk_identity",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "native-only-currently",
+      "native_campaign": true,
+      "decisive_witness": "actual Nix closure, migrator/systemd/secret and enabled role health; surviving guest VMM/cgroup/disk where applicable",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "ziggy-completion-once-accounted",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "partially instrumented; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Ziggy completion acknowledgment conserves one Marshall accounting update",
+      "hosted_templates": [
+        "integrated-zfs-satellite"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-current-VM-plus-satellite; unbuilt",
+      "native_campaign": false,
+      "decisive_witness": "durable Ziggy spool ID, independent provider accept log and Marshall aggregate; current real placement/execution authority required",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "A normal admitted guest inference joins one private provider acceptance to one settled Request and a Daily delta. Exact ACK-loss/replay and restart witnesses are absent, and the hosted guest-to-Audi graph is not ready.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [
+        {
+          "file": "antithesis/workload/satellite/scenarios.py",
+          "line": 73,
+          "kind": "always",
+          "sha256": "31e9787da957b10c2eacc71d08111096f1b8299a3d801f5739460386373d6f5e"
+        }
+      ],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "ziggy-interrupted-inference-never-reexecutes",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Ziggy recovery replays accounting without repeating an inference effect",
+      "hosted_templates": [
+        "integrated-zfs-satellite"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-current-VM-plus-satellite; unbuilt",
+      "native_campaign": false,
+      "decisive_witness": "durable Ziggy spool ID, independent provider accept log and Marshall aggregate; current real placement/execution authority required",
+      "support_semantics": [
+        "SUT-side Reachable/Sometimes anchor at independently observed commit-before-reply or effect-before-receipt state"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "ziggy-spool-capacity-before-provider",
+      "priority": "P0",
+      "confidence": "high",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "ziggy provider effects require a previously durable bounded spool slot",
+      "hosted_templates": [
+        "integrated-zfs-satellite"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "proposed-real-inner-zfs-backed-current-VM-plus-satellite; unbuilt",
+      "native_campaign": false,
+      "decisive_witness": "durable Ziggy spool ID, independent provider accept log and Marshall aggregate; current real placement/execution authority required",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "authoritative-dns-follows-current-placement",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Authoritative DNS addresses follow the current published placement",
+      "hosted_templates": [],
+      "limited_support_templates": [
+        "access: actual authoritative DNS packets versus current Marshall route only; no destination guest effect or completed relocation claim"
+      ],
+      "requires_integrated_zfs_host": true,
+      "hosted_boundary": "full connection-and-relocation claim requires two real Lilly physical execution boundaries; currently native KVM/ZFS only",
+      "native_campaign": true,
+      "decisive_witness": "post-publication direct Audi DNS answers on each replica plus real destination boot, current route and successful SSH/HTTPS destination nonce; old source refused",
+      "support_semantics": [
+        "Sometimes: destination A answer and independently observed destination guest request after a real relocation",
+        "Reachable: actual stale-route refusal or lost-hint convergence branch",
+        "access-only DNS safety is a limited subclaim; an unavailable guest oracle leaves full property unexercised"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "two_real_lilly_execution_boundaries",
+        "guest_family_and_image_digest",
+        "dns_replica_ID_and_A_RRset",
+        "route_revision",
+        "editor_alias_if_selected"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "editor-login-code-single-use-after-reply-loss",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Editor login code creates at most one credential after reply loss",
+      "hosted_templates": [
+        "access"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-browser-identity-or-DNS-packets; physical guest route separate",
+      "native_campaign": false,
+      "decisive_witness": "actual public callback/DNS packet plus consistent PostgreSQL authority rows",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "editor-save-survives-worker-recovery",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Personal editor save survives worker recovery under its owner's UID",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "editor-signout-fences-active-guest-write",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Signed-out editor session cannot write new guest bytes",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "revoked-ssh-key-refuses-fresh-guest-login",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Revoked SSH key cannot open a fresh guest login",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "strict-ssh-host-trust-reaches-current-guest",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Strict SSH host certificates reach only the current guest execution",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "agent-long-fetch-result-retains-live-lease",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Sometimes",
+      "primary_literal_message": "A permitted slow guest fetch reaches a durable completed tool result",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "meaningful designated-operation/combined-state witness",
+        "record precondition and dependency restoration",
+        "per-operation terminal check after measured fault-free window; do not infer universal liveness from one Sometimes"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "agent-started-tool-effect-not-redispatched",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "A started agent command is never redispatched after uncertain executor loss",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "galileo-named-origin-credential-and-revocation-bound",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "partially instrumented; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Named integration uses its authorized origin and headers and stops after revoked renewal",
+      "hosted_templates": [
+        "integrated-zfs-satellite"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-real-guest-attached-named-integration; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "actual pre-NAT guest identity, current attachment, exact origin/header and upstream effect",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "Separate checks cover origin A/headers, detached held-stream EOF, fresh no-effect refusal, and reattach progress. The canonical composed primary is absent without the exact aged-grant, recorder-delay and refused-renewal witnesses; the hosted guest-to-Audi graph is not ready.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [
+        {
+          "file": "antithesis/workload/satellite/scenarios.py",
+          "line": 143,
+          "kind": "always",
+          "sha256": "31e9787da957b10c2eacc71d08111096f1b8299a3d801f5739460386373d6f5e"
+        },
+        {
+          "file": "antithesis/workload/satellite/scenarios.py",
+          "line": 207,
+          "kind": "always",
+          "sha256": "31e9787da957b10c2eacc71d08111096f1b8299a3d801f5739460386373d6f5e"
+        },
+        {
+          "file": "antithesis/workload/satellite/scenarios.py",
+          "line": 232,
+          "kind": "always",
+          "sha256": "31e9787da957b10c2eacc71d08111096f1b8299a3d801f5739460386373d6f5e"
+        },
+        {
+          "file": "antithesis/workload/satellite/scenarios.py",
+          "line": 270,
+          "kind": "always",
+          "sha256": "31e9787da957b10c2eacc71d08111096f1b8299a3d801f5739460386373d6f5e"
+        }
+      ],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "magic-link-preview-post-mfa-boundary",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Magic-link preview and pending MFA cannot grant browser work authority",
+      "hosted_templates": [
+        "access"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-browser-identity-or-DNS-packets; physical guest route separate",
+      "native_campaign": false,
+      "decisive_witness": "actual public callback/DNS packet plus consistent PostgreSQL authority rows",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/access/browser.py",
+          "line": 216,
+          "kind": "always",
+          "sha256": "d05ae97418bbd6f5eb51c4667022d1efaa68fdb4de917035a68d44b5046c0fbd"
+        }
+      ],
+      "implementation_scope": "Marshall HTTPS/SQL token and login receipts after two preview GETs, then pending-MFA protected GET on replica B; same-login WebAuthn positive is optional and guest bytes, same-origin failover, and hosted execution remain unverified.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "remembered-cookie-revocation-cross-replica",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Revoked remembered cookie cannot mint or use browser authority across Marshall replicas",
+      "hosted_templates": [
+        "access"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-browser-identity-or-DNS-packets; physical guest route separate",
+      "native_campaign": false,
+      "decisive_witness": "actual public callback/DNS packet plus consistent PostgreSQL authority rows",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/access/browser.py",
+          "line": 346,
+          "kind": "always",
+          "sha256": "d05ae97418bbd6f5eb51c4667022d1efaa68fdb4de917035a68d44b5046c0fbd"
+        }
+      ],
+      "implementation_scope": "Replica B exchange, replica A sign-out, replica B refusal, and exact SQL JTI sets; no guest byte witness, ordinary same-origin failover, or hosted execution.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "stale-admin-tab-current-mutation-authority",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Stale Control room tab cannot commit an admin mutation after authority withdrawal",
+      "hosted_templates": [
+        "access"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-hosted-browser-identity-or-DNS-packets; physical guest route separate",
+      "native_campaign": false,
+      "decisive_witness": "actual public callback/DNS packet plus consistent PostgreSQL authority rows",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/access/browser.py",
+          "line": 479,
+          "kind": "always",
+          "sha256": "d05ae97418bbd6f5eb51c4667022d1efaa68fdb4de917035a68d44b5046c0fbd"
+        }
+      ],
+      "implementation_scope": "Replica B mounted LiveView, real pre-fence set-role target/audit pair, closed Ash demotion, and processed post-fence event with unchanged inventory; hosted execution and guest effects remain unverified.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "authenticated-create-to-retained-guest-file",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Authenticated create-to-guest-file success preserves request VM boot UID and fsynced bytes",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "Mandatory Reachable: healed create journey reached fresh guest-file reread after real restart",
+        "per-attempt ledger binds user UUID, request key, VM, placement, physical boot, GuestAccount UID and fsynced hash",
+        "check each designated attempt terminal state after measured post-heal quiet interval; absent guest oracle is unexercised"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "clone-two-drive-copy-survives-source-deletion",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Cloned root and data drives retain independent acknowledged bytes after source deletion",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "two-host-native-KVM-and-ZFS-required-for-full-claim",
+      "native_campaign": true,
+      "decisive_witness": "two independently current VMMs, retained root/data GUID and bytes, committed handoff and actual DNS/SSH route",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "resize-retains-exact-guest-bytes-and-grown-shape",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Confirmed resize preserves fsynced guest bytes and reports exact physical shape",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "stopped-relocation-retains-bytes-and-routes-to-destination",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Stopped relocation serves retained guest bytes at destination and refuses former source route",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "two-host-native-KVM-and-ZFS-required-for-full-claim",
+      "native_campaign": true,
+      "decisive_witness": "two independently current VMMs, retained root/data GUID and bytes, committed handoff and actual DNS/SSH route",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "brady-flow-attribution-requires-current-incarnation",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Brady resolves flow ownership only for the current labeled execution incarnation",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "standalone-real-TPROXY-router-and-TCG-ZFS; does-not-prove-Lilly-backing",
+      "native_campaign": true,
+      "decisive_witness": "real guest packet/origin/cache-object/connection ledger and independent flow labels",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "brady-forbidden-destinations-never-reach-upstream",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Forbidden original destinations never reach Brady upstream or shared cache",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "standalone-real-TPROXY-router-and-TCG-ZFS; does-not-prove-Lilly-backing",
+      "native_campaign": true,
+      "decisive_witness": "real guest packet/origin/cache-object/connection ledger and independent flow labels",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "brady-proxy-loss-preserves-web-and-quic-denial",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Proxy loss never opens direct guest web or QUIC egress",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "standalone-real-TPROXY-router-and-TCG-ZFS; does-not-prove-Lilly-backing",
+      "native_campaign": true,
+      "decisive_witness": "real guest packet/origin/cache-object/connection ledger and independent flow labels",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "brady-sensitive-exchanges-never-reuse-shared-cache",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Credentialed requests never reuse and private responses never enter Brady shared cache",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "standalone-real-TPROXY-router-and-TCG-ZFS; does-not-prove-Lilly-backing",
+      "native_campaign": true,
+      "decisive_witness": "real guest packet/origin/cache-object/connection ledger and independent flow labels",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "native-firecracker-confinement-survives-owner-recovery",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Current Firecracker execution retains its jail UID namespace and cgroup confinement",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "native-KVM-physical-boundary-only",
+      "native_campaign": true,
+      "decisive_witness": "actual Firecracker PID/start, jail namespace/UID/cgroup, TAP/nft packet receiver and guest profile",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "native-guest-packets-obey-profile-and-tap-boundaries",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Physical guest packets cannot cross forbidden profile TAP or destination boundaries",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "native-KVM-physical-boundary-only",
+      "native_campaign": true,
+      "decisive_witness": "actual Firecracker PID/start, jail namespace/UID/cgroup, TAP/nft packet receiver and guest profile",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "diagnostic-outage-preserves-authorized-user-effect",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Sometimes",
+      "primary_literal_message": "Authorized guest effect completes during a finite diagnostic outage",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "meaningful designated-operation/combined-state witness",
+        "record precondition and dependency restoration",
+        "per-operation terminal check after measured fault-free window; do not infer universal liveness from one Sometimes"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "host-enrollment-receipt-follows-live-health",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Host enrollment receipt follows authenticated binding and live role health",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "native-NixOS-systemd-secrets-storage-only",
+      "native_campaign": true,
+      "decisive_witness": "exact physical GUID/credential generation/binary digest, live role health and durable receipt",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "lyra-guest-update-fences-executor-handoff",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Lyra guest update never runs unverified or overlapping executors",
+      "hosted_templates": [
+        "integrated-zfs-guest"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "proposed-integrated-ZFS-backed-Lilly-with-TCG-guest; unbuilt",
+      "native_campaign": true,
+      "decisive_witness": "current authority and boot tuple plus independent guest editor/SSH/file/PTY effect",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "runtime-secret-bundle-complete-or-previous",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Runtime secret bundle publication is complete or retains the previous bundle",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "native-NixOS-systemd-secrets-storage-only",
+      "native_campaign": true,
+      "decisive_witness": "exact physical GUID/credential generation/binary digest, live role health and durable receipt",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "inception-parent-publication-cannot-confer-child-authority",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "researched; primary unimplemented",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Inception nested forwarding requires a current parent lease and child effects require child authorization",
+      "hosted_templates": [],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "native-KVM-physical-boundary-only",
+      "native_campaign": true,
+      "decisive_witness": "actual Firecracker PID/start, jail namespace/UID/cgroup, TAP/nft packet receiver and guest profile",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "enabled_profile_and_capability"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [],
+      "implementation_scope": "No authored primary; research target only.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "backup-interrupted-restore-target-unpublished",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Interrupted backup restore leaves its partial target unpublished",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-Restic-isolated-target; native-guest-ZFS-companion",
+      "native_campaign": true,
+      "decisive_witness": "actual Restic tag/manifest parser, target publication marker and independent restored component hash",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity",
+        "source_provider_and_revision_when_applicable",
+        "drive_count_and_GUIDs_when_applicable"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/backup/scenarios.py",
+          "line": 172,
+          "kind": "always",
+          "sha256": "c037cd1d31e4ea171caf7d7de5b02342a6e110763229359d10893911ccb931d4"
+        }
+      ],
+      "implementation_scope": "Production restore CLI with fixed Restic interruption gate, marker/prefix and fresh retry; no hosted run.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    },
+    {
+      "property_id": "backup-published-manifest-retention-compatible",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "status": "authored primary; hosted unexecuted; scope partial",
+      "primary_assertion_kind": "Always",
+      "primary_literal_message": "Newly published backup point passes its retention manifest validator",
+      "hosted_templates": [
+        "storage"
+      ],
+      "limited_support_templates": [],
+      "requires_integrated_zfs_host": false,
+      "hosted_boundary": "real-Restic-isolated-target; native-guest-ZFS-companion",
+      "native_campaign": true,
+      "decisive_witness": "actual Restic tag/manifest parser, target publication marker and independent restored component hash",
+      "support_semantics": [
+        "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
+      ],
+      "selection_state": "draft-unexercised",
+      "required_variant_axes": [
+        "guest_family:NixOS|Ubuntu when applicable",
+        "release_image_digest",
+        "physical_observer_identity"
+      ],
+      "selected_variants": [],
+      "variant_coverage_state": "unselected; record exact values before claiming evaluation",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/backup/scenarios.py",
+          "line": 235,
+          "kind": "always",
+          "sha256": "c037cd1d31e4ea171caf7d7de5b02342a6e110763229359d10893911ccb931d4"
+        }
+      ],
+      "implementation_scope": "Actual coordinator publication plus raw Restic/production inspect; backward wall-clock step remains unimplemented.",
+      "selected_control_core_intent": false,
+      "selected_control_core_hash_current": false,
+      "authored_support_callsites": [],
+      "selected_control_core_support_intent": false,
+      "selected_control_core_support_hash_current": false
+    }
+  ],
+  "authored_snapshot": {
+    "as_of_utc": "2026-10-13 15:03 UTC",
+    "source_callsite_count": 153,
+    "catalog_primary_matches": 26,
+    "duplicate_callsite_messages": [],
+    "source_sha256": {
+      "antithesis/workload/access/browser.py": "d05ae97418bbd6f5eb51c4667022d1efaa68fdb4de917035a68d44b5046c0fbd",
+      "antithesis/workload/admission/scenarios.py": "e8463eeeb67bf9754c1e53455617b7e308c227965f69ce6633b4b4125dce1fc3",
+      "antithesis/workload/backup/scenarios.py": "c037cd1d31e4ea171caf7d7de5b02342a6e110763229359d10893911ccb931d4",
+      "antithesis/workload/control/bounds.py": "7afd25bd08c5369ac2c10d73147a2cc240929a8f249db0ff83ed3b4725b8350d",
+      "antithesis/workload/control/delivery.py": "1c169ac6eca568af29e9ab416c491f240b601bed31ef1e8e3c76be25786a383a",
+      "antithesis/workload/control/dispatch.py": "283fc77c160f8322fcb9f13705057063e8dcdd32773175f3d9ca2fd8c96d5c92",
+      "antithesis/workload/control/host_sessions.py": "f49d22486b396f02dfe78b488d0c20386366bbf5d03545ffbdb199aa4fa2950c",
+      "antithesis/workload/control/pending.py": "34701054cf3c1476cb11cdbcb313f8b63627d5be57e48727da33fb1fd0c05770",
+      "antithesis/workload/control/scenarios.py": "bf5bc2c57da430f46322a89a60f0fa8cdc850961874b74faafadaacbd62a61cd",
+      "antithesis/workload/core/bootstrap.py": "92c849db8ca82610d7b09d8b96d79bee152943c28a88e47787953958db2cd308",
+      "antithesis/workload/core/smoke.py": "057aa276e82d589362b64108924c3fcf36c5397e5cca138742d356dc33b11d8c",
+      "antithesis/workload/guest_lifecycle/scenarios.py": "8405339b780443a2ff28ef48a99a51b91ecb5ea554922f9883dce15e65bde3b6",
+      "antithesis/workload/recorder/scenarios.py": "d0daa6576faeccebd9bf3bd9f635192607db3aca12bb81a003a68752effdc099",
+      "antithesis/workload/repository/scenarios.py": "fcd75125a1c20fcd3bb11a67dc6b1fbdfa8f0e09ca415d03f98f45644ea1686c",
+      "antithesis/workload/satellite/scenarios.py": "31e9787da957b10c2eacc71d08111096f1b8299a3d801f5739460386373d6f5e",
+      "antithesis/workload/terminal/scenarios.py": "6656dd5f5cacf5ee2a3189356a0110f2047ce1771ea009e7fd581fc45b73a98c",
+      "audi/lib/audi/application.ex": "fa000ef3c4cf38726e9a54d021c4921fe25379e54a85c62a8097a469fed3ca55",
+      "brady/lib/brady/application.ex": "17588a241b696f57540bf3e232a71715a011a890f25e0aeeadd297b13f161459",
+      "enrico/lib/enrico/application.ex": "5d578dd9400ca65b28b403cfa0fdd74bcf623ef75016945cf228d76c031d5f1e",
+      "galileo/lib/galileo/application.ex": "fd796859968bf9c7b03b80470e620ec8616e374c0a043b9fb3774045b9a52516",
+      "lilly/lib/lilly/application.ex": "b53aba3d75fb8f867cc93715ed3c963e9d1de55380d4a9cd1feface3e2aff709",
+      "marshall/lib/marshall/application.ex": "2899dac1a9d0bad64296672dfb4b76234d16dca636ff0c2b028a6ece8683e7e0",
+      "porsche/lib/porsche/application.ex": "817cf0f357d44d15785570021c82832270553f2acf3224fee5039ee750da700b",
+      "ziggy/lib/ziggy/application.ex": "27a415e2d9be7de0e3ff12ecf122c86bcab5f29faa4eaef284b79e2bce1bc403"
+    },
+    "selected_profile_source": "antithesis/verification/selections/control-core.json",
+    "selected_profile_name": "control-core",
+    "selected_templates": [
+      "control",
+      "control_rotation",
+      "control_dispatch",
+      "control_legacy_request"
+    ],
+    "selection_stage_command": "python3.13 antithesis/verification/selection.py stage --output antithesis/build/selected-test",
+    "selected_manifest_sha256": "4d61bfc148a2ef13529417fbfeab8723ae589e1e62ffff34c84aef87618bdfe4",
+    "selected_manifest_source_hashes_current": true,
+    "selected_manifest_stale_paths": [],
+    "selected_command_count": 9,
+    "selected_runtime_dependency_count": 30,
+    "identity_freeze_requirement": "identity.py binds selected command manifest and assertion roster to selected commands/dependencies and compiled selected app files; source inventory is not a frozen hosted identity"
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "scope": "Repository-only investigation of nine assigned properties; no Antithesis or native campaign executed",
+  "updated": "2026-10-13",
+  "external_refs": [],
+  "properties": [
+    {
+      "slug": "brady-cache-complete-publication",
+      "questions": [
+        {
+          "old_question": "Which external response header or event proves a cache hit without asking Brady's store to self-attest?",
+          "status": "resolved",
+          "answer": "No dedicated response hit header. With one stable unique key and no concurrent requester, unchanged origin request count plus complete client bytes is the independent hit witness; brady.request_completed cache=:hit is supporting telemetry.",
+          "evidence": ["brady/lib/brady/proxy.ex:102-140", "brady/lib/brady/log.ex:40-58", "brady/lib/brady/events.ex:93-110"]
+        },
+        {
+          "old_question": "Can the hosted filesystem/fault setup offer a true persisted power-cut boundary, or only process kills?",
+          "status": "partial",
+          "probe": "Build a faultable guest storage boundary, kill power after object rename, reboot and verify indexed object and bytes. Current commit syncs body and metadata but has no destination-parent directory sync after rename; process kills alone cannot prove power-loss durability.",
+          "evidence": ["brady/lib/brady/cache/store.ex:250-286", "nix/tests/machines/brady-network/default.nix:1-34"]
+        }
+      ],
+      "proposed_catalog_edits": ["Remove the hit-signal question and specify origin request count as independent oracle.", "Keep power-cut question partial and scope the planned Always assertion to process/restart publication until disk power-cut evidence exists."]
+    },
+    {
+      "slug": "brady-cache-physical-headroom-and-leases",
+      "questions": [
+        {
+          "old_question": "Can the hosted TCG router expose independent pool and guest-parent snapshots at each append?",
+          "status": "resolved",
+          "answer": "The existing Brady storage Nix VM has real ZFS pool and guest-parent observations. Compare each append to its accepted native sample, freshness deadline, quota and pending reservations; the sample can be up to three seconds old, so do not claim instantaneous free bytes against unrelated writers.",
+          "evidence": ["nix/tests/machines/brady-network/storage.py:110-185", "brady/lib/brady/cache/pressure.ex:30-79", "brady/lib/brady/cache/store.ex:108-145"]
+        },
+        {
+          "old_question": "Which native fault yields uncertain temporary deletion without corrupting the whole pool?",
+          "status": "partial",
+          "probe": "Fault removal of one owned temporary path while leaving the ZFS mount writable; observe retained pending reservation and write pause, then reconcile after repair. Validate that the injector does not also break pressure or all cache writes.",
+          "evidence": ["brady/lib/brady/cache/store.ex:423-450", "nix/tests/machines/brady-network/storage.py"]
+        }
+      ],
+      "proposed_catalog_edits": ["State the sample/deadline accounting invariant instead of an instantaneous physical-free-space invariant.", "Keep targeted uncertain-delete injection as a partial probe."]
+    },
+    {
+      "slug": "brady-listener-socket-worker-bound",
+      "questions": [
+        {
+          "old_question": "Which TCG router fixture can produce transparent connections and inspect socket inodes without interfering with the accepted backlog?",
+          "status": "resolved",
+          "answer": "nix/tests/machines/brady-network runs packaged transparent Brady behind Lilly nftables with veth guest and origin namespaces. Hold guest sockets there; inventory handed-off worker socket inodes separately from backlog sockets. The production release fixes each scheme at 256 workers.",
+          "evidence": ["nix/tests/machines/brady-network/default.nix:1-90", "nix/tests/machines/brady-network/driver.py:1-75", "brady/lib/brady/application.ex:27-46", "brady/lib/brady/listener.ex:59-115"]
+        },
+        {
+          "old_question": "What measured quiet interval is appropriate for freed-slot progress?",
+          "status": "partial",
+          "probe": "Measure healthy saturation-to-successor latency in the same hosted topology at 256 held sockets; choose a generous bounded tail from those observations and label it a test interval, not a product SLA.",
+          "evidence": ["brady/lib/brady/listener.ex:59-115"]
+        }
+      ],
+      "proposed_catalog_edits": ["Name brady-network as the native transparent fixture and distinguish worker sockets from accept backlog.", "Treat limits 1 and 2 as component invocations; packaged configuration has no max_connections override."]
+    },
+    {
+      "slug": "enrico-attempt-replay-bounded-receipts",
+      "questions": [
+        {
+          "old_question": "How can the test fill 1025 completed receipts cheaply while preserving a real native Git effect per sampled attempt?",
+          "status": "partial",
+          "probe": "Use generated Manager histories with controlled Git replies for cheap 1023/1024/1025 cap behavior; separately sample real Git against the existing loopback verified-TLS github.com fixture. A combined 1025 real-fetch campaign is feasible with a tiny repo but needs a measured run budget before claiming it.",
+          "evidence": ["enrico/test/manager_history_property_test.exs:349-427", "enrico/test/support/controlled_git.sh", "nix/tests/machines/enrico-service/default.nix:12-40"]
+        },
+        {
+          "old_question": "Which Marshall status path is authoritative after Enrico receipt eviction or restart?",
+          "status": "resolved",
+          "answer": "Marshall's locked PostgreSQL repository attempt is durable authority. Enrico missing status for a refreshing/failed attempt causes a new attempt ID and service_unavailable abandonment; transient transport status failure resumes the old ID. Native fetch may repeat after local receipt loss, so deduplication applies only to retained receipts.",
+          "evidence": ["marshall/lib/marshall/enrico/worker.ex:171-230", "enrico/lib/enrico/manager.ex:70-82,131-132,257-288"]
+        }
+      ],
+      "proposed_catalog_edits": ["Constrain the no-second-fetch assertion to the active/retained Manager receipt window.", "Describe missing-after-eviction as a new durable Marshall attempt, not exactly-once native Git execution."]
+    },
+    {
+      "slug": "enrico-native-git-admission-after-manager-restart",
+      "questions": [
+        {
+          "old_question": "How can real Git pause after slot acquisition without changing production ownership or executable path?",
+          "status": "resolved",
+          "answer": "The native owner takes the global slot and repository flock before execing Git. Existing packaged test pauses the local verified-TLS nginx origin with SIGSTOP, leaving Git blocked after lock acquisition on the production executable path.",
+          "evidence": ["enrico/native/git-owner/src/main.rs:100-190", "nix/tests/machines/enrico-service/driver.py:300-325"]
+        },
+        {
+          "old_question": "Does hosted Linux preserve inherited-FD and descendant custody with observable locks?",
+          "status": "partial",
+          "probe": "In the chosen hosted image, hold native Git, kill Manager/helper, inventory lock inode holders through /proc/<pid>/fd and /proc/locks, then attempt the ninth command and same-repo command. Source and existing native tests establish implementation, not this hosted observation.",
+          "evidence": ["enrico/native/git-owner/src/main.rs:73-190", "enrico/native/git-owner/tests/histories.rs:399-403,770-800"]
+        },
+        {
+          "old_question": "Can a local deterministic fixture satisfy Enrico's fixed source-origin policy without weakening it?",
+          "status": "resolved",
+          "answer": "Existing Nix machine resolves the fixed github.com name to a local bare Git HTTPS fixture with a trusted test CA. Enrico still constructs only its hard-coded GitHub URL from validated labels.",
+          "evidence": ["enrico/lib/enrico/git.ex:48-70", "nix/tests/machines/enrico-service/default.nix:12-40"]
+        }
+      ],
+      "proposed_catalog_edits": ["Use the fixed-origin DNS/TLS fixture and nginx pause as the candidate workload.", "Keep hosted inherited-lock observation open until executed; do not infer it from BEAM task counters."]
+    },
+    {
+      "slug": "enrico-published-head-remains-addressable",
+      "questions": [
+        {
+          "old_question": "What safe hook can interrupt real Git between atomic fetch and retained-ref update?",
+          "status": "partial",
+          "probe": "Observe native command exec boundaries without replacing Git, for example trace execve of symbolic-ref/update-ref after fetch, then kill and read prior published SHA via git cat-file. Validate the trigger and old-SHA oracle in the hosted image before claiming this exact window.",
+          "evidence": ["enrico/lib/enrico/git.ex:52-115,392-443", "enrico/native/git-owner/src/main.rs:159-190"]
+        },
+        {
+          "old_question": "How can a deterministic local Git fixture preserve Enrico's fixed production source-origin boundary?",
+          "status": "resolved",
+          "answer": "Reuse the existing packaged verified HTTPS fixture that maps fixed github.com to loopback, force-pushes a bare repo, prunes Git, and checks an older explicit SHA remains browsable.",
+          "evidence": ["nix/tests/machines/enrico-service/default.nix:12-40", "nix/tests/machines/enrico-service/driver.py:214-237"]
+        }
+      ],
+      "proposed_catalog_edits": ["Keep the property on explicit durable Marshall SHA and unchanged tree/blob bytes, not mutable HEAD.", "Mark exact post-fetch interruption as a prospective probe while retaining broad process/source-outage histories."]
+    },
+    {
+      "slug": "ziggy-completion-once-accounted",
+      "questions": [
+        {
+          "old_question": "Which current-credential fixture isolates one owner/day/provider/model bucket?",
+          "status": "partial",
+          "probe": "Compose real Marshall/PostgreSQL with a dedicated owner/VM/host and rotated current Ziggy host credential as in Marshall requests_test; baseline the exact Daily key and quiesce other writers. Existing packaged Ziggy machine uses synthetic Control and cannot prove Marshall aggregate conservation.",
+          "evidence": ["marshall/test/marshall/inference/requests_test.exs:1-80", "marshall/lib/marshall/inference/totals.ex:11-46", "nix/tests/machines/ziggy-service/default.nix:94-100"]
+        },
+        {
+          "old_question": "How can an observer sample spool removal after directory sync/recovery settles?",
+          "status": "resolved",
+          "answer": "After exact Marshall ACK and Spool.acknowledge return, wait for no slot file, restart Ziggy and verify no recovered slot; the removal path syncs the directory before dropping the in-memory entry. This proves process-restart scope; power-cut persistence needs a separate faultable disk.",
+          "evidence": ["ziggy/lib/ziggy/reporter.ex:35-57", "ziggy/lib/ziggy/spool.ex:174-200,391-412", "nix/tests/machines/ziggy-service/driver.py:70-75"]
+        }
+      ],
+      "proposed_catalog_edits": ["Specify the exact isolated Daily bucket and real Marshall credential requirement for the aggregate oracle.", "Scope settled slot removal to ACK, directory sync, and process restart; keep physical power-cut durability separate."]
+    },
+    {
+      "slug": "ziggy-interrupted-inference-never-reexecutes",
+      "questions": [
+        {
+          "old_question": "Which safe HTTP/agent fixture correlation observes effects without changing production payload semantics?",
+          "status": "resolved",
+          "answer": "Ziggy does not forward its internal request ID upstream. For a controlled single outstanding call or claim, use a unique synthetic marker in the ordinary legal request body and a private fixture ledger of provider accepts; compare count before and after recovery. Keep marker and payload out of Ziggy diagnostics. Concurrent calls require separate private fixture correlation.",
+          "evidence": ["ziggy/lib/ziggy/upstream.ex:20-80", "ziggy/lib/ziggy/http.ex:323-420", "ziggy/lib/ziggy/agent_worker.ex:68-130", "nix/tests/machines/ziggy-service/driver.py:135-190"]
+        }
+      ],
+      "proposed_catalog_edits": ["Name the one-outstanding-call fixture scope and independent provider accept ledger.", "Do not claim provider-side exactly-once semantics or identify effects solely from Ziggy request IDs."]
+    },
+    {
+      "slug": "ziggy-spool-capacity-before-provider",
+      "questions": [
+        {
+          "old_question": "Which HTTP/agent routes share a spool in the chosen deployment?",
+          "status": "resolved",
+          "answer": "One Ziggy release starts one named Spool using config.spool; both HTTP inference and enabled AgentWorker call it before Upstream.stream. Distinct Ziggy hosts use distinct spool directories.",
+          "evidence": ["ziggy/lib/ziggy/application.ex:15-45", "ziggy/lib/ziggy/http.ex:410-420", "ziggy/lib/ziggy/agent_worker.ex:68-110"]
+        },
+        {
+          "old_question": "Can hosted faults expose directory-sync uncertainty beyond process restart?",
+          "status": "partial",
+          "probe": "Inject a targeted directory fsync error after a slot file write and verify failed admission fences provider effects; use a faultable disk/power-cut boundary for persistence claims. Existing packaged fixture exercises SIGKILL/restart and full spool, not fsync failure.",
+          "evidence": ["ziggy/lib/ziggy/spool.ex:260-285,375-391,473-480", "nix/tests/machines/ziggy-service/driver.py:135-190"]
+        }
+      ],
+      "proposed_catalog_edits": ["State that HTTP and agent share only their local Ziggy Spool, with maxPendingRequests=8 in the existing packaged fixture.", "Keep directory-sync uncertainty as a separate unexecuted fault probe."]
+    }
+  ]
+}

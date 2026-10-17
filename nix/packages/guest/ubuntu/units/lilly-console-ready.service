@@ -1,0 +1,13 @@
+[Unit]
+Description=Mark guest boot completion on the serial console
+# no-serial-login-shell: the console ends with this fixed line, never a getty.
+After=multi-user.target
+
+[Service]
+Type=oneshot
+StandardOutput=tty
+TTYPath=/dev/ttyS0
+ExecStart=/bin/echo lilly-guest boot complete
+
+[Install]
+WantedBy=multi-user.target

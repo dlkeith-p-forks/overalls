@@ -1,0 +1,5 @@
+[Unit]
+Description=Watch Overalls SSH host certificate renewal
+
+[Path]
+PathChanged=/run/overalls-ssh-host/ssh_host_ed25519_key-cert.pub

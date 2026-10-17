@@ -1,0 +1,164 @@
+defmodule Lilly.Inception.Runtime do
+  @moduledoc "Independent bounded publication polls; slow guests never block execution control."
+  use GenServer
+  alias Lilly.Control.{Client, Store}
+  alias Lilly.VM.{Driver, Executor}
+
+  @spec start_link(keyword()) :: GenServer.on_start()
+  def start_link(options), do: GenServer.start_link(__MODULE__, options)
+
+  @impl true
+  def init(options) do
+    Process.flag(:trap_exit, true)
+    send(self(), :tick)
+    {:ok, Map.merge(Map.new(options), %{tasks: %{}, cursor: nil, proof_cursors: %{}})}
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] inception-poll-worker-bound
+  # At most sixteen placement polls may run concurrently and at most one per
+  # placement. Each task MUST be killed after fifteen seconds. Polls MUST remain
+  # separate from lifecycle sampling; loss of the authenticated control runtime
+  # MUST stop these tasks without stopping VMs. No task payload may be logged.
+  @impl true
+  def handle_info(:tick, state) do
+    state =
+      case Store.all(state.store) do
+        {:ok, commands} ->
+          placements =
+            commands
+            |> Enum.filter(&(&1.profile == :inception and &1.kind in [:provision, :start]))
+            |> Enum.map(& &1.placement_id)
+
+          state = %{state | proof_cursors: Map.take(state.proof_cursors, placements)}
+          active = MapSet.new(state.tasks, fn {_, {_, placement}} -> placement end)
+
+          eligible =
+            commands
+            |> Enum.filter(fn command ->
+              command.profile == :inception and command.kind in [:provision, :start] and
+                command.host_id == state.config.client.host_id and
+                not MapSet.member?(active, command.placement_id)
+            end)
+            |> Enum.sort_by(& &1.placement_id)
+
+          {before, after_cursor} =
+            Enum.split_while(eligible, &(state.cursor != nil and &1.placement_id <= state.cursor))
+
+          Enum.take(after_cursor ++ before, 16 - map_size(state.tasks))
+          |> Enum.reduce(state, fn command, state ->
+            proof_cursor = Map.get(state.proof_cursors, command.placement_id, 0)
+
+            task =
+              Task.async(fn ->
+                Process.flag(:sensitive, true)
+                poll(state.config, state.session, command, proof_cursor)
+                :ok
+              end)
+
+            Process.send_after(self(), {:expire, task.ref}, 15_000)
+
+            %{
+              state
+              | tasks: Map.put(state.tasks, task.ref, {task, command.placement_id}),
+                cursor: command.placement_id,
+                proof_cursors:
+                  Map.put(
+                    state.proof_cursors,
+                    command.placement_id,
+                    rem(proof_cursor + 16, 65_536)
+                  )
+            }
+          end)
+
+        _ ->
+          state
+      end
+
+    Process.send_after(self(), :tick, 1000)
+    {:noreply, state}
+  end
+
+  def handle_info({ref, :ok}, state) when is_reference(ref) do
+    Process.demonitor(ref, [:flush])
+    {:noreply, %{state | tasks: Map.delete(state.tasks, ref)}}
+  end
+
+  def handle_info({:DOWN, ref, :process, _, _}, state),
+    do: {:noreply, %{state | tasks: Map.delete(state.tasks, ref)}}
+
+  def handle_info({:expire, ref}, state) do
+    if entry = state.tasks[ref], do: Task.shutdown(elem(entry, 0), :brutal_kill)
+    {:noreply, %{state | tasks: Map.delete(state.tasks, ref)}}
+  end
+
+  def handle_info({:EXIT, _, _}, state), do: {:noreply, state}
+
+  @impl true
+  def terminate(_, state) do
+    Enum.each(state.tasks, fn {_, {task, _}} -> Task.shutdown(task, :brutal_kill) end)
+    :ok
+  end
+
+  defp poll(config, session, command, proof_cursor) do
+    with {:ok, offer} <- Client.exchange_inception(config.client, session, command, nil),
+         {:ok, spec} <- Executor.specification(command),
+         pool when not is_nil(pool) <- Enum.find(config.pools, &(&1.id == command.pool_id)),
+         {:ok, publication} <-
+           Driver.inception_publication(
+             config.execution,
+             pool,
+             spec,
+             %{
+               label: offer.label,
+               zone: offer.zone,
+               generation: offer.environment_generation,
+               parent: offer.parent,
+               public: offer.public
+             },
+             execution_epoch: command.execution_epoch,
+             generation: command.generation
+           ),
+         true <- System.monotonic_time(:millisecond) < offer.deadline do
+      with {:ok, next_offer} <-
+             Client.exchange_inception(config.client, session, command, %{
+               "offer_id" => offer.offer_id,
+               "publication" => publication
+             }),
+           true <- is_map(offer.public),
+           true <-
+             Map.take(next_offer, [:label, :zone, :environment_generation, :public]) ==
+               Map.take(offer, [:label, :zone, :environment_generation, :public]) do
+        # Parent publication happens before querying the physical authoritative
+        # replicas. The result is returned only through the same owned boot.
+        namespace = %{
+          label: offer.label,
+          zone: offer.zone,
+          generation: offer.environment_generation,
+          parent: offer.parent,
+          public: offer.public
+        }
+
+        source_deadline = offer.deadline + publication["ttl_ms"] - 5000
+
+        observations =
+          Lilly.Inception.Propagation.observe(
+            namespace,
+            publication,
+            source_deadline,
+            proof_cursor
+          )
+
+        if System.monotonic_time(:millisecond) < next_offer.deadline do
+          Driver.inception_publication(
+            config.execution,
+            pool,
+            spec,
+            Map.put(namespace, :observations, observations),
+            execution_epoch: command.execution_epoch,
+            generation: command.generation
+          )
+        end
+      end
+    end
+  end
+end

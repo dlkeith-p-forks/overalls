@@ -1,0 +1,12 @@
+[Unit]
+Description=Install current Lilly platform trust before guest networking
+Before=lilly-network.service ssh.service
+ConditionKernelCommandLine=lilly.boot_challenge
+
+[Service]
+Type=notify
+NotifyAccess=main
+TimeoutStartSec=180s
+StateDirectory=overalls-trust
+StateDirectoryMode=0755
+ExecStart=/usr/local/bin/overalls-trustd ubuntu

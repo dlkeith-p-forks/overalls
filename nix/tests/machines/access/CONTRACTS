@@ -1,0 +1,4 @@
+@cc [owner:ghuntley,label:verification] access-runtime-fixture-keys
+SSH private fixture keys MUST be generated inside each test VM and never enter
+retained artifacts. Runtime public-key injection establishes central key lookup;
+the evaluation suite MUST independently verify registry-to-key-file generation.

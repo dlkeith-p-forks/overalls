@@ -1,0 +1,61 @@
+# Repository-wide Python tool configuration.
+#
+# The prek git hooks (devenv.nix git-hooks) and the `python-static` Nix check
+# both run ruff and ty with this configuration. Machine-test driver fragments
+# under nix/tests/machines are concatenated by Nix into one driver script; they
+# are linted, formatted and annotation-checked here, and type-checked as the
+# composed driver by the NixOS test framework's own ty gate.
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+extend-exclude = [
+    ".agents",
+    "marshall/deps",
+    "antithesis/build",
+    "antithesis/runtime",
+    "antithesis/scratchbook",
+    "antithesis/**/_build",
+    "antithesis/**/.venv",
+    "antithesis/**/__pycache__",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "ANN", "SIM", "RUF"]
+# The formatter enforces layout where it can; long string literals that the
+# formatter cannot reflow are not lint errors.
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+# Native browser helpers are copied beside their callers at build time. Keep
+# their classification stable when the JS browser/ tree contains vendored Python.
+known-first-party = ["browser"]
+
+[tool.ruff.lint.per-file-ignores]
+# Driver fragments reference injected globals (Nix preamble variables, nodes,
+# framework helpers and definitions from other concatenated fragments).
+# The fleet driver carries the consolidated stdlib imports for the whole
+# concatenated fleet script, so its own imports are intentionally broad.
+"nix/tests/machines/**" = ["F821", "E402"]
+"nix/tests/machines/fleet/driver.py" = ["F401"]
+"nix/tests/support/transfer.py" = ["F821"]
+"nix/tests/support/update.py" = ["F821"]
+
+[tool.ty.src]
+include = [
+    "nix/modules",
+    "nix/packages",
+    "nix/tests/evaluation",
+    "nix/tests/support",
+    "audi",
+    "scripts",
+    "marshall/scripts",
+    "lilly/test/transfer",
+]
+
+# The python-static gate checks all Antithesis source in separate ty projects.
+# Its runnable `schema`, `control` and `origin` module names otherwise shadow
+# the repository's existing imports when merged into this root resolution set.
+
+[tool.ty.environment]
+python-version = "3.13"

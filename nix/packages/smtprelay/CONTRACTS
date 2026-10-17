@@ -1,0 +1,11 @@
+@cc [owner:ghuntley,label:security] smtp-upstream-verified
+The maintained patch MUST require authenticated TLS with certificate and hostname
+verification before sending credentials or mail. Credential values and upstream
+response text MUST NOT enter logs, tracing, arguments or build outputs.
+
+@cc [owner:ghuntley,label:recovery] smtp-synchronous-bounded
+Forwarding MUST have a three-second connection deadline and eight-second total
+deadline and close its upstream connection on cancellation or timeout. Success
+MUST follow upstream DATA acceptance; no queue, persistent payload or internal
+retry may replace Marshall's encrypted outbox authority. Maintain and run the
+patched package's tests whenever changing the transport patch.

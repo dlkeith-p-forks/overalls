@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "name": "repository-origin",
+  "compose_files": [
+    "antithesis/config/docker-compose.yaml",
+    "antithesis/config/compose.origin.yaml",
+    "antithesis/config/compose.enrico.yaml"
+  ],
+  "templates": ["repository"],
+  "runtime_packages": ["core", "repository", "access"],
+  "services": [
+    "pg", "migrate", "marshall-a", "marshall-b", "lilly-a", "enrollment",
+    "workload", "origin", "enrico"
+  ],
+  "workload_environment": [
+    "ANTITHESIS_MARSHALL_URLS", "ANTITHESIS_CA_FILE", "ANTITHESIS_FIXTURE_MANIFEST",
+    "ANTITHESIS_DB_HOST", "ANTITHESIS_DB_PASSWORD_FILE",
+    "ANTITHESIS_CONTROL_CREDENTIAL_FILE", "ANTITHESIS_CONTROL_REQUEST_DIR",
+    "ANTITHESIS_BOOTSTRAP_PROFILE", "ANTITHESIS_ENRICO_URL",
+    "ANTITHESIS_ENRICO_CA_FILE", "ANTITHESIS_ENRICO_TOKEN_FILE",
+    "ANTITHESIS_ENRICO_MIRROR_ROOT", "ANTITHESIS_ENRICO_CONTROL_ROOT",
+    "ANTITHESIS_ENRICO_OBSERVER_FILE", "ANTITHESIS_ORIGIN_ADMIN_URL",
+    "ANTITHESIS_ORIGIN_CA_FILE",
+    "ANTITHESIS_ORIGIN_ADMIN_TOKEN_FILE", "ANTITHESIS_REPOSITORY_FIXTURE_FILE"
+  ],
+  "bootstrap_template": "repository-origin",
+  "singleton_templates": []
+}

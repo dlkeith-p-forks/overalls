@@ -1,0 +1,24 @@
+@cc [owner:ghuntley,label:persistence] migration-snapshot-resource-agreement
+Schema changes MUST reconcile the Ash resource definitions, new migrations and
+resource snapshots. Every change to a deployed database MUST be a new migration
+compatible with the release still serving while it runs. A table or column removed
+from the Ash resources is dropped by a hand-written migration in a later push, after
+both hosts converge (ADR-0159). Applied migration files MAY lose one-shot data
+statements, purges or compatibility triggers whose effect is present in every
+deployed database; such edits MUST NOT change the schema a fresh installation
+produces, MUST retain required seed rows and MUST NOT be presented as an upgrade
+path. Constraints and partial unique
+indexes implementing admission, idempotency, active grants and writer fencing
+MUST remain enforced by PostgreSQL, not solely application checks.
+
+ADR-0147 explicitly authorizes spelling-only baseline reconciliation for fresh
+installations. Those source-file edits MUST NOT be described as a deployed-schema
+upgrade or an importer for existing databases or Lilly journals.
+
+@cc [owner:ghuntley,label:deployment] explicit-release-migration
+Production migrations MUST run through the release migration workflow before
+dependent application versions start, either explicitly or in ADR-0036's locked
+automatic pre-switch phase. Ordinary replica startup MUST NOT race to migrate
+the shared database. Seed scripts MUST NOT insert working production credentials
+or bypass protected host enrollment. A destructive migration MUST NOT be pushed
+until overalls records the preceding push healthy.

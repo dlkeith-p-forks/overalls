@@ -1,0 +1,40 @@
+# remembered-cookie-revocation-cross-replica — Revoked remembered cookie cannot mint or use browser authority across Marshall replicas
+
+**Type / priority / confidence:** Safety (`Always`), P0, high confidence in intended source contract; unimplemented Antithesis candidate. **Planned primary literal message:** **"Revoked remembered cookie cannot mint or use browser authority across Marshall replicas"**. Missing according to `existing-assertions.md`.
+
+**Property and assertion semantics.** After a definite ordinary sign-out for the supplied credential, administrator **Sign out everywhere**, MFA reset or retirement commits, a previously copied remember cookie must not mint a fresh stored login or authorize a new work mutation through another Marshall process. Already mounted old browser sessions must refuse at their next required-login check. An exchange committed before revocation may temporarily return a login, but revocation must remove that new login; an exchange ordered after revocation must refuse. A fresh magic-link login after global session revocation is intentionally allowed, while reset/retirement revoke that link too. `Always` compares every post-commit cookie replay and work attempt with exact stored token and effect inventory. A separate `Reachable` should mark a real remembered exchange before the fence and a refused replay after it, with unique messages.
+
+**Fault history.** Obtain a real persistent cookie from the SMTP-backed magic-link POST on A and copy it to browser contexts pinned to A and B. For an enrolled account, first show that an exchanged remembered cookie creates a distinct pending-MFA login; for a no-MFA account, demonstrate a usable remembered login before revocation. Race B's cookie exchange with A's sign-out/global revocation/reset/retirement, exercising both committed orders; drop B's PostgreSQL responses, restart B, then reconnect. Try a mounted event and a fresh request with copied old cookies after the definite fence. Reconcile ambiguous HTTP outcomes against committed token rows before asserting absence. Sign-out of only one browser's supplied cookie must not be generalized to all devices; use the admin action for global semantics.
+
+**Independent oracle.** Workload records cookie identity only in fixture-private memory, not logs. Read-only PostgreSQL inspection tracks the original `remember_me` token, every resulting `user` JTI, verification generation, target account status and a unique VM admission key/operation row for a browser `provision` event. A live browser HTTP/LiveView refusal and unchanged committed admission inventory are both required. A guest nonce is optional strengthening for an already provisioned guest and requires a real gateway/guest. Database unavailable is inconclusive for a read, but no new mutation may be admitted from cached cookies while unavailable.
+
+**Source and intended contract.** `marshall/lib/marshall_web/router.ex:7-20` exchanges remembered credentials before loading the session. `marshall/lib/marshall/accounts/user.ex:134-142` places the action in a transaction. `remembered_login.ex:8-55` locks the current account through exchange and gives sign-out sorted credential locks. `marshall/lib/marshall_web/controllers/auth_controller.ex:118-159` performs sign-out and cookie clearing inside a Ledger transaction. `marshall/lib/marshall/accounts/admin_users.ex:69-103` revokes both `user` and `remember_me` purposes under actor/target locks. `account_lifecycle.ex:78-95,105-155,178-187` resets or retires with broader token revocation. `login.ex:28-103` checks stored presence at database time. `security.ex:42-60` prevents remembered exchange from carrying completed MFA. `live_user_auth.ex:23-103` checks mounted events. `machines_live.ex:110-147` supplies a browser mutation whose committed admission can be counted. ADR-0123 records the lock-order guarantee and deliberate fresh-email exception. Existing `remember_me_login_test.exs:14-123`, `admin_account_distributed_test.exs:75-116`, and native `nix/tests/machines/mfa-login/browser.py:207-345` cover narrower executions.
+
+**Value menu.** Sign-out/global revocation/reset/retirement; no-MFA/enrolled account; exchange-before-fence/fence-before-exchange; old mounted/new HTTP context; cookie original/copy/tampered/expired; same/different Marshall; healthy/partitioned/recovered PostgreSQL; request response accepted/lost. Do not interpret a JS redirect as proof of no admitted mutation.
+
+**Focused topology and proof boundary.** Two real Marshall releases and a shared PostgreSQL with independent connection pools, fixture-owned local SMTP, a browser workload with pinned contexts and cookie copy, and controlled admission capacity for the optional `provision` probe. The safety core is committed login/effect authority; it makes no claim about physical VM success. A separate guest/gateway variant may add a nonce oracle for real access.
+
+**Open Questions:**
+
+- Which exact browser event provides the smallest deterministic committed mutation after remembered exchange, without requiring a guest boot? `(partial: MachinesLive provision has a durable admission path but needs a prepared image/host capacity fixture)`
+- How can a hosted run produce both account-lock orders reproducibly without treating an unobserved race as coverage? `(partial: distributed tests contain committed schedules; hosted interleaving gate is not specified)`
+
+### Investigation Log
+
+#### Which exact browser event provides the smallest deterministic committed mutation after remembered exchange, without requiring a guest boot?
+
+- Examined `machines_live.ex:110-147`, `remember_me_login_test.exs:14-123` and topology. Found `provision` carries current actor and request key into Compute and has inspectable committed admission. It requires a valid image/capacity setup not yet selected for this focused template. Conclusion: partial; keep stored-login issuance as the minimum oracle and use `provision` only with its real prerequisites.
+
+#### How can a hosted run produce both account-lock orders reproducibly without treating an unobserved race as coverage?
+
+- Examined `remembered_login.ex:8-55`, `admin_users.ex:69-103`, `admin_account_distributed_test.exs:75-116`, and ADR-0123. Found explicit account-row serialization and existing test schedules. No hosted pause/gate is defined. Conclusion: partial; record observed transaction order and require one witness for each order before claiming both exercised.
+
+## Evaluation and proof boundary
+
+**Proof boundary:** Draft selection: `access`. real-hosted-browser-identity-or-DNS-packets; physical guest route separate; independent witness: actual public callback/DNS packet plus consistent PostgreSQL authority rows. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
+
+## Authored assertion snapshot
+
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/access/browser.py:346`. Replica B exchange, replica A sign-out, replica B refusal, and exact SQL JTI sets; no guest byte witness, ordinary same-origin failover, or hosted execution. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.

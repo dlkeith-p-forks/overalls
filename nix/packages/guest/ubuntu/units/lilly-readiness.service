@@ -1,0 +1,25 @@
+[Unit]
+Description=Lilly placement-bound boot readiness
+Requires=lilly-grow-root.service
+Wants=lilly-network.service
+After=lilly-network.service lilly-grow-root.service
+ConditionKernelCommandLine=lilly.placement
+ConditionKernelCommandLine=lilly.execution_epoch
+ConditionKernelCommandLine=lilly.boot_challenge
+ConditionKernelCommandLine=lilly.ipv4
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/lib/lilly-readiness.py /usr/bin/systemctl /usr/sbin/ip
+Environment=LILLY_REQUIRED_UNITS=lilly-grow-root.service
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_VSOCK AF_UNIX AF_NETLINK
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+PrivateDevices=yes
+TasksMax=16
+MemoryMax=64M
+StandardOutput=null

@@ -1,0 +1,8 @@
+@cc [owner:ghuntley,label:maintenance] vendored-source-boundary
+Vendored assets MUST retain their license/provenance notices. Application
+behavior and contract backfills belong in the integrating hooks or directory
+contracts, not edits to bundled upstream code. A demonstrated upstream defect MAY
+receive a narrowly scoped local correction only with recorded original and patched
+integrity, reproducible patch instructions, an architecture review and a regression
+executing the patched artifact. An intentional vendor update MUST review affected
+hooks and rebuild the application's asset bundles.

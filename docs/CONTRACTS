@@ -1,0 +1,10 @@
+@cc [owner:ghuntley,label:verification] documentation-evidence-scope
+Documentation MUST distinguish accepted decisions, implemented code and executed
+acceptance tests. Commands not run and tests limited to one physical host MUST
+NOT be described as verified production or independent-host behavior.
+
+@cc [owner:ghuntley,label:architecture] documentation-preserve-decisions
+Material replacements of accepted decisions MUST preserve the original rationale
+and use reciprocal ADR supersession links. Contract backfills MUST NOT silently
+change accepted product requirements or turn incidental implementation details
+into new architectural decisions.

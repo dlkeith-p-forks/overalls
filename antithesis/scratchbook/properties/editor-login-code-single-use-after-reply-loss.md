@@ -1,0 +1,21 @@
+# editor-login-code-single-use-after-reply-loss
+
+**Type / priority:** Safety, P0. **Primary SDK assertion:** `Always` **"Editor login code creates at most one credential after reply loss"** for every completed redemption history. Add a separately named `Sometimes` witness for an initial successful exchange, so an all-refusal template cannot pass vacuously.
+
+**Property:** One approved editor code and exact browser state create at most one personal editor credential, even if the exchange response is lost or two callbacks race. Replay, wrong state, wrong account and wrong origin create no additional credential. A lost response may leave the first credential committed; the oracle must distinguish uncertainty from rollback.
+
+**Source trail:** `marshall/lib/marshall/editor/authority.ex:81-157` locks the candidate, verifies current stored login, account, code and state, creates one credential, and consumes the login in one transaction. `audi/lib/audi/http/editor_browser.ex:13-100` sets exact host-only state/session cookies and redeems a closed callback. `marshall/lib/marshall/editor/CONTRACTS:1-24` requires current login and account/execution binding. ADR-0158 `docs/architecture/decisions/0158-durable-guest-identities.md:30-59` retains GuestAccount UUID across same-user email changes while retirement refuses. These sources define the intended invariant; none proves the race outcome at this commit.
+
+**Real actions and oracle:** Use a synthetic real browser login and Marshall's public editor launch, obtain one ticket/code by normal approval, and capture its exact host-only state cookie in a private client. Race two same-code HTTPS callback requests through Audi; inject a lost response after one exchange can commit. Query committed Editor Login/Credential rows by ticket and hash correlation through a privileged read-only test oracle, not by logging raw credentials. Exactly one credential may exist, its login is consumed, and only a winning response may set a usable editor session cookie. Replay the ticket/code with the same state, wrong state, different actor and wrong editor hostname; none creates a second credential. If the first reply is lost, inspect the database before classifying the result. Use a fresh code as the positive control for a usable editor open.
+
+**Fault/interesting values:** Two Audi instances with separate current service identities, Marshall replica crash after DB commit before response, Audi restart before cookie delivery, and a code at the edge of its 60-second approval deadline. The availability of two Audi replicas is a fixture question; one replica with concurrent clients is a narrower valid race. Never put code, state, cookie, callback URL or account identity in ordinary diagnostics.
+
+**Environment proof:** Hosted `access` with real Marshall/PostgreSQL/Audi is enough to prove transaction cardinality and public callback behavior; a guest is optional for this property. No TCG or Firecracker isolation claim follows. If a usability supplement opens a guest editor, it must match the current VM/host/placement/epoch/generation/session/boot tuple; host vsock peer CID 2 only identifies the host endpoint.
+
+**Questions / investigation log:** The oracle must read transaction outcomes without fabricating a callback response. Source examined: Editor authority, Audi callback, contracts, ADR-0158 and topology. No current composed run or confirmed duplicate exists. A suspected duplicate remains a hypothesis until concurrent public callbacks and the committed row count reproduce it.
+
+## Evaluation and proof boundary
+
+**Proof boundary:** Draft selection: `access`. real-hosted-browser-identity-or-DNS-packets; physical guest route separate; independent witness: actual public callback/DNS packet plus consistent PostgreSQL authority rows. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.

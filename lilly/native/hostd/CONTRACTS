@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:security] hostd-no-elevation-or-raw-diagnostics
+lilly-hostd MUST run without setuid bits or file capabilities; its systemd
+unit supplies its privileges. It writes no log stream: replies carry closed
+status and refusal codes only, and utility arguments, output, credential
+material and native error strings MUST NOT become diagnostics. Lilly emits
+the reviewed events for every effect it requests.
+
+@cc [owner:ghuntley,label:security] hostd-closed-utilities
+hostd MUST execute only executables from its fixed utility table, resolved
+from its own PATH at startup, with a cleared environment (PATH and LC_ALL=C
+only) and stdin closed. A caller never supplies an executable path.
+
+@cc [owner:ghuntley,label:verification] hostd-hegel-properties
+Protocol decoding, directory validation and lease ordering MUST be covered
+by Hegel property tests against independent models, and session custody
+(commands killed and reaped before their lease is released, on release and
+on session death) by tests that run real utilities. Tests run without root;
+cgroup custody and caller-death fencing of production Lilly paths remain
+with the NixOS machine tests.

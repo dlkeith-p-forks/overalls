@@ -1,0 +1,57 @@
+# Optional upstream fixture. Select only with a workload that verifies the
+# origin's current receipts and synthetic CA before setup completion.
+services:
+  origin:
+    container_name: overalls-origin
+    hostname: overalls-origin
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/origin:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: origin
+    environment:
+      NO_COLOR: "1"
+      ORIGIN_STATE_DIR: /var/lib/overalls-origin
+      ORIGIN_CA_OUT: /run/overalls-origin-ca/ca.pem
+      ORIGIN_ADMIN_TOKEN_OUT: /run/overalls-origin-admin/admin-token
+      ORIGIN_INTEGRATION_AUTH_TOKEN_OUT: /run/overalls-origin-shared/integration-auth-token
+      ORIGIN_INTEGRATION_AUTH_NEXT_OUT: /run/overalls-origin-shared/integration-auth-next-token
+      ORIGIN_INTEGRATION_STATIC_VALUE_OUT: /run/overalls-origin-shared/integration-static-value
+    volumes:
+      - origin-state:/var/lib/overalls-origin
+      - origin-ca:/run/overalls-origin-ca
+      - origin-admin:/run/overalls-origin-admin
+      - origin-shared:/run/overalls-origin-shared
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--show-error", "--fail", "--output", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+      start_period: 15s
+    networks:
+      control:
+        aliases:
+          - origin-fixture
+          - api.openai.com
+          - api.anthropic.com
+          - github.com
+          - integration.fixture.test
+          - integration-a.fixture.test
+          - integration-b.fixture.test
+
+  workload:
+    volumes:
+      - origin-ca:/run/overalls-origin-ca:ro
+      - origin-admin:/run/overalls-origin-admin:ro
+
+  enrollment:
+    volumes:
+      - origin-shared:/run/overalls-origin-shared:ro
+
+volumes:
+  origin-state:
+  origin-ca:
+  origin-admin:
+  origin-shared:

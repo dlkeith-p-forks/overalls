@@ -1,0 +1,3 @@
+@cc [owner:ghuntley,label:security] disposable-ssh-ca-fixture
+This publicly known key MUST only sign isolated automated-test certificates.
+Production deployment and guest artifacts MUST NOT reference this identity.

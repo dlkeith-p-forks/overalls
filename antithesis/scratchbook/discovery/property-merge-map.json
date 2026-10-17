@@ -1,0 +1,1770 @@
+{
+  "sut_path": "/home/ghuntley/src/kittens-antithesis-reset",
+  "commit": "c835eb1017d24a001215c319373fa4204d64269b",
+  "updated": "2026-10-13",
+  "external_references": [],
+  "scope_answer": "Repository only (Recommended)",
+  "candidate_count": 113,
+  "canonical_count": 104,
+  "entries": [
+    {
+      "canonical": "audi-authority-request-start-deadline",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-04/audi-authority-request-start-deadline.md"
+      ],
+      "focus_ids": [
+        "04"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Audi authority never extends beyond request-start TTL or changes its binding",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "backup-interrupted-cleanup-owned-only",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/backup-interrupted-cleanup-owned-only.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Backup recovery destroys only positively owned snapshots and retains uncertain cleanup",
+      "open_questions": [
+        "Can hosted storage observation stay independent through pool inspection faults? `(partial: native source/proof histories exist; hosted split-view fault unproven)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "backup-retained-manifest-closure",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-01/backup-retained-manifest-closure.md",
+        "antithesis/scratchbook/discovery/property-candidates-03/backup-recovery-manifest-reference-closure.md"
+      ],
+      "focus_ids": [
+        "01",
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Retained backup manifest references restorable component snapshots",
+      "open_questions": [
+        "Which disposable guest-disk sentinel can be restored independently? `(partial: isolated host/database sentinels already exist)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "backup-time-skew-never-activates-historical-authority",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-11/backup-time-skew-never-activates-historical-authority.md"
+      ],
+      "focus_ids": [
+        "11"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "medium",
+      "planned_sdk_message": "Restored mixed-time backup remains isolated from live fleet authority",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "brady-cache-complete-publication",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-01/brady-cache-complete-publication.md"
+      ],
+      "focus_ids": [
+        "01"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Brady cache hit serves a complete committed object",
+      "open_questions": [
+        "Does hosted storage permit a persisted power-cut test, or process kills only? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "brady-cache-physical-headroom-and-leases",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-05/brady-cache-physical-headroom-and-leases.md"
+      ],
+      "focus_ids": [
+        "05"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "brady cache writes fit fresh physical headroom and retain leased objects on uncertainty",
+      "open_questions": [
+        "Which fault reaches uncertain temporary deletion safely? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "brady-listener-socket-worker-bound",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-05/brady-listener-socket-worker-bound.md"
+      ],
+      "focus_ids": [
+        "05"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "brady listener overload never creates an extra live worker or leaked accepted FD",
+      "open_questions": [
+        "What measured freed-slot quiet interval is justified? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "cancelled-relocation-restores-after-revocation",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-07/cancelled-relocation-restores-after-revocation.md"
+      ],
+      "focus_ids": [
+        "07"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Cancelled relocation restores source only after revocation and retains cleanup custody",
+      "open_questions": [
+        "Can the native fixture cut between source revocation and stop without breaking the owner lock? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "continuing-boot-advances-generation-without-second-boot",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-11/continuing-boot-advances-generation-without-second-boot.md"
+      ],
+      "focus_ids": [
+        "11"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Logical generation adoption retains one physical boot and fences old delivery",
+      "open_questions": [
+        "Which native fixture can delay a guest workspace reply through a committed generation advance while retaining the VMM? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "control-bind-before-domain-effects",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-04/control-bind-before-domain-effects.md"
+      ],
+      "focus_ids": [
+        "04"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Control domain effects require the authenticated service hello",
+      "open_questions": [],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "control-bound-credential-revalidated",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-04/control-bound-credential-revalidated.md"
+      ],
+      "focus_ids": [
+        "04"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Bound control sockets revalidate current credentials before each domain effect",
+      "open_questions": [],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "control-hint-loss-reconciles-authority",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-04/control-hint-loss-reconciles-authority.md"
+      ],
+      "focus_ids": [
+        "04"
+      ],
+      "type": "Sometimes",
+      "priority": "P1",
+      "confidence": "medium",
+      "planned_sdk_message": "Control reader reconciles committed authority after lost hint",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "control-inflight-limit-and-retirement",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-05/control-inflight-limit-and-retirement.md"
+      ],
+      "focus_ids": [
+        "05"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "control client pending requests fit negotiated window and busy calls send no frame",
+      "open_questions": [],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "control-no-hidden-redelivery",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-04/control-no-hidden-redelivery.md"
+      ],
+      "focus_ids": [
+        "04"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Control transport never redelivers an uncertain application call",
+      "open_questions": [],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "control-pending-response-retirement",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-04/control-pending-response-retirement.md"
+      ],
+      "focus_ids": [
+        "04"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Control responses settle only their live pending request",
+      "open_questions": [],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "control-service-dispatch-closed",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-04/control-service-dispatch-closed.md"
+      ],
+      "focus_ids": [
+        "04"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Control rejects cross-service and invalid documents before domain effects",
+      "open_questions": [],
+      "status": "partially instrumented; primary unimplemented"
+    },
+    {
+      "canonical": "control-version-refusal-remains-terminal",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-04/control-version-refusal-remains-terminal.md",
+        "antithesis/scratchbook/discovery/property-candidates-10/control-v1-version-refusal-preserves-intent.md"
+      ],
+      "focus_ids": [
+        "04",
+        "10"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Control transport version refusal stops its owner without losing its class",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "current-membership-gates-new-private-web",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-06/current-membership-gates-new-private-web.md"
+      ],
+      "focus_ids": [
+        "06"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Revoked membership cannot deliver a newly admitted private web request to the guest",
+      "open_questions": [
+        "Which minimal guest app and browser-login fixture gives a full Audi private route and independent nonce recorder? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "delete-release-follows-physical-retirement",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-08/delete-release-follows-physical-retirement.md"
+      ],
+      "focus_ids": [
+        "08"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "lifecycle.delete_release_requires_current_physical_retirement",
+      "open_questions": [
+        "Which native observer establishes VMM, network, and ZFS absence before Marshall releases reservation/address? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "enrico-attempt-replay-bounded-receipts",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-09/enrico-attempt-replay-bounded-receipts.md"
+      ],
+      "focus_ids": [
+        "09"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Enrico retained attempt replay starts no second fetch",
+      "open_questions": [
+        "How can a real-effect fixture reach 1025 completions cheaply? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "enrico-native-git-admission-after-manager-restart",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-02/enrico-native-refresh-cap-survives-manager-restart.md",
+        "antithesis/scratchbook/discovery/property-candidates-05/enrico-native-git-admission-after-manager-restart.md"
+      ],
+      "focus_ids": [
+        "02",
+        "05"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Enrico native Git ownership bounds physical concurrent refreshes",
+      "open_questions": [
+        "Does hosted Linux preserve inherited-FD and descendant custody with observable locks? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "enrico-published-head-remains-addressable",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-01/enrico-published-head-remains-addressable.md",
+        "antithesis/scratchbook/discovery/property-candidates-03/enrico-interruption-preserves-published-head.md"
+      ],
+      "focus_ids": [
+        "01",
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Enrico published Git head remains addressable through failed refresh",
+      "open_questions": [
+        "What safe hook can interrupt real Git between atomic fetch and retained-ref update? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "execution-v4-refuses-legacy-document",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-10/execution-v4-refuses-legacy-document.md"
+      ],
+      "focus_ids": [
+        "10"
+      ],
+      "type": "AlwaysOrUnreachable",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Execution v4 refuses legacy authority without changing durable command",
+      "open_questions": [
+        "Can a test peer inject malformed inner documents over the real authenticated Control transport? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "expired-web-lease-stops-existing-guest-bytes",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-06/expired-web-lease-stops-existing-guest-bytes.md"
+      ],
+      "focus_ids": [
+        "06"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Expired Audi web authority cannot forward new guest bytes",
+      "open_questions": [
+        "How will a hosted guest fixture mark post-deadline ordering without synchronized clocks? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`",
+        "Which hosted fault controller can suspend the guard while retaining production ownership? `(partial: production guard suspension in hosted TCG remains unproven)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "galileo-accounting-delay-does-not-renew-old-grant",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-11/galileo-accounting-delay-does-not-renew-old-grant.md"
+      ],
+      "focus_ids": [
+        "11"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Galileo accounting delay cannot start an upstream effect on an aged grant",
+      "open_questions": [
+        "Is grant TTL anchored at Marshall response or deliberately at later upstream lease creation? `(needs human input)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "guest-identity-cutover-preserves-uid-custody",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-10/guest-identity-cutover-preserves-uid-custody.md"
+      ],
+      "focus_ids": [
+        "10"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Guest identity cutover preserves UUID and UID custody across mailbox history",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "guest-identity-never-transfers-on-email-reuse",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-06/guest-identity-never-transfers-on-email-reuse.md"
+      ],
+      "focus_ids": [
+        "06"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Retired guest identity and home never transfer to a replacement account",
+      "open_questions": [
+        "Which guest fixture covers SSH, browser terminal and editor on one retained identity across both guest families, versus capability-specific cases? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "guest-readiness-binds-current-physical-boot",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-08/guest-readiness-binds-current-physical-boot.md"
+      ],
+      "focus_ids": [
+        "08"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "lifecycle.guest_ready_receipt_matches_current_physical_boot_and_execution",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "guest-ready-does-not-claim-workspace-checkout",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-11/guest-ready-does-not-claim-workspace-checkout.md"
+      ],
+      "focus_ids": [
+        "11"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Guest readiness does not claim repository checkout completed",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "guest-workspace-restart-publication-no-clobber",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/guest-workspace-restart-publication-no-clobber.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Guest workspace recovery preserves its accepted source and published developer checkout",
+      "open_questions": [
+        "How does the TCG restart retain filesystem and independently witness publication durability? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "guest-workspace-source-replay-once",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-09/guest-workspace-source-replay-once.md"
+      ],
+      "focus_ids": [
+        "09"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Guest workspace source replay preserves one boot-bound source",
+      "open_questions": [
+        "How can clone effects be counted without exposing source? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "healthy-revision-requires-live-candidate",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-08/healthy-revision-requires-live-candidate.md",
+        "antithesis/scratchbook/discovery/property-candidates-10/updater-versioned-health-before-promotion.md"
+      ],
+      "focus_ids": [
+        "08",
+        "10"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "lifecycle.update_healthy_requires_active_closure_current_secrets_and_role_health",
+      "open_questions": [
+        "Can a native fixture vary status documents through each real service health implementation? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "host-credential-rotation-fences-old-socket",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-07/host-credential-rotation-fences-old-socket.md"
+      ],
+      "focus_ids": [
+        "07"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Committed host credential rotation fences old Control request authority",
+      "open_questions": [],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "host-session-successor-fences-old-exchanges",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-07/host-session-successor-fences-old-exchanges.md"
+      ],
+      "focus_ids": [
+        "07"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Superseded Lilly host session cannot change exchange state or dispatch work",
+      "open_questions": [],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "lease-expiry-independent-of-blocked-renewal",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-02/lease-expiry-independent-of-blocked-renewal.md"
+      ],
+      "focus_ids": [
+        "02"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Expired service lease cannot forward a new upstream effect",
+      "open_questions": [
+        "Which irreversible admission boundary can each service expose independently of bytes buffered before expiry? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lilly-async-result-keeps-command-identity",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-02/lilly-async-result-keeps-command-identity.md"
+      ],
+      "focus_ids": [
+        "02"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Lilly asynchronous result retains its original command generation",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lilly-corrupt-intent-never-becomes-receipt",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-01/lilly-corrupt-intent-never-becomes-receipt.md"
+      ],
+      "focus_ids": [
+        "01"
+      ],
+      "type": "AlwaysOrUnreachable",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Lilly refuses receipt when stored placement intent is unreadable",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lilly-finite-obstruction-recovery-progress",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/lilly-finite-obstruction-recovery-progress.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Sometimes",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Lilly retained eligible intent progresses after finite obstruction and restart",
+      "open_questions": [
+        "What measured baseline interval supplies the workload budget? `(partial: cadence/retries found, no universal SLA)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lilly-interrupted-launch-at-most-once",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/lilly-interrupted-launch-at-most-once.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Lilly recovery never resubmits one physical launch authority",
+      "open_questions": [
+        "Can the hosted adapter retain independently durable submission witnesses with production marker semantics? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lilly-outcome-replay-exact-ack",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/lilly-outcome-replay-exact-ack.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Lilly recovery preserves outcome identity until its exact acknowledgment",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lilly-pool-sampling-does-not-starve-mutation",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-02/pool-contention-preserves-neighbor-progress.md",
+        "antithesis/scratchbook/discovery/property-candidates-05/lilly-pool-sampling-does-not-starve-mutation.md"
+      ],
+      "focus_ids": [
+        "02",
+        "05"
+      ],
+      "type": "Sometimes",
+      "priority": "P1",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Lilly independent pool mutation completes during sustained sampling pressure",
+      "open_questions": [
+        "Which measured post-release interval is sufficient for each selected operation? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`",
+        "Can hosted TCG maintain two independent real pools with genuine contention under faults? `(partial: two real hosted pools and lock fault fixture remain unbuilt)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lilly-receipt-survives-control-loss",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/lilly-receipt-survives-control-loss.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Lilly command receipt remains backed by matching durable intent after restart",
+      "open_questions": [
+        "Which hosted filesystem faults exercise directory fsync uncertainty? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lilly-view-restart-withdraws-stream-authority",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-02/lilly-view-restart-withdraws-stream-authority.md"
+      ],
+      "focus_ids": [
+        "02"
+      ],
+      "type": "AlwaysOrUnreachable",
+      "priority": "P0",
+      "confidence": "medium",
+      "planned_sdk_message": "Lilly View restart withdraws stale stream authority before forwarding",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lost-host-hint-eventually-delivers-command",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-07/lost-host-hint-eventually-delivers-command.md"
+      ],
+      "focus_ids": [
+        "07"
+      ],
+      "type": "Sometimes",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Committed host command reached Lilly after notifier isolation healed",
+      "open_questions": [
+        "Can one Marshall notifier be isolated independently of its Repo and the other replica? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "marshall-admission-atomic-allocation",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-01/marshall-admission-atomic-allocation.md"
+      ],
+      "focus_ids": [
+        "01"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Marshall acknowledged admission has one joined allocation and dispatch job",
+      "open_questions": [
+        "Which PaperTrail/audit row is mandatory for new admission? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "marshall-admission-key-survives-archive",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-09/marshall-admission-key-survives-archive.md"
+      ],
+      "focus_ids": [
+        "09"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Marshall replayed admission key never allocates a second VM",
+      "open_questions": [
+        "Which TCG/native deletion path reaches archival with physical cleanup? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "marshall-admission-measured-physical-capacity",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-05/marshall-admission-measured-physical-capacity.md"
+      ],
+      "focus_ids": [
+        "05"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "marshall placement fits fresh measured physical headroom and all outstanding holds",
+      "open_questions": [
+        "Which adapter preserves Collector freshness while providing independent usage/ZFS samples? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`",
+        "Can hosted faults produce real pool-lock busy reports? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "marshall-crash-recovery-budget-and-stale-capacity",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/marshall-crash-recovery-budget-and-stale-capacity.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Marshall crash recovery preserves its budget and waits for fresh capacity proof",
+      "open_questions": [
+        "Can supported hosted DB-time faults reach backward time with real Ledger.now? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "migration-finishes-before-upgrade-activation",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-08/migration-finishes-before-upgrade-activation.md"
+      ],
+      "focus_ids": [
+        "08"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "lifecycle.candidate_activation_follows_successful_explicit_migration",
+      "open_questions": [
+        "Which native fixture can fault the real migrator and observe advisory-lock custody across two Marshall hosts? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "native-utility-descendant-custody",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-02/native-utility-descendant-custody.md",
+        "antithesis/scratchbook/discovery/property-candidates-03/native-owner-recovery-keeps-descendant-custody.md"
+      ],
+      "focus_ids": [
+        "02",
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Native utility descendant custody blocks a second mutation until retirement",
+      "open_questions": [
+        "Does hosted Linux preserve subreaper and inherited-descriptor behavior with stable pidfd/inode evidence after helper death? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "porsche-wait-never-resubmits-mutation",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-09/porsche-wait-never-resubmits-mutation.md"
+      ],
+      "focus_ids": [
+        "09"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Porsche wait submits one mutation and only polls its receipt",
+      "open_questions": [
+        "Can a selected physical command reach a matching terminal receipt before the CLI timeout in hosted TCG? `(partial: 120-second wait is source-backed; real TCG progress needs measured tail)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "private-readiness-v1-gates-new-execution",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-10/private-readiness-v1-gates-new-execution.md"
+      ],
+      "focus_ids": [
+        "10"
+      ],
+      "type": "AlwaysOrUnreachable",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Private readiness v1 must match role and host before new guest execution",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "relocation-handoff-one-current-execution",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-07/relocation-handoff-one-current-execution.md"
+      ],
+      "focus_ids": [
+        "07"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Relocation handoff has one current placement epoch and one activation outbox",
+      "open_questions": [
+        "Which native observer can identify both VMM custody and guest write authority during handoff? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "request-recorder-capacity-does-not-admit-phantom-work",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-05/request-recorder-capacity-does-not-admit-phantom-work.md"
+      ],
+      "focus_ids": [
+        "05"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "request recorder saturation cannot fabricate admitted tickets or a clean quality interval",
+      "open_questions": [
+        "Is a full 4096-worker hosted run feasible without unrelated OS limits? `(partial: exact Rust bound tested; BEAM/hosted resource envelope unmeasured)`",
+        "Can hosted deployment preserve the native fixture's exact systemd producer identity? `(partial: native two-unit fixture exists; hosted equivalent unproven)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "request-recorder-restart-conserves-custody",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/request-recorder-restart-conserves-custody.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Request recorder recovery conserves admissions without inventing producer death",
+      "open_questions": [
+        "Which hosted topology preserves exact systemd producer authentication while faulting parties independently? `(partial: native NixOS fixture passes this shape; hosted equivalent unproven)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "runtime-restart-requires-fresh-readiness",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-08/runtime-restart-requires-fresh-readiness.md"
+      ],
+      "focus_ids": [
+        "08"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "lifecycle.restored_journal_cannot_authorize_fresh_runtime_readiness",
+      "open_questions": [
+        "Can the hosted composition restart real Runtime during database outage while preserving the same physical guest? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "source-stop-after-committed-placement-holds",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-02/source-stop-after-committed-placement-holds.md"
+      ],
+      "focus_ids": [
+        "02"
+      ],
+      "type": "AlwaysOrUnreachable",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Clone source interruption follows committed placement and capacity holds",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "source-v2-capability-gates-admission",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-10/source-v2-capability-gates-admission.md"
+      ],
+      "focus_ids": [
+        "10"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Workspace source admission requires matching image v4 source-v2 capability",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "source-v2-delivery-envelope-v1-boot-bound",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-10/source-v2-delivery-envelope-v1-boot-bound.md"
+      ],
+      "focus_ids": [
+        "10"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Workspace source-v2 delivery accepts only matching v1 boot envelope",
+      "open_questions": [
+        "Where can a controlled guest responder inject invalid envelopes through the actual vsock broker? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "stale-local-execution-cannot-forward-guest-bytes",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-06/stale-local-execution-cannot-forward-guest-bytes.md"
+      ],
+      "focus_ids": [
+        "06"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Retired local execution cannot receive new Audi guest bytes",
+      "open_questions": [
+        "How can the harness independently observe old guardian death? `(partial: local view and guardian path traced)`",
+        "Can TCG retain two distinguishable boot recorders? `(partial: two distinguishable TCG boot recorders remain unbuilt)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "stop-retains-disk-until-restart",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-08/stop-retains-disk-until-restart.md"
+      ],
+      "focus_ids": [
+        "08"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "lifecycle.completed_stop_has_no_vmm_and_retains_disk_identity",
+      "open_questions": [
+        "Can the hosted storage/guest fixture inspect disk GUID, network detach, and fresh boot without substituting modeled physical effects? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "store-v3-host-binding-survives-upgrade",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-10/store-v3-host-binding-survives-upgrade.md"
+      ],
+      "focus_ids": [
+        "10"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Lilly Store v3 refuses foreign or changed host binding without reinterpretation",
+      "open_questions": [
+        "Which seam changes host/version across complete Runtime lifetimes while retaining real ownership? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "terminal-create-reply-loss-one-pty",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-09/terminal-create-reply-loss-one-pty.md"
+      ],
+      "focus_ids": [
+        "09"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Terminal create replay retains one guest PTY and one opened receipt",
+      "open_questions": [
+        "How can the guest count past PTY births? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`",
+        "Does TCG composition use real terminal host stream end to end? `(partial: composed authenticated TCG terminal route remains unrun)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "terminal-input-frame-replay-once",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-09/terminal-input-frame-replay-once.md"
+      ],
+      "focus_ids": [
+        "09"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "medium-high",
+      "planned_sdk_message": "Terminal replayed input sequence reaches guest once",
+      "open_questions": [
+        "Which transport seam can replay an authenticated frame on the same channel? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`",
+        "Which guest program can witness tokens with low perturbation? `(partial: independent fsynced guest token observer remains unbuilt)`"
+      ],
+      "status": "partially instrumented; primary unimplemented"
+    },
+    {
+      "canonical": "terminal-kill-progress-under-pty-backpressure",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-02/terminal-kill-progress-under-pty-backpressure.md"
+      ],
+      "focus_ids": [
+        "02"
+      ],
+      "type": "Sometimes",
+      "priority": "P1",
+      "confidence": "medium",
+      "planned_sdk_message": "Terminal explicit kill retires session under blocked PTY input",
+      "open_questions": [
+        "Can the PTY buffer be saturated and its blocked write witnessed in the deployed daemon? `(partial: source opens master without O_NONBLOCK)`"
+      ],
+      "status": "partially instrumented; primary unimplemented"
+    },
+    {
+      "canonical": "terminal-physical-scrollback-budget",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-05/terminal-physical-scrollback-budget.md"
+      ],
+      "focus_ids": [
+        "05"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "terminal physical scrollback backing stays within reserved aggregate budget",
+      "open_questions": [
+        "Can hosted TCG expose exact backing snapshots without perturbing allocation? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`",
+        "Which guest-vsock route preserves concurrent PTYs under outer faults? `(partial: concurrent guest-vsock route remains unrun)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "terminal-stalled-viewer-neighbor-progress",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-05/terminal-stalled-viewer-neighbor-progress.md"
+      ],
+      "focus_ids": [
+        "05"
+      ],
+      "type": "Sometimes",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "terminal neighbor completes create attach and byte delivery while another viewer is credit stalled",
+      "open_questions": [
+        "What measured native/TCG quiet interval is appropriate? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`",
+        "Can hosted faults retain a stalled but open viewer socket? `(partial: hosted fault must retain open stalled viewer socket)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "trace-archive-ack-loss-preserves-replay",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/trace-archive-ack-loss-preserves-replay.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Trace archive recovery preserves accepted immutable custody through acknowledgment loss",
+      "open_questions": [
+        "Which hosted fault reaches actual SQLite commit uncertainty beyond process restart? `(partial: SIGKILL/reopen and ACK replay covered; media fault unproven)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "trace-spool-physical-quota-with-retained-custody",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-05/trace-spool-physical-quota-with-retained-custody.md"
+      ],
+      "focus_ids": [
+        "05"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "medium-high",
+      "planned_sdk_message": "trace spool saturation preserves accepted archive bytes and refuses on exhausted backing",
+      "open_questions": [
+        "What exact transient SQLite/WAL footprint envelope applies? `(partial: one 8 MiB native run measured below 12 MiB; no general bound)`",
+        "Can hosted storage enforce recoverable real ENOSPC? `(partial: no hosted trace-spool ENOSPC fixture found)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "transient-observation-is-not-absence",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/transient-observation-is-not-absence.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Lilly temporary observation failure never fabricates physical absence",
+      "open_questions": [
+        "Which hosted probe faults preserve real production observation? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "updater-failed-activation-recovers-live-roles",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/updater-failed-activation-recovers-live-roles.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "Updater failed activation attempts every prior live role without claiming unverified health",
+      "open_questions": [
+        "Which source-built native fixture can independently observe updater/migrator death and all restoration effects? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "upgrade-preserves-owned-guests",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-08/upgrade-preserves-owned-guests.md"
+      ],
+      "focus_ids": [
+        "08"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "high",
+      "planned_sdk_message": "lifecycle.upgrade_preserves_owned_vmm_and_disk_identity",
+      "open_questions": [
+        "Which native fixture can retain and independently identify guest VMM/cgroup and disk across the release switch? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "ziggy-completion-once-accounted",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-01/ziggy-completion-once-accounted.md",
+        "antithesis/scratchbook/discovery/property-candidates-03/inference-accounting-ack-loss-counted-once.md"
+      ],
+      "focus_ids": [
+        "01",
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Ziggy completion acknowledgment conserves one Marshall accounting update",
+      "open_questions": [
+        "Which current-credential fixture isolates one owner/day/provider/model bucket? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "partially instrumented; primary unimplemented"
+    },
+    {
+      "canonical": "ziggy-interrupted-inference-never-reexecutes",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-03/ziggy-interrupted-inference-never-reexecutes.md"
+      ],
+      "focus_ids": [
+        "03"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "Ziggy recovery replays accounting without repeating an inference effect",
+      "open_questions": [],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "ziggy-spool-capacity-before-provider",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/property-candidates-05/ziggy-spool-capacity-before-provider.md"
+      ],
+      "focus_ids": [
+        "05"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "high",
+      "planned_sdk_message": "ziggy provider effects require a previously durable bounded spool slot",
+      "open_questions": [
+        "Can hosted faults expose directory-sync uncertainty? `(partial: source investigated; selected composed fault/effect fixture remains unrun)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "authoritative-dns-follows-current-placement",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/access-routes/authoritative-dns-follows-current-placement.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:access-routes"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Authoritative DNS addresses follow the current published placement",
+      "open_questions": [
+        "Which event exposes each Audi replica\u2019s accepted post-relocation revision without replacing the actual DNS query?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "editor-login-code-single-use-after-reply-loss",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/access-routes/editor-login-code-single-use-after-reply-loss.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:access-routes"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Editor login code creates at most one credential after reply loss",
+      "open_questions": [
+        "Can the selected public callback fixture race two Audi replicas and read committed credential cardinality without fabricating responses?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "editor-save-survives-worker-recovery",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/access-routes/editor-save-survives-worker-recovery.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:access-routes"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Personal editor save survives worker recovery under its owner's UID",
+      "open_questions": [
+        "Can the selected editor-capable TCG image drive a real browser save acknowledgment and independent file read after worker recovery?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "editor-signout-fences-active-guest-write",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/access-routes/editor-signout-fences-active-guest-write.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:access-routes"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Signed-out editor session cannot write new guest bytes",
+      "open_questions": [
+        "What lease deadline bounds closure of an existing editor stream after committed sign-out?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "revoked-ssh-key-refuses-fresh-guest-login",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/access-routes/revoked-ssh-key-refuses-fresh-guest-login.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:access-routes"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Revoked SSH key cannot open a fresh guest login",
+      "open_questions": [
+        "How can a live outer SSH session be retained across key removal while forcing a genuinely fresh inner authentication?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "strict-ssh-host-trust-reaches-current-guest",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/access-routes/strict-ssh-host-trust-reaches-current-guest.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:access-routes"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Strict SSH host certificates reach only the current guest execution",
+      "open_questions": [
+        "Which adapter captures the strict OpenSSH host-certificate transcript and pins the source address through relocation?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "agent-long-fetch-result-retains-live-lease",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/agent-integration/agent-long-fetch-result-retains-live-lease.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:agent-integration"
+      ],
+      "type": "Sometimes",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "A permitted slow guest fetch reaches a durable completed tool result",
+      "open_questions": [
+        "Does a controlled fetch lasting more than 30 seconds lose its final transition without an in-tool heartbeat? `(partial: 30-second lease and synchronous fetch are source-backed; composed timing run is absent)`"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "agent-started-tool-effect-not-redispatched",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/agent-integration/agent-started-tool-effect-not-redispatched.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:agent-integration"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "A started agent command is never redispatched after uncertain executor loss",
+      "open_questions": [
+        "The hosted `guest-vmm` must run real Lyra and its private verified TLS/relay path; a mock RPC or command-status-only test is insufficient. A TCG guest can establish actual file effect and software restart behavior, not Firecracker isolation. The prior native fixture is one strict sequence, not a?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "galileo-named-origin-credential-and-revocation-bound",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/agent-integration/galileo-named-origin-credential-and-revocation-bound.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:agent-integration"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Named integration uses its authorized origin and headers and stops after revoked renewal",
+      "open_questions": [
+        "Can a hosted fixture retain actual pre-NAT guest binding and live origin socket through ordinary attachment withdrawal? `(partial: native precedent exists; hosted composition is unbuilt)`"
+      ],
+      "status": "partially instrumented; primary unimplemented"
+    },
+    {
+      "canonical": "magic-link-preview-post-mfa-boundary",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/browser-authority/magic-link-preview-post-mfa-boundary.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:browser-authority"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Magic-link preview and pending MFA cannot grant browser work authority",
+      "open_questions": [
+        "Which exact browser fixture can control JS suppression for GET preview and resume the auto-submit POST without bypassing the real CSRF path? `(partial: existing native browser fixture exercises automatic visit; no hosted Antithesis browser fixture is defined)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "remembered-cookie-revocation-cross-replica",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/browser-authority/remembered-cookie-revocation-cross-replica.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:browser-authority"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Revoked remembered cookie cannot mint or use browser authority across Marshall replicas",
+      "open_questions": [
+        "Which exact browser event provides the smallest deterministic committed mutation after remembered exchange, without requiring a guest boot? `(partial: MachinesLive provision has a durable admission path but needs a prepared image/host capacity fixture)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "stale-admin-tab-current-mutation-authority",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/browser-authority/stale-admin-tab-current-mutation-authority.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:browser-authority"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Stale Control room tab cannot commit an admin mutation after authority withdrawal",
+      "open_questions": [
+        "Which user-facing control supplies the cleanest stale-event inventory with no dependent asynchronous worker effect? `(partial: set-role has target and audit rows; invite additionally creates outbox and mail jobs)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "authenticated-create-to-retained-guest-file",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/customer-journey/authenticated-create-to-retained-guest-file.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:customer-journey"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Authenticated create-to-guest-file success preserves request VM boot UID and fsynced bytes",
+      "open_questions": [
+        "Can a browser driver preserve one hidden create key through a lost LiveView reply and retry against Marshall B without changing the submitted shape? A fresh key would test another request, invalidating the idempotency portion.",
+        "What exact read-only projection exposes the authoritative owner/key/VM/placement/epoch/GuestAccount tuple at the same snapshot as the journey ledger, and how is it tied to QEMU boot ID without trusting a stale UI row?",
+        "Can the planned TCG image and browser-terminal path complete normal stop/start with persistent overlay, fresh boot and second personal terminal within a measured test budget? If not, hosted scope must report infeasible and native evidence cannot be inferred from it.",
+        "Which selected fault and observed restoration point define the post-heal deadline for each attempt? Without those, report pending/inconclusive rather than universal per-op liveness."
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "clone-two-drive-copy-survives-source-deletion",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/data-journeys/clone-two-drive-copy-survives-source-deletion.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:data-journeys"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Cloned root and data drives retain independent acknowledged bytes after source deletion",
+      "open_questions": [
+        "Which Inception guest path/mount exposes a stable, fsyncable marker on the `data.raw` inner filesystem, and how can the workload obtain a bounded independent digest without logging terminal bytes?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "resize-retains-exact-guest-bytes-and-grown-shape",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/data-journeys/resize-retains-exact-guest-bytes-and-grown-shape.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:data-journeys"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Confirmed resize preserves fsynced guest bytes and reports exact physical shape",
+      "open_questions": [
+        "Can the composed Antithesis guest fixture expose the VMM API and retained block device across a Lilly crash while preserving exact boot/placement identity?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "stopped-relocation-retains-bytes-and-routes-to-destination",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/data-journeys/stopped-relocation-retains-bytes-and-routes-to-destination.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:data-journeys"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Stopped relocation serves retained guest bytes at destination and refuses former source route",
+      "open_questions": [
+        "Can the native fixture hold the source disk at a documented point after destination readiness but before cleanup and read the destination then?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "brady-flow-attribution-requires-current-incarnation",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/isolation-egress/brady-flow-attribution-requires-current-incarnation.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:isolation-egress"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Brady resolves flow ownership only for the current labeled execution incarnation",
+      "open_questions": [
+        "How can the harness retain and identify one accepted Brady socket through address reuse without exposing the URL or guest bytes?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "brady-forbidden-destinations-never-reach-upstream",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/isolation-egress/brady-forbidden-destinations-never-reach-upstream.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:isolation-egress"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Forbidden original destinations never reach Brady upstream or shared cache",
+      "open_questions": [
+        "How will the router fixture create several routable but forbidden addresses without accidentally crossing the host's real network?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "brady-proxy-loss-preserves-web-and-quic-denial",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/isolation-egress/brady-proxy-loss-preserves-web-and-quic-denial.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:isolation-egress"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Proxy loss never opens direct guest web or QUIC egress",
+      "open_questions": [
+        "Can the TCG router expose origin TCP/UDP effect logs and nft counters as one monotonic private oracle during crash/reload?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "brady-sensitive-exchanges-never-reuse-shared-cache",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/isolation-egress/brady-sensitive-exchanges-never-reuse-shared-cache.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:isolation-egress"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Credentialed requests never reuse and private responses never enter Brady shared cache",
+      "open_questions": [
+        "What harness-private cache inventory API can associate an object with a synthetic response hash without reading production-like payloads?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "native-firecracker-confinement-survives-owner-recovery",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/isolation-egress/native-firecracker-confinement-survives-owner-recovery.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:isolation-egress"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Current Firecracker execution retains its jail UID namespace and cgroup confinement",
+      "open_questions": [
+        "How will a test-only root monitor expose a stable per-PID process-start/pidfd sample under concurrent exit?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "native-guest-packets-obey-profile-and-tap-boundaries",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/isolation-egress/native-guest-packets-obey-profile-and-tap-boundaries.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:isolation-egress"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Physical guest packets cannot cross forbidden profile TAP or destination boundaries",
+      "open_questions": [
+        "Can a workload-owned packet collector capture both accepted and refused attempts without relying on a client timeout?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "diagnostic-outage-preserves-authorized-user-effect",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/operations/diagnostic-outage-preserves-authorized-user-effect.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:operations"
+      ],
+      "type": "Sometimes",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Authorized guest effect completes during a finite diagnostic outage",
+      "open_questions": [
+        "Which hosted or native fixture can fault recorder, spool and Collector separately while preserving the real authenticated producer, Lilly Control exchange and a booted guest independent effect oracle?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "host-enrollment-receipt-follows-live-health",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/operations/host-enrollment-receipt-follows-live-health.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:operations"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Host enrollment receipt follows authenticated binding and live role health",
+      "open_questions": [
+        "Can a native source-built fixture independently capture exact Marshall operation identity, Lilly polling status and physical storage GUID during the same interrupted enrollment?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "lyra-guest-update-fences-executor-handoff",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/operations/lyra-guest-update-fences-executor-handoff.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:operations"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Lyra guest update never runs unverified or overlapping executors",
+      "open_questions": [
+        "Can a source-built real guest fixture control candidate registration and stop/interrupt the seed at each durable handoff without replacing the real supervisor or guest executable?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "runtime-secret-bundle-complete-or-previous",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/operations/runtime-secret-bundle-complete-or-previous.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:operations"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Runtime secret bundle publication is complete or retains the previous bundle",
+      "open_questions": [
+        "Can the native secret-custody fixture schedule a crash immediately before and after `RENAME_EXCHANGE` while the independent consumer samples the published directory?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "inception-parent-publication-cannot-confer-child-authority",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/optional-profiles/inception-parent-publication-cannot-confer-child-authority.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:optional-profiles"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Inception nested forwarding requires a current parent lease and child effects require child authorization",
+      "open_questions": [
+        "Can the current builder execute the full nested-KVM fixture and retain two inner stacks under its actual capacity?"
+      ],
+      "status": "researched; primary unimplemented"
+    },
+    {
+      "canonical": "backup-interrupted-restore-target-unpublished",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/restore-publication/backup-interrupted-restore-target-unpublished.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:restore-publication"
+      ],
+      "type": "Always",
+      "priority": "P0",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Interrupted backup restore leaves its partial target unpublished",
+      "open_questions": [
+        "Can an interrupted guest-disk restore retain an independently inventoried partial target? `(partial: generated Restic interruption and native host/DB restore exist; guest-disk campaign is absent)`"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    },
+    {
+      "canonical": "backup-published-manifest-retention-compatible",
+      "contributing_relative_files": [
+        "antithesis/scratchbook/discovery/gaps/restore-publication/backup-published-manifest-retention-compatible.md"
+      ],
+      "focus_ids": [
+        "evaluation-gap:restore-publication"
+      ],
+      "type": "Always",
+      "priority": "P1",
+      "confidence": "source-grounded",
+      "planned_sdk_message": "Newly published backup point passes its retention manifest validator",
+      "open_questions": [
+        "Can a scoped clock fault step the coordinator backward while Restic and TLS S3 remain healthy? `(partial: source exposes independent time samples; no actual clock-step campaign)`",
+        "Does an actual backward-step capture reach a tag-visible point, or does an earlier check refuse it?"
+      ],
+      "status": "authored primary; hosted unexecuted; scope partial"
+    }
+  ],
+  "deferred_candidates": [
+    {
+      "slug": "backup-historical-restore-reentry-reconciliation",
+      "relative_file": "antithesis/scratchbook/discovery/gaps/restore-publication/backup-historical-restore-reentry-reconciliation.md",
+      "reason": "No operator activation/reconciliation receipt; positive reentry assertion is not testable."
+    }
+  ]
+}

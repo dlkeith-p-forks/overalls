@@ -1,0 +1,7 @@
+@cc [owner:ghuntley,label:verification] source-export-native-boundary
+This fixture MUST validate source-built ordinary disk claims and native snapshot
+lineage before invoking real ZFS sends. Export selection MUST NOT be reported as
+installed SSH authorization, physical guest stop or Oban coordination. Native
+sender revocation tests MUST observe a running real sender and confirm its
+process absence after the production revocation API succeeds. These local checks
+MUST NOT establish authenticated SSH delivery or remote receive quiescence.

@@ -1,0 +1,5 @@
+name,type,guid,mountpoint,mounted,compression,reservation,refreservation,dedup,sync,origin,used,available,logicalused,quota,compressratio,usedbychildren,usedbydataset,usedbyrefreservation,usedbysnapshots,refquota,readonly,canmount
+tank/lilly	filesystem	16715362755308281257	/pool	yes	lz4	0	0	off	standard	-	2162688	366742528	2129920	0	1.00	2138112	24576	0	0	0	off	on
+tank/lilly/child	filesystem	11345630361736064663	/pool/child	yes	lz4	0	0	off	standard	-	2138112	267360256	2117632	0	1.00	0	1075200	0	1062912	268435456	off	noauto
+tank/lilly/child@baseline	snapshot	17849690617919238879	-	-	-	-	-	-	-	-	1062912	-	-	-	1.00	-	-	-	-	-	-	-
+tank/lilly/child@final	snapshot	14113083615982819699	-	-	-	-	-	-	-	-	0	-	-	-	1.00	-	-	-	-	-	-	-

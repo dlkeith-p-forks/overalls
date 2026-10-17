@@ -1,0 +1,15 @@
+{
+  "url": "https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26100.1742.240906-0331.ge_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso",
+  "sha256": "0gdjg62sq807jn79j15z278dx99q1l1b7c8m7k2wdqshwc14bvyh",
+  "name": "windows-server-2025-eval-26100.1742-en-us.iso",
+  "release": "Windows Server 2025 Evaluation",
+  "build": "26100.1742.240906-0331",
+  "language": "en-us",
+  "evaluation_center": "https://go.microsoft.com/fwlink/?linkid=2293312&clcid=0x409&culture=en-us&country=us",
+  "editions": [
+    "Windows Server 2025 SERVERSTANDARDCORE",
+    "Windows Server 2025 SERVERSTANDARD",
+    "Windows Server 2025 SERVERDATACENTERCORE",
+    "Windows Server 2025 SERVERDATACENTER"
+  ]
+}

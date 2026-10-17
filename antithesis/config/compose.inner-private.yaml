@@ -1,0 +1,12 @@
+# Select only with compose.host-vmm.yaml after the measured inner host and
+# original private-volume mapping are verified. This opts in to host-bound
+# Ziggy/Galileo issuance; the base host and control graphs remain unchanged.
+services:
+  lilly-host-vmm:
+    image: overalls-antithesis/private-host-vmm:local
+    build:
+      target: private-host-vmm
+
+  enrollment:
+    environment:
+      OVERALLS_ANTITHESIS_INNER_SATELLITES: "1"

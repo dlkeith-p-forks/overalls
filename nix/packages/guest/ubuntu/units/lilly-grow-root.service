@@ -1,0 +1,9 @@
+[Unit]
+Description=Grow the writable guest root to its admitted capacity
+After=systemd-remount-fs.service
+Before=lilly-readiness.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/resize2fs /dev/vda

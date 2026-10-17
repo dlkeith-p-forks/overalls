@@ -1,0 +1,8 @@
+@cc [owner:ghuntley,label:verification] tooling-pinned-upstream
+Contract tooling MUST use the exact upstream cc-check version in package.json and
+its committed npm lockfile. A missing installation MUST fail with a setup command;
+verification MUST NOT silently download a different tool or skip checking.
+
+@cc [owner:ghuntley,label:architecture] tooling-development-only
+The Node contract checker and its dependencies MUST remain development tooling;
+Marshall, Lilly and protocol production releases MUST NOT depend on them at runtime.

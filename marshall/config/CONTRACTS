@@ -1,0 +1,17 @@
+@cc [owner:ghuntley,label:security] production-configuration-fails-closed
+Production MUST load deployment validation and validated SMTP configuration
+before application startup. Missing required secrets, invalid TLS settings or
+invalid replica/connection budgets MUST fail startup, not fall back to
+development keys, plaintext database access or the local mail adapter. Remote
+SMTP requires verified TLS; explicit host-local SMTP is limited to 127.0.0.1.
+
+@cc [owner:ghuntley,label:security] development-exceptions-stay-local
+Development vault keys and insecure loopback provisioner transport MUST be
+enabled only in dev/test. Production MUST keep authentication redirects free of
+token-bearing path diagnostics and filter password, token, bytes and input
+parameters from Phoenix diagnostics.
+
+@cc [owner:ghuntley,label:coordination] production-job-database-authority
+Oban MUST use Marshall.Repo and PostgreSQL notifications so independently
+running Marshall replicas share durable work. Application configuration MUST
+NOT substitute node-local job authority. See ADR-0003 and ADR-0027.

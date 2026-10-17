@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:architecture] audi-authority-boundary
+Audi MUST implement its own authoritative DNS and SSH gateway. Marshall Ash
+resources remain durable identity, access and placement authority. Audi MUST NOT
+access Marshall's database or grant access from DNS answers alone.
+
+@cc [owner:ghuntley,label:security] audi-local-placement-only
+Guest streams MUST bind the current local placement and execution epoch through
+Lilly's restricted connector. Expired authority MUST terminate existing streams
+as well as reject new streams. No arbitrary TCP or cross-host guest relay is allowed.
+
+@cc [owner:ghuntley,label:security] audi-bounded-untrusted-input
+Network decoders MUST bound packet sizes, recursion, buffers and concurrency.
+Peer strings MUST NOT create atoms. Diagnostics MUST NOT contain raw packets,
+URLs, headers, credentials, HTTP bodies or SSH payloads.

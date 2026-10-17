@@ -1,0 +1,15 @@
+{
+  "slug": "private-readiness-v1-gates-new-execution",
+  "evidence_file": "antithesis/scratchbook/properties/private-readiness-v1-gates-new-execution.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Does the documented gate cover every new physical launch route, including recovery of a retained start, or is the intended property limited to fresh starts?",
+      "answer": "Both stopped-unit start and restart call Lilly.Private.Readiness.ready?/1 before Driver.start/restart. The already-running branch only adopts.",
+      "status": "resolved",
+      "proposed_catalog_edit": "Remove this open question and say the new physical start boundary includes stopped-unit restart/recovery."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

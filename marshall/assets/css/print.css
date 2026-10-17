@@ -1,0 +1,33 @@
+@media print {
+  :root, :root[data-theme="dark"] {
+    --text-color: #000;
+    --text-color-alt: #444;
+    --background-color: #fff;
+    --background-color-alt: #fff;
+  }
+  .workspace-sidebar, .mobile-header, #navigation-backdrop,
+  .workspace-breadcrumb, .skip-link, #flash-group,
+  .hldd-contents, .hldd-pagination, .appearance-control, .public-header nav {
+    display: none !important;
+  }
+  .workspace-shell, .hldd-grid, .docs-shell {
+    display: block;
+  }
+  .console-main {
+    max-width: none;
+    padding: 0;
+  }
+  pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  section {
+    break-inside: avoid;
+  }
+  .hldd-prose section {
+    break-before: page;
+  }
+  .hldd-prose, .docs-content {
+    max-width: none;
+  }
+}

@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+; Windows PE SAN policy "OnlineAll": freshly attached disks come up online and
+; writable, so Setup can apply the answer file's DiskConfiguration to the
+; virtio installation disk instead of failing on an offline disk.
+[HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\partmgr\Parameters]
+"SanPolicy"=dword:00000001

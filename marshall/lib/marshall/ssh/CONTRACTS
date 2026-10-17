@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:security] ssh-durable-account-authority
+SSH key ownership, approvals, sessions and command receipts MUST be Ash resources
+backed by PostgreSQL. Public actions MUST select the user from the authenticated
+actor, never from client ownership fields. Porsche MUST NOT access the database.
+
+@cc [owner:ghuntley,label:security] ssh-revocation-no-resurrection
+Removing a key MUST revoke subsequent authorization through it, including existing
+sessions. Registering it again MUST NOT restore old sessions. Accepted durable
+machine operations MUST continue independently of SSH connection or key lifetime.

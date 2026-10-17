@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "status": "passed",
+  "verified_at_utc": "2026-10-13T12:56:41Z",
+  "scope": "software-emulated Linux/ZFS/Brady router under QEMU TCG",
+  "source": {
+    "head": "c835eb1017d24a001215c319373fa4204d64269b",
+    "worktree_dirty": true,
+    "fixture_store_path": "/nix/store/2cvgrs9jzkf96z0cbnnhpal8j049vpi4-storage",
+    "bootstrap_sha256": "18fdd885f5212c0e8a3adac34d9461915af1eb4dc09fa4ba69648b97586d0a4d",
+    "control_sha256": "2f1f0ca9c32b661700a13e8e86244457d0f93cffc1b80b0e8f5dbc761f999860",
+    "oracle_sha256": "26833a5e63e2702d11093401570d9b5afbf767e74cbfeb34c2b9c4e747066656",
+    "origin_sha256": "807a55fab4ebee4f163cf6a16511ecedb6458da55014526cfa18b61f2478912e",
+    "runner_sha256": "bc58e3b2f02c2642a13f6a62996b276dbc94038039730ea0b2d80a715c0f9ff3",
+    "smoke_sha256": "8084fc1905c8a0208875596ddeeaec032025ec9f19e21436c0519e8a5e5ada13",
+    "storage_router_nix_sha256": "75b74c581325b58e9475bf960318dfc2c865b250a21d389fbfc4398a76021c40"
+  },
+  "build": {
+    "command": "nix build --no-link --print-out-paths .#antithesis-router-vmm-context",
+    "exit_code": 0,
+    "context": "/nix/store/40c1lak39q5xyxg6q296jasczlrgd3zg-overalls-antithesis-router-vmm-context",
+    "image": "/nix/store/7cki4d3kxzfw7d5a30jj3xmlaqna4ysa-overalls-antithesis-router-image",
+    "toplevel": "/nix/store/8wajiw4yiv2q18smph8dasqbgpl57sqi-nixos-system-nixos-26.05.20260914.c3eea5b",
+    "root_image": {"bytes": 2845769728, "sha256": "be49c4a2420d0231038989cb38e19611ee4e2c99f5e1ba7bc22f4df55cfb073f"},
+    "kernel": {"bytes": 13545984, "sha256": "e66ba4bc741e6b9f844ea9b1e4f84b2cbdbec926169def2a4688178dcbf3bcb7"},
+    "initrd": {"bytes": 27657525, "sha256": "e3014bfee441cc9044abf7e3fd0c87d030254bec59c74bd1077c14e15dad47a1"},
+    "log": "/home/ghuntley/.local/state/nix/build-logs/1791895487326-3737713-0.jsonl",
+    "log_sha256": "7b1053d4cda271871fdad985c16b0fde3177a6453c1d487173ae1d391426423a"
+  },
+  "execution": {
+    "launch_mode": "direct host runner using exact built Nix image, kernel, initrd and QEMU; container context built but not launched",
+    "qemu": "/nix/store/7fbvcx0hwmaxv2jafvc1g6d6zg5fgm8i-qemu-10.2.4/bin/qemu-system-x86_64",
+    "accelerator": "tcg,thread=single",
+    "vcpu": 1,
+    "memory_mib": 2048,
+    "state_dir": "/var/tmp/overalls-routervm-20261013/state",
+    "smoke_command": "python3.13 antithesis/emulation/storage/smoke.py --config /var/tmp/overalls-routervm-20261013/config.json",
+    "smoke_exit_code": 0,
+    "smoke_log": "/var/tmp/overalls-routervm-20261013/smoke-final2.log",
+    "smoke_log_sha256": "f96eb8fa2ceedb4389936903b11971bef503f23be595210e47aa19b39fa256b9",
+    "serial_log": "/var/tmp/overalls-routervm-20261013/state/serial.log",
+    "serial_log_sha256": "5ee73b78a426ab1ee5210f5e2988ad3966af0452743faa8efcf03615bc8bb91b",
+    "post_observation": "/var/tmp/overalls-routervm-20261013/post-observe.json",
+    "post_observation_sha256": "0a84f4d96af783a0ae5a5b73451cc31153b7d00bb1765bac69f1491bcf986d59",
+    "qemu_pid": 3870753,
+    "qemu_stopped_after_evidence": true
+  },
+  "observed": {
+    "before_boot_id": "299888b1-e940-4863-95b7-e1a5a917775c",
+    "after_boot_id": "9507f3ad-11d3-49d5-bb0f-b18f8579b7aa",
+    "qmp_system_reset_acknowledged": true,
+    "pool_guid_before_and_after": "6018209262888840004",
+    "parent_guid_before_and_after": "16570712071147543403",
+    "cache_guid_after": "6871658991604552075",
+    "pool_status_after": "ONLINE",
+    "parent_quota_bytes_after": 268435456,
+    "cache_quota_bytes_before_and_after": 67108864,
+    "cache_refquota_bytes_before_and_after": 67108864,
+    "http_and_https_origin_body_bytes": 22,
+    "http_and_https_origin_body_sha256": "4e9d451a3fcee7112d27aa982c0fe155d5185888769148ddda3fe7c8af1aae50",
+    "complete_cache_body_count_after": 2,
+    "origin_effects_after": {"http:public": 1, "https:public": 1},
+    "origin_effect_count_unchanged_during_origin_off_replay": true,
+    "nft_interception_packets_before_reset": 118,
+    "nft_rules_after_reset": 64,
+    "marker": {"id": "0000000000000003", "bytes": 41, "sha256": "5178eba5eb28f198a83074363a4d02651ad1e4c5ad4ba9d4afc4a93de9e29b44", "retained_after_reset": true}
+  },
+  "retained_disks": {
+    "root_overlay": {"bytes": 12451840, "sha256": "03b1b555959c11a782505a6b1fcbf1d1fbea107630ea04f7691e609b2228b0e3"},
+    "mirror_a": {"bytes": 1073741824, "sha256": "90b33f502d878dc0486347074758ab38e74655081f7d861f7d194ef47faf688b"},
+    "mirror_b": {"bytes": 1073741824, "sha256": "1af053d0d0fde4053801dd97b4b1e0f53519b577d2ff6d1fe1b295608ec1c360"}
+  },
+  "checks": {
+    "ruff_format": "passed",
+    "ruff_check": "passed",
+    "ty_python_3_13_with_cryptography": "passed",
+    "code_contracts_format": "passed",
+    "git_diff_check": "passed",
+    "recorded_logs_cookie_or_private_key_scan": "no match"
+  },
+  "diagnostic_attempts": [
+    "Initial direct boot omitted rw, so NixOS initrd could not mount /sysroot/run; fixed in runner.py.",
+    "Initial bootstrap lacked a Lilly release cookie; the first guest journal showed Lilly eval exit 1. The cookie is now generated privately per boot.",
+    "Intermediate image bootstrap lacked procps on PATH; sysctl failed. The service path now includes procps.",
+    "Previous final-image first boot failed the strict disk serial read before udev settled; a QMP retry passed. The validated image uses a bounded 30-second retry and passed on fresh disks.",
+    "Previous final-image Brady rejected the fixture CA without keyCertSign. The validated image includes CA KeyUsage and passed interception."
+  ],
+  "limitations": [
+    "TCG Linux kernel, ZFS and nftables integration is software-emulated; this does not establish physical power-loss durability or KVM/Firecracker behavior.",
+    "QMP reset and post-import marker readback provide guest/process-crash evidence, not physical power-loss evidence.",
+    "The fixture uses loose reverse-path filtering and fixed synthetic peers, not production strict source validation or real guest attribution.",
+    "The router-vmm container context was built, but Docker/Podman startup and hosted Antithesis behavior were not exercised."
+  ]
+}

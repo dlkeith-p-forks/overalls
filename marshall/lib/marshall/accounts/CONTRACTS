@@ -1,0 +1,12 @@
+@cc [owner:ghuntley,label:security] accounts-stored-login-authority
+User login tokens MUST be stored and their presence required for authentication.
+Long-lived connections MUST consult current token presence and expiry instead of
+relying only on a previously verified JWT signature.
+
+@cc [owner:ghuntley,label:security] accounts-mail-secret-boundary
+Magic-link email payloads MUST be encrypted at rest, absent from audit history and
+job arguments, and excluded from diagnostics. User-facing magic-link requests MUST
+NOT reveal recipient registration or provider/enqueue failure details.
+
+Administrator audit projections MUST recheck current authority, remain keyset
+bounded, and expose only redacted actor/target/action/time fields.

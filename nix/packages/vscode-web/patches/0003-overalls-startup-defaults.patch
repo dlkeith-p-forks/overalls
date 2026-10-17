@@ -1,0 +1,13 @@
+diff --git a/src/vs/base/common/product.ts b/src/vs/base/common/product.ts
+index a6352e6f..4772d312 100644
+--- a/src/vs/base/common/product.ts
++++ b/src/vs/base/common/product.ts
+@@ -108,6 +108,8 @@ export interface IProductConfiguration {
+ 		readonly configurationDefaults?: {
+ 			readonly 'rust-analyzer.server.path': 'rust-analyzer';
+ 			readonly 'elixirLS.languageServerOverridePath': string;
++			readonly 'workbench.startupEditor': 'none';
++			readonly 'workbench.welcomePage.walkthroughs.openOnInstall': false;
+ 		};
+ 	};
+ 	readonly version: string;

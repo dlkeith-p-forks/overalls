@@ -1,0 +1,15 @@
+{
+  "slug": "runtime-restart-requires-fresh-readiness",
+  "evidence_file": "antithesis/scratchbook/properties/runtime-restart-requires-fresh-readiness.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Can the hosted composition restart real Runtime during database outage while preserving the same physical guest?",
+      "answer": "The native fleet fixture already kills real Lilly during PostgreSQL outage, checks false readiness and identical Firecracker process snapshots, then requires new connection epochs and readiness. No hosted TCG composition is built.",
+      "status": "partial",
+      "proposed_catalog_edit": "Tag partial and distinguish current native test presence from proposed hosted reproduction."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

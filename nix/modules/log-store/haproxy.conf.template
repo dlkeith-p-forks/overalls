@@ -1,0 +1,38 @@
+global
+  log stdout format raw local0
+  ssl-default-bind-options ssl-min-ver TLSv1.2
+  maxconn 256
+
+defaults
+  mode http
+  log global
+  timeout connect 2s
+  timeout client 30s
+  timeout server 30s
+  timeout check 2s
+  log-format '{"event":"logstore_entry","status":%ST,"bytes":%B,"duration_ms":%Tt,"backend":"%b","termination":"%tsc"}'
+
+userlist logstore_insert
+  user insert insecure-password __INSERT_PASSWORD__
+
+userlist logstore_reader
+  user reader insecure-password __READER_PASSWORD__
+
+frontend logstore_fleet
+  bind __ADDRESS__:__PORT__ ssl crt __TLS_PEM__
+  acl p_insert path_beg /insert/
+  acl p_read path_beg /select/
+  acl p_health path /health /ping
+  acl auth_insert http_auth(logstore_insert)
+  acl auth_reader http_auth(logstore_reader)
+  http-request allow if p_insert auth_insert
+  http-request allow if p_read auth_reader
+  http-request allow if p_health auth_reader
+  http-request deny deny_status 401
+  default_backend logstore_store
+
+backend logstore_store
+  option httpchk
+  http-check send meth GET uri /health ver HTTP/1.1
+  http-check expect status 200
+  server store 127.0.0.1:__BACKEND_PORT__ inter 1s fall 2 rise 2

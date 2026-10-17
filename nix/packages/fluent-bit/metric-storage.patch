@@ -1,0 +1,12 @@
+--- a/plugins/filter_log_to_metrics/log_to_metrics.c
++++ b/plugins/filter_log_to_metrics/log_to_metrics.c
+@@ -903,7 +903,8 @@
+     }
+ 
+     /* Set the storage type for emitter */
+-    ret = flb_input_set_property(input_ins, "storage.type", "memory");
++    ret = flb_input_set_property(input_ins, "storage.type",
++                                 getenv("OVERALLS_LOG_HOSTNAME") ? "filesystem" : "memory");
+     if (ret == -1) {
+         flb_plg_error(f_ins, "cannot set storage type for emitter instance");
+         return -1;

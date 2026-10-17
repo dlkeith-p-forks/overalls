@@ -1,0 +1,195 @@
+# Select with compose.origin.yaml and a guest topology that supplies the real
+# Lilly private connector and guest-to-Audi network channel. The current base
+# graph does not provide that channel; this overlay stays unselected until it
+# is proven with independent origin and guest evidence.
+services:
+  enrollment:
+    environment:
+      OVERALLS_ANTITHESIS_SATELLITES: "1"
+    volumes:
+      - satellite-credentials:/run/overalls-satellite-secrets
+      - satellite-public:/run/overalls-satellite-public
+      - ziggy-private:/run/overalls-satellite-ziggy
+      - galileo-private:/run/overalls-satellite-galileo
+      - audi-private-secrets:/run/overalls-satellite-audi
+      - porsche-private:/run/overalls-satellite-porsche
+
+  lilly-a:
+    environment:
+      OVERALLS_ANTITHESIS_PRIVATE_SERVICES: "1"
+    volumes:
+      - lilly-ingress:/run/lilly-ingress
+      - ziggy-proxy:/run/ziggy
+      - audi-status:/run/audi-private
+
+  ziggy:
+    container_name: overalls-ziggy
+    hostname: overalls-ziggy
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/ziggy:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: ziggy
+    entrypoint: ["/opt/overalls/entrypoints/satellite-start.sh", "ziggy"]
+    environment:
+      NO_COLOR: "1"
+    volumes:
+      - ziggy-private:/run/overalls-satellite-secrets:ro
+      - origin-ca:/run/overalls-origin-ca:ro
+      - ziggy-proxy:/run/ziggy
+      - ziggy-spool:/var/lib/ziggy
+    tmpfs:
+      - /run/overalls-satellite:mode=0700
+    depends_on:
+      enrollment:
+        condition: service_healthy
+      origin:
+        condition: service_healthy
+      marshall-a:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/overalls/entrypoints/health-satellite.sh", "ziggy"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+    networks: [control]
+
+  galileo:
+    container_name: overalls-galileo
+    hostname: overalls-galileo
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/galileo:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: galileo
+    entrypoint: ["/opt/overalls/entrypoints/satellite-start.sh", "galileo"]
+    environment:
+      NO_COLOR: "1"
+    volumes:
+      - galileo-private:/run/overalls-satellite-secrets:ro
+      - origin-ca:/run/overalls-origin-ca:ro
+      - galileo-proxy:/run/galileo
+    tmpfs:
+      - /run/overalls-satellite:mode=0700
+    depends_on:
+      enrollment:
+        condition: service_healthy
+      origin:
+        condition: service_healthy
+      marshall-a:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/overalls/entrypoints/health-satellite.sh", "galileo"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+    networks: [control]
+
+  audi-private:
+    container_name: overalls-audi-private
+    hostname: overalls-audi-private
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/audi:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: audi
+    entrypoint: ["/opt/overalls/entrypoints/satellite-start.sh", "audi-private"]
+    environment:
+      NO_COLOR: "1"
+    volumes:
+      - audi-private-secrets:/run/overalls-satellite-secrets:ro
+      - ziggy-proxy:/run/ziggy
+      - galileo-proxy:/run/galileo
+      - audi-status:/run/audi-private
+      - lilly-ingress:/run/lilly-ingress
+    tmpfs:
+      - /run/overalls-satellite:mode=0700
+    cap_add:
+      - NET_ADMIN
+      - NET_BIND_SERVICE
+    network_mode: service:lilly-a
+    depends_on:
+      lilly-a:
+        condition: service_started
+      ziggy:
+        condition: service_healthy
+      galileo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/overalls/entrypoints/health-satellite.sh", "audi-private"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+
+  porsche:
+    container_name: overalls-porsche
+    hostname: overalls-porsche
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/porsche:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: porsche
+    entrypoint: ["/opt/overalls/entrypoints/satellite-start.sh", "porsche"]
+    environment:
+      NO_COLOR: "1"
+    volumes:
+      - porsche-private:/run/overalls-satellite-secrets:ro
+      - porsche-state:/var/lib/porsche
+    tmpfs:
+      - /run/overalls-satellite:mode=0700
+    depends_on:
+      enrollment:
+        condition: service_healthy
+      marshall-a:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/opt/overalls/entrypoints/health-satellite.sh", "porsche"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+    networks:
+      control:
+        ipv4_address: 10.87.0.24
+
+  workload:
+    environment:
+      ANTITHESIS_SATELLITES: "1"
+      ANTITHESIS_PRIVATE_ROOT_CA: /run/overalls-satellite-public/private-root.pem
+      ANTITHESIS_ORIGIN_CA: /run/overalls-origin-ca/ca.pem
+    volumes:
+      - satellite-public:/run/overalls-satellite-public:ro
+    depends_on:
+      ziggy:
+        condition: service_healthy
+      galileo:
+        condition: service_healthy
+      audi-private:
+        condition: service_healthy
+      porsche:
+        condition: service_healthy
+
+volumes:
+  satellite-credentials:
+  satellite-public:
+  ziggy-private:
+  galileo-private:
+  audi-private-secrets:
+  porsche-private:
+  ziggy-proxy:
+  galileo-proxy:
+  audi-status:
+  lilly-ingress:
+  ziggy-spool:
+  porsche-state:

@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:verification] published-host-enrollment
+Enrollment acceptance MUST authenticate the installed host, deliver an encrypted
+shared Git key, activate an exact published revision, persist a verified receipt
+and accept a subsequent ordinary update. A failed Git pin MUST preserve identity
+and withhold the receipt and polling. Fixture secrets MUST NOT enter publications.

@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:security] logstore-entry-authority-split
+The fleet entry MUST terminate verified TLS and admit `/insert/*` only with the
+insert credential, `/select/*` and `/health`/`/ping` only with the reader
+credential, and deny every other request with 401. Placeholder tokens are the
+only credential carriers here; real values arrive via runtime substitution.
+
+@cc [owner:ghuntley,label:security] logstore-request-log-minimal
+Request diagnostics MUST name only outcome, status, bytes and termination
+reason; URLs, query strings, headers, credentials and bodies MUST NOT be logged.

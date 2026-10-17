@@ -1,0 +1,21 @@
+{
+  "slug": "marshall-admission-key-survives-archive",
+  "evidence_file": "antithesis/scratchbook/properties/marshall-admission-key-survives-archive.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Which public admission endpoint preserves the caller-supplied key through SSH and HTTP wrappers?",
+      "answer": "Authenticated machine LiveView forwards caller request_key into Compute.provision. SSH request-id pins an outer SSH.Request receipt, but the first SSH execution generates a separate Compute key; repository launch derives actor/source/visit key. No generic HTTP JSON admission route was found.",
+      "status": "resolved",
+      "proposed_catalog_edit": "Remove endpoint question; use the authenticated LiveView form for direct caller-supplied Compute key replay. Name SSH receipt replay as a separate contract, not evidence that its caller request-id survives in Compute."
+    },
+    {
+      "old_question": "What bounded TCG/native deletion history reaches archived state without bypassing physical cleanup?",
+      "answer": "Native fleet lifecycle scenario drives stop/delete, waits for archived_at, released holds, removed VMM unit/ZFS dataset/rootfs and pool allocation. Hosted TCG equivalent and post-archive key replay are not built.",
+      "status": "partial",
+      "proposed_catalog_edit": "Tag partial; use native physical-cleanup sequence or equivalent hosted TCG path before end-to-end archived replay claim."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

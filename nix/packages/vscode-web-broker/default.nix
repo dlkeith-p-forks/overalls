@@ -1,0 +1,24 @@
+{ pkgs }:
+pkgs.pkgsStatic.rustPlatform.buildRustPackage {
+  pname = "overalls-vscode-web-broker";
+  version = "0.1.0";
+  src = pkgs.lib.cleanSourceWith {
+    src = ./.;
+    filter = path: type:
+      let name = builtins.baseNameOf path;
+      in name != "target" && (type == "directory" || pkgs.lib.hasSuffix ".rs" name ||
+        builtins.elem name [ "Cargo.toml" "Cargo.lock" "CONTRACTS" ]);
+  };
+  cargoLock.lockFile = ./Cargo.lock;
+  doCheck = true;
+  strictDeps = true;
+  nativeCheckInputs = [ pkgs.clippy ];
+  postCheck = ''
+    cargo clippy --locked --offline --all-targets -- -D warnings
+  '';
+  meta = {
+    description = "Account-bound Overalls guest broker for source-built VS Code";
+    platforms = [ "x86_64-linux" ];
+    mainProgram = "overalls-vscode-web-broker";
+  };
+}

@@ -1,0 +1,15 @@
+{
+  "slug": "marshall-crash-recovery-budget-and-stale-capacity",
+  "evidence_file": "antithesis/scratchbook/properties/marshall-crash-recovery-budget-and-stale-capacity.md",
+  "external_references": [],
+  "questions": [
+    {
+      "old_question": "Can current hosted DB-time fault enablement reach backward time without replacing Ledger.now/0 with a fake source?",
+      "answer": "Ledger.now reads PostgreSQL clock_timestamp(). A unit test persists future crash timestamps to test conservative accounting; hosted topology exposes no PostgreSQL wall-clock step fault.",
+      "status": "partial",
+      "proposed_catalog_edit": "Tag partial; keep future-timestamp decision probe separate from a real database clock rollback."
+    }
+  ],
+  "catalog_edited": false,
+  "merge_map_edited": false
+}

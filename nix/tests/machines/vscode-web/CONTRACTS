@@ -1,0 +1,15 @@
+@cc [owner:ghuntley,label:verification] editor-focused-native-package
+The standalone `default.nix` check MUST execute the source-built editor and broker
+under a personal Linux UID over trusted HTTPS. Its local account authorizer and
+TLS relay are fixture adapters; passing that standalone check MUST NOT be claimed
+as Marshall/Cedar/Audi or Firecracker image acceptance.
+
+@cc [owner:ghuntley,label:verification] editor-fleet-real-chain
+The `fleet.py` and `guest.exs` acceptance scripts MUST exercise real Marshall,
+Audi and Lilly releases and actual Firecracker execution of the selected guest
+image. Their driver build or type check MUST NOT establish native acceptance;
+passing execution MUST identify the tested NixOS or Ubuntu guest family.
+
+@cc [owner:ghuntley,label:verification;security] editor-local-browser-inputs
+Browser assets, workspace files and gallery responses MUST come from local
+bounded fixtures. No public service or production credential may enter this test.

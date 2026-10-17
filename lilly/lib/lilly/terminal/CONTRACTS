@@ -1,0 +1,19 @@
+@cc [owner:ghuntley,label:security] terminal-dial-requires-actor-authority
+Guest terminal dials MUST use an identity obtained from the VM actor for the
+current durable running placement/epoch/generation, with the hello proof bound
+to the persisted current boot challenge. The actor authorizes only the
+assigned terminal stream process.
+
+@cc [owner:ghuntley,label:security] terminal-attach-requires-fresh-hello
+Every guest attachment connection MUST complete its own fresh boot-bound HMAC
+hello before presenting the session token or carrying terminal bytes.
+
+@cc [owner:ghuntley,label:recovery] terminal-input-dedup-before-delivery
+Stream input frames MUST be applied only with a strictly increasing
+per-channel sequence; equal or older sequences MUST be dropped without
+delivery so stream reconnects can never execute guest input twice.
+
+@cc [owner:ghuntley,label:security] terminal-bytes-never-in-diagnostics
+Terminal bytes, titles and replay payloads MUST NOT enter logs, GenServer
+status reports or crash reports. Process status carries identifiers and
+counters only.

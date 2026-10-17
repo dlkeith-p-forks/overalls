@@ -1,0 +1,4 @@
+@cc [owner:ghuntley,label:security] encrypted-dumps-only
+Enabled crash dumps MUST require an encryption-enabled release and an operator
+public RSA key of at least 3072 bits. Private keys and dump contents MUST NOT
+enter logs. Enabling dumps MUST NOT enable Linux plaintext core storage.

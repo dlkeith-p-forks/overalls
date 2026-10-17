@@ -1,0 +1,16 @@
+@cc [owner:ghuntley,label:storage] brady-dataset-custody
+Preparation MUST verify the enrolled pool and parent dataset GUIDs before creating
+only the designated disposable cache dataset. Existing unowned datasets or mount
+contents MUST NOT be adopted, overwritten or destroyed. Cache storage failures
+MUST NOT stop independently running guests or grant direct guest egress.
+
+@cc [owner:ghuntley,label:security] brady-service-privilege
+The proxy MUST run under its own UID inside Lilly's network namespace with only
+the socket capabilities needed for transparency and marking. Signing credentials
+MUST be runtime files. Root storage preparation MUST accept only trusted bounded
+configuration and use fixed executable argv, never interpolate a shell command.
+
+@cc [owner:ghuntley,label:storage] brady-pressure-native-mount-flags
+The pressure observer MUST inspect the enrolled parent and cache with their native
+mount write flags. Service sandbox remounts MUST NOT be mistaken for host ZFS
+policy changes. The observer MUST issue only read-only ZFS inspection commands.

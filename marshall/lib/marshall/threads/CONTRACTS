@@ -1,0 +1,69 @@
+@cc [owner:ghuntley,label:architecture;durability] thread-provisioning-durable
+Creating a user thread MUST commit its pending objective, mode, machine
+specification, create request key and provisioning job atomically before
+provisioning runs. Replaying the create request MUST compare the full canonical
+request and return the retained thread, including after archival or reopen.
+Retries for the same machine admission key MUST reuse the existing Compute
+admission and MUST NOT create a second machine binding.
+
+@cc [owner:ghuntley,label:durability] thread-initial-objective-once
+After an agent root is bound, provisioning MUST enqueue the thread objective
+before marking the user thread ready, using a stable request key derived from the
+thread identity. Replayed workers for the same bound agent thread MUST return
+the existing agent turn and MUST NOT enqueue a second initial objective.
+
+@cc [owner:ghuntley,label:recovery] thread-archive-deletion-fence
+Archiving a thread with a machine MUST persist deleting state, Compute deletion
+and its archival job atomically. An admitted VM MUST be tracked before readiness
+polling so archive can delete it. Provisioning retries MUST NOT bind a machine
+to a deleting or archived thread, and the thread MUST become archived only after
+retained Compute history reports physical deletion.
+
+@cc [owner:ghuntley,label:security;authorization] thread-current-authority
+Every user-thread read, prompt, retry and archive operation MUST recheck the
+current authenticated creator, thread grant or team authority through Cedar. A
+thread identifier, stale LiveView assign or prior membership alone MUST NOT
+authorize a mutation.
+
+@cc [owner:ghuntley,label:durability;recovery] thread-reopen-machine-generation
+Reopening an archived thread MUST clear its retired machine and agent binding,
+retain the original create idempotency key, assign a fresh machine admission
+key and enqueue its durable provisioning job in the same transaction. A worker
+from a previous machine generation MUST NOT bind, ready or fail the current
+generation. A provisioning retry MUST NOT resurrect an archived or deleting
+thread, and a replacement for a cleaned-up VM MUST wait for physical archival.
+
+@cc [owner:ghuntley,label:durability;recovery] thread-job-key-required
+Provisioning and archival jobs MUST carry a nonempty machine admission key.
+Workers MUST cancel jobs without that key before modifying thread or machine
+state, and MUST leave the current generation unchanged when the key differs.
+
+@cc [owner:ghuntley,label:security;durability] thread-lifecycle-terminal-read
+Archive and delete requests MUST recheck current thread manage
+authority under the thread lock. Deletion MUST leave the thread and machine
+history readable to an authorized owner or team member, and the thread MUST
+remain deleting until Compute confirms physical VM archival.
+
+@cc [owner:ghuntley,label:security;durability] thread-retained-transcript-read
+An authorized creator, current thread reader or current team member MUST be able
+to read the retained agent transcript after a thread is archived, while archived
+state MUST expose no prompt admission or terminal write path.
+
+@cc [owner:ghuntley,label:durability] thread-ready-requires-running
+A user thread MUST remain provisioning until its bound VM has a current running
+observation and the initial objective has been admitted. An accepted Compute
+request alone MUST NOT expose a ready thread or terminal entry point.
+
+@cc [owner:ghuntley,label:security;durability] thread-sharing-generation-continuity
+Thread grants MUST persist across pending admission, archival and reopen. Viewer
+allows read, operator adds prompts, and manager adds retry, lifecycle and sharing.
+The creator's ownership MUST NOT be replaced or revoked through sharing. Only the
+currently bound machine may inherit these grants through existing Cedar policy.
+Independent machine grants remain additive but MUST NOT reveal a thread; current
+team membership retains its existing thread read/write or management authority.
+
+@cc [owner:ghuntley,label:security;concurrency] thread-sharing-serialized-revocation
+Thread sharing MUST serialize on the thread before its bound VM and persist the
+grant change, immutable idempotency receipt and user/machine invalidation hints in
+the same transaction. Permission reads from a VM MUST NOT lock the thread. A stale
+replay MUST NOT regrant access after later revocation.

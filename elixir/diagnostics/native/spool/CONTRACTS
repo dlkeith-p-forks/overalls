@@ -1,0 +1,16 @@
+@cc [owner:ghuntley,label:recovery] trace-spool-accepted-custody
+A successful admission MUST follow exclusive private custody, initial directory fsync,
+and SQLite WAL transactions with synchronous=FULL fsync. Accepted batches MUST remain immutable
+and retained until configured expiry even after Collector or Tempo acknowledgment.
+ACK loss MUST preserve the same batch; uncertain storage MUST poison admission.
+
+@cc [owner:ghuntley,label:security] trace-spool-provenance
+Admission MUST validate kernel UID, exact systemd service cgroup and stable
+process incarnation. The spool MUST replace resource provenance and accept only
+the reviewed name/attribute schema. Raw payloads, exception text, status messages,
+events, baggage and arbitrary resource identity MUST NOT reach upstream.
+
+@cc [owner:ghuntley,label:capacity] trace-spool-refuses-new-data
+Archive quota exhaustion MUST refuse new data without evicting accepted batches.
+Telemetry failure MUST NOT signal or restart the producer, mutate application
+authority or inspect its command arguments, terminal or disk streams.

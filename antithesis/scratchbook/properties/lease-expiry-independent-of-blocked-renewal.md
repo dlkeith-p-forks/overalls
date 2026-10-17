@@ -1,0 +1,21 @@
+# lease-expiry-independent-of-blocked-renewal
+
+P0; medium-high confidence; safety. Planned `Always` message: **"Expired service lease cannot forward a new upstream effect"**. For a controlled request in Audi, Ziggy or Galileo, once its current lease deadline is past and renewal has not returned valid current authority, no new bytes or provider/integration effect may cross its service boundary. A successful late renewal must not revive already expired ownership. The [fresh assertion scan](../existing-assertions.md) finds the SDK assertion **missing**. `Always` applies to every independently witnessed forwarded effect after deadline; a slow or uncertain response is not proof of an effect.
+
+Source: `audi/lib/audi/authority/stream_guard.ex:125-180` uses a socket-owner watchdog independent of queued guard renewals. `ziggy/lib/ziggy/lease.ex:42-91` places a timer directly on request owner and computes renewed remaining time from renewal start. `galileo/lib/galileo/upstream.ex:400-455` uses a separate lease process and monitored renewal/reader workers. These mechanisms differ, so the workload must preserve each real owner and transport path. A lease timeout during permanently blocked peer I/O may legitimately terminate the request; a successful completion is not the safety claim.
+
+Workload and independent oracle: establish real authorized streams/requests to controlled endpoints, delay Marshall renewal while keeping upstream/downstream sockets backpressured, and revoke/expire authority. A workload clock/deadline record, source-side byte counters and upstream request ledger identify effects after the deadline. Reconcile whether bytes already admitted before expiry merely drained later; assert against *new effect admission* at the relevant boundary. SUT `Reachable` messages **"Audi watchdog closed expired socket owner"**, **"Ziggy expiry killed blocked request owner"** and **"Galileo lease stopped renewed upstream forwarding"** are separate replay hints, not interchangeable oracles.
+
+Value menu: renewal success/denial/lost reply/late success; short and default TTL; upload/download/inference/SSH stream; 0/one/many blocked peers; guard/owner death; expiration before/after provider admission. Hosted real services and controlled endpoints can test transport and service fencing. Native guest socket, inference provider billing and integration external effects need their respective physical or controlled-provider witnesses. Open question: native guest/provider billing timestamps remain outside the hosted service oracle. `(partial: source-side forwarding/admission points and controlled endpoint receipts can distinguish new calls from buffered bytes; physical billing/guest effects need separate witnesses)`
+
+### Investigation Log (2026-10-13)
+
+#### New effect admission versus buffered delivery
+
+- Examined: Audi `StreamGuard` and `SSH.Channel`, Ziggy `Lease` and upstream owner, Galileo `Upstream` connect/upload/deliver and `lease_open?`. Found: owner/guardian deadlines are independent of renewal workers; Galileo checks the lease before connect/request, each upload pull/send and response delivery, and Audi SSH checks active deadline at send. A sequence-tagged checkpoint at those calls can timestamp fresh admission, while a controlled endpoint records the matching request/byte. Not found: an external-only timestamp that can prove when a buffered kernel byte was admitted, or hosted evidence for native guest/provider billing. Conclusion: exclude pre-expiry buffered bytes from the invariant; use paired source admission and controlled receipt in hosted tests. Native guest and provider effects remain explicit separate probes.
+
+## Evaluation and proof boundary
+
+**Proof boundary:** Draft selection: `integrated-zfs-satellite`. proposed-real-inner-zfs-backed-current-VM-plus-satellite; unbuilt; independent witness: Audi post-deadline guest nonce plus Ziggy/Galileo first upstream accept, each with own grant clock and renewal; current real placement/execution authority required. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.

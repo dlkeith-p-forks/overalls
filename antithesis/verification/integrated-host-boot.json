@@ -1,0 +1,224 @@
+{
+  "record_type": "overalls.antithesis_integrated_host_boot.v1",
+  "version": 1,
+  "status": "measured_host_passed_authenticated_integration_blocked_repair_in_progress",
+  "scope": "Local serialized software-emulated NixOS Lilly host using actual ZFS and private9p witness transport; no admitted nested guest or authenticated Control evidence yet",
+  "attempts": [
+    {
+      "attempt": 1,
+      "scope": "first emulated host boot; authenticated Lilly not reached",
+      "image": "/nix/store/ddrcq7jwhndkyqwid42yxh4vr4wwlj8h-overalls-antithesis-lilly-host-image",
+      "qemu": {
+        "pid": 379294,
+        "start_ticks": 167786608
+      },
+      "qmp_quit_exit_confirmed": true,
+      "measured_storage": {
+        "backend": "zfs",
+        "dataset": "tank/lilly",
+        "dataset_guid": "7510783031752771554",
+        "zpool_guid": "15046609084953521753"
+      },
+      "physical_sample": {
+        "connected": false,
+        "state": "unavailable",
+        "version": 1
+      },
+      "serial_sha256": "c5601eb8be19742bb075f5dce84ac508ca7993561355163a15fb6ce1fabf7a93",
+      "retained_state": "/var/tmp/overalls-integrated-host-20261013/attempt1"
+    },
+    {
+      "attempt": 2,
+      "scope": "second emulated host boot; measured ZFS and witness successful; authenticated Lilly not reached",
+      "image": "/nix/store/f8n6dpwmlnsxfnvb5ml3c9msmvi8g0yb-overalls-antithesis-lilly-host-image",
+      "qemu": {
+        "pid": 688103,
+        "start_ticks": 167868760
+      },
+      "qmp_quit_exit_confirmed": true,
+      "measured_storage": {
+        "backend": "zfs",
+        "dataset": "tank/lilly",
+        "dataset_guid": "4636373869048164247",
+        "zpool_guid": "15026366311524071254"
+      },
+      "physical_sample": {
+        "connected": false,
+        "state": "unavailable",
+        "version": 1
+      },
+      "serial_sha256": "383bac207f03ef30f2fc3b6f340039c0c9152b31b0f1cba632d47b74f7a35e5c",
+      "retained_state": "/var/tmp/overalls-integrated-host-20261013/attempt2"
+    },
+    {
+      "attempt": 3,
+      "scope": "corrected host actual ZFS and cgroup sample; enrollment pending",
+      "image": "/nix/store/6ydz0av6byr2v61zpfnlc85k4709iw21-overalls-antithesis-lilly-host-image",
+      "image_manifest": {
+        "version": 1,
+        "root": {
+          "bytes": 10825367552,
+          "sha256": "bd35e356a6861e4a3ad8c1a2c9707ee190b473caa052fc0908239c9627737659"
+        },
+        "kernel": {
+          "bytes": 13545984,
+          "sha256": "e66ba4bc741e6b9f844ea9b1e4f84b2cbdbec926169def2a4688178dcbf3bcb7"
+        },
+        "initrd": {
+          "bytes": 27886864,
+          "sha256": "49330ef185318db1a73c48952f717003fb3f36269cdd94ff37dacd4b29c62004"
+        },
+        "toplevel": "/nix/store/777jhyj9lri0xd4d8p7xkjw8rs4zhq2l-nixos-system-lilly-host-26.05.20260914.c3eea5b"
+      },
+      "qemu": {
+        "pid": 1354959,
+        "start_ticks": 168009881
+      },
+      "qemu_state_at_observation": "running",
+      "physical_sample": {
+        "available_bytes": 7800864768,
+        "boot_id": "e9c464ef-69f4-40ce-8ea1-6a37627a96f3",
+        "connected": false,
+        "cpu_period_us": 100000,
+        "cpu_quota_us": 200000,
+        "dataset": "tank/lilly",
+        "dataset_guid": "3775047098018746578",
+        "execution_ready": false,
+        "memory_current_bytes": 60243968,
+        "memory_limit_bytes": 5368709120,
+        "referenced_bytes": 98304,
+        "sampled_at_ns": 1791900383793368926,
+        "used_bytes": 98304,
+        "version": 1,
+        "zpool_free_bytes": 8052523008,
+        "zpool_guid": "13986100652378567783",
+        "zpool_total_bytes": 8053063680
+      },
+      "build_log": "/home/ghuntley/.local/state/nix/build-logs/1791899418575-897288-0.jsonl",
+      "build_seconds": 746,
+      "qmp_quit_exit_confirmed": true,
+      "serial_sha256": "f49fc10abf92d72ebf426803d4c8fff307a0e6e581ede27e9089592204800ac3",
+      "retained_state": "/var/tmp/overalls-integrated-host-20261013/attempt3"
+    },
+    {
+      "attempt": 4,
+      "scope": "private-service host measured ZFS/cgroups and generated runtime PKI; first enrollment issued, application rejected runtime configuration before Control",
+      "image": "/nix/store/mk3rk6hwwqvc9gy7wm5yz4gcga0hxr88-overalls-antithesis-lilly-host-image",
+      "image_manifest": {
+        "version": 1,
+        "root": {
+          "bytes": 11033903104,
+          "sha256": "97d947a85a4b57e17ea3eb3fdd4d67849a395a2c456c79990263f087537b12cc"
+        },
+        "kernel": {
+          "bytes": 13545984,
+          "sha256": "e66ba4bc741e6b9f844ea9b1e4f84b2cbdbec926169def2a4688178dcbf3bcb7"
+        },
+        "initrd": {
+          "bytes": 27883352,
+          "sha256": "d9dc5e3b16f5dcff355bf1cb412b03cc52e70a75ab54edc65335dd3249862e79"
+        },
+        "toplevel": "/nix/store/lh8c55pyzqb0m696nr55fcq5x81sp54a-nixos-system-lilly-host-26.05.20260914.c3eea5b"
+      },
+      "qemu": {
+        "pid": 1708495,
+        "start_ticks": 168099497
+      },
+      "qemu_state_at_observation": "stopped",
+      "physical_sample": {
+        "available_bytes": 7800864768,
+        "boot_id": "cf44ad31-adba-4f1b-b05e-4d9d570b5548",
+        "connected": false,
+        "cpu_period_us": 100000,
+        "cpu_quota_us": 200000,
+        "dataset": "tank/lilly",
+        "dataset_guid": "3675030396837452947",
+        "execution_ready": false,
+        "memory_current_bytes": 60452864,
+        "memory_limit_bytes": 5368709120,
+        "referenced_bytes": 98304,
+        "sampled_at_ns": 1791901386323033296,
+        "used_bytes": 98304,
+        "version": 1,
+        "zpool_free_bytes": 8052523008,
+        "zpool_guid": "4898617891420808741",
+        "zpool_total_bytes": 8053063680
+      },
+      "private_pki_unit": "completed",
+      "private_role_configuration": "withheld; disabled-host Ziggy rotation refused; zero-byte output and durable marker retained in private forensic archive",
+      "guest_image_witness": {
+        "image_id": "sha256:eb343229826a1c8e6678234adba2314f368db36fb8fa3041656e5e678cf2e991",
+        "memory_bytes": 2147483648,
+        "minimum_disk_bytes": 6442450944,
+        "state": "ok",
+        "vcpu": 1,
+        "workspace_source_version": 2
+      },
+      "build_log": "/home/ghuntley/.local/state/nix/build-logs/1791900331448-1391863-0.jsonl",
+      "build_seconds": 613,
+      "runtime_state": "/home/ghuntley/.local/share/containers/storage/volumes/overalls-antithesis_lilly-host-state/_data",
+      "qmp_quit_exit_confirmed": true,
+      "retained_state": "/var/tmp/overalls-integrated-host-20261013/attempt4",
+      "first_control_credentials_published_at": "2026-10-13T14:42:19Z",
+      "authenticated_control": "not_reached",
+      "startup_diagnosis": {
+        "source": "actual journal from read-only stopped root overlay",
+        "boot_id": "cf44ad31adba4f1bb05e4d9d570b5548",
+        "closed_error": "invalid_runtime_configuration",
+        "occurrences": 2
+      },
+      "repair_candidates": [
+        "owned root dataset compression was not set to the native validators required lz4 policy",
+        "IPv4 forwarding was not enabled for production network setup"
+      ]
+    }
+  ],
+  "repairs": [
+    {
+      "change": "Remove JSON guest.toolConfig from environment.systemPackages",
+      "status": "build succeeded after initial buildEnv rejection"
+    },
+    {
+      "change": "Add rw to direct kernel boot command",
+      "status": "both recorded boots reached measured ZFS preparation"
+    },
+    {
+      "change": "Add ZFS and util-linux tools to health unit PATH",
+      "status": "built and booted, physical sampler still unavailable"
+    },
+    {
+      "change": "Enable real lilly.slice controllers and place emulator in same slice",
+      "status": "built and booted; complete real ZFS and kernel cgroup sample observed"
+    }
+  ],
+  "witness": {
+    "transport": "private9p request/reply to fixed inner Unix witness socket",
+    "image_id": "sha256:3b6d91d7fba677e371024e99605d6466a35c5afd7fa591bb3dd16cd8658659ac",
+    "minimum_disk_bytes": 6442450944,
+    "memory_bytes": 2147483648,
+    "vcpu": 1,
+    "workspace_source_version": null,
+    "observed_on_attempts": [
+      1,
+      2,
+      3
+    ]
+  },
+  "limitations": [
+    "First two boots published unavailable physical health; corrected baseline and private-host boots passed measured ZFS/cgroup sampling only.",
+    "First host credential was issued, but Lilly rejected runtime configuration before Control; authenticated Control, admission, guest trust/readiness, terminal accounts and crash recovery remain unverified.",
+    "TCG kernel/ZFS integration is not native KVM/Firecracker isolation or physical power-loss evidence.",
+    "Sources remain concurrently edited; immutable Nix store paths identify each actual image."
+  ],
+  "architecture_impact": "Harness-only verification topology and accounting; accepted production decisions unchanged. ADR-0017, ADR-0033 and ADR-0142 remain applicable.",
+  "private_container_selection": {
+    "context_derivation": "/nix/store/0zw9982rsrlnvdjg13f3a6679vnqzwrm-overalls-antithesis-private-host-vmm-context.drv",
+    "compose_overlay": "antithesis/config/compose.inner-private.yaml",
+    "docker_target": "private-host-vmm",
+    "nix_evaluation": "passed",
+    "compose_render": "passed",
+    "container_build": "not_run",
+    "container_start": "not_run",
+    "scope": "Explicit source selection only; attempt 4 boot used privateHostImage with the direct runner."
+  }
+}

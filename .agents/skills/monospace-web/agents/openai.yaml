@@ -1,0 +1,6 @@
+interface:
+  display_name: "Monospace Web"
+  short_description: "Apply and verify Marshall's Monospace Web presentation"
+  default_prompt: "Use $monospace-web to change or review Marshall templates, stylesheets and presentation JavaScript on the character grid with the four theme tokens and no external resources."
+policy:
+  allow_implicit_invocation: true

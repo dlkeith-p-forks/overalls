@@ -1,0 +1,171 @@
+# @cc [owner:ghuntley,label:product] image-immutable-content-fields
+# After registration, resource actions MUST NOT change image identity, manifest,
+# architecture or minimum sizes. Availability configuration may change enabled
+# status and MUST retain an audited history.
+defmodule Marshall.Compute.Image do
+  use Ash.Resource,
+    otp_app: :marshall,
+    domain: Marshall.Compute,
+    data_layer: AshPostgres.DataLayer,
+    authorizers: [Marshall.Authorization.AshAuthorizer],
+    extensions: [AshPaperTrail.Resource]
+
+  @type editor_image_status :: :available | :unsupported_image | :unavailable
+  @type guest_capabilities :: %{
+          available: boolean(),
+          ssh: boolean(),
+          terminal: boolean(),
+          agents: boolean(),
+          editor: boolean(),
+          readiness: boolean(),
+          inception: boolean()
+        }
+  @type editor_capability :: %{
+          editor_protocol: 1,
+          editor_commit: String.t(),
+          editor_release: String.t()
+        }
+
+  postgres do
+    table "compute_images"
+    repo Marshall.Repo
+  end
+
+  paper_trail do
+    metadata :actor_kind, :atom, allow_nil?: true
+    metadata :actor_id, :uuid, allow_nil?: true
+    sensitive_attributes :ignore
+    change_tracking_mode :changes_only
+    store_action_name? true
+    ignore_attributes [:inserted_at, :updated_at]
+    version_extensions authorizers: [Marshall.Authorization.AshAuthorizer]
+  end
+
+  actions do
+    defaults [:read]
+
+    create :register do
+      accept [:name, :manifest]
+      change Marshall.Compute.Changes.ValidateImage
+    end
+
+    update :configure do
+      accept [:enabled]
+    end
+  end
+
+  attributes do
+    attribute :id, :string, primary_key?: true, allow_nil?: false
+    attribute :name, :string, allow_nil?: false, constraints: [min_length: 1, max_length: 128]
+    attribute :manifest, :map, allow_nil?: false
+    attribute :architecture, :atom, allow_nil?: false, constraints: [one_of: [:x86_64]]
+    attribute :minimum_memory_bytes, :integer, allow_nil?: false
+    attribute :minimum_disk_bytes, :integer, allow_nil?: false
+    attribute :enabled, :boolean, allow_nil?: false, default: true
+    create_timestamp :inserted_at
+    update_timestamp :updated_at
+  end
+
+  # @cc [owner:ghuntley,label:security;protocol] image-editor-exact-release
+  # Editor capability MUST require a validated manifest matching the stored image
+  # ID and the exact configured protocol/commit/release. Valid legacy or different
+  # releases MUST return unsupported_image; missing/corrupt image or configuration
+  # MUST return unavailable. Catalog enabled status MUST NOT revoke an existing
+  # image's editor capability. This pure helper MUST NOT grant user authority.
+  @spec editor_capability(term(), term()) ::
+          {:ok, editor_capability()} | {:error, :unsupported_image | :unavailable}
+  def editor_capability(%{id: id, manifest: manifest}, configured) do
+    with {:ok, approved} <- OverallsProtocol.EditorRelease.decode(configured),
+         {:ok, %{id: ^id} = validated} <- OverallsProtocol.ImageManifest.validate(manifest) do
+      case Map.get(validated, :editor) do
+        ^approved ->
+          {:ok,
+           %{
+             editor_protocol: approved.protocol,
+             editor_commit: approved.commit,
+             editor_release: approved.release
+           }}
+
+        _ ->
+          {:error, :unsupported_image}
+      end
+    else
+      _ -> {:error, :unavailable}
+    end
+  end
+
+  def editor_capability(_, _), do: {:error, :unavailable}
+
+  # @cc [owner:ghuntley,label:security;protocol] image-guest-agents-exact-manifest
+  # Guest agent capability MUST come only from a validated manifest matching the
+  # stored image ID: version-4 images carry the Linux agent set, version-5
+  # firmware images declare `none` or `windows-v1`, and version-6 native images
+  # carry their matching native agent set. A missing, corrupt or
+  # mismatched manifest MUST return unavailable, never a default agent set. This
+  # pure helper grants no authority.
+  @spec guest_agents_capability(term()) ::
+          {:ok, OverallsProtocol.ImageManifest.guest_agents()} | {:error, :unavailable}
+  def guest_agents_capability(%{id: id, manifest: manifest}) do
+    case OverallsProtocol.ImageManifest.validate(manifest) do
+      {:ok, %{id: ^id} = validated} ->
+        {:ok, OverallsProtocol.ImageManifest.guest_agents(validated)}
+
+      _ ->
+        {:error, :unavailable}
+    end
+  end
+
+  def guest_agents_capability(_), do: {:error, :unavailable}
+
+  @doc "Finite per-capability guest facts of an image row for projections and refusals; fails closed."
+  # @cc [owner:ghuntley,label:security;product] image-guest-capabilities-from-table
+  # guest_capabilities/1 MUST derive every boolean from OverallsProtocol.GuestAgents'
+  # table for the validated, row-bound agent set and MUST return all-false
+  # (available: false) for a missing, corrupt or mismatched manifest. Surfaces
+  # branch on these booleans, never on the agent set name.
+  @spec guest_capabilities(term()) :: guest_capabilities()
+  def guest_capabilities(image) do
+    case guest_agents_capability(image) do
+      {:ok, agents} ->
+        capabilities = OverallsProtocol.GuestAgents.capabilities(agents)
+
+        %{
+          available: true,
+          ssh: capabilities.ssh,
+          terminal: capabilities.terminal,
+          agents: capabilities.agents,
+          editor: capabilities.editor,
+          readiness: capabilities.readiness,
+          inception: capabilities.inception
+        }
+
+      {:error, :unavailable} ->
+        %{
+          available: false,
+          ssh: false,
+          terminal: false,
+          agents: false,
+          editor: false,
+          readiness: false,
+          inception: false
+        }
+    end
+  end
+
+  # @cc [owner:ghuntley,label:capacity] image-default-shape-rounding
+  # For image minima within execution limits, omitted defaults MUST meet those
+  # minima through whole MiB memory and whole GiB disk rounding. Minima above the
+  # execution limits MUST remain oversized so admission rejects them, never clamp
+  # below image requirements. This helper MUST NOT alter explicitly supplied sizes
+  # or substitute for transactional Ash admission.
+  @spec default_shape(%{minimum_memory_bytes: pos_integer(), minimum_disk_bytes: pos_integer()}) ::
+          %{vcpu: pos_integer(), memory_bytes: pos_integer(), disk_bytes: pos_integer()}
+  def default_shape(image) do
+    %{
+      vcpu: 1,
+      memory_bytes: max(512, div(image.minimum_memory_bytes + 1_048_575, 1_048_576)) * 1_048_576,
+      disk_bytes:
+        max(2, div(image.minimum_disk_bytes + 1_073_741_823, 1_073_741_824)) * 1_073_741_824
+    }
+  end
+end

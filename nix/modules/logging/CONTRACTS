@@ -1,0 +1,43 @@
+@cc [owner:ghuntley,label:security] logging-trusted-origin
+Origin identity and source routing MUST derive from trusted journal fields or
+module-owned inputs, never fields in application messages. Restricted audit data
+MUST require an explicit source selection on every destination.
+
+@cc [owner:ghuntley,label:recovery] logging-independent-delivery
+Exporters MUST run independently of application and VM lifetimes. Persistent
+queues MUST have explicit bounds and destination failures MUST NOT stop guests.
+
+@cc [owner:ghuntley,label:deployment] logging-chunked-input-routes
+The journal reader MUST keep at most eight conditional routes per input,
+chunking the selected source surface across systemd input shards with distinct
+cursor databases; tail inputs route only their own source. Fluent Bit 5.0.x
+YAML parsing rejects larger per-input route lists at load time.
+
+@cc [owner:ghuntley,label:security] logging-runtime-credentials
+Destination secrets MUST be read from private runtime files, never embedded in
+store configuration or command arguments. Diagnostic errors MUST use fixed text
+without remote response bodies or rendered configuration.
+
+@cc [owner:ghuntley,label:security] logging-sdk-health-closed
+SDK health gauges MUST derive service identity from trusted journal units and
+require that service's reviewed observability_health event. Only the four reviewed
+trace health fields and trusted numeric event timestamp may become metrics:
+availability is zero or one; pending,
+queue drops and export failures are nonnegative finite integers. Other metadata
+MUST NOT become metric values or labels. Host and unit labels MUST come from
+module identity and trusted journal fields, preserving separate producers.
+
+@cc [owner:ghuntley,label:security;deployment] logging-sdk-health-loopback
+Fleet telemetry with logging MUST expose numeric application metrics on a distinct
+loopback-only Prometheus exporter with an explicit queue budget. Numeric projection
+MUST preserve original application log sources and routes; a metrics-only reader
+MAY admit reviewed numeric records but MUST NOT export their application payloads.
+
+@cc [owner:ghuntley,label:security] logging-runtime-projection
+Application runtime gauges MUST use a matching trusted application unit and
+catalogued runtime_metrics event; a metrics.summary payload from an application
+unit MUST NOT be projected. Only the trusted operations collector unit MAY use the
+closed metrics.summary shape. Numeric projection
+MUST preserve the source log and attach only module/journal identity labels.
+Runtime freshness MUST derive from the native journal timestamp, never payload
+metadata or the time of a later scrape.

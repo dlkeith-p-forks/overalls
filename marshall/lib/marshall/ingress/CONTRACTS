@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:security;concurrency] ingress-authority-serialization
+Endpoint mutations MUST hold the VM row lock and authorize current persisted
+membership through Cedar. Stable labels MUST NOT change with configuration,
+relocation or VM name reuse. Raw resource mutations remain trusted internal only.
+
+@cc [owner:ghuntley,label:architecture] ingress-ash-authority
+Ash/PostgreSQL own endpoint identity, visibility and policy revisions. Audi caches
+and DNS publications MUST NOT independently create or extend authorization.
+Audit records MUST commit with the corresponding business mutation.

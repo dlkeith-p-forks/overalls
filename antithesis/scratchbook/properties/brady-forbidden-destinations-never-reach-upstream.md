@@ -1,0 +1,25 @@
+# brady-forbidden-destinations-never-reach-upstream
+
+**Type/priority/status:** Safety, P0; proposed, unimplemented, unexecuted. Primary `Always(condition, "Forbidden original destinations never reach Brady upstream or shared cache")`. `Always` fits the packet/effect invariant: one connection to a forbidden target or response stored from it is enough to violate the boundary. A supplementary `Reachable(protected_destination_refused, "Protected original destination is refused before Brady upstream dial")` guides the negative branch.
+
+**Property:** A guest request with a private, special or operator-protected original IPv4 destination, invalid IPv6 destination or mismatched HTTP authority cannot cause an upstream socket or cache lookup/response, including during DNS changes or a configured TLS tunnel. For admitted HTTPS, the original IP remains pinned and upstream certificate identity for SNI must verify; a resolver disagreement by itself must not become an automatic refusal or unsafe bypass.
+
+**Primary source:** `lilly/lib/lilly/network/policy.ex:19-21,100-128` drops protected targets before TPROXY and only bypasses interception for exact fixed private services. `brady/lib/brady/connection.ex:5-18,67-86,112-145` reads original destination from the accepted socket and treats TLS tunnel as an exact configured exception. `brady/lib/brady/destination.ex:22-33,63-114` defines public destination and HTTP authority checks, while `brady/lib/brady/upstream.ex:5-31,34-56` rechecks the original IP and verifies TLS upstream identity. ADR-0069 and its 2026-09-28 HTTPS correction distinguish HTTP DNS agreement from HTTPS certificate identity. `nix/tests/machines/brady-network/driver.py:68-109` is a useful existing veth fixture path, not execution proof for this candidate.
+
+**Independent oracle and action/fault recipe:** Build an inner Linux router with actual nftables/TPROXY and Brady. Place independent listeners at representative private, link-local, host, metadata and operator-protected endpoints; also a public fixture with valid and mismatched TLS certificates. From a guest veth, send TCP 80/443 with deliberately conflicting Host/SNI/original IP and altered DNS answer. Record the accepted kernel original destination and the forbidden listeners' accept counters before and after each attempt; inventory cache keys and object hashes. Fault Brady's DNS resolver and restart Brady around a protected-range configuration refresh. Every forbidden attempt must have zero forbidden-listener effects and no reusable cache object; allowed HTTPS with a valid cert at the pinned original IP provides a positive control. A client HTTP error alone is insufficient. An exact operator TLS exception may tunnel only its configured host/port, with the original destination still public.
+
+**Value menu:** private/special/operator-protected/public destination; HTTP authority match/mismatch; HTTPS valid/invalid SNI certificate; DNS same/different/failed; exact tunnel exception/non-exception; port 80/443/configured extra port; new/established flow; Brady before/after restart. Use only synthetic hostnames and loopback/namespace fixture networks with an explicit test policy.
+
+**Topology/proof limit:** `storage-router` TCG can prove real Linux pre-NAT route and Brady upstream policy, including ZFS cache effects. It does not establish Firecracker source identity or fleet operator CIDR completeness. The latter depends on `lilly/lib/lilly/network/CONTRACTS:1-3`: reachable public control networks must be configured as protected; the property can only assess the configured set. Native KVM is required to upgrade the guest-origin claim.
+
+**Open questions:** How will the router fixture create several routable but forbidden addresses without accidentally crossing the host's real network? `(partial: brady-network uses namespace-local 8.8.4.x and protected 8.8.4.5, but lacks the broader matrix)`; where should a test observe cache lookup refusal before a response is served? `(partial: Proxy validates destination before lookup, but no external per-request cache lookup hook is available)`.
+
+### Investigation log
+
+- Examined Lilly Policy, Brady Connection/Destination/Upstream/Proxy, ADR-0069 correction and `brady-network/driver.py`. Found explicit dual policy checks and original-IP pinning. Did not find a currently composed multi-address origin ledger or independent assertion run; no bypass defect is claimed.
+
+## Evaluation and proof boundary
+
+**Proof boundary:** Draft selection: `storage`. standalone-real-TPROXY-router-and-TCG-ZFS; does-not-prove-Lilly-backing; independent witness: real guest packet/origin/cache-object/connection ledger and independent flow labels. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.

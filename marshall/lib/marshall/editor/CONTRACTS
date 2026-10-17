@@ -1,0 +1,31 @@
+@cc [owner:ghuntley,label:security] editor-dedicated-authority
+Guest editor launch, approval, admission and renewal MUST require a current
+stored login and fresh VM write permission.
+Customer access additionally MUST require the exact VM owner. Generic web policy,
+public visibility and peer identities MUST NOT authorize editor access.
+
+@cc [owner:ghuntley,label:security;protocol] editor-refusal-classification
+Missing, stale or revoked cookie/login identity MUST return authentication_required
+so a fresh real sign-in can replace the personal host cookie. Current account,
+profile, Customer owner or write denial MUST remain forbidden; missing route or
+execution authority MUST remain unauthorized. Reauthentication MUST NOT revive
+the old cookie or lease.
+
+@cc [owner:ghuntley,label:security;concurrency] editor-account-execution-binding
+Admission and renewal MUST retain the permanent GuestAccount UUID and UID,
+gateway generation, host session, VM execution and
+immutable image editor descriptor. Retired accounts and expired leases MUST NOT
+renew. Email changes MUST NOT replace the account or invalidate its editor origin.
+Lock order MUST remain service, host, VM, User, GuestAccount, credential,
+lease. Initial launch allocation MUST use GuestAccounts' serialized allocator.
+
+@cc [owner:ghuntley,label:security;observability] editor-redacted-durable-audit
+Only credential hashes may persist. Audit transitions MUST commit atomically with
+their mutation, outcome events MUST follow outer commit, and administrator reads
+MUST be bounded and omit proofs, hashes, usernames, paths and request contents.
+
+@cc [owner:ghuntley,label:recovery;concurrency] editor-bounded-retention
+Operational cleanup MUST delete at most 500 expired rows per transaction only
+after seven days, with leases before unreferenced credentials and locked rows
+skipped. Audit versions MUST remain independent. A full batch MUST schedule its
+continuation atomically.

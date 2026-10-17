@@ -1,0 +1,16 @@
+@cc [owner:ghuntley,label:security] public-documentation-content
+These files MUST contain only reviewed public instructions and synthetic examples.
+Credentials, private gateway API instructions, account/fleet state and operational
+crash artifacts MUST NOT enter these pages. Unknown paths MUST NOT select other
+priv files. Runtime user content MUST NOT be rendered as trusted documentation.
+
+@cc [owner:ghuntley,label:verification] public-command-examples
+Every porsche fenced example MUST parse with the shared command grammar. The
+command reference MUST derive from the same catalog used by the SSH gateway.
+Unimplemented behavior MUST be identified until its runtime acceptance passes.
+
+@cc [owner:ghuntley,label:product;security] public-browser-extension-installation
+The browser extension guide MUST require explicit Overalls server configuration
+and describe Chrome's unsigned developer installation and Firefox's temporary
+installation. It MUST NOT imply browser-store publication or permanent unsigned
+Firefox installation, or promise downloads when the deployment disables them.

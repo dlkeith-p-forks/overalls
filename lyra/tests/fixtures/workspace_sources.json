@@ -1,0 +1,527 @@
+{
+  "version": 2,
+  "accepted": [
+    {
+      "url": "https://github.com/tastejs/todomvc",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "tastejs"
+        ],
+        "repository": "todomvc",
+        "revision": {
+          "kind": "default"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/tastejs/todomvc/",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "tastejs"
+        ],
+        "repository": "todomvc",
+        "revision": {
+          "kind": "default"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/tastejs/todomvc.git",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "tastejs"
+        ],
+        "repository": "todomvc",
+        "revision": {
+          "kind": "default"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/tastejs/todomvc?tab=readme-ov-file#readme",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "tastejs"
+        ],
+        "repository": "todomvc",
+        "revision": {
+          "kind": "default"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/NixOS/nixpkgs/tree/master",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "NixOS"
+        ],
+        "repository": "nixpkgs",
+        "revision": {
+          "kind": "ref",
+          "value": "master"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/overalls/fixture/tree/feature/x",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "overalls"
+        ],
+        "repository": "fixture",
+        "revision": {
+          "kind": "ref",
+          "value": "feature/x"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/a-b/c.d_e/tree/release-1.2@x+y=z,w/",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "a-b"
+        ],
+        "repository": "c.d_e",
+        "revision": {
+          "kind": "ref",
+          "value": "release-1.2@x+y=z,w"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/o/r/tree/0123456789abcdef0123456789ABCDEF01234567",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "o"
+        ],
+        "repository": "r",
+        "revision": {
+          "kind": "ref",
+          "value": "0123456789abcdef0123456789ABCDEF01234567"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/o/r/commit/abc1234",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "o"
+        ],
+        "repository": "r",
+        "revision": {
+          "kind": "commit",
+          "value": "abc1234"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/o/r/commit/0123456789ABCDEF0123456789abcdef01234567",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "o"
+        ],
+        "repository": "r",
+        "revision": {
+          "kind": "commit",
+          "value": "0123456789abcdef0123456789abcdef01234567"
+        }
+      }
+    },
+    {
+      "url": "https://github.com/o/r/pull/7",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "o"
+        ],
+        "repository": "r",
+        "revision": {
+          "kind": "change",
+          "value": 7
+        }
+      }
+    },
+    {
+      "url": "https://github.com/o/r/pull/2147483647/files",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "o"
+        ],
+        "repository": "r",
+        "revision": {
+          "kind": "change",
+          "value": 2147483647
+        }
+      }
+    },
+    {
+      "url": "https://github.com/o/r/pull/12/commits/",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "o"
+        ],
+        "repository": "r",
+        "revision": {
+          "kind": "change",
+          "value": 12
+        }
+      }
+    },
+    {
+      "url": "https://gitlab.com/group/sub/repo/-/tree/feature/thing/path",
+      "source": {
+        "version": 2,
+        "provider": "gitlab",
+        "namespace": [
+          "group",
+          "sub"
+        ],
+        "repository": "repo",
+        "revision": {
+          "kind": "ref",
+          "value": "feature/thing/path"
+        }
+      }
+    },
+    {
+      "url": "https://gitlab.com/group/sub/repo/-/merge_requests/12/diffs",
+      "source": {
+        "version": 2,
+        "provider": "gitlab",
+        "namespace": [
+          "group",
+          "sub"
+        ],
+        "repository": "repo",
+        "revision": {
+          "kind": "change",
+          "value": 12
+        }
+      }
+    },
+    {
+      "url": "https://gitlab.com/group/repo/-/tags/v1",
+      "source": {
+        "version": 2,
+        "provider": "gitlab",
+        "namespace": [
+          "group"
+        ],
+        "repository": "repo",
+        "revision": {
+          "kind": "tag",
+          "value": "v1"
+        }
+      }
+    },
+    {
+      "url": "https://codeberg.org/forge/repo/src/branch/main/path",
+      "source": {
+        "version": 2,
+        "provider": "codeberg",
+        "namespace": [
+          "forge"
+        ],
+        "repository": "repo",
+        "revision": {
+          "kind": "ref",
+          "value": "main/path"
+        }
+      }
+    },
+    {
+      "url": "https://codeberg.org/forge/repo/src/tag/v1",
+      "source": {
+        "version": 2,
+        "provider": "codeberg",
+        "namespace": [
+          "forge"
+        ],
+        "repository": "repo",
+        "revision": {
+          "kind": "tag",
+          "value": "v1"
+        }
+      }
+    },
+    {
+      "url": "https://codeberg.org/forge/repo/pulls/7/files",
+      "source": {
+        "version": 2,
+        "provider": "codeberg",
+        "namespace": [
+          "forge"
+        ],
+        "repository": "repo",
+        "revision": {
+          "kind": "change",
+          "value": 7
+        }
+      }
+    },
+    {
+      "url": "https://bitbucket.org/team/repo/src/main/path",
+      "source": {
+        "version": 2,
+        "provider": "bitbucket",
+        "namespace": [
+          "team"
+        ],
+        "repository": "repo",
+        "revision": {
+          "kind": "ref",
+          "value": "main/path"
+        }
+      }
+    },
+    {
+      "url": "https://bitbucket.org/team/repo/pull-requests/8/diff",
+      "source": {
+        "version": 2,
+        "provider": "bitbucket",
+        "namespace": [
+          "team"
+        ],
+        "repository": "repo",
+        "revision": {
+          "kind": "change",
+          "value": 8
+        }
+      }
+    },
+    {
+      "url": "https://github.com/owner/repo/releases/tag/v1",
+      "source": {
+        "version": 2,
+        "provider": "github",
+        "namespace": [
+          "owner"
+        ],
+        "repository": "repo",
+        "revision": {
+          "kind": "tag",
+          "value": "v1"
+        }
+      }
+    }
+  ],
+  "refused": [
+    {
+      "url": "",
+      "reason": "invalid_url"
+    },
+    {
+      "url": "github.com/o/r",
+      "reason": "invalid_url"
+    },
+    {
+      "url": "http://github.com/o/r",
+      "reason": "unsupported_host"
+    },
+    {
+      "url": "https://github.com.evil.test/o/r",
+      "reason": "unsupported_host"
+    },
+    {
+      "url": "https://user@github.com/o/r",
+      "reason": "unsupported_host"
+    },
+    {
+      "url": "https://github.com:443/o/r",
+      "reason": "unsupported_host"
+    },
+    {
+      "url": "https://github.com/",
+      "reason": "invalid_url"
+    },
+    {
+      "url": "https://github.com/o",
+      "reason": "invalid_url"
+    },
+    {
+      "url": "https://github.com/-o/r",
+      "reason": "invalid_namespace"
+    },
+    {
+      "url": "https://github.com/o-/r",
+      "reason": "invalid_namespace"
+    },
+    {
+      "url": "https://github.com/o--p/r",
+      "reason": "invalid_namespace"
+    },
+    {
+      "url": "https://github.com/o_p/r",
+      "reason": "invalid_namespace"
+    },
+    {
+      "url": "https://github.com/o/-r",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://github.com/o/..",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://github.com/o/r%20x",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://github.com/o/r/tree/",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/tree/-x",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/tree/a..b",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/tree/a/.b",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/tree/a.lock",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/tree/a//b",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/tree/a%20b",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/tree/a;rm",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/tree/$(id)",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/tree/@",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/commit/abc",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/commit/xyz1234",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/pull/0",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/pull/07",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/pull/2147483648",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/pull/7/conversation",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/issues/7",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r/blob/main/README.md",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/-bad/r",
+      "reason": "invalid_namespace"
+    },
+    {
+      "url": "https://github.com/o/-r",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://github.com/o/r/nope",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://gitlab.com/-bad/r",
+      "reason": "invalid_namespace"
+    },
+    {
+      "url": "https://gitlab.com/o/-r",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://codeberg.org/-bad/r",
+      "reason": "invalid_namespace"
+    },
+    {
+      "url": "https://codeberg.org/o/-r",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://codeberg.org/o/r/nope",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://bitbucket.org/-bad/r",
+      "reason": "invalid_namespace"
+    },
+    {
+      "url": "https://bitbucket.org/o/-r",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://bitbucket.org/o/r/nope",
+      "reason": "invalid_reference"
+    },
+    {
+      "url": "https://github.com/o/r.git.git",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://gitlab.com/o/r.git.git",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://codeberg.org/o/r.git.git",
+      "reason": "invalid_repository"
+    },
+    {
+      "url": "https://bitbucket.org/o/r.git.git",
+      "reason": "invalid_repository"
+    }
+  ]
+}

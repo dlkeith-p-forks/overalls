@@ -1,0 +1,6 @@
+Host @label@.@zone@
+  HostName @label@.@zone@
+  Port 22
+  AddressFamily inet
+  HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com
+  ProxyCommand overalls proxy --host %h --identity id_ed25519

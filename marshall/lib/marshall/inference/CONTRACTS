@@ -1,0 +1,12 @@
+@cc [owner:ghuntley,label:security] inference-exact-execution-authority
+Admission and renewal MUST authenticate a dedicated Ziggy credential, serialize
+against current host and VM state, and bind the exact placement and execution
+epoch. Customer and unknown profiles MUST deny admission, identity authorization
+and renewal, including previously admitted requests. Neither user headers, provider keys nor cached VM ownership confer authority.
+
+@cc [owner:ghuntley,label:accounting] inference-metadata-only-idempotence
+Request IDs MUST be unique durable admissions before provider effects. Completion
+MUST be immutable and idempotent, attributed to the admitted VM owner; a replay
+matches only an exactly equal stored completion, and PostgreSQL MUST refuse a
+stored completion outside the closed wire key set. Missing usage MUST remain unknown. Prompts, responses, tools and upstream error bodies
+MUST never enter persisted records or diagnostics.

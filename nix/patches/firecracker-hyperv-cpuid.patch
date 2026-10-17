@@ -1,0 +1,270 @@
+diff -ruN b2/src/vmm/src/arch/x86_64/vcpu.rs b3/src/vmm/src/arch/x86_64/vcpu.rs
+--- a/src/vmm/src/arch/x86_64/vcpu.rs	2026-10-13 16:50:45.802843414 +0000
++++ b/src/vmm/src/arch/x86_64/vcpu.rs	2026-10-13 19:20:49.376478890 +0000
+@@ -10,7 +10,8 @@
+ use std::sync::Arc;
+ 
+ use kvm_bindings::{
+-    CpuId, KVM_MAX_CPUID_ENTRIES, KVM_MAX_MSR_ENTRIES, Msrs, Xsave, kvm_debugregs, kvm_lapic_state,
++    CpuId, KVM_EXIT_HYPERV_HCALL, KVM_EXIT_HYPERV_SYNDBG, KVM_EXIT_HYPERV_SYNIC,
++    KVM_MAX_CPUID_ENTRIES, KVM_MAX_MSR_ENTRIES, Msrs, Xsave, kvm_debugregs, kvm_lapic_state,
+     kvm_mp_state, kvm_regs, kvm_sregs, kvm_vcpu_events, kvm_xcrs, kvm_xsave, kvm_xsave2,
+ };
+ use kvm_ioctls::{VcpuExit, VcpuFd};
+@@ -714,6 +715,42 @@
+     }
+ }
+ 
++impl KvmVcpu {
++    /// Completes a `KVM_EXIT_HYPERV` exit.
++    ///
++    /// Firecracker enables neither the Hyper-V SynIC nor the synthetic debugger, so
++    /// the only exits KVM forwards are hypercalls it does not implement itself. They
++    /// are answered with `HV_STATUS_INVALID_HYPERCALL_CODE`, which makes the guest
++    /// fall back to its non-enlightened path; the other exit types are informational.
++    pub fn handle_hyperv_exit(&mut self) -> Result<VcpuEmulation, VcpuError> {
++        /// TLFS hypercall status: the hypercall code is not supported.
++        const HV_STATUS_INVALID_HYPERCALL_CODE: u64 = 2;
++        let run = self.fd.get_kvm_run();
++        // SAFETY: KVM filled the `hyperv` member of the exit union for KVM_EXIT_HYPERV.
++        let hyperv = unsafe { &mut run.__bindgen_anon_1.hyperv };
++        match hyperv.type_ {
++            KVM_EXIT_HYPERV_HCALL => {
++                // SAFETY: `hcall` is the active union member for a hypercall exit.
++                let hcall = unsafe { &mut hyperv.u.hcall };
++                warn!(
++                    "vcpu: unimplemented Hyper-V hypercall {:#x} answered with invalid code",
++                    hcall.input & 0xffff
++                );
++                hcall.result = HV_STATUS_INVALID_HYPERCALL_CODE;
++            }
++            KVM_EXIT_HYPERV_SYNIC => {
++                // SAFETY: `synic` is the active union member for a SynIC exit.
++                let msr = unsafe { hyperv.u.synic.msr };
++                warn!("vcpu: Hyper-V SynIC update through MSR {msr:#x} ignored");
++            }
++            KVM_EXIT_HYPERV_SYNDBG => warn!("vcpu: Hyper-V synthetic debugger exit ignored"),
++            other => warn!("vcpu: unknown Hyper-V exit type {other} ignored"),
++        }
++        Ok(VcpuEmulation::Handled)
++    }
++
++}
++
+ impl Peripherals {
+     /// Runs the vCPU in KVM context and handles the kvm exit reason.
+     ///
+diff -ruN b2/src/vmm/src/cpu_config/x86_64/custom_cpu_template.rs b3/src/vmm/src/cpu_config/x86_64/custom_cpu_template.rs
+--- a/src/vmm/src/cpu_config/x86_64/custom_cpu_template.rs	2026-10-13 16:50:45.816843948 +0000
++++ b/src/vmm/src/cpu_config/x86_64/custom_cpu_template.rs	2026-10-13 19:20:49.375478851 +0000
+@@ -129,6 +129,12 @@
+     /// Modifiers for model specific registers.
+     #[serde(default)]
+     pub msr_modifiers: Vec<RegisterModifier>,
++    /// Advertise Hyper-V enlightenments (CPUID leaves 0x40000000..=0x4000000a)
++    /// so Windows guests use the KVM-implemented reference time counter,
++    /// reference TSC page and hypercall interface. The KVM signature leaves
++    /// move to 0x40000100 as QEMU does.
++    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
++    pub hyperv: bool,
+ }
+ 
+ impl CustomCpuTemplate {
+diff -ruN b2/src/vmm/src/cpu_config/x86_64/mod.rs b3/src/vmm/src/cpu_config/x86_64/mod.rs
+--- a/src/vmm/src/cpu_config/x86_64/mod.rs	2026-10-13 16:50:45.816843948 +0000
++++ b/src/vmm/src/cpu_config/x86_64/mod.rs	2026-10-13 19:20:49.375478851 +0000
+@@ -17,7 +17,31 @@
+ use self::custom_cpu_template::CpuidRegister;
+ use super::templates::CustomCpuTemplate;
+ use crate::Vcpu;
+-use crate::cpu_config::x86_64::cpuid::{Cpuid, CpuidKey};
++use crate::cpu_config::x86_64::cpuid::{
++    Cpuid, CpuidEntry, CpuidKey, CpuidRegisters, KvmCpuidFlags,
++};
++
++/// First hypervisor CPUID leaf; Hyper-V's interface lives here when enabled.
++pub const HYPERV_CPUID_BASE: u32 = 0x4000_0000;
++/// Highest Hyper-V leaf advertised in `HYPERV_CPUID_BASE`.
++pub const HYPERV_CPUID_MAX: u32 = 0x4000_000a;
++/// Where the KVM signature leaves are relocated when Hyper-V occupies the base.
++pub const KVM_CPUID_RELOCATED_BASE: u32 = 0x4000_0100;
++
++/// Hyper-V CPUID leaf 0x40000003 EAX: partition privileges implemented by KVM
++/// without extra capabilities (TLFS `HV_PARTITION_PRIVILEGE_MASK`).
++const HV_MSR_VP_RUNTIME_AVAILABLE: u32 = 1 << 0;
++const HV_MSR_TIME_REF_COUNT_AVAILABLE: u32 = 1 << 1;
++const HV_MSR_APIC_ACCESS_AVAILABLE: u32 = 1 << 4;
++const HV_MSR_HYPERCALL_AVAILABLE: u32 = 1 << 5;
++const HV_MSR_VP_INDEX_AVAILABLE: u32 = 1 << 6;
++const HV_MSR_REFERENCE_TSC_AVAILABLE: u32 = 1 << 9;
++const HV_ACCESS_FREQUENCY_MSRS: u32 = 1 << 11;
++/// Hyper-V CPUID leaf 0x40000003 EDX: frequency MSRs are present.
++const HV_FEATURE_FREQUENCY_MSRS_AVAILABLE: u32 = 1 << 8;
++/// Hyper-V CPUID leaf 0x40000004 EAX: implementation recommendations.
++const HV_X64_APIC_ACCESS_RECOMMENDED: u32 = 1 << 3;
++const HV_X64_RELAXED_TIMING_RECOMMENDED: u32 = 1 << 5;
+ 
+ /// Errors thrown while configuring templates.
+ #[derive(Debug, PartialEq, Eq, thiserror::Error, displaydoc::Display)]
+@@ -111,8 +135,89 @@
+             }
+         }
+ 
++        if template.hyperv {
++            Self::apply_hyperv_leaves(guest_cpuid);
++        }
++
+         Ok(Self { cpuid, msrs })
+     }
++
++    /// Install the Hyper-V interface leaves at `HYPERV_CPUID_BASE`.
++    ///
++    /// KVM implements the advertised MSRs unconditionally once the guest sees
++    /// the `Hv#1` interface signature; no `KVM_ENABLE_CAP` call is needed for
++    /// this feature set. The KVM signature leaves keep their content at
++    /// `KVM_CPUID_RELOCATED_BASE` so Linux guests still find kvmclock.
++    fn apply_hyperv_leaves(guest_cpuid: &mut BTreeMap<CpuidKey, CpuidEntry>) {
++        let kvm_leaves: Vec<(CpuidKey, CpuidEntry)> = guest_cpuid
++            .range(CpuidKey::leaf(HYPERV_CPUID_BASE)..CpuidKey::leaf(KVM_CPUID_RELOCATED_BASE))
++            .map(|(key, entry)| (key.clone(), entry.clone()))
++            .collect();
++        for (key, _) in &kvm_leaves {
++            guest_cpuid.remove(key);
++        }
++        for (key, mut entry) in kvm_leaves {
++            let relocated = key.leaf - HYPERV_CPUID_BASE + KVM_CPUID_RELOCATED_BASE;
++            if key.leaf == HYPERV_CPUID_BASE {
++                // Maximum leaf of the relocated KVM block.
++                entry.result.eax =
++                    entry.result.eax - HYPERV_CPUID_BASE + KVM_CPUID_RELOCATED_BASE;
++            }
++            guest_cpuid.insert(
++                CpuidKey {
++                    leaf: relocated,
++                    subleaf: key.subleaf,
++                },
++                entry,
++            );
++        }
++
++        let leaf = |leaf: u32, eax: u32, ebx: u32, ecx: u32, edx: u32| {
++            (
++                CpuidKey::leaf(leaf),
++                CpuidEntry {
++                    flags: KvmCpuidFlags::EMPTY,
++                    result: CpuidRegisters { eax, ebx, ecx, edx },
++                },
++            )
++        };
++        let hyperv_leaves = [
++            // Maximum leaf and vendor signature "Linux KVM Hv".
++            leaf(0x4000_0000, HYPERV_CPUID_MAX, 0x756e_694c, 0x564b_2078, 0x7648_204d),
++            // Interface signature "Hv#1".
++            leaf(0x4000_0001, 0x3123_7648, 0, 0, 0),
++            // Hypervisor build number and version.
++            leaf(0x4000_0002, 0x3839, 0xa_0000, 0, 0),
++            // Features.
++            leaf(
++                0x4000_0003,
++                HV_MSR_VP_RUNTIME_AVAILABLE
++                    | HV_MSR_TIME_REF_COUNT_AVAILABLE
++                    | HV_MSR_APIC_ACCESS_AVAILABLE
++                    | HV_MSR_HYPERCALL_AVAILABLE
++                    | HV_MSR_VP_INDEX_AVAILABLE
++                    | HV_MSR_REFERENCE_TSC_AVAILABLE
++                    | HV_ACCESS_FREQUENCY_MSRS,
++                0,
++                0,
++                HV_FEATURE_FREQUENCY_MSRS_AVAILABLE,
++            ),
++            // Recommendations; EBX is the spinlock retry count before trapping.
++            leaf(
++                0x4000_0004,
++                HV_X64_APIC_ACCESS_RECOMMENDED | HV_X64_RELAXED_TIMING_RECOMMENDED,
++                0xfff,
++                0,
++                0,
++            ),
++        ];
++        for (key, entry) in hyperv_leaves {
++            guest_cpuid.insert(key, entry);
++        }
++        for leaf_id in 0x4000_0005..=HYPERV_CPUID_MAX {
++            guest_cpuid.insert(CpuidKey::leaf(leaf_id), CpuidEntry::default());
++        }
++    }
+ }
+ 
+ #[cfg(test)]
+@@ -232,6 +337,59 @@
+     }
+ 
+     #[test]
++    fn test_apply_hyperv_leaves() {
++        let mut config = supported_cpu_config();
++        config.cpuid.inner_mut().insert(
++            CpuidKey::leaf(0x4000_0000),
++            CpuidEntry {
++                flags: KvmCpuidFlags::EMPTY,
++                result: CpuidRegisters {
++                    eax: 0x4000_0001,
++                    ebx: 0x4b4d_564b,
++                    ecx: 0x564b_4d56,
++                    edx: 0x4d,
++                },
++            },
++        );
++        config.cpuid.inner_mut().insert(
++            CpuidKey::leaf(0x4000_0001),
++            CpuidEntry {
++                flags: KvmCpuidFlags::EMPTY,
++                result: CpuidRegisters {
++                    eax: 0x7f,
++                    ..Default::default()
++                },
++            },
++        );
++        let without =
++            CpuConfiguration::apply_template(config.clone(), &CustomCpuTemplate::default())
++                .unwrap();
++        assert_eq!(without, config);
++
++        let template = CustomCpuTemplate {
++            hyperv: true,
++            ..Default::default()
++        };
++        let with = CpuConfiguration::apply_template(config, &template).unwrap();
++        let cpuid = with.cpuid.inner();
++        let base = &cpuid[&CpuidKey::leaf(HYPERV_CPUID_BASE)].result;
++        assert_eq!(base.eax, HYPERV_CPUID_MAX);
++        assert_eq!(base.ebx, 0x756e_694c);
++        assert_eq!(cpuid[&CpuidKey::leaf(0x4000_0001)].result.eax, 0x3123_7648);
++        let features = &cpuid[&CpuidKey::leaf(0x4000_0003)].result;
++        assert_ne!(features.eax & HV_MSR_REFERENCE_TSC_AVAILABLE, 0);
++        assert_ne!(features.eax & HV_MSR_HYPERCALL_AVAILABLE, 0);
++        for leaf_id in 0x4000_0005..=HYPERV_CPUID_MAX {
++            assert!(cpuid.contains_key(&CpuidKey::leaf(leaf_id)));
++        }
++        let kvm = &cpuid[&CpuidKey::leaf(KVM_CPUID_RELOCATED_BASE)].result;
++        assert_eq!(kvm.eax, KVM_CPUID_RELOCATED_BASE + 1);
++        assert_eq!(kvm.ebx, 0x4b4d_564b);
++        assert_eq!(cpuid[&CpuidKey::leaf(0x4000_0101)].result.eax, 0x7f);
++        assert!(!cpuid.contains_key(&CpuidKey::leaf(0x4000_000b)));
++    }
++
++    #[test]
+     fn test_apply_template() {
+         let host_configuration = supported_cpu_config();
+         let cpu_config_result = host_configuration
+diff -ruN b2/src/vmm/src/vstate/vcpu.rs b3/src/vmm/src/vstate/vcpu.rs
+--- a/src/vmm/src/vstate/vcpu.rs	2026-10-13 16:50:45.914847690 +0000
++++ b/src/vmm/src/vstate/vcpu.rs	2026-10-13 19:20:49.376478890 +0000
+@@ -406,6 +406,8 @@
+ 
+                 Ok(VcpuEmulation::Paused)
+             }
++            #[cfg(target_arch = "x86_64")]
++            Ok(VcpuExit::Hyperv) => self.kvm_vcpu.handle_hyperv_exit(),
+             emulation_result => handle_kvm_exit(&mut self.kvm_vcpu.peripherals, emulation_result),
+         }
+     }

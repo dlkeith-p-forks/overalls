@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:assumption] lilly-protected-public-infrastructure
+The operator MUST include reachable public control-plane and host infrastructure
+networks in protected_cidrs before enabling guest networking. Private-range denial alone
+does not identify every deployment's public infrastructure (ADR-0015).
+
+@cc [owner:ghuntley,label:security] lilly-network-policy-validated-inputs
+Callers MUST construct policy inputs through Network.Config.new/4,5,6,7 and
+Network.Guest.new/3 before interpolating interface names, addresses, table names or
+CIDRs into nftables programs. Peer strings must not bypass these validators.

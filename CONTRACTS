@@ -1,0 +1,33 @@
+@cc [owner:ghuntley,label:architecture] repository-decision-evidence
+Changes to accepted architectural requirements MUST preserve their rationale and
+update the applicable ADR and implementation evidence in the same change. An
+accepted decision or a passing structural checker MUST NOT be presented as proof
+that runtime behavior or deployment acceptance has been verified.
+
+@cc [owner:ghuntley,label:security] repository-secret-diagnostics
+Application and operational diagnostics MUST NOT expose credentials, authentication
+tokens, token-bearing login URLs, encryption keys or terminal contents. Synthetic
+test values may be inspected only within isolated fixtures and MUST NOT become
+production defaults. ADR-0042's opt-in full-argument host audit is restricted
+evidence, not ordinary diagnostics; only explicitly selected destinations may
+receive it. Encrypted crash artifact contents MUST NOT enter log destinations.
+
+@cc [owner:ghuntley,label:verification] repository-contract-maintenance
+When changing code, authors MUST inspect its local notes, enclosing declarations,
+ancestor CONTRACTS and relevant callee contracts; reconcile implementation, tests
+and obligations together. Conflicting requirements MUST be surfaced, not silently
+removed or weakened to make the implementation appear compliant.
+
+@cc [owner:ghuntley,label:verification] repository-test-claim-boundary
+Verification claims MUST identify the actual tested scope. Unit tests and mocks
+MUST NOT establish physical VM isolation, multi-host availability, SMTP inbox
+delivery or fleet throughput. Environment-dependent acceptance remains separate
+from the ordinary project gates.
+
+@cc [owner:ghuntley,label:architecture] repository-compatibility-lifetime
+Production code MUST NOT retain a reader, field, route, column, option or
+migration whose only purpose is an older release, peer, stored format or retired
+name once both hosts have converged past it (ADR-0159). Mixed-version safety MUST
+be achieved by ordering converged pushes: the consumer tolerates absence, then the
+producer stops, then the decoder becomes strict or the schema object is dropped.
+Old-format durable data MUST be exported with a recorded digest before it is purged.

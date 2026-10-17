@@ -1,0 +1,10 @@
+@cc [owner:ghuntley,label:security] lilly-probes-host-ownership
+Operators MUST run root smoke/fixture operations only on a dedicated disposable
+test host. Operations touching the global /var/lib/lilly enrollment MUST verify
+absence before preparation and fixture identity before cleanup; an existing
+enrollment MUST NOT be overwritten. A daemon exit MUST NOT prove guests stopped.
+
+@cc [owner:ghuntley,label:verification] lilly-probes-physical-evidence
+Real execution probes MUST verify guest output, disk persistence and physical
+cleanup before claiming those properties. Unit tests alone MUST NOT replace
+opt-in KVM/systemd/network acceptance.

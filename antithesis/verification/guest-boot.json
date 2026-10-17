@@ -1,0 +1,97 @@
+{
+  "record_type": "overalls.antithesis_guest_boot.v1",
+  "schema_version": 1,
+  "recorded_at_utc": "2026-10-13T10:45:25Z",
+  "scope": "Local serialized QEMU TCG boot of the production NixOS guest adapted to q35; one placement and one retained qcow2 overlay.",
+  "result": "passed_local_emulation",
+  "source_sha256": {
+    "antithesis/nix/guest.nix": "743abced0c64e9ff0a1b68727acb4dfcf9fb0f4a83578fc64230c32fdc24c62a",
+    "antithesis/emulation/guest/runner.py": "d297521d0167a62e316547385a2e2cfdf7ae1efe19854f1dc6751dc5e33d9dec",
+    "antithesis/emulation/guest/README.md": "c461165aaf3e459ba8ddbf14f62ef58e56887f1a49685c1436636b3efac1d4a9"
+  },
+  "artifacts": {
+    "image_derivation": "/nix/store/v2p4dxc2q4zbkli73lnwngncj00mbvyr-overalls-antithesis-tcg-nixos-x86_64.drv",
+    "image_output": "/nix/store/4a0cplfxrav2r3z8p1c4gcq06gw931ah-overalls-antithesis-tcg-nixos-x86_64",
+    "manifest_sha256": "5f49c664e763521174b997a4cd6e6195a7175101cdb0e3bb4a48f100038fd829",
+    "manifest_version": 4,
+    "rootfs_bytes": 3276800000,
+    "rootfs_sha256": "77f0b0c742170ee155eb856ffa4eb7ae0e12f141842938f0aca9c19bdd2a7601",
+    "kernel_sha256": "9988978614709bc0153ed8e05bcf074737fe091da00009b9c0370c69044d0323",
+    "initrd_sha256": "959036c8e4d65b45d92fca0ed9ad0113e49db86df268e684ac50f6fd973cd57c",
+    "minimum_memory_bytes": 2147483648,
+    "workspace_source_version": null,
+    "runner_derivation": "/nix/store/hdzd5ny2df00gwlcgsv2371wad4p10d5-overalls-tcg-guest.drv",
+    "runner_output": "/nix/store/8bp13zki7z9p8s85fa5lrr3xqk0s76k0-overalls-tcg-guest",
+    "tool_config_output": "/nix/store/d6f478q9fgs3v8s2chbf9wbzy3qjx6jf-overalls-tcg-guest-tools.json",
+    "tool_config_sha256": "8b12805166d9d5555bf1eafb759ee4b3ce7cd896fc79d1ab35ed9556fda56592",
+    "qemu_version": "11.1.0",
+    "vhost_device_vsock_version": "0.3.0"
+  },
+  "observations": [
+    {
+      "phase": "initial_image_boot",
+      "result": "readiness_failed",
+      "evidence": "Guest reached multi-user and port 1026 flush succeeded; q35 named its PCI NIC enp0s3 and lilly-network.service could not bring up eth0. The diagnostic VM was stopped."
+    },
+    {
+      "phase": "repaired_image_first_boot",
+      "execution_epoch": 3,
+      "result": "ready",
+      "readiness_port": 1024,
+      "boot_id": "7c76cc8f-b050-4229-aadf-83982d030886",
+      "guest_startup_seconds": 37.210,
+      "qemu_rss_kib": 771452,
+      "backend_rss_kib": 3596,
+      "flush_port_1026": "succeeded",
+      "stopped_after_observation": true
+    },
+    {
+      "phase": "same_overlay_restart",
+      "execution_epoch": 4,
+      "result": "ready",
+      "readiness_port": 1024,
+      "boot_id": "40ed111d-72e7-433a-ac5c-2d91e67fad49",
+      "qemu_start_to_verified_ready_ms": 43985,
+      "guest_startup_seconds": 42.789,
+      "qemu_rss_kib": 773440,
+      "backend_rss_kib": 3956,
+      "same_machine_identity_after_overlay_restart": true,
+      "stopped_after_observation": true
+    },
+    {
+      "phase": "retained_overlay_offline_check",
+      "result": "passed",
+      "qemu_img_check_errors": 0,
+      "retained_machine_identity_bytes_match_first_boot": true,
+      "method": "Converted the stopped qcow2 overlay to temporary raw and read /etc/machine-id with debugfs; temporary raw was deleted. The identity value is omitted."
+    },
+    {
+      "phase": "final_formatted_runner_confirmation",
+      "execution_epoch": 5,
+      "result": "ready",
+      "readiness_port": 1024,
+      "boot_id": "76e90f58-18a8-4828-b6c4-3dabd3e55830",
+      "qemu_start_to_verified_ready_ms": 38523,
+      "qemu_rss_kib": 768640,
+      "backend_rss_kib": 4148,
+      "stopped_after_observation": true
+    }
+  ],
+  "repairs": [
+    "Added net.ifnames=0 to the q35 guest kernel parameters so the production network service sees eth0.",
+    "Accepted only QEMU's exact sibling .qemu-system-x86_64-wrapped executable as a live process identity, with matching PID and process start tick."
+  ],
+  "cleanup": {
+    "owned_qemu_and_backend_stopped": true,
+    "owned_tap_absent": true,
+    "persistent_qcow2_retained_for_review": true,
+    "temporary_raw_deleted": true
+  },
+  "limitations": [
+    "The Lilly hosted GuestExecutor bridge to this runner is still unwired and fail-closed; this is not a hosted Antithesis guest baseline.",
+    "This local TCG run does not establish native Firecracker, KVM, ZFS, or host isolation behavior.",
+    "Workspace source capability was null in the built image; no workspace delivery was verified.",
+    "The shared worktree was dirty. Derivations and source hashes identify this observed build; a later evaluation can differ."
+  ],
+  "architecture_impact": "Harness-only software emulation of the production guest; no accepted architectural decision or production guest/Lilly contract changed. ADR-0017, ADR-0157 and ADR-0158 remain unchanged."
+}

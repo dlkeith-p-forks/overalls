@@ -1,0 +1,13 @@
+@cc [owner:ghuntley,label:security] access-current-membership
+VM permissions MUST derive from the immutable owner, current unarchived machine
+and currently bound thread grants, and team membership through Cedar, subject to
+immutable profile restrictions. These grant sources MUST remain additive and
+thread grants MUST NOT be copied into machine grants. Customer grants MUST NOT
+authorize access; only the owner may access its workspace. A cached browser role
+or a historical grant MUST NOT authorize an
+operation after membership changes.
+
+@cc [owner:ghuntley,label:concurrency] access-change-terminal-atomicity
+Sharing mutations MUST hold the VM row lock and commit grant replacement,
+idempotency result and terminal revocation/fencing together. A failed transaction
+MUST leave the prior membership and terminal authority intact.

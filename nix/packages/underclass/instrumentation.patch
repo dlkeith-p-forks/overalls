@@ -1,0 +1,96 @@
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -18,3 +18,4 @@
+ pub mod top;
+ pub mod ui;
+ pub mod usage;
++pub mod slo;
+--- a/src/store.rs
++++ b/src/store.rs
+@@ -70,6 +70,7 @@
+ 
+ pub struct Store {
+     conn: Mutex<Connection>,
++    pub slo: Option<std::sync::Arc<crate::slo::Journal>>,
+ }
+ 
+ fn schema() -> &'static str {
+@@ -257,7 +258,7 @@
+         let conn = Connection::open(path)?;
+         conn.execute_batch(schema())?;
+         migrate(&conn)?;
+-        Ok(Self { conn: Mutex::new(conn) })
++        Ok(Self { conn: Mutex::new(conn), slo: None })
+     }
+ 
+     #[allow(dead_code)]
+@@ -265,7 +266,7 @@
+         let conn = Connection::open_in_memory()?;
+         conn.execute_batch(schema())?;
+         migrate(&conn)?;
+-        Ok(Self { conn: Mutex::new(conn) })
++        Ok(Self { conn: Mutex::new(conn), slo: None })
+     }
+ 
+     pub fn list_accounts(&self) -> Vec<Account> {
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -78,7 +78,22 @@
+ /// minted ones. Key and token values MUST NOT be written to diagnostics.
+ async fn async_serve(bind_override: Option<String>) -> Result<(), Box<dyn std::error::Error>> {
+     let cfg = config::Config::load();
+-    let store = Arc::new(store::Store::open(&cfg.db_path())?);
++    let mut store = store::Store::open(&cfg.db_path())?;
++    let snapshot_path = std::env::var_os("UNDERCLASS_SLO_SNAPSHOT").map(std::path::PathBuf::from);
++    if let Some(path) = &snapshot_path {
++        if !path.is_absolute() { return Err(underclass::slo::Error::Invalid.into()); }
++        store.slo = Some(underclass::slo::Journal::open(cfg.db_path().parent().ok_or(underclass::slo::Error::Invalid)?)?);
++    }
++    let store = Arc::new(store);
++    if let (Some(journal), Some(path)) = (store.slo.clone(), snapshot_path) {
++        journal.publish_group(&path)?;
++        std::thread::spawn(move || loop {
++            std::thread::sleep(std::time::Duration::from_secs(5));
++            if journal.publish_group(&path).is_err() {
++                tracing::warn!("slo.snapshot_unavailable");
++            }
++        });
++    }
+     store.prune_bindings(
+         models::now_ms(),
+         pool::BINDING_TTL_MS,
+--- a/src/proxy.rs
++++ b/src/proxy.rs
+@@ -223,6 +223,20 @@
+         .to_string();
+     let sticky = extract_sticky_key(&body, session_header.as_deref());
+ 
++    // @cc [owner:ghuntley,label:durability;security] underclass-parsed-admission
++    // Authorized parsed object requests with a nonempty model MUST persist an
++    // admission before provider effects. Accounting refusal MUST return 503;
++    // the persisted journal MUST retain no model, prompt or caller identity.
++    let slo_admission = if body.is_object() && !model.is_empty() {
++        match state.store.slo.as_ref().map(|journal| journal.admit()).transpose() {
++            Ok(admission) => admission,
++            Err(_) => return attach_request_id(error_response(
++                StatusCode::SERVICE_UNAVAILABLE,
++                "request accounting unavailable", "service_unavailable",
++            ), &request_id),
++        }
++    } else { None };
++
+     state.resets.maybe_reset(&state.pool, &state.store, &state.tokens, &request_id).await;
+ 
+     let total_accounts = state.pool.lock().unwrap().accounts.len().max(1);
+@@ -303,7 +317,10 @@
+         {
+             Attempt::Respond(resp) => {
+                 logging::log_request_completed(&request_id, resp.status().as_u16(), started.elapsed().as_millis() as u64);
+-                return resp;
++                return match slo_admission {
++                    Some(admission) => admission.wrap_response(resp),
++                    None => resp,
++                };
+             }
+             Attempt::Failover(passthrough) => {
+                 last_upstream = passthrough.or(last_upstream);

@@ -1,0 +1,1132 @@
+diff --git a/src/vs/base/common/product.ts b/src/vs/base/common/product.ts
+index 9115683b..a6352e6f 100644
+--- a/src/vs/base/common/product.ts
++++ b/src/vs/base/common/product.ts
+@@ -101,6 +101,14 @@ export interface IProductConfiguration {
+ 		readonly releaseId: string;
+ 		readonly protocol: 1;
+ 		readonly extensionSigningKeys: readonly string[];
++		readonly policy?: {
++			readonly builtInAI: 'disabled';
++			readonly workspaceTrust: 'disabled';
++		};
++		readonly configurationDefaults?: {
++			readonly 'rust-analyzer.server.path': 'rust-analyzer';
++			readonly 'elixirLS.languageServerOverridePath': string;
++		};
+ 	};
+ 	readonly version: string;
+ 	readonly date?: string;
+diff --git a/src/vs/platform/configuration/common/overallsProductPolicy.ts b/src/vs/platform/configuration/common/overallsProductPolicy.ts
+new file mode 100644
+index 00000000..78b95be5
+--- /dev/null
++++ b/src/vs/platform/configuration/common/overallsProductPolicy.ts
+@@ -0,0 +1,49 @@
++/*---------------------------------------------------------------------------------------------
++ *  Copyright (c) Microsoft Corporation. All rights reserved.
++ *  Licensed under the MIT License. See License.txt in the project root for license information.
++ *--------------------------------------------------------------------------------------------*/
++
++import { ErrorNoTelemetry } from '../../../base/common/errors.js';
++import { Event } from '../../../base/common/event.js';
++import { IProductConfiguration } from '../../../base/common/product.js';
++import { localize } from '../../../nls.js';
++import { ILogService } from '../../log/common/log.js';
++import product from '../../product/common/product.js';
++import { ConfigurationModel } from './configurationModels.js';
++import { IPolicyConfiguration } from './configurations.js';
++
++/** @cc [owner:ghuntley,label:security] overalls-built-in-ai-capability
++ * Bundled Chat, inline Chat and language-model entry points MUST honor the
++ * immutable product capability before activation, UI creation or provider calls.
++ * Independent extension UI and generic language completion APIs remain available.
++ */
++export function isBuiltInAIDisabled(configuration: Pick<IProductConfiguration, 'overallsEditor'> = product): boolean {
++	return configuration.overallsEditor?.policy?.builtInAI === 'disabled';
++}
++
++export const builtInAIDisabledMessage = localize('overalls.builtInAIDisabled', "Built-in AI features are disabled in this editor.");
++
++export function assertBuiltInAIEnabled(): void {
++	if (isBuiltInAIDisabled()) {
++		throw new ErrorNoTelemetry(builtInAIDisabledMessage);
++	}
++}
++
++/** @cc [owner:ghuntley,label:security] overalls-fixed-policy-precedence
++ * Product AI settings MUST merge after every delegated policy snapshot and
++ * change event, so user, workspace, folder and language settings cannot revive AI.
++ * Other policy values MUST be preserved; ordinary tooling defaults are not policy.
++ */
++export function withOverallsProductPolicy(delegate: IPolicyConfiguration, logService: ILogService, configuration: Pick<IProductConfiguration, 'overallsEditor'> = product): IPolicyConfiguration {
++	if (!isBuiltInAIDisabled(configuration)) {
++		return delegate;
++	}
++	const fixed = ConfigurationModel.createEmptyModel(logService);
++	fixed.setValue('chat.disableAIFeatures', true);
++	fixed.setValue('workbench.disableAICustomizations', true);
++	return {
++		onDidChangeConfiguration: Event.map(delegate.onDidChangeConfiguration, model => model.merge(fixed)),
++		get configurationModel(): ConfigurationModel { return delegate.configurationModel.merge(fixed); },
++		async initialize(): Promise<ConfigurationModel> { return (await delegate.initialize()).merge(fixed); }
++	};
++}
+diff --git a/src/vs/platform/configuration/test/common/overallsProductPolicy.check.ts b/src/vs/platform/configuration/test/common/overallsProductPolicy.check.ts
+new file mode 100644
+index 00000000..bdd3bef3
+--- /dev/null
++++ b/src/vs/platform/configuration/test/common/overallsProductPolicy.check.ts
+@@ -0,0 +1,96 @@
++/*---------------------------------------------------------------------------------------------
++ *  Copyright (c) Microsoft Corporation. All rights reserved.
++ *  Licensed under the MIT License. See License.txt in the project root for license information.
++ *--------------------------------------------------------------------------------------------*/
++
++import assert from 'assert';
++import { Emitter } from '../../../../base/common/event.js';
++import { ResourceMap } from '../../../../base/common/map.js';
++import { IProductConfiguration } from '../../../../base/common/product.js';
++import { URI } from '../../../../base/common/uri.js';
++import { NullLogService } from '../../../log/common/log.js';
++import { Workspace, WorkspaceFolder } from '../../../workspace/common/workspace.js';
++import { Configuration, ConfigurationModel, ConfigurationModelParser } from '../../common/configurationModels.js';
++import { IPolicyConfiguration } from '../../common/configurations.js';
++import { isBuiltInAIDisabled, withOverallsProductPolicy } from '../../common/overallsProductPolicy.js';
++
++const policyProduct: Pick<IProductConfiguration, 'overallsEditor'> = {
++	overallsEditor: { releaseId: 'test', protocol: 1, extensionSigningKeys: [], policy: { builtInAI: 'disabled', workspaceTrust: 'disabled' } }
++};
++const keys = ['chat.disableAIFeatures', 'workbench.disableAICustomizations'] as const;
++
++/** @cc [owner:ghuntley,label:verification] overalls-policy-configuration-matrix
++ * Tests MUST execute the actual policy overlay and configuration engine through
++ * every setting scope, language override, initialization and change event.
++ */
++export async function runOverallsPolicyChecks(): Promise<void> {
++	const log = new NullLogService();
++	const empty = (): ConfigurationModel => ConfigurationModel.createEmptyModel(log);
++	const emitter = new Emitter<ConfigurationModel>();
++	let delegatedModel = empty();
++	delegatedModel.setValue('chat.disableAIFeatures', false);
++	delegatedModel.setValue('workbench.disableAICustomizations', false);
++	delegatedModel.setValue('unrelated.enterprise.policy', 'preserved');
++	const delegate: IPolicyConfiguration = {
++		onDidChangeConfiguration: emitter.event,
++		get configurationModel(): ConfigurationModel { return delegatedModel; },
++		async initialize(): Promise<ConfigurationModel> { return delegatedModel; }
++	};
++	assert.equal(isBuiltInAIDisabled({}), false);
++	assert.equal(isBuiltInAIDisabled(policyProduct), true);
++	assert.equal(withOverallsProductPolicy(delegate, log, {}), delegate);
++	const fixed = withOverallsProductPolicy(delegate, log, policyProduct);
++	function checkSnapshot(model: ConfigurationModel): void {
++		for (const key of keys) { assert.equal(model.getValue(key), true); }
++		assert.equal(model.getValue('unrelated.enterprise.policy'), 'preserved');
++	}
++	checkSnapshot(fixed.configurationModel);
++	checkSnapshot(await fixed.initialize());
++	let changes = 0;
++	const listener = fixed.onDidChangeConfiguration(model => { checkSnapshot(model); changes++; });
++	for (const value of [false, undefined, true]) {
++		delegatedModel = empty();
++		delegatedModel.setValue('unrelated.enterprise.policy', 'preserved');
++		for (const key of keys) {
++			if (value !== undefined) { delegatedModel.setValue(key, value); }
++		}
++		emitter.fire(delegatedModel);
++		checkSnapshot(fixed.configurationModel);
++	}
++	assert.equal(changes, 3);
++	listener.dispose();
++	emitter.dispose();
++
++	const folder = new WorkspaceFolder({ uri: URI.file('/project'), name: 'project', index: 0 });
++	const workspace = new Workspace('test', [folder], false, URI.file('/project/test.code-workspace'), () => false);
++	const resource = URI.file('/project/src/main.rs');
++	const parser = new ConfigurationModelParser('saved settings', log);
++	parser.parse(JSON.stringify({
++		'chat.disableAIFeatures': false,
++		'workbench.disableAICustomizations': false,
++		'editor.wordWrap': 'on',
++		'[rust]': { 'chat.disableAIFeatures': false, 'workbench.disableAICustomizations': false }
++	}));
++	const saved = parser.configurationModel;
++	for (const key of keys) { assert.equal(saved.override('rust').getValue(key), false); }
++	// Enumerate presence/absence in defaults, application, local/remote user,
++	// workspace, folder and memory; saved language settings ride with each scope.
++	for (let mask = 0; mask < 128; mask++) {
++		const scope = (bit: number): ConfigurationModel => mask & (1 << bit) ? saved : empty();
++		const folders = new ResourceMap<ConfigurationModel>();
++		folders.set(folder.uri, scope(5));
++		const memory = new ResourceMap<ConfigurationModel>();
++		memory.set(resource, saved);
++		const config = new Configuration(scope(0), fixed.configurationModel, scope(1), scope(2), scope(3), scope(4), folders, scope(6), memory, log);
++		for (const overrideIdentifier of [undefined, 'rust']) {
++			for (const key of keys) {
++				const overrides = { resource, overrideIdentifier };
++				assert.equal(config.getValue(key, overrides, workspace), true, `scope matrix ${mask}`);
++				assert.equal(config.inspect<boolean>(key, overrides, workspace).policyValue, true);
++				config.updateValue(key, false, { resource, overrideIdentifiers: ['rust'] });
++				assert.equal(config.getValue(key, overrides, workspace), true);
++			}
++		}
++		assert.equal(config.getValue('editor.wordWrap', { resource }, workspace), 'on');
++	}
++}
+diff --git a/src/vs/server/node/webClientServer.ts b/src/vs/server/node/webClientServer.ts
+index c217b118..06dfd7e6 100644
+--- a/src/vs/server/node/webClientServer.ts
++++ b/src/vs/server/node/webClientServer.ts
+@@ -356,6 +356,7 @@ export class WebClientServer {
+ 			_wrapWebWorkerExtHostInIframe,
+ 			developmentOptions: { enableSmokeTestDriver: this._environmentService.args['enable-smoke-test-driver'] ? true : undefined, logLevel: this._logService.getLevel() },
+ 			settingsSyncOptions: !this._environmentService.isBuilt && this._environmentService.args['enable-sync'] ? { enabled: true } : undefined,
++			configurationDefaults: this._productService.overallsEditor?.configurationDefaults,
+ 			enableWorkspaceTrust: !this._environmentService.args['disable-workspace-trust'],
+ 			enabledExtensionProposedApi: this._environmentService.args['enable-proposed-api'],
+ 			folderUri: resolveWorkspaceURI(this._environmentService.args['default-folder']),
+diff --git a/src/vs/workbench/contrib/chat/browser/chat.shared.contribution.ts b/src/vs/workbench/contrib/chat/browser/chat.shared.contribution.ts
+index d00df7a6..db141c30 100644
+--- a/src/vs/workbench/contrib/chat/browser/chat.shared.contribution.ts
++++ b/src/vs/workbench/contrib/chat/browser/chat.shared.contribution.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { isBuiltInAIDisabled } from '../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { Event } from '../../../../base/common/event.js';
+ import { createMarkdownCommandLink } from '../../../../base/common/htmlContent.js';
+ import { Disposable, DisposableMap, DisposableStore } from '../../../../base/common/lifecycle.js';
+@@ -2548,36 +2549,38 @@ configurationRegistry.registerConfiguration({
+ 		},
+ 	}
+ });
+-Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
+-	EditorPaneDescriptor.create(
+-		ChatEditor,
+-		ChatEditorInput.EditorID,
+-		nls.localize('chat', "Chat")
+-	),
+-	[
+-		new SyncDescriptor(ChatEditorInput)
+-	]
+-);
+-Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
+-	EditorPaneDescriptor.create(
+-		ChatDebugEditor,
+-		ChatDebugEditorInput.ID,
+-		nls.localize('chatDebug', "Debug View")
+-	),
+-	[
+-		new SyncDescriptor(ChatDebugEditorInput)
+-	]
+-);
+-Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
+-	EditorPaneDescriptor.create(
+-		AgentPluginEditor,
+-		AgentPluginEditor.ID,
+-		nls.localize('agentPlugin', "Agent Plugin")
+-	),
+-	[
+-		new SyncDescriptor(AgentPluginEditorInput)
+-	]
+-);
++if (!isBuiltInAIDisabled()) {
++	Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
++		EditorPaneDescriptor.create(
++			ChatEditor,
++			ChatEditorInput.EditorID,
++			nls.localize('chat', "Chat")
++		),
++		[
++			new SyncDescriptor(ChatEditorInput)
++		]
++	);
++	Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
++		EditorPaneDescriptor.create(
++			ChatDebugEditor,
++			ChatDebugEditorInput.ID,
++			nls.localize('chatDebug', "Debug View")
++		),
++		[
++			new SyncDescriptor(ChatDebugEditorInput)
++		]
++	);
++	Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
++		EditorPaneDescriptor.create(
++			AgentPluginEditor,
++			AgentPluginEditor.ID,
++			nls.localize('agentPlugin', "Agent Plugin")
++		),
++		[
++			new SyncDescriptor(AgentPluginEditorInput)
++		]
++	);
++}
+ function isStringKeyedObject(value: unknown): value is Record<string, unknown> {
+ 	return !!value && typeof value === 'object' && !Array.isArray(value);
+ }
+@@ -2810,6 +2813,10 @@ class ChatResolverContribution extends Disposable {
+ 	) {
+ 		super();
+ 
++		if (isBuiltInAIDisabled()) {
++			return;
++		}
++
+ 		this._registerEditor(Schemas.vscodeChatEditor);
+ 		this._registerEditor(Schemas.vscodeLocalChatSession);
+ 
+@@ -2887,6 +2894,9 @@ class ChatDebugResolverContribution implements IWorkbenchContribution {
+ 	constructor(
+ 		@IEditorResolverService editorResolverService: IEditorResolverService,
+ 	) {
++		if (isBuiltInAIDisabled()) {
++			return;
++		}
+ 		editorResolverService.registerEditor(
+ 			`${ChatDebugEditorInput.RESOURCE.scheme}:**/**`,
+ 			{
+@@ -3241,8 +3251,10 @@ AccessibleViewRegistry.register(new ChatFindAccessibilityHelp());
+ AccessibleViewRegistry.register(new ChatPetAchievementsAccessibilityHelp());
+ 
+ registerEditorFeature(ChatInputBoxContentProvider);
+-Registry.as<IEditorFactoryRegistry>(EditorExtensions.EditorFactory).registerEditorSerializer(ChatEditorInput.TypeID, ChatEditorInputSerializer);
+-Registry.as<IEditorFactoryRegistry>(EditorExtensions.EditorFactory).registerEditorSerializer(ChatDebugEditorInput.ID, ChatDebugEditorInputSerializer);
++if (!isBuiltInAIDisabled()) {
++	Registry.as<IEditorFactoryRegistry>(EditorExtensions.EditorFactory).registerEditorSerializer(ChatEditorInput.TypeID, ChatEditorInputSerializer);
++	Registry.as<IEditorFactoryRegistry>(EditorExtensions.EditorFactory).registerEditorSerializer(ChatDebugEditorInput.ID, ChatDebugEditorInputSerializer);
++}
+ 
+ registerWorkbenchContribution2(CopilotTelemetryContribution.ID, CopilotTelemetryContribution, WorkbenchPhase.BlockRestore);
+ registerWorkbenchContribution2(EditorChatUsageContribution.ID, EditorChatUsageContribution, WorkbenchPhase.BlockRestore);
+diff --git a/src/vs/workbench/contrib/chat/browser/chatParticipant.contribution.ts b/src/vs/workbench/contrib/chat/browser/chatParticipant.contribution.ts
+index 89200842..ba47d3aa 100644
+--- a/src/vs/workbench/contrib/chat/browser/chatParticipant.contribution.ts
++++ b/src/vs/workbench/contrib/chat/browser/chatParticipant.contribution.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { isBuiltInAIDisabled } from '../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { coalesce, isNonEmptyArray } from '../../../../base/common/arrays.js';
+ import { Codicon } from '../../../../base/common/codicons.js';
+ import { toErrorMessage } from '../../../../base/common/errorMessage.js';
+@@ -70,7 +71,7 @@ const chatViewDescriptor: IViewDescriptor = {
+ 		order: 1
+ 	},
+ 	ctorDescriptor: new SyncDescriptor(ChatViewPane),
+-	when: ContextKeyExpr.and(
++	when: isBuiltInAIDisabled() ? ContextKeyExpr.false() : ContextKeyExpr.and(
+ 		ChatContextKeys.accountPolicyGateActive.negate(),
+ 		ContextKeyExpr.or(
+ 			ContextKeyExpr.and(
+@@ -92,7 +93,7 @@ Registry.as<IViewsRegistry>(ViewExtensions.ViewsRegistry).registerViews([{
+ 	canToggleVisibility: false,
+ 	canMoveView: false,
+ 	ctorDescriptor: new SyncDescriptor(ChatUpdateRequiredView),
+-	when: ManagedSettingsUpdateRequiredContext,
++	when: isBuiltInAIDisabled() ? ContextKeyExpr.false() : ManagedSettingsUpdateRequiredContext,
+ 	openCommandActionDescriptor: {
+ 		id: 'workbench.action.chat.showUpdateRequired',
+ 		title: localize2('chat.updateRequiredView', "Chat Update Requirement"),
+diff --git a/src/vs/workbench/contrib/chat/browser/chatSessions/chatSessions.contribution.ts b/src/vs/workbench/contrib/chat/browser/chatSessions/chatSessions.contribution.ts
+index b853fbef..f5185459 100644
+--- a/src/vs/workbench/contrib/chat/browser/chatSessions/chatSessions.contribution.ts
++++ b/src/vs/workbench/contrib/chat/browser/chatSessions/chatSessions.contribution.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { assertBuiltInAIEnabled, isBuiltInAIDisabled } from '../../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { sep } from '../../../../../base/common/path.js';
+ import { AsyncIterableProducer, DeferredPromise, raceCancellationError } from '../../../../../base/common/async.js';
+ import { CancellationToken, CancellationTokenSource } from '../../../../../base/common/cancellation.js';
+@@ -314,6 +315,11 @@ interface IPendingSessionResolution {
+ }
+ 
+ 
++/** @cc [owner:ghuntley,label:security] overalls-native-chat-session-capability
++ * Native Chat sessions MUST remain unavailable before extension activation,
++ * controller refresh or content/customization callbacks under disabled product
++ * policy. Native implementation registration MUST be inert.
++ */
+ export class ChatSessionsService extends Disposable implements IChatSessionsService {
+ 	readonly _serviceBrand: undefined;
+ 
+@@ -376,6 +382,9 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 		super();
+ 
+ 		this._hasCanDelegateProvidersKey = ChatContextKeys.hasCanDelegateProviders.bindTo(this._contextKeyService);
++		if (isBuiltInAIDisabled()) {
++			return;
++		}
+ 
+ 		this._register(extensionPoint.setHandler(extensions => {
+ 			for (const ext of extensions) {
+@@ -554,6 +563,9 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	}
+ 
+ 	private _isContributionAvailable(contribution: IChatSessionsExtensionPoint): boolean {
++		if (isBuiltInAIDisabled()) {
++			return false;
++		}
+ 		if (!contribution.when) {
+ 			return true;
+ 		}
+@@ -568,9 +580,13 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	 *
+ 	 * Session types with no contribution entry (e.g. the built-in `local`
+ 	 * provider, or item controllers registered without a matching contribution)
+-	 * are treated as available, since there is no `when` clause gating them.
++	 * are treated as available, since there is no `when` clause gating them,
++	 * unless the immutable product capability disables native Chat.
+ 	 */
+ 	private _isContributionAvailableForType(sessionType: string): boolean {
++		if (isBuiltInAIDisabled()) {
++			return false;
++		}
+ 		// Resolve the owning contribution by primary type, falling back to the
+ 		// alternative-id map. We must NOT use `_resolveToPrimaryType` here: it
+ 		// returns `undefined` once the primary contribution is unavailable, which
+@@ -935,6 +951,9 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 
+ 
+ 	registerChatSessionContribution(contribution: IChatSessionsExtensionPoint): IDisposable {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		if (this._contributions.has(contribution.type)) {
+ 			return { dispose: () => { } };
+ 		}
+@@ -982,6 +1001,9 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	}
+ 
+ 	private async doActivateChatSessionItemController(chatViewType: string): Promise<boolean> {
++		if (isBuiltInAIDisabled()) {
++			return false;
++		}
+ 		await this._extensionService.whenInstalledExtensionsRegistered();
+ 		const resolvedType = this._resolveToPrimaryType(chatViewType);
+ 		if (resolvedType) {
+@@ -1003,6 +1025,9 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	}
+ 
+ 	async canResolveChatSession(sessionType: string) {
++		if (isBuiltInAIDisabled()) {
++			return false;
++		}
+ 		await this._extensionService.whenInstalledExtensionsRegistered();
+ 		if (!this._isContributionAvailableForType(sessionType)) {
+ 			return false;
+@@ -1153,6 +1178,9 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	}
+ 
+ 	registerChatSessionItemController(chatSessionType: string, controller: IChatSessionItemController): IDisposable {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		const disposables = new DisposableStore();
+ 
+ 
+@@ -1188,6 +1216,9 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	}
+ 
+ 	registerChatSessionContentProvider(chatSessionType: string, provider: IChatSessionContentProvider): IDisposable {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		if (this._contentProviders.has(chatSessionType)) {
+ 			throw new Error(`Content provider for ${chatSessionType} is already registered.`);
+ 		}
+@@ -1213,6 +1244,9 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	}
+ 
+ 	registerCustomizationsProvider(chatSessionType: string, provider: IChatSessionCustomizationsProvider): IDisposable {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		this._customizationsProviders.set(chatSessionType, provider);
+ 		const onChangeDisposable = provider.onDidChangeCustomizations(() => {
+ 			this._onDidChangeCustomizations.fire({ chatSessionType });
+@@ -1238,6 +1272,7 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	}
+ 
+ 	async createNewChatSessionItem(chatSessionType: string, request: IChatNewSessionRequest, token: CancellationToken): Promise<IChatSessionItem | undefined> {
++		assertBuiltInAIEnabled();
+ 		const controllerData = this._itemControllers.get(chatSessionType);
+ 		if (!controllerData) {
+ 			return undefined;
+@@ -1288,6 +1323,7 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	}
+ 
+ 	public async getOrCreateChatSession(sessionResource: URI, token: CancellationToken): Promise<IChatSession> {
++		assertBuiltInAIEnabled();
+ 		{
+ 			const existingSessionData = this._sessions.get(sessionResource);
+ 			if (existingSessionData) {
+@@ -1417,6 +1453,7 @@ export class ChatSessionsService extends Disposable implements IChatSessionsServ
+ 	}
+ 
+ 	public async getChatSessionHistory(sessionResource: URI, token: CancellationToken): Promise<readonly IChatSessionHistoryItem[]> {
++		assertBuiltInAIEnabled();
+ 		const existing = this._sessions.get(this._resolveResource(sessionResource));
+ 		if (existing) {
+ 			return [...existing.session.history];
+diff --git a/src/vs/workbench/contrib/chat/browser/tools/languageModelToolsService.ts b/src/vs/workbench/contrib/chat/browser/tools/languageModelToolsService.ts
+index ab143449..192a24d4 100644
+--- a/src/vs/workbench/contrib/chat/browser/tools/languageModelToolsService.ts
++++ b/src/vs/workbench/contrib/chat/browser/tools/languageModelToolsService.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { assertBuiltInAIEnabled, isBuiltInAIDisabled } from '../../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { renderAsPlaintext } from '../../../../../base/browser/markdownRenderer.js';
+ import { assertNever } from '../../../../../base/common/assert.js';
+ import { RunOnceScheduler, timeout } from '../../../../../base/common/async.js';
+@@ -307,6 +308,9 @@ export class LanguageModelToolsService extends Disposable implements ILanguageMo
+ 	}
+ 
+ 	registerToolData(toolData: IToolData): IDisposable {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		if (this._tools.has(toolData.id)) {
+ 			throw new Error(`Tool "${toolData.id}" is already registered.`);
+ 		}
+@@ -350,6 +354,9 @@ export class LanguageModelToolsService extends Disposable implements ILanguageMo
+ 	}
+ 
+ 	registerToolImplementation(id: string, tool: IToolImpl): IDisposable {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		const entry = this._tools.get(id);
+ 		if (!entry) {
+ 			throw new Error(`Tool "${id}" was not contributed.`);
+@@ -491,6 +498,7 @@ export class LanguageModelToolsService extends Disposable implements ILanguageMo
+ 	}
+ 
+ 	async invokeTool(dto: IToolInvocation, countTokens: CountTokensCallback, token: CancellationToken): Promise<IToolResult> {
++		assertBuiltInAIEnabled();
+ 		this._logService.trace(`[LanguageModelToolsService#invokeTool] Invoking tool ${dto.toolId} with parameters ${JSON.stringify(dto.parameters)}`);
+ 
+ 		const toolData = this._tools.get(dto.toolId)?.data;
+diff --git a/src/vs/workbench/contrib/chat/browser/widget/chatWidgetService.ts b/src/vs/workbench/contrib/chat/browser/widget/chatWidgetService.ts
+index 579cc6db..6a39b6ec 100644
+--- a/src/vs/workbench/contrib/chat/browser/widget/chatWidgetService.ts
++++ b/src/vs/workbench/contrib/chat/browser/widget/chatWidgetService.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { isBuiltInAIDisabled } from '../../../../../platform/configuration/common/overallsProductPolicy.js';
+ import * as dom from '../../../../../base/browser/dom.js';
+ import { timeout } from '../../../../../base/common/async.js';
+ import { Emitter, Event } from '../../../../../base/common/event.js';
+@@ -79,6 +80,9 @@ export class ChatWidgetService extends Disposable implements IChatWidgetService
+ 	}
+ 
+ 	async revealWidget(preserveFocus?: boolean): Promise<IChatWidget | undefined> {
++		if (isBuiltInAIDisabled()) {
++			return undefined;
++		}
+ 		const last = this.lastFocusedWidget;
+ 		if (last && await this.reveal(last, preserveFocus)) {
+ 			return last;
+@@ -88,6 +92,9 @@ export class ChatWidgetService extends Disposable implements IChatWidgetService
+ 	}
+ 
+ 	async reveal(widget: IChatWidget, preserveFocus?: boolean): Promise<boolean> {
++		if (isBuiltInAIDisabled()) {
++			return false;
++		}
+ 		if (widget.viewModel?.sessionResource) {
+ 			const alreadyOpenWidget = await this.revealSessionIfAlreadyOpen(widget.viewModel.sessionResource, { preserveFocus });
+ 			if (alreadyOpenWidget) {
+@@ -112,6 +119,9 @@ export class ChatWidgetService extends Disposable implements IChatWidgetService
+ 	openSession(sessionResource: URI, target?: typeof ChatViewPaneTarget, options?: IChatEditorOptions): Promise<IChatWidget | undefined>;
+ 	openSession(sessionResource: URI, target?: PreferredGroup, options?: IChatEditorOptions): Promise<IChatWidget | undefined>;
+ 	async openSession(sessionResource: URI, target?: typeof ChatViewPaneTarget | PreferredGroup, options?: IChatEditorOptions): Promise<IChatWidget | undefined> {
++		if (isBuiltInAIDisabled()) {
++			return undefined;
++		}
+ 		const t0 = Date.now();
+ 		const targetKind = target === ChatViewPaneTarget ? 'view' : (typeof target === 'undefined' ? 'undefined' : 'editor');
+ 		this.logService.trace(`[ChatWidgetService] openSession start uri=${sessionResource.toString()} target=${targetKind}`);
+diff --git a/src/vs/workbench/contrib/chat/browser/widgetHosts/chatQuick.ts b/src/vs/workbench/contrib/chat/browser/widgetHosts/chatQuick.ts
+index 27d9bfca..47905ead 100644
+--- a/src/vs/workbench/contrib/chat/browser/widgetHosts/chatQuick.ts
++++ b/src/vs/workbench/contrib/chat/browser/widgetHosts/chatQuick.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { isBuiltInAIDisabled } from '../../../../../platform/configuration/common/overallsProductPolicy.js';
+ import * as dom from '../../../../../base/browser/dom.js';
+ import { Orientation, Sash } from '../../../../../base/browser/ui/sash/sash.js';
+ import { disposableTimeout } from '../../../../../base/common/async.js';
+@@ -86,6 +87,9 @@ export class QuickChatService extends Disposable implements IQuickChatService {
+ 	}
+ 
+ 	open(options?: IQuickChatOpenOptions): void {
++		if (isBuiltInAIDisabled()) {
++			return;
++		}
+ 		if (this._input) {
+ 			if (this._currentChat && options?.query) {
+ 				this._currentChat.focus();
+diff --git a/src/vs/workbench/contrib/chat/common/chatService/chatServiceImpl.ts b/src/vs/workbench/contrib/chat/common/chatService/chatServiceImpl.ts
+index a3249351..eca888e7 100644
+--- a/src/vs/workbench/contrib/chat/common/chatService/chatServiceImpl.ts
++++ b/src/vs/workbench/contrib/chat/common/chatService/chatServiceImpl.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { assertBuiltInAIEnabled, builtInAIDisabledMessage, isBuiltInAIDisabled } from '../../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { DeferredPromise, raceCancellationError, raceTimeout } from '../../../../../base/common/async.js';
+ import { CancellationToken, CancellationTokenSource } from '../../../../../base/common/cancellation.js';
+ import { IStringDictionary } from '../../../../../base/common/collections.js';
+@@ -334,7 +335,7 @@ export class ChatService extends Disposable implements IChatService {
+ 	}
+ 
+ 	isEnabled(location: ChatAgentLocation): boolean {
+-		return this.chatAgentService.getContributedDefaultAgent(location) !== undefined;
++		return !isBuiltInAIDisabled() && this.chatAgentService.getContributedDefaultAgent(location) !== undefined;
+ 	}
+ 
+ 	private migrateData(): ISerializableChatsData | undefined {
+@@ -560,6 +561,7 @@ export class ChatService extends Disposable implements IChatService {
+ 	}
+ 
+ 	startNewLocalSession(location: ChatAgentLocation, options?: IChatSessionStartOptions): IChatModelReference {
++		assertBuiltInAIEnabled();
+ 		this.trace('startNewLocalSession');
+ 		const sessionResource = LocalChatSessionUri.forSession(generateUuid());
+ 		return this._sessionModels.acquireOrCreate({
+@@ -573,6 +575,7 @@ export class ChatService extends Disposable implements IChatService {
+ 	}
+ 
+ 	private _startSession(props: IStartSessionProps): ChatModel {
++		assertBuiltInAIEnabled();
+ 		const { initialData, location, sessionResource, canUseTools, transferEditingSession, disableBackgroundKeepAlive, inputState, isReadOnly, isInputBlocked, sessionTypeSelectionReason } = props;
+ 		const model = this.instantiationService.createInstance(ChatModel, initialData, { initialLocation: location, canUseTools, resource: sessionResource, disableBackgroundKeepAlive, inputState, isReadOnly, isInputBlocked, sessionTypeSelectionReason });
+ 		if (this._hasAgentHostContribution(sessionResource)) {
+@@ -596,6 +599,7 @@ export class ChatService extends Disposable implements IChatService {
+ 	}
+ 
+ 	async activateDefaultAgent(location: ChatAgentLocation): Promise<void> {
++		assertBuiltInAIEnabled();
+ 		await this.extensionService.whenInstalledExtensionsRegistered();
+ 
+ 		const defaultAgentData = this.chatAgentService.getContributedDefaultAgent(location) ?? this.chatAgentService.getContributedDefaultAgent(ChatAgentLocation.Chat);
+@@ -633,6 +637,7 @@ export class ChatService extends Disposable implements IChatService {
+ 	}
+ 
+ 	private async acquireOrRestoreLocalSession(sessionResource: URI, debugOwner?: string): Promise<IChatModelReference | undefined> {
++		assertBuiltInAIEnabled();
+ 		this.trace('acquireOrRestoreSession', `${sessionResource}`);
+ 		const existingRef = this.acquireExistingSession(sessionResource, debugOwner);
+ 		if (existingRef) {
+@@ -677,6 +682,7 @@ export class ChatService extends Disposable implements IChatService {
+ 	}
+ 
+ 	loadSessionFromData(data: IExportableChatData | ISerializableChatData, debugOwner?: string, sessionTypeSelectionReason?: SessionTypeSelectionReason): IChatModelReference {
++		assertBuiltInAIEnabled();
+ 		const sessionId = (data as ISerializableChatData).sessionId ?? generateUuid();
+ 		const sessionResource = LocalChatSessionUri.forSession(sessionId);
+ 		return this._sessionModels.acquireOrCreate({
+@@ -689,6 +695,7 @@ export class ChatService extends Disposable implements IChatService {
+ 	}
+ 
+ 	async acquireOrLoadSession(sessionResource: URI, location: ChatAgentLocation, token: CancellationToken, debugOwner?: string, sessionTypeSelectionReason?: SessionTypeSelectionReason): Promise<IChatModelReference | undefined> {
++		assertBuiltInAIEnabled();
+ 		if (LocalChatSessionUri.isLocalSession(sessionResource)) {
+ 			return this.acquireOrRestoreLocalSession(sessionResource, debugOwner);
+ 		} else {
+@@ -1327,6 +1334,9 @@ export class ChatService extends Disposable implements IChatService {
+ 	}
+ 
+ 	private async sendRequestInternal(sessionResource: URI, request: string, options: IChatSendRequestOptions | undefined, isSubmission: boolean): Promise<ChatSendResult> {
++		if (isBuiltInAIDisabled()) {
++			return { kind: 'rejected', reason: builtInAIDisabledMessage };
++		}
+ 		this.trace('sendRequest', `sessionResource: ${sessionResource.toString()}, message: ${request.substring(0, 20)}${request.length > 20 ? '[...]' : ''}}`);
+ 
+ 		const hasExplicitFileOrImageAttachment = [...(options?.attachedContext ?? []), ...(options?.resolvedVariables ?? [])].some(isExplicitFileOrImageVariableEntry);
+diff --git a/src/vs/workbench/contrib/chat/common/languageModels.ts b/src/vs/workbench/contrib/chat/common/languageModels.ts
+index ce30a73f..392f14dc 100644
+--- a/src/vs/workbench/contrib/chat/common/languageModels.ts
++++ b/src/vs/workbench/contrib/chat/common/languageModels.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { assertBuiltInAIEnabled, isBuiltInAIDisabled } from '../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { SequencerByKey, timeout } from '../../../../base/common/async.js';
+ import { VSBuffer } from '../../../../base/common/buffer.js';
+ import { CancellationToken } from '../../../../base/common/cancellation.js';
+@@ -12,7 +13,7 @@ import { Emitter, Event } from '../../../../base/common/event.js';
+ import { hash } from '../../../../base/common/hash.js';
+ import { Iterable } from '../../../../base/common/iterator.js';
+ import { IJSONSchema, TypeFromJsonSchema } from '../../../../base/common/jsonSchema.js';
+-import { DisposableStore, IDisposable, toDisposable } from '../../../../base/common/lifecycle.js';
++import { Disposable, DisposableStore, IDisposable, toDisposable } from '../../../../base/common/lifecycle.js';
+ import { IObservable, observableValue } from '../../../../base/common/observable.js';
+ import { equals } from '../../../../base/common/objects.js';
+ import Severity from '../../../../base/common/severity.js';
+@@ -1137,6 +1138,9 @@ export class LanguageModelsService implements ILanguageModelsService {
+ 	) {
+ 		this._hasUserSelectableModels = ChatContextKeys.languageModelsAreUserSelectable.bindTo(_contextKeyService);
+ 		this._hasNonCopilotUserSelectableModels = ChatContextKeys.nonCopilotLanguageModelsAreUserSelectable.bindTo(_contextKeyService);
++		if (isBuiltInAIDisabled()) {
++			return;
++		}
+ 		this._recentlyUsedModelIds = this._readRecentlyUsedModels();
+ 		this._pinnedModelIds = this._readPinnedModels();
+ 		this._readVisibility();
+@@ -1194,6 +1198,9 @@ export class LanguageModelsService implements ILanguageModelsService {
+ 	}
+ 
+ 	deltaLanguageModelChatProviderDescriptors(added: IUserFriendlyLanguageModel[], removed: IUserFriendlyLanguageModel[]): void {
++		if (isBuiltInAIDisabled()) {
++			return;
++		}
+ 		const addedVendorIds: string[] = [];
+ 		const removedVendorIds: string[] = [];
+ 
+@@ -1282,6 +1289,9 @@ export class LanguageModelsService implements ILanguageModelsService {
+ 	}
+ 
+ 	private async _resolveAllLanguageModels(vendorId: string, silent: boolean): Promise<void> {
++		if (isBuiltInAIDisabled()) {
++			return;
++		}
+ 
+ 		const vendor = this._vendors.get(vendorId);
+ 
+@@ -1471,6 +1481,9 @@ export class LanguageModelsService implements ILanguageModelsService {
+ 	}
+ 
+ 	async selectLanguageModels(selector: ILanguageModelChatSelector): Promise<string[]> {
++		if (isBuiltInAIDisabled()) {
++			return [];
++		}
+ 
+ 		if (selector.vendor) {
+ 			await this._resolveAllLanguageModels(selector.vendor, true);
+@@ -1496,6 +1509,9 @@ export class LanguageModelsService implements ILanguageModelsService {
+ 	}
+ 
+ 	registerLanguageModelProvider(vendor: string, provider: ILanguageModelChatProvider): IDisposable {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		this._logService.trace('[LM] registering language model provider', vendor, provider);
+ 
+ 		if (!this._vendors.has(vendor)) {
+@@ -1521,6 +1537,7 @@ export class LanguageModelsService implements ILanguageModelsService {
+ 	}
+ 
+ 	async sendChatRequest(modelId: string, from: ExtensionIdentifier | undefined, messages: IChatMessage[], options: ILanguageModelChatRequestOptions, token: CancellationToken): Promise<ILanguageModelChatResponse> {
++		assertBuiltInAIEnabled();
+ 		const metadata = this._modelCache.get(modelId);
+ 		const provider = this._providers.get(metadata?.vendor || '');
+ 		if (!provider) {
+@@ -2379,6 +2396,7 @@ export class LanguageModelsService implements ILanguageModelsService {
+ 	}
+ 
+ 	async migrateLanguageModelsProviderGroup(languageModelsProviderGroup: ILanguageModelsProviderGroup): Promise<void> {
++		assertBuiltInAIEnabled();
+ 		const { vendor, name, ...configuration } = languageModelsProviderGroup;
+ 		if (!this._vendors.get(vendor)) {
+ 			throw new Error(`Vendor ${vendor} not found.`);
+diff --git a/src/vs/workbench/contrib/chat/common/participants/chatAgents.ts b/src/vs/workbench/contrib/chat/common/participants/chatAgents.ts
+index 516cd786..9fee0843 100644
+--- a/src/vs/workbench/contrib/chat/common/participants/chatAgents.ts
++++ b/src/vs/workbench/contrib/chat/common/participants/chatAgents.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { assertBuiltInAIEnabled, isBuiltInAIDisabled } from '../../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { findLast } from '../../../../../base/common/arraysFind.js';
+ import { CancellationToken } from '../../../../../base/common/cancellation.js';
+ import { IStringDictionary } from '../../../../../base/common/collections.js';
+@@ -371,6 +372,13 @@ export class ChatAgentService extends Disposable implements IChatAgentService {
+ 	}
+ 
+ 	private _updateContextKeys(): void {
++		if (isBuiltInAIDisabled()) {
++			this._hasDefaultAgent.set(false);
++			this._defaultAgentRegistered.set(false);
++			this._extensionAgentRegistered.set(false);
++			this._hasToolsAgent = false;
++			return;
++		}
+ 		let extensionAgentRegistered = false;
+ 		let defaultAgentRegistered = false;
+ 		let toolsAgentRegistered = false;
+@@ -396,6 +404,9 @@ export class ChatAgentService extends Disposable implements IChatAgentService {
+ 	}
+ 
+ 	registerAgentImplementation(id: string, agentImpl: IChatAgentImplementation): IDisposable {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		const entry = this._agents.get(id);
+ 		if (!entry) {
+ 			throw new Error(`Unknown agent: ${JSON.stringify(id)}`);
+@@ -423,6 +434,9 @@ export class ChatAgentService extends Disposable implements IChatAgentService {
+ 	}
+ 
+ 	registerDynamicAgent(data: IChatAgentData, agentImpl: IChatAgentImplementation): IDisposable {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		data.isDynamic = true;
+ 		const agent = { data, impl: agentImpl };
+ 		this._agents.set(data.id, agent);
+@@ -437,6 +451,9 @@ export class ChatAgentService extends Disposable implements IChatAgentService {
+ 	private _agentCompletionProviders = new Map<string, (query: string, token: CancellationToken) => Promise<IChatAgentCompletionItem[]>>();
+ 
+ 	registerAgentCompletionProvider(id: string, provider: (query: string, token: CancellationToken) => Promise<IChatAgentCompletionItem[]>) {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		this._agentCompletionProviders.set(id, provider);
+ 		return {
+ 			dispose: () => { this._agentCompletionProviders.delete(id); }
+@@ -444,6 +461,9 @@ export class ChatAgentService extends Disposable implements IChatAgentService {
+ 	}
+ 
+ 	async getAgentCompletionItems(id: string, query: string, token: CancellationToken) {
++		if (isBuiltInAIDisabled()) {
++			return [];
++		}
+ 		return await this._agentCompletionProviders.get(id)?.(query, token) ?? [];
+ 	}
+ 
+@@ -468,7 +488,7 @@ export class ChatAgentService extends Disposable implements IChatAgentService {
+ 
+ 	public get hasToolsAgent(): boolean {
+ 		// The chat participant enablement is just based on this setting. Don't wait for the extension to be loaded.
+-		return !!this.configurationService.getValue(ChatConfiguration.AgentEnabled);
++		return !isBuiltInAIDisabled() && !!this.configurationService.getValue(ChatConfiguration.AgentEnabled);
+ 	}
+ 
+ 	getContributedDefaultAgent(location: ChatAgentLocation): IChatAgentData | undefined {
+@@ -545,6 +565,7 @@ export class ChatAgentService extends Disposable implements IChatAgentService {
+ 	}
+ 
+ 	async invokeAgent(id: string, request: IChatAgentRequest, progress: (parts: IChatProgress[]) => void, history: IChatAgentHistoryEntry[], token: CancellationToken): Promise<IChatAgentResult> {
++		assertBuiltInAIEnabled();
+ 		markChat(request.sessionResource, ChatPerfMark.AgentWillInvoke);
+ 		const data = this._agents.get(id);
+ 		if (!data?.impl) {
+@@ -603,6 +624,9 @@ export class ChatAgentService extends Disposable implements IChatAgentService {
+ 	}
+ 
+ 	registerChatParticipantDetectionProvider(handle: number, provider: IChatParticipantDetectionProvider) {
++		if (isBuiltInAIDisabled()) {
++			return Disposable.None;
++		}
+ 		this._chatParticipantDetectionProviders.set(handle, provider);
+ 		return toDisposable(() => {
+ 			this._chatParticipantDetectionProviders.delete(handle);
+@@ -614,6 +638,9 @@ export class ChatAgentService extends Disposable implements IChatAgentService {
+ 	}
+ 
+ 	async detectAgentOrCommand(request: IChatAgentRequest, history: IChatAgentHistoryEntry[], options: { location: ChatAgentLocation }, token: CancellationToken): Promise<{ agent: IChatAgentData; command?: IChatAgentCommand } | undefined> {
++		if (isBuiltInAIDisabled()) {
++			return undefined;
++		}
+ 		// TODO@joyceerhl should we have a selector to be able to narrow down which provider to use
+ 		const provider = Iterable.first(this._chatParticipantDetectionProviders.values());
+ 		if (!provider) {
+diff --git a/src/vs/workbench/contrib/chat/test/common/overallsProductPolicy.check.ts b/src/vs/workbench/contrib/chat/test/common/overallsProductPolicy.check.ts
+new file mode 100644
+index 00000000..bd5a3b2e
+--- /dev/null
++++ b/src/vs/workbench/contrib/chat/test/common/overallsProductPolicy.check.ts
+@@ -0,0 +1,181 @@
++/*---------------------------------------------------------------------------------------------
++ *  Copyright (c) Microsoft Corporation. All rights reserved.
++ *  Licensed under the MIT License. See License.txt in the project root for license information.
++ *--------------------------------------------------------------------------------------------*/
++
++import assert from 'assert';
++import { CancellationToken } from '../../../../../base/common/cancellation.js';
++import { Emitter, Event } from '../../../../../base/common/event.js';
++import { DisposableStore } from '../../../../../base/common/lifecycle.js';
++import { URI } from '../../../../../base/common/uri.js';
++import { mock } from '../../../../../base/test/common/mock.js';
++import { IConfigurationValue } from '../../../../../platform/configuration/common/configuration.js';
++import { builtInAIDisabledMessage, isBuiltInAIDisabled, withOverallsProductPolicy } from '../../../../../platform/configuration/common/overallsProductPolicy.js';
++import { NullPolicyConfiguration } from '../../../../../platform/configuration/common/configurations.js';
++import { TestConfigurationService } from '../../../../../platform/configuration/test/common/testConfigurationService.js';
++import { ExtensionIdentifier } from '../../../../../platform/extensions/common/extensions.js';
++import { IFileService } from '../../../../../platform/files/common/files.js';
++import { ServiceCollection } from '../../../../../platform/instantiation/common/serviceCollection.js';
++import { TestInstantiationService } from '../../../../../platform/instantiation/test/common/instantiationServiceMock.js';
++import { MockContextKeyService } from '../../../../../platform/keybinding/test/common/mockKeybindingService.js';
++import { ILogService, NullLogService } from '../../../../../platform/log/common/log.js';
++import { INotificationService } from '../../../../../platform/notification/common/notification.js';
++import { IOpenerService } from '../../../../../platform/opener/common/opener.js';
++import { IProductService } from '../../../../../platform/product/common/productService.js';
++import { IQuickInputService } from '../../../../../platform/quickinput/common/quickInput.js';
++import { IRequestService } from '../../../../../platform/request/common/request.js';
++import { ISecretStorageService } from '../../../../../platform/secrets/common/secrets.js';
++import { IStorageService } from '../../../../../platform/storage/common/storage.js';
++import { ITelemetryService } from '../../../../../platform/telemetry/common/telemetry.js';
++import { IUserDataProfilesService, toUserDataProfile } from '../../../../../platform/userDataProfile/common/userDataProfile.js';
++import { IUriIdentityService } from '../../../../../platform/uriIdentity/common/uriIdentity.js';
++import { IWorkspaceContextService, Workspace, WorkspaceFolder, WorkbenchState } from '../../../../../platform/workspace/common/workspace.js';
++import { IChatEntitlementService } from '../../../../services/chat/common/chatEntitlementService.js';
++import { IWorkbenchConfigurationService } from '../../../../services/configuration/common/configuration.js';
++import { ConfigurationEditing, ConfigurationEditingError, ConfigurationEditingErrorCode, EditableConfigurationTarget } from '../../../../services/configuration/common/configurationEditing.js';
++import { IEditorService } from '../../../../services/editor/common/editorService.js';
++import { IExtensionService } from '../../../../services/extensions/common/extensions.js';
++import { IFilesConfigurationService } from '../../../../services/filesConfiguration/common/filesConfigurationService.js';
++import { IPreferencesService } from '../../../../services/preferences/common/preferences.js';
++import { ITextFileService } from '../../../../services/textfile/common/textfiles.js';
++import { IUserDataProfileService } from '../../../../services/userDataProfile/common/userDataProfile.js';
++import { ITextModelService } from '../../../../../editor/common/services/resolverService.js';
++import { IMcpService } from '../../../mcp/common/mcpTypes.js';
++import { ChatContextKeys } from '../../common/actions/chatContextKeys.js';
++import { IChatDebugService } from '../../common/chatDebugService.js';
++import { IChatSessionsService } from '../../common/chatSessionsService.js';
++import { ChatService } from '../../common/chatService/chatServiceImpl.js';
++import { ChatAgentLocation, ChatModeKind } from '../../common/constants.js';
++import { LanguageModelsService } from '../../common/languageModels.js';
++import { ILanguageModelsConfigurationService } from '../../common/languageModelsConfiguration.js';
++import { ChatSessionStore } from '../../common/model/chatSessionStore.js';
++import { IChatTransferService } from '../../common/model/chatTransferService.js';
++import { ChatAgentService, IChatAgentData, IChatAgentRequest } from '../../common/participants/chatAgents.js';
++import { IChatSlashCommandService } from '../../common/participants/chatSlashCommands.js';
++import { IPromptsService } from '../../common/promptSyntax/service/promptsService.js';
++
++/** @cc [owner:ghuntley,label:verification] overalls-native-ai-direct-services
++ * Checks MUST instantiate the actual patched services and attempt direct native
++ * calls, proving disabled registration stays inert and provider/network callbacks
++ * cannot run. Configuration writes MUST report the actual upstream policy error.
++ */
++export async function runOverallsPolicyChecks(): Promise<void> {
++	assert.equal(isBuiltInAIDisabled(), true, 'test runner must set immutable product policy before module import');
++	const disposables = new DisposableStore();
++	const log = new NullLogService();
++	const context = new MockContextKeyService();
++	const config = new TestConfigurationService({ 'chat.agent.enabled': true, 'chat.disableAIFeatures': false });
++	const agents = disposables.add(new ChatAgentService(context, config));
++	let callbacks = 0;
++	const called = (): never => { callbacks++; throw new Error('Disabled native callback executed'); };
++	const agentData: IChatAgentData = {
++		id: 'test.default', name: 'Test', extensionId: new ExtensionIdentifier('test.ai'), extensionVersion: undefined,
++		extensionPublisherId: 'test', extensionDisplayName: 'Test', isDefault: true,
++		metadata: {}, slashCommands: [], disambiguation: [], locations: [ChatAgentLocation.Chat], modes: [ChatModeKind.Ask]
++	};
++	const request: IChatAgentRequest = {
++		sessionResource: URI.parse('vscode-local-chat-session:/test'), requestId: 'test', agentId: agentData.id,
++		message: 'test', variables: { variables: [] }, location: ChatAgentLocation.Chat
++	};
++	try {
++		disposables.add(agents.registerAgent(agentData.id, agentData));
++		disposables.add(agents.registerAgentImplementation(agentData.id, { invoke: async () => called() }));
++		disposables.add(agents.registerDynamicAgent({ ...agentData, id: 'test.dynamic' }, { invoke: async () => called() }));
++		disposables.add(agents.registerAgentCompletionProvider(agentData.id, async () => called()));
++		disposables.add(agents.registerChatParticipantDetectionProvider(1, { provideParticipantDetection: async () => called() }));
++		assert.equal(agents.getAgents().length, 1, 'declarative extension contribution remains accepted');
++		assert.deepEqual(agents.getActivatedAgents(), []);
++		assert.equal(agents.hasToolsAgent, false);
++		assert.equal(agents.hasChatParticipantDetectionProviders(), false);
++		for (const key of [ChatContextKeys.enabled, ChatContextKeys.panelParticipantRegistered, ChatContextKeys.extensionParticipantRegistered]) {
++			assert.equal(context.getContextKeyValue(key.key), false);
++		}
++		await assert.rejects(agents.invokeAgent(agentData.id, request, called, [], CancellationToken.None), { message: builtInAIDisabledMessage });
++		assert.deepEqual(await agents.getAgentCompletionItems(agentData.id, 'test', CancellationToken.None), []);
++		assert.equal(await agents.detectAgentOrCommand(request, [], { location: ChatAgentLocation.Chat }, CancellationToken.None), undefined);
++
++		const extensionService = new class extends mock<IExtensionService>() {
++			override activateByEvent = async (): Promise<void> => called();
++			override whenInstalledExtensionsRegistered = async (): Promise<boolean> => called();
++		};
++		const storage = new class extends mock<IStorageService>() {
++			override readonly onWillSaveState = Event.None;
++		};
++		const languageModels = new LanguageModelsService(
++			extensionService, log, storage, context, new class extends mock<ILanguageModelsConfigurationService>() { },
++			new class extends mock<IQuickInputService>() { }, new class extends mock<ISecretStorageService>() { },
++			new class extends mock<IProductService>() { override readonly chatParticipantRegistry = 'https://example.invalid/native-chat'; },
++			new class extends mock<IRequestService>() { override request = async () => called(); },
++			new class extends mock<INotificationService>() { }, new class extends mock<IOpenerService>() { },
++			new class extends mock<ITelemetryService>() { }
++		);
++		disposables.add(languageModels);
++		languageModels.deltaLanguageModelChatProviderDescriptors([{ vendor: 'test', displayName: 'Test', configuration: undefined, managementCommand: undefined, when: undefined }], []);
++		const modelChanges = new Emitter<void>();
++		disposables.add(modelChanges);
++		disposables.add(languageModels.registerLanguageModelProvider('test', {
++			onDidChange: modelChanges.event,
++			provideLanguageModelChatInfo: async () => called(), sendChatRequest: async () => called(), provideTokenCount: async () => called()
++		}));
++		modelChanges.fire();
++		assert.deepEqual(await languageModels.selectLanguageModels({ vendor: 'test' }), []);
++		assert.deepEqual(await languageModels.selectLanguageModels({}), []);
++		await assert.rejects(languageModels.sendChatRequest('test', undefined, [], {}, CancellationToken.None), { message: builtInAIDisabledMessage });
++		await assert.rejects(languageModels.migrateLanguageModelsProviderGroup({ vendor: 'test', name: 'test' }), { message: builtInAIDisabledMessage });
++		assert.equal(context.getContextKeyValue(ChatContextKeys.languageModelsAreUserSelectable.key), false);
++		assert.equal(context.getContextKeyValue(ChatContextKeys.nonCopilotLanguageModelsAreUserSelectable.key), false);
++
++		const instantiation = disposables.add(new TestInstantiationService(new ServiceCollection([ILogService, log], [ITelemetryService, new class extends mock<ITelemetryService>() { }])));
++		instantiation.stubInstance(ChatSessionStore, { dispose(): void { }, async migrateDataIfNeeded(): Promise<void> { }, getTransferredSessionData(): undefined { return undefined; }, async readSession(): Promise<never> { return called(); }, async readTransferredSession(): Promise<never> { return called(); } });
++		const chat = disposables.add(new ChatService(
++			storage, log, new class extends mock<ITelemetryService>() { }, extensionService, instantiation,
++			new class extends mock<IWorkspaceContextService>() { }, new class extends mock<IChatSlashCommandService>() { }, agents, config,
++			new class extends mock<IChatTransferService>() { }, new class extends mock<IChatSessionsService>() {
++				override canResolveChatSession = async (): Promise<boolean> => called();
++				override getOrCreateChatSession = async (): Promise<never> => called();
++			},
++			new class extends mock<IMcpService>() { }, new class extends mock<IPromptsService>() { },
++			new class extends mock<IChatEntitlementService>() { }, languageModels, new class extends mock<IChatDebugService>() { }
++		));
++		assert.equal(chat.isEnabled(ChatAgentLocation.Chat), false);
++		for (const resource of [request.sessionResource, URI.parse('test-native:/test')]) {
++			await assert.rejects(chat.acquireOrLoadSession(resource, ChatAgentLocation.Chat, CancellationToken.None), { message: builtInAIDisabledMessage });
++		}
++		assert.throws(() => chat.startNewLocalSession(ChatAgentLocation.Chat), { message: builtInAIDisabledMessage });
++		await assert.rejects(chat.activateDefaultAgent(ChatAgentLocation.Chat), { message: builtInAIDisabledMessage });
++		assert.deepEqual(await chat.sendRequest(request.sessionResource, 'test'), { kind: 'rejected', reason: builtInAIDisabledMessage });
++		assert.equal(Array.from(chat.chatModels.get()).length, 0);
++
++		const folder = new WorkspaceFolder({ uri: URI.file('/project'), name: 'project', index: 0 });
++		const workspace = new Workspace('test', [folder], false, URI.file('/project/project.code-workspace'), () => false);
++		const profile = toUserDataProfile('default', 'Default', URI.file('/profile'), URI.file('/cache'));
++		const policy = withOverallsProductPolicy(new NullPolicyConfiguration(), log).configurationModel;
++		const editing = new ConfigurationEditing(
++			URI.file('/remote/settings.json'),
++			new class extends mock<IWorkbenchConfigurationService>() {
++				override isSettingAppliedForAllProfiles(): boolean { return false; }
++				override inspect<T>(key: string): IConfigurationValue<T> { return { value: undefined, policyValue: policy.getValue<T>(key) }; }
++			},
++			new class extends mock<IWorkspaceContextService>() {
++				override getWorkspace(): Workspace { return workspace; }
++				override getWorkbenchState(): WorkbenchState { return WorkbenchState.WORKSPACE; }
++				override getWorkspaceFolder(resource: URI): WorkspaceFolder | null { return workspace.getFolder(resource) ? folder : null; }
++			},
++			new class extends mock<IUserDataProfileService>() { override readonly currentProfile = profile; },
++			new class extends mock<IUserDataProfilesService>() { override readonly defaultProfile = profile; },
++			new class extends mock<IFileService>() { }, new class extends mock<ITextModelService>() { }, new class extends mock<ITextFileService>() { },
++			new class extends mock<INotificationService>() { }, new class extends mock<IPreferencesService>() { }, new class extends mock<IEditorService>() { },
++			new class extends mock<IUriIdentityService>() { }, new class extends mock<IFilesConfigurationService>() { }
++		);
++		for (const target of [EditableConfigurationTarget.USER_LOCAL, EditableConfigurationTarget.USER_REMOTE, EditableConfigurationTarget.WORKSPACE, EditableConfigurationTarget.WORKSPACE_FOLDER]) {
++			for (const key of ['chat.disableAIFeatures', 'workbench.disableAICustomizations']) {
++				await assert.rejects(editing.writeConfiguration(target, { key, value: false }, { donotNotifyError: true, scopes: { resource: URI.file('/project/main.rs'), overrideIdentifiers: ['rust'] } }),
++					(error: unknown): boolean => error instanceof ConfigurationEditingError && error.code === ConfigurationEditingErrorCode.ERROR_POLICY_CONFIGURATION);
++			}
++		}
++		assert.equal(callbacks, 0);
++	} finally {
++		disposables.dispose();
++		config.onDidChangeConfigurationEmitter.dispose();
++	}
++}
+diff --git a/src/vs/workbench/contrib/inlineChat/browser/inlineChatActions.ts b/src/vs/workbench/contrib/inlineChat/browser/inlineChatActions.ts
+index 7e5d8f63..2e5ad754 100644
+--- a/src/vs/workbench/contrib/inlineChat/browser/inlineChatActions.ts
++++ b/src/vs/workbench/contrib/inlineChat/browser/inlineChatActions.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { isBuiltInAIDisabled } from '../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { Codicon } from '../../../../base/common/codicons.js';
+ import { KeyCode, KeyMod } from '../../../../base/common/keyCodes.js';
+ import { ICodeEditor, isCodeEditor, isDiffEditor } from '../../../../editor/browser/editorBrowser.js';
+@@ -38,7 +39,7 @@ const inlineChatNotebooksOldEnabled = ContextKeyExpr.or(
+ 	ContextKeyExpr.and(NOTEBOOK_IS_ACTIVE_EDITOR, CTX_INLINE_CHAT_HAS_NOTEBOOK_INLINE)
+ );
+ 
+-const inlineChatContextKey = ContextKeyExpr.and(
++const inlineChatContextKey = isBuiltInAIDisabled() ? ContextKeyExpr.false() : ContextKeyExpr.and(
+ 	ContextKeyExpr.or(inlineChatNotebooksOldEnabled, CTX_INLINE_CHAT_V2_ENABLED),
+ 	CTX_INLINE_CHAT_POSSIBLE,
+ 	EditorContextKeys.writable,
+diff --git a/src/vs/workbench/contrib/inlineChat/browser/inlineChatController.ts b/src/vs/workbench/contrib/inlineChat/browser/inlineChatController.ts
+index 2080f8b2..84150eec 100644
+--- a/src/vs/workbench/contrib/inlineChat/browser/inlineChatController.ts
++++ b/src/vs/workbench/contrib/inlineChat/browser/inlineChatController.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { isBuiltInAIDisabled } from '../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { renderAsPlaintext } from '../../../../base/browser/markdownRenderer.js';
+ import { alert } from '../../../../base/browser/ui/aria/aria.js';
+ import { disposableTimeout } from '../../../../base/common/async.js';
+@@ -699,6 +700,9 @@ export class InlineChatController implements IEditorContribution {
+ 	}
+ 
+ 	async run(arg?: InlineChatRunOptions): Promise<boolean> {
++		if (isBuiltInAIDisabled()) {
++			return false;
++		}
+ 		assertType(this.#editor.hasModel());
+ 		this.#cancelPendingSession();
+ 		const uri = this.#editor.getModel().uri;
+diff --git a/src/vs/workbench/services/chat/common/chatEntitlementService.ts b/src/vs/workbench/services/chat/common/chatEntitlementService.ts
+index fe752b88..7a81c609 100644
+--- a/src/vs/workbench/services/chat/common/chatEntitlementService.ts
++++ b/src/vs/workbench/services/chat/common/chatEntitlementService.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { isBuiltInAIDisabled } from '../../../../platform/configuration/common/overallsProductPolicy.js';
+ import product from '../../../../platform/product/common/product.js';
+ import { Barrier } from '../../../../base/common/async.js';
+ import { CancellationToken, CancellationTokenSource } from '../../../../base/common/cancellation.js';
+@@ -450,6 +451,11 @@ export class ChatEntitlementService extends Disposable implements IChatEntitleme
+ 		);
+ 		this.sentimentObs = observableFromEvent(this.onDidChangeSentiment, () => this.sentiment);
+ 
++		if (isBuiltInAIDisabled()) {
++			ChatEntitlementContextKeys.Setup.hidden.bindTo(this.contextKeyService).set(true);
++			return;
++		}
++
+ 		if ((isWeb && !environmentService.remoteAuthority && !environmentService.isSessionsWindow)) {
+ 			ChatEntitlementContextKeys.Setup.hidden.bindTo(this.contextKeyService).set(true); // hide copilot UI on web if unsupported
+ 			return;
+@@ -731,6 +737,7 @@ export class ChatEntitlementService extends Disposable implements IChatEntitleme
+ 	}
+ 
+ 	setForceHidden(hidden: boolean): void {
++		hidden = isBuiltInAIDisabled() || hidden;
+ 		if (this.context) {
+ 			this.context.value.setForceHidden(hidden);
+ 		} else {
+diff --git a/src/vs/workbench/services/configuration/browser/configurationService.ts b/src/vs/workbench/services/configuration/browser/configurationService.ts
+index 91253749..0fc37a8d 100644
+--- a/src/vs/workbench/services/configuration/browser/configurationService.ts
++++ b/src/vs/workbench/services/configuration/browser/configurationService.ts
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
++import { withOverallsProductPolicy } from '../../../../platform/configuration/common/overallsProductPolicy.js';
+ import { URI } from '../../../../base/common/uri.js';
+ import { Event, Emitter } from '../../../../base/common/event.js';
+ import { ResourceMap } from '../../../../base/common/map.js';
+@@ -129,7 +130,7 @@ export class WorkspaceService extends Disposable implements IWorkbenchConfigurat
+ 		this.initRemoteUserConfigurationBarrier = new Barrier();
+ 		this.completeWorkspaceBarrier = new Barrier();
+ 		this.defaultConfiguration = this._register(new DefaultConfiguration(userDataProfileService.currentProfile.id, configurationCache, environmentService, logService));
+-		this.policyConfiguration = policyService instanceof NullPolicyService ? new NullPolicyConfiguration() : this._register(new PolicyConfiguration(this.defaultConfiguration, policyService, logService));
++		this.policyConfiguration = withOverallsProductPolicy(policyService instanceof NullPolicyService ? new NullPolicyConfiguration() : this._register(new PolicyConfiguration(this.defaultConfiguration, policyService, logService)), logService);
+ 		this.configurationCache = configurationCache;
+ 		this._configuration = new Configuration(this.defaultConfiguration.configurationModel, this.policyConfiguration.configurationModel, ConfigurationModel.createEmptyModel(logService), ConfigurationModel.createEmptyModel(logService), ConfigurationModel.createEmptyModel(logService), ConfigurationModel.createEmptyModel(logService), new ResourceMap(), ConfigurationModel.createEmptyModel(logService), new ResourceMap<ConfigurationModel>(), this.workspace, logService);
+ 		this.applicationConfigurationDisposables = this._register(new DisposableStore());

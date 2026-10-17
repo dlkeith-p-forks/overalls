@@ -1,0 +1,792 @@
+{
+  "sut_path": "/home/ghuntley/src/kittens-antithesis-reset",
+  "commit": "c835eb1017d24a001215c319373fa4204d64269b",
+  "updated": "2026-10-13",
+  "external_references": [],
+  "scope_answer": "Repository only (Recommended)",
+  "status": "evaluation findings reconciled into 104-property research catalog; no hosted SDK baseline",
+  "catalog_snapshot_count": 104,
+  "safety_count_frozen": false,
+  "whole_repository_scope_authorized": true,
+  "scope_bias_disposition": "Whole repository, native, TCG and real hosted coverage are authorized; no scope-narrowing question is needed. Keep environment-specific proof limits.",
+  "control_core_limit": "Real Control-only hosted runtime reports execution_ready=false with unavailable pool; Marshall admission requires execution_ready=true and fresh measured available ZFS pool. Accepted placement needs prospective integrated real inner-ZFS-backed Lilly host or native KVM. Standalone storage-router is not the backing pool; no fake admission or bypass.",
+  "execution_rule": "No mutants until a matching real baseline and oracle are green. Current native repairs/runs are scoped local evidence, not hosted Antithesis coverage.",
+  "findings": [
+    {
+      "id": "F1",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "Existential Sometimes cannot prove every eligible operation eventually finishes.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F1",
+      "action_ids": [
+        "R1"
+      ]
+    },
+    {
+      "id": "F2",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "Optional AlwaysOrUnreachable can pass without danger path.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F2",
+      "action_ids": [
+        "R2"
+      ]
+    },
+    {
+      "id": "F3",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "Hosted/TGC/native proof scopes are mixed without a row roster.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F3",
+      "action_ids": [
+        "R3",
+        "I6",
+        "I7"
+      ]
+    },
+    {
+      "id": "F4",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "Static decoder/version/migration matrices should be ordinary tests; preserve fault transition slice.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F4",
+      "action_ids": [
+        "R4"
+      ]
+    },
+    {
+      "id": "F5",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "High-value intermediate search checkpoints remain prose only.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F5",
+      "action_ids": [
+        "R5"
+      ]
+    },
+    {
+      "id": "F6",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "Terminal kill needs observed blocked PTY write.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F6",
+      "action_ids": [
+        "R6"
+      ]
+    },
+    {
+      "id": "F7",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "Pool sampling progress can pass without contention.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F7",
+      "action_ids": [
+        "R7"
+      ]
+    },
+    {
+      "id": "F8",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "Exact production cap setup may be too large for routine hosted search.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F8",
+      "action_ids": [
+        "R8"
+      ]
+    },
+    {
+      "id": "F9",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "Control version refusal combines permanent and recoverable owner behavior.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F9",
+      "action_ids": [
+        "R9"
+      ]
+    },
+    {
+      "id": "F10",
+      "lens": "antithesis-fit",
+      "category": "Refinement",
+      "summary": "Guest identity cutover fixed conversion dominates unless later reuse race is retained.",
+      "source": "antithesis/scratchbook/evaluation/antithesis-fit.md",
+      "source_locator": "F10",
+      "action_ids": [
+        "R10"
+      ]
+    },
+    {
+      "id": "C1",
+      "lens": "coverage-balance",
+      "category": "Gap",
+      "summary": "Browser magic-link/MFA/remembered login and administrative revocation absent.",
+      "source": "antithesis/scratchbook/evaluation/coverage-balance.md",
+      "source_locator": "C1",
+      "action_ids": [
+        "G1"
+      ]
+    },
+    {
+      "id": "C2",
+      "lens": "coverage-balance",
+      "category": "Gap",
+      "summary": "Physical guest isolation and Brady egress/attribution authority absent.",
+      "source": "antithesis/scratchbook/evaluation/coverage-balance.md",
+      "source_locator": "C2",
+      "action_ids": [
+        "G2"
+      ]
+    },
+    {
+      "id": "C3",
+      "lens": "coverage-balance",
+      "category": "Gap",
+      "summary": "Clone, resize and relocation byte/GUID/route lineage thin.",
+      "source": "antithesis/scratchbook/evaluation/coverage-balance.md",
+      "source_locator": "C3",
+      "action_ids": [
+        "G3"
+      ]
+    },
+    {
+      "id": "C4",
+      "lens": "coverage-balance",
+      "category": "Gap",
+      "summary": "Agent tools and normal named integration effects thin.",
+      "source": "antithesis/scratchbook/evaluation/coverage-balance.md",
+      "source_locator": "C4",
+      "action_ids": [
+        "G4"
+      ]
+    },
+    {
+      "id": "C5",
+      "lens": "coverage-balance",
+      "category": "Gap",
+      "summary": "SSH, DNS route and personal editor effects absent.",
+      "source": "antithesis/scratchbook/evaluation/coverage-balance.md",
+      "source_locator": "C5",
+      "action_ids": [
+        "G5"
+      ]
+    },
+    {
+      "id": "C6",
+      "lens": "coverage-balance",
+      "category": "Gap",
+      "summary": "Inception and guest/profile/provider variants need explicit selection and possibly properties.",
+      "source": "antithesis/scratchbook/evaluation/coverage-balance.md",
+      "source_locator": "C6",
+      "action_ids": [
+        "G6",
+        "R13"
+      ]
+    },
+    {
+      "id": "C7",
+      "lens": "coverage-balance",
+      "category": "Gap",
+      "summary": "Interrupted isolated restore publication absent.",
+      "source": "antithesis/scratchbook/evaluation/coverage-balance.md",
+      "source_locator": "C7",
+      "action_ids": [
+        "G7"
+      ]
+    },
+    {
+      "id": "C8",
+      "lens": "coverage-balance",
+      "category": "Gap",
+      "summary": "Lyra updater/enrollment/secret custody and diagnostic-independent user progress absent.",
+      "source": "antithesis/scratchbook/evaluation/coverage-balance.md",
+      "source_locator": "C8",
+      "action_ids": [
+        "G8"
+      ]
+    },
+    {
+      "id": "C9",
+      "lens": "coverage-balance",
+      "category": "Refinement",
+      "summary": "Optional reach, liveness restoration and priority distribution need an exact roster.",
+      "source": "antithesis/scratchbook/evaluation/coverage-balance.md",
+      "source_locator": "C9",
+      "action_ids": [
+        "R2",
+        "R3",
+        "R13"
+      ]
+    },
+    {
+      "id": "W1",
+      "lens": "wildcard",
+      "category": "Gap",
+      "summary": "Catalog begins after customer browser authority already exists.",
+      "source": "antithesis/scratchbook/evaluation/wildcard.md",
+      "source_locator": "W1",
+      "action_ids": [
+        "G1"
+      ]
+    },
+    {
+      "id": "W2",
+      "lens": "wildcard",
+      "category": "Gap",
+      "summary": "Safe handoff does not imply useful copied bytes or new route.",
+      "source": "antithesis/scratchbook/evaluation/wildcard.md",
+      "source_locator": "W2",
+      "action_ids": [
+        "G3"
+      ]
+    },
+    {
+      "id": "W3",
+      "lens": "wildcard",
+      "category": "Gap",
+      "summary": "No assertion joins acknowledged create to same-customer usable persistent guest.",
+      "source": "antithesis/scratchbook/evaluation/wildcard.md",
+      "source_locator": "W3",
+      "action_ids": [
+        "G9"
+      ]
+    },
+    {
+      "id": "W4",
+      "lens": "wildcard",
+      "category": "Gap",
+      "summary": "Backward clock step may publish complete manifest invalid for later retention.",
+      "source": "antithesis/scratchbook/evaluation/wildcard.md",
+      "source_locator": "W4",
+      "action_ids": [
+        "G7"
+      ]
+    },
+    {
+      "id": "W5",
+      "lens": "wildcard",
+      "category": "Bias",
+      "summary": "Historical restore reentry requires policy receipt absent from source.",
+      "source": "antithesis/scratchbook/evaluation/wildcard.md",
+      "source_locator": "W5",
+      "action_ids": [
+        "B1",
+        "R11"
+      ]
+    },
+    {
+      "id": "I1",
+      "lens": "implementability",
+      "category": "Refinement",
+      "summary": "Every row needs executable history, independent typed oracle, assertion evaluation and unexercised state.",
+      "source": "antithesis/scratchbook/evaluation/implementability.md",
+      "source_locator": "I1",
+      "action_ids": [
+        "I1",
+        "R3"
+      ]
+    },
+    {
+      "id": "I2",
+      "lens": "implementability",
+      "category": "Refinement",
+      "summary": "Control requires real authenticated wire and effect histories.",
+      "source": "antithesis/scratchbook/evaluation/implementability.md",
+      "source_locator": "I2",
+      "action_ids": [
+        "I3"
+      ]
+    },
+    {
+      "id": "I3",
+      "lens": "implementability",
+      "category": "Refinement",
+      "summary": "Lease requires causal effect barrier; Galileo anchor remains unsettled.",
+      "source": "antithesis/scratchbook/evaluation/implementability.md",
+      "source_locator": "I3",
+      "action_ids": [
+        "I4",
+        "B2",
+        "R12"
+      ]
+    },
+    {
+      "id": "I4",
+      "lens": "implementability",
+      "category": "Refinement",
+      "summary": "External effects require faithful local origins and full-cap witnesses.",
+      "source": "antithesis/scratchbook/evaluation/implementability.md",
+      "source_locator": "I4",
+      "action_ids": [
+        "I5",
+        "R8"
+      ]
+    },
+    {
+      "id": "I5",
+      "lens": "implementability",
+      "category": "Refinement",
+      "summary": "Physical lifecycle needs real lower boundary and two-host transfer for full claims.",
+      "source": "antithesis/scratchbook/evaluation/implementability.md",
+      "source_locator": "I5",
+      "action_ids": [
+        "I6",
+        "I7",
+        "R3"
+      ]
+    },
+    {
+      "id": "I6",
+      "lens": "implementability",
+      "category": "Refinement",
+      "summary": "Backup/measurement custody needs actual Restic, SQLite, systemd producer and quota faults.",
+      "source": "antithesis/scratchbook/evaluation/implementability.md",
+      "source_locator": "I6",
+      "action_ids": [
+        "I8"
+      ]
+    },
+    {
+      "id": "I7",
+      "lens": "implementability",
+      "category": "Refinement",
+      "summary": "Guest/workspace/terminal need boot-bound independent effect witnesses.",
+      "source": "antithesis/scratchbook/evaluation/implementability.md",
+      "source_locator": "I7",
+      "action_ids": [
+        "I6",
+        "R6"
+      ]
+    },
+    {
+      "id": "I8",
+      "lens": "implementability",
+      "category": "Refinement",
+      "summary": "Updater/migration need native NixOS closure/systemd/migrator evidence.",
+      "source": "antithesis/scratchbook/evaluation/implementability.md",
+      "source_locator": "I8",
+      "action_ids": [
+        "I8",
+        "R3"
+      ]
+    },
+    {
+      "id": "T1",
+      "lens": "source-trace",
+      "category": "Refinement",
+      "summary": "Control-only hosted pool has identity without measured available ZFS or execution readiness; Marshall refuses accepted placement.",
+      "source": [
+        "lilly/lib/lilly/control/runtime.ex:478",
+        "marshall/lib/marshall/compute/admission.ex:202",
+        "marshall/lib/marshall/compute/admission.ex:212",
+        "marshall/lib/marshall/compute/host_reports.ex:272"
+      ],
+      "action_ids": [
+        "R14",
+        "I9"
+      ]
+    }
+  ],
+  "catalog_edit_proposals": [
+    {
+      "id": "R1",
+      "targets": [
+        "control-hint-loss-reconciles-authority",
+        "lost-host-hint-eventually-delivers-command",
+        "lilly-finite-obstruction-recovery-progress",
+        "lilly-pool-sampling-does-not-starve-mutation",
+        "terminal-kill-progress-under-pty-backpressure",
+        "terminal-stalled-viewer-neighbor-progress",
+        "cancelled-relocation-restores-after-revocation",
+        "delete-release-follows-physical-retirement",
+        "guest-readiness-binds-current-physical-boot",
+        "stop-retains-disk-until-restart",
+        "runtime-restart-requires-fresh-readiness",
+        "updater-failed-activation-recovers-live-roles",
+        "upgrade-preserves-owned-guests"
+      ],
+      "operation": "retain meaningful Sometimes but narrow prose; add support check",
+      "exact_proposal": "State that Sometimes confirms one designated recovered history. Add an exact operation ID, witnessed precondition and restored dependencies, then a separate per-operation terminal check after a measured fault-free interval. Report missing prerequisites/unavailable oracle separately. Do not claim fairness or universal eventual completion.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R2",
+      "targets": [
+        "execution-v4-refuses-legacy-document",
+        "lilly-corrupt-intent-never-becomes-receipt",
+        "lilly-view-restart-withdraws-stream-authority",
+        "source-stop-after-committed-placement-holds",
+        "private-readiness-v1-gates-new-execution",
+        "store-v3-host-binding-survives-upgrade"
+      ],
+      "operation": "add distinct danger-path Reachable to selected templates",
+      "exact_proposal": "Keep AlwaysOrUnreachable as optional-path safety. In each focused command require Reachable of the incompatible document, corrupt existing intent, actual rest_for_one View restart, source-stop after holds, negative enabled private-readiness response, or bound legacy profile rewrite, respectively; compatible success alone is insufficient.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R3",
+      "targets": [
+        "all 104 current properties"
+      ],
+      "operation": "add roster-backed evidence scope and unexercised state",
+      "exact_proposal": "For each row record selected hosted template if any, exact hosted claim limit, independent physical witness and native acceptance requirement from template-roster.json. Native-only rows remain acceptance targets, not claimed hosted SDK evaluations. An absent selected oracle is unexercised, never pass.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R4",
+      "targets": [
+        "control-service-dispatch-closed",
+        "execution-v4-refuses-legacy-document",
+        "store-v3-host-binding-survives-upgrade",
+        "source-v2-capability-gates-admission",
+        "private-readiness-v1-gates-new-execution",
+        "guest-identity-cutover-preserves-uid-custody"
+      ],
+      "operation": "split deterministic matrices from fault transition",
+      "exact_proposal": "Put exhaustive fixed decoder/version/migration cases in ordinary tests. A focused Antithesis run uses representative invalid input racing a valid effect, restart, revocation or cutover, with the same independent oracle.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R5",
+      "targets": [
+        "marshall-admission-atomic-allocation",
+        "lilly-outcome-replay-exact-ack",
+        "lilly-interrupted-launch-at-most-once",
+        "brady-cache-complete-publication",
+        "ziggy-interrupted-inference-never-reexecutes",
+        "enrico-native-git-admission-after-manager-restart",
+        "guest-workspace-restart-publication-no-clobber",
+        "terminal-create-reply-loss-one-pty"
+      ],
+      "operation": "add surgical observed intermediate search anchor",
+      "exact_proposal": "Add a unique SUT-side Reachable or Sometimes at the actual commit-before-lost-reply, pending-outcome-after-reconnect, marker-before-launch, cache-publish, provider-effect-before-accounting, native-slot-held-after-manager-restart, rename-before-done or PTY-birth-before-reply state. Keep final independent safety Always; requesting a fault is not a reached anchor.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R6",
+      "targets": [
+        "terminal-kill-progress-under-pty-backpressure"
+      ],
+      "operation": "make blocked-write precondition explicit",
+      "exact_proposal": "Require independent evidence of a real blocked PTY master write while authorized kill is pending; absent this event, record unexercised precondition rather than terminald liveness failure. Keep neighbor probe separate.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R7",
+      "targets": [
+        "lilly-pool-sampling-does-not-starve-mutation"
+      ],
+      "operation": "bind contention to designated operation",
+      "exact_proposal": "Require contested acquisition and release on the same pool/operation ID before progress check, while production sampling remains enabled. Measure the post-release quiet interval; ordinary uncontended completion cannot satisfy targeted fairness acceptance.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R8",
+      "targets": [
+        "request-recorder-capacity-does-not-admit-phantom-work",
+        "enrico-attempt-replay-bounded-receipts"
+      ],
+      "operation": "separate exact-cap acceptance from small search",
+      "exact_proposal": "Measure dedicated 4096+1 recorder worker and 1024+1 real Git receipt campaigns at production caps. A smaller configured cap is mechanism evidence only; early hosted search may focus on lost replies and few active effects without claiming exact-cap acceptance.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R9",
+      "targets": [
+        "control-version-refusal-remains-terminal"
+      ],
+      "operation": "split opposite transport histories",
+      "exact_proposal": "Use separate commands or branch-correlated assertion IDs for permanent 426/4001 no-retry and recoverable outage reconnect. Record connection/owner ID and class; a healthy reconnect cannot satisfy the permanent-refusal check.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R10",
+      "targets": [
+        "guest-identity-cutover-preserves-uid-custody",
+        "guest-identity-never-transfers-on-email-reuse"
+      ],
+      "operation": "keep cutover conversion as native/integration acceptance and later race in Antithesis",
+      "exact_proposal": "Static pre/post migration row and sequence conversion is ordinary acceptance. Hosted fault search begins after committed cutover and races same-user email edit with retire/new-user same-email admission and lost reply; check immutable UUID/UID/home and guest effect.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R11",
+      "targets": [
+        "backup-time-skew-never-activates-historical-authority"
+      ],
+      "operation": "remove implied eventual activation",
+      "exact_proposal": "State quarantine of the restored graph as the current safety claim. A later activation requires a separately named reconciliation receipt for DB sequence, GuestAccount UID/home, disk GUID, Store host binding, execution epoch and live endpoints; no automatic reentry is promised.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R12",
+      "targets": [
+        "galileo-accounting-delay-does-not-renew-old-grant"
+      ],
+      "operation": "keep TTL anchor unresolved until product policy/source question closes",
+      "exact_proposal": "Compare original grant return, elapsed accounting wait, current renewal and first upstream accept; report observed branch without calling it a violation until the intended grant TTL anchor is established. Preserve this as a genuine policy question.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R13",
+      "targets": [
+        "all selected optional/version/guest-family rows"
+      ],
+      "operation": "require variant and reach manifest",
+      "exact_proposal": "Record exact NixOS/Ubuntu, Customer/OSS, Inception, source provider/revision, multi-drive and enabled/disabled configurations selected for each template. A nonselected variant is unexercised, not covered by another family pass.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    },
+    {
+      "id": "R14",
+      "targets": [
+        "marshall-admission-atomic-allocation",
+        "marshall-admission-key-survives-archive",
+        "marshall-admission-measured-physical-capacity",
+        "marshall-crash-recovery-budget-and-stale-capacity",
+        "lilly-outcome-replay-exact-ack",
+        "lilly-interrupted-launch-at-most-once",
+        "lost-host-hint-eventually-delivers-command",
+        "source-v2-capability-gates-admission",
+        "all accepted-placement guest/satellite rows"
+      ],
+      "operation": "mark accepted placement blocked on real integrated ZFS host or native",
+      "exact_proposal": "Control-only hosted pool reports identity/unavailable and execution_ready=false. It can test handshake/report/auth/refusal/reconnect, not accepted placement. The admitted/effect branch requires real current measured ZFS capacity wired through Lilly to Marshall; standalone storage-router is not that production backing. Mark selected hosted branch unexercised until integrated-zfs-host/guest/satellite is built and positive admission passes. Never seed fake admission or bypass the real gate.",
+      "disposition": "applied to catalog/evidence and roster as research requirements; execution remains unbuilt"
+    }
+  ],
+  "gap_discovery_briefs": [
+    {
+      "id": "G1",
+      "title": "Browser entry and administrative authority",
+      "sources": [
+        "coverage-balance.md#1-browser-identity-and-administrative-authorization-are-absent",
+        "wildcard.md#1-the-catalog-starts-after-browser-authority-already-exists"
+      ],
+      "brief": "Discover magic-link preview GET versus consuming POST/MFA, copied remembered-cookie revocation across Marshall A/B, and stale-tab administrative mutation after demotion. Separate positive first-authority journey from post-revocation safety.",
+      "independent_oracle": "local SMTP accept ledger, PostgreSQL login/role/domain rows, two copied browser sessions and guest nonce/effect recorder",
+      "boundary": "real-hosted Marshall A/B, PostgreSQL, browser, SMTP fixture; guest TCG for byte effects",
+      "return": "candidate safety/progress properties with precise token/session linearization, literal messages and open questions",
+      "disposition": "source-grounded discovery integrated into catalog and evidence; no baseline executed",
+      "resulting_property_ids": [
+        "magic-link-preview-post-mfa-boundary",
+        "remembered-cookie-revocation-cross-replica",
+        "stale-admin-tab-current-mutation-authority"
+      ]
+    },
+    {
+      "id": "G2",
+      "title": "Native isolation and Brady egress policy",
+      "sources": [
+        "coverage-balance.md#2-physical-guest-isolation-and-egress-authority-have-no-direct-property"
+      ],
+      "brief": "Discover Firecracker jail/cgroup/UID and packet isolation; Brady original-destination/current-source attribution, private or credentialed cache bypass, forbidden destination/QUIC and proxy-failure egress refusal. Keep router interception separate from native guest confinement.",
+      "independent_oracle": "kernel process/namespace/cgroup identities, packet counters, original tuple, independent forbidden-origin accept log and guest effect",
+      "boundary": "TCG storage-router for interception; native KVM for Firecracker/host network isolation",
+      "return": "separate property candidates for authority and physical isolation, each with a reachable negative path",
+      "disposition": "source-grounded discovery integrated into catalog and evidence; no baseline executed",
+      "resulting_property_ids": [
+        "brady-flow-attribution-requires-current-incarnation",
+        "brady-forbidden-destinations-never-reach-upstream",
+        "brady-proxy-loss-preserves-web-and-quic-denial",
+        "brady-sensitive-exchanges-never-reuse-shared-cache",
+        "native-firecracker-confinement-survives-owner-recovery",
+        "native-guest-packets-obey-profile-and-tap-boundaries"
+      ]
+    },
+    {
+      "id": "G3",
+      "title": "Copy, resize and relocation data/route lineage",
+      "sources": [
+        "coverage-balance.md#3-clone-resize-and-relocation-data-lineage-are-thin-relative-to-impact",
+        "wildcard.md#2-physical-copy-and-route-usefulness-are-not-implied-by-safe-handoff"
+      ],
+      "brief": "Discover multi-drive clone hashes/GUID independence after divergent writes and source deletion; resize size and retained bytes; stopped-only relocation bytes and usable new DNS/SSH/HTTPS route with old-source refusal. Do not assume live pre-copy.",
+      "independent_oracle": "per-drive incompressible sentinels, source/destination GUIDs, independent guest reads and route/physical execution observations",
+      "boundary": "two-Lilly native KVM/ZFS fleet or explicitly reduced real TCG transfer adapter",
+      "return": "distinct clone/resize/relocation assertions and physical preconditions",
+      "disposition": "source-grounded discovery integrated into catalog and evidence; no baseline executed",
+      "resulting_property_ids": [
+        "clone-two-drive-copy-survives-source-deletion",
+        "resize-retains-exact-guest-bytes-and-grown-shape",
+        "stopped-relocation-retains-bytes-and-routes-to-destination"
+      ]
+    },
+    {
+      "id": "G4",
+      "title": "Lyra tool and Galileo named integration effects",
+      "sources": [
+        "coverage-balance.md#4-agent-tools-and-named-integrations-are-underrepresented"
+      ],
+      "brief": "Discover uncertain started/tool effect replay, long tool lease renewal, revoked CLI approval, named integration attachment/origin/header authority and no-retry external effect. Do not treat Ziggy inference as a tool-effect oracle.",
+      "independent_oracle": "guest command/web action ledger and controlled provider/integration origin accept log with durable Marshall IDs",
+      "boundary": "real-hosted Marshall/Ziggy/Galileo/origin plus TCG/native guest for actual Lyra tool effects",
+      "return": "separate agent tool and integration candidates, including lease-policy questions",
+      "disposition": "source-grounded discovery integrated into catalog and evidence; no baseline executed",
+      "resulting_property_ids": [
+        "agent-long-fetch-result-retains-live-lease",
+        "agent-started-tool-effect-not-redispatched",
+        "galileo-named-origin-credential-and-revocation-bound"
+      ]
+    },
+    {
+      "id": "G5",
+      "title": "SSH, DNS and personal editor effects",
+      "sources": [
+        "coverage-balance.md#5-ssh-dns-route-convergence-and-personal-editor-effects-remain-a-blind-spot"
+      ],
+      "brief": "Discover strict SSH host certificate/key authority, DNS route convergence after move, and personal editor one-use exchange/current UID/home/save/search/PTY effects through crashes and sign-out.",
+      "independent_oracle": "DNS query and actual SSH/HTTPS route receipt, host certificate chain, guest file bytes/UID and editor origin/workbench effect",
+      "boundary": "real Audi/Porsche/Marshall with TCG guest; native fleet for moved host/Firecracker proof",
+      "return": "separate route/SSH/editor candidates with current and stale negative cases",
+      "disposition": "source-grounded discovery integrated into catalog and evidence; no baseline executed",
+      "resulting_property_ids": [
+        "authoritative-dns-follows-current-placement",
+        "editor-login-code-single-use-after-reply-loss",
+        "editor-save-survives-worker-recovery",
+        "editor-signout-fences-active-guest-write",
+        "revoked-ssh-key-refuses-fresh-guest-login",
+        "strict-ssh-host-trust-reaches-current-guest"
+      ]
+    },
+    {
+      "id": "G6",
+      "title": "Optional recursive and configuration coverage",
+      "sources": [
+        "coverage-balance.md#6-optional-recursive-and-profile-specific-deployments-need-explicit-selection"
+      ],
+      "brief": "Identify Inception recursive authority and independently selected NixOS/Ubuntu, Customer/OSS, source provider/revision and multi-drive cases. Separate genuinely new invariant from required variant/reach condition on existing property.",
+      "independent_oracle": "nested and outer identity/authority receipts plus version/profile-specific guest and disk effects",
+      "boundary": "native Inception/guest family checks; hosted TCG only where exact guest capability is present",
+      "return": "new candidates only for distinct guarantees; otherwise explicit roster variant requirements",
+      "disposition": "source-grounded discovery integrated into catalog and evidence; no baseline executed",
+      "resulting_property_ids": [
+        "inception-parent-publication-cannot-confer-child-authority"
+      ]
+    },
+    {
+      "id": "G7",
+      "title": "Restore publication and backward-clock manifest",
+      "sources": [
+        "coverage-balance.md#7-backup-publication-is-represented-interrupted-restore-completion-is-not",
+        "wildcard.md#4-backward-wall-clock-movement-can-create-a-backup-that-poisons-retention"
+      ],
+      "brief": "Discover refusal to publish an interrupted isolated restore target and a real Restic capture with backward wall-clock movement between start/completion; later valid retention must not be poisoned. The modeled time counterexample is a hypothesis, not a confirmed defect.",
+      "independent_oracle": "isolated target publication marker and component hashes; repository manifest validator, later retention and referenced snapshot enumeration",
+      "boundary": "real Restic with native/typed clock fault seam; TCG or native storage for guest snapshots",
+      "return": "two separate safety properties with reachable interrupted/time-skew branches",
+      "disposition": "source-grounded discovery integrated into catalog and evidence; no baseline executed",
+      "resulting_property_ids": [
+        "backup-interrupted-restore-target-unpublished",
+        "backup-published-manifest-retention-compatible"
+      ]
+    },
+    {
+      "id": "G8",
+      "title": "Operational custody and diagnostic independence",
+      "sources": [
+        "coverage-balance.md#8-operational-custody-and-diagnostic-independence-lack-progress-witnesses"
+      ],
+      "brief": "Discover Lyra binary updater verified artifact/drain/registration rollback, host enrollment and atomic secret bundle, plus valid user effect while recorder/collector is down under ADR-0149.",
+      "independent_oracle": "binary digest, registration/secret owner state and actual user/provider effect versus degraded measurement quality",
+      "boundary": "native machine for host/guest updater and enrollment; real-hosted producer/recorder fault for independence",
+      "return": "separate operations and conditional effect-progress candidates",
+      "disposition": "source-grounded discovery integrated into catalog and evidence; no baseline executed",
+      "resulting_property_ids": [
+        "diagnostic-outage-preserves-authorized-user-effect",
+        "host-enrollment-receipt-follows-live-health",
+        "lyra-guest-update-fences-executor-handoff",
+        "runtime-secret-bundle-complete-or-previous"
+      ]
+    },
+    {
+      "id": "G9",
+      "title": "Composed useful create journey",
+      "sources": [
+        "wildcard.md#3-no-property-makes-an-acknowledged-create-useful-to-the-same-customer"
+      ],
+      "brief": "After one authenticated customer create and lost reply, heal faults; bind request key, User UUID, UID, VM/placement/boot and sentinel hash; write/reread via real shell/editor, restart Lilly or guest and reread. One good Sometimes is a reach witness only; also check designated operation after a measured quiet window.",
+      "independent_oracle": "workload identity ledger and guest fsync/read bytes via authenticated terminal/SSH; real boot/overlay identity",
+      "boundary": "guest-journey TCG for software-emulated guest; native KVM for Firecracker continuity",
+      "return": "customer-level safety and conditional progress candidate(s) without a universal SLA",
+      "disposition": "source-grounded discovery integrated into catalog and evidence; no baseline executed",
+      "resulting_property_ids": [
+        "authenticated-create-to-retained-guest-file"
+      ]
+    }
+  ],
+  "implementation_prerequisites": [
+    {
+      "id": "I1",
+      "title": "Assertion and oracle lifecycle",
+      "action": "Build a 75-ID assertion manifest with literal kind/message/location, typed unavailable/refused/committed observations, append-only independent attempt/effect ledgers outside ANTITHESIS_OUTPUT_DIR, setup_complete owner and explicit unexercised reports."
+    },
+    {
+      "id": "I2",
+      "title": "Source-built images and SDK smoke",
+      "action": "Build pinned release/closure OCI images, compile-time harness-only lower seams, Python SDK and BEAM fallback JSONL, Rust symbols/build IDs; run local Compose and small hosted declaration/evaluation smoke before broad runs."
+    },
+    {
+      "id": "I3",
+      "title": "Authenticated Control wire fixture",
+      "action": "Use bounded real TLS/WebSocket peer/proxy with reviewed synthetic credentials, exact call/wire IDs, hello/close class and postcommit effect ledger; positive control for each malformed/refusal case."
+    },
+    {
+      "id": "I4",
+      "title": "Lease/effect causal barriers",
+      "action": "Record grant/request-start/renewal in one clock domain where possible and use causal guest/upstream first-effect barriers across containers; never treat socket close/timer/log as absence of bytes."
+    },
+    {
+      "id": "I5",
+      "title": "Faithful external origins",
+      "action": "Build separate real provider/integration/Git origin logs and Brady TPROXY route with fixed-source policy, actual Git/native locks and accepted-effect IDs; validate production caps in dedicated measured campaigns."
+    },
+    {
+      "id": "I6",
+      "title": "Physical guest and storage adapters",
+      "action": "Boot and measure real TCG guest and separate ZFS/router VM; preserve real Lilly Store/Runtime/actor/journal, QEMU PID/overlay/boot/vsock, ZFS GUID, owned quota and actual pressure freshness. Do not claim Firecracker isolation or production backing from TCG."
+    },
+    {
+      "id": "I7",
+      "title": "Two-host transfer/native acceptance",
+      "action": "Use native two-Lilly KVM/ZFS fixture for full relocation/copy/cleanup, physical VMM and network witness; a fake import/stop receipt cannot close these rows."
+    },
+    {
+      "id": "I8",
+      "title": "Restic, telemetry and native updater",
+      "action": "Use isolated Restic restores and owned ZFS cleanup, real recorder/SQLite producer identity and quota faults, and native NixOS closure/migrator/systemd/secret/health observations; current fixture passes remain scoped local evidence only."
+    },
+    {
+      "id": "I9",
+      "title": "Integrated real ZFS host for accepted placement",
+      "action": "Build and measure a real inner-ZFS-backed Lilly host that reports execution_ready only when actual execution and current measured pool are available, then wire its session/report to Marshall. Use this for accepted placement and guest/satellite effects. Keep standalone storage-router separate; control-only host must report unavailable and cannot be used as fake admission."
+    }
+  ],
+  "genuine_policy_questions": [
+    {
+      "id": "B1",
+      "title": "Historical restore activation policy",
+      "question": "What operator-controlled receipt establishes safe transition from quarantined restored DB/disk/host state to serving authority, if such activation is supported?",
+      "reason": "Inspected source/ADRs define isolated restore and document UID/sequence reconciliation limits; no automatic activation command or cross-component RPO was found.",
+      "independent_work": "Keep quarantine/partial restore properties and native isolated restore drill; do not promise reentry."
+    },
+    {
+      "id": "B2",
+      "title": "Galileo grant TTL anchor",
+      "question": "Is a Galileo grant deadline anchored at Marshall grant response or at later upstream lease creation after synchronous measurement admission?",
+      "reason": "Source exposes a 2-second grant and up to 5-second accounting wait before local deadline creation; intended authority semantics are not established by code order alone.",
+      "independent_work": "Build original grant/renewal/upstream first-effect ledger and report timing without declaring a violation."
+    }
+  ],
+  "deferred_candidate": {
+    "id": "backup-historical-restore-reentry-reconciliation",
+    "reason": "No operator activation/reconciliation receipt exists; positive reentry is not an executable property."
+  }
+}

@@ -1,0 +1,10 @@
+@cc [owner:ghuntley,label:durability] production-durable-commits
+Marshall.Operations.RuntimeConfig.from_env/1 MUST configure synchronous_commit=on
+on every accepted production Repo connection. A database or role default of off
+MUST NOT cause Marshall to acknowledge a write before the configured durable WAL
+flush. The database operator remains responsible for synchronous standby selection.
+
+@cc [owner:ghuntley,label:security] production-database-identity
+Marshall.Operations.RuntimeConfig.from_env/1 MUST retain primary-only connections
+and verified TLS, except for its explicit literal-loopback development mode.
+Invalid configuration MUST return a fixed error without including supplied secrets.

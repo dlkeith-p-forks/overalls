@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "extensions": [
+    {
+      "id": "EditorConfig.EditorConfig",
+      "version": "0.18.2",
+      "targetPlatform": "universal",
+      "vsix": {
+        "url": "https://open-vsx.org/api/EditorConfig/EditorConfig/0.18.2/file/EditorConfig.EditorConfig-0.18.2.vsix",
+        "hash": "sha256-y8A3D/IEvBbYSj7mgwU2/AQ1WFb6DolasGThoDz8uEo="
+      },
+      "signature": {
+        "url": "https://open-vsx.org/api/EditorConfig/EditorConfig/0.18.2/file/EditorConfig.EditorConfig-0.18.2.sigzip",
+        "hash": "sha256-BPrjaM0IiKaEpU9bEhtRf39Jre1zqxkZ3XDd9n8h5ew="
+      }
+    },
+    {
+      "id": "cab404.vscode-direnv",
+      "version": "1.0.0",
+      "targetPlatform": "universal",
+      "vsix": {
+        "url": "https://open-vsx.org/api/cab404/vscode-direnv/1.0.0/file/cab404.vscode-direnv-1.0.0.vsix",
+        "hash": "sha256-+nLH+T9v6TQCqKZw6HPN/ZevQ65FVm2SAo2V9RecM3Y="
+      },
+      "signature": {
+        "url": "https://open-vsx.org/api/cab404/vscode-direnv/1.0.0/file/cab404.vscode-direnv-1.0.0.sigzip",
+        "hash": "sha256-+0DbhULUFXcs3+mBPnLMLWSfe6XizbmKU+Z59dZh3Pw="
+      }
+    },
+    {
+      "id": "elixir-lsp.elixir-ls",
+      "version": "0.31.1",
+      "targetPlatform": "universal",
+      "vsix": {
+        "url": "https://open-vsx.org/api/elixir-lsp/elixir-ls/0.31.1/file/elixir-lsp.elixir-ls-0.31.1.vsix",
+        "hash": "sha256-G0ab1HReO2zHeX3xJupu9WGXdetONleRyhiSPVCVIz0="
+      },
+      "signature": {
+        "url": "https://open-vsx.org/api/elixir-lsp/elixir-ls/0.31.1/file/elixir-lsp.elixir-ls-0.31.1.sigzip",
+        "hash": "sha256-16jj7kar2UktCYsa30cXbyLN6Wsj7PyB88LvPk2y81k="
+      }
+    },
+    {
+      "id": "rust-lang.rust-analyzer",
+      "version": "0.3.3073",
+      "targetPlatform": "universal",
+      "vsix": {
+        "url": "https://open-vsx.org/api/rust-lang/rust-analyzer/0.3.3073/file/rust-lang.rust-analyzer-0.3.3073.vsix",
+        "hash": "sha256-ZKtKLTYsIQpyl/qKodk6/gCGtPOZ4+GSECT7fTWH3ik="
+      },
+      "signature": {
+        "url": "https://open-vsx.org/api/rust-lang/rust-analyzer/0.3.3073/file/rust-lang.rust-analyzer-0.3.3073.sigzip",
+        "hash": "sha256-q9bQI7BF/R89WjUfa1wwMcwPhx0/l5QxyP5rl6/7dK4="
+      }
+    }
+  ]
+}

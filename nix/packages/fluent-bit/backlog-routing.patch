@@ -1,0 +1,97 @@
+--- a/src/flb_input_chunk.c
++++ b/src/flb_input_chunk.c
+@@ -800,7 +800,7 @@
+                                      i_ins->config->router);
+ }
+ 
+-static int input_chunk_collect_output_references(struct flb_config *config,
++int flb_input_chunk_collect_output_references(struct flb_config *config,
+                                                  const struct flb_chunk_direct_route *route,
+                                                  struct flb_output_instance ***out_matches,
+                                                  size_t *out_count)
+@@ -1145,7 +1145,7 @@
+         for (direct_index = 0; direct_index < direct_count; direct_index++) {
+             direct_matches = NULL;
+             direct_match_count = 0;
+-            ret = input_chunk_collect_output_references(in->config,
++            ret = flb_input_chunk_collect_output_references(in->config,
+                                                         &direct_routes[direct_index],
+                                                         &direct_matches,
+                                                         &direct_match_count);
+@@ -1181,7 +1181,7 @@
+             for (direct_index = 0; direct_index < direct_count; direct_index++) {
+                 direct_matches = NULL;
+                 direct_match_count = 0;
+-                ret = input_chunk_collect_output_references(in->config,
++                ret = flb_input_chunk_collect_output_references(in->config,
+                                                             &direct_routes[direct_index],
+                                                             &direct_matches,
+                                                             &direct_match_count);
+--- a/include/fluent-bit/flb_input_chunk.h
++++ b/include/fluent-bit/flb_input_chunk.h
+@@ -153,6 +153,10 @@
+                                     char *tag, int tag_len,
+                                     const struct flb_chunk_direct_route *routes,
+                                     int route_count);
++int flb_input_chunk_collect_output_references(struct flb_config *config,
++                                              const struct flb_chunk_direct_route *route,
++                                              struct flb_output_instance ***out_matches,
++                                              size_t *out_count);
+ int flb_chunk_route_plugin_matches(struct flb_output_instance *o_ins,
+                                    const struct flb_chunk_direct_route *route);
+ int flb_input_chunk_has_direct_routes(struct flb_input_chunk *ic);
+--- a/plugins/in_storage_backlog/sb.c
++++ b/plugins/in_storage_backlog/sb.c
+@@ -283,6 +283,13 @@
+     int                     result;
+     size_t                  slots;
+ 
++    struct flb_chunk_direct_route *direct_routes = NULL;
++    struct flb_output_instance **matches = NULL;
++    int direct_count = 0;
++    size_t match_count = 0;
++    int route_index; size_t match_index;
++    int direct_status;
++
+     memset(&dummy_input_chunk, 0, sizeof(struct flb_input_chunk));
+ 
+     slots = flb_routes_mask_get_slots(context->ins->config->router);
+@@ -312,8 +319,36 @@
+         return -2;
+     }
+ 
+-    flb_routes_mask_set_by_tag(dummy_input_chunk.routes_mask, tag_buf, tag_len,
+-                               context->ins);
++    /* Backlog discovery must use the same persisted routing identity as
++     * chunk restoration, before assigning chunks to bounded output queues. */
++    direct_status = flb_input_chunk_get_direct_routes(&dummy_input_chunk,
++                                                     &direct_routes, &direct_count);
++    if (direct_status == 0 && direct_count > 0) {
++        for (route_index = 0; route_index < direct_count; route_index++) {
++            matches = NULL;
++            match_count = 0;
++            result = flb_input_chunk_collect_output_references(context->ins->config,
++                        &direct_routes[route_index], &matches, &match_count);
++            if (result != 0) {
++                flb_free(matches);
++                flb_input_chunk_destroy_direct_routes(direct_routes, direct_count);
++                return -3;
++            }
++            for (match_index = 0; match_index < match_count; match_index++) {
++                flb_routes_mask_set_bit(dummy_input_chunk.routes_mask,
++                                        matches[match_index]->id,
++                                        context->ins->config->router);
++            }
++            flb_free(matches);
++        }
++    }
++    else if (direct_status != -2) {
++        flb_routes_mask_set_by_tag(dummy_input_chunk.routes_mask, tag_buf, tag_len,
++                                   context->ins);
++    }
++    if (direct_routes) {
++        flb_input_chunk_destroy_direct_routes(direct_routes, direct_count);
++    }
+ 
+     mk_list_foreach_safe(head, tmp, &context->backlogs) {
+         backlog = mk_list_entry(head, struct sb_out_queue, _head);

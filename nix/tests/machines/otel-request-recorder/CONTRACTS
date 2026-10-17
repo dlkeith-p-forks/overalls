@@ -1,0 +1,11 @@
+@cc [owner:ghuntley,label:verification;durability] recorder-cut-real-commit-and-identity
+The commitReplyLoss fixture MUST retain production Unix peer authentication and
+Store accounting. Its checkpoint MUST stop only after an accepted production
+Runtime.apply and before write_frame; it MUST NOT fabricate checkpoints or replies.
+The ordinary fixture MUST retain its production recorder and helper timeout.
+
+@cc [owner:ghuntley,label:verification] recorder-cut-required-histories
+The commitReplyLoss fixture MUST refuse evaluation if its history insertion
+boundary disappears. Native evidence MUST observe actual recorder kernel stop
+and Client refusal/gap before claiming reply loss or delayed acknowledgment.
+Compiled source and composed typing MUST NOT be reported as native execution.
