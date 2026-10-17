@@ -15,6 +15,7 @@ from pathlib import Path
 
 from assertions import python_calls
 from identity import (
+    IMAGE_CATALOG_LINK,
     IMAGE_CATALOG_ROOT,
     STAGED_CATALOG,
     command,
@@ -303,6 +304,7 @@ def manifest(root: Path, selection: Selection) -> dict[str, Json]:
                 "runtime_dependencies": [file_record(path, root) for path in dependencies],
                 "image_command_root": "/opt/antithesis/test/v1",
                 "image_catalog_root": IMAGE_CATALOG_ROOT,
+                "image_catalog_link": IMAGE_CATALOG_LINK,
             }
         ),
         "command manifest",
@@ -753,9 +755,11 @@ def stage(root: Path, selection: Selection, output: Path) -> dict[str, Json]:
     The staged Antithesis catalog MUST contain exactly the manifest's runtime
     dependencies, as one ``workload`` module tree, so the hosted Python
     instrumentor declares every assertion reachable from the selected commands
-    and bootstrap and none from an unselected package. The tree MUST have one
-    top-level entry: the SDK registers a single instrumentation module per
-    process and would otherwise load only one of several catalogs.
+    and bootstrap and none from an unselected package. The image MUST present
+    that tree as the single resolved root of ``/opt/antithesis/catalog``: the
+    instrumentor catalogs each root separately and the SDK registers one root's
+    catalog per process, so a root per package would leave every other selected
+    package's assertions undeclared.
     """
     data = manifest(root, selection)
     temporary = Path(tempfile.mkdtemp(prefix=f".{output.name}.", dir=output.parent))
