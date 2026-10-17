@@ -16,6 +16,7 @@ type Profile = Literal[
     "admission-stub",
     "backup-restic",
     "satellite-standin",
+    "guest-lifecycle",
 ]
 PROFILES: tuple[Profile, ...] = (
     "control-core",
@@ -25,6 +26,7 @@ PROFILES: tuple[Profile, ...] = (
     "admission-stub",
     "backup-restic",
     "satellite-standin",
+    "guest-lifecycle",
 )
 
 

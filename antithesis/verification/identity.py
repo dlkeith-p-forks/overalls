@@ -996,6 +996,7 @@ def main() -> int:
             "admission-stub",
             "backup-restic",
             "satellite-standin",
+            "guest-lifecycle",
         ),
         default="control-core",
     )

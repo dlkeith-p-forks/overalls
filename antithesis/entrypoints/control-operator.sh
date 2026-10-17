@@ -204,6 +204,29 @@ enroll_optional_host() {
   host_verified=1
 }
 
+guest_catalog_enabled=${OVERALLS_ANTITHESIS_GUEST_CATALOG:-0}
+guest_image_registered=0
+case "$guest_catalog_enabled" in
+  0|1) ;;
+  *) echo 'Invalid guest catalog mode' >&2; exit 1 ;;
+esac
+# @cc [owner:ghuntley,label:security;verification] guest-image-operator-registration
+# The guest-lifecycle profile's image MUST enter Marshall's catalog only through
+# the operator's Images.register action, which derives the image ID from the
+# manifest content. A missing, linked, oversized or invalid manifest MUST leave
+# the image unregistered; registration grants no capacity or execution claim.
+register_guest_image() {
+  [[ "$guest_catalog_enabled" == 1 && "$guest_image_registered" == 0 ]] || return 0
+  local manifest=/run/overalls-guest-catalog/manifest.json
+  [[ -f "$manifest" && ! -L "$manifest" ]] || return 0
+  (( $(stat -c '%s' "$manifest") <= 65536 )) || { echo 'Guest image manifest oversized' >&2; return 0; }
+  if "$release" eval 'Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); [path] = System.argv(); {:ok, manifest} = path |> File.read!() |> JSON.decode(); {:ok, _} = Marshall.Compute.Images.register(manifest, "NixOS TCG guest")' "$manifest" >/dev/null 2>&1; then
+    guest_image_registered=1
+  else
+    echo 'Guest image registration unavailable' >&2
+  fi
+}
+
 publish_refusal() {
   local request_id=$1 reason=$2 destination="$channel/results/$1.json" temporary
   temporary=$(mktemp "$channel/results/.$request_id.XXXXXXXX")
@@ -557,6 +580,7 @@ process_request() {
 
 while true; do
   enroll_optional_host
+  register_guest_image
   # @cc [owner:ghuntley,label:security;verification] inner-satellites-after-host
   # Inner service credentials MUST be issued only after the measured host's
   # credential, committed pool and private fixture have been verified.

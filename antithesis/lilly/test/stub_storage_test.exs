@@ -116,7 +116,16 @@ defmodule OverallsAntithesis.Lilly.StubStorageTest do
              )
 
     assert {nil, first, [%{total_bytes: @total}], [_image]} =
-             Collector.stub_sample({:ok, stub}, pools, cgroup, leaf, inventory(), limits, nil, %{})
+             Collector.stub_sample(
+               {:ok, stub},
+               pools,
+               cgroup,
+               leaf,
+               inventory(),
+               limits,
+               nil,
+               %{}
+             )
 
     Process.sleep(2)
     File.write!(Path.join(leaf, "cpu.stat"), "usage_usec 60\n")

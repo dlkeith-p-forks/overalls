@@ -19,6 +19,7 @@ from core.profile_readiness import (
     access_smtp_ready,
     admission_stub_ready,
     backup_restic_ready,
+    guest_lifecycle_ready,
     recorder_host_ready,
     repository_origin_ready,
     satellite_standin_ready,
@@ -78,6 +79,7 @@ class BootstrapTests(unittest.TestCase):
                 "admission-stub",
                 "backup-restic",
                 "satellite-standin",
+                "guest-lifecycle",
             ):
                 with self.subTest(profile=profile):
                     config = replace(self.config(Path(directory)), profile=profile)
@@ -103,6 +105,28 @@ class BootstrapTests(unittest.TestCase):
                 self.assertFalse(recorder_host_ready(config))
                 self.assertFalse(backup_restic_ready())
                 self.assertFalse(satellite_standin_ready())
+                self.assertFalse(guest_lifecycle_ready())
+
+    def test_guest_probe_requires_observed_substrate_and_reports_once(self) -> None:
+        environment = {"ANTITHESIS_CONTROL_REQUEST_DIR": "/run/overalls-control-requests"}
+        with (
+            patch.dict(os.environ, environment),
+            patch("core.profile_readiness.substrate_gap") as gap,
+        ):
+            gap.return_value = "guest_identity_unavailable"
+            with self.assertLogs("core.profile_readiness", level="WARNING") as logs:
+                self.assertFalse(guest_lifecycle_ready())
+                self.assertFalse(guest_lifecycle_ready())
+            self.assertEqual(len(logs.records), 1)
+            self.assertIn("guest_identity_unavailable", logs.output[0])
+            gap.side_effect = PermissionError("requests")
+            with self.assertLogs("core.profile_readiness", level="WARNING") as logs:
+                self.assertFalse(guest_lifecycle_ready())
+            self.assertIn("operator_channel (PermissionError)", logs.output[0])
+            gap.side_effect = None
+            gap.return_value = None
+            self.assertTrue(guest_lifecycle_ready())
+            gap.assert_called_with(Path("/run/overalls-control-requests"))
 
     def test_backup_probe_refuses_shared_or_toolless_root(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

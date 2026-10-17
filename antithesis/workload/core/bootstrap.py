@@ -16,6 +16,7 @@ from core.profile_readiness import (
     access_smtp_ready,
     admission_stub_ready,
     backup_restic_ready,
+    guest_lifecycle_ready,
     recorder_host_ready,
     repository_origin_ready,
     satellite_standin_ready,
@@ -83,6 +84,8 @@ def probe(config: Config) -> Probe:
         return Probe(False, "backup_restic")
     if config.profile == "satellite-standin" and not satellite_standin_ready():
         return Probe(False, "satellite_standin")
+    if config.profile == "guest-lifecycle" and not guest_lifecycle_ready():
+        return Probe(False, "guest_lifecycle")
     return Probe(True, "complete")
 
 
@@ -111,6 +114,8 @@ def run(config: Config, stop: Event) -> int:
                 setup_complete({"template": "backup-restic"})
             elif config.profile == "satellite-standin":
                 setup_complete({"template": "satellite-standin"})
+            elif config.profile == "guest-lifecycle":
+                setup_complete({"template": "guest-lifecycle"})
             elif config.profile == "control-core":
                 setup_complete({"template": "control-core"})
             else:

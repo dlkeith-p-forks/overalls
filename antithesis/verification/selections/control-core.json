@@ -14,7 +14,8 @@
     "core",
     "control",
     "access",
-    "repository"
+    "repository",
+    "guest_lifecycle"
   ],
   "services": [
     "pg",

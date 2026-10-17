@@ -57,6 +57,12 @@ The inspected source moves this private check to GuestExecutor to avoid a
 credential/report bootstrap cycle. The current private host still has report
 sequence zero, so this ordering is source-reviewed rather than composed
 execution evidence.
+The separate container `guest-lifecycle` profile instead places a guest-vmm
+QEMU TCG container beside a STUB-storage Lilly release: Lilly alone mounts the
+mutating guest control socket, enrollment alone mounts the read-only witness
+socket and the image catalog share, and the workload reaches both only through
+the operator's closed request channel. Its synthetic pool is not ZFS; losing
+guest-vmm health, the registered image or the stub catalog withholds setup.
 Loss of the fixture database, private credentials, current report or inner-host
 measurement withholds the corresponding setup or guest claim.
 

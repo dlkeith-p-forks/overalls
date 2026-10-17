@@ -85,13 +85,13 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `antithesis/workload/core/smoke.py:41` | `always_or_unreachable` | Control smoke invalid credential refused before upgrade | support / startup |
 | `antithesis/workload/core/smoke.py:46` | `reachable` | Control smoke observed authentication refusal on fleet listener | support / startup |
 | `antithesis/workload/core/smoke.py:56` | `reachable` | Control smoke observed durable v4 host report | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:41` | `always` | Completed guest lifecycle outcome matches current VM state and execution identity | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:216` | `always` | Guest ready outcome has current tuple and independent live QEMU guest readiness | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:222` | `reachable` | Accepted provision reached a real QEMU guest boot and port 1024 readiness | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:239` | `always` | Accepted stop has no QEMU process and retains the measured guest overlay | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:245` | `reachable` | Accepted stop has independently absent QEMU and retained qcow2 hash | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:273` | `always` | Fresh start reaches a new physical boot on the retained guest placement | support / startup |
-| `antithesis/workload/guest_lifecycle/scenarios.py:275` | `reachable` | Stopped retained guest restarted with a new kernel boot UUID | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:42` | `always` | Completed guest lifecycle outcome matches current VM state and execution identity | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:192` | `always` | Guest ready outcome has current tuple and independent live QEMU guest readiness | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:198` | `reachable` | Accepted provision reached a real QEMU guest boot and port 1024 readiness | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:215` | `always` | Accepted stop has no QEMU process and retains the measured guest overlay | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:221` | `reachable` | Accepted stop has independently absent QEMU and retained qcow2 hash | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:249` | `always` | Fresh start reaches a new physical boot on the retained guest placement | support / startup |
+| `antithesis/workload/guest_lifecycle/scenarios.py:251` | `reachable` | Stopped retained guest restarted with a new kernel boot UUID | support / startup |
 | `antithesis/workload/recorder/scenarios.py:124` | `always` | Request recorder exact capacity holds 4096 real worker admissions | support / startup |
 | `antithesis/workload/recorder/scenarios.py:129` | `reachable` | Request recorder reached 4096 live authenticated producer workers | support / startup |
 | `antithesis/workload/recorder/scenarios.py:145` | `always` | request recorder saturation cannot fabricate admitted tickets or a clean quality interval | `request-recorder-capacity-does-not-admit-phantom-work` |

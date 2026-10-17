@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "name": "guest-lifecycle",
+  "compose_files": [
+    "antithesis/config/docker-compose.yaml",
+    "antithesis/config/compose.guest-vmm.yaml",
+    "antithesis/config/compose.guest-lifecycle.yaml"
+  ],
+  "templates": ["guest_lifecycle"],
+  "runtime_packages": ["core", "guest_lifecycle", "access", "repository"],
+  "services": [
+    "pg", "migrate", "marshall-a", "marshall-b", "lilly-a", "enrollment",
+    "workload", "guest-vmm"
+  ],
+  "workload_environment": [
+    "ANTITHESIS_MARSHALL_URLS", "ANTITHESIS_CA_FILE", "ANTITHESIS_FIXTURE_MANIFEST",
+    "ANTITHESIS_DB_HOST", "ANTITHESIS_DB_PASSWORD_FILE",
+    "ANTITHESIS_CONTROL_CREDENTIAL_FILE", "ANTITHESIS_CONTROL_REQUEST_DIR",
+    "ANTITHESIS_BOOTSTRAP_PROFILE"
+  ],
+  "bootstrap_template": "guest-lifecycle",
+  "singleton_templates": []
+}

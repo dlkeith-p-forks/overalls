@@ -243,6 +243,17 @@ completes. Setup requires those committed report, pool and image rows in SQL.
 The results are admission-logic evidence only, never ZFS, physical-capacity,
 KVM or isolation evidence; the measured-capacity command stays in a separate,
 unselected template for the measured host graph.
+The optional `guest-lifecycle` profile selects the guest lifecycle command with
+the guest VMM overlay. Its container Lilly is a separate STUB-storage release:
+it reports a fixed synthetic pool with no ZFS and compute headroom for one free
+guest-vmm slot, capped by measured cgroup limits, and sets execution readiness
+only after a guest-vmm health check and a verified advertised image. The
+enrollment operator registers that image manifest through the catalog action.
+Bootstrap adds a third gate: the guest-vmm image identity, read through the
+read-only witness bridge, and a Marshall catalog offering that image with known
+capacity for its shape. The stub admits one emulated QEMU TCG guest only; it is
+not native ZFS, KVM, Firecracker, isolation or capacity evidence, and no local
+or hosted run of this profile is recorded.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The

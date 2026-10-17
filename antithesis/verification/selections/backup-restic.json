@@ -6,7 +6,7 @@
     "antithesis/config/compose.backup.yaml"
   ],
   "templates": ["backup"],
-  "runtime_packages": ["core", "backup", "access", "repository"],
+  "runtime_packages": ["core", "backup", "access", "repository", "guest_lifecycle"],
   "services": [
     "pg", "migrate", "marshall-a", "marshall-b", "lilly-a", "enrollment",
     "workload"

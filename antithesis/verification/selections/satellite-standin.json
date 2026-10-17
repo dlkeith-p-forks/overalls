@@ -9,7 +9,8 @@
   ],
   "templates": ["satellite"],
   "runtime_packages": [
-    "core", "satellite", "access", "admission", "repository", "terminal"
+    "core", "satellite", "access", "admission", "repository", "terminal",
+    "guest_lifecycle"
   ],
   "services": [
     "pg", "migrate", "marshall-a", "marshall-b", "lilly-a", "enrollment",

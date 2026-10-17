@@ -33,7 +33,16 @@ defmodule OverallsAntithesis.Lilly.Collector do
       substrate = StubStorage.read()
 
       {capacity, usage, reported_pools, stub_images} =
-        stub_sample(substrate, pools, "/sys/fs/cgroup", path, inventory, limits, previous, coverage)
+        stub_sample(
+          substrate,
+          pools,
+          "/sys/fs/cgroup",
+          path,
+          inventory,
+          limits,
+          previous,
+          coverage
+        )
 
       report = %{
         capacity: capacity,

@@ -20,6 +20,7 @@ from access.oracle import AccessOracle
 from core.config import Config
 from core.outcome import State
 from core.sql import SqlOracle
+from guest_lifecycle.readiness import substrate_gap
 from repository.client import EnricoClient
 from repository.fixture import GitOrigin
 from repository.oracle import RepositoryOracle
@@ -461,4 +462,26 @@ def satellite_standin_ready() -> bool:
         return _incomplete(profile, "guest_standin_receipt_missing")
     if receipt != "verified":
         return _incomplete(profile, f"guest_standin_receipt_{receipt}")
+    return True
+
+
+def guest_lifecycle_ready() -> bool:
+    """@cc [owner:ghuntley,label:verification] bootstrap-guest-substrate
+    Guest-lifecycle setup MUST observe the guest-vmm image identity through the
+    enrollment operator's read-only witness bridge and a Marshall catalog that
+    offers that exact image with known capacity for its shape. The capacity
+    comes from the labelled STUB-storage collector and MUST NOT be described as
+    native ZFS or KVM readiness. Missing observations leave setup incomplete.
+    """
+    profile = "guest-lifecycle"
+    try:
+        request_root = Path(_required("ANTITHESIS_CONTROL_REQUEST_DIR"))
+    except ValueError as error:
+        return _incomplete(profile, f"configuration ({type(error).__name__})")
+    try:
+        gap = substrate_gap(request_root)
+    except OSError as error:
+        return _incomplete(profile, f"operator_channel ({type(error).__name__})")
+    if gap is not None:
+        return _incomplete(profile, gap)
     return True

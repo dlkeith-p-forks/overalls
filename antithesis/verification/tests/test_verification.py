@@ -922,6 +922,7 @@ class VerificationTests(unittest.TestCase):
             ("admission-stub", "admission", 2),
             ("backup-restic", "backup", 5),
             ("satellite-standin", "satellite", 4),
+            ("guest-lifecycle", "guest_lifecycle", 1),
         ):
             with self.subTest(profile=name):
                 selection = read_selection(
@@ -1112,6 +1113,94 @@ class VerificationTests(unittest.TestCase):
                 validate_compose(selection, rendered(**{change: True}))
 
     @unittest.skipUnless(shutil.which("docker-compose"), "Compose CLI unavailable")
+    def test_guest_lifecycle_compose_keeps_guest_sockets_out_of_workload(self) -> None:
+        root = Path(__file__).resolve().parents[3]
+        selection = read_selection(root / "antithesis/verification/selections/guest-lifecycle.json")
+        healthy = {"condition": "service_healthy"}
+
+        def volume(source: str, target: str, read_only: bool = False) -> dict[str, object]:
+            return {"type": "volume", "source": source, "target": target, "read_only": read_only}
+
+        def graph(mutation: str = "") -> dict[str, Json]:
+            environment = {
+                key: "/run/overalls-secrets/fixture.json" for key in selection.workload_environment
+            }
+            environment.update(
+                {
+                    "ANTITHESIS_DB_HOST": "pg",
+                    "ANTITHESIS_MARSHALL_URLS": "https://marshall-a,https://marshall-b",
+                    "ANTITHESIS_CONTROL_CREDENTIAL_FILE": (
+                        "/run/overalls-control-secrets/lilly-a-credential.json"
+                    ),
+                    "ANTITHESIS_CONTROL_REQUEST_DIR": "/run/overalls-control-requests",
+                    "ANTITHESIS_BOOTSTRAP_PROFILE": (
+                        "control-core" if mutation == "profile" else "guest-lifecycle"
+                    ),
+                }
+            )
+            gated = ["pg", "marshall-a", "marshall-b", "enrollment", "lilly-a"]
+            if mutation != "ungated":
+                gated.append("guest-vmm")
+            workload_volumes = [
+                volume("oracle-credentials", "/run/overalls-secrets", True),
+                volume("control-credentials", "/run/overalls-control-secrets", True),
+                volume("control-requests", "/run/overalls-control-requests/requests"),
+                volume("control-results", "/run/overalls-control-requests/results", True),
+            ]
+            if mutation == "workload_witness":
+                workload_volumes.append(
+                    volume("guest-vmm-witness", "/run/overalls-guest-witness", True)
+                )
+            enrollment_volumes = [
+                volume("guest-vmm-witness", "/run/overalls-guest-witness", True),
+                volume("guest-catalog", "/run/overalls-guest-catalog", True),
+            ]
+            if mutation == "enrollment_control":
+                enrollment_volumes.append(volume("guest-vmm-control", "/run/overalls-guest-vmm"))
+            services: dict[str, object] = {name: {} for name in selection.services}
+            services["workload"] = {
+                "environment": environment,
+                "depends_on": {name: healthy for name in gated},
+                "volumes": workload_volumes,
+            }
+            services["lilly-a"] = {
+                "image": (
+                    "overalls-antithesis/lilly:local"
+                    if mutation == "lilly_image"
+                    else "overalls-antithesis/lilly-guest:local"
+                ),
+                "depends_on": {"guest-vmm": healthy},
+                "environment": {
+                    "OVERALLS_ANTITHESIS_GUEST_SOCKET": "/run/overalls-guest-vmm/control.sock",
+                    "OVERALLS_ANTITHESIS_GUEST_IMAGE": "/opt/overalls/guest-vmm/image",
+                },
+                "volumes": [
+                    volume("guest-vmm-control", "/run/overalls-guest-vmm"),
+                    volume("guest-catalog", "/run/overalls-guest-catalog"),
+                ],
+            }
+            services["enrollment"] = {
+                "environment": {
+                    "OVERALLS_ANTITHESIS_GUEST_WITNESS_SOCKET": (
+                        "/run/overalls-guest-witness/witness.sock"
+                    ),
+                    "OVERALLS_ANTITHESIS_GUEST_CATALOG": "1",
+                },
+                "volumes": enrollment_volumes,
+            }
+            return obj(narrow_json({"services": services}), "guest Compose")
+
+        validate_compose(selection, graph())
+        for mutation in (
+            "workload_witness",
+            "ungated",
+            "lilly_image",
+            "enrollment_control",
+            "profile",
+        ):
+            with self.subTest(mutation=mutation), self.assertRaises(EvidenceError):
+                validate_compose(selection, graph(mutation))
+
     def test_backup_and_satellite_profiles_refuse_weakened_fixtures(self) -> None:
         root = Path(__file__).resolve().parents[3]
         backup = read_selection(root / "antithesis/verification/selections/backup-restic.json")

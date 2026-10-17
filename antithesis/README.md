@@ -154,6 +154,20 @@ and editor login-code commands need a current running VM; the controlled Lilly
 pool reports unavailable capacity and no editor gateway, release or wildcard is
 configured, so those commands record unexercised in this graph.
 
+The `guest-lifecycle` profile
+([selection](verification/selections/guest-lifecycle.json)) selects the one
+`guest_lifecycle` command with `config/compose.guest-vmm.yaml` and
+`config/compose.guest-lifecycle.yaml`. Build and stage the `pg`, `marshall`,
+`lilly-guest`, `guest-vmm` and `workload` contexts for it. Hosted Antithesis has
+no KVM, so the guest runs under QEMU TCG. The container `lilly-guest` release
+uses **STUB storage**: a fixed synthetic pool with no ZFS, plus compute
+headroom for one free guest-vmm slot. It exists only so Marshall can admit one
+emulated guest and is not native ZFS, KVM, Firecracker or capacity evidence. The
+bootstrap completes setup only after it observes the guest-vmm image identity
+through the enrollment witness bridge and a Marshall catalog offering that
+image with known capacity. See the
+[guest lifecycle scope](workload/guest_lifecycle/README.md).
+
 `config/compose.origin.yaml` and `config/compose.smtp.yaml` are optional fixture
 overrides for local upstream and SMTP scenarios. They add separate containers,
 private persistent state, generated runtime CA material, and read-only oracle
@@ -162,12 +176,14 @@ fixture values to an `origin-shared` volume mounted read-only in enrollment;
 the values do not appear in Compose environment values. Their admin health
 checks show only that the fixture server is accepting requests.
 `config/compose.guest-vmm.yaml` selects the
-source-built guest Lilly variant and a separate QEMU TCG server with a private
-Unix control socket and retained emulator state. A distinct, sanitized witness
-socket is mounted read-only only in enrollment for the closed operator bridge;
-neither the mutating control socket nor raw guest boot state reaches workload.
-Its health check confirms the server's inventory interface, not a booted or
-ready guest. `config/compose.enrico.yaml` adds the source-built Enrico release
+source-built STUB-storage guest Lilly variant and a separate QEMU TCG server
+with a private Unix control socket and retained emulator state. A distinct,
+sanitized witness socket is mounted read-only only in enrollment for the closed
+operator bridge; neither the mutating control socket nor raw guest boot state
+reaches workload. Lilly publishes its baked guest image manifest to a
+`guest-catalog` share mounted read-only in enrollment, which registers it
+through `Marshall.Compute.Images.register`. Its health check confirms the
+server's inventory interface, not a booted or ready guest. `config/compose.enrico.yaml` adds the source-built Enrico release
 and origin fixture, private Git state and restart request/result volumes, and a
 passive inode observer. The observer publishes all eight native Git admission
 lock identities and bounded repository lock holders; incomplete or stale

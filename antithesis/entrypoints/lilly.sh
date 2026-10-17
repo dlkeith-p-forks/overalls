@@ -99,10 +99,33 @@ case "${OVERALLS_ANTITHESIS_PRIVATE_SERVICES:-0}" in
   *) echo 'invalid private service selection' >&2; exit 1 ;;
 esac
 
+# The guest-lifecycle profile selects the STUB-storage guest release and names
+# its baked immutable TCG image. Only that canonical store directory may be
+# configured; its manifest is also published to the enrollment operator's
+# catalog share so the operator can register the content-derived image ID.
+images='[]'
+case "${OVERALLS_ANTITHESIS_GUEST_IMAGE:-}" in
+  '') ;;
+  /opt/overalls/guest-vmm/image)
+    image_dir=$(readlink -e /opt/overalls/guest-vmm/image) || { echo 'guest image unavailable' >&2; exit 1; }
+    [[ "$image_dir" =~ ^/nix/store/[0-9a-z]{32}-[A-Za-z0-9._+-]+$ && -f "$image_dir/manifest.json" ]] ||
+      { echo 'invalid guest image' >&2; exit 1; }
+    images=$(jq -cn --arg path "$image_dir" '[{path:$path}]')
+    catalog=/run/overalls-guest-catalog
+    [[ -d "$catalog" && ! -L "$catalog" ]] || { echo 'guest catalog share unavailable' >&2; exit 1; }
+    jq -e 'type == "object" and .version == 4 and .architecture == "x86_64"' "$image_dir/manifest.json" >/dev/null ||
+      { echo 'invalid guest image manifest' >&2; exit 1; }
+    cp "$image_dir/manifest.json" "$catalog/.manifest.json.new"
+    chmod 0644 "$catalog/.manifest.json.new"
+    mv -T "$catalog/.manifest.json.new" "$catalog/manifest.json"
+    ;;
+  *) echo 'invalid guest image selection' >&2; exit 1 ;;
+esac
+
 jq -n --arg host "$host_id" --arg pool "$pool_id" --arg credential "$secrets/lilly-a-credential.json" \
   --arg ca "$secrets/ca.crt" --arg firecracker "$firecracker" --arg jailer "$jailer" --arg unshare "$unshare" \
-  --argjson private "$private_services" \
-  '{version:4,control_plane:"https://marshall-a:5443",host_id:$host,credential_file:$credential,cacertfile:$ca,state_dir:"/var/lib/lilly/control",cgroup_path:"/sys/fs/cgroup/lilly.slice",images:[],pools:[{id:$pool,path:"/var/lib/lilly/pool",filesystem_id:"zfs:10001:10002",storage:{backend:"zfs",zpool_guid:"10001",dataset_guid:"10002",dataset:"overalls/antithesis"}}],execution:{state_dir:"/var/lib/lilly/vm",network_state_dir:"/var/lib/lilly/network",egress_interface:"eth0",protected_cidrs:[],firecracker:$firecracker,jailer:$jailer,unshare:$unshare,audi_ingress:false,private_services:$private,guest_trust_roots:[],brady:null,firecracker_logging:false,provisioning_readiness:false,inception_smtp_file:null,inception_image_id:null,inception_proof_file:null,inception_probe_id:null}} | if $private then .ingress={path:"/run/lilly-ingress/audi.sock",audi_uid:0} else . end' > "$runtime/config.json.new"
+  --argjson private "$private_services" --argjson images "$images" \
+  '{version:4,control_plane:"https://marshall-a:5443",host_id:$host,credential_file:$credential,cacertfile:$ca,state_dir:"/var/lib/lilly/control",cgroup_path:"/sys/fs/cgroup/lilly.slice",images:$images,pools:[{id:$pool,path:"/var/lib/lilly/pool",filesystem_id:"zfs:10001:10002",storage:{backend:"zfs",zpool_guid:"10001",dataset_guid:"10002",dataset:"overalls/antithesis"}}],execution:{state_dir:"/var/lib/lilly/vm",network_state_dir:"/var/lib/lilly/network",egress_interface:"eth0",protected_cidrs:[],firecracker:$firecracker,jailer:$jailer,unshare:$unshare,audi_ingress:false,private_services:$private,guest_trust_roots:[],brady:null,firecracker_logging:false,provisioning_readiness:false,inception_smtp_file:null,inception_image_id:null,inception_proof_file:null,inception_probe_id:null}} | if $private then .ingress={path:"/run/lilly-ingress/audi.sock",audi_uid:0} else . end' > "$runtime/config.json.new"
 chmod 0600 "$runtime/config.json.new"
 mv "$runtime/config.json.new" "$runtime/config.json"
 export LILLY_CONFIG_FILE="$runtime/config.json" LILLY_STATUS_SOCKET="$runtime/status.sock"

@@ -6,7 +6,7 @@
     "antithesis/config/compose.admission-stub.yaml"
   ],
   "templates": ["admission"],
-  "runtime_packages": ["core", "admission", "access", "repository"],
+  "runtime_packages": ["core", "admission", "access", "repository", "guest_lifecycle"],
   "services": [
     "pg", "migrate", "marshall-a", "marshall-b", "lilly-a", "enrollment",
     "workload"

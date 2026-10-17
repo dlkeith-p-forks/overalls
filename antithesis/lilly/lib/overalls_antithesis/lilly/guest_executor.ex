@@ -512,8 +512,9 @@ defmodule OverallsAntithesis.Lilly.GuestExecutor do
 
   defp trust_matches?(_config, _boot, _boot_id), do: true
 
+  @doc "Validated guest-vmm placement inventory; malformed or unavailable is an error."
   @spec inventory() :: {:ok, [map()]} | {:error, :execution_unavailable}
-  defp inventory do
+  def inventory do
     with {:ok, %{"state" => "ok", "placements" => entries} = raw} <-
            GuestRPC.call(%{"operation" => "inventory"}),
          true <- map_size(raw) == 2 and is_list(entries) and length(entries) <= 1024,

@@ -1,5 +1,7 @@
-# Optional real QEMU TCG guest boundary. This overlay is not selected by the
-# control-core bootstrap; a guest workload must verify native guest evidence.
+# Optional real QEMU TCG guest boundary, selected by the guest-lifecycle
+# profile together with compose.guest-lifecycle.yaml. The lilly-guest release
+# uses STUB storage (a fixed synthetic pool; no ZFS) and a guest-vmm slot
+# headroom; nothing here is native KVM, ZFS or Firecracker evidence.
 services:
   guest-vmm:
     container_name: overalls-guest-vmm
@@ -51,8 +53,10 @@ services:
       target: lilly-guest
     environment:
       OVERALLS_ANTITHESIS_GUEST_SOCKET: /run/overalls-guest-vmm/control.sock
+      OVERALLS_ANTITHESIS_GUEST_IMAGE: /opt/overalls/guest-vmm/image
     volumes:
       - guest-vmm-control:/run/overalls-guest-vmm
+      - guest-catalog:/run/overalls-guest-catalog
     depends_on:
       guest-vmm:
         condition: service_healthy
@@ -60,10 +64,13 @@ services:
   enrollment:
     environment:
       OVERALLS_ANTITHESIS_GUEST_WITNESS_SOCKET: /run/overalls-guest-witness/witness.sock
+      OVERALLS_ANTITHESIS_GUEST_CATALOG: "1"
     volumes:
       - guest-vmm-witness:/run/overalls-guest-witness:ro
+      - guest-catalog:/run/overalls-guest-catalog:ro
 
 volumes:
   guest-vmm-state:
   guest-vmm-control:
   guest-vmm-witness:
+  guest-catalog:

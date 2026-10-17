@@ -16,14 +16,16 @@ TCG recorder VM overlay; `admission-stub` selects the two admission commands
 on the harness stub storage substrate (not ZFS; see the admission workload
 notes); `backup-restic` selects the five backup commands with the
 private Restic fixture volume; `satellite-standin` selects four satellite
-commands with the origin, satellite and labelled guest stand-in overlays. Each
-requires an independent fixture readiness probe before the sole bootstrap owner
-signals setup completion. In `satellite-standin` only the unbound-source command
-can reach its assertions; the three commands that need a current running VM
-record unexercised because the controlled pool has no capacity. Stage the chosen
-command selection immediately before building its workload image. Guest
-commands remain unselected until they have a complete profile and readiness
-gate.
+commands with the origin, satellite and labelled guest stand-in overlays;
+`guest-lifecycle` selects the one guest lifecycle command with the guest-vmm
+and guest-lifecycle overlays, and its Lilly uses a separate STUB storage
+release (a fixed synthetic pool, no ZFS) with no native KVM, ZFS or
+Firecracker claim. Each requires an independent fixture readiness probe
+before the sole bootstrap owner signals setup completion. In
+`satellite-standin` only the unbound-source command can reach its
+assertions; the three commands that need a current running VM record
+unexercised because the controlled pool has no capacity. Stage the chosen
+command selection immediately before building its workload image.
 
 Staging also writes the hosted Python assertion catalog. The workload image
 copies `selected-test/catalog/` to `/opt/antithesis/catalog`, and that tree
@@ -63,8 +65,8 @@ For an optional profile, pass its JSON file to `selection.py stage` with
 `--selection`, use the same file for `selection.py materialize`, then pass
 `--selection repository-origin`, `--selection access-smtp`,
 `--selection recorder-host`, `--selection admission-stub`,
-`--selection backup-restic` or `--selection satellite-standin` to
-`identity.py`. Render and build the exact ordered
+`--selection backup-restic`, `--selection satellite-standin` or
+`--selection guest-lifecycle` to `identity.py`. Render and build the exact ordered
 Compose files listed in that profile. All campaign operations use the one
 canonical ledger path. Point `snouty validate` or the launch skill at the
 materialized `antithesis/runtime/configs/<profile>` directory only after its

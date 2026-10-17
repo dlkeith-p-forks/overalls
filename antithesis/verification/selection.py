@@ -48,6 +48,7 @@ REVIEWED_PROFILES = frozenset(
         "admission-stub",
         "backup-restic",
         "satellite-standin",
+        "guest-lifecycle",
     }
 )
 COMMAND = re.compile(r"^(?:serial_driver|singleton_driver|first|helper)_[a-z][a-z0-9_]*\.py$")
@@ -422,6 +423,8 @@ def validate_compose(selection: Selection, rendered: dict[str, Json]) -> None:
         validate_backup_restic(environment, targets)
     elif selection.name == "satellite-standin":
         validate_satellite_standin(services, workload, environment, targets)
+    elif selection.name == "guest-lifecycle":
+        validate_guest_lifecycle(services, workload, environment, depends)
     else:
         raise EvidenceError("selection has no reviewed bootstrap prerequisite validator")
 
@@ -584,6 +587,71 @@ def validate_satellite_standin(
         or result.get("source") != mounts[root + "/results"].get("source")
     ):
         raise EvidenceError("guest stand-in request/result handoff volumes are incomplete")
+
+
+def validate_guest_lifecycle(
+    services: dict[str, Json],
+    workload: dict[str, Json],
+    environment: dict[str, Json],
+    depends: dict[str, Json],
+) -> None:
+    """@cc [owner:ghuntley,label:verification;security] guest-lifecycle-compose-boundary
+    The guest-lifecycle profile MUST health-gate the workload and the
+    STUB-storage lilly-guest release on guest-vmm, give only Lilly the mutating
+    guest control socket and only enrollment the read-only witness socket and
+    image catalog share. Workload MUST NOT mount guest-vmm state, control,
+    witness or catalog volumes; its evidence arrives through the operator.
+    """
+    if environment.get("ANTITHESIS_BOOTSTRAP_PROFILE") != "guest-lifecycle":
+        raise EvidenceError("guest bootstrap profile differs from selected commands")
+    dependency = obj(field(depends, "guest-vmm"), "guest-vmm dependency")
+    if field(dependency, "condition") != "service_healthy":
+        raise EvidenceError("guest-vmm is not health-gated for workload")
+    lilly = obj(field(services, "lilly-a"), "lilly-a service")
+    if field(lilly, "image") != "overalls-antithesis/lilly-guest:local":
+        raise EvidenceError("guest profile must run the stub-storage lilly-guest release")
+    lilly_depends = obj(field(lilly, "depends_on"), "lilly-a dependencies")
+    if field(obj(field(lilly_depends, "guest-vmm"), "guest-vmm"), "condition") != (
+        "service_healthy"
+    ):
+        raise EvidenceError("guest-vmm is not health-gated for lilly-a")
+    lilly_environment = obj(field(lilly, "environment"), "lilly-a environment")
+    if lilly_environment.get("OVERALLS_ANTITHESIS_GUEST_SOCKET") != (
+        "/run/overalls-guest-vmm/control.sock"
+    ) or lilly_environment.get("OVERALLS_ANTITHESIS_GUEST_IMAGE") != (
+        "/opt/overalls/guest-vmm/image"
+    ):
+        raise EvidenceError("lilly-guest control socket or image selection differs")
+    enrollment = obj(field(services, "enrollment"), "enrollment service")
+    enrollment_environment = obj(field(enrollment, "environment"), "enrollment environment")
+    if (
+        enrollment_environment.get("OVERALLS_ANTITHESIS_GUEST_WITNESS_SOCKET")
+        != ("/run/overalls-guest-witness/witness.sock")
+        or enrollment_environment.get("OVERALLS_ANTITHESIS_GUEST_CATALOG") != "1"
+    ):
+        raise EvidenceError("enrollment guest witness or catalog bridge differs")
+
+    def sources(service: dict[str, Json], name: str) -> dict[str, bool]:
+        mounted: dict[str, bool] = {}
+        for value in arr(service.get("volumes", []), f"{name} volumes"):
+            volume = obj(value, f"{name} volume")
+            source = volume.get("source")
+            if isinstance(source, str):
+                mounted[source] = volume.get("read_only") is True
+        return mounted
+
+    guest_volumes = {"guest-vmm-state", "guest-vmm-control", "guest-vmm-witness", "guest-catalog"}
+    if set(sources(workload, "workload")) & guest_volumes:
+        raise EvidenceError("workload mounts private guest-vmm state or sockets")
+    enrollment_volumes = sources(enrollment, "enrollment")
+    if (
+        enrollment_volumes.get("guest-vmm-witness") is not True
+        or enrollment_volumes.get("guest-catalog") is not True
+        or {"guest-vmm-control", "guest-vmm-state"} & set(enrollment_volumes)
+    ):
+        raise EvidenceError("enrollment guest bridge is not read-only witness and catalog")
+    if {"guest-vmm-witness", "guest-vmm-state"} & set(sources(lilly, "lilly-a")):
+        raise EvidenceError("lilly-a mounts guest witness or emulator state")
 
 
 def rendered_compose(root: Path, selection: Selection) -> dict[str, Json]:

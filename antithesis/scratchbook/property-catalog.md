@@ -797,6 +797,8 @@ These properties exercise the placement, execution, and physical ownership bound
 
 **Proof boundary:** Draft selection: `integrated-zfs-guest`. proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof; independent witness: retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
+**Guest-lifecycle profile (2026-10-17):** The launchable `guest-lifecycle` selection runs `guest_lifecycle/serial_driver_physical_boot_cycle.py` against a real QEMU TCG guest with a STUB-storage container Lilly (fixed synthetic pool, no ZFS). Its support `Always` joins each guest-ready outcome to the current tuple, live QEMU/backend start ticks and port-1024 readiness, and a fresh start must show a new kernel boot UUID. The primary stays unimplemented: there is no Lilly boot-journal join, delayed or replaced boot, ZFS pool or native evidence, and no hosted run is recorded.
+
 **Evaluation follow-up:** `R1`: `Sometimes` witnesses one designated recovered history. Track its exact operation ID, observed preconditions and dependency restoration; separately check that operation’s terminal state after a measured quiet interval. Missing oracle/precondition is unexercised, not a pass or a liveness violation. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
 **Open Questions:**
@@ -1124,6 +1126,8 @@ These properties exercise the placement, execution, and physical ownership bound
 | **Evidence** | [Source and oracle](properties/stop-retains-disk-until-restart.md); discovery focus 08. |
 
 **Proof boundary:** Draft selection: `integrated-zfs-guest`. proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof; independent witness: retained QEMU PID/boot challenge/overlay plus independent guest or connector effect; current measured ZFS pool required for accepted placement. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Guest-lifecycle profile (2026-10-17):** The launchable `guest-lifecycle` selection's support `Always` requires an accepted stop to show no QEMU/backend process and a retained qcow2 overlay hash in the separate guest-vmm container. The pool is a STUB, so ZFS dataset GUID, retained guest content, address and network detach remain unexercised; the primary stays unimplemented and no hosted run is recorded.
 
 **Evaluation follow-up:** `R1`: `Sometimes` witnesses one designated recovered history. Track its exact operation ID, observed preconditions and dependency restoration; separately check that operation’s terminal state after a measured quiet interval. Missing oracle/precondition is unexercised, not a pass or a liveness violation. Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 

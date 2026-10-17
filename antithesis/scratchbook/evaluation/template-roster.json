@@ -984,7 +984,9 @@
       "hosted_templates": [
         "integrated-zfs-guest"
       ],
-      "limited_support_templates": [],
+      "limited_support_templates": [
+        "guest_lifecycle (guest-lifecycle profile): STUB-storage container Lilly plus real QEMU TCG guest; support tuple/live-QEMU/port-1024 readiness witness only, no Lilly boot-journal join, ZFS or native claim"
+      ],
       "requires_integrated_zfs_host": true,
       "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
       "native_campaign": true,
@@ -2172,7 +2174,9 @@
       "hosted_templates": [
         "integrated-zfs-guest"
       ],
-      "limited_support_templates": [],
+      "limited_support_templates": [
+        "guest_lifecycle (guest-lifecycle profile): STUB-storage container Lilly plus real QEMU TCG guest; support absent-QEMU and retained-qcow2-hash witness only, no ZFS dataset GUID, address or network detach claim"
+      ],
       "requires_integrated_zfs_host": true,
       "hosted_boundary": "proposed-real-inner-zfs-backed-lilly-plus-tcg-guest; unbuilt, no Firecracker proof",
       "native_campaign": true,
