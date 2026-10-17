@@ -480,11 +480,90 @@ defmodule Audi.HTTP.ProxyTest do
     :gen_tcp.close(listener)
   end
 
-  defp grant do
+  # @cc [owner:ghuntley,label:verification;recovery] audi-websocket-idle-timeout-test
+  # A quiet browser MUST NOT be closed by the listener's HTTP read_timeout:
+  # with a 300 ms listener read_timeout, an upgraded socket idle for 1 s MUST
+  # still deliver the guest's next frame.
+  test "an idle upgraded WebSocket outlives the listener read timeout", c do
+    {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
+    {:ok, {_, guest_port}} = :inet.sockname(listener)
+    owner = self()
+
+    proxy =
+      start_supervised!(
+        Supervisor.child_spec(
+          {Bandit,
+           plug:
+             {Relay,
+              client: c.client,
+              zone: "apps.example",
+              connector: {Audi.Test.WebConnector, %{port: guest_port, owner: owner}}},
+           scheme: :http,
+           ip: {127, 0, 0, 1},
+           port: 0,
+           startup_log: false,
+           thousand_island_options: [read_timeout: 300],
+           websocket_options: [compress: false]},
+          id: :idle_websocket_proxy
+        )
+      )
+
+    {:ok, {_, proxy_port}} = ThousandIsland.listener_info(proxy)
+
+    guest =
+      Task.async(fn ->
+        {:ok, socket} = :gen_tcp.accept(listener, 3000)
+        headers = request(socket, "")
+        [key] = Regex.run(~r/sec-websocket-key: ([^\r]+)\r\n/i, headers, capture: :all_but_first)
+        accept = Base.encode64(:crypto.hash(:sha, key <> "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"))
+
+        :ok =
+          :gen_tcp.send(socket, [
+            "HTTP/1.1 101 Switching Protocols\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Accept: ",
+            accept,
+            "\r\n\r\n"
+          ])
+
+        receive do
+          :send -> :ok = :gen_tcp.send(socket, <<0x82, 4, "late">>)
+        after
+          5000 -> flunk("idle client never released the guest")
+        end
+
+        socket
+      end)
+
+    {:ok, socket} = :gen_tcp.connect({127, 0, 0, 1}, proxy_port, [:binary, active: false], 1000)
+    key = Base.encode64(:crypto.strong_rand_bytes(16))
+
+    :ok =
+      :gen_tcp.send(socket, [
+        "GET /ws HTTP/1.1\r\nHost: ",
+        @label,
+        ".apps.example\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Version: 13\r\nSec-WebSocket-Key: ",
+        key,
+        "\r\n\r\n"
+      ])
+
+    assert_receive {:control_request, control, ref, "/api/audi/v1/web-open", _, _}, 2000
+    send(control, {ref, 200, JSON.encode!(grant(30_000))})
+    assert request(socket, "") =~ "101"
+    Process.sleep(1000)
+    send(guest.pid, :send)
+    assert {:ok, <<0x82, 4, "late">>} = :gen_tcp.recv(socket, 6, 2000)
+
+    :gen_tcp.close(socket)
+    :gen_tcp.close(Task.await(guest, 1000))
+    assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
+    send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
+    :gen_tcp.close(listener)
+  end
+
+  defp grant(ttl \\ 5000) do
     %{
       version: 1,
       grant: %{
-        ttl: 5000,
+        ttl: ttl,
         user_id: nil,
         ticket:
           "audi_web_stream_" <> Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false),

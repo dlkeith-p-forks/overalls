@@ -4,6 +4,8 @@ defmodule Audi.HTTP.WebSocketUpgrade do
   alias Audi.HTTP.{Headers, WebSocket}
   require Audi.Events
   @guid "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+  # Bandit's WebSock default; the listener read_timeout is for HTTP requests.
+  @idle_timeout 60_000
 
   @spec requested?(Plug.Conn.t()) :: boolean()
   def requested?(conn), do: get_req_header(conn, "upgrade") != []
@@ -109,10 +111,17 @@ defmodule Audi.HTTP.WebSocketUpgrade do
         generation: binding.generation
       )
 
+      # @cc [owner:ghuntley,label:recovery] audi-websocket-idle-timeout
+      # The relay MUST carry its own client idle timeout. Without one, Thousand
+      # Island applies the listener's 5 s HTTP read_timeout to every WebSocket
+      # read and Bandit closes a quiet browser socket with 1002, which a client
+      # with a 5 s keepalive (the editor's extension host) races. Authority
+      # stays with the lease guard; this bounds only an idle client.
       upgrade_adapter(
         conn,
         :websocket,
-        {WebSocket, %{socket: socket, renewal: renewal, binding: binding}, [compress: false]}
+        {WebSocket, %{socket: socket, renewal: renewal, binding: binding},
+         [compress: false, timeout: @idle_timeout]}
       )
     else
       _ -> send_resp(conn, 502, "WebSocket upstream unavailable\n")

@@ -14,6 +14,14 @@ let
     libhegel = hegelLibhegel;
   };
   hegel = import ../hegel/run-test.nix { pkgs = testPkgs; inherit hegelPython; };
+  # Keep the engine/binding smoke suite as an explicit check.  Machine tests
+  # depend on these packages transitively, but that does not make shrinking,
+  # replay mismatch handling, or concurrent state-machine cleanup observable
+  # when no migrated machine is selected by a CI matrix.
+  hegel-framework-packages = buildPkgs.linkFarm "overalls-hegel-framework-packages" [
+    { name = "libhegel"; path = hegelLibhegel; }
+    { name = "python"; path = hegelPython; }
+  ];
   featureFleet = options: import ./machines/fleet (service // {
     hostFixture = fixtures.hetzner-uefi; inherit hegel;
   } // options);
@@ -42,6 +50,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
     package = packages.${application};
     inherit (packages) toolchain;
   }) // {
+  hegel-framework-packages = hegel-framework-packages;
   team-ssh = import ./machines/team-ssh service;
   vscode-web-package = import ./machines/vscode-web { pkgs = testPkgs; inherit packages; };
   vscode-web-broker = packages.vscodeWebBroker;

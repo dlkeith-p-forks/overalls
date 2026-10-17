@@ -57,6 +57,7 @@ defmodule AudiSshTlsContractTest do
     }
 
     requested_at = System.monotonic_time(:millisecond)
+
     {:ok, guard} =
       Audi.Authority.StreamGuard.start_link(
         owner: owner,
