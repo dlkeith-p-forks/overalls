@@ -380,14 +380,18 @@ files explicitly report incomplete coverage and never authorize VM cleanup.
 
 ## Developer verification
 
-The repository's GitHub Actions `devenv` job runs on pushes to `main`. It installs
-Nix and devenv, enables the `overalls` Cachix cache, then runs `devenv test`
-inside the pinned shell. Local devenv evaluations pull from and publish to the
-`overalls` cache. The workflow uses `devenv shell -- bash -e {0}` as its
-default command shell so additional checked-in commands can share the same
-environment. Hosted execution proves only the configured devenv hooks and shell
-build on the GitHub runner; component-specific precommit suites and native fleet
-acceptance remain separate.
+GitHub Actions runs on privileged, cached Namespace runners so Nix builds keep
+their sandbox. Every job installs single-user Nix and the devenv revision pinned
+by `devenv.lock`, and publishes what it builds to the `overalls` Cachix cache.
+`publish-cache.yml` runs on trunk pushes and pull requests: repository gates,
+`mix precommit` for each Elixir project, and every enabled non-machine flake
+check. `nixos-machine-tests.yml` runs daily or on dispatch and fans out one job
+per NixOS machine test selected from `meta.ci` (Inception is excluded); its
+discovery evaluates only that metadata, and each matrix job builds its test.
+`nix-upgrades.yml` updates `devenv.lock` weekly and pins the flake's
+`buildNixpkgs` to the same nixpkgs. A run is execution evidence only for the
+commit it ran; a selected matrix entry is not a passing result, and nested-KVM
+availability on the hosted runners is unverified.
 
 `elixir/request_accounting/` is the shared typed request-accounting library.
 `Overalls.RequestAccounting.Producer` performs private quality-marker and local
