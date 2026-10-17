@@ -72,7 +72,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   ziggy-underclass = import ./machines/ziggy-underclass service;
   fleet-network = import ./machines/fleet-network { pkgs = testPkgs; };
   galileo-service = import ./machines/galileo-service service;
-  enrico-service = import ./machines/enrico-service { pkgs = testPkgs; module = modules.enrico; inherit packages; };
+  enrico-service = import ./machines/enrico-service { pkgs = testPkgs; module = modules.services.enrico; inherit packages; };
   git-mirrors-browser = import ./machines/git-mirrors service;
   underclass-package = packages.underclass;
   underclass-configuration = import ./evaluation/underclass.nix {
@@ -131,13 +131,13 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   fleet-monitor-configuration = import ./evaluation/fleet-monitor.nix { pkgs = testPkgs; module = modules.default; };
   remote-builders = import ./machines/remote-builders service;
   remote-builders-configuration = import ./evaluation/remote-builders.nix { pkgs = testPkgs; inherit nixpkgs; module = modules.default; };
-  access = import ./machines/access { pkgs = testPkgs; module = modules.access; };
+  access = import ./machines/access { pkgs = testPkgs; module = modules.security.access; };
   access-configuration = import ./evaluation/access.nix {
     pkgs = testPkgs; inherit nixpkgs;
-    accessModule = modules.access; secretsModule = modules.secrets;
+    accessModule = modules.security.access; secretsModule = modules.security.secrets;
   };
   fleet-firewall-configuration = import ./evaluation/fleet-firewall.nix {
-    pkgs = testPkgs; inherit nixpkgs; module = modules.fleet-firewall;
+    pkgs = testPkgs; inherit nixpkgs; module = modules.network.fleet-firewall;
   };
   secret-reconciliation = import ./evaluation/secrets.nix { pkgs = buildPkgs; };
   auto-update-compatibility = import ./evaluation/auto-update-compatibility.nix { pkgs = buildPkgs; };
@@ -196,7 +196,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
     pkgs = testPkgs;
     inherit nixpkgs;
     module = modules.default;
-    sysctlModule = modules.sysctl;
+    sysctlModule = modules.platform.sysctl;
   };
   storage-configuration = import ./evaluation/storage-configuration.nix {
     pkgs = testPkgs;
@@ -211,7 +211,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   audi-dns = import ./machines/audi-dns service;
   ssh-host-certificates = import ./machines/ssh-host-certificates storage;
   audi-openssh = import ./machines/audi-openssh storage;
-  sysctl = import ./machines/sysctl { pkgs = testPkgs; module = modules.sysctl; };
+  sysctl = import ./machines/sysctl { pkgs = testPkgs; module = modules.platform.sysctl; };
   nix-ld = import ./machines/nix-ld { pkgs = testPkgs; };
   auto-update = import ./machines/auto-update service;
   nix-gc-configuration = import ./evaluation/nix-gc.nix {
@@ -383,22 +383,22 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
     inherit nixpkgs;
     hostFixture = fixtures.hetzner-uefi;
     inherit imageSource;
-    secretsModule = modules.secrets;
+    secretsModule = modules.security.secrets;
   };
   host-hetzner-bios = import ./machines/mirrored-installation {
     pkgs = testPkgs; inherit nixpkgs; hostFixture = fixtures.hetzner-bios;
     inherit imageSource;
-    secretsModule = modules.secrets; platform = "hetzner"; firmwareMode = "bios";
+    secretsModule = modules.security.secrets; platform = "hetzner"; firmwareMode = "bios";
   };
   host-ec2-bios = import ./machines/mirrored-installation {
     pkgs = testPkgs; inherit nixpkgs; hostFixture = fixtures.ec2-bios;
     inherit imageSource;
-    secretsModule = modules.secrets; platform = "ec2"; firmwareMode = "bios";
+    secretsModule = modules.security.secrets; platform = "ec2"; firmwareMode = "bios";
   };
   host-ec2-uefi = import ./machines/mirrored-installation {
     pkgs = testPkgs; inherit nixpkgs; hostFixture = fixtures.ec2-uefi;
     inherit imageSource;
-    secretsModule = modules.secrets; platform = "ec2"; firmwareMode = "uefi";
+    secretsModule = modules.security.secrets; platform = "ec2"; firmwareMode = "uefi";
   };
   host-images = import ./machines/host-images { pkgs = testPkgs; images = fixtures.hetzner-uefi.config.system.build.overallsTestImages; };
   host-enrollment = import ./machines/host-enrollment {
