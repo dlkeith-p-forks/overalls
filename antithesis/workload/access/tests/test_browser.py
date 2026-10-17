@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import http.cookiejar
 import os
 import subprocess
 import unittest
+from urllib.request import Request
 
 from access.browser import pending_mutation_refused, pending_read_ok
-from access.http import hidden_form
+from access.http import _pinned, hidden_form
 from access.liveview import parse_live_page
 from access.mail import _message_link
 from access.passkey import Authenticator, assertion
@@ -128,6 +130,39 @@ class BrowserHelpersTest(unittest.TestCase):
         self.assertEqual(
             (live.csrf, live.session, live.node_id), ("csrf123", "signed-session", "phx-main")
         )
+
+    def test_copied_session_cookie_is_sent_to_dotless_destination_replica(self) -> None:
+        original = http.cookiejar.Cookie(
+            version=0,
+            name="_marshall_key",
+            value="session",
+            port=None,
+            port_specified=False,
+            domain="marshall-a.local",
+            domain_specified=False,
+            domain_initial_dot=False,
+            path="/",
+            path_specified=True,
+            secure=True,
+            expires=None,
+            discard=False,
+            comment=None,
+            comment_url=None,
+            rest={"HttpOnly": ""},
+        )
+
+        def sent(cookie: http.cookiejar.Cookie, url: str) -> str:
+            jar = http.cookiejar.CookieJar()
+            jar.set_cookie(cookie)
+            request = Request(url)
+            jar.add_cookie_header(request)
+            return request.get_header("Cookie", "")
+
+        self.assertEqual(sent(original, "https://marshall-a/overview"), "_marshall_key=session")
+        copied = _pinned(original, "marshall-b")
+        self.assertEqual(sent(copied, "https://marshall-b/overview"), "_marshall_key=session")
+        self.assertEqual(sent(copied, "https://marshall-a/overview"), "")
+        self.assertEqual(original.domain, "marshall-a.local")
 
     def test_pending_mfa_read_follows_adr_0160_signed_in_boundary(self) -> None:
         self.assertTrue(pending_read_ok(200, True, False, True))

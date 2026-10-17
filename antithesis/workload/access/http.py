@@ -24,6 +24,22 @@ from urllib.request import (
 from core.outcome import Observation
 
 
+def _pinned(original: http.cookiejar.Cookie, destination_host: str) -> http.cookiejar.Cookie:
+    """Host-only copy of a cookie for another replica.
+
+    The cookie jar matches a dotless host such as ``marshall-b`` by its
+    effective request host ``marshall-b.local``; a bare hostname domain would
+    never be sent, silently turning cross-replica probes into anonymous ones.
+    """
+    host = destination_host.lower()
+    effective_host = host if "." in host else f"{host}.local"
+    cookie = copy.copy(original)
+    cookie.domain = effective_host
+    cookie.domain_specified = False
+    cookie.domain_initial_dot = False
+    return cookie
+
+
 @dataclass(frozen=True)
 class BrowserResponse:
     body: bytes
@@ -97,11 +113,7 @@ class BrowserClient:
         if len(matches) != 1:
             return None
         copied = BrowserClient(self._ca_file, self._timeout)
-        cookie = copy.copy(matches[0])
-        cookie.domain = destination_host
-        cookie.domain_specified = False
-        cookie.domain_initial_dot = False
-        copied.cookies.set_cookie(cookie)
+        copied.cookies.set_cookie(_pinned(matches[0], destination_host))
         return copied
 
     def copied_session(self, destination_host: str) -> BrowserClient | None:
@@ -111,11 +123,7 @@ class BrowserClient:
             return None
         copied = BrowserClient(self._ca_file, self._timeout)
         for original in session:
-            cookie = copy.copy(original)
-            cookie.domain = destination_host
-            cookie.domain_specified = False
-            cookie.domain_initial_dot = False
-            copied.cookies.set_cookie(cookie)
+            copied.cookies.set_cookie(_pinned(original, destination_host))
         return copied
 
     def cookie_header(self, url: str) -> str:
