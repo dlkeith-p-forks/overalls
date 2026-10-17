@@ -20,6 +20,11 @@ chmod 0700 "$satellite"
 private_file() {
   [[ -s "$1" && -f "$1" && ! -L "$1" && "$(stat -c '%a:%u:%h' "$1")" == '600:0:1' ]]
 }
+# The enrollment image ships coreutils but not diffutils, so compare digests.
+same_file() {
+  local left right
+  left=$(sha256sum < "$1") && right=$(sha256sum < "$2") && [[ "$left" == "$right" ]]
+}
 
 # @cc [owner:ghuntley,label:verification;security] satellite-operator-failure-reason
 # A failed operator command MUST surface only the CLI's fixed status line, whose
@@ -108,7 +113,7 @@ if [[ ! -e "$satellite/control-ca.pem" ]]; then
   chmod 0600 "$satellite/.control-ca.pem.new"
   mv -T "$satellite/.control-ca.pem.new" "$satellite/control-ca.pem"
 fi
-cmp -s "$secrets/ca.crt" "$satellite/control-ca.pem" || { echo 'Satellite control CA mismatch' >&2; exit 1; }
+same_file "$secrets/ca.crt" "$satellite/control-ca.pem" || { echo 'Satellite control CA mismatch' >&2; exit 1; }
 private_file "$satellite/control-ca.pem" || exit 1
 
 if [[ ! -e "$satellite/openai.key" ]]; then
@@ -159,7 +164,7 @@ if [[ ! -e "$public/private-root.pem" ]]; then
   chmod 0644 "$public/.private-root.pem.new"
   mv -T "$public/.private-root.pem.new" "$public/private-root.pem"
 fi
-cmp -s "$satellite/private-root.pem" "$public/private-root.pem" || exit 1
+same_file "$satellite/private-root.pem" "$public/private-root.pem" || exit 1
 
 publish_role() {
   local role=$1 directory="/run/overalls-satellite-$1" file
@@ -171,7 +176,7 @@ publish_role() {
       chmod 0600 "$directory/.$file.new"
       mv -T "$directory/.$file.new" "$directory/$file"
     fi
-    private_file "$directory/$file" && cmp -s "$satellite/$file" "$directory/$file" || exit 1
+    private_file "$directory/$file" && same_file "$satellite/$file" "$directory/$file" || exit 1
   done
   touch "$directory/issued-ready"
 }
