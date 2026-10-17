@@ -1,3 +1,4 @@
+[![ci](https://github.com/ghuntley/overalls/actions/workflows/ci.yml/badge.svg)](https://github.com/ghuntley/overalls/actions/workflows/ci.yml)
 [![Update DevEnv Dependencies](https://github.com/ghuntley/overalls/actions/workflows/update-devenv.yml/badge.svg)](https://github.com/ghuntley/overalls/actions/workflows/update-devenv.yml)
 
 # Overalls
