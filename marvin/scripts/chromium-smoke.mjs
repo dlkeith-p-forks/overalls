@@ -26,7 +26,7 @@ try {
   const options=context.pages()[0]??await context.newPage();
   await options.goto(`chrome-extension://${id}/options.html`);
   await options.locator('[data-build="platform"]').getByText("browser-chrome").waitFor();
-  assert.equal(await options.locator("#guide-link").getAttribute("href"),"https://github.com/antithesishq/kittens/blob/main/marshall/priv/docs/browser-extension.md");
+  assert.equal(await options.locator("#guide-link").getAttribute("href"),"https://github.com/ghuntley/overalls/blob/trunk/marshall/priv/docs/browser-extension.md");
   await options.locator("#server-url").fill(origin);
   await options.getByRole("button",{name:"Save"}).click();
   await options.locator("#status").getByText("Saved.").waitFor();

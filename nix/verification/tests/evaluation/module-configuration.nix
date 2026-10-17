@@ -158,7 +158,7 @@ let
   updater = {
     services.overallsAutoUpdate = {
       enable = true;
-      repository = "https://github.com/antithesishq/kittens";
+      repository = "https://github.com/ghuntley/overalls";
       flakeAttr = "test-host";
     };
   };

@@ -22,7 +22,7 @@ defmodule Marshall.Handbook do
 
               markdown =
                 Regex.replace(~r/\]\(repo:([^\s)]+)\)/, markdown, fn _, target ->
-                  "](https://github.com/antithesishq/kittens/blob/main/#{target})"
+                  "](https://github.com/ghuntley/overalls/blob/trunk/#{target})"
                 end)
 
               markdown = Regex.replace(~r/\]\(#([a-z][a-z0-9-]*)\)/, markdown, "](/hldd/\\1)")

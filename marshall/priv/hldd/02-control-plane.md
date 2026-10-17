@@ -6,7 +6,7 @@ policy boundaries. Oban performs retryable background work.
 
 The signed-in sidebar in Workspace and Control room places **Source code**
 directly below **HLDD**. It opens the
-[Overalls repository](https://github.com/antithesishq/kittens) on GitHub.
+[Overalls repository](https://github.com/ghuntley/overalls) on GitHub.
 
 Workspace labels `/usage` **AI usage**; its page shows **Your AI usage**.
 Control room labels `/admin/usage` **Fleet AI usage**. These names describe

@@ -61,7 +61,7 @@ def check_reference_navigation(page: Page) -> None:
     source = page.locator("#nav-hldd + a#nav-source-code")
     expect(source).to_be_visible()
     expect(source).to_contain_text("Source code")
-    expect(source).to_have_attribute("href", "https://github.com/antithesishq/kittens")
+    expect(source).to_have_attribute("href", "https://github.com/ghuntley/overalls")
     expect(page.locator("#nav-source-code[data-phx-link]")).to_have_count(0)
 
 

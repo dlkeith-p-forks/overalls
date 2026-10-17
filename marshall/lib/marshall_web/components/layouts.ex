@@ -164,7 +164,7 @@ defmodule MarshallWeb.Layouts do
 
   # @cc [owner:ghuntley,label:product] signed-in-source-code-navigation
   # The shared signed-in menu MUST place Source code immediately below HLDD,
-  # linking to https://github.com/antithesishq/kittens with ordinary navigation.
+  # linking to https://github.com/ghuntley/overalls with ordinary navigation.
 
   # @cc [owner:ghuntley,label:product] browser-extension-guide-navigation
   # The public header and shared signed-in menu MUST expose a browser extension
@@ -188,7 +188,7 @@ defmodule MarshallWeb.Layouts do
         <tr>
           <th>Source</th>
           <td class="width-min">
-            <a href="https://github.com/antithesishq/kittens">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/ghuntley/overalls">GitHub <span aria-hidden="true">↗</span></a>
           </td>
         </tr>
         <tr data-overalls-extension-setup="true">
@@ -297,7 +297,7 @@ defmodule MarshallWeb.Layouts do
                       aria-current={@active == "hldd" && "page"}
                     >
                       HLDD <span class="nav-hint">Reference</span>
-                    </.link><.link id="nav-source-code" href="https://github.com/antithesishq/kittens">
+                    </.link><.link id="nav-source-code" href="https://github.com/ghuntley/overalls">
                       Source code <span class="nav-hint">GitHub ↗</span>
                     </.link>
                   </li>

@@ -22,7 +22,7 @@ defmodule MarshallWeb.LoggedOutAccessTest do
 
     refute html =~ ~s(class="public-header")
     refute html =~ ~s(id="public-marvin-extension")
-    refute html =~ ~s(href="https://github.com/antithesishq/kittens")
+    refute html =~ ~s(href="https://github.com/ghuntley/overalls")
     refute html =~ ~s(class="auth-banner")
     assert html =~ "Email me a sign-in link"
     refute html =~ "Request magic link"

@@ -21,7 +21,7 @@ function updateGuideLink(link, serverUrl) {
   try {
     link.href = new URL("/docs/browser-extension", normalizeServerUrl(serverUrl)).href;
   } catch {
-    link.href = "https://github.com/antithesishq/kittens/blob/main/marshall/priv/docs/browser-extension.md";
+    link.href = "https://github.com/ghuntley/overalls/blob/trunk/marshall/priv/docs/browser-extension.md";
   }
 }
 const settings = api.storage.sync;

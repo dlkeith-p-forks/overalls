@@ -6682,11 +6682,9 @@
         {
           "kind": "machine",
           "path": "nix/verification/tests/machines/hldd/browser.py",
-          "assertion": "expect(source).to_have_attribute(\"href\", \"https://github.com/antithesishq/kittens\")",
+          "assertion": "expect(source).to_have_attribute(\"href\", \"https://github.com/ghuntley/overalls\")",
           "scope": "Source code immediately follows HLDD with its exact repository href and ordinary navigation in Workspace and Control room, without requesting GitHub.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-09-25-handbook-reader-verification.md",
-          "record_assertion": "Integrated native hldd-browser passed in 49.65 seconds"
+          "execution": "present"
         },
         {
           "kind": "unit",
