@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use std::io::{Read, Write};
+use std::io::Read;
 use std::path::{Path, PathBuf};
 use std::process::{Child, Command as Process, Stdio};
 use std::time::{Duration, Instant};
@@ -124,8 +124,7 @@ fn escaped_stream_children_are_reaped_before_owner_exit(tc: hegel::TestCase) {
             StreamSide::Producer => ("fixture_producer_escaped_children", "fixture_consumer"),
             StreamSide::Consumer => ("fixture_producer", "fixture_consumer_escaped_children"),
         };
-        let (mut helper, mut control, mut output) = spawn(
-            &directory,
+        let mut helper = spawn(
             "10000",
             &fixture_args(producer),
             &fixture_args(consumer),
@@ -135,11 +134,8 @@ fn escaped_stream_children_are_reaped_before_owner_exit(tc: hegel::TestCase) {
                 ("HL_PROD_PIDFILE", producer_path),
                 ("HL_CONS_PIDFILE", consumer_path),
                 ("HL_PROD_BYTES", "0"),
-                ("LILLY_TRANSFER_PROGRESS", "0"),
-                ("LILLY_TRANSFER_BYTES_PER_SECOND", "0"),
             ],
         );
-        handshake(&mut control, &mut output);
         let mut guards = EscapedChildren(Vec::new());
         let producer = published_pid(&producer_pid);
         let consumer = published_pid(&consumer_pid);
@@ -205,26 +201,24 @@ fn escaped_stream_children_are_reaped_before_owner_exit(tc: hegel::TestCase) {
 
 #[derive(Clone, Copy, Debug)]
 enum EscapeFailure {
-    CallerEof,
     Deadline,
     SideFailure,
 }
 
 /// @cc [owner:ghuntley,label:verification;recovery] transfer-failed-adopted-custody
-/// Caller EOF, deadline expiry and either failed side MUST retain the helper's
-/// owner lock while independently witnessed escaped descendants remain alive.
-/// Confirmed reaping after explicit descendant death MUST preserve the trigger's
-/// exact failure status and permit successor lock admission.
+/// Deadline expiry and either failed side MUST keep the helper alive (and so
+/// hostd's stream lease held) while independently witnessed escaped
+/// descendants remain alive. Confirmed reaping after explicit descendant death
+/// MUST preserve the trigger's exact failure status.
 // Real fixed deadline histories take over30seconds; only the input-speed
 // health check is inapplicable. All custody assertions and deadlines remain.
 #[hegel::test(test_cases = 2, suppress_health_check = [hegel::HealthCheck::TooSlow])]
-fn escaped_stream_failure_retains_lock_until_actual_reaping(tc: hegel::TestCase) {
+fn escaped_stream_failure_retains_custody_until_actual_reaping(tc: hegel::TestCase) {
     let role = tc.draw(hegel::generators::sampled_from(&[
         StreamSide::Producer,
         StreamSide::Consumer,
     ]));
     let trigger = tc.draw(hegel::generators::sampled_from(&[
-        EscapeFailure::CallerEof,
         EscapeFailure::Deadline,
         EscapeFailure::SideFailure,
     ]));
@@ -232,13 +226,11 @@ fn escaped_stream_failure_retains_lock_until_actual_reaping(tc: hegel::TestCase)
     let fixed = [StreamSide::Producer, StreamSide::Consumer]
         .into_iter()
         .flat_map(|role| {
-            [
-                EscapeFailure::CallerEof,
-                EscapeFailure::Deadline,
-                EscapeFailure::SideFailure,
-            ]
-            .into_iter()
-            .flat_map(move |trigger| [1, 3].into_iter().map(move |count| (role, trigger, count)))
+            [EscapeFailure::Deadline, EscapeFailure::SideFailure]
+                .into_iter()
+                .flat_map(move |trigger| {
+                    [1, 3].into_iter().map(move |count| (role, trigger, count))
+                })
         });
     for (role, trigger, count) in fixed.chain(std::iter::once((role, trigger, count))) {
         failed_escape_case(role, trigger, count);
@@ -246,7 +238,6 @@ fn escaped_stream_failure_retains_lock_until_actual_reaping(tc: hegel::TestCase)
 }
 
 fn failed_escape_case(role: StreamSide, trigger: EscapeFailure, count: usize) {
-    use rustix::fs::{flock, FlockOperation};
     let directory = tempfile::tempdir().expect("failure fixture directory");
     let root = directory.path().to_str().expect("root path");
     let producer_path = directory.path().join("producer.pid");
@@ -261,8 +252,7 @@ fn failed_escape_case(role: StreamSide, trigger: EscapeFailure, count: usize) {
     } else {
         "20000"
     };
-    let (mut helper, control, mut output) = spawn(
-        &directory,
+    let mut helper = spawn(
         timeout,
         &fixture_args(producer),
         &fixture_args(consumer),
@@ -278,12 +268,8 @@ fn failed_escape_case(role: StreamSide, trigger: EscapeFailure, count: usize) {
                 "HL_CONS_PIDFILE",
                 consumer_path.to_str().expect("consumer path"),
             ),
-            ("LILLY_TRANSFER_PROGRESS", "0"),
-            ("LILLY_TRANSFER_BYTES_PER_SECOND", "0"),
         ],
     );
-    let mut control = Some(control);
-    handshake(control.as_mut().expect("live caller"), &mut output);
     let producer_pid = published_pid(&producer_path);
     let consumer_pid = published_pid(&consumer_path);
     let mut guards = EscapedChildren(Vec::new());
@@ -313,7 +299,6 @@ fn failed_escape_case(role: StreamSide, trigger: EscapeFailure, count: usize) {
         );
     }
     match trigger {
-        EscapeFailure::CallerEof => drop(control.take()),
         EscapeFailure::Deadline => {}
         EscapeFailure::SideFailure => std::fs::write(directory.path().join("release-side"), "fail")
             .expect("release failed side"),
@@ -337,21 +322,11 @@ fn failed_escape_case(role: StreamSide, trigger: EscapeFailure, count: usize) {
         helper.0.try_wait().expect("helper status").is_none(),
         "uncertain descendant custody: {role:?}/{trigger:?}/{count}"
     );
-    let successor = std::fs::OpenOptions::new()
-        .read(true)
-        .write(true)
-        .open(directory.path().join("owner.lock"))
-        .expect("successor lock file");
-    assert_eq!(
-        flock(&successor, FlockOperation::NonBlockingLockExclusive),
-        Err(rustix::io::Errno::WOULDBLOCK)
-    );
     for pid in &guards.0 {
         rustix::process::kill_process(*pid, rustix::process::Signal::KILL)
             .expect("explicit child death");
     }
     let expected = match trigger {
-        EscapeFailure::CallerEof => 4,
         EscapeFailure::Deadline => 2,
         EscapeFailure::SideFailure => match role {
             StreamSide::Producer => 5,
@@ -370,8 +345,6 @@ fn failed_escape_case(role: StreamSide, trigger: EscapeFailure, count: usize) {
         );
     }
     guards.0.clear();
-    flock(&successor, FlockOperation::NonBlockingLockExclusive)
-        .expect("successor lock after confirmed death");
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -433,39 +406,34 @@ fn fixture_args(fixture: &str) -> Vec<String> {
 }
 
 fn spawn(
-    directory: &tempfile::TempDir,
     timeout_ms: &str,
     producer: &[String],
     consumer: &[String],
     envs: &[(&str, &str)],
-) -> (Running, std::process::ChildStdin, std::process::ChildStdout) {
-    use std::os::unix::fs::PermissionsExt as _;
-    let lock = directory.path().join("owner.lock");
-    drop(std::fs::File::create(&lock).expect("fixture lock"));
-    std::fs::set_permissions(&lock, std::fs::Permissions::from_mode(0o600)).expect("private");
+) -> Running {
+    spawn_with(timeout_ms, "0", "-", producer, consumer, envs)
+}
+
+/// Start the helper as hostd does: no stdin, stdout and stderr captured.
+fn spawn_with(
+    timeout_ms: &str,
+    rate: &str,
+    progress: &str,
+    producer: &[String],
+    consumer: &[String],
+    envs: &[(&str, &str)],
+) -> Running {
     let mut command = Process::new(HELPER);
     command
-        .arg(&lock)
-        .arg(timeout_ms)
+        .args([timeout_ms, rate, progress, "-", "-"])
         .arg(producer.len().to_string())
         .args(producer)
         .args(consumer)
-        .stdin(Stdio::piped())
+        .stdin(Stdio::null())
         .stdout(Stdio::piped())
         .stderr(Stdio::null())
         .envs(envs.iter().map(|(key, value)| (*key, *value)));
-    let mut child = Running(command.spawn().expect("spawned transfer helper"));
-    let stdin = child.0.stdin.take().expect("stdin");
-    let stdout = child.0.stdout.take().expect("stdout");
-    (child, stdin, stdout)
-}
-
-fn handshake(stdin: &mut std::process::ChildStdin, stdout: &mut std::process::ChildStdout) {
-    stdin.write_all(b"stream-nonce\n").expect("nonce");
-    stdin.flush().expect("flushed");
-    let mut echo = vec![0_u8; b"stream-nonce\n".len()];
-    stdout.read_exact(&mut echo).expect("echo");
-    assert_eq!(echo, b"stream-nonce\n");
+    Running(command.spawn().expect("spawned transfer helper"))
 }
 
 fn countfile(dir: &tempfile::TempDir) -> PathBuf {
@@ -555,137 +523,127 @@ fn fixture_side_diag() {
     err.flush().expect("flush");
 }
 
+#[test]
+#[ignore = "stream fixture"]
+fn fixture_consumer_idle() {
+    if let Some(path) = std::env::var_os("HL_CONS_PIDFILE") {
+        std::fs::write(path, std::process::id().to_string()).expect("consumer PID witness");
+    }
+    std::thread::sleep(Duration::from_secs(60));
+}
+
 // -- Cases. --
 
 #[test]
 fn transfer_flows_bytes_to_the_consumer_and_exits_zero() {
     let dir = tempfile::tempdir().expect("fixture");
     let count = countfile(&dir);
-    let producer = fixture_args("fixture_producer");
-    let consumer = fixture_args("fixture_consumer");
     let count_string = count.to_string_lossy().into_owned();
-    let (mut helper, mut stdin, mut stdout) = spawn(
-        &dir,
+    let mut helper = spawn(
         "30000",
-        &producer,
-        &consumer,
+        &fixture_args("fixture_producer"),
+        &fixture_args("fixture_consumer"),
         &[
             ("HL_PROD_BYTES", "131072"),
             ("HL_CONS_COUNTFILE", count_string.as_str()),
         ],
     );
-    handshake(&mut stdin, &mut stdout);
+    let mut stdout = helper.0.stdout.take().expect("stdout");
     assert_eq!(helper.wait_bounded(Duration::from_secs(30)).code(), Some(0));
     assert_eq!(
         std::fs::read_to_string(&count).expect("count").trim(),
         "131072"
     );
     let mut rest = Vec::new();
-    stdout.read_to_end(&mut rest).expect("post-handshake");
-    assert!(rest.is_empty(), "helper stdout carried only the handshake");
+    stdout.read_to_end(&mut rest).expect("helper stdout");
+    assert!(rest.is_empty(), "helper stdout carries nothing");
 }
 
+/// @cc [owner:ghuntley,label:verification] transfer-progress-descriptor
+/// The progress descriptor MUST end holding exactly the 8-byte big-endian
+/// count of spliced bytes at offset 0 after a successful transfer.
 #[test]
-fn revoke_after_handshake_kills_and_reports_four() {
+fn progress_descriptor_holds_the_final_count() {
     let dir = tempfile::tempdir().expect("fixture");
-    let pidfile = dir.path().join("producer.pid");
-    let pid_string = pidfile.to_string_lossy().into_owned();
-    let (mut helper, mut stdin, mut stdout) = spawn(
-        &dir,
+    let progress = std::fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create_new(true)
+        .open(dir.path().join("progress"))
+        .expect("progress file");
+    rustix::io::fcntl_setfd(&progress, rustix::io::FdFlags::empty()).expect("inheritable");
+    let fd = std::os::fd::AsRawFd::as_raw_fd(&progress).to_string();
+    let mut helper = spawn_with(
         "30000",
-        &fixture_args("fixture_producer_idle"),
+        "0",
+        &fd,
+        &fixture_args("fixture_producer"),
         &fixture_args("fixture_consumer"),
-        &[("HL_PROD_PIDFILE", pid_string.as_str())],
+        &[("HL_PROD_BYTES", "65536")],
     );
-    handshake(&mut stdin, &mut stdout);
-    // Wait for the producer to be up before cancelling so the kill is
-    // observable rather than an empty convergence.
-    let start = Instant::now();
-    while !pidfile.exists() {
-        assert!(
-            start.elapsed() < Duration::from_secs(10),
-            "producer pidfile"
-        );
-        std::thread::sleep(Duration::from_millis(20));
-    }
-    stdin.write_all(b"anything-here-cancels\n").expect("cancel");
-    stdin.flush().expect("flush");
-    assert_eq!(helper.wait_bounded(Duration::from_secs(15)).code(), Some(4));
-    let pid: i32 = std::fs::read_to_string(&pidfile)
-        .expect("pidfile")
-        .trim()
-        .parse()
-        .expect("numeric");
-    let proc = format!("/proc/{pid}");
-    let deadline = Instant::now() + Duration::from_secs(10);
-    while Path::new(&proc).exists() && Instant::now() < deadline {
-        std::thread::sleep(Duration::from_millis(20));
-    }
-    assert!(!Path::new(&proc).exists(), "producer survived revocation");
+    assert_eq!(helper.wait_bounded(Duration::from_secs(30)).code(), Some(0));
+    let bytes = std::fs::read(dir.path().join("progress")).expect("progress");
+    let total = u64::from_be_bytes(bytes.as_slice().try_into().expect("eight bytes"));
+    // The producer's libtest banner is spliced too, so the count covers at
+    // least the payload.
+    assert!(total >= 65536, "spliced count covers the payload: {total}");
 }
 
 #[test]
 fn deadline_expiry_reports_two() {
-    let dir = tempfile::tempdir().expect("fixture");
-    let (mut helper, mut stdin, mut stdout) = spawn(
-        &dir,
+    let mut helper = spawn(
         "1000",
         &fixture_args("fixture_producer_idle"),
         &fixture_args("fixture_consumer"),
         &[],
     );
-    handshake(&mut stdin, &mut stdout);
     assert_eq!(helper.wait_bounded(Duration::from_secs(15)).code(), Some(2));
 }
 
 #[test]
 fn excessive_diagnostics_report_three() {
-    let dir = tempfile::tempdir().expect("fixture");
-    let (mut helper, mut stdin, mut stdout) = spawn(
-        &dir,
+    let mut helper = spawn(
         "30000",
         &fixture_args("fixture_side_diag"),
         &fixture_args("fixture_side_diag"),
         &[],
     );
-    handshake(&mut stdin, &mut stdout);
     assert_eq!(helper.wait_bounded(Duration::from_secs(15)).code(), Some(3));
 }
+
 #[test]
 fn side_failures_distinguish_roles() {
     // Producer fails only: five.
-    let dir = tempfile::tempdir().expect("fixture");
-    let (mut helper, mut stdin, mut stdout) = spawn(
-        &dir,
+    let mut helper = spawn(
         "30000",
         &fixture_args("fixture_producer"),
         &fixture_args("fixture_consumer"),
         &[("HL_PROD_EXIT", "9"), ("HL_PROD_BYTES", "1024")],
     );
-    handshake(&mut stdin, &mut stdout);
     assert_eq!(helper.wait_bounded(Duration::from_secs(15)).code(), Some(5));
 
     // Consumer fails only: six.
-    let dir = tempfile::tempdir().expect("fixture");
-    let (mut helper, mut stdin, mut stdout) = spawn(
-        &dir,
+    let mut helper = spawn(
         "30000",
         &fixture_args("fixture_producer"),
         &fixture_args("fixture_consumer"),
         &[("HL_PROD_BYTES", "1024"), ("HL_CONS_EXIT", "33")],
     );
-    handshake(&mut stdin, &mut stdout);
     assert_eq!(helper.wait_bounded(Duration::from_secs(15)).code(), Some(6));
 }
 
 #[test]
 fn usage_variants_exit_sixty_four() {
-    let dir = tempfile::tempdir().expect("fixture");
-    for lock in [Path::new("relative.lock"), countfile(&dir).as_path()] {
+    for arguments in [
+        vec!["not-a-timeout"],
+        // A root side uid is never accepted.
+        vec!["1000", "0", "-", "0", "-", "1", "/bin/true", "/bin/true"],
+        // A progress descriptor below 3 would alias stdio.
+        vec!["1000", "0", "2", "-", "-", "1", "/bin/true", "/bin/true"],
+    ] {
         let mut command = Process::new(HELPER);
         command
-            .arg(lock)
-            .arg("not-a-timeout")
+            .args(arguments)
             .stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::null());
@@ -695,52 +653,65 @@ fn usage_variants_exit_sixty_four() {
 }
 
 #[test]
-fn contended_lock_reports_seventy_three_after_consuming_nonce() {
-    use rustix::fs::{flock, FlockOperation};
-    use std::os::unix::fs::PermissionsExt as _;
-    let dir = tempfile::tempdir().expect("fixture");
-    let lock = dir.path().join("owner.lock");
-    drop(std::fs::File::create(&lock).expect("lock"));
-    std::fs::set_permissions(&lock, std::fs::Permissions::from_mode(0o600)).expect("private");
-    let anchor = std::fs::File::options()
-        .read(true)
-        .write(true)
-        .open(&lock)
-        .expect("anchor");
-    flock(&anchor, FlockOperation::NonBlockingLockExclusive).expect("anchor lock");
-    let mut command = Process::new(HELPER);
-    let producer_args = fixture_args("fixture_producer_idle");
-    let consumer_args = fixture_args("fixture_consumer");
-    command
-        .arg(&lock)
-        .arg("30000")
-        .arg(producer_args.len().to_string())
-        .args(&producer_args)
-        .args(&consumer_args)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::null());
-    let mut helper = Running(command.spawn().expect("spawned"));
-    let mut stdin = helper.0.stdin.take().expect("stdin");
-    let mut stdout = helper.0.stdout.take().expect("stdout");
-    stdin.write_all(b"stream-nonce\n").expect("nonce");
-    stdin.flush().expect("flush");
-    assert_eq!(
-        helper.wait_bounded(Duration::from_secs(15)).code(),
-        Some(73)
+fn progress_descriptor_must_be_a_regular_file() {
+    // Descriptor 1000 is not open in the helper.
+    let mut helper = spawn_with(
+        "5000",
+        "0",
+        "1000",
+        &fixture_args("fixture_producer"),
+        &fixture_args("fixture_consumer"),
+        &[("HL_PROD_BYTES", "0")],
     );
-    let mut rest = Vec::new();
-    stdout
-        .read_to_end(&mut rest)
-        .expect("any echo would be a bug");
-    assert!(rest.is_empty());
+    assert_eq!(
+        helper.wait_bounded(Duration::from_secs(10)).code(),
+        Some(70)
+    );
 }
 
+/// An unprivileged side still dies with a killed helper: its parent-death
+/// signal is set after the uid drop. Needs root to change uid; skipped
+/// otherwise. On Linux 6.18 this also passes with the opposite order, so it
+/// guards the outcome rather than discriminating the ordering.
 #[test]
-#[ignore = "stream fixture"]
-fn fixture_consumer_idle() {
-    if let Some(path) = std::env::var_os("HL_CONS_PIDFILE") {
-        std::fs::write(path, std::process::id().to_string()).expect("consumer PID witness");
+fn unprivileged_sides_die_with_a_killed_helper() {
+    if !rustix::process::geteuid().is_root() {
+        return;
     }
-    std::thread::sleep(Duration::from_secs(60));
+    let dir = tempfile::tempdir().expect("tempdir");
+    std::fs::set_permissions(
+        dir.path(),
+        std::os::unix::fs::PermissionsExt::from_mode(0o777),
+    )
+    .unwrap();
+    let witness = dir.path().join("producer.pid");
+    let script = format!("echo $$ > {}; exec sleep 60", witness.display());
+    let producer = ["/bin/sh".to_string(), "-c".to_string(), script];
+    let consumer = [
+        "/bin/sh".to_string(),
+        "-c".to_string(),
+        "exec sleep 60".to_string(),
+    ];
+    let mut command = Process::new(HELPER);
+    command
+        .args(["60000", "0", "-", "65534", "65534"])
+        .arg(producer.len().to_string())
+        .args(&producer)
+        .args(&consumer)
+        .stdin(Stdio::null())
+        .stdout(Stdio::null())
+        .stderr(Stdio::null());
+    let mut helper = Running(command.spawn().expect("spawned transfer helper"));
+    let pid = published_pid(&witness);
+    let _escaped = EscapedChildren(vec![pid]);
+    helper.0.kill().expect("killed helper");
+    let _ = helper.0.wait();
+    let deadline = Instant::now() + Duration::from_secs(5);
+    while !process_retired(pid) {
+        assert!(
+            Instant::now() < deadline,
+            "unprivileged side outlived the helper"
+        );
+        std::thread::sleep(Duration::from_millis(10));
+    }
 }

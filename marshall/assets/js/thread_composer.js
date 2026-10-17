@@ -1,6 +1,6 @@
 // @ts-check
 
-/** @typedef {{el: HTMLElement, pushEvent: (event: string, payload: Record<string, unknown>) => void, handleEvent: (event: string, callback: (payload: unknown) => void) => void, controller?: AbortController, composer?: HTMLTextAreaElement, returnFocus?: HTMLElement, choice: number, composing: boolean, detailDialogOpen?: boolean}} ComposerHook */
+/** @typedef {{el: HTMLElement, pushEvent: (event: string, payload: Record<string, unknown>) => void, handleEvent: (event: string, callback: (payload: unknown) => void) => void, controller?: AbortController, composer?: HTMLTextAreaElement, returnFocus?: HTMLElement, choice: number, composing: boolean, detailDialogOpen?: boolean, paletteOpen?: boolean, paletteQuery?: string, paletteOrigin?: "button" | "slash"}} ComposerHook */
 
 /**
  * @cc [owner:ghuntley,label:product] composer-command-prefix
@@ -45,10 +45,11 @@ function choices(hook) {
 function highlight(hook) {
   const buttons = choices(hook);
   hook.choice = Math.max(0, Math.min(hook.choice, buttons.length - 1));
+  const input = palette(hook)?.open ? hook.el.querySelector("#thread-command-search") : hook.composer;
+  input?.removeAttribute("aria-activedescendant");
   buttons.forEach((button, index) => {
     button.setAttribute("aria-selected", String(index === hook.choice));
     if (index === hook.choice) {
-      const input = palette(hook)?.open ? hook.el.querySelector("#thread-command-search") : hook.composer;
       input?.setAttribute("aria-activedescendant", button.id);
     }
   });
@@ -61,47 +62,133 @@ function hideCompletions(hook) {
   hook.composer?.removeAttribute("aria-activedescendant");
 }
 
-/** @param {ComposerHook} hook @param {string} query @returns {void} */
-function filter(hook, query) {
+/** @param {ComposerHook} hook @param {string} query @param {boolean} resetChoice @returns {void} */
+function filter(hook, query, resetChoice = true) {
+  hook.paletteQuery = query;
   const container = palette(hook)?.open ? palette(hook) : hook.el.querySelector("[data-thread-completions]");
   container?.querySelectorAll("button[data-thread-command]").forEach(button => {
     if (button instanceof HTMLButtonElement) button.hidden = !button.dataset.threadCommand?.startsWith(query.toLowerCase().replace(/^\//, ""));
   });
-  hook.choice = 0;
+  if (resetChoice) hook.choice = 0;
+  if (palette(hook)?.open) hook.el.querySelector("#thread-command-search")?.setAttribute("aria-expanded", "true");
   highlight(hook);
 }
 
-/** @param {ComposerHook} hook @param {HTMLElement | undefined} trigger @returns {void} */
-function openPalette(hook, trigger) {
+/**
+ * @cc [owner:ghuntley,label:product;accessibility] slash-command-palette
+ * A slash typed at the command position MUST open the same command palette as
+ * the Commands control, seed its search with the command prefix, and preserve
+ * the composer draft until a command is explicitly selected. LiveView patches
+ * caused by composer validation MUST keep that palette open and restore its
+ * current query and focus.
+ * @param {ComposerHook} hook
+ * @param {HTMLElement | undefined} trigger
+ * @param {string} query
+ * @param {"button" | "slash"} origin
+ * @returns {void}
+ */
+function openPalette(hook, trigger, query = "", origin = "button") {
   const dialog = palette(hook);
   if (!dialog) return;
+  hook.paletteOpen = true;
+  hook.paletteQuery = query;
   hook.returnFocus = trigger;
+  hook.paletteOrigin = origin;
   hideCompletions(hook);
-  dialog.showModal();
+  if (trigger instanceof HTMLTextAreaElement) trigger.setAttribute("aria-expanded", "true");
+  if (!dialog.open) dialog.showModal();
   const search = dialog.querySelector("input");
-  if (search) { search.value = ""; search.focus(); }
-  filter(hook, "");
+  if (search) {
+    search.value = query;
+    search.focus();
+  }
+  filter(hook, query);
 }
 
 /** @param {ComposerHook} hook @returns {void} */
 function closePalette(hook) {
-  palette(hook)?.close();
+  const dialog = palette(hook);
+  const composer = hook.composer?.isConnected
+    ? hook.composer
+    : hook.el.querySelector("textarea[data-thread-input]");
+  dialog?.close();
+  hook.paletteOpen = false;
+  hook.paletteQuery = undefined;
+  hook.paletteOrigin = undefined;
+  if (composer instanceof HTMLTextAreaElement) composer.setAttribute("aria-expanded", "false");
+  dialog?.querySelector("input")?.setAttribute("aria-expanded", "false");
   if (hook.returnFocus?.isConnected) hook.returnFocus.focus();
-  else hook.composer?.focus();
+  else if (composer instanceof HTMLTextAreaElement) composer.focus();
 }
 
 /** @param {ComposerHook} hook @param {string} command @param {boolean} complete @returns {void} */
 function activate(hook, command, complete) {
-  const input = hook.composer || hook.el.querySelector("textarea[data-thread-input]");
+  const input = hook.composer?.isConnected
+    ? hook.composer
+    : hook.el.querySelector("textarea[data-thread-input]");
   if (complete && input instanceof HTMLTextAreaElement) {
-    input.value = `/${command} `;
-    input.dispatchEvent(new Event("input", {bubbles: true}));
+    const prefix = commandPrefix(input.value);
+    // A slash palette owns the command draft. A palette opened from the
+    // toolbar may still be used with an empty composer, but must not discard
+    // an unrelated message when Tab is pressed.
+    if (hook.paletteOrigin === "slash" || prefix !== null || input.value.trim() === "") {
+      input.value = `/${command} `;
+      input.dispatchEvent(new Event("input", {bubbles: true}));
+    }
     input.focus();
   } else {
     hook.pushEvent("thread_command", {command});
   }
   hideCompletions(hook);
   if (palette(hook)?.open) closePalette(hook);
+}
+
+/**
+ * @cc [owner:ghuntley,label:product;accessibility] palette-patch-persistence
+ * While the palette is open, a LiveView patch MUST restore its modal state,
+ * current search query, filtered choices, active choice and search focus before
+ * the next composer keystroke.
+ * @param {ComposerHook} hook
+ * @returns {void}
+ */
+function restorePalette(hook) {
+  const dialog = palette(hook);
+  if (!hook.paletteOpen || !dialog || dialog.open) return;
+
+  // A composer `phx-change` patch can reconcile the dialog while it is open.
+  // The server intentionally does not render the client-only `open` state, so
+  // restore it from the hook before the next keystroke reaches the composer.
+  dialog.showModal();
+  const composer = hook.composer?.isConnected
+    ? hook.composer
+    : hook.el.querySelector("textarea[data-thread-input]");
+  if (composer instanceof HTMLTextAreaElement) composer.setAttribute("aria-expanded", "true");
+  const search = dialog.querySelector("input");
+  if (search instanceof HTMLInputElement) {
+    const query = hook.paletteQuery || "";
+    search.value = query;
+    search.focus();
+    filter(hook, query, false);
+  }
+}
+
+/** @param {ComposerHook} hook @returns {void} */
+function bindTerminalDisclosure(hook) {
+  hook.el.querySelectorAll("details[data-thread-terminal]").forEach(details => {
+    if (!(details instanceof HTMLDetailsElement)) return;
+    const load = () => {
+      if (!details.open) return;
+      const frame = details.querySelector("iframe[data-thread-terminal-src]");
+      if (!(frame instanceof HTMLIFrameElement) || frame.hasAttribute("src")) return;
+      const source = frame.dataset.threadTerminalSrc;
+      if (source) frame.src = source;
+    };
+    if (details.dataset.threadTerminalBound !== "true") {
+      details.dataset.threadTerminalBound = "true";
+      details.addEventListener("toggle", load, {signal: hook.controller?.signal});
+    }
+    load();
+  });
 }
 
 /**
@@ -117,6 +204,7 @@ export const ThreadComposer = {
     this.choice = 0;
     this.composing = false;
     refreshCommandAvailability(this);
+    bindTerminalDisclosure(this);
     const signal = this.controller.signal;
     this.el.addEventListener("compositionstart", () => { this.composing = true; }, {signal});
     this.el.addEventListener("compositionend", () => { this.composing = false; }, {signal});
@@ -134,9 +222,7 @@ export const ThreadComposer = {
       const prefix = commandPrefix(target.value);
       hideCompletions(this);
       if (prefix !== null) {
-        this.el.querySelector("[data-thread-completions]")?.removeAttribute("hidden");
-        target.setAttribute("aria-expanded", "true");
-        filter(this, prefix);
+        if (!palette(this)?.open) openPalette(this, target, prefix, "slash");
       }
       if (/(?:^|\s)\$[^\s]*$/.test(target.value)) this.pushEvent("skill_search", {query: target.value.split("$").at(-1) || ""});
     }, {signal});
@@ -168,7 +254,12 @@ export const ThreadComposer = {
         event.preventDefault();
         this.choice = (this.choice + (event.key === "ArrowDown" ? 1 : -1) + buttons.length) % buttons.length;
         highlight(this);
-      } else if (event.key === "Enter" || (event.key === "Tab" && !inPalette)) {
+      } else if (event.key === "Enter" || event.key === "Tab") {
+        if (
+          target instanceof HTMLButtonElement &&
+          !target.dataset.threadCommand &&
+          !target.dataset.threadSkill
+        ) return;
         event.preventDefault();
         const selected = target instanceof HTMLButtonElement ? target : buttons[this.choice];
         const command = selected?.dataset.threadCommand;
@@ -198,6 +289,8 @@ export const ThreadComposer = {
   /** @this {ComposerHook} @returns {void} */
   updated() {
     refreshCommandAvailability(this);
+    bindTerminalDisclosure(this);
+    restorePalette(this);
     const dialog = this.el.querySelector("dialog[data-thread-dialog]");
     if (dialog instanceof HTMLDialogElement && !dialog.open) {
       this.returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : this.composer;

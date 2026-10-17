@@ -162,7 +162,7 @@ OS lock helper (`lilly/native/host-lock/src/lib.rs`), pipe client
 [API client](../../../lilly/lib/lilly/vm/api.ex) implement local execution.
 [Network ownership](../../../lilly/lib/lilly/network.ex),
 [nftables policy](../../../lilly/lib/lilly/network/policy.ex),
-[guest configuration](../../../nix/packages/guest/configuration.nix) and
+[guest configuration](../../../nix/domains/artifacts/guest/configuration.nix) and
 [pinned builds](../../../devenv.nix) implement host/guest routing prerequisites.
 
 [Root KVM smoke](../../../lilly/scripts/smoke_jailed.exs) exercises three real
@@ -179,9 +179,9 @@ verification outcomes and remaining integration gaps.
 canonical pool paths that cannot fit the jail API's Unix socket address before
 advertising execution readiness. [Socket-path tests](../../../lilly/test/vm/jail_test.exs)
 cover byte lengths and a real socket at the maximum, and the
-[deployment fixture](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/scripts/deployment_fixture.exs) verifies
+deployment fixture (`lilly/scripts/deployment_fixture.exs` at kittens revision `9fe1e493`, repository deleted) verifies
 rejection with a complete real host configuration. The
-[three-node browser harness](../../../nix/tests/README.md)
+[three-node browser harness](../../../nix/verification/tests/README.md)
 provisions a fresh guest through the packaged Lilly service; see the
 [review](../reviews/2026-09-16-terminal-failover.md).
 

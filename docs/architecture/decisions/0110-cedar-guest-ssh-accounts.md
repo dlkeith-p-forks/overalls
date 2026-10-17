@@ -143,8 +143,8 @@ trusted account rosters, with unit and Hegel coverage. The internal
 trusted binding, key, account, Audi session and Cedar write access. The
 [private Audi frontend](../../../audi/lib/audi/private/front.ex) and
 [Ziggy relay](../../../ziggy/lib/ziggy/http.ex) carry the host-derived binding.
-The [NixOS guest](../../../nix/packages/guest/default.nix) and
-[Ubuntu guest](../../../nix/packages/guest/ubuntu/default.nix) configure sshd,
+The [NixOS guest](../../../nix/domains/artifacts/guest/default.nix) and
+[Ubuntu guest](../../../nix/domains/artifacts/guest/ubuntu/default.nix) configure sshd,
 PAM, roster sync and account homes. The
 NixOS sudo configuration includes the reconciler's policy directory. Managed
 policy filenames use the stable UID so sudo also loads policies for names with
@@ -170,12 +170,12 @@ wildcard configuration remain the supported setup path. Marshall persists guest-
 through
 [GuestLogin](../../../marshall/lib/marshall/ssh/guest_login.ex), while Audi's
 session rows are the trusted connectivity audit. The
-[private-network machine test](../../../nix/tests/machines/private-services/driver.py)
+[private-network machine test](../../../nix/verification/tests/machines/private-services/driver.py)
 proves the Customer DNS/TLS fence. The
-[Audi fleet scenario](../../../nix/tests/machines/fleet/scenarios/audi.py) proves
+[Audi fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/audi.py) proves
 native per-user SSH, separate homes, durable login rows, key and share
 revocation, and live stream closure on NixOS and Ubuntu guest images.
-The [user SSH journey scenario](../../../nix/tests/machines/fleet/scenarios/user-ssh-journey.py)
+The [user SSH journey scenario](../../../nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py)
 checks Porsche key registration and VM creation through to Overalls CLI setup
 and an interactive shell on a fresh guest. The
 [guest access implementation](../../../marshall/lib/marshall/ssh/guest_access.ex)

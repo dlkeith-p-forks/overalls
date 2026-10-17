@@ -92,7 +92,7 @@ fresh token checks and pending/active writer authority in PostgreSQL. A local ga
 exists under [ADR-0020](0020-local-console-fences-and-bounded-streams.md), connected
 through the runtime and HTTPS relay under
 [ADR-0021](0021-console-relay-connections-and-mailboxes.md). The
-[NixOS guest](../../../nix/packages/guest/configuration.nix) and its local
+[NixOS guest](../../../nix/domains/artifacts/guest/configuration.nix) and its local
 console client provided a
 verified root serial shell under [ADR-0011](0011-nixos-guest-and-console.md);
 the remote relay applies the persisted user sharing/session policy.
@@ -102,7 +102,7 @@ the remote relay applies the persisted user sharing/session policy.
 Persisted grants are implemented under ADR-0018 and control-plane terminal authority
 under ADR-0019. Browser rendering and reconnect behavior now exist under
 [ADR-0022](0022-browser-terminal-and-live-login-checks.md). The
-[fleet browser test](../../../nix/tests/machines/fleet/browser.py) now passes real sharing,
+[fleet browser test](../../../nix/verification/tests/machines/fleet/browser.py) now passes real sharing,
 writer handoff, revocation and Marshall loss through the production proxy.
 Complete broader fault/load acceptance under the intended workload. The configured
 session and writer intervals do not establish an end-to-end revocation guarantee.

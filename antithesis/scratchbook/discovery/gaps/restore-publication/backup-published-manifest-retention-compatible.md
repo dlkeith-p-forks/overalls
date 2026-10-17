@@ -11,16 +11,16 @@ deletion. Instrumentation is missing in the [fresh scan](../../../existing-asser
 
 ## Source-grounded hypothesis
 
-`nix/modules/backups/journal.py:113-133` persists `started_at=int(time.time())`.
-`nix/modules/backups/runtime.py:207-225` samples a new completion wall time,
+`nix/domains/system/backups/journal.py:113-133` persists `started_at=int(time.time())`.
+`nix/domains/system/backups/runtime.py:207-225` samples a new completion wall time,
 writes `complete=True`, uploads the manifest with `Repository.backup`, records
 the ID, transitions completed and only then invokes `retain`. There is no
 producer-side call to `Repository.manifest` between manifest construction and
-upload. `nix/modules/backups/restic.py:213-254` rejects `started_at >
+upload. `nix/domains/system/backups/restic.py:213-254` rejects `started_at >
 completed_at`; `:256-295` validates *every* manifest before any `forget` batch.
 The generated real-Restic operator suite injects a manually reversed-time
 manifest and verifies inspect/restore/prune refuse without mutation
-(`nix/tests/evaluation/backup-operators.py:580-668`). Discovery assumptions A12
+(`nix/verification/tests/evaluation/backup-operators.py:580-668`). Discovery assumptions A12
 models start=2000, completion=1000 and predicts a backward wall-clock step
 could make a coordinator-published point fail later retention. A full clock-step
 through actual coordinator and Restic was not executed. This is **not a confirmed

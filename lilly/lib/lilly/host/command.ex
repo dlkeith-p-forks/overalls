@@ -38,8 +38,8 @@ defmodule Lilly.Host.Command do
     mount: "mount",
     umount: "umount",
     chown: "chown",
-    systemd_run: "systemd-run",
-    systemctl: "systemctl"
+    systemctl: "systemctl",
+    chmod: "chmod"
   }
   @type name ::
           :image_copy
@@ -77,8 +77,13 @@ defmodule Lilly.Host.Command do
           | :mount
           | :umount
           | :chown
-          | :systemd_run
           | :systemctl
+          | :chmod
+  @doc false
+  # The utility names Command accepts (compared with hostd's table in tests).
+  @spec names() :: [name()]
+  def names, do: Map.keys(@executables)
+
   @type error ::
           :utility_unavailable
           | :command_failed
@@ -120,6 +125,15 @@ defmodule Lilly.Host.Command do
   # keeps the lease if this BEAM's session ends. attach/2 MUST wait at most
   # wait_ms for the result of a job known under the key. Both MUST refuse with
   # :host_lock_required without a current lease.
+  @doc "Start one VM unit through hostd's typed launch, under the caller's lease."
+  @spec launch_vm(Lilly.Host.Hostd.launch()) :: {:ok, binary()} | {:error, error()}
+  def launch_vm(launch) do
+    case Lilly.Host.Lock.current() do
+      %Lilly.Host.Lease{} = lease -> Lilly.Host.Hostd.launch_vm(lease.session, lease.id, launch)
+      nil -> {:error, :host_lock_required}
+    end
+  end
+
   @spec run_durable(name(), [String.t()], pos_integer(), <<_::256>>) ::
           {:ok, binary()} | {:error, error() | :job_running | :job_unknown}
   def run_durable(name, arguments, timeout_ms, <<_::256>> = key)
@@ -185,7 +199,7 @@ defmodule Lilly.Host.Command do
                :mount,
                :umount,
                :chown,
-               :systemd_run
+               :chmod
              ] ->
           {:error, :host_lock_required}
 

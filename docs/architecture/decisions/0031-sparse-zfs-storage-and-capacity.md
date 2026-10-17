@@ -183,7 +183,7 @@ fields refuses rollback while any ZFS pool remains enrolled.
 observations to that immutable identity under the existing host-row lock.
 [Budget arithmetic](../../../marshall/lib/marshall/compute/budget.ex) applies the
 enrolled logical cap separately from physical availability and retained credits;
-[history](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/observations.ex) keeps their
+history (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted) keeps their
 units and provenance separate. Existing
 [VM reservation costs](../../../protocol/lib/overalls_protocol/vm_shape.ex) already
 charge the requested disk size and retain the 64 MiB VMM memory allowance.
@@ -205,7 +205,7 @@ checks, and verifies physical decomposition and quota bounds. It returns child
 dataset GUIDs and exclusive physical usage, **not** a VM allocation-credit map;
 durable ownership is established separately by the lifecycle integration below.
 [Reader properties](../../../lilly/test/host/zfs_test.exs) and the
-[NixOS storage suite](../../../nix/tests/machines/native-zfs/default.nix) cover this foundation; the
+[NixOS storage suite](../../../nix/verification/tests/machines/native-zfs/default.nix) cover this foundation; the
 [native observation review](../reviews/2026-09-16-native-zfs-observations.md)
 records actual results and limitations. Equal reads are observations, not an
 atomic ZFS transaction, a reservation or proof against concurrent guest writes.
@@ -243,11 +243,11 @@ Malformed output, missing pools, utility failure/timeouts or an import change
 leave all native rates unknown without discarding otherwise valid dataset
 capacity. I/O columns never replace effective dataset availability or owned
 physical credit. Capacity has its own source/scope fields. The
-[telemetry mapper](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/observations.ex)
+telemetry mapper (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted)
 retains both scopes and the import identity; an explicitly configured maximum
 must use the matching I/O scope. No ceiling is inferred and admission arithmetic
 is unchanged. [Parser properties](../../../lilly/test/host/zfs_io_test.exs), the
-[real I/O machine suite](../../../nix/tests/machines/zfs-io/default.nix) and
+[real I/O machine suite](../../../nix/verification/tests/machines/zfs-io/default.nix) and
 [I/O review](../reviews/2026-09-16-native-zfs-io.md) record verification and limits.
 
 [Dataset ownership](../../../lilly/lib/lilly/host/zfs_dataset.ex) stores private
@@ -263,18 +263,18 @@ Deletion follows the existing driver's physical-stop and jail/network-cleanup
 proof. It checks ownership, GUID, contents and mount aliases, persists a deletion
 fence, and uses nonrecursive, nonforced ZFS destruction. A retained tombstone
 outside the removed dataset permits reconciliation and prevents UUID reuse.
-The [lifecycle machine fixture](../../../nix/tests/machines/zfs-lifecycle/driver.py) exercises
+The [lifecycle machine fixture](../../../nix/verification/tests/machines/zfs-lifecycle/driver.py) exercises
 actual Lilly disk APIs, verified images and interruption after real utility
 mutations. The [lifecycle review](../reviews/2026-09-16-owned-zfs-lifecycle.md)
 records executed results and limits.
 
-The [NixOS Lilly module](../../../nix/modules/lilly.nix) now accepts explicit
+The [NixOS Lilly module](../../../nix/domains/system/lilly.nix) now accepts explicit
 native identity and logical budget and supplies the host's matching ZFS package.
 It requires an existing correctly mounted parent; enabling the service does not
 format disks, create/import pools or change properties. The separate
-[mirrored installation module](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/modules/mirrored-zfs.nix) declares
+mirrored installation module (`nix/domains/system/mirrored-zfs.nix` at kittens revision `16e8dbe4`, repository deleted) declares
 the root mirror and a dedicated Lilly parent with LZ4, no reservations and an
-explicit quota. Its [firmware installation check](../../../nix/tests/machines/mirrored-installation/default.nix)
+explicit quota. Its [firmware installation check](../../../nix/verification/tests/machines/mirrored-installation/default.nix)
 passed actual property and surviving-disk checks. Exported disk images cleanly
 export the root pool inside the image builder before shutdown. The
 [installation review](../reviews/2026-09-16-mirrored-installation.md) records the
@@ -282,7 +282,7 @@ separate image-builder verification. The existing reference host's storage and
 installation adapter still require its actual reviewed configuration.
 
 The [jail configuration](../../../lilly/lib/lilly/vm/jail.ex) explicitly selects
-Writeback/Sync. The [nested guest check](../../../nix/tests/machines/zfs-guest/default.nix) exercises
+Writeback/Sync. The [nested guest check](../../../nix/verification/tests/machines/zfs-guest/default.nix) exercises
 actual Firecracker on ZFS, physical confinement, console data across stop/start,
 stopped allocation retention and recovery of a distinct acknowledged guest write
 after simulated host loss. It imports Lilly's module for host prerequisites and
@@ -309,9 +309,9 @@ between independently valid property trees now remain a withheld observation but
 return `storage_busy` through dataset/disk preparation for the existing executor
 to retry. Non-usage properties, child identities and bracketing backing identity
 must match; malformed accounting, changed quota or unsafe policy do not qualify.
-The [native reader fixture](../../../nix/tests/machines/native-zfs/driver.py) defines real between-read
+The [native reader fixture](../../../nix/verification/tests/machines/native-zfs/driver.py) defines real between-read
 usage, quota and child-identity mutations, and the
-[lifecycle fixture](../../../nix/tests/machines/zfs-lifecycle/driver.py) checks no initial claim or
+[lifecycle fixture](../../../nix/verification/tests/machines/zfs-lifecycle/driver.py) checks no initial claim or
 dataset is created on a usage race before a normal retry. The complete native
 reader suite passed all three mutations, and the full lifecycle suite passed
 busy preparation, retry and existing ownership/crash-recovery cases. The complete
@@ -347,7 +347,7 @@ validates it under receive policy with its journal-fixed snapshot expectations
 [accounting](../../../lilly/lib/lilly/host/zfs.ex)), still defers while a stream
 may be writing or counters are settling, and capacity accounting never adopts
 staging. Evidence: [focused tests](../../../lilly/test/host/zfs_test.exs) and the
-native [clone matrix](../../../nix/tests/machines/zfs-guest/cloning.exs).
+native [clone matrix](../../../nix/verification/tests/machines/zfs-guest/cloning.exs).
 
 ### Transient contention keeps the previous observation (2026-10-09)
 

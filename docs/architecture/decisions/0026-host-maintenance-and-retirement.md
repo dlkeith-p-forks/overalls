@@ -109,9 +109,9 @@ exercise concurrent entry points, duplicate workers and transaction rollback.
 [actor tests](../../../lilly/test/vm/actor_test.exs) cover retained durable results.
 The [KVM harness](../../../marshall/scripts/smoke_execution.exs) now exercises
 host-wide maintenance, retained data, explicit restart and empty-host retirement.
-[Migration verification](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/scripts/verify_maintenance_migration.exs)
+Migration verification (`marshall/scripts/verify_maintenance_migration.exs` at kittens revision `9fe1e493`, repository deleted)
 uses a disposable database to check the historical backfill and constraints.
-See the [operator guide](../../host-maintenance.md) and
+See the [operator guide](../../operations/host-maintenance.md) and
 [review](../reviews/2026-09-16-host-maintenance.md) for checks and limitations.
 Marshall and Lilly gates, three-node tests, built-release commands, historical-data
 migration checks and the complete three-guest KVM maintenance run pass.

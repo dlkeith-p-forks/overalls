@@ -2,8 +2,10 @@ defmodule Marshall.Agents.SkillMaintenance do
   @moduledoc "Durable skill installation turns and bounded read-only outcome reconciliation."
   alias Marshall.Accounts.Security
   alias Marshall.Agents.{Command, Prompt, SkillOperation, Skills, Thread, Turn}
+  alias Marshall.Agents.Skills.Failures
   alias Marshall.Compute.Ledger
   alias Marshall.Threads.Thread, as: UserThread
+  require Marshall.Events
 
   @type progress :: :pending | :completed | {:error, atom()}
   @max_status_attempts 3
@@ -11,9 +13,42 @@ defmodule Marshall.Agents.SkillMaintenance do
   @doc "Recovers queued installation admissions and pinned replacement-machine restorations."
   @spec tick() :: :ok
   def tick do
-    for thread_id <- Skills.restoration_threads(), do: Skills.restore(thread_id)
-    for operation <- Skills.pending(), do: enqueue(operation)
+    _ = tick(nil)
     :ok
+  end
+
+  # @cc [owner:ghuntley,label:concurrency;recovery] skill-restoration-progress
+  # Each maintenance pass MUST report the last scanned thread as its cursor,
+  # continue after restore errors, and emit only a bounded, catalogued outcome.
+  # A restore error MUST NOT abort the pass or cause the same first batch to be
+  # selected indefinitely.
+  @spec tick(String.t() | nil) :: {:ok, String.t() | nil}
+  def tick(cursor) do
+    restoration_threads = Skills.restoration_threads(cursor)
+
+    Enum.each(restoration_threads, fn thread_id ->
+      case restore(thread_id) do
+        {:ok, _operations} ->
+          :ok
+
+        {:error, reason} ->
+          Marshall.Events.emit("agent.skill_restoration_failed",
+            thread_id: thread_id,
+            reason: Failures.normalize(reason)
+          )
+      end
+    end)
+
+    for operation <- Skills.pending(), do: enqueue(operation)
+
+    {:ok, List.last(restoration_threads)}
+  end
+
+  @spec restore(String.t()) :: {:ok, [SkillOperation.t()]} | {:error, term()}
+  defp restore(thread_id) do
+    Skills.restore(thread_id)
+  rescue
+    _ -> {:error, :unavailable}
   end
 
   @spec enqueue(SkillOperation.t()) :: :ok

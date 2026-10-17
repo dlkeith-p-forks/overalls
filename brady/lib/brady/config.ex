@@ -1,6 +1,6 @@
 defmodule Brady.Config do
   @moduledoc "Closed runtime configuration; operator policy cannot disable origin isolation."
-  @keys ~w(version host_id issuer_cert_file issuer_key_file upstream_ca_file protected_cidrs tls_exceptions cache_directory cache_dataset cache_quota_bytes)
+  @keys ~w(version host_id attribution_uid issuer_cert_file issuer_key_file upstream_ca_file protected_cidrs tls_exceptions cache_directory cache_dataset cache_quota_bytes)
   @uuid ~r/\A[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}\z/
   @gib 1_073_741_824
 
@@ -27,6 +27,7 @@ defmodule Brady.Config do
          1 <- value["version"],
          host when is_binary(host) <- value["host_id"],
          true <- Regex.match?(@uuid, host),
+         uid when is_integer(uid) and uid in 0..4_294_967_294 <- value["attribution_uid"],
          true <-
            Enum.all?(
              ~w(issuer_cert_file issuer_key_file upstream_ca_file cache_directory),
@@ -44,6 +45,7 @@ defmodule Brady.Config do
       {:ok,
        %{
          host_id: host,
+         attribution_uid: uid,
          certfile: value["issuer_cert_file"],
          keyfile: value["issuer_key_file"],
          upstream_ca_file: value["upstream_ca_file"],
@@ -73,7 +75,7 @@ defmodule Brady.Config do
       signer: Brady.TLS.Certificates,
       socket_options: [{:raw, 1, 36, <<0x42524145::native-unsigned-32>>}],
       resolver: &resolve/1,
-      attribution: &Brady.Attribution.lookup(config.host_id, &1)
+      attribution: &Brady.Attribution.lookup(config.host_id, config.attribution_uid, &1)
     })
   end
 

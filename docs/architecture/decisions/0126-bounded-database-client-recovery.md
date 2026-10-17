@@ -104,9 +104,9 @@ ordinary deployment/restart workflow. No live rollout is included in this change
 supplies the settings; the
 [configuration regression](../../../marshall/test/marshall/operations/runtime_config_test.exs)
 pins their complete production list. The
-[two-machine fixture](../../../nix/tests/machines/database-recovery/default.nix),
-[release client](../../../nix/tests/machines/database-recovery/client.exs) and
-[driver](../../../nix/tests/machines/database-recovery/driver.py) exercise verified
+[two-machine fixture](../../../nix/verification/tests/machines/database-recovery/default.nix),
+[release client](../../../nix/verification/tests/machines/database-recovery/client.exs) and
+[driver](../../../nix/verification/tests/machines/database-recovery/driver.py) exercise verified
 TLS PostgreSQL with the actual release Repo and observed lock queue.
 
 The additional `database-recovery-active` check keeps the acquired holder lock

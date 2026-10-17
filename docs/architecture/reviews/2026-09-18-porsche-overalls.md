@@ -15,7 +15,7 @@ ADR-0050 usage-based capacity changes and excluding concurrent Audi/relocation w
 
 ## Implementation review
 
-The [module](../../../nix/modules/porsche.nix) gives Porsche a dedicated user,
+The [module](../../../nix/domains/system/porsche.nix) gives Porsche a dedicated user,
 private systemd credentials, separate persistent SSH identity and bounded resources.
 Port collision assertions require administrative SSH on 2222 before enabling the
 management listener on 22. The updater includes Porsche and secret-dependent
@@ -29,7 +29,7 @@ no token is placed in argv, source or the Nix store. The committed bundle is SOP
 ciphertext for the authenticated host and recovery recipients. Matching active
 authority preserves its generation. Reapplying the declaration after an operator
 disable explicitly re-enables it; this behavior is documented in the
-[operations guide](../../porsche-operations.md).
+[operations guide](../../operations/porsche-operations.md).
 
 ## Verification
 

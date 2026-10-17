@@ -13,7 +13,7 @@ path = "src/main.rs"
 
 [dependencies]
 libc = "=0.2.189"
-rustix = { version = "=1.1.5", features = ["event", "fs", "net", "pipe", "process", "thread", "time"] }
+rustix = { version = "=1.1.5", features = ["event", "fs", "mount", "net", "pipe", "process", "thread", "time"] }
 
 [dev-dependencies]
 hegeltest = "=0.28.8"

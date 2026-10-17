@@ -5,7 +5,7 @@ P0; high confidence; safety. Instrumentation **missing** per [fresh scan](../../
 liveness cannot settle before deadline; lifetime identity/counters never reset)`;
 message **"Request recorder recovery conserves admissions without inventing producer death"**.
 
-Evidence: `nix/modules/otel-guest/receiver/src/request_recorder.rs:151-186`
+Evidence: `nix/domains/system/otel-guest/receiver/src/request_recorder.rs:151-186`
 (`liveness`) separates unavailable boot/proc/pidfd evidence from death;
 `:305-319` (`reconcile`) settles only proven-dead or expired producers;
 `:324-362` (`apply`) responds after Store.transition. Durable implementation

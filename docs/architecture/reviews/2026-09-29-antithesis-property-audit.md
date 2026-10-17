@@ -2,7 +2,7 @@
 
 ## Scope and architecture impact
 
-The [working audit](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/property-test-audit.md)
+The working audit (`antithesis/scratchbook/property-test-audit.md` at kittens revision `9fe1e493`, repository deleted)
 tracks all 63 research candidates against current source and tests. This batch
 adds generated local checks for the Lilly journal attempt ordering and
 superseded executor results, Marshall host report ordering, CLI approval and

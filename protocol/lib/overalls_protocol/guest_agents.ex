@@ -33,18 +33,20 @@ defmodule OverallsProtocol.GuestAgents do
   @none Map.new(@all, fn {key, _} -> {key, false} end)
 
   # @cc [owner:ghuntley,label:protocol;security] guest-agents-capability-table-closed
-  # capabilities/1 is the only authority for what a guest agent set can do. A new
-  # agent set MUST be a new value with its own row; an existing row MUST NOT be
-  # mutated, because recorded manifests and bundles carry the set name. parse/1
-  # MUST accept exactly the wire names of this table and MUST NOT create atoms.
+  # capabilities/1 is the only authority for what a guest agent set can do. A
+  # new agent set MUST be a new value with its own row. Existing rows MUST NOT
+  # be widened or repurposed; a reviewed fail-closed narrowing is permitted
+  # when an earlier row overclaimed an implementation that does not exist.
+  # parse/1 MUST accept exactly the wire names of this table and MUST NOT create
+  # atoms.
   @spec capabilities(t()) :: capabilities()
   def capabilities(:linux), do: @all
   def capabilities(:none), do: @none
   def capabilities(:windows_v1), do: %{@all | inception: false, editor: false}
-  # Native rows remain transport declarations while the cross-built kernel,
-  # complete agent closure and machine evidence are unavailable. Keep every
-  # user-facing capability false so a directly registered native manifest
-  # cannot earn readiness, trust, workspace, SSH, agent or terminal authority.
+  # Native images are admitted only as fail-closed capability rows until their
+  # cross-built agents and runtime evidence exist. Their transport remains
+  # discoverable through vsock?/1 so the setup path cannot accidentally fall
+  # back to a non-native transport.
   def capabilities(:freebsd_v1), do: @none
   def capabilities(:illumos_v1), do: @none
 
@@ -67,8 +69,6 @@ defmodule OverallsProtocol.GuestAgents do
   @spec vsock?(t()) :: boolean()
   def vsock?(agents) do
     if agents in [:freebsd_v1, :illumos_v1] do
-      # The jail must retain the host-only transport shape for native bundles,
-      # even while capability admission is fail-closed.
       true
     else
       capabilities = capabilities(agents)
@@ -81,8 +81,9 @@ defmodule OverallsProtocol.GuestAgents do
   # @cc [owner:ghuntley,label:recovery] readiness-budget-by-agent-set
   # readiness_budget_ms/2 MUST give every agent set a fixed readiness deadline:
   # Linux guests 120 s (Inception 2400 s for its instance-specific rebuild) and
-  # Windows guests 600 s, matching Marshall's provision service level. A set
-  # without readiness has no budget to spend and MUST NOT be waited for.
+  # firmware guests with guest agents 600 s, matching Marshall's provision
+  # service level. A set without readiness has no budget to spend and MUST NOT
+  # be waited for.
   @spec readiness_budget_ms(t(), atom()) :: pos_integer()
   def readiness_budget_ms(:linux, :inception), do: 2_400_000
   def readiness_budget_ms(:linux, _profile), do: 120_000

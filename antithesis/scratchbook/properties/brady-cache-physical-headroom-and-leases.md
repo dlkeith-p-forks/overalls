@@ -25,14 +25,14 @@ focus: "05 — Resource Boundaries"
 
 #### Can the hosted TCG router expose independent pool and guest-parent snapshots at each append?
 
-- Examined: `nix/tests/machines/brady-network/default.nix:1-34`, `nix/tests/machines/brady-network/storage.py:110-185`, `nix/modules/brady/storage.py:197-292`, `brady/lib/brady/cache/pressure.ex:30-79`, and `brady/lib/brady/cache/store.ex:108-145,207-238`.
+- Examined: `nix/verification/tests/machines/brady-network/default.nix:1-34`, `nix/verification/tests/machines/brady-network/storage.py:110-185`, `nix/domains/system/brady/storage.py:197-292`, `brady/lib/brady/cache/pressure.ex:30-79`, and `brady/lib/brady/cache/store.ex:108-145,207-238`.
 - Found: the storage machine uses a real ZFS router VM and direct pool/parent pressure observations. The root producer publishes a bounded sample; Brady accepts it for at most three seconds and deducts pending reservations on each append. An outside witness can snapshot `zpool`/`zfs` and the fixture's allocated bytes around a controlled append.
 - Not found: atomic observation of unrelated writers and Store admission in the same instant. That is not the contract; freshness is bounded, not instantaneous.
 - Conclusion: resolved as a sampled-headroom property. Assert the accepted native sample, deadline, quota, and pending accounting at each append; separately observe physical ZFS behavior in controlled histories.
 
 #### Which native fault yields uncertain temporary deletion without corrupting the whole pool?
 
-- Examined: `brady/lib/brady/cache/store.ex:423-450`, `nix/tests/machines/brady-network/storage.py`, and `large-storage.py`.
+- Examined: `brady/lib/brady/cache/store.ex:423-450`, `nix/verification/tests/machines/brady-network/storage.py`, and `large-storage.py`.
 - Found: `discard_write/2` retains its reservation and pauses writes when `File.rm_rf/1` fails. Existing native tests cover pressure and stale observation, not a targeted temp-directory removal failure.
 - Not found: an existing native deletion-failure injector that leaves the cache mount and other objects healthy. A broad read-only remount would also change write custody and confound the intended branch.
 - Conclusion: partial. First prove the branch with a scoped filesystem fault seam or a controlled single-temp-path permission fault; verify that the fault does not invalidate the whole cache mount before claiming native coverage.

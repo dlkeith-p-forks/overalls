@@ -22,7 +22,7 @@ and ADR-0034 remains proposed. No live production host was changed.
 
 - The [flake](../../../flake.nix) pins stable NixOS 26.05 separately from the
   development package set and exports actual source packages and checks.
-- [Release derivations](../../../nix/packages/default.nix) use fixed-output
+- [Release derivations](../../../nix/domains/artifacts/default.nix) use fixed-output
   Mix/Cargo sources, a lock snapshot guard, offline native compilation and
   prefetched asset tools. Source filtering excludes local deps/builds and old
   digested assets. Cedar executes successfully in the packaged Marshall runtime.
@@ -30,9 +30,9 @@ and ADR-0034 remains proposed. No live production host was changed.
   ERTS, independent consumers, no packaged cookie, and actual frontend manifests.
   Both [closure exports](../../../scripts/package_release.sh) completed using
   the source packages; Lilly retains its canonical host tools.
-- [Module checks](../../../nix/tests/evaluation/module-configuration.nix) validate independent
+- [Module checks](../../../nix/verification/tests/evaluation/module-configuration.nix) validate independent
   roles, type constraints, port/connection/memory budgets and rejection paths.
-- The [role suite](../../../nix/tests/machines/service-roles/default.nix) passed on four QEMU machines;
+- The [role suite](../../../nix/verification/tests/machines/service-roles/default.nix) passed on four QEMU machines;
   the initial run took 56 seconds and the extended proxy run took 72.53 seconds.
   Both Marshall fixtures required explicit
   migrations, authenticated TLS database connections and separate enforced
@@ -42,13 +42,13 @@ and ADR-0034 remains proposed. No live production host was changed.
   `system.slice`, with host mount visibility and separate guest limits. Its
   durable ownership binding proves the actual inner-KVM probe succeeded.
   Daemon restart was exercised; this suite contains no Firecracker guests.
-- The [proxy module](../../../nix/modules/proxy.nix) passed real backend
+- The [proxy module](../../../nix/domains/system/proxy.nix) passed real backend
   loss/recovery, CA/name-verified TLS routing and wrong-name rejection. Request
   logs excluded a synthetic token-bearing URL. Lilly's managed uplink retained
   only its assigned IPv4 address, without host DHCP/IPv6 interference.
-- The [secret module](../../../nix/modules/secrets/default.nix) uses actual pinned
+- The [secret module](../../../nix/domains/system/secrets/default.nix) uses actual pinned
   SecretSpec/SOPS and SSH-to-age tools. Its initial two-machine
-  [custody test](../../../nix/tests/machines/secret-custody/default.nix) passed in 61.27 seconds, covering
+  [custody test](../../../nix/verification/tests/machines/secret-custody/default.nix) passed in 61.27 seconds, covering
   actual unprivileged Marshall startup, distinct host identities, wrong-host
   rejection, independent synthetic operator recovery and missing-value startup
   fencing with preservation of the previous bundle.
@@ -58,14 +58,14 @@ and ADR-0034 remains proposed. No live production host was changed.
   and successful decryption. Marshall returned to readiness after the switch.
   This validates one application's environment rotation; it does not establish
   fleet signing/Cloak/database coordination, host recipient rotation or reboot.
-- [Boundary properties](../../../nix/tests/machines/secret-custody/properties.py) passed actual
+- [Boundary properties](../../../nix/verification/tests/machines/secret-custody/properties.py) passed actual
   systemd EnvironmentFile delivery for 40 generated examples of four Unicode
   values plus explicit quoting/control-character cases. SIGKILL before bundle
   publication preserved the prior files; cleanup removed abandoned staging
   without touching another bundle. Unsafe paths, oversized output and a timed-out
   resolver's process group were rejected or terminated. These are VM-local
   filesystem/process checks, not host power-loss persistence evidence.
-- The public [operator recipient](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/packages/operator-recipient/default.nix) built
+- The public operator recipient (`nix/domains/artifacts/operator-recipient/default.nix` at kittens revision `9fe1e493`, repository deleted) built
   successfully after checking the supplied key's SSH fingerprint. No operator
   private key, production credential or live key lookup was used.
 - Framework Python type/lint checks passed. Final structural checks passed for
@@ -106,7 +106,7 @@ and ADR-0034 remains proposed. No live production host was changed.
    now excludes the exact host-derived uplink from dhcpcd, NetworkManager and
    networkd; it does not disable management of unrelated interfaces.
 9. Resolver output initially had only an after-capture size check. The
-   [preparer](../../../nix/modules/secrets/prepare.py) now reads with a fixed memory bound
+   [preparer](../../../nix/domains/system/secrets/prepare.py) now reads with a fixed memory bound
    and deadline, killing the complete subprocess group on failure. Environment
    output rejects characters forbidden by systemd before publication.
 10. Interrupted staging needs cleanup beyond Python's `finally` block. The
@@ -114,7 +114,7 @@ and ADR-0034 remains proposed. No live production host was changed.
     staging, while retaining the previously published directory. The process
     termination fixture handles `/proc` disappearing during its observation.
 11. `Requires`/`After` can propagate a preparation restart to running consumers.
-    The [runbook](../../nixos.md) uses explicit consumer stop, preparation,
+    The [runbook](../../operations/nixos.md) uses explicit consumer stop, preparation,
    consumer start and readiness checks. Changing ciphertext alone cannot update
    an existing process environment. Fleet-wide key coordination remains open.
 12. The NixOS test framework omits the configuration-switch program by default.

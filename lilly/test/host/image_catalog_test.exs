@@ -162,15 +162,15 @@ defmodule Lilly.Host.ImageCatalogTest do
 
   defp content(name, index, _valid, _padding), do: "synthetic #{name} #{index}"
 
-  # Replacement uses a fresh inode, then removes the old entry so the image
-  # directory remains closed while identity cannot collide within timestamp
-  # granularity.
+  # Replacement uses a fresh inode and retains the old one, as a Nix store
+  # replacement would, so identity cannot collide within timestamp granularity.
+  # The retained inode lives beside the image directory: image directories
+  # are closed to exactly the manifest's files (image-directory-file-set-closed).
   defp replace_rootfs(directory, index, valid) do
     path = Path.join(directory, "rootfs.ext4")
-    old_path = path <> ".#{System.unique_integer([:positive])}"
-    File.rename!(path, old_path)
+    retained = directory <> ".retained-#{System.unique_integer([:positive])}"
+    File.rename!(path, retained)
     write_read_only(path, content("rootfs", index, valid, 0))
-    File.rm!(old_path)
   end
 
   defp write_read_only(path, data) do

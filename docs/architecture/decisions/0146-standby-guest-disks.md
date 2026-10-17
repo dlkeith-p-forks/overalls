@@ -87,7 +87,7 @@ on 2026-10-09 and confirmed it on 2026-10-10.
 **Update (2026-10-11, [ADR-0159](0159-remove-legacy-compatibility.md)):** the
 zero/off value was removed. `standbyDisks.perImage` is a positive per-pool,
 per-image count (1..128, default 1) in the
-[Nix module](../../../nix/modules/lilly.nix) and
+[Nix module](../../../nix/domains/system/lilly.nix) and
 [pool model](../../../lilly/lib/lilly/host/pool.ex); refill visits every pool
 (`refill` (`lilly/lib/lilly/host/standby_refill.ex`, removed by ADR-0177)). Standbys of an image
 that is no longer configured are retired by the sweep, which the native
@@ -101,8 +101,8 @@ yielding to announced pool-lock waiters, after a production image rebuild
 retired and filled about 260 standbys each under the pool lock.
 
 **Historical diagnostic readers before ADR-0149:**
-- the protocol [lifecycle allowlist](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/protocol/lib/overalls_protocol/lifecycle_audit.ex);
-- Marshall [ingestion](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/compute/lifecycle_ingestion.ex);
+- the protocol lifecycle allowlist (`protocol/lib/overalls_protocol/lifecycle_audit.ex` at kittens revision `a99f74f0`, repository deleted);
+- Marshall ingestion (`marshall/lib/marshall/compute/lifecycle_ingestion.ex` at kittens revision `a99f74f0`, repository deleted);
 
 [ADR-0149](0149-independent-observability.md) retires those diagnostic-wire
 readers. Current compatibility and authority remain in state-only native
@@ -119,12 +119,12 @@ on trace admission or a diagnostic ACK.
 - `fill, claim, sweep and retirement` (`lilly/lib/lilly/host/standby_disk.ex`, removed by ADR-0177);
 - the `refill process` (`lilly/lib/lilly/host/standby_refill.ex`, removed by ADR-0177);
 - [materialization](../../../lilly/lib/lilly/vm/disk.ex);
-- the [Nix option](../../../nix/modules/lilly.nix).
+- the [Nix option](../../../nix/domains/system/lilly.nix).
 
 **Tests:**
 - the `state-machine property` (`lilly/test/lifecycle/standby_disk_test.exs`, removed by ADR-0177);
 - the [accounting property](../../../lilly/test/host/zfs_test.exs);
-- the native [`image-template` standby subtest](../../../nix/tests/machines/image-template/driver.py),
+- the native [`image-template` standby subtest](../../../nix/verification/tests/machines/image-template/driver.py),
   whose historical version is recorded as passing on 2026-10-09. That evidence covers:
   - fill from the sealed template, with `bcloneused` growth;
   - a claim by rename that keeps the GUID;

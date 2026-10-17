@@ -105,7 +105,7 @@ execution scope and remaining boundaries.
 
 The [default-profile histories](../../../marshall/test/marshall/ssh/commands_test.exs)
 exercise omitted and explicit profiles through pinned request retries and changed
-semantic-input refusals. The [default-profile native journey](../../../nix/tests/machines/default-oss/driver.py)
+semantic-input refusals. The [default-profile native journey](../../../nix/verification/tests/machines/default-oss/driver.py)
 creates through packaged Porsche and the browser with no profile choice; its
 [execution review](../reviews/2026-09-25-default-oss-verification.md) records
 passing checks and remaining acceptance gaps separately. This retains the explicit
@@ -271,20 +271,20 @@ approval on the same connection, lost HTTP replies and idempotent retry without
 duplicate VM/job admission. The completion test supplies matching outcome evidence
 explicitly; it does not execute a guest. Porsche is a test-only Marshall dependency.
 
-[Nix source packaging](../../../nix/packages/default.nix) and the explicit
-[payload check](../../../nix/tests/release/probe.exs) now build Porsche with pinned
+[Nix source packaging](../../../nix/domains/artifacts/default.nix) and the explicit
+[payload check](../../../nix/verification/tests/release/probe.exs) now build Porsche with pinned
 fixed-output dependencies. Normal and encrypted-runtime releases build. The
 payload check executes the packaged runtime and verifies required gateway modules,
 shared parsing, invalid configuration rejection and absence of Ash, Oban, Ecto,
 other applications and privileged host tools. This does not prove encrypted dump
 capture.
 
-The [NixOS module](../../../nix/modules/porsche.nix) runs the release as a dedicated
+The [NixOS module](../../../nix/domains/system/porsche.nix) runs the release as a dedicated
 unprivileged user with bounded resources, private runtime credentials and a
 persistent management host key. Port 22 requires administrative OpenSSH on 2222.
-The [configuration check](../../../nix/tests/evaluation/porsche.nix) rejects port
+The [configuration check](../../../nix/verification/tests/evaluation/porsche.nix) rejects port
 collisions and missing administrative listeners. The real
-[service machine check](../../../nix/tests/machines/porsche-service/default.nix)
+[service machine check](../../../nix/verification/tests/machines/porsche-service/default.nix)
 passes startup, separate identities/ports, credential custody, restart persistence
 and invalid-credential rejection. Marshall and guests are absent from this fixture.
 Systemd supplies root/group-readable credentials; startup copies the gateway token
@@ -292,8 +292,8 @@ into a service-owned mode-0400 runtime file before strict application validation
 The module wires optional encrypted dumps and retention, but capture acceptance
 remains separate.
 
-[Fluent Bit routing](../../../nix/modules/logging/normalize.lua) derives the Porsche
-source from the journal unit. The [native collector check](../../../nix/tests/evaluation/logging-metrics.py)
+[Fluent Bit routing](../../../nix/domains/system/logging/normalize.lua) derives the Porsche
+source from the journal unit. The [native collector check](../../../nix/verification/tests/evaluation/logging-metrics.py)
 passes trusted-source routing and fixed service/environment metric labels with
 synthetic summaries. The service machine check now also sends a real SSH attempt,
 observes the resulting HTTP failure counter in Porsche's periodic report, and
@@ -303,7 +303,7 @@ service-to-collector evidence, not live AWS export. Destination selection remain
 explicit.
 
 [Runtime configuration](../../../marshall/lib/marshall/operations/runtime_config.ex)
-and the [Marshall module](../../../nix/modules/marshall.nix) accept a canonical
+and the [Marshall module](../../../nix/domains/system/marshall.nix) accept a canonical
 operator default image digest. Browser and SSH omitted sizes use the shared
 [Ash image helper](../../../marshall/lib/marshall/compute/image.ex), rounding up
 to whole MiB/GiB while preserving explicit inputs and transactional admission.
@@ -315,7 +315,7 @@ prove configured selection and rejection of explicit undersized requests.
 prepare private credentials and configure/rotate/disable gateway authority through
 Ash. [Tests](../../../marshall/test/marshall/operations/ssh_gateway_test.exs) verify
 file custody, idempotent application and session invalidation. The
-[operator guide](../../porsche-operations.md) describes manual release usage.
+[operator guide](../../operations/porsche-operations.md) describes manual release usage.
 The private API now includes an Ash gateway readiness action requiring current
 gateway authority and a writable, migrated database, without creating a user
 session. [Porsche health](../../../porsche/lib/porsche/health.ex) combines that
@@ -323,27 +323,27 @@ request with the live SSH daemon check. [The private status server](../../../por
 serves fresh versioned readiness over a mode-0600 Unix socket in a private runtime
 directory. The updater includes Porsche among required services, secret consumers
 and diagnostic preflight checks, and requires its exact affirmative socket reply.
-The [encrypted delivery check](../../../nix/tests/machines/porsche-secrets/default.nix)
+The [encrypted delivery check](../../../nix/verification/tests/machines/porsche-secrets/default.nix)
 passes packaged Ash operator issuance/rotation, SSH-derived SecretSpec/SOPS
 publication and actual service readiness. It verifies wrong-host rejection,
 private credential custody, readiness loss until the replacement is loaded,
 unchanged management host identity, and recovery after a missing-value update
 preserves the previous bundle while blocking startup. Full fleet acceptance is recorded below.
 
-The [encrypted capture check](../../../nix/tests/machines/porsche-crash-dumps/default.nix)
+The [encrypted capture check](../../../nix/verification/tests/machines/porsche-crash-dumps/default.nix)
 passes four actual Porsche service crashes and off-host decryption with a disposable
 analyst-held RSA private key. It verifies private ciphertext custody, configured
 byte/time bounds, count/age retention and fixed metadata-only journal reports.
 Weak and missing public keys fail startup; Linux core storage remains disabled.
 No live cloud export or full fleet recovery is established by this fixture.
 
-[Host tooling](../../../nix/packages/host/cli.py) now selects administrative SSH
+[Host tooling](../../../nix/domains/artifacts/host/cli.py) now selects administrative SSH
 ports explicitly for host commands and Nix copies. Approved installation plans
 bind source and installer ports; post-kexec calls switch to the installer port.
 Marshall enrollment preparation has an independent control-target port. The
-[operator guide](../../porsche-operations.md) specifies staged administrative
+[operator guide](../../operations/porsche-operations.md) specifies staged administrative
 verification before handing port 22 to Porsche. Existing host-key pinning and
-erasure authorization remain in force. The [staged NixOS check](../../../nix/tests/machines/administrative-ssh/default.nix)
+erasure authorization remain in force. The [staged NixOS check](../../../nix/verification/tests/machines/administrative-ssh/default.nix)
 verifies real administrative SSH and Nix store access before and after handing
 port 22 to Porsche, with the administrative key retained and management identity
 separate. It does not perform destructive installation.
@@ -358,8 +358,8 @@ the declared credential is authoritative, including re-enabling a disabled gatew
 The [deployment review](../reviews/2026-09-18-porsche-overalls.md) records exact
 validation scope and remaining acceptance gaps.
 
-The [full fleet check](../../../nix/tests/machines/fleet/default.nix), including
-its [Porsche scenario](../../../nix/tests/machines/fleet/scenarios/porsche.py),
+The [full fleet check](../../../nix/verification/tests/machines/fleet/default.nix), including
+its [Porsche scenario](../../../nix/verification/tests/machines/fleet/scenarios/porsche.py),
 passed in 2093.74 seconds against the captured completion revision `5089dea`.
 Nine NixOS machines exercise three Marshall nodes, two Lilly nodes and actual
 nested Firecracker guests. Acceptance includes browser key approval/removal,

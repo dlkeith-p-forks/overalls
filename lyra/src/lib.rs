@@ -3,6 +3,20 @@ pub mod agent;
 pub mod durable;
 pub mod guest;
 pub mod http;
+#[cfg(any(
+    target_os = "freebsd",
+    target_os = "illumos",
+    target_os = "solaris",
+    all(test, unix)
+))]
+pub mod native_guest;
+#[cfg(any(
+    target_os = "freebsd",
+    target_os = "illumos",
+    target_os = "solaris",
+    all(test, unix)
+))]
+pub mod native_vsock;
 pub mod platform;
 pub mod private_http;
 pub mod ssh_certificate;

@@ -132,6 +132,40 @@ defmodule Marshall.Ingress.RoutesTest do
     assert {:error, _} = report(c.request)
   end
 
+  # The 2026-10-17 production failure: after the management host moved zones,
+  # each gateway held generation-1 installations for both the retired and the
+  # active zone, and the projection compared the active certificate with the
+  # retired zone's receipt, so every known-hosts lookup was refused.
+  test "current projection uses the active zone's installation when another zone shares the generation",
+       c do
+    assert {:ok, reported} = report(c.request)
+
+    [installation] =
+      Ledger.read!(Marshall.Ingress.FleetCertificateInstallation,
+        host_id: c.service.host_id,
+        zone: "apps.example.test"
+      )
+
+    Ledger.create!(Marshall.Ingress.FleetCertificateInstallation, :record, %{
+      host_id: c.service.host_id,
+      service_id: c.service.id,
+      service_generation: c.service.generation,
+      zone: "apps.aaaa-retired.test",
+      generation: installation.generation,
+      fingerprint: String.duplicate("f", 64)
+    })
+
+    # Rewriting the active row places the retired zone's row first in both
+    # heap and (host_id, zone, generation) index order.
+    Ledger.update!(installation, :rebind_service, %{
+      service_generation: installation.service_generation
+    })
+
+    assert {:ok, projected} = current(reported.label)
+    assert projected.certificate_fingerprint == c.request.certificate_fingerprint
+    assert {:ok, _} = report(c.request)
+  end
+
   test "generation changes and stale or stopped execution cannot refresh a report", c do
     assert {:ok, first} = report(c.request)
 

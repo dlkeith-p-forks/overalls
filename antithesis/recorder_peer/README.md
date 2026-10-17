@@ -14,7 +14,7 @@ claim that its replies prove Rust custody.
 The peer needs `FIXTURE_CONTROL`, `FIXTURE_RECORDER`, `FIXTURE_MARKER`,
 `FIXTURE_EFFECTS`, `FIXTURE_TRACE_SOCKET`, `FIXTURE_TRACE_SMALL` and
 `FIXTURE_TRACE_LARGE`. The last two point to the reviewed native fixture hex
-files, `nix/tests/fixtures/trace-spool/request.hex` and `batch.hex`.
+files, `nix/verification/tests/fixtures/trace-spool/request.hex` and `batch.hex`.
 It must run under the actual configured producer UID and cgroup. The Rust
 request recorder and trace spool must run independently, with durable state on
 retained storage. A hosted container cgroup with no matching `*.service`

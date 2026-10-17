@@ -1,5 +1,6 @@
 defmodule Lilly.VM.Observation do
   @moduledoc "Confirm process identity, confinement and API readiness before reporting a running VMM."
+  require Lilly.Events
   alias Lilly.Host.{Command, Pool}
   alias Lilly.VM.{API, Config, Jail, Spec, Unit}
   # @cc [owner:ghuntley,label:isolation] running-means-verified-confinement
@@ -9,26 +10,66 @@ defmodule Lilly.VM.Observation do
   @spec running?(Config.t(), Pool.t(), Spec.t()) :: boolean()
   def running?(config, pool, spec), do: match?({:ok, _}, vmm(config, pool, spec))
 
+  @type check ::
+          :unit_not_running
+          | :cgroup_unreadable
+          | :vmm_process_ambiguous
+          | :identity_mismatch
+          | :limits_mismatch
+          | :api_unavailable
+          | :unit_stopped_during_check
+  @type vmm :: %{pid: pos_integer(), cgroup: Path.t()}
+
   @doc "The verified running VMM's host PID and unit cgroup, under the same checks as running?/3."
-  @spec vmm(Config.t(), Pool.t(), Spec.t()) ::
-          {:ok, %{pid: pos_integer(), cgroup: Path.t()}} | :error
+  # @cc [owner:ghuntley,label:observability;isolation] observation-failure-is-named
+  # vmm/3 MUST return :error exactly when check/3 names a failing check, and
+  # MUST emit vm.observation_failed once per distinct consecutive failing check
+  # for the placement in the calling process (a success re-arms it), carrying
+  # only the placement id and the closed check atom: never paths, PIDs or output.
+  @spec vmm(Config.t(), Pool.t(), Spec.t()) :: {:ok, vmm()} | :error
   def vmm(config, pool, spec) do
-    with {:ok, :running} <- Unit.status(spec),
-         {:ok, procs} <- File.read(Path.join(Unit.cgroup(spec), "cgroup.procs")),
+    key = {__MODULE__, :failed, spec.id}
+
+    case check(config, pool, spec) do
+      {:ok, vmm} ->
+        Process.delete(key)
+        {:ok, vmm}
+
+      {:error, check} ->
+        if Process.put(key, check) != check do
+          Lilly.Events.emit("vm.observation_failed", placement_id: spec.id, check: check)
+        end
+
+        :error
+    end
+  end
+
+  @doc "The same checks as vmm/3, naming the first one that fails."
+  @spec check(Config.t(), Pool.t(), Spec.t()) :: {:ok, vmm()} | {:error, check()}
+  def check(config, pool, spec) do
+    with {:unit_not_running, {:ok, :running}} <- {:unit_not_running, Unit.status(spec)},
+         {:cgroup_unreadable, {:ok, procs}} <-
+           {:cgroup_unreadable, File.read(Path.join(Unit.cgroup(spec), "cgroup.procs"))},
          pids = String.split(procs),
-         true <- length(pids) in 1..64,
-         [pid] <- Enum.filter(pids, &vmm?(&1, spec)),
-         true <-
-           same_files?([
-             {"/proc/#{pid}/root", Jail.root(pool, spec)},
-             {"/proc/#{pid}/ns/net", "/run/netns/" <> config.network.namespace},
-             {"/proc/#{pid}/exe", Path.join(Jail.root(pool, spec), "firecracker")}
-           ]),
-         true <- limits?(spec),
-         true <- API.running?(Path.join(Jail.root(pool, spec), "api.sock"), spec.id),
-         {:ok, :running} <- Unit.status(spec),
-         do: {:ok, %{pid: String.to_integer(pid), cgroup: Unit.cgroup(spec)}},
-         else: (_ -> :error)
+         {:vmm_process_ambiguous, true} <- {:vmm_process_ambiguous, length(pids) in 1..64},
+         {:vmm_process_ambiguous, [pid]} <-
+           {:vmm_process_ambiguous, Enum.filter(pids, &vmm?(&1, spec))},
+         {:identity_mismatch, true} <-
+           {:identity_mismatch,
+            same_files?([
+              {"/proc/#{pid}/root", Jail.root(pool, spec)},
+              {"/proc/#{pid}/ns/net", "/run/netns/" <> config.network.namespace},
+              {"/proc/#{pid}/exe", Path.join(Jail.root(pool, spec), "firecracker")}
+            ])},
+         {:limits_mismatch, true} <- {:limits_mismatch, limits?(spec)},
+         {:api_unavailable, true} <-
+           {:api_unavailable, API.running?(Path.join(Jail.root(pool, spec), "api.sock"), spec.id)},
+         {:unit_stopped_during_check, {:ok, :running}} <-
+           {:unit_stopped_during_check, Unit.status(spec)} do
+      {:ok, %{pid: String.to_integer(pid), cgroup: Unit.cgroup(spec)}}
+    else
+      {check, _} -> {:error, check}
+    end
   end
 
   defp vmm?(pid, spec) do
@@ -67,11 +108,11 @@ defmodule Lilly.VM.Observation do
   end
 
   # @cc [owner:ghuntley,label:isolation;security] vmm-identity-through-hostd
-  # same_files?/1 MUST compare device and inode of each pair through one
-  # lilly-hostd `stat -L` read, so the VMM's /proc root, network namespace
-  # and executable, which need ptrace-level access, are never read by the
-  # BEAM itself (ADR-0182). Any missing, malformed or partial answer MUST be
-  # false.
+  # same_files?/1 MUST compare device and inode of each pair. The BEAM, as
+  # its service user, lacks the ptrace-level access the VMM's /proc root,
+  # network namespace and executable need, so it asks lilly-hostd for one
+  # `stat -L` read (ADR-0182). Any missing, malformed or partial answer MUST
+  # be false.
   defp same_files?(pairs) do
     paths = Enum.flat_map(pairs, fn {a, b} -> [a, b] end)
 

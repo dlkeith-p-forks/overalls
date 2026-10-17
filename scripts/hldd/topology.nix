@@ -4,7 +4,7 @@
 { flake }:
 let
   lib = flake.inputs.nixpkgs.lib;
-  inventory = (import ../../nix/hosts/inventory.nix { inherit lib; }).hosts;
+  inventory = (import ../../nix/platform/hosts/inventory.nix { inherit lib; }).hosts;
   roles = [ "marshall" "marshallProxy" "postgresql" "lilly" "lillyTransfer"
     "porsche" "audi" "audiDns" "audiPrivate" "brady" "ziggy" "galileo"
     "enrico" "underclass" "overallsFleetExporter" "overallsBackups" "overallsAutoUpdate"
@@ -36,6 +36,7 @@ in map (name:
       ++ lib.optional ((c.services.audi.enable or false) && (c.services.overallsOtelFleet.enable or false)) "audiSshSloExporter"
       ++ lib.optional ((c.services.underclass.enable or false) && (c.services.overallsOtelFleet.enable or false)) "underclassMonitorProbe"
       ++ lib.optional ((c.services.underclass.enable or false) && (c.services.overallsOtelFleet.enable or false)) "underclassProxySloExporter"
+      ++ lib.optional ((c.services.underclass.enable or false) && (c.services.underclass.egress.enable or false)) "underclassEgress"
       ++ lib.optional ((c.services.marshall.enable or false) && (c.services.overallsOtelFleet.enable or false)) "marshallSloExporter"
       ++ lib.optional (c.services.overallsOtelFleet.publicGrafana.enable or false) "grafanaPublicProxy"
       ++ lib.optional (c.services.prometheus.alertmanager.enable or false) "alertmanager"

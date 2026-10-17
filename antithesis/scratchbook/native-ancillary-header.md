@@ -22,7 +22,7 @@ The retained native spine has complementary boundaries:
 
 ## Backup division and references
 
-Backup native/service/custody detail is owned by the parallel storage inventory; no second repository inspection/build was needed. Explicit adjacent exports are `backup-types`, `backup-operators`, `backup-custody`, `backup-configuration`, `backup-recovery`, `guest-backups` at [default.nix:151](/home/ghuntley/src/kittens-antithesis-reset/nix/tests/default.nix:151), with `native-backup-cleanup`/`packaged-backup-cleanup` at [default.nix:322](/home/ghuntley/src/kittens-antithesis-reset/nix/tests/default.nix:322).
+Backup native/service/custody detail is owned by the parallel storage inventory; no second repository inspection/build was needed. Explicit adjacent exports are `backup-types`, `backup-operators`, `backup-custody`, `backup-configuration`, `backup-recovery`, `guest-backups` at [default.nix:151](/home/ghuntley/src/kittens-antithesis-reset/nix/verification/tests/catalog.nix:151), with `native-backup-cleanup`/`packaged-backup-cleanup` at [default.nix:322](/home/ghuntley/src/kittens-antithesis-reset/nix/verification/tests/catalog.nix:322).
 
 The independently produced out-of-repository companions contain exact source assertions/resources/history:
 

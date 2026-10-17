@@ -82,7 +82,7 @@ instruction to do whatever is needed on this development fleet (2026-10-07).
 
 - A sandboxed Nix build running while a guest dataset is mounted MUST NOT
   prevent that guest's fenced deletion. Covered by the native
-  [namespace-cleanup test](../../../nix/tests/machines/zfs-guest/namespace-cleanup.py)
+  [namespace-cleanup test](../../../nix/verification/tests/machines/zfs-guest/namespace-cleanup.py)
   (`nix-sandbox-never-holds-guest-dataset`).
 - The existing service-copy, descriptor-pinned, proc-less, generated-history and
   open-file subtests MUST keep passing.
@@ -97,9 +97,9 @@ instruction to do whatever is needed on this development fleet (2026-10-07).
 
 ## Implementation evidence
 
-[Lilly module `nix-daemon` isolation](../../../nix/modules/lilly.nix)
+[Lilly module `nix-daemon` isolation](../../../nix/domains/system/lilly.nix)
 (`nix-builds-exclude-guest-datasets`) and
-[auto-update daemon routing](../../../nix/modules/auto-update/default.nix)
+[auto-update daemon routing](../../../nix/domains/system/auto-update/default.nix)
 (`update-builds-use-isolated-daemon`). The native namespace-cleanup suite passed
 (test script finished in 1652.69s), including `nix-sandbox-never-holds-guest-dataset`
 and every pre-existing subtest; see the
@@ -116,7 +116,7 @@ of `/var/lib/lilly/pool` (`master:176`) inside user namespaces, so every guest
 dataset mount propagated into them locked and fenced deletion reported
 `zfs_dataset_cleanup_unconfirmed` (11 guests needed manual dataset destruction).
 Dungarees runs none of these and deleted cleanly. The
-[Lilly module](../../../nix/modules/lilly.nix) now adds `lilly-pool-propagation`,
+[Lilly module](../../../nix/domains/system/lilly.nix) now adds `lilly-pool-propagation`,
 which makes each pool mount recursively private before Lilly starts, so guest
 mounts no longer propagate into any other namespace and existing slaves leave
 the pool's peer group. Namespaces created while guests are mounted still copy

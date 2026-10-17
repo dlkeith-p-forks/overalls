@@ -5,7 +5,7 @@
 Implementation is isolated in `feat/marshall-admin`. The original checkout's
 uncommitted disk-limit work is excluded. This review covers the initial account
 authority, bootstrap migration, Cedar extension and user-management LiveView.
-It does not claim completion of the [full admin plan](../../admin-implementation.md).
+It does not claim completion of the [full admin plan](../../history/ledgers/admin-implementation.md).
 
 ## Architecture impact
 

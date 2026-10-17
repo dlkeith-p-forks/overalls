@@ -20,7 +20,7 @@ archive/publication behavior; broader migration acceptance remains unresolved.
 ## Findings
 
 1. **High — raw lifecycle claim rewrite violates archive/publication custody.**
-   [ProfileRename](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/lib/lilly/control/profile_rename.ex) initially
+   ProfileRename (`lilly/lib/lilly/control/profile_rename.ex` at kittens revision `9fe1e493`, repository deleted) initially
    applies `PrivateFiles.write` directly to `claim.json`, recursively changing its
    profile while leaving `_lifecycle` revision unchanged.
    [ZFSDataset](../../../lilly/lib/lilly/host/zfs_dataset.ex) normally publishes that
@@ -86,7 +86,7 @@ seed 414888. The original archive is absent, as recorded in
 `/tmp/kittens-profile-migration-raw-baseline-witness.log`. This falsifies the raw
 rewrite against the corrected fixture without modifying the production source.
 
-The actual [Marshall migration test](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/test/marshall/profile_rename_migration_test.exs)
+The actual Marshall migration test (`marshall/test/marshall/profile_rename_migration_test.exs` at kittens revision `9fe1e493`, repository deleted)
 passes one check in 0.3 seconds, seed 551224 (`seed551224` ledger reference), at
 `/tmp/kittens-observability-profile-marshall-focused-fixed.log`. It uses populated
 disposable PostgreSQL tables, runs the real migration twice under distinct fixture

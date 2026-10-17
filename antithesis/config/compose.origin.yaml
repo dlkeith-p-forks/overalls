@@ -5,7 +5,6 @@ services:
     container_name: overalls-origin
     hostname: overalls-origin
     platform: linux/amd64
-    init: true
     image: overalls-antithesis/origin:local
     build:
       context: ../..

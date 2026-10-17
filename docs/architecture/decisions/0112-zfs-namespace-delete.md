@@ -76,7 +76,7 @@ The [delete path](../../../lilly/lib/lilly/host/zfs_dataset.ex),
 [command lock](../../../lilly/lib/lilly/host/command.ex) implement the boundary.
 The [actor](../../../lilly/lib/lilly/vm/actor.ex) uses bounded
 [retry delays](../../../lilly/lib/lilly/vm/delete_retry.ex). The
-[machine scenario](../../../nix/tests/machines/zfs-guest/namespace-cleanup.py)
+[machine scenario](../../../nix/verification/tests/machines/zfs-guest/namespace-cleanup.py)
 and [property test](../../../lilly/test/vm/delete_retry_test.exs) are the
 verification points. The source-built machine scenario passed in 342 seconds:
 it detached nine late namespace copies, preserved a running neighbor, blocked
@@ -103,6 +103,15 @@ recorded healthy `b9790a5c`, the original source deletion completed normally.
 Original source and target request receipts succeeded; exact-two SQL/ZFS/systemd
 audits confirmed deleted rows, released reservations, absent datasets and inactive
 VMM units. This establishes the observed proc-less recovery, not arbitrary churn.
+
+Image template retirement had not used the helper. On 2026-10-16 every
+retiring template on overalls failed `zfs destroy` as busy: 44 service
+namespaces held copies of one template. `ImageTemplate` destroy now detaches
+those copies with the same helper before `zfs destroy`, under the exclusive
+image lease after the durable `retiring` record
+([image_template.ex](../../../lilly/lib/lilly/host/image_template.ex)). A manual
+helper run on that template reported `cleaned 44` and kept the host mount.
+Lilly's own retirement through the helper is not yet recorded.
 
 ## Open questions
 

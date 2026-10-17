@@ -65,7 +65,7 @@
         {
           "old": "Which fixture retains systemd producer identity while faulting recorder?",
           "status": "resolved_for_native_partial_for_hosted",
-          "answer": "nix/tests/machines/otel-request-recorder runs separate sdk-producer.service and overalls-request-sdk.service with real UID/cgroup/process attribution and independent restarts. No equivalent hosted topology is established.",
+          "answer": "nix/verification/tests/machines/otel-request-recorder runs separate sdk-producer.service and overalls-request-sdk.service with real UID/cgroup/process attribution and independent restarts. No equivalent hosted topology is established.",
           "exact_probe": "In the proposed hosted topology, check real peer UID, unit cgroup and start identity via authenticated RPC before independently killing either service.",
           "proposed_catalog_open_questions": ["Can hosted deployment preserve the native fixture's exact systemd producer identity? `(partial: native two-unit fixture exists; hosted equivalent unproven)`"]
         }

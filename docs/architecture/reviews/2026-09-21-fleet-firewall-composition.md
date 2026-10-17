@@ -23,13 +23,13 @@ network module.
 
 ## Changes
 
-- `nix/modules/fleet-network.nix` marks its authenticated internal transport rules
+- `nix/domains/system/fleet-network.nix` marks its authenticated internal transport rules
   as an explicit exception only when the authoritative fleet perimeter is
   enabled; standalone consumers retain normal NixOS firewall composition.
 - The `fleet-network-source-access` code contract continues to require suppression
   of ordinary service contributions while allowing explicit authenticated
   transport rules at force priority.
-- `nix/tests/evaluation/fleet-firewall.nix` composes the real fleet firewall and
+- `nix/verification/tests/evaluation/fleet-firewall.nix` composes the real fleet firewall and
   fleet network modules for both nftables and iptables, and requires both the
   broad reviewed-source rule and the narrow TCP 5443 rule to survive while an
   ordinary source-unrestricted TCP rule remains suppressed. Standalone cases

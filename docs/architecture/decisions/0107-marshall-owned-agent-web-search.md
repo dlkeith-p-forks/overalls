@@ -73,8 +73,8 @@ The [Marshall search coordinator](../../../marshall/lib/marshall/agents/web_sear
 [profile policy](../../../marshall/lib/marshall/agents/capabilities.ex),
 [encrypted credential wiring](../../../fleet/hosts/overalls/services.nix), and
 [database/property tests](../../../marshall/test/marshall/agents/model_calls_test.exs),
-[agent fleet VM test](../../../nix/tests/machines/fleet/scenarios/agent.py) and
-[secret-custody VM test](../../../nix/tests/machines/secret-custody/driver.py)
+[agent fleet VM test](../../../nix/verification/tests/machines/fleet/scenarios/agent.py) and
+[secret-custody VM test](../../../nix/verification/tests/machines/secret-custody/driver.py)
 implement and verify the initial path. The Overalls secret document now carries
 an encrypted provider key; production-provider acceptance remains to be verified.
 

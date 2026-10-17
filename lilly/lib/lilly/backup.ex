@@ -189,7 +189,7 @@ defmodule Lilly.Backup do
              with :ok <- ZFSDataset.bind(pool),
                   :ok <- PrivateFiles.directory("/run/overalls-backups"),
                   :ok <- PrivateFiles.directory("/run/overalls-backups/pools"),
-                  {:ok, _} <- File.rm_rf(destination),
+                  :ok <- Lilly.Host.Privilege.remove_tree(destination),
                   {:ok, _} <-
                     Command.run(
                       :cp,
@@ -276,8 +276,7 @@ defmodule Lilly.Backup do
   defp unmount(pool, id) do
     mount = mount_path(pool, id)
 
-    with {:ok, body} <- Command.run(:findmnt, ["--json", "--list", "-o", "TARGET,SOURCE"]),
-         {:ok, %{"filesystems" => mounts}} when is_list(mounts) <- JSON.decode(body) do
+    with {:ok, mounts} <- Lilly.Host.MountTable.read() do
       case Enum.filter(mounts, &(&1["target"] == mount)) do
         [] ->
           :ok

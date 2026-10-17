@@ -5,7 +5,7 @@ P0; high confidence; safety. Instrumentation **missing** per [fresh scan](../exi
 liveness cannot settle before deadline; lifetime identity/counters never reset)`;
 message **"Request recorder recovery conserves admissions without inventing producer death"**.
 
-Evidence: `nix/modules/otel-guest/receiver/src/request_recorder.rs:151-186`
+Evidence: `nix/domains/system/otel-guest/receiver/src/request_recorder.rs:151-186`
 (`liveness`) separates unavailable boot/proc/pidfd evidence from death;
 `:305-319` (`reconcile`) settles only proven-dead or expired producers;
 `:324-362` (`apply`) responds after Store.transition. Durable implementation
@@ -50,7 +50,7 @@ authentication while faulting recorder and producer independently?
 
 #### Which hosted deployment can retain exact systemd-unit producer authentication while faulting recorder and producer independently?
 
-- Examined (2026-10-13): `nix/tests/machines/otel-request-recorder/default.nix:51-113`, `driver.py:1-220`, `commit-reply-loss.py`, `nix/modules/otel-guest/receiver/src/request_recorder.rs:155-186,207-245,305-362`, and `durable_slo.rs:770-800`.
+- Examined (2026-10-13): `nix/verification/tests/machines/otel-request-recorder/default.nix:51-113`, `driver.py:1-220`, `commit-reply-loss.py`, `nix/domains/system/otel-guest/receiver/src/request_recorder.rs:155-186,207-245,305-362`, and `durable_slo.rs:770-800`.
 - Found: the existing NixOS VM gives each Rust recorder and BEAM producer its own systemd unit and validates the real UID/cgroup/boot/start identity. It exercises recorder restart, producer death, whole-VM crash recovery, and a source-built commit-before-reply cut. Its state tests prove duplicate settlement refusal and retained checkpoint identity.
 - Not found: a documented hosted container topology that gives the recorder the same systemd unit cgroup and kernel identity while allowing independent Antithesis process faults. The native VM fixture can establish this boundary, but ordinary container process kills alone cannot claim equivalent authentication.
 - Conclusion: partial for hosted topology. Reuse the NixOS VM with both production units for native acceptance; for an Antithesis deployment, first probe peer UID/cgroup/start identity through the real RPC, independently kill the recorder and producer, and verify the checkpoint across their restarts. Until that probe passes, limit hosted claims to the Store/RPC subset.

@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  inventory = (import ../nix/hosts/inventory.nix { inherit lib; }).hosts;
+  inventory = (import ../nix/platform/hosts/inventory.nix { inherit lib; }).hosts;
   publicKeys = builtins.fromJSON (builtins.readFile ./fleet-public-keys.json);
   machines = {
     overalls = { address = "10.90.0.1"; endpointAddress = "136.243.69.55"; };

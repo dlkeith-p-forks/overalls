@@ -80,7 +80,7 @@ row's manifest already carried `guest_agents`.
    budget is a candidate fix if the quiet rerun is close to the limit.
 7. **Pre-existing, unrelated:** the `inception` machine test does not evaluate
    on main or on this branch (`attribute 'vscodeWeb' missing` from
-   `nix/modules/marshall.nix` through the storage fixture's package set). Not
+   `nix/domains/system/marshall.nix` through the storage fixture's package set). Not
    touched here; recorded so it is not mistaken for Phase 3 fallout.
 8. **The Rust MMDS client parsed the wrong document shape.** Two
    `windows-lilly-guest-agents` runs ended with repeated `vm.trust_failed`.

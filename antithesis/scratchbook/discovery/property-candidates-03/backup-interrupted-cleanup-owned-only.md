@@ -5,7 +5,7 @@ P0; high confidence; safety. Instrumentation **missing** per [fresh scan](../../
 and local ownership marker; failed inspection retains cleanup journal)`; message
 **"Backup recovery destroys only positively owned snapshots and retains uncertain cleanup"**.
 
-Evidence: `nix/modules/backups/host.py:108-164` (`cleanup`, `release`) validates
+Evidence: `nix/domains/system/backups/host.py:108-164` (`cleanup`, `release`) validates
 nonce, dataset GUID, selected mount, snapshot GUID and local property, verifies
 absence after destroy before journal unlink/fsync. `:192-211` (`prepare`)
 publishes cleanup intent before zfs snapshot, updates GUID afterward.

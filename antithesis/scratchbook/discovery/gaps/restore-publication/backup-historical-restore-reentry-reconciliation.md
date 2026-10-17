@@ -14,7 +14,7 @@ No callsite exists in the [fresh Antithesis scan](../../../existing-assertions.m
 `backup-time-skew-never-activates-historical-authority` already checks the
 negative boundary: a mixed-time restored graph stays isolated from live fleet
 authority. It does not promise that an operator can eventually activate that
-graph. `nix/modules/backups/runtime.py:313-345` restores numbered component
+graph. `nix/domains/system/backups/runtime.py:313-345` restores numbered component
 directories and writes a final `manifest.json`; it has no activation or claim
 operation (`:252-267`). A valid marker proves byte restoration, not safe
 serving. ADR-0070 requires old-node fencing and explicit reconciliation before
@@ -59,8 +59,8 @@ into a production primary to obtain a reach witness.
 
 #### What is the authoritative receipt/transaction for activation, and which component signs or verifies it?
 
-- Examined: `nix/modules/backups/runtime.py:252-345`, ADR-0070, ADR-0158,
-  `docs/backups.md:313-350`, existing
+- Examined: `nix/domains/system/backups/runtime.py:252-345`, ADR-0070, ADR-0158,
+  `docs/operations/backups.md:313-350`, existing
   `backup-time-skew-never-activates-historical-authority` evidence.
 - Found: a restore-target marker and manual operator guidance only; ADR-0158
   explicitly disclaims automatic historical repair.
@@ -81,7 +81,7 @@ into a production primary to obtain a reach witness.
 
 #### What exact serving action is authorized after reconciliation, and what old-node fencing proof is required?
 
-- Examined: ADR-0070 `:86-102`, `docs/backups.md:313-350`, backup runtime CLI
+- Examined: ADR-0070 `:86-102`, `docs/operations/backups.md:313-350`, backup runtime CLI
   operations and the topology's native KVM boundary.
 - Found: manual fencing and isolated recovery instructions; no automatic serving
   operation on a restored target.

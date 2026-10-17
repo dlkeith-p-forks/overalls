@@ -11,7 +11,7 @@
 ]
 # Native entries stay out of the catalog until their cross-built kernel and
 # agent package have a positive admission receipt.  Keeping the constructors
-# available in `nix/packages` lets evaluation and source-pin checks run without
+# available in `nix/domains/artifacts` lets evaluation and source-pin checks run without
 # making an unavailable image launchable through the fleet catalog.
  ++ builtins.filter (entry: entry.package.passthru.nativeAdmission or false) [
   { name = "FreeBSD 14.3"; package = overallsPackages.freebsdGuest; }

@@ -133,7 +133,19 @@ defmodule Marshall.AgentRevocationFixture do
   def submit!(fixture) do
     {:ok, result} = prompt(fixture, Ash.UUID.generate())
     [turn] = Ledger.read!(Turn, id: result.turn_id)
+    settle_context!(fixture, turn)
     turn
+  end
+
+  # Turns admit model work only after their durable context snapshot settles
+  # (ADR-0178); settle it through the real executor coordinator first. Context
+  # runs under the root owner's guest account, so the owner is the default.
+  @spec settle_context!(fixture(), Turn.t(), User.t() | nil) :: :ok
+  def settle_context!(fixture, turn, actor \\ nil) do
+    turn_id = turn.id
+    {:ok, %{id: ^turn_id} = started} = Marshall.Agents.TurnCoordinator.claim_next()
+    Marshall.AgentContextFixtures.context_fixture(started, fixture.vm, actor || fixture.owner)
+    :ok
   end
 
   @spec tick() :: :ok
@@ -149,6 +161,7 @@ defmodule Marshall.AgentRevocationFixture do
 
   @spec complete_model!(fixture(), Turn.t()) :: :ok
   def complete_model!(fixture, turn) do
+    settle_pending_context!(fixture, turn)
     {:ok, %{call: work}} = ModelCalls.claim(fixture.token)
     [%{turn_id: claimed}] = Ledger.read!(ModelCall, id: work.id)
 
@@ -170,14 +183,32 @@ defmodule Marshall.AgentRevocationFixture do
     turn
   end
 
+  # Real executors advertise context inventory; replacements must too, or a
+  # turn that re-prepares context after an executor change can never settle.
   @spec register!(fixture()) :: Executor.t()
   def register!(fixture) do
-    {:ok, executor} = ExecutorSession.register(fixture.binding)
+    {:ok, executor} = ExecutorSession.register(fixture.binding, nil, ["context-v1"])
     executor
+  end
+
+  # A turn re-prepares context when its contributing executor changed; settle
+  # that inventory through the real coordinator, then let the loop queue model work.
+  @spec settle_pending_context!(fixture(), Turn.t()) :: :ok
+  def settle_pending_context!(fixture, turn) do
+    case Marshall.Agents.Context.prepare(turn.id) do
+      {:pending, _} ->
+        [current] = Ledger.read!(Turn, id: turn.id)
+        Marshall.AgentContextFixtures.context_fixture(current, fixture.vm, fixture.owner)
+        Loop.tick()
+
+      _ ->
+        :ok
+    end
   end
 
   @spec queue_tool!(fixture(), Turn.t()) :: ModelCall.t()
   def queue_tool!(fixture, turn) do
+    settle_pending_context!(fixture, turn)
     {:ok, %{call: work}} = ModelCalls.claim(fixture.token)
     [%{turn_id: claimed}] = Ledger.read!(ModelCall, id: work.id)
 

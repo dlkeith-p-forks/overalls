@@ -2,7 +2,7 @@ defmodule Lilly.VM.Unit do
   @moduledoc "Systemd owns the entire detached boot-log/VMM process tree, independently of Lilly."
   require Lilly.Events
   alias Lilly.Host.{Command, Pool}
-  alias Lilly.VM.{Config, Intent, Jail, Spec, WorkloadBundle}
+  alias Lilly.VM.{Config, Intent, Spec, WorkloadBundle}
 
   @spec name(Spec.t()) :: String.t()
   def name(spec), do: "lilly-vm-#{spec.id}.service"
@@ -23,8 +23,7 @@ defmodule Lilly.VM.Unit do
   def start(config, pool, spec, intent, bundle, vm_id \\ nil) do
     with {:ok, "active\n"} <-
            Command.run(:systemctl, ["show", "lilly.slice", "--property=ActiveState", "--value"]),
-         {:ok, _} <-
-           Command.run(:systemd_run, arguments(config, pool, spec, intent, bundle), 10_000) do
+         {:ok, _} <- Command.launch_vm(launch(config, pool, spec, intent, bundle)) do
       unit_started(vm_id, intent)
     end
   end
@@ -52,77 +51,31 @@ defmodule Lilly.VM.Unit do
   # Firecracker stdio MUST pass through the bounded byte-oriented boot-log
   # writer: kernel console output is a read-only diagnostic and terminals MUST
   # NOT ride the serial console.
-  # The forking log writer MUST run outside the PID namespace: the guarded
-  # jailer/Firecracker exec chain MUST remain PID 1 inside that namespace.
-  # Only a firmware bundle adds `--enable-pci` and the jail-local MMDS metadata
-  # file; a kernel bundle's argument list MUST stay exactly as before.
-  @spec arguments(Config.t(), Pool.t(), Spec.t(), Intent.t(), WorkloadBundle.t()) ::
-          [String.t()]
-  def arguments(config, pool, spec, intent, bundle) do
-    [
-      "--quiet",
-      "--collect",
-      "--service-type=exec",
-      "--unit",
-      name(spec),
-      "--description=Overalls VM v1 placement=#{intent.placement_id} epoch=#{intent.execution_epoch} generation=#{intent.generation}",
-      "--slice=lilly.slice",
-      "--property=UMask=0077",
-      "--property=KillMode=control-group",
-      "--property=TimeoutStopSec=5s",
-      "--property=NoNewPrivileges=yes",
-      "--property=TasksMax=64",
-      "--property=MemorySwapMax=0",
-      "--property=MemoryMax=#{Spec.host_memory(spec)}",
-      "--property=CPUQuota=#{spec.vcpu * 100}%",
-      "--",
-      config.boot_log_writer,
-      boot_log(config, spec),
-      config.unshare,
-      "--fork",
-      "--pid",
-      "--kill-child=KILL",
-      # Only the child creates a mount namespace. A waiting parent in that
-      # namespace would pin every dataset mounted when this VM was launched.
-      config.unshare,
-      "--mount-proc",
-      config.launch_guard,
-      Intent.lock_path(Path.join(config.state_dir, spec.id)),
-      Intent.path(Path.join(config.state_dir, spec.id)),
-      intent.placement_id,
-      Integer.to_string(intent.execution_epoch),
-      Integer.to_string(intent.generation),
-      config.jailer,
-      "--id",
-      spec.id,
-      "--exec-file",
-      config.firecracker,
-      "--uid",
-      Integer.to_string(spec.network.uid),
-      "--gid",
-      Integer.to_string(spec.network.uid),
-      "--cgroup-version",
-      "2",
-      "--parent-cgroup",
-      "lilly.slice/" <> name(spec),
-      "--chroot-base-dir",
-      Jail.base(pool),
-      "--netns",
-      "/run/netns/" <> config.network.namespace,
-      "--resource-limit",
-      "no-file=2048",
-      "--",
-      "--api-sock",
-      "/api.sock",
-      "--config-file",
-      "/firecracker.json"
-    ] ++ transport_arguments(bundle) ++ Lilly.VM.Logging.arguments(config, intent)
+
+  # @cc [owner:ghuntley,label:security] vm-launch-fields-only
+  # launch/5 MUST describe the unit only by typed fields (placement, epoch,
+  # generation, jail uid, memory, vCPUs, boot kind, logging, VM state
+  # directory, network namespace and pool root). The command line, including the forking log
+  # writer outside the PID namespace and the guarded jailer/Firecracker exec
+  # chain as PID 1 inside it, is built by lilly-hostd
+  # (vm-launch-argv-derived-by-hostd); Lilly never names an executable.
+  @spec launch(Config.t(), Pool.t(), Spec.t(), Intent.t(), WorkloadBundle.t()) ::
+          Lilly.Host.Hostd.launch()
+  def launch(config, pool, spec, intent, bundle) do
+    %{
+      placement: spec.id,
+      epoch: intent.execution_epoch,
+      generation: intent.generation,
+      uid: spec.network.uid,
+      memory_bytes: Spec.host_memory(spec),
+      vcpus: spec.vcpu,
+      firmware: bundle.boot_kind == :firmware,
+      logging: config.firecracker_logging,
+      state_dir: config.state_dir,
+      namespace: config.network.namespace,
+      pool: pool.path
+    }
   end
-
-  defp transport_arguments(%{boot_kind: :firmware}),
-    do: ["--enable-pci", "--metadata", "/metadata.json"]
-
-  defp transport_arguments(_bundle), do: []
 
   # @cc [owner:ghuntley,label:recovery;observability] unit-stop-unconfirmed-closed
   # Unconfirmed unit stops MUST report only the VM/placement identifiers and the

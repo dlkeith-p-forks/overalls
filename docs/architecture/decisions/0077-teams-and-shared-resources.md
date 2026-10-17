@@ -97,7 +97,7 @@ retain the propagated actor metadata.
 [Generated operation histories](../../../marshall/test/marshall/teams_history_test.exs)
 now compare actual role and consent mutations with an independent model and check
 deferred owner constraints between operations. The
-[native browser journey](../../../nix/tests/machines/teams/default.nix) exercises
+[native browser journey](../../../nix/verification/tests/machines/teams/default.nix) exercises
 committed ownership transfer and membership revocation through three ordinary
 accounts over verified HTTPS. The [verification review](../reviews/2026-09-25-team-authority-verification.md)
 records execution and a fixed admin-to-owner mutation refusal; neither test
@@ -108,13 +108,13 @@ current owner; other collisions refuse, while archived names acquire fresh
 identities. [Creation histories](../../../marshall/test/marshall/teams_creation_test.exs)
 and [three-node creation races](../../../marshall/test/marshall/compute/distributed_admission_test.exs)
 verify actor isolation, retry receipts and the committed owner invariant. The
-[native browser](../../../nix/tests/machines/teams/browser.py) verifies creation
+[native browser](../../../nix/verification/tests/machines/teams/browser.py) verifies creation
 refusals and fresh-name recovery with ordinary accounts.
 The [creation review](../reviews/2026-09-25-team-creation-verification.md) records
 execution and the separate SSH pinned-request replay boundary.
 
 The [SSH HTTP histories](../../../marshall/test/marshall_web/teams_ssh_api_test.exs)
-and [packaged Porsche journey](../../../nix/tests/machines/team-ssh/driver.py)
+and [packaged Porsche journey](../../../nix/verification/tests/machines/team-ssh/driver.py)
 exercise stable permanent refusals, consent, safe creator retries and pinned
 historical requests without restoring membership. Public creation and stored
 names share one grammar. The [SSH review](../reviews/2026-09-25-team-ssh-verification.md)
@@ -129,7 +129,7 @@ ordinary lifecycle and resource management remain owner/admin-only. Customer
 owner-only access still precedes Cedar. [Generated resource histories](../../../marshall/test/marshall/teams_resource_history_test.exs)
 exercise real resource actions and membership revocation; [full retirement races](../../../marshall/test/marshall/teams_retirement_distributed_test.exs)
 use target-specific write gates across three independent Marshall nodes. The
-[native resource journey](../../../nix/tests/machines/team-resources/driver.py)
+[native resource journey](../../../nix/verification/tests/machines/team-resources/driver.py)
 passed with actual certified Audi guest SSH and the Galileo private HTTP path.
 It verifies ordinary member use and management refusal, Customer separation,
 admin stop/start with retained home, and removal/re-addition of shared SSH and

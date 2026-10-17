@@ -70,21 +70,21 @@ lifecycle/outcomes and the executable v2 client/API. The same three-node suite n
 checks restart admission against new provisioning and lifecycle AshOban rollback.
 
 [ADR-0027](0027-production-release-deployment.md) adds a declared fleet connection
-budget and [NixOS deployment checks](../../../nix/tests/README.md) with
+budget and [NixOS deployment checks](../../../nix/verification/tests/README.md) with
 three unprivileged production systemd releases, actual PostgreSQL TLS, HAProxy
 pass-through, shared authenticated sessions, node stop/restart and database
 outage/recovery. All processes in this fixture share one physical host. These
 checks do not establish HA PostgreSQL or 100-node workload capacity.
 
 [ADR-0029](0029-database-durability-and-recovery.md) adds explicit durable commit
-parameters and a [database recovery harness](../../../nix/tests/README.md).
+parameters and a [database recovery harness](../../../nix/verification/tests/README.md).
 Three unchanged Marshall processes survive a manually fenced local PostgreSQL
 promotion, with synchronous replication rebuilt before traffic resumes. Real
 backup verification/restoration also demonstrates that historical snapshots can
 contain revoked credentials and must remain isolated. Automatic production HA,
 independent failure domains and authoritative historical recovery remain open.
 
-The [NixOS fleet suite](../../../nix/tests/machines/fleet/default.nix) boots three separate
+The [NixOS fleet suite](../../../nix/verification/tests/machines/fleet/default.nix) boots three separate
 Marshall machines sharing PostgreSQL and coordinating two actual Lilly machines.
 The complete immutable run passed authenticated browser sharing/terminal recovery,
 concurrent admission, machine/database loss and stale-capacity rejection. The

@@ -101,7 +101,7 @@ The visual language, component layer and all presentation CSS change; no
 database migration, protocol, deployment topology, domain boundary,
 authorization rule or runtime JavaScript framework changes. The CSS bundle
 shrinks (about 47 kB) and four dependencies leave `mix.lock`, so the Marshall
-fixed-output dependency hash in `nix/packages/dependency-hashes.json` changes
+fixed-output dependency hash in `nix/domains/artifacts/dependency-hashes.json` changes
 and the Nix build drops its Tailwind configuration line. The browser floor is
 engines with CSS `round()` and `:has()` (current Chromium and Firefox). Open
 tabs reload on reconnect after deployment because digested assets change.

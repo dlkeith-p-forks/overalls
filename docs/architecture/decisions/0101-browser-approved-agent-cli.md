@@ -77,7 +77,7 @@ and [CLI](../../../lyra/src/agent_cli.rs) implement the flow. The
 [focused tests](../../../marshall/test/marshall_web/agent_cli_test.exs) exercise
 HTTP and LiveView boundaries against PostgreSQL, including access revocation,
 expiry, cross-VM IDs and deletion. Native Rust checks cover the executable;
-the [NixOS CLI test](../../../nix/tests/machines/agent-cli/default.nix)
+the [NixOS CLI test](../../../nix/verification/tests/machines/agent-cli/default.nix)
 executes the packaged binary through the approval, prompt and result RPCs over
 verified HTTPS.
 

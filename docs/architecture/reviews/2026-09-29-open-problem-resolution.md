@@ -28,7 +28,7 @@ caused by that change.
     evidence.
 - **Conflict markers.**
   - `origin/main` carried unresolved markers in
-    `nix/tests/machines/fleet/default.nix` from the verification 110/112/113
+    `nix/verification/tests/machines/fleet/default.nix` from the verification 110/112/113
     merges, which broke every fleet check. Merge commits skip ordinary
     pre-commit hooks, which is how they got in.
   - **Fix:** `scripts/check_conflict_markers.exs` now runs as a prek hook at
@@ -116,7 +116,7 @@ caused by that change.
   trust, then never answered readiness. The mechanism was not identified when
   it was reverted.
 - Re-assessed 2026-10-02: no hook is needed. The deploy path
-  (`nix/modules/auto-update/runtime.py` `activate`) stops every consumer and
+  (`nix/domains/system/auto-update/runtime.py` `activate`) stops every consumer and
   health unit, switches, then explicitly starts all health units including
   `audi-private.service`, and its health check requires private Audi active.
   A throwaway NixOS VM test on the pinned systemd (260.2) showed that a

@@ -86,7 +86,7 @@ artifact has no production architecture impact.
    `AuthorizedKeysCommand`, a guest-account login PAM hook and public-key-only
    authority; roster synchronization precedes sshd startup, a two-second timer
    refreshes it, and certificate changes reload the listener
-   (`nix/packages/guest/default.nix:10`, `:13`, `:17`, `:28`, `:37`, `:71`,
+   (`nix/domains/artifacts/guest/default.nix:10`, `:13`, `:17`, `:28`, `:37`, `:71`,
    `:77`, `:87`). The helper certificate installation path verifies the
    received certificate before publishing it
    (`lyra/src/bin/overalls-host-certificate.rs:228`, `:237`).
@@ -99,7 +99,7 @@ artifact has no production architecture impact.
    (`lilly/lib/lilly/vm/guest_trust.ex:5`, `:10`, `:72`).
 4. NixOS private services force the guest CA bundle to the receiver's current
    bundle, start trust before network, and start workspace receiving after
-   trust (`nix/packages/guest/private-services.nix:39`, `:43`, `:62`, `:92`).
+   trust (`nix/domains/artifacts/guest/private-services.nix:39`, `:43`, `:62`, `:92`).
    A fake TLS server with verification disabled would bypass the system's trust
    boundary and is unsuitable evidence for these flows.
 
@@ -107,45 +107,45 @@ artifact has no production architecture impact.
 
 1. The terminal daemon parses a kernel boot identity, derives a boot key from
    challenge plus `overalls-terminald-v1`, and listens on AF_VSOCK
-   (`nix/packages/terminald/src/main.rs:18`, `:24`, `:32`). The kernel-observed
+   (`nix/domains/artifacts/terminald/src/main.rs:18`, `:24`, `:32`). The kernel-observed
    peer CID must be 2 before reading bytes (`:55`), and every connection must
    begin with a valid HMAC hello (`:74`, `:85`, `:122`). Hello proof includes
-   nonce, placement and epoch (`nix/packages/terminald/src/session.rs:192`).
+   nonce, placement and epoch (`nix/domains/artifacts/terminald/src/session.rs:192`).
 2. Control creates/queries/kills/resizes sessions; attaching has a separate
    connection with its own hello before token-bearing attach
-   (`nix/packages/terminald/src/main.rs:98`, `:151`). Session creation resolves
+   (`nix/domains/artifacts/terminald/src/main.rs:98`, `:151`). Session creation resolves
    the account before fork; PTY code resolves passwd data and supplementary
-   groups (`nix/packages/terminald/src/pty.rs:112`, `:132`). Session lifetime
+   groups (`nix/domains/artifacts/terminald/src/pty.rs:112`, `:132`). Session lifetime
    is owned by terminald in the guest, while outer connection lifetime is
-   separate (`nix/packages/terminald/CONTRACTS`, contract
+   separate (`nix/domains/artifacts/terminald/CONTRACTS`, contract
    `sessions-outlive-connections`). The latter is an explicit requirement to
    test, not established by reading source.
 3. terminald starts after guest readiness as a guest-root systemd service with
    512 MiB bound and guest login shells under resolved identities; the module
    deliberately retains child guest powers, relying on VM and host networking
-   isolation (`nix/packages/guest/terminald.nix:23`, `:31`, `:40`). Ubuntu
-   ships the same vsock/account helper service (`nix/packages/guest/ubuntu/units/lilly-terminals.service:12`).
+   isolation (`nix/domains/artifacts/guest/terminald.nix:23`, `:31`, `:40`). Ubuntu
+   ships the same vsock/account helper service (`nix/domains/artifacts/guest/ubuntu/units/lilly-terminals.service:12`).
 4. The editor broker runs as root, reads `/proc/cmdline`, binds only the guest
    address:4444 and eth0 device, checks exact profile gateway peer IP and bounds
-   concurrent connections (`nix/packages/vscode-web-broker/src/main.rs:747`,
+   concurrent connections (`nix/domains/artifacts/vscode-web-broker/src/main.rs:747`,
    `:753`, `:755`, `:776`, `:780`). Its boot parser derives gateway from profile
    address and binds placement/physical execution epoch; logical generation
    updates deliberately do not redefine physical boot
-   (`nix/packages/vscode-web-broker/src/lib.rs:232`).
+   (`nix/domains/artifacts/vscode-web-broker/src/lib.rs:232`).
 5. Editor admission reads one four-byte-length-prefixed JSON preface with max
    2048-byte payload, denies unknown fields, and validates exact account and
-   package binding (`nix/packages/vscode-web-broker/src/lib.rs:9`, `:20`,
+   package binding (`nix/domains/artifacts/vscode-web-broker/src/lib.rs:9`, `:20`,
    `:213`, `:311`; `src/main.rs:707`). Fields include VM, host, placement,
    session, user/account IDs, epoch/generation, UID/name, protocol, source
    commit, immutable release and canonical HTTPS origin (`src/lib.rs:29`).
 6. Per-account single-flight precedes fresh `ensure` roster reconciliation;
    existing worker readiness and root systemd metadata determine reuse or
-   recreation (`nix/packages/vscode-web-broker/src/main.rs:575`, `:591`,
+   recreation (`nix/domains/artifacts/vscode-web-broker/src/main.rs:575`, `:591`,
    `:605`, `:617`). Worker connects verify kernel SO_PEERCRED UID (`:484`).
    Workers are independent units with explicit UID/GID, private runtime socket,
    personal server data and direct executable argv (`:645`). They disable
    workspace trust/telemetry and use upstream idle shutdown (`:560`). Broker
-   restart preserves runtime directories (`nix/packages/guest/vscode-web.nix:23`,
+   restart preserves runtime directories (`nix/domains/artifacts/guest/vscode-web.nix:23`,
    `:36`, `:38`). HTTP/WS bytes relay only after account/package admission and
    successful readiness (`src/main.rs:725`, `:734`, `:742`).
 
@@ -174,9 +174,9 @@ artifact has no production architecture impact.
    configuration/publication 1028, trust 1030, workspace 1031, terminal 1075
    (`lilly/lib/lilly/vm/readiness.ex:74`, `credentials.ex:113`, `flush.ex:25`,
    `inception_exchange.ex:8`, `guest_trust.ex:5`, `workspace_source.ex:12`,
-   `nix/packages/guest/terminald.nix:13`). Guest Python readiness/flush and
+   `nix/domains/artifacts/guest/terminald.nix:13`). Guest Python readiness/flush and
    Inception ingress independently reject non-host peers
-   (`nix/packages/guest/readiness.py:193`, `flush.py:61`,
+   (`nix/domains/artifacts/guest/readiness.py:193`, `flush.py:61`,
    `inception/ingress.py:337`). Flush is diagnostic/best-effort, not authority
    to stop/activate the guest (`lilly/lib/lilly/vm/flush.ex:7`).
 5. Workspace delivery is a supervised task outside executor lifetime, with
@@ -230,7 +230,7 @@ artifact has no production architecture impact.
 
 Several Rust tests deliberately pass by skipping environment-dependent native
 work: vsock checks return when unavailable
-(`nix/packages/terminald/src/vsock.rs:118`), and vm-watch child tests document
+(`nix/domains/artifacts/terminald/src/vsock.rs:118`), and vm-watch child tests document
 similar cgroup unavailability (`lilly/native/vm-watch/src/tests.rs:96`). A green
 test aggregate therefore must record skipped reachability separately.
 
@@ -240,29 +240,29 @@ NixOS guest assembly evaluates pinned NixOS modules and ships an uncompressed
 Firecracker kernel ELF, matching initrd and writable-template ext4 image. The
 manifest is v4 with exact hashes/lengths, workspace source protocol2 only when the
 boot service is enabled, and optional immutable editor descriptor plus 2 GiB
-headroom (`nix/packages/guest/default.nix:6`, `:138`, `:199`, `:209`, `:220`,
+headroom (`nix/domains/artifacts/guest/default.nix:6`, `:138`, `:199`, `:209`, `:220`,
 `:232`). The Ubuntu build similarly assembles rootfs in a Nix Linux VM, installs
 the same Rust guest helpers, enables trust/workspace/editor/agent units only by
 capability and emits the same manifest schema
-(`nix/packages/guest/ubuntu/default.nix:172`, `:259`, `:284`, `:372`, `:415`,
+(`nix/domains/artifacts/guest/ubuntu/default.nix:172`, `:259`, `:284`, `:372`, `:415`,
 `:441`). No hosted result for either distro exists from this discovery.
 
 Inception is not merely another standard guest: it imports inner Marshall,
 Porsche, Audi/DNS, private services, Ziggy and control modules, disables ordinary
 guest sshd, loads KVM and ZFS, and configures one inner Marshall replica plus
 verified-TLS local PostgreSQL18 with synchronous commits
-(`nix/packages/guest/inception/default.nix:33`, `:38`, `:50`, `:68`, `:100`).
+(`nix/domains/artifacts/guest/inception/default.nix:33`, `:38`, `:50`, `:68`, `:100`).
 Its early identity stage checks virtualization flags, loads the corresponding
 KVM module, and then starts inner storage/namespace bootstrap (`:129`).
 Inner Porsche talks to fixed verified `https://localhost:5443`; Audi has a paired
 10.41 address at its control 10.40 slot and root-owned inner Lilly connector
-(`nix/packages/guest/inception/roles.py:71`, `:101`). The parent publication poll
+(`nix/domains/artifacts/guest/inception/roles.py:71`, `:101`). The parent publication poll
 checks ownership/current confined boot both before and after vsock exchange,
 and uses one deadline and exact request/boot binding
 (`lilly/lib/lilly/vm/driver.ex:998`, `:1015`, `:1030`,
 `lilly/lib/lilly/vm/inception_exchange.ex:13`, `:76`). Public readiness is kept
 independent of core namespace/execution readiness in the inner deployment
-(`nix/packages/guest/inception/default.nix:173`).
+(`nix/domains/artifacts/guest/inception/default.nix:173`).
 
 ## Adaptation recommendations and explicit gaps
 

@@ -11,7 +11,7 @@ services:
       context: ../..
       dockerfile: antithesis/Dockerfile
       target: enrico
-    entrypoint: ["/opt/overalls/entrypoints/enrico.sh"]
+    entrypoint: ["/opt/kittens/entrypoints/enrico.sh"]
     environment:
       NO_COLOR: "1"
       OVERALLS_ANTITHESIS_STATE_DIR: /var/lib/overalls-antithesis-sdk
@@ -28,7 +28,7 @@ services:
       origin:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "/opt/overalls/entrypoints/health-enrico.sh"]
+      test: ["CMD", "/opt/kittens/entrypoints/health-enrico.sh"]
       interval: 3s
       timeout: 5s
       retries: 40

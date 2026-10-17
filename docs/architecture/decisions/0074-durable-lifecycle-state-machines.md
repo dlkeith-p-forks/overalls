@@ -151,8 +151,8 @@ or skips. Standalone test-module typing also passed without warnings. Production
 [resize](../../../marshall/lib/marshall/compute/resize_request.ex) declare graphs.
 [Lilly journal](../../../lilly/lib/lilly/lifecycle/journal.ex) and
 [manual persistence](../../../lilly/lib/lilly/lifecycle/persist.ex) implement
-locked state/audit publication. [Ingestion](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/compute/lifecycle_ingestion.ex)
-and [delivery](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/lilly/lib/lilly/lifecycle/audit_runtime.ex) implement replay.
+locked state/audit publication. Ingestion (`marshall/lib/marshall/compute/lifecycle_ingestion.ex` at kittens revision `a99f74f0`, repository deleted)
+and delivery (`lilly/lib/lilly/lifecycle/audit_runtime.ex` at kittens revision `a99f74f0`, repository deleted) implement replay.
 Refusals emit `lifecycle.audit_refused` with closed reasons, and the bounded
 retention job emits `lifecycle.retention_deleted` with its deleted count after commit.
 The retention inventory now includes every current PaperTrail version table and
@@ -162,7 +162,7 @@ historical actor is inferred. The inventory is protected by an introspection tes
 [Database audit tests](../../../marshall/test/marshall/compute/lifecycle_audit_test.exs)
 have passed; [journal properties](../../../lilly/test/lifecycle/journal_test.exs)
 exercise idempotency, corruption and an independent dataset model.
-[Native crash driver](../../../nix/tests/machines/zfs-lifecycle/driver.py) checks
+[Native crash driver](../../../nix/verification/tests/machines/zfs-lifecycle/driver.py) checks
 audit envelopes alongside actual ZFS recovery.
 The [execution journal threshold regression](../../../lilly/test/vm/journal_test.exs)
 checks that a 48-event backlog warning uses the closed resource atom and allows
@@ -173,7 +173,7 @@ also avoids raising after a committed host event when the action or state has
 no preexisting Marshall atom; the original strings remain durable.
 
 Remaining milestone gates and exact executed results are tracked in the
-[implementation ledger](../../lifecycle-implementation.md). Final native,
+[implementation ledger](../../history/ledgers/lifecycle-implementation.md). Final native,
 distributed, contract and Dialyzer verification is still in progress.
 
 ## Open questions

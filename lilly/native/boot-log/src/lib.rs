@@ -21,15 +21,39 @@ pub const EXIT_USAGE: u8 = 64;
 pub const EXIT_CHILD_SETUP: u8 = 71;
 pub const EXIT_CUSTODY: u8 = 74;
 
-/// A validated invocation: an absolute private log path and an absolute command.
+/// A validated invocation: an optional reader uid, an absolute private log
+/// path and an absolute command.
 #[derive(Debug, Eq, PartialEq)]
 pub struct Request {
+    pub reader: Option<u32>,
     pub log: PathBuf,
     pub program: PathBuf,
     pub arguments: Vec<OsString>,
 }
 
+/// Uids a log may be handed to: never root (the writer's own default) nor
+/// the `-1` "unchanged" sentinel of chown(2).
+pub const READER_UIDS: std::ops::RangeInclusive<u32> = 1..=4_294_967_294;
+
+/// @cc [owner:ghuntley,label:security] boot-log-cli-reader
+/// parse_cli MUST accept `[--reader-uid N] LOG PROGRAM ARGS...` only, with N
+/// a decimal uid in READER_UIDS and LOG and PROGRAM absolute; any other
+/// shape, including a repeated or misplaced `--reader-uid`, MUST be None.
 pub fn parse_cli(arguments: &[OsString]) -> Option<Request> {
+    let (reader, arguments) = match arguments {
+        [flag, uid, rest @ ..] if flag.as_os_str().as_bytes() == b"--reader-uid" => {
+            let uid = std::str::from_utf8(uid.as_os_str().as_bytes()).ok()?;
+            if !uid.bytes().all(|byte| byte.is_ascii_digit()) {
+                return None;
+            }
+            let uid: u32 = uid.parse().ok()?;
+            if !READER_UIDS.contains(&uid) {
+                return None;
+            }
+            (Some(uid), rest)
+        }
+        rest => (None, rest),
+    };
     let [log, program, rest @ ..] = arguments else {
         return None;
     };
@@ -39,15 +63,21 @@ pub fn parse_cli(arguments: &[OsString]) -> Option<Request> {
         }
     }
     Some(Request {
+        reader,
         log: PathBuf::from(log),
         program: PathBuf::from(program),
         arguments: rest.to_vec(),
     })
 }
 
-/// Open the output file and prove it is a private, single-link, owner-only
-/// regular inode. Symlink resolutions and stranger inodes are refused.
-fn open_log(path: &Path) -> Result<std::fs::File, ()> {
+/// @cc [owner:ghuntley,label:security] boot-log-private-to-its-reader
+/// open_log MUST write only through a descriptor opened without following a
+/// final symlink onto a single-link regular file of mode 0600 owned by the
+/// writer's euid or by `reader`; any other inode is refused. With a reader,
+/// the file MUST then belong to that uid, changed through the same descriptor
+/// and re-verified, so no other user can read console bytes and the writer
+/// never writes into a file it has not proven private.
+fn open_log(path: &Path, reader: Option<u32>) -> Result<std::fs::File, ()> {
     let fd = open(
         path,
         OFlags::WRONLY | OFlags::CREATE | OFlags::TRUNC | OFlags::NOFOLLOW,
@@ -55,15 +85,28 @@ fn open_log(path: &Path) -> Result<std::fs::File, ()> {
     )
     .map_err(|_| ())?;
     let file: std::fs::File = fd.into();
+    let euid = rustix::process::geteuid().as_raw();
+    let private = |metadata: &std::fs::Metadata, owners: &[Option<u32>]| {
+        metadata.is_file()
+            && metadata.nlink() == 1
+            && owners.contains(&Some(metadata.uid()))
+            && metadata.mode() & 0o777 == 0o600
+    };
     let metadata = file.metadata().map_err(|_| ())?;
-    let private = metadata.is_file()
-        && metadata.nlink() == 1
-        && metadata.uid() == rustix::process::geteuid().as_raw()
-        && metadata.mode() & 0o777 == 0o600;
-    if private {
-        Ok(file)
-    } else {
-        Err(())
+    if !private(&metadata, &[Some(euid), reader]) {
+        return Err(());
+    }
+    match reader {
+        Some(uid) if metadata.uid() != uid => {
+            std::os::unix::fs::fchown(&file, Some(uid), None).map_err(|_| ())?;
+            let handed = file.metadata().map_err(|_| ())?;
+            if private(&handed, &[reader]) {
+                Ok(file)
+            } else {
+                Err(())
+            }
+        }
+        _ => Ok(file),
     }
 }
 
@@ -190,7 +233,7 @@ pub enum Drained {
 /// status is preserved; a child dead by signal re-raises that signal so the
 /// owning service observes a real signal death.
 pub fn run(request: &Request) -> u8 {
-    let mut output = match open_log(&request.log) {
+    let mut output = match open_log(&request.log, request.reader) {
         Err(()) => return EXIT_CUSTODY,
         Ok(file) => file,
     };

@@ -31,7 +31,7 @@ Open questions: Which in-path fault seam can duplicate an already authorized Mar
 
 #### 2026-10-13 follow-up: What is a safe guest effect probe?
 
-- Examined: the native terminal guest path in `nix/packages/terminald/src/main.rs` and the terminal channel write/ACK path above.
+- Examined: the native terminal guest path in `nix/domains/artifacts/terminald/src/main.rs` and the terminal channel write/ACK path above.
 - Found: a fixed, typed, guest-owned program can accept only bounded synthetic frame IDs, fsync a count/order ledger, and emit a fixed acknowledgement to the PTY. Run it as the controlled terminal command, not an arbitrary shell payload. The ledger, not host ACK, is the byte-effect oracle.
 - Not found: a packaged implementation or composed TCG measurement of its timing effect.
 - Conclusion: partial; establish baseline latency before using a deadline, and keep this fixture's coverage separate from normal interactive shell behavior.

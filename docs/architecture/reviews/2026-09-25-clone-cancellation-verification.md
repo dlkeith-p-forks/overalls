@@ -65,10 +65,10 @@ the remote source-lock transaction is still alive. The original assertion surviv
 release/drain/cleanup, and fixture rows are checked after both probes.
 Snapshots compare durable attributes, excluding process-local Ash metadata.
 
-The [native driver](../../../nix/tests/machines/clone-cancellation/driver.py) uses
+The [native driver](../../../nix/verification/tests/machines/clone-cancellation/driver.py) uses
 the fleet's three Marshall replicas, two Lilly/ZFS/KVM machines, database, HTTPS
 proxy and client. A separately typed
-[browser helper](../../../nix/tests/machines/clone-cancellation/browser.py) creates
+[browser helper](../../../nix/verification/tests/machines/clone-cancellation/browser.py) creates
 and shares a real source, queues two manager requests, cancels captured work, and
 revokes manager access through ordinary UI controls. A retained manager tab must
 lose both submission and request controls.
@@ -631,7 +631,7 @@ Session `39147` drained with status 0. **That runtime was never executed and is
 superseded**, leaving seven actual failed native captures. The build archive is
 `/home/ghuntley/.local/state/nix/build-logs/1790394016921-379240-0.jsonl`.
 
-The fixture-only [recorder](../../../nix/tests/support/zfs_observation_recorder.py)
+The fixture-only [recorder](../../../nix/verification/tests/support/zfs_observation_recorder.py)
 is installed only for `cloneCancellation`, before the host-selected ZFS package
 in Lilly's service PATH. It ultimately invokes that same `config.boot.zfs.package`
 executable under the existing command/lock process group. Unarmed and nonmatching
@@ -688,8 +688,8 @@ lock descriptor and remains subject to the native owner's group cleanup.
 
 For replay, the clone-only release build replaces exactly one reviewed
 `observe_for_readiness` body using the
-[fail-closed instrumenter](../../../nix/tests/support/instrument_clone_observation.py).
-A [typed fixture wrapper](../../../nix/tests/machines/clone-cancellation/observation.ex)
+[fail-closed instrumenter](../../../nix/verification/tests/support/instrument_clone_observation.py).
+A [typed fixture wrapper](../../../nix/verification/tests/machines/clone-cancellation/observation.ex)
 receives the exact `SnapshotOwnership.expectations/1` result before the unchanged
 observer. Under the same pool lock, it publishes only a validated placement UUID
 and at most eight exact dataset/snapshot GUID bindings, bounded to 4096 bytes in
@@ -946,7 +946,7 @@ a future candidate. Integrated Lilly `mix precommit` passed **413 checks**
 `/tmp/verify020-integrated-lilly-precommit.log`, session `70316`, status 0.
 
 The next diagnostic is confined to the clone-cancellation release. The
-[instrumenter](../../../nix/tests/support/instrument_clone_reports.py) pins hashes
+[instrumenter](../../../nix/verification/tests/support/instrument_clone_reports.py) pins hashes
 of both `HostReports` and its actual authenticated `ProvisionerControl` caller.
 It wraps the original `valid?/3` boolean operands in their existing `and` chain
 and adds diagnostics inside subsequent rejection branches. Predicates retain
@@ -955,7 +955,7 @@ rollback and external `invalid_report` result remain unchanged. The wrapper
 `HostReports.ingest/3` is not relied on for authenticated exchange evidence.
 Malformed report shape records no age and does not inspect invalid fields.
 
-The [fixture helper](../../../nix/tests/machines/clone-cancellation/report_rejection.ex)
+The [fixture helper](../../../nix/verification/tests/machines/clone-cancellation/report_rejection.ex)
 accepts only eleven fixed stages: report shape, future sample, expired sample,
 pool schema, pool set, storage identity, capacity schema, capacity bounds,
 protocol, image IDs and architecture. Each record has only `stage` and signed
@@ -977,7 +977,7 @@ remains required. Successful intervals discard their rings. Sink failures preser
 the original validation result. No resource, polling, freshness or capacity guard
 is relaxed, and instrumented timing is not performance evidence.
 
-The [dedicated tests](../../../nix/tests/machines/clone-cancellation/report_rejection_test.exs)
+The [dedicated tests](../../../nix/verification/tests/machines/clone-cancellation/report_rejection_test.exs)
 passed **7 checks**, seed `239871`, in the isolated `_verify020_reports` database
 partition; `/tmp/verify020-report-tests-final.log`, session `71205`, status 0.
 Removing only diagnostic calls restores the original complete source AST. Original

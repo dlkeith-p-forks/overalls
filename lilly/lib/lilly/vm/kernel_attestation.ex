@@ -5,7 +5,7 @@ defmodule Lilly.VM.KernelAttestation do
   @port 1098
   @default_timeout 120_000
   @maximum_timeout 2_400_000
-  @maximum_frame 2_048
+  @maximum_frame 512
 
   @type expectation :: Protocol.expectation()
   @type result ::
@@ -93,7 +93,8 @@ defmodule Lilly.VM.KernelAttestation do
                {:ok, body} <- :gen_tcp.recv(socket, 0, remaining(deadline)),
                true <- byte_size(body) <= @maximum_frame and String.ends_with?(body, "\n"),
                {:ok, value} <- JSON.decode(body),
-               {:ok, boot_id} <- Protocol.verify(value, expected) do
+               {:ok, boot_id} <- Protocol.verify(value, expected),
+               true <- remaining(deadline) > 0 do
             {:ok, boot_id}
           else
             _ -> :not_attested

@@ -32,7 +32,7 @@ control-plane hosts run Audi's DNS role. Audi implements DNS UDP/TCP itself and
 uses OTP SSH for its SSH listener; no external DNS or SSH server implements
 these Audi roles. Standard OpenSSH clients use generated configuration.
 
-The [access-flow diagrams](../../audi.md) describe service placement, the user's
+The [access-flow diagrams](../../services/audi.md) describe service placement, the user's
 view and the nested SSH stream. They distinguish target behavior from enabled
 implementation.
 
@@ -129,7 +129,7 @@ certificate-storage permission loss and gateway/DNS corrective updates. The user
 removed scale investigation from the completion criteria on 2026-09-18;
 historical capacity limitations below are not claims of supported scale.
 The detailed [review](../reviews/2026-09-17-audi-ingress.md) records executed
-checks, source revisions and failures. The [access guide](../../audi.md) describes
+checks, source revisions and failures. The [access guide](../../services/audi.md) describes
 the configured service composition and user flows.
 
 | Capability | Current implementation and evidence |
@@ -139,7 +139,7 @@ the configured service composition and user flows.
 | Web | [HTTP/WebSocket forwarding](../../../audi/lib/audi/http/web_socket.ex), private browser sign-in and host-only cookies pass the real-browser fleet scenario. Public access remains limited to the primary app. |
 | Certificates | Independent readiness work, durable issuance/custody and bounded recovery are implemented. The merged fleet test issues through Pebble, restores gateway readiness with the CA stopped, and denies ingress during custody permission loss before recovering the same certificate and guest. |
 | Modeling and verification | Marshall Ash resources remain authority. Structured logging, property tests and Nix modules are implemented; the [review](../reviews/2026-09-17-audi-ingress.md) distinguishes application gates, physical scenarios and unexecuted requirements. |
-| Relocation and crash recovery | The [real fleet scenario](../../../nix/tests/machines/fleet/scenarios/audi-relocation.py) passes transfer, handoff, physical source cleanup, destination DNS, unchanged strict SSH with retained guest data, HTTPS at the stable name and stale-source refusal. The same run passes a Lilly main-process crash while preserving the guest and closing live streams. These are the tested failure cases, not a claim of universal fault tolerance. |
+| Relocation and crash recovery | The [real fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/audi-relocation.py) passes transfer, handoff, physical source cleanup, destination DNS, unchanged strict SSH with retained guest data, HTTPS at the stable name and stale-source refusal. The same run passes a Lilly main-process crash while preserving the guest and closing live streams. These are the tested failure cases, not a claim of universal fault tolerance. |
 | Capacity | The [measurement artifact](../measurements/2026-09-18-audi-readiness.json) retains complete-publication and HTTPS-readiness measurements, including failures. The latest twelve-round synthetic HTTPS run passed with only about 1.5 ms first-round margin. This does not establish actual fleet capacity. |
 
 The final merged run uses clean snapshot `/tmp/audi-brady-integrated-v7uw6ba3`
@@ -205,7 +205,7 @@ estimates. Validation is tracked in the
 [Brady review](../reviews/2026-09-18-brady-egress-cache.md); this plan correction
 does not establish deployment-scale publication capacity.
 
-The new [relocation scenario](../../../nix/tests/machines/fleet/scenarios/audi-relocation.py)
+The new [relocation scenario](../../../nix/verification/tests/machines/fleet/scenarios/audi-relocation.py)
 combines real transfer with Audi's existing fleet checks. Its runtime acceptance
 is pending; adding the scenario does not close the relocation evidence gap.
 
@@ -233,7 +233,7 @@ prefixes, removal and unavailable replicas. This does not grant web access.
 [publication properties](../../../audi/test/dns_directory_test.exs) check reordered
 revisions. Those initial tests use local sockets and injected publication data;
 the later replication tests below cover the Marshall API. The closed DNS startup schema and
-[DNS Nix module](../../../nix/modules/audi-dns.nix) enable an independent
+[DNS Nix module](../../../nix/domains/system/audi-dns.nix) enable an independent
 unprivileged `audi-dns` service with bounded UDP/TCP listeners and an initially
 empty replica. Automated ACME issuance, HTTP/HTTPS forwarding and full acceptance
 remain outstanding. Until the first fresh snapshot arrives, configured DNS
@@ -319,7 +319,7 @@ This does not discover current issuance IDs after startup, persist store revisio
 tombstones, establish placement authority or publish routes; those require the
 outstanding control-plane coordinator and deployment wiring.
 
-Marshall now models [issuance work](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/lib/marshall/ingress/issuance.ex)
+Marshall now models issuance work (`marshall/lib/marshall/ingress/issuance.ex` at kittens revision `9fe1e493`, repository deleted)
 through Ash/PostgreSQL with transactional audit history, positive execution
 bindings and a partial unique index allowing one pending record per VM.
 The historical admission action authenticated the
@@ -414,7 +414,7 @@ new tests have not been run under the deferred verification sequence.
 The gateway's optional closed TLS configuration now starts the SNI store,
 HTTP/HTTPS listeners, bounded task supervisor and separate readiness/issuance
 workers through [application startup](../../../audi/lib/audi/application.ex).
-The [Nix gateway module](../../../nix/modules/audi.nix) supplies separate public
+The [Nix gateway module](../../../nix/domains/system/audi.nix) supplies separate public
 trust credentials, private persistent certificate custody and explicit issuer
 consent/replica settings. Config rejects unsafe custody, fewer than two replicas,
 unknown fields and listener port collisions. Added startup and Nix evaluation
@@ -600,10 +600,10 @@ unique increasing durable revisions. They do not establish multi-node capacity.
 The [startup configuration](../../../audi/lib/audi/config.ex) and
 [application](../../../audi/lib/audi/application.ex) now require DNS control
 credentials and start the refresh worker after the directory and listener.
-The [DNS Nix module](../../../nix/modules/audi-dns.nix) passes private runtime
+The [DNS Nix module](../../../nix/domains/system/audi-dns.nix) passes private runtime
 credentials using systemd `LoadCredential`, supports a CA bundle and prerequisite
 secret services, and preserves the separate unprivileged role. The
-[machine test](../../../nix/tests/machines/audi-dns/default.nix) now exercises this
+[machine test](../../../nix/verification/tests/machines/audi-dns/default.nix) now exercises this
 wiring against a controlled HTTPS publisher. Automated certificate/readiness
 production, full Marshall-to-Firecracker deployment and fleet scale acceptance
 remain outstanding; DNS publication cannot manufacture those missing records.
@@ -703,17 +703,17 @@ implement the ADR-0052 exception. They require explicit operator enablement;
 the Lilly NixOS module now exposes `ingress.enable` and binds it to a matching
 local Audi identity. Firecracker acceptance remains outstanding.
 
-[Source-built packages](../../../nix/packages/default.nix) now include Audi and
+[Source-built packages](../../../nix/domains/artifacts/default.nix) now include Audi and
 its encrypted-dump variant with a fixed dependency hash; host-tool metadata and
 symlinks are explicitly Lilly-only. The exported `audi-release`
-[payload check](../../../nix/tests/release/probe.exs) passed for the actual Nix
+[payload check](../../../nix/verification/tests/release/probe.exs) passed for the actual Nix
 release and verifies runtime and application independence. The gateway
 [runtime configuration](../../../audi/lib/audi/config.ex) and
 [application startup](../../../audi/lib/audi/application.ex) now select the real
 Marshall authority and UID-checked local connector. Configuration is bounded and
 closed, private files require service ownership and restrictive permissions, and
 invalid configured startup fails without exposing secret contents. Registry loss
-restarts the dependent SSH listener. The [NixOS module](../../../nix/modules/audi.nix)
+restarts the dependent SSH listener. The [NixOS module](../../../nix/domains/system/audi.nix)
 runs an unprivileged independent release with systemd credentials, a persistent
 Ed25519 host key and explicit administrative/Porsche port collision checks.
 Its configuration and service machine checks passed against the packaged release;
@@ -753,7 +753,7 @@ construct an exact per-VM profile with strict outer Ed25519 host-key verificatio
 verified bounded HTTPS lookup, HTTP-200-only acceptance and no persistent outer
 host cache or connection multiplexing. It preserves the inner guest's normal
 known-hosts files and rejects shell/configuration/SSH-token injection. The
-[NixOS client-flow check](../../../nix/tests/machines/audi-openssh/default.nix)
+[NixOS client-flow check](../../../nix/verification/tests/machines/audi-openssh/default.nix)
 uses real OpenSSH and curl with controlled stock sshd and HTTPS fixtures. Its
 scope is client configuration, not Marshall publication or Audi/Firecracker
 acceptance. Configuration generation grants no access by itself.
@@ -940,8 +940,8 @@ connects a controlled CA, two Audi DNS replicas, private custody and a real TLS
 listener, including CA-independent readiness recovery. Both pass in their
 application suites and do not establish Nix/Firecracker or fleet acceptance.
 
-The new [Audi fleet scenario](../../../nix/tests/machines/fleet/scenarios/audi.py)
-and [role composition](../../../nix/tests/machines/fleet/audi.nix) deploy actual
+The new [Audi fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/audi.py)
+and [role composition](../../../nix/verification/tests/machines/fleet/audi.nix) deploy actual
 Audi/Marshall/Lilly releases and nested Firecracker with two Audi DNS replicas and
 a DNS-validating Pebble CA. The updated full composition passes in 601.56 seconds with
 nested KVM. It verifies DNS-validated certificate issuance, public HTTPS, live
@@ -970,7 +970,7 @@ including host, pool, placement and completed-operation rows. Ten real publicati
 action samples return the full catalog in 142–253 ms without changing production
 deadlines. This is a synthetic database projection measurement; it excludes
 readiness writes, HTTP/DNS transport and physical guest traffic and does not
-establish sustained fleet capacity. The [access guide](../../audi.md) documents
+establish sustained fleet capacity. The [access guide](../../services/audi.md) documents
 the explicit command; normal gates exclude the capacity tag.
 
 The passing physical rerun includes independent readiness completion, fair issuance

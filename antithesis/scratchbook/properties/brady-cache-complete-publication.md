@@ -36,7 +36,7 @@ Open question: Can a hosted storage fixture cut power to the cache filesystem af
 
 2026-10-13 source follow-up:
 
-- Examined: `brady/lib/brady/cache/store.ex:250-286`, `:626-645`, and `nix/tests/machines/brady-network/default.nix:1-34`.
+- Examined: `brady/lib/brady/cache/store.ex:250-286`, `:626-645`, and `nix/verification/tests/machines/brady-network/default.nix:1-34`.
 - Found: the commit syncs the body and metadata before `File.rename/2`, but does not sync the destination parent directory after rename. The existing Nix router uses QEMU disks for storage tests, yet no cache-specific power-cut control or post-crash disk witness is wired here.
 - Conclusion: partial. Model process death/restart separately from power loss. A true power-cut claim needs a faultable guest storage boundary and recovery oracle; the current source does not prove rename persistence after power loss.
 

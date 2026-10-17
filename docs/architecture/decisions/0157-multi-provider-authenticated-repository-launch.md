@@ -192,7 +192,7 @@ authentication resume and successful-admission clear.
 [Manifest4](../../../protocol/lib/overalls_protocol/image_manifest.ex),
 [admission](../../../marshall/lib/marshall/compute/admission.ex),
 [Lilly start](../../../lilly/lib/lilly/vm/driver.ex) and both
-[NixOS](../../../nix/packages/guest/default.nix)/[Ubuntu](../../../nix/packages/guest/ubuntu/default.nix)
+[NixOS](../../../nix/domains/artifacts/guest/default.nix)/[Ubuntu](../../../nix/domains/artifacts/guest/ubuntu/default.nix)
 builders implement explicit source capability. Focused component and declaration
 checks are recorded in the [current review](../reviews/2026-10-10-browser-launcher.md).
 The complete current NixOS multi-provider/MFA/cross-tab/retention/download/CLI

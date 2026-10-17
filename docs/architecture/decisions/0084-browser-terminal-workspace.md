@@ -112,9 +112,9 @@ graphics, many-pane and performance acceptance requirements.
 
 ## Completion update
 
-The recovered [original UI/fidelity requirements](../../terminal-v2-plan.md)
+The recovered [original UI/fidelity requirements](../../history/ledgers/terminal-v2-plan.md)
 include an explicit clipboard-read opt-in, per-machine consent, search/zoom and
-per-session sharing. The [completion ledger](../../terminal-v2-completion.md)
+per-session sharing. The [completion ledger](../../history/ledgers/terminal-v2-completion.md)
 records the implemented controls and executed evidence. The UI exposes those capabilities;
 clipboard reads remain denied by default and require explicit opt-in on a
 writable live pane. Replayed output cannot read/write the clipboard or emit

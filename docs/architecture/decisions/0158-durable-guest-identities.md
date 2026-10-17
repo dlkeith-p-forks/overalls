@@ -139,7 +139,7 @@ are the implementation boundaries for this change. Existing
 [personal terminals](../../../marshall/lib/marshall/terminal/authority.ex),
 [Editor authority](../../../marshall/lib/marshall/editor/authority.ex) and
 [guest helper](../../../lyra/src/bin/overalls-ssh-authorize.rs) consume the durable
-identity. The [editor broker](../../../nix/packages/vscode-web-broker/src/main.rs)
+identity. The [editor broker](../../../nix/domains/artifacts/vscode-web-broker/src/main.rs)
 checks its exact UID/name/home before worker launch.
 The [cutover migration](../../../marshall/priv/repo/migrations/20261010110000_durable_guest_identities.exs)
 preserves UUID/UID reservations and the sequence, canonicalizes database names,

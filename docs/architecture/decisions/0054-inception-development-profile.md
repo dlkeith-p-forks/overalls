@@ -112,7 +112,7 @@ include it. [Disk preparation](../../../lilly/lib/lilly/vm/disk.ex),
 [jail mounts](../../../lilly/lib/lilly/vm/jail.ex) and
 [owned ZFS lifecycle](../../../lilly/lib/lilly/host/zfs_dataset.ex) now handle
 the additional file without changing root-size semantics. The
-[native storage scenario](../../../nix/tests/machines/zfs-guest/driver.py) includes
+[native storage scenario](../../../nix/verification/tests/machines/zfs-guest/driver.py) includes
 sparse allocation, restart, missing-disk refusal and cleanup. The expanded native
 check passed before SMTP integration; its updated fixture requires another run.
 It exercises the ordinary image with the Inception disk layout, independently
@@ -126,7 +126,7 @@ binds the configured image, minimum service budget and native host proof. The
 profile defaults. [Admission tests](../../../marshall/test/marshall/compute/inception_test.exs)
 cover ordinary users, missing proof, exact image binding and both-disk reservation.
 
-The [host preflight](../../../nix/packages/guest/nesting-probe/host.py) runs a
+The [host preflight](../../../nix/domains/artifacts/guest/nesting-probe/host.py) runs a
 trusted temporary Firecracker-in-Firecracker boot without networking or SMTP.
 Its private receipt binds the current host boot, image, probe artifact and VMM.
 [Eligibility](../../../lilly/lib/lilly/host/inception_proof.ex) also requires
@@ -134,17 +134,17 @@ currently enabled nesting and valid private SMTP configuration. The native check
 passed the real probe and rejected tampered receipt fields. This is single-host
 AMD evidence, not Intel or fleet-wide qualification.
 
-The [Inception image](../../../nix/packages/guest/inception/default.nix) builds
+The [Inception image](../../../nix/domains/artifacts/guest/inception/default.nix) builds
 successfully with PostgreSQL, source, tools and both application releases.
-[Bootstrap preparation](../../../nix/packages/guest/inception/prepare.py) and
-[runtime identity tests](../../../nix/tests/evaluation/inception-runtime.py)
+[Bootstrap preparation](../../../nix/domains/artifacts/guest/inception/prepare.py) and
+[runtime identity tests](../../../nix/verification/tests/evaluation/inception-runtime.py)
 cover independent credentials and preserved workspace edits. The
-[guest SMTP receiver](../../../nix/packages/guest/inception/credentials.py) and
+[guest SMTP receiver](../../../nix/domains/artifacts/guest/inception/credentials.py) and
 [host sender](../../../lilly/lib/lilly/vm/credentials.ex) use a private, boot-bound
 vsock channel; local socket and runtime tests cover rejection and rotation.
 The [execution coordinator](../../../lilly/lib/lilly/vm/executor.ex) requires
 stack readiness before the first Inception running outcome. The basic
-[native stack check](../../../nix/tests/machines/inception/driver.py) passed
+[native stack check](../../../nix/verification/tests/machines/inception/driver.py) passed
 PostgreSQL/Marshall/Lilly readiness, native ZFS setup, retained enrollment and
 source edits across stop/start, and deletion of both disks. The expanded check
 for real outer admission and inner lifecycle is still in progress.

@@ -89,7 +89,7 @@ and [browser checks](../../../marshall/test/marshall_web/admin_users_live_test.e
 pass. The [bootstrap probe](../../../marshall/scripts/verify_admin_bootstrap.exs)
 also passed with three independent peers. Full-gate, guest-session revocation acceptance and the
 one-time deployed-account promotion remain pending; see the
-[implementation ledger](../../admin-implementation.md).
+[implementation ledger](../../history/ledgers/admin-implementation.md).
 The [admin access console](../../../marshall/lib/marshall_web/live/admin/access_live.ex)
 and redacted [SSH admin actions](../../../marshall/lib/marshall/ssh/admin_actions.ex)
 provide bounded key/session inventory and revocation; focused browser coverage is

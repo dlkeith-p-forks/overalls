@@ -121,7 +121,7 @@ enrollment and deployment inputs remain explicit prerequisites.
 
 ## Implementation evidence
 
-The [compatibility history check](../../../nix/tests/evaluation/auto-update-compatibility.nix)
+The [compatibility history check](../../../nix/verification/tests/evaluation/auto-update-compatibility.nix)
 exports the existing fixed assertions together with generated operator key and
 shared-authority histories. It executes actual `compatible` and `preflight`,
 covering every serving baseline, the inactive-file fallback, staged candidate
@@ -132,7 +132,7 @@ establish native migration or activation. The
 records execution and preserves the original native evidence below. Policy and
 decision/implementation statuses are unchanged.
 
-The [custody history check](../../../nix/tests/evaluation/auto-update-custody.nix)
+The [custody history check](../../../nix/verification/tests/evaluation/auto-update-custody.nix)
 executes the production run/stage/preflight/migrate/activate/verify state
 machine over generated rotation and custody histories inside a disposable uid-0
 namespace, with real SecretSpec/SOPS descriptors, resolution and descriptor-bound
@@ -145,23 +145,23 @@ effects are world-model seams; no native systemd, migration or guest-survival
 acceptance is established. The
 [2026-09-26 review](../reviews/2026-09-26-custody-updater.md) records execution.
 
-The [updater](../../../nix/modules/auto-update/runtime.py) verifies the
+The [updater](../../../nix/domains/system/auto-update/runtime.py) verifies the
 sticky, writable `/dev/shm` tmpfs before stopping consumers. A new Git revision
 whose built system and deployment manifest exactly match the active system
 advances healthy history only after live role verification, without rerunning
-migrations or activation. [Focused tests](../../../nix/tests/machines/auto-update/unit.py)
+migrations or activation. [Focused tests](../../../nix/verification/tests/machines/auto-update/unit.py)
 cover shared-memory refusal before a consumer stop; the
-[updater machine](../../../nix/tests/machines/auto-update/driver.py) verifies
+[updater machine](../../../nix/verification/tests/machines/auto-update/driver.py) verifies
 the identical-system path keeps a live service process. The
 [recovery review](../reviews/2026-09-23-auto-update-identical-system.md)
 records the scope and remaining production acceptance.
 
-The [updater](../../../nix/modules/auto-update/runtime.py) now quiesces
+The [updater](../../../nix/domains/system/auto-update/runtime.py) now quiesces
 declared socket activators before stopping their consumer services and attempts
 to restore previously running roles after a failed activation. The
 [Overalls declaration](../../../fleet/hosts/overalls/configuration.nix) includes
 its socket-activated fleet relay, and the
-[updater machine](../../../nix/tests/machines/auto-update/default.nix) drives a
+[updater machine](../../../nix/verification/tests/machines/auto-update/default.nix) drives a
 continuous client through a candidate switch and failure recovery. This closes
 the socket reactivation race observed during the 2026-09-23 Overalls rollout;
 production activation is tracked in the Enrico
@@ -170,10 +170,10 @@ production activation is tracked in the Enrico
 Audi gateway and DNS roles now participate in candidate consumers and required
 unit health. Each enabled role must also return an exact affirmative versioned,
 role-bound response from its private status socket. The
-[socket tests](../../../nix/tests/machines/auto-update/unit.py) cover wrong roles,
+[socket tests](../../../nix/verification/tests/machines/auto-update/unit.py) cover wrong roles,
 negative/malformed/oversized replies and conjunction across enabled roles.
 Audi's packaged DNS test verifies live authority, outage rejection and restart
-recovery. The [Audi fleet scenario](../../../nix/tests/machines/fleet/scenarios/audi.py)
+recovery. The [Audi fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/audi.py)
 also passed real gateway and DNS package updates, unhealthy-candidate rejection,
 preserved healthy history and corrective-revision recovery without replacing the
 guest process. This verifies corrective updates, not automatic code or schema
@@ -181,23 +181,23 @@ rollback; see the bounded run evidence in
 [ADR-0047](0047-audi-ingress-and-authoritative-dns.md).
 
 Porsche now participates in required service health, secret-consumer ordering and
-encrypted diagnostic preflight. The [updater](../../../nix/modules/auto-update/runtime.py)
+encrypted diagnostic preflight. The [updater](../../../nix/domains/system/auto-update/runtime.py)
 requires its bounded private socket response to report version 1 and `ready: true`.
-[Socket integration tests](../../../nix/tests/machines/auto-update/unit.py) exercise
+[Socket integration tests](../../../nix/verification/tests/machines/auto-update/unit.py) exercise
 the normal updater health path with affirmative, negative, malformed and oversized
 responses. Deployed Porsche-to-Marshall update acceptance remains separate.
 
 
-- [Updater module](../../../nix/modules/auto-update/default.nix) and
-  [runtime](../../../nix/modules/auto-update/runtime.py) implement the candidate
+- [Updater module](../../../nix/domains/system/auto-update/default.nix) and
+  [runtime](../../../nix/domains/system/auto-update/runtime.py) implement the candidate
   workflow, including durable retries and exact candidate activation.
-- [Shared secret helper](../../../nix/modules/secrets/prepare.py) separates
+- [Shared secret helper](../../../nix/domains/system/secrets/prepare.py) separates
   resolution from publication and supports descriptor-bound private staging.
 - [Lilly runtime](../../../lilly/lib/lilly/control/runtime.ex) and
   [local status server](../../../lilly/lib/lilly/control/status_server.ex) provide
   delivery/reconciliation readiness and a bounded private transport.
 
-- The [updater machine check](../../../nix/tests/machines/auto-update/default.nix)
+- The [updater machine check](../../../nix/verification/tests/machines/auto-update/default.nix)
   passes real Git selection and NixOS switches, phase failures, corrective commits,
   concurrency exclusion, health-only retry and identity cleanup. It now also passes
   out-of-band live-system drift reconvergence: after the running closure is switched
@@ -205,7 +205,7 @@ responses. Deployed Porsche-to-Marshall update acceptance remains separate.
   candidate again and records one healthy event, and the following poll is the no-op
   fast path with unchanged durable status. Unit coverage pins `migrate()` issuing one
   collected fixed migration unit per attempt, re-runnable for the same candidate.
-- The [fleet check](../../../nix/tests/machines/fleet/default.nix) update scenario now
+- The [fleet check](../../../nix/verification/tests/machines/fleet/default.nix) update scenario now
   additionally passes a failed candidate activation on a Lilly host with three live
   guests: every guest VMM process identity is preserved, stopped consumer roles are
   restored, `lastHealthy` keeps the serving revision, the durable record reports the
@@ -213,12 +213,12 @@ responses. Deployed Porsche-to-Marshall update acceptance remains separate.
   host credential rotation's superseded credential is refused with 401 inside its
   nominal TTL. Executions and timings are recorded in the
   [update failure matrix review](../reviews/2026-09-26-update-failure-matrix.md).
-- The [credential-rotation check](../../../nix/tests/machines/credential-rotation/default.nix)
+- The [credential-rotation check](../../../nix/verification/tests/machines/credential-rotation/default.nix)
   passes three concurrent candidate migrators under observed advisory locking,
   a migration longer than the serving idle-transaction deadline, staged-source
   consistency, failed migration isolation, incompatible-authority rejection,
   compatible key addition and journal leakage checks.
-- The [fleet check](../../../nix/tests/machines/fleet/default.nix) passes distinct
+- The [fleet check](../../../nix/verification/tests/machines/fleet/default.nix) passes distinct
   Lilly release adoption and encrypted replacement-credential delivery while
   retaining six guest processes, disk writes, networking and authenticated browser
   terminal recovery. Subsequent database, daemon, storage and revocation scenarios
@@ -247,7 +247,7 @@ are corrected without changing the decision:
 - The identical-system path verified a new revision without staging its
   secrets, so a secret-only change was never applied and an unresolvable
   candidate bundle passed, contrary to the activation rule above. The
-  [updater](../../../nix/modules/auto-update/runtime.py) now stages every
+  [updater](../../../nix/domains/system/auto-update/runtime.py) now stages every
   candidate bundle first; byte-identical bundles keep the verify-only path,
   any difference takes preflight, migration and activation, and a failed
   resolution fails at `stage`. Staged copies on the verify-only path are
@@ -265,7 +265,7 @@ are corrected without changing the decision:
   active and the switch left no newly failed system unit, the updater records
   `update.switch_incomplete` and continues to restore roles; a newly failed
   unit still fails activation, and the bounded health checks decide success.
-- [Focused tests](../../../nix/tests/machines/auto-update/unit.py) cover the
+- [Focused tests](../../../nix/verification/tests/machines/auto-update/unit.py) cover the
   switch-exit handling, the single-transaction stop, a unit that stays active, per-phase deadlines and the
   staged/live bundle comparison.
 - **Update (2026-10-13, [ADR-0165](0165-restart-only-changed-units.md)):**

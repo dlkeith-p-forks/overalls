@@ -148,42 +148,42 @@ production enablement stays off until those are supplied.
 
 ## Implementation evidence
 
-The [uploaded point property](../../../nix/tests/evaluation/backup-operators.py)
+The [uploaded point property](../../../nix/verification/tests/evaluation/backup-operators.py)
 adds generated actual local-Restic manifest interruption, byte-exact restore and
 retention expiry histories; full13-test suite1418s passed in the [review](../reviews/2026-10-03-backup-upload-publication-histories.md).
 S3/native-reader/during-upload acceptance remains separate.
 
-The [reader retirement repair](../../../nix/modules/backups/common.py) preserves
+The [reader retirement repair](../../../nix/domains/system/backups/common.py) preserves
 unreaped group identity and requires native task death proof before returning to
 cleanup. Actual leader-exit and pthread properties are in the [review](../reviews/2026-10-03-backup-reader-group-retirement.md);
 pinned compilation/type/runtime8s and packaged cleanup121s passed. The inherited native shutdown bound remains an explicit
 contract gap; command timeout is not reader death proof.
 
-The [publishing recovery property](../../../nix/tests/machines/backup-cleanup/packaged_cleanup.py)
+The [publishing recovery property](../../../nix/verification/tests/machines/backup-cleanup/packaged_cleanup.py)
 adds installed cleanup for synthetic publishing journal boundaries; combined
 native execution passed in 155 seconds, exit 0, in the [review](../reviews/2026-10-03-backup-publication-recovery.md).
 This is not actual upload or producer-death acceptance.
 
-The [packaged cleanup property](../../../nix/tests/machines/backup-cleanup/packaged_cleanup.py)
+The [packaged cleanup property](../../../nix/verification/tests/machines/backup-cleanup/packaged_cleanup.py)
 exercises the installed service/operator through interrupted preparing, capturing
 and cleaning runs, shared-lock contention and foreign nonce refusal. Pinned typing
 passed; native execution passed in 138 seconds, exit 0, in the [review](../reviews/2026-10-03-backup-packaged-cleanup.md).
 Full capture/upload composition remains separate.
 
-The [native identity/pre-GUID properties](../../../nix/tests/machines/backup-cleanup/native_cleanup.py)
+The [native identity/pre-GUID properties](../../../nix/verification/tests/machines/backup-cleanup/native_cleanup.py)
 retain original descriptors while replacing actual native objects, and exercise
 cleanup before snapshot creation or GUID recording. Typing and the combined
 thirty-seven-history native check passed (169 seconds, exit 0) in the [scoped review](../reviews/2026-10-03-backup-native-identity-intent.md).
 Sequential replacement refusal does not establish concurrent mutation fencing.
 
-The [native cleanup worker-death property](../../../nix/tests/machines/backup-cleanup/native_cleanup.py)
+The [native cleanup worker-death property](../../../nix/verification/tests/machines/backup-cleanup/native_cleanup.py)
 adds actual systemd worker/helper SIGKILL before/after native destruction, exact
 retained descriptor and once-only successful destruction across replay. Typing
 passed; combined native execution passed in 134 seconds, exit 0, in the
 [worker-death review](../reviews/2026-10-03-backup-cleanup-worker-death.md). It
 does not establish complete packaged cleanup orchestration or power loss.
 
-The [native host cleanup property](../../../nix/tests/machines/backup-cleanup/native_cleanup.py)
+The [native host cleanup property](../../../nix/verification/tests/machines/backup-cleanup/native_cleanup.py)
 extends HostCapture proof refusal and post-destroy replay checks to real ZFS and
 mounts. Pinned Python 3.13 typing and native execution passed (98 seconds,
 exit 0), as recorded in the
@@ -197,32 +197,32 @@ and once-only destruction across uncertain retry. The pinned Python 3.13 Nix gat
 passed all thirteen workflow tests, including both properties. Controlled native
 command results do not extend the historical native ZFS acceptance scope.
 
-The [module](../../../nix/modules/backups/default.nix),
-[coordinator](../../../nix/modules/backups/runtime.py),
-[journal](../../../nix/modules/backups/journal.py),
-[reference retention](../../../nix/modules/backups/restic.py),
+The [module](../../../nix/domains/system/backups/default.nix),
+[coordinator](../../../nix/domains/system/backups/runtime.py),
+[journal](../../../nix/domains/system/backups/journal.py),
+[reference retention](../../../nix/domains/system/backups/restic.py),
 [Lilly boundary](../../../lilly/lib/lilly/backup.ex) and
 [owned snapshots](../../../lilly/lib/lilly/host/backup_snapshot.ex) implement the
-initial workflow. [Guest flush](../../../nix/packages/guest/flush.py) is installed
-in the NixOS and Ubuntu images. [Fleet projection](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/backup_status.py)
-and [admin rendering](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall_web/live/admin/dashboard_live.ex)
+initial workflow. [Guest flush](../../../nix/domains/artifacts/guest/flush.py) is installed
+in the NixOS and Ubuntu images. Fleet projection (`nix/domains/system/fleet-monitor/backup_status.py` at kittens revision `a99f74f0`, repository deleted)
+and admin rendering (`marshall/lib/marshall_web/live/admin/dashboard_live.ex` at kittens revision `a99f74f0`, repository deleted)
 provide observational status.
 
-[State and credential tests](../../../nix/tests/evaluation/backup-state.py),
-[failure and generated retention tests](../../../nix/tests/evaluation/backup-workflow.py)
-and [the strict typing gate](../../../nix/tests/evaluation/backup-types.nix) provide
-unit-level evidence. [Native recovery tests](../../../nix/tests/machines/backups/default.nix)
+[State and credential tests](../../../nix/verification/tests/evaluation/backup-state.py),
+[failure and generated retention tests](../../../nix/verification/tests/evaluation/backup-workflow.py)
+and [the strict typing gate](../../../nix/verification/tests/evaluation/backup-types.nix) provide
+unit-level evidence. [Native recovery tests](../../../nix/verification/tests/machines/backups/default.nix)
 pass real ZFS, TLS S3, configured remote PostgreSQL, isolated file/database restore,
 retention, exclusions and credential-independent cleanup. The recovery test also
 starts a fresh Marshall release against its restored database. An unrelated
 keyring fails to decrypt the real AshCloak wildcard and account fields; the
 matching restored fixture keyring decrypts them and verifies saved digests.
-[Firecracker recovery tests](../../../nix/tests/machines/zfs-guest/backups.py) pass
+[Firecracker recovery tests](../../../nix/verification/tests/machines/zfs-guest/backups.py) pass
 flush-only running/stopped/unresponsive captures, isolated disk restore, transfer
 coexistence, foreign snapshot refusal and cleanup after process loss following
 native creation. Both application precommit/Dialyzer gates pass; the
 [review](../reviews/2026-09-18-host-recovery-backups.md) records scope and counts.
-The [recovery guide](../../backups.md) documents explicit operator fencing and
+The [recovery guide](../../operations/backups.md) documents explicit operator fencing and
 replacement-identity reconciliation. This establishes isolated implementation
 acceptance, not production enablement, physical power-loss testing or automatic
 restoration of historical authority. The extended native drill additionally pins
@@ -232,21 +232,21 @@ leadership; the fixed Lilly fence characterizations and the full findings are in
 the [historical-authority characterization review](../reviews/2026-09-26-historical-authority-characterization.md).
 
 The [operator verification review](../reviews/2026-09-26-backup-operator-verification.md)
-tracks [generated public-runtime histories](../../../nix/tests/evaluation/backup-operators.py)
+tracks [generated public-runtime histories](../../../nix/verification/tests/evaluation/backup-operators.py)
 against local encrypted Restic: complete manifest parsing, shared-reference
 retention, lock contention, refusal inventories and explicit fresh-target recovery
 after partial restoration. This adds verification of existing decisions; native
 and production evidence retains its original scope.
 
 The [custody review](../reviews/2026-09-26-custody-backup-key.md) adds the
-[backup-custody evaluation check](../../../nix/tests/evaluation/backup-custody.py):
+[backup-custody evaluation check](../../../nix/verification/tests/evaluation/backup-custody.py):
 the documented zero-failure password key ceremony, the exact `repository`-label
 wedge when a rotated password deploys without the preceding `restic key`
 ceremony together with its previous-generation recovery, and the
 restore→decrypt→repository-access composition including the
 historical-generation refusal leg. The wedge and the operator key ceremony were
 previously undocumented; this decision and its runtime contracts are unchanged.
-Native and production evidence retains its original scope.The [updater custody histories](../../../nix/tests/machines/auto-update/custody_histories.py)
+Native and production evidence retains its original scope.The [updater custody histories](../../../nix/verification/tests/machines/auto-update/custody_histories.py)
 pin host-side behavior when a host is removed from any SOPS document its
 configuration still selects, including `hostname-backup`: recipient-keyed
 resolution fails closed at updater staging (`operation_failed`/`stage`) with the
@@ -255,7 +255,7 @@ a custody or configuration fix. Evidence only; no recipient or repository-key
 semantics changed.
 The [interruption and custody review](../reviews/2026-09-27-backup-interruptions.md)
 extends those histories: credential-custody validation (already required on the
-capture path) is now enforced by [repository commands](../../../nix/modules/backups/restic.py)
+capture path) is now enforced by [repository commands](../../../nix/domains/system/backups/restic.py)
 immediately before every repository operation, closing a refusal asymmetry for
 operator list/inspect/restore/init and scheduled prune/check. Generated
 SIGTERM/SIGKILL/timeout interruptions per restore component, kill-during-upload

@@ -17,12 +17,67 @@ defmodule MarshallWeb.ThreadsLiveTest do
     assert has_element?(view, "a[href='/threads/activity']", "Activity")
   end
 
+  # @cc [owner:ghuntley,label:verification;durability] thread-index-keyset-controls
+  # The LiveView MUST expose the domain's next keyset page once more than one
+  # bounded page exists, and advancing it MUST reveal older authorized threads.
+  test "thread index advances through keyset pages", c do
+    oldest = create_thread(c.owner, "Oldest thread")
+    Enum.each(1..50, &create_thread(c.owner, "Thread #{&1}"))
+
+    {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads")
+
+    assert has_element?(view, "#thread-page-next")
+    refute has_element?(view, "#thread-list-items a[href='/threads/#{oldest.id}']")
+
+    render_click(view, "threads_next")
+
+    assert has_element?(view, "#thread-list-items a[href='/threads/#{oldest.id}']")
+    assert has_element?(view, "#thread-page-first")
+  end
+
   test "new thread view collects an objective and machine settings", c do
     {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/new")
     assert has_element?(view, "#new-thread-form")
     assert has_element?(view, "textarea[name='thread[objective]']")
     assert has_element?(view, "select[name='thread[mode]']")
     assert has_element?(view, "#create-thread")
+  end
+
+  # @cc [owner:ghuntley,label:verification;product] new-thread-skill-selection
+  # A new thread has no guest context yet, but a bounded skill source selected
+  # from the composer MUST remain in the draft and be sent with creation.
+  test "new thread composer keeps an initial skill selection", c do
+    {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/new")
+
+    render_click(view, "skill_search", %{"query" => "release-checks"})
+
+    assert has_element?(
+             view,
+             "#thread-skill-suggestions button[data-thread-skill='release-checks']"
+           )
+
+    render_click(view, "select_skill", %{"id" => "release-checks"})
+    assert has_element?(view, "#thread-selected-skills", "$release-checks")
+
+    send(view.pid, :refresh_threads)
+    assert has_element?(view, "#thread-selected-skills", "$release-checks")
+
+    render_submit(view, "create", %{
+      "thread" => %{
+        "objective" => "Prepare the release",
+        "mode" => "medium",
+        "collaboration_mode" => "work",
+        "profile" => "standard",
+        "image_id" => "image",
+        "vcpu" => "2",
+        "memory_mib" => "4096",
+        "disk_gib" => "40",
+        "team_id" => ""
+      }
+    })
+
+    [thread] = Marshall.Compute.Ledger.read!(Marshall.Threads.Thread, creator_id: c.owner.id)
+    assert thread.initial_skill_ids == ["release-checks"]
   end
 
   # @cc [owner:ghuntley,label:verification;product] composer-mode-does-not-provision
@@ -136,6 +191,37 @@ defmodule MarshallWeb.ThreadsLiveTest do
     refute has_element?(view, "#thread-search-empty")
   end
 
+  test "activity filters narrow authorized status and sharing scope", c do
+    own = create_thread(c.owner, "My activity")
+    shared = create_thread(c.owner, "Shared activity")
+    collaborator = user()
+    :ok = set_thread_access(c.owner, shared, collaborator, :viewer)
+
+    {:ok, view, _html} = live(signed_in(c.conn, collaborator), ~p"/threads/activity")
+
+    assert has_element?(view, "#thread-activity-items a[href='/threads/#{shared.id}']")
+    refute has_element?(view, "#thread-activity-items a[href='/threads/#{own.id}']")
+
+    view
+    |> form("#thread-activity-filter",
+      filter: %{status: "all", time: "all", owner: "mine"}
+    )
+    |> render_change()
+
+    refute has_element?(view, "#thread-activity-items a[href='/threads/#{shared.id}']")
+
+    view
+    |> form("#thread-activity-filter",
+      filter: %{status: "all", time: "all", owner: "shared"}
+    )
+    |> render_change()
+
+    assert has_element?(view, "#thread-activity-items a[href='/threads/#{shared.id}']")
+    refute has_element?(view, "#thread-activity-items a[href='/threads/#{own.id}']")
+    assert has_element?(view, "#thread-activity-time-filter")
+    assert has_element?(view, "#thread-activity-owner-filter")
+  end
+
   # @cc [owner:ghuntley,label:verification;security] pending-thread-preserves-objective
   # A pending thread MUST display its authorized saved objective and explain
   # provisioning without prompt or terminal controls. Prompt admission MUST
@@ -155,6 +241,26 @@ defmodule MarshallWeb.ThreadsLiveTest do
     assert Marshall.Compute.Ledger.read!(Marshall.Agents.Turn, actor_id: c.owner.id) == []
   end
 
+  # @cc [owner:ghuntley,label:verification;product] pending-thread-lifecycle-control
+  # A manager MUST be able to archive a pending or provisioning thread so a
+  # stuck admission can be cancelled through the same durable lifecycle used
+  # for ready and failed threads.
+  test "pending thread exposes manager lifecycle actions", c do
+    thread = create_thread(c.owner, "Cancel a stuck admission")
+    {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/#{thread.id}")
+
+    assert has_element?(view, "details.thread-actions-menu")
+    assert has_element?(view, "details.thread-actions-menu button[phx-click='archive']")
+    assert has_element?(view, "details.thread-actions-menu button[phx-click='delete']")
+
+    view
+    |> element("details.thread-actions-menu button[phx-click='archive']")
+    |> render_click()
+
+    assert {:ok, %Marshall.Threads.Thread{status: :archived}} =
+             Marshall.Threads.get_thread(%{thread_id: thread.id}, actor: c.owner)
+  end
+
   # @cc [owner:ghuntley,label:verification;product] thread-conversation-reading-order
   # The reply composer MUST precede the transcript in document order. Events
   # MUST appear newest first by their persisted sequence, including after refresh.
@@ -163,13 +269,24 @@ defmodule MarshallWeb.ThreadsLiveTest do
 
     [root] = Ledger.read!(Marshall.Agents.Root, vm_id: c.vm.id)
     [agent_thread] = Ledger.read!(Marshall.Agents.Thread, root_id: root.id)
-    thread = create_thread(c.owner, "Follow the deployment")
+    thread = create_thread(c.owner, "Follow the deployment", c.vm.idempotency_key)
 
     Ledger.update!(thread, :bind_machine, %{
       machine_id: c.vm.id,
       agent_root_id: root.id,
       agent_thread_id: agent_thread.id,
       status: :ready
+    })
+
+    current_thread = Ledger.read!(Marshall.Threads.Thread, id: thread.id) |> hd()
+    Marshall.Threads.Generation.sync!(current_thread)
+
+    Ledger.create!(Marshall.Threads.Generation, :open, %{
+      thread_id: current_thread.id,
+      ordinal: 2,
+      machine_key: "retired:" <> Ash.UUID.generate(),
+      status: :archived,
+      archived_at: DateTime.utc_now()
     })
 
     older =
@@ -189,6 +306,16 @@ defmodule MarshallWeb.ThreadsLiveTest do
       })
 
     {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/#{thread.id}")
+
+    assert has_element?(view, "#thread-generations")
+    assert has_element?(view, "#thread-generation-selector option[value='1']")
+    assert has_element?(view, "#thread-generation-selector option[value='2']")
+
+    {:ok, invalid_view, _html} =
+      live(signed_in(c.conn, c.owner), ~p"/threads/#{thread.id}?generation=999")
+
+    assert has_element?(invalid_view, "#thread-not-found")
+    refute has_element?(invalid_view, "#thread-prompt-form")
 
     assert conversation_order(view) == [
              "thread-prompt-form",
@@ -235,7 +362,13 @@ defmodule MarshallWeb.ThreadsLiveTest do
     fixture = EditorFixture.new()
     [root] = Ledger.read!(Marshall.Agents.Root, vm_id: fixture.vm.id)
     [agent_thread] = Ledger.read!(Marshall.Agents.Thread, root_id: root.id)
-    thread = create_thread(fixture.owner, "Review the implementation in the editor")
+
+    thread =
+      create_thread(
+        fixture.owner,
+        "Review the implementation in the editor",
+        fixture.vm.idempotency_key
+      )
 
     Ledger.update!(thread, :bind_machine, %{
       machine_id: fixture.vm.id,
@@ -246,6 +379,11 @@ defmodule MarshallWeb.ThreadsLiveTest do
 
     {:ok, view, _html} = live(signed_in(c.conn, fixture.owner), ~p"/threads/#{thread.id}")
     assert has_element?(view, "#thread-vscode[href='/machines/#{fixture.vm.id}/code']")
+
+    assert has_element?(
+             view,
+             "#thread-terminal-embed iframe[data-thread-terminal-src='/machines/#{fixture.vm.id}/terminals']"
+           )
 
     Ledger.intent!(fixture.vm, %{
       desired_state: :stopped,
@@ -267,7 +405,7 @@ defmodule MarshallWeb.ThreadsLiveTest do
 
     [root] = Ledger.read!(Marshall.Agents.Root, vm_id: c.vm.id)
     [agent_thread] = Ledger.read!(Marshall.Agents.Thread, root_id: root.id)
-    thread = create_thread(c.owner, "A shared release investigation")
+    thread = create_thread(c.owner, "A shared release investigation", c.vm.idempotency_key)
 
     Ledger.update!(thread, :bind_machine, %{
       machine_id: c.vm.id,
@@ -275,6 +413,11 @@ defmodule MarshallWeb.ThreadsLiveTest do
       agent_thread_id: agent_thread.id,
       status: :ready
     })
+
+    Marshall.Threads.Generation.sync!(
+      Ledger.read!(Marshall.Threads.Thread, id: thread.id)
+      |> hd()
+    )
 
     collaborator = user()
     :ok = set_thread_access(c.owner, thread, collaborator, :viewer)
@@ -417,7 +560,7 @@ defmodule MarshallWeb.ThreadsLiveTest do
                %{
                  objective: "Retain the completed task",
                  machine_spec: request(),
-                 idempotency_key: Ash.UUID.generate()
+                 idempotency_key: c.vm.idempotency_key
                },
                actor: c.owner
              )
@@ -429,6 +572,8 @@ defmodule MarshallWeb.ThreadsLiveTest do
         agent_thread_id: agent_thread.id,
         status: :ready
       })
+
+    Marshall.Threads.Generation.sync!(bound)
 
     Ledger.create!(Marshall.Agents.Event, :append, %{
       thread_id: agent_thread.id,
@@ -468,13 +613,15 @@ defmodule MarshallWeb.ThreadsLiveTest do
   end
 
   @spec create_thread(Marshall.Accounts.User.t(), String.t()) :: Marshall.Threads.Thread.t()
-  defp create_thread(owner, objective) do
+  @spec create_thread(Marshall.Accounts.User.t(), String.t(), String.t()) ::
+          Marshall.Threads.Thread.t()
+  defp create_thread(owner, objective, idempotency_key \\ Ash.UUID.generate()) do
     {:ok, thread} =
       Marshall.Threads.create_thread(
         %{
           objective: objective,
           machine_spec: request(),
-          idempotency_key: Ash.UUID.generate()
+          idempotency_key: idempotency_key
         },
         actor: owner
       )

@@ -124,11 +124,11 @@ SSH/systemd machine workflow separately from simulated client tests.
 
 ## Implementation evidence
 
-The [host transport](../../../nix/packages/host/cli.py) now selects explicit
+The [host transport](../../../nix/domains/artifacts/host/cli.py) now selects explicit
 administrative ports for SSH and Nix copies. Plans bind source and installer ports;
 post-kexec calls use the installer port. Enrollment preparation selects Marshall's
-operator port independently. [Planning tests](../../../nix/tests/evaluation/host-planning.py)
-cover port binding and phase selection; [preparation tests](../../../nix/tests/evaluation/enrollment-preparation.py)
+operator port independently. [Planning tests](../../../nix/verification/tests/evaluation/host-planning.py)
+cover port binding and phase selection; [preparation tests](../../../nix/verification/tests/evaluation/enrollment-preparation.py)
 verify the independent Marshall choice. This preserves existing identity and
 erasure authorization boundaries.
 
@@ -136,13 +136,13 @@ erasure authorization boundaries.
 - [Coordinator](../../../marshall/lib/marshall/compute/enrollment_preparation.ex)
   and [resource](../../../marshall/lib/marshall/compute/enrollment_operation.ex)
   implement durable retry identity and private export.
-- [Host preparation](../../../nix/packages/host/preparation.py),
-  [operator module](../../../nix/modules/marshall-operator.nix) and
-  [host profile](../../../nix/hosts/profile.nix) implement the deployment boundary.
+- [Host preparation](../../../nix/domains/artifacts/host/preparation.py),
+  [operator module](../../../nix/domains/system/marshall-operator.nix) and
+  [host profile](../../../nix/platform/hosts/profile.nix) implement the deployment boundary.
 - [Application tests](../../../marshall/test/marshall/compute/enrollment_test.exs)
-  and [custody tests](../../../nix/tests/evaluation/enrollment-preparation.py)
+  and [custody tests](../../../nix/verification/tests/evaluation/enrollment-preparation.py)
   exercise the scoped failure and cryptographic boundaries.
-- [Machine acceptance](../../../nix/tests/machines/enrollment-operator/default.nix)
+- [Machine acceptance](../../../nix/verification/tests/machines/enrollment-operator/default.nix)
   exercises actual pinned SSH, SOPS delivery and Lilly readiness across rotation.
 - [Review](../reviews/2026-09-17-declarative-enrollment.md) records passing scoped
   checks, release artifacts, unrelated checkout failures and deployment limits.
@@ -152,15 +152,15 @@ erasure authorization boundaries.
 Physical provider enrollment and production recovery access remain deployment
 acceptance, independent of synthetic fixture results.
 
-The [explicit enrollment runner](../../../nix/packages/host/enrollment.py)
+The [explicit enrollment runner](../../../nix/domains/artifacts/host/enrollment.py)
 validates initial resource budgets and native GUIDs against the installed host
 without requiring a prior enrollment receipt. Existing policies cannot change
 through enrollment; ordinary resource-update journals remain separate. The
-[host-planning tests](../../../nix/tests/evaluation/host-planning.py) exercise this
+[host-planning tests](../../../nix/verification/tests/evaluation/host-planning.py) exercise this
 first-enrollment boundary and rejection of changed budgets and identities.
 They also exercise empty-host rebind refusal boundaries, retained tombstones,
 partial owner-write retry, completed-journal retry and the unchanged ordinary
-updater binding fence. The [host deployment manifest](../../../nix/modules/auto-update/default.nix)
+updater binding fence. The [host deployment manifest](../../../nix/domains/system/auto-update/default.nix)
 supplies the declared transfer-state path to that check. Production use remains
 separate acceptance evidence and is recorded in the associated architecture
 review rather than inferred from these simulated filesystem checks.

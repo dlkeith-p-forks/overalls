@@ -149,7 +149,9 @@ Run component gates before publication. Release builds use locked dependencies a
 an explicit source allowlist. Stage private secrets, verify schema and credential
 compatibility, run serialized compatible migrations, then switch and verify health.
 Serving application startup does not run migrations. Independent automatic updates
-perform their own pre-switch migration and health sequence.
+perform their own pre-switch migration and health sequence. Enrolled hosts poll
+the `trunk` branch of `ssh://git@github.com/ghuntley/overalls` with the shared
+deploy key and the pinned GitHub host key from their declaration.
 
 For manual rolling changes, remove one backend from traffic, activate, wait for
 verified `/health/ready`, and restore traffic before moving to another.
@@ -281,8 +283,8 @@ Acceptance requires the deployed revision, healthy required services, current ho
 reports, an authorized guest lifecycle, terminal/SSH access, and working configured
 mail/provider paths. A build or push alone proves none of these runtime outcomes.
 
-Evidence: [host tool](repo:docs/host-provisioning.md), [enrollment](repo:docs/provisioner-enrollment.md),
-[deployment](repo:docs/deployment.md), [updater](repo:nix/modules/auto-update/runtime.py).
+Evidence: [host tool](repo:docs/operations/host-provisioning.md), [enrollment](repo:docs/operations/provisioner-enrollment.md),
+[deployment](repo:docs/operations/deployment.md), [updater](repo:nix/domains/system/auto-update/runtime.py).
 
 The SSH CA change requires the certificate database migrations and updated
 Marshall, gateways, client and new guest images as one coordinated development
@@ -321,12 +323,16 @@ staging. This is structural evidence only; neither distribution has a native
 boot, recovery or independent-host acceptance claim here. Preliminary FreeBSD
 and OmniOS/illumos version-6 image packages and catalog entries exist without
 standby metadata, but the rolling FreeBSD source endpoint is retired and
-replaced by a checksum-pinned archive capture. The native-kernel derivation
-currently emits immutable source/contract receipts with `artifact.available =
-false`; image construction stops before copying a stock disk. No successful
-cross-built kernel, native agent or `terminald`, signed image, boot, recovery
-or independent-host acceptance is recorded, and bundle version 3 remains
-runtime work in progress.
+replaced by a checksum-pinned archive capture. Nix evaluates the pinned native
+receipts, but their placeholder kernel artifacts make image construction stop
+before a stock disk is copied. The OmniOS row uses the explicit `illumosGuest`
+constructor. Bundle version 3 is implemented and structurally tested, but
+signed rollout and launch remain unrecorded.
+
+The native service package is also incomplete. Its rc.d/SMF supervisor and
+readiness PID checks are source evidence; the cross-built Lyra closure,
+native `terminald` and OS-native SSH configuration remain unavailable on the
+Linux release builder. Service files alone cannot confer fleet admission.
 
 The Windows guest spike ([ADR-0169](repo:docs/architecture/decisions/0169-firmware-booted-windows-guests.md))
 adds build-time requirements without touching fleet activation. The builder
@@ -334,12 +340,12 @@ needs the `kvm` system feature (`requiredSystemFeatures = ["kvm"]`, the same
 mechanism `pkgs.vmTools` and the NixOS test framework use) because Windows is
 installed under QEMU inside the sandbox, and it downloads the roughly 6 GiB
 Windows Server 2025 evaluation ISO as a fixed-output fetch pinned in
-[iso.json](repo:nix/packages/guest/windows/iso.json). Installation takes 20 to
+[iso.json](repo:nix/domains/artifacts/guest/windows/iso.json). Installation takes 20 to
 40 minutes and is not reproducible, so rebuilds happen only when an input pin
 changes. Production use needs licensed media swapped into the pin file; the
 evaluation licence covers 180 days of guest uptime.
 
-The [patched Firecracker](repo:nix/packages/firecracker.nix) replaces the plain
+The [patched Firecracker](repo:nix/domains/artifacts/infrastructure/firecracker.nix) replaces the plain
 nixpkgs package in Lilly's release metadata and the development shell. It keeps
 the `1.16.1` version string Lilly matches, so no fleet ordering constraint
 follows from this change; hosts pick it up with their next activation like any
@@ -367,6 +373,6 @@ copied to both hosts with `nix copy`, and the same store path verified on each
 (and `disk.raw` verified sparse) before the second push stages it in
 `fleet/guest-images.nix` without standby metadata; hosts substitute the image
 instead of each building a different one with a different identity. The
-procedure is in [docs/nixos.md](repo:docs/nixos.md); acceptance is recorded in
+procedure is in [docs/operations/nixos.md](repo:docs/operations/nixos.md); acceptance is recorded in
 the [agents review](repo:docs/architecture/reviews/2026-10-14-windows-guest-agents.md)
 and the [multi-OS review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md).

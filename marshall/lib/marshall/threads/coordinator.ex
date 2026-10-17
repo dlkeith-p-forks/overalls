@@ -5,7 +5,7 @@ defmodule Marshall.Threads.Coordinator do
   require Marshall.Events
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.Ledger
-  alias Marshall.Threads.{Authorization, MachineSpec, Mode, Thread}
+  alias Marshall.Threads.{Authorization, Generation, MachineSpec, Mode, Thread}
 
   @impl true
   @spec run(Ash.ActionInput.t(), keyword(), map()) :: {:ok, term()} | {:error, term()}
@@ -66,6 +66,8 @@ defmodule Marshall.Threads.Coordinator do
               machine_key: args.idempotency_key
             })
 
+          _generation = Generation.open!(thread, 1)
+
           enqueue_provision!(thread)
 
           Ledger.after_commit(fn ->
@@ -80,26 +82,34 @@ defmodule Marshall.Threads.Coordinator do
   end
 
   defp execute(:list, args, actor) do
-    member_team_ids =
-      Ledger.read!(Marshall.Teams.TeamMember, user_id: actor.id)
-      |> Enum.map(& &1.team_id)
+    case authorized_page(thread_query(actor), actor, args[:limit] || 100) do
+      {:ok, {items, _has_more?}} -> Enum.take(items, args[:limit] || 100)
+      {:error, reason} -> Ledger.rollback(reason)
+    end
+  end
 
-    team_ids =
-      Marshall.Teams.Team
-      |> Ash.Query.filter(id in ^member_team_ids)
-      |> Ash.read!(actor: SystemActor.compute())
-      |> Enum.map(& &1.id)
+  # @cc [owner:ghuntley,label:security;durability] thread-list-keyset-page
+  # Thread pages MUST keyset paginate the same authorized query with a stable
+  # inserted_at/id ordering. An unknown or unauthorized cursor returns an empty
+  # page and never broadens the caller's read scope.
+  defp execute(:list_page, args, actor) do
+    limit = args[:limit] || 50
 
-    Thread
-    |> Ash.Query.for_read(:history, %{}, actor: SystemActor.compute())
-    |> Ash.Query.filter(
-      creator_id == ^actor.id or team_id in ^team_ids or
-        exists(grants, user_id == ^actor.id and is_nil(archived_at))
-    )
-    |> Ash.Query.sort(inserted_at: :desc)
-    |> Ash.Query.limit(args[:limit] || 100)
-    |> Ash.read!(actor: SystemActor.compute())
-    |> Enum.filter(&Authorization.allowed?(&1, actor, "read"))
+    case page_query(thread_query(actor), args[:after], actor) do
+      {:ok, query} ->
+        case authorized_page(query, actor, limit) do
+          {:ok, {rows, has_more?}} ->
+            items = Enum.take(rows, limit)
+
+            %{items: items, next_cursor: if(has_more?, do: List.last(items).id)}
+
+          {:error, reason} ->
+            Ledger.rollback(reason)
+        end
+
+      :empty ->
+        %{items: [], next_cursor: nil}
+    end
   end
 
   defp execute(:get, %{thread_id: id}, actor) do
@@ -165,6 +175,7 @@ defmodule Marshall.Threads.Coordinator do
     locked = Ledger.lock_history!(Thread, thread.id) || Ledger.rollback(:not_found)
     require_management!(locked, actor)
     locked = with_admitted_machine!(locked)
+    cancel_pending_question!(locked)
 
     case locked.status do
       status when status in [:archived, :deleting] ->
@@ -174,10 +185,14 @@ defmodule Marshall.Threads.Coordinator do
         archive_machine!(locked, actor)
 
       _ ->
-        Ledger.update!(locked, :mark_archived, %{
-          status: :archived,
-          archived_at: DateTime.utc_now()
-        })
+        archived =
+          Ledger.update!(locked, :mark_archived, %{
+            status: :archived,
+            archived_at: DateTime.utc_now()
+          })
+
+        Generation.sync!(archived)
+        archived
     end
   end
 
@@ -204,6 +219,8 @@ defmodule Marshall.Threads.Coordinator do
         failure_reason: nil
       })
 
+    _generation = Generation.open_next!(reopened)
+
     enqueue_provision!(reopened)
 
     reopened
@@ -212,14 +229,137 @@ defmodule Marshall.Threads.Coordinator do
   defp execute(operation, args, actor),
     do: Marshall.Threads.Controls.execute(operation, args, actor)
 
+  @spec thread_query(Marshall.Accounts.User.t()) :: Ash.Query.t()
+  defp thread_query(actor) do
+    member_team_ids =
+      Ledger.read!(Marshall.Teams.TeamMember, user_id: actor.id)
+      |> Enum.map(& &1.team_id)
+
+    team_ids =
+      Marshall.Teams.Team
+      |> Ash.Query.filter(id in ^member_team_ids)
+      |> Ash.read!(actor: SystemActor.compute())
+      |> Enum.map(& &1.id)
+
+    Thread
+    |> Ash.Query.for_read(:history, %{}, actor: SystemActor.compute())
+    |> Ash.Query.filter(
+      creator_id == ^actor.id or team_id in ^team_ids or
+        exists(grants, user_id == ^actor.id and is_nil(archived_at))
+    )
+    |> Ash.Query.sort(inserted_at: :desc, id: :desc)
+  end
+
+  @spec page_query(Ash.Query.t(), String.t() | nil, Marshall.Accounts.User.t()) ::
+          {:ok, Ash.Query.t()} | :empty
+  defp page_query(query, nil, _actor), do: {:ok, query}
+
+  defp page_query(query, cursor, actor) when is_binary(cursor) do
+    case Ledger.history!(Thread, id: cursor) do
+      [%Thread{} = thread] ->
+        if Authorization.allowed?(thread, actor, "read") do
+          {:ok,
+           Ash.Query.filter(
+             query,
+             inserted_at < ^thread.inserted_at or
+               (inserted_at == ^thread.inserted_at and id < ^thread.id)
+           )}
+        else
+          :empty
+        end
+
+      _ ->
+        :empty
+    end
+  end
+
+  defp page_query(_query, _cursor, _actor), do: :empty
+
+  @page_batch 100
+  @max_page_scan 10_000
+
+  # @cc [owner:ghuntley,label:security;durability] thread-authorized-page-bound
+  # Authorized thread pagination MUST continue past post-query authorization
+  # refusals so visible pages do not contain holes. It MUST stop after a fixed
+  # scan budget and return a closed error rather than silently truncating or
+  # exposing a cursor that could broaden the reader's scope.
+  @spec authorized_page(Ash.Query.t(), Marshall.Accounts.User.t(), pos_integer()) ::
+          {:ok, {[Thread.t()], boolean()}} | {:error, :authorization_scan_limit}
+  defp authorized_page(query, actor, limit) do
+    collect_authorized(query, actor, limit, [], 0)
+  end
+
+  @spec collect_authorized(
+          Ash.Query.t(),
+          Marshall.Accounts.User.t(),
+          pos_integer(),
+          [Thread.t()],
+          non_neg_integer()
+        ) :: {:ok, {[Thread.t()], boolean()}} | {:error, :authorization_scan_limit}
+  defp collect_authorized(query, actor, limit, collected, scanned) do
+    batch_size = min(@page_batch, limit + 1)
+
+    rows =
+      query
+      |> Ash.Query.limit(batch_size)
+      |> Ash.read!(actor: SystemActor.compute())
+
+    authorized = Enum.filter(rows, &Authorization.allowed?(&1, actor, "read"))
+    collected = collected ++ authorized
+    scanned = scanned + length(rows)
+
+    cond do
+      length(collected) > limit ->
+        {:ok, {Enum.take(collected, limit + 1), true}}
+
+      length(rows) < batch_size ->
+        {:ok, {collected, false}}
+
+      scanned >= @max_page_scan ->
+        {:error, :authorization_scan_limit}
+
+      true ->
+        last = List.last(rows)
+
+        collect_authorized(
+          after_thread(query, last),
+          actor,
+          limit,
+          collected,
+          scanned
+        )
+    end
+  end
+
+  @spec after_thread(Ash.Query.t(), Thread.t()) :: Ash.Query.t()
+  defp after_thread(query, %Thread{} = thread) do
+    Ash.Query.filter(
+      query,
+      inserted_at < ^thread.inserted_at or
+        (inserted_at == ^thread.inserted_at and id < ^thread.id)
+    )
+  end
+
+  @spec cancel_pending_question!(Thread.t()) :: :ok
+  defp cancel_pending_question!(%Thread{agent_thread_id: agent_thread_id})
+       when is_binary(agent_thread_id) do
+    Marshall.Agents.Planning.cancel_pending_locked!(agent_thread_id, :archived)
+  end
+
+  defp cancel_pending_question!(%Thread{}), do: :ok
+
   @spec archive_machine!(Thread.t(), Marshall.Accounts.User.t()) :: Thread.t()
   defp archive_machine!(thread, actor) do
     case Ledger.history!(Marshall.Compute.VirtualMachine, id: thread.machine_id) do
       [%{archived_at: archived_at}] when not is_nil(archived_at) ->
-        Ledger.update!(thread, :mark_archived, %{
-          status: :archived,
-          archived_at: DateTime.utc_now()
-        })
+        archived =
+          Ledger.update!(thread, :mark_archived, %{
+            status: :archived,
+            archived_at: DateTime.utc_now()
+          })
+
+        Generation.sync!(archived)
+        archived
 
       [%{desired_state: :deleted}] ->
         # Deleted intent is monotone, but is not a physical deletion receipt.
@@ -271,27 +411,36 @@ defmodule Marshall.Threads.Coordinator do
   end
 
   @spec prepare_retry!(Thread.t()) :: Thread.t()
-  defp prepare_retry!(%Thread{machine_id: nil} = thread),
-    do: Ledger.update!(thread, :bind_machine, %{status: :pending, failure_reason: nil})
+  defp prepare_retry!(%Thread{machine_id: nil} = thread) do
+    updated = Ledger.update!(thread, :bind_machine, %{status: :pending, failure_reason: nil})
+    Generation.sync!(updated)
+    updated
+  end
 
   defp prepare_retry!(thread) do
     case Ledger.history!(Marshall.Compute.VirtualMachine, id: thread.machine_id) do
       [%{archived_at: archived_at}] when not is_nil(archived_at) ->
-        Ledger.update!(thread, :reopen, %{
-          status: :pending,
-          archived_at: nil,
-          machine_id: nil,
-          agent_root_id: nil,
-          agent_thread_id: nil,
-          machine_key: "thread-retry:" <> thread.id <> ":" <> Ash.UUID.generate(),
-          failure_reason: nil
-        })
+        reopened =
+          Ledger.update!(thread, :reopen, %{
+            status: :pending,
+            archived_at: nil,
+            machine_id: nil,
+            agent_root_id: nil,
+            agent_thread_id: nil,
+            machine_key: "thread-retry:" <> thread.id <> ":" <> Ash.UUID.generate(),
+            failure_reason: nil
+          })
+
+        _generation = Generation.open_next!(reopened)
+        reopened
 
       [%{desired_state: :deleted}] ->
         Ledger.rollback(:retry_unavailable)
 
       [_vm] ->
-        Ledger.update!(thread, :bind_machine, %{status: :pending, failure_reason: nil})
+        updated = Ledger.update!(thread, :bind_machine, %{status: :pending, failure_reason: nil})
+        Generation.sync!(updated)
+        updated
 
       [] ->
         Ledger.rollback(:machine_unavailable)
@@ -301,6 +450,7 @@ defmodule Marshall.Threads.Coordinator do
   @spec mark_deleting!(Thread.t()) :: Thread.t()
   defp mark_deleting!(thread) do
     deleting = Ledger.update!(thread, :mark_deleting, %{status: :deleting})
+    Generation.sync!(deleting)
 
     Marshall.Threads.ArchiveWorker.new(%{
       "thread_id" => deleting.id,

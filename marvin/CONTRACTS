@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:security] marvin-launch-boundary
+The extension MUST transmit a source page only after an explicit toolbar click,
+only for the four exact HTTPS provider hosts, and only to the configured server.
+It MUST NOT collect page contents, credentials, history or telemetry.
+
+@cc [owner:ghuntley,label:build] marvin-package-boundary
+Archives MUST contain only maintained extension assets and generated build
+metadata. The package version MUST come from package.json; archives MUST have
+stable entry order, timestamps, modes and compression for identical inputs.
+
+@cc [owner:ghuntley,label:verification] marvin-checked-javascript
+Maintained JavaScript, including build scripts and tests, MUST pass strict
+TypeScript checking through explicit JSDoc interfaces. External values MUST be
+validated before use; dependency tools MUST remain outside distributed archives.

@@ -89,7 +89,7 @@ The [shared guidance](../../../protocol/lib/overalls_protocol/ssh_onboarding.ex)
 [channel state machine](../../../audi/lib/audi/ssh/state.ex) implement these
 boundaries. [Transport tests](../../../audi/test/ssh_transport_test.exs) exercise
 real OpenSSH and byte preservation; [state properties](../../../audi/test/ssh_state_test.exs)
-exercise arbitrary request histories. The [native journey](../../../nix/tests/machines/fleet/scenarios/user-ssh-journey.py)
+exercise arbitrary request histories. The [native journey](../../../nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py)
 covers the full setup flow. Validation results and remaining gaps are recorded
 in the [review](../reviews/2026-09-25-ssh-onboarding-guidance.md).
 

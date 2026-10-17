@@ -5,11 +5,11 @@
 Extend the existing single-host browser acceptance to three immutable production
 Marshall releases, TLS PostgreSQL, HAProxy, the packaged root Lilly service and
 a newly provisioned Firecracker guest. The
-[harness](../../../nix/tests/README.md) reuses the isolated
-[deployment fixture](../../../nix/tests/README.md). Its trusted
-[Marshall helper](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/scripts/deployment_fixture.exs) requires a
+[harness](../../../nix/verification/tests/README.md) reuses the isolated
+[deployment fixture](../../../nix/verification/tests/README.md). Its trusted
+Marshall helper (`marshall/scripts/deployment_fixture.exs` at kittens revision `9fe1e493`, repository deleted) requires a
 matching disposable-database sentinel; its
-[Lilly helper](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/scripts/deployment_fixture.exs) uses the global host
+Lilly helper (`lilly/scripts/deployment_fixture.exs` at kittens revision `9fe1e493`, repository deleted) uses the global host
 lock and fixture ownership before physical preparation or cleanup.
 
 This remains one physical host. The work preserves existing protocol, authority,

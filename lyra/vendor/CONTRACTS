@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:build;security] lyra-vendored-dependency-provenance
+Vendored dependency edits MUST preserve the upstream license and exact source
+version, document the upstream archive checksum and local diff, and receive the
+same cross-target checks as their consumers. Upstream implementation files MUST
+NOT be reformatted or changed beyond the documented patch.

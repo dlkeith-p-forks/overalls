@@ -51,15 +51,15 @@ the subsequently merged main networking changes also passes.
 | Requirement | Implementation and verification |
 | --- | --- |
 | Audi owns authoritative DNS | The [server](../../../audi/lib/audi/dns/server.ex) binds UDP and TCP itself. Wire, replica and directory properties plus two independent packaged DNS nodes cover authoritative answers, expiry and failover. No external DNS server implements the role. |
-| DNS placement and short TTL | The [service diagram and guide](../../audi.md) place two DNS replicas on control hosts and gateways beside Lilly. Address TTL is 20 seconds. Marshall publishes placement state; it does not create per-VM DNS-provider records. Fleet relocation verifies both replicas change to the destination. |
+| DNS placement and short TTL | The [service diagram and guide](../../services/audi.md) place two DNS replicas on control hosts and gateways beside Lilly. Address TTL is 20 seconds. Marshall publishes placement state; it does not create per-VM DNS-provider records. Fleet relocation verifies both replicas change to the destination. |
 | Audi owns SSH proxying | The [OTP SSH listener](../../../audi/lib/audi/ssh/listener.ex) disables host shells and generic forwarding. Real nested OpenSSH reaches guest port 22 with separate platform and guest keys; strict verification and revocation are exercised. |
 | HTTP/HTTPS and WebSockets | The [web proxy](../../../audi/lib/audi/http/proxy.ex) and browser/session authority run against a real guest application. The fleet verifies private login, streaming, WebSockets, public-to-private changes and CA-offline recovery. |
 | Current authorization and local isolation | [Lilly's guardian](../../../lilly/lib/lilly/ingress/guardian.ex) and namespace connector bind current placement/execution. Application tests cover expired/superseded authority; native tests cover revocation, control outage, daemon crash and same-host/cross-host/host denial. |
-| Stable names across relocation | The [native scenario](../../../nix/tests/machines/fleet/scenarios/audi-relocation.py) verifies retained data, physical source cleanup, destination DNS, unchanged strict SSH configuration, stable-name HTTPS and stale-source refusal. The final merged full run passes in 1520.47 seconds. |
-| Authenticated-user and TCP-flow diagrams | The [access guide](../../audi.md) contains service-placement and nested-SSH sequence diagrams, browser behavior and client configuration instructions. |
+| Stable names across relocation | The [native scenario](../../../nix/verification/tests/machines/fleet/scenarios/audi-relocation.py) verifies retained data, physical source cleanup, destination DNS, unchanged strict SSH configuration, stable-name HTTPS and stale-source refusal. The final merged full run passes in 1520.47 seconds. |
+| Authenticated-user and TCP-flow diagrams | The [access guide](../../services/audi.md) contains service-placement and nested-SSH sequence diagrams, browser behavior and client configuration instructions. |
 | Ash domain modeling | [Marshall.Ingress](../../../marshall/lib/marshall/ingress.ex) owns endpoints, service identities, routes, issuance and sessions through Ash resources. Audi's runtime caches do not replace database authority. |
 | Structured private logging | [Events](../../../audi/lib/audi/events.ex), [privacy filtering](../../../audi/lib/audi/privacy.ex) and transfer diagnostics emit closed metadata. Property tests exercise arbitrary private payloads and prevent their appearance in diagnostics or transfer stdout. |
-| Nix deployment modules | [Gateway](../../../nix/modules/audi.nix) and [DNS](../../../nix/modules/audi-dns.nix) modules provide separate packaged roles, protected runtime credentials, readiness and update integration. The latest merged driver builds with type checking and linting; native runs exercise both roles and corrective updates. |
+| Nix deployment modules | [Gateway](../../../nix/domains/system/audi.nix) and [DNS](../../../nix/domains/system/audi-dns.nix) modules provide separate packaged roles, protected runtime credentials, readiness and update integration. The latest merged driver builds with type checking and linting; native runs exercise both roles and corrective updates. |
 | Property-based and native tests | Merged gates: Audi 140 checks/46 properties; protocol 134/51; Lilly 331/39; Marshall 725/64. Required Dialyzer gates pass. Native ZFS transfer/recovery passes in 461.17 seconds. Snapshot-specific results and logs are recorded below. |
 | Certificate storage recovery | The permission-loss subtest passes in 11.12 seconds within the successful final merged run: deny access while unreadable, recover the same certificate and surviving guest with the CA offline. The earlier full-run cleanup failure is retained below. |
 | Commit, merge and preserve work | The implementation and preceding results are committed and merged into verified `origin/main` at `7d45d9e`. Original local work and interrupted experiment backups are retained. Final evidence documentation is published in the closing commit. |
@@ -178,7 +178,7 @@ certificate hostname rejection and the transport-failure diagnostic canary.
 The 48-record ADR checker and final whitespace check passed. These remain local
 process/database/transport tests, not NixOS guest or fleet acceptance.
 
-The [flow diagrams](../../audi.md) explain the accepted DNS placement and nested
+The [flow diagrams](../../services/audi.md) explain the accepted DNS placement and nested
 SSH path. They do not establish working SSH ingress. Remaining high-priority
 work includes placement publication, user/SSH authorization and expiring stream
 authority, a fenced local connector, the SSH/HTTP data paths, and NixOS deployment
@@ -2706,7 +2706,7 @@ passes as recorded below; broader actor/storage/capacity obligations remain open
 
 Evaluation of that recovery extension against current main found a fixture
 integration gap: mandatory Ziggy on each Lilly lacked its required encrypted
-secret document. The [fleet Ziggy module](../../../nix/tests/machines/fleet/ziggy.nix)
+secret document. The [fleet Ziggy module](../../../nix/verification/tests/machines/fleet/ziggy.nix)
 now retains the real service, issues independent Ziggy credentials through the
 real Marshall operator after host enablement, and seals them through the existing
 runtime SOPS/recovery-recipient path. Provider discovery uses a local TLS fixture

@@ -322,7 +322,7 @@ future permit/stream coordinator must confirm that separately. Pinned OpenSSH is
 included in production, development and operator-bundle host tools. Tests execute
 real key generation and public derivation, but not a peer SSH transfer.
 
-[Guest readiness](../../../nix/packages/guest/readiness.py) now has a Nix-installed
+[Guest readiness](../../../nix/domains/artifacts/guest/readiness.py) now has a Nix-installed
 vsock listener restricted to host CID 2. Responses bind boot-supplied placement,
 epoch and challenge plus the kernel boot ID, and require active multi-user/network
 units, expected /32 address/routes and a root write/fsync probe. The
@@ -362,7 +362,7 @@ durable current-journal index and native creation nonces. It still caps physical
 credit at the disk commitment; temporary-reservation credit remains unimplemented. Native
 parser/tree reads remain bounded to 4 MiB, with at most 4096 child filesystems
 and two snapshots per child; exceeding either limit withholds observation.
-The [native observation suite](../../../nix/tests/machines/native-zfs/driver.py)
+The [native observation suite](../../../nix/verification/tests/machines/native-zfs/driver.py)
 passed this reader against real shared snapshot blocks, wrong/deleted GUID bindings,
 strict default rejection and cleanup, alongside its existing policy/pressure and
 400-child checks. Fixture-supplied expectations are not production ownership proof.
@@ -417,7 +417,7 @@ coordination, import ownership adoption, activation and Oban integration remain
 unimplemented. Missing local state cannot be reconstructed from received
 properties; new preparation requires caller-proven native absence.
 
-A [native transfer suite](../../../nix/tests/machines/zfs-transfer/driver.py) now
+A [native transfer suite](../../../nix/verification/tests/machines/zfs-transfer/driver.py) now
 passed native baseline and incremental interruption/resume, full stopped transfer,
 abort of incomplete receive, mismatched-lineage refusal and ext4 contents after
 nonrecursive source reclamation. It uses two block-backed pools within one outer
@@ -509,7 +509,7 @@ A [pinned destination SSH client](../../../lilly/lib/lilly/transfer/ssh.ex) now
 joins existing per-relocation key custody to the native streaming helper. The
 key journal binds the enrolled peer before publishing private known-hosts data.
 The client excludes ambient SSH configuration, agents, forwarding and shared
-connections. A new [native SSH fixture](../../../nix/tests/machines/ssh-transfer/default.nix)
+connections. A new [native SSH fixture](../../../nix/verification/tests/machines/ssh-transfer/default.nix)
 passed real authentication, 32 MiB integrity, wrong-host/client-key rejection
 before export, and retired-key refusal in 27.29 seconds. Lilly and Marshall
 precommit passed, including forced Dialyzer.
@@ -563,7 +563,7 @@ preceding implementation increments, not the current code. Native test execution
 and its limits are recorded in the relocation review; integrated relocation
 remains unimplemented and this ADR remains partial.
 
-The [installed source module](../../../nix/modules/transfer.nix) now supplies a
+The [installed source module](../../../nix/domains/system/transfer.nix) now supplies a
 dedicated restricted SSH listener, root AuthorizedKeysCommand and a private
 socket-activated worker. Its [native channel](../../../lilly/native/export-channel/src/lib.rs)
 passes the authenticated stdout descriptor from the fixed SSH bridge to the root
@@ -574,7 +574,7 @@ the existing export supervisor. The transfer account is denied on ordinary SSH,
 and helpers remain non-setuid. Export services have their own bounded slice and
 use the host-selected ZFS userspace. Lilly's Nix module can generate the private
 export configuration when the optional service is enabled. The
-[two-node endpoint check](../../../nix/tests/machines/export-endpoint/default.nix)
+[two-node endpoint check](../../../nix/verification/tests/machines/export-endpoint/default.nix)
 passed native transfer, arbitrary-command refusal, listener-stop cancellation,
 confirmed source revocation and cleanup with the received snapshot retained.
 It uses synthetic control distribution and does not establish destination
@@ -965,7 +965,7 @@ It uses identical SSH restrictions and a fixed `cmp` consumer to require the exa
 challenge line and successful SSH exit; received bytes are not persisted or passed
 to BEAM. A local expected-response file contains only the canonical public
 challenge. Both source-built and bundled host tools include pinned diffutils.
-The [installed endpoint fixture](../../../nix/tests/machines/export-endpoint/driver.py)
+The [installed endpoint fixture](../../../nix/verification/tests/machines/export-endpoint/driver.py)
 now tests probe-only authentication, wrong challenge, export refusal and revocation;
 its native run is pending. Control exchange, current-authority checks and Marshall's
 pre-stop decision remain outstanding, so this helper alone does not enable moves.
@@ -1057,13 +1057,13 @@ revocation during a real lock wait pass. User-facing progress and controls remai
 
 ### Integrated native acceptance fixture (2026-09-17)
 
-The new [relocation fleet scenario](../../../nix/tests/machines/fleet/scenarios/relocation.py)
+The new [relocation fleet scenario](../../../nix/verification/tests/machines/fleet/scenarios/relocation.py)
 uses public admission, three Marshall instances, two real Lilly services and
 enrolled restricted SSH endpoints. It holds the baseline transfer until a guest
 write after snapshot creation, then requires the destination to retain that write,
 reclaim the source and return to the former host under a new placement. Syntax and
 contract checks pass; native execution is in progress. The
-[local source fixture](../../../nix/tests/machines/zfs-guest/source.exs) also adds
+[local source fixture](../../../nix/verification/tests/machines/zfs-guest/source.exs) also adds
 typed running-source probe coverage. Its first run reached revocation but failed
 because the fixture inherited its control-store lock. The corrected isolated task
 passed its native subtest in 24.24 seconds, including unchanged guest processes,
@@ -1091,7 +1091,7 @@ active exact-stream receiving intent with local ownership and a destination GUID
 before returning an opaque token. [ZFS](../../../lilly/lib/lilly/host/zfs.ex)
 requires stable safe staging and exact baseline lineage. The source validator
 remains responsible for decoding and checking source snapshot identity. The
-[native fixture](../../../nix/tests/machines/zfs-transfer/received.exs) now checks
+[native fixture](../../../nix/verification/tests/machines/zfs-transfer/received.exs) now checks
 partial full/incremental retrieval and ownership/lineage refusal; its run is
 pending. The preceding source-token native suite passed in 439.92 seconds.
 Coordinator-driven delivery and runtime resume remain incomplete; implementation
@@ -1133,7 +1133,7 @@ full Marshall relocation or daemon-update recovery.
 The [native stream helper](../../../lilly/native/transfer-stream/src/lib.rs) now uses
 nonblocking kernel splice and a monotonic rate bucket with a 64 KiB burst cap.
 [Runtime configuration](../../../lilly/lib/lilly/control/config.ex) and the
-[NixOS module](../../../nix/modules/lilly.nix) default production receive to
+[NixOS module](../../../nix/domains/system/lilly.nix) default production receive to
 64 MiB/s with a positive configurable ceiling of 1 GiB/s. The receiver carries
 that setting through SSH to native custody. Focused throttling/timeout tests pass;
 the final full gate and rate-enabled native acceptance remain pending. Byte
@@ -1176,7 +1176,7 @@ relocation or update-recovery evidence. The review records its artifact and the
 remaining native progress validation.
 
 
-[RelocationProgress](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/protocol/lib/overalls_protocol/relocation_progress.ex)
+RelocationProgress (`protocol/lib/overalls_protocol/relocation_progress.ex` at kittens revision `a99f74f0`, repository deleted)
 now defines bounded attempt-scoped transport telemetry. Attempt ordering combines
 the authenticated host session/epoch with a BEAM-monotonic positive sequence;
 control runtime restart opens a fresh session. The receiving application must
@@ -1193,7 +1193,7 @@ through the shared v3 codec.
 [Marshall's receive coordinator](../../../marshall/lib/marshall/compute/relocation_receives.ex)
 checks the current destination session and retained source request under host/VM
 locks, ignores stale or inapplicable observations, and stores one latest report
-using the [validated Ash type](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/compute/receive_progress.ex).
+using the validated Ash type (`marshall/lib/marshall/compute/receive_progress.ex` at kittens revision `a99f74f0`, repository deleted).
 Session epoch, attempt sequence, request revision and nondecreasing attempt bytes
 prevent late observations replacing newer work. Progress updates grant no
 receipt, execution authority, scheduling action or capacity credit.
@@ -1248,7 +1248,7 @@ results; the corrected-clock relocation fleet and broader acceptance remain acti
 
 ### Recovery and pressure acceptance implementation (2026-09-18)
 
-The [native failure scenarios](../../../nix/tests/machines/fleet/scenarios/relocation-failures.py)
+The [native failure scenarios](../../../nix/verification/tests/machines/fleet/scenarios/relocation-failures.py)
 exercise actual transfer interruption, daemon restart, source reboot after stop,
 post-stop cancellation, failed readiness, Delete during cleanup, updater activation
 on both endpoints and physical ZFS pressure. Disposable proxy path gates withhold

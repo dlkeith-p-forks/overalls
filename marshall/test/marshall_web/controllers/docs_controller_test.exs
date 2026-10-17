@@ -40,7 +40,7 @@ defmodule MarshallWeb.DocsControllerTest do
     end
   end
 
-  test "browser extension guide advertises both developer downloads and setup limits" do
+  test "Browser extension guide advertises both developer downloads and setup limits" do
     html_conn = get(build_conn(), "/docs/browser-extension")
     document = html_conn |> html_response(200) |> LazyHTML.from_document()
 
@@ -54,6 +54,8 @@ defmodule MarshallWeb.DocsControllerTest do
     assert content =~ "Load Temporary Add-on"
     assert content =~ "HTTPS"
     assert content =~ "unsigned"
+    assert content =~ "marks the open Overalls page as installed"
+    assert content =~ "does not sign you in"
 
     for provider <- ~w(GitHub GitLab Codeberg Bitbucket), do: assert(content =~ provider)
 

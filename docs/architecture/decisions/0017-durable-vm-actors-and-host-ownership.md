@@ -101,7 +101,7 @@ V1 storage is not silently upgraded into executable storage.
 
 The [waiting-intent review](../reviews/2026-10-05-launch-guard-waiting-intent.md) records an exact blocked kernel flock witness, post-wait generation/state/custody refusals and unchanged exec control. Fresh integrated native rebuild passed127seconds (3library properties,6integration checks,rustfmt/Clippy); local ordering mutation is historical and scoped. Consumer and systemd/Firecracker composition remain open. Decision/status unchanged.
 
-The [native worker BEAM extension](../../../nix/tests/machines/zfs-guest/actor-recovery.exs)
+The [native worker BEAM extension](../../../nix/verification/tests/machines/zfs-guest/actor-recovery.exs)
 adds abrupt process-wide release-worker loss after completed Firecracker effect
 and before actor outcome recording, followed by independent Store/lock reopens.
 The [review](../reviews/2026-10-03-lilly-native-beam-recovery.md) records passing
@@ -110,8 +110,8 @@ histories. The production systemd daemon
 is disabled in this storage fixture; authenticated activation, fixed global
 ownership and production daemon restart remain separate verification gaps.
 
-The [native actor completion-window fixture](../../../nix/tests/machines/zfs-guest/actor-recovery.exs)
-and [generated driver](../../../nix/tests/machines/zfs-guest/actor-recovery.py)
+The [native actor completion-window fixture](../../../nix/verification/tests/machines/zfs-guest/actor-recovery.exs)
+and [generated driver](../../../nix/verification/tests/machines/zfs-guest/actor-recovery.py)
 extend the controlled executor history to real Executor/systemd/Firecracker/ZFS
 effects. The combined real lock contention/completion extension passed in
 671 seconds, exit 0, as recorded in the
@@ -135,7 +135,7 @@ does not change this decision's partial implementation status.
 [real integration harness](../../../marshall/scripts/smoke_execution.exs) exercise these
 contracts. See the [review](../reviews/2026-09-15-durable-vm-actors.md) for actual
 results and remaining operational/multi-host evidence.
-The [historical focused Antithesis actor harness](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/README.md) provided a
+The historical focused Antithesis actor harness (`antithesis/README.md` at kittens revision `9fe1e493`, repository deleted) provided a
 locally validated Store/actor/journal replay workload with a durable fake launch
 marker. Its [review](../reviews/2026-09-28-antithesis-local-harness.md) retains
 the exact local execution and the missing mid-attempt, hosted and native coverage.
@@ -199,7 +199,7 @@ The [owned storage review](../reviews/2026-09-16-owned-zfs-lifecycle.md) records
 recovery and physical guest verification separately from runtime wiring.
 
 [ADR-0027](0027-production-release-deployment.md) adds a packaged Lilly runtime
-closure and [systemd service](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/systemd/lilly.service). The daemon
+closure and systemd service (`scripts/test/fixtures/legacy-deployment/systemd/lilly.service` at kittens revision `9fe1e493`, repository deleted). The daemon
 remains outside the guest slice and shares the host mount namespace. The KVM
 harness now also hands three running guests to the packaged service and verifies
 unchanged VMM PIDs, reservations, console/data access and new-session reports
@@ -248,7 +248,7 @@ retain the partial implementation status.
 
 ## Open questions
 
-Protected enrollment now has an [operator file workflow](../../../docs/provisioner-enrollment.md)
+Protected enrollment now has an [operator file workflow](../../operations/provisioner-enrollment.md)
 under [ADR-0025](0025-protected-provisioner-enrollment.md), with tested SSH-derived
 key custody under ADR-0032. Complete actual replacement deployment operations,
 tombstone retention, independent physical-host acceptance and load validation.

@@ -2,6 +2,7 @@
 //! (ADR-0171): what is read, validated, persisted and replied, kept apart from
 //! the operating-system layer in `platform`.
 
+pub mod flush;
 pub mod kernel_probe;
 pub mod mmds;
 pub mod readiness;

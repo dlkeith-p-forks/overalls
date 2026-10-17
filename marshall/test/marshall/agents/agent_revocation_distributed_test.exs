@@ -217,39 +217,45 @@ defmodule Marshall.Agents.AgentRevocationDistributedTest do
     end)
   end
 
+  # @cc [owner:ghuntley,label:verification] agent-claim-withdrawal-scoped-fixture
+  # Claim/withdrawal schedules MUST select the queued effect command without
+  # treating completed context commands as effects, and MUST clean their
+  # committed fixture even if preparation fails before the concurrency gate.
   @spec claim_withdrawal([pid()], :claim_first | :withdrawal_first) :: :ok
   defp claim_withdrawal([first, second, third] = peers, order) do
     supervisor = start_supervised!(Task.Supervisor)
 
     Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
       c = Fixture.setup()
-      turn = Fixture.submit!(c)
-      assert :ok = Fixture.tick()
-      assert %{status: :running} = Fixture.turn(turn.id)
-      Fixture.queue_tool!(c, turn)
-      executor = Fixture.register!(c)
-      [command] = Ledger.read!(Command, turn_id: turn.id)
-
-      gate = System.unique_integer([:positive])
-      leading = if order == :claim_first, do: :claim, else: :withdraw
-
-      operation = fn
-        :claim, peer ->
-          remote(
-            peer,
-            ExecutorSession,
-            :claim,
-            [c.binding, executor.id, executor.fence_epoch],
-            30_000
-          )
-
-        :withdraw, peer ->
-          remote(peer, Fixture, :share, [c, :revoked], 30_000)
-      end
-
-      follower = if order == :claim_first, do: :withdraw, else: :claim
 
       try do
+        turn = Fixture.submit!(c)
+        assert :ok = Fixture.tick()
+        assert %{status: :running} = Fixture.turn(turn.id)
+        Fixture.queue_tool!(c, turn)
+        executor = Fixture.register!(c)
+
+        [command] =
+          Ledger.read!(Command, turn_id: turn.id, call_id: "effect", tool: :exec_command)
+
+        gate = System.unique_integer([:positive])
+        leading = if order == :claim_first, do: :claim, else: :withdraw
+
+        operation = fn
+          :claim, peer ->
+            remote(
+              peer,
+              ExecutorSession,
+              :claim,
+              [c.binding, executor.id, executor.fence_epoch],
+              30_000
+            )
+
+          :withdraw, peer ->
+            remote(peer, Fixture, :share, [c, :revoked], 30_000)
+        end
+
+        follower = if order == :claim_first, do: :withdraw, else: :claim
         before = :peer.call(third, Fixture, :snapshot, [c.vm.id])
         Fixture.query("SELECT pg_advisory_lock($1)", [gate])
 

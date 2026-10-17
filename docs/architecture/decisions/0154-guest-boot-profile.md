@@ -135,7 +135,7 @@ full path on their first boot.
   fixture in [boot_log.rs](../../../lilly/native/boot-log/tests/boot_log.rs).
 - Report lines are marked, printable and bounded. The report waits for at most
   30 s and handles an unfinished boot. Covered by
-  [Python unit/property tests](../../../nix/tests/evaluation/ubuntu-guest.py).
+  [Python unit/property tests](../../../nix/verification/tests/evaluation/ubuntu-guest.py).
 - Rotation still takes the full path:
   - a present marker always means a completed rebuild;
   - an identical delivery is a no-op;
@@ -148,7 +148,7 @@ full path on their first boot.
 - NixOS boots with a registered store and no registration file. The rootfs
   rebuilds byte-identically (`nix build --rebuild`). The native check runs
   `nix-store -q --hash /run/current-system`.
-- [Native boot-profile journey](../../../nix/tests/machines/zfs-guest/boot-profile.py):
+- [Native boot-profile journey](../../../nix/verification/tests/machines/zfs-guest/boot-profile.py):
   each image boots three times through Lilly's real trust delivery:
   1. image roots;
   2. an added root;
@@ -161,14 +161,14 @@ full path on their first boot.
 ## Implementation evidence
 
 - Writer: [lib.rs](../../../lilly/native/boot-log/src/lib.rs) (`Stamper`, `Retention`).
-- Report: [boot_report.py](../../../nix/packages/guest/boot_report.py), wired in
-  [configuration.nix](../../../nix/packages/guest/configuration.nix) and
-  [lilly-boot-report.service](../../../nix/packages/guest/ubuntu/units/lilly-boot-report.service).
-- NixOS registration at build time: [guest builder](../../../nix/packages/guest/default.nix).
-- Ubuntu prebuilt trust: [Ubuntu builder](../../../nix/packages/guest/ubuntu/default.nix),
-  [platform_digest.py](../../../nix/packages/guest/ubuntu/platform_digest.py) and
+- Report: [boot_report.py](../../../nix/domains/artifacts/guest/boot_report.py), wired in
+  [configuration.nix](../../../nix/domains/artifacts/guest/configuration.nix) and
+  [lilly-boot-report.service](../../../nix/domains/artifacts/guest/ubuntu/units/lilly-boot-report.service).
+- NixOS registration at build time: [guest builder](../../../nix/domains/artifacts/guest/default.nix).
+- Ubuntu prebuilt trust: [Ubuntu builder](../../../nix/domains/artifacts/guest/ubuntu/default.nix),
+  [platform_digest.py](../../../nix/domains/artifacts/guest/ubuntu/platform_digest.py) and
   [overalls-trustd.rs](../../../lyra/src/bin/overalls-trustd.rs).
-- Native checks: [zfs-guest fixture](../../../nix/tests/machines/zfs-guest/default.nix)
+- Native checks: [zfs-guest fixture](../../../nix/verification/tests/machines/zfs-guest/default.nix)
   (`guest-boot-profile`, `ubuntu-guest-boot-profile`; `zfs-guest` and
   `ubuntu-guest` assert the profile on first boot).
 

@@ -39,7 +39,12 @@ defmodule Audi.Private.Front do
          true <- String.starts_with?(conn.request_path, "/"),
          purpose = lookup_purpose(conn),
          {:ok, binding, subscription} <-
-           Audi.Private.Connector.subscribe(opts[:connector], conn.remote_ip, purpose),
+           Audi.Private.Connector.subscribe(
+             opts[:connector],
+             opts[:connector_uid],
+             conn.remote_ip,
+             purpose
+           ),
          :ok <- host_binding(binding, opts[:host_id], subscription) do
       guard = Audi.Private.Guard.start(subscription, binding)
 

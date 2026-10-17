@@ -164,11 +164,12 @@ defmodule MarshallWeb.Layouts do
 
   # @cc [owner:ghuntley,label:product] signed-in-source-code-navigation
   # The shared signed-in menu MUST place Source code immediately below HLDD,
-  # linking to https://github.com/antithesishq/kittens with ordinary navigation.
+  # linking to https://github.com/ghuntley/overalls with ordinary navigation.
 
   # @cc [owner:ghuntley,label:product] browser-extension-guide-navigation
-  # The public header and shared signed-in menu MUST expose a Browser extension
-  # link to /docs/browser-extension with ordinary navigation.
+  # The public header and shared signed-in menu MUST expose a browser extension
+  # link to /docs/browser-extension with ordinary navigation. The setup links
+  # remain presentation hints and cannot grant access or change authorization.
   @spec console_header(map()) :: Phoenix.LiveView.Rendered.t()
   def console_header(assigns) do
     assigns = assign(assigns, :groups, navigation(assigns.active))
@@ -187,14 +188,14 @@ defmodule MarshallWeb.Layouts do
         <tr>
           <th>Source</th>
           <td class="width-min">
-            <a href="https://github.com/antithesishq/kittens">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/ghuntley/overalls">GitHub <span aria-hidden="true">↗</span></a>
           </td>
         </tr>
-        <tr>
+        <tr data-overalls-extension-setup="true">
           <th>Browser</th>
           <td class="width-min">
-            <.link id="public-browser-extension" href={~p"/docs/browser-extension"}>
-              Extension <span aria-hidden="true">↗</span>
+            <.link id="public-marvin-extension" href={~p"/docs/browser-extension"}>
+              Browser extension <span aria-hidden="true">↗</span>
             </.link>
           </td>
         </tr>
@@ -281,8 +282,8 @@ defmodule MarshallWeb.Layouts do
                       SSH keys
                     </.link>
                   </li>
-                  <li>
-                    <.link id="nav-browser-extension" href={~p"/docs/browser-extension"}>
+                  <li data-overalls-extension-setup="true">
+                    <.link id="nav-marvin-extension" href={~p"/docs/browser-extension"}>
                       Browser extension
                     </.link>
                   </li>
@@ -296,7 +297,7 @@ defmodule MarshallWeb.Layouts do
                       aria-current={@active == "hldd" && "page"}
                     >
                       HLDD <span class="nav-hint">Reference</span>
-                    </.link><.link id="nav-source-code" href="https://github.com/antithesishq/kittens">
+                    </.link><.link id="nav-source-code" href="https://github.com/ghuntley/overalls">
                       Source code <span class="nav-hint">GitHub ↗</span>
                     </.link>
                   </li>

@@ -50,7 +50,7 @@ commit uncertainty beyond orderly process restart?
 
 #### Which hosted persistence fault can exercise SQLite FULL WAL commit uncertainty beyond orderly process restart?
 
-- Examined (2026-10-13): `elixir/diagnostics/native/spool/src/lib.rs:249-350,483-655,819-861`, `src/main.rs:680-711`, and `nix/tests/machines/trace-spool/default.nix:90-128`.
+- Examined (2026-10-13): `elixir/diagnostics/native/spool/src/lib.rs:249-350,483-655,819-861`, `src/main.rs:680-711`, and `nix/verification/tests/machines/trace-spool/default.nix:90-128`.
 - Found: SQLite uses WAL with `synchronous=FULL`; intake ACK follows transaction commit. Unit/property tests cover duplicate intake, delivery ACK, reopen, retention-policy change, archive replay and poison after storage error. The NixOS machine test kills the spool and verifies persisted archive identity, then replays after Collector delivery. Those tests do not cut the SQLite transaction at an unknown commit result.
 - Not found: a hosted storage fault with proven power-loss or torn-commit semantics, or a controllable commit-after-durable-before-return cut in the current spool. SIGKILL of a process and network ACK loss provide useful replay histories, but do not by themselves establish media power-loss behavior.
 - Conclusion: partial. A supported disposable block-backed VM could cut power at the SQLite commit boundary and reopen after crash, or a source-built fault variant could cut after commit and before intake ACK to test acknowledgement uncertainty only. Classify the latter narrowly; require filesystem durability evidence for the former.

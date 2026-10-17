@@ -25,7 +25,7 @@ focus: "05 — Resource Boundaries"
 
 #### Which TCG router fixture can produce transparent connections and inspect socket inodes without interfering with the accepted backlog?
 
-- Examined: `nix/tests/machines/brady-network/default.nix:1-90`, `driver.py:1-75`, `brady/lib/brady/listener.ex:15-115`, `brady/lib/brady/application.ex:27-46`, and `brady/lib/brady/config.ex:1-72`.
+- Examined: `nix/verification/tests/machines/brady-network/default.nix:1-90`, `driver.py:1-75`, `brady/lib/brady/listener.ex:15-115`, `brady/lib/brady/application.ex:27-46`, and `brady/lib/brady/config.ex:1-72`.
 - Found: the Nix router already has production `IP_TRANSPARENT` listeners, Lilly nftables/policy routing, and separate veth guest/origin namespaces. Connections can be held from the guest namespace while `/proc/<Brady PID>/fd` and `ss` are sampled in the router namespace. Worker admission happens only after `accept`; backlog sockets must be excluded from the active-worker oracle. The release sets no `max_connections` override, so the production threshold is 256.
 - Conclusion: resolved for fixture selection. Add held guest sockets to that router, correlate accepted socket inodes after handoff, and sample accepted workers separately from the kernel backlog. A smaller cap is a component test of `Brady.Listener` only.
 

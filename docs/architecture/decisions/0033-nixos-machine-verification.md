@@ -23,7 +23,7 @@ repository-owned suite.
 
 ## Decision
 
-Implement repository tests under `nix/tests/` with `pkgs.testers.runNixOSTest` and
+Implement repository tests under `nix/verification/tests/` with `pkgs.testers.runNixOSTest` and
 named QEMU machine nodes. Import the actual service modules and source-built
 packages; do not substitute fake Marshall/Lilly daemons or fake Firecracker for
 execution acceptance. Export individual `checks.x86_64-linux` derivations through
@@ -107,13 +107,13 @@ secrets or user terminal content.
 
 ## Implementation evidence
 
-The shared [fleet host profile](../../../nix/hosts/profile.nix) loads both
+The shared [fleet host profile](../../../nix/platform/hosts/profile.nix) loads both
 supported KVM vendor modules, enables their nested-virtualization options and
 advertises the `nested-kvm` Nix system feature. The
-[storage](../../../nix/tests/evaluation/storage-configuration.nix) and
-[enrollment](../../../nix/tests/evaluation/enrollment-configuration.nix)
+[storage](../../../nix/verification/tests/evaluation/storage-configuration.nix) and
+[enrollment](../../../nix/verification/tests/evaluation/enrollment-configuration.nix)
 evaluation checks cover base and enrolled hosts, while the
-[remote-builder check](../../../nix/tests/evaluation/remote-builders.nix)
+[remote-builder check](../../../nix/verification/tests/evaluation/remote-builders.nix)
 covers both Overalls and Dungarees declarations. This makes native nested suites
 schedulable throughout the managed fleets. It does not replace each suite's
 runtime `/dev/kvm` verification or prove that an arbitrary non-fleet builder
@@ -122,32 +122,32 @@ supports nesting. The
 records the change and its evaluation evidence.
 
 [ADR-0041](0041-declarative-fleet-users.md) adds the named fleet
-[SSH suite](../../../nix/tests/machines/access/default.nix),
-[access evaluation](../../../nix/tests/evaluation/access.nix) and
-[actual SOPS reconciliation tests](../../../nix/tests/evaluation/secrets_test.py).
+[SSH suite](../../../nix/verification/tests/machines/access/default.nix),
+[access evaluation](../../../nix/verification/tests/evaluation/access.nix) and
+[actual SOPS reconciliation tests](../../../nix/verification/tests/evaluation/secrets_test.py).
 The [fleet-user review](../reviews/2026-09-17-fleet-users.md) records verification
 and the separate boundaries of public-key fixture injection, registry evaluation
 and actual operator deployment.
 
 [ADR-0040](0040-host-local-smtp-relay.md) adds a separate SMTP bundle consumer
-and [relay machine suite](../../../nix/tests/machines/smtp-relay/default.nix).
+and [relay machine suite](../../../nix/verification/tests/machines/smtp-relay/default.nix).
 Its [review](../reviews/2026-09-17-smtp-relay.md) tracks verification; existing
 secret custody and machine acceptance boundaries remain unchanged.
 
 [ADR-0039](0039-opt-in-host-tcp-profile.md) adds the standalone
-[sysctl machine suite](../../../nix/tests/machines/sysctl/default.nix) for BBR/fq,
+[sysctl machine suite](../../../nix/verification/tests/machines/sysctl/default.nix) for BBR/fq,
 inherited policy, connected TCP sockets and reboot persistence. Its execution
 evidence is tracked in the [host TCP review](../reviews/2026-09-17-host-tcp-profile.md).
 
 [ADR-0038](0038-http01-validation-and-peer-routing.md) adds an
-[HTTP-01 suite](../../../nix/tests/machines/acme-http01/default.nix) with three
+[HTTP-01 suite](../../../nix/verification/tests/machines/acme-http01/default.nix) with three
 actual frontends and a separate local CA/DNS validator. Local configuration and
-[lookup tests](../../../nix/tests/evaluation/acme-lookup.py), the HTTP machine suite,
+[lookup tests](../../../nix/verification/tests/evaluation/acme-lookup.py), the HTTP machine suite,
 Route 53 regression and service-role regression pass. Execution results and
 limits are recorded in the [review](../reviews/2026-09-17-http01-validation.md).
 The existing Route 53 suite remains required.
 
-The [test catalog](../../../nix/tests/README.md) maps the fifteen stable flake
+The [test catalog](../../../nix/verification/tests/README.md) maps the fifteen stable flake
 checks to evaluation, release and per-machine-suite directories. Fleet scenarios
 are composed in explicit order before framework lint/type checking; shared
 support retains the suites' authentication, TLS and resource boundaries. The
@@ -155,8 +155,8 @@ support retains the suites' authentication, TLS and resource boundaries. The
 inventory comparisons and execution results without replacing earlier evidence.
 
 The [flake](../../../flake.nix) exports
-[configuration checks](../../../nix/tests/evaluation/module-configuration.nix) and the
-[NixOS role suite](../../../nix/tests/machines/service-roles/default.nix), using actual source-built
+[configuration checks](../../../nix/verification/tests/evaluation/module-configuration.nix) and the
+[NixOS role suite](../../../nix/verification/tests/machines/service-roles/default.nix), using actual source-built
 releases and runtime-generated synthetic credentials. The role suite covers
 neither service, Marshall only, Lilly only and both. It requires hardware
 acceleration and the `nested-kvm` feature because Lilly validates inner KVM at
@@ -174,7 +174,7 @@ returns unavailable with none and recovers when they restart. The suite also
 exercises the HAProxy TLS bridge, wrong-name rejection and sanitized request
 logs. The [completion audit](../reviews/2026-09-16-plan-completion-audit.md)
 records the exact derivation and remaining physical-host acceptance. The
-[secret custody suite](../../../nix/tests/machines/secret-custody/default.nix) adds two machines with
+[secret custody suite](../../../nix/verification/tests/machines/secret-custody/default.nix) adds two machines with
 actual SecretSpec/SOPS resolution, distinct SSH identities and synthetic operator
 recovery. The current suite passed wrong-host and missing-value startup rejection,
 real Marshall credential delivery, group isolation, environment properties,
@@ -188,7 +188,7 @@ through the actual preparation module. The
 application-credential rotation. Reusable-image/reboot behavior has separate
 passing evidence below.
 
-The separate [credential-rotation suite](../../../nix/tests/machines/credential-rotation/default.nix)
+The separate [credential-rotation suite](../../../nix/verification/tests/machines/credential-rotation/default.nix)
 passed in 249.75 seconds with three actual Marshall machines and shared PostgreSQL.
 It verifies staged/promoted Cloak keyrings through live HTTPS credential checks,
 coordinated database/signing/cookie cutover, old password/token/cookie rejection,
@@ -197,7 +197,7 @@ The [rotation review](../reviews/2026-09-16-fleet-credential-rotation.md) record
 its planned interruption and distinguishes HTTP authentication from browser
 sign-in/terminal continuity.
 
-The [ACME suite](../../../nix/tests/machines/acme-route53/default.nix) adds actual Lego and Pebble, DNS
+The [ACME suite](../../../nix/verification/tests/machines/acme-route53/default.nix) adds actual Lego and Pebble, DNS
 challenge records and a Route 53 API fixture verifying signed requests. It uses
 real Marshall/HAProxy and generated encrypted AWS credentials. Scenarios cover
 issuance, renewal, provider failure, WebSocket transport survival, reload retry,
@@ -207,7 +207,7 @@ suite passed, as did the shared role and secret-custody regression suites. The
 runs from test failures and records shared role/custody regression results.
 This is not real AWS/CA or physical crash acceptance.
 
-The [native ZFS suite](../../../nix/tests/machines/native-zfs/default.nix) runs Lilly's source-built reader
+The [native ZFS suite](../../../nix/verification/tests/machines/native-zfs/default.nix) runs Lilly's source-built reader
 in a KVM-accelerated NixOS machine with OpenZFS 2.4.4 and two virtual mirror
 members. It exercises mount/GUID identity, sparse files, LZ4, separate logical
 and physical usage, quota pressure, unsafe properties, unexpected snapshot/
@@ -215,17 +215,17 @@ bookmark/clone/descendant rejection, degraded backing, large property responses,
 observed reclamation and replaced-dataset fencing. The
 [observation review](../reviews/2026-09-16-native-zfs-observations.md) records
 executed runs. Dataset creation/deletion in that reader fixture uses ZFS utilities.
-The separate [owned lifecycle driver](../../../nix/tests/machines/zfs-lifecycle/driver.py) calls
+The separate [owned lifecycle driver](../../../nix/verification/tests/machines/zfs-lifecycle/driver.py) calls
 actual Lilly disk APIs with verified guest artifacts, including interruption
 after real create/copy/destroy mutations and ownership/GUID/mount conflicts.
-The [guest suite](../../../nix/tests/machines/zfs-guest/default.nix) adds actual nested Firecracker,
+The [guest suite](../../../nix/verification/tests/machines/zfs-guest/default.nix) adds actual nested Firecracker,
 physical confinement checks, console persistence, stopped disk retention,
 cleanup and simulated host loss. The
 [lifecycle review](../reviews/2026-09-16-owned-zfs-lifecycle.md) records which
 checks have completed. Neither suite establishes independent physical power
 loss, fleet coordination or production acceptance.
 
-The [native I/O suite](../../../nix/tests/machines/zfs-io/default.nix) runs the source-built
+The [native I/O suite](../../../nix/verification/tests/machines/zfs-io/default.nix) runs the source-built
 collector on two real ZFS pools. It generates read/write traffic outside Lilly's
 dataset, checks pool-scoped rates separately from dataset quota/availability,
 and injects malformed output, timeout and a real export/import between identity
@@ -270,7 +270,7 @@ with real ZFS/cgroup sampling and runtime PKI preparation. Both passing host
 samples remain disconnected and execution-unready; no nested guest or
 authenticated Control result was recorded.
 
-The [firmware installation suite](../../../nix/tests/machines/mirrored-installation/default.nix) uses
+The [firmware installation suite](../../../nix/verification/tests/machines/mirrored-installation/default.nix) uses
 actual installer/target module variants with test-console instrumentation. It
 attaches no direct kernel or shared host store, boots OVMF, installs to two blank
 QCOW2 disks, verifies mirrored EFI artifacts and boots both the complete mirror
@@ -282,7 +282,7 @@ authentication policy on the installer, healthy mirror and both survivors. The
 executed results from definitions and image builds. The existing reference host's
 external boot test has not been located or ported.
 
-The separate [exported-image suite](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/tests/machines/bootstrap-images/default.nix)
+The separate exported-image suite (`nix/verification/tests/machines/bootstrap-images/default.nix` at kittens revision `16e8dbe4`, repository deleted)
 boots the unmodified public QCOW2 artifacts through OVMF using disposable
 overlays. It injects neither credentials nor a test-console service, and reads
 the SSH public identity externally. Fresh copies must generate different keys;
@@ -294,7 +294,7 @@ The complete exported-image check passed after the image builder gained a clean
 root-pool export before shutdown. Execution results and the corrected import
 failure are recorded in the installation review.
 
-The [fleet suite](../../../nix/tests/machines/fleet/default.nix) boots the minimum distinct
+The [fleet suite](../../../nix/verification/tests/machines/fleet/default.nix) boots the minimum distinct
 Marshall/Lilly topology with separate PostgreSQL and proxy machines, native ZFS
 disks and authenticated provisioner reports. The complete current-source immutable
 run passed in **1108.23 seconds**: real browser/terminal/sharing/revocation,
@@ -313,12 +313,12 @@ existing reference-host configuration and external mirrored-boot test remain
 unavailable. External provider/physical-host acceptance retains its stated gaps.
 All fifteen exported check derivations have successful outputs for the final
 source/package revisions. The existing
-[NixOS deployment checks](../../../nix/tests/README.md),
+[NixOS deployment checks](../../../nix/verification/tests/README.md),
 [execution smoke](../../../marshall/scripts/smoke_execution.exs),
 [jailed KVM smoke](../../../lilly/scripts/smoke_jailed.exs) and
-[terminal failover harness](../../../nix/tests/README.md) provide
+[terminal failover harness](../../../nix/verification/tests/README.md) provide
 historical evidence with their own boundaries. The
-[guest configuration](../../../nix/packages/guest/configuration.nix) alone is not a host
+[guest configuration](../../../nix/domains/artifacts/guest/configuration.nix) alone is not a host
 integration test. No physical storage benchmarks have run.
 
 The [standalone browser gate review](../reviews/2026-09-25-browser-type-gates.md)

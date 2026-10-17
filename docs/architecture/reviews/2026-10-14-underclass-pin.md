@@ -2,7 +2,7 @@
 
 ## Scope and architecture impact
 
-Advance the [immutable package](../../../nix/packages/underclass/default.nix)
+Advance the [immutable package](../../../nix/domains/artifacts/underclass/default.nix)
 from `3e35c3bf3d24c7fa79cb93602b571b1b9c194514` to
 `d0cb27474464d35bc56f7f06fc632654981d5b4e`, the latest upstream GitHub `main`
 revision at review time. Refresh both source and locked Cargo vendor hashes.
@@ -49,7 +49,7 @@ socket test uses a short path. The `utop` wrapper contract is unchanged.
 Inspected upstream unit tests for the catalog entry, stream classification and
 the manual reset refusal, override and idempotency paths. Their presence is not
 passing execution. The fleet's existing
-[service machine test](../../../nix/tests/machines/underclass-service/default.nix)
+[service machine test](../../../nix/verification/tests/machines/underclass-service/default.nix)
 covers service custody and authentication but does not exercise reset
 redemption or a controlled upstream credit endpoint.
 

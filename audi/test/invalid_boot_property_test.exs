@@ -203,6 +203,7 @@ defmodule Audi.InvalidBootPropertyTest do
        "role" => "private",
        "host_id" => @id,
        "connector_path" => Path.join(root, "connector.sock"),
+       "connector_uid" => 1000,
        "ziggy_socket" => Path.join(root, "ziggy.sock"),
        "galileo_socket" => Path.join(root, "galileo.sock"),
        "certificate_file" => @certificate,

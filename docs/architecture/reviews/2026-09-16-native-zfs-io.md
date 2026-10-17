@@ -16,14 +16,14 @@ rates and drops the pool-space columns. The [collector](../../../lilly/lib/lilly
 merges those observations with independently measured dataset capacity. Failed
 I/O leaves unknown rates while preserving otherwise valid capacity.
 
-[Telemetry history](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/observations.ex)
+Telemetry history (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted)
 now retains separate I/O and capacity scopes, import identity and rate-clock
 provenance. Native read/write IOPS and throughput are logical zpool observations,
 including other datasets. The CLI truncates rates to integers. The requested
 interval and collection cost are separate from the unexposed exact timestamp
 delta; unknown latency, queues, in-flight, busy percentage and maxima stay null.
 Ext4 continues using block-device diskstats. History and IOPS never participate
-in admission. The [operator guide](../../storage-capacity.md) documents semantics.
+in admission. The [operator guide](../../operations/storage-capacity.md) documents semantics.
 
 ## Findings and disposition
 

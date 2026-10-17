@@ -240,7 +240,7 @@ production behavior, accepted rationale and decision status are unchanged.
 
 ## Native generated pinned archive draft
 
-The unexecuted `nix/tests/machines/brady-network/large-storage.py` extension
+The unexecuted `nix/verification/tests/machines/brady-network/large-storage.py` extension
 adds fifteen reproducible fixed/generated full-commit archive histories over
 actual port-443 upstream TLS and packaged proxy/ZFS storage. Two veth clients
 check independent digests and exact origin-count increments for complete reuse

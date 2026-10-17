@@ -101,7 +101,7 @@ This change does not deploy production or validate independent-host availability
 implement the boundary. [Generated histories](../../../marshall/test/marshall_web/mfa_login_history_test.exs),
 [cookie regressions](../../../marshall/test/marshall_web/remember_me_login_test.exs),
 [committed races](../../../marshall/test/marshall/compute/distributed_admission_test.exs)
-and a [three-replica browser scenario](../../../nix/tests/machines/mfa-login/browser.py)
+and a [three-replica browser scenario](../../../nix/verification/tests/machines/mfa-login/browser.py)
 provide assertions; execution and remaining acceptance are recorded in the
 [verification review](../reviews/2026-09-25-mfa-login-verification.md).
 
@@ -117,7 +117,7 @@ credentials — including the mounted session that issued the removal — and th
 signed-out stale views refuse navigation and mutation with unchanged stored
 inventory; see its
 [domain regressions](../../../marshall/test/marshall/accounts/security_credential_test.exs)
-and [native journey](../../../nix/tests/machines/credential-self-service/browser.py).
+and [native journey](../../../nix/verification/tests/machines/credential-self-service/browser.py).
 
 The [administrative account authority review](../reviews/2026-09-25-admin-account-authority-verification.md)
 records the audit-commit overlap baseline and sorted participant correction for

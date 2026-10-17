@@ -68,7 +68,7 @@ made the identical probe succeed. Five subsequent probes also succeeded. This
 did not load code into or restart the serving Lilly process, publish readiness,
 or modify the failed relocation receipt.
 
-The [native regression](../../../nix/tests/machines/zfs-guest/readiness.exs)
+The [native regression](../../../nix/verification/tests/machines/zfs-guest/readiness.exs)
 adds a real lock holder, checks success with the same guest boot ID, rejects a
 lock hold that exceeds the probe budget, and retains the existing stale-identity
 and stopped-execution negative cases. The source-built `zfs-guest` driver ran

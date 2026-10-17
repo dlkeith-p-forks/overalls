@@ -2,15 +2,15 @@
 
 ## Scope and evidence
 
-The [access module](../../../nix/modules/access.nix) enables the pinned NixOS Mosh
+The [access module](../../../nix/domains/system/access.nix) enables the pinned NixOS Mosh
 module on access-enabled hosts and systemd lingering for registry login users.
 The upstream module supplies the package and UDP 60000–61000 firewall range.
 The shared host profile includes Overalls; guest images are unchanged.
 
-The [evaluation suite](../../../nix/tests/evaluation/access.nix) checks enabled
+The [evaluation suite](../../../nix/verification/tests/evaluation/access.nix) checks enabled
 Mosh, its firewall range, lingering for admin and non-admin login users, and the
 absence of implicit Mosh for disabled access and secrets-only compositions.
-The [machine suite](../../../nix/tests/machines/access/driver.py) tests actual
+The [machine suite](../../../nix/verification/tests/machines/access/driver.py) tests actual
 cross-machine Mosh terminal input bootstrapped over administrative SSH port 2222,
 user managers before login and after logout, and removed-account linger cleanup.
 Fixture private keys are generated inside the VMs.

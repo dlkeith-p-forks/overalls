@@ -1,5 +1,11 @@
 # Multi-OS guest image architecture review (2026-10-16)
 
+This historical review records ADR-0180's earlier capability declarations and
+preliminary artifact evidence. [ADR-0186](../decisions/0186-native-kernel-provenance-and-admission.md)
+and the [native kernel review](2026-10-17-native-kernel-attestation.md) supersede
+the native admission conclusions: current capabilities are all false and image
+assembly refuses unavailable kernels.
+
 ## Scope
 
 This review covers the Arch Linux and AlmaLinux image builders, the preliminary
@@ -8,9 +14,10 @@ extension for native FreeBSD and OmniOS (the `illumos` protocol family), includi
 the validated source-artifact selection tests added after the initial contract review. It
 reconciles the work with ADR-0011/0068, ADR-0146/0159 and the Windows decisions
 ADR-0169 through ADR-0173. The FreeBSD source endpoint is retired and is
-replaced by a checksum-pinned archive capture; local Nix realization now
-passes for both native builders, but neither family has a recorded runtime
-execution.
+replaced by a checksum-pinned archive capture. The protocol capability rows now
+describe the shared native daemon surfaces and Marshall projects them by
+validated image identity; local Nix realization passes for both native
+builders, but neither family has a recorded runtime execution.
 
 ## Architecture impact
 
@@ -32,9 +39,9 @@ Linux catalog entries without standby metadata. The evaluation check inspects th
 kernel/root shape and source format. It does not boot either image or prove
 distro-native service behavior.
 
-Evidence: `nix/packages/guest/foreign-linux.nix`,
-`nix/packages/guest/arch/default.nix`, `nix/packages/guest/alma/default.nix`,
-`fleet/guest-images.nix` and `nix/tests/evaluation/foreign-linux-guests.nix`.
+Evidence: `nix/domains/artifacts/guest/foreign-linux.nix`,
+`nix/domains/artifacts/guest/arch/default.nix`, `nix/domains/artifacts/guest/alma/default.nix`,
+`fleet/guest-images.nix` and `nix/verification/tests/evaluation/foreign-linux-guests.nix`.
 
 ### 2. Native protocol shapes are explicit — resolved with implementation gap
 
@@ -43,8 +50,8 @@ bounded artifacts and rejects extra keys and mismatches. Both native families
 use CloudHv firmware and raw-GPT roots; FreeBSD's disk retains its EFI and UFS
 partitions. Version 3 bundles carry the same explicit OS and firmware metadata.
 Existing Linux and Windows versions remain
-separate. The protocol currently uses `illumos` for the OmniOS family; that
-naming remains an open product decision.
+separate. The protocol uses `illumos` for the OmniOS family; OmniOS remains the
+installable downstream image and `illumos` is the stable wire identity.
 
 Evidence: `protocol/lib/overalls_protocol/image_manifest.ex`,
 `protocol/lib/overalls_protocol/workload_bundle.ex` and protocol tests. The
@@ -62,31 +69,52 @@ start a Firecracker guest.
 
 Evidence: `lilly/lib/lilly/vm/jail.ex`,
 `lilly/lib/lilly/vm/workload_bundle.ex`, `lilly/test/vm/jail_test.exs` and
-`lilly/test/host/image_test.exs`. The host image tests verify that FreeBSD
-selects `disk.raw` for both native families while Lilly keeps its
+`lilly/test/host/image_test.exs`. The host image tests verify that FreeBSD and
+illumos select `disk.raw` while Lilly keeps its
 internal persistent destination name; they do not realize an image or launch a
 guest.
 
 ### 4. Preliminary native builders are not runtime proof — open
 
 `native.nix` exposes FreeBSD 14.3 and OmniOS r151050 builders and the fleet
-catalog contains both entries without standby metadata; its `OmniOS r151050` row
-consumes the explicit `illumosGuest` constructor. The generic `illumos`
+catalog contains both entries without standby metadata. The OmniOS row consumes
+the explicit `illumosGuest` constructor. The generic `illumos`
 constructor selects that pinned OmniOS downstream image and
 records `https://illumos.org/` as its upstream project. illumos.org publishes
 the operating-system source and identifies OmniOS, OpenIndiana and Tribblix as
 installable distributions; it does not publish a standalone guest root image.
 The FreeBSD source uses a retired `Latest` endpoint through a checksum-pinned archive capture and the
 builder preserves the complete EFI/GPT/UFS disk before writing the manifest. A local
-Nix build of both packages succeeds; this is artifact evidence only and does
+Nix build of both packages succeeds, and the native evaluation asserts that
+both builders use the pinned CloudHv firmware. This is artifact evidence only and does
 not establish native boot or fleet readiness.
 
-### 5. Capability rows are contract surface, not runtime proof — open
+### 5. Capability rows are contract surface, not runtime proof — resolved with implementation gap
 
-`freebsd-v1` and `illumos-v1` are declared with the Windows capability flags and
-600-second budget. No native agents, successful image output, Marshall capability
-projection, guest readiness or fleet acceptance exists for either family. The
-rows must remain partial until those artifacts and tests land.
+`freebsd-v1` and `illumos-v1` have explicit wire identities and now map to the
+shared readiness, trust, terminal, workspace, flush, SSH and agent-control
+capability row while editor and Inception remain disabled. Native manifests may
+declare workspace source version 2, and Lilly's validated bundle path attaches
+the guest vsock for these sets. Marshall's projection is bound to the manifest's
+content ID and fails closed for corruption or identity mismatch. This is a
+versioned contract and unit/property evidence only: the shared Lyra native
+vsock adapter, readiness daemon, trust daemon and workspace receiver are
+present, and the native builder can copy an optional agent payload. Terminal,
+flush, SSH and agent daemons, target-native packaging, service definitions,
+boot and machine recovery still need to be recorded before a capability becomes
+an operational claim.
+
+### 6. Native firmware transport remains a VMM boundary — resolved with runtime gap
+
+The Firecracker derivation now carries the PCI BAR relocation and native queue
+initialization fixes required by CloudHv guests. The MSI-X table and PBA use a
+dedicated BAR, 64-bit relocation commits on the high-half write, and queue
+ioevents move only after complete registration; hot-unplug removes both BARs.
+Valid illumos queue setup while status is zero is admitted, while malformed
+queue state remains refused. The patch evaluation inspects the selected patch
+set, and the contracts capture these invariants. FreeBSD's CloudHv boot and
+illumos ZFS import still need nested-KVM execution records before this review
+can claim runtime acceptance.
 
 ## Verification boundary
 
@@ -101,9 +129,9 @@ new native families.
 ## Follow-up
 
 Build signed FreeBSD and OmniOS/illumos images, decide whether OmniOS remains
-under the `illumos` wire name, implement and test their agents, then add nested
-KVM machine scenarios for boot, MMDS/vsock identity, isolation, storage growth,
-restart and recovery. Add Marshall-driven fleet journeys before claiming
+under the `illumos` wire name, finish and test their native agents, then add
+nested-KVM machine scenarios for boot, MMDS/vsock identity, isolation, storage
+growth, restart and recovery. Add Marshall-driven fleet journeys before claiming
 readiness, terminal, workspace, relocation or availability.
 
 Structural checks for this documentation change are `elixir scripts/check_adrs.exs`,

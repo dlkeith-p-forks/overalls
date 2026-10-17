@@ -486,7 +486,7 @@ The thirty-second-cap mutant failed at the observed8000ms ceiling (exit2,seed0,
 3.3seconds,one failing property,nine exclusions), independently of later socket
 recovery. Restored source cmp passed; restored property passed exit0,seed0,
 33.0seconds,one property,nine exclusions. See the
-[local cap mutation ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-control-reconnect-cap.md).
+local cap mutation ledger (`antithesis/scratchbook/mutation-testing/local-control-reconnect-cap.md` at kittens revision `9fe1e493`, repository deleted).
 No later recovery assertion after mutant failure receives mutation credit.
 
 ## Imported consumer review: Lilly pending terminal classification
@@ -544,7 +544,7 @@ results transport_error after the independently observed4001 close:exit2,seed0,
 0.7seconds,prefix0,one failing property. Later terminal assertions are not
 mutation-credited. Production cmp restoration passed; restored execution
 passed exit0,seed0,1.1seconds,one property, warnings-as-errors compilation.
-See the [local Lilly mutation ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-lilly-pending-version-class.md).
+See the local Lilly mutation ledger (`antithesis/scratchbook/mutation-testing/local-lilly-pending-version-class.md` at kittens revision `9fe1e493`, repository deleted).
 
 The earlier standalone Protocol development-environment forced Dialyzer
 completed exit0,4.75seconds with zero errors, skips or unnecessary skips.
@@ -651,7 +651,7 @@ passed exit0,seed0,0.8seconds:3checks (1property,2tests). Source restoration was
 copied from the integrated service; the retained fork contains no Git metadata.
 Logs: `/tmp/kittens-porsche-session-status-mutant.log` and
 `/tmp/kittens-porsche-session-status-restored.log`. Exact patch/provenance is in
-the [local ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-porsche-session-status.md).
+the local ledger (`antithesis/scratchbook/mutation-testing/local-porsche-session-status.md` at kittens revision `9fe1e493`, repository deleted).
 This is local falsification after oracle refinement, not a hosted result.
 Full integrated Marshall and actual socket credential-rotation histories remain
 open. The research audit now tracks96candidates,89partial and7bounded-local.
@@ -769,8 +769,8 @@ suite passed18checks in10.0seconds. Async reconnect30-second-cap mutant failed
 All used seed0. Mutants exited2; restored runs exited0. All four source files
 restored byte-for-byte; no mutation entered integration. Later assertions and
 other generated trigger variants receive no mutation credit. See the
-[authority ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-bound-control-authority.md)
-and [async cap ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-async-control-reconnect-cap.md).
+authority ledger (`antithesis/scratchbook/mutation-testing/local-bound-control-authority.md` at kittens revision `9fe1e493`, repository deleted)
+and async cap ledger (`antithesis/scratchbook/mutation-testing/local-async-control-reconnect-cap.md` at kittens revision `9fe1e493`, repository deleted).
 These are local oracle results, not hosted or fleet acceptance.
 
 ## Ziggy and Porsche pending version refusal after migration
@@ -810,7 +810,7 @@ after zero successful draws. Later close4008 controls are not mutation-credited.
 Both files were restored and compared byte-for-byte with integration source.
 Restored Ziggy and Porsche each passed one property, seed 0, 1.0 seconds,
 exit 0, in `/tmp/kittens-satellite-pending-version-restored.log`.
-The [local ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-bound-control-authority.md)
+The local ledger (`antithesis/scratchbook/mutation-testing/local-bound-control-authority.md` at kittens revision `9fe1e493`, repository deleted)
 records matching baselines, mutant logs and retained patch hashes. This is local
 adapter oracle evidence; native and hosted acceptance remain open.
 
@@ -864,7 +864,7 @@ restored property passed 3.2 seconds each, seed 0, exit 0; mutant failed the
 predicted missing successor worker assertion, 2.2 seconds, seed 0, exit 2,
 after zero successful draws. Later hello/shutdown assertions were not reached.
 Restored source was compared byte-for-byte; logs and patch hash are in the
-[local ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-bound-control-authority.md).
+local ledger (`antithesis/scratchbook/mutation-testing/local-bound-control-authority.md` at kittens revision `9fe1e493`, repository deleted).
 
 ## Abrupt terminal owner loss
 

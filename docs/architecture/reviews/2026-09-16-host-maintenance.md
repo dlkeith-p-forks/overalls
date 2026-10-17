@@ -62,7 +62,7 @@ Downgrade refuses to discard provenance or drain history.
   pass concurrent drain/start/provision and duplicate-worker scenarios. Injected
   initial/continuation job failure rolls back admission or the entire stop batch.
   verifies session archival and writer fencing during a maintenance stop.
-- [Disposable database check](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/scripts/verify_maintenance_migration.exs)
+- Disposable database check (`marshall/scripts/verify_maintenance_migration.exs` at kittens revision `9fe1e493`, repository deleted)
   passes historical backfill, admission/provenance constraints and rollback refusal.
   It leaves existing enabled hosts normal and removes only its temporary database.
 - Lilly precommit passes 82 cases (18 properties, 64 tests), runtime/compiler/ADR
@@ -94,7 +94,7 @@ change; the existing HTTPS terminal probe runs in the integration harness.
 
 ## Remaining work
 
-The [operator guide](../../host-maintenance.md) documents prerequisites and the
+The [operator guide](../../operations/host-maintenance.md) documents prerequisites and the
 difference between historical confirmation and current quiescence. Install the
 migration and compatible code on all Marshall nodes, plus the updated Lilly
 executor, before enabling this workflow.
@@ -114,7 +114,7 @@ with `MIX_ENV=test mix run --no-start scripts/verify_maintenance_migration.exs`.
 The test PostgreSQL account needs permission to create its disposable database.
 
 For real execution, use the dedicated-host command in
-[Lilly's historical integration guide](https://github.com/antithesishq/kittens/blob/5af65d3fe47626523707d7aafe2c1993f91e568c/lilly/README.md#marshall-to-firecracker-integration).
+Lilly's historical integration guide (`lilly/README.md#marshall-to-firecracker-integration` at kittens revision `5af65d3f`, repository deleted).
 This run used `devenv build outputs.guest outputs.vmm outputs.hostTools`, static
 Firecracker/jailer 1.16.1 and the pinned NixOS guest. Pass canonical executable
 paths for dtach/unshare; the runtime rejects symlink launcher paths. The release

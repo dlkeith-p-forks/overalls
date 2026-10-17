@@ -153,8 +153,8 @@ measurement failure boundaries. No migration runs implicitly during app startup.
 
 The native fleet's private sentinel-fenced helper invokes the production
 reconciler without receipt refresh, forged outcomes or altered deadlines.
-[Agent assertions](../../../nix/tests/machines/fleet/scenarios/agent.py) and
-[NixOS/Ubuntu Porsche assertions](../../../nix/tests/machines/fleet/scenarios/user-ssh-journey.py)
+[Agent assertions](../../../nix/verification/tests/machines/fleet/scenarios/agent.py) and
+[NixOS/Ubuntu Porsche assertions](../../../nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py)
 require actual successful guest measurements and identical permanent source
 identities/counters/buckets after Marshall restart and repeated scans. These
 agent assertions passed the serial native NixOS check in 900 seconds, as recorded
@@ -206,8 +206,8 @@ implement retained measurement accounting. The
 [properties and database tests](../../../marshall/test/marshall/compute/service_levels_test.exs)
 have recorded passing focused execution in the
 [review](../reviews/2026-10-02-durable-physical-slos.md).
-[Nix custody](../../../nix/modules/otel-fleet/service-levels.nix) and
-[Rust exporter](../../../nix/modules/otel-guest/receiver/src/slo.rs) define the
+[Nix custody](../../../nix/domains/system/otel-fleet/service-levels.nix) and
+[Rust exporter](../../../nix/domains/system/otel-guest/receiver/src/slo.rs) define the
 collection boundary. Native publication/browser checks and full Marshall and
 protocol gates have recorded passing execution in the review. Both production
 hosts activated `3f7ebc11`; live checks verified three isolated exporters,

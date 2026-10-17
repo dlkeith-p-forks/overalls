@@ -22,7 +22,7 @@ Next probe: Revocation is a committed receipt gate before a fresh source epoch a
 
 #### Can the native fixture cut between source revocation and stop without breaking the owner lock?
 
-- Examined: `marshall/lib/marshall/compute/relocation_restoration.ex:16-51; marshall/lib/marshall/compute/relocation_coordinator.ex:243-255; nix/tests/machines/fleet/scenarios/audi-relocation.py`.
+- Examined: `marshall/lib/marshall/compute/relocation_restoration.ex:16-51; marshall/lib/marshall/compute/relocation_coordinator.ex:243-255; nix/verification/tests/machines/fleet/scenarios/audi-relocation.py`.
 - Found: Revocation is a committed receipt gate before a fresh source epoch and stop outbox. The inspected native scenarios expose no pause between those two coordinator steps while retaining the production host owner. Probe by pausing the coordinator after the revocation receipt commit, then verify host lock continuity and exact physical stop; until then use response loss as the narrower schedule.
 - Not established: No current hosted/native execution was run in this investigation; source and test presence alone do not establish the physical outcome.
 - Conclusion: partial; Keep an open partial question about a lock-preserving coordinator pause; scope current oracle to response loss and receipts.

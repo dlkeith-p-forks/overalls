@@ -62,7 +62,7 @@ exit1 in77seconds, archive `1791219716113-2303698-0.jsonl`, log
 failure, not collateral damage. The source and test fork were restored and verified
 byte-for-byte, then retained at `/tmp/kittens-source-export-reap-restored`.
 No mutant entered the user tree. See the
-[local ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-source-export-adopted-children.md).
+local ledger (`antithesis/scratchbook/mutation-testing/local-source-export-adopted-children.md` at kittens revision `9fe1e493`, repository deleted).
 
 Main9a71e12a was fast-forwarded into this worktree after native verification;
 it changes Enrico and documentation, not Lilly production or source-export code.

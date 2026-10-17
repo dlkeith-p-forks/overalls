@@ -45,13 +45,6 @@ defmodule Lilly.Network.Ingress do
                timeout: 750
              },
              [
-               {:inet_backend, :inet},
-               {:netns, String.to_charlist("/run/netns/" <> network.namespace)},
-               {:bind_to_device, guest.tap},
-               # Linux SOL_SOCKET/SO_MARK, native-endian uint32.
-               {:raw, 1, 36, <<mark::native-unsigned-32>>}
-             ] ++ if(binding.service == :editor, do: [ip: source], else: []),
-             [
                :binary,
                {:active, false},
                {:packet, 0},

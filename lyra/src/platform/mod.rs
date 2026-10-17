@@ -9,18 +9,6 @@
 #[cfg(windows)]
 pub mod windows;
 
-// FreeBSD and illumos expose the same POSIX process/filesystem primitives as
-// Linux, but do not provide Linux's `sockaddr_vm` libc bindings or `/proc` boot
-// identity files.  Keep those differences in one adapter so the native guest
-// daemons share the protocol implementation with Linux and Windows.
-#[cfg(any(
-    target_os = "linux",
-    target_os = "freebsd",
-    target_os = "illumos",
-    target_os = "solaris"
-))]
-pub mod native;
-
 use std::fs::{File, OpenOptions};
 use std::io;
 use std::path::Path;

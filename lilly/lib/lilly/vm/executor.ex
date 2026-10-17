@@ -106,9 +106,9 @@ defmodule Lilly.VM.Executor do
   # @cc [owner:ghuntley,label:security] terminal-options-require-running-boot
   # terminal_options/2 MUST return the jailed vsock socket path bound to the
   # persisted current boot challenge only after a running VMM observation for
-  # the exact current specification and only when the boot bundle's validated
-  # agent set declares terminal capability; callers use the result as terminal
-  # dial authority and any mismatch or an agentless guest MUST deny dialing.
+  # the exact current specification and only when the boot bundle declares an
+  # agent set with terminal capability; callers use the result as terminal dial
+  # authority and any mismatch or an agentless guest MUST deny dialing.
   @spec terminal_options(Config.t(), Execution.command()) :: {:ok, keyword()} | {:error, atom()}
   def terminal_options(config, command) do
     with {:ok, spec} <- specification(command),
@@ -408,7 +408,8 @@ defmodule Lilly.VM.Executor do
          ) do
       :ok -> after_trust(config, pool, spec, command, history)
       {:error, :trust_failed} -> fail(config, pool, spec, command, history)
-      {:error, :trust_unconfirmed} -> {:retry, :trust_unconfirmed}
+      {:error, :provisioning_busy} -> {:retry, :provisioning_busy}
+      {:error, stage} -> {:retry, stage}
     end
   end
 

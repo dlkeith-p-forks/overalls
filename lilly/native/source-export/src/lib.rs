@@ -150,9 +150,17 @@ fn acquire_lock(path: &Path) -> Result<Held, u8> {
     let metadata = file.metadata().map_err(|_| EXIT_INSECURE_LOCK)?;
     {
         use std::os::unix::fs::MetadataExt as _;
+        // This process's uid, or the owner of the lock's directory (Lilly's
+        // service uid when it runs unprivileged, ADR-0182): never a third party.
+        let directory_owner = path
+            .parent()
+            .and_then(|parent| std::fs::symlink_metadata(parent).ok())
+            .filter(std::fs::Metadata::is_dir)
+            .map(|parent| parent.uid());
         let private = metadata.is_file()
             && metadata.nlink() == 1
-            && metadata.uid() == rustix::process::geteuid().as_raw()
+            && (metadata.uid() == rustix::process::geteuid().as_raw()
+                || Some(metadata.uid()) == directory_owner)
             && metadata.mode() & 0o022 == 0;
         if !private {
             return Err(EXIT_INSECURE_LOCK);

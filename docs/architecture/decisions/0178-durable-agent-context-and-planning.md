@@ -56,6 +56,11 @@ constraints, completed work, open work and needed references. The summary is
 generated context, never trusted application policy. Native Responses compaction
 uses `compaction_trigger` only for provider/model capabilities independently
 verified for its returned state, with tools disabled for the maintenance request.
+Deployment configuration binds that verification to an exact provider/model
+allowlist record and a lowercase SHA-256 evidence digest; a legacy global
+boolean cannot enable it. Marshall currently accepts only OpenAI routes and
+rechecks the pair when queuing and claiming, while omission leaves native
+compaction disabled.
 Both paths keep the existing Ziggy pull,
 inference admission and accounting route; no listener or host service is added.
 
@@ -157,11 +162,17 @@ mode instructions, durable question/answer state and exact proposal admission.
 [Compaction tests](../../../marshall/test/marshall/agents/compaction_test.exs),
 [planning parser properties](../../../marshall/test/marshall/agents/planning_test.exs)
 and [planning persistence cases](../../../marshall/test/marshall/agents/planning_persistence_test.exs)
-are present. The focused Marshall feature suite passed 64 cases (61 tests and
-3 properties), including schema migration and integrated loop fixtures. Native
-guest, browser and deployment acceptance remain tracked separately in the
-[context review](../reviews/2026-10-16-agent-context-and-planning.md). Source
-presence does not establish restart, live provider or browser acceptance.
+are present. Native maintenance admission is bound to exact provider/model
+capability evidence and rechecked at queue and claim; omission leaves native
+compaction disabled. The focused Marshall feature suite passed 64 cases (61
+tests and 3 properties), including schema migration and integrated loop
+fixtures. The distributed recovery suite adds four process-loss cases for
+pending questions, checkpoint projection, compaction-plan reconstruction and
+managed-skill dispatch across replacement peers; it observes committed
+PostgreSQL state and does not establish guest/provider completion. Native guest,
+browser and deployment acceptance remain tracked separately in the [context
+review](../reviews/2026-10-16-agent-context-and-planning.md). Source presence
+does not establish live provider or browser acceptance.
 
 ## Open questions
 

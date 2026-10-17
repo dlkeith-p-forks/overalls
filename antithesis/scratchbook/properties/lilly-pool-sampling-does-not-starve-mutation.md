@@ -21,14 +21,14 @@ Next probe: Storage.locked permits bounded mutation acquisition and Runtime drop
 
 #### Which measured post-release interval is sufficient for each selected operation?
 
-- Examined: `lilly/lib/lilly/host/storage.ex:9-30; lilly/lib/lilly/control/runtime.ex:252-313,445-478; nix/tests/machines/fleet/scenarios/capacity.py:114-155; antithesis/scratchbook/emulated-storage-feasibility.md`.
+- Examined: `lilly/lib/lilly/host/storage.ex:9-30; lilly/lib/lilly/control/runtime.ex:252-313,445-478; nix/verification/tests/machines/fleet/scenarios/capacity.py:114-155; antithesis/scratchbook/emulated-storage-feasibility.md`.
 - Found: Storage.locked permits bounded mutation acquisition and Runtime drops or defers samples while one is in flight, but neither supplies an end-to-end post-release completion bound. The repository has multi-host ZFS native fixtures; the hosted TCG design does not yet prove two independently mounted real pools. Probe each operation under a measured quiet interval and two actual pools before assigning a physical-neighbor oracle.
 - Not established: No current hosted/native execution was run in this investigation; source and test presence alone do not establish the physical outcome.
 - Conclusion: partial; Keep both measured interval and hosted two-pool feasibility partial.
 
 #### Can hosted TCG maintain two independent real pools with genuine contention under faults?
 
-- Examined: `antithesis/scratchbook/emulated-storage-feasibility.md`, `lilly/lib/lilly/host/storage.ex:9-30`, and `nix/tests/machines/fleet/scenarios/capacity.py:114-155`.
+- Examined: `antithesis/scratchbook/emulated-storage-feasibility.md`, `lilly/lib/lilly/host/storage.ex:9-30`, and `nix/verification/tests/machines/fleet/scenarios/capacity.py:114-155`.
 - Found: the source lock is per pool and the native fixture has real ZFS observations; the hosted design is a feasibility proposal.
 - Not established: two concurrently mounted independent TCG pools with controllable lock contention have not been built or run in this tree.
 - Conclusion: partial; run a two-pool hosted bring-up with separate GUIDs and an independent neighbor mutation witness.

@@ -60,7 +60,7 @@ preserve its authority, isolation and image-size decisions.
 | Offline instance-specific guest trust | Isolated-store rebuild succeeds | Actual inner boot, nested guest and private inference remain pending |
 
 The fixture sources are in
-[the native suite](../../../nix/tests/machines/inception/default.nix).
+[the native suite](../../../nix/verification/tests/machines/inception/default.nix).
 Neither a driver build nor this checkpoint establishes full public acceptance
 or production readiness. No deployment is claimed.
 
@@ -145,7 +145,7 @@ exact TXT sets and bounded TTL on every replica. Owner selection rotates through
 bounded batches, with bounded concurrency and one shared deadline. The host
 submits the child publication before observing propagation.
 
-The [child receiver](../../../nix/packages/guest/inception/observations.py) consumes
+The [child receiver](../../../nix/domains/artifacts/guest/inception/observations.py) consumes
 an exact original offer once, checking boot, generation and proofs. It caps expiry
 from offer creation and original source lifetime, never receipt. Root owns the
 Audi-readable evidence directory and atomically published file. A bounded local
@@ -160,19 +160,19 @@ not yet been established.
 
 ## Inner control TLS
 
-The [proof hook](../../../nix/packages/guest/inception/control_proofs.py) accepts
+The [proof hook](../../../nix/domains/artifacts/guest/inception/control_proofs.py) accepts
 one fixed control owner and canonical proof under a boot/generation/job nonce,
 with a nonrenewable three-minute deadline. It completes presentation only after
-fresh parent evidence. The [worker](../../../nix/packages/guest/inception/control_worker.py)
+fresh parent evidence. The [worker](../../../nix/domains/artifacts/guest/inception/control_worker.py)
 uses independent persistent Lego account state, an isolated environment and a
 bounded process group. Completion, timeout or exit kills remaining hooks before
 clearing authority. Restart discards old jobs before publishing cached readiness.
 
-The [TLS helper](../../../nix/packages/guest/inception/control_tls.py) validates
+The [TLS helper](../../../nix/domains/artifacts/guest/inception/control_tls.py) validates
 CA trust, hostname, key, lifetime and the complete candidate HAProxy configuration
 before atomic certificate replacement. Readiness requires a fresh source-bound
 IPv4 PROXY/TLS/HTTP probe, including the exact served leaf. A failed probe cannot
-publish ready. The [units](../../../nix/packages/guest/inception/control.nix) keep
+publish ready. The [units](../../../nix/domains/artifacts/guest/inception/control.nix) keep
 issuance separate from core readiness and run the proxy unprivileged. BindsTo and
 ordering stop the proxy when its worker becomes inactive, including unexpected
 exit; native failure propagation remains unverified.
@@ -289,7 +289,7 @@ clients. This is independent of the control hook's observation failure.
    absence of browser routes on the fleet listener; these new native assertions
    have not yet run. The six application gates pass as recorded below;
    production transport and full native verification remain outstanding. The opt-in
-   [WireGuard module](../../../nix/modules/fleet-network.nix) supplies an IPv4
+   [WireGuard module](../../../nix/domains/system/fleet-network.nix) supplies an IPv4
    host-only transport with keyed /32 routes, runtime private-key custody and
    source/destination/interface firewall rules. Both production host declarations
    now enable it, with independent inventoried ciphertext and pinned public keys.
@@ -300,10 +300,10 @@ clients. This is independent of the control hook's observation failure.
    Overalls callers retain loopback, while Dungarees resolves its fleet API over
    the tunnel and verifies the service CA. These are undeployed declarations:
    production key decryption, handshakes and serving acceptance remain unverified.
-   See the [fleet network guide](../../fleet-network.md).
+   See the [fleet network guide](../../operations/fleet-network.md).
    Module checks pass for both firewall backends, refusal of IPv6, self-peering,
    disabled firewalls and globally trusted tunnel interfaces. The new
-   [native tunnel fixture](../../../nix/tests/machines/fleet-network/default.nix)
+   [native tunnel fixture](../../../nix/verification/tests/machines/fleet-network/default.nix)
    covers admitted traffic, physical-interface refusal, denied ports, key
    revocation and forwarding drop counters. Native encrypted connectivity and
    physical/closed-port refusal passed in both directions across the two firewall
@@ -381,7 +381,7 @@ driver discarded their successful stdout. The probe now emits only fixed public
 status predicates to the outer console, including proof presence at the job,
 heartbeat and publication stages. No terminal contents or proof values are
 emitted. Public issuance and private provider startup remain unverified.
-A new [public-boundary probe](../../../nix/tests/machines/inception/public_boundary.py)
+A new [public-boundary probe](../../../nix/verification/tests/machines/inception/public_boundary.py)
 is wired after certificate acceptance for both environments: verified inner TLS
 through physical Audi must reject all five fleet API prefixes, including unknown
 versions, malformed JSON and forged forwarding headers, without sessions or
@@ -414,7 +414,7 @@ checks but do not replace final project gates after all implementation and merge
 work. Concurrent Mix runs previously interfered with caches and database
 connections; the reported Marshall result is the clean serial rerun.
 
-The [cross-runtime proof check](../../../nix/tests/evaluation/inception-proof-broker.py)
+The [cross-runtime proof check](../../../nix/verification/tests/evaluation/inception-proof-broker.py)
 runs packaged Audi against the actual Python Unix broker and passes exact proof,
 wrong generation/proof/UID and expired-evidence cases. Local transport tests cover
 opaque nested TLS with an independently trusted child certificate, ordinary TLS,
@@ -449,7 +449,7 @@ running; the fixture now separately waits for the real core readiness response.
 Whether that resolves a startup race or exposes a persistent enrollment failure
 remains to be established by the next native run.
 
-The [private PKI bootstrap](../../../nix/packages/guest/inception/private_pki.py)
+The [private PKI bootstrap](../../../nix/domains/artifacts/guest/inception/private_pki.py)
 uses Audi's existing hierarchy primitives to generate independent instance-bound
 custody outside the build. Five actual-crypto tests cover restart identity,
 missing and foreign custody, key mismatch, interrupted publication and expired
@@ -515,20 +515,20 @@ remain required; earlier passing results do not establish this merged revision.
 ## Nested guest trust completion (2026-09-19)
 
 The recovered plan's image-builder item is implemented on the merged revision.
-The [recipe](../../../nix/packages/guest/inception/image-builder.nix) now scans
+The [recipe](../../../nix/domains/artifacts/guest/inception/image-builder.nix) now scans
 certificate inputs line-wise; whole-file `hasInfix` overflowed Nix's regex stack
 on real CA bundles, which was the experiment's evaluation error. The fileset
 includes `flush.py`, whose omission broke the copied guest configuration. A
 `cache` output retains the recipe and every closure store path behind a single
 runtime reference, so the offline rebuild graph travels inside the environment.
 
-The [image rebuild unit](../../../nix/packages/guest/inception/default.nix)
+The [image rebuild unit](../../../nix/domains/artifacts/guest/inception/default.nix)
 runs after the independent private PKI publishes the instance root and before
 enrollment; it rebuilds the guest image with `nix-build --offline` from the
 prewarmed cache and publishes the rebuilt content identity to
 `/run/inception/default-image-id`. Inner Marshall reads that identity through
 a validated systemd credential
-([helper](../../../nix/modules/marshall-default-image.py)); invalid input
+([helper](../../../nix/domains/system/marshall-default-image.py)); invalid input
 prevents startup and empty input disables the default. Enrollment registers
 and selects only the rebuilt image, so an inner guest cannot boot without its
 environment's trust. The private-services assertion shares the line-wise scan.

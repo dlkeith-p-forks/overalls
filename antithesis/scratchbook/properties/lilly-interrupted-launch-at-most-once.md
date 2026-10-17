@@ -52,7 +52,7 @@ Next probe: The production launch path persists launch-attempt.bin before privil
 
 #### Can the hosted adapter retain independently durable submission witnesses with production marker semantics?
 
-- Examined: `lilly/lib/lilly/vm/driver.ex:336-421,1474-1492; nix/tests/machines/fleet/scenarios/submission-recovery.py:21-105,190-191`.
+- Examined: `lilly/lib/lilly/vm/driver.ex:336-421,1474-1492; nix/verification/tests/machines/fleet/scenarios/submission-recovery.py:21-105,190-191`.
 - Found: The production launch path persists launch-attempt.bin before privileged start, and the native submission-recovery scenario has a real barrier on either side of submission plus marker hash and VMM snapshot checks. A hosted executor adapter with an independently durable submission ledger is not present in inspected source. Probe adapter marker-before-effect ordering under process death; do not equate adapter success with systemd acceptance.
 - Not established: No current hosted/native execution was run in this investigation; source and test presence alone do not establish the physical outcome.
 - Conclusion: partial; Name native barrier as existing test presence; keep hosted adapter question partial.

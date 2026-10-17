@@ -87,7 +87,8 @@ defmodule Overalls.HLDDCoverage do
 
       kind =
         cond do
-          e["kind"] == "machine" and not String.starts_with?(e["path"], "nix/tests/machines/") ->
+          e["kind"] == "machine" and
+              not String.starts_with?(e["path"], "nix/verification/tests/machines/") ->
             ["machine evidence must reference a NixOS machine test"]
 
           e["kind"] == "property" and not property_source?(source) ->

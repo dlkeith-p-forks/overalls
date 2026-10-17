@@ -4,7 +4,7 @@ defmodule Brady.InvalidBootPropertyTest do
 
   @moduletag timeout: 240_000
   @probe Path.expand("../../scripts/invalid_boot_probe.exs", __DIR__)
-  @fields ~w(version host_id issuer_cert_file issuer_key_file upstream_ca_file protected_cidrs tls_exceptions cache_directory cache_dataset cache_quota_bytes)
+  @fields ~w(version host_id attribution_uid issuer_cert_file issuer_key_file upstream_ca_file protected_cidrs tls_exceptions cache_directory cache_dataset cache_quota_bytes)
   @paths ~w(issuer_cert_file issuer_key_file upstream_ca_file cache_directory)
   @config_cases [
     :missing,
@@ -276,6 +276,7 @@ defmodule Brady.InvalidBootPropertyTest do
     %{
       "version" => 1,
       "host_id" => "11111111-1111-4111-8111-111111111111",
+      "attribution_uid" => 377,
       "issuer_cert_file" => certfile,
       "issuer_key_file" => keyfile,
       "upstream_ca_file" => certfile,

@@ -47,9 +47,9 @@ are not inputs.
 Official Code OSS already supplies REH-web, native server extensions, PTYs,
 watching, search and language tools. The package takes official Microsoft source
 as its sole upstream source and applies the maintained
-[patch](../../../nix/packages/vscode-web/patches/0001-overalls-browser-editor.patch).
+[patch](../../../nix/domains/artifacts/vscode-web/patches/0001-overalls-browser-editor.patch).
 OpenVSCode is comparison material. The
-[recipe](../../../nix/packages/vscode-web/default.nix) builds dependency inputs and
+[recipe](../../../nix/domains/artifacts/vscode-web/default.nix) builds dependency inputs and
 native bindings offline, checks TypeScript and preserves license notices. Product
 configuration omits optional agent/Copilot entry points, sets Open VSX and pins
 gallery signing keys. Gallery VSIX verification precedes extraction and settings
@@ -104,10 +104,10 @@ the outer ledger commit; nested action success followed by rollback produces no
 authority outcome. The Control room audit read policy remains current-user
 `admin_read`, consistent with the existing Cedar contract.
 
-The [recurring browser module](../../../nix/modules/otel-fleet/browser-probes.nix)
+The [recurring browser module](../../../nix/domains/system/otel-fleet/browser-probes.nix)
 declares independent Overalls NixOS/Ubuntu supervisors with private real operator
 storage state and closed guest fixtures. The
-[shared journey](../../../nix/modules/otel-guest/browser_journey.py) is also used by
+[shared journey](../../../nix/domains/system/otel-guest/browser_journey.py) is also used by
 full fleet acceptance; success requires actual Marshall opening, expected origin,
 saved/read-back Markdown, isolated preview and personal terminal UID/guest OS.
 Separate durable recorders/exporters carry numerical outcomes under distinct
@@ -318,7 +318,7 @@ guards both no-agent onboarding and default-account initialization: absent optio
 product configuration yields an undefined provider and a settled initialization
 barrier, without creating a fake account/backend. Normal gallery and uninstall
 paths are guarded consistently. The maintained source-bundled asynchronous
-[no-account regression](../../../nix/packages/vscode-web/check-no-account.mts)
+[no-account regression](../../../nix/domains/artifacts/vscode-web/check-no-account.mts)
 exercises get, refresh, sign-in and sign-out settlement plus provider absence.
 Build thirteen passed source/checker typing, that regression and assembly, then
 failed sandbox Chromium startup with a Fontconfig/font-tree SIGABRT. Its later
@@ -376,7 +376,7 @@ runtime or physical host availability.
 
 ## Native and operational gaps
 
-The [NixOS machine fixture](../../../nix/tests/machines/vscode-web/default.nix) is
+The [NixOS machine fixture](../../../nix/verification/tests/machines/vscode-web/default.nix) is
 present. It uses the actual source-built package and Rust broker, trusted TLS,
 browser formatting, diagnostics, search, Git, Markdown preview/local resources
 and terminal UID, plus a browser-only extension's activation marker and real
@@ -470,8 +470,8 @@ The corresponding NixOS driver/image preparation built in 252 seconds with the
 same distinction; neither result establishes a running Firecracker editor journey.
 
 Both full fleet checks are also present via
-[fleet composition](../../../nix/tests/machines/fleet/default.nix) and
-[editor driver](../../../nix/tests/machines/vscode-web/fleet.py). They use real
+[fleet composition](../../../nix/verification/tests/machines/fleet/default.nix) and
+[editor driver](../../../nix/verification/tests/machines/vscode-web/fleet.py). They use real
 ordinary browser account state and actual Marshall→Audi→Lilly→Firecracker images,
 verify manifest/default shape/2 GiB writable headroom, invoke the shared browser
 journey, inspect native personal worker custody, and repeat broker restart,
@@ -525,7 +525,7 @@ unobserved in that revision, so no package, missing-library or timing cause is
 claimed. Fixed closed substages/categories have since been added for a diagnostic
 rerun, without changing waits/assertions. Ubuntu complete browser/recovery/
 revocation acceptance remains unresolved.
-The [authorization driver](../../../nix/tests/machines/vscode-web/authorization.py)
+The [authorization driver](../../../nix/verification/tests/machines/vscode-web/authorization.py)
 additionally checks actual Audi refusal of missing/sibling/null Origin for unsafe
 requests and upgrades, then ordinary browser sign-out, closure of established
 editor WebSockets within thirty seconds, fixed-origin 303 authentication recovery
@@ -732,7 +732,7 @@ finding was reached. Its record is `/tmp/kittens-editor-ui-dialyzer.log`. A comp
 569-module rebuild corrected the artifact failure without a source workaround;
 the final check reached actual analysis and established Marshall typing acceptance.
 
-The [console correction](../../../nix/tests/machines/vscode-web/guest.exs) satisfies
+The [console correction](../../../nix/verification/tests/machines/vscode-web/guest.exs) satisfies
 `editor-fixture-executed-root-shell`: the printed fresh nonce is split in the
 submitted command, so input echo cannot provide the exact newline-delimited
 success result. Success additionally requires executed `id -u` to equal zero.
@@ -1423,7 +1423,7 @@ is inferred from database readiness or earlier historical passes.
 
 ## Narrow personal bundle update correction
 
-The [0004 patch](../../../nix/packages/vscode-web/patches/0004-overalls-personal-bundled-updates.patch)
+The [0004 patch](../../../nix/domains/artifacts/vscode-web/patches/0004-overalls-personal-bundled-updates.patch)
 adds a typed immutable product roster for only EditorConfig, vscode-direnv,
 ElixirLS and rust-analyzer. The source-reviewed helper validates its unknown
 runtime roster and permits only exact lowercase literal IDs; input IDs normalize
@@ -1623,7 +1623,7 @@ records establishes a complete merged component/native or production rerun.
 
 One concrete incoming contract mismatch remains outside the editor behavior:
 `transfer-journal-migration-never-blocks` in
-[TransferJournalMigration](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/lib/lilly/control/transfer_journal_migration.ex)
+TransferJournalMigration (`lilly/lib/lilly/control/transfer_journal_migration.ex` at kittens revision `9fe1e493`, repository deleted)
 requires refusing scans above 16,384 candidates, but `pool_candidates/1` enumerates
 all candidate paths and reads legacy markers before `migrate/1` checks their count.
 The current limit bounds rewrites, not scanning. This is a bounded-scan gap with

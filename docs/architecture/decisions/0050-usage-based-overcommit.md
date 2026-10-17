@@ -84,11 +84,11 @@ commit must preserve increased ceilings if ordinary rollback would shrink them.
 
 ## Implementation evidence
 
-[Resource transition support](../../../nix/modules/auto-update/resources.py) and
-the [updater](../../../nix/modules/auto-update/runtime.py) implement exact binding
+[Resource transition support](../../../nix/domains/system/auto-update/resources.py) and
+the [updater](../../../nix/domains/system/auto-update/runtime.py) implement exact binding
 comparison, native identity checks, journaled receipts and in-place application.
-The [host profile](../../../nix/hosts/profile.nix) publishes its reviewed policy;
-the [module](../../../nix/modules/auto-update/default.nix) reapplies it at boot.
+The [host profile](../../../nix/platform/hosts/profile.nix) publishes its reviewed policy;
+the [module](../../../nix/domains/system/auto-update/default.nix) reapplies it at boot.
 [Usage sampling](../../../lilly/lib/lilly/host/usage.ex) constrains headroom across
 cgroup ancestors and host availability. [Budget](../../../marshall/lib/marshall/compute/budget.ex)
 and [startup settlement](../../../marshall/lib/marshall/compute/startup_holds.ex)
@@ -114,12 +114,12 @@ host measurement. See the
 
 Resource-journal replay validates the enrollment receipt's nested storage
 evidence while preserving its independently authenticated current revision; the
-[resource regression test](../../../nix/tests/machines/auto-update/resources_test.py)
+[resource regression test](../../../nix/verification/tests/machines/auto-update/resources_test.py)
 covers retry after later re-enrollment, and updater preflight maps failures to
 the helper's closed diagnostic reasons.
-The [real guest fixture](../../../nix/tests/machines/zfs-guest/driver.py) passed
+The [real guest fixture](../../../nix/verification/tests/machines/zfs-guest/driver.py) passed
 aggregate CPU/RAM/disk promises above physical budgets and CPU-pressure recovery.
-The [fleet suite](../../../nix/tests/machines/fleet/default.nix) passed concurrent
+The [fleet suite](../../../nix/verification/tests/machines/fleet/default.nix) passed concurrent
 startup admission, retained-disk restart, deletion, stale-capacity rejection,
 updates, terminal recovery and authority revocation. Overalls completed both
 deployment stages with unchanged original guest PIDs and native storage identity.

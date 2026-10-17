@@ -22,7 +22,7 @@ Next probe: Boot.adopt_generation and the property test preserve the journal boo
 
 #### Which native fixture can delay a guest workspace reply through a committed generation advance while retaining the VMM?
 
-- Examined: `lilly/lib/lilly/vm/boot.ex:64-86; lilly/lib/lilly/vm/driver.ex:776-875; lilly/test/vm/boot_generation_adoption_property_test.exs:12-65; nix/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655`.
+- Examined: `lilly/lib/lilly/vm/boot.ex:64-86; lilly/lib/lilly/vm/driver.ex:776-875; lilly/test/vm/boot_generation_adoption_property_test.exs:12-65; nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py:626-655`.
 - Found: Boot.adopt_generation and the property test preserve the journal boot challenge across a newer generation, but the inspected native fleet scenarios provide no guest workspace reply barrier. Probe a protected workspace-source reply delay while observing unchanged VMM PID/start time and guest boot ID, then commit generation N+1 and release N reply.
 - Not established: No current hosted/native execution was run in this investigation; source and test presence alone do not establish the physical outcome.
 - Conclusion: partial; Retain partial; separate journal adoption from a future native delayed-reply result.

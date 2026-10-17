@@ -85,30 +85,30 @@ guarantee. Fleet database/storage budgets require measured acceptance.
 
 ## Implementation evidence
 
-The [fleet refusal histories](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall_web/fleet_version_history_test.exs)
+The fleet refusal histories (`marshall/test/marshall_web/fleet_version_history_test.exs` at kittens revision `a99f74f0`, repository deleted)
 use actually issued credentials and preserve complete public-table hashes and
 exact timer-free monitoring cache state after each refused surface corpus.
 They reproduced malformed monitor JSON entering the generic 503 arm; the
-[ingestion plug](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall_web/fleet_api.ex) now maps parser
+ingestion plug (`marshall/lib/marshall_web/fleet_api.ex` at kittens revision `a99f74f0`, repository deleted) now maps parser
 errors to its existing permanent 400 invalid-samples class before cache admission.
 Current dispatch and actual sample acceptance/flush calibrate the state oracles.
 The [property audit](../reviews/2026-09-29-antithesis-property-audit.md) records
 local scope and retained TLS, native, scale and client-retry gaps.
 
 Ziggy extends this existing monitoring path through
-[bounded local numeric probes](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/runtime.py),
-[proxy chart specifications](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/dashboard_catalog.ex)
+bounded local numeric probes (`nix/domains/system/fleet-monitor/runtime.py` at kittens revision `a99f74f0`, repository deleted),
+proxy chart specifications (`marshall/lib/marshall/fleet/dashboard_catalog.ex` at kittens revision `a99f74f0`, repository deleted)
 and [per-Lilly links](../../../marshall/lib/marshall_web/live/admin/lilly_nodes_live.ex).
 Proxy monitoring remains observational; unknown/stale data grants no inference or
 compute authority. See [ADR-0063](0063-private-services-and-ziggy.md) and the
-[verification ledger](../../ziggy.md) for its separate implementation gaps.
+[verification ledger](../../services/ziggy.md) for its separate implementation gaps.
 
 Galileo uses the same bounded local-proxy projection. The
-[strict sample validator](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/sample.ex) now
+strict sample validator (`marshall/lib/marshall/fleet/sample.ex` at kittens revision `a99f74f0`, repository deleted) now
 accepts its three closed numeric gauges only on the `galileo.service` record and
 keeps readiness boolean-coded. A production Dungarees sample exposed the missing
 server allowlist even though the collector already emitted those fields; the
-[regression test](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/fleet/sample_test.exs) covers the
+regression test (`marshall/test/marshall/fleet/sample_test.exs` at kittens revision `a99f74f0`, repository deleted) covers the
 accepted record, cross-service rejection, invalid readiness and negative counts.
 The complete Marshall precommit gate passed with 852 checks (787 tests and 65
 properties), contract/logging/ADR checks, browser-side suites and zero Dialyzer
@@ -116,33 +116,33 @@ errors. This fixes schema agreement but does not complete the remaining native
 transport and scale obligations.
 
 
-[Measurements](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/metrics.py) implement bounded
+Measurements (`nix/domains/system/fleet-monitor/metrics.py` at kittens revision `a99f74f0`, repository deleted) implement bounded
 Linux/ZFS parsing and identity-aware rates. The independent
-[runtime](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/runtime.py) collects allowlisted
+runtime (`nix/domains/system/fleet-monitor/runtime.py` at kittens revision `a99f74f0`, repository deleted) collects allowlisted
 systemd metadata, rechecks invocation stability, buffers samples and accepts only
-durable acknowledgments. The [NixOS module](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/default.nix)
+durable acknowledgments. The NixOS module (`nix/domains/system/fleet-monitor/default.nix` at kittens revision `a99f74f0`, repository deleted)
 is opt-in with runtime credential paths and service budgets.
 [Lilly launch metadata](../../../lilly/lib/lilly/vm/unit.ex) binds the actual
 launched revision rather than later intent. Ten
-[isolated collector tests](../../../nix/tests/evaluation/fleet-monitor.py) pass;
+[isolated collector tests](../../../nix/verification/tests/evaluation/fleet-monitor.py) pass;
 these are not native fleet acceptance. HTTP ingestion, deployment enrollment,
 caches, history persistence, dashboards and scale/native acceptance were pending
 at the collector checkpoint below; subsequent server evidence follows.
 
-The [Fleet resources](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/lib/marshall/fleet.ex) now model unique
+The Fleet resources (`marshall/lib/marshall/fleet.ex` at kittens revision `9fe1e493`, repository deleted) now model unique
 physical hosts and dedicated credentials. The
-[credential coordinator](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/lib/marshall/fleet/credentials.ex)
+credential coordinator (`marshall/lib/marshall/fleet/credentials.ex` at kittens revision `9fe1e493`, repository deleted)
 implements fresh authentication, rotation and revocation. The
-[sample validator](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/sample.ex) implements the
+sample validator (`marshall/lib/marshall/fleet/sample.ex` at kittens revision `a99f74f0`, repository deleted) implements the
 bounded version-one allowlist. Seven
-[focused tests](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/fleet/credentials_test.exs) (including
-[sample checks](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/fleet/sample_test.exs)) passed.
+focused tests (`marshall/test/marshall/fleet/credentials_test.exs` at kittens revision `a99f74f0`, repository deleted) (including
+sample checks (`marshall/test/marshall/fleet/sample_test.exs` at kittens revision `a99f74f0`, repository deleted)) passed.
 A real local collector envelope also passed the Marshall validator. Deployment
 enrollment wiring remains pending.
 
-The [ingestion plug](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall_web/fleet_api.ex) now requires
+The ingestion plug (`marshall/lib/marshall_web/fleet_api.ex` at kittens revision `a99f74f0`, repository deleted) now requires
 actual HTTPS and a dedicated bearer, bounds JSON reads and bypasses generic request
-logging. The [cache](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/cache.ex) keeps bounded
+logging. The cache (`marshall/lib/marshall/fleet/cache.ex` at kittens revision `a99f74f0`, repository deleted) keeps bounded
 compressed observations and pending samples, coalesces notifications every five
 seconds and flushes at most 128 samples per host per minute. Connected BEAM nodes
 share a globally named cache; PostgreSQL serializes writes even if cache owners
@@ -151,28 +151,28 @@ and scale verification. Collectors rotate through buffered replay windows while
 including the newest sample, allowing backlog to drain without waiting on the
 same initial window every time.
 
-[History](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/history.ex) commits per-host/scope/
+History (`marshall/lib/marshall/fleet/history.ex` at kittens revision `a99f74f0`, repository deleted) commits per-host/scope/
 period JSON statistics, short-lived digest-bound receipts and flush time together.
 Sample receipt rows expire after two hours; per-host bucket payloads are capped at
 16384 entities and 8 MiB. Only committed receipts authorize ACKs. Sampled gauges
 retain counts/extrema, while rate means weight observed intervals and assign them
 to the interval end bucket; these weights are not time-coverage percentages.
-Mixed contexts and unknowns remain explicit. [Read projection](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/read_history.ex)
+Mixed contexts and unknowns remain explicit. Read projection (`marshall/lib/marshall/fleet/read_history.ex` at kittens revision `a99f74f0`, repository deleted)
 extracts one entity in PostgreSQL and filters expiry before bounded cleanup.
 Twenty-two focused tests cover persistence, rollback, replay, revocation, API
 limits, history extraction and retention. The ingestion checkpoint passed 581
 Marshall tests and Dialyzer (before its final three focused additions).
 
-The [inventory action](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/lib/marshall/fleet/inventory.ex) returns
+The inventory action (`marshall/lib/marshall/fleet/inventory.ex` at kittens revision `9fe1e493`, repository deleted) returns
 bounded authenticated physical-host pages under [ADR-0119](0119-authenticated-control-room-reads.md), including offline identities.
-The [fleet projection](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/utilization.ex) weights
+The fleet projection (`marshall/lib/marshall/fleet/utilization.ex` at kittens revision `a99f74f0`, repository deleted) weights
 known CPU/RAM numerators by matching denominators, excludes stale/cross-boot
 records and keeps physical pools separate from logical datasets. It reports
 contributing-host counts and excludes incomplete storage summaries. The
-[fleet page](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall_web/live/admin/fleet_live.ex) refreshes
+fleet page (`marshall/lib/marshall_web/live/admin/fleet_live.ex` at kittens revision `a99f74f0`, repository deleted) refreshes
 cached measurements every five seconds, inventory every minute, and calculates
 totals/rankings across all enrolled inventory pages while keeping host rows
-bounded. The [node page](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall_web/live/admin/node_live.ex)
+bounded. The node page (`marshall/lib/marshall_web/live/admin/node_live.ex` at kittens revision `a99f74f0`, repository deleted)
 shows bounded resource pages and explicitly requested historical means/extrema
 with observation counts and unjoined gaps. Twenty-six focused Fleet/domain/UI
 tests pass at this checkpoint. Workload ranking, capacity explanations and
@@ -196,10 +196,10 @@ not change the acceptance status of the previously implemented monitoring path.
 The terminal master plan adds a passive numeric terminal-service projection:
 Lilly stream readiness, channels, dial failures/proxy errors, and recent
 per-placement/epoch/generation guest dial observations. The
-[collector decoder](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/modules/fleet-monitor/terminal_metrics.py)
+collector decoder (`nix/domains/system/fleet-monitor/terminal_metrics.py` at kittens revision `a99f74f0`, repository deleted)
 rejects unknown fields, wrong host identity and oversized responses, while
 failed observation remains absent. The
-[completion ledger](../../terminal-v2-completion.md) tracks current source and
+[completion ledger](../../history/ledgers/terminal-v2-completion.md) tracks current source and
 verification; these metrics must not authorize execution or replace freshness
 gates. End-to-end monitoring acceptance remains pending.
 

@@ -11,5 +11,5 @@ flowchart LR
   Lilly["Lilly"] -->|"Poll authorized machine work"| Marshall
 ```
 
-See [Porsche operations](../docs/porsche-operations.md) and the
+See [Porsche operations](../docs/operations/porsche-operations.md) and the
 [SSH management decision](../docs/architecture/decisions/0046-porsche-ssh-management.md).

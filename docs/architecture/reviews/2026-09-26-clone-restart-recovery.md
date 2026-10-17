@@ -101,18 +101,18 @@ retry; deploying this fix alone does not revive them.
   exercise real Ash/PostgreSQL transitions and authenticated duplicate effect
   receipts, publication with failed source restoration, explicit retry, newer
   source intent and cleanup order. Physical outcomes are synthetic in this test.
-- [Native restart fixture](../../../nix/tests/machines/zfs-guest/restart.exs)
+- [Native restart fixture](../../../nix/verification/tests/machines/zfs-guest/restart.exs)
   distinguishes a held pool lock from coherent usage changes returned by a
-  fixture-only [utility wrapper](../../../nix/tests/support/zfs-readiness-fault.py).
+  fixture-only [utility wrapper](../../../nix/verification/tests/support/zfs-readiness-fault.py).
   It checks that retries leave boot/launch-attempt files unchanged, preserve
   authority and keep the VMM stopped. Missing disk/bundle and malformed bundle
   cases remain rejected. The same generation then boots and reads guest data.
-- [Native clone fixture](../../../nix/tests/machines/zfs-guest/cloning.exs) now
+- [Native clone fixture](../../../nix/verification/tests/machines/zfs-guest/cloning.exs) now
   restores its source through production `Driver.restart`, preserving the
   portable-bundle boundary. It also checks same-pool owned staging and terminal
   malformed/foreign evidence before same-authority restart after adoption. The
   final fixture also covers the prepared-receive window before native creation.
-- [Porsche fleet](../../../nix/tests/machines/fleet/scenarios/porsche.py) arms a
+- [Porsche fleet](../../../nix/verification/tests/machines/fleet/scenarios/porsche.py) arms a
   fixture-only native launch refusal for the source. It verifies publication,
   retained slots, refused transfers from the independent destination, public
   retry, source disk identity/data, destination process preservation and cleanup.

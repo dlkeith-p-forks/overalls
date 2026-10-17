@@ -83,24 +83,24 @@ and all launch entrypoints must supply the selected public key.
 
 ## Implementation evidence
 
-[Logging module](../../../nix/modules/logging/default.nix) defines neutral inputs,
+[Logging module](../../../nix/domains/system/logging/default.nix) defines neutral inputs,
 conditional routes, destination presets and resource limits. Its
-[runtime preparation](../../../nix/modules/logging/runtime.py) resolves private
-credentials. [Audit module](../../../nix/modules/security-audit.nix) defines
-restricted rules and native rotation. [CloudWatch management](../../../nix/modules/cloudwatch/default.nix)
-is separate from collection. [Fluent Bit patches](../../../nix/packages/fluent-bit/default.nix)
+[runtime preparation](../../../nix/domains/system/logging/runtime.py) resolves private
+credentials. [Audit module](../../../nix/domains/system/security-audit.nix) defines
+restricted rules and native rotation. [CloudWatch management](../../../nix/domains/system/cloudwatch/default.nix)
+is separate from collection. [Fluent Bit patches](../../../nix/domains/artifacts/fluent-bit/default.nix)
 address checkpoint ordering, persisted route recovery, partial rejection, verified
 TLS, durable metric emission and explicit AWS identity selection.
 [Lilly native logging](../../../lilly/lib/lilly/vm/logging.ex) creates generation-bound
-FIFOs read by an [independent collector](../../../nix/modules/firecracker-logging/collector.py).
+FIFOs read by an [independent collector](../../../nix/domains/system/firecracker-logging/collector.py).
 [OTP report translation](../../../marshall/lib/marshall/otp_reports.ex) prevents raw
 process data from reaching formatters; [aggregate telemetry](../../../marshall/lib/marshall/observability.ex)
-retains numeric observations. [Crash dump runtime](../../../nix/modules/crash-dumps/runtime.py)
+retains numeric observations. [Crash dump runtime](../../../nix/domains/system/crash-dumps/runtime.py)
 validates the encryption-enabled release and operator key and bounds artifact retention.
-The [three-host machine check](../../../nix/tests/machines/logging/default.nix),
-[native transport fixtures](../../../nix/tests/evaluation/logging-transports.py), and
-[actual OTP encryption test](../../../nix/tests/evaluation/encrypted-crash-dumps.py)
-provide executable evidence. [Operational guidance](../../observability.md) documents
+The [three-host machine check](../../../nix/verification/tests/machines/logging/default.nix),
+[native transport fixtures](../../../nix/verification/tests/evaluation/logging-transports.py), and
+[actual OTP encryption test](../../../nix/verification/tests/evaluation/encrypted-crash-dumps.py)
+provide executable evidence. [Operational guidance](../../operations/observability.md) documents
 configuration, credential rotation, queue sizing, IAM and provider acceptance.
 These checks do not establish live AWS policy/KMS enforcement or measured production
 capacity; implementation remains partial pending those deployment-specific checks.
@@ -114,7 +114,7 @@ checks that failed receipt storage rolls back work and emits no false provisioni
 or sharing success, while a committed command still logs admission. The
 [SSH API tests](../../../marshall/test/marshall_web/ssh_api_test.exs) also verify
 credential and command-argument exclusion at debug level. Porsche's own SSH
-runtime now uses the [NixOS service](../../../nix/modules/porsche.nix), with explicit
+runtime now uses the [NixOS service](../../../nix/domains/system/porsche.nix), with explicit
 Fluent Bit classification from trusted journal unit identity. Its
 [source privacy filter](../../../porsche/lib/porsche/privacy.ex) and JSON stderr
 configuration are installed before its SSH listener accepts peers. The
@@ -125,7 +125,7 @@ reviewed [Porsche.Events](../../../porsche/lib/porsche/events.ex) catalog are th
 only informative exception: the filter reconstructs them from fixed catalog text
 with shape-validated atoms, so private SSH processes gain closed diagnostic
 events without payloads. The
-[native collector check](../../../nix/tests/evaluation/logging-metrics.py) now checks
+[native collector check](../../../nix/verification/tests/evaluation/logging-metrics.py) now checks
 Porsche synthetic summaries and fixed metric dimensions as well as Lilly.
 [Porsche aggregation](../../../porsche/lib/porsche/observability.ex) now records only
 fixed numeric HTTP/command totals, SSH proof candidate/proved totals and BEAM
@@ -133,7 +133,7 @@ gauges. Its
 [model and raw-handler tests](../../../porsche/test/observability_test.exs) verify
 bounded storage, metadata exclusion, sanitized reports and command execution
 without its metrics process. The service wires the shared
-encrypted-dump wrapper and retention. The [Porsche capture machine check](../../../nix/tests/machines/porsche-crash-dumps/default.nix)
+encrypted-dump wrapper and retention. The [Porsche capture machine check](../../../nix/verification/tests/machines/porsche-crash-dumps/default.nix)
 now forces actual service crashes, decrypts on a separate analyst node, verifies
 private artifact custody, configured 256-MiB/10-second bounds, three-file/seven-day
 retention and metadata-only journal reports, and rejects weak/missing public keys.
@@ -165,7 +165,7 @@ The [Porsche review](../reviews/2026-09-17-porsche-ssh-management.md) records th
 resolved parity defect in Marshall and Lilly's translators. Both now rebuild
 metric reports through primary filters and permit only closed numeric summaries
 through translation. Their existing aggregation and crash privacy remain intact.
-The [actual-application metric check](../../../nix/tests/machines/application-metrics/default.nix)
+The [actual-application metric check](../../../nix/verification/tests/machines/application-metrics/default.nix)
 passes periodic emission from source-built Marshall and Lilly services through
 journald and native Fluent Bit output. It does not inject synthetic summaries or
 establish guest execution, replication or live AWS delivery. The review records

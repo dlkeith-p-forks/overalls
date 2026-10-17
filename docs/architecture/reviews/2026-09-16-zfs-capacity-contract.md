@@ -36,7 +36,7 @@ requirements. User authorization comes from the accepted plan implementation.
   yields no admission. Compression/logical usage never enter A; only physical
   allocation for retained commitments does, capped per VM. Deletion does not
   increase available bytes until free space is observed.
-- [Telemetry](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/observations.ex) records
+- Telemetry (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted) records
   physical use, logical use, quota, compression and logical budget separately
   with units and backend/GUID context. Historical values remain outside admission.
 

@@ -63,7 +63,7 @@ Private append-only evidence, original create receipts, lifecycle receipts and
 bounded host snapshots reside outside Git under the operator's
 `https-egress-20261002` state directory. The
 [acceptance runner](../../../scripts/egress_acceptance.py) makes the scenario
-repeatable; its [guide](../../egress-acceptance.md) specifies ownership checks,
+repeatable; its [guide](../../acceptance/egress-acceptance.md) specifies ownership checks,
 request replay and cleanup. Public evidence excludes account credentials, raw
 terminal data and private keys.
 
@@ -91,7 +91,7 @@ terminal data and private keys.
 
 **Native HTTPS cache recovery passed: full and range bytes survived proxy restart
 with the origin stopped.** The added
-[native storage scenario](../../../nix/tests/machines/brady-network/storage.py)
+[native storage scenario](../../../nix/verification/tests/machines/brady-network/storage.py)
 warms HTTP and HTTPS separately, requires another published object for HTTPS,
 stops the origin, restarts Brady, verifies exact full and range bytes, and checks
 fresh hit counters. It uses production TLS/ZFS helpers with veth guest peers;
@@ -224,7 +224,7 @@ exact-root/alias/busy/race refusal rules. The additional scan is bounded at
 131,072 descriptors; failures and overflow retain the deletion fence. No force,
 lazy detach, unrelated process termination or service restart is introduced.
 
-The [machine regression](../../../nix/tests/machines/zfs-guest/namespace-cleanup.py)
+The [machine regression](../../../nix/verification/tests/machines/zfs-guest/namespace-cleanup.py)
 holds a late namespace descriptor after reaping its last child. It requires
 fenced Firecracker/disk deletion while the holder and neighboring guest survive.
 The existing live-file-holder case still requires busy refusal followed by safe

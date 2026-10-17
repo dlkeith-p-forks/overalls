@@ -2,8 +2,8 @@
 
 ## Scope and evidence
 
-Review the optional [updater module](../../../nix/modules/auto-update/default.nix),
-[phase runner](../../../nix/modules/auto-update/runtime.py), shared secret resolver,
+Review the optional [updater module](../../../nix/domains/system/auto-update/default.nix),
+[phase runner](../../../nix/domains/system/auto-update/runtime.py), shared secret resolver,
 Marshall migration entrypoint and Lilly readiness protocol. This changes recovery
 and deployment authorization boundaries under ADR-0036, retaining ADR-0030 except
 its operator-only migration requirement. ADR-0032 governs unchanged identity and

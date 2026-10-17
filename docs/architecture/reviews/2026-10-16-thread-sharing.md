@@ -31,6 +31,10 @@ within ADR-0161; its separate assessment and evidence are in the
 - Machine visibility, SSH/guest roster hints, terminal and editor access must
   consult the effective current role. Hints confer no authority. Personal guest
   accounts and terminal/session ownership remain separate from VM roles.
+- Durable agent event appends project a post-commit activity-clock touch onto
+  the current enclosing user thread. The projection validates the binding, locks
+  the thread row and skips archived/deleting rows; it is an ordering hint and
+  carries no task or machine authority.
 
 The [Grant](../../../marshall/lib/marshall/threads/grant.ex),
 [AccessChange](../../../marshall/lib/marshall/threads/access_change.ex) and
@@ -67,8 +71,9 @@ as direct machine grants and explains the independent thread/team sources.
 
 ## Verification and remaining gaps
 
-On 2026-10-16, the focused thread suite passed 111 cases: 109 tests and two
-properties, zero failures, seed `332929`, in 24.1 seconds. It ran in the pinned
+An earlier run recorded that the focused thread suite passed 111 cases: 109 tests and two properties. The rerun below includes the activity-clock assertion and the additional focused cases now present in the tree.
+
+On 2026-10-16, the focused thread suite passed 117 cases: 115 tests and two properties, zero failures, seed `36204`, in 22.9 seconds. It ran in the pinned
 devenv shell against the isolated `threads_design` PostgreSQL test partition,
 with `ERL_FLAGS='+S 2:2'`, `--max-cases 2` and `--warnings-as-errors`. The command,
 from `marshall/`, selected these files:
@@ -90,6 +95,9 @@ mix test test/marshall/threads_test.exs \
 
 The sharing role property exercised persisted grants through real Cedar and
 PostgreSQL. The database-backed cases covered immutable replay after revocation,
+and the thread test asserts that prompt and durable agent-event receipts advance
+the enclosing thread activity clock after commit. The projection uses the
+current binding and leaves archived/deleting rows unchanged.
 generation continuity, bounded recipient and machine lists, additive VM/team
 sources, stale binding refusal, guest roster candidates and retired-user cleanup.
 LiveView cases covered current role controls, lost authority, registered-account
@@ -128,5 +136,6 @@ Deployment remains pending at this boundary. Historical thread lifecycle and
 production recovery results establish their original scope only.
 Native cross-node revocation, active terminal/editor/SSH/web refusal, physical
 archive/reopen continuity and broader generated grant/race histories require
-separate execution evidence. Previous-generation transcript browsing remains
-absent.
+separate execution evidence. Previous-generation transcript browsing is implemented
+through the retained-generation selector and read-only transcript path; native
+archive/reopen continuity remains unverified.

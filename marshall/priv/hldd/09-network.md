@@ -72,11 +72,17 @@ unchanged; a guest that configures any other address stays unreachable. The
 bootstrap resolves public names through the same resolvers as Linux guests
 (1.1.1.1, 9.9.9.9) and sends only `.internal` names to Lilly's private resolver
 at 169.254.254.1, which it reaches through the gateway. Windows guest agents (`windows-v1`,
-[ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md)) talk
-to Lilly over virtio-vsock through the virtio-win `viosock` driver, the same
-jail-local endpoint and port protocols the Linux agents use; the firmware jail
-adds the vsock device only for an agent set that speaks them, and the agentless
-image keeps none.
+[ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md)) talk to
+Lilly over virtio-vsock using the same jail-local endpoint and fixed port
+protocols as Linux agents. Windows discovers the address family through the
+virtio-win `viosock` provider. Native FreeBSD/illumos rows reserve that transport
+shape, but stock kernels lack the required AF_VSOCK/virtio-vsock support.
+Custom kernels, native adapters and host-CID enforcement remain unverified,
+and every native capability stays false under
+[ADR-0186](repo:docs/architecture/decisions/0186-native-kernel-provenance-and-admission.md).
+The firmware jail adds the vsock device only for an agent set that speaks these
+protocols, and the agentless image keeps none. Every guest response remains
+bound to host CID 2, guest CID 3 and the current boot identity.
 
 Host firewall activation must preserve Lilly's owned nftables tables. Do not use
 a global ruleset flush. The fleet perimeter separately declares public listeners
@@ -167,7 +173,7 @@ equal the guest's, because rotating names such as github.com resolve differently
 through different public resolvers. Plain HTTP `Host` and operator TLS-exception
 tunnels, which Brady cannot verify, still must resolve to the original address.
 
-The [live egress workflow](repo:docs/egress-acceptance.md) creates only recorded
+The [live egress workflow](repo:docs/acceptance/egress-acceptance.md) creates only recorded
 disposable NixOS, Ubuntu and Customer fixtures through Porsche. It verifies
 ordinary guest trust, the Brady signer chain, redirect and Git clone traffic,
 public bytes/cache hits and protected-address refusals, then repeats after
@@ -388,9 +394,9 @@ recover the timed-out guest's missing TLS stderr or explain the older native
 template failures. See the [coding CLI review](repo:docs/architecture/reviews/2026-10-13-native-guest-coding-clis.md).
 
 Evidence: [Lilly policy](repo:lilly/lib/lilly/network/policy.ex),
-[fleet network](repo:docs/fleet-network.md), [Audi operations](repo:docs/audi.md),
+[fleet network](repo:docs/operations/fleet-network.md), [Audi operations](repo:docs/services/audi.md),
 [private names](repo:docs/architecture/decisions/0111-private-service-tls-names.md),
-[ACME module](repo:nix/modules/acme/default.nix).
+[ACME module](repo:nix/domains/system/acme/default.nix).
 
 ## Streaming cache history verification
 

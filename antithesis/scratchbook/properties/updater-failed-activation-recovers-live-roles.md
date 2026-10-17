@@ -8,7 +8,7 @@ message **"Updater failed activation attempts every prior live role without clai
 Abrupt process death does not execute Python finally; do not conflate it with the
 caught UpdateError path or claim immediate universal restoration after SIGKILL.
 
-Evidence: `nix/modules/auto-update/runtime.py:580-609` (`activate`) snapshots
+Evidence: `nix/domains/system/auto-update/runtime.py:580-609` (`activate`) snapshots
 affected active consumers/sockets; `:622-661` stops sockets before consumers,
 prepares secrets before role restoration, restarts sockets last;
 `:663-677` independent per-unit finally recovery so one failed start cannot mask
@@ -65,7 +65,7 @@ not a confirmed SUT defect or reason to invent rollback.
 
 #### Which source-built native fixture can record every restoration action and serving effect while updater/migrator processes die independently?
 
-- Examined: `nix/tests/machines/auto-update/default.nix:1-105`, `driver.py:1-145`, `nix/tests/machines/fleet/scenarios/updates.py:1-48`, `nix/modules/auto-update/runtime.py:580-677`, and the fixed migrator unit at `:542-571`.
+- Examined: `nix/verification/tests/machines/auto-update/default.nix:1-105`, `driver.py:1-145`, `nix/verification/tests/machines/fleet/scenarios/updates.py:1-48`, `nix/domains/system/auto-update/runtime.py:580-677`, and the fixed migrator unit at `:542-571`.
 - Found: the updater NixOS fixture switches actual candidate systems and checks socket and retained dummy process behavior. The fleet fixture upgrades real Lilly while comparing Firecracker process snapshots and guest network probes. `activate` captures active roles and, on caught failure, attempts restoration of each secret/consumer/socket independently. A separately running migrator unit can outlive the updater.
 - Not found: a source-built native fixture that faults each real role restoration step, records every systemd action and live socket effect, and independently kills updater and migrator during the same candidate run. The existing one-host dummy guest cannot establish owned VM disk custody; the fleet success path lacks this restoration fault matrix.
 - Conclusion: partial. Add a combined fleet updater scenario with per-unit systemd fault points, journal/unit transition capture, separate updater/migrator PID control and native guest identity checks. Limit the `Always` claim to caught incomplete activation, and treat SIGKILL recovery as a separate later-attempt observation.

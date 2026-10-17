@@ -1,21 +1,21 @@
-//! Boot-bound public CA installer for FreeBSD and illumos guests.
+//! Boot-bound trust bundle installer for native guests.
 
 #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
-mod daemon {
+fn main() -> ! {
     use lyra::guest::trust;
-    use lyra::platform::native::{self, Listener};
+    use lyra::native_guest;
+    use lyra::native_vsock::Listener;
     use std::fs::{self, File, OpenOptions};
     use std::io::{self, Write};
+    use std::os::unix::fs::symlink;
     use std::path::{Path, PathBuf};
 
-    const STATE: &str = "/var/lib/overalls-trust";
-
-    fn atomic_bundle(path: &Path, bytes: &[u8]) -> io::Result<()> {
+    fn atomic_write(path: &Path, bytes: &[u8]) -> io::Result<()> {
         let parent = path
             .parent()
-            .ok_or_else(|| io::Error::other("invalid trust path"))?;
+            .ok_or_else(|| io::Error::other("trust path"))?;
         fs::create_dir_all(parent)?;
-        let next = parent.join(".ca-bundle.next");
+        let next = parent.join(".overalls-ca.next");
         let mut file = OpenOptions::new()
             .write(true)
             .create(true)
@@ -27,72 +27,72 @@ mod daemon {
         File::open(parent)?.sync_all()
     }
 
-    fn install(os: &str, roots: &[String], digest: &str) -> io::Result<()> {
-        let (base, destination) = native::trust_paths(os)?;
-        let base = fs::read(base)?;
-        let bytes = trust::bundle(&base, roots)?;
-        let state = Path::new(STATE);
-        fs::create_dir_all(state)?;
-        let staged = state.join(format!("bundle-{digest}.pem"));
-        if !staged.exists() {
-            atomic_bundle(&staged, &bytes)?;
-        } else if fs::read(&staged)? != bytes {
-            return Err(io::Error::other("trust bundle conflict"));
-        }
-        let parent = PathBuf::from(destination)
-            .parent()
-            .map(Path::to_path_buf)
-            .ok_or_else(|| io::Error::other("invalid trust destination"))?;
-        fs::create_dir_all(&parent)?;
-        let next = parent.join(".overalls-ca.next");
-        let _ = fs::remove_file(&next);
-        std::os::unix::fs::symlink(&staged, &next)?;
-        fs::rename(next, destination)?;
-        File::open(parent)?.sync_all()
-    }
-
-    pub fn run(os: &str) -> i32 {
-        let (boot, _, _) = match native::identity() {
-            Ok(value) => value,
-            Err(_) => return 1,
-        };
-        let listener = match Listener::bind(trust::PORT, 1) {
-            Ok(value) => value,
-            Err(_) => return 2,
-        };
-        loop {
-            let mut connection = match listener.accept() {
-                Ok(value) => value,
-                Err(_) => continue,
-            };
-            let request = match trust::read_frame(&mut connection) {
-                Ok(value) => value,
-                Err(_) => continue,
-            };
-            if trust::validate(&request, &boot).is_err() {
-                continue;
-            }
-            let roots_pem = request.roots.clone();
-            if install(os, &roots_pem, &request.bundle_digest).is_err() {
-                continue;
-            }
-            let receipt = trust::receipt(&request, &boot);
-            let _ = trust::write_frame(&mut connection, &receipt);
-        }
-    }
-}
-
-#[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
-fn main() -> ! {
     let os = if cfg!(target_os = "freebsd") {
         "freebsd"
     } else {
         "illumos"
     };
-    std::process::exit(daemon::run(os));
+    let (boot, _, _) = match native_guest::identity() {
+        Ok(value) => value,
+        Err(_) => std::process::exit(1),
+    };
+    let listener = match Listener::bind(trust::PORT, 1) {
+        Ok(value) => value,
+        Err(_) => std::process::exit(2),
+    };
+    loop {
+        let mut connection = match listener.accept() {
+            Ok(value) => value,
+            Err(_) => continue,
+        };
+        let request = match trust::read_frame(&mut connection) {
+            Ok(value) => value,
+            Err(_) => continue,
+        };
+        if trust::validate(&request, &boot).is_err() {
+            continue;
+        }
+        let (base, destination) = match native_guest::trust_paths(os) {
+            Ok(value) => value,
+            Err(_) => continue,
+        };
+        let bundle = match trust::bundle(&fs::read(base).unwrap_or_default(), &request.roots) {
+            Ok(value) => value,
+            Err(_) => continue,
+        };
+        let state = PathBuf::from("/var/lib/overalls-trust");
+        if fs::create_dir_all(&state).is_err() {
+            continue;
+        }
+        let staged = state.join(format!("bundle-{}.pem", request.bundle_digest));
+        if staged.exists() {
+            if !fs::read(&staged)
+                .map(|bytes| bytes == bundle)
+                .unwrap_or(false)
+            {
+                continue;
+            }
+        } else if atomic_write(&staged, &bundle).is_err() {
+            continue;
+        }
+        let destination = Path::new(destination);
+        let parent = match destination.parent() {
+            Some(value) => value,
+            None => continue,
+        };
+        if fs::create_dir_all(parent).is_err() {
+            continue;
+        }
+        let next = parent.join(".overalls-ca-link.next");
+        let _ = fs::remove_file(&next);
+        if symlink(&staged, &next).is_err() || fs::rename(next, destination).is_err() {
+            continue;
+        }
+        let _ = trust::write_frame(&mut connection, &trust::receipt(&request, &boot));
+    }
 }
 
 #[cfg(not(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris")))]
 fn main() -> ! {
-    std::process::exit(64);
+    std::process::exit(64)
 }

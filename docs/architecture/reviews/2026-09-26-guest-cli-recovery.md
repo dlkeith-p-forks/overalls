@@ -67,7 +67,7 @@ and desktop installer-base properties retain their narrower helper scope.
 
 ## Native journey and evidence boundaries
 
-[The strict native driver](../../../nix/tests/machines/guest-cli-recovery/driver.py)
+[The strict native driver](../../../nix/verification/tests/machines/guest-cli-recovery/driver.py)
 uses nine NixOS machines on one physical KVM host and a real NixOS Firecracker
 guest. An ordinary owner shares the VM with an ordinary operator; that operator
 completes a deterministic-provider model/tool round trip. Fixed console actions

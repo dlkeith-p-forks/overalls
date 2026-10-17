@@ -33,17 +33,21 @@ defmodule Marshall.Agents.Loop do
   @impl true
   def init(_options) do
     Process.send_after(self(), :tick, @tick_ms)
-    {:ok, %{ticks: 0}}
+    {:ok, %{ticks: 0, skill_restoration_cursor: nil}}
   end
 
   @impl true
   def handle_info(:tick, state) do
-    try do
-      tick()
-      if rem(state.ticks, 60) == 0, do: CLIAccess.reap()
-    rescue
-      _ -> Marshall.Events.emit("agent.loop_failed", reason: :unexpected)
-    end
+    state =
+      try do
+        %{state | skill_restoration_cursor: run_tick(state.skill_restoration_cursor)}
+      rescue
+        _ ->
+          Marshall.Events.emit("agent.loop_failed", reason: :unexpected)
+          state
+      end
+
+    if rem(state.ticks, 60) == 0, do: CLIAccess.reap()
 
     Process.send_after(self(), :tick, @tick_ms)
     {:noreply, %{state | ticks: state.ticks + 1}}
@@ -55,10 +59,16 @@ defmodule Marshall.Agents.Loop do
   # durable state rather than trusting an in-memory queue.
   @spec tick() :: :ok
   def tick do
+    _ = run_tick(nil)
+    :ok
+  end
+
+  @spec run_tick(String.t() | nil) :: String.t() | nil
+  defp run_tick(skill_restoration_cursor) do
     :ok = ModelCalls.reap()
     :ok = TurnCoordinator.reap_unavailable()
     :ok = ExecutorSession.reap_orphaned()
-    :ok = Marshall.Agents.SkillMaintenance.tick()
+    {:ok, next_cursor} = Marshall.Agents.SkillMaintenance.tick(skill_restoration_cursor)
     claim_turns(@claim_batch)
 
     %{rows: rows} =
@@ -70,7 +80,7 @@ defmodule Marshall.Agents.Loop do
       )
 
     Enum.each(rows, fn [raw_id] -> advance(Ecto.UUID.load!(raw_id)) end)
-    :ok
+    next_cursor
   end
 
   defp claim_turns(0), do: :ok

@@ -406,12 +406,22 @@ defmodule Enrico.Git do
       "maintenance.auto=false" | args
     ]
 
-    open_native(root, mode, git, command, timeout, limit, [
+    open_native(root, mode, git, command, timeout, limit, native_environment())
+  end
+
+  @spec native_environment() :: [{charlist(), charlist()}]
+  defp native_environment do
+    base = [
       {~c"GIT_CONFIG_NOSYSTEM", ~c"1"},
       {~c"GIT_CONFIG_GLOBAL", ~c"/dev/null"},
       {~c"GIT_ALLOW_PROTOCOL", ~c"https"},
       {~c"GIT_TERMINAL_PROMPT", ~c"0"}
-    ])
+    ]
+
+    case System.get_env("GIT_SSL_CAINFO") do
+      nil -> base
+      ca_file -> [{~c"GIT_SSL_CAINFO", String.to_charlist(ca_file)} | base]
+    end
   end
 
   @spec open_native(binary(), binary(), binary(), [binary()], pos_integer(), pos_integer(), [

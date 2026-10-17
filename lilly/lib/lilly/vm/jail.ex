@@ -70,11 +70,12 @@ defmodule Lilly.VM.Jail do
   # configuration/3 MUST pass the caller's durably prepared boot identity into the
   # guest: on the kernel command line with a jail-local vsock endpoint for a kernel
   # bundle, or through the MMDS metadata file (metadata/3) for a firmware bundle,
-  # which boots the firmware over virtio-pci with the Hyper-V CPU template. A
-  # firmware bundle gets the jail-local vsock endpoint only when its agent set
-  # speaks a vsock protocol (OverallsProtocol.GuestAgents.vsock?/1); an agentless
-  # bundle has no vsock device. The caller MUST supply a Boot matching this
-  # placement and current launch intent, never peer-provided boot data.
+  # which boots the firmware over virtio-pci. Only Windows firmware receives the
+  # Hyper-V CPU template; native FreeBSD and illumos firmware use the default CPU
+  # model. A firmware bundle gets the jail-local vsock endpoint only when its agent
+  # set speaks a vsock protocol (OverallsProtocol.GuestAgents.vsock?/1); an
+  # agentless bundle has no vsock device. The caller MUST supply a Boot matching
+  # this placement and current launch intent, never peer-provided boot data.
   @spec configuration(WorkloadBundle.t(), Spec.t(), Boot.t()) :: map()
   def configuration(%{boot_kind: :kernel} = bundle, spec, boot) do
     boot_source = %{
@@ -197,15 +198,14 @@ defmodule Lilly.VM.Jail do
         &Path.join(root, &1)
       )
 
-    with {:ok, body} <- Command.run(:findmnt, ["--json", "--list", "--output", "TARGET"]),
-         {:ok, %{"filesystems" => mounts}} <- JSON.decode(body),
+    with {:ok, mounts} <- Lilly.Host.MountTable.read(),
          targets =
            mounts
            |> Enum.map(& &1["target"])
            |> Enum.filter(&(&1 == root or String.starts_with?(&1, root <> "/"))),
          true <- Enum.all?(targets, &(&1 in allowed)),
          :ok <- unmount(targets),
-         {:ok, _} <- File.rm_rf(root) do
+         :ok <- Lilly.Host.Privilege.remove_tree(root) do
       :ok
     else
       _ ->

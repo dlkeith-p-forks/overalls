@@ -1,22 +1,37 @@
 # Agent threads and tools
 
+## Native guest agent boundary
+
+FreeBSD and illumos guests have a closed Lyra protocol shape for readiness,
+trust, terminal, workspace, flush, SSH and agent execution. The protocol's
+`freebsd-v1` and `illumos-v1` rows currently disable every user-facing
+capability, retaining only the host-only transport declaration. If a later
+reviewed rollout enables a row, Lilly must bind host CID 2 to guest CID 3 and
+each daemon must validate the current boot challenge before responding.
+Credentials, terminal bytes, command arguments and Git output stay outside
+diagnostics. Native adapters and image assembly are under implementation; no
+nested-KVM or Marshall fleet result is implied by the capability table.
+
 ## Native agent sets and kernel identity
 
 FreeBSD and OmniOS (`illumos` on the wire) use the explicit v6/v3 native image
-contract from [ADR-0180](repo:docs/architecture/decisions/0180-multi-os-guest-image-contract.md).
+contract from [ADR-0186](repo:docs/architecture/decisions/0186-native-kernel-provenance-and-admission.md).
 Their bundle carries kernel provenance and the native guest package names the
 kernel probe, agent, flush, readiness, trust, workspace and SSH helper
 daemons. Lilly sends no credentials and does not publish readiness until the
 jail-local probe returns an `attested` response matching the current placement,
 execution epoch, boot challenge, native OS and kernel digest. The response is
 boot-bound and bounded; stale, malformed, placeholder or mismatched evidence
-refuses.
+refuses, as does readiness with a different boot ID. The current probe hashes
+the configured kernel file and cannot by
+itself establish that the file is the running kernel.
 
 The current `native-kernels` derivation is a source/contract receipt only and
 sets `artifact.available = false`. The image builders therefore refuse before
-copying a stock kernel or root disk. The daemons have not been cross-built for
-FreeBSD or illumos, and the shared Linux `terminald` package has no native
-target. The capability table remains contract surface only: no native terminal,
+copying a stock kernel or root disk. FreeBSD and illumos daemon target type
+checks pass, but linked installable closures and integrated native images are
+absent. The shared Linux `terminald` package has no native target. The capability
+table remains contract surface only: no native terminal,
 workspace, SSH, trust, readiness, boot or fleet result is implied. See the
 [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
 
@@ -136,7 +151,7 @@ before that refusal and verifies that later poll messages start no model task.
 The local test does not prove a hosted version-skew rollout or the fate of an
 already-active provider task.
 
-Evidence: [agent workflows](repo:docs/agent-threads.md),
+Evidence: [agent workflows](repo:docs/development/agent-threads.md),
 [pulled model work](repo:docs/architecture/decisions/0100-pulled-agent-work-over-ziggy-control.md),
 [profile capability policy](repo:docs/architecture/decisions/0103-profile-scoped-agent-capabilities.md),
 [search](repo:docs/architecture/decisions/0107-marshall-owned-agent-web-search.md).
@@ -208,6 +223,14 @@ The default compactor produces a tool-free summary with progress, decisions,
 constraints, remaining work and references. The summary has generated-context
 provenance and cannot replace trusted application policy. Provider-native
 compaction is enabled only for separately verified provider/model capability.
+The deployment allowlist is `MARSHALL_AGENT_NATIVE_COMPACTION_CAPABILITIES`, a
+JSON array of exact `{provider, model, evidence_digest}` records. Marshall
+currently accepts only the `openai` provider, validates model syntax and a
+lowercase SHA-256 evidence digest, and matches the complete provider/model pair
+at queue and claim time. The legacy global boolean is refused when enabled;
+omitting the allowlist leaves native compaction disabled. A digest records the
+operator's evidence receipt but does not claim live provider acceptance by
+itself, so the decision remains partial until that evidence exists.
 Both maintenance request forms disable tools and tool choice, so compaction
 cannot execute an ordinary side effect while producing continuation state.
 Both paths use durable model calls through the existing Ziggy pull and accounting

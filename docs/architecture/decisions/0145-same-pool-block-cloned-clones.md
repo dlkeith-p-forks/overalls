@@ -108,9 +108,9 @@ remain prerequisites; a diagnostic ACK confers no adoption or cleanup authority.
 ## Implementation evidence
 
 - **Historical Release A (diagnostic readers):** the
-  [protocol allowlist](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/protocol/lib/overalls_protocol/lifecycle_audit.ex),
-  its [test](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/protocol/test/lifecycle_audit_test.exs) and the
-  [Marshall mapping](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/compute/lifecycle_log.ex).
+  protocol allowlist (`protocol/lib/overalls_protocol/lifecycle_audit.ex` at kittens revision `a99f74f0`, repository deleted),
+  its test (`protocol/test/lifecycle_audit_test.exs` at kittens revision `a99f74f0`, repository deleted) and the
+  Marshall mapping (`marshall/lib/marshall/compute/lifecycle_log.ex` at kittens revision `a99f74f0`, repository deleted).
 - **Release B prerequisites:**
   - the [snapshot source mode](../../../lilly/native/image-copy/src/lib.rs), with Hegel properties;
   - [capture extraction](../../../lilly/lib/lilly/transfer/source_snapshots.ex).
@@ -125,7 +125,7 @@ remain prerequisites; a diagnostic ACK confers no adoption or cleanup authority.
   - the former `block_clone_copies` configuration and `services.lilly.blockCloneCopies`
     Nix option (both removed by ADR-0159),
     and [unit tests](../../../lilly/test/transfer/clone_copy_test.exs);
-  - native coverage in the [`zfs-guest-clone` block-copy subtest](../../../nix/tests/machines/zfs-guest/clone-matrix.py),
+  - native coverage in the [`zfs-guest-clone` block-copy subtest](../../../nix/verification/tests/machines/zfs-guest/clone-matrix.py),
     which passed on 2026-10-09. It covers:
     - `bcloneused` growth and independent origins;
     - a chained block copy;
@@ -151,7 +151,7 @@ establish an independently captured post-cutover clone measurement.
 removed. Every same-host, same-pool clone now block-copies in
 [clone effects](../../../lilly/lib/lilly/clone/effects.ex); adopt and discard
 still follow the durable copy journal. The native
-[`zfs-guest-clone` matrix](../../../nix/tests/machines/zfs-guest/clone-matrix.py)
+[`zfs-guest-clone` matrix](../../../nix/verification/tests/machines/zfs-guest/clone-matrix.py)
 runs in this single mode: the resized and chained clones are block copies too,
 and every run discards a copied, unadopted destination. Same-host clones across
 pools keep the local stream receive, which this matrix no longer exercises.

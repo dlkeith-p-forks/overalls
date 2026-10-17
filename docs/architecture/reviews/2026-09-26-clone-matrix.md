@@ -108,7 +108,7 @@ Focused suites (MIX_TEST_PARTITION=verify116, ERL_FLAGS="+S 6:6"):
   pass.
 
 Native machine runs (HEAVY lock, serialized): see per-check entries in
-`nix/tests/README.md` and the scenarios ledger. Captured run facts (derivation
+`nix/verification/tests/README.md` and the scenarios ledger. Captured run facts (derivation
 and output paths, durations) are appended below as they complete:
 
 - (pending) `cloning-fleet`, `zfs-guest-clone`, `clone-destination-loss`,

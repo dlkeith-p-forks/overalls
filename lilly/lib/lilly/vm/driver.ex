@@ -171,7 +171,7 @@ defmodule Lilly.VM.Driver do
               )},
            {:boot_log, :ok} <- {:boot_log, remove_log(Unit.boot_log(config, spec))},
            {:snapshots, :ok} <- {:snapshots, fun.()},
-           {:disk, :ok} <- {:disk, Disk.delete(pool, spec, 2000)},
+           {:disk, :ok} <- {:disk, Disk.delete(pool, spec)},
            do: :ok,
            else: (
              {:claim, _} ->
@@ -380,12 +380,12 @@ defmodule Lilly.VM.Driver do
   defp agents_profile(_image, _spec), do: :ok
 
   # @cc [owner:ghuntley,label:security;protocol] source-capability-before-start
-  # A fresh source-bearing execution MUST use a validated current v4 kernel or
-  # v6 native image that explicitly declares workspace source protocol 2.
-  # Package presence, stale manifests and malformed capability fields MUST
-  # refuse before disk preparation, launch intent or any other host effect.
-  # Retained restart/adoption paths use the immutable portable bundle and do
-  # not recreate an image.
+  # A fresh source-bearing execution MUST use a validated current image that
+  # explicitly declares workspace source protocol 2 (v4 Linux or v6 native).
+  # Package presence, stale
+  # manifests and malformed capability fields MUST refuse before disk preparation,
+  # launch intent or any other host effect. Retained restart/adoption paths use
+  # the immutable portable bundle and do not recreate an image.
   @spec source_capability(Image.t(), Spec.t()) :: :ok | {:error, :workspace_source_unavailable}
   defp source_capability(_image, %{workspace_source: nil}), do: :ok
 
@@ -758,6 +758,14 @@ defmodule Lilly.VM.Driver do
     end
   end
 
+  # @cc [owner:ghuntley,label:recovery;concurrency] trust-queues-for-placement-lease
+  # Every placement lease the trust path takes MUST wait up to @trust_wait_ms
+  # in hostd's FIFO queue, as the other readiness steps do, so the per-tick
+  # boot probe and outcome journal writers cannot starve trust confirmation
+  # of an adopted guest; contention past the wait still retries as
+  # trust_lock_unavailable and never fences.
+  @trust_wait_ms 2000
+
   # @cc [owner:ghuntley,label:security;recovery] trust-skipped-receipt-for-agentless-guests
   # A guest without agents MUST never be sent trust material; trust/4 MUST instead
   # persist a `skipped` receipt bound to the exact current boot under the placement
@@ -767,38 +775,28 @@ defmodule Lilly.VM.Driver do
     directory = directory(config, spec)
     budget = readiness_budget(pool, spec)
 
-    result =
-      locked(config, spec, fn ->
-        with :ok <- readiness_claim(config, pool, spec, expected),
-             {:ok, boot} <- Boot.current(directory, spec.id, expected),
-             :ok <- Provisioning.awaiting_trust(config, spec, boot, budget),
-             {:ok, previous} <-
-               Lilly.Lifecycle.Journal.load(
-                 Lilly.Lifecycle.GuestTrust,
-                 directory,
-                 "guest-trust.json"
-               ) do
-          if previous && previous.payload["state"] == "skipped" &&
-               same_trust_boot?(previous.payload, boot) do
-            :ok
-          else
-            with :ok <- write_trust_state(directory, trust_payload(config, boot, "skipped", 0)) do
-              Lilly.Events.emit("vm.trust_skipped",
-                placement_id: spec.id,
-                execution_epoch: boot.execution_epoch
-              )
+    config
+    |> locked(spec, @trust_wait_ms, fn ->
+      with :ok <- readiness_stage(config, pool, spec, expected),
+           {:ok, boot} <- current_boot(directory, spec.id, expected),
+           :ok <- awaiting_trust(config, spec, boot, budget),
+           {:ok, previous} <- trust_journal(directory) do
+        if previous && previous.payload["state"] == "skipped" &&
+             same_trust_boot?(previous.payload, boot) do
+          :ok
+        else
+          with :ok <- trust_state(directory, trust_payload(config, boot, "skipped", 0)) do
+            Lilly.Events.emit("vm.trust_skipped",
+              placement_id: spec.id,
+              execution_epoch: boot.execution_epoch
+            )
 
-              :ok
-            end
+            :ok
           end
         end
-      end)
-
-    case result do
-      :ok -> :ok
-      {:error, :provisioning_busy} = error -> error
-      _ -> {:error, :trust_unconfirmed}
-    end
+      end
+    end)
+    |> trust_result()
   end
 
   defp deliver_trust(config, pool, spec, options) do
@@ -807,21 +805,16 @@ defmodule Lilly.VM.Driver do
     budget = readiness_budget(pool, spec)
 
     with :ok <-
-           locked(config, spec, fn ->
-             with :ok <- readiness_claim(config, pool, spec, expected),
-                  {:ok, boot} <- Boot.current(directory, spec.id, expected),
-                  do: Provisioning.awaiting_trust(config, spec, boot, budget)
+           locked(config, spec, @trust_wait_ms, fn ->
+             with :ok <- readiness_stage(config, pool, spec, expected),
+                  {:ok, boot} <- current_boot(directory, spec.id, expected),
+                  do: awaiting_trust(config, spec, boot, budget)
            end),
-         {:ok, boot} <- Boot.current(directory, spec.id, expected),
-         {:ok, previous} <-
-           Lilly.Lifecycle.Journal.load(Lilly.Lifecycle.GuestTrust, directory, "guest-trust.json"),
-         :ok <- maybe_deliver_trust(config, pool, spec, expected, boot, previous, directory) do
-      :ok
-    else
-      {:error, :trust_failed} -> {:error, :trust_failed}
-      {:error, :provisioning_busy} = error -> error
-      _ -> {:error, :trust_unconfirmed}
+         {:ok, boot} <- current_boot(directory, spec.id, expected),
+         {:ok, previous} <- trust_journal(directory) do
+      maybe_deliver_trust(config, pool, spec, expected, boot, previous, directory)
     end
+    |> trust_result()
   end
 
   defp maybe_deliver_trust(config, pool, spec, expected, boot, previous, directory) do
@@ -833,22 +826,20 @@ defmodule Lilly.VM.Driver do
 
     cond do
       receipt_for_boot?(previous && previous.payload, boot) ->
-        locked(config, spec, fn ->
-          with :ok <- readiness_claim(config, pool, spec, expected),
-               {:ok, ^boot} <- Boot.current(directory, spec.id, expected),
-               do: :ok,
-               else: (_ -> {:error, :trust_unconfirmed})
+        locked(config, spec, @trust_wait_ms, fn ->
+          with :ok <- readiness_stage(config, pool, spec, expected),
+               do: same_boot(directory, spec.id, expected, boot)
         end)
 
       is_integer(attempts) and attempts >= 3 ->
         {:error, :trust_failed}
 
       not is_integer(attempts) or attempts < 0 ->
-        {:error, :trust_unconfirmed}
+        {:error, :trust_attempts_invalid}
 
       true ->
         with :ok <-
-               locked(config, spec, fn ->
+               locked(config, spec, @trust_wait_ms, fn ->
                  prepare_trust_state(
                    config,
                    pool,
@@ -865,52 +856,21 @@ defmodule Lilly.VM.Driver do
             execution_epoch: boot.execution_epoch
           )
 
-          with {:ok, boot_id, digest} <-
-                 GuestTrust.deliver(
-                   Path.join(Jail.root(pool, spec), "v.sock"),
-                   boot,
-                   config.guest_trust_roots,
-                   trust_timeout(config, spec, boot)
-                 ),
-               :ok <-
-                 locked(config, spec, fn ->
-                   with :ok <- readiness_claim(config, pool, spec, expected),
-                        {:ok, ^boot} <- Boot.current(directory, spec.id, expected),
-                        :ok <-
-                          write_trust_state(
-                            directory,
-                            trust_payload(
-                              config,
-                              boot,
-                              "installed",
-                              attempts + 1,
-                              boot_id,
-                              digest
-                            )
-                          ) do
-                     :ok
-                   else
-                     _ -> {:error, :trust_unconfirmed}
-                   end
-                 end) do
-            Lilly.Events.emit("vm.trust_installed",
-              placement_id: spec.id,
-              execution_epoch: boot.execution_epoch
-            )
+          case GuestTrust.deliver(
+                 Path.join(Jail.root(pool, spec), "v.sock"),
+                 boot,
+                 config.guest_trust_roots,
+                 trust_timeout(config, spec, boot)
+               ) do
+            {:ok, boot_id, digest} ->
+              installed(config, pool, spec, expected, boot, directory, attempts, boot_id, digest)
 
-            :ok
-          else
             _ ->
-              locked(config, spec, fn ->
-                with :ok <- readiness_claim(config, pool, spec, expected),
-                     {:ok, ^boot} <- Boot.current(directory, spec.id, expected) do
-                  write_trust_state(
-                    directory,
-                    trust_payload(config, boot, "failed", attempts + 1)
-                  )
-                else
-                  _ -> {:error, :trust_unconfirmed}
-                end
+              locked(config, spec, @trust_wait_ms, fn ->
+                with :ok <- readiness_stage(config, pool, spec, expected),
+                     :ok <- same_boot(directory, spec.id, expected, boot),
+                     do:
+                       trust_state(directory, trust_payload(config, boot, "failed", attempts + 1))
               end)
 
               Lilly.Events.emit("vm.trust_failed",
@@ -918,25 +878,120 @@ defmodule Lilly.VM.Driver do
                 execution_epoch: boot.execution_epoch
               )
 
-              {:error, :trust_unconfirmed}
+              {:error, :trust_delivery_failed}
           end
-        else
-          _ -> {:error, :trust_unconfirmed}
         end
     end
   end
 
+  defp installed(config, pool, spec, expected, boot, directory, attempts, boot_id, digest) do
+    with :ok <-
+           locked(config, spec, @trust_wait_ms, fn ->
+             with :ok <- readiness_stage(config, pool, spec, expected),
+                  :ok <- same_boot(directory, spec.id, expected, boot),
+                  do:
+                    trust_state(
+                      directory,
+                      trust_payload(config, boot, "installed", attempts + 1, boot_id, digest)
+                    )
+           end) do
+      Lilly.Events.emit("vm.trust_installed",
+        placement_id: spec.id,
+        execution_epoch: boot.execution_epoch
+      )
+
+      :ok
+    end
+  end
+
   defp prepare_trust_state(config, pool, spec, expected, boot, previous, directory, attempts) do
-    with :ok <- readiness_claim(config, pool, spec, expected),
-         {:ok, ^boot} <- Boot.current(directory, spec.id, expected),
+    with :ok <- readiness_stage(config, pool, spec, expected),
+         :ok <- same_boot(directory, spec.id, expected, boot),
          :ok <-
            if(previous == nil or not same_trust_boot?(previous.payload, boot),
-             do: write_trust_state(directory, trust_payload(config, boot, "pending", 0)),
+             do: trust_state(directory, trust_payload(config, boot, "pending", 0)),
              else: :ok
            ) do
-      write_trust_state(directory, trust_payload(config, boot, "delivering", attempts + 1))
-    else
-      _ -> {:error, :trust_unconfirmed}
+      trust_state(directory, trust_payload(config, boot, "delivering", attempts + 1))
+    end
+  end
+
+  # @cc [owner:ghuntley,label:observability;security] trust-unconfirmed-names-stage
+  # trust/4 MUST return :ok, {:error, :trust_failed}, {:error, :provisioning_busy}
+  # or exactly one trust_stage() atom naming the first step that could not be
+  # confirmed; no other value may escape, so the executor's deferral reason
+  # always names the stage. Every stage still retries: naming MUST NOT turn
+  # an unconfirmed step into success or a terminal failure.
+  @type trust_stage ::
+          :trust_lock_unavailable
+          | :trust_claim_mismatch
+          | :trust_boot_unconfirmed
+          | :trust_boot_changed
+          | :trust_vmm_unconfirmed
+          | :trust_provisioning_unconfirmed
+          | :trust_journal_unreadable
+          | :trust_state_unwritten
+          | :trust_attempts_invalid
+          | :trust_delivery_failed
+  @trust_stages [
+    :trust_lock_unavailable,
+    :trust_claim_mismatch,
+    :trust_boot_unconfirmed,
+    :trust_boot_changed,
+    :trust_vmm_unconfirmed,
+    :trust_provisioning_unconfirmed,
+    :trust_journal_unreadable,
+    :trust_state_unwritten,
+    :trust_attempts_invalid,
+    :trust_delivery_failed
+  ]
+
+  @doc "The closed stage atoms trust/4 returns while guest trust is unconfirmed."
+  @spec trust_stages() :: [trust_stage(), ...]
+  def trust_stages, do: @trust_stages
+
+  defp trust_result(:ok), do: :ok
+
+  defp trust_result({:error, reason}) when reason in [:trust_failed, :provisioning_busy],
+    do: {:error, reason}
+
+  defp trust_result({:error, stage}) when stage in @trust_stages, do: {:error, stage}
+  defp trust_result(_), do: {:error, :trust_lock_unavailable}
+
+  defp current_boot(directory, placement, expected) do
+    case Boot.current(directory, placement, expected) do
+      {:ok, boot} -> {:ok, boot}
+      _ -> {:error, :trust_boot_unconfirmed}
+    end
+  end
+
+  defp same_boot(directory, placement, expected, boot) do
+    case Boot.current(directory, placement, expected) do
+      {:ok, ^boot} -> :ok
+      {:ok, _} -> {:error, :trust_boot_changed}
+      _ -> {:error, :trust_boot_unconfirmed}
+    end
+  end
+
+  defp awaiting_trust(config, spec, boot, budget) do
+    case Provisioning.awaiting_trust(config, spec, boot, budget) do
+      :ok -> :ok
+      {:error, :provisioning_busy} = error -> error
+      _ -> {:error, :trust_provisioning_unconfirmed}
+    end
+  end
+
+  defp trust_journal(directory) do
+    case Lilly.Lifecycle.Journal.load(Lilly.Lifecycle.GuestTrust, directory, "guest-trust.json") do
+      {:ok, previous} -> {:ok, previous}
+      _ -> {:error, :trust_journal_unreadable}
+    end
+  end
+
+  defp trust_state(directory, payload) do
+    case write_trust_state(directory, payload) do
+      :ok -> :ok
+      _ -> {:error, :trust_state_unwritten}
     end
   end
 
@@ -978,7 +1033,7 @@ defmodule Lilly.VM.Driver do
   end
 
   defp write_trust_state(directory, payload) do
-    with {:ok, lock} <- Lilly.Host.Lock.acquire(Path.join(directory, "audit-lock")) do
+    with {:ok, lock} <- Lilly.Host.Lock.acquire(Path.join(directory, "audit-lock"), 2000) do
       try do
         Lilly.Lifecycle.Journal.write(
           Lilly.Lifecycle.GuestTrust,
@@ -1137,7 +1192,7 @@ defmodule Lilly.VM.Driver do
   end
 
   defp write_workspace_source_state(directory, payload) do
-    with {:ok, lock} <- Lilly.Host.Lock.acquire(Path.join(directory, "audit-lock")) do
+    with {:ok, lock} <- Lilly.Host.Lock.acquire(Path.join(directory, "audit-lock"), 2000) do
       try do
         Lilly.Lifecycle.Journal.write(
           Lilly.Lifecycle.WorkspaceSource,
@@ -1199,6 +1254,8 @@ defmodule Lilly.VM.Driver do
   # reuse earlier authority or return success after that deadline.
   # SMTP delivery MUST keep its existing ten-minute maximum even when the
   # Inception core readiness budget is longer.
+  # Native kernel evidence and readiness MUST name the same guest boot UUID;
+  # matching the host challenge alone MUST NOT join two distinct guest boots.
   @doc "Return the verified guest boot ID after rechecking the same local launch authority."
   @spec ready_boot(Config.t(), Pool.t(), Spec.t(), keyword()) ::
           {:ok, OverallsProtocol.uuid()} | {:error, atom()}
@@ -1213,7 +1270,7 @@ defmodule Lilly.VM.Driver do
              readiness_claim(config, pool, spec, expected)
            end),
          {:ok, boot} <- Boot.current(directory(config, spec), spec.id, expected),
-         :ok <-
+         {:ok, kernel_boot_id} <-
            verify_native_kernel(
              pool,
              spec,
@@ -1227,6 +1284,7 @@ defmodule Lilly.VM.Driver do
              Boot.expectation(boot),
              remaining(deadline)
            ),
+         :ok <- same_attested_boot(kernel_boot_id, boot_id),
          :ok <-
            locked(config, spec, min(remaining(deadline), 2000), fn ->
              with :ok <- readiness_claim(config, pool, spec, expected),
@@ -1253,28 +1311,35 @@ defmodule Lilly.VM.Driver do
   end
 
   # Native guests expose a kernel identity probe before the ordinary readiness
-  # exchange. A missing or mismatched descriptor/evidence fails closed; Linux
-  # and agentless firmware retain their existing readiness paths.
+  # exchange. A missing or mismatched descriptor/evidence fails closed. Retain
+  # the observed guest boot UUID so readiness cannot substitute a different
+  # boot. Linux and agentless firmware have no native kernel evidence.
   @spec verify_native_kernel(Pool.t(), Spec.t(), Boot.t(), pos_integer()) ::
-          :ok | {:error, atom()}
+          {:ok, OverallsProtocol.uuid() | nil} | {:error, atom()}
   defp verify_native_kernel(pool, spec, boot, timeout) do
     with {:ok, bundle} <- guest_bundle(pool, spec),
          {:ok, os} <- native_os(bundle),
          kernel when is_map(kernel) <- Map.get(bundle, :kernel),
          digest when is_binary(digest) <- Map.get(kernel, :sha256),
          true <- timeout > 0,
-         {:ok, _boot_id} <-
+         {:ok, boot_id} <-
            KernelAttestation.verify(
              Path.join(Lilly.VM.Jail.root(pool, spec), "v.sock"),
              Map.merge(Boot.expectation(boot), %{os: os, kernel_sha256: digest}),
              timeout
            ) do
-      :ok
+      {:ok, boot_id}
     else
-      {:error, :not_native} -> :ok
+      {:error, :not_native} -> {:ok, nil}
       _ -> {:error, :kernel_attestation_unconfirmed}
     end
   end
+
+  @spec same_attested_boot(OverallsProtocol.uuid() | nil, OverallsProtocol.uuid()) ::
+          :ok | {:error, :kernel_attestation_unconfirmed}
+  defp same_attested_boot(nil, _boot_id), do: :ok
+  defp same_attested_boot(boot_id, boot_id), do: :ok
+  defp same_attested_boot(_, _), do: {:error, :kernel_attestation_unconfirmed}
 
   defp guest_bundle(pool, spec),
     do: Lilly.VM.WorkloadBundle.load(Lilly.Host.ZFSDataset.directory(pool, spec), spec)
@@ -1405,12 +1470,24 @@ defmodule Lilly.VM.Driver do
   end
 
   defp readiness_claim(config, pool, spec, expected) do
-    with :ok <- existing_claim(config, pool, spec),
-         {:ok, _} <- Boot.current(directory(config, spec), spec.id, expected),
-         true <- Observation.running?(config, pool, spec) do
+    case readiness_stage(config, pool, spec, expected) do
+      :ok -> :ok
+      {:error, _} -> {:error, :readiness_unconfirmed}
+    end
+  end
+
+  # The confined-authority proof behind readiness_claim/4, naming the first
+  # failing part as a trust stage.
+  defp readiness_stage(config, pool, spec, expected) do
+    with {:claim, :ok} <- {:claim, existing_claim(config, pool, spec)},
+         {:boot, {:ok, _}} <-
+           {:boot, Boot.current(directory(config, spec), spec.id, expected)},
+         {:vmm, true} <- {:vmm, Observation.running?(config, pool, spec)} do
       :ok
     else
-      _ -> {:error, :readiness_unconfirmed}
+      {:claim, _} -> {:error, :trust_claim_mismatch}
+      {:boot, _} -> {:error, :trust_boot_unconfirmed}
+      {:vmm, _} -> {:error, :trust_vmm_unconfirmed}
     end
   end
 

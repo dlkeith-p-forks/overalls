@@ -85,9 +85,9 @@ can contain the exact legacy format.
 
 ## Implementation evidence
 
-[VM journal import](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/lib/lilly/vm/journal.ex) performed the exact
+VM journal import (`lilly/lib/lilly/vm/journal.ex` at kittens revision `9fe1e493`, repository deleted) performed the exact
 shape check, existing authority validation, locked byte recheck and atomic audit
-envelope publication. [Journal tests](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/test/vm/journal_test.exs)
+envelope publication. Journal tests (`lilly/test/vm/journal_test.exs` at kittens revision `9fe1e493`, repository deleted)
 exercised successful and refused imports without root or KVM. Focused tests and
 Lilly's complete precommit gate passed; production rollout evidence remained
 outstanding, so implementation was partial.

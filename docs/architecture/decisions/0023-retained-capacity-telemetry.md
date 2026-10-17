@@ -97,17 +97,17 @@ must remain visible to consumers.
 
 ## Implementation evidence
 
-[Summary resource](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/summary.ex),
-[recorder](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/recorder.ex),
-[metric extraction](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/observations.ex),
-[statistics](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/statistics.ex) and
-[retention action](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/expire.ex) implement
+Summary resource (`marshall/lib/marshall/telemetry/summary.ex` at kittens revision `a99f74f0`, repository deleted),
+recorder (`marshall/lib/marshall/telemetry/recorder.ex` at kittens revision `a99f74f0`, repository deleted),
+metric extraction (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted),
+statistics (`marshall/lib/marshall/telemetry/statistics.ex` at kittens revision `a99f74f0`, repository deleted) and
+retention action (`marshall/lib/marshall/telemetry/expire.ex` at kittens revision `a99f74f0`, repository deleted) implement
 the persistence and transaction boundary. The
 [migration](../../../marshall/priv/repo/migrations/20260916012936_retained_capacity_telemetry.exs)
 creates the table, uniqueness and expiry indexes, and host cascade.
-[Statistics properties](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/telemetry/statistics_test.exs),
-[observation checks](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/telemetry/observations_test.exs),
-[database tests](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/telemetry/retention_test.exs) and
+Statistics properties (`marshall/test/marshall/telemetry/statistics_test.exs` at kittens revision `a99f74f0`, repository deleted),
+observation checks (`marshall/test/marshall/telemetry/observations_test.exs` at kittens revision `a99f74f0`, repository deleted),
+database tests (`marshall/test/marshall/telemetry/retention_test.exs` at kittens revision `a99f74f0`, repository deleted) and
 [three-node tests](../../../marshall/test/marshall/compute/distributed_admission_test.exs)
 verify aggregation, privacy, rollback, retention and concurrent retry behavior.
 The [review](../reviews/2026-09-16-retained-telemetry.md) records the passing

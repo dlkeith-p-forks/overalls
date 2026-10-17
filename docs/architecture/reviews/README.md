@@ -1,5 +1,11 @@
 # Architecture reviews
 
+- [Underclass tailnet exit-node egress (2026-10-17)](2026-10-17-underclass-tailnet-egress.md): ADR-0185 routes only Underclass provider traffic through a dedicated userspace tailnet node and the Australian exit node, confines the unit to loopback and gates start on exit-node selection. Configuration and headscale machine checks passed; live login and stage 2 pending.
+- [Lilly owns every socket it uses (2026-10-17)](2026-10-17-lilly-owns-every-socket.md): ADR-0184 removes hostd descriptor passing (the BEAM never closes a descriptor it did not create), adding connect-on-behalf, a privilege-dropped ingress bridge and Lilly socket custody. Machine runs pending.
+- [Guest dataset streams in lilly-hostd (2026-10-16)](2026-10-16-guest-dataset-streams-in-hostd.md): ADR-0183 replaces ADR-0182 step 3's ZFS delegation with typed hostd streams; fixed Lilly uid 977 (which collided on dungarees) to 377; repaired main's broken Nix layout paths. Native machine runs pending.
+- [Browser extension presence (2026-10-16)](2026-10-16-browser-extension-presence.md): exact-origin optional permission and presentation-only installed marker; runtime Chrome/Firefox setup-visibility evidence remains pending.
+
+- [Underclass saturation reselect pin (2026-10-16)](2026-10-16-underclass-pin.md): fleet package `8c1a38c` to `469aff4` reselects after the saturation reset attempt instead of returning stale 429s, skips the reset lock while a Codex account is healthy and logs relative `retry_after_ms` with absolute `until_ms`. ADR-0102 unchanged; upstream Rust tests passed and the package built offline.
 - [lilly-hostd core review (2026-10-16)](2026-10-16-lilly-hostd-core.md): ADR-0176 decision 4, first stage. One `lilly-hostd` daemon replaces a `lilly-host-lock` process per held lock: FIFO leases on the same inodes, a closed utility table, per-command cgroup custody released only after a confirmed empty cgroup, root-only peers in `lilly.service`, and Lilly bound to the unit.
 - [Agent context and planning (2026-10-16)](2026-10-16-agent-context-and-planning.md):
   ADR-0178/0179's checkpoint coverage, instruction trust, durable question/proposal
@@ -15,7 +21,7 @@
   FreeBSD/OmniOS boot, agents, recovery and fleet claims remain open.
 
 - [Native kernel provenance and attestation (2026-10-17)](2026-10-17-native-kernel-attestation.md):
-  ADR-0180's kernel provenance descriptor, fail-closed native-kernel receipts,
+  ADR-0186 replaces ADR-0180 with a kernel provenance descriptor, fail-closed native-kernel receipts,
   jail-local boot-bound attestation and guest daemon packaging. Source and
   focused tests exist; cross-built kernels, native `terminald`, boot, agents,
   recovery and fleet evidence remain open.
@@ -25,7 +31,7 @@
   replay and revocation boundaries. The focused 111-case suite and synthetic
   browser matrix passed; native transport and cross-node recovery remain separate.
 
-- [User threads architecture review (2026-10-15)](2026-10-15-user-threads.md): ADR-0174's Threads boundary, running-VM readiness, idempotent initial objective, archive deletion confirmation, reopen machine keys and retained-transcript authority. The working integration snapshot passed 31 focused tests and presentation checks; native recovery, cross-node replay and browsing previous transcript generations remain gaps.
+- [User threads architecture review (2026-10-15)](2026-10-15-user-threads.md): ADR-0174's Threads boundary, running-VM readiness, idempotent initial objective, archive deletion confirmation, reopen machine keys, retained-generation transcript selection and retained-transcript authority. The working integration snapshot passed 31 focused tests and presentation checks; native recovery and cross-node replay remain gaps.
 
 - [Underclass manual reset redemption pin (2026-10-14)](2026-10-14-underclass-pin.md): fleet package `3e35c3b` to `d0cb274` adds an admin-token-gated manual Codex reset endpoint, CLI and page button, a `gpt-6-sol` catalog entry and body-based stream classification. ADR-0102 keeps its accepted decision and partial status; hashes and an offline package build were validated, tests were not run.
 - [Underclass stream statistics pin (2026-10-15)](2026-10-15-underclass-pin.md): fleet package `d0cb274` to `8c1a38c` adds bounded stream outcomes and admin-token-gated long-range capacity statistics while preserving the independent pool and monitor boundaries. Hashes and an offline package build were validated; tests were not run.
@@ -550,3 +556,15 @@ needs replacement. Keep checks that were run separate from future test plans.
 
 - [Terminal peer budget incarnation](2026-10-06-terminal-peer-budget-incarnation.md): generated authenticated TLS peer-pair restart and exact successor admission; synthetic host/native gap and mutation validation are explicit.
 - [Transient pool contention and capacity freshness](2026-10-09-transient-pool-contention.md): withheld-pool diagnostics, `busy` report entry keeping the previous observation, server-first rollout.
+
+- [2026-09-26: Fleet diagnostic log store and Control room viewer](2026-09-26-fleet-log-viewer.md): ADR-0127's WG-scoped VictoriaLogs destination, reviewed Fluent Bit sources, read-only Control-room viewer and deployment evidence; long-horizon retention and CA rotation remain open.
+- [2026-09-26: Hegel property-based testing for NixOS machine checks](2026-09-26-hegel-machine-property-testing.md): verification-only Hegel framework and migrated machine suites; contracts, HLDD and Python gates passed, with composed property execution bounded by existing failures.
+- [Backup interruptions and custody symmetry (2026-09-27)](2026-09-27-backup-interruptions.md): backup command custody gates, interruption/publication-window histories and cleanup mutants preserve terminal recovery semantics; native and production gaps remain.
+- [Agent revocation histories (2026-09-28)](2026-09-28-agent-revocation.md): owner-authority fencing, revocation-aware CLI authorization and orphaned-command retirement, with focused and three-BEAM histories passing.
+- [Ingress renewal and refusal-matrix verification (2026-09-28)](2026-09-28-ingress-refusals.md): generated publication/lease/withdrawal histories, distributed renewal races and Audi refusal coverage; focused and component gates passed, native fleet execution remains queued.
+- [Integration name-custody fencing (2026-09-28)](2026-09-28-integration-faults.md): archived integration names now refuse replay and team liveness binds authority to membership; focused histories and contract annotations passed.
+- [Windows guest agents (2026-10-14)](2026-10-14-windows-guest-agents.md): ADR-0171's `windows-v1` capability table, vsock endpoint, readiness and Rust guest agents; unit, image and fleet validation are recorded with native workstation and scheduler gaps.
+- [Windows images with pinned winget packages (2026-10-15)](2026-10-15-windows-images-winget.md): ADR-0173's Desktop Experience image installs pinned winget packages and WSL features through an offline file server; image and fleet checks passed, with interactive winget registration and nested virtualization gaps recorded.
+- [Windows workstation client (2026-10-15)](2026-10-15-windows-workstation-client.md): ADR-0172's cross-platform Kittens CLI adds Windows packaging, SSH and update paths; Linux checks, Windows cross-build and fleet guest-agent validation passed, with real Windows workstation use remaining.
+- [Antithesis five-attempt bootstrap admission (2026-10-16)](2026-10-16-antithesis-five-attempt-admission.md): verification campaign ledger admits five concurrent hosted attempts and refuses a sixth; no production architecture boundary changes.
+- [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)

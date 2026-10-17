@@ -34,15 +34,15 @@ defmodule Lilly.Transfer.SSH do
   # bounded shell-inert resume token; no paths or
   # caller shell text. Native stream completion is not a verified import or proof
   # that remote producers are reaped; source revocation remains independently required.
-  @spec pull(Path.t(), request(), map(), Stream.command(), pos_integer()) ::
+  @spec pull(Path.t(), request(), map(), Stream.consumer(), pos_integer()) ::
           :ok | {:error, atom()}
-  @spec pull(Path.t(), request(), map(), Stream.command(), pos_integer(), String.t() | nil) ::
+  @spec pull(Path.t(), request(), map(), Stream.consumer(), pos_integer(), String.t() | nil) ::
           :ok | {:error, atom()}
   @spec pull(
           Path.t(),
           request(),
           map(),
-          Stream.command(),
+          Stream.consumer(),
           pos_integer(),
           String.t() | nil,
           non_neg_integer()
@@ -51,7 +51,7 @@ defmodule Lilly.Transfer.SSH do
           Path.t(),
           request(),
           map(),
-          Stream.command(),
+          Stream.consumer(),
           pos_integer(),
           String.t() | nil,
           non_neg_integer(),
@@ -106,7 +106,6 @@ defmodule Lilly.Transfer.SSH do
              endpoint
            ),
          {:ok, producer} <- probe_command(endpoint, request, files, challenge),
-         cmp when is_binary(cmp) <- System.find_executable("cmp"),
          name = "probe-" <> challenge,
          directory = Path.dirname(files.identity_file),
          :ok <- PrivateFiles.write(directory, name, "lilly-probe-v3 " <> challenge <> "\n") do
@@ -115,7 +114,7 @@ defmodule Lilly.Transfer.SSH do
         Stream.run(
           files.stream_dir,
           producer,
-          {cmp, ["--silent", "--", Path.join(directory, name), "-"]},
+          {:compare, Path.join(directory, name)},
           timeout
         )
       )
@@ -169,101 +168,55 @@ defmodule Lilly.Transfer.SSH do
   end
 
   # @cc [owner:ghuntley,label:security] probe-command-retains-all-ssh-restrictions
-  # probe_command/4 MUST use the same connection restrictions as command/3,
-  # replacing only its closed remote verb/arguments with the canonical probe.
+  # probe_command/4 MUST use the same connection fields as command/3,
+  # replacing only its closed remote verb with the canonical probe.
   @spec probe_command(map(), request(), map(), String.t()) ::
-          {:ok, Stream.command()} | {:error, atom()}
+          {:ok, Stream.producer()} | {:error, atom()}
   def probe_command(endpoint, request, files, challenge) do
     with true <- OverallsProtocol.uuid?(challenge),
-         {:ok, {ssh, args}} <- command(endpoint, request, files) do
-      {:ok, {ssh, Enum.drop(args, -2) ++ ["lilly-probe-v3", request.relocation_id, challenge]}}
+         {:ok, {:ssh, ssh}} <- command(endpoint, request, files) do
+      {:ok, {:ssh, %{ssh | verb: {:probe, challenge}}}}
     else
       _ -> {:error, :invalid_ssh_transfer}
     end
   end
 
   # @cc [owner:ghuntley,label:security] resumed-ssh-retains-pinned-transport
-  # resume_command/4 MUST preserve every ordinary SSH restriction and accept only
+  # resume_command/4 MUST preserve every ordinary SSH field and accept only
   # a bounded shell-inert token. The remote source MUST independently validate its
   # lineage against the live permit before sending; syntax alone grants no authority.
   @spec resume_command(map(), request(), map(), String.t()) ::
-          {:ok, Stream.command()} | {:error, atom()}
+          {:ok, Stream.producer()} | {:error, atom()}
   def resume_command(endpoint, request, files, token) do
     with true <- ExportRequest.token?(token),
-         {:ok, {ssh, args}} <- command(endpoint, request, files),
-         do:
-           {:ok,
-            {ssh,
-             Enum.drop(args, -2) ++
-               ["lilly-resume-v4", request.relocation_id, token]}},
+         {:ok, {:ssh, ssh}} <- command(endpoint, request, files),
+         do: {:ok, {:ssh, %{ssh | verb: {:resume, token}}}},
          else: (_ -> {:error, :invalid_ssh_transfer})
   end
 
   # @cc [owner:ghuntley,label:security] ssh-command-has-no-ambient-authority
-  # command/3 accepts trusted local file paths prepared by Key.connection/6.
-  # Paths MUST exclude SSH token/environment expansion syntax. Arguments MUST
-  # explicitly require the private known-hosts pin and one Ed25519 identity;
-  # transport MUST force IPv4 even when an enrolled DNS name has AAAA records;
-  # peer strings MUST NOT select users, commands, config files or executables.
-  @spec command(map(), request(), map()) :: {:ok, Stream.command()} | {:error, atom()}
+  # command/3 accepts trusted local file paths prepared by Key.connection/6 and
+  # returns only typed connection fields: hostd derives the ssh command line
+  # with its fixed options (the private known-hosts pin, one Ed25519 identity,
+  # IPv4 only, no agent, forwarding, proxy or multiplexing) and runs it as
+  # the service uid (hostd-transfer-stream-typed). Paths MUST exclude SSH
+  # token/environment expansion syntax; peer strings MUST NOT select users,
+  # commands, config files or executables.
+  @spec command(map(), request(), map()) :: {:ok, Stream.producer()} | {:error, atom()}
   def command(endpoint, request, %{identity_file: identity, known_hosts: known}) do
     with {:ok, endpoint} <- OverallsProtocol.TransferSSH.endpoint(endpoint),
-         true <- valid_request?(request) and safe_path?(identity) and safe_path?(known),
-         ssh when is_binary(ssh) <- System.find_executable("ssh") do
-      options = [
-        "AddressFamily=inet",
-        "BatchMode=yes",
-        "IdentitiesOnly=yes",
-        "IdentityAgent=none",
-        "CertificateFile=none",
-        "PreferredAuthentications=publickey",
-        "PubkeyAuthentication=yes",
-        "PasswordAuthentication=no",
-        "KbdInteractiveAuthentication=no",
-        "PubkeyAcceptedAlgorithms=ssh-ed25519",
-        "HostKeyAlgorithms=ssh-ed25519",
-        "StrictHostKeyChecking=yes",
-        "UserKnownHostsFile=" <> known,
-        "GlobalKnownHostsFile=/dev/null",
-        "KnownHostsCommand=none",
-        "VerifyHostKeyDNS=no",
-        "UpdateHostKeys=no",
-        "HostKeyAlias=lilly-" <> request.source_host_id,
-        "CheckHostIP=no",
-        "CanonicalizeHostname=no",
-        "ControlMaster=no",
-        "ControlPath=none",
-        "ControlPersist=no",
-        "ClearAllForwardings=yes",
-        "ForwardAgent=no",
-        "ForwardX11=no",
-        "Tunnel=no",
-        "ProxyCommand=none",
-        "ProxyJump=none",
-        "PermitLocalCommand=no",
-        "ConnectionAttempts=1",
-        "ConnectTimeout=10",
-        "ServerAliveInterval=15",
-        "ServerAliveCountMax=2",
-        "Compression=no",
-        "LogLevel=ERROR"
-      ]
-
-      args =
-        ["-F", "/dev/null", "-T", "-n", "-i", identity] ++
-          Enum.flat_map(options, &["-o", &1]) ++
-          [
-            "-p",
-            Integer.to_string(endpoint["port"]),
-            "-l",
-            "lilly-transfer",
-            "--",
-            endpoint["address"],
-            "lilly-export-v4",
-            request.relocation_id
-          ]
-
-      {:ok, {ssh, args}}
+         true <- valid_request?(request) and safe_path?(identity) and safe_path?(known) do
+      {:ok,
+       {:ssh,
+        %{
+          address: endpoint["address"],
+          port: endpoint["port"],
+          source_host: request.source_host_id,
+          relocation: request.relocation_id,
+          identity: identity,
+          known_hosts: known,
+          verb: :export
+        }}}
     else
       _ -> {:error, :invalid_ssh_transfer}
     end

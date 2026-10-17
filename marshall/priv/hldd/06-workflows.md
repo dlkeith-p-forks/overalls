@@ -224,7 +224,12 @@ The corrected expanded cloning check remains pending.
 Clone and relocation exports send compressed ZFS streams (`zfs send -c`), with the
 snapshot name last so resumed exports bind the same snapshot. Same-host clone
 streams use `services.lilly.localTransferBytesPerSecond` (default 1 GiB/s), while
-peer transfers keep `transferBytesPerSecond` (default 64 MiB/s). Receive-side
+peer transfers keep `transferBytesPerSecond` (default 64 MiB/s). On the
+destination and for same-host clones, lilly-hostd runs the stream from typed
+fields, since the BEAM holds no ZFS permission: a local send or resume, or an
+SSH pull, into a policy-fixed receive
+([ADR-0183](repo:docs/architecture/decisions/0183-guest-dataset-streams-in-hostd.md)).
+The source host's root export worker keeps its own sender. Receive-side
 lineage, nonce and ownership verification is unchanged. Before this change, a
 measured same-host clone spent 46.9 of 71 seconds sending about 3 GB of
 uncompressed logical data at 64 MiB/s. Lilly reports newly offered clone effects on
@@ -494,7 +499,8 @@ separate from that historical evidence.
 
 ## Native utility descendant custody
 
-Host-lock, transfer-stream and source-export helpers retain completion and lock custody until every
+Host-lock, transfer-stream (under its hostd lease, ADR-0183) and source-export
+helpers retain completion custody until every
 adopted child is reaped across process groups/sessions. Direct leader retirement
 does not permit a reply or successor mutation. Native completion and failure
 histories, scoped selector mutations and source identity after integration are
@@ -528,9 +534,14 @@ Archive/delete requests record deleting intent and use Compute's lifecycle
 coordinator. The thread remains deleting until retained VM history reports
 physical archival; a desired deleted state alone is insufficient. An authorized
 reopen clears the retired binding, retains the original create request key,
-assigns a fresh machine key and queues admission atomically. PaperTrail retains
-the old identities; archived transcript reads use the current retained binding.
-Browsing transcripts from earlier reopened generations remains separate work.
+assigns a fresh machine key and queues admission atomically. Durable
+`ThreadGeneration` rows retain each machine/root/thread identity. PaperTrail and
+generation rows preserve the old identities; authorized archived transcript
+reads can select an earlier generation through the read-only workspace selector.
+The selected generation repeats root, owner and thread checks and cannot prompt,
+open a terminal or mutate a machine.
+Archiving also cancels any pending human planning question with an `archived`
+reason before deletion intent or retained archival is committed.
 
 Thread sharing has its own durable grant and immutable request result. Sharing
 serializes on the thread and then its bound VM, with current authority checked
@@ -561,7 +572,12 @@ Managed skill configuration changes affect later snapshots. Guest operations
 publish pinned immutable revisions and report their original operation identity;
 an uncertain reply is resolved by a status read. Failed updates keep the active
 revision, admitted turns retain their referenced versions, and reopening
-restores recorded commits/digests instead of following branch heads.
+restores recorded commits/digests instead of following branch heads. The
+restoration coordinator uses a bounded round-robin cursor so one blocked thread
+cannot monopolize the scan. Active receipts continue through their existing
+turn, terminal failures are not replayed automatically for the same machine
+generation, and rejected restorations emit a bounded reason event before the
+scan advances. A fresh machine key makes the pinned revision eligible again.
 
 Both hosts converged healthy on the machine-key expansion at
 `d5e03c080204a33a11b8c136e983593630e4fccf` on 2026-10-15. That expansion left the

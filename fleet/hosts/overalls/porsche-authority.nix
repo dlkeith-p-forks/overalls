@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   marshall = config.services.marshall;
-  mailEnvironment = import ../../../nix/modules/smtp-relay/environment.nix {
+  mailEnvironment = import ../../../nix/domains/system/smtp-relay/environment.nix {
     inherit lib;
     cfg = marshall.smtpRelay;
   };

@@ -1,20 +1,19 @@
-# ADR-0156: Browser launcher build and public distribution
+# ADR-0156: Browser launcher build, distribution and exact-origin presence detection
 
 - ID: ADR-0156
 - Date: 2026-10-10
 - Status: accepted
-- Implementation: implemented
+- Implementation: partial
 - Components: browser, Marshall, Nix
 - Supersedes: none
 - Superseded by: none
 
 ## Context
 
-The user asked to inspect and port Weaver's `browser/*`, serve it from `/bin`,
+The user asked to maintain a browser launcher, serve it from `/bin`,
 include GitHub, GitLab, Codeberg and Bitbucket, require explicit server
-configuration and distribute unsigned developer packages. Weaver was inspected
-at commit `b211e71b9c86aeca507323baab7650218688e9c9`; its launcher behavior informs
-the port, while Overalls owns authentication and immutable package boundaries.
+configuration and distribute unsigned developer packages. Overalls owns
+authentication and immutable package boundaries.
 
 The CLI already has an installer/update manifest. Browser archives need separate
 metadata and allowlisted paths without changing that existing CLI format.
@@ -40,7 +39,18 @@ Grant the fixed provider host permissions plus activeTab, synced settings and th
 reviewed configuration context menu. Do not embed a production credential or
 default server selection.
 
-Use `browser/package.json` as the version authority, lockfile-pinned build tools,
+For setup discovery, the extension requests optional host access only for the
+normalized Overalls origin the user explicitly saves. A small packaged content
+script marks that exact origin with a stable document attribute when the extension
+is installed and configured. Marshall observes the marker as a presentation hint
+and hides setup affordances only after a positive local signal. The marker is
+spoofable and is never an authentication, machine, sharing or launch grant;
+missing configuration, denied access, withdrawn permission or an unavailable
+detector leave setup visible. Registration is reconciled at startup and when the
+configured origin changes, with the previous working configuration retained if
+permission or registration fails.
+
+Use `marvin/package.json` as the version authority, lockfile-pinned build tools,
 hash-verified Nix npm inputs and no dependency install scripts. The ordinary release
 build is offline. Build maintained assets and provenance into unpacked Chrome and
 Firefox directories; generate deterministic ZIP/XPI entries with sorted names,
@@ -48,23 +58,23 @@ fixed UTC timestamps, modes and compression. The default source epoch is the ZIP
 epoch, 1980-01-01. Source digests cover maintained browser inputs; generated
 `dist/` and dependencies stay outside the source digest and archives.
 
-Export `nix build .#browser` and `.#checks.x86_64-linux.browser`. Development commands
-`browser-build`, `browser-check` and `browser-watch` in devenv invoke the same
+Export `nix build .#marvin` and `.#checks.x86_64-linux.marvin`. Development commands
+`marvin-build`, `marvin-check` and `marvin-watch` in devenv invoke the same
 maintained build/check source with pinned tools. The check performs strict typing,
 Node tests, repeat packaging, Mozilla's standalone add-on linter, real Chromium
 extension loading and archive integrity inspection. This launcher uses no image
 generator, browser-store upload or signing service.
 
 The immutable package has archives in `bin/`, a version1 distribution manifest at
-its root and unpacked extensions in `share/overalls-browser/`. Its manifest records
+its root and unpacked extensions in `share/overalls-marvin/`. Its manifest records
 unsigned status, release version, source digest and each artifact size/SHA-256.
-Marshall's nullable `services.marshall.browserPackage` defaults to this package;
-the wrapper removes inherited `OVERALLS_BROWSER_RELEASE` and supplies its selected
+Marshall's nullable `services.marshall.marvinPackage` defaults to this package;
+the wrapper removes inherited `OVERALLS_MARVIN_RELEASE` and supplies its selected
 package after loading other environment files. Null supplies an explicit empty
 value and disables downloads. Environment files cannot override package selection.
 
 Public GET routes `/bin/chrome.zip` and `/bin/firefox.xpi` deliver developer
-archives. `/bin/browser/manifest.json` and `/bin/browser/sha256/ARTIFACT` publish
+archives. `/bin/marvin/manifest.json` and `/bin/marvin/sha256/ARTIFACT` publish
 their dedicated metadata. The controller permits only these two artifact names,
 a canonical Nix-store root and `bin` parent that are actual directories, regular
 bounded files and validated digest/length metadata. Symlink roots, parents or
@@ -79,13 +89,16 @@ submission or permanent-install claim is part of this decision.
 
 ## Alternatives
 
-- Weaver's Cargo workspace version and automatic manifest/package synchronization
-  do not supply Overalls' browser release version. Keep native modules, use the
-  local package version authority and content-bound provenance.
+- A separate package version or automatic manifest synchronization would not
+  supply the browser release's content-bound provenance. Keep native modules,
+  use the local package version authority and deterministic metadata.
 - Folding browser entries into the CLI manifest would change its updater contract
   and mix distinct artifact consumers.
-- A fixed production server or automatic origin detection conflicts with explicit
-  configuration and can send source intent to an unintended server.
+- A fixed production server or automatic source-origin detection conflicts with explicit
+  configuration and can send source intent to an unintended server. A broad
+  always-on host permission would expose unrelated sites and make local setup
+  state authoritative, so exact optional origin access and a non-authoritative
+  marker are used instead.
 - Signed/store-published packages require publication/signing work the user did
   not request; developer archives meet the authorized distribution scope.
 
@@ -105,28 +118,37 @@ Archive availability does not establish authenticated launch or guest checkout.
 - Source queries/fragments cannot enter the launch fragment or transmission.
   Preserve provider origin/path and refuse URL user information.
 - Both target archives contain only reviewed assets and provenance. Identical
-  inputs yield identical bytes and recorded SHA-256 descriptors.
+  inputs yield identical bytes and recorded SHA-256 descriptors. The detector
+  asset is packaged in both archives and is registered only for the saved exact
+  origin.
 - Downloads cannot traverse paths or serve another package/file; disabled or
   malformed roots and files refuse with 404.
 - Chromium runtime and Firefox temporary installation/settings/provider toolbar
-  probes are bounded package evidence. Public provider network, signed installation
-  and real cross-tab authenticated guest journeys remain separate.
+  probes are bounded package evidence. Presence registration, exact-origin
+  marker injection and setup visibility are tested independently of authority.
+  Public provider network, signed installation and real cross-tab authenticated
+  guest journeys remain separate.
 
 ## Implementation evidence
 
-[Maintained launcher](../../../browser/common/extension.mjs),
-[build](../../../browser/scripts/build.mjs),
-[packager](../../../browser/scripts/package.mjs),
-[package tests](../../../browser/scripts/package.test.mjs) and
-[Chromium smoke](../../../browser/scripts/chromium-smoke.mjs) implement the shared
-extension and build checks. [Nix package](../../../nix/packages/browser/default.nix),
+[Maintained launcher](../../../marvin/common/extension.mjs), [exact-origin
+detector](../../../marvin/common/presence.mjs) and [registration](../../../marvin/common/presence_config.mjs),
+[build](../../../marvin/scripts/build.mjs),
+[packager](../../../marvin/scripts/package.mjs),
+[package tests](../../../marvin/scripts/package.test.mjs), [presence tests](../../../marvin/common/presence_config.test.mjs) and
+[Chromium smoke](../../../marvin/scripts/chromium-smoke.mjs) implement the shared
+extension and build checks. Marshall's [presence observer](../../../marshall/assets/js/browser_extension_presence.js)
+and [presentation test](../../../marshall/test/browser/browser_extension_presence_test.mjs)
+cover setup visibility without making the marker authoritative. [Nix package](../../../nix/domains/artifacts/marvin/default.nix),
 [devenv commands](../../../devenv.nix),
-[Marshall module](../../../nix/modules/marshall.nix) and
-[download controller](../../../marshall/lib/marshall_web/controllers/browser_download_controller.ex)
+[Marshall module](../../../nix/domains/system/marshall.nix) and
+[download controller](../../../marshall/lib/marshall_web/controllers/marvin_download_controller.ex)
 connect source-built artifacts to public downloads. The
-[current review](../reviews/2026-10-10-browser-launcher.md) separates executed
+[current review](../reviews/2026-10-10-browser-launcher.md) and the
+[presence review](../reviews/2026-10-16-browser-extension-presence.md) separate executed
 checks from native/production and permanent installation gaps.
-Implementation is implemented: the minimized immutable package/check, byte-identical
+Implementation remains partial until the exact-origin detector has recorded both
+Chrome and Firefox runtime setup-visibility evidence. The minimized immutable package/check, byte-identical
 developer packages and actual Chromium/Firefox provider actions passed, including
 query/hash sentinel removal. Packages preceding the privacy correction retain their
 captured scope. Public deployment and external provider acceptance remain validation gaps;

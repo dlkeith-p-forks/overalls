@@ -88,10 +88,10 @@ The [Enrico Git runner](../../../enrico/lib/enrico/git.ex) constructs the
 GitHub URL and bounds operations. The [Marshall resource](../../../marshall/lib/marshall/enrico/repository.ex)
 and [worker](../../../marshall/lib/marshall/enrico/worker.ex) define state and
 refresh reconciliation; the [audit resource](../../../marshall/lib/marshall/enrico/audit_event.ex)
-records actions and outcomes. The [service module](../../../nix/modules/enrico.nix)
+records actions and outcomes. The [service module](../../../nix/domains/system/enrico.nix)
 and [Overalls declaration](../../../fleet/hosts/overalls/services.nix) define
 runtime custody, storage and private listener. The
-[machine fixture](../../../nix/tests/machines/enrico-service/default.nix)
+[machine fixture](../../../nix/verification/tests/machines/enrico-service/default.nix)
 exercises a packaged service. The machine, Marshall precommit and fleet build
 checks pass. A live Overalls activation recorded revision `3a5ae1a1` healthy;
 the mounted `zroot/enrico` dataset has `refquota=100G`, and the Enrico listener
@@ -101,7 +101,7 @@ capacity behavior.
 The mirror manager also records unique admitted terminal refresh outcomes and
 fixed duration buckets for a candidate SLI. Its private Unix health socket
 serves a fixed numeric snapshot to a Rust host exporter. The isolated
-[service machine test](../../../nix/tests/machines/enrico-service/default.nix)
+[service machine test](../../../nix/verification/tests/machines/enrico-service/default.nix)
 passed source-to-collector delivery, duplicate-attempt stability and source
 outage failure accounting. This evidence does not set an SLO target or prove
 live collection.
@@ -112,7 +112,7 @@ private CA and translates transport failures to bounded reasons. The
 [failure-reason migration](../../../marshall/priv/repo/migrations/20260923060150_add_enrico_failure_reason.exs)
 adds nullable reasons to append-only audit records, and the Git runner permits
 a 60-minute initial mirror fetch while Marshall waits up to 65 minutes.
-The [Enrico NixOS module](../../../nix/modules/enrico.nix) defaults to
+The [Enrico NixOS module](../../../nix/domains/system/enrico.nix) defaults to
 an 8 GiB service memory limit after a live Nixpkgs `index-pack` exceeded the
 initial 2 GiB limit. The worker resumes in-flight attempts after transient
 status failures, and records an abandoned attempt before replacing it.
@@ -128,7 +128,7 @@ shares the catalog mutation transaction, and worker outcomes require the current
 locked attempt. [Generated public histories](../../../marshall/test/marshall/enrico/history_test.exs)
 and [three-process ordering tests](../../../marshall/test/marshall/enrico/history_distributed_test.exs)
 pass for retained publication, removal/re-registration and stale/duplicate outcomes.
-The [ordinary browser fixture](../../../nix/tests/machines/git-mirrors/default.nix)
+The [ordinary browser fixture](../../../nix/verification/tests/machines/git-mirrors/default.nix)
 passed the complete packaged Marshall/Enrico native journey in 53.43 seconds on
 captured `f4de549a`-based tree `89e03703`. Earlier packaged-service machine results
 retain their original scope; these additions do not establish physical tunnel or

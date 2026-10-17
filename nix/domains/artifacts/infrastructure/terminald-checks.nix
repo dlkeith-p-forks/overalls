@@ -1,0 +1,32 @@
+{ pkgs }:
+pkgs.rustPlatform.buildRustPackage {
+  pname = "lilly-terminald-native-checks";
+  version = "0.1.0";
+  src = pkgs.lib.cleanSourceWith {
+    src = ../terminald;
+    filter = path: type:
+      let name = builtins.baseNameOf path;
+      in name != "target" && name != ".hegel" &&
+        (type == "directory" || pkgs.lib.hasSuffix ".rs" name ||
+          builtins.elem name [ "Cargo.toml" "Cargo.lock" "CONTRACTS" ]);
+  };
+  cargoLock.lockFile = ../terminald/Cargo.lock;
+  doCheck = false;
+  strictDeps = true;
+  nativeBuildInputs = [ pkgs.clippy ];
+  TERMINALD_TEST_SHELL = "${pkgs.bash}/bin/bash";
+  TERMINALD_TEST_HEAD = "${pkgs.coreutils}/bin/head";
+  buildPhase = ''
+    runHook preBuild
+    cargo clippy --offline --all-targets -- -D warnings
+    cargo test --offline
+    runHook postBuild
+  '';
+  installPhase = ''
+    mkdir -p $out
+  '';
+  meta = {
+    description = "Overalls terminald native test and clippy gate";
+    platforms = [ "x86_64-linux" ];
+  };
+}

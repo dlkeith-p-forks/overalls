@@ -100,7 +100,7 @@ shape (ADR-0159).
   `refill process` (`lilly/lib/lilly/host/standby_refill.ex`, removed by ADR-0177),
   [pool-lock waiters](../../../lilly/lib/lilly/host/storage.ex),
   [pool configuration](../../../lilly/lib/lilly/host/pool.ex),
-  [Nix module](../../../nix/modules/lilly.nix),
+  [Nix module](../../../nix/domains/system/lilly.nix),
   [overalls](../../../fleet/hosts/overalls/services.nix) and
   [dungarees](../../../fleet/hosts/dungarees/configuration.nix).
 - Usage resample: [ZFS observation](../../../lilly/lib/lilly/host/zfs.ex).

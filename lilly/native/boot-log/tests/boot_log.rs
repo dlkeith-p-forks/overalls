@@ -278,3 +278,62 @@ fn wait(child: &mut Running) -> Option<i32> {
         std::thread::sleep(Duration::from_millis(20));
     }
 }
+
+fn run_reader(reader: u32, log: &Path) -> Option<i32> {
+    let mut child = Running(
+        Process::new(HELPER)
+            .arg("--reader-uid")
+            .arg(reader.to_string())
+            .arg(log)
+            .args(fixture_argv("fixture_child_emit"))
+            .env("HL_LOG_BYTES", "64")
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+            .expect("spawned boot-log"),
+    );
+    wait(&mut child)
+}
+
+fn owner_and_mode(log: &Path) -> (u32, u32) {
+    use std::os::unix::fs::MetadataExt;
+    let metadata = std::fs::metadata(log).expect("log metadata");
+    (metadata.uid(), metadata.mode() & 0o777)
+}
+
+/// boot-log-private-to-its-reader: as root the log is handed to the reader,
+/// kept 0600, reused on relaunch and refused to any other reader; without
+/// root the writer's own uid is its reader and a foreign reader is refused.
+#[test]
+fn reader_receives_the_private_log_or_custody_is_refused() {
+    let directory = tempfile::tempdir().expect("fixture directory");
+    let log = new_log(&directory);
+    let euid = rustix::process::geteuid().as_raw();
+    if euid == 0 {
+        assert_eq!(run_reader(65_534, &log), Some(0));
+        assert_eq!(owner_and_mode(&log), (65_534, 0o600));
+        let bytes = std::fs::read(&log).expect("read log");
+        assert!(bytes.windows(13).any(|w| w == b"stderr-marker"));
+        assert_eq!(
+            run_reader(65_534, &log),
+            Some(0),
+            "relaunch reuses its file"
+        );
+        assert_eq!(
+            run_reader(65_533, &log),
+            Some(74),
+            "another reader is refused"
+        );
+        assert_eq!(owner_and_mode(&log), (65_534, 0o600));
+    } else {
+        assert_eq!(run_reader(euid, &log), Some(0));
+        assert_eq!(owner_and_mode(&log), (euid, 0o600));
+        let other = directory.path().join("other.log");
+        assert_eq!(
+            run_reader(euid + 1, &other),
+            Some(74),
+            "no hand-over without root"
+        );
+    }
+}

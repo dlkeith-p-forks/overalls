@@ -35,6 +35,36 @@ defmodule Lilly.Lifecycle.ImageTemplateTest do
     assert ImageTemplate.valid_payload?(Map.put(payload(), "identities", identities))
   end
 
+  # The 2026-10-16 template outage: a sealed FreeBSD template written before its
+  # kernel `rootfs.ufs` kind was removed made the whole catalog unreadable.
+  test "a record of a retired image kind stays decodable so it can be retired" do
+    legacy = Map.new(~w(manifest.json kernel rootfs.ufs), &{&1, Enum.to_list(1..11)})
+
+    for state <- ~w(ready quarantined retiring deleted) do
+      assert ImageTemplate.valid_payload?(
+               payload()
+               |> Map.merge(%{"state" => state, "guid" => "42", "identities" => legacy})
+             )
+    end
+  end
+
+  property "identities name manifest.json and only single safe path components" do
+    unsafe = member_of(["../kernel", "a/b", ".hidden", "", "Kernel", String.duplicate("a", 65)])
+    names = ~w(manifest.json kernel initrd rootfs.ext4)
+
+    check all(name <- unsafe, size <- integer(2..3)) do
+      safe = Map.new(Enum.take(names, size), &{&1, Enum.to_list(1..11)})
+      assert ImageTemplate.valid_payload?(Map.put(payload(), "identities", safe))
+
+      refute ImageTemplate.valid_payload?(
+               Map.put(payload(), "identities", Map.put(safe, name, Enum.to_list(1..11)))
+             )
+    end
+
+    without_manifest = Map.new(tl(names), &{&1, Enum.to_list(1..11)})
+    refute ImageTemplate.valid_payload?(Map.put(payload(), "identities", without_manifest))
+  end
+
   # @cc [owner:ghuntley,label:verification] template-history-independent-facts
   # Generated histories MUST track prerequisite evidence independently from the
   # production graph, reopen durable state after every operation and preserve

@@ -68,6 +68,18 @@ The private Docker variant is selected by adding
 `private-host-vmm` context. Its Compose file renders, but no container startup
 or inner private-service readiness has been recorded.
 
+## Firecracker native firmware operations
+
+The patched Firecracker build is required for native firmware guests. Its
+virtio PCI transport keeps the queue BAR and the MSI-X table/PBA BAR independent,
+commits 64-bit relocation only after the high-half write and moves queue
+ioevents only after successful registration. Hot-unplug removes both BARs and
+all ioevents. During illumos initialization, valid queue size/address writes are
+accepted while status is zero; malformed queue state and writes after a
+forbidden transition remain refused. The evaluation checks inspect the selected
+patch set, while nested FreeBSD/OmniOS boot and recovery remain separate
+acceptance evidence.
+
 ## Browser editor package and image updates
 
 Update the four extension pins separately from the official Code OSS/runtime pins:
@@ -131,7 +143,7 @@ results do not establish native fleet or production runtime. Earlier
 package/native/activation records retain their own scope, and these fleet passes
 predate the incoming template changes rather than validating periodic sweeps.
 
-Use the [package update procedure](repo:nix/packages/vscode-web/README.md) to review
+Use the [package update procedure](repo:nix/domains/artifacts/vscode-web/README.md) to review
 the official source, maintained patches, native ABI and signing keys. Build the
 third-party package and its native check before assembling new guest images:
 
@@ -416,7 +428,7 @@ serving Marshall database URL, token signing secret, cookie or Cloak custody is
 refused at preflight as `coordinated_secret_change`; staging resolves privately
 but is never published, consumers never stop and no migration runs. Recovery is
 the documented manual cutover from the
-[NixOS operations runbook](repo:docs/nixos.md): once the operator has switched
+[NixOS operations runbook](repo:docs/operations/nixos.md): once the operator has switched
 the host to the exact refused closure and re-prepared its bundles, the first
 timer run after the persisted retry time finds the active candidate and only
 re-verifies live health. It does not re-stage, re-resolve, rerun migrations or
@@ -467,7 +479,7 @@ samples follow separately recorded prewarm attempts. Guest SSH `ls` must succeed
 against the returned `ssh_host`; read-only physical state and independent catalogued logs record
 host, pool, timing and cleanup without storing terminal bytes or command output.
 
-The [run protocol](repo:docs/provisioning-fastpath.md) requires host-load and
+The [run protocol](repo:docs/history/ledgers/provisioning-fastpath.md) requires host-load and
 native template-identity review before claiming a warm-cache speedup. A dry-run
 custody test or completed result file alone does not prove VM isolation, physical
 cleanup, or the ≥30% and sub-10-second targets. Failed or uncertain cleanup
@@ -598,8 +610,8 @@ storage cleanup belongs to Lilly. Brady and Enrico caches have separate quotas.
 Do not reclaim a guest dataset with generic cache or Nix garbage-collection tools.
 
 Evidence: [maintenance commands](repo:marshall/lib/marshall/operations/cli.ex),
-[host maintenance](repo:docs/host-maintenance.md), [updater contract](repo:nix/modules/auto-update/CONTRACTS),
-[email](repo:docs/production-email.md), [Nix GC](repo:nix/modules/nix-gc.nix).
+[host maintenance](repo:docs/operations/host-maintenance.md), [updater contract](repo:nix/domains/system/auto-update/CONTRACTS),
+[email](repo:docs/operations/production-email.md), [Nix GC](repo:nix/domains/system/nix-gc.nix).
 
 SSH certificate operations use `porsche-ssh-certificate.timer` and
 `audi-ssh-certificate.timer` on gateways and the existing guest sync timer. A

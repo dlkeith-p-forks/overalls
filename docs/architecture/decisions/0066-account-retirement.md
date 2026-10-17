@@ -89,7 +89,7 @@ implement and exercise the lifecycle. Native validation status is retained in th
 exercise repeated same-email generations, rejected-action inventories, real signed
 passkey registration, prior keys/grants/membership, receipt replay, pending holds
 and cleanup bound to the retired UUID. The new
-[native journey](../../../nix/tests/machines/account-lifecycle/driver.py) pairs
+[native journey](../../../nix/verification/tests/machines/account-lifecycle/driver.py) pairs
 browser invitation and elevated typed retirement with actual Firecracker/ZFS
 reclamation; its execution status and exact scope are recorded in the
 [account lifecycle verification review](../reviews/2026-09-25-account-lifecycle-verification.md).

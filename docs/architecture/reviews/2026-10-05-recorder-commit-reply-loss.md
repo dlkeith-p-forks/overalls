@@ -221,7 +221,7 @@ Retraction-mutant driver build completed exit0 in88seconds, archive
 `1791212300388-1493853-0.jsonl`. This captures the changed Rust reply-write branch
 and unchanged assertion workload before its diagnostic output refinement; native
 execution remains pending. The scoped
-[local mutation ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/native-recorder-commit-reply-loss.md)
+local mutation ledger (`antithesis/scratchbook/mutation-testing/native-recorder-commit-reply-loss.md` at kittens revision `9fe1e493`, repository deleted)
 records outstanding verdicts and all prior executions without claiming the
 broader hosted sweep is complete.
 

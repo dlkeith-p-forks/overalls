@@ -44,9 +44,11 @@ defmodule Marshall.Agents.ExecutorLossHistoryTest do
     c = fixture()
     key = Ash.UUID.generate()
     turn = submit!(c, key)
+    {:ok, %{id: ^turn} = started} = Marshall.Agents.TurnCoordinator.claim_next()
+    Marshall.AgentContextFixtures.context_fixture(started, c.vm, c.owner)
     assert :ok = Loop.tick()
     queue_tool!(c, turn)
-    assert {:ok, first} = ExecutorSession.register(c.binding)
+    assert {:ok, first} = ExecutorSession.register(c.binding, nil, ["context-v1"])
     assert {:ok, command} = ExecutorSession.claim(c.binding, first.id, first.fence_epoch)
     assert command.turn_id == turn
 
@@ -77,7 +79,7 @@ defmodule Marshall.Agents.ExecutorLossHistoryTest do
       assert [%{status: ^state}] = Ledger.read!(Command, id: command.id)
     end
 
-    assert {:ok, replacement} = ExecutorSession.register(c.binding)
+    assert {:ok, replacement} = ExecutorSession.register(c.binding, nil, ["context-v1"])
     assert replacement.id != first.id
     assert replacement.fence_epoch == first.fence_epoch + 1
     assert [%{invalidated_at: invalidated}] = Ledger.read!(Executor, id: first.id)
@@ -190,7 +192,7 @@ defmodule Marshall.Agents.ExecutorLossHistoryTest do
     assert [%{status: ^expected}] = Ledger.read!(Command, id: command.id)
     assert length(Ledger.read!(Turn, thread_id: c.thread.id)) == 2
     assert [%{kind: :tool_dispatched}] = Ledger.read!(AuditEvent, target_id: command.id)
-    assert length(Ledger.read!(Command, thread_id: c.thread.id)) == 2
+    assert length(tool_commands(thread_id: c.thread.id)) == 2
     after_retry = inventory()
     for {table, hashes} <- prior_work, do: assert(hashes -- Map.fetch!(after_retry, table) == [])
 
@@ -226,6 +228,7 @@ defmodule Marshall.Agents.ExecutorLossHistoryTest do
 
   @spec queue_tool!(fixture(), String.t()) :: :ok
   defp queue_tool!(c, turn) do
+    settle_pending_context!(c, turn)
     assert {:ok, %{call: work}} = ModelCalls.claim(c.token)
     assert [%{turn_id: ^turn}] = Ledger.read!(ModelCall, id: work.id)
 
@@ -247,6 +250,7 @@ defmodule Marshall.Agents.ExecutorLossHistoryTest do
 
   @spec complete_model!(fixture(), String.t()) :: :ok
   defp complete_model!(c, turn) do
+    settle_pending_context!(c, turn)
     assert {:ok, %{call: work}} = ModelCalls.claim(c.token)
     assert [%{turn_id: ^turn, iteration: 2}] = Ledger.read!(ModelCall, id: work.id)
     assert Enum.any?(work.request["input"], &(&1["type"] == "function_call_output"))
@@ -398,5 +402,26 @@ defmodule Marshall.Agents.ExecutorLossHistoryTest do
 
       {name, Enum.map(rows, fn [hash] -> hash end)}
     end)
+  end
+
+  # Context preparation leaves a completed context_inventory command; these
+  # histories count only the tool commands the model requested.
+  @spec tool_commands(keyword()) :: [Command.t()]
+  defp tool_commands(filter),
+    do: Command |> Ledger.read!(filter) |> Enum.reject(&(&1.tool == :context_inventory))
+
+  # A turn re-prepares context after its contributing executor changed; settle
+  # it through the real coordinator before expecting queued model work.
+  @spec settle_pending_context!(map(), String.t()) :: :ok
+  defp settle_pending_context!(c, turn) do
+    case Marshall.Agents.Context.prepare(turn) do
+      {:pending, _} ->
+        [current] = Ledger.read!(Marshall.Agents.Turn, id: turn)
+        Marshall.AgentContextFixtures.context_fixture(current, c.vm, c.owner)
+        Loop.tick()
+
+      _ ->
+        :ok
+    end
   end
 end

@@ -10,7 +10,7 @@ split large/embedded drivers and share existing fixtures. Application test
 layouts and runtime behavior remain unchanged; the existing execution smoke
 script now reads its service fixture from the test tree. The
 [layout guide](../../../nix/README.md) and
-[test catalog](../../../nix/tests/README.md) describe the resulting ownership.
+[test catalog](../../../nix/verification/tests/README.md) describe the resulting ownership.
 
 This preserves ADRs 0011, 0028 and 0030–0033. There is no replacement deployment,
 storage, custody or verification decision. Source links and implementation
@@ -44,7 +44,7 @@ and physical/deployment acceptance gaps remain intact.
 - **Deployment ownership:** `deploy/` and its environment examples are removed;
   the deployment guide now directs operators to NixOS. Four byte-identical
   historical service/proxy definitions and their applicable contracts moved to
-  [test-only fixtures](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/README.md).
+  test-only fixtures (`scripts/test/fixtures/legacy-deployment/README.md` at kittens revision `9fe1e493`, repository deleted).
   The deployment, database-recovery, fleet-characterization, terminal and execution
   harnesses retain their complementary coverage. Their callers use the new paths;
   historical ADR links retain the earlier topology and evidence. The old

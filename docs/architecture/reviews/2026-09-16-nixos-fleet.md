@@ -10,7 +10,7 @@ tests existing reservation and independent-VM-lifetime contracts in ADRs 0005,
 0006, 0010, 0013 and 0017. The user authorized implementation; no decision is replaced.
 All affected partial implementation statuses remain partial.
 
-The [fleet module](../../../nix/tests/machines/fleet/default.nix) boots three distinct Marshall
+The [fleet module](../../../nix/verification/tests/machines/fleet/default.nix) boots three distinct Marshall
 machines, two Lilly machines, a separate PostgreSQL server, HAProxy, a local
 egress/DNS fixture and a browser client. Services use the actual source-built
 releases and production modules. TLS peer/name checks, Cedar, authenticated host
@@ -18,15 +18,15 @@ reports, AshOban execution and native ZFS identities remain active.
 
 ## Fixture boundaries
 
-- [Storage preparation](../../../nix/tests/machines/fleet/storage.nix) builds actual
+- [Storage preparation](../../../nix/verification/tests/machines/fleet/storage.nix) builds actual
   mirrored ZFS disks, reads their pool/dataset GUIDs and cleanly exports the pool.
   Each Lilly gets independent persistent overlays. The public identity metadata
   binds immutable module options; capacity is measured at runtime.
-- [Credential preparation](../../../nix/tests/support/fleet-credentials.py) generates
+- [Credential preparation](../../../nix/verification/tests/support/fleet-credentials.py) generates
   the CA, separate endpoint keys, database password, signing keys and fixture
   sentinel inside the disposable database VM. Private transfer files remain
   outside the test's retained output directory.
-- The [trusted operator helper](../../../nix/tests/machines/fleet/operator.exs) validates
+- The [trusted operator helper](../../../nix/verification/tests/machines/fleet/operator.exs) validates
   the private database sentinel before acting. Enrollment uses the actual request
   parser and Ash enrollment actions, with fixed fixture host/pool UUIDs solely
   to match immutable NixOS options. Actual credential issuance follows. Hosts
@@ -38,7 +38,7 @@ reports, AshOban execution and native ZFS identities remain active.
   they are ready, preventing sequential execution from masquerading as a race.
   These calls are trusted fixture invocations; they do not establish browser/API
   session sharing by themselves.
-- [Process observations](../../../nix/tests/support/vm-processes.py) compare actual
+- [Process observations](../../../nix/verification/tests/support/vm-processes.py) compare actual
   Firecracker process trees by PID and kernel start time. Unit readiness alone
   does not establish uninterrupted execution.
 
@@ -107,9 +107,9 @@ virtualization and actual `/dev/kvm`. No KVM scenario was skipped.
    Both service modules generated base64 release cookies. A random leading `+`
    was interpreted by the Erlang launcher as a VM option, causing startup failure
    and echoing the ephemeral cookie in usage diagnostics. The
-   [Marshall](../../../nix/modules/marshall.nix) and
-   [Lilly](../../../nix/modules/lilly.nix) wrappers now encode all 32 random bytes
-   as hexadecimal. The [role regression](../../../nix/tests/machines/service-roles/driver.py) checks the
+   [Marshall](../../../nix/domains/system/marshall.nix) and
+   [Lilly](../../../nix/domains/system/lilly.nix) wrappers now encode all 32 random bytes
+   as hexadecimal. The [role regression](../../../nix/verification/tests/machines/service-roles/driver.py) checks the
    actual process environment for exactly 64 hexadecimal digits without printing
    the cookie. This preserves entropy and existing distribution-disabled behavior;
    it fixes ADR-0030 startup and secret-diagnostic obligations.
@@ -136,7 +136,7 @@ virtualization and actual `/dev/kvm`. No KVM scenario was skipped.
    its own canonicalization and plain-block-extent checks. Mandatory fields are
    still required. [Parser regressions](../../../lilly/test/host/zfs_test.exs)
    explicitly reject missing leaf identity/health fields, and the
-   [native suite](../../../nix/tests/machines/native-zfs/driver.py) adds export/import through persistent
+   [native suite](../../../nix/verification/tests/machines/native-zfs/driver.py) adds export/import through persistent
    partition aliases. That complete native machine suite and the fleet's actual
    imported-disk preflight passed. The incomplete fleet run is not acceptance of
    its later guest scenarios.
@@ -174,8 +174,8 @@ virtualization and actual `/dev/kvm`. No KVM scenario was skipped.
    result through the existing executor, before any launch attempt. They retain
    durable ownership and initialized-disk checks.
 
-   New [reader cases](../../../nix/tests/machines/native-zfs/driver.py) mutate actual usage, quota and
-   child GUIDs between reads; the [lifecycle case](../../../nix/tests/machines/zfs-lifecycle/driver.py)
+   New [reader cases](../../../nix/verification/tests/machines/native-zfs/driver.py) mutate actual usage, quota and
+   child GUIDs between reads; the [lifecycle case](../../../nix/verification/tests/machines/zfs-lifecycle/driver.py)
    requires a usage race to leave the initial claim/dataset absent and permits a
    later normal preparation. The complete native reader suite passed, including
    all three between-read mutations. The complete lifecycle regression also passed.
@@ -314,9 +314,9 @@ virtualization and actual `/dev/kvm`. No KVM scenario was skipped.
     before the generation guard and jailer. The waiting parent stays in the host
     mount namespace. Jailer still creates its own namespace and detaches its old
     root; PID isolation, launch fencing and control-group lifetime remain intact.
-    The [fleet lifecycle case](../../../nix/tests/machines/fleet/driver.py) requires deletion of
+    The [fleet lifecycle case](../../../nix/verification/tests/machines/fleet/driver.py) requires deletion of
     an older VM on each host while comparing all surviving VMM identities.
-    The focused [nested guest regression](../../../nix/tests/machines/zfs-guest/driver.py) now
+    The focused [nested guest regression](../../../nix/verification/tests/machines/zfs-guest/driver.py) now
     defines the same older/later-VM case plus continued survivor disk access.
     Lilly's complete precommit and the full fleet lifecycle case passed after
     the change. The focused guest regression also passed in 696.22 seconds. No unrelated VM
@@ -364,14 +364,14 @@ virtualization and actual `/dev/kvm`. No KVM scenario was skipped.
 
 ## Remaining obligations
 
-The [browser fixture](../../../nix/tests/machines/fleet/browser.py) verifies real
+The [browser fixture](../../../nix/verification/tests/machines/fleet/browser.py) verifies real
 single-origin login, owner/member/stranger access, terminal effects, Marshall
 machine loss, writer handoff, grant revocation and login revocation. Its driver
 imports the runtime CA into the test user's NSS database and uses Chromium's
 normal TLS verification. Public file rendezvous commands control backend routing
 and machine loss; tokens stay in private client-VM files. Browser acceptance
 passed in the complete immutable fleet. The
-[network fixture](../../../nix/tests/machines/fleet/network.exs) verifies actual
+[network fixture](../../../nix/verification/tests/machines/fleet/network.exs) verifies actual
 serial-console probes in all six guests, local TCP listener positive controls,
 controlled DNS/HTTP egress, all 30 directed guest-pair denials, host/protected
 address denial and source-IP/MAC/VLAN/IPv6 ingress-drop counter checks. The Lilly

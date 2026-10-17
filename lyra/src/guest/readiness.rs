@@ -1,6 +1,6 @@
 //! Guest boot readiness evidence (vsock port 1024), shared by the Windows
 //! readiness daemon and usable by any agent that answers Lilly's poll
-//! (ADR-0171; the Linux guests keep `nix/packages/guest/readiness.py`).
+//! (ADR-0171; the Linux guests keep `nix/domains/artifacts/guest/readiness.py`).
 //!
 //! Lilly dials port 1024, reads one JSON line of at most 512 bytes and verifies
 //! it against the boot it launched. The line binds this boot's placement,

@@ -298,8 +298,8 @@ A separate writable-settings
 diagnostic passed personal HOME/outside/direnv/disable/override browser checks
 on an older immutable package, without establishing complete current acceptance.
 
-The [personal update patch](../../../nix/packages/vscode-web/patches/0004-overalls-personal-bundled-updates.patch)
-and [compiled membership checker](../../../nix/packages/vscode-web/check-bundled-updates.mts)
+The [personal update patch](../../../nix/domains/artifacts/vscode-web/patches/0004-overalls-personal-bundled-updates.patch)
+and [compiled membership checker](../../../nix/domains/artifacts/vscode-web/check-bundled-updates.mts)
 preserve that accepted behavior with a distinct four-ID product roster. The
 earlier new package passed in 226 seconds, exit 0, at release
 `8efe4c8af6e30ffde6d614135deb86bb77968f13a8376ce23a2a01ad629ef627`, with full
@@ -337,8 +337,8 @@ four recurring fixture/session files absent, with browser supervisors restarting
 active exporters supply no completed browser coverage. Production opening and
 seven-day history remain unestablished. Implementation remains partial.
 
-The [startup-defaults patch](../../../nix/packages/vscode-web/patches/0003-overalls-startup-defaults.patch)
-and [product configuration](../../../nix/packages/vscode-web/default.nix) are a
+The [startup-defaults patch](../../../nix/domains/artifacts/vscode-web/patches/0003-overalls-startup-defaults.patch)
+and [product configuration](../../../nix/domains/artifacts/vscode-web/default.nix) are a
 small follow-up under this decision. The new actual package passed in 217 seconds
 and its installed-validator maintenance check passed in 28 seconds. Its release
 is `73ad577f1102eaf74ba05f0c6dbd310ee8896d852c36860ff4761271fc700fff`.
@@ -350,11 +350,11 @@ execution, native guest or production acceptance. The review records exact
 outputs and temporary fixture provenance; earlier evidence below retains its
 prior scope.
 
-[The policy patch](../../../nix/packages/vscode-web/patches/0002-overalls-editor-policy.patch),
-[extension lock](../../../nix/packages/vscode-web/extensions.lock.json),
-[validator/extractor/updater](../../../nix/packages/vscode-web/extensions.py) and
-[maintenance wrapper](../../../nix/packages/vscode-web/updater.nix) implement the
-authorized specialization. The [maintenance tests](../../../nix/packages/vscode-web/test_extensions.py)
+[The policy patch](../../../nix/domains/artifacts/vscode-web/patches/0002-overalls-editor-policy.patch),
+[extension lock](../../../nix/domains/artifacts/vscode-web/extensions.lock.json),
+[validator/extractor/updater](../../../nix/domains/artifacts/vscode-web/extensions.py) and
+[maintenance wrapper](../../../nix/domains/artifacts/vscode-web/updater.nix) implement the
+authorized specialization. The [maintenance tests](../../../nix/domains/artifacts/vscode-web/test_extensions.py)
 passed all 19 tests without skips in 1.239 seconds under Python3.13.15 with the
 actual source-bundled Node signature/upstream engine boundary. They include
 generated safe-path/nightly-page histories, exact adapters, malformed artifacts,
@@ -412,13 +412,13 @@ Both production hosts settled healthy on `50021c04`, which contains the editor
 merge. Host activation does not establish fresh guest or authenticated browser
 acceptance. The review retains exact activation provenance and remaining gaps.
 
-[The package and update procedure](../../../nix/packages/vscode-web/README.md),
-[recipe](../../../nix/packages/vscode-web/default.nix) and
-[patch](../../../nix/packages/vscode-web/patches/0001-overalls-browser-editor.patch)
+[The package and update procedure](../../../nix/domains/artifacts/vscode-web/README.md),
+[recipe](../../../nix/domains/artifacts/vscode-web/default.nix) and
+[patch](../../../nix/domains/artifacts/vscode-web/patches/0001-overalls-browser-editor.patch)
 implement the official-source build and browser adapters.
-[The broker](../../../nix/packages/vscode-web-broker/src/main.rs),
-[NixOS module](../../../nix/packages/guest/vscode-web.nix) and
-[Ubuntu assembler](../../../nix/packages/guest/ubuntu/default.nix) establish the
+[The broker](../../../nix/domains/artifacts/vscode-web-broker/src/main.rs),
+[NixOS module](../../../nix/domains/artifacts/guest/vscode-web.nix) and
+[Ubuntu assembler](../../../nix/domains/artifacts/guest/ubuntu/default.nix) establish the
 declared personal runtime and closure assembly.
 
 [Editor authority](../../../marshall/lib/marshall/editor/authority.ex),
@@ -446,7 +446,7 @@ later cosmetic toolbar diff; that diff has separate component verification.
 The tests establish exact
 retained-image status and mounted/fresh launch
 refusals, not native isolation or a production editor journey. The
-[native fixture](../../../nix/tests/machines/vscode-web/default.nix) passed its
+[native fixture](../../../nix/verification/tests/machines/vscode-web/default.nix) passed its
 complete Linux browser/UID/socket/refusal and broker/worker recovery assertions;
 its synthetic bridge and roster retain their standalone scope. Before observability
 integration, the complete NixOS fleet check additionally passed real
@@ -456,7 +456,7 @@ physical running/readiness, unsafe Origin refusal and sign-out/WebSocket closure
 with fresh sign-in recovery. Stop/start preserves placement/execution epoch,
 advances generation and rotates physical boot challenge/guest boot UUID.
 Definitive official-source packaging, strict source/checker typing,
-[no-account async settlement](../../../nix/packages/vscode-web/check-no-account.mts),
+[no-account async settlement](../../../nix/domains/artifacts/vscode-web/check-no-account.mts),
 verifier/runtime checks and actual installed Chromium workbench startup inside
 the Nix sandbox have recorded acceptance in that review. All four full application
 gates, including Marshall's 1,532 checks and forced Dialyzer, also passed before

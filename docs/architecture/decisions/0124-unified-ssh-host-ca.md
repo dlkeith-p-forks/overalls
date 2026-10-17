@@ -97,7 +97,7 @@ guest disks keep their old behavior and are outside this migration.
 The [certificate codec](../../../protocol/lib/overalls_protocol/ssh_host_certificate.ex),
 [issuer](../../../marshall/lib/marshall/ssh/host_certificates.ex),
 [resource](../../../marshall/lib/marshall/ssh/host_certificate.ex),
-[OTP patch](../../../nix/patches/otp-ssh-host-certificates.patch),
+[OTP patch](../../../nix/platform/patches/otp-ssh-host-certificates.patch),
 [shared installer](../../../lyra/src/bin/overalls-host-certificate.rs), and
 [client trust](../../../lyra/src/trust.rs) implement the initial path.
 [Property tests](../../../protocol/test/ssh_host_certificate_test.exs) verify
@@ -123,6 +123,14 @@ Darwin artifact selection and the macOS shasum checksum fallback. The fleet user
 SSH journey records one revoke→probe→re-register cycle closing guest SSH and
 Porsche account proof on both NixOS and Ubuntu; see the
 [installer revocation review](../reviews/2026-09-26-installer-revocation.md).
+
+Correction (2026-10-17): the gateway renewer skipped Marshall while its
+installed certificate was valid, checking it only against the principal stored
+beside it. After the management host was renamed, Porsche kept serving an
+`overalls.dev` certificate (valid to 2036), and every new `overalls config-ssh`
+failed. Gateways now ask Marshall on every run, and a failed request keeps a
+still-valid installation (`gateway-principal-from-authority` in
+[`overalls-host-certificate.rs`](../../../lyra/src/bin/overalls-host-certificate.rs)).
 
 ## Open questions
 

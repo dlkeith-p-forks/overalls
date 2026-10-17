@@ -6,7 +6,7 @@ policy boundaries. Oban performs retryable background work.
 
 The signed-in sidebar in Workspace and Control room places **Source code**
 directly below **HLDD**. It opens the
-[Overalls repository](https://github.com/antithesishq/kittens) on GitHub.
+[Overalls repository](https://github.com/ghuntley/overalls) on GitHub.
 
 Workspace labels `/usage` **AI usage**; its page shows **Your AI usage**.
 Control room labels `/admin/usage` **Fleet AI usage**. These names describe
@@ -178,8 +178,8 @@ Application diagnostics use the independent observability path described in
 [observability](#monitoring), under
 [ADR-0149](repo:docs/architecture/decisions/0149-independent-observability.md).
 The earlier fleet envelope corpus was baseline evidence for the retired routes;
-it is retained at the
-[baseline revision](https://github.com/antithesishq/kittens/blob/a99f74f0/marshall/test/marshall_web/fleet_version_history_test.exs).
+it was retained as
+`marshall/test/marshall_web/fleet_version_history_test.exs` at kittens revision `a99f74f0` (repository deleted).
 It does not verify the version-4 rollout.
 
 An authenticated exchange also rolls back a valid capacity report when a
@@ -256,7 +256,7 @@ revocations. Marshall's host liveness, and Porsche and the remaining edge
 services, adopt them in later phases.
 
 Evidence: [coordination decision](repo:docs/architecture/decisions/0003-control-plane-coordination.md),
-[control transport](repo:docs/provisioner-transport.md), [runtime configuration](repo:marshall/config/runtime.exs),
+[control transport](repo:docs/operations/provisioner-transport.md), [runtime configuration](repo:marshall/config/runtime.exs),
 [protocol library](repo:protocol/mix.exs),
 [liveness primitives decision](repo:docs/architecture/decisions/0140-event-driven-liveness-and-single-writer-views.md).
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Opt-in, resumable production guest egress checks. See docs/egress-acceptance.md."""
+"""Opt-in, resumable production guest egress checks. See docs/acceptance/egress-acceptance.md."""
 
 import argparse
 import base64

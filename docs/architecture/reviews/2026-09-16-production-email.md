@@ -110,4 +110,4 @@ overall production readiness.
 [distributed regression](../../../marshall/test/marshall/compute/distributed_admission_test.exs),
 [privacy tests](../../../marshall/test/marshall_web/authentication_privacy_test.exs),
 [configuration tests](../../../marshall/test/marshall/mailer/config_test.exs),
-[operator guide](../../production-email.md).
+[operator guide](../../operations/production-email.md).

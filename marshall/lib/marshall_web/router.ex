@@ -49,13 +49,13 @@ defmodule MarshallWeb.Router do
     get "/bin/install.ps1", OverallsController, :install_powershell
     get "/bin/manifest.json", OverallsController, :manifest
     get "/bin/sha256/:target", OverallsController, :checksum
-    # @cc [owner:ghuntley,label:security] public-browser-bin-routes
+    # @cc [owner:ghuntley,label:security] public-marvin-bin-routes
     # Extension delivery MUST use exact public archive routes and an independent
     # metadata namespace, without creating a login session or selecting paths.
-    get "/bin/chrome.zip", BrowserDownloadController, :chrome
-    get "/bin/firefox.xpi", BrowserDownloadController, :firefox
-    get "/bin/browser/manifest.json", BrowserDownloadController, :manifest
-    get "/bin/browser/sha256/:artifact", BrowserDownloadController, :checksum
+    get "/bin/chrome.zip", MarvinDownloadController, :chrome
+    get "/bin/firefox.xpi", MarvinDownloadController, :firefox
+    get "/bin/marvin/manifest.json", MarvinDownloadController, :manifest
+    get "/bin/marvin/sha256/:artifact", MarvinDownloadController, :checksum
     get "/bin/:target", OverallsController, :artifact
     get "/docs", DocsController, :index
     get "/docs.md", DocsController, :markdown

@@ -24,14 +24,14 @@ Open questions: What guest-owned birth ledger can count PTY creations that exit 
 
 #### 2026-10-13 follow-up: Which terminald query exposes cumulative creation count?
 
-- Examined: `nix/packages/terminald/src/main.rs:150-188`, `session.rs:137-183,209-299,300-319`, and `lilly/lib/lilly/terminal/vsock.ex:121-134,214-220`.
+- Examined: `nix/domains/artifacts/terminald/src/main.rs:150-188`, `session.rs:137-183,209-299,300-319`, and `lilly/lib/lilly/terminal/vsock.ex:121-134,214-220`.
 - Found: `OP_CREATION_STATUS` returns the request's guest session ID and live flag; `OP_LIST` returns current sessions. `create_once` locks the request ledger and returns the same live PTY for a matching duplicate, while conflicting parameters refuse. The registry retains request receipts for at least 24 hours or the session lifetime.
 - Not found: a production query for cumulative PTY births, including a PTY created and retired between two LIST calls.
 - Conclusion: partial. Add a bounded guest-owned creation-effect ledger or test-only PTY spawn observer for the composed workload; keep it separate from Marshall's Opening/Session rows.
 
 #### 2026-10-13 follow-up: Is the real host stream present in a TCG fixture?
 
-- Examined: `marshall/lib/marshall/terminal/authority.ex:361-399`, `lilly/lib/lilly/terminal/stream.ex:474-510,620-640`, `nix/packages/terminald/src/main.rs:55-112,150-188`, and `../deployment-topology.md`.
+- Examined: `marshall/lib/marshall/terminal/authority.ex:361-399`, `lilly/lib/lilly/terminal/stream.ex:474-510,620-640`, `nix/domains/artifacts/terminald/src/main.rs:55-112,150-188`, and `../deployment-topology.md`.
 - Found: the production route is Marshall authority → authenticated Lilly terminal stream → guest vsock HELLO → terminald `CREATE_ONCE`/`CREATION_STATUS`. A hosted TCG workload must keep all of these links and drop the reply on the real route.
 - Not found: an assembled TCG terminal workload or observed reply-loss run.
 - Conclusion: partial composition; direct daemon tests establish the registry mechanism only.

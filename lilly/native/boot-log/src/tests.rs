@@ -6,7 +6,8 @@ use std::time::Duration;
 
 /// @cc [owner:ghuntley,label:verification] hegel-boot-log-selector-oracle
 /// Generated argument vectors MUST be classified by the independent selector
-/// spec: exactly an absolute log path and absolute command, plus extra argv.
+/// spec: an optional leading `--reader-uid N` (N decimal, 1..=4294967294),
+/// then exactly an absolute log path and absolute command, plus extra argv.
 #[hegel::test]
 fn cli_selector_matches_independent_oracle(tc: TestCase) {
     let alphabet = [
@@ -18,26 +19,54 @@ fn cli_selector_matches_independent_oracle(tc: TestCase) {
         "/usr/bin/vm",
         "vm",
         "/x y",
+        "--reader-uid",
+        "377",
+        "0",
+        "+1",
+        "4294967294",
+        "4294967295",
     ];
-    let length = tc.draw(gs::integers::<usize>().min_value(0).max_value(6));
+    let length = tc.draw(gs::integers::<usize>().min_value(0).max_value(7));
     let words: Vec<String> = (0..length)
         .map(|_| tc.draw(gs::sampled_from(&alphabet)).to_string())
         .collect();
-    let ok = words.len() >= 2 && words[0].starts_with('/') && words[1].starts_with('/');
+    let decimal = |word: &str| {
+        (!word.is_empty() && word.bytes().all(|b| b.is_ascii_digit()))
+            .then(|| word.parse::<u64>().ok())
+            .flatten()
+            .filter(|uid| (1..=4_294_967_294).contains(uid))
+    };
+    let (reader, positional): (Option<Option<u64>>, &[String]) =
+        if words.first().map(String::as_str) == Some("--reader-uid") {
+            match words.get(1).and_then(|word| decimal(word)) {
+                Some(uid) => (Some(Some(uid)), &words[2..]),
+                None => (None, &[]),
+            }
+        } else {
+            (Some(None), &words[..])
+        };
+    let ok = reader.is_some()
+        && positional.len() >= 2
+        && positional[0].starts_with('/')
+        && positional[1].starts_with('/');
     match (
         parse_cli(&words.iter().map(OsString::from).collect::<Vec<_>>()),
         ok,
     ) {
         (None, false) => {}
         (Some(request), true) => {
-            assert_eq!(request.log.as_os_str(), OsStr::new(words[0].as_str()));
-            assert_eq!(request.program.as_os_str(), OsStr::new(words[1].as_str()));
+            assert_eq!(request.reader.map(u64::from), reader.flatten());
+            assert_eq!(request.log.as_os_str(), OsStr::new(positional[0].as_str()));
+            assert_eq!(
+                request.program.as_os_str(),
+                OsStr::new(positional[1].as_str())
+            );
             let rest: Vec<String> = request
                 .arguments
                 .iter()
                 .map(|arg| arg.to_string_lossy().into_owned())
                 .collect();
-            assert_eq!(rest, words[2..].to_vec());
+            assert_eq!(rest, positional[2..].to_vec());
         }
         (parsed, ok) => panic!("selector diverged from oracle: {parsed:?} ok={ok}"),
     }

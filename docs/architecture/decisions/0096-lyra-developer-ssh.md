@@ -78,7 +78,7 @@ The legacy per-VM download and its server-side renderer were
 and host-key discovery remain. References above to available downloaded profiles
 describe the earlier implementation; nested client support remains outside Lyra.
 
-The [client](../../../lyra/src/main.rs), [Nix derivation](../../../nix/packages/lyra.nix),
+The [client](../../../lyra/src/main.rs), [Nix derivation](../../../nix/domains/artifacts/infrastructure/lyra.nix),
 [public routes](../../../marshall/lib/marshall_web/router.ex),
 [delivery controller](../../../marshall/lib/marshall_web/controllers/overalls_controller.ex),
 and [machine view](../../../marshall/lib/marshall_web/live/machines_live.ex)

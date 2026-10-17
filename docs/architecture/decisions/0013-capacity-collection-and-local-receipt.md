@@ -156,7 +156,7 @@ and [bounded utilities](../../../lilly/lib/lilly/host/command.ex) define OS acce
 [counter tests](../../../lilly/test/host/counters_test.exs),
 [pool tests](../../../lilly/test/host/pool_test.exs),
 [store properties](../../../lilly/test/lilly/control/store_test.exs) and
-[host integration tests](../../../nix/tests/machines/fleet/default.nix)
+[host integration tests](../../../nix/verification/tests/machines/fleet/default.nix)
 cover the listed foundation invariants. The
 [review](../reviews/2026-09-15-capacity-loop.md) records scope and remaining gaps.
 

@@ -11,16 +11,16 @@ in compute admission or lifecycle transactions.
 
 ## Evidence and findings
 
-The [HTTP plug](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall_web/fleet_api.ex) handles and halts
+The HTTP plug (`marshall/lib/marshall_web/fleet_api.ex` at kittens revision `a99f74f0`, repository deleted) handles and halts
 monitor requests before generic parsing/logging, requires actual HTTPS, reads at
 most 4 MiB and uses fresh monitor credentials. Malformed values return fixed
-errors. The [cache](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/cache.ex) validates before
+errors. The cache (`marshall/lib/marshall/fleet/cache.ex` at kittens revision `a99f74f0`, repository deleted) validates before
 acceptance, stores compressed bounded observations for up to 10,000 hosts (or the
 256 MiB payload cap), preserves newer live samples
 against reordering, and coalesces small notifications every five seconds. It does
 not acknowledge persistence on live acceptance.
 
-[History](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/history.ex) locks the monitor host,
+History (`marshall/lib/marshall/fleet/history.ex` at kittens revision `a99f74f0`, repository deleted) locks the monitor host,
 rechecks buffered credentials and sample age, and commits statistics, digest-bound
 receipts and flush time together at most once per minute per host. Expired or
 revoked buffered entries cannot indefinitely block fresh entries. Receipt failure
@@ -29,17 +29,17 @@ increase observation counts. Each flush admits at most 128 samples, and each
 host/scope/time JSON bucket is capped at 16384 entities and 8 MiB. Those bounds
 are backpressure limits, not evidence that maximum-size traffic is economical.
 
-[Statistics](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/statistics.ex) retain known
+Statistics (`marshall/lib/marshall/fleet/statistics.ex` at kittens revision `a99f74f0`, repository deleted) retain known
 counts, extrema, latest values and context changes. Gauge means are sample means;
 rate means weight measured intervals and assign those observations to the interval
 end bucket. Neither weights nor first/last timestamps are coverage percentages.
 Missing buckets and fields remain absent. Physical pools, logical datasets and
 workload scopes are not summed together by persistence.
 
-[History reads](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/read_history.ex) recheck
+History reads (`marshall/lib/marshall/fleet/read_history.ex` at kittens revision `a99f74f0`, repository deleted) recheck
 current administrator permission and use SQL JSON extraction for one entity,
 avoiding loading a whole host's JSON for a single chart. Reads enforce expiry and
-bounded keyset pages. [Retention](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/expire.ex)
+bounded keyset pages. Retention (`marshall/lib/marshall/fleet/expire.ex` at kittens revision `a99f74f0`, repository deleted)
 deletes at most 1000 expired rows per table and atomically schedules continuation.
 Authority and audit are outside that cleanup.
 
@@ -77,7 +77,7 @@ Reviewed root/Marshall/Fleet/web/test contracts and the AshOban scheduling helpe
 Its insertion raises on failure, preserving retention-continuation atomicity.
 New notes cover scoped ingestion, durable ACKs, once-per-minute commits, bounded
 projections and independent retention. Final gates, native acceptance and the
-[complete ledger](../../admin-implementation.md) remain required.
+[complete ledger](../../history/ledgers/admin-implementation.md) remain required.
 
 ## 2026-09-22 Galileo schema reconciliation
 

@@ -119,6 +119,12 @@ defmodule Marshall.Events do
     metadata: [operation_id: :uuid, installation_id: :uuid, outcome: :atom]
   )
 
+  defevent("agent.skill_restoration_failed",
+    level: :warning,
+    message: "Agent managed skill restoration failed",
+    metadata: [thread_id: :uuid, reason: :atom]
+  )
+
   defevent("agent.loop_failed",
     level: :warning,
     message: "Agent scheduler tick failed",

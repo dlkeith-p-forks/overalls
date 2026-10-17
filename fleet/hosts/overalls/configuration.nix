@@ -56,7 +56,7 @@
   };
   services.openssh.openFirewall = false;
   networking.enableIPv6 = false;
-  networking.firewall = import ../../../nix/modules/listener-firewall.nix {
+  networking.firewall = import ../../../nix/domains/system/listener-firewall.nix {
     inherit lib config; address = "136.243.69.55"; tcpPorts = [ 2222 ];
     udpPortRanges = [{ from = 60000; to = 61000; }];
   };

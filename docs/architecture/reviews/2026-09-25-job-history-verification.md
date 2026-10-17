@@ -78,7 +78,7 @@ lock/sign-out ordering failures: **6/10 passed, four failed**, seed `19003`,
 adaptation left two direct peer calls; that run safely stopped peers and provides
 no corrected-runtime evidence.
 
-The [native browser journey](../../../nix/tests/machines/job-history/default.nix)
+The [native browser journey](../../../nix/verification/tests/machines/job-history/default.nix)
 passed at the captured revision below. It uses packaged Marshall/Oban, PostgreSQL,
 verified browser TLS, virtual WebAuthn, the real DeliverAuthEmail worker and the
 existing isolated TLS/authenticated SMTP fixture. Public magic-link requests

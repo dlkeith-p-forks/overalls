@@ -130,7 +130,16 @@ defmodule Marshall.Agents.SkillsTest do
     operation = installed(c)
     [old_revision] = Ledger.read!(SkillRevision, id: operation.revision_id)
     Ledger.update!(c.thread, :reopen, %{machine_key: Ash.UUID.generate()})
+    thread_id = c.thread.id
+    assert [^thread_id] = Skills.restoration_threads()
+    assert [^thread_id] = Skills.restoration_threads(thread_id)
     assert {:ok, [restore]} = Skills.restore(c.thread.id)
+
+    # A queued or terminal failed receipt owns this machine generation. The
+    # coordinator must skip it so another replacement can make progress.
+    assert Skills.restoration_threads() == []
+    assert {:ok, %{status: :failed}} = Skills.fail(restore.id, :fetch_failed)
+    assert Skills.restoration_threads() == []
 
     assert restore.request["source"]["revision"] == %{
              "kind" => "commit",

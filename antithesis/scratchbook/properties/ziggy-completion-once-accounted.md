@@ -26,13 +26,13 @@ Use a real credential-backed isolated aggregate bucket, external provider effect
 
 2026-10-13 source follow-up:
 
-- Examined: `marshall/test/marshall/inference/requests_test.exs:1-80,108-155`, `marshall/lib/marshall/inference/totals.ex:11-46`, `nix/tests/machines/ziggy-service/default.nix:94-100`, and `driver.py:1-72`.
+- Examined: `marshall/test/marshall/inference/requests_test.exs:1-80,108-155`, `marshall/lib/marshall/inference/totals.ex:11-46`, `nix/verification/tests/machines/ziggy-service/default.nix:94-100`, and `driver.py:1-72`.
 - Found: Marshall's test fixture rotates a real current host credential and creates an owner whose Daily row starts absent. Daily keys are day of admission, owner, provider and model; the existing packaged Ziggy machine records provider calls and completions but substitutes a synthetic Control service for Marshall.
 - Conclusion: partial on integration, resolved on construction. Use a dedicated owner/VM/host credential and one model/provider in a real Marshall PostgreSQL composition; baseline that exact Daily key and quiesce other writers. Do not infer total conservation from the synthetic Control machine.
 
 #### How can an observer sample spool removal after directory sync/recovery settles?
 
-- Examined: `ziggy/lib/ziggy/reporter.ex:35-57`, `ziggy/lib/ziggy/spool.ex:174-200,260-285,473-480`, and `nix/tests/machines/ziggy-service/driver.py:70-75,135-145`.
+- Examined: `ziggy/lib/ziggy/reporter.ex:35-57`, `ziggy/lib/ziggy/spool.ex:174-200,260-285,473-480`, and `nix/verification/tests/machines/ziggy-service/driver.py:70-75,135-145`.
 - Found: reporter removes only after exact `acknowledged` ID; `Spool.acknowledge/2` removes the file and syncs the directory before removing the in-memory entry. The packaged machine waits until no `*.json` slot remains. A restarted Ziggy re-reads slots from disk, so the observer can require both no slot after ACK and no resurrected slot after process restart.
 - Conclusion: resolved for process/restart scope. Read only after confirmed ACK and quiescence, then restart Ziggy and re-read; a physical power-cut claim still needs a faultable filesystem and belongs to the remaining question above.
 

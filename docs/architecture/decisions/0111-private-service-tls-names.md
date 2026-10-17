@@ -69,12 +69,12 @@ The [offline issuer](../../../audi/priv/private_pki/authority.py) and
 [shared name list](../../../protocol/lib/overalls_protocol/private_services.ex)
 now specify the reduced SAN set. The [Rust helper](../../../lyra/src/bin/overalls-ssh-authorize.rs)
 uses verified native TLS for the existing deployed leaf, and the
-[Nix build](../../../nix/packages/lyra.nix) packages it for guest images.
+[Nix build](../../../nix/domains/artifacts/infrastructure/lyra.nix) packages it for guest images.
 The [PKI tests](../../../audi/test/private_pki/test_authority.py) and
 [protocol tests](../../../protocol/test/private_services_test.exs) check the
-exact new names. The [fleet PKI fixture](../../../nix/tests/machines/fleet/galileo.nix)
+exact new names. The [fleet PKI fixture](../../../nix/verification/tests/machines/fleet/galileo.nix)
 uses a constrained intermediate, and the
-[NixOS and Ubuntu user journey](../../../nix/tests/machines/fleet/scenarios/user-ssh-journey.py)
+[NixOS and Ubuntu user journey](../../../nix/verification/tests/machines/fleet/scenarios/user-ssh-journey.py)
 checks login, commands, home and a second login after relocation. At the
 2026-09-24 checkpoint, host ciphertexts contained the earlier leaf and existing
 VM disks contained the earlier helper. Those rotation and migration obligations

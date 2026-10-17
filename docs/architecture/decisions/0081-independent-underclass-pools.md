@@ -100,12 +100,12 @@ obligations; source licensing does not establish permission to pool accounts.
 
 ## Implementation evidence
 
-The [pinned package](../../../nix/packages/underclass/default.nix),
-[NixOS module](../../../nix/modules/underclass.nix), and
-[enrolled host profile](../../../nix/hosts/profile.nix) implement the package,
+The [pinned package](../../../nix/domains/artifacts/underclass/default.nix),
+[NixOS module](../../../nix/domains/system/underclass.nix), and
+[enrolled host profile](../../../nix/platform/hosts/profile.nix) implement the package,
 runtime and per-host secret wiring. The
-[configuration check](../../../nix/tests/evaluation/underclass.nix) and
-[machine check](../../../nix/tests/machines/underclass-service/default.nix)
+[configuration check](../../../nix/verification/tests/evaluation/underclass.nix) and
+[machine check](../../../nix/verification/tests/machines/underclass-service/default.nix)
 cover the local invariants. Upstream commits `c7d07f1` and `18a7aa1` remove
 credential diagnostics and transactionally prune SQLite sticky bindings. The
 fleet pin at `a8e51a7` also includes validated cross-proxy request-ID propagation
@@ -124,7 +124,7 @@ measurement before changing the host resource bounds.
 The fleet package exposes `underclass` and its `utop` monitor wrapper on enabled
 hosts' PATH. The wrapper uses the existing admin-token-protected monitor API;
 it does not receive the service's private environment file automatically.
-[Operations](../../underclass.md) document onboarding,
+[Operations](../../services/underclass.md) document onboarding,
 failure behavior and acceptance boundaries.
 
 Implementation remains partial pending live Tailscale Serve, ACL and provider

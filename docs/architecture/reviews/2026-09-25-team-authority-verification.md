@@ -37,7 +37,7 @@ The [connection race tests](../../../marshall/test/marshall/teams_concurrency_te
 include `transfer acceptance serializes with target retirement`; separate SQL
 connections in one BEAM do not satisfy the three-Marshall overlap requirement.
 
-[The native browser check](../../../nix/tests/machines/teams/default.nix), exported
+[The native browser check](../../../nix/verification/tests/machines/teams/default.nix), exported
 as `teams-browser`, starts the real Marshall release and PostgreSQL. Three ordinary
 accounts sign in with isolated magic links, then use Chromium over verified HTTPS
 for every team mutation. An admin's owner removal is refused. A target accepts

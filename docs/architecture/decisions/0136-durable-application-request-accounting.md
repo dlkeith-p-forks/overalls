@@ -151,23 +151,23 @@ The source client project passed nine checks (six properties, three tests),
 seed751543. A controlled Unix acknowledgment peer does not extend native Rust
 identity, durable storage or production coverage evidence.
 
-The [Rust accounting core](../../../nix/modules/otel-guest/receiver/src/durable_slo.rs)
+The [Rust accounting core](../../../nix/domains/system/otel-guest/receiver/src/durable_slo.rs)
 implements bounded admissions, fenced terminal outcomes, conservation validation,
 deadline/death reconciliation and private exclusive fsynced checkpoint custody.
 Its tests exercise generated histories, real checkpoint reopen, interrupted stage
 refusal, missing/corrupt state and poisoned writers. Execution results are recorded
 in the [review](../reviews/2026-10-02-durable-request-slos.md).
-The [Rust runtime](../../../nix/modules/otel-guest/receiver/src/request_recorder.rs)
+The [Rust runtime](../../../nix/domains/system/otel-guest/receiver/src/request_recorder.rs)
 implements versioned bounded frames, kernel peer UID and cgroup-unit attribution,
 PID/start/boot death proof, live-producer heartbeat gating and exporter-compatible
-snapshots. The [Nix module](../../../nix/modules/otel-fleet/request-recorder.nix)
+snapshots. The [Nix module](../../../nix/domains/system/otel-fleet/request-recorder.nix)
 declares independent unprivileged units and private source custody; its standalone
-instance set defaults to empty. The [fleet bindings](../../../nix/modules/otel-fleet/request-sources.nix)
+instance set defaults to empty. The [fleet bindings](../../../nix/domains/system/otel-fleet/request-sources.nix)
 now select eight sources on Overalls and five on Dungarees, with independent
 exporter accounts and explicit measurement horizons. Legacy request exporters
 are disabled while application handlers and database sources remain independent.
-The [native test](../../../nix/tests/machines/otel-request-recorder/default.nix)
-and [driver](../../../nix/tests/machines/otel-request-recorder/driver.py) exercise
+The [native test](../../../nix/verification/tests/machines/otel-request-recorder/default.nix)
+and [driver](../../../nix/verification/tests/machines/otel-request-recorder/driver.py) exercise
 real recorder/producer SIGKILL and wrong-unit/refusal boundaries. Passing execution
 is recorded separately in the review. The [producer](../../../elixir/request_accounting/lib/overalls/request_accounting/producer.ex)
 uses bounded Unix RPC and [private quality markers](../../../elixir/request_accounting/lib/overalls/request_accounting/quality_marker.ex).
@@ -193,7 +193,7 @@ history remain durable; dead-producer settlement adds one failure without an
 invented duration. Complete per-source overload/storage-fault acceptance remains
 open.
 
-The [DNS native fault extension](../../../nix/tests/machines/audi-dns/slo-faults.py)
+The [DNS native fault extension](../../../nix/verification/tests/machines/audi-dns/slo-faults.py)
 has recorded passing execution in that review. It verifies recorder loss with
 the real DNS producer alive, clean restart coverage preservation and unclean
 idle restart coverage advancement without resetting completed outcomes. Its
@@ -205,21 +205,21 @@ before the unchanged deadline, preserves completed history and recorder identity
 and verifies client failure before timeout followed by fresh DNS recovery.
 Complete per-source overload/storage faults remain separate.
 
-The [Porsche native fault extension](../../../nix/tests/machines/fleet/porsche-slo-faults.py)
+The [Porsche native fault extension](../../../nix/verification/tests/machines/fleet/porsche-slo-faults.py)
 has recorded passing execution in the same review. Actual approved-key SSH
 dispatch and collector acceptance precede recorder loss, clean restart and
 unclean idle producer restart checks. Settled history and coverage preserve
 their specified transitions, and a fresh SSH command adds one success/duration.
 In-flight loss and physical lifecycle fault acceptance remain separate.
 
-The [Brady native fault extension](../../../nix/tests/machines/fleet/brady-slo-faults.py)
+The [Brady native fault extension](../../../nix/verification/tests/machines/fleet/brady-slo-faults.py)
 has recorded passing execution in the same review. Real guest requests and
 collector acceptance precede recorder loss, clean restart and idle producer
 SIGKILL. Settled history, coverage transitions and unchanged guest process
 identity are checked; a fresh guest HTTP request adds one success/duration.
 In-flight loss, overload/storage faults and power loss remain separate.
 
-The [transport native fault helper](../../../nix/tests/machines/fleet/request-slo-faults.py)
+The [transport native fault helper](../../../nix/verification/tests/machines/fleet/request-slo-faults.py)
 has recorded Audi SSH execution in the same review. Registered-key guest SSH
 and independent collector acceptance precede recorder SIGKILL, clean restart
 and idle producer SIGKILL. Settled checkpoint/publication identity, coverage,
@@ -243,7 +243,7 @@ Guest process identity remains unchanged; the existing load, execution fencing,
 peer ingress, relocation and control-plane outage/recovery assertions also pass.
 In-flight loss, overload/storage faults and power loss remain separate.
 
-The [recorder machine fixture](../../../nix/tests/machines/otel-request-recorder/driver.py)
+The [recorder machine fixture](../../../nix/verification/tests/machines/otel-request-recorder/driver.py)
 has recorded whole-VM hard-stop execution in the same review: 66.87 seconds,
 including a 12.13-second restart subtest. An acknowledged pending admission
 survives a changed kernel boot and settles once, before its unchanged deadline,

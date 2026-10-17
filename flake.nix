@@ -23,18 +23,18 @@
     let
       system = "x86_64-linux";
       pkgs = buildNixpkgs.legacyPackages.${system};
-      built = import ./nix/packages { inherit pkgs; };
+      built = import ./nix/domains/artifacts/default.nix { inherit pkgs; };
       antithesisImages = import ./antithesis/nix { inherit pkgs nixpkgs; };
-      hostPackages = import ./nix/packages {
+      hostPackages = import ./nix/domains/artifacts/default.nix {
         inherit pkgs;
         privateServiceRoots = [ ./secrets/private-services-root.pem ./secrets/brady-root.pem ];
       };
-      inventory = import ./nix/hosts/inventory.nix { inherit (nixpkgs) lib; };
-      fixtures = import ./nix/tests/fixtures/hosts/configurations.nix { inherit nixpkgs disko; modules = self.nixosModules; };
+      inventory = import ./nix/platform/hosts/inventory.nix { inherit (nixpkgs) lib; };
+      fixtures = import ./nix/verification/tests/fixtures/hosts/configurations.nix { inherit nixpkgs disko; modules = self.nixosModules; };
       hostSystem = name: enrolled: nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { overallsPackages = hostPackages; };
-        modules = [ self.nixosModules.default (import ./nix/hosts/profile.nix {
+        modules = [ self.nixosModules.default (import ./nix/platform/hosts/profile.nix {
           host = inventory.hosts.${name}; diskoModule = disko.nixosModules.disko; inherit enrolled;
         }) ] ++ nixpkgs.lib.optionals (enrolled && builtins.pathExists (./fleet/hosts + "/${name}/configuration.nix"))
           [ (./fleet/hosts + "/${name}/configuration.nix") ];
@@ -49,43 +49,34 @@
       lib.mkArchLinuxGuest = built.mkArchLinuxGuest;
       lib.mkAlmaLinuxGuest = built.mkAlmaLinuxGuest;
       lib.mkAlmaGuest = built.mkAlmaGuest;
+      lib.nativeKernels = built.nativeKernels;
       lib.mkFreeBSDGuest = built.mkFreeBSDGuest;
       lib.mkOmniOSGuest = built.mkOmniOSGuest;
       lib.mkIllumosGuest = built.mkIllumosGuest;
-      lib.nativeKernels = built.nativeKernels;
       packages.${system} = {
-        nix-compact = nix-compact.lib.mkPackage { inherit pkgs; };
-        nix-compact-host = nix-compact.lib.mkPackage { pkgs = nixpkgs.legacyPackages.${system}; };
-        inherit (built) marshall lilly audi porsche ziggy galileo enrico brady guest hostTools smtprelay underclass lyra browser;
-        ubuntu-guest = built.ubuntuGuest;
-        freebsd-guest = built.freebsdGuest;
-        omnios-guest = built.omniosGuest;
-        illumos-guest = built.illumosGuest;
+        default = built.marshall;
+        service-marshall = built.marshall;
+        service-lilly = built.lilly;
+        service-audi = built.audi;
+        service-porsche = built.porsche;
+        service-ziggy = built.ziggy;
+        service-galileo = built.galileo;
+        service-enrico = built.enrico;
+        service-brady = built.brady;
+        guest-nixos = built.guest;
+        guest-ubuntu = built.ubuntuGuest;
+        guest-arch = built.archGuest;
+        guest-alma = built.almaLinuxGuest;
         freebsd-kernel-receipt = built.nativeKernels.freebsdKernel;
         illumos-kernel-receipt = built.nativeKernels.illumosKernel;
         illumos-sdk-receipt = built.nativeKernels.illumosSdk;
-        arch-guest = built.archGuest;
-        archlinux-guest = built.archLinuxGuest;
-        alma-linux-guest = built.almaLinuxGuest;
-        almalinux-guest = built.almaLinuxGuest;
-        vscode-web = built.vscodeWeb;
-        update-vscode-extensions = built.updateVscodeExtensions;
-        ubuntu-lock = built.ubuntuLock;
-        inception-guest = built.inceptionGuest;
-        # Windows guest spike (ADR-0169): patched VMM, PVH UEFI firmware,
-        # evaluation-ISO image and the standalone serial-console launcher.
-        firecracker = built.vmm;
-        windows-firmware = built.windowsFirmware;
-        windows-guest = built.windowsGuest;
-        windows-boot = built.windowsBoot;
-        marshall-encrypted-dumps = built.encrypted.marshall;
-        lilly-encrypted-dumps = built.encrypted.lilly;
-        audi-encrypted-dumps = built.encrypted.audi;
-        brady-encrypted-dumps = built.encrypted.brady;
-        porsche-encrypted-dumps = built.encrypted.porsche;
-        user-recipients = built.userRecipients;
-        secrets = built.secrets;
-        host = import ./nix/packages/host { pkgs = nixpkgs.legacyPackages.${system}; };
+        guest-freebsd = built.freebsdGuest;
+        guest-omnios = built.omniosGuest;
+        guest-illumos = built.illumosGuest;
+        guest-inception = built.inceptionGuest;
+        guest-windows = built.windowsGuest;
+        host-tools = built.hostTools;
+        host = import ./nix/domains/artifacts/host { pkgs = nixpkgs.legacyPackages.${system}; };
         host-kexec = (nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [ nixos-images.nixosModules.kexec-installer nixos-images.nixosModules.noninteractive
@@ -95,40 +86,74 @@
               boot.kernelModules = [ "kvm-intel" "kvm-amd" ];
             }) ];
         }).config.system.build.kexecInstallerTarball;
-        default = built.marshall;
-      } // (pkgs.lib.mapAttrs' (name: context:
-        pkgs.lib.nameValuePair "antithesis-${name}-context" context
-      ) antithesisImages.contexts);
+        tool-nix-compact = nix-compact.lib.mkPackage { inherit pkgs; };
+        tool-nix-compact-host = nix-compact.lib.mkPackage { pkgs = nixpkgs.legacyPackages.${system}; };
+        tool-lyra = built.lyra;
+        tool-browser = built.browser;
+        tool-vscode-web = built.vscodeWeb;
+        tool-vscode-web-broker = built.vscodeWebBroker;
+        tool-update-vscode-extensions = built.updateVscodeExtensions;
+        tool-underclass = built.underclass;
+        tool-smtprelay = built.smtprelay;
+        security-user-recipients = built.userRecipients;
+        security-secrets = built.secrets;
+        security-marshall-encrypted-dumps = built.encrypted.marshall;
+        security-lilly-encrypted-dumps = built.encrypted.lilly;
+        security-audi-encrypted-dumps = built.encrypted.audi;
+        security-brady-encrypted-dumps = built.encrypted.brady;
+        security-porsche-encrypted-dumps = built.encrypted.porsche;
+        security-ziggy-encrypted-dumps = built.encrypted.ziggy;
+        security-galileo-encrypted-dumps = built.encrypted.galileo;
+        security-enrico-encrypted-dumps = built.encrypted.enrico;
+      };
 
       legacyPackages.${system} = built;
 
       nixosModules = {
-        nix-compact = import ./nix/modules/nix-compact.nix { nixCompact = nix-compact; };
-        backups = { imports = [ (import ./nix/modules/backups { packages = built; }) self.nixosModules.lilly self.nixosModules.marshall self.nixosModules.secrets ]; };
-        logging = ./nix/modules/logging/default.nix;
-        cloudwatch = ./nix/modules/cloudwatch/default.nix;
-        security-audit = ./nix/modules/security-audit.nix;
-        access = ./nix/modules/access.nix;
-        fleet-firewall = ./nix/modules/fleet-firewall.nix;
-        tailscale = ./nix/modules/tailscale.nix;
-        underclass = import ./nix/modules/underclass.nix { packages = built; };
-        remote-builders = { imports = [ ./nix/modules/remote-builders.nix self.nixosModules.secrets ]; };
-        sysctl = ./nix/modules/sysctl.nix;
-        default = import ./nix/modules { packages = built; nixCompact = nix-compact; };
-        marshall = import ./nix/modules/marshall.nix { packages = built; };
-        lilly = import ./nix/modules/lilly.nix { packages = built; };
-        brady = import ./nix/modules/brady { packages = built; };
-        porsche = import ./nix/modules/porsche.nix { packages = built; };
-        audi-private = import ./nix/modules/audi-private.nix { packages = built; };
-        ziggy = import ./nix/modules/ziggy.nix { packages = built; };
-        galileo = import ./nix/modules/galileo.nix { packages = built; };
-        enrico = import ./nix/modules/enrico.nix { packages = built; };
-        audi = import ./nix/modules/audi.nix { packages = built; };
-        proxy = { imports = [ self.nixosModules.marshall ./nix/modules/proxy.nix ]; };
-        acme = { imports = [ self.nixosModules.proxy ./nix/modules/acme/default.nix ]; };
-        secrets = import ./nix/modules/secrets/default.nix { packages = built; };
-        auto-update = import ./nix/modules/auto-update/default.nix { packages = built; };
-
+        default = import ./nix/domains/system/catalog.nix { packages = built; nixCompact = nix-compact; };
+        services = {
+          marshall = import ./nix/domains/system/marshall.nix { packages = built; };
+          lilly = import ./nix/domains/system/lilly.nix { packages = built; };
+          brady = import ./nix/domains/system/brady { packages = built; };
+          porsche = import ./nix/domains/system/porsche.nix { packages = built; };
+          audi-private = import ./nix/domains/system/audi-private.nix { packages = built; };
+          ziggy = import ./nix/domains/system/ziggy.nix { packages = built; };
+          galileo = import ./nix/domains/system/galileo.nix { packages = built; };
+          enrico = import ./nix/domains/system/enrico.nix { packages = built; };
+          audi = import ./nix/domains/system/audi.nix { packages = built; };
+        };
+        platform = {
+          nix-compact = import ./nix/domains/system/nix-compact.nix { nixCompact = nix-compact; };
+          remote-builders = { imports = [ ./nix/domains/system/remote-builders.nix self.nixosModules.security.secrets ]; };
+          sysctl = ./nix/domains/system/sysctl.nix;
+          auto-update = import ./nix/domains/system/auto-update/default.nix { packages = built; };
+        };
+        network = {
+          proxy = { imports = [ self.nixosModules.services.marshall ./nix/domains/system/proxy.nix ]; };
+          acme = { imports = [ self.nixosModules.network.proxy ./nix/domains/system/acme/default.nix ]; };
+          fleet-firewall = ./nix/domains/system/fleet-firewall.nix;
+          tailscale = ./nix/domains/system/tailscale.nix;
+        };
+        security = {
+          access = ./nix/domains/system/access.nix;
+          audit = ./nix/domains/system/security-audit.nix;
+          host-identity = ./nix/domains/system/host-identity.nix;
+          ssh-host-certificate = ./nix/domains/system/ssh-host-certificate.nix;
+          secrets = import ./nix/domains/system/secrets/default.nix { packages = built; };
+        };
+        storage = {
+          backups = { imports = [ (import ./nix/domains/system/backups { packages = built; }) self.nixosModules.services.lilly self.nixosModules.services.marshall self.nixosModules.security.secrets ]; };
+          crash-dumps = import ./nix/domains/system/crash-dumps { lib = nixpkgs.lib; pkgs = pkgs; };
+        };
+        observability = {
+          logging = ./nix/domains/system/logging/default.nix;
+          cloudwatch = ./nix/domains/system/cloudwatch/default.nix;
+          fleet-exporter = ./nix/domains/system/fleet-exporter/default.nix;
+          otel-guest = ./nix/domains/system/otel-guest/default.nix;
+          otel-fleet = ./nix/domains/system/otel-fleet/default.nix;
+          underclass = import ./nix/domains/system/underclass.nix { packages = built; };
+          log-store = ./nix/domains/system/log-store/default.nix;
+        };
       };
 
       nixosConfigurations = nixpkgs.lib.mapAttrs (name: _: hostSystem name true)
@@ -136,7 +161,7 @@
           && host.git.knownHosts != "" && nixpkgs.lib.any (document: document.name == "${name}-git") host.credentials) inventory.hosts)
         // nixpkgs.lib.mapAttrs' (name: _: nixpkgs.lib.nameValuePair "${name}-base" (hostSystem name false)) inventory.hosts;
 
-      checks.${system} = (import ./nix/tests {
+      checks.${system} = (import ./nix/verification/tests/catalog.nix {
         buildPkgs = pkgs;
         testPkgs = nixpkgs.legacyPackages.${system};
         inherit nixpkgs;
@@ -151,7 +176,7 @@
         nix-compact-core = nix-compact.lib.mkCoreCheck { inherit pkgs; };
         nix-compact-native = nix-compact.lib.mkNativeCheck { inherit pkgs; };
         nix-compact-native-host = nix-compact.lib.mkNativeCheck { pkgs = nixpkgs.legacyPackages.${system}; };
-        nix-compact-configuration = import ./nix/packages/nix-compact/configuration-check.nix { inherit nixpkgs; nixCompact = nix-compact; };
+        nix-compact-configuration = import ./nix/domains/artifacts/nix-compact/configuration-check.nix { inherit nixpkgs; nixCompact = nix-compact; };
         hldd = pkgs.runCommand "overalls-hldd-check" {
           nativeBuildInputs = [ built.toolchain.elixir ];
           LC_ALL = "C.UTF-8";
@@ -180,9 +205,9 @@
         '';
         terminald = built.terminaldChecks;
         terminald-windows = built.terminaldWindows;
-        overalls-install-ps1 = import ./nix/tests/overalls-install-ps1.nix { inherit pkgs; };
+        overalls-install-ps1 = import ./nix/verification/tests/overalls-install-ps1.nix { inherit pkgs; };
         lyra = built.lyra.tests;
-        browser = built.browser.tests;
+        marvin = built.marvin.tests;
       };
     };
 }

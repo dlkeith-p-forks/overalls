@@ -5,7 +5,7 @@ P0; high confidence; safety. Instrumentation **missing** per [fresh scan](../exi
 and local ownership marker; failed inspection retains cleanup journal)`; message
 **"Backup recovery destroys only positively owned snapshots and retains uncertain cleanup"**.
 
-Evidence: `nix/modules/backups/host.py:108-164` (`cleanup`, `release`) validates
+Evidence: `nix/domains/system/backups/host.py:108-164` (`cleanup`, `release`) validates
 nonce, dataset GUID, selected mount, snapshot GUID and local property, verifies
 absence after destroy before journal unlink/fsync. `:192-211` (`prepare`)
 publishes cleanup intent before zfs snapshot, updates GUID afterward.
@@ -45,7 +45,7 @@ observation through pool inspection faults without granting observer mutation au
 
 #### Can the bounded hosted storage VM preserve independent cleanup observation through pool inspection faults without granting observer mutation authority?
 
-- Examined (2026-10-13): `nix/modules/backups/host.py:108-164`, `nix/tests/evaluation/backup-workflow.py:578-733`, and `nix/tests/machines/backups/driver.py:91-139`.
+- Examined (2026-10-13): `nix/domains/system/backups/host.py:108-164`, `nix/verification/tests/evaluation/backup-workflow.py:578-733`, and `nix/verification/tests/machines/backups/driver.py:91-139`.
 - Found: the cleanup path uses real `zfs list/get`, `findmnt`, local nonce, dataset GUID, snapshot GUID, and a durable descriptor; inspection errors retain the descriptor. Generated proof histories cover unavailable inspection and foreign identities, while the NixOS machine test kills a real upload and observes cleanup recovery. A separate read-only observer can enumerate GUIDs and descriptor bytes without using the cleanup service's mutation API.
 - Not found: a hosted storage topology or executed fault that makes the production ZFS inspection path unavailable while a separate observer still reads the same pool. The machine test does not exercise that split-view fault.
 - Conclusion: partial. Probe a disposable NixOS/ZFS VM with a narrowly faulted `zfs`/`findmnt` invocation for the cleanup unit, then compare independent read-only GUID/property/descriptor observations before and after retry. Do not claim the hosted fault is available from source alone.

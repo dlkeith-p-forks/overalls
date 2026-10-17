@@ -11,10 +11,10 @@ Reviewed [runtime validation](../../../marshall/lib/marshall/operations/runtime_
 [health](../../../marshall/lib/marshall/operations/health.ex),
 [migration entry point](../../../marshall/lib/marshall/operations/migrate.ex),
 [release packaging](../../../scripts/package_release.sh),
-[Nix closure](../../../nix/packages/release-bundle.nix),
-[Marshall](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/systemd/marshall@.service) and
-[Lilly](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/systemd/lilly.service) service units, and the
-[deployment guide](../../../docs/deployment.md).
+[Nix closure](../../../nix/domains/artifacts/applications/release-bundle.nix),
+Marshall (`scripts/test/fixtures/legacy-deployment/systemd/marshall@.service` at kittens revision `9fe1e493`, repository deleted) and
+Lilly (`scripts/test/fixtures/legacy-deployment/systemd/lilly.service` at kittens revision `9fe1e493`, repository deleted) service units, and the
+[deployment guide](../../operations/deployment.md).
 
 ## Findings and disposition
 
@@ -73,7 +73,7 @@ Reviewed [runtime validation](../../../marshall/lib/marshall/operations/runtime_
   and [HTTP tests](../../../marshall/test/marshall_web/health_test.exs) pass nine
   cases (two properties, seven tests): fixed errors, budget bounds, explicit
   listeners, IPv6 options, missing schema and read-only transactions.
-- [Deployment acceptance](../../../nix/tests/README.md) passes with
+- [Deployment acceptance](../../../nix/verification/tests/README.md) passes with
   PostgreSQL 18.6, systemd 255 and HAProxy 3.4.3 on the development host. It uses
   a separate disposable database and freshly generated CA/key material.
 - The packaged migration command applies every migration to the empty TLS

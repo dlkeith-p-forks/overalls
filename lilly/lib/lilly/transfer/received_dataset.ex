@@ -129,15 +129,16 @@ defmodule Lilly.Transfer.ReceivedDataset do
 
   def prepare(_, _), do: {:error, :received_dataset_unconfirmed}
 
-  # @cc [owner:ghuntley,label:security;recovery] receiver-argv-from-local-intent
+  # @cc [owner:ghuntley,label:security;recovery] receiver-fields-from-local-intent
   # receiver/2 requires the pool lock, current relocation/reservation authority
   # and quiescent streams. It MUST require existing receiving intent, revalidate
   # native staging, and derive the target and ownership markers only from the
-  # trusted pool and validated local journal. Fixed receive options MUST prevent
-  # mounting/execution and retain resumable state. Returned argv does not prove
+  # trusted pool and validated local journal. hostd adds the fixed receive
+  # options that prevent mounting/execution and retain resumable state
+  # (hostd-transfer-stream-typed). The returned descriptor does not prove
   # stream authority, completed receive, adoption or guest execution permission.
   @spec receiver(Pool.t(), Relocation.descriptor()) ::
-          {:ok, Lilly.Transfer.Stream.command()} | failure()
+          {:ok, Lilly.Transfer.Stream.consumer()} | failure()
   def receiver(
         pool,
         %{destination: %{placement_id: placement, host_id: host, pool_id: pool_id}} = descriptor
@@ -151,36 +152,17 @@ defmodule Lilly.Transfer.ReceivedDataset do
              pool.storage
            ),
          true <- journal["stream"] == Relocation.encode_descriptor(descriptor)["stream"],
-         {:ok, ^journal} <- prepare(pool, descriptor),
-         executable when is_binary(executable) <- System.find_executable("zfs") do
-      placement = descriptor.destination.placement_id
-
-      properties = [
-        {"mountpoint", Path.join([pool.path, "vms", placement])},
-        {"canmount", "noauto"},
-        {"readonly", "on"},
-        {"exec", "off"},
-        {"setuid", "off"},
-        {"devices", "off"},
-        {"compression", "lz4"},
-        {"reservation", "none"},
-        {"refreservation", "none"},
-        {"dedup", "off"},
-        {"sync", "standard"},
-        {"quota", "none"},
-        {"refquota", "none"},
-        {"lilly:host", pool.host_id},
-        {"lilly:pool", pool.id},
-        {"lilly:vm", placement},
-        {"lilly:nonce", journal["nonce"]}
-      ]
-
-      arguments =
-        ["receive", "-u", "-s"] ++
-          Enum.flat_map(properties, fn {key, value} -> ["-o", key <> "=" <> value] end) ++
-          [pool.storage.dataset <> "/vm-" <> placement]
-
-      {:ok, {executable, arguments}}
+         {:ok, ^journal} <- prepare(pool, descriptor) do
+      {:ok,
+       {:receive,
+        %{
+          dataset: pool.storage.dataset,
+          pool: pool.path,
+          placement: descriptor.destination.placement_id,
+          host: pool.host_id,
+          pool_id: pool.id,
+          nonce: journal["nonce"]
+        }}}
     else
       _ -> {:error, :received_dataset_unconfirmed}
     end
@@ -194,7 +176,7 @@ defmodule Lilly.Transfer.ReceivedDataset do
   # A failed resume lookup alone MUST NOT authorize ordinary replay.
   # Unknown/replaced state fails.
   @spec fresh_receiver(Pool.t(), Relocation.descriptor()) ::
-          {:ok, Lilly.Transfer.Stream.command()} | failure()
+          {:ok, Lilly.Transfer.Stream.consumer()} | failure()
   def fresh_receiver(pool, descriptor) do
     with {:ok, command} <- receiver(pool, descriptor),
          {:ok, journal} <-

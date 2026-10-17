@@ -5,10 +5,10 @@ P0; high confidence; safety. Instrumentation **missing** per [fresh scan](../../
 component snapshots; incomplete/interrupted runs cannot evict that closure)`;
 message **"Backup retention recovery preserves the complete reference closure of retained recovery points"**.
 
-Evidence: `nix/modules/backups/runtime.py:122-225` captures every required
+Evidence: `nix/domains/system/backups/runtime.py:122-225` captures every required
 inventoried guest (flush unconfirmed is degraded, not skipped), PostgreSQL when
 configured and host state; records failures and cleanup before complete manifest.
-`nix/modules/backups/restic.py:213-254` (`manifest`) validates complete structure;
+`nix/domains/system/backups/restic.py:213-254` (`manifest`) validates complete structure;
 `:256-295` (`retain`) validates retained references before any forget, unioning
 shared component IDs. Backup CONTRACTS and ADR-0070 claim short-retention recovery,
 not a single cross-service simultaneous point-in-time snapshot.

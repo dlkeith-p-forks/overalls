@@ -81,16 +81,16 @@ that import service modules without enabling fleet access.
 
 ## Implementation evidence
 
-The [fleet host profile](../../../nix/hosts/profile.nix) enables Tailscale and
+The [fleet host profile](../../../nix/platform/hosts/profile.nix) enables Tailscale and
 the fleet firewall. The
-[Tailscale module](../../../nix/modules/tailscale.nix) provides the default-off
+[Tailscale module](../../../nix/domains/system/tailscale.nix) provides the default-off
 exit-node option; the Overalls and Dungarees host configurations enable it. The
-[fleet firewall module](../../../nix/modules/fleet-firewall.nix) trusts the
+[fleet firewall module](../../../nix/domains/system/fleet-firewall.nix) trusts the
 overlay interface and renders both firewall backends from the typed
-[source registry](../../../nix/allowed-hosts.nix). The
-[firewall evaluation](../../../nix/tests/evaluation/fleet-firewall.nix) covers
+[source registry](../../../nix/policy/network/allowed-hosts.nix). The
+[firewall evaluation](../../../nix/verification/tests/evaluation/fleet-firewall.nix) covers
 defaults, both backends and invalid data; the
-[Tailscale evaluation](../../../nix/tests/evaluation/tailscale.nix) covers every
+[Tailscale evaluation](../../../nix/verification/tests/evaluation/tailscale.nix) covers every
 fleet fixture. Live tailnet enrollment and packet-level production verification
 remain pending, so implementation is partial.
 

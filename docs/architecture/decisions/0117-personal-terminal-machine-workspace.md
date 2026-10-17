@@ -107,15 +107,15 @@ and the existing opening ledger. The
 and [LiveView](../../../marshall/lib/marshall_web/live/terminal_live.ex) implement
 workspace transitions. The
 [guest helper](../../../lyra/src/bin/overalls-ssh-authorize.rs),
-[PTY daemon](../../../nix/packages/terminald/src/session.rs), and
-[NixOS](../../../nix/packages/guest/default.nix)/
-[Ubuntu](../../../nix/packages/guest/ubuntu/units/lilly-terminals.service) wiring
+[PTY daemon](../../../nix/domains/artifacts/terminald/src/session.rs), and
+[NixOS](../../../nix/domains/artifacts/guest/default.nix)/
+[Ubuntu](../../../nix/domains/artifacts/guest/ubuntu/units/lilly-terminals.service) wiring
 share account reconciliation.
 
 [Property tests](../../../marshall/test/marshall_web/terminal_opening_test.exs)
 exercise transition invariants. [Authority tests](../../../marshall/test/marshall/terminal/personal_session_test.exs)
 exercise identity reuse, retries, exit and revocation. The
-[native browser scenario](../../../nix/tests/machines/fleet/browser.py) tests missing
+[native browser scenario](../../../nix/verification/tests/machines/fleet/browser.py) tests missing
 account restoration and passwd/home identity on a real guest. Execution results
 and remaining rollout/native scope are recorded in the
 [review](../reviews/2026-09-25-personal-terminal-workspace.md).

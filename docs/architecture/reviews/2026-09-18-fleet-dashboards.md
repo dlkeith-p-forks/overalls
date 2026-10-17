@@ -9,13 +9,13 @@ semantics are introduced. The existing accepted decisions remain partial.
 
 ## Evidence and findings
 
-The [inventory action](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/marshall/lib/marshall/fleet/inventory.ex) returns
+The inventory action (`marshall/lib/marshall/fleet/inventory.ex` at kittens revision `9fe1e493`, repository deleted) returns
 at most 128 enrolled identities per keyset page, including offline/disabled hosts.
 It checks current Cedar permission and exposes no credential or machine-ID data.
 The LiveViews use existing stored-login/current-role hooks before navigation,
 events and refresh. Demotion closes the mounted fleet view in a browser-state test.
 
-The [utilization projection](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/utilization.ex)
+The utilization projection (`marshall/lib/marshall/fleet/utilization.ex` at kittens revision `a99f74f0`, repository deleted)
 weights CPU by cores and memory by bytes, requiring known numerator/denominator
 pairs. Disabled, stale, future-skewed and different-boot/collector measurements do
 not contribute. Physical pools remain separate from logical datasets. Truncated,

@@ -29,7 +29,8 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
           history(stage, boundary)
         rescue
           error ->
-            reraise %{error | message: "#{stage}/#{boundary}: " <> Exception.message(error)},
+            reraise RuntimeError,
+                    "#{stage}/#{boundary}: " <> Exception.message(error),
                     __STACKTRACE__
         end
       end)
@@ -447,7 +448,7 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
       assert :ok = Fixture.tick()
       assert :ok = Fixture.tick()
       assert %{status: :failed, failure_reason: :machine_unavailable} = Fixture.turn(turn.id)
-      assert {:error, :stale_execution} = ExecutorSession.register(c.binding)
+      assert {:error, :stale_execution} = ExecutorSession.register(c.binding, nil, ["context-v1"])
     else
       assert %{status: :completed} = Fixture.turn(turn.id)
     end
@@ -514,7 +515,7 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
       end
 
     if stage == :queued do
-      assert [] = Ledger.read!(Command, turn_id: turn.id)
+      assert [] = tool_commands(turn_id: turn.id)
       assert [] = Ledger.read!(ModelCall, turn_id: turn.id)
       assert :ok = Fixture.tick()
     end
@@ -624,6 +625,7 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
     # authority for the owner while emptying the model's tool matrix.
     {:ok, submitted} = Fixture.prompt(c, Ash.UUID.generate(), c.owner)
     [turn] = Ledger.read!(Turn, id: submitted.turn_id)
+    Fixture.settle_context!(c, turn, c.owner)
 
     # Synthetic persisted-profile boundary: the model admission policy cannot
     # advertise tools for a profile outside the agent matrix.
@@ -635,7 +637,7 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
     assert :ok = Fixture.tick()
     assert %{status: :failed, failure_reason: :capability_denied} = Fixture.turn(turn.id)
     assert [] = Ledger.read!(ModelCall)
-    assert [] = Ledger.read!(Command)
+    assert [] = tool_commands([])
     assert :ok = Fixture.tick()
     :ok
   end
@@ -655,15 +657,15 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
 
     Marshall.PasskeyFixture.cleanup(admin)
 
-    assert {:error, :access_revoked} = ExecutorSession.register(c.binding)
-    assert {:error, :access_revoked} = ExecutorSession.register(c.binding)
+    assert {:error, :access_revoked} = ExecutorSession.register(c.binding, nil, ["context-v1"])
+    assert {:error, :access_revoked} = ExecutorSession.register(c.binding, nil, ["context-v1"])
     assert [] = Ledger.read!(Marshall.Agents.Executor)
 
     # Member withdrawal alone never mints refusals at registration: the lease
     # binds the owner's VM; per-turn authority still gates claims.
     c = Fixture.setup()
     assert {:ok, _} = Fixture.share(c, :revoked)
-    assert {:ok, executor} = ExecutorSession.register(c.binding)
+    assert {:ok, executor} = ExecutorSession.register(c.binding, nil, ["context-v1"])
     assert {:ok, nil} = ExecutorSession.claim(c.binding, executor.id, executor.fence_epoch)
     :ok
   end
@@ -673,7 +675,7 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
     turn = Fixture.submit!(c)
     assert :ok = Fixture.tick()
     Fixture.queue_tool!(c, turn)
-    [command] = Ledger.read!(Command, turn_id: turn.id)
+    [command] = tool_commands(turn_id: turn.id)
     assert command.status == :queued
 
     assert {:ok, _} = Fixture.share(c, :revoked)
@@ -686,10 +688,8 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
     assert [%{status: :cancelled, result: %{"reason" => "turn_finished"}}] =
              Ledger.read!(Command, id: command.id)
 
-    assert [%{kind: :tool_finished, outcome: :failed, target_id: target_id}] =
-             Ledger.read!(AuditEvent, kind: :tool_finished, turn_id: turn.id)
-
-    assert target_id == command.id
+    assert [%{kind: :tool_finished, outcome: :failed}] =
+             Ledger.read!(AuditEvent, kind: :tool_finished, target_id: command.id)
 
     before = Fixture.snapshot(c.vm.id)
     assert :ok = Fixture.tick()
@@ -697,4 +697,10 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
     assert Fixture.snapshot(c.vm.id) == before
     :ok
   end
+
+  # Context preparation leaves a completed context_inventory command; these
+  # histories count only the tool commands the model requested.
+  @spec tool_commands(keyword()) :: [Command.t()]
+  defp tool_commands(filter),
+    do: Command |> Ledger.read!(filter) |> Enum.reject(&(&1.tool == :context_inventory))
 end

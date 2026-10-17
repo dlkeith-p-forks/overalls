@@ -235,7 +235,7 @@ still two seconds, the system is strictly no weaker than phase 1:
 Verification:
 - Hegel properties for the argument and parser grammars. One of them found and
   closed `/sys/fs/cgroup/.` being accepted as a cgroup.
-- The [vm-watch NixOS test](../../../nix/tests/machines/vm-watch/probe.py):
+- The [vm-watch NixOS test](../../../nix/verification/tests/machines/vm-watch/probe.py):
   SIGKILL is reported within 50 ms (8.1 ms measured), and the test also covers
   an emptied unit cgroup, refusal of a foreign PID, detach on EOF and the
   grammar.
@@ -243,7 +243,7 @@ Verification:
   exhaustive watch table, a property that terminal reports always revoke,
   immediate revocation on exit, fail-closed on a crashed watcher, and
   backstop-only operation without the helper.
-- A [brady-fleet subtest](../../../nix/tests/machines/fleet/scenarios/brady.py)
+- A [brady-fleet subtest](../../../nix/verification/tests/machines/fleet/scenarios/brady.py)
   that kills a real guest's Firecracker and requires revocation by the watcher
   in under a second, followed by refused attribution.
 

@@ -81,9 +81,9 @@ unchanged by this decision and remains governed by ADR-0075.
 ## Implementation evidence
 
 The typed registry, assertions and both backend renderings live in
-[fleet-firewall.nix](../../../nix/modules/fleet-firewall.nix); composition,
+[fleet-firewall.nix](../../../nix/domains/system/fleet-firewall.nix); composition,
 rejection and suppression cases are in
-[fleet-firewall.nix evaluation](../../../nix/tests/evaluation/fleet-firewall.nix),
+[fleet-firewall.nix evaluation](../../../nix/verification/tests/evaluation/fleet-firewall.nix),
 which passes. The Audi entries are declared in the
 [Overalls](../../../fleet/hosts/overalls/services.nix) and
 [Dungarees](../../../fleet/hosts/dungarees/configuration.nix) host

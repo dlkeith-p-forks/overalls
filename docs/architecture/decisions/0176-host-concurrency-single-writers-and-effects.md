@@ -483,7 +483,7 @@ daemon that holds every lease.
   leases. A lost session stops the process, which every holder monitors. A
   BEAM without `LILLY_HOSTD_SOCKET` (eval tools, probes, unit tests) starts
   a private daemon with process-group custody.
-- **Deployment.** The [Lilly module](../../../nix/modules/lilly.nix) adds
+- **Deployment.** The [Lilly module](../../../nix/domains/system/lilly.nix) adds
   `lilly-hostd.service` (`Type=notify`, `Delegate=yes`, root peers in
   `lilly.service` only), and binds Lilly to it (`hostd-unit-custody`). The
   auto-updater's health units include it.
@@ -504,6 +504,105 @@ Evidence:
 Not done in this stage: explicit rank-ordered leases at the ~45 sites, the
 outcome ledger, generation fencing and typed native effects.
 
+Decision 4, second stage (lease order, fencing and the ledger):
+- **Lease order.** [`LockOrder`](../../../lilly/lib/lilly/host/lock_order.ex)
+  classifies every lease directory and records each nesting a process
+  performs, in the manner of the kernel's lockdep. Acquiring a class while
+  holding one previously acquired under it is reported as
+  `lilly.lease_order_inverted` (`lease-order-inversion-reported`; property
+  test `lease-order-inversion-oracle` against an independent model). This
+  stage reports and never refuses: a strict refusal is enabled only after
+  production shows no inversions. First data (2026-10-16): overalls
+  reported `pool` then `other` twice in six hours, dungarees twice; the
+  machine runs reported `transfer` under `pool` and `placement` against
+  `other`. `other` still groups several unrelated directories (socket
+  custody, permit journals), so its pairs are not yet evidence of one
+  inverted pair; the next step is to give those directories their own
+  classes, then review the remaining real inversions before enforcing.
+- **Generation fencing** is met without a hostd copy of the intent: every
+  launch step re-reads `intent.bin`, the tombstone, the unit state and the
+  attempt under the placement lease (`launch-fence-exact`), and only the
+  commit step writes `launch-attempt.bin` and starts the unit
+  (`launch-steps-fenced`). hostd holds that lease, and a dead holder's
+  commands are reaped before anyone else is granted it, so a hostd-side
+  fence would re-check the same file under the same lease.
+- **Outcome ledger.** Ordinary commands are killed and reaped when their
+  session ends, so they never complete after their caller and need no
+  ledger. Commands that do outlive the caller are durable jobs; their keys
+  give at-most-once execution while running and an attachable result for
+  ten minutes (`durable-job-outlives-session`).
+
+Decision 4, typed commands, first command (the VM launch): `systemd-run`
+started each guest's root process chain from a command line Lilly built,
+which let a compromised BEAM run any root command through hostd. hostd now
+offers a typed `LaunchVm` instead (operation 10,
+[`vm_launch.rs`](../../../lilly/native/hostd/src/vm_launch.rs)): Lilly sends
+the placement, epoch, generation, jail uid, memory, vCPUs, boot kind,
+logging switch, VM state directory, network namespace and pool, and hostd
+validates each (reserved uid range, bounds, a configured pool root, a
+state directory beneath its lease roots) and builds the command line from
+executable paths the [Lilly module](../../../nix/domains/system/lilly.nix) gives
+it (`vm-launch-argv-derived-by-hostd`). Direct `systemd-run` requests are
+refused by the decoder, and Lilly's utility tables no longer name it.
+
+Decision 4, native file executor: `chmod`, `chown`, `mv`, `rm`, `truncate`,
+`mkfifo` and `sync` are no longer run as programs. hostd accepts only the
+argument shapes Lilly uses (`chmod MODE -- P`, `mv [--no-clobber]
+--no-target-directory -- A B`, `rm [--force|-rf --one-file-system] -- P`,
+`truncate --size N -- P`, `mkfifo --mode=0600 -- P`, `chown U:G -- P`,
+`sync -- P…`) and performs each on descriptors: every path is resolved
+from an open root with `openat2(RESOLVE_BENEATH | RESOLVE_NO_SYMLINKS)`, the
+final component is never followed, modes are limited to 0400, 0444, 0600
+and 0700, and owners to the VM uid range or the service uid
+([`files.rs`](../../../lilly/native/hostd/src/files.rs),
+`native-file-effects-beneath-roots`). The roots are Lilly's state
+directories, pools and its own `/run/lilly*` and backup directories, not
+all of `/run`. Lilly's call sites are unchanged. Tests cover each shape and
+the refusals, including a symlinked component whose outside target stays
+untouched. `mount`, `umount`, `cp`, the ZFS mutations, `nft` and `ip` still
+take Lilly's arguments.
+
+Decision 4, argument grammar for the remaining utilities: an inventory of
+every argv Lilly sends found that the closed executable table did not
+close behaviour. `zfs` and `zpool`, marked read-only, would still destroy;
+`systemctl` could stop any unit; `sysctl -w` could set any kernel
+parameter; and `Command.in_namespace` sent `ip netns exec NS <absolute
+executable>`, arbitrary root execution. hostd now checks every program's
+argv against Lilly's shapes before running it
+([`policy.rs`](../../../lilly/native/hostd/src/policy.rs),
+[`zfs_policy.rs`](../../../lilly/native/hostd/src/zfs_policy.rs),
+`utility-arguments-grammar`, `zfs-arguments-within-pools`): ZFS names
+strictly beneath the configured pool datasets with an allowlist of
+properties; `ip` and `sysctl` only on Lilly's devices and namespaces;
+`netns exec` only for `ip`, `nft`, `sysctl` and the flow labeller, whose
+path hostd replaces with its own; `systemctl` only on `lilly-vm-*` units;
+image copies, the backup `cp` and `ssh-keygen` beneath the file roots.
+Durable jobs are checked the same way. The grammar applies to the
+production unit (pool datasets configured); a private daemon started by an
+eval tool runs with its owner's own privilege and is not confined. Residual
+risks: `nft` rule-file content, the ZFS snapshot mount's `mount(8)` target,
+and the peer-supplied resume token, which only its helper's parser checks.
+
+Steady-state spawns, measured: on 2026-10-16 a 60 s trace of `lilly-hostd`
+on a nearly idle overalls counted about 94 utilities a second (`realpath`
+2704, `zfs` 1194, `stat` 836, `zpool` 507, `findmnt` 419), mostly the pool
+identity check behind each one-second report. Mount, path and device facts
+are now read natively ([`MountTable`](../../../lilly/lib/lilly/host/mount_table.ex),
+`mount-table-matches-findmnt`; [`Paths`](../../../lilly/lib/lilly/host/paths.ex),
+`canonical-path-matches-realpath`, `block-device-numbers-from-sysfs`), each
+checked against the utility it replaces on both hosts' real tables. Native
+executors were weighed against the same measurement: pool listings take
+about 15 ms for 8 datasets, network changes are already one `nft --file`
+batch per guest, and `systemctl` reported no failures in 24 hours, so
+`libzfs_core`, rtnetlink and D-Bus are deferred until a measured section is
+bound by them.
+
+Decision 1, queued deletes: a disk delete waits up to 30 s in the pool's
+FIFO queue, like a create's sections. Before this change it gave up after
+one second and rejoined at the back: 228 of 526 slow or contended pool
+sections on overalls in 24 hours (2026-10-16) were deletes refused as busy
+after exactly 1001 ms.
+
 Decision 5, first stage (durable jobs):
 [`lilly-hostd`](../../../lilly/native/hostd/src/session.rs) runs a
 `RunDurable` command on its own thread under the caller's lease and stores
@@ -517,11 +616,23 @@ to the copy already in flight instead of killing and restarting it. The
 template's Ash journal stays the checkpoint across a hostd restart, which
 still kills running jobs with hostd's cgroup. Evidence: the hostd test
 `durable-job-survives-session` (13 hostd tests pass) and the Lilly suite
-(image template tests run through a private daemon). Clone copies and
-backup captures are not jobs yet.
+(image template tests run through a private daemon). Clone file copies are
+durable jobs too ([`CloneCopy`](../../../lilly/lib/lilly/transfer/clone_copy.ex),
+`clone-copy-durable`): a re-entered copy attaches to the copy in flight,
+and starts again only when hostd knows no job for its key or the finished
+job's temporary file is gone.
+
+Backup captures need no hostd job: `Lilly.Backup.main` runs in the
+`overalls-backups` service, a separate process with its own private
+hostd, whose Lilly-side steps (snapshot, metadata copy, mount) take seconds;
+restic then reads the mounted snapshot itself. A Lilly restart cannot
+interrupt a capture, which is what this decision guards against. After a
+hostd restart, which kills its jobs with its cgroup, template copies start
+again from their Ash journal, and clone copies resume per file from their
+`file_copied` journal records, so no copy restarts from nothing.
 
 Security end state, first stage (hardening): the
-[Lilly module](../../../nix/modules/lilly.nix) applies namespace-free
+[Lilly module](../../../nix/domains/system/lilly.nix) applies namespace-free
 hardening to both units (`lilly-units-namespace-free-hardening`): a reduced
 capability bounding set, native syscall architecture, locked personality and
 no realtime scheduling. `RestrictSUIDSGID` was in the first deployment and is
@@ -530,9 +641,9 @@ fails every `openat2` with ENOSYS; every hostd lease was refused and Lilly
 could not start on either host (2026-10-16, `fb691e517`). Mount namespaces
 (`ProtectSystem`, `PrivateMounts`) are ruled out for both units, because hostd
 mounts guest datasets for the host and the private pool propagation of
-ADR-0144 would hide new guest mounts from a Lilly namespace. The BEAM still
-runs as root; [ADR-0182](0182-unprivileged-lilly-beam.md) (proposed) plans the
-privilege drop from an inventory of what still needs root.
+ADR-0144 would hide new guest mounts from a Lilly namespace. The privilege
+drop followed in [ADR-0182](0182-unprivileged-lilly-beam.md): the BEAM runs
+only as the unprivileged `lilly` user, and hostd is the only root component.
 
 ## Open questions
 

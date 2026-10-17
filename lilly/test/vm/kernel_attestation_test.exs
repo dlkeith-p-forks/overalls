@@ -33,7 +33,14 @@ defmodule Lilly.VM.KernelAttestationTest do
 
         try do
           assert {:ok, "CONNECT 1098\n"} = :gen_tcp.recv(socket, 0, 2_000)
-          :ok = :gen_tcp.send(socket, handshake <> response)
+
+          if is_binary(response) do
+            :ok = :gen_tcp.send(socket, [handshake, response])
+          else
+            for fragment <- [handshake | response] do
+              :ok = :gen_tcp.send(socket, fragment)
+            end
+          end
         after
           :gen_tcp.close(socket)
         end
@@ -60,10 +67,28 @@ defmodule Lilly.VM.KernelAttestationTest do
     }) <> "\n"
   end
 
-  test "native probe verifies host CID-bound response and allows fragmentation" do
-    {path, task} = server(wire())
+  test "local proxy framing verifies a boot-bound response across writes" do
+    <<first::binary-size(100), rest::binary>> = wire()
+    {path, task} = server([first, rest])
     assert {:ok, @boot} = KernelAttestation.verify(path, @expected, 1_000)
     Task.await(task)
+  end
+
+  test "oversized bodies and malformed proxy handshakes refuse" do
+    for {body, handshake} <- [
+          {String.duplicate(" ", 513) <> "\n", "OK 1098\n"},
+          {wire(), "OK 0\n"},
+          {wire(), "OK 01098\n"},
+          {wire(), "OK 4294967296\n"},
+          {wire(), "NO 1098\n"}
+        ] do
+      {path, task} = server(body, handshake)
+
+      assert {:error, :kernel_attestation_timeout} =
+               KernelAttestation.verify(path, @expected, 120)
+
+      Task.await(task)
+    end
   end
 
   test "wrong OS, digest, boot and malformed frames fail closed" do

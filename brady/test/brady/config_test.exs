@@ -5,6 +5,7 @@ defmodule Brady.ConfigTest do
     %{
       "version" => 1,
       "host_id" => "11111111-2222-3333-4444-555555555555",
+      "attribution_uid" => 377,
       "issuer_cert_file" => "/run/credentials/brady/issuer.pem",
       "issuer_key_file" => "/run/credentials/brady/issuer.key",
       "upstream_ca_file" => "/etc/ssl/certs/ca-bundle.crt",

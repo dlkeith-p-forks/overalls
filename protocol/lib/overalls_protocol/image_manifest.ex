@@ -5,7 +5,8 @@ defmodule OverallsProtocol.ImageManifest do
   Version 4 describes kernel-booted Linux images (kernel, initrd, ext4 root,
   boot arguments) with explicit workspace-source and editor capabilities.
   Version 5 describes firmware-booted images (a PVH firmware and a raw GPT
-  root disk) that carry no guest agents. Version 6 adds native FreeBSD and
+  root disk) that declare no guest agents or the Windows v1 agent set.
+  Version 6 adds native FreeBSD and
   illumos firmware disk images. Both derive the same content-addressed
   `sha256:` identity from an ordered identity array.
   """
@@ -57,7 +58,7 @@ defmodule OverallsProtocol.ImageManifest do
           architecture: :x86_64,
           os: :freebsd | :illumos,
           boot_kind: :firmware,
-          pci: boolean(),
+          pci: true,
           root_format: :raw_gpt,
           guest_agents: :freebsd_v1 | :illumos_v1,
           minimum_memory_bytes: pos_integer(),

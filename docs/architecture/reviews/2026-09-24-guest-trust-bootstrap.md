@@ -14,7 +14,7 @@ durable audit model; ADR-0110's SSH roster still determines SSH authorization.
 
 - The previous immutable NixOS `security.pki.caBundle` and Ubuntu image-build
   `update-ca-certificates` step could not replace platform roots on a retained
-  disk. The [NixOS trust unit](../../../nix/packages/guest/private-services.nix)
+  disk. The [NixOS trust unit](../../../nix/domains/artifacts/guest/private-services.nix)
   now atomically points `/etc/ssl/certs` at the writable installed bundle. The
   [Ubuntu receiver](../../../lyra/src/bin/overalls-trustd.rs) replaces a managed
   certificate directory and rebuilds the system bundle before notifying
@@ -27,8 +27,8 @@ durable audit model; ADR-0110's SSH roster still determines SSH authorization.
   failure. The [executor](../../../lilly/lib/lilly/vm/executor.ex) withholds
   `running` until this receipt is committed.
 - The [lifecycle resource](../../../lilly/lib/lilly/lifecycle/guest_trust.ex),
-  [closed protocol state list](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/protocol/lib/kittens_protocol/lifecycle_audit.ex),
-  [outbox](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/lilly/lib/lilly/lifecycle/outbox.ex) and
+  closed protocol state list (`protocol/lib/kittens_protocol/lifecycle_audit.ex` at kittens revision `a99f74f0`, repository deleted),
+  outbox (`lilly/lib/lilly/lifecycle/outbox.ex` at kittens revision `a99f74f0`, repository deleted) and
   [Marshall projection](../../../marshall/lib/marshall/compute/lifecycle_log.ex)
   provide durable, authenticated audit and catalogued diagnostics without
   certificate contents, command arguments or terminal bytes.
@@ -40,7 +40,7 @@ durable audit model; ADR-0110's SSH roster still determines SSH authorization.
   publishes the public directory and PEM with modes `0755` and `0644`, and
   repairs old modes on retry. A Rust regression test checks those modes. The
   fleet machine fixture checks readability as the SSH callback user.
-- The isolated [Ubuntu storage fixture](../../../nix/tests/machines/zfs-guest/probe.exs)
+- The isolated [Ubuntu storage fixture](../../../nix/verification/tests/machines/zfs-guest/probe.exs)
   has no Audi authority to issue an SSH roster. It now verifies installed
   trust, networking and storage while asserting SSH stays closed, without
   calling that VM fully ready. The Ubuntu relocation fleet test supplies the

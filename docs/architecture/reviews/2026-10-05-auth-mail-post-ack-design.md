@@ -28,8 +28,8 @@ it adds no production code, SQL trigger, resource, protocol or authority. Its
 callback observations never expose the changeset, record or credential payload.
 
 Draft files: `/tmp/kittens-mail-post-ack-draft-u2p3w2`. Retained patches:
-[fixture](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/properties/patches/auth-email-post-ack-fixture.patch)
-and [property](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/properties/patches/auth-email-post-ack-property.patch).
+fixture (`antithesis/scratchbook/properties/patches/auth-email-post-ack-fixture.patch` at kittens revision `9fe1e493`, repository deleted)
+and property (`antithesis/scratchbook/properties/patches/auth-email-post-ack-property.patch` at kittens revision `9fe1e493`, repository deleted).
 Pinned Code.format_string parsing/formatting passed; compiler, typing, runtime,
 mutation and integration have not run. The main worktree remains frozen for
 Marshall's full gate. This draft is not recorded passing handbook coverage.

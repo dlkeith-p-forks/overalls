@@ -82,11 +82,11 @@ the supported image and CLI update paths.
 [Audi private OTLP routing](../../../audi/lib/audi/private/front.ex) provides
 the exact route and bounded forwarding; its [property tests](../../../audi/test/private_otel_test.exs)
 exercise the request grammar and declared size limits. The
-[Rust guest receiver](../../../nix/modules/otel-guest/receiver/src/lib.rs)
+[Rust guest receiver](../../../nix/domains/system/otel-guest/receiver/src/lib.rs)
 sanitizes payloads and has property tests. The
-[fleet module](../../../nix/modules/otel-fleet/default.nix) enables collectors,
+[fleet module](../../../nix/domains/system/otel-fleet/default.nix) enables collectors,
 Prometheus, Tempo and loopback Grafana on enrolled hosts. The
-[NixOS machine test](../../../nix/tests/machines/otel-fleet/default.nix)
+[NixOS machine test](../../../nix/verification/tests/machines/otel-fleet/default.nix)
 passes central service startup, hostmetric scrape, valid guest metric export,
 and socket/namespace refusal. Its extended two-node run passed persisted
 worker trace-queue replay after a collector restart during a central Tempo
@@ -94,7 +94,7 @@ outage. A subsequent run uses disposable peers of the production fleet
 WireGuard module and passes trace backfill after a worker tunnel outage and
 collector restart. These fixtures send direct local OTLP traces; they do not
 establish guest TLS over the central tunnel or production trace retention. The
-[signed-in SLO page](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall_web/live/slo_live.ex)
+signed-in SLO page (`marshall/lib/marshall_web/live/slo_live.ex` at kittens revision `a99f74f0`, repository deleted)
 reads only two fixed recording rules and preserves unknown data. HAProxy supplies
 an unsampled draft public ingress completion ratio; application-specific SLIs,
 real guest trace delivery across WireGuard and production trace validation
@@ -104,14 +104,14 @@ tool counts, a duration histogram and one fixed-name span after the terminal
 transition. The trace ID is derived from a one-way hash of the command ID;
 the command ID, arguments, result and user data are absent from OTLP. These are
 diagnostic claims and do not enter fleet SLO arithmetic. The recorded
-[native guest journey](../../../nix/tests/machines/fleet/scenarios/agent.py)
+[native guest journey](../../../nix/verification/tests/machines/fleet/scenarios/agent.py)
 passes an acknowledged tool result through Audi private TLS, Lilly's current
 binding, the restricted Rust receiver and the host collector. The extended
 native journey queries the acknowledged command's trace at disposable local
 Tempo after the same guest TLS and receiver path. Binding changes during
 upload and live production guest collection remain open.
 Brady now writes a private [cumulative outcome snapshot](../../../brady/lib/brady/metrics.ex)
-for resolved terminal requests. A [Rust host exporter](../../../nix/modules/otel-guest/receiver/src/bin/slo_exporter.rs)
+for resolved terminal requests. A [Rust host exporter](../../../nix/domains/system/otel-guest/receiver/src/bin/slo_exporter.rs)
 validates fixed fields, file custody, freshness and monotonicity before local
 OTLP export through a group-restricted Unix socket. This is candidate
 instrumentation: a scoped Firecracker request-to-collector assertion passed,
@@ -235,20 +235,20 @@ known-down collector and absent-ingress display, and current-login revocation
 against packaged Marshall and local Prometheus. Production browser access and
 the 28-day baseline remain open.
 
-The [Rust exporter](../../../nix/modules/otel-guest/receiver/src/slo.rs) now
+The [Rust exporter](../../../nix/domains/system/otel-guest/receiver/src/slo.rs) now
 publishes a fixed source-start-time gauge beside every trusted application
-snapshot. [Nix recording rules](../../../nix/modules/otel-fleet/rules.nix)
+snapshot. [Nix recording rules](../../../nix/domains/system/otel-fleet/rules.nix)
 withhold each five-minute candidate ratio until every request series has a
 matching host/replica start marker that is fresh and at least five minutes old.
-[Prometheus rule fixtures](../../../nix/tests/evaluation/otel-slo-rules.nix)
+[Prometheus rule fixtures](../../../nix/verification/tests/evaluation/otel-slo-rules.nix)
 exercise a counter reset with a changed start time; the
-[host collector test](../../../nix/tests/machines/otel-fleet/default.nix)
+[host collector test](../../../nix/verification/tests/machines/otel-fleet/default.nix)
 checks the gauge reaches the collector. This protects the reset window but
 does not recover outcomes lost before a crash or make source accounting durable.
-The [Grafana candidate panels](../../../nix/modules/otel-fleet/default.nix)
-also apply the shared [source-readiness expression](../../../nix/modules/otel-fleet/source-ready.nix)
+The [Grafana candidate panels](../../../nix/domains/system/otel-fleet/default.nix)
+also apply the shared [source-readiness expression](../../../nix/domains/system/otel-fleet/source-ready.nix)
 and a nonzero current five-minute request rate through their
-[query guard](../../../nix/modules/otel-fleet/candidate-query.nix). Live deployment showed that Prometheus could retain an older
+[query guard](../../../nix/domains/system/otel-fleet/candidate-query.nix). Live deployment showed that Prometheus could retain an older
 recording for its instant-vector lookback after restart, even while the new
 recording rule emitted no value. Query-time gating prevents that retained
 sample from appearing as a valid current candidate ratio. The dashboard guard
@@ -262,13 +262,13 @@ The same Nix configuration now provisions a guarded five-minute p95 observed
 duration candidate for each of the nine instrumented application paths. A
 candidate is absent unless its success-ratio recording exists, all source
 markers are ready, the duration count covers every admitted request in
-the window, and none exceeds the last finite 10-second bucket. The [shared roster](../../../nix/modules/otel-fleet/candidate-sources.nix)
+the window, and none exceeds the last finite 10-second bucket. The [shared roster](../../../nix/domains/system/otel-fleet/candidate-sources.nix)
 also creates one Grafana latency panel per path. These p95 values are baseline
 observations, not latency objectives: the named paths have different completion
 boundaries, and no measured target or burn alert has been approved.
 
 Underclass now has a separate host-owned local monitor readiness candidate.
-The [Rust probe](../../../nix/modules/otel-guest/receiver/src/underclass_probe.rs)
+The [Rust probe](../../../nix/domains/system/otel-guest/receiver/src/underclass_probe.rs)
 reads the pinned service's read-only Unix monitor endpoint without proxy or
 administrator credentials and exports only a fixed 0/1 gauge through an
 Underclass-only collector socket. The Nix rule requires exactly one fresh,

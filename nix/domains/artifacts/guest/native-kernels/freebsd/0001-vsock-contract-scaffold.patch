@@ -1,0 +1,65 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Overalls maintainers <overalls@localhost>
+Date: Sat, 17 Oct 2026 00:00:00 +0000
+Subject: [PATCH 1/1] document the proposed freebsd virtio-vsock ABI
+
+This header describes a proposed, OS-specific userspace/kernel address layout.
+It does not register a socket family or implement a virtio-vsock transport.
+---
+ sys/dev/virtio/vsock/overalls_vsock_contract.h | 50 ++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+ create mode 100644 sys/dev/virtio/vsock/overalls_vsock_contract.h
+
+--- /dev/null
++++ b/sys/dev/virtio/vsock/overalls_vsock_contract.h
+@@ -0,0 +1,50 @@
++/* Proposed Overalls ABI only: no socket family is registered by this header. */
++#ifndef _DEV_VIRTIO_VSOCK_OVERALLS_CONTRACT_H_
++#define _DEV_VIRTIO_VSOCK_OVERALLS_CONTRACT_H_
++
++#include <sys/types.h>
++#include <sys/socket.h>
++
++/* AF 40 is AF_INET_SDP. Use the pinned source's vendor slot AF_VENDOR03. */
++#define OVERALLS_AF_VSOCK 45
++#if AF_VENDOR03 != OVERALLS_AF_VSOCK
++#error "Overalls vsock must use the reviewed FreeBSD vendor family"
++#endif
++
++/**
++ * @cc [owner:ghuntley,label:protocol] freebsd-vsock-address-layout
++ * Native addresses MUST retain FreeBSD's length and 8-bit family prefix,
++ * followed by reserved16, port32, cid32 and four zero bytes, for size 16.
++ */
++struct overalls_sockaddr_vm {
++    uint8_t svm_len;
++    sa_family_t svm_family;
++    uint16_t svm_reserved;
++    uint32_t svm_port;
++    uint32_t svm_cid;
++    uint8_t svm_zero[4];
++};
++
++_Static_assert(sizeof(sa_family_t) == 1, "FreeBSD family width");
++_Static_assert(sizeof(struct overalls_sockaddr_vm) == 16, "FreeBSD vsock size");
++_Static_assert(__builtin_offsetof(struct overalls_sockaddr_vm, svm_len) == 0,
++    "FreeBSD vsock length offset");
++_Static_assert(__builtin_offsetof(struct overalls_sockaddr_vm, svm_family) == 1,
++    "FreeBSD vsock family offset");
++_Static_assert(__builtin_offsetof(struct overalls_sockaddr_vm, svm_port) == 4,
++    "FreeBSD vsock port offset");
++_Static_assert(__builtin_offsetof(struct overalls_sockaddr_vm, svm_cid) == 8,
++    "FreeBSD vsock CID offset");
++
++#define OVERALLS_VSOCK_GUEST_CID 3ULL
++#define OVERALLS_VSOCK_HOST_CID 2ULL
++#define OVERALLS_VSOCK_MAX_SOCKETS 128U
++#define OVERALLS_VSOCK_MAX_FRAME 65536U
++#define OVERALLS_VSOCK_PORT_READINESS 1024U
++#define OVERALLS_VSOCK_PORT_FLUSH 1026U
++#define OVERALLS_VSOCK_PORT_TRUST 1030U
++#define OVERALLS_VSOCK_PORT_WORKSPACE 1031U
++#define OVERALLS_VSOCK_PORT_TERMINAL 1075U
++#define OVERALLS_VSOCK_PORT_ATTESTATION 1098U
++
++#endif
