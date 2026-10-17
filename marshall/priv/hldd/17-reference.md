@@ -277,7 +277,7 @@ emitted setup and passed six serial Control commands; the selected manifest
 has four stale runtime-dependency hashes, so no frozen hosted baseline follows.
 
 The static researched catalog contains 104 primary properties. The current
-literal scanner finds 163 SDK callsites, 30 matching primary messages and 74
+literal scanner finds 164 SDK callsites, 30 matching primary messages and 74
 missing primaries, with no duplicate callsite or kind mismatch; none
 of the 104 properties is complete as a workload plus independent oracle and
 hosted result. The default `control-core` selection now stages 13 commands in
