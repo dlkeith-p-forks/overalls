@@ -165,7 +165,12 @@ verified-TLS receipt. The `satellite` template's unbound-source command checks
 that a forged guest-side request produces no origin receipt. The Ziggy, Galileo
 and editor login-code commands need a current running VM; the controlled Lilly
 pool reports unavailable capacity and no editor gateway, release or wildcard is
-configured, so those commands record unexercised in this graph.
+configured, so those commands record unexercised in this graph. Because
+Ziggy and Galileo credentials need an enabled host and Marshall enables only a
+host with a fresh execution-ready report, `entrypoints/satellite-enroll.sh`
+applies a labelled **STUB**: it sets only `lilly-a`'s administrative `enabled`
+flag through the Host `:configure` action. It fabricates no readiness,
+capacity, pool credit or VM binding, so admission still refuses the host.
 
 The `guest-lifecycle` profile
 ([selection](verification/selections/guest-lifecycle.json)) selects the one

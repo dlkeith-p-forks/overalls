@@ -331,7 +331,16 @@ required `connector_uid` and so could not load its configuration. Ziggy
 completion, Galileo named origin and the editor login-code race need a current
 running VM; the controlled Lilly pool reports unavailable capacity and no Audi
 editor gateway, editor release or wildcard is configured, so their primary and
-`Sometimes` assertions stay unevaluated. Both profiles have rendered Compose
+`Sometimes` assertions stay unevaluated. Ziggy and Galileo issue and
+authenticate credentials only for an enabled host, and Marshall's reviewed
+enable action requires a fresh execution-ready report that the controlled
+`lilly-a` never sends, so satellite enrollment applies a labelled harness
+**STUB**: it sets only `lilly-a`'s administrative `enabled` flag through the
+Host `:configure` action and verifies it with the operator `show` command. The
+stub fabricates no readiness, capacity, pool credit or VM binding, so Marshall
+admission still refuses the host; it is not evidence for the readiness gate on
+host enablement. A failed satellite operator command reports only the CLI's
+fixed atom status line. Both profiles have rendered Compose
 graphs that pass the selection validators and unit tests; neither has a local
 `compose up` or hosted run.
 The [integrated-host record](repo:antithesis/verification/integrated-host-boot.json)
