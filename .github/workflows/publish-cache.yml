@@ -6,9 +6,11 @@ on:
   pull_request:
   workflow_dispatch:
 
+# A newer push supersedes any in-flight run on the same ref, trunk included,
+# so CI always builds the latest commit instead of queueing a backlog.
 concurrency:
   group: publish-cache-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/trunk' }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
