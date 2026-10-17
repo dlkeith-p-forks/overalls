@@ -30,6 +30,7 @@ RUN groupadd --system nixbld \
          usermod --append --groups nixbld "nixbld${builder}"; \
        done \
     && mkdir -m 0755 /nix \
+    && mkdir -m 0755 /etc/nix \
     && curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install \
     | sh -s -- --no-daemon \
     && printf '%s\n' \
