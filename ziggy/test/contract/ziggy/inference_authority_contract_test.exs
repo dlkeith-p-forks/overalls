@@ -4,6 +4,9 @@ defmodule ZiggyInferenceAuthorityContractTest do
   @tag obligation: "ziggy.inference_authority.I1"
   test "declared modules compile and remain loadable" do
     modules = [
+      Ziggy.AgentError,
+      Ziggy.AgentStream,
+      Ziggy.AgentWorker,
       Ziggy.Control,
       Ziggy.Control.Link,
       Ziggy.Credential,
@@ -60,5 +63,50 @@ defmodule ZiggyInferenceAuthorityContractTest do
              Ziggy.Lease.init(Keyword.merge(base, ttl_ms: 100, renewal_ms: 100))
 
     assert {:stop, :invalid_lease} = Ziggy.Lease.init(Keyword.put(base, :request_id, "bad"))
+  end
+
+  @tag obligation: "ziggy.inference_authority.I5"
+  test "streamed responses require a complete contiguous terminal output" do
+    item = %{"type" => "message", "content" => []}
+
+    gap_frame =
+      "data: " <>
+        Jason.encode!(%{
+          "type" => "response.output_item.done",
+          "output_index" => 1,
+          "item" => item
+        }) <> "\n\n"
+
+    terminal_gap =
+      "data: " <>
+        Jason.encode!(%{
+          "type" => "response.completed",
+          "response" => %{"status" => "completed", "id" => "resp_1"}
+        }) <> "\n\n"
+
+    assert {:ok, gap} = Ziggy.AgentStream.feed(%Ziggy.AgentStream{}, gap_frame <> terminal_gap)
+    assert {:error, :invalid_response} = Ziggy.AgentStream.finish(gap)
+
+    item_frame =
+      "data: " <>
+        Jason.encode!(%{
+          "type" => "response.output_item.done",
+          "output_index" => 0,
+          "item" => item
+        }) <>
+        "\n\n"
+
+    terminal =
+      "data: " <>
+        Jason.encode!(%{
+          "type" => "response.completed",
+          "response" => %{"status" => "completed", "id" => "resp_2"}
+        }) <> "\n\n"
+
+    assert {:ok, stream} = Ziggy.AgentStream.feed(%Ziggy.AgentStream{}, item_frame <> terminal)
+    assert {:ok, %{"output" => [^item]}} = Ziggy.AgentStream.finish(stream)
+
+    assert {:ok, duplicate} = Ziggy.AgentStream.feed(stream, terminal)
+    assert {:error, :invalid_response} = Ziggy.AgentStream.finish(duplicate)
   end
 end

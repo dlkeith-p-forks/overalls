@@ -6,9 +6,9 @@
       "covered": 0
     },
     "ziggy": {
-      "active": 9,
+      "active": 10,
       "coverage": 1.0,
-      "covered": 9
+      "covered": 10
     }
   },
   "components": {
@@ -80,10 +80,10 @@
       }
     },
     "ziggy.inference_authority": {
-      "active": 4,
+      "active": 5,
       "app": "ziggy",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "ziggy.inference_authority.I1": {
@@ -125,6 +125,16 @@
           "tests": [
             "test lease rejects unsafe authority parameters before starting"
           ]
+        },
+        "ziggy.inference_authority.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test streamed responses require a complete contiguous terminal output"
+          ]
         }
       }
     }
@@ -132,8 +142,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 9,
+    "active": 10,
     "coverage": 1.0,
-    "covered": 9
+    "covered": 10
   }
 }
