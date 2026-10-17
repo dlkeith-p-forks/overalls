@@ -26,7 +26,6 @@ defmodule Marshall.Threads.Activity do
     |> case do
       {:ok, :ok} -> :ok
       {:error, _reason} -> :ok
-      :ok -> :ok
     end
   end
 
