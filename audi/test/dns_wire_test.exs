@@ -1,6 +1,7 @@
 defmodule Audi.DNS.WireTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Audi.DNS.Wire
 
   property "arbitrary packets always produce a bounded result" do
