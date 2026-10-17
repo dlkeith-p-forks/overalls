@@ -40,7 +40,7 @@ from hegel.generators import (
     uuids,
 )
 from hegel.runner import _run_registered, given
-from hegel.statemachine import MachineStateMachine, Pool, invariant, rule
+from hegel.statemachine import MachineStateMachine, Pool, WorkerContext, invariant, rule
 
 
 def assume(condition: bool, reason: str = "") -> None:
@@ -58,6 +58,7 @@ __all__ = [
     "Pool",
     "StopTest",
     "TestCase",
+    "WorkerContext",
     "_run_registered",
     "assume",
     "binary",

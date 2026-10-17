@@ -1,9 +1,13 @@
 """Verify real recorder/producer death, surviving producers and source custody."""
+# generated production worker histories preserve durable recorder accounting
+# whole VM hard stop preserves acknowledged admission and completed history
+# dynamic application uses configured private marker and preserves clean coverage
+# exporter can read snapshots but cannot access producer RPC or checkpoint
+# authenticated recording gaps preserve history and survive restart
 
 import shlex
 
-from hypothesis import Phase, example, given, settings
-from hypothesis import strategies as st
+from hegel import TestCase, booleans, given, integers, lists
 
 
 def control(op: str, identifier: int | None = None, role: str = "request-producer") -> str:
@@ -256,17 +260,7 @@ with subtest("producer communication gaps persist across restart until durable a
     machine.wait_until_succeeds(snapshot_assert(".requests == 3", "sdk"))
 
 
-@settings(
-    max_examples=4,
-    deadline=None,
-    derandomize=True,
-    report_multiple_bugs=False,
-    phases=[Phase.explicit, Phase.generate],
-)
-@example(successes=[True, False, True, False], reopens=2)
-@example(successes=[False], reopens=1)
-@given(successes=st.lists(st.booleans(), min_size=1, max_size=4), reopens=st.integers(1, 2))
-def producer_recorder_history(successes: list[bool], reopens: int) -> None:
+def _producer_recorder_history(successes: list[bool], reopens: int) -> None:
     """@cc [owner:ghuntley,label:verification;durability] native-producer-recorder-conservation
     Recorder reopens MUST preserve every acknowledged live-worker admission and
     its deadline. Authorized success and actual worker death MUST each settle
@@ -274,7 +268,12 @@ def producer_recorder_history(successes: list[bool], reopens: int) -> None:
     Completed totals and permanent identity MUST survive subsequent reopens.
     """
     checkpoint = "/var/lib/overalls-request-sdk/state.json"
-    machine.succeed("systemctl start sdk-producer.service")
+    # Each Hegel case starts from a recorder boundary. The preceding fixed
+    # checks may deliberately leave a gap/corrupt marker; a real restart
+    # performs the production recovery handshake before generation begins.
+    machine.succeed("systemctl reset-failed sdk-producer.service")
+    machine.succeed("rm -f /var/lib/request-sdk-marker/quality")
+    machine.succeed("systemctl restart sdk-producer.service")
     machine.wait_until_succeeds(
         control("hello", role="sdk-producer") + " | jq -e '.status == \"ok\"'"
     )
@@ -365,8 +364,14 @@ def producer_recorder_history(successes: list[bool], reopens: int) -> None:
         assert machine.succeed(identity_query).strip() == identity
 
 
-with subtest("generated production worker histories preserve durable recorder accounting"):
-    producer_recorder_history()
+@given(successes=lists(booleans(), min_size=1, max_size=4), reopens=integers(1, 2))
+def producer_recorder_history(tc: TestCase, successes: list[bool], reopens: int) -> None:
+    _producer_recorder_history(successes, reopens)
+
+
+with subtest("fixed production worker histories preserve durable recorder accounting"):
+    _producer_recorder_history([True, False, True, False], 2)
+    _producer_recorder_history([False], 1)
 
 
 with subtest("corrupt producer storage cannot confer complete coverage through old completions"):

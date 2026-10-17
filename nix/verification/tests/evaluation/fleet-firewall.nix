@@ -102,32 +102,14 @@ let
     nftRules = lib.all (fragment: lib.hasInfix fragment nft.networking.firewall.extraInputRules) [
       ''ip saddr 136.243.69.55 meta l4proto { tcp, udp } accept comment "Overalls fleet host"''
       ''ip saddr 136.243.69.35 meta l4proto { tcp, udp } accept comment "Dungarees fleet host"''
-      ''ip saddr 103.134.170.11 meta l4proto { tcp, udp } accept comment "Geoffrey Huntley"''
-      ''ip saddr 98.128.180.170 meta l4proto { tcp, udp } accept comment "Oskar"''
-      ''ip saddr 23.16.102.97 meta l4proto { tcp, udp } accept comment "Carl Sverre"''
-      ''ip saddr 202.73.33.218 meta l4proto { tcp, udp } accept comment "Singapore Office"''
-      ''ip saddr 208.185.151.161 meta l4proto { tcp, udp } accept comment "Vienna Office"''
-    ] && !(lib.hasInfix "dport" nft.networking.firewall.extraInputRules);
+    ] && !(lib.hasInfix "dport" nft.networking.firewall.extraInputRules)
+      # ADR-0075: personal addresses were removed on 2026-10-16.
+      && !(lib.hasInfix "103.134.170.11" nft.networking.firewall.extraInputRules);
     iptablesRules = lib.all (fragment: lib.hasInfix fragment iptables.networking.firewall.extraCommands) [
       "-s 136.243.69.55 -p tcp"
       "-s 136.243.69.55 -p udp"
       "-s 136.243.69.35 -p tcp"
       "-s 136.243.69.35 -p udp"
-      "-s 103.134.170.11 -p tcp"
-      "-s 103.134.170.11 -p udp"
-      "--comment 'Geoffrey Huntley'"
-      "-s 98.128.180.170 -p tcp"
-      "-s 98.128.180.170 -p udp"
-      "--comment Oskar"
-      "-s 23.16.102.97 -p tcp"
-      "-s 23.16.102.97 -p udp"
-      "--comment 'Carl Sverre'"
-      "-s 202.73.33.218 -p tcp"
-      "-s 202.73.33.218 -p udp"
-      "--comment 'Singapore Office'"
-      "-s 208.185.151.161 -p tcp"
-      "-s 208.185.151.161 -p udp"
-      "--comment 'Vienna Office'"
     ] && !(lib.hasInfix "--dport" iptables.networking.firewall.extraCommands);
     composedRules = valid composedNft && valid composedIptables
       && lib.all (fragment: lib.hasInfix fragment composedNft.networking.firewall.extraInputRules) [

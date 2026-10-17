@@ -143,6 +143,41 @@ class TestCase:
 
     def __init__(self, ptr: int) -> None:
         self._ptr = ptr
+        self._closed = False
+
+    def clone(self, *, worker_index: int | None = None) -> TestCase:
+        """Return an independent choice stream for one concurrent worker.
+
+        A clone must be driven by only one worker thread.  It shares the
+        completion outcome and budgets with its source and is released with
+        :meth:`close` after the worker joins.
+        """
+        if self._closed:
+            raise RuntimeError("cannot clone a closed test case")
+        engine = lib()
+        out = c_void_p()
+        check(engine.hegel_test_case_clone(engine.ctx, self._ptr, byref(out)))
+        assert out.value is not None
+        clone = TestCase(int(out.value))
+        if worker_index is not None:
+            clone.set_worker(worker_index)
+        return clone
+
+    def set_worker(self, worker_index: int) -> None:
+        if self._closed:
+            raise RuntimeError("cannot attribute a closed test case")
+        check(lib().hegel_test_case_set_worker(lib().ctx, self._ptr, worker_index))
+
+    def close(self) -> None:
+        if not self._closed:
+            check(lib().hegel_test_case_free(lib().ctx, self._ptr))
+            self._closed = True
+
+    def __enter__(self) -> TestCase:
+        return self
+
+    def __exit__(self, _type: object, _value: object, _traceback: object) -> None:
+        self.close()
 
     def draw(self, generator: Generator[T]) -> T:
         return generator.draw(self)
@@ -325,6 +360,8 @@ def replay_property(
     callback = OutputCallback(on_output)
     settings = config.build()
     raw = c_void_p()
+    status = int(CaseStatus.INVALID)
+    error: BaseException | None = None
     try:
         check(
             engine.hegel_test_case_from_blob(

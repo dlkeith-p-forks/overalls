@@ -3,8 +3,7 @@ import shlex
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
-from hypothesis import given, settings
-from hypothesis import strategies as st
+from hegel import TestCase, given, sampled_from, text
 
 
 @dataclass(frozen=True)
@@ -104,14 +103,20 @@ with subtest("generated routing histories preserve exact roster and label refusa
         roster.append(source)
     assert len(roster) == 20
 
-    @settings(max_examples=80, deadline=None, derandomize=True)
     @given(
-        source=st.sampled_from(roster),
-        window=st.sampled_from(["fast", "slow"]),
-        changed=st.sampled_from(["alertname", "slo", "window", "status", "severity"]),
-        foreign=st.text(alphabet="abcdefghijklmnopqrstuvwxyz0123456789_", min_size=1, max_size=24),
+        source=sampled_from(roster),
+        window=sampled_from(["fast", "slow"]),
+        changed=sampled_from(["alertname", "slo", "window", "status", "severity"]),
+        foreign=text(alphabet="abcdefghijklmnopqrstuvwxyz0123456789_", min_size=1, max_size=24),
     )
-    def routing_property(source: str, window: str, changed: str, foreign: str) -> None:
+    def routing_property(
+        tc: TestCase, source: str, window: str, changed: str, foreign: str
+    ) -> None:
+        """@cc [owner:ghuntley,label:verification;security] burn-route-roster-property
+        Every generated in-roster alert MUST select the reviewed fleet receiver;
+        changing any routing label MUST select the unrouted sink. The generated
+        values are labels only and MUST NOT alter the fixture's bearer custody.
+        """
         labels: dict[str, str] = {
             "alertname": f"OverallsSLOBurn_{window}_{source}",
             "slo": source,
@@ -126,7 +131,6 @@ with subtest("generated routing histories preserve exact roster and label refusa
         args = " ".join(shlex.quote(f"{key}={value}") for key, value in labels.items())
         machine.succeed(command + "--verify.receivers=unrouted " + args)
 
-    routing_property()
 
 with subtest("actual Prometheus sends a warning through verified TLS and runtime bearer custody"):
     wait_delivery("OverallsSLOBurn_fast_galileo", "firing")
