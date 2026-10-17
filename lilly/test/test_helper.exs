@@ -7,4 +7,4 @@
 System.delete_env("LILLY_SERVICE_UID")
 :persistent_term.erase({Lilly.Host.Privilege, :service_uid})
 
-ExUnit.start()
+ExUnit.start(formatters: [ExUnit.CLIFormatter, Covenant.Formatter])

@@ -19,6 +19,7 @@ defmodule Brady.MixProject do
 
   defp deps do
     [
+      {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:overalls_protocol, path: "../protocol"},
       {:overalls_diagnostics, path: "../elixir/diagnostics"},
       {:overalls_request_accounting, path: "../elixir/request_accounting"},
@@ -51,6 +52,7 @@ defmodule Brady.MixProject do
         "deps.unlock --unused",
         "format --check-formatted",
         "test --warnings-as-errors",
+        "covenant.check --no-run",
         "dialyzer --force-check"
       ]
     ]

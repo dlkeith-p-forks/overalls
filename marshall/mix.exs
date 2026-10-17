@@ -52,6 +52,7 @@ defmodule Marshall.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:ex_cedar, "~> 0.1.2"},
       {:yaml_elixir, "~> 2.12"},
       {:overalls_protocol, path: "../protocol"},
@@ -151,6 +152,7 @@ defmodule Marshall.MixProject do
         "deps.unlock --unused",
         "format",
         "test --include distributed --warnings-as-errors",
+        "covenant.check --no-run",
         "terminal.check",
         "workspace.check",
         "monospace.check",

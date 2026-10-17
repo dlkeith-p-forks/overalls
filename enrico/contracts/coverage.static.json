@@ -1,0 +1,50 @@
+{
+  "apps": {
+    "enrico": {
+      "active": 1,
+      "coverage": 1.0,
+      "covered": 1
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "enrico.mirror": {
+      "active": 1,
+      "app": "enrico",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "enrico.mirror.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "mode": "static",
+  "totals": {
+    "active": 1,
+    "coverage": 1.0,
+    "covered": 1
+  }
+}

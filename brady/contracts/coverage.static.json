@@ -1,0 +1,69 @@
+{
+  "apps": {
+    "brady": {
+      "active": 2,
+      "coverage": 1.0,
+      "covered": 2
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "brady.cache": {
+      "active": 1,
+      "app": "brady",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "brady.cache.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "brady.proxy": {
+      "active": 1,
+      "app": "brady",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "brady.proxy.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "mode": "static",
+  "totals": {
+    "active": 2,
+    "coverage": 1.0,
+    "covered": 2
+  }
+}

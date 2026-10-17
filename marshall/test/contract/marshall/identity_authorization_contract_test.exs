@@ -1,0 +1,66 @@
+defmodule MarshallIdentityAuthorizationContractTest do
+  use Covenant.Case, component: "marshall.identity_authorization"
+
+  @tag obligation: "marshall.identity_authorization.I1"
+  test "declared modules compile and remain loadable" do
+    modules = [
+      Marshall.Access,
+      Marshall.Access.AdminActions,
+      Marshall.Access.Authorization,
+      Marshall.Access.Change,
+      Marshall.Access.Grant,
+      Marshall.Access.Sharing,
+      Marshall.Accounts,
+      Marshall.Accounts.AccountLifecycle,
+      Marshall.Accounts.AdminBootstrap,
+      Marshall.Accounts.AdminEvent,
+      Marshall.Accounts.AdminEvents,
+      Marshall.Accounts.AdminUsers,
+      Marshall.Accounts.Administrators,
+      Marshall.Accounts.AuthEmail,
+      Marshall.Accounts.AuthEmails,
+      Marshall.Accounts.BootstrapAdministrator,
+      Marshall.Accounts.Checks.Administrator,
+      Marshall.Accounts.Checks.ControlRoomRead,
+      Marshall.Accounts.Checks.InternalLookup,
+      Marshall.Accounts.DeleteUserMachines,
+      Marshall.Accounts.DeliverAuthEmail,
+      Marshall.Accounts.EligibleEmail,
+      Marshall.Accounts.EmailAddress,
+      Marshall.Accounts.GuestAccount,
+      Marshall.Accounts.GuestAccounts,
+      Marshall.Accounts.GuestUsername,
+      Marshall.Accounts.Login,
+      Marshall.Accounts.MagicLinkSignIn,
+      Marshall.Accounts.Passkey,
+      Marshall.Accounts.PasskeyChallenge,
+      Marshall.Accounts.PruneSecurity,
+      Marshall.Accounts.RegistrationFence,
+      Marshall.Accounts.RememberedLogin,
+      Marshall.Accounts.Security,
+      Marshall.Accounts.Token,
+      Marshall.Accounts.User,
+      Marshall.Accounts.User.Senders.SendMagicLinkEmail,
+      Marshall.Accounts.UserDeletion,
+      Marshall.Accounts.Verification,
+      Marshall.Administration,
+      Marshall.Administration.AuditEvent,
+      Marshall.Administration.ExpireJobHistory,
+      Marshall.Administration.JobEvent,
+      Marshall.Administration.JobSnapshot,
+      Marshall.Administration.Jobs,
+      Marshall.Administration.Operations,
+      Marshall.Authorization.AshAuthorizer,
+      Marshall.Authorization.Cedar,
+      Marshall.Authorization.SystemActor,
+      Marshall.Teams,
+      Marshall.Teams.Coordinator,
+      Marshall.Teams.Team,
+      Marshall.Teams.TeamMember,
+      Marshall.Teams.Transfer,
+      Marshall.Teams.TransferSwap
+    ]
+
+    assert Enum.all?(modules, &Code.ensure_loaded?/1)
+  end
+end

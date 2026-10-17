@@ -1,5 +1,7 @@
 # Architecture decision records
 
+[ADR-0186](0186-covenant-contract-verification.md) adopts Covenant as a test-only, deterministic contract verification layer across all twelve Elixir applications. It complements existing `CONTRACTS`, ADR, HLDD, native and integration evidence; the initial obligations establish module-loadability baselines and explicitly do not claim native or deployment guarantees.
+
 [ADR-0185](0185-underclass-tailnet-exit-egress.md) routes Underclass provider
 traffic, and only that traffic, through a dedicated userspace tailnet node and
 an Australian exit node, confining the Underclass unit to loopback behind a

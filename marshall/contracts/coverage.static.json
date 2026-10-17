@@ -1,0 +1,145 @@
+{
+  "apps": {
+    "marshall": {
+      "active": 6,
+      "coverage": 1.0,
+      "covered": 6
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "marshall.compute": {
+      "active": 1,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "marshall.compute.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "marshall.identity_authorization": {
+      "active": 1,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "marshall.identity_authorization.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "marshall.integrations_persistence": {
+      "active": 1,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "marshall.integrations_persistence.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "marshall.ssh_terminal": {
+      "active": 1,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "marshall.ssh_terminal.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "marshall.threads_agents": {
+      "active": 1,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "marshall.threads_agents.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "marshall.web_surface": {
+      "active": 1,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "marshall.web_surface.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "mode": "static",
+  "totals": {
+    "active": 6,
+    "coverage": 1.0,
+    "covered": 6
+  }
+}

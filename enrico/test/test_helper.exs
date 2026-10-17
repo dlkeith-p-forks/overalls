@@ -20,4 +20,4 @@ unless System.find_executable("enrico-git-owner") do
   end
 end
 
-ExUnit.start(exclude: [:skip])
+ExUnit.start(exclude: [:skip], formatters: [ExUnit.CLIFormatter, Covenant.Formatter])

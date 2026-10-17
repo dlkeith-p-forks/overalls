@@ -1,0 +1,88 @@
+{
+  "apps": {
+    "audi": {
+      "active": 3,
+      "coverage": 1.0,
+      "covered": 3
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "audi.dns_authority": {
+      "active": 1,
+      "app": "audi",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "audi.dns_authority.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "audi.http_gateway": {
+      "active": 1,
+      "app": "audi",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "audi.http_gateway.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "audi.ssh_tls": {
+      "active": 1,
+      "app": "audi",
+      "coverage": 1.0,
+      "covered": 1,
+      "form": "light",
+      "obligations": {
+        "audi.ssh_tls.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "mode": "static",
+  "totals": {
+    "active": 3,
+    "coverage": 1.0,
+    "covered": 3
+  }
+}

@@ -26,6 +26,7 @@ defmodule Porsche.MixProject do
 
   defp deps do
     [
+      {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:logger_json, "~> 7.0"},
       {:overalls_protocol, path: "../protocol"},
       {:overalls_diagnostics, path: "../elixir/diagnostics"},
@@ -59,6 +60,7 @@ defmodule Porsche.MixProject do
         "deps.unlock --unused",
         "format --check-formatted",
         "test --warnings-as-errors",
+        "covenant.check --no-run",
         "dialyzer --force-check"
       ]
     ]
