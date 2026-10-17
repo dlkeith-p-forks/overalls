@@ -1,6 +1,7 @@
 defmodule Enrico.InvalidBootPropertyTest do
   use ExUnit.Case, async: false
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   @moduletag timeout: 240_000
   @probe Path.expand("../scripts/invalid_boot_probe.exs", __DIR__)
