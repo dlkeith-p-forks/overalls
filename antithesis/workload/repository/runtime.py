@@ -48,7 +48,9 @@ def read_repository_fixture(path: Path) -> RepositoryFixture:
     owner, name, namespace = parsed.get("owner"), parsed.get("name"), parsed.get("namespace")
     if not isinstance(owner, str) or not isinstance(name, str) or namespace != "github":
         raise ValueError("invalid repository fixture source")
-    if (owner, name) != ("Fixture", "demo"):
+    # Marshall canonicalizes GitHub sources to lowercase at registration, so the
+    # manifest carries the committed identity that live SQL and the origin serve.
+    if (owner, name) != ("fixture", "demo"):
         raise ValueError("unexpected repository fixture source")
     repository_id, registered_by_id = parsed.get("repository_id"), parsed.get("registered_by_id")
     if not isinstance(repository_id, str) or not isinstance(registered_by_id, str):

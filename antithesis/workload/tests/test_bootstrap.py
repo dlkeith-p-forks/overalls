@@ -103,7 +103,7 @@ class BootstrapTests(unittest.TestCase):
             fixture.fixture_id = "fixture-a"
             fixture.repository_id = uuid4()
             fixture.registered_by_id = uuid4()
-            fixture.owner = "Fixture"
+            fixture.owner = "fixture"
             fixture.name = "demo"
             source = MagicMock()
             source.state = State.OBSERVED
@@ -112,7 +112,8 @@ class BootstrapTests(unittest.TestCase):
             source.value.head = "a" * 40
             identity = MagicMock()
             identity.state = State.OBSERVED
-            identity.value = (("github", "Fixture", "demo", fixture.registered_by_id),)
+            # Marshall stores the canonical lowercase source identity.
+            identity.value = (("github", "fixture", "demo", fixture.registered_by_id),)
             publication = MagicMock()
             publication.state = State.OBSERVED
             publication.value.phase = "pending"
@@ -151,6 +152,22 @@ class BootstrapTests(unittest.TestCase):
                 identity.state = State.OBSERVED
                 api.state = State.UNAVAILABLE
                 self.assertFalse(repository_origin_ready(config, "fixture-a"))
+                api.state = State.OBSERVED
+                # The manifest spelling must equal Marshall's committed identity;
+                # the unmet condition is reported once per distinct reason.
+                identity.value = (("github", "Fixture", "demo", fixture.registered_by_id),)
+                with self.assertLogs("core.profile_readiness", level="WARNING") as logs:
+                    self.assertFalse(repository_origin_ready(config, "fixture-a"))
+                    self.assertFalse(repository_origin_ready(config, "fixture-a"))
+                self.assertEqual(len(logs.records), 1)
+                self.assertIn("sql_registration_identity_mismatch", logs.output[0])
+                identity.value = (("github", "fixture", "demo", fixture.registered_by_id),)
+                publication.value.phase = "failed"
+                with self.assertLogs("core.profile_readiness", level="WARNING") as logs:
+                    self.assertFalse(repository_origin_ready(config, "fixture-a"))
+                self.assertIn("sql_publication_phase_failed", logs.output[0])
+                publication.value.phase = "pending"
+                self.assertTrue(repository_origin_ready(config, "fixture-a"))
 
     def test_access_probe_requires_all_actors_and_smtp_receipts(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

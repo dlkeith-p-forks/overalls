@@ -101,7 +101,7 @@ class OriginTest(unittest.TestCase):
 
     def test_real_git_fetch_and_force_push_generation(self) -> None:
         mirror = Path(self.temporary.name) / "mirror.git"
-        url = f"http://127.0.0.1:{self.origin.server_port}/Fixture/demo.git"
+        url = f"http://127.0.0.1:{self.origin.server_port}/fixture/demo.git"
         subprocess.run(
             [
                 "git",
@@ -167,7 +167,7 @@ class OriginTest(unittest.TestCase):
             subprocess.check_output(
                 [
                     "git",
-                    f"--git-dir={self.state.root / 'git' / 'Fixture/demo.git'}",
+                    f"--git-dir={self.state.root / 'git' / 'fixture/demo.git'}",
                     "tag",
                     "--list",
                 ]

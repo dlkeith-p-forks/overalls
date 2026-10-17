@@ -76,14 +76,18 @@ defmodule OverallsAntithesis.Fixture do
       |> Ash.run_action()
 
     stage!("repository.register")
-    {:ok, repository} = Catalog.register(admin_actor, "Fixture", "demo")
+    {:ok, repository} = Catalog.register(admin_actor, "fixture", "demo")
+    # Catalog.register commits the canonical lowercase GitHub source; the
+    # manifest publishes that committed identity, which live SQL, the Enrico
+    # refresh request and the origin fixture's served path all share.
+    %Marshall.Enrico.Repository{namespace: "github", owner: "fixture", name: "demo"} = repository
 
     manifest = %{
       "schema_version" => 1,
       "fixture_id" => fixture_id,
-      "namespace" => "github",
-      "owner" => "Fixture",
-      "name" => "demo",
+      "namespace" => repository.namespace,
+      "owner" => repository.owner,
+      "name" => repository.name,
       "repository_id" => repository.id,
       "registered_by_id" => admin_a.id,
       "webauthn_origin" => MarshallWeb.Endpoint.url(),
@@ -273,7 +277,7 @@ defmodule OverallsAntithesis.Fixture do
   def read_manifest!(path) do
     manifest = path |> File.read!() |> JSON.decode!()
     true = manifest["schema_version"] == 1 and manifest["fixture_id"] == fixture_id!()
-    true = manifest["namespace"] == "github" and manifest["owner"] == "Fixture"
+    true = manifest["namespace"] == "github" and manifest["owner"] == "fixture"
     true = manifest["name"] == "demo"
     manifest
   end

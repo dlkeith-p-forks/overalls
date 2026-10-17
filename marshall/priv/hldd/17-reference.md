@@ -210,6 +210,18 @@ infer a wire version from SQL. Production Execution and the real Control
 probes enforce wire v4 separately. Historical local boot captures predate this
 current-schema witness; local readiness alone does not establish hosted SDK
 ingestion or native effects.
+The optional `repository-origin` profile adds a second gate before the same
+single setup signal: the operator-issued repository manifest must match the
+independent fixture ID, the origin fixture must answer an authenticated state
+read, the SELECT-only oracle must find the registration row and a
+`pending`/`refreshing`/`ready` phase, and Enrico must answer an authenticated
+status read for a never-issued attempt. Marshall commits GitHub sources in
+canonical lowercase, so the operator publishes `github/fixture/demo` exactly as
+registered and the origin fixture serves that path; an earlier mixed-case
+manifest and served path never matched the committed row, and Marshall's own
+refresh failed against the origin, so setup stayed incomplete. The probe now
+reports each distinct unmet prerequisite once per process by condition token,
+observation state, HTTP status or phase, never by credential or payload.
 The host report has unavailable pool capacity and false execution readiness,
 so a successful Control connection cannot authorize a guest placement. The
 controlled executor records requests without claiming physical effects; its
