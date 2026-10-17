@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### porsche.control_transport.I2 — Control client configuration is constrained
+- **scope:** `Porsche.Client.new/3`
+- **must:** Only HTTPS host origins, valid tokens, and known options are accepted; IPv6 literals and HTTP origins are rejected.
+- **kind:** security
+- **status:** active

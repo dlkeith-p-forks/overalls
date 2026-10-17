@@ -7,4 +7,24 @@ defmodule PorscheControlTransportContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "porsche.control_transport.I2"
+  test "control client rejects unsafe origins and tokens" do
+    assert {:ok, client} =
+             Porsche.Client.new(
+               "https://control.example",
+               "porsche_gateway_" <> Base.url_encode64(<<0::256>>, padding: false)
+             )
+
+    assert client.origin == "https://control.example"
+
+    assert {:error, :invalid_configuration} =
+             Porsche.Client.new("http://control.example", "token")
+
+    assert {:error, :invalid_configuration} =
+             Porsche.Client.new(
+               "https://[::1]",
+               "porsche_gateway_" <> Base.url_encode64(<<0::256>>, padding: false)
+             )
+  end
 end

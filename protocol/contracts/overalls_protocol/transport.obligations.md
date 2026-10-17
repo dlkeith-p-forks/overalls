@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### overalls_protocol.transport.I2 — Control envelopes remain closed and bounded
+- **scope:** `OverallsProtocol.Control.Envelope.decode/1`
+- **must:** Valid versioned messages decode, while unknown kinds, extra fields, invalid names, and unsupported versions are rejected without creating atoms.
+- **kind:** security
+- **status:** active

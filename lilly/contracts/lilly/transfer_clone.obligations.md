@@ -19,3 +19,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Reject malformed transfer identity inputs without creating key state.
 - **kind:** security
 - **status:** active
+
+### lilly.transfer_clone.I3 — Export request grammar is exact and shell inert
+- **scope:** `Lilly.Transfer.ExportRequest.parse/1` and `token?/1`
+- **must:** Accept only canonical v4 relocation commands and bounded hexadecimal resume tokens; reject alternate whitespace, shell syntax, malformed UUIDs, and oversized tokens without normalization.
+- **kind:** security
+- **status:** active

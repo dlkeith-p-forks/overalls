@@ -13,3 +13,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### audi.ssh_tls.I2 — SSH request grammar is closed and bounded
+- **scope:** `Audi.SSH.Request.parse/1`
+- **must:** Only bounded valid connect selectors parse; malformed, oversized, and non-text commands are rejected.
+- **kind:** security
+- **status:** active
+
+### audi.ssh_tls.I3 — TLS material validation fails closed
+- **scope:** `Audi.TLS.FleetMaterial.validate/4`
+- **must:** malformed certificates, keys, roots, or hostnames return a fixed invalid result without raising.
+- **kind:** security
+- **status:** active

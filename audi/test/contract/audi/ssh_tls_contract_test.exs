@@ -24,4 +24,23 @@ defmodule AudiSshTlsContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "audi.ssh_tls.I2"
+  test "SSH request grammar is closed and bounded" do
+    assert Audi.SSH.Request.parse("connect a-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") ==
+             {:ok, "a-" <> String.duplicate("a", 32)}
+
+    assert Audi.SSH.Request.parse("connect bad host") == :error
+    assert Audi.SSH.Request.parse("connect " <> String.duplicate("a", 64)) == :error
+    assert Audi.SSH.Request.parse(:unexpected) == :error
+  end
+
+  @tag obligation: "audi.ssh_tls.I3"
+  test "TLS material validation fails closed for malformed input" do
+    assert Audi.TLS.FleetMaterial.validate("", "", "", "example.com") ==
+             {:error, :invalid_tls_material}
+
+    assert Audi.TLS.FleetMaterial.validate("bad", "bad", "bad", "*.example.com") ==
+             {:error, :invalid_tls_material}
+  end
 end

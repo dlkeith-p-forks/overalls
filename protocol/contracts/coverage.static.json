@@ -1,9 +1,9 @@
 {
   "apps": {
     "overalls_protocol": {
-      "active": 5,
+      "active": 8,
       "coverage": 1.0,
-      "covered": 5
+      "covered": 8
     },
     "system": {
       "active": 0,
@@ -52,10 +52,10 @@
       }
     },
     "overalls_protocol.state_view": {
-      "active": 1,
+      "active": 3,
       "app": "overalls_protocol",
       "coverage": 1.0,
-      "covered": 1,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "overalls_protocol.state_view.I1": {
@@ -67,14 +67,34 @@
           "tests": [
             "test declared modules compile and remain loadable"
           ]
+        },
+        "overalls_protocol.state_view.I2": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test cadence coalesces requests while running"
+          ]
+        },
+        "overalls_protocol.state_view.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test view ownership and versions are enforced"
+          ]
         }
       }
     },
     "overalls_protocol.transport": {
-      "active": 1,
+      "active": 2,
       "app": "overalls_protocol",
       "coverage": 1.0,
-      "covered": 1,
+      "covered": 2,
       "form": "light",
       "obligations": {
         "overalls_protocol.transport.I1": {
@@ -85,6 +105,16 @@
           "testable": true,
           "tests": [
             "test declared modules compile and remain loadable"
+          ]
+        },
+        "overalls_protocol.transport.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test control envelope accepts closed valid messages and rejects unknown fields"
           ]
         }
       }
@@ -101,8 +131,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 5,
+    "active": 8,
     "coverage": 1.0,
-    "covered": 5
+    "covered": 8
   }
 }
