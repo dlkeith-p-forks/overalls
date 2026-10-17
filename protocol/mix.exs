@@ -12,7 +12,7 @@ defmodule OverallsProtocol.MixProject do
         {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
         {:hegel_ex,
          git: "https://github.com/ghuntley/hegel-erlang.git",
-         ref: "817ca23",
+         ref: "e875ccc",
          subdir: "packages/hegel_ex",
          only: [:dev, :test],
          runtime: false}
