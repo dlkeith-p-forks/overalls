@@ -120,11 +120,3 @@ for the component being changed.
   native-language annotation conventions and discovery limits. All three
   `mix precommit` gates include `mix contracts.check`; syntax success is not
   semantic verification.
-
-## exe.dev environment
-
-You are running in an exe.dev VM.
-
-https://exe.dev/docs/proxy.md documents the exe.dev HTTPS proxy.
-Only use documented exe.dev features (https://exe.dev/docs.md). Undocumented
-local endpoints are internal infrastructure—unstable and unsupported.
