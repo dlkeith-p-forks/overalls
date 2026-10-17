@@ -1,0 +1,39 @@
+name: devenv
+description: Install Nix on the Namespace cache volume, configure Cachix and install devenv.
+
+inputs:
+  cachix-auth-token:
+    description: Token for pushing to the overalls Cachix cache.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    # The cached Namespace profiles mount a persistent volume at /cache; keeping
+    # /nix there reuses the store between jobs.
+    - name: Mount Nix store from cache volume
+      shell: bash
+      run: |
+        sudo mkdir -p /cache/nix /nix
+        sudo mount --bind /cache/nix /nix
+        sudo chown runner /nix
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@9aaadd8b85853f67fcdf488e6a4e9efa94ee96e2
+      with:
+        extra_nix_config: |
+          system-features = nixos-test benchmark big-parallel
+          max-jobs = auto
+          cores = 0
+
+    - name: Configure Cachix
+      uses: cachix/cachix-action@ee79db531bfb851a7cf47035057b7cca88d26449
+      with:
+        name: overalls
+        extraPullNames: devenv
+        authToken: ${{ inputs.cachix-auth-token }}
+
+    - name: Install devenv
+      shell: bash
+      run: nix profile install nixpkgs#devenv

@@ -1,0 +1,100 @@
+name: ci
+
+on:
+  push:
+    branches: [trunk]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/trunk' }}
+
+permissions:
+  contents: read
+
+jobs:
+  # Repository-wide gates: prek hooks (Python ruff/ty, HLDD receipts, conflict
+  # markers, structured-event logging), the ADR checker and contract checks.
+  gates:
+    runs-on: namespace-profile-cached-amd64-xl
+    timeout-minutes: 60
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Install contract tooling
+        run: devenv shell -- npm ci --prefix tools/code-contracts --ignore-scripts
+      - name: prek
+        run: devenv shell -- prek run --all-files --show-diff-on-failure
+      - name: ADRs
+        run: devenv shell -- elixir scripts/check_adrs.exs
+      - name: Contracts
+        run: |
+          devenv shell -- node scripts/check_contracts.mjs coverage
+          devenv shell -- node --test scripts/test/check_contracts_test.mjs
+
+  # Each Elixir project's `mix precommit` gate against the devenv PostgreSQL.
+  precommit:
+    runs-on: namespace-profile-cached-amd64-xl
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [protocol, marshall, lilly, audi, brady, ziggy, porsche, galileo, enrico]
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Cache Mix deps and build
+        uses: namespacelabs/nscloud-cache-action@v1
+        with:
+          path: |
+            ${{ matrix.project }}/deps
+            ${{ matrix.project }}/_build
+      - name: Install contract tooling
+        run: devenv shell -- npm ci --prefix tools/code-contracts --ignore-scripts
+      - name: Start PostgreSQL
+        run: |
+          devenv up --detach postgres
+          for _ in $(seq 1 60); do
+            if devenv shell -- pg_isready -q; then exit 0; fi
+            sleep 2
+          done
+          echo "PostgreSQL did not become ready" >&2
+          exit 1
+      - name: mix precommit
+        working-directory: ${{ matrix.project }}
+        run: devenv shell -- bash -euo pipefail -c 'mix deps.get && mix precommit'
+      - name: Verify precommit left no changes
+        run: git diff --exit-code
+
+  # Nix flake evaluation plus the non-machine flake checks.
+  nix:
+    runs-on: namespace-profile-cached-amd64-xl
+    timeout-minutes: 120
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Report KVM availability
+        run: |
+          ls -l /dev/kvm || echo "no /dev/kvm on this runner"
+          cat /sys/module/kvm_intel/parameters/nested /sys/module/kvm_amd/parameters/nested 2>/dev/null || true
+      - name: Evaluate flake
+        run: nix flake check --no-build --show-trace
+      - name: Build static checks
+        run: |
+          nix build -L --no-link \
+            .#checks.x86_64-linux.hldd \
+            .#checks.x86_64-linux.conflict-markers \
+            .#checks.x86_64-linux.python-static
