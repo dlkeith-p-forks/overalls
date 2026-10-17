@@ -9,7 +9,7 @@ defmodule Overalls.RequestAccounting.MixProject do
       deps: [
         {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
         {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "b2d6814", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
+      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "998c2a9", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
       ],
       aliases: [
         "toolchain.check": [
