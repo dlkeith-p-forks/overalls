@@ -774,8 +774,10 @@ Read-only preflight derives the actual mounted root and checks physical capacity
 both GPT headers and arrays, CRCs, pinned disk/partition GUIDs, starts and layout.
 FreeBSD uses `gpart recover`, root partition5 resize and `growfs`, preserving the
 root UUID/start and every nonroot entry. OmniOS requires the assembly dataset and
-pool GUID plus exactly one whole-disk vdev, then uses `zpool online -e` while
-preserving loader and reserved-tail identity. Commands have120-second and64-KiB
+pool GUID plus exactly one whole-disk vdev. Its validated `s1` identity remains
+the authority input, raw `p0` is used for GPT preflight, and `zpool online -e`
+receives the unsliced disk operand required by the pinned whole-disk lookup.
+Loader and reserved-tail identities remain protected. Commands have120-second and64-KiB
 bounds. Typed numeric receipt fields retain `native_admission=false`.
 
 Twelve pure parser/authority/GPT tests and cross-target Clippy passed. The updated
@@ -1194,15 +1196,98 @@ Firecracker services, transport/reset/DMA safety, isolation or admission.
 
 The first corrected-image Firecracker service attempt failed at its 240-second
 first-boot deadline; the complete build failed in 353 seconds. The VMM remained
-alive through that deadline, unlike the earlier `9853` early shutdown. Native
-serial contained only newlines, and Firecracker reported the network device
-not yet activated at 17:43:56 and 17:45:00 UTC. No kernel or service response was
-obtained. The observed failure stage is boot; the next driver/bootstrap failure
-has not been located. Records are `/tmp/overalls-native-omnios-76b8-services.log`
+alive through that deadline, unlike the earlier `9853` early shutdown. The
+retained native serial contains the OmniOS banner and login prompt, with growth
+in maintenance; the earlier wrapper-rendered impression of only newlines was
+incorrect. Its 26,404-byte `serial.log` is under
+`/nix/store/7iciaq8hlk17gn92vp6nfiyi3blhd4jl-vm-test-run-overalls-illumos-native-services/`,
+SHA256 `f2ab74a7ad657614cbe1bc69b6afe9e7f11cb8b4691017db3586d6516719e8f0`.
+The growth-gated bootstrap withheld network/identity, so the fixture timed out
+before service oracles. The later host-direct diagnostic below isolates the
+incorrect expansion operand. The source-qualified read-only inspection receipt
+is `/tmp/overalls-omnios-76b8-serial-discrimination/retained-nested-receipt.json`,
+SHA256 `09c16ced36404d1c852c764abf95ddac361463b4aaf5245be2d6c34c5b8f88b4`.
+It binds the failed derivation, retained output and exact `a49255bd` image in its
+dependency closure. Three separate host-direct fresh-clone controls reached login
+using API-mode file serial, API-mode raw PTY and `--no-api` file serial. The
+receipts establish no PTY/API-dependent serial failure, clean guest shutdown or
+native service acceptance. Build records are
+`/tmp/overalls-native-omnios-76b8-services.log`
 and `/home/ghuntley/.local/state/nix/build-logs/1792258871620-1627105-0.jsonl`;
 the failed derivation is
 `/nix/store/w12jz771m913l4lc4dmbkdr0jr31hw4f-vm-test-run-overalls-illumos-native-services.drv`.
 This attempt grants no service, transport, reset or storage acceptance.
+
+## 13. OmniOS whole-disk expansion operand correction
+
+A separate host-direct diagnostic booted a disposable `76b8` clone under the
+pinned Firecracker 1.16.1 PCI executable
+`/nix/store/a6281qwrnsj4yrnkwpj514vjvii6wc9q-firecracker-static-x86_64-unknown-linux-musl-1.16.1/bin/firecracker`,
+with two vCPUs, 2,048 MiB, raw host PTY input/output, an isolated TAP without a
+host route/address, fixture MMDS and guest CID 3. This is distinct from the
+failed nested formal-service run. Both the nesting and PTY setup differ; no
+causal claim about PTY versus file-backed serial follows.
+
+The diagnostic reaches console login with the growth service in maintenance.
+The exact pool's `zpool online -e` rejects `/dev/dsk/c1t0d0s1` with
+`no such device in pool`, while the unsliced `/dev/dsk/c1t0d0` operand succeeds
+and records `whole_disk_status=0`. The inspected bounded receipt is
+`/tmp/overalls-native-76b8-growth-diagnostic/diagnostic-receipt.json`.
+It binds the sealed `a49255bd` disk, transport token `76b8c1ad` and serial
+SHA256 `24ca6b25f16f01a554f15bc9be6c623adc6bb3d2a9eeab26c0e334c115948ff6`
+at `serial.log` in that directory. It records guest filesystem synchronization
+and removal of the owned TAP after shutdown. The pinned libzfs
+whole-disk lookup strips the `s1` suffix, so a validated partition identity is
+not itself the expansion command's accepted whole-disk name.
+
+The [typed helper correction](../../../lyra/src/native_growth.rs) keeps the
+validated `s1` path for pool/vdev authority and raw `p0` for dual-GPT/capacity
+preflight, then supplies only the unsliced operand to expansion. It does not
+accept caller-selected disks or weaken pool/GPT identity checks. This is a
+source-grounded diagnostic correction, not an automatic corrected-helper,
+full-service, growth-history, crash or admission result. A new payload/kit,
+pristine native assembly and exact-image formal replay remain required.
+
+The corrected Rust/type/Clippy/native-probe/payload/kit build passed in 258
+seconds at `/tmp/overalls-native-growth-operand-build.log`; the immutable Rust
+gate is `/nix/store/l3qsbnk5b6ykh5c2d7bls7kxp8ir1gk9-lyra-tests-0.1.0`.
+The operand regression checks both typed raw and whole-disk names while retaining
+partition authority. Kit
+`/nix/store/d0rd5sly1p3j9rhg4pp3kvfbrkkhy41i-overalls-omnios-native-image-candidate-kit`
+has manifest SHA256
+`12052ad8296ede904ad869b27b43a6012baba650936879734d4af5f374823b44`;
+its verified transfer archive SHA256 is
+`f5fa51470d12fa489872b2116a6d053d1251a8779808b2ca8d767152e481d866`.
+The kernel token remains `76b8c1ad`. All 37 FreeBSD payload file/link entries
+remain identical to the final reviewed `hf1wv` payload, as independently recorded
+in `/tmp/overalls-native-growth-operand-freebsd-payload-comparison.json`.
+
+A fresh pinned scratch disk passed native assembly with this corrected kit:
+nine installed/linked modules, 764 verified payload entries, three native SMF
+validations, five disabled stock services and the four exact stock-network
+removals. The private-device/GUID-only read-only extraction returned the
+158,278-byte assembly receipt SHA256
+`676dbc4343cc133340bec6c275cd92bf32b5d38dff2abe9b7ab664ab369856c6`,
+growth helper SHA256
+`bb33f20b45d567daa5493eaf9fa2c8cac4ad4b8475174af5a342fa4ea542c4b3`
+and unchanged unix SHA256
+`c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21`.
+The receipt retains `runtime_validated=false` and `native_admission=false`.
+The target pool exported; only administration GUID `9985174500187493668`
+remained imported and both workspaces were absent before `sync; init 5`.
+Native filesystem synchronization completed at 18:20:53 UTC and QEMU exited 0.
+The sealed 8,589,934,592-byte disk SHA256 is
+`bea32fe6e64eb322a43d584d0cb9a72d23148272097d9510696817ce69980fa7`.
+Its read-only baseline, assembly receipt, firmware link and explicitly test-only
+metadata are `/tmp/overalls-omnios-native-growth-fixed-artifact/`; runtime
+checks must clone this baseline. The preceding `a49255bd` disk remains sealed
+separately.
+Logs `admin-growth-operand-assembly-result.log`,
+`admin-growth-operand-readonly-receipt.log`,
+`admin-growth-operand-export-preflight.log` and
+`admin-growth-operand-shutdown.log` are under
+`/tmp/overalls-omnios-native-probe/`. Exact-image Firecracker service/growth/
+transport/reset acceptance remains separate from this assembly result.
 
 ## Verification boundary and follow-up
 
@@ -1212,7 +1297,9 @@ service, growth, policy, daemon-recovery, process-crash, ordinary-transport and
 transport-event results above. Their receipts retain distinct image identities
 and establish only those nested-KVM histories. OmniOS has target-native
 assembly, scoped diagnostic transport and paired direct-only QEMU boot evidence;
-the corrected-image normal Firecracker service attempt still fails at boot.
+the preceding corrected-block Firecracker service attempt reaches login but
+times out before service oracles with growth in maintenance. Corrected growth
+payload `bea32fe6` has fresh native assembly evidence; runtime replay is open.
 Neither family's record establishes wrong-CID injection, DMA/race stress,
 direct native peer-VM isolation, physical power-loss durability, relocation or
 fleet availability.

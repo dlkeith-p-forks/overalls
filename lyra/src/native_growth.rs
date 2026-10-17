@@ -297,7 +297,18 @@ fn assembly(value: &[u8], actual_guid: &str) -> io::Result<()> {
     Ok(())
 }
 
-fn illumos_device(path: &str) -> io::Result<String> {
+#[derive(Debug, PartialEq, Eq)]
+struct IllumosDisk {
+    raw: String,
+    whole: String,
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] illumos-growth-disk-operands
+/// An assembly-bound, single whole-disk vdev MUST retain its validated s1
+/// partition identity for authority checks, read GPT through the physical p0
+/// device, and expand using the unsliced whole-disk operand. The pinned ZFS
+/// lookup deliberately hides the s1 suffix for whole-disk vdevs.
+fn illumos_device(path: &str) -> io::Result<IllumosDisk> {
     let name = path
         .strip_prefix("/dev/dsk/c")
         .and_then(|name| name.strip_suffix("s1"))
@@ -309,7 +320,10 @@ fn illumos_device(path: &str) -> io::Result<String> {
     }) {
         return Err(invalid());
     }
-    Ok(format!("/dev/rdsk/c{name}p0"))
+    Ok(IllumosDisk {
+        raw: format!("/dev/rdsk/c{name}p0"),
+        whole: format!("/dev/dsk/c{name}"),
+    })
 }
 
 fn illumos_vdev(value: &str, expected_guid: u64) -> io::Result<String> {
@@ -483,7 +497,8 @@ pub fn run(os: Os) -> io::Result<()> {
                 &command("/usr/sbin/zdb", &["-C", POOL], true)?,
                 pool_guid(actual.trim())?,
             )?;
-            (illumos_device(&target)?, target)
+            let disk = illumos_device(&target)?;
+            (disk.raw, disk.whole)
         }
     };
     let mut device = disk(&path)?;
@@ -607,7 +622,10 @@ mod tests {
         assert_eq!(illumos_vdev(&config, 42).unwrap(), "/dev/dsk/c2t0d0s1");
         assert_eq!(
             illumos_device("/dev/dsk/c2t0d0s1").unwrap(),
-            "/dev/rdsk/c2t0d0p0"
+            IllumosDisk {
+                raw: "/dev/rdsk/c2t0d0p0".to_owned(),
+                whole: "/dev/dsk/c2t0d0".to_owned(),
+            }
         );
         assert!(illumos_vdev(&config, 43).is_err());
         for (from, to) in [

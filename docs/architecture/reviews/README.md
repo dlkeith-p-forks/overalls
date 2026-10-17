@@ -35,6 +35,12 @@
   isolation, physical recovery and fleet acceptance remain open. Capabilities
   and catalog admission stay disabled.
 
+- [Host boot-log authorization (2026-10-17)](2026-10-17-host-boot-log-authorization.md):
+  read-only host diagnostics have independent Cedar, host-stream and current
+  execution authority while guest terminal capability remains disabled.
+  The review tracks boot/log incarnation fencing and focused verification
+  separately from deployed browser and native-image acceptance.
+
 - [Thread sharing review (2026-10-16)](2026-10-16-thread-sharing.md): ADR-0175's
   durable thread grants, current bound-machine authority, additive VM/team roles,
   replay and revocation boundaries. The focused 111-case suite and synthetic

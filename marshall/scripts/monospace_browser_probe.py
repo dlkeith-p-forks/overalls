@@ -172,6 +172,20 @@ def check_font(page: Page) -> None:
     )
 
 
+def check_machine_tabs(page: Page) -> None:
+    """Wrapped machine tabs must remain within their navigation box."""
+    tabs = page.locator("nav[aria-label='Machine workspace']")
+    bounds = tabs.bounding_box()
+    assert bounds is not None, "Machine navigation is missing"
+    for link in tabs.locator("a, button").all():
+        item = link.bounding_box()
+        assert item is not None, "Machine navigation control is hidden"
+        assert bounds["y"] - 0.1 <= item["y"], "Machine tab begins outside its navigation"
+        assert item["y"] + item["height"] <= bounds["y"] + bounds["height"] + 0.1, (
+            "Wrapped machine tab escapes its navigation"
+        )
+
+
 def check_grid(page: Page, route: str) -> None:
     """Every laid-out element starts on a half-line boundary (renderer DOM excluded)."""
     result: object = page.evaluate("window.overallsGrid.check()")
@@ -658,7 +672,7 @@ def check_contrast(page: Page) -> None:
         assert ratio >= minimum, f"Insufficient contrast for {foreground} on {background}"
 
 
-GRID_ROUTES = ("overview", "machines", "create", "machine", "security", "ssh", "hldd")
+GRID_ROUTES = ("overview", "machines", "create", "machine", "boot-log", "security", "ssh", "hldd")
 
 
 def run(fixture: Context, artifacts: Path) -> None:
@@ -685,6 +699,7 @@ def run(fixture: Context, artifacts: Path) -> None:
             "create": "/machines/new",
             "machine": f"/machines/{fixture['vm_id']}",
             "terminal": f"/machines/{fixture['vm_id']}/terminals",
+            "boot-log": f"/machines/{fixture['vm_id']}/terminals?view=boot-log",
             "access": f"/machines/{fixture['vm_id']}/access",
             "machine-settings": f"/machines/{fixture['vm_id']}/settings",
             "agents": f"/machines/{fixture['vm_id']}/threads",
@@ -711,12 +726,21 @@ def run(fixture: Context, artifacts: Path) -> None:
                 if name in (
                     "machine",
                     "terminal",
+                    "boot-log",
                     "access",
                     "machine-settings",
                     "agents",
                     "resize",
                 ):
                     expect(page.locator("#machine-connect")).to_be_visible()
+                if name == "boot-log":
+                    check_machine_tabs(page)
+                    expect(page.locator("#machine-boot-log")).to_have_attribute(
+                        "aria-current", "page"
+                    )
+                    expect(page.locator("#terminal-boot-view")).to_be_visible()
+                    expect(page.locator("#terminal-status")).to_have_text("Boot log · read-only")
+                    expect(page.locator("#terminal-create")).to_have_count(0)
                 if name == "machine":
                     page.locator("[data-copy-command='machine-install-command']").click()
                     expect(page.locator("#machine-copy-status")).to_have_text("Command copied.")
@@ -734,6 +758,7 @@ def run(fixture: Context, artifacts: Path) -> None:
                 "create",
                 "machine",
                 "terminal",
+                "boot-log",
                 "agents",
                 "integrations",
                 "teams",
@@ -742,7 +767,9 @@ def run(fixture: Context, artifacts: Path) -> None:
             ):
                 visit(page, fixture["origin"], routes[name])
                 check_overflow(page)
-                if name in ("machine", "terminal"):
+                if name in ("machine", "terminal", "boot-log"):
+                    check_machine_tabs(page)
+                    check_grid(page, routes[name])
                     terminal = page.locator("#terminal-display").bounding_box()
                     sidebar = page.locator("#terminal-sidebar-list").bounding_box()
                     assert terminal is not None and sidebar is not None

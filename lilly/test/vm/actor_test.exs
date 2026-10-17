@@ -49,6 +49,122 @@ defmodule Lilly.VM.ActorTest do
          ]}
   end
 
+  defmodule DiagnosticExecutor do
+    @behaviour Lilly.VM.Executor
+    @impl true
+    @spec reconcile({pid(), Path.t()}, map(), map()) :: Lilly.VM.Executor.result()
+    def reconcile({owner, _directory}, command, history),
+      do: ControlledExecutor.reconcile(owner, command, history)
+
+    @impl true
+    @spec boot_log({pid(), Path.t()}, map(), non_neg_integer()) ::
+            {:ok, Lilly.VM.BootLog.page()} | {:error, atom()}
+    def boot_log({_owner, directory}, command, cursor) do
+      Lilly.VM.BootLog.read(
+        directory,
+        command.placement_id,
+        {command.execution_epoch, command.generation},
+        cursor
+      )
+    end
+  end
+
+  defmodule BlockingDiagnosticExecutor do
+    @behaviour Lilly.VM.Executor
+    @impl true
+    @spec reconcile(pid(), map(), map()) :: Lilly.VM.Executor.result()
+    def reconcile(owner, command, history),
+      do: ControlledExecutor.reconcile(owner, command, history)
+
+    @impl true
+    @spec boot_log(pid(), map(), non_neg_integer()) :: {:ok, Lilly.VM.BootLog.page()}
+    def boot_log(owner, _command, cursor) do
+      send(owner, {:diagnostic_read_started, self()})
+
+      receive do
+        :finish_diagnostic_read -> {:ok, %{next: cursor + 7, bytes: "private"}}
+      end
+    end
+  end
+
+  test "pending and failed actors expose current boot diagnostics without terminal identity",
+       context do
+    directory = Path.join(context.tmp_dir, "diagnostic")
+    File.mkdir!(directory)
+    File.chmod!(directory, 0o700)
+
+    for {name, bytes} <- [
+          {"boot.json",
+           JSON.encode!(%{
+             "version" => 1,
+             "placement_id" => @id,
+             "execution_epoch" => 1,
+             "generation" => 1,
+             "boot_challenge" => String.duplicate("a", 64)
+           })},
+          {"intent.bin", <<@id::binary, 1::64, 1::64, 1>>},
+          {"launch-attempt.bin", <<@id::binary, 1::64, 1::64>>},
+          {"boot.log", "startup failure"}
+        ] do
+      path = Path.join(directory, name)
+      File.write!(path, bytes)
+      File.chmod!(path, 0o600)
+    end
+
+    options =
+      Keyword.merge(context.options,
+        executor: {DiagnosticExecutor, {self(), directory}},
+        terminal_owner: self()
+      )
+
+    actor = start_supervised!({Actor, options})
+    assert {:error, :boot_log_unavailable} = Actor.boot_log(actor, @id, 0)
+    Actor.reconcile(actor)
+    assert_receive {:execute, task, _, _}, 2000
+    assert {:ok, %{next: 15, bytes: "startup failure"}} = Actor.boot_log(actor, @id, 0)
+    assert {:error, :terminal_unavailable} = Actor.terminal_identity(actor, @id)
+    assert {:error, :boot_log_unavailable} = Actor.boot_log(actor, Lilly.UUID.generate(), 0)
+
+    unauthorized = Task.async(fn -> Actor.boot_log(actor, @id, 0) end)
+    assert {:error, :not_terminal_owner} = Task.await(unauthorized)
+
+    File.write!(Path.join(directory, "intent.bin"), <<@id::binary, 1::64, 1::64, 3>>)
+
+    send(
+      task,
+      {:result,
+       {:ok, %{running() | state: :failed, compute_empty: true, reason: :execution_failed}}}
+    )
+
+    assert_receive {:vm_actor_outcome, @id, ^actor, %{state: :failed}}, 2000
+    assert {:ok, %{next: 15, bytes: "startup failure"}} = Actor.boot_log(actor, @id, 0)
+    assert {:error, :terminal_unavailable} = Actor.terminal_identity(actor, @id)
+
+    {:ok, :stored} = accept(context, command(2, :stop))
+    assert {:error, :boot_log_unavailable} = Actor.boot_log(actor, @id, 0)
+  end
+
+  test "a durable command superseded during a diagnostic read discards its bytes", context do
+    options = Keyword.put(context.options, :executor, {BlockingDiagnosticExecutor, self()})
+    actor = start_supervised!({Actor, options})
+    Actor.reconcile(actor)
+    assert_receive {:execute, _, _, _}, 2000
+
+    reader =
+      Task.async(fn ->
+        receive do
+          :read -> Actor.boot_log(actor, @id, 0)
+        end
+      end)
+
+    assert :ok = Actor.terminal_owner(actor, reader.pid)
+    send(reader.pid, :read)
+    assert_receive {:diagnostic_read_started, ^actor}
+    {:ok, :stored} = accept(context, command(2, :stop))
+    send(actor, :finish_diagnostic_read)
+    assert {:error, :boot_log_unavailable} = Task.await(reader)
+  end
+
   test "terminal identity requires the current running generation and denies supersession",
        context do
     vsock_path = "/tmp/ltv-" <> Lilly.UUID.generate()

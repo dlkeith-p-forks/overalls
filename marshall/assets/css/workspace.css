@@ -176,8 +176,8 @@ button.machine-editor-link {
 .machine-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 1ch;
-  height: var(--line-height);
+  gap: var(--border-thickness) 1ch;
+  min-height: var(--line-height);
   margin: 0 0 var(--line-height);
   border-bottom: var(--border-thickness) solid var(--text-color);
 }

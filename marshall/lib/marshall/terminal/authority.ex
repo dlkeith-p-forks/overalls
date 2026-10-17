@@ -210,9 +210,14 @@ defmodule Marshall.Terminal.Authority do
 
   @spec boot_log(Compute.VirtualMachine.t(), map(), non_neg_integer()) ::
           {:ok, %{next: non_neg_integer(), bytes: binary()}} | {:error, atom()}
+  # @cc [owner:ghuntley,label:security;recovery] boot-log-is-host-diagnostic
+  # Boot-log reads MUST recheck Cedar read authority and the current host's
+  # authenticated protocol-2 stream and liveness, independently of guest agent
+  # capabilities or readiness. Controls MUST retain the current placement and
+  # execution epoch; this read MUST NOT authorize guest terminal operations.
   def boot_log(vm, actor, cursor) do
     with {:ok, vm} <- live_vm(vm.id, actor, "read"),
-         {:ok, host} <- capability(vm),
+         {:ok, host} <- host_stream_capability(vm),
          {:ok, %{type: :boot_log_data, next: next, bytes: bytes}} <-
            stream_control(host.id, boot_log_message(vm, cursor)) do
       {:ok, %{next: next, bytes: bytes}}
@@ -316,8 +321,15 @@ defmodule Marshall.Terminal.Authority do
   # whose catalog image's agent set lacks the terminal capability before
   # consulting host terminal protocol or liveness; the UI hiding is not authority.
   defp capability(vm) do
-    with %{terminal: true} <- Compute.Images.guest_capabilities(vm.image_id),
-         [host] when is_map(host.inventory) <- Ledger.read!(Host, id: host_of(vm)) do
+    with %{terminal: true} <- Compute.Images.guest_capabilities(vm.image_id) do
+      host_stream_capability(vm)
+    else
+      _ -> {:error, :terminal_unavailable}
+    end
+  end
+
+  defp host_stream_capability(vm) do
+    with [host] when is_map(host.inventory) <- Ledger.read!(Host, id: host_of(vm)) do
       if host.inventory["terminal_protocol"] === 2 and
            Marshall.Compute.HostLiveness.authority?(
              host.connection_session_id,

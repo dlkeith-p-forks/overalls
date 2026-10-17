@@ -71,6 +71,10 @@ image contains a tool.
    machine evidence are recorded. A native manifest may carry
    `workspace_source_version = 2` as schema, but that declaration does not
    grant source delivery. A missing or mismatched manifest remains refused.
+   Reading the host's bounded serial boot log is a separately authorized
+   diagnostic under [ADR-0083](0083-terminal-host-stream-and-registry.md), not
+   a guest terminal capability or readiness claim. It may remain available for
+   an exact current pending/failed boot while all native capabilities stay false.
 5. **Lilly preserves shared boundaries.** Kernel bundles include an initrd only
    when the validated bundle declares one. Firmware bundles select the default
    CPU model for illumos and retain Hyper-V configuration only for Windows.
@@ -311,8 +315,14 @@ The paired direct-only QEMU diagnostic mounts root and reaches console login on
 growth service enters maintenance; Firecracker service/transport/reset evidence,
 original ZFS EIO causality and production admission remain separate gates. The
 failed `9853` history remains preserved. The first corrected-image Firecracker
-service attempt stays alive but misses its 240-second first-boot deadline, with
-blank serial and no kernel/service response. The failure stage remains boot.
+service attempt stays alive and reaches console login with growth in maintenance,
+withholding network/identity and missing the 240-second fixture deadline.
+Retained serial corrects the earlier wrapper-rendered blank-output impression.
+A separate exact-image host-direct diagnostic isolates the sliced expansion
+operand refusal. The corrected typed raw/whole-disk helper passed its Rust gates,
+then fresh kit `d0rd` passed native assembly and clean shutdown, sealing disk
+`bea32fe6`; the review binds complete kit/receipt/disk identities. Corrected
+service/growth/transport/reset replay and production admission remain open.
 
 Both wrappers share the allocation-free, little-endian frame and credit state
 machine in [common](../../../nix/domains/artifacts/guest/native-kernels/common).

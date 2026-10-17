@@ -177,6 +177,13 @@ defmodule MarshallWeb.EditorWorkspaceTest do
     assert Enum.count(LazyHTML.query(linux, "a[href='/machines/#{c.vm.id}']")) == 1
     assert Enum.count(LazyHTML.query(linux, "#open-vscode")) == 1
 
+    assert Enum.count(
+             LazyHTML.query(
+               linux,
+               "#machine-boot-log[href='/machines/#{c.vm.id}/terminals?view=boot-log']"
+             )
+           ) == 1
+
     windows =
       render.(
         Map.put(vm, :guest_capabilities, %{
@@ -195,6 +202,14 @@ defmodule MarshallWeb.EditorWorkspaceTest do
     assert Enum.empty?(LazyHTML.query(windows, "a[href='/machines/#{c.vm.id}']"))
     assert Enum.empty?(LazyHTML.query(windows, "#open-vscode"))
     assert Enum.empty?(LazyHTML.query(windows, "#open-vscode-disabled"))
+
+    assert Enum.count(
+             LazyHTML.query(
+               windows,
+               "#machine-boot-log[href='/machines/#{c.vm.id}/terminals?view=boot-log']"
+             )
+           ) == 1
+
     notice = LazyHTML.query(windows, "#machine-connect-unavailable")
     assert Enum.count(notice) == 1
     assert LazyHTML.text(notice) =~ "no guest agents"

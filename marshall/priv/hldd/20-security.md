@@ -800,6 +800,15 @@ With an unprivileged Lilly, hostd passes the service uid as `--reader-uid` and
 the writer changes the file's owner to it through the open descriptor, so only
 Lilly can read console bytes and a planted link or foreign file is refused
 (exit 74) before any console byte is written to it.
+Browser boot-log access separately rechecks Cedar VM read permission, current
+placement/execution and fresh authenticated host-stream authority. Lilly accepts
+only its assigned stream caller, validates the newest runnable command and
+binds the private file to the retained boot/launch incarnation before returning
+at most 16 KiB. Pending/failed guest bootstrap does not grant input or guest
+terminal authority; image terminal capability remains independently enforced.
+Responses contain no jailed guest socket path or boot challenge, and console
+bytes enter no diagnostic event or database payload. Changed, missing or foreign
+identity refuses rather than opening another path.
 Template diagnostics leave the native postcommit boundary through the independent
 observability plane. Validated host/pool/record identities support correlation;
 no trace, timestamp or historical event can create a placement, prove current
@@ -949,7 +958,11 @@ native-VM peer isolation is also unexecuted.
 
 Native root mutation is confined to the actual mounted root and pinned GPT
 identities, after read-only dual-header/CRC/capacity validation. OmniOS additionally
-binds the assembly dataset/pool GUID and single whole-disk vdev. Root-only
+binds the assembly dataset/pool GUID and single whole-disk vdev. Growth keeps
+that vdev's validated `s1` authority identity and raw `p0` GPT preflight separate
+from the unsliced operand required by libzfs expansion. The scoped native
+operand diagnostic does not establish corrected-helper or interrupted-growth
+acceptance. Root-only
 no-argument invocation, an exclusive root-owned lock, bounded utility output and
 postflight precede the volatile success receipt required by bootstrap. Pure
 parser tests do not establish filesystem growth or interruption recovery.

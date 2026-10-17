@@ -70,6 +70,11 @@ defmodule MarshallWeb.WorkspaceComponents do
   # missing projection hides the control and shows the explanation instead.
   # Hiding is presentation only; server-side authorities refuse independently.
 
+  # @cc [owner:ghuntley,label:product;security] workspace-host-boot-log-entry
+  # Machine readers MUST have a distinct Boot log entry regardless of guest
+  # terminal capability. This entry MUST select read-only host diagnostics;
+  # navigation MUST NOT grant terminal or host-file authority.
+
   # @cc [owner:ghuntley,label:product] workspace-global-thread-entry
   # Machine workspace navigation MUST omit the machine-scoped Agents entry;
   # the global Threads navigation is the primary entry to agent work.
@@ -82,6 +87,12 @@ defmodule MarshallWeb.WorkspaceComponents do
         navigate={~p"/machines/#{@vm.id}"}
         aria-current={@active == "terminal" && "page"}
       >Terminal</.link>
+      <.link
+        :if={@vm.permissions.read}
+        id="machine-boot-log"
+        navigate={~p"/machines/#{@vm.id}/terminals?view=boot-log"}
+        aria-current={@active == "boot-log" && "page"}
+      >Boot log</.link>
       <.link
         :if={@vm.permissions.manage && OverallsProtocol.ProfilePolicy.allows?(@vm.profile, :sharing)}
         navigate={~p"/machines/#{@vm.id}/access"}
@@ -250,7 +261,7 @@ defmodule MarshallWeb.WorkspaceComponents do
             <%= cond do %>
               <% capability?(@vm, :available) && !capability?(@vm, :ssh) -> %>
                 This machine's image has no guest agents yet: SSH, the browser terminal
-                and agents are unavailable. Use the host serial console.
+                and agents are unavailable. Use Boot log to view the read-only host console.
               <% !@vm.permissions.write -> %>
                 SSH connection requires write access to this machine.
               <% @vm.profile == :inception -> %>

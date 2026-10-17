@@ -124,7 +124,15 @@ diagnostic reaches console login on `76b8` under the same no-vsock settings
 where `9853` panics mounting root. Growth enters maintenance in that diagnostic;
 Firecracker service/transport/reset acceptance remains separate. Corrected
 runtime tests use independent clones and grant no admission from assembly alone.
-The first corrected-image Firecracker service run stays alive but misses its
-240-second first-boot deadline, with blank serial and no kernel/service response.
+The first corrected-image Firecracker service run stays alive and reaches login,
+but growth enters maintenance and bootstrap withholds network/identity, missing
+the 240-second fixture deadline. The retained serial contains the banner/login;
+the wrapper's earlier blank-serial rendering was incomplete evidence. A separate
+host-direct diagnostic identifies the sliced `zpool online -e` operand refusal;
+the helper now derives the unsliced whole-disk operand while preserving exact
+partition/pool authority. Corrected kit `d0rd` passed a fresh native assembly,
+native schema checks, read-only receipt extraction, clean export and shutdown.
+Its sealed disk is `bea32fe6`; exact service/growth/transport/reset replay is
+still required. The native review records full disk/receipt identities.
 Fresh-boot verification must also establish that the imported pool's candidate name,
 selected BE, vfstab, loader and pool cache survive export and a fresh boot.

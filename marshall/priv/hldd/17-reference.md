@@ -579,7 +579,9 @@ under the same no-vsock settings where `9853` panics mounting root. Growth enter
 maintenance in this diagnostic; corrected Firecracker service/transport/reset
 acceptance remains separate, and the earlier `9853` boot failures stay recorded.
 The first corrected-image Firecracker service run stays alive but misses its
-240-second first-boot deadline, with blank serial and no kernel/service response.
+240-second first-boot deadline after reaching login with growth in maintenance
+and network/identity withheld. Retained serial corrects the earlier wrapper's
+blank-output impression; it does not establish service acceptance.
 The vendor-base FreeBSD
 candidate passed complete services and same-boot daemon recovery over two clean
 boots each; later canonical-roots/SSH inputs passed full service oracles in the
@@ -595,8 +597,14 @@ commands and writes `/var/run/overalls/root-growth.json` before bootstrap may
 publish identity. Twelve pure checks and three native FreeBSD QEMU boots passed
 one unchanged root plus two expansions with retained home/GPT/foreign-disk checks;
 the later exact canonical-roots/SSH image passed 334-second Firecracker growth
-with three clean boots, two expansions and full service oracles. OmniOS growth
-and interrupted expansion remain pending; final blocking-flush FreeBSD replay
+with three clean boots, two expansions and full service oracles. A host-direct
+Firecracker diagnostic on a disposable OmniOS `76b8` clone reproduced the `s1`
+expansion-operand refusal and unsliced whole-disk success. The corrected helper
+retains validated `s1` authority and raw `p0` GPT preflight, using the unsliced
+disk only for expansion. The typed Rust/Clippy/native build and fresh corrected
+kit `d0rd` assembly passed; read-only disk `bea32fe6` has its exact receipt in
+the native review. Corrected-helper OmniOS replay and interrupted
+expansion remain pending; final blocking-flush FreeBSD replay
 passed the same three-boot/two-expansion boundary. The
 OmniOS kit's offline SMF profile disables stock cloud-init's four instances and
 stock SSH; exact-profile database-copy validation passed without touching the
