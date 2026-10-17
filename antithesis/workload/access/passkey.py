@@ -96,6 +96,13 @@ def assertion(
     }
 
 
+# The operator writes a minimal P-256 SEC1 ECPrivateKey (version, 32-byte
+# scalar, named-curve parameters, no public key): exactly 51 DER bytes.
+# OpenSSL derives the public point when signing, so that is the smallest
+# private key encoding this authenticator must accept.
+_MINIMUM_PRIVATE_DER = 51
+
+
 def authenticator_from_private(raw_id: object, private_der: object) -> Authenticator | None:
     if not isinstance(raw_id, str) or not isinstance(private_der, str):
         return None
@@ -104,6 +111,6 @@ def authenticator_from_private(raw_id: object, private_der: object) -> Authentic
         decoded_key = _decode(private_der)
     except (ValueError, binascii.Error):
         return None
-    if not 16 <= len(decoded_id) <= 1024 or not 64 <= len(decoded_key) <= 4096:
+    if not 16 <= len(decoded_id) <= 1024 or not _MINIMUM_PRIVATE_DER <= len(decoded_key) <= 4096:
         return None
     return Authenticator(raw_id, decoded_key)

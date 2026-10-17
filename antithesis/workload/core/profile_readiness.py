@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import re
 import secrets
 import sqlite3
 import ssl
@@ -37,6 +38,34 @@ def _required(name: str) -> str:
     if value is None or not value.strip():
         raise ValueError(f"missing {name}")
     return value.strip()
+
+
+# Static ValueError messages raised by reviewed fixture/configuration parsers.
+# Only these, never arbitrary exception text, may be echoed into a reason.
+_REVIEWED_CONFIGURATION_ERRORS = frozenset(
+    {
+        "invalid access fixture",
+        "invalid access fixture actor",
+        "invalid synthetic actor email",
+        "invalid fixture authenticator",
+        "invalid fixture identity",
+        "invalid WebAuthn origin",
+        "invalid WebAuthn RP binding",
+        "duplicate access fixture actor",
+        "unreviewed SMTP fixture endpoint",
+    }
+)
+_MISSING_VARIABLE = re.compile(r"missing [A-Z][A-Z0-9_]{0,63}")
+
+
+def _configuration_reason(error: Exception) -> str:
+    """Name the failed configuration check without echoing untrusted text."""
+    message = str(error)
+    if isinstance(error, ValueError) and (
+        message in _REVIEWED_CONFIGURATION_ERRORS or _MISSING_VARIABLE.fullmatch(message)
+    ):
+        return f"configuration_or_credentials ({type(error).__name__}: {message})"
+    return f"configuration_or_credentials ({type(error).__name__})"
 
 
 def _incomplete(profile: str, reason: str) -> bool:
@@ -75,7 +104,7 @@ def repository_origin_ready(config: Config, expected_fixture_id: str) -> bool:
             Path(_required("ANTITHESIS_ENRICO_TOKEN_FILE")),
         )
     except (OSError, UnicodeError, ValueError) as error:
-        return _incomplete(profile, f"configuration_or_credentials ({type(error).__name__})")
+        return _incomplete(profile, _configuration_reason(error))
     if fixture.fixture_id != expected_fixture_id:
         return _incomplete(profile, "fixture_id_mismatch")
 
@@ -132,7 +161,7 @@ def access_smtp_ready(config: Config, expected_fixture_id: str) -> bool:
         fixture = read_access_fixture(Path(_required("ANTITHESIS_ACCESS_FIXTURE_FILE")))
         mail = MailLinks.from_environment(config.ca_file)
     except (OSError, UnicodeError, ValueError) as error:
-        return _incomplete(profile, f"configuration_or_credentials ({type(error).__name__})")
+        return _incomplete(profile, _configuration_reason(error))
     if fixture.fixture_id != expected_fixture_id:
         return _incomplete(profile, "fixture_id_mismatch")
 
@@ -454,7 +483,7 @@ def satellite_standin_ready() -> bool:
             Path(_required("ANTITHESIS_GUEST_STANDIN_ROOT")) / "results/ready.json"
         )
     except (OSError, UnicodeError, ValueError) as error:
-        return _incomplete(profile, f"configuration_or_credentials ({type(error).__name__})")
+        return _incomplete(profile, _configuration_reason(error))
     source = origin.state()
     if source.state is not State.OBSERVED or source.value is None:
         return _incomplete(profile, f"origin_state_{source.state.value}")
