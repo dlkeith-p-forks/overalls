@@ -274,12 +274,17 @@ the guest VMM overlay. Its container Lilly is a separate STUB-storage release:
 it reports a fixed synthetic pool with no ZFS and compute headroom for one free
 guest-vmm slot, capped by measured cgroup limits, and sets execution readiness
 only after a guest-vmm health check and a verified advertised image. The
-enrollment operator registers that image manifest through the catalog action.
-Bootstrap adds a third gate: the guest-vmm image identity, read through the
+enrollment operator registers that image manifest through the catalog action
+and enables lilly-a through the reviewed CLI `enable` action once its report is
+fresh and execution-ready; Marshall's catalog counts no capacity from a disabled
+host. Bootstrap adds a third gate: the guest-vmm image identity, read through the
 read-only witness bridge, and a Marshall catalog offering that image with known
 capacity for its shape. The stub admits one emulated QEMU TCG guest only; it is
-not native ZFS, KVM, Firecracker, isolation or capacity evidence, and no local
-or hosted run of this profile is recorded.
+not native ZFS, KVM, Firecracker, isolation or capacity evidence. Its first
+hosted run (`a2edc265384761d6607df51eac50b29d-65-0`) timed out at
+`capacity_unknown` because the host was never enabled; the earlier local pass
+had inherited an enabled host from a retained PostgreSQL volume, so local
+validations now start from empty volumes.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The

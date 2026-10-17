@@ -579,14 +579,16 @@ process_request() {
 }
 
 # @cc [owner:ghuntley,label:verification;capacity] stub-host-enablement
-# Only the admission-stub profile enables lilly-a, through Marshall's reviewed
-# CLI enable action, which itself refuses until Lilly's stub report is fresh and
-# execution-ready. Lilly connects after enrollment-ready, so this retries from
-# the operator loop. It fabricates no readiness, capacity or pool credit.
+# Only the stub-capacity profiles (admission-stub storage, guest-lifecycle
+# catalog) enable lilly-a, through Marshall's reviewed CLI enable action, which
+# itself refuses until Lilly's stub report is fresh and execution-ready. Lilly
+# connects after enrollment-ready, so this retries from the operator loop. It
+# fabricates no readiness, capacity or pool credit.
 stub_host_enabled=0
 stub_enable_after=0
 enable_stub_host() {
-  [[ "${OVERALLS_ANTITHESIS_STORAGE_STUB:-0}" == 1 && "$stub_host_enabled" == 0 ]] || return 0
+  [[ ( "${OVERALLS_ANTITHESIS_STORAGE_STUB:-0}" == 1 || "${OVERALLS_ANTITHESIS_GUEST_CATALOG:-0}" == 1 ) &&
+    "$stub_host_enabled" == 0 ]] || return 0
   (( SECONDS >= stub_enable_after )) || return 0
   if "$release" eval 'Marshall.Operations.CLI.main()' enable "$host_id" >/dev/null 2>&1; then
     stub_host_enabled=1
