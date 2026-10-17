@@ -1,6 +1,7 @@
 defmodule Ziggy.SLOTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
   alias Ziggy.SLO
 
   # @cc [owner:ghuntley,label:verification] ziggy-slo-generated-completions

@@ -1,6 +1,7 @@
 defmodule Ziggy.AgentStreamTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   property "reassembles completed output items across arbitrary chunk boundaries" do
     item = %{

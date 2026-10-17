@@ -1,6 +1,7 @@
 defmodule Ziggy.AgentErrorTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
+  import Hegel
+  import Hegel.Gen
 
   test "only exact provider rejection fields establish a context or compaction failure" do
     for code <- ["context_length_exceeded", "context_window_exceeded"] do
