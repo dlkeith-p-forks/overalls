@@ -177,7 +177,7 @@ runs in.
 
 Rules for contract tests:
 
-- Properties over grids (StreamData), not pinned outputs. A pinned example
+- Properties over grids (Hegel), not pinned outputs. A pinned example
   fixes one point; a property sweeps a line.
 - Persisted formats (table columns, event types, audit keys, prompt block
   order, token prefixes, tool names and descriptions) are environment facts

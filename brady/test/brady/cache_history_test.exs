@@ -219,7 +219,7 @@ defmodule Brady.CacheHistoryTest do
     end
   end
 
-  @spec command() :: StreamData.t(command())
+  @spec command() :: Hegel.Gen.t()
   defp command do
     frequency([
       {5,
