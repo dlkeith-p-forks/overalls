@@ -243,3 +243,118 @@ fn root_bridge_runs_as_the_given_uid() {
     drop(bridge.lilly);
     assert!(wait(&mut bridge.child).success());
 }
+
+/// A detached bridge with hostd's end of its control socket.
+struct Detached {
+    bridge: Bridge,
+    control: UnixStream,
+}
+
+fn spawn_detached() -> Detached {
+    let (lilly, bridge_client) = pair();
+    let (bridge_guest, guest) = pair();
+    let (control, bridge_control) = pair();
+    let _serial = SPAWN.lock().expect("spawn lock");
+    for fd in [&bridge_client, &bridge_guest, &bridge_control] {
+        rustix::io::fcntl_setfd(fd, rustix::io::FdFlags::empty()).expect("inheritable");
+    }
+    let child = Command::new(HELPER)
+        .arg("--detached")
+        .arg(bridge_control.as_raw_fd().to_string())
+        .arg(bridge_client.as_raw_fd().to_string())
+        .arg(bridge_guest.as_raw_fd().to_string())
+        .stdin(Stdio::null())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .expect("bridge spawns");
+    drop((bridge_client, bridge_guest, bridge_control));
+    Detached {
+        bridge: Bridge {
+            child,
+            lilly: UnixStream::from(lilly),
+            guest: UnixStream::from(guest),
+        },
+        control: UnixStream::from(control),
+    }
+}
+
+/// @cc [owner:ghuntley,label:verification;security] bridge-detached-handshake-fixture
+/// A detached bridge MUST send READY, move no guest byte to its client before
+/// GO, bridge exactly after GO, and exit 70 without moving a byte when the
+/// control socket ends before GO.
+#[test]
+fn detached_bridge_moves_nothing_before_go() {
+    let mut detached = spawn_detached();
+    let mut ready = [0_u8; 1];
+    detached
+        .control
+        .read_exact(&mut ready)
+        .expect("bridge reports ready");
+    assert_eq!(ready[0], lilly_ingress_bridge::READY);
+    detached
+        .bridge
+        .guest
+        .write_all(b"banner")
+        .expect("guest speaks first");
+    detached
+        .bridge
+        .lilly
+        .set_read_timeout(Some(Duration::from_millis(200)))
+        .expect("timeout");
+    let mut early = [0_u8; 6];
+    assert!(
+        detached.bridge.lilly.read(&mut early).is_err(),
+        "no guest byte may reach the client before GO"
+    );
+    detached
+        .bridge
+        .lilly
+        .write_all(b"greeting")
+        .expect("the client writes before GO");
+    detached
+        .control
+        .write_all(&[lilly_ingress_bridge::GO])
+        .expect("hostd answers GO");
+    detached
+        .bridge
+        .lilly
+        .set_read_timeout(Some(Duration::from_secs(10)))
+        .expect("timeout");
+    detached
+        .bridge
+        .lilly
+        .read_exact(&mut early)
+        .expect("guest bytes after GO");
+    assert_eq!(&early, b"banner");
+    let mut moved = [0_u8; 8];
+    detached
+        .bridge
+        .guest
+        .read_exact(&mut moved)
+        .expect("client bytes reach the guest");
+    assert_eq!(&moved, b"greeting");
+    drop(detached.bridge.lilly);
+    assert!(wait(&mut detached.bridge.child).success());
+    silent(&mut detached.bridge.child);
+
+    let mut abandoned = spawn_detached();
+    abandoned
+        .control
+        .read_exact(&mut ready)
+        .expect("bridge reports ready");
+    drop(abandoned.control);
+    assert_eq!(wait(&mut abandoned.bridge.child).code(), Some(70));
+    abandoned
+        .bridge
+        .guest
+        .set_read_timeout(Some(Duration::from_secs(10)))
+        .expect("timeout");
+    let mut rest = Vec::new();
+    abandoned
+        .bridge
+        .guest
+        .read_to_end(&mut rest)
+        .expect("guest sees end of stream");
+    assert!(rest.is_empty(), "an abandoned bridge moves no byte");
+}

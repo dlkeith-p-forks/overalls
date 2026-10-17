@@ -515,6 +515,15 @@ decision 4):
   crashed hostd still holds its inherited lock descriptor, so no successor is granted
   while it runs. On restart hostd kills any command cgroups left by its predecessor.
   VMMs are transient units outside hostd's cgroup and keep running.
+- **A guest SSH session is live during a hostd or Lilly restart.** Its detached
+  ingress bridge runs in its own `lilly-ingress-<key>.scope` in
+  `lilly_ingress.slice`, outside both units, so the session continues
+  ([ADR-0187](repo:docs/architecture/decisions/0187-detached-ingress-bridges.md)).
+  The restarted Lilly lists live bridges through hostd. It gives each one with a
+  readable record a keeper, which has 30 seconds to see its execution current
+  again. It ends a bridge with no record at once, and one whose execution is not
+  current in time. Editor and nested HTTPS connections still end, and their
+  clients reconnect.
 
 - **A template copy is in flight.** It runs as a durable hostd job keyed by
   its source, pending file and size. It survives a Lilly restart and keeps the

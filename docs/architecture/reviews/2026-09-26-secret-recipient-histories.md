@@ -27,7 +27,7 @@ already generate 40 environment roundtrips and check interruption. These are
 credited separately from the new recipient-history properties.
 
 Historical native custody and host/replacement rotation passed in **135.90
-seconds** with `qznzhiy5msbanzza00ci46mpr54gc6rd-vm-test-run-kittens-secret-custody.drv`;
+seconds** with `qznzhiy5msbanzza00ci46mpr54gc6rd-vm-test-run-overalls-secret-custody.drv`;
 the [original review](2026-09-16-secret-host-rotation.md) retains scope and
 limitations. Coordinated credentials passed across three Marshall machines in
 **249.75 seconds**, as recorded in the [rotation review](2026-09-16-fleet-credential-rotation.md).
@@ -84,8 +84,8 @@ establish those semantics.
 - The exact exported `checks.x86_64-linux.secret-reconciliation` passed **14
   fixed tests, 12 generated recipient histories, 8 generated interruption
   histories and 2 explicit interruption boundaries**. Final derivation:
-  `/nix/store/k55qp2q5dq1qn0a6da4cl9qj8alzxn7i-kittens-secret-reconciliation.drv`;
-  output `/nix/store/lr6mhy3vh7508akh1m1h8hi13bzx7smk-kittens-secret-reconciliation`.
+  `/nix/store/k55qp2q5dq1qn0a6da4cl9qj8alzxn7i-overalls-secret-reconciliation.drv`;
+  output `/nix/store/lr6mhy3vh7508akh1m1h8hi13bzx7smk-overalls-secret-reconciliation`.
   The final command completed in 144 seconds; its build log reports the fixed
   suite in 4.685 seconds and both property completion markers.
 - Executable inputs are captured in staged tree
@@ -96,7 +96,7 @@ establish those semantics.
   `0cb7d3514cdae3f81f02210cfddf18c65703a51e43b0d89f3f0f1b33264824a7`.
 - Initial candidate `ebe79e66a6304d5ef0954c7c2111452ed476ac65` also passed the
   complete exported gate in 126 seconds, output
-  `/nix/store/jfx9b05pjsd3xsvy7cd6wkh4ykhdj9mg-kittens-secret-reconciliation`.
+  `/nix/store/jfx9b05pjsd3xsvy7cd6wkh4ykhdj9mg-overalls-secret-reconciliation`.
   The first direct type-check invocation failed because it omitted the pinned
   dependency interpreter and assigned an undeclared ModuleType attribute. The
   fault seam now uses `patch.object`; configured all-file Ruff format, Ruff lint
@@ -108,7 +108,7 @@ establish those semantics.
   generated coverage, options and ownership/topology checks pass. Reviewed
   receipts, full all-file prek (including configured Ruff/ty and logging checks)
   and Nix HLDD pass. The initial documentation gate completed in 24 seconds,
-  output `/nix/store/n2xhcqsc37wqrqq1r5k48169gcw3nan8-kittens-hldd-check`;
+  output `/nix/store/n2xhcqsc37wqrqq1r5k48169gcw3nan8-overalls-hldd-check`;
   final evidence bookkeeping is rechecked before commit. No executable source
   changed after the final cryptographic run.
 

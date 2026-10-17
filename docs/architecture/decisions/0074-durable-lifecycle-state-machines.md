@@ -151,8 +151,8 @@ or skips. Standalone test-module typing also passed without warnings. Production
 [resize](../../../marshall/lib/marshall/compute/resize_request.ex) declare graphs.
 [Lilly journal](../../../lilly/lib/lilly/lifecycle/journal.ex) and
 [manual persistence](../../../lilly/lib/lilly/lifecycle/persist.ex) implement
-locked state/audit publication. Ingestion (`marshall/lib/marshall/compute/lifecycle_ingestion.ex` at kittens revision `a99f74f0`, repository deleted)
-and delivery (`lilly/lib/lilly/lifecycle/audit_runtime.ex` at kittens revision `a99f74f0`, repository deleted) implement replay.
+locked state/audit publication. Ingestion (`marshall/lib/marshall/compute/lifecycle_ingestion.ex` at overalls revision `a99f74f0`, repository deleted)
+and delivery (`lilly/lib/lilly/lifecycle/audit_runtime.ex` at overalls revision `a99f74f0`, repository deleted) implement replay.
 Refusals emit `lifecycle.audit_refused` with closed reasons, and the bounded
 retention job emits `lifecycle.retention_deleted` with its deleted count after commit.
 The retention inventory now includes every current PaperTrail version table and

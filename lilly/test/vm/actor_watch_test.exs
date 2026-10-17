@@ -300,7 +300,9 @@ defmodule Lilly.VM.ActorWatchTest do
     controlled_result(actor, running())
     eventually(fn -> :sys.get_state(actor).watch.state == :watching end)
     old_port = :sys.get_state(actor).watch_port
-    controlled_result(actor, %{running() | state: :failed, compute_empty: true, reason: :crashed})
+    # An unconfirmed observation revokes without settling the command; a
+    # recorded failure would settle it (failed-outcome-settles-command).
+    controlled_result(actor, unconfirmed())
     refute live?(ctx.view)
 
     File.write!(Path.join(ctx.dir, "target-b"), "")
@@ -328,7 +330,7 @@ defmodule Lilly.VM.ActorWatchTest do
     controlled_result(actor, running())
     port = :sys.get_state(actor).watch_port
     assert :sys.get_state(actor).watch.state == :starting
-    controlled_result(actor, %{running() | state: :failed, compute_empty: true, reason: :crashed})
+    controlled_result(actor, unconfirmed())
     refute live?(ctx.view)
     File.write!(Path.join(ctx.dir, "target-unavailable"), "")
     controlled_result(actor, running())
@@ -510,6 +512,17 @@ defmodule Lilly.VM.ActorWatchTest do
       disk_present: true,
       cleanup_complete: false,
       reason: :none
+    }
+
+  # Executor.unknown/1: inconclusive, revokes liveness, never settles.
+  @spec unconfirmed() :: map()
+  defp unconfirmed,
+    do: %{
+      state: :unknown,
+      compute_empty: false,
+      disk_present: false,
+      cleanup_complete: false,
+      reason: :identity_mismatch
     }
 
   @spec controlled_actor(fixture()) :: pid()

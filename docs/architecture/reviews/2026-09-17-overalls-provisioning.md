@@ -33,7 +33,7 @@ and the ARC cap is 8 GiB. No application role is enabled.
 - Installation generated the host key privately on the target and retrieved
   its public key and storage GUID receipt over the authenticated connection.
 - The installed host booted successfully as `overalls`; pinned-key SSH login as
-  `ghuntley` and passwordless sudo succeeded. `kittens-host-check` verified storage,
+  `ghuntley` and passwordless sudo succeeded. `overalls-host-check` verified storage,
   identity, actual KVM creation and the installed SSH policy. No failed systemd
   units were reported. Both mirror members were ONLINE with no ZFS data errors.
 - Installed IPv4/IPv6 routes and the exact ZFS quota, LZ4 compression and zero
@@ -62,7 +62,7 @@ behalf of the production profile.
 
 Git enrollment activated revision `1e82301ec97f7082e0ea90142ce71e8bb11e9157`,
 persisted the receipt and enabled polling after its health checks. The installed
-`kittens-host-check --receipt` passed, and automatic updating recorded that
+`overalls-host-check --receipt` passed, and automatic updating recorded that
 revision and its actual system closure as healthy with zero failures. The normal
 updater then applied revision `e37f6877ba660a4bb857f75c6578d5dff64ff90d` and
 recorded its actual system closure as healthy. The documented `host verify`
@@ -74,6 +74,6 @@ application deployment, Lilly enrollment and scheduling are outside this result.
 This one-host installation does not complete the full ADR-0043 acceptance matrix.
 
 Public installation receipts are retained in the operator's private state
-location `~/.local/state/kittens/provisioning/overalls`; the target retains its
-storage receipt in `/var/lib/kittens-host`. No private keys or plaintext
+location `~/.local/state/overalls/provisioning/overalls`; the target retains its
+storage receipt in `/var/lib/overalls-host`. No private keys or plaintext
 credentials belong in this review or the repository.

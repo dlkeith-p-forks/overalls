@@ -67,7 +67,7 @@ possible transfer/retirement overlap.
 
 Execution in `devenv shell`, `ERL_FLAGS='+S 4:4'`,
 `MIX_TEST_PARTITION=verify004`, `PGHOST=/run/user/1000/devenv-0e19ff2/postgres`
-and `TMPDIR=/tmp/kittens-verify004`:
+and `TMPDIR=/tmp/overalls-verify004`:
 
 - Seed 44004: `mix test test/marshall/teams_creation_test.exs test/marshall/teams_test.exs test/marshall_web/teams_live_test.exs --seed 44004`
   passed 12 checks (2 properties, 10 tests) before incorporating team-authority's
@@ -90,9 +90,9 @@ passed the extended native creation journey in 55.64 seconds, with verified HTTP
 persisted ordinary-account checks before/after operations, one creation receipt
 per actual team, and the fresh team's committed owner. QEMU cleanup completed.
 Exact tested derivation:
-`/nix/store/j36frcpcp2pgsh17rmgx4ql01q4a1gdc-vm-test-run-kittens-teams-browser.drv`.
+`/nix/store/j36frcpcp2pgsh17rmgx4ql01q4a1gdc-vm-test-run-overalls-teams-browser.drv`.
 Output, including `teams-authority.png` and `teams-creation.png`:
-`/nix/store/823zcncyrxbc3hv41imrjwlw2d2ghkyb-vm-test-run-kittens-teams-browser`.
+`/nix/store/823zcncyrxbc3hv41imrjwlw2d2ghkyb-vm-test-run-overalls-teams-browser`.
 The immutable run contains this fix and the corrected ordinary-account fixture.
 The later main merge retained the coordinator and all native fixture files byte
 for byte; final handbook evidence changes do not alter the exercised behavior.

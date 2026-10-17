@@ -40,12 +40,12 @@ does not prove it remained continuously above the threshold between them.
 The first sandboxed native check passed all 47 tests in 4.16 seconds and Clippy
 with warnings as errors. Nix completed in 32 seconds, exit zero; archive
 `1791031818706-3928551-0.jsonl`. Log:
-`/tmp/kittens-terminald-neighbor-native.log`.
+`/tmp/overalls-terminald-neighbor-native.log`.
 That execution precedes the zero/configured/pump-boundary extension and explicit
 callee contract. The final sandboxed native check passed all 47 tests in 4.66 seconds and Clippy
 with warnings as errors. Nix completed in48seconds, exit zero; archive
 `1791031945713-4008487-0.jsonl`. Log:
-`/tmp/kittens-terminald-neighbor-final-native.log`.
+`/tmp/overalls-terminald-neighbor-final-native.log`.
 Contract format and callee declaration/ancestor discovery passed. Fresh source review found no
 blocking oracle defect and prompted the expanded value menu. Fresh combined source and documentation review found no blocker. The combined
 budget/neighbor suite passed all48tests in5.94seconds and Clippy; Nix40seconds,
@@ -53,7 +53,7 @@ exit zero, archive `1791032206546-18334-0.jsonl`. The independent fixture daemon
 preserve each property's scope. Combined handbook references, generated reference/views/coverage, repository
 hooks (including Python formatting/lint/types) and evaluated HLDD passed;
 Nix25seconds, archive `1791032486182-211198-0.jsonl`. Log:
-`/tmp/kittens-terminald-budget-neighbor-combined-hldd.log`.
+`/tmp/overalls-terminald-budget-neighbor-combined-hldd.log`.
 Marshall integrated gate and publication remain pending.
 
 ## Remaining gaps
@@ -70,7 +70,7 @@ telemetry changes. These advances leave terminald runtime and this property
 unchanged. The complete merged Marshall gate passed1451 checks (237 properties
 and1214 tests), two exclusions, seed26636, in1666.1seconds. Forced Dialyzer
 passed48.09seconds with zero errors or skips. Log:
-`/tmp/kittens-terminald-a5b6-marshall.log`.
+`/tmp/overalls-terminald-a5b6-marshall.log`.
 
 The a5b6c891 terminald check succeeded through cache reuse in7seconds, archive
 `1791184669364-2936262-0.jsonl`; the authoritative executed combined48-test

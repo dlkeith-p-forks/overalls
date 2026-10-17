@@ -5,7 +5,7 @@
 The user approved the fastpath decision (renumbered ADR-0130 after main allocated its earlier identifiers to the fleet log viewer and fleet telemetry), implementation in a new worktree, Ash state machines,
 property/native tests, structured event audit and Git-driven deployment through
 main/origin. Subsequent direction requires Rust and Hegel for the copy helper.
-All direct sudo use remains read-only. Worktree `kittens-provisioning-fastpath`,
+All direct sudo use remains read-only. Worktree `overalls-provisioning-fastpath`,
 branch `codex/provisioning-fastpath`, includes main through `186a1ea4` and preserves
 its clone-restart recovery change. This review is in progress, without deployment
 or a claim that the full plan is complete.

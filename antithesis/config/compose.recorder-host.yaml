@@ -1,6 +1,8 @@
-# Optional NixOS recorder host. Exact service UID/cgroup authority and the
-# bounded archive filesystem live inside this guest; selection requires a
-# separate bootstrap probe and recorded runtime evidence.
+# Optional NixOS recorder host, selected by the `recorder-host` profile. Exact
+# service UID/cgroup authority and the bounded archive filesystem live inside
+# this TCG guest. The workload bootstrap's recorder probe independently checks
+# the observation share before setup completion; this is emulated evidence,
+# not native KVM evidence.
 services:
   recorder-host-vmm:
     container_name: overalls-recorder-host-vmm
@@ -31,6 +33,7 @@ services:
 
   workload:
     environment:
+      ANTITHESIS_BOOTSTRAP_PROFILE: recorder-host
       ANTITHESIS_RECORDER_REQUESTS: /run/overalls-recorder-requests
       ANTITHESIS_RECORDER_RESULTS: /run/overalls-recorder-results
       ANTITHESIS_RECORDER_OBSERVATION: /run/overalls-recorder-observation

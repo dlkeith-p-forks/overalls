@@ -84,7 +84,7 @@ The handbook scenario row stays `partial` with its delegation block preserved.
   The pinned actor test name is exactly: a restored journal cannot resolve egress before a fresh running observation.
 - Native restore drill: `nix build .#checks.x86_64-linux.backup-recovery`
   **passed in 435 seconds** under the campaign MEDIUM native lock; result
-  `/nix/store/lkzp46sxznaxvi9j348hapf4ff37pmv5-vm-test-run-kittens-backup-recovery`.
+  `/nix/store/lkzp46sxznaxvi9j348hapf4ff37pmv5-vm-test-run-overalls-backup-recovery`.
   That run covers the final driver source. The build log records
   "Marshall operator isolation verified" three times: every operator-mode boot in
   the drill (fixture creation, the rejected wrong keyring and the successful
@@ -92,7 +92,7 @@ The handbook scenario row stays `partial` with its delegation block preserved.
   restore-drill isolation guarantee, not a historical-authority reactivation
   acceptance. An earlier identical-content run of the pre-reformat driver passed
   in 175 seconds
-  (`/nix/store/j0dbx31d56k05m30n3q7j19lyvjnvdjm-vm-test-run-kittens-backup-recovery`);
+  (`/nix/store/j0dbx31d56k05m30n3q7j19lyvjnvdjm-vm-test-run-overalls-backup-recovery`);
   the two drivers differ only by a Ruff line join.
 - No new or changed NixOS machine scenarios were introduced; the drill extends
   the pre-existing `backup-recovery` check.
@@ -176,4 +176,4 @@ On this tree before push:
   changed driver fragment; Nix `python-static` passed 676 files plus the
   reformatted driver.
 - `nix build .#checks.x86_64-linux.hldd` passed (result
-  `/nix/store/2x7ncl28c13y93nrkrdj0k706ygjk5d3-kittens-hldd-check`, 11 seconds).
+  `/nix/store/2x7ncl28c13y93nrkrdj0k706ygjk5d3-overalls-hldd-check`, 11 seconds).

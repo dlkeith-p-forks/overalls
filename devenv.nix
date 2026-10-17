@@ -132,6 +132,25 @@ in
     git --version | grep --color=auto "${pkgs.git.version}"
   '';
 
+  # Linked worktrees share the common .git/hooks, so every shell entry would
+  # rewrite the one pre-commit hook to load its own worktree's config. Give
+  # each linked worktree its own hooks directory before the installer runs;
+  # the main checkout keeps .git/hooks.
+  tasks."overalls:worktree-hooks" = {
+    exec = ''
+      git=${pkgs.git}/bin/git
+      if dir=$($git rev-parse --path-format=absolute --git-dir 2>/dev/null) &&
+         common=$($git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) &&
+         [ "$dir" != "$common" ]; then
+        $git config extensions.worktreeConfig true
+        mkdir -p "$dir/hooks"
+        [ "$($git config --worktree --get core.hooksPath || true)" = "$dir/hooks" ] ||
+          $git config --worktree core.hooksPath "$dir/hooks"
+      fi
+    '';
+    before = [ "devenv:git-hooks:install" ];
+  };
+
   # https://devenv.sh/git-hooks/
   # The Python gates run through prek with the pinned ruff and ty; the same
   # checks run in CI as the python-static Nix check. The structured-event

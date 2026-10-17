@@ -1,7 +1,7 @@
 # Multi-OS guest image architecture review (2026-10-16)
 
 This historical review records ADR-0180's earlier capability declarations and
-preliminary artifact evidence. [ADR-0186](../decisions/0186-native-kernel-provenance-and-admission.md)
+preliminary artifact evidence. [ADR-0188](../decisions/0188-native-kernel-provenance-and-admission.md)
 and the [native kernel review](2026-10-17-native-kernel-attestation.md) supersede
 the native admission conclusions: current capabilities are all false and image
 assembly refuses unavailable kernels.

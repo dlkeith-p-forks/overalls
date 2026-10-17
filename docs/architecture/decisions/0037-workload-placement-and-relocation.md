@@ -1176,7 +1176,7 @@ relocation or update-recovery evidence. The review records its artifact and the
 remaining native progress validation.
 
 
-RelocationProgress (`protocol/lib/overalls_protocol/relocation_progress.ex` at kittens revision `a99f74f0`, repository deleted)
+RelocationProgress (`protocol/lib/overalls_protocol/relocation_progress.ex` at overalls revision `a99f74f0`, repository deleted)
 now defines bounded attempt-scoped transport telemetry. Attempt ordering combines
 the authenticated host session/epoch with a BEAM-monotonic positive sequence;
 control runtime restart opens a fresh session. The receiving application must
@@ -1193,7 +1193,7 @@ through the shared v3 codec.
 [Marshall's receive coordinator](../../../marshall/lib/marshall/compute/relocation_receives.ex)
 checks the current destination session and retained source request under host/VM
 locks, ignores stale or inapplicable observations, and stores one latest report
-using the validated Ash type (`marshall/lib/marshall/compute/receive_progress.ex` at kittens revision `a99f74f0`, repository deleted).
+using the validated Ash type (`marshall/lib/marshall/compute/receive_progress.ex` at overalls revision `a99f74f0`, repository deleted).
 Session epoch, attempt sequence, request revision and nondecreasing attempt bytes
 prevent late observations replacing newer work. Progress updates grant no
 receipt, execution authority, scheduling action or capacity credit.

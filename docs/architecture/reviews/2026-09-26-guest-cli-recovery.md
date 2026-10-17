@@ -124,14 +124,14 @@ execution from this recovery work and unobserved live rollout.
   Galileo helper matches source byte-for-byte, SHA-256
   `9f91504a126e10039d83bbff00036ab116795416cd6c21d4eb6c75c7bf92e07f`.
   Native runtime derivation:
-  `/nix/store/ll8rqk6agvdb0dj45mmv0nk1ydvm6bd5-vm-test-run-kittens-guest-cli-recovery.drv`.
-  Driver: `/nix/store/k0jv5wkk1payv1nl5x2izkvcz67qdc4g-nixos-test-driver-kittens-guest-cli-recovery`.
+  `/nix/store/ll8rqk6agvdb0dj45mmv0nk1ydvm6bd5-vm-test-run-overalls-guest-cli-recovery.drv`.
+  Driver: `/nix/store/k0jv5wkk1payv1nl5x2izkvcz67qdc4g-nixos-test-driver-overalls-guest-cli-recovery`.
   Composed script SHA-256:
   `24dc276f56d6f99dfb87368f1481cca186ca859db86c9127e75ab2b6abd8beab`.
   Build archive `1790395503743-727222-0.jsonl`, strict check lines 6587–6592.
 - Native recovery journey passed all six stages, exit 0. Its frozen runtime
   derivation is the one above; output
-  `/nix/store/ha7pfj17rh78v2mbqyfnwp9fv1zxzn7s-vm-test-run-kittens-guest-cli-recovery`,
+  `/nix/store/ha7pfj17rh78v2mbqyfnwp9fv1zxzn7s-vm-test-run-overalls-guest-cli-recovery`,
   archive `/home/ghuntley/.local/state/nix/build-logs/1790396223108-953351-0.jsonl`.
   Fleet boot took 51.47 seconds; actual admission 122.23 seconds; initial shared
   operator real tool control 53.90 seconds; invalid-format recovery and fresh

@@ -173,12 +173,12 @@ installs the committed CA and admits peer-only 8443;
 [overalls](../../../fleet/hosts/overalls/services.nix) and
 [dungarees](../../../fleet/hosts/dungarees/configuration.nix) enable the
 collector with the reviewed source list and runtime-file credentials; the
-store client (`marshall/lib/marshall/logs/store.ex` at kittens revision `a99f74f0`, repository deleted) and
-viewer (`marshall/lib/marshall_web/live/admin/logs_live.ex` at kittens revision `a99f74f0`, repository deleted) implement
+store client (`marshall/lib/marshall/logs/store.ex` at overalls revision `a99f74f0`, repository deleted) and
+viewer (`marshall/lib/marshall_web/live/admin/logs_live.ex` at overalls revision `a99f74f0`, repository deleted) implement
 closed query compilation, bounded narrowing, event-identity dedup and the
 read-only admin surface.
-Store tests (`marshall/test/marshall/logs/store_test.exs` at kittens revision `a99f74f0`, repository deleted) and
-viewer tests (`marshall/test/marshall_web/admin_logs_live_test.exs` at kittens revision `a99f74f0`, repository deleted)
+Store tests (`marshall/test/marshall/logs/store_test.exs` at overalls revision `a99f74f0`, repository deleted) and
+viewer tests (`marshall/test/marshall_web/admin_logs_live_test.exs` at overalls revision `a99f74f0`, repository deleted)
 pass (13 checks including 2 properties); the
 [log-store machine test](../../../nix/verification/tests/machines/log-store/default.nix)
 executes the full native path including backfill; the

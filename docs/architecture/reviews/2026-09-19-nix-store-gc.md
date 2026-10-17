@@ -12,14 +12,14 @@ lifecycle boundary changes. [ADR-0036](../decisions/0036-automatic-host-updates.
 keeps its documented exclusion of generation retention from the updater;
 [ADR-0067](../decisions/0067-reciprocal-nix-builders.md) cache and scheduling
 policies are unchanged, with the accepted interaction documented below. The
-design ports TVL depot's automatic garbage collection module to Kittens
+design ports TVL depot's automatic garbage collection module to Overalls
 conventions at the user's request.
 
 ## Findings and resolution
 
 - depot's `services.depot.automatic-gc` ran `nix-collect-garbage` through a
   store-path `script` with a `/run` kill switch, `multi-user.target` timer
-  activation and untyped options. The Kittens module uses inline script text,
+  activation and untyped options. The Overalls module uses inline script text,
   typed options (`strMatching`, `ints.positive`), `timers.target` with jitter
   and catch-up, and makes stopping the timer the documented control.
 - The guest dataset quota is a ceiling, not a reservation: legitimate guest
@@ -47,12 +47,12 @@ All checks ran from the isolated worktree on the committed files.
   bounded deletion arguments, pinned `nix.package` invocation, typed
   rejection of invalid intervals/sizes/preservation windows, and default
   enablement across all four production profile fixtures:
-  `/nix/store/wv084670ynq35rv04xx0p519g8ip1zrr-kittens-nix-gc-check.json`.
+  `/nix/store/wv084670ynq35rv04xx0p519g8ip1zrr-overalls-nix-gc-check.json`.
 - Module and storage-configuration regressions passed after the profile
-  change: `/nix/store/9c80yh8jfd8r7l4a59ih2qr7z5xpgxxi-kittens-module-configuration-check.json`
+  change: `/nix/store/9c80yh8jfd8r7l4a59ih2qr7z5xpgxxi-overalls-module-configuration-check.json`
   and `/nix/store/jpnj08jq8347xilbww00xp7ycbrdl973-host-profile-checks.json`.
 - Direct evaluation confirmed both enrolled hosts and both base
-  configurations produce `kittens-nix-gc` timers with the reviewed values
+  configurations produce `overalls-nix-gc` timers with the reviewed values
   (1h, 200/400 GiB, 14d, `timers.target`, persistent).
 - `nix flake check --no-build` fails identically on `main` and this branch on
   fixture-dependent checks that require previously built images (different

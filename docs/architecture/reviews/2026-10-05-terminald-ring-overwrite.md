@@ -11,7 +11,7 @@ overwrite. This is backing capacity, not allocator/RSS peak or VM acceptance.
 The generated native Ring property failed its allocation bound; the other46
 tests passed. Test duration11.01seconds, Nix71seconds, exit1, archive
 `1791190116768-2228675-0.jsonl`. Log:
-`/tmp/kittens-terminald-ring-allocation-baseline.log`.
+`/tmp/overalls-terminald-ring-allocation-baseline.log`.
 
 ## Repair and property
 
@@ -41,7 +41,7 @@ protocols or the accepted raw-byte retention decision.
 
 The repaired generated native Ring gate passed47 tests in5.38seconds and
 Clippy; Nix40seconds, exit0, archive `1791190304832-2301623-0.jsonl`. Log:
-`/tmp/kittens-terminald-ring-allocation-fixed.log`. This result predates the
+`/tmp/overalls-terminald-ring-allocation-fixed.log`. This result predates the
 explanatory contract notes, with unchanged runtime/test logic.
 
 The overwrite repair is integrated with the separate retired-ring repair in

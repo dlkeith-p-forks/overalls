@@ -309,17 +309,17 @@ forced rechecks.
 Native acceptance passed on the same revision, serially, with real nested-KVM
 ZFS:
 
-- `kittens-zfs-guest` passed in 1367 s: real guest sync, sparse retained
+- `overalls-zfs-guest` passed in 1367 s: real guest sync, sparse retained
   storage, backup phase/audit agreement, per-run producer identity,
   interrupted-process cleanup authority and restored-data checks.
-- `kittens-zfs-lifecycle` passed in 470 s: sparse provision, unknown-content
+- `overalls-zfs-lifecycle` passed in 470 s: sparse provision, unknown-content
   and mount-alias destruction refusals, crash-after-real-mutation recovery,
   resize growth without reinitialization and retired-cleanup guardrails.
-- `kittens-zfs-transfer` passed in 237 s: pre-copy and stopped adoption,
+- `overalls-zfs-transfer` passed in 237 s: pre-copy and stopped adoption,
   incremental recovery between snapshot removals, Inception two-drive
   adoption with the corrected incomplete-set refusal, idempotent
   re-adoption, `Disk.prepare` reuse and fenced cleanup.
-- `kittens-relocation-fleet` passed in 3584 s with zero failed subtests:
+- `overalls-relocation-fleet` passed in 3584 s with zero failed subtests:
   running and stopped moves, return moves, baseline-write verification,
   pre-handoff and post-stop cancellation with verified source restoration,
   logical Delete reclaim, dual endpoint daemon-restart recovery, readiness

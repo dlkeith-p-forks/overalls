@@ -1,6 +1,6 @@
-# ADR-0186: Native kernel provenance and fail-closed multi-OS admission
+# ADR-0188: Native kernel provenance and fail-closed multi-OS admission
 
-- ID: ADR-0186
+- ID: ADR-0188
 - Date: 2026-10-17
 - Status: accepted
 - Implementation: partial

@@ -4,7 +4,7 @@ let
   nativeKernels = import ./native-kernels { inherit pkgs; };
   # Source/patch receipts do not establish a bootable kernel or installed service
   # closure. Keep admission closed until target-native assembly and machine
-  # evidence are reviewed together under ADR-0186.
+  # evidence are reviewed together under ADR-0188.
   nativeImageAssemblyReady = false;
   # Native guests are deliberately assembled from immutable upstream release
   # artifacts.  The source derivations are separate so a source refresh cannot

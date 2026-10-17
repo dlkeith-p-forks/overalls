@@ -1,7 +1,7 @@
 # Lifecycle operation histories and recorded native lifecycle matrix
 
 Campaign improvement 037. Branch `verify/037-lifecycle-histories`, worktree
-`kittens-verify-lifecycle-histories`, integrated base `origin/main` at
+`overalls-verify-lifecycle-histories`, integrated base `origin/main` at
 `f24661b2` (merge of improvement 068, carrying the restored `executorLoss`
 fleet parameter from `40c1e73b`; the parameter's loss in the `f7cdb3c5` merge
 had made the `fleet` check unevaluable between `f7cdb3c5` and that fix).
@@ -30,7 +30,7 @@ Architecture impact: none. The existing decisions stand unchanged:
 The new tests exercise existing public actions (`Compute.provision`,
 `Compute.lifecycle`) and the physical outcome ingestion path
 (`Marshall.Compute.Outcomes.ingest_locked!` through the real
-`KittensProtocol.Execution.outcome` codec) exactly as the provisioner control
+`OverallsProtocol.Execution.outcome` codec) exactly as the provisioner control
 exchange invokes it under a host-locked ledger transaction.
 New Inception testing and validation remain excluded per user direction; the
 native run uses the existing disposable nine-VM fleet fixture only. Physical
@@ -156,7 +156,7 @@ the pinned Nix fleet check with nested KVM. No new dependencies.
    and `nix build .#checks.x86_64-linux.hldd`.
 4. One native `checks.x86_64-linux.fleet` run recorded with store path,
    duration, exit status and process-drain evidence, serialized with other
-   campaign builds through `flock /tmp/kittens-native-build.lock`.
+   campaign builds through `flock /tmp/overalls-native-build.lock`.
 5. One bounded mutant demonstrating detection by the new properties, restored
    and recorded.
 
@@ -242,7 +242,7 @@ in the same session and the focused suite re-passed.
 
 Focused property suite (all within
 `devenv shell -- env ERL_FLAGS='+S 4:4' MIX_TEST_PARTITION=verify037
-PGHOST=/run/user/1000/devenv-0e19ff2/postgres TMPDIR=/tmp/kittens-verify037`,
+PGHOST=/run/user/1000/devenv-0e19ff2/postgres TMPDIR=/tmp/overalls-verify037`,
 worktree root):
 
 - `mix test test/marshall/compute/lifecycle_history_test.exs --seed 0`:
@@ -281,23 +281,23 @@ fresh partition `verify037b`:
   this improvement's). This is a suite-hygiene finding against recently merged
   suites, not a functional regression signal for lifecycle behavior.
 
-### Native lifecycle matrix (`checks.x86_64-linux.fleet` / `vm-test-run-kittens-fleet`)
+### Native lifecycle matrix (`checks.x86_64-linux.fleet` / `vm-test-run-overalls-fleet`)
 
 `nix/verification/tests/machines/fleet/scenarios/lifecycle.py` composes only into the
 default `fleet` check (ninth of eleven concatenated scenario fragments). Two
-full attempts were made under `flock /tmp/kittens-native-build.lock`, each
+full attempts were made under `flock /tmp/overalls-native-build.lock`, each
 awaited inside one synchronous shell call with a 3600-second budget; load was
 below the 25 threshold at each launch (21.4 and ~7).
 
 1. **Attempt 1** (base `ab8b5b87` + this change, derivation
-   `cxabcxsv2szh3i9kk1cp7kpbn8pddjw8-vm-test-run-kittens-fleet.drv`): the flock
+   `cxabcxsv2szh3i9kk1cp7kpbn8pddjw8-vm-test-run-overalls-fleet.drv`): the flock
    acquisition waited 47 minutes behind another campaign session's identical
    build; the vm-test build itself ran 771 seconds and was then cut by this
    harness's outer timeout (`interrupted by the user`), never reaching the
    driver. No guest was started by this attempt.
 2. **Attempt 2** (base `f24661b2` + this change, derivation
-   `xb2mvy0fgi1nzm9z6j3jyldxpnlhr037-vm-test-run-kittens-fleet.drv`, would-be
-   output `/nix/store/wqaq8fs16lzab8p8rmfpab0d42g20wqj-vm-test-run-kittens-fleet`):
+   `xb2mvy0fgi1nzm9z6j3jyldxpnlhr037-vm-test-run-overalls-fleet.drv`, would-be
+   output `/nix/store/wqaq8fs16lzab8p8rmfpab0d42g20wqj-vm-test-run-overalls-fleet`):
    driver ran the full scenario sequence and **failed after 1,774 guest
    seconds (33.6 minutes wall) at the `terminal.py` subtest "verified terminal
    v2 sessions, sharing and reconnect across three Marshall machines"** —

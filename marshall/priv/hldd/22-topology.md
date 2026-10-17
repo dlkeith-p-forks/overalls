@@ -502,7 +502,11 @@ a root-only `SOCK_SEQPACKET` socket, and keeps each command in its own child of 
 delegated cgroup. Lilly binds to it: a hostd stop stops Lilly, and a Lilly stop or
 crash ends the session, after which hostd kills and reaps that session's commands
 before releasing its leases. VMMs are not hostd children; they run as transient
-units in `lilly.slice`, so a hostd restart cannot stop a guest.
+units in `lilly.slice`, so a hostd restart cannot stop a guest. Detached ingress
+bridges for guest SSH and plain web run as transient `lilly-ingress-<key>.scope`
+units in `lilly_ingress.slice` (bounded at 1 GiB and 1100 tasks, never restarted
+on deployment), so a hostd or Lilly restart cannot end a live session either
+([ADR-0187](repo:docs/architecture/decisions/0187-detached-ingress-bridges.md)).
 
 Overalls alone publishes shared-database creation-to-ready, physical lifecycle
 and operation-linked SSH completion totals. `marshallReadySloExporter`,

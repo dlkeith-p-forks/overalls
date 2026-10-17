@@ -11,7 +11,7 @@ module on mirrored native ZFS with no repository credentials or remote services.
 ## Property and contracts
 
 `packaged_cleanup` covers three fixed plus six generated histories through the
-installed `kittens-backup-cleanup.service` and `kittens-backup cleanup` CLI.
+installed `overalls-backup-cleanup.service` and `overalls-backup cleanup` CLI.
 The menu is preparing/capturing/cleaning, service/operator, and one/two/three
 refusals and replays. There is no configured capacity threshold in this path.
 Shared lock contention preserves exact journal/status/intent bytes and native

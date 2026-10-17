@@ -19,7 +19,7 @@ tests.
 
 ### High — nested image cache omitted the evaluator sources
 
-The native `kittens-inception` driver passed nested-KVM eligibility, proof
+The native `overalls-inception` driver passed nested-KVM eligibility, proof
 tamper rejection, outer host enrollment, two DNS replica enrollment, gateway
 startup and launch of the first managed Firecracker VM. The VM did not return
 its boot-bound core readiness response. At the production ten-minute deadline,
@@ -169,7 +169,7 @@ not satisfy ADR-0085's native acceptance requirement.
 - `inception-image-builder`: passed in pure flake evaluation after the fix.
 - The exact runtime image command passed against an isolated local store
   populated only from the retained cache closure.
-- Native `kittens-inception` driver: repeated failures after the first managed
+- Native `overalls-inception` driver: repeated failures after the first managed
   VM missed ten- and twenty-minute core-readiness deadlines. The dedicated
   ingress port and namespace passed fixed guest predicates in the latter runs;
   the instance-specific image rebuild remained unfinished. A separate direct

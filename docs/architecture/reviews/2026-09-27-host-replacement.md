@@ -126,10 +126,10 @@ socket, `ERL_FLAGS="+S 6:6"`):
 - four distributed schedules pass with complete-table restoration:
   `distributed_enrollment_test.exs`: 4 committed schedules pass; combined with
   `drains_test.exs` 33 pass. Evidence scope note: reservation digests stable across every generated history.
-- **native host-replacement journey passes**: derivation `/nix/store/v6ajjygfcc3gybam4wzzznh4rm9aihqc-vm-test-run-kittens-host-replacement.drv`, total native build+VM run wall time 9m58s (five subtests: bootstrap/enrollment 83 s, baseline guest private-service reachability 34 s, retirement 13 s, stale-credential refusal 10 s, replacement prepare/enroll/rotate/enable 75 s; QMUs cleaned in 2.87 s; owned process identity count zero at end). All six scenario stages passed.
+- **native host-replacement journey passes**: derivation `/nix/store/v6ajjygfcc3gybam4wzzznh4rm9aihqc-vm-test-run-overalls-host-replacement.drv`, total native build+VM run wall time 9m58s (five subtests: bootstrap/enrollment 83 s, baseline guest private-service reachability 34 s, retirement 13 s, stale-credential refusal 10 s, replacement prepare/enroll/rotate/enable 75 s; QMUs cleaned in 2.87 s; owned process identity count zero at end). All six scenario stages passed.
 - Marshall `mix precommit`: counts recorded in the campaign report; forced
   Dialyzer clean.
-- Native: `vm-test-run-kittens-host-replacement` (see below for the executed
+- Native: `vm-test-run-overalls-host-replacement` (see below for the executed
   derivation/output paths and durations).
 
 ## Native journey (HEAVY lock)
@@ -160,7 +160,7 @@ Stages:
    and `/renew`.
 4. Replacement: `zpool reguid`/`zfs` create supplies brand-new pool and dataset
    GUIDs on l2's own disks (asserted different from the old host's);
-   `kittens-marshall-enrollment` over pinned operator SSH prepares the
+   `overalls-marshall-enrollment` over pinned operator SSH prepares the
    replacement (server-generated host id binding the fresh identity figures);
    the same operation ID retry returns byte-identical results;
    name recycling of the retired host is refused (bridge rejection plus the

@@ -6,7 +6,8 @@ let
   # administrative SSH on 2026-09-18. Guest budgets are not CPU discovery.
   endpoints = {
     dungarees = { address = "136.243.69.35"; port = 2222; logicalCpus = 32; };
-    overalls = { address = "136.243.69.55"; port = 2222; logicalCpus = 32; };
+    # Overalls administrative SSH listens only on its Tailscale address.
+    overalls = { address = "100.117.30.53"; port = 2222; logicalCpus = 32; };
   };
 in
 # @cc [owner:ghuntley,label:security] fleet-builder-authority

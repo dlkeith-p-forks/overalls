@@ -313,9 +313,9 @@ including the HLDD receipt gate; standalone `check_adrs.exs`,
 `check_hldd.exs`, `hldd_options.exs --check`, `hldd_coverage.exs --check` and
 `hldd_views.exs --check` all pass. The Nix `checks.x86_64-linux.hldd` build
 passed in 12 seconds, producing
-`/nix/store/9rz4jcskwmy7fi7ap5gsvpz7mndqfa4j-kittens-hldd-check`, and the
+`/nix/store/9rz4jcskwmy7fi7ap5gsvpz7mndqfa4j-overalls-hldd-check`, and the
 bookkeeping rebuild after the ledger/citation records passed in 12 seconds
-producing `/nix/store/ciz5vphydcxgp9kx6nvzskia79g3kyqs-kittens-hldd-check`.
+producing `/nix/store/ciz5vphydcxgp9kx6nvzskia79g3kyqs-overalls-hldd-check`.
 
 ## Latent oracle failure found during integration review
 

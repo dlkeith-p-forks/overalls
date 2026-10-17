@@ -1,5 +1,13 @@
 # Architecture decision records
 
+[ADR-0187](0187-detached-ingress-bridges.md) bridges Audi's guest SSH and
+plain web connections straight to the guest in detached `lilly-ingress-<key>`
+scopes that survive lilly-hostd and Lilly restarts, while Lilly keeps the
+execution fence through recorded bindings, keepers and re-adoption, amending
+ADR-0184 decision 3.
+
+[ADR-0186](0186-covenant-contract-verification.md) adopts Covenant as a test-only, deterministic contract verification layer across all twelve Elixir applications. It complements existing `CONTRACTS`, ADR, HLDD, native and integration evidence; the initial obligations establish module-loadability baselines and explicitly do not claim native or deployment guarantees.
+
 [ADR-0185](0185-underclass-tailnet-exit-egress.md) routes Underclass provider
 traffic, and only that traffic, through a dedicated userspace tailnet node and
 an Australian exit node, confining the Underclass unit to loopback behind a
@@ -46,7 +54,7 @@ VM-only access does not expose the task transcript. Focused database/UI and
 synthetic browser checks passed for persisted grants and authority integration;
 native transport revocation and physical recovery remain unverified.
 
-[ADR-0186](0186-native-kernel-provenance-and-admission.md) replaces ADR-0180 and records the cross-OS guest
+[ADR-0188](0188-native-kernel-provenance-and-admission.md) replaces ADR-0180 and records the cross-OS guest
 image contract: Arch Linux and AlmaLinux retain the version-4 Linux shape with
 distinct distribution markers, while native FreeBSD and OmniOS use explicit
 version-6 manifests and version-3 bundles. The illumos constructor records
@@ -371,8 +379,10 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0183](0183-guest-dataset-streams-in-hostd.md) | accepted | partial | Guest dataset streams run in lilly-hostd |
 | [ADR-0184](0184-lilly-owns-every-socket.md) | accepted | partial | Lilly owns every socket it uses |
 | [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
+| [ADR-0186](0186-covenant-contract-verification.md) | accepted | partial | Covenant contract verification across Elixir applications |
+| [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |
+| [ADR-0188](0188-native-kernel-provenance-and-admission.md) | accepted | partial | Native kernel provenance and fail-closed multi-OS admission |
 | [ADR-0180](0180-multi-os-guest-image-contract.md) | superseded | partial | Multi-OS guest image families on the Firecracker fleet |
-| [ADR-0186](0186-native-kernel-provenance-and-admission.md) | accepted | partial | Native kernel provenance and fail-closed multi-OS admission |
 | [ADR-0174](0174-user-threads.md) | superseded | partial | User threads own isolated work machines |
 | [ADR-0175](0175-thread-sharing-and-bound-machine-authority.md) | accepted | partial | Thread sharing and bound machine authority |
 | [ADR-0176](0176-host-concurrency-single-writers-and-effects.md) | accepted | planned | Host concurrency through single writers, reconcilers and a host-effects engine |

@@ -96,7 +96,7 @@ after this review. Diagnosis on both fleet hosts:
   updaters build concurrently. Each host's Nix daemon filled its local slots
   with the peer's forwarded derivations and delegated new build requests to the
   peer daemon, which delegated them back. Derivations alternated between
-  `kittens-builder-dungarees` and `kittens-builder-overalls` in the client log
+  `overalls-builder-dungarees` and `overalls-builder-overalls` in the client log
   without ever executing; network counters showed only protocol handshakes
   while each updater's two-hour command timeout elapsed.
 - Wedged daemon sessions held `gc.lock` and the store database lock while

@@ -79,7 +79,7 @@ This rebuild does not establish database recovery, multi-host availability,
 SMTP inbox delivery or guest wildcard-certificate production issuance.
 
 Public installation receipts and private operational logs are retained outside
-the checkout at `~/.local/state/kittens/rebuild-overalls`.
+the checkout at `~/.local/state/overalls/rebuild-overalls`.
 
 ## Dungarees guest cleanup
 

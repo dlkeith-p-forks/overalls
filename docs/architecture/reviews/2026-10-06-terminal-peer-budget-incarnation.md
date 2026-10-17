@@ -22,31 +22,31 @@ and admits precisely the generated number of replacement pairs. Replacement
 owners terminate before the next draw.
 
 Focused execution passed four checks (one property, three tests), seed 0,
-2.0 seconds, exit 0 in `/tmp/kittens-peer-budget-incarnation-attached.log`.
+2.0 seconds, exit 0 in `/tmp/overalls-peer-budget-incarnation-attached.log`.
 The initial listing fixture failed its live occupancy assertion because one-shot
 control replies deliberately terminate Remote; persistent attachments corrected
 the fixture. That initial result is not a production counterexample
-(`/tmp/kittens-peer-budget-incarnation-first.log`).
+(`/tmp/overalls-peer-budget-incarnation-first.log`).
 
 ## Mutation validation and limits
 
 The first return-owner-PID mutant run ended at an unrelated stream_busy refusal:
 shrinking reused the still-live initial attachment after a partially executed
 destructive budget restart. No falsification is credited to that run
-(`/tmp/kittens-peer-budget-return-owner-mutant.log`). Shrinking is now disabled
+(`/tmp/overalls-peer-budget-return-owner-mutant.log`). Shrinking is now disabled
 for this destructive generated history; a fresh matching baseline and re-sweep
 are in progress. Full Marshall precommit and forced typing remain pending.
 
 Matching no-shrink fork baseline passed four checks (one property, three tests), seed 0, 2.1 seconds, exit 0.
-Log `/tmp/kittens-peer-budget-incarnation-fork-baseline2.log`. The realistic
+Log `/tmp/overalls-peer-budget-incarnation-fork-baseline2.log`. The realistic
 mutant returns the admitted caller PID instead of the budget PID on fresh
 admission, causing both peer sides to monitor themselves. It failed the predicted
 missing old-owner DOWN after budget death: generated two pairs, zero successful
 draws, seed 0, 3.4 seconds, exit 2. Log
-`/tmp/kittens-peer-budget-return-owner-mutant2.log`. Later replacement-admission
+`/tmp/overalls-peer-budget-return-owner-mutant2.log`. Later replacement-admission
 checks are not mutation-credited. Source restored and byte-compared; restored
 execution passed four checks, seed 0, 2.1 seconds, exit 0, in
-`/tmp/kittens-peer-budget-incarnation-restored.log`.
+`/tmp/overalls-peer-budget-incarnation-restored.log`.
 
 The property does not establish native guest survival, physical channel custody,
 cross-node partitions or hosted Antithesis acceptance. These remain separate gaps.

@@ -42,11 +42,11 @@ body after the client closes; it does not establish arbitrary body throughput.
 Initial file run: exit2,seed0,24.7seconds; seven of eight checks passed
 (three of four properties, all four tests). The new pending-close property
 failed on transport_error. Log
-`/tmp/kittens-audi-real-version-boundaries-baseline.log`.
+`/tmp/overalls-audi-real-version-boundaries-baseline.log`.
 
 After classification repair: exit0,seed0,25.4seconds; eight checks
 (four properties,four tests), plus compiler warnings-as-errors and formatting.
-Log `/tmp/kittens-audi-real-version-boundaries-repaired.log`.
+Log `/tmp/overalls-audi-real-version-boundaries-repaired.log`.
 
 The added actual-close DNS cadence history then passed with the full file:
 exit0,seed0,56.6seconds; nine checks (five properties,four tests).
@@ -54,12 +54,12 @@ It uses fixed0/1/2 transient prefixes in each generated draw, halts the public
 automatic-work capability before retry, ignores stale timer refs, preserves
 exact directory bytes/deadline, and observes healthy UDP followed by TCP
 SERVFAIL after the original five-second expiry. Production timers are unchanged.
-Log `/tmp/kittens-audi-real-version-cadence-baseline.log`.
+Log `/tmp/overalls-audi-real-version-cadence-baseline.log`.
 
 The pending-read property now adds actual idle4008 positive controls so an
 overbroad permanent classifier is falsifiable. Its refined focused baseline
 passed exit0,seed0,33.3seconds: two properties, seven exclusions, log
-`/tmp/kittens-audi-real-close-controls-baseline.log`.
+`/tmp/overalls-audi-real-close-controls-baseline.log`.
 Removing only unproven classification in a separate copy failed both properties
 in1.6seconds: pending reads lost the permanent class and DNS's public automatic
 work fence remained enabled. Source was restored byte-for-byte; the focused
@@ -73,7 +73,7 @@ larger-body mutation cases were not reached. Full Audi precommit passed on the
 merged source: 182 checks (51 properties, 131 tests), seed 718971, 164.4 seconds.
 Forced Dialyzer passed in 5.53 seconds with zero errors, skipped warnings or
 unnecessary skips. Compiler, formatting, contracts and ADR gates also passed.
-The execution log is `/tmp/kittens-audi-origin-repaired-precommit.log`.
+The execution log is `/tmp/overalls-audi-origin-repaired-precommit.log`.
 Remaining consumer checks, handbook reconciliation and publication remain open.
 Packaged gateway SSH/Fleet pending-close histories, physical mixed-version
 deployment and hosted faults remain gaps; prior native DNS evidence retains

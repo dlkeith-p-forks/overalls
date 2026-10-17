@@ -1,0 +1,94 @@
+name: "nixos machine tests"
+
+# Fans out one job per NixOS machine test. The matrix is derived by evaluating
+# meta.ci on the flake checks (nix/verification/tests/ci.nix): every check with
+# ci.enable and ci.machine runs here; nothing is listed by hand.
+on:
+  schedule:
+    # Daily at 14:00 UTC
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+    inputs:
+      checks:
+        description: Space-separated check names to run instead of every CI machine test.
+        required: false
+        default: ""
+
+concurrency:
+  group: nixos-machine-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
+    timeout-minutes: 60
+    outputs:
+      checks: ${{ steps.select.outputs.checks }}
+      errors: ${{ steps.discover.outputs.errors }}
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          install-devenv: "false"
+      - name: Discover machine tests
+        id: discover
+        run: .github/scripts/select-checks.sh machine
+      - name: Apply requested subset
+        id: select
+        env:
+          ALL: ${{ steps.discover.outputs.checks }}
+          REQUESTED: ${{ inputs.checks }}
+        run: |
+          set -euo pipefail
+          if [ -z "${REQUESTED:-}" ]; then
+            echo "checks=$ALL" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          checks=$(jq -cn --argjson all "$ALL" --arg req "$REQUESTED" '$req | split(" ") | map(select(. != "")) as $r | ($r - $all) as $unknown | if ($unknown | length) > 0 then error("not evaluable CI machine tests: \($unknown | join(", "))") else $r end')
+          echo "checks=$checks" >> "$GITHUB_OUTPUT"
+
+  machine:
+    needs: discover
+    if: needs.discover.outputs.checks != '[]'
+    name: ${{ matrix.check }}
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        check: ${{ fromJSON(needs.discover.outputs.checks) }}
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v9
+      - uses: ./.github/actions/devenv
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          install-devenv: "false"
+          system-features: nixos-test benchmark big-parallel kvm nested-kvm
+      - name: Report virtualization
+        run: |
+          ls -l /dev/kvm
+          grep -c -w -E 'vmx|svm' /proc/cpuinfo || echo "no vmx/svm CPU flag exposed"
+      - name: Run ${{ matrix.check }}
+        # Pushes the guest images, packages and test drivers built for this
+        # scenario to the overalls cache as they are realised.
+        run: cachix watch-exec overalls -- nix build -L --no-link .#checks.x86_64-linux.${{ matrix.check }}
+
+  # Fails the run when any check did not evaluate, after every check that did
+  # evaluate has had its machine run.
+  evaluation:
+    needs: [discover, machine]
+    if: always() && needs.discover.result == 'success'
+    runs-on: namespace-profile-cached-amd64
+    steps:
+      - name: Require every check to evaluate
+        env:
+          ERRORS: ${{ needs.discover.outputs.errors }}
+        run: |
+          if [ "${ERRORS:-0}" -gt 0 ]; then
+            echo "::error::$ERRORS checks failed to evaluate; see the discover job summary"
+            exit 1
+          fi

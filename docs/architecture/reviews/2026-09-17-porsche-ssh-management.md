@@ -449,7 +449,7 @@ checks. `porsche-service` passed with the actual module and source-built release
 SSH key scans on both ports, distinct identities, private key/credential modes,
 unprivileged service identity, restart persistence and fail-closed invalid-token
 startup. The fixture contains no Marshall or guests. Its passing output is
-`z2ll8pai9dg6jnr1vcpwkpkh5lgiyki3-vm-test-run-kittens-porsche-service`.
+`z2ll8pai9dg6jnr1vcpwkpkh5lgiyki3-vm-test-run-overalls-porsche-service`.
 Encrypted runtime packaging and service wrapper/retention wiring are present;
 actual encrypted Porsche crash capture has not been tested.
 
@@ -517,7 +517,7 @@ The final `porsche-service` NixOS check passed with the actual source-built rele
 and Fluent Bit module. An authenticated SSH transport attempt against an absent
 Marshall fixture generates one HTTP transport error. Porsche's real minute report
 retains that counter, journald carries the structured JSON, and the collector emits
-`kittens_gauge_http_errors` with value 1 and only fixed environment/service labels.
+`overalls_gauge_http_errors` with value 1 and only fixed environment/service labels.
 The gateway credential is absent from collector logs. Earlier custody, port,
 persistence and invalid-credential checks still pass. No synthetic application
 summary is injected in this machine check. Marshall/guests and live AWS are absent.
@@ -678,7 +678,7 @@ suite passed seven tests, including the real private socket through verified HTT
 to Ash: readiness is affirmative before gateway disable and false immediately
 afterward, with no user sessions created. This uses PostgreSQL sandbox ownership,
 not a deployed fleet. The existing NixOS updater activation/recovery test passed:
-`/nix/store/zmiyrsn547ah8b7j1mnzy8kbwry3w1rc-vm-test-run-kittens-auto-update`.
+`/nix/store/zmiyrsn547ah8b7j1mnzy8kbwry3w1rc-vm-test-run-overalls-auto-update`.
 That fixture establishes updater regression behavior, not a deployed Porsche
 rotation or full-fleet update.
 
@@ -693,7 +693,7 @@ its timer disabled under test control. It verifies the actual deployment manifes
 contains Porsche's status path, health unit and secret consumer, observes false
 readiness without Marshall, and retains custody, restart, metric-export and
 invalid-credential checks. Output:
-`/nix/store/6vrf1bm6bhkcah7ka70r2zargz7n1bms-vm-test-run-kittens-porsche-service`.
+`/nix/store/6vrf1bm6bhkcah7ka70r2zargz7n1bms-vm-test-run-overalls-porsche-service`.
 The fixture's redundant logging import was removed because the current aggregate
 module already imports logging. Full fleet and encrypted capture remain open.
 
@@ -718,7 +718,7 @@ service removes it. RSA-2048 and missing public keys fail startup without new
 dumps. No plaintext Linux core artifact is created.
 
 The machine check passed:
-`/nix/store/i19a89shkflfpg9swis98ypy4v19bhpv-vm-test-run-kittens-porsche-crash-dumps`.
+`/nix/store/i19a89shkflfpg9swis98ypy4v19bhpv-vm-test-run-overalls-porsche-crash-dumps`.
 Python compilation and code-contract structural checks passed. This is local
 service/analyst evidence, not live CloudWatch export, a fleet failure test, or proof
 of measured overload behavior. OTP reference: https://www.erlang.org/doc/apps/erts/erl_cmd.html
@@ -741,14 +741,14 @@ was introduced.
 Seventeen planning tests passed, including rejection of changed ports before
 contacting the target and phase-specific selection. Nine real encrypted enrollment
 preparation tests passed with distinct host/Marshall ports:
-`/nix/store/2ih1gr6z6y2ich1hzj4cmd9s4rfis89c-kittens-enrollment-preparation`.
+`/nix/store/2ih1gr6z6y2ich1hzj4cmd9s4rfis89c-overalls-enrollment-preparation`.
 Python compilation and contract structural checks passed. The initial real
 OpenSSH/Nix store transport check passed; the extended staged Porsche handoff
 check is recorded below when finished. This does not establish destructive
 installation or full fleet acceptance.
 
 The extended `administrative-ssh` NixOS check passed:
-`/nix/store/nmbgfmlrnjignyxsfagjpr9yjfj9083x-vm-test-run-kittens-administrative-ssh`.
+`/nix/store/nmbgfmlrnjignyxsfagjpr9yjfj9083x-vm-test-run-overalls-administrative-ssh`.
 It first authenticates pinned administrative SSH and Nix store transport on 2222,
 then activates a specialization handing port 22 to the actual Porsche release.
 Administrative connections still succeed on 2222/2223, the administrative host
@@ -781,7 +781,7 @@ the unencrypted connection. The fixture now selects verified TLS in the executed
 command after environment-file loading, matching the production module's ordering.
 
 The corrected source-built machine check passed all scenarios in 94 seconds:
-`caihddyc5dvc26ygqigrf9df5apmjrz4-vm-test-run-kittens-porsche-secrets`.
+`caihddyc5dvc26ygqigrf9df5apmjrz4-vm-test-run-overalls-porsche-secrets`.
 Both initial and rotated runtime tokens matched the private prepared files;
 the service could read neither the root bundle nor administrative private key.
 The wrong host failed decryption without publication. A missing secret retained
@@ -908,7 +908,7 @@ path forward. No application assertion or physical acceptance is inferred from
 this build-tool crash.
 
 The corrected source-built driver completed and passed NixOS driver lint/type
-checks: `bjhkm4xk65l0j2qxaqc0gd5mlqsk44bm-nixos-test-driver-kittens-porsche-fleet`.
+checks: `bjhkm4xk65l0j2qxaqc0gd5mlqsk44bm-nixos-test-driver-overalls-porsche-fleet`.
 Inspection of its captured storage script confirms both rebuilt GUIDs and the
 8 GiB quota. The exact packaged driver is now running directly with its captured
 configuration in `/tmp/porsche-fleet-final-runtime`, using mandatory KVM and the

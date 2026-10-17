@@ -165,7 +165,7 @@ archives retain their original revision and cannot prove current deployment.
 [Accounting validation](../../../protocol/lib/overalls_protocol/inference.ex) and
 [Ziggy's private completion schema](../../../ziggy/lib/ziggy/completion.ex) separate
 wire accounting from local diagnostics. [Replay tests](../../../marshall/test/marshall/inference/requests_test.exs)
-cover retained old receipts. The credential migration (`marshall/priv/repo/migrations/20261009120000_retire_monitor_credentials.exs` at kittens revision `9fe1e493`, repository deleted)
+cover retained old receipts. The credential migration (`marshall/priv/repo/migrations/20261009120000_retire_monitor_credentials.exs` at overalls revision `9fe1e493`, repository deleted)
 revokes monitor authority while preserving tables.
 
 The [infrastructure exporter](../../../nix/domains/system/fleet-exporter/exporter.py) and
@@ -437,8 +437,8 @@ additional cloning matrix reruns remain outstanding.
 ADR-0159 Push 6 removed the superseded clauses from code: the
 [lifecycle journal](../../../lilly/lib/lilly/lifecycle/journal.ex) accepts only v2
 envelopes and no longer migrates v1 or writes `.lifecycle-v1`/`.lifecycle-legacy`
-archives; the archive importer (`lilly/lib/lilly/lifecycle/diagnostics.ex` at kittens revision `9fe1e493`, repository deleted),
-legacy event vocabulary (`lilly/lib/lilly/lifecycle/legacy_event.ex` at kittens revision `9fe1e493`, repository deleted),
+archives; the archive importer (`lilly/lib/lilly/lifecycle/diagnostics.ex` at overalls revision `9fe1e493`, repository deleted),
+legacy event vocabulary (`lilly/lib/lilly/lifecycle/legacy_event.ex` at overalls revision `9fe1e493`, repository deleted),
 standby terminal-archive custody branch and `persist_transition` are deleted; and
 the shared [custody API](../../../elixir/diagnostics/lib/overalls/diagnostics/custody.ex)
 keeps only bounded `enqueue/3` (synchronous `persist/3` and its processor/sampler

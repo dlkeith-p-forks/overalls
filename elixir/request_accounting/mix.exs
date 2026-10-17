@@ -7,6 +7,7 @@ defmodule Overalls.RequestAccounting.MixProject do
       version: "0.1.0",
       elixir: "== 1.20.4",
       deps: [
+        {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
         {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
         {:stream_data, "~> 1.4", only: :test}
       ],
@@ -27,6 +28,7 @@ defmodule Overalls.RequestAccounting.MixProject do
           "compile --warnings-as-errors",
           "format --check-formatted",
           "test --warnings-as-errors",
+          "covenant.check --no-run",
           "dialyzer --force-check"
         ]
       ]

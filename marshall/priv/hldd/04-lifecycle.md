@@ -270,20 +270,32 @@ accepted report decides the restart. A late report is not a capacity shortfall
 not hidden by unlimited restart loops.
 
 A failed placement whose desired state is still `running` keeps its command,
-so the per-VM actor re-drives it on every one-second tick until Marshall sends
-a newer command or a deletion. Each re-drive re-runs the idempotent failure
-fence and cleanup and observes the same failed outcome, which leaves the
-durable outcome journal unchanged. Lilly logs `vm.failed` (VM, placement and
-the closed reason `execution_failed` or `crashed`) only after the journal
-records a new failed outcome: once per generation and reason, again after a
-recorded recovery or for a newer command's failure, and not again after a
-Lilly restart over the same journaled failure. On 2026-10-17 the event was
-emitted by the driver on every re-drive, producing a per-second warning loop
-that stopped only when the VMs were deleted. The
+but Lilly does not retry it on its own. Once a VM actor has durably recorded
+(or re-observed unchanged) a failed outcome for the exact current command, it
+settles: its one-second tick and unchanged reconcile requests start no further
+work, so the failure fence, its locks and its cleanup run once rather than
+every second. The durable journal still carries that failed outcome to Marshall
+until acknowledged, exactly as before. Recovery stays with Marshall: a crash
+within the restart budget, an owner start or retry, and a deletion each arrive
+as a newer command, which the actor drives at once. A Lilly or actor restart
+re-observes the failure once, so readiness still rests on an observation made
+by the current runtime, then settles again without appending an outcome.
+Journal contention, retryable results and unconfirmed cleanup (`unknown`) do
+not settle and are retried on the tick as before. Lilly logs `vm.failed` (VM,
+placement and the closed reason `execution_failed` or `crashed`) only after the
+journal records a new failed outcome: once per generation and reason, again
+after a recorded recovery or for a newer command's failure, and not again after
+a Lilly restart over the same journaled failure. On 2026-10-17 a failed
+placement was re-driven, and `vm.failed` emitted, every second until the VMs
+were deleted. The
 [actor failure-event property](repo:lilly/test/vm/actor_failure_event_test.exs)
-checks generated failure, recovery, restart and newer-command histories with a
-controlled executor; the per-tick physical re-drive itself is unchanged and is
-not exercised natively by this property.
+checks generated failure, recovery, restart and newer-command histories, and
+the [settled-failure property](repo:lilly/test/vm/actor_failure_settled_test.exs)
+checks that ticks and unchanged reconcile requests start no work after a
+recorded failure, that a replacement actor drives it exactly once, that a newer
+command or deletion still drives, and that the actor's real timer starts no work
+for two periods. Both use a controlled executor; no native machine test
+exercises a settled failure.
 
 A launch runs as six steps: begin (claim and running intent), disk, boot
 records, jail, logging and network, and commit
@@ -340,7 +352,7 @@ Lilly journals also model execution, claims, receives, exports, snapshots, and
 resize effects. Updates occur under native locks and publish state plus revision
 atomically. Preserve these journals across daemon upgrades and recovery.
 
-The historical Antithesis actor harness (`antithesis/README.md` at kittens revision `9fe1e493`, repository deleted)
+The historical Antithesis actor harness (`antithesis/README.md` at overalls revision `9fe1e493`, repository deleted)
 exercised duplicate-generation launch histories through Lilly's real command
 Store, VM actor and journal with a persistent fake executor. Its named-volume
 workload observed replay across actor process lifetimes; it did not run Marshall
@@ -410,7 +422,7 @@ Committed transitions enter the shared library's bounded volatile queue only
 after the native writer releases.
 The former audit-drain, cursor and reoffer evidence describes the retired
 application protocol and was preserved in the
-baseline lifecycle chapter, `marshall/priv/hldd/04-lifecycle.md` at kittens revision `a99f74f0` (repository deleted).
+baseline lifecycle chapter, `marshall/priv/hldd/04-lifecycle.md` at overalls revision `a99f74f0` (repository deleted).
 Marshall's local transactional audit and PaperTrail retention tests remain active.
 
 ## Native submission and daemon-loss verification

@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Native guest backups and retained-source restoration inventory
 
-Repository: `/home/ghuntley/src/kittens-antithesis-reset`; inspected HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a` and its current sources, 2026-10-13. `external_references=[]`. This is read-only source evidence: no test evaluation, build, execution, production observation, secret inspection or retired Antithesis harness inspection. The inventory does not change architecture, accepted decisions, runtime behavior or verification receipts. Related companion inventories cover backup service/custody (`/home/ghuntley/src/kittens-antithesis-reset/antithesis/scratchbook/native-backup-service-custody-part.md`) and native/packaged cleanup (`/home/ghuntley/src/kittens-antithesis-reset/antithesis/scratchbook/native-backup-cleanup-part.md`). Together the three parts inventory the requested custody/recovery/guest/cleanup exports at `nix/verification/tests/catalog.nix:153,155-156,322-323` plus ordinary source restoration in `zfs-guest`; backup typing/operators/configuration are only identified as adjacent exports.
+Repository: `/home/ghuntley/src/overalls-antithesis-reset`; inspected HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a` and its current sources, 2026-10-13. `external_references=[]`. This is read-only source evidence: no test evaluation, build, execution, production observation, secret inspection or retired Antithesis harness inspection. The inventory does not change architecture, accepted decisions, runtime behavior or verification receipts. Related companion inventories cover backup service/custody (`/home/ghuntley/src/overalls-antithesis-reset/antithesis/scratchbook/native-backup-service-custody-part.md`) and native/packaged cleanup (`/home/ghuntley/src/overalls-antithesis-reset/antithesis/scratchbook/native-backup-cleanup-part.md`). Together the three parts inventory the requested custody/recovery/guest/cleanup exports at `nix/verification/tests/catalog.nix:153,155-156,322-323` plus ordinary source restoration in `zfs-guest`; backup typing/operators/configuration are only identified as adjacent exports.
 
 ## Instructions and decision scope
 

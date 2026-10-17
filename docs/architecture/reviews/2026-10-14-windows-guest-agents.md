@@ -84,8 +84,8 @@ row's manifest already carried `guest_agents`.
    touched here; recorded so it is not mistaken for Phase 3 fallout.
 8. **The Rust MMDS client parsed the wrong document shape.** Two
    `windows-lilly-guest-agents` runs ended with repeated `vm.trust_failed`.
-   A local boot of the same image showed why: `kittens-readinessd` and
-   `kittens-trustd-windows` started, then gave up after their 600 s identity
+   A local boot of the same image showed why: `overalls-readinessd` and
+   `overalls-trustd-windows` started, then gave up after their 600 s identity
    budget with `identity_unavailable`, while the PowerShell bootstrap read the
    same MMDS fine. Firecracker answers `GET /lilly` with the `lilly` subtree
    itself, but `guest/mmds` expected the `{"lilly": {...}}` object Lilly seeds,
@@ -123,7 +123,7 @@ row's manifest already carried `guest_agents`.
     file and vendor hash are unchanged. A Windows guest against the real leaf
     is still a fleet proof.
 13. **The agent executor lived only in the desktop CLI binary.** Porting the
-    whole `kittens` CLI to Windows touches config, logging, proxy and update
+    whole `overalls` CLI to Windows touches config, logging, proxy and update
     code that Windows guests do not need. The executor core moved into the
     Lyra library behind a `Host` trait instead. Linux keeps the same digest,
     telemetry, log and runtime markers through `guest_host`. Windows supplies
@@ -218,7 +218,7 @@ row's manifest already carried `guest_agents`.
     only `probe_sshd_pending`, so readiness timed out after 600 s and the
     request ended `activation_failed` (retryable) after about 707 s of
     downtime. The `ssh-ready` marker from the source boot was still on disk:
-    Linux keeps it in `/run`, which every boot clears, but `C:\kittens\run`
+    Linux keeps it in `/run`, which every boot clears, but `C:\overalls\run`
     persists. readinessd therefore demanded a running sshd. sshd starts only
     after this boot's first roster pass, and the destination could not get a
     roster before the relocation committed. The marker now holds the boot id
@@ -253,7 +253,7 @@ Executed on 2026-10-14 from the worktree (uncommitted Phase 3 tree):
 | `lilly`: `jail_test`, `provisioning_test`, `config_test`, `image_template_cacheable_test` (new cases) | pass (cacheability test corrected to count the manifest, rerun pending) |
 | `marshall`: `image_guest_agents_capability_test`, `editor_workspace_test`, `image_admission_test`, `ssh/commands_test`, `terminal/authority_test`, `machines_live_test`, `service_levels_test` on a fresh test database | 91/91 after finding 1; `image_admission_test` 5/5 and `machines_live_test` 32/32 after the later test fixes |
 | `lyra`: `cargo fmt`, `cargo check --all-targets`, `cargo test`, `cargo clippy -D warnings` (Linux) | pass |
-| `legacyPackages.lyraWindows` (gate 0, zig cross-build) | pass: `kittens-winprobe.exe`, 320 000 bytes, PE32+ console, manifest with digest; by gate 3 five agents including the rustls-linked roster and host-certificate agents |
+| `legacyPackages.lyraWindows` (gate 0, zig cross-build) | pass: `overalls-winprobe.exe`, 320 000 bytes, PE32+ console, manifest with digest; by gate 3 five agents including the rustls-linked roster and host-certificate agents |
 | `checks.firecracker-patch-tests` (nine patches) | pass, 28 tests including the five indirect-descriptor tests |
 | `marshall`: `ssh/guest_access_test` (authorized keys pull), `control/satellite_version_test` | pass (9/9) |
 | `ziggy`: `provider_selection_test` (route refusals including `/ssh/v1/authorized-keys`) | pass (10/10) |
@@ -266,7 +266,7 @@ Executed on 2026-10-14 from the worktree (uncommitted Phase 3 tree):
 | `lyra`: `guest::mmds` after finding 8 (subtree parsed, envelope refused) and all `guest::` tests | pass (12/12), 2026-10-15 |
 | terminald (gate 4): `cargo test` on Linux after the platform split, including the new MMDS identity tests | pass (54/54, `TERMINALD_TEST_HEAD` pinned as in the Nix check) |
 | terminald: `cargo clippy --all-targets -D warnings` (Linux) and `cargo check --all-targets --target x86_64-pc-windows-gnu` with Lyra's toolchain | pass, no warnings |
-| `legacyPackages.terminaldWindows` (zig cross-build) | pass: `kittens-terminald.exe`, 532 480 bytes, PE32+ console, manifest with digest |
+| `legacyPackages.terminaldWindows` (zig cross-build) | pass: `overalls-terminald.exe`, 532 480 bytes, PE32+ console, manifest with digest |
 | `checks.windows-guest-unit` with the terminal-daemon, task and task-settings assertions | pass |
 
 Two earlier Marshall runs are not evidence: one ran under the dev environment
@@ -320,9 +320,9 @@ recorded in the session notes and the database was recreated.
 
   This is the scenario finding 20 deadlocked.
 - **Roster SSH through Audi proved, 2026-10-15 05:38Z.** After the operator
-  refreshed the client configuration with `kittens config-ssh`, which sets
-  `User u200000`, a plain `ssh` to `win-accept-3` through the Kittens proxy and
-  Audi logged in as `kittens 00`. Strict host key checking accepted the
+  refreshed the client configuration with `overalls config-ssh`, which sets
+  `User u200000`, a plain `ssh` to `win-accept-3` through the Overalls proxy and
+  Audi logged in as `overalls 00`. Strict host key checking accepted the
   guest's per-boot host certificate, and the guest's sshd logged `Accepted
   publickey for u200000`. The roster agent reported each login (`login_recorded`)
   from sshd's log. The first attempt, with a stale client configuration
@@ -357,10 +357,10 @@ recorded in the session notes and the database was recreated.
 - **Gate 0 (toolchain)** recorded above.
 - **Gate 1 (viosock transport) recorded on bare KVM, 2026-10-14 21:58Z.** With
   the ninth patch (alignment fixed), the probe image booted under the patched
-  VMM through the scratch launcher; the guest's `kittens-winprobe` found address
+  VMM through the scratch launcher; the guest's `overalls-winprobe` found address
   family 40 through the `\\.\Viosock` control device, listened on vsock port
   1024 (now 1099), and the host's `CONNECT` returned `OK 1073741832` followed by
-  `{"probe":"kittens-winprobe","version":"0.1.0","address_family":40,"source":"ioctl","peer_cid":2,"peer_port":1073741832,"connection":9}`;
+  `{"probe":"overalls-winprobe","version":"0.1.0","address_family":40,"source":"ioctl","peer_cid":2,"peer_port":1073741832,"connection":9}`;
   Firecracker's log showed no descriptor errors (zero `UnwritableDescriptor` or
   `InvalidIndirectTable` lines against several hundred under the unpatched
   VMM). Replies were lost only when the dialling `printf | socat` half-closed
@@ -373,18 +373,18 @@ recorded in the session notes and the database was recreated.
   about 325 s of guest time), booted under the patched VMM on nested KVM to the
   SAC prompt, and the probe answered the host's `CONNECT 1099` 23.7 s after the
   prompt: `OK 1073741829` then
-  `{"probe":"kittens-winprobe","version":"0.1.0","address_family":40,"source":"ioctl","peer_cid":2,"peer_port":1073741829,"connection":2}`;
+  `{"probe":"overalls-winprobe","version":"0.1.0","address_family":40,"source":"ioctl","peer_cid":2,"peer_port":1073741829,"connection":2}`;
   the probe log read from the EFI system partition showed `listening on vsock
   port 1099` and `answered connection 1 peer_cid=2 … sent=true`.
 - **Gate 2 (readiness and trust daemons) implemented, execution pending.**
-  `lyraWindows` builds `kittens-winprobe.exe` (414 720 bytes),
-  `kittens-readinessd.exe` (509 440 bytes) and `kittens-trustd-windows.exe`
+  `lyraWindows` builds `overalls-winprobe.exe` (414 720 bytes),
+  `overalls-readinessd.exe` (509 440 bytes) and `overalls-trustd-windows.exe`
   (564 224 bytes); the Lyra check passes with the Windows-target type check and
   the shared MMDS, readiness and trust unit tests; the `windows-v1` image
   (`windowsGuestAgents`) and the `windows-lilly-guest-agents` machine test
   evaluate. Its execution (installed trust and ready provisioning with a guest
   boot UUID, new UUID after restart) is recorded here once run.
-- **Gate 3 linking proof.** `kittens-ssh-sync-windows.exe` (2 405 376 bytes),
+- **Gate 3 linking proof.** `overalls-ssh-sync-windows.exe` (2 405 376 bytes),
   which constructs the shared private HTTPS client (`reqwest` with rustls and
   `ring`) against the trust daemon's bundle, links for `x86_64-pc-windows-gnu`
   through the zig toolchain, so the mingw fallback of the plan is not needed.

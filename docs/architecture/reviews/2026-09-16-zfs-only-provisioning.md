@@ -53,21 +53,21 @@ authentication, ownership, accounting and recovery requirements.
 
 | Check | Result | Derivation |
 | --- | --- | --- |
-| module-configuration | built and passed | `3m2n5k5djmnwvmzvs086g8dc8xqkklsd-kittens-module-configuration-check.json.drv` |
-| storage-configuration | cached, unchanged derivation | `pynla3c6hr571aiibyy7zj8q8yy9fq4h-kittens-storage-configuration.drv` |
+| module-configuration | built and passed | `3m2n5k5djmnwvmzvs086g8dc8xqkklsd-overalls-module-configuration-check.json.drv` |
+| storage-configuration | cached, unchanged derivation | `pynla3c6hr571aiibyy7zj8q8yy9fq4h-overalls-storage-configuration.drv` |
 | marshall-release | built and passed | `jqq4p8ncnjv5hfq153w07q77dh71cr4n-marshall-source-release-check.drv` |
 | lilly-release | built and passed | `1qch8kqs98hb920hfg0rcqjbi45wzx2p-lilly-source-release-check.drv` |
-| native-zfs | 270.31 s machine script | `wzkw11av7kbhiqhjwc4rn6y7b60sxgp4-vm-test-run-kittens-native-zfs.drv` |
-| zfs-lifecycle | 753.67 s machine script | `0whcdgi6nd8acadsc997lgwa4vd2vxfj-vm-test-run-kittens-zfs-lifecycle.drv` |
-| zfs-guest | 636.70 s machine script | `8h1dcl9lszbb76hjsgclkrq9x4bachws-vm-test-run-kittens-zfs-guest.drv` |
-| zfs-io | 74.83 s machine script | `s0l8fzhyzi2h8ry56ag9wyxagms003w5-vm-test-run-kittens-zfs-io.drv` |
-| service-roles | 98.68 s machine script | `3rrcy7pkrdzvrfm5arl07f03j8ynch75-vm-test-run-kittens-service-roles.drv` |
-| acme-route53 | 133.74 s machine script | `9jwn3fg6g4dfbf87740c1ww6skdn0pfh-vm-test-run-kittens-acme-route53.drv` |
-| secret-custody | 135.78 s machine script | `j3cz6qznzd6q25pl65yhn4482s9f59rf-vm-test-run-kittens-secret-custody.drv` |
-| credential-rotation | 259.66 s machine script | `344nzylprqdv5zy0x3ii1hkpvkcad82p-vm-test-run-kittens-credential-rotation.drv` |
-| mirrored-installation | cached, unchanged derivation | `saqjzcibsmqffwna78dw23jnj094islr--test-run-kittens-mirrored-installation.drv` |
-| bootstrap-images | cached, unchanged derivation | `81vyl7w0c4nwcc6882lgkxxzjp21f778--test-run-kittens-bootstrap-images.drv` |
-| fleet | 1177.88 s machine script | `w98ya6ib8dlxlbr357d7lvrgrgmx7vb3-vm-test-run-kittens-fleet.drv` |
+| native-zfs | 270.31 s machine script | `wzkw11av7kbhiqhjwc4rn6y7b60sxgp4-vm-test-run-overalls-native-zfs.drv` |
+| zfs-lifecycle | 753.67 s machine script | `0whcdgi6nd8acadsc997lgwa4vd2vxfj-vm-test-run-overalls-zfs-lifecycle.drv` |
+| zfs-guest | 636.70 s machine script | `8h1dcl9lszbb76hjsgclkrq9x4bachws-vm-test-run-overalls-zfs-guest.drv` |
+| zfs-io | 74.83 s machine script | `s0l8fzhyzi2h8ry56ag9wyxagms003w5-vm-test-run-overalls-zfs-io.drv` |
+| service-roles | 98.68 s machine script | `3rrcy7pkrdzvrfm5arl07f03j8ynch75-vm-test-run-overalls-service-roles.drv` |
+| acme-route53 | 133.74 s machine script | `9jwn3fg6g4dfbf87740c1ww6skdn0pfh-vm-test-run-overalls-acme-route53.drv` |
+| secret-custody | 135.78 s machine script | `j3cz6qznzd6q25pl65yhn4482s9f59rf-vm-test-run-overalls-secret-custody.drv` |
+| credential-rotation | 259.66 s machine script | `344nzylprqdv5zy0x3ii1hkpvkcad82p-vm-test-run-overalls-credential-rotation.drv` |
+| mirrored-installation | cached, unchanged derivation | `saqjzcibsmqffwna78dw23jnj094islr--test-run-overalls-mirrored-installation.drv` |
+| bootstrap-images | cached, unchanged derivation | `81vyl7w0c4nwcc6882lgkxxzjp21f778--test-run-overalls-bootstrap-images.drv` |
+| fleet | 1177.88 s machine script | `w98ya6ib8dlxlbr357d7lvrgrgmx7vb3-vm-test-run-overalls-fleet.drv` |
 
 The first Marshall run exposed remaining distributed RPC fixtures using removed
 v1 entry points and a drain fixture without a sufficient logical budget. These

@@ -7,9 +7,9 @@ Marshall releases, TLS PostgreSQL, HAProxy, the packaged root Lilly service and
 a newly provisioned Firecracker guest. The
 [harness](../../../nix/verification/tests/README.md) reuses the isolated
 [deployment fixture](../../../nix/verification/tests/README.md). Its trusted
-Marshall helper (`marshall/scripts/deployment_fixture.exs` at kittens revision `9fe1e493`, repository deleted) requires a
+Marshall helper (`marshall/scripts/deployment_fixture.exs` at overalls revision `9fe1e493`, repository deleted) requires a
 matching disposable-database sentinel; its
-Lilly helper (`lilly/scripts/deployment_fixture.exs` at kittens revision `9fe1e493`, repository deleted) uses the global host
+Lilly helper (`lilly/scripts/deployment_fixture.exs` at overalls revision `9fe1e493`, repository deleted) uses the global host
 lock and fixture ownership before physical preparation or cleanup.
 
 This remains one physical host. The work preserves existing protocol, authority,

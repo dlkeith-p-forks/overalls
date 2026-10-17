@@ -48,13 +48,13 @@ source and independent runtime evidence reviews found no remaining blocker.
 
 The final copied fixture and production modules passed pinned Python 3.13 Ruff
 format/lint and ty in `backup-types`, exit 0, in 10 seconds; archive
-`1791013969182-2302280-0.jsonl`, log `/tmp/kittens-backup-worker-types-final.log`.
+`1791013969182-2302280-0.jsonl`, log `/tmp/overalls-backup-worker-types-final.log`.
 Existing state/workflow/status tests also execute. This is typing evidence, not
 native worker execution.
 
 The combined native ownership and worker-death check passed in 134 seconds,
 exit 0; archive `1791013997003-2327202-0.jsonl`, log
-`/tmp/kittens-backup-worker-native.log`. The actual property command took
+`/tmp/overalls-backup-worker-native.log`. The actual property command took
 66.01 seconds; VM script 86.24 seconds. Thirteen original ownership histories
 and eight worker-death histories completed; native worker units fourteen through
 twenty-one record SIGKILL status nine. Composed driver validation passed.

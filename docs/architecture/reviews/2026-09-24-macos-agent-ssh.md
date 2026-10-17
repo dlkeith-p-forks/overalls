@@ -5,7 +5,7 @@
 This review covers the public installer, Lyra's local key selection, and the
 isolated Audi gateway connection under ADR-0110 and ADR-0096. The live installer
 matches the repository source. It selects `darwin-arm64` or `darwin-amd64`,
-verifies a SHA-256 digest, runs `kittens config-ssh`, then invokes OpenSSH. The
+verifies a SHA-256 digest, runs `overalls config-ssh`, then invokes OpenSSH. The
 published macOS artifacts match their manifest digests. The reported
 `SSH configuration installed` line therefore establishes that download and
 account proof completed; the following `audi@... Permission denied (publickey)`
@@ -15,7 +15,7 @@ Setup's Porsche proof uses the user's OpenSSH configuration, including a
 `Host * IdentityAgent` rule such as 1Password's quoted socket path. Lyra's
 Audi subprocess uses `-F /dev/null` and previously discarded that agent choice.
 If the selected key exists only in the configured agent, Lyra writes the exact
-registered public key to `kittens-identity.pub`, but the isolated subprocess
+registered public key to `overalls-identity.pub`, but the isolated subprocess
 cannot reach the signer. `IdentityFile` alone cannot repair that missing agent.
 An encrypted private file could also be missed because setup attempted to
 derive its public key with an empty passphrase. Separately, a pending desktop

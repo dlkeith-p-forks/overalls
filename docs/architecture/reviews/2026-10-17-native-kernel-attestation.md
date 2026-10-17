@@ -2,7 +2,7 @@
 
 ## Scope
 
-This review covers ADR-0186, the replacement for ADR-0180 that adds native FreeBSD and
+This review covers ADR-0188, the replacement for ADR-0180 that adds native FreeBSD and
 illumos kernel provenance, a jail-local kernel probe, native agent daemon
 packaging and Lilly's pre-credential kernel-attestation check. It inspects the
 current `native-kernels` Nix inputs, version-6 manifests and version-3 bundles,
@@ -20,7 +20,7 @@ boot-bound trust model. The native daemons remain guest-local processes; they do
 not create a new host service or Ash domain. No deployment topology or domain
 ownership changes.
 
-[ADR-0186](../decisions/0186-native-kernel-provenance-and-admission.md) is accepted
+[ADR-0188](../decisions/0188-native-kernel-provenance-and-admission.md) is accepted
 under the custom native-kernel plan. It preserves the foreign Linux and native
 metadata choices; [ADR-0180](../decisions/0180-multi-os-guest-image-contract.md)
 retains the superseded rationale and historical evidence.

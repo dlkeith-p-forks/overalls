@@ -82,8 +82,8 @@ plus Ruff formatting and lint.
 
 - Base: `ddf1d05a5749bf202d967cf8d687e50969d9fe0c`.
 - Captured executable tree: `496cb8b974f9e3872d768d68649db51e7d02f78c`.
-- Derivation: `/nix/store/1knzjmv4gf6zw6yifc9388fy63sdwnj1-kittens-auto-update-compatibility.drv`.
-- Result: `/nix/store/24ylbg3qvr6fjlsiq8d3vlr6m6a8lbgr-kittens-auto-update-compatibility`.
+- Derivation: `/nix/store/1knzjmv4gf6zw6yifc9388fy63sdwnj1-overalls-auto-update-compatibility.drv`.
+- Result: `/nix/store/24ylbg3qvr6fjlsiq8d3vlr6m6a8lbgr-overalls-auto-update-compatibility`.
 - Production runtime SHA256: `06adee90c7c116381e1b9632c53b198a4bc23ee4415348953128c1f9f2259fe1`.
 - Unchanged fixed-test SHA256: `5d228c81768f0cbd4996424a02f05cf10c86b50884e47909196b3d42a0ef012b`.
 - History SHA256: `15fd26f69d0ff48a3a6fa270d072c28416721ba49ec61b4a85eb9c56a9e65312`.

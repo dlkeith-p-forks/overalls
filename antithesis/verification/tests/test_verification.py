@@ -28,15 +28,18 @@ from identity import (
     verify_image_copies,
     verify_image_copy,
     verify_image_selection,
+    verify_staged_catalog,
     verify_staged_selection,
     walk_inputs,
 )
 from schema import EvidenceError, Json, arr, atomic_json, field, integer, narrow_json, obj, string
 from selection import (
+    Selection,
     hosted_compose,
     manifest,
     materialization,
     read_selection,
+    selected_files,
     stage,
     validate_compose,
     verify_materialization,
@@ -188,6 +191,12 @@ class VerificationTests(unittest.TestCase):
         copies = docker_copies(repository)
         self.assertIn(
             CopyInput("antithesis/control_peer/", "/opt/overalls-antithesis/control-peer/", None),
+            copies["workload"],
+        )
+        # The selection-scoped catalog is a direct COPY, so its lineage is
+        # checked like every other workload input.
+        self.assertIn(
+            CopyInput("antithesis/build/selected-test/catalog/", "/opt/antithesis/catalog/", None),
             copies["workload"],
         )
         with tempfile.TemporaryDirectory() as directory:
@@ -629,10 +638,86 @@ class VerificationTests(unittest.TestCase):
 
             shutil.copytree(output, replica)
             verify_staged_selection(staged_root, data)
+            verify_staged_catalog(staged_root, data)
+            catalog = replica / "catalog/workload"
+            staged_modules = {
+                str(path.relative_to(catalog)) for path in catalog.rglob("*") if path.is_file()
+            }
+            runtime_modules = {
+                string(field(obj(item, "dependency"), "path"), "path").removeprefix(
+                    "antithesis/workload/"
+                )
+                for item in arr(field(data, "runtime_dependencies"), "runtime dependencies")
+            }
+            self.assertEqual(staged_modules, runtime_modules)
+            self.assertIn("core/__init__.py", staged_modules)
+            self.assertIn("core/bootstrap.py", staged_modules)
+            # Same package, untraced module: only the host_sessions template imports it.
+            self.assertNotIn("control/host_sessions.py", staged_modules)
+            self.assertFalse(any(name.startswith("backup/") for name in staged_modules))
+            extra = catalog / "backup/scenarios.py"
+            extra.parent.mkdir()
+            extra.write_text("unselected module", encoding="utf-8")
+            with self.assertRaisesRegex(EvidenceError, "extra or missing modules"):
+                verify_staged_catalog(staged_root, data)
+            shutil.rmtree(extra.parent)
+            module = catalog / "core/bootstrap.py"
+            original = module.read_bytes()
+            module.write_text("stale module", encoding="utf-8")
+            with self.assertRaisesRegex(EvidenceError, "differs from source"):
+                verify_staged_catalog(staged_root, data)
+            module.write_bytes(original)
+            verify_staged_catalog(staged_root, data)
+            (replica / "catalog/second").mkdir()
+            with self.assertRaisesRegex(EvidenceError, "exactly one workload module tree"):
+                verify_staged_catalog(staged_root, data)
+            (replica / "catalog/second").rmdir()
             command = replica / "v1/control/serial_driver_smoke.py"
             command.write_text("stale command", encoding="utf-8")
             with self.assertRaises(EvidenceError):
                 verify_staged_selection(staged_root, data)
+            command.write_bytes(
+                (root / "antithesis/test/v1/control/serial_driver_smoke.py").read_bytes()
+            )
+            shutil.rmtree(replica / "catalog")
+            with self.assertRaisesRegex(EvidenceError, "extra or missing entries"):
+                verify_staged_selection(staged_root, data)
+
+    def test_selected_commands_keep_assertions_in_traced_modules(self) -> None:
+        selection = Selection(
+            name="probe",
+            compose_files=("antithesis/config/docker-compose.yaml",),
+            templates=("probe",),
+            runtime_packages=("core",),
+            singleton_templates=(),
+            services=("workload",),
+            workload_environment=("ANTITHESIS_DB_HOST",),
+            bootstrap_template="probe",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            core = root / "antithesis/workload/core"
+            core.mkdir(parents=True)
+            (core / "__init__.py").write_text('"""core"""\n', encoding="utf-8")
+            (core / "bootstrap.py").write_text("READY = True\n", encoding="utf-8")
+            (core / "config.py").write_text("VALUE = 1\n", encoding="utf-8")
+            command = root / "antithesis/test/v1/probe/serial_driver_probe.py"
+            command.parent.mkdir(parents=True)
+            command.write_text("from core.config import VALUE\nprint(VALUE)\n", encoding="utf-8")
+            files, dependencies = selected_files(root, selection)
+            self.assertEqual(files, [command])
+            # Importing ``core.config`` executes ``core/__init__.py`` too, so the
+            # initializer is a traced runtime dependency and catalog member.
+            self.assertEqual(
+                dependencies,
+                [core / "__init__.py", core / "bootstrap.py", core / "config.py"],
+            )
+            command.write_text(
+                'from antithesis.assertions import reachable\nreachable("probe ran")\n',
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(EvidenceError, "declares SDK assertions"):
+                selected_files(root, selection)
 
     def test_image_selection_rejects_broad_command_tree(self) -> None:
         root = Path(__file__).resolve().parents[3]
@@ -831,6 +916,7 @@ class VerificationTests(unittest.TestCase):
         for name, family, expected_count in (
             ("repository-origin", "repository", 4),
             ("access-smtp", "access", 3),
+            ("recorder-host", "recorder", 3),
         ):
             with self.subTest(profile=name):
                 selection = read_selection(
@@ -877,6 +963,79 @@ class VerificationTests(unittest.TestCase):
         services["origin"] = {}
         with self.assertRaises(EvidenceError):
             validate_compose(selection, obj(narrow_json({"services": services}), "overlay Compose"))
+
+    def test_recorder_profile_requires_gated_vm_and_read_only_witnesses(self) -> None:
+        root = Path(__file__).resolve().parents[3]
+        selection = read_selection(root / "antithesis/verification/selections/recorder-host.json")
+
+        def rendered(**changes: object) -> dict[str, Json]:
+            environment: dict[str, object] = {
+                key: "/run/overalls-secrets/fixture.json" for key in selection.workload_environment
+            }
+            environment.update(
+                {
+                    "ANTITHESIS_DB_HOST": "pg",
+                    "ANTITHESIS_MARSHALL_URLS": "https://marshall-a,https://marshall-b",
+                    "ANTITHESIS_CONTROL_CREDENTIAL_FILE": (
+                        "/run/overalls-control-secrets/lilly-a-credential.json"
+                    ),
+                    "ANTITHESIS_CONTROL_REQUEST_DIR": "/run/overalls-control-requests",
+                    "ANTITHESIS_BOOTSTRAP_PROFILE": "recorder-host",
+                    "ANTITHESIS_RECORDER_REQUESTS": "/run/overalls-recorder-requests",
+                    "ANTITHESIS_RECORDER_RESULTS": "/run/overalls-recorder-results",
+                    "ANTITHESIS_RECORDER_OBSERVATION": "/run/overalls-recorder-observation",
+                    "ANTITHESIS_RECORDER_LEDGER": (
+                        "/var/lib/overalls-antithesis-recorder/ledger.sqlite"
+                    ),
+                }
+            )
+            volumes: list[dict[str, object]] = [
+                {"target": "/run/overalls-secrets"},
+                {"target": "/run/overalls-control-secrets"},
+                {"target": "/run/overalls-control-requests/requests"},
+                {"target": "/run/overalls-control-requests/results"},
+                {"target": "/run/overalls-recorder-requests"},
+                {"target": "/run/overalls-recorder-results", "read_only": True},
+                {"target": "/run/overalls-recorder-observation", "read_only": True},
+                {"target": "/var/lib/overalls-antithesis-recorder"},
+            ]
+            depends = {
+                name: {"condition": "service_healthy"}
+                for name in (
+                    "pg",
+                    "marshall-a",
+                    "marshall-b",
+                    "enrollment",
+                    "lilly-a",
+                    "recorder-host-vmm",
+                )
+            }
+            services: dict[str, object] = {name: {} for name in selection.services}
+            services["recorder-host-vmm"] = {"healthcheck": {"test": ["CMD", "true"]}}
+            services["workload"] = {
+                "environment": environment,
+                "depends_on": depends,
+                "volumes": volumes,
+            }
+            if "profile" in changes:
+                environment["ANTITHESIS_BOOTSTRAP_PROFILE"] = changes["profile"]
+            if changes.get("writable_observation"):
+                volumes[6] = {"target": "/run/overalls-recorder-observation"}
+            if changes.get("ungated"):
+                depends["recorder-host-vmm"] = {"condition": "service_started"}
+            if changes.get("vm_state"):
+                volumes.append({"target": "/var/lib/recorder-hostvm/state"})
+            return obj(narrow_json({"services": services}), "recorder Compose")
+
+        validate_compose(selection, rendered())
+        for change in (
+            {"profile": "control-core"},
+            {"writable_observation": True},
+            {"ungated": True},
+            {"vm_state": True},
+        ):
+            with self.subTest(change=change), self.assertRaises(EvidenceError):
+                validate_compose(selection, rendered(**change))
 
     def test_global_budget_and_five_inflight_limit_across_configs(self) -> None:
         ledger = initialize(

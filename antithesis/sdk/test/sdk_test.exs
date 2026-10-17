@@ -43,7 +43,9 @@ defmodule OverallsAntithesis.SDKTest do
   end
 
   setup %{helper: helper} do
-    dir = Path.join(System.tmp_dir!(), "overalls-sdk-output-#{System.unique_integer([:positive])}")
+    dir =
+      Path.join(System.tmp_dir!(), "overalls-sdk-output-#{System.unique_integer([:positive])}")
+
     state_dir = dir <> "-state"
     File.mkdir!(dir)
     File.mkdir!(state_dir)

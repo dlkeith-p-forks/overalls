@@ -78,8 +78,8 @@ an abrupt-loss simulation that invalidates the relevant caches.
 
 [Packaging](../../../scripts/package_release.sh) builds outside Nix and then uses
 the [closure wrapper](../../../nix/domains/artifacts/applications/release-bundle.nix). The
-HAProxy example (`scripts/test/fixtures/legacy-deployment/haproxy.cfg.example` at kittens revision `9fe1e493`, repository deleted) and
-deployment contract (`scripts/test/fixtures/legacy-deployment/CONTRACTS` at kittens revision `9fe1e493`, repository deleted) require passthrough. They do not
+HAProxy example (`scripts/test/fixtures/legacy-deployment/haproxy.cfg.example` at overalls revision `9fe1e493`, repository deleted) and
+deployment contract (`scripts/test/fixtures/legacy-deployment/CONTRACTS` at overalls revision `9fe1e493`, repository deleted) require passthrough. They do not
 implement ADR-0030's source-built packages, host modules or TLS bridge.
 
 Classification: selected replacement remains unimplemented. Keep the existing
@@ -90,7 +90,7 @@ database budgets, migrations, readiness and independent guest supervision.
 ### 5. High — secret custody has a bootstrap and privilege boundary
 
 [Private-file readers](../../../lilly/lib/lilly/control/credential_file.ex) and
-Marshall's TLS credentials (`scripts/test/fixtures/legacy-deployment/systemd/marshall@.service` at kittens revision `9fe1e493`, repository deleted) support
+Marshall's TLS credentials (`scripts/test/fixtures/legacy-deployment/systemd/marshall@.service` at overalls revision `9fe1e493`, repository deleted) support
 existing delivery only. There is no host SSH-to-age/SecretSpec preparation service.
 An image containing a reusable host key or a Marshall service holding the host
 age identity would violate ADR-0032's intended boundary.

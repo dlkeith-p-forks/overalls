@@ -56,6 +56,11 @@ for the component being changed.
 
 ## Verification and implementation
 
+- Inception is known broken and out of scope. Ignore Inception-related
+  failures, including the zfs-guest "Inception retains a separate sparse data
+  drive" subtest and the Inception machine tests: do not investigate or fix
+  them, and do not let them block other work. Report them as known Inception
+  failures.
 - Elixir diagnostic events MUST go through each application's reviewed Events
   catalog (`Marshall.Events`, `Lilly.Events`, `Audi.Events`, `Brady.Events`,
   `Ziggy.Events`, `Porsche.Events`): add a `defevent` entry first, then emit
@@ -120,3 +125,9 @@ for the component being changed.
   native-language annotation conventions and discovery limits. All three
   `mix precommit` gates include `mix contracts.check`; syntax success is not
   semantic verification.
+
+## Covenant contract verification
+
+Use the [Covenant skill](.agents/skills/covenant/SKILL.md) when adding or maintaining Covenant contracts in any Elixir application. Keep Covenant development/test-only (`only: [:dev, :test]`, `runtime: false`) and preserve existing test-helper behavior while including `Covenant.Formatter`. Contract obligations belong under each application's `contracts/` tree and tagged executable tests under `test/contract/`, with stable IDs `<mix_app>.<component>.I<n>`. Run static and runtime Covenant checks plus the application's normal precommit gate; protocol changes also require Marshall and Lilly consumer checks.
+
+Covenant evidence is limited to behavior observable in the BEAM test VM. Do not use it to claim native Rust/KVM, physical isolation, multi-host recovery, browser, or production deployment guarantees. Preserve the existing `CONTRACTS`, ADR, HLDD, native, machine, and integration evidence, and update architecture/HLDD records when verification scope changes.

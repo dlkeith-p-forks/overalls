@@ -19,7 +19,7 @@ trust installation can unblock roster/certificate HTTPS. No sshd PID marker
 exists before bootstrap succeeds, withholding readiness.
 The shared Linux `terminald` has no native target. Placeholder kernel receipts
 stop image assembly before copying a stock disk, and all native capabilities
-remain false under [ADR-0186](repo:docs/architecture/decisions/0186-native-kernel-provenance-and-admission.md).
+remain false under [ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md).
 The intended services must accept only host CID 2 for guest CID 3 and refuse
 foreign, malformed or stale boot bindings. Protocol, Marshall and daemon units
 are source evidence; native startup, CID enforcement, restart, storage and

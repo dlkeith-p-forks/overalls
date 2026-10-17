@@ -124,16 +124,16 @@ custody symmetry 88.371s after reproduction (43 pre-fix subtest failures);
 restore-component interruptions 48.112s; kill-during-upload 36.792s;
 publication pinning 83.072s; concurrency + mid-restore swap 113.092s. The full
 extended suite passed 12 tests in 1097.042s. The strict derivation
-`kittens-backup-operator-histories` (ruff format+check, ty, then the twelve
-tests) built at `/nix/store/0abkirxjvs49019xqv8hdrm5w6rjihv9-kittens-backup-operator-histories`
+`overalls-backup-operator-histories` (ruff format+check, ty, then the twelve
+tests) built at `/nix/store/0abkirxjvs49019xqv8hdrm5w6rjihv9-overalls-backup-operator-histories`
 in 1155s. The backup-types derivation passed at
-`/nix/store/i2gk01gn2gsx3wai47jlzcmhily2k28z-kittens-backup-types`
+`/nix/store/i2gk01gn2gsx3wai47jlzcmhily2k28z-overalls-backup-types`
 (ruff/ty plus its existing 8 state, 11 workflow and status suites). The Lilly
 focused restored-authority suite passed 2 tests in 0.7s
 (`MIX_TEST_PARTITION=verify109`, `ERL_FLAGS='+S 6:6'`).
 
 Native `backup-recovery`: passed in 325s at
-`/nix/store/c6is7prqpmhng1pyvws7mlicc77ygkf0-vm-test-run-kittens-backup-recovery`
+`/nix/store/c6is7prqpmhng1pyvws7mlicc77ygkf0-vm-test-run-overalls-backup-recovery`
 (captured under flock `/tmp/opencode/verify-native-medium.lock`). Subtest
 seconds: wild-card custody 6.49, timer wiring 0.03, first complete point 11.62,
 SIGKILL-during-upload reconciliation 6.31, stale-lock refusal and unlock 9.70,

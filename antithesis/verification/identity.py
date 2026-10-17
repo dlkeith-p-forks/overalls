@@ -109,6 +109,10 @@ STAGES = frozenset(
     }
 )
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
+# The staged catalog is one Python module tree; the workload Dockerfile copies
+# ``selected-test/catalog/`` to ``/opt/antithesis/catalog/``.
+STAGED_CATALOG = "catalog/workload"
+IMAGE_CATALOG_ROOT = "/opt/antithesis/catalog/workload"
 STORE = re.compile(r"^/nix/store/[a-z0-9]{32}-[^\s]+$")
 RUNTIME_IMAGE_PATHS = frozenset(
     {
@@ -662,6 +666,8 @@ def verify_staged_selection(root: Path, expected: dict[str, Json]) -> None:
     actual = obj(read_json(staged / "command-manifest.json"), "staged command manifest")
     if actual != expected:
         raise EvidenceError("staged command manifest differs from selected source")
+    if {path.name for path in staged.iterdir()} != {"v1", "catalog", "command-manifest.json"}:
+        raise EvidenceError("staged selection contains extra or missing entries")
     expected_files: set[str] = set()
     for value in arr(field(expected, "files"), "selected files"):
         record = obj(value, "selected file")
@@ -677,33 +683,51 @@ def verify_staged_selection(root: Path, expected: dict[str, Json]) -> None:
             raise EvidenceError(f"staged selected command differs from source: {relative}")
     actual_files = {
         str(path.relative_to(staged))
-        for path in staged.rglob("*")
-        if path.is_file()
-        and path.name != "command-manifest.json"
-        and "__pycache__" not in path.parts
+        for path in (staged / "v1").rglob("*")
+        if path.is_file() and "__pycache__" not in path.parts
     }
     if actual_files != expected_files:
         raise EvidenceError("staged command tree contains extra or missing files")
 
 
-def verify_nix_catalog(root: Path, expected: dict[str, Json]) -> None:
-    context = root / "antithesis/build/contexts/workload/rootfs"
-    link = context / "opt/antithesis/catalog"
-    if not link.is_symlink():
-        raise EvidenceError("staged workload lacks Nix runtime catalog link")
-    target = os.readlink(link)
-    if not STORE.fullmatch(target):
-        raise EvidenceError("Nix runtime catalog target invalid")
-    catalog = context / target.lstrip("/")
+def verify_staged_catalog(root: Path, expected: dict[str, Json]) -> None:
+    """@cc [owner:ghuntley,label:verification] staged-catalog-equals-runtime-closure
+    The staged catalog MUST hold exactly the manifest's runtime dependencies as
+    regular files with their source bytes and modes under one ``workload``
+    module directory. Extra, missing, stale or linked members MUST prevent an
+    identity freeze; the Dockerfile COPY lineage check then binds the image.
+    """
+    staged = root / "antithesis/build/selected-test" / Path(STAGED_CATALOG).parent
+    if not staged.is_dir() or {path.name for path in staged.iterdir()} != {
+        Path(STAGED_CATALOG).name
+    }:
+        raise EvidenceError("staged catalog must contain exactly one workload module tree")
+    catalog = root / "antithesis/build/selected-test" / STAGED_CATALOG
+    if field(expected, "image_catalog_root") != IMAGE_CATALOG_ROOT:
+        raise EvidenceError("selected manifest names an unexpected image catalog root")
+    expected_files: set[str] = set()
     for value in arr(field(expected, "runtime_dependencies"), "runtime dependencies"):
         record = obj(value, "runtime dependency")
         source = string(field(record, "path"), "runtime source")
         relative = source.removeprefix("antithesis/workload/")
         if relative == source:
             raise EvidenceError("runtime dependency escapes workload")
-        image_file = catalog / relative
-        if not image_file.is_file() or sha256(image_file.read_bytes()) != field(record, "sha256"):
-            raise EvidenceError(f"staged Nix runtime catalog is stale or incomplete: {relative}")
+        expected_files.add(relative)
+        staged_file = catalog / relative
+        if (
+            staged_file.is_symlink()
+            or not staged_file.is_file()
+            or sha256(staged_file.read_bytes()) != field(record, "sha256")
+            or stat.S_IMODE(staged_file.stat().st_mode) != field(record, "mode")
+        ):
+            raise EvidenceError(f"staged catalog member differs from source: {relative}")
+    actual_files = {
+        str(path.relative_to(catalog))
+        for path in catalog.rglob("*")
+        if path.is_file() or path.is_symlink()
+    }
+    if actual_files != expected_files:
+        raise EvidenceError("staged catalog contains extra or missing modules")
 
 
 def verify_image_selection(
@@ -895,7 +919,7 @@ def freeze(
         root, root / "antithesis/scratchbook/property-catalog.md", selected_paths
     )
     context = [context_record(root, stage) for stage in stages]
-    verify_nix_catalog(root, selected_manifest)
+    verify_staged_catalog(root, selected_manifest)
     image_data = images(root, stages, engine)
     verify_image_contexts(root, engine, context, image_data)
     verify_image_copies(root, engine, stages, image_data)
@@ -964,7 +988,7 @@ def main() -> int:
     parser.add_argument("--compose", type=Path)
     parser.add_argument(
         "--selection",
-        choices=("control-core", "repository-origin", "access-smtp"),
+        choices=("control-core", "repository-origin", "access-smtp", "recorder-host"),
         default="control-core",
     )
     parser.add_argument("--engine", choices=("podman", "docker"), default="podman")

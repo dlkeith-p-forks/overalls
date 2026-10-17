@@ -120,7 +120,7 @@ The complete log is `/tmp/verify014-precommit.log`.
 All-file prek passed, including ruff, formatting, ty and application logging
 checks. ADR, HLDD receipts, generated options, coverage and Ash/deployment views
 passed. The initial Nix HLDD result was
-`/nix/store/w6pkkw9gmil2bpkwsjm8652g35vmx4lh-kittens-hldd-check`.
+`/nix/store/w6pkkw9gmil2bpkwsjm8652g35vmx4lh-overalls-hldd-check`.
 Post-suite fixture inspection found zero keys, credential gateways, deletion
 receipts and trigger gates in the isolated database.
 

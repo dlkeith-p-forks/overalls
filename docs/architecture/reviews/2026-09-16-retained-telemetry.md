@@ -63,7 +63,7 @@ context, absent buckets, authorization, physical retention, continuation rollbac
 and three-node duplicate ingestion. Database teardown left no summary fixtures.
 The expected injected database failures emit Postgrex rollback diagnostics;
 they do not represent failing cases. The final command log is
-`/tmp/kittens-telemetry-final-checks.log` in this development environment.
+`/tmp/overalls-telemetry-final-checks.log` in this development environment.
 
 The new migration creates only the summary table and its indexes/reference.
 Review used the touched source files and generated migration: the current Git
@@ -84,13 +84,13 @@ implementation does not resolve them.
 
 ## Evidence
 
-Summary resource (`marshall/lib/marshall/telemetry/summary.ex` at kittens revision `a99f74f0`, repository deleted),
-recorder (`marshall/lib/marshall/telemetry/recorder.ex` at kittens revision `a99f74f0`, repository deleted),
-observations (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted),
-statistics (`marshall/lib/marshall/telemetry/statistics.ex` at kittens revision `a99f74f0`, repository deleted),
-retention action (`marshall/lib/marshall/telemetry/expire.ex` at kittens revision `a99f74f0`, repository deleted),
-statistics properties (`marshall/test/marshall/telemetry/statistics_test.exs` at kittens revision `a99f74f0`, repository deleted),
-observation checks (`marshall/test/marshall/telemetry/observations_test.exs` at kittens revision `a99f74f0`, repository deleted),
-database tests (`marshall/test/marshall/telemetry/retention_test.exs` at kittens revision `a99f74f0`, repository deleted),
+Summary resource (`marshall/lib/marshall/telemetry/summary.ex` at overalls revision `a99f74f0`, repository deleted),
+recorder (`marshall/lib/marshall/telemetry/recorder.ex` at overalls revision `a99f74f0`, repository deleted),
+observations (`marshall/lib/marshall/telemetry/observations.ex` at overalls revision `a99f74f0`, repository deleted),
+statistics (`marshall/lib/marshall/telemetry/statistics.ex` at overalls revision `a99f74f0`, repository deleted),
+retention action (`marshall/lib/marshall/telemetry/expire.ex` at overalls revision `a99f74f0`, repository deleted),
+statistics properties (`marshall/test/marshall/telemetry/statistics_test.exs` at overalls revision `a99f74f0`, repository deleted),
+observation checks (`marshall/test/marshall/telemetry/observations_test.exs` at overalls revision `a99f74f0`, repository deleted),
+database tests (`marshall/test/marshall/telemetry/retention_test.exs` at overalls revision `a99f74f0`, repository deleted),
 [three-node tests](../../../marshall/test/marshall/compute/distributed_admission_test.exs),
 [operator guide](../../history/ledgers/capacity-history.md).

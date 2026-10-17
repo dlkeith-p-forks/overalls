@@ -1,5 +1,5 @@
 #![deny(unsafe_code)]
-#![doc = "Byte bridge lilly-hostd runs between a Lilly socket and a guest connection (ADR-0184)."]
+#![doc = "Byte bridge lilly-hostd runs between a client socket and a guest connection (ADR-0184, ADR-0187)."]
 
 use rustix::event::{PollFd, PollFlags};
 use rustix::fs::OFlags;
@@ -23,10 +23,19 @@ pub const FDS: RangeInclusive<i64> = 3..=1023;
 /// Accepted uids to drop to: never root, never the overflow uid.
 pub const UIDS: RangeInclusive<i64> = 1..=4_294_967_294;
 
+/// The byte a detached bridge sends hostd once it holds both connections.
+pub const READY: u8 = b'R';
+/// The byte hostd answers once the client's greeting is written.
+pub const GO: u8 = b'G';
+
 /// A validated invocation.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Request {
-    /// The socket whose peer is Lilly's own socket.
+    /// Detached mode (ADR-0187): hostd's end of the start handshake. A
+    /// detached bridge outlives hostd, so it sets no parent-death signal.
+    pub control: Option<i32>,
+    /// The client socket: Lilly's own socket (op 13) or, detached, Audi's
+    /// connection to Lilly's ingress socket (op 14).
     pub client: i32,
     /// The guest TCP connection hostd dialled inside the namespace.
     pub guest: i32,
@@ -48,21 +57,32 @@ fn number(text: &OsStr, range: &RangeInclusive<i64>) -> Option<i64> {
 }
 
 /// @cc [owner:ghuntley,label:security] bridge-cli-bounded
-/// The command line MUST be exactly `<client fd> <guest fd> [<uid>]`: two
-/// distinct strict decimals in 3..=1023 and an optional strict decimal uid in
-/// 1..=4294967294. Anything else is refused before any descriptor is used.
+/// The command line MUST be exactly `[--detached <control fd>] <client fd>
+/// <guest fd> [<uid>]`: pairwise distinct strict decimals in 3..=1023 and an
+/// optional strict decimal uid in 1..=4294967294. Anything else is refused
+/// before any descriptor is used.
 pub fn parse_cli(arguments: &[OsString]) -> Option<Request> {
-    let (client, guest, uid) = match arguments {
+    let (control, rest) = match arguments {
+        [flag, control, rest @ ..] if flag.as_bytes() == b"--detached" => {
+            (Some(number(control, &FDS)?), rest)
+        }
+        rest => (None, rest),
+    };
+    let (client, guest, uid) = match rest {
         [client, guest] => (client, guest, None),
         [client, guest, uid] => (client, guest, Some(number(uid, &UIDS)?)),
         _ => return None,
     };
     let client = number(client, &FDS)?;
     let guest = number(guest, &FDS)?;
-    if client == guest {
+    if client == guest || control.is_some_and(|control| control == client || control == guest) {
         return None;
     }
     Some(Request {
+        control: match control {
+            Some(control) => Some(i32::try_from(control).ok()?),
+            None => None,
+        },
         client: i32::try_from(client).ok()?,
         guest: i32::try_from(guest).ok()?,
         uid: match uid {
@@ -117,10 +137,11 @@ impl Direction {
 }
 
 /// @cc [owner:ghuntley,label:recovery] bridge-ends-with-lilly
-/// The bridge MUST finish once Lilly's side reached end of stream and every
-/// byte it sent was delivered to the guest: Lilly closes only whole sockets,
-/// so a silent guest cannot keep a bridge alive. A guest end of stream only
-/// shuts Lilly's side for writing, after the guest's bytes were delivered.
+/// The bridge MUST finish once the client's side (Lilly's socket, or Audi's
+/// connection when detached) reached end of stream and every byte it sent
+/// was delivered to the guest: clients close only whole sockets, so a silent
+/// guest cannot keep a bridge alive. A guest end of stream only shuts the
+/// client's side for writing, after the guest's bytes were delivered.
 pub fn finished(outbound: &Direction) -> bool {
     outbound.drained()
 }
@@ -131,17 +152,25 @@ pub fn half_close_due(inbound: &Direction) -> bool {
 }
 
 /// @cc [owner:ghuntley,label:security;isolation] bridge-custody
-/// Before any byte moves, both descriptors MUST be sockets, and a given uid
-/// MUST be applied (no supplementary groups, that gid and uid, no_new_privs)
-/// with the parent-death signal set afterwards and the recorded parent
-/// verified. Bytes move only between the two sockets through this process's
-/// kernel pipes, never to stdout, stderr or a diagnostic. Any read or write
-/// error closes both connections and exits nonzero.
+/// Before any byte moves, every descriptor MUST be a socket, and a given uid
+/// MUST be applied (no supplementary groups, that gid and uid, no_new_privs).
+/// An attached bridge then sets the parent-death signal and verifies the
+/// recorded parent. A detached bridge (bridge-detached-handshake) sets none,
+/// so it outlives hostd. Bytes move only between the two sockets through this
+/// process's kernel pipes, never to stdout, stderr or a diagnostic. Any read
+/// or write error closes both connections and exits nonzero.
 pub fn run(request: &Request) -> u8 {
     let parent = rustix::process::getppid();
     let (Some(client), Some(guest)) = (native::adopt(request.client), native::adopt(request.guest))
     else {
         return EXIT_SETUP;
+    };
+    let control = match request.control {
+        Some(fd) => match native::adopt(fd) {
+            Some(control) if socket(&control) => Some(control),
+            _ => return EXIT_SETUP,
+        },
+        None => None,
     };
     if !socket(&client) || !socket(&guest) {
         return EXIT_SETUP;
@@ -151,9 +180,10 @@ pub fn run(request: &Request) -> u8 {
             return EXIT_SETUP;
         }
     }
-    if rustix::process::set_parent_process_death_signal(Some(rustix::process::Signal::KILL))
-        .is_err()
-        || rustix::process::getppid() != parent
+    if control.is_none()
+        && (rustix::process::set_parent_process_death_signal(Some(rustix::process::Signal::KILL))
+            .is_err()
+            || rustix::process::getppid() != parent)
     {
         return EXIT_SETUP;
     }
@@ -172,7 +202,38 @@ pub fn run(request: &Request) -> u8 {
     let (Ok(outbound_pipe), Ok(inbound_pipe)) = pipes else {
         return EXIT_SETUP;
     };
+    if let Some(control) = control {
+        if !handshake(control) {
+            return EXIT_SETUP;
+        }
+    }
     bridge(&client, &guest, &outbound_pipe, &inbound_pipe)
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] bridge-detached-handshake
+/// A detached bridge MUST, once it holds both connections, has dropped
+/// privileges and has its pipes, send hostd exactly READY on the control
+/// socket and then move no byte until it reads exactly GO, which hostd sends
+/// only after writing the client's greeting. Any other byte, end of stream
+/// or error exits with EXIT_SETUP, so guest bytes can never precede the
+/// greeting and a bridge hostd abandoned mid-start never runs. The control
+/// socket is closed before any byte moves.
+pub fn handshake(control: OwnedFd) -> bool {
+    loop {
+        match rustix::io::write(&control, &[READY]) {
+            Ok(1) => break,
+            Err(Errno::INTR) => continue,
+            _ => return false,
+        }
+    }
+    let mut answer = [0_u8; 1];
+    loop {
+        match rustix::io::read(&control, &mut answer) {
+            Ok(1) => return answer[0] == GO,
+            Err(Errno::INTR) => continue,
+            _ => return false,
+        }
+    }
 }
 
 fn socket(descriptor: &OwnedFd) -> bool {

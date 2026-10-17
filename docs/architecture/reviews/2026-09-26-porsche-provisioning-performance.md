@@ -18,7 +18,7 @@ mutation or cleanup.
 Every sudo operation was read-only, including guest systemd inspection. SQL used
 `BEGIN READ ONLY` and bounded statement timeouts.
 
-The new worktree is `/home/ghuntley/src/kittens-porsche-provisioning-performance`,
+The new worktree is `/home/ghuntley/src/overalls-porsche-provisioning-performance`,
 branch `codex/porsche-provisioning-performance`, based on
 `73a3a96c73d4d464d2f55258837446b32f2a9bee`; existing checkout changes were preserved.
 The deployed updater reported healthy revision

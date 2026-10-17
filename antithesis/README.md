@@ -101,7 +101,8 @@ before running Compose. The Compose build context is the repository root.
 The local CLI and engine paths are recorded in
 `.devenv/antithesis-environment.json`; set its `DOCKER_HOST` and
 `SNOUTY_CONTAINER_ENGINE=podman` for local checks. Stage the chosen command
-selection before building the workload image, then materialize that selection
+selection before building the workload image (staging also writes the image's
+selection-scoped Python assertion catalog), then materialize that selection
 with `antithesis/verification/selection.py materialize --engine podman`. Freeze
 its image and config identity as described in
 [the campaign guide](verification/README.md). Validate the resulting standalone
@@ -157,10 +158,17 @@ evidence, not native KVM evidence.
 host for exact service UID and cgroup authority, retained recorder state, and
 bounded archive filesystem tests. Workload can submit private fixed requests
 and read sanitized results and observation files; it cannot mount VM state.
-This graph remains unselected until its image, health, and matching setup
-probe are validated in a local run. The current `control-core` bootstrap does
-not check these extra fixtures or their effects,
-so the overrides are not selected for a run until matching workloads and setup
-probes require that evidence. Render an override with `docker-compose -f
+The `recorder-host` selection profile selects this overlay with the three
+`test/v1/recorder` commands. Its VM health check requires a fresh all-active
+unit sample, both service identities, the distinct bounded archive device and
+readable checkpoint and SQLite state. The workload's separate recorder probe
+re-reads those witnesses through its read-only observation share, requires
+every pending checkpoint admission to name the current producer PID and start
+ticks, and checks its writable request and ledger volumes before the single
+setup signal. No local or hosted run of this profile is recorded yet; its
+evidence is TCG emulation, not native KVM. The current `control-core`
+bootstrap does not check the other extra fixtures or their effects, so those
+overrides are not selected for a run until matching workloads and setup probes
+require that evidence. Render an override with `docker-compose -f
 antithesis/config/docker-compose.yaml -f antithesis/config/compose.origin.yaml
 config --quiet` (substitute the selected override as needed).

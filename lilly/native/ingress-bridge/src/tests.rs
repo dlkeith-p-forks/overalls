@@ -3,7 +3,7 @@ use hegel::generators as gs;
 use hegel::TestCase;
 
 /// The independent command-line specification.
-fn oracle(words: &[String]) -> Option<(i32, i32, Option<u32>)> {
+fn oracle(words: &[String]) -> Option<(Option<i32>, i32, i32, Option<u32>)> {
     let strict = |word: &str, low: u64, high: u64| -> Option<u64> {
         let canonical = !word.is_empty()
             && word.bytes().all(|byte| byte.is_ascii_digit())
@@ -15,6 +15,11 @@ fn oracle(words: &[String]) -> Option<(i32, i32, Option<u32>)> {
         };
         (low..=high).contains(&value).then_some(value)
     };
+    let (control, words) = if words.first().map(String::as_str) == Some("--detached") {
+        (Some(strict(words.get(1)?, 3, 1023)? as i32), &words[2..])
+    } else {
+        (None, words)
+    };
     let (client, guest, uid) = match words {
         [client, guest] => (client, guest, None),
         [client, guest, uid] => (client, guest, Some(strict(uid, 1, 4_294_967_294)? as u32)),
@@ -22,12 +27,14 @@ fn oracle(words: &[String]) -> Option<(i32, i32, Option<u32>)> {
     };
     let client = strict(client, 3, 1023)? as i32;
     let guest = strict(guest, 3, 1023)? as i32;
-    (client != guest).then_some((client, guest, uid))
+    let distinct = client != guest && control != Some(client) && control != Some(guest);
+    distinct.then_some((control, client, guest, uid))
 }
 
 fn word(tc: &TestCase) -> String {
-    let choice = tc.draw(gs::integers::<u8>().max_value(5));
+    let choice = tc.draw(gs::integers::<u8>().max_value(6));
     match choice {
+        6 => "--detached".to_string(),
         0 => tc.draw(gs::integers::<u16>().max_value(1100)).to_string(),
         1 => tc.draw(gs::integers::<u64>()).to_string(),
         2 => format!("0{}", tc.draw(gs::integers::<u16>().max_value(99))),
@@ -42,10 +49,11 @@ fn word(tc: &TestCase) -> String {
 /// on arbitrary word lists, including leading zeros, padding and bounds.
 #[hegel::test]
 fn command_line_matches_the_independent_oracle(tc: TestCase) {
-    let count = tc.draw(gs::integers::<usize>().max_value(4));
+    let count = tc.draw(gs::integers::<usize>().max_value(6));
     let words: Vec<String> = (0..count).map(|_| word(&tc)).collect();
     let arguments: Vec<OsString> = words.iter().map(OsString::from).collect();
-    let parsed = parse_cli(&arguments).map(|request| (request.client, request.guest, request.uid));
+    let parsed = parse_cli(&arguments)
+        .map(|request| (request.control, request.client, request.guest, request.uid));
     assert_eq!(parsed, oracle(&words));
 }
 

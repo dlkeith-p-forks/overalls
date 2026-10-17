@@ -4,8 +4,10 @@ The enrollment container runs `control-operator.sh` as its main process. Before
 publishing enrollment readiness, it creates synthetic accounts by consuming
 magic-link tokens through the production Ash sign-in action, registers and
 verifies P-256 passkeys through `User.security`, grants the second administrator
-through `User.set_administrator`, and registers `github/Fixture/demo` through
-`Catalog.register`. The private result is
+through `User.set_administrator`, and registers `github/fixture/demo` through
+`Catalog.register` (Marshall commits the canonical lowercase source identity,
+which the manifest, the origin fixture's served path and the workload's
+readiness probe all share). The private result is
 `/run/overalls-control-secrets/fixture.json` (mode 0600). It contains the actual
 user and repository IDs and synthetic passkey key material needed by the
 browser workload. It supplements the independent, nonsecret

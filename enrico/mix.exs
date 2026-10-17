@@ -26,6 +26,7 @@ defmodule Enrico.MixProject do
 
   defp deps do
     [
+      {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:bandit, "~> 1.12"},
       {:logger_json, "~> 7.0"},
       {:req, "~> 0.7.4"},
@@ -61,6 +62,7 @@ defmodule Enrico.MixProject do
         "deps.unlock --unused",
         "format --check-formatted",
         "test --warnings-as-errors",
+        "covenant.check --no-run",
         "dialyzer --force-check"
       ]
     ]

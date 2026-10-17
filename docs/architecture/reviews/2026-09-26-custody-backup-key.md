@@ -26,16 +26,16 @@ age and OpenSSH binaries with synthetic disposable identities; no systemd, S3,
 ZFS, PostgreSQL or native claim is made.
 
 - Exported `checks.x86_64-linux.secret-reconciliation`, derivation
-  `/nix/store/l2vs2rmr4kzkaynggc8jf028l6l6x0h9-kittens-secret-reconciliation.drv`,
-  output `/nix/store/2j9j8xfimav8zqv32rf4gc0q073aqsyh-kittens-secret-reconciliation`:
+  `/nix/store/l2vs2rmr4kzkaynggc8jf028l6l6x0h9-overalls-secret-reconciliation.drv`,
+  output `/nix/store/2j9j8xfimav8zqv32rf4gc0q073aqsyh-overalls-secret-reconciliation`:
   the unchanged 14 fixed secrets tests (Ran 14 tests in 3.271s; OK),
   Recipient histories passed: 12 generated examples,
   Interruption histories passed: 8 generated examples and 2 explicit boundaries,
   Ceremony histories passed: 6 generated examples and 3 explicit pairs.
   Direct turnover refusals passed: 4 generated examples and 1 explicit pair.
 - Exported `checks.x86_64-linux.backup-custody`, derivation
-  `/nix/store/i5w4xbgzmvhvx17zgz5z79fzljkvc8nq-kittens-backup-custody.drv`,
-  output `/nix/store/hwvl1206cfahadbag67fm41dqyllc0vb-kittens-backup-custody`:
+  `/nix/store/i5w4xbgzmvhvx17zgz5z79fzljkvc8nq-overalls-backup-custody.drv`,
+  output `/nix/store/hwvl1206cfahadbag67fm41dqyllc0vb-overalls-backup-custody`:
   Ran 3 tests in 73.605s; OK — `test_ceremony_overlap_never_wedges_scheduled_operations`,
   `test_restored_ciphertext_decryption_recovers_repository_access` and
   `test_rotation_without_ceremony_wedges_with_repository_failure_label`.
@@ -140,13 +140,13 @@ recorded.
 - Full `prek run --all-files` passed on the final tree, including the Ruff,
   Ruff-format, ty, per-application logging and hldd-review hooks.
 - `nix build .#checks.x86_64-linux.hldd` passed on the final receipt tree;
-  executed output `/nix/store/dhqp59gv81vy02sdwcd2a4n21vm7khld-kittens-hldd-check`
+  executed output `/nix/store/dhqp59gv81vy02sdwcd2a4n21vm7khld-overalls-hldd-check`
   (an earlier completed run produced
-  `/nix/store/1f4am4hk79v3hy753jc0p5cyrxxvbism-kittens-hldd-check`; the gate's
+  `/nix/store/1f4am4hk79v3hy753jc0p5cyrxxvbism-overalls-hldd-check`; the gate's
   inputs are the chapters, scenario ledger and receipts, not this review).
 - `nix build .#checks.x86_64-linux.python-static` passed (Ruff/ty across the
   repository, including both Python files changed here); output
-  `/nix/store/z87nqwx021720p46w9b6l80fzsvn3xi7-kittens-python-static`.
+  `/nix/store/z87nqwx021720p46w9b6l80fzsvn3xi7-overalls-python-static`.
 - No Elixir application source changed (handbook chapters, scenario ledger and
   docs only), so the Marshall/Lilly/protocol `mix precommit` suites are outside
   this improvement per the campaign precedent for documentation-only changes;

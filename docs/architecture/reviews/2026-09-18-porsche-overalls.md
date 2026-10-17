@@ -176,7 +176,7 @@ its accepted scope and rationale remain unchanged.
 
 The full nine-machine `porsche-fleet` driver exited successfully after 2093.74
 seconds and cleaned up all its virtual machines. Captured driver:
-`/nix/store/80w6aa6ydfcyfs8941b0h356451lkb6l-nixos-test-driver-kittens-porsche-fleet`.
+`/nix/store/80w6aa6ydfcyfs8941b0h356451lkb6l-nixos-test-driver-overalls-porsche-fleet`.
 Its source is the completion candidate committed as `5089dea`; the later merge's
 unrelated ingress, resizing and relocation changes are outside this result.
 

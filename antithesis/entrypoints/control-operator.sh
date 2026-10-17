@@ -194,10 +194,12 @@ publish_uncertain() {
   mv -T "$temporary" "$destination"
 }
 
+# Postgrex binds uuid parameters as 16-byte binaries, so the textual host ID
+# MUST be dumped first; a string parameter raises and hides every rotation.
 current_epoch() {
   local expected=$1
   rm -f /tmp/control-epoch
-  "$release" eval 'Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); [host] = System.argv(); [[epoch]] = Ecto.Adapters.SQL.query!(Marshall.Repo, "SELECT connection_epoch FROM compute_hosts WHERE id = $1::uuid", [host], log: false).rows; File.write!("/tmp/control-epoch", Integer.to_string(epoch))' "$expected" >/dev/null
+  "$release" eval 'Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); [host] = System.argv(); [[epoch]] = Ecto.Adapters.SQL.query!(Marshall.Repo, "SELECT connection_epoch FROM compute_hosts WHERE id = $1", [Ecto.UUID.dump!(host)], log: false).rows; File.write!("/tmp/control-epoch", Integer.to_string(epoch))' "$expected" >/dev/null
   [[ -s /tmp/control-epoch ]] || return 1
   local epoch
   epoch=$(</tmp/control-epoch)

@@ -106,7 +106,7 @@ oracle. The mutation was restored; bounded cleanup drained actual actions before
 fixture deletion. No mutant is part of the committed change.
 
 The original native derivation
-`/nix/store/1sgq0lch6jgv4jgwmw08dzvd9k7zb2wq-vm-test-run-kittens-team-resources.drv`
+`/nix/store/1sgq0lch6jgv4jgwmw08dzvd9k7zb2wq-vm-test-run-overalls-team-resources.drv`
 was captured with the old policy but never executed. Its driver build rejected
 an insufficiently narrowed browser dictionary under the pinned Nix `ty`; the
 browser now copies validated string keys into `dict[str, object]` before lookup.
@@ -122,11 +122,11 @@ from the driver and successfully prepared and explained in a read-only transacti
 against the migrated isolated test database. A synthetic catalogue sample verified
 the journal parser's closed-reason projection with unrelated non-JSON lines.
 The first executed composed driver
-`/nix/store/c39vak1a8yli1qp81wm7iq39016163iz-nixos-test-driver-kittens-team-resources.drv`
+`/nix/store/c39vak1a8yli1qp81wm7iq39016163iz-nixos-test-driver-overalls-team-resources.drv`
 passed strict Nix typing and lint with both strengthened refusal oracles. Its
 browser helper passed the separate pinned type gate. The corresponding native
 candidate was
-`/nix/store/9c2z99ahvn2ljwn7wq654p7hbni5zr9n-vm-test-run-kittens-team-resources.drv`;
+`/nix/store/9c2z99ahvn2ljwn7wq654p7hbni5zr9n-vm-test-run-overalls-team-resources.drv`;
 it passed fleet boot, enrollment and ordinary browser key registration, then
 failed with fixture `KeyError: stranger_email` while comparing the third successful
 Porsche `whoami` response. All nine machines were cleaned up in 3.60 seconds.
@@ -159,9 +159,9 @@ passed in this combined run. Frontend checks and forced Dialyzer passed; Dialyze
 reported zero errors, zero skipped findings and zero unnecessary skips.
 
 The second native candidate was
-`/nix/store/pcfqbvwb2jpzwll1cr9rjkcz2amhzc6x-vm-test-run-kittens-team-resources.drv`.
+`/nix/store/pcfqbvwb2jpzwll1cr9rjkcz2amhzc6x-vm-test-run-overalls-team-resources.drv`.
 Its composed driver
-`/nix/store/f52hsb1979wd92xmr0vzz8l1zqjnppy2-nixos-test-driver-kittens-team-resources.drv`
+`/nix/store/f52hsb1979wd92xmr0vzz8l1zqjnppy2-nixos-test-driver-overalls-team-resources.drv`
 passed strict typing and lint with the early account decoder and complete public
 projection. All-file prek and the Nix `hldd` gate passed on the combined tree.
 This run passed boot in 64.07 seconds, enrollment/private services in 184.93
@@ -190,7 +190,7 @@ passed in 0.7 seconds, seed `129100`. Negative cases cover arbitrary binary,
 tuple, map, unknown atom, string-shaped reason, unrelated event and simultaneous
 mail tag. The HTTP check confirms a real 403 refusal retains its closed reason
 without its credential. The image-only native candidate
-`/nix/store/0k7kbkas5bfnpj9wp1hccp76qrfij537-vm-test-run-kittens-team-resources.drv`
+`/nix/store/0k7kbkas5bfnpj9wp1hccp76qrfij537-vm-test-run-overalls-team-resources.drv`
 was never executed; its driver build was stopped after this concrete finding.
 The in-flight full gate with seed `519229` was interrupted before the filter edit
 and is not passing evidence.
@@ -211,9 +211,9 @@ sessions. All-file prek, ADR/contract and generated HLDD checks passed; the fina
 Nix `hldd` gate also passed.
 
 The complete old-base native candidate was
-`/nix/store/2wvl1vmnfl1ci05xmgqmra7baldakyja-vm-test-run-kittens-team-resources.drv`.
+`/nix/store/2wvl1vmnfl1ci05xmgqmra7baldakyja-vm-test-run-overalls-team-resources.drv`.
 Its composed driver
-`/nix/store/mryyhslpcr37b6ffljq4qqcdr4r6mcas-nixos-test-driver-kittens-team-resources.drv`
+`/nix/store/mryyhslpcr37b6ffljq4qqcdr4r6mcas-nixos-test-driver-overalls-team-resources.drv`
 passed strict typing and lint. Execution failed at retained-home SSH immediately
 after member-admin stop/start. Boot (52.03 seconds), authenticated admission setup
 (100.22 seconds), browser/Porsche identity (20.10 seconds), three real guest
@@ -265,14 +265,14 @@ active sessions on `marshall_testverify012`.
 All-file prek, Ruff formatting/lint, Python typing, structured logging,
 ADR/contract checks, generated HLDD coverage/options/views and Nix `hldd` passed.
 The complete certified candidate is
-`/nix/store/nba1ninxhx92g3l9nls9bx5ibr8nlrla-vm-test-run-kittens-team-resources.drv`.
+`/nix/store/nba1ninxhx92g3l9nls9bx5ibr8nlrla-vm-test-run-overalls-team-resources.drv`.
 Its driver
-`/nix/store/g37c4m37nn5ian7g40arkjf28140sjsi-nixos-test-driver-kittens-team-resources.drv`
+`/nix/store/g37c4m37nn5ian7g40arkjf28140sjsi-nixos-test-driver-overalls-team-resources.drv`
 built in 243 seconds and passed strict typing and lint.
 
 The certified native team-resource journey passed in **396.31 seconds** on
 2026-09-25 against that captured `aaba77ee`-based candidate. Its output is
-`/nix/store/nfmzhl9frwq19b1w9nhxcbb1fn2gklmf-vm-test-run-kittens-team-resources`.
+`/nix/store/nfmzhl9frwq19b1w9nhxcbb1fn2gklmf-vm-test-run-overalls-team-resources`.
 The six subtests passed: fleet boot (50.35 seconds), authenticated admission
 (114.95 seconds), ordinary browser keys/Porsche identity (21.33 seconds), shared,
 personal and Customer provisioning (150.96 seconds), member use and refusals
@@ -324,11 +324,11 @@ was found in the reviewed scope; structural checks do not establish semantics.
 Nix evaluation resolved both the team and guest-trust checks and preserved the
 same exported `defaultOssBrowser` artifact as the default-OSS check. The integrated
 team driver is
-`/nix/store/wdxgribjlgsisd423lx58wp5qrr6982q-nixos-test-driver-kittens-team-resources.drv`.
+`/nix/store/wdxgribjlgsisd423lx58wp5qrr6982q-nixos-test-driver-overalls-team-resources.drv`.
 Its derivation retains `ty check testScriptWithTypes`; its complete `testScript`
 is byte-for-byte identical to the previously built and executed `g37c4m37` driver.
 The integrated native derivation
-`/nix/store/2pfdph7rqd4gx2qgbmmx3glsfn9iinbq-vm-test-run-kittens-team-resources.drv`
+`/nix/store/2pfdph7rqd4gx2qgbmmx3glsfn9iinbq-vm-test-run-overalls-team-resources.drv`
 was evaluated but not executed. No new native result is inferred from evaluation.
 
 The final architecture review retains ADR-0077's accepted partial status,

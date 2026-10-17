@@ -164,7 +164,7 @@ Focused distributed validation below ran against this change on
   full suite **1,192 passed (139 properties, 1,053 tests), 2 excluded**, seed
   `230692`, browser-state checks, and forced Dialyzer with **0 errors, 0
   skipped, 0 unnecessary skips** in 1m11.85s (log
-  `/tmp/kittens-verify068/precommit2.log`, overall "done (passed
+  `/tmp/overalls-verify068/precommit2.log`, overall "done (passed
   successfully)").
 - Structural gates: `elixir scripts/check_adrs.exs` passed (124 decisions);
   generated HLDD coverage/options/views checks passed;

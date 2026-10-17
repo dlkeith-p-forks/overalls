@@ -41,7 +41,7 @@ final ring. This was a workload gap.
 The corrected two-phase baseline passed all 51 native tests in 11.15 seconds
 and Clippy with warnings as errors. Nix completed in 45 seconds, archive
 `1791192168763-3425135-0.jsonl`; log
-`/tmp/kittens-terminald-growth-budget-two-phase-native.log`.
+`/tmp/overalls-terminald-growth-budget-two-phase-native.log`.
 The subsequent targeted control failed with Hegel's inconsistent-outcome
 diagnostic, not a stable allocation counterexample: one failure, 50 filtered,
 291.04 seconds; Nix 320 seconds, archive `1791192323567-3528926-0.jsonl`.
@@ -54,7 +54,7 @@ and integrated governance gates remained pending; that failure was not credited.
 The full-target two-phase baseline passed all 51 native tests in 15.35 seconds
 and Clippy. Nix completed in 49 seconds, archive
 `1791192715031-3769030-0.jsonl`; log
-`/tmp/kittens-terminald-growth-full-phases-native.log`.
+`/tmp/overalls-terminald-growth-full-phases-native.log`.
 The rerun used the same original-append mutation, SHA256
 `bf9df7d7881148c69ce534ac8f16a0a0584048d25bd37949ff59d99b05465a3c`,
 in the disposable worktree, with only this property selected.
@@ -66,7 +66,7 @@ fixed default witness is included before that generated family. One targeted
 test failed, 50 were filtered out, in 210.16 seconds; Nix failed in 259 seconds.
 Archive
 `1791192797878-3816768-0.jsonl`; log
-`/tmp/kittens-terminald-growth-full-phases-original-append-mutant.log`.
+`/tmp/overalls-terminald-growth-full-phases-original-append-mutant.log`.
 This is local sensitivity to the actual backing regression, not a hosted sweep.
 Main `c4b1a7277d1b67c50397bef52d9e27defd70dc2a` was subsequently merged;
 the duplicated allocation repairs disappear from this batch's diff. The only
@@ -79,7 +79,7 @@ and logs. Production worktrees contain the repaired append behavior.
 After merging main `c4b1a727`, the complete Marshall gate passed1451 checks
 (237 properties,1214 tests), two exclusions, seed342919, in1667.9seconds.
 Forced Dialyzer passed46.44seconds with zero errors, skips or unnecessary skips;
-its PLT rebuild took3m25.43s. Log `/tmp/kittens-terminald-growth-marshall2.log`.
+its PLT rebuild took3m25.43s. Log `/tmp/overalls-terminald-growth-marshall2.log`.
 The initial precommit attempt stopped before testing because the new worktree
 lacked the pinned contract checker. Lockfile installation corrected the tooling
 gap before this complete rerun; no gate was bypassed.
@@ -87,7 +87,7 @@ gap before this complete rerun; no gate was bypassed.
 All repository hooks passed, including Ruff, formatting and ty. The combined
 native/evaluated-HLDD check passed17seconds, archive
 `1791193311230-4134882-0.jsonl`; log
-`/tmp/kittens-terminald-growth-integrated-hooks.log`. Its native result reused
+`/tmp/overalls-terminald-growth-integrated-hooks.log`. Its native result reused
 the cache; the authoritative executed51-test baseline remains15.35seconds above.
 Source/contract self-review found no blocker in exact retention/backing snapshots,
 reservation ordering or joined cleanup. Final report/receipt and commit hooks

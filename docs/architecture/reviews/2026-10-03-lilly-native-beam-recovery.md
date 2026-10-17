@@ -54,7 +54,7 @@ Formatting passed. The changed Elixir fixture modules compiled in the pinned
 test runtime and Dialyzer returned zero warnings, terminal exit zero, against
 the parent's existing dependency PLT. This analyzes the fixture modules; it
 does not repeat PLT validation or the full component gate. Log:
-`/tmp/kittens-native-beam-types.log`.
+`/tmp/overalls-native-beam-types.log`.
 
 The source-built NixOS native check passed with terminal exit zero in 1,037
 seconds, archive `1791028366849-1610010-0.jsonl`. The complete machine script
@@ -65,8 +65,8 @@ seconds; the new worker-BEAM histories finished in 487.12 seconds. New
 fresh Store/lock reopens, identical Firecracker identity/launch marker, stable
 outcome, actual guest write/read and final deletion. Composed driver lint/type
 checks passed within this source-built NixOS check. Logs:
-`/tmp/kittens-native-beam-format.log` and
-`/tmp/kittens-native-beam-recovery.log`. The evaluated Nix HLDD gate separately
+`/tmp/overalls-native-beam-format.log` and
+`/tmp/overalls-native-beam-recovery.log`. The evaluated Nix HLDD gate separately
 passed in 17 seconds, archive `1791028725728-1872211-0.jsonl`; that handbook
 execution predates recording this machine result.
 
@@ -90,13 +90,13 @@ component Lilly gate for this extension passed475 checks (85 properties and
 with zero errors or skips. The wrapper then stopped before Marshall compilation
 because that worktree had no dependency checkout. Pinned verified dependencies
 and build cache were copied from the passing mail worktree; Marshall will be
-rerun separately. Log: `/tmp/kittens-native-beam-final-merged-gates.log`. Log:
-`/tmp/kittens-native-beam-lilly-precommit.log`.
+rerun separately. Log: `/tmp/overalls-native-beam-final-merged-gates.log`. Log:
+`/tmp/overalls-native-beam-lilly-precommit.log`.
 
 Main was merged through `52cd07f1`, preserving private SLO delivery and committed
 waiting-token verification. The first merged Marshall wrapper stopped at stale
 HLDD receipts before compiling or running tests. Log:
-`/tmp/kittens-native-beam-marshall-merged-precommit.log`. No failed prerequisite
+`/tmp/overalls-native-beam-marshall-merged-precommit.log`. No failed prerequisite
 is counted as a passing runtime gate.
 
 ## Updated main verification
@@ -104,7 +104,7 @@ is counted as a passing runtime gate.
 The pre-merge Marshall gate passed 1,434 checks (233 properties and 1,201 tests),
 with two exclusions, seed750658, in1,770.3 seconds. Forced Dialyzer passed49.91
 seconds with zero errors or skips. Log:
-`/tmp/kittens-native-beam-marshall-final-precommit.log`.
+`/tmp/overalls-native-beam-marshall-final-precommit.log`.
 
 Origin/main was subsequently merged through `a5b6c891`. ADR-0140 changes the
 actor task result to carry liveness evidence. The fixture now requires the
@@ -112,12 +112,12 @@ wrapped running result and the wrapper's absent optional watcher target in the
 suspended actor mailbox. It still obtains physical process/marker evidence from
 the real executor and independent native helpers. Earlier runtime results are
 historical evidence for the pre-merge implementation; merged native and component
-verification is pending. Log: `/tmp/kittens-native-beam-a5b6-native.log`.
+verification is pending. Log: `/tmp/overalls-native-beam-a5b6-native.log`.
 
 The merged component gates passed: Lilly503 checks (92 properties and411 tests),
 seed444218, in91.9 seconds; Marshall1451 checks (237 properties and1214 tests),
 two exclusions, seed122646, in1379.6 seconds. Both forced Dialyzer gates passed
-with zero errors or skips. Log: `/tmp/kittens-native-beam-a5b6-components.log`.
+with zero errors or skips. Log: `/tmp/overalls-native-beam-a5b6-components.log`.
 Static hooks including ruff, format and ty passed. Evaluated HLDD passed43seconds,
 archive `1791184825751-3062895-0.jsonl`.
 
@@ -130,7 +130,7 @@ and retains whole-BEAM loss on the crash path. It publishes no connected runtime
 or durable intent rows, so this setup grants no authenticated execution authority.
 Kill diagnostics distinguish prior actor exit without disclosing exit payloads.
 The corrected native rerun is pending:
-`/tmp/kittens-native-beam-a5b6-view-native.log`.
+`/tmp/overalls-native-beam-a5b6-view-native.log`.
 
 ## Remaining gaps
 
@@ -147,7 +147,7 @@ at the a5b6c891 integration with the real isolated View and wrapped result oracl
 Archive `1791188153386-972013-0.jsonl`; actor-only histories460.04seconds and
 whole-worker histories506.95seconds. All required native identity, stable outcome,
 guest write/read and deletion checks completed. Log:
-`/tmp/kittens-native-beam-a5b6-view-native.log`.
+`/tmp/overalls-native-beam-a5b6-view-native.log`.
 
 Main subsequently advanced through7e2b20df with only telemetry freshness changes;
 Lilly Actor/Executor, the protocol View and this fixture are unchanged by that
@@ -159,4 +159,4 @@ passed0.90seconds with no warnings, terminal exit0. This reused the validated
 Lilly dependency PLT and did not repeat PLT validation. The first direct CLI
 invocation lacked Elixir debug-info code on its path and could not analyze;
 the corrected invocation supplied that code path. Log:
-`/tmp/kittens-native-beam-final-fixture-types2.log`.
+`/tmp/overalls-native-beam-final-fixture-types2.log`.

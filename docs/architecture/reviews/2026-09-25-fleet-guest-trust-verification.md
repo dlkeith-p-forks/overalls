@@ -52,11 +52,11 @@ candidates retain their exact scope below.
 ### Passing integrated native candidate
 
 The immutable candidate
-`/nix/store/n99x4zg3czzsbin4lnv13my0k7n7hryn-vm-test-run-kittens-fleet-guest-trust.drv`
+`/nix/store/n99x4zg3czzsbin4lnv13my0k7n7hryn-vm-test-run-overalls-fleet-guest-trust.drv`
 captured staged tree `f934b2029f70ed45e0d0a7194927a0e3c0bc6a2c` on application
 base `0cfa6302`. Execution started at **18:07:11 UTC on 2026-09-25**, ended at
 **18:21:30 UTC**, and returned **exit 0** with output
-`/nix/store/bkz839br0csxx0hw5m6np8zvxanyv20f-vm-test-run-kittens-fleet-guest-trust`.
+`/nix/store/bkz839br0csxx0hw5m6np8zvxanyv20f-vm-test-run-overalls-fleet-guest-trust`.
 Fleet bootstrap passed in **59.43 seconds** and authenticated storage/service
 setup in **129.35 seconds**.
 
@@ -102,11 +102,11 @@ The integrated code candidate on `aaba77ee`, staged tree
 122 ADR records, HLDD receipts, generated coverage/views/options, all-file prek
 (logging, ruff format, ruff and ty) and diff checks returned success. Nix built:
 
-- HLDD: `/nix/store/8924zi6c7jmyklqv4za84axhqai281gi-kittens-hldd-check`.
-- All seven configurations: `/nix/store/ngw2241dg6qnbrx70nhvaw8ccsrkyh16-kittens-fleet-guest-trust-configuration.json`.
-- Strict composed driver: `/nix/store/iq96ni6bnb4cv2dirvld6xdh5y7mrily-nixos-test-driver-kittens-fleet-guest-trust`,
+- HLDD: `/nix/store/8924zi6c7jmyklqv4za84axhqai281gi-overalls-hldd-check`.
+- All seven configurations: `/nix/store/ngw2241dg6qnbrx70nhvaw8ccsrkyh16-overalls-fleet-guest-trust-configuration.json`.
+- Strict composed driver: `/nix/store/iq96ni6bnb4cv2dirvld6xdh5y7mrily-nixos-test-driver-overalls-fleet-guest-trust`,
   with both type checking and lint passing. Its derivation is
-  `/nix/store/88cyvq4ha2nh0dzgwzk3s7459hbdb0fa-nixos-test-driver-kittens-fleet-guest-trust.drv`.
+  `/nix/store/88cyvq4ha2nh0dzgwzk3s7459hbdb0fa-nixos-test-driver-overalls-fleet-guest-trust.drv`.
 
 The native helper, driver, fleet/operator/evaluation inputs, application library
 sources and guest images are unchanged from the passing native tree. Only this
@@ -116,7 +116,7 @@ static capture; native and full application provenance remain as stated above.
 ### Rejected native candidate
 
 The first executed candidate was
-`/nix/store/wa76izbbmxzkxzz7wsfa41kfagkc9h1g-vm-test-run-kittens-fleet-guest-trust.drv`,
+`/nix/store/wa76izbbmxzkxzz7wsfa41kfagkc9h1g-vm-test-run-overalls-fleet-guest-trust.drv`,
 captured from staged tree `63e93152573a90957d6efd865bce0e71b5239d22` on application
 base `5bce9478`. Fleet bootstrap passed in 57.25 seconds and authenticated native
 storage/service setup in 140.72 seconds. Ubuntu completed initial and repeated
@@ -140,7 +140,7 @@ Published main `6f58ef65` is integrated for the corrected candidate. Its resize
 selector, image-minimum guard, native helpers and evidence are preserved.
 
 The next candidate,
-`/nix/store/8qlic46hd7795qf0ni13d8nhxyrkjrdl-vm-test-run-kittens-fleet-guest-trust.drv`,
+`/nix/store/8qlic46hd7795qf0ni13d8nhxyrkjrdl-vm-test-run-overalls-fleet-guest-trust.drv`,
 captured staged tree `b7c898c49780d3434b7975f7272ecd23686ce15c` on `6f58ef65`.
 Bootstrap passed in 68.80 seconds, authenticated setup in 225.88 seconds and
 Ubuntu's full journey passed again. NixOS reached installed/running and passed
@@ -170,7 +170,7 @@ preserved. This integration adds no application authority or policy changes;
 the combined application and governance gates are rerun for the final candidate.
 
 The integrated candidate
-`/nix/store/clqq5a2dpnicn2ghjbsff808499akcjb-vm-test-run-kittens-fleet-guest-trust.drv`
+`/nix/store/clqq5a2dpnicn2ghjbsff808499akcjb-vm-test-run-overalls-fleet-guest-trust.drv`
 captured tree `60e491fdeecb27869ece7dbeb65017f5e75dbd16` on `7681806b`. Bootstrap
 passed in 73.44 seconds, authenticated setup in 190.19 seconds and Ubuntu's full
 journey passed again. NixOS reached installed/running and passed the required
@@ -178,7 +178,7 @@ active-service observation, then failed the separate `ssh_ready` marker check.
 All nine machines were cleaned in 3.82 seconds. The bounded bundle comparison
 was not reached; this candidate does not establish its native success.
 
-The NixOS and Ubuntu roster units explicitly remove `/run/kittens-ssh-ready`
+The NixOS and Ubuntu roster units explicitly remove `/run/overalls-ssh-ready`
 before every refresh and recreate it in `ExecStartPost` after successful sync.
 The NixOS timer runs every two seconds; an already active listener remains active
 through a refresh. The failed single marker observation cannot distinguish an
@@ -191,7 +191,7 @@ absence still fails. The next candidate established this successful observation.
 ### Completed trust journey and rejected capacity oracle
 
 The corrected immutable candidate
-`/nix/store/ffrpc7yf04lsiph2zj34kzcnn9yy67p5-vm-test-run-kittens-fleet-guest-trust.drv`
+`/nix/store/ffrpc7yf04lsiph2zj34kzcnn9yy67p5-vm-test-run-overalls-fleet-guest-trust.drv`
 captured staged tree `76639a3b72d49208a431cd9011b89a43a0261eb9` on `7681806b`.
 Its first attempt, started at 17:18:57 UTC, was interrupted by agent orchestration
 when the owning turn yielded. That attempt has no product acceptance result.

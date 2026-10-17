@@ -4,9 +4,12 @@
   # @cc [owner:ghuntley,label:build] flake-package-inputs
   # Application packages MUST use the same locked package input as devenv;
   # NixOS host modules MUST use the separately locked stable NixOS input.
+  # buildNixpkgs follows the same devenv-nixpkgs branch as devenv.yaml and is
+  # pinned only by flake.lock; the package-input-lock check MUST fail when
+  # flake.lock and devenv.lock lock different revisions.
   inputs = {
     nix-compact.url = "github:ghuntley/nix-compact/7b4205856cd01b2c356197689daabcca19baa7af";
-    buildNixpkgs.url = "github:cachix/devenv-nixpkgs/256551e45f6303e142ab4a98be1bf243feb77dc0";
+    buildNixpkgs.url = "github:cachix/devenv-nixpkgs/rolling";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixos-images = {
       url = "github:nix-community/nixos-images/4fcaaefd02b5bc777f99afd620cb1a9aa1fb5b83";
@@ -163,7 +166,7 @@
           && host.git.knownHosts != "" && nixpkgs.lib.any (document: document.name == "${name}-git") host.credentials) inventory.hosts)
         // nixpkgs.lib.mapAttrs' (name: _: nixpkgs.lib.nameValuePair "${name}-base" (hostSystem name false)) inventory.hosts;
 
-      checks.${system} = (import ./nix/verification/tests/catalog.nix {
+      checks.${system} = import ./nix/verification/tests/ci.nix { inherit (pkgs) lib; checks = (import ./nix/verification/tests/catalog.nix {
         buildPkgs = pkgs;
         testPkgs = nixpkgs.legacyPackages.${system};
         inherit nixpkgs;
@@ -194,6 +197,16 @@
           elixir scripts/hldd_views.exs --check "$deploymentTopology"
           touch "$out"
         '';
+        package-input-lock =
+          let
+            flakeLock = (builtins.fromJSON (builtins.readFile ./flake.lock)).nodes.buildNixpkgs.locked;
+            devenvNodes = (builtins.fromJSON (builtins.readFile ./devenv.lock)).nodes;
+            devenvLock = devenvNodes.${devenvNodes.root.inputs.nixpkgs}.locked;
+            pinned = lock: "${lock.owner}/${lock.repo}/${lock.rev}";
+          in
+          if pinned flakeLock == pinned devenvLock
+          then pkgs.runCommand "overalls-package-input-lock-check" { } "touch $out"
+          else throw "flake.lock buildNixpkgs (${pinned flakeLock}) differs from devenv.lock nixpkgs (${pinned devenvLock})";
         conflict-markers = pkgs.runCommand "overalls-conflict-markers-check" {
           nativeBuildInputs = [ built.toolchain.elixir pkgs.git ];
           LC_ALL = "C.UTF-8";
@@ -210,6 +223,6 @@
         overalls-install-ps1 = import ./nix/verification/tests/overalls-install-ps1.nix { inherit pkgs; };
         lyra = built.lyra.tests;
         marvin = built.marvin.tests;
-      };
+      }; };
     };
 }

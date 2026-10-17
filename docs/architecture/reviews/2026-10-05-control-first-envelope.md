@@ -98,7 +98,7 @@ No production client behavior is changed by this property.
 ## Recorded client batch and first-envelope results
 
 Client file passed exit0,seed0,44.8seconds: four checks (one property,three
-tests), log `/tmp/kittens-control-pending-batches-original-baseline.log`.
+tests), log `/tmp/overalls-control-pending-batches-original-baseline.log`.
 Every generated case ran all fixed1/7/8 answered/dropped/timed-out histories.
 Five-second production request deadlines were retained; loopback socket and
 bounded no-replay scope remain explicit. Full gates and targeted mutation are
@@ -106,7 +106,7 @@ pending; no verified-TLS or fleet claim follows from this property.
 
 The original first-envelope property failed exit2,seed0,0.8seconds before a
 successful generated case: counter0 ping produced :push before identity binding,
-log `/tmp/kittens-control-first-envelope-original-baseline.log`. Closed kind/tag
+log `/tmp/overalls-control-first-envelope-original-baseline.log`. Closed kind/tag
 diagnostics exposed no principal or credential. The repair adds a nil-identity
 message refusal after the specific hello clause and before all other envelopes.
 It retains foreign/invalid hello classifications and valid bound heartbeats.
@@ -115,7 +115,7 @@ while retaining the three observed closed result tags.
 
 The repaired control file passed exit0,seed0,2.1seconds: seven checks (one
 property,six tests), including existing verified-TLS end-to-end request,
-log `/tmp/kittens-control-first-envelope-repaired-focused.log`. No warnings
+log `/tmp/overalls-control-first-envelope-repaired-focused.log`. No warnings
 remained. This is recorded focused evidence; full component/type/publication
 gates and targeted fence mutation remain pending. Architecture impact implements
 existing ADR-0142 first-hello requirements, with no new authority or wire version.
@@ -154,7 +154,7 @@ new wire fields, domains or authority. Execution and repair evidence are pending
 The original history failed exit2,seed0,60.3seconds at count7: a replacement
 upgrade was observed after unsupported_version despite all pending callers
 settling as unproven. Four other checks were excluded. Log:
-`/tmp/kittens-control-version-terminal-original.log`. This is a recorded actual
+`/tmp/overalls-control-version-terminal-original.log`. This is a recorded actual
 retry violation, replacing the earlier source-only diagnosis for this path.
 The repair removes the stop backoff, retains phase stopped with the refusal,
 ignores queued connect messages while stopped, and stops frame reduction on
@@ -164,7 +164,7 @@ is running; HTTP426, queued-message histories, mutation, typing and consumer
 gates remain pending. No new architectural decision is introduced.
 
 The repaired client file passed exit0,seed0,167.3seconds: five checks (two
-properties,three tests), log `/tmp/kittens-control-version-terminal-repaired.log`.
+properties,three tests), log `/tmp/overalls-control-version-terminal-repaired.log`.
 Both generated WebSocket refusal histories retained the real61000ms observation;
 the existing pending-batch property also passed against the changed client.
 This result predates the queued-connect and HTTP426 extension and is not evidence
@@ -175,7 +175,7 @@ The expanded full client file is running; mutation, typing, consumer gates,
 heartbeat ownership and native fleet acceptance remain open.
 
 The expanded client file passed exit0,seed0,288.0seconds: six checks (three
-properties,three tests), log `/tmp/kittens-control-version-terminal-expanded.log`.
+properties,three tests), log `/tmp/overalls-control-version-terminal-expanded.log`.
 The HTTP426 and WebSocket refusal properties each ran two generated histories
 with actual61000ms observations and queued-connect status barriers. All pending
 batch correlation/timeout/drop checks passed against the repaired client.
@@ -208,7 +208,7 @@ for welcome/barrier transit before the connection's own five-second heartbeat.
 Its own heartbeat must subsequently arrive and preserve ready state. No fake
 clock or production deadline compression is used. The original property failed
 exit2,seed0,10.4seconds with an early ping1, drawn3, zero successful generated
-cases; six checks excluded. Log `/tmp/kittens-control-heartbeat-original.log`.
+cases; six checks excluded. Log `/tmp/overalls-control-heartbeat-original.log`.
 The fixed loop fails before later histories; no exhaustive reconnect claim follows.
 
 The separate repair stores an Erlang timer reference, cancels it on retirement
@@ -222,10 +222,10 @@ loopback fixture; it is not a production latency bound or arbitrary scheduler
 guarantee. Self-review only.
 
 The heartbeat-focused repair passed exit0,seed0,47.8seconds: one property,
-six checks excluded, log `/tmp/kittens-control-heartbeat-repaired.log`. The
+six checks excluded, log `/tmp/overalls-control-heartbeat-repaired.log`. The
 refined terminal baseline completed separately with six checks (three properties,
 three tests),exit0,seed0,318.9seconds in
-`/tmp/kittens-control-terminal-refined-baseline.log`. That result predates the
+`/tmp/overalls-control-terminal-refined-baseline.log`. That result predates the
 heartbeat repair and closes the refined queued-connect baseline requirement.
 After it completed, the heartbeat source and test were copied into this worktree.
 Combined full Protocol/consumer/type gates and heartbeat mutation remain open.
@@ -247,7 +247,7 @@ for the frozen Protocol gate, and its combined type/consumer gates remain open.
 Protocol precommit passed exit0:249checks (97properties,152tests),seed219746,
 367.5seconds, plus forced compilation, formatting, contract checks and zero-error
 Dialyzer (zero skipped/unnecessary skips),3.84seconds. Log:
-`/tmp/kittens-control-heartbeat-integrated-protocol-precommit.log`. This gate
+`/tmp/overalls-control-heartbeat-integrated-protocol-precommit.log`. This gate
 includes all production repairs and the original heartbeat property, before
 the retired-reference extension. After completion, the extension test was copied
 into this worktree; production Client source remained byte-identical. Focused
@@ -258,7 +258,7 @@ of the subsequently extended test.
 
 The integrated extension then passed exit0,seed0,45.9seconds: one property,
 six checks excluded, with warnings-as-errors compilation and formatting checks.
-Log `/tmp/kittens-control-heartbeat-extension-integrated-checks.log`. Production
+Log `/tmp/overalls-control-heartbeat-extension-integrated-checks.log`. Production
 source is unchanged from the249-check gate and the extension is unchanged from
 its separate green baseline and killed ref-matching mutant. Lilly's full consumer
 gate is running; Marshall/Galileo gates, final handbook checks and upstream
@@ -281,7 +281,7 @@ the Client wholesale or claim the fixed-eight property covers256 admission.
 
 Lilly precommit subsequently passed exit0:503checks (92properties,411tests),
 83.8seconds, with forced Dialyzer reporting zero errors/skips/unnecessary skips.
-Log `/tmp/kittens-control-repairs-lilly-precommit.log`. This validates the current
+Log `/tmp/overalls-control-repairs-lilly-precommit.log`. This validates the current
 consumer tree, not the captured incoming Lilly-server migration. Reviewed HLDD
 receipt/reference, coverage, options, domain/topology and ADR checks passed.
 Evaluated Nix HLDD passed exit0 in16seconds, archive
@@ -294,7 +294,7 @@ Marshall precommit completed with exit0 in the repaired control worktree:
 1466 checks (240 properties,1226 tests), two exclusions, seed936963,
 1676.2seconds. UI checks passed (four checks), and forced Dialyzer passed
 with zero errors, skips or unnecessary skips in53.8seconds after its PLT
-update. Log `/tmp/kittens-control-repairs-marshall-precommit2.log`.
+update. Log `/tmp/overalls-control-repairs-marshall-precommit2.log`.
 This validates the current consumer and shared governance tree; it does not
 validate incoming98aff42a, the isolated capacity prototype or the unexecuted
 post-ACK mail draft. The first receipt-failing invocation remains uncredited.
@@ -308,17 +308,17 @@ and heartbeat ownership requirements without changing domains or wire formats.
 Galileo's full precommit passed exit0:31checks (11properties,20tests),
 seed137303,121.5seconds, with forced Dialyzer reporting zero errors, skips or
 unnecessary skips in5.99seconds. Log
-`/tmp/kittens-control-repairs-galileo-precommit2.log`. The first invocation
+`/tmp/overalls-control-repairs-galileo-precommit2.log`. The first invocation
 stopped before compilation because this worktree lacked Hex dependencies;
 locked dependencies were fetched without changing Galileo's lockfile.
 
 All-file prek passed conflict markers, each application logging catalog,
 HLDD review, Ruff, Ruff formatting and ty. Log
-`/tmp/kittens-control-final-allfile-prek.log`. Reviewed HLDD receipt/reference,
+`/tmp/overalls-control-final-allfile-prek.log`. Reviewed HLDD receipt/reference,
 coverage, domain/topology, generated options and ADR checks passed in
-`/tmp/kittens-control-final-research-review.log`. Evaluated Nix HLDD passed
+`/tmp/overalls-control-final-research-review.log`. Evaluated Nix HLDD passed
 exit0 in25seconds, archive `1791233524161-2377205-0.jsonl`, log
-`/tmp/kittens-control-final-evaluated-hldd2.log`. Its first attempt rejected a
+`/tmp/overalls-control-final-evaluated-hldd2.log`. Its first attempt rejected a
 stale system receipt after the heartbeat research evidence was reconciled;
 that failed attempt is uncredited. This result predates this final result prose;
 receipt checks must be reconciled before commit. Latest-main integration and
@@ -357,8 +357,8 @@ the production Audi/Lilly64 limit to fixed1/8/256 witnesses.
 The integrated original capacity property passed26.8seconds,seed0,one property
 and eight exclusions. The service64 extension passed27.7seconds,seed0 with
 the same counts; both had compiler warnings-as-errors and format checks. Logs
-`/tmp/kittens-control-capacity-integrated-baseline.log` and
-`/tmp/kittens-control-capacity-service64-baseline.log`. Prototype mutation credit
+`/tmp/overalls-control-capacity-integrated-baseline.log` and
+`/tmp/overalls-control-capacity-service64-baseline.log`. Prototype mutation credit
 does not claim execution of fixed64. Full integrated Protocol gate is running;
 Audi, Lilly, Marshall/Galileo, native migration and publication remain open.
 
@@ -384,7 +384,7 @@ is claimed from this source observation.
 The full integrated Protocol precommit subsequently passed exit0:251checks
 (98properties,153tests),seed212242,390.4seconds, with zero errors/skips/
 unnecessary skips in forced Dialyzer,3.97seconds. Log
-`/tmp/kittens-control-origin-integrated-protocol-precommit.log`. This includes
+`/tmp/overalls-control-origin-integrated-protocol-precommit.log`. This includes
 the integrated capacity/service64 property and retired heartbeat extension.
 Protocol source/tests remain unchanged after this result. Audi's actual pending
 close4001 regression then reproduced and was repaired in its consumer adapter;
@@ -401,16 +401,16 @@ The merged Lilly precommit exited 2: 504/505 checks passed (94/94 properties,
 readiness test failed its combined elapsed >=90 and <500ms assertion; that
 assertion did not expose which bound failed. Forced Dialyzer nevertheless ran
 and passed in 15.51 seconds with zero errors, skips or unnecessary skips.
-Log: `/tmp/kittens-control-origin-integrated-lilly-precommit.log`.
+Log: `/tmp/overalls-control-origin-integrated-lilly-precommit.log`.
 The test now checks each unchanged bound separately to report elapsed on failure.
 This diagnostic edit has no architecture impact: it preserves the deadline,
 request and expected outcome. The isolated readiness file passed all seven tests,
 seed 5371, in 2.4 seconds with warnings-as-errors; log
-`/tmp/kittens-control-readiness-isolated.log`. This does not establish the cause
+`/tmp/overalls-control-readiness-isolated.log`. This does not establish the cause
 of the full-suite failure. The full Lilly rerun subsequently passed: 505 checks
 (94 properties, 411 tests), seed484267, 202.3 seconds; forced Dialyzer passed
 in17.14 seconds with zero errors, skips or unnecessary skips. The precommit
-process exited0. Log `/tmp/kittens-control-origin-integrated-lilly-precommit2.log`.
+process exited0. Log `/tmp/overalls-control-origin-integrated-lilly-precommit2.log`.
 Both readiness timing bounds remain unchanged. The earlier failure and its
 unproven cause are retained; this is not a claim that timing flakiness is repaired.
 
@@ -436,27 +436,27 @@ review evidence, not new native execution or comprehensive service-test credit.
 Full Galileo precommit passed31 checks (11 properties,20 tests),seed841285,
 97.0 seconds, with zero errors/skips/unnecessary skips in forced Dialyzer,
 5.17 seconds. The process exited0; log
-`/tmp/kittens-control-origin-integrated-galileo-precommit.log`. Marshall's merged
+`/tmp/overalls-control-origin-integrated-galileo-precommit.log`. Marshall's merged
 gate is now running. No packaged migration or independent-host acceptance is
 inferred from these local consumer results.
 
 ## Final merged Marshall and governance gates
 
 The first merged Marshall precommit exited1 at stale HLDD review receipts before
-compilation or tests; log `/tmp/kittens-control-origin-integrated-marshall-precommit.log`.
+compilation or tests; log `/tmp/overalls-control-origin-integrated-marshall-precommit.log`.
 After individual source/chapter reviews, the second full gate exited0:
 1474 checks (242 properties,1232 tests),two exclusions,seed471856,1743.9seconds.
 Forced Dialyzer passed47.18seconds with zero errors, skips or unnecessary skips.
-Log `/tmp/kittens-control-origin-integrated-marshall-precommit2.log`.
+Log `/tmp/overalls-control-origin-integrated-marshall-precommit2.log`.
 Production and test source stayed fixed throughout this execution.
 
 All-file prek passed conflict markers, every application logging catalog gate,
 HLDD receipts, Ruff lint/format and ty; log
-`/tmp/kittens-control-origin-allfile-prek.log`. Structural receipt/reference,
+`/tmp/overalls-control-origin-allfile-prek.log`. Structural receipt/reference,
 view, option and coverage checks passed; log
-`/tmp/kittens-control-origin-hldd-structural.log`. Evaluated Nix HLDD passed in18
+`/tmp/overalls-control-origin-hldd-structural.log`. Evaluated Nix HLDD passed in18
 seconds, archive `1791239193754-1576972-0.jsonl`, log
-`/tmp/kittens-control-origin-evaluated-hldd.log`. These results precede this final
+`/tmp/overalls-control-origin-evaluated-hldd.log`. These results precede this final
 evidence paragraph; affected receipts need review before publication. Local
 Protocol251, Audi182, Lilly505, Galileo31 and Marshall1474 gates do not establish
 the migrated native fixture, deployment rollout or full Antithesis plan completion.
@@ -475,7 +475,7 @@ port. The incoming fixed-sleep reconnect regression becomes a generated4..8
 actual-failed-dial history with nonce-like owned callback observations and
 :sys synchronization. Focused execution passed exit0,seed0,20.8seconds:
 one property,nine exclusions; warnings-as-errors compilation and formatting
-passed (`/tmp/kittens-integrated-reconnect-property.log`). This adds the92nd
+passed (`/tmp/overalls-integrated-reconnect-property.log`). This adds the92nd
 research candidate; the91existing candidates remain in scope. Mutation, full
 consumer gates, receipt reconciliation, evaluated handbook and merge commit are
 pending. Existing255a execution records remain historical and do not cover
@@ -486,7 +486,7 @@ The thirty-second-cap mutant failed at the observed8000ms ceiling (exit2,seed0,
 3.3seconds,one failing property,nine exclusions), independently of later socket
 recovery. Restored source cmp passed; restored property passed exit0,seed0,
 33.0seconds,one property,nine exclusions. See the
-local cap mutation ledger (`antithesis/scratchbook/mutation-testing/local-control-reconnect-cap.md` at kittens revision `9fe1e493`, repository deleted).
+local cap mutation ledger (`antithesis/scratchbook/mutation-testing/local-control-reconnect-cap.md` at overalls revision `9fe1e493`, repository deleted).
 No later recovery assertion after mutant failure receives mutation credit.
 
 ## Imported consumer review: Lilly pending terminal classification
@@ -512,7 +512,7 @@ the93rd audit candidate, preserving all prior candidates.
 Full Protocol tests on the origin-integrated/mail integration worktree passed
 exit0,seed0,431.1seconds (428.5async,2.5sync):252checks,99properties,153tests.
 Compiler warnings-as-errors and format --check-formatted passed before the
-run. Log `/tmp/kittens-mail-origin-integrated-protocol-runtime.log`. The
+run. Log `/tmp/overalls-mail-origin-integrated-protocol-runtime.log`. The
 following standalone Dialyzer command defaults to the development environment
 and remains live; it is not credited as the required test-environment forced
 precommit gate. Full consumer/governance/native publication remains open.
@@ -526,7 +526,7 @@ property exit2,seed0,0.7seconds:zero successful draws,prefix0. Both operation
 kinds were independently observed before actual close4001; the first result
 was transport_error rather than unsupported_version. The4008 control passed;
 later version/final assertions after failure are not credited. Log
-`/tmp/kittens-lilly-pending-close-original.log`.
+`/tmp/overalls-lilly-pending-close-original.log`.
 
 The response adapter now checks stopped-owner status for unproven and
 disconnected, with an explicit response typespec and contract. Existing
@@ -535,7 +535,7 @@ no resend, new domain authority, wire change or diagnostic event is introduced.
 The oracle now collects both pending results and observes the actual close
 reason before comparison. Repaired execution passed exit0,seed0,1.1seconds:
 one property, formatting and warnings-as-errors compilation. Log
-`/tmp/kittens-lilly-pending-close-repaired.log`. Reversion mutant, restored
+`/tmp/overalls-lilly-pending-close-repaired.log`. Reversion mutant, restored
 execution, forced test typing, full consumers and native Runtime/transfer
 fencing remain required. This is independent Lilly evidence, not Audi credit.
 
@@ -544,7 +544,7 @@ results transport_error after the independently observed4001 close:exit2,seed0,
 0.7seconds,prefix0,one failing property. Later terminal assertions are not
 mutation-credited. Production cmp restoration passed; restored execution
 passed exit0,seed0,1.1seconds,one property, warnings-as-errors compilation.
-See the local Lilly mutation ledger (`antithesis/scratchbook/mutation-testing/local-lilly-pending-version-class.md` at kittens revision `9fe1e493`, repository deleted).
+See the local Lilly mutation ledger (`antithesis/scratchbook/mutation-testing/local-lilly-pending-version-class.md` at overalls revision `9fe1e493`, repository deleted).
 
 The earlier standalone Protocol development-environment forced Dialyzer
 completed exit0,4.75seconds with zero errors, skips or unnecessary skips.
@@ -572,7 +572,7 @@ executables, with current documentation and all forced consumer gates.
 The exact-helper-PATH full precommit attempt stopped at test compilation:
 retained audit fairness still called the removed HTTP server/2 fixture after
 the incoming migration deleted it. Log
-`/tmp/kittens-mail-native-origin-integrated-lilly-precommit.log`. This run is
+`/tmp/overalls-mail-native-origin-integrated-lilly-precommit.log`. This run is
 not credited as a passing full suite or forced Dialyzer result. The remaining
 caller now uses the same WebSocket audit handler and owned connected link as
 the migrated recovery history. All fairness/pending/readiness assertions and
@@ -587,7 +587,7 @@ The full mix precommit command uses MIX_ENV=test and places the exact previously
 verified host-lock and transfer-stream executables first on PATH. Compiler,
 format, ADR, contract/regression and logging gates preceding the tests passed.
 Forced Dialyzer is still live; no full precommit/typing success is claimed yet.
-Log `/tmp/kittens-mail-native-origin-integrated-lilly-precommit2.log`.
+Log `/tmp/overalls-mail-native-origin-integrated-lilly-precommit2.log`.
 
 Both complete native project directories additionally compare with their
 passing native-source archives, excluding target and .gitignore (the latter is
@@ -601,7 +601,7 @@ Full MIX_ENV=test mix precommit completed exit0 with the exact verified native
 helpers first on PATH. Tests:506checks (95properties,411tests),seed712576,
 130.8seconds. Forced Dialyzer:15.06seconds,zero errors,skips or unnecessary
 skips; PLT rebuild79.18seconds. Log
-`/tmp/kittens-mail-native-origin-integrated-lilly-precommit2.log`.
+`/tmp/overalls-mail-native-origin-integrated-lilly-precommit2.log`.
 The earlier pending statements describe their checkpoints. Other consumers,
 current handbook receipts, evaluated publication and physical/hosted acceptance
 remain open. This component gate does not establish native fleet isolation.
@@ -617,7 +617,7 @@ both adapters. Each status response must match the originating document after
 removing its issuance-only token. Refusal documents retain exact equality.
 
 Focused execution passed exit0,seed0,0.7seconds:3checks (1property,2tests).
-Log: `/tmp/kittens-porsche-strengthened-baseline.log`.
+Log: `/tmp/overalls-porsche-strengthened-baseline.log`.
 
 This is an adapter/domain property using sandboxed PostgreSQL and the HTTPS
 controller helper; it does not open a WebSocket or establish TLS, authenticated
@@ -634,7 +634,7 @@ The integrated Protocol precommit ran with `MIX_ENV=test`, seed426800.
 All252checks passed (99properties,153tests) in403.9seconds; contract-checker
 regressions passed19checks. Its forced test Dialyzer reported zero errors,
 zero skips and zero unnecessary skips in3.6seconds. Evidence log:
-`/tmp/kittens-mail-native-origin-protocol-precommit.log`. The command's explicit
+`/tmp/overalls-mail-native-origin-protocol-precommit.log`. The command's explicit
 second forced Dialyzer check also passed, reporting zero errors/skips and zero
 unnecessary skips in4.6seconds after18.32seconds of PLT work. The complete
 command exited0. This supersedes the earlier dev-environment-only typing gap for
@@ -649,9 +649,9 @@ comparison: pending versus authenticated. Two unit tests passed; later
 cross-adapter assertions are not mutation-credited. Restored fork execution
 passed exit0,seed0,0.8seconds:3checks (1property,2tests). Source restoration was
 copied from the integrated service; the retained fork contains no Git metadata.
-Logs: `/tmp/kittens-porsche-session-status-mutant.log` and
-`/tmp/kittens-porsche-session-status-restored.log`. Exact patch/provenance is in
-the local ledger (`antithesis/scratchbook/mutation-testing/local-porsche-session-status.md` at kittens revision `9fe1e493`, repository deleted).
+Logs: `/tmp/overalls-porsche-session-status-mutant.log` and
+`/tmp/overalls-porsche-session-status-restored.log`. Exact patch/provenance is in
+the local ledger (`antithesis/scratchbook/mutation-testing/local-porsche-session-status.md` at overalls revision `9fe1e493`, repository deleted).
 This is local falsification after oracle refinement, not a hosted result.
 Full integrated Marshall and actual socket credential-rotation histories remain
 open. The research audit now tracks96candidates,89partial and7bounded-local.
@@ -664,11 +664,11 @@ The required compiler, contracts, logging, formatting, distributed tests and
 terminal/dashboard/workspace gates completed before forced test Dialyzer.
 PLT work took155.84seconds; analysis took42.65seconds with zero errors, zero
 skips and zero unnecessary skips. Log:
-`/tmp/kittens-integrated-marshall-full-precommit.log`. Tested staged tree:
+`/tmp/overalls-integrated-marshall-full-precommit.log`. Tested staged tree:
 `e384913d7fb1dcc9f113893b2b77223eeb328505`, HEAD255a2346/MERGE_HEADb6496b73.
 Documentation reconciliation follows this execution without changing runtime
 source. Evaluated HLDD passed exit0 in26seconds, log
-`/tmp/kittens-integrated-evaluated-hldd.log`.
+`/tmp/overalls-integrated-evaluated-hldd.log`.
 
 Origin/main advanced to29ad6228 during verification. This result does not cover
 its44-file terminal/client/telemetry migration. Normal pending-merge publication,
@@ -681,7 +681,7 @@ separate unintegrated work. The full all-source/research objective is unfinished
 Audi's full precommit exited0 with `MIX_ENV=test`, seed298574. All182checks
 passed (51properties,131tests) in153.2seconds; forced test Dialyzer reported zero
 errors/skips and zero unnecessary skips in4.89seconds after21.2seconds PLT work.
-Log: `/tmp/kittens-integrated-audi-precommit.log`. This verifies the current
+Log: `/tmp/overalls-integrated-audi-precommit.log`. This verifies the current
 b6496b73 integration consumer, including retained pending-version refusal
 histories. It does not execute the separate delayed-admission draft or verify
 incoming origin29ad6228. Galileo's current consumer gate remains pending.
@@ -691,7 +691,7 @@ incoming origin29ad6228. Galileo's current consumer gate remains pending.
 Galileo's full precommit exited0 with `MIX_ENV=test`, seed18638. All31checks
 passed (11properties,20tests) in106.3seconds. Forced test Dialyzer reported zero
 errors/skips and zero unnecessary skips in4.96seconds after21.22seconds PLT work.
-Log: `/tmp/kittens-integrated-galileo-precommit.log`. This supersedes the pending
+Log: `/tmp/overalls-integrated-galileo-precommit.log`. This supersedes the pending
 consumer checkpoint above for the b6496b73 integration only.
 
 Final contract review clarified bounded-reconnect prose to name unsupported
@@ -714,7 +714,7 @@ The revised reconnect oracle gates each owned worker, awaits opening-reference
 retirement, and measures returning-listener readiness within4500ms.
 
 Full merged Protocol execution passed253checks (99properties,154tests),seed0,
-424.9seconds,exit0 (`/tmp/kittens-async-merged-protocol-tests-typing.log`). Forced
+424.9seconds,exit0 (`/tmp/overalls-async-merged-protocol-tests-typing.log`). Forced
 development Dialyzer passed3.9seconds; forced test Dialyzer passed4.06seconds;
 both reported zero errors, skips and unnecessary skips. Contract structure passed
 119CONTRACTS files,2501native notes,205parsed files and2597maintained sources.
@@ -722,7 +722,7 @@ These structural counts do not establish semantic review of every source file.
 Required precommit and consumer gates remain open after this merge.
 
 Bound TLS credential rotation baseline passed2properties,seed0,2.3seconds,exit0
-(`/tmp/kittens-bound-rotation-first-baseline.log`). The Ziggy property rotates
+(`/tmp/overalls-bound-rotation-first-baseline.log`). The Ziggy property rotates
 host credentials after0..3healthy prefixes, repeatedly refuses fresh identity
 requests on the already-bound old socket, and admits a newly bound replacement.
 The Porsche property preserves gateway ID/increments generation, refuses old
@@ -740,7 +740,7 @@ until individual review of the combined migration, property and handbook diff.
 ### Delayed SSH admission composition
 
 Audi delayed admission transport baseline passed18checks (1property,17tests),
-seed0,11.1seconds,exit0 (`/tmp/kittens-audi-delayed-admission-owned-baseline.log`).
+seed0,11.1seconds,exit0 (`/tmp/overalls-audi-delayed-admission-owned-baseline.log`).
 An explicit backend entered/release gate holds authorization beyond generated
 TTL25/75/150ms, with a measured elapsed witness. The supervised exec task retains
 SSH message ownership until exact channel closure. Independent notifications
@@ -752,12 +752,12 @@ Marshall control-backend composition, guest isolation or native rollout.
 Forced Audi typing/full gate and a request-start-reset mutant remain pending.
 
 Audi forced test Dialyzer passed4.93seconds with zero errors, skips and unnecessary
-skips,exit0. Log `/tmp/kittens-audi-delayed-evidence-typing.log`; scenario generation
+skips,exit0. Log `/tmp/overalls-audi-delayed-evidence-typing.log`; scenario generation
 and checks and ADR structure also passed. Full Audi precommit remains pending.
 
 ### Local oracle falsification after main integration
 
-The retained no-Git fork `/tmp/kittens-control-property-mutants.8KP6eR` uses
+The retained no-Git fork `/tmp/overalls-control-property-mutants.8KP6eR` uses
 separate builds and matching source/test baselines. Ziggy revoked-at omission
 failed0.9seconds at the old bound socket unauthorized assertion; Porsche gateway
 session-generation omission failed1.2seconds at replacement-credential refusal
@@ -769,8 +769,8 @@ suite passed18checks in10.0seconds. Async reconnect30-second-cap mutant failed
 All used seed0. Mutants exited2; restored runs exited0. All four source files
 restored byte-for-byte; no mutation entered integration. Later assertions and
 other generated trigger variants receive no mutation credit. See the
-authority ledger (`antithesis/scratchbook/mutation-testing/local-bound-control-authority.md` at kittens revision `9fe1e493`, repository deleted)
-and async cap ledger (`antithesis/scratchbook/mutation-testing/local-async-control-reconnect-cap.md` at kittens revision `9fe1e493`, repository deleted).
+authority ledger (`antithesis/scratchbook/mutation-testing/local-bound-control-authority.md` at overalls revision `9fe1e493`, repository deleted)
+and async cap ledger (`antithesis/scratchbook/mutation-testing/local-async-control-reconnect-cap.md` at overalls revision `9fe1e493`, repository deleted).
 These are local oracle results, not hosted or fleet acceptance.
 
 ## Ziggy and Porsche pending version refusal after migration
@@ -785,14 +785,14 @@ implement Marshall domain authentication; this is adapter/transport evidence.
 Original Ziggy reproduced2pending authority_unavailable results instead of
 unsupported_version,exit2,seed0,0.3seconds. Original Porsche reproduced2pending
 transport_error results instead of unsupported_version,exit2,seed0,0.3seconds.
-Logs `/tmp/kittens-ziggy-pending-version-first-baseline2.log` and
-`/tmp/kittens-porsche-pending-version-first-baseline.log`. Production guards now
+Logs `/tmp/overalls-ziggy-pending-version-first-baseline2.log` and
+`/tmp/overalls-porsche-pending-version-first-baseline.log`. Production guards now
 consult stopped-owner status for disconnected and unproven calls. Other errors
 retain their classes and no request is queued or replayed.
 
 Repaired focused Ziggy passed3checks (2properties,1test),seed0,1.0seconds.
 Repaired focused Porsche passed9checks (2properties,7tests),seed0,6.9seconds.
-Log `/tmp/kittens-satellite-pending-version-repaired-baseline.log`. Transient4008
+Log `/tmp/overalls-satellite-pending-version-repaired-baseline.log`. Transient4008
 controls passed. New helper is test-only under protocol/test/support; production
 codecs/transports and wire schemas did not change. Porsche directory contracts
 now reflect accepted ADR-0142 control transport while retaining domain authority,
@@ -809,8 +809,8 @@ Porsche returned two transport_error errors, 0.3 seconds. Both exited 2, seed 0,
 after zero successful draws. Later close4008 controls are not mutation-credited.
 Both files were restored and compared byte-for-byte with integration source.
 Restored Ziggy and Porsche each passed one property, seed 0, 1.0 seconds,
-exit 0, in `/tmp/kittens-satellite-pending-version-restored.log`.
-The local ledger (`antithesis/scratchbook/mutation-testing/local-bound-control-authority.md` at kittens revision `9fe1e493`, repository deleted)
+exit 0, in `/tmp/overalls-satellite-pending-version-restored.log`.
+The local ledger (`antithesis/scratchbook/mutation-testing/local-bound-control-authority.md` at overalls revision `9fe1e493`, repository deleted)
 records matching baselines, mutant logs and retained patch hashes. This is local
 adapter oracle evidence; native and hosted acceptance remain open.
 
@@ -821,13 +821,13 @@ opening worker. Its death retained an occupied opening reference indefinitely,
 violating the existing reconnect contract. The new generated real loopback
 property failed at the missing second worker after a peer-observed request and
 worker death: seed 0, generated two deaths, exit 2, 2.1 seconds, zero successful
-draws. Log `/tmp/kittens-terminal-opening-worker-original.log`.
+draws. Log `/tmp/overalls-terminal-opening-worker-original.log`.
 
 The repair owns a worker monitor per attempt, clears only matching deaths and
 schedules existing backoff recovery. Completion flushes the monitor; stale
 successful sockets close. Termination retires the opening worker without guest
 effects. Three focused checks (two properties, one test) passed seed 0, exit 0,
-0.1 seconds in `/tmp/kittens-terminal-opening-worker-repaired.log`. The property
+0.1 seconds in `/tmp/overalls-terminal-opening-worker-repaired.log`. The property
 observes fresh real requests and shutdown socket closure; it does not authenticate
 the recovered hello or establish native/TLS deployment acceptance. ADR-0083/0142
 and independent guest lifetime remain unchanged. Full Lilly gates, forced typing
@@ -835,7 +835,7 @@ and isolated mutation are pending. The initial attempt is internally gated solel
 to install process tracing before the real dial.
 
 Strengthened terminal recovery execution passed three checks (two properties, one test), seed 0, 3.2 seconds, exit 0.
-Log `/tmp/kittens-terminal-opening-worker-authenticated.log`. The successor's
+Log `/tmp/overalls-terminal-opening-worker-authenticated.log`. The successor's
 decoded hello matches the original host/session/epoch exactly; readiness remains
 false until the scripted hello_response. Closing that socket reports readiness
 loss, then the next stalled opening is stopped with observed worker death and
@@ -848,11 +848,11 @@ backoff timing, TLS/domain authentication and native guest acceptance remain ope
 The integrated Ziggy precommit exited 0: 66 checks (16 properties, 50 tests),
 seed 245101, 59.4 seconds; forced test Dialyzer 4.94 seconds, zero errors,
 skips or unnecessary skips. Log
-`/tmp/kittens-satellite-ziggy-integrated-precommit.log`.
+`/tmp/overalls-satellite-ziggy-integrated-precommit.log`.
 Integrated Porsche precommit exited 0: 94 checks (16 properties, 78 tests),
 seed 690807, 148.7 seconds; forced test Dialyzer 4.58 seconds, zero errors,
 skips or unnecessary skips. Log
-`/tmp/kittens-satellite-porsche-integrated-precommit.log`.
+`/tmp/overalls-satellite-porsche-integrated-precommit.log`.
 These supersede earlier pending consumer-gate checkpoints for the current
 satellite adapter fix. Native deployment, provider effects and hosted exploration
 remain separate; source/architecture structure checks are not runtime acceptance.
@@ -864,24 +864,24 @@ restored property passed 3.2 seconds each, seed 0, exit 0; mutant failed the
 predicted missing successor worker assertion, 2.2 seconds, seed 0, exit 2,
 after zero successful draws. Later hello/shutdown assertions were not reached.
 Restored source was compared byte-for-byte; logs and patch hash are in the
-local ledger (`antithesis/scratchbook/mutation-testing/local-bound-control-authority.md` at kittens revision `9fe1e493`, repository deleted).
+local ledger (`antithesis/scratchbook/mutation-testing/local-bound-control-authority.md` at overalls revision `9fe1e493`, repository deleted).
 
 ## Abrupt terminal owner loss
 
 The initial monitored-worker revision completed Lilly precommit: 501 checks
 (95 properties, 406 tests), seed 853883, 125.1 seconds; forced test Dialyzer
 13.37 seconds with zero errors, skips or unnecessary skips, exit 0. Log
-`/tmp/kittens-terminal-worker-lilly-integrated-precommit.log`. This result predates
+`/tmp/overalls-terminal-worker-lilly-integrated-precommit.log`. This result predates
 the following owner-loss repair and is not its complete gate evidence.
 
 The isolated fork's owner-kill extension failed at the worker DOWN assertion:
 seed 0, exit 2, 2.2 seconds, after zero successful draws. Log
-`/tmp/kittens-terminal-opening-owner-kill-original.log`. The unlinked worker
+`/tmp/overalls-terminal-opening-owner-kill-original.log`. The unlinked worker
 survived abrupt owner death because terminate was bypassed. Linking the monitored
 worker to the trapping stream passed the isolated extension, seed 0, exit 0,
-3.4 seconds in `/tmp/kittens-terminal-opening-owner-kill-linked2.log`.
+3.4 seconds in `/tmp/overalls-terminal-opening-owner-kill-linked2.log`.
 An initial fork compile attempt used an unqualified spawn_opt; it failed compilation
-and is not behavioral evidence (`/tmp/kittens-terminal-opening-owner-kill-linked.log`).
+and is not behavioral evidence (`/tmp/overalls-terminal-opening-owner-kill-linked.log`).
 
 The integration repair uses linked/monitored spawning. The stream already traps
 exits, so worker death retains the matching-monitor recovery path; owner death
@@ -889,7 +889,7 @@ retires the worker. Every generated history now exercises orderly and abrupt
 shutdown after observed stalled handshakes, alongside exact successor hello and
 readiness. Integrated focused execution passed eight checks (seven properties,
 one test), seed 0, 7.6 seconds, exit 0, in
-`/tmp/kittens-terminal-opening-owner-both-repaired.log`. Updated full gate and
+`/tmp/overalls-terminal-opening-owner-both-repaired.log`. Updated full gate and
 typing remain pending. Independent guest lifetime, ADR-0083/0142 rationale,
 wire schemas and durable authority are unchanged. Native/TLS/domain acceptance
 and production backoff timing remain open.
@@ -897,7 +897,7 @@ and production backoff timing remain open.
 The final linked-owner Lilly precommit subsequently passed 501 checks (95
 properties, 406 tests), seed 125240, 263.2 seconds, exit 0; forced test Dialyzer
 11.89 seconds with zero errors, skips or unnecessary skips. Log
-`/tmp/kittens-terminal-owner-linked-lilly-precommit.log`. This predates the later
+`/tmp/overalls-terminal-owner-linked-lilly-precommit.log`. This predates the later
 shared Protocol worker-ownership repair and does not verify that dependency
 change in the consumer.
 
@@ -908,7 +908,7 @@ reference after unmonitored worker death. A generated fork property observes a
 real loopback upgrade request, kills the credential-reported worker, and awaits
 a successor under the four-second backoff ceiling. It failed after zero successful
 draws, generated two deaths, seed 0, 4.6 seconds, exit 2, in
-`/tmp/kittens-control-opening-worker-original.log`.
+`/tmp/overalls-control-opening-worker-original.log`.
 
 Linked/monitored workers, matching-DOWN attempt retirement and existing lost
 backoff repair that history. Completion demonitor-flushes; client termination
@@ -917,14 +917,14 @@ codec, credential storage, domain authorization or terminal close reactions.
 Initial repaired fork property passed 4.7 seconds, seed 0, exit 0. Integrated
 focused execution passed 12 checks (seven properties, five tests), seed 0,
 428.7 seconds, exit 0, in
-`/tmp/kittens-control-opening-worker-integrated-focused.log`.
+`/tmp/overalls-control-opening-worker-integrated-focused.log`.
 
 The strengthened fork property also checks exact version1/service/generation
 hello, readiness only after welcome, transport loss, and both orderly/abrupt
 client-owner shutdown. It passed one property, seed 0, 11.8 seconds, exit 0:
-`/tmp/kittens-control-opening-owner-hello-fork2.log`. Its first attempt omitted
+`/tmp/overalls-control-opening-owner-hello-fork2.log`. Its first attempt omitted
 version1 from the expected decoded map and failed that test assertion; it is not
-a production counterexample (`/tmp/kittens-control-opening-owner-hello-fork.log`).
+a production counterexample (`/tmp/overalls-control-opening-owner-hello-fork.log`).
 The stronger property is integrated; the final Protocol gate passed as recorded
 below.
 ADR-0142/0140 rationale/status remain unchanged; production backoff remains in
@@ -932,23 +932,23 @@ force. Plain loopback/scripted welcome does not establish TLS/domain/native
 acceptance. All consumers must reverify the shared dependency change.
 
 Final matching fork baseline passed one property, seed 0, 13.6 seconds, exit 0.
-Log `/tmp/kittens-control-opening-final-fork-baseline.log`. The separate mutant
+Log `/tmp/overalls-control-opening-final-fork-baseline.log`. The separate mutant
 changes only the matching-DOWN handler to retain state. It failed the predicted
 missing successor assertion, seed 0, 4.6 seconds, exit 2, generated two deaths,
 after zero successful draws. Later hello and shutdown assertions were not reached
 and are not mutation-credited. Log
-`/tmp/kittens-control-opening-retained-attempt-mutant.log`. Source restored and
+`/tmp/overalls-control-opening-retained-attempt-mutant.log`. Source restored and
 compared byte-for-byte; restored execution passed one property, seed 0,
-15.9 seconds, exit 0, in `/tmp/kittens-control-opening-final-restored.log`.
+15.9 seconds, exit 0, in `/tmp/overalls-control-opening-final-restored.log`.
 
 Final Protocol precommit with the exact support-file discovery setting passed
 254 checks (100 properties, 154 tests), seed 465553, 440.2 seconds, exit 0.
 Explicit forced test Dialyzer passed 4.22 seconds with zero errors, skips or
 unnecessary skips. Log
-`/tmp/kittens-control-owner-protocol-precommit-discovery-fixed.log`.
+`/tmp/overalls-control-owner-protocol-precommit-discovery-fixed.log`.
 The preceding gate passed all 254 checks and typing but exited 1 because the new
 test helper was unmatched by Mix's discovery filters; it is not a passing gate
-(`/tmp/kittens-control-owner-final-protocol-precommit.log`). The fix ignores
+(`/tmp/overalls-control-owner-final-protocol-precommit.log`). The fix ignores
 exactly `test/support/control_close_peer.ex` during test discovery; consumers
 still explicitly load it, and other files retain normal discovery warnings.
 This metadata change preserves production architecture. Current consumer gates
@@ -959,7 +959,7 @@ and native/hosted acceptance remain pending.
 The first consumer gate against the final shared worker change exited 2:
 182/183 checks passed (51/52 properties, 131/131 tests), seed 486531,
 155.7 seconds. Forced test Dialyzer was clean, 4.62 seconds. Log
-`/tmp/kittens-shared-worker-audi-precommit.log`. The DNS version/payload property
+`/tmp/overalls-shared-worker-audi-precommit.log`. The DNS version/payload property
 called immediately after asynchronous startup, before the actual HTTP426 was
 received, and observed the expected not-yet-connected transport class. That is a
 test synchronization failure, not evidence of a production version classifier
@@ -970,11 +970,11 @@ the real shared client's stopped unsupported-version status within five seconds.
 It then checks DNS/identity calls and absence of domain request dispatch over the
 same generated malformed/oversized body corpus. No production classifier changed.
 Corrected fork DNS file passed nine checks (five properties, four tests), seed 0,
-56.6 seconds, exit 0 in `/tmp/kittens-audi-dns-version-stop-fork.log`. The inspected
+56.6 seconds, exit 0 in `/tmp/overalls-audi-dns-version-stop-fork.log`. The inspected
 test-only diff is integrated. Full Audi precommit passed 183 checks (52 properties,
 131 tests), seed 368095, 142.0 seconds, exit 0. Forced test Dialyzer passed
 5.63 seconds with zero errors, skips or unnecessary skips. Log
-`/tmp/kittens-shared-worker-audi-stopped-barrier-precommit.log`. Other consumer
+`/tmp/overalls-shared-worker-audi-stopped-barrier-precommit.log`. Other consumer
 gates and native/hosted acceptance remain pending. Accepted ADR-0142 semantics
 and runtime startup behavior remain unchanged.
 
@@ -992,7 +992,7 @@ sending actual4001 or the transient4008 control over verified loopback TLS.
 Original source failed with two pending renewal results classified as
 authority_unavailable instead of unsupported_version, zero successful draws,
 seed0, 0.3 seconds, exit2. Log
-`/tmp/kittens-galileo-pending-version-original2.log`. The earlier launcher
+`/tmp/overalls-galileo-pending-version-original2.log`. The earlier launcher
 attempt lacked fork dependencies and did not execute the test; it is not a
 behavioral result. The repair inspects the stopped-owner reason for both
 disconnected and unproven replies. No automatic redelivery, durable authority,
@@ -1000,13 +1000,13 @@ transport schema or accepted decision changes. Applicable repository/Galileo
 contracts and the shared client retirement/status paths were reviewed.
 
 Repaired focused Galileo passed3checks (2properties,1test), seed0, 3.4seconds,
-exit0 in `/tmp/kittens-galileo-pending-version-repaired.log`. A separate guard
+exit0 in `/tmp/overalls-galileo-pending-version-repaired.log`. A separate guard
 reversion failed the same predicted4001 assertion after zero successful draws,
 two pending renewal calls, seed0, 0.3seconds, exit2:
-`/tmp/kittens-galileo-pending-version-guard-mutant.log`. Later routes and4008
+`/tmp/overalls-galileo-pending-version-guard-mutant.log`. Later routes and4008
 controls were not reached and are not mutation-credited. Restored source
 passed one property, seed0, 2.7seconds, exit0 in
-`/tmp/kittens-galileo-pending-version-restored.log` and was copied byte-for-byte
+`/tmp/overalls-galileo-pending-version-restored.log` and was copied byte-for-byte
 into integration. The shared scripted helper's finite service/operation
 allowlists now include Galileo; existing Ziggy/Porsche cases remain available.
 
@@ -1016,7 +1016,7 @@ authorization boundary. Integrated full Galileo precommit passed32checks
 (12properties,20tests), seed512221,100.3seconds,exit0. Gate Dialyzer passed
 4.78seconds; explicit forced test Dialyzer passed5.15seconds, both with zero
 errors, skips or unnecessary skips. Log
-`/tmp/kittens-shared-worker-galileo-pending-precommit.log`. These
+`/tmp/overalls-shared-worker-galileo-pending-precommit.log`. These
 local scripted-peer results do not establish Marshall domain authentication,
 upstream provider fencing, packaged service rollout or hosted mixed-version
 exploration. The brief no-dispatch observation is not arbitrary future silence.
@@ -1027,11 +1027,11 @@ Ziggy precommit against the linked/monitored shared worker and expanded finite
 TLS helper passed66checks (16properties,50tests),seed895967,63.5seconds,exit0.
 Gate Dialyzer passed6.3seconds and explicit forced test Dialyzer passed5.68seconds,
 both with zero errors, skips or unnecessary skips. Log
-`/tmp/kittens-shared-worker-ziggy-current-precommit.log`.
+`/tmp/overalls-shared-worker-ziggy-current-precommit.log`.
 Porsche current precommit passed94checks (16properties,78tests),seed214624,
 143.4seconds,exit0. Gate Dialyzer passed3.95seconds and explicit forced test
 Dialyzer passed4.42seconds, both with zero errors, skips or unnecessary skips.
-Log `/tmp/kittens-shared-worker-porsche-current-precommit.log`.
+Log `/tmp/overalls-shared-worker-porsche-current-precommit.log`.
 Audi183 and Galileo32 current gates passed as recorded above. Lilly and Marshall
 current gates remain pending; native/hosted acceptance remains separate.
 
@@ -1069,7 +1069,7 @@ and did not validate contracts.
 
 The inspected prepared file was copied byte-for-byte into integration. Required
 all-file Python hooks passed: ruff,ruff-format,ty, followed by explicit standalone
-fixture typing. Log `/tmp/kittens-opening-custody-python-static.log`.
+fixture typing. Log `/tmp/overalls-opening-custody-python-static.log`.
 Native machine execution against this narrowed fixture remains pending; earlier
 native results retain their historical source scope. No generated property is
 credited for this small schema guard.

@@ -87,7 +87,7 @@ ready after the Security page's Continue link.
 - `nix build .#checks.x86_64-linux.control-room-browser --no-link` passed:
   **control-room-browser passed**, exit zero; VM script 59.57 seconds and browser
   journey 30.05 seconds. The passing derivation was
-  `/nix/store/8s0vywc7aiq195s0vzkjrnjpqc2sbdv7-vm-test-run-kittens-control-room-browser.drv`.
+  `/nix/store/8s0vywc7aiq195s0vzkjrnjpqc2sbdv7-vm-test-run-overalls-control-room-browser.drv`.
   `nix log` on that derivation records the assertions and completed QEMU cleanup.
   Later evidence and integration documentation do not change its runtime assertions.
 

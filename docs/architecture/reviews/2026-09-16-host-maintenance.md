@@ -62,7 +62,7 @@ Downgrade refuses to discard provenance or drain history.
   pass concurrent drain/start/provision and duplicate-worker scenarios. Injected
   initial/continuation job failure rolls back admission or the entire stop batch.
   verifies session archival and writer fencing during a maintenance stop.
-- Disposable database check (`marshall/scripts/verify_maintenance_migration.exs` at kittens revision `9fe1e493`, repository deleted)
+- Disposable database check (`marshall/scripts/verify_maintenance_migration.exs` at overalls revision `9fe1e493`, repository deleted)
   passes historical backfill, admission/provenance constraints and rollback refusal.
   It leaves existing enabled hosts normal and removes only its temporary database.
 - Lilly precommit passes 82 cases (18 properties, 64 tests), runtime/compiler/ADR
@@ -114,7 +114,7 @@ with `MIX_ENV=test mix run --no-start scripts/verify_maintenance_migration.exs`.
 The test PostgreSQL account needs permission to create its disposable database.
 
 For real execution, use the dedicated-host command in
-Lilly's historical integration guide (`lilly/README.md#marshall-to-firecracker-integration` at kittens revision `5af65d3f`, repository deleted).
+Lilly's historical integration guide (`lilly/README.md#marshall-to-firecracker-integration` at overalls revision `5af65d3f`, repository deleted).
 This run used `devenv build outputs.guest outputs.vmm outputs.hostTools`, static
 Firecracker/jailer 1.16.1 and the pinned NixOS guest. Pass canonical executable
 paths for dtach/unshare; the runtime rejects symlink launcher paths. The release

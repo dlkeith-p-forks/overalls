@@ -46,7 +46,7 @@ three recovered replays; fixed witnesses retain first and repeated replay.
 
 The completion-window fixture passed the source-built NixOS check, exit 0,
 in 779 seconds; archive `1791011037338-535511-0.jsonl`, log
-`/tmp/kittens-native-actor-recovery-networked.log`. The native script took
+`/tmp/overalls-native-actor-recovery-networked.log`. The native script took
 732.10 seconds and the four histories took 715.88 seconds. Executed
 (generation, replay) pairs were `(1, 1)`, `(9223372036854775805, 3)`, `(1, 1)`
 and `(2, 2)`. Each included subsequent real guest write/read and native deletion.
@@ -54,7 +54,7 @@ This pass predates the placement-lock contention extension.
 
 The combined contention/completion native check passed, exit 0, in 671 seconds;
 archive `1791011957778-1096679-0.jsonl`, log
-`/tmp/kittens-native-actor-recovery-combined.log`. The native script took
+`/tmp/overalls-native-actor-recovery-combined.log`. The native script took
 605.88 seconds and all four histories took 584.93 seconds. The same four
 (generation, replay) pairs passed real contention, completion recovery, guest
 write/read and native deletion. Composed driver lint/type checks passed within
@@ -64,7 +64,7 @@ not establish runtime failures in this scenario.
 The combined fixture modules and existing Lilly/protocol consumer program were
 compiled with debug information and freshly analyzed against the existing
 pinned test dependency PLT. Dialyzer returned zero warnings, exit 0; log
-`/tmp/kittens-native-actor-dialyzer-combined.log`. This analyzes the changed fixture
+`/tmp/overalls-native-actor-dialyzer-combined.log`. This analyzes the changed fixture
 but does not repeat PLT validation or the component precommit suite. An initial
 raw Dialyzer invocation lacked Elixir's debug-info backend and failed before
 analysis; invoking it within the pinned Mix runtime corrected the tool setup.

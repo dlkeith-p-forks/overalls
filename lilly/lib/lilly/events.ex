@@ -98,6 +98,21 @@ defmodule Lilly.Events do
   # Application and control channel
   defevent("lilly.started", message: "Lilly started", metadata: [])
 
+  defevent("lilly.ingress_bridges_adopted",
+    level: :info,
+    message: "Detached ingress bridges reconciled after start",
+    metadata: [adopting: :int, ended: :int, forgotten: :int]
+  )
+
+  defevent("lilly.ingress_bridge_ended",
+    level: :info,
+    message: "Detached ingress bridge ended by its keeper",
+    metadata: [
+      reason: {:enum, [:fenced, :unadopted, :unknown]},
+      outcome: {:enum, [:ended, :end_unconfirmed]}
+    ]
+  )
+
   defevent("lilly.images_verified",
     message: "Configured image digest verification finished",
     metadata: [verified_images: :int, rejected_images: :int]

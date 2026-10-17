@@ -33,20 +33,20 @@ unknown usage, immutable accounting, content-free diagnostics and scoped claims.
 ## Verification
 
 The focused property passed seed `203368` in 7.6 seconds, warnings-as-errors,
-terminal exit0. Log: `/tmp/kittens-ziggy-reporter-history-focused.log`.
+terminal exit0. Log: `/tmp/overalls-ziggy-reporter-history-focused.log`.
 The initial run exposed an uppercase hexadecimal UUID fixture after the small
 cases; correcting the generator and validating every ID preserves the oracle.
 Full Ziggy precommit passed 64 checks (15 properties, 49 tests), seed 521050, in 61.7
 seconds. Forced Dialyzer passed in 5.33 seconds with zero errors, skips or unnecessary
 skips; terminal exit0.
-Log: `/tmp/kittens-ziggy-reporter-history-full-gates.log`. Fresh source review
+Log: `/tmp/overalls-ziggy-reporter-history-full-gates.log`. Fresh source review
 found no concrete blocker. Publication verification passed the all-file static,
 ADR, local HLDD and generated-reference checks and the evaluated Nix HLDD gate.
 Marshall's test phase passed 1,423 checks (222 properties, 1,201 tests), with two
 exclusions, seed `119138`, in 1,531.1 seconds. Forced Dialyzer passed in 51.6
 seconds with zero errors, skips or unnecessary skips; the complete publication
 command exited 0.
-Log: `/tmp/kittens-ziggy-reporter-publication-gates.log`.
+Log: `/tmp/overalls-ziggy-reporter-publication-gates.log`.
 
 ## Remaining gaps
 

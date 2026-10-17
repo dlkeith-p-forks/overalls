@@ -79,7 +79,7 @@ virtio-win `viosock` provider. Native FreeBSD/illumos rows reserve that transpor
 shape, but stock kernels lack the required AF_VSOCK/virtio-vsock support.
 Custom kernels, native adapters and host-CID enforcement remain unverified,
 and every native capability stays false under
-[ADR-0186](repo:docs/architecture/decisions/0186-native-kernel-provenance-and-admission.md).
+[ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md).
 The firmware jail adds the vsock device only for an agent set that speaks these
 protocols, and the agentless image keeps none. Every guest response remains
 bound to host CID 2, guest CID 3 and the current boot identity.

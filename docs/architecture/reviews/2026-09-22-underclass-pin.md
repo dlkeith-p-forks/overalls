@@ -17,14 +17,14 @@ Upstream tests cover accepted, rejected and generated identifiers and end-to-end
 forwarding.
 
 The remaining change updates `lru` from 0.12.5 to 0.16.3. Underclass's bounded
-sticky-binding behavior and persisted SQLite cap remain unchanged. The Kittens
+sticky-binding behavior and persisted SQLite cap remain unchanged. The Overalls
 module, secret wiring, endpoint authorization, loopback bind and publication
 model are unchanged.
 
 ## Verification
 
 The pinned derivation builds from the immutable Git revision and locked Cargo
-dependencies. Kittens package, evaluation and NixOS service checks exercise the
+dependencies. Overalls package, evaluation and NixOS service checks exercise the
 resulting package, configuration invariants, endpoint authorization, diagnostic
 redaction and persistence. ADR and code-contract validation cover the updated
 evidence and unchanged deployment contracts.

@@ -9,7 +9,7 @@ Prometheus/Tempo/Grafana placement and initial collection-health baseline.
 - **Guest provenance:** Audi's private TLS frontend uses Lilly's current
   pre-NAT binding and streams to a host-local Unix socket. The receiver checks
   the Audi UID, validates the binding, removes arbitrary resource, datapoint,
-  span-event and link data, and admits eight reviewed `kittens.guest.*` names
+  span-event and link data, and admits eight reviewed `overalls.guest.*` names
   under per-VM and host-wide minute budgets. Host metrics
   follow a separate collector pipeline with host provenance. Ordinary guest
   claims cannot enter the current host collection-health rule. A host-local
@@ -48,7 +48,7 @@ Prometheus/Tempo/Grafana placement and initial collection-health baseline.
   Prometheus, Tempo, Grafana and receiver, scraped a real host metric, accepted
   one guest protobuf metric, and refused a non-Audi Unix peer and a forged
   outer metric name. A subsequent passing run observed exported
-  `kittens_guest_requests` and HAProxy response series and authenticated to
+  `overalls_guest_requests` and HAProxy response series and authenticated to
   Grafana with its generated local operator password.
 - A later two-node NixOS run passed: the worker collector exported host metrics
   on its test network address and central Prometheus scraped the worker as up.
@@ -158,7 +158,7 @@ operation labels and no account or VM identity:
 | Enrico | `Enrico.HTTP` and mirror updater | Registered mirror refresh to readable revision |
 | Brady | `Brady.Metrics` | Private cache request to completed result |
 | Underclass | Pinned external package monitor socket | Local provider readiness and authorized proxy completion |
-| Lyra | `kittens agent` and guest executor | Guest tool outcome as segregated diagnostics only |
+| Lyra | `overalls agent` and guest executor | Guest tool outcome as segregated diagnostics only |
 
 The nine deployed candidate paths cover Marshall HTTP, two Audi boundaries,
 and Brady, Galileo, Enrico, Porsche dispatch and Ziggy. They do not yet cover
@@ -257,7 +257,7 @@ The Rust exporter generated property and Clippy with warnings denied passed.
 `nix build .#checks.x86_64-linux.otel-fleet --no-link` then passed on
 2026-09-28 after staging the new Rust binary so Nix included it. That two-node
 machine run started the packaged Rust exporter as the Brady UID, read a private
-synthetic snapshot and observed `kittens_outer_brady_requests_total` at the
+synthetic snapshot and observed `overalls_outer_brady_requests_total` at the
 collector's Prometheus endpoint. It did not run Brady, Lilly's attribution path
 or a Firecracker request for this new candidate series.
 After moving application intake to a group-owned Unix socket, the same NixOS
@@ -288,7 +288,7 @@ cited above retain their narrower scope.
 Two `brady-fleet` native runs observed a real guest's two attributed HTTP
 requests and a private Brady SLO snapshot with cumulative successes and closed
 histogram buckets. The second run additionally passed the Rust exporter and
-collector assertion for `kittens_outer_brady_requests_total` with collector-owned
+collector assertion for `overalls_outer_brady_requests_total` with collector-owned
 `application` origin and `brady` service labels. Both complete runs failed later
 in the existing Brady/Lilly restart-attribution subtest with `Fleet condition
 timed out; private diagnostics withheld`. This is scoped request-to-collector
@@ -367,7 +367,7 @@ NixOS check passed synthetic Audi source-schema export and ordinary Audi UID
 socket refusal. The `otel-galileo-native` Firecracker run reached and passed
 `real Galileo guest outcome reaches isolated Rust OTLP collector intake`:
 it observed an Audi-owned success after current guest binding, the exported
-`kittens_outer_audi_private_requests_total` series with application provenance,
+`overalls_outer_audi_private_requests_total` series with application provenance,
 and refusal of an ordinary Audi UID at the collector socket. The complete
 `nix build .#checks.x86_64-linux.otel-galileo-native --no-link` gate passed on
 2026-09-28, including its later upload, execution stop, cross-host peer,
@@ -524,7 +524,7 @@ The new `otel-marshall` NixOS check passed on 2026-09-29. It booted a packaged
 Marshall release and central collector with disposable WireGuard peers, sent a
 real HTTPS request that completed as 404, and observed Marshall's private
 cumulative request counter increase. The static Rust exporter delivered the
-`kittens_outer_marshall_web_requests_total` series with collector-assigned
+`overalls_outer_marshall_web_requests_total` series with collector-assigned
 application provenance and the fixed `overalls` instance identity. The same
 run verified source-directory mode 0750, snapshot mode 0640, exporter refusal
 to write the source directory, and ordinary Marshall UID refusal at the
@@ -606,8 +606,8 @@ recovery finding, not a passing full scenario. The dedicated SLO variant is
 bounded before that recovery scenario.
 The focused `otel-audi-ssh-native` NixOS check then passed on 2026-09-29.
 It completed the authorized guest SSH journey and waited for both
-`kittens_outer_audi_ssh_requests_total` and
-`kittens_outer_audi_ssh_successes_total` to exceed zero at the host collector
+`overalls_outer_audi_ssh_requests_total` and
+`overalls_outer_audi_ssh_successes_total` to exceed zero at the host collector
 under collector-assigned `audi_ssh` application provenance. The test used the
 real Audi source snapshot and isolated static Rust exporter; it supplied no
 synthetic outcome. This records source-to-collector delivery for one admitted
@@ -647,9 +647,9 @@ browser journey or durable counter recovery. A later source restart returned
 the in-process cumulative request value to zero, confirming the documented
 restart-loss gap.
 
-The live Prometheus query also exposed a third `up{job="kittens-otel"}` series:
+The live Prometheus query also exposed a third `up{job="overalls-otel"}` series:
 the Overalls collector exported HAProxy's own scrape result with
-`kittens.telemetry.origin=host`. The initial collector-health recording rule
+`overalls.telemetry.origin=host`. The initial collector-health recording rule
 included that series, so Marshall's exact two-result `/slos` parser would show
 Unknown despite two healthy collectors. The corrected rule selects only raw
 Prometheus collector scrapes, and its rule test includes the extra host-origin

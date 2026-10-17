@@ -56,7 +56,7 @@ against the pinned SecretSpec/SOPS/ssh-to-age/age toolchain with a synthetic
 generated host identity, `publish()`, `staged_contents()`/`descriptor_id()`
 handoff consumption by a real `prepare.py` subprocess per activated unit,
 `verify()`/health polling and `record_healthy` cleanup, and the public
-`kittens-secrets` CLI policy refusal matrix. World-model seams (systemd,
+`overalls-secrets` CLI policy refusal matrix. World-model seams (systemd,
 Git refs, Nix builds, clocks, EnvironmentFile parsing, serving-process
 discovery) are explicit and fail closed on unexpected commands.
 
@@ -67,8 +67,8 @@ The exported `auto-update-custody` check passed in **13 seconds** on
 lint plus `ty` against the copied production runtime, prepare.py, CLI and the
 history file, then executes **5 tests: 26 generated histories and 2 fixed
 boundaries** inside a disposable uid-0 user namespace (bwrap) with confined
-`/run/kittens-auto-update`, `/var/lib/kittens-auto-update`, `/run/current-system`
-and `/run/kittens-secrets` paths:
+`/run/overalls-auto-update`, `/var/lib/overalls-auto-update`, `/run/current-system`
+and `/run/overalls-secrets` paths:
 
 - Rotation recovery: 9 histories over refusal counts 1..22 (forced examples at
   1/16/17/22 across all three authority fields), optional in-window fetch tick.
@@ -84,8 +84,8 @@ so the corpus is pinned. Tool versions are pinned by the flake (sops 3.13.3
 during this build; secretspec/age/ssh-to-age from the same package set).
 
 - Base: `c14ae27d` (published `origin/main` at branch creation).
-- Derivation: `/nix/store/695yq92pcqffk3vbbmlh0j1w66kzvccv-kittens-auto-update-custody.drv`.
-- Result: `/nix/store/k2x0kr392vv5rpr1mf37amczpla1q26v-kittens-auto-update-custody`.
+- Derivation: `/nix/store/695yq92pcqffk3vbbmlh0j1w66kzvccv-overalls-auto-update-custody.drv`.
+- Result: `/nix/store/k2x0kr392vv5rpr1mf37amczpla1q26v-overalls-auto-update-custody`.
 - Production runtime SHA256: `06adee90c7c11638...`; prepare SHA256: `7097249f09f22464...`;
   CLI SHA256: `0cb7d3514cdae3f8...` (all unchanged from base).
 - Histories SHA256: `937968622d772ea2...`; check SHA256: `e5caf3e7ba08d865...`.

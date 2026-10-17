@@ -45,12 +45,24 @@ defmodule Overalls.HLDDGate do
     end)
   end
 
+  # @cc [owner:ghuntley,label:verification] hldd-ci-workflows-exempt
+  # .github/ (CI workflows, actions and their scripts) MUST NOT be a reviewed
+  # source: it drives repository automation, not documented product behavior,
+  # configuration or deployment, so it needs no handbook receipt.
+  @ci_prefix ".github/"
+
+  # @cc [owner:ghuntley,label:verification] hldd-devenv-pin-exempt
+  # devenv.lock and flake.lock MUST NOT be reviewed sources: the scheduled
+  # automatic nix upgrades workflow rewrites their pins unattended; a pin bump
+  # alone changes no documented behavior. devenv.yaml, devenv.nix and
+  # flake.nix remain covered.
   @spec excluded?(String.t()) :: boolean()
   defp excluded?(path) do
     Enum.any?(Path.split(path), &(&1 in @ignored)) or
       path == @manifest or
+      path in ["devenv.lock", "flake.lock"] or
       (String.starts_with?(path, @chapters <> "/") and String.ends_with?(path, ".md")) or
-      String.starts_with?(path, ["secrets/", "marshall/priv/static/assets/"]) or
+      String.starts_with?(path, ["secrets/", "marshall/priv/static/assets/", @ci_prefix]) or
       String.ends_with?(path, [".beam", ".pyc", ".gz"]) or
       path == "marshall/priv/static/cache_manifest.json" or
       Regex.match?(~r/-[0-9a-f]{32}\.[^.]+$/, path)

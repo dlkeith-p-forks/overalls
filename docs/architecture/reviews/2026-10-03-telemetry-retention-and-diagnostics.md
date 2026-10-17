@@ -155,7 +155,7 @@ inspection. Source-specific full fault acceptance remains a separate gap.
 The focused `otel-porsche-native` check passed in **688 seconds overall**, with
 the VM script completing in **215.40 seconds**, archive
 `1791002853808-94007-0.jsonl` and log
-`/tmp/kittens-slo-audit-porsche-native.log`. It executes actual approved-key SSH
+`/tmp/overalls-slo-audit-porsche-native.log`. It executes actual approved-key SSH
 dispatch, requires the durable Porsche snapshot to contain at least one request
 and success with conserved totals, and requires nonzero independently exported
 collector success counters. This closes the prior focused check's driver-gate
@@ -165,7 +165,7 @@ seven-day history or production notification delivery.
 The serial `brady-fleet` check passed in **931 seconds overall**, with the VM
 script completing in **472.02 seconds**, archive
 `1791003832828-775657-0.jsonl` and log
-`/tmp/kittens-slo-audit-brady-native.log`. Actual guest HTTPS requests produced
+`/tmp/overalls-slo-audit-brady-native.log`. Actual guest HTTPS requests produced
 current-owner/execution attribution, at least two durable requests and successes,
 conserved terminal and histogram counts and collector-visible application-labelled
 request counters. Brady/Lilly restart preserved the guest process identity and
@@ -178,7 +178,7 @@ it does not establish all recorder/application fault paths or production history
 The expanded `enrico-service` check passed in **88 seconds overall**, with the
 VM script completing in **57.75 seconds**, archive
 `1791005392272-1699164-0.jsonl` and log
-`/tmp/kittens-slo-enrico-native2.log`. Two stale assertions called the removed
+`/tmp/overalls-slo-enrico-native2.log`. Two stale assertions called the removed
 in-memory SLO endpoint; they now inspect the durable source. The actual packaged
 Enrico producer remains alive through recorder SIGKILL, preserving source
 identity and completed counters after a fresh snapshot. A clean application
@@ -199,7 +199,7 @@ production behavior, authority, protocol, targets and retention are unchanged.
 
 The expanded `audi-dns` native check passed in **108 seconds overall**, with
 the VM script completing in **75.34 seconds**, archive
-`1791007371668-2818103-0.jsonl` and log `/tmp/kittens-slo-dns-native.log`.
+`1791007371668-2818103-0.jsonl` and log `/tmp/overalls-slo-dns-native.log`.
 The real packaged DNS role continues serving through recorder SIGKILL without
 producer restart, preserving source identity and completed counters while
 advancing coverage. Clean producer restart preserves settled history and
@@ -219,7 +219,7 @@ delivery. The overall SLO implementation goal therefore remains active.
 
 The expanded `otel-porsche-native` check passed, with the VM script completing
 in **207.62 seconds**. Execution log:
-`/tmp/kittens-slo-porsche-fault-native.log`. The composed driver type checks
+`/tmp/overalls-slo-porsche-fault-native.log`. The composed driver type checks
 passed before native execution. After actual approved-key SSH dispatch and
 independent collector acceptance, recorder SIGKILL preserves settled checkpoint
 identity and completed totals with the producer alive while advancing coverage.
@@ -231,7 +231,7 @@ impact. In-flight producer loss, physical lifecycle accounting, overload/storage
 faults, power loss and production history remain separate acceptance gaps.
 
 The expanded `brady-fleet` check passed, with the VM script completing in
-**460.07 seconds**, log `/tmp/kittens-slo-brady-fault-native.log`. The composed
+**460.07 seconds**, log `/tmp/overalls-slo-brady-fault-native.log`. The composed
 driver type checks passed before native execution. Actual guest HTTP/HTTPS
 outcomes and independent collector acceptance precede the added fault checks.
 Recorder SIGKILL preserves settled checkpoint identity and completed counters
@@ -257,12 +257,12 @@ ADR-0136 verification without changing architecture or production behavior.
 The first expanded execution failed before any admitted loss: the disposable
 systemd SSH client exited127 because its executable search path was missing.
 The original three restart cases passed. Log:
-`/tmp/kittens-audi-inflight-native.log`. The fixture now supplies an explicit
+`/tmp/overalls-audi-inflight-native.log`. The fixture now supplies an explicit
 system executable path and `TimeoutStartSec=90`; systemd correctly reported that
 `RuntimeMaxSec` does not bound a oneshot service. The corrected native run passed
 with the VM script completing in **420.26 seconds** and terminal build exit0;
 the admitted-loss subtest passed in **5.07 seconds**. Log:
-`/tmp/kittens-audi-inflight-native-fixed.log`. All three existing restart cases
+`/tmp/overalls-audi-inflight-native-fixed.log`. All three existing restart cases
 also passed. The real connector pause reached one persisted admission before
 SIGKILL. Recovery settled exactly one failure, preserved source incarnation,
 original start, successes, duration count and every bucket, advanced coverage,
@@ -287,10 +287,10 @@ and `52cd07f1` pending-journal fairness oracle. Full Marshall precommit passed
 **1,434 checks (233 properties and 1,201 tests)**, two exclusions, seed745177,
 in1770.8seconds. Forced Dialyzer passed in41.75seconds with zero errors, skipped
 warnings or unnecessary skips; wrapper exit0. Log:
-`/tmp/kittens-audi-inflight-merged-marshall.log`. Full Lilly precommit passed
+`/tmp/overalls-audi-inflight-merged-marshall.log`. Full Lilly precommit passed
 **475 checks (85 properties and 390 tests)**, seed447363, in70.5seconds; forced
 Dialyzer passed in15.68seconds with zero errors or skips and wrapper exit0.
-Log: `/tmp/kittens-audi-inflight-merged-lilly-ready.log`. The initial local Lilly
+Log: `/tmp/overalls-audi-inflight-merged-lilly-ready.log`. The initial local Lilly
 wrapper stopped before tests because this worktree lacked dependencies; fetching
 the existing locked versions supplied that prerequisite without a lockfile change.
 
@@ -312,7 +312,7 @@ do not establish seven-day compliance, ninety days of collected history or
 external notification receipt.
 
 The earlier expanded `otel-audi-ssh-native` check passed serially, with the VM script
-completing in **408.40 seconds**, log `/tmp/kittens-request-slo-audi-serial.log`.
+completing in **408.40 seconds**, log `/tmp/overalls-request-slo-audi-serial.log`.
 The composed driver type gate passed before actual native execution. Registered-key
 OpenSSH reaches the real Firecracker guest and independent collector counters
 before the shared transport fault helper runs. Recorder SIGKILL preserves settled
@@ -365,20 +365,20 @@ pending its final rerun; passing subtests do not make the failed overall run gre
 The current Marshall full precommit gate passed on the combined `feafe943` base
 with the transport evidence changes: **227 properties and 1,201 tests passed**,
 two excluded, seed213392, 1619.1 seconds; forced Dialyzer reported zero errors.
-Log `/tmp/kittens-request-slo-marshall-precommit.log`. Its isolated partition is
+Log `/tmp/overalls-request-slo-marshall-precommit.log`. Its isolated partition is
 `_slo_transport_20261003`. Later native fixture changes do not alter Marshall
 application code or test semantics.
 
 Marshall's full precommit gate passed on `c975c445` using the isolated test
 partition `_slo_c975_20261003`: **227 properties and 1,201 tests passed**, two
 excluded, seed885879; forced Dialyzer reported zero errors. Log:
-`/tmp/kittens-slo-brady-marshall-precommit-isolated.log`. The initial run against
+`/tmp/overalls-slo-brady-marshall-precommit-isolated.log`. The initial run against
 the default database found old fixture rows and was stopped; it is not a passing
 gate or established application regression. The retained old database was not
 modified to obtain the passing result.
 
 The final expanded `otel-galileo-native` check passed, with the complete VM script
-finishing in **860.71 seconds**, log `/tmp/kittens-request-slo-galileo-final.log`.
+finishing in **860.71 seconds**, log `/tmp/overalls-request-slo-galileo-final.log`.
 Its composed driver type gate passed. Actual guest forwarding and collector
 acceptance precede all six Galileo/Audi private fault assertions. Recorder loss
 with producer alive preserves settled identity, terminal totals and histogram
@@ -403,7 +403,7 @@ closed by diagnostic or histogram tests.
 
 The expanded `otel-request-recorder` NixOS check passed: **66.87 seconds** of
 VM script execution, including **12.13 seconds** for the whole-VM hard-stop
-subtest. Log: `/tmp/kittens-recorder-whole-vm-loss-native.log`. The composed
+subtest. Log: `/tmp/overalls-recorder-whole-vm-loss-native.log`. The composed
 driver lint and type gates passed. The fixture acknowledges one pending
 admission before `machine.crash()` and requires a different kernel boot ID after
 restart. Before the unchanged admission deadline, exactly one unknown-duration
@@ -439,7 +439,7 @@ was made; private attempt logs were not disclosed. This is a second observed
 activation retry, not a diagnosis or fault-test acceptance.
 
 After deployment, Prometheus reported all 272 rules healthy, including all 40
-burn evaluators. All 20 `kittens:slo_status{window="objective"}` series were
+burn evaluators. All 20 `overalls:slo_status{window="objective"}` series were
 warming (code 6). Other window labels are distinct observations and do not
 increase the objective roster. Active metric retention remained 90 days.
 This establishes deployment/rule health, not seven-day eligibility, external
@@ -455,7 +455,7 @@ The following full native run reached the new clone source-restoration retry
 accounting subtest, which passed in **8.34 seconds**. Exact public receipt/clone
 binding, successful completion within its original deadline, aggregate/histogram
 conservation and unchanged terminal row/source totals after replay were checked.
-Log: `/tmp/kittens-workflow-retry-cancel-native-validated.log`.
+Log: `/tmp/overalls-workflow-retry-cancel-native-validated.log`.
 
 That overall run failed before cancellation at the existing OSS cross-host
 placement assertion. Retained shape equality had already passed; this is not
@@ -505,7 +505,7 @@ run. Adding `--no-block` preserves the real request and all original bounds.
 The corrected native script passed in **89.06 seconds**;
 the admitted DNS producer-loss subtest passed in **11.80 seconds**. Composed driver typing/lint,
 loopback listener assertions and all earlier fault cases also passed. Log:
-`/tmp/kittens-dns-inflight-native-nonblocking.log`. Exactly one failure settles
+`/tmp/overalls-dns-inflight-native-nonblocking.log`. Exactly one failure settles
 before the original deadline, without a duration or change to completed history,
 identity, sums or buckets. The recorder survives; the client exits unsuccessfully
 before timeout and a fresh successful DNS request adds one measured completion.
@@ -516,7 +516,7 @@ The majority-core clone run passed the retry subtest in **7.97 seconds**, retain
 OSS shape, cross-host placement and distinct native ZFS identity/origin checks,
 then failed the copied guest's public start before cancellation. Physically
 running observations did not establish guest readiness; the cause remains
-unproven. Log: `/tmp/kittens-workflow-retry-cancel-native-headroom.log`.
+unproven. Log: `/tmp/overalls-workflow-retry-cancel-native-headroom.log`.
 The next native run adds fixed-unit activity and marker-presence booleans on
 that failure path. Console contents and unit environments remain private; the
 original start, placement and cancellation assertions are unchanged. These
@@ -528,7 +528,7 @@ measurement subtest or OSS copied-guest start. Its destination was running,
 native guest content verification passed and both transfer slots were held;
 the observed receipt did not satisfy exact `transfer_busy`. The actual refusal
 was not retained by the bare assertion, so no cause is established. Log:
-`/tmp/kittens-workflow-retry-cancel-native-readiness.log`. A subsequent fixture
+`/tmp/overalls-workflow-retry-cancel-native-readiness.log`. A subsequent fixture
 change exposes only finite allowlisted refusal labels and retains that exact
 assertion; it does not accept alternative refusals or claim cancellation coverage.
 
@@ -555,7 +555,7 @@ the retry measurement subtest in **9.11 seconds**, then again failed the OSS
 copy's bounded public start before cancellation. Shape, cross-host placement
 and native ZFS independence assertions passed. The guest diagnostic helper
 failed at `connect` with `MatchError`, so no guest service booleans were obtained.
-Log: `/tmp/kittens-workflow-retry-cancel-native-refusal.log`. The earlier
+Log: `/tmp/overalls-workflow-retry-cancel-native-refusal.log`. The earlier
 intermittent refusal's cause remains unknown; this pass does not erase it.
 
 The fixture now distinguishes terminal intent, boot, claim, vsock, creation and
@@ -602,7 +602,7 @@ full component acceptance remain required before production publication.
 
 The focused journal/adoption run passed **11 checks (2 properties, 9 tests)**,
 seed `952978`, in **2.6 seconds**. Log:
-`/tmp/kittens-continuing-boot-properties.log`. Generated isolated file histories
+`/tmp/overalls-continuing-boot-properties.log`. Generated isolated file histories
 cover repeated advances, replay, old authority, foreign placement/epoch,
 future-generation, corrupt and missing state. This verifies metadata arithmetic
 and durable rereads, not VMM confinement or physical boot/guest availability.
@@ -613,7 +613,7 @@ Full Lilly compiler, test and forced Dialyzer gates remain pending.
 The serial Lilly `mix precommit` passed **478 checks (87 properties, 391 tests)**
 in **77.0 seconds**, followed by forced Dialyzer with **zero errors, zero skips,
 zero unnecessary skips** in **15.22 seconds**. Log:
-`/tmp/kittens-boot-generation-precommit-serial.log`. The preceding attempt had
+`/tmp/overalls-boot-generation-precommit-serial.log`. The preceding attempt had
 one existing 100-millisecond audit-lock helper wait failure under build contention;
 its focused rerun passed. That focused run conflicted with the preceding
 Dialyzer artifact read, so only the subsequent serial complete gate is recorded
@@ -630,7 +630,7 @@ the OSS cross-host shape and independent ZFS identity checks, **repeated public
 Start with unchanged native process snapshot**, inherited guest marker, divergent
 writes and subsequent cleanup. The run failed later at composed line 2316:
 `assert vm_state(cancelled_destination) == "stopped"`, before public cancellation.
-Log: `/tmp/kittens-workflow-retry-cancel-native-generation-fixed.log`.
+Log: `/tmp/overalls-workflow-retry-cancel-native-generation-fixed.log`.
 This records native continued-process readiness for the repaired scope; it does
 not establish completed cancellation accounting or a passing full clone matrix.
 
@@ -659,7 +659,7 @@ GUID, destination archival/dataset removal and transfer-slot release passed.
 The run continued through stopped-source browser cloning and then failed a
 later cloned-guest public relocation with **source_unavailable**, at composed
 line 2432 (`relocate_porsche_clone`). Log:
-`/tmp/kittens-workflow-retry-cancel-native-copy-window.log`. Full matrix acceptance
+`/tmp/overalls-workflow-retry-cancel-native-copy-window.log`. Full matrix acceptance
 remains unproven; the completed cancellation checks retain their narrower scope.
 
 Production relocation uses this refusal for source host/pool freshness and
@@ -678,7 +678,7 @@ published-clone recovery wait (composed lines 2022/1866), after the catalogued
 `clone.failed` event with generic `activation_failed`. Source shows this event
 is emitted for a terminal queued activation failure; its specific reason was
 not recorded in that run. Log:
-`/tmp/kittens-workflow-native-source-observations.log`. The new relocation source
+`/tmp/overalls-workflow-native-source-observations.log`. The new relocation source
 preflight was not reached; no native pass for that extension is claimed.
 The same observational preflight now precedes the initial faulted clone
 submission and requires actual host/pool receipts within one second, leaving
@@ -692,11 +692,11 @@ execution of this extension remains pending.
 
 The settled-source run failed earlier at original-VM relocation admission with
 `source_unavailable` (composed line 1780), before any source preflight was
-reached. Log: `/tmp/kittens-workflow-native-settled-source.log`. Applying the
+reached. Log: `/tmp/overalls-workflow-native-settled-source.log`. Applying the
 preflight there produced an actual bounded diagnostic in the next run:
 all thirteen non-freshness predicates were true, but the two **tightened
 one-second freshness predicates were false**. Log:
-`/tmp/kittens-workflow-native-all-source-preflights.log`. This does not identify
+`/tmp/overalls-workflow-native-all-source-preflights.log`. This does not identify
 whether the unchanged production freshness window was violated. The earlier
 reader fetched source rows separately before choosing its clock; reader delay
 and sampling/startup alignment were not excluded.
@@ -715,7 +715,7 @@ atomic-source rerun remains pending.
 The atomic-source run executed the query and protocol validation successfully.
 Its timeout returned **host_fresh=true, pool_fresh=true, reports_recent=false**,
 with every other predicate true. Log:
-`/tmp/kittens-workflow-native-atomic-source.log`. Configured freshness therefore
+`/tmp/overalls-workflow-native-atomic-source.log`. Configured freshness therefore
 passed at the observed snapshot; the extra one-second margin did not. The fixture
 now derives its margin from the configured window, reserving two seconds for the
 following RPC (a three-second sample-age allowance under a five-second window).
@@ -731,7 +731,7 @@ subtest passed in **1380.65 seconds**; clone audit after source deletion passed
 in **0.13 seconds**. Native retry measurement with exact receipt replay passed
 in **15.46 seconds**, and native cancellation measurement with exact receipt
 replay passed in **8.40 seconds**. Log:
-`/tmp/kittens-workflow-native-source-rpc-budget.log`.
+`/tmp/overalls-workflow-native-source-rpc-budget.log`.
 
 This captured candidate includes the production continuing-boot repair and the
 final atomic sixteen-boolean source observer with configured-window RPC budget.
@@ -759,7 +759,7 @@ Post-deployment inspection found the Underclass source clock approaching the
 45-second freshness refusal boundary because the probe emitted every fifteen
 seconds while the central fleet scrape and recording group ran every thirty
 seconds. The correction preserves the 45-second guard and changes the probe to
-five seconds, the central `kittens-otel` scrape to ten seconds, and the SLO
+five seconds, the central `overalls-otel` scrape to ten seconds, and the SLO
 recording group to ten seconds. Marshall's evidence projection now includes the
 Underclass source age. The NixOS fleet fixture asserts a fresh source clock
 after the real probe, collector and Prometheus path starts. Rust probe properties

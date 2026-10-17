@@ -52,24 +52,24 @@ identity and original launch authority through authenticated settlement.
 ## Verification and remaining work
 
 Pinned Ruff formatting, lint and ty checks passed for the typed barrier helper;
-log `/tmp/kittens-lilly-submission-barrier-static.log`. This establishes static
+log `/tmp/overalls-lilly-submission-barrier-static.log`. This establishes static
 checks only. Native derivation evaluation passed, exit0; log
-`/tmp/kittens-lilly-submission-eval.log`. The generated scenario now runs both
+`/tmp/overalls-lilly-submission-eval.log`. The generated scenario now runs both
 before/after phases for each selected host and one/two subsequent daemon reopens,
 with fixed first-host/one-reopen and second-host/two-reopen witnesses. It checks
 actual old PID disappearance, exact native process identities, unchanged launch
 marker, completed original operation, exact state/reason and immutable outcome
 IDs/sequences through authenticated exchange. Pinned scenario formatting and lint
 passed after a loop-capture correction; helper ty passed. Log
-`/tmp/kittens-lilly-submission-scenario-static2.log`. Fragment type checking was pending at that stage; the refined composed
+`/tmp/overalls-lilly-submission-scenario-static2.log`. Fragment type checking was pending at that stage; the refined composed
 driver passed as recorded below.
 An atomic link now publishes a fully written checkpoint rather than exposing a
 partially written file. The positive worker/suspension refinement passed pinned
-formatting, lint and helper ty; log `/tmp/kittens-lilly-submission-tree-stop-static.log`.
+formatting, lint and helper ty; log `/tmp/overalls-lilly-submission-tree-stop-static.log`.
 The initial native execution predates this refinement and failed, archive
-`1791197341395-2049832-0.jsonl`, log `/tmp/kittens-lilly-submission-native.log`.
+`1791197341395-2049832-0.jsonl`, log `/tmp/overalls-lilly-submission-native.log`.
 Its exact initial fixture patch is retained at
-`/tmp/kittens-lilly-submission-initial-native-source.patch`, SHA256
+`/tmp/overalls-lilly-submission-initial-native-source.patch`, SHA256
 `d2cebbdb9b63f14ee41a3ffa5c4b10e1dd2d9cca0541440cf089267d739960d9`.
 The initial Nix-composed driver passed its static checks (archive lines4643
 and4646) and booted the fleet; its runtime assertions remain pending. This
@@ -103,7 +103,7 @@ to preserve the first actual fault after shared machine state changes. Fixed
 host/reopen witnesses and generated draws remain enabled on success. Final
 whole-tree suspension, positive worker identity and generation-bound restoration
 source passed pinned scenario format/lint; log
-`/tmp/kittens-lilly-submission-failure-preservation-static.log`. At that stage native
+`/tmp/overalls-lilly-submission-failure-preservation-static.log`. At that stage native
 execution, refreshed receipts and gates remained pending. No production defect
 is established by these initial fixture failures.
 
@@ -111,7 +111,7 @@ is established by these initial fixture failures.
 
 The integrated `31f133d8` refined source passed the complete source-built NixOS
 check: 1544seconds, exit0, archive `1791199858236-3527244-0.jsonl`, log
-`/tmp/kittens-lilly-submission-refined-native.log`. The composed driver lint and
+`/tmp/overalls-lilly-submission-refined-native.log`. The composed driver lint and
 type gates passed (archive events4342 and4345). The profile matrix passed in
 325.69seconds and existing Runtime-readiness recovery passed in217.64seconds.
 The new submission/whole-daemon-loss subtest passed in337.69seconds; the complete
@@ -132,7 +132,7 @@ source is identical to the green retained-start baseline. Patch SHA256 is
 `4871cadd4fc08257be48e97708421235c15648604d96b63f1769f3d7a2391cfa`.
 The native run exited1 in1264seconds, archive
 `1791201540948-16345-0.jsonl`, log
-`/tmp/kittens-lilly-submission-equal-authority-mutant.log`.
+`/tmp/overalls-lilly-submission-equal-authority-mutant.log`.
 
 The exact before checkpoint, suspended original daemon/worker, inactive native
 unit and marker precede whole-tree kill. Old-daemon retirement and fresh MainPID
@@ -151,7 +151,7 @@ The full Marshall gate on main34 plus this fixture passed, exit0:1452 checks
 (238 properties,1214 tests),2 excluded, seed366224,1772.5seconds. PLT update
 completed in5m5.4seconds; forced Dialyzer completed in46.73seconds with zero
 errors, skips or unnecessary skips. Log
-`/tmp/kittens-lilly-submission-main34-precommit3.log`. Setup failures from missing
+`/tmp/overalls-lilly-submission-main34-precommit3.log`. Setup failures from missing
 contract-tool/dependency installations preceded this run and are not test defects.
 
 Final in-context source review inspected the complete wrapper and generated
@@ -164,6 +164,6 @@ continuity does not independently decode its exact authority. Initial provision,
 guest data usability, exact dataset cleanup, power loss and hosted exploration
 remain separate gaps. All-file publication hooks passed, including Ruff and ty; the evaluated Nix
 HLDD check passed40seconds, exit0, archive `1791204659507-1449994-0.jsonl`.
-Log `/tmp/kittens-lilly-submission-final-hooks.log`. Source-derived views,
+Log `/tmp/overalls-lilly-submission-final-hooks.log`. Source-derived views,
 generated option reference, ADR138 structural checks and reviewed receipts
-passed in `/tmp/kittens-lilly-submission-final-evidence-check2.log`.
+passed in `/tmp/overalls-lilly-submission-final-evidence-check2.log`.

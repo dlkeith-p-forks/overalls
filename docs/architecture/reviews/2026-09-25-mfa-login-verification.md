@@ -81,8 +81,8 @@ published improvements 006 and 008 through
 - `final mfa-login-browser passed`: the final transactional-read implementation
   completed the NixOS script in **57.20 seconds**, including the **23.57-second**
   browser journey and **0.78-second** successful cleanup. Output:
-  `/nix/store/7man4gilnrwybsw7571l1d9avimyhvfs-vm-test-run-kittens-mfa-login-browser`.
-  Derivation: `/nix/store/n1vzv4460cw8scppsv7567pmq8wzmxxs-vm-test-run-kittens-mfa-login-browser.drv`.
+  `/nix/store/7man4gilnrwybsw7571l1d9avimyhvfs-vm-test-run-overalls-mfa-login-browser`.
+  Derivation: `/nix/store/n1vzv4460cw8scppsv7567pmq8wzmxxs-vm-test-run-overalls-mfa-login-browser.drv`.
   The 297-second Nix command includes rebuilding the packaged source. The
   production target lock was restored and checked before capturing this derivation.
 - The final standalone browser artifact passed pinned `ty` against the same
@@ -102,12 +102,12 @@ published improvements 006 and 008 through
   is claimed for those final static-check changes.
 - The earlier wrapper implementation passed its native script in **75.40 seconds**,
   including a **33.49-second** browser journey and successful VM cleanup. Output:
-  `/nix/store/7mi35f8fkspcxn2yfi00aqd8766nbzix-vm-test-run-kittens-mfa-login-browser`.
-  Derivation: `/nix/store/ascd7izamqkh578ji260fq8rih4zmmqj-vm-test-run-kittens-mfa-login-browser.drv`.
+  `/nix/store/7mi35f8fkspcxn2yfi00aqd8766nbzix-vm-test-run-overalls-mfa-login-browser`.
+  Derivation: `/nix/store/ascd7izamqkh578ji260fq8rih4zmmqj-vm-test-run-overalls-mfa-login-browser.drv`.
   The Nix command's 89 seconds includes build overhead.
   The first attempt exposed a fixture expectation: anonymous `/` redirects to
   `/sign-in` (failed derivation
-  `/nix/store/qzfcggnr9d4jmw1zvm6v6lm6bghjc5sf-vm-test-run-kittens-mfa-login-browser.drv`).
+  `/nix/store/qzfcggnr9d4jmw1zvm6v6lm6bghjc5sf-vm-test-run-overalls-mfa-login-browser.drv`).
   Correcting that expected destination produced the recorded pass.
 - Focused remembered-login examples passed **5 tests**, seed `77007`, including
   first-enrollment freshness, copied-cookie sign-out/global revoke, reset and

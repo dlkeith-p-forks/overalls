@@ -27,7 +27,7 @@ Each `handbook` scenario-row claim was traced to current source:
   pre-revocation cookie is refused in a separate context (browser.py:219-222).
   The record ("Integrated native hldd-browser passed in 49.65 seconds") matches
   the 005 review's integrated validation with derivation
-  `/nix/store/nrgwckjhvcranzjyqccsnbqd3pa32pyz-vm-test-run-kittens-hldd-browser.drv`.
+  `/nix/store/nrgwckjhvcranzjyqccsnbqd3pa32pyz-vm-test-run-overalls-hldd-browser.drv`.
   Consistent; retains its original single-instance source and scope.
 - **property, recorded** (`marshall/test/marshall_web/hldd_live_test.exs`
   "ordinary reader chapter histories lose revoked expired and deleted login
@@ -91,7 +91,7 @@ Each `handbook` scenario-row claim was traced to current source:
 
 Pinned devenv Elixir 1.20.4/OTP 29.0.6; `ERL_FLAGS='+S 4:4'`,
 `MIX_TEST_PARTITION=verify073`, `PGHOST=/run/user/1000/devenv-0e19ff2/postgres`,
-`TMPDIR=/tmp/kittens-verify073`:
+`TMPDIR=/tmp/overalls-verify073`:
 
 - `mix test test/marshall_web/hldd_live_test.exs --seed 0`: **8 passed
   (1 property, 7 tests)** in 2.6 seconds.
@@ -117,7 +117,7 @@ Pinned devenv Elixir 1.20.4/OTP 29.0.6; `ERL_FLAGS='+S 4:4'`,
   links only). `hldd_options.exs --check`, `hldd_coverage.exs --check` and
   `hldd_views.exs --check` pass on the edited tree.
 
-Logs: `/tmp/kittens-verify073/heavy-gate.log` plus focused-suite output.
+Logs: `/tmp/overalls-verify073/heavy-gate.log` plus focused-suite output.
 Review receipts (`marshall` updated; `lilly`, `services` and `deployment`
 no-impact; `governance` updated for this record, the index and the ledger row)
 are recorded after all documentation edits; `check_hldd.exs`, all-file `prek`

@@ -93,6 +93,11 @@ This replaces ADR-0182 step 2's mechanism, not its confinement policy.
 - Ingress adds one splice hop and one helper process per connection,
   bounded by hostd's in-flight limit. A hostd restart drops live ingress
   connections, as a Lilly restart already did.
+  Amended by [ADR-0187](0187-detached-ingress-bridges.md) (2026-10-17): for
+  preface-free services (SSH and plain web) hostd now bridges Audi's
+  connection itself in a detached scope that survives hostd and Lilly
+  restarts, and the BEAM relay leaves that path. Editor and nested HTTPS
+  keep this decision's op 13 bridge and its restart behaviour.
 - hostd's received-descriptor surface is one socket per request, validated
   by kind and state before use. Every other descriptor ends the session.
 - Lilly's `:socket` and the `gen_tcp` port share one file description.
@@ -154,10 +159,11 @@ This replaces ADR-0182 step 2's mechanism, not its confinement policy.
   passed all 15 subtests. Guest SSH reaches the guest through hostd op 13
   and `lilly-ingress-bridge`, which is the unprivileged BEAM's only route.
 
-Remaining: a hostd restart drops live ingress bridges. The user-SSH journey
-subtest "a lilly-hostd restart ends live guest SSH and new sessions
-reconnect" asserts that loss, the unchanged guest boot and reconnection; it is
-present but has no recorded run yet.
+Remaining: a hostd restart drops live op 13 bridges (editor and nested
+HTTPS). For guest SSH, [ADR-0187](0187-detached-ingress-bridges.md) replaces
+the loss with detached bridges; its user-SSH journey subtest "live guest SSH
+survives lilly-hostd and Lilly restarts until its bridge is fenced" replaces
+the subtest that asserted the loss and has no recorded run yet.
 
 ## Open questions
 
@@ -171,3 +177,6 @@ None.
   the only root component.
 - [ADR-0183](0183-guest-dataset-streams-in-hostd.md): the unprivileged
   machine-test evidence.
+- [ADR-0187](0187-detached-ingress-bridges.md): amends decision 3 so guest
+  SSH and plain web bridges are detached and survive hostd and Lilly
+  restarts.

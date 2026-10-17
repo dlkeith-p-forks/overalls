@@ -36,7 +36,9 @@ HOSTS = (
     "integration-b.fixture.test",
     "smtp.fixture.test",
 )
-GIT_REPO = "Fixture/demo.git"
+# Marshall canonicalizes GitHub sources to lowercase, and its Enrico refresh
+# requests carry that committed owner/name; the served path must match exactly.
+GIT_REPO = "fixture/demo.git"
 MAX_BODY = 16_777_216
 MAX_JOURNAL = 33_554_432
 MAX_RECEIPTS = 200_000

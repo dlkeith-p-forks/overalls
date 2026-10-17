@@ -51,14 +51,14 @@ The initial four-property run passed seed355749 in89.6seconds before the final
 conservation repairs. It does not establish those later assertions.
 The reviewed combined run passed four properties, seed `158289`, in 91.9 seconds,
 with warnings-as-errors and terminal exit0. Log:
-`/tmp/kittens-retry-binding-histories-reviewed-focused.log`.
+`/tmp/overalls-retry-binding-histories-reviewed-focused.log`.
 The fresh reviewer found no further concrete defect in this scope.
 Full Marshall precommit passed 1,422 checks (221 properties, 1,201 tests), two exclusions, seed930025,1133.1seconds; forced Dialyzer42.96seconds with zero errors, skips or unnecessary skips; terminal exit0.
-Log: `/tmp/kittens-retry-binding-histories-full-gates.log`.
+Log: `/tmp/overalls-retry-binding-histories-full-gates.log`.
 All-file hooks, generated-reference checks and evaluated Nix HLDD passed in that
 command. Final evidence-record publication checks also passed with terminal
 exit0: all-file hooks, ADR/HLDD/generated-reference checks and evaluated Nix HLDD.
-Publication log: `/tmp/kittens-retry-binding-publication-gates.log`.
+Publication log: `/tmp/overalls-retry-binding-publication-gates.log`.
 The previous 1,419-check result belongs to baseline10c07e05 and excludes these
 three additions.
 

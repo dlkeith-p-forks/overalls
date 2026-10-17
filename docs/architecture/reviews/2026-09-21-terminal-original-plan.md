@@ -39,7 +39,7 @@ and executed acceptance rather than inheriting those claims.
   per-session sharing, operator read-only behavior and live revocation pass.
 - **Medium: absent fleet health.** Capability advertising was incorrectly treated
   as completion of monitoring. The passive Lilly socket, bounded
-  collector decoder (`nix/domains/system/fleet-monitor/terminal_metrics.py` at kittens revision `a99f74f0`, repository deleted),
+  collector decoder (`nix/domains/system/fleet-monitor/terminal_metrics.py` at overalls revision `a99f74f0`, repository deleted),
   service/VM allowlists and panels now exist. Failures yield absent measurements;
   observations never authorize work. Decoder, configuration, history and panel
   tests pass, and the fleet scenario covers service loss and restart.

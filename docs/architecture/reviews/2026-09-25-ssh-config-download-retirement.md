@@ -65,7 +65,7 @@ Validation in the isolated worktree:
 - Marshall's complete test run passed 967 checks (74 properties, 893 tests),
   including distributed tests; two environment-specific cases were excluded.
 - The native OpenSSH check passed all positive and negative scenarios in 22.21s:
-  `/nix/store/38vpn8p891364285l78cyvc7lcq184hm-vm-test-run-kittens-audi-openssh`.
+  `/nix/store/38vpn8p891364285l78cyvc7lcq184hm-vm-test-run-overalls-audi-openssh`.
 - `prek run --all-files` passed ruff formatting/linting, ty and all application
   logging gates. The native Nix check also checked its composed Python driver.
 - ADR validation and contract syntax/discovery checks passed. Semantic review

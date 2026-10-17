@@ -18,11 +18,11 @@ cleanup is bounded and monitor-confirmed.
 
 The adopted four-property file passed with warnings treated as errors, seed
 `751543`, in 8.4 seconds, exit 0. Log:
-`/tmp/kittens-lilly-completed-history-adopted.log`. The unchanged three-property
+`/tmp/overalls-lilly-completed-history-adopted.log`. The unchanged three-property
 baseline separately passed in 7.6 seconds at the same seed. Component precommit
 passed 475 checks (85 properties, 390 tests), seed `700852`, in 63.6 seconds,
 exit 0. Forced Dialyzer passed in 17.66 seconds with zero errors, skips or
-unnecessary skips. Log: `/tmp/kittens-lilly-completed-trusted-precommit.log`.
+unnecessary skips. Log: `/tmp/overalls-lilly-completed-trusted-precommit.log`.
 The pinned host helpers were selected directly from their root-owned Nix store
 directory. An earlier run through user-owned profile ancestry correctly failed
 three configuration cases and is not passing evidence. ADR/HLDD references,

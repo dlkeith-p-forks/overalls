@@ -84,9 +84,9 @@ the capacity assertion was not weakened for this change.
 
 Production Porsche acceptance passed against revision
 `a5ddfc7838d62946ef955f8f23323f8d7bf96c95` on both physical hosts. Porsche
-created source `kittens-relocation-20260922-121310-source`
+created source `overalls-relocation-20260922-121310-source`
 (`605ebc7f-b4c4-4432-98a6-60ec38c7682b`) on Overalls and cloned it as
-`kittens-relocation-20260922-121310-clone`
+`overalls-relocation-20260922-121310-clone`
 (`123fa0fb-d4c3-472c-b116-2b54de2d1441`). The clone moved Overalls to Dungarees
 under operation `c8a7896f-14a6-4845-85c3-ba3c96d1542a`, returned running with
 `host: dungarees`, and reported 62 seconds of downtime. Exact replay of request

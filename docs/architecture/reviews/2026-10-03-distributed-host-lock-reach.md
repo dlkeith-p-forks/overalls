@@ -34,18 +34,18 @@ acquisition now stops acquired peers before propagating failure.
 
 The focused property passed seed `219491` in 51.6 seconds, warnings-as-errors,
 terminal exit 0 (one passed, two unselected properties excluded).
-Log: `/tmp/kittens-capacity-host-lock-focused.log`. This records actual three-peer
+Log: `/tmp/overalls-capacity-host-lock-focused.log`. This records actual three-peer
 blocking-chain reach, committed oracle checks and complete fixture restoration.
 The complete distributed-capacity file passed all three properties, seed `396307`,
 in 162.6 seconds, warnings-as-errors, terminal exit 0.
-Log: `/tmp/kittens-capacity-host-lock-history.log`. Fresh source review found no
+Log: `/tmp/overalls-capacity-host-lock-history.log`. Fresh source review found no
 blocker in result validation, transaction custody or cleanup. Partial-acquisition
 and tag-restoration failure branches have source review but no injected-failure
 execution evidence. Full publication gates exited 0: all-file static checks,
 ADR and handbook/reference/coverage/view checks, evaluated Nix HLDD, and Marshall
 precommit. Marshall passed 1,424 checks (223 properties, 1,201 tests), two excluded,
 seed `893479`, in 1305.7 seconds. Forced Dialyzer passed in 48.96 seconds with zero
-errors, skips or unnecessary skips. Log: `/tmp/kittens-capacity-host-lock-full-gates.log`.
+errors, skips or unnecessary skips. Log: `/tmp/overalls-capacity-host-lock-full-gates.log`.
 This execution predates integration of remote `d651c460`; merged checks remain required.
 
 ## Local mutation check
@@ -58,11 +58,11 @@ transaction wait cycle. The blocking witness had completed; the property failed
 when its closed relocation-refusal classifier rejected the Ash-wrapped deadlock
 in `absorb_step/3`. This is evidence for the complete property, not evidence that
 the preceding recursive structured-error detector recognized this wrapper.
-Log: `/tmp/kittens-capacity-host-lock-mutant.log`; exact patch:
-`/tmp/kittens-host-lock-descending-mutant.patch`. The primary worktree received no
+Log: `/tmp/overalls-capacity-host-lock-mutant.log`; exact patch:
+`/tmp/overalls-host-lock-descending-mutant.patch`. The primary worktree received no
 mutation. Restored source passed the same seed in 50.0 seconds, warnings-as-errors,
 exit 0 (one passed, two unselected properties excluded).
-Log: `/tmp/kittens-capacity-host-lock-restored.log`. Fresh review confirmed the
+Log: `/tmp/overalls-capacity-host-lock-restored.log`. Fresh review confirmed the
 failure attribution. The complete one-line mutant was:
 
 ```diff

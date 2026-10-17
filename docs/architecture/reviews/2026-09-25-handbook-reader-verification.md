@@ -62,9 +62,9 @@ Validation started from integrated main `e9a262b0` plus this improvement:
 - Native hldd-browser passed in 54.24 seconds. The ordinary-reader browser
   subtest took 24.06 seconds; full package build and native execution took 340
   seconds. QEMU cleanup completed. Exact tested derivation:
-  `/nix/store/4xzg1m3k0ynkg3zxaxx1fcjnqapgdfgz-vm-test-run-kittens-hldd-browser.drv`.
+  `/nix/store/4xzg1m3k0ynkg3zxaxx1fcjnqapgdfgz-vm-test-run-overalls-hldd-browser.drv`.
   Output and five screenshots:
-  `/nix/store/8k773zn9k897rrwx7g7zpj8704halvd0-vm-test-run-kittens-hldd-browser`.
+  `/nix/store/8k773zn9k897rrwx7g7zpj8704halvd0-vm-test-run-overalls-hldd-browser`.
   Desktop and mobile screenshots were inspected. The run establishes persisted
   ordinary role immediately after login and at completion, every section and
   diagram, and both actual stored-login revocation refusals. Its immutable output
@@ -98,13 +98,13 @@ below supersedes the original artifact for this combined scope.
   in both signed-in contexts, actual login-error redaction and both revocation
   refusals. The browser subtest took 21.75 seconds; total delta build/run took 60
   seconds. QEMU cleanup completed in 0.47 seconds. Exact tested derivation:
-  `/nix/store/nrgwckjhvcranzjyqccsnbqd3pa32pyz-vm-test-run-kittens-hldd-browser.drv`.
+  `/nix/store/nrgwckjhvcranzjyqccsnbqd3pa32pyz-vm-test-run-overalls-hldd-browser.drv`.
   Output and screenshots:
-  `/nix/store/lw1v6nx09ps6fx38bp6wxdj97zf65mgg-vm-test-run-kittens-hldd-browser`.
+  `/nix/store/lw1v6nx09ps6fx38bp6wxdj97zf65mgg-vm-test-run-overalls-hldd-browser`.
   The desktop screenshot was inspected and shows Source code immediately below
   HLDD. No GitHub request is part of this test.
 - The immediately preceding source-link native run passed in 53.32 seconds
-  (`/nix/store/wys4nvjac6abrng17qkbly3q1a56dl2d-vm-test-run-kittens-hldd-browser.drv`);
+  (`/nix/store/wys4nvjac6abrng17qkbly3q1a56dl2d-vm-test-run-overalls-hldd-browser.drv`);
   it does not establish the later login-error guard. The final fixture delta
   reused the same Marshall package and reran the actual native journey.
 

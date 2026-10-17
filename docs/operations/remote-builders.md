@@ -1,7 +1,7 @@
 # Reciprocal builders and caches
 
 Dungarees and Overalls use [one registry](../../../fleet/remote-builders.nix) through
-`nixosModules.remote-builders`. Import that module and set
+`nixosModules.platform.remote-builders`. Import that module and set
 `overalls.remoteBuilders.enable`, `localName`, and `machines` to opt in elsewhere.
 The default aggregate module exposes the same options without enabling them.
 

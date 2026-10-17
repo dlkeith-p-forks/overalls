@@ -37,6 +37,7 @@ defmodule Lilly.MixProject do
 
   defp deps do
     [
+      {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:ash, "== 3.33.6"},
       {:ash_state_machine, "== 0.2.13"},
       {:logger_json, "~> 7.0"},
@@ -72,6 +73,7 @@ defmodule Lilly.MixProject do
         "deps.unlock --unused",
         "format --check-formatted",
         "test --warnings-as-errors",
+        "covenant.check --no-run",
         "dialyzer --force-check"
       ]
     ]

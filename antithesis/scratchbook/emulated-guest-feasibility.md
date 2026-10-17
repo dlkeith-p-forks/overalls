@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Emulated real guest feasibility — 2026-10-13
 
-Research root: `/home/ghuntley/src/kittens-antithesis-reset`. This is a fresh,
+Research root: `/home/ghuntley/src/overalls-antithesis-reset`. This is a fresh,
 read-only SUT investigation. The work did not edit repository files, read
 archived Antithesis content, build images, boot guests, or run native isolation
 assertions. Repository instructions, ancestor contracts,

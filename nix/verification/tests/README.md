@@ -322,6 +322,21 @@ nix build -L .#checks.x86_64-linux.fleet --extra-system-features nested-kvm
 nix flake check -L --extra-system-features nested-kvm
 ```
 
+### Continuous integration
+
+`ci.nix` wraps every exported check with `meta.ci = { enable, machine,
+nestedKvm }`. A check is a machine test when it has a test driver, requires
+`kvm`, or is listed as a machine aggregate; it is excluded from CI only by name
+in `ci.nix` (currently the Inception checks). GitHub Actions derives its
+matrices by evaluation: `publish-cache.yml` builds every enabled non-machine
+check and publishes it to Cachix, and `nixos-machine-tests.yml` fans out one
+job per enabled machine test. `.github/scripts/select-checks.sh machine|build`
+evaluates each check in isolation with `nix-eval-jobs`, so a check that fails
+to evaluate is reported (and fails the run) without hiding the others.
+
+A scheduled or dispatched run is execution evidence only for the commit it
+ran; a selected matrix entry is not a passing result.
+
 Machine tests require a Linux builder with usable KVM. Nested-guest tests also
 require nested virtualization and the `nested-kvm` feature. The build user needs
 device access; declaring a feature does not provide it. See the

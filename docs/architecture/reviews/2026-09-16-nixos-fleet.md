@@ -46,7 +46,7 @@ reports, AshOban execution and native ZFS identities remain active.
 
 **The complete fleet at this checkpoint passed in 1108.23 seconds** for the execution
 scope (1108.96 seconds on the framework's overall script timer). The successful
-immutable derivation is `b9l8ldi07mlakv9lnfc9yim9hkqp55ax-vm-test-run-kittens-fleet`;
+immutable derivation is `b9l8ldi07mlakv9lnfc9yim9hkqp55ax-vm-test-run-overalls-fleet`;
 the later [Nix refactor review](2026-09-16-nix-layout-and-test-refactor.md) records
 the reorganized suite's derivation and regression results. All nine machines
 used their source-built releases and immutable service units, with no diagnostic

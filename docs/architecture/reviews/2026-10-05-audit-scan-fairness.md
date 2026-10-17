@@ -39,7 +39,7 @@ appends, multiple resource classes or hosted Antithesis coverage.
 ## Verification
 
 The corrected focused run passed two properties in155.3seconds, seed937797,
-log `/tmp/kittens-audit-scan-fairness-focused2.log`, exit0. The fixed129-placement
+log `/tmp/overalls-audit-scan-fairness-focused2.log`, exit0. The fixed129-placement
 case runs in every draw. Generated257placement cases are available in the
 property; this record does not assert that every random geometry was selected.
 Full component/governance gates and targeted mutation checks subsequently passed as recorded below.
@@ -65,7 +65,7 @@ SHA256 was verified before copying an independent tool cache and rerunning.
 
 The new `metadata traversal retains the exact suffix after its path budget`
 property passes two properties in0.9seconds, seed820551, exit0, log
-`/tmp/kittens-audit-scan-path-budget-focused2.log`. Generated file counts cover
+`/tmp/overalls-audit-scan-path-budget-focused2.log`. Generated file counts cover
 0/1/126/127/128/129/255/256/257and each draw also includes129files. The configured
 actors root consumes one visit; the first batch must retain exactly the sorted
 suffix after127regular files, and the next batch retains the suffix after a
@@ -81,7 +81,7 @@ The queue-reset mutant changes only AuditRuntime's real tick traversal to restar
 from configured roots every time. The unchanged new fairness property failed
 after28.8seconds, seed937797, exit2, with count17/backlog1: a later offered
 resource was already in the independently observed roster before the roster was
-complete. Log `/tmp/kittens-audit-scan-fairness-mutant.log`; patch
+complete. Log `/tmp/overalls-audit-scan-fairness-mutant.log`; patch
 `antithesis/scratchbook/mutation-testing/patches/local-audit-reset-scan-queue.patch`,
 SHA256 `597e1fe97f971889b16ee599af4870972071f7478624854c272c2997641fc0bd`.
 This is a local property falsification, not a hosted SDK catalog result.
@@ -90,7 +90,7 @@ The mutant was restored before the separate path-budget mutant.
 The path-budget mutant changes only Outbox.batch's128visit limit to129. The
 unchanged suffix property failed in0.1seconds, seed296931, exit2: fixed129file
 case retained only`99`, while the independent128visit oracle required`98`and`99`.
-Log `/tmp/kittens-audit-scan-path-budget-mutant.log`; patch
+Log `/tmp/overalls-audit-scan-path-budget-mutant.log`; patch
 `antithesis/scratchbook/mutation-testing/patches/local-audit-path-budget-129.patch`,
 SHA256 `11344868fa2136a4d06aa713bb61bc529e1d6b75bc080025e49cfaf1c4afe2f7`.
 Both mutations were restored in the disposable fork; `git diff --exit-code HEAD
@@ -103,7 +103,7 @@ The pinned full Lilly `mix precommit` completed exit 0, passing 505 checks
 (94 properties and 411 tests), seed 429293, in 212.2 seconds. Forced Dialyzer
 passed in 15.0 seconds with zero errors, skips or unnecessary skips. Runtime,
 compiler, formatter, contracts, logging, ADR and HLDD gates passed. Log:
-`/tmp/kittens-audit-scan-fairness-lilly-precommit.log`. This records the frozen
+`/tmp/overalls-audit-scan-fairness-lilly-precommit.log`. This records the frozen
 b5c9c133 baseline plus the owned property/evidence draft, before main integration.
 
 All-file hooks and evaluated HLDD passed immediately before the full component
@@ -130,7 +130,7 @@ evidence remain separate in the merged scenario ledger. Integrated Marshall subs
 Full integrated Marshall precommit passed exit0:1452checks (238properties,
 1214tests), two exclusions,seed344724,in1649.5seconds. Forced Dialyzer passed
 41.53seconds with zero errors, skips or unnecessary skips after PLT checking.
-Log: `/tmp/kittens-audit-scan-fairness-marshall-precommit2.log`.
+Log: `/tmp/overalls-audit-scan-fairness-marshall-precommit2.log`.
 The first attempt stopped before compilation because this worktree lacked
 dependencies; matching locked independent dependency/build caches were copied
 before the passing run. That attempt is not test evidence.
@@ -144,7 +144,7 @@ not Marshall/Lilly/protocol implementation or these tests. Recorded test scope
 is preserved. Final all-file hooks, ADR checks, generated references and views,
 and evaluated HLDD passed exit0; evaluated build completed in20seconds, archive
 `1791221254103-3173626-0.jsonl`, log
-`/tmp/kittens-audit-scan-fairness-final-publish-checks.log`.
+`/tmp/overalls-audit-scan-fairness-final-publish-checks.log`.
 Publication follows normal commit hooks. Final diff preserves ADR-0074 and
 existing production contracts; architecture impact is verification evidence only.
 Stored mutation patch files retain the unified-diff blank context marker; raw

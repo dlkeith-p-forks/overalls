@@ -210,6 +210,26 @@ infer a wire version from SQL. Production Execution and the real Control
 probes enforce wire v4 separately. Historical local boot captures predate this
 current-schema witness; local readiness alone does not establish hosted SDK
 ingestion or native effects.
+The optional `repository-origin` profile adds a second gate before the same
+single setup signal: the operator-issued repository manifest must match the
+independent fixture ID, the origin fixture must answer an authenticated state
+read, the SELECT-only oracle must find the registration row and a
+`pending`/`refreshing`/`ready` phase, and Enrico must answer an authenticated
+status read for a never-issued attempt. Marshall commits GitHub sources in
+canonical lowercase, so the operator publishes `github/fixture/demo` exactly as
+registered and the origin fixture serves that path; an earlier mixed-case
+manifest and served path never matched the committed row, and Marshall's own
+refresh failed against the origin, so setup stayed incomplete. The probe now
+reports each distinct unmet prerequisite once per process by condition token,
+observation state, HTTP status or phase, never by credential or payload.
+The optional `recorder-host` profile selects the TCG NixOS recorder VM and the
+three recorder commands. The workload waits for the VM health check, then its
+own read-only probe requires a fresh all-active unit sample, producer and spool
+identities in their reviewed cgroups, a distinct 32–64 MiB archive device, a
+checkpoint whose pending admissions name only the current producer PID and
+start ticks, a readable SQLite archive and writable request and ledger volumes.
+Missing or stale evidence leaves setup incomplete. The profile is selectable,
+but no local or hosted run is recorded; its evidence is emulated, not native.
 The host report has unavailable pool capacity and false execution readiness,
 so a successful Control connection cannot authorize a guest placement. The
 controlled executor records requests without claiming physical effects; its
@@ -460,7 +480,24 @@ and placeholder kernels cannot enter image construction. A declaration of
 `workspace_source_version` 2 does not grant source delivery. Lilly's added probe
 path binds kernel-file identity to the current boot fields and requires the
 same boot ID from readiness, but native boot and running-kernel evidence remain
-absent. See [ADR-0186](repo:docs/architecture/decisions/0186-native-kernel-provenance-and-admission.md).
+absent. See [ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md).
+
+## Elixir contract verification
+
+All twelve Elixir applications declare Covenant as a development/test dependency
+with `runtime: false`; production releases gain no contract service or runtime
+dependency. Each application's `contracts/` tree names obligations, and tagged
+tests under `test/contract/` provide executable evidence. Precommit runs
+`mix covenant.check --no-run`, while the ordinary ExUnit run retains its existing
+formatters and adds `Covenant.Formatter` for runtime results.
+
+Initial module-loadability obligations detect missing or renamed declared modules.
+Additional behavior fixtures establish only their asserted BEAM-observable scope.
+Coverage percentages and static checks do not establish passing runtime execution,
+native Rust/KVM behavior, guest isolation, physical recovery or deployment.
+Existing `CONTRACTS`, ADRs and scenario-specific native/machine records remain
+separate obligations. See
+[ADR-0186](repo:docs/architecture/decisions/0186-covenant-contract-verification.md).
 
 ## Keeping this handbook current
 
@@ -487,6 +524,9 @@ these checks establishes currency and structure, not factual correctness.
 Generated build caches and `.nixos-test-history` are excluded consistently from
 Git and packaged-source inventories. Execution claims need an explicit reviewed
 record; the generated history file is not an acceptance receipt.
+CI-only `.github/` automation and unattended `devenv.lock`/`flake.lock` pin changes
+are excluded from review receipts; source configuration such as `devenv.nix`,
+`devenv.yaml` and `flake.nix` remains covered.
 
 Property evidence recognizes Rust Hegel's bare `#[hegel::test]` and configured
 `#[hegel::test(test_cases = 8)]` attributes, including multiline formatting and

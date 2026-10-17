@@ -104,7 +104,7 @@ The final logs are `.devenv/durable-lifecycle-witness-nixos-driver.log` and
 `n11l3r34vbvm162f1q2caz84w7n4idxi` and `41vhh6p6n2syl2lphkb8n7avqkcar5wl`.
 Pinned Ruff formatting/linting and whole-repo contract
 format/discovery/enforcement also passed. The evaluated Nix `hldd` gate passed
-with output `gydcaqq3hmjs64nl0bwqi1dh13la1f8i-kittens-hldd-check`; its local
+with output `gydcaqq3hmjs64nl0bwqi1dh13la1f8i-overalls-hldd-check`; its local
 execution record is `.devenv/durable-hldd-final.log`. Four additional
 composed Nix driver checks passed for team resources, sharing surfaces, SSH
 bootstrap and installer trust. Composition/type checks do not run their machines

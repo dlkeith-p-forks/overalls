@@ -29,6 +29,7 @@ defmodule Audi.MixProject do
 
   defp deps do
     [
+      {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:bandit, "~> 1.12"},
       {:logger_json, "~> 7.0"},
       {:mint, "~> 1.10"},
@@ -63,6 +64,7 @@ defmodule Audi.MixProject do
         "deps.unlock --unused",
         "format --check-formatted",
         "test --warnings-as-errors",
+        "covenant.check --no-run",
         "dialyzer --force-check"
       ]
     ]

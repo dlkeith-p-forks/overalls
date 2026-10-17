@@ -23,9 +23,9 @@ then return exact success with every adopted PID absent.
 
 The original production selector failed the property in0.08seconds; targeted
 package exit1 in75seconds, archive `1791219322823-1921057-0.jsonl`, log
-`/tmp/kittens-source-export-escaped-baseline1.log`. Failed patch SHA256
+`/tmp/overalls-source-export-escaped-baseline1.log`. Failed patch SHA256
 `91783f7f8807201fb219c38fe35dce20606ff54eec45207c6dc5f4eb1e7d6498`,
-`/tmp/kittens-source-export-escaped-baseline1-failed.patch`.
+`/tmp/overalls-source-export-escaped-baseline1-failed.patch`.
 Rustix `waitpid(None, ...)` selects children only in the caller's process group;
 the exporter treated that group's ECHILD as confirmation despite adopted children
 in another session. Cleanup now uses the all-child `wait(...)` selector.
@@ -50,7 +50,7 @@ The selector-only full package passed85seconds, archive
 `1791219443566-2063578-0.jsonl`: two library tests and nine integration tests,
 six deliberately ignored exec fixtures. That revision predates the leader repair.
 Package3 passed exit0 in92seconds, archive `1791219599261-2213767-0.jsonl`, log
-`/tmp/kittens-source-export-escaped-package3.log`. Two library Hegel properties
+`/tmp/overalls-source-export-escaped-package3.log`. Two library Hegel properties
 and nine integration tests passed (including the new property); integration
 execution took1.33seconds. Rustfmt and all-target locked/offline Clippy passed
 through the package gate. No fixtures were counted as passing application tests.
@@ -58,11 +58,11 @@ through the package gate. No fixtures were counted as passing application tests.
 The targeted selector reversion mutant failed exactly the new property in0.06seconds:
 one escaped child remained alive while helper exit status was success0. Package
 exit1 in77seconds, archive `1791219716113-2303698-0.jsonl`, log
-`/tmp/kittens-source-export-reap-mutant.log`. This diagnoses the predicted selector
+`/tmp/overalls-source-export-reap-mutant.log`. This diagnoses the predicted selector
 failure, not collateral damage. The source and test fork were restored and verified
-byte-for-byte, then retained at `/tmp/kittens-source-export-reap-restored`.
+byte-for-byte, then retained at `/tmp/overalls-source-export-reap-restored`.
 No mutant entered the user tree. See the
-local ledger (`antithesis/scratchbook/mutation-testing/local-source-export-adopted-children.md` at kittens revision `9fe1e493`, repository deleted).
+local ledger (`antithesis/scratchbook/mutation-testing/local-source-export-adopted-children.md` at overalls revision `9fe1e493`, repository deleted).
 
 Main9a71e12a was fast-forwarded into this worktree after native verification;
 it changes Enrico and documentation, not Lilly production or source-export code.
@@ -80,11 +80,11 @@ in73.4seconds. Forced Dialyzer passed11.78seconds with zero errors, skips or
 unnecessary skips after PLT checking57.91seconds. Runtime, compiler, formatting,
 contracts, logging, ADR and reviewed HLDD gates passed. The test PATH selected
 the exact repaired source-built helper package. Log:
-`/tmp/kittens-source-export-adopted-lilly-precommit.log`.
+`/tmp/overalls-source-export-adopted-lilly-precommit.log`.
 Pinned code-contract syntax/discovery, scenario generation, views and option
 reference checks also passed. Final all-file hooks and evaluated HLDD passed exit0 in17seconds, archive
 `1791221374656-3268397-0.jsonl`, log
-`/tmp/kittens-source-export-adopted-publish-checks.log`.
+`/tmp/overalls-source-export-adopted-publish-checks.log`.
 Integration of other completed batches remains pending. These checks do not
 establish escaped failure-path or physical storage acceptance.
 
@@ -116,7 +116,7 @@ source scope and does not prove these newly added failure histories.
 
 Failure extension package passed exit0,126seconds, archive
 `1791223765972-671788-0.jsonl`, log
-`/tmp/kittens-source-export-escaped-failures-package4.log`. Two library properties
+`/tmp/overalls-source-export-escaped-failures-package4.log`. Two library properties
 and10integration checks passed, including both completion/failure custody
 properties; six executable fixtures were ignored. Integration completed21.03seconds.
 Rustfmt and all-target locked/offline Clippy passed. All seven fixed failure
@@ -132,13 +132,13 @@ The unchanged failure property falsified the group-only wait selector on
 CallerEof/count1: helper completion was observed while the independently
 witnessed escaped child remained live. Targeted property failed5.10seconds;
 package exited1 in103seconds, archive `1791224263140-979856-0.jsonl`, log
-`/tmp/kittens-source-export-escaped-failure-selector-mutant.log`.
+`/tmp/overalls-source-export-escaped-failure-selector-mutant.log`.
 Patch `source-export-failure-process-group-only-reap.patch` SHA256
 `f31123729980d6cc90b65dc7d81ae687cbcbb43e1ee6d12eb7529bba1c0fa09d`.
 The first EOF counterexample stops the mutant; other failure-trigger mutation
 counterexamples are not credited. Source/tests were restored and compared
 byte-for-byte, then retained at
-`/tmp/kittens-export-failure-selector-restored-mbyjggbi`.
+`/tmp/overalls-export-failure-selector-restored-mbyjggbi`.
 No mutation remains in the user worktree. Final publication checks remain open.
 
 ### Failure publication and audit fairness integration
@@ -149,7 +149,7 @@ the evaluated check exited0 in16seconds, archive
 The audit fairness integration brings the already verified505-check Lilly tree
 from35f7770f. That gate passed seed300233 in119.9seconds, with94properties and
 411tests; forced Dialyzer12.45seconds, zero errors/skips/unnecessary skips, log
-`/tmp/kittens-source-export-fairness-integrated-lilly-precommit.log`.
+`/tmp/overalls-source-export-fairness-integrated-lilly-precommit.log`.
 
 Compared with35f7770f, the combined tree changes only the source-export Rust
 test file and research/handbook records. Compared withf2752a91, native
@@ -169,7 +169,7 @@ publication remain pending; no full merged execution is claimed.
 ### Fresh integrated package execution
 
 Forced integrated rebuild passed exit0,111seconds,archive
-`1791249901266-3984571-0.jsonl`,log `/tmp/kittens-integrated-source-export-rebuild.log`.
+`1791249901266-3984571-0.jsonl`,log `/tmp/overalls-integrated-source-export-rebuild.log`.
 Two library properties and ten integration checks passed, six executable fixtures
 ignored. Completion and escaped failure properties both passed; integration20.97s,
 rustfmt and all-target Clippy passed. Verified package:

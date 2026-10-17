@@ -42,7 +42,7 @@ real-Restic suite. Initial archive
 all twelve original tests passed; the new property failed its initial backup setup.
 the local fixture deliberately has unavailable filesystem tools. The corrected
 property uses production materialize instead of paths; the corrected focused property passed in 286.602 seconds, exit 0, in
-`/tmp/kittens-upload-focused.log`, with two fixed plus four generated histories.
+`/tmp/overalls-upload-focused.log`, with two fixed plus four generated histories.
 The final complete pinned operator check passed in 1418 seconds, exit 0;
 archive `1791019749568-892525-0.jsonl`. All 13 tests passed in 1406.863 seconds,
 including the new two-fixed/four-generated publication histories. Independent

@@ -4,7 +4,7 @@
 
 Review the Marshall agent Ash domain, browser workspace, durable turn and model
 loop, VM wake and access rules, Ziggy control transport, host-local Underclass
-route, guest `kittens agent-executor`, and guest/host service wiring. Weaver was
+route, guest `overalls agent-executor`, and guest/host service wiring. Weaver was
 studied from the local clone at commit
 `b211e71b9c86aeca507323baab7650218688e9c9`.
 
@@ -32,8 +32,8 @@ integrated. The guest service now receives `curl` and `timeout` on its systemd
 
 ### Medium: CLI whole-system acceptance remains open
 
-The guest image starts the hidden `kittens agent-executor`, which has no model
-state and executes only fenced commands. The desktop `kittens agent` now uses
+The guest image starts the hidden `overalls agent-executor`, which has no model
+state and executes only fenced commands. The desktop `overalls agent` now uses
 an explicit browser approval of a hash of its random secret. Marshall stores
 only the digest, scopes the session to one VM, rechecks write access on every
 request and audits approval. Focused HTTP and LiveView tests pass. A NixOS

@@ -24,7 +24,7 @@ The actual fixed deadline case had seven neighbors, a live escaped child and
 one admission plus one repository lock descriptor, but exit124 rather than126.
 Failed patch SHA256
 `159bf37e97ab3caf8360275ea40b71b09343fd78a9e683ef55a14e4d0fc00e0f`,
-`/tmp/kittens-enrico-escaped-owner-package3-failed.patch`.
+`/tmp/overalls-enrico-escaped-owner-package3-failed.patch`.
 
 Rustix1.1.5 documents `waitpid(None, ...)` as waiting only for children in the
 caller's process group. The cleanup loop therefore missed the adopted escaped
@@ -47,7 +47,7 @@ establishes Clippy success or a passing escaped-session baseline.
 
 Package4 passed all eleven native properties in27.28seconds; the full package
 passed exit0 in67seconds, archive `1791218630397-1348451-0.jsonl`, log
-`/tmp/kittens-enrico-escaped-owner-package4.log`. The package runs rustfmt and
+`/tmp/overalls-enrico-escaped-owner-package4.log`. The package runs rustfmt and
 all-target Clippy with locked offline dependencies and warnings as errors.
 Cargo formatting and diff checks also passed before submission. Integrated
 component gates, reviewed HLDD receipts and
@@ -58,7 +58,7 @@ The targeted reversion mutant was falsified locally: archive
 failed191.18seconds. Deadline/seven-neighbor counterexample again observed the
 escaped child alive with both locks and exit124 instead of126. The fixed and
 generated histories were unchanged. See the
-local mutation ledger (`antithesis/scratchbook/mutation-testing/local-enrico-escaped-session.md` at kittens revision `9fe1e493`, repository deleted).
+local mutation ledger (`antithesis/scratchbook/mutation-testing/local-enrico-escaped-session.md` at overalls revision `9fe1e493`, repository deleted).
 Pinned code-contract syntax and discovery passed for the source and history
 declarations; semantic review preserves all-child reaping, inherited authority,
 bounded cleanup and independent process witnesses. This is self-review; no fresh
@@ -92,7 +92,7 @@ tests), seed344695,in303.0seconds. Forced Dialyzer passed4.54seconds with zero
 errors, skips or unnecessary skips. Runtime, compiler, formatting, contracts,
 logging, ADR and HLDD receipt gates passed. The test PATH selected the verified
 source-built repaired helper package. Log:
-`/tmp/kittens-enrico-escaped-owner-precommit.log`.
+`/tmp/overalls-enrico-escaped-owner-precommit.log`.
 Integrated ADR, scenario generation, views, options and reviewed receipts passed
 before this gate. Final all-file hooks and evaluated HLDD remain required before
 commit; no new production activation or service-cgroup acceptance is claimed.
@@ -100,7 +100,7 @@ commit; no new production activation or service-cgroup acceptance is claimed.
 Final all-file hooks passed, including Ruff format/lint, ty, contracts, logging
 and reviewed HLDD. Evaluated Nix HLDD passed exit0 in20seconds, archive
 `1791219825308-2352676-0.jsonl`, log
-`/tmp/kittens-enrico-escaped-owner-publish-checks3.log`. Earlier publication
+`/tmp/overalls-enrico-escaped-owner-publish-checks3.log`. Earlier publication
 attempts refused an updated receipt without corresponding chapter changes, then
 stale shared Lilly/deployment chapter digests; the actual service/scenario facts
 were reviewed and reconciled before this passing run. No gate was bypassed.

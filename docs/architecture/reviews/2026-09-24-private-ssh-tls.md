@@ -46,7 +46,7 @@ durable guest-login audit rows and Audi's structured open event matched the
 VM and placement.
 
 Both NixOS and Ubuntu fleet journeys passed after extension to the complete
-Porsche create, Kittens SSH, Porsche relocation, and Kittens SSH sequence. Each
+Porsche create, Overalls SSH, Porsche relocation, and Overalls SSH sequence. Each
 checked `whoami`, `pwd`, home ownership and mode, `ls`, a pre-move home file,
 a post-move interactive shell, and the new placement's durable login audit.
 The Audi PKI tests, four-target Lyra package build, Lyra unit/property tests,

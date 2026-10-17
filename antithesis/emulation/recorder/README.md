@@ -35,12 +35,19 @@ witness. The VM
 health check requires a fresh observer sample, active units, both identities,
 the distinct 32–64 MiB archive, and readable checkpoint and SQLite state.
 
-Runtime acceptance is pending the serialized VM slot. Build the exact
+The `recorder-host` selection profile
+(`antithesis/verification/selections/recorder-host.json`) selects this VM with
+the recorder command template. The workload depends on the VM health check, and
+`core/profile_readiness.py` independently re-reads the observation share before
+the single setup signal: fresh active units, both identities in their reviewed
+cgroups, the distinct 32–64 MiB archive, a valid checkpoint whose pending
+admissions name only the current producer PID/start ticks, a readable SQLite
+archive, and writable request and ledger volumes. The probe is read-only; the
+first trace intake into SQLite is witnessed by the selected commands, not by
+setup. Runtime acceptance is still pending: build the exact
 `antithesis-recorder-host-vmm-context` output, boot its QEMU process, then record
 the context derivation, image hashes, QEMU PID, guest kernel boot ID and source
-hashes. Before signaling setup completion, require the health check and verify
-that the checkpoint's producer PID/start ticks match `identity.json` and the
-trace receiver accepts a reviewed batch into its independent SQLite archive.
+hashes.
 The focused workload commands are
 `test/v1/recorder/first_capacity.py`,
 `test/v1/recorder/serial_driver_recovery.py`, and

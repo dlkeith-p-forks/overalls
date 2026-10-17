@@ -197,10 +197,10 @@ derive owner metadata from the VM record. The
 [durable store](../../../lilly/lib/lilly/control/store.ex) retain legacy command
 compatibility and reject conflicting same-generation metadata. Legacy owners are
 refreshed separately through the
-closed batch codec (`protocol/lib/overalls_protocol/egress_owners.ex` at kittens revision `9fe1e493`, repository deleted),
+closed batch codec (`protocol/lib/overalls_protocol/egress_owners.ex` at overalls revision `9fe1e493`, repository deleted),
 [authenticated read-only API](../../../marshall/lib/marshall/compute/provisioner_control.ex),
 [bound HTTPS client](../../../lilly/lib/lilly/control/client.ex) and
-volatile cache (`lilly/lib/lilly/network/owner_cache.ex` at kittens revision `9fe1e493`, repository deleted).
+volatile cache (`lilly/lib/lilly/network/owner_cache.ex` at overalls revision `9fe1e493`, repository deleted).
 Component tests cover host/session fencing, exact binding, expiry and absence of
 execution-intent mutation.
 
@@ -224,9 +224,9 @@ VM/owner attribution, legacy refresh, restart survival and old-flow refusal
 after IP reassignment to a different owner.
 
 The [aggregate producer](../../../brady/lib/brady/metrics.ex),
-collector (`nix/domains/system/fleet-monitor/runtime.py` at kittens revision `a99f74f0`, repository deleted),
-ingestion schema (`marshall/lib/marshall/fleet/sample.ex` at kittens revision `a99f74f0`, repository deleted) and
-panel catalog (`marshall/lib/marshall/fleet/dashboard_catalog.ex` at kittens revision `a99f74f0`, repository deleted) extend
+collector (`nix/domains/system/fleet-monitor/runtime.py` at overalls revision `a99f74f0`, repository deleted),
+ingestion schema (`marshall/lib/marshall/fleet/sample.ex` at overalls revision `a99f74f0`, repository deleted) and
+panel catalog (`marshall/lib/marshall/fleet/dashboard_catalog.ex` at overalls revision `a99f74f0`, repository deleted) extend
 the existing collector, actor, durable history and administration dashboards.
 Tests cover incarnation/freshness, missing-data rate gaps, unknown versus zero,
 secret-field rejection and database/dashboard behavior. Real collector-to-history

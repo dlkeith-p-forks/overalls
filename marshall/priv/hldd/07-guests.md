@@ -827,7 +827,7 @@ artifacts make image construction stop before a stock disk is copied. No
 cross-built kernel, complete native agent closure, native `terminald`, machine
 boot, readiness, terminal, workspace, relocation or fleet evidence is recorded.
 
-See [ADR-0186](repo:docs/architecture/decisions/0186-native-kernel-provenance-and-admission.md),
+See [ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md),
 the [multi-OS architecture review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md)
 and the [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
 

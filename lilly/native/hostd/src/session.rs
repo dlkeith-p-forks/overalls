@@ -64,6 +64,9 @@ pub struct Daemon {
     pub roots: Vec<std::path::PathBuf>,
     /// Executables for typed VM launches; None refuses LaunchVm.
     pub vm_tools: Option<crate::vm_launch::Tools>,
+    /// Detached ingress bridges (ADR-0187); None refuses BridgeIngress and
+    /// lists no bridges.
+    pub ingress: Option<crate::ingress::Config>,
     next_session: AtomicU64,
     jobs: Mutex<HashMap<[u8; JOB_KEY], Job>>,
     jobs_changed: Condvar,
@@ -91,6 +94,7 @@ impl Daemon {
             file_roots: Vec::new(),
             roots: Vec::new(),
             vm_tools: None,
+            ingress: None,
             next_session: AtomicU64::new(1),
             jobs: Mutex::new(HashMap::new()),
             jobs_changed: Condvar::new(),
@@ -412,7 +416,109 @@ impl Session {
                 };
                 self.bridge(id, socket, request);
             }
+            Request::BridgeIngress {
+                key,
+                greeting,
+                mark,
+                destination,
+                port,
+                source,
+                timeout_ms,
+                namespace,
+                device,
+            } => {
+                let Some(socket) = descriptor else {
+                    return self.refuse(id, Refusal::Malformed);
+                };
+                let text = |bytes: Vec<u8>| String::from_utf8(bytes).unwrap_or_default();
+                let request = crate::descriptors::NetnsTcp {
+                    namespace: text(namespace),
+                    device: text(device),
+                    mark,
+                    destination: std::net::Ipv4Addr::from(destination),
+                    port,
+                    source: (source != [0, 0, 0, 0]).then(|| std::net::Ipv4Addr::from(source)),
+                    timeout: Duration::from_millis(u64::from(timeout_ms)),
+                };
+                match self.bridge_ingress(&key, &greeting, socket, request) {
+                    Ok(()) => self.reply(id, &Reply::Connected),
+                    Err(reason) => self.refuse(id, reason),
+                }
+            }
+            Request::ListIngressBridges => {
+                let keys = self
+                    .daemon
+                    .ingress
+                    .as_ref()
+                    .map(crate::ingress::live)
+                    .unwrap_or_default();
+                self.reply(
+                    id,
+                    &Reply::Result {
+                        status: Status::Succeeded,
+                        bytes: keys.concat(),
+                    },
+                );
+            }
+            Request::EndIngressBridge { key } => {
+                let Some(config) = self.daemon.ingress.as_ref() else {
+                    return self.refuse(id, Refusal::Unavailable);
+                };
+                match crate::ingress::end(config, &key) {
+                    Ok(()) => self.reply(
+                        id,
+                        &Reply::Result {
+                            status: Status::Succeeded,
+                            bytes: Vec::new(),
+                        },
+                    ),
+                    Err(reason) => self.refuse(id, reason),
+                }
+            }
         }
+    }
+
+    /// @cc [owner:ghuntley,label:security;isolation;recovery] hostd-detached-ingress-bridge
+    /// A detached bridge MUST be refused (Unavailable) without ingress
+    /// configuration or a resolved helper; its received descriptor MUST pass
+    /// ingress-client-is-audi (else Malformed) before anything else; there
+    /// MUST be fewer than MAX_BRIDGES live bridges and none with this key.
+    /// hostd then dials the guest exactly as hostd-netns-connect and starts
+    /// `[systemd-run --scope --unit=lilly-ingress-<key>.scope --slice=<slice>
+    /// --property=RuntimeMaxSec=<30 days> --] lilly-ingress-bridge --detached
+    /// 5 3 4 [<service uid>]` (the uid whenever hostd is root) through
+    /// hostd-detached-spawn, with Audi's connection at 3, the guest at 4 and
+    /// the bridge's end of a fresh control socket at 5, keeping no copy of
+    /// any. Connected is sent only after the bridge sent READY, the greeting
+    /// was written whole to Audi's connection and GO was sent, all within
+    /// START_TIMEOUT; on any failure the bridge is killed through its pidfd
+    /// and its scope, and Unavailable is sent. The bridge is no command of
+    /// this session: Cancel and session close leave it running.
+    fn bridge_ingress(
+        &self,
+        key: &[u8; crate::ingress::KEY],
+        greeting: &[u8],
+        client: OwnedFd,
+        request: crate::descriptors::NetnsTcp,
+    ) -> Result<(), Refusal> {
+        let (Some(config), Some(helper)) = (
+            self.daemon.ingress.as_ref(),
+            self.daemon
+                .utilities
+                .get(crate::utilities::Utility::IngressBridge),
+        ) else {
+            return Err(Refusal::Unavailable);
+        };
+        crate::ingress::client_kind(&client, config.peer_uid)?;
+        let live = crate::ingress::live(config);
+        if live.len() >= crate::ingress::MAX_BRIDGES || live.contains(key) {
+            return Err(Refusal::Unavailable);
+        }
+        let guest = crate::descriptors::open_netns_tcp(request)?;
+        let uid = rustix::process::geteuid()
+            .is_root()
+            .then_some(self.daemon.service_uid);
+        crate::ingress::start(config, helper, key, greeting, client, guest, uid)
     }
 
     /// @cc [owner:ghuntley,label:security;isolation] hostd-ingress-bridge

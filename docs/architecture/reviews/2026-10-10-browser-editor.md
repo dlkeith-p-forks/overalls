@@ -3,7 +3,7 @@
 Date: 2026-10-10. Decision: [ADR-0153](../decisions/0153-official-source-browser-editor.md),
 accepted and partially implemented under the user's explicit source-comparison,
 patch/package, guest embedding and Marshall browser-opening request. Work is in
-the isolated `kittens-vscode-web` worktree. Host activation is recorded below;
+the isolated `overalls-vscode-web` worktree. Host activation is recorded below;
 host activation alone does not establish a production editor journey.
 
 The historical package/component/standalone/NixOS acceptance below precedes
@@ -40,7 +40,7 @@ The cloned official repository was inspected at stable 1.141.0 commit
 at `2bfb814c5215c51a10e80c2cb1b58ed91068ad8b`. The research trees are
 `/tmp/openvscode-research.sCXhVy/vscode` and
 `/tmp/openvscode-research.sCXhVy/openvscode-server`, with a separate patch tree at
-`/tmp/vscode-kittens-patches-20261010`. OpenVSCode's Open VSX product configuration
+`/tmp/vscode-overalls-patches-20261010`. OpenVSCode's Open VSX product configuration
 and source-built REH layout informed the package. Its downstream release binaries
 are not inputs.
 
@@ -126,7 +126,7 @@ The shared journey gives Chromium private writable configuration/cache directori
 without changing HOME or inherited data paths, preserving the native tester's
 actual NSS trust database. Its wrapper supplies pinned Fontconfig and DejaVu even
 on a headless host. The wrapper/closure derivation passed, exit zero, in seven
-seconds at `/nix/store/272a971ljfcdhgsrwipx5jaqq10gx6fw-kittens-browser-editor-journey`.
+seconds at `/nix/store/272a971ljfcdhgsrwipx5jaqq10gx6fw-overalls-browser-editor-journey`.
 That establishes assembly of the real helper and font closure, not an authenticated
 recurring journey. The package-only startup fixture separately owns its temporary
 trust bypass; that fixture cannot establish the verified TLS trust of native tests.
@@ -143,7 +143,7 @@ The final shared helper also bounds command-picker reopening while contributions
 restore, retains the sixty-second supervisor deadline and supports later already
 trusted journeys. Its final pinned wrapper/closure derivation passed, exit zero,
 in five seconds at
-`/nix/store/0n91vv8crr0v0qlpgfq86qczva6kw68g-kittens-browser-editor-journey`.
+`/nix/store/0n91vv8crr0v0qlpgfq86qczva6kw68g-overalls-browser-editor-journey`.
 That revision waits for the active terminal textarea before inspecting its
 accessibility tree, enables screen-reader accessibility only when that tree is
 absent, and waits for the tree before checking output. Pinned Python format,
@@ -277,7 +277,7 @@ checked 232 rules and both browser sources' failure, idle, success, collector
 outage, stale, warmup and gap histories. These are rule and state-machine scopes,
 not actual browser or recurring production execution.
 The current exported broker is
-`/nix/store/08cngz71aj6s5zwkbh42sx44wn66pkin-kittens-vscode-web-broker-static-x86_64-unknown-linux-musl-0.1.0`,
+`/nix/store/08cngz71aj6s5zwkbh42sx44wn66pkin-overalls-vscode-web-broker-static-x86_64-unknown-linux-musl-0.1.0`,
 built with the flake's Rust 1.97.1. Its gate passed eight library and six main
 tests and Clippy; one intentionally ignored subprocess fixture is exercised by
 the bounded metadata deadline test. The retained source is byte-identical to the
@@ -291,10 +291,10 @@ initial install check failed because its direct compiled helper lacked the
 package NLS bootstrap. Corrected build seven then passed full client/built-in/media
 TypeScript, REH-web assembly, ELF fixup and signature/origin/socket/framing/CSP
 runtime checks at
-`/nix/store/v8a7xmikdvns613p8fcad75s95fb6vdb-kittens-vscode-web-1.141.0`.
+`/nix/store/v8a7xmikdvns613p8fcad75s95fb6vdb-overalls-vscode-web-1.141.0`.
 Review found its release identity did not yet bind concrete runtime/toolchain
 derivation paths. The corrected build eight passed at
-`/nix/store/fikl416ay8dzf0jn5jcs08xahrrl52ni-kittens-vscode-web-1.141.0`, with
+`/nix/store/fikl416ay8dzf0jn5jcs08xahrrl52ni-overalls-vscode-web-1.141.0`, with
 editor protocol 1 and release
 `ff20286227c40abe269339952b23c5ae768fe6594fb553f63b18272a0c399bfb`.
 Build seven's result is retained for its earlier recipe only. Build eight passed
@@ -327,7 +327,7 @@ derivation; neither is package acceptance. A pinned tiny sandbox reproduction
 passed after adding a build-only Fontconfig/DejaVu closure.
 
 Definitive build fourteen passed, exit zero, at
-`/nix/store/hwi07xkfb4h3vyqci1bpp65bdc7lpz7h-kittens-vscode-web-1.141.0`, with
+`/nix/store/hwi07xkfb4h3vyqci1bpp65bdc7lpz7h-overalls-vscode-web-1.141.0`, with
 official source `2a59476c9bfcb90b3ddc372c36762471b7dfad1c`, editor protocol 1 and
 release `48825ace38095ccad1904c141e498a566f427e7b0772809fa0388af091355ca2`.
 It passed full client/selected extension/media TypeScript with zero errors,
@@ -421,7 +421,7 @@ The earlier 77/75/67-second acceptances retain their prior helper revisions. The
 60-second run covers the final guarded-terminal behavior; subsequent helper edits
 add fixed workbench substages/failure categories only, with no changed wait or
 assertion behavior. Their static gate is recorded in
-`/tmp/kittens-editor-helper-stages-static-final.log`; they have no new native
+`/tmp/overalls-editor-helper-stages-static-final.log`; they have no new native
 execution result at this point.
 The first build-fourteen native run passed broker authority/foreign-peer refusals
 and loaded the actual workbench and extension-worker iframe, then failed because
@@ -546,7 +546,7 @@ idle behavior and independent physical host faults remain separate acceptance.
 Dungarees activated merged revision `0fcab4f6` healthy with zero updater failures.
 Overalls remained on its prior revision: its build stopped before activation when
 `overalls-default-image-id` validated the editor-bearing v3 manifest without
-loading `KittensProtocol.EditorRelease`. Local reproduction is retained in
+loading `OverallsProtocol.EditorRelease`. Local reproduction is retained in
 `1791614504999-3715300-0.jsonl`; the concrete failure is undefined
 `EditorRelease.decode/1`, not a guest or browser failure. Full Mix compilation
 loads that module, so earlier protocol/package/native results did not exercise
@@ -593,7 +593,7 @@ the merged component scopes. Audi's merged full gate also passed 197 checks
 Marshall's subsequent full feature `mix precommit` passed, exit zero, with
 1,424 checks (237 properties, 1,187 tests; two excluded), seed `309061`, in
 1,324.4 seconds (28.8 asynchronous, 1,295.6 synchronous), log
-`/tmp/kittens-editor-ui-marshall-precommit.log`. Its runtime and ADR/HLDD checks,
+`/tmp/overalls-editor-ui-marshall-precommit.log`. Its runtime and ADR/HLDD checks,
 structural contract coverage of 2,686 maintained source files and logging catalog
 check for 164 events passed, together with Node's 19 contract, 32
 browser-state and four metrics checks. Final forced Dialyzer reached actual
@@ -714,21 +714,21 @@ release and missing configuration, stopping with still-running observation,
 writer downgrade, stored-login revocation and safe missing-status rendering.
 The final focused selection passed 58 checks (five properties, 53 tests), seed
 `369052`, in 19.9 seconds with warnings treated as errors, log
-`/tmp/kittens-editor-ui-focused-final.log`. It includes the new one-property/
+`/tmp/overalls-editor-ui-focused-final.log`. It includes the new one-property/
 one-unit capability module, eight workspace cases and existing Editor authority,
 controller and SSH command tests. An initial assertion compared Ash action
 metadata across configure/read; the final regression compares all persisted image
 attributes instead. No implementation refusal was weakened. Compiler and contract
 syntax/19 regression checks passed, as did 164 logging checks. The final forced
 Dialyzer check passed with zero errors, zero skips and zero unnecessary skips in
-38.26 seconds, log `/tmp/kittens-editor-ui-dialyzer-final.log`. The complete
+38.26 seconds, log `/tmp/overalls-editor-ui-dialyzer-final.log`. The complete
 feature Marshall gate subsequently passed as recorded above. These scoped tests do not
 establish native guest isolation, production sign-in or migration.
 Pinned Elixir 1.20.4/OTP 29 formatting and actual FleetTerminal/EditorGuestFixture
 module compilation passed for the root-UID fixture correction. The first forced
 Dialyzer attempt stopped at artifact analysis with unusable Core Erlang for
 existing Marshall BEAM files despite their debug-info chunks; no application type
-finding was reached. Its record is `/tmp/kittens-editor-ui-dialyzer.log`. A complete
+finding was reached. Its record is `/tmp/overalls-editor-ui-dialyzer.log`. A complete
 569-module rebuild corrected the artifact failure without a source workaround;
 the final check reached actual analysis and established Marshall typing acceptance.
 
@@ -788,8 +788,8 @@ failure retain old bytes; postrename parent synchronization failure retains a
 complete new lock and returns a distinct durability-unknown result. CLI results
 contain structured closed outcomes. Focused Ruff formatting/lint and actual ty
 analysis passed; all-files Ruff lint and ty also passed inside devenv. The captured
-test and typing logs are `/tmp/kittens-vscode-extension-maintenance-tests.log` and
-`/tmp/kittens-vscode-extension-maintenance-typing.log`. This is developer execution
+test and typing logs are `/tmp/overalls-vscode-extension-maintenance-tests.log` and
+`/tmp/overalls-vscode-extension-maintenance-typing.log`. This is developer execution
 of the frozen helpers with the exact source-bundled validator, not execution of
 the final installed package or native language extensions.
 
@@ -811,10 +811,10 @@ links, generated option reference, scenario coverage and Ash/deployment views
 checks also passed. Code-contract format/discovery covered 124 CONTRACTS files,
 2,628 native notes, 248 parsed source files and 2,704 maintained source files;
 these are structural results, not semantic or native proof. Captured output is
-`/tmp/kittens-vscode-extension-final-governance.log`.
+`/tmp/overalls-vscode-extension-final-governance.log`.
 
 The final specialized Nix package passed, exit0, in 234 seconds. Output is
-`/nix/store/iz3b2l7iqmdwpnhhi0r94xglf6zd8g59-kittens-vscode-web-1.141.0`, with
+`/nix/store/iz3b2l7iqmdwpnhhi0r94xglf6zd8g59-overalls-vscode-web-1.141.0`, with
 release ID `6bc2197a6d4f5b2183a7274ae2c967eee1f95b4f0ccd10f5a71fbbd472b16e8d`.
 Execution is recorded in
 `/home/ghuntley/.local/state/nix/build-logs/1791629634342-2003989-0.jsonl`.
@@ -827,18 +827,18 @@ journeys, rollout and authenticated production browser acceptance remain separat
 
 The Nix extension-maintenance check then passed in nine seconds using the final
 package's installed validator, running all 19 tests without skips plus Ruff/ty.
-Output is `/nix/store/1r8wiqv3zq1nbngky52ys7xx167mp31j-kittens-vscode-extension-maintenance`,
+Output is `/nix/store/1r8wiqv3zq1nbngky52ys7xx167mp31j-overalls-vscode-extension-maintenance`,
 recorded in `1791629952881-2052915-0.jsonl`. An initial fixture-layout attempt
 failed import ordering because flat copies changed Ruff's first-party discovery;
 the corrected sandbox preserves the repository layout and original configuration.
 The packaged maintenance wrapper's explicit four-pin network check also returned
 structured `outcome: current`, all `changed: false`, exit0, recorded in
-`/tmp/kittens-editor-specialization-updater-wrapper-final.log`. This verifies the
+`/tmp/overalls-editor-specialization-updater-wrapper-final.log`. This verifies the
 actual installed maintenance boundary; native extension activation remains separate.
 
 Marshall's ordinary complete selection passed 1,257 checks (224 properties and
 1,033 tests), with 169 excluded, in 1,015.5 seconds, recorded in
-`/tmp/kittens-editor-specialization-marshall-runtime.log`. Forced typing and the
+`/tmp/overalls-editor-specialization-marshall-runtime.log`. Forced typing and the
 full precommit including distributed execution retain separate scope. The forced
 Dialyzer analysis subsequently passed with zero errors, skips or unnecessary
 skips in 32.67 seconds on this premerge snapshot. These results do not establish
@@ -865,7 +865,7 @@ Neither attached-node counts nor notification locator strictness are established
 causes. The later replay of the split fixture also reached the policy marker;
 marker completion proves only preceding native assertions, not the next browser
 selector. Full native failures remain unresolved pending a passing rerun.
-Replay is recorded in `/tmp/kittens-editor-native-diagnostic-execution.log`; the
+Replay is recorded in `/tmp/overalls-editor-native-diagnostic-execution.log`; the
 private screenshot is excluded. The fixture must assert absence of visible native
 AI UI immediately after each guarded action. Corrected fixture and complete
 passing rerun remain required; this is a failed native attempt with scoped replay
@@ -964,11 +964,11 @@ and all-files Ruff format/lint/annotations and actual ty analysis inside devenv.
 Contract structure/discovery covered 124 CONTRACTS files, 2647 native notes,
 251 parsed source files and 2711 maintained source files. These are scoped
 structural/static results, not runtime acceptance; output is captured in
-`/tmp/kittens-editor-merged-governance.log`.
+`/tmp/overalls-editor-merged-governance.log`.
 
 The merged frozen Nix HLDD gate passed, exit0, in nine seconds, recorded in
 `1791631027438-2173986-0.jsonl` and
-`/tmp/kittens-editor-merged-final-nix-hldd.log`. Its evaluated snapshot was the
+`/tmp/overalls-editor-merged-final-nix-hldd.log`. Its evaluated snapshot was the
 then-uncommitted merge subsequently committed as `058f13d8`; it does not establish
 application or native acceptance.
 
@@ -994,7 +994,7 @@ Marshall's full merged `mix precommit` passed, exit0, with 1,424 checks (237
 properties, 1,187 tests; two excluded), seed505818, in 1,432.7 seconds. Forced
 Dialyzer reached actual analysis and passed with zero errors, skips or unnecessary
 skips in 30.7 seconds. Output is captured in
-`/tmp/kittens-editor-merged-marshall-precommit.log`. This is merged application
+`/tmp/overalls-editor-merged-marshall-precommit.log`. This is merged application
 verification, separate from the earlier 1,257-check premerge ordinary selection
 and from native/production acceptance.
 
@@ -1006,16 +1006,16 @@ the actual package verifier. Its structured result was `outcome: current`, with
 all four extension versions unchanged. This adds default automatic selection
 evidence beyond the earlier explicit-pin check; it does not change the lock,
 Code OSS pins or deployed images. Output is captured in
-`/tmp/kittens-editor-specialization-updater-latest-check.log`.
+`/tmp/overalls-editor-specialization-updater-latest-check.log`.
 
 The corrected per-action standalone native rerun used the frozen snapshot
-`/tmp/kittens-editor-merged-native-fixed.U1LA6t`, subsequently included in
+`/tmp/overalls-editor-merged-native-fixed.U1LA6t`, subsequently included in
 `058f13d8`. It failed, exit1, in 111 seconds, recorded in
 `1791630808836-2155554-0.jsonl`, after passing the original cold terminal/editor/
 webview/browser-extension journey in 33.06 seconds (line2942) and Alice's
 outside-HOME policy stage in 10.64 seconds (lines2944–2993). Bob's HOME defaults
 stage failed before invoking the fixture: lines3075–3083 report an absent
-`Kittens Fixture: Native Policy` command-palette
+`Overalls Fixture: Native Policy` command-palette
 row after a 30-second visibility wait. These are separate scoped observations
 from the earlier unknown assertion in `1791629876989-2040455-0.jsonl`; no cause for
 that earlier failure is established. Subsequent diagnostic discovery found both
@@ -1025,7 +1025,7 @@ controls, version selection and real language diagnostics remain unverified.
 
 The complete guest-family checks then executed an archived exact
 `058f13d8109e3e1b061ec66981367414f1de600c` snapshot
-`/tmp/kittens-editor-058f-fleets.FAv5fB`. Both failed: NixOS in 806 seconds, log
+`/tmp/overalls-editor-058f-fleets.FAv5fB`. Both failed: NixOS in 806 seconds, log
 `1791631239081-2195760-0.jsonl`, and Ubuntu in 1,335 seconds, log
 `1791631239081-2195759-0.jsonl`. Both passed their initial cold editor/terminal/
 custody subtest: NixOS in 35.12 seconds (line30639), Ubuntu in 32.10 seconds
@@ -1064,7 +1064,7 @@ one. These checks establish host activation only.
 
 The subsequent read-only Overalls closure inspection at 12:00:46 UTC belongs to
 current `50021c04`. Its active closure contains the previously built package
-`/nix/store/iz3b2l7iqmdwpnhhi0r94xglf6zd8g59-kittens-vscode-web-1.141.0`.
+`/nix/store/iz3b2l7iqmdwpnhhi0r94xglf6zd8g59-overalls-vscode-web-1.141.0`.
 The installed descriptor/product and both manifest-v3 image declarations agree
 on protocol1, official source `2a59476c9bfcb90b3ddc372c36762471b7dfad1c` and release
 `6bc2197a6d4f5b2183a7274ae2c967eee1f95b4f0ccd10f5a71fbbd472b16e8d`:
@@ -1122,9 +1122,9 @@ user-overridable configuration. This changes first-window and extension-install
 presentation within ADR-0153; it introduces no new architectural decision, audit
 event, authorization, protocol, extension custody or runtime dependency.
 The three-patch application check passed in
-`/tmp/kittens-editor-startup-defaults-patch-check.log`. The actual new package
+`/tmp/overalls-editor-startup-defaults-patch-check.log`. The actual new package
 passed, exit0, in 217 seconds:
-`/nix/store/3zzcx1nf4fkmqnva7x8hvfwssphxvs7q-kittens-vscode-web-1.141.0`, log
+`/nix/store/3zzcx1nf4fkmqnva7x8hvfwssphxvs7q-overalls-vscode-web-1.141.0`, log
 `1791634204167-2491944-0.jsonl`. Its full client TypeScript compilation,
 compiled 128-case policy/service checks, installed Chromium and PTY checks
 passed. Direct installed-product inspection confirmed the two defaults and the
@@ -1132,13 +1132,13 @@ descriptor tuple: protocol 1, official source
 `2a59476c9bfcb90b3ddc372c36762471b7dfad1c`, release
 `73ad577f1102eaf74ba05f0c6dbd310ee8896d852c36860ff4761271fc700fff`.
 The new installed-validator extension-maintenance check passed, exit0, in 28
-seconds: `/nix/store/3ayi9qysxik3f00l560vyppz7hxvr912-kittens-vscode-extension-maintenance`,
+seconds: `/nix/store/3ayi9qysxik3f00l560vyppz7hxvr912-overalls-vscode-extension-maintenance`,
 log `1791634398697-2516469-0.jsonl`.
 
 A separate manual fresh-profile browser smoke passed, exit0, against that exact
 new package. Temporary drivers are
-`/tmp/kittens-startup-absence.sAwi1o/check-runtime.mts` and
-`/tmp/kittens-startup-absence.sAwi1o/check-browser.py`. The isolated private
+`/tmp/overalls-startup-absence.sAwi1o/check-runtime.mts` and
+`/tmp/overalls-startup-absence.sAwi1o/check-browser.py`. The isolated private
 TLS/Unix fixture added `--enable-smoke-test-driver` only for this invocation,
 awaited actual `window.driver.whenWorkbenchRestored()`, then observed
 `.gettingStartedContainer` count 0 and Welcome/Get Started/Walkthrough startup-tab
@@ -1189,15 +1189,15 @@ production persistence protocol, authority, policy or architecture is introduced
 The composed standalone and fleet helper build passed Ruff/ty in six seconds,
 log `1791634949810-2561298-0.jsonl`. Earlier scoped diagnostic probes include the
 fresh Bob five-second delayed palette pass
-(`/tmp/kittens-editor-bob-delay-fresh-execution.log`, line1960) and rediscovery
+(`/tmp/overalls-editor-bob-delay-fresh-execution.log`, line1960) and rediscovery
 execution of HOME/outside-HOME Policy, all seven guarded AI actions in each, and
 explicit direnv approval
-(`/tmp/kittens-editor-bob-rediscovery-execution.log`, lines2041–2101).
+(`/tmp/overalls-editor-bob-rediscovery-execution.log`, lines2041–2101).
 The latter then reached the real EditorConfig editor but failed at its old
 Disable label. These observations support a registration-readiness hypothesis;
 they do not establish the cause of every historical failure. The subsequent
 workbench-reload probe passed actual native Disabled:
-`/tmp/kittens-editor-bob-workbench-reload-execution.log`, line2127
+`/tmp/overalls-editor-bob-workbench-reload-execution.log`, line2127
 (`Bob rediscovery probe disabled passed`), after HOME/outside-HOME/AI/direnv
 assertions, then failed Overrides. Fixture investigation identified EACCES on
 personal `Machine/settings.json`: both native fixture seed paths copied the
@@ -1209,7 +1209,7 @@ diagnostics remain intact, with no new event emission or production configuratio
 change.
 
 The earlier full standalone/NixOS/Ubuntu snapshot
-`/tmp/kittens-editor-final-native-fleets-289hxd2l` has separate outcomes.
+`/tmp/overalls-editor-final-native-fleets-289hxd2l` has separate outcomes.
 Standalone failed in 85 seconds, log `1791635022542-2569792-0.jsonl`, during
 fixture nginx startup: the newly introduced exact-origin map could not fit its
 long keys in the default hash bucket. The fixture now sets
@@ -1222,7 +1222,7 @@ checks follow the final mode/hash-bucket-corrected freeze separately. Full
 acceptance remains unrecorded, and no new cross-device or production persistence
 claim follows from the source review, scoped disablement pass or helper build.
 
-The next corrected snapshot `/tmp/kittens-editor-corrected-native-fleets-fls4bybc`
+The next corrected snapshot `/tmp/overalls-editor-corrected-native-fleets-fls4bybc`
 also failed standalone in 80 seconds, log `1791635372071-2632879-0.jsonl`:
 the raw hash-bucket directive duplicated the NixOS module's generated directive.
 The final frozen fixture uses `services.nginx.mapHashBucketSize = 128` and removes
@@ -1264,8 +1264,8 @@ preferred follow-up.
 The corrected NixOS fleet passed, exit 0, in 805 seconds total build plus native
 execution. The corrected Ubuntu fleet passed, exit 0, in 829 seconds total build
 plus native execution. Both use the immutable snapshot
-`/tmp/kittens-editor-corrected-native-fleets-fls4bybc` and startup package
-`/nix/store/3zzcx1nf4fkmqnva7x8hvfwssphxvs7q-kittens-vscode-web-1.141.0`, release
+`/tmp/overalls-editor-corrected-native-fleets-fls4bybc` and startup package
+`/nix/store/3zzcx1nf4fkmqnva7x8hvfwssphxvs7q-overalls-vscode-web-1.141.0`, release
 `73ad577f1102eaf74ba05f0c6dbd310ee8896d852c36860ff4761271fc700fff`.
 Their logs are in `/home/ghuntley/.local/state/nix/build-logs/`:
 `1791635372070-2632880-0.jsonl` for NixOS, run 44514, and
@@ -1314,7 +1314,7 @@ classification, visibility, uninstall or authority change. No candidate executio
 is claimed here.
 
 The scoped writable-settings Bob diagnostic passed, exit 0, in
-`/tmp/kittens-editor-bob-writable-settings-execution.log`. It uses an older
+`/tmp/overalls-editor-bob-writable-settings-execution.log`. It uses an older
 immutable VM/package and current helpers with temporary mode 0600 matching the
 corrected fixture. HOME, outside-HOME, explicit direnv, disable/reload and user
 server overrides passed. This is scoped browser-profile/personal-control evidence,
@@ -1323,9 +1323,9 @@ the older unknown policy assertion or establish cross-device disable state.
 
 Actual project-server language execution remains failed. The initial scoped
 run 39454, exit 1, is retained in
-`/tmp/kittens-editor-scoped-real-languages-execution.log`: Rust's success notice
+`/tmp/overalls-editor-scoped-real-languages-execution.log`: Rust's success notice
 was absent and Elixir was not run. The independent both-stage run 5169, exit 1,
-is retained in `/tmp/kittens-editor-scoped-language-artifacts-execution.log`;
+is retained in `/tmp/overalls-editor-scoped-language-artifacts-execution.log`;
 Rust and Elixir browser statuses were false at physical lines 1947 and 2023.
 Private backend artifacts remain outside the repository.
 
@@ -1342,13 +1342,13 @@ installers.
 
 A subsequent scratch fixture-only repair produced scoped Elixir success in
 run 8791: `Scoped actual elixir browser status zero: True` at physical line 1981
-of `/tmp/kittens-editor-fixed-scoped-language-artifacts-execution.log`. The
+of `/tmp/overalls-editor-fixed-scoped-language-artifacts-execution.log`. The
 native subtest took 9.77 seconds and then checked the marker's Bob UID and absence
 of Bob's installer cache. Its original immutable driver is
-`/nix/store/q6f5i91b0iq47hwc6ihap5rir76fsa7a-nixos-test-driver-kittens-vscode-web-native`,
+`/nix/store/q6f5i91b0iq47hwc6ihap5rir76fsa7a-nixos-test-driver-overalls-vscode-web-native`,
 with configuration/artifacts under
-`/tmp/kittens-editor-fixed-scoped-language-artifacts-yc45bsyj` from the first
-`/tmp/kittens-editor-language-closure-candidate.96KrZu` build. That driver build
+`/tmp/overalls-editor-fixed-scoped-language-artifacts-yc45bsyj` from the first
+`/tmp/overalls-editor-language-closure-candidate.96KrZu` build. That driver build
 passed in 41 seconds, log `1791637149162-2864829-0.jsonl`.
 The pinned immutable Hex/MIX_HOME fixture closure removes the clean-home Hex
 prompt without changing production defaults. The same scoped run still exited 1:
@@ -1359,10 +1359,10 @@ Earlier language failures retain their original scope.
 
 The final scoped scratch language run 29678 subsequently passed both actual
 servers, exit 0, with a 36.61-second driver script. Its log is
-`/tmp/kittens-editor-rust-code-observations-execution.log`, immutable driver
-`/nix/store/4r5909mdhvpqb5fwgrcqwbc4w8sbmx0v-nixos-test-driver-kittens-vscode-web-native`,
+`/tmp/overalls-editor-rust-code-observations-execution.log`, immutable driver
+`/nix/store/4r5909mdhvpqb5fwgrcqwbc4w8sbmx0v-nixos-test-driver-overalls-vscode-web-native`,
 and configuration/artifacts
-`/tmp/kittens-editor-rust-code-observations-5wdr9cwl/`. It uses the corrected
+`/tmp/overalls-editor-rust-code-observations-5wdr9cwl/`. It uses the corrected
 private candidate source named above and old startup package 3zz, not final 7fdh.
 Rust and Elixir browser statuses are true at physical lines 1913 and 1951, with
 both-stage settlement at 1963. Both personal marker UID 200002 checks ran, and
@@ -1382,7 +1382,7 @@ failures 0 and failure null; active system matched lastHealthySystem and
 `/run/current-system`. Selected actual-role services were active/running and
 both updaters were idle. The postdeployment fetch/rebase completed cleanly on
 that same checkpoint before this follow-up source change.
-The retained `/tmp/kittens-editor-startup-63a-production-20261010.json` is
+The retained `/tmp/overalls-editor-startup-63a-production-20261010.json` is
 explicitly a structured transcription of captured allowlisted tool output,
 not an original redirected raw log. It records each observation's timestamp
 and scope.
@@ -1416,7 +1416,7 @@ recorders/exporters cannot manufacture browser coverage.
 
 The required Marshall precommit attempt at the startup checkpoint failed before
 tests because the worktree PostgreSQL was not running; its captured output is
-`/tmp/kittens-editor-startup-latest-marshall-precommit.log`. The supported devenv
+`/tmp/overalls-editor-startup-latest-marshall-precommit.log`. The supported devenv
 PostgreSQL startup subsequently reached readiness. A final full gate must run
 after reviewed source/receipt freeze; no new passing startup-checkpoint full gate
 is inferred from database readiness or earlier historical passes.
@@ -1451,7 +1451,7 @@ remains empty. These are source review conclusions, separate from actual
 Workbench execution.
 
 The new actual package passed, exit 0, in 226 seconds:
-`/nix/store/3bc7nmbs9lsh0j7ilsy7ypicvzfhvn57-kittens-vscode-web-1.141.0`.
+`/nix/store/3bc7nmbs9lsh0j7ilsy7ypicvzfhvn57-overalls-vscode-web-1.141.0`.
 Log `1791637585887-2919312-0.jsonl` has terminal completion status 0. It ran full
 client TypeScript, the strict typed membership checker against the actual compiled
 helper, existing policy/service checks, and installed Chromium/PTY runtime.
@@ -1472,7 +1472,7 @@ production activation evidence does not validate this new release.
 
 The final identity build additionally binds the new membership checker content
 hash into release inputs. It passed, exit 0, in 236 seconds at
-`/nix/store/7fdh6cfldywpb1rhvdibvlmnxwscp5jd-kittens-vscode-web-1.141.0`, log
+`/nix/store/7fdh6cfldywpb1rhvdibvlmnxwscp5jd-overalls-vscode-web-1.141.0`, log
 `1791637930578-2962122-0.jsonl`. Independent descriptor/product inspection
 confirmed protocol 1, the same official source, release
 `7d2415fecdd209b1cad571f2fd95a22fa4829f5fa4ed50e8688bd08d25f2d9a6`, exact
@@ -1482,7 +1482,7 @@ PTY checks passed. The earlier 8efe build retains only its historical identity.
 
 The final installed-validator maintenance derivation passed in seven seconds,
 exit 0, at
-`/nix/store/x15yw8i6nycvhp8hxpq1nrs65bji4gg3-kittens-vscode-extension-maintenance`,
+`/nix/store/x15yw8i6nycvhp8hxpq1nrs65bji4gg3-overalls-vscode-extension-maintenance`,
 log `1791638208201-3013005-0.jsonl`. Both final guest image builds passed in
 99 seconds, exit 0, log `1791638302262-3019810-0.jsonl`:
 
@@ -1494,7 +1494,7 @@ log `1791638208201-3013005-0.jsonl`. Both final guest image builds passed in
 Direct manifests are v3 and match protocol 1, source 2a594 and release 7d2415. Image
 build/identity evidence does not establish final-release native fleet runtime,
 production activation or an upgrade of retained guest disks. The final full
-standalone snapshot `/tmp/kittens-editor-final-package-native-zc02xyjx` used
+standalone snapshot `/tmp/overalls-editor-final-package-native-zc02xyjx` used
 package 7fdh in run 28874, log `1791638451076-3032388-0.jsonl`. It failed after
 116 seconds at the lower-import refusal oracle. The actual CLI printed the
 specific expected downgrade refusal at logical line 3129, while `guest.fail`
@@ -1509,7 +1509,7 @@ the existing System-removal refusal without changing its success-status contract
 No product or package source changed. Reviewed final default.nix SHA256 is
 `288e4c0fea15aeb4c771031a4b568986966f00b5c35787d29f531e5efe2dc64f`.
 The corrected immutable snapshot
-`/tmp/kittens-editor-final-captured-native-c829s4f5` launched as run 70655,
+`/tmp/overalls-editor-final-captured-native-c829s4f5` launched as run 70655,
 log `1791638687980-3055020-0.jsonl`; no passing result is claimed at this boundary.
 
 Source/contract review of the five frozen fixture files found no substantive
@@ -1528,7 +1528,7 @@ source files; syntax/discovery do not replace the semantic review or runtime sco
 
 All 36 ordinary preference cases passed against the actual compiled
 `shouldAutoUpdateExtension` method in the frozen scratch fixture
-`/tmp/kittens-manual-update-design.R1u4KW/check-workbench-methods.mts`.
+`/tmp/overalls-manual-update-design.R1u4KW/check-workbench-methods.mts`.
 For each managed ID, automatic updates off without opt-ins refused; on permitted;
 pinning, per-ID/global/workspace disablement refused; explicit ID/publisher opt-ins
 while off permitted, and an explicit negative ID overrode a publisher opt-in.
@@ -1555,8 +1555,8 @@ remain separate. This scratch evidence adds no production browser claim.
 
 The corrected final-package standalone native check passed, exit 0, in 342 seconds
 total build plus execution. Its driver script took 323.30 seconds. Run 70655 used
-immutable snapshot `/tmp/kittens-editor-final-captured-native-c829s4f5`, driver
-`/nix/store/vy7r67bazjbc67lb2r176xcihgh4rxz9-nixos-test-driver-kittens-vscode-web-native`
+immutable snapshot `/tmp/overalls-editor-final-captured-native-c829s4f5`, driver
+`/nix/store/vy7r67bazjbc67lb2r176xcihgh4rxz9-nixos-test-driver-overalls-vscode-web-native`
 and final package 7fdh/release 7d2415. Log
 `/home/ghuntley/.local/state/nix/build-logs/1791638687980-3055020-0.jsonl`
 has independently inspected terminal completion status 0.
@@ -1588,7 +1588,7 @@ idle/retirement, multi-writer and fault histories remain separate.
 The initial reviewed documentation gates passed: ADR structure/links for 152
 decisions, conflict markers across 4275 files, HLDD receipts/options/coverage/views
 and Nix HLDD in 24 seconds, log `1791638882167-3097750-0.jsonl`. All-files prek
-then passed, exit 0, in `/tmp/kittens-editor-followup-final-prek.log`, including
+then passed, exit 0, in `/tmp/overalls-editor-followup-final-prek.log`, including
 Events catalogs, HLDD, Ruff formatting/linting and ty. These gate records precede
 the final native-outcome documentation reconciliation. Concurrent devenv startup
 raced local GC-root/load-exports setup on initial attempts; serial retries passed.
@@ -1623,7 +1623,7 @@ records establishes a complete merged component/native or production rerun.
 
 One concrete incoming contract mismatch remains outside the editor behavior:
 `transfer-journal-migration-never-blocks` in
-TransferJournalMigration (`lilly/lib/lilly/control/transfer_journal_migration.ex` at kittens revision `9fe1e493`, repository deleted)
+TransferJournalMigration (`lilly/lib/lilly/control/transfer_journal_migration.ex` at overalls revision `9fe1e493`, repository deleted)
 requires refusing scans above 16,384 candidates, but `pool_candidates/1` enumerates
 all candidate paths and reads legacy markers before `migrate/1` checks their count.
 The current limit bounds rewrites, not scanning. This is a bounded-scan gap with

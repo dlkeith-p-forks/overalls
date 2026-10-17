@@ -111,7 +111,7 @@ reverted; the restored file passes the full focused suite again.
 - Mutant runs: both mutants fired at the intended oracles and were reverted.
 - Native: `nix build .#checks.x86_64-linux.credential-self-service-browser
   --no-link` — **credential-self-service-browser passed**: derivation
-  `/nix/store/82ibbanij84p8w0xdhq6nl2cqifld41l-vm-test-run-kittens-credential-self-service-browser`;
+  `/nix/store/82ibbanij84p8w0xdhq6nl2cqifld41l-vm-test-run-overalls-credential-self-service-browser`;
   browser journey 28.26 seconds inside a 58.01-second VM script with 0.47-second
   cleanup. Three earlier attempts failed before acceptance and remain visible in
   this branch's history: Chrome permits one internal virtual authenticator per
@@ -123,7 +123,7 @@ reverted; the restored file passes the full focused suite again.
 - Repo governance: `elixir scripts/check_adrs.exs`, `scripts/check_hldd.exs`,
   `scripts/hldd_coverage.exs --check`, `scripts/hldd_views.exs --check`,
   `prek run --all-files` and `nix build .#checks.x86_64-linux.hldd --no-link`
-  (`/nix/store/pxs88gmvscln7bhdc2wyp4x5aj7h8scy-kittens-hldd-check`, 11 seconds).
+  (`/nix/store/pxs88gmvscln7bhdc2wyp4x5aj7h8scy-overalls-hldd-check`, 11 seconds).
   Receipts recorded per source group.
 - The first full-gate attempt passed all 1203 tests but was rejected by
   `--warnings-as-errors` on unused bindings in the new history property;

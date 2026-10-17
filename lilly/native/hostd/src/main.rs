@@ -52,12 +52,35 @@ fn run() -> u8 {
         return EXIT_SETUP;
     };
     let utilities = Table::resolve(&std::env::var_os("PATH").unwrap_or_default());
+    // Detached ingress bridges (ADR-0187) need Audi's uid, which is dynamic,
+    // and systemd-run to place each bridge in its own scope.
+    let ingress = match &options.ingress {
+        None => None,
+        Some((user, slice)) => {
+            let Some(peer_uid) = std::fs::read("/etc/passwd")
+                .ok()
+                .and_then(|passwd| lilly_hostd::passwd_uid(&passwd, user))
+            else {
+                return EXIT_SETUP;
+            };
+            let Some(launcher) = utilities.get(lilly_hostd::utilities::Utility::SystemdRun) else {
+                return EXIT_SETUP;
+            };
+            Some(lilly_hostd::ingress::Config {
+                peer_uid,
+                slice: slice.clone(),
+                cgroup: std::path::Path::new("/sys/fs/cgroup").join(slice),
+                launcher: Some(launcher.to_path_buf()),
+            })
+        }
+    };
     let socket_roots = options.socket_roots.clone();
     let pools = options.pools();
     let mut daemon = Daemon::new(leases, utilities, custody, peer_uid, options.peer_cgroups);
     daemon.service_uid = service_uid;
     daemon.socket_roots = socket_roots;
     daemon.vm_tools = options.vm_tools.clone();
+    daemon.ingress = ingress;
     daemon.roots = options.roots.clone();
     daemon.pool_datasets = options.pool_datasets.clone();
     daemon.pools = pools;

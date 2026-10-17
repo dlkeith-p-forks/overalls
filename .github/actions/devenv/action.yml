@@ -1,0 +1,90 @@
+name: devenv
+description: Mount caches from the Namespace cache volume, install Nix, configure Cachix and optionally install the locked devenv CLI.
+
+inputs:
+  cachix-auth-token:
+    description: Token for pushing to the overalls Cachix cache.
+    required: false
+    default: ""
+  cache-paths:
+    description: Extra workspace-relative or absolute paths to keep on the cache volume.
+    required: false
+    default: ""
+  system-features:
+    description: Nix system features this runner provides (machine tests add kvm and nested-kvm).
+    required: false
+    default: nixos-test benchmark big-parallel
+  install-devenv:
+    description: Whether to install the devenv CLI.
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    # The cache mount must run after checkout (which wipes the workspace) and
+    # before Nix is installed. `nix` mode keeps /nix and ~/.cache/nix (flake, tarball and
+    # evaluation caches) on the volume; `npm` cannot be used because npm comes
+    # from the devenv shell, so its cache directory is listed explicitly.
+    # Cargo builds run outside Nix (for example Enrico's test helper builds
+    # native/git-owner), so every crate's target directory and the Cargo
+    # registry and git checkouts stay on the volume. Nix-built crates are
+    # cached by the Nix store and Cachix instead.
+    - name: List Rust target directories
+      id: rust
+      shell: bash
+      run: |
+        {
+          echo "targets<<EOF"
+          git ls-files -z -- '*Cargo.toml' ':!:**/vendor/**' | xargs -0 -n1 dirname | sort -u | sed 's#$#/target#'
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
+
+    - name: Mount caches from cache volume
+      uses: namespacelabs/nscloud-cache-action@v1
+      with:
+        cache: nix
+        path: |
+          ~/.npm
+          ~/.cache/devenv
+          ~/.cargo/registry
+          ~/.cargo/git
+          ${{ steps.rust.outputs.targets }}
+          ${{ inputs.cache-paths }}
+
+    # Builds MUST be sandboxed: without it the builder's /bin/sh is the runner
+    # container's dash, which broke lilly-hostd's helper-script tests. The
+    # sandbox needs a privileged runner container
+    # (`<profile>;container.privileged=true`); with fallback disabled an
+    # unprivileged runner fails loudly instead of building unsandboxed.
+    - name: Install Nix
+      uses: cachix/install-nix-action@9aaadd8b85853f67fcdf488e6a4e9efa94ee96e2
+      with:
+        extra_nix_config: |
+          access-tokens = github.com=${{ github.token }}
+          sandbox = true
+          sandbox-fallback = false
+          system-features = ${{ inputs.system-features }}
+          max-jobs = auto
+          cores = 0
+
+    # Push in the post-job step rather than through the cachix daemon: the
+    # daemon holds a read lock on the local Nix database for the whole job,
+    # which deadlocks devenv when it needs the write lock.
+    - name: Configure Cachix
+      uses: cachix/cachix-action@ee79db531bfb851a7cf47035057b7cca88d26449
+      with:
+        name: overalls
+        extraPullNames: devenv
+        authToken: ${{ inputs.cachix-auth-token }}
+        useDaemon: false
+
+    # Install the CLI from the devenv revision pinned in devenv.lock so it
+    # matches the modules it evaluates; devenv.cachix.org serves the build.
+    - name: Install devenv
+      if: inputs.install-devenv == 'true'
+      shell: bash
+      run: |
+        rev=$(jq -r '.nodes.devenv.locked.rev' devenv.lock)
+        nix profile add "github:cachix/devenv/$rev"
+        devenv version

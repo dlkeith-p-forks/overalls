@@ -15,7 +15,7 @@ nested-KVM or Marshall fleet result is implied by the capability table.
 ## Native agent sets and kernel identity
 
 FreeBSD and OmniOS (`illumos` on the wire) use the explicit v6/v3 native image
-contract from [ADR-0186](repo:docs/architecture/decisions/0186-native-kernel-provenance-and-admission.md).
+contract from [ADR-0188](repo:docs/architecture/decisions/0188-native-kernel-provenance-and-admission.md).
 Their bundle carries kernel provenance and the native guest package names the
 kernel probe, agent, flush, readiness, trust, workspace and SSH helper
 daemons. Lilly sends no credentials and does not publish readiness until the

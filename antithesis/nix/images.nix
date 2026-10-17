@@ -174,19 +174,6 @@ let
     meta.platforms = [ "x86_64-linux" ];
   };
   pythonWheels = import ./python-wheels.nix { inherit pkgs; };
-  # @cc [owner:ghuntley,label:verification] python-runtime-catalog
-  # The Python source catalog MUST include current and future workload runtime
-  # modules while excluding tests and non-Python inputs.
-  pythonCatalog = pkgs.runCommand "overalls-antithesis-python-catalog" {
-    nativeBuildInputs = [ pkgs.coreutils pkgs.findutils ];
-  } ''
-    mkdir -p "$out"
-    cd ${../workload}
-    find . -type f -name '*.py' ! -name 'test_*.py' \
-      ! -path '*/tests/*' -print | while IFS= read -r module; do
-      install -Dm0644 "$module" "$out/$module"
-    done
-  '';
   controlPeerTools = pkgs.buildEnv {
     name = "overalls-antithesis-control-peer-tools";
     paths = [ packages.toolchain.elixir packages.toolchain.erlang ];
@@ -256,9 +243,13 @@ let
       extraRoots = [ sdkWriter guestPackages.hostTools pkgs.pkgsStatic.firecracker ];
       extraLinks."opt/antithesis/sdk_writer" = "${sdkWriter}/bin/sdk_writer";
     };
+    # The Python assertion catalog is not a Nix input: ``selection.py stage``
+    # writes the selection-scoped tree under antithesis/build/selected-test and
+    # the Dockerfile copies it to /opt/antithesis/catalog, so the hosted
+    # instrumentor declares only assertions reachable from the selected commands.
     workload = closure.mkContext {
       name = "workload";
-      extraRoots = [ pkgs.python313 pythonWheels pythonCatalog pkgs.git controlPeerTools controlPeerProtocol pkgs.restic backupModules traceSpool ];
+      extraRoots = [ pkgs.python313 pythonWheels pkgs.git controlPeerTools controlPeerProtocol pkgs.restic backupModules traceSpool ];
       extraLinks = {
         "opt/overalls/python" = toString pkgs.python313;
         "opt/overalls/python-deps" = toString pythonWheels;
@@ -267,7 +258,6 @@ let
         "opt/overalls/restic" = toString pkgs.restic;
         "opt/overalls/backup-modules" = toString backupModules;
         "opt/overalls/trace-spool" = toString traceSpool;
-        "opt/antithesis/catalog" = toString pythonCatalog;
       };
     };
     origin = closure.mkContext {

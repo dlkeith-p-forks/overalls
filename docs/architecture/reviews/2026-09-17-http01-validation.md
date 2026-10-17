@@ -43,12 +43,12 @@ Existing unrelated relocation work in the working tree is preserved.
   and source-specific firewall restrictions worked, publication retried a failed
   reload, and standalone loopback issuance required no AWS credentials. The final
   run with the corrected DNS answer-rotation counter also passed in 187.85 seconds
-  (`yah46vq5jx12s5za222z416fwwyirzj6-vm-test-run-kittens-acme-http01.drv`).
+  (`yah46vq5jx12s5za222z416fwwyirzj6-vm-test-run-overalls-acme-http01.drv`).
 - Route 53 regression passed in 184.77 seconds
-  (`ajfvrq3dvm4dvv0aazwwas11mrnl4kr4-vm-test-run-kittens-acme-route53.drv`),
+  (`ajfvrq3dvm4dvv0aazwwas11mrnl4kr4-vm-test-run-overalls-acme-route53.drv`),
   including invalid certificate rejection, cached startup and reload recovery.
 - Service-role regression passed in 127.12 seconds
-  (`ijg67i4sn7dzh4mbnfa5k4pg9rxn850w-vm-test-run-kittens-service-roles.drv`).
+  (`ijg67i4sn7dzh4mbnfa5k4pg9rxn850w-vm-test-run-overalls-service-roles.drv`).
 - Full flake evaluation passed using an unstaged source snapshot. The pinned
   ADR checker and contract format/coverage gates passed. Contract review traced
   challenge selection, credential delivery, fixed responder destinations,

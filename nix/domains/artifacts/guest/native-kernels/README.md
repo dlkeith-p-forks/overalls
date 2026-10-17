@@ -23,4 +23,4 @@ kernel and SDK builds, target-native image assembly, and recorded boot, CID,
 malformed-input, reset, isolation and recovery tests. No native runtime support
 follows from a passing receipt build or Nix evaluation.
 
-ADR-0186 governs the native kernel and admission requirements.
+ADR-0188 governs the native kernel and admission requirements.

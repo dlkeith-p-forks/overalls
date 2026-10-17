@@ -1,11 +1,11 @@
-# Kittens developer console redesign
+# Overalls developer console redesign
 
 ## Scope and decisions
 
 The redesign preserves ADR-0018, ADR-0022 and ADR-0049. It adds an authenticated
 `/machines/new` action before the parameterized detail route and redirects `/`
 to `/machines`. There are no new dependencies, migrations, backend APIs or domain
-boundaries. Kittens uses the existing Phoenix/Tailwind bundles with shared console
+boundaries. Overalls uses the existing Phoenix/Tailwind bundles with shared console
 navigation, controls and neutral light/dark tokens. Public HTML documentation stays
 outside the session pipeline; its appearance preference uses browser storage.
 

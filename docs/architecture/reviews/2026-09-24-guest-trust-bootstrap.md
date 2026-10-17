@@ -27,16 +27,16 @@ durable audit model; ADR-0110's SSH roster still determines SSH authorization.
   failure. The [executor](../../../lilly/lib/lilly/vm/executor.ex) withholds
   `running` until this receipt is committed.
 - The [lifecycle resource](../../../lilly/lib/lilly/lifecycle/guest_trust.ex),
-  closed protocol state list (`protocol/lib/kittens_protocol/lifecycle_audit.ex` at kittens revision `a99f74f0`, repository deleted),
-  outbox (`lilly/lib/lilly/lifecycle/outbox.ex` at kittens revision `a99f74f0`, repository deleted) and
+  closed protocol state list (`protocol/lib/overalls_protocol/lifecycle_audit.ex` at overalls revision `a99f74f0`, repository deleted),
+  outbox (`lilly/lib/lilly/lifecycle/outbox.ex` at overalls revision `a99f74f0`, repository deleted) and
   [Marshall projection](../../../marshall/lib/marshall/compute/lifecycle_log.ex)
   provide durable, authenticated audit and catalogued diagnostics without
   certificate contents, command arguments or terminal bytes.
 - Native NixOS fleet runs reached `vm.trust_installed` and then found
   that the unprivileged SSH callback could not traverse the installed bundle.
   `tempfile` created its directory with mode `0700`; the guest agent also owns
-  `/var/lib/kittens` with mode `0700`, so public trust cannot live below it.
-  The receiver now uses an independent `/var/lib/kittens-trust` state directory,
+  `/var/lib/overalls` with mode `0700`, so public trust cannot live below it.
+  The receiver now uses an independent `/var/lib/overalls-trust` state directory,
   publishes the public directory and PEM with modes `0755` and `0644`, and
   repairs old modes on retry. A Rust regression test checks those modes. The
   fleet machine fixture checks readability as the SSH callback user.

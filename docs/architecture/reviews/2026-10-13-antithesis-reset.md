@@ -60,7 +60,7 @@ formatting, reviewed logging and forced Dialyzer with zero errors and zero skips
 Root ADR, handbook receipt/reference, generated option/scenario/view, conflict
 marker and code-contract checks passed; the contract tooling's 19 regression
 tests also passed. `nix build .#checks.x86_64-linux.hldd --no-link` passed with
-output `/nix/store/zkxmw9dh7wb9vyd1rs8h932kafh04z4i-kittens-hldd-check`.
+output `/nix/store/zkxmw9dh7wb9vyd1rs8h932kafh04z4i-overalls-hldd-check`.
 Marshall's full `mix precommit` passed 1,459 cases (238 properties, 1,221 tests;
 four excluded by the normal configuration) in 1,441.0 seconds, followed by forced
 Dialyzer with zero errors, zero skips and zero unnecessary skips. The saved full

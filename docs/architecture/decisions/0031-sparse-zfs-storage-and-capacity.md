@@ -183,7 +183,7 @@ fields refuses rollback while any ZFS pool remains enrolled.
 observations to that immutable identity under the existing host-row lock.
 [Budget arithmetic](../../../marshall/lib/marshall/compute/budget.ex) applies the
 enrolled logical cap separately from physical availability and retained credits;
-history (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted) keeps their
+history (`marshall/lib/marshall/telemetry/observations.ex` at overalls revision `a99f74f0`, repository deleted) keeps their
 units and provenance separate. Existing
 [VM reservation costs](../../../protocol/lib/overalls_protocol/vm_shape.ex) already
 charge the requested disk size and retain the 64 MiB VMM memory allowance.
@@ -243,7 +243,7 @@ Malformed output, missing pools, utility failure/timeouts or an import change
 leave all native rates unknown without discarding otherwise valid dataset
 capacity. I/O columns never replace effective dataset availability or owned
 physical credit. Capacity has its own source/scope fields. The
-telemetry mapper (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted)
+telemetry mapper (`marshall/lib/marshall/telemetry/observations.ex` at overalls revision `a99f74f0`, repository deleted)
 retains both scopes and the import identity; an explicitly configured maximum
 must use the matching I/O scope. No ceiling is inferred and admission arithmetic
 is unchanged. [Parser properties](../../../lilly/test/host/zfs_io_test.exs), the
@@ -272,7 +272,7 @@ The [NixOS Lilly module](../../../nix/domains/system/lilly.nix) now accepts expl
 native identity and logical budget and supplies the host's matching ZFS package.
 It requires an existing correctly mounted parent; enabling the service does not
 format disks, create/import pools or change properties. The separate
-mirrored installation module (`nix/domains/system/mirrored-zfs.nix` at kittens revision `16e8dbe4`, repository deleted) declares
+mirrored installation module (`nix/domains/system/mirrored-zfs.nix` at overalls revision `16e8dbe4`, repository deleted) declares
 the root mirror and a dedicated Lilly parent with LZ4, no reservations and an
 explicit quota. Its [firmware installation check](../../../nix/verification/tests/machines/mirrored-installation/default.nix)
 passed actual property and surviving-disk checks. Exported disk images cleanly

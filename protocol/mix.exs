@@ -8,6 +8,7 @@ defmodule OverallsProtocol.MixProject do
       elixir: "== 1.20.4",
       test_ignore_filters: ["test/support/control_close_peer.ex"],
       deps: [
+        {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
         {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
         {:stream_data, "~> 1.4", only: :test}
       ],
@@ -23,6 +24,7 @@ defmodule OverallsProtocol.MixProject do
           "deps.unlock --unused",
           "format --check-formatted",
           "test --warnings-as-errors",
+          "covenant.check --no-run",
           "dialyzer"
         ]
       ]

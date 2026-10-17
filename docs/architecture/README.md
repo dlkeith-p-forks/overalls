@@ -53,7 +53,7 @@ winget's pinned Git for Windows and the shared agent executor; images are
 Desktop Experience with pinned winget packages and WSL features (ADR-0173). The fleet proofs and the image
 staging are pending.
 
-[ADR-0186](decisions/0186-native-kernel-provenance-and-admission.md) records the
+[ADR-0188](decisions/0188-native-kernel-provenance-and-admission.md) records the
 cross-OS contract behind these detailed choices. Arch Linux and AlmaLinux retain
 the version-4 Linux image shape with distinct deterministic markers. Native
 FreeBSD and OmniOS use explicit version-6 manifests and version-3 bundles;
@@ -480,7 +480,7 @@ records the structural gate, the Playwright probe in both themes and the gaps.
 Overview entry and complete workspace/control-room navigation under the Overalls
 name together with the historical Nekomo visual system, now replaced by
 ADR-0161. Existing domain authority, machine routes and terminal capabilities
-remained in place. The [redesign review](reviews/2026-09-24-kittens-nekomo-redesign.md)
+remained in place. The [redesign review](reviews/2026-09-24-overalls-nekomo-redesign.md)
 records the application, browser, type and contract gates at that revision.
 
 [ADR-0112](decisions/0112-zfs-namespace-delete.md) extends Lilly's fenced ZFS
@@ -1370,7 +1370,7 @@ random base64 prefixes from becoming Erlang options.
 | Compute lifecycle | VM intent, placements, durable operations and bounded recovery | [ADR-0004](decisions/0004-lilly-and-vm-actors.md), [ADR-0037](decisions/0037-workload-placement-and-relocation.md) |
 | Hosts and scheduling | Architecture, inventory, freshness, atomic reservations | [ADR-0006](decisions/0006-capacity-accounting.md) |
 | Independent observability | Typed service diagnostics, durable private custody, infrastructure export and Grafana/Tempo views | [ADR-0149](decisions/0149-independent-observability.md) |
-| Execution | Privileged Lilly, Firecracker, persistent local disks, profile networking | [ADR-0004](decisions/0004-lilly-and-vm-actors.md), [ADR-0007](decisions/0007-profile-networking.md) |
+| Execution | Unprivileged Lilly behind lilly-hostd, Firecracker, persistent local disks, profile networking, guest ingress bridges that survive host-service restarts | [ADR-0004](decisions/0004-lilly-and-vm-actors.md), [ADR-0007](decisions/0007-profile-networking.md), [ADR-0182](decisions/0182-unprivileged-lilly-beam.md), [ADR-0184](decisions/0184-lilly-owns-every-socket.md), [ADR-0187](decisions/0187-detached-ingress-bridges.md) |
 | Coordination | Shared database and AshOban work across Marshall instances | [ADR-0003](decisions/0003-control-plane-coordination.md) |
 | Assurance | Audit, archival, encryption, logs and verification | [ADR-0002](decisions/0002-elixir-ash-and-types.md), [ADR-0009](decisions/0009-assurance-and-testing.md) |
 | Host deployment and TLS | NixOS roles, reproducible packages/images, verified proxy backends and HTTP-01 peer routing | [ADR-0038](decisions/0038-http01-validation-and-peer-routing.md) |
@@ -1531,3 +1531,7 @@ Linux property/mutation evidence is recorded in the
 [transfer review](reviews/2026-10-05-transfer-stream-adopted-children.md). Exact
 source identity after integration does not establish full consumer, bounded
 escape cleanup or physical storage acceptance; those remain open.
+
+## Contract verification
+
+ADR-0186 records the Covenant test-only contract layer used by all Elixir applications. Covenant obligations and tests provide deterministic executable evidence while existing ADR, HLDD, native and integration records remain authoritative for deployment and isolation guarantees.

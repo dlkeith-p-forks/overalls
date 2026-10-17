@@ -11,6 +11,7 @@ defmodule Overalls.Diagnostics.MixProject do
       version: "0.1.0",
       elixir: "== 1.20.4",
       deps: [
+        {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
         {:opentelemetry, "~> 1.7"},
         {:opentelemetry_api, "~> 1.5"},
         {:opentelemetry_exporter, "~> 1.11"},
@@ -38,6 +39,7 @@ defmodule Overalls.Diagnostics.MixProject do
           "schema.check",
           "format --check-formatted",
           "test --warnings-as-errors",
+          "covenant.check --no-run",
           "dialyzer --force-check"
         ]
       ]

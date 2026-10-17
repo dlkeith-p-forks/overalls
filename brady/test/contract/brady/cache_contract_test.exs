@@ -1,0 +1,43 @@
+defmodule BradyCacheContractTest do
+  use Covenant.Case, component: "brady.cache"
+
+  @tag obligation: "brady.cache.I1"
+  test "declared modules compile and remain loadable" do
+    modules = [
+      Brady.Attribution,
+      Brady.Cache,
+      Brady.Cache.Archive,
+      Brady.Cache.Budget,
+      Brady.Cache.Policy,
+      Brady.Cache.Pressure,
+      Brady.Cache.Range,
+      Brady.Cache.Recovery,
+      Brady.Cache.Runtime,
+      Brady.Cache.Store
+    ]
+
+    assert Enum.all?(modules, &Code.ensure_loaded?/1)
+  end
+
+  @tag obligation: "brady.cache.I2"
+  test "range policy routes malformed and selects bounded ranges" do
+    h = fn pairs -> Enum.map(pairs, fn {k, v} -> {k, v} end) end
+    assert Brady.Cache.Range.select(h.([{"range", "bytes=bad"}]), [], 10) == :upstream
+    assert Brady.Cache.Range.select(h.([{"range", "bytes=2-4"}]), [], 10) == {:partial, 2, 3}
+  end
+
+  @tag obligation: "brady.cache.I3"
+  test "range validators fail closed and unsatisfiable ranges are explicit" do
+    assert Brady.Cache.Range.select(
+             [{"range", "bytes=0-1"}, {"if-range", "\"stale\""}],
+             [{"etag", "\"v1\""}],
+             10
+           ) == :upstream
+
+    assert Brady.Cache.Range.select([{"range", "bytes=99-100"}], [], 10) == :unsatisfiable
+    assert Brady.Cache.Range.select([], [], 10) == :full
+    assert Brady.Cache.Range.select([{"range", "bytes=0-"}], [], 0) == :unsatisfiable
+    assert Brady.Cache.Range.select([{"range", "bytes=5-2"}], [], 10) == :upstream
+    assert Brady.Cache.Range.select([{"range", String.duplicate("x", 129)}], [], 10) == :upstream
+  end
+end

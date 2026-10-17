@@ -86,8 +86,8 @@ handbook evidence text and one fleet argument-list restoration.
 - `nix build .#checks.x86_64-linux.default-oss-creation.defaultOssBrowser` →
   `/nix/store/8352qagnp2lfv7sll8xaaiswhss9v29q-default-oss-browser-typed` (4 s).
 - Native `default-oss-creation` under the campaign HEAVY lock: drv
-  `/nix/store/pij0g1wm6g6yjrph9cpbd5mn7gkp6q6p-vm-test-run-kittens-default-oss-creation.drv`,
-  output `/nix/store/85j44gam1pr1f1qs2hr1z0az2b32b6bv-vm-test-run-kittens-default-oss-creation`,
+  `/nix/store/pij0g1wm6g6yjrph9cpbd5mn7gkp6q6p-vm-test-run-overalls-default-oss-creation.drv`,
+  output `/nix/store/85j44gam1pr1f1qs2hr1z0az2b32b6bv-vm-test-run-overalls-default-oss-creation`,
   script 427.63 s, cleanup 2.98 s, nix wrapper 479 s, and
   native default-OSS journey passed in 427.63 seconds.
   The four new/extended subtests ran

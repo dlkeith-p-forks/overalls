@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Native backup cleanup inventory
 
-Inspected checkout: `/home/ghuntley/src/kittens-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a` on 2026-10-13. This is a read-only source inventory. No Nix evaluation/build, VM execution, type gate, repository edit, production credential inspection or external reference access was performed. Historical passing execution below is the checked-in review's report, not a fresh run or proof for this HEAD.
+Inspected checkout: `/home/ghuntley/src/overalls-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a` on 2026-10-13. This is a read-only source inventory. No Nix evaluation/build, VM execution, type gate, repository edit, production credential inspection or external reference access was performed. Historical passing execution below is the checked-in review's report, not a fresh run or proof for this HEAD.
 
 ## Instructions, contracts and architectural scope
 

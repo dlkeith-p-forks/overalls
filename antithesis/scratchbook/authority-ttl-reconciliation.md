@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Audi authority TTL reconciliation
 
-Date: 2026-10-13. Scope: `/home/ghuntley/src/kittens-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`, current selected sources. This is read-only research; no tracked repository files were edited. Existing staged retirement work was left intact, and retired Antithesis contents were not read. This artifact is outside the repository. The code-contracts and architecture-review workflows were applied. An attempted independent ADR sub-agent could not start because the shared thread limit was reached.
+Date: 2026-10-13. Scope: `/home/ghuntley/src/overalls-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`, current selected sources. This is read-only research; no tracked repository files were edited. Existing staged retirement work was left intact, and retired Antithesis contents were not read. This artifact is outside the repository. The code-contracts and architecture-review workflows were applied. An attempted independent ADR sub-agent could not start because the shared thread limit was reached.
 
 ## Conclusion
 

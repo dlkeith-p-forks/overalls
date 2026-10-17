@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Native database-recovery inventory — 2026-10-13
 
-Source root: `/home/ghuntley/src/kittens-antithesis-reset` at HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`, with an existing reset working diff. Paths below are relative to that root. This is a read-only inventory of the six exported database client-loss checks. No repository edits, builds, native reruns, production credential reads or retired `antithesis/` harness reads were performed. Historical execution claims are attributed to committed documentation and retain their original captured scope; this inventory adds no runtime acceptance.
+Source root: `/home/ghuntley/src/overalls-antithesis-reset` at HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a`, with an existing reset working diff. Paths below are relative to that root. This is a read-only inventory of the six exported database client-loss checks. No repository edits, builds, native reruns, production credential reads or retired `antithesis/` harness reads were performed. Historical execution claims are attributed to committed documentation and retain their original captured scope; this inventory adds no runtime acceptance.
 
 Architecture assessment before and after review: no architecture impact from the inventory itself. The substantive obligations are ADR-0126 (client-loss recovery), inherited ADR-0030/0033 machine and deployment verification, ADR-0029 database durability/quarantine, ADR-0048's qualified nonredundant deployment, and ADR-0070 host-recovery boundaries. An accepted/implemented ADR is separate from execution evidence. No repository/HLDD change is made by this out-of-repository report.
 

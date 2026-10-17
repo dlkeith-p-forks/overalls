@@ -694,23 +694,90 @@ with subtest("Overalls CLI opens an interactive Firecracker Bash shell with Star
         timeout=30,
     )
 
-with subtest("a lilly-hostd restart ends live guest SSH and new sessions reconnect"):
-    # @cc [owner:ghuntley,label:verification;isolation] journey-hostd-restart-ends-bridges
-    # Each ingress bridge is a child of the lilly-hostd session that started it
-    # (ADR-0184), so restarting hostd MUST end a live guest SSH session and leave
-    # no lilly-ingress-bridge process; the guest MUST keep its boot and a new
-    # session MUST reach it through the restarted hostd.
-    bridges = "pgrep -u lilly -f '/lilly-ingress-bridge 3 4'"
+with subtest("live guest SSH survives lilly-hostd and Lilly restarts until its bridge is fenced"):
+    # @cc [owner:ghuntley,label:verification;isolation] journey-hostd-restart-keeps-bridges
+    # ADR-0187: guest SSH runs in a detached lilly-ingress-bridge, as lilly, in
+    # its own lilly-ingress-<key>.scope in lilly_ingress.slice. Restarting
+    # lilly-hostd (which restarts Lilly through BindsTo) and then Lilly alone
+    # MUST keep the live session: the same bridge process, a new hostd, bytes
+    # still crossing both ways, and the restarted Lilly re-adopting the bridge
+    # past its 30 s adoption grace. A bridge whose record is gone MUST be ended
+    # by the next Lilly start, ending the session; the guest keeps its boot and
+    # a new session reconnects.
+    bridges = "pgrep -n -u lilly -f '/lilly-ingress-bridge --detached 5 3 4'"
+    records = "/run/lilly-ingress/audi.sock.bridges"
+    session_pid = 'kill -0 "$(cat /tmp/live-guest-ssh.pid)"'
+
+    def echoed(line: str) -> None:
+        client.succeed(f"printf '%s\\n' {shlex.quote(line)} >/tmp/live-in")
+        client.wait_until_succeeds(
+            f"grep -qx {shlex.quote('echo:' + line)} /tmp/live-guest-ssh.out", timeout=60
+        )
+
+    def adopted_since(epoch: str) -> None:
+        host.wait_until_succeeds(
+            f"journalctl -u lilly.service -o cat --since @{epoch} "
+            '| grep -E \'"event":"lilly.ingress_bridges_adopted".*"adopting":[1-9]\'',
+            timeout=120,
+        )
+
+    client.succeed("rm -f /tmp/live-in /tmp/live-guest-ssh.out && mkfifo /tmp/live-in")
+    # A sleeping writer keeps the FIFO open, so ssh's stdin never reaches EOF.
+    # It detaches stdio first and opens the FIFO read-write, which never blocks
+    # on Linux; a blocking write-open would hold the driver's output pipe.
+    client.succeed(
+        "sleep 3600 >/dev/null 2>&1 </dev/null 3<>/tmp/live-in & echo $! >/tmp/live-in-holder.pid"
+    )
+    echo_loop = (
+        "printf 'live-session-open\\n'; "
+        'while IFS= read -r line; do printf "echo:%s\\n" "$line"; done'
+    )
     client.succeed(
         ssh_environment
-        + shlex.join([*ssh_args, "printf live-session-open; exec sleep 600"])
-        + " >/tmp/live-guest-ssh.out 2>&1 </dev/null & echo $! >/tmp/live-guest-ssh.pid"
+        + shlex.join([*ssh_args, echo_loop])
+        + " </tmp/live-in >/tmp/live-guest-ssh.out 2>&1 & echo $! >/tmp/live-guest-ssh.pid"
     )
-    client.wait_until_succeeds("grep -q live-session-open /tmp/live-guest-ssh.out", timeout=120)
+    client.wait_until_succeeds("grep -qx live-session-open /tmp/live-guest-ssh.out", timeout=120)
     host.wait_until_succeeds(bridges, timeout=30)
+    bridge_pid = host.succeed(bridges).strip()
+    cgroup = host.succeed(f"cat /proc/{bridge_pid}/cgroup").strip()
+    assert re.fullmatch(r"0::/lilly_ingress\.slice/lilly-ingress-[0-9a-f]{32}\.scope", cgroup), (
+        cgroup
+    )
+    key = cgroup.rsplit("lilly-ingress-", 1)[1].removesuffix(".scope")
+    host.succeed(f"test -s {records}/{key}")
+    echoed("before-restart")
+
+    hostd_before = host.succeed("systemctl show -P MainPID lilly-hostd.service").strip()
+    epoch = host.succeed("date +%s").strip()
     host.succeed("systemctl restart lilly-hostd.service")
-    client.wait_until_succeeds('! kill -0 "$(cat /tmp/live-guest-ssh.pid)"', timeout=60)
-    host.wait_until_fails(bridges, timeout=30)
+    host.wait_until_succeeds(
+        "systemctl is-active lilly-hostd.service && systemctl is-active lilly.service", timeout=120
+    )
+    assert host.succeed("systemctl show -P MainPID lilly-hostd.service").strip() != hostd_before
+    host.succeed(f"kill -0 {bridge_pid}")
+    client.succeed(session_pid)
+    echoed("after-hostd-restart")
+    adopted_since(epoch)
+    # Past the adoption grace the keeper guards the bridge rather than ending it.
+    client.succeed("sleep 35")
+    client.succeed(session_pid)
+    echoed("after-adoption-grace")
+
+    epoch = host.succeed("date +%s").strip()
+    host.succeed("systemctl restart lilly.service")
+    host.wait_until_succeeds("systemctl is-active lilly.service", timeout=120)
+    adopted_since(epoch)
+    host.succeed(f"kill -0 {bridge_pid}")
+    echoed("after-lilly-restart")
+
+    # Fence: a bridge without a record is ended by the next Lilly start.
+    host.succeed(f"rm {records}/{key}")
+    host.succeed("systemctl restart lilly.service")
+    client.wait_until_succeeds(f"! {session_pid}", timeout=120)
+    host.wait_until_fails(f"kill -0 {bridge_pid}", timeout=60)
+    host.wait_until_fails(f"systemctl is-active lilly-ingress-{key}.scope", timeout=60)
+    client.succeed('kill "$(cat /tmp/live-in-holder.pid)" || true')
     host.succeed("systemctl is-active lilly.service")
     assert (
         client.wait_until_succeeds(
@@ -719,7 +786,6 @@ with subtest("a lilly-hostd restart ends live guest SSH and new sessions reconne
         ).strip()
         == guest_boot
     )
-    host.wait_until_fails(bridges, timeout=30)
 
 with subtest("email change preserves native identity, home, SSH configuration and running boot"):
     # @cc [owner:ghuntley,label:verification;security] journey-mailbox-identity-continuity

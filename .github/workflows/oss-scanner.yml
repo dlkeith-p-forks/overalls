@@ -1,0 +1,49 @@
+name: "project glasswing oss scanner"
+
+# Builds the Project Glasswing (Anthropic OSS Scanner) offline-analysis image
+# from .oss-scanner/Dockerfile and, on trunk, publishes it to the workspace's
+# private Namespace registry.
+on:
+  push:
+    branches: [trunk]
+  pull_request:
+    paths:
+      - .oss-scanner/**
+      - .github/workflows/oss-scanner.yml
+  workflow_dispatch:
+
+concurrency:
+  group: oss-scanner-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  image:
+    runs-on: namespace-profile-cached-amd64-xl
+    timeout-minutes: 120
+    steps:
+      # A plain full clone: the image must contain a self-contained .git, not
+      # one that borrows objects from a runner-side mirror.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Namespace remote builders
+        uses: namespacelabs/nscloud-setup-buildx-action@v0
+
+      - name: Build and publish
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: .oss-scanner/Dockerfile
+          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/trunk' }}
+          tags: |
+            ${{ env.NSC_CONTAINER_REGISTRY }}/overalls-oss-scanner:${{ github.sha }}
+            ${{ env.NSC_CONTAINER_REGISTRY }}/overalls-oss-scanner:trunk
+          # Every stage's layers are cached in the registry (mode=max), on top
+          # of the remote builder's own cache; pull requests read but never
+          # write the shared cache.
+          cache-from: type=registry,ref=${{ env.NSC_CONTAINER_REGISTRY }}/overalls-oss-scanner:buildcache
+          cache-to: ${{ (github.event_name != 'pull_request' && github.ref == 'refs/heads/trunk') && format('type=registry,ref={0}/overalls-oss-scanner:buildcache,mode=max,image-manifest=true', env.NSC_CONTAINER_REGISTRY) || '' }}

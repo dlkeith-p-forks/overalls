@@ -89,8 +89,10 @@ defmodule Lilly.Application do
 
   # @cc [owner:ghuntley,label:recovery] ingress-runtime-supervision
   # The real connector MUST start after Runtime under rest-for-one supervision,
-  # so loss of Runtime closes streams and restarts admission. The backend MUST
-  # remain the local execution guardian, never a configuration-selected module.
+  # so loss of Runtime closes relayed streams and restarts admission; detached
+  # bridges (ADR-0187) outlive it and the restarted connector re-adopts or ends
+  # them. The backend MUST remain the local execution guardian, never a
+  # configuration-selected module.
   @spec ingress_children(Lilly.Control.Config.t()) :: [{module(), keyword()}]
   def ingress_children(%{execution: %{network: %{ingress: false}}}), do: []
   def ingress_children(%{ingress: nil}), do: []

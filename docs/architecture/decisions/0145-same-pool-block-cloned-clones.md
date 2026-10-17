@@ -108,9 +108,9 @@ remain prerequisites; a diagnostic ACK confers no adoption or cleanup authority.
 ## Implementation evidence
 
 - **Historical Release A (diagnostic readers):** the
-  protocol allowlist (`protocol/lib/overalls_protocol/lifecycle_audit.ex` at kittens revision `a99f74f0`, repository deleted),
-  its test (`protocol/test/lifecycle_audit_test.exs` at kittens revision `a99f74f0`, repository deleted) and the
-  Marshall mapping (`marshall/lib/marshall/compute/lifecycle_log.ex` at kittens revision `a99f74f0`, repository deleted).
+  protocol allowlist (`protocol/lib/overalls_protocol/lifecycle_audit.ex` at overalls revision `a99f74f0`, repository deleted),
+  its test (`protocol/test/lifecycle_audit_test.exs` at overalls revision `a99f74f0`, repository deleted) and the
+  Marshall mapping (`marshall/lib/marshall/compute/lifecycle_log.ex` at overalls revision `a99f74f0`, repository deleted).
 - **Release B prerequisites:**
   - the [snapshot source mode](../../../lilly/native/image-copy/src/lib.rs), with Hegel properties;
   - [capture extraction](../../../lilly/lib/lilly/transfer/source_snapshots.ex).

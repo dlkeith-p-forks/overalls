@@ -35,7 +35,7 @@ evidence text only. No production runtime, schema, protocol or permission change
 
 - The `auto-update` machine gains the out-of-band drift reconvergence leg, run
   natively: full driver rebuild passed in 89 seconds
-  (`/nix/store/513wxp9mizimp283s76ggrvcndbfi1mx-vm-test-run-kittens-auto-update`;
+  (`/nix/store/513wxp9mizimp283s76ggrvcndbfi1mx-vm-test-run-overalls-auto-update`;
   build-log `1790590305169-2930010-0`), including the new leg's own 10.82s.
 - The migration-unit idempotence property sits in the same check's Python
   evaluation (`unit.py`).

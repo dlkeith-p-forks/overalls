@@ -67,10 +67,10 @@ Real provider deployment and actual operator recovery decryption require the
 corresponding deployment inputs. No production credentials are used in tests.
 
 The passing expanded test is
-`/nix/store/22299ydw7cpa99ql176y2msgbycx42dr-vm-test-run-kittens-enrollment-operator.drv`.
+`/nix/store/22299ydw7cpa99ql176y2msgbycx42dr-vm-test-run-overalls-enrollment-operator.drv`.
 The release artifacts used were
-`/nix/store/bk9h9cb9ak30m3pjdfy98myfn49id73a-kittens-marshall-0.1.0` and
-`/nix/store/cna8l5c22ra7gkdg17j0i8lbfnnsy8h1-kittens-lilly-0.1.0`.
+`/nix/store/bk9h9cb9ak30m3pjdfy98myfn49id73a-overalls-marshall-0.1.0` and
+`/nix/store/cna8l5c22ra7gkdg17j0i8lbfnnsy8h1-overalls-lilly-0.1.0`.
 
 ## Commit isolation
 

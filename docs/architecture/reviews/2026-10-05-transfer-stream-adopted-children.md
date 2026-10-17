@@ -39,17 +39,17 @@ package exit1,67seconds, archive `1791220728655-2864070-0.jsonl`.
 Expanded two-role package passed exit0,95seconds, archive
 `1791221894853-3668113-0.jsonl`: three library properties and eight integration
 checks passed in1.01seconds, eight ignored executable fixtures; rustfmt/all-target
-Clippy passed. Log `/tmp/kittens-transfer-stream-escaped-package3.log`.
+Clippy passed. Log `/tmp/overalls-transfer-stream-escaped-package3.log`.
 Targeted selector reversion was falsified with unchanged property source in
 0.07seconds: roleProducer/count1, helper success0 and escaped_alive=true.
 The selected package exited1 in81seconds, archive
 `1791222047033-3794061-0.jsonl`, log
-`/tmp/kittens-transfer-stream-selector-mutant.log`. Patch SHA256
+`/tmp/overalls-transfer-stream-selector-mutant.log`. Patch SHA256
 `4c2965ef0f5585ded30702ab2e0ceb14ed0caccb6ab0e24abbfa1707c6cec4db`.
 The first failing producer case stops the mutant property; this is not a separately
 observed consumer mutant counterexample. Both roles passed the unmutated baseline.
 Temporary source/tests were restored and compared byte-for-byte, then retained
-at `/tmp/kittens-transfer-selector-restored-xfmwjm5o`. No mutant is in the user tree.
+at `/tmp/overalls-transfer-selector-restored-xfmwjm5o`. No mutant is in the user tree.
 
 ## Remaining verification
 
@@ -82,14 +82,14 @@ fixed real five-second deadline histories account for this runtime. No custody
 assertion failure was reported. Only this property's TooSlow check is exempted;
 all other health checks, every original assertion and all deadlines remain.
 Failed native source patch is retained at
-`/tmp/kittens-transfer-stream-escaped-failures-package4-failed.patch`.
+`/tmp/overalls-transfer-stream-escaped-failures-package4-failed.patch`.
 A corrected package execution remains required; this red run is not a pass.
 
 ### Corrected failure extension native result
 
 Corrected extension package passed exit0,138seconds, archive
 `1791224119862-888167-0.jsonl`, log
-`/tmp/kittens-transfer-stream-escaped-failures-package5.log`. Three library
+`/tmp/overalls-transfer-stream-escaped-failures-package5.log`. Three library
 properties and nine integration checks passed; eight executable fixtures were
 ignored. Integration took45.73seconds. Rustfmt/all-target Clippy passed.
 Both completion and failure properties ran; all fixed both-side EOF/deadline/
@@ -108,7 +108,7 @@ failed3.64seconds; package exited1 in83seconds, archive
 `1791228049561-3146991-0.jsonl`. Patch SHA256 remains
 `4c2965ef0f5585ded30702ab2e0ceb14ed0caccb6ab0e24abbfa1707c6cec4db`.
 Source/tests were restored and compared byte-for-byte, then the inert fork was
-retained at `/tmp/kittens-transfer-failure-selector-restored-c7Z2p35m`.
+retained at `/tmp/overalls-transfer-failure-selector-restored-c7Z2p35m`.
 Only this first producer/EOF history is credited. The failure property now has
 local targeted attribution; consumer/final gates, newer-main integration and
 physical storage/SSH/hosted boundaries remain open. Self-review only.
@@ -117,7 +117,7 @@ physical storage/SSH/hosted boundaries remain open. Self-review only.
 
 The owned native source/test diff passes `git apply --check` against the
 origin98aff42a-merged control worktree. Temporary patch
-`/tmp/kittens-transfer-custody-integration.patch` has SHA256
+`/tmp/overalls-transfer-custody-integration.patch` has SHA256
 `641e0a9c1e795f16c187a0ee287bd79b72c34809fccb2d170f7163dea6cd130f`.
 No native source was applied during the merged Marshall gate. Patch compatibility
 does not establish exact-helper-PATH Lilly execution or merged native acceptance;
@@ -163,7 +163,7 @@ Full MIX_ENV=test mix precommit completed exit0 with the exact verified native
 helpers first on PATH. Tests:506checks (95properties,411tests),seed712576,
 130.8seconds. Forced Dialyzer:15.06seconds,zero errors,skips or unnecessary
 skips; PLT rebuild79.18seconds. Log
-`/tmp/kittens-mail-native-origin-integrated-lilly-precommit2.log`.
+`/tmp/overalls-mail-native-origin-integrated-lilly-precommit2.log`.
 The earlier pending statements describe their checkpoints. Other consumers,
 current handbook receipts, evaluated publication and physical/hosted acceptance
 remain open. This component gate does not establish native fleet isolation.

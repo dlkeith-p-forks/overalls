@@ -64,6 +64,23 @@ defmodule Overalls.HLDDTest do
     end
   end
 
+  test "devenv and flake pin updates do not enter the reviewed inventory", %{root: root} do
+    write(root, "source.ex", "reviewed source")
+    write(root, "devenv.lock", "pinned inputs")
+    write(root, "flake.lock", "pinned inputs")
+    write(root, "devenv.yaml", "inputs")
+    write(root, "flake.nix", "inputs")
+    assert HLDDGate.files(root) == ["devenv.yaml", "flake.nix", "source.ex"]
+  end
+
+  test "CI workflows and scripts do not enter the reviewed inventory", %{root: root} do
+    write(root, "source.ex", "reviewed source")
+    write(root, ".github/workflows/ci.yml", "workflow")
+    write(root, ".github/scripts/select-checks.sh", "script")
+    write(root, "nested/.github/kept.ex", "nested source")
+    assert HLDDGate.files(root) == ["nested/.github/kept.ex", "source.ex"]
+  end
+
   test "Git and packaged inventories agree on generated history and ignored directories", %{
     root: root
   } do

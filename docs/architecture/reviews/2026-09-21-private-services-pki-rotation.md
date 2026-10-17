@@ -15,7 +15,7 @@ Overalls and Dungarees receive only the shared leaf chain and private key.
   chain and key. A new P-256 root, constrained intermediate and exact-name leaf
   were generated with the reviewed offline bootstrap. The public root and all
   three ciphertexts now carry the same 20/10/10-year hierarchy.
-- **Resolved, medium: no atomic payload-update command.** `kittens-secrets
+- **Resolved, medium: no atomic payload-update command.** `overalls-secrets
   encrypt` exclusively created documents and `rekey` changed recipients without
   changing payloads. Removing a committed ciphertext before re-encryption would
   create a publication gap. Explicit `encrypt --replace` now snapshots the old
@@ -27,7 +27,7 @@ Overalls and Dungarees receive only the shared leaf chain and private key.
 
 ## Verification
 
-- `kittens-secrets check` validated all 27 document recipient sets after rotation.
+- `overalls-secrets check` validated all 27 document recipient sets after rotation.
 - Recovery-identity decryption proved the recovery document exactly matched the
   generated root/intermediate payload and both host documents preserved their
   existing Audi credential.

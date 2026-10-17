@@ -85,6 +85,7 @@ defmodule Lilly.VM.Actor do
                  System.find_executable("lilly-vm-watch")
                end),
              deferred: nil,
+             settled: nil,
              active: false,
              steady: 0,
              last_reconcile_at: nil,
@@ -338,14 +339,15 @@ defmodule Lilly.VM.Actor do
               state
               | delete_attempts: 0,
                 next_delete_attempt_at: nil,
-                deferred: nil
+                deferred: nil,
+                settled: nil
             }
             |> Map.put(:steady, 0)
             |> watch(:stop)
             |> liveness(:revoke),
           else: state
 
-      if not is_nil(state.task) or
+      if not is_nil(state.task) or settled?(state, command) or
            (command.kind == :delete and is_integer(state.next_delete_attempt_at) and
               System.monotonic_time(:millisecond) < state.next_delete_attempt_at) do
         {:noreply, state}
@@ -398,6 +400,25 @@ defmodule Lilly.VM.Actor do
     end
   end
 
+  # @cc [owner:ghuntley,label:capacity;recovery;concurrency] failed-outcome-settles-command
+  # Once this actor process has durably recorded (or identically re-recorded)
+  # a failed outcome for the exact newest stored command, schedule/1 MUST NOT
+  # start executor work for that command again: no tick, unchanged reconcile
+  # cast or completed-run follow-up may re-run the failure fence. A different
+  # stored command (newer generation, epoch, start or delete) MUST drive at
+  # once. A replacement actor MUST drive the command once before settling, so
+  # readiness still rests on an observation made by the current runtime and an
+  # actor restart cannot loop. Journal contention, retry results and unknown
+  # outcomes MUST NOT settle.
+  @spec settled?(map(), map()) :: boolean()
+  defp settled?(%{settled: command, journal: %{outcome: %{state: :failed} = outcome}}, command),
+    do:
+      outcome.operation_id == command.id and outcome.placement_id == command.placement_id and
+        outcome.execution_epoch == command.execution_epoch and
+        outcome.generation == command.generation
+
+  defp settled?(_state, _command), do: false
+
   # @cc [owner:ghuntley,label:recovery;observability] actor-stop-events-precede-otp-report
   # vm.actor_stopped MUST be emitted before {:stop, reason, state} for invalid
   # journals, unavailable actors, invalid executor results and failed journal
@@ -426,7 +447,8 @@ defmodule Lilly.VM.Actor do
             do: state.steady + 1,
             else: 0
 
-        state = %{state | steady: steady}
+        settled = if observation.state == :failed, do: command
+        state = %{state | steady: steady, settled: settled}
 
         # An identical observation leaves the journal unchanged: nothing new
         # was recorded, so there is nothing to announce.
@@ -533,8 +555,8 @@ defmodule Lilly.VM.Actor do
   # @cc [owner:ghuntley,label:observability;recovery] failure-event-once-per-recorded-outcome
   # vm.failed MUST be emitted only after the durable journal records a new
   # failed outcome for the current command, so a failed placement whose
-  # desired state is still running and is re-observed every tick reports once
-  # per distinct failed outcome (placement, epoch, generation, reason and
+  # desired state is still running and is re-observed (once per actor process,
+  # see failed-outcome-settles-command) reports once per distinct failed outcome (placement, epoch, generation, reason and
   # facts), not once per reconcile. A recovered outcome, a new failure reason or
   # a newer command's failure MUST emit again; an actor restart over the same
   # journaled failure MUST NOT. Only identifiers and the closed reason atom.
@@ -698,7 +720,8 @@ defmodule Lilly.VM.Actor do
   defp watched_proof?(watch, target), do: Watch.watching?(watch, target)
 
   # @cc [owner:ghuntley,label:capacity;recovery;concurrency] steady-state-reconcile-backstop
-  # A tick or unchanged reconcile cast MAY skip starting a reconcile only while
+  # Apart from a settled failed outcome (failed-outcome-settles-command), a
+  # tick or unchanged reconcile cast MAY skip starting a reconcile only while
   # the actor is steady: at least three consecutive reconciles of the current
   # command recorded an unchanged running outcome, an armed watcher holds the
   # exact VMM of the current proof, and the last reconcile started under 10 s

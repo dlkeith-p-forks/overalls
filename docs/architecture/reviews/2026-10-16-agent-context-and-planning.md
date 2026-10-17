@@ -73,7 +73,7 @@ compaction state preservation, Responses accounting classification, closed
 context/native-support/incomplete/cancelled errors, the 1 MiB response cap and
 delivery retry/loss without provider replay. Failure usage retains provided
 fields while absent usage remains unknown. The captured result is
-`/tmp/kittens-agent-context-ziggy-focused.log`. This is local transport evidence,
+`/tmp/overalls-agent-context-ziggy-focused.log`. This is local transport evidence,
 not native guest, physical fleet or live provider acceptance.
 
 Guest Windows library, agent executor and SSH roster cross-target compilation

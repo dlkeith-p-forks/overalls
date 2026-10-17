@@ -11,11 +11,24 @@ The default `control-core` selection includes only the `control`,
 templates. The latter three each contain one terminal singleton command. The
 separate `repository-origin` profile selects four repository commands with the
 origin and Enrico overlays; `access-smtp` selects three access commands with
-the SMTP overlay. Each requires an independent fixture readiness probe before
-the sole bootstrap owner signals setup completion. Stage the chosen command
-selection immediately before building its workload image. Guest, recorder,
+the SMTP overlay; `recorder-host` selects the three recorder commands with the
+TCG recorder VM overlay. Each requires an independent fixture readiness probe
+before the sole bootstrap owner signals setup completion. Stage the chosen
+command selection immediately before building its workload image. Guest,
 backup and satellite commands remain unselected until each has a complete
 profile and readiness gate.
+
+Staging also writes the hosted Python assertion catalog. The workload image
+copies `selected-test/catalog/` to `/opt/antithesis/catalog`, and that tree
+holds exactly the manifest's runtime dependencies (the traced imports of the
+selected commands and bootstrap, including executed package initializers) as
+one `workload` module. The Antithesis Python instrumentor therefore declares
+every assertion reachable from the selected commands, including ones a run
+never evaluates, and no assertion from an unselected package; a zero-hit
+property in a hosted report is a selected-scope gap, not an artifact of an
+unselected template. Test commands carry no SDK assertions of their own, and
+staging refuses one that does. The catalog has a single top-level entry on
+purpose: the Python SDK registers one instrumentation module per process.
 
 After the selected Nix contexts are built and staged, stage the commands, build
 Compose images, then materialize the selected graph as a standalone Snouty
@@ -41,8 +54,8 @@ python3.13 antithesis/verification/campaign.py reserve \
 
 For an optional profile, pass its JSON file to `selection.py stage` with
 `--selection`, use the same file for `selection.py materialize`, then pass
-`--selection repository-origin` or
-`--selection access-smtp` to `identity.py`. Render and build the exact ordered
+`--selection repository-origin`, `--selection access-smtp` or
+`--selection recorder-host` to `identity.py`. Render and build the exact ordered
 Compose files listed in that profile. All campaign operations use the one
 canonical ledger path. Point `snouty validate` or the launch skill at the
 materialized `antithesis/runtime/configs/<profile>` directory only after its
@@ -97,7 +110,9 @@ while retaining all attempt expenditure. A reserved attempt stays spent after a 
 launch or crash. Use `abandoned --attempt-id ID` only for a reservation known
 never to have reached remote submission. Once a run ID is submitted, retain its
 concurrency slot until triage records completion, including an `unknown` result
-if the run ended without a usable verdict. The global admission gate allows up to five active attempts so independent hosted profiles can be smoke-tested concurrently; the per-profile baseline, mutant and identity rules remain unchanged.
+if the run ended without a usable verdict. Completion is bound to the identity recorded on the
+attempt, so it remains possible after source drift; a green result updates the
+config baseline only while that config is still initialized at the attempt's identity. The global admission gate allows up to five active attempts so independent hosted profiles can be smoke-tested concurrently; the per-profile baseline, mutant and identity rules remain unchanged.
 
 For a mutant, reserve with `--purpose mutant --property-message 'literal SDK
 message'`. Only one mutant may remain between selection and submission; at most
@@ -128,7 +143,9 @@ patch bytes and identities; it does not prove the patch's semantic effect.
 The source inventory intentionally includes compiled `marshall/priv/hldd` and
 the executable `antithesis/test` tree. The frozen assertion roster is scoped to
 selected commands, their traced runtime imports, and compiled selected services;
-the standalone assertion scan remains a full source discovery report. It excludes research scratchbooks, root
+the standalone assertion scan remains a full source discovery report. The freeze
+checks that the staged catalog tree equals those runtime imports byte for byte
+and that the workload image copied it unchanged. It excludes research scratchbooks, root
 architecture reviews, execution ledgers and local build outputs. It records
 file bytes and modes plus symlink targets. Staged Nix closure trees, context
 identities and actual Nix root derivation/requisite queries are captured, along

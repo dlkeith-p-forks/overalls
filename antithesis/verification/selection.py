@@ -13,7 +13,10 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
+from assertions import python_calls
 from identity import (
+    IMAGE_CATALOG_ROOT,
+    STAGED_CATALOG,
     command,
     file_record,
     images,
@@ -36,6 +39,7 @@ from schema import (
 
 TEMPLATE = re.compile(r"^[a-z][a-z0-9_]*$")
 CONFIG = re.compile(r"^[a-z][a-z0-9-]*$")
+REVIEWED_PROFILES = frozenset({"control-core", "repository-origin", "access-smtp", "recorder-host"})
 COMMAND = re.compile(r"^(?:serial_driver|singleton_driver|first|helper)_[a-z][a-z0-9_]*\.py$")
 
 
@@ -159,7 +163,25 @@ def module_dependencies(path: Path, workload: Path, packages: tuple[str, ...]) -
     return found
 
 
+def package_initializers(module: Path, workload: Path) -> tuple[Path, ...]:
+    """Ancestor ``__init__.py`` files that importing ``module`` also executes."""
+    parts = module.relative_to(workload).parts[:-1]
+    if module.name == "__init__.py":
+        parts = parts[:-1]
+    return tuple(
+        initializer
+        for depth in range(1, len(parts) + 1)
+        if (initializer := workload.joinpath(*parts[:depth], "__init__.py")).is_file()
+    )
+
+
 def selected_files(root: Path, selection: Selection) -> tuple[list[Path], list[Path]]:
+    """@cc [owner:ghuntley,label:verification] thin-selected-commands
+    A selected test command or helper MUST NOT contain an SDK assertion
+    callsite of its own; assertions live in traced workload modules so the
+    staged catalog covers every selected callsite, including ones that never
+    run. Staging MUST refuse a command that declares one.
+    """
     tests = root / "antithesis/test/v1"
     workload = root / "antithesis/workload"
     selected: list[Path] = []
@@ -184,20 +206,29 @@ def selected_files(root: Path, selection: Selection) -> tuple[list[Path], list[P
                 commands.append(path)
     if not commands:
         raise EvidenceError("selection has no test commands")
-    dependencies: set[Path] = set()
+    for path in selected:
+        if python_calls(path, root):
+            raise EvidenceError(f"selected test command declares SDK assertions: {path}")
     bootstrap = workload / "core/bootstrap.py"
     if not bootstrap.is_file():
         raise EvidenceError("selected bootstrap source is missing")
-    dependencies.add(bootstrap)
-    pending = [*commands, bootstrap]
+    dependencies: set[Path] = set()
+    pending: list[Path] = []
+
+    def require(module: Path) -> None:
+        for candidate in (module, *package_initializers(module, workload)):
+            if candidate not in dependencies:
+                dependencies.add(candidate)
+                pending.append(candidate)
+
+    require(bootstrap)
+    pending.extend(commands)
     while pending:
         path = pending.pop()
         for dependency in module_dependencies(path, workload, selection.runtime_packages):
-            if dependency not in dependencies:
-                dependencies.add(dependency)
-                pending.append(dependency)
-    # Every runtime package used by selected commands needs a selected Nix
-    # catalog source. The actual staged store catalog is checked during freeze.
+            require(dependency)
+    # Every runtime package used by selected commands needs a selected catalog
+    # source. The staged catalog tree itself is checked during freeze.
     for dependency in dependencies:
         if dependency.relative_to(workload).parts[0] not in selection.runtime_packages:
             raise EvidenceError(f"unselected runtime dependency {dependency}")
@@ -207,10 +238,11 @@ def selected_files(root: Path, selection: Selection) -> tuple[list[Path], list[P
 def manifest(root: Path, selection: Selection) -> dict[str, Json]:
     """@cc [owner:ghuntley,label:verification] selected-command-closure
     A selected image MUST expose exactly its named command templates and bind
-    the traced local runtime imports to their source hashes. Missing source or
-    unsupported template members MUST stop staging; unselected optional test
-    commands MUST stay outside the image. Other workload modules may be bundled
-    but do not enter the selected assertion roster without a traced import.
+    the traced local runtime imports, including executed package initializers,
+    to their source hashes. Missing source or unsupported template members MUST
+    stop staging; unselected optional test commands MUST stay outside the image.
+    Other workload modules may be bundled but enter neither the selected
+    assertion roster nor the image's assertion catalog without a traced import.
     """
     files, dependencies = selected_files(root, selection)
     tests = root / "antithesis/test"
@@ -236,7 +268,7 @@ def manifest(root: Path, selection: Selection) -> dict[str, Json]:
                     and isinstance(value.value, str)
                 ):
                     declared.append(value.value)
-    if set(declared) != {"control-core", "repository-origin", "access-smtp"} or len(declared) != 3:
+    if set(declared) != REVIEWED_PROFILES or len(declared) != len(REVIEWED_PROFILES):
         raise EvidenceError("bootstrap must declare exactly the reviewed setup templates")
     if selection.bootstrap_template not in declared:
         raise EvidenceError("bootstrap completion template differs from selected config")
@@ -259,6 +291,7 @@ def manifest(root: Path, selection: Selection) -> dict[str, Json]:
                 "commands": commands,
                 "runtime_dependencies": [file_record(path, root) for path in dependencies],
                 "image_command_root": "/opt/antithesis/test/v1",
+                "image_catalog_root": IMAGE_CATALOG_ROOT,
             }
         ),
         "command manifest",
@@ -371,8 +404,59 @@ def validate_compose(selection: Selection, rendered: dict[str, Json]) -> None:
                 path == target or path.startswith(target.rstrip("/") + "/") for target in targets
             ):
                 raise EvidenceError(f"SMTP fixture {key} lacks a mounted volume")
+    elif selection.name == "recorder-host":
+        validate_recorder_host(services, workload, environment, depends, targets)
     else:
         raise EvidenceError("selection has no reviewed bootstrap prerequisite validator")
+
+
+def validate_recorder_host(
+    services: dict[str, Json],
+    workload: dict[str, Json],
+    environment: dict[str, Json],
+    depends: dict[str, Json],
+    targets: set[str],
+) -> None:
+    """@cc [owner:ghuntley,label:verification;security] recorder-host-selection-boundary
+    The recorder profile MUST health-gate the workload on the recorder VM,
+    select the recorder bootstrap probe, give the workload a writable request
+    share and read-only result/observation shares, and keep VM state, the
+    serial console and QEMU control out of the workload.
+    """
+    if environment.get("ANTITHESIS_BOOTSTRAP_PROFILE") != "recorder-host":
+        raise EvidenceError("recorder bootstrap profile differs from selected commands")
+    dependency = obj(field(depends, "recorder-host-vmm"), "recorder VM dependency")
+    if field(dependency, "condition") != "service_healthy":
+        raise EvidenceError("recorder VM is not health-gated")
+    vm = obj(field(services, "recorder-host-vmm"), "recorder VM service")
+    obj(field(vm, "healthcheck"), "recorder VM health check")
+    expected = {
+        "ANTITHESIS_RECORDER_REQUESTS": "/run/overalls-recorder-requests",
+        "ANTITHESIS_RECORDER_RESULTS": "/run/overalls-recorder-results",
+        "ANTITHESIS_RECORDER_OBSERVATION": "/run/overalls-recorder-observation",
+        "ANTITHESIS_RECORDER_LEDGER": "/var/lib/overalls-antithesis-recorder/ledger.sqlite",
+    }
+    for key, value in expected.items():
+        if environment.get(key) != value:
+            raise EvidenceError(f"recorder fixture path mismatch: {key}")
+    mounts = {
+        string(field(obj(value, "workload volume"), "target"), "workload volume target"): obj(
+            value, "workload volume"
+        )
+        for value in arr(field(workload, "volumes"), "workload volumes")
+    }
+    for target, read_only in (
+        ("/run/overalls-recorder-requests", False),
+        ("/run/overalls-recorder-results", True),
+        ("/run/overalls-recorder-observation", True),
+        ("/var/lib/overalls-antithesis-recorder", False),
+    ):
+        if target not in targets:
+            raise EvidenceError(f"recorder share lacks a mounted volume: {target}")
+        if bool(mounts[target].get("read_only", False)) is not read_only:
+            raise EvidenceError(f"recorder share has the wrong access mode: {target}")
+    if any(target.startswith("/var/lib/recorder-hostvm") for target in targets):
+        raise EvidenceError("workload mounts recorder VM state")
 
 
 def rendered_compose(root: Path, selection: Selection) -> dict[str, Json]:
@@ -470,6 +554,14 @@ def verify_materialization(
 
 
 def stage(root: Path, selection: Selection, output: Path) -> dict[str, Json]:
+    """@cc [owner:ghuntley,label:verification] selection-scoped-catalog
+    The staged Antithesis catalog MUST contain exactly the manifest's runtime
+    dependencies, as one ``workload`` module tree, so the hosted Python
+    instrumentor declares every assertion reachable from the selected commands
+    and bootstrap and none from an unselected package. The tree MUST have one
+    top-level entry: the SDK registers a single instrumentation module per
+    process and would otherwise load only one of several catalogs.
+    """
     data = manifest(root, selection)
     temporary = Path(tempfile.mkdtemp(prefix=f".{output.name}.", dir=output.parent))
     try:
@@ -478,6 +570,13 @@ def stage(root: Path, selection: Selection, output: Path) -> dict[str, Json]:
             source = root / string(field(record, "path"), "source path")
             relative = source.relative_to(root / "antithesis/test")
             destination = temporary / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
+        for item in arr(field(data, "runtime_dependencies"), "runtime dependencies"):
+            record = obj(item, "runtime dependency")
+            source = root / string(field(record, "path"), "runtime source")
+            relative = source.relative_to(root / "antithesis/workload")
+            destination = temporary / STAGED_CATALOG / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, destination)
         atomic_json(temporary / "command-manifest.json", data)

@@ -262,14 +262,14 @@ execution, native execution or the required pinned precommit gates.
 
 The integrated focused Brady history suite passed nine checks (six properties,
 three tests), seed `223798`, in 0.9 seconds. Log:
-`/tmp/kittens-brady-histories-focused-ready.log`. The first attempt failed
+`/tmp/overalls-brady-histories-focused-ready.log`. The first attempt failed
 compilation because a private check/1 helper collided with ExUnitProperties;
 it was renamed sync_pressure/1. The next attempt passed five of six properties
 but exposed a fully-buffered parser fixture race: the listener closed before
 sender accept. Explicit sender readiness repaired that fixture without changing
 production code or payload/refusal oracles. Both failed logs are retained:
-`/tmp/kittens-brady-histories-focused.log` and
-`/tmp/kittens-brady-histories-focused-fixed.log`. Full static/component gates,
+`/tmp/overalls-brady-histories-focused.log` and
+`/tmp/overalls-brady-histories-focused-fixed.log`. Full static/component gates,
 reviewed handbook receipts and native generated archive execution remain pending.
 
 
@@ -292,8 +292,8 @@ seed `531891`, in 127.1 seconds. Forced Dialyzer passed in 5.18 seconds with
 zero errors, skips or unnecessary skips. This capture excludes the subsequently
 added removal property. That property passed separately (seed `225096`, 0.2
 seconds) under UID 1000, confirming the local permission-refusal fixture executes
-without privileged bypass. Logs: `/tmp/kittens-brady-histories-full.log` and
-`/tmp/kittens-brady-removal-focused.log`. A final combined component capture,
+without privileged bypass. Logs: `/tmp/overalls-brady-histories-full.log` and
+`/tmp/overalls-brady-removal-focused.log`. A final combined component capture,
 static/handbook gates and native archive execution remain pending.
 
 The first expanded native run failed before the generated archive histories:
@@ -309,7 +309,7 @@ Investigation and isolated native rerun remain pending.
 The final combined Brady precommit passed 80 checks (29 properties, 51 tests),
 seed `219616`, in 117.4 seconds, including the removal history. Forced Dialyzer
 passed in 6.14 seconds with zero errors, skips or unnecessary skips. Log:
-`/tmp/kittens-brady-histories-combined-full.log`. The failed native first run is
+`/tmp/overalls-brady-histories-combined-full.log`. The failed native first run is
 retained; a serial rerun now includes fixture pressure/counter diagnostics without
 relaxing the exact reuse assertion. Native and final handbook/static gates remain
 pending. This records local component verification, not hosted acceptance.
@@ -329,7 +329,7 @@ native capture remains necessary.
 Pinned all-file prek passed catalog logging, handbook receipts, Ruff formatting/
 lint and ty. ADR structural/local-link checks, generated options/coverage and
 source/evaluated Ash/deployment views also passed. Log:
-`/tmp/kittens-brady-histories-static.log`. These checks include the latest 8 MiB
+`/tmp/overalls-brady-histories-static.log`. These checks include the latest 8 MiB
 publication barrier; the live native capture predates that final barrier. Native
 verification and final evaluated HLDD publication gate remain pending.
 

@@ -18,14 +18,14 @@ Marshall SLI selector. A shared proxy or certificate outage affects both paths.
 ## Verification
 
 The final configuration check passed in **81 seconds**, archive
-`1790989474957-3463288-0.jsonl`, log `/tmp/kittens-public-grafana-eval-final2.log`.
+`1790989474957-3463288-0.jsonl`, log `/tmp/overalls-public-grafana-eval-final2.log`.
 It covers twelve generated ports under both firewall backends, enabled-role
 opt-out, standalone firewall composition, invalid prerequisites, zero/conflicting
 ports, SSH and socket conflicts, authentication and loopback settings. These
 are generated Nix evaluation cases, not an application property framework or
 native network evidence. The native check passed overall in **129 seconds**, with **84.52 seconds**
 of script execution, archive `1790989689559-3569570-0.jsonl`, log
-`/tmp/kittens-public-grafana-native.log`. An untrusted client verified the
+`/tmp/overalls-public-grafana-native.log`. An untrusted client verified the
 disposable certificate, reached health and the authenticated 57-panel dashboard,
 completed a real Grafana WebSocket upgrade, refused anonymous/wrong-password
 operator reads and foreign Host requests, and could not reach loopback Grafana,

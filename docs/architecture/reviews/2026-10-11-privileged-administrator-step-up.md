@@ -115,9 +115,9 @@ mounted mutations after demotion.
 The login browser subprocess took 29.02 seconds and its full VM script took
 60.15 seconds; the account browser subprocess took 31.50 seconds and its script
 took 60.00 seconds. Both builds exited zero. Their output paths are
-`/nix/store/nlzfmgsqzp1sgynykcsl3bk0vsdj9yg3-vm-test-run-kittens-mfa-login-browser`
-and `/nix/store/plvbp6slva8jqz1w795jypx7kxk9ds2i-vm-test-run-kittens-admin-account-browser`,
-using release `/nix/store/mrlqrawlw9l9plnm10p7iqirk4srvrai-kittens-marshall-0.1.0`.
+`/nix/store/nlzfmgsqzp1sgynykcsl3bk0vsdj9yg3-vm-test-run-overalls-mfa-login-browser`
+and `/nix/store/plvbp6slva8jqz1w795jypx7kxk9ds2i-vm-test-run-overalls-admin-account-browser`,
+using release `/nix/store/mrlqrawlw9l9plnm10p7iqirk4srvrai-overalls-marshall-0.1.0`.
 
 These initial native captures precede the final no-key setup-return addition,
 generic **Passkey verified** copy, submitted-phase browser state changes and
@@ -131,14 +131,14 @@ fixture diff. Both builds exited zero. The login browser subprocess took
 subprocess took 34.88 seconds and its full script took 61.59 seconds.
 The immutable derivations and outputs are:
 
-- `/nix/store/5hw7pa5yn9ymcnxxxfcd54gbvcy414r8-vm-test-run-kittens-mfa-login-browser.drv`
-  → `/nix/store/cqa1xps3fxj42hvwa5nhhk6hm5ljgsww-vm-test-run-kittens-mfa-login-browser`
-- `/nix/store/68xfwf7lk2h2ygxxggz7q5ar0wfl31h4-vm-test-run-kittens-admin-account-browser.drv`
-  → `/nix/store/rz3x0q2v96h8i295d8cr34yhwnvcszh5-vm-test-run-kittens-admin-account-browser`
+- `/nix/store/5hw7pa5yn9ymcnxxxfcd54gbvcy414r8-vm-test-run-overalls-mfa-login-browser.drv`
+  → `/nix/store/cqa1xps3fxj42hvwa5nhhk6hm5ljgsww-vm-test-run-overalls-mfa-login-browser`
+- `/nix/store/68xfwf7lk2h2ygxxggz7q5ar0wfl31h4-vm-test-run-overalls-admin-account-browser.drv`
+  → `/nix/store/rz3x0q2v96h8i295d8cr34yhwnvcszh5-vm-test-run-overalls-admin-account-browser`
 
 Both use packaged release
-`/nix/store/c6x103d0jsnr1n06l9z5mnph952jy3mm-kittens-marshall-0.1.0`;
-execution is recorded in `/tmp/kittens-admin-step-up-final-native.log`.
+`/nix/store/c6x103d0jsnr1n06l9z5mnph952jy3mm-overalls-marshall-0.1.0`;
+execution is recorded in `/tmp/overalls-admin-step-up-final-native.log`.
 Real Chromium, verified TLS and a virtual WebAuthn authenticator passed ordinary
 and remembered read/export access, no-key Security return and explicit retry
 followed by exact inline action continuation, the persisted 900-second receipt,
@@ -158,13 +158,13 @@ The login browser subprocess took 22.95 seconds; its VM-script block took
 browser subprocess took 29.52 seconds; its VM-script block took 55.25 seconds
 and reported finished duration was 55.27 seconds. Their immutable artifacts are:
 
-- `/nix/store/jcv03w97hsqb9za78zcs8x0i665cf2sq-vm-test-run-kittens-mfa-login-browser.drv`
-  → `/nix/store/yy8hg91x5ai3r8jhxmy2ddkvbrg90kgk-vm-test-run-kittens-mfa-login-browser`
-- `/nix/store/m7bnp3xb93yk9mvayff22myhq1fcm877-vm-test-run-kittens-admin-account-browser.drv`
-  → `/nix/store/qavln2hzrll9j4ivv5zjbm0s5k624kk7-vm-test-run-kittens-admin-account-browser`
+- `/nix/store/jcv03w97hsqb9za78zcs8x0i665cf2sq-vm-test-run-overalls-mfa-login-browser.drv`
+  → `/nix/store/yy8hg91x5ai3r8jhxmy2ddkvbrg90kgk-vm-test-run-overalls-mfa-login-browser`
+- `/nix/store/m7bnp3xb93yk9mvayff22myhq1fcm877-vm-test-run-overalls-admin-account-browser.drv`
+  → `/nix/store/qavln2hzrll9j4ivv5zjbm0s5k624kk7-vm-test-run-overalls-admin-account-browser`
 
-Both use release `/nix/store/8qiaq96va3rc5lk1c1fzpp7dswi19l0s-kittens-marshall-0.1.0`;
-execution is recorded in `/tmp/kittens-admin-step-up-merged-native.log`.
+Both use release `/nix/store/8qiaq96va3rc5lk1c1fzpp7dswi19l0s-overalls-marshall-0.1.0`;
+execution is recorded in `/tmp/overalls-admin-step-up-merged-native.log`.
 The verified-TLS Chromium/virtual-WebAuthn assertion scope is unchanged:
 ordinary and remembered access, no-key enrollment return and explicit retry,
 exact inline continuation, persisted 900-second receipt, cancellation/focus,
@@ -187,19 +187,19 @@ documentation conflicts. Contract checking includes 19 JavaScript validator
 tests; syntax validation is not semantic authorization proof. All-file pinned
 Python Ruff formatting, Ruff linting and ty checking passed. The evaluated Nix
 HLDD gate passed; its execution log is
-`/tmp/kittens-admin-step-up-final-hldd-nix.log`. These structural results do not
+`/tmp/overalls-admin-step-up-final-hldd-nix.log`. These structural results do not
 establish runtime acceptance. Source/chapter changes after a receipt require its
 review again. Exact pushed `d4bd0214` also passed all-file pinned Python
 Ruff formatting/linting and ty checking
-(`/tmp/kittens-admin-step-up-merged-python.log`) and evaluated Nix HLDD
-(`/tmp/kittens-admin-step-up-merged-hldd-nix.log`). The pre-`f603be11` Marshall precommit was stopped after main
+(`/tmp/overalls-admin-step-up-merged-python.log`) and evaluated Nix HLDD
+(`/tmp/overalls-admin-step-up-merged-hldd-nix.log`). The pre-`f603be11` Marshall precommit was stopped after main
 advanced; it has no completed result and is not evidence. The latest merged
 Marshall precommit passed against `d4bd0214` with exit zero. Its Elixir result
 was 1,474 passed (237 properties and 1,237 tests), four excluded, in
 1,216.0 seconds. Node browser suites passed 32 terminal tests and eight
 repository-launch/MFA tests; workspace TypeScript passed. Forced Dialyzer
 passed with zero errors, zero skips and zero unnecessary skips. The complete
-log is `/tmp/kittens-admin-step-up-merged-precommit.log`. This run includes the
+log is `/tmp/overalls-admin-step-up-merged-precommit.log`. This run includes the
 first-enrollment return/explicit-retry and five machine recovery examples; those
 LiveView results do not replace native target-page recovery acceptance.
 Merged-source review found no concrete source conflict or authority regression;

@@ -58,14 +58,14 @@ The final focused file passed both properties in 63.7 seconds, seed63342,
 including fresh replacement-peer terminal verification and full-table restoration.
 Forced test-environment Dialyzer passed in 74.84 seconds with zero errors,
 skipped warnings or unnecessary skips. Focused runtime and type evidence are
-recorded in `/tmp/kittens-mail-committed-final-focused.log`. The evaluated Nix
+recorded in `/tmp/overalls-mail-committed-final-focused.log`. The evaluated Nix
 HLDD check passed in 36 seconds (archive `1791025984098-215730-0.jsonl`). Full
 Marshall precommit completed with terminal exit zero. Its runtime suite passed
 1,432 checks (231 properties and 1,201 tests), with two exclusions, seed612345,
 in 1,525.2 seconds. Its final forced Dialyzer passed in 50.9 seconds with zero
 errors, skipped warnings or unnecessary skips. The final source includes the
 comment-only cleanup contract correction. Log:
-`/tmp/kittens-mail-committed-precommit-final.log`.
+`/tmp/overalls-mail-committed-precommit-final.log`.
 
 ## Remaining gaps
 

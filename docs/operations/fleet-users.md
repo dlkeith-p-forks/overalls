@@ -26,7 +26,7 @@ meaning, including any privileges granted by other services. Administrators can
 access their hosts' identities and local secrets through root; `secretRecovery`
 adds off-host access to every inventoried document.
 
-Import `nixosModules.access` (included in `nixosModules.default`) and set
+Import `nixosModules.security.access` (included in `nixosModules.default`) and set
 `overalls.access.enable = true` on every participating host. The module reads the
 shared registry by default; `overalls.access.users` accepts the same typed
 attribute set for explicit compositions and tests. Keep fleet compositions on

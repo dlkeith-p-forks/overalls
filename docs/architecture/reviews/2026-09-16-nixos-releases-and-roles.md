@@ -65,7 +65,7 @@ and ADR-0034 remains proposed. No live production host was changed.
   without touching another bundle. Unsafe paths, oversized output and a timed-out
   resolver's process group were rejected or terminated. These are VM-local
   filesystem/process checks, not host power-loss persistence evidence.
-- The public operator recipient (`nix/domains/artifacts/operator-recipient/default.nix` at kittens revision `9fe1e493`, repository deleted) built
+- The public operator recipient (`nix/domains/artifacts/operator-recipient/default.nix` at overalls revision `9fe1e493`, repository deleted) built
   successfully after checking the supplied key's SSH fingerprint. No operator
   private key, production credential or live key lookup was used.
 - Framework Python type/lint checks passed. Final structural checks passed for

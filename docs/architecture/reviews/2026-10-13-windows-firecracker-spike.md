@@ -182,7 +182,7 @@ a custom CPU template asks for `hyperv`.
   legacy `setup.exe /legacy` from a `winpeshl.ini` inside `boot.wim`. Resolved
   structurally: the build now extracts Microsoft's boot files and `boot.wim`
   with 7-Zip (the media's ISO 9660 side holds only a README; the tree is UDF),
-  injects `winpeshl.ini` and `kittens-setup.cmd` into `boot.wim` index 2 with
+  injects `winpeshl.ini` and `overalls-setup.cmd` into `boot.wim` index 2 with
   wimlib, and produces its own UEFI boot ISO from `efisys_noprompt.bin` with
   the answer file and drivers; Microsoft's ISO stays unmodified as the
   `/installfrom` source. No keypress is needed any more.
@@ -198,7 +198,7 @@ a custom CPU template asks for `hyperv`.
   read them back with mtools: `PnPIBS: Error 0x3 occurred while enumerating the
   files and subdirectories` for the DriverPaths entries, then `Failed to query
   disk [0] status 0x80042405`. The virtio drivers now live inside `boot.wim` at
-  `X:\kittens\drivers`, referenced by both the windowsPE and offlineServicing
+  `X:\overalls\drivers`, referenced by both the windowsPE and offlineServicing
   `DriverPaths`, and the boot.wim SYSTEM hive carries `SanPolicy = 1`.
 - **Answer-file limits learned the hard way.** `RunSynchronousCommand` orders
   must be consecutive from 1 (a gap fails the pass with `0x8007000d`), and a
@@ -244,7 +244,7 @@ KVM-capable host:
   Standard Core installation completed inside the Nix KVM sandbox in about
   255 seconds of guest time (QEMU, 4 vCPU, 4 GiB): two `RESET` stage
   boundaries, all nine serial checkpoints from Windows PE through
-  `KITTENS-SETUP-COMPLETE`, 17 screenshots, and the Setup, specialize and
+  `OVERALLS-SETUP-COMPLETE`, 17 screenshots, and the Setup, specialize and
   driver-binding logs recovered from the EFI system partition. The sparse
   `disk.raw` occupies 4.2 GB of its 32 GiB.
 - Firecracker boot of that image (eight-patch VMM, `--enable-pci`, 2 vCPU,
@@ -253,7 +253,7 @@ KVM-capable host:
   found the GPT and the EFI system partition, started `bootmgfw.efi`, and
   Windows reached `Computer is booting, SAC started and initialized.` and
   `EVENT: The CMD command is now available.` within about a minute of guest
-  time. On the console, `id` reported computer `KITTENS`, build 26100, product
+  time. On the console, `id` reported computer `OVERALLS`, build 26100, product
   Windows Server; `i` listed one network interface with an APIPA address (DHCP
   is disabled by `SetupComplete.cmd`). Firecracker's log held only the
   expected probes (extended hypercall `0x8001`, VMware port `0x5658`) and the

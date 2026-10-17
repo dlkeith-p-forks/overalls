@@ -1,0 +1,128 @@
+{
+  "apps": {
+    "overalls_request_accounting": {
+      "active": 8,
+      "coverage": 1.0,
+      "covered": 8
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "overalls_request_accounting.aggregate": {
+      "active": 5,
+      "app": "overalls_request_accounting",
+      "coverage": 1.0,
+      "covered": 5,
+      "form": "light",
+      "obligations": {
+        "overalls_request_accounting.aggregate.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "overalls_request_accounting.aggregate.I2": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test recording preserves outcome counts and excludes are identity"
+          ]
+        },
+        "overalls_request_accounting.aggregate.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test snapshots validate and reject tampered counts"
+          ]
+        },
+        "overalls_request_accounting.aggregate.I4": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test duration accounting remains bounded and excluded outcomes are inert"
+          ]
+        },
+        "overalls_request_accounting.aggregate.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test invalid services and durations fail closed"
+          ]
+        }
+      }
+    },
+    "overalls_request_accounting.recorder": {
+      "active": 3,
+      "app": "overalls_request_accounting",
+      "coverage": 1.0,
+      "covered": 3,
+      "form": "light",
+      "obligations": {
+        "overalls_request_accounting.recorder.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "overalls_request_accounting.recorder.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test quality marker round trips only in a private directory"
+          ]
+        },
+        "overalls_request_accounting.recorder.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test recorder replies are closed and bounded"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "totals": {
+    "active": 8,
+    "coverage": 1.0,
+    "covered": 8
+  }
+}

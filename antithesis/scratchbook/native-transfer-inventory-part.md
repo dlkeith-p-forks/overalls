@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Native transfer inventory (exported `zfs-transfer`)
 
-- **Scope/provenance:** repository-only inspection of `/home/ghuntley/src/kittens-antithesis-reset`; `external_references=[]`; no retired Antithesis harness was read; no build or execution was performed. Inspected revision: `9fe1e493b2090d44bacd16089049cd12b316d58a`.
+- **Scope/provenance:** repository-only inspection of `/home/ghuntley/src/overalls-antithesis-reset`; `external_references=[]`; no retired Antithesis harness was read; no build or execution was performed. Inspected revision: `9fe1e493b2090d44bacd16089049cd12b316d58a`.
 - **Applicable contracts:** repository `CONTRACTS` (`repository-decision-evidence`, `repository-test-claim-boundary`), `nix/CONTRACTS` (`zfs-only-provisioner-pools`), `nix/verification/tests/CONTRACTS` (`nix-test-real-packages`, `nix-test-isolated-inputs`), and `nix/verification/tests/machines/zfs-transfer/CONTRACTS`. The local boundary contract requires real streams between separate block-backed pools, interrupted receive/resume, snapshot lineage and real ext4 contents; it explicitly forbids reporting this suite as Lilly/Oban orchestration, SSH authentication, guest readiness or acceptance across independent physical hosts (`nix/verification/tests/machines/zfs-transfer/CONTRACTS:1-5`). `received.exs` and `adoption.exs` independently say synthetic descriptors/boot artifacts do not establish bootable-image, guest-rootfs, activation or end-to-end relocation acceptance (`received.exs:1-4`; `adoption.exs:1-4`).
 
 ## Export and environment

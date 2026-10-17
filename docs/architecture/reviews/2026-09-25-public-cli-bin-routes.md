@@ -15,7 +15,7 @@ Ziggy's private `/agent/v1/update/` routes.
 - Marshall still serves files only from the operator-selected Lyra Nix store
   path and allows only four fixed platform targets. The installer and updater
   still verify SHA-256 and enforce their existing download bounds.
-- The former `/kittens/` endpoints are removed. Already-installed desktop
+- The former `/overalls/` endpoints are removed. Already-installed desktop
   clients using that manifest URL need to run the new installer once to resume
   automatic updates. This is an intentional compatibility break authorized for
   this change; no installed executable or guest state migration is required.

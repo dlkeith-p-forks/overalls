@@ -94,7 +94,7 @@ outage. A subsequent run uses disposable peers of the production fleet
 WireGuard module and passes trace backfill after a worker tunnel outage and
 collector restart. These fixtures send direct local OTLP traces; they do not
 establish guest TLS over the central tunnel or production trace retention. The
-signed-in SLO page (`marshall/lib/marshall_web/live/slo_live.ex` at kittens revision `a99f74f0`, repository deleted)
+signed-in SLO page (`marshall/lib/marshall_web/live/slo_live.ex` at overalls revision `a99f74f0`, repository deleted)
 reads only two fixed recording rules and preserves unknown data. HAProxy supplies
 an unsampled draft public ingress completion ratio; application-specific SLIs,
 real guest trace delivery across WireGuard and production trace validation

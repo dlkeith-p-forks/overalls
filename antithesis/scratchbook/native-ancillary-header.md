@@ -1,5 +1,5 @@
 ---
-sut_path: /home/ghuntley/src/kittens-antithesis-reset
+sut_path: /home/ghuntley/src/overalls-antithesis-reset
 commit: c835eb1017d24a001215c319373fa4204d64269b
 updated: 2026-10-13
 external_references: []
@@ -8,7 +8,7 @@ research_started_at_commit: 9fe1e493b2090d44bacd16089049cd12b316d58a
 ---
 # Ancillary native campaign inventory — 2026-10-13
 
-Read-only current-source inventory from `/home/ghuntley/src/kittens-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a` plus the existing reset working diff. No repository edits, builds, Nix evaluation, native reruns, deployments, secret inspection or retired `antithesis/` harness reads were performed. Repository paths are source references intended for external `refs[]`; they do not describe a new harness or a current passing execution. The report itself has no architecture/HLDD impact and adds no runtime evidence.
+Read-only current-source inventory from `/home/ghuntley/src/overalls-antithesis-reset`, HEAD `9fe1e493b2090d44bacd16089049cd12b316d58a` plus the existing reset working diff. No repository edits, builds, Nix evaluation, native reruns, deployments, secret inspection or retired `antithesis/` harness reads were performed. Repository paths are source references intended for external `refs[]`; they do not describe a new harness or a current passing execution. The report itself has no architecture/HLDD impact and adds no runtime evidence.
 
 The retained native spine has complementary boundaries:
 
@@ -22,12 +22,12 @@ The retained native spine has complementary boundaries:
 
 ## Backup division and references
 
-Backup native/service/custody detail is owned by the parallel storage inventory; no second repository inspection/build was needed. Explicit adjacent exports are `backup-types`, `backup-operators`, `backup-custody`, `backup-configuration`, `backup-recovery`, `guest-backups` at [default.nix:151](/home/ghuntley/src/kittens-antithesis-reset/nix/verification/tests/catalog.nix:151), with `native-backup-cleanup`/`packaged-backup-cleanup` at [default.nix:322](/home/ghuntley/src/kittens-antithesis-reset/nix/verification/tests/catalog.nix:322).
+Backup native/service/custody detail is owned by the parallel storage inventory; no second repository inspection/build was needed. Explicit adjacent exports are `backup-types`, `backup-operators`, `backup-custody`, `backup-configuration`, `backup-recovery`, `guest-backups` at [default.nix:151](/home/ghuntley/src/overalls-antithesis-reset/nix/verification/tests/catalog.nix:151), with `native-backup-cleanup`/`packaged-backup-cleanup` at [default.nix:322](/home/ghuntley/src/overalls-antithesis-reset/nix/verification/tests/catalog.nix:322).
 
 The independently produced out-of-repository companions contain exact source assertions/resources/history:
 
-- [Guest backup/retained-source inventory](/home/ghuntley/src/kittens-antithesis-reset/antithesis/scratchbook/native-backup-inventory-part.md): actual nested Firecracker flush and unchanged VMM identity, exact restored ext4 bytes from local encrypted Restic, nonce/refusal and post-native-create worker loss; source-owned restoration belongs to ordinary `zfs-guest`, not `guest-backups`.
-- [Service and custody inventory](/home/ghuntley/src/kittens-antithesis-reset/antithesis/scratchbook/native-backup-service-custody-part.md): `backup-recovery` is a real two-VM ZFS/PostgreSQL/TLS-MinIO machine journey; `backup-custody` is native subprocess/package integration through local encrypted repositories, not a VM test. Host/database/keys and isolated restored authority boundaries stay distinct.
-- [Native and packaged cleanup inventory](/home/ghuntley/src/kittens-antithesis-reset/antithesis/scratchbook/native-backup-cleanup-part.md): one KVM VM per check, real mirrored ZFS/custody/intent/GUID/replay and installed systemd/CLI semantics; 2048MiB/2cores/two4096MiB data disks,300s property command. Historical combined direct cleanup169s, packaged publication155s and later reader-repair packaged121s results retain their exact scopes. Constructed publishing journals do not establish kill-during-upload; no physical power-loss, whole backup pipeline, independent hosts or restored authority acceptance follows.
+- [Guest backup/retained-source inventory](/home/ghuntley/src/overalls-antithesis-reset/antithesis/scratchbook/native-backup-inventory-part.md): actual nested Firecracker flush and unchanged VMM identity, exact restored ext4 bytes from local encrypted Restic, nonce/refusal and post-native-create worker loss; source-owned restoration belongs to ordinary `zfs-guest`, not `guest-backups`.
+- [Service and custody inventory](/home/ghuntley/src/overalls-antithesis-reset/antithesis/scratchbook/native-backup-service-custody-part.md): `backup-recovery` is a real two-VM ZFS/PostgreSQL/TLS-MinIO machine journey; `backup-custody` is native subprocess/package integration through local encrypted repositories, not a VM test. Host/database/keys and isolated restored authority boundaries stay distinct.
+- [Native and packaged cleanup inventory](/home/ghuntley/src/overalls-antithesis-reset/antithesis/scratchbook/native-backup-cleanup-part.md): one KVM VM per check, real mirrored ZFS/custody/intent/GUID/replay and installed systemd/CLI semantics; 2048MiB/2cores/two4096MiB data disks,300s property command. Historical combined direct cleanup169s, packaged publication155s and later reader-repair packaged121s results retain their exact scopes. Constructed publishing journals do not establish kill-during-upload; no physical power-loss, whole backup pipeline, independent hosts or restored authority acceptance follows.
 
 The following full sections consolidate Brady/recorder, database and executor/isolation references. Historical records and source presence remain deliberately distinct.

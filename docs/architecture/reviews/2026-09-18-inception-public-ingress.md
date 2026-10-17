@@ -242,7 +242,7 @@ clients. This is independent of the control hook's observation failure.
    test in 39.86 seconds: encrypted secret delivery, verified synthetic-provider
    streaming, accounting pressure/recovery, stream revocation, restart without
    replay, and Audi's inability to read credentials. Its result is
-   `/nix/store/8xxdjida4a5qbzxq2bac8jid2h236qyr-vm-test-run-kittens-ziggy-service`.
+   `/nix/store/8xxdjida4a5qbzxq2bac8jid2h236qyr-vm-test-run-overalls-ziggy-service`.
    That fixture uses synthetic control authority, so it does not establish native
    Inception acceptance. Inner private Audi now shares the physical renewal and
    frontend units, receives only leaf custody/public roots and enters the exact
@@ -313,7 +313,7 @@ clients. This is independent of the control hook's observation failure.
    The corrected two-VM rerun passed in 37.63 seconds, including nonzero
    forwarding drop counters for nftables and iptables and refusal after peer
    removal. Its result is
-   `/nix/store/cwxx9sms1g6jig0r89xnpg86wkw1g1k0-vm-test-run-kittens-fleet-network`.
+   `/nix/store/cwxx9sms1g6jig0r89xnpg86wkw1g1k0-vm-test-run-overalls-fleet-network`.
    This establishes the isolated fixture, not production key decryption or
    physical-host activation. Existing
    deployed services remain unchanged; no private fleet rollout is claimed.
@@ -361,12 +361,12 @@ existing closed native failure classes; export-marker and empty-output checks
 remain intact. This fixture correction changes no architectural decision.
 The corrected SSH machine run passed in 15.87 seconds, including actual transfer,
 wrong server/client key refusal, source permit revocation and retired-key refusal:
-`/nix/store/gbqn6vwcnlawcxgn3byzdhy1h6zi59pw-vm-test-run-kittens-ssh-transfer`.
+`/nix/store/gbqn6vwcnlawcxgn3byzdhy1h6zi59pw-vm-test-run-overalls-ssh-transfer`.
 The Inception driver build then exposed conflicting inherited/local Lilly fleet
 URLs in the fixture. Its explicit private fleet URL now overrides the generic
 loopback default. The current-source driver subsequently built with local
 builders and the public Nix cache:
-`/nix/store/wry5v5hkw9rlqiqagm7f3m2zsk1jva6h-nixos-test-driver-kittens-inception`.
+`/nix/store/wry5v5hkw9rlqiqagm7f3m2zsk1jva6h-nixos-test-driver-overalls-inception`.
 Its first execution failed before Inception acceptance: the driver selected
 `XDG_RUNTIME_DIR=/run/user/1000`, whose 13 GiB tmpfs filled, causing outer VM
 disk I/O errors and a read-only filesystem during preflight. The process ended;
@@ -387,7 +387,7 @@ through physical Audi must reject all five fleet API prefixes, including unknown
 versions, malformed JSON and forged forwarding headers, without sessions or
 redirects. Syntax and contract checks pass. The running driver predates this
 probe, so it cannot establish that new assertion. The updated boundary driver
-built at `/nix/store/xilffi6ib8kv3bahl0yswbw172slsp7n-nixos-test-driver-kittens-inception`;
+built at `/nix/store/xilffi6ib8kv3bahl0yswbw172slsp7n-nixos-test-driver-overalls-inception`;
 it predates the retained-diagnostics fix and has not run. A rebuilt native run
 with both changes is required.
 This expands verification of ADR-0073 without changing its accepted boundaries.

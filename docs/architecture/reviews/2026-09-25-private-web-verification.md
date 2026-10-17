@@ -73,9 +73,9 @@ closed stage names without tokens, URLs, exception text or guest payloads.
 
 The strict native driver build passed in 339 seconds at captured source tree
 `ae4a82425ea8f33fe878b109ef959c878fde74bc`, producing
-`/nix/store/3n13g01pj2i8z27q0npqllwa11mp00la-nixos-test-driver-kittens-private-web`.
+`/nix/store/3n13g01pj2i8z27q0npqllwa11mp00la-nixos-test-driver-overalls-private-web`.
 The captured runtime derivation is
-`/nix/store/0cj8fs29rvss40ifvb5x4z5jdg00y4n4-vm-test-run-kittens-private-web.drv`;
+`/nix/store/0cj8fs29rvss40ifvb5x4z5jdg00y4n4-vm-test-run-overalls-private-web.drv`;
 its input driver matches that build. Build log: `/tmp/verify021-native-build5.log`.
 Earlier build attempts corrected source inclusion and strict Python/JavaScript
 typing; none launched native runtime.
@@ -104,7 +104,7 @@ The corrected candidate integrates published `d2a4767147fd726d3f353eda4ed2eb563d
 including ADR-0126's reviewed production database recovery settings. The shared
 terminal helper changes do not change private-web browser behavior. Captured tree
 `c3d08d598eda8d3db101cb6888ac207d59f625f6` built the strictly typed driver
-`/nix/store/9kbbswmk0wkh5rkc6wmavzyxizny9svi-nixos-test-driver-kittens-private-web`
+`/nix/store/9kbbswmk0wkh5rkc6wmavzyxizny9svi-nixos-test-driver-overalls-private-web`
 in 315 seconds (`/tmp/verify021-native-build6.log`). The exact composed script
 comparison with the first capture contains only the typed full-row inventory
 diagnostics and startup-settlement prerequisite. The private-web script and
@@ -113,8 +113,8 @@ identical release packages: the integrated production recovery defaults changed.
 
 **Corrected private-web passed all nine native stages in 462.02 seconds.**
 Runtime derivation:
-`/nix/store/38khrig39v15rrvl0hxpfcgsxcq45aw5-vm-test-run-kittens-private-web.drv`.
-Output: `/nix/store/kkxbbkrjqs1gffaqsjf26jm0dhsd3wqm-vm-test-run-kittens-private-web`.
+`/nix/store/38khrig39v15rrvl0hxpfcgsxcq45aw5-vm-test-run-overalls-private-web.drv`.
+Output: `/nix/store/kkxbbkrjqs1gffaqsjf26jm0dhsd3wqm-vm-test-run-overalls-private-web`.
 Log: `/tmp/verify021-native-run2.log`; full JSONL:
 `/home/ghuntley/.local/state/nix/build-logs/1790371502461-3112977-0.jsonl`.
 
