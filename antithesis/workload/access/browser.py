@@ -149,30 +149,40 @@ def verify_fixture_login(config: Config, login: Login, actor: Actor, webauthn_or
     if login.origin != webauthn_origin:
         # A virtual authenticator must obey the same origin restriction as a
         # browser. A signed assertion for another URL would be false evidence.
+        LOG.info("WebAuthn verification unexercised: login origin is not the RP origin")
         return False
     response = _value(login.browser.request("GET", f"{login.origin}/settings/security"))
     if response is None or response.status != 200:
+        LOG.info("WebAuthn verification unexercised: security page unavailable")
         return False
     page = parse_live_page(response.body)
     if page is None:
+        LOG.info("WebAuthn verification unexercised: security page is not a LiveView")
         return False
     mounted = _value(
         LiveView.mount(login.browser, login.origin, "/settings/security", page, config.ca_file)
     )
     if mounted is None:
+        LOG.info("WebAuthn verification unexercised: security LiveView mount failed")
         return False
     try:
         begun = _value(mounted.event("begin", {"kind": "verify"}))
         if begun is None or begun.get("ok") is not True:
+            LOG.info("WebAuthn verification unexercised: begin reply missing ok challenge")
             return False
         signed = assertion(begun.get("challenge"), actor.authenticator, webauthn_origin)
         if signed is None:
+            LOG.info("WebAuthn verification unexercised: challenge did not name the passkey")
             return False
         finished = mounted.event("finish", {"kind": "verify", "payload": signed})
         if finished.state is not State.OBSERVED:
+            LOG.info("WebAuthn verification unexercised: finish reply unavailable")
             return False
         completed = _value(AccessOracle(SqlOracle(config)).completed_verifications(actor.user_id))
-        return completed is not None and login.user_jti in completed
+        if completed is None or login.user_jti not in completed:
+            LOG.info("WebAuthn verification unexercised: no verification row for the login")
+            return False
+        return True
     finally:
         mounted.close()
 
@@ -578,6 +588,7 @@ def run_stale_admin(
 def main_magic() -> int:
     from access.mail import MailLinks
 
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = Config.from_environment()
         fixture = read_access_fixture(Path("/run/overalls-control-secrets/fixture.json"))
@@ -590,6 +601,7 @@ def main_magic() -> int:
 def main_remember() -> int:
     from access.mail import MailLinks
 
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = Config.from_environment()
         return run_remembered_revocation(config, MailLinks.from_environment(config.ca_file))
@@ -601,6 +613,7 @@ def main_remember() -> int:
 def main_admin() -> int:
     from access.mail import MailLinks
 
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = Config.from_environment()
         fixture = read_access_fixture(Path("/run/overalls-control-secrets/fixture.json"))

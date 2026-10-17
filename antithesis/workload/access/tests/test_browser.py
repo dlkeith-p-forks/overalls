@@ -12,7 +12,7 @@ from urllib.request import Request
 
 from access.browser import _token_path, pending_mutation_refused, pending_read_ok
 from access.http import _pinned, hidden_form
-from access.liveview import parse_live_page
+from access.liveview import _event_reply, parse_live_page
 from access.mail import _message_link
 from access.passkey import Authenticator, assertion
 from core.outcome import State
@@ -175,6 +175,12 @@ class BrowserHelpersTest(unittest.TestCase):
         self.assertIsNone(_token_path("https://elsewhere/magic_link/tok", origins))
         self.assertIsNone(_token_path("http://marshall-a/magic_link/tok", origins))
         self.assertIsNone(_token_path("https://marshall-a/magic_link/tok?x=1", origins))
+
+    def test_event_reply_is_unwrapped_from_the_reply_diff(self) -> None:
+        reply = {"ok": True, "challenge": {"challenge": "abc"}}
+        self.assertEqual(_event_reply({"diff": {"r": reply, "0": "x"}}), reply)
+        self.assertEqual(_event_reply({"diff": {"0": "x"}}), {"diff": {"0": "x"}})
+        self.assertEqual(_event_reply({}), {})
 
     def test_pending_mfa_read_follows_adr_0160_signed_in_boundary(self) -> None:
         self.assertTrue(pending_read_ok(200, True, False, True))

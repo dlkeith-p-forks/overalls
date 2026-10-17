@@ -37,6 +37,8 @@
 
 ## Authored assertion snapshot
 
-**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/access/browser.py:566`. Replica B mounted LiveView, real pre-fence set-role target/audit pair, closed Ash demotion, and processed post-fence event with unchanged inventory; hosted execution and guest effects remain unverified. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
+**Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/access/browser.py:576`. Replica B mounted LiveView, real pre-fence set-role target/audit pair, closed Ash demotion, and processed post-fence event with unchanged inventory; hosted execution and guest effects remain unverified. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Hosted result (2026-10-17):** The command ran 115 times in run `986e8c81e5e7beeeffe83071f48acd55-65-0` without reaching any assertion. `verify_fixture_login` relies on `parse_live_page`, which missed Phoenix's bare `data-phx-main` attribute, and magic links from the other replica were rejected. Both harness defects are fixed. No Marshall behaviour was implicated.
+
+Run `6da5104c21b653ba9b56bc85ae001539-65-0`, which included the parser fix, was still 0-hit. The harness LiveView client returned the raw `{"diff": {"r": reply}}` payload, but Phoenix carries a `{:reply, map}` inside the reply diff and the JS client unwraps it. So `verify_fixture_login` never saw SecurityLive's `ok` or `challenge`, and it stopped before signing. The client now unwraps `diff.r`. Every early stop on the WebAuthn path logs a fixed `WebAuthn verification unexercised` reason.
