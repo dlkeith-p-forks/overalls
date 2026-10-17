@@ -192,6 +192,7 @@ def run_replay() -> int:
         settled = _settled(runtime, repository_id, attempt_id, 35)
         if settled is None:
             return 0
+        quiet = runtime.oracle.marshall_refresh_marker()
         baseline = runtime.origin.state()
         if baseline.state is not State.OBSERVED or baseline.value is None:
             return 0
@@ -205,6 +206,16 @@ def run_replay() -> int:
                 replay_observed = True
                 replay_consistent = replay_consistent and duplicate.value == settled
         after = runtime.origin.receipts(baseline.value.sequence)
+        still_quiet = runtime.oracle.marshall_refresh_marker()
+        if (
+            quiet.state is not State.OBSERVED
+            or quiet.value is None
+            or quiet.value[0] != 0
+            or still_quiet.state is not State.OBSERVED
+            or still_quiet.value != quiet.value
+        ):
+            LOG.info("Enrico replay case unexercised: Marshall refresh in replay window")
+            return 0
         final_generation = service_generation(runtime.mirror_root)
         if (
             final_generation.state is not State.OBSERVED

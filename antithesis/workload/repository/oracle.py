@@ -5,6 +5,7 @@ import os
 import re
 import subprocess
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from uuid import UUID
 
@@ -49,6 +50,26 @@ class RepositoryOracle:
         ):
             return Observation.unavailable()
         return Observation.observed(Published(repository_id, phase, head, attempt))
+
+    def marshall_refresh_marker(self) -> Observation[tuple[int, datetime | None]]:
+        """@cc [owner:ghuntley,label:verification] enrico-foreign-fetch-fence
+        Origin receipts carry no requester identity, so a window MAY be
+        attributed to one Enrico attempt only if Marshall started no refresh of
+        its own in it: no repository is refreshing and the latest committed
+        begin_refresh time is unchanged across the window.
+        """
+        rows = self._sql.select(
+            "SELECT count(*) FILTER (WHERE phase = 'refreshing'), max(last_attempt_at) "
+            "FROM enrico_repositories",
+            (),
+            maximum_rows=1,
+        )
+        if rows.state is not State.OBSERVED or rows.value is None or len(rows.value) != 1:
+            return Observation.unavailable()
+        refreshing, latest = rows.value[0]
+        if type(refreshing) is not int or (latest is not None and not isinstance(latest, datetime)):
+            return Observation.unavailable()
+        return Observation.observed((refreshing, latest))
 
     def failure_audit(self, repository_id: UUID, attempt_id: UUID) -> Observation[bool]:
         rows = self._sql.select(
