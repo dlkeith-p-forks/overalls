@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from campaign import initialize, modify, reserve, transition
+from campaign import MAX_ACTIVE_ATTEMPTS, initialize, modify, reserve, transition
 from schema import EvidenceError, Json, field, obj
 
 
@@ -34,12 +34,12 @@ def baseline_worker(path: str, queue: multiprocessing.Queue[str]) -> None:
 
 
 class BaselineSerializationTests(unittest.TestCase):
-    def test_five_active_attempts_are_allowed_and_sixth_is_refused(self) -> None:
-        ledger = initialize(None, "identity", ["safety", "safety-two"])
-        for _ in range(5):
+    def test_active_attempt_cap_is_enforced(self) -> None:
+        ledger = initialize(None, "identity", [f"safety-{n}" for n in range(8)])
+        for _ in range(MAX_ACTIVE_ATTEMPTS):
             attempt = reserve(ledger, "identity", "bootstrap", None)
             self.assertEqual(attempt["status"], "reserved")
-        with self.assertRaisesRegex(EvidenceError, "five remote attempts already in flight"):
+        with self.assertRaisesRegex(EvidenceError, "32 remote attempts already in flight"):
             reserve(ledger, "identity", "bootstrap", None)
 
     def test_active_baseline_blocks_reservation_until_terminal_transition(self) -> None:

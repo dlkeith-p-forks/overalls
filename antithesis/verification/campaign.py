@@ -25,7 +25,7 @@ from schema import (
 
 PURPOSES = frozenset({"bootstrap", "baseline", "mutant", "retry", "resweep"})
 ACTIVE = frozenset({"reserved", "submitted"})
-MAX_ACTIVE_ATTEMPTS = 5
+MAX_ACTIVE_ATTEMPTS = 32
 CANONICAL_LEDGER = "antithesis/runtime/campaign-ledger.json"
 HASH = re.compile(r"^[0-9a-f]{64}$")
 DURATION_MINUTES = {
@@ -292,7 +292,7 @@ def reserve(
         if string(field(obj(item, "attempt"), "status"), "status") in ACTIVE
     ]
     if len(active) >= MAX_ACTIVE_ATTEMPTS:
-        raise EvidenceError("five remote attempts already in flight")
+        raise EvidenceError(f"{MAX_ACTIVE_ATTEMPTS} remote attempts already in flight")
     if purpose == "baseline" and any(
         item.get("config") == config and item.get("purpose") == "baseline" for item in active
     ):

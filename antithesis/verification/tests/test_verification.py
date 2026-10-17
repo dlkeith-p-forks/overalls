@@ -16,7 +16,15 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from assertions import roster
-from campaign import initialize, modify, policy_duration, reserve, transition, verify_manifest
+from campaign import (
+    MAX_ACTIVE_ATTEMPTS,
+    initialize,
+    modify,
+    policy_duration,
+    reserve,
+    transition,
+    verify_manifest,
+)
 from identity import (
     CopyInput,
     _image_hashes,
@@ -1247,32 +1255,22 @@ class VerificationTests(unittest.TestCase):
                 with self.assertRaises(EvidenceError):
                     validate_compose(satellite, rendered)
 
-    def test_global_budget_and_five_inflight_limit_across_configs(self) -> None:
+    def test_global_budget_across_configs(self) -> None:
         ledger = initialize(
             None, "identity-a", ["safety", "safety-two"], "antithesis/config/a.yaml"
         )
         initialize(ledger, "identity-b", ["safety", "safety-two"], "antithesis/config/b.yaml")
         self.assertEqual(ledger["ceiling"], 10)
-        for config, identity in (
-            ("antithesis/config/a.yaml", "identity-a"),
-            ("antithesis/config/b.yaml", "identity-b"),
-            ("antithesis/config/a.yaml", "identity-a"),
-            ("antithesis/config/b.yaml", "identity-b"),
-            ("antithesis/config/a.yaml", "identity-a"),
-        ):
+        for index in range(10):
+            config, identity = (
+                ("antithesis/config/a.yaml", "identity-a")
+                if index % 2 == 0
+                else ("antithesis/config/b.yaml", "identity-b")
+            )
             reserve(ledger, identity, "bootstrap", None, config)
-        with self.assertRaises(EvidenceError):
-            reserve(ledger, "identity-b", "bootstrap", None, "antithesis/config/b.yaml")
-        for item in arr(field(ledger, "attempts"), "attempts"):
-            transition(ledger, str(obj(item, "attempt")["attempt_id"]), "abandoned")
-        for config, identity in (
-            ("antithesis/config/b.yaml", "identity-b"),
-            ("antithesis/config/a.yaml", "identity-a"),
-            ("antithesis/config/b.yaml", "identity-b"),
-            ("antithesis/config/a.yaml", "identity-a"),
-            ("antithesis/config/b.yaml", "identity-b"),
-        ):
-            reserve(ledger, identity, "bootstrap", None, config)
+            if index == 4:
+                for item in arr(field(ledger, "attempts"), "attempts"):
+                    transition(ledger, str(obj(item, "attempt")["attempt_id"]), "abandoned")
         with self.assertRaises(EvidenceError):
             reserve(ledger, "identity-a", "bootstrap", None, "antithesis/config/a.yaml")
         initialize(ledger, "identity-c", ["new safety"], "antithesis/config/c.yaml")
@@ -1384,9 +1382,10 @@ class VerificationTests(unittest.TestCase):
         with self.assertRaises(EvidenceError):
             initialize(narrow_json(old), "identity", ["safety"])
 
-    def test_five_inflight_limit_and_config_binding(self) -> None:
-        ledger = initialize(None, "identity", ["safety", "safety-two"], "antithesis/config/a.yaml")
-        for _ in range(5):
+    def test_inflight_limit_and_config_binding(self) -> None:
+        messages = [f"safety-{index}" for index in range(8)]
+        ledger = initialize(None, "identity", messages, "antithesis/config/a.yaml")
+        for _ in range(MAX_ACTIVE_ATTEMPTS):
             reserve(ledger, "identity", "bootstrap", None, "antithesis/config/a.yaml")
         with self.assertRaises(EvidenceError):
             reserve(ledger, "identity", "bootstrap", None, "antithesis/config/a.yaml")

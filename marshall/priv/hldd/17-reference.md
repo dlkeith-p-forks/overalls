@@ -184,7 +184,7 @@ derivations and source hashes.
 The [foundation review](repo:docs/architecture/reviews/2026-10-13-antithesis-harness-foundation.md)
 describes an isolated control fixture. The graph below is its proposed Compose
 layout, not the deployed fleet or evidence that all containers have started.
-The hosted bootstrap campaign admits five active attempts so the selected Compose profiles can be validated concurrently; this operational limit does not establish a production deployment or a passing property result.
+The hosted campaign admits up to 32 active attempts so every selected Compose profile and its replicas can run concurrently; this operational limit does not establish a production deployment or a passing property result.
 
 ```mermaid
 flowchart LR

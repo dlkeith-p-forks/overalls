@@ -125,11 +125,11 @@ never to have reached remote submission. Once a run ID is submitted, retain its
 concurrency slot until triage records completion, including an `unknown` result
 if the run ended without a usable verdict. Completion is bound to the identity recorded on the
 attempt, so it remains possible after source drift; a green result updates the
-config baseline only while that config is still initialized at the attempt's identity. The global admission gate allows up to five active attempts so independent hosted profiles can be smoke-tested concurrently; the per-profile baseline, mutant and identity rules remain unchanged.
+config baseline only while that config is still initialized at the attempt's identity. The global admission gate allows up to 32 active attempts so every hosted profile and its replicas can run concurrently; the per-profile baseline, mutant and identity rules remain unchanged.
 
 For a mutant, reserve with `--purpose mutant --property-message 'literal SDK
 message'`. Only one mutant may remain between selection and submission; at most
-five attempts may be active. The ceiling is five times the union of researched
+32 attempts may be active. The ceiling is five times the union of researched
 primary safety messages and authored SDK safety messages, deduplicated by literal
 message. `Sometimes` and `Reachable` stay in the roster but do not expand that
 ceiling. A catalog entry with no authored callsite remains an implementation gap;
