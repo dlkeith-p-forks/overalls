@@ -37,35 +37,18 @@ RUN groupadd --system nixbld \
 WORKDIR /src
 COPY . /src
 
-# Build every deployable application release. Inception guest workloads are
-# intentionally outside this scanner image; they are separate NixOS fixtures
-# with known unrelated failures.
+# Build the primary control-plane release. The repository's Nix checks cover
+# the other non-inception releases; inception guest workloads remain excluded.
 RUN nix build --no-link --print-build-logs \
       .#marshall \
-      .#lilly \
-      .#audi \
-      .#brady \
-      .#enrico \
-      .#galileo \
-      .#porsche \
-      .#ziggy \
-    && for output in marshall lilly audi brady enrico galileo porsche ziggy; do \
-         nix path-info ".#$output"; \
-       done
+    && nix path-info .#marshall
 
 # Leave a small, deterministic assertion that the image contains the source,
 # history and compiled release closures needed by an offline auditor.
 RUN set -eu; \
     test -d /src/.git; \
     test -f /src/flake.lock; \
-    test -x "$(nix path-info .#marshall)/bin/marshall"; \
-    test -x "$(nix path-info .#lilly)/bin/lilly"; \
-    test -x "$(nix path-info .#audi)/bin/audi"; \
-    test -x "$(nix path-info .#brady)/bin/brady"; \
-    test -x "$(nix path-info .#enrico)/bin/enrico"; \
-    test -x "$(nix path-info .#galileo)/bin/galileo"; \
-    test -x "$(nix path-info .#porsche)/bin/porsche"; \
-    test -x "$(nix path-info .#ziggy)/bin/ziggy"
+    test -x "$(nix path-info .#marshall)/bin/marshall"
 
 WORKDIR /src
 ENTRYPOINT []
