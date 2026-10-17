@@ -1,6 +1,6 @@
 defmodule OverallsProtocol.ViewTest do
   use ExUnit.Case, async: false
-  import Hegel
+  import Hegel, except: [run: 1, run: 2]
   import Hegel.Gen
   alias OverallsProtocol.View
 
