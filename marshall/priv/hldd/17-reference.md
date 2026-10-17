@@ -357,7 +357,12 @@ no VM, boot, tap, placement or execution authority and mounts no secret. Its
 assertions test only private Audi's transport-only attribution with the origin
 fixture as effect witness; they say nothing about guest routing or isolation.
 The overlay also corrects the private Audi start script, which omitted the
-required `connector_uid` and so could not load its configuration. Ziggy
+required `connector_uid` and so could not load its configuration, and waited
+on the disabled ordinary `audi.sock` instead of Lilly's private-services
+`private.sock`. Porsche refuses to listen without a Marshall-signed host
+certificate, which Lyra fetches in production; the stand-in start script makes
+the same reviewed `/api/ssh/v1/host-certificate` request with the gateway token
+held in a private header file. Ziggy
 completion, Galileo named origin and the editor login-code race need a current
 running VM; the controlled Lilly pool reports unavailable capacity and no Audi
 editor gateway, editor release or wildcard is configured, so their primary and

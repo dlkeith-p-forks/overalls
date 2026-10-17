@@ -62,15 +62,15 @@ case "$role" in
   audi-private)
     private_file "$satellite/private-leaf.pem" && private_file "$satellite/private-leaf.key" && private_file "$satellite/private-root.pem" || exit 1
     for ((attempt=0; attempt<120; attempt++)); do
-      [[ -S /run/lilly-ingress/audi.sock ]] && break
+      [[ -S /run/lilly-ingress/private.sock ]] && break
       sleep 1
     done
-    [[ -S /run/lilly-ingress/audi.sock ]] || { echo 'Lilly private connector unavailable' >&2; exit 1; }
+    [[ -S /run/lilly-ingress/private.sock ]] || { echo 'Lilly private connector unavailable' >&2; exit 1; }
     mkdir -p /run/audi-private
     chmod 0700 /run/audi-private
     ip address show dev lo | grep -q '169[.]254[.]254[.]1' || ip address add 169.254.254.1/32 dev lo
     jq -n --arg host "$host" --arg satellite "$satellite" \
-      '{version:1,role:"private",host_id:$host,connector_path:"/run/lilly-ingress/audi.sock",connector_uid:0,ziggy_socket:"/run/ziggy/proxy.sock",galileo_socket:"/run/galileo/proxy.sock",certificate_file:($satellite+"/private-leaf.pem"),key_file:($satellite+"/private-leaf.key"),roots_file:($satellite+"/private-root.pem"),status_socket:"/run/audi-private/status.sock"}' > "$runtime/audi.json"
+      '{version:1,role:"private",host_id:$host,connector_path:"/run/lilly-ingress/private.sock",connector_uid:0,ziggy_socket:"/run/ziggy/proxy.sock",galileo_socket:"/run/galileo/proxy.sock",certificate_file:($satellite+"/private-leaf.pem"),key_file:($satellite+"/private-leaf.key"),roots_file:($satellite+"/private-root.pem"),status_socket:"/run/audi-private/status.sock"}' > "$runtime/audi.json"
     chmod 0600 "$runtime/audi.json"
     export AUDI_CONFIG_FILE="$runtime/audi.json" RELEASE_TMP="$runtime"
     exec /opt/overalls/audi/bin/audi start
@@ -82,6 +82,34 @@ case "$role" in
     if [[ ! -e /var/lib/porsche/host-keys/ssh_host_ed25519_key ]]; then
       ssh-keygen -q -t ed25519 -N '' -f /var/lib/porsche/host-keys/ssh_host_ed25519_key >/dev/null
       chmod 0600 /var/lib/porsche/host-keys/ssh_host_ed25519_key
+    fi
+    # @cc [owner:ghuntley,label:security;verification] porsche-host-certificate
+    # Porsche refuses to listen without a Marshall-signed host certificate. In
+    # production Lyra's overalls-host-certificate obtains it; this harness stand-in
+    # makes the same reviewed POST to Marshall's SSH API with the gateway token,
+    # passing the token only through a private header file, never argv or logs.
+    certificate=/var/lib/porsche/host-keys/ssh_host_ed25519_key-cert.pub
+    if [[ ! -s "$certificate" ]]; then
+      printf 'Authorization: Bearer %s\n' "$(<"$satellite/porsche.token")" > "$runtime/porsche-auth.header"
+      chmod 0600 "$runtime/porsche-auth.header"
+      jq -cn --arg key "$(</var/lib/porsche/host-keys/ssh_host_ed25519_key.pub)" \
+        '{version:1,public_key:$key}' > "$runtime/porsche-certificate-request.json"
+      for ((attempt=0; attempt<60; attempt++)); do
+        if curl -sSf --max-time 10 --cacert "$satellite/control-ca.pem" \
+            -H @"$runtime/porsche-auth.header" -H 'content-type: application/json' \
+            --data @"$runtime/porsche-certificate-request.json" \
+            -o "$runtime/porsche-certificate.json" \
+            https://marshall-a:5443/api/ssh/v1/host-certificate 2>/dev/null &&
+          jq -er 'select(.version == 1) | .certificate' "$runtime/porsche-certificate.json" > "$certificate.new"; then
+          break
+        fi
+        rm -f "$certificate.new"
+        sleep 2
+      done
+      rm -f "$runtime/porsche-auth.header" "$runtime/porsche-certificate.json"
+      [[ -s "$certificate.new" ]] || { echo 'Porsche host certificate unavailable' >&2; exit 1; }
+      chmod 0644 "$certificate.new"
+      mv -T "$certificate.new" "$certificate"
     fi
     jq -n --arg satellite "$satellite" \
       '{version:1,control_plane:"https://marshall-a:5443",public_origin:"https://marshall-a",credential_file:($satellite+"/porsche.token"),host_key_dir:"/var/lib/porsche/host-keys",bind:"0.0.0.0",port:2223,cacertfile:($satellite+"/control-ca.pem"),status_socket:"/run/overalls-satellite/porsche-status.sock"}' > "$runtime/porsche.json"
