@@ -17,4 +17,14 @@ defmodule ZiggyAccountingContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "ziggy.accounting.I2"
+  test "version fences require the current probe and recover on acceptance" do
+    fence = Ziggy.VersionFence.new(fence_backoff_ms: 10)
+    {fenced, 10, token} = Ziggy.VersionFence.refused(fence)
+    assert Ziggy.VersionFence.fenced?(fenced)
+    assert Ziggy.VersionFence.probe?(fenced, token)
+    refute Ziggy.VersionFence.probe?(fenced, make_ref())
+    refute Ziggy.VersionFence.fenced?(Ziggy.VersionFence.accepted(fenced))
+  end
 end

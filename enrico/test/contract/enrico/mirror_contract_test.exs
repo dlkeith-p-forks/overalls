@@ -18,4 +18,13 @@ defmodule EnricoMirrorContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "enrico.mirror.I2"
+  test "git validators reject traversal and unsafe sources" do
+    assert Enrico.Git.valid_source?("owner", "repo")
+    refute Enrico.Git.valid_source?("../owner", "repo.git")
+    refute Enrico.Git.valid_ref?("main..evil")
+    refute Enrico.Git.valid_path?("/etc/passwd")
+    refute Enrico.Git.valid_path?("a/../b")
+  end
 end

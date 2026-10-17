@@ -81,4 +81,22 @@ defmodule OverallsProtocolCodecsContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "overalls_protocol.codecs.I2"
+  test "wire decoder bounds input and accepts only JSON objects" do
+    assert {:ok, %{"ok" => true}} = OverallsProtocol.decode(~s({"ok":true}))
+    assert {:error, :invalid_message} = OverallsProtocol.decode(~s([1,2,3]))
+    assert {:error, :invalid_message} = OverallsProtocol.decode("not-json")
+
+    assert {:error, :message_too_large} =
+             OverallsProtocol.decode(String.duplicate("x", OverallsProtocol.max_body() + 1))
+  end
+
+  @tag obligation: "overalls_protocol.codecs.I3"
+  test "UUID validation is strict and report nil remains unknown" do
+    assert OverallsProtocol.uuid?("123e4567-e89b-12d3-a456-426614174000")
+    refute OverallsProtocol.uuid?("123E4567-e89b-12d3-a456-426614174000")
+    refute OverallsProtocol.uuid?("not-a-uuid")
+    assert {:ok, nil} = OverallsProtocol.report(nil)
+  end
 end

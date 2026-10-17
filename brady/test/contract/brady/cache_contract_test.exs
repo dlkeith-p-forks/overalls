@@ -18,4 +18,11 @@ defmodule BradyCacheContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "brady.cache.I2"
+  test "range policy routes malformed and selects bounded ranges" do
+    h = fn pairs -> Enum.map(pairs, fn {k, v} -> {k, v} end) end
+    assert Brady.Cache.Range.select(h.([{"range", "bytes=bad"}]), [], 10) == :upstream
+    assert Brady.Cache.Range.select(h.([{"range", "bytes=2-4"}]), [], 10) == {:partial, 2, 3}
+  end
 end

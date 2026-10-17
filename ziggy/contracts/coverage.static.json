@@ -6,9 +6,9 @@
       "covered": 0
     },
     "ziggy": {
-      "active": 2,
+      "active": 5,
       "coverage": 1.0,
-      "covered": 2
+      "covered": 5
     }
   },
   "components": {
@@ -21,10 +21,10 @@
       "obligations": {}
     },
     "ziggy.accounting": {
-      "active": 1,
+      "active": 2,
       "app": "ziggy",
       "coverage": 1.0,
-      "covered": 1,
+      "covered": 2,
       "form": "light",
       "obligations": {
         "ziggy.accounting.I1": {
@@ -36,14 +36,24 @@
           "tests": [
             "test declared modules compile and remain loadable"
           ]
+        },
+        "ziggy.accounting.I2": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test version fences require the current probe and recover on acceptance"
+          ]
         }
       }
     },
     "ziggy.inference_authority": {
-      "active": 1,
+      "active": 3,
       "app": "ziggy",
       "coverage": 1.0,
-      "covered": 1,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "ziggy.inference_authority.I1": {
@@ -55,6 +65,26 @@
           "tests": [
             "test declared modules compile and remain loadable"
           ]
+        },
+        "ziggy.inference_authority.I2": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test route resolution is closed and validates models"
+          ]
+        },
+        "ziggy.inference_authority.I3": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test provider errors classify into closed reasons"
+          ]
         }
       }
     }
@@ -62,8 +92,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 2,
+    "active": 5,
     "coverage": 1.0,
-    "covered": 2
+    "covered": 5
   }
 }

@@ -28,4 +28,15 @@ defmodule AudiHttpGatewayContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "audi.http_gateway.I2"
+  test "response cookies lose domain and reserved cookies" do
+    assert {:ok, headers} =
+             Audi.HTTP.Headers.response([
+               {"set-cookie", "sid=x; Domain=evil.test; Path=/"},
+               {"set-cookie", "__host-audi_token=y"}
+             ])
+
+    assert headers == [{"set-cookie", "sid=x; Path=/"}]
+  end
 end

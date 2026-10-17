@@ -13,4 +13,12 @@ defmodule PorscheSshContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "porsche.ssh.I2"
+  test "input handles CRLF and interrupt" do
+    state = %Porsche.SSH.Input{}
+    assert {:ok, state, ["hi"]} = Porsche.SSH.Input.feed(state, "hi\r")
+    assert {:ok, _state, []} = Porsche.SSH.Input.feed(state, "\n")
+    assert Porsche.SSH.Input.feed(%Porsche.SSH.Input{}, <<3>>) == :interrupt
+  end
 end

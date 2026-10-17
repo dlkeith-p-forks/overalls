@@ -1,9 +1,9 @@
 {
   "apps": {
     "overalls_request_accounting": {
-      "active": 2,
+      "active": 4,
       "coverage": 1.0,
-      "covered": 2
+      "covered": 4
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "overalls_request_accounting.aggregate": {
-      "active": 1,
+      "active": 3,
       "app": "overalls_request_accounting",
       "coverage": 1.0,
-      "covered": 1,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "overalls_request_accounting.aggregate.I1": {
@@ -27,6 +27,26 @@
           "testable": true,
           "tests": [
             "test declared modules compile and remain loadable"
+          ]
+        },
+        "overalls_request_accounting.aggregate.I2": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test recording preserves outcome counts and excludes are identity"
+          ]
+        },
+        "overalls_request_accounting.aggregate.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test snapshots validate and reject tampered counts"
           ]
         }
       }
@@ -62,8 +82,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 2,
+    "active": 4,
     "coverage": 1.0,
-    "covered": 2
+    "covered": 4
   }
 }

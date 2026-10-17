@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### audi.dns_authority.I2 — DNS framing rejects responses and bounds EDNS
+- **scope:** the component behavior exercised by the tagged contract test
+- **must:** `Audi.DNS.Wire.decode/1` MUST reject response packets and clamp EDNS UDP size to 1232.
+- **kind:** security
+- **status:** active

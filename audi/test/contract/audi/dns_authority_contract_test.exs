@@ -21,4 +21,18 @@ defmodule AudiDnsAuthorityContractTest do
 
     assert Enum.all?(modules, &Code.ensure_loaded?/1)
   end
+
+  @tag obligation: "audi.dns_authority.I2"
+  test "wire decoder rejects responses and clamps EDNS" do
+    assert Audi.DNS.Wire.decode(<<0::16, 0x8000::16, 1::16, 0::48>>) == {:error, :response}
+
+    packet =
+      <<1::16, 0::16, 1::16, 0::16, 0::16, 1::16>> <>
+        Audi.DNS.Wire.encode_name(["com"]) <>
+        <<1::16, 1::16>> <>
+        <<0, 41::16, 65_535::16, 0, 0, 0::16, 0::16>>
+
+    assert {:ok, q} = Audi.DNS.Wire.decode(packet)
+    assert q.udp_size == 1232
+  end
 end

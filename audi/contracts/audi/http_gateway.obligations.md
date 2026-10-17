@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### audi.http_gateway.I2 — Guest response cookies are host-only
+- **scope:** the component behavior exercised by the tagged contract test
+- **must:** `Audi.HTTP.Headers.response/1` MUST remove Domain attributes and reserved platform cookies.
+- **kind:** security
+- **status:** active

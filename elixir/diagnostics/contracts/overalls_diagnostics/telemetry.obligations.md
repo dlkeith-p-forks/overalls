@@ -13,3 +13,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### overalls_diagnostics.telemetry.I2 — Diagnostic payloads are redacted
+- **scope:** `Overalls.Diagnostics.Privacy.filter/2`
+- **must:** Filtered events use fixed messages and omit unreviewed sensitive metadata.
+- **kind:** security
+- **status:** active
+
+### overalls_diagnostics.telemetry.I3 — Runtime categories are finite
+- **scope:** runtime event categorization
+- **must:** OTP reports map to the reviewed finite category vocabulary.
+- **kind:** non-functional
+- **status:** active

@@ -13,3 +13,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### overalls_protocol.codecs.I2 — Decoder rejects malformed and oversized bodies
+- **scope:** `OverallsProtocol.decode/1`
+- **must:** Only bounded JSON objects are accepted; malformed, non-object, and oversized bodies are rejected.
+- **kind:** security
+- **status:** active
+
+### overalls_protocol.codecs.I3 — Unknown capacity remains explicit
+- **scope:** `OverallsProtocol.report/1`, `uuid?/1`
+- **must:** Nil reports remain unknown and UUID validation is strict.
+- **kind:** functional
+- **status:** active

@@ -13,3 +13,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### overalls_antithesis_sdk.sdk.I2 — Bounded numeric details
+- **scope:** `OverallsAntithesis.SDK.Details`
+- **must:** Details accept only bounded non-negative integers and wire only present fields.
+- **kind:** functional
+- **status:** active
+
+### overalls_antithesis_sdk.sdk.I3 — Assertion wire shape
+- **scope:** `OverallsAntithesis.SDK.Property`
+- **must:** Property wire output preserves assertion kind and emits details only for hits.
+- **kind:** functional
+- **status:** active

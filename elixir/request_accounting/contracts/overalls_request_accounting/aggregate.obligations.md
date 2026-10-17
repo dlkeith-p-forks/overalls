@@ -13,3 +13,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### overalls_request_accounting.aggregate.I2 — Outcomes and exclusions are counted consistently
+- **scope:** `Overalls.RequestAccounting.Aggregate.record/3`
+- **must:** Successes and failures increment their counters; excluded outcomes leave the aggregate unchanged.
+- **kind:** functional
+- **status:** active
+
+### overalls_request_accounting.aggregate.I3 — Snapshots reject tampering
+- **scope:** `snapshot/1`, `validate_snapshot/1`
+- **must:** Produced snapshots validate, while inconsistent counts are rejected.
+- **kind:** security
+- **status:** active

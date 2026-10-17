@@ -13,3 +13,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Every declared module MUST compile and remain loadable in the project's test VM; removing or renaming one MUST make this contract test fail.
 - **kind:** non-functional
 - **status:** active
+
+### porsche.ssh.I2 — SSH input submits CRLF once and handles interrupts
+- **scope:** the component behavior exercised by the tagged contract test
+- **must:** incremental input MUST submit one line for CRLF and report control-C as interrupt.
+- **kind:** security
+- **status:** active
