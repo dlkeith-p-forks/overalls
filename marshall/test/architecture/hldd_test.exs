@@ -71,6 +71,14 @@ defmodule Overalls.HLDDTest do
     assert HLDDGate.files(root) == ["devenv.yaml", "source.ex"]
   end
 
+  test "CI workflows and scripts do not enter the reviewed inventory", %{root: root} do
+    write(root, "source.ex", "reviewed source")
+    write(root, ".github/workflows/ci.yml", "workflow")
+    write(root, ".github/scripts/select-checks.sh", "script")
+    write(root, "nested/.github/kept.ex", "nested source")
+    assert HLDDGate.files(root) == ["nested/.github/kept.ex", "source.ex"]
+  end
+
   test "Git and packaged inventories agree on generated history and ignored directories", %{
     root: root
   } do
