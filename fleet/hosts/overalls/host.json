@@ -80,6 +80,10 @@
     {
       "name": "overalls-ssh-host-ca",
       "path": "secrets/overalls-ssh-host-ca.enc.json"
+    },
+    {
+      "name": "overalls-cachix",
+      "path": "secrets/overalls-cachix.enc.json"
     }
   ],
   "discovery": {

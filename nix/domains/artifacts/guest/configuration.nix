@@ -3,7 +3,12 @@ let
   codingClis = arguments.codingClis or (import ./coding-clis.nix { inherit pkgs; });
 in
 {
-  imports = [ (modulesPath + "/profiles/minimal.nix") ./private-services.nix ./terminald.nix ];
+  imports = [
+    (modulesPath + "/profiles/minimal.nix")
+    ../../system/nix-cache.nix
+    ./private-services.nix
+    ./terminald.nix
+  ];
 
   system.stateVersion = "26.05";
   networking.hostName = "lilly-guest";

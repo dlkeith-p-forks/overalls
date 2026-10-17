@@ -3304,3 +3304,19 @@ Tested scope: SQL manager/replay/recovery tests, native-library local Git/filesy
 **Gaps:** Manager/role histories, URL/path attacks, interrupted guest installation reconciliation, local-edit preservation, immutable revision retention and pinned physical reopen restoration remain unverified on Linux and Windows.
 
 **Preferred test work:** Add and execute generated source/operation histories plus native Linux/Windows install/update/remove/reopen journeys using public-repository fixtures, exact digest assertions, mid-operation guest loss and current-authority withdrawal.
+
+## Build a host or guest closure with the signed Overalls Nix cache
+
+Coverage: **partial**. Layers: authorization, transport, execution, recovery.
+
+Boundary: Nix configuration trusts only the pinned Overalls Cachix signing key for the additional read substituter. The NixOS host catalog, NixOS guests, kexec installer and Ubuntu nix-daemon share the declaration; cache publication and credentials remain outside the fleet.
+
+Required refusal: Reject substituted paths when signatures are disabled or the Overalls key is absent. A Cachix outage falls back to cache.nixos.org or a local build; foreign images without Nix are outside this journey.
+
+Tested scope: Evaluation evidence covers the shared host module, NixOS guest, fleet fixtures and signature policy. It does not establish live Cachix reachability, substitution hit rate or physical rollout.
+
+- **unit, present**: [configured](repo:nix/verification/tests/evaluation/nix-cache.nix) — The flake evaluation check passed for host, guest and all declared fleet fixtures; it also rejects a forced require-sigs=false configuration..
+
+**Gaps:** No recorded physical host/guest run demonstrates a Cachix hit or outage fallback. Cache freshness, availability and deployment convergence remain unverified.
+
+**Preferred test work:** Run a NixOS machine journey that forces a known signed closure through Cachix, then blocks the endpoint and records successful upstream or local fallback while preserving signature refusal.

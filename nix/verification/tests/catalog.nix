@@ -217,6 +217,9 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   nix-gc-configuration = import ./evaluation/nix-gc.nix {
     pkgs = testPkgs; inherit nixpkgs; module = modules.default; inherit fixtures;
   };
+  nix-cache-configuration = import ./evaluation/nix-cache.nix {
+    pkgs = testPkgs; inherit nixpkgs fixtures; module = modules.default;
+  };
   tailscale-configuration = import ./evaluation/tailscale.nix {
     pkgs = testPkgs; inherit nixpkgs; module = modules.default; inherit fixtures;
   };

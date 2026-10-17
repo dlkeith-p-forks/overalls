@@ -78,7 +78,8 @@
         host = import ./nix/domains/artifacts/host { pkgs = nixpkgs.legacyPackages.${system}; };
         host-kexec = (nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = [ nixos-images.nixosModules.kexec-installer nixos-images.nixosModules.noninteractive
+            modules = [ nixos-images.nixosModules.kexec-installer nixos-images.nixosModules.noninteractive
+              ./nix/domains/system/nix-cache.nix
             ({ config, pkgs, ... }: {
               system.kexec-installer.name = "overalls-host-installer";
               environment.systemPackages = [ pkgs.python3 config.boot.zfs.package ];
@@ -124,6 +125,7 @@
           audi = import ./nix/domains/system/audi.nix { packages = built; };
         };
         platform = {
+          nix-cache = ./nix/domains/system/nix-cache.nix;
           nix-compact = import ./nix/domains/system/nix-compact.nix { nixCompact = nix-compact; };
           remote-builders = { imports = [ ./nix/domains/system/remote-builders.nix self.nixosModules.security.secrets ]; };
           sysctl = ./nix/domains/system/sysctl.nix;

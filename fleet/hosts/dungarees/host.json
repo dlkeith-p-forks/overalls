@@ -52,6 +52,10 @@
     {
       "name": "dungarees-audi-dns",
       "path": "secrets/dungarees-audi-dns.enc.json"
+    },
+    {
+      "name": "overalls-cachix",
+      "path": "secrets/overalls-cachix.enc.json"
     }
   ],
   "discovery": {

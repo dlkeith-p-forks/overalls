@@ -1,5 +1,15 @@
 # Architecture
 
+[ADR-0188](decisions/0188-signed-overalls-cachix-substitution.md) adds the
+signed Overalls Cachix read cache to all Nix-running hosts, installers and guest
+images. The upstream cache and signature enforcement remain enabled, with local
+build fallback; declaration evaluation is implemented while live cache rollout
+remains partial.
+
+[ADR-0189](decisions/0189-cachix-watch-store-publishing.md) enables continuous
+signed-store publication from both fleet NixOS hosts using host-custodied SOPS
+credentials; live upload acceptance remains partial.
+
 [ADR-0178](decisions/0178-durable-agent-context-and-planning.md) adds durable
 active context, compaction checkpoints and Plan/Work collaboration to the
 Marshall-owned agent loop. Context is separate from retained transcript history;

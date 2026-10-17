@@ -1,3 +1,22 @@
+# Nix cache trust and fallback
+
+Every Nix-running host and guest imports the shared cache declaration from
+[the platform cache module](repo:nix/platform/nix-cache.nix). Nix keeps
+`https://cache.nixos.org/` and adds `https://overalls.cachix.org`; paths from the
+second endpoint are accepted only with the pinned
+`overalls.cachix.org-1` public key. Signature verification remains required,
+and fallback permits a local build or another configured substituter when Cachix
+is unavailable. The kexec installer and Ubuntu guest `nix-daemon` use the same
+values. The Overalls and Dungarees fleet hosts also enable the NixOS
+`cachix-watch-store` agent for cache `overalls`. Its scoped API token is
+delivered as the SOPS bundle `overalls-cachix` and the agent requires that bundle
+unit before starting. The token is not part of evaluated configuration or guest
+images; live upload and rotation evidence remain unrecorded.
+
+No Cachix write token is embedded. The evaluation check
+`nix-cache-configuration` covers host, guest and fleet fixture declarations; it
+does not establish live reachability, cache hit rate or physical rollout.
+
 # NixOS machine configuration
 
 ## Guest coding CLI configuration
