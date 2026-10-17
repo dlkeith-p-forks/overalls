@@ -31,3 +31,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Native rows MUST be complete, unique, bounded, and tied to requested pool names; malformed, duplicate, overflowing, or extra rows MUST remain unavailable.
 - **kind:** security
 - **status:** active
+
+### lilly.host_ownership.I5 — Pool turns are exclusive and releaseable
+- **scope:** `Lilly.Host.PoolQueue.enter/4` and `leave/2`
+- **must:** A held directory turn MUST reject a zero-wait second entrant as busy; releasing the holder MUST make the lane available again, while an unqueued environment remains a successful no-op turn.
+- **kind:** ordering
+- **status:** active

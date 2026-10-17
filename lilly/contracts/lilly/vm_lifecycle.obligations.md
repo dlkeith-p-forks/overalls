@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Storage identity MUST clear optional workspace delivery data while preserving the validated VM specification fields.
 - **kind:** persisted-format
 - **status:** active
+
+### lilly.vm_lifecycle.I4 — Liveness evidence fails closed and owns rows
+- **scope:** `Lilly.Execution.Liveness.step/2` and `rows/1`
+- **must:** A fresh liveness state MUST hold no rows; boot evidence MUST publish only the boot row, running evidence MUST hold both rows, inconclusive evidence MUST have no effects, and invalid events MUST be rejected.
+- **kind:** security
+- **status:** active

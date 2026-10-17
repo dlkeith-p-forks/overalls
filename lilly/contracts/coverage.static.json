@@ -1,9 +1,9 @@
 {
   "apps": {
     "lilly": {
-      "active": 13,
+      "active": 15,
       "coverage": 1.0,
-      "covered": 13
+      "covered": 15
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "lilly.host_ownership": {
-      "active": 4,
+      "active": 5,
       "app": "lilly",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "lilly.host_ownership.I1": {
@@ -57,6 +57,16 @@
           "testable": true,
           "tests": [
             "test ZFS parsers reject incomplete, duplicate, and overflowing native rows"
+          ]
+        },
+        "lilly.host_ownership.I5": {
+          "failing": 0,
+          "kind": "ordering",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test pool turns are exclusive and releasing a holder reopens the lane"
           ]
         }
       }
@@ -140,10 +150,10 @@
       }
     },
     "lilly.vm_lifecycle": {
-      "active": 3,
+      "active": 4,
       "app": "lilly",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "lilly.vm_lifecycle.I1": {
@@ -175,6 +185,16 @@
           "tests": [
             "test storage identity clears delivery-only workspace source"
           ]
+        },
+        "lilly.vm_lifecycle.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test liveness state fails closed and publishes only evidence-owned rows"
+          ]
         }
       }
     },
@@ -190,8 +210,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 13,
+    "active": 15,
     "coverage": 1.0,
-    "covered": 13
+    "covered": 15
   }
 }

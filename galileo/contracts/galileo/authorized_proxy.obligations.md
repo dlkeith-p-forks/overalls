@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** path prefix removal MUST preserve unrelated paths and never match partial segments.
 - **kind:** security
 - **status:** active
+
+### galileo.authorized_proxy.I4 — SLO actor records terminal outcomes
+- **scope:** `Galileo.SLO`
+- **must:** The SLO actor MUST accept valid outcome observations and expose cumulative success/failure counts and duration totals; invalid observations MUST be rejected at the API boundary.
+- **kind:** functional
+- **status:** active

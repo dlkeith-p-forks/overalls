@@ -31,3 +31,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Property wire output preserves assertion kind and emits details only for hits.
 - **kind:** functional
 - **status:** active
+
+### overalls_antithesis_sdk.sdk.I5 — Writer disables safely without external helper
+- **scope:** `OverallsAntithesis.SDK.Writer.init/1` and writer calls
+- **must:** When the external Antithesis output directory is absent, the writer actor MUST enter disabled state and reject writes without spawning a port.
+- **kind:** security
+- **status:** active

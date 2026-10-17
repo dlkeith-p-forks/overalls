@@ -25,3 +25,9 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Known provider statuses map to closed reason atoms and unrecognized payloads remain `:upstream_failed`.
 - **kind:** functional
 - **status:** active
+
+### ziggy.inference_authority.I4 — Lease actor rejects unsafe authority parameters
+- **scope:** `Ziggy.Lease.init/1`
+- **must:** Lease startup MUST refuse non-positive or overlong TTLs, renewal intervals that are not shorter than TTL, and malformed request identifiers.
+- **kind:** security
+- **status:** active

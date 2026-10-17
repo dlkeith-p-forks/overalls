@@ -90,4 +90,26 @@ defmodule OverallsDiagnosticsTelemetryContractTest do
     refute Overalls.Diagnostics.Schema.uuid?(:not_a_uuid)
     refute Overalls.Diagnostics.Schema.enum?(:not_in_trace_schema)
   end
+
+  @tag obligation: "overalls_diagnostics.telemetry.I7"
+  test "metric interval snapshots consume accepted measurements once" do
+    assert :ok = Overalls.Diagnostics.Metrics.reset()
+    assert :ok = Overalls.Diagnostics.Metrics.record([:audi, :ssh, :candidate], %{count: 2})
+    assert {:ok, first} = Overalls.Diagnostics.Metrics.take_snapshot()
+    assert get_in(first, ["audi.ssh.candidate", "count"]) == 2
+    assert {:ok, second} = Overalls.Diagnostics.Metrics.take_snapshot()
+    refute Map.has_key?(second, "audi.ssh.candidate")
+    assert :ok = Overalls.Diagnostics.Metrics.reset()
+    assert {:ok, empty} = Overalls.Diagnostics.Metrics.take_snapshot()
+    assert empty == %{}
+  end
+
+  @tag obligation: "overalls_diagnostics.telemetry.I8"
+  test "processor health has bounded typed counters" do
+    health = Overalls.Diagnostics.Processor.health()
+    assert is_boolean(health.available)
+    assert is_integer(health.pending) and health.pending >= 0
+    assert is_integer(health.queue_dropped) and health.queue_dropped >= 0
+    assert is_integer(health.export_failed) and health.export_failed >= 0
+  end
 end

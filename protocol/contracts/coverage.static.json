@@ -1,9 +1,9 @@
 {
   "apps": {
     "overalls_protocol": {
-      "active": 13,
+      "active": 14,
       "coverage": 1.0,
-      "covered": 13
+      "covered": 14
     },
     "system": {
       "active": 0,
@@ -82,10 +82,10 @@
       }
     },
     "overalls_protocol.state_view": {
-      "active": 4,
+      "active": 5,
       "app": "overalls_protocol",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "overalls_protocol.state_view.I1": {
@@ -126,6 +126,16 @@
           "testable": true,
           "tests": [
             "test view index and subscribers track deletion"
+          ]
+        },
+        "overalls_protocol.state_view.I5": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test owner death revokes rows and notifies subscribers"
           ]
         }
       }
@@ -181,8 +191,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 13,
+    "active": 14,
     "coverage": 1.0,
-    "covered": 13
+    "covered": 14
   }
 }

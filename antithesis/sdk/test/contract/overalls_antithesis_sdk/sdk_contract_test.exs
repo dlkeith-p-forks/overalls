@@ -53,4 +53,14 @@ defmodule OverallsAntithesisSdkSdkContractTest do
              accepted_count: 9_223_372_036_854_775_808
            })
   end
+
+  @tag obligation: "overalls_antithesis_sdk.sdk.I5"
+  test "writer is disabled without external helper configuration" do
+    {:ok, state} = OverallsAntithesis.SDK.Writer.init([])
+    assert state.state == :disabled
+    assert state.port == nil
+
+    assert {:reply, :disabled, ^state} =
+             OverallsAntithesis.SDK.Writer.handle_call({:write, <<1>>, nil}, self(), state)
+  end
 end

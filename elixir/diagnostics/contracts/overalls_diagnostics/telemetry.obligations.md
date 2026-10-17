@@ -43,3 +43,16 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** UUID validation accepts only five correctly sized hexadecimal groups, and enum validation accepts only atoms present in the reviewed trace schema; malformed terms and unknown values are rejected without conversion side effects.
 - **kind:** security
 - **status:** active
+
+
+### overalls_diagnostics.telemetry.I7 — Metrics snapshots consume intervals exactly once
+- **scope:** `Overalls.Diagnostics.Metrics.take_snapshot/0` and `reset/0`
+- **must:** Accepted measurements MUST appear in the next interval snapshot, be consumed exactly once, and reset MUST clear subsequent snapshots.
+- **kind:** functional
+- **status:** active
+
+### overalls_diagnostics.telemetry.I8 — Processor health remains bounded and typed
+- **scope:** `Overalls.Diagnostics.Processor.health/0`
+- **must:** Processor health MUST expose finite fields with non-negative integer counters and a boolean availability flag.
+- **kind:** non-functional
+- **status:** active

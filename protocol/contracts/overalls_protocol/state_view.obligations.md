@@ -14,6 +14,12 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **kind:** non-functional
 - **status:** active
 
+### overalls_protocol.state_view.I5 — Owner death revokes rows and notifies readers
+- **scope:** `OverallsProtocol.View` monitor cleanup
+- **must:** When a key owner exits, its row and index entries MUST be removed and subscribed readers MUST receive a change notification.
+- **kind:** functional
+- **status:** active
+
 ### overalls_protocol.state_view.I2 — Cadence coalesces in-flight work
 - **scope:** `OverallsProtocol.Cadence.step/2`
 - **must:** A run starts from idle, ticks during a run do not start another run, requests coalesce into one follow-up, and completion of an idle cadence is rejected.

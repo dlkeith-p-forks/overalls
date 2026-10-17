@@ -31,3 +31,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Planning input MUST contain one to three well formed questions with bounded text and unique identifiers; malformed or duplicate entries MUST be rejected deterministically.
 - **kind:** security
 - **status:** active
+
+### marshall.threads_agents.I5 — Machine specifications fail closed and preserve shape
+- **scope:** `Marshall.Threads.MachineSpec.from_map/1`
+- **must:** Only x86_64 specs with positive bounded VMShape resources and supported profiles MUST be accepted; customer profiles and malformed UUIDs MUST be refused.
+- **kind:** security
+- **status:** active
+
+### marshall.threads_agents.I6 — Thread titles remain bounded and deterministic on generator failure
+- **scope:** `Marshall.Threads.Title.generate/1` and `fallback/1`
+- **must:** Generated titles MUST be whitespace-normalized and capped at 120 bytes; generator failures or blank output MUST use the safe objective fallback.
+- **kind:** functional
+- **status:** active

@@ -35,4 +35,17 @@ defmodule GalileoAuthorizedProxyContractTest do
     assert Galileo.Strip.apply("", "/users") == "/users"
     assert Galileo.Strip.apply("/api/", "/api/users") == "/users"
   end
+
+  @tag obligation: "galileo.authorized_proxy.I4"
+  test "SLO actor records outcomes" do
+    {:ok, pid} = Galileo.SLO.start_link([])
+    on_exit(fn -> if Process.alive?(pid), do: GenServer.stop(pid) end)
+    GenServer.cast(pid, {:record, true, 10})
+    GenServer.cast(pid, {:record, false, 20})
+    Process.sleep(10)
+    snapshot = GenServer.call(pid, :snapshot)
+    assert snapshot.successes == 1
+    assert snapshot.failures == 1
+    assert snapshot.duration.sum_us == 30
+  end
 end

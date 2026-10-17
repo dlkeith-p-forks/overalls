@@ -19,3 +19,15 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** The compute actor MUST carry only its explicit purpose and authorization MUST fail closed when policy state or a recognized user principal is absent.
 - **kind:** security
 - **status:** active
+
+### marshall.identity_authorization.I3 — Account boundary validators fail closed
+- **scope:** `Marshall.Accounts.EmailAddress.valid?/1` and `Marshall.Accounts.GuestUsername.from_uid/1`
+- **must:** Mailbox validation MUST reject nonbinary, control, whitespace, display-name, and overlong input; guest usernames MUST derive only from allocated durable UIDs and reject all other terms.
+- **kind:** security
+- **status:** active
+
+### marshall.identity_authorization.I4 — Security proof freshness is time bounded
+- **scope:** `Marshall.Accounts.Security.elevation_fresh?/3` and `email_fresh?/2`
+- **must:** Future proofs, expired proofs, proofs older than their configured windows, and malformed terms MUST be rejected; only currently valid bounded proofs may authorize sensitive actions.
+- **kind:** security
+- **status:** active

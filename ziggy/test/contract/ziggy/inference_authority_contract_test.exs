@@ -26,6 +26,7 @@ defmodule ZiggyInferenceAuthorityContractTest do
 
     assert {:error, :invalid_request} =
              Ziggy.Route.resolve("POST", "/v1/responses", "", ~s({"model":"bad model"}))
+
     assert {:error, :unsupported_route} =
              Ziggy.Route.resolve("POST", "/v1/responses", "", String.duplicate("x", 16_777_217))
   end
@@ -37,5 +38,27 @@ defmodule ZiggyInferenceAuthorityContractTest do
 
     assert :cancelled = Ziggy.AgentError.terminal(%{"status" => "cancelled"})
     assert :upstream_failed = Ziggy.AgentError.classify(%{"message" => "secret"})
+  end
+
+  @tag obligation: "ziggy.inference_authority.I4"
+  test "lease rejects unsafe authority parameters before starting" do
+    owner = self()
+
+    base = [
+      owner: owner,
+      request_id: "00000000-0000-0000-0000-000000000001",
+      renew: fn -> :ok end,
+      tasks: self()
+    ]
+
+    assert {:stop, :invalid_lease} = Ziggy.Lease.init(Keyword.merge(base, ttl_ms: 0))
+
+    assert {:stop, :invalid_lease} =
+             Ziggy.Lease.init(Keyword.merge(base, ttl_ms: 31_000, renewal_ms: 1))
+
+    assert {:stop, :invalid_lease} =
+             Ziggy.Lease.init(Keyword.merge(base, ttl_ms: 100, renewal_ms: 100))
+
+    assert {:stop, :invalid_lease} = Ziggy.Lease.init(Keyword.put(base, :request_id, "bad"))
   end
 end

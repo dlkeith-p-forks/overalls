@@ -44,4 +44,20 @@ defmodule LillyVmLifecycleBehaviorContractTest do
     assert persisted.id == spec.id
     assert persisted.disk_bytes == spec.disk_bytes
   end
+
+  @tag obligation: "lilly.vm_lifecycle.I4"
+  test "liveness state fails closed and publishes only evidence-owned rows" do
+    liveness = Lilly.Execution.Liveness.new()
+    assert Lilly.Execution.Liveness.rows(:unproven) == []
+
+    assert {:ok, booting, [{:publish, :boot}]} =
+             Lilly.Execution.Liveness.step(liveness, :observed_booting)
+
+    assert booting.state == :booting
+    assert {:ok, booting, []} = Lilly.Execution.Liveness.step(booting, :inconclusive)
+    assert {:ok, live, effects} = Lilly.Execution.Liveness.step(booting, :observed_running)
+    assert live.state == :live
+    assert Enum.sort(effects) == [{:publish, :boot}, {:publish, :live}]
+    assert {:error, :invalid_transition} = Lilly.Execution.Liveness.step(live, :unknown)
+  end
 end

@@ -25,3 +25,10 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Only exact bounded acknowledgements and allowlisted refusal reasons decode; malformed, oversized, or unknown replies are unavailable.
 - **kind:** security
 - **status:** active
+
+
+### overalls_request_accounting.recorder.I4 — Producer admission fails closed
+- **scope:** `Overalls.RequestAccounting.Producer.admit/2` and `complete/4`
+- **must:** Admission against an unavailable producer or a non-local owner MUST return `:unrecorded`; malformed or repeated completion MUST be a safe no-op.
+- **kind:** functional
+- **status:** active

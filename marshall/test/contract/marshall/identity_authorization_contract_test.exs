@@ -76,4 +76,36 @@ defmodule MarshallIdentityAuthorizationContractTest do
              Marshall.Authorization.Cedar.entity("VM", "vm-1")
            ) == false
   end
+
+  @tag obligation: "marshall.identity_authorization.I3"
+  test "account boundary validators reject unsafe identity input" do
+    assert Marshall.Accounts.EmailAddress.valid?("alice@example.com")
+    refute Marshall.Accounts.EmailAddress.valid?("Alice Example <alice@example.com>")
+    refute Marshall.Accounts.EmailAddress.valid?("alice\r\n@example.com")
+    refute Marshall.Accounts.EmailAddress.valid?(String.duplicate("a", 255) <> "@x.test")
+    refute Marshall.Accounts.EmailAddress.valid?(nil)
+    refute Marshall.Accounts.EmailAddress.valid?("alice @example.com")
+
+    assert Marshall.Accounts.GuestUsername.from_uid(200_000) == {:ok, "u200000"}
+    assert Marshall.Accounts.GuestUsername.from_uid(999_999) == {:ok, "u999999"}
+    assert Marshall.Accounts.GuestUsername.from_uid(199_999) == :error
+    assert Marshall.Accounts.GuestUsername.from_uid(1_000_000) == :error
+    assert Marshall.Accounts.GuestUsername.from_uid("200000") == :error
+  end
+
+  @tag obligation: "marshall.identity_authorization.I4"
+  test "security proof freshness is bounded in both directions" do
+    verified = ~U[2026-01-01 00:00:00Z]
+    now = ~U[2026-01-01 00:05:00Z]
+    expiry = ~U[2026-01-01 00:10:00Z]
+
+    assert Marshall.Accounts.Security.elevation_fresh?(verified, expiry, now)
+    refute Marshall.Accounts.Security.elevation_fresh?(~U[2026-01-01 00:11:00Z], expiry, now)
+    refute Marshall.Accounts.Security.elevation_fresh?(verified, ~U[2026-01-01 00:04:59Z], now)
+    refute Marshall.Accounts.Security.elevation_fresh?(nil, expiry, now)
+
+    assert Marshall.Accounts.Security.email_fresh?(~U[2026-01-01 00:04:00Z], now)
+    refute Marshall.Accounts.Security.email_fresh?(~U[2025-12-31 23:00:00Z], now)
+    refute Marshall.Accounts.Security.email_fresh?(nil, now)
+  end
 end

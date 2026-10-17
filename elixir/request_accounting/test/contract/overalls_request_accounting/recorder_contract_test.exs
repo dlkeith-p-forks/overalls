@@ -44,4 +44,26 @@ defmodule OverallsRequestAccountingRecorderContractTest do
     assert {:error, :unavailable} =
              Overalls.RequestAccounting.RecorderRPC.decode(String.duplicate("x", 513))
   end
+
+  @tag obligation: "overalls_request_accounting.recorder.I4"
+  test "producer admission and malformed completion fail closed" do
+    assert :unrecorded = Overalls.RequestAccounting.Producer.admit(:missing_producer)
+    assert :unrecorded = Overalls.RequestAccounting.Producer.admit(:missing_producer, self())
+
+    assert :ok =
+             Overalls.RequestAccounting.Producer.complete(
+               :missing_producer,
+               :bad_ticket,
+               :success,
+               1
+             )
+
+    assert :ok =
+             Overalls.RequestAccounting.Producer.complete(
+               :missing_producer,
+               :unrecorded,
+               :success,
+               1
+             )
+  end
 end

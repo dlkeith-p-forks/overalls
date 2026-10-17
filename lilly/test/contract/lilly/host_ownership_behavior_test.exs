@@ -40,4 +40,16 @@ defmodule LillyHostOwnershipBehaviorContractTest do
              Lilly.Host.ZFSIO.parse_identities("tank\tguid\t1\ntank\tguid\t2\n", ["tank"])
            )
   end
+
+  @tag obligation: "lilly.host_ownership.I5"
+  test "pool turns are exclusive and releasing a holder reopens the lane" do
+    directory =
+      Path.join(System.tmp_dir!(), "covenant-pool-#{System.unique_integer([:positive])}")
+
+    assert {:ok, holder} = Lilly.Host.PoolQueue.enter(directory, :observe, 0)
+    assert {:error, :busy} = Lilly.Host.PoolQueue.enter(directory, :mutate, 0)
+    assert :ok = Lilly.Host.PoolQueue.leave(directory, holder)
+    assert {:ok, next} = Lilly.Host.PoolQueue.enter(directory, :upkeep, 0)
+    assert :ok = Lilly.Host.PoolQueue.leave(directory, next)
+  end
 end
