@@ -6,6 +6,7 @@ import os
 import time
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal
 from uuid import UUID, uuid4
 
 from antithesis.assertions import always, reachable
@@ -25,6 +26,35 @@ from core.outcome import Observation, State
 from core.sql import SqlOracle
 
 LOG = logging.getLogger(__name__)
+
+# Fixed, nonsecret reasons an admission command can stop before reaching a
+# settled Marshall decision. Each is logged at most once per process.
+Unexercised = Literal[
+    "Compute catalog result unavailable",
+    "measured eligible host capacity unavailable",
+    "no enabled catalog image advertised",
+    "pre-submission SQL snapshot unavailable",
+    "fresh admission key already has committed rows",
+    "Marshall admission reply unavailable",
+    "post-submission SQL snapshot unavailable",
+    "operator image precheck refused before admission",
+    "real delete was not observed archived",
+]
+_REPORTED: set[str] = set()
+# The operator boots one Marshall release per request; under a saturated CPU
+# that alone can approach 30 s, after which the result would be unknown.
+OPERATOR_TIMEOUT_SECONDS = 90.0
+
+
+def unexercised(reason: Unexercised) -> None:
+    """Log one static reason once per process; never a pass, never a failure."""
+    if reason not in _REPORTED:
+        _REPORTED.add(reason)
+        LOG.info("Compute admission unexercised: %s", reason)
+
+
+def _configure_logging() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
 
 @dataclass(frozen=True)
@@ -59,21 +89,40 @@ def load_runtime() -> Runtime | None:
         )
     )
     operator = ComputeOperator(
-        Path(os.getenv("ANTITHESIS_CONTROL_OPERATOR_ROOT", "/run/overalls-control-requests"))
+        Path(os.getenv("ANTITHESIS_CONTROL_OPERATOR_ROOT", "/run/overalls-control-requests")),
+        timeout_seconds=OPERATOR_TIMEOUT_SECONDS,
     )
-    catalog = operator.catalog()
-    if catalog.state is not State.OBSERVED or catalog.value is None:
-        return None
-    selected = catalog.value
-    image = next(
-        (candidate for candidate in selected.images if _catalog_fits(selected, candidate)), None
-    )
-    if not selected.capacity_known or image is None:
-        LOG.info("Compute admission unexercised: measured eligible host capacity unavailable")
+    image = select_image(operator.catalog())
+    if image is None:
         return None
     sql = SqlOracle(config)
     return Runtime(
         owner_id, fixture.host_ids, operator, AdmissionOracle(sql), sql, image, AttemptLedger()
+    )
+
+
+def select_image(catalog: Observation[Catalog]) -> CatalogImage | None:
+    """@cc [owner:ghuntley,label:verification;capacity] admission-catalog-image-selection
+    Only an observed catalog with known capacity and an advertised enabled image
+    MAY select an image. A fitting image is preferred; when the catalog's
+    unlocked headroom is below the request shape the request is still submitted,
+    because Marshall's serialized admission transaction, not this observer,
+    decides placement and a definite refusal is a real admission decision.
+    Every other outcome MUST log a static unexercised reason and select none.
+    """
+    if catalog.state is not State.OBSERVED or catalog.value is None:
+        unexercised("Compute catalog result unavailable")
+        return None
+    selected = catalog.value
+    if not selected.capacity_known:
+        unexercised("measured eligible host capacity unavailable")
+        return None
+    if not selected.images:
+        unexercised("no enabled catalog image advertised")
+        return None
+    return next(
+        (candidate for candidate in selected.images if _catalog_fits(selected, candidate)),
+        selected.images[0],
     )
 
 
@@ -100,7 +149,11 @@ def new_admission(
     settled admission result; a missing reply MUST remain an uncertain attempt.
     """
     before = _rows(runtime.oracle, runtime.owner_id, key)
-    if before is None or before:
+    if before is None:
+        unexercised("pre-submission SQL snapshot unavailable")
+        return Observation.unavailable(), None
+    if before:
+        unexercised("fresh admission key already has committed rows")
         return Observation.unavailable(), None
     result = runtime.attempts.submit(
         runtime.operator, runtime.oracle, runtime.owner_id, key, runtime.image, name
@@ -114,16 +167,35 @@ def new_admission(
     return result.response, after
 
 
+def _settled(
+    response: Observation[DomainResult], rows: tuple[Allocation, ...] | None
+) -> tuple[DomainResult, tuple[Allocation, ...]] | None:
+    """A Marshall decision with its committed-row witness, or a logged reason."""
+    if response.state is not State.OBSERVED or response.value is None:
+        unexercised("Marshall admission reply unavailable")
+        return None
+    if rows is None:
+        unexercised("post-submission SQL snapshot unavailable")
+        return None
+    if response.value.status == "error" and response.value.reason == "image_unavailable":
+        # The operator's catalog precheck refused before Marshall admission ran.
+        unexercised("operator image precheck refused before admission")
+        return None
+    return response.value, rows
+
+
 def run_atomic_allocation() -> int:
+    _configure_logging()
     runtime = load_runtime()
     if runtime is None:
         return 0
     key = uuid4()
     name = f"admission-{key.hex[:20]}"
-    response, rows = new_admission(runtime, key, name)
-    if rows is None or response.state is not State.OBSERVED or response.value is None:
+    response, observed_rows = new_admission(runtime, key, name)
+    settled = _settled(response, observed_rows)
+    if settled is None:
         return 0
-    result = response.value
+    result, rows = settled
     if result.status == "error":
         joined = not rows
     else:
@@ -173,23 +245,52 @@ def _key_verdict(verdicts: list[bool]) -> int:
     return 0
 
 
+def _refused_replay(runtime: Runtime, key: UUID, name: str) -> bool | None:
+    """Replay a definitely refused key once; it may admit at most one VM."""
+    attempt = runtime.attempts.submit(
+        runtime.operator, runtime.oracle, runtime.owner_id, key, runtime.image, name
+    )
+    settled = _settled(attempt.response, _committed(attempt.committed))
+    if settled is None:
+        return None
+    result, rows = settled
+    if result.status == "error":
+        return not rows
+    receipt = provisioned(result)
+    return receipt is not None and _one_identity(rows, receipt) is True
+
+
+def _committed(
+    observation: Observation[tuple[Allocation, ...]],
+) -> tuple[Allocation, ...] | None:
+    return observation.value if observation.state is State.OBSERVED else None
+
+
 def run_key_survives_archive() -> int:
+    _configure_logging()
     runtime = load_runtime()
     if runtime is None:
         return 0
     key = uuid4()
     name = f"admission-{key.hex[:20]}"
-    first, initial_rows = new_admission(runtime, key, name)
-    if first.state is not State.OBSERVED or first.value is None:
+    first_response, first_rows = new_admission(runtime, key, name)
+    settled = _settled(first_response, first_rows)
+    if settled is None:
         return 0
-    if initial_rows is None:
-        return 0
+    first, initial_rows = settled
     verdicts: list[bool] = []
-    if first.value.status == "error":
+    if first.status == "error":
         if initial_rows:
             verdicts.append(False)
+        else:
+            # A real refusal (for example insufficient measured headroom) still
+            # leaves a replayable key: the identical request may admit at most
+            # one VM and never a second one.
+            replay = _refused_replay(runtime, key, name)
+            if replay is not None:
+                verdicts.append(replay)
         return _key_verdict(verdicts)
-    vm = provisioned(first.value)
+    vm = provisioned(first)
     if vm is None or _one_identity(initial_rows, vm) is not True:
         verdicts.append(False)
         return _key_verdict(verdicts)
@@ -203,15 +304,18 @@ def run_key_survives_archive() -> int:
         if identical_attempt.committed.state is State.OBSERVED
         else None
     )
-    if current is not None:
-        if _one_identity(current, vm) is not True:
-            verdicts.append(False)
-        elif identical.state is State.OBSERVED and identical.value is not None:
-            retry = provisioned(identical.value)
-            same = retry is not None and retry.vm_id == vm.vm_id
-            verdicts.append(same)
-            if same:
-                reachable("Marshall admission reused durable idempotency history")
+    if current is None:
+        unexercised("post-submission SQL snapshot unavailable")
+    elif _one_identity(current, vm) is not True:
+        verdicts.append(False)
+    elif identical.state is State.OBSERVED and identical.value is not None:
+        retry = provisioned(identical.value)
+        same = retry is not None and retry.vm_id == vm.vm_id
+        verdicts.append(same)
+        if same:
+            reachable("Marshall admission reused durable idempotency history")
+    else:
+        unexercised("Marshall admission reply unavailable")
 
     changed_attempt = runtime.attempts.submit(
         runtime.operator, runtime.oracle, runtime.owner_id, key, runtime.image, f"{name}-changed"
@@ -222,15 +326,18 @@ def run_key_survives_archive() -> int:
         if changed_attempt.committed.state is State.OBSERVED
         else None
     )
-    if current is not None:
-        if _one_identity(current, vm) is not True:
+    if current is None:
+        unexercised("post-submission SQL snapshot unavailable")
+    elif _one_identity(current, vm) is not True:
+        verdicts.append(False)
+    elif changed.state is State.OBSERVED and changed.value is not None:
+        if changed.value.status == "ok":
             verdicts.append(False)
-        elif changed.state is State.OBSERVED and changed.value is not None:
-            if changed.value.status == "ok":
-                verdicts.append(False)
-            elif changed.value.reason == "idempotency_conflict":
-                verdicts.append(True)
-                reachable("Marshall admission rejected changed same-key request")
+        elif changed.value.reason == "idempotency_conflict":
+            verdicts.append(True)
+            reachable("Marshall admission rejected changed same-key request")
+    else:
+        unexercised("Marshall admission reply unavailable")
 
     if _archive(runtime, vm.vm_id):
         archived = _rows(runtime.oracle, runtime.owner_id, key)
@@ -255,4 +362,7 @@ def run_key_survives_archive() -> int:
                         reachable("Marshall admission replay found archived idempotency history")
         elif archived is not None:
             verdicts.append(False)
+    else:
+        # Expected under the stub: the controlled executor never completes a delete.
+        unexercised("real delete was not observed archived")
     return _key_verdict(verdicts)

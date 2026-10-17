@@ -240,6 +240,11 @@ A fully stub-backed report advertises placement readiness, so Marshall's real
 admission transaction commits VM, placement, reservation and dispatch rows,
 but the controlled executor never launches a guest and a delete never
 completes. Setup requires those committed report, pool and image rows in SQL.
+Catalog headroom below the request shape no longer withholds a request: a
+definite `insufficient_capacity` refusal is Marshall's real decision, checked
+for absent rows and a bounded one-VM replay. Every stop before a settled
+decision logs a fixed `Compute admission unexercised` reason; the first hosted
+run reached no admission assertion because those lines were never emitted.
 The results are admission-logic evidence only, never ZFS, physical-capacity,
 KVM or isolation evidence; the measured-capacity command stays in a separate,
 unselected template for the measured host graph.

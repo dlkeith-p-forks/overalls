@@ -1617,9 +1617,9 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/admission/scenarios.py",
-          "line": 140,
+          "line": 212,
           "kind": "always",
-          "sha256": "467d99aa4f9fa5b2ecdf1c07d0ba52532f40861e897deb06f2e4a2feaeb30720"
+          "sha256": "d1cad7184f477f216fc76da675567e8604710bb757f1f021b6a06d4f43a486aa"
         }
       ],
       "implementation_scope": "One serial trusted-operator admission joins a terminal domain receipt to one-statement PostgreSQL VM, placement, reservation, address, provision-operation and dispatch-job rows; no cross-node same-key race, commit-cut run, or positive integrated-host checkpoint.",
@@ -1660,9 +1660,9 @@
       "authored_primary_callsites": [
         {
           "file": "antithesis/workload/admission/scenarios.py",
-          "line": 172,
+          "line": 244,
           "kind": "always",
-          "sha256": "467d99aa4f9fa5b2ecdf1c07d0ba52532f40861e897deb06f2e4a2feaeb30720"
+          "sha256": "d1cad7184f477f216fc76da675567e8604710bb757f1f021b6a06d4f43a486aa"
         }
       ],
       "implementation_scope": "Observed first-key SQL contradictions fail, identical replay and exact idempotency conflict are checked, and archived replay waits for real delete plus SQL archival; integrated physical cleanup and hosted execution remain unverified.",
@@ -3851,7 +3851,7 @@
     "source_sha256": {
       "antithesis/workload/access/browser.py": "09ee2415222b843175990bfcb638cb476c52cc1f027faba6cc12c131cf4d8a37",
       "antithesis/workload/admission/physical_scenario.py": "4fc2cab60d0f74376da546f6cf3f9aa262b5955f2ffe1f4545f43a0c4fc8e4f8",
-      "antithesis/workload/admission/scenarios.py": "467d99aa4f9fa5b2ecdf1c07d0ba52532f40861e897deb06f2e4a2feaeb30720",
+      "antithesis/workload/admission/scenarios.py": "d1cad7184f477f216fc76da675567e8604710bb757f1f021b6a06d4f43a486aa",
       "antithesis/workload/backup/scenarios.py": "c037cd1d31e4ea171caf7d7de5b02342a6e110763229359d10893911ccb931d4",
       "antithesis/workload/control/bounds.py": "7afd25bd08c5369ac2c10d73147a2cc240929a8f249db0ff83ed3b4725b8350d",
       "antithesis/workload/control/delivery.py": "1c169ac6eca568af29e9ab416c491f240b601bed31ef1e8e3c76be25786a383a",
