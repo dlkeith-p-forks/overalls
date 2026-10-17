@@ -1,9 +1,9 @@
 name: Update DevEnv Dependencies
 
-# Manual only. flake.nix requires buildNixpkgs to match the nixpkgs pinned in
-# devenv.lock, and a lock change makes the deployment HLDD receipt stale, so an
-# unattended bump cannot pass CI without a reviewed flake and receipt update.
 on:
+  schedule:
+    # Run every Monday at 5:00 AM UTC
+    - cron: "0 5 * * 1"
   workflow_dispatch:
 
 concurrency:

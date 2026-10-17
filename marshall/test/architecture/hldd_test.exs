@@ -64,6 +64,13 @@ defmodule Overalls.HLDDTest do
     end
   end
 
+  test "devenv pin updates do not enter the reviewed inventory", %{root: root} do
+    write(root, "source.ex", "reviewed source")
+    write(root, "devenv.lock", "pinned inputs")
+    write(root, "devenv.yaml", "inputs")
+    assert HLDDGate.files(root) == ["devenv.yaml", "source.ex"]
+  end
+
   test "Git and packaged inventories agree on generated history and ignored directories", %{
     root: root
   } do

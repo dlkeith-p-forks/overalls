@@ -45,10 +45,15 @@ defmodule Overalls.HLDDGate do
     end)
   end
 
+  # @cc [owner:ghuntley,label:verification] hldd-devenv-pin-exempt
+  # devenv.lock MUST NOT be a reviewed source: the scheduled devenv update
+  # workflow rewrites its pins unattended, and a pin bump alone changes no
+  # documented behavior. devenv.yaml and devenv.nix remain covered.
   @spec excluded?(String.t()) :: boolean()
   defp excluded?(path) do
     Enum.any?(Path.split(path), &(&1 in @ignored)) or
       path == @manifest or
+      path == "devenv.lock" or
       (String.starts_with?(path, @chapters <> "/") and String.ends_with?(path, ".md")) or
       String.starts_with?(path, ["secrets/", "marshall/priv/static/assets/"]) or
       String.ends_with?(path, [".beam", ".pyc", ".gz"]) or
