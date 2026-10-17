@@ -89,16 +89,16 @@ defmodule OverallsAntithesis.Lilly.ControlledExecutorTest do
     assert {:ok, [pool]} = PoolConfig.decode([raw], @host)
     assert pool.backend == :controlled
     assert pool.template_budget_bytes == 34_359_738_368
-    assert pool.standby_per_image == 1
-    assert pool.standby_fills_per_pass == 4
-    assert pool.standby_retirements_per_pass == 4
+    assert pool.image_io_timeout_ms == 300_000
 
     for {key, value} <- [
           {"logical_budget_bytes", 10_737_418_240},
           {"template_budget_bytes", 0},
-          {"standby_per_image", 0},
-          {"standby_fills_per_pass", 33},
-          {"standby_retirements_per_pass", 0}
+          {"image_io_timeout_ms", 999},
+          {"image_io_timeout_ms", 14_400_001},
+          {"standby_per_image", 1},
+          {"standby_fills_per_pass", 4},
+          {"standby_retirements_per_pass", 4}
         ] do
       assert :error = PoolConfig.decode([Map.put(raw, key, value)], @host)
     end

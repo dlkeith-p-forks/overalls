@@ -522,8 +522,7 @@ defmodule Lilly.VM.Executor do
            Driver.fail(config.execution, pool, spec,
              execution_epoch: command.execution_epoch,
              generation: command.generation,
-             vm_id: command.vm_id,
-             failure_reason: reason
+             vm_id: command.vm_id
            ),
          present when is_boolean(present) <- disk_present(pool, spec) do
       {:ok, %{facts(:failed, present) | reason: reason}}

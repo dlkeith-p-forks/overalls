@@ -593,6 +593,14 @@ pub fn supervise() -> io::Result<i32> {
 // or clear the rejection cooldown, staged or applied identity: only a
 // successful digest receipt followed by a failed candidate registration may
 // reject an artifact.
+
+// @cc [owner:ghuntley,label:recovery] lyra-failed-check-defers-to-lock-holder
+// mark_failed MUST NOT block on the update lock. When `.lock` is held it MUST
+// skip its write: the holder is a concurrent check or activation whose newer
+// outcome supersedes this failure, and waiting would overwrite that outcome.
+// The flock belongs to the open file description, which fork duplicates until
+// exec even with O_CLOEXEC, so tests that assert on a mark_failed write MUST
+// first wait for every earlier `.lock` descriptor (quiesce_update_lock).
 fn mark_failed(dir: &Path) {
     if let Ok(gate) = lock(dir) {
         if gate.try_lock_exclusive().is_ok() {
@@ -804,6 +812,7 @@ mod tests {
         };
         let dir = tempfile::tempdir().expect("test directory");
         write_status(dir.path(), &status).expect("seed status");
+        quiesce_update_lock(dir.path());
         mark_failed(dir.path());
         let after = read_status(dir.path());
         assert_eq!(after.last_check.as_deref(), Some("failed"));
@@ -812,6 +821,57 @@ mod tests {
         assert_eq!(after.rejected_until_ms, status.rejected_until_ms);
         assert_eq!(after.applied, status.applied);
         assert_eq!(after.installed, status.installed);
+    }
+
+    /// Block until no copy of any earlier `.lock` descriptor still holds the
+    /// flock. A concurrent test thread's fork (e.g. hegel's server or an
+    /// `ssh-keygen` spawn) duplicates this process's descriptors until the child
+    /// execs, so a lock this test released can briefly outlive its own drop.
+    fn quiesce_update_lock(dir: &Path) {
+        let gate = lock(dir).expect("update lock");
+        gate.lock_exclusive().expect("quiesced update lock");
+        FileExt::unlock(&gate).expect("release update lock");
+    }
+
+    #[test]
+    fn failed_check_defers_to_a_surviving_lock_descriptor() {
+        let dir = tempfile::tempdir().expect("test directory");
+        write_status(
+            dir.path(),
+            &Status {
+                last_check: Some("rolled_back".to_owned()),
+                ..Status::default()
+            },
+        )
+        .expect("seed status");
+        let gate = lock(dir.path()).expect("update lock");
+        gate.lock_exclusive().expect("held update lock");
+        // A duplicate shares the open file description exactly as a forked
+        // child's inherited descriptor does between fork and exec.
+        let inherited = gate.try_clone().expect("duplicate descriptor");
+        drop(gate);
+        let (release, released) = std::sync::mpsc::channel::<()>();
+        let holder = thread::spawn(move || {
+            released.recv().expect("release signal");
+            thread::sleep(Duration::from_millis(50));
+            drop(inherited);
+        });
+
+        mark_failed(dir.path());
+        assert_eq!(
+            read_status(dir.path()).last_check.as_deref(),
+            Some("rolled_back"),
+            "mark_failed must skip rather than wait while the lock is held"
+        );
+
+        release.send(()).expect("signal holder");
+        quiesce_update_lock(dir.path());
+        mark_failed(dir.path());
+        assert_eq!(
+            read_status(dir.path()).last_check.as_deref(),
+            Some("failed")
+        );
+        holder.join().expect("holder thread");
     }
 
     #[test]
@@ -841,6 +901,7 @@ mod tests {
 
         // Transient failures after a rollback (e.g. a closed 503 manifest
         // denial) must not move or extend that cooldown.
+        quiesce_update_lock(dir.path());
         mark_failed(dir.path());
         let after = read_status(dir.path());
         assert_eq!(after.last_check.as_deref(), Some("failed"));

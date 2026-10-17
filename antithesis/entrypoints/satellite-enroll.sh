@@ -9,7 +9,7 @@ umask 077
 secrets=/run/overalls-secrets
 satellite=/run/overalls-satellite-secrets
 public=/run/overalls-satellite-public
-release=/opt/kittens/marshall/bin/marshall
+release=/opt/overalls/marshall/bin/marshall
 [[ "${MARSHALL_INSTANCE_ID:-}" == enrollment-operator && -d "$satellite" && -d "$public" ]] || exit 1
 for role in ziggy galileo audi porsche; do
   [[ -d "/run/overalls-satellite-$role" ]] || exit 1

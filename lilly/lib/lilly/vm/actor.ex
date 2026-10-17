@@ -436,6 +436,8 @@ defmodule Lilly.VM.Actor do
             placement_id: command.placement_id,
             outcome_state: observation.state
           )
+
+          recorded_failure(command, observation)
         end
 
         state = %{state | journal: journal}
@@ -527,6 +529,24 @@ defmodule Lilly.VM.Actor do
     actor_stopped(state.command.vm_id, state.command.placement_id, :invalid_executor_result)
     {:stop, :invalid_executor_result, state}
   end
+
+  # @cc [owner:ghuntley,label:observability;recovery] failure-event-once-per-recorded-outcome
+  # vm.failed MUST be emitted only after the durable journal records a new
+  # failed outcome for the current command, so a failed placement whose
+  # desired state is still running and is re-observed every tick reports once
+  # per distinct failed outcome (placement, epoch, generation, reason and
+  # facts), not once per reconcile. A recovered outcome, a new failure reason or
+  # a newer command's failure MUST emit again; an actor restart over the same
+  # journaled failure MUST NOT. Only identifiers and the closed reason atom.
+  defp recorded_failure(command, %{state: :failed, reason: reason}) do
+    Lilly.Events.emit("vm.failed",
+      vm_id: command.vm_id,
+      placement_id: command.placement_id,
+      reason: reason
+    )
+  end
+
+  defp recorded_failure(_command, _observation), do: :ok
 
   defp publish(state) do
     send(

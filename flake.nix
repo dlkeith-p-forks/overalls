@@ -105,7 +105,9 @@
         security-ziggy-encrypted-dumps = built.encrypted.ziggy;
         security-galileo-encrypted-dumps = built.encrypted.galileo;
         security-enrico-encrypted-dumps = built.encrypted.enrico;
-      };
+      } // (pkgs.lib.mapAttrs' (name: context:
+        pkgs.lib.nameValuePair "antithesis-${name}-context" context
+      ) antithesisImages.contexts);
 
       legacyPackages.${system} = built;
 

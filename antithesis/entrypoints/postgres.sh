@@ -80,7 +80,7 @@ chown -R postgres:postgres "$aux"
 chmod 0700 "$aux" "$aux/tls"
 chmod 0600 "$aux/tls/pg.key" "$aux/pg-password" "$aux/oracle-password"
 export ANTITHESIS_PG_AUX="$aux"
-pgbin=/opt/kittens/postgresql/bin
+pgbin=/opt/overalls/postgresql/bin
 as_postgres() {
   setpriv --reuid=postgres --regid=postgres --clear-groups "$@"
 }
@@ -116,7 +116,7 @@ else
   }
   trap cleanup_bootstrap EXIT
   as_postgres "$pgbin/createdb" -h "$aux" -U overalls overalls
-  as_postgres env PGHOST="$aux" /opt/kittens/entrypoints/oracle-init.sh
+  as_postgres env PGHOST="$aux" /opt/overalls/entrypoints/oracle-init.sh
   as_postgres "$pgbin/pg_ctl" -D "$data" -m fast -w stop >/dev/null
   as_postgres touch "$data/.overalls-initialized"
   trap - EXIT

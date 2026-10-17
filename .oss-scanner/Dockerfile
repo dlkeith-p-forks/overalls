@@ -9,7 +9,7 @@ FROM debian:bookworm
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    NIX_CONFIG="experimental-features = nix-command flakes\nsandbox = false" \
+    NIX_CONFIG="experimental-features = nix-command flakes" \
     PATH=/root/.nix-profile/bin:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 RUN apt-get update \
@@ -25,7 +25,10 @@ RUN apt-get update \
 # Install a single-user Nix profile. The scanner's later layer supplies the
 # package manager, compilers and debugger tools it uses during analysis.
 RUN groupadd --system nixbld \
-    && for builder in $(seq 1 10); do useradd --system --no-create-home --gid nixbld "nixbld${builder}"; done \
+    && for builder in $(seq 1 10); do \
+         useradd --system --no-create-home --gid nixbld "nixbld${builder}"; \
+         usermod --append --groups nixbld "nixbld${builder}"; \
+       done \
     && mkdir -m 0755 /nix \
     && curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install \
     | sh -s -- --no-daemon \
