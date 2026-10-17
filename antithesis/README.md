@@ -128,6 +128,32 @@ Optional satellite, guest-emulator and storage-router scenarios must be selected
 by focused override files when their source-built images, adapters, fixtures and
 oracles are implemented. The default graph makes no claims for those paths.
 
+The `backup-restic` profile adds `config/compose.backup.yaml` to the base graph
+and selects the five `backup` commands. The workload image already carries the
+production backup operator and pinned Restic; the overlay mounts a dedicated
+private named volume where each command creates a disposable encrypted Restic
+file repository. Bootstrap requires the operator, Restic, a private root and a
+real probe repository that initializes and enumerates empty before setup. A
+file backend keeps raw Restic reads free of network uncertainty, because the
+operator returns one failure status for an unavailable repository and for a
+validator refusal. No ZFS host capture, S3 bucket or recovery target is used.
+
+The `satellite-standin` profile renders the base graph with
+`config/compose.origin.yaml`, `config/compose.satellites.yaml` and
+`config/compose.satellite-standin.yaml`. The last overlay adds a labelled
+**guest stand-in**: a process from the workload image that shares only
+`lilly-a`'s network namespace and speaks the guest-side protocol to private
+Audi at `169.254.254.1` with the private root and an internal-service SNI. It is
+not a guest and has no VM, boot, tap, placement or execution authority; Lilly
+binds no VM to its address, so private Audi must refuse it. It mounts only the
+public private-Audi root and a fixed request/result channel. Bootstrap requires
+the origin fixture's authenticated state, the private root and the stand-in's
+verified-TLS receipt. The `satellite` template's unbound-source command checks
+that a forged guest-side request produces no origin receipt. The Ziggy, Galileo
+and editor login-code commands need a current running VM; the controlled Lilly
+pool reports unavailable capacity and no editor gateway, release or wildcard is
+configured, so those commands record unexercised in this graph.
+
 `config/compose.origin.yaml` and `config/compose.smtp.yaml` are optional fixture
 overrides for local upstream and SMTP scenarios. They add separate containers,
 private persistent state, generated runtime CA material, and read-only oracle

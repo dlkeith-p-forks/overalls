@@ -1,0 +1,63 @@
+# Select after compose.origin.yaml and compose.satellites.yaml. This overlay
+# supplies the guest-to-private-Audi channel with a labelled GUEST STAND-IN:
+# a harness process from the workload image that shares only Lilly's network
+# namespace and speaks the guest-side protocol (TLS to 169.254.254.1 with the
+# private root and an internal-service SNI). It is not a guest. It has no VM,
+# boot, tap, placement or execution authority, and Lilly binds no VM to its
+# source address, so private Audi must refuse it. It mounts no secrets: only
+# the public private-Audi root and a fixed request/result channel.
+#
+# The hosted Lilly pool still reports unavailable capacity, so commands that
+# need a current running VM (Ziggy completion, Galileo named origin and the
+# editor login-code race) stay unexercised in this graph; no Audi editor
+# gateway, editor release or wildcard is configured here.
+services:
+  guest-standin:
+    container_name: overalls-guest-standin
+    platform: linux/amd64
+    init: true
+    image: overalls-antithesis/workload:local
+    build:
+      context: ../..
+      dockerfile: antithesis/Dockerfile
+      target: workload
+    entrypoint: ["/opt/overalls/python/bin/python3.13", "-m", "satellite.standin"]
+    environment:
+      NO_COLOR: "1"
+      ANTITHESIS_GUEST_STANDIN_ROOT: /run/overalls-guest-standin
+      ANTITHESIS_PRIVATE_ROOT_CA: /run/overalls-satellite-public/private-root.pem
+    volumes:
+      - satellite-public:/run/overalls-satellite-public:ro
+      - guest-standin-requests:/run/overalls-guest-standin/requests:ro
+      - guest-standin-results:/run/overalls-guest-standin/results
+    network_mode: service:lilly-a
+    depends_on:
+      audi-private:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "jq", "-e", ".role == \"guest-standin\" and .private_tls_verified == true", "/run/overalls-guest-standin/results/ready.json"]
+      interval: 3s
+      timeout: 3s
+      retries: 60
+      start_period: 15s
+
+  workload:
+    environment:
+      ANTITHESIS_BOOTSTRAP_PROFILE: satellite-standin
+      ANTITHESIS_SATELLITE_READY: "1"
+      ANTITHESIS_GUEST_STANDIN_ROOT: /run/overalls-guest-standin
+      ANTITHESIS_ORIGIN_ADMIN_URL: http://origin-fixture:8080
+      ANTITHESIS_ORIGIN_ADMIN_TOKEN_FILE: /run/overalls-origin-admin/admin-token
+      ANTITHESIS_ACCESS_FIXTURE_FILE: /run/overalls-control-secrets/fixture.json
+    volumes:
+      - guest-standin-requests:/run/overalls-guest-standin/requests
+      - guest-standin-results:/run/overalls-guest-standin/results:ro
+    depends_on:
+      origin:
+        condition: service_healthy
+      guest-standin:
+        condition: service_healthy
+
+volumes:
+  guest-standin-requests:
+  guest-standin-results:

@@ -994,6 +994,8 @@ def main() -> int:
             "access-smtp",
             "recorder-host",
             "admission-stub",
+            "backup-restic",
+            "satellite-standin",
         ),
         default="control-core",
     )

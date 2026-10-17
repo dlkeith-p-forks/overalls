@@ -7,6 +7,7 @@ import json
 import os
 import shutil
 import signal
+import stat
 import subprocess
 import sys
 import tempfile
@@ -358,9 +359,35 @@ class BackupFixture:
             self.ungate()
 
 
+def fixture_root() -> Path | None:
+    """@cc [owner:ghuntley,label:verification;security] backup-fixture-volume
+    A selected backup profile MAY place disposable repositories under the
+    private Restic fixture volume named by ``ANTITHESIS_BACKUP_ROOT``. The root
+    MUST be an absolute, non-symlink, root- or self-owned directory without group
+    or other write access; anything else refuses the fixture rather than
+    falling back to another location. Unset selects the process temporary root.
+    """
+    raw = os.environ.get("ANTITHESIS_BACKUP_ROOT")
+    if raw is None:
+        return None
+    root = Path(raw)
+    if not root.is_absolute() or ".." in root.parts or root.is_symlink():
+        raise RuntimeError("Restic fixture root is not a canonical private directory")
+    observed = root.lstat()
+    if (
+        not stat.S_ISDIR(observed.st_mode)
+        or observed.st_uid not in (0, os.geteuid())
+        or observed.st_mode & 0o022
+    ):
+        raise RuntimeError("Restic fixture root is not a canonical private directory")
+    return root
+
+
 @contextmanager
 def fixture(keep_last: int = 2) -> Iterator[BackupFixture]:
     if not MODULES.joinpath("runtime.py").is_file() or not RESTIC.is_file():
         raise RuntimeError("production backup modules or Restic closure absent")
-    with tempfile.TemporaryDirectory(prefix="overalls-antithesis-backup-") as temporary:
+    with tempfile.TemporaryDirectory(
+        prefix="overalls-antithesis-backup-", dir=fixture_root()
+    ) as temporary:
         yield BackupFixture(Path(temporary), keep_last)

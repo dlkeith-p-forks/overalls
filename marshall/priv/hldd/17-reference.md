@@ -286,6 +286,29 @@ Their presence does not establish that selected images, migration, credentials,
 health, independent oracles and one setup owner ran together. The local guest
 and router TCG records each have their own artifact identity and never count as
 the default control graph's hosted baseline.
+
+| Profile | Overlays after the base | Selected commands | Setup gate beyond the base | Reachable claim |
+| --- | --- | --- | --- | --- |
+| `backup-restic` | `compose.backup.yaml` | five `backup` commands | production backup operator and pinned Restic present; private fixture volume; a probe Restic file repository initializes and enumerates empty | production prune, inspect, backup and restore against disposable encrypted file repositories, checked by raw Restic and restored hashes; no ZFS capture, S3 or recovery target |
+| `satellite-standin` | `compose.origin.yaml`, `compose.satellites.yaml`, `compose.satellite-standin.yaml` | four `satellite` commands | origin fixture state; private-Audi root; guest stand-in receipt of a verified TLS handshake to private Audi | private Audi forwards nothing for a forged request from a source Lilly never bound; VM-dependent commands record unexercised |
+
+The `backup-restic` repository uses Restic's local file backend because the
+production operator reports one failure status for an unavailable repository
+and for a validator refusal; a network backend would let a fault read as a
+refusal. The `satellite-standin` **guest stand-in** is a labelled harness process
+from the workload image that shares only `lilly-a`'s network namespace and
+speaks the guest-side TLS protocol to `169.254.254.1`. It is not a guest: it has
+no VM, boot, tap, placement or execution authority and mounts no secret. Its
+assertions test only private Audi's transport-only attribution with the origin
+fixture as effect witness; they say nothing about guest routing or isolation.
+The overlay also corrects the private Audi start script, which omitted the
+required `connector_uid` and so could not load its configuration. Ziggy
+completion, Galileo named origin and the editor login-code race need a current
+running VM; the controlled Lilly pool reports unavailable capacity and no Audi
+editor gateway, editor release or wildcard is configured, so their primary and
+`Sometimes` assertions stay unevaluated. Both profiles have rendered Compose
+graphs that pass the selection validators and unit tests; neither has a local
+`compose up` or hosted run.
 The [integrated-host record](repo:antithesis/verification/integrated-host-boot.json)
 captures two unavailable-health TCG boots and one corrected third-image boot
 with actual ZFS and cgroup sampling. A fourth built private-service image

@@ -1,0 +1,22 @@
+{
+  "format": 1,
+  "name": "backup-restic",
+  "compose_files": [
+    "antithesis/config/docker-compose.yaml",
+    "antithesis/config/compose.backup.yaml"
+  ],
+  "templates": ["backup"],
+  "runtime_packages": ["core", "backup", "access", "repository"],
+  "services": [
+    "pg", "migrate", "marshall-a", "marshall-b", "lilly-a", "enrollment",
+    "workload"
+  ],
+  "workload_environment": [
+    "ANTITHESIS_MARSHALL_URLS", "ANTITHESIS_CA_FILE", "ANTITHESIS_FIXTURE_MANIFEST",
+    "ANTITHESIS_DB_HOST", "ANTITHESIS_DB_PASSWORD_FILE",
+    "ANTITHESIS_CONTROL_CREDENTIAL_FILE", "ANTITHESIS_CONTROL_REQUEST_DIR",
+    "ANTITHESIS_BOOTSTRAP_PROFILE", "ANTITHESIS_BACKUP_ROOT"
+  ],
+  "bootstrap_template": "backup-restic",
+  "singleton_templates": []
+}

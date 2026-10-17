@@ -8,6 +8,25 @@ from typing import Literal
 from urllib.parse import urlparse
 from uuid import UUID
 
+type Profile = Literal[
+    "control-core",
+    "repository-origin",
+    "access-smtp",
+    "recorder-host",
+    "admission-stub",
+    "backup-restic",
+    "satellite-standin",
+]
+PROFILES: tuple[Profile, ...] = (
+    "control-core",
+    "repository-origin",
+    "access-smtp",
+    "recorder-host",
+    "admission-stub",
+    "backup-restic",
+    "satellite-standin",
+)
+
 
 @dataclass(frozen=True)
 class Fixture:
@@ -27,9 +46,7 @@ class Config:
     db_name: str
     db_password_file: Path
     timeout_seconds: int
-    profile: Literal[
-        "control-core", "repository-origin", "access-smtp", "recorder-host", "admission-stub"
-    ] = "control-core"
+    profile: Profile = "control-core"
 
     @classmethod
     def from_environment(cls) -> "Config":
@@ -55,14 +72,9 @@ class Config:
         )
         if port > 65535 or timeout > 3600:
             raise ValueError("port or bootstrap timeout out of range")
-        profile = os.getenv("ANTITHESIS_BOOTSTRAP_PROFILE", "control-core")
-        if profile not in (
-            "control-core",
-            "repository-origin",
-            "access-smtp",
-            "recorder-host",
-            "admission-stub",
-        ):
+        requested = os.getenv("ANTITHESIS_BOOTSTRAP_PROFILE", "control-core")
+        profile = next((name for name in PROFILES if name == requested), None)
+        if profile is None:
             raise ValueError("unsupported bootstrap profile")
         return cls(
             marshall_urls=urls,

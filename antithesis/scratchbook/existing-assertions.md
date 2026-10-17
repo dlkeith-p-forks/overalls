@@ -177,6 +177,29 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 - Selected `control-core` manifest has 9 commands and 30 runtime dependencies; its manifest hash is `4d61bfc148a2ef13529417fbfeab8723ae589e1e62ffff34c84aef87618bdfe4`. It is current for scanned selected sources; source selection must be staged again before identity freeze.
 - This scan does not freeze `N`, choose a hosted template, or claim any selected assertion evaluated.
 
+## Addendum: backup-restic and satellite-standin profiles (2026-10-17)
+
+A later scan added six callsites (159 total; 27 of 104 primary messages authored).
+Line numbers are omitted because the files are new and moving; the template roster
+records the editor primary's current line and hash. None has a hosted run.
+
+| File | Kind | Literal message | Catalog primary |
+| --- | --- | --- | --- |
+| `antithesis/workload/satellite/editor.py` | `reachable` | Editor login code committed while its only callback reply was lost | support |
+| `antithesis/workload/satellite/editor.py` | `always` | Editor login code creates at most one credential after reply loss | `editor-login-code-single-use-after-reply-loss` |
+| `antithesis/workload/satellite/editor.py` | `sometimes` | Editor login code exchange issued one session through Audi | support (positive control) |
+| `antithesis/workload/satellite/private_ingress.py` | `reachable` | Guest stand-in reached private Audi over verified TLS | support / stand-in channel |
+| `antithesis/workload/satellite/private_ingress.py` | `always` | Private Audi forwards nothing for a guest source Lilly never bound | support / stand-in refusal |
+| `antithesis/workload/satellite/private_ingress.py` | `reachable` | Private Audi refused an unbound guest-side source | support / stand-in refusal |
+
+The private-ingress checks use the labelled guest stand-in, which is not a guest:
+they test private Audi's transport-only attribution for a source Lilly never bound,
+with the independent origin fixture as effect witness. They make no guest, tap,
+pre-NAT routing or isolation claim. The editor callsites are selected in
+`satellite-standin` but cannot be reached there: Marshall's editor login needs a
+current running VM and editor release that the hosted controlled pool cannot supply.
+The `backup-restic` profile selects the existing backup callsites unchanged.
+
 ## Open Questions
 
 - Which authored primary assertions will be included and meaningfully evaluated in the next immutable selected image? Resolve the current source/manifest hash drift before answering.

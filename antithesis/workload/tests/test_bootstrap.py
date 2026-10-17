@@ -18,8 +18,10 @@ from core.outcome import State
 from core.profile_readiness import (
     access_smtp_ready,
     admission_stub_ready,
+    backup_restic_ready,
     recorder_host_ready,
     repository_origin_ready,
+    satellite_standin_ready,
 )
 from core.sql import SqlOracle
 
@@ -74,6 +76,8 @@ class BootstrapTests(unittest.TestCase):
                 "access-smtp",
                 "recorder-host",
                 "admission-stub",
+                "backup-restic",
+                "satellite-standin",
             ):
                 with self.subTest(profile=profile):
                     config = replace(self.config(Path(directory)), profile=profile)
@@ -97,6 +101,56 @@ class BootstrapTests(unittest.TestCase):
                 self.assertFalse(repository_origin_ready(config, "fixture-a"))
                 self.assertFalse(access_smtp_ready(config, "fixture-a"))
                 self.assertFalse(recorder_host_ready(config))
+                self.assertFalse(backup_restic_ready())
+                self.assertFalse(satellite_standin_ready())
+
+    def test_backup_probe_refuses_shared_or_toolless_root(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "fixture"
+            root.mkdir()
+            root.chmod(0o777)
+            with patch.dict(os.environ, {"ANTITHESIS_BACKUP_ROOT": str(root)}, clear=True):
+                # Absent image tools refuse before any repository is created.
+                self.assertFalse(backup_restic_ready())
+                with (
+                    patch("core.profile_readiness.BACKUP_MODULES", Path(__file__)),
+                    patch("core.profile_readiness.RESTIC", Path(__file__)),
+                ):
+                    self.assertFalse(backup_restic_ready())
+            self.assertEqual(list(root.iterdir()), [])
+
+    def test_satellite_probe_requires_verified_standin_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "results").mkdir()
+            token = root / "admin-token"
+            token.write_text("t" * 40, encoding="ascii")
+            environment = {
+                "ANTITHESIS_ORIGIN_ADMIN_URL": "http://origin-fixture:8080",
+                "ANTITHESIS_ORIGIN_ADMIN_TOKEN_FILE": str(token),
+                "ANTITHESIS_PRIVATE_ROOT_CA": str(root / "missing.pem"),
+                "ANTITHESIS_GUEST_STANDIN_ROOT": str(root),
+            }
+            observed = MagicMock()
+            observed.state = State.OBSERVED
+            with (
+                patch.dict(os.environ, environment, clear=True),
+                patch("core.profile_readiness.ssl.create_default_context"),
+                patch("core.profile_readiness.GitOrigin.state", return_value=observed),
+            ):
+                self.assertFalse(satellite_standin_ready())
+                receipt: dict[str, object] = {
+                    "version": 1,
+                    "role": "guest-standin",
+                    "private_tls_verified": False,
+                    "server_name": "llm.internal",
+                }
+                ready = root / "results/ready.json"
+                ready.write_text(json.dumps(receipt), encoding="utf-8")
+                self.assertFalse(satellite_standin_ready())
+                receipt["private_tls_verified"] = True
+                ready.write_text(json.dumps(receipt), encoding="utf-8")
+                self.assertTrue(satellite_standin_ready())
 
     def test_unknown_profile_is_rejected_before_setup(self) -> None:
         environment = {

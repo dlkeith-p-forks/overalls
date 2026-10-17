@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import multiprocessing
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -39,6 +40,7 @@ from selection import (
     manifest,
     materialization,
     read_selection,
+    rendered_compose,
     selected_files,
     stage,
     validate_compose,
@@ -918,6 +920,8 @@ class VerificationTests(unittest.TestCase):
             ("access-smtp", "access", 3),
             ("recorder-host", "recorder", 3),
             ("admission-stub", "admission", 2),
+            ("backup-restic", "backup", 5),
+            ("satellite-standin", "satellite", 4),
         ):
             with self.subTest(profile=name):
                 selection = read_selection(
@@ -1106,6 +1110,43 @@ class VerificationTests(unittest.TestCase):
         for change in ("physical", "no_stub", "guest_lilly", "profile"):
             with self.subTest(change=change), self.assertRaises(EvidenceError):
                 validate_compose(selection, rendered(**{change: True}))
+
+    @unittest.skipUnless(shutil.which("docker-compose"), "Compose CLI unavailable")
+    def test_backup_and_satellite_profiles_refuse_weakened_fixtures(self) -> None:
+        root = Path(__file__).resolve().parents[3]
+        backup = read_selection(root / "antithesis/verification/selections/backup-restic.json")
+        rendered = rendered_compose(root, backup)
+        workload = obj(field(obj(field(rendered, "services"), "s"), "workload"), "w")
+        workload["volumes"] = [
+            item
+            for item in arr(field(workload, "volumes"), "v")
+            if field(obj(item, "v"), "target") != "/var/lib/overalls-backup-fixture"
+        ]
+        with self.assertRaises(EvidenceError):
+            validate_compose(backup, rendered)
+
+        satellite = read_selection(
+            root / "antithesis/verification/selections/satellite-standin.json"
+        )
+        for weaken in ("network", "results", "secret"):
+            with self.subTest(weaken=weaken):
+                rendered = rendered_compose(root, satellite)
+                services = obj(field(rendered, "services"), "services")
+                standin = obj(field(services, "guest-standin"), "stand-in")
+                if weaken == "network":
+                    standin["network_mode"] = "service:workload"
+                elif weaken == "results":
+                    workload = obj(field(services, "workload"), "workload")
+                    for item in arr(field(workload, "volumes"), "v"):
+                        mount = obj(item, "v")
+                        if field(mount, "target") == "/run/overalls-guest-standin/results":
+                            mount["read_only"] = False
+                else:
+                    arr(field(standin, "volumes"), "v").append(
+                        {"type": "volume", "source": "x", "target": "/run/overalls-secrets"}
+                    )
+                with self.assertRaises(EvidenceError):
+                    validate_compose(satellite, rendered)
 
     def test_global_budget_and_five_inflight_limit_across_configs(self) -> None:
         ledger = initialize(

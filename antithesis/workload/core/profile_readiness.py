@@ -3,8 +3,12 @@
 import json
 import logging
 import os
+import secrets
 import sqlite3
 import ssl
+import stat
+import subprocess
+import tempfile
 import time
 from pathlib import Path
 from typing import TypeGuard
@@ -329,4 +333,132 @@ def admission_stub_ready(config: Config, host_ids: tuple[UUID, ...]) -> bool:
         return _incomplete(profile, "stub_pool_observation_missing")
     if type(images) is not int or images < 1:
         return _incomplete(profile, "advertised_enabled_image_missing")
+    return True
+
+
+BACKUP_MODULES = Path("/opt/overalls/backup-modules/runtime.py")
+RESTIC = Path("/opt/overalls/restic/bin/restic")
+
+
+def _private_directory(path: Path) -> bool:
+    if not path.is_absolute() or ".." in path.parts or path.is_symlink():
+        return False
+    observed = path.lstat()
+    return (
+        stat.S_ISDIR(observed.st_mode)
+        and observed.st_uid in (0, os.geteuid())
+        and not observed.st_mode & 0o022
+    )
+
+
+def _restic(
+    arguments: list[str], environment: dict[str, str]
+) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(
+        [str(RESTIC), *arguments],
+        env=environment,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        timeout=60,
+        check=False,
+    )
+
+
+def backup_restic_ready() -> bool:
+    """@cc [owner:ghuntley,label:verification] bootstrap-backup-restic-fixture
+    Backup setup MUST find the production backup operator and pinned Restic in
+    the image, a private fixture volume, and a real disposable encrypted Restic
+    repository that initializes and enumerates empty there. The probe repository
+    MUST be removed afterward. A missing tool, unsafe root or failed Restic call
+    MUST leave setup incomplete; readiness never implies a backup was taken.
+    """
+    profile = "backup-restic"
+    try:
+        root = Path(_required("ANTITHESIS_BACKUP_ROOT"))
+    except ValueError as error:
+        return _incomplete(profile, f"configuration ({type(error).__name__})")
+    if not BACKUP_MODULES.is_file() or not RESTIC.is_file():
+        return _incomplete(profile, "backup_operator_or_restic_absent")
+    try:
+        if not _private_directory(root):
+            return _incomplete(profile, "fixture_root_unsafe")
+        with tempfile.TemporaryDirectory(
+            prefix="overalls-antithesis-backup-probe-", dir=root
+        ) as temporary:
+            probe = Path(temporary)
+            password = probe / "password"
+            password.write_text(secrets.token_hex(32) + "\n", encoding="ascii")
+            password.chmod(0o600)
+            environment = {
+                "PATH": "/usr/bin:/bin",
+                "HOME": str(probe),
+                "RESTIC_REPOSITORY": str(probe / "repository"),
+                "RESTIC_PASSWORD_FILE": str(password),
+                "RESTIC_CACHE_DIR": str(probe / "cache"),
+                "LC_ALL": "C",
+                "TZ": "UTC",
+            }
+            if _restic(["init"], environment).returncode != 0:
+                return _incomplete(profile, "restic_init_failed")
+            listed = _restic(["snapshots", "--json"], environment)
+            if listed.returncode != 0:
+                return _incomplete(profile, "restic_enumeration_failed")
+            inventory: object = json.loads(listed.stdout)
+            if inventory != []:
+                return _incomplete(profile, "restic_probe_not_empty")
+    except (OSError, subprocess.SubprocessError, ValueError) as error:
+        return _incomplete(profile, f"restic_probe ({type(error).__name__})")
+    return True
+
+
+def _channel_receipt(path: Path) -> str | None:
+    """Return the stand-in's fixed readiness verdict, or None when absent."""
+    if path.is_symlink() or not path.is_file() or path.stat().st_size > 4096:
+        return None
+    value: object = json.loads(path.read_text(encoding="utf-8"))
+    if (
+        not isinstance(value, dict)
+        or set(value) != {"version", "role", "private_tls_verified", "server_name"}
+        or value.get("version") != 1
+        or value.get("role") != "guest-standin"
+        or value.get("server_name") != "llm.internal"
+        or type(value.get("private_tls_verified")) is not bool
+    ):
+        return "invalid"
+    return "verified" if value["private_tls_verified"] else "unverified"
+
+
+def satellite_standin_ready() -> bool:
+    """@cc [owner:ghuntley,label:verification] bootstrap-satellite-standin-channel
+    Satellite setup MUST observe the independent origin fixture through its
+    authenticated state read, load the published private Audi root, and find
+    the guest stand-in's receipt that it completed a verified TLS handshake to
+    private Audi inside Lilly's network namespace. The stand-in is not a guest:
+    its receipt grants no VM binding and MUST NOT be read as guest readiness.
+    Missing or invalid evidence MUST leave setup incomplete.
+    """
+    profile = "satellite-standin"
+    try:
+        origin = GitOrigin(
+            os.getenv("ANTITHESIS_ORIGIN_ADMIN_URL", "http://origin:8080"),
+            Path(
+                os.getenv(
+                    "ANTITHESIS_ORIGIN_ADMIN_TOKEN_FILE", "/run/overalls-origin-admin/admin-token"
+                )
+            ),
+        )
+        ssl.create_default_context(cafile=_required("ANTITHESIS_PRIVATE_ROOT_CA"))
+        receipt = _channel_receipt(
+            Path(_required("ANTITHESIS_GUEST_STANDIN_ROOT")) / "results/ready.json"
+        )
+    except (OSError, UnicodeError, ValueError) as error:
+        return _incomplete(profile, f"configuration_or_credentials ({type(error).__name__})")
+    source = origin.state()
+    if source.state is not State.OBSERVED or source.value is None:
+        return _incomplete(profile, f"origin_state_{source.state.value}")
+    if receipt is None:
+        return _incomplete(profile, "guest_standin_receipt_missing")
+    if receipt != "verified":
+        return _incomplete(profile, f"guest_standin_receipt_{receipt}")
     return True

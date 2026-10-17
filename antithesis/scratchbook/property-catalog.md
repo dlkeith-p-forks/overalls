@@ -385,6 +385,8 @@ These properties exercise the recovery and independent custody boundaries and th
 
 **Proof boundary:** Draft selection: `storage`. hosted-restic-or-tcg-zfs-limited; independent witness: owned ZFS GUID/marker, independent Restic enumeration/isolated restore hash and fenced target. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
+**Selected profile (2026-10-17):** `backup-restic` selects the five `backup` commands with `compose.backup.yaml`, which gives each command a disposable encrypted Restic file repository on a dedicated private named volume. Bootstrap requires the production operator, pinned Restic and a real probe repository that initializes and enumerates empty there. A local file backend is deliberate: the production operator returns one failure status for repository unavailability and validator refusal, so a network-attached repository would make unavailable reads look like refusals. This profile exercises no ZFS, host capture, S3 or live recovery target and has no hosted run or baseline yet.
+
 **Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/backup/scenarios.py:73`. Real Restic IDs, production prune/inspect and independent per-reference restore hashes; selected guest/ZFS capture completeness is separate. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
@@ -646,6 +648,8 @@ These properties exercise the external effects and caches boundaries and their f
 | **Evidence** | [Source and oracle](properties/ziggy-completion-once-accounted.md); discovery focus 01, 03. |
 
 **Proof boundary:** Draft selection: `integrated-zfs-satellite`. proposed-real-inner-zfs-backed-current-VM-plus-satellite; unbuilt; independent witness: durable Ziggy spool ID, independent provider accept log and Marshall aggregate; current real placement/execution authority required. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Selected profile (2026-10-17):** `satellite-standin` selects this command with the origin and satellite overlays and a labelled guest stand-in. The command still needs a current running VM; the hosted controlled Lilly pool reports unavailable capacity, so it records unexercised in that graph. The stand-in is not a guest and supplies no VM binding. No hosted run exists.
 
 **Supporting assertion snapshot (2026-10-13 15:03 UTC):** Narrower assertion messages are present at `antithesis/workload/satellite/scenarios.py:73`. A normal admitted guest inference joins one private provider acceptance to one settled Request and a Daily delta. Exact ACK-loss/replay and restart witnesses are absent, and the hosted guest-to-Audi graph is not ready. At least one listed support callsite is outside the current staged control-core selection. This records source presence, not a passing hosted or native result.
 
@@ -1640,7 +1644,7 @@ These properties join public route authority to real DNS, SSH and editor outcome
 | | |
 |---|---|
 | **Type** | Safety (`Always` primary) |
-| **Priority / Confidence / Status** | P0 / source-grounded / researched; primary unimplemented |
+| **Priority / Confidence / Status** | P0 / source-grounded / authored primary; hosted unexecuted; positive path precondition-blocked |
 | **Property** | One approved editor code and browser state create at most one personal credential despite duplicate callbacks or a lost reply. |
 | **Invariant** | `Always` with unique planned SDK message **"Editor login code creates at most one credential after reply loss"**; each reached effect or settled observation must satisfy the invariant. |
 | **Antithesis Angle** | Lose responses, change current route or credential authority, and verify real DNS, SSH or editor effects. |
@@ -1648,6 +1652,8 @@ These properties join public route authority to real DNS, SSH and editor outcome
 | **Evidence** | [Source, values and oracle](properties/editor-login-code-single-use-after-reply-loss.md); evaluation gap access-routes. |
 
 **Proof boundary:** Draft selection: `access`. real-hosted-browser-identity-or-DNS-packets; physical guest route separate; independent witness: actual public callback/DNS packet plus consistent PostgreSQL authority rows. Native companion: not required for this bounded claim. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Selected profile (2026-10-17):** The primary `Always`, a `Sometimes` positive exchange witness and a reply-loss `Reachable` are authored in `antithesis/workload/satellite/editor.py` and selected through `antithesis/test/v1/satellite/serial_driver_editor_login_reply_loss.py` in `satellite-standin`. The history uses a real browser login, Marshall launch and approval, two raced Audi callbacks (one optionally reply-lost), same-state replay and a wrong-state callback, and classifies only committed `editor_logins` and `editor_credentials` rows keyed by the ticket digest. Marshall's `begin_login` requires a current running VM on the Audi gateway's host and an editor-capable image release. The hosted controlled Lilly pool reports unavailable capacity, and that profile configures no editor release, editor wildcard or Audi editor gateway, so the command records unexercised and evaluates no assertion. The `Sometimes` witness will therefore show zero hits until an integrated host and editor gateway exist. Wrong-actor and wrong-hostname replays are not authored. No hosted run exists.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
 
@@ -1792,6 +1798,8 @@ These properties cover tool dispatch, renewable work and approved external origi
 | **Evidence** | [Source, values and oracle](properties/galileo-named-origin-credential-and-revocation-bound.md); evaluation gap agent-integration. |
 
 **Proof boundary:** Draft selection: `integrated-zfs-satellite`. proposed-real-guest-attached-named-integration; unbuilt; independent witness: actual pre-NAT guest identity, current attachment, exact origin/header and upstream effect. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Selected profile (2026-10-17):** `satellite-standin` selects this command with the origin and satellite overlays and a labelled guest stand-in. The command still needs a current running VM; the hosted controlled Lilly pool reports unavailable capacity, so it records unexercised in that graph. The stand-in is not a guest and supplies no VM binding. No hosted run exists.
 
 **Supporting assertion snapshot (2026-10-13 15:03 UTC):** Narrower assertion messages are present at `antithesis/workload/satellite/scenarios.py:143`, `antithesis/workload/satellite/scenarios.py:207`, `antithesis/workload/satellite/scenarios.py:232`, `antithesis/workload/satellite/scenarios.py:270`. Separate checks cover origin A/headers, detached held-stream EOF, fresh no-effect refusal, and reattach progress. The canonical composed primary is absent without the exact aged-grant, recorder-delay and refused-renewal witnesses; the hosted guest-to-Audi graph is not ready. At least one listed support callsite is outside the current staged control-core selection. This records source presence, not a passing hosted or native result.
 
@@ -2218,6 +2226,8 @@ These properties compare actual Restic publication and isolated target markers u
 
 **Proof boundary:** Draft selection: `storage`. real-Restic-isolated-target; native-guest-ZFS-companion; independent witness: actual Restic tag/manifest parser, target publication marker and independent restored component hash. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
 
+**Selected profile (2026-10-17):** `backup-restic` selects the five `backup` commands with `compose.backup.yaml`, which gives each command a disposable encrypted Restic file repository on a dedicated private named volume. Bootstrap requires the production operator, pinned Restic and a real probe repository that initializes and enumerates empty there. A local file backend is deliberate: the production operator returns one failure status for repository unavailability and validator refusal, so a network-attached repository would make unavailable reads look like refusals. This profile exercises no ZFS, host capture, S3 or live recovery target and has no hosted run or baseline yet.
+
 **Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/backup/scenarios.py:172`. Production restore CLI with fixed Restic interruption gate, marker/prefix and fresh retry; no hosted run. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 
 **Evaluation follow-up:** Record exact selected image/profile, guest family, source provider/revision, drive count and enabled capability as applicable; unselected variants are unexercised.
@@ -2239,6 +2249,8 @@ These properties compare actual Restic publication and isolated target markers u
 | **Evidence** | [Source, values and oracle](properties/backup-published-manifest-retention-compatible.md); evaluation gap restore-publication. |
 
 **Proof boundary:** Draft selection: `storage`. real-Restic-isolated-target; native-guest-ZFS-companion; independent witness: actual Restic tag/manifest parser, target publication marker and independent restored component hash. Native companion: required. Current state: unexercised; no hosted catalog-property evaluation or baseline exists.
+
+**Selected profile (2026-10-17):** `backup-restic` selects the five `backup` commands with `compose.backup.yaml`, which gives each command a disposable encrypted Restic file repository on a dedicated private named volume. Bootstrap requires the production operator, pinned Restic and a real probe repository that initializes and enumerates empty there. A local file backend is deliberate: the production operator returns one failure status for repository unavailability and validator refusal, so a network-attached repository would make unavailable reads look like refusals. This profile exercises no ZFS, host capture, S3 or live recovery target and has no hosted run or baseline yet.
 
 **Authored assertion snapshot (2026-10-13 15:03 UTC):** Primary `always` message is present at `antithesis/workload/backup/scenarios.py:235`. Actual coordinator publication plus raw Restic/production inspect; backward wall-clock step remains unimplemented. It is outside the currently staged control-core selection. This records source presence, not a passing hosted or native result.
 

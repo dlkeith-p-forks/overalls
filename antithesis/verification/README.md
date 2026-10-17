@@ -14,11 +14,16 @@ origin and Enrico overlays; `access-smtp` selects three access commands with
 the SMTP overlay; `recorder-host` selects the three recorder commands with the
 TCG recorder VM overlay; `admission-stub` selects the two admission commands
 on the harness stub storage substrate (not ZFS; see the admission workload
-notes). Each requires an independent fixture readiness probe
-before the sole bootstrap owner signals setup completion. Stage the chosen
-command selection immediately before building its workload image. Guest,
-backup and satellite commands remain unselected until each has a complete
-profile and readiness gate.
+notes); `backup-restic` selects the five backup commands with the
+private Restic fixture volume; `satellite-standin` selects four satellite
+commands with the origin, satellite and labelled guest stand-in overlays. Each
+requires an independent fixture readiness probe before the sole bootstrap owner
+signals setup completion. In `satellite-standin` only the unbound-source command
+can reach its assertions; the three commands that need a current running VM
+record unexercised because the controlled pool has no capacity. Stage the chosen
+command selection immediately before building its workload image. Guest
+commands remain unselected until they have a complete profile and readiness
+gate.
 
 Staging also writes the hosted Python assertion catalog. The workload image
 copies `selected-test/catalog/` to `/opt/antithesis/catalog`, and that tree
@@ -57,7 +62,9 @@ python3.13 antithesis/verification/campaign.py reserve \
 For an optional profile, pass its JSON file to `selection.py stage` with
 `--selection`, use the same file for `selection.py materialize`, then pass
 `--selection repository-origin`, `--selection access-smtp`,
-`--selection recorder-host` or `--selection admission-stub` to `identity.py`. Render and build the exact ordered
+`--selection recorder-host`, `--selection admission-stub`,
+`--selection backup-restic` or `--selection satellite-standin` to
+`identity.py`. Render and build the exact ordered
 Compose files listed in that profile. All campaign operations use the one
 canonical ledger path. Point `snouty validate` or the launch skill at the
 materialized `antithesis/runtime/configs/<profile>` directory only after its

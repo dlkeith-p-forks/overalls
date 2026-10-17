@@ -54,7 +54,12 @@ same-host engine, but the bind mount has not been exercised here.
 
 `repository-origin.json` selects the base file plus `compose.origin.yaml` and
 `compose.enrico.yaml`; `access-smtp.json` selects the base plus
-`compose.smtp.yaml`. Local `docker-compose -f ... -f ... config` and
+`compose.smtp.yaml`; `backup-restic.json` selects the base plus
+`compose.backup.yaml`; `satellite-standin.json` selects the base plus
+`compose.origin.yaml`, `compose.satellites.yaml` and
+`compose.satellite-standin.yaml`. The last two profiles have rendered and
+passed the selection validators locally but have no recorded local
+`compose up`, build or hosted run. Local `docker-compose -f ... -f ... config` and
 `identity.py` render those ordered files, while the official `snouty validate`
 and `snouty launch --config` interfaces accept only a config directory
 containing one `docker-compose.yaml`. `selection.py materialize` now writes that

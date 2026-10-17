@@ -99,7 +99,8 @@
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Retained backup manifest references restorable component snapshots",
       "hosted_templates": [
-        "storage"
+        "storage",
+        "backup-restic"
       ],
       "limited_support_templates": [],
       "requires_integrated_zfs_host": false,
@@ -109,7 +110,7 @@
       "support_semantics": [
         "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
       ],
-      "selection_state": "draft-unexercised",
+      "selection_state": "selected-unexecuted",
       "required_variant_axes": [
         "guest_family:NixOS|Ubuntu when applicable",
         "release_image_digest",
@@ -2787,11 +2788,11 @@
       "property_id": "editor-login-code-single-use-after-reply-loss",
       "priority": "P0",
       "confidence": "source-grounded",
-      "status": "researched; primary unimplemented",
+      "status": "authored primary; hosted unexecuted; positive path precondition-blocked",
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Editor login code creates at most one credential after reply loss",
       "hosted_templates": [
-        "access"
+        "satellite-standin"
       ],
       "limited_support_templates": [],
       "requires_integrated_zfs_host": false,
@@ -2801,7 +2802,7 @@
       "support_semantics": [
         "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
       ],
-      "selection_state": "draft-unexercised",
+      "selection_state": "selected-precondition-blocked",
       "required_variant_axes": [
         "guest_family:NixOS|Ubuntu when applicable",
         "release_image_digest",
@@ -2810,11 +2811,31 @@
       ],
       "selected_variants": [],
       "variant_coverage_state": "unselected; record exact values before claiming evaluation",
-      "authored_primary_callsites": [],
-      "implementation_scope": "No authored primary; research target only.",
+      "authored_primary_callsites": [
+        {
+          "file": "antithesis/workload/satellite/editor.py",
+          "line": 289,
+          "kind": "always",
+          "sha256": "d0521d184df0b8bcb830673cb01697493118325d9efdbc313d109f45472e62d2"
+        }
+      ],
+      "implementation_scope": "Real browser login, Marshall editor launch and approval, then two raced Audi public callbacks (one optionally reply-lost) classified by committed editor_logins and editor_credentials rows keyed by the ticket digest; same-state replay and a wrong-state callback follow. Selected in satellite-standin, which has no current running VM, editor release, editor wildcard or Audi editor gateway, so the command records unexercised and evaluates no assertion there. Wrong-actor and wrong-hostname replays are not authored.",
       "selected_control_core_intent": false,
       "selected_control_core_hash_current": false,
-      "authored_support_callsites": [],
+      "authored_support_callsites": [
+        {
+          "file": "antithesis/workload/satellite/editor.py",
+          "line": 293,
+          "kind": "sometimes",
+          "sha256": "d0521d184df0b8bcb830673cb01697493118325d9efdbc313d109f45472e62d2"
+        },
+        {
+          "file": "antithesis/workload/satellite/editor.py",
+          "line": 280,
+          "kind": "reachable",
+          "sha256": "d0521d184df0b8bcb830673cb01697493118325d9efdbc313d109f45472e62d2"
+        }
+      ],
       "selected_control_core_support_intent": false,
       "selected_control_core_support_hash_current": false
     },
@@ -3731,7 +3752,8 @@
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Interrupted backup restore leaves its partial target unpublished",
       "hosted_templates": [
-        "storage"
+        "storage",
+        "backup-restic"
       ],
       "limited_support_templates": [],
       "requires_integrated_zfs_host": false,
@@ -3741,7 +3763,7 @@
       "support_semantics": [
         "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
       ],
-      "selection_state": "draft-unexercised",
+      "selection_state": "selected-unexecuted",
       "required_variant_axes": [
         "guest_family:NixOS|Ubuntu when applicable",
         "release_image_digest",
@@ -3774,7 +3796,8 @@
       "primary_assertion_kind": "Always",
       "primary_literal_message": "Newly published backup point passes its retention manifest validator",
       "hosted_templates": [
-        "storage"
+        "storage",
+        "backup-restic"
       ],
       "limited_support_templates": [],
       "requires_integrated_zfs_host": false,
@@ -3784,7 +3807,7 @@
       "support_semantics": [
         "positive-control Reachable when the selected fault/refusal branch is otherwise invisible"
       ],
-      "selection_state": "draft-unexercised",
+      "selection_state": "selected-unexecuted",
       "required_variant_axes": [
         "guest_family:NixOS|Ubuntu when applicable",
         "release_image_digest",
