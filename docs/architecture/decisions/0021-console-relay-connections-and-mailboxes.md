@@ -122,8 +122,8 @@ Revocation cannot undo bytes already accepted or commands already running.
 
 ## Implementation evidence
 
-The [shared codec](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/protocol/lib/overalls_protocol/console.ex) and
-[properties](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/protocol/test/console_test.exs) implement strict bounded
+The shared codec (`protocol/lib/overalls_protocol/console.ex` at kittens revision `9fe1e493`, repository deleted) and
+properties (`protocol/test/console_test.exs` at kittens revision `9fe1e493`, repository deleted) implement strict bounded
 console envelopes. The local gate and
 socket tests add explicit discard and
 delivery-result tracking. Connection authority persisted consumed nonces and request ordering under the Host lock.

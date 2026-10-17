@@ -121,7 +121,7 @@ Chromium browsers. It suppresses replies after accepted input, queues more typin
 kills the serving node, and proves explicit reacquisition without replay. It also
 checks shared writer handoff and grant/login revocation across nodes. See the
 [failover review](../reviews/2026-09-16-terminal-failover.md) and
-[run instructions](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/README.md#browser-failover-with-a-fresh-guest).
+run instructions (`scripts/test/fixtures/legacy-deployment/README.md#browser-failover-with-a-fresh-guest` at kittens revision `9fe1e493`, repository deleted).
 
 ## Open questions
 

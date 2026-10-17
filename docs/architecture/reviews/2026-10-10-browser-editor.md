@@ -1623,7 +1623,7 @@ records establishes a complete merged component/native or production rerun.
 
 One concrete incoming contract mismatch remains outside the editor behavior:
 `transfer-journal-migration-never-blocks` in
-[TransferJournalMigration](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/lib/lilly/control/transfer_journal_migration.ex)
+TransferJournalMigration (`lilly/lib/lilly/control/transfer_journal_migration.ex` at kittens revision `9fe1e493`, repository deleted)
 requires refusing scans above 16,384 candidates, but `pool_candidates/1` enumerates
 all candidate paths and reads legacy markers before `migrate/1` checks their count.
 The current limit bounds rewrites, not scanning. This is a bounded-scan gap with

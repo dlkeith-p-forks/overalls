@@ -27,8 +27,8 @@ durable audit model; ADR-0110's SSH roster still determines SSH authorization.
   failure. The [executor](../../../lilly/lib/lilly/vm/executor.ex) withholds
   `running` until this receipt is committed.
 - The [lifecycle resource](../../../lilly/lib/lilly/lifecycle/guest_trust.ex),
-  [closed protocol state list](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/protocol/lib/kittens_protocol/lifecycle_audit.ex),
-  [outbox](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/lilly/lib/lilly/lifecycle/outbox.ex) and
+  closed protocol state list (`protocol/lib/kittens_protocol/lifecycle_audit.ex` at kittens revision `a99f74f0`, repository deleted),
+  outbox (`lilly/lib/lilly/lifecycle/outbox.ex` at kittens revision `a99f74f0`, repository deleted) and
   [Marshall projection](../../../marshall/lib/marshall/compute/lifecycle_log.ex)
   provide durable, authenticated audit and catalogued diagnostics without
   certificate contents, command arguments or terminal bytes.

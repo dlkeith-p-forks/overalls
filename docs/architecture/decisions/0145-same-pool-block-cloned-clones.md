@@ -108,9 +108,9 @@ remain prerequisites; a diagnostic ACK confers no adoption or cleanup authority.
 ## Implementation evidence
 
 - **Historical Release A (diagnostic readers):** the
-  [protocol allowlist](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/protocol/lib/overalls_protocol/lifecycle_audit.ex),
-  its [test](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/protocol/test/lifecycle_audit_test.exs) and the
-  [Marshall mapping](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/compute/lifecycle_log.ex).
+  protocol allowlist (`protocol/lib/overalls_protocol/lifecycle_audit.ex` at kittens revision `a99f74f0`, repository deleted),
+  its test (`protocol/test/lifecycle_audit_test.exs` at kittens revision `a99f74f0`, repository deleted) and the
+  Marshall mapping (`marshall/lib/marshall/compute/lifecycle_log.ex` at kittens revision `a99f74f0`, repository deleted).
 - **Release B prerequisites:**
   - the [snapshot source mode](../../../lilly/native/image-copy/src/lib.rs), with Hegel properties;
   - [capture extraction](../../../lilly/lib/lilly/transfer/source_snapshots.ex).

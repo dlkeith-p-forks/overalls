@@ -128,7 +128,7 @@ The [NixOS module](../../../nix/domains/system/secrets/default.nix) pins the sup
 public key, enables key-based SSH bootstrap, and orders root-only preparation
 after persistent host-key creation. [Pinned packages](../../../nix/domains/artifacts/default.nix)
 supply SecretSpec 0.19.1, SOPS 3.13.3, ssh-to-age 1.3.0 and age 1.3.1. The
-[operator recipient package](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/operator-recipient/default.nix) checks the SSH
+operator recipient package (`nix/domains/artifacts/operator-recipient/default.nix` at kittens revision `9fe1e493`, repository deleted) checks the SSH
 fingerprint and converts only the public key; it performs no remote lookup.
 
 [Preparation](../../../nix/domains/system/secrets/prepare.py) uses explicit provider/project/profile
@@ -179,8 +179,8 @@ through the actual secret module and deliberately injects conflicting ambient
 credentials. Reflected provider errors are included in its journal privacy check.
 See the [ACME review](../reviews/2026-09-16-acme-publication.md).
 
-The [generic bootstrap](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/machines/bootstrap.nix) and
-[offline installer](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/machines/installer.nix) reuse the pinned public
+The generic bootstrap (`nix/machines/bootstrap.nix` at kittens revision `16e8dbe4`, repository deleted) and
+offline installer (`nix/machines/installer.nix` at kittens revision `16e8dbe4`, repository deleted) reuse the pinned public
 administration key without including a private host key. SSH is available before
 application enrollment and secret delivery. The
 [firmware installation test](../../../nix/verification/tests/machines/mirrored-installation/driver.py) checks absence
@@ -191,7 +191,7 @@ disabled on the installer, healthy mirror and both surviving-disk boots.
 Test-console instrumentation exists only in test variants. The
 [installation review](../reviews/2026-09-16-mirrored-installation.md) records
 executed results and remaining host acceptance. The separate
-[exact exported-image check](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/verification/tests/machines/bootstrap-images/default.nix) also passed
+exact exported-image check (`nix/verification/tests/machines/bootstrap-images/default.nix` at kittens revision `16e8dbe4`, repository deleted) also passed
 without injected credentials or test-console instrumentation: independent fresh
 copies generated different SSH identities, while reboot and either surviving
 disk retained the original copy's identity.

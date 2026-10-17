@@ -197,10 +197,10 @@ derive owner metadata from the VM record. The
 [durable store](../../../lilly/lib/lilly/control/store.ex) retain legacy command
 compatibility and reject conflicting same-generation metadata. Legacy owners are
 refreshed separately through the
-[closed batch codec](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/protocol/lib/overalls_protocol/egress_owners.ex),
+closed batch codec (`protocol/lib/overalls_protocol/egress_owners.ex` at kittens revision `9fe1e493`, repository deleted),
 [authenticated read-only API](../../../marshall/lib/marshall/compute/provisioner_control.ex),
 [bound HTTPS client](../../../lilly/lib/lilly/control/client.ex) and
-[volatile cache](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/lib/lilly/network/owner_cache.ex).
+volatile cache (`lilly/lib/lilly/network/owner_cache.ex` at kittens revision `9fe1e493`, repository deleted).
 Component tests cover host/session fencing, exact binding, expiry and absence of
 execution-intent mutation.
 
@@ -224,9 +224,9 @@ VM/owner attribution, legacy refresh, restart survival and old-flow refusal
 after IP reassignment to a different owner.
 
 The [aggregate producer](../../../brady/lib/brady/metrics.ex),
-[collector](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/runtime.py),
-[ingestion schema](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/sample.ex) and
-[panel catalog](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/fleet/dashboard_catalog.ex) extend
+collector (`nix/domains/system/fleet-monitor/runtime.py` at kittens revision `a99f74f0`, repository deleted),
+ingestion schema (`marshall/lib/marshall/fleet/sample.ex` at kittens revision `a99f74f0`, repository deleted) and
+panel catalog (`marshall/lib/marshall/fleet/dashboard_catalog.ex` at kittens revision `a99f74f0`, repository deleted) extend
 the existing collector, actor, durable history and administration dashboards.
 Tests cover incarnation/freshness, missing-data rate gaps, unknown versus zero,
 secret-field rejection and database/dashboard behavior. Real collector-to-history

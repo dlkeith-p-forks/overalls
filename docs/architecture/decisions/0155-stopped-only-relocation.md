@@ -159,8 +159,8 @@ supported.
   [import journal](../../../lilly/lib/lilly/transfer/import_journal.ex),
   [SSH grammar](../../../lilly/lib/lilly/transfer/export_request.ex) and
   [lifecycle resources](../../../lilly/lib/lilly/lifecycle/snapshot_set.ex).
-- Legacy on-host journals: [startup migration](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/lib/lilly/control/transfer_journal_migration.ex)
-  and its [property/unit tests](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/test/control/transfer_journal_migration_test.exs).
+- Legacy on-host journals: startup migration (`lilly/lib/lilly/control/transfer_journal_migration.ex` at kittens revision `9fe1e493`, repository deleted)
+  and its property/unit tests (`lilly/test/control/transfer_journal_migration_test.exs` at kittens revision `9fe1e493`, repository deleted).
   ADR-0159 Push 6 deleted this migration, the import-journal `legacy`/`rebase_legacy`
   readers, the snapshot-journal `drop_legacy_slot` rewrite, the lifecycle
   `rebase_legacy` helper and their tests and `lilly.transfer_journals_migrated`
@@ -177,7 +177,7 @@ clone, Audi relocation and maintenance-evacuation runs on this cut.
 ADR-0159 (Push 7) purged the 18 exported pre-copy relocations of archived VMs,
 together with their foreign-key closure, and validated
 `relocation_stop_requires_probe` for every row
-([migration](https://github.com/antithesishq/kittens/blob/033c8eefd06aaba136f333fdf5b047fac7ef7f76/marshall/priv/repo/migrations/20261011200000_purge_pre_copy_relocations.exs)).
+(migration (`marshall/priv/repo/migrations/20261011200000_purge_pre_copy_relocations.exs` at kittens revision `033c8eef`, repository deleted)).
 The retained history described above is therefore exported, no longer stored.
 
 ## Open questions

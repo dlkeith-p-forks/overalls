@@ -148,7 +148,7 @@ digests with differing example.test/retry.example.test Message-ID domains. Its
 namespace-independent initial assertion therefore does not mask the regression.
 Other histories failed earlier fixed-format assertions and are not credited as
 rotation sensitivity. Later terminal observations after the targeted failure
-are not credited. See the [mutation ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-mail-sender-domain-identity.md).
+are not credited. See the mutation ledger (`antithesis/scratchbook/mutation-testing/local-mail-sender-domain-identity.md` at kittens revision `9fe1e493`, repository deleted).
 Source restoration was compared byte-for-byte. Restored focused execution
 passed exit0,seed0,28.1seconds:one property,three exclusions, warnings-as-errors
 compilation; `/tmp/kittens-mail-sender-rotation-restored.log`. Full forced

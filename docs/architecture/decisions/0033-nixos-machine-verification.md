@@ -282,7 +282,7 @@ authentication policy on the installer, healthy mirror and both survivors. The
 executed results from definitions and image builds. The existing reference host's
 external boot test has not been located or ported.
 
-The separate [exported-image suite](https://github.com/antithesishq/kittens/blob/16e8dbe4a8871df015fa9853febf1a1e7e99e29b/nix/verification/tests/machines/bootstrap-images/default.nix)
+The separate exported-image suite (`nix/verification/tests/machines/bootstrap-images/default.nix` at kittens revision `16e8dbe4`, repository deleted)
 boots the unmodified public QCOW2 artifacts through OVMF using disposable
 overlays. It injects neither credentials nor a test-console service, and reads
 the SSH public identity externally. Fresh copies must generate different keys;

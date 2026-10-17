@@ -178,8 +178,8 @@ Application diagnostics use the independent observability path described in
 [observability](#monitoring), under
 [ADR-0149](repo:docs/architecture/decisions/0149-independent-observability.md).
 The earlier fleet envelope corpus was baseline evidence for the retired routes;
-it is retained at the
-[baseline revision](https://github.com/antithesishq/kittens/blob/a99f74f0/marshall/test/marshall_web/fleet_version_history_test.exs).
+it was retained as
+`marshall/test/marshall_web/fleet_version_history_test.exs` at kittens revision `a99f74f0` (repository deleted).
 It does not verify the version-4 rollout.
 
 An authenticated exchange also rolls back a valid capacity report when a

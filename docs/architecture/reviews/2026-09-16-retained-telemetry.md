@@ -84,13 +84,13 @@ implementation does not resolve them.
 
 ## Evidence
 
-[Summary resource](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/summary.ex),
-[recorder](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/recorder.ex),
-[observations](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/observations.ex),
-[statistics](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/statistics.ex),
-[retention action](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/expire.ex),
-[statistics properties](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/telemetry/statistics_test.exs),
-[observation checks](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/telemetry/observations_test.exs),
-[database tests](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/test/marshall/telemetry/retention_test.exs),
+Summary resource (`marshall/lib/marshall/telemetry/summary.ex` at kittens revision `a99f74f0`, repository deleted),
+recorder (`marshall/lib/marshall/telemetry/recorder.ex` at kittens revision `a99f74f0`, repository deleted),
+observations (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted),
+statistics (`marshall/lib/marshall/telemetry/statistics.ex` at kittens revision `a99f74f0`, repository deleted),
+retention action (`marshall/lib/marshall/telemetry/expire.ex` at kittens revision `a99f74f0`, repository deleted),
+statistics properties (`marshall/test/marshall/telemetry/statistics_test.exs` at kittens revision `a99f74f0`, repository deleted),
+observation checks (`marshall/test/marshall/telemetry/observations_test.exs` at kittens revision `a99f74f0`, repository deleted),
+database tests (`marshall/test/marshall/telemetry/retention_test.exs` at kittens revision `a99f74f0`, repository deleted),
 [three-node tests](../../../marshall/test/marshall/compute/distributed_admission_test.exs),
 [operator guide](../../history/ledgers/capacity-history.md).

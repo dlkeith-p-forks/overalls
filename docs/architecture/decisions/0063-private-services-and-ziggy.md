@@ -114,7 +114,7 @@ version-skew behavior. The
 public trust and split DNS; [service configuration](../../../nix/domains/system/ziggy.nix)
 uses existing SOPS bundles and systemd credentials.
 
-The existing [fleet collector](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/nix/domains/system/fleet-monitor/runtime.py)
+The existing fleet collector (`nix/domains/system/fleet-monitor/runtime.py` at kittens revision `a99f74f0`, repository deleted)
 and [Lilly admin page](../../../marshall/lib/marshall_web/live/admin/lilly_nodes_live.ex)
 now expose content-free proxy observations and retained service charts, preserving
 ADRs 0060/0062's separate monitoring authority and freshness rules.

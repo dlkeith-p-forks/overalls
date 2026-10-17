@@ -1118,7 +1118,7 @@ storage observation. Retained totals remain historical; no reservation is releas
 Existing admission, restart and relocation helpers already check each pool's
 freshness. A later verified observation restores normal eligibility.
 
-[Telemetry](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/observations.ex) records physical
+Telemetry (`marshall/lib/marshall/telemetry/observations.ex` at kittens revision `a99f74f0`, repository deleted) records physical
 capacity and allocatable bytes as unknown while freshness is absent; independent
 I/O, reservation commitments and enrolled logical budgets remain distinct. The
 change uses existing Ash report actions and nullable freshness, without schema

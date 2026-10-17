@@ -58,7 +58,7 @@ The targeted reversion mutant was falsified locally: archive
 failed191.18seconds. Deadline/seven-neighbor counterexample again observed the
 escaped child alive with both locks and exit124 instead of126. The fixed and
 generated histories were unchanged. See the
-[local mutation ledger](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/mutation-testing/local-enrico-escaped-session.md).
+local mutation ledger (`antithesis/scratchbook/mutation-testing/local-enrico-escaped-session.md` at kittens revision `9fe1e493`, repository deleted).
 Pinned code-contract syntax and discovery passed for the source and history
 declarations; semantic review preserves all-child reaping, inherited authority,
 bounded cleanup and independent process witnesses. This is self-review; no fresh

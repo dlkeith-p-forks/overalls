@@ -324,7 +324,7 @@ Lilly journals also model execution, claims, receives, exports, snapshots, and
 resize effects. Updates occur under native locks and publish state plus revision
 atomically. Preserve these journals across daemon upgrades and recovery.
 
-The [historical Antithesis actor harness](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/README.md)
+The historical Antithesis actor harness (`antithesis/README.md` at kittens revision `9fe1e493`, repository deleted)
 exercised duplicate-generation launch histories through Lilly's real command
 Store, VM actor and journal with a persistent fake executor. Its named-volume
 workload observed replay across actor process lifetimes; it did not run Marshall
@@ -393,8 +393,8 @@ fleet's old-format state was exported and purged. The
 Committed transitions enter the shared library's bounded volatile queue only
 after the native writer releases.
 The former audit-drain, cursor and reoffer evidence describes the retired
-application protocol and is preserved at the
-[baseline lifecycle chapter](https://github.com/antithesishq/kittens/blob/a99f74f0/marshall/priv/hldd/04-lifecycle.md).
+application protocol and was preserved in the
+baseline lifecycle chapter, `marshall/priv/hldd/04-lifecycle.md` at kittens revision `a99f74f0` (repository deleted).
 Marshall's local transactional audit and PaperTrail retention tests remain active.
 
 ## Native submission and daemon-loss verification

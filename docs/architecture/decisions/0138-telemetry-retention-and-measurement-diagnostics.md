@@ -73,9 +73,9 @@ production retention remains a future acceptance requirement.
 [Retention and dashboard provisioning](../../../nix/domains/system/otel-fleet/default.nix),
 [diagnostic rules](../../../nix/domains/system/otel-fleet/diagnostics.nix),
 [storage monitoring](../../../nix/domains/system/otel-fleet/storage.nix),
-[Underclass accounting](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/underclass/slo.rs),
-[export validation](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/system/otel-guest/receiver/src/slo.rs) and
-[signed-in diagnostics](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/slo_status_read.ex)
+Underclass accounting (`nix/domains/artifacts/underclass/slo.rs` at kittens revision `9fe1e493`, repository deleted),
+export validation (`nix/domains/system/otel-guest/receiver/src/slo.rs` at kittens revision `9fe1e493`, repository deleted) and
+signed-in diagnostics (`marshall/lib/marshall/telemetry/slo_status_read.ex` at kittens revision `a99f74f0`, repository deleted)
 implement the decision. Exact passing scopes and remaining gaps are recorded in
 the [review](../reviews/2026-10-03-telemetry-retention-and-diagnostics.md).
 The Underclass links are permalinks to the separate-histogram implementation.

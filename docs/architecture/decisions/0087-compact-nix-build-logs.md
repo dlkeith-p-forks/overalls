@@ -119,7 +119,7 @@ one derivation. Log parsing must bound memory, depth and rendering expansion.
   stable references, budgeted presentation and bounded retrieval.
 - The [Hegel properties](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/property-test.cc) pass
   1,000 generated core cases and 50 real-build cases in each pinned-input
-  [native check](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/nix-compact/native-check.nix). Runtime checks
+  native check (`nix/domains/artifacts/nix-compact/native-check.nix` at kittens revision `9fe1e493`, repository deleted). Runtime checks
   cover JSON/path stdout, TTY/raw formats, startup and mid-write capture fallback,
   evaluation diagnostics, quiet-build heartbeat, SIGINT, a Unix-socket daemon and
   both remote builder protocols through Nix's localhost transport fixture. These
@@ -142,7 +142,7 @@ one derivation. Log parsing must bound memory, depth and rendering expansion.
   maps requirements to tests and records operational boundaries. The
   [upstream contracts](https://github.com/ghuntley/nix-compact/blob/7b4205856cd01b2c356197689daabcca19baa7af/package/CONTRACTS) define the corresponding
   implementation obligations; structural validation alone is not runtime proof.
-- The [consumer adapters](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/nix-compact/default.nix) and
+- The consumer adapters (`nix/domains/artifacts/nix-compact/default.nix` at kittens revision `9fe1e493`, repository deleted) and
   [lock resolver](../../../nix/domains/artifacts/nix-compact/source.nix) delegate to the
   root flake's immutable source revision. The
   [extraction review](../reviews/2026-09-21-standalone-nix-compact.md) records

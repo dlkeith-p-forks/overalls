@@ -89,8 +89,8 @@ provisional warning state is visible to operators but does not notify anyone.
 The [objective roster](../../../nix/domains/system/otel-fleet/objectives.nix) and
 [rules](../../../nix/domains/system/otel-fleet/objective-rules.nix) provision targets,
 coverage guards and burn expressions. The [signed-in catalog](../../../nix/domains/system/otel-fleet/slo-catalog.nix)
-feeds [Marshall's bounded reader](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall/telemetry/slo_read.ex)
-and [SLO page](https://github.com/antithesishq/kittens/blob/a99f74f06542798dc9ef288e77c99d480433fc57/marshall/lib/marshall_web/live/slo_live.ex).
+feeds Marshall's bounded reader (`marshall/lib/marshall/telemetry/slo_read.ex` at kittens revision `a99f74f0`, repository deleted)
+and SLO page (`marshall/lib/marshall_web/live/slo_live.ex` at kittens revision `a99f74f0`, repository deleted).
 The [Promtool fixture](../../../nix/verification/tests/evaluation/otel-slo-rules.nix) and
 [browser machine fixture](../../../nix/verification/tests/machines/otel-marshall/default.nix)
 check the boundaries. The [provisional objective review](../reviews/2026-10-02-provisional-seven-day-slos.md)

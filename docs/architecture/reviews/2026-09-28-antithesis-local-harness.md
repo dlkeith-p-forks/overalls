@@ -2,7 +2,7 @@
 
 ## Scope and architecture impact
 
-The first [Antithesis harness](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/README.md) isolates Lilly's
+The first Antithesis harness (`antithesis/README.md` at kittens revision `9fe1e493`, repository deleted) isolates Lilly's
 real durable command Store, VM Actor and journal behind the actor's existing
 executor interface. Its fake executor records effective launches in a persistent
 volume for the `no-duplicate-generation-launch` property. The harness does not
@@ -19,7 +19,7 @@ accepted decisions and their implementation statuses remain unchanged.
 The actor receives command intent from the real
 [Store](../../../lilly/lib/lilly/control/store.ex), persists attempted generation
 in its real [journal](../../../lilly/lib/lilly/vm/journal.ex), and calls the
-[fake executor](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/support/fake_executor.exs) through the
+fake executor (`antithesis/support/fake_executor.exs` at kittens revision `9fe1e493`, repository deleted) through the
 existing actor dependency seam. The workload runs separate BEAM processes to
 exercise durable same-generation replay and generation advance. A named volume
 retains Store, journal, and fake effect records across those process lifetimes.
@@ -33,7 +33,7 @@ show that a native systemd/Firecracker launch was fenced, or that a guest,
 network, ZFS dataset, or independent physical host behaved correctly. Marshall,
 PostgreSQL and the authenticated fleet exchange are absent from this first
 topology. The broader candidates in the
-[property catalog](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/scratchbook/property-catalog.md) are
+property catalog (`antithesis/scratchbook/property-catalog.md` at kittens revision `9fe1e493`, repository deleted) are
 research input, not implemented assertions; copied evidence predates current
 `main` and requires revalidation before use.
 

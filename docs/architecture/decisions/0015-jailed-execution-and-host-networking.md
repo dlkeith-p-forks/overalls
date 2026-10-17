@@ -179,7 +179,7 @@ verification outcomes and remaining integration gaps.
 canonical pool paths that cannot fit the jail API's Unix socket address before
 advertising execution readiness. [Socket-path tests](../../../lilly/test/vm/jail_test.exs)
 cover byte lengths and a real socket at the maximum, and the
-[deployment fixture](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/lilly/scripts/deployment_fixture.exs) verifies
+deployment fixture (`lilly/scripts/deployment_fixture.exs` at kittens revision `9fe1e493`, repository deleted) verifies
 rejection with a complete real host configuration. The
 [three-node browser harness](../../../nix/verification/tests/README.md)
 provisions a fresh guest through the packaged Lilly service; see the

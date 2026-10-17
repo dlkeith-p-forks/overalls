@@ -26,7 +26,7 @@ the consumer retains its established option defaults and package inputs.
   package/check factories and four checks. Supported Nix/platform combinations
   fail explicitly rather than silently selecting another version.
 - [Consumer flake](../../../flake.nix), [devenv inputs](../../../devenv.yaml),
-  [package adapters](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/nix/domains/artifacts/nix-compact/default.nix) and
+  package adapters (`nix/domains/artifacts/nix-compact/default.nix` at kittens revision `9fe1e493`, repository deleted) and
   [NixOS adapter](../../../nix/domains/system/nix-compact.nix) use the pinned source.
 - [Lock resolver](../../../nix/domains/artifacts/nix-compact/source.nix) preserves direct
   imports used by existing fixtures, resolving the root lock's immutable GitHub

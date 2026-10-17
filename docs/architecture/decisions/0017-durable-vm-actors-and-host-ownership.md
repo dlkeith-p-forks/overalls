@@ -135,7 +135,7 @@ does not change this decision's partial implementation status.
 [real integration harness](../../../marshall/scripts/smoke_execution.exs) exercise these
 contracts. See the [review](../reviews/2026-09-15-durable-vm-actors.md) for actual
 results and remaining operational/multi-host evidence.
-The [historical focused Antithesis actor harness](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/antithesis/README.md) provided a
+The historical focused Antithesis actor harness (`antithesis/README.md` at kittens revision `9fe1e493`, repository deleted) provided a
 locally validated Store/actor/journal replay workload with a durable fake launch
 marker. Its [review](../reviews/2026-09-28-antithesis-local-harness.md) retains
 the exact local execution and the missing mid-attempt, hosted and native coverage.
@@ -199,7 +199,7 @@ The [owned storage review](../reviews/2026-09-16-owned-zfs-lifecycle.md) records
 recovery and physical guest verification separately from runtime wiring.
 
 [ADR-0027](0027-production-release-deployment.md) adds a packaged Lilly runtime
-closure and [systemd service](https://github.com/antithesishq/kittens/blob/9fe1e493b2090d44bacd16089049cd12b316d58a/scripts/test/fixtures/legacy-deployment/systemd/lilly.service). The daemon
+closure and systemd service (`scripts/test/fixtures/legacy-deployment/systemd/lilly.service` at kittens revision `9fe1e493`, repository deleted). The daemon
 remains outside the guest slice and shares the host mount namespace. The KVM
 harness now also hands three running guests to the packaged service and verifies
 unchanged VMM PIDs, reservations, console/data access and new-session reports
