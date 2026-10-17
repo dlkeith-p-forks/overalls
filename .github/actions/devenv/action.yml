@@ -52,11 +52,18 @@ runs:
           ${{ steps.rust.outputs.targets }}
           ${{ inputs.cache-paths }}
 
+    # Builds MUST be sandboxed: without it the builder's /bin/sh is the runner
+    # container's dash, which broke lilly-hostd's helper-script tests. The
+    # sandbox needs a privileged runner container
+    # (`<profile>;container.privileged=true`); with fallback disabled an
+    # unprivileged runner fails loudly instead of building unsandboxed.
     - name: Install Nix
       uses: cachix/install-nix-action@9aaadd8b85853f67fcdf488e6a4e9efa94ee96e2
       with:
         extra_nix_config: |
           access-tokens = github.com=${{ github.token }}
+          sandbox = true
+          sandbox-fallback = false
           system-features = ${{ inputs.system-features }}
           max-jobs = auto
           cores = 0

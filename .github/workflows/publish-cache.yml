@@ -17,7 +17,7 @@ jobs:
   # Repository-wide gates: prek hooks (Python ruff/ty, HLDD receipts, conflict
   # markers, structured-event logging), the ADR checker and contract checks.
   gates:
-    runs-on: namespace-profile-cached-amd64-xl
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
     timeout-minutes: 60
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v9
@@ -41,7 +41,7 @@ jobs:
 
   # Each Elixir project's `mix precommit` gate against the devenv PostgreSQL.
   precommit:
-    runs-on: namespace-profile-cached-amd64-xl
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
     timeout-minutes: 90
     strategy:
       fail-fast: false
@@ -83,7 +83,7 @@ jobs:
   # (meta.ci, nix/verification/tests/ci.nix) and publishes it to Cachix.
   # Machine tests run in nixos-machine-tests.yml.
   nix:
-    runs-on: namespace-profile-cached-amd64-xl
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
     timeout-minutes: 180
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v9
@@ -102,7 +102,11 @@ jobs:
         run: |
           set -euo pipefail
           mapfile -t names < <(jq -r '.[]' <<<"$CHECKS")
-          nix build -L --no-link --keep-going "${names[@]/#/.#checks.x86_64-linux.}"
+          # watch-exec uploads everything realised during the build to the
+          # overalls cache, including paths a previous job on this cache
+          # volume built but could not push.
+          cachix watch-exec overalls -- \
+            nix build -L --no-link --keep-going "${names[@]/#/.#checks.x86_64-linux.}"
       - name: Require every check to evaluate
         if: always() && steps.select.outcome == 'success'
         env:

@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   discover:
-    runs-on: namespace-profile-cached-amd64-xl
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
     timeout-minutes: 60
     outputs:
       checks: ${{ steps.select.outputs.checks }}
@@ -55,7 +55,7 @@ jobs:
     needs: discover
     if: needs.discover.outputs.checks != '[]'
     name: ${{ matrix.check }}
-    runs-on: namespace-profile-cached-amd64-xl
+    runs-on: namespace-profile-cached-amd64-xl;container.privileged=true
     timeout-minutes: 240
     strategy:
       fail-fast: false
@@ -73,7 +73,9 @@ jobs:
           ls -l /dev/kvm
           grep -c -w -E 'vmx|svm' /proc/cpuinfo || echo "no vmx/svm CPU flag exposed"
       - name: Run ${{ matrix.check }}
-        run: nix build -L --no-link .#checks.x86_64-linux.${{ matrix.check }}
+        # Pushes the guest images, packages and test drivers built for this
+        # scenario to the overalls cache as they are realised.
+        run: cachix watch-exec overalls -- nix build -L --no-link .#checks.x86_64-linux.${{ matrix.check }}
 
   # Fails the run when any check did not evaluate, after every check that did
   # evaluate has had its machine run.
