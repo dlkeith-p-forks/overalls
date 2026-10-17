@@ -361,6 +361,81 @@ with subtest("the real guest preserves editor policy, personal defaults and dire
     )
     editor_native("policy")
 
+with subtest("live editor WebSockets survive lilly-hostd and Lilly restarts in detached bridges"):
+    # @cc [owner:ghuntley,label:verification;recovery] journey-editor-restart-keeps-bridges
+    # ADR-0192: editor connections run in detached lilly-ingress-bridge
+    # processes in lilly_ingress.slice like guest SSH (ADR-0187). With a live
+    # browser editor, restarting lilly-hostd (which restarts Lilly through
+    # BindsTo) and then Lilly alone, each past the 30 s adoption grace, MUST
+    # keep the bridge processes holding the guest's port 4444 and every editor
+    # WebSocket open, with frames still arriving on them afterwards.
+    restart_host, _ = current_placement(editor_vm)
+    live = editor_root + "/restart"
+    editor_bridges = (
+        "for ns in $(ip netns list | cut -d' ' -f1); do "
+        "ip netns exec \"$ns\" ss -Htnp state established '( dport = :4444 )'; done "
+        "| grep -o '\"lilly-ingress-b\",pid=[0-9]*' | cut -d= -f2 | sort -u"
+    )
+    client.succeed(f"rm -rf {live} && install -d -o tester -m 0700 {live}")
+    # The browser helper runs detached from the driver's pipes; the driver and
+    # the helper coordinate only through the ready and go files.
+    # Playwright's request client runs in Node, which trusts only its own roots
+    # plus NODE_EXTRA_CA_CERTS, not Chromium's; the final /version check needs it.
+    client.succeed(
+        "sudo -u tester env HOME=/home/tester NODE_EXTRA_CA_CERTS="
+        + editor_root
+        + "/browser-roots.pem "
+        + shlex.join(
+            [
+                editor_python,
+                editor_browser_artifact + "/restart.py",
+                editor_root + "/journey.json",
+                "--chromium",
+                "/run/current-system/sw/bin/chromium",
+                "--ready",
+                live + "/ready",
+                "--go",
+                live + "/go",
+            ]
+        )
+        + f" </dev/null >{live}/out 2>&1 & echo $! >{live}/pid"
+    )
+    client.wait_until_succeeds(f"test -s {live}/ready", timeout=180)
+    restart_host.wait_until_succeeds(f'test -n "$({editor_bridges})"', timeout=30)
+    # Short HTTP requests also cross 4444; two snapshots keep the long-lived
+    # (WebSocket) bridges, and the browser asserts each WebSocket itself.
+    first = set(restart_host.succeed(editor_bridges).split())
+    client.succeed("sleep 10")
+    bridge_pids = sorted(first & set(restart_host.succeed(editor_bridges).split()))
+    assert bridge_pids, "no long-lived editor bridge"
+    for pid in bridge_pids:
+        cgroup = restart_host.succeed(f"cat /proc/{pid}/cgroup").strip()
+        assert re.fullmatch(
+            r"0::/lilly_ingress\.slice/lilly-ingress-[0-9a-f]{32}\.scope", cgroup
+        ), cgroup
+
+    hostd_before = restart_host.succeed("systemctl show -P MainPID lilly-hostd.service").strip()
+    restart_host.succeed("systemctl restart lilly-hostd.service")
+    restart_host.wait_until_succeeds(
+        "systemctl is-active lilly-hostd.service && systemctl is-active lilly.service", timeout=120
+    )
+    assert (
+        restart_host.succeed("systemctl show -P MainPID lilly-hostd.service").strip()
+        != hostd_before
+    )
+    client.succeed("sleep 35")
+    restart_host.succeed("systemctl restart lilly.service")
+    restart_host.wait_until_succeeds("systemctl is-active lilly.service", timeout=120)
+    client.succeed("sleep 35")
+    survivors = set(bridge_pids) & set(restart_host.succeed(editor_bridges).split())
+    assert survivors, "no editor bridge survived the restarts"
+
+    client.succeed(f"touch {live}/go")
+    client.wait_until_succeeds(f'! kill -0 "$(cat {live}/pid)"', timeout=180)
+    # The helper prints only fixed stage and assertion messages, never browser data.
+    print(client.succeed(f"cat {live}/out"))
+    client.succeed(f"grep -qx 'Editor restart survival assertions passed' {live}/out")
+
 with subtest("broker restart preserves the independent editor process and user workspace"):
     editor_native("broker-restart")
     editor_journey()

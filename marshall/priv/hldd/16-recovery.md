@@ -70,8 +70,14 @@ native editor acceptance retain their separate gaps under
 A lost Marshall or database cannot grant new editor authority. Existing Audi
 communication expires within its thirty-second lease unless current-account,
 stored-login, write and exact execution/release authority renews. Hints prompt an
-earlier renewal. A closed/expired lease or changed account, gateway, host session,
-placement or execution cannot revive; reconnect requires fresh admission. Relay
+earlier renewal. A closed/expired lease or changed account, gateway, host,
+placement or execution cannot revive; reconnect requires fresh admission. A
+Lilly restart replaces only the provisioner's control session: while Lilly
+reconnects, editor and web renewal answer `unavailable`, which Audi retries
+inside the unchanged lease, and the first report on the new session lets
+renewal succeed with the same binding
+([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)).
+If Lilly does not return within the lease, the stream ends at its deadline. Relay
 closure is not proof that a guest terminal or extension process terminated.
 
 Expired or revoked cookie/login identity starts the fixed browser sign-in flow
@@ -558,15 +564,25 @@ decision 4):
   crashed hostd still holds its inherited lock descriptor, so no successor is granted
   while it runs. On restart hostd kills any command cgroups left by its predecessor.
   VMMs are transient units outside hostd's cgroup and keep running.
-- **A guest SSH session is live during a hostd or Lilly restart.** Its detached
+- **A guest SSH, editor or nested HTTPS session is live during a hostd or
+  Lilly restart.** Its detached
   ingress bridge runs in its own `lilly-ingress-<key>.scope` in
   `lilly_ingress.slice`, outside both units, so the session continues
   ([ADR-0187](repo:docs/architecture/decisions/0187-detached-ingress-bridges.md)).
   The restarted Lilly lists live bridges through hostd. It gives each one with a
   readable record a keeper, which has 30 seconds to see its execution current
   again. It ends a bridge with no record at once, and one whose execution is not
-  current in time. Editor and nested HTTPS connections still end, and their
-  clients reconnect.
+  current in time. Editor and nested HTTPS connections take the same path
+  ([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)):
+  hostd writes their Lilly-derived preface and checks the editor's exact
+  ready frame before the bridge starts, so a live browser editor WebSocket
+  continues too. A connection still being set up when hostd restarts fails,
+  and its client retries. Marshall's lease renewal for SSH, editor and web
+  streams answers `unavailable` while Lilly reconnects, after every
+  conclusive check, and Audi retries inside the unchanged lease, so a
+  renewal falling in the restart window does not cut the session. Nested
+  streams keep their publication-bound five-second leases and do not ride
+  out a Lilly restart.
 
 - **A template copy is in flight.** It runs as a durable hostd job keyed by
   its source, pending file and size. It survives a Lilly restart and keeps the

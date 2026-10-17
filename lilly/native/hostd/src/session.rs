@@ -419,6 +419,9 @@ impl Session {
             Request::BridgeIngress {
                 key,
                 greeting,
+                preface,
+                expect,
+                ready_ms,
                 mark,
                 destination,
                 port,
@@ -440,7 +443,12 @@ impl Session {
                     source: (source != [0, 0, 0, 0]).then(|| std::net::Ipv4Addr::from(source)),
                     timeout: Duration::from_millis(u64::from(timeout_ms)),
                 };
-                match self.bridge_ingress(&key, &greeting, socket, request) {
+                let stage = crate::ingress::Stage {
+                    preface: &preface,
+                    expect: &expect,
+                    ready: Duration::from_millis(u64::from(ready_ms)),
+                };
+                match self.bridge_ingress(&key, &greeting, &stage, socket, request) {
                     Ok(()) => self.reply(id, &Reply::Connected),
                     Err(reason) => self.refuse(id, reason),
                 }
@@ -483,7 +491,10 @@ impl Session {
     /// configuration or a resolved helper; its received descriptor MUST pass
     /// ingress-client-is-audi (else Malformed) before anything else; there
     /// MUST be fewer than MAX_BRIDGES live bridges and none with this key.
-    /// hostd then dials the guest exactly as hostd-netns-connect and starts
+    /// hostd then dials the guest exactly as hostd-netns-connect, stages the
+    /// guest connection through ingress-guest-stage (the preface written
+    /// whole, the expected frame read exactly, else Unavailable with no
+    /// bridge started), and starts
     /// `[systemd-run --scope --unit=lilly-ingress-<key>.scope --slice=<slice>
     /// --property=RuntimeMaxSec=<30 days> --] lilly-ingress-bridge --detached
     /// 5 3 4 [<service uid>]` (the uid whenever hostd is root) through
@@ -498,6 +509,7 @@ impl Session {
         &self,
         key: &[u8; crate::ingress::KEY],
         greeting: &[u8],
+        stage: &crate::ingress::Stage<'_>,
         client: OwnedFd,
         request: crate::descriptors::NetnsTcp,
     ) -> Result<(), Refusal> {
@@ -515,6 +527,7 @@ impl Session {
             return Err(Refusal::Unavailable);
         }
         let guest = crate::descriptors::open_netns_tcp(request)?;
+        crate::ingress::stage(&guest, stage)?;
         let uid = rustix::process::geteuid()
             .is_root()
             .then_some(self.daemon.service_uid);

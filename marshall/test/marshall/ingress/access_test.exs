@@ -84,6 +84,64 @@ defmodule Marshall.Ingress.AccessTest do
     Map.merge(fixture, %{service: service, params: params, request: request})
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] web-renewal-across-lilly-restart
+  # Web renewal MUST be inconclusive while Lilly reconnects, succeed with the
+  # unchanged binding once the new session reports, and stay conclusive for a
+  # newer generation or stop even while the host is reconnecting.
+  test "web renewal across a Lilly restart is inconclusive, then keeps the binding", c do
+    [endpoint] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
+
+    assert {:ok, _} =
+             Ingress.configure_endpoint(
+               %{
+                 vm_id: c.vm.id,
+                 expected_revision: endpoint.policy_revision,
+                 primary_port: 8080,
+                 visibility: :public
+               },
+               actor: c.owner
+             )
+
+    request = %{service_token: c.request.service_token, label: endpoint.label, app_port: 0}
+    assert {:ok, opened} = Ingress.open_web(request, actor: SystemActor.compute())
+    token = c.request.service_token
+    renew = %{"version" => 1, "stream_token" => opened.ticket}
+    [host] = Ledger.read!(Host, id: c.vm.host_id)
+    assert {:ok, :ok} = Marshall.Compute.HostReports.disconnect(host.id, host.connection_epoch)
+
+    assert {:error, :temporarily_unavailable} =
+             Marshall.Ingress.ControlRequests.handle("web-renew", token, renew)
+
+    assert {:error, _} = Ingress.open_web(request, actor: SystemActor.compute())
+    [host] = Ledger.read!(Host, id: c.vm.host_id)
+
+    Ledger.update!(host, :connect, %{
+      connection_session_id: Ash.UUID.generate(),
+      connection_epoch: host.connection_epoch + 1,
+      report_sequence: 0,
+      reported_at: nil
+    })
+
+    assert {:error, :temporarily_unavailable} =
+             Marshall.Ingress.ControlRequests.handle("web-renew", token, renew)
+
+    [host] = Ledger.read!(Host, id: c.vm.host_id)
+    Ledger.update!(host, :report, %{reported_at: Ledger.now()})
+
+    assert {:ok, %{grant: renewed}} =
+             Marshall.Ingress.ControlRequests.handle("web-renew", token, renew)
+
+    assert renewed.binding == opened.binding
+
+    [host] = Ledger.read!(Host, id: c.vm.host_id)
+    assert {:ok, :ok} = Marshall.Compute.HostReports.disconnect(host.id, host.connection_epoch)
+    [vm] = Ledger.read!(Marshall.Compute.VirtualMachine, id: c.vm.id)
+    Ledger.intent!(vm, %{desired_state: :stopped, generation: vm.generation + 1})
+
+    assert {:error, :unauthorized} =
+             Marshall.Ingress.ControlRequests.handle("web-renew", token, renew)
+  end
+
   property "public primary streams cannot survive policy changes or authorize alternate ports",
            c do
     check all(port <- filter(integer(3000..9999), &(&1 != 4444)), max_runs: 8) do

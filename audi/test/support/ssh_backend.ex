@@ -92,6 +92,10 @@ defmodule Audi.SSHBackendFixture do
       %{renew: :allow, ttl: ttl} ->
         {:ok, %{binding: binding, ttl: ttl}}
 
+      # What Audi.Control.Client returns for Marshall's "unavailable" answer.
+      %{renew: :unavailable} ->
+        {:error, :http_error}
+
       %{renew: :hang} ->
         receive do
           :never -> {:error, :denied}

@@ -71,17 +71,57 @@ defmodule Lilly.Network.Ingress do
 
   def connect(_, _, _), do: {:error, :ingress_unavailable}
 
-  @doc "Services whose stream needs no preface or ready frame, so hostd may bridge them detached."
+  @doc """
+  Services hostd may bridge detached: every service connect/3 serves. SSH
+  and web need no stage; the editor and nested HTTPS have hostd write the
+  preface Lilly derived, and the editor has hostd require Lilly's exact ready
+  frame, before the bridge starts (ADR-0187, ADR-0192).
+  """
   @spec detachable?(map()) :: boolean()
-  def detachable?(%{service: service}), do: service in [:ssh, :web, :porsche_ssh, :audi_ssh]
+  def detachable?(%{service: service}),
+    do: service in [:ssh, :web, :editor, :porsche_ssh, :audi_ssh, :control_https, :audi_https]
+
   def detachable?(_), do: false
 
+  # The editor's guest ready frame, as the trusted connector requires it: the
+  # broker writes exactly this length-framed document after accepting the
+  # editor binding, and hostd compares it byte for byte.
+  @editor_ready OverallsProtocol.IngressConnect.ready()
+  @editor_ready_ms 20_000
+
+  # @cc [owner:ghuntley,label:security;protocol] ingress-detached-stage
+  # stage/3 MUST derive what hostd exchanges with the guest before a detached
+  # bridge starts only from the validated binding and derived target: nested
+  # HTTPS gets exactly connect/3's PROXY v2 preface and no expected frame; the
+  # editor gets connect/3's length-framed editor binding, the exact
+  # length-framed ready document and connect/3's 20 s ready bound; every other
+  # service gets nothing. Lilly alone decides both byte strings; hostd only
+  # writes one and compares the other.
+  @spec stage(map(), binary(), pos_integer()) ::
+          {:ok, Lilly.Host.Hostd.bridge_stage()} | {:error, :ingress_unavailable}
+  def stage(binding, destination, port) do
+    with {:ok, preface} <- preface(binding, destination, port) do
+      {:ok, Map.put(expected(binding), :preface, preface)}
+    else
+      _ -> {:error, :ingress_unavailable}
+    end
+  end
+
+  defp expected(%{service: :editor}),
+    do: %{
+      expect: <<byte_size(@editor_ready)::unsigned-big-32, @editor_ready::binary>>,
+      ready: @editor_ready_ms
+    }
+
+  defp expected(_), do: %{expect: <<>>, ready: 0}
+
   # @cc [owner:ghuntley,label:security;recovery] ingress-detached-bridge-derived-target
-  # bridge/6 MUST apply exactly connect/3's enablement, identity revalidation
-  # and target derivation, accept only a detachable binding (no preface and
-  # no ready frame), and have hostd bridge Audi's connection `client` to that
-  # target in a detached bridge named by `key`, writing `greeting` first
-  # (ADR-0187). No service may supply a peer address or a greeting.
+  # bridge/6 MUST apply exactly connect/3's enablement, identity revalidation,
+  # target derivation and editor source address, accept only a detachable
+  # binding, derive its stage through ingress-detached-stage, and have hostd
+  # bridge Audi's connection `client` to that target in a detached bridge
+  # named by `key`, writing `greeting` first (ADR-0187, ADR-0192). No service
+  # may supply a peer address, a preface or a greeting.
   @spec bridge(Config.t(), Guest.t(), map(), :gen_tcp.socket(), <<_::128>>, binary()) ::
           :ok | {:error, :ingress_unavailable}
   def bridge(%Config{ingress: true} = network, %Guest{} = guest, binding, client, key, greeting) do
@@ -98,15 +138,17 @@ defmodule Lilly.Network.Ingress do
            ),
          {:ok, ^guest} <- Guest.new(guest.vm_id, guest.profile, guest.slot),
          {:ok, {destination, port, mark}} <- target(guest, binding),
+         {:ok, stage} <- stage(binding, destination, port),
          {:ok, address} <- :inet.parse_ipv4strict_address(String.to_charlist(destination)),
+         {:ok, source} <- :inet.parse_ipv4strict_address(String.to_charlist(guest.gateway)),
          :ok <-
-           Lilly.Host.Hostd.bridge_ingress(client, key, greeting, %{
+           Lilly.Host.Hostd.bridge_ingress(client, key, greeting, stage, %{
              namespace: network.namespace,
              device: guest.tap,
              mark: mark,
              destination: address,
              port: port,
-             source: nil,
+             source: if(binding.service == :editor, do: source, else: nil),
              timeout: 750
            }) do
       :ok

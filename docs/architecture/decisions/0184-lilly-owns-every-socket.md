@@ -98,6 +98,10 @@ This replaces ADR-0182 step 2's mechanism, not its confinement policy.
   connection itself in a detached scope that survives hostd and Lilly
   restarts, and the BEAM relay leaves that path. Editor and nested HTTPS
   keep this decision's op 13 bridge and its restart behaviour.
+  Amended by [ADR-0192](0192-staged-detached-ingress.md) (2026-10-17): the
+  editor and nested HTTPS also use detached bridges, with hostd writing
+  Lilly's preface and checking Lilly's exact ready frame first; op 13
+  remains only as a fallback.
 - hostd's received-descriptor surface is one socket per request, validated
   by kind and state before use. Every other descriptor ends the session.
 - Lilly's `:socket` and the `gen_tcp` port share one file description.
@@ -159,8 +163,9 @@ This replaces ADR-0182 step 2's mechanism, not its confinement policy.
   passed all 15 subtests. Guest SSH reaches the guest through hostd op 13
   and `lilly-ingress-bridge`, which is the unprivileged BEAM's only route.
 
-Remaining: a hostd restart drops live op 13 bridges (editor and nested
-HTTPS). For guest SSH, [ADR-0187](0187-detached-ingress-bridges.md) replaces
+Remaining: a hostd restart drops live op 13 bridges, which are now only a
+fallback; [ADR-0192](0192-staged-detached-ingress.md) moved the editor and
+nested HTTPS to detached bridges, with machine evidence pending. For guest SSH, [ADR-0187](0187-detached-ingress-bridges.md) replaces
 the loss with detached bridges; its user-SSH journey subtest "live guest SSH
 survives lilly-hostd and Lilly restarts until its bridge is fenced" replaces
 the subtest that asserted the loss and has no recorded run yet.
@@ -180,3 +185,5 @@ None.
 - [ADR-0187](0187-detached-ingress-bridges.md): amends decision 3 so guest
   SSH and plain web bridges are detached and survive hostd and Lilly
   restarts.
+- [ADR-0192](0192-staged-detached-ingress.md): extends that to the editor
+  and nested HTTPS.

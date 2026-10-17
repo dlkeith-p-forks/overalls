@@ -345,7 +345,10 @@ Services connect to Marshall over one WebSocket each (ADR-0142):
   refused renewal ends it immediately. Web streams and SSH sessions hold
   30-second leases renewed at half their remaining time (about every 15 s);
   SSH grants carry the key owner's user so user hints reach them. Nested
-  streams keep their environment publication's five-second bound.
+  streams keep their environment publication's five-second bound. A renewal
+  blocked only because Lilly is reconnecting is `unavailable`, not a
+  refusal: Audi keeps the lease and retries until its deadline
+  ([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)).
 - **Refusals stay refusals:** while disconnected after a refused upgrade or a
   refused/unsupported-version close, the shared client answers requests with
   that refusal, and each service reports it as unauthorized (or a version

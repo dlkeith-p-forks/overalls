@@ -4,7 +4,7 @@ defmodule Marshall.Ingress.Sessions do
   alias Marshall.Authorization.SystemActor
   alias Marshall.Access.Authorization
   alias Marshall.Compute.{Host, Ledger, Operation}
-  alias Marshall.Ingress.{Endpoint, Error, Services, Session, Token}
+  alias Marshall.Ingress.{Endpoint, Error, Execution, Services, Session, Token}
   alias Marshall.SSH.Key
   require Ash.Query
   require Marshall.Events
@@ -99,22 +99,27 @@ defmodule Marshall.Ingress.Sessions do
   # Renewal MUST revalidate the exact unarchived key identity, gateway generation,
   # current membership and immutable execution binding. Expired/closed sessions
   # MUST never revive. The five-second client deadline begins before its request.
+  # A provisioner that is only reconnecting (ingress-renewal-host-reconnecting)
+  # MUST be decided last, after every conclusive check, as
+  # :temporarily_unavailable, leaving the lease unchanged (ADR-0187, ADR-0192).
   defp perform(:renew_ssh, request) do
     service = gateway!(request.service_token)
     candidate = by_token!(request.session_token)
     bind_service!(candidate, service)
     key = shared!(Key, id: candidate.key_id)
     user = user!(key)
-    host = host!(service.host_id)
+    host = host!(service.host_id, :renew)
     vm = Authorization.live_vm!(candidate.vm_id, user, "write")
     session = Ledger.lock!(Session, candidate.id) || deny!()
     bind_service!(session, service)
     live!(session)
-    ready!(vm, host)
+    ready!(vm, host, :renew)
 
     unless session.placement_id == vm.current_placement_id and
              session.execution_epoch == vm.execution_epoch and session.generation == vm.generation,
            do: deny!()
+
+    Execution.renewable!(host, Ledger.now())
 
     session
     |> Ledger.update!(:renew, %{expires_at: DateTime.add(Ledger.now(), @ttl, :millisecond)})
@@ -136,27 +141,33 @@ defmodule Marshall.Ingress.Sessions do
     service
   end
 
-  defp host!(id) do
+  # Admission requires a live, reported host session. Renewal also accepts a
+  # reconnecting one here; Execution.renewable!/2 then decides it last.
+  defp host!(id, purpose \\ :admit) do
     host = shared!(Host, id: id)
 
     unless host.enabled and host.maintenance_mode != :retired and
-             is_binary(host.connection_session_id) and
-             Marshall.Compute.HostLiveness.authority?(
-               host.connection_session_id,
-               host.reported_at,
-               Ledger.now()
-             ),
+             (live?(host) or (purpose == :renew and reconnecting?(host))),
            do: deny!()
 
     host
   end
 
-  defp ready!(vm, host) do
-    unless Marshall.Compute.HostLiveness.authority?(
-             host.connection_session_id,
-             host.reported_at,
-             Ledger.now()
-           ) and vm.host_id == host.id and
+  defp live?(host),
+    do:
+      is_binary(host.connection_session_id) and
+        Marshall.Compute.HostLiveness.authority?(
+          host.connection_session_id,
+          host.reported_at,
+          Ledger.now()
+        )
+
+  defp reconnecting?(host),
+    do: not is_binary(host.connection_session_id) or is_nil(host.reported_at)
+
+  defp ready!(vm, host, purpose \\ :admit) do
+    unless (live?(host) or (purpose == :renew and reconnecting?(host))) and
+             vm.host_id == host.id and
              vm.desired_state == :running and
              vm.observed_state == :running and
              Marshall.Compute.RelocationReadinessState.terminal_allowed?(vm) and
