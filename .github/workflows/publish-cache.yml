@@ -95,7 +95,7 @@ jobs:
           ls -l /dev/kvm || echo "no /dev/kvm on this runner"
           cat /sys/module/kvm_intel/parameters/nested /sys/module/kvm_amd/parameters/nested 2>/dev/null || true
       - name: Evaluate flake
-        run: nix flake check --no-build --show-trace
+        run: nix flake check --no-build --keep-going
       - name: Build static checks
         run: |
           nix build -L --no-link \
