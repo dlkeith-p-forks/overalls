@@ -2,7 +2,7 @@
 # The native fixture MUST use the production Rust recorder and Nix module with
 # real Unix peer/cgroup attribution and SIGKILL recovery. No application outcome
 # or production seven-day compliance claim follows from this isolated fixture.
-{ pkgs, toolchain, commitReplyLoss ? false }:
+{ pkgs, toolchain, hegel, commitReplyLoss ? false }:
 let
   identities = import ../../../../domains/system/otel-fleet/request-identities.nix;
   driverSource = builtins.readFile ./driver.py;
@@ -47,9 +47,14 @@ let
 # The fault variant MUST refuse evaluation if its insertion boundary disappears;
 # it MUST NOT silently run only the original histories.
 in assert !commitReplyLoss || pkgs.lib.hasInfix corruptionBoundary driverSource;
-pkgs.testers.runNixOSTest {
+hegel.runTest {
   name = if commitReplyLoss then "overalls-otel-request-recorder-commit-reply-loss" else "overalls-otel-request-recorder";
-  extraPythonPackages = packages: [ packages.hypothesis ];
+  properties = {
+    enable = true;
+    profile = "ci";
+    testCases = 4;
+    derandomize = true;
+  };
   nodes.machine = { ... }: {
     imports = [ ../../../../domains/system/otel-fleet/request-recorder.nix ];
     virtualisation.memorySize = 1536;

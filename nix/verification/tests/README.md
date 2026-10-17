@@ -90,10 +90,21 @@ Catalog registration stays explicit: extend the check's argument set in
 `myservice = import ./machines/myservice (service // { inherit hegel; })`
 (matches must supply exactly the suite's lambda arguments; several take no
 `module`). `underclass-service`, `secret-custody`, `zfs-transfer` and
-`agent-cli` are the current migrated examples. Omitting `properties`
+`agent-cli` are the original migrated examples; bounded telemetry, recorder,
+fleet-recovery and actor-recovery histories are migrated in the accompanying
+Hegel coverage review. Omitting `properties`
 (or `enable = false`) composes to the plain upstream test unchanged. The Python
 binding's own smoke properties run in its package `checkPhase`, not as a
 separate flake check.
+
+Hegel is the property engine for NixOS verification. New or migrated machine
+properties MUST use Hegel generators and state machines; Hypothesis imports and
+dependencies are not permitted in composed machine drivers. Fixed browser,
+firmware, installation, image, exact-configuration and other one-shot checks
+remain imperative because their evidence depends on a specific acceptance
+journey rather than generated replayable operations. A suite is not labelled
+property-covered merely because a decorator exists: the Hegel run and its
+counterexample/replay or concurrent schedule evidence must be recorded.
 
 ## Find a test
 
@@ -423,7 +434,7 @@ Current combined native acceptance must be recorded separately.
 `admin-account-browser` adds packaged WebAuthn reset and current-authority refusals from stale mounted administration pages. See the [execution review](../../../docs/architecture/reviews/2026-09-25-admin-account-authority-verification.md) for exact passing scope; presence alone is not native acceptance.
 
 `lilly-runtime-readiness` reuses the source-built nine-machine fleet and six
-nested Firecracker guests. Its pinned Hypothesis scenario restarts daemon mains
+nested Firecracker guests. Its generated Hegel scenario restarts daemon mains
 under actual PostgreSQL outage, requires complete negative private readiness
 replies, checks bounded negative watches and restores authenticated epochs and
 positive readiness without changing VMM process snapshots. Native execution is

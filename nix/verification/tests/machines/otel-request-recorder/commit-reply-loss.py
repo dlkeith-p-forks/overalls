@@ -1,12 +1,19 @@
 """Generated real commit-before-reply losses, without a producer-identity proxy."""
 
+from hegel import TestCase, booleans, given, sampled_from
+
 
 def start_sdk_producer() -> None:
     """@cc [owner:ghuntley,label:verification] producer-control-incarnation-ready
     Startup MUST observe the actual control server before issuing work; a retained
     marker or socket pathname MUST NOT establish a new producer is ready.
     """
-    machine.succeed("systemctl start sdk-producer.service")
+    # Hegel invokes each generated case after the fixed native witnesses and
+    # after earlier cases. Restarting at this boundary lets the real producer
+    # recovery protocol restore a usable marker without fabricating state.
+    machine.succeed("systemctl reset-failed sdk-producer.service")
+    machine.succeed("rm -f /var/lib/request-sdk-marker/quality")
+    machine.succeed("systemctl restart sdk-producer.service")
     machine.wait_until_succeeds(
         control("hello", role="sdk-producer") + " | jq -e '.status == \"ok\"'"
     )
@@ -81,25 +88,7 @@ def commit_reply_cut(operation: str, command: str, fault: str) -> str:
     return result
 
 
-@settings(
-    max_examples=4,
-    deadline=None,
-    derandomize=True,
-    report_multiple_bugs=False,
-    phases=[Phase.explicit, Phase.generate],
-)
-@example(operation="admit", success=True, reopens=1, fault="kill")
-@example(operation="finish", success=True, reopens=2, fault="kill")
-@example(operation="finish", success=False, reopens=1, fault="kill")
-@example(operation="admit", success=True, reopens=2, fault="delay")
-@example(operation="finish", success=False, reopens=1, fault="delay")
-@given(
-    operation=st.sampled_from(["admit", "finish"]),
-    success=st.booleans(),
-    reopens=st.sampled_from([1, 2]),
-    fault=st.sampled_from(["kill", "delay"]),
-)
-def durable_commit_reply_loss(operation: str, success: bool, reopens: int, fault: str) -> None:
+def _durable_commit_reply_loss(operation: str, success: bool, reopens: int, fault: str) -> None:
     """@cc [owner:ghuntley,label:verification;durability] native-uncertain-commit-conservation
     Lost admit replies MUST leave a real durable admission despite client refusal;
     observed producer death MUST settle it once without duration. Lost finish
@@ -200,21 +189,19 @@ def durable_commit_reply_loss(operation: str, success: bool, reopens: int, fault
     )
 
 
-with subtest("real durable commits survive lost replies with client gaps"):
-    durable_commit_reply_loss()
-
-
-@settings(
-    max_examples=2,
-    deadline=None,
-    derandomize=True,
-    report_multiple_bugs=False,
-    phases=[Phase.explicit, Phase.generate],
+@given(
+    operation=sampled_from(["admit", "finish"]),
+    success=booleans(),
+    reopens=sampled_from([1, 2]),
+    fault=sampled_from(["kill", "delay"]),
 )
-@example(fault="kill", reopens=1)
-@example(fault="delay", reopens=2)
-@given(fault=st.sampled_from(["kill", "delay"]), reopens=st.sampled_from([1, 2]))
-def durable_gap_ack_loss(fault: str, reopens: int) -> None:
+def durable_commit_reply_loss(
+    tc: TestCase, operation: str, success: bool, reopens: int, fault: str
+) -> None:
+    _durable_commit_reply_loss(operation, success, reopens, fault)
+
+
+def _durable_gap_ack_loss(fault: str, reopens: int) -> None:
     """@cc [owner:ghuntley,label:verification;durability] native-gap-handshake-before-admission
     A committed gap with unknown acknowledgment MUST NOT permit new admission.
     While its reply is withheld, real Client admission MUST refuse with unchanged
@@ -277,5 +264,19 @@ def durable_gap_ack_loss(fault: str, reopens: int) -> None:
     )
 
 
-with subtest("committed gaps without acknowledgments cannot authorize new measurement admission"):
-    durable_gap_ack_loss()
+@given(fault=sampled_from(["kill", "delay"]), reopens=sampled_from([1, 2]))
+def durable_gap_ack_loss(tc: TestCase, fault: str, reopens: int) -> None:
+    _durable_gap_ack_loss(fault, reopens)
+
+
+with subtest("fixed durable commit-reply losses preserve real recorder boundaries"):
+    _durable_commit_reply_loss("admit", True, 1, "kill")
+    _durable_commit_reply_loss("finish", True, 2, "kill")
+    _durable_commit_reply_loss("finish", False, 1, "kill")
+    _durable_commit_reply_loss("admit", True, 2, "delay")
+    _durable_commit_reply_loss("finish", False, 1, "delay")
+
+
+with subtest("fixed committed gaps require an acknowledged recovery handshake"):
+    _durable_gap_ack_loss("kill", 1)
+    _durable_gap_ack_loss("delay", 2)

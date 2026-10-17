@@ -15,7 +15,7 @@ let
   };
   hegel = import ../hegel/run-test.nix { pkgs = testPkgs; inherit hegelPython; };
   featureFleet = options: import ./machines/fleet (service // {
-    hostFixture = fixtures.hetzner-uefi;
+    hostFixture = fixtures.hetzner-uefi; inherit hegel;
   } // options);
   featureFleets = {
     fleet = featureFleet {};
@@ -97,11 +97,11 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   public-grafana-configuration = import ./evaluation/public-grafana.nix { pkgs = testPkgs; inherit nixpkgs; module = modules.default; };
   trace-spool-native = import ./machines/trace-spool { pkgs = testPkgs; };
   otel-fleet = import ./machines/otel-fleet { pkgs = testPkgs; };
-  otel-burn-delivery = import ./machines/otel-burn-delivery { pkgs = testPkgs; };
+  otel-burn-delivery = import ./machines/otel-burn-delivery { pkgs = testPkgs; inherit hegel; };
   otel-marshall = import ./machines/otel-marshall service;
-  otel-request-recorder = import ./machines/otel-request-recorder { pkgs = testPkgs; inherit (packages) toolchain; };
+  otel-request-recorder = import ./machines/otel-request-recorder { pkgs = testPkgs; inherit (packages) toolchain; inherit hegel; };
   otel-request-recorder-commit-reply-loss = import ./machines/otel-request-recorder {
-    pkgs = testPkgs; inherit (packages) toolchain; commitReplyLoss = true;
+    pkgs = testPkgs; inherit (packages) toolchain; inherit hegel; commitReplyLoss = true;
   };
   otel-slo-rules = import ./evaluation/otel-slo-rules.nix { pkgs = buildPkgs; };
   telemetry-diagnostics = import ./evaluation/telemetry-diagnostics.nix { pkgs = buildPkgs; };
@@ -373,7 +373,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
     bootProfile = true;
     guest = import ./fixtures/ubuntu { inherit packages; };
   });
-  lilly-native-actor-recovery = import ./machines/zfs-guest (storage // { actorRecovery = true; });
+  lilly-native-actor-recovery = import ./machines/zfs-guest (storage // { actorRecovery = true; inherit hegel; });
   zfs-namespace-cleanup = import ./machines/zfs-guest (storage // { namespaceCleanup = true; });
   inception = import ./machines/inception storage;
   zfs-transfer = import ./machines/zfs-transfer (storage // { inherit hegel; });

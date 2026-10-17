@@ -33,6 +33,16 @@ pkgs.python3.pkgs.buildPythonPackage {
       exit 1
     fi
     grep -q "replay reproduced the failure" replay.log
+    if HEGEL_REPLAY_BLOB="$blob" python tests/smoke.py state > mismatch.log 2>&1; then
+      echo "expected cross-property replay mismatch to exit nonzero" >&2
+      exit 1
+    fi
+    grep -q "replay blob did not reproduce any registered failure" mismatch.log
+    if HEGEL_REPLAY_BLOB="not-a-hegel-blob" python tests/smoke.py state > invalid-replay.log 2>&1; then
+      echo "expected malformed replay to exit nonzero" >&2
+      exit 1
+    fi
+    grep -q "replay failed" invalid-replay.log
     python tests/smoke.py state
     python tests/smoke.py concurrent
     if python tests/smoke.py state_failing > state.log 2>&1; then
