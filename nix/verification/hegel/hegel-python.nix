@@ -34,6 +34,7 @@ pkgs.python3.pkgs.buildPythonPackage {
     fi
     grep -q "replay reproduced the failure" replay.log
     python tests/smoke.py state
+    python tests/smoke.py concurrent
     if python tests/smoke.py state_failing > state.log 2>&1; then
       echo "expected state_failing to exit nonzero" >&2
       exit 1

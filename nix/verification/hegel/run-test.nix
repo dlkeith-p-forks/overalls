@@ -45,7 +45,9 @@ let
   pyStrList =
     value: if value == null then none else "(${lib.concatMapStringsSep "," (v: builtins.toJSON v) value},)";
 
-  # Appended after the user's script so registrations happen first.
+  # The epilogue is called from both branches so registered properties still
+  # run when an imperative test assertion raises.  A property failure in that
+  # branch is reported, then the original imperative exception is re-raised.
   epilogue = cfg: ''
     from hegel import _run_registered as _overalls_hegel_run
     _overalls_hegel_run(
@@ -59,6 +61,20 @@ let
         redact=${pyBool cfg.redact},
         phases=${pyStrList cfg.phases},
     )
+  '';
+  indent2 = script: lib.concatMapStringsSep "\n" (line: "  " + line) (lib.splitString "\n" script);
+  indent4 = script: lib.concatMapStringsSep "\n" (line: "    " + line) (lib.splitString "\n" script);
+  compose = cfg: script: ''
+    try:
+${indent2 (if script == "" then "pass" else script)}
+    except BaseException:
+        try:
+${indent4 (epilogue cfg)}
+        except BaseException:
+            print("[hegel] property runner failed while preserving an imperative failure")
+        raise
+    else:
+${indent2 (epilogue cfg)}
   '';
 in
 {
@@ -79,9 +95,9 @@ in
 
       composedScript =
         if lib.isFunction testScript then
-          args: testScript args + lib.optionalString hasProperties ("\n" + epilogue cfg)
+          args: if hasProperties then compose cfg (testScript args) else testScript args
         else
-          testScript + lib.optionalString hasProperties ("\n" + epilogue cfg);
+          if hasProperties then compose cfg testScript else testScript;
     in
     pkgs.testers.runNixOSTest (
       (removeAttrs test [ "properties" ])

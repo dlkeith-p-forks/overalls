@@ -11,6 +11,7 @@ from __future__ import annotations
 import atexit
 import ctypes
 import os
+import threading
 from collections.abc import Callable
 from ctypes import (
     POINTER,
@@ -27,6 +28,11 @@ from ctypes import (
 from enum import IntEnum
 
 _DEFAULT_LIBRARY = "@LIBHEGEL_C@"
+
+# A context owns the ABI's last-error slot and cannot be used concurrently.
+# Worker threads use cloned test-case handles, while this lock serialises the
+# short ctypes calls that touch the shared context.
+_ENGINE_LOCK = threading.RLock()
 
 
 class Result(IntEnum):
@@ -163,7 +169,9 @@ _PROTOTYPES: list[tuple[str, object, list[object]]] = [
         [_Void, _Void, c_char_p, OutputCallback, c_void_p, POINTER(_Void)],
     ),
     ("hegel_test_case_free", ctypes.c_int, [_Void, _Void]),
+    ("hegel_test_case_is_nondeterministic", ctypes.c_int, [_Void, _Void, POINTER(c_bool)]),
     ("hegel_test_case_clone", ctypes.c_int, [_Void, _Void, POINTER(_Void)]),
+    ("hegel_test_case_set_worker", ctypes.c_int, [_Void, _Void, c_int64]),
     ("hegel_mark_complete", ctypes.c_int, [_Void, _Void, c_uint32, c_char_p]),
     (
         "hegel_generate_boolean",
@@ -345,10 +353,16 @@ class Lib:
         function = getattr(self._cdll, name, None)
         if function is None:
             raise AttributeError(name)
-        return function
+
+        def call(*args: object) -> int:
+            with _ENGINE_LOCK:
+                return int(function(*args))
+
+        return call
 
     def last_error(self) -> str:
-        message = self._cdll.hegel_context_last_error(self.ctx)
+        with _ENGINE_LOCK:
+            message = self._cdll.hegel_context_last_error(self.ctx)
         return message.decode() if message else ""
 
 

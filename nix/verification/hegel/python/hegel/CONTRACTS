@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:verification] replay-mismatch-fails
+Replay execution MUST fail when the blob is malformed, overruns the registered
+property, or does not reproduce an interesting failure. A replay mismatch MUST
+NOT be reported as a passing test.
+
+@cc [owner:ghuntley,label:verification] worker-handle-ownership
+Each concurrent state-machine worker MUST drive its own cloned `TestCase`
+handle, and that handle MUST be released after the worker joins. The root
+handle MUST remain with the scheduler that advances state-machine groups.
+
+@cc [owner:ghuntley,label:verification] imperative-failure-epilogue
+Properties-enabled NixOS scripts MUST execute their registered Hegel
+properties even when the imperative script raises, then preserve and re-raise
+the original imperative exception.

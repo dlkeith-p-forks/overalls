@@ -119,7 +119,11 @@ def _run_registered(
             ) -> Callable[[TestCase], None]:
                 def run(tc: TestCase) -> None:
                     execute_state_machine(
-                        entry.machine_cls, tc, step_count=steps if steps is not None else 40
+                        entry.machine_cls,
+                        tc,
+                        step_count=steps if steps is not None else 40,
+                        min_concurrency=entry.min_concurrency,
+                        max_concurrency=entry.max_concurrency,
                     )
 
                 return run
@@ -127,6 +131,9 @@ def _run_registered(
             units.append((entry.name, stateful_body()))
 
     if not units:
+        if replay_blob:
+            sink("[hegel] replay blob did not match: no properties are registered")
+            raise SystemExit(1)
         sink("[hegel] no properties registered")
         return
 
@@ -146,7 +153,10 @@ def _run_registered(
                         sink(f"[hegel] {name}: {line}")
                 raise SystemExit(1)
         sink("[hegel] replay blob did not reproduce any registered failure")
-        return
+        # A valid blob that does not fail this property is a replay mismatch,
+        # not a passing test.  Treat it as an explicit CI failure so stale or
+        # cross-property blobs can never silently pass the machine check.
+        raise SystemExit(1)
 
     failed: list[RunReport] = []
     for name, body in units:
