@@ -1,28 +1,37 @@
 name: devenv
-description: Install Nix on the Namespace cache volume, configure Cachix and install devenv.
+description: Mount caches from the Namespace cache volume, install Nix, configure Cachix and install the locked devenv CLI.
 
 inputs:
   cachix-auth-token:
     description: Token for pushing to the overalls Cachix cache.
     required: false
     default: ""
+  cache-paths:
+    description: Extra workspace-relative or absolute paths to keep on the cache volume.
+    required: false
+    default: ""
 
 runs:
   using: composite
   steps:
-    # The cached Namespace profiles mount a persistent volume at /cache; keeping
-    # /nix there reuses the store between jobs.
-    - name: Mount Nix store from cache volume
-      shell: bash
-      run: |
-        sudo mkdir -p /cache/nix /nix
-        sudo mount --bind /cache/nix /nix
-        sudo chown runner /nix
+    # Must run after checkout (which wipes the workspace) and before Nix is
+    # installed. `nix` mode keeps /nix and ~/.cache/nix (flake, tarball and
+    # evaluation caches) on the volume; `npm` cannot be used because npm comes
+    # from the devenv shell, so its cache directory is listed explicitly.
+    - name: Mount caches from cache volume
+      uses: namespacelabs/nscloud-cache-action@v1
+      with:
+        cache: nix
+        path: |
+          ~/.npm
+          ~/.cache/devenv
+          ${{ inputs.cache-paths }}
 
     - name: Install Nix
       uses: cachix/install-nix-action@9aaadd8b85853f67fcdf488e6a4e9efa94ee96e2
       with:
         extra_nix_config: |
+          access-tokens = github.com=${{ github.token }}
           system-features = nixos-test benchmark big-parallel
           max-jobs = auto
           cores = 0
@@ -38,6 +47,11 @@ runs:
         authToken: ${{ inputs.cachix-auth-token }}
         useDaemon: false
 
+    # Install the CLI from the devenv revision pinned in devenv.lock so it
+    # matches the modules it evaluates; devenv.cachix.org serves the build.
     - name: Install devenv
       shell: bash
-      run: nix profile install nixpkgs#devenv
+      run: |
+        rev=$(jq -r '.nodes.devenv.locked.rev' devenv.lock)
+        nix profile add "github:cachix/devenv/$rev"
+        devenv version

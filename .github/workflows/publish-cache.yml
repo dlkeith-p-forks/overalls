@@ -26,6 +26,8 @@ jobs:
       - uses: ./.github/actions/devenv
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          cache-paths: |
+            ~/.cache/prek
       - name: Install contract tooling
         run: devenv shell -- npm ci --prefix tools/code-contracts --ignore-scripts
       - name: prek
@@ -49,15 +51,17 @@ jobs:
       - uses: namespacelabs/nscloud-checkout-action@v9
         with:
           fetch-depth: 0
+      # Each service keeps its fetched deps and compiled _build (including the
+      # Dialyzer project PLT); Hex, Mix (core PLTs) and rebar3 caches are shared.
       - uses: ./.github/actions/devenv
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: Cache Mix deps and build
-        uses: namespacelabs/nscloud-cache-action@v1
-        with:
-          path: |
+          cache-paths: |
             ${{ matrix.project }}/deps
             ${{ matrix.project }}/_build
+            ~/.mix
+            ~/.hex
+            ~/.cache/rebar3
       - name: Install contract tooling
         run: devenv shell -- npm ci --prefix tools/code-contracts --ignore-scripts
       - name: Start PostgreSQL
