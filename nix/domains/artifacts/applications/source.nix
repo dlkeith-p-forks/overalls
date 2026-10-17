@@ -3,7 +3,8 @@ let
   root = ../../../..;
   project = root + "/${application}";
   # @cc [owner:ghuntley,label:build] release-source-allowlist
-  # Only application build inputs, the shared protocol and the explicit local
+  # Only application build inputs, the shared protocol (including its compile-time
+  # priv data) and the explicit local
   # request-accounting and observability libraries MUST enter the source closure. Local builds, fetched
   # deps and generated assets MUST remain excluded.
 
@@ -18,6 +19,7 @@ let
     ../../../../protocol/mix.exs
     ../../../../protocol/mix.lock
     ../../../../protocol/lib
+    ../../../../protocol/priv
     ../../../../elixir/diagnostics/mix.exs
     ../../../../elixir/diagnostics/mix.lock
     ../../../../elixir/diagnostics/lib
