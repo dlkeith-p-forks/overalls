@@ -9,7 +9,7 @@ FROM debian:bookworm
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    NIX_CONFIG="experimental-features = nix-command flakes\nsandbox = false" \
+    NIX_CONFIG="experimental-features = nix-command flakes" \
     PATH=/root/.nix-profile/bin:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 RUN apt-get update \
