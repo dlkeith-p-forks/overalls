@@ -382,7 +382,26 @@ fn create_file(path: &Path) -> Result<File> {
     }
     options.open(path).map_err(|_| Failure("storage_failed"))
 }
-fn lock_installation(path: &Path) -> Result<File> {
+/// Exclusive installation lock that releases its flock explicitly on drop.
+#[derive(Debug)]
+struct InstallationLock(File);
+impl Drop for InstallationLock {
+    fn drop(&mut self) {
+        // Closing this descriptor alone would not release the lock while a
+        // fork-inherited duplicate of its open file description survives.
+        // LOCK_UN acts on the shared description, so it releases every copy.
+        let _ = FileExt::unlock(&self.0);
+    }
+}
+
+// @cc [owner:ghuntley,label:recovery] managed-skills-lock-released-explicitly
+// lock_installation MUST stay non-blocking: a held installation lock refuses with
+// operation_in_progress, and only one holder may proceed. Release MUST unlock the
+// flock (LOCK_UN) before closing, on every path including errors and replay. The
+// flock belongs to the open file description, which a process spawned by another
+// thread duplicates until exec despite O_CLOEXEC; relying on close would let that
+// copy keep the lock and make a later caller see a false operation_in_progress.
+fn lock_installation(path: &Path) -> Result<InstallationLock> {
     let target = path.join("lock");
     if !target.try_exists().map_err(|_| Failure("storage_failed"))? {
         drop(create_file(&target)?);
@@ -390,7 +409,7 @@ fn lock_installation(path: &Path) -> Result<File> {
     let file = regular_file(&target, 0)?;
     file.try_lock_exclusive()
         .map_err(|_| Failure("operation_in_progress"))?;
-    Ok(file)
+    Ok(InstallationLock(file))
 }
 fn read_receipt(path: &Path) -> Result<Receipt> {
     let reader = regular_file(path, MAX_RECEIPT)?.take(MAX_RECEIPT + 1);
@@ -1280,6 +1299,32 @@ mod tests {
             "operation_conflict"
         );
         assert_eq!(status_at(tmp.path(), &json!({"version":1,"thread_id":THREAD,"installation_id":INSTALLATION,"operation_id":OPERATION})).unwrap()["status"], "uncertain");
+    }
+    #[test]
+    fn released_lock_ignores_fork_inherited_descriptor_copies() {
+        let tmp = tempfile::tempdir().unwrap();
+        let installation = installation_path(tmp.path(), THREAD, INSTALLATION).unwrap();
+        secure_directory(&installation).unwrap();
+        let held = lock_installation(&installation).unwrap();
+        // A duplicate shares the open file description exactly as a child
+        // forked by another thread does between fork and exec.
+        let inherited = held.0.try_clone().unwrap();
+        assert_eq!(
+            lock_installation(&installation).unwrap_err().code(),
+            "operation_in_progress",
+            "a real holder still excludes other installers"
+        );
+        drop(held);
+        // The surviving copy must not keep the installation locked.
+        let next = lock_installation(&installation)
+            .expect("released lock must not report operation_in_progress");
+        assert_eq!(
+            lock_installation(&installation).unwrap_err().code(),
+            "operation_in_progress"
+        );
+        drop(next);
+        drop(inherited);
+        drop(lock_installation(&installation).unwrap());
     }
     #[test]
     fn failed_lease_cannot_create_a_receipt() {
