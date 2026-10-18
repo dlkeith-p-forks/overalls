@@ -26,7 +26,7 @@ the ownership inventory.
 | `Marshall.GitHub` | Personal OAuth connections, authorization/refresh attempts, persistent machine exclusions, generation-bound request leases and payload-free audit. The current VM owner selects the grant; guest claims, queued work and cached projections confer no authority. |
 | `Marshall.Inference` | Provider credentials, request admission and daily usage. Request authority and accounting remain distinct from provider-side execution. |
 | `Marshall.Ingress` | Public services, publications, DNS, TLS custody, readiness and ingress sessions, including short-lived immutable EditorAssetsReceipt. Discovery binds current placement/assets but does not grant Editor authority. |
-| `Marshall.Peach` | Account-scoped credential issuance and encrypted credential custody for the Peach integration. Current account authorization and credential ownership govern issuance and revocation; the integration service receives only the bounded credential payload and cannot grant machine, editor, or execution authority. |
+| `Marshall.Peach` | Dedicated private-reflection host credentials. Rotation serializes on the Compute host, retains only a secret digest, revokes prior Peach credentials and never changes compute credentials, sessions, reports or reservations. Current host state, expiry and revocation fence each projection request. |
 | `Marshall.SSH` | Account keys, browser approvals, gateway sessions, management requests, guest login and public host-certificate generations. Signing locks current service or boot authority through publication; the private CA remains outside PostgreSQL. Management authority does not grant host administrative SSH. |
 | `Marshall.Teams` | Teams, membership and resource transfers. Mutations enter Compute's ledger commit scope so authority changes share its transaction boundary. |
 | `Marshall.Terminal` | Grants, locations, openings, sessions, events and tickets. Exclusive writer leases and current execution fences govern terminal access. |
@@ -175,6 +175,31 @@ flowchart LR
 <!-- hldd:view:end -->
 
 ## Verification and gaps
+
+### Peach reflection authority
+
+[Marshall.Peach](repo:marshall/lib/marshall/peach.ex) owns only the dedicated
+[Credential](repo:marshall/lib/marshall/peach/credential.ex) resource;
+[rotation and authentication](repo:marshall/lib/marshall/peach/credentials.ex)
+serialize with current Compute host state. The private Peach service authenticates
+with that role-specific credential before Marshall builds a bounded, secret-free
+projection from current machine and integration authority. Peach does not inherit
+Compute or Audi credentials and cannot mutate placements, sessions or reservations.
+
+```mermaid
+flowchart LR
+  Guest[Current guest execution] --> Front[Audi private frontend]
+  Front --> Peach[Peach reflection service]
+  Peach -->|dedicated credential| Authority[Marshall Peach credential]
+  Authority --> Host[Compute host and current execution]
+  Host --> Projection[Marshall bounded reflection projection]
+  Projection --> Peach
+```
+
+The arrows describe request/authority flow rather than new resource ownership.
+Protocol validation, the Peach projection fixture and the Marshall control
+service tests cover bounded shape and malformed-request refusal; packaged guest deployment, stale execution and physical isolation
+remain separate gaps in the [reflection review](repo:docs/architecture/reviews/2026-10-18-guest-reflection.md).
 
 ### GitHub connection ownership
 

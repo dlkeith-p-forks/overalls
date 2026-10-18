@@ -7,6 +7,15 @@ unchanged across relocation. A restored guest retains its IP/MAC; a destination
 placement does not allocate a new address. Checkpoint admission independently
 compares the retained guest workload shape and slot with current authority.
 
+Reviewed REST, GraphQL, Git smart-HTTP and LFS requests use fixed GitHub origins
+and validated rewrites. Guest input cannot choose arbitrary credential
+recipients. Injected Authorization replaces guest copies; unsafe redirects and
+response links cannot forward the token to an unreviewed host. Connected requests
+pin the owner's credential generation and renewable lease. Detach, disconnect,
+retirement or generation replacement withdraws authority without replaying an
+upstream mutation. Anonymous public forwarding receives no credential. See
+[services](#services), [security](#security) and
+[ADR-0202](repo:docs/architecture/decisions/0202-github-com-owner-integration.md).
 Suspended-machine discovery retains publication and identity lookup without
 pretending the guest is reachable. Audi admits wake only after current SSH key,
 web publication/login or editor authority. A waiting connection joins one durable

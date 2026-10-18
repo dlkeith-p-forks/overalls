@@ -127,9 +127,7 @@ def write_archive(
 
 
 def main(arguments: list[str]) -> None:
-    """Stage a regular-file-only editor archive.
-
-    @cc [owner:ghuntley,label:security;build] windows-editor-archive-staging
+    """@cc [owner:ghuntley,label:security;build] windows-editor-archive-staging
     The staged archive MUST contain only deterministic regular files with
     Windows-compatible relative names, and its closed inventory MUST bind every
     path, size, mode and SHA-256 digest to the archive metadata.

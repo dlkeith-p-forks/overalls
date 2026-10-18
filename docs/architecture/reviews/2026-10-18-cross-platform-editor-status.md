@@ -107,6 +107,26 @@ This is native build/import evidence. Package capability remains false; it does
 not qualify an installed candidate image, personal worker, browser journey,
 recovery path or workstation CLI.
 
+The later candidate installer completed with result `0`, reason `complete`, in
+2883.1 seconds. Its summary records `OVERALLS-EDITOR-CANDIDATE-INSTALLED` and
+`OVERALLS-SETUP-COMPLETE`; retained evidence is
+`/tmp/windows-editor-candidate-fbd3ccab/evidence/summary.json`
+(SHA256 `9e976c74c0e4f26b3154490636e14d6bd3ce4f50a6bbdb8894d7cd58c6067997`)
+and `serial.log`
+(SHA256 `42c89cdb0169237107a3915ef89fdbbbca10a0e5582239ff2728211a7c9a5522`).
+A separate Firecracker launch of
+`/nix/store/nxgcv8a4i87y3pgg467ggypd00hibh8w-lilly-windows-editor-candidate-fbd3ccab-x86_64`
+with 2 vCPU and 4096 MiB reached Windows Server build 26100's `SAC>` prompt at
+20:54:53 UTC. Its retained `boot.stderr` SHA256 is
+`6221c1b4f0e58f8e62701a6dcc9e3138e336182e9dabc512ed89774e53edd9e6`,
+`firecracker.log` SHA256 is
+`26dadf8d7c0547919edbc29586e10482ed597bcb0ec48a9a2d1e89779aa339a8`,
+and metrics SHA256 is
+`742660b4d6024fa6eeb1a4489d3a29f6deb7cd57cf3bb92c46f7e2558e2524f4`.
+These are installer and console-boot results. They establish neither current
+guest readiness nor editor browser, PTY, personal-worker or recovery acceptance.
+The candidate remains unselected.
+
 Existing decisions retain their statuses; ADR-0200 is new and accepted/partial.
 Architecture impact includes that Windows candidate design and the evidence
 reconciliation, while accepted editor authority and native fail-closed rows are
@@ -134,7 +154,7 @@ check old-path 404 responses and the single navigation entry. This repairs
 design drift and introduces no new architecture decision or handbook behavior.
 The same integration dropped the Ash policy entries for `set_time_zone` and
 `set_locale`, leaving the existing self-only locked implementations unreachable.
-Restoring their authenticated-actor policy preserves ADR-0195/ADR-0197; the
+Restoring their authenticated-actor policy preserves ADR-0195/ADR-0201; the
 implementations still reject non-User or retired actors and accept no target
 account identifier. Existing account and domain tests cover successful updates
 and unauthorized or invalid preference refusal.

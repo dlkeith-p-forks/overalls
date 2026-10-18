@@ -9,34 +9,35 @@
 #  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=1; plural=0;\nLanguage: ja\n"
+msgstr "Plural-Forms: nplurals=1; plural=0;\n"
+"Language: ja\n"
 
-#: lib/marshall_web/browser_messages.ex:11
+#: lib/marshall_web/browser_messages.ex:17
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
 msgstr "%{count}1日前"
 
-#: lib/marshall_web/browser_messages.ex:12
+#: lib/marshall_web/browser_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
 msgstr "%{count}1時間前"
 
-#: lib/marshall_web/browser_messages.ex:13
+#: lib/marshall_web/browser_messages.ex:19
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
 msgstr "%{count}1分前"
 
-#: lib/marshall_web/browser_messages.ex:14
+#: lib/marshall_web/browser_messages.ex:20
 #, elixir-autogen, elixir-format
 msgid "%{label} copied."
 msgstr "%{label} がコピーされました。"
 
-#: lib/marshall_web/browser_messages.ex:9
+#: lib/marshall_web/browser_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing"
 msgstr "%{name}・%{count}の閲覧"
 
-#: lib/marshall_web/browser_messages.ex:10
+#: lib/marshall_web/browser_messages.ex:12
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing · %{activity}"
 msgstr "%{name} · %{count} 表示 · %{activity}"
@@ -46,72 +47,72 @@ msgstr "%{name} · %{count} 表示 · %{activity}"
 msgid "%{name} · Terminals"
 msgstr "%{name}・端子"
 
-#: lib/marshall_web/browser_messages.ex:15
+#: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ 新しい"
 
-#: lib/marshall_web/browser_messages.ex:16
+#: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Applying administrative change…"
 msgstr "管理上の変更を適用しています…"
 
-#: lib/marshall_web/browser_messages.ex:17
+#: lib/marshall_web/browser_messages.ex:23
 #, elixir-autogen, elixir-format
 msgid "Boot log · read-only"
 msgstr "ブートログ · 読み取り専用"
 
-#: lib/marshall_web/browser_messages.ex:18
+#: lib/marshall_web/browser_messages.ex:24
 #, elixir-autogen, elixir-format
 msgid "Close this terminal session?"
 msgstr "この端末セッションを閉じますか?"
 
-#: lib/marshall_web/browser_messages.ex:19
+#: lib/marshall_web/browser_messages.ex:25
 #, elixir-autogen, elixir-format
 msgid "Command"
 msgstr "指示"
 
-#: lib/marshall_web/browser_messages.ex:20
+#: lib/marshall_web/browser_messages.ex:27
 #, elixir-autogen, elixir-format
 msgid "Could not copy. Select the text and copy it manually."
 msgstr "コピーできませんでした。テキストを選択して手動でコピーします。"
 
-#: lib/marshall_web/browser_messages.ex:21
+#: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
 msgstr "アクセスを更新できませんでした。アカウントのマシンアクセスを確認してください。"
 
-#: lib/marshall_web/browser_messages.ex:22
+#: lib/marshall_web/browser_messages.ex:31
 #, elixir-autogen, elixir-format
 msgid "Design diagram; explanation follows in the handbook"
 msgstr "設計図;説明はハンドブックに続きます"
 
-#: lib/marshall_web/browser_messages.ex:23
+#: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "全画面表示に入る"
 
-#: lib/marshall_web/browser_messages.ex:24
+#: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "Exit full screen"
 msgstr "全画面表示を終了する"
 
-#: lib/marshall_web/browser_messages.ex:25
+#: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
 msgid "Input buffer full — that input was not sent"
 msgstr "入力バッファーがいっぱいです — その入力は送信されませんでした"
 
-#: lib/marshall_web/browser_messages.ex:26
+#: lib/marshall_web/browser_messages.ex:36
 #, elixir-autogen, elixir-format
 msgid "Match found"
 msgstr "一致が見つかりました"
 
-#: lib/marshall_web/browser_messages.ex:27
+#: lib/marshall_web/browser_messages.ex:37
 #, elixir-autogen, elixir-format
 msgid "No matches"
 msgstr "一致しません"
 
-#: lib/marshall_web/browser_messages.ex:28
+#: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
 msgstr ""
@@ -119,103 +120,103 @@ msgstr ""
 "\n"
 "%{url}"
 
-#: lib/marshall_web/browser_messages.ex:29
+#: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "Opening…"
 msgstr "オープニング…"
 
-#: lib/marshall_web/browser_messages.ex:30
+#: lib/marshall_web/browser_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled. You can try again."
 msgstr "パスキー要求がキャンセルされました。もう一度試すことができます。"
 
-#: lib/marshall_web/browser_messages.ex:31
+#: lib/marshall_web/browser_messages.ex:44
 #, elixir-autogen, elixir-format
 msgid "Passkey verification failed or unavailable. Try again."
 msgstr "パスキーの検証が失敗したか、使用できません。もう一度やり直してください。"
 
-#: lib/marshall_web/browser_messages.ex:32
+#: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
 msgstr "ターミナル名 (このブラウザのみ。空の場合は生成された名前が復元されます)"
 
-#: lib/marshall_web/browser_messages.ex:33
+#: lib/marshall_web/browser_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
 msgstr "結果は確認できませんでした。再試行する前に、ページをリロードし、結果を確認してください。"
 
-#: lib/marshall_web/browser_messages.ex:34
+#: lib/marshall_web/browser_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
 msgstr ""
 "このマシンはクリップボードに %{bytes} バイトの書き込みを要求しています。once、session、mute のいずれかを入力してください。"
 
-#: lib/marshall_web/browser_messages.ex:35
+#: lib/marshall_web/browser_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
 msgstr "このリポジトリ リンクを起動できませんでした。もう一度リンクを開きます。"
 
-#: lib/marshall_web/browser_messages.ex:36
+#: lib/marshall_web/browser_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "対話するために入力します"
 
-#: lib/marshall_web/browser_messages.ex:37
+#: lib/marshall_web/browser_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "閲覧アクセスを更新中…"
 
-#: lib/marshall_web/browser_messages.ex:38
+#: lib/marshall_web/browser_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr "検証を完了できませんでした。もう一度やり直してください。"
 
-#: lib/marshall_web/browser_messages.ex:39
+#: lib/marshall_web/browser_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr "%{action} へのパスキーを使用して確認します。これは検証後に 1 回実行されます。"
 
-#: lib/marshall_web/browser_messages.ex:40
+#: lib/marshall_web/browser_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "閲覧のみ"
 
-#: lib/marshall_web/browser_messages.ex:41
+#: lib/marshall_web/browser_messages.ex:74
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "閲覧アクセスを更新しました。"
 
-#: lib/marshall_web/browser_messages.ex:42
+#: lib/marshall_web/browser_messages.ex:75
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "パスキーを待っています…"
 
-#: lib/marshall_web/browser_messages.ex:43
+#: lib/marshall_web/browser_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "この管理上の変更を完了する"
 
-#: lib/marshall_web/browser_messages.ex:44
+#: lib/marshall_web/browser_messages.ex:78
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "ちょうど今"
 
-#: lib/marshall_web/browser_messages.ex:45
+#: lib/marshall_web/browser_messages.ex:79
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "●ライブ"
 
-#: lib/marshall_web/browser_messages.ex:46
+#: lib/marshall_web/browser_messages.ex:80
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● 読み取り専用"
 
-#: lib/marshall_web/browser_messages.ex:47
+#: lib/marshall_web/browser_messages.ex:81
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ 再接続中…"
 
-#: lib/marshall_web/browser_messages.ex:48
+#: lib/marshall_web/browser_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ スクロールバックを復元中…"

@@ -2,7 +2,7 @@
 
 ## GitHub.com connection authority
 
-[ADR-0198](repo:docs/architecture/decisions/0198-github-com-owner-integration.md)
+[ADR-0202](repo:docs/architecture/decisions/0202-github-com-owner-integration.md)
 accepts a personal `github-com` connection managed from Integrations. Start uses
 the current completed stored login and CSRF-protected
 `POST /auth/github-com/start`; the fixed callback
@@ -131,7 +131,7 @@ the same User preserve its guest identity. No profile username, public email-edi
 action or onboarding step is added. The profile section of `/settings` contains
 the display time zone of [ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md),
 the language preference, and the Git author/trailer defaults of
-[ADR-0199](repo:docs/architecture/decisions/0199-git-attribution-and-guest-identity.md).
+[ADR-0198](repo:docs/architecture/decisions/0198-git-attribution-and-guest-identity.md).
 The self-only `set_time_zone` action changes no identity, guest account or authority (see
 [time zones and local time](#interactive)). Native plus-alias/numeric-leading mailbox
 sign-in and SMTP inbox delivery remain separate gaps in [scenario coverage](#coverage).

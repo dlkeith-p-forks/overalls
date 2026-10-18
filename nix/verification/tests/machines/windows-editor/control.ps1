@@ -255,9 +255,17 @@ function Invoke-FixtureOperation {
         [IO.File]::WriteAllText(($Workspace + '\saved.txt'), '')
         [IO.File]::WriteAllText(($Extension + '\fixture.json'), (@{username=$Username; sid=$Sid; workspace=$Workspace} | ConvertTo-Json -Compress))
         foreach ($Tree in @($Data, $Workspace)) {
-            & icacls.exe $Tree /inheritance:r /grant:r ($Sid + ':(OI)(CI)F') '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-544:(OI)(CI)F' /T /q | Out-Null
-            if ($LASTEXITCODE -ne 0) { throw 'fixture_personal_acl_failed' }
-            & icacls.exe $Tree /setowner $Sid /T /q | Out-Null
+            # Recursive icacls inheritance removal can erase a file's newly
+            # inherited grants. Set every disposable leaf's exact policy.
+            [object[]]$Items = @((Get-Item -LiteralPath $Tree)) + @(Get-ChildItem -LiteralPath $Tree -Recurse -Force)
+            foreach ($Item in $Items) {
+                [string]$Flags = ''
+                if ($Item -is [IO.DirectoryInfo]) { $Flags = 'OICI' }
+                [System.Security.AccessControl.FileSystemSecurity]$Acl = Get-Acl -LiteralPath $Item.FullName
+                $Acl.SetSecurityDescriptorSddlForm('D:P(A;' + $Flags + ';FA;;;SY)(A;' + $Flags + ';FA;;;BA)(A;' + $Flags + ';FA;;;' + $Sid + ')')
+                Set-Acl -LiteralPath $Item.FullName -AclObject $Acl
+            }
+            & icacls.exe $Tree /setowner ('*' + $Sid) /T /q | Out-Null
             if ($LASTEXITCODE -ne 0) { throw 'fixture_personal_owner_failed' }
         }
         return [pscustomobject]@{ok=$true; operation=$Operation; sid=$Sid}

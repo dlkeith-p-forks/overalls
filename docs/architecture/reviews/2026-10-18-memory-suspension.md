@@ -73,7 +73,7 @@ an earlier full application run does not verify later changed sources.
 
 ## Merged documentation and contract reconciliation
 
-Canonical trunk assignments retain pins as ADR-0193, localization as ADR-0197,
+Canonical assignments retain pins as ADR-0193, localization as ADR-0201,
 Git attribution as ADR-0198 and suspension as ADR-0199. Reciprocal supersession
 links, indexes and source references use those distinct IDs. Accepted rationale
 and historical evidence remain intact. Suspension is accepted with partial
@@ -165,6 +165,19 @@ alone grants none of them.
   and zero-error/zero-skip forced Dialyzer; the sole failure is the known
   excluded Inception suspended-renewer test. These counts retain premerge
   source scope and are not final changed-source gate results.
+
+## Post-pull local hostd verification
+
+At integrated `3e25e8218`, the local hostd cargo suite passed **61 tests**,
+with **0 failed** and **0 ignored**, in **1.51 seconds**. The captured command
+was `cargo test --manifest-path lilly/native/hostd/Cargo.toml`; log:
+`/tmp/osmatrix-hostd-integrated-tests.log`. It includes checkpoint stream
+custody, API-only restore launch and closed systemctl query/lifecycle policy.
+These are local native-process and argv/lease results. They do not execute
+ZFS checkpoint transitions, KVM continuation, suspended ingress or multi-host
+recovery, and do not replace the current Lilly consumer gate.
+The same integrated local source passed `cargo clippy --all-targets -- -D warnings`;
+log: `/tmp/osmatrix-hostd-integrated-clippy.log`. This is native static evidence.
 
 ## Historical recorded validation
 

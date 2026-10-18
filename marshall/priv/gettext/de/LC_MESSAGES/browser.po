@@ -9,34 +9,35 @@
 #  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: de\n"
+msgstr "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
 
-#: lib/marshall_web/browser_messages.ex:11
+#: lib/marshall_web/browser_messages.ex:17
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
 msgstr "Vor %{count}d"
 
-#: lib/marshall_web/browser_messages.ex:12
+#: lib/marshall_web/browser_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
 msgstr "Vor %{count}h"
 
-#: lib/marshall_web/browser_messages.ex:13
+#: lib/marshall_web/browser_messages.ex:19
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
 msgstr "Vor %{count}m"
 
-#: lib/marshall_web/browser_messages.ex:14
+#: lib/marshall_web/browser_messages.ex:20
 #, elixir-autogen, elixir-format
 msgid "%{label} copied."
 msgstr "%{label} kopiert."
 
-#: lib/marshall_web/browser_messages.ex:9
+#: lib/marshall_web/browser_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing"
 msgstr "%{name} · %{count} anzeigen"
 
-#: lib/marshall_web/browser_messages.ex:10
+#: lib/marshall_web/browser_messages.ex:12
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing · %{activity}"
 msgstr "%{name} · %{count} anzeigen · %{activity}"
@@ -46,76 +47,76 @@ msgstr "%{name} · %{count} anzeigen · %{activity}"
 msgid "%{name} · Terminals"
 msgstr "%{name} · Terminals"
 
-#: lib/marshall_web/browser_messages.ex:15
+#: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ Neu"
 
-#: lib/marshall_web/browser_messages.ex:16
+#: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Applying administrative change…"
 msgstr "Verwaltungsänderung wird angewendet…"
 
-#: lib/marshall_web/browser_messages.ex:17
+#: lib/marshall_web/browser_messages.ex:23
 #, elixir-autogen, elixir-format
 msgid "Boot log · read-only"
 msgstr "Boot-Protokoll · schreibgeschützt"
 
-#: lib/marshall_web/browser_messages.ex:18
+#: lib/marshall_web/browser_messages.ex:24
 #, elixir-autogen, elixir-format
 msgid "Close this terminal session?"
 msgstr "Diese Terminalsitzung schließen?"
 
-#: lib/marshall_web/browser_messages.ex:19
+#: lib/marshall_web/browser_messages.ex:25
 #, elixir-autogen, elixir-format
 msgid "Command"
 msgstr "Befehl"
 
-#: lib/marshall_web/browser_messages.ex:20
+#: lib/marshall_web/browser_messages.ex:27
 #, elixir-autogen, elixir-format
 msgid "Could not copy. Select the text and copy it manually."
 msgstr ""
 "Konnte nicht kopiert werden. Wählen Sie den Text aus und kopieren Sie ihn "
 "manuell."
 
-#: lib/marshall_web/browser_messages.ex:21
+#: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
 msgstr ""
 "Der Zugriff konnte nicht aktualisiert werden. Überprüfen Sie den "
 "Maschinenzugriff des Kontos."
 
-#: lib/marshall_web/browser_messages.ex:22
+#: lib/marshall_web/browser_messages.ex:31
 #, elixir-autogen, elixir-format
 msgid "Design diagram; explanation follows in the handbook"
 msgstr "Designdiagramm; Die Erklärung folgt im Handbuch"
 
-#: lib/marshall_web/browser_messages.ex:23
+#: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "Geben Sie den Vollbildmodus ein"
 
-#: lib/marshall_web/browser_messages.ex:24
+#: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "Exit full screen"
 msgstr "Verlassen Sie den Vollbildmodus"
 
-#: lib/marshall_web/browser_messages.ex:25
+#: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
 msgid "Input buffer full — that input was not sent"
 msgstr "Eingabepuffer voll – diese Eingabe wurde nicht gesendet"
 
-#: lib/marshall_web/browser_messages.ex:26
+#: lib/marshall_web/browser_messages.ex:36
 #, elixir-autogen, elixir-format
 msgid "Match found"
 msgstr "Übereinstimmung gefunden"
 
-#: lib/marshall_web/browser_messages.ex:27
+#: lib/marshall_web/browser_messages.ex:37
 #, elixir-autogen, elixir-format
 msgid "No matches"
 msgstr "Keine Übereinstimmungen"
 
-#: lib/marshall_web/browser_messages.ex:28
+#: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
 msgstr ""
@@ -123,116 +124,116 @@ msgstr ""
 "\n"
 "%{url}"
 
-#: lib/marshall_web/browser_messages.ex:29
+#: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "Opening…"
 msgstr "Öffnung…"
 
-#: lib/marshall_web/browser_messages.ex:30
+#: lib/marshall_web/browser_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled. You can try again."
 msgstr "Passkey-Anfrage abgebrochen. Sie können es noch einmal versuchen."
 
-#: lib/marshall_web/browser_messages.ex:31
+#: lib/marshall_web/browser_messages.ex:44
 #, elixir-autogen, elixir-format
 msgid "Passkey verification failed or unavailable. Try again."
 msgstr ""
 "Die Passkey-Überprüfung ist fehlgeschlagen oder nicht verfügbar. Versuchen "
 "Sie es erneut."
 
-#: lib/marshall_web/browser_messages.ex:32
+#: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
 msgstr ""
 "Terminalname (nur dieser Browser; leer stellt den generierten Namen wieder "
 "her)"
 
-#: lib/marshall_web/browser_messages.ex:33
+#: lib/marshall_web/browser_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
 msgstr ""
 "Das Ergebnis konnte nicht bestätigt werden. Laden Sie die Seite neu und "
 "überprüfen Sie das Ergebnis, bevor Sie es erneut versuchen."
 
-#: lib/marshall_web/browser_messages.ex:34
+#: lib/marshall_web/browser_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
 msgstr ""
 "Dieser Rechner möchte %{bytes} Byte in Ihre Zwischenablage schreiben. Geben "
 "Sie once, session oder mute ein."
 
-#: lib/marshall_web/browser_messages.ex:35
+#: lib/marshall_web/browser_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
 msgstr ""
 "Dieser Repository-Link konnte nicht gestartet werden. Öffnen Sie den Link "
 "erneut."
 
-#: lib/marshall_web/browser_messages.ex:36
+#: lib/marshall_web/browser_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Geben Sie etwas ein, um zu interagieren"
 
-#: lib/marshall_web/browser_messages.ex:37
+#: lib/marshall_web/browser_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "Anzeigezugriff wird aktualisiert…"
 
-#: lib/marshall_web/browser_messages.ex:38
+#: lib/marshall_web/browser_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr ""
 "Die Verifizierung konnte nicht abgeschlossen werden. Versuchen Sie es "
 "erneut."
 
-#: lib/marshall_web/browser_messages.ex:39
+#: lib/marshall_web/browser_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr ""
 "Bestätigen Sie mit Ihrem Passkey für %{action}. Dies wird nach der "
 "Überprüfung einmal ausgeführt."
 
-#: lib/marshall_web/browser_messages.ex:40
+#: lib/marshall_web/browser_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "Nur ansehen"
 
-#: lib/marshall_web/browser_messages.ex:41
+#: lib/marshall_web/browser_messages.ex:74
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "Ansichtszugang aktualisiert."
 
-#: lib/marshall_web/browser_messages.ex:42
+#: lib/marshall_web/browser_messages.ex:75
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "Warten auf Ihren Passkey…"
 
-#: lib/marshall_web/browser_messages.ex:43
+#: lib/marshall_web/browser_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "Schließen Sie diese administrative Änderung ab"
 
-#: lib/marshall_web/browser_messages.ex:44
+#: lib/marshall_web/browser_messages.ex:78
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "soeben"
 
-#: lib/marshall_web/browser_messages.ex:45
+#: lib/marshall_web/browser_messages.ex:79
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "● live"
 
-#: lib/marshall_web/browser_messages.ex:46
+#: lib/marshall_web/browser_messages.ex:80
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● schreibgeschützt"
 
-#: lib/marshall_web/browser_messages.ex:47
+#: lib/marshall_web/browser_messages.ex:81
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ Wiederverbinden…"
 
-#: lib/marshall_web/browser_messages.ex:48
+#: lib/marshall_web/browser_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ Scrollback wird wiederhergestellt…"

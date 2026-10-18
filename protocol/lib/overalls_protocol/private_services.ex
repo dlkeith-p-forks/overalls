@@ -73,8 +73,8 @@ defmodule OverallsProtocol.PrivateServices do
 
   # @cc [owner:ghuntley,label:security] internal-certificate-fleet-wildcard
   # The whole fleet serves private TLS with one offline-issued certificate
-  # covering the exact Ziggy name and each single-label name in the integration
-  # zone. Certificate names MUST NOT bind a host, placement or
+  # covering the fixed Ziggy and reflection names and each single-label name in
+  # the integration zone. Certificate names MUST NOT bind a host, placement or
   # caller-selected value; rotation is operator custody, not runtime issuance.
   @spec certificate_names() :: [binary()]
   def certificate_names, do: @certificate_names

@@ -27,7 +27,8 @@ defmodule Audi.Config do
     expected =
       ~w(version role host_id connector_path connector_uid ziggy_socket galileo_socket certificate_file key_file roots_file status_socket)
 
-    with true <- Enum.sort(Map.keys(value) -- ["otel_socket"]) == Enum.sort(expected),
+    with true <-
+           Enum.sort(Map.keys(value) -- ["otel_socket", "peach_socket"]) == Enum.sort(expected),
          true <- OverallsProtocol.uuid?(value["host_id"]),
          true <-
            Enum.all?(
@@ -35,10 +36,7 @@ defmodule Audi.Config do
              &(canonical_path?(value[&1]) and byte_size(value[&1]) <= 107)
            ),
          true <- is_integer(value["connector_uid"]) and value["connector_uid"] in 0..4_294_967_294,
-         true <-
-           is_nil(value["otel_socket"]) or
-             (canonical_path?(value["otel_socket"]) and
-                byte_size(value["otel_socket"]) <= 107),
+         true <- Enum.all?(~w(otel_socket peach_socket), &optional_socket?(value[&1])),
          {:ok, _} <- read(value["key_file"], :secret, 16_384),
          :ok <- certificate(value["certificate_file"]),
          true <- canonical_path?(value["roots_file"]),
@@ -51,6 +49,7 @@ defmodule Audi.Config do
          connector_uid: value["connector_uid"],
          ziggy_socket: value["ziggy_socket"],
          galileo_socket: value["galileo_socket"],
+         peach_socket: value["peach_socket"],
          otel_socket: value["otel_socket"],
          certificate: value["certificate_file"],
          key: value["key_file"],
@@ -179,6 +178,15 @@ defmodule Audi.Config do
   end
 
   defp decode(_), do: {:error, :invalid_runtime_configuration}
+
+  # @cc [owner:ghuntley,label:security] audi-optional-private-backends
+  # An omitted private backend MUST remain disabled. A configured backend MUST
+  # name one bounded canonical Unix-socket path, never a TCP origin or inline data.
+  @spec optional_socket?(term()) :: boolean()
+  defp optional_socket?(nil), do: true
+
+  defp optional_socket?(value),
+    do: canonical_path?(value) and byte_size(value) <= 107
 
   # @cc [owner:ghuntley,label:security] audi-relay-runtime-operator-peers
   # Relay startup MUST require one fleet /32 and a finite distinct list of

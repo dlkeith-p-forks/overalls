@@ -18,7 +18,7 @@ transport reset does not preserve established sockets.
 
 ## Language and text direction
 
-[ADR-0197](repo:docs/architecture/decisions/0196-single-account-settings-page.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.
+[ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.
 
 ## Inline privileged browser actions
 
@@ -89,14 +89,17 @@ NixOS or Ubuntu sign-in, edit/save/readback and recovery receipt is recorded in
 this status review, and the captured Alma/Arch receipts retain their earlier
 image and source scope.
 
-Windows has only a staged editor runtime/source and broker boundary. The
-runtime and source recipes keep `editor_capability = false`; the portable model
-and Win32 launcher bind workers to MMDS boot identity, descriptor, placement,
-epoch, GuestAccount/UID, local SAM SID and origin, with SYSTEM-only jobs,
-profile-backed paths, exact process and named-pipe custody, and refusal of
-foreign or incomplete recovery. The listener and roster authorizer code has no
-image admission or recorded native Windows execution. A browser origin, native
-bundle, sign-in, edit/save/readback and restart recovery remain open.
+Windows has a reviewed native Code OSS bundle and a separately unselected
+candidate image; `windows-v1` retains `editor: false`. The portable model and
+Win32 launcher bind workers to MMDS boot identity, descriptor, placement, epoch,
+GuestAccount/UID, local SAM SID and origin, with SYSTEM-only jobs, profile-backed
+paths, exact process and named-pipe custody, and refusal of foreign or incomplete
+recovery. The candidate installer completed and a separate 2-vCPU/4096-MiB
+Firecracker boot reached Windows Server build 26100 SAC. These narrow results do
+not establish current readiness, image admission, browser sign-in,
+edit/save/readback, PTY, personal-worker or restart recovery. Exact identities
+and evidence digests remain in the
+[cross-platform review](repo:docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md).
 
 Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
 shares one header. A bordered heading box carries the machine name, then an

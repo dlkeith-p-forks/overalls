@@ -17,7 +17,7 @@ let
     connector_uid = config.users.users.lilly.uid;
     ziggy_socket = "/run/ziggy/proxy.sock";
     galileo_socket = "/run/galileo/proxy.sock";
-    peach_socket = "/run/peach/reflection.sock";
+    peach_socket = if config.services.peach.enable then config.services.peach.socket else null;
     otel_socket = if otelEnabled then "/run/overalls-otel-guest/receiver.sock" else null;
     certificate_file = "/run/audi-private/credentials/chain.pem";
     key_file = "/run/audi-private/credentials/key.pem";
@@ -43,7 +43,7 @@ in {
   # re-encrypt and redeploy.
   config = lib.mkIf cfg.enable {
     assertions = [
-      { assertion = config.services.lilly.enable && config.services.ziggy.enable && config.services.galileo.enable && config.services.peach.enable;
+      { assertion = config.services.lilly.enable && config.services.ziggy.enable && config.services.galileo.enable;
         message = "Audi private services must run beside enabled Lilly, Ziggy and Galileo services."; }
     ];
     services.lilly.privateServices.enable = true;

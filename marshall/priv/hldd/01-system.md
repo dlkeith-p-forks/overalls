@@ -28,6 +28,8 @@ flowchart TB
   VM --> Private[Audi private frontend]
   Private --> Ziggy[Ziggy inference]
   Private --> Galileo[Galileo integrations]
+  Private --> Peach[Peach reflection]
+  Peach -->|current credential and execution projection| Marshall
   VM --> Brady[Brady filtered web egress]
   Ziggy --> Marshall
   Galileo --> Marshall
@@ -60,6 +62,7 @@ and [deployment topology](#topology) for evaluated host and service placement.
 | Brady | Transparent guest web proxy and cache | Disposable bounded cache; host-specific signer |
 | Ziggy | Provider inference and durable usage delivery | Bounded local receipt spool |
 | Galileo | Named integrations and peer forwarding | Authority and encrypted configuration in Marshall |
+| Peach | Secret-free guest reflection behind the private frontend | Dedicated host credential digest and projection authority in Marshall; no guest snapshot state |
 | Enrico | Private GitHub mirrors | Quota-bound Git cache |
 | Underclass | Independent subscription pool on each host | Host-local SQLite and provider credentials |
 

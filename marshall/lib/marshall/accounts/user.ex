@@ -93,13 +93,22 @@ defmodule Marshall.Accounts.User do
       validate Marshall.Accounts.ValidLocale
     end
 
+    # @cc [owner:ghuntley,label:security;product] newsletter-dismissal-self-only
+    # A live account MAY dismiss its own newsletter invitation permanently;
+    # input MUST NOT reset the preference or mutate another account.
+    update :dismiss_newsletter do
+      accept []
+      require_atomic? true
+      change set_attribute(:newsletter_dismissed, true)
+    end
+
     # @cc [owner:ghuntley,label:security;protocol] locale-explicit-clear
     # Only an explicit nil MAY clear the saved locale. Empty or unsupported
     # strings MUST reach validation unchanged and refuse without a write.
     action :set_locale, :map do
       argument :locale, :string,
         allow_nil?: true,
-        constraints: [max_length: 35, allow_empty?: false]
+        constraints: [max_length: 35, trim?: false, allow_empty?: true]
 
       run Marshall.Accounts.ProfileLocale
     end
@@ -267,6 +276,10 @@ defmodule Marshall.Accounts.User do
       authorize_if expr(id == ^actor(:id) and is_nil(deleted_at))
     end
 
+    policy action(:dismiss_newsletter) do
+      authorize_if expr(id == ^actor(:id) and is_nil(deleted_at))
+    end
+
     policy action([:security, :set_time_zone, :set_locale]) do
       authorize_if actor_present()
     end
@@ -317,6 +330,11 @@ defmodule Marshall.Accounts.User do
       allow_nil?: true,
       public?: false,
       constraints: [max_length: 35, allow_empty?: false]
+
+    attribute :newsletter_dismissed, :boolean,
+      allow_nil?: false,
+      public?: false,
+      default: false
 
     attribute :email, Marshall.Accounts.EmailAddress do
       allow_nil? false

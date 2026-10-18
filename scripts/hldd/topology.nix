@@ -7,7 +7,7 @@ let
   inventory = (import ../../nix/platform/hosts/inventory.nix { inherit lib; }).hosts;
   roles = [ "marshall" "marshallProxy" "postgresql" "lilly" "lillyTransfer"
     "porsche" "audi" "audiDns" "audiPrivate" "brady" "ziggy" "galileo"
-    "enrico" "underclass" "overallsFleetExporter" "overallsBackups" "overallsAutoUpdate"
+    "enrico" "peach" "underclass" "overallsFleetExporter" "overallsBackups" "overallsAutoUpdate"
     "overallsLogging" "overallsLogStore" "overallsOtelGuest" "overallsOtelFleet"
     "opentelemetry-collector" "prometheus" "tempo" "grafana" ];
 in map (name:

@@ -345,6 +345,10 @@ throttle cooldown that expires while a request waits on the reset lock no longer
 yields a stale 429; requests skip that lock while a Codex account is healthy.
 `request.saturated` logs a relative `retry_after_ms` and an absolute `until_ms`.
 Upstream Rust tests passed; no dedicated regression test covers the race.
+The current package pin is `7169223`, with a refreshed source archive hash and
+unchanged Cargo lock/vendor hash. No new build or test result accompanies that
+pin; the earlier revision's evidence does not establish current provider behavior
+or production activation.
 Provider egress can be pinned to a tailnet exit node (ADR-0185).
 `underclass-egress.service` runs a separate unprivileged userspace `tailscaled`
 with its own state and socket, no TUN device and no routes. Its HTTP proxy
@@ -366,7 +370,7 @@ See [Underclass operations](repo:docs/services/underclass.md).
 
 ### Built-in GitHub.com provider
 
-[ADR-0198](repo:docs/architecture/decisions/0198-github-com-owner-integration.md)
+[ADR-0202](repo:docs/architecture/decisions/0202-github-com-owner-integration.md)
 accepts `github-com` at `https://com-github.integration.internal`. It resolves
 the VM owner's personal connection rather than a globally registered integration
 name. Eligible non-Customer owner machines are implicit sources; persistent
