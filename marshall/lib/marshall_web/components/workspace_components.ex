@@ -128,15 +128,60 @@ defmodule MarshallWeb.WorkspaceComponents do
   end
 
   attr :vm, :map, required: true
+  attr :id, :string, required: true
+  # @cc [owner:ghuntley,label:product] pin-toggle-presentation
+  # The pin control MUST read the caller's projected `pinned` flag only (a
+  # missing flag renders as unpinned), name its state in text and
+  # `aria-pressed`, and send the server-selected VM id with the displayed state
+  # through the `pin` event; it MUST NOT be offered for a machine with deleted
+  # intent unless the caller still holds a pin to clear. The flag never
+  # authorizes the toggle; the Pins coordinator decides.
+  @spec pin_toggle(map()) :: Phoenix.LiveView.Rendered.t()
+  def pin_toggle(assigns) do
+    assigns = assign(assigns, :pinned, pinned?(assigns.vm))
+
+    ~H"""
+    <button
+      :if={@pinned || @vm.desired_state != :deleted}
+      type="button"
+      id={@id}
+      class="console-button ghost pin-toggle"
+      phx-click="pin"
+      phx-value-id={@vm.id}
+      phx-value-pinned={to_string(@pinned)}
+      aria-pressed={to_string(@pinned)}
+      aria-label={"#{if @pinned, do: "Unpin", else: "Pin"} #{@vm.name}"}
+    >{if @pinned, do: "Unpin", else: "Pin"}</button>
+    """
+  end
+
+  attr :vm, :map, required: true
+  attr :id, :string, required: true
+  @doc "A text marker for a machine the caller has pinned; renders nothing otherwise."
+  @spec pinned_label(map()) :: Phoenix.LiveView.Rendered.t()
+  def pinned_label(assigns) do
+    assigns = assign(assigns, :pinned, pinned?(assigns.vm))
+
+    ~H"""
+    <span :if={@pinned} id={@id} class="status-label pinned-label" data-tone="muted">Pinned</span>
+    """
+  end
+
+  @doc "The caller's projected pin flag; partial projections count as unpinned."
+  @spec pinned?(map()) :: boolean()
+  def pinned?(vm), do: Map.get(vm, :pinned, false) == true
+
+  attr :vm, :map, required: true
   attr :connection, :map, default: nil
   attr :power_key, :string, required: true
   attr :active, :string, required: true
   # @cc [owner:ghuntley,label:security;product] workspace-editor-eligibility
   # Every editor control MUST require current projected write/profile authority,
   # Customer ownership, both desired/observed running and available image status.
-  # Unsupported images MUST show a disabled control with a new-image explanation;
-  # missing/unknown status MUST fail closed. Rendering MUST NOT read resources or
-  # allocate accounts; the displayed status MUST NOT authorize the launch route.
+  # Unsupported images MUST show a disabled control with an unsupported-image
+  # explanation and no advice to create a machine; missing/unknown status MUST
+  # fail closed. Rendering MUST NOT read resources or allocate accounts; the
+  # displayed status MUST NOT authorize the launch route.
   @spec machine_header(map()) :: Phoenix.LiveView.Rendered.t()
   def machine_header(assigns) do
     assigns = assign(assigns, :editor_control, editor_control(assigns.vm))
@@ -151,6 +196,7 @@ defmodule MarshallWeb.WorkspaceComponents do
             <span id="machine-state" class="status-label" data-state={@vm.observed_state}>{machine_state(
               @vm
             )}</span>
+            <.pinned_label vm={@vm} id="machine-pinned" />
           </div>
           <p class="machine-facts muted">
             {@vm.vcpu} vCPU · {workspace_gib(@vm.memory_bytes)} GiB memory · {workspace_gib(
@@ -171,6 +217,7 @@ defmodule MarshallWeb.WorkspaceComponents do
         </div>
         <div class="machine-actions">
           <div class="machine-action-row">
+            <.pin_toggle vm={@vm} id={"pin-#{@vm.id}"} />
             <.link
               :if={@editor_control == :available}
               id="open-vscode"
@@ -223,7 +270,6 @@ defmodule MarshallWeb.WorkspaceComponents do
               <%= case @editor_control do %>
                 <% :unsupported_image -> %>
                   This machine's image does not support the current browser editor.
-                  Create a new machine using the current NixOS or Ubuntu image.
                 <% :not_running -> %>
                   VS Code requires a running machine.
                 <% _ -> %>
@@ -391,7 +437,7 @@ defmodule MarshallWeb.WorkspaceComponents do
 
   @spec editor_unavailable_message(atom()) :: String.t()
   def editor_unavailable_message(:unsupported_image),
-    do: "Create a new machine using the current image to use VS Code."
+    do: "This machine's image does not support the current browser editor."
 
   def editor_unavailable_message(:not_running), do: "VS Code requires a running machine."
   def editor_unavailable_message(:unavailable), do: "VS Code is temporarily unavailable."

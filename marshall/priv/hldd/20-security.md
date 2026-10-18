@@ -53,6 +53,30 @@ then answers `unavailable`, so revocation stays conclusive in that window.
 These are source-reviewed revocation paths, not a recorded native closure result
 for thread sharing.
 
+## Machine pins and the owner-pin deletion fence
+
+[ADR-0193](repo:docs/architecture/decisions/0193-per-user-machine-pins.md) adds a
+personal pin that orders lists and, for the owner, fences deletion. The pin is
+not an authority: it cannot grant, extend or retain access, and only the owner's
+pin changes what any actor may do. Evidence is BEAM-level (generated histories,
+LiveView and SSH command tests); no native journey has run.
+
+| Layer | Authority and required refusal |
+| --- | --- |
+| Identity | Pins belong to the current stored login's user. A compute system actor, a nil actor or any non-user term projects an empty pinned set and a false flag; no path lets one user read or change another user's pins. |
+| Authorization | Pinning rechecks current Cedar read access under the VM row lock and refuses deleted intent. Deletion through every path (browser, Fleet workloads, SSH/Porsche `rm`, thread teardown) is refused with `machine_pinned` while the owner holds a live pinned row; shared users' pins never fence, and start/stop are never fenced. |
+| Transport | Browser toggles and Porsche `pin`/`unpin` carry only the machine reference and displayed state; the coordinator's idempotent result absorbs a stale state. Refusals cross the SSH control API as closed 409 reasons (`machine_pinned`, `pin_limit`) and Porsche prints fixed hints with no remote text. |
+| Execution | Pin, unpin and delete serialize on the VM row lock; a per-user advisory lock serializes one user's pins so the twenty-pin cap holds under concurrency. The guard runs after existing clone/resize/relocation/deleted-intent checks and a refusal rolls the whole request back. |
+| Isolation | A pin changes no guest, host or network state. Relocation source cleanup reclaims a copy and is not fenced. |
+| Storage | One live row per user/machine (`current_pin` identity, partial index for the guard), PaperTrail versions with actor kind/id and no sensitive attributes. Removal is an archive; both VM archive sites archive every remaining pin in the archive transaction. |
+| Recovery | The owner's account deletion archives the owner's own pins in the delete transaction, so a retired account cannot leave an undeletable machine; account cleanup also archives the user's pins elsewhere. A user whose access ended can still unpin. |
+
+Untested boundaries: a live Porsche SSH session or packaged browser driving a
+pin natively, and cross-node pin/delete races beyond the shared row lock
+argument. Expected refusals: `machine_pinned` on delete, `pin_limit` on the 21st
+pin, `vm_deleted` when pinning a deleting machine, `forbidden` for a reader
+without access or an unpin without a live row.
+
 ## User-run guest coding CLI layers
 
 Codex and Claude Code are ordinary guest processes, separate from Marshall's

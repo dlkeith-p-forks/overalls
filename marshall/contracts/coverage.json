@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 24,
+      "active": 27,
       "coverage": 1.0,
-      "covered": 24
+      "covered": 27
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "marshall.compute": {
-      "active": 3,
+      "active": 4,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "marshall.compute.I1": {
@@ -48,14 +48,24 @@
           "tests": [
             "test inception default shape preserves minimum resources"
           ]
+        },
+        "marshall.compute.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the owner-pin refusal is a closed compute reason across the SSH control API"
+          ]
         }
       }
     },
     "marshall.identity_authorization": {
-      "active": 4,
+      "active": 6,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 6,
       "form": "light",
       "obligations": {
         "marshall.identity_authorization.I1": {
@@ -96,6 +106,26 @@
           "testable": true,
           "tests": [
             "test security proof freshness is bounded in both directions"
+          ]
+        },
+        "marshall.identity_authorization.I5": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the pin state machine has exactly two transitions from a pinned start"
+          ]
+        },
+        "marshall.identity_authorization.I6": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test pin projections are empty for every non-user actor"
           ]
         }
       }
@@ -317,8 +347,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 24,
+    "active": 27,
     "coverage": 1.0,
-    "covered": 24
+    "covered": 27
   }
 }

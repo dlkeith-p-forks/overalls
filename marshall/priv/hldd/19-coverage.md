@@ -1204,6 +1204,29 @@ Tested scope: Composed generated role-by-entry matrix with an independent litera
 
 **Preferred test work:** Retain native revocation journeys and extend the generated matrix when actions or roles change; add a native composed withdrawal journey for physical acceptance.
 
+## Pin a machine to the top of the lists and keep it from being deleted until the owner unpins it
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, storage, recovery.
+
+Boundary: A pin is a per-user Access row with a two-state machine (pinned, unpinned) and one live row per user/machine; it confers no authority. The lifecycle coordinator reads the owner's live pinned row under the VM lock and refuses every delete path with machine_pinned; the owner's account deletion archives the owner's pins first; both VM archive sites archive every remaining pin.
+
+Required refusal: Refuse pinning without current read access, on deleted intent (vm_deleted) and past twenty pins (pin_limit); refuse browser, Fleet workloads, SSH/Porsche rm and thread deletes while the owner holds a pin; never let a shared user's pin fence deletion or a pin extend revoked access.
+
+Tested scope: Generated owner/member pin and delete histories through the real domain action and the real SSH rm path against local PostgreSQL, a per-user ordered-set model over three machines, pagination with random page sizes, LiveView toggles on the list, overview and header with the disabled Delete and refusal flash, SSH pin/unpin/rm command tests and the cross-application closed reason set. No native journey.
+
+- **property, present**: [deletion is admitted exactly when the owner's pin is absent](repo:marshall/test/marshall/access/pins_property_test.exs) — Generated owner/member pin, unpin and delete histories through Compute.lifecycle and the SSH rm command against a boolean model; refusals leave intent and operations unchanged; the deleted outcome archives every pin.
+- **property, present**: [pin histories match the per-user ordered-set model](repo:marshall/test/marshall/access/pins_property_test.exs) — Two users over three machines against an ordered-set model: one live row per pair, idempotent repeats, pinned_vm_ids and the pinned view in model order, no cross-user visibility.
+- **property, present**: [pinned section plus excluded pages covers each machine once](repo:marshall/test/marshall/access/pins_property_test.exs) — Random pinned subsets and page sizes over six machines; pinned first in pin order, the remainder in id order, each machine exactly once.
+- **unit, present**: [the owner's pin blocks every lifecycle delete path, other users' pins do not](repo:marshall/test/marshall/access/pins_test.exs) — Owner, manager and administrator deletes refused with machine_pinned; start/stop unaffected; manager pin never fences; archive removes the manager's pin.
+- **unit, present**: [account deletion proceeds past the departing owner's pins and archives them](repo:marshall/test/marshall/access/pins_test.exs) — DeleteUserMachines through the real lifecycle coordinator with the owner's pins present; other holders' pins survive.
+- **unit, present**: [the header toggle fences Delete until the owner unpins](repo:marshall/test/marshall_web/machine_pins_live_test.exs) — LiveView settings and terminal tabs: toggle through the shared hook, disabled Delete with Unpin to delete, forged delete refused with the fixed flash, deletion after unpin.
+- **unit, present**: [pin and unpin fence rm through the SSH command path](repo:marshall/test/marshall/ssh/commands_test.exs) — Authenticated SSH session fixtures: idempotent pin/unpin receipts, rm refused with machine_pinned, rm admitted after unpin, no pinned key in show, stranger refusals.
+- **unit, present**: [pin refusals keep their closed reason and add a fixed next-step hint](repo:porsche/test/runner_test.exs) — Porsche runner against a scripted client: machine_pinned and pin_limit exit as conflicts with fixed hints; pin/unpin dispatch without polling.
+
+**Gaps:** No NixOS machine test drives a pin over a live Porsche SSH session or in the packaged browser; cross-node pin/delete races are argued from the shared VM row lock, not observed; team-admin pinning is undecided.
+
+**Preferred test work:** Add a native Porsche journey that pins, is refused rm, unpins and deletes, and a packaged-browser toggle check; keep the generated BEAM histories as the model oracle.
+
 ## Keep Customer machines private and isolated
 
 Coverage: **partial**. Layers: authorization, isolation.

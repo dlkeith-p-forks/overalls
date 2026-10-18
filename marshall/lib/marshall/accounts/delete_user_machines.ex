@@ -78,23 +78,29 @@ defmodule Marshall.Accounts.DeleteUserMachines do
 
   # @cc [owner:ghuntley,label:security;recovery] account-deletion-thread-access-cleanup
   # Deleted-user cleanup MUST revoke canonical thread grants as well as machine
-  # grants and SSH keys through their resource actions, preserving access hints
-  # and history. It MUST remain incomplete while any bounded cleanup work remains.
+  # grants, machine pins and SSH keys through their resource actions, preserving
+  # access hints and history. It MUST remain incomplete while any bounded
+  # cleanup work remains.
   @spec cleanup_access!(Ash.UUID.t()) :: boolean()
   defp cleanup_access!(id) do
-    resources = [Marshall.SSH.Key, Marshall.Access.Grant, Marshall.Threads.Grant]
+    resources = [
+      {Marshall.SSH.Key, :revoke},
+      {Marshall.Access.Grant, :revoke},
+      {Marshall.Threads.Grant, :revoke},
+      {Marshall.Access.Pin, :remove}
+    ]
 
-    for resource <- resources do
+    for {resource, action} <- resources do
       resource
       |> Ash.Query.filter(user_id == ^id)
       |> Ash.Query.limit(100)
       |> Ash.read!(actor: SystemActor.compute())
-      |> Enum.each(&Ledger.archive!(&1, :revoke))
+      |> Enum.each(&Ledger.archive!(&1, action))
     end
 
     Enum.each(Ledger.read!(Passkey, user_id: id), &Ledger.archive!(&1, :destroy))
 
-    Enum.any?(resources, fn resource ->
+    Enum.any?(resources, fn {resource, _action} ->
       resource
       |> Ash.Query.filter(user_id == ^id)
       |> Ash.Query.limit(1)

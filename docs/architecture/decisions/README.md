@@ -1,5 +1,11 @@
 # Architecture decision records
 
+[ADR-0193](0193-per-user-machine-pins.md) adds per-user machine pins: pinned
+machines lead the machines page and overview, an owner's pin refuses every
+delete path (browser, Fleet workloads, SSH/Porsche `rm`, thread teardown) with
+`machine_pinned` except the owner's own account deletion, archival removes all
+pins, and Porsche gains `pin`/`unpin` commands.
+
 [ADR-0192](0192-staged-detached-ingress.md) moves the browser editor and
 nested HTTPS onto ADR-0187's detached ingress bridges. The BEAM's only
 essential role for them was setup: hostd now writes the preface Lilly derives
@@ -425,6 +431,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
 | [ADR-0186](0186-covenant-contract-verification.md) | accepted | partial | Covenant contract verification across Elixir applications |
 | [ADR-0192](0192-staged-detached-ingress.md) | accepted | partial | Editor and nested HTTPS use staged detached ingress bridges |
+| [ADR-0193](0193-per-user-machine-pins.md) | accepted | partial | Per-user machine pins and the owner-pin deletion guard |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
 | [ADR-0188](0188-signed-overalls-cachix-substitution.md) | accepted | partial | Use the signed Overalls Cachix cache across Nix machines |
 | [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |

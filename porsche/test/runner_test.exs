@@ -101,6 +101,38 @@ defmodule Porsche.RunnerTest do
     end
   end
 
+  test "pin refusals keep their closed reason and add a fixed next-step hint" do
+    {options, state} = script([{:error, :machine_pinned}])
+    result = Runner.run(client(), "s", "rm pinned-machine --request-id #{@id}", options)
+    assert result.exit_status == 2
+    assert result.response["error"] == "machine_pinned"
+    assert result.response["hint"] =~ "unpin it first: unpin MACHINE"
+    assert length(state.().calls) == 1
+
+    {options, _state} = script([{:error, :pin_limit}])
+    result = Runner.run(client(), "s", "pin another-machine --request-id #{@id}", options)
+    assert result.exit_status == 2
+    assert result.response["error"] == "pin_limit"
+    assert result.response["hint"] =~ "unpin one first"
+
+    {options, _state} = script([{:error, :forbidden}])
+    result = Runner.run(client(), "s", "pin another-machine --request-id #{@id}", options)
+    refute Map.has_key?(result.response, "hint")
+
+    for name <- ["pin", "unpin"] do
+      {options, state} = script([Map.put(receipt("succeeded"), "operation_id", nil)])
+
+      assert %{exit_status: 0} =
+               Runner.run(client(), "s", "#{name} vm-one --request-id #{@id}", options)
+
+      [call] = state.().calls
+      assert get_in(call, ["command", "command"]) == name
+      assert get_in(call, ["command", "arguments"]) == ["vm-one"]
+      # A synchronous mutation submits once and never waits on a receipt.
+      refute Enum.any?(state.().progress, &(&1.event == :waiting))
+    end
+  end
+
   test "one admission then correlated request polls, with the same session authority" do
     {options, state} = script([receipt("accepted"), receipt("accepted"), receipt("succeeded")])
 

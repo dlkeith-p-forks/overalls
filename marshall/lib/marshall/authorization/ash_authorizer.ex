@@ -280,6 +280,8 @@ defmodule Marshall.Authorization.AshAuthorizer do
     Marshall.Access.Grant => [:read, :history, :grant, :mark_revoked, :revoke],
     Marshall.Access.Grant.Version => [:read, :create],
     Marshall.Access.Change => [:read, :record],
+    Marshall.Access.Pin => [:read, :history, :pin, :unpin, :repin, :remove],
+    Marshall.Access.Pin.Version => [:read, :create],
     Marshall.Compute.Host => [
       :read,
       :enroll,
@@ -544,10 +546,13 @@ defmodule Marshall.Authorization.AshAuthorizer do
                       :get_for_user,
                       :resolve_for_user,
                       :list_for_user,
+                      :pinned_for_user,
                       :catalog
                     ]) or
                  (state.resource == Marshall.Access.Grant and
                     state.action in [:set_access, :list_grants]) or
+                 (state.resource == Marshall.Access.Pin and
+                    state.action in [:pin_machine, :unpin_machine]) or
                  (state.resource == Marshall.Threads.Grant and
                     state.action in [:set_access, :list_grants]) or
                  (state.resource == Marshall.Galileo.Integration and

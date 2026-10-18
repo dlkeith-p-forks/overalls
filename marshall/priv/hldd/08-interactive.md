@@ -564,6 +564,29 @@ their captured scope in the review. These tests exercise the accessible DOM and
 xterm selection; separate assistive-technology integration remains unverified.
 See the [scoped execution record](repo:docs/architecture/reviews/2026-09-25-terminal-workspace-verification.md).
 
+## Pinned machines in the lists
+
+The Machines page and the Overview order each user's pinned machines first
+([ADR-0193](repo:docs/architecture/decisions/0193-per-user-machine-pins.md)).
+The pinned section is a separate bounded read (at most twenty rows, newest pin
+first) that applies the same per-row Cedar read decision and projection as the
+keyset page; the page then excludes those ids, so a machine appears once and
+paging neither repeats nor skips. The pinned section is shown on the first page
+only. The Overview fills its six preview slots with pinned machines first.
+
+Every row, preview and machine header carries a text `Pin`/`Unpin` control
+(`#pin-<machine>`, `aria-pressed`) and a `[Pinned]` label; the control sends the
+server-selected machine id and the displayed state, and the Access coordinator
+decides. On the Settings tab the owner's own pin disables Delete with "Unpin to
+delete"; a forged delete event is still refused by the domain with a fixed flash.
+A shared manager's Delete stays enabled and receives the same refusal, and Fleet
+workloads names the owner's pin in its flash. Refusals show fixed messages
+(`pin_limit`, `vm_deleted`, otherwise a generic retry); the browser never learns
+other users' pins. The SSH `ls`/`show` wire views omit the pin flag so the
+Porsche JSON contract is unchanged. LiveView evidence is in
+[machine_pins_live_test.exs](repo:marshall/test/marshall_web/machine_pins_live_test.exs);
+the browser probe checks the toggle's presentation on both themes.
+
 ## Developer SSH
 
 Use the machine's installation instructions to install the `overalls` CLI and
@@ -768,6 +791,16 @@ without listener or status startup. These are test-build checks. Baseline
 synthetic host-key bytes establish loader custody acceptance only; configured
 SSH/host-certificate startup, packaged refusal, file-replacement races, native
 isolation and hosted config faults remain open for this property.
+
+`pin MACHINE` and `unpin MACHINE` are non-physical mutations: they resolve the
+machine like `rm`, call the Access pin coordinator as the SSH actor, answer
+`{id, name, pinned}` synchronously and replay by request id. `rm` on a machine
+its owner has pinned answers the closed `machine_pinned` reason; Porsche refines
+`machine_pinned` and `pin_limit` into named conflict exits and prints a fixed
+hint ("unpin it first: unpin MACHINE"). `ls` gains no pinned column. The
+[SSH command tests](repo:marshall/test/marshall/ssh/commands_test.exs) cover
+pin, unpin, the refused `rm` and the admitted `rm` after unpin; no native Porsche
+journey has run them.
 
 Use the command reference in [verification and reference](#reference). Supply
 secret values only through supported stdin/private-file interfaces. A management

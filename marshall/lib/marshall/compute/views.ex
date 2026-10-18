@@ -1,7 +1,7 @@
 defmodule Marshall.Compute.Views do
   @moduledoc "Bounded user-facing VM views. Resource mutation remains in the trusted coordinators."
   use Ash.Resource.Actions.Implementation
-  alias Marshall.Access.Authorization
+  alias Marshall.Access.{Authorization, Pins}
   alias Marshall.Authorization.SystemActor
   alias Marshall.Compute.{Budget, Host, Image, Ledger, Reservation, StoragePool, VirtualMachine}
   require Ash.Query
@@ -34,6 +34,9 @@ defmodule Marshall.Compute.Views do
 
           :list ->
             list(input.arguments, context.actor)
+
+          :pinned ->
+            pinned(context.actor)
 
           :resolve ->
             resolve(input.arguments.reference, context.actor)
@@ -76,12 +79,16 @@ defmodule Marshall.Compute.Views do
   # User VM pages MUST be bounded by the validated limit and cursor, include only
   # current Cedar-readable VMs, and expose only the view field allowlist, the
   # current physical host name, the registered image display name, opaque
-  # execution reference, finite editor image status, current permissions and
-  # bounded authorized operation summaries. The bounded SQL candidates MUST
-  # include current thread grants; every row still requires a fresh Cedar
-  # decision. Internal host IDs, placements, reservations and image manifests
-  # stay private.
+  # execution reference, finite editor image status, current permissions, the
+  # caller's own pin flag and bounded authorized operation summaries. The
+  # bounded SQL candidates MUST include current thread grants; every row still
+  # requires a fresh Cedar decision. The validated `exclude` list (at most the
+  # pin limit) MUST remove those ids from the keyset page without changing its
+  # order or cursor semantics. Internal host IDs, placements, reservations,
+  # image manifests and other users' pins stay private.
   defp list(request, actor) do
+    exclude = Map.get(request, :exclude, [])
+
     query =
       VirtualMachine
       |> Ash.Query.filter(
@@ -105,6 +112,8 @@ defmodule Marshall.Compute.Views do
     query =
       if Map.get(request, :after), do: Ash.Query.filter(query, id > ^request.after), else: query
 
+    query = if exclude == [], do: query, else: Ash.Query.filter(query, id not in ^exclude)
+
     rows = Ash.read!(query, actor: SystemActor.compute())
 
     items =
@@ -119,6 +128,34 @@ defmodule Marshall.Compute.Views do
     }
   end
 
+  # @cc [owner:ghuntley,label:security;product] views-pinned-section-bounded
+  # The pinned section MUST contain only the caller's live `pinned` rows (at
+  # most the pin limit), ordered newest pin first, restricted to unarchived VMs
+  # that pass the same fresh per-row Cedar read decision and projected through
+  # the same view as the keyset page. A pin on a VM the caller can no longer
+  # read MUST be omitted, not fail the whole section.
+  defp pinned(actor) do
+    ids = Pins.pinned_vm_ids(actor)
+
+    rows =
+      if ids == [] do
+        %{}
+      else
+        VirtualMachine
+        |> Ash.Query.filter(id in ^ids)
+        |> Ash.read!(actor: SystemActor.compute())
+        |> Map.new(&{&1.id, &1})
+      end
+
+    items =
+      ids
+      |> Enum.flat_map(&List.wrap(rows[&1]))
+      |> Enum.filter(&Authorization.allowed?(&1, actor, "read"))
+      |> Enum.map(&view(&1, actor))
+
+    %{items: items}
+  end
+
   @spec view(VirtualMachine.t(), map()) :: map()
   defp view(vm, actor) do
     image = List.first(Ledger.read!(Image, id: vm.image_id))
@@ -130,6 +167,7 @@ defmodule Marshall.Compute.Views do
       ssh_host: ssh_host_name(vm),
       editor_image_status: editor_image_status(image),
       guest_capabilities: Image.guest_capabilities(image),
+      pinned: Pins.pinned?(vm, actor),
       resize: resize_view(vm, actor),
       relocation:
         if(Authorization.allowed?(vm, actor, "manage"),

@@ -226,6 +226,8 @@ defmodule Marshall.Compute.Outcomes do
           for address <- Ledger.read!(NetworkAddress, vm_id: vm.id),
               do: Ledger.archive!(address, :release)
 
+          # Remaining pins belong to non-owners or a retired owner (ADR-0193).
+          Marshall.Access.Pins.remove_for_vm!(vm.id)
           Ledger.archive!(vm, :archive)
         end
 

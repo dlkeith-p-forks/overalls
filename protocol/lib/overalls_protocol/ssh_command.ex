@@ -26,7 +26,13 @@ defmodule OverallsProtocol.SSHCommand do
        "Cancel an unpublished clone or uncommitted relocation request."},
     "start" => {1, 1, [], "start MACHINE", "Start a machine."},
     "stop" => {1, 1, [], "stop MACHINE", "Stop a machine, retaining its disk."},
-    "rm" => {1, 1, [], "rm MACHINE", "Delete a machine and its disk."},
+    "rm" =>
+      {1, 1, [], "rm MACHINE",
+       "Delete a machine and its disk. Refused while its owner has it pinned."},
+    "pin" =>
+      {1, 1, [], "pin MACHINE",
+       "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."},
+    "unpin" => {1, 1, [], "unpin MACHINE", "Remove your pin from a machine."},
     "share show" =>
       {1, 1, ["after"], "share show MACHINE [--after CURSOR]", "List access grants."},
     "share add" =>
@@ -90,8 +96,11 @@ defmodule OverallsProtocol.SSHCommand do
     "request cancel"
   ]
 
+  # Pins are durable mutations with no physical operation: no receipt wait.
   @mutations @physical ++
                [
+                 "pin",
+                 "unpin",
                  "share add",
                  "share remove",
                  "ssh-key remove",
@@ -395,7 +404,18 @@ defmodule OverallsProtocol.SSHCommand do
     do: match?({:ok, _}, OverallsProtocol.Integration.basic_credential(value))
 
   defp arguments_valid?(name, [machine])
-       when name in ["show", "start", "stop", "rm", "clone", "relocate", "resize", "share show"],
+       when name in [
+              "show",
+              "start",
+              "stop",
+              "rm",
+              "pin",
+              "unpin",
+              "clone",
+              "relocate",
+              "resize",
+              "share show"
+            ],
        do: machine?(machine)
 
   defp arguments_valid?("share add", [machine, email, role]),

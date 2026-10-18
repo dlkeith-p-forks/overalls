@@ -226,6 +226,16 @@ defmodule Porsche.Runner do
   defp failure(reason, id, status) do
     response = %{"version" => 1, "status" => "error", "error" => Atom.to_string(reason)}
     response = if id, do: Map.put(response, "request_id", id), else: response
+    response = if hint = hint(reason), do: Map.put(response, "hint", hint), else: response
     %{exit_status: status, response: response, close: false}
   end
+
+  # Fixed next-step text for refusals a user can resolve themselves; it carries
+  # no remote or command text.
+  @spec hint(atom()) :: String.t() | nil
+  defp hint(:machine_pinned),
+    do: "The owner has this machine pinned; unpin it first: unpin MACHINE"
+
+  defp hint(:pin_limit), do: "You already hold the maximum number of pins; unpin one first."
+  defp hint(_), do: nil
 end

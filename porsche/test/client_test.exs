@@ -190,6 +190,8 @@ defmodule Porsche.ClientTest do
           :relocation_retry_unavailable,
           :placement_changed,
           :name_unavailable,
+          :machine_pinned,
+          :pin_limit,
           :idempotency_conflict
         ] do
       {client, worker} = server(context, {:error, Atom.to_string(reason)})

@@ -15,5 +15,10 @@ defmodule Marshall.Access do
     end
 
     resource Marshall.Access.Change
+
+    resource Marshall.Access.Pin do
+      define :pin_machine, action: :pin_machine
+      define :unpin_machine, action: :unpin_machine
+    end
   end
 end

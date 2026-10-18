@@ -126,6 +126,7 @@ defmodule Marshall.SSH.CommandsTest do
     refute Map.has_key?(hd(listed.result["items"]), "host_id")
     refute Map.has_key?(hd(listed.result["items"]), "current_placement_id")
     refute Map.has_key?(hd(listed.result["items"]), "editor_image_status")
+    refute Map.has_key?(hd(listed.result["items"]), "pinned")
 
     assert {:ok, shown} = command(c, "show placed-machine")
     assert shown.result["host"] == c.host.name
@@ -759,6 +760,56 @@ defmodule Marshall.SSH.CommandsTest do
       assert {:ok, _} = ingest(c.host.id, outcome(deletion, 3, :deleted))
       assert {:ok, %{status: ^expected}} = command(c, "request show #{id}")
     end
+  end
+
+  # @cc [owner:ghuntley,label:verification;product] ssh-pin-guard-commands
+  # `pin`/`unpin` MUST succeed idempotently through the SSH path with a
+  # synchronous receipt, `rm` MUST refuse with `machine_pinned` while the owner
+  # holds the pin and leave intent/operations unchanged, and `rm` MUST be
+  # admitted after `unpin`. `show`/`ls` MUST NOT gain a `pinned` key.
+  test "pin and unpin fence rm through the SSH command path", c do
+    assert {:ok, created} = command(c, "new --name keeper --request-id keeper-create")
+    vm_id = created.result["id"]
+
+    assert {:ok, pinned} = command(c, "pin keeper --request-id pin-1")
+    assert pinned.status == "succeeded"
+    assert is_nil(pinned.operation_id)
+    assert pinned.result == %{"id" => vm_id, "name" => "keeper", "pinned" => true}
+    assert {:ok, ^pinned} = command(c, "pin keeper --request-id pin-1")
+    assert {:ok, again} = command(c, "pin #{vm_id} --request-id pin-2")
+    assert again.result["pinned"] == true
+    assert [_] = Ledger.read!(Marshall.Access.Pin, vm_id: vm_id, user_id: c.actor.id)
+
+    assert {:ok, shown} = command(c, "show keeper")
+    refute Map.has_key?(shown.result, "pinned")
+
+    operations = Ledger.read!(Operation, vm_id: vm_id)
+    assert {:error, refused} = command(c, "rm keeper --request-id rm-pinned")
+    assert Exception.message(refused) =~ "machine_pinned"
+    assert Ledger.read!(Operation, vm_id: vm_id) == operations
+    assert [%{desired_state: :running}] = Ledger.read!(VirtualMachine, id: vm_id)
+    assert [] = Ledger.read!(Request, user_id: c.actor.id, request_id: "rm-pinned")
+
+    assert {:ok, unpinned} = command(c, "unpin keeper --request-id unpin-1")
+    assert unpinned.result == %{"id" => vm_id, "name" => "keeper", "pinned" => false}
+    assert {:ok, ^unpinned} = command(c, "unpin keeper --request-id unpin-1")
+
+    assert {:ok, %{result: %{"pinned" => false}}} =
+             command(c, "unpin keeper --request-id unpin-2")
+
+    assert {:ok, deleted} = command(c, "rm keeper --request-id rm-after-unpin")
+    assert deleted.status == "accepted"
+    assert [%{desired_state: :deleted}] = Ledger.read!(VirtualMachine, id: vm_id)
+
+    assert {:error, refused} = command(c, "pin keeper --request-id pin-deleted")
+    assert Exception.message(refused) =~ "vm_deleted"
+
+    # A stranger can neither pin nor unpin a machine it cannot read.
+    stranger = session_for(c, user(), <<9::256>>)
+    assert {:error, refused} = command(stranger, "pin #{vm_id} --request-id pin-stranger")
+    assert Exception.message(refused) =~ "forbidden"
+    assert {:error, refused} = command(stranger, "unpin #{vm_id} --request-id unpin-stranger")
+    assert Exception.message(refused) =~ "forbidden"
   end
 
   test "name reuse cannot retarget an old delete receipt", c do

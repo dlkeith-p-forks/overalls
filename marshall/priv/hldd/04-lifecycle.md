@@ -18,6 +18,26 @@ These are **desired states**. The VM resource permits idempotent start/stop
 requests. Deletion is terminal intent. Relocation has additional stopped-source
 handoff and restoration transitions guarded by its coordinator.
 
+Deletion has one more admission check since
+[ADR-0193](repo:docs/architecture/decisions/0193-per-user-machine-pins.md). With
+the host and VM locked, after authorization and the clone, resize, relocation
+and deleted-intent checks, a `delete` request is refused with `machine_pinned`
+while the machine's owner holds a live pinned row. The check sits in the single
+lifecycle coordinator, so it covers the browser Delete button, Fleet workloads,
+SSH and Porsche `rm`, and thread archive/delete teardown alike; a refusal writes
+no generation, operation, receipt or thread transition. Pins held by shared users
+never fence deletion, and start/stop are never fenced. The owner's account
+deletion is the one exception: `delete_for_account/2` archives the departing
+owner's pins on the machine inside the delete transaction before the guard, so a
+retired account cannot leave an undeletable machine. When the deleted outcome
+finally archives the VM, both archive sites archive every remaining pin in the
+same transaction, so no live pin outlives its machine. Relocation source cleanup
+reclaims a copy, not the machine, and is not fenced. The generated
+[guard history](repo:marshall/test/marshall/access/pins_property_test.exs) drives
+pin, unpin and delete attempts through the domain action and the SSH `rm` path
+against an owner/member model; it is local PostgreSQL evidence, not a native or
+cross-node race result.
+
 A repeated Start advances logical generation even when the confined VMM remains
 running. Lilly adopts the boot journal into that generation only under placement
 ownership, after proving the existing native process. The same placement and

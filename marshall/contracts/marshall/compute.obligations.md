@@ -25,3 +25,10 @@ The component's declared Elixir modules remain present, compilable, and owned by
 - **must:** Inception defaults MUST retain at least the configured vCPU, memory, and disk minima regardless of image-provided values; ordinary profiles MUST retain the image shape.
 - **kind:** functional
 - **status:** active
+
+### marshall.compute.I4 — Delete refusals keep the owner-pin reason closed
+- **scope:** `Marshall.Compute.Error` for the lifecycle owner-pin guard (ADR-0193)
+- **must:** The guard's refusal MUST be the stable `machine_pinned` reason carried by `Marshall.Compute.Error`, whose message names only that reason; the reason MUST be in the SSH control API's closed 409 set and in Porsche's refined conflict reasons, so no path renders a different or open-ended text.
+- **kind:** security
+- **status:** active
+
