@@ -38,7 +38,7 @@ defmodule MarshallWeb.AccountLive do
        remaining: 0,
        enrollment_started?: false,
        keys: [],
-       git_form: git_form(socket.assigns.current_user)
+       git_form: nil
      )
      |> assign_picker()
      |> reset_key_form()
