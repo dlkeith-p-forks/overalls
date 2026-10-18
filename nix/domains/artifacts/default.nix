@@ -34,6 +34,7 @@ let
   # Android guest remains reproducible and does not depend on host SDK state.
   androidEnvironment = pkgs.callPackage (pkgs.path + "/pkgs/development/mobile/androidenv") {
     licenseAccepted = true;
+    config = { allowUnfree = true; };
   };
   androidSdk = (androidEnvironment.composeAndroidPackages {
     cmdLineToolsVersion = "latest";
