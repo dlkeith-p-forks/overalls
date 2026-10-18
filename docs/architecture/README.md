@@ -100,9 +100,10 @@ except bounded root firmware `NvVars`. OmniOS assembly disables vendor cloud-ini
 and SSH in the clone's offline SMF repository, and native trust keeps an immutable
 vendor CA separate from the effective managed bundle. Actual FreeBSD crash
 execution exposed scheduled-only UFS sync; native UFS suspension/resume corrected
-the defect and passed the final scoped crash replay. OmniOS complete
-services/growth/crash, wrong-CID
-injection, reset/DMA safety, physical recovery and fleet acceptance remain open.
+the defect and passed the final scoped crash replay. OmniOS network policy,
+wrong-CID injection, reset/DMA safety, physical recovery and fleet acceptance
+remain open; its scoped process-crash receipt does not establish physical
+recovery or admission.
 The completion-corrected OmniOS image reaches console login in both the paired
 direct-only QEMU diagnostic and retained nested Firecracker serial; growth
 maintenance prevents kernel/service responses. The corrected growth operand

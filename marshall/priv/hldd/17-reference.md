@@ -696,7 +696,8 @@ A new assembled image must pass fresh-boot disabled-state and immutable payload
 checks. The native isolation fixture's composed driver and
 Linux nft smoke pass; the exact canonical-roots/SSH FreeBSD image also passed
 two clean native policy boots with sink controls, actual guard drops and source
-recovery. OmniOS, direct native peer-VM, jail and host isolation remain gaps.
+recovery. OmniOS process-crash recovery is recorded separately; direct native peer-VM,
+jail, host isolation and fleet admission remain gaps.
 
 `native-fixture-unit` executes the host parser/refusal/cleanup/Git/FAT boundary
 suite with pinned Python, Git, OpenSSH, OpenSSL, FAT and block tools. The recorded

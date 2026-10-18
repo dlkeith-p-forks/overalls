@@ -38,10 +38,16 @@ complete service oracles before/after observed SIGKILL, same-disk restart with
 fresh MMDS/boot identity, exact retained marker/home bytes, stale-authority
 refusal, native UFS snapshot background fsck and final clean exit. The review
 binds exact image/kernel/firmware/VMM hashes and immutable crash/service receipts.
-Pinned OmniOS ZFS sync already
-blocks on `spa_sync_allpools`, but its crash scenario still needs execution.
-This does not establish physical stable-media/host power-loss durability,
-interrupted expansion or fleet recovery.
+Pinned OmniOS ZFS sync already blocks on `spa_sync_allpools`. The source-qualified
+OmniOS crash variant passed with the same-disk restart receipt at
+`/tmp/overalls-omnios-native-probe/exact-crash-recovery-new/crash-recovery-receipt.json`.
+It observed a first-boot Firecracker SIGKILL, booted with fresh MMDS authority
+and boot ID, refused the previous flush/workspace/terminal authority, retained
+the exact home and marker bytes, completed a zero-error ZFS scrub and observed
+a clean final shutdown. The image, kernel, firmware and patched VMM hashes are
+bound in that receipt; `native_admission` remains false. This does not establish
+physical stable-media/host power-loss durability, interrupted expansion,
+isolation, relocation or fleet recovery.
 
 ## Durable guest identity reservations
 

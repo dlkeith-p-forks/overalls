@@ -1031,7 +1031,7 @@ old-authority refusal; its seven host checks pass. Actual crash execution expose
 scheduled-only UFS sync. The corrected native suspension/resume flush passed the
 final FreeBSD observed-SIGKILL/same-disk restart boundary with exact retained bytes,
 native UFS snapshot fsck and complete service oracles before/after the crash.
-OmniOS recovery remains unexecuted. Neither fixture establishes physical
+The separate OmniOS process-crash receipt covers SIGKILL and same-disk recovery; supervised daemon recovery remains unexecuted. Neither fixture establishes physical
 stable-media/host power-loss durability or fleet recovery.
 
 A separate test-only FreeBSD probe passed one actual Firecracker pause,

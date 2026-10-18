@@ -236,6 +236,7 @@ let
     supervise() {
       service_name="$1"
       shift
+      command_path="$1"
       child=""
       stop_child() {
         if [ -n "$child" ]; then
@@ -247,6 +248,11 @@ let
       trap stop_child EXIT
       trap 'exit 0' HUP INT TERM
       while [ ! -e "$stop_file" ]; do
+        if [ ! -x "$command_path" ]; then
+          rm -f "$run_dir/$service_name.pid"
+          sleep 1
+          continue
+        fi
         "$@" &
         child=$!
         printf '%s\n' "$child" > "$run_dir/$service_name.pid"

@@ -377,7 +377,7 @@ on every boot, with a mandatory volatile mounted-root receipt. Its production
 binary expands the target set to ten per OS; the exact twenty-executable native
 package cross-build passed. Three native FreeBSD QEMU boots passed unchanged
 root plus two expansions and retained-data/GPT/foreign-disk checks. Final
-Firecracker composition and OmniOS growth remain pending. The native isolation
+Firecracker composition and the source-qualified OmniOS service/growth replay are recorded separately; interrupted growth and native isolation remain pending. The native isolation
 machine driver builds and uses actual packaged
 Lilly router/TAP rules; a Linux nft smoke passed, while the native two-boot
 scenario remains unexecuted. These are disposable verification programs, not new

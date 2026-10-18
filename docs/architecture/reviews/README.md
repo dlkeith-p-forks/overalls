@@ -22,7 +22,9 @@
   Arch/Alma Linux reuse of the version-4 contract, explicit FreeBSD/illumos
   version-6 and bundle-v3 metadata, and Lilly's conditional initrd/vsock/CPU
   mapping. Builder evaluation and focused unit evidence are recorded; native
-  FreeBSD/OmniOS boot, agents, recovery and fleet claims remain open.
+  FreeBSD/OmniOS boot, agents, supervised daemon recovery, isolation and fleet
+  claims remain open; scoped OmniOS service, growth and process-crash receipts
+  are recorded separately.
 
 - [Exact native image admission (2026-10-17)](2026-10-17-native-image-admission.md):
   qualifies only the reviewed FreeBSD image by complete immutable identity,

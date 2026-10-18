@@ -72,8 +72,10 @@ complete native service fixture over two clean boots: current-boot identity,
 readiness, trust, flush, workspace, terminal, SSH, executor fencing, retained
 home and clean shutdown all passed. The runner requires status zero and the
 bounded `syncing file systems... done` serial marker before recording a clean
-illumos boot. Growth, policy, daemon/crash recovery, physical isolation and
-image qualification remain pending. Neither the capability table nor these
+illumos boot. Growth, policy, supervised daemon recovery, physical isolation and
+image qualification remain pending. The separate OmniOS abrupt-crash receipt
+covers process SIGKILL and same-disk recovery; neither it, the capability table
+nor these
 service receipts establish fleet acceptance. See the
 [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
 
@@ -85,8 +87,10 @@ requests. A stock native boot and its SMF method confirmed `/usr/sbin/sshd`, now
 used by both native supervisors. OmniOS assembly and booted verification check
 that exact path is a bounded root-owned regular executable ELF with safe modes;
 `native_ssh_executable_checked` records only that file check. The corrected path
-and config are in the final assembled `wz4r` kit; complete service replay remains
-pending. Those partial diagnostics grant no SSH, terminal or image qualification.
+and config are in the final assembled `wz4r` kit; that historical disk remains
+outside runtime qualification. The later source-qualified image passed complete
+service replay, while these partial diagnostics grant no SSH, terminal or image
+qualification.
 OmniOS's downstream
 PAM policy is always on and its parser rejects explicit `UsePAM yes`; generated
 OmniOS config omits that directive while FreeBSD retains it. Native `sshd -t`

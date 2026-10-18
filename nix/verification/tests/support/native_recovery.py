@@ -126,6 +126,9 @@ def fail_daemon(context: runner.BootContext, before: Snapshot) -> None:
         f"/bin/chmod a-x {path}; /bin/kill -KILL {before.pid}; attempt=0; "
         f"while /bin/kill -0 {before.pid} 2>/dev/null; do "
         'test "$attempt" -lt 5; attempt=$((attempt + 1)); /bin/sleep 1; done; '
+        "attempt=0; "
+        f"while [ -e {MARKER} ]; do "
+        'test "$attempt" -lt 5; attempt=$((attempt + 1)); /bin/sleep 1; done; '
         "printf native-daemon-exited"
     )
     if command(context, script) != b"native-daemon-exited":
