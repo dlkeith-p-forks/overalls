@@ -25,30 +25,31 @@ defmodule Marshall.Agents.CapabilitiesTest do
   defp expected(_), do: []
 
   property "advertised tools and dispatch permission follow the independent profile matrix" do
-    check all(
-            profile <-
-              one_of([member_of(@profiles), integer(), string(:printable, max_length: 8)]),
-            tool <- one_of([member_of(@tools), integer(), string(:printable, max_length: 8)])
-          ) do
-      assert Capabilities.tools(profile) == expected(profile)
-      assert Capabilities.allowed?(profile, tool) == tool in expected(profile)
+    profile =
+      draw(
+        "profile",
+        one_of([member_of(@profiles), integer(), string(:printable, max_length: 8)])
+      )
 
-      events = [struct(Event, %{kind: :prompt, sequence: 1, body: %{"prompt" => "hello"}})]
+    tool = draw("tool", one_of([member_of(@tools), integer(), string(:printable, max_length: 8)]))
+    assert Capabilities.tools(profile) == expected(profile)
+    assert Capabilities.allowed?(profile, tool) == tool in expected(profile)
 
-      case ModelProtocol.request(events, "gpt-6-sol", profile) do
-        {:ok, %{"tools" => schemas} = request} ->
-          assert Enum.map(schemas, & &1["name"]) == Enum.map(expected(profile), &Atom.to_string/1)
-          assert ModelProtocol.request_tools_allowed?(request, profile)
+    events = [struct(Event, %{kind: :prompt, sequence: 1, body: %{"prompt" => "hello"}})]
 
-        {:error, :capability_denied} ->
-          assert expected(profile) == []
+    case ModelProtocol.request(events, "gpt-6-sol", profile) do
+      {:ok, %{"tools" => schemas} = request} ->
+        assert Enum.map(schemas, & &1["name"]) == Enum.map(expected(profile), &Atom.to_string/1)
+        assert ModelProtocol.request_tools_allowed?(request, profile)
 
-          assert {:error, :capability_denied} =
-                   ModelProtocol.parse_response(
-                     %{"choices" => [%{"message" => %{"content" => "hello"}}]},
-                     profile
-                   )
-      end
+      {:error, :capability_denied} ->
+        assert expected(profile) == []
+
+        assert {:error, :capability_denied} =
+                 ModelProtocol.parse_response(
+                   %{"choices" => [%{"message" => %{"content" => "hello"}}]},
+                   profile
+                 )
     end
   end
 
@@ -76,51 +77,47 @@ defmodule Marshall.Agents.CapabilitiesTest do
   end
 
   property "any forbidden call rejects a whole generated model response" do
-    check all(
-            profile <- member_of(@profiles),
-            tools <-
-              list_of(
-                member_of([
-                  :exec_command,
-                  :read_file,
-                  :spawn_child_agent,
-                  :web_search,
-                  :web_fetch
-                ]),
-                min_length: 1,
-                max_length: 8
-              )
-          ) do
-      output =
-        tools
-        |> Enum.with_index()
-        |> Enum.map(fn {tool, index} ->
-          arguments =
-            case tool do
-              :exec_command -> ~s({"cmd":"pwd"})
-              :read_file -> ~s({"path":"/etc/hostname"})
-              :spawn_child_agent -> ~s({"title":"child","prompt":"work"})
-              :web_search -> ~s({"query":"example"})
-              :web_fetch -> ~s({"url":"http://127.0.0.1:8080/"})
-            end
+    profile = draw("profile", member_of(@profiles))
 
-          %{
-            "type" => "function_call",
-            "call_id" => "call-#{index}",
-            "name" => Atom.to_string(tool),
-            "arguments" => arguments
-          }
-        end)
+    tools =
+      draw(
+        "tools",
+        list_of(
+          member_of([:exec_command, :read_file, :spawn_child_agent, :web_search, :web_fetch]),
+          min_length: 1,
+          max_length: 8
+        )
+      )
 
-      result =
-        ModelProtocol.parse_response(%{"status" => "completed", "output" => output}, profile)
+    output =
+      tools
+      |> Enum.with_index()
+      |> Enum.map(fn {tool, index} ->
+        arguments =
+          case tool do
+            :exec_command -> ~s({"cmd":"pwd"})
+            :read_file -> ~s({"path":"/etc/hostname"})
+            :spawn_child_agent -> ~s({"title":"child","prompt":"work"})
+            :web_search -> ~s({"query":"example"})
+            :web_fetch -> ~s({"url":"http://127.0.0.1:8080/"})
+          end
 
-      if Enum.all?(tools, &(&1 in expected(profile))) do
-        assert {:ok, {:tools, calls}} = result
-        assert Enum.map(calls, & &1.tool) == tools
-      else
-        assert {:error, :capability_denied} = result
-      end
+        %{
+          "type" => "function_call",
+          "call_id" => "call-#{index}",
+          "name" => Atom.to_string(tool),
+          "arguments" => arguments
+        }
+      end)
+
+    result =
+      ModelProtocol.parse_response(%{"status" => "completed", "output" => output}, profile)
+
+    if Enum.all?(tools, &(&1 in expected(profile))) do
+      assert {:ok, {:tools, calls}} = result
+      assert Enum.map(calls, & &1.tool) == tools
+    else
+      assert {:error, :capability_denied} = result
     end
   end
 end

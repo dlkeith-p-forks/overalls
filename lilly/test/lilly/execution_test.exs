@@ -68,43 +68,43 @@ defmodule Lilly.ExecutionTest do
         :revoke
       ]
 
-      check all(sequence <- list_of(member_of(events), max_length: 120)) do
-        Enum.reduce(sequence, {Liveness.new(), MapSet.new()}, fn event, {machine, rows} ->
-          case Liveness.step(machine, event) do
-            {:ok, next, effects} ->
-              rows =
-                Enum.reduce(effects, rows, fn
-                  {:publish, row}, acc -> MapSet.put(acc, row)
-                  {:delete, row}, acc -> MapSet.delete(acc, row)
-                end)
+      sequence = draw("sequence", list_of(member_of(events), max_length: 120))
 
-              assert rows == MapSet.new(Liveness.rows(next.state))
+      Enum.reduce(sequence, {Liveness.new(), MapSet.new()}, fn event, {machine, rows} ->
+        case Liveness.step(machine, event) do
+          {:ok, next, effects} ->
+            rows =
+              Enum.reduce(effects, rows, fn
+                {:publish, row}, acc -> MapSet.put(acc, row)
+                {:delete, row}, acc -> MapSet.delete(acc, row)
+              end)
 
-              if event == :inconclusive,
-                do: assert(next.state == machine.state and effects == [])
+            assert rows == MapSet.new(Liveness.rows(next.state))
 
-              if event == :observed_running, do: assert(next.state == :live)
+            if event == :inconclusive,
+              do: assert(next.state == machine.state and effects == [])
 
-              if event == :observed_booting,
-                do: assert(next.state in [:booting, :live])
+            if event == :observed_running, do: assert(next.state == :live)
 
-              if event == :boot_failed, do: refute(:live in Liveness.rows(next.state))
-              {next, rows}
+            if event == :observed_booting,
+              do: assert(next.state in [:booting, :live])
 
-            {:error, :invalid_transition} ->
-              assert {event, machine.state} in [
-                       {:watched, :unproven},
-                       {:watched, :suspect},
-                       {:watched, :revoked},
-                       {:expired, :unproven},
-                       {:expired, :suspect},
-                       {:expired, :revoked}
-                     ]
+            if event == :boot_failed, do: refute(:live in Liveness.rows(next.state))
+            {next, rows}
 
-              {machine, rows}
-          end
-        end)
-      end
+          {:error, :invalid_transition} ->
+            assert {event, machine.state} in [
+                     {:watched, :unproven},
+                     {:watched, :suspect},
+                     {:watched, :revoked},
+                     {:expired, :unproven},
+                     {:expired, :suspect},
+                     {:expired, :revoked}
+                   ]
+
+            {machine, rows}
+        end
+      end)
     end
   end
 
@@ -226,59 +226,64 @@ defmodule Lilly.ExecutionTest do
   test "reads equal the join of runtime, intent and live rows for any write history" do
     placements = [@a, @b]
 
-    check all(
-            ops <-
-              list_of(
-                one_of([
-                  constant(:connect),
-                  constant(:disconnect),
-                  tuple(
-                    {constant(:intent), member_of(placements), integer(1..3),
-                     member_of([:start, :stop])}
-                  ),
-                  tuple({constant(:forget), member_of(placements)}),
-                  tuple({constant(:live), member_of(placements), integer(1..3), boolean()}),
-                  tuple({constant(:not_live), member_of(placements)})
-                ]),
-                max_length: 40
-              ),
-            test_cases: 50
-          ) do
-      # A fresh view per run: earlier writers' claims never leak into this one.
-      view = :"execution_property_#{System.unique_integer([:positive])}"
-      {:ok, view_pid} = View.start_link(name: view)
-      runtime = writer()
-      actors = Map.new(placements, &{&1, writer()})
+    Hegel.check(
+      fn ->
+        ops =
+          draw(
+            "ops",
+            list_of(
+              one_of([
+                constant(:connect),
+                constant(:disconnect),
+                tuple(
+                  {constant(:intent), member_of(placements), integer(1..3),
+                   member_of([:start, :stop])}
+                ),
+                tuple({constant(:forget), member_of(placements)}),
+                tuple({constant(:live), member_of(placements), integer(1..3), boolean()}),
+                tuple({constant(:not_live), member_of(placements)})
+              ]),
+              max_length: 40
+            )
+          )
 
-      model =
-        Enum.reduce(ops, %{connected: false, intents: %{}, lives: %{}}, fn op, model ->
-          model = apply_op(view, runtime, actors, op, model)
+        # A fresh view per run: earlier writers' claims never leak into this one.
+        view = :"execution_property_#{System.unique_integer([:positive])}"
+        {:ok, view_pid} = View.start_link(name: view)
+        runtime = writer()
+        actors = Map.new(placements, &{&1, writer()})
 
-          for placement <- placements do
-            expected =
-              with true <- model.connected,
-                   {:ok, intent} <- Map.fetch(model.intents, placement),
-                   {:ok, {^intent, fresh?}} <- Map.fetch(model.lives, placement),
-                   true <- fresh? do
-                {:ok, intent}
-              else
-                _ -> :error
+        model =
+          Enum.reduce(ops, %{connected: false, intents: %{}, lives: %{}}, fn op, model ->
+            model = apply_op(view, runtime, actors, op, model)
+
+            for placement <- placements do
+              expected =
+                with true <- model.connected,
+                     {:ok, intent} <- Map.fetch(model.intents, placement),
+                     {:ok, {^intent, fresh?}} <- Map.fetch(model.lives, placement),
+                     true <- fresh? do
+                  {:ok, intent}
+                else
+                  _ -> :error
+                end
+
+              case Execution.current(view, placement) do
+                {:ok, _version, live} -> assert expected == {:ok, live.command}
+                :error -> assert expected == :error
               end
-
-            case Execution.current(view, placement) do
-              {:ok, _version, live} -> assert expected == {:ok, live.command}
-              :error -> assert expected == :error
             end
-          end
 
-          model
-        end)
+            model
+          end)
 
-      _ = model
-      Enum.each([runtime | Map.values(actors)], &Process.exit(&1, :kill))
-      Process.unlink(view_pid)
-      GenServer.stop(view_pid)
-    end
+        _ = model
+        Enum.each([runtime | Map.values(actors)], &Process.exit(&1, :kill))
+        Process.unlink(view_pid)
+        GenServer.stop(view_pid)
+      end,
+      test_cases: 100
+    )
   end
 
   defp intent_for(placement, generation, kind),

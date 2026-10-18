@@ -879,8 +879,8 @@ separate obligations. See
 
 ## Elixir property verification
 
-Elixir properties currently use the test-only Hegel frontend ref `8fe9786`
-(`8fe9786cf2e134689c1bd58229e186d97c2f05f8`) under
+Elixir properties currently use the test-only Hegel frontend ref `b0dec2a`
+(`b0dec2abf868c7036950c00256a2ebf5af2929e7`) under
 [ADR-0191](repo:docs/architecture/decisions/0191-elixir-hegel-property-verification.md).
 Protocol properties run once per declared case count with fixed seeds and no
 example database or printed replay blobs. A local draw boundary records literal
@@ -889,6 +889,43 @@ the native replay printer. Bounded generators retain exact string/collection
 constraints, malformed peer shapes and unsigned 64-bit GUIDs through the engine's
 signed integer interface. Transport cases release their own listeners, supervised
 children and fixture messages before another case or replay.
+
+The current exploration repair restores ordinary successful properties to the
+engine's default 100 generated cases and retains existing larger budgets.
+Each property has one runner: labelled draws share its case, and nested
+`check all` execution options are rejected. Unsupported StreamData options
+`max_runs` and `max_shrinking_steps` are rejected rather than silently ignored.
+Finite exhaustive matrices may use ordinary tests when every matrix cell and
+assertion remains; one-case negative and replay controls are separately scoped.
+
+Generated cases own their SQL sandbox, supervised children, sockets and temporary
+files. Cleanup runs before the next case, shrinking attempt or replay. ExUnit
+setup runs once per test and cannot substitute for case isolation. Supervised
+cleanup checks the original PID before stopping a child, so a reused child ID
+does not grant cleanup authority over its replacement. Fresh-VM boot histories
+retain the complete mutation matrix and generated exploration. Measured aggregate
+budgets can reach three hours; each individual boot retains a 30-second deadline
+and a five-second forced-termination allowance.
+
+The frontend preserves original BEAM failures when the native engine reports a
+flaky run. Its native installer stages and atomically renames the shared library:
+compilation must not truncate an inode mapped into another running BEAM. The
+upstream native-backed suite and all eight Nix production release checks passed
+at `b0dec2a`. A separate test-build probe loaded the packaged NIF without an
+override, counted 100 draws and reproduced a deliberate failure. Complete
+application-suite qualification remains pending. Every Hegel revision change
+requires all eleven Mix declarations and locks plus all eight Nix Mix dependency
+hashes. A pin, hash refresh or historical passing suite alone does not qualify
+the installed NIF or the current consumers. The
+[exploration review](repo:docs/architecture/reviews/2026-10-18-hegel-exploration-and-native-custody.md)
+records the repair, exact intermediate results and remaining checks.
+
+### Historical migration evidence
+
+The following records retain their original pins and source scopes. In particular,
+the earlier one- and two-case clamps and ignored compatibility options described
+below are superseded by the current exploration repair; they are not current
+runner guidance. Historical passes do not qualify the current changed tests.
 
 This verifies BEAM codec, refusal and process/socket behavior. It does not
 establish native guest execution, TLS, physical isolation, storage recovery or

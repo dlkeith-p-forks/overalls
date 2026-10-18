@@ -23,8 +23,8 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
     WorkflowServiceLevels
   }
 
-  # Four complete fifteen-window menus retain every temporal refusal witness.
-  # Bound the complete database history without treating host load as a proof.
+  # Each generated case retains the complete temporal-refusal witness menu.
+  # The aggregate timeout accommodates full exploration, not a host-load proof.
   @moduletag timeout: 900_000
   @duration_bounds [
     1_000_000,
@@ -45,39 +45,36 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # consumer controls, not elapsed clock, native boot or transport evidence.
   property "retry measurements retain both received proof windows through repeated scans",
     profile: :ci,
-    test_cases: 4 do
-    check all(
-            physical <- member_of([-1, 0, 599, 600, 601]),
-            ready <- member_of([-1, 0, 599, 600, 601]),
-            phase <- member_of([:before, :after]),
-            proofs <- member_of([:none, :physical, :both]),
-            repeats <- member_of([1, 2, 4]),
-            test_cases: 4
-          ) do
-      for {p, r, when_, presence} <- [
-            {physical, ready, phase, proofs},
-            {-1, 0, :after, :both},
-            {0, 0, :after, :both},
-            {599, 600, :after, :both},
-            {600, 600, :after, :both},
-            {600, 601, :after, :both},
-            {600, 600, :before, :both},
-            {0, 600, :before, :both},
-            {600, 0, :before, :both},
-            {0, -1, :after, :both},
-            {601, 0, :after, :both},
-            {0, 0, :after, :none},
-            {0, 0, :after, :physical},
-            {0, 0, :before, :none},
-            {0, 0, :before, :physical}
-          ] do
-        :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+    test_cases: 100 do
+    physical = draw("physical", member_of([-1, 0, 599, 600, 601]))
+    ready = draw("ready", member_of([-1, 0, 599, 600, 601]))
+    phase = draw("phase", member_of([:before, :after]))
+    proofs = draw("proofs", member_of([:none, :physical, :both]))
+    repeats = draw("repeats", member_of([1, 2, 4]))
 
-        try do
-          window_history(p, r, when_, presence, repeats)
-        after
-          :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
-        end
+    for {p, r, when_, presence} <- [
+          {physical, ready, phase, proofs},
+          {-1, 0, :after, :both},
+          {0, 0, :after, :both},
+          {599, 600, :after, :both},
+          {600, 600, :after, :both},
+          {600, 601, :after, :both},
+          {600, 600, :before, :both},
+          {0, 600, :before, :both},
+          {600, 0, :before, :both},
+          {0, -1, :after, :both},
+          {601, 0, :after, :both},
+          {0, 0, :after, :none},
+          {0, 0, :after, :physical},
+          {0, 0, :before, :none},
+          {0, 0, :before, :physical}
+        ] do
+      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+
+      try do
+        window_history(p, r, when_, presence, repeats)
+      after
+        :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
       end
     end
   end
@@ -89,46 +86,47 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # retry measurement once. Historical failed readiness MUST remain acknowledged
   # without satisfying the newer retry measurement.
   property "retry proof binding refusals conserve authority before matching success",
-    test_cases: 2 do
-    check all(
-            binding <-
-              member_of([
-                :operation,
-                :vm,
-                :placement,
-                :epoch,
-                :generation,
-                :host,
-                :ready_operation,
-                :ready_generation,
-                :ready_descriptor,
-                :ready_host,
-                :ready_historical
-              ]),
-            repeats <- member_of([1, 2, 4]),
-            test_cases: 2
-          ) do
-      for witness <- [
-            binding,
-            :operation,
-            :vm,
-            :placement,
-            :epoch,
-            :generation,
-            :host,
-            :ready_operation,
-            :ready_generation,
-            :ready_descriptor,
-            :ready_host,
-            :ready_historical
-          ] do
-        :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+    test_cases: 100 do
+    binding =
+      draw(
+        "binding",
+        member_of([
+          :operation,
+          :vm,
+          :placement,
+          :epoch,
+          :generation,
+          :host,
+          :ready_operation,
+          :ready_generation,
+          :ready_descriptor,
+          :ready_host,
+          :ready_historical
+        ])
+      )
 
-        try do
-          binding_history(witness, repeats)
-        after
-          :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
-        end
+    repeats = draw("repeats", member_of([1, 2, 4]))
+
+    for witness <- [
+          binding,
+          :operation,
+          :vm,
+          :placement,
+          :epoch,
+          :generation,
+          :host,
+          :ready_operation,
+          :ready_generation,
+          :ready_descriptor,
+          :ready_host,
+          :ready_historical
+        ] do
+      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+
+      try do
+        binding_history(witness, repeats)
+      after
+        :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
       end
     end
   end
@@ -354,20 +352,17 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # retained without changing current intent or satisfying the newer retry.
   # Matching current proof MUST finish once; replay MUST conserve full totals.
   property "retained older physical proof cannot satisfy a newer retry measurement",
-    test_cases: 2 do
-    check all(
-            side <- member_of([:source, :destination]),
-            repeats <- member_of([1, 2, 4]),
-            test_cases: 2
-          ) do
-      for endpoint <- [side, :source, :destination] do
-        :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+    test_cases: 100 do
+    side = draw("side", member_of([:source, :destination]))
+    repeats = draw("repeats", member_of([1, 2, 4]))
 
-        try do
-          historical_history(endpoint, repeats)
-        after
-          :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
-        end
+    for endpoint <- [side, :source, :destination] do
+      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+
+      try do
+        historical_history(endpoint, repeats)
+      after
+        :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
       end
     end
   end
@@ -508,20 +503,17 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # scans. Timeout MUST preserve authority, proof and unrelated accounting rows.
   property "pending retry measurements fail once across their unchanged deadline",
     profile: :ci,
-    test_cases: 2 do
-    check all(
-            presence <- member_of([:none, :physical]),
-            repeats <- member_of([1, 2, 4]),
-            test_cases: 2
-          ) do
-      for proofs <- [presence, :none, :physical] do
-        :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+    test_cases: 100 do
+    presence = draw("presence", member_of([:none, :physical]))
+    repeats = draw("repeats", member_of([1, 2, 4]))
 
-        try do
-          crossing_history(proofs, repeats)
-        after
-          :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
-        end
+    for proofs <- [presence, :none, :physical] do
+      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+
+      try do
+        crossing_history(proofs, repeats)
+      after
+        :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
       end
     end
   end

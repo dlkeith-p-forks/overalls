@@ -225,8 +225,8 @@ secrets into the serial log, keep `assert` messages value-free.
 ## Elixir and BEAM properties
 
 Elixir properties use the same native Hegel engine but run inside the Mix test VM.
-The current protocol, Marshall and Lilly frontend ref is `08cd428`, resolved as
-`08cd4289b8b268ae14176e3391c791647e8affae`. The recorded
+The current protocol, Marshall and Lilly frontend ref is `b0dec2a`, resolved as
+`b0dec2abf868c7036950c00256a2ebf5af2929e7`. The recorded
 299-test protocol gate used the earlier `2c9f7a4` frontend; the review preserves
 the passing `6a62795` result separately. Those historical results do not verify
 the current pin or changed consumer tests.
@@ -235,34 +235,52 @@ authorization decisions, bounded retry/reconciliation models, and BEAM-visible
 process or socket behavior. Keep NixOS, native Rust/KVM, physical isolation,
 filesystem durability, and multi-host recovery claims in their dedicated suites.
 
-The current protocol suite uses one `property` runner with explicit `test_cases`,
-`seed`, `database: :disabled` and `print_blob: false` options. Do not nest the
-frontend's `check all` compatibility runner inside a property: compatibility
-options inside a property and filter clauses are not preserved. Standalone
-`check all` now propagates options, but the engine uses `test_cases`, not
-`max_runs`. The earlier `f1ad336` map-context/options branch recursively
+The `b0dec2a` installer publishes the NIF through a sibling temporary file and
+atomic rename. The previous in-place copy truncated a loaded library inode,
+which could crash a concurrent test VM even when copying identical bytes.
+Installer regressions verify inode preservation, complete concurrent publication,
+permissions and failed-copy cleanup. This packaging repair changes no native
+engine or runtime frontend sources relative to `1cfe362`.
+
+Use one `property` runner with labelled draws, or a standalone `Hegel.check`
+runner inside an ordinary test. Execution options belong on that runner.
+The frontend rejects unknown options, nested `check all` execution
+options, and unsupported compatibility clauses. Earlier frontends silently
+discarded these inputs. Native engine errors retain the original discovered
+BEAM failures and stacks; flaky errors do not erase their underlying assertions.
+Standalone `check all` propagates supported options,
+but the engine uses `test_cases`, not `max_runs`; `max_shrinking_steps` is also
+unsupported. Express filter conditions explicitly with `Hegel.assume` and
+destructure a generated value after drawing it. The earlier `f1ad336` map-context/options branch recursively
 expanded and failed a 512 MiB/10-second compilation probe while a plain-property
-control passed. The current `08cd428` source passed an equally bounded
+control passed. The historical `08cd428` source passed an equally bounded
 compilation/runtime probe for map context with options, named ExUnit context
 with options and map context without options. A named context receives the
 complete ExUnit context, including metadata; use a submap pattern for setup
 values. Retained tagged ordinary declarations keep their existing generated
 checks and fixture boundaries; this scoped probe is not a complete consumer gate.
-For retained plain outer properties, put `test_cases` on that outer runner as
-well: the inner compatibility count cannot control an already active run.
-Preserve fixture setup and cleanup at their existing per-case boundary when
-repairing counts. The native ABI does not implement `max_shrinking_steps`; its
-presence alone cannot establish disabled shrinking.
+Keep the default 100-case exploration budget and existing larger budgets for
+generated success properties. A one-case deliberate failure/replay control is
+different from a reduced success property. An exhaustive finite input matrix
+can be an ordinary test; avoid repeatedly drawing an element already included
+in that complete matrix. Do not truncate mutation lists to make tests finish.
+ExUnit setup and teardown happen once per test, not once per generated case.
+Use per-case setup/teardown or `Hegel.on_cleanup` for fixture ownership.
+The shared test helper `Overalls.HegelFixtures` stops only the supervised PID
+owned by its case and refuses to stop a replacement using the same child ID.
 The pinned `string` kind accepts an explicit character list; pass
 `Enum.to_list(?a..?z)` for lowercase ASCII. A Range is not that alphabet and
 falls back to printable ASCII. `member_of` also requires a list; use
 `integer(0..2)` for that integer domain. Slow real-I/O histories may select the
 CI profile at their actual runner boundary without reducing cases or deadlines.
-Review effective settings from the linked NIF: for the current Elixir frontend,
-its explicit setters restore randomness and database defaults, leaving only
-TooSlow suppression changed. The profile name alone does not prove the same
-behavior for another frontend or future pin.
-At the current pin, the shared-lock distributed property retains two generated
+Review effective settings from the linked NIF. Since `8fe9786`, unspecified
+randomness and database settings inherit the selected profile; older frontend
+setter behavior does not establish the current settings. Keep full case budgets
+when using the CI profile for demonstrated slow external I/O, and document the
+reason. Size a finite aggregate ExUnit timeout from measured workload duration;
+preserve per-operation deadlines. The profile name alone does not establish
+execution scope or a passing result.
+At the historical `08cd428` pin, the shared-lock distributed property retained two generated
 cases and all three rotations per case under its scoped CI profile. Its selected
 run passed in 26.9 seconds at ExUnit seed 770435. The prior full `f1ad336` scan
 failed only its TooSlow heuristic after two valid inputs in 34.511763231 seconds;

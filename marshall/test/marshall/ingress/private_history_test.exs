@@ -59,122 +59,125 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
   # withdrawal MUST recheck authority on exchange. Gateway-style explicit close
   # after refusal MUST permanently fence that ticket even after re-addition.
   # Synthetic execution reports establish control admission, not network closure.
+  @tag :hegel_case_sandbox
   property "private browser admission and renewal follow combined sharing histories",
-    test_cases: 12 do
-    check all(
-            port <- member_of([0, 3000, 9999]),
-            tail <-
-              list_of(
-                one_of([
-                  map(member_of([:web, :viewer, :operator, :manager, :revoked]), &{:direct, &1}),
-                  map(member_of([:member, :admin, :removed]), &{:team, &1})
-                ]),
-                max_length: 8
-              ),
-            test_cases: 12
-          ) do
-      c = fixture()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    port = draw("port", member_of([0, 3000, 9999]))
 
-      operations =
-        [
-          {:direct, :web},
-          {:direct, :viewer},
-          {:direct, :operator},
-          {:direct, :manager},
-          {:team, :member},
-          {:direct, :revoked},
-          {:team, :removed},
-          {:team, :admin},
-          {:team, :removed},
-          {:direct, :web}
-        ] ++ tail
+    tail =
+      draw(
+        "tail",
+        list_of(
+          one_of([
+            map(member_of([:web, :viewer, :operator, :manager, :revoked]), &{:direct, &1}),
+            map(member_of([:member, :admin, :removed]), &{:team, &1})
+          ]),
+          max_length: 8
+        )
+      )
 
-      Enum.reduce(
-        Enum.with_index(operations, 3),
-        %{direct: :revoked, team: false, live: nil, cookie: nil, closed: []},
-        fn {operation, sequence}, model ->
-          fresh_report(c, sequence)
-          pending = if allowed?(model), do: approve(c, port)
-          model = change(c, model, operation)
-          expected = allowed?(model)
+    c = fixture()
 
-          if pending do
-            result = Ingress.exchange_web_login(pending, actor: SystemActor.compute())
-            assert match?({:ok, _}, result) == expected
-          end
+    operations =
+      [
+        {:direct, :web},
+        {:direct, :viewer},
+        {:direct, :operator},
+        {:direct, :manager},
+        {:team, :member},
+        {:direct, :revoked},
+        {:team, :removed},
+        {:team, :admin},
+        {:team, :removed},
+        {:direct, :web}
+      ] ++ tail
 
-          if model.cookie do
-            opening = open(c, model.cookie, port)
-            assert match?({:ok, _}, opening) == expected
+    Enum.reduce(
+      Enum.with_index(operations, 3),
+      %{direct: :revoked, team: false, live: nil, cookie: nil, closed: []},
+      fn {operation, sequence}, model ->
+        fresh_report(c, sequence)
+        pending = if allowed?(model), do: approve(c, port)
+        model = change(c, model, operation)
+        expected = allowed?(model)
 
-            case opening do
-              {:ok, opened} ->
-                assert {:ok, _} =
-                         Ingress.close_web(renewal(c, opened.ticket),
-                           actor: SystemActor.compute()
-                         )
+        if pending do
+          result = Ingress.exchange_web_login(pending, actor: SystemActor.compute())
+          assert match?({:ok, _}, result) == expected
+        end
 
-              {:error, _} ->
-                :ok
-            end
-          end
+        if model.cookie do
+          opening = open(c, model.cookie, port)
+          assert match?({:ok, _}, opening) == expected
 
-          request = begin_login(c, port)
-
-          approval =
-            Ingress.authorize_web_login(%{ticket: request.ticket, login_token: c.token},
-              actor: c.member
-            )
-
-          assert match?({:ok, _}, approval) == expected
-
-          model =
-            if model.live do
-              result = Ingress.renew_web(renewal(c, model.live), actor: SystemActor.compute())
-              assert match?({:ok, _}, result) == expected
-
-              if expected do
-                model
-              else
-                assert {:ok, %{closed: true}} =
-                         Ingress.close_web(renewal(c, model.live), actor: SystemActor.compute())
-
-                %{model | live: nil, closed: [model.live | model.closed]}
-              end
-            else
-              model
-            end
-
-          for closed <- model.closed do
-            assert {:error, _} =
-                     Ingress.renew_web(renewal(c, closed), actor: SystemActor.compute())
-          end
-
-          if expected do
-            cookie = cookie(c, port)
-            model = %{model | cookie: cookie}
-            # Exact host/app credentials cannot authorize another private port.
-            assert {:error, _} = open(c, cookie, if(port == 3000, do: 9999, else: 3000))
-            assert {:ok, opened} = open(c, cookie, port)
-            assert opened.user_id == c.member.id
-            assert opened.binding.port == if(port == 0, do: 8080, else: port)
-            assert opened.ttl > 0 and opened.ttl <= 30_000
-
-            if model.live do
+          case opening do
+            {:ok, opened} ->
               assert {:ok, _} =
-                       Ingress.close_web(renewal(c, opened.ticket), actor: SystemActor.compute())
+                       Ingress.close_web(renewal(c, opened.ticket),
+                         actor: SystemActor.compute()
+                       )
 
-              model
-            else
-              %{model | live: opened.ticket}
-            end
-          else
-            assert {:error, _} = open(c, nil, port)
-            model
+            {:error, _} ->
+              :ok
           end
         end
-      )
-    end
+
+        request = begin_login(c, port)
+
+        approval =
+          Ingress.authorize_web_login(%{ticket: request.ticket, login_token: c.token},
+            actor: c.member
+          )
+
+        assert match?({:ok, _}, approval) == expected
+
+        model =
+          if model.live do
+            result = Ingress.renew_web(renewal(c, model.live), actor: SystemActor.compute())
+            assert match?({:ok, _}, result) == expected
+
+            if expected do
+              model
+            else
+              assert {:ok, %{closed: true}} =
+                       Ingress.close_web(renewal(c, model.live), actor: SystemActor.compute())
+
+              %{model | live: nil, closed: [model.live | model.closed]}
+            end
+          else
+            model
+          end
+
+        for closed <- model.closed do
+          assert {:error, _} =
+                   Ingress.renew_web(renewal(c, closed), actor: SystemActor.compute())
+        end
+
+        if expected do
+          cookie = cookie(c, port)
+          model = %{model | cookie: cookie}
+          # Exact host/app credentials cannot authorize another private port.
+          assert {:error, _} = open(c, cookie, if(port == 3000, do: 9999, else: 3000))
+          assert {:ok, opened} = open(c, cookie, port)
+          assert opened.user_id == c.member.id
+          assert opened.binding.port == if(port == 0, do: 8080, else: port)
+          assert opened.ttl > 0 and opened.ttl <= 30_000
+
+          if model.live do
+            assert {:ok, _} =
+                     Ingress.close_web(renewal(c, opened.ticket), actor: SystemActor.compute())
+
+            model
+          else
+            %{model | live: opened.ticket}
+          end
+        else
+          assert {:error, _} = open(c, nil, port)
+          model
+        end
+      end
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;security] private-web-stale-bindings
@@ -182,73 +185,71 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
   # bindings. Actual endpoint configuration and sign-out exercise public actions;
   # expiry and generation changes below are explicitly synthetic fault injection.
   # A new login may authorize a fresh stream but MUST NOT revive the closed one.
-  property "private streams retain exact policy, execution and login bindings", test_cases: 20 do
-    check all(
-            boundary <- member_of([:policy, :execution, :signout, :close, :expire]),
-            port <- member_of([0, 3000, 9999]),
-            test_cases: 20
-          ) do
-      c = fixture()
+  @tag :hegel_case_sandbox
+  property "private streams retain exact policy, execution and login bindings", test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    boundary = draw("boundary", member_of([:policy, :execution, :signout, :close, :expire]))
+    port = draw("port", member_of([0, 3000, 9999]))
+    c = fixture()
 
-      change(
-        c,
-        %{direct: :revoked, team: false, live: nil, cookie: nil, closed: []},
-        {:direct, :web}
-      )
+    change(
+      c,
+      %{direct: :revoked, team: false, live: nil, cookie: nil, closed: []},
+      {:direct, :web}
+    )
 
-      credential = cookie(c, port)
-      assert {:ok, opened} = open(c, credential, port)
-      request = renewal(c, opened.ticket)
-      assert {:ok, _} = Ingress.renew_web(request, actor: SystemActor.compute())
+    credential = cookie(c, port)
+    assert {:ok, opened} = open(c, credential, port)
+    request = renewal(c, opened.ticket)
+    assert {:ok, _} = Ingress.renew_web(request, actor: SystemActor.compute())
 
-      case boundary do
-        :policy ->
-          [endpoint] = Ledger.read!(Endpoint, vm_id: c.vm.id)
+    case boundary do
+      :policy ->
+        [endpoint] = Ledger.read!(Endpoint, vm_id: c.vm.id)
 
-          assert {:ok, _} =
-                   Ingress.configure_endpoint(
-                     %{
-                       vm_id: c.vm.id,
-                       expected_revision: endpoint.policy_revision,
-                       primary_port: 8081,
-                       visibility: :private
-                     },
-                     actor: c.owner
-                   )
+        assert {:ok, _} =
+                 Ingress.configure_endpoint(
+                   %{
+                     vm_id: c.vm.id,
+                     expected_revision: endpoint.policy_revision,
+                     primary_port: 8081,
+                     visibility: :private
+                   },
+                   actor: c.owner
+                 )
 
-        :execution ->
-          [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
-          Ledger.intent!(vm, %{generation: vm.generation + 1})
+      :execution ->
+        [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
+        Ledger.intent!(vm, %{generation: vm.generation + 1})
 
-        :signout ->
-          conn =
-            Plug.Test.conn(:get, "/sign-out")
-            |> Plug.Test.init_test_session(%{"user_token" => c.token})
-            |> Plug.Conn.assign(:current_user, c.member)
-            |> Phoenix.Controller.fetch_flash()
-            |> MarshallWeb.AuthController.sign_out(%{})
+      :signout ->
+        conn =
+          Plug.Test.conn(:get, "/sign-out")
+          |> Plug.Test.init_test_session(%{"user_token" => c.token})
+          |> Plug.Conn.assign(:current_user, c.member)
+          |> Phoenix.Controller.fetch_flash()
+          |> MarshallWeb.AuthController.sign_out(%{})
 
-          assert conn.status == 302
+        assert conn.status == 302
 
-        :close ->
-          assert {:ok, _} = Ingress.close_web(request, actor: SystemActor.compute())
+      :close ->
+        assert {:ok, _} = Ingress.close_web(request, actor: SystemActor.compute())
 
-        :expire ->
-          [stream] = Ledger.read!(WebStream, id: opened.binding.session_id)
-          Ledger.update!(stream, :renew, %{expires_at: DateTime.add(Ledger.now(), -1)})
-      end
-
-      assert {:error, _} = Ingress.renew_web(request, actor: SystemActor.compute())
-      if boundary == :signout, do: assert(match?({:error, _}, open(c, credential, port)))
-      assert {:ok, _} = Ingress.close_web(request, actor: SystemActor.compute())
-      c = %{c | token: Marshall.TerminalFixtures.user_token(c.member)}
-
-      if boundary != :execution do
-        assert {:ok, _} = open(c, cookie(c, port), port)
-      end
-
-      assert {:error, _} = Ingress.renew_web(request, actor: SystemActor.compute())
+      :expire ->
+        [stream] = Ledger.read!(WebStream, id: opened.binding.session_id)
+        Ledger.update!(stream, :renew, %{expires_at: DateTime.add(Ledger.now(), -1)})
     end
+
+    assert {:error, _} = Ingress.renew_web(request, actor: SystemActor.compute())
+    if boundary == :signout, do: assert(match?({:error, _}, open(c, credential, port)))
+    assert {:ok, _} = Ingress.close_web(request, actor: SystemActor.compute())
+    c = %{c | token: Marshall.TerminalFixtures.user_token(c.member)}
+
+    if boundary != :execution do
+      assert {:ok, _} = open(c, cookie(c, port), port)
+    end
+
+    assert {:error, _} = Ingress.renew_web(request, actor: SystemActor.compute())
   end
 
   @spec allowed?(model()) :: boolean()

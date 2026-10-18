@@ -8,7 +8,7 @@ defmodule OverallsProtocol.HegelTerminalTest do
   property "data frames preserve channel, sequence and payload",
     database: :disabled,
     print_blob: false,
-    test_cases: 64,
+    test_cases: 100,
     seed: 20_261_017 do
     channel = draw("channel", Hegel.Gen.integer(1, 100))
     sequence = draw("sequence", Hegel.Gen.integer(1, 1_000_000))
@@ -24,7 +24,7 @@ defmodule OverallsProtocol.HegelTerminalTest do
   property "truncating a valid frame is reported as partial",
     database: :disabled,
     print_blob: false,
-    test_cases: 48,
+    test_cases: 100,
     seed: 20_261_018 do
     channel = draw(Hegel.Gen.integer(1, 100))
     sequence = draw(Hegel.Gen.integer(1, 1_000_000))

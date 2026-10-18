@@ -22,20 +22,16 @@ defmodule Marshall.Compute.RelocationRestorationPropertyTest do
   # Exact failures MUST retain cancellation authority through bounded retries and
   # exhaustion; expired retry history MUST permit fenced restoration to recover.
   property "generated unknown outcomes retain restoration fencing across failed starts",
-    test_cases: 4 do
-    check all(
-            stop_unknowns <- list_of(integer(1..3), length: 4),
-            start_unknowns <- list_of(integer(1..3), length: 4),
-            test_cases: 4
-          ) do
-      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+    test_cases: 100 do
+    stop_unknowns = draw("stop_unknowns", list_of(integer(1..3), length: 4))
+    start_unknowns = draw("start_unknowns", list_of(integer(1..3), length: 4))
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
 
-      try do
-        c = fixture()
-        journey(c, stop_unknowns, start_unknowns)
-      after
-        :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
-      end
+    try do
+      c = fixture()
+      journey(c, stop_unknowns, start_unknowns)
+    after
+      :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
     end
   end
 

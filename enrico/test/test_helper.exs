@@ -1,3 +1,5 @@
+Code.require_file("../../scripts/test/hegel_fixtures.exs", __DIR__)
+
 # Git operations run through the native enrico-git-owner helper. Packaged
 # builds put it on PATH; a source checkout builds it here so the suite never
 # depends on a helper left behind by an earlier install.

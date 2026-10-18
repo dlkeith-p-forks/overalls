@@ -14,13 +14,11 @@ defmodule Porsche.PendingVersionRefusalPropertyTest do
   # unsupported_version; close4008 MUST remain a transient transport class.
   # A prior successful call and peer-observed pending inventory MUST establish
   # reach. Connection loss MUST NOT replay any request.
-  property "pending calls retain a version refusal after the peer closes",
-    max_runs: 3,
-    max_shrinking_steps: 0 do
+  property "pending calls retain a version refusal after the peer closes" do
     {:ok, supervisor} = Task.Supervisor.start_link()
     on_cleanup(fn -> Supervisor.stop(supervisor, :normal) end)
 
-    count = draw(integer(1..3))
+    count = draw("count", integer(1..3))
 
     for reason <- [:unsupported_version, :draining] do
       reference = make_ref()
@@ -35,13 +33,13 @@ defmodule Porsche.PendingVersionRefusalPropertyTest do
           keyfile: Path.join(@fixtures, "localhost.key")
         ])
 
-      on_exit(fn -> :ssl.close(listener) end)
+      on_cleanup(fn -> :ssl.close(listener) end)
       {:ok, {_, port}} = :ssl.sockname(listener)
       owner = self()
       peer_id = make_ref()
 
       peer =
-        start_supervised!(%{
+        Overalls.HegelFixtures.start_supervised!(%{
           id: peer_id,
           start:
             {Task, :start_link, [fn -> ControlClosePeer.serve(listener, owner, reference) end]},
@@ -52,7 +50,7 @@ defmodule Porsche.PendingVersionRefusalPropertyTest do
       base = "https://127.0.0.1:#{port}"
 
       client =
-        start_supervised!(
+        Overalls.HegelFixtures.start_supervised!(
           {Client,
            [
              url: base,

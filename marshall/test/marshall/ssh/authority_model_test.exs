@@ -7,68 +7,70 @@ defmodule Marshall.SSH.AuthorityModelTest do
   alias Marshall.SSH
   alias Marshall.SSH.{Session, Token}
 
+  @tag :hegel_case_sandbox
   property "generated approval, expiry, rotation and key histories never resurrect authority",
-    test_cases: 25 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     owner = Marshall.ComputeFixtures.user()
 
-    check all(
-            actions <-
-              list_of(member_of([:approve, :revoke_key, :add_key, :close, :expire, :rotate]),
-                min_length: 1,
-                max_length: 16
-              ),
-            test_cases: 25
-          ) do
-      {gateway_token, _} = Token.issue(:gateway)
-
-      {:ok, _} =
-        SSH.configure_gateway(%{name: "model", token: gateway_token},
-          actor: SystemActor.compute()
+    actions =
+      draw(
+        "actions",
+        list_of(member_of([:approve, :revoke_key, :add_key, :close, :expire, :rotate]),
+          min_length: 1,
+          max_length: 16
         )
+      )
 
-      text =
-        "ssh-ed25519 " <>
-          Base.encode64(<<11::32, "ssh-ed25519", 32::32, :crypto.strong_rand_bytes(32)::binary>>)
+    {gateway_token, _} = Token.issue(:gateway)
 
-      {:ok, pending} =
-        SSH.open_session(%{gateway_token: gateway_token, public_key: text},
-          actor: SystemActor.compute()
-        )
+    {:ok, _} =
+      SSH.configure_gateway(%{name: "model", token: gateway_token},
+        actor: SystemActor.compute()
+      )
 
-      approval = String.replace_prefix(pending.approval_path, "/ssh/approve/", "")
-      context = %{owner: owner, public_key: text, approval: approval, session: pending}
+    text =
+      "ssh-ed25519 " <>
+        Base.encode64(<<11::32, "ssh-ed25519", 32::32, :crypto.strong_rand_bytes(32)::binary>>)
 
-      initial = %{
-        gateway_token: gateway_token,
-        gateway_valid: true,
-        live: true,
-        approved: false,
-        key_live: false,
-        key: nil
-      }
+    {:ok, pending} =
+      SSH.open_session(%{gateway_token: gateway_token, public_key: text},
+        actor: SystemActor.compute()
+      )
 
-      model =
-        Enum.reduce(actions, initial, fn action, model ->
-          next = step(action, model, context)
+    approval = String.replace_prefix(pending.approval_path, "/ssh/approve/", "")
+    context = %{owner: owner, public_key: text, approval: approval, session: pending}
 
-          result =
-            SSH.session_status(
-              %{gateway_token: next.gateway_token, session_token: pending.session_token},
-              actor: SystemActor.compute()
-            )
+    initial = %{
+      gateway_token: gateway_token,
+      gateway_valid: true,
+      live: true,
+      approved: false,
+      key_live: false,
+      key: nil
+    }
 
-          cond do
-            not next.gateway_valid or not next.live -> assert match?({:error, _}, result)
-            not next.approved -> assert {:ok, %{status: "pending"}} = result
-            next.key_live -> assert {:ok, %{status: "authenticated"}} = result
-            true -> assert match?({:error, _}, result)
-          end
+    model =
+      Enum.reduce(actions, initial, fn action, model ->
+        next = step(action, model, context)
 
-          next
-        end)
+        result =
+          SSH.session_status(
+            %{gateway_token: next.gateway_token, session_token: pending.session_token},
+            actor: SystemActor.compute()
+          )
 
-      if model.key, do: SSH.remove_key(%{id: model.key.id}, actor: owner)
-    end
+        cond do
+          not next.gateway_valid or not next.live -> assert match?({:error, _}, result)
+          not next.approved -> assert {:ok, %{status: "pending"}} = result
+          next.key_live -> assert {:ok, %{status: "authenticated"}} = result
+          true -> assert match?({:error, _}, result)
+        end
+
+        next
+      end)
+
+    if model.key, do: SSH.remove_key(%{id: model.key.id}, actor: owner)
   end
 
   defp step(:approve, model, c) do

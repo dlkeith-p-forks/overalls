@@ -72,22 +72,21 @@ defmodule Brady.Cache.PolicyTest do
   end
 
   property "origins, targets and variant values never alias in exercised identities" do
-    check all(part <- string(:alphanumeric, min_length: 1, max_length: 100)) do
-      base = request()
-      key = Policy.key(base, ["accept-encoding"])
+    part = draw("part", string(:alphanumeric, min_length: 1, max_length: 100))
+    base = request()
+    key = Policy.key(base, ["accept-encoding"])
 
-      for modified <- [
-            request(%{scheme: :http}),
-            request(%{port: 8443}),
-            request(%{host: part <> ".other.example"}),
-            request(%{target: "/other/" <> part}),
-            request(%{headers: [{"accept-encoding", part}]})
-          ] do
-        refute Policy.key(modified, ["accept-encoding"]) == key
-      end
-
-      assert Regex.match?(~r/\A[0-9a-f]{64}\z/, key)
+    for modified <- [
+          request(%{scheme: :http}),
+          request(%{port: 8443}),
+          request(%{host: part <> ".other.example"}),
+          request(%{target: "/other/" <> part}),
+          request(%{headers: [{"accept-encoding", part}]})
+        ] do
+      refute Policy.key(modified, ["accept-encoding"]) == key
     end
+
+    assert Regex.match?(~r/\A[0-9a-f]{64}\z/, key)
   end
 
   test "missing and empty variants differ; names and host are case insensitive" do

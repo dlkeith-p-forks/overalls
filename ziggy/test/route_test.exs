@@ -101,22 +101,19 @@ defmodule Ziggy.RouteTest do
   end
 
   property "unknown paths never become upstream destinations" do
-    check all(path <- string(:alphanumeric, min_length: 1, max_length: 256)) do
-      assert {:error, :unsupported_route} =
-               Ziggy.Route.resolve("POST", "/" <> path, "", ~s({"model":"test"}))
-    end
+    path = draw("path", string(:alphanumeric, min_length: 1, max_length: 256))
+
+    assert {:error, :unsupported_route} =
+             Ziggy.Route.resolve("POST", "/" <> path, "", ~s({"model":"test"}))
   end
 
   property "only the exact Anthropic beta query reaches a native route" do
-    check all(
-            query <- string(:printable, min_length: 1, max_length: 256),
-            path <- member_of(@anthropic_paths)
-          ) do
-      result = Ziggy.Route.resolve("POST", path, query, ~s({"model":"test"}))
+    query = draw("query", string(:printable, min_length: 1, max_length: 256))
+    path = draw("path", member_of(@anthropic_paths))
+    result = Ziggy.Route.resolve("POST", path, query, ~s({"model":"test"}))
 
-      if query == "beta=true",
-        do: assert(match?({:ok, %{query: :anthropic_beta}}, result)),
-        else: assert(result == {:error, :unsupported_route})
-    end
+    if query == "beta=true",
+      do: assert(match?({:ok, %{query: :anthropic_beta}}, result)),
+      else: assert(result == {:error, :unsupported_route})
   end
 end

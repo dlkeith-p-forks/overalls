@@ -16,75 +16,73 @@ defmodule Marshall.Compute.ServiceLevelsTest do
 
   @origin ~U[2026-10-02 00:00:00.000000Z]
 
+  @tag :hegel_case_sandbox
   property "deadline histories never manufacture success from missing or late readiness" do
-    check all(
-            budget <- integer(1..3_000),
-            physical_offset <- integer(0..4_000),
-            ready_offset <- integer(0..4_000),
-            observed_offset <- integer(0..4_000)
-          ) do
-      deadline = DateTime.add(@origin, budget)
-      physical_at = DateTime.add(@origin, physical_offset)
-      ready_at = DateTime.add(@origin, ready_offset)
-      now = DateTime.add(@origin, observed_offset)
-      physical = %{state: :running, at: physical_at}
+    Marshall.DataCase.isolate_property_case()
+    budget = draw("budget", integer(1..3000))
+    physical_offset = draw("physical_offset", integer(0..4000))
+    ready_offset = draw("ready_offset", integer(0..4000))
+    observed_offset = draw("observed_offset", integer(0..4000))
+    deadline = DateTime.add(@origin, budget)
+    physical_at = DateTime.add(@origin, physical_offset)
+    ready_at = DateTime.add(@origin, ready_offset)
+    now = DateTime.add(@origin, observed_offset)
+    physical = %{state: :running, at: physical_at}
 
-      result =
-        ServiceLevels.decide(
-          :marshall_ready,
-          :provision,
-          @origin,
-          deadline,
-          physical,
-          ready_at,
-          now
-        )
+    result =
+      ServiceLevels.decide(
+        :marshall_ready,
+        :provision,
+        @origin,
+        deadline,
+        physical,
+        ready_at,
+        now
+      )
 
-      cond do
-        physical_offset <= budget and ready_offset <= budget ->
-          assert {:finished, true, at, duration} = result
-          assert at == DateTime.add(@origin, max(physical_offset, ready_offset))
-          assert duration == max(physical_offset, ready_offset) * 1_000_000
+    cond do
+      physical_offset <= budget and ready_offset <= budget ->
+        assert {:finished, true, at, duration} = result
+        assert at == DateTime.add(@origin, max(physical_offset, ready_offset))
+        assert duration == max(physical_offset, ready_offset) * 1_000_000
 
-        observed_offset >= budget ->
-          assert result == {:finished, false, deadline, budget * 1_000_000}
+      observed_offset >= budget ->
+        assert result == {:finished, false, deadline, budget * 1_000_000}
 
-        true ->
-          assert result == :pending
-      end
-
-      missing =
-        ServiceLevels.decide(:marshall_ready, :provision, @origin, deadline, physical, nil, now)
-
-      if observed_offset < budget,
-        do: assert(missing == :pending),
-        else: assert(missing == {:finished, false, deadline, budget * 1_000_000})
+      true ->
+        assert result == :pending
     end
+
+    missing =
+      ServiceLevels.decide(:marshall_ready, :provision, @origin, deadline, physical, nil, now)
+
+    if observed_offset < budget,
+      do: assert(missing == :pending),
+      else: assert(missing == {:finished, false, deadline, budget * 1_000_000})
   end
 
+  @tag :hegel_case_sandbox
   property "missing physical evidence survives observation histories until the deadline" do
-    check all(
-            budget <- integer(1..3_000),
-            offsets <- list_of(integer(-1_000..4_000), min_length: 1)
-          ) do
-      deadline = DateTime.add(@origin, budget)
+    Marshall.DataCase.isolate_property_case()
+    budget = draw("budget", integer(1..3000))
+    offsets = draw("offsets", list_of(integer(-1000..4000), min_length: 1))
+    deadline = DateTime.add(@origin, budget)
 
-      for offset <- offsets do
-        result =
-          ServiceLevels.decide(
-            :lilly_physical,
-            :start,
-            @origin,
-            deadline,
-            nil,
-            nil,
-            DateTime.add(@origin, offset)
-          )
+    for offset <- offsets do
+      result =
+        ServiceLevels.decide(
+          :lilly_physical,
+          :start,
+          @origin,
+          deadline,
+          nil,
+          nil,
+          DateTime.add(@origin, offset)
+        )
 
-        if offset < budget,
-          do: assert(result == :pending),
-          else: assert(result == {:finished, false, deadline, budget * 1_000_000})
-      end
+      if offset < budget,
+        do: assert(result == :pending),
+        else: assert(result == {:finished, false, deadline, budget * 1_000_000})
     end
   end
 

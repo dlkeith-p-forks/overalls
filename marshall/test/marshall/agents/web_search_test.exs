@@ -6,28 +6,28 @@ defmodule Marshall.Agents.WebSearchTest do
   alias Marshall.Agents.{ModelProtocol, WebSearch}
 
   property "the projection includes every organic result in provider order" do
-    check all(
-            titles <-
-              list_of(string(:alphanumeric, min_length: 1, max_length: 32), max_length: 50)
-          ) do
-      organic =
-        Enum.with_index(titles, fn title, index ->
-          %{"title" => title, "link" => "https://example.org/#{index}", "snippet" => "summary"}
-        end)
+    titles =
+      draw(
+        "titles",
+        list_of(string(:alphanumeric, min_length: 1, max_length: 32), max_length: 50)
+      )
 
-      assert {:ok, %{"results" => results, "answer_box" => nil}, 1} =
-               WebSearch.project(%{"organic" => organic, "credits" => 1})
+    organic =
+      Enum.with_index(titles, fn title, index ->
+        %{"title" => title, "link" => "https://example.org/#{index}", "snippet" => "summary"}
+      end)
 
-      assert Enum.map(results, & &1["title"]) == titles
-      assert length(results) == length(organic)
-    end
+    assert {:ok, %{"results" => results, "answer_box" => nil}, 1} =
+             WebSearch.project(%{"organic" => organic, "credits" => 1})
+
+    assert Enum.map(results, & &1["title"]) == titles
+    assert length(results) == length(organic)
   end
 
   property "cache keys preserve exact trimmed query bytes" do
-    check all(query <- string(:printable, min_length: 1, max_length: 200)) do
-      assert WebSearch.cache_key("  " <> query <> "  ") == WebSearch.cache_key(query)
-      assert byte_size(WebSearch.cache_key(query)) == 64
-    end
+    query = draw("query", string(:printable, min_length: 1, max_length: 200))
+    assert WebSearch.cache_key("  " <> query <> "  ") == WebSearch.cache_key(query)
+    assert byte_size(WebSearch.cache_key(query)) == 64
   end
 
   test "web search has no tool-specific 2000-byte limit" do

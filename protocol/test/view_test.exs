@@ -60,100 +60,110 @@ defmodule OverallsProtocol.ViewTest do
 
   @tag :hegel
   test "rows, ownership, versions and lookups match a reference model" do
-    check all(
-            commands <-
-              list_of(
-                one_of([
-                  tuple({constant(:claim), integer(0..2), member_of(@keys)}),
-                  tuple(
-                    {constant(:put), integer(0..2), member_of(@keys), integer(),
-                     list_of(member_of(@terms), max_length: 2)}
-                  ),
-                  tuple({constant(:delete), integer(0..2), member_of(@keys)}),
-                  tuple({constant(:release), integer(0..2), member_of(@keys)}),
-                  tuple({constant(:crash), integer(0..2)})
-                ]),
-                max_length: 60
-              ),
-            test_cases: 60
-          ) do
-      view = generated_view()
-      writers = Enum.map(0..2, fn _ -> writer() end)
+    Hegel.check(
+      fn ->
+        commands =
+          draw(
+            "commands",
+            list_of(
+              one_of([
+                tuple({constant(:claim), integer(0..2), member_of(@keys)}),
+                tuple(
+                  {constant(:put), integer(0..2), member_of(@keys), integer(),
+                   list_of(member_of(@terms), max_length: 2)}
+                ),
+                tuple({constant(:delete), integer(0..2), member_of(@keys)}),
+                tuple({constant(:release), integer(0..2), member_of(@keys)}),
+                tuple({constant(:crash), integer(0..2)})
+              ]),
+              max_length: 60
+            )
+          )
 
-      model =
-        Enum.reduce(
-          commands,
-          %{owners: %{}, rows: %{}, version: current_version(view), writers: writers},
-          fn command, model ->
-            model = step(view, command, model)
-            assert_matches(view, model)
-            model
-          end
-        )
+        view = generated_view()
+        writers = Enum.map(0..2, fn _ -> writer() end)
 
-      Enum.each(model.writers, &Process.exit(&1, :kill))
-      # Rows of exited writers disappear: the view converges to empty.
-      Enum.each(@keys, fn key -> eventually(fn -> View.fetch(view, key) == :error end) end)
-      # So do their claims, so the next run starts with no owners.
-      await_released(view, @keys)
-    end
+        model =
+          Enum.reduce(
+            commands,
+            %{owners: %{}, rows: %{}, version: current_version(view), writers: writers},
+            fn command, model ->
+              model = step(view, command, model)
+              assert_matches(view, model)
+              model
+            end
+          )
+
+        Enum.each(model.writers, &Process.exit(&1, :kill))
+        # Rows of exited writers disappear: the view converges to empty.
+        Enum.each(@keys, fn key -> eventually(fn -> View.fetch(view, key) == :error end) end)
+        # So do their claims, so the next run starts with no owners.
+        await_released(view, @keys)
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
   test "subscribers are notified of every change to a subscribed key" do
-    check all(
-            ops <-
-              list_of(
-                one_of([
-                  tuple({constant(:put), member_of(@keys)}),
-                  tuple({constant(:delete), member_of(@keys)}),
-                  tuple({constant(:release), member_of(@keys)}),
-                  constant(:crash)
-                ]),
-                max_length: 30
-              ),
-            test_cases: 40
-          ) do
-      view = generated_view()
-      :ok = View.subscribe(view, [:k1, :k2])
-      w = writer()
-      Enum.each(@keys, fn key -> :ok = run(w, fn -> View.claim(view, key) end) end)
+    Hegel.check(
+      fn ->
+        ops =
+          draw(
+            "ops",
+            list_of(
+              one_of([
+                tuple({constant(:put), member_of(@keys)}),
+                tuple({constant(:delete), member_of(@keys)}),
+                tuple({constant(:release), member_of(@keys)}),
+                constant(:crash)
+              ]),
+              max_length: 30
+            )
+          )
 
-      w =
-        Enum.reduce(ops, w, fn
-          {:put, key}, w ->
-            {:ok, _} = run(w, fn -> View.put(view, key, :v, []) end)
-            expect(view, key)
-            w
+        view = generated_view()
+        :ok = View.subscribe(view, [:k1, :k2])
+        w = writer()
+        Enum.each(@keys, fn key -> :ok = run(w, fn -> View.claim(view, key) end) end)
 
-          {:delete, key}, w ->
-            :ok = run(w, fn -> View.delete(view, key) end)
-            expect(view, key)
-            w
+        w =
+          Enum.reduce(ops, w, fn
+            {:put, key}, w ->
+              {:ok, _} = run(w, fn -> View.put(view, key, :v, []) end)
+              expect(view, key)
+              w
 
-          {:release, key}, w ->
-            :ok = run(w, fn -> View.release(view, key) end)
-            expect(view, key)
-            :ok = run(w, fn -> View.claim(view, key) end)
-            w
+            {:delete, key}, w ->
+              :ok = run(w, fn -> View.delete(view, key) end)
+              expect(view, key)
+              w
 
-          :crash, w ->
-            Process.exit(w, :kill)
-            # Every key the writer owned is removed and announced.
-            Enum.each([:k1, :k2], &expect(view, &1))
-            fresh = writer()
+            {:release, key}, w ->
+              :ok = run(w, fn -> View.release(view, key) end)
+              expect(view, key)
+              :ok = run(w, fn -> View.claim(view, key) end)
+              w
 
-            Enum.each(@keys, fn key ->
-              eventually(fn -> run(fresh, fn -> View.claim(view, key) end) == :ok end)
-            end)
+            :crash, w ->
+              Process.exit(w, :kill)
+              # Every key the writer owned is removed and announced.
+              Enum.each([:k1, :k2], &expect(view, &1))
+              fresh = writer()
 
-            fresh
-        end)
+              Enum.each(@keys, fn key ->
+                eventually(fn -> run(fresh, fn -> View.claim(view, key) end) == :ok end)
+              end)
 
-      Process.exit(w, :kill)
-      Enum.each([:k1, :k2], &expect(view, &1))
-      refute_receive {:view_changed, ^view, :k3}, 20
-    end
+              fresh
+          end)
+
+        Process.exit(w, :kill)
+        Enum.each([:k1, :k2], &expect(view, &1))
+        refute_receive {:view_changed, ^view, :k3}, 20
+      end,
+      test_cases: 100
+    )
   end
 
   # Subscribed keys must be announced; unsubscribed keys never are.

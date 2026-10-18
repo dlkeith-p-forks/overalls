@@ -22,67 +22,67 @@ defmodule Marshall.TeamsCreationTest do
   # Generated creation histories MUST check every reply against the actor/name
   # model and compare persisted memberships, audit receipts and versions after
   # retries and refusals. Archived names MUST acquire a fresh identity and owner.
+  @tag :hegel_case_sandbox
   property "creation histories isolate actors, names, retries and archived generations",
-    test_cases: 25 do
-    check all(
-            operations <-
-              list_of(tuple({integer(0..2), integer(0..1), integer(0..2)}),
-                min_length: 1,
-                max_length: 15
-              ),
-            test_cases: 25
-          ) do
-      actors = for _ <- 0..2, do: Marshall.ComputeFixtures.user()
-      prefix = "create-" <> binary_part(Ash.UUID.generate(), 0, 8)
-      names = [prefix <> "-a", prefix <> "-b"]
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    operations =
+      draw(
+        "operations",
+        list_of(tuple({integer(0..2), integer(0..1), integer(0..2)}),
+          min_length: 1,
+          max_length: 15
+        )
+      )
 
-      # Every generated history includes both a retry and a foreign collision.
-      model =
-        Enum.reduce([{0, 0, 0}, {0, 0, 0}, {1, 0, 0} | operations], %{}, fn
-          {actor_index, name_index, key}, model ->
-            actor = Enum.fetch!(actors, actor_index)
-            name = Enum.fetch!(names, name_index)
-            create_step(model, actor, name, Integer.to_string(key))
-        end)
+    actors = for _ <- 0..2, do: Marshall.ComputeFixtures.user()
+    prefix = "create-" <> binary_part(Ash.UUID.generate(), 0, 8)
+    names = [prefix <> "-a", prefix <> "-b"]
 
-      name = hd(names)
-      %{team: previous} = Map.fetch!(model, name)
-      assert {:ok, :ok} = Ledger.transaction(fn -> Ledger.archive!(previous, :archive) end)
-      model = Map.delete(model, name)
-      actor = Enum.fetch!(actors, 2)
-      model = create_step(model, actor, name, "0")
-      refute model[name].team.id == previous.id
-      assert length(Ledger.history!(Team, name: name)) == 2
-      create_step(model, actor, name, "different-retry-key")
-    end
+    # Every generated history includes both a retry and a foreign collision.
+    model =
+      Enum.reduce([{0, 0, 0}, {0, 0, 0}, {1, 0, 0} | operations], %{}, fn
+        {actor_index, name_index, key}, model ->
+          actor = Enum.fetch!(actors, actor_index)
+          name = Enum.fetch!(names, name_index)
+          create_step(model, actor, name, Integer.to_string(key))
+      end)
+
+    name = hd(names)
+    %{team: previous} = Map.fetch!(model, name)
+    assert {:ok, :ok} = Ledger.transaction(fn -> Ledger.archive!(previous, :archive) end)
+    model = Map.delete(model, name)
+    actor = Enum.fetch!(actors, 2)
+    model = create_step(model, actor, name, "0")
+    refute model[name].team.id == previous.id
+    assert length(Ledger.history!(Team, name: name)) == 2
+    create_step(model, actor, name, "different-retry-key")
   end
 
+  @tag :hegel_case_sandbox
   property "transferred names cannot create false success for either owner identity",
-    test_cases: 15 do
-    check all(
-            role <- member_of([:admin, :member]),
-            remove_creator? <- boolean(),
-            key <- string(:alphanumeric, min_length: 1, max_length: 16),
-            test_cases: 15
-          ) do
-      creator = Marshall.ComputeFixtures.user()
-      target = Marshall.ComputeFixtures.user()
-      name = "transfer-create-" <> binary_part(Ash.UUID.generate(), 0, 8)
-      assert {:ok, team} = create(creator, name, key)
-      assert {:ok, _} = set_member(team.id, target, role, creator)
-      assert {:ok, transfer} = Coordinator.offer(team.id, to_string(target.email), creator)
-      assert {:ok, _} = Coordinator.accept(transfer.id, target)
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    role = draw("role", member_of([:admin, :member]))
+    remove_creator? = draw("remove_creator?", boolean())
+    key = draw("key", string(:alphanumeric, min_length: 1, max_length: 16))
+    creator = Marshall.ComputeFixtures.user()
+    target = Marshall.ComputeFixtures.user()
+    name = "transfer-create-" <> binary_part(Ash.UUID.generate(), 0, 8)
+    assert {:ok, team} = create(creator, name, key)
+    assert {:ok, _} = set_member(team.id, target, role, creator)
+    assert {:ok, transfer} = Coordinator.offer(team.id, to_string(target.email), creator)
+    assert {:ok, _} = Coordinator.accept(transfer.id, target)
 
-      if remove_creator?, do: assert({:ok, _} = set_member(team.id, creator, :removed, target))
-      before = snapshot(team.id)
+    if remove_creator?, do: assert({:ok, _} = set_member(team.id, creator, :removed, target))
+    before = snapshot(team.id)
 
-      for actor <- [creator, target] do
-        assert {:error, _} = create(actor, name, key)
-        assert snapshot(team.id) == before
-      end
-
-      assert Coordinator.roles(team.id).owner == target.id
+    for actor <- [creator, target] do
+      assert {:error, _} = create(actor, name, key)
+      assert snapshot(team.id) == before
     end
+
+    assert Coordinator.roles(team.id).owner == target.id
   end
 
   @spec create_step(model(), User.t(), String.t(), String.t()) :: model()

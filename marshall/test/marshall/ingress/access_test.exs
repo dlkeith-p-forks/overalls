@@ -145,46 +145,50 @@ defmodule Marshall.Ingress.AccessTest do
 
   @tag :hegel
   test "public primary streams cannot survive policy changes or authorize alternate ports", c do
-    check all(port <- filter(integer(3000..9999), &(&1 != 4444)), test_cases: 8) do
-      [endpoint] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
+    Hegel.check(
+      fn ->
+        port = draw("port", filter(integer(3000..9999), &(&1 != 4444)))
+        [endpoint] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
 
-      assert {:ok, public} =
-               Ingress.configure_endpoint(
-                 %{
-                   vm_id: c.vm.id,
-                   expected_revision: endpoint.policy_revision,
-                   primary_port: port,
-                   visibility: :public
-                 },
-                 actor: c.owner
-               )
+        assert {:ok, public} =
+                 Ingress.configure_endpoint(
+                   %{
+                     vm_id: c.vm.id,
+                     expected_revision: endpoint.policy_revision,
+                     primary_port: port,
+                     visibility: :public
+                   },
+                   actor: c.owner
+                 )
 
-      request = %{service_token: c.request.service_token, label: endpoint.label, app_port: 0}
-      assert {:ok, opened} = Ingress.open_web(request, actor: SystemActor.compute())
-      assert opened.binding.port == port
-      assert opened.user_id == nil
+        request = %{service_token: c.request.service_token, label: endpoint.label, app_port: 0}
+        assert {:ok, opened} = Ingress.open_web(request, actor: SystemActor.compute())
+        assert opened.binding.port == port
+        assert opened.user_id == nil
 
-      assert {:error, _} =
-               Ingress.open_web(%{request | app_port: port}, actor: SystemActor.compute())
+        assert {:error, _} =
+                 Ingress.open_web(%{request | app_port: port}, actor: SystemActor.compute())
 
-      renewal = %{service_token: c.request.service_token, stream_token: opened.ticket}
-      assert {:ok, _} = Ingress.renew_web(renewal, actor: SystemActor.compute())
+        renewal = %{service_token: c.request.service_token, stream_token: opened.ticket}
+        assert {:ok, _} = Ingress.renew_web(renewal, actor: SystemActor.compute())
 
-      assert {:ok, _} =
-               Ingress.configure_endpoint(
-                 %{
-                   vm_id: c.vm.id,
-                   expected_revision: public.policy_revision,
-                   primary_port: port,
-                   visibility: :private
-                 },
-                 actor: c.owner
-               )
+        assert {:ok, _} =
+                 Ingress.configure_endpoint(
+                   %{
+                     vm_id: c.vm.id,
+                     expected_revision: public.policy_revision,
+                     primary_port: port,
+                     visibility: :private
+                   },
+                   actor: c.owner
+                 )
 
-      assert {:error, _} = Ingress.renew_web(renewal, actor: SystemActor.compute())
-      assert {:error, _} = Ingress.open_web(request, actor: SystemActor.compute())
-      assert {:ok, %{closed: true}} = Ingress.close_web(renewal, actor: SystemActor.compute())
-    end
+        assert {:error, _} = Ingress.renew_web(renewal, actor: SystemActor.compute())
+        assert {:error, _} = Ingress.open_web(request, actor: SystemActor.compute())
+        assert {:ok, %{closed: true}} = Ingress.close_web(renewal, actor: SystemActor.compute())
+      end,
+      test_cases: 100
+    )
   end
 
   test "closed and expired web streams never regain authority", c do
@@ -201,24 +205,30 @@ defmodule Marshall.Ingress.AccessTest do
                actor: c.owner
              )
 
-    check all(mode <- member_of([:close, :expire]), age <- integer(1..1000), test_cases: 10) do
-      assert {:ok, opened} =
-               Ingress.open_web(
-                 %{service_token: c.request.service_token, label: endpoint.label, app_port: 0},
-                 actor: SystemActor.compute()
-               )
+    Hegel.check(
+      fn ->
+        mode = draw("mode", member_of([:close, :expire]))
+        age = draw("age", integer(1..1000))
 
-      request = %{service_token: c.request.service_token, stream_token: opened.ticket}
+        assert {:ok, opened} =
+                 Ingress.open_web(
+                   %{service_token: c.request.service_token, label: endpoint.label, app_port: 0},
+                   actor: SystemActor.compute()
+                 )
 
-      if mode == :close do
-        assert {:ok, %{closed: true}} = Ingress.close_web(request, actor: SystemActor.compute())
-      else
-        [stream] = Ledger.read!(Marshall.Ingress.WebStream, id: opened.binding.session_id)
-        Ledger.update!(stream, :renew, %{expires_at: DateTime.add(Ledger.now(), -age)})
-      end
+        request = %{service_token: c.request.service_token, stream_token: opened.ticket}
 
-      assert {:error, _} = Ingress.renew_web(request, actor: SystemActor.compute())
-    end
+        if mode == :close do
+          assert {:ok, %{closed: true}} = Ingress.close_web(request, actor: SystemActor.compute())
+        else
+          [stream] = Ledger.read!(Marshall.Ingress.WebStream, id: opened.binding.session_id)
+          Ledger.update!(stream, :renew, %{expires_at: DateTime.add(Ledger.now(), -age)})
+        end
+
+        assert {:error, _} = Ingress.renew_web(request, actor: SystemActor.compute())
+      end,
+      test_cases: 100
+    )
   end
 
   test "web cleanup retains referenced credentials and audits, then removes old unreferenced records",
@@ -288,90 +298,96 @@ defmodule Marshall.Ingress.AccessTest do
 
     [endpoint] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
 
-    check all(bytes <- binary(length: 32), port <- member_of([0, 3000, 9999]), test_cases: 5) do
-      state = Base.url_encode64(bytes, padding: false)
-      digest = Base.encode16(:crypto.hash(:sha256, state), case: :lower)
+    Hegel.check(
+      fn ->
+        bytes = draw("bytes", binary(length: 32))
+        port = draw("port", member_of([0, 3000, 9999]))
+        state = Base.url_encode64(bytes, padding: false)
+        digest = Base.encode16(:crypto.hash(:sha256, state), case: :lower)
 
-      assert {:ok, started} =
-               Ingress.begin_web_login(
-                 %{
-                   service_token: c.request.service_token,
-                   label: endpoint.label,
-                   app_port: port,
-                   state_digest: digest
-                 },
-                 actor: SystemActor.compute()
-               )
-
-      assert {:ok, approved} =
-               Ingress.authorize_web_login(%{ticket: started.ticket, login_token: c.token},
-                 actor: c.owner
-               )
-
-      exchange = %{
-        service_token: c.request.service_token,
-        ticket: started.ticket,
-        code: approved.code,
-        state: state
-      }
-
-      wrong = Base.url_encode64(:crypto.hash(:sha256, bytes), padding: false)
-
-      if wrong != state do
-        assert {:error, _} =
-                 Ingress.exchange_web_login(%{exchange | state: wrong},
+        assert {:ok, started} =
+                 Ingress.begin_web_login(
+                   %{
+                     service_token: c.request.service_token,
+                     label: endpoint.label,
+                     app_port: port,
+                     state_digest: digest
+                   },
                    actor: SystemActor.compute()
                  )
-      end
 
-      assert {:ok, result} = Ingress.exchange_web_login(exchange, actor: SystemActor.compute())
-      assert result.hostname == started.hostname
-      assert {:ok, hash} = Token.digest(result.cookie, :web_cookie)
+        assert {:ok, approved} =
+                 Ingress.authorize_web_login(%{ticket: started.ticket, login_token: c.token},
+                   actor: c.owner
+                 )
 
-      assert [%{app_port: ^port, user_id: user_id}] =
-               Ledger.read!(Marshall.Ingress.WebCredential, token_hash: hash)
+        exchange = %{
+          service_token: c.request.service_token,
+          ticket: started.ticket,
+          code: approved.code,
+          state: state
+        }
 
-      assert user_id == c.owner.id
+        wrong = Base.url_encode64(:crypto.hash(:sha256, bytes), padding: false)
 
-      assert {:ok, stream} =
-               Ingress.open_web(
-                 %{
-                   service_token: c.request.service_token,
-                   label: endpoint.label,
-                   app_port: port,
-                   cookie: result.cookie
-                 },
-                 actor: SystemActor.compute()
-               )
+        if wrong != state do
+          assert {:error, _} =
+                   Ingress.exchange_web_login(%{exchange | state: wrong},
+                     actor: SystemActor.compute()
+                   )
+        end
 
-      assert stream.user_id == c.owner.id
-      renewal = %{service_token: c.request.service_token, stream_token: stream.ticket}
-      assert {:ok, _} = Ingress.renew_web(renewal, actor: SystemActor.compute())
-      [credential] = Ledger.read!(Marshall.Ingress.WebCredential, token_hash: hash)
-      Ledger.update!(credential, :revoke, %{revoked_at: Ledger.now()})
-      assert {:error, _} = Ingress.renew_web(renewal, actor: SystemActor.compute())
+        assert {:ok, result} = Ingress.exchange_web_login(exchange, actor: SystemActor.compute())
+        assert result.hostname == started.hostname
+        assert {:ok, hash} = Token.digest(result.cookie, :web_cookie)
 
-      assert {:error, _} = Ingress.exchange_web_login(exchange, actor: SystemActor.compute())
+        assert [%{app_port: ^port, user_id: user_id}] =
+                 Ledger.read!(Marshall.Ingress.WebCredential, token_hash: hash)
 
-      assert {:error, _} =
-               Ingress.authorize_web_login(%{ticket: started.ticket, login_token: c.token},
-                 actor: c.owner
-               )
-    end
+        assert user_id == c.owner.id
+
+        assert {:ok, stream} =
+                 Ingress.open_web(
+                   %{
+                     service_token: c.request.service_token,
+                     label: endpoint.label,
+                     app_port: port,
+                     cookie: result.cookie
+                   },
+                   actor: SystemActor.compute()
+                 )
+
+        assert stream.user_id == c.owner.id
+        renewal = %{service_token: c.request.service_token, stream_token: stream.ticket}
+        assert {:ok, _} = Ingress.renew_web(renewal, actor: SystemActor.compute())
+        [credential] = Ledger.read!(Marshall.Ingress.WebCredential, token_hash: hash)
+        Ledger.update!(credential, :revoke, %{revoked_at: Ledger.now()})
+        assert {:error, _} = Ingress.renew_web(renewal, actor: SystemActor.compute())
+
+        assert {:error, _} = Ingress.exchange_web_login(exchange, actor: SystemActor.compute())
+
+        assert {:error, _} =
+                 Ingress.authorize_web_login(%{ticket: started.ticket, login_token: c.token},
+                   actor: c.owner
+                 )
+      end,
+      test_cases: 100
+    )
   end
 
   property "browser bearer purposes cannot be substituted for each other" do
-    check all(
-            purpose <-
-              member_of([:service, :session, :web_login, :web_code, :web_cookie, :web_stream])
-          ) do
-      {token, hash} = Token.issue(purpose)
-      assert {:ok, ^hash} = Token.digest(token, purpose)
+    purpose =
+      draw(
+        "purpose",
+        member_of([:service, :session, :web_login, :web_code, :web_cookie, :web_stream])
+      )
 
-      for other <-
-            [:service, :session, :web_login, :web_code, :web_cookie, :web_stream] -- [purpose] do
-        assert :error = Token.digest(token, other)
-      end
+    {token, hash} = Token.issue(purpose)
+    assert {:ok, ^hash} = Token.digest(token, purpose)
+
+    for other <-
+          [:service, :session, :web_login, :web_code, :web_cookie, :web_stream] -- [purpose] do
+      assert :error = Token.digest(token, other)
     end
   end
 

@@ -16,32 +16,36 @@ defmodule Lilly.VM.JournalTest do
   test "outcomes survive reopening and delayed receipts cannot discard newer state", %{
     journal: initial
   } do
-    check all(count <- integer(1..8), test_cases: 15) do
-      dir = Path.join(initial.directory, Lilly.UUID.generate())
-      {:ok, journal} = Journal.open(dir, @id, @id, @id)
+    Hegel.check(
+      fn ->
+        count = draw("count", integer(1..8))
+        dir = Path.join(initial.directory, Lilly.UUID.generate())
+        {:ok, journal} = Journal.open(dir, @id, @id, @id)
 
-      last =
-        Enum.reduce(1..count, journal, fn generation, previous ->
-          command = command(generation)
-          {:ok, next} = Journal.attempt(previous, command)
-          {:ok, next} = Journal.record(next, command, running())
-          assert next.sequence == generation
+        last =
+          Enum.reduce(1..count, journal, fn generation, previous ->
+            command = command(generation)
+            {:ok, next} = Journal.attempt(previous, command)
+            {:ok, next} = Journal.record(next, command, running())
+            assert next.sequence == generation
 
-          if previous.outcome do
-            {:ok, same} = Journal.acknowledge(next, [previous.outcome.id])
-            assert Journal.pending(same) == next.outcome
-          end
+            if previous.outcome do
+              {:ok, same} = Journal.acknowledge(next, [previous.outcome.id])
+              assert Journal.pending(same) == next.outcome
+            end
 
-          {:ok, reloaded} = Journal.open(dir, @id, @id, @id)
-          assert reloaded == next
-          reloaded
-        end)
+            {:ok, reloaded} = Journal.open(dir, @id, @id, @id)
+            assert reloaded == next
+            reloaded
+          end)
 
-      {:ok, acked} = Journal.acknowledge(last, [last.outcome.id])
-      assert Journal.pending(acked) == nil
-      {:ok, ^acked} = Journal.open(dir, @id, @id, @id)
-      assert acked.running_generation == count
-    end
+        {:ok, acked} = Journal.acknowledge(last, [last.outcome.id])
+        assert Journal.pending(acked) == nil
+        {:ok, ^acked} = Journal.open(dir, @id, @id, @id)
+        assert acked.running_generation == count
+      end,
+      test_cases: 100
+    )
   end
 
   test "execution attempts and outcomes advance beyond 64 transitions without diagnostics", %{

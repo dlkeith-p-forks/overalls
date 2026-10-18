@@ -9,9 +9,9 @@ defmodule Audi.SSH.KeyPublisherTest do
   # @cc [owner:ghuntley,label:verification;protocol] audi-host-key-version-halt-history
   # Transient publication failures may retry; verified 426 MUST halt queued
   # publication while preserving the exact local key-file digests.
-  test "host key publisher halts after version refusal and preserves key files", context do
+  property "host key publisher halts after version refusal and preserves key files", context do
     server =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         {Bandit,
          plug: {Audi.Test.DNSControl, owner: self()},
          scheme: :https,
@@ -37,32 +37,32 @@ defmodule Audi.SSH.KeyPublisherTest do
 
     before = key_digests(context.directory)
 
-    check all(transients <- member_of([0, 1, 2]), max_runs: 3, test_cases: 1) do
-      publisher =
-        start_supervised!(
-          {Audi.SSH.KeyPublisher, client: client, host_key_dir: context.directory}
-        )
+    transients = draw("transients", member_of([0, 1, 2]))
 
-      try do
-        for _ <- List.duplicate(:transient, transients) do
-          assert_receive {:control_request, pid, ref, _, _, _}, 4000
-          send(pid, {ref, 503, "{}"})
-          _ = :sys.get_state(publisher)
-          send(publisher, :publish)
-        end
+    publisher =
+      Overalls.HegelFixtures.start_supervised!(
+        {Audi.SSH.KeyPublisher, client: client, host_key_dir: context.directory}
+      )
 
+    try do
+      for _ <- List.duplicate(:transient, transients) do
         assert_receive {:control_request, pid, ref, _, _, _}, 4000
-        send(pid, {ref, 426, "invalid version body"})
+        send(pid, {ref, 503, "{}"})
         _ = :sys.get_state(publisher)
-        for _ <- 1..3, do: send(publisher, :publish)
-        _ = :sys.get_state(publisher)
-        refute_receive {:control_request, _, _, _, _, _}, 300
-        assert :sys.get_state(publisher).last == {:error, :unsupported_version}
-        refute Audi.SSH.KeyPublisher.automatic_work_enabled?(publisher)
-        assert key_digests(context.directory) == before
-      after
-        stop_supervised(Audi.SSH.KeyPublisher)
+        send(publisher, :publish)
       end
+
+      assert_receive {:control_request, pid, ref, _, _, _}, 4000
+      send(pid, {ref, 426, "invalid version body"})
+      _ = :sys.get_state(publisher)
+      for _ <- 1..3, do: send(publisher, :publish)
+      _ = :sys.get_state(publisher)
+      refute_receive {:control_request, _, _, _, _, _}, 300
+      assert :sys.get_state(publisher).last == {:error, :unsupported_version}
+      refute Audi.SSH.KeyPublisher.automatic_work_enabled?(publisher)
+      assert key_digests(context.directory) == before
+    after
+      stop_supervised(Audi.SSH.KeyPublisher)
     end
   end
 

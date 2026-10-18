@@ -1,5 +1,10 @@
 # Architecture reviews
 
+- [Hegel exploration and native installation (2026-10-18)](2026-10-18-hegel-exploration-and-native-custody.md):
+  restores generated exploration and per-case fixture ownership, rejects ignored
+  runner options, and fixes truncation of mapped NIF libraries; intermediate
+  execution is recorded separately from pending complete consumer/release gates.
+
 - [One account settings page (2026-10-18)](2026-10-18-account-settings-page.md):
   ADR-0196 merges Profile, Security and SSH keys into `/settings` behind the
   security mount, removes the old routes without redirects and collapses the

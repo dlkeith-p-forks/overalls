@@ -116,7 +116,7 @@ defmodule Porsche.ClientTest do
   end
 
   property "arbitrary credentials cannot escape the constructor's fixed result" do
-    token = draw(binary(max_length: 200))
+    token = draw("token", binary(max_length: 200))
 
     case Client.new("https://localhost", token) do
       {:ok, client} -> refute inspect(client) =~ token

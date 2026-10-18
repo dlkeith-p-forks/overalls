@@ -200,90 +200,104 @@ defmodule Marshall.Ingress.RoutesTest do
   test "mismatched execution reports cannot mutate the accepted route", c do
     {:ok, accepted} = report(c.request)
 
-    check all(
-            field <-
-              member_of([:placement_id, :execution_epoch, :generation, :service_generation]),
-            increment <- integer(1..1000),
-            test_cases: 25
-          ) do
-      value =
-        if field == :placement_id,
-          do: Ash.UUID.generate(),
-          else: Map.fetch!(c.request, field) + increment
+    Hegel.check(
+      fn ->
+        field =
+          draw(
+            "field",
+            member_of([:placement_id, :execution_epoch, :generation, :service_generation])
+          )
 
-      assert {:error, _} = report(Map.put(c.request, field, value))
-      assert [%{revision: revision}] = Ledger.read!(Route, id: accepted.id)
-      assert revision == accepted.revision
-    end
+        increment = draw("increment", integer(1..1000))
+
+        value =
+          if field == :placement_id,
+            do: Ash.UUID.generate(),
+            else: Map.fetch!(c.request, field) + increment
+
+        assert {:error, _} = report(Map.put(c.request, field, value))
+        assert [%{revision: revision}] = Ledger.read!(Route, id: accepted.id)
+        assert revision == accepted.revision
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
   test "refreshes preserve one route and reject unacknowledged certificate substitutions", c do
-    check all(
-            fingerprints <- list_of(member_of(["a", "b", "c"]), min_length: 1, max_length: 12),
-            test_cases: 15
-          ) do
-      [host] = Ledger.read!(Host, id: c.vm.host_id)
-      Ledger.update!(host, :report, %{reported_at: Ledger.now()})
-      {:ok, initial} = report(c.request)
+    Hegel.check(
+      fn ->
+        fingerprints =
+          draw("fingerprints", list_of(member_of(["a", "b", "c"]), min_length: 1, max_length: 12))
 
-      Enum.reduce(fingerprints, initial, fn prefix, previous ->
-        request = %{c.request | certificate_fingerprint: String.duplicate(prefix, 64)}
+        [host] = Ledger.read!(Host, id: c.vm.host_id)
+        Ledger.update!(host, :report, %{reported_at: Ledger.now()})
+        {:ok, initial} = report(c.request)
 
-        next =
-          if prefix == "a" do
-            assert {:ok, next} = report(request)
-            assert next.revision == previous.revision + 1
-            next
-          else
-            assert {:error, _} = report(request)
-            previous
-          end
+        Enum.reduce(fingerprints, initial, fn prefix, previous ->
+          request = %{c.request | certificate_fingerprint: String.duplicate(prefix, 64)}
 
-        assert next.id == initial.id
-        assert next.certificate_fingerprint == c.request.certificate_fingerprint
-        assert [%{id: id, revision: revision}] = Ledger.read!(Route, vm_id: c.vm.id)
-        assert id == initial.id
-        assert revision == next.revision
-        next
-      end)
-    end
+          next =
+            if prefix == "a" do
+              assert {:ok, next} = report(request)
+              assert next.revision == previous.revision + 1
+              next
+            else
+              assert {:error, _} = report(request)
+              previous
+            end
+
+          assert next.id == initial.id
+          assert next.certificate_fingerprint == c.request.certificate_fingerprint
+          assert [%{id: id, revision: revision}] = Ledger.read!(Route, vm_id: c.vm.id)
+          assert id == initial.id
+          assert revision == next.revision
+          next
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
   test "only completed start or provision history admits readiness and current projection", c do
     {:ok, accepted} = report(c.request)
 
-    check all(
-            states <-
-              list_of(
-                tuple(
-                  {member_of(["pending", "acknowledged", "completed", "cancelled"]),
-                   member_of(["provision", "start", "stop", "delete", "resize"])}
-                ),
-                min_length: 1,
-                max_length: 12
+    Hegel.check(
+      fn ->
+        states =
+          draw(
+            "states",
+            list_of(
+              tuple(
+                {member_of(["pending", "acknowledged", "completed", "cancelled"]),
+                 member_of(["provision", "start", "stop", "delete", "resize"])}
               ),
-            test_cases: 15
-          ) do
-      [host] = Ledger.read!(Host, id: c.vm.host_id)
-      Ledger.update!(host, :report, %{reported_at: Ledger.now()})
+              min_length: 1,
+              max_length: 12
+            )
+          )
 
-      for {status, kind} <- states do
-        # Only this sandbox fixture's operation history is changed. Keep the
-        # execution binding fixed so status/kind alone decide admissibility.
-        Ecto.Adapters.SQL.query!(
-          Marshall.Repo,
-          "UPDATE compute_operations SET status=$1, kind=$2 WHERE vm_id=$3",
-          [status, kind, Ecto.UUID.dump!(c.vm.id)],
-          log: false
-        )
+        [host] = Ledger.read!(Host, id: c.vm.host_id)
+        Ledger.update!(host, :report, %{reported_at: Ledger.now()})
 
-        eligible? = status == "completed" and kind in ["provision", "start"]
-        assert match?({:ok, _}, report(c.request)) == eligible?
-        assert match?({:ok, _}, current(accepted.label)) == eligible?
-      end
-    end
+        for {status, kind} <- states do
+          # Only this sandbox fixture's operation history is changed. Keep the
+          # execution binding fixed so status/kind alone decide admissibility.
+          Ecto.Adapters.SQL.query!(
+            Marshall.Repo,
+            "UPDATE compute_operations SET status=$1, kind=$2 WHERE vm_id=$3",
+            [status, kind, Ecto.UUID.dump!(c.vm.id)],
+            log: false
+          )
+
+          eligible? = status == "completed" and kind in ["provision", "start"]
+          assert match?({:ok, _}, report(c.request)) == eligible?
+          assert match?({:ok, _}, current(accepted.label)) == eligible?
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   defp report(request), do: Ingress.report_ready_route(request, actor: SystemActor.compute())

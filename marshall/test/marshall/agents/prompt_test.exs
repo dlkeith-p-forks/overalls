@@ -29,16 +29,20 @@ defmodule Marshall.Agents.PromptTest do
   end
 
   test "a repeated prompt key creates one turn, event and audit receipt", c do
-    check all(prompt <- string(:alphanumeric, min_length: 1, max_length: 64), test_cases: 12) do
-      key = Ash.UUID.generate()
-      input = %{thread_id: c.thread.id, prompt: prompt, request_key: key}
-      assert {:ok, first} = Agents.submit_prompt(input, actor: c.actor)
-      assert {:ok, second} = Agents.submit_prompt(input, actor: c.actor)
-      assert first.turn_id == second.turn_id
-      assert length(Ledger.read!(Turn, request_key: key)) == 1
-      assert length(Ledger.read!(Event, turn_id: first.turn_id)) == 1
-      assert length(Ledger.read!(AuditEvent, turn_id: first.turn_id)) == 1
-    end
+    Hegel.check(
+      fn ->
+        prompt = draw("prompt", string(:alphanumeric, min_length: 1, max_length: 64))
+        key = Ash.UUID.generate()
+        input = %{thread_id: c.thread.id, prompt: prompt, request_key: key}
+        assert {:ok, first} = Agents.submit_prompt(input, actor: c.actor)
+        assert {:ok, second} = Agents.submit_prompt(input, actor: c.actor)
+        assert first.turn_id == second.turn_id
+        assert length(Ledger.read!(Turn, request_key: key)) == 1
+        assert length(Ledger.read!(Event, turn_id: first.turn_id)) == 1
+        assert length(Ledger.read!(AuditEvent, turn_id: first.turn_id)) == 1
+      end,
+      test_cases: 100
+    )
   end
 
   test "reusing a key with different content is rejected", c do
@@ -58,49 +62,50 @@ defmodule Marshall.Agents.PromptTest do
   end
 
   test "stopped VM prompt retries and changed payload retain one turn and wake", c do
-    check all(
-            prompt <- string(:alphanumeric, min_length: 1, max_length: 24),
-            retries <- integer(1..4),
-            test_cases: 6
-          ) do
-      host_fixture()
-      {:ok, vm} = Compute.provision(request(), actor: c.actor)
-      [root] = Ledger.read!(Root, vm_id: vm.id)
-      [thread] = Ledger.read!(Thread, root_id: root.id)
+    Hegel.check(
+      fn ->
+        prompt = draw("prompt", string(:alphanumeric, min_length: 1, max_length: 24))
+        retries = draw("retries", integer(1..4))
+        host_fixture()
+        {:ok, vm} = Compute.provision(request(), actor: c.actor)
+        [root] = Ledger.read!(Root, vm_id: vm.id)
+        [thread] = Ledger.read!(Thread, root_id: root.id)
 
-      assert {:ok, _} =
-               Compute.lifecycle(
-                 %{vm_id: vm.id, kind: :stop, idempotency_key: Ash.UUID.generate()},
-                 actor: c.actor
-               )
+        assert {:ok, _} =
+                 Compute.lifecycle(
+                   %{vm_id: vm.id, kind: :stop, idempotency_key: Ash.UUID.generate()},
+                   actor: c.actor
+                 )
 
-      key = Ash.UUID.generate()
-      input = %{thread_id: thread.id, prompt: prompt, request_key: key}
-      assert {:ok, first} = Agents.submit_prompt(input, actor: c.actor)
+        key = Ash.UUID.generate()
+        input = %{thread_id: thread.id, prompt: prompt, request_key: key}
+        assert {:ok, first} = Agents.submit_prompt(input, actor: c.actor)
 
-      for _ <- 1..retries do
-        assert {:ok, replay} = Agents.submit_prompt(input, actor: c.actor)
-        assert replay.turn_id == first.turn_id
-      end
+        for _ <- 1..retries do
+          assert {:ok, replay} = Agents.submit_prompt(input, actor: c.actor)
+          assert replay.turn_id == first.turn_id
+        end
 
-      assert {:error, _} =
-               Agents.submit_prompt(%{input | prompt: prompt <> "changed"}, actor: c.actor)
+        assert {:error, _} =
+                 Agents.submit_prompt(%{input | prompt: prompt <> "changed"}, actor: c.actor)
 
-      assert [%{id: turn_id, prompt: ^prompt}] = Ledger.read!(Turn, request_key: key)
-      assert turn_id == first.turn_id
-      assert [%{kind: :prompt, turn_id: ^turn_id}] = Ledger.read!(Event, turn_id: turn_id)
+        assert [%{id: turn_id, prompt: ^prompt}] = Ledger.read!(Turn, request_key: key)
+        assert turn_id == first.turn_id
+        assert [%{kind: :prompt, turn_id: ^turn_id}] = Ledger.read!(Event, turn_id: turn_id)
 
-      assert [%{kind: :prompt_admitted}] =
-               Ledger.read!(AuditEvent, turn_id: turn_id, kind: :prompt_admitted)
+        assert [%{kind: :prompt_admitted}] =
+                 Ledger.read!(AuditEvent, turn_id: turn_id, kind: :prompt_admitted)
 
-      assert [%{kind: :wake_requested}] =
-               Ledger.read!(AuditEvent, turn_id: turn_id, kind: :wake_requested)
+        assert [%{kind: :wake_requested}] =
+                 Ledger.read!(AuditEvent, turn_id: turn_id, kind: :wake_requested)
 
-      assert [%{kind: :start, request_key: wake_key}] =
-               Ledger.read!(Operation, vm_id: vm.id, initiator: :agent)
+        assert [%{kind: :start, request_key: wake_key}] =
+                 Ledger.read!(Operation, vm_id: vm.id, initiator: :agent)
 
-      assert wake_key == "agent:" <> key
-    end
+        assert wake_key == "agent:" <> key
+      end,
+      test_cases: 100
+    )
   end
 
   test "child thread, parent event and audit receipt are committed together", c do
@@ -158,36 +163,41 @@ defmodule Marshall.Agents.PromptTest do
   test "shared write roles can wake, read-only roles cannot", c do
     member = user()
 
-    check all(role <- member_of([:web, :viewer, :operator, :manager]), test_cases: 12) do
-      assert {:ok, _} =
-               Access.set_access(
-                 %{
-                   vm_id: c.vm.id,
-                   email: to_string(member.email),
-                   role: role,
-                   idempotency_key: Ash.UUID.generate()
-                 },
-                 actor: c.actor
-               )
+    Hegel.check(
+      fn ->
+        role = draw("role", member_of([:web, :viewer, :operator, :manager]))
 
-      assert {:ok, _} =
-               Compute.lifecycle(
-                 %{vm_id: c.vm.id, kind: :stop, idempotency_key: Ash.UUID.generate()},
-                 actor: c.actor
-               )
+        assert {:ok, _} =
+                 Access.set_access(
+                   %{
+                     vm_id: c.vm.id,
+                     email: to_string(member.email),
+                     role: role,
+                     idempotency_key: Ash.UUID.generate()
+                   },
+                   actor: c.actor
+                 )
 
-      result =
-        Agents.submit_prompt(
-          %{thread_id: c.thread.id, prompt: "wake", request_key: Ash.UUID.generate()},
-          actor: member
-        )
+        assert {:ok, _} =
+                 Compute.lifecycle(
+                   %{vm_id: c.vm.id, kind: :stop, idempotency_key: Ash.UUID.generate()},
+                   actor: c.actor
+                 )
 
-      if role in [:operator, :manager] do
-        assert {:ok, _} = result
-      else
-        assert {:error, _} = result
-      end
-    end
+        result =
+          Agents.submit_prompt(
+            %{thread_id: c.thread.id, prompt: "wake", request_key: Ash.UUID.generate()},
+            actor: member
+          )
+
+        if role in [:operator, :manager] do
+          assert {:ok, _} = result
+        else
+          assert {:error, _} = result
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   test "a deleted VM rejects a new prompt while retaining the root thread", c do

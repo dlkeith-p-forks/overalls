@@ -4,10 +4,9 @@ defmodule Audi.InvalidBootPropertyTest do
   import Hegel.Gen
 
   @moduletag :tmp_dir
-  # Each of the 100 default cases traverses all 42 role/mutation pairs: 4200
-  # fresh VMs if completed. This bounded aggregate budget may expire before
-  # the complete run finishes on shared build hosts.
-  @moduletag timeout: 600_000
+  # A full matrix takes tens of seconds in fresh VMs; preserve all 100 cases.
+  # The aggregate budget includes shared-host headroom; each boot stays bounded.
+  @moduletag timeout: 10_800_000
   @id "11111111-1111-4111-8111-111111111111"
   @probe Path.expand("../scripts/invalid_boot_probe.exs", __DIR__)
   @certificate Path.expand("../../marshall/test/fixtures/tls/localhost.pem", __DIR__)
@@ -82,58 +81,56 @@ defmodule Audi.InvalidBootPropertyTest do
   # are called. Refusal MUST preserve fixture bytes and exclude paths and secrets
   # from diagnostics. Unset configuration MUST remain a separate no-listener boot.
   property "generated invalid Audi role configurations refuse fresh OTP startup",
+    # Fresh-VM matrices are slow external fixtures; CI still explores 100 cases.
     profile: :ci,
     print_blob: false do
     root = Path.join(System.tmp_dir!(), "k-ab-" <> Base.encode16(:crypto.strong_rand_bytes(8)))
     File.mkdir!(root)
     File.chmod!(root, 0o700)
-    on_exit(fn -> File.rm_rf!(root) end)
+    on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(
-            order <- shuffle(@cases),
-            suffix <- string(:alphanumeric, length: 43),
-            invalid_port <- member_of([0, 65_536, "22", nil]),
-            max_runs: 1
-          ) do
-      for {role, mutation} <- order do
-        directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
-        File.mkdir!(directory)
-        File.chmod!(directory, 0o700)
-        token = "audi_service_" <> suffix
-        {config, secret} = configuration(role, directory, token)
-        path = Path.join(directory, "config.json")
-        write_config(path, config)
-        assert {:ok, _} = Audi.Config.load(path)
-        {:ok, secret_bytes} = File.read(secret)
+    order = draw("order", shuffle(@cases))
+    suffix = draw("suffix", string(:alphanumeric, length: 43))
+    invalid_port = draw("invalid_port", member_of([0, 65536, "22", nil]))
 
-        key_bytes =
-          if role == :gateway,
-            do: [File.read!(Path.join(directory, "ssh_host_ed25519_key"))],
-            else: []
+    for {role, mutation} <- order do
+      directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
+      File.mkdir!(directory)
+      File.chmod!(directory, 0o700)
+      token = "audi_service_" <> suffix
+      {config, secret} = configuration(role, directory, token)
+      path = Path.join(directory, "config.json")
+      write_config(path, config)
+      assert {:ok, _} = Audi.Config.load(path)
+      {:ok, secret_bytes} = File.read(secret)
 
-        mutate(mutation, path, secret, config, token, invalid_port)
-        before = snapshot(directory)
-        {output, status} = boot(path, config["status_socket"])
-        assert status == 0
+      key_bytes =
+        if role == :gateway,
+          do: [File.read!(Path.join(directory, "ssh_host_ed25519_key"))],
+          else: []
 
-        assert projection(output) == %{
-                 "outcome" => "rejected",
-                 "start_attempted" => false,
-                 "rejection_event" => true,
-                 "supervisor" => false,
-                 "proof_registry" => false,
-                 "status_socket" => false
-               }
+      mutate(mutation, path, secret, config, token, invalid_port)
+      before = snapshot(directory)
+      {output, status} = boot(path, config["status_socket"])
+      assert status == 0
 
-        private? =
-          not Enum.any?(
-            [token, secret_bytes, directory, @certificate, @ca, @key, "-----BEGIN" | key_bytes],
-            &String.contains?(output, &1)
-          )
+      assert projection(output) == %{
+               "outcome" => "rejected",
+               "start_attempted" => false,
+               "rejection_event" => true,
+               "supervisor" => false,
+               "proof_registry" => false,
+               "status_socket" => false
+             }
 
-        assert private?, "boot diagnostics exposed fixture paths or secrets"
-        assert snapshot(directory) == before
-      end
+      private? =
+        not Enum.any?(
+          [token, secret_bytes, directory, @certificate, @ca, @key, "-----BEGIN" | key_bytes],
+          &String.contains?(output, &1)
+        )
+
+      assert private?, "boot diagnostics exposed fixture paths or secrets"
+      assert snapshot(directory) == before
     end
   end
 
@@ -150,9 +147,25 @@ defmodule Audi.InvalidBootPropertyTest do
            }
   end
 
+  # @cc [owner:ghuntley,label:verification] fresh-boot-operation-deadline
+  # Each probe MUST run in a fresh VM with the complete startup oracle. A boot
+  # exceeding 30 seconds MUST fail; its process group gets at most five seconds
+  # to terminate before forced cleanup, independently of the aggregate budget.
   @spec boot(Path.t() | nil, Path.t()) :: {String.t(), non_neg_integer()}
   defp boot(path, status) do
-    System.cmd("mix", ["run", "--no-start", "--no-compile", "--no-deps-check", @probe],
+    System.cmd(
+      "timeout",
+      [
+        "--signal=TERM",
+        "--kill-after=5s",
+        "30s",
+        "mix",
+        "run",
+        "--no-start",
+        "--no-compile",
+        "--no-deps-check",
+        @probe
+      ],
       env: [
         {"MIX_ENV", "test"},
         {"ERL_FLAGS", "+S 2:2 +SDcpu 1 +SDio 1"},

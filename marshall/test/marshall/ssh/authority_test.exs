@@ -44,27 +44,31 @@ defmodule Marshall.SSH.AuthorityTest do
   end
 
   test "removal and re-addition never restore a previous connection", c do
-    check all(bytes <- binary(length: 32), test_cases: 20) do
-      text = public_key(bytes)
-      assert {:ok, key} = SSH.add_key(%{public_key: text}, actor: c.user)
-      assert {:ok, first} = open(c, text)
-      assert first.status == "authenticated"
-      assert {:ok, _} = SSH.remove_key(%{id: key.id}, actor: c.user)
-      assert {:error, _} = status(c, first)
-      assert {:ok, replacement} = SSH.add_key(%{public_key: text}, actor: c.user)
-      assert {:error, _} = status(c, first)
-      assert {:ok, second} = open(c, text)
-      assert {:ok, %{status: "authenticated"}} = status(c, second)
+    Hegel.check(
+      fn ->
+        bytes = draw("bytes", binary(length: 32))
+        text = public_key(bytes)
+        assert {:ok, key} = SSH.add_key(%{public_key: text}, actor: c.user)
+        assert {:ok, first} = open(c, text)
+        assert first.status == "authenticated"
+        assert {:ok, _} = SSH.remove_key(%{id: key.id}, actor: c.user)
+        assert {:error, _} = status(c, first)
+        assert {:ok, replacement} = SSH.add_key(%{public_key: text}, actor: c.user)
+        assert {:error, _} = status(c, first)
+        assert {:ok, second} = open(c, text)
+        assert {:ok, %{status: "authenticated"}} = status(c, second)
 
-      assert {:ok, %{closed: true}} =
-               SSH.close_session(request(c, second), actor: SystemActor.compute())
+        assert {:ok, %{closed: true}} =
+                 SSH.close_session(request(c, second), actor: SystemActor.compute())
 
-      assert {:ok, %{closed: true}} =
-               SSH.close_session(request(c, second), actor: SystemActor.compute())
+        assert {:ok, %{closed: true}} =
+                 SSH.close_session(request(c, second), actor: SystemActor.compute())
 
-      assert {:error, _} = status(c, second)
-      assert {:ok, _} = SSH.remove_key(%{id: replacement.id}, actor: c.user)
-    end
+        assert {:error, _} = status(c, second)
+        assert {:ok, _} = SSH.remove_key(%{id: replacement.id}, actor: c.user)
+      end,
+      test_cases: 100
+    )
   end
 
   test "gateway rotation and another gateway cannot inherit a session", c do

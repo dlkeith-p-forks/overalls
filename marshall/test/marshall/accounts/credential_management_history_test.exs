@@ -62,16 +62,14 @@ defmodule Marshall.Accounts.CredentialManagementHistoryTest do
   # last-passkey removal MUST disable MFA and revoke every stored session,
   # including its own.
   @tag timeout: 120_000
+  @tag :hegel_case_sandbox
   property "generated passkey and SSH key histories match the raw inventory oracle",
-    test_cases: 25 do
-    check all(
-            admin <- boolean(),
-            seed <- binary(length: 16),
-            operations <- operations(),
-            test_cases: 25
-          ) do
-      run_history(admin, seed, operations)
-    end
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    admin = draw("admin", boolean())
+    seed = draw("seed", binary(length: 16))
+    operations = draw("operations", operations())
+    run_history(admin, seed, operations)
   end
 
   @spec run_history(boolean(), binary(), [atom()]) :: :ok

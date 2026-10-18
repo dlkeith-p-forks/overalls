@@ -81,14 +81,11 @@ defmodule Marshall.Agents.PlanningTest do
   end
 
   property "a prefix cut before the closing tag never grants an implementation identity" do
-    check all(
-            body <- string(:alphanumeric, min_length: 1, max_length: 300),
-            suffix_size <- integer(0..15)
-          ) do
-      text = "<proposed_plan>\n" <> body <> "\n"
-      closing_prefix = binary_part("</proposed_plan>", 0, suffix_size)
-      assert :none = Planning.parse_proposal(text <> closing_prefix)
-    end
+    body = draw("body", string(:alphanumeric, min_length: 1, max_length: 300))
+    suffix_size = draw("suffix_size", integer(0..15))
+    text = "<proposed_plan>\n" <> body <> "\n"
+    closing_prefix = binary_part("</proposed_plan>", 0, suffix_size)
+    assert :none = Planning.parse_proposal(text <> closing_prefix)
   end
 
   test "mode instructions are application-selected and child planning cannot ask humans" do

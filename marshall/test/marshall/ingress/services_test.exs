@@ -257,7 +257,9 @@ defmodule Marshall.Ingress.ServicesTest do
     assert [] = Ledger.read!(Service)
   end
 
-  property "arbitrary public-key input cannot replace a registered identity", test_cases: 30 do
+  @tag :hegel_case_sandbox
+  property "arbitrary public-key input cannot replace a registered identity", test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     %{host: host} = Marshall.ComputeFixtures.host_fixture()
     {token, _} = Token.issue()
     name = "immutable-property-" <> Ash.UUID.generate()
@@ -273,122 +275,125 @@ defmodule Marshall.Ingress.ServicesTest do
     {:ok, expected} =
       Ingress.publish_host_key(%{token: token, public_key: key}, actor: SystemActor.compute())
 
-    check all(
-            candidate <- one_of([binary(max_length: 200), constant(key), constant(host_key())]),
-            test_cases: 30
-          ) do
-      result =
-        Ingress.publish_host_key(%{token: token, public_key: candidate},
-          actor: SystemActor.compute()
-        )
+    candidate =
+      draw("candidate", one_of([binary(max_length: 200), constant(key), constant(host_key())]))
 
-      if candidate == key,
-        do: assert(result == {:ok, expected}),
-        else: assert(match?({:error, _}, result))
+    result =
+      Ingress.publish_host_key(%{token: token, public_key: candidate},
+        actor: SystemActor.compute()
+      )
 
-      assert [%{ssh_host_key: ^key}] = Ledger.read!(Service, id: service.id)
-    end
+    if candidate == key,
+      do: assert(result == {:ok, expected}),
+      else: assert(match?({:error, _}, result))
+
+    assert [%{ssh_host_key: ^key}] = Ledger.read!(Service, id: service.id)
   end
 
+  @tag :hegel_case_sandbox
   property "address histories advance identity exactly when the address set changes",
-    test_cases: 20 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     %{host: host} = Marshall.ComputeFixtures.host_fixture()
 
-    check all(
-            history <-
-              list_of(map(list_of(integer(1..12), max_length: 8), &Enum.uniq/1),
-                min_length: 1,
-                max_length: 10
-              ),
-            test_cases: 20
-          ) do
-      {token, _} = Token.issue()
-      params = %{name: Ash.UUID.generate(), role: :gateway, host_id: host.id, token: token}
-      assert {:ok, _} = Ingress.configure_service(params, actor: SystemActor.compute())
+    history =
+      draw(
+        "history",
+        list_of(map(list_of(integer(1..12), max_length: 8), &Enum.uniq/1),
+          min_length: 1,
+          max_length: 10
+        )
+      )
 
-      Enum.reduce(history, {[], 1}, fn octets, {previous, generation} ->
-        addresses = Enum.map(octets, &"192.0.2.#{&1}")
-        expected = generation + if(Enum.sort(addresses) == previous, do: 0, else: 1)
+    {token, _} = Token.issue()
+    params = %{name: Ash.UUID.generate(), role: :gateway, host_id: host.id, token: token}
+    assert {:ok, _} = Ingress.configure_service(params, actor: SystemActor.compute())
 
-        assert {:ok, service} =
-                 Ingress.configure_service(Map.put(params, :addresses, addresses),
-                   actor: SystemActor.compute()
-                 )
+    Enum.reduce(history, {[], 1}, fn octets, {previous, generation} ->
+      addresses = Enum.map(octets, &"192.0.2.#{&1}")
+      expected = generation + if(Enum.sort(addresses) == previous, do: 0, else: 1)
 
-        assert service.generation == expected
-        assert [%{addresses: stored}] = Ledger.read!(Service, id: service.id)
-        assert stored == Enum.sort(addresses)
-        {stored, expected}
-      end)
-    end
+      assert {:ok, service} =
+               Ingress.configure_service(Map.put(params, :addresses, addresses),
+                 actor: SystemActor.compute()
+               )
+
+      assert service.generation == expected
+      assert [%{addresses: stored}] = Ledger.read!(Service, id: service.id)
+      assert stored == Enum.sort(addresses)
+      {stored, expected}
+    end)
   end
 
-  property "rotation and revocation histories reject every replaced credential", test_cases: 20 do
-    check all(
-            actions <-
-              list_of(member_of([:rotate, :disable, :repeat]), min_length: 1, max_length: 12),
-            test_cases: 20
-          ) do
-      {token, _} = Token.issue()
-      name = "dns-" <> Ash.UUID.generate()
-      params = %{name: name, role: :dns, token: token}
-      assert {:ok, service} = Ingress.configure_service(params, actor: SystemActor.compute())
+  @tag :hegel_case_sandbox
+  property "rotation and revocation histories reject every replaced credential",
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    actions =
+      draw(
+        "actions",
+        list_of(member_of([:rotate, :disable, :repeat]), min_length: 1, max_length: 12)
+      )
 
-      Enum.reduce(actions, %{token: token, generation: 1, enabled: true, retired: []}, fn action,
-                                                                                          model ->
-        next =
-          case action do
-            :rotate ->
-              {fresh, _} = Token.issue()
+    {token, _} = Token.issue()
+    name = "dns-" <> Ash.UUID.generate()
+    params = %{name: name, role: :dns, token: token}
+    assert {:ok, service} = Ingress.configure_service(params, actor: SystemActor.compute())
 
-              assert {:ok, value} =
-                       Ingress.configure_service(%{params | token: fresh},
-                         actor: SystemActor.compute()
-                       )
+    Enum.reduce(actions, %{token: token, generation: 1, enabled: true, retired: []}, fn action,
+                                                                                        model ->
+      next =
+        case action do
+          :rotate ->
+            {fresh, _} = Token.issue()
 
-              assert value.generation == model.generation + 1
+            assert {:ok, value} =
+                     Ingress.configure_service(%{params | token: fresh},
+                       actor: SystemActor.compute()
+                     )
 
-              %{
-                model
-                | token: fresh,
-                  generation: value.generation,
-                  enabled: true,
-                  retired: [model.token | model.retired]
-              }
+            assert value.generation == model.generation + 1
 
-            :disable ->
-              assert {:ok, value} =
-                       Ingress.disable_service(%{id: service.id}, actor: SystemActor.compute())
-
-              assert value.generation == model.generation + if(model.enabled, do: 1, else: 0)
-              %{model | enabled: false, generation: value.generation}
-
-            :repeat ->
-              result =
-                Ingress.configure_service(%{params | token: model.token},
-                  actor: SystemActor.compute()
-                )
-
-              if model.enabled,
-                do: assert(match?({:ok, _}, result)),
-                else: assert(match?({:error, _}, result))
-
+            %{
               model
-          end
+              | token: fresh,
+                generation: value.generation,
+                enabled: true,
+                retired: [model.token | model.retired]
+            }
 
-        current = Ingress.service_identity(%{token: next.token}, actor: SystemActor.compute())
+          :disable ->
+            assert {:ok, value} =
+                     Ingress.disable_service(%{id: service.id}, actor: SystemActor.compute())
 
-        if next.enabled,
-          do: assert(match?({:ok, _}, current)),
-          else: assert(match?({:error, _}, current))
+            assert value.generation == model.generation + if(model.enabled, do: 1, else: 0)
+            %{model | enabled: false, generation: value.generation}
 
-        for retired <- next.retired do
-          assert {:error, _} =
-                   Ingress.service_identity(%{token: retired}, actor: SystemActor.compute())
+          :repeat ->
+            result =
+              Ingress.configure_service(%{params | token: model.token},
+                actor: SystemActor.compute()
+              )
+
+            if model.enabled,
+              do: assert(match?({:ok, _}, result)),
+              else: assert(match?({:error, _}, result))
+
+            model
         end
 
-        next
-      end)
-    end
+      current = Ingress.service_identity(%{token: next.token}, actor: SystemActor.compute())
+
+      if next.enabled,
+        do: assert(match?({:ok, _}, current)),
+        else: assert(match?({:error, _}, current))
+
+      for retired <- next.retired do
+        assert {:error, _} =
+                 Ingress.service_identity(%{token: retired}, actor: SystemActor.compute())
+      end
+
+      next
+    end)
   end
 end

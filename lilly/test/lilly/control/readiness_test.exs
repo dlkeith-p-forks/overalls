@@ -10,51 +10,57 @@ defmodule Lilly.Control.ReadinessTest do
   # stale or foreign actor MUST refuse even when the report is fresh.
   @tag :hegel
   test "generated report ages and actor rosters require every current authority" do
-    check all(
-            age_ms <- member_of([-1, 0, 1, 14_999, 15_000, 15_001, 30_000]),
-            actor_cases <-
-              list_of(
-                member_of([:current, :missing, :old_epoch, :old_generation, :foreign_placement]),
-                min_length: 1,
-                max_length: 4
-              ),
-            test_cases: 60
-          ) do
-      now = DateTime.utc_now()
+    Hegel.check(
+      fn ->
+        age_ms = draw("age_ms", member_of([-1, 0, 1, 14999, 15000, 15001, 30000]))
 
-      {durable, actors} =
-        actor_cases
-        |> Enum.with_index(1)
-        |> Enum.reduce({%{}, %{}}, fn {actor_case, index}, {durable, actors} ->
-          placement_id = "placement-#{index}"
-          command = %{placement_id: placement_id, execution_epoch: 4, generation: 7}
+        actor_cases =
+          draw(
+            "actor_cases",
+            list_of(
+              member_of([:current, :missing, :old_epoch, :old_generation, :foreign_placement]),
+              min_length: 1,
+              max_length: 4
+            )
+          )
 
-          actor =
-            case actor_case do
-              :current -> %{reconciled: {placement_id, 4, 7}}
-              :missing -> nil
-              :old_epoch -> %{reconciled: {placement_id, 3, 7}}
-              :old_generation -> %{reconciled: {placement_id, 4, 6}}
-              :foreign_placement -> %{reconciled: {"foreign", 4, 7}}
-            end
+        now = DateTime.utc_now()
 
-          actors = if actor, do: Map.put(actors, placement_id, actor), else: actors
-          {Map.put(durable, placement_id, command), actors}
-        end)
+        {durable, actors} =
+          actor_cases
+          |> Enum.with_index(1)
+          |> Enum.reduce({%{}, %{}}, fn {actor_case, index}, {durable, actors} ->
+            placement_id = "placement-#{index}"
+            command = %{placement_id: placement_id, execution_epoch: 4, generation: 7}
 
-      state = %{
-        phase: :connected,
-        terminal_ready: true,
-        last_error: nil,
-        sample_error: nil,
-        delivered_report_at: DateTime.add(now, -age_ms, :millisecond),
-        durable: durable,
-        actors: actors
-      }
+            actor =
+              case actor_case do
+                :current -> %{reconciled: {placement_id, 4, 7}}
+                :missing -> nil
+                :old_epoch -> %{reconciled: {placement_id, 3, 7}}
+                :old_generation -> %{reconciled: {placement_id, 4, 6}}
+                :foreign_placement -> %{reconciled: {"foreign", 4, 7}}
+              end
 
-      expected = age_ms >= 0 and age_ms <= 15_000 and Enum.all?(actor_cases, &(&1 == :current))
-      assert Runtime.readiness(state, now) == expected
-    end
+            actors = if actor, do: Map.put(actors, placement_id, actor), else: actors
+            {Map.put(durable, placement_id, command), actors}
+          end)
+
+        state = %{
+          phase: :connected,
+          terminal_ready: true,
+          last_error: nil,
+          sample_error: nil,
+          delivered_report_at: DateTime.add(now, -age_ms, :millisecond),
+          durable: durable,
+          actors: actors
+        }
+
+        expected = age_ms >= 0 and age_ms <= 15_000 and Enum.all?(actor_cases, &(&1 == :current))
+        assert Runtime.readiness(state, now) == expected
+      end,
+      test_cases: 100
+    )
   end
 
   test "fresh local collection is insufficient without delivery and reconciliation" do

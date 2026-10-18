@@ -93,43 +93,48 @@ defmodule Marshall.Ingress.EndpointsTest do
   end
 
   test "generated policy changes preserve identity and count only actual mutations", ctx do
-    check all(
-            changes <-
-              list_of(tuple({integer(1..65535), member_of([:private, :public])}),
-                min_length: 1,
-                max_length: 20
-              ),
-            test_cases: 20
-          ) do
-      {:ok, initial} = Ingress.get_endpoint(%{vm_id: ctx.vm.id}, actor: ctx.owner)
+    Hegel.check(
+      fn ->
+        changes =
+          draw(
+            "changes",
+            list_of(tuple({integer(1..65535), member_of([:private, :public])}),
+              min_length: 1,
+              max_length: 20
+            )
+          )
 
-      Enum.reduce(changes, initial, fn {port, visibility}, before ->
-        params = %{
-          vm_id: ctx.vm.id,
-          expected_revision: before.policy_revision,
-          primary_port: port,
-          visibility: visibility
-        }
+        {:ok, initial} = Ingress.get_endpoint(%{vm_id: ctx.vm.id}, actor: ctx.owner)
 
-        if port == 4444 do
-          assert {:error, _} = Ingress.configure_endpoint(params, actor: ctx.owner)
-          assert {:ok, current} = Ingress.get_endpoint(%{vm_id: ctx.vm.id}, actor: ctx.owner)
-          assert current == before
-          before
-        else
-          assert {:ok, after_change} = Ingress.configure_endpoint(params, actor: ctx.owner)
+        Enum.reduce(changes, initial, fn {port, visibility}, before ->
+          params = %{
+            vm_id: ctx.vm.id,
+            expected_revision: before.policy_revision,
+            primary_port: port,
+            visibility: visibility
+          }
 
-          delta =
-            if port == before.primary_port and visibility == before.visibility, do: 0, else: 1
+          if port == 4444 do
+            assert {:error, _} = Ingress.configure_endpoint(params, actor: ctx.owner)
+            assert {:ok, current} = Ingress.get_endpoint(%{vm_id: ctx.vm.id}, actor: ctx.owner)
+            assert current == before
+            before
+          else
+            assert {:ok, after_change} = Ingress.configure_endpoint(params, actor: ctx.owner)
 
-          assert after_change.policy_revision == before.policy_revision + delta
-          assert after_change.label == initial.label
-          assert after_change.vm_id == ctx.vm.id
-          assert after_change.primary_port == port
-          assert after_change.visibility == visibility
-          after_change
-        end
-      end)
-    end
+            delta =
+              if port == before.primary_port and visibility == before.visibility, do: 0, else: 1
+
+            assert after_change.policy_revision == before.policy_revision + delta
+            assert after_change.label == initial.label
+            assert after_change.vm_id == ctx.vm.id
+            assert after_change.primary_port == port
+            assert after_change.visibility == visibility
+            after_change
+          end
+        end)
+      end,
+      test_cases: 100
+    )
   end
 end

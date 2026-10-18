@@ -43,9 +43,9 @@ defmodule Lilly.Transfer.CloneCopyTest do
   end
 
   property "only same-host, same-pool clones are eligible for block copies" do
-    check all(host <- member_of([id(4), id(8)]), pool <- member_of([id(5), id(9)])) do
-      assert CloneCopy.same_pool?(descriptor(host, pool)) == (host == id(4) and pool == id(5))
-    end
+    host = draw("host", member_of([id(4), id(8)]))
+    pool = draw("pool", member_of([id(5), id(9)]))
+    assert CloneCopy.same_pool?(descriptor(host, pool)) == (host == id(4) and pool == id(5))
   end
 
   @tag :tmp_dir

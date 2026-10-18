@@ -20,7 +20,7 @@ defmodule Porsche.SSH.OutputTest do
   end
 
   property "JSON results round-trip arbitrary Unicode without raw terminal control sequences" do
-    text = draw(string(:utf8, max_length: 200))
+    text = draw("text", string(:utf8, max_length: 200))
     response = %{"version" => 1, "status" => "succeeded", "result" => %{"value" => [text]}}
     encoded = Output.render(response, true)
     assert JSON.decode!(encoded) == response

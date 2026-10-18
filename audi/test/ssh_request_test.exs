@@ -5,20 +5,20 @@ defmodule Audi.SSH.RequestTest do
   alias Audi.SSH.Request
 
   property "every accepted command is a bounded label or fixed nested selector" do
-    check all(bytes <- binary(max_length: 1000)) do
-      case Request.parse(bytes) do
-        {:ok, label} when is_binary(label) ->
-          assert bytes == "connect " <> label
-          assert byte_size(label) <= 63
-          assert OverallsProtocol.IngressName.valid_label?(label)
+    bytes = draw("bytes", binary(max_length: 1000))
 
-        {:ok, {:nested, label, service}} ->
-          assert service in [:porsche_ssh, :audi_ssh]
-          assert {:ok, ^label, ^service} = OverallsProtocol.InceptionName.ssh_selector(bytes)
+    case Request.parse(bytes) do
+      {:ok, label} when is_binary(label) ->
+        assert bytes == "connect " <> label
+        assert byte_size(label) <= 63
+        assert OverallsProtocol.IngressName.valid_label?(label)
 
-        :error ->
-          :ok
-      end
+      {:ok, {:nested, label, service}} ->
+        assert service in [:porsche_ssh, :audi_ssh]
+        assert {:ok, ^label, ^service} = OverallsProtocol.InceptionName.ssh_selector(bytes)
+
+      :error ->
+        :ok
     end
   end
 

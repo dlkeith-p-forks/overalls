@@ -94,34 +94,31 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
         Enum.map(import_reasons, &{:import, &1}) ++
         [readiness: :execution_unavailable, readiness: :readiness_timeout]
 
-    check all(
-            stage <- member_of(stages),
-            bytes <- binary(min_length: 1, max_length: 64),
-            wrapped? <- boolean()
-          ) do
-      # Hegel's check all binds plain variables only, so destructure here.
-      {mode, reason} = stage
-      secret = "private-cleanup-" <> Base.encode16(bytes)
-      failure = if wrapped?, do: {:error, {reason, secret}}, else: {:error, reason}
-      expected = if wrapped?, do: :effect_unconfirmed, else: reason
+    stage = draw("stage", member_of(stages))
+    bytes = draw("bytes", binary(min_length: 1, max_length: 64))
+    wrapped? = draw("wrapped?", boolean())
+    # Keep the correlated tuple as one draw before destructuring its values.
+    {mode, reason} = stage
+    secret = "private-cleanup-" <> Base.encode16(bytes)
+    failure = if wrapped?, do: {:error, {reason, secret}}, else: {:error, reason}
+    expected = if wrapped?, do: :effect_unconfirmed, else: reason
 
-      output =
-        ExUnit.CaptureLog.capture_log([metadata: [:event, :reason]], fn ->
-          state = %{failure_state() | mode: mode}
-          assert {:noreply, failed} = fail_effect(state, failure)
-          assert failed.last_failure == expected
-          assert failed.pending == state.pending
-          assert failed.active == nil
-          assert failed.retry_at > System.monotonic_time(:millisecond)
-          assert {:noreply, repeated} = fail_effect(failed, failure)
-          assert repeated.pending == state.pending
-        end)
+    output =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :reason]], fn ->
+        state = %{failure_state() | mode: mode}
+        assert {:noreply, failed} = fail_effect(state, failure)
+        assert failed.last_failure == expected
+        assert failed.pending == state.pending
+        assert failed.active == nil
+        assert failed.retry_at > System.monotonic_time(:millisecond)
+        assert {:noreply, repeated} = fail_effect(failed, failure)
+        assert repeated.pending == state.pending
+      end)
 
-      assert output =~ Atom.to_string(expected)
-      refute output =~ secret
-      refute output =~ "private-command"
-      assert length(Regex.scan(~r/Relocation effect failed/, output)) == 1
-    end
+    assert output =~ Atom.to_string(expected)
+    refute output =~ secret
+    refute output =~ "private-command"
+    assert length(Regex.scan(~r/Relocation effect failed/, output)) == 1
   end
 
   defp failure_state do
@@ -288,28 +285,25 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
   end
 
   property "renewal never exceeds signed expiry growth or remaining wall validity" do
-    check all(
-            ttl <- integer(1..300),
-            elapsed <- integer(0..299),
-            growth <- integer(0..300),
-            wall_delta <- integer(-100..300)
-          ) do
-      original = command(1000 + ttl)
-      active = %{command: original, deadline: ttl * 1000}
-      renewed = %{original | id: Lilly.UUID.generate(), expires_at: original.expires_at + growth}
-      monotonic = elapsed * 1000
-      wall = 1000 + wall_delta
+    ttl = draw("ttl", integer(1..300))
+    elapsed = draw("elapsed", integer(0..299))
+    growth = draw("growth", integer(0..300))
+    wall_delta = draw("wall_delta", integer(-100..300))
+    original = command(1000 + ttl)
+    active = %{command: original, deadline: ttl * 1000}
+    renewed = %{original | id: Lilly.UUID.generate(), expires_at: original.expires_at + growth}
+    monotonic = elapsed * 1000
+    wall = 1000 + wall_delta
 
-      case ReceiveRuntime.lease(renewed, active, wall, monotonic) do
-        {:ok, deadline} ->
-          assert deadline > monotonic
-          assert deadline <= active.deadline + growth * 1000
-          assert deadline <= monotonic + (renewed.expires_at - wall) * 1000
-          assert deadline <= monotonic + 300_000
+    case ReceiveRuntime.lease(renewed, active, wall, monotonic) do
+      {:ok, deadline} ->
+        assert deadline > monotonic
+        assert deadline <= active.deadline + growth * 1000
+        assert deadline <= monotonic + (renewed.expires_at - wall) * 1000
+        assert deadline <= monotonic + 300_000
 
-        {:error, :receive_lease_unconfirmed} ->
-          :ok
-      end
+      {:error, :receive_lease_unconfirmed} ->
+        :ok
     end
   end
 end

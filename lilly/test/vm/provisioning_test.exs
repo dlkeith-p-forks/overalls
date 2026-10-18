@@ -125,47 +125,52 @@ defmodule Lilly.VM.ProvisioningTest do
 
   @tag :hegel
   test "foreign journals and stale cancellation cannot alter durable progress", c do
-    check all(epoch <- integer(1..100), generation <- integer(2..100), test_cases: 20) do
-      spec = %{c.spec | id: Lilly.UUID.generate()}
-      directory = Path.join(c.config.state_dir, spec.id)
-      {:ok, lock} = Lock.acquire(directory)
+    Hegel.check(
+      fn ->
+        epoch = draw("epoch", integer(1..100))
+        generation = draw("generation", integer(2..100))
+        spec = %{c.spec | id: Lilly.UUID.generate()}
+        directory = Path.join(c.config.state_dir, spec.id)
+        {:ok, lock} = Lock.acquire(directory)
 
-      try do
-        assert :ok = Provisioning.prepare(c.config, spec, {epoch, generation})
+        try do
+          assert :ok = Provisioning.prepare(c.config, spec, {epoch, generation})
 
-        assert {:ok, before} =
-                 Journal.load(Lilly.Lifecycle.Provisioning, directory, "provisioning.json")
+          assert {:ok, before} =
+                   Journal.load(Lilly.Lifecycle.Provisioning, directory, "provisioning.json")
 
-        assert before.payload["launched_at"] == nil
-        assert before.payload["deadline"] == nil
-        foreign = %{c.config | network: %{c.config.network | host_id: Lilly.UUID.generate()}}
+          assert before.payload["launched_at"] == nil
+          assert before.payload["deadline"] == nil
+          foreign = %{c.config | network: %{c.config.network | host_id: Lilly.UUID.generate()}}
 
-        assert {:error, :provisioning_unconfirmed} =
-                 Provisioning.cancel(foreign, spec, {epoch, generation})
+          assert {:error, :provisioning_unconfirmed} =
+                   Provisioning.cancel(foreign, spec, {epoch, generation})
 
-        assert {:error, :provisioning_unconfirmed} =
-                 Provisioning.fail(foreign, spec, {epoch, generation})
+          assert {:error, :provisioning_unconfirmed} =
+                   Provisioning.fail(foreign, spec, {epoch, generation})
 
-        assert {:error, :provisioning_unconfirmed} =
-                 Provisioning.cancel(c.config, spec, {epoch, generation - 1})
+          assert {:error, :provisioning_unconfirmed} =
+                   Provisioning.cancel(c.config, spec, {epoch, generation - 1})
 
-        assert {:ok, ^before} =
-                 Journal.load(Lilly.Lifecycle.Provisioning, directory, "provisioning.json")
+          assert {:ok, ^before} =
+                   Journal.load(Lilly.Lifecycle.Provisioning, directory, "provisioning.json")
 
-        assert :ok = Provisioning.cancel(c.config, spec, {epoch, generation})
+          assert :ok = Provisioning.cancel(c.config, spec, {epoch, generation})
 
-        assert {:ok, after_record} =
-                 Journal.load(Lilly.Lifecycle.Provisioning, directory, "provisioning.json")
+          assert {:ok, after_record} =
+                   Journal.load(Lilly.Lifecycle.Provisioning, directory, "provisioning.json")
 
-        assert after_record.state == :superseded
-        assert :ok = Provisioning.cancel(c.config, spec, {epoch, generation})
+          assert after_record.state == :superseded
+          assert :ok = Provisioning.cancel(c.config, spec, {epoch, generation})
 
-        assert {:ok, ^after_record} =
-                 Journal.load(Lilly.Lifecycle.Provisioning, directory, "provisioning.json")
-      after
-        Lock.release(lock)
-      end
-    end
+          assert {:ok, ^after_record} =
+                   Journal.load(Lilly.Lifecycle.Provisioning, directory, "provisioning.json")
+        after
+          Lock.release(lock)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   test "launching records the caller's readiness budget once and keeps it on relaunch", c do

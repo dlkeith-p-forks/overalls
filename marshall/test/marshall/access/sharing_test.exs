@@ -16,31 +16,36 @@ defmodule Marshall.Access.SharingTest do
   end
 
   test "persisted role replacement drives the real Cedar permission matrix", context do
-    check all(
-            roles <-
-              list_of(member_of([:web, :viewer, :operator, :manager, :revoked]),
-                min_length: 1,
-                max_length: 8
-              ),
-            test_cases: 12
-          ) do
-      for role <- roles do
-        assert {:ok, _} = share(context, role)
+    Hegel.check(
+      fn ->
+        roles =
+          draw(
+            "roles",
+            list_of(member_of([:web, :viewer, :operator, :manager, :revoked]),
+              min_length: 1,
+              max_length: 8
+            )
+          )
 
-        for action <- ["read", "write", "manage", "web"] do
-          expected =
-            (action == "web" and role != :revoked) or role == :manager or
-              (role == :operator and action in ["read", "write"]) or
-              (role == :viewer and action == "read")
+        for role <- roles do
+          assert {:ok, _} = share(context, role)
 
-          assert Authorization.allowed?(context.vm, context.member, action) == expected
-          assert Authorization.allowed?(context.vm, context.owner, action)
+          for action <- ["read", "write", "manage", "web"] do
+            expected =
+              (action == "web" and role != :revoked) or role == :manager or
+                (role == :operator and action in ["read", "write"]) or
+                (role == :viewer and action == "read")
+
+            assert Authorization.allowed?(context.vm, context.member, action) == expected
+            assert Authorization.allowed?(context.vm, context.owner, action)
+          end
+
+          assert length(Ledger.read!(Grant, vm_id: context.vm.id, user_id: context.member.id)) ==
+                   if(role == :revoked, do: 0, else: 1)
         end
-
-        assert length(Ledger.read!(Grant, vm_id: context.vm.id, user_id: context.member.id)) ==
-                 if(role == :revoked, do: 0, else: 1)
-      end
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   test "delayed retries preserve subsequent revocation and reject changed semantics", context do

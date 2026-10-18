@@ -3,7 +3,9 @@ defmodule Galileo.InvalidBootPropertyTest do
   import Hegel
   import Hegel.Gen
 
-  @moduletag timeout: 240_000
+  # A full matrix takes tens of seconds in fresh VMs; preserve all 100 cases.
+  # The aggregate budget includes shared-host headroom; each boot stays bounded.
+  @moduletag timeout: 10_800_000
   @probe Path.expand("../scripts/invalid_boot_probe.exs", __DIR__)
   @id "11111111-1111-4111-8111-111111111111"
   @cases [
@@ -76,35 +78,32 @@ defmodule Galileo.InvalidBootPropertyTest do
   property "generated invalid Galileo configurations refuse fresh OTP startup",
     profile: :ci do
     root = private_directory("k-gb-")
-    on_exit(fn -> File.rm_rf!(root) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(
-            order <- shuffle(@cases),
-            token <- string(:alphanumeric, length: 80),
-            invalid_length <- member_of([79, 81, 8192]),
-            max_runs: 3
-          ) do
-      for mutation <- order do
-        directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
-        File.mkdir!(directory)
-        File.chmod!(directory, 0o700)
-        config = configuration(directory, token)
-        path = Path.join(directory, "config.json")
-        write_config(path, config)
-        assert {:ok, _} = Galileo.Config.load(path)
-        mutate(mutation, path, config, invalid_length)
-        credentials = credential_bytes(config["credential_file"])
-        before = snapshot(directory)
-        {output, status} = boot(path, config["socket"])
-        assert status == 0
-        assert projection(output) == expected("rejected", false, true)
+    order = draw("order", shuffle(@cases))
+    token = draw("token", string(:alphanumeric, length: 80))
+    invalid_length = draw("invalid_length", member_of([79, 81, 8192]))
 
-        private? =
-          not Enum.any?([token, directory | credentials], &String.contains?(output, &1))
+    for mutation <- order do
+      directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
+      File.mkdir!(directory)
+      File.chmod!(directory, 0o700)
+      config = configuration(directory, token)
+      path = Path.join(directory, "config.json")
+      write_config(path, config)
+      assert {:ok, _} = Galileo.Config.load(path)
+      mutate(mutation, path, config, invalid_length)
+      credentials = credential_bytes(config["credential_file"])
+      before = snapshot(directory)
+      {output, status} = boot(path, config["socket"])
+      assert status == 0
+      assert projection(output) == expected("rejected", false, true)
 
-        assert private?, "boot diagnostics exposed fixture paths or credentials"
-        assert snapshot(directory) == before
-      end
+      private? =
+        not Enum.any?([token, directory | credentials], &String.contains?(output, &1))
+
+      assert private?, "boot diagnostics exposed fixture paths or credentials"
+      assert snapshot(directory) == before
     end
   end
 
@@ -122,23 +121,20 @@ defmodule Galileo.InvalidBootPropertyTest do
   property "generated immutable store socket paths are rejected without boot effects",
     profile: :ci do
     root = private_directory("k-gs-")
-    on_exit(fn -> File.rm_rf!(root) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(
-            suffix <- string(:alphanumeric, min_length: 8, max_length: 32),
-            token <- string(:alphanumeric, length: 80),
-            max_runs: 20
-          ) do
-      config = configuration(root, token)
-      path = Path.join(root, "config.json")
-      write_config(path, config)
-      assert {:ok, _} = Galileo.Config.load(path)
-      write_config(path, Map.put(config, "socket", "/nix/store/" <> suffix <> ".sock"))
-      before = snapshot(root)
-      rejected? = match?({:error, :invalid_configuration}, Galileo.Config.load(path))
-      assert rejected?, "immutable socket path was accepted by the loader"
-      assert snapshot(root) == before
-    end
+    suffix = draw("suffix", string(:alphanumeric, min_length: 8, max_length: 32))
+    token = draw("token", string(:alphanumeric, length: 80))
+
+    config = configuration(root, token)
+    path = Path.join(root, "config.json")
+    write_config(path, config)
+    assert {:ok, _} = Galileo.Config.load(path)
+    write_config(path, Map.put(config, "socket", "/nix/store/" <> suffix <> ".sock"))
+    before = snapshot(root)
+    rejected? = match?({:error, :invalid_configuration}, Galileo.Config.load(path))
+    assert rejected?, "immutable socket path was accepted by the loader"
+    assert snapshot(root) == before
   end
 
   @spec private_directory(String.t()) :: Path.t()
@@ -164,9 +160,25 @@ defmodule Galileo.InvalidBootPropertyTest do
     }
   end
 
+  # @cc [owner:ghuntley,label:verification] fresh-boot-operation-deadline
+  # Each probe MUST run in a fresh VM with the complete startup oracle. A boot
+  # exceeding 30 seconds MUST fail; its process group gets at most five seconds
+  # to terminate before forced cleanup, independently of the aggregate budget.
   @spec boot(Path.t() | nil, Path.t()) :: {String.t(), non_neg_integer()}
   defp boot(path, socket) do
-    System.cmd("mix", ["run", "--no-start", "--no-compile", "--no-deps-check", @probe],
+    System.cmd(
+      "timeout",
+      [
+        "--signal=TERM",
+        "--kill-after=5s",
+        "30s",
+        "mix",
+        "run",
+        "--no-start",
+        "--no-compile",
+        "--no-deps-check",
+        @probe
+      ],
       env: [
         {"MIX_ENV", "test"},
         {"ERL_FLAGS", "+S 2:2 +SDcpu 1 +SDio 1"},

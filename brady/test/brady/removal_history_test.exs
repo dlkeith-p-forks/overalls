@@ -14,15 +14,12 @@ defmodule Brady.Cache.RemovalHistoryTest do
   # Injected file refusal and local permissions MUST NOT establish native ZFS
   # failure, process interruption inside publication or power-loss acceptance.
   property "unconfirmed removal retains exact charged bytes until confirmed cleanup" do
-    check all(
-            prefix <- member_of([0, 1, 4096, 65_536]),
-            attempted <- member_of([1, 4096, 65_536]),
-            retries <- member_of([1, 2, 3]),
-            max_runs: 8
-          ) do
-      for {size, additional} <- [{prefix, attempted}, {0, 1}, {65_536, 65_536}] do
-        history(size, additional, retries)
-      end
+    prefix = draw("prefix", member_of([0, 1, 4096, 65536]))
+    attempted = draw("attempted", member_of([1, 4096, 65536]))
+    retries = draw("retries", member_of([1, 2, 3]))
+
+    for {size, additional} <- [{prefix, attempted}, {0, 1}, {65_536, 65_536}] do
+      history(size, additional, retries)
     end
   end
 

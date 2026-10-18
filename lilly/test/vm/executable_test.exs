@@ -41,10 +41,14 @@ defmodule Lilly.VM.ExecutableTest do
   test "an ELF interpreter is always rejected regardless of header order", %{tmp_dir: dir} do
     path = Path.join(dir, "vmm")
 
-    check all(headers <- list_of(integer(0..16), max_length: 16)) do
-      File.write!(path, elf([1 | headers] ++ [3]))
-      File.chmod!(path, 0o755)
-      refute Executable.static_x86_64?(path)
-    end
+    Hegel.check(
+      fn ->
+        headers = draw("headers", list_of(integer(0..16), max_length: 16))
+        File.write!(path, elf([1 | headers] ++ [3]))
+        File.chmod!(path, 0o755)
+        refute Executable.static_x86_64?(path)
+      end,
+      []
+    )
   end
 end

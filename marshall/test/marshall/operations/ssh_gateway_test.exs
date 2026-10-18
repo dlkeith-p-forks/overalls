@@ -57,12 +57,16 @@ defmodule Marshall.Operations.SSHGatewayTest do
   end
 
   test "malformed private credential contents never alter gateway authority", c do
-    check all(bytes <- binary(max_length: 256)) do
-      File.write!(c.first, "invalid:" <> bytes)
-      File.chmod!(c.first, 0o600)
-      assert {:error, :invalid_gateway_file} = CLI.run(["gateway-configure", "edge", c.first])
-      assert Ledger.read!(Gateway) == []
-    end
+    Hegel.check(
+      fn ->
+        bytes = draw("bytes", binary(max_length: 256))
+        File.write!(c.first, "invalid:" <> bytes)
+        File.chmod!(c.first, 0o600)
+        assert {:error, :invalid_gateway_file} = CLI.run(["gateway-configure", "edge", c.first])
+        assert Ledger.read!(Gateway) == []
+      end,
+      []
+    )
   end
 
   test "bootstrap ensure preserves identity and refuses rotation or resurrection", c do

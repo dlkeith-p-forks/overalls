@@ -45,6 +45,12 @@ defmodule Marshall.DataCase do
   # raise before starting an owner; an absent tag MUST preserve Ecto's configured
   # ownership timeout.
   @spec setup_sandbox(%{required(:async) => boolean(), optional(atom()) => term()}) :: :ok
+  def setup_sandbox(%{hegel_case_sandbox: true, async: false}), do: :ok
+
+  def setup_sandbox(%{hegel_case_sandbox: true}) do
+    raise ArgumentError, "per-case shared SQL sandboxes require a synchronous test"
+  end
+
   def setup_sandbox(tags) do
     options = [shared: not tags[:async]]
 
@@ -63,6 +69,17 @@ defmodule Marshall.DataCase do
 
     pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Marshall.Repo, options)
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+  end
+
+  # @cc [owner:ghuntley,label:verification] generated-sandbox-case-isolation
+  # Tests tagged hegel_case_sandbox MUST be synchronous and create a fresh owner for each generated
+  # case and stop it before replay or the next case. Register this before process
+  # fixtures so their cleanup runs first. Committed/distributed tests retain
+  # their explicit owned-row cleanup instead; they MUST NOT use this helper.
+  @spec isolate_property_case() :: :ok
+  def isolate_property_case do
+    owner = Ecto.Adapters.SQL.Sandbox.start_owner!(Marshall.Repo, shared: true)
+    Hegel.on_cleanup(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(owner) end)
   end
 
   @doc """

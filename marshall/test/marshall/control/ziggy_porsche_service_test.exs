@@ -74,40 +74,44 @@ defmodule Marshall.Control.ZiggyPorscheServiceTest do
         {"commands", %{"version" => 1, "session_token" => "unknown", "command" => "ls"}}
       ])
 
-    check all(route_body <- cases, test_cases: 24) do
-      {route, body} = route_body
-      http = ssh(c.gateway, route, body)
-      socket = Porsche.handle_request("porsche." <> route, body, principal)
+    Hegel.check(
+      fn ->
+        route_body = draw("route_body", cases)
+        {route, body} = route_body
+        http = ssh(c.gateway, route, body)
+        socket = Porsche.handle_request("porsche." <> route, body, principal)
 
-      case {http.status, socket} do
-        {200, {:ok, value}} ->
-          document = Jason.decode!(http.resp_body)
-          assert Map.keys(value) == Map.keys(document)
-          assert Map.take(value, ["status", "user"]) == Map.take(document, ["status", "user"])
-          assert value["status"] == "authenticated"
-          assert value["user"]["id"] == c.user.id
-          assert value["session_id"] != document["session_id"]
-          assert value["session_token"] != document["session_token"]
+        case {http.status, socket} do
+          {200, {:ok, value}} ->
+            document = Jason.decode!(http.resp_body)
+            assert Map.keys(value) == Map.keys(document)
+            assert Map.take(value, ["status", "user"]) == Map.take(document, ["status", "user"])
+            assert value["status"] == "authenticated"
+            assert value["user"]["id"] == c.user.id
+            assert value["session_id"] != document["session_id"]
+            assert value["session_token"] != document["session_token"]
 
-          for issued <- [document, value] do
-            status_body = %{"version" => 1, "session_token" => issued["session_token"]}
-            status_http = ssh(c.gateway, "session", status_body)
-            assert status_http.status == 200
+            for issued <- [document, value] do
+              status_body = %{"version" => 1, "session_token" => issued["session_token"]}
+              status_http = ssh(c.gateway, "session", status_body)
+              assert status_http.status == 200
 
-            assert {:ok, status_socket} =
-                     Porsche.handle_request("porsche.session", status_body, principal)
+              assert {:ok, status_socket} =
+                       Porsche.handle_request("porsche.session", status_body, principal)
 
-            assert status_socket == Jason.decode!(status_http.resp_body)
-            assert status_socket == Map.delete(issued, "session_token")
-          end
+              assert status_socket == Jason.decode!(status_http.resp_body)
+              assert status_socket == Map.delete(issued, "session_token")
+            end
 
-        {_status, {:error, name}} ->
-          assert Jason.decode!(http.resp_body) == %{"error" => name}
+          {_status, {:error, name}} ->
+            assert Jason.decode!(http.resp_body) == %{"error" => name}
 
-        other ->
-          flunk("transport results differ for #{route}: #{inspect(other)}")
-      end
-    end
+          other ->
+            flunk("transport results differ for #{route}: #{inspect(other)}")
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   @spec ssh(binary(), String.t(), map()) :: Plug.Conn.t()

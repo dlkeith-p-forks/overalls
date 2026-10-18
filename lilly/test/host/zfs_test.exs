@@ -106,172 +106,166 @@ defmodule Lilly.Host.ZFSTest do
   @usage ~w(used available logicalused compressratio usedbychildren usedbydataset usedbysnapshots)
 
   property "identity observations tolerate usage-only drift that exact observations refuse" do
-    check all(
-            base <-
-              map(
-                list_of(tuple({member_of(@usage), integer(0..1_000_000)}), min_length: 1),
-                &Map.new/1
-              ),
-            drift <-
-              map(
-                list_of(tuple({member_of(@usage), integer(0..1_000_000)}), min_length: 1),
-                &Map.new/1
-              ),
-            guid <- string(Enum.to_list(?0..?9), min_length: 1, max_length: 8)
-          ) do
-      before = %{@name => Map.merge(base, %{"guid" => guid, "mountpoint" => "/pool/vm"})}
-      after_read = %{@name => Map.merge(before[@name], drift)}
-      accounting = {:ok, %{children: %{@name => %{dataset_guid: guid}}}}
+    base =
+      draw(
+        "base",
+        map(
+          list_of(tuple({member_of(@usage), integer(0..1_000_000)}), min_length: 1),
+          &Map.new/1
+        )
+      )
 
-      # Usage-only changes never alter the non-usage fingerprint that fences identity.
-      assert ZFS.stable_properties(before) == ZFS.stable_properties(after_read)
+    drift =
+      draw(
+        "drift",
+        map(
+          list_of(tuple({member_of(@usage), integer(0..1_000_000)}), min_length: 1),
+          &Map.new/1
+        )
+      )
 
-      assert ZFS.decide_sample(before, after_read, accounting, accounting, :identity) ==
-               accounting
+    guid = draw("guid", string(Enum.to_list(48..57), min_length: 1, max_length: 8))
+    before = %{@name => Map.merge(base, %{"guid" => guid, "mountpoint" => "/pool/vm"})}
+    after_read = %{@name => Map.merge(before[@name], drift)}
+    accounting = {:ok, %{children: %{@name => %{dataset_guid: guid}}}}
 
-      # An exact observation asks for a bounded resample carrying the later
-      # coherent tree instead of withholding the pool for ordinary writes.
-      assert ZFS.decide_sample(before, after_read, accounting, accounting, :exact) ==
-               if(before == after_read, do: accounting, else: {:retry_usage, elem(accounting, 1)})
-    end
+    # Usage-only changes never alter the non-usage fingerprint that fences identity.
+    assert ZFS.stable_properties(before) == ZFS.stable_properties(after_read)
+
+    assert ZFS.decide_sample(before, after_read, accounting, accounting, :identity) ==
+             accounting
+
+    # An exact observation asks for a bounded resample carrying the later
+    # coherent tree instead of withholding the pool for ordinary writes.
+    assert ZFS.decide_sample(before, after_read, accounting, accounting, :exact) ==
+             if(before == after_read, do: accounting, else: {:retry_usage, elem(accounting, 1)})
   end
 
   property "identity observations still require coherent accounting and stable identity" do
-    check all(
-            property <- member_of(~w(guid origin mountpoint quota readonly)),
-            usage <- member_of([:exact, :identity]),
-            rejected <- member_of([:before, :after, :both])
-          ) do
-      tree = %{@name => %{"guid" => "1", property => "original", "used" => 1}}
-      changed = %{@name => %{"guid" => "1", property => "changed", "used" => 1}}
-      refute ZFS.stable_properties(tree) == ZFS.stable_properties(changed)
+    property = draw("property", member_of(~w(guid origin mountpoint quota readonly)))
+    usage = draw("usage", member_of([:exact, :identity]))
+    rejected = draw("rejected", member_of([:before, :after, :both]))
+    tree = %{@name => %{"guid" => "1", property => "original", "used" => 1}}
+    changed = %{@name => %{"guid" => "1", property => "changed", "used" => 1}}
+    refute ZFS.stable_properties(tree) == ZFS.stable_properties(changed)
 
-      ok = {:ok, %{children: %{}}}
+    ok = {:ok, %{children: %{}}}
 
-      {first, second} =
-        case rejected do
-          :before -> {:error, ok}
-          :after -> {ok, :error}
-          :both -> {:error, :error}
-        end
+    {first, second} =
+      case rejected do
+        :before -> {:error, ok}
+        :after -> {ok, :error}
+        :both -> {:error, :error}
+      end
 
-      assert ZFS.decide_sample(tree, tree, first, second, usage) == :retry
-    end
+    assert ZFS.decide_sample(tree, tree, first, second, usage) == :retry
   end
 
   property "logical usage and compression do not become exclusive physical usage" do
-    check all(
-            child <- integer(0..1_000_000),
-            metadata <- integer(0..1_000_000),
-            free <- integer(0..1_000_000),
-            logical <- integer(0..1_000_000_000),
-            ratio <- integer(1..1000)
-          ) do
-      parent =
-        row("tank/lilly", "/pool", "2", %{
-          "used" => child + metadata,
-          "available" => free,
-          "usedbychildren" => child,
-          "usedbydataset" => metadata,
-          "logicalused" => logical,
-          "compressratio" => ratio * 1.0
-        })
+    child = draw("child", integer(0..1_000_000))
+    metadata = draw("metadata", integer(0..1_000_000))
+    free = draw("free", integer(0..1_000_000))
+    logical = draw("logical", integer(0..1_000_000_000))
+    ratio = draw("ratio", integer(1..1000))
 
-      vm = row(@name, "/pool/vms/#{@vm}", "3", %{"used" => child, "usedbydataset" => child})
-      assert {:ok, result} = ZFS.accounting(%{"tank/lilly" => parent, @name => vm}, @identity)
-      assert result.total_bytes == child + metadata + free
-      assert result.free_bytes == free
-      assert %{dataset_guid: "3", physical_bytes: ^child} = result.children[@name]
-      assert result.storage.logical_used_bytes == logical
-      refute Map.has_key?(result, :allocations)
-    end
+    parent =
+      row("tank/lilly", "/pool", "2", %{
+        "used" => child + metadata,
+        "available" => free,
+        "usedbychildren" => child,
+        "usedbydataset" => metadata,
+        "logicalused" => logical,
+        "compressratio" => ratio * 1.0
+      })
+
+    vm = row(@name, "/pool/vms/#{@vm}", "3", %{"used" => child, "usedbydataset" => child})
+    assert {:ok, result} = ZFS.accounting(%{"tank/lilly" => parent, @name => vm}, @identity)
+    assert result.total_bytes == child + metadata + free
+    assert result.free_bytes == free
+    assert %{dataset_guid: "3", physical_bytes: ^child} = result.children[@name]
+    assert result.storage.logical_used_bytes == logical
+    refute Map.has_key?(result, :allocations)
   end
 
   property "arbitrary native property bytes never crash" do
-    check all(output <- binary(max_length: 4096)) do
-      case ZFS.parse_datasets(output) do
-        :error -> :ok
-        {:ok, rows} -> assert map_size(rows) in 1..16_385
-      end
+    output = draw("output", binary(max_length: 4096))
+
+    case ZFS.parse_datasets(output) do
+      :error -> :ok
+      {:ok, rows} -> assert map_size(rows) in 1..16_385
     end
   end
 
   property "template physical allocation remains measured storage, never VM credit" do
-    check all(
-            used <- integer(0..1_000_000),
-            free <- integer(0..1_000_000),
-            logical <- integer(0..1_000_000_000),
-            seal <- member_of(["on", "off"])
-          ) do
-      id = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
-      name = "tank/lilly/template-" <> id
+    used = draw("used", integer(0..1_000_000))
+    free = draw("free", integer(0..1_000_000))
+    logical = draw("logical", integer(0..1_000_000_000))
+    seal = draw("seal", member_of(["on", "off"]))
+    id = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+    name = "tank/lilly/template-" <> id
 
-      parent =
-        row("tank/lilly", "/pool", "2", %{
-          "used" => used + 7,
-          "usedbychildren" => used,
-          "usedbydataset" => 7,
-          "available" => free
-        })
+    parent =
+      row("tank/lilly", "/pool", "2", %{
+        "used" => used + 7,
+        "usedbychildren" => used,
+        "usedbydataset" => 7,
+        "available" => free
+      })
 
-      template =
-        row(name, "/pool/templates/" <> id, "3", %{
-          "used" => used,
-          "usedbydataset" => used,
-          "logicalused" => logical,
-          "readonly" => seal
-        })
+    template =
+      row(name, "/pool/templates/" <> id, "3", %{
+        "used" => used,
+        "usedbydataset" => used,
+        "logicalused" => logical,
+        "readonly" => seal
+      })
 
-      tree = %{"tank/lilly" => parent, name => template}
-      assert {:ok, observation} = ZFS.accounting(tree, @identity)
-      assert observation.total_bytes == used + 7 + free
-      assert observation.free_bytes == free
-      assert observation.children[name].physical_bytes == used
-      refute Map.has_key?(observation, :allocations)
-      assert :error = ZFS.accounting(put_in(tree, [name, "guid"], "2"), @identity)
+    tree = %{"tank/lilly" => parent, name => template}
+    assert {:ok, observation} = ZFS.accounting(tree, @identity)
+    assert observation.total_bytes == used + 7 + free
+    assert observation.free_bytes == free
+    assert observation.children[name].physical_bytes == used
+    refute Map.has_key?(observation, :allocations)
+    assert :error = ZFS.accounting(put_in(tree, [name, "guid"], "2"), @identity)
 
-      assert :error =
-               ZFS.accounting(put_in(tree, [name, "origin"], "tank/foreign@origin"), @identity)
+    assert :error =
+             ZFS.accounting(put_in(tree, [name, "origin"], "tank/foreign@origin"), @identity)
 
-      assert :error = ZFS.accounting(put_in(tree, [name, "mountpoint"], "/foreign"), @identity)
-    end
+    assert :error = ZFS.accounting(put_in(tree, [name, "mountpoint"], "/foreign"), @identity)
   end
 
   # @cc [owner:ghuntley,label:verification;capacity] retired-standby-is-unknown-storage
   # After ADR-0177 a `standby-*` child MUST withhold the pool wherever it is
   # mounted; accounting never measures it as owned storage.
   property "retired standby datasets withhold the pool wherever they are mounted" do
-    check all(
-            used <- integer(0..1_000_000),
-            seal <- member_of(["on", "off"]),
-            mount <- member_of([:standby, :claimed, :foreign, :template, :nested])
-          ) do
-      id = "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
-      placement = "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
-      name = "tank/lilly/standby-" <> id
+    used = draw("used", integer(0..1_000_000))
+    seal = draw("seal", member_of(["on", "off"]))
+    mount = draw("mount", member_of([:standby, :claimed, :foreign, :template, :nested]))
+    id = "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+    placement = "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+    name = "tank/lilly/standby-" <> id
 
-      mountpoint =
-        case mount do
-          :standby -> "/pool/standbys/" <> id
-          :claimed -> "/pool/vms/" <> placement
-          :foreign -> "/foreign/standbys/" <> id
-          :template -> "/pool/templates/" <> id
-          :nested -> "/pool/vms/" <> placement <> "/x"
-        end
+    mountpoint =
+      case mount do
+        :standby -> "/pool/standbys/" <> id
+        :claimed -> "/pool/vms/" <> placement
+        :foreign -> "/foreign/standbys/" <> id
+        :template -> "/pool/templates/" <> id
+        :nested -> "/pool/vms/" <> placement <> "/x"
+      end
 
-      parent =
-        row("tank/lilly", "/pool", "2", %{
-          "used" => used + 7,
-          "usedbychildren" => used,
-          "usedbydataset" => 7,
-          "available" => 5
-        })
+    parent =
+      row("tank/lilly", "/pool", "2", %{
+        "used" => used + 7,
+        "usedbychildren" => used,
+        "usedbydataset" => 7,
+        "available" => 5
+      })
 
-      standby =
-        row(name, mountpoint, "3", %{"used" => used, "usedbydataset" => used, "readonly" => seal})
+    standby =
+      row(name, mountpoint, "3", %{"used" => used, "usedbydataset" => used, "readonly" => seal})
 
-      assert :error = ZFS.accounting(%{"tank/lilly" => parent, name => standby}, @identity)
-    end
+    assert :error = ZFS.accounting(%{"tank/lilly" => parent, name => standby}, @identity)
   end
 
   # @cc [owner:ghuntley,label:verification;capacity] incoming-sibling-refuses-pool-credit
@@ -455,19 +449,16 @@ defmodule Lilly.Host.ZFSTest do
   end
 
   property "retained blocks shared by transfer snapshots are counted once from the child" do
-    check all(
-            current <- integer(0..1_000_000),
-            retained <- integer(0..1_000_000),
-            exclusive_a <- integer(0..retained),
-            exclusive_b <- integer(0..(retained - exclusive_a))
-          ) do
-      {tree, bindings} = snapshot_tree(current, retained, exclusive_a, exclusive_b)
-      assert {:ok, observation} = ZFS.accounting(tree, @identity, bindings)
-      assert observation.children[@name].physical_bytes == current + retained
-      assert observation.snapshots == bindings
-      refute Map.has_key?(observation, :allocations)
-      assert :error = ZFS.accounting(tree, @identity)
-    end
+    current = draw("current", integer(0..1_000_000))
+    retained = draw("retained", integer(0..1_000_000))
+    exclusive_a = draw("exclusive_a", integer(0..retained))
+    exclusive_b = draw("exclusive_b", integer(0..(retained - exclusive_a)))
+    {tree, bindings} = snapshot_tree(current, retained, exclusive_a, exclusive_b)
+    assert {:ok, observation} = ZFS.accounting(tree, @identity, bindings)
+    assert observation.children[@name].physical_bytes == current + retained
+    assert observation.snapshots == bindings
+    refute Map.has_key?(observation, :allocations)
+    assert :error = ZFS.accounting(tree, @identity)
   end
 
   test "snapshot expectations bind exact child and snapshot GUIDs and permit no extra entries" do

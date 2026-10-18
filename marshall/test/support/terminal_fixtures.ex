@@ -136,13 +136,18 @@ defmodule Marshall.TerminalFixtures do
   # @cc [owner:ghuntley,label:integration] fake-stream-replies-synthetic-controls
   # The stream fixture MUST only answer catalogued control messages with
   # synthetic identifiers; it never carries terminal bytes or host secrets.
-  @spec stream_fixture(String.t()) :: pid()
-  def stream_fixture(host_id) do
+  @spec stream_fixture(String.t(), :test | :property) :: pid()
+  def stream_fixture(host_id, lifetime \\ :test) when lifetime in [:test, :property] do
     owner = self()
     ref = make_ref()
 
+    start =
+      if lifetime == :property,
+        do: &Overalls.HegelFixtures.start_supervised!/1,
+        else: &ExUnit.Callbacks.start_supervised!/1
+
     pid =
-      ExUnit.Callbacks.start_supervised!(%{
+      start.(%{
         id: ref,
         restart: :temporary,
         start:
@@ -317,4 +322,21 @@ defmodule Marshall.TerminalFixtures do
     do: {{:ok, %{type: :boot_log_data, vm_id: vm_id, next: 0, bytes: ""}}, sessions, creations}
 
   defp synthetic_reply(_, _, sessions, creations), do: {{:ok, %{}}, sessions, creations}
+
+  # @cc [owner:ghuntley,label:verification] terminal-generated-mailbox-isolation
+  # Completed generated cases MUST retire their fixture notifications before a
+  # successor case measures viewer mailbox pressure. Unrelated messages remain.
+  @spec drain_case_messages() :: :ok
+  def drain_case_messages do
+    receive do
+      {:terminal_attached, _} -> drain_case_messages()
+      {:terminal_output, _} -> drain_case_messages()
+      {:terminal_closed, _} -> drain_case_messages()
+      :terminal_slow_viewer -> drain_case_messages()
+      :renew_location -> drain_case_messages()
+      {:expire_request, _, _} -> drain_case_messages()
+    after
+      0 -> :ok
+    end
+  end
 end

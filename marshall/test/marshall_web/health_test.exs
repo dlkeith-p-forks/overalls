@@ -42,32 +42,35 @@ defmodule MarshallWeb.HealthTest do
   # @cc [owner:ghuntley,label:verification;recovery] health-inconclusive-property
   # For any observation sequence, readiness MUST follow definite answers at once
   # and keep a ready verdict through unanswered probes only within the backstop.
+  @tag :hegel_case_sandbox
   property "unanswered probes keep readiness only within the backstop" do
-    check all(
-            steps <-
-              list_of(
-                tuple({member_of([:ready, :not_ready, :inconclusive]), integer(0..20_000)}),
-                max_length: 40
-              )
-          ) do
-      Enum.reduce(steps, {nil, 0}, fn {observation, gap}, {last, now} ->
-        now = now + gap
-        {verdict, next} = Health.decide(last, observation, now)
+    Marshall.DataCase.isolate_property_case()
+    steps =
+      draw(
+        "steps",
+        list_of(
+          tuple({member_of([:ready, :not_ready, :inconclusive]), integer(0..20000)}),
+          max_length: 40
+        )
+      )
 
-        case observation do
-          :ready ->
-            assert {verdict, next} == {true, now}
+    Enum.reduce(steps, {nil, 0}, fn {observation, gap}, {last, now} ->
+      now = now + gap
+      {verdict, next} = Health.decide(last, observation, now)
 
-          :not_ready ->
-            assert {verdict, next} == {false, nil}
+      case observation do
+        :ready ->
+          assert {verdict, next} == {true, now}
 
-          :inconclusive ->
-            assert {verdict, next} == {last != nil and now - last < Health.backstop_ms(), last}
-        end
+        :not_ready ->
+          assert {verdict, next} == {false, nil}
 
-        {next, now}
-      end)
-    end
+        :inconclusive ->
+          assert {verdict, next} == {last != nil and now - last < Health.backstop_ms(), last}
+      end
+
+      {next, now}
+    end)
   end
 
   test "an unanswered probe keeps a recent ready verdict but never invents one" do

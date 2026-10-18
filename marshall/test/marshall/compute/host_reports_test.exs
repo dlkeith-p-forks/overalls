@@ -14,95 +14,95 @@ defmodule Marshall.Compute.HostReportsTest do
   # capacity state unchanged. A reconnect may reset sequence only while its
   # epoch advances and host freshness is revoked.
   property "generated report histories preserve epoch order and atomic rejection",
-    test_cases: 12 do
-    check all(
-            actions <-
-              list_of(member_of([:advance, :duplicate, :older, :old_epoch, :partial, :reconnect]),
-                min_length: 1,
-                max_length: 8
-              ),
-            test_cases: 12
-          ) do
-      fixture = host_fixture()
-      host_id = fixture.host.id
-      pool_id = fixture.pool.id
+    test_cases: 100 do
+    actions =
+      draw(
+        "actions",
+        list_of(member_of([:advance, :duplicate, :older, :old_epoch, :partial, :reconnect]),
+          min_length: 1,
+          max_length: 8
+        )
+      )
 
-      Enum.reduce(actions, {fixture.epoch, 1}, fn action, {epoch, sequence} ->
-        before_host = report_host_snapshot(host_id)
-        before_pool = report_pool_snapshot(pool_id)
-        free_bytes = 10_737_418_240 - (sequence + 1) * 1_048_576
+    fixture = host_fixture()
+    host_id = fixture.host.id
+    pool_id = fixture.pool.id
 
-        next_pool =
-          fixture.report.pools
-          |> hd()
-          |> Map.put(:free_bytes, free_bytes)
-          |> Map.put(:storage, storage_observation(fixture.pool, 10_737_418_240, free_bytes))
+    Enum.reduce(actions, {fixture.epoch, 1}, fn action, {epoch, sequence} ->
+      before_host = report_host_snapshot(host_id)
+      before_pool = report_pool_snapshot(pool_id)
+      free_bytes = 10_737_418_240 - (sequence + 1) * 1_048_576
 
-        next = %{
-          fixture.report
-          | sequence: sequence + 1,
-            sampled_at: Ledger.now(),
-            capacity:
-              capacity(5 - rem(sequence + 1, 4), 4_294_967_296 - (sequence + 1) * 1_048_576),
-            pools: [next_pool]
-        }
+      next_pool =
+        fixture.report.pools
+        |> hd()
+        |> Map.put(:free_bytes, free_bytes)
+        |> Map.put(:storage, storage_observation(fixture.pool, 10_737_418_240, free_bytes))
 
-        case action do
-          :reconnect ->
-            assert {:ok, new_epoch} = HostReports.connect(host_id)
-            assert new_epoch > epoch
-            after_host = report_host_snapshot(host_id)
-            assert after_host.connection_epoch == new_epoch
-            assert after_host.report_sequence == 0
-            assert after_host.reported_at == nil
-            assert report_pool_snapshot(pool_id) == before_pool
-            {new_epoch, 0}
+      next = %{
+        fixture.report
+        | sequence: sequence + 1,
+          sampled_at: Ledger.now(),
+          capacity:
+            capacity(5 - rem(sequence + 1, 4), 4_294_967_296 - (sequence + 1) * 1_048_576),
+          pools: [next_pool]
+      }
 
-          :advance ->
-            assert {:ok, :ok} = HostReports.ingest(host_id, epoch, next)
-            after_host = report_host_snapshot(host_id)
-            assert after_host.connection_epoch == epoch
-            assert after_host.report_sequence == sequence + 1
-            assert after_host.reported_at != nil
-            assert after_host.effective_cores == next.effective_cores
-            assert after_host.effective_memory_bytes == next.effective_memory_bytes
-            assert after_host.capacity == next.capacity
-            assert after_host.inventory == next.inventory
-            after_pool = report_pool_snapshot(pool_id)
-            assert after_pool.total_bytes == next_pool.total_bytes
-            assert after_pool.free_bytes == next_pool.free_bytes
-            assert after_pool.allocations == next_pool.allocations
+      case action do
+        :reconnect ->
+          assert {:ok, new_epoch} = HostReports.connect(host_id)
+          assert new_epoch > epoch
+          after_host = report_host_snapshot(host_id)
+          assert after_host.connection_epoch == new_epoch
+          assert after_host.report_sequence == 0
+          assert after_host.reported_at == nil
+          assert report_pool_snapshot(pool_id) == before_pool
+          {new_epoch, 0}
 
-            assert after_pool.storage_observation ==
-                     OverallsProtocol.Storage.encode(next_pool.storage)
+        :advance ->
+          assert {:ok, :ok} = HostReports.ingest(host_id, epoch, next)
+          after_host = report_host_snapshot(host_id)
+          assert after_host.connection_epoch == epoch
+          assert after_host.report_sequence == sequence + 1
+          assert after_host.reported_at != nil
+          assert after_host.effective_cores == next.effective_cores
+          assert after_host.effective_memory_bytes == next.effective_memory_bytes
+          assert after_host.capacity == next.capacity
+          assert after_host.inventory == next.inventory
+          after_pool = report_pool_snapshot(pool_id)
+          assert after_pool.total_bytes == next_pool.total_bytes
+          assert after_pool.free_bytes == next_pool.free_bytes
+          assert after_pool.allocations == next_pool.allocations
 
-            {epoch, sequence + 1}
+          assert after_pool.storage_observation ==
+                   OverallsProtocol.Storage.encode(next_pool.storage)
 
-          rejected ->
-            {sent_epoch, sent_report, reason} =
-              case rejected do
-                :duplicate ->
-                  {epoch, %{next | sequence: sequence},
-                   if(sequence == 0, do: :invalid_report, else: :stale_report)}
+          {epoch, sequence + 1}
 
-                :older ->
-                  {epoch, %{next | sequence: max(0, sequence - 1)},
-                   if(sequence <= 1, do: :invalid_report, else: :stale_report)}
+        rejected ->
+          {sent_epoch, sent_report, reason} =
+            case rejected do
+              :duplicate ->
+                {epoch, %{next | sequence: sequence},
+                 if(sequence == 0, do: :invalid_report, else: :stale_report)}
 
-                :old_epoch ->
-                  {epoch - 1, next, :stale_connection}
+              :older ->
+                {epoch, %{next | sequence: max(0, sequence - 1)},
+                 if(sequence <= 1, do: :invalid_report, else: :stale_report)}
 
-                :partial ->
-                  {epoch, %{next | pools: []}, :invalid_report}
-              end
+              :old_epoch ->
+                {epoch - 1, next, :stale_connection}
 
-            assert {:error, ^reason} = HostReports.ingest(host_id, sent_epoch, sent_report)
-            assert report_host_snapshot(host_id) == before_host
-            assert report_pool_snapshot(pool_id) == before_pool
-            {epoch, sequence}
-        end
-      end)
-    end
+              :partial ->
+                {epoch, %{next | pools: []}, :invalid_report}
+            end
+
+          assert {:error, ^reason} = HostReports.ingest(host_id, sent_epoch, sent_report)
+          assert report_host_snapshot(host_id) == before_host
+          assert report_pool_snapshot(pool_id) == before_pool
+          {epoch, sequence}
+      end
+    end)
   end
 
   @spec report_host_snapshot(String.t()) :: map()

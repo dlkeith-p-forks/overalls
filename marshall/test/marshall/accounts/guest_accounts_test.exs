@@ -22,32 +22,33 @@ defmodule Marshall.Accounts.GuestAccountsTest do
   # @cc [owner:ghuntley,label:verification;security] durable-email-history-oracle
   # Generated email changes MUST preserve the User and GuestAccount UUIDs,
   # numeric UID and Linux login without creating historical guest incarnations.
-  property "email changes and changes back preserve one lifetime identity", test_cases: 12 do
-    check all(changes <- integer(1..8), test_cases: 12) do
-      prefix = binary_part(Ash.UUID.generate(), 0, 16)
-      email = "original-#{prefix}@example.test"
-      user = account(email)
-      first = ensure!(user)
+  @tag :hegel_case_sandbox
+  property "email changes and changes back preserve one lifetime identity", test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    changes = draw("changes", integer(1..8))
+    prefix = binary_part(Ash.UUID.generate(), 0, 16)
+    email = "original-#{prefix}@example.test"
+    user = account(email)
+    first = ensure!(user)
 
-      changed =
-        Enum.reduce(1..changes, user, fn iteration, current ->
-          updated =
-            Ledger.update!(current, :security_state, %{
-              email: "9person+#{prefix}-#{iteration}@elsewhere.test"
-            })
+    changed =
+      Enum.reduce(1..changes, user, fn iteration, current ->
+        updated =
+          Ledger.update!(current, :security_state, %{
+            email: "9person+#{prefix}-#{iteration}@elsewhere.test"
+          })
 
-          assert updated.id == user.id
-          assert identity(ensure!(updated)) == identity(first)
-          updated
-        end)
+        assert updated.id == user.id
+        assert identity(ensure!(updated)) == identity(first)
+        updated
+      end)
 
-      restored = Ledger.update!(changed, :security_state, %{email: email})
-      assert identity(ensure!(restored)) == identity(first)
+    restored = Ledger.update!(changed, :security_state, %{email: email})
+    assert identity(ensure!(restored)) == identity(first)
 
-      assert Enum.map(Ledger.read!(GuestAccount, user_id: user.id), &identity/1) == [
-               identity(first)
-             ]
-    end
+    assert Enum.map(Ledger.read!(GuestAccount, user_id: user.id), &identity/1) == [
+             identity(first)
+           ]
   end
 
   test "actual retirement reserves identity and same-email replacement inherits nothing" do

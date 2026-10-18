@@ -5,67 +5,63 @@ defmodule MarshallWeb.TerminalOpeningTest do
   alias MarshallWeb.TerminalOpening, as: Opening
 
   property "transient failure histories preserve execution and never resurrect closed shells" do
-    check all(
-            phase <- member_of([:waiting, :opening, :ready, :closed, :failed]),
-            errors <-
-              list_of(
-                member_of([
-                  :terminal_open_pending,
-                  :terminal_unavailable,
-                  :stream_unavailable,
-                  :stream_timeout,
-                  :stream_busy,
-                  :stream_not_ready,
-                  :timeout
-                ]),
-                min_length: 1,
-                max_length: 100
-              )
-          ) do
-      initial = %{execution: "execution-one", phase: phase, rejections: 0}
-      final = Enum.reduce(errors, initial, &Opening.failed(&2, &1))
-      assert final == initial
-      assert {_, action} = Opening.observe(final, "execution-one", true, true, false)
-      assert action == if(phase in [:waiting, :opening], do: :open, else: :none)
-      failed = Enum.reduce(1..5, final, fn _, state -> Opening.failed(state, :rejected) end)
-      assert {^failed, :none} = Opening.observe(failed, "execution-one", true, true, false)
-      assert {_, :open} = Opening.observe(failed, "execution-two", true, true, false)
-    end
+    phase = draw("phase", member_of([:waiting, :opening, :ready, :closed, :failed]))
+
+    errors =
+      draw(
+        "errors",
+        list_of(
+          member_of([
+            :terminal_open_pending,
+            :terminal_unavailable,
+            :stream_unavailable,
+            :stream_timeout,
+            :stream_busy,
+            :stream_not_ready,
+            :timeout
+          ]),
+          min_length: 1,
+          max_length: 100
+        )
+      )
+
+    initial = %{execution: "execution-one", phase: phase, rejections: 0}
+    final = Enum.reduce(errors, initial, &Opening.failed(&2, &1))
+    assert final == initial
+    assert {_, action} = Opening.observe(final, "execution-one", true, true, false)
+    assert action == if(phase in [:waiting, :opening], do: :open, else: :none)
+    failed = Enum.reduce(1..5, final, fn _, state -> Opening.failed(state, :rejected) end)
+    assert {^failed, :none} = Opening.observe(failed, "execution-one", true, true, false)
+    assert {_, :open} = Opening.observe(failed, "execution-two", true, true, false)
   end
 
   property "arbitrary polling cannot create a shell after closing or failure" do
-    check all(
-            phase <- member_of([:closed, :failed]),
-            polls <- list_of({boolean(), boolean()}, max_length: 100)
-          ) do
-      state = %{execution: "execution-one", phase: phase, rejections: 0}
+    phase = draw("phase", member_of([:closed, :failed]))
+    polls = draw("polls", list_of({boolean(), boolean()}, max_length: 100))
+    state = %{execution: "execution-one", phase: phase, rejections: 0}
 
-      Enum.reduce(polls, state, fn {running, writable}, state ->
-        assert {next, :none} = Opening.observe(state, "execution-one", running, writable, false)
-        assert next.phase == phase
-        next
-      end)
-    end
+    Enum.reduce(polls, state, fn {running, writable}, state ->
+      assert {next, :none} = Opening.observe(state, "execution-one", running, writable, false)
+      assert next.phase == phase
+      next
+    end)
   end
 
   property "a stopped or read-only machine never automatically opens" do
-    check all(
-            phase <- member_of([:waiting, :opening, :ready, :closed, :failed]),
-            access <- member_of([{false, false}, {false, true}, {true, false}]),
-            sessions <- boolean()
-          ) do
-      # Hegel's check all binds plain variables only, so destructure here.
-      {running, writable} = access
+    phase = draw("phase", member_of([:waiting, :opening, :ready, :closed, :failed]))
+    access = draw("access", member_of(false: false, false: true, true: false))
+    sessions = draw("sessions", boolean())
+    # Keep the correlated tuple as one draw before destructuring its values.
+    {running, writable} = access
 
-      assert {_, :none} =
-               Opening.observe(
-                 %{execution: "execution-one", phase: phase, rejections: 0},
-                 "execution-one",
-                 running,
-                 writable,
-                 sessions
-               )
-    end
+    assert {_, :none} =
+             Opening.observe(
+               %{execution: "execution-one", phase: phase, rejections: 0},
+               "execution-one",
+               running,
+               writable,
+               sessions
+             )
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] terminal-rejection-budget

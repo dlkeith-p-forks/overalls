@@ -42,17 +42,13 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
       @tag :post_ack
     end
 
-    property name, test_cases: 3 do
+    property name, test_cases: 100 do
       crash? = unquote(crash?)
       phase = unquote(phase)
 
-      check all(
-              replays <- integer(1..3),
-              ordering <- member_of([[0, 1, 2], [1, 2, 0], [2, 0, 1]]),
-              test_cases: 3
-            ) do
-        unboxed(fn -> history(crash?, replays, ordering, phase) end)
-      end
+      replays = draw("replays", integer(1..3))
+      ordering = draw("ordering", member_of([[0, 1, 2], [1, 2, 0], [2, 0, 1]]))
+      unboxed(fn -> history(crash?, replays, ordering, phase) end)
     end
   end
 
@@ -62,15 +58,14 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
   # The separate committed observer MUST still see pending ciphertext before retry.
   @tag :sender_rotation
   property "generated pending mail retries retain Message-ID across sender-domain rotation",
-    test_cases: 3 do
-    check all(
-            replays <- integer(1..3),
-            ordering <- member_of([[0, 1, 2], [1, 2, 0], [2, 0, 1]]),
-            sender_domain <- member_of(["retry.example.test", "alternate.example.test"]),
-            test_cases: 3
-          ) do
-      unboxed(fn -> history(true, replays, ordering, :post_ack, sender_domain) end)
-    end
+    test_cases: 100 do
+    replays = draw("replays", integer(1..3))
+    ordering = draw("ordering", member_of([[0, 1, 2], [1, 2, 0], [2, 0, 1]]))
+
+    sender_domain =
+      draw("sender_domain", member_of(["retry.example.test", "alternate.example.test"]))
+
+    unboxed(fn -> history(true, replays, ordering, :post_ack, sender_domain) end)
   end
 
   @spec history(

@@ -26,77 +26,75 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # Personal-owner histories MUST exercise public attachment changes and derive
   # admission from a separate attachment model. Refusals and every renewal MUST
   # preserve durable credentials, provenance, attachments and mutation audits.
+  @tag :hegel_case_sandbox
   property "personal owners require explicit attachments for admission and renewal",
-    test_cases: 15 do
-    check all(
-            peer <- boolean(),
-            tail <- list_of(boolean(), max_length: 12),
-            stale_delta <- integer(1..10),
-            test_cases: 15
-          ) do
-      fixture = fresh_fixture()
-      outsider = Marshall.ComputeFixtures.user()
-      name = "personal-" <> binary_part(Ash.UUID.generate(), 0, 12)
-      {:ok, integration} = configure_peer(name, fixture, peer, 0)
-      {token, wire} = authority(fixture, name)
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    peer = draw("peer", boolean())
+    tail = draw("tail", list_of(boolean(), max_length: 12))
+    stale_delta = draw("stale_delta", integer(1..10))
+    fixture = fresh_fixture()
+    outsider = Marshall.ComputeFixtures.user()
+    name = "personal-" <> binary_part(Ash.UUID.generate(), 0, 12)
+    {:ok, integration} = configure_peer(name, fixture, peer, 0)
+    {token, wire} = authority(fixture, name)
+    before = snapshot(integration.id)
+    assert {:error, :unauthorized} = Authorizations.authorize(token, wire)
+    assert_renewal(Authorizations.renew(token, wire), false)
+    assert snapshot(integration.id) == before
+
+    for {attached, sequence} <- Enum.with_index([true, false, true, false] ++ tail, 2) do
+      operation = if attached, do: :attach_integration, else: :detach_integration
+
+      assert {:ok, _} =
+               apply(Galileo, operation, [
+                 %{name: name, vm_id: fixture.vm.id},
+                 [actor: fixture.owner]
+               ])
+
+      fresh_report(fixture, sequence)
       before = snapshot(integration.id)
-      assert {:error, :unauthorized} = Authorizations.authorize(token, wire)
-      assert_renewal(Authorizations.renew(token, wire), false)
-      assert snapshot(integration.id) == before
 
-      for {attached, sequence} <- Enum.with_index([true, false, true, false] ++ tail, 2) do
-        operation = if attached, do: :attach_integration, else: :detach_integration
+      for mutation <- [:attach_integration, :detach_integration, :remove_integration] do
+        arguments =
+          if mutation == :remove_integration,
+            do: %{name: name},
+            else: %{name: name, vm_id: fixture.vm.id}
 
-        assert {:ok, _} =
-                 apply(Galileo, operation, [
-                   %{name: name, vm_id: fixture.vm.id},
-                   [actor: fixture.owner]
-                 ])
+        refusal_logs =
+          ExUnit.CaptureLog.capture_log([level: :info, metadata: [:event]], fn ->
+            assert {:error, _} = apply(Galileo, mutation, [arguments, [actor: outsider]])
+          end)
 
-        fresh_report(fixture, sequence)
-        before = snapshot(integration.id)
-
-        for mutation <- [:attach_integration, :detach_integration, :remove_integration] do
-          arguments =
-            if mutation == :remove_integration,
-              do: %{name: name},
-              else: %{name: name, vm_id: fixture.vm.id}
-
-          refusal_logs =
-            ExUnit.CaptureLog.capture_log([level: :info, metadata: [:event]], fn ->
-              assert {:error, _} = apply(Galileo, mutation, [arguments, [actor: outsider]])
-            end)
-
-          refute refusal_logs =~ "galileo.integration_configured"
-          assert snapshot(integration.id) == before
-        end
-
-        assert_renewal(Authorizations.renew(token, wire), attached)
+        refute refusal_logs =~ "galileo.integration_configured"
         assert snapshot(integration.id) == before
-        authorization = Authorizations.authorize(token, wire)
-        assert match?({:ok, _}, authorization) == attached
-
-        if not attached do
-          assert authorization == {:error, :unauthorized}
-          assert snapshot(integration.id) == before
-        end
-
-        current = snapshot(integration.id)
-
-        for {field, value} <- [
-              {"execution_epoch", fixture.vm.execution_epoch + stale_delta},
-              {"placement_id", Ash.UUID.generate()}
-            ] do
-          stale_wire = put_in(wire, ["binding", field], value)
-          assert {:error, :unauthorized} = Authorizations.authorize(token, stale_wire)
-          assert_renewal(Authorizations.renew(token, stale_wire), false)
-          assert snapshot(integration.id) == current
-        end
-
-        for event <- Ledger.read!(Marshall.Accounts.AdminEvent, target_id: integration.id),
-            event.kind in [:galileo_attach, :galileo_detach],
-            do: assert(event.actor_id == fixture.owner.id)
       end
+
+      assert_renewal(Authorizations.renew(token, wire), attached)
+      assert snapshot(integration.id) == before
+      authorization = Authorizations.authorize(token, wire)
+      assert match?({:ok, _}, authorization) == attached
+
+      if not attached do
+        assert authorization == {:error, :unauthorized}
+        assert snapshot(integration.id) == before
+      end
+
+      current = snapshot(integration.id)
+
+      for {field, value} <- [
+            {"execution_epoch", fixture.vm.execution_epoch + stale_delta},
+            {"placement_id", Ash.UUID.generate()}
+          ] do
+        stale_wire = put_in(wire, ["binding", field], value)
+        assert {:error, :unauthorized} = Authorizations.authorize(token, stale_wire)
+        assert_renewal(Authorizations.renew(token, stale_wire), false)
+        assert snapshot(integration.id) == current
+      end
+
+      for event <- Ledger.read!(Marshall.Accounts.AdminEvent, target_id: integration.id),
+          event.kind in [:galileo_attach, :galileo_detach],
+          do: assert(event.actor_id == fixture.owner.id)
     end
   end
 
@@ -104,124 +102,130 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # Supported account retirement and integration removal MUST refuse subsequent
   # admission and renewal despite prior successful attachment. Refused reads
   # MUST preserve the post-mutation durable snapshot and mutation audit rows.
+  @tag :hegel_case_sandbox
   property "supported retirement and removal revoke previously attached personal integrations",
-    test_cases: 4 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     [bootstrap] = Ledger.read!(Marshall.Accounts.AdminBootstrap)
     Ledger.update!(bootstrap, :complete, %{})
     admin = Marshall.PasskeyFixture.elevate(Marshall.PasskeyFixture.user(true))
 
-    check all(peer <- boolean(), attempts <- integer(1..3), test_cases: 4) do
-      for terminal <- [:remove, :retire] do
-        fixture = fresh_fixture()
-        name = "retire-" <> binary_part(Ash.UUID.generate(), 0, 12)
-        {:ok, integration} = configure_peer(name, fixture, peer, 0)
+    peer = draw("peer", boolean())
+    attempts = draw("attempts", integer(1..3))
 
-        assert {:ok, _} =
-                 Galileo.attach_integration(%{name: name, vm_id: fixture.vm.id},
-                   actor: fixture.owner
-                 )
+    for terminal <- [:remove, :retire] do
+      fixture = fresh_fixture()
+      name = "retire-" <> binary_part(Ash.UUID.generate(), 0, 12)
+      {:ok, integration} = configure_peer(name, fixture, peer, 0)
 
-        {token, wire} = authority(fixture, name)
-        assert {:ok, _} = Authorizations.authorize(token, wire)
-        assert_renewal(Authorizations.renew(token, wire), true)
+      assert {:ok, _} =
+               Galileo.attach_integration(%{name: name, vm_id: fixture.vm.id},
+                 actor: fixture.owner
+               )
 
-        case terminal do
-          :remove ->
-            assert {:ok, _} = Galileo.remove_integration(%{name: name}, actor: fixture.owner)
+      {token, wire} = authority(fixture, name)
+      assert {:ok, _} = Authorizations.authorize(token, wire)
+      assert_renewal(Authorizations.renew(token, wire), true)
 
-          :retire ->
-            assert {:ok, _} =
-                     Marshall.Accounts.User
-                     |> Ash.ActionInput.for_action(
-                       :delete_user,
-                       %{user_id: fixture.owner.id, confirmation: to_string(fixture.owner.email)},
-                       actor: admin
-                     )
-                     |> Ash.run_action()
-        end
+      case terminal do
+        :remove ->
+          assert {:ok, _} = Galileo.remove_integration(%{name: name}, actor: fixture.owner)
 
-        before = snapshot(integration.id)
+        :retire ->
+          assert {:ok, _} =
+                   Marshall.Accounts.User
+                   |> Ash.ActionInput.for_action(
+                     :delete_user,
+                     %{user_id: fixture.owner.id, confirmation: to_string(fixture.owner.email)},
+                     actor: admin
+                   )
+                   |> Ash.run_action()
+      end
 
-        for _ <- 1..attempts do
-          assert {:error, :unauthorized} = Authorizations.authorize(token, wire)
-          assert_renewal(Authorizations.renew(token, wire), false)
-          assert snapshot(integration.id) == before
-        end
+      before = snapshot(integration.id)
+
+      for _ <- 1..attempts do
+        assert {:error, :unauthorized} = Authorizations.authorize(token, wire)
+        assert_renewal(Authorizations.renew(token, wire), false)
+        assert snapshot(integration.id) == before
       end
     end
   end
 
+  @tag :hegel_case_sandbox
   property "archived teams refuse integration admission, renewal, reads and peer tokens",
-    test_cases: 8 do
-    check all(attached <- boolean(), peer <- boolean(), attempts <- integer(1..3), test_cases: 8) do
-      fixture = fresh_fixture()
-      manager = Marshall.ComputeFixtures.user()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    attached = draw("attached", boolean())
+    peer = draw("peer", boolean())
+    attempts = draw("attempts", integer(1..3))
+    fixture = fresh_fixture()
+    manager = Marshall.ComputeFixtures.user()
 
-      {:ok, team} =
-        Marshall.Teams.create_team(
-          %{name: "archive-" <> Ash.UUID.generate(), idempotency_key: Ash.UUID.generate()},
-          actor: manager
-        )
+    {:ok, team} =
+      Marshall.Teams.create_team(
+        %{name: "archive-" <> Ash.UUID.generate(), idempotency_key: Ash.UUID.generate()},
+        actor: manager
+      )
 
-      {:ok, _} =
-        Marshall.Teams.set_team_member(
-          %{
-            team_id: team.id,
-            email: fixture.owner.email,
-            role: :member,
-            idempotency_key: Ash.UUID.generate()
-          },
-          actor: manager
-        )
+    {:ok, _} =
+      Marshall.Teams.set_team_member(
+        %{
+          team_id: team.id,
+          email: fixture.owner.email,
+          role: :member,
+          idempotency_key: Ash.UUID.generate()
+        },
+        actor: manager
+      )
 
-      name = "archive-" <> binary_part(Ash.UUID.generate(), 0, 12)
+    name = "archive-" <> binary_part(Ash.UUID.generate(), 0, 12)
 
-      {:ok, integration} =
-        Galileo.configure_integration(
-          %{
-            name: name,
-            target: if(peer, do: nil, else: "https://v0.example.test"),
-            peer: peer,
-            peer_vm_id: if(peer, do: fixture.vm.id),
-            team_id: team.id,
-            headers: [%{kind: :bearer, name: "authorization", value: "fixture-0"}],
-            idempotency_key: Ash.UUID.generate()
-          },
-          actor: manager
-        )
+    {:ok, integration} =
+      Galileo.configure_integration(
+        %{
+          name: name,
+          target: if(peer, do: nil, else: "https://v0.example.test"),
+          peer: peer,
+          peer_vm_id: if(peer, do: fixture.vm.id),
+          team_id: team.id,
+          headers: [%{kind: :bearer, name: "authorization", value: "fixture-0"}],
+          idempotency_key: Ash.UUID.generate()
+        },
+        actor: manager
+      )
 
-      if attached do
-        assert {:ok, _} =
-                 Galileo.attach_integration(%{name: name, vm_id: fixture.vm.id}, actor: manager)
+    if attached do
+      assert {:ok, _} =
+               Galileo.attach_integration(%{name: name, vm_id: fixture.vm.id}, actor: manager)
+    end
+
+    {token, wire} = authority(fixture, name)
+    assert {:ok, _} = Authorizations.authorize(token, wire)
+    assert {:ok, _} = Authorizations.renew(token, wire)
+    assert {:ok, _} = Galileo.show_integration(%{name: name}, actor: manager)
+    assert {:ok, _} = PeerTokens.verify(PeerTokens.mint(fixture.vm.id, integration.id, name))
+
+    pending_token =
+      if peer do
+        {:ok, %{"peer" => %{"token" => pending}}} = Authorizations.authorize(token, wire)
+        pending
+      else
+        PeerTokens.mint(fixture.vm.id, integration.id, name)
       end
 
-      {token, wire} = authority(fixture, name)
-      assert {:ok, _} = Authorizations.authorize(token, wire)
-      assert {:ok, _} = Authorizations.renew(token, wire)
-      assert {:ok, _} = Galileo.show_integration(%{name: name}, actor: manager)
-      assert {:ok, _} = PeerTokens.verify(PeerTokens.mint(fixture.vm.id, integration.id, name))
+    {:ok, :ok} = Ledger.transaction(fn -> Ledger.archive!(team, :archive) end, manager)
+    before = snapshot(integration.id)
 
-      pending_token =
-        if peer do
-          {:ok, %{"peer" => %{"token" => pending}}} = Authorizations.authorize(token, wire)
-          pending
-        else
-          PeerTokens.mint(fixture.vm.id, integration.id, name)
-        end
-
-      {:ok, :ok} = Ledger.transaction(fn -> Ledger.archive!(team, :archive) end, manager)
-      before = snapshot(integration.id)
-
-      for sequence <- 2..(attempts + 1) do
-        fresh_report(fixture, sequence)
-        assert {:error, :unauthorized} = Authorizations.authorize(token, wire)
-        assert {:error, :unauthorized} = Authorizations.renew(token, wire)
-        assert {:error, error} = Galileo.show_integration(%{name: name}, actor: manager)
-        assert Exception.message(error) =~ "forbidden"
-        assert {:ok, []} = Galileo.list_integrations(%{}, actor: manager)
-        assert {:error, :invalid_peer_token} = PeerTokens.verify(pending_token)
-        assert snapshot(integration.id) == before
-      end
+    for sequence <- 2..(attempts + 1) do
+      fresh_report(fixture, sequence)
+      assert {:error, :unauthorized} = Authorizations.authorize(token, wire)
+      assert {:error, :unauthorized} = Authorizations.renew(token, wire)
+      assert {:error, error} = Galileo.show_integration(%{name: name}, actor: manager)
+      assert Exception.message(error) =~ "forbidden"
+      assert {:ok, []} = Galileo.list_integrations(%{}, actor: manager)
+      assert {:error, :invalid_peer_token} = PeerTokens.verify(pending_token)
+      assert snapshot(integration.id) == before
     end
   end
 
@@ -231,54 +235,54 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # test's operation model, not the implementation's authority predicates. Each
   # renewal MUST leave credentials, token rows and configuration receipts intact.
   # Synthetic execution reports establish application admission only.
+  @tag :hegel_case_sandbox
   property "renewal tracks combined membership, attachment and ownership histories",
-    test_cases: 20 do
-    check all(
-            tail <-
-              list_of(member_of([:join, :leave, :attach, :detach, :team, :personal]),
-                max_length: 15
-              ),
-            test_cases: 20
-          ) do
-      fixture = fresh_fixture()
-      manager = Marshall.ComputeFixtures.user()
-
-      {:ok, team} =
-        Marshall.Teams.create_team(
-          %{name: "renew-" <> Ash.UUID.generate(), idempotency_key: Ash.UUID.generate()},
-          actor: manager
-        )
-
-      name = "renew-" <> binary_part(Ash.UUID.generate(), 0, 12)
-      {:ok, integration} = configure(name, manager, team.id, 0)
-      {token, wire} = authority(fixture, name)
-
-      operations =
-        [:join, :attach, :leave, :detach, :join, :personal, :attach, :team, :detach, :leave] ++
-          tail
-
-      Enum.reduce(
-        Enum.with_index(operations, 2),
-        %{member: false, attached: false, team: true},
-        fn {operation, sequence}, state ->
-          state = apply_operation(operation, state, fixture, manager, team.id, name, sequence)
-          fresh_report(fixture, sequence)
-          expected = state.attached or (state.team and state.member)
-          before = snapshot(integration.id)
-          assert_renewal(Authorizations.renew(token, wire), expected)
-          assert snapshot(integration.id) == before
-          authorization = Authorizations.authorize(token, wire)
-          assert match?({:ok, _}, authorization) == expected
-          if not expected, do: assert(authorization == {:error, :unauthorized})
-          state
-        end
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    tail =
+      draw(
+        "tail",
+        list_of(member_of([:join, :leave, :attach, :detach, :team, :personal]), max_length: 15)
       )
 
-      assert {:ok, _} = Galileo.remove_integration(%{name: name}, actor: manager)
-      before = snapshot(integration.id)
-      assert {:error, :unauthorized} = Authorizations.renew(token, wire)
-      assert snapshot(integration.id) == before
-    end
+    fixture = fresh_fixture()
+    manager = Marshall.ComputeFixtures.user()
+
+    {:ok, team} =
+      Marshall.Teams.create_team(
+        %{name: "renew-" <> Ash.UUID.generate(), idempotency_key: Ash.UUID.generate()},
+        actor: manager
+      )
+
+    name = "renew-" <> binary_part(Ash.UUID.generate(), 0, 12)
+    {:ok, integration} = configure(name, manager, team.id, 0)
+    {token, wire} = authority(fixture, name)
+
+    operations =
+      [:join, :attach, :leave, :detach, :join, :personal, :attach, :team, :detach, :leave] ++
+        tail
+
+    Enum.reduce(
+      Enum.with_index(operations, 2),
+      %{member: false, attached: false, team: true},
+      fn {operation, sequence}, state ->
+        state = apply_operation(operation, state, fixture, manager, team.id, name, sequence)
+        fresh_report(fixture, sequence)
+        expected = state.attached or (state.team and state.member)
+        before = snapshot(integration.id)
+        assert_renewal(Authorizations.renew(token, wire), expected)
+        assert snapshot(integration.id) == before
+        authorization = Authorizations.authorize(token, wire)
+        assert match?({:ok, _}, authorization) == expected
+        if not expected, do: assert(authorization == {:error, :unauthorized})
+        state
+      end
+    )
+
+    assert {:ok, _} = Galileo.remove_integration(%{name: name}, actor: manager)
+    before = snapshot(integration.id)
+    assert {:error, :unauthorized} = Authorizations.renew(token, wire)
+    assert snapshot(integration.id) == before
   end
 
   # @cc [owner:ghuntley,label:verification] galileo-renewal-no-new-provenance
@@ -286,37 +290,38 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # after direct/peer reconfiguration MUST return exactly TTL/version without
   # minting, consuming, replacing or refreshing that token. Removal MUST refuse
   # renewal and token consumption. This does not assert network cancellation.
+  @tag :hegel_case_sandbox
   property "renewals never reissue peer provenance or credentials after configuration changes",
-    test_cases: 15 do
-    check all(modes <- list_of(boolean(), min_length: 3, max_length: 10), test_cases: 15) do
-      fixture = fresh_fixture()
-      name = "peer-" <> binary_part(Ash.UUID.generate(), 0, 12)
-      {:ok, integration} = configure_peer(name, fixture, true, 0)
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    modes = draw("modes", list_of(boolean(), min_length: 3, max_length: 10))
+    fixture = fresh_fixture()
+    name = "peer-" <> binary_part(Ash.UUID.generate(), 0, 12)
+    {:ok, integration} = configure_peer(name, fixture, true, 0)
 
-      assert {:ok, _} =
-               Galileo.attach_integration(%{name: name, vm_id: fixture.vm.id},
-                 actor: fixture.owner
-               )
+    assert {:ok, _} =
+             Galileo.attach_integration(%{name: name, vm_id: fixture.vm.id},
+               actor: fixture.owner
+             )
 
-      {token, wire} = authority(fixture, name)
-      assert {:ok, %{"peer" => %{"token" => peer_token}}} = Authorizations.authorize(token, wire)
-      assert [[digest]] = token_digests(integration.id)
-      assert digest == :crypto.hash(:sha256, peer_token)
+    {token, wire} = authority(fixture, name)
+    assert {:ok, %{"peer" => %{"token" => peer_token}}} = Authorizations.authorize(token, wire)
+    assert [[digest]] = token_digests(integration.id)
+    assert digest == :crypto.hash(:sha256, peer_token)
 
-      for {peer, sequence} <- Enum.with_index(modes, 2) do
-        assert {:ok, current} = configure_peer(name, fixture, peer, sequence)
-        assert current.id == integration.id
-        fresh_report(fixture, sequence)
-        before = snapshot(integration.id)
-        for _ <- 1..3, do: assert_renewal(Authorizations.renew(token, wire), true)
-        assert snapshot(integration.id) == before
-        assert token_digests(integration.id) == [[digest]]
-      end
-
-      assert {:ok, _} = Galileo.remove_integration(%{name: name}, actor: fixture.owner)
-      assert {:error, :unauthorized} = Authorizations.renew(token, wire)
-      assert {:error, :invalid_peer_token} = PeerTokens.verify(peer_token)
+    for {peer, sequence} <- Enum.with_index(modes, 2) do
+      assert {:ok, current} = configure_peer(name, fixture, peer, sequence)
+      assert current.id == integration.id
+      fresh_report(fixture, sequence)
+      before = snapshot(integration.id)
+      for _ <- 1..3, do: assert_renewal(Authorizations.renew(token, wire), true)
+      assert snapshot(integration.id) == before
+      assert token_digests(integration.id) == [[digest]]
     end
+
+    assert {:ok, _} = Galileo.remove_integration(%{name: name}, actor: fixture.owner)
+    assert {:error, :unauthorized} = Authorizations.renew(token, wire)
+    assert {:error, :invalid_peer_token} = PeerTokens.verify(peer_token)
   end
 
   @spec apply_operation(

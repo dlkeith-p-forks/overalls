@@ -76,21 +76,26 @@ defmodule Lilly.Transfer.ImportJournalTest do
   end
 
   test "local inventory preserves storage binding and never mutates the journal", c do
-    check all(replacement <- integer(1000..100_000)) do
-      locked(c, fn ->
-        {:ok, expected} = Journal.prepare(c.directory, c.descriptor, c.identity)
-        path = Path.join(c.directory, "import.json")
-        original = File.read!(path)
+    Hegel.check(
+      fn ->
+        replacement = draw("replacement", integer(1000..100_000))
 
-        assert {:ok, %{descriptor: descriptor, journal: ^expected}} =
-                 Journal.local(c.directory, c.identity)
+        locked(c, fn ->
+          {:ok, expected} = Journal.prepare(c.directory, c.descriptor, c.identity)
+          path = Path.join(c.directory, "import.json")
+          original = File.read!(path)
 
-        assert descriptor == c.descriptor
-        changed = %{c.identity | dataset_guid: Integer.to_string(replacement)}
-        assert {:error, :import_state_unconfirmed} = Journal.local(c.directory, changed)
-        assert File.read!(path) == original
-      end)
-    end
+          assert {:ok, %{descriptor: descriptor, journal: ^expected}} =
+                   Journal.local(c.directory, c.identity)
+
+          assert descriptor == c.descriptor
+          changed = %{c.identity | dataset_guid: Integer.to_string(replacement)}
+          assert {:error, :import_state_unconfirmed} = Journal.local(c.directory, changed)
+          assert File.read!(path) == original
+        end)
+      end,
+      []
+    )
   end
 
   test "local inventory rejects missing locks and malformed or foreign journals", c do
@@ -221,23 +226,27 @@ defmodule Lilly.Transfer.ImportJournalTest do
 
   test "arbitrary persisted bytes never crash or change immutable scope", c do
     locked(c, fn ->
-      check all(bytes <- binary(max_length: 4096)) do
-        :ok = PrivateFiles.write(c.directory, "import.json", bytes)
+      Hegel.check(
+        fn ->
+          bytes = draw("bytes", binary(max_length: 4096))
+          :ok = PrivateFiles.write(c.directory, "import.json", bytes)
 
-        assert {:error, :import_state_unconfirmed} =
-                 Journal.for_intent(c.directory, Map.delete(c.descriptor, :stream), c.identity)
+          assert {:error, :import_state_unconfirmed} =
+                   Journal.for_intent(c.directory, Map.delete(c.descriptor, :stream), c.identity)
 
-        case Journal.read(c.directory, c.descriptor, c.identity) do
-          {:error, :import_state_unconfirmed} ->
-            :ok
+          case Journal.read(c.directory, c.descriptor, c.identity) do
+            {:error, :import_state_unconfirmed} ->
+              :ok
 
-          {:ok, record} ->
-            assert record["binding"]["local_storage"] ==
-                     OverallsProtocol.Storage.encode(c.identity)
+            {:ok, record} ->
+              assert record["binding"]["local_storage"] ==
+                       OverallsProtocol.Storage.encode(c.identity)
 
-            assert record["binding"]["relocation_id"] == c.descriptor.relocation_id
-        end
-      end
+              assert record["binding"]["relocation_id"] == c.descriptor.relocation_id
+          end
+        end,
+        []
+      )
     end)
   end
 

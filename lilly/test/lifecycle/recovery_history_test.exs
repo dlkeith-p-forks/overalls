@@ -36,62 +36,71 @@ defmodule Lilly.Lifecycle.RecoveryHistoryTest do
   # control connection without a diagnostic sender. This actor fixture does not
   # establish native VMM execution, TLS authentication or a full Runtime startup.
   @tag :hegel
+  # Full100-case recovery workload measured61 seconds under parallel suite load.
+  @tag timeout: 180_000
   test "restored actor effects resume without a diagnostic sender", %{tmp_dir: root} do
-    check all(
-            actor_count <- integer(1..3),
-            transitions <- member_of([1, 64, 65, 80]),
-            test_cases: 4
-          ) do
-      directory = Path.join(root, Lilly.UUID.generate())
-      :ok = PrivateFiles.directory(directory)
-      host = Lilly.UUID.generate()
-      {:ok, store} = Store.open(directory, host, 3)
-      commands = prepare_backlogs(store, actor_count, transitions)
-      {:ok, supervisor} = Supervisor.start_link([], strategy: :one_for_one)
+    Hegel.check(
+      fn ->
+        actor_count = draw("actor_count", integer(1..3))
+        transitions = draw("transitions", member_of([1, 64, 65, 80]))
+        directory = Path.join(root, Lilly.UUID.generate())
+        :ok = PrivateFiles.directory(directory)
+        host = Lilly.UUID.generate()
+        {:ok, store} = Store.open(directory, host, 3)
+        commands = prepare_backlogs(store, actor_count, transitions)
+        {:ok, supervisor} = Supervisor.start_link([], strategy: :one_for_one)
 
-      try do
-        actors = start_actors(supervisor, store, commands)
+        try do
+          actors = start_actors(supervisor, store, commands)
 
-        {:ok, client} =
-          Client.new("https://example.test", host, host <> ":" <> String.duplicate("a", 43),
-            machine_id: "sha256:" <> String.duplicate("a", 64)
-          )
+          {:ok, client} =
+            Client.new("https://example.test", host, host <> ":" <> String.duplicate("a", 43),
+              machine_id: "sha256:" <> String.duplicate("a", 64)
+            )
 
-        config = %Config{client: client, state_dir: directory, cgroup_path: directory, pools: []}
-        session = %{session_id: Lilly.UUID.generate(), epoch: 1, pools: []}
-        task = Task.async(fn -> {:ok, session} end)
+          config = %Config{
+            client: client,
+            state_dir: directory,
+            cgroup_path: directory,
+            pools: []
+          }
 
-        state = %{
-          phase: :connecting,
-          actors: actors,
-          config: config,
-          session: nil,
-          exchange_task: task,
-          failures: 0,
-          last_error: nil
-        }
+          session = %{session_id: Lilly.UUID.generate(), epoch: 1, pools: []}
+          task = Task.async(fn -> {:ok, session} end)
 
-        for {_, entry} <- actors, do: refute(:sys.get_state(entry.pid).active)
-        reference = task.ref
-        assert_receive {^reference, result}, 2000
+          state = %{
+            phase: :connecting,
+            actors: actors,
+            config: config,
+            session: nil,
+            exchange_task: task,
+            failures: 0,
+            last_error: nil
+          }
 
-        assert {:noreply, %{phase: :connected} = connected} =
-                 Runtime.handle_info({reference, result}, state)
+          for {_, entry} <- actors, do: refute(:sys.get_state(entry.pid).active)
+          reference = task.ref
+          assert_receive {^reference, result}, 2000
 
-        refute Map.has_key?(connected, :audit_ready)
-        refute Map.has_key?(connected, :lifecycle_audit)
+          assert {:noreply, %{phase: :connected} = connected} =
+                   Runtime.handle_info({reference, result}, state)
 
-        for {placement, entry} <- actors do
-          generation = entry.command.generation
-          assert_receive {:recovery_effect, task_pid, ^placement, ^generation}, 2000
-          actor = :sys.get_state(entry.pid)
-          assert actor.task.pid == task_pid
-          assert actor.active
+          refute Map.has_key?(connected, :audit_ready)
+          refute Map.has_key?(connected, :lifecycle_audit)
+
+          for {placement, entry} <- actors do
+            generation = entry.command.generation
+            assert_receive {:recovery_effect, task_pid, ^placement, ^generation}, 2000
+            actor = :sys.get_state(entry.pid)
+            assert actor.task.pid == task_pid
+            assert actor.active
+          end
+        after
+          Supervisor.stop(supervisor)
         end
-      after
-        Supervisor.stop(supervisor)
-      end
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   @spec prepare_backlogs(Store.t(), pos_integer(), pos_integer()) :: [

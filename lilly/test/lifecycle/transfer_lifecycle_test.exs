@@ -58,27 +58,28 @@ defmodule Lilly.Lifecycle.TransferLifecycleTest do
   end
 
   property "single-stream progressions only move forward or retire" do
-    check all(
-            path <-
-              list_of(member_of([:receiving, :received, :retiring, :retired]), max_length: 6)
-          ) do
-      transitions = AshStateMachine.Info.state_machine_transitions(Import)
+    path =
+      draw(
+        "path",
+        list_of(member_of([:receiving, :received, :retiring, :retired]), max_length: 6)
+      )
 
-      allowed? = fn from, to ->
-        Enum.any?(transitions, fn t ->
-          (t.from == [:*] or from in List.wrap(t.from)) and to in List.wrap(t.to)
-        end)
-      end
+    transitions = AshStateMachine.Info.state_machine_transitions(Import)
 
-      for [from, to] <- Enum.chunk_every(path, 2, 1, :discard), from != to do
-        assert allowed?.(from, to) ==
-                 {from, to} in [
-                   {:receiving, :received},
-                   {:receiving, :retiring},
-                   {:received, :retiring},
-                   {:retiring, :retired}
-                 ]
-      end
+    allowed? = fn from, to ->
+      Enum.any?(transitions, fn t ->
+        (t.from == [:*] or from in List.wrap(t.from)) and to in List.wrap(t.to)
+      end)
+    end
+
+    for [from, to] <- Enum.chunk_every(path, 2, 1, :discard), from != to do
+      assert allowed?.(from, to) ==
+               {from, to} in [
+                 {:receiving, :received},
+                 {:receiving, :retiring},
+                 {:received, :retiring},
+                 {:retiring, :retired}
+               ]
     end
   end
 end

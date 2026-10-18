@@ -7,80 +7,84 @@ defmodule Marshall.Accounts.SecurityTest do
   alias Marshall.Compute.Ledger
   alias Marshall.Authorization.Cedar
 
+  @tag :hegel_case_sandbox
   property "elevation expires exactly at fifteen minutes and rejects future verification" do
-    check all(offset <- integer(-1_000_000..1_000_000)) do
-      verified = ~U[2026-09-18 00:00:00.000000Z]
-      now = DateTime.add(verified, offset, :millisecond)
+    Marshall.DataCase.isolate_property_case()
+    offset = draw("offset", integer(-1_000_000..1_000_000))
+    verified = ~U[2026-09-18 00:00:00.000000Z]
+    now = DateTime.add(verified, offset, :millisecond)
 
-      assert Security.elevation_fresh?(verified, DateTime.add(verified, 900), now) ==
-               (offset >= 0 and offset < 900_000)
-    end
+    assert Security.elevation_fresh?(verified, DateTime.add(verified, 900), now) ==
+             (offset >= 0 and offset < 900_000)
   end
 
+  @tag :hegel_case_sandbox
   property "first enrollment email proof expires exactly at five minutes" do
-    check all(offset <- integer(-1_000_000..1_000_000)) do
-      primary = ~U[2026-09-18 00:00:00.000000Z]
-      now = DateTime.add(primary, offset, :millisecond)
+    Marshall.DataCase.isolate_property_case()
+    offset = draw("offset", integer(-1_000_000..1_000_000))
+    primary = ~U[2026-09-18 00:00:00.000000Z]
+    now = DateTime.add(primary, offset, :millisecond)
 
-      assert Security.email_fresh?(primary, now) ==
-               (offset >= 0 and offset <= 300_000)
-    end
+    assert Security.email_fresh?(primary, now) ==
+             (offset >= 0 and offset <= 300_000)
   end
 
+  @tag :hegel_case_sandbox
   property "revocation and generation changes fence arbitrary verification sequences",
-    test_cases: 15 do
-    check all(
-            events <-
-              list_of(member_of([:verify, :lock, :expire, :generation, :revoke]),
-                min_length: 1,
-                max_length: 12
-              ),
-            test_cases: 15
-          ) do
-      {actor, token} = login(user())
-      key = register(actor)
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    events =
+      draw(
+        "events",
+        list_of(member_of([:verify, :lock, :expire, :generation, :revoke]),
+          min_length: 1,
+          max_length: 12
+        )
+      )
 
-      Enum.reduce(events, {true, false}, fn event, {live, _elevated} ->
-        elevated =
-          case event do
-            :verify ->
-              result =
-                case action(actor, :begin_verify) do
-                  {:ok, challenge} -> action(actor, :finish_verify, assertion(challenge, key))
-                  error -> error
-                end
+    {actor, token} = login(user())
+    key = register(actor)
 
-              assert match?({:ok, %{verified: true}}, result) == live
-              live
+    Enum.reduce(events, {true, false}, fn event, {live, _elevated} ->
+      elevated =
+        case event do
+          :verify ->
+            result =
+              case action(actor, :begin_verify) do
+                {:ok, challenge} -> action(actor, :finish_verify, assertion(challenge, key))
+                error -> error
+              end
 
-            :lock ->
-              action(actor, :lock)
-              false
+            assert match?({:ok, %{verified: true}}, result) == live
+            live
 
-            :expire ->
-              [proof] = Ledger.read!(Verification, id: Security.jti(actor))
-              Ledger.update!(proof, :verify, %{elevated_until: Ledger.now()})
-              false
+          :lock ->
+            action(actor, :lock)
+            false
 
-            :generation ->
-              current = Security.current(actor.id)
+          :expire ->
+            [proof] = Ledger.read!(Verification, id: Security.jti(actor))
+            Ledger.update!(proof, :verify, %{elevated_until: Ledger.now()})
+            false
 
-              Ledger.update!(current, :security_state, %{
-                mfa_generation: current.mfa_generation + 1
-              })
+          :generation ->
+            current = Security.current(actor.id)
 
-              false
+            Ledger.update!(current, :security_state, %{
+              mfa_generation: current.mfa_generation + 1
+            })
 
-            :revoke ->
-              AshAuthentication.TokenResource.Actions.revoke(Marshall.Accounts.Token, token)
-              false
-          end
+            false
 
-        live = live and event != :revoke
-        assert Security.recent?(actor) == (live and elevated)
-        {live, elevated}
-      end)
-    end
+          :revoke ->
+            AshAuthentication.TokenResource.Actions.revoke(Marshall.Accounts.Token, token)
+            false
+        end
+
+      live = live and event != :revoke
+      assert Security.recent?(actor) == (live and elevated)
+      {live, elevated}
+    end)
   end
 
   test "real WebAuthn enrollment and assertion enable session-specific MFA and admin elevation" do

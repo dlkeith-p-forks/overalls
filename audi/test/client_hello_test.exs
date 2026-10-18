@@ -29,9 +29,8 @@ defmodule Audi.Inception.ClientHelloTest do
   end
 
   property "malformed hello bodies fail without raising" do
-    check all(bytes <- binary(max_length: 65536)) do
-      assert {:error, :invalid_client_hello} = ClientHello.parse(bytes)
-    end
+    bytes = draw("bytes", binary(max_length: 65536))
+    assert {:error, :invalid_client_hello} = ClientHello.parse(bytes)
   end
 
   test "fragmented records preserve all original bytes" do

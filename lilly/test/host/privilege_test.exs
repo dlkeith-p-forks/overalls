@@ -29,15 +29,19 @@ defmodule Lilly.Host.PrivilegeTest do
     path: path,
     owner: owner
   } do
-    check all(service <- one_of([constant(owner), integer(0..1_262_142)])) do
-      :persistent_term.put(@key, service)
-      {:ok, %File.Stat{uid: reported}} = Privilege.lstat(path)
-      {:ok, %File.Stat{uid: stat_reported}} = Privilege.stat(path)
+    Hegel.check(
+      fn ->
+        service = draw("service", one_of([constant(owner), integer(0..1_262_142)]))
+        :persistent_term.put(@key, service)
+        {:ok, %File.Stat{uid: reported}} = Privilege.lstat(path)
+        {:ok, %File.Stat{uid: stat_reported}} = Privilege.stat(path)
 
-      expected = if owner == 0 or owner == service, do: 0, else: owner
-      assert reported == expected
-      assert stat_reported == expected
-    end
+        expected = if owner == 0 or owner == service, do: 0, else: owner
+        assert reported == expected
+        assert stat_reported == expected
+      end,
+      []
+    )
   end
 
   test "without a configured service uid nothing but root is trusted", %{

@@ -18,17 +18,17 @@ defmodule Marshall.Ingress.FleetACMETest do
              Request.restore("other.example.test", request.der, request.private_key_pem)
   end
 
-  property "account identity is derived from the saved scalar", test_cases: 40 do
-    check all(bytes <- binary(length: 32), test_cases: 40) do
-      case AccountKey.from_private(bytes) do
-        {:ok, key} ->
-          assert {:ok, recovered} = AccountKey.from_private(key.private)
-          assert recovered.thumbprint == key.thumbprint
-          refute inspect(key) =~ Base.encode16(bytes, case: :lower)
+  property "account identity is derived from the saved scalar", test_cases: 100 do
+    bytes = draw("bytes", binary(length: 32))
 
-        {:error, :invalid_account_key} ->
-          :ok
-      end
+    case AccountKey.from_private(bytes) do
+      {:ok, key} ->
+        assert {:ok, recovered} = AccountKey.from_private(key.private)
+        assert recovered.thumbprint == key.thumbprint
+        refute inspect(key) =~ Base.encode16(bytes, case: :lower)
+
+      {:error, :invalid_account_key} ->
+        :ok
     end
   end
 

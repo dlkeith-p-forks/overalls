@@ -34,147 +34,148 @@ defmodule Marshall.Compute.RelocationCompetingHistoryTest do
   # the competitor's complete allocation records. This is database authority
   # with synthetic outcomes, not evidence that native streams have ceased.
   property "competing relocation admission follows both endpoint stream receipts",
-    test_cases: 12 do
-    check all(
-            source_first? <- boolean(),
-            wrong_epoch? <- boolean(),
-            repeats <- member_of([1, 2, 4]),
-            history <-
-              list_of(member_of([:failed_batch, :poll, :advance, :cancel]),
-                min_length: 4,
-                max_length: 12
-              ),
-            test_cases: 12
-          ) do
-      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+    test_cases: 100 do
+    source_first? = draw("source_first?", boolean())
+    wrong_epoch? = draw("wrong_epoch?", boolean())
+    repeats = draw("repeats", member_of([1, 2, 4]))
 
-      try do
-        source = roomy_host()
-        owner = user()
-        incumbent = stopped_workload(owner)
-        competitor = stopped_workload(owner)
-        assert incumbent.host_id == source.host.id
-        assert competitor.host_id == source.host.id
-        destination = roomy_host()
-        source_connection = connection(source.host)
-        destination_connection = connection(destination.host)
-        refresh(source, source_connection, 3)
-        refresh(destination, destination_connection, 3)
-
-        assert {:ok, original} =
-                 Compute.relocate(
-                   %{vm_id: incumbent.id, idempotency_key: Ash.UUID.generate()},
-                   actor: owner
-                 )
-
-        assert original.source_host_id == source.host.id
-        assert original.destination_host_id == destination.host.id
-        assert length(slots(original)) == 2
-        assert Enum.all?(slots(original), &is_nil(&1.released_at))
-        original_slot_ids = Enum.map(slots(original), & &1.id) |> Enum.sort()
-        competing_args = %{vm_id: competitor.id, idempotency_key: Ash.UUID.generate()}
-        refuse(competing_args, owner, repeats)
-
-        assert {:ok, cancelled} =
-                 Compute.cancel_relocation(%{relocation_id: original.id}, actor: owner)
-
-        assert cancelled.cancellation_requested_at
-
-        source_receipt = %{
-          id: original.id,
-          placement_id: original.source_placement_id,
-          execution_epoch: original.source_epoch
-        }
-
-        destination_receipt = %{
-          id: original.id,
-          placement_id: original.destination_placement_id,
-          execution_epoch: original.destination_epoch
-        }
-
-        offer(:source, source_connection, source_receipt)
-        offer(:destination, destination_connection, destination_receipt)
-
-        for {side, channel, receipt} <- [
-              {:source, source_connection, source_receipt},
-              {:destination, destination_connection, destination_receipt}
-            ] do
-          wrong =
-            if wrong_epoch?,
-              do: %{receipt | execution_epoch: receipt.execution_epoch + 1},
-              else: %{receipt | placement_id: Ash.UUID.generate()}
-
-          before = inventory()
-          assert {:error, :invalid_outcome} = exchange(side, channel, [wrong])
-          assert inventory() == before
-        end
-
-        endpoints = [
-          {:source, source_connection, source_receipt},
-          {:destination, destination_connection, destination_receipt}
-        ]
-
-        receipt_history(
-          [:failed_batch, :poll, :advance, :cancel] ++ history,
-          endpoints,
-          original,
-          owner,
-          false
+    history =
+      draw(
+        "history",
+        list_of(member_of([:failed_batch, :poll, :advance, :cancel]),
+          min_length: 4,
+          max_length: 12
         )
+      )
 
-        [first, second] = if source_first?, do: endpoints, else: Enum.reverse(endpoints)
-        {side, channel, receipt} = first
-        assert {:ok, _} = exchange(side, channel, [receipt])
-        advance(original, repeats)
-        assert Enum.all?(slots(original), &is_nil(&1.released_at))
-        refuse(competing_args, owner, repeats)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
 
-        receipt_history(
-          [:failed_batch, :poll, :advance, :cancel] ++ history,
-          [first],
-          original,
-          owner,
-          true
-        )
+    try do
+      source = roomy_host()
+      owner = user()
+      incumbent = stopped_workload(owner)
+      competitor = stopped_workload(owner)
+      assert incumbent.host_id == source.host.id
+      assert competitor.host_id == source.host.id
+      destination = roomy_host()
+      source_connection = connection(source.host)
+      destination_connection = connection(destination.host)
+      refresh(source, source_connection, 3)
+      refresh(destination, destination_connection, 3)
 
-        {side, channel, receipt} = second
-        assert {:ok, _} = exchange(side, channel, [receipt])
-        assert Enum.all?(slots(original), &is_nil(&1.released_at))
-        advance(original, repeats)
-        released = slots(original)
-        assert Enum.sort(Enum.map(released, & &1.id)) == original_slot_ids
-        assert Enum.all?(released, &match?(%DateTime{}, &1.released_at))
-        [pending] = Ledger.read!(Relocation, id: original.id)
-        assert pending.source_restored_at == nil
-        assert pending.destination_cleaned_at == nil
-        assert pending.finished_at == nil
+      assert {:ok, original} =
+               Compute.relocate(
+                 %{vm_id: incumbent.id, idempotency_key: Ash.UUID.generate()},
+                 actor: owner
+               )
 
-        refresh(source, source_connection, 4)
-        refresh(destination, destination_connection, 4)
-        assert {:ok, admitted} = Compute.relocate(competing_args, actor: owner)
-        assert admitted.vm_id == competitor.id
-        assert admitted.source_host_id == source.host.id
-        assert admitted.destination_host_id == destination.host.id
-        assert length(slots(admitted)) == 2
-        assert Enum.all?(slots(admitted), &is_nil(&1.released_at))
-        assert length(Ledger.read!(WorkloadPlacement, vm_id: competitor.id)) == 2
-        assert length(Ledger.read!(Reservation, vm_id: competitor.id)) == 2
-        allocations = inventory()
+      assert original.source_host_id == source.host.id
+      assert original.destination_host_id == destination.host.id
+      assert length(slots(original)) == 2
+      assert Enum.all?(slots(original), &is_nil(&1.released_at))
+      original_slot_ids = Enum.map(slots(original), & &1.id) |> Enum.sort()
+      competing_args = %{vm_id: competitor.id, idempotency_key: Ash.UUID.generate()}
+      refuse(competing_args, owner, repeats)
 
-        for _ <- 1..repeats do
-          for {side, channel, receipt} <- endpoints,
-              do: assert({:ok, _} = exchange(side, channel, [receipt]))
+      assert {:ok, cancelled} =
+               Compute.cancel_relocation(%{relocation_id: original.id}, actor: owner)
 
-          advance(original, 1)
-          assert slots(original) == released
-          assert inventory() == allocations
-          assert {:ok, replay} = Compute.relocate(competing_args, actor: owner)
-          assert replay.id == admitted.id
-          assert inventory() == allocations
-        end
-      after
-        :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
+      assert cancelled.cancellation_requested_at
+
+      source_receipt = %{
+        id: original.id,
+        placement_id: original.source_placement_id,
+        execution_epoch: original.source_epoch
+      }
+
+      destination_receipt = %{
+        id: original.id,
+        placement_id: original.destination_placement_id,
+        execution_epoch: original.destination_epoch
+      }
+
+      offer(:source, source_connection, source_receipt)
+      offer(:destination, destination_connection, destination_receipt)
+
+      for {side, channel, receipt} <- [
+            {:source, source_connection, source_receipt},
+            {:destination, destination_connection, destination_receipt}
+          ] do
+        wrong =
+          if wrong_epoch?,
+            do: %{receipt | execution_epoch: receipt.execution_epoch + 1},
+            else: %{receipt | placement_id: Ash.UUID.generate()}
+
+        before = inventory()
+        assert {:error, :invalid_outcome} = exchange(side, channel, [wrong])
+        assert inventory() == before
       end
+
+      endpoints = [
+        {:source, source_connection, source_receipt},
+        {:destination, destination_connection, destination_receipt}
+      ]
+
+      receipt_history(
+        [:failed_batch, :poll, :advance, :cancel] ++ history,
+        endpoints,
+        original,
+        owner,
+        false
+      )
+
+      [first, second] = if source_first?, do: endpoints, else: Enum.reverse(endpoints)
+      {side, channel, receipt} = first
+      assert {:ok, _} = exchange(side, channel, [receipt])
+      advance(original, repeats)
+      assert Enum.all?(slots(original), &is_nil(&1.released_at))
+      refuse(competing_args, owner, repeats)
+
+      receipt_history(
+        [:failed_batch, :poll, :advance, :cancel] ++ history,
+        [first],
+        original,
+        owner,
+        true
+      )
+
+      {side, channel, receipt} = second
+      assert {:ok, _} = exchange(side, channel, [receipt])
+      assert Enum.all?(slots(original), &is_nil(&1.released_at))
+      advance(original, repeats)
+      released = slots(original)
+      assert Enum.sort(Enum.map(released, & &1.id)) == original_slot_ids
+      assert Enum.all?(released, &match?(%DateTime{}, &1.released_at))
+      [pending] = Ledger.read!(Relocation, id: original.id)
+      assert pending.source_restored_at == nil
+      assert pending.destination_cleaned_at == nil
+      assert pending.finished_at == nil
+
+      refresh(source, source_connection, 4)
+      refresh(destination, destination_connection, 4)
+      assert {:ok, admitted} = Compute.relocate(competing_args, actor: owner)
+      assert admitted.vm_id == competitor.id
+      assert admitted.source_host_id == source.host.id
+      assert admitted.destination_host_id == destination.host.id
+      assert length(slots(admitted)) == 2
+      assert Enum.all?(slots(admitted), &is_nil(&1.released_at))
+      assert length(Ledger.read!(WorkloadPlacement, vm_id: competitor.id)) == 2
+      assert length(Ledger.read!(Reservation, vm_id: competitor.id)) == 2
+      allocations = inventory()
+
+      for _ <- 1..repeats do
+        for {side, channel, receipt} <- endpoints,
+            do: assert({:ok, _} = exchange(side, channel, [receipt]))
+
+        advance(original, 1)
+        assert slots(original) == released
+        assert inventory() == allocations
+        assert {:ok, replay} = Compute.relocate(competing_args, actor: owner)
+        assert replay.id == admitted.id
+        assert inventory() == allocations
+      end
+    after
+      :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
     end
   end
 

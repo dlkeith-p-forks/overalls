@@ -129,11 +129,15 @@ defmodule Marshall.Ingress.PublicationsTest do
   test "stale execution generations never publish retained route rows", c do
     [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
 
-    check all(increment <- integer(1..10_000), test_cases: 20) do
-      Ledger.intent!(vm, %{generation: vm.generation + increment})
-      assert {:ok, %{routes: [], proofs: []}} = snapshot(c)
-      assert {:error, _} = Ingress.current_route(%{label: c.route.label}, actor: actor())
-    end
+    Hegel.check(
+      fn ->
+        increment = draw("increment", integer(1..10000))
+        Ledger.intent!(vm, %{generation: vm.generation + increment})
+        assert {:ok, %{routes: [], proofs: []}} = snapshot(c)
+        assert {:error, _} = Ingress.current_route(%{label: c.route.label}, actor: actor())
+      end,
+      test_cases: 100
+    )
   end
 
   test "real HTTPS API and Audi receiver populate a local DNS directory", c do

@@ -39,8 +39,10 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # model MUST retain every accepted identity across failed retries, cancellation,
   # name release and authorization changes, and compare durable side effects.
   # Operation inventories MUST compare complete rows without relying on query order.
+  @tag :hegel_case_sandbox
   property "queue histories retain identities while authority and retry eligibility change",
-    test_cases: 16 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     fixture = host_fixture()
     owner = user()
     manager = user()
@@ -54,35 +56,34 @@ defmodule Marshall.Compute.CloneHistoryTest do
         tuple({member_of([:submit, :cancel, :retry, :advance, :conflict]), integer(1..4)})
       ])
 
-    check all(history <- list_of(commands, min_length: 8, max_length: 28), test_cases: 16) do
-      prefix = Ash.UUID.generate()
-      context = %{owner: owner, actor: manager, vm: vm, prefix: prefix}
-      grant(context, :manager)
-      model = %{authorized: true, requests: %{}, queue: []}
-      # Every generated run reaches a failed retry, a cancellation, and a revoked
-      # replay before exploring its additional command history.
-      required = [
-        {:submit, 1},
-        {:advance, 1},
-        {:retry, 1},
-        :revoke,
-        {:submit, 1},
-        :grant,
-        {:cancel, 1},
-        {:retry, 1}
-      ]
+    history = draw("history", list_of(commands, min_length: 8, max_length: 28))
+    prefix = Ash.UUID.generate()
+    context = %{owner: owner, actor: manager, vm: vm, prefix: prefix}
+    grant(context, :manager)
+    model = %{authorized: true, requests: %{}, queue: []}
+    # Every generated run reaches a failed retry, a cancellation, and a revoked
+    # replay before exploring its additional command history.
+    required = [
+      {:submit, 1},
+      {:advance, 1},
+      {:retry, 1},
+      :revoke,
+      {:submit, 1},
+      :grant,
+      {:cancel, 1},
+      {:retry, 1}
+    ]
 
-      final = Enum.reduce(required ++ history, model, &step(&1, &2, context))
-      grant(context, :manager)
+    final = Enum.reduce(required ++ history, model, &step(&1, &2, context))
+    grant(context, :manager)
 
-      for {_key, entry} <- final.requests,
-          do: assert({:ok, _} = Compute.cancel_clone(%{request_id: entry.id}, actor: manager))
+    for {_key, entry} <- final.requests,
+        do: assert({:ok, _} = Compute.cancel_clone(%{request_id: entry.id}, actor: manager))
 
-      assert MapSet.new(Ledger.read!(Operation, vm_id: vm.id)) == MapSet.new(operations)
-      assert Ledger.read!(Reservation, vm_id: vm.id) == holds
-      assert Ledger.read!(VirtualMachine, owner_id: manager.id) == []
-      assert Ledger.read!(TransferSlot, host_id: fixture.host.id) == []
-    end
+    assert MapSet.new(Ledger.read!(Operation, vm_id: vm.id)) == MapSet.new(operations)
+    assert Ledger.read!(Reservation, vm_id: vm.id) == holds
+    assert Ledger.read!(VirtualMachine, owner_id: manager.id) == []
+    assert Ledger.read!(TransferSlot, host_id: fixture.host.id) == []
   end
 
   @spec step(command(), model(), context()) :: model()
@@ -273,101 +274,102 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # publishing or fabricating a snapshot. Only an intent-bound successful receipt
   # may clear the diagnostic and allow the coordinator to record that snapshot.
   # Operation inventories MUST compare complete rows without relying on query order.
+  @tag :hegel_case_sandbox
   property "unconfirmed capture retries the same effect until a bound receipt clears progress",
-    test_cases: 8 do
-    check all(attempts <- integer(1..4), test_cases: 8) do
-      fixture = host_fixture()
-      owner = user()
-      {:ok, vm} = Compute.provision(request(), actor: owner)
-      [provision] = Ledger.read!(Operation, vm_id: vm.id)
-      Fixture.settle(vm, provision, :running)
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    attempts = draw("attempts", integer(1..4))
+    fixture = host_fixture()
+    owner = user()
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    [provision] = Ledger.read!(Operation, vm_id: vm.id)
+    Fixture.settle(vm, provision, :running)
 
-      {:ok, clone} =
-        Compute.clone(%{vm_id: vm.id, idempotency_key: Ash.UUID.generate()}, actor: owner)
+    {:ok, clone} =
+      Compute.clone(%{vm_id: vm.id, idempotency_key: Ash.UUID.generate()}, actor: owner)
 
-      reach(clone.id, :capturing)
+    reach(clone.id, :capturing)
+    Fixture.advance(clone.id)
+    [capture] = Ledger.read!(CloneEffect, clone_request_id: clone.id, kind: :capture)
+    {:ok, credential} = Marshall.Compute.Credentials.rotate(fixture.host.id, 3600)
+    session = Ash.UUID.generate()
+
+    {:ok, opened} =
+      Marshall.Compute.ProvisionerControl.open_execution(credential.token, %{
+        session_id: session,
+        machine_id: fixture.host.machine_id
+      })
+
+    message = %{session_id: session, epoch: opened["epoch"], results: []}
+    assert {:ok, %{"commands" => [offered]}} = CloneEffects.exchange(credential.token, message)
+    assert offered["id"] == capture.id
+    holds = capture_holds(vm.id, clone.destination_vm_id)
+    slots = Ledger.read!(TransferSlot, clone_request_id: clone.id)
+    operations = Ledger.read!(Operation, vm_id: vm.id)
+
+    uncertain = %{
+      "id" => capture.id,
+      "kind" => "capture",
+      "result" => %{"error" => "unconfirmed", "reason" => "snapshot_unconfirmed"}
+    }
+
+    for _attempt <- 1..attempts do
+      assert {:ok, %{"commands" => [retry], "acknowledgements" => [id]}} =
+               CloneEffects.exchange(credential.token, %{message | results: [uncertain]})
+
+      assert id == capture.id and retry["id"] == capture.id
+      assert retry["intent"] == offered["intent"]
       Fixture.advance(clone.id)
-      [capture] = Ledger.read!(CloneEffect, clone_request_id: clone.id, kind: :capture)
-      {:ok, credential} = Marshall.Compute.Credentials.rotate(fixture.host.id, 3600)
-      session = Ash.UUID.generate()
-
-      {:ok, opened} =
-        Marshall.Compute.ProvisionerControl.open_execution(credential.token, %{
-          session_id: session,
-          machine_id: fixture.host.machine_id
-        })
-
-      message = %{session_id: session, epoch: opened["epoch"], results: []}
-      assert {:ok, %{"commands" => [offered]}} = CloneEffects.exchange(credential.token, message)
-      assert offered["id"] == capture.id
-      holds = capture_holds(vm.id, clone.destination_vm_id)
-      slots = Ledger.read!(TransferSlot, clone_request_id: clone.id)
-      operations = Ledger.read!(Operation, vm_id: vm.id)
-
-      uncertain = %{
-        "id" => capture.id,
-        "kind" => "capture",
-        "result" => %{"error" => "unconfirmed", "reason" => "snapshot_unconfirmed"}
-      }
-
-      for _attempt <- 1..attempts do
-        assert {:ok, %{"commands" => [retry], "acknowledgements" => [id]}} =
-                 CloneEffects.exchange(credential.token, %{message | results: [uncertain]})
-
-        assert id == capture.id and retry["id"] == capture.id
-        assert retry["intent"] == offered["intent"]
-        Fixture.advance(clone.id)
-        current = Fixture.request(clone.id)
-        assert current.phase == :capturing and current.failure == "capture_snapshot_unconfirmed"
-        assert current.destination_vm_id == clone.destination_vm_id
-
-        assert current.snapshot == nil and current.published_at == nil and
-                 current.finished_at == nil
-
-        [pending] = Ledger.read!(CloneEffect, id: capture.id)
-        assert pending.result == nil and pending.completed_at == nil
-        assert capture_holds(vm.id, clone.destination_vm_id) == holds
-        assert Ledger.read!(TransferSlot, clone_request_id: clone.id) == slots
-        assert MapSet.new(Ledger.read!(Operation, vm_id: vm.id)) == MapSet.new(operations)
-        assert Ledger.read!(Operation, vm_id: clone.destination_vm_id) == []
-      end
-
-      descriptor =
-        Map.put(offered["intent"], "stream", %{
-          "source_dataset_guid" => "100",
-          "to_guid" => "101"
-        })
-
-      assert {:ok, _} = OverallsProtocol.DiskTransfer.descriptor(descriptor)
-      receipt = %{uncertain | "result" => %{"descriptor" => descriptor}}
-
-      assert {:ok, %{"acknowledgements" => [id]}} =
-               CloneEffects.exchange(credential.token, %{message | results: [receipt]})
-
-      assert id == capture.id
-      [confirmed] = Ledger.read!(CloneEffect, id: capture.id)
-      assert confirmed.result == receipt["result"] and confirmed.completed_at != nil
       current = Fixture.request(clone.id)
-      assert current.failure == nil and current.phase == :capturing
-      assert current.snapshot == nil and current.published_at == nil
+      assert current.phase == :capturing and current.failure == "capture_snapshot_unconfirmed"
+      assert current.destination_vm_id == clone.destination_vm_id
+
+      assert current.snapshot == nil and current.published_at == nil and
+               current.finished_at == nil
+
+      [pending] = Ledger.read!(CloneEffect, id: capture.id)
+      assert pending.result == nil and pending.completed_at == nil
       assert capture_holds(vm.id, clone.destination_vm_id) == holds
       assert Ledger.read!(TransferSlot, clone_request_id: clone.id) == slots
-
-      # Duplicate success and a late old uncertain receipt cannot erase the
-      # retained capture or restore its cleared diagnostic.
-      for replay <- [receipt, uncertain] do
-        assert {:ok, _} = CloneEffects.exchange(credential.token, %{message | results: [replay]})
-        assert Fixture.request(clone.id).failure == nil
-        assert Ledger.read!(CloneEffect, id: capture.id) == [confirmed]
-      end
-
-      Fixture.advance(clone.id)
-      current = Fixture.request(clone.id)
-      assert current.phase == :copying and current.snapshot == receipt["result"]
-      assert current.failure == nil and current.published_at == nil
-      assert current.destination_vm_id == clone.destination_vm_id
-      Fixture.cleanup(fixture.host.id, owner.id)
+      assert MapSet.new(Ledger.read!(Operation, vm_id: vm.id)) == MapSet.new(operations)
+      assert Ledger.read!(Operation, vm_id: clone.destination_vm_id) == []
     end
+
+    descriptor =
+      Map.put(offered["intent"], "stream", %{
+        "source_dataset_guid" => "100",
+        "to_guid" => "101"
+      })
+
+    assert {:ok, _} = OverallsProtocol.DiskTransfer.descriptor(descriptor)
+    receipt = %{uncertain | "result" => %{"descriptor" => descriptor}}
+
+    assert {:ok, %{"acknowledgements" => [id]}} =
+             CloneEffects.exchange(credential.token, %{message | results: [receipt]})
+
+    assert id == capture.id
+    [confirmed] = Ledger.read!(CloneEffect, id: capture.id)
+    assert confirmed.result == receipt["result"] and confirmed.completed_at != nil
+    current = Fixture.request(clone.id)
+    assert current.failure == nil and current.phase == :capturing
+    assert current.snapshot == nil and current.published_at == nil
+    assert capture_holds(vm.id, clone.destination_vm_id) == holds
+    assert Ledger.read!(TransferSlot, clone_request_id: clone.id) == slots
+
+    # Duplicate success and a late old uncertain receipt cannot erase the
+    # retained capture or restore its cleared diagnostic.
+    for replay <- [receipt, uncertain] do
+      assert {:ok, _} = CloneEffects.exchange(credential.token, %{message | results: [replay]})
+      assert Fixture.request(clone.id).failure == nil
+      assert Ledger.read!(CloneEffect, id: capture.id) == [confirmed]
+    end
+
+    Fixture.advance(clone.id)
+    current = Fixture.request(clone.id)
+    assert current.phase == :copying and current.snapshot == receipt["result"]
+    assert current.failure == nil and current.published_at == nil
+    assert current.destination_vm_id == clone.destination_vm_id
+    Fixture.cleanup(fixture.host.id, owner.id)
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] clone-effect-uncertainty-retains-commitments
@@ -376,8 +378,10 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # receipts. Matching success MUST clear its label; duplicate success and late
   # uncertainty MUST NOT erase completion or recreate progress failure.
   # Operation inventories MUST compare complete rows without relying on query order.
+  @tag :hegel_case_sandbox
   property "forward and cleanup uncertainty await the same bound effect without releasing holds",
-    test_cases: 4 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     cases = [
       {:prepare, :destination},
       {:probe, :source},
@@ -390,99 +394,99 @@ defmodule Marshall.Compute.CloneHistoryTest do
       {:prune, :source}
     ]
 
-    check all(attempts <- integer(1..3), test_cases: 4) do
-      for {kind, endpoint} <- cases do
-        fixture = host_fixture()
-        owner = user()
-        {:ok, vm} = Compute.provision(request(), actor: owner)
-        [provision] = Ledger.read!(Operation, vm_id: vm.id)
-        Fixture.settle(vm, provision, :running)
+    attempts = draw("attempts", integer(1..3))
 
-        {:ok, clone} =
-          Compute.clone(%{vm_id: vm.id, idempotency_key: Ash.UUID.generate()}, actor: owner)
+    for {kind, endpoint} <- cases do
+      fixture = host_fixture()
+      owner = user()
+      {:ok, vm} = Compute.provision(request(), actor: owner)
+      [provision] = Ledger.read!(Operation, vm_id: vm.id)
+      Fixture.settle(vm, provision, :running)
 
-        reach_effect(clone.id, kind, owner)
+      {:ok, clone} =
+        Compute.clone(%{vm_id: vm.id, idempotency_key: Ash.UUID.generate()}, actor: owner)
 
-        [effect] =
-          Ledger.read!(CloneEffect, clone_request_id: clone.id, kind: kind, endpoint: endpoint)
+      reach_effect(clone.id, kind, owner)
 
-        {:ok, credential} = Marshall.Compute.Credentials.rotate(fixture.host.id, 3600)
-        session = Ash.UUID.generate()
+      [effect] =
+        Ledger.read!(CloneEffect, clone_request_id: clone.id, kind: kind, endpoint: endpoint)
 
-        {:ok, opened} =
-          Marshall.Compute.ProvisionerControl.open_execution(credential.token, %{
-            session_id: session,
-            machine_id: fixture.host.machine_id
-          })
+      {:ok, credential} = Marshall.Compute.Credentials.rotate(fixture.host.id, 3600)
+      session = Ash.UUID.generate()
 
-        message = %{session_id: session, epoch: opened["epoch"], results: []}
-        assert {:ok, %{"commands" => commands}} = CloneEffects.exchange(credential.token, message)
-        offered = Enum.find(commands, &(&1["id"] == effect.id))
-        assert offered
-        before = Fixture.request(clone.id)
-        holds = capture_holds(vm.id, clone.destination_vm_id)
-        slots = Ledger.read!(TransferSlot, clone_request_id: clone.id)
-        operations = Ledger.read!(Operation, vm_id: vm.id)
+      {:ok, opened} =
+        Marshall.Compute.ProvisionerControl.open_execution(credential.token, %{
+          session_id: session,
+          machine_id: fixture.host.machine_id
+        })
 
-        uncertain = %{
-          "id" => effect.id,
-          "kind" => Atom.to_string(kind),
-          "result" => %{"error" => "unconfirmed", "reason" => "effect_unconfirmed"}
-        }
+      message = %{session_id: session, epoch: opened["epoch"], results: []}
+      assert {:ok, %{"commands" => commands}} = CloneEffects.exchange(credential.token, message)
+      offered = Enum.find(commands, &(&1["id"] == effect.id))
+      assert offered
+      before = Fixture.request(clone.id)
+      holds = capture_holds(vm.id, clone.destination_vm_id)
+      slots = Ledger.read!(TransferSlot, clone_request_id: clone.id)
+      operations = Ledger.read!(Operation, vm_id: vm.id)
 
-        for _attempt <- 1..attempts do
-          assert {:ok, %{"commands" => retries, "acknowledgements" => [id]}} =
-                   CloneEffects.exchange(credential.token, %{message | results: [uncertain]})
+      uncertain = %{
+        "id" => effect.id,
+        "kind" => Atom.to_string(kind),
+        "result" => %{"error" => "unconfirmed", "reason" => "effect_unconfirmed"}
+      }
 
-          assert id == effect.id
-          retry = Enum.find(retries, &(&1["id"] == effect.id))
-          assert retry && retry["intent"] == offered["intent"]
-          Fixture.advance(clone.id)
-          current = Fixture.request(clone.id)
-          assert current.failure == "#{kind}_effect_unconfirmed" and current.phase == before.phase
+      for _attempt <- 1..attempts do
+        assert {:ok, %{"commands" => retries, "acknowledgements" => [id]}} =
+                 CloneEffects.exchange(credential.token, %{message | results: [uncertain]})
 
-          assert current.snapshot == before.snapshot and
-                   current.destination_vm_id == clone.destination_vm_id
+        assert id == effect.id
+        retry = Enum.find(retries, &(&1["id"] == effect.id))
+        assert retry && retry["intent"] == offered["intent"]
+        Fixture.advance(clone.id)
+        current = Fixture.request(clone.id)
+        assert current.failure == "#{kind}_effect_unconfirmed" and current.phase == before.phase
 
-          assert current.published_at == nil and current.finished_at == nil
-          [pending] = Ledger.read!(CloneEffect, id: effect.id)
+        assert current.snapshot == before.snapshot and
+                 current.destination_vm_id == clone.destination_vm_id
 
-          assert pending.status == :offered and pending.result == nil and
-                   pending.completed_at == nil
+        assert current.published_at == nil and current.finished_at == nil
+        [pending] = Ledger.read!(CloneEffect, id: effect.id)
 
-          assert pending.payload == effect.payload
-          assert capture_holds(vm.id, clone.destination_vm_id) == holds
-          assert Ledger.read!(TransferSlot, clone_request_id: clone.id) == slots
-          assert MapSet.new(Ledger.read!(Operation, vm_id: vm.id)) == MapSet.new(operations)
-          assert Ledger.read!(Operation, vm_id: clone.destination_vm_id) == []
-        end
+        assert pending.status == :offered and pending.result == nil and
+                 pending.completed_at == nil
 
-        result =
-          case kind do
-            :prepare -> %{"public_key" => transfer_endpoint()["host_key"]}
-            :copy -> %{"dataset_guid" => "102"}
-            _ -> %{}
-          end
-
-        receipt = %{uncertain | "result" => result}
-        assert {:ok, _} = CloneEffects.exchange(credential.token, %{message | results: [receipt]})
-        [confirmed] = Ledger.read!(CloneEffect, id: effect.id)
-
-        assert confirmed.status == :completed and confirmed.completed_at != nil and
-                 confirmed.result == result
-
-        for replay <- [receipt, uncertain] do
-          assert {:ok, _} =
-                   CloneEffects.exchange(credential.token, %{message | results: [replay]})
-
-          assert Fixture.request(clone.id).failure == nil
-          assert Ledger.read!(CloneEffect, id: effect.id) == [confirmed]
-        end
-
+        assert pending.payload == effect.payload
         assert capture_holds(vm.id, clone.destination_vm_id) == holds
         assert Ledger.read!(TransferSlot, clone_request_id: clone.id) == slots
-        Fixture.cleanup(fixture.host.id, owner.id)
+        assert MapSet.new(Ledger.read!(Operation, vm_id: vm.id)) == MapSet.new(operations)
+        assert Ledger.read!(Operation, vm_id: clone.destination_vm_id) == []
       end
+
+      result =
+        case kind do
+          :prepare -> %{"public_key" => transfer_endpoint()["host_key"]}
+          :copy -> %{"dataset_guid" => "102"}
+          _ -> %{}
+        end
+
+      receipt = %{uncertain | "result" => result}
+      assert {:ok, _} = CloneEffects.exchange(credential.token, %{message | results: [receipt]})
+      [confirmed] = Ledger.read!(CloneEffect, id: effect.id)
+
+      assert confirmed.status == :completed and confirmed.completed_at != nil and
+               confirmed.result == result
+
+      for replay <- [receipt, uncertain] do
+        assert {:ok, _} =
+                 CloneEffects.exchange(credential.token, %{message | results: [replay]})
+
+        assert Fixture.request(clone.id).failure == nil
+        assert Ledger.read!(CloneEffect, id: effect.id) == [confirmed]
+      end
+
+      assert capture_holds(vm.id, clone.destination_vm_id) == holds
+      assert Ledger.read!(TransferSlot, clone_request_id: clone.id) == slots
+      Fixture.cleanup(fixture.host.id, owner.id)
     end
   end
 
@@ -553,83 +557,88 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # Cancellation histories MUST retain source/destination holds until both native
   # endpoints, destination discard, snapshot prune and source restoration have
   # supplied evidence. Revoked user actions MUST fail while admitted recovery runs.
+  @tag :hegel_case_sandbox
   property "cancellation retains obligations through reordered evidence and revoked requester",
-    test_cases: 16 do
-    check all(
-            boundary <- member_of([:preparing, :stopping, :capturing, :copying, :publishing]),
-            revoke? <- boolean(),
-            commands <-
-              list_of(
-                member_of([
-                  :advance,
-                  :replay,
-                  :revoke_source,
-                  :revoke_destination,
-                  :discard,
-                  :prune,
-                  :restore
-                ]),
-                min_length: 5,
-                max_length: 20
-              ),
-            test_cases: 16
-          ) do
-      host = host_fixture()
-      owner = user()
-      actor = user()
-      {:ok, vm} = Compute.provision(request(), actor: owner)
-      [provision] = Ledger.read!(Operation, vm_id: vm.id)
-      Fixture.settle(vm, provision, :running)
-      context = %{owner: owner, actor: actor, vm: vm}
-      grant(context, :manager)
-      args = %{vm_id: vm.id, idempotency_key: Ash.UUID.generate()}
-      {:ok, clone} = Compute.clone(args, actor: actor)
-      reach(clone.id, boundary)
-      snapshot = Fixture.request(clone.id).snapshot
-      assert {:ok, _} = Compute.cancel_clone(%{request_id: clone.id}, actor: actor)
-      if revoke?, do: grant(context, :revoked)
-      Fixture.advance(clone.id)
-      initial = if boundary == :preparing, do: MapSet.new([:restore]), else: MapSet.new()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    boundary =
+      draw("boundary", member_of([:preparing, :stopping, :capturing, :copying, :publishing]))
 
-      final_commands = [
-        :restore,
-        :restore,
-        :revoke_source,
-        :revoke_destination,
-        :discard,
-        :prune,
-        :advance
-      ]
+    revoke? = draw("revoke?", boolean())
 
-      seen =
-        Enum.reduce(commands ++ final_commands, initial, fn command, seen ->
-          updated = cancellation_step(command, clone.id, args, actor, revoke?, seen)
-          assert_obligations(clone, vm, updated, snapshot)
-          updated
-        end)
+    commands =
+      draw(
+        "commands",
+        list_of(
+          member_of([
+            :advance,
+            :replay,
+            :revoke_source,
+            :revoke_destination,
+            :discard,
+            :prune,
+            :restore
+          ]),
+          min_length: 5,
+          max_length: 20
+        )
+      )
 
-      assert MapSet.size(seen) == 5
-      assert Fixture.request(clone.id).phase == :cancelled
-      assert {:error, _} = Compute.retry_clone(%{request_id: clone.id}, actor: actor)
-      grant(context, :manager)
-      assert {:ok, replay} = Compute.clone(args, actor: actor)
+    host = host_fixture()
+    owner = user()
+    actor = user()
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    [provision] = Ledger.read!(Operation, vm_id: vm.id)
+    Fixture.settle(vm, provision, :running)
+    context = %{owner: owner, actor: actor, vm: vm}
+    grant(context, :manager)
+    args = %{vm_id: vm.id, idempotency_key: Ash.UUID.generate()}
+    {:ok, clone} = Compute.clone(args, actor: actor)
+    reach(clone.id, boundary)
+    snapshot = Fixture.request(clone.id).snapshot
+    assert {:ok, _} = Compute.cancel_clone(%{request_id: clone.id}, actor: actor)
+    if revoke?, do: grant(context, :revoked)
+    Fixture.advance(clone.id)
+    initial = if boundary == :preparing, do: MapSet.new([:restore]), else: MapSet.new()
 
-      assert {replay.id, replay.destination_vm_id, replay.phase} ==
-               {clone.id, clone.destination_vm_id, :cancelled}
+    final_commands = [
+      :restore,
+      :restore,
+      :revoke_source,
+      :revoke_destination,
+      :discard,
+      :prune,
+      :advance
+    ]
 
-      # The old actor/key remains cancelled even after its released name is
-      # explicitly reused by another request identity.
-      assert {:ok, replacement} =
-               Compute.clone(
-                 %{args | idempotency_key: Ash.UUID.generate()} |> Map.put(:name, clone.name),
-                 actor: actor
-               )
+    seen =
+      Enum.reduce(commands ++ final_commands, initial, fn command, seen ->
+        updated = cancellation_step(command, clone.id, args, actor, revoke?, seen)
+        assert_obligations(clone, vm, updated, snapshot)
+        updated
+      end)
 
-      refute replacement.id == clone.id
-      assert {:ok, _} = Compute.cancel_clone(%{request_id: replacement.id}, actor: actor)
-      Fixture.cleanup(host.host.id, actor.id)
-      Fixture.query("DELETE FROM users WHERE id=$1", [Ecto.UUID.dump!(owner.id)])
-    end
+    assert MapSet.size(seen) == 5
+    assert Fixture.request(clone.id).phase == :cancelled
+    assert {:error, _} = Compute.retry_clone(%{request_id: clone.id}, actor: actor)
+    grant(context, :manager)
+    assert {:ok, replay} = Compute.clone(args, actor: actor)
+
+    assert {replay.id, replay.destination_vm_id, replay.phase} ==
+             {clone.id, clone.destination_vm_id, :cancelled}
+
+    # The old actor/key remains cancelled even after its released name is
+    # explicitly reused by another request identity.
+    assert {:ok, replacement} =
+             Compute.clone(
+               %{args | idempotency_key: Ash.UUID.generate()} |> Map.put(:name, clone.name),
+               actor: actor
+             )
+
+    refute replacement.id == clone.id
+    assert {:ok, _} = Compute.cancel_clone(%{request_id: replacement.id}, actor: actor)
+    Fixture.cleanup(host.host.id, actor.id)
+    Fixture.query("DELETE FROM users WHERE id=$1", [Ecto.UUID.dump!(owner.id)])
   end
 
   @spec reach(String.t(), boundary()) :: :ok
@@ -767,138 +776,136 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # destination row and offered workload descriptor against the source row
   # captured at activation. Catalog disable or rotation MUST refuse fresh
   # admission while leaving queued identity, replay and completion untouched.
+  @tag :hegel_case_sandbox
   property "generated profile and shape histories retain the captured source row through churn",
-    test_cases: 8 do
-    check all(
-            profile <- member_of([:customer, :standard, :oss]),
-            vcpu <- member_of([1, 2]),
-            memory_mib <- member_of([512, 768, 1024]),
-            disk_gib <- member_of([2, 3]),
-            churn <- member_of([:none, :disabled, :rotated]),
-            power <- member_of([:running, :stopped]),
-            test_cases: 8
-          ) do
-      budget = 34_359_738_368
-      fixture = host_fixture()
-      report_pool_capacity(fixture, budget)
-      owner = user()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    profile = draw("profile", member_of([:customer, :standard, :oss]))
+    vcpu = draw("vcpu", member_of([1, 2]))
+    memory_mib = draw("memory_mib", member_of([512, 768, 1024]))
+    disk_gib = draw("disk_gib", member_of([2, 3]))
+    churn = draw("churn", member_of([:none, :disabled, :rotated]))
+    power = draw("power", member_of([:running, :stopped]))
+    budget = 34_359_738_368
+    fixture = host_fixture()
+    report_pool_capacity(fixture, budget)
+    owner = user()
 
-      {:ok, vm} =
-        Compute.provision(
-          request(%{
-            profile: profile,
-            vcpu: vcpu,
-            memory_bytes: memory_mib * 1_048_576,
-            disk_bytes: disk_gib * 1_073_741_824
-          }),
+    {:ok, vm} =
+      Compute.provision(
+        request(%{
+          profile: profile,
+          vcpu: vcpu,
+          memory_bytes: memory_mib * 1_048_576,
+          disk_bytes: disk_gib * 1_073_741_824
+        }),
+        actor: owner
+      )
+
+    [provision] = Ledger.read!(Operation, vm_id: vm.id)
+    Fixture.settle(vm, provision, :running)
+
+    if power == :stopped do
+      {:ok, stop} =
+        Compute.lifecycle(%{vm_id: vm.id, kind: :stop, idempotency_key: Ash.UUID.generate()},
           actor: owner
         )
 
-      [provision] = Ledger.read!(Operation, vm_id: vm.id)
-      Fixture.settle(vm, provision, :running)
-
-      if power == :stopped do
-        {:ok, stop} =
-          Compute.lifecycle(%{vm_id: vm.id, kind: :stop, idempotency_key: Ash.UUID.generate()},
-            actor: owner
-          )
-
-        Fixture.settle(vm, stop, :stopped)
-      end
-
-      captured =
-        vm.id
-        |> source_row()
-        |> Map.take(@shape_keys)
-
-      case churn do
-        :disabled ->
-          [image] = Ledger.read!(Marshall.Compute.Image, id: captured.image_id)
-          Ledger.update!(image, :configure, %{enabled: false})
-
-          assert {:error, provision_error} =
-                   Compute.provision(
-                     request(%{
-                       profile: profile,
-                       vcpu: vcpu,
-                       memory_bytes: memory_mib * 1_048_576,
-                       disk_bytes: disk_gib * 1_073_741_824
-                     }),
-                     actor: owner
-                   )
-
-          assert Exception.message(provision_error) =~ "image_unavailable"
-
-        :rotated ->
-          rotated = rotated_image(captured.image_id)
-          report_inventory_images(fixture, rotated.id)
-
-        :none ->
-          :ok
-      end
-
-      key = Ash.UUID.generate()
-      {:ok, clone} = Compute.clone(%{vm_id: vm.id, idempotency_key: key}, actor: owner)
-      {:ok, replay} = Compute.clone(%{vm_id: vm.id, idempotency_key: key}, actor: owner)
-      assert {replay.id, replay.destination_vm_id} == {clone.id, clone.destination_vm_id}
-
-      drive_clone(clone.id, power, owner)
-
-      completed = Fixture.request(clone.id)
-      assert completed.phase == :complete
-      assert completed.active == false
-      assert completed.published_at && completed.finished_at
-      [destination] = Ledger.read!(VirtualMachine, id: clone.destination_vm_id)
-      assert Map.take(destination, @shape_keys) == captured
-      assert destination.id != vm.id
-      assert destination.owner_id == owner.id
-      assert Map.take(source_row(vm.id), @shape_keys) == captured
-
-      descriptor =
-        completed.specification["workload"]
-        |> Map.take(Enum.map(@shape_keys, &Atom.to_string/1))
-
-      assert descriptor ==
-               Map.new(captured, fn
-                 {shape_key, value} when is_atom(value) ->
-                   {Atom.to_string(shape_key), Atom.to_string(value)}
-
-                 {shape_key, value} ->
-                   {Atom.to_string(shape_key), value}
-               end)
-
-      assert completed.specification["source"]["vm_id"] == vm.id
-      assert completed.specification["destination"]["vm_id"] == clone.destination_vm_id
-      assert {:ok, _} = OverallsProtocol.DiskTransfer.intent(CloneEffects.intent(completed))
-
-      assert Ledger.read!(CloneEffect, clone_request_id: clone.id, kind: :capture) |> length() ==
-               1
-
-      assert Ledger.read!(TransferSlot, clone_request_id: clone.id, released_at: [is_nil: true]) ==
-               []
-
-      # Property iterations share one sandbox generation; never leak a disabled
-      # image or extra image rows into the next generated history.
-      if churn == :disabled do
-        [image] = Ledger.read!(Marshall.Compute.Image, id: captured.image_id)
-        Ledger.update!(image, :configure, %{enabled: true})
-      end
-
-      # Completed clone drives leave source/destination operations that carry the
-      # request identity; release their physical outcomes and the operation rows
-      # by requester before the shared host-scoped teardown deletes queue rows.
-      Fixture.query(
-        "DELETE FROM compute_physical_outcomes o USING compute_operations op, compute_clone_requests r WHERE op.clone_request_id = r.id AND r.requested_by_id = $1 AND o.operation_id = op.id",
-        [Ecto.UUID.dump!(owner.id)]
-      )
-
-      Fixture.query(
-        "DELETE FROM compute_operations WHERE clone_request_id IN (SELECT id FROM compute_clone_requests WHERE requested_by_id = $1)",
-        [Ecto.UUID.dump!(owner.id)]
-      )
-
-      Fixture.cleanup(fixture.host.id, owner.id)
+      Fixture.settle(vm, stop, :stopped)
     end
+
+    captured =
+      vm.id
+      |> source_row()
+      |> Map.take(@shape_keys)
+
+    case churn do
+      :disabled ->
+        [image] = Ledger.read!(Marshall.Compute.Image, id: captured.image_id)
+        Ledger.update!(image, :configure, %{enabled: false})
+
+        assert {:error, provision_error} =
+                 Compute.provision(
+                   request(%{
+                     profile: profile,
+                     vcpu: vcpu,
+                     memory_bytes: memory_mib * 1_048_576,
+                     disk_bytes: disk_gib * 1_073_741_824
+                   }),
+                   actor: owner
+                 )
+
+        assert Exception.message(provision_error) =~ "image_unavailable"
+
+      :rotated ->
+        rotated = rotated_image(captured.image_id)
+        report_inventory_images(fixture, rotated.id)
+
+      :none ->
+        :ok
+    end
+
+    key = Ash.UUID.generate()
+    {:ok, clone} = Compute.clone(%{vm_id: vm.id, idempotency_key: key}, actor: owner)
+    {:ok, replay} = Compute.clone(%{vm_id: vm.id, idempotency_key: key}, actor: owner)
+    assert {replay.id, replay.destination_vm_id} == {clone.id, clone.destination_vm_id}
+
+    drive_clone(clone.id, power, owner)
+
+    completed = Fixture.request(clone.id)
+    assert completed.phase == :complete
+    assert completed.active == false
+    assert completed.published_at && completed.finished_at
+    [destination] = Ledger.read!(VirtualMachine, id: clone.destination_vm_id)
+    assert Map.take(destination, @shape_keys) == captured
+    assert destination.id != vm.id
+    assert destination.owner_id == owner.id
+    assert Map.take(source_row(vm.id), @shape_keys) == captured
+
+    descriptor =
+      completed.specification["workload"]
+      |> Map.take(Enum.map(@shape_keys, &Atom.to_string/1))
+
+    assert descriptor ==
+             Map.new(captured, fn
+               {shape_key, value} when is_atom(value) ->
+                 {Atom.to_string(shape_key), Atom.to_string(value)}
+
+               {shape_key, value} ->
+                 {Atom.to_string(shape_key), value}
+             end)
+
+    assert completed.specification["source"]["vm_id"] == vm.id
+    assert completed.specification["destination"]["vm_id"] == clone.destination_vm_id
+    assert {:ok, _} = OverallsProtocol.DiskTransfer.intent(CloneEffects.intent(completed))
+
+    assert Ledger.read!(CloneEffect, clone_request_id: clone.id, kind: :capture) |> length() ==
+             1
+
+    assert Ledger.read!(TransferSlot, clone_request_id: clone.id, released_at: [is_nil: true]) ==
+             []
+
+    # Property iterations share one sandbox generation; never leak a disabled
+    # image or extra image rows into the next generated history.
+    if churn == :disabled do
+      [image] = Ledger.read!(Marshall.Compute.Image, id: captured.image_id)
+      Ledger.update!(image, :configure, %{enabled: true})
+    end
+
+    # Completed clone drives leave source/destination operations that carry the
+    # request identity; release their physical outcomes and the operation rows
+    # by requester before the shared host-scoped teardown deletes queue rows.
+    Fixture.query(
+      "DELETE FROM compute_physical_outcomes o USING compute_operations op, compute_clone_requests r WHERE op.clone_request_id = r.id AND r.requested_by_id = $1 AND o.operation_id = op.id",
+      [Ecto.UUID.dump!(owner.id)]
+    )
+
+    Fixture.query(
+      "DELETE FROM compute_operations WHERE clone_request_id IN (SELECT id FROM compute_clone_requests WHERE requested_by_id = $1)",
+      [Ecto.UUID.dump!(owner.id)]
+    )
+
+    Fixture.cleanup(fixture.host.id, owner.id)
   end
 
   @spec source_row(String.t()) :: VirtualMachine.t()

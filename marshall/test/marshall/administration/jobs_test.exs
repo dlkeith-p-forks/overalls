@@ -27,65 +27,65 @@ defmodule Marshall.Administration.JobsTest do
   # regardless of raw arguments, errors, state order or revoked login. A
   # revoked reader MUST receive no list or detail projection.
   property "generated mixed job histories expose only redacted fields to current readers",
-    test_cases: 8 do
-    check all(
-            states <-
-              list_of(member_of(~w(available executing retryable completed discarded cancelled)),
-                min_length: 1,
-                max_length: 5
-              ),
-            suffix <- string(:alphanumeric, min_length: 1, max_length: 32),
-            shape <- member_of([:flat, :nested, :array]),
-            test_cases: 8
-          ) do
-      reader = Marshall.PasskeyFixture.user() |> Marshall.PasskeyFixture.verified_session()
-      queue = "redaction_#{Ash.UUID.generate()}"
-      marker = "private-#{Ash.UUID.generate()}-#{suffix}"
-
-      args =
-        case shape do
-          :flat -> %{"token" => marker}
-          :nested -> %{"payload" => %{"credential" => marker}}
-          :array -> %{"items" => [%{"secret" => marker}]}
-        end
-
-      jobs =
-        Enum.map(states, fn state ->
-          job =
-            args |> Oban.Job.new(worker: "Marshall.TestWorker", queue: queue) |> Oban.insert!()
-
-          transition(job, state, errors: [%{"error" => marker, "attempt" => 1}], attempt: 1)
-          job
-        end)
-
-      assert {:ok, %{items: items}} = Administration.jobs(%{queue: queue}, actor: reader)
-      assert MapSet.new(Enum.map(items, & &1.id)) == MapSet.new(Enum.map(jobs, & &1.id))
-
-      for item <- items do
-        assert MapSet.new(Map.keys(item)) == MapSet.new(@safe_job_keys)
-        refute inspect(item) =~ marker
-      end
-
-      for job <- jobs do
-        assert {:ok, detail} = Administration.job(%{id: job.id}, actor: reader)
-        assert MapSet.new(Map.keys(detail.job)) == MapSet.new(@safe_job_keys)
-
-        assert Enum.all?(detail.events, fn event ->
-                 MapSet.new(Map.keys(event)) == MapSet.new(@safe_event_keys)
-               end)
-
-        refute inspect(detail) =~ marker
-      end
-
-      :ok =
-        AshAuthentication.TokenResource.Actions.revoke(
-          Marshall.Accounts.Token,
-          reader.__metadata__.token
+    test_cases: 100 do
+    states =
+      draw(
+        "states",
+        list_of(member_of(~w(available executing retryable completed discarded cancelled)),
+          min_length: 1,
+          max_length: 5
         )
+      )
 
-      assert {:error, _} = Administration.jobs(%{queue: queue}, actor: reader)
-      assert {:error, _} = Administration.job(%{id: hd(jobs).id}, actor: reader)
+    suffix = draw("suffix", string(:alphanumeric, min_length: 1, max_length: 32))
+    shape = draw("shape", member_of([:flat, :nested, :array]))
+    reader = Marshall.PasskeyFixture.user() |> Marshall.PasskeyFixture.verified_session()
+    queue = "redaction_#{Ash.UUID.generate()}"
+    marker = "private-#{Ash.UUID.generate()}-#{suffix}"
+
+    args =
+      case shape do
+        :flat -> %{"token" => marker}
+        :nested -> %{"payload" => %{"credential" => marker}}
+        :array -> %{"items" => [%{"secret" => marker}]}
+      end
+
+    jobs =
+      Enum.map(states, fn state ->
+        job =
+          args |> Oban.Job.new(worker: "Marshall.TestWorker", queue: queue) |> Oban.insert!()
+
+        transition(job, state, errors: [%{"error" => marker, "attempt" => 1}], attempt: 1)
+        job
+      end)
+
+    assert {:ok, %{items: items}} = Administration.jobs(%{queue: queue}, actor: reader)
+    assert MapSet.new(Enum.map(items, & &1.id)) == MapSet.new(Enum.map(jobs, & &1.id))
+
+    for item <- items do
+      assert MapSet.new(Map.keys(item)) == MapSet.new(@safe_job_keys)
+      refute inspect(item) =~ marker
     end
+
+    for job <- jobs do
+      assert {:ok, detail} = Administration.job(%{id: job.id}, actor: reader)
+      assert MapSet.new(Map.keys(detail.job)) == MapSet.new(@safe_job_keys)
+
+      assert Enum.all?(detail.events, fn event ->
+               MapSet.new(Map.keys(event)) == MapSet.new(@safe_event_keys)
+             end)
+
+      refute inspect(detail) =~ marker
+    end
+
+    :ok =
+      AshAuthentication.TokenResource.Actions.revoke(
+        Marshall.Accounts.Token,
+        reader.__metadata__.token
+      )
+
+    assert {:error, _} = Administration.jobs(%{queue: queue}, actor: reader)
+    assert {:error, _} = Administration.job(%{id: hd(jobs).id}, actor: reader)
   end
 
   test "all job states are captured without arguments or raw exception strings", %{admin: admin} do
@@ -129,7 +129,7 @@ defmodule Marshall.Administration.JobsTest do
     job = insert_job()
     transition(job, "executing", attempt: 1)
     transition(job, "discarded", attempt: 1)
-    Repo.delete_all(from j in Oban.Job, where: j.id == ^job.id)
+    Repo.delete_all(from(j in Oban.Job, where: j.id == ^job.id))
 
     assert {:ok, %{job: %{raw_present: false, retryable: false}, events: events}} =
              Administration.job(%{id: job.id}, actor: admin)

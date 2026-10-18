@@ -29,35 +29,38 @@ defmodule Marshall.TeamsHistoryTest do
   # owner constraints MUST be checked between operations without preventing the
   # temporary ownerless state inside an atomic transfer. SQL sandbox execution
   # does not establish independent-node races or actual outer transaction commits.
+  @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "generated membership and consent histories preserve current authority",
-    test_cases: 40 do
-    check all(commands <- list_of(command(), min_length: 15, max_length: 35), test_cases: 40) do
-      fixture = fixture()
-      initial = %{roles: %{0 => :owner, 1 => :admin, 2 => :member}, transfers: []}
+    profile: :ci,
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    commands = draw("commands", list_of(command(), min_length: 15, max_length: 35))
+    fixture = fixture()
+    initial = %{roles: %{0 => :owner, 1 => :admin, 2 => :member}, transfers: []}
 
-      # Every history exercises owner protection, consent, all terminal outcomes,
-      # and stale owner/admin authority before exploring additional combinations.
-      prefix = [
-        {:member, 1, 0, :removed},
-        {:offer, 0, 2},
-        {:transition, :decline, 2, 0},
-        {:transition, :accept, 2, 0},
-        {:offer, 0, 1},
-        {:transition, :cancel, 0, 1},
-        {:transition, :accept, 1, 1},
-        {:offer, 0, 2},
-        {:transition, :accept, 2, 2},
-        {:offer, 0, 1},
-        {:member, 2, 0, :removed},
-        {:member, 0, 3, :member}
-      ]
+    # Every history exercises owner protection, consent, all terminal outcomes,
+    # and stale owner/admin authority before exploring additional combinations.
+    prefix = [
+      {:member, 1, 0, :removed},
+      {:offer, 0, 2},
+      {:transition, :decline, 2, 0},
+      {:transition, :accept, 2, 0},
+      {:offer, 0, 1},
+      {:transition, :cancel, 0, 1},
+      {:transition, :accept, 1, 1},
+      {:offer, 0, 2},
+      {:transition, :accept, 2, 2},
+      {:offer, 0, 1},
+      {:member, 2, 0, :removed},
+      {:member, 0, 3, :member}
+    ]
 
-      Enum.reduce(prefix ++ commands, initial, fn command, model ->
-        next = execute(command, model, fixture)
-        assert_state(next, fixture)
-        next
-      end)
-    end
+    Enum.reduce(prefix ++ commands, initial, fn command, model ->
+      next = execute(command, model, fixture)
+      assert_state(next, fixture)
+      next
+    end)
   end
 
   @spec command() :: Hegel.Gen.t(command())

@@ -95,7 +95,7 @@ defmodule Marshall.MixProject do
       {:lazy_html, ">= 0.1.0", only: :test},
       {:hegel_ex,
        git: "https://github.com/ghuntley/hegel-erlang.git",
-       ref: "8fe9786",
+       ref: "b0dec2a",
        subdir: "packages/hegel_ex",
        only: [:dev, :test],
        runtime: false},

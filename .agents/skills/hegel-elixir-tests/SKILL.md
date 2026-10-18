@@ -54,12 +54,25 @@ ExUnit tests where those provide the required evidence.
   coverage but must not weaken an existing contract.
 - Treat `test_cases` as a verification-strength setting, not a generic timeout
   workaround. Never clamp an ordinary property to one generated case merely to
-  make a suite finish. Keep default exploration for normal properties; use a
-  named CI profile only when sockets, host processes, native work, or other
-  external fixtures impose a demonstrated budget, and record the exact reduced
-  count and reason. Options on `check all` are not reliable in this Hegel
-  implementation: put execution options on `property` and use `draw/2` or
-  `draw/3` for generated values.
+  make a suite finish. Preserve default exploration (currently 100 cases) and
+  existing larger budgets, including for real sockets and fresh OTP processes.
+  A small count is appropriate for a deliberate failing replay control, not for
+  making a generated success property pass. Audit truncated mutation lists as
+  well as runner counts. A fixed exhaustive matrix belongs in an ordinary test.
+- Use one `property` runner with labelled draws. Standalone `check all` runs its
+  own engine, but nested `check all` at older pins silently ignores its options.
+  `max_runs` and `max_shrinking_steps` are not supported Hegel settings. Inspect
+  the exact pinned frontend before relying on compatibility syntax. The Elixir
+  labelled convenience form is `draw(label, generator)`; the explicit Erlang
+  API is `:hegel.draw(test_case, label, generator)`.
+- Diagnose slow cases before changing their budgets. Keep per-operation
+  deadlines and assertions; size a finite aggregate ExUnit timeout from measured
+  case duration and the full exploration budget. Use Astra for stalled BEAM/NIF
+  diagnosis when authorized, inspecting progress, stacks, CPU and memory. Do not
+  kill an owned run merely because it is quiet. ExUnit `--trace` disables
+  aggregate timeouts, including explicit tags and `--timeout`; omit it when
+  verifying finite test budgets. Profile names alone do not prove
+  effective case counts, randomness, replay-database or health-check settings.
 - Keep diagnostics redacted by default. Include labels, locations, seeds, and bounded
   structural metadata; opt into values or replay blobs only when the test explicitly
   proves they are safe. Failure rendering must preserve the original exception.
@@ -89,6 +102,20 @@ checks. Run contract, ADR, logging, conflict-marker, and HLDD checks required by
 repository. Record exact seeds/replay identifiers, test counts, and known skipped
 boundaries; do not describe a passing BEAM property as proof of physical isolation or
 production recovery.
+
+The native installer must publish a complete sibling file with atomic rename.
+Never copy over a loaded `.so` in place: truncating its mapped inode can crash
+another BEAM, even when the replacement bytes are identical. Before `b0dec2a`,
+avoid concurrent Mix compilation and tests in the same application.
+
+Before recording execution, compare the dependency checkout with `mix.lock` and
+identify the loaded NIF and its ABI. A stale `deps/` checkout or an external NIF
+override does not verify the packaged current pin. Exercise both successful
+generation and a deliberate failure/replay through the native engine. For a
+full-suite request, inventory every Mix application and default exclusions;
+enable required distributed/host/capacity fixtures in an isolated environment.
+Report unfinished and excluded tests separately from passes. Review and record
+HLDD groups individually; never bulk-refresh receipts to make a gate pass.
 
 For failures, retain the minimized replay and original exception, identify whether the
 cause is a generator, oracle, fixture cleanup, engine, or product defect, and add a

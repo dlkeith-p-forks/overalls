@@ -40,31 +40,32 @@ defmodule Lilly.Host.MountTableTest do
   # mount-table-matches-findmnt): targets with spaces, tabs and backslashes
   # come back decoded, and nothing is silently dropped.
   property "escaped targets decode to the original path" do
-    check all(
-            parts <-
-              list_of(
-                string(Enum.to_list(?a..?z) ++ [?\s, ?\t, ?\\], min_length: 1, max_length: 8),
-                min_length: 1,
-                max_length: 4
-              )
-          ) do
-      target = "/" <> Enum.join(parts, "/")
+    parts =
+      draw(
+        "parts",
+        list_of(
+          string(Enum.to_list(97..122) ++ ~c" \t\\", min_length: 1, max_length: 8),
+          min_length: 1,
+          max_length: 4
+        )
+      )
 
-      escaped =
-        target
-        |> String.to_charlist()
-        |> Enum.map(fn
-          c when c in [?\s, ?\t, ?\n, ?\\] ->
-            "\\" <> String.pad_leading(Integer.to_string(c, 8), 3, "0")
+    target = "/" <> Enum.join(parts, "/")
 
-          c ->
-            <<c>>
-        end)
-        |> Enum.join()
+    escaped =
+      target
+      |> String.to_charlist()
+      |> Enum.map(fn
+        c when c in [?\s, ?\t, ?\n, ?\\] ->
+          "\\" <> String.pad_leading(Integer.to_string(c, 8), 3, "0")
 
-      line = "50 22 0:30 / #{escaped} rw - tmpfs tmpfs rw\n"
-      assert {:ok, [%{"target" => ^target}]} = MountTable.parse(line)
-    end
+        c ->
+          <<c>>
+      end)
+      |> Enum.join()
+
+    line = "50 22 0:30 / #{escaped} rw - tmpfs tmpfs rw\n"
+    assert {:ok, [%{"target" => ^target}]} = MountTable.parse(line)
   end
 
   test "canonical/1 resolves symlinks and refuses missing or relative paths" do

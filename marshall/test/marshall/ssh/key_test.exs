@@ -5,32 +5,30 @@ defmodule Marshall.SSH.KeyTest do
   import Marshall.ComputeFixtures, only: [user: 0]
   alias Marshall.SSH
 
+  @tag :hegel_case_sandbox
   property "canonical key ownership survives duplicate registration and changes only after revocation",
-    test_cases: 30 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     owner = user()
     other = user()
 
-    check all(
-            bytes <- binary(length: 32),
-            label <- string(:alphanumeric, max_length: 32),
-            test_cases: 30
-          ) do
-      public_key = encode(bytes)
-      assert {:ok, key} = SSH.add_key(%{public_key: public_key, label: label}, actor: owner)
-      assert {:ok, same} = SSH.add_key(%{public_key: public_key <> " comment"}, actor: owner)
-      assert same.id == key.id
-      assert {:error, _} = SSH.add_key(%{public_key: public_key}, actor: other)
-      assert {:error, _} = SSH.remove_key(%{id: key.id}, actor: other)
-      assert {:ok, [listed]} = SSH.list_keys(%{}, actor: owner)
-      assert listed.id == key.id
-      refute Map.has_key?(listed, :public_key)
-      assert {:ok, []} = SSH.list_keys(%{}, actor: other)
-      assert {:ok, %{revoked: true}} = SSH.remove_key(%{id: key.id}, actor: owner)
-      assert {:ok, []} = SSH.list_keys(%{}, actor: owner)
-      assert {:ok, replacement} = SSH.add_key(%{public_key: public_key}, actor: owner)
-      refute replacement.id == key.id
-      assert {:ok, _} = SSH.remove_key(%{id: replacement.id}, actor: owner)
-    end
+    bytes = draw("bytes", binary(length: 32))
+    label = draw("label", string(:alphanumeric, max_length: 32))
+    public_key = encode(bytes)
+    assert {:ok, key} = SSH.add_key(%{public_key: public_key, label: label}, actor: owner)
+    assert {:ok, same} = SSH.add_key(%{public_key: public_key <> " comment"}, actor: owner)
+    assert same.id == key.id
+    assert {:error, _} = SSH.add_key(%{public_key: public_key}, actor: other)
+    assert {:error, _} = SSH.remove_key(%{id: key.id}, actor: other)
+    assert {:ok, [listed]} = SSH.list_keys(%{}, actor: owner)
+    assert listed.id == key.id
+    refute Map.has_key?(listed, :public_key)
+    assert {:ok, []} = SSH.list_keys(%{}, actor: other)
+    assert {:ok, %{revoked: true}} = SSH.remove_key(%{id: key.id}, actor: owner)
+    assert {:ok, []} = SSH.list_keys(%{}, actor: owner)
+    assert {:ok, replacement} = SSH.add_key(%{public_key: public_key}, actor: owner)
+    refute replacement.id == key.id
+    assert {:ok, _} = SSH.remove_key(%{id: replacement.id}, actor: owner)
   end
 
   test "public actions require an account and raw resource access remains internal" do

@@ -362,88 +362,99 @@ defmodule Marshall.SSH.CommandsTest do
   # Receipts MUST replay only for their accepted actor; a changed kind with a
   # used request key MUST conflict without new durable work.
   test "lifecycle commands across profiles admit only current authority", c do
-    check all(
-            profile <- member_of(["oss", "customer"]),
-            performers <-
-              if(
-                profile == "oss",
-                do: list_of(member_of([:owner, :member]), length: 3),
-                else: constant([:owner, :owner, :owner])
+    Hegel.check(
+      fn ->
+        profile = draw("profile", member_of(["oss", "customer"]))
+
+        performers =
+          draw(
+            "performers",
+            if(profile == "oss") do
+              list_of(member_of([:owner, :member]), length: 3)
+            else
+              constant([:owner, :owner, :owner])
+            end
+          )
+
+        refusals =
+          draw(
+            "refusals",
+            list_of(
+              tuple(
+                {member_of(
+                   if(profile == "oss") do
+                     [:revoked, :stranger, :admin]
+                   else
+                     [:member, :revoked, :stranger, :admin]
+                   end
+                 ), member_of([:stop, :start, :rm, :show])}
               ),
-            refusals <-
-              list_of(
-                tuple(
-                  {member_of(
-                     if(profile == "oss",
-                       do: [:revoked, :stranger, :admin],
-                       else: [:member, :revoked, :stranger, :admin]
-                     )
-                   ), member_of([:stop, :start, :rm, :show])}
-                ),
-                min_length: 6,
-                max_length: 12
-              ),
-            test_cases: 8
-          ) do
-      actors = history_actors(c)
-      refresh_reports(c)
-      name = "ctl-" <> binary_part(Ash.UUID.generate(), 0, 8)
-      create_key = Ash.UUID.generate()
+              min_length: 6,
+              max_length: 12
+            )
+          )
 
-      created_result =
-        command(c, "new --name #{name} --profile #{profile} --request-id #{create_key}")
+        actors = history_actors(c)
+        refresh_reports(c)
+        name = "ctl-" <> binary_part(Ash.UUID.generate(), 0, 8)
+        create_key = Ash.UUID.generate()
 
-      assert {:ok, created} = created_result
+        created_result =
+          command(c, "new --name #{name} --profile #{profile} --request-id #{create_key}")
 
-      assert created.result["profile"] == profile
-      vm_id = created.result["id"]
-      [provision] = Ledger.read!(Operation, id: created.operation_id)
-      assert {:ok, _} = ingest(c.host.id, outcome(provision, 1, :running))
-      assert {:ok, %{status: "succeeded"}} = command(c, "request show #{create_key}")
-      wire_membership(c, actors, profile, name, vm_id)
+        assert {:ok, created} = created_result
 
-      refusers =
-        if profile == "oss",
-          do: [:revoked, :stranger, :admin],
-          else: [:member, :revoked, :stranger, :admin]
+        assert created.result["profile"] == profile
+        vm_id = created.result["id"]
+        [provision] = Ledger.read!(Operation, id: created.operation_id)
+        assert {:ok, _} = ingest(c.host.id, outcome(provision, 1, :running))
+        assert {:ok, %{status: "succeeded"}} = command(c, "request show #{create_key}")
+        wire_membership(c, actors, profile, name, vm_id)
 
-      for refused <- refusers do
-        assert {:ok, listed} = command(actors[refused], "ls")
-        assert listed.result["items"] == []
-      end
+        refusers =
+          if profile == "oss",
+            do: [:revoked, :stranger, :admin],
+            else: [:member, :revoked, :stranger, :admin]
 
-      [p0, p1, p2] = performers
-      steps = [{:stop, p0}, {:start, p1}, {:rm, p2}]
+        for refused <- refusers do
+          assert {:ok, listed} = command(actors[refused], "ls")
+          assert listed.result["items"] == []
+        end
 
-      chunks =
-        refusals
-        |> Enum.with_index()
-        |> Enum.group_by(fn {_, index} -> rem(index, 4) end, fn {refusal, _} -> refusal end)
+        [p0, p1, p2] = performers
+        steps = [{:stop, p0}, {:start, p1}, {:rm, p2}]
 
-      {_, settled} =
-        steps
-        |> Enum.with_index()
-        |> Enum.reduce({2, %{}}, fn {{kind, performer}, chunk}, {sequence, settled} ->
-          for {refused, attempt} <- Map.get(chunks, chunk, []) do
-            refused_entry(actors, refused, attempt, name)
-          end
+        chunks =
+          refusals
+          |> Enum.with_index()
+          |> Enum.group_by(fn {_, index} -> rem(index, 4) end, fn {refusal, _} -> refusal end)
 
-          settle = accepted_lifecycle(c, actors[performer], kind, name, vm_id, sequence)
+        {_, settled} =
+          steps
+          |> Enum.with_index()
+          |> Enum.reduce({2, %{}}, fn {{kind, performer}, chunk}, {sequence, settled} ->
+            for {refused, attempt} <- Map.get(chunks, chunk, []) do
+              refused_entry(actors, refused, attempt, name)
+            end
 
-          other = if performer == :owner, do: :member, else: :owner
-          assert {:error, _} = command(actors[other], "request show #{settle.key}")
-          assert {:error, _} = command(actors.stranger, "request show #{settle.key}")
-          assert {:error, _} = command(actors.admin, "request show #{settle.key}")
+            settle = accepted_lifecycle(c, actors[performer], kind, name, vm_id, sequence)
 
-          {sequence + 1, Map.put(settled, kind, settle)}
-        end)
+            other = if performer == :owner, do: :member, else: :owner
+            assert {:error, _} = command(actors[other], "request show #{settle.key}")
+            assert {:error, _} = command(actors.stranger, "request show #{settle.key}")
+            assert {:error, _} = command(actors.admin, "request show #{settle.key}")
 
-      for {refused, attempt} <- Map.get(chunks, 3, []) do
-        refused_entry(actors, refused, attempt, name)
-      end
+            {sequence + 1, Map.put(settled, kind, settle)}
+          end)
 
-      close_history(c, actors, name, vm_id, settled)
-    end
+        for {refused, attempt} <- Map.get(chunks, 3, []) do
+          refused_entry(actors, refused, attempt, name)
+        end
+
+        close_history(c, actors, name, vm_id, settled)
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] customer-archived-receipt-pinning
@@ -514,62 +525,69 @@ defmodule Marshall.SSH.CommandsTest do
   # An omitted profile and any explicit profile are different semantic inputs,
   # even explicit OSS; changing that input MUST refuse without new durable work.
   test "omitted and explicit profiles stay pinned through retry histories", c do
-    check all(
-            selection <- member_of([nil, "oss", "customer", "standard"]),
-            attempts <-
-              list_of(member_of([:retry, :explicit_oss, :customer, :omit]),
-                min_length: 1,
-                max_length: 8
-              ),
-            test_cases: 16
-          ) do
-      Ledger.update!(c.host, :report, %{reported_at: Ledger.now()})
-      key = Ash.UUID.generate()
-      profile_option = if selection, do: " --profile #{selection}", else: ""
-      original = "new --cpu 1 --request-id #{key}" <> profile_option
-      assert {:ok, receipt} = command(c, original)
-      expected = selection || "oss"
-      assert receipt.result["profile"] == expected
-      vm_id = receipt.result["id"]
-      [vm] = Ledger.read!(VirtualMachine, id: vm_id)
-      assert Atom.to_string(vm.profile) == expected
-      admitted_rows = durable_profile_rows()
+    Hegel.check(
+      fn ->
+        selection = draw("selection", member_of([nil, "oss", "customer", "standard"]))
 
-      # Every generated history includes both replay and a decisive conflict.
-      for attempt <- [:retry, if(selection == "customer", do: :omit, else: :customer)] ++ attempts do
-        selected =
-          case attempt do
-            :retry -> selection
-            :explicit_oss -> "oss"
-            :customer -> "customer"
-            :omit -> nil
+        attempts =
+          draw(
+            "attempts",
+            list_of(member_of([:retry, :explicit_oss, :customer, :omit]),
+              min_length: 1,
+              max_length: 8
+            )
+          )
+
+        Ledger.update!(c.host, :report, %{reported_at: Ledger.now()})
+        key = Ash.UUID.generate()
+        profile_option = if selection, do: " --profile #{selection}", else: ""
+        original = "new --cpu 1 --request-id #{key}" <> profile_option
+        assert {:ok, receipt} = command(c, original)
+        expected = selection || "oss"
+        assert receipt.result["profile"] == expected
+        vm_id = receipt.result["id"]
+        [vm] = Ledger.read!(VirtualMachine, id: vm_id)
+        assert Atom.to_string(vm.profile) == expected
+        admitted_rows = durable_profile_rows()
+
+        # Every generated history includes both replay and a decisive conflict.
+        for attempt <-
+              [:retry, if(selection == "customer", do: :omit, else: :customer)] ++ attempts do
+          selected =
+            case attempt do
+              :retry -> selection
+              :explicit_oss -> "oss"
+              :customer -> "customer"
+              :omit -> nil
+            end
+
+          option = if selected, do: " --profile #{selected}", else: ""
+          result = command(c, "new --cpu 1 --request-id #{key} --json --no-wait" <> option)
+
+          if selected == selection do
+            assert result == {:ok, receipt}
+          else
+            assert {:error, error} = result
+            assert Exception.message(error) =~ "idempotency_conflict"
           end
 
-        option = if selected, do: " --profile #{selected}", else: ""
-        result = command(c, "new --cpu 1 --request-id #{key} --json --no-wait" <> option)
-
-        if selected == selection do
-          assert result == {:ok, receipt}
-        else
-          assert {:error, error} = result
-          assert Exception.message(error) =~ "idempotency_conflict"
+          assert [%{id: ^vm_id, profile: profile}] = Ledger.read!(VirtualMachine, id: vm_id)
+          assert Atom.to_string(profile) == expected
+          assert length(Ledger.read!(Operation, vm_id: vm_id)) == 1
+          assert length(Ledger.read!(Reservation, vm_id: vm_id)) == 1
+          assert length(Ledger.read!(Request, user_id: c.actor.id, request_id: key)) == 1
+          assert durable_profile_rows() == admitted_rows
         end
 
-        assert [%{id: ^vm_id, profile: profile}] = Ledger.read!(VirtualMachine, id: vm_id)
-        assert Atom.to_string(profile) == expected
-        assert length(Ledger.read!(Operation, vm_id: vm_id)) == 1
-        assert length(Ledger.read!(Reservation, vm_id: vm_id)) == 1
-        assert length(Ledger.read!(Request, user_id: c.actor.id, request_id: key)) == 1
-        assert durable_profile_rows() == admitted_rows
-      end
+        {:ok, deletion} =
+          Compute.lifecycle(%{vm_id: vm_id, kind: :delete, idempotency_key: Ash.UUID.generate()},
+            actor: c.actor
+          )
 
-      {:ok, deletion} =
-        Compute.lifecycle(%{vm_id: vm_id, kind: :delete, idempotency_key: Ash.UUID.generate()},
-          actor: c.actor
-        )
-
-      assert {:ok, _} = ingest(c.host.id, outcome(deletion, 1, :deleted))
-    end
+        assert {:ok, _} = ingest(c.host.id, outcome(deletion, 1, :deleted))
+      end,
+      test_cases: 100
+    )
   end
 
   test "relocation commands select the destination, replay, poll and cancel by receipt", c do
@@ -803,37 +821,42 @@ defmodule Marshall.SSH.CommandsTest do
   end
 
   test "retries, acknowledgement and reordered evidence preserve one physical result", c do
-    check all(succeeded? <- boolean(), retries <- integer(1..4), test_cases: 8) do
-      id = Ash.UUID.generate()
-      {:ok, receipt} = command(c, "new --request-id #{id}")
+    Hegel.check(
+      fn ->
+        succeeded? = draw("succeeded?", boolean())
+        retries = draw("retries", integer(1..4))
+        id = Ash.UUID.generate()
+        {:ok, receipt} = command(c, "new --request-id #{id}")
 
-      for _ <- 1..retries do
-        assert {:ok, ^receipt} = command(c, "new --request-id #{id} --json --no-wait")
-      end
+        for _ <- 1..retries do
+          assert {:ok, ^receipt} = command(c, "new --request-id #{id} --json --no-wait")
+        end
 
-      [operation] = Ledger.read!(Operation, id: receipt.operation_id)
-      assert length(Ledger.read!(Operation, vm_id: operation.vm_id)) == 1
-      Ledger.update!(operation, :acknowledge, %{})
-      assert {:ok, %{status: "accepted"}} = command(c, "request show #{id}")
-      state = if succeeded?, do: :running, else: :failed
-      event = outcome(operation, 2, state)
-      assert {:ok, _} = ingest(c.host.id, event)
-      stale = outcome(operation, 1, if(succeeded?, do: :failed, else: :running))
-      assert {:ok, _} = ingest(c.host.id, stale)
-      expected = if succeeded?, do: "succeeded", else: "failed"
-      assert {:ok, %{status: ^expected}} = command(c, "request show #{id}")
-      [completed] = Ledger.read!(Operation, id: operation.id)
-      assert completed.completion_outcome_id == event.id
+        [operation] = Ledger.read!(Operation, id: receipt.operation_id)
+        assert length(Ledger.read!(Operation, vm_id: operation.vm_id)) == 1
+        Ledger.update!(operation, :acknowledge, %{})
+        assert {:ok, %{status: "accepted"}} = command(c, "request show #{id}")
+        state = if succeeded?, do: :running, else: :failed
+        event = outcome(operation, 2, state)
+        assert {:ok, _} = ingest(c.host.id, event)
+        stale = outcome(operation, 1, if(succeeded?, do: :failed, else: :running))
+        assert {:ok, _} = ingest(c.host.id, stale)
+        expected = if succeeded?, do: "succeeded", else: "failed"
+        assert {:ok, %{status: ^expected}} = command(c, "request show #{id}")
+        [completed] = Ledger.read!(Operation, id: operation.id)
+        assert completed.completion_outcome_id == event.id
 
-      {:ok, deletion} =
-        Compute.lifecycle(
-          %{vm_id: operation.vm_id, kind: :delete, idempotency_key: Ash.UUID.generate()},
-          actor: c.actor
-        )
+        {:ok, deletion} =
+          Compute.lifecycle(
+            %{vm_id: operation.vm_id, kind: :delete, idempotency_key: Ash.UUID.generate()},
+            actor: c.actor
+          )
 
-      assert {:ok, _} = ingest(c.host.id, outcome(deletion, 3, :deleted))
-      assert {:ok, %{status: ^expected}} = command(c, "request show #{id}")
-    end
+        assert {:ok, _} = ingest(c.host.id, outcome(deletion, 3, :deleted))
+        assert {:ok, %{status: ^expected}} = command(c, "request show #{id}")
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;product] ssh-pin-guard-commands

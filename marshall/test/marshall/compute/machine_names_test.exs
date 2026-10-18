@@ -84,27 +84,32 @@ defmodule Marshall.Compute.MachineNamesTest do
 
   @tag :hegel
   test "retries pin the generated or chosen name and reject changing it", %{owner: owner} do
-    check all(suffix <- integer(1..1_000_000), explicit? <- boolean(), test_cases: 12) do
-      params = request(%{name: if(explicit?, do: "chosen-#{suffix}")})
-      assert {:ok, vm} = Compute.provision(params, actor: owner)
-      assert OverallsProtocol.MachineName.valid?(vm.name)
-      assert {:ok, replay} = Compute.provision(params, actor: owner)
-      assert replay.id == vm.id
-      assert replay.name == vm.name
+    Hegel.check(
+      fn ->
+        suffix = draw("suffix", integer(1..1_000_000))
+        explicit? = draw("explicit?", boolean())
+        params = request(%{name: if(explicit?, do: "chosen-#{suffix}")})
+        assert {:ok, vm} = Compute.provision(params, actor: owner)
+        assert OverallsProtocol.MachineName.valid?(vm.name)
+        assert {:ok, replay} = Compute.provision(params, actor: owner)
+        assert replay.id == vm.id
+        assert replay.name == vm.name
 
-      assert {:error, error} =
-               Compute.provision(Map.put(params, :name, "different-#{suffix}"), actor: owner)
+        assert {:error, error} =
+                 Compute.provision(Map.put(params, :name, "different-#{suffix}"), actor: owner)
 
-      assert Exception.message(error) =~ "idempotency_conflict"
-      # Reclaim through the actual outcome path so each generated case leaves capacity.
-      assert {:ok, deletion} =
-               Compute.lifecycle(
-                 %{vm_id: vm.id, kind: :delete, idempotency_key: Ash.UUID.generate()},
-                 actor: owner
-               )
+        assert Exception.message(error) =~ "idempotency_conflict"
+        # Reclaim through the actual outcome path so each generated case leaves capacity.
+        assert {:ok, deletion} =
+                 Compute.lifecycle(
+                   %{vm_id: vm.id, kind: :delete, idempotency_key: Ash.UUID.generate()},
+                   actor: owner
+                 )
 
-      assert {:ok, _} = ingest(vm.host_id, outcome(deletion, 1, :deleted))
-    end
+        assert {:ok, _} = ingest(vm.host_id, outcome(deletion, 1, :deleted))
+      end,
+      test_cases: 100
+    )
   end
 
   test "logical deletion retains a name until confirmed cleanup; old retries retain identity", %{

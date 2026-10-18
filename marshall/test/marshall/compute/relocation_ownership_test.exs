@@ -83,87 +83,83 @@ defmodule Marshall.Compute.RelocationOwnershipTest do
   # A clone and a relocation MUST NOT occupy one host simultaneously. A failed
   # paired relocation MUST leave neither new endpoint claimed; released rows
   # MUST stay historical while the previously blocked claimant can proceed.
-  property "generated clone and relocation claims retain exclusive host slots", test_cases: 8 do
-    check all(
-            incumbent <- member_of([:clone, :relocation]),
-            contested_endpoint <- member_of([:source, :destination]),
-            retries <- integer(1..3),
-            test_cases: 8
-          ) do
-      context = relocation_fixture()
+  property "generated clone and relocation claims retain exclusive host slots", test_cases: 100 do
+    incumbent = draw("incumbent", member_of([:clone, :relocation]))
+    contested_endpoint = draw("contested_endpoint", member_of([:source, :destination]))
+    retries = draw("retries", integer(1..3))
+    context = relocation_fixture()
 
-      host_id =
-        if contested_endpoint == :source,
-          do: context.source.host.id,
-          else: context.destination.host.id
+    host_id =
+      if contested_endpoint == :source,
+        do: context.source.host.id,
+        else: context.destination.host.id
 
-      clone =
-        Ledger.create!(CloneRequest, :enqueue, %{
-          source_vm_id: context.vm.id,
-          requested_by_id: context.owner.id,
-          request_key: Ash.UUID.generate(),
-          destination_vm_id: Ash.UUID.generate(),
-          name: "clone-#{Ash.UUID.generate()}",
-          sequence: System.unique_integer([:positive, :monotonic])
+    clone =
+      Ledger.create!(CloneRequest, :enqueue, %{
+        source_vm_id: context.vm.id,
+        requested_by_id: context.owner.id,
+        request_key: Ash.UUID.generate(),
+        destination_vm_id: Ash.UUID.generate(),
+        name: "clone-#{Ash.UUID.generate()}",
+        sequence: System.unique_integer([:positive, :monotonic])
+      })
+
+    if incumbent == :clone do
+      clone_slot =
+        Ledger.create!(TransferSlot, :occupy, %{
+          host_id: host_id,
+          clone_request_id: clone.id
         })
 
-      if incumbent == :clone do
-        clone_slot =
-          Ledger.create!(TransferSlot, :occupy, %{
-            host_id: host_id,
-            clone_request_id: clone.id
-          })
-
-        for _ <- 1..retries do
-          assert {:error, :transfer_busy} = occupy(context.relocation)
-          assert Enum.map(owned_slots(clone, context.relocation), & &1.id) == [clone_slot.id]
-          assert_exclusive_slots([context.source.host.id, context.destination.host.id])
-        end
-
-        released = Ledger.update!(clone_slot, :release, %{released_at: Ledger.now()})
-        assert {:ok, slots} = occupy(context.relocation)
-        assert length(slots) == 2
-        assert %{released_at: %DateTime{}} = released
-
-        assert [%{id: id, released_at: released_at}] =
-                 Ledger.read!(TransferSlot, id: clone_slot.id)
-
-        assert id == released.id
-        assert released_at == released.released_at
-      else
-        assert {:ok, slots} = occupy(context.relocation)
-
-        for _ <- 1..retries do
-          assert_sql_error(
-            :unique_violation,
-            "INSERT INTO compute_transfer_slots (host_id, clone_request_id) VALUES ($1, $2)",
-            [uuid(host_id), uuid(clone.id)]
-          )
-
-          assert MapSet.new(owned_slots(clone, context.relocation), & &1.id) ==
-                   MapSet.new(slots, & &1.id)
-
-          assert_exclusive_slots([context.source.host.id, context.destination.host.id])
-        end
-
-        for slot <- slots,
-            do: Ledger.update!(slot, :release, %{released_at: Ledger.now()})
-
-        clone_slot =
-          Ledger.create!(TransferSlot, :occupy, %{
-            host_id: host_id,
-            clone_request_id: clone.id
-          })
-
-        assert clone_slot.released_at == nil
-        assert length(owned_slots(clone, context.relocation)) == 3
+      for _ <- 1..retries do
+        assert {:error, :transfer_busy} = occupy(context.relocation)
+        assert Enum.map(owned_slots(clone, context.relocation), & &1.id) == [clone_slot.id]
+        assert_exclusive_slots([context.source.host.id, context.destination.host.id])
       end
 
-      assert_exclusive_slots([context.source.host.id, context.destination.host.id])
+      released = Ledger.update!(clone_slot, :release, %{released_at: Ledger.now()})
+      assert {:ok, slots} = occupy(context.relocation)
+      assert length(slots) == 2
+      assert %{released_at: %DateTime{}} = released
 
-      for slot <- owned_slots(clone, context.relocation), is_nil(slot.released_at) do
-        Ledger.update!(slot, :release, %{released_at: Ledger.now()})
+      assert [%{id: id, released_at: released_at}] =
+               Ledger.read!(TransferSlot, id: clone_slot.id)
+
+      assert id == released.id
+      assert released_at == released.released_at
+    else
+      assert {:ok, slots} = occupy(context.relocation)
+
+      for _ <- 1..retries do
+        assert_sql_error(
+          :unique_violation,
+          "INSERT INTO compute_transfer_slots (host_id, clone_request_id) VALUES ($1, $2)",
+          [uuid(host_id), uuid(clone.id)]
+        )
+
+        assert MapSet.new(owned_slots(clone, context.relocation), & &1.id) ==
+                 MapSet.new(slots, & &1.id)
+
+        assert_exclusive_slots([context.source.host.id, context.destination.host.id])
       end
+
+      for slot <- slots,
+          do: Ledger.update!(slot, :release, %{released_at: Ledger.now()})
+
+      clone_slot =
+        Ledger.create!(TransferSlot, :occupy, %{
+          host_id: host_id,
+          clone_request_id: clone.id
+        })
+
+      assert clone_slot.released_at == nil
+      assert length(owned_slots(clone, context.relocation)) == 3
+    end
+
+    assert_exclusive_slots([context.source.host.id, context.destination.host.id])
+
+    for slot <- owned_slots(clone, context.relocation), is_nil(slot.released_at) do
+      Ledger.update!(slot, :release, %{released_at: Ledger.now()})
     end
   end
 

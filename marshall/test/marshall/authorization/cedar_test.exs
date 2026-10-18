@@ -27,22 +27,19 @@ defmodule Marshall.Authorization.CedarTest do
     actor = Ash.Seed.seed!(User, %{email: "#{Ash.UUID.generate()}@example.test"})
     actor_id = actor.id
 
-    check all(
-            role <- member_of([:owner, :web, :viewer, :operator, :manager, :stranger]),
-            action <- member_of(["read", "write", "manage", "web"])
-          ) do
-      owner = if role == :owner, do: actor_id, else: "owner:" <> actor_id
+    role = draw("role", member_of([:owner, :web, :viewer, :operator, :manager, :stranger]))
+    action = draw("action", member_of(["read", "write", "manage", "web"]))
+    owner = if role == :owner, do: actor_id, else: "owner:" <> actor_id
 
-      grants =
-        if role in [:web, :viewer, :operator, :manager], do: %{role => [actor_id]}, else: %{}
+    grants =
+      if role in [:web, :viewer, :operator, :manager], do: %{role => [actor_id]}, else: %{}
 
-      allowed =
-        (action == "web" and role != :stranger) or role in [:owner, :manager] or
-          (role == :viewer and action == "read") or
-          (role == :operator and action in ["read", "write"])
+    allowed =
+      (action == "web" and role != :stranger) or role in [:owner, :manager] or
+        (role == :viewer and action == "read") or
+        (role == :operator and action in ["read", "write"])
 
-      assert Cedar.allowed?(actor, action, Cedar.vm("vm", owner, grants)) == allowed
-    end
+    assert Cedar.allowed?(actor, action, Cedar.vm("vm", owner, grants)) == allowed
   end
 
   property "the Cedar policy enforces the complete team membership matrix" do
@@ -50,53 +47,49 @@ defmodule Marshall.Authorization.CedarTest do
     actor_id = actor.id
     other = "member:" <> actor_id
 
-    check all(
-            role <- member_of([:owner, :admin, :member, :stranger]),
-            action <- member_of(["team_read", "team_manage_members", "team_transfer"])
-          ) do
-      team =
-        Cedar.entity("Team", "team", %{
-          "owner" => Cedar.entity("User", if(role == :owner, do: actor_id, else: other)).uid,
-          "admins" =>
-            Enum.map(
-              if(role in [:owner, :admin], do: [actor_id], else: []),
-              &Cedar.entity("User", &1).uid
-            ),
-          "members" =>
-            Enum.map(
-              if(role == :stranger, do: [], else: [actor_id]),
-              &Cedar.entity("User", &1).uid
-            )
-        })
+    role = draw("role", member_of([:owner, :admin, :member, :stranger]))
+    action = draw("action", member_of(["team_read", "team_manage_members", "team_transfer"]))
 
-      allowed =
-        (role in [:owner, :admin] and true) or
-          (role == :member and action == "team_read")
+    team =
+      Cedar.entity("Team", "team", %{
+        "owner" => Cedar.entity("User", if(role == :owner, do: actor_id, else: other)).uid,
+        "admins" =>
+          Enum.map(
+            if(role in [:owner, :admin], do: [actor_id], else: []),
+            &Cedar.entity("User", &1).uid
+          ),
+        "members" =>
+          Enum.map(
+            if(role == :stranger, do: [], else: [actor_id]),
+            &Cedar.entity("User", &1).uid
+          )
+      })
 
-      assert Cedar.allowed?(actor, action, team) == allowed
-    end
+    allowed =
+      (role in [:owner, :admin] and true) or
+        (role == :member and action == "team_read")
+
+    assert Cedar.allowed?(actor, action, team) == allowed
   end
 
   property "the Cedar policy enforces the integration manager matrix" do
     actor = Ash.Seed.seed!(User, %{email: "#{Ash.UUID.generate()}@example.test"})
     actor_id = actor.id
 
-    check all(
-            role <- member_of([:owner, :manager, :stranger]),
-            action <- member_of(["integration_read", "integration_manage"])
-          ) do
-      integration =
-        Cedar.entity("Integration", "integration", %{
-          "owner" => Cedar.entity("User", if(role == :owner, do: actor_id, else: "other")).uid,
-          "managers" =>
-            Enum.map(
-              if(role == :manager, do: [actor_id], else: []),
-              &Cedar.entity("User", &1).uid
-            )
-        })
+    role = draw("role", member_of([:owner, :manager, :stranger]))
+    action = draw("action", member_of(["integration_read", "integration_manage"]))
 
-      assert Cedar.allowed?(actor, action, integration) == (role != :stranger)
-    end
+    integration =
+      Cedar.entity("Integration", "integration", %{
+        "owner" => Cedar.entity("User", if(role == :owner, do: actor_id, else: "other")).uid,
+        "managers" =>
+          Enum.map(
+            if(role == :manager, do: [actor_id], else: []),
+            &Cedar.entity("User", &1).uid
+          )
+      })
+
+    assert Cedar.allowed?(actor, action, integration) == (role != :stranger)
   end
 
   property "team authority extends the VM matrix only through membership sets" do
@@ -104,21 +97,19 @@ defmodule Marshall.Authorization.CedarTest do
     actor_id = actor.id
     stranger_owner = "owner:" <> actor_id
 
-    check all(
-            role <- member_of([:team_admin, :team_member, :none]),
-            action <- member_of(["read", "write", "manage", "web"])
-          ) do
-      grants = %{
-        team_admins: if(role == :team_admin, do: [actor_id], else: []),
-        team_members: if(role == :team_member, do: [actor_id], else: [])
-      }
+    role = draw("role", member_of([:team_admin, :team_member, :none]))
+    action = draw("action", member_of(["read", "write", "manage", "web"]))
 
-      allowed =
-        (role == :team_admin and action in ["read", "write", "manage", "web"]) or
-          (role == :team_member and action in ["read", "write", "web"])
+    grants = %{
+      team_admins: if(role == :team_admin, do: [actor_id], else: []),
+      team_members: if(role == :team_member, do: [actor_id], else: [])
+    }
 
-      assert Cedar.allowed?(actor, action, Cedar.vm("vm", stranger_owner, grants)) == allowed
-    end
+    allowed =
+      (role == :team_admin and action in ["read", "write", "manage", "web"]) or
+        (role == :team_member and action in ["read", "write", "web"])
+
+    assert Cedar.allowed?(actor, action, Cedar.vm("vm", stranger_owner, grants)) == allowed
   end
 
   test "only typed actors can provision, and users cannot coordinate" do
@@ -148,41 +139,43 @@ defmodule Marshall.Authorization.CedarTest do
   property "removing the owning entity attribute never preserves Cedar authority" do
     owner = Ash.Seed.seed!(User, %{email: "#{Ash.UUID.generate()}@example.test"})
 
-    check all(
-            resource_kind <- member_of([:vm, :team, :integration]),
-            action <-
-              case resource_kind do
-                :vm -> member_of(~w(read write manage web))
-                :team -> member_of(~w(team_read team_manage_members team_transfer))
-                :integration -> member_of(~w(integration_read integration_manage))
-              end
-          ) do
-      resource =
+    resource_kind = draw("resource_kind", member_of([:vm, :team, :integration]))
+
+    action =
+      draw(
+        "action",
         case resource_kind do
-          :vm ->
-            Cedar.vm("vm", owner.id)
-
-          :team ->
-            Cedar.entity("Team", "team", %{
-              "owner" => Cedar.entity("User", owner.id).uid,
-              "admins" => [],
-              "members" => []
-            })
-
-          :integration ->
-            Cedar.entity("Integration", "integration", %{
-              "owner" => Cedar.entity("User", owner.id).uid,
-              "managers" => []
-            })
+          :vm -> member_of(~w(read write manage web))
+          :team -> member_of(~w(team_read team_manage_members team_transfer))
+          :integration -> member_of(~w(integration_read integration_manage))
         end
+      )
 
-      assert Cedar.allowed?(owner, action, resource)
+    resource =
+      case resource_kind do
+        :vm ->
+          Cedar.vm("vm", owner.id)
 
-      refute Cedar.allowed?(owner, action, %{
-               resource
-               | attributes: Map.delete(resource.attributes, "owner")
-             })
-    end
+        :team ->
+          Cedar.entity("Team", "team", %{
+            "owner" => Cedar.entity("User", owner.id).uid,
+            "admins" => [],
+            "members" => []
+          })
+
+        :integration ->
+          Cedar.entity("Integration", "integration", %{
+            "owner" => Cedar.entity("User", owner.id).uid,
+            "managers" => []
+          })
+      end
+
+    assert Cedar.allowed?(owner, action, resource)
+
+    refute Cedar.allowed?(owner, action, %{
+             resource
+             | attributes: Map.delete(resource.attributes, "owner")
+           })
   end
 
   test "administrators have fleet VM authority while ordinary grants remain scoped" do

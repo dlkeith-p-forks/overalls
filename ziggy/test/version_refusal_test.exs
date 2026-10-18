@@ -43,7 +43,7 @@ defmodule Ziggy.VersionRefusalTest do
   property "wire 426 stays terminal even when its body exceeds the reply limit",
     profile: :ci do
     endpoint =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         {Bandit,
          plug: {RefusingEndpoint, self()},
          scheme: :https,
@@ -64,22 +64,19 @@ defmodule Ziggy.VersionRefusalTest do
       client: :"ziggy_refused_#{System.unique_integer([:positive])}"
     }
 
-    start_supervised!({Ziggy.Control.Link, control})
+    Overalls.HegelFixtures.start_supervised!({Ziggy.Control.Link, control})
     # The upgrade itself is refused with 426 and an oversized body.
     assert_receive {:refused_path, "/api/control/v1"}, 3_000
     refused(control.client, 100)
 
-    check all(
-            routes <-
-              list_of(member_of(["complete", "agent_next", "admit"]),
-                min_length: 1,
-                max_length: 4
-              ),
-            max_runs: 8
-          ) do
-      for route <- routes do
-        assert {:error, :unsupported_version} = Ziggy.Control.request(control, route, %{})
-      end
+    routes =
+      draw(
+        "routes",
+        list_of(member_of(["complete", "agent_next", "admit"]), min_length: 1, max_length: 4)
+      )
+
+    for route <- routes do
+      assert {:error, :unsupported_version} = Ziggy.Control.request(control, route, %{})
     end
   end
 
@@ -99,13 +96,14 @@ defmodule Ziggy.VersionRefusalTest do
   # Generated transient replies MAY retry, but a subsequent 426 MUST leave
   # durable completions unacknowledged and stop automatic control requests.
   test "completion reporter stops after version refusal and retains receipts", c do
-    check all(transient_replies <- integer(0..4), max_runs: 8) do
+    check all(transient_replies <- integer(0..4)) do
       directory = Path.join(c.directory, Integer.to_string(System.unique_integer([:positive])))
       File.mkdir!(directory)
       File.chmod!(directory, 0o700)
+      Hegel.on_cleanup(fn -> File.rm_rf!(directory) end)
 
       spool =
-        start_supervised!(
+        Overalls.HegelFixtures.start_supervised!(
           Supervisor.child_spec(
             {Ziggy.Spool, directory: directory, max_requests: 1},
             id: {:spool, make_ref()}
@@ -127,7 +125,7 @@ defmodule Ziggy.VersionRefusalTest do
       end
 
       reporter =
-        start_supervised!(
+        Overalls.HegelFixtures.start_supervised!(
           Supervisor.child_spec(
             {Ziggy.Reporter, spool: spool, control: %{}, request: request},
             id: {:reporter, make_ref()}
@@ -153,45 +151,48 @@ defmodule Ziggy.VersionRefusalTest do
   end
 
   property "model poll stops after version refusal" do
-    check all(transient_replies <- integer(0..4), max_runs: 8) do
-      owner = self()
+    transient_replies = draw("transient_replies", integer(0..4))
 
-      request = fn _control, route, _body ->
-        send(owner, {:request, route})
-        attempt = Process.get(:attempt, 0) + 1
-        Process.put(:attempt, attempt)
+    owner = self()
 
-        if attempt <= transient_replies,
-          do: {:error, :authority_unavailable},
-          else: Ziggy.Control.socket_result({:error, "unsupported_version"}, route, 16_384, nil)
-      end
+    request = fn _control, route, _body ->
+      send(owner, {:request, route})
+      attempt = Process.get(:attempt, 0) + 1
+      Process.put(:attempt, attempt)
 
-      worker =
-        start_supervised!({Ziggy.AgentWorker, config: %{control: %{}}, request: request})
-
-      for _ <- 1..(transient_replies + 1) do
-        send(worker, :poll)
-        assert_receive {:request, "agent_next"}, 1000
-      end
-
-      assert %{fence: fence, active: active} = :sys.get_state(worker)
-      assert Ziggy.VersionFence.fenced?(fence)
-      assert active == %{}
-      for _ <- 1..3, do: send(worker, :poll)
-      assert Ziggy.VersionFence.fenced?(:sys.get_state(worker).fence)
-      refute_receive {:request, _}, 20
-      stop_supervised!(Ziggy.AgentWorker)
+      if attempt <= transient_replies,
+        do: {:error, :authority_unavailable},
+        else: Ziggy.Control.socket_result({:error, "unsupported_version"}, route, 16_384, nil)
     end
+
+    worker =
+      Overalls.HegelFixtures.start_supervised!(
+        {Ziggy.AgentWorker, config: %{control: %{}}, request: request}
+      )
+
+    for _ <- 1..(transient_replies + 1) do
+      send(worker, :poll)
+      assert_receive {:request, "agent_next"}, 1000
+    end
+
+    assert %{fence: fence, active: active} = :sys.get_state(worker)
+    assert Ziggy.VersionFence.fenced?(fence)
+    assert active == %{}
+    for _ <- 1..3, do: send(worker, :poll)
+    assert Ziggy.VersionFence.fenced?(:sys.get_state(worker).fence)
+    refute_receive {:request, _}, 20
+    stop_supervised!(Ziggy.AgentWorker)
   end
 
   test "one version refusal preserves every queued completion", c do
-    check all(receipts <- integer(1..5), max_runs: 5) do
+    check all(receipts <- integer(1..5)) do
       directory = Path.join(c.directory, Integer.to_string(System.unique_integer([:positive])))
       File.mkdir!(directory)
       File.chmod!(directory, 0o700)
+      Hegel.on_cleanup(fn -> File.rm_rf!(directory) end)
 
       spool =
-        start_supervised!(
+        Overalls.HegelFixtures.start_supervised!(
           Supervisor.child_spec(
             {Ziggy.Spool, directory: directory, max_requests: receipts},
             id: {:spool, make_ref()}
@@ -213,7 +214,7 @@ defmodule Ziggy.VersionRefusalTest do
       end
 
       reporter =
-        start_supervised!(
+        Overalls.HegelFixtures.start_supervised!(
           Supervisor.child_spec(
             {Ziggy.Reporter, spool: spool, control: %{}, request: request},
             id: {:reporter, make_ref()}

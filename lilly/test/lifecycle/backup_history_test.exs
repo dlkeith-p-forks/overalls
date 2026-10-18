@@ -175,37 +175,40 @@ defmodule Lilly.Lifecycle.BackupHistoryTest do
 
   @tag :hegel
   test "native backup histories cannot skip cleanup or resurrect a cleaned producer", c do
-    check all(
-            targets <- list_of(member_of(~w(creating ready cleaning cleaned)), max_length: 15),
-            test_cases: 20
-          ) do
-      directory = Path.join(c.directory, Lilly.UUID.generate())
+    Hegel.check(
+      fn ->
+        targets =
+          draw("targets", list_of(member_of(~w(creating ready cleaning cleaned)), max_length: 15))
 
-      locked(directory, fn ->
-        value = payload(c)
-        assert :ok = Journal.write(BackupSnapshot, directory, "backup.json", value)
+        directory = Path.join(c.directory, Lilly.UUID.generate())
 
-        Enum.reduce(targets, "creating", fn target, state ->
-          allowed =
-            case state do
-              "creating" -> target in ~w(creating ready cleaning)
-              "ready" -> target in ~w(ready cleaning)
-              "cleaning" -> target in ~w(cleaning cleaned)
-              "cleaned" -> target == "cleaned"
-            end
+        locked(directory, fn ->
+          value = payload(c)
+          assert :ok = Journal.write(BackupSnapshot, directory, "backup.json", value)
 
-          assert Journal.write(BackupSnapshot, directory, "backup.json", %{
-                   value
-                   | "phase" => target
-                 }) == :ok == allowed
+          Enum.reduce(targets, "creating", fn target, state ->
+            allowed =
+              case state do
+                "creating" -> target in ~w(creating ready cleaning)
+                "ready" -> target in ~w(ready cleaning)
+                "cleaning" -> target in ~w(cleaning cleaned)
+                "cleaned" -> target == "cleaned"
+              end
 
-          {:ok, record} = Journal.load(BackupSnapshot, directory, "backup.json")
-          expected = if allowed, do: target, else: state
-          assert Atom.to_string(record.state) == expected
-          expected
+            assert Journal.write(BackupSnapshot, directory, "backup.json", %{
+                     value
+                     | "phase" => target
+                   }) == :ok == allowed
+
+            {:ok, record} = Journal.load(BackupSnapshot, directory, "backup.json")
+            expected = if allowed, do: target, else: state
+            assert Atom.to_string(record.state) == expected
+            expected
+          end)
         end)
-      end)
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   defp finish(c) do

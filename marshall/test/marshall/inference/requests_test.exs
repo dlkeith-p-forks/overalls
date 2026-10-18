@@ -105,48 +105,54 @@ defmodule Marshall.Inference.RequestsTest do
   end
 
   test "completion replay and conflict histories count each request once", c do
-    check all(
-            attempts <- list_of(member_of([:replay, :conflict]), min_length: 1, max_length: 12),
-            test_cases: 12
-          ) do
-      id = Ash.UUID.generate()
-      input = Map.put(c.input, "request_id", id)
+    Hegel.check(
+      fn ->
+        attempts =
+          draw(
+            "attempts",
+            list_of(member_of([:replay, :conflict]), min_length: 1, max_length: 12)
+          )
 
-      previous =
-        Ledger.read!(Marshall.Inference.Daily, owner_id: c.owner.id)
-        |> Enum.reduce(0, fn daily, total -> total + daily.requests end)
+        id = Ash.UUID.generate()
+        input = Map.put(c.input, "request_id", id)
 
-      assert {:ok, %{request_id: ^id}} = Requests.admit(c.ziggy_token, input)
-      assert {:ok, %{acknowledged: ^id}} = Requests.complete(c.ziggy_token, id, completion())
-      [committed] = Ledger.read!(Request, id: id)
+        previous =
+          Ledger.read!(Marshall.Inference.Daily, owner_id: c.owner.id)
+          |> Enum.reduce(0, fn daily, total -> total + daily.requests end)
 
-      for attempt <- attempts do
-        result =
-          case attempt do
-            :replay ->
-              Requests.complete(c.ziggy_token, id, completion())
+        assert {:ok, %{request_id: ^id}} = Requests.admit(c.ziggy_token, input)
+        assert {:ok, %{acknowledged: ^id}} = Requests.complete(c.ziggy_token, id, completion())
+        [committed] = Ledger.read!(Request, id: id)
 
-            :conflict ->
-              Requests.complete(
-                c.ziggy_token,
-                id,
-                Map.put(completion(), "outcome", "cancelled")
-              )
-          end
+        for attempt <- attempts do
+          result =
+            case attempt do
+              :replay ->
+                Requests.complete(c.ziggy_token, id, completion())
 
-        assert result ==
-                 if(attempt == :replay,
-                   do: {:ok, %{acknowledged: id}},
-                   else: {:error, :completion_conflict}
-                 )
+              :conflict ->
+                Requests.complete(
+                  c.ziggy_token,
+                  id,
+                  Map.put(completion(), "outcome", "cancelled")
+                )
+            end
 
-        assert Ledger.read!(Request, id: id) == [committed]
+          assert result ==
+                   if(attempt == :replay,
+                     do: {:ok, %{acknowledged: id}},
+                     else: {:error, :completion_conflict}
+                   )
 
-        daily_rows = Ledger.read!(Marshall.Inference.Daily, owner_id: c.owner.id)
-        assert Enum.sum(Enum.map(daily_rows, & &1.requests)) == previous + 1
-        assert Enum.sum(Enum.map(daily_rows, & &1.unknown_requests)) == previous + 1
-      end
-    end
+          assert Ledger.read!(Request, id: id) == [committed]
+
+          daily_rows = Ledger.read!(Marshall.Inference.Daily, owner_id: c.owner.id)
+          assert Enum.sum(Enum.map(daily_rows, & &1.requests)) == previous + 1
+          assert Enum.sum(Enum.map(daily_rows, & &1.unknown_requests)) == previous + 1
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   test "retired owners cannot admit or renew inference but accounting can finish", c do

@@ -7,27 +7,29 @@ defmodule Marshall.Terminal.PersonalSessionTest do
   alias Marshall.Terminal.Authority
   import Marshall.TerminalFixtures
 
+  @tag :hegel_case_sandbox
   property "automatic retries share the SSH identity and never replace an exited shell",
-    test_cases: 8 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     fixture = terminal_fixture()
-    stream = stream_fixture(fixture.host.id)
+    stream = stream_fixture(fixture.host.id, :property)
 
     assert {:ok, account} =
              Ledger.transaction(fn -> GuestAccounts.ensure!(fixture.owner.id) end)
 
     assert {:ok, session} = Authority.open_personal_session(fixture.vm, fixture.owner)
 
-    check all(retries <- integer(1..8), test_cases: 8) do
-      for _ <- 1..retries do
-        assert {:ok, repeated} = Authority.open_personal_session(fixture.vm, fixture.owner)
-        assert repeated.id == session.id
-      end
+    retries = draw("retries", integer(1..8))
 
-      assert {:ok, [listed]} = Authority.list_sessions(fixture.vm, fixture.owner)
-      assert listed.user == account.username
-      assert {:ok, same} = Ledger.transaction(fn -> GuestAccounts.ensure!(fixture.owner.id) end)
-      assert {same.id, same.uid} == {account.id, account.uid}
+    for _ <- 1..retries do
+      assert {:ok, repeated} = Authority.open_personal_session(fixture.vm, fixture.owner)
+      assert repeated.id == session.id
     end
+
+    assert {:ok, [listed]} = Authority.list_sessions(fixture.vm, fixture.owner)
+    assert listed.user == account.username
+    assert {:ok, same} = Ledger.transaction(fn -> GuestAccounts.ensure!(fixture.owner.id) end)
+    assert {same.id, same.uid} == {account.id, account.uid}
 
     send(stream, {:guest_exited, session.guest_session_id})
     assert {:ok, []} = Authority.list_sessions(fixture.vm, fixture.owner)

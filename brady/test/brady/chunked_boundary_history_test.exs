@@ -16,26 +16,21 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
   # mutation MUST leave both reservations unchanged. The surviving owner's exact
   # bytes MUST publish without admitting the refused object.
   property "overlapping unknown-length owners preserve exact object quota and headroom boundaries" do
-    check all(
-            cap <- member_of([1, 4095, 4096, 65_535]),
-            axis <- member_of([:object, :quota, :pool, :parent]),
-            reverse <- boolean(),
-            max_runs: 12
-          ) do
-      {:ok, supervisor} = Task.Supervisor.start_link()
-      Process.unlink(supervisor)
-      Hegel.on_cleanup(fn -> Process.exit(supervisor, :shutdown) end)
+    cap = draw("cap", member_of([1, 4095, 4096, 65535]))
+    axis = draw("axis", member_of([:object, :quota, :pool, :parent]))
+    reverse = draw("reverse", boolean())
 
-      for {limit, boundary} <- [
-            {cap, axis},
-            {1, :quota},
-            {1, :object},
-            {4096, :object},
-            {1, :pool},
-            {65_535, :parent}
-          ] do
-        history(supervisor, limit, boundary, reverse)
-      end
+    supervisor = Overalls.HegelFixtures.start_supervised!(Task.Supervisor)
+
+    for {limit, boundary} <- [
+          {cap, axis},
+          {1, :quota},
+          {1, :object},
+          {4096, :object},
+          {1, :pool},
+          {65_535, :parent}
+        ] do
+      history(supervisor, limit, boundary, reverse)
     end
   end
 
@@ -45,25 +40,20 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
   # after restart. Recovery MUST clear incomplete leases without granting stale
   # references authority. Process loss MUST NOT establish native power-loss proof.
   property "unknown-length process loss preserves only completed payloads" do
-    check all(
-            size <- member_of([0, 1, 65_535, 65_536, 65_537]),
-            target <- member_of([:owner, :store]),
-            committed <- boolean(),
-            max_runs: 8
-          ) do
-      {:ok, supervisor} = Task.Supervisor.start_link()
-      Process.unlink(supervisor)
-      Hegel.on_cleanup(fn -> Process.exit(supervisor, :shutdown) end)
+    size = draw("size", member_of([0, 1, 65535, 65536, 65537]))
+    target = draw("target", member_of([:owner, :store]))
+    committed = draw("committed", boolean())
 
-      for {bytes, loss, complete} <- [
-            {size, target, committed},
-            {0, :owner, false},
-            {65_537, :store, false},
-            {65_536, :owner, true},
-            {1, :store, true}
-          ] do
-        crash_history(supervisor, bytes, loss, complete)
-      end
+    supervisor = Overalls.HegelFixtures.start_supervised!(Task.Supervisor)
+
+    for {bytes, loss, complete} <- [
+          {size, target, committed},
+          {0, :owner, false},
+          {65_537, :store, false},
+          {65_536, :owner, true},
+          {1, :store, true}
+        ] do
+      crash_history(supervisor, bytes, loss, complete)
     end
   end
 

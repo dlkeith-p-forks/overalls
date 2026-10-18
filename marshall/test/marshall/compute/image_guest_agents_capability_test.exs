@@ -23,48 +23,47 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
   # their own content-bound ID; kernel manifests MUST report the Linux agent set;
   # any mismatched ID or malformed manifest MUST fail closed as unavailable, with
   # every capability false.
+  @tag :hegel_case_sandbox
   property "guest agent capability is bound to the validated manifest and its exact image ID",
-    test_cases: 25 do
-    check all(
-            root_bytes <- integer(1..137_438_953_472),
-            firmware_bytes <- integer(1..67_108_864),
-            agents <- member_of(["none", "windows-v1"]),
-            test_cases: 25
-          ) do
-      manifest =
-        windows_image_manifest()
-        |> put_in(["root", "bytes"], root_bytes)
-        |> put_in(["boot", "firmware", "bytes"], firmware_bytes)
-        |> Map.put("minimum_disk_bytes", root_bytes)
-        |> Map.put("guest_agents", agents)
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    root_bytes = draw("root_bytes", integer(1..137_438_953_472))
+    firmware_bytes = draw("firmware_bytes", integer(1..67_108_864))
+    agents = draw("agents", member_of(["none", "windows-v1"]))
 
-      {:ok, validated} = OverallsProtocol.ImageManifest.validate(manifest)
-      {:ok, set} = OverallsProtocol.GuestAgents.parse(agents)
-      assert {:ok, ^set} = Image.guest_agents_capability(%{id: validated.id, manifest: manifest})
-      capabilities = Image.guest_capabilities(%{id: validated.id, manifest: manifest})
-      assert capabilities.available
-      assert capabilities.readiness == (set == :windows_v1)
-      assert capabilities.trust == (set == :windows_v1)
-      assert capabilities.ssh == (set == :windows_v1)
-      assert capabilities.terminal == (set == :windows_v1)
-      assert capabilities.workspace == (set == :windows_v1)
-      assert capabilities.flush == (set == :windows_v1)
-      assert capabilities.agents == (set == :windows_v1)
-      assert capabilities.readiness == (set == :windows_v1)
-      refute capabilities.editor
-      refute capabilities.inception
+    manifest =
+      windows_image_manifest()
+      |> put_in(["root", "bytes"], root_bytes)
+      |> put_in(["boot", "firmware", "bytes"], firmware_bytes)
+      |> Map.put("minimum_disk_bytes", root_bytes)
+      |> Map.put("guest_agents", agents)
 
-      assert {:error, :unavailable} =
-               Image.guest_agents_capability(%{id: image_id(), manifest: manifest})
+    {:ok, validated} = OverallsProtocol.ImageManifest.validate(manifest)
+    {:ok, set} = OverallsProtocol.GuestAgents.parse(agents)
+    assert {:ok, ^set} = Image.guest_agents_capability(%{id: validated.id, manifest: manifest})
+    capabilities = Image.guest_capabilities(%{id: validated.id, manifest: manifest})
+    assert capabilities.available
+    assert capabilities.readiness == (set == :windows_v1)
+    assert capabilities.trust == (set == :windows_v1)
+    assert capabilities.ssh == (set == :windows_v1)
+    assert capabilities.terminal == (set == :windows_v1)
+    assert capabilities.workspace == (set == :windows_v1)
+    assert capabilities.flush == (set == :windows_v1)
+    assert capabilities.agents == (set == :windows_v1)
+    assert capabilities.readiness == (set == :windows_v1)
+    refute capabilities.editor
+    refute capabilities.inception
 
-      assert Image.guest_capabilities(%{id: image_id(), manifest: manifest}) == @none
+    assert {:error, :unavailable} =
+             Image.guest_agents_capability(%{id: image_id(), manifest: manifest})
 
-      assert {:error, :unavailable} =
-               Image.guest_agents_capability(%{
-                 id: validated.id,
-                 manifest: Map.put(manifest, "name", "Windows")
-               })
-    end
+    assert Image.guest_capabilities(%{id: image_id(), manifest: manifest}) == @none
+
+    assert {:error, :unavailable} =
+             Image.guest_agents_capability(%{
+               id: validated.id,
+               manifest: Map.put(manifest, "name", "Windows")
+             })
   end
 
   test "kernel images carry the Linux agent set and malformed rows fail closed" do

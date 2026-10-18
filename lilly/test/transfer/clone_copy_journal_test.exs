@@ -119,44 +119,59 @@ defmodule Lilly.Transfer.CloneCopyJournalTest do
 
   @tag :hegel
   test "bindings, file records and completion refuse every conflicting history", c do
-    check all(
-            other_nonce <- member_of([String.duplicate("b", 32), "short", @nonce]),
-            other_guid <- member_of(["300", "301"]),
-            other_size <- member_of([4096, 4097]),
-            missing <- member_of(@files),
-            test_cases: 30
-          ) do
-      directory = Path.join(c.directory, Integer.to_string(System.unique_integer([:positive])))
-      c = %{c | directory: directory}
+    Hegel.check(
+      fn ->
+        other_nonce = draw("other_nonce", member_of([String.duplicate("b", 32), "short", @nonce]))
+        other_guid = draw("other_guid", member_of(["300", "301"]))
+        other_size = draw("other_size", member_of([4096, 4097]))
+        missing = draw("missing", member_of(@files))
+        directory = Path.join(c.directory, Integer.to_string(System.unique_integer([:positive])))
+        c = %{c | directory: directory}
 
-      locked(c, fn ->
-        {:ok, _} = Journal.prepare(directory, c.descriptor, c.identity)
-        {:ok, _} = Journal.bind(directory, c.descriptor, c.identity, @nonce, "300")
+        locked(c, fn ->
+          {:ok, _} = Journal.prepare(directory, c.descriptor, c.identity)
+          {:ok, _} = Journal.bind(directory, c.descriptor, c.identity, @nonce, "300")
 
-        rebind = Journal.bind(directory, c.descriptor, c.identity, other_nonce, other_guid)
+          rebind = Journal.bind(directory, c.descriptor, c.identity, other_nonce, other_guid)
 
-        assert match?({:ok, _}, rebind) == (other_nonce == @nonce and other_guid == "300")
+          assert match?({:ok, _}, rebind) == (other_nonce == @nonce and other_guid == "300")
 
-        {:ok, _} =
-          Journal.file_copied(directory, c.descriptor, c.identity, "kernel", 4096, @source)
+          {:ok, _} =
+            Journal.file_copied(directory, c.descriptor, c.identity, "kernel", 4096, @source)
 
-        rerecord =
-          Journal.file_copied(directory, c.descriptor, c.identity, "kernel", other_size, @source)
+          rerecord =
+            Journal.file_copied(
+              directory,
+              c.descriptor,
+              c.identity,
+              "kernel",
+              other_size,
+              @source
+            )
 
-        assert match?({:ok, _}, rerecord) == (other_size == 4096)
+          assert match?({:ok, _}, rerecord) == (other_size == 4096)
 
-        assert {:error, _} =
-                 Journal.file_copied(directory, c.descriptor, c.identity, "../escape", 1, @source)
+          assert {:error, _} =
+                   Journal.file_copied(
+                     directory,
+                     c.descriptor,
+                     c.identity,
+                     "../escape",
+                     1,
+                     @source
+                   )
 
-        for name <- @files -- [missing], name != "kernel" do
-          {:ok, _} = Journal.file_copied(directory, c.descriptor, c.identity, name, 1, @source)
-        end
+          for name <- @files -- [missing], name != "kernel" do
+            {:ok, _} = Journal.file_copied(directory, c.descriptor, c.identity, name, 1, @source)
+          end
 
-        complete = Journal.copied(directory, c.descriptor, c.identity, "300", @files)
-        assert match?({:ok, _}, complete) == (missing == "kernel")
-        assert {:error, _} = Journal.copied(directory, c.descriptor, c.identity, "301", @files)
-      end)
-    end
+          complete = Journal.copied(directory, c.descriptor, c.identity, "300", @files)
+          assert match?({:ok, _}, complete) == (missing == "kernel")
+          assert {:error, _} = Journal.copied(directory, c.descriptor, c.identity, "301", @files)
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   test "retirement is permanent and requires the exact bound GUID", c do

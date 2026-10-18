@@ -120,15 +120,33 @@ defmodule Overalls.HLDDCoverage do
   # calls. Macro-name prefixes and incomplete outer delimiters MUST NOT qualify.
   # Explicit Elixir Hegel.check/run calls MUST also qualify; other module names,
   # function-name prefixes and a tag alone MUST NOT establish a runner.
+  # Parenthesized Elixir property macros MUST qualify without accepting prefixed
+  # macro names or unrelated module calls.
   # Lexical recognition MUST NOT imply source validity or recorded/native execution.
   @spec property_source?(String.t()) :: boolean()
   defp property_source?(source) do
-    String.contains?(source, ["property ", "check all", "proptest!", "@given"]) or
-      Regex.match?(~r/(?<![\w.])Hegel\s*\.\s*(?:check|run)\s*\(/, source) or
+    String.contains?(source, ["check all", "proptest!", "@given"]) or
+      unqualified_call?(source, ~r/(?<![\w.])property(?:\s|\()/) or
+      unqualified_call?(source, ~r/(?<![\w.])Hegel\s*\.\s*(?:check|run)\s*\(/) or
       Regex.match?(
         ~r/#\s*\[\s*hegel\s*::\s*test\s*(?<args>\((?:[^()]|(?&args))*\))?\s*\]/,
         source
       )
+  end
+
+  @spec unqualified_call?(String.t(), Regex.t()) :: boolean()
+  defp unqualified_call?(source, pattern) do
+    pattern
+    |> Regex.scan(source, return: :index)
+    |> Enum.any?(fn [{offset, _length}] ->
+      prefix =
+        source
+        |> binary_part(0, offset)
+        |> then(&Regex.replace(~r/^\s*#[^\n]*$/m, &1, ""))
+        |> String.trim_trailing()
+
+      not String.ends_with?(prefix, ".")
+    end)
   end
 
   @spec local_file?(String.t(), term()) :: boolean()

@@ -26,42 +26,39 @@ defmodule Marshall.Ingress.HistoryTest do
   # and never carry token material. Backdating and intent injection are synthetic
   # faults; everything else drives public or gateway actions.
   test "publication, lease and withdrawal histories follow one authority model", c do
-    check all(
-            tail <-
-              list_of(operations(),
-                min_length: 6,
-                max_length: 16
-              ),
-            test_cases: 10
-          ) do
-      c = Fx.new(c.certificate)
+    Hegel.check(
+      fn ->
+        tail = draw("tail", list_of(operations(), min_length: 6, max_length: 16))
+        c = Fx.new(c.certificate)
 
-      model =
-        Enum.reduce(
-          [
-            {:configure, :public, 8080},
-            :acknowledge,
-            :report,
-            :publish,
-            {:open_web, :anonymous, 0},
-            {:open_web, :member, 0},
-            {:open_web, :member, 3000},
-            {:open_ssh, :owner},
-            {:open_ssh, :member}
-            | tail
-          ],
-          initial(c),
-          fn operation, model ->
-            Fx.fresh_report(c, model.sequence)
+        model =
+          Enum.reduce(
+            [
+              {:configure, :public, 8080},
+              :acknowledge,
+              :report,
+              :publish,
+              {:open_web, :anonymous, 0},
+              {:open_web, :member, 0},
+              {:open_web, :member, 3000},
+              {:open_ssh, :owner},
+              {:open_ssh, :member}
+              | tail
+            ],
+            initial(c),
+            fn operation, model ->
+              Fx.fresh_report(c, model.sequence)
 
-            apply_step(current(c, model), model, operation)
-            |> Map.update!(:sequence, &(&1 + 1))
-          end
-        )
+              apply_step(current(c, model), model, operation)
+              |> Map.update!(:sequence, &(&1 + 1))
+            end
+          )
 
-      Fx.fresh_report(c, model.sequence + 1)
-      audit(c, model)
-    end
+        Fx.fresh_report(c, model.sequence + 1)
+        audit(c, model)
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;security] ingress-lease-exact-boundary

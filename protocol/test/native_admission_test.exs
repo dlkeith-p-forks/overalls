@@ -11,7 +11,7 @@ defmodule OverallsProtocol.NativeAdmissionTest do
   property "codec-valid root and firmware substitutions cannot inherit reviewed capabilities",
     database: :disabled,
     print_blob: false,
-    test_cases: 64,
+    test_cases: 100,
     seed: 20_261_017 do
     digest = draw("root_digest", Hegel.Gen.binary(32, 32))
     sha256 = Base.encode16(digest, case: :lower)

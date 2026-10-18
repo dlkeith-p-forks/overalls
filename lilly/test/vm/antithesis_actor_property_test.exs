@@ -19,34 +19,38 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # durable fake launch, including when a previous result remains unacknowledged.
   @tag :hegel
   test "replay and generation advance never duplicate a fake launch", %{tmp_dir: root} do
-    check all(actions <- list_of(member_of([:replay, :advance]), max_length: 7), test_cases: 20) do
-      directory = fresh_directory(root)
-      {:ok, store} = Store.open(directory, @host_id, 3)
-      first = command(1)
-      assert {:ok, :stored} = Store.accept(store, first)
-      assert_running(reconcile_once(store, directory, first), first)
+    Hegel.check(
+      fn ->
+        actions = draw("actions", list_of(member_of([:replay, :advance]), max_length: 7))
+        directory = fresh_directory(root)
+        {:ok, store} = Store.open(directory, @host_id, 3)
+        first = command(1)
+        assert {:ok, :stored} = Store.accept(store, first)
+        assert_running(reconcile_once(store, directory, first), first)
 
-      final =
-        Enum.reduce(actions, first, fn action, current ->
-          next =
-            case action do
-              :replay ->
-                current
+        final =
+          Enum.reduce(actions, first, fn action, current ->
+            next =
+              case action do
+                :replay ->
+                  current
 
-              :advance ->
-                %{current | id: Lilly.UUID.generate(), generation: current.generation + 1}
-            end
+                :advance ->
+                  %{current | id: Lilly.UUID.generate(), generation: current.generation + 1}
+              end
 
-          expected = if action == :replay, do: :duplicate, else: :stored
-          assert {:ok, ^expected} = Store.accept(store, next)
-          assert_running(reconcile_once(store, directory, next), next)
-          assert_unique_attempts(directory, next)
-          next
-        end)
+            expected = if action == :replay, do: :duplicate, else: :stored
+            assert {:ok, ^expected} = Store.accept(store, next)
+            assert_running(reconcile_once(store, directory, next), next)
+            assert_unique_attempts(directory, next)
+            next
+          end)
 
-      assert_unique_attempts(directory, final)
-      assert {:ok, ^final} = Store.read(store, @placement_id)
-    end
+        assert_unique_attempts(directory, final)
+        assert {:ok, ^final} = Store.read(store, @placement_id)
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] interrupted-launch-fails-closed
@@ -54,31 +58,35 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # same-generation actor replay; the recovered actor MUST NOT launch it again.
   @tag :hegel
   test "a marker left before fake launch completion fences actor replay", %{tmp_dir: root} do
-    check all(generation <- integer(1..100), test_cases: 20) do
-      directory = fresh_directory(root)
-      {:ok, store} = Store.open(directory, @host_id, 3)
-      intent = command(generation)
-      assert {:ok, :stored} = Store.accept(store, intent)
+    Hegel.check(
+      fn ->
+        generation = draw("generation", integer(1..100))
+        directory = fresh_directory(root)
+        {:ok, store} = Store.open(directory, @host_id, 3)
+        intent = command(generation)
+        assert {:ok, :stored} = Store.accept(store, intent)
 
-      marker = %{
-        "epoch" => intent.execution_epoch,
-        "generation" => generation,
-        "status" => "attempted",
-        "attempts" => %{attempt_key(intent) => 1}
-      }
+        marker = %{
+          "epoch" => intent.execution_epoch,
+          "generation" => generation,
+          "status" => "attempted",
+          "attempts" => %{attempt_key(intent) => 1}
+        }
 
-      :ok = Lilly.Host.PrivateFiles.write(directory, "fake-executor.json", JSON.encode!(marker))
-      outcome = reconcile_once(store, directory, intent)
-      assert outcome.state == :failed
-      assert outcome.reason == :execution_failed
-      assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == marker
+        :ok = Lilly.Host.PrivateFiles.write(directory, "fake-executor.json", JSON.encode!(marker))
+        outcome = reconcile_once(store, directory, intent)
+        assert outcome.state == :failed
+        assert outcome.reason == :execution_failed
+        assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == marker
 
-      replayed = reconcile_once(store, directory, intent)
-      assert replayed.id == outcome.id
-      assert replayed.sequence == outcome.sequence
-      assert replayed.state == :failed
-      assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == marker
-    end
+        replayed = reconcile_once(store, directory, intent)
+        assert replayed.id == outcome.id
+        assert replayed.sequence == outcome.sequence
+        assert replayed.state == :failed
+        assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == marker
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] killed-actor-attempt-fence
@@ -89,56 +97,60 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   test "actor death after a durable launch attempt fences the same generation", %{
     tmp_dir: root
   } do
-    check all(generation <- integer(1..100), test_cases: 20) do
-      directory = fresh_directory(root)
-      {:ok, store} = Store.open(directory, @host_id, 3)
-      intent = command(generation)
-      assert {:ok, :stored} = Store.accept(store, intent)
+    Hegel.check(
+      fn ->
+        generation = draw("generation", integer(1..100))
+        directory = fresh_directory(root)
+        {:ok, store} = Store.open(directory, @host_id, 3)
+        intent = command(generation)
+        assert {:ok, :stored} = Store.accept(store, intent)
 
-      {:ok, actor} =
-        Actor.start_link(
-          store: store,
-          vm_id: @vm_id,
-          placement_id: @placement_id,
-          owner: self(),
-          executor: {FakeExecutor, {directory, self()}}
-        )
+        {:ok, actor} =
+          Actor.start_link(
+            store: store,
+            vm_id: @vm_id,
+            placement_id: @placement_id,
+            owner: self(),
+            executor: {FakeExecutor, {directory, self()}}
+          )
 
-      Process.unlink(actor)
+        Process.unlink(actor)
 
-      try do
-        assert_receive {:vm_actor_ready, @placement_id, ^actor, _}, 2_000
-        Actor.reconcile(actor)
-        assert_receive {:fake_launch_attempted, task}, 5_000
+        try do
+          assert_receive {:vm_actor_ready, @placement_id, ^actor, _}, 2_000
+          Actor.reconcile(actor)
+          assert_receive {:fake_launch_attempted, task}, 5_000
 
-        attempted = FakeExecutor.read(Path.join(directory, "fake-executor.json"))
-        assert attempted["status"] == "attempted"
-        assert attempted["attempts"] == %{attempt_key(intent) => 1}
+          attempted = FakeExecutor.read(Path.join(directory, "fake-executor.json"))
+          assert attempted["status"] == "attempted"
+          assert attempted["attempts"] == %{attempt_key(intent) => 1}
 
-        actor_ref = Process.monitor(actor)
-        task_ref = Process.monitor(task)
-        Process.exit(actor, :kill)
-        assert_receive {:DOWN, ^actor_ref, :process, ^actor, :killed}, 2_000
-        assert_receive {:DOWN, ^task_ref, :process, ^task, _}, 2_000
+          actor_ref = Process.monitor(actor)
+          task_ref = Process.monitor(task)
+          Process.exit(actor, :kill)
+          assert_receive {:DOWN, ^actor_ref, :process, ^actor, :killed}, 2_000
+          assert_receive {:DOWN, ^task_ref, :process, ^task, _}, 2_000
 
-        journal_dir = Path.join([directory, "actors", @placement_id])
-        assert {:ok, journal} = Journal.open(journal_dir, @host_id, @vm_id, @placement_id)
-        assert journal.attempted_generation == generation
-        assert journal.outcome == nil
+          journal_dir = Path.join([directory, "actors", @placement_id])
+          assert {:ok, journal} = Journal.open(journal_dir, @host_id, @vm_id, @placement_id)
+          assert journal.attempted_generation == generation
+          assert journal.outcome == nil
 
-        outcome = reconcile_once(store, directory, intent)
-        assert outcome.state == :failed
-        assert outcome.reason == :execution_failed
-        assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == attempted
+          outcome = reconcile_once(store, directory, intent)
+          assert outcome.state == :failed
+          assert outcome.reason == :execution_failed
+          assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == attempted
 
-        replayed = reconcile_once(store, directory, intent)
-        assert replayed.id == outcome.id
-        assert replayed.sequence == outcome.sequence
-        assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == attempted
-      after
-        if Process.alive?(actor), do: Process.exit(actor, :kill)
-      end
-    end
+          replayed = reconcile_once(store, directory, intent)
+          assert replayed.id == outcome.id
+          assert replayed.sequence == outcome.sequence
+          assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == attempted
+        after
+          if Process.alive?(actor), do: Process.exit(actor, :kill)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] completed-launch-before-record-crash
@@ -147,70 +159,74 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # another launch and replay the exact recovered outcome identity and sequence.
   @tag :hegel
   test "completed launch survives actor death before outcome recording", %{tmp_dir: root} do
-    check all(generation <- integer(1..100), test_cases: 20) do
-      directory = fresh_directory(root)
-      {:ok, store} = Store.open(directory, @host_id, 3)
-      intent = command(generation)
-      assert {:ok, :stored} = Store.accept(store, intent)
+    Hegel.check(
+      fn ->
+        generation = draw("generation", integer(1..100))
+        directory = fresh_directory(root)
+        {:ok, store} = Store.open(directory, @host_id, 3)
+        intent = command(generation)
+        assert {:ok, :stored} = Store.accept(store, intent)
 
-      {:ok, actor} =
-        Actor.start_link(
-          store: store,
-          vm_id: @vm_id,
-          placement_id: @placement_id,
-          owner: self(),
-          executor: {FakeExecutor, {directory, self()}}
-        )
+        {:ok, actor} =
+          Actor.start_link(
+            store: store,
+            vm_id: @vm_id,
+            placement_id: @placement_id,
+            owner: self(),
+            executor: {FakeExecutor, {directory, self()}}
+          )
 
-      Process.unlink(actor)
+        Process.unlink(actor)
 
-      try do
-        assert_receive {:vm_actor_ready, @placement_id, ^actor, _}, 2_000
-        Actor.reconcile(actor)
-        assert_receive {:fake_launch_attempted, task}, 5_000
-        %{task: %Task{ref: result_ref}} = :sys.get_state(actor)
-        :ok = :sys.suspend(actor)
-        journal_path = Path.join([directory, "actors", @placement_id, "journal.json"])
-        before = File.read!(journal_path)
-        raw = JSON.decode!(before)
-        assert raw["attempted_generation"] == generation
-        assert raw["outcome"] == nil
-        task_ref = Process.monitor(task)
-        send(task, :resume_fake_launch)
-        assert_receive {:DOWN, ^task_ref, :process, ^task, :normal}, 5_000
-        assert {:messages, messages} = Process.info(actor, :messages)
+        try do
+          assert_receive {:vm_actor_ready, @placement_id, ^actor, _}, 2_000
+          Actor.reconcile(actor)
+          assert_receive {:fake_launch_attempted, task}, 5_000
+          %{task: %Task{ref: result_ref}} = :sys.get_state(actor)
+          :ok = :sys.suspend(actor)
+          journal_path = Path.join([directory, "actors", @placement_id, "journal.json"])
+          before = File.read!(journal_path)
+          raw = JSON.decode!(before)
+          assert raw["attempted_generation"] == generation
+          assert raw["outcome"] == nil
+          task_ref = Process.monitor(task)
+          send(task, :resume_fake_launch)
+          assert_receive {:DOWN, ^task_ref, :process, ^task, :normal}, 5_000
+          assert {:messages, messages} = Process.info(actor, :messages)
 
-        expected = %{
-          state: :running,
-          compute_empty: false,
-          disk_present: true,
-          cleanup_complete: false,
-          reason: :none
-        }
+          expected = %{
+            state: :running,
+            compute_empty: false,
+            disk_present: true,
+            cleanup_complete: false,
+            reason: :none
+          }
 
-        # The actor's task replies {result, observed target}; only the result is pinned.
-        assert Enum.any?(messages, &match?({^result_ref, {{:ok, ^expected}, _target}}, &1))
-        completed = FakeExecutor.read(Path.join(directory, "fake-executor.json"))
-        assert completed["status"] == "running"
-        assert completed["attempts"] == %{attempt_key(intent) => 1}
-        assert File.read!(journal_path) == before
-        refute_receive {:vm_actor_outcome, @placement_id, ^actor, _}, 0
-        actor_ref = Process.monitor(actor)
-        Process.exit(actor, :kill)
-        assert_receive {:DOWN, ^actor_ref, :process, ^actor, :killed}, 2_000
-        assert File.read!(journal_path) == before
+          # The actor's task replies {result, observed target}; only the result is pinned.
+          assert Enum.any?(messages, &match?({^result_ref, {{:ok, ^expected}, _target}}, &1))
+          completed = FakeExecutor.read(Path.join(directory, "fake-executor.json"))
+          assert completed["status"] == "running"
+          assert completed["attempts"] == %{attempt_key(intent) => 1}
+          assert File.read!(journal_path) == before
+          refute_receive {:vm_actor_outcome, @placement_id, ^actor, _}, 0
+          actor_ref = Process.monitor(actor)
+          Process.exit(actor, :kill)
+          assert_receive {:DOWN, ^actor_ref, :process, ^actor, :killed}, 2_000
+          assert File.read!(journal_path) == before
 
-        recovered = reconcile_completed_once(store, directory, intent)
-        assert_running(recovered, intent)
-        assert recovered.sequence == 1
-        assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == completed
-        replayed = reconcile_completed_once(store, directory, intent)
-        assert replayed == recovered
-        assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == completed
-      after
-        stop_completed_actor(actor)
-      end
-    end
+          recovered = reconcile_completed_once(store, directory, intent)
+          assert_running(recovered, intent)
+          assert recovered.sequence == 1
+          assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == completed
+          replayed = reconcile_completed_once(store, directory, intent)
+          assert replayed == recovered
+          assert FakeExecutor.read(Path.join(directory, "fake-executor.json")) == completed
+        after
+          stop_completed_actor(actor)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   @spec stop_completed_actor(pid()) :: :ok

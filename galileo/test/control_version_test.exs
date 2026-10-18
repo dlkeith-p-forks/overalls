@@ -9,28 +9,29 @@ defmodule Galileo.ControlVersionTest do
   # 401 credential refusal stays unauthorized (ADR-0080); anything else is an
   # authority outage, never a version refusal.
   property "version refusals keep their permanent class on every route" do
-    check all(
-            status <- member_of([426, 401, 503]),
-            routes <-
-              list_of(member_of(["authorize", "identity", "renew"]), min_length: 1, max_length: 3),
-            max_runs: 6
-          ) do
-      control = Galileo.ControlStub.start({:refuse, status})
-      assert_receive {:control_path, "/api/control/v1"}, 1_000
+    status = draw("status", member_of([426, 401, 503]))
 
-      expected =
-        case status do
-          426 -> {:error, :unsupported_version}
-          401 -> {:error, :unauthorized}
-          _ -> {:error, :authority_unavailable}
-        end
+    routes =
+      draw(
+        "routes",
+        list_of(member_of(["authorize", "identity", "renew"]), min_length: 1, max_length: 3)
+      )
 
-      for route <- routes do
-        assert Galileo.Control.request(control, route, %{}) == expected
+    control = Galileo.ControlStub.start({:refuse, status})
+    assert_receive {:control_path, "/api/control/v1"}, 1_000
+
+    expected =
+      case status do
+        426 -> {:error, :unsupported_version}
+        401 -> {:error, :unauthorized}
+        _ -> {:error, :authority_unavailable}
       end
 
-      refute_receive {:control_request, _}, 50
+    for route <- routes do
+      assert Galileo.Control.request(control, route, %{}) == expected
     end
+
+    refute_receive {:control_request, _}, 50
   end
 
   test "requests travel as galileo ops and map domain refusals" do

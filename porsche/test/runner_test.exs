@@ -330,9 +330,9 @@ defmodule Porsche.RunnerTest do
   end
 
   property "wait traces submit once and stop at the first terminal receipt or deadline" do
-    pending = draw(integer(0..10))
-    timeout = draw(integer(1..8))
-    terminal = draw(member_of(["succeeded", "failed", "superseded"]))
+    pending = draw("pending", integer(0..10))
+    timeout = draw("timeout", integer(1..8))
+    terminal = draw("terminal", member_of(["succeeded", "failed", "superseded"]))
     replies = List.duplicate(receipt("accepted"), pending) ++ [receipt(terminal)]
     {options, state} = script(replies)
     result = Runner.run(client(), "s", "new --timeout #{timeout} --request-id #{@id}", options)

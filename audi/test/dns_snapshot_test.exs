@@ -106,24 +106,24 @@ defmodule Audi.DNS.SnapshotTest do
   end
 
   property "every decoded deadline is bound to request start, even after response delay" do
-    check all(ttl <- integer(1..5000), delay <- integer(0..6000)) do
-      started = now() - delay
+    ttl = draw("ttl", integer(1..5000))
+    delay = draw("delay", integer(0..6000))
+    started = now() - delay
 
-      value =
-        envelope()
-        |> Map.put("ttl", ttl)
-        |> Map.put("routes", [%{"label" => @label, "addresses" => ["192.0.2.1"], "ttl" => ttl}])
-        |> Map.put("proofs", [])
+    value =
+      envelope()
+      |> Map.put("ttl", ttl)
+      |> Map.put("routes", [%{"label" => @label, "addresses" => ["192.0.2.1"], "ttl" => ttl}])
+      |> Map.put("proofs", [])
 
-      case Snapshot.decode(value, @zone, started) do
-        {:ok, snapshot} ->
-          assert snapshot.expires_at == started + ttl
-          assert snapshot.entries[@label <> "." <> @zone].expires_at == started + ttl
-          assert delay < ttl
+    case Snapshot.decode(value, @zone, started) do
+      {:ok, snapshot} ->
+        assert snapshot.expires_at == started + ttl
+        assert snapshot.entries[@label <> "." <> @zone].expires_at == started + ttl
+        assert delay < ttl
 
-        {:error, :expired_response} ->
-          assert started + ttl <= now()
-      end
+      {:error, :expired_response} ->
+        assert started + ttl <= now()
     end
   end
 

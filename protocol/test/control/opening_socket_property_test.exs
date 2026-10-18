@@ -15,7 +15,7 @@ defmodule OverallsProtocol.Control.OpeningSocketPropertyTest do
     profile: :ci,
     database: :disabled,
     print_blob: false,
-    test_cases: 2,
+    test_cases: 100,
     seed: 574_889_640 do
     repetitions = draw("repetitions", integer(1..3))
 

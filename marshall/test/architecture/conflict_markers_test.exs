@@ -13,25 +13,26 @@ defmodule Overalls.ConflictMarkersTest do
   # base or closing conflict marker, and MUST NOT report Markdown underlines,
   # indented or embedded marker text.
   property "reports exactly the lines that start with a conflict marker" do
-    check all(
-            lines <-
-              list_of(
-                one_of([
-                  member_of(@markers),
-                  member_of(["=======", "Heading", "  <<<<<<< indented", "a >>>>>>> b", ""]),
-                  string(:printable, max_length: 20)
-                ]),
-                max_length: 30
-              )
-          ) do
-      expected =
-        lines
-        |> Enum.with_index(1)
-        |> Enum.filter(fn {line, _} -> Regex.match?(~r/\A(<{7}|\|{7}|>{7})( |\z)/, line) end)
-        |> Enum.map(fn {_, number} -> {"f", number} end)
+    lines =
+      draw(
+        "lines",
+        list_of(
+          one_of([
+            member_of(@markers),
+            member_of(["=======", "Heading", "  <<<<<<< indented", "a >>>>>>> b", ""]),
+            string(:printable, max_length: 20)
+          ]),
+          max_length: 30
+        )
+      )
 
-      assert ConflictMarkers.scan("f", Enum.join(lines, "\n")) == expected
-    end
+    expected =
+      lines
+      |> Enum.with_index(1)
+      |> Enum.filter(fn {line, _} -> Regex.match?(~r/\A(<{7}|\|{7}|>{7})( |\z)/, line) end)
+      |> Enum.map(fn {_, number} -> {"f", number} end)
+
+    assert ConflictMarkers.scan("f", Enum.join(lines, "\n")) == expected
   end
 
   test "the historical broken fleet module is refused and Markdown underlines are not" do

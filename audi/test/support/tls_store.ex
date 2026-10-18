@@ -16,7 +16,6 @@ end
 
 defmodule Audi.Test.Writer do
   @moduledoc "Starts a named single-writer module and its view (`module.children/1`)."
-  import ExUnit.Callbacks, only: [start_supervised!: 1]
 
   @spec start!(module(), keyword()) :: atom()
   def start!(module, options) do
@@ -24,7 +23,7 @@ defmodule Audi.Test.Writer do
 
     for child <- module.children(Keyword.put(options, :name, name)) do
       spec = Supervisor.child_spec(child, [])
-      start_supervised!(Supervisor.child_spec(spec, id: {spec.id, name}))
+      Overalls.HegelFixtures.start_fixture!(Supervisor.child_spec(spec, id: {spec.id, name}))
     end
 
     name

@@ -135,23 +135,29 @@ defmodule Marshall.Operations.AudiTest do
   end
 
   test "malformed address lists never create authority", c do
-    check all(
-            parts <-
-              list_of(string(:alphanumeric, min_length: 1, max_length: 12),
-                min_length: 1,
-                max_length: 6
-              )
-          ) do
-      assert {:error, _} =
-               CLI.run([
-                 "audi-gateway-rotate",
-                 "property-gateway",
-                 c.host_id,
-                 Enum.join(parts, ","),
-                 c.failed
-               ])
+    Hegel.check(
+      fn ->
+        parts =
+          draw(
+            "parts",
+            list_of(string(:alphanumeric, min_length: 1, max_length: 12),
+              min_length: 1,
+              max_length: 6
+            )
+          )
 
-      assert Ledger.read!(Service, name: "property-gateway") == []
-    end
+        assert {:error, _} =
+                 CLI.run([
+                   "audi-gateway-rotate",
+                   "property-gateway",
+                   c.host_id,
+                   Enum.join(parts, ","),
+                   c.failed
+                 ])
+
+        assert Ledger.read!(Service, name: "property-gateway") == []
+      end,
+      []
+    )
   end
 end

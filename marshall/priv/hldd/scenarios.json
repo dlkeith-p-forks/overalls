@@ -1862,10 +1862,10 @@
           "record_assertion": "Focused execution passed exit0,seed0,20.8seconds:"
         },
         {
-          "kind": "property",
+          "kind": "unit",
           "path": "protocol/test/control/opening_worker_property_test.exs",
           "assertion": "opening worker death permits a fresh control handshake",
-          "scope": "Final matching isolated fork: real plain-loopback worker deaths, production jitter, exact version/service/binding hello and orderly/abrupt owner socket cleanup. Scripted welcome is not domain/TLS/native acceptance.",
+          "scope": "Current source exhaustively enumerates the finite matrix as ordinary ExUnit tests. The linked execution record belongs to its historical generated form and does not qualify this conversion. Final matching isolated fork: real plain-loopback worker deaths, production jitter, exact version/service/binding hello and orderly/abrupt owner socket cleanup. Scripted welcome is not domain/TLS/native acceptance.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-05-control-first-envelope.md",
           "record_assertion": "Final matching fork baseline passed one property, seed 0, 13.6 seconds, exit 0."
@@ -9315,8 +9315,8 @@
         {
           "kind": "property",
           "path": "lilly/test/lilly/control/invalid_boot_property_test.exs",
-          "assertion": "generated invalid configurations reject fresh OTP boots before serving",
-          "scope": "52 fresh OTP rejections across thirteen invalid classes, no traced named supervisor/Runtime/StatusServer start attempt and no surviving supervisor/Runtime/status/terminal-metrics sockets, unchanged files/runtime directories, no started event and no synthetic credential in captured output. Valid loader precheck; no configured native execution claim.",
+          "assertion": "configuration rejects fresh OTP boot before serving",
+          "scope": "Current source runs each mutation in a separate Hegel check with the full case budget; the linked result predates that restructuring. 52 fresh OTP rejections across thirteen invalid classes, no traced named supervisor/Runtime/StatusServer start attempt and no surviving supervisor/Runtime/status/terminal-metrics sockets, unchanged files/runtime directories, no started event and no synthetic credential in captured output. Valid loader precheck; no configured native execution claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-09-29-antithesis-property-audit.md",
           "record_assertion": "2 checks (1 property, 1 test)"
@@ -9638,10 +9638,10 @@
       "preferred_gap": "Add packaged machine startup and real certificate/Marshall account approval and authorized HTTPS management journeys; local scripted pending authority does not establish domain authorization.",
       "evidence": [
         {
-          "kind": "property",
+          "kind": "unit",
           "path": "porsche/test/host_certificate_boot_property_test.exs",
           "assertion": "invalid host certificates refuse Porsche startup before the SSH daemon",
-          "scope": "Exact first-child refusal before traced daemon/status/observability, absent service state and preserved fixture custody/privacy; semantic certificate mutants retain valid signatures.",
+          "scope": "Current source exhaustively enumerates the finite matrix as ordinary ExUnit tests. The linked execution record belongs to its historical generated form and does not qualify this conversion. Exact first-child refusal before traced daemon/status/observability, absent service state and preserved fixture custody/privacy; semantic certificate mutants retain valid signatures.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-09-29-antithesis-property-audit.md",
           "record_assertion": "54 fresh OTP refusals across 18"
@@ -9758,10 +9758,10 @@
           "record_assertion": "passed exit0,seed0,33.3seconds"
         },
         {
-          "kind": "property",
+          "kind": "unit",
           "path": "audi/test/http_front_test.exs",
           "assertion": "fleet version refusal retires suspended readiness without reopening polling",
-          "scope": "Fixed five stages plus generated draw; prior transient retry, real wildcard validation/probe, active Installation task and suspended scheduler death; retained Store metadata.",
+          "scope": "Current source exhaustively enumerates the finite matrix as ordinary ExUnit tests. The linked execution record belongs to its historical generated form and does not qualify this conversion. Fixed five stages plus generated draw; prior transient retry, real wildcard validation/probe, active Installation task and suspended scheduler death; retained Store metadata.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-03-audi-terminal-version-refusal.md",
           "record_assertion": "The expanded five-stage Fleet property passed in 39.9 seconds"
@@ -10167,10 +10167,10 @@
       "preferred_gap": "Verify the complete component gate and authenticated native reconnect/worker-loss behavior with production backoff.",
       "evidence": [
         {
-          "kind": "property",
+          "kind": "unit",
           "path": "lilly/test/terminal/opening_worker_property_test.exs",
           "assertion": "a killed opening worker retires its attempt and permits a fresh dial",
-          "scope": "Actual local sockets and process death with scripted session hello acceptance and opening shutdown.",
+          "scope": "Current source exhaustively enumerates the finite matrix as ordinary ExUnit tests. The linked execution record belongs to its historical generated form and does not qualify this conversion. Actual local sockets and process death with scripted session hello acceptance and opening shutdown.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-05-control-first-envelope.md",
           "record_assertion": "Integrated focused execution passed eight checks (seven properties,"

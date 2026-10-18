@@ -313,15 +313,15 @@ defmodule Audi.ConfigTest do
     assert {:error, :invalid_runtime_configuration} = Audi.Config.load(c.path)
   end
 
-  test "arbitrary configuration bytes produce a fixed error or a secret-free inspected result",
-       c do
-    check all(bytes <- binary(max_length: 20_000), max_runs: 40) do
-      File.write!(c.path, bytes)
+  property "arbitrary configuration bytes produce a fixed error or a secret-free inspected result",
+           c do
+    bytes = draw("bytes", binary(max_length: 20000))
 
-      case Audi.Config.load(c.path) do
-        {:error, :invalid_runtime_configuration} -> :ok
-        {:ok, options} -> refute inspect(options) =~ @token
-      end
+    File.write!(c.path, bytes)
+
+    case Audi.Config.load(c.path) do
+      {:error, :invalid_runtime_configuration} -> :ok
+      {:ok, options} -> refute inspect(options) =~ @token
     end
   end
 

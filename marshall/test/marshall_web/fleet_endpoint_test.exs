@@ -58,43 +58,43 @@ defmodule MarshallWeb.FleetEndpointTest do
   end
 
   property "listener routing ignores method, host header and supplied machine credential",
-    test_cases: 60 do
-    check all(
-            service <-
-              one_of([
-                member_of(~w(provisioners ssh audi control terminal-peer)),
-                filter(string(:alphanumeric, min_length: 1, max_length: 12), &(&1 != "agents"))
-              ]),
-            suffix <- member_of(["v1/identity", "v3/clone", "v999/unknown"]),
-            method <- member_of([:get, :post, :put, :delete]),
-            host <- member_of(["example.test", "fleet.example.test", "localhost"]),
-            slug <- string(:alphanumeric, min_length: 1, max_length: 24),
-            test_cases: 60
-          ) do
-      machine_path = "/api/#{service}/#{suffix}"
+    test_cases: 100 do
+    service =
+      draw(
+        "service",
+        one_of([
+          member_of(~w(provisioners ssh audi control terminal-peer)),
+          filter(string(:alphanumeric, min_length: 1, max_length: 12), &(&1 != "agents"))
+        ])
+      )
 
-      public =
-        conn(method, "https://#{host}#{machine_path}", "not-json")
-        |> put_req_header("content-type", "application/json")
-        |> put_req_header("authorization", "Bearer synthetic-fixture")
-        |> MarshallWeb.PublicIngress.call([])
+    suffix = draw("suffix", member_of(["v1/identity", "v3/clone", "v999/unknown"]))
+    method = draw("method", member_of([:get, :post, :put, :delete]))
+    host = draw("host", member_of(["example.test", "fleet.example.test", "localhost"]))
+    slug = draw("slug", string(:alphanumeric, min_length: 1, max_length: 24))
+    machine_path = "/api/#{service}/#{suffix}"
 
-      assert public.status == 404
-      assert public.halted
-      assert get_resp_header(public, "cache-control") == ["no-store"]
-      assert get_resp_header(public, "set-cookie") == []
-      assert {:ok, "not-json", _} = read_body(public)
+    public =
+      conn(method, "https://#{host}#{machine_path}", "not-json")
+      |> put_req_header("content-type", "application/json")
+      |> put_req_header("authorization", "Bearer synthetic-fixture")
+      |> MarshallWeb.PublicIngress.call([])
 
-      fleet =
-        conn(method, "https://#{host}/machines/#{slug}", "not-json")
-        |> put_req_header("authorization", "Lilly synthetic-fixture")
-        |> MarshallWeb.FleetEndpoint.call([])
+    assert public.status == 404
+    assert public.halted
+    assert get_resp_header(public, "cache-control") == ["no-store"]
+    assert get_resp_header(public, "set-cookie") == []
+    assert {:ok, "not-json", _} = read_body(public)
 
-      assert fleet.status == 404
-      assert fleet.halted
-      assert get_resp_header(fleet, "cache-control") == ["no-store"]
-      assert get_resp_header(fleet, "set-cookie") == []
-      assert get_resp_header(fleet, "location") == []
-    end
+    fleet =
+      conn(method, "https://#{host}/machines/#{slug}", "not-json")
+      |> put_req_header("authorization", "Lilly synthetic-fixture")
+      |> MarshallWeb.FleetEndpoint.call([])
+
+    assert fleet.status == 404
+    assert fleet.halted
+    assert get_resp_header(fleet, "cache-control") == ["no-store"]
+    assert get_resp_header(fleet, "set-cookie") == []
+    assert get_resp_header(fleet, "location") == []
   end
 end

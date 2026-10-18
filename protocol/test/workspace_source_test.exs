@@ -27,84 +27,86 @@ defmodule OverallsProtocol.WorkspaceSourceTest do
   end
 
   property "canonical URLs and wire encodings round-trip" do
-    check all(source <- source()) do
-      assert WorkspaceSource.valid?(source)
-      assert {:ok, ^source} = source |> WorkspaceSource.to_url() |> WorkspaceSource.parse_url()
-      assert {:ok, ^source} = source |> WorkspaceSource.encode() |> WorkspaceSource.decode()
-      encoded = source |> WorkspaceSource.encode() |> JSON.encode!() |> JSON.decode!()
-      assert {:ok, ^source} = WorkspaceSource.decode(encoded)
-    end
+    source = draw("source", source())
+    assert WorkspaceSource.valid?(source)
+    assert {:ok, ^source} = source |> WorkspaceSource.to_url() |> WorkspaceSource.parse_url()
+    assert {:ok, ^source} = source |> WorkspaceSource.encode() |> WorkspaceSource.decode()
+    encoded = source |> WorkspaceSource.encode() |> JSON.encode!() |> JSON.decode!()
+    assert {:ok, ^source} = WorkspaceSource.decode(encoded)
   end
 
   @tag :hegel
   test "accepted sources never yield an option-shaped or traversing git argument" do
-    check all(url <- url_like(), profile: :ci, test_cases: 500) do
-      case WorkspaceSource.parse_url(url) do
-        {:ok, source} ->
-          for value <- source.namespace ++ [source.repository, source.revision[:value]],
-              is_binary(value) do
-            refute String.starts_with?(value, "-")
-            refute String.contains?(value, [" ", "\\", ";", "$", "`", "\n", "%"])
-            refute Enum.any?(String.split(value, "/"), &(&1 in [".", ".."]))
-          end
+    Hegel.check(
+      fn ->
+        url = draw("url", url_like())
 
-          if is_binary(source.revision[:value]),
-            do: refute(String.contains?(source.revision.value, ".."))
+        case WorkspaceSource.parse_url(url) do
+          {:ok, source} ->
+            for value <- source.namespace ++ [source.repository, source.revision[:value]],
+                is_binary(value) do
+              refute String.starts_with?(value, "-")
+              refute String.contains?(value, [" ", "\\", ";", "$", "`", "\n", "%"])
+              refute Enum.any?(String.split(value, "/"), &(&1 in [".", ".."]))
+            end
 
-        {:error, reason} ->
-          assert reason in [
-                   :invalid_url,
-                   :unsupported_host,
-                   :invalid_namespace,
-                   :invalid_repository,
-                   :invalid_reference
-                 ]
-      end
-    end
+            if is_binary(source.revision[:value]),
+              do: refute(String.contains?(source.revision.value, ".."))
+
+          {:error, reason} ->
+            assert reason in [
+                     :invalid_url,
+                     :unsupported_host,
+                     :invalid_namespace,
+                     :invalid_repository,
+                     :invalid_reference
+                   ]
+        end
+      end,
+      profile: :ci,
+      test_cases: 500
+    )
   end
 
   property "decode refuses altered, extended or unversioned wire references" do
-    check all(
-            source <- source(),
-            field <- member_of(["version", "provider", "namespace", "repository", "revision"]),
-            value <- one_of([integer(), constant("-x"), constant("a b"), constant(%{})])
-          ) do
-      wire = WorkspaceSource.encode(source)
-      assert {:error, :invalid_message} = WorkspaceSource.decode(Map.put(wire, "extra", 1))
-      assert {:error, :invalid_message} = WorkspaceSource.decode(Map.delete(wire, field))
-      changed = Map.put(wire, field, value)
-      if changed != wire, do: assert({:error, :invalid_message} = WorkspaceSource.decode(changed))
-      assert {:error, :invalid_message} = WorkspaceSource.decode(Map.put(wire, "version", 1))
+    source = draw("source", source())
 
-      assert {:error, :invalid_message} =
-               WorkspaceSource.decode(Map.put(wire, "host", "gitlab.com"))
-    end
+    field =
+      draw("field", member_of(["version", "provider", "namespace", "repository", "revision"]))
+
+    value = draw("value", one_of([integer(), constant("-x"), constant("a b"), constant(%{})]))
+    wire = WorkspaceSource.encode(source)
+    assert {:error, :invalid_message} = WorkspaceSource.decode(Map.put(wire, "extra", 1))
+    assert {:error, :invalid_message} = WorkspaceSource.decode(Map.delete(wire, field))
+    changed = Map.put(wire, field, value)
+    if changed != wire, do: assert({:error, :invalid_message} = WorkspaceSource.decode(changed))
+    assert {:error, :invalid_message} = WorkspaceSource.decode(Map.put(wire, "version", 1))
+
+    assert {:error, :invalid_message} =
+             WorkspaceSource.decode(Map.put(wire, "host", "gitlab.com"))
   end
 
   property "execution commands carry a source only for egress profiles on provision or start" do
-    check all(
-            source <- source(),
-            kind <- member_of([:provision, :start, :stop, :delete]),
-            profile <- member_of([:customer, :standard, :oss, :inception]),
-            owned <- boolean()
-          ) do
-      command = %{command() | kind: kind, profile: profile}
-      command = if owned, do: Map.put(command, :owner_id, @id), else: command
-      sourced = Map.put(command, :workspace_source, source)
-      wire = Execution.encode_command(sourced)
+    source = draw("source", source())
+    kind = draw("kind", member_of([:provision, :start, :stop, :delete]))
+    profile = draw("profile", member_of([:customer, :standard, :oss, :inception]))
+    owned = draw("owned", boolean())
+    command = %{command() | kind: kind, profile: profile}
+    command = if owned, do: Map.put(command, :owner_id, @id), else: command
+    sourced = Map.put(command, :workspace_source, source)
+    wire = Execution.encode_command(sourced)
 
-      if kind in [:provision, :start] and profile != :customer do
-        assert {:ok, ^sourced} = Execution.command(wire)
-        assert {:ok, [^sourced]} = Execution.commands([wire |> JSON.encode!() |> JSON.decode!()])
-      else
-        assert {:error, :invalid_message} = Execution.command(wire)
-      end
-
-      assert {:ok, ^command} = command |> Execution.encode_command() |> Execution.command()
-
-      nested = put_in(wire, ["workspace_source", "path"], "/etc")
-      assert {:error, :invalid_message} = Execution.command(nested)
+    if kind in [:provision, :start] and profile != :customer do
+      assert {:ok, ^sourced} = Execution.command(wire)
+      assert {:ok, [^sourced]} = Execution.commands([wire |> JSON.encode!() |> JSON.decode!()])
+    else
+      assert {:error, :invalid_message} = Execution.command(wire)
     end
+
+    assert {:ok, ^command} = command |> Execution.encode_command() |> Execution.command()
+
+    nested = put_in(wire, ["workspace_source", "path"], "/etc")
+    assert {:error, :invalid_message} = Execution.command(nested)
   end
 
   defp source do

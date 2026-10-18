@@ -101,34 +101,31 @@ defmodule Audi.PrivacyTest do
   end
 
   property "every catalog event reconstructs its fixed message and rejects arbitrary metadata" do
-    check all(
-            name <- member_of(Map.keys(@catalog)),
-            payload <- binary(min_length: 1, max_length: 1024)
-          ) do
-      canary = "private-canary-" <> payload
+    name = draw("name", member_of(Map.keys(@catalog)))
+    payload = draw("payload", binary(min_length: 1, max_length: 1024))
+    canary = "private-canary-" <> payload
 
-      event = %{
-        level: :info,
-        msg: {:string, payload},
-        meta: %{
-          event: name,
-          token: canary,
-          path: canary,
-          user_id: canary,
-          hostname: "canary." <> payload,
-          reason: payload,
-          vm_id: "not-a-uuid",
-          audi_private: true,
-          state: %{secret: canary}
-        }
+    event = %{
+      level: :info,
+      msg: {:string, payload},
+      meta: %{
+        event: name,
+        token: canary,
+        path: canary,
+        user_id: canary,
+        hostname: "canary." <> payload,
+        reason: payload,
+        vm_id: "not-a-uuid",
+        audi_private: true,
+        state: %{secret: canary}
       }
+    }
 
-      sanitized = Audi.Privacy.filter(event, nil)
-      canary = "private-canary-" <> payload
-      assert sanitized.msg == {:string, Map.fetch!(@catalog, name).message}
-      assert sanitized.meta == %{event: name, domain: [:audi]}
-      refute inspect(sanitized) =~ canary
-    end
+    sanitized = Audi.Privacy.filter(event, nil)
+    canary = "private-canary-" <> payload
+    assert sanitized.msg == {:string, Map.fetch!(@catalog, name).message}
+    assert sanitized.meta == %{event: name, domain: [:audi]}
+    refute inspect(sanitized) =~ canary
   end
 
   test "catalog events keep only uuid-validated identifiers" do

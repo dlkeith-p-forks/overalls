@@ -8,49 +8,50 @@ defmodule Lilly.Host.ImageCopyTest do
 
   @tag :hegel
   test "native materialization preserves sparse bytes and independent destination writes", c do
-    check all(
-            prefix <- binary(min_length: 1, max_length: 1024),
-            suffix <- binary(min_length: 1, max_length: 1024),
-            hole <- integer(0..2_097_152),
-            method <- member_of(["copy", "auto"]),
-            test_cases: 16
-          ) do
-      directory = Path.join(c.tmp_dir, Lilly.UUID.generate())
-      {:ok, lock} = Lock.acquire(directory)
-      source = Path.join(directory, "source")
-      destination = Path.join(directory, "destination")
-      bytes = prefix <> :binary.copy(<<0>>, hole) <> suffix
-      File.write!(source, bytes)
-      File.chmod!(source, 0o444)
+    Hegel.check(
+      fn ->
+        prefix = draw("prefix", binary(min_length: 1, max_length: 1024))
+        suffix = draw("suffix", binary(min_length: 1, max_length: 1024))
+        hole = draw("hole", integer(0..2_097_152))
+        method = draw("method", member_of(["copy", "auto"]))
+        directory = Path.join(c.tmp_dir, Lilly.UUID.generate())
+        {:ok, lock} = Lock.acquire(directory)
+        source = Path.join(directory, "source")
+        destination = Path.join(directory, "destination")
+        bytes = prefix <> :binary.copy(<<0>>, hole) <> suffix
+        File.write!(source, bytes)
+        File.chmod!(source, 0o444)
 
-      try do
-        assert {:ok, result} =
-                 Command.run(
-                   :image_copy,
-                   [method, source, destination, to_string(byte_size(bytes))],
-                   10_000
-                 )
+        try do
+          assert {:ok, result} =
+                   Command.run(
+                     :image_copy,
+                     [method, source, destination, to_string(byte_size(bytes))],
+                     10_000
+                   )
 
-        assert result in ["copy\n", "offload\n", "reflink\n"]
-        if method == "copy", do: assert(result == "copy\n")
-        assert File.read!(destination) == bytes
-        assert File.stat!(destination).links == 1
-        File.write!(destination, "changed")
-        assert File.read!(source) == bytes
+          assert result in ["copy\n", "offload\n", "reflink\n"]
+          if method == "copy", do: assert(result == "copy\n")
+          assert File.read!(destination) == bytes
+          assert File.stat!(destination).links == 1
+          File.write!(destination, "changed")
+          assert File.read!(source) == bytes
 
-        assert {:error, _} =
-                 Command.run(:image_copy, [
-                   method,
-                   source,
-                   destination,
-                   to_string(byte_size(bytes))
-                 ])
+          assert {:error, _} =
+                   Command.run(:image_copy, [
+                     method,
+                     source,
+                     destination,
+                     to_string(byte_size(bytes))
+                   ])
 
-        assert File.read!(destination) == "changed"
-      after
-        Lock.release(lock)
-      end
-    end
+          assert File.read!(destination) == "changed"
+        after
+          Lock.release(lock)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   test "size mismatch, mutable sources and symlink destinations are refused", c do

@@ -73,11 +73,11 @@ defmodule Marshall.Agents.ContextPolicyTest do
   end
 
   property "configured positive allowances preserve their exact value" do
-    check all(limit <- integer(1..2_147_483_647)) do
-      assert {:ok, %{input_token_limit: ^limit, native_compaction_capabilities: []}} =
-               ContextPolicy.from_env(%{
-                 "MARSHALL_AGENT_CONTEXT_INPUT_TOKEN_LIMIT" => Integer.to_string(limit)
-               })
-    end
+    limit = draw("limit", integer(1..2_147_483_647))
+
+    assert {:ok, %{input_token_limit: ^limit, native_compaction_capabilities: []}} =
+             ContextPolicy.from_env(%{
+               "MARSHALL_AGENT_CONTEXT_INPUT_TOKEN_LIMIT" => Integer.to_string(limit)
+             })
   end
 end

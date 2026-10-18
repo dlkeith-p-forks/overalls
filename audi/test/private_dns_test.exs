@@ -45,15 +45,13 @@ defmodule Audi.PrivateDNSTest do
   end
 
   property "unknown internal names never resolve or fall back" do
-    check all(
-            label <- string(:alphanumeric, min_length: 1, max_length: 63),
-            label != "llm"
-          ) do
-      assert <<7::16, flags::16, 1::16, 0::16, _::binary>> =
-               Audi.Private.DNS.answer(question([label, "internal"], 1), nil, :udp)
+    label = draw("label", string(:alphanumeric, min_length: 1, max_length: 63))
+    assume(label != "llm")
 
-      assert (flags &&& 0x40F) == 0x403
-    end
+    assert <<7::16, flags::16, 1::16, 0::16, _::binary>> =
+             Audi.Private.DNS.answer(question([label, "internal"], 1), nil, :udp)
+
+    assert (flags &&& 0x40F) == 0x403
   end
 
   test "the integration zone answers single labels and nothing deeper" do
@@ -74,24 +72,21 @@ defmodule Audi.PrivateDNSTest do
   end
 
   property "integration labels answer from a closed lowercase charset only" do
-    check all(
-            label <- string(:alphanumeric, min_length: 1, max_length: 40),
-            upper? <- boolean()
-          ) do
-      # The wire decoder canonicalizes labels to lowercase, so queries behave
-      # case-insensitively; character validity is checked on the lowercased form.
-      label = label |> String.downcase() |> then(&if(upper?, do: String.upcase(&1), else: &1))
-      packet = Audi.Private.DNS.answer(question([label, "integration", "internal"], 1), nil, :udp)
+    label = draw("label", string(:alphanumeric, min_length: 1, max_length: 40))
+    upper? = draw("upper?", boolean())
+    # The wire decoder canonicalizes labels to lowercase, so queries behave
+    # case-insensitively; character validity is checked on the lowercased form.
+    label = label |> String.downcase() |> then(&if(upper?, do: String.upcase(&1), else: &1))
+    packet = Audi.Private.DNS.answer(question([label, "integration", "internal"], 1), nil, :udp)
 
-      valid =
-        label
-        |> String.downcase()
-        |> then(&Regex.match?(~r/\A[a-z][a-z0-9-]{0,38}[a-z0-9]\z|\A[a-z]\z/, &1))
+    valid =
+      label
+      |> String.downcase()
+      |> then(&Regex.match?(~r/\A[a-z][a-z0-9-]{0,38}[a-z0-9]\z|\A[a-z]\z/, &1))
 
-      case valid do
-        true -> assert <<7::16, _::16, 1::16, 1::16, _::binary>> = packet
-        false -> assert <<7::16, _::16, 1::16, 0::16, _::binary>> = packet
-      end
+    case valid do
+      true -> assert <<7::16, _::16, 1::16, 1::16, _::binary>> = packet
+      false -> assert <<7::16, _::16, 1::16, 0::16, _::binary>> = packet
     end
   end
 

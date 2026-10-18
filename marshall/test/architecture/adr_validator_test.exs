@@ -192,33 +192,42 @@ defmodule Overalls.ADRValidatorTest do
   test "acyclic histories with branches remain valid regardless of decision order", %{
     root: root
   } do
-    check all(choices <- list_of(integer(0..100), min_length: 2, max_length: 20), test_cases: 40) do
-      records =
-        choices
-        |> Enum.with_index(1)
-        |> Enum.map(fn {choice, number} ->
-          predecessor = rem(choice, number)
-          decision(number, supersedes: if(predecessor == 0, do: [], else: [predecessor]))
-        end)
-        |> connect_successors()
+    Hegel.check(
+      fn ->
+        choices = draw("choices", list_of(integer(0..100), min_length: 2, max_length: 20))
 
-      fixture(root, Enum.reverse(records))
-      assert {:ok, count} = ADRValidator.check(root)
-      assert count == length(records)
-    end
+        records =
+          choices
+          |> Enum.with_index(1)
+          |> Enum.map(fn {choice, number} ->
+            predecessor = rem(choice, number)
+            decision(number, supersedes: if(predecessor == 0, do: [], else: [predecessor]))
+          end)
+          |> connect_successors()
+
+        fixture(root, Enum.reverse(records))
+        assert {:ok, count} = ADRValidator.check(root)
+        assert count == length(records)
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
   test "closing a valid replacement chain always produces a detected cycle", %{root: root} do
-    check all(size <- integer(2..30), test_cases: 30) do
-      chain = Enum.map(1..size, &decision(&1, supersedes: if(&1 == 1, do: [], else: [&1 - 1])))
-      fixture(root, connect_successors(chain))
-      assert {:ok, ^size} = ADRValidator.check(root)
+    Hegel.check(
+      fn ->
+        size = draw("size", integer(2..30))
+        chain = Enum.map(1..size, &decision(&1, supersedes: if(&1 == 1, do: [], else: [&1 - 1])))
+        fixture(root, connect_successors(chain))
+        assert {:ok, ^size} = ADRValidator.check(root)
 
-      cycle = List.update_at(chain, 0, &%{&1 | supersedes: [size]})
-      fixture(root, connect_successors(cycle))
-      assert_error(root, "Supersession cycle")
-    end
+        cycle = List.update_at(chain, 0, &%{&1 | supersedes: [size]})
+        fixture(root, connect_successors(cycle))
+        assert_error(root, "Supersession cycle")
+      end,
+      test_cases: 100
+    )
   end
 
   defp decision(number, attrs \\ []) do

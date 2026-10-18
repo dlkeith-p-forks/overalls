@@ -77,43 +77,51 @@ defmodule MarshallWeb.SSHAPITest do
       {:ok, api(c, route, payload) |> reply(200)}
     end
 
-    check all(count <- integer(0..4), test_cases: 10) do
-      integrations =
-        for _ <- List.duplicate(:integration, count) do
-          {:ok, integration} =
-            Marshall.Galileo.configure_integration(
-              %{
-                name: "live" <> Ash.UUID.generate(),
-                target: "https://origin.example.test",
-                headers: [%{kind: :bearer, name: "authorization", value: "private-page-secret"}],
-                idempotency_key: Ash.UUID.generate()
-              },
-              actor: c.user
-            )
+    Hegel.check(
+      fn ->
+        count = draw("count", integer(0..4))
 
-          integration
+        integrations =
+          for _ <- List.duplicate(:integration, count) do
+            {:ok, integration} =
+              Marshall.Galileo.configure_integration(
+                %{
+                  name: "live" <> Ash.UUID.generate(),
+                  target: "https://origin.example.test",
+                  headers: [%{kind: :bearer, name: "authorization", value: "private-page-secret"}],
+                  idempotency_key: Ash.UUID.generate()
+                },
+                actor: c.user
+              )
+
+            integration
+          end
+
+        result =
+          Porsche.Runner.run(client, opened["session_token"], "integration list --json",
+            request: request
+          )
+
+        assert result.exit_status == 0
+        assert %{"items" => items, "next_cursor" => nil} = result.response["result"]
+
+        assert Enum.sort(Enum.map(items, & &1["id"])) ==
+                 Enum.sort(Enum.map(integrations, & &1.id))
+
+        refute JSON.encode!(result.response) =~ "private-page-secret"
+
+        assert Enum.all?(
+                 items,
+                 &(&1["headers"] == [%{"kind" => "bearer", "name" => "authorization"}])
+               )
+
+        for integration <- integrations do
+          assert {:ok, _} =
+                   Marshall.Galileo.remove_integration(%{name: integration.name}, actor: c.user)
         end
-
-      result =
-        Porsche.Runner.run(client, opened["session_token"], "integration list --json",
-          request: request
-        )
-
-      assert result.exit_status == 0
-      assert %{"items" => items, "next_cursor" => nil} = result.response["result"]
-      assert Enum.sort(Enum.map(items, & &1["id"])) == Enum.sort(Enum.map(integrations, & &1.id))
-      refute JSON.encode!(result.response) =~ "private-page-secret"
-
-      assert Enum.all?(
-               items,
-               &(&1["headers"] == [%{"kind" => "bearer", "name" => "authorization"}])
-             )
-
-      for integration <- integrations do
-        assert {:ok, _} =
-                 Marshall.Galileo.remove_integration(%{name: integration.name}, actor: c.user)
-      end
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   test "management API lists and provisions Ubuntu with idempotent image selection", c do

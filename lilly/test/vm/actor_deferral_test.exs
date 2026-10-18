@@ -33,55 +33,60 @@ defmodule Lilly.VM.ActorDeferralTest do
   @tag :hegel
   test "deferral diagnostics follow reason transitions across outcomes and actor restarts",
        context do
-    check all(
-            steps <-
-              list_of(
-                frequency([
-                  {6, tuple({constant(:retry), member_of(@reasons)})},
-                  {1, constant(:observed)},
-                  {1, constant(:actor_restart)}
-                ]),
-                min_length: 1,
-                max_length: 12
-              ),
-            test_cases: 15
-          ) do
-      id = Lilly.UUID.generate()
-      directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
-      File.mkdir!(directory)
-      File.chmod!(directory, 0o700)
-      {:ok, store} = Store.open(directory, id, 3)
-      start = command(id)
-      {:ok, :stored} = Store.accept(store, start)
+    Hegel.check(
+      fn ->
+        steps =
+          draw(
+            "steps",
+            list_of(
+              frequency([
+                {6, tuple({constant(:retry), member_of(@reasons)})},
+                {1, constant(:observed)},
+                {1, constant(:actor_restart)}
+              ]),
+              min_length: 1,
+              max_length: 12
+            )
+          )
 
-      options = [
-        store: store,
-        vm_id: id,
-        placement_id: id,
-        execution_epoch: 1,
-        owner: self(),
-        executor: {ControlledExecutor, self()}
-      ]
+        id = Lilly.UUID.generate()
+        directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
+        File.mkdir!(directory)
+        File.chmod!(directory, 0o700)
+        {:ok, store} = Store.open(directory, id, 3)
+        start = command(id)
+        {:ok, :stored} = Store.accept(store, start)
 
-      log =
-        ExUnit.CaptureLog.capture_log([metadata: @metadata], fn ->
-          actor = start_supervised!({Actor, options}, id: id)
-          assert_receive {:vm_actor_ready, ^id, ^actor, _}, 2000
-          Enum.reduce(steps, actor, &apply_step(&1, &2, start, options))
-          stop_supervised!(id)
-        end)
+        options = [
+          store: store,
+          vm_id: id,
+          placement_id: id,
+          execution_epoch: 1,
+          owner: self(),
+          executor: {ControlledExecutor, self()}
+        ]
 
-      emitted =
-        log
-        |> String.split("\n")
-        |> Enum.filter(&(&1 =~ "vm.execution_deferred" and &1 =~ "vm_id=#{id}"))
-        |> Enum.map(fn line ->
-          [_, reason] = Regex.run(~r/reason=([a-z_]+)/, line)
-          String.to_existing_atom(reason)
-        end)
+        log =
+          ExUnit.CaptureLog.capture_log([metadata: @metadata], fn ->
+            actor = Overalls.HegelFixtures.start_supervised!({Actor, options}, id: id)
+            assert_receive {:vm_actor_ready, ^id, ^actor, _}, 2000
+            Enum.reduce(steps, actor, &apply_step(&1, &2, start, options))
+            stop_supervised!(id)
+          end)
 
-      assert emitted == expected(steps)
-    end
+        emitted =
+          log
+          |> String.split("\n")
+          |> Enum.filter(&(&1 =~ "vm.execution_deferred" and &1 =~ "vm_id=#{id}"))
+          |> Enum.map(fn line ->
+            [_, reason] = Regex.run(~r/reason=([a-z_]+)/, line)
+            String.to_existing_atom(reason)
+          end)
+
+        assert emitted == expected(steps)
+      end,
+      test_cases: 100
+    )
   end
 
   @spec apply_step(step(), pid(), map(), keyword()) :: pid()

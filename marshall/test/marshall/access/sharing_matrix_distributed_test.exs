@@ -215,95 +215,100 @@ defmodule Marshall.Access.SharingMatrixDistributedTest do
   @tag :hegel
   test "generated peer schedules keep every entry on the committed matrix",
        %{peers: peers} do
-    check all(
-            tail <-
-              list_of(
-                tuple(
-                  {member_of([:manager, :operator, :viewer, :web, :revoked]), integer(0..2),
-                   integer(0..2), member_of([:ssh_open, :web_authorize, :inventory])}
-                ),
-                min_length: 2,
-                max_length: 4
+    Hegel.check(
+      fn ->
+        tail =
+          draw(
+            "tail",
+            list_of(
+              tuple(
+                {member_of([:manager, :operator, :viewer, :web, :revoked]), integer(0..2),
+                 integer(0..2), member_of([:ssh_open, :web_authorize, :inventory])}
               ),
-            test_cases: 3
-          ) do
-      schedule =
-        [
-          {:operator, 0, 1, :ssh_open},
-          {:manager, 1, 2, :web_authorize},
-          {:viewer, 2, 0, :web_authorize},
-          {:viewer, 0, 1, :ssh_open},
-          {:viewer, 2, 0, :inventory},
-          {:web, 1, 2, :web_authorize},
-          {:web, 0, 1, :inventory},
-          {:web, 2, 0, :ssh_open},
-          {:revoked, 1, 2, :web_authorize}
-        ] ++ tail
+              min_length: 2,
+              max_length: 4
+            )
+          )
 
-      Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
-        assert [] = Enum.filter(Ledger.read!(Host), & &1.enabled)
-        fixture = Fixture.create(disable_others: false)
+        schedule =
+          [
+            {:operator, 0, 1, :ssh_open},
+            {:manager, 1, 2, :web_authorize},
+            {:viewer, 2, 0, :web_authorize},
+            {:viewer, 0, 1, :ssh_open},
+            {:viewer, 2, 0, :inventory},
+            {:web, 1, 2, :web_authorize},
+            {:web, 0, 1, :inventory},
+            {:web, 2, 0, :ssh_open},
+            {:revoked, 1, 2, :web_authorize}
+          ] ++ tail
 
-        # No in-flight RPCs exist between iterations: all calls are serially
-        # awaited. Peers therefore stay alive across a failing iteration so the
-        # shrink evidence keeps its original oracle instead of losing the peers.
-        Cleanup.protect do
-          for {role, mutator, prober, entry} <- schedule do
-            assert {:ok, _} = mutate(Enum.at(peers, mutator), fixture, role)
+        Ecto.Adapters.SQL.Sandbox.unboxed_run(Repo, fn ->
+          assert [] = Enum.filter(Ledger.read!(Host), & &1.enabled)
+          fixture = Fixture.create(disable_others: false)
 
-            probe = Enum.at(peers, prober)
+          # No in-flight RPCs exist between iterations: all calls are serially
+          # awaited. Peers therefore stay alive across a failing iteration so the
+          # shrink evidence keeps its original oracle instead of losing the peers.
+          Cleanup.protect do
+            for {role, mutator, prober, entry} <- schedule do
+              assert {:ok, _} = mutate(Enum.at(peers, mutator), fixture, role)
 
-            case entry do
-              :ssh_open ->
-                fresh(fixture)
+              probe = Enum.at(peers, prober)
 
-                if grants?(role, :ssh) do
-                  assert {:ok, ssh} = open_ssh(probe, fixture)
-                  assert {:ok, %{closed: true}} = close_ssh(probe, fixture, ssh.ticket)
-                else
-                  assert {:error, _} = open_ssh(probe, fixture)
-                end
+              case entry do
+                :ssh_open ->
+                  fresh(fixture)
 
-              :web_authorize ->
-                fresh(fixture)
-                {ticket, _state} = begin_web(probe, fixture)
+                  if grants?(role, :ssh) do
+                    assert {:ok, ssh} = open_ssh(probe, fixture)
+                    assert {:ok, %{closed: true}} = close_ssh(probe, fixture, ssh.ticket)
+                  else
+                    assert {:error, _} = open_ssh(probe, fixture)
+                  end
 
-                result =
-                  :peer.call(
-                    probe,
-                    Marshall.Ingress,
-                    :authorize_web_login,
-                    [
-                      %{ticket: ticket, login_token: fixture.member_token},
-                      [actor: fixture.member]
-                    ],
-                    30_000
-                  )
+                :web_authorize ->
+                  fresh(fixture)
+                  {ticket, _state} = begin_web(probe, fixture)
 
-                if grants?(role, :web) do
-                  assert {:ok, _} = result
-                else
-                  assert {:error, _} = result
-                end
+                  result =
+                    :peer.call(
+                      probe,
+                      Marshall.Ingress,
+                      :authorize_web_login,
+                      [
+                        %{ticket: ticket, login_token: fixture.member_token},
+                        [actor: fixture.member]
+                      ],
+                      30_000
+                    )
 
-              :inventory ->
-                assert {:ok, %{items: items}} =
-                         :peer.call(
-                           probe,
-                           Marshall.Compute,
-                           :list_vms,
-                           [%{}, [actor: fixture.member]],
-                           30_000
-                         )
+                  if grants?(role, :web) do
+                    assert {:ok, _} = result
+                  else
+                    assert {:error, _} = result
+                  end
 
-                assert Enum.any?(items, &(&1.id == fixture.vm.id)) == grants?(role, :inventory)
+                :inventory ->
+                  assert {:ok, %{items: items}} =
+                           :peer.call(
+                             probe,
+                             Marshall.Compute,
+                             :list_vms,
+                             [%{}, [actor: fixture.member]],
+                             30_000
+                           )
+
+                  assert Enum.any?(items, &(&1.id == fixture.vm.id)) == grants?(role, :inventory)
+              end
             end
+          after
+            Fixture.cleanup(fixture)
           end
-        after
-          Fixture.cleanup(fixture)
-        end
-      end)
-    end
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   # Independent literal matrix: identical contract to the sandboxed history.

@@ -21,61 +21,58 @@ defmodule Marshall.Terminal.ViewerTest do
   end
 
   property "refusal diagnostics classify the boundary without logging terminal contents" do
-    check all(
-            secret <- string(:alphanumeric, min_length: 24, max_length: 64),
-            reason <- member_of([:authority, :output_window, :input_ack])
-          ) do
-      bytes = "private-terminal-" <> secret
+    secret = draw("secret", string(:alphanumeric, min_length: 24, max_length: 64))
+    reason = draw("reason", member_of([:authority, :output_window, :input_ack]))
+    bytes = "private-terminal-" <> secret
 
-      state =
-        case reason do
-          :authority ->
-            %{mode: :rw, channel: 1, stream: self()}
+    state =
+      case reason do
+        :authority ->
+          %{mode: :rw, channel: 1, stream: self()}
 
-          :output_window ->
-            window =
-              Enum.reduce(1..Window.frame_limit(), Window.new(), fn _, window ->
-                {:ok, window} = Window.take(window, 0)
-                window
-              end)
+        :output_window ->
+          window =
+            Enum.reduce(1..Window.frame_limit(), Window.new(), fn _, window ->
+              {:ok, window} = Window.take(window, 0)
+              window
+            end)
 
-            %{output_window: window}
+          %{output_window: window}
 
-          :input_ack ->
-            %{input_window: Window.new()}
+        :input_ack ->
+          %{input_window: Window.new()}
+      end
+
+    logs =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :reason]], fn ->
+        original = Logger.metadata()
+        Logger.metadata(marshall_terminal: true)
+
+        try do
+          result =
+            case reason do
+              :authority ->
+                Marshall.Terminal.Viewer.handle_in({bytes, [opcode: :binary]}, state)
+
+              :output_window ->
+                Marshall.Terminal.Viewer.handle_info({:terminal_output, bytes}, state)
+
+              :input_ack ->
+                Marshall.Terminal.Viewer.handle_info(
+                  {:terminal_input_ack, 1, byte_size(bytes)},
+                  state
+                )
+            end
+
+          assert result == {:stop, :normal, state}
+        after
+          Logger.reset_metadata(original)
         end
+      end)
 
-      logs =
-        ExUnit.CaptureLog.capture_log([metadata: [:event, :reason]], fn ->
-          original = Logger.metadata()
-          Logger.metadata(marshall_terminal: true)
-
-          try do
-            result =
-              case reason do
-                :authority ->
-                  Marshall.Terminal.Viewer.handle_in({bytes, [opcode: :binary]}, state)
-
-                :output_window ->
-                  Marshall.Terminal.Viewer.handle_info({:terminal_output, bytes}, state)
-
-                :input_ack ->
-                  Marshall.Terminal.Viewer.handle_info(
-                    {:terminal_input_ack, 1, byte_size(bytes)},
-                    state
-                  )
-              end
-
-            assert result == {:stop, :normal, state}
-          after
-            Logger.reset_metadata(original)
-          end
-        end)
-
-      assert logs =~ "event=terminal.viewer_refused"
-      assert logs =~ "reason=#{reason}"
-      refute logs =~ bytes
-    end
+    assert logs =~ "event=terminal.viewer_refused"
+    assert logs =~ "reason=#{reason}"
+    refute logs =~ bytes
   end
 
   test "an attached viewer heartbeats every five seconds without terminal data" do

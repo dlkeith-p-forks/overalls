@@ -72,6 +72,8 @@ defmodule Galileo.ControlStub do
           map()
   def start(responder) do
     owner = self()
+    endpoint_id = make_ref()
+    client_id = make_ref()
 
     endpoint =
       ExUnit.Callbacks.start_supervised!(
@@ -83,8 +85,10 @@ defmodule Galileo.ControlStub do
          startup_log: false,
          certfile: Path.join(@fixtures, "localhost.pem"),
          keyfile: Path.join(@fixtures, "localhost.key")},
-        id: make_ref()
+        id: endpoint_id
       )
+
+    cleanup_child(endpoint_id)
 
     {:ok, {_, port}} = ThousandIsland.listener_info(endpoint)
 
@@ -99,11 +103,24 @@ defmodule Galileo.ControlStub do
            cacertfile: Path.join(@fixtures, "ca.pem"),
            owner: owner
          ]},
-        id: make_ref()
+        id: client_id
       )
 
+    cleanup_child(client_id)
     await(client, responder)
     %{client: client}
+  end
+
+  # @cc [owner:ghuntley,label:verification] control-stub-case-custody
+  # A generated case MUST retire its TLS endpoint and reconnecting client before
+  # the next case or shrink; ordinary ExUnit fixtures retain test-scoped custody.
+  @spec cleanup_child(reference()) :: :ok
+  defp cleanup_child(id) do
+    if Hegel.in_property_case?() do
+      Hegel.on_cleanup(fn -> ExUnit.Callbacks.stop_supervised!(id) end)
+    end
+
+    :ok
   end
 
   @spec await(pid(), term()) :: :ok

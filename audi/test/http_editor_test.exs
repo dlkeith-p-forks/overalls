@@ -37,44 +37,42 @@ defmodule Audi.HTTP.EditorTest do
     %{client: Audi.Test.DNSControl.connected(client), label: EditorName.label(@vm, @account)}
   end
 
-  test "unsafe requests reject sibling or missing origins before admission or connection", c do
-    check all(
-            method <- member_of([:post, :put, :delete]),
-            suffix <- string(:alphanumeric, min_length: 1, max_length: 20)
-          ) do
-      conn = Plug.Test.conn(method, "https://#{c.label}.apps.test/upload", "private-canary")
+  property "unsafe requests reject sibling or missing origins before admission or connection",
+           c do
+    method = draw("method", member_of([:post, :put, :delete]))
+    suffix = draw("suffix", string(:alphanumeric, min_length: 1, max_length: 20))
+    conn = Plug.Test.conn(method, "https://#{c.label}.apps.test/upload", "private-canary")
 
-      for origins <- [
-            [],
-            ["null"],
-            ["https://#{suffix}.apps.test"],
-            [Editor.origin(conn), Editor.origin(conn)]
-          ] do
-        conn = %{conn | req_headers: Enum.map(origins, &{"origin", &1})}
+    for origins <- [
+          [],
+          ["null"],
+          ["https://#{suffix}.apps.test"],
+          [Editor.origin(conn), Editor.origin(conn)]
+        ] do
+      conn = %{conn | req_headers: Enum.map(origins, &{"origin", &1})}
 
-        response =
-          Editor.call(conn,
-            client: c.client,
-            zone: "apps.test",
-            connector: {Audi.Test.WebConnector, %{port: 1, owner: self()}}
-          )
+      response =
+        Editor.call(conn,
+          client: c.client,
+          zone: "apps.test",
+          connector: {Audi.Test.WebConnector, %{port: 1, owner: self()}}
+        )
 
-        assert response.status == 403
-        assert get_resp_header(response, "x-frame-options") == ["DENY"]
-        refute_received {:control_request, _, _, _, _, _}
-        refute_received {:guest_binding, _}
-      end
-
-      assert Editor.origin_allowed?(put_req_header(conn, "origin", Editor.origin(conn)))
-
-      refute Editor.origin_allowed?(
-               put_req_header(
-                 Plug.Test.conn(:get, "https://#{c.label}.apps.test/"),
-                 "upgrade",
-                 "websocket"
-               )
-             )
+      assert response.status == 403
+      assert get_resp_header(response, "x-frame-options") == ["DENY"]
+      refute_received {:control_request, _, _, _, _, _}
+      refute_received {:guest_binding, _}
     end
+
+    assert Editor.origin_allowed?(put_req_header(conn, "origin", Editor.origin(conn)))
+
+    refute Editor.origin_allowed?(
+             put_req_header(
+               Plug.Test.conn(:get, "https://#{c.label}.apps.test/"),
+               "upgrade",
+               "websocket"
+             )
+           )
   end
 
   test "editor credentials have a separate purpose and duplicate cookies are rejected", c do

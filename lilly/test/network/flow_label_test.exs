@@ -8,23 +8,23 @@ defmodule Lilly.Network.FlowLabelTest do
   @intent %{placement_id: @placement, execution_epoch: 1, generation: 1, state: :running}
 
   property "incarnation changes cannot silently reuse a flow label" do
-    check all(epoch <- integer(1..1_000_000), generation <- integer(1..1_000_000)) do
-      intent = %{@intent | execution_epoch: epoch, generation: generation}
-      {:ok, token} = FlowLabel.token(@host, intent)
-      assert token =~ ~r/\A[89a-f][0-9a-f]{31}\z/
-      assert FlowLabel.token(@host, intent) == {:ok, token}
+    epoch = draw("epoch", integer(1..1_000_000))
+    generation = draw("generation", integer(1..1_000_000))
+    intent = %{@intent | execution_epoch: epoch, generation: generation}
+    {:ok, token} = FlowLabel.token(@host, intent)
+    assert token =~ ~r/\A[89a-f][0-9a-f]{31}\z/
+    assert FlowLabel.token(@host, intent) == {:ok, token}
 
-      for changed <- [
-            %{intent | execution_epoch: epoch + 1},
-            %{intent | generation: generation + 1},
-            %{intent | placement_id: @host}
-          ] do
-        assert {:ok, different} = FlowLabel.token(@host, changed)
-        refute different == token
-      end
-
-      refute FlowLabel.token(@placement, intent) == {:ok, token}
+    for changed <- [
+          %{intent | execution_epoch: epoch + 1},
+          %{intent | generation: generation + 1},
+          %{intent | placement_id: @host}
+        ] do
+      assert {:ok, different} = FlowLabel.token(@host, changed)
+      refute different == token
     end
+
+    refute FlowLabel.token(@placement, intent) == {:ok, token}
   end
 
   test "owned policy marker rejects changed incarnation, missing tables and ambiguous shape" do

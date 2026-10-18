@@ -23,27 +23,33 @@ defmodule MarshallWeb.ControlRoomHistoryTest do
   test "current role and login histories govern Control room reads and audited writes", %{
     conn: conn
   } do
-    check all(
-            administrator <- boolean(),
-            forged_role <- boolean(),
-            events <-
-              list_of(
-                member_of([
-                  :promote,
-                  :demote,
-                  :verify,
-                  :lock,
-                  :expire_elevation,
-                  :revoke,
-                  :expire_login
-                ]),
-                min_length: 1,
-                max_length: 8
-              ),
-            test_cases: 25
-          ) do
-      assert_history(conn, administrator, forged_role, events)
-    end
+    Hegel.check(
+      fn ->
+        administrator = draw("administrator", boolean())
+        forged_role = draw("forged_role", boolean())
+
+        events =
+          draw(
+            "events",
+            list_of(
+              member_of([
+                :promote,
+                :demote,
+                :verify,
+                :lock,
+                :expire_elevation,
+                :revoke,
+                :expire_login
+              ]),
+              min_length: 1,
+              max_length: 8
+            )
+          )
+
+        assert_history(conn, administrator, forged_role, events)
+      end,
+      test_cases: 100
+    )
   end
 
   test "a mounted actor gains, loses and regains authority before terminal session invalidation",

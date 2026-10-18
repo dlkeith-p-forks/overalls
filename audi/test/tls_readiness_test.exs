@@ -11,109 +11,111 @@ defmodule Audi.TLS.ReadinessTest do
   # @cc [owner:ghuntley,label:verification;protocol] audi-readiness-version-halt-history
   # Terminal result from an owned job MUST retire every other job, notify the
   # owner and refuse queued refreshes without reopening authority.
-  test "owned version refusal cancels jobs and cannot be reopened by ticks", c do
-    check all(count <- member_of([1, 7, 16]), max_runs: 3, test_cases: 1) do
-      parent = self()
-      tag = make_ref()
+  property "owned version refusal cancels jobs and cannot be reopened by ticks", c do
+    count = draw("count", member_of([1, 7, 16]))
 
-      scheduler =
-        pool(c, fn entry, _ ->
-          send(parent, {tag, entry.vm_id, self()})
+    parent = self()
+    tag = make_ref()
 
-          receive do
-            :version_refused -> {:error, :unsupported_version}
-            :release -> :ok
-          end
-        end)
+    scheduler =
+      pool(c, fn entry, _ ->
+        send(parent, {tag, entry.vm_id, self()})
 
-      try do
-        entries = for number <- 1..count, do: {%{vm_id: to_string(number)}, number}
-        assert :ok = Readiness.refresh(scheduler, entries, now() + 5000)
+        receive do
+          :version_refused -> {:error, :unsupported_version}
+          :release -> :ok
+        end
+      end)
 
-        jobs =
-          for _ <- 1..count do
-            assert_receive {^tag, _, pid}
-            pid
-          end
+    try do
+      entries = for number <- 1..count, do: {%{vm_id: to_string(number)}, number}
+      assert :ok = Readiness.refresh(scheduler, entries, now() + 5000)
 
-        send(hd(jobs), :version_refused)
-        assert_receive {:control_version_refused, ^scheduler}, 1000
-        Enum.each(jobs, &await_dead/1)
-
-        assert {:error, :unsupported_version} =
-                 Readiness.refresh(scheduler, entries, now() + 5000)
-
-        for _ <- 1..3, do: send(scheduler, :tick)
-        _ = :sys.get_state(scheduler)
-        refute_receive {^tag, _, _}, 300
-        assert :sys.get_state(scheduler).jobs == %{}
-      after
-        GenServer.stop(scheduler)
-      end
-    end
-  end
-
-  test "healthy refreshes do not wait for unfinished jobs", c do
-    check all(slow_count <- integer(1..8), max_runs: 3, test_cases: 1) do
-      tag = make_ref()
-      parent = self()
-
-      work = fn entry, revision ->
-        send(parent, {tag, entry.vm_id, self(), revision})
-        if entry.vm_id != "healthy", do: receive(do: (:release -> :ok))
-      end
-
-      pool = pool(c, work)
-      entries = for number <- 1..slow_count, do: {%{vm_id: to_string(number)}, 1}
-      :ok = Readiness.refresh(pool, [{%{vm_id: "healthy"}, 2} | entries], now() + 5000)
-
-      slow =
-        for number <- 1..slow_count do
-          id = to_string(number)
-          assert_receive {^tag, ^id, pid, 1}
+      jobs =
+        for _ <- 1..count do
+          assert_receive {^tag, _, pid}
           pid
         end
 
-      assert_receive {^tag, "healthy", _, 2}
-      assert_receive {^tag, "healthy", _, 2}, 2000
-      assert Enum.all?(slow, &Process.alive?/1)
-      :ok = Readiness.refresh(pool, [], now() + 5000)
-      Enum.each(slow, &await_dead/1)
-      GenServer.stop(pool)
+      send(hd(jobs), :version_refused)
+      assert_receive {:control_version_refused, ^scheduler}, 1000
+      Enum.each(jobs, &await_dead/1)
+
+      assert {:error, :unsupported_version} =
+               Readiness.refresh(scheduler, entries, now() + 5000)
+
+      for _ <- 1..3, do: send(scheduler, :tick)
+      _ = :sys.get_state(scheduler)
+      refute_receive {^tag, _, _}, 300
+      assert :sys.get_state(scheduler).jobs == %{}
+    after
+      GenServer.stop(scheduler)
     end
   end
 
-  test "concurrency stays bounded and each completion admits queued work", c do
-    check all(count <- integer(17..40), max_runs: 5, test_cases: 1) do
-      tag = make_ref()
-      parent = self()
+  # Each of 100 cases observes the real one-second refresh tick.
+  @tag timeout: 180_000
+  property "healthy refreshes do not wait for unfinished jobs", c do
+    slow_count = draw("slow_count", integer(1..8))
 
-      pool =
-        pool(c, fn entry, _ ->
-          send(parent, {tag, entry.vm_id, self()})
+    tag = make_ref()
+    parent = self()
 
-          receive do
-            :release -> :ok
-          end
-        end)
-
-      entries = for n <- 1..count, do: {%{vm_id: to_string(n)}, n}
-      :ok = Readiness.refresh(pool, entries, now() + 5000)
-
-      running =
-        for _ <- 1..16 do
-          assert_receive {^tag, id, pid}
-          {id, pid}
-        end
-
-      refute_receive {^tag, _, _}, 30
-      send(elem(hd(running), 1), :release)
-      assert_receive {^tag, next_id, next_pid}
-      refute next_id in Enum.map(running, &elem(&1, 0))
-      :ok = Readiness.refresh(pool, [], now() + 5000)
-      Enum.each([next_pid | Enum.map(running, &elem(&1, 1))], &await_dead/1)
-      GenServer.stop(pool)
+    work = fn entry, revision ->
+      send(parent, {tag, entry.vm_id, self(), revision})
+      if entry.vm_id != "healthy", do: receive(do: (:release -> :ok))
     end
+
+    pool = pool(c, work)
+    entries = for number <- 1..slow_count, do: {%{vm_id: to_string(number)}, 1}
+    :ok = Readiness.refresh(pool, [{%{vm_id: "healthy"}, 2} | entries], now() + 5000)
+
+    slow =
+      for number <- 1..slow_count do
+        id = to_string(number)
+        assert_receive {^tag, ^id, pid, 1}
+        pid
+      end
+
+    assert_receive {^tag, "healthy", _, 2}
+    assert_receive {^tag, "healthy", _, 2}, 2000
+    assert Enum.all?(slow, &Process.alive?/1)
+    :ok = Readiness.refresh(pool, [], now() + 5000)
+    Enum.each(slow, &await_dead/1)
+    GenServer.stop(pool)
+  end
+
+  property "concurrency stays bounded and each completion admits queued work", c do
+    count = draw("count", integer(17..40))
+
+    tag = make_ref()
+    parent = self()
+
+    pool =
+      pool(c, fn entry, _ ->
+        send(parent, {tag, entry.vm_id, self()})
+
+        receive do
+          :release -> :ok
+        end
+      end)
+
+    entries = for n <- 1..count, do: {%{vm_id: to_string(n)}, n}
+    :ok = Readiness.refresh(pool, entries, now() + 5000)
+
+    running =
+      for _ <- 1..16 do
+        assert_receive {^tag, id, pid}
+        {id, pid}
+      end
+
+    refute_receive {^tag, _, _}, 30
+    send(elem(hd(running), 1), :release)
+    assert_receive {^tag, next_id, next_pid}
+    refute next_id in Enum.map(running, &elem(&1, 0))
+    :ok = Readiness.refresh(pool, [], now() + 5000)
+    Enum.each([next_pid | Enum.map(running, &elem(&1, 1))], &await_dead/1)
+    GenServer.stop(pool)
   end
 
   test "catalog expiry kills jobs even with the scheduler suspended", c do
@@ -175,7 +177,10 @@ defmodule Audi.TLS.ReadinessTest do
   end
 
   defp pool(c, work, owner \\ self()),
-    do: start_supervised!({Readiness, owner: owner, tasks: c.tasks, work: work}, id: make_ref())
+    do:
+      Overalls.HegelFixtures.start_fixture!({Readiness, owner: owner, tasks: c.tasks, work: work},
+        id: make_ref()
+      )
 
   defp await_dead(pid) do
     ref = Process.monitor(pid)

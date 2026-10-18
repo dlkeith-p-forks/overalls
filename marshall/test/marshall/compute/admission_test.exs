@@ -205,34 +205,32 @@ defmodule Marshall.Compute.AdmissionTest do
   # Every same-key replay after VM archival MUST return the original ID without
   # creating another allocation record or dispatch job; changed shape MUST
   # refuse with the same complete inventory.
-  property "archived admission replays retain the complete allocation inventory", test_cases: 8 do
-    check all(
-            repeats <- integer(1..4),
-            changed <-
-              member_of([
-                %{vcpu: 1},
-                %{memory_bytes: 1_073_741_824},
-                %{disk_bytes: 4_294_967_296}
-              ]),
-            test_cases: 8
-          ) do
-      _fixture = host_fixture()
-      actor = user()
-      params = request()
-      assert {:ok, vm} = Compute.provision(params, actor: actor)
-      assert :ok = Ledger.archive!(vm, :archive)
-      before = admission_inventory()
+  property "archived admission replays retain the complete allocation inventory",
+    test_cases: 100 do
+    repeats = draw("repeats", integer(1..4))
 
-      for _ <- 1..repeats do
-        assert {:ok, %{id: id}} = Compute.provision(params, actor: actor)
-        assert id == vm.id
-        assert admission_inventory() == before
-      end
+    changed =
+      draw(
+        "changed",
+        member_of([%{vcpu: 1}, %{memory_bytes: 1_073_741_824}, %{disk_bytes: 4_294_967_296}])
+      )
 
-      assert {:error, error} = Compute.provision(Map.merge(params, changed), actor: actor)
-      assert Exception.message(error) =~ "idempotency_conflict"
+    _fixture = host_fixture()
+    actor = user()
+    params = request()
+    assert {:ok, vm} = Compute.provision(params, actor: actor)
+    assert :ok = Ledger.archive!(vm, :archive)
+    before = admission_inventory()
+
+    for _ <- 1..repeats do
+      assert {:ok, %{id: id}} = Compute.provision(params, actor: actor)
+      assert id == vm.id
       assert admission_inventory() == before
     end
+
+    assert {:error, error} = Compute.provision(Map.merge(params, changed), actor: actor)
+    assert Exception.message(error) =~ "idempotency_conflict"
+    assert admission_inventory() == before
   end
 
   @typep admission_inventory :: %{

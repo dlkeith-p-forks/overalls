@@ -181,24 +181,24 @@ defmodule Brady.Cache.PressureTest do
   end
 
   property "freshness never substitutes for boot or mount custody" do
-    check all(age <- integer(0..100_000), bad <- member_of(["boot_id", "device", "host_id"])) do
-      sample = Map.put(observation(), "observed_ms", 100_000 - age)
-      result = Pressure.validate(sample, config(), @mount, 100_000, @boot)
+    age = draw("age", integer(0..100_000))
+    bad = draw("bad", member_of(["boot_id", "device", "host_id"]))
+    sample = Map.put(observation(), "observed_ms", 100_000 - age)
+    result = Pressure.validate(sample, config(), @mount, 100_000, @boot)
 
-      if age <= 3000 do
-        assert {:ok, {"42", "0:99", "tank/brady"}, _} = result
-      else
-        assert {:stale, {"42", "0:99", "tank/brady"}} = result
-      end
-
-      assert :error =
-               Pressure.validate(
-                 Map.put(sample, bad, "foreign"),
-                 config(),
-                 @mount,
-                 100_000,
-                 @boot
-               )
+    if age <= 3000 do
+      assert {:ok, {"42", "0:99", "tank/brady"}, _} = result
+    else
+      assert {:stale, {"42", "0:99", "tank/brady"}} = result
     end
+
+    assert :error =
+             Pressure.validate(
+               Map.put(sample, bad, "foreign"),
+               config(),
+               @mount,
+               100_000,
+               @boot
+             )
   end
 end

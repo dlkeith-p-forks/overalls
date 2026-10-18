@@ -8,6 +8,11 @@ defmodule Audi.DNS.ServerTest do
   @vm "demo-0123456789abcdef0123456789abcdef"
 
   setup do
+    fixture()
+  end
+
+  @spec fixture() :: %{directory: atom(), authority: %Authority{}, port: non_neg_integer()}
+  defp fixture do
     directory = Audi.Test.DNSDirectory.start!([])
 
     entries = %{
@@ -26,7 +31,7 @@ defmodule Audi.DNS.ServerTest do
       directory: directory
     }
 
-    server = start_supervised!({Server, authority: authority})
+    server = Overalls.HegelFixtures.start_fixture!({Server, authority: authority}, id: make_ref())
     %{directory: directory, authority: authority, port: Server.port(server)}
   end
 
@@ -105,31 +110,29 @@ defmodule Audi.DNS.ServerTest do
   # Generated ordinary in-zone questions MUST be candidate successes when an
   # authoritative NXDOMAIN is produced; out-of-zone and transfer questions
   # MUST stay excluded, independent of UDP or TCP framing.
-  test "candidate DNS outcomes distinguish authoritative completion from refusal", ctx do
-    check all(
-            label <- string(:alphanumeric, min_length: 1, max_length: 20),
-            transport <- member_of([:udp, :tcp])
-          ) do
-      {reply, outcome} =
-        Authority.answer_with_outcome(query("#{label}.apps.example", 1), ctx.authority, transport)
+  property "candidate DNS outcomes distinguish authoritative completion from refusal", ctx do
+    label = draw("label", string(:alphanumeric, min_length: 1, max_length: 20))
+    transport = draw("transport", member_of([:udp, :tcp]))
 
-      assert is_binary(reply)
-      assert outcome == :success
+    {reply, outcome} =
+      Authority.answer_with_outcome(query("#{label}.apps.example", 1), ctx.authority, transport)
 
-      {_reply, outside} =
-        Authority.answer_with_outcome(query("#{label}.else.example", 1), ctx.authority, transport)
+    assert is_binary(reply)
+    assert outcome == :success
 
-      assert outside == :exclude
+    {_reply, outside} =
+      Authority.answer_with_outcome(query("#{label}.else.example", 1), ctx.authority, transport)
 
-      {_reply, transfer} =
-        Authority.answer_with_outcome(
-          query("#{label}.apps.example", 252),
-          ctx.authority,
-          transport
-        )
+    assert outside == :exclude
 
-      assert transfer == :exclude
-    end
+    {_reply, transfer} =
+      Authority.answer_with_outcome(
+        query("#{label}.apps.example", 252),
+        ctx.authority,
+        transport
+      )
+
+    assert transfer == :exclude
   end
 
   test "stale publication produces a counted candidate failure", ctx do
@@ -195,7 +198,9 @@ defmodule Audi.DNS.ServerTest do
     assert {2, 0, 0} = result(query("p3000-#{@vm}.apps.example", 1), ctx)
   end
 
-  test "only the accepted alternate port interval inherits a base publication", ctx do
+  property "only the accepted alternate port interval inherits a base publication" do
+    ctx = fixture()
+
     entries = %{
       "#{@vm}.apps.example" => %{
         addresses: [{192, 0, 2, 9}],
@@ -206,10 +211,9 @@ defmodule Audi.DNS.ServerTest do
     :ok =
       Directory.publish(ctx.directory, 5, entries, System.monotonic_time(:millisecond) + 60_000)
 
-    check all(port <- integer(0..65_535)) do
-      actual = result(query("p#{port}-#{@vm}.apps.example", 1), ctx)
-      assert actual == if(port in 3000..9999, do: {0, 1, 0}, else: {3, 0, 1})
-    end
+    port = draw("port", integer(0..65535))
+    actual = result(query("p#{port}-#{@vm}.apps.example", 1), ctx)
+    assert actual == if(port in 3000..9999, do: {0, 1, 0}, else: {3, 0, 1})
 
     for port <- [3000, 9999] do
       assert {0, 1, 0} = result(query("p#{port}-#{@vm}.apps.example", 1), ctx)

@@ -22,10 +22,9 @@ defmodule Marshall.CommittedCredentialInventoryTest do
   # effects against raw committed state before exact teardown.
   @tag timeout: 120_000
   property "committed credential lifecycles preserve unrelated fixture history and restore inventory",
-    test_cases: 8 do
-    check all(bytes <- binary(length: 32), test_cases: 8) do
-      unboxed(fn -> verify_lifecycle!(bytes) end)
-    end
+    test_cases: 100 do
+    bytes = draw("bytes", binary(length: 32))
+    unboxed(fn -> verify_lifecycle!(bytes) end)
   end
 
   @spec verify_lifecycle!(binary()) :: :ok

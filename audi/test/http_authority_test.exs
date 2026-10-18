@@ -4,13 +4,14 @@ defmodule Audi.HTTP.AuthorityTest do
   import Hegel.Gen
   alias Audi.HTTP.Authority
 
-  property "a suspended renewer cannot preserve the owner or its guest socket",
-    profile: :ci,
-    test_cases: 1 do
+  # 100 generated leases take 120–180 seconds before socket setup.
+  @tag timeout: 300_000
+  property "a suspended renewer cannot preserve the owner or its guest socket" do
     # Allow a loaded runner to start the guard before the generated lease expires.
-    ttl = draw(integer(1200..1800))
+    ttl = draw("ttl", integer(1200..1800))
 
     {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
+    on_cleanup(fn -> :gen_tcp.close(listener) end)
     {:ok, {_, port}} = :inet.sockname(listener)
     parent = self()
 
@@ -54,8 +55,15 @@ defmodule Audi.HTTP.AuthorityTest do
         end
       end)
 
+    on_cleanup(fn ->
+      Process.exit(owner, :kill)
+      Process.demonitor(monitor, [:flush])
+    end)
+
     {:ok, peer} = :gen_tcp.accept(listener, 1000)
+    on_cleanup(fn -> :gen_tcp.close(peer) end)
     assert_receive {:guarded, worker, _}, 1000
+    on_cleanup(fn -> Process.exit(worker, :kill) end)
     assert_receive {:DOWN, ^monitor, :process, ^owner, :killed}, 3000
     assert {:error, :closed} = :gen_tcp.recv(peer, 0, 1000)
     Process.exit(worker, :kill)
