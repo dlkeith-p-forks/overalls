@@ -71,12 +71,6 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
   defp crash_history(supervisor, size, target, committed) do
     root = Path.join(System.tmp_dir!(), "brady-loss-#{System.unique_integer([:positive])}")
     limits = %{quota: 1_000_000, object: 100_000, high: 900_000, low: 800_000}
-    old_id = {:old_store, make_ref()}
-    new_id = {:new_store, make_ref()}
-
-    spec =
-      Supervisor.child_spec({Store, root: root, limits: limits}, id: old_id, restart: :temporary)
-
     {:ok, store} = Store.start_link(root: root, limits: limits)
     Process.unlink(store)
     key = String.duplicate("d", 64)
@@ -133,8 +127,7 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
       assert %{used: ^expected_used, pending: 0, readers: 0, writers: 0} = Store.stats(recovered)
       :ok
     after
-      stop_supervised(old_id)
-      stop_supervised(new_id)
+      if Process.alive?(store), do: GenServer.stop(store)
       File.rm_rf!(root)
     end
   end
@@ -196,7 +189,6 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
       if axis in [:pool, :parent], do: 1_000_000, else: cap + if(axis == :quota, do: 1, else: 0)
 
     limits = %{quota: quota, object: object, high: quota, low: quota - 1}
-    id = {:boundary_store, make_ref()}
     {:ok, store} = Store.start_link(root: root, limits: limits)
     Process.unlink(store)
     parent = self()
@@ -269,7 +261,7 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
 
       :ok
     after
-      stop_supervised(id)
+      if Process.alive?(store), do: GenServer.stop(store)
       File.rm_rf!(root)
     end
   end

@@ -90,13 +90,15 @@ defmodule Porsche.HostCertificateNegotiationPropertyTest do
   # trust, a foreign CA and a mismatched hostname before Porsche submits a session.
   # A trusted matching certificate MUST reach signed user-key proof with the real
   # Proof callback. The scripted pending reply MUST NOT establish account authority.
-  property "strict OpenSSH certificate trust gates real signed-key session submission", fixture do
+  property "strict OpenSSH certificate trust gates real signed-key session submission",
+    %{directory: directory, port: port, backend: backend} do
     cases = draw(shuffle([:trusted, :foreign_ca, :foreign_name, :absent]))
+    fixture = %{directory: directory, port: port, backend: backend}
 
     for kind <- cases do
-      Agent.update(fixture.backend, fn _ -> [] end)
+      Agent.update(backend, fn _ -> [] end)
       {output, status} = connect(fixture, kind)
-      calls = Agent.get(fixture.backend, & &1)
+      calls = Agent.get(backend, & &1)
 
       if kind == :trusted do
         assert_receive :session_closed, 5000

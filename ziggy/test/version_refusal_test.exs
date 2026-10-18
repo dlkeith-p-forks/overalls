@@ -151,7 +151,7 @@ defmodule Ziggy.VersionRefusalTest do
     end
   end
 
-  property "model poll stops after version refusal", _c do
+  property "model poll stops after version refusal" do
     check all(transient_replies <- integer(0..4), max_runs: 8) do
       owner = self()
 
