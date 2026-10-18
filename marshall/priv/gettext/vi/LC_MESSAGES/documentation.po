@@ -4292,7 +4292,7 @@ msgstr "**Khoảng trống:** Cả bảy họ chính xác được chọn đều
 #: lib/marshall/documentation_messages.ex:1740
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** An earlier NixOS fleet passed interactive SSH then failed a later agent-token case; another passed enrollment but refused clone relocation during Marshall unavailability. The strict reader-revision rerun passed the complete NixOS Porsche lifecycle subtest including relocation, clone and cleanup but failed the later terminal/browser stage amid Marshall database checkout timeouts. The reader-revision Ubuntu authenticated SSH journey passed login, account revocation and renewal, relocation, reboot and clone, with VM-test cleanup; its disposable fixture enabled readiness and templates, but did not assert an actual template hit or exact readiness journal. Production template producers were off at that historical reader boundary. Incoming author-reported activation and historical standby-source samples retain their separate scope; they do not establish a matched campaign or current independent deployment acceptance. The final typed focused NixOS Porsche lifecycle variant now passes on its captured pre-Starship images and fixtures; Ubuntu lifecycle and the separate complete clone fault matrix remain unrun. The first live benchmark canary failed direct SSH without Audi and its original deletion outlasted the runner deadline, then was independently confirmed cleaned. Two corrected readers-off production canaries passed client SSH and cleanup, not template-enabled readiness. A readers-off campaign passed ten sequential authenticated SSH samples per distribution but failed two of four concurrent creations with execution_failed; the failed run-owned VMs were independently confirmed deleted with released reservations and absent ZFS datasets using their preplanned deletion IDs. Sequential medians are exploratory, not an accepted matched baseline. The unrun Ubuntu Porsche lifecycle and separate complete clone fault matrix, delayed bootstrap/template-hit acceptance, complete concurrent baseline/enabled benchmark and independently observed current producer rollout remain. Current NixOS lifecycle evidence retains its captured pre-Starship scope. The formerly stuck baseline fixture is confirmed deleted. ADR-0143 offload, compressed same-host clones and deletion under pool writes pass native ZFS tests but lack post-deploy production measurement; compressed local clone throughput on real disks is unmeasured. ADR-0149 retires diagnostic ingestion/outbox/presentation; pre-cutover evidence is historical. Replacement native/property acceptance must execute separately. ADR-0177's two 26-create production bursts (with and without standbys) are recorded in the ADR; no machine test plants a leftover standby-* dataset to show the pool withheld natively."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1744
 #, elixir-autogen, elixir-format
@@ -4357,7 +4357,7 @@ msgstr "**Khoảng trống:** Cả bằng chứng tính năng ban đầu và b�
 #: lib/marshall/documentation_messages.ex:1792
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Both original full Ubuntu attempts failed at fresh neighbour startup with template_quarantined. The 507.23-second and 449.24-second diagnostics stopped after original VM 102 start/write without reproducing failure or completing deletion/survival. Later imported inspection demonstrated st_dev-only strict refusal, not the failure-instant predicate; original cause remains unknown. Both final actions exercised exact reuse only. Device-only public-cache quarantine/retirement/deletion/replacement remains unexecuted. Current NixOS focus covers only the 200-line prefix; its later 161 lines retain prior full-run scope. The first production NixOS Codex timeout retained no child TLS stderr; Ubuntu creation was not issued. Independent old-chain rejection, same-root preparation and encrypted round-trips do not establish commit/push of the leaf change, both-host live Rustls/SSH acceptance or successful renewed production canaries. Limited Codex/curl trust refusals do not establish every Claude mode. Native/fleet fixtures, production artifacts, live providers, sustained load, independent physical hosts and retained-disk upgrades retain separate scopes; production Anthropic remains disabled. Dangerous defaults intentionally remove client-level approval and sandbox protections; guest OS/VM/network/Marshall boundaries remain, and no stronger local confidentiality claim is made."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1796
 #, elixir-autogen, elixir-format
@@ -4372,7 +4372,7 @@ msgstr "**Khoảng trống:** Thực thi thư kết hợp định dạng hiện 
 #: lib/marshall/documentation_messages.ex:1804
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Complete per-source native fault coverage and seven-day history remain pending. Earlier Audi and combined remaining-source failures are retained separately; serial Audi SSH, focused native Porsche and serial Brady durable-source/collector acceptance passed. Expanded Enrico recorder/producer SIGKILL, clean restart, outage and recovery passed. DNS recorder loss and clean/unclean idle producer restart preserve history with the expected coverage transitions; Admitted DNS producer loss now has recorded pre-deadline failure and recovery evidence; overload/storage faults remain separate. Porsche service scripts retain narrower scopes. Hardware power loss and per-application host restart remain unverified; measurement horizons are provisional. External notification delivery needs a configured destination. Porsche recorder loss with a surviving producer, clean restart and unclean idle producer restart now have recorded native continuity evidence; in-flight producer loss remains separate. Brady recorder loss and clean/unclean idle producer restarts now have recorded accounting/coverage continuity and unchanged guest process evidence; in-flight loss remains separate."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1808
 #, elixir-autogen, elixir-format
@@ -4382,7 +4382,7 @@ msgstr "**Khoảng trống:** Chưa xác minh chuyển phát đăng ký SSH/trì
 #: lib/marshall/documentation_messages.ex:1812
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Connect and response fault permutations and origin receipt of partial bytes remain open; no production upstream SLA or arbitrary streaming/load guarantee follows from fixture origins. Hosted mixed-version renewal and guest-driven repeat requests are not measured by local version-refusal tests. Initial source provisioning failed ZFS observation and recovered separately. ADR-0134 production policy and controlled-origin withdrawal passed on7fda1272; production invalid-TTL/control-timeout, blocked-upload and partial-response fault injections and fresh SSH admission reliability remain open. Independent TLS counts and late-retry refusal are recorded only for the isolated packaged blocked-upload fixture. The original fixture grants and VMs were removed; archival fixture cleanup completed after the proc-less repair; the empty fixture account retirement completed through an authorized temporary software passkey whose credential and sessions were removed afterwards."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1816
 #, elixir-autogen, elixir-format
@@ -4467,32 +4467,32 @@ msgstr "**Khoảng trống:** Đĩa máy khách hiện có được chủ ý lo�
 #: lib/marshall/documentation_messages.ex:1884
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Final extension publication and newer-main integration gates are pending. Real ZFS/authenticated SSH, physical transfer-slot release, automatic cgroup cleanup and uninterruptible I/O remain open. Historical native evidence retained by byte-identical source/test integration; fresh main29ad6228 combined packages/consumer gates remain pending."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1888
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Finite native histories do not explore every interruption point between journal and kernel effects; the composed fleet check's recorded rerun is currently blocked by a reproduced terminal-stage failure before the lifecycle fragment executes (docs/architecture/reviews/2026-09-26-lifecycle-histories.md). Retention tests do not execute Oban, cron recovery, competing sweeps or elapsed oldest-row lag. The local fence test injects handler results and does not run the real Lilly HTTP client or terminal WebSocket 404 path. The archived-receipt tail uses synthetic outcomes on local PostgreSQL; cross-host delivery and native effects remain open. ADR-0149 retires diagnostic ingestion/outbox/presentation; pre-cutover evidence is historical. Replacement native/properties must be executed separately. No current native obsolete-source crash acceptance."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1892
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Fleet and user-SSH journey runs on df94ad026/b55b4e1ad record the namespace dial, guest SSH through lilly-ingress-bridge and the flat descriptor count. Op 13 bridges, now only a fallback, still end on a hostd or Lilly restart; guest SSH survival is the detached-ingress-bridge-survival scenario and editor/nested HTTPS survival the staged-detached-ingress-survival scenario."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1900
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Focused execution passed3checks (1property,2tests),seed0,0.7seconds. Pending-status mutant failed the stable-field comparison after17successful draws,0.7seconds; restored3checks passed0.8seconds. Full integrated verification remains pending. Direct adapter invocation does not establish actual WebSocket upgrade, verified TLS, post-bind credential rotation or native gateway acceptance."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1904
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full Lilly application death at this boundary, start/restart completion, attempt-marker-before-submission, physical power loss and hosted faults remain open. Executor retry is witnessed; actor-deferred result consumption is not independently asserted."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1908
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full integrated Protocol precommit passed251 checks (98 properties,153 tests),seed212242,390.4seconds with clean forced Dialyzer. Remaining consumer gates, server task saturation, authenticated native TLS/fleet pressure and hosted faults remain open. Always-eight mutation credit belongs to the earlier isolated prototype and does not execute the added fixed64 witness."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1912
 #, elixir-autogen, elixir-format
@@ -4502,37 +4502,37 @@ msgstr "**Khoảng trống:** Lịch sử quan sát/kích hoạt chéo đích đ
 #: lib/marshall/documentation_messages.ex:1916
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated local histories do not execute native systemd units, real database migrations, guest-impact activation or live environment replacement on machines; independent physical rollout scheduling remains outside host-local updates and automatic database rollback is forbidden."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1920
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated pressure inputs do not establish ZFS custody or kernel/TLS isolation. Native veth peers do not establish Firecracker attribution. Arbitrary power loss, disk-full/deletion failures, every HTTP parser combination remain separate. Earlier SSH interruptions and unresolved-attribution requests remain availability gaps; bounded receipt polling does not fix them. An earlier multi-GiB fill abandonment remains unexplained; the later full native pass and closed refusal diagnostics do not establish its resolution. A concurrent main activation interrupted an in-flight Ubuntu transfer (curl 18); connection survival across proxy restart remains separate."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1924
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated shell-change/reconciliation-failure histories and native custom per-user configuration rendering remain untested, so coverage stays partial. Root/manual-user suites retain their exact historical revision scope; no merged root rerun is claimed. Historical artifacts are not reruns of the new control/diagnostic boundary, and managed prompt journeys do not establish independent diagnostic-custody recovery. NixOS TERM=dumb intentionally retains its native skip. No existing-disk migration, production rollout, independent physical-host availability or new production isolation claim."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1928
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Guard-removal mutant killed at counter0 ping in0.9seconds; Marshall1466-check and zero-error forced Dialyzer gate passed. Incoming-main integration and publication remain pending; callback coverage does not prove native fleet or rollout behavior. Existing TLS smoke retains its separate scope."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1932
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, every administrative mutation family, populated drill-down projections and independent physical hosts remain unverified. Cross-replica revocation has recorded generated three-BEAM schedule evidence for mounted reads; the cross-replica native browser scenario is the login journey's three colocated services."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1936
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, SMTP delivery and production rollout remain separate; full/native captures and previous Control room/retirement claims retain their exact revisions."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1940
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, actual inbox delivery and production rollout remain unverified. Native replicas share one NixOS VM and PostgreSQL. JavaScript-capable mail scanners may consume links; the native automatic-submit run uses three colocated replicas in one VM."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1944
 #, elixir-autogen, elixir-format
@@ -4542,17 +4542,17 @@ msgstr "**Khoảng trống:** Bộ xác thực phần cứng, bản sao phục v
 #: lib/marshall/documentation_messages.ex:1948
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Historical Protocol249, Lilly503, Marshall1466 and Galileo31-check gates retain their own revisions. Merged Protocol251 includes the extended test and passed with clean forced Dialyzer. Remaining merged consumer gates, merge publication, verified TLS and native fleet acceptance remain open. The4900ms observation allows100ms transit in this healthy loopback fixture and is not a production latency or arbitrary scheduler guarantee."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1952
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Historical initial NixOS/Ubuntu captures failed; an Ubuntu diagnostic reached waiting before the source-handoff repair, and the corrected 1703s Ubuntu run stalled at Codeberg change after four initial and ten additional cases. Focused exact dnsmasq 2.93/musl evidence isolated fixture AAAA REFUSED; authoritative local-domain NODATA repaired the namespace probe and complete NixOS run. Latest frozen Ubuntu exited 1 after 266.734s at initial guest startup with Lilly execution_failed, after browser sign-in/MFA/dedupe passed; no checkout/restart/matrix/download/CLI was reached and startup cause remains under diagnosis. Complete current Ubuntu acceptance is unresolved. Live provider API/smart-HTTP, Firefox public-provider network, production cutover/download/checkout and Brady interception remain unverified. Private repositories/self-hosted origins are out of scope. Guest writers share the checkout by design. The signed pending cookie holds one intent; concurrent response ordering is not a multi-tab queue. Obsolete sourced machines require recreation; retained bundle custody has no source-v1 adapter. Final extension sentinel removal passed actual Chromium/Firefox actions; four pure capture minimizer tests/types are enforced by workspace.check. Normal fragment/cookie/form resume composes in current native browsers, but focused browser assertions of query/hash sentinel removal, capture storage contents and sanitized POST contents remain unrecorded."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1956
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Historical native results before ADR-0155 exercised retired pre-copy and retain their scope; the incoming stopped-only cut has separate 20-subtest evidence; its synthesized legacy-journal subtest was removed with the migration (ADR-0159), and the reduced scenario has not been rerun natively. No complete retained-state upgrade, independent physical-host failure, merged-editor relocation rerun or production acceptance is established. Production acceptance on 2026-09-25 refused transfer_busy due to an older clone retaining Overalls' slot. The newer NixOS Porsche fleet failed clone relocation on temporarily_unavailable while all Marshall backends briefly lost readiness. Neither physical direction nor opposite-direction concurrency was validated in production. Local generated transfer-slot evidence does not establish independent-process races or physical stream cessation before release; uncovered ownership/receipt interleavings remain."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1960
 #, elixir-autogen, elixir-format
@@ -4562,17 +4562,17 @@ msgstr "**Khoảng trống:** Máy chủ vật lý độc lập, DNS/CA/tải s�
 #: lib/marshall/documentation_messages.ex:1964
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical hosts, team terminal/agent journeys, existing SSH session termination, positive public CLI integration configuration and production rollout remain separate. Recorded native accounts remain ordinary; integration setup invokes the real Ash action through the private fixture."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1968
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical tunnel, ZFS quota and 100 GiB cache pressure, large repository durations, physical authenticators and production rollout remain separate. The browser cache uses an ordinary VM filesystem. Generated service responses do not establish native Git/network behavior. The initial failed UI fixture run remains separately recorded."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1972
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Initial attempt is internally gated for tracing and fixture backoff is reduced. Plain loopback peer supplies scripted authentication response; no TLS, Marshall domain authentication, production recovery time bound or native guest acceptance. Provisional socket custody adds a scripted-worker callback/socket fixture for pre/post-handoff loss and failed completion; its cleanup mutant was caught and restored property passed. Current Lilly gate passed502checks (96properties,406tests),seed218587,149.8seconds with zero-error forced typing; remaining consumers and native/hosted acceptance remain open."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1976
 #, elixir-autogen, elixir-format
@@ -4587,7 +4587,7 @@ msgstr "**Khoảng trống:** Nghiệm thu mở rộng bị gián đoạn và kh
 #: lib/marshall/documentation_messages.ex:1984
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Interrupted writes, interrupted expansion, physical stable-media/host power loss, direct isolation, relocation and fleet recovery remain unproven; both native crash receipts retain admission false, while exact sealed FreeBSD activation is recorded separately."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1988
 #, elixir-autogen, elixir-format
@@ -4597,57 +4597,57 @@ msgstr "**Khoảng trống:** Phân loại lỗi thu hồi trực tiếp, thu th
 #: lib/marshall/documentation_messages.ex:1992
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Local insert faults and recorded post-commit worker/BEAM loss with concurrent three-node retries do not cover pre-commit ambiguity, HTTP reply loss, optional workspace-source or Inception environment writes, or native job execution. The poison-command test does not cover Lilly's response to that durable 409, retained relocation-cleanup obligations or a policy decision on whole-host report starvation. The Lilly transient property injects handler results and does not run client retry, a real partition or Marshall freshness recovery. These checks do not establish fleet-wide production throughput or arbitrary overcommit tuning."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:1996
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Local monitor readiness is not authorized proxy completion, tailnet availability or a live-provider result. A provisional monitor target exists, but full seven-day production coverage remains unverified."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2000
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Manager/role histories, URL/path attacks, interrupted guest installation reconciliation, local-edit preservation, immutable revision retention and pinned physical reopen restoration remain unverified on Linux and Windows."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2004
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Marshall account authorization/browser approval, HTTPS management, production release/systemd startup, native isolation, production CA rotation, concurrent replacement and hosted faults remain open."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2008
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Namespace ready receipts do not establish Marshall authority, TLS or guest isolation. Native candidate injection bypasses artifact delivery. Ubuntu failure recovery, real guest-command drain, power-loss/I/O faults, physical hosts and production rollout remain separate; registered-but-bad semantic rollback is outside the accepted decision."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2012
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native NixOS agent and full NixOS/Ubuntu Porsche journeys passed on their captured snapshots. Both hosts activated readiness healthy with all 22 current retained boots verified. Non-operation SSH workflows, fresh production creation, other source crash accounting, seven-day observation and notification delivery remain under verification. Nonzero pre-activation counters cannot establish guest boot failure or compliance."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2020
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native Windows SID/profile lookup, Linux account resolution through authenticated operations, changed-file retry histories, complete skill selection across compaction and transport revocation remain unverified. Local temporary-file tests do not establish VM or host filesystem isolation."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2024
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native attempt two's executor interruption remains unexplained; the passing capture predates the subsequent Underclass package pin. Independent physical hosts, production providers/load/rollout, Ubuntu browser-approved CLI and native hostile-tool/profile permutations remain separate. Inception verification is excluded by user direction."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2028
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native browser-approved CLI journeys are recorded under the agent-cli scenario; this row retains its generated-matrix, SQL-backed prompt/claim and deterministic-provider scopes. Concurrent same-key prompt and model claims, lost replies and actual provider effects remain open. Native hostile-tool/profile permutations and Ubuntu browser-approved CLI remain open; live external providers remain an excluded boundary. A live Marshall version-skew deployment and already-active provider tasks remain outside the local poll test."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2032
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native cross-node sharing races, active terminal/editor/SSH/web revocation and physical archive/reopen grant continuity remain unverified. Synthetic VM/roster and browser outcomes do not prove transport closure, guest isolation or personal-session refusal. A thread manager can intentionally delegate independent machine access, whose lifetime is separate from thread revocation."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2036
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native expired target-page recovery, reconnect intent loss, argument substitution, stale-resource races, broader mutation families and elevated Customer isolation remain unexecuted in these journeys. Three serving replicas share one VM and PostgreSQL; hardware authenticators, independent physical hosts and rollout remain separate. Exact expiry arithmetic and a persisted 900-second interval do not establish a native899/900/901second timed journey. Mixed real-action property histories remain a preferred gap beyond timestamp arithmetic and fixed signed-assertion examples."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2040
 #, elixir-autogen, elixir-format
@@ -4667,77 +4667,77 @@ msgstr "**Khoảng trống:** Chưa xác minh di chuyển cơ sở dữ liệu c
 #: lib/marshall/documentation_messages.ex:2052
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native macOS installation/runtime and arbitrary pre-existing SSH configurations remain outside this tested Linux scope; guest connections are recorded under ssh-host-ca and the fleet user journey revocation cycle."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2056
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native n99x4 passed both distributions with ADR-0124 certificate-gated readiness and the corrected physical refusal on 0cfa6302. Subsequent aaba77ee gateway startup-retry integration has separate upstream native evidence; this result remains attached to its captured base. Four rejected candidates and an orchestration-aborted attempt retain their exact scopes. Lifecycle/digest property executions and receiver-side failure-exhaustion are recorded on 40c1e73b in the 043 review (2 properties on seeds 0/43043; six probe executions, eight completed refusals each). ADR-0113's sender-side terminal trust-retry exhaustion (at most three attempts, then fencing; canonical 053), independent physical hosts and the seven legacy feature matrices remain separate. Historical native relocation evidence retains its captured revision."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2060
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native pre-start loss has no safe identified observation seam; application histories use synthetic running receipts/expiry and model results. The recorded native run is one started-effect interruption on one staged tree. Earlier native CLI attempt two remains unexplained. Physical hosts, Ubuntu, live providers, native expiry histories and long-duration replay absence remain separate."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2064
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native reboot, quota refusal, canonical identity, ACK preservation and corrupt-store refusal pass in disposable machines. Test VM fsync does not establish physical host power-loss or production ninety-day retention."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2068
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native running-workload downtime consent (every running move now needs it per ADR-0155), cancellation/replan and interruption permutations, physically independent hosts, hardware passkeys, Ubuntu evacuation and production rollout remain unverified."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2072
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Nested-KVM 1-vCPU fixture timings only; no fleet-hardware measurement. ADR-0154's accepted at-most-30-second completion wait is unimplemented across in-flight tool timeouts; a controlled runner waited 40.25s, requiring a timeout-budget correction/regression. Isolated fixtures cannot finish booting without Audi, so systemd-analyze time is observed only on the NixOS image without private services. No curl verification against a platform-issued leaf certificate in this journey."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2076
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Ninety-day observed production retention, future trace capacity and complete eligible seven-day compliance remain open; existing all-source fault and physical workflow acceptance gaps are unchanged. ADR-0149 retires diagnostic ingestion/outbox/presentation; pre-cutover evidence is historical. Replacement native/properties must be executed separately."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2080
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No Marshall-driven Windows fleet matrix is recorded. The named image and nested KVM boot prove the operator and firmware paths only; WSL 2 and Podman nested virtualization, Hyper-V synthetic timers, SAC login and timekeeping under load remain unverified. Lilly launch, MMDS identity, agent trust/readiness, sparse template handling and Windows tools are covered by the linked scenarios."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2084
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No NixOS machine test asserts the headers, HSTS or cookie attributes over the packaged release and TLS proxy, and the production deployment has not been observed sending them. The credential-rotation and mfa-login machine tests were not re-run after the cookie rename. The browser probe did not reach its final evidence line because of a two-pixel thread-workspace grid offset and a thread-activity overflow that reproduce with CSP bypassed. User applications stay same-site with the control plane, so SameSite gives no CSRF protection against them."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2088
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No NixOS machine test drives a pin over a live Porsche SSH session or in the packaged browser; cross-node pin/delete races are argued from the shared VM row lock, not observed; team-admin pinning is undecided."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2092
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No NixOS machine test drives the profile page or the browser connect param in the packaged browser; local-time lines inside LiveView streams refresh on re-read, not on the minute tick; the browser probe inherits pre-existing off-grid and thread appearance failures."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2096
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No complete NixOS/browser journey through a pending/failed guest is recorded for this correction yet. Reading sparse serial output does not identify the failed guest stage, install guest agents or prove native readiness, isolation or recovery."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2100
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No complete current-image OmniOS supervised daemon-recovery result or formal NixOS gate rerun. The current direct-host policy/transport/reset receipts are bounded fixtures, not wrong-CID/DMA stress, direct native peer-VM/TAP, jail/physical-host isolation, interrupted writes, physical stable-media recovery, multi-host recovery or full Marshall fleet acceptance. Current standalone services/growth/crash reruns retain their own pending outcomes; old image receipts are not transferred. Process-SIGKILL is not host power-loss durability. Unqualified rows and OmniOS remain false."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2104
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No execution on a real Windows workstation yet: unattended winget OpenSSH installation, the elevated machine PATH reordering and its declined-elevation fallback, config-ssh against Porsche, overalls ssh into Linux and Windows guests, overalls open and an update activation by rename-aside are unexercised; the planned proof uses a Windows Server 2025 fleet VM as the workstation."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2108
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No fresh FreeBSD exact-image machine history withdraws a real executor lease while a command is running; the OmniOS receipt covers that boundary on the current source-qualified image. Deliberate descendants escaping the process group are outside this cleanup guarantee. Local Linux process tests cannot establish native host isolation or revocation timing."
-msgstr "**Khoảng trống:** Các phạm vi kiểm thử và bằng chứng liên quan vẫn chưa hoàn tất; những giới hạn được ghi nhận cần được xử lý trong các vòng xác minh tiếp theo."
+msgstr ""
 
 #: lib/marshall/documentation_messages.ex:2112
 #, elixir-autogen, elixir-format
