@@ -122,6 +122,7 @@ defmodule Marshall.Accounts.AccountLifecycle do
         retire_guest_account!(id)
         Marshall.Teams.Coordinator.retire_user!(id, actor.id)
         retire_integrations!(id)
+        Marshall.GitHub.retire_locked!(id)
 
         if user.administrator do
           remaining =

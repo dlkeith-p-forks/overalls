@@ -11,7 +11,7 @@ let
     systemd_run = "${pkgs.systemd}/bin/systemd-run";
     systemctl = "${pkgs.systemd}/bin/systemctl";
     account_authorizer = "${lyraLinux}/bin/overalls-ssh-authorize";
-    worker_path = "/run/current-system/sw/bin";
+    worker_path = "/usr/local/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
   });
 in
 {

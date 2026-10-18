@@ -1,6 +1,11 @@
 # Galileo named integrations
 
 Canonical guest endpoint: `https://<name>.integration.internal`.
+The built-in [GitHub.com provider](github-com.md) uses
+`https://com-github.integration.internal` with per-owner OAuth authority under
+[ADR-0198](../architecture/decisions/0198-github-com-owner-integration.md).
+Its implicit owner eligibility and persistent detach are specific to that
+provider; the generic attachment policy below remains unchanged.
 Architecture: [ADR-0080](../architecture/decisions/0080-named-edge-integrations.md)
 with [ADR-0077](../architecture/decisions/0077-teams-and-shared-resources.md),
 [ADR-0078](../architecture/decisions/0078-fleet-wildcard-certificate.md) and

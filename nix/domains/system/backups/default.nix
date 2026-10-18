@@ -16,6 +16,7 @@ let
     cp ${./postgres.py} $out/postgres.py
     cp ${./restic.py} $out/restic.py
     cp ${./runtime.py} $out/runtime.py
+    cp ${./restore.py} $out/restore.py
   '';
   lillyConfig = pkgs.writeText "overalls-lilly-backup.json" (builtins.toJSON {
     host_id = lilly.hostId;
@@ -98,6 +99,16 @@ let
       properties+=(--property=${lib.escapeShellArg "EnvironmentFile=${cfg.environmentFile}"})
       ${lib.optionalString cfg.postgres.enable ''properties+=(--property=${lib.escapeShellArg "EnvironmentFile=-${marshall.environmentFile}"})''}
     fi
+    ${lib.optionalString cfg.postgres.enable (''
+      if [ "''${1:-}" = restore-database ]; then
+        shift
+        exec ${pkgs.systemd}/bin/systemd-run --quiet --wait --pipe --collect \
+          "''${properties[@]}" ${pkgs.python3}/bin/python3 ${scripts}/restore.py ${descriptor} \
+          --epoch-file ${lib.escapeShellArg marshall.githubRestoreEpochFile} \
+          --systemctl ${pkgs.systemd}/bin/systemctl \
+          ${lib.concatMapStringsSep " " (name: "--instance " + lib.escapeShellArg "marshall-${name}.service") (builtins.attrNames marshall.instances)} "$@"
+      fi
+    '')}
     exec ${pkgs.systemd}/bin/systemd-run --quiet --wait --pipe --collect \
       "''${properties[@]}" ${pkgs.python3}/bin/python3 ${scripts}/runtime.py ${descriptor} "$@"
   '';

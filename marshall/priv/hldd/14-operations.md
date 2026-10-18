@@ -1,5 +1,23 @@
 # Routine operations
 
+## GitHub connection and token rotation
+
+Users connect, inspect, disconnect and change machine eligibility through
+Integrations. Only the connection owner mutates it. A detached machine stays
+excluded across reconnect until reattached. Shared writers use the VM owner's
+identity. Without eligible credentials the route can still make anonymous public
+requests; it cannot select another user's token. Generic attachments are separate.
+
+Inspect connection phase/expiry without exposing token fields or raw provider
+errors. Refresh becomes due ten minutes before access expiry, bounds drain to
+five minutes and uses current fenced settlement. `reconnect_required` needs a
+new browser consent; restarting a job or copying a token into a guest is not
+recovery. Disconnect withdraws authority and completes provider revocation before
+another grant is installed. OAuth App registration and provider/organization
+consent remain operator/external inputs. See [services](#services),
+[recovery](#recovery) and the
+[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
+
 ## Experimental Antithesis control fixture
 
 Build the selected source-built context exports, stage them with

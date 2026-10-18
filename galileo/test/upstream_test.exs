@@ -581,6 +581,44 @@ defmodule Galileo.UpstreamTest do
     refute_receive :origin_attempt
   end
 
+  test "an already expired admission cannot open an origin", %{origin: origin} do
+    result =
+      Upstream.stream(%{target: origin, headers: [], ttl: 500},
+        method: "GET",
+        path: "/stall",
+        query: "",
+        body_state: :empty,
+        pull: fn state -> {:ok, "", state} end,
+        headers: [],
+        consume: fn _ -> :ok end,
+        renew: fn -> flunk("expired authority must not renew") end,
+        lease_expires_at: System.monotonic_time(:millisecond) - 1,
+        transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
+      )
+
+    assert result.outcome == :transport_error
+    refute_receive :origin_attempt, 0
+  end
+
+  test "a renewal cannot restart its absolute lifetime after authority delay", %{origin: origin} do
+    result =
+      Upstream.stream(%{target: origin, headers: [], ttl: 500},
+        method: "GET",
+        path: "/stall",
+        query: "",
+        body_state: :empty,
+        pull: fn state -> {:ok, "", state} end,
+        headers: [],
+        consume: fn _ -> :ok end,
+        renew: fn -> {:ok, %{ttl: 500, expires_at: System.monotonic_time(:millisecond) - 1}} end,
+        transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
+      )
+
+    assert result.outcome == :cancelled
+    assert_receive :origin_attempt
+    refute_receive :origin_attempt, 0
+  end
+
   test "a renewal call cannot outlive the current lease", %{origin: origin} do
     owner = self()
 

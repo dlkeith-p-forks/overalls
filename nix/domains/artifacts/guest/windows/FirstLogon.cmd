@@ -23,6 +23,10 @@ if exist C:\overalls\winget\packages.txt (
   powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File C:\overalls\setup\overalls-winget.ps1 -Phase verify >> %LOG% 2>&1
 )
 
+rem Managed clients replace the stock packages only after offline validation.
+powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File C:\overalls\setup\overalls-github-tools.ps1 >> %LOG% 2>&1
+if errorlevel 1 exit /b 1
+
 rem DHCP off: Lilly guests use a single validated /32 that the bootstrap
 rem configures; DHCP would be dropped by the host guard.
 powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-NetAdapter | Set-NetIPInterface -AddressFamily IPv4 -Dhcp Disabled" >> %LOG% 2>&1

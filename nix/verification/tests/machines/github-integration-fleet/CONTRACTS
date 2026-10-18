@@ -1,0 +1,12 @@
+@cc [owner:ghuntley,label:verification;security] github-fleet-real-authorities
+OAuth consent and callback MUST traverse Chromium and the packaged Marshall
+provider adapter. Guest commands MUST execute in the current real KVM boot and
+cross Lilly, Audi and Galileo's production authority path. No synthetic control
+server, connector binding or direct credential/domain-state injection is allowed.
+
+@cc [owner:ghuntley,label:verification;privacy] github-fleet-synthetic-provider
+The isolated provider MUST use fixed GitHub hostnames, valid fixture TLS and
+synthetic credentials only. Logs and failure receipts MUST contain closed stage
+categories and structural observations, never URLs with OAuth state/codes,
+credentials, request bodies, browser documents or terminal bytes. Passing this
+fixture MUST NOT be described as live GitHub or seven-family runtime evidence.

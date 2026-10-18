@@ -1,11 +1,11 @@
 # Architecture decision records
 
-[ADR-0200](0200-windows-browser-editor-candidate.md) accepts a source-built,
-account-bound Windows editor candidate with a separate `windows-editor-v1`
-manifest-v7/bundle-v4 contract. Native package, image and browser qualification
-remain separate; the selected `windows-v1` editor capability stays false.
+[ADR-0198](0198-github-com-owner-integration.md) accepts the built-in GitHub.com
+connection, owner-bound machine authority, persistent detach, encrypted rotating
+tokens and fenced scheduled refresh through the existing private service path.
+Implementation and seven-family/provider acceptance remain in progress.
 
-[ADR-0198](0198-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
+[ADR-0199](0199-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0192](0192-staged-detached-ingress.md) moves the browser editor and
 nested HTTPS onto ADR-0187's detached ingress bridges. The BEAM's only
@@ -422,6 +422,10 @@ native workflow completion and production activation retain separate scopes.
 
 | Decision | Status | Implementation | Title |
 | --- | --- | --- | --- |
+| [ADR-0198](0198-github-com-owner-integration.md) | accepted | partial | Owner-bound GitHub.com integration |
+| [ADR-0196](0196-single-account-settings-page.md) | accepted | partial | One account settings page |
+| [ADR-0197](0197-memory-suspension-and-demand-wake.md) | accepted | partial | Memory-preserving suspension, relocation and demand wake |
+| [ADR-0200](0200-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |
 | [ADR-0171](0171-windows-guest-agents.md) | proposed | partial | Windows guest agents over virtio-vsock and fleet enablement |
 | [ADR-0172](0172-windows-workstation-client.md) | proposed | partial | Windows workstation client |
 | [ADR-0173](0173-windows-images-winget-desktop-experience.md) | proposed | partial | Windows images on Desktop Experience with pinned winget packages |
@@ -893,3 +897,5 @@ and physical storage acceptance. See the
 [host-lock review](../reviews/2026-10-05-host-lock-descendant-custody.md) and
 [transfer review](../reviews/2026-10-05-transfer-stream-adopted-children.md);
 ADR-0015/0037 retain their statuses and accepted rationale.
+
+| [ADR-0199](0199-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |

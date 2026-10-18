@@ -26,6 +26,7 @@ from enum import StrEnum
 from pathlib import Path
 
 from native_git_fixture import Repository
+from native_github_fixture import GitHub
 
 MAX_HEADERS = 8192
 MAX_BODY = 16_384
@@ -194,6 +195,7 @@ class Authority:
     started: bool = False
     execution_completed: bool = False
     withdrawal: Withdrawal = field(default_factory=Withdrawal, init=False, repr=False)
+    github: GitHub | None = field(default=None, repr=False)
     _lock: threading.RLock = field(default_factory=threading.RLock, init=False, repr=False)
 
     def snapshot(self) -> Snapshot:
@@ -416,7 +418,8 @@ class Authority:
             if (
                 not isinstance(digest, str)
                 or re.fullmatch(r"[0-9a-f]{64}", digest) is None
-                or request["capabilities"] != ["context-v1", "skills-v1"]
+                or request["capabilities"]
+                not in (["context-v1", "skills-v1"], ["context-v1", "skills-v1", "github-tools-v1"])
             ):
                 raise Refused("invalid fixture registration")
             self.fence_epoch += 1
@@ -428,6 +431,12 @@ class Authority:
                 "fence_epoch": self.fence_epoch,
                 "expires_at_ms": int(time.time() * 1000) + 60_000,
             }
+        if path == "/agent/v1/maintenance/claim" and request.keys() == {
+            "executor_id",
+            "fence_epoch",
+        }:
+            self.lease(request)
+            return {"maintenance": None}
         if path in ("/agent/v1/heartbeat", "/agent/v1/claim") and request.keys() == {
             "executor_id",
             "fence_epoch",
@@ -624,10 +633,37 @@ class Handler(socketserver.BaseRequestHandler):
         try:
             stream.do_handshake()
             method, host, path, body = request(stream)
+            github = self.server.authority.github
+            artifact = None
+            extra = None
+            if github is not None:
+                with self.server.authority._lock:
+                    artifact = github.file(method, host, path, self.server.authority)
+                    if artifact is None:
+                        extra = github.route(method, host, path, body, self.server.authority)
+            if artifact is not None:
+                deadline = time.monotonic() + 8
+                stream.sendall(
+                    b"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nConnection: close\r\nContent-Length: "
+                    + str(artifact.bytes).encode()
+                    + b"\r\n\r\n"
+                )
+                with artifact.path.open("rb") as source:
+                    while chunk := source.read(65536):
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0:
+                            raise TimeoutError("native artifact deadline exceeded")
+                        stream.settimeout(remaining)
+                        stream.sendall(chunk)
+                return
             git = (
-                self.server.repository.response(method, host, path, body)
-                if self.server.repository is not None
-                else None
+                extra
+                if extra is not None
+                else (
+                    self.server.repository.response(method, host, path, body)
+                    if self.server.repository is not None
+                    else None
+                )
             )
             if git is not None:
                 content_type, payload = git.content_type, git.body

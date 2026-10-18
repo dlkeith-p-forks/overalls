@@ -12,6 +12,11 @@ host.succeed("ip address add 169.254.254.1/32 dev lo")
 host.succeed("ip address add 1.1.1.1/32 dev lo")
 try:
     extra = f" --os-name {os_name}" + (" --growth" if growth else "")
+    if github:
+        extra += (
+            " --github-tools-release /etc/native-github-tools"
+            " --github-executor-release /etc/native-github-executors"
+        )
     host.succeed(
         f"python3 /etc/native-service-tools/{service_runner}"
         " --image /etc/overalls-native-service-image"
@@ -28,6 +33,15 @@ try:
     host.copy_from_vm("/work/native-services/service-receipt.json")
     host.copy_from_vm("/work/native-services/control-0.json")
     host.copy_from_vm("/work/native-services/control-1.json")
+    if github:
+        host.succeed(
+            "jq -e '.version == 1 and .native_admission == false"
+            " and (.checks | length == 8) and (.boots | length == 2)"
+            ' and .boots[0].outcome == "installed"'
+            ' and .boots[1].outcome == "already_current"\''
+            " /work/native-services/github-tools-receipt.json"
+        )
+        host.copy_from_vm("/work/native-services/github-tools-receipt.json")
     if growth:
         growth_checks = 5 if os_name == "freebsd" else 8
         host.copy_from_vm("/work/native-services/control-2.json")

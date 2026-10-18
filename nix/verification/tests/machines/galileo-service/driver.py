@@ -28,7 +28,7 @@ deployed = (
 )
 client.wait_until_succeeds(
     deployed
-    + " -o /dev/null -w '%{http_code}' https://exedev.integration.internal/api/v3/ready | grep -Fx 200",
+    + " -o /dev/null -w '%{http_code}' https://esample.integration.internal/api/v3/ready | grep -Fx 200",
     timeout=60,
 )
 
@@ -45,10 +45,10 @@ assert metrics["gauges"]["galileo_total_requests"] >= 0
 
 with subtest("injected credentials reach the origin and never the guest"):
     response = proxy.succeed(
-        f"{curl} --unix-socket /run/galileo/proxy.sock -H 'Host: exedev.integration.internal' "
+        f"{curl} --unix-socket /run/galileo/proxy.sock -H 'Host: esample.integration.internal' "
         f"-H 'authorization: Bearer guest-attempt' -H 'x-guest-attempt: visible' "
         + headers
-        + " --data-binary '{\"hello\":1}' 'http://exedev.integration.internal/api/v3/users'"
+        + " --data-binary '{\"hello\":1}' 'http://esample.integration.internal/api/v3/users'"
     )
     served = json.loads(response)
     assert served["path"] == "/users", served
@@ -72,8 +72,8 @@ with subtest("authorized Galileo outcome enters only the private cumulative SLO 
     )
     proxy.succeed(
         "test $(curl --silent --output /dev/null --write-out '%{http_code}' "
-        "--unix-socket /run/galileo/proxy.sock -H 'Host: exedev.integration.internal' "
-        "http://exedev.integration.internal/slo) = 403"
+        "--unix-socket /run/galileo/proxy.sock -H 'Host: esample.integration.internal' "
+        "http://esample.integration.internal/slo) = 403"
     )
 
 with subtest("Rust exporter delivers Galileo-owned outcomes to the isolated collector"):
@@ -96,9 +96,9 @@ with subtest("Rust exporter delivers Galileo-owned outcomes to the isolated coll
 
 with subtest("strip prefix is segment aligned"):
     response = proxy.succeed(
-        f"{curl} --unix-socket /run/galileo/proxy.sock -H 'Host: exedev.integration.internal' "
+        f"{curl} --unix-socket /run/galileo/proxy.sock -H 'Host: esample.integration.internal' "
         + headers
-        + " 'http://exedev.integration.internal/api/v3x/other'"
+        + " 'http://esample.integration.internal/api/v3x/other'"
     )
     assert json.loads(response)["path"] == "/api/v3x/other"
 
@@ -111,10 +111,10 @@ with subtest("deployed Galileo preserves a multi-pull binary upload"):
         "b'galileo-multi-pull!')\""
     )
     response = proxy.succeed(
-        f"{curl} --unix-socket /run/galileo/proxy.sock -H 'Host: exedev.integration.internal' "
+        f"{curl} --unix-socket /run/galileo/proxy.sock -H 'Host: esample.integration.internal' "
         + headers
         + " --data-binary @/run/galileo-upload.bin "
-        + "'http://exedev.integration.internal/api/v3/upload'"
+        + "'http://esample.integration.internal/api/v3/upload'"
     )
     served = json.loads(response)
     assert served["path"] == "/upload", served
@@ -137,7 +137,7 @@ for phase in ("lease-blocked-upload", "lease-partial-response"):
             )
 
 with subtest("packaged Audi forwards GET and POST to packaged Galileo across machines"):
-    response = client.succeed(deployed + " 'https://exedev.integration.internal/api/v3/users'")
+    response = client.succeed(deployed + " 'https://esample.integration.internal/api/v3/users'")
     served = json.loads(response)
     assert served["path"] == "/users", served
     assert served["body_bytes"] == 0, served
@@ -153,12 +153,12 @@ with subtest("packaged Audi forwards GET and POST to packaged Galileo across mac
 
 with subtest("Audi preserves query strings and ordinary HTTP methods"):
     response = client.succeed(
-        deployed + " 'https://exedev.integration.internal/api/v3/users?visible=true'"
+        deployed + " 'https://esample.integration.internal/api/v3/users?visible=true'"
     )
     served = json.loads(response)
     assert served["path"] == "/users?visible=true", served
     response = client.succeed(
-        deployed + " -X PUT 'https://exedev.integration.internal/api/v3/users'"
+        deployed + " -X PUT 'https://esample.integration.internal/api/v3/users'"
     )
     served = json.loads(response)
     assert served["method"] == "PUT", served
@@ -181,7 +181,7 @@ with subtest("a stalled destination is bounded without a retry"):
     )
     started = time.monotonic()
     client.fail(
-        deployed + " --fail 'https://exedev.integration.internal/api/v3/stall'",
+        deployed + " --fail 'https://esample.integration.internal/api/v3/stall'",
         timeout=45,
     )
     elapsed = time.monotonic() - started
@@ -201,7 +201,7 @@ with subtest("binding change fences an active request and denies the replacement
         "systemctl reset-failed galileo-relocation.service 2>/dev/null || true; "
         "systemd-run --unit=galileo-relocation /run/current-system/sw/bin/curl "
         "--noproxy '*' --silent --show-error --fail --cacert /etc/galileo-ca.pem "
-        "--max-time 45 https://exedev.integration.internal/api/v3/stall"
+        "--max-time 45 https://esample.integration.internal/api/v3/stall"
     )
     proxy.wait_until_succeeds(
         f"{curl} --unix-socket /run/galileo/proxy.sock http://galileo/metrics | "
@@ -220,7 +220,7 @@ with subtest("binding change fences an active request and denies the replacement
     )
     status = client.succeed(
         deployed
-        + " -o /dev/null -w '%{http_code}' 'https://exedev.integration.internal/api/v3/users'"
+        + " -o /dev/null -w '%{http_code}' 'https://esample.integration.internal/api/v3/users'"
     )
     assert status.strip() == "403", status
     proxy.wait_until_succeeds(
@@ -235,7 +235,7 @@ with subtest("control authority refusal preserves guest403 before the destinatio
     proxy.succeed("printf denied > /run/galileo-fixture/control-mode")
     status = client.succeed(
         deployed
-        + " -o /dev/null -w '%{http_code}' 'https://exedev.integration.internal/api/v3/users'"
+        + " -o /dev/null -w '%{http_code}' 'https://esample.integration.internal/api/v3/users'"
     )
     assert status.strip() == "403", status
     after = int(proxy.succeed("wc -l < /run/galileo-fixture/observed.jsonl").strip())
@@ -247,7 +247,7 @@ with subtest("control authority outage remains guest503 without destination effe
     proxy.succeed("printf outage > /run/galileo-fixture/control-mode")
     status = client.succeed(
         deployed
-        + " -o /dev/null -w '%{http_code}' 'https://exedev.integration.internal/api/v3/users'"
+        + " -o /dev/null -w '%{http_code}' 'https://esample.integration.internal/api/v3/users'"
     )
     assert status.strip() == "503", status
     after = int(proxy.succeed("wc -l < /run/galileo-fixture/observed.jsonl").strip())
@@ -278,8 +278,8 @@ with subtest("bounded concurrent cross-machine load completes without leaked req
 
 with subtest("forged bindings and unknown names deny"):
     proxy.fail(
-        f"{curl} --unix-socket /run/galileo/proxy.sock -H 'Host: exedev.integration.internal' "
-        "-H 'x-overalls-binding: Zm9yZ2Vk' 'http://exedev.integration.internal/api/v3/users'"
+        f"{curl} --unix-socket /run/galileo/proxy.sock -H 'Host: esample.integration.internal' "
+        "-H 'x-overalls-binding: Zm9yZ2Vk' 'http://esample.integration.internal/api/v3/users'"
     )
     proxy.fail(
         f"{curl} --unix-socket /run/galileo/proxy.sock -H 'Host: denied.integration.internal' "

@@ -1,10 +1,11 @@
 defmodule Marshall.Agents.ExecutorRPC do
   @moduledoc "Host-authenticated, VM-bound wire boundary for guest executor RPCs."
-  alias Marshall.Agents.ExecutorSession
+  alias Marshall.Agents.{Bootstrap, ExecutorSession, Maintenance}
   alias Marshall.Compute.Ledger
   alias Marshall.Inference.Credentials
 
-  @routes ~w(register heartbeat claim transition)
+  @maintenance_routes ~w(maintenance_claim maintenance_transition maintenance_artifact bootstrap_artifact)
+  @routes ~w(register heartbeat claim transition) ++ @maintenance_routes
 
   # @cc [owner:ghuntley,label:security;recovery] executor-rpc-host-binding
   # The dedicated Ziggy credential MUST authenticate the binding's physical
@@ -19,6 +20,13 @@ defmodule Marshall.Agents.ExecutorRPC do
         fn ->
           authority = Credentials.authenticate_locked!(token)
           unless authority.host_id == binding.host_id, do: Ledger.rollback(:unauthorized)
+
+          if route in @maintenance_routes or
+               (route == "claim" and Bootstrap.requires_authority?(input["executor_id"])) or
+               (route == "transition" and Bootstrap.attempt?(input["command_id"])) do
+            unwrap!(Marshall.Inference.Requests.authorize(token, input["binding"]))
+          end
+
           execute!(operation, input["binding"])
         end,
         {:provisioner, binding.host_id}
@@ -48,6 +56,59 @@ defmodule Marshall.Agents.ExecutorRPC do
 
   defp operation("heartbeat", input), do: lease_operation(:heartbeat, input)
   defp operation("claim", input), do: lease_operation(:claim, input)
+  defp operation("maintenance_claim", input), do: lease_operation(:maintenance_claim, input)
+
+  defp operation(
+         "maintenance_transition",
+         %{
+           "binding" => _,
+           "executor_id" => executor_id,
+           "fence_epoch" => fence,
+           "maintenance_id" => id,
+           "status" => status,
+           "result" => result
+         } = input
+       )
+       when map_size(input) == 6 and is_integer(fence) and fence > 0 and
+              status in ["started", "completed", "failed"] and is_map(result) do
+    if OverallsProtocol.uuid?(executor_id) and OverallsProtocol.uuid?(id),
+      do: {:ok, {:maintenance_transition, executor_id, fence, id, status, result}},
+      else: {:error, :invalid_request}
+  end
+
+  defp operation(
+         "maintenance_artifact",
+         %{
+           "binding" => _,
+           "executor_id" => executor_id,
+           "fence_epoch" => fence,
+           "maintenance_id" => id,
+           "digest" => digest
+         } = input
+       )
+       when map_size(input) == 5 and is_integer(fence) and fence > 0 do
+    if OverallsProtocol.uuid?(executor_id) and OverallsProtocol.uuid?(id) and
+         OverallsProtocol.GitHubTools.digest?(digest),
+       do: {:ok, {:maintenance_artifact, executor_id, fence, id, digest}},
+       else: {:error, :invalid_request}
+  end
+
+  defp operation(
+         "bootstrap_artifact",
+         %{
+           "binding" => _,
+           "executor_id" => executor_id,
+           "fence_epoch" => fence,
+           "bootstrap_id" => id,
+           "digest" => digest
+         } = input
+       )
+       when map_size(input) == 5 and is_integer(fence) and fence > 0 do
+    if OverallsProtocol.uuid?(executor_id) and OverallsProtocol.uuid?(id) and
+         OverallsProtocol.GitHubTools.digest?(digest),
+       do: {:ok, {:bootstrap_artifact, executor_id, fence, id, digest}},
+       else: {:error, :invalid_request}
+  end
 
   defp operation(
          "transition",
@@ -124,7 +185,13 @@ defmodule Marshall.Agents.ExecutorRPC do
   end
 
   defp execute!({:claim, id, fence}, binding) do
-    case unwrap!(ExecutorSession.claim(binding, id, fence)) do
+    parsed = unwrap!(OverallsProtocol.PrivateServices.binding(binding))
+
+    candidate =
+      Bootstrap.claim_locked!(parsed, id, fence) ||
+        unwrap!(ExecutorSession.claim(binding, id, fence))
+
+    case candidate do
       nil ->
         %{command: nil}
 
@@ -141,8 +208,41 @@ defmodule Marshall.Agents.ExecutorRPC do
   end
 
   defp execute!({:transition, id, fence, command_id, state, result}, binding) do
-    command = unwrap!(ExecutorSession.transition(binding, id, fence, command_id, state, result))
-    %{command_id: command.id, status: command.status}
+    parsed = unwrap!(OverallsProtocol.PrivateServices.binding(binding))
+
+    case Bootstrap.transition_locked!(parsed, id, fence, command_id, state, result) do
+      {:ok, response} ->
+        response
+
+      :not_bootstrap ->
+        command =
+          unwrap!(ExecutorSession.transition(binding, id, fence, command_id, state, result))
+
+        %{command_id: command.id, status: command.status}
+    end
+  end
+
+  defp execute!({:maintenance_claim, id, fence}, binding) do
+    parsed = unwrap!(OverallsProtocol.PrivateServices.binding(binding))
+    release = unwrap!(Marshall.Operations.GitHubTools.load())
+    Maintenance.claim_locked!(parsed, id, fence, release)
+  end
+
+  defp execute!({:maintenance_transition, id, fence, attempt_id, status, result}, binding) do
+    parsed = unwrap!(OverallsProtocol.PrivateServices.binding(binding))
+    release = unwrap!(Marshall.Operations.GitHubTools.load())
+    Maintenance.transition_locked!(parsed, id, fence, attempt_id, status, result, release)
+  end
+
+  defp execute!({:maintenance_artifact, id, fence, attempt_id, digest}, binding) do
+    parsed = unwrap!(OverallsProtocol.PrivateServices.binding(binding))
+    release = unwrap!(Marshall.Operations.GitHubTools.load())
+    Maintenance.artifact_locked!(parsed, id, fence, attempt_id, digest, release)
+  end
+
+  defp execute!({:bootstrap_artifact, id, fence, attempt_id, digest}, binding) do
+    parsed = unwrap!(OverallsProtocol.PrivateServices.binding(binding))
+    Bootstrap.artifact_locked!(parsed, id, fence, attempt_id, digest)
   end
 
   defp unwrap!({:ok, value}), do: value

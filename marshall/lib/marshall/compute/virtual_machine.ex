@@ -352,6 +352,10 @@ defmodule Marshall.Compute.VirtualMachine do
       accept [:idle_suspend_enabled, :idle_activity_at, :idle_revision]
     end
 
+    update :reflection_metadata do
+      accept [:labels, :comment]
+    end
+
     update :checkpoint do
       accept [:current_checkpoint]
     end
@@ -462,6 +466,8 @@ defmodule Marshall.Compute.VirtualMachine do
     attribute :vcpu, :integer, allow_nil?: false, constraints: [min: 1, max: 32]
     attribute :memory_bytes, :integer, allow_nil?: false, constraints: [min: 536_870_912]
     attribute :disk_bytes, :integer, allow_nil?: false, constraints: [min: 2_147_483_648]
+    attribute :labels, {:array, :string}, allow_nil?: false, default: [], constraints: [max_length: 32]
+    attribute :comment, :string, allow_nil?: false, default: "", constraints: [max_length: 2048]
     attribute :generation, :integer, allow_nil?: false, default: 1, constraints: [min: 1]
     attribute :outcome_sequence, :integer, allow_nil?: false, default: 0, constraints: [min: 0]
     attribute :current_checkpoint, :map

@@ -1,5 +1,44 @@
 # Backup and recovery
 
+## GitHub rotating credential recovery
+
+Token ciphertext needs Marshall's matching Cloak keyring. A historical backup
+may contain a refresh token consumed after backup, so decryption does not prove
+current provider authority. An exchange can rotate upstream before its reply or
+local commit is lost. Such uncertainty enters `reconnect_required` instead of
+blindly retrying the old token.
+
+Before any replica serves a restored database, keep serving stopped and apply a
+fresh durable external restore epoch through
+`Marshall.GitHub.invalidate_restored_credentials_before_serving!/0`. The cold
+helper reads `MARSHALL_GITHUB_RESTORE_EPOCH_FILE` and uses the non-serving operator
+application. A singleton database acknowledgement makes repeated application of
+one epoch idempotent. A changed epoch atomically advances connection generations,
+clears restored credentials and staged pairs, invalidates ceremonies and request
+pins, and requires browser reconnection. Failure must withhold serving. This
+source contract does not establish a recorded systemd/database restore journey.
+An existing or unreadable `<epoch-file>.pending` sentinel refuses startup even
+without a final marker, so interrupted marker publication cannot become a
+normal no-marker boot. A genuinely absent marker/sentinel remains a no-op.
+
+`overalls-backup restore-database --archive /ABSOLUTE/database.dump --epoch CANONICAL_UUID`
+verifies companion capture metadata/digest, stops and
+runtime-masks configured local replicas, durably publishes the marker and runs
+`pg_restore`. The marker persists after failure or success. Operators must fence
+remote replicas and distribute the same fresh UUID across all replica marker
+paths before unmasking/restarting; this local tool cannot prove those remote
+steps. Raw `pg_restore` outside the supported path cannot be detected from
+restored rows. The source wrapper is not a recorded full recovery execution.
+
+Attempt/generation fences prevent late refresh results, callbacks or revocation
+jobs reviving older grants. Machine detach persists across reconnect. Retirement
+withdraws authority in the account transaction. Lost Marshall/database authority
+denies fresh authenticated admission and expires existing leases; it does not
+prove an upstream mutation failed or authorize replay. Anonymous public traffic
+is separate. Native faults, backup restore, live provider and seven-family
+updates remain gaps until recorded in [coverage](#coverage) and the
+[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
+
 ## Experimental native daemon recovery
 
 The optional FreeBSD/OmniOS recovery fixture observes one real flush-daemon

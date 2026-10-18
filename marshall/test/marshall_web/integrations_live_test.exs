@@ -5,6 +5,36 @@ defmodule MarshallWeb.IntegrationsLiveTest do
   import Phoenix.LiveViewTest
   alias Marshall.Compute.Ledger
 
+  test "built-in GitHub endpoint stays per owner and detachment is reversible", %{conn: conn} do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    {:ok, view, _} = live(signed_in(conn, fixture.owner), ~p"/integrations")
+
+    assert has_element?(
+             view,
+             "#github-com-integration",
+             "https://com-github.integration.internal"
+           )
+
+    assert has_element?(view, "#github-com-state", "Disconnected")
+    assert has_element?(view, "#github-com-integration", "owner's GitHub permissions")
+
+    view |> form("#github-com-detach", github_machine: %{vm_id: fixture.vm.id}) |> render_submit()
+    assert has_element?(view, "#github-com-excluded-#{fixture.vm.id}")
+    view |> element("#github-com-excluded-#{fixture.vm.id} button") |> render_click()
+    refute has_element?(view, "#github-com-excluded-#{fixture.vm.id}")
+
+    other = Marshall.ComputeFixtures.user()
+    {:ok, other_view, _} = live(signed_in(build_conn(), other), ~p"/integrations")
+
+    html =
+      other_view
+      |> form("#github-com-detach", github_machine: %{vm_id: fixture.vm.id})
+      |> render_submit()
+
+    assert html =~ "Could not update the GitHub connection."
+    refute has_element?(other_view, "#github-com-excluded-#{fixture.vm.id}")
+  end
+
   @tag :hegel
   test "invalid submissions preserve the connected view and show redacted refusal", %{
     conn: conn

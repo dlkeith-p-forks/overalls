@@ -1,0 +1,146 @@
+--- a/lfshttp/client.go
++++ b/lfshttp/client.go
+@@ -1,6 +1,7 @@
+ package lfshttp
+ 
+ import (
++	"github.com/git-lfs/git-lfs/v3/internal/overalls"
+ 	"context"
+ 	"crypto/tls"
+ 	goerrors "errors"
+@@ -205,6 +206,12 @@
+ }
+ 
+ func (c *Client) sshResolveWithRetries(e Endpoint, method string) (*sshAuthResponse, error) {
++	if overalls.Managed {
++		u, err := url.Parse(e.Url)
++		if err != nil { return nil, overalls.ErrOrigin }
++		if _, err := overalls.Route(u); err != nil { return nil, err }
++		return &sshAuthResponse{}, nil
++	}
+ 	var sshRes sshAuthResponse
+ 	var err error
+ 
+@@ -290,6 +297,7 @@
+ 		retries = defaultRequestRetries
+ 	}
+ 
++	if overalls.Managed { retries = 0 }
+ 	var res *http.Response
+ 
+ 	requests := max(0, retries) + 1
+@@ -340,6 +348,10 @@
+ 		return nil, res, c.handleResponse(res)
+ 	}
+ 
++	if overalls.Managed && !overalls.Read(req.Method) {
++		res.Body.Close()
++		return nil, res, overalls.ErrRedirect
++	}
+ 	redirectTo := res.Header.Get("Location")
+ 	locurl, err := url.Parse(redirectTo)
+ 	if err == nil && !locurl.IsAbs() {
+@@ -498,6 +510,9 @@
+ }
+ 
+ func (c *Client) HttpClient(u *url.URL, access creds.AccessMode) (*http.Client, error) {
++	if overalls.Managed {
++		return &http.Client{Transport: overalls.Wrap(overalls.Direct()), CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}, nil
++	}
+ 	c.clientMu.Lock()
+ 	defer c.clientMu.Unlock()
+ 
+--- a/lfsapi/auth.go
++++ b/lfsapi/auth.go
+@@ -1,6 +1,7 @@
+ package lfsapi
+ 
+ import (
++	"github.com/git-lfs/git-lfs/v3/internal/overalls"
+ 	"encoding/base64"
+ 	"fmt"
+ 	"net/http"
+@@ -24,6 +25,7 @@
+ // authentication from netrc or git's credential helpers if necessary,
+ // supporting basic authentication.
+ func (c *Client) DoWithAuth(remote string, access creds.Access, req *http.Request) (*http.Response, error) {
++	if overalls.Managed { return c.client.Do(req) }
+ 	count := 0
+ 	res, err := c.doWithAuth(remote, &count, access, req, nil)
+ 
+@@ -46,6 +48,7 @@
+ // the same way as DoWithAuth, but will not retry the request if it fails with
+ // an authorization error.
+ func (c *Client) DoWithAuthNoRetry(remote string, access creds.Access, req *http.Request) (*http.Response, error) {
++	if overalls.Managed { return c.client.Do(req) }
+ 	count := 0
+ 	return c.doWithAuth(remote, &count, access, req, nil)
+ }
+--- a/lfsapi/lfsapi.go
++++ b/lfsapi/lfsapi.go
+@@ -1,6 +1,7 @@
+ package lfsapi
+ 
+ import (
++	"github.com/git-lfs/git-lfs/v3/internal/overalls"
+ 	"github.com/git-lfs/git-lfs/v3/config"
+ 	"github.com/git-lfs/git-lfs/v3/creds"
+ 	"github.com/git-lfs/git-lfs/v3/errors"
+@@ -53,6 +54,7 @@
+ // server is not using an SSH remote or the git-lfs-transfer style of SSH
+ // remote.
+ func (c *Client) SSHTransfer(operation, remote string) *ssh.SSHTransfer {
++	if overalls.Managed { return nil }
+ 	if len(operation) == 0 {
+ 		return nil
+ 	}
+--- a/tq/manifest.go
++++ b/tq/manifest.go
+@@ -1,6 +1,7 @@
+ package tq
+ 
+ import (
++	"github.com/git-lfs/git-lfs/v3/internal/overalls"
+ 	"strings"
+ 	"sync"
+ 
+@@ -225,7 +226,7 @@
+ 			apiClient, operation, remote,
+ 		)
+ 		tusAllowed = git.Bool("lfs.tustransfers", false)
+-		configureCustomAdapters(git, m)
++		if !overalls.Managed { configureCustomAdapters(git, m) }
+ 	}
+ 
+ 	if m.maxRetries < 1 {
+@@ -251,6 +252,12 @@
+ 		}
+ 	}
+ 
++	if overalls.Managed {
++		m.maxRetries = 0
++		m.basicTransfersOnly = true
++		m.standaloneTransferAgent = ""
++		tusAllowed = false
++	}
+ 	configureBasicDownloadAdapter(m)
+ 	configureBasicUploadAdapter(m)
+ 	if tusAllowed {
+--- a/tq/transfer_queue.go
++++ b/tq/transfer_queue.go
+@@ -1,6 +1,7 @@
+ package tq
+ 
+ import (
++	"github.com/git-lfs/git-lfs/v3/internal/overalls"
+ 	"fmt"
+ 	"os"
+ 	"sort"
+@@ -61,6 +62,7 @@
+ // CanRetry returns the current number of retries, and whether or not it exceeds
+ // the maximum number of retries (see: retryCounter.MaxRetries).
+ func (r *retryCounter) CanRetry(oid string) (int, bool) {
++	if overalls.Managed { return r.CountFor(oid), false }
+ 	count := r.CountFor(oid)
+ 	return count, count < r.MaxRetries
+ }

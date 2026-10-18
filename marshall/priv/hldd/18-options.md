@@ -3504,6 +3504,84 @@ Default:
 ```
 
 
+## `services.marshall.github.clientId`
+
+Public GitHub OAuth application client identity. Configure together with clientSecretFile and redirectUri.
+
+Type: `null or string matching the pattern [A-Za-z0-9_.-]{1,200}`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.github.clientSecretFile`
+
+Private runtime GitHub OAuth client secret, delivered through systemd credentials.
+
+Type: `null or string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.github.redirectUri`
+
+Registered HTTPS GitHub OAuth callback URL.
+
+Type: `null or string matching the pattern https://[A-Za-z0-9.-]+(:[0-9]+)?/auth/github-com/callback`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.githubBootstrapRelease`
+
+Immutable source-built executor inventory for retained-machine tool maintenance.
+
+Type: `null or package`.
+
+Default:
+
+```nix
+<derivation overalls-executor-bootstrap-v1>
+```
+
+
+## `services.marshall.githubRestoreEpochFile`
+
+Root-controlled public UUID restored-authority fence, shared identically across all replicas before recovery startup. The marker persists after invalidation.
+
+Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+"/var/lib/overalls-marshall-recovery/github-restore-epoch"
+```
+
+
+## `services.marshall.githubToolsRelease`
+
+Immutable manifest for the managed guest GitHub tools release.
+
+Type: `null or package`.
+
+Default:
+
+```nix
+<derivation overalls-github-tools-release-v1>
+```
+
+
 ## `services.marshall.inceptionImageId`
 
 Immutable image bound exclusively to the Inception development profile; native host eligibility is also required.
@@ -8223,6 +8301,32 @@ Default:
   "openai"
   "anthropic"
 ]
+```
+
+
+## `services.ziggy.githubBootstrapRelease`
+
+Immutable executor artifacts for fenced retained-machine GitHub tools bootstrap.
+
+Type: `null or package`.
+
+Default:
+
+```nix
+<derivation overalls-executor-bootstrap-v1>
+```
+
+
+## `services.ziggy.githubToolsRelease`
+
+Immutable managed GitHub CLI and LFS release for fenced guest maintenance.
+
+Type: `null or package`.
+
+Default:
+
+```nix
+<derivation overalls-github-tools-release-v1>
 ```
 
 

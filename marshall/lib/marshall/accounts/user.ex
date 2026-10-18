@@ -46,6 +46,7 @@ defmodule Marshall.Accounts.User do
   postgres do
     table "users"
     repo Marshall.Repo
+    migration_defaults git_email: "\"noreply@overalls.dev\""
   end
 
   actions do

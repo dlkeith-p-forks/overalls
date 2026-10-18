@@ -19,6 +19,50 @@ does not establish live reachability, cache hit rate or physical rollout.
 
 # NixOS machine configuration
 
+## GitHub OAuth deployment inputs
+
+NixOS exposes `services.marshall.github.clientId`, `clientSecretFile` and
+`redirectUri`, all defaulting to `null`. Configure all three or none. The unit
+wrapper removes inherited GitHub settings, supplies only module values and loads
+the secret through a systemd credential. Partial module configuration fails
+evaluation; the runtime independently validates complete values and callback
+syntax. No callback-host equality with the configured Marshall origin is implied.
+
+`services.marshall.githubToolsRelease` and `services.ziggy.githubToolsRelease`
+select the same immutable public client release. Marshall receives
+`MARSHALL_GITHUB_TOOLS_MANIFEST_FILE` and validates the
+closed content-addressed inventory and artifact sizes/digests before the current
+executor can obtain a fenced maintenance attempt. The option installs no GitHub
+secret in the guest; a configured manifest is not a recorded native upgrade.
+
+Matching `services.marshall.githubBootstrapRelease` and
+`services.ziggy.githubBootstrapRelease` provide public source-built executor
+artifacts for retained machines that lack the tool capability. Marshall receives
+`MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE`. The closed inventory and fixed
+bootstrap program remain separate from tool-installation authority and receipts.
+
+`services.marshall.githubRestoreEpochFile` defaults to
+`/var/lib/overalls-marshall-recovery/github-restore-epoch`. Supported database
+restore publishes a fresh common fleet UUID there before changing the database;
+the marker remains and each unit applies it in non-serving prestart. Operators
+must stop all replicas and distribute that same epoch before any restart. Local
+masking cannot establish remote fencing; direct raw database replacement is not
+automatically detectable.
+
+Configure `MARSHALL_GITHUB_CLIENT_ID`, `MARSHALL_GITHUB_CLIENT_SECRET_FILE` and
+`MARSHALL_GITHUB_REDIRECT_URI` together. All absent disables setup; partial or
+malformed configuration refuses startup. Production uses the exact registered
+HTTPS redirect with path `/auth/github-com/callback`, no query, fragment or user
+information. Explicit loopback development/test settings may use HTTP.
+
+The client-secret setting is an absolute private runtime-file path, not secret
+bytes in application configuration or Nix values. The domain reads it at the
+exchange boundary. Existing Cloak keyring, Galileo control credentials, private
+TLS and guest trust are required. The shared PostgreSQL-backed `github` queue
+uses concurrency two and AshOban scheduling. The hostname needs no wildcard SAN
+change. See [operator configuration](repo:docs/services/github-com.md) and
+[services](#services).
+
 ## Guest coding CLI configuration
 
 Both image builders use

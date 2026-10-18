@@ -4123,6 +4123,7 @@ defmodule Marshall.DocumentationMessages do
       "Automatic compaction evaluates the complete projected request before inference\nand between tool iterations. It begins at 90% of a configured model input\nallowance or 75% of the byte/item limits. The known-limit estimate rounds encoded\nrequest bytes divided by four upward; it is not a provider tokenizer count.\nUnknown token limits remain visibly\nunknown and use the byte/item limits. `/compact` requests compaction explicitly.\nHistorical context can be folded through bounded batches; current required\ninstructions and input that cannot fit return an explicit size refusal.\nCompaction consumes ordinary billed model usage. Current context estimates and\ncumulative usage describe different quantities."
     ),
     dgettext_noop("documentation", "Automation"),
+    dgettext_noop("documentation", "Reflection integration"),
     dgettext_noop("documentation", "Backend HTTPS port."),
     dgettext_noop("documentation", "Backend IPv4 address or hostname."),
     dgettext_noop(

@@ -53,6 +53,7 @@ defmodule Galileo.Application do
          [
            {Finch, name: Galileo.Finch, pools: %{default: [size: 256, count: 8]}},
            {Galileo.Control.Link, config.control},
+           {Galileo.GitHub.Capabilities, []},
            {Bandit,
             plug: {Galileo.HTTP, config},
             ip: {:local, config.socket},

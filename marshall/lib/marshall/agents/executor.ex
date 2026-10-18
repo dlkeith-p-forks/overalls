@@ -54,7 +54,7 @@ defmodule Marshall.Agents.Executor do
     attribute :capabilities, {:array, :string},
       allow_nil?: false,
       default: [],
-      constraints: [max_length: 2]
+      constraints: [max_length: 3]
 
     attribute :invalidated_at, :utc_datetime_usec
     create_timestamp :inserted_at

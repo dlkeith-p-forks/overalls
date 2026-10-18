@@ -11,7 +11,6 @@
 msgid ""
 msgstr "\nPlural-Forms: nplurals=1; plural=0;\nLanguage: ja\n"
 
-
 #: lib/marshall_web/live/machines_live.ex:1064
 #, elixir-autogen, elixir-format
 msgid " and counting"
@@ -31,7 +30,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] "%{count}所有機"
 msgstr[1] "%{count} 所有マシン"
 
-#: lib/marshall_web/live/account_live.ex:358
+#: lib/marshall_web/live/account_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
@@ -62,8 +61,8 @@ msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:893
 #: lib/marshall_web/live/machines_live.ex:894
-#: lib/marshall_web/live/overview_live.ex:202
-#: lib/marshall_web/live/overview_live.ex:203
+#: lib/marshall_web/live/overview_live.ex:206
+#: lib/marshall_web/live/overview_live.ex:207
 #: lib/marshall_web/live/resize_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -90,7 +89,7 @@ msgid "%{value1} reasoning"
 msgstr "%{value1} 推論"
 
 #: lib/marshall_web/live/machines_live.ex:892
-#: lib/marshall_web/live/overview_live.ex:201
+#: lib/marshall_web/live/overview_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
@@ -100,7 +99,7 @@ msgstr "%{value1} vCPU"
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB ディスク"
 
-#: lib/marshall_web/components/workspace_components.ex:212
+#: lib/marshall_web/components/workspace_components.ex:236
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}"
 msgstr "%{value1} vCPU · %{value2} GiB メモリ · %{value3} GiB ディスク · %{value4}"
@@ -133,7 +132,7 @@ msgstr "%{value1} → %{value2} GiB"
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
 
-#: lib/marshall_web/live/integrations_live.ex:214
+#: lib/marshall_web/live/integrations_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "**** (書き込み専用)"
@@ -154,12 +153,12 @@ msgstr "+ 新しい"
 msgid "+ Queue clone"
 msgstr "+ キュークローン"
 
-#: lib/marshall_web/live/account_live.ex:364
+#: lib/marshall_web/live/account_live.ex:451
 #, elixir-autogen, elixir-format
 msgid "1. Profile"
 msgstr "1.プロフィール"
 
-#: lib/marshall_web/live/account_live.ex:441
+#: lib/marshall_web/live/account_live.ex:568
 #, elixir-autogen, elixir-format
 msgid "2. Sign-in and passkeys"
 msgstr "2. サインインとパスキー"
@@ -169,7 +168,7 @@ msgstr "2. サインインとパスキー"
 msgid "24 hours"
 msgstr "24時間"
 
-#: lib/marshall_web/live/account_live.ex:530
+#: lib/marshall_web/live/account_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "3. SSH keys"
 msgstr "3. SSH キー"
@@ -230,7 +229,7 @@ msgstr "システム、その構成、操作に関するリファレンス。"
 msgid "A selected skill is no longer available. Reload Skills and select its current source."
 msgstr "選択したスキルは使用できなくなりました。スキルをリロードし、現在のソースを選択します。"
 
-#: lib/marshall_web/live/overview_live.ex:173
+#: lib/marshall_web/live/overview_live.ex:177
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "ちょっとしたプレビュー。アクセス可能なすべてのマシンが入っています"
@@ -296,7 +295,7 @@ msgstr "AI活用レポート"
 msgid "Accept ownership"
 msgstr "所有権を受け入れる"
 
-#: lib/marshall_web/components/workspace_components.ex:107
+#: lib/marshall_web/components/workspace_components.ex:128
 #: lib/marshall_web/live/machines_live.ex:670
 #: lib/marshall_web/live/machines_live.ex:696
 #: lib/marshall_web/live/machines_live.ex:921
@@ -330,7 +329,7 @@ msgstr "アクセスを更新しました。"
 #: lib/marshall_web/components/layouts.ex:315
 #: lib/marshall_web/components/layouts.ex:418
 #: lib/marshall_web/live/account_live.ex:34
-#: lib/marshall_web/live/account_live.ex:343
+#: lib/marshall_web/live/account_live.ex:426
 #: lib/marshall_web/live/admin/access_live.ex:93
 #: lib/marshall_web/live/admin/access_live.ex:139
 #: lib/marshall_web/live/machines_live.ex:932
@@ -378,7 +377,7 @@ msgstr "アクション"
 #: lib/marshall_web/live/admin/access_live.ex:192
 #: lib/marshall_web/live/admin/git_live.ex:101
 #: lib/marshall_web/live/admin/workloads_live.ex:112
-#: lib/marshall_web/live/integrations_live.ex:230
+#: lib/marshall_web/live/integrations_live.ex:360
 #: lib/marshall_web/live/threads_live.ex:1776
 #, elixir-autogen, elixir-format
 msgid "Actions"
@@ -406,12 +405,12 @@ msgstr "活動"
 msgid "Actor"
 msgstr "俳優"
 
-#: lib/marshall_web/live/account_live.ex:582
+#: lib/marshall_web/live/account_live.ex:757
 #, elixir-autogen, elixir-format
 msgid "Add SSH key"
 msgstr "SSHキーを追加する"
 
-#: lib/marshall_web/live/account_live.ex:559
+#: lib/marshall_web/live/account_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Add a key"
 msgstr "キーを追加する"
@@ -421,7 +420,7 @@ msgstr "キーを追加する"
 msgid "Add a mirror"
 msgstr "ミラーを追加する"
 
-#: lib/marshall_web/live/integrations_live.ex:274
+#: lib/marshall_web/live/integrations_live.ex:404
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "統合を追加する"
@@ -431,7 +430,7 @@ msgstr "統合を追加する"
 msgid "Add mirror"
 msgstr "ミラーを追加する"
 
-#: lib/marshall_web/live/account_live.ex:465
+#: lib/marshall_web/live/account_live.ex:602
 #, elixir-autogen, elixir-format
 msgid "Add passkey"
 msgstr "パスキーを追加する"
@@ -441,14 +440,14 @@ msgstr "パスキーを追加する"
 msgid "Add, change or remove a member"
 msgstr "メンバーの追加、変更、または削除"
 
-#: lib/marshall_web/live/account_live.ex:517
-#: lib/marshall_web/live/account_live.ex:553
+#: lib/marshall_web/live/account_live.ex:665
+#: lib/marshall_web/live/account_live.ex:728
 #: lib/marshall_web/live/admin/access_live.ex:141
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "追加した"
 
-#: lib/marshall_web/live/account_live.ex:580
+#: lib/marshall_web/live/account_live.ex:755
 #, elixir-autogen, elixir-format
 msgid "Adding…"
 msgstr "追加中…"
@@ -592,7 +591,7 @@ msgstr "閲覧を許可する"
 msgid "Allows"
 msgstr "許可します"
 
-#: lib/marshall_web/components/workspace_components.ex:337
+#: lib/marshall_web/components/workspace_components.ex:361
 #, elixir-autogen, elixir-format
 msgid "Already installed"
 msgstr "すでにインストールされています"
@@ -721,7 +720,7 @@ msgstr "建築"
 msgid "Archive"
 msgstr "アーカイブ"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:192
+#: lib/marshall_web/live/admin/workloads_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "この VM をアーカイブしますか?"
@@ -769,12 +768,13 @@ msgstr "アーカイブがリクエストされました。マシンはアーカ
 msgid "Archiving · releasing the machine"
 msgstr "マシンのアーカイブ・リリース"
 
-#: lib/marshall_web/live/integrations_live.ex:268
+#: lib/marshall_web/live/integrations_live.ex:288
+#: lib/marshall_web/live/integrations_live.ex:398
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "添付する"
 
-#: lib/marshall_web/live/integrations_live.ex:265
+#: lib/marshall_web/live/integrations_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "ID でマシンを接続する"
@@ -846,12 +846,12 @@ msgstr "スレッドに戻る"
 msgid "Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion."
 msgstr "Oban によって実行されるバックグラウンド作業。成功したジョブは、物理的な結果がまだ保留中の作業をディスパッチしている可能性があります。関連する操作に従って完了してください。"
 
-#: lib/marshall_web/live/integrations_live.ex:293
+#: lib/marshall_web/live/integrations_live.ex:433
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "基本ユーザー:パス"
 
-#: lib/marshall_web/live/integrations_live.ex:287
+#: lib/marshall_web/live/integrations_live.ex:427
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "無記名トークン"
@@ -861,7 +861,7 @@ msgstr "無記名トークン"
 msgid "Binary content"
 msgstr "バイナリコンテンツ"
 
-#: lib/marshall_web/components/workspace_components.ex:357
+#: lib/marshall_web/components/workspace_components.ex:381
 #: lib/marshall_web/live/terminal_live.ex:529
 #, elixir-autogen, elixir-format
 msgid "Boot log"
@@ -883,7 +883,7 @@ msgstr "ブレッドクラム"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "ソースを一時的に停止して、ディスクを安全にキャプチャできるようにします。"
 
-#: lib/marshall_web/live/overview_live.ex:188
+#: lib/marshall_web/live/overview_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr "Chrome または Firefox 拡張機能を使用して、GitHub、GitLab、Codeberg、または Bitbucket リポジトリを Overalls に導入します。"
@@ -910,7 +910,7 @@ msgid "Build something, fix a bug, explore an idea…"
 msgstr "何かを構築し、バグを修正し、アイデアを検討します…"
 
 #: lib/marshall_web/live/machines_live.ex:892
-#: lib/marshall_web/live/overview_live.ex:201
+#: lib/marshall_web/live/overview_live.ex:205
 #: lib/marshall_web/live/resize_live.ex:284
 #: lib/marshall_web/live/resize_live.ex:318
 #: lib/marshall_web/live/resize_live.ex:388
@@ -1057,7 +1057,7 @@ msgstr "容量説明"
 msgid "Capacity information is temporarily unavailable."
 msgstr "容量情報は一時的に利用できません。"
 
-#: lib/marshall_web/live/overview_live.ex:205
+#: lib/marshall_web/live/overview_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "マシンを作成するときに容量が再度チェックされます。"
@@ -1113,12 +1113,12 @@ msgstr "子スレッド"
 msgid "Child thread created"
 msgstr "子スレッドが作成されました"
 
-#: lib/marshall_web/live/account_live.ex:264
+#: lib/marshall_web/live/account_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Choose a language from the list."
 msgstr "リストから言語を選択します。"
 
-#: lib/marshall_web/live/account_live.ex:173
+#: lib/marshall_web/live/account_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Choose a time zone from the list."
 msgstr "リストからタイムゾーンを選択します。"
@@ -1143,7 +1143,7 @@ msgstr "環境に合わせてイメージとリソースを選択します。"
 msgid "Choose your environment"
 msgstr "環境を選択してください"
 
-#: lib/marshall_web/live/account_live.ex:432
+#: lib/marshall_web/live/account_live.ex:521
 #, elixir-autogen, elixir-format
 msgid "Clear saved zone"
 msgstr "保存されたゾーンをクリアする"
@@ -1302,12 +1302,12 @@ msgstr "確認されたリソース"
 msgid "Connect"
 msgstr "接続する"
 
-#: lib/marshall_web/live/overview_live.ex:217
+#: lib/marshall_web/live/overview_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "インテグレーションを接続する ↗"
 
-#: lib/marshall_web/components/workspace_components.ex:308
+#: lib/marshall_web/components/workspace_components.ex:332
 #, elixir-autogen, elixir-format
 msgid "Connect from your computer"
 msgstr "コンピュータから接続する"
@@ -1372,30 +1372,30 @@ msgstr "コントロールルーム・%{section}"
 msgid "Control room · AI usage"
 msgstr "コントロールルーム・AI活用"
 
-#: lib/marshall_web/components/workspace_components.ex:225
-#: lib/marshall_web/components/workspace_components.ex:324
-#: lib/marshall_web/components/workspace_components.ex:334
-#: lib/marshall_web/components/workspace_components.ex:345
+#: lib/marshall_web/components/workspace_components.ex:249
+#: lib/marshall_web/components/workspace_components.ex:348
+#: lib/marshall_web/components/workspace_components.ex:358
+#: lib/marshall_web/components/workspace_components.ex:369
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "コピー"
 
-#: lib/marshall_web/components/workspace_components.ex:323
+#: lib/marshall_web/components/workspace_components.ex:347
 #, elixir-autogen, elixir-format
 msgid "Copy Linux and macOS install command"
 msgstr "Linux および macOS のインストール コマンドをコピーする"
 
-#: lib/marshall_web/components/workspace_components.ex:344
+#: lib/marshall_web/components/workspace_components.ex:368
 #, elixir-autogen, elixir-format
 msgid "Copy SSH command"
 msgstr "SSHコマンドのコピー"
 
-#: lib/marshall_web/components/workspace_components.ex:333
+#: lib/marshall_web/components/workspace_components.ex:357
 #, elixir-autogen, elixir-format
 msgid "Copy Windows PowerShell install command"
 msgstr "Windows PowerShell インストール コマンドをコピーする"
 
-#: lib/marshall_web/components/workspace_components.ex:224
+#: lib/marshall_web/components/workspace_components.ex:248
 #, elixir-autogen, elixir-format
 msgid "Copy machine ID"
 msgstr "コピー機ID"
@@ -1430,12 +1430,12 @@ msgstr "このアカウントの変更を受け入れることができません
 msgid "Could not accept this change. Refresh and check the workload state."
 msgstr "この変更を受け入れることができませんでした。ワークロードの状態を更新して確認します。"
 
-#: lib/marshall_web/live/account_live.ex:149
+#: lib/marshall_web/live/account_live.ex:183
 #, elixir-autogen, elixir-format
 msgid "Could not add this key. Paste one supported public key; it must not belong to another account."
 msgstr "このキーを追加できませんでした。サポートされている公開キーを 1 つ貼り付けます。別のアカウントに属してはいけません。"
 
-#: lib/marshall_web/live/integrations_live.ex:72
+#: lib/marshall_web/live/integrations_live.ex:81
 #, elixir-autogen, elixir-format
 msgid "Could not attach that machine."
 msgstr "そのマシンを接続できませんでした。"
@@ -1445,7 +1445,7 @@ msgstr "そのマシンを接続できませんでした。"
 msgid "Could not change administrator access."
 msgstr "管理者アクセスを変更できませんでした。"
 
-#: lib/marshall_web/live/account_live.ex:183
+#: lib/marshall_web/live/account_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Could not clear your time zone."
 msgstr "タイムゾーンをクリアできませんでした。"
@@ -1465,7 +1465,7 @@ msgstr "子スレッドを作成できませんでした。"
 msgid "Could not create this team."
 msgstr "このチームを作成できませんでした。"
 
-#: lib/marshall_web/live/integrations_live.ex:84
+#: lib/marshall_web/live/integrations_live.ex:94
 #, elixir-autogen, elixir-format
 msgid "Could not detach that machine."
 msgstr "そのマシンを切り離せませんでした。"
@@ -1480,12 +1480,12 @@ msgstr "所有権を提供できませんでした。"
 msgid "Could not register repository. Verify your passkey and labels."
 msgstr "リポジトリを登録できませんでした。パスキーとラベルを確認してください。"
 
-#: lib/marshall_web/live/integrations_live.ex:60
+#: lib/marshall_web/live/integrations_live.ex:68
 #, elixir-autogen, elixir-format
 msgid "Could not remove this integration."
 msgstr "この統合を削除できませんでした。"
 
-#: lib/marshall_web/live/account_live.ex:160
+#: lib/marshall_web/live/account_live.ex:211
 #, elixir-autogen, elixir-format
 msgid "Could not remove this key."
 msgstr "このキーを削除できませんでした。"
@@ -1505,7 +1505,7 @@ msgstr "その VM アクセスを取り消すことができませんでした�
 msgid "Could not revoke that key."
 msgstr "そのキーを取り消すことができませんでした。"
 
-#: lib/marshall_web/live/integrations_live.ex:49
+#: lib/marshall_web/live/integrations_live.ex:54
 #, elixir-autogen, elixir-format
 msgid "Could not save this integration. Check the name, HTTPS target and header values."
 msgstr "この統合を保存できませんでした。名前、HTTPS ターゲット、ヘッダー値を確認してください。"
@@ -1587,12 +1587,12 @@ msgstr "クローンマシンの作成"
 msgid "Creating…"
 msgstr "作成…"
 
-#: lib/marshall_web/live/account_live.ex:120
+#: lib/marshall_web/live/account_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
 msgstr "資格情報の変更が拒否されました。名前は 1 ～ 80 文字にする必要があり、変更には過去 15 分間に検証されたパスキーが必要で、管理者は少なくとも 1 つのパスキーを保持する必要があります。"
 
-#: lib/marshall_web/live/integrations_live.ex:282
+#: lib/marshall_web/live/integrations_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "資格"
@@ -1608,12 +1608,12 @@ msgstr "現在のヘッドルームは一時的に利用できません。"
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "現在のヘッドルーム: %{value1} vCPU · %{value2} GiB メモリ · %{value3} GiB ディスク"
 
-#: lib/marshall_web/live/overview_live.ex:197
+#: lib/marshall_web/live/overview_live.ex:201
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "現在のプロビジョニングのヘッドルーム"
 
-#: lib/marshall_web/components/workspace_components.ex:466
+#: lib/marshall_web/components/workspace_components.ex:490
 #: lib/marshall_web/live/machines_live.ex:505
 #: lib/marshall_web/live/machines_live.ex:565
 #, elixir-autogen, elixir-format
@@ -1656,7 +1656,7 @@ msgstr "端末のフォントサイズを小さくする"
 msgid "Delegated a task"
 msgstr "タスクを委任しました"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:194
+#: lib/marshall_web/live/admin/workloads_live.ex:212
 #: lib/marshall_web/live/machines_live.ex:1185
 #: lib/marshall_web/live/threads_live.ex:1779
 #, elixir-autogen, elixir-format
@@ -1678,12 +1678,12 @@ msgstr "このマシンとそのディスクを削除しますか?これを元�
 msgid "Delete user and machines"
 msgstr "ユーザーとマシンを削除する"
 
-#: lib/marshall_web/components/workspace_components.ex:70
+#: lib/marshall_web/components/workspace_components.ex:78
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "削除されました"
 
-#: lib/marshall_web/components/workspace_components.ex:58
+#: lib/marshall_web/components/workspace_components.ex:66
 #: lib/marshall_web/live/machines_live.ex:569
 #: lib/marshall_web/live/threads_live.ex:1594
 #, elixir-autogen, elixir-format
@@ -1720,7 +1720,8 @@ msgstr "目的地準備完了。ソースをクリーンアップする"
 msgid "Destination restart requested. The source copy remains retained until readiness succeeds."
 msgstr "宛先の再起動が要求されました。ソース コピーは、準備が完了するまで保持されます。"
 
-#: lib/marshall_web/live/integrations_live.ex:246
+#: lib/marshall_web/live/integrations_live.ex:279
+#: lib/marshall_web/live/integrations_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "切り離す"
@@ -1732,7 +1733,7 @@ msgstr "切り離す"
 msgid "Details"
 msgstr "詳細"
 
-#: lib/marshall_web/live/account_live.ex:322
+#: lib/marshall_web/live/account_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Detected from your browser: %{value1}. Save it so others can see your local time."
 msgstr "ブラウザから検出されました: %{value1}。他の人があなたの現地時間を確認できるように保存します。"
@@ -1754,7 +1755,7 @@ msgid "Disabled"
 msgstr "無効"
 
 #: lib/marshall_web/live/machines_live.ex:894
-#: lib/marshall_web/live/overview_live.ex:203
+#: lib/marshall_web/live/overview_live.ex:207
 #: lib/marshall_web/live/resize_live.ex:286
 #: lib/marshall_web/live/resize_live.ex:327
 #: lib/marshall_web/live/resize_live.ex:413
@@ -1809,7 +1810,7 @@ msgid "Duration"
 msgstr "間隔"
 
 #: lib/marshall_web/auth_text.ex:16
-#: lib/marshall_web/live/account_live.ex:393
+#: lib/marshall_web/live/account_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Email"
 msgstr "電子メール"
@@ -1841,7 +1842,7 @@ msgstr "JavaScript を有効にしてリポジトリ リンクを開くか、"
 msgid "Enabled"
 msgstr "有効"
 
-#: lib/marshall_web/live/account_live.ex:483
+#: lib/marshall_web/live/account_live.ex:620
 #, elixir-autogen, elixir-format
 msgid "End this verification before the fifteen minutes are up."
 msgstr "15 分が経過する前にこの検証を終了してください。"
@@ -1943,7 +1944,7 @@ msgstr "有効期限が切れます"
 msgid "Explain capacity"
 msgstr "容量の説明"
 
-#: lib/marshall_web/live/overview_live.ex:219
+#: lib/marshall_web/live/overview_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "使い方を探る ↗"
@@ -1953,7 +1954,7 @@ msgstr "使い方を探る ↗"
 msgid "Export AI usage"
 msgstr "AI の使用状況をエクスポートする"
 
-#: lib/marshall_web/components/workspace_components.ex:69
+#: lib/marshall_web/components/workspace_components.ex:77
 #: lib/marshall_web/live/admin/jobs_live.ex:16
 #: lib/marshall_web/live/threads_live.ex:1593
 #: lib/marshall_web/live/threads_live.ex:2497
@@ -2011,12 +2012,12 @@ msgstr "タスクを見つけてください…"
 msgid "Find in scrollback"
 msgstr "スクロールバックで検索"
 
-#: lib/marshall_web/live/overview_live.ex:218
+#: lib/marshall_web/live/overview_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "仲間を見つける ↗"
 
-#: lib/marshall_web/live/account_live.ex:551
+#: lib/marshall_web/live/account_live.ex:724
 #, elixir-autogen, elixir-format
 msgid "Fingerprint"
 msgstr "指紋"
@@ -2155,7 +2156,7 @@ msgstr "HLDD"
 msgid "HLDD · Design and operations"
 msgstr "HLDD · 設計と運用"
 
-#: lib/marshall_web/live/integrations_live.ex:280
+#: lib/marshall_web/live/integrations_live.ex:418
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "HTTPS ターゲット"
@@ -2166,7 +2167,7 @@ msgstr "HTTPS ターゲット"
 msgid "Handbook contents"
 msgstr "ハンドブックの内容"
 
-#: lib/marshall_web/live/overview_live.ex:208
+#: lib/marshall_web/live/overview_live.ex:212
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "ヘッドルームは一時的に利用できません。"
@@ -2204,7 +2205,7 @@ msgstr "ホストID"
 msgid "Human requests and system recovery transitions. History is retained for 90 days."
 msgstr "人間のリクエストとシステム回復の移行。履歴は 90 日間保存されます。"
 
-#: lib/marshall_web/components/workspace_components.ex:217
+#: lib/marshall_web/components/workspace_components.ex:241
 #, elixir-autogen, elixir-format
 msgid "ID"
 msgstr "ID"
@@ -2288,7 +2289,7 @@ msgstr "端末のフォントサイズを大きくする"
 msgid "Ingress routes"
 msgstr "イングレスルート"
 
-#: lib/marshall_web/live/integrations_live.ex:209
+#: lib/marshall_web/live/integrations_live.ex:337
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "挿入された認証情報"
@@ -2309,7 +2310,7 @@ msgstr "検査する"
 msgid "Install a skill"
 msgstr "スキルをインストールする"
 
-#: lib/marshall_web/components/workspace_components.ex:314
+#: lib/marshall_web/components/workspace_components.ex:338
 #, elixir-autogen, elixir-format
 msgid "Install and connect"
 msgstr "インストールして接続する"
@@ -2324,40 +2325,40 @@ msgstr "スキルのインストール"
 msgid "Installing…"
 msgstr "インストール中…"
 
-#: lib/marshall_web/components/workspace_components.ex:312
+#: lib/marshall_web/components/workspace_components.ex:336
 #, elixir-autogen, elixir-format
 msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
 msgstr "オーバーオールをインストールし、SSH を構成して、このマシンに接続します。 Windows では、インストーラーは OpenSSH 9.6 以降もインストールし、管理者の承認を得て、それをデフォルトの SSH にします。"
 
-#: lib/marshall_web/live/integrations_live.ex:42
+#: lib/marshall_web/live/integrations_live.ex:46
 #, elixir-autogen, elixir-format
 msgid "Integration %{value1} saved."
 msgstr "統合 %{value1} が保存されました。"
 
-#: lib/marshall_web/live/integrations_live.ex:57
+#: lib/marshall_web/live/integrations_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "Integration removed."
 msgstr "統合が削除されました。"
 
 #: lib/marshall_web/components/layouts.ex:399
 #: lib/marshall_web/components/layouts.ex:422
-#: lib/marshall_web/live/integrations_live.ex:165
+#: lib/marshall_web/live/integrations_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "統合"
 
-#: lib/marshall_web/live/integrations_live.ex:98
+#: lib/marshall_web/live/integrations_live.ex:143
 #, elixir-autogen, elixir-format
 msgid "Integrations are temporarily unavailable."
 msgstr "統合は一時的に利用できなくなります。"
 
-#: lib/marshall_web/live/account_live.ex:197
+#: lib/marshall_web/live/account_live.ex:253
 #: lib/marshall_web/live/admin/access_live.ex:44
 #: lib/marshall_web/live/admin/jobs_live.ex:109
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:138
 #: lib/marshall_web/live/admin/users_live.ex:78
 #: lib/marshall_web/live/admin/workloads_live.ex:59
-#: lib/marshall_web/live/integrations_live.ex:88
+#: lib/marshall_web/live/integrations_live.ex:111
 #: lib/marshall_web/live/machines_live.ex:363
 #: lib/marshall_web/live/teams_live.ex:41
 #: lib/marshall_web/live/teams_live.ex:108
@@ -2402,7 +2403,7 @@ msgstr "求人"
 msgid "Jobs are unavailable or the filters are invalid."
 msgstr "ジョブが利用できないか、フィルターが無効です。"
 
-#: lib/marshall_web/live/account_live.ex:522
+#: lib/marshall_web/live/account_live.ex:671
 #, elixir-autogen, elixir-format
 msgid "Keep a backup passkey. If you lose access, another administrator can reset your passkeys."
 msgstr "バックアップのパスキーを保管しておいてください。アクセスできなくなった場合は、別の管理者がパスキーをリセットできます。"
@@ -2413,7 +2414,7 @@ msgstr "バックアップのパスキーを保管しておいてください。
 msgid "Key"
 msgstr "鍵"
 
-#: lib/marshall_web/live/account_live.ex:532
+#: lib/marshall_web/live/account_live.ex:683
 #, elixir-autogen, elixir-format
 msgid "Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key."
 msgstr "ここに登録されたキーは、このサイトと同じアカウントと権限で SSH 経由でマシンを開きます。キーを削除してアクセスを取り消します。電子メール サインインはキーなしで機能し続けます。"
@@ -2428,18 +2429,18 @@ msgstr "親切"
 msgid "LLM index"
 msgstr "LLM インデックス"
 
-#: lib/marshall_web/live/account_live.ex:562
+#: lib/marshall_web/live/account_live.ex:737
 #: lib/marshall_web/live/ssh_approval_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "ラベル (オプション)"
 
-#: lib/marshall_web/live/account_live.ex:369
+#: lib/marshall_web/live/account_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "言語"
 
-#: lib/marshall_web/live/account_live.ex:375
+#: lib/marshall_web/live/account_live.ex:462
 #, elixir-autogen, elixir-format
 msgid "Language is detected from your browser."
 msgstr "ブラウザから言語が検出されます。"
@@ -2523,7 +2524,7 @@ msgstr "リリーノード・%{mode}メンテナンス"
 msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
 msgstr "Lilly ノードとそのアドミッション状態。マシンのサービスを停止する前に、ノードのワークロードを移動します。"
 
-#: lib/marshall_web/components/workspace_components.ex:316
+#: lib/marshall_web/components/workspace_components.ex:340
 #, elixir-autogen, elixir-format
 msgid "Linux / macOS"
 msgstr "Linux / macOS"
@@ -2533,12 +2534,12 @@ msgstr "Linux / macOS"
 msgid "Loaded sources"
 msgstr "ロードされたソース"
 
-#: lib/marshall_web/live/account_live.ex:394
+#: lib/marshall_web/live/account_live.ex:481
 #, elixir-autogen, elixir-format
 msgid "Local time"
 msgstr "現地時間"
 
-#: lib/marshall_web/live/account_live.ex:482
+#: lib/marshall_web/live/account_live.ex:619
 #, elixir-autogen, elixir-format
 msgid "Lock now"
 msgstr "今すぐロックする"
@@ -2566,28 +2567,29 @@ msgstr "MFA が登録されていません"
 #: lib/marshall_web/live/admin/access_live.ex:92
 #: lib/marshall_web/live/admin/operations_live.ex:145
 #: lib/marshall_web/live/inference_live.ex:172
-#: lib/marshall_web/live/integrations_live.ex:229
+#: lib/marshall_web/live/integrations_live.ex:359
 #: lib/marshall_web/live/machines_live.ex:665
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "機械"
 
-#: lib/marshall_web/components/workspace_components.ex:223
+#: lib/marshall_web/components/workspace_components.ex:247
 #, elixir-autogen, elixir-format
 msgid "Machine ID"
 msgstr "マシンID"
 
-#: lib/marshall_web/live/integrations_live.ex:266
+#: lib/marshall_web/live/integrations_live.ex:276
+#: lib/marshall_web/live/integrations_live.ex:396
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "マシンのUUID"
 
-#: lib/marshall_web/live/integrations_live.ex:69
+#: lib/marshall_web/live/integrations_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Machine attached."
 msgstr "機械が取り付けられています。"
 
-#: lib/marshall_web/live/integrations_live.ex:81
+#: lib/marshall_web/live/integrations_live.ex:90
 #, elixir-autogen, elixir-format
 msgid "Machine detached."
 msgstr "機械が切り離されました。"
@@ -2647,7 +2649,7 @@ msgstr "マシンの起動に失敗しました。マシンのステータスと
 msgid "Machine update requested."
 msgstr "マシンの更新が要求されました。"
 
-#: lib/marshall_web/components/workspace_components.ex:97
+#: lib/marshall_web/components/workspace_components.ex:118
 #, elixir-autogen, elixir-format
 msgid "Machine workspace"
 msgstr "マシンワークスペース"
@@ -2661,7 +2663,7 @@ msgstr "機械："
 #: lib/marshall_web/components/layouts.ex:421
 #: lib/marshall_web/live/machines_live.ex:103
 #: lib/marshall_web/live/machines_live.ex:643
-#: lib/marshall_web/live/overview_live.ex:173
+#: lib/marshall_web/live/overview_live.ex:177
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "機械"
@@ -2671,12 +2673,12 @@ msgstr "機械"
 msgid "Machines are temporarily unavailable."
 msgstr "マシンは一時的に利用できなくなります。"
 
-#: lib/marshall_web/live/overview_live.ex:177
+#: lib/marshall_web/live/overview_live.ex:181
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "マシンをロードできませんでした。更新して再試行してください。"
 
-#: lib/marshall_web/live/integrations_live.ex:218
+#: lib/marshall_web/live/integrations_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "アクセス可能なマシン"
@@ -2717,7 +2719,7 @@ msgstr "管理者にする"
 msgid "Make it yours"
 msgstr "それをあなたのものにしてください"
 
-#: lib/marshall_web/live/overview_live.ex:212
+#: lib/marshall_web/live/overview_live.ex:216
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "お寛ぎ下さい"
@@ -2809,7 +2811,7 @@ msgid "Membership updated."
 msgstr "メンバーシップを更新しました。"
 
 #: lib/marshall_web/live/machines_live.ex:893
-#: lib/marshall_web/live/overview_live.ex:202
+#: lib/marshall_web/live/overview_live.ex:206
 #: lib/marshall_web/live/resize_live.ex:285
 #: lib/marshall_web/live/resize_live.ex:321
 #: lib/marshall_web/live/resize_live.ex:410
@@ -2886,7 +2888,7 @@ msgstr "モデル"
 msgid "More than one skill has this name. Select its exact source from Skills."
 msgstr "複数のスキルにこの名前が付いています。 「スキル」から正確なソースを選択してください。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:184
+#: lib/marshall_web/live/admin/workloads_live.ex:202
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "動く"
@@ -2911,23 +2913,23 @@ msgstr "このマシンを自動的に選択されたホストに移動します
 msgid "Move to another host"
 msgstr "別のホストに移動する"
 
-#: lib/marshall_web/live/account_live.ex:564
+#: lib/marshall_web/live/account_live.ex:739
 #: lib/marshall_web/live/ssh_approval_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "私のラップトップ"
 
-#: lib/marshall_web/live/integrations_live.ex:279
+#: lib/marshall_web/live/integrations_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "名前"
 
-#: lib/marshall_web/live/integrations_live.ex:276
+#: lib/marshall_web/live/integrations_live.ex:406
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
 msgstr "エンドポイントに名前を付けて HTTPS API を指すようにするか、別のマシンへのピア接続としてマークします。シークレットは書き込み専用です。シークレットは挿入用に保存され、再度表示されることはありません。"
 
-#: lib/marshall_web/live/integrations_live.ex:166
+#: lib/marshall_web/live/integrations_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
 msgstr "マシンが到達する名前付きエンドポイント (https://NAME.integration.internal)。資格情報はエッジで挿入され、マシンからは決して読み取ることができません。"
@@ -2974,7 +2976,7 @@ msgstr "次のページ"
 msgid "Next page →"
 msgstr "次のページ→"
 
-#: lib/marshall_web/live/overview_live.ex:215
+#: lib/marshall_web/live/overview_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "次のステップ"
@@ -2994,7 +2996,7 @@ msgstr "アウディのサービスは登録されていません。"
 msgid "No DNS publications are recorded."
 msgstr "DNS パブリケーションは記録されません。"
 
-#: lib/marshall_web/live/account_live.ex:535
+#: lib/marshall_web/live/account_live.ex:688
 #, elixir-autogen, elixir-format
 msgid "No SSH keys yet. You can always sign in here using email."
 msgstr "SSH キーはまだありません。ここでは、電子メールを使用していつでもサインインできます。"
@@ -3040,7 +3042,7 @@ msgstr "クローンリクエストはまだありません。コピーをキュ
 msgid "No direct machine grants."
 msgstr "直接のマシン許可はありません。"
 
-#: lib/marshall_web/live/integrations_live.ex:222
+#: lib/marshall_web/live/integrations_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "明示的な添付ファイルはありません。現在のチーム メンバーのマシンはアクセスできます。"
@@ -3070,7 +3072,7 @@ msgstr "個別のスレッドにはまだ付与されていません。"
 msgid "No ingress routes are published."
 msgstr "受信ルートは公開されません。"
 
-#: lib/marshall_web/live/integrations_live.ex:211
+#: lib/marshall_web/live/integrations_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "挿入されたヘッダーはありません。"
@@ -3080,7 +3082,7 @@ msgstr "挿入されたヘッダーはありません。"
 msgid "No instruction sources collected yet."
 msgstr "指示ソースはまだ収集されていません。"
 
-#: lib/marshall_web/live/integrations_live.ex:169
+#: lib/marshall_web/live/integrations_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
 msgstr "まだ統合はありません。以下に 1 つを追加して、マシンに API または別のマシンへの名前付き接続を与えます。"
@@ -3095,7 +3097,7 @@ msgstr "これらのフィルターに一致する求人はありません。"
 msgid "No machine is shared with another account."
 msgstr "他のアカウントとマシンを共有することはありません。"
 
-#: lib/marshall_web/live/integrations_live.ex:223
+#: lib/marshall_web/live/integrations_live.ex:353
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr "アクセスできるマシンはありません。この統合を使用するにはマシンを接続します。"
@@ -3125,7 +3127,7 @@ msgstr "ミラー イベントは記録されませんでした。"
 msgid "No older threads are available on this page."
 msgstr "このページには古いスレッドはありません。"
 
-#: lib/marshall_web/live/account_live.ex:491
+#: lib/marshall_web/live/account_live.ex:628
 #, elixir-autogen, elixir-format
 msgid "No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action."
 msgstr "パスキーはまだありません。最初の登録では、最後の 5 分以内に完了した新しい電子メール サインインが必要です。セットアップ後、元のページに戻り、アクションを再試行します。"
@@ -3171,7 +3173,7 @@ msgstr "このワークスペースではスキルが見つかりませんでし
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "開いている端子はありません。 [新規] を選択して個人用シェルを開きます。"
 
-#: lib/marshall_web/live/account_live.ex:325
+#: lib/marshall_web/live/account_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "No zone saved and none detected; times are shown in UTC until you choose one."
 msgstr "ゾーンは保存されず、何も検出されませんでした。時刻は選択するまで UTC で表示されます。"
@@ -3255,7 +3257,7 @@ msgstr "昔の仕事→"
 msgid "Older transitions →"
 msgstr "古いトランジション →"
 
-#: lib/marshall_web/live/account_live.ex:346
+#: lib/marshall_web/live/account_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "On this page"
 msgstr "このページでは"
@@ -3280,16 +3282,16 @@ msgstr "GitHub、GitLab、Codeberg、または Bitbucket 上のパブリック �
 msgid "Open Overalls"
 msgstr "オープンオーバーオール"
 
-#: lib/marshall_web/components/workspace_components.ex:239
-#: lib/marshall_web/components/workspace_components.ex:249
-#: lib/marshall_web/components/workspace_components.ex:397
-#: lib/marshall_web/components/workspace_components.ex:405
+#: lib/marshall_web/components/workspace_components.ex:263
+#: lib/marshall_web/components/workspace_components.ex:273
+#: lib/marshall_web/components/workspace_components.ex:421
+#: lib/marshall_web/components/workspace_components.ex:429
 #: lib/marshall_web/live/threads_live.ex:1768
 #, elixir-autogen, elixir-format
 msgid "Open VS Code"
 msgstr "VS コードを開く"
 
-#: lib/marshall_web/components/workspace_components.ex:396
+#: lib/marshall_web/components/workspace_components.ex:420
 #, elixir-autogen, elixir-format
 msgid "Open VS Code for %{value1}"
 msgstr "%{value1} の VS コードを開く"
@@ -3304,7 +3306,7 @@ msgstr "クローンを開く"
 msgid "Open machine →"
 msgstr "マシンを開く →"
 
-#: lib/marshall_web/live/overview_live.ex:184
+#: lib/marshall_web/live/overview_live.ex:188
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "ブラウザからリポジトリを開く"
@@ -3330,7 +3332,7 @@ msgstr "%{value1}のオープン端子"
 msgid "Open terminal here"
 msgstr "ここでターミナルを開きます"
 
-#: lib/marshall_web/live/overview_live.ex:166
+#: lib/marshall_web/live/overview_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "ターミナルを開く ↗"
@@ -3416,7 +3418,7 @@ msgstr "オーバーオールは一時的に入手不可となります。この
 msgid "Overview"
 msgstr "概要"
 
-#: lib/marshall_web/live/integrations_live.ex:200
+#: lib/marshall_web/live/integrations_live.ex:328
 #: lib/marshall_web/live/machines_live.ex:698
 #: lib/marshall_web/live/machines_live.ex:810
 #: lib/marshall_web/live/machines_live.ex:948
@@ -3450,27 +3452,27 @@ msgstr "所有権オファーが更新されました。"
 msgid "Ownership offered by %{value1} to %{value2}."
 msgstr "%{value1} から %{value2} によって所有権が提供されます。"
 
-#: lib/marshall_web/live/account_live.ex:92
+#: lib/marshall_web/live/account_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Passkey added. Verify it when you need to approve an administrative change."
 msgstr "パスキーが追加されました。管理上の変更を承認する必要がある場合に確認してください。"
 
-#: lib/marshall_web/live/account_live.ex:504
+#: lib/marshall_web/live/account_live.ex:646
 #, elixir-autogen, elixir-format
 msgid "Passkey name"
 msgstr "パスキー名"
 
-#: lib/marshall_web/live/account_live.ex:128
+#: lib/marshall_web/live/account_live.ex:161
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled or unavailable. You can try again."
 msgstr "パスキー要求がキャンセルされたか、利用できません。もう一度試すことができます。"
 
-#: lib/marshall_web/live/account_live.ex:93
+#: lib/marshall_web/live/account_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Passkey verified for 15 minutes."
 msgstr "パスキーは 15 分間検証されました。"
 
-#: lib/marshall_web/live/account_live.ex:449
+#: lib/marshall_web/live/account_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "Passkey verified · %{count} second remaining."
 msgid_plural "Passkey verified · %{count} seconds remaining."
@@ -3487,7 +3489,7 @@ msgstr "過去 30 日間"
 msgid "Past 7 days"
 msgstr "過去 7 日間"
 
-#: lib/marshall_web/live/account_live.ex:574
+#: lib/marshall_web/live/account_live.ex:749
 #, elixir-autogen, elixir-format
 msgid "Paste a public key from your .pub file. Never paste a private key."
 msgstr ".pub ファイルから公開キーを貼り付けます。秘密キーは決して貼り付けないでください。"
@@ -3507,22 +3509,22 @@ msgstr "スケジュールを一時停止する"
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr "一時停止すると、新しい移動のスケジュールが停止されます。受け入れられた移動は続行されます。メンテナンス対応には確認済みのソース クリーンアップが必要です。完了した仕事だけでは不十分です。"
 
-#: lib/marshall_web/live/integrations_live.ex:326
+#: lib/marshall_web/live/integrations_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "ピア統合"
 
-#: lib/marshall_web/live/integrations_live.ex:197
+#: lib/marshall_web/live/integrations_live.ex:325
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "ピアマシン"
 
-#: lib/marshall_web/live/integrations_live.ex:329
+#: lib/marshall_web/live/integrations_live.ex:469
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "ピアマシンID"
 
-#: lib/marshall_web/components/workspace_components.ex:66
+#: lib/marshall_web/components/workspace_components.ex:74
 #: lib/marshall_web/live/resize_live.ex:458
 #: lib/marshall_web/live/threads_live.ex:1590
 #: lib/marshall_web/live/threads_live.ex:2494
@@ -3556,7 +3558,7 @@ msgstr "このマシンのクローンを作成する権限はもう利用でき
 msgid "Personal"
 msgstr "個人的"
 
-#: lib/marshall_web/live/integrations_live.ex:203
+#: lib/marshall_web/live/integrations_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "個人的な統合"
@@ -3577,7 +3579,7 @@ msgstr "位相: %{phase}"
 msgid "Pick up where you left off."
 msgstr "中断したところから再開します。"
 
-#: lib/marshall_web/components/workspace_components.ex:176
+#: lib/marshall_web/components/workspace_components.ex:197
 #, elixir-autogen, elixir-format
 msgid "Pinned"
 msgstr "固定された"
@@ -3698,7 +3700,7 @@ msgstr "価格のソース/バージョン"
 msgid "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
 msgstr "プライベートかつ所有者限定。 SSH と端末アクセス。アウトバウンド接続、共有、Web アプリ、AI エージェントはありません。"
 
-#: lib/marshall_web/live/account_live.ex:349
+#: lib/marshall_web/live/account_live.ex:432
 #: lib/marshall_web/live/machines_live.ex:668
 #: lib/marshall_web/live/machines_live.ex:692
 #: lib/marshall_web/live/machines_live.ex:788
@@ -3760,7 +3762,7 @@ msgstr "プロビジョニングが再試行されます。"
 msgid "Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification."
 msgstr "マシン用にミラーリングされたパブリック GitHub リポジトリ。ミラーは 1 時間ごとに更新されます。変更には最新のパスキーの検証が必要です。"
 
-#: lib/marshall_web/live/account_live.ex:569
+#: lib/marshall_web/live/account_live.ex:744
 #, elixir-autogen, elixir-format
 msgid "Public key"
 msgstr "公開鍵"
@@ -3823,7 +3825,7 @@ msgstr "ワークロードを再計画する"
 msgid "Read and write in the terminal."
 msgstr "ターミナルでの読み取りと書き込み。"
 
-#: lib/marshall_web/live/overview_live.ex:220
+#: lib/marshall_web/live/overview_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "フィールドノートを読む ↗"
@@ -3920,7 +3922,7 @@ msgid "Reference"
 msgstr "参照"
 
 #: lib/marshall_web/live/admin/git_live.ex:115
-#: lib/marshall_web/live/overview_live.ex:234
+#: lib/marshall_web/live/overview_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "リフレッシュ"
@@ -3940,7 +3942,7 @@ msgstr "更新をキューに入れることができませんでした。"
 msgid "Refresh queued."
 msgstr "更新がキューに入れられました。"
 
-#: lib/marshall_web/live/overview_live.ex:232
+#: lib/marshall_web/live/overview_live.ex:236
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "爽やか…"
@@ -4013,10 +4015,10 @@ msgstr "私を覚えてますか"
 msgid "Removal queued."
 msgstr "削除が待機中です。"
 
-#: lib/marshall_web/live/account_live.ex:514
-#: lib/marshall_web/live/account_live.ex:547
+#: lib/marshall_web/live/account_live.ex:662
+#: lib/marshall_web/live/account_live.ex:704
 #: lib/marshall_web/live/admin/git_live.ex:122
-#: lib/marshall_web/live/integrations_live.ex:188
+#: lib/marshall_web/live/integrations_live.ex:316
 #: lib/marshall_web/live/teams_live.ex:242
 #: lib/marshall_web/live/threads_live.ex:2352
 #: lib/marshall_web/live/threads_live.ex:2449
@@ -4050,17 +4052,17 @@ msgstr "このアカウントの管理者アクセスを削除しますか?"
 msgid "Remove mirror?"
 msgstr "ミラーを取り外しますか?"
 
-#: lib/marshall_web/live/integrations_live.ex:185
+#: lib/marshall_web/live/integrations_live.ex:313
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "この統合を削除しますか?"
 
-#: lib/marshall_web/live/account_live.ex:545
+#: lib/marshall_web/live/account_live.ex:699
 #, elixir-autogen, elixir-format
 msgid "Remove this key's SSH access? Already accepted machine operations will continue."
 msgstr "このキーの SSH アクセスを削除しますか?すでに受け付けているマシン操作は継続されます。"
 
-#: lib/marshall_web/live/account_live.ex:512
+#: lib/marshall_web/live/account_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "このパスキーを削除しますか?最後のパスキーを削除すると、どこからでもサインアウトされます。"
@@ -4070,7 +4072,7 @@ msgstr "このパスキーを削除しますか?最後のパスキーを削除�
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "このソースから削除されました。キャンペーンのクリーンアップの検証を待っています。"
 
-#: lib/marshall_web/live/account_live.ex:505
+#: lib/marshall_web/live/account_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr "名前の変更"
@@ -4188,7 +4190,7 @@ msgstr "再試行を要求しています…"
 msgid "Requesting…"
 msgstr "リクエスト中…"
 
-#: lib/marshall_web/live/integrations_live.ex:330
+#: lib/marshall_web/live/integrations_live.ex:470
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "ピア統合に必要"
@@ -4356,7 +4358,7 @@ msgstr "フリートのワークロードに戻り、パスキーを確認して
 msgid "Return to the conversation whenever you need."
 msgstr "必要に応じていつでも会話に戻ってください。"
 
-#: lib/marshall_web/live/account_live.ex:487
+#: lib/marshall_web/live/account_live.ex:624
 #, elixir-autogen, elixir-format
 msgid "Return to the requested page and retry the action →"
 msgstr "要求されたページに戻り、アクションを再試行します →"
@@ -4430,7 +4432,7 @@ msgstr "役割"
 msgid "Room for your next idea"
 msgstr "次のアイデアのための余地"
 
-#: lib/marshall_web/live/overview_live.ex:196
+#: lib/marshall_web/live/overview_live.ex:200
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "成長の余地"
@@ -4445,35 +4447,35 @@ msgstr "ルートディスク (GiB)"
 msgid "Route expires"
 msgstr "ルートの有効期限が切れる"
 
-#: lib/marshall_web/live/integrations_live.ex:311
+#: lib/marshall_web/live/integrations_live.ex:451
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "ルーティング、チームの所有権、ピア接続"
 
-#: lib/marshall_web/components/workspace_components.ex:67
+#: lib/marshall_web/components/workspace_components.ex:75
 #: lib/marshall_web/live/admin/jobs_live.ex:13
 #: lib/marshall_web/live/resize_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "ランニング"
 
-#: lib/marshall_web/components/workspace_components.ex:364
+#: lib/marshall_web/components/workspace_components.ex:388
 #, elixir-autogen, elixir-format
 msgid "SSH connection details are temporarily unavailable."
 msgstr "SSH 接続の詳細は一時的に利用できません。"
 
-#: lib/marshall_web/components/workspace_components.ex:360
+#: lib/marshall_web/components/workspace_components.ex:384
 #, elixir-autogen, elixir-format
 msgid "SSH connection requires write access to this machine."
 msgstr "SSH 接続には、このマシンへの書き込みアクセスが必要です。"
 
-#: lib/marshall_web/live/account_live.ex:328
+#: lib/marshall_web/live/account_live.ex:393
 #: lib/marshall_web/live/admin/access_live.ex:159
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "SSHキー"
 
-#: lib/marshall_web/live/account_live.ex:142
+#: lib/marshall_web/live/account_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "SSH key added."
 msgstr "SSHキーが追加されました。"
@@ -4483,7 +4485,7 @@ msgstr "SSHキーが追加されました。"
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "SSH キーが承認されました。 SSH クライアントに戻ることができます。"
 
-#: lib/marshall_web/live/account_live.ex:157
+#: lib/marshall_web/live/account_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "SSH key removed."
 msgstr "SSH キーが削除されました。"
@@ -4493,12 +4495,12 @@ msgstr "SSH キーが削除されました。"
 msgid "SSH key revoked."
 msgstr "SSH キーが取り消されました。"
 
-#: lib/marshall_web/live/account_live.ex:357
+#: lib/marshall_web/live/account_live.ex:440
 #, elixir-autogen, elixir-format
 msgid "SSH keys"
 msgstr "SSHキー"
 
-#: lib/marshall_web/live/account_live.ex:247
+#: lib/marshall_web/live/account_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "SSH keys are temporarily unavailable."
 msgstr "SSH キーは一時的に利用できません。"
@@ -4514,12 +4516,12 @@ msgstr "SSH セッションが閉じられました。"
 msgid "Save access"
 msgstr "保存アクセス"
 
-#: lib/marshall_web/live/integrations_live.ex:336
+#: lib/marshall_web/live/integrations_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "統合の保存"
 
-#: lib/marshall_web/live/account_live.ex:379
+#: lib/marshall_web/live/account_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Save language"
 msgstr "言語を保存する"
@@ -4529,12 +4531,12 @@ msgstr "言語を保存する"
 msgid "Save member"
 msgstr "メンバーの保存"
 
-#: lib/marshall_web/live/account_live.ex:423
+#: lib/marshall_web/live/account_live.ex:512
 #, elixir-autogen, elixir-format
 msgid "Save time zone"
 msgstr "タイムゾーンを保存する"
 
-#: lib/marshall_web/live/account_live.ex:319
+#: lib/marshall_web/live/account_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Saved: %{value1}. Others who share a team, machine or thread with you see your local time."
 msgstr "保存済み: %{value1}。あなたとチーム、マシン、またはスレッドを共有している他の人には、あなたの現地時間が表示されます。"
@@ -4638,12 +4640,12 @@ msgstr "送信中…"
 msgid "Service"
 msgstr "サービス"
 
-#: lib/marshall_web/live/overview_live.ex:194
+#: lib/marshall_web/live/overview_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "ブラウザ拡張機能のセットアップ ↗"
 
-#: lib/marshall_web/components/workspace_components.ex:111
+#: lib/marshall_web/components/workspace_components.ex:132
 #, elixir-autogen, elixir-format
 msgid "Settings"
 msgstr "設定"
@@ -4756,7 +4758,7 @@ msgstr "どこでもサインアウト"
 msgid "Sign this account out of every browser session?"
 msgstr "すべてのブラウザ セッションからこのアカウントをサインアウトしますか?"
 
-#: lib/marshall_web/live/account_live.ex:353
+#: lib/marshall_web/live/account_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Sign-in and passkeys"
 msgstr "サインインとパスキー"
@@ -4896,7 +4898,7 @@ msgstr "古い、または不明"
 msgid "Stale or unknown report"
 msgstr "古いレポートまたは不明なレポート"
 
-#: lib/marshall_web/components/workspace_components.ex:467
+#: lib/marshall_web/components/workspace_components.ex:491
 #: lib/marshall_web/live/machines_live.ex:505
 #: lib/marshall_web/live/machines_live.ex:567
 #: lib/marshall_web/live/threads_live.ex:1406
@@ -4904,7 +4906,7 @@ msgstr "古いレポートまたは不明なレポート"
 msgid "Standard"
 msgstr "標準"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:172
+#: lib/marshall_web/live/admin/workloads_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "始める"
@@ -4914,7 +4916,7 @@ msgstr "始める"
 msgid "Start evacuation"
 msgstr "避難開始"
 
-#: lib/marshall_web/components/workspace_components.ex:264
+#: lib/marshall_web/components/workspace_components.ex:288
 #, elixir-autogen, elixir-format
 msgid "Start machine"
 msgstr "スタートマシン"
@@ -4924,7 +4926,7 @@ msgstr "スタートマシン"
 msgid "Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source."
 msgstr "スラッシュのようなテキストを文字通り送信するには、スペースから始めます。 $ と入力して、正確なソースによってスキルを選択します。"
 
-#: lib/marshall_web/components/workspace_components.ex:62
+#: lib/marshall_web/components/workspace_components.ex:70
 #: lib/marshall_web/live/machines_live.ex:573
 #, elixir-autogen, elixir-format
 msgid "Starting"
@@ -4953,12 +4955,12 @@ msgstr "スタートアップホールド"
 msgid "State"
 msgstr "州"
 
-#: lib/marshall_web/live/integrations_live.ex:300
+#: lib/marshall_web/live/integrations_live.ex:440
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "静的ヘッダー名"
 
-#: lib/marshall_web/live/integrations_live.ex:306
+#: lib/marshall_web/live/integrations_live.ex:446
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "静的ヘッダー値"
@@ -4981,8 +4983,8 @@ msgstr "状態"
 msgid "Step %{value1} is waiting on the host: %{value2}"
 msgstr "ステップ %{value1} はホスト上で待機しています: %{value2}"
 
-#: lib/marshall_web/components/workspace_components.ex:274
-#: lib/marshall_web/live/admin/workloads_live.ex:181
+#: lib/marshall_web/components/workspace_components.ex:298
+#: lib/marshall_web/live/admin/workloads_live.ex:199
 #: lib/marshall_web/live/resize_live.ex:487
 #: lib/marshall_web/live/resize_live.ex:493
 #, elixir-autogen, elixir-format
@@ -4999,13 +5001,13 @@ msgstr "機械を停止してください"
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr "移動全体にわたって、この実行中のワークロードを停止しますか?ディスクをコピーしてコピー先で再起動すると、ダウンタイムが長引く可能性があります。"
 
-#: lib/marshall_web/components/workspace_components.ex:68
+#: lib/marshall_web/components/workspace_components.ex:76
 #: lib/marshall_web/live/resize_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "停止しました"
 
-#: lib/marshall_web/components/workspace_components.ex:59
+#: lib/marshall_web/components/workspace_components.ex:67
 #: lib/marshall_web/live/machines_live.ex:570
 #: lib/marshall_web/live/resize_live.ex:451
 #, elixir-autogen, elixir-format
@@ -5032,12 +5034,12 @@ msgstr "リソースを安全に変更できるようにマシンを停止しま
 msgid "Stopping the source"
 msgstr "ソースを停止する"
 
-#: lib/marshall_web/live/integrations_live.ex:316
+#: lib/marshall_web/live/integrations_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "ストリッププレフィックス"
 
-#: lib/marshall_web/live/integrations_live.ex:205
+#: lib/marshall_web/live/integrations_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "接頭辞を削除します"
@@ -5083,7 +5085,7 @@ msgid "Taking snapshot"
 msgstr "スナップショットの取得"
 
 #: lib/marshall_web/live/admin/audit_live.ex:265
-#: lib/marshall_web/live/integrations_live.ex:194
+#: lib/marshall_web/live/integrations_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "ターゲット"
@@ -5093,7 +5095,7 @@ msgstr "ターゲット"
 msgid "Team"
 msgstr "チーム"
 
-#: lib/marshall_web/live/integrations_live.ex:202
+#: lib/marshall_web/live/integrations_live.ex:330
 #: lib/marshall_web/live/threads_live.ex:1097
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
@@ -5109,7 +5111,7 @@ msgstr "チーム%{value1}が作成されました。"
 msgid "Team (optional)"
 msgstr "チーム (オプション)"
 
-#: lib/marshall_web/live/integrations_live.ex:321
+#: lib/marshall_web/live/integrations_live.ex:461
 #: lib/marshall_web/live/threads_live.ex:1415
 #, elixir-autogen, elixir-format
 msgid "Team ID"
@@ -5125,7 +5127,7 @@ msgstr "チームのメンバーシップとスレッドの共有により、マ
 msgid "Team name"
 msgstr "チーム名"
 
-#: lib/marshall_web/live/integrations_live.ex:322
+#: lib/marshall_web/live/integrations_live.ex:462
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "チーム所有の統合"
@@ -5142,7 +5144,7 @@ msgstr "チーム"
 msgid "Teams are temporarily unavailable."
 msgstr "チームは一時的に利用できません。"
 
-#: lib/marshall_web/components/workspace_components.ex:102
+#: lib/marshall_web/components/workspace_components.ex:123
 #: lib/marshall_web/live/admin/workloads_live.ex:153
 #, elixir-autogen, elixir-format
 msgid "Terminal"
@@ -5538,13 +5540,13 @@ msgstr "このマシンは利用できないか、アクセスが終了してい
 msgid "This machine's host is currently unavailable."
 msgstr "このマシンのホストは現在利用できません。"
 
-#: lib/marshall_web/components/workspace_components.ex:282
-#: lib/marshall_web/components/workspace_components.ex:447
+#: lib/marshall_web/components/workspace_components.ex:306
+#: lib/marshall_web/components/workspace_components.ex:471
 #, elixir-autogen, elixir-format
 msgid "This machine's image does not support the current browser editor."
 msgstr "このマシンのイメージは現在のブラウザ エディタをサポートしていません。"
 
-#: lib/marshall_web/components/workspace_components.ex:351
+#: lib/marshall_web/components/workspace_components.ex:375
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
 msgstr "このマシンのイメージにはまだゲスト エージェントがありません。SSH、ブラウザ端末、およびエージェントは利用できません。使用"
@@ -5689,17 +5691,17 @@ msgid "Time"
 msgstr "時間"
 
 #: lib/marshall_web/components/layouts.ex:361
-#: lib/marshall_web/live/account_live.ex:415
+#: lib/marshall_web/live/account_live.ex:504
 #, elixir-autogen, elixir-format
 msgid "Time zone"
 msgstr "タイムゾーン"
 
-#: lib/marshall_web/live/account_live.ex:180
+#: lib/marshall_web/live/account_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Time zone cleared. Your browser's zone is used."
 msgstr "タイムゾーンがクリアされました。ブラウザのゾーンが使用されます。"
 
-#: lib/marshall_web/live/account_live.ex:172
+#: lib/marshall_web/live/account_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Time zone saved."
 msgstr "タイムゾーンが保存されました。"
@@ -5768,7 +5770,7 @@ msgstr "しばらくしてからもう一度お試しください。"
 msgid "Turn complete"
 msgstr "ターン完了"
 
-#: lib/marshall_web/live/account_live.ex:552
+#: lib/marshall_web/live/account_live.ex:727
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "タイプ"
@@ -5798,7 +5800,7 @@ msgstr "Ultra は、複雑で無制限の作業に適しています。"
 msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
 msgstr "端末共有を更新できません。受信者は共有する前にマシンにアクセスできる必要があります。"
 
-#: lib/marshall_web/components/workspace_components.ex:72
+#: lib/marshall_web/components/workspace_components.ex:80
 #: lib/marshall_web/live/machines_live.ex:694
 #: lib/marshall_web/live/machines_live.ex:890
 #: lib/marshall_web/live/machines_live.ex:896
@@ -5806,8 +5808,8 @@ msgstr "端末共有を更新できません。受信者は共有する前にマ
 msgid "Unavailable"
 msgstr "利用不可"
 
-#: lib/marshall_web/components/workspace_components.ex:71
-#: lib/marshall_web/components/workspace_components.ex:469
+#: lib/marshall_web/components/workspace_components.ex:79
+#: lib/marshall_web/components/workspace_components.ex:493
 #: lib/marshall_web/live/admin/jobs_live.ex:176
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:273
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
@@ -5873,7 +5875,7 @@ msgstr "リビジョンの更新 (オプション)"
 #: lib/marshall_web/live/admin/jobs_live.ex:203
 #: lib/marshall_web/live/admin/operations_live.ex:56
 #: lib/marshall_web/live/admin/workloads_live.ex:98
-#: lib/marshall_web/live/overview_live.ex:228
+#: lib/marshall_web/live/overview_live.ex:232
 #: lib/marshall_web/live/threads_live.ex:1603
 #, elixir-autogen, elixir-format
 msgid "Updated"
@@ -5909,7 +5911,7 @@ msgstr "パブリック GitHub、GitLab、Codeberg、または Bitbucket リポ�
 msgid "Use an existing account's email to grant, change or revoke a thread role."
 msgstr "既存のアカウントの電子メールを使用して、スレッド ロールを付与、変更、または取り消します。"
 
-#: lib/marshall_web/live/account_live.ex:388
+#: lib/marshall_web/live/account_live.ex:475
 #, elixir-autogen, elixir-format
 msgid "Use browser language"
 msgstr "ブラウザ言語を使用する"
@@ -5924,7 +5926,7 @@ msgstr "これらのサイズを維持したまま、現在のマシンの状態
 msgid "Use team machines and integrations."
 msgstr "チームマシンと統合を使用します。"
 
-#: lib/marshall_web/components/workspace_components.ex:362
+#: lib/marshall_web/components/workspace_components.ex:386
 #, elixir-autogen, elixir-format
 msgid "Use the browser terminal for this Inception environment."
 msgstr "この Inception 環境にはブラウザ ターミナルを使用します。"
@@ -5971,44 +5973,44 @@ msgstr "VMのライフサイクル"
 msgid "VS Code access"
 msgstr "VS コードへのアクセス"
 
-#: lib/marshall_web/components/workspace_components.ex:286
+#: lib/marshall_web/components/workspace_components.ex:310
 #, elixir-autogen, elixir-format
 msgid "VS Code is temporarily unavailable for this machine."
 msgstr "VS Code はこのマシンでは一時的に利用できません。"
 
-#: lib/marshall_web/components/workspace_components.ex:450
+#: lib/marshall_web/components/workspace_components.ex:474
 #, elixir-autogen, elixir-format
 msgid "VS Code is temporarily unavailable."
 msgstr "VS Code は一時的に利用できなくなります。"
 
-#: lib/marshall_web/components/workspace_components.ex:451
+#: lib/marshall_web/components/workspace_components.ex:475
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "VS Code はこのマシンでは使用できません。"
 
-#: lib/marshall_web/components/workspace_components.ex:284
-#: lib/marshall_web/components/workspace_components.ex:449
+#: lib/marshall_web/components/workspace_components.ex:308
+#: lib/marshall_web/components/workspace_components.ex:473
 #, elixir-autogen, elixir-format
 msgid "VS Code requires a running machine."
 msgstr "VS Code には実行中のマシンが必要です。"
 
-#: lib/marshall_web/live/account_live.ex:100
+#: lib/marshall_web/live/account_live.ex:127
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Please try again."
 msgstr "検証を完了できませんでした。もう一度試してください。"
 
-#: lib/marshall_web/live/account_live.ex:72
+#: lib/marshall_web/live/account_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
 msgstr "検証が必要です。既存のパスキーを使用するか、最初の登録の前にサインアウトして新しい電子メール リンクをリクエストしてください。"
 
-#: lib/marshall_web/live/account_live.ex:452
+#: lib/marshall_web/live/account_live.ex:585
 #, elixir-autogen, elixir-format
 msgid "Verify a passkey before making administrative changes or changing passkeys."
 msgstr "管理上の変更を加えたり、パスキーを変更したりする前に、パスキーを確認してください。"
 
 #: lib/marshall_web/components/layouts.ex:111
-#: lib/marshall_web/live/account_live.ex:473
+#: lib/marshall_web/live/account_live.ex:610
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "パスキーで認証する"
@@ -6169,7 +6171,7 @@ msgstr "誰がこのマシンに到達できるのか、そしてそれぞれの
 msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
 msgstr "誰がどのマシンに、どのキーまたはセッションを使用してアクセスできるか。秘密キー、セッション トークン、ゲートウェイ資格情報は表示されません。"
 
-#: lib/marshall_web/live/account_live.ex:344
+#: lib/marshall_web/live/account_live.ex:427
 #, elixir-autogen, elixir-format
 msgid "Who you are, how you prove it, and the keys that reach your machines."
 msgstr "あなたが誰であるか、それを証明する方法、そしてあなたのマシンに届く鍵。"
@@ -6184,7 +6186,7 @@ msgstr "ワイルドカードのローテーションを要求できませんで
 msgid "Wildcard rotation requested for generation %{generation}."
 msgstr "世代 %{generation} に対してワイルドカード ローテーションが要求されました。"
 
-#: lib/marshall_web/components/workspace_components.ex:326
+#: lib/marshall_web/components/workspace_components.ex:350
 #, elixir-autogen, elixir-format
 msgid "Windows"
 msgstr "窓"
@@ -6339,7 +6341,7 @@ msgstr "このスレッドへの読み取り専用アクセス権があります
 msgid "You no longer have permission for this action."
 msgstr "このアクションに対する権限はもうありません。"
 
-#: lib/marshall_web/live/account_live.ex:443
+#: lib/marshall_web/live/account_live.ex:570
 #, elixir-autogen, elixir-format
 msgid "You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one."
 msgstr "電子メールのリンクを使用してサインインします。パスキーは、管理上の変更前およびパスキーの変更前の本人であることを証明します。ワークスペースを日常的に使用する場合、ワークスペースを必要とすることはありません。"
@@ -6399,7 +6401,7 @@ msgstr "マシンが停止している間、ディスクは手元に残ります
 msgid "Your email address has now been confirmed"
 msgstr "あなたのメールアドレスが確認されました"
 
-#: lib/marshall_web/live/account_live.ex:409
+#: lib/marshall_web/live/account_live.ex:496
 #, elixir-autogen, elixir-format
 msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
 msgstr "あなたの電子メールはサインイン ID であり、ここで編集することはできません。オーバーオールのたびにゾーンに表示されます。チーム、マシン、スレッドを共有している人、および管理者は、ゾーンが保存されると、電子メールの横に現在の現地時間が表示されます。"
@@ -6439,12 +6441,12 @@ msgstr "あなたのマシン"
 msgid "Your objective is saved. Retry to prepare the workspace again."
 msgstr "あなたの目標は保存されました。ワークスペースを再度準備してみてください。"
 
-#: lib/marshall_web/live/account_live.ex:493
+#: lib/marshall_web/live/account_live.ex:632
 #, elixir-autogen, elixir-format
 msgid "Your passkeys"
 msgstr "あなたのパスキー"
 
-#: lib/marshall_web/live/account_live.ex:456
+#: lib/marshall_web/live/account_live.ex:591
 #, elixir-autogen, elixir-format
 msgid "Your passkeys were reset. Register a replacement before approving administrative changes."
 msgstr "パスキーがリセットされました。管理上の変更を承認する前に、代替者を登録してください。"
@@ -6479,7 +6481,7 @@ msgstr "プライベートコピーが作成されました。ソース スナ�
 msgid "Your role: %{role}"
 msgstr "あなたの役割: %{role}"
 
-#: lib/marshall_web/live/account_live.ex:374
+#: lib/marshall_web/live/account_live.ex:461
 #, elixir-autogen, elixir-format
 msgid "Your saved language overrides browser preferences."
 msgstr "保存した言語はブラウザの設定よりも優先されます。"
@@ -6519,12 +6521,12 @@ msgstr "あなたのワークスペースに、ちょっとした息抜きのス
 msgid "Zone"
 msgstr "ゾーン"
 
-#: lib/marshall_web/live/account_live.ex:451
+#: lib/marshall_web/live/account_live.ex:584
 #, elixir-autogen, elixir-format
 msgid "[not verified]"
 msgstr "[未検証]"
 
-#: lib/marshall_web/live/account_live.ex:448
+#: lib/marshall_web/live/account_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "[verified]"
 msgstr "[検証済み]"
@@ -6614,7 +6616,7 @@ msgstr "オーバーオールへ続く"
 msgid "delete this user account"
 msgstr "このユーザーアカウントを削除する"
 
-#: lib/marshall_web/live/account_live.ex:350
+#: lib/marshall_web/live/account_live.ex:433
 #, elixir-autogen, elixir-format
 msgid "email, time zone and your local clock"
 msgstr "電子メール、タイムゾーン、ローカル時計"
@@ -6624,7 +6626,7 @@ msgstr "電子メール、タイムゾーン、ローカル時計"
 msgid "enabled"
 msgstr "有効"
 
-#: lib/marshall_web/live/integrations_live.ex:279
+#: lib/marshall_web/live/integrations_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "例-統合"
@@ -6765,7 +6767,7 @@ msgstr "このノードの退避を開始します"
 msgid "teammate@example.test"
 msgstr "チームメイト@example.test"
 
-#: lib/marshall_web/components/workspace_components.ex:358
+#: lib/marshall_web/components/workspace_components.ex:382
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "読み取り専用のホスト コンソールを表示します。"
@@ -6782,12 +6784,12 @@ msgstr "利用不可"
 msgid "unknown"
 msgstr "未知"
 
-#: lib/marshall_web/live/account_live.ex:354
+#: lib/marshall_web/live/account_live.ex:437
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "管理上の変更の検証"
 
-#: lib/marshall_web/live/integrations_live.ex:301
+#: lib/marshall_web/live/integrations_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-APIトークン"
@@ -6870,3 +6872,160 @@ msgstr "← 設定"
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ 選択・実行する・エスケープ・閉じる"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Awaiting GitHub authorization"
+msgstr "Awaiting GitHub authorization"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Connect GitHub"
+msgstr "Connect GitHub"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
+msgstr "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:148
+#: lib/marshall_web/live/integrations_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "Connected"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:246
+#, elixir-autogen, elixir-format
+msgid "Connected as %{login}"
+msgstr "Connected as %{login}"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Could not update the GitHub connection."
+msgstr "Could not update the GitHub connection."
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:261
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub"
+msgstr "Disconnect GitHub"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub from your machines?"
+msgstr "Disconnect GitHub from your machines?"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "Disconnected"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "Disconnecting GitHub"
+msgstr "Disconnecting GitHub"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Finishing active GitHub requests"
+msgstr "Finishing active GitHub requests"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
+#, elixir-autogen, elixir-format
+msgid "GitHub connected."
+msgstr "GitHub connected."
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "GitHub could not be connected. Try again from Integrations."
+msgstr "GitHub could not be connected. Try again from Integrations."
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Machines excluded from your GitHub identity"
+msgstr "Machines excluded from your GitHub identity"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Reconnect required"
+msgstr "Reconnect required"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Refreshing GitHub connection"
+msgstr "Refreshing GitHub connection"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Temporarily unavailable"
+msgstr "Temporarily unavailable"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/integrations_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
+msgstr "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/account_live.ex:547
+#, elixir-autogen, elixir-format
+msgid "Add Overalls commit attribution"
+msgstr "Add Overalls commit attribution"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/account_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Enter a valid Git name and email address."
+msgstr "Enter a valid Git name and email address."
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/account_live.ex:540
+#, elixir-autogen, elixir-format
+msgid "Git email"
+msgstr "Git email"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/account_live.ex:555
+#, elixir-autogen, elixir-format
+msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/account_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Git settings saved."
+msgstr "Git settings saved."
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/account_live.ex:533
+#, elixir-autogen, elixir-format
+msgid "Git username"
+msgstr "Git username"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/account_live.ex:559
+#, elixir-autogen, elixir-format
+msgid "Save Git settings"
+msgstr "Save Git settings"
+
+#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
+#: lib/marshall_web/live/account_live.ex:550
+#, elixir-autogen, elixir-format
+msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."

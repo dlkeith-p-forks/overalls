@@ -30,14 +30,17 @@ fn native_executor_url(url: &str) -> bool {
         && Url::parse(url).is_ok_and(|parsed| {
             parsed.host_str() == Some("llm.internal")
                 && parsed.port_or_known_default() == Some(443)
-                && parsed.query().is_none()
-                && matches!(
-                    parsed.path(),
-                    "/agent/v1/register"
-                        | "/agent/v1/heartbeat"
-                        | "/agent/v1/claim"
-                        | "/agent/v1/transition"
-                )
+                && ((parsed.query().is_none()
+                    && matches!(
+                        parsed.path(),
+                        "/agent/v1/register"
+                            | "/agent/v1/heartbeat"
+                            | "/agent/v1/claim"
+                            | "/agent/v1/transition"
+                            | "/agent/v1/maintenance/claim"
+                            | "/agent/v1/maintenance/transition"
+                    ))
+                    || crate::agent::maintenance::artifact_url(&parsed))
         })
 }
 
@@ -91,6 +94,46 @@ pub fn request_exact(
         timeout,
         Some(expected),
     )
+}
+
+/// Stream a verified, bounded artifact without retaining its complete body.
+/// The caller's lease callback MUST remain true before each write.
+pub fn download(
+    url: &str,
+    maximum: usize,
+    destination: &mut impl io::Write,
+    lease: &mut impl FnMut() -> bool,
+) -> io::Result<usize> {
+    if !valid_https(url) || maximum == 0 || !lease() {
+        return Err(io::Error::other("invalid artifact request"));
+    }
+    let mut response = client(url, Duration::from_secs(10))?
+        .get(url)
+        .send()
+        .map_err(|_| io::Error::other("artifact unavailable"))?;
+    if response.status() != StatusCode::OK
+        || response
+            .content_length()
+            .is_some_and(|length| length > maximum as u64)
+    {
+        return Err(io::Error::other("artifact unavailable"));
+    }
+    let mut bytes = 0usize;
+    let mut buffer = [0u8; 65_536];
+    loop {
+        let count = response.read(&mut buffer)?;
+        if count == 0 {
+            return Ok(bytes);
+        }
+        bytes = bytes
+            .checked_add(count)
+            .filter(|total| *total <= maximum)
+            .ok_or_else(|| io::Error::other("artifact too large"))?;
+        if !lease() {
+            return Err(io::Error::other("artifact authority unavailable"));
+        }
+        destination.write_all(&buffer[..count])?;
+    }
 }
 
 fn request_with_status(

@@ -97,7 +97,7 @@ VM lifecycle or capacity reservations.
 Invoke a fixed allowlist of GNU/util-linux utilities with argv arrays and no
 shell. Pin those utilities in devenv. Bound output and use a separate timeout
 process for utility execution. Use ordinary documented Linux interfaces; no
-exe.dev internal endpoints are involved.
+sample-host internal endpoints are involved.
 
 ## Alternatives
 

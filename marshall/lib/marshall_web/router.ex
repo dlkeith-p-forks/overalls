@@ -90,6 +90,8 @@ defmodule MarshallWeb.Router do
     get("/machines/:id/code", EditorController, :launch)
     get("/usage/export", InferenceExportController, :show)
     get("/admin/usage/export", InferenceExportController, :show)
+    post("/auth/github-com/start", GitHubConnectionController, :start)
+    get("/auth/github-com/callback", GitHubConnectionController, :callback)
 
     # @cc [owner:ghuntley,label:security] authenticated-machine-routes
     # Machine and terminal pages MUST remain in the authentication LiveView

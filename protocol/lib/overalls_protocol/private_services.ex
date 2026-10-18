@@ -3,7 +3,7 @@ defmodule OverallsProtocol.PrivateServices do
   @address "169.254.254.1"
   @hostname "llm.internal"
   @integration_zone "integration.internal"
-  @certificate_names ["llm.internal", "*.integration.internal"]
+  @certificate_names ["llm.internal", "reflection.internal", "*.integration.internal"]
   @fields ~w(host_id vm_id placement_id execution_epoch)
   @type binding :: %{
           host_id: binary(),

@@ -1,10 +1,14 @@
 # Architecture reviews
 
-- [One account settings page (2026-10-18)](2026-10-18-account-settings-page.md):
-  ADR-0196 merges Profile, Security and SSH keys into `/settings` behind the
-  security mount, removes the old routes without redirects and collapses the
-  sidebar; LiveView, contract, presentation and probe checks ran, while the
-  rewritten NixOS browser tests and Antithesis workload were not executed.
+- [GitHub.com owner integration (2026-10-18)](2026-10-18-github-com-integration.md):
+  ADR-0198's per-user OAuth custody, owner-bound built-in Galileo route,
+  persistent detach and refresh/drain/generation fencing; implementation and
+  native/provider acceptance remain in progress.
+
+- [Memory-preserving suspension and demand wake (2026-10-18)](2026-10-18-memory-suspension.md):
+  ADR-0197, durable lifecycle/wake/checkpoint state machines and authenticated
+  waiting connections; implementation and native acceptance in progress.
+
 - [Foreign Linux browser editor (2026-10-18)](2026-10-18-foreign-linux-browser-editor.md):
   repairs the missing Alma/Arch editor package, account broker and immutable
   descriptor while preserving exact-release authority; twelve Alma native browser
@@ -638,3 +642,5 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [Antithesis five-attempt bootstrap admission (2026-10-16)](2026-10-16-antithesis-five-attempt-admission.md): verification campaign ledger admits five concurrent hosted attempts and refuses a sixth; no production architecture boundary changes.
 - [Antithesis guest-lifecycle profile (2026-10-17)](2026-10-17-antithesis-guest-lifecycle-profile.md): launchable QEMU TCG guest-lifecycle selection with a labelled stub-storage container Lilly; harness-only, no ADR change and no recorded run.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)
+
+- [Git attribution and guest identity (2026-10-18)](2026-10-18-git-attribution.md): ADR-0199 settings, immutable snapshots and guest configuration verification.

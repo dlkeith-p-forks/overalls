@@ -8,8 +8,8 @@
 //! `installed` receipt bound to the same boot, nonce and digest. A failed or
 //! partial installation never acknowledges.
 
-use rustls_pki_types::CertificateDer;
 use rustls_pki_types::pem::PemObject;
+use rustls_pki_types::CertificateDer;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::io::{self, Read, Write};
@@ -233,22 +233,18 @@ mod tests {
         assert!(validate(&wrong_digest, &boot).is_err());
         assert!(validate(&request(vec![ROOT.to_string(), ROOT.to_string()]), &boot).is_err());
         assert!(validate(&request(vec![]), &boot).is_err());
-        assert!(
-            validate(
-                &request(vec![
-                    ROOT.replace("CERTIFICATE-----\nMIIB", "CERTIFICATE-----\n!!IB")
-                ]),
-                &boot
-            )
-            .is_err()
-        );
-        assert!(
-            validate(
-                &request(vec![format!("{ROOT}-----BEGIN PRIVATE KEY-----\n")]),
-                &boot
-            )
-            .is_err()
-        );
+        assert!(validate(
+            &request(vec![
+                ROOT.replace("CERTIFICATE-----\nMIIB", "CERTIFICATE-----\n!!IB")
+            ]),
+            &boot
+        )
+        .is_err());
+        assert!(validate(
+            &request(vec![format!("{ROOT}-----BEGIN PRIVATE KEY-----\n")]),
+            &boot
+        )
+        .is_err());
         let bundle = bundle(
             b"-----BEGIN CERTIFICATE-----\nbase\n-----END CERTIFICATE-----",
             &good.roots,
@@ -277,12 +273,10 @@ mod tests {
         install_trust(&base, &destination, &state, &first, &boot()).unwrap();
         let expected = bundle(vendor, &first.roots).unwrap();
         assert_eq!(fs::read(&destination).unwrap(), expected);
-        assert!(
-            fs::symlink_metadata(&destination)
-                .unwrap()
-                .file_type()
-                .is_symlink()
-        );
+        assert!(fs::symlink_metadata(&destination)
+            .unwrap()
+            .file_type()
+            .is_symlink());
 
         let mut next_boot = boot();
         next_boot.execution_epoch += 1;

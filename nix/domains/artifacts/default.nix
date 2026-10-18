@@ -30,6 +30,7 @@ let
   mkWindowsEditorBundle = import ./vscode-web/windows-bundle.nix { inherit pkgs; source = windowsEditorSource; };
   windowsEditorBroker = import ./vscode-web-broker/windows.nix { inherit pkgs; inherit (lyra) toolchain; };
   codingClis = import ./guest/coding-clis.nix { inherit pkgs; };
+  githubTools = import ./guest/github { inherit pkgs; };
   # Patched static Firecracker/jailer pair (ADR-0169); the only VMM Lilly runs.
   inherit (import ./infrastructure/firecracker.nix { inherit pkgs; }) vmm;
   # UEFI firmware Firecracker loads as its PVH "kernel" for Windows guests.
@@ -57,6 +58,7 @@ let
   windowsBoot = import ./guest/windows/boot.nix { inherit pkgs vmm; };
   lyra = import ./infrastructure/lyra.nix { inherit pkgs; };
   lyraWindows = lyra.windows;
+  githubBootstrapRelease = import ./infrastructure/executor-bootstrap.nix { inherit pkgs lyra; };
   nativeAgentPayload = import ./guest/native-agents.nix { inherit pkgs lyra terminald; };
   # Native guest daemons use each OS's reviewed vsock ABI and are shipped
   # separately from the workstation CLI for native image assembly.
@@ -275,8 +277,8 @@ in
 rec {
   inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestRuntime windowsGuestPublished windowsGuestDrvload windowsBoot windowsEditorRuntime windowsEditorSource windowsEditorBroker mkWindowsEditorBundle;
   inherit terminald terminaldChecks terminaldWindows;
-  inherit codingClis;
-  inherit lyra lyraLinux lyraWindows lyraNative;
+  inherit codingClis githubTools;
+  inherit lyra lyraLinux lyraWindows lyraNative githubBootstrapRelease;
   marvin = import ./marvin { inherit pkgs; };
   vscodeWeb = import ./vscode-web { inherit pkgs; };
   updateVscodeExtensions = import ./vscode-web/updater.nix { inherit pkgs vscodeWeb; };
