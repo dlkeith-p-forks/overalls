@@ -130,7 +130,8 @@ defmodule Audi.HTTP.FrontTest do
     check all(
             generated <- member_of([:fetch, :ack, :catalog, :ready, :catalog_with_job]),
             max_runs: 1,
-            test_cases: 1
+            test_cases: 1,
+            profile: :ci
           ) do
       for stage <- [:fetch, :ack, :catalog, :ready, :catalog_with_job, generated] do
         tasks = start_supervised!({Task.Supervisor, max_children: 20})

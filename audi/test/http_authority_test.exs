@@ -6,7 +6,7 @@ defmodule Audi.HTTP.AuthorityTest do
 
   property "a suspended renewer cannot preserve the owner or its guest socket" do
     # Allow a loaded runner to start the guard before the generated lease expires.
-    check all(ttl <- integer(1200..1800), max_runs: 5, test_cases: 1) do
+    check all(ttl <- integer(1200..1800), max_runs: 5, test_cases: 1, profile: :ci) do
       {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
       {:ok, {_, port}} = :inet.sockname(listener)
       parent = self()
