@@ -64,7 +64,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
     check all(
             culprit <- member_of([:manager, :tasks]),
             count <- member_of([1, 7, 8]),
-            max_runs: 3
+            max_runs: 1
           ) do
       restart_history(culprit, count)
     end

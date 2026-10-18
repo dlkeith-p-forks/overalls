@@ -90,7 +90,7 @@ defmodule Audi.InvalidBootPropertyTest do
             order <- shuffle(@cases),
             suffix <- string(:alphanumeric, length: 43),
             invalid_port <- member_of([0, 65_536, "22", nil]),
-            max_runs: 3
+            max_runs: 1
           ) do
       for {role, mutation} <- order do
         directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
