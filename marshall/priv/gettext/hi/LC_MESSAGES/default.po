@@ -7197,21 +7197,25 @@ msgstr "आपसे %{span} आगे"
 msgid "%{span} behind you"
 msgstr "आपसे %{span} पीछे"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "कमिट में Overalls का श्रेय जोड़ें"
+msgstr "Add Overalls commit attribution"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "मान्य Git नाम और ईमेल पता दर्ज करें।"
+msgstr "Enter a valid Git name and email address."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git ईमेल"
+msgstr "Git email"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."

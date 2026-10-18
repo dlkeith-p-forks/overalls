@@ -6910,45 +6910,52 @@ msgstr "உங்களை விட %{span} முன்னால்"
 msgid "%{span} behind you"
 msgstr "உங்களை விட %{span} பின்னால்"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "கமிட்களில் Overalls பங்களிப்பைக் குறிப்பிடு"
+msgstr "Add Overalls commit attribution"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "செல்லுபடியாகும் Git பெயரையும் மின்னஞ்சல் முகவரியையும் உள்ளிடவும்."
+msgstr "Enter a valid Git name and email address."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git மின்னஞ்சல்"
+msgstr "Git email"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git அடையாள மாற்றங்கள் புதிய இயந்திரங்களுக்குப் பொருந்தும். கமிட்களின் பங்களிப்புக் குறிப்புகளில் செய்யப்படும் மாற்றங்கள் இனிவரும் ஏஜென்ட் கோரிக்கைகளுக்குப் பொருந்தும்."
+msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 
 #: lib/marshall_web/live/account_live.ex:538
 #, elixir-autogen, elixir-format
 msgid "Git settings"
 msgstr "Git அமைப்புகள்"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git அமைப்புகள் சேமிக்கப்பட்டன."
+msgstr "Git settings saved."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:542
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git பயனர்பெயர்"
+msgstr "Git username"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Git அமைப்புகளைச் சேமி"
+msgstr "Save Git settings"
 
 #: lib/marshall_web/live/account_live.ex:559
 #, elixir-autogen, elixir-format
@@ -7092,10 +7099,11 @@ msgstr "காணப்பட்ட இடையூறு: %{seconds} வின�
 msgid "Operation"
 msgstr "செயல்பாடு"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "இடைநிறுத்தப்பட்டது"
+msgstr "Paused"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:399
 #, elixir-autogen, elixir-format

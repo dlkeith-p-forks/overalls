@@ -6910,45 +6910,52 @@ msgstr "আপনার থেকে %{span} এগিয়ে"
 msgid "%{span} behind you"
 msgstr "আপনার থেকে %{span} পিছিয়ে"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "কমিটে Overalls-এর অবদান স্বীকার যোগ করুন"
+msgstr "Add Overalls commit attribution"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "একটি বৈধ Git নাম ও ইমেইল ঠিকানা লিখুন।"
+msgstr "Enter a valid Git name and email address."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git ইমেইল"
+msgstr "Git email"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git পরিচয়ের পরিবর্তন নতুন মেশিনে প্রযোজ্য হবে। কমিটের অবদানের স্বীকৃতির পরিবর্তন ভবিষ্যৎ এজেন্ট অনুরোধে প্রযোজ্য হবে।"
+msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 
 #: lib/marshall_web/live/account_live.ex:538
 #, elixir-autogen, elixir-format
 msgid "Git settings"
 msgstr "Git সেটিংস"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git সেটিংস সংরক্ষিত হয়েছে।"
+msgstr "Git settings saved."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:542
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git ব্যবহারকারীর নাম"
+msgstr "Git username"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Git সেটিংস সংরক্ষণ করুন"
+msgstr "Save Git settings"
 
 #: lib/marshall_web/live/account_live.ex:559
 #, elixir-autogen, elixir-format
@@ -7092,10 +7099,11 @@ msgstr "পর্যবেক্ষিত বিঘ্ন: %{seconds}s (চল�
 msgid "Operation"
 msgstr "কার্যক্রম"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "সাময়িক বন্ধ"
+msgstr "Paused"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:399
 #, elixir-autogen, elixir-format

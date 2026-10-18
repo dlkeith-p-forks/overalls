@@ -6910,45 +6910,52 @@ msgstr "%{span} ahead of your time"
 msgid "%{span} behind you"
 msgstr "%{span} behind your time"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "Add Overalls credit for commit"
+msgstr "Add Overalls commit attribution"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "Put correct Git name and email address."
+msgstr "Enter a valid Git name and email address."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Email for Git"
+msgstr "Git email"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes go work for new machines. Commit attribution changes go work for future agent requests."
+msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 
 #: lib/marshall_web/live/account_live.ex:538
 #, elixir-autogen, elixir-format
 msgid "Git settings"
 msgstr "Settings for Git"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "We don save Git settings."
+msgstr "Git settings saved."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:542
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Username for Git"
+msgstr "Git username"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Save di Git settings"
+msgstr "Save Git settings"
 
 #: lib/marshall_web/live/account_live.ex:559
 #, elixir-autogen, elixir-format
@@ -7092,10 +7099,11 @@ msgstr "Interruption wey we see: %{seconds} seconds (e still dey go on)"
 msgid "Operation"
 msgstr "Di operation"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "E pause"
+msgstr "Paused"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:399
 #, elixir-autogen, elixir-format

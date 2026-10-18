@@ -7311,6 +7311,7 @@ msgstr "%{span} por delante de tu hora"
 msgid "%{span} behind you"
 msgstr "%{span} por detrás de tu hora"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"

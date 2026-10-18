@@ -6904,45 +6904,52 @@ msgstr "%{span} lebih cepat dari Anda"
 msgid "%{span} behind you"
 msgstr "%{span} lebih lambat dari Anda"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "Tambahkan atribusi Overalls pada commit"
+msgstr "Add Overalls commit attribution"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "Masukkan nama Git dan alamat email yang valid."
+msgstr "Enter a valid Git name and email address."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Email Git"
+msgstr "Git email"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Perubahan identitas Git berlaku untuk mesin baru. Perubahan atribusi commit berlaku untuk permintaan agen berikutnya."
+msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 
 #: lib/marshall_web/live/account_live.ex:538
 #, elixir-autogen, elixir-format
 msgid "Git settings"
 msgstr "Pengaturan Git"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Pengaturan Git disimpan."
+msgstr "Git settings saved."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:542
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Nama pengguna Git"
+msgstr "Git username"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Simpan pengaturan Git"
+msgstr "Save Git settings"
 
 #: lib/marshall_web/live/account_live.ex:559
 #, elixir-autogen, elixir-format
@@ -7086,10 +7093,11 @@ msgstr "Gangguan teramati: %{seconds} dtk (berlangsung)"
 msgid "Operation"
 msgstr "Operasi"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Dijeda"
+msgstr "Paused"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:399
 #, elixir-autogen, elixir-format
