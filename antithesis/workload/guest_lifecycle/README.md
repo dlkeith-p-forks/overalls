@@ -21,7 +21,7 @@ and `guest-vmm`. Hosted Antithesis has no KVM, so the guest boots under QEMU
 TCG. The container `lilly-guest` release has no ZFS: its
 `OverallsAntithesis.Lilly.StubStorageCollector` reports each configured pool as
 a **fixed synthetic 1 TiB STUB** with zero usage and no allocation credit, and
-limits compute headroom to one free guest-vmm slot (1 vCPU, 2 GiB) capped by
+limits compute headroom to one free guest-vmm slot (1 vCPU, 2 GiB guest plus the 64 MiB VMM overhead admission reserves) capped by
 the container's measured cgroup limits. `StubStorageHealth` sets
 `execution_ready` only with that stub report, the verified advertised image and
 a passing guest-vmm health check. The enrollment operator registers the

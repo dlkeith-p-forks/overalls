@@ -228,6 +228,19 @@ the native blob oracle could not run Git and every attempt stopped before the
 force push (run `30a420d501d5d6d22527e679a7f00005-65-0`). The image now links
 `/opt/overalls/git`, the oracle calls it explicitly, and each early stop logs a
 fixed `Enrico published-head case unexercised` reason.
+The 1,025-attempt receipt-cap campaign ran but stopped silently in hosted run
+`56a1285564c94413812835f74246cf04-65-0`: it abandoned the campaign on the first
+failed fetch, although Enrico retains failed and succeeded receipts alike under
+the same cap. It now counts any settled attempt and logs a fixed
+`Enrico receipt-cap campaign unexercised` reason at every early stop. Run
+`3f76c3f47ad4062ba0d1c37896e5f3e9-65-0` showed the campaign is not completable in
+a hosted run (about 5.7 s per attempt, roughly 95 minutes for 1,025), so the cap
+stays covered by Enrico's unit and property tests. The same run produced one
+counterexample to the ninth-refresh refusal: a held fetch hit Enrico's 10 s
+read timeout under a slowed network, freeing a slot that the ninth refresh then
+legitimately took, while a holder snapshot scanned before that change still
+matched. The ninth verdict now requires a snapshot whose scan started after the
+ninth submission, and the observer stamps each snapshot before it scans.
 The optional `recorder-host` profile selects the TCG NixOS recorder VM and the
 three recorder commands. The workload waits for the VM health check, then its
 own read-only probe requires a fresh all-active unit sample, producer and spool
@@ -252,8 +265,13 @@ crashed on every trace request; back-to-back recovery restarts also tripped
 systemd's default start limit, and the pressure loop outran the command window.
 The fixture paths now carry store context, the producer refuses a failed
 request instead of exiting, the two restarted units have no start limit in this
-fixture only, and the pressure loop has a 20 s budget. Its evidence is
-emulated, not native.
+fixture only, and the pressure loop has a 20 s budget. The next run
+(`acfe129cf2288d30a7972edcbf9b92cf-65-0`) reached spool custody, recovery and
+real ENOSPC on the dedicated archive, but the one write attempted under ENOSPC
+committed into already allocated SQLite pages, so no refusal followed; the
+command now keeps writing, up to 32 batches, until the exhausted backing
+refuses. Archive quota refusal stays out of reach inside the 20 s loop. Its
+evidence is emulated, not native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
@@ -273,6 +291,13 @@ the VM row, which the placement migration had moved to
 `compute_workload_placements`, so every query failed and was reported as
 unavailable (`379970e17a2d5312bff3e5c5e2c17369-65-0`). The witness now joins the
 current placement, and oracle queries log each failing SQLSTATE class once.
+The following run (`642e01a83533ba33f07ba9e3eb4b17fd-65-0`) settled hundreds of
+decisions, all refusals, so the acceptance-path assertions held only vacuously;
+the refusal reason was invisible because the operator discards evaluation
+output. The workload now logs Marshall's closed refusal token once per process,
+and the operator names the operation whose result became uncertain. CPU and
+memory headroom here are measured over the whole Antithesis VM, so a refusal
+for capacity is Marshall's correct decision on a busy host, not a defect.
 Catalog headroom below the request shape no longer withholds a request: a
 definite `insufficient_capacity` refusal is Marshall's real decision, checked
 for absent rows and a bounded one-VM replay. Every stop before a settled
@@ -296,7 +321,12 @@ not native ZFS, KVM, Firecracker, isolation or capacity evidence. Its first
 hosted run (`a2edc265384761d6607df51eac50b29d-65-0`) timed out at
 `capacity_unknown` because the host was never enabled; the earlier local pass
 had inherited an enabled host from a retained PostgreSQL volume, so local
-validations now start from empty volumes.
+validations now start from empty volumes. With the host enabled, run
+`91c9dfa850d2435808323d8910182d7a-65-0` still admitted no guest: the stub slot
+reported exactly the 2 GiB guest memory, while admission reserves guest memory
+plus the fixed 64 MiB VMM overhead, so Marshall correctly refused every
+provision for insufficient capacity. The slot now reports guest memory plus
+that overhead, and the workload capacity gate requires the same sum.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The
@@ -387,7 +417,13 @@ material, never a production CA. Ziggy
 completion, Galileo named origin and the editor login-code race need a current
 running VM; the controlled Lilly pool reports unavailable capacity and no Audi
 editor gateway, editor release or wildcard is configured, so their primary and
-`Sometimes` assertions stay unevaluated. Ziggy and Galileo issue and
+`Sometimes` assertions stay unevaluated; the first hosted run
+(`e6bff5d6e4b57e6bb43c7a018384750d-65-0`) confirmed this, and each stop now logs a
+fixed `Satellite VM placement unexercised` reason. That run also listed twelve
+access assertions as never hit because the satellite drivers imported the
+fixture login from the access browser module; the login now lives in the
+assertion-free `access/session.py`, so only selected callsites enter the
+roster. Ziggy and Galileo issue and
 authenticate credentials only for an enabled host, and Marshall's reviewed
 enable action requires a fresh execution-ready report that the controlled
 `lilly-a` never sends, so satellite enrollment applies a labelled harness

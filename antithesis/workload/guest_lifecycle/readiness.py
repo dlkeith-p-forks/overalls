@@ -6,6 +6,10 @@ from core.outcome import State
 from guest_lifecycle.operation import ComputeLifecycleOperator, OperationLedger, OperatorReply
 from guest_lifecycle.witness import GuestIdentity, GuestWitnessClient
 
+# Admission reserves guest memory plus the fixed VMM overhead
+# (OverallsProtocol.VMShape.host_memory/1); headroom must cover both.
+VMM_OVERHEAD_BYTES = 67_108_864
+
 
 def _object(reply: OperatorReply) -> dict[str, object] | None:
     return reply.value if reply.status == "ok" and isinstance(reply.value, dict) else None
@@ -37,7 +41,7 @@ def capacity_gap(reply: OperatorReply, identity: GuestIdentity) -> str | None:
         type(vcpu) is int
         and vcpu >= identity.vcpu
         and type(memory) is int
-        and memory >= identity.memory_bytes
+        and memory >= identity.memory_bytes + VMM_OVERHEAD_BYTES
         and type(disk) is int
         and disk >= identity.minimum_disk_bytes
     ):

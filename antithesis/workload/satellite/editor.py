@@ -24,10 +24,10 @@ from uuid import UUID
 
 from antithesis.assertions import always, reachable, sometimes
 
-from access.browser import Login, login_fixture, verify_fixture_login
 from access.fixture import read_access_fixture
 from access.mail import MailLinks
 from access.oracle import AccessOracle
+from access.session import Login, login_fixture, verify_fixture_login
 from core.config import Config
 from core.interesting import choice
 from core.outcome import Observation, State

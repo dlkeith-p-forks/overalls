@@ -476,6 +476,8 @@ process_domain_action() {
         'type == "object" and .version == 1 and .request_id == $id and .operation == $op and ((.status == "ok" and (keys == ["operation","request_id","status","value","version"])) or ((.status == "error" or .status == "unavailable") and (keys == ["operation","reason","request_id","status","version"]) and (.reason | type == "string" and length >= 1 and length <= 100)))' \
         "$temporary" >/dev/null 2>&1; then
     rm -f "$temporary"
+    # Name only the closed operation; evaluation output stays discarded.
+    echo "overalls operator: $operation result uncertain" >&2
     publish_uncertain "$request_id"
     rm -f "$request"
     return

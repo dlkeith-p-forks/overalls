@@ -10,11 +10,12 @@ import subprocess
 import unittest
 from urllib.request import Request
 
-from access.browser import _token_path, pending_mutation_refused, pending_read_ok
+from access.browser import pending_mutation_refused, pending_read_ok
 from access.http import _pinned, hidden_form
 from access.liveview import _event_reply, parse_live_page
 from access.mail import _message_link
 from access.passkey import Authenticator, assertion
+from access.session import _token_path
 from core.outcome import State
 
 

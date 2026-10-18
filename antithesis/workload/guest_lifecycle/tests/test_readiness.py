@@ -20,7 +20,7 @@ def catalog(
     known: bool = True,
     image: str = IMAGE,
     vcpu: int = 1,
-    memory: int = 2_147_483_648,
+    memory: int = 2_214_592_512,
     disk: int = 4_294_967_296,
     status: str = "ok",
 ) -> OperatorReply:
@@ -42,6 +42,7 @@ class ReadinessTests(unittest.TestCase):
             (catalog(image="sha256:" + "b" * 64), "image_not_offered"),
             (catalog(vcpu=0), "capacity_insufficient"),
             (catalog(memory=1), "capacity_insufficient"),
+            (catalog(memory=2_147_483_648), "capacity_insufficient"),
             (catalog(disk=4096), "capacity_insufficient"),
         )
         for reply, reason in cases:
