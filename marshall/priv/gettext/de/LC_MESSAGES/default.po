@@ -2368,7 +2368,7 @@ msgstr "Falls Sie dies nicht angefordert haben, ignorieren Sie diese E-Mail."
 #: lib/marshall_web/live/threads_live.ex:1451
 #, elixir-autogen, elixir-format
 msgid "Image"
-msgstr "Image"
+msgstr "Abbild"
 
 #: lib/marshall_web/live/admin/operations_live.ex:72
 #, elixir-autogen, elixir-format
@@ -2378,7 +2378,7 @@ msgstr "Imagekatalog"
 #: lib/marshall_web/live/admin/operations_live.ex:66
 #, elixir-autogen, elixir-format
 msgid "Images"
-msgstr "Images"
+msgstr "Abbilder"
 
 #: lib/marshall_web/live/machines_live.ex:808
 #, elixir-autogen, elixir-format
@@ -6651,7 +6651,7 @@ msgstr "Arbeitsverzeichnis"
 #: lib/marshall_web/live/admin/workloads_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Workload"
-msgstr "Workload"
+msgstr "Arbeitslast"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:77
 #, elixir-autogen, elixir-format
@@ -6662,7 +6662,7 @@ msgstr "Die Workloadübersicht ist vorübergehend nicht verfügbar."
 #: lib/marshall_web/components/layouts.ex:442
 #, elixir-autogen, elixir-format
 msgid "Workloads"
-msgstr "Workloads"
+msgstr "Arbeitslasten"
 
 #: lib/marshall_web/components/layouts.ex:280
 #: lib/marshall_web/components/layouts.ex:448

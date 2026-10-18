@@ -5,6 +5,22 @@ defmodule MarshallWeb.DocsControllerTest do
   alias Marshall.Documentation
   alias OverallsProtocol.SSHCommand
 
+  # @cc [owner:ghuntley,label:verification] public-docs-language-direction
+  # Public documentation MUST expose the negotiated language and its explicit
+  # direction without requiring a session or authentication.
+  test "public documentation declares negotiated language and direction" do
+    for {locale, direction} <- [{"en", "ltr"}, {"ar", "rtl"}, {"ur", "rtl"}, {"ja", "ltr"}] do
+      conn = build_conn() |> put_req_header("accept-language", locale) |> get("/docs")
+      document = conn |> html_response(200) |> LazyHTML.from_document()
+
+      assert Enum.count(LazyHTML.query(document, "html[lang='#{locale}'][dir='#{direction}']")) ==
+               1
+
+      assert get_resp_header(conn, "content-language") == [locale]
+      assert get_resp_header(conn, "set-cookie") == []
+    end
+  end
+
   test "public HTML and Markdown share packaged content without login or cookies" do
     for page <- Documentation.pages() do
       path = if page.slug == "index", do: "/docs", else: "/docs/#{page.slug}"
@@ -81,7 +97,7 @@ defmodule MarshallWeb.DocsControllerTest do
     {:ok, page} = Documentation.page("commands")
 
     for command <- SSHCommand.catalog() do
-      assert page.markdown =~ "## #{command.name}\n"
+      assert page.markdown =~ "## `#{command.name}`\n"
       assert page.markdown =~ "`#{command.usage}`"
     end
 

@@ -7015,7 +7015,7 @@ msgstr "স্বীকৃত"
 #: lib/marshall_web/live/integrations_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "Awaiting GitHub authorization"
-msgstr ""
+msgstr "GitHub অনুমোদনের অপেক্ষায়"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
 #, elixir-autogen, elixir-format
@@ -7045,7 +7045,7 @@ msgstr "প্রার্থী: %{name}"
 #: lib/marshall_web/live/overview_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
-msgstr ""
+msgstr "আপনার ইনবক্স দেখুন এবং সদস্যতা নিশ্চিত করতে লিঙ্কে ক্লিক করুন।"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
@@ -7067,7 +7067,7 @@ msgstr "ক্লোন করা হচ্ছে"
 #: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Comment"
-msgstr ""
+msgstr "মন্তব্য"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
 #, elixir-autogen, elixir-format
@@ -7077,23 +7077,23 @@ msgstr "কনফিগার করা হোস্টের অতিরিক
 #: lib/marshall_web/live/integrations_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Connect GitHub"
-msgstr ""
+msgstr "GitHub সংযুক্ত করুন"
 
 #: lib/marshall_web/live/integrations_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
-msgstr ""
+msgstr "Git, পুল রিকোয়েস্ট, Actions, রিলিজ এবং অন্যান্য উন্নয়ন কর্মপ্রবাহের জন্য আপনার GitHub অ্যাকাউন্ট সংযুক্ত করুন। GitHub পরিচয়পত্র এজেই থাকে।"
 
 #: lib/marshall_web/live/integrations_live.ex:126
 #: lib/marshall_web/live/integrations_live.ex:127
 #, elixir-autogen, elixir-format
 msgid "Connected"
-msgstr ""
+msgstr "সংযুক্ত"
 
 #: lib/marshall_web/live/integrations_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "Connected as %{login}"
-msgstr ""
+msgstr "%{login} হিসেবে সংযুক্ত"
 
 #: lib/marshall_web/automatic_magic_sign_in_live.ex:33
 #, elixir-autogen, elixir-format
@@ -7118,27 +7118,27 @@ msgstr "গন্তব্য পরিষ্কারের অনুরোধ 
 #: lib/marshall_web/live/integrations_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub"
-msgstr ""
+msgstr "GitHub সংযোগ বিচ্ছিন্ন করুন"
 
 #: lib/marshall_web/live/integrations_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub from your machines?"
-msgstr ""
+msgstr "আপনার মেশিনগুলি থেকে GitHub সংযোগ বিচ্ছিন্ন করবেন?"
 
 #: lib/marshall_web/live/integrations_live.ex:128
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
-msgstr ""
+msgstr "সংযোগ বিচ্ছিন্ন"
 
 #: lib/marshall_web/live/integrations_live.ex:133
 #, elixir-autogen, elixir-format
 msgid "Disconnecting GitHub"
-msgstr ""
+msgstr "GitHub সংযোগ বিচ্ছিন্ন করা হচ্ছে"
 
 #: lib/marshall_web/live/overview_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
-msgstr ""
+msgstr "বন্ধ করুন"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
 #, elixir-autogen, elixir-format
@@ -7165,7 +7165,7 @@ msgstr "খালি করা হচ্ছে"
 #: lib/marshall_web/live/overview_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
-msgstr ""
+msgstr "একটি বৈধ ইমেইল ঠিকানা লিখুন।"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
 #, elixir-autogen, elixir-format
@@ -7175,22 +7175,22 @@ msgstr "সরিয়ে নেওয়া হচ্ছে"
 #: lib/marshall_web/live/integrations_live.ex:130
 #, elixir-autogen, elixir-format
 msgid "Finishing active GitHub requests"
-msgstr ""
+msgstr "সক্রিয় GitHub অনুরোধগুলি শেষ করা হচ্ছে"
 
 #: lib/marshall_web/live/overview_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
-msgstr ""
+msgstr "ইমেইলে Overalls ও AI সম্পর্কে পরামর্শ, কৌশল ও নতুন খবর পান।"
 
 #: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
 #, elixir-autogen, elixir-format
 msgid "GitHub connected."
-msgstr ""
+msgstr "GitHub সংযুক্ত হয়েছে।"
 
 #: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
 #, elixir-autogen, elixir-format
 msgid "GitHub could not be connected. Try again from Integrations."
-msgstr ""
+msgstr "GitHub সংযুক্ত করা যায়নি। Integrations থেকে আবার চেষ্টা করুন।"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #, elixir-autogen, elixir-format
@@ -7210,17 +7210,17 @@ msgstr "কাজের অবস্থা"
 #: lib/marshall_web/live/machines_live.ex:1116
 #, elixir-autogen, elixir-format
 msgid "Labels"
-msgstr ""
+msgstr "লেবেল"
 
 #: lib/marshall_web/live/machines_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
-msgstr ""
+msgstr "মেশিনের মেটাডেটা সংরক্ষিত হয়েছে।"
 
 #: lib/marshall_web/live/integrations_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Machines excluded from your GitHub identity"
-msgstr ""
+msgstr "আপনার GitHub পরিচয় থেকে বাদ দেওয়া মেশিনগুলি"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #, elixir-autogen, elixir-format
@@ -7245,17 +7245,17 @@ msgstr "কার্যক্রম"
 #: lib/marshall_web/live/integrations_live.ex:132
 #, elixir-autogen, elixir-format
 msgid "Reconnect required"
-msgstr ""
+msgstr "পুনরায় সংযোগ প্রয়োজন"
 
 #: lib/marshall_web/live/machines_live.ex:1115
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
-msgstr ""
+msgstr "রিফ্লেকশন মেটাডেটা"
 
 #: lib/marshall_web/live/integrations_live.ex:131
 #, elixir-autogen, elixir-format
 msgid "Refreshing GitHub connection"
-msgstr ""
+msgstr "GitHub সংযোগ নবায়ন করা হচ্ছে"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:424
 #, elixir-autogen, elixir-format
@@ -7302,17 +7302,17 @@ msgstr "গন্তব্য আবার চালু করার চেষ�
 #: lib/marshall_web/live/machines_live.ex:1118
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
-msgstr ""
+msgstr "মেটাডেটা সংরক্ষণ করুন"
 
 #: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
-msgstr ""
+msgstr "এজেন্টদের জন্য সংক্ষিপ্ত বিবরণ"
 
 #: lib/marshall_web/live/integrations_live.ex:401
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
-msgstr ""
+msgstr "গেস্ট রিফ্লেকশনের জন্য সংক্ষিপ্ত বিবরণ"
 
 #: lib/marshall_web/automatic_magic_sign_in_live.ex:27
 #, elixir-autogen, elixir-format
@@ -7352,12 +7352,12 @@ msgstr "সর্বশেষ খবর জানুন"
 #: lib/marshall_web/live/overview_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
-msgstr ""
+msgstr "সদস্যতা নিন"
 
 #: lib/marshall_web/live/integrations_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Temporarily unavailable"
-msgstr ""
+msgstr "সাময়িকভাবে অনুপলব্ধ"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
 #, elixir-autogen, elixir-format
@@ -7367,12 +7367,12 @@ msgstr "স্থানান্তর ব্যস্ত"
 #: lib/marshall_web/live/overview_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
-msgstr ""
+msgstr "যেকোনো সময় সদস্যতা বাতিল করুন।"
 
 #: lib/marshall_web/live/overview_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
-msgstr ""
+msgstr "আমরা নিউজলেটার পরিষেবায় পৌঁছাতে পারিনি। পরে আবার চেষ্টা করুন।"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
 #, elixir-autogen, elixir-format
@@ -7402,12 +7402,12 @@ msgstr "আপনার ইমেইল লিংক যাচাই করা �
 #: lib/marshall_web/live/integrations_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
-msgstr ""
+msgstr "আপনার মেশিনগুলি স্বয়ংক্রিয়ভাবে আপনার সংযুক্ত GitHub পরিচয় ব্যবহার করে। শেয়ার করা মেশিনের সহযোগীরা মালিকের GitHub অনুমতি ব্যবহার করতে পারেন। বিচ্ছিন্ন মেশিনগুলি পরিচয়বিহীনভাবে সর্বজনীন GitHub ব্যবহারের সুবিধা বজায় রাখে।"
 
 #: lib/marshall_web/live/machines_live.ex:1116
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
-msgstr ""
+msgstr "প্রোডাকশন, প্রকল্পের-নাম"
 
 #: lib/marshall/accounts/time_zones.ex:300
 #, elixir-autogen, elixir-format
