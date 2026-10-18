@@ -893,3 +893,5 @@ and physical storage acceptance. See the
 [host-lock review](../reviews/2026-10-05-host-lock-descendant-custody.md) and
 [transfer review](../reviews/2026-10-05-transfer-stream-adopted-children.md);
 ADR-0015/0037 retain their statuses and accepted rationale.
+
+| [ADR-0199](0199-guest-reflection.md) | accepted | partial | Guest reflection service |
