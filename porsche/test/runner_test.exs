@@ -298,27 +298,24 @@ defmodule Porsche.RunnerTest do
   end
 
   property "wait traces submit once and stop at the first terminal receipt or deadline" do
-    check all(
-            pending <- integer(0..10),
-            timeout <- integer(1..8),
-            terminal <- member_of(["succeeded", "failed", "superseded"])
-          ) do
-      replies = List.duplicate(receipt("accepted"), pending) ++ [receipt(terminal)]
-      {options, state} = script(replies)
-      result = Runner.run(client(), "s", "new --timeout #{timeout} --request-id #{@id}", options)
+    pending = draw(integer(0..10))
+    timeout = draw(integer(1..8))
+    terminal = draw(member_of(["succeeded", "failed", "superseded"]))
+    replies = List.duplicate(receipt("accepted"), pending) ++ [receipt(terminal)]
+    {options, state} = script(replies)
+    result = Runner.run(client(), "s", "new --timeout #{timeout} --request-id #{@id}", options)
 
-      if pending < timeout do
-        assert result.response["status"] == terminal
-        assert result.exit_status == if(terminal == "succeeded", do: 0, else: 1)
-        assert length(state.().calls) == pending + 1
-      else
-        assert result.exit_status == 4
-        assert result.response["status"] == "accepted"
-        assert length(state.().calls) == timeout
-      end
-
-      assert Enum.count(state.().calls, &(get_in(&1, ["command", "command"]) == "new")) == 1
+    if pending < timeout do
+      assert result.response["status"] == terminal
+      assert result.exit_status == if(terminal == "succeeded", do: 0, else: 1)
+      assert length(state.().calls) == pending + 1
+    else
+      assert result.exit_status == 4
+      assert result.response["status"] == "accepted"
+      assert length(state.().calls) == timeout
     end
+
+    assert Enum.count(state.().calls, &(get_in(&1, ["command", "command"]) == "new")) == 1
   end
 
   defp client do

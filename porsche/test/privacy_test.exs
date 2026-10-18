@@ -19,25 +19,25 @@ defmodule Porsche.PrivacyTest do
   end
 
   property "report redaction is independent of arbitrary secret payloads and metadata" do
-    check all(secret <- binary(min_length: 1, max_length: 4096)) do
-      event = %{
-        level: :error,
-        msg: {:report, %{label: {:gen_server, :terminate}, state: secret, messages: [secret]}},
-        meta: %{porsche_private: true, token: secret, report_cb: fn _ -> secret end}
-      }
+    secret = draw(binary(min_length: 1, max_length: 4096))
 
-      filtered = Porsche.Privacy.filter(event, nil)
+    event = %{
+      level: :error,
+      msg: {:report, %{label: {:gen_server, :terminate}, state: secret, messages: [secret]}},
+      meta: %{porsche_private: true, token: secret, report_cb: fn _ -> secret end}
+    }
 
-      assert filtered == %{
-               level: :error,
-               msg: {:string, "Porsche process_crash (payload redacted)"},
-               meta: %{
-                 domain: [:porsche],
-                 event: "porsche.process_crash",
-                 report_category: "process_crash"
-               }
+    filtered = Porsche.Privacy.filter(event, nil)
+
+    assert filtered == %{
+             level: :error,
+             msg: {:string, "Porsche process_crash (payload redacted)"},
+             meta: %{
+               domain: [:porsche],
+               event: "porsche.process_crash",
+               report_category: "process_crash"
              }
-    end
+           }
   end
 
   test "raw handlers receive only redacted source events, even without the default formatter" do
@@ -166,46 +166,45 @@ defmodule Porsche.PrivacyTest do
   end
 
   property "fingerprints, command markers and credentials never appear in any filter output" do
-    check all(payload <- string(:printable, min_length: 1, max_length: 128)) do
-      secret = "synthetic-secret-" <> payload
+    payload = draw(string(:printable, min_length: 1, max_length: 128))
+    secret = "synthetic-secret-" <> payload
 
-      events = [
-        %{
-          level: :warning,
-          msg: {:string, secret},
-          meta: %{
-            porsche_private: true,
-            event: "porsche.auth_denied",
-            reason: :unknown_key,
-            fingerprint: secret,
-            command: secret
-          }
-        },
-        %{
-          level: :info,
-          msg: {:string, secret},
-          meta: %{porsche_private: true, event: "porsche.session_outcome", outcome_state: secret}
-        },
-        %{
-          level: :warning,
-          msg: {:string, secret},
-          meta: %{porsche_private: true, event: "porsche.exchange_failed", reason: secret}
-        },
-        %{
-          level: :error,
-          msg: {:report, %{label: {:gen_server, :terminate}, state: secret, command: secret}},
-          meta: %{porsche_private: true, token: secret}
-        },
-        %{level: :error, msg: {:string, secret}, meta: %{domain: [:otp, :ssh], command: secret}},
-        %{level: :error, msg: {~c"~s~s", [secret, secret]}, meta: %{porsche_private: true}}
-      ]
+    events = [
+      %{
+        level: :warning,
+        msg: {:string, secret},
+        meta: %{
+          porsche_private: true,
+          event: "porsche.auth_denied",
+          reason: :unknown_key,
+          fingerprint: secret,
+          command: secret
+        }
+      },
+      %{
+        level: :info,
+        msg: {:string, secret},
+        meta: %{porsche_private: true, event: "porsche.session_outcome", outcome_state: secret}
+      },
+      %{
+        level: :warning,
+        msg: {:string, secret},
+        meta: %{porsche_private: true, event: "porsche.exchange_failed", reason: secret}
+      },
+      %{
+        level: :error,
+        msg: {:report, %{label: {:gen_server, :terminate}, state: secret, command: secret}},
+        meta: %{porsche_private: true, token: secret}
+      },
+      %{level: :error, msg: {:string, secret}, meta: %{domain: [:otp, :ssh], command: secret}},
+      %{level: :error, msg: {~c"~s~s", [secret, secret]}, meta: %{porsche_private: true}}
+    ]
 
-      for event <- events do
-        filtered = Porsche.Privacy.filter(event, nil)
+    for event <- events do
+      filtered = Porsche.Privacy.filter(event, nil)
 
-        if filtered != :ignore do
-          refute inspect(filtered) =~ secret
-        end
+      if filtered != :ignore do
+        refute inspect(filtered) =~ secret
       end
     end
   end

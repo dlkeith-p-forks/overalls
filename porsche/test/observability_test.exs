@@ -17,44 +17,44 @@ defmodule Porsche.ObservabilityTest do
   end
 
   property "aggregate counts match an independent model and discard arbitrary metadata" do
-    check all(
-            events <-
-              list_of(
-                tuple(
-                  {member_of([:http, :ssh]), integer(0..1_000_000), integer(0..1),
-                   binary(max_length: 128)}
-                ),
-                max_length: 100
-              )
-          ) do
-      Observability.snapshot()
+    events =
+      draw(
+        list_of(
+          tuple(
+            {member_of([:http, :ssh]), integer(0..1_000_000), integer(0..1),
+             binary(max_length: 128)}
+          ),
+          max_length: 100
+        )
+      )
 
-      expected =
-        Enum.reduce(events, %{}, fn {kind, duration, error, secret}, model ->
-          Observability.observe(
-            [:porsche, kind, :complete],
-            %{duration_us: duration, error: error},
-            %{token: secret, command: secret},
-            nil
-          )
+    Observability.snapshot()
 
-          Map.update(model, kind, {1, duration, error}, fn {n, d, e} ->
-            {n + 1, d + duration, e + error}
-          end)
+    expected =
+      Enum.reduce(events, %{}, fn {kind, duration, error, secret}, model ->
+        Observability.observe(
+          [:porsche, kind, :complete],
+          %{duration_us: duration, error: error},
+          %{token: secret, command: secret},
+          nil
+        )
+
+        Map.update(model, kind, {1, duration, error}, fn {n, d, e} ->
+          {n + 1, d + duration, e + error}
         end)
+      end)
 
-      assert :ets.info(Observability, :size) <= 2
-      snapshot = Observability.snapshot()
+    assert :ets.info(Observability, :size) <= 2
+    snapshot = Observability.snapshot()
 
-      for {kind, {count, duration, errors}} <- expected do
-        assert snapshot["#{kind}_count"] == count
-        assert snapshot["#{kind}_duration_ms"] == duration / 1000
-        assert snapshot["#{kind}_errors"] == errors
-      end
-
-      assert Map.keys(Observability.snapshot()) |> Enum.sort() ==
-               ~w(beam_atoms beam_memory_bytes beam_processes beam_run_queue ssh_candidate_total ssh_proved_total)
+    for {kind, {count, duration, errors}} <- expected do
+      assert snapshot["#{kind}_count"] == count
+      assert snapshot["#{kind}_duration_ms"] == duration / 1000
+      assert snapshot["#{kind}_errors"] == errors
     end
+
+    assert Map.keys(Observability.snapshot()) |> Enum.sort() ==
+             ~w(beam_atoms beam_memory_bytes beam_processes beam_run_queue ssh_candidate_total ssh_proved_total)
   end
 
   test "ssh candidate and proved telemetry surface as clamped cumulative counters" do
@@ -97,30 +97,30 @@ defmodule Porsche.ObservabilityTest do
   end
 
   property "retired metric-shaped reports are redacted like any other report" do
-    check all(secret <- binary(max_length: 2048)) do
-      event = %{
-        level: :info,
-        msg:
-          {:report,
-           %{
-             event: "metrics.summary",
-             service: secret,
-             token: secret,
-             metrics: %{"http_count" => 3, "command" => secret}
-           }},
-        meta: %{token: secret, report_cb: fn _ -> secret end, porsche_private: true}
-      }
+    secret = draw(binary(max_length: 2048))
 
-      assert Porsche.Privacy.filter(event, nil) == %{
-               level: :info,
-               msg: {:string, "Porsche runtime_report (payload redacted)"},
-               meta: %{
-                 domain: [:porsche],
-                 event: "porsche.runtime_report",
-                 report_category: "runtime_report"
-               }
+    event = %{
+      level: :info,
+      msg:
+        {:report,
+         %{
+           event: "metrics.summary",
+           service: secret,
+           token: secret,
+           metrics: %{"http_count" => 3, "command" => secret}
+         }},
+      meta: %{token: secret, report_cb: fn _ -> secret end, porsche_private: true}
+    }
+
+    assert Porsche.Privacy.filter(event, nil) == %{
+             level: :info,
+             msg: {:string, "Porsche runtime_report (payload redacted)"},
+             meta: %{
+               domain: [:porsche],
+               event: "porsche.runtime_report",
+               report_category: "runtime_report"
              }
-    end
+           }
   end
 
   test "actual periodic emission reaches raw handlers with numeric metrics only" do

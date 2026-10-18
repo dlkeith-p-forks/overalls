@@ -5,34 +5,31 @@ defmodule Porsche.SLOTest do
   alias Porsche.{Observability, SLO}
 
   property "generated terminal command dispatches keep closed cumulative outcomes and buckets" do
-    check all(
-            outcomes <-
-              list_of(tuple({boolean(), integer(0..20_000_000)}), max_length: 100)
-          ) do
-      final =
-        Enum.reduce(outcomes, SLO.new(), fn {success, duration}, state ->
-          SLO.record(state, success, duration)
-        end)
+    outcomes = draw(list_of(tuple({boolean(), integer(0..20_000_000)}), max_length: 100))
 
-      snapshot = SLO.snapshot(final)
-      assert snapshot.requests == length(outcomes)
-      assert snapshot.successes == Enum.count(outcomes, &elem(&1, 0))
-      assert snapshot.failures == snapshot.requests - snapshot.successes
-      assert snapshot.duration.count == snapshot.requests
-      assert snapshot.duration.sum_us == Enum.reduce(outcomes, 0, &(&2 + elem(&1, 1)))
-      assert Enum.sum(snapshot.duration.bucket_counts) == snapshot.requests
-      bounds = snapshot.duration.explicit_bounds_us
+    final =
+      Enum.reduce(outcomes, SLO.new(), fn {success, duration}, state ->
+        SLO.record(state, success, duration)
+      end)
 
-      assert snapshot.duration.bucket_counts ==
-               Enum.map(0..length(bounds), fn index ->
-                 Enum.count(outcomes, fn {_success, duration} ->
-                   Enum.find_index(bounds, &(duration <= &1)) == index or
-                     (index == length(bounds) and duration > List.last(bounds))
-                 end)
+    snapshot = SLO.snapshot(final)
+    assert snapshot.requests == length(outcomes)
+    assert snapshot.successes == Enum.count(outcomes, &elem(&1, 0))
+    assert snapshot.failures == snapshot.requests - snapshot.successes
+    assert snapshot.duration.count == snapshot.requests
+    assert snapshot.duration.sum_us == Enum.reduce(outcomes, 0, &(&2 + elem(&1, 1)))
+    assert Enum.sum(snapshot.duration.bucket_counts) == snapshot.requests
+    bounds = snapshot.duration.explicit_bounds_us
+
+    assert snapshot.duration.bucket_counts ==
+             Enum.map(0..length(bounds), fn index ->
+               Enum.count(outcomes, fn {_success, duration} ->
+                 Enum.find_index(bounds, &(duration <= &1)) == index or
+                   (index == length(bounds) and duration > List.last(bounds))
                end)
+             end)
 
-      refute inspect(snapshot) =~ "command"
-    end
+    refute inspect(snapshot) =~ "command"
   end
 
   test "terminal SSH telemetry reaches the cumulative source without changing interval summaries" do

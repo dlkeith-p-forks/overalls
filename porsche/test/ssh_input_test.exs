@@ -5,31 +5,28 @@ defmodule Porsche.SSH.InputTest do
   alias Porsche.SSH.Input
 
   property "line normalization is independent of packet boundaries" do
-    check all(
-            first <- string(:alphanumeric, max_length: 100),
-            second <- string(:alphanumeric, max_length: 100),
-            suffix <- member_of(["", "é", "猫", "👩‍💻"]),
-            size <- integer(1..30)
-          ) do
-      first = first <> suffix
-      bytes = first <> "\r\n" <> second <> "\n"
+    first = draw(string(:alphanumeric, max_length: 100))
+    second = draw(string(:alphanumeric, max_length: 100))
+    suffix = draw(member_of(["", "é", "猫", "👩‍💻"]))
+    size = draw(integer(1..30))
+    first = first <> suffix
+    bytes = first <> "\r\n" <> second <> "\n"
 
-      chunks =
-        bytes
-        |> :binary.bin_to_list()
-        |> Enum.chunk_every(size)
-        |> Enum.map(&:erlang.list_to_binary/1)
+    chunks =
+      bytes
+      |> :binary.bin_to_list()
+      |> Enum.chunk_every(size)
+      |> Enum.map(&:erlang.list_to_binary/1)
 
-      state =
-        Enum.reduce(chunks, %Input{}, fn chunk, state ->
-          {:ok, next, _} = Input.feed(state, chunk)
-          next
-        end)
+    state =
+      Enum.reduce(chunks, %Input{}, fn chunk, state ->
+        {:ok, next, _} = Input.feed(state, chunk)
+        next
+      end)
 
-      assert {:line, ^first, rest} = Input.take(state)
-      assert {:line, ^second, rest} = Input.take(rest)
-      assert :empty = Input.take(rest)
-    end
+    assert {:line, ^first, rest} = Input.take(state)
+    assert {:line, ^second, rest} = Input.take(rest)
+    assert :empty = Input.take(rest)
   end
 
   test "backspace, controls, EOF and total pending input have explicit bounds" do
@@ -46,18 +43,15 @@ defmodule Porsche.SSH.InputTest do
   end
 
   property "fragmented editing and Unicode produce the same submitted command" do
-    check all(
-            size <- integer(1..20),
-            word <- string(:alphanumeric, min_length: 1, max_length: 40)
-          ) do
-      bytes = word <> "é👩‍💻猫\e[D\b\eOC!\e[999~\r\n"
-      state = feed_chunks(bytes, size)
-      assert {:line, command, rest} = Input.take(state)
-      assert command == word <> "é猫!"
-      assert :empty = Input.take(rest)
-      assert state.escape == ""
-      assert String.valid?(state.buffer)
-    end
+    size = draw(integer(1..20))
+    word = draw(string(:alphanumeric, min_length: 1, max_length: 40))
+    bytes = word <> "é👩‍💻猫\e[D\b\eOC!\e[999~\r\n"
+    state = feed_chunks(bytes, size)
+    assert {:line, command, rest} = Input.take(state)
+    assert command == word <> "é猫!"
+    assert :empty = Input.take(rest)
+    assert state.escape == ""
+    assert String.valid?(state.buffer)
   end
 
   test "history restores the draft and cursor, isolates channels and requires Enter" do
@@ -125,24 +119,24 @@ defmodule Porsche.SSH.InputTest do
   end
 
   property "arbitrary packet bytes cannot grow parser state beyond its bounds" do
-    check all(chunks <- list_of(binary(max_length: 100), max_length: 20)) do
-      Enum.reduce_while(chunks, %Input{}, fn bytes, state ->
-        case Input.feed(state, bytes) do
-          {:ok, next, _} ->
-            assert Input.pending_bytes(next) <= 8192
-            assert byte_size(next.escape) <= 64
-            assert byte_size(next.utf8) <= 3
-            assert length(next.history) <= 100
-            assert Enum.sum(Enum.map(next.history, &byte_size/1)) <= 65536
-            assert String.valid?(next.buffer)
-            assert next.cursor <= String.length(next.buffer)
-            {:cont, next}
+    chunks = draw(list_of(binary(max_length: 100), max_length: 20))
 
-          _ ->
-            {:halt, state}
-        end
-      end)
-    end
+    Enum.reduce_while(chunks, %Input{}, fn bytes, state ->
+      case Input.feed(state, bytes) do
+        {:ok, next, _} ->
+          assert Input.pending_bytes(next) <= 8192
+          assert byte_size(next.escape) <= 64
+          assert byte_size(next.utf8) <= 3
+          assert length(next.history) <= 100
+          assert Enum.sum(Enum.map(next.history, &byte_size/1)) <= 65536
+          assert String.valid?(next.buffer)
+          assert next.cursor <= String.length(next.buffer)
+          {:cont, next}
+
+        _ ->
+          {:halt, state}
+      end
+    end)
   end
 
   defp feed_chunks(bytes, size) do
