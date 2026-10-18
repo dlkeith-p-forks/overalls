@@ -4,6 +4,7 @@ defmodule MarshallWeb.TerminalLive do
   require Marshall.Events
   alias Marshall.Compute
   alias Marshall.Terminal.Authority
+  alias Marshall.Android.DisplayTickets
   alias MarshallWeb.{MachineWorkspace, TerminalOpening}
   import MarshallWeb.TerminalOpening, only: [is_retryable: 1]
 
@@ -20,6 +21,8 @@ defmodule MarshallWeb.TerminalLive do
         vm: nil,
         opening: TerminalOpening.new(),
         opening_task: nil,
+        android_display?: false,
+        android_display_notice: nil,
         sessions_empty?: true,
         notice: nil,
         opening_notice: nil,
@@ -33,7 +36,11 @@ defmodule MarshallWeb.TerminalLive do
     case Compute.get_vm(%{vm_id: id}, actor: socket.assigns.current_user) do
       {:ok, vm} ->
         if connected?(socket), do: Process.send_after(self(), :refresh_terminals, 2000)
-        {:ok, MachineWorkspace.put_vm(socket, vm), layout: false}
+        {:ok,
+         socket
+         |> MachineWorkspace.put_vm(vm)
+         |> assign(android_display?: get_in(vm, [:guest_capabilities, :android_display]) == true),
+         layout: false}
 
       _ ->
         # ADR-0140: an unreachable database is not evidence the machine is
@@ -61,6 +68,25 @@ defmodule MarshallWeb.TerminalLive do
   end
 
   @impl true
+  def handle_event("android_display_ticket", %{"mode" => mode}, socket)
+      when mode in ["viewer", "controller"] do
+    display_mode = String.to_existing_atom(mode)
+
+    case DisplayTickets.issue(socket.assigns.vm, socket.assigns.current_user, display_mode) do
+      {:ok, ticket} ->
+        {:noreply,
+         socket
+         |> assign(android_display_notice: gettext("Display relay ticket issued."))
+         |> push_event("android_display_ticket", %{ticket: ticket, mode: mode})}
+
+      {:error, :forbidden} ->
+        {:noreply, assign(socket, android_display_notice: gettext("Android display is unavailable."))}
+    end
+  end
+
+  def handle_event("android_display_ticket", _params, socket),
+    do: {:noreply, assign(socket, android_display_notice: gettext("Android display is unavailable."))}
+
   def handle_event("terminal_new", %{"request_id" => request_id}, socket)
       when is_binary(request_id) do
     case Authority.open_personal_session(
@@ -587,6 +613,20 @@ defmodule MarshallWeb.TerminalLive do
               <button id="terminal-boot-log" type="button">{gettext("Boot log")}</button>
             </div>
           </aside>
+
+          <section :if={@android_display?} id="android-display" class="stack" aria-labelledby="android-display-heading">
+            <h2 id="android-display-heading">{gettext("Android display")}</h2>
+            <p>{gettext("The software-rendered Android display uses the machine relay.")}</p>
+            <div class="row">
+              <button type="button" phx-click="android_display_ticket" phx-value-mode="viewer">
+                {gettext("Open display")}
+              </button>
+              <button type="button" phx-click="android_display_ticket" phx-value-mode="controller">
+                {gettext("Request control")}
+              </button>
+            </div>
+            <p :if={@android_display_notice} role="status">{@android_display_notice}</p>
+          </section>
 
           <div id="terminal-display" class="machine-terminal-display">
             <div id="terminal-display-ui" phx-update="ignore">
