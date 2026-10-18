@@ -19,7 +19,7 @@ in
   # The guest display bridge MUST bind RFB to loopback. This module does not
   # claim authenticated host display access; no new guest ingress port is opened
   # and an authenticated display relay remains a separate integration.
-  environment.systemPackages = [ androidSdk pkgs.xorg.xorgserver pkgs.x11vnc pkgs.socat ];
+  environment.systemPackages = [ androidSdk pkgs.jdk pkgs.xorg.xorgserver pkgs.x11vnc pkgs.socat ];
 
   users.users.overalls-android = {
     isSystemUser = true;
@@ -39,6 +39,7 @@ in
       ANDROID_USER_HOME = "/var/lib/overalls-android";
       ANDROID_AVD_HOME = avdRoot;
       DISPLAY = ":0";
+      JAVA_HOME = "${pkgs.jdk}";
     };
     serviceConfig = {
       Type = "simple";
