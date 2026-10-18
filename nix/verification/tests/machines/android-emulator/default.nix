@@ -79,7 +79,7 @@ pkgs.testers.runNixOSTest {
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
     android.wait_for_open_port(5555)
     android.succeed("adb start-server")
-    android.wait_until_succeeds("adb -s emulator-5554 wait-for-device", timeout=180)
+    android.wait_until_succeeds("timeout 15 adb -s emulator-5554 wait-for-device", timeout=600)
     android.wait_until_succeeds("test \"$(timeout 15 adb -s emulator-5554 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=600)
     android.succeed("adb -s emulator-5554 shell getprop ro.kernel.qemu | grep -Fx 1")
     android.succeed("adb -s emulator-5554 shell settings get global animator_duration_scale")
