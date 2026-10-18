@@ -614,7 +614,7 @@ defmodule MarshallWeb.TerminalLive do
             </div>
           </aside>
 
-          <section :if={@android_display?} id="android-display" class="stack" aria-labelledby="android-display-heading">
+          <section :if={@android_display?} id="android-display" class="stack" aria-labelledby="android-display-heading" phx-hook="AndroidDisplay" data-display-websocket-url="/android-display">
             <h2 id="android-display-heading">{gettext("Android display")}</h2>
             <p>{gettext("The software-rendered Android display uses the machine relay.")}</p>
             <div class="row">
@@ -625,7 +625,8 @@ defmodule MarshallWeb.TerminalLive do
                 {gettext("Request control")}
               </button>
             </div>
-            <p :if={@android_display_notice} role="status">{@android_display_notice}</p>
+            <p data-display-status data-status="idle" role="status">{@android_display_notice || gettext("Waiting for display relay.")}</p>
+            <canvas width="1080" height="1920" aria-label={gettext("Android display canvas")}></canvas>
           </section>
 
           <div id="terminal-display" class="machine-terminal-display">
