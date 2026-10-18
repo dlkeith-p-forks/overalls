@@ -34,4 +34,5 @@ guest disks, log the reference, or let delivery delay, fail or fence running (AD
 Android display connections MUST derive the guest address, fixed RFB port and
 network mark from a revalidated Guest identity, require the current emulator
 generation and an Android display capability, and refuse stale or ordinary inputs
-before opening a host socket.
+before opening a host socket. The connector MUST send the closed relay preface
+only after the namespace socket is established.
