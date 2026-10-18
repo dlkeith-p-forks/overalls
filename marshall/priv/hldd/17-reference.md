@@ -309,8 +309,15 @@ the enrollment operator registers that image through Marshall's catalog action
 and then enables lilly-a through the reviewed CLI `enable` action, which
 refuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real
 admission transaction commits VM, placement, reservation and dispatch rows,
-but the controlled executor never launches a guest and a delete never
-completes. Setup requires the enabled normal-mode host and those committed report, pool
+but the controlled executor never launches a guest. A delete settles only
+through a labelled **STUB** enabled by this profile's explicit opt-in: the
+controlled executor reports the deleted facts for a placement only after
+observing a controlled pool, a journal that never recorded it running, only
+publication records for it and no native execution state, and writes an
+absence attestation; Marshall's real outcome, release and archive path then
+runs. Run `a8c0a8e424bc48eb017aa2322795fc68-65-0` left archived-key replay
+unreached and later admissions short of vCPU because no delete settled. This
+is never cleanup or physical-absence evidence for anything that existed. Setup requires the enabled normal-mode host and those committed report, pool
 and image rows in SQL; hosted runs before this check never enabled the host,
 so every admission probe stopped at unknown capacity
 (`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`). With the host enabled, the next run
@@ -926,6 +933,11 @@ history hit the same TooSlow heuristic; its scoped profile retains every case
 and oracle. That selected test then passed in 46.4 seconds, seed 525114, with
 three unrelated tests excluded. Final complete Marshall precommit remains
 pending; these are separate focused execution records.
+The later incoming Ziggy reporter history explicitly selects one generated
+case, and two Galileo boot-refusal histories select two each with the CI
+profile. Their remaining inner compatibility `max_runs` options are ignored;
+these bounded counts reduce exploration and do not inherit the preserved-count
+claim for the Marshall and protocol repairs above.
 The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

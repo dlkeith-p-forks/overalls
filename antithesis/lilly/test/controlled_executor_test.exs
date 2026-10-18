@@ -9,6 +9,7 @@ defmodule OverallsAntithesis.Lilly.ControlledExecutorTest do
   @vm "44444444-4444-4444-8444-444444444444"
   @owner "66666666-6666-4666-8666-666666666666"
   @operation "55555555-5555-4555-8555-555555555555"
+  @delete "77777777-7777-4777-8777-777777777777"
 
   @spec raw_command(String.t()) :: map()
   defp raw_command(kind) do
@@ -65,6 +66,114 @@ defmodule OverallsAntithesis.Lilly.ControlledExecutorTest do
     assert {:retry, :execution_unavailable} = GuestExecutor.reconcile(config, command, %{})
     assert {:error, :execution_unavailable} = GuestExecutor.boot_proof(config, command)
     assert {:error, :untracked_vm_units} = GuestExecutor.verify_units([command])
+  end
+
+  @spec delete_fixture() :: {Config.t(), OverallsProtocol.Execution.command(), Path.t()}
+  defp delete_fixture do
+    root = Path.join(System.tmp_dir!(), "antithesis-delete-#{System.unique_integer([:positive])}")
+    File.mkdir!(root)
+    File.chmod!(root, 0o700)
+    on_exit(fn -> File.rm_rf!(root) end)
+    pool_path = Path.join(root, "pool")
+    File.mkdir!(pool_path)
+
+    storage = %{
+      "backend" => "zfs",
+      "zpool_guid" => "10001",
+      "dataset_guid" => "10002",
+      "dataset" => "overalls/antithesis"
+    }
+
+    raw = %{
+      "id" => @pool,
+      "path" => pool_path,
+      "filesystem_id" => "zfs:10001:10002",
+      "storage" => storage
+    }
+
+    {:ok, pools} = PoolConfig.decode([raw], @host)
+    execution_dir = Path.join(root, "vm")
+
+    config = %Config{
+      client: nil,
+      state_dir: root,
+      cgroup_path: "/sys/fs/cgroup/lilly.slice",
+      pools: pools,
+      execution: %{state_dir: execution_dir}
+    }
+
+    {:ok, provision} = OverallsProtocol.Execution.command(raw_command("provision"))
+    {:ok, delete} = OverallsProtocol.Execution.command(%{raw_command("delete") | "id" => @delete})
+    assert {:retry, :execution_unavailable} = ControlledExecutor.reconcile(config, provision, %{})
+    {config, delete, execution_dir}
+  end
+
+  @never_running %{running_epoch: 0, running_generation: 0}
+  @stub {:ok, %{}}
+
+  test "stub delete settles only on observed absence under the explicit opt-in" do
+    {config, delete, _execution_dir} = delete_fixture()
+
+    assert {:retry, :execution_unavailable} =
+             ControlledExecutor.reconcile(config, delete, @never_running)
+
+    deleted = %{
+      state: :deleted,
+      compute_empty: true,
+      disk_present: false,
+      cleanup_complete: true,
+      reason: :none
+    }
+
+    assert {:ok, ^deleted} = ControlledExecutor.settle(config, delete, @never_running, @stub, "1")
+    path = ControlledExecutor.absence_path(config, delete.id)
+    assert {:ok, bytes} = Lilly.Host.PrivateFiles.read_secret(path)
+
+    assert {:ok, %{"scope" => "controlled_absence_attestation_stub_not_physical"}} =
+             JSON.decode(bytes)
+
+    assert {:ok, ^deleted} = ControlledExecutor.settle(config, delete, @never_running, @stub, "1")
+    assert {:ok, ^bytes} = Lilly.Host.PrivateFiles.read_secret(path)
+  end
+
+  test "stub delete refuses every unobserved or out-of-profile condition" do
+    {config, delete, execution_dir} = delete_fixture()
+
+    for {history, substrate, opt_in} <- [
+          {@never_running, @stub, nil},
+          {@never_running, @stub, "0"},
+          {@never_running, :disabled, "1"},
+          {@never_running, {:error, :stub_storage_invalid}, "1"},
+          {%{running_epoch: 1, running_generation: 1}, @stub, "1"},
+          {%{}, @stub, "1"}
+        ] do
+      assert {:retry, :execution_unavailable} =
+               ControlledExecutor.settle(config, delete, history, substrate, opt_in)
+    end
+
+    for kind <- [:provision, :start, :stop, :resize] do
+      command = %{delete | kind: kind}
+
+      assert {:retry, :execution_unavailable} =
+               ControlledExecutor.settle(config, command, @never_running, @stub, "1")
+    end
+
+    assert {:retry, :execution_unavailable} =
+             ControlledExecutor.settle(%{config | pools: []}, delete, @never_running, @stub, "1")
+
+    assert {:retry, :execution_unavailable} =
+             ControlledExecutor.settle(
+               %{config | execution: nil},
+               delete,
+               @never_running,
+               @stub,
+               "1"
+             )
+
+    File.mkdir_p!(Path.join(execution_dir, @placement))
+
+    assert {:retry, :execution_unavailable} =
+             ControlledExecutor.settle(config, delete, @never_running, @stub, "1")
   end
 
   test "hosted pool identity never creates schedulable or native I/O capacity" do

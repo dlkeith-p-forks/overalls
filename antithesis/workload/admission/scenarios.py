@@ -245,6 +245,9 @@ def run_atomic_allocation() -> int:
     always(joined, "Marshall acknowledged admission has one joined allocation and dispatch job")
     if joined and result.status == "ok":
         reachable("Marshall admission reached joined dispatch enqueue")
+    if receipt_vm := (provisioned(result) if result.status == "ok" else None):
+        # Release the one-core stub budget for later admissions; an attempt only.
+        runtime.operator.lifecycle(receipt_vm.vm_id, "delete", uuid4())
     return 0
 
 
@@ -396,6 +399,6 @@ def run_key_survives_archive() -> int:
         elif archived is not None:
             verdicts.append(False)
     else:
-        # Expected under the stub: the controlled executor never completes a delete.
+        # The stub delete settles only after observed absence; a fault can still delay it.
         unexercised("real delete was not observed archived")
     return _key_verdict(verdicts)

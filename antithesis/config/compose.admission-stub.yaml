@@ -10,6 +10,9 @@ services:
   lilly-a:
     environment:
       OVERALLS_ANTITHESIS_STORAGE_STUB: "1"
+      # STUB: lets the controlled executor settle a delete only for a placement it
+      # observably never created anything for. Not cleanup, KVM or ZFS evidence.
+      OVERALLS_ANTITHESIS_STUB_DELETE: "1"
 
   enrollment:
     environment:
