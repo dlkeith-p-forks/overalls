@@ -17,38 +17,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6
 #, elixir-autogen, elixir-format
 msgid "   A failed component restore leaves earlier numbered output for inspection and\n   does not write the final `manifest.json`. Preserve partial output, resolve the\n   cause and explicitly retry into a fresh empty private directory. The command\n   refuses an already populated target."
-msgstr ""
-"   Una restauración de componente fallida deja la salida numerada anterior para inspección y\n"
-"   no escribe el `manifest.json` final. Conserve la salida parcial, resuelva la causa y vuelva a\n"
-"   intentarlo explícitamente en un directorio privado nuevo y vacío. El comando rechaza un destino\n"
-"   que ya contiene archivos."
+msgstr "   Si falla la restauración de un componente, las salidas numeradas anteriores quedan disponibles para su inspección y\n   no se escribe el archivo final `manifest.json`. Conserve la salida parcial, resuelva la\n   causa y vuelva a intentarlo explícitamente en un directorio privado nuevo y vacío. El comando\n   rechaza un destino que ya contenga archivos."
 
 #: lib/marshall/documentation_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "  Before 2026-10-17 private Audi and Brady required uid 0. After the\n  unprivileged switch, every guest host-certificate and roster lookup was\n  refused, so sshd never started and readiness timed out. The fleet machine\n  test found this; Brady's attribution failed the same way, reporting\n  unresolved."
-msgstr ""
-"  Antes del 17-10-2026, Audi y Brady privados requerían uid 0. Tras el cambio sin privilegios, se\n"
-"  rechazaron todas las búsquedas de certificados de host de invitados y del roster; sshd nunca se\n"
-"  inició y la preparación agotó el tiempo. La prueba de máquina de la flota lo detectó; la\n"
-"  atribución de Brady falló igual y quedó sin resolver."
+msgstr "  Antes del 2026-10-17, Audi privado y Brady requerían uid 0. Tras el\n  cambio a ejecución sin privilegios, se rechazaban todas las consultas de certificados de host y del registro de invitados,\n  por lo que sshd nunca se iniciaba y se agotaba el plazo de disponibilidad. La prueba de máquinas de la flota\n  detectó este problema; la atribución de Brady fallaba del mismo modo e informaba\n  que no se había podido resolver."
 
 #: lib/marshall/documentation_messages.ex:14
 #, elixir-autogen, elixir-format
 msgid "  Evidence:\n  - hostd fixture tests and Hegel decoding models;\n  - bridge process fixtures (the privilege-drop fixture runs only as root);\n  - a Lilly custody property test that fails if a socket is not released.\n  The namespace dial and the bridge in a real VM namespace are covered only\n  by the fleet machine test."
-msgstr ""
-"  Evidencias:\n"
-"  - pruebas de fixtures de hostd y modelos de decodificación de Hegel;\n"
-"  - fixtures de procesos puente (el fixture de reducción de privilegios solo se ejecuta como root);\n"
-"  - una prueba de propiedad de custodia de Lilly que falla si no se libera un socket.\n"
-"  El acceso al espacio de nombres y el puente en un espacio de nombres de VM real solo están\n"
-"  cubiertos por la prueba de máquina de la flota."
+msgstr "  Evidencia:\n  - pruebas con entornos de prueba de hostd y modelos de decodificación de Hegel;\n  - entornos de prueba del proceso puente (el de reducción de privilegios solo se ejecuta como root);\n  - una prueba de propiedades de custodia de Lilly que falla si no se libera un socket.\n  La conexión al espacio de nombres y el puente en un espacio de nombres de una VM real solo están cubiertos\n  por la prueba de máquinas de la flota."
 
 #: lib/marshall/documentation_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "  For this reason, callers of the module system can provide `specialArgs`\n  which are available during import resolution."
-msgstr ""
-"  Por este motivo, los llamadores del sistema de módulos pueden proporcionar `specialArgs`,\n"
-"  disponibles durante la resolución de imports."
+msgstr "  Por este motivo, quienes llaman al sistema de módulos pueden proporcionar `specialArgs`,\n  disponibles durante la resolución de importaciones."
 
 #: lib/marshall/documentation_messages.ex:22
 #, elixir-autogen, elixir-format
@@ -66,29 +50,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:26
 #, elixir-autogen, elixir-format
 msgid "  Services that call Lilly authenticate it by `SO_PEERCRED` as the configured\n  Lilly uid, which the NixOS modules fill from `users.users.lilly.uid`:\n  - private Audi's guest lookup (`connector_uid`);\n  - the Audi gateway's ingress connector (`connectorUid`, which Lilly's module\n    asserts);\n  - Brady's egress attribution (`attribution_uid`)."
-msgstr ""
-"  Los servicios que llaman a Lilly lo autentican mediante `SO_PEERCRED` como el uid de Lilly\n"
-"  configurado, que los módulos NixOS rellenan desde `users.users.lilly.uid`:\n"
-"  - la consulta de invitados de Audi privado (`connector_uid`);\n"
-"  - el conector de entrada de la pasarela Audi (`connectorUid`, que verifica el módulo de Lilly);\n"
-"  - la atribución de salida de Brady (`attribution_uid`)."
+msgstr "  Los servicios que llaman a Lilly lo autentican mediante `SO_PEERCRED` como el\n  uid de Lilly configurado, que los módulos de NixOS obtienen de `users.users.lilly.uid`:\n  - la consulta de invitados de Audi privado (`connector_uid`);\n  - el conector de entrada de la pasarela Audi (`connectorUid`, que el módulo de Lilly\n    comprueba mediante una aserción);\n  - la atribución de salida de Brady (`attribution_uid`)."
 
 #: lib/marshall/documentation_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "  Whereas option values can generally depend on other option values\n  thanks to laziness, this does not apply to `imports`, which\n  must be computed statically before anything else."
-msgstr ""
-"  Aunque los valores de opción normalmente pueden depender de otros valores gracias a la pereza,\n"
-"  esto no se aplica a `imports`, que deben calcularse estáticamente antes que cualquier otra cosa."
+msgstr "  Aunque los valores de las opciones generalmente pueden depender de los valores de otras opciones\n  gracias a la evaluación diferida, esto no se aplica a `imports`, que\n  debe calcularse de forma estática antes de cualquier otra cosa."
 
 #: lib/marshall/documentation_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "  hostd sends Lilly no descriptor. It refuses a received descriptor that is\n  not an unconnected, non-listening AF_UNIX stream socket, and it ends the\n  session on a descriptor attached to any other request, a missing\n  descriptor, more than one descriptor, or truncated or foreign ancillary\n  data. Lilly closes each socket once its `gen_tcp` port is down, whether\n  the owner closed it, died or handed it on."
-msgstr ""
-"  hostd no envía ningún descriptor a Lilly. Rechaza cualquier descriptor recibido que no sea un\n"
-"  socket de flujo AF_UNIX sin conexión ni escucha, y termina la sesión si un descriptor está\n"
-"  asociado a otra solicitud, falta, hay más de uno o los datos auxiliares están truncados o son\n"
-"  ajenos. Lilly cierra cada socket cuando su puerto `gen_tcp` se detiene, tanto si lo cerró el\n"
-"  propietario como si murió o lo entregó."
+msgstr "  hostd no envía ningún descriptor a Lilly. Rechaza un descriptor recibido que\n  no sea un socket de flujo AF_UNIX sin conexión y que no esté a la escucha, y finaliza la\n  sesión si un descriptor acompaña a cualquier otra solicitud, si falta\n  un descriptor, si hay más de uno o si los datos auxiliares están truncados\n  o son ajenos al protocolo. Lilly cierra cada socket cuando su puerto `gen_tcp` deja de estar activo, tanto si\n  su propietario lo cerró como si murió o lo transfirió."
 
 #: lib/marshall/documentation_messages.ex:46
 #, elixir-autogen, elixir-format
@@ -4638,58 +4610,27 @@ msgstr "### overalls"
 #: lib/marshall/documentation_messages.ex:1716
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A killed shell supervisor with surviving children is unverified. Storage power-loss durability, relocation, physical host failure and fleet availability remain separate from individual daemon replacement."
-msgstr ""
-"**Carencias:** No se ha verificado la terminación de un supervisor de shell "
-"cuyos procesos hijos sobreviven. La durabilidad del almacenamiento ante "
-"pérdida de energía, la reubicación, el fallo del host físico y la "
-"disponibilidad de la flota siguen siendo aspectos separados de la "
-"sustitución individual de demonios."
+msgstr "**Carencias:** No se ha verificado el caso de un supervisor de shell terminado cuyos procesos hijos sobreviven. La durabilidad del almacenamiento ante una pérdida de alimentación, la reubicación, el fallo de un host físico y la disponibilidad de la flota siguen siendo cuestiones separadas de la sustitución de demonios individuales."
 
 #: lib/marshall/documentation_messages.ex:1720
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A native browser Control-room journey over the real Marshall release, log-store CA rotation, production roll-out acceptance and multi-host fleet query behavior remain unverified; duplicate absorption after real queue backfill is covered by unit-level identity dedup only. ADR-0149 retires diagnostic ingestion/outbox/presentation; pre-cutover evidence is historical. Replacement native/properties must be executed separately."
-msgstr ""
-"**Carencias:** Siguen sin verificarse un recorrido nativo de la sala de "
-"control en el navegador sobre la versión real de Marshall, la rotación de la"
-" CA del almacén de registros, la aceptación del despliegue en producción y "
-"las consultas de flota entre varios hosts; la absorción de duplicados tras "
-"un relleno real de la cola solo está cubierta por deduplicación de identidad"
-" a nivel unitario. ADR-0149 retira la recepción, la bandeja de salida y la "
-"presentación de diagnósticos; las pruebas anteriores a la transición son "
-"históricas. Las pruebas nativas y de propiedades sustitutivas deben "
-"ejecutarse por separado."
+msgstr "**Carencias:** Siguen sin verificarse un recorrido de navegador nativo por la sala de Control con la versión real de Marshall, la rotación de la CA del almacén de registros, la aceptación del despliegue en producción y las consultas de flota entre varios hosts; la absorción de duplicados tras el relleno real de la cola solo está cubierta por deduplicación de identidad a nivel unitario. ADR-0149 retira la ingestión, la bandeja de salida y la presentación de diagnósticos; la evidencia anterior al cambio es histórica. Las pruebas nativas y de propiedades de reemplazo deben ejecutarse por separado."
 
 #: lib/marshall/documentation_messages.ex:1724
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A separate full native run failed in Lilly crash recovery after passing the guest SSH collector assertion. Source-process crash accounting, production nonzero collection and measured targets remain open."
-msgstr ""
-"**Carencias:** Una ejecución nativa completa independiente falló durante la "
-"recuperación de Lilly tras una caída, después de superar la aserción del "
-"recopilador SSH del invitado. Siguen pendientes la contabilización de caídas"
-" del proceso de origen, la recopilación no nula en producción y los "
-"objetivos medidos."
+msgstr "**Carencias:** Una ejecución nativa completa independiente falló en la recuperación de Lilly tras una caída, después de superar la aserción del recolector SSH de invitados. Siguen pendientes la contabilización de caídas del proceso de origen, la recolección de valores distintos de cero en producción y los objetivos medidos."
 
 #: lib/marshall/documentation_messages.ex:1728
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Actual multi-gateway package mismatch/receipt expiry, native public DNS and TLS through Audi, publisher restart/version refusal and signing-key rollout have no recorded editor acceptance here."
-msgstr ""
-"**Carencias:** No hay aceptación registrada del editor para discrepancias "
-"reales de paquetes entre varios gateways o caducidad de comprobantes, DNS "
-"público y TLS nativos mediante Audi, reinicio del publicador o rechazo de "
-"versiones y despliegue de claves de firma."
+msgstr "**Carencias:** No consta aquí aceptación del editor para desajustes reales de paquetes entre varias pasarelas o caducidad de recibos, DNS público nativo y TLS a través de Audi, reinicio del publicador o rechazo de versiones, ni despliegue de claves de firma."
 
 #: lib/marshall/documentation_messages.ex:1732
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Agentless launch is recorded. C: growth after a host-side extension and timekeeping under load remain unobserved; the host reachability probe is a test-only policy allowance, not a product path or Marshall observation. Agent trust/readiness, terminal, workspace, roster and executor coverage belongs to the windows-v1 scenario. Independent-host recovery and a repeatable Marshall-driven Windows matrix remain unverified."
-msgstr ""
-"**Carencias:** El lanzamiento sin agentes está registrado. Siguen sin "
-"observarse el crecimiento de C: tras una ampliación en el host y el "
-"mantenimiento de la hora bajo carga; la sonda de accesibilidad del host es "
-"una excepción de política solo para pruebas, no una vía del producto ni una "
-"observación de Marshall. La cobertura de confianza y preparación de agentes,"
-" terminal, espacio de trabajo, registro de miembros y ejecutor pertenece al "
-"escenario windows-v1. Siguen sin verificarse la recuperación entre hosts "
-"independientes y una matriz Windows repetible dirigida por Marshall."
+msgstr "**Carencias:** Se ha registrado el arranque sin agente. Siguen sin observarse el crecimiento de C: tras una ampliación desde el host y el mantenimiento de la hora bajo carga; la sonda de accesibilidad del host es una excepción de política exclusiva de pruebas, no una ruta del producto ni una observación de Marshall. La cobertura de confianza y disponibilidad del agente, terminal, espacio de trabajo, registro y ejecutor pertenece al escenario windows-v1. Siguen sin verificarse la recuperación en un host independiente y una matriz de Windows repetible controlada por Marshall."
 
 #: lib/marshall/documentation_messages.ex:1736
 #, elixir-autogen, elixir-format
@@ -4765,76 +4706,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1744
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Archive/live revocation, complete provider/tool continuation and browser keyboard/mobile question/proposal flows remain unverified. The instructional mode does not enforce operating-system read-only execution."
-msgstr ""
-"**Carencias:** Siguen sin verificarse la revocación archivada/en vivo, la "
-"continuación completa de proveedores y herramientas y los flujos de "
-"preguntas y propuestas con teclado y móvil en el navegador. El modo "
-"instructivo no impone ejecución de solo lectura en el sistema operativo."
+msgstr "**Carencias:** Siguen sin verificarse la revocación en sesiones archivadas o activas, la continuación completa de proveedores y herramientas, y los flujos de preguntas y propuestas con teclado o móvil en el navegador. El modo de instrucciones no impone la ejecución de solo lectura a nivel del sistema operativo."
 
 #: lib/marshall/documentation_messages.ex:1748
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Archived-name reuse has generated domain and SSH evidence but no native public archival journey; archival is currently a trusted resource action. Independent committed transfer/retirement overlap is recorded under the teams scenario, with native physical recovery acceptance separate."
-msgstr ""
-"**Carencias:** La reutilización de nombres archivados tiene pruebas de "
-"dominio generadas y de SSH, pero no un recorrido público nativo de "
-"archivado; el archivado es actualmente una acción de recurso de confianza. "
-"La superposición de transferencia y retirada confirmadas independientes está"
-" registrada en el escenario de equipos, con aceptación separada de "
-"recuperación física nativa."
+msgstr "**Carencias:** La reutilización de nombres archivados dispone de evidencia generada del dominio y de SSH, pero no de un recorrido nativo de archivado público; actualmente el archivado es una acción de recurso de confianza. El solapamiento entre transferencias y retiradas confirmadas de forma independiente está registrado en el escenario de equipos, mientras que la aceptación de recuperación física nativa se trata por separado."
 
 #: lib/marshall/documentation_messages.ex:1752
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Arguments remain caller-supplied until typed native effects replace the utility table. The peer cgroup check reads /proc after connect rather than through a pidfd. Lilly and hostd both run as root until the privilege drop."
-msgstr ""
-"**Carencias:** Los argumentos siguen siendo proporcionados por el llamante "
-"hasta que efectos nativos tipados sustituyan la tabla de utilidades. La "
-"comprobación del cgroup del par lee /proc después de conectar, en lugar de "
-"hacerlo mediante un pidfd. Lilly y hostd se ejecutan como root hasta la "
-"reducción de privilegios."
+msgstr "**Carencias:** Los argumentos siguen siendo proporcionados por quien llama hasta que efectos nativos tipados sustituyan la tabla de utilidades. La comprobación del cgroup del par lee /proc después de conectar, en lugar de hacerlo mediante un pidfd. Lilly y hostd se ejecutan como root hasta la reducción de privilegios."
 
 #: lib/marshall/documentation_messages.ex:1756
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated redemption, the 409 refusals and force override, idempotency across restart and live upstream credit consumption have not been verified for this revision."
-msgstr ""
-"**Carencias:** No se han verificado para esta revisión el canje autenticado,"
-" los rechazos 409 y la anulación forzada, la idempotencia entre reinicios ni"
-" el consumo de créditos en vivo del proveedor ascendente."
+msgstr "**Carencias:** No se han verificado para esta revisión el canje autenticado, los rechazos 409 y la anulación forzada, la idempotencia entre reinicios ni el consumo real de crédito del servicio de origen."
 
 #: lib/marshall/documentation_messages.ex:1760
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated statistics queries, event import deduplication, retention pruning, rollup recovery and live provider capacity classification have not been verified for this revision."
-msgstr ""
-"**Carencias:** No se han verificado para esta revisión las consultas "
-"autenticadas de estadísticas, la deduplicación de importaciones de eventos, "
-"la poda de retención, la recuperación de agregados ni la clasificación de "
-"capacidad del proveedor en vivo."
+msgstr "**Carencias:** No se han verificado para esta revisión las consultas autenticadas de estadísticas, la deduplicación de importaciones de eventos, la purga por retención, la recuperación de agregados ni la clasificación real de capacidad de proveedores."
 
 #: lib/marshall/documentation_messages.ex:1764
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated vsock/Firecracker/browser composition, aggregate64MiB admission, escaped descendant death and hosted fault reach remain open."
-msgstr ""
-"**Carencias:** Siguen pendientes la composición autenticada de "
-"vsock/Firecracker/navegador, la admisión agregada de 64 MiB, la terminación "
-"de descendientes escapados y el alcance de fallos alojados."
+msgstr "**Carencias:** Siguen pendientes la composición autenticada de vsock/Firecracker/navegador, la admisión agregada de 64MiB, la terminación de descendientes que escaparon y el alcance de los fallos en el entorno alojado."
 
 #: lib/marshall/documentation_messages.ex:1768
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authorized command-to-collector attribution, asynchronous physical completion, process-crash accounting and a measured target remain open. The production sample proves dispatch source collection only."
-msgstr ""
-"**Carencias:** Siguen pendientes la atribución de comandos autorizados al "
-"recopilador, la finalización física asíncrona, la contabilización de caídas "
-"de procesos y un objetivo medido. La muestra de producción solo demuestra la"
-" recopilación de la fuente de envío."
+msgstr "**Carencias:** Siguen pendientes la atribución autorizada de comandos a recolectores, la finalización física asíncrona, la contabilización de caídas de procesos y un objetivo medido. La muestra de producción solo demuestra la recolección en el origen del despacho."
 
 #: lib/marshall/documentation_messages.ex:1772
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Binding changes during upload, customer-profile refusal, guest trace delivery to central Tempo over authenticated WireGuard, physical-host outage duration, long-duration queue capacity and production guest volume remain unverified."
-msgstr ""
-"**Carencias:** Siguen sin verificarse los cambios de vinculación durante la "
-"carga, el rechazo del perfil de cliente, la entrega de trazas del invitado a"
-" Tempo central mediante WireGuard autenticado, la duración de caídas del "
-"host físico, la capacidad de cola a largo plazo y el volumen de invitados en"
-" producción."
+msgstr "**Carencias:** Siguen sin verificarse los cambios de vinculación durante la carga, el rechazo de perfiles de cliente, la entrega de trazas de invitados al Tempo central mediante WireGuard autenticado, la duración de interrupciones del host físico, la capacidad de la cola a largo plazo y el volumen de invitados en producción."
 
 #: lib/marshall/documentation_messages.ex:1776
 #, elixir-autogen, elixir-format

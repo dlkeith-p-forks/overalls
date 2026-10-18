@@ -7196,7 +7196,7 @@ msgstr "Git ఇమెయిల్"
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr ""
+msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
@@ -7205,28 +7205,8 @@ msgstr "4. Git identity"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Git email"
-msgstr "Git email"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git identity"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format

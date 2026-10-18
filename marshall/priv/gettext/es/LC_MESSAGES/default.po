@@ -7319,22 +7319,12 @@ msgstr "Añadir la atribución de Overalls a los commits"
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr ""
+msgstr "Enter a valid Git name and email address."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
 msgstr "4. Git identity"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format

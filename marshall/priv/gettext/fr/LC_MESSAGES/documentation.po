@@ -4262,27 +4262,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1716
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A killed shell supervisor with surviving children is unverified. Storage power-loss durability, relocation, physical host failure and fleet availability remain separate from individual daemon replacement."
-msgstr ""
+msgstr "**Lacunes :** Le cas d’un superviseur de shell tué dont les enfants survivent n’est pas vérifié. La durabilité du stockage en cas de coupure électrique, la relocalisation, la défaillance d’un hôte physique et la disponibilité de la flotte restent distinctes du remplacement d’un démon individuel."
 
 #: lib/marshall/documentation_messages.ex:1720
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A native browser Control-room journey over the real Marshall release, log-store CA rotation, production roll-out acceptance and multi-host fleet query behavior remain unverified; duplicate absorption after real queue backfill is covered by unit-level identity dedup only. ADR-0149 retires diagnostic ingestion/outbox/presentation; pre-cutover evidence is historical. Replacement native/properties must be executed separately."
-msgstr ""
+msgstr "**Lacunes :** Un parcours Control-room dans un navigateur natif sur la véritable version de Marshall, la rotation de l’AC du magasin de journaux, la validation du déploiement en production et le comportement des requêtes de flotte sur plusieurs hôtes restent non vérifiés ; l’absorption des doublons après le remplissage réel de la file n’est couverte que par la déduplication d’identités au niveau unitaire. ADR-0149 retire l’ingestion, la boîte d’envoi et la présentation des diagnostics ; les preuves antérieures à la bascule sont historiques. Les vérifications natives et de propriétés qui les remplacent doivent être exécutées séparément."
 
 #: lib/marshall/documentation_messages.ex:1724
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A separate full native run failed in Lilly crash recovery after passing the guest SSH collector assertion. Source-process crash accounting, production nonzero collection and measured targets remain open."
-msgstr ""
+msgstr "**Lacunes :** Une exécution native complète distincte a échoué lors de la récupération après plantage de Lilly, après avoir satisfait l’assertion du collecteur SSH invité. La comptabilisation des plantages des processus sources, la collecte non nulle en production et les objectifs mesurés restent à traiter."
 
 #: lib/marshall/documentation_messages.ex:1728
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Actual multi-gateway package mismatch/receipt expiry, native public DNS and TLS through Audi, publisher restart/version refusal and signing-key rollout have no recorded editor acceptance here."
-msgstr ""
+msgstr "**Lacunes :** Les divergences réelles de paquets entre passerelles, l’expiration des reçus, le DNS public natif et TLS via Audi, le redémarrage du service de publication et le refus de version, ainsi que le déploiement des clés de signature ne disposent ici d’aucune validation enregistrée pour l’éditeur de code."
 
 #: lib/marshall/documentation_messages.ex:1732
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Agentless launch is recorded. C: growth after a host-side extension and timekeeping under load remain unobserved; the host reachability probe is a test-only policy allowance, not a product path or Marshall observation. Agent trust/readiness, terminal, workspace, roster and executor coverage belongs to the windows-v1 scenario. Independent-host recovery and a repeatable Marshall-driven Windows matrix remain unverified."
-msgstr ""
+msgstr "**Lacunes :** Le lancement sans agent est enregistré. L’agrandissement de C: après une extension côté hôte et la précision de l’horloge sous charge restent inobservés ; la sonde de joignabilité de l’hôte est une autorisation de politique réservée aux tests, sans constituer un chemin produit ni une observation de Marshall. La couverture de la confiance et de la disponibilité des agents, du terminal, de l’espace de travail, du registre et de l’exécuteur relève du scénario windows-v1. La récupération sur un hôte indépendant et une matrice Windows reproductible pilotée par Marshall restent non vérifiées."
 
 #: lib/marshall/documentation_messages.ex:1736
 #, elixir-autogen, elixir-format
@@ -4297,52 +4297,52 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1744
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Archive/live revocation, complete provider/tool continuation and browser keyboard/mobile question/proposal flows remain unverified. The instructional mode does not enforce operating-system read-only execution."
-msgstr ""
+msgstr "**Lacunes :** La révocation en mode archivé ou actif, la continuation complète des fournisseurs et outils et les parcours de questions et propositions au clavier et sur mobile dans le navigateur restent non vérifiés. Le mode d’instruction n’impose pas une exécution en lecture seule au niveau du système d’exploitation."
 
 #: lib/marshall/documentation_messages.ex:1748
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Archived-name reuse has generated domain and SSH evidence but no native public archival journey; archival is currently a trusted resource action. Independent committed transfer/retirement overlap is recorded under the teams scenario, with native physical recovery acceptance separate."
-msgstr ""
+msgstr "**Lacunes :** La réutilisation des noms archivés dispose de preuves générées pour le domaine et SSH, mais d’aucun parcours public natif d’archivage ; l’archivage est actuellement une action de ressource de confiance. Le chevauchement indépendant de transferts et retraits validés est enregistré dans le scénario des équipes, la validation de la récupération physique native restant distincte."
 
 #: lib/marshall/documentation_messages.ex:1752
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Arguments remain caller-supplied until typed native effects replace the utility table. The peer cgroup check reads /proc after connect rather than through a pidfd. Lilly and hostd both run as root until the privilege drop."
-msgstr ""
+msgstr "**Lacunes :** Les arguments restent fournis par l’appelant tant que des effets natifs typés ne remplacent pas la table d’utilitaires. La vérification du cgroup du pair lit /proc après la connexion, sans passer par un pidfd. Lilly et hostd s’exécutent tous deux en root jusqu’à l’abandon des privilèges."
 
 #: lib/marshall/documentation_messages.ex:1756
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated redemption, the 409 refusals and force override, idempotency across restart and live upstream credit consumption have not been verified for this revision."
-msgstr ""
+msgstr "**Lacunes :** L’utilisation authentifiée, les refus 409 et le remplacement forcé, l’idempotence après redémarrage et la consommation réelle de crédits en amont n’ont pas été vérifiés pour cette révision."
 
 #: lib/marshall/documentation_messages.ex:1760
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated statistics queries, event import deduplication, retention pruning, rollup recovery and live provider capacity classification have not been verified for this revision."
-msgstr ""
+msgstr "**Lacunes :** Les requêtes statistiques authentifiées, la déduplication des imports d’événements, la suppression à échéance de rétention, la récupération des agrégats et la classification de la capacité réelle des fournisseurs n’ont pas été vérifiées pour cette révision."
 
 #: lib/marshall/documentation_messages.ex:1764
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated vsock/Firecracker/browser composition, aggregate64MiB admission, escaped descendant death and hosted fault reach remain open."
-msgstr ""
+msgstr "**Lacunes :** La composition authentifiée vsock/Firecracker/navigateur, l’admission aggregate64MiB, la mort des descendants échappés et la portée des défauts dans l’environnement hébergé restent à traiter."
 
 #: lib/marshall/documentation_messages.ex:1768
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authorized command-to-collector attribution, asynchronous physical completion, process-crash accounting and a measured target remain open. The production sample proves dispatch source collection only."
-msgstr ""
+msgstr "**Lacunes :** L’attribution autorisée de la commande au collecteur, l’achèvement physique asynchrone, la comptabilisation des plantages de processus et un objectif mesuré restent à traiter. L’échantillon de production prouve uniquement la collecte des sources de répartition."
 
 #: lib/marshall/documentation_messages.ex:1772
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Binding changes during upload, customer-profile refusal, guest trace delivery to central Tempo over authenticated WireGuard, physical-host outage duration, long-duration queue capacity and production guest volume remain unverified."
-msgstr ""
+msgstr "**Lacunes :** Les changements de liaison pendant le téléversement, le refus du profil client, la livraison des traces invitées au Tempo central via WireGuard authentifié, la durée d’indisponibilité des hôtes physiques, la capacité de file sur une longue durée et le volume d’invités en production restent non vérifiés."
 
 #: lib/marshall/documentation_messages.ex:1776
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Both complete NixOS and Ubuntu terminal journeys passed on captured tree e710ef1e, including full graphics, accessible selection, machine-loss recovery, writer refusal and revocation. Existing disks still need compatible guest components. Physical/provider failures, production load and assistive-technology integration beyond the accessible DOM remain unverified. Fresh same-email NixOS personal identity has separate recorded account-lifecycle evidence."
-msgstr ""
+msgstr "**Lacunes :** Les deux parcours complets de terminal NixOS et Ubuntu ont réussi sur l’arbre capturé e710ef1e, y compris les graphismes complets, la sélection accessible, la récupération après perte de machine, le refus d’écriture et la révocation. Les disques existants nécessitent encore des composants invités compatibles. Les défaillances physiques ou des fournisseurs, la charge de production et l’intégration des technologies d’assistance au-delà du DOM accessible restent non vérifiées. Une nouvelle identité personnelle NixOS avec la même adresse électronique dispose de preuves distinctes enregistrées pour le cycle de vie du compte."
 
 #: lib/marshall/documentation_messages.ex:1780
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Both corrected pre-template startup-snapshot complete family scripts now pass authenticated browser and broker/worker/VM recovery. Sudo writers hold root; personal homes do not provide OS confidentiality. Generated native restart/retirement histories, idle activity, real roster retirement, adversarial descendant-held metadata stdout and physical faults remain unexecuted. Earlier Ubuntu failures retain their scope; no recurring, production or periodic template-sweep claim follows."
-msgstr ""
+msgstr "**Lacunes :** Les deux scripts complets corrigés des familles utilisant un instantané de démarrage antérieur au modèle réussissent désormais la récupération authentifiée du navigateur et du courtier, du processus de travail et de la VM. Les rédacteurs sudo disposent des droits root ; les répertoires personnels n’assurent pas la confidentialité au niveau du système d’exploitation. Les historiques natifs générés de redémarrage et de retrait, l’activité au repos, le retrait réel du registre, la sortie standard de métadonnées conservée par des descendants adverses et les défauts physiques restent inexécutés. Les échecs Ubuntu antérieurs conservent leur portée ; aucune affirmation de balayage récurrent, périodique ou en production des modèles n’en découle."
 
 #: lib/marshall/documentation_messages.ex:1784
 #, elixir-autogen, elixir-format
@@ -4352,7 +4352,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1788
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Both original feature witnesses and incoming d4499c4c merged witnesses passed after correcting setup co-location/transfer enrollment and the shared-delete oracle for legitimate relocation source cleanup. The final oracle preserves unchanged whole-VM count plus zero retained-placement deletes. Retained disks, restore reconciliation and rollout remain separate; mixed old/new serving releases are unsupported. Arbitrary interruption points, independent physical-host failures, hardware authenticators, live SMTP and later incoming integration remain separate."
-msgstr ""
+msgstr "**Lacunes :** Les témoins fonctionnels d’origine et les témoins fusionnés entrants d4499c4c ont réussi après correction de la configuration de colocalisation et de l’inscription au transfert, ainsi que de l’oracle de suppression partagée pour le nettoyage légitime de la source de relocalisation. L’oracle final préserve un nombre total de VM inchangé et l’absence de suppression des placements conservés. Les disques conservés, la réconciliation des restaurations et le déploiement restent distincts ; le service simultané par d’anciennes et nouvelles versions n’est pas pris en charge. Les points d’interruption arbitraires, les défaillances indépendantes d’hôtes physiques, les authentificateurs matériels, le SMTP réel et les intégrations entrantes ultérieures restent distincts."
 
 #: lib/marshall/documentation_messages.ex:1792
 #, elixir-autogen, elixir-format
@@ -4362,12 +4362,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1796
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Capture overhead, database throughput, independent physical hosts, hardware authenticators, SMTP inbox delivery and production rollout remain outside finite functional evidence. Historical passes retain their captured revisions."
-msgstr ""
+msgstr "**Lacunes :** Le surcoût de capture, le débit de la base de données, les hôtes physiques indépendants, les authentificateurs matériels, la livraison SMTP en boîte de réception et le déploiement en production restent en dehors des preuves fonctionnelles finies. Les réussites historiques conservent leurs révisions capturées."
 
 #: lib/marshall/documentation_messages.ex:1800
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Combined current-format mail execution passed19checks (9properties,10tests),seed0,266.0s; full typing/integration gates remain pending. Prior recorded SMTP/worker runs retain the older identifier format. An uncertain delivery spanning the old/new Message-ID format transition cannot reconstruct its previously emitted ID. Oban duplicate-job scheduling, complete sign-in consumption/session issuance, exact natural expiry, token changes after validation, body/origin stability under endpoint rotation, host relay composition, inbox delivery, native machine and hosted faults remain open."
-msgstr ""
+msgstr "**Lacunes :** L’exécution combinée du courrier au format actuel a réussi 19 vérifications (9 propriétés, 10 tests), avec la graine 0, en 266,0 s ; les contrôles complets de typage et d’intégration restent en attente. Les exécutions SMTP et de processus de travail précédemment enregistrées conservent l’ancien format d’identifiant. Une livraison incertaine chevauchant la transition entre les anciens et nouveaux formats Message-ID ne peut pas reconstruire son identifiant précédemment émis. La planification de tâches Oban en double, la consommation complète de la connexion et l’émission de session, l’expiration naturelle exacte, les changements de jeton après validation, la stabilité du corps et de l’origine lors de la rotation du point de terminaison, la composition du relais hôte, la livraison en boîte de réception, les défauts sur machine native et en environnement hébergé restent à traiter."
 
 #: lib/marshall/documentation_messages.ex:1804
 #, elixir-autogen, elixir-format
@@ -4377,7 +4377,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1808
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Concurrent native browser/SSH registration-versus-retirement delivery and independent physical control-plane hosts remain unverified. Existing native journeys retain their separate nonconcurrent scope."
-msgstr ""
+msgstr "**Lacunes :** La livraison concurrente de l’enregistrement et du retrait via navigateur natif et SSH, ainsi que les hôtes physiques indépendants du plan de contrôle restent non vérifiés. Les parcours natifs existants conservent leur portée distincte sans concurrence."
 
 #: lib/marshall/documentation_messages.ex:1812
 #, elixir-autogen, elixir-format
@@ -4387,7 +4387,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1816
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Continuous pressure between observations, aggregate admission, complete byte fidelity, throughput, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Lacunes :** La pression continue entre les observations, l’admission agrégée, la fidélité intégrale des octets, le débit, la composition authentifiée vsock/VM/navigateur et les défauts en environnement hébergé restent à traiter."
 
 #: lib/marshall/documentation_messages.ex:1820
 #, elixir-autogen, elixir-format
