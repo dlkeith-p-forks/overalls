@@ -311,6 +311,15 @@ defmodule MarshallWeb.Layouts do
                       SSH keys
                     </.link>
                   </li>
+                  <li>
+                    <.link
+                      id="nav-usage"
+                      navigate={~p"/usage"}
+                      aria-current={@active == "usage" && "page"}
+                    >
+                      AI usage
+                    </.link>
+                  </li>
                   <li data-overalls-extension-setup="true">
                     <.link id="nav-marvin-extension" href={~p"/docs/browser-extension"}>
                       Browser extension
@@ -382,8 +391,7 @@ defmodule MarshallWeb.Layouts do
          {"machines", "Machines", "/machines"},
          {"integrations", "Integrations", "/integrations"},
          {"git", "Git repositories", "/git"},
-         {"teams", "Teams", "/teams"},
-         {"usage", "AI usage", "/usage"}
+         {"teams", "Teams", "/teams"}
        ]}
     ]
   end

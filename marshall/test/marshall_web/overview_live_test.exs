@@ -15,6 +15,12 @@ defmodule MarshallWeb.OverviewLiveTest do
     assert has_element?(view, "#overview-machines-empty")
     assert has_element?(view, "#overview-create[href='/machines/new']")
     assert has_element?(view, "nav[aria-label=Main] a[href='/git']")
+    # AI usage is an account destination, listed after the workspace group.
+    html = render(view)
+    {account, _} = :binary.match(html, "Your account")
+    {usage, _} = :binary.match(html, ~s(id="nav-usage"))
+    assert usage > account
+    assert has_element?(view, "#nav-usage[href='/usage']", "AI usage")
     assert has_element?(view, "nav[aria-label=Main] a[aria-current=page][href='/overview']")
     assert has_element?(view, "#nav-marvin-extension[href='/docs/browser-extension']")
     assert has_element?(view, "li[data-overalls-extension-setup] #nav-marvin-extension")
