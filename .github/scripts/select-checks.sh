@@ -55,11 +55,18 @@ fi
 if [ "$kind" = build ]; then
   # A check whose meta.ci failed to evaluate stays in, so its error is reported.
   machines=$(jq -c -s 'map(select(.meta.ci.machine == true) | .attr)' "$meta")
-  # Workers share the runner's memory with import-from-derivation builds.
+  # Workers share the runner's memory with import-from-derivation builds, and
+  # --max-memory-size only recycles a worker after its current check, so a
+  # check that evaluates many NixOS systems (module-configuration) can grow a
+  # worker far past it: eight workers were OOM-killed on a 64 GiB runner.
+  # Allow 12 GiB per worker.
+  mem_gib=$(( $(awk '/^MemTotal:/ { print $2 }' /proc/meminfo) / 1048576 ))
+  workers=$(( mem_gib / 12 ))
+  workers=$(( workers < 1 ? 1 : workers > 8 ? 8 : workers ))
   nix shell --inputs-from . nixpkgs#nix-eval-jobs --command \
     nix-eval-jobs --flake "$flake_checks" --meta \
       --select "checks: builtins.removeAttrs checks (builtins.fromJSON ''$machines'')" \
-      --workers 8 --max-memory-size 4096 > "$results"
+      --workers "$workers" --max-memory-size 4096 > "$results"
 else
   cp "$meta" "$results"
 fi
