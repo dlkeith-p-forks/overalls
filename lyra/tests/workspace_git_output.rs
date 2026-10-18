@@ -25,6 +25,27 @@ fn ready_path() -> PathBuf {
     invoked_program().with_extension("ready")
 }
 
+#[test]
+fn workspace_git_configuration_environment_helper() {
+    if !helper_invocation("workspace_git_configuration_environment_helper") {
+        return;
+    }
+    let home = std::env::var_os("HOME").expect("test home environment");
+    let path = PathBuf::from(home).join(".captured-git-config");
+    let system = std::env::var_os("GIT_CONFIG_SYSTEM").unwrap_or_default();
+    let no_system = std::env::var_os("GIT_CONFIG_NOSYSTEM").unwrap_or_default();
+    fs::write(
+        path,
+        [
+            system.as_encoded_bytes(),
+            b"\n",
+            no_system.as_encoded_bytes(),
+        ]
+        .concat(),
+    )
+    .expect("record git configuration environment");
+}
+
 // These helpers are ordinary no-op tests unless explicitly launched as the
 // fake git executable. Its descendant inherits the captured stdout pipe.
 #[test]
@@ -102,6 +123,7 @@ fn bounded_output(helper: &str, timeout: Duration) {
         program,
         ca_bundle: root.path().join("unused-ca"),
         home: root.path().to_path_buf(),
+        system_configuration: None,
     };
     let started = Instant::now();
     let outcome = git.output_with_timeout(
@@ -146,6 +168,58 @@ fn output_limit_kills_active_parent_and_descendant() {
     bounded_output(
         "workspace_git_oversized_pipe_helper",
         Duration::from_secs(2),
+    );
+}
+
+/// @cc [owner:ghuntley,label:verification;security] workspace-git-system-config
+/// Native SystemGit MUST select only the daemon-owned system configuration and
+/// MUST leave ordinary guest Git isolated from system configuration.
+#[test]
+fn native_system_config_is_selected_without_widening_defaults() {
+    let root = tempfile::tempdir().expect("fixture root");
+    let program = root.path().join("fake-git");
+    symlink(std::env::current_exe().expect("test executable"), &program).expect("fake executable");
+    let selected = root.path().join("native-gitconfig");
+    let mut native = SystemGit {
+        program: program.clone(),
+        ca_bundle: root.path().join("unused-ca"),
+        home: root.path().to_path_buf(),
+        system_configuration: Some(selected.clone()),
+    };
+    native
+        .output_with_timeout(
+            &[
+                "--exact".into(),
+                "workspace_git_configuration_environment_helper".into(),
+                "--nocapture".into(),
+            ],
+            Duration::from_secs(2),
+        )
+        .expect("native helper succeeds");
+    let captured = fs::read_to_string(root.path().join(".captured-git-config"))
+        .expect("native configuration capture");
+    assert_eq!(captured, format!("{}\n", selected.display()));
+
+    let mut ordinary = SystemGit {
+        program,
+        ca_bundle: root.path().join("unused-ca"),
+        home: root.path().to_path_buf(),
+        system_configuration: None,
+    };
+    ordinary
+        .output_with_timeout(
+            &[
+                "--exact".into(),
+                "workspace_git_configuration_environment_helper".into(),
+                "--nocapture".into(),
+            ],
+            Duration::from_secs(2),
+        )
+        .expect("ordinary helper succeeds");
+    assert_eq!(
+        fs::read_to_string(root.path().join(".captured-git-config"))
+            .expect("ordinary configuration capture"),
+        "\n1"
     );
 }
 

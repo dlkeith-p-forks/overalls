@@ -11,6 +11,9 @@ import socket
 import subprocess
 import time
 from pathlib import Path
+from typing import Literal
+
+Os = Literal["freebsd", "illumos"]
 
 
 def digest(path: Path) -> str:
@@ -101,14 +104,18 @@ def raw_connection(path: Path, port: int) -> socket.socket:
         raise
 
 
-def run(image: Path, vmm: Path, probe: Path, work: Path) -> None:
+def run(image: Path, vmm: Path, probe: Path, work: Path, os_name: Os) -> None:
     """@cc [owner:ghuntley,label:verification;security] native-reset-private-machine
     The fixture MUST use a fresh private disposable disk and VMM API socket,
     match its pre-event compiled identity to exact image assembly, and hold both
     host connections open through the reset event. Peerless identity refusal
-    MUST be observed over serial before recording success. Cleanup MUST stop
-    the owned VM; neither saved memory nor disk may become a production image.
+    MUST be observed over serial before recording success. FreeBSD MUST refuse
+    new sockets until a replacement VM; illumos MUST revalidate the current CID
+    before allowing a fresh socket. Cleanup MUST stop the owned VM; neither
+    saved memory nor disk may become a production image.
     """
+    if os_name not in ("freebsd", "illumos"):
+        raise ValueError("invalid native reset operating system")
     work.mkdir(mode=0o700, exist_ok=False, parents=True)
     assembly = document((image / "evidence/assembly-receipt.json").read_bytes())
     build_id = assembly.get("build_id")
@@ -184,11 +191,15 @@ def run(image: Path, vmm: Path, probe: Path, work: Path) -> None:
                     api(work / "api.sock", "PATCH", "/vm", {"state": "Resumed"}),
                 ]
                 verified = wait_event(work, process, "native-reset-verified")
+            expected_fresh_socket = (
+                "refused-until-new-vm" if os_name == "freebsd" else "current-cid-revalidated"
+            )
+            expected_idle_error = 54 if os_name == "freebsd" else 131
             if (
-                verified.get("idle_error") != 54
-                or verified.get("fresh_socket") != "refused-until-new-vm"
+                verified.get("idle_error") != expected_idle_error
+                or verified.get("fresh_socket") != expected_fresh_socket
             ):
-                raise RuntimeError("FreeBSD reset did not retain its fail-closed socket fence")
+                raise RuntimeError(f"{os_name} reset did not retain its fail-closed socket fence")
             for field in ("accept_error", "read_error", "write_error"):
                 error = verified.get(field)
                 if type(error) is not int or error <= 0:
@@ -198,7 +209,7 @@ def run(image: Path, vmm: Path, probe: Path, work: Path) -> None:
                 raise RuntimeError("native reset writer completed instead of remaining blocked")
             receipt = {
                 "version": 1,
-                "os": "freebsd",
+                "os": os_name,
                 "transport_build_id": build_id,
                 "kernel_sha256": kernel_sha256,
                 "test_probe_sha256": digest(probe),
@@ -229,6 +240,7 @@ class Options(argparse.Namespace):
     vmm: Path
     probe: Path
     work: Path
+    os: Os
 
 
 def main() -> None:
@@ -237,8 +249,9 @@ def main() -> None:
     parser.add_argument("--vmm", type=Path, required=True)
     parser.add_argument("--probe", type=Path, required=True)
     parser.add_argument("--work", type=Path, required=True)
+    parser.add_argument("--os", choices=("freebsd", "illumos"), default="freebsd")
     arguments = parser.parse_args(namespace=Options())
-    run(arguments.image, arguments.vmm, arguments.probe, arguments.work)
+    run(arguments.image, arguments.vmm, arguments.probe, arguments.work, arguments.os)
 
 
 if __name__ == "__main__":

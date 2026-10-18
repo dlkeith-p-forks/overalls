@@ -839,7 +839,8 @@ growth receipts and retained home data. Service and growth receipts are
 and `growth-receipt.json` in that output. The log is
 `/tmp/overalls-native-growth-firmware-fixed.log`. This closes the stated
 FreeBSD three-boot growth boundary for those exact inputs; it does not establish
-interrupted growth, OmniOS growth or admission. The final blocking-flush image
+interrupted growth or admission. The later source-qualified OmniOS growth replay is
+recorded separately below. The final blocking-flush image
 subsequently passed the same complete growth boundary in the five-variant
 matrix above, with the same capacity series and three distinct clean boots.
 
@@ -938,7 +939,7 @@ Evidence: [native recovery oracle](../../../nix/verification/tests/support/nativ
 [snapshot boundary tests](../../../nix/verification/tests/support/native_recovery_test.py),
 [optional machine variant](../../../nix/verification/tests/machines/native-services/default.nix).
 
-### 9. Abrupt guest crash recovery — scoped final FreeBSD execution, OmniOS pending
+### 9. Abrupt guest crash recovery — scoped FreeBSD and OmniOS execution
 
 The optional crash variant flushes and reads back exact retained home bytes,
 then requires the actual Firecracker process to exit by SIGKILL. A new MMDS
@@ -956,8 +957,27 @@ filesystem suspension and soft-dependency drains, then immediately resumes with
 `UFSRESUME`. Acknowledgement follows successful resume; closing the descriptor
 also resumes after errors. The final reviewed image then passed all eight crash
 checks and both complete service oracles, as bound by the five-variant matrix
-above. Pinned OmniOS ZFS sync already uses blocking `spa_sync_allpools`; its
-native crash scenario remains unexecuted. Original failure records remain
+above.
+
+The source-qualified OmniOS image also passed the crash variant with image SHA-256
+`d47a84fd726276865bea26812c2a3624b88144eda87926e2dd6dbd5dccb98bc8`, kernel
+SHA-256 `c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21`,
+firmware SHA-256
+`261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2` and VMM
+SHA-256 `ba91e85a7af3f96d02f845df543daec07353ed6bff4aaee0abf524c751476b68`.
+The immutable receipt is
+`/tmp/overalls-omnios-native-probe/exact-crash-recovery-new/crash-recovery-receipt.json`;
+its service receipt is beside it. It records boot IDs
+`b96de36b-de10-44a1-9deb-2e4f2f427690` and
+`3498d92c-9616-434d-ad91-7194e2930c39`, an observed first-boot SIGKILL,
+same-disk/new-MMDS restart, stale flush/workspace/terminal refusal, exact
+retained bytes, a completed zero-error ZFS scrub and final clean shutdown.
+The marker SHA-256 is `2922f2b980975fd442059bf51842a1a5fe6cf889f73fb6369e555b700b49fd5b`.
+The receipt uses synthetic authority and retains `native_admission=false`;
+it does not establish physical stable-media or host power-loss durability,
+interrupted expansion, isolation, relocation, fleet recovery or admission.
+
+Original failure records remain
 `/tmp/overalls-freebsd-crash-full.log` (fsck clears the managed-home directory
 and retained files) and `/tmp/overalls-native-crash-debug/diagnostic-v2.log`
 (bounded diagnostics confirm home lookup/account activation/roster refusal
@@ -1355,6 +1375,52 @@ are unchanged. Logs `admin-ssh-config-final-assembly.log`,
 flags remain false; exact-image boot/service, lease withdrawal, growth,
 transport/reset, isolation and recovery replay remain pending.
 
+The sealed `wz4r` disk was subsequently audited against its payload receipt and
+found to contain an older cached kit: `/etc/gitconfig` still used the rejected
+`/workspace/*` wildcard and its workspaced binary predates the exact-path
+receiver. The current source-derived kit is
+`/nix/store/w5mg2jw3c2sispdkfg1r9ys5vxm41a97-overalls-omnios-native-image-candidate-kit`;
+the historical disk therefore cannot qualify current workspace ownership, lease
+withdrawal, service, growth or recovery behavior. A separate current
+source-qualified test image has since been assembled and replayed for native
+services; admission and OmniOS capability rows remain false.
+
+## Current OmniOS native service replay
+
+The current source-qualified OmniOS test image was replayed in the complete
+native service fixture with the patched Firecracker 1.16.1 build. The receipt
+`/tmp/overalls-omnios-native-probe/exact-services-jak6/service-receipt.json`
+records two clean boots and binds image SHA-256
+`4709cc444055528f53326d2e0c943b5ef002396008920f1940a0a06591a992cb`, kernel
+SHA-256 `c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21`,
+firmware SHA-256
+`261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2` and VMM
+SHA-256
+`ba91e85a7af3f96d02f845df543daec07353ed6bff4aaee0abf524c751476b68`.
+
+The recorded service matrix covers current-boot identity, readiness, trust,
+flush, workspace ownership and exact checkout bytes, managed terminal and PTY
+behavior, certified SSH/account/refusal paths, private HTTPS Git, executor
+heartbeat withdrawal and process-group fencing, fresh-fence recovery, host-key
+rotation and retained home data. The receipt and test-only manifest retain
+`native_admission=false`; no capability row or fleet authority was changed.
+
+This closes the prior exact-image service-replay gap for the current source
+payload. A fresh growth replay then ran from
+`/tmp/overalls-omnios-native-probe/exact-services-growth-rerun2` with the same
+image and patched VMM. Its receipt records three clean boots and two root
+expansions: physical bytes `8589934592 -> 10737418240 -> 12884901888`, pool
+bytes `8053063680 -> 10200547328 -> 12348030976`, and root bytes
+`6882697216 -> 8963035136 -> 11043348480`; pool GUID
+`6088636317398311714`, vdev GUID `7318836247622920379`, assembly SHA-256
+`f1f0833204ba6b56cefcecc1cb59a18743b5f490a25cf1e62a48243145678adc`, and
+`native_admission=false` remain bound in
+`growth-receipt.json`. This is scoped mounted-root growth evidence; network
+policy isolation, supervised daemon recovery, reset/DMA stress, physical or
+peer-VM isolation, stable-media durability and Marshall fleet admission remain
+open and require separate receipts. The separate OmniOS abrupt-crash receipt
+above covers process SIGKILL and same-disk recovery only.
+
 ## Verification boundary and follow-up
 
 Protocol, Lilly and Rust unit tests plus Nix evaluation provide typed, bounded
@@ -1365,9 +1431,9 @@ and establish only those nested-KVM histories. OmniOS has target-native
 assembly, scoped diagnostic transport and paired direct-only QEMU boot evidence;
 the preceding corrected-block Firecracker service attempt reaches login but
 times out before service oracles with growth in maintenance. Corrected growth
-payloads retain their own assembly evidence. Final `wz4r` disk `e7fc0c04` has
-fresh native assembly evidence including executor and SSH corrections; its
-complete runtime replay remains open.
+payloads retain their own assembly evidence. The current source-qualified OmniOS
+service, growth and crash receipts are recorded above; supervised daemon recovery,
+interrupted growth and final `wz4r` runtime replay remain open.
 Neither family's record establishes wrong-CID injection, DMA/race stress,
 direct native peer-VM isolation, physical power-loss durability, relocation or
 fleet availability.

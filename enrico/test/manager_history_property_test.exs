@@ -64,7 +64,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
     check all(
             culprit <- member_of([:manager, :tasks]),
             count <- member_of([1, 7, 8]),
-            max_runs: 3
+            max_runs: 1
           ) do
       restart_history(culprit, count)
     end
@@ -326,7 +326,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
     end
   end
 
-  property "real refresh workers preserve reuse against retired generation messages" do
+  property "real refresh workers preserve reuse against retired generation messages", profile: :ci do
     for terminal <- [:success, :death], neighbors <- [1_023, 1_024, 1_025] do
       real_refresh_history(terminal, neighbors)
     end

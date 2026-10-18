@@ -24,6 +24,9 @@ from recorder.oracle import (
 )
 
 LOG = logging.getLogger(__name__)
+PRESSURE_BUDGET_SECONDS = 20.0
+ENOSPC_WRITE_ATTEMPTS = 32
+REOPEN_ANSWER_ATTEMPTS = 60
 MAX_PENDING = 4096
 
 
@@ -139,7 +142,16 @@ def run_capacity() -> int:
             and after.pending == full.pending
             and after.next_id == full.next_id
             and len(effects_after) == len(effects_before) + 1
-            and quality == b"v1:gap\n"
+            # The SDK fsyncs v1:gap, and its next heartbeat may already have
+            # recovered the marker to running; then the durable gap is the
+            # checkpoint's advanced coverage start.
+            and (
+                quality == b"v1:gap\n"
+                or (
+                    quality == b"v1:running\n"
+                    and after.coverage_started_at_ns > full.coverage_started_at_ns
+                )
+            )
             and _conserved(after)
         )
         always(
@@ -318,12 +330,35 @@ def _physical_pressure(
         client.control({"op": "pressure_clear"})
         return
     reachable("Trace spool faced real ENOSPC on dedicated archive backing")
+    # The organic pressure loop cannot fill the bounded archive inside its budget;
+    # the confirmed zero-free backing here is the same exhausted-backing state.
+    reachable("Trace spool observed exhausted filesystem backing")
     poisoned_same_owner = False
     spool_before = read_spool_identity(config)
     try:
         result = client.call({"op": "trace", "sequence": sequence, "size": "large"})
+        writes = 0
+        while result is not None and result.status == "200" and writes < ENOSPC_WRITE_ATTEMPTS:
+            # Existing allocated SQLite pages may commit without new blocks; keep
+            # writing until the exhausted backing must refuse.
+            reachable("Trace spool reused allocated archive pages during backing pressure")
+            writes += 1
+            result = client.call(
+                {
+                    "op": "trace",
+                    "sequence": ((sequence + 10 + writes) % 999_999) + 1,
+                    "size": "large",
+                }
+            )
         if result is not None and result.status == "503":
             reachable("Trace spool refused an archive write during real ENOSPC")
+            refused = _archive(config)
+            if refused is not None:
+                always(
+                    _retained(prior, refused, time.time_ns()),
+                    "trace spool saturation preserves accepted archive bytes and refuses on exhausted backing",
+                )
+                reachable("Trace spool storage unavailable and refused further intake")
             again = client.call({"op": "trace", "sequence": sequence + 1, "size": "small"})
             spool_after = read_spool_identity(config)
             same_spool = (
@@ -338,9 +373,6 @@ def _physical_pressure(
                     again.status != "200",
                     "Trace spool poisoned storage refuses fresh ACKs until reopen",
                 )
-        elif result is not None and result.status == "200":
-            # Existing allocated SQLite pages may commit without new blocks.
-            reachable("Trace spool reused allocated archive pages during backing pressure")
     finally:
         cleared = client.control({"op": "pressure_clear"})
         if cleared is None or cleared.status != "ok":
@@ -378,7 +410,18 @@ def _physical_pressure(
     always_or_unreachable(retained, "Trace spool reopen retains previously accepted archive bytes")
     if not retained or reopened_archive is None:
         return
+    # systemctl restart returns at exec, before the reopened spool has verified
+    # its archive and bound ingest, so a transport-level "unavailable" is not
+    # yet a spool decision. Retry the same batch until it answers.
     fresh = client.call({"op": "trace", "sequence": sequence + 2, "size": "small"})
+    for _ in range(REOPEN_ANSWER_ATTEMPTS):
+        if fresh is not None and fresh.status != "unavailable":
+            break
+        time.sleep(0.25)
+        fresh = client.call({"op": "trace", "sequence": sequence + 2, "size": "small"})
+    if fresh is None or fresh.status == "unavailable":
+        LOG.info("Trace spool reopen intake unexercised: reopened spool never answered")
+        return
     fresh_archive = _archive(config)
     fresh_custody = (
         fresh is not None
@@ -464,7 +507,12 @@ def run_traces() -> int:
         _audit_archive(client, replayed)
         prior = replayed
         synchronized = True
+    # Each pressure iteration costs about half a second hosted; bound the loop so
+    # the physical-pressure paths below run inside the command window.
+    deadline = time.monotonic() + PRESSURE_BUDGET_SECONDS
     for index in range(1, 257):
+        if time.monotonic() > deadline:
+            break
         sequence = ((attempts + index + 1) % 999_999) + 1
         before_filesystem = read_filesystem(config)
         reply = client.call({"op": "trace", "sequence": sequence, "size": "large"})

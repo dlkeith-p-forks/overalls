@@ -49,7 +49,10 @@ digests and pinned Rust/compiler/linker/SDK inputs. The illumos SDK is a
 userland linker sysroot, not a kernel-module linker or runtime attestation.
 Readiness additionally requires live supervisor PID markers for every daemon,
 including terminald, sshd and the roster/certificate refresh worker, plus a fresh
-volatile SSH-ready marker; marker presence alone cannot grant readiness.
+volatile SSH-ready marker; marker presence alone cannot grant readiness. Each
+supervisor publishes markers through same-directory atomic rename and clears its
+known daemon markers, including `sshd-native`, after an interrupted predecessor;
+the FreeBSD service-manager pidfile is preserved.
 
 The sealed reviewed FreeBSD disk `5022d714` passed all five native service,
 growth, IPv4/router/TAP policy, daemon-recovery and process-SIGKILL recovery
@@ -67,10 +70,16 @@ recovery acceptance. A separate FreeBSD transport gate passed with
 token/CID/credit-window and ABI refusal assertions. A stock
 OmniOS probe passed native PTY shell/controlling-terminal,
 resize and inherited-descriptor checks; it does not execute the full terminal
-session protocol. Corrected OmniOS assembly has passed, but complete native
-services, growth, recovery and image qualification remain pending. Neither the
-capability table nor the historical partial candidates establish fleet
-acceptance. See the
+session protocol. The current source-qualified OmniOS image then passed the
+complete native service fixture over two clean boots: current-boot identity,
+readiness, trust, flush, workspace, terminal, SSH, executor fencing, retained
+home and clean shutdown all passed. The runner requires status zero and the
+bounded `syncing file systems... done` serial marker before recording a clean
+illumos boot. Policy, supervised daemon recovery, physical isolation and image
+qualification remain pending. The separate OmniOS abrupt-crash receipt
+covers process SIGKILL and same-disk recovery; neither it, the capability table
+nor these
+service receipts establish fleet acceptance. See the
 [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
 
 Direct `sis8` diagnostics reached current-boot kernel/network/trust responses
@@ -81,8 +90,10 @@ requests. A stock native boot and its SMF method confirmed `/usr/sbin/sshd`, now
 used by both native supervisors. OmniOS assembly and booted verification check
 that exact path is a bounded root-owned regular executable ELF with safe modes;
 `native_ssh_executable_checked` records only that file check. The corrected path
-and config are in the final assembled `wz4r` kit; complete service replay remains
-pending. Those partial diagnostics grant no SSH, terminal or image qualification.
+and config are in the final assembled `wz4r` kit; that historical disk remains
+outside runtime qualification. The later source-qualified image passed complete
+service replay, while these partial diagnostics grant no SSH, terminal or image
+qualification.
 OmniOS's downstream
 PAM policy is always on and its parser rejects explicit `UsePAM yes`; generated
 OmniOS config omits that directive while FreeBSD retains it. Native `sshd -t`
@@ -90,16 +101,25 @@ and `sshd -T` passed with synthetic volatile host-key/certificate prerequisites,
 retaining effective PAM, public-key-only authentication and the authorization
 helper/forced command. That check starts no daemon or SSH session.
 
-Final `wz4r` disk SHA256
+The previously sealed `wz4r` disk was assembled from a stale cached kit: its
+receipt still carries the old `/workspace/*` Git ownership configuration and
+pre-fencing workspace receiver. The current source-derived kit is
+`/nix/store/w5mg2jw3c2sispdkfg1r9ys5vxm41a97-overalls-omnios-native-image-candidate-kit`
+and has not yet been assembled into a replacement disk. Consequently the
+historical `wz4r` hashes below do not qualify current workspace, lease, service,
+growth or recovery behavior; OmniOS admission remains disabled.
+
+Historical `wz4r` disk SHA256
 `e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41`
 passed native nine-module/764-payload assembly, all three SMF validations, the
 safe native SSH executable check, read-only receipt extraction/export and clean
 shutdown. Its read-only baseline is
 `/tmp/overalls-omnios-native-ssh-config-final-artifact/`; clone it before booting.
 The [native admission review](repo:docs/architecture/reviews/2026-10-17-native-image-admission.md)
-records exact kit/receipt hashes. Runtime, complete services and admission
-remain false; exact-image boot/service, lease withdrawal, growth, transport/reset,
-isolation and recovery replay remain pending.
+records exact kit/receipt hashes. The historical `wz4r` baseline remains outside
+runtime qualification and admission; current source-qualified service, growth and
+process-crash receipts are recorded separately. Exact-image lease withdrawal,
+transport/reset, isolation and image qualification remain pending.
 
 Application release source now includes `protocol/priv` alongside Protocol's
 library and Mix files so its compile-time exact native registry input enters

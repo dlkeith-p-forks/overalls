@@ -24,8 +24,6 @@ defmodule Brady.ProxyChunkedHistoryTest do
   # Empty destination policy MUST remain a loopback fixture override and MUST NOT
   # establish public destination admission, TLS, interception or guest isolation.
   property "chunked proxy histories reuse only complete public parser results" do
-    supervisor = start_supervised!(Task.Supervisor)
-
     check all(
             chunks <-
               list_of(binary(min_length: 2, max_length: 2048), min_length: 1, max_length: 4),
@@ -33,6 +31,12 @@ defmodule Brady.ProxyChunkedHistoryTest do
             cut <- member_of([1, 2, 7, 31, 65_536]),
             max_runs: 6
           ) do
+      {:ok, supervisor} = Task.Supervisor.start_link()
+      Process.unlink(supervisor)
+      Hegel.on_cleanup(fn ->
+        Process.exit(supervisor, :shutdown)
+      end)
+
       for {parts, outcome} <- [
             {chunks, mode},
             {[], :complete},

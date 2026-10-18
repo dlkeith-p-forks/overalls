@@ -84,7 +84,12 @@ publication behavior. No live S3, production clock or credentials are involved.
   source ordering and modeled reversed time are known; no actual clock-step
   campaign or tenant capability has been demonstrated)`
 - Does a backward step through actual capture finish with a tag-visible point,
-  or does an earlier runtime/Restic check prevent upload?
+  or does an earlier runtime/Restic check prevent upload? `(answered locally,
+  2026-10-18, harness stub: with libfaketime preloaded into the coordinator
+  only and a 120-second backward step at host-state upload, the real
+  coordinator published a tag-visible manifest with completed_at before
+  started_at, exited nonzero from retention, and production inspect refused
+  the point. No hosted run yet; not a real host clock step.)`
 
 ### Investigation Log
 

@@ -168,6 +168,25 @@ def tcp_command(platform: runner.Platform, destination: str, source: str | None 
     return f"/usr/bin/python3.12 -c {shlex.quote(script)} {destination}{bind}"
 
 
+def foreign_source_commands(platform: runner.Platform) -> tuple[str, str]:
+    """@cc [owner:ghuntley,label:verification;security] native-isolation-source-dialect
+    The unassigned-source probe MUST use the reviewed interface and reversible
+    address operation for the selected native OS. Unknown platforms MUST be
+    rejected before any host or guest command is constructed.
+    """
+    if platform.name == "freebsd":
+        return (
+            f"/sbin/ifconfig vtnet0 inet {FOREIGN}/32 alias",
+            f"/sbin/ifconfig vtnet0 inet {FOREIGN} -alias",
+        )
+    if platform.name == "illumos":
+        return (
+            f"/sbin/ifconfig vioif0 addif {FOREIGN}/32 up",
+            f"/sbin/ifconfig vioif0 removeif {FOREIGN}",
+        )
+    raise ValueError("unreviewed native isolation platform")
+
+
 def nft(*arguments: str) -> None:
     subprocess.run(["nft", *arguments], stdin=subprocess.DEVNULL, check=True, timeout=10)
 
@@ -247,12 +266,7 @@ def guard_drops(guard: str) -> int:
 
 def foreign_source(context: runner.BootContext, *, allowed: bool) -> None:
     """Attempt an unassigned source while retaining the real SSH identity."""
-    if context.platform.name == "freebsd":
-        add = f"/sbin/ifconfig vtnet0 inet {FOREIGN}/32 alias"
-        remove = f"/sbin/ifconfig vtnet0 inet {FOREIGN} -alias"
-    else:
-        add = f"/sbin/ifconfig vioif0 addif {FOREIGN}/32 up"
-        remove = f"/sbin/ifconfig vioif0 removeif {FOREIGN}"
+    add, remove = foreign_source_commands(context.platform)
     status = "0" if allowed else "1"
     cleanup = f"{remove} >/dev/null 2>&1"
     script = (

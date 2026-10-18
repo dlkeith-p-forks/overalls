@@ -1,5 +1,6 @@
 """Independent read-only PostgreSQL observation of migration and host authority."""
 
+import logging
 from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import LiteralString
@@ -9,6 +10,9 @@ import psycopg
 
 from core.config import Config
 from core.outcome import Observation
+
+LOGGER = logging.getLogger(__name__)
+_REPORTED_SQLSTATES: set[str] = set()
 
 
 @dataclass(frozen=True)
@@ -60,7 +64,14 @@ class SqlOracle:
                 if len(rows) > maximum_rows:
                     return Observation.unavailable()
                 return Observation.observed(tuple(rows))
-        except (OSError, psycopg.Error, ValueError):
+        except psycopg.Error as error:
+            # Name only the SQLSTATE class, once per state, so schema drift is visible.
+            state = error.sqlstate or "unknown"
+            if state not in _REPORTED_SQLSTATES:
+                _REPORTED_SQLSTATES.add(state)
+                LOGGER.warning("oracle select failed: sqlstate=%s", state)
+            return Observation.unavailable()
+        except (OSError, ValueError):
             return Observation.unavailable()
 
     def migrated_primary(self, version: int) -> Observation[bool]:

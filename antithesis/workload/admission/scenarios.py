@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import re
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -44,6 +45,12 @@ _REPORTED: set[str] = set()
 # The operator boots one Marshall release per request; under a saturated CPU
 # that alone can approach 30 s, after which the result would be unknown.
 OPERATOR_TIMEOUT_SECONDS = 90.0
+
+
+# Marshall.Compute.Error reasons are lowercase atom names.
+_REASON = re.compile(r"[a-z_]{1,64}")
+_REFUSALS: set[str] = set()
+_SHORT: set[str] = set()
 
 
 def unexercised(reason: Unexercised) -> None:
@@ -120,10 +127,26 @@ def select_image(catalog: Observation[Catalog]) -> CatalogImage | None:
     if not selected.images:
         unexercised("no enabled catalog image advertised")
         return None
-    return next(
+    fitting = next(
         (candidate for candidate in selected.images if _catalog_fits(selected, candidate)),
-        selected.images[0],
+        None,
     )
+    if fitting is None:
+        _short(selected, selected.images[0])
+    return fitting or selected.images[0]
+
+
+def _short(catalog: Catalog, image: CatalogImage) -> None:
+    """Name each catalog dimension below the reservation once per process (no values)."""
+    vcpu, memory, disk = image.request_shape()
+    for dimension, short in (
+        ("vcpu", catalog.available_vcpu < vcpu),
+        ("memory", catalog.available_memory_bytes < memory + 67_108_864),
+        ("disk", catalog.available_disk_bytes < disk + 1_073_741_824),
+    ):
+        if short and dimension not in _SHORT:
+            _SHORT.add(dimension)
+            LOG.info("Compute catalog headroom below reservation: %s", dimension)
 
 
 def _catalog_fits(catalog: Catalog, image: CatalogImage) -> bool:
@@ -181,7 +204,17 @@ def _settled(
         # The operator's catalog precheck refused before Marshall admission ran.
         unexercised("operator image precheck refused before admission")
         return None
+    if response.value.status == "error":
+        _refused(response.value.reason)
     return response.value, rows
+
+
+def _refused(reason: object) -> None:
+    """Log Marshall's closed refusal token once per process; any other text stays unnamed."""
+    token = reason if isinstance(reason, str) and _REASON.fullmatch(reason) else "unrecognized"
+    if token not in _REFUSALS:
+        _REFUSALS.add(token)
+        LOG.info("Compute admission refused: %s", token)
 
 
 def run_atomic_allocation() -> int:

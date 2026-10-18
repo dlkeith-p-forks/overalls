@@ -447,6 +447,23 @@ def inventory(state_root: Path, tools: ToolConfig) -> dict[str, object]:
                 state = "uncertain"
         elif partial_path.exists() or attempt_path.exists():
             state = "uncertain"
+        elif (directory / "stopped.json").exists():
+            # A stopped placement keeps the boot tuple it last ran, so the
+            # executor can bind an accepted stop to that exact boot.
+            stopped = load_object(directory / "stopped.json")
+            stopped_epoch = stopped.get("execution_epoch")
+            stopped_generation = stopped.get("generation")
+            if (
+                stopped.get("placement_id") == directory.name
+                and type(stopped_epoch) is int
+                and 1 <= stopped_epoch <= MAX_EPOCH
+                and type(stopped_generation) is int
+                and 1 <= stopped_generation <= MAX_EPOCH
+            ):
+                epoch = stopped_epoch
+                generation = stopped_generation
+            else:
+                state = "uncertain"
         if state == "stopped" and overlay_path.is_file():
             if not bound or type(disk_size) is not int:
                 raise ValueError("retained overlay image mismatch")

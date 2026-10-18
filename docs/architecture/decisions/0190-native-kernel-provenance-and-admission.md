@@ -31,10 +31,16 @@ catalog entries now exist. FreeBSD 14.3 is fetched from a checksum-pinned
 archive capture because the rolling `Latest` endpoint was retired. The native-kernel package keeps source receipts separate from experimental
 outputs: the FreeBSD candidate now cross-builds a complete kernel, while the
 illumos implementation includes a modern virtio backport and bounded socket
-and transport sources. Stock-image constructors still consume unavailable
-receipts and refuse before copying a stock disk. The reviewed FreeBSD candidate
-now has exact five-scenario native evidence and a separate immutable promotion
-path; unrelated candidate builds and exploratory boots grant no admission.
+and transport sources. OmniOS candidate assembly removes an inherited standalone
+`-s` from `/boot/transient.conf` while preserving the ZFS root, boot path and
+console arguments; second boot rejects any remaining single-user argument.
+Stock-image constructors still consume unavailable receipts and refuse before
+copying a stock disk. The reviewed FreeBSD candidate now has exact
+five-scenario native evidence and a separate immutable promotion path; unrelated
+candidate builds and exploratory boots grant no admission. The current OmniOS
+candidate has scoped native service, mounted-root growth and same-disk
+process-crash receipts, but those receipts retain `native_admission=false` and
+do not establish physical recovery, isolation, reset stress or fleet acceptance.
 
 The existing NixOS, Ubuntu and Windows contracts must remain intact. OS names,
 root formats, boot artifacts and agent capabilities must come from validated
@@ -88,9 +94,10 @@ image contains a tool.
 6. **Evidence is scoped to what exists.** The Arch/Alma evaluation check proves
    builder command shape and distinct distribution markers only. Protocol tests
    and the Lilly jail test prove bounded metadata and the native firmware
-   configuration only. No native FreeBSD or OmniOS boot, readiness,
-   trust, terminal, workspace, relocation or Marshall fleet acceptance is
-   implied by those checks.
+   configuration only. The recorded native receipts prove only their named
+   FreeBSD and OmniOS nested-KVM scenarios; they do not imply wrong-CID or
+   reset/DMA safety, direct peer-VM or host isolation, physical durability,
+   relocation or Marshall fleet acceptance.
 7. **Native admission is boot-bound and fail closed.** Before credentials or
    readiness, Lilly requires an `attested` response from the jail-local probe
    matching the native OS, placement, execution epoch, boot challenge and
@@ -130,7 +137,8 @@ image contains a tool.
     published image contains only its declared artifacts and manifest, while
     the protocol registry independently controls runtime admission. This
     authorizes the reviewed FreeBSD image without claiming reproducible native
-    assembly, physical recovery, fleet rollout or OmniOS acceptance.
+    assembly, physical recovery or fleet rollout; OmniOS remains closed until
+    its remaining evidence and promotion requirements are satisfied.
 
 Authorization: the multi-OS guest-image implementation plan of 2026-10-16 and
 the custom native-kernel plan of 2026-10-17, followed by the explicit instruction
@@ -248,8 +256,15 @@ Separate target-native candidate assembly and scoped FreeBSD transport,
 complete-service, growth, IPv4 policy and daemon-recovery execution have passed.
 The exact source-qualified receipts are recorded in the
 [review](../reviews/2026-10-17-native-kernel-attestation.md). The final reviewed
-FreeBSD image also passed the scoped same-disk SIGKILL/recovery boundary;
-OmniOS complete-service acceptance still needs its own machine runs. The
+FreeBSD image also passed the scoped same-disk SIGKILL/recovery boundary. The
+current source-qualified OmniOS image subsequently passed the complete native
+service fixture over two clean boots, including current-boot identity, readiness,
+trust, flush, workspace, terminal, SSH, executor fencing and retained-home checks.
+Its receipt keeps admission false and explicitly excludes growth, network policy,
+supervised daemon recovery, physical isolation and fleet admission. A separate
+OmniOS crash receipt records same-disk restart after an observed Firecracker
+SIGKILL, fresh MMDS/boot identity, stale-authority refusal, retained bytes and a
+zero-error ZFS scrub; it does not establish physical recovery or admission. The
 reviewed FreeBSD image has a separate
 [promotion constructor](../../../nix/domains/artifacts/guest/native-promotion/freebsd.nix),
 [artifact/evidence verifier](../../../nix/domains/artifacts/guest/native-promotion/verify.ex),
@@ -381,7 +396,9 @@ assembly. A diagnostic Firecracker clone subsequently passed complete file/token
 verification and the native Rust transport probe through 1 MiB under a
 debugger-only stock pseudo ISA setting. The assembler now binds persistent
 pseudo ISA and loader/kernel serial settings while preserving original files;
-final exact-image replay and complete OmniOS services remain pending. A native
+final exact-image replay and complete OmniOS services were later recorded in a
+separate receipt; growth, policy, supervised daemon recovery and isolation remain
+pending. A native
 FreeBSD vendor-base image passed complete service and daemon-recovery variants
 over two clean boots each, including actual certified SSH/account/sudo/refusals,
 trust, private-HTTPS Git checkout bytes, managed PTY input/resize/replay, fenced
@@ -393,6 +410,21 @@ the blocking UFS flush correction. The final reviewed image SHA256
 subsequently passed all five service/growth/policy/daemon-recovery/abrupt-crash
 variants, with complete per-boot service oracles, exact artifact hashes and
 admission false. The review records the immutable output paths and scope.
+
+The current source-qualified OmniOS service fixture then passed two clean boots
+using image SHA-256
+`4709cc444055528f53326d2e0c943b5ef002396008920f1940a0a06591a992cb`, kernel
+SHA-256 `c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21`,
+firmware SHA-256
+`261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2` and patched
+Firecracker SHA-256
+`ba91e85a7af3f96d02f845df543daec07353ed6bff4aaee0abf524c751476b68`. Its
+receipt records current-boot identity, readiness, trust, flush, workspace,
+terminal, SSH, executor fencing and retained-home checks, with both boots ending
+cleanly. The test-only manifest and receipt retain `native_admission=false`;
+growth, network policy, supervised daemon recovery, physical isolation and fleet
+admission remain separate requirements. The separate OmniOS crash receipt
+records process SIGKILL and same-disk recovery only.
 
 The [root-growth helper](../../../lyra/src/native_growth.rs),
 [GPT validator](../../../lyra/src/native_growth/gpt.rs) and
@@ -407,8 +439,8 @@ capacity increases, retained home data, protected GPT/partition identities,
 foreign-disk preservation and caller/nonroot refusals. The strict EFI oracle
 preserves every directory/file path and file bytes except the pinned firmware's
 root regular `NvVars` store bounded to 1 MiB. The final blocking-flush image
-passed the same three-boot/two-expansion boundary. OmniOS growth and interrupted
-expansion still require execution. The
+passed the same three-boot/two-expansion boundary. The later source-qualified OmniOS
+three-boot/two-expansion replay is recorded below; interrupted expansion still requires execution. The
 [isolation fixture](../../../nix/verification/tests/machines/native-isolation/driver.py)
 uses packaged Lilly router/TAP policy and positive-control TCP sinks. Its
 composed NixOS driver and real Linux nft rule/counter smoke check passed. The
@@ -461,7 +493,7 @@ or runtime readiness claim. OmniOS also rejects explicit `UsePAM yes` because
 its downstream PAM policy is always on. Omitting that directive only for
 OmniOS passed native `sshd -t` and `sshd -T` with synthetic volatile host-key
 prerequisites, retaining effective PAM and public-key-only authentication.
-The final `wz4r` kit subsequently passed fresh native assembly and clean
+The previously reported `wz4r` kit subsequently passed native assembly and clean
 shutdown, sealing the 8,589,934,592-byte disk SHA256
 `e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41`.
 Its 158,319-byte assembly receipt SHA256 is
@@ -476,7 +508,11 @@ marker and recreates it after volatile runtime loss. The include is outside the
 writable checkout, and unrelated root-owned repositories remain refused. This
 native-only closure is required because pinned OmniOS Git 2.44 does not support
 the `/workspace/*` prefix form; it establishes checkout ownership only, not
-native service or admission.
+native service or admission. The sealed `wz4r` disk was later found to contain
+a stale cached kit with the former wildcard config and pre-fencing receiver, so
+it does not evidence this current source behavior. The source-derived kit
+`/nix/store/w5mg2jw3c2sispdkfg1r9ys5vxm41a97-overalls-omnios-native-image-candidate-kit`
+requires fresh target-native assembly and replay.
 The final kit includes
 the executor lease/stop correction and both SSH fixes. Runtime, complete
 services, growth, recovery and admission remain false or pending for these
@@ -488,12 +524,13 @@ exact bytes; the admission review records their separate replay requirements.
   the installable downstream image and `illumos` is the stable protocol label.
   A direct illumos.org image source is unavailable: the upstream project
   identifies OmniOS, OpenIndiana and Tribblix as downstream distributions.
-- Whether the corrected exact OmniOS payload passes the complete current
-  boot/service/restart matrix, including the 600-second readiness budget.
+- Whether the corrected exact OmniOS payload passes the remaining current
+  boot/service/restart matrix, including supervised daemon recovery and the
+  600-second readiness budget. Its process-crash/same-disk receipt is recorded.
 - Reproducible native full-disk assembly remains unrecorded. The exact FreeBSD
   artifact is promoted by reviewed immutable bytes and hash-bound native
   evidence; candidate manifests alone remain insufficient.
-- OmniOS native crash, wrong-CID injection, reset/DMA and broader isolation
+- OmniOS wrong-CID injection, reset/DMA, physical recovery and broader isolation
   scenarios retain their separate gaps. Enabling the reviewed FreeBSD image
   does not close them or activate the OmniOS family.
 

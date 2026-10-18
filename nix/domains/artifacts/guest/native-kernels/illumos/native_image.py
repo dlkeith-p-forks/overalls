@@ -32,6 +32,8 @@ TRUST_BASE = "root/etc/overalls/system-ca.pem"
 TRUST_DESTINATION = "root/etc/ssl/cacert.pem"
 MAX_TRUST_BASE = 1024 * 1024
 MAX_TRUST_CERT = 16384
+MAX_TRANSIENT = 65536
+TRANSIENT_CONFIG = "boot/transient.conf"
 CONSOLE_SETTINGS = {
     "etc/system": b"\n* Overalls Firecracker UART nexus.\nset pseudo_isa=1\n",
     "boot/loader.conf.local": (
@@ -563,6 +565,52 @@ def check_native_ssh_executable(root: Path) -> None:
         raise ValueError("native sshd must be a safe root-owned executable ELF")
 
 
+def _remove_transient_single_user(data: bytes) -> bytes:
+    """Remove only the standalone ``-s`` boot argument from transient state."""
+    lines = data.splitlines(keepends=True)
+    result: list[bytes] = []
+    for line in lines:
+        if line.startswith(b"boot-args="):
+            line = re.sub(rb"(?P<prefix>[ \t])-s(?P<suffix>[ \t]+)", rb"\g<prefix>", line)
+            line = re.sub(rb"(?P<prefix>[ \t])-s(?P<quote>[\"\\'])", rb"\g<quote>", line)
+            line = re.sub(rb"(?P<quote>[\"\\'])-s(?P<suffix>[ \t]+)", rb"\g<quote>", line)
+            line = re.sub(rb"(?P<quote>[\"\\'])-s(?P<end>[\"\\'])", rb"\g<quote>\g<end>", line)
+        result.append(line)
+    return b"".join(result)
+
+
+def sanitize_transient_configuration(root: Path) -> None:
+    """@cc [owner:ghuntley,label:build;security;verification] native-transient-single-user
+    The cloned OmniOS transient loader configuration MUST NOT retain a standalone
+    ``-s`` boot argument inherited from the administration boot. Other transient
+    boot arguments, including the ZFS root and console binding, MUST be preserved
+    byte-for-byte; missing transient state is allowed.
+    """
+    path = kernel.destination(root, TRANSIENT_CONFIG)
+    if not path.exists():
+        return
+    metadata = path.lstat()
+    if not stat.S_ISREG(metadata.st_mode) or stat.S_IMODE(metadata.st_mode) & 0o022:
+        raise ValueError("native transient configuration must be a safe regular file")
+    original = kernel.read_file(path, MAX_TRANSIENT)
+    sanitized = _remove_transient_single_user(original)
+    if sanitized != original:
+        kernel.install_file(root, TRANSIENT_CONFIG, sanitized, stat.S_IMODE(metadata.st_mode))
+
+
+def check_transient_configuration(root: Path) -> None:
+    """@cc [owner:ghuntley,label:verification] native-transient-single-user-receipt
+    Boot verification MUST reject a present transient loader configuration that
+    still contains a standalone ``-s`` argument, while allowing a missing file.
+    """
+    path = kernel.destination(root, TRANSIENT_CONFIG)
+    if not path.exists():
+        return
+    data = kernel.read_file(path, MAX_TRANSIENT)
+    if _remove_transient_single_user(data) != data:
+        raise ValueError("native transient configuration still requests single-user boot")
+
+
 def configure_console(root: Path) -> list[Entry]:
     """@cc [owner:ghuntley,label:build;verification] native-image-serial-handoff
     Only the scratch clone MUST receive the reviewed pseudo ISA nexus and ttya
@@ -674,6 +722,7 @@ def assemble(kit: Path, device: Path, guid: str, expected: str) -> None:
         installed = installation_entries(files)
         merge_root(ROOT, kit, installed)
         installed.extend(configure_console(ROOT))
+        sanitize_transient_configuration(ROOT)
         check_installed(ROOT, installed)
         check_console_configuration(ROOT, installed)
         validate_native_services(ROOT)
@@ -699,6 +748,7 @@ def assemble(kit: Path, device: Path, guid: str, expected: str) -> None:
             "removed_stock_network_files": list(STOCK_NETWORK_FILES),
             "native_service_manifests_validated": True,
             "native_ssh_executable_checked": True,
+            "transient_single_user_sanitized": True,
             "native_admission": False,
             "runtime_validated": False,
         }
@@ -733,6 +783,7 @@ def verify(expected: str) -> None:
         or parsed.get("removed_stock_network_files") != list(STOCK_NETWORK_FILES)
         or parsed.get("native_service_manifests_validated") is not True
         or parsed.get("native_ssh_executable_checked") is not True
+        or parsed.get("transient_single_user_sanitized") is not True
         or parsed.get("native_admission") is not False
     ):
         raise ValueError("expected closed candidate assembly receipt")
@@ -761,6 +812,7 @@ def verify(expected: str) -> None:
         raise ValueError("installed sudoers receipt must bind target mode0440")
     check_installed(Path("/"), installed, runtime_trust=True)
     check_console_configuration(Path("/"), installed)
+    check_transient_configuration(Path("/"))
     check_stock_services_disabled()
     check_stock_network_absent(Path("/"))
     validate_native_services(Path("/"))
@@ -782,6 +834,7 @@ def verify(expected: str) -> None:
                     "module_digests_checked": True,
                     "payload_digests_checked": True,
                     "console_configuration_checked": True,
+                    "transient_single_user_checked": True,
                     "git_runtime_checked": True,
                     "vendor_trust_digest_checked": True,
                     "effective_trust_path_checked": True,

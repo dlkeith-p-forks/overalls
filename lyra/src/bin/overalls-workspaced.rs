@@ -95,6 +95,7 @@ fn spawn_clone(
                 program: image.git.clone(),
                 ca_bundle: image.ca_bundle.clone(),
                 home: state.paths().state.clone(),
+                system_configuration: None,
             };
             let outcome =
                 state.clone_with_retry(&source, &mut git, Retry::GUEST, &mut thread::sleep, || {

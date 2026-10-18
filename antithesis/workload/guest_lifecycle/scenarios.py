@@ -19,7 +19,7 @@ from guest_lifecycle.domain import (
     vm_view,
 )
 from guest_lifecycle.operation import ComputeLifecycleOperator, OperationLedger, OperatorReply
-from guest_lifecycle.readiness import capacity_ready
+from guest_lifecycle.readiness import observed_gap
 from guest_lifecycle.witness import GuestSpec, GuestWitness, GuestWitnessClient
 
 LOG = logging.getLogger(__name__)
@@ -156,14 +156,9 @@ def run_physical_boot_cycle() -> int:
     witness = GuestWitnessClient(operator)
     identity_result = witness.identity()
     catalog_result = operator.catalog()
-    if (
-        identity_result.state is not State.OBSERVED
-        or identity_result.value is None
-        or catalog_result.state is not State.OBSERVED
-        or catalog_result.value is None
-        or not capacity_ready(catalog_result.value, identity_result.value)
-    ):
-        LOG.info("Guest lifecycle unexercised: image or measured capacity unavailable")
+    gap = observed_gap(identity_result, catalog_result)
+    if gap is not None or identity_result.value is None or catalog_result.value is None:
+        LOG.info("Guest lifecycle unexercised: %s", gap or "observation_missing")
         return 0
     image = identity_result.value
     disk_bytes = ((image.minimum_disk_bytes + 4095) // 4096) * 4096
@@ -179,78 +174,82 @@ def run_physical_boot_cycle() -> int:
     except (ValueError, TypeError):
         LOG.info("Guest lifecycle provision receipt unavailable")
         return 0
-    first = _sample(operator, witness, vm_id, provision_operation, "provision", "running", 240)
-    if isinstance(first, ObservedMismatch):
-        _reject_mismatch()
-        return 1
-    if first is None:
-        LOG.info("Guest lifecycle initial boot unexercised")
-        return 0
-    if first.operation.outcome is None or not first.operation.outcome.guest_ready:
-        LOG.info("Guest lifecycle outcome lacks guest-ready proof")
-        return 0
-    always(
-        _running_matches(first),
-        "Guest ready outcome has current tuple and independent live QEMU guest readiness",
-    )
-    if not _running_matches(first):
-        return 1
-    reachable("Accepted provision reached a real QEMU guest boot and port 1024 readiness")
-
-    stop_reply = operator.lifecycle(vm_id, "stop", uuid4())
-    if stop_reply.state is not State.OBSERVED or stop_reply.value is None:
-        LOG.info("Guest lifecycle stop uncertain")
-        return 0
+    # Every exit after admission submits a final stop, so a failed or
+    # unobserved cycle cannot leave the single guest slot held.
     try:
-        stop_id = lifecycle_id(stop_reply.value, vm_id, "stop")
-    except (ValueError, TypeError):
-        return 0
-    stopped = _sample(operator, witness, vm_id, stop_id, "stop", "stopped", 240)
-    if isinstance(stopped, ObservedMismatch):
-        _reject_mismatch()
-        return 1
-    if stopped is None:
-        LOG.info("Guest lifecycle completed stop unexercised")
-        return 0
-    always(
-        _stopped_has_retained_overlay(stopped),
-        "Accepted stop has no QEMU process and retains the measured guest overlay",
-    )
-    if not _stopped_has_retained_overlay(stopped):
-        return 1
-    reachable("Accepted stop has independently absent QEMU and retained qcow2 hash")
+        first = _sample(operator, witness, vm_id, provision_operation, "provision", "running", 240)
+        if isinstance(first, ObservedMismatch):
+            _reject_mismatch()
+            return 1
+        if first is None:
+            LOG.info("Guest lifecycle initial boot unexercised")
+            return 0
+        if first.operation.outcome is None or not first.operation.outcome.guest_ready:
+            LOG.info("Guest lifecycle outcome lacks guest-ready proof")
+            return 0
+        always(
+            _running_matches(first),
+            "Guest ready outcome has current tuple and independent live QEMU guest readiness",
+        )
+        if not _running_matches(first):
+            return 1
+        reachable("Accepted provision reached a real QEMU guest boot and port 1024 readiness")
 
-    start_reply = operator.lifecycle(vm_id, "start", uuid4())
-    if start_reply.state is not State.OBSERVED or start_reply.value is None:
-        LOG.info("Guest lifecycle fresh start uncertain")
-        return 0
-    try:
-        start_id = lifecycle_id(start_reply.value, vm_id, "start")
-    except (ValueError, TypeError):
-        return 0
-    restarted = _sample(operator, witness, vm_id, start_id, "start", "running", 240)
-    if isinstance(restarted, ObservedMismatch):
-        _reject_mismatch()
-        return 1
-    if restarted is None:
-        LOG.info("Guest lifecycle restarted boot unexercised")
-        return 0
-    if restarted.operation.outcome is None or not restarted.operation.outcome.guest_ready:
-        LOG.info("Guest lifecycle restart outcome lacks guest-ready proof")
-        return 0
-    fresh = (
-        _running_matches(restarted)
-        and first.guest.physical_boot is not None
-        and restarted.guest.physical_boot != first.guest.physical_boot
-        and restarted.guest.boot_id != first.guest.boot_id
-        and restarted.vm.placement_id == first.vm.placement_id
-        and restarted.guest.overlay_present
-    )
-    always(fresh, "Fresh start reaches a new physical boot on the retained guest placement")
-    if fresh:
-        reachable("Stopped retained guest restarted with a new kernel boot UUID")
-    _release_slot(operator, vm_id)
-    return 0 if fresh else 1
+        stop_reply = operator.lifecycle(vm_id, "stop", uuid4())
+        if stop_reply.state is not State.OBSERVED or stop_reply.value is None:
+            LOG.info("Guest lifecycle stop uncertain")
+            return 0
+        try:
+            stop_id = lifecycle_id(stop_reply.value, vm_id, "stop")
+        except (ValueError, TypeError):
+            return 0
+        stopped = _sample(operator, witness, vm_id, stop_id, "stop", "stopped", 240)
+        if isinstance(stopped, ObservedMismatch):
+            _reject_mismatch()
+            return 1
+        if stopped is None:
+            LOG.info("Guest lifecycle completed stop unexercised")
+            return 0
+        always(
+            _stopped_has_retained_overlay(stopped),
+            "Accepted stop has no QEMU process and retains the measured guest overlay",
+        )
+        if not _stopped_has_retained_overlay(stopped):
+            return 1
+        reachable("Accepted stop has independently absent QEMU and retained qcow2 hash")
+
+        start_reply = operator.lifecycle(vm_id, "start", uuid4())
+        if start_reply.state is not State.OBSERVED or start_reply.value is None:
+            LOG.info("Guest lifecycle fresh start uncertain")
+            return 0
+        try:
+            start_id = lifecycle_id(start_reply.value, vm_id, "start")
+        except (ValueError, TypeError):
+            return 0
+        restarted = _sample(operator, witness, vm_id, start_id, "start", "running", 240)
+        if isinstance(restarted, ObservedMismatch):
+            _reject_mismatch()
+            return 1
+        if restarted is None:
+            LOG.info("Guest lifecycle restarted boot unexercised")
+            return 0
+        if restarted.operation.outcome is None or not restarted.operation.outcome.guest_ready:
+            LOG.info("Guest lifecycle restart outcome lacks guest-ready proof")
+            return 0
+        fresh = (
+            _running_matches(restarted)
+            and first.guest.physical_boot is not None
+            and restarted.guest.physical_boot != first.guest.physical_boot
+            and restarted.guest.boot_id != first.guest.boot_id
+            and restarted.vm.placement_id == first.vm.placement_id
+            and restarted.guest.overlay_present
+        )
+        always(fresh, "Fresh start reaches a new physical boot on the retained guest placement")
+        if fresh:
+            reachable("Stopped retained guest restarted with a new kernel boot UUID")
+        return 0 if fresh else 1
+    finally:
+        _release_slot(operator, vm_id)
 
 
 def _release_slot(operator: ComputeLifecycleOperator, vm_id: UUID) -> None:

@@ -22,6 +22,11 @@ from pathlib import Path
 MODULES = Path("/opt/overalls/backup-modules")
 RESTIC = Path("/opt/overalls/restic/bin/restic")
 GATE = Path(__file__).with_name("helper_restic_gate.py")
+# STUB (harness): libfaketime and its spec-rewriting Restic wrapper step only a
+# workload-selected coordinator's wall clock; see ``backward_clock_step``.
+FAKETIME = Path("/opt/overalls/libfaketime/lib/libfaketimeMT.so.1")
+CLOCK_STEP = Path(__file__).with_name("helper_clock_step.py")
+CLOCK_STEP_SECONDS = 120
 
 
 @dataclass(frozen=True)
@@ -323,6 +328,44 @@ class BackupFixture:
 
     def ungate(self) -> None:
         self.config["restic"] = str(RESTIC)
+
+    @contextmanager
+    def backward_clock_step(self) -> Iterator[None]:
+        """@cc [owner:ghuntley,label:verification] backup-backward-clock-step-stub
+        STUB (harness): operator runs inside this context preload libfaketime
+        with a spec file that starts at real time. The Restic wrapper rewrites
+        it to a fixed backward offset when the coordinator begins its
+        host-state upload, after its journal recorded ``started_at``. Only the
+        coordinator process is faked; Restic, raw oracle reads and production
+        modules are unchanged, and the environment and Restic path are
+        restored on exit. This is not evidence of real host clock steps.
+        """
+        if not FAKETIME.is_file():
+            raise RuntimeError("harness libfaketime closure absent")
+        spec = self.root / "faketime.spec"
+        spec.write_text("+0\n", encoding="ascii")
+        wrapper = self.root / "clock-step-restic.py"
+        shutil.copyfile(CLOCK_STEP, wrapper)
+        wrapper.chmod(0o700)
+        (self.root / "clock-step.json").write_text(
+            json.dumps(
+                {"real": str(RESTIC), "spec": str(spec), "offset": f"-{CLOCK_STEP_SECONDS}"}
+            ),
+            encoding="utf-8",
+        )
+        saved = dict(self.environment)
+        self.environment.update(
+            LD_PRELOAD=str(FAKETIME),
+            FAKETIME_TIMESTAMP_FILE=str(spec),
+            FAKETIME_NO_CACHE="1",
+            FAKETIME_DONT_FAKE_MONOTONIC="1",
+        )
+        self.config["restic"] = str(wrapper)
+        try:
+            yield
+        finally:
+            self.environment = saved
+            self.ungate()
 
     def interrupt_at_gate(self, operation: str, marker: Path, *arguments: str) -> Result | None:
         process = self.operator_process(operation, *arguments)

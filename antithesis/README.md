@@ -218,7 +218,9 @@ evidence, not native KVM evidence.
 selects a harness **stub** storage substrate on the controlled Lilly release:
 `entrypoints/lilly.sh` writes a fixed private substrate file and a tiny
 non-bootable image, the harness collector reports configured stub pool totals
-for the enrolled pool identity plus measured cgroup CPU/memory headroom, and
+for the enrolled pool identity, measured cgroup memory headroom and a labelled
+STUB CPU budget capped by the measured cores (the hosted VM has one logical
+CPU, so a measured whole idle core never appears), and
 Lilly digest-verifies the stub image before advertising it. The enrollment
 operator registers that image through Marshall's reviewed catalog action. A
 fully stub-backed report advertises placement readiness, so Marshall's real

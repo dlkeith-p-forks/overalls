@@ -45,7 +45,7 @@ defmodule OverallsAntithesis.RecorderPeer do
       case :gen_tcp.recv(socket, 0, 10_000) do
         {:ok, bytes} when byte_size(bytes) <= 4096 ->
           case JSON.decode(bytes) do
-            {:ok, request} -> dispatch(request, state)
+            {:ok, request} -> guarded_dispatch(request, state)
             _ -> {%{status: "invalid"}, state}
           end
 
@@ -62,6 +62,14 @@ defmodule OverallsAntithesis.RecorderPeer do
   # Every admitted slot MUST be a monitored live BEAM worker with a production
   # Producer ticket. Every attempted slot MUST append one fsynced fixture effect,
   # including measurement refusals. The response is not a durable-state oracle.
+  # A fixture fault must not kill the producer that owns live admissions.
+  @spec guarded_dispatch(term(), state()) :: {map(), state()}
+  defp guarded_dispatch(request, state) do
+    dispatch(request, state)
+  rescue
+    _ -> {%{status: "unavailable"}, state}
+  end
+
   @spec dispatch(term(), state()) :: {map(), state()}
   defp dispatch(%{"op" => "admit", "count" => count} = request, state)
        when is_integer(count) and count in 1..@max_batch and map_size(request) == 2 do

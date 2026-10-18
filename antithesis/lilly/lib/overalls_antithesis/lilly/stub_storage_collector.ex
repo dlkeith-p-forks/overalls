@@ -14,7 +14,8 @@ defmodule OverallsAntithesis.Lilly.StubStorageCollector do
   # One emulated QEMU TCG placement per guest-vmm (deployment topology).
   @slots 1
   @slot_millicores 1000
-  @slot_memory_bytes 2_147_483_648
+  # Guest RAM plus the VMM overhead admission reserves for each placement.
+  @slot_memory_bytes OverallsProtocol.VMShape.host_memory(2_147_483_648)
   # Fixed STUB pool size. It is not a measured filesystem or ZFS dataset.
   @stub_pool_bytes 1_099_511_627_776
   @interval_us 1_000_000

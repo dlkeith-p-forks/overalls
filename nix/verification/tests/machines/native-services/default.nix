@@ -1,7 +1,9 @@
 { pkgs, packages, image ? packages.freebsdImageCandidate, osName ? "freebsd"
-, isolation ? false, growth ? false, recovery ? false, crash ? false }:
+, isolation ? false, growth ? false, recovery ? false, crash ? false
+, transport ? false, transportReset ? false, transportProbe ? null
+, transportBuildId ? "" }:
 let
-  scenario = if isolation then "isolation" else if growth then "growth" else if recovery then "recovery" else if crash then "crash-recovery" else "services";
+  scenario = if transportReset then "transport-reset" else if transport then "ordinary-transport" else if isolation then "isolation" else if growth then "growth" else if recovery then "recovery" else if crash then "crash-recovery" else "services";
   tools = pkgs.runCommand "overalls-native-service-tools" {
     nativeBuildInputs = [ pkgs.python3 pkgs.ruff pkgs.ty ];
   } ''
@@ -23,6 +25,14 @@ let
     ${pkgs.lib.optionalString isolation ''
       cp ${../../support/native_isolation.py} "$out/native_isolation.py"
       cp ${../../support/native_tcp_probe.py} "$out/native_tcp_probe.py"
+    ''}
+    ${pkgs.lib.optionalString (transport || transportReset) ''
+      cp ${../../support/native_reset.py} "$out/native_reset.py"
+      cp ${../../support/native_transport.py} "$out/native_transport.py"
+      cp ${../../support/native_ordinary_transport.py} "$out/native_ordinary_transport.py"
+    ''}
+    ${pkgs.lib.optionalString transportReset ''
+      cp ${../../support/native_omnios_reset_runner.py} "$out/native_omnios_reset_runner.py"
     ''}
     ruff format --check --config config/pyproject.toml "$out"
     ruff check --config config/pyproject.toml "$out"
@@ -54,7 +64,8 @@ let
 in
 assert !image.nativeAdmission;
 assert builtins.elem osName [ "freebsd" "illumos" ];
-assert pkgs.lib.count (enabled: enabled) [ isolation growth recovery crash ] <= 1;
+assert (!transport && !transportReset) || (osName == "illumos" && transportProbe != null && builtins.match "[0-9a-f]{64}" transportBuildId != null);
+assert pkgs.lib.count (enabled: enabled) [ isolation growth recovery crash transport transportReset ] <= 1;
 # @cc [owner:ghuntley,label:verification;security] native-service-machine-boundary
 # The actual native image MUST bootstrap against isolated MMDS in nested KVM
 # and answer the host-only daemon protocols. Missing SSH authority MUST withhold
@@ -74,6 +85,12 @@ assert pkgs.lib.count (enabled: enabled) [ isolation growth recovery crash ] <= 
 # disk under fresh boot authority, verify retained synchronized data and native
 # filesystem recovery, and finish with a verified clean exit. Its separate
 # receipt MUST NOT claim interrupted-write durability or physical recovery.
+# Ordinary transport MUST run only an external test probe after a complete
+# production-service baseline, stop production listeners for its exact socket
+# capacity checks and restore the same boot before two verified clean exits.
+# Reset transport MUST observe an actual private VMM event after that baseline
+# and dispose its VM after independent serial verification; it MUST NOT create
+# an ordinary service receipt or claim restored service or clean shutdown.
 pkgs.testers.runNixOSTest {
   name = "overalls-${osName}-native-${scenario}";
   requiredFeatures.nested-kvm = true;
@@ -100,15 +117,24 @@ pkgs.testers.runNixOSTest {
     environment.etc."overalls-native-service-image".source = image;
     environment.etc."native-service-tools".source = tools;
     environment.etc."native-service-fixture".source = fixture;
+    environment.etc."native-transport-probe" = lib.mkIf (transport || transportReset) {
+      source = transportProbe;
+    };
     networking.firewall.trustedInterfaces = [ "native0" ];
     boot.kernel.sysctl."net.ipv4.ip_forward" = 0;
   };
   testScript = ''
     vmm = "${packages.vmm}/bin/firecracker"
     os_name = "${osName}"
+    build_id = "${transportBuildId}"
     growth = ${if growth then "True" else "False"}
     recovery = ${if recovery then "True" else "False"}
     crash = ${if crash then "True" else "False"}
     service_runner = "${if recovery then "native_recovery.py" else if crash then "native_crash_recovery.py" else "native_service_runner.py"}"
-  '' + builtins.readFile (if isolation then ../native-isolation/driver.py else ./driver.py);
+  '' + builtins.readFile (
+    if transportReset then ./omnios-reset-driver.py
+    else if transport then ./ordinary-transport-driver.py
+    else if isolation then ../native-isolation/driver.py
+    else ./driver.py
+  );
 }

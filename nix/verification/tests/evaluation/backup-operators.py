@@ -253,7 +253,8 @@ class Fixture:
         Each rule fires when every listed token appears in the shim's argv.
         "block" records its pid in marker and sleeps; "delegate_then_block" runs
         the real Restic first (upload completes), then blocks before returning;
-        "swap_then_delegate" rewrites the private password file and delegates.
+        "swap_then_delegate" rewrites the private password file and delegates;
+        "mark_then_delegate" records its pid in marker and delegates.
         Unmatched invocations delegate transparently.
         """
         helper = self.root / "shim-restic"
@@ -277,6 +278,9 @@ class Fixture:
             + '            Path(rule["marker"]).write_text(str(os.getpid()))\n'
             + "            time.sleep(3600)\n"
             + "            sys.exit(completed.returncode)\n"
+            + '        if rule["action"] == "mark_then_delegate":\n'
+            + '            Path(rule["marker"]).write_text(str(os.getpid()))\n'
+            + "            sys.exit(subprocess.run([REAL, *arguments]).returncode)\n"
             + '        if rule["action"] == "swap_then_delegate":\n'
             + '            Path(rule["password_file"]).write_text(rule["password"])\n'
             + '            Path(rule["marker"]).write_text(str(os.getpid()))\n'
@@ -1034,6 +1038,53 @@ class OperatorHistories(unittest.TestCase):
                     "completed",
                 )
                 self.assertIn(orphan, f.ids())
+
+    def test_backward_clock_step_publishes_a_retention_valid_point(self) -> None:
+        """A wall clock stepped backward mid-capture still publishes a valid point.
+
+        Antithesis run 6993853fa020fd46ed8e13c6c123ac86-65-0 published a
+        manifest whose completed_at preceded started_at; retention and inspect
+        then refused the newly published point.
+        """
+        with fixture() as f:
+            marker = f.root / "clock-step.mark"
+            hooks = f.root / "clock-hooks"
+            hooks.mkdir(mode=0o700)
+            # The runtime reads time.time after the host-state upload; once the
+            # shim records that upload, every later reading is 120 s earlier.
+            (hooks / "sitecustomize.py").write_text(
+                "import os, time\n"
+                + "_real = time.time\n"
+                + "def _stepped() -> float:\n"
+                + "    stepped = os.path.exists("
+                + repr(str(marker))
+                + ")\n"
+                + "    return _real() - (120 if stepped else 0)\n"
+                + "time.time = _stepped\n"
+            )
+            f.environment["PYTHONPATH"] = str(hooks)
+            f.restic_shim(
+                [
+                    {
+                        "action": "mark_then_delegate",
+                        "tokens": ["backup", "--tag", "host-state"],
+                        "marker": str(marker),
+                    }
+                ]
+            )
+            self.succeeded(f.cli("backup", timeout=180))
+            self.assertTrue(marker.exists())
+            journal = f.manifest_journal()
+            self.assertEqual(journal["phase"], "completed")
+            listed = rows(json.loads(self.succeeded(f.cli("list"))))
+            self.assertEqual(len(listed), 1)
+            manifest = object_value(
+                json.loads(self.succeeded(f.cli("inspect", "--snapshot", string(listed[0]["id"]))))
+            )
+            started, completed = manifest["started_at"], manifest["completed_at"]
+            assert isinstance(started, int) and isinstance(completed, int)
+            self.assertLessEqual(started, completed)
+            self.succeeded(f.cli("prune", timeout=120))
 
     def test_publication_window_interruption_pins_valid_point_with_failed_journal(
         self,

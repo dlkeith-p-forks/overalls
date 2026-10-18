@@ -876,8 +876,8 @@ which remains unadmitted; it does not replace the sealed closure. The
 separates artifact verification, cache publication, SQL/host refusal tests and
 native scenario evidence. Reproducible native assembly, direct native peer-VM
 isolation, physical recovery, relocation and Marshall-driven fleet acceptance
-remain gaps. OmniOS service acceptance is incomplete and its admission remains
-closed.
+remain gaps. The current source-qualified OmniOS service, growth and crash
+receipts are recorded separately; OmniOS admission remains closed.
 
 Native bootstrap canonicalizes only local `ifconfig` MAC output: exactly six
 one- or two-digit ASCII hexadecimal octets become lowercase two-digit octets
@@ -985,7 +985,7 @@ boots/two expansions with complete service oracles, preserved data and strict
 EFI inventories (only bounded root `NvVars` mutable). The final reviewed
 blocking-flush image passed all five services/growth/policy/daemon-recovery/
 same-disk SIGKILL-recovery variants, with exact image and immutable receipt paths
-in the native review. OmniOS growth still requires execution.
+in the native review. The recorded source-qualified OmniOS growth replay separately covers three clean boots and two expansions; interrupted expansion remains open.
 This adds a tenth production executable
 per OS beyond the recorded eighteen-executable package. OmniOS's offline SMF
 profile disables all four stock cloud-init instances and stock SSH; only
@@ -1029,8 +1029,7 @@ network/identity. Retained serial corrects an earlier wrapper-rendered
 blank-output impression; the sliced expansion operand is separately diagnosed.
 The corrected growth-operand kit `d0rd` passed a fresh native assembly with
 nine modules, 764 payload entries, native schema checks, clean export and
-shutdown. Sealed disk `bea32fe6` retains token `76b8c1ad`; exact-image
-service/growth/transport/reset replay remains open.
+shutdown. Sealed disk `bea32fe6` retains token `76b8c1ad`; that historical kit remains separate from the later source-qualified service and growth receipts. Transport/reset replay and supervised daemon recovery remain open.
 
 The final `wz4r` kit includes current executor lease cancellation and the
 corrected `/usr/sbin/sshd` path/OmniOS always-on PAM config. Fresh native
@@ -1041,9 +1040,10 @@ receipt extraction/export and clean administration shutdown. The sealed
 `e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41`,
 at `/tmp/overalls-omnios-native-ssh-config-final-artifact/`; exact kit/receipt
 identities and logs are in the native review. Clone this read-only baseline
-before runtime checks. Runtime, complete services and admission remain false;
-exact-image boot/service, lease withdrawal, growth, transport/reset, isolation
-and recovery replay remain pending. Native `sshd -t/-T` separately passed with
+before runtime checks. The historical `wz4r` baseline remains outside runtime
+qualification and admission; current source-qualified service, growth and
+process-crash receipts are recorded separately. Exact-image lease withdrawal,
+transport/reset, isolation and image qualification remain pending. Native `sshd -t/-T` separately passed with
 synthetic volatile host-key prerequisites, preserving PAM and public-key-only
 authentication; parser acceptance proves no running SSH session or readiness.
 
@@ -1063,6 +1063,16 @@ helper boundary tests include foreign/traversal links, writable or nested-link
 targets, vendor substitution, unrelated payload changes and malformed/oversized
 roots. This structural verification grants no current-boot trust authority;
 the trust protocol receipt must still match the current boot.
+The assembler also removes an inherited standalone `-s` from the cloned
+`/boot/transient.conf` while preserving its ZFS root, boot path and console
+arguments; second-boot verification rejects any remaining single-user token.
+This fixes loader selection only. The current source-qualified OmniOS image
+later passed two complete native service boots; the runner required status zero
+and the bounded `syncing file systems... done` serial marker before recording
+clean shutdown. Policy, supervised daemon recovery and physical isolation remain
+pending. The separate OmniOS abrupt-crash receipt covers
+process SIGKILL and same-disk recovery; physical stable-media and host recovery
+remain unverified.
 
 ## Windows guests (experimental)
 
@@ -1374,7 +1384,8 @@ Like every image, Windows root disks are copied on demand (ADR-0177). The
 Windows image is staged only after the code converges. The multi-OS review
 records the Arch/Alma builder evidence. The later native and activation reviews
 record exact FreeBSD service/transport/recovery and image qualification scopes;
-OmniOS complete services and native fleet acceptance remain open.
+OmniOS native fleet acceptance remains open; its scoped abrupt-crash receipt
+does not establish physical recovery or admission.
 
 Verification: `firecracker-vmm` (version, `--enable-pci`, static pair),
 `windows-firmware` (PVH note, patched aperture), `windows-guest-unit`

@@ -391,6 +391,53 @@ class GrowthBoundaryTest(unittest.TestCase):
                 [growth.INITIAL_BYTES + generation * growth.EXPANSION for generation in range(3)],
             )
 
+    def test_interrupted_expansion_retains_capacity_and_retries_same_generation(self) -> None:
+        """An interrupted host expansion must be retried without truncation."""
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            disk = work / "disk.raw"
+            write_layout(disk, 0)
+            format_loader(disk)
+            oracle = growth.Oracle(disk, work, KERNEL)
+
+            oracle.before_boot(0)
+            write_layout(disk, 0)
+            first = oracle.guest(Probe(0), "/usr/bin/sudo")
+            oracle.after_shutdown(first)
+
+            oracle.before_boot(1)
+            self.assertEqual(disk.stat().st_size, growth.INITIAL_BYTES + growth.EXPANSION)
+
+            def interrupted_probe(_command: str) -> subprocess.CompletedProcess[bytes]:
+                raise OSError("test-only growth interruption")
+
+            with self.assertRaises(OSError):
+                oracle.guest(interrupted_probe, "/usr/bin/sudo")
+            oracle.interrupt_before_guest()
+            self.assertEqual(disk.stat().st_size, growth.INITIAL_BYTES + growth.EXPANSION)
+            with self.assertRaises(RuntimeError):
+                oracle.before_boot(0)
+
+            oracle.before_boot(1)
+            write_layout(disk, 1)
+            retry = oracle.guest(Probe(1), "/usr/bin/sudo")
+            oracle.after_shutdown(retry)
+            oracle.before_boot(2)
+            write_layout(disk, 2)
+            third = oracle.guest(Probe(2), "/usr/bin/sudo")
+            oracle.after_shutdown(third)
+            oracle.finish(BOOT_IDS)
+
+            receipt = json.loads((work / "growth-receipt.json").read_bytes())
+            self.assertEqual(
+                receipt["physical_bytes"],
+                [
+                    growth.INITIAL_BYTES,
+                    growth.INITIAL_BYTES + growth.EXPANSION,
+                    growth.INITIAL_BYTES + 2 * growth.EXPANSION,
+                ],
+            )
+
     def test_foreign_disk_reserved_bytes_and_assembly_mutation_refuse_completion(self) -> None:
         for mutation in ("foreign", "reserved", "assembly", "boot-file"):
             with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:

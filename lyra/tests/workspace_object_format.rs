@@ -37,6 +37,7 @@ fn git_under(root: &Path) -> SystemGit {
         program,
         ca_bundle: root.join("unused-local-ca"),
         home: root.into(),
+        system_configuration: None,
     }
 }
 

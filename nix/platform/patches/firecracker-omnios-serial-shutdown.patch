@@ -1,0 +1,190 @@
+--- a/src/vmm/src/devices/legacy/serial.rs	2026-06-29 09:33:24.000000000 +0000
++++ b/src/vmm/src/devices/legacy/serial.rs	2026-10-18 00:15:21.828800540 +0000
+@@ -26,6 +26,35 @@
+ use crate::utils::usize_to_u64;
+ use crate::vstate::bus::BusDevice;
+
++/// OmniOS emits this fixed marker after all guest filesystems are synced.
++const ILLUMOS_SYNC_MARKER: &[u8] = b"syncing file systems... done";
++
++#[derive(Debug, Default)]
++struct ShutdownMarkerDetector {
++    matched: usize,
++}
++
++impl ShutdownMarkerDetector {
++    /// @cc [owner:ghuntley,label:recovery;protocol] illumos-serial-shutdown-marker
++    /// The detector MUST signal only after the exact contiguous sync marker has
++    /// been written, preserve partial matches across output calls, and retain no
++    /// guest output bytes beyond the bounded marker-match state.
++    fn observe(&mut self, bytes: &[u8]) -> bool {
++        for byte in bytes {
++            if *byte == ILLUMOS_SYNC_MARKER[self.matched] {
++                self.matched += 1;
++                if self.matched == ILLUMOS_SYNC_MARKER.len() {
++                    self.matched = 0;
++                    return true;
++                }
++            } else {
++                self.matched = usize::from(*byte == ILLUMOS_SYNC_MARKER[0]);
++            }
++        }
++        false
++    }
++}
++
+ /// Metrics specific to the UART device.
+ #[derive(Debug, Serialize, Default)]
+ pub struct SerialDeviceMetrics {
+@@ -139,24 +168,34 @@
+     inner: SerialOutInner,
+     /// Optional rate limiter for serial output bandwidth.
+     rate_limiter: Option<TokenBucket>,
++    /// VMM exit event used by the fixed OmniOS clean-shutdown marker.
++    shutdown_evt: Option<EventFd>,
++    shutdown_detector: ShutdownMarkerDetector,
+ }
+
+ impl SerialOut {
+     /// Create a new `SerialOut` with the given inner sink and optional rate limiter.
+     pub fn new(inner: SerialOutInner, rate_limiter: Option<TokenBucket>) -> Self {
++        Self::with_shutdown(inner, rate_limiter, None)
++    }
++
++    /// Create a serial output with the optional fixed OmniOS shutdown detector.
++    pub fn with_shutdown(
++        inner: SerialOutInner,
++        rate_limiter: Option<TokenBucket>,
++        shutdown_evt: Option<EventFd>,
++    ) -> Self {
+         Self {
+             inner,
+             rate_limiter,
++            shutdown_evt,
++            shutdown_detector: ShutdownMarkerDetector::default(),
+         }
+     }
+ }
+
+ impl std::io::Write for SerialOut {
+     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+-        if let SerialOutInner::Sink = self.inner {
+-            return Ok(buf.len());
+-        }
+-
+         // Check rate limiter if configured.
+         if let Some(ref mut rl) = self.rate_limiter {
+             match rl.reduce(usize_to_u64(buf.len())) {
+@@ -170,11 +209,28 @@
+             }
+         }
+
+-        match &mut self.inner {
++        let result = match &mut self.inner {
+             SerialOutInner::Stdout(stdout) => stdout.write(buf),
+             SerialOutInner::File(file) => file.write(buf),
+             SerialOutInner::Sink => Ok(buf.len()),
++        };
++        if let Ok(&written) = result.as_ref() {
++            let marker_complete = self.shutdown_evt.is_some()
++                && self.shutdown_detector.observe(&buf[..written]);
++            if marker_complete {
++                if let Err(err) = self.flush() {
++                    error!("Could not flush OmniOS shutdown marker: {err}");
++                }
++                if self
++                    .shutdown_evt
++                    .as_ref()
++                    .is_some_and(|event| event.write(1).is_err())
++                {
++                    error!("Could not signal OmniOS shutdown event");
++                }
++            }
+         }
++        result
+     }
+     fn flush(&mut self) -> std::io::Result<()> {
+         match &mut self.inner {
+@@ -450,6 +506,34 @@
+     }
+
+     #[test]
++    fn test_omnios_shutdown_marker_signals_after_split_output() {
++        let event = EventFd::new(libc::EFD_NONBLOCK).unwrap();
++        let mut output =
++            SerialOut::with_shutdown(SerialOutInner::Sink, None, Some(event.try_clone().unwrap()));
++        output.write_all(b"syncing file systems... do").unwrap();
++        assert_eq!(
++            event.read().unwrap_err().kind(),
++            std::io::ErrorKind::WouldBlock
++        );
++        output.write_all(b"ne").unwrap();
++        assert_eq!(event.read().unwrap(), 1);
++    }
++
++    #[test]
++    fn test_omnios_shutdown_marker_refuses_near_match() {
++        let event = EventFd::new(libc::EFD_NONBLOCK).unwrap();
++        let mut output =
++            SerialOut::with_shutdown(SerialOutInner::Sink, None, Some(event.try_clone().unwrap()));
++        output
++            .write_all(b"syncing file systems... donx")
++            .unwrap();
++        assert_eq!(
++            event.read().unwrap_err().kind(),
++            std::io::ErrorKind::WouldBlock
++        );
++    }
++
++    #[test]
+     fn test_serial_bus_read() {
+         let intr_evt = EventFdTrigger::new(EventFd::new(libc::EFD_NONBLOCK).unwrap());
+
+--- a/src/vmm/src/device_manager/mod.rs	2026-06-29 09:33:24.000000000 +0000
++++ b/src/vmm/src/device_manager/mod.rs	2026-10-18 00:10:14.681330246 +0000
+@@ -148,13 +148,15 @@
+         output: Option<&PathBuf>,
+         state: Option<&serial::SerialState>,
+         rate_limiter: Option<TokenBucket>,
++        shutdown_evt: Option<EventFd>,
+     ) -> Result<Arc<Mutex<SerialDevice>>, std::io::Error> {
+         let (serial_in, serial_out) = match output {
+             Some(path) => (
+                 None,
+-                SerialOut::new(
++                SerialOut::with_shutdown(
+                     SerialOutInner::File(open_file_nonblock(path)?),
+                     rate_limiter,
++                    shutdown_evt,
+                 ),
+             ),
+             None => {
+@@ -162,7 +164,11 @@
+
+                 (
+                     Some(std::io::stdin()),
+-                    SerialOut::new(SerialOutInner::Stdout(std::io::stdout()), rate_limiter),
++                    SerialOut::with_shutdown(
++                        SerialOutInner::Stdout(std::io::stdout()),
++                        rate_limiter,
++                        shutdown_evt,
++                    ),
+                 )
+             }
+         };
+@@ -205,11 +211,15 @@
+         serial_rate_limiter: Option<TokenBucket>,
+     ) -> Result<PortIODeviceManager, DeviceManagerCreateError> {
+         // Create serial device
++        let shutdown_evt = vcpus_exit_evt
++            .try_clone()
++            .map_err(DeviceManagerCreateError::EventFd)?;
+         let serial = Self::setup_serial_device(
+             event_manager,
+             serial_output,
+             serial_state,
+             serial_rate_limiter,
++            Some(shutdown_evt),
+         )?;
+         let reset_evt = vcpus_exit_evt
+             .try_clone()

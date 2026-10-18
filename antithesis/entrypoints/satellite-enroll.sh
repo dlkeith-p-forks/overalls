@@ -166,6 +166,13 @@ if [[ ! -e "$public/private-root.pem" ]]; then
 fi
 same_file "$satellite/private-root.pem" "$public/private-root.pem" || exit 1
 
+# Satellite startup requires a non-empty marker (`-s`), written last and atomically.
+ready_marker() {
+  printf 'issued\n' > "$1/.issued-ready.new"
+  chmod 0600 "$1/.issued-ready.new"
+  mv -T "$1/.issued-ready.new" "$1/issued-ready"
+}
+
 publish_role() {
   local role=$1 directory="/run/overalls-satellite-$1" file
   shift
@@ -178,11 +185,11 @@ publish_role() {
     fi
     private_file "$directory/$file" && same_file "$satellite/$file" "$directory/$file" || exit 1
   done
-  touch "$directory/issued-ready"
+  ready_marker "$directory"
 }
 
 publish_role ziggy ziggy.token openai.key anthropic.key
 publish_role galileo galileo.token
 publish_role audi private-root.pem private-leaf.pem private-leaf.key
 publish_role porsche porsche.token
-touch "$satellite/issued-ready"
+ready_marker "$satellite"

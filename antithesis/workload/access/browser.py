@@ -2,177 +2,37 @@
 
 from __future__ import annotations
 
-import base64
 import json
 import logging
 import os
 import stat
 import time
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Protocol
 from urllib.parse import urlparse
 from uuid import UUID, uuid4
 
 from antithesis.assertions import always, reachable
 
 from access.fixture import AccessFixture, Actor, read_access_fixture
-from access.http import BrowserClient, BrowserResponse, hidden_form
+from access.http import BrowserClient, hidden_form
 from access.liveview import LiveView, parse_live_page
 from access.oracle import AccessOracle
-from access.passkey import assertion
+from access.session import (
+    LinkSource,
+    Login,
+    _jwt_jti,
+    _magic_page,
+    _request_and_page,
+    _submit_magic,
+    _value,
+    login_fixture,
+    verify_fixture_login,
+)
 from core.config import Config
-from core.outcome import Observation, State
+from core.outcome import State
 from core.sql import SqlOracle
 
 LOG = logging.getLogger(__name__)
-
-
-class LinkSource(Protocol):
-    def sequence(self) -> Observation[int]: ...
-
-    def wait_link(self, email: str, after: int, timeout_seconds: float) -> Observation[str]: ...
-
-
-@dataclass(frozen=True)
-class Login:
-    browser: BrowserClient
-    user_id: UUID
-    user_jti: str
-    origin: str
-
-
-def _value[T](result: Observation[T]) -> T | None:
-    return result.value if result.state is State.OBSERVED else None
-
-
-def _jwt_jti(token: str) -> str | None:
-    try:
-        middle = token.split(".")[1]
-        data: object = json.loads(base64.urlsafe_b64decode(middle + "=" * (-len(middle) % 4)))
-    except (IndexError, ValueError, UnicodeError):
-        return None
-    if isinstance(data, dict) and isinstance(data.get("jti"), str):
-        return data["jti"]
-    return None
-
-
-def _token_path(link: str, expected_origin: str) -> tuple[str, str] | None:
-    parsed = urlparse(link)
-    expected = urlparse(expected_origin)
-    if (
-        parsed.scheme != "https"
-        or parsed.netloc != expected.netloc
-        or not parsed.path.startswith("/magic_link/")
-    ):
-        return None
-    token = parsed.path.removeprefix("/magic_link/")
-    if not token or "/" in token or parsed.query or parsed.fragment:
-        return None
-    return parsed.path, token
-
-
-def _request_link(browser: BrowserClient, origin: str, email: str) -> bool:
-    page = _value(browser.request("GET", f"{origin}/sign-in"))
-    if page is None or page.status != 200:
-        return False
-    form = hidden_form(page.body, "/auth/user/magic_link/request")
-    if form is None:
-        return False
-    form["user[email]"] = email
-    response = _value(browser.request("POST", f"{origin}/auth/user/magic_link/request", form=form))
-    return response is not None and response.status == 302
-
-
-def _magic_page(browser: BrowserClient, origin: str, path: str) -> BrowserResponse | None:
-    response = _value(browser.request("GET", f"{origin}{path}"))
-    return response if response is not None and response.status == 200 else None
-
-
-def _submit_magic(
-    browser: BrowserClient, origin: str, page: BrowserResponse
-) -> BrowserResponse | None:
-    form = hidden_form(page.body, "/auth/user/magic_link")
-    if form is None or form.get("user[remember_me]") != "true":
-        return None
-    return _value(browser.request("POST", f"{origin}/auth/user/magic_link", form=form))
-
-
-def _request_and_page(
-    config: Config, links: LinkSource, email: str, origin: str
-) -> tuple[BrowserClient, str, str, BrowserResponse] | None:
-    browser = BrowserClient(config.ca_file)
-    cursor = _value(links.sequence())
-    if cursor is None:
-        return None
-    if not _request_link(browser, origin, email):
-        return None
-    link = _value(links.wait_link(email, cursor, 30))
-    if link is None:
-        return None
-    parsed = _token_path(link, origin)
-    if parsed is None:
-        return None
-    path, token = parsed
-    page = _magic_page(browser, origin, path)
-    if page is None:
-        return None
-    return browser, path, token, page
-
-
-def login_fixture(config: Config, links: LinkSource, actor: Actor, origin: str) -> Login | None:
-    """Create a real login via public SMTP request, GET preview and CSRF POST."""
-    result = _request_and_page(config, links, actor.email, origin)
-    if result is None:
-        return None
-    browser, _path, _token, page = result
-    oracle = AccessOracle(SqlOracle(config))
-    before = _value(oracle.tokens(actor.user_id))
-    if before is None:
-        return None
-    posted = _submit_magic(browser, origin, page)
-    if posted is None or posted.status != 302:
-        return None
-    after = _value(oracle.tokens(actor.user_id))
-    if after is None:
-        return None
-    issued = after.user - before.user
-    if len(issued) != 1 or not browser.has_cookie("remember"):
-        return None
-    return Login(browser, actor.user_id, next(iter(issued)), origin)
-
-
-def verify_fixture_login(config: Config, login: Login, actor: Actor, webauthn_origin: str) -> bool:
-    """Complete a real WebAuthn ceremony for this login over SecurityLive."""
-    if login.origin != webauthn_origin:
-        # A virtual authenticator must obey the same origin restriction as a
-        # browser. A signed assertion for another URL would be false evidence.
-        return False
-    response = _value(login.browser.request("GET", f"{login.origin}/settings/security"))
-    if response is None or response.status != 200:
-        return False
-    page = parse_live_page(response.body)
-    if page is None:
-        return False
-    mounted = _value(
-        LiveView.mount(login.browser, login.origin, "/settings/security", page, config.ca_file)
-    )
-    if mounted is None:
-        return False
-    try:
-        begun = _value(mounted.event("begin", {"kind": "verify"}))
-        if begun is None or begun.get("ok") is not True:
-            return False
-        signed = assertion(begun.get("challenge"), actor.authenticator, webauthn_origin)
-        if signed is None:
-            return False
-        finished = mounted.event("finish", {"kind": "verify", "payload": signed})
-        if finished.state is not State.OBSERVED:
-            return False
-        completed = _value(AccessOracle(SqlOracle(config)).completed_verifications(actor.user_id))
-        return completed is not None and login.user_jti in completed
-    finally:
-        mounted.close()
 
 
 def pending_read_ok(
@@ -416,18 +276,23 @@ def run_remembered_revocation(config: Config, links: LinkSource) -> int:
     after_replay = _value(oracle.tokens(account.user_id))
     if replay is None or after_replay is None:
         return 0
-    blocked = (
+    unchanged = after_replay.user == fenced.user and after_replay.remember == fenced.remember
+    redirected = (
         replay.status in (302, 303)
         and replay.location is not None
         and replay.location.startswith("/sign-in")
-        and after_replay.user == fenced.user
-        and after_replay.remember == fenced.remember
     )
+    # A 5xx (B cannot reach PostgreSQL under a partition) is Marshall's
+    # inconclusive refusal (live_user_auth.ex revoked-login-halts-operation
+    # raises on mount when the Repo does not answer): it must commit nothing,
+    # but it cannot redirect.
+    refused = (redirected or replay.status >= 500) and unchanged
     always(
-        blocked,
+        refused,
         "Revoked remembered cookie cannot mint or use browser authority across Marshall replicas",
-        {"fence": "ordinary_sign_out", "replica": "b"},
+        {"fence": "ordinary_sign_out", "replica": "b", "status_class": replay.status // 100},
     )
+    blocked = redirected and unchanged
     if blocked:
         reachable("Copied remembered cookie was refused on second Marshall after sign-out")
     return 0
@@ -571,6 +436,7 @@ def run_stale_admin(
 def main_magic() -> int:
     from access.mail import MailLinks
 
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = Config.from_environment()
         fixture = read_access_fixture(Path("/run/overalls-control-secrets/fixture.json"))
@@ -583,6 +449,7 @@ def main_magic() -> int:
 def main_remember() -> int:
     from access.mail import MailLinks
 
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = Config.from_environment()
         return run_remembered_revocation(config, MailLinks.from_environment(config.ca_file))
@@ -594,6 +461,7 @@ def main_remember() -> int:
 def main_admin() -> int:
     from access.mail import MailLinks
 
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = Config.from_environment()
         fixture = read_access_fixture(Path("/run/overalls-control-secrets/fixture.json"))

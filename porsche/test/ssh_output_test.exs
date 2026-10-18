@@ -20,19 +20,18 @@ defmodule Porsche.SSH.OutputTest do
   end
 
   property "JSON results round-trip arbitrary Unicode without raw terminal control sequences" do
-    check all(text <- string(:utf8, max_length: 200)) do
-      response = %{"version" => 1, "status" => "succeeded", "result" => %{"value" => [text]}}
-      encoded = Output.render(response, true)
-      assert JSON.decode!(encoded) == response
-      assert String.ends_with?(encoded, "\n")
+    text = draw(string(:utf8, max_length: 200))
+    response = %{"version" => 1, "status" => "succeeded", "result" => %{"value" => [text]}}
+    encoded = Output.render(response, true)
+    assert JSON.decode!(encoded) == response
+    assert String.ends_with?(encoded, "\n")
 
-      refute Regex.match?(
-               ~r/[\x{0000}-\x{0009}\x{000b}-\x{001f}\x{007f}-\x{009f}\x{2028}\x{2029}]/u,
-               encoded
-             )
+    refute Regex.match?(
+             ~r/[\x{0000}-\x{0009}\x{000b}-\x{001f}\x{007f}-\x{009f}\x{2028}\x{2029}]/u,
+             encoded
+           )
 
-      assert length(String.split(encoded, "\n")) == 2
-    end
+    assert length(String.split(encoded, "\n")) == 2
   end
 
   test "human results escape controls in top-level and nested fields" do

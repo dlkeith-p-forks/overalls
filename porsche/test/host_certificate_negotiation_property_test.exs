@@ -91,33 +91,33 @@ defmodule Porsche.HostCertificateNegotiationPropertyTest do
   # A trusted matching certificate MUST reach signed user-key proof with the real
   # Proof callback. The scripted pending reply MUST NOT establish account authority.
   property "strict OpenSSH certificate trust gates real signed-key session submission", fixture do
-    check all(cases <- shuffle([:trusted, :foreign_ca, :foreign_name, :absent]), max_runs: 3) do
-      for kind <- cases do
-        Agent.update(fixture.backend, fn _ -> [] end)
-        {output, status} = connect(fixture, kind)
-        calls = Agent.get(fixture.backend, & &1)
+    cases = draw(shuffle([:trusted, :foreign_ca, :foreign_name, :absent]))
 
-        if kind == :trusted do
-          assert_receive :session_closed, 5000
-          assert status == 3
-          assert output =~ "approval_required"
-          assert [{"sessions", message}] = Enum.filter(calls, &(elem(&1, 0) == "sessions"))
+    for kind <- cases do
+      Agent.update(fixture.backend, fn _ -> [] end)
+      {output, status} = connect(fixture, kind)
+      calls = Agent.get(fixture.backend, & &1)
 
-          assert {:ok, expected} =
-                   OverallsProtocol.SSHKey.parse(
-                     File.read!(Path.join(fixture.directory, "id_ed25519.pub"))
-                   )
+      if kind == :trusted do
+        assert_receive :session_closed, 5000
+        assert status == 3
+        assert output =~ "approval_required"
+        assert [{"sessions", message}] = Enum.filter(calls, &(elem(&1, 0) == "sessions"))
 
-          assert message["public_key"] == expected.public_key
-          refute Enum.any?(calls, &(elem(&1, 0) == "commands"))
-        else
-          assert status == 255
+        assert {:ok, expected} =
+                 OverallsProtocol.SSHKey.parse(
+                   File.read!(Path.join(fixture.directory, "id_ed25519.pub"))
+                 )
 
-          assert output =~ "Host key verification failed" or
-                   output =~ "Couldn't drop certificate: unknown or unsupported key type"
+        assert message["public_key"] == expected.public_key
+        refute Enum.any?(calls, &(elem(&1, 0) == "commands"))
+      else
+        assert status == 255
 
-          assert calls == []
-        end
+        assert output =~ "Host key verification failed" or
+                 output =~ "Couldn't drop certificate: unknown or unsupported key type"
+
+        assert calls == []
       end
     end
   end

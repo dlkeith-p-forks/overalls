@@ -6,6 +6,7 @@ import socket
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -71,7 +72,7 @@ class NativeLeaseOracleTest(unittest.TestCase):
         with (
             tempfile.TemporaryDirectory() as temporary,
             subprocess.Popen(
-                [sys.executable, "-c", "pass"],
+                [sys.executable, "-c", "import time; time.sleep(5)"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             ) as process,
@@ -99,6 +100,107 @@ class NativeLeaseOracleTest(unittest.TestCase):
                 self.assertRaisesRegex(RuntimeError, "observation was late"),
             ):
                 runner.observe_group(context, 115.0, (700, 701))
+
+    def test_process_observation_accepts_only_the_fixed_login_event(self) -> None:
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            subprocess.Popen(
+                [sys.executable, "-c", "pass"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            ) as process,
+        ):
+            root = Path(temporary)
+            binding = services.Binding("dddddddd-dddd-4ddd-8ddd-000000000201", 7, "a" * 64)
+            context = runner.BootContext(
+                root / "uds",
+                services.Boot(binding, "dddddddd-dddd-4ddd-8ddd-000000000202"),
+                root,
+                root,
+                runner.DEFAULT_NETWORK,
+                runner.Platform("illumos"),
+                process,
+                control.Authority(
+                    control.Config(root / "ca", "native.fixture.test", frozenset({"127.0.0.1"}))
+                ),
+            )
+            observed = subprocess.CompletedProcess[bytes](
+                ["synthetic-observation"],
+                0,
+                b"700 701\n700 700 S\n701 700 S\ngroup-present\n",
+                runner.SSH_LOGIN_EVENT,
+            )
+            with patch.object(runner, "ssh", return_value=observed):
+                group = runner.observe_group(context, time.monotonic() + 5.0, (700, 701))
+                if group is None:
+                    raise AssertionError("synthetic group observation was missing")
+                self.assertTrue(group.live)
+            refused = subprocess.CompletedProcess[bytes](
+                observed.args,
+                observed.returncode,
+                observed.stdout,
+                runner.SSH_LOGIN_EVENT + b"unexpected",
+            )
+            with (
+                patch.object(runner, "ssh", return_value=refused),
+                self.assertRaisesRegex(RuntimeError, "process observation failed"),
+            ):
+                runner.observe_group(context, time.monotonic() + 5.0, (700, 701))
+
+    def test_clean_shutdown_requires_zero_status_and_omnios_sync_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            serial = Path(temporary) / "serial.log"
+            serial.write_bytes(runner.ILLUMOS_SYNC_MARKER)
+            with subprocess.Popen(
+                [sys.executable, "-c", "pass"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            ) as process:
+                runner.wait_clean_shutdown(process, runner.Platform("illumos"), serial)
+            with (
+                subprocess.Popen(
+                    [sys.executable, "-c", "raise SystemExit(2)"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                ) as process,
+                self.assertRaisesRegex(RuntimeError, "did not exit cleanly"),
+            ):
+                runner.wait_clean_shutdown(process, runner.Platform("illumos"), serial)
+            serial.write_bytes(b"")
+            with (
+                subprocess.Popen(
+                    [sys.executable, "-c", "pass"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                ) as process,
+                self.assertRaisesRegex(RuntimeError, "evidence was incomplete"),
+            ):
+                runner.wait_clean_shutdown(process, runner.Platform("illumos"), serial)
+
+    def test_clean_shutdown_binds_omnios_evidence_to_the_bounded_serial_log(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            serial = Path(temporary) / "serial.log"
+            serial.write_bytes(b"x" * (runner.MAX_SERIAL_VERIFICATION + 1))
+            with (
+                subprocess.Popen(
+                    [sys.executable, "-c", "pass"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                ) as process,
+                self.assertRaisesRegex(RuntimeError, "serial log exceeded its bound"),
+            ):
+                runner.wait_clean_shutdown(process, runner.Platform("illumos"), serial)
+
+    def test_clean_shutdown_does_not_require_omnios_serial_evidence_for_freebsd(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            serial = Path(temporary) / "serial.log"
+            serial.write_bytes(b"")
+            with subprocess.Popen(
+                [sys.executable, "-c", "pass"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            ) as process:
+                runner.wait_clean_shutdown(process, runner.Platform("freebsd"), serial)
 
     def test_git_refusal_requires_actual_ownership_error_and_no_success_output(self) -> None:
         ownership = b"fatal: detected dubious ownership in repository at '/synthetic'\n"

@@ -25,6 +25,7 @@ defmodule OverallsAntithesis.Lilly.StubStorageTest do
           %{"scope" => "native-zfs"},
           %{"free_bytes" => @total + 1},
           %{"zpool_guid" => "0"},
+          %{"stub_cpu_millicores" => 0},
           %{"image_path" => "relative"},
           %{"extra" => true}
         ] do
@@ -86,7 +87,8 @@ defmodule OverallsAntithesis.Lilly.StubStorageTest do
     refute StubStorage.ready?(%{report | pools: [unavailable]}, {:ok, stub})
   end
 
-  test "stub samples keep compute measured and the disabled path unavailable", %{tmp_dir: root} do
+  test "stub samples cap the stub CPU budget, keep memory measured and the disabled path unavailable",
+       %{tmp_dir: root} do
     cgroup = Path.join(root, "cgroup")
     leaf = Path.join(cgroup, "lilly")
     File.mkdir_p!(leaf)
@@ -143,8 +145,22 @@ defmodule OverallsAntithesis.Lilly.StubStorageTest do
                %{}
              )
 
-    assert capacity["cpu_headroom_millicores"] <= 2000
+    assert capacity["cpu_headroom_millicores"] == 1000
     assert capacity["memory_headroom_bytes"] <= 4_294_967_296
+
+    wide = %{stub | stub_cpu_millicores: 8000}
+
+    assert {%{"cpu_headroom_millicores" => 2000}, _usage, _pools, _images} =
+             Collector.stub_sample(
+               {:ok, wide},
+               pools,
+               cgroup,
+               leaf,
+               inventory(),
+               limits,
+               %{usage: first},
+               %{}
+             )
   end
 
   @spec substrate(Path.t(), Path.t() | nil) :: map()
@@ -157,6 +173,7 @@ defmodule OverallsAntithesis.Lilly.StubStorageTest do
       "dataset" => "overalls/antithesis",
       "total_bytes" => @total,
       "free_bytes" => @free,
+      "stub_cpu_millicores" => 1000,
       "image_path" => image || Path.join(root, "stub-image")
     }
   end

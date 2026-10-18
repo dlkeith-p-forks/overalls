@@ -30,6 +30,11 @@ import native_services as services
 
 PRINCIPAL = "native.fixture.test"
 USERNAME = "u200000"
+SSH_LOGIN_EVENT = (
+    b'{"service":"overalls-ssh-authorize","event":"ssh.login_recorded","severity":"info"}\n'
+)
+MAX_SERIAL_VERIFICATION = 4 * 1024 * 1024
+ILLUMOS_SYNC_MARKER = b"syncing file systems... done"
 
 
 @dataclass(frozen=True)
@@ -176,6 +181,26 @@ def wait_readiness(process: subprocess.Popen[bytes], uds: Path, boot: services.B
             if time.monotonic() >= deadline:
                 raise RuntimeError("native complete readiness deadline exceeded") from None
             time.sleep(0.5)
+
+
+def wait_clean_shutdown(process: subprocess.Popen[bytes], platform: Platform, serial: Path) -> None:
+    """@cc [owner:ghuntley,label:verification;recovery] native-clean-shutdown-exit
+    A native VM MUST exit with status zero after the requested shutdown. An
+    illumos run MUST also contain the bounded filesystem-sync marker that
+    causes the pinned VMM to exit; any nonzero status or missing marker MUST
+    fail closed.
+    """
+    status = process.wait(timeout=60)
+    if status != 0:
+        raise RuntimeError(f"native guest did not exit cleanly (status={status})")
+    if platform.name != "illumos":
+        return
+    metadata = serial.stat()
+    if metadata.st_size > MAX_SERIAL_VERIFICATION:
+        raise RuntimeError("native shutdown serial log exceeded its bound")
+    evidence = serial.read_bytes()
+    if ILLUMOS_SYNC_MARKER not in evidence:
+        raise RuntimeError("native OmniOS shutdown evidence was incomplete")
 
 
 def ssh(
@@ -481,13 +506,19 @@ def observe_group(
         context.work / "known_hosts",
         f"{context.platform.sudo} -n {context.platform.bash} -c " + shlex.quote(command),
         network=context.network,
-        timeout=min(2.0, remaining),
+        # SSHD/PAM login receipt processing on Illumos can exceed two seconds;
+        # retain a bounded observation while leaving the fifteen-second fence
+        # budget to the caller.
+        timeout=min(5.0, remaining),
     )
     if time.monotonic() >= deadline:
         raise RuntimeError("native lease process observation was late")
     if result.returncode == 1 and not result.stdout and not result.stderr:
         return None
-    if result.returncode != 0 or result.stderr:
+    # The native forced SSH session emits its fixed catalogued login event on
+    # stderr before replacing itself with Bash. Accept that exact event while
+    # refusing arbitrary command or diagnostic bytes.
+    if result.returncode != 0 or result.stderr not in (b"", SSH_LOGIN_EVENT):
         raise RuntimeError("native lease process observation failed")
     return process_group(result.stdout, expected)
 
@@ -940,8 +971,7 @@ def run(
                                 )
                                 if shutdown.returncode not in (0, 255) or shutdown.stdout:
                                     raise RuntimeError("native SSH shutdown request failed")
-                                if process.wait(timeout=60) != 0:
-                                    raise RuntimeError("native guest did not exit cleanly")
+                                wait_clean_shutdown(process, platform, work / "serial.log")
                                 boot_endings.append("clean")
                             if growth_check is not None:
                                 stage = "offline-growth-verification"

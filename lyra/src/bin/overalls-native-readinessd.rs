@@ -21,9 +21,9 @@ fn main() -> ! {
     }
     impl Probe for Live<'_> {
         fn ready(&mut self) -> io::Result<bool> {
-            Ok(native_guest::network_ready(self.address, self.gateway)?
+            Ok(native_guest::services_ready()?
+                && native_guest::network_ready(self.address, self.gateway)?
                 && native_guest::writable_root().is_ok()
-                && native_guest::services_ready()?
                 && kernel_probe::verified_build_id(self.listener)
                     .is_ok_and(|current| current == self.kernel_build_id)
                 && kernel_probe::kernel_sha256(self.os)

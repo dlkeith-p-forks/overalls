@@ -1,7 +1,8 @@
 # Optional admission profile on a STUB storage substrate (`admission-stub`).
 # The controlled Lilly release reports configured stub pool totals from a
-# harness-only substrate file instead of ZFS, measured cgroup CPU/memory
-# headroom, and a tiny digest-verified, non-bootable stub image the operator
+# harness-only substrate file instead of ZFS, a labelled STUB CPU budget capped
+# by the measured cgroup cores (hosted Antithesis provisions one logical CPU, so
+# a measured whole idle core never appears), measured memory headroom, and a tiny digest-verified, non-bootable stub image the operator
 # registers through Marshall's reviewed catalog action. Admission decisions
 # still run through real Marshall code; nothing here is ZFS, KVM or isolation
 # evidence, and no guest is ever launched.

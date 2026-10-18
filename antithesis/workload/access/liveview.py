@@ -39,10 +39,21 @@ class _LivePageParser(HTMLParser):
         fields = dict(attrs)
         if tag == "meta" and fields.get("name") == "csrf-token":
             self.csrf = fields.get("content")
-        if fields.get("data-phx-main") is not None:
+        # Phoenix renders data-phx-main as a bare boolean attribute, which
+        # HTMLParser reports with a None value.
+        if "data-phx-main" in fields:
             self.session = fields.get("data-phx-session")
             self.static = fields.get("data-phx-static")
             self.node_id = fields.get("id")
+
+
+def _event_reply(payload: dict[str, object]) -> dict[str, object]:
+    """LiveView carries a handle_event {:reply, map} inside the reply diff as
+    ``{"diff": {"r": map}}``; the JS client unwraps it before pushEvent
+    callbacks see it. Return that map, or the bare payload for :noreply."""
+    diff = payload.get("diff")
+    reply = diff.get("r") if isinstance(diff, dict) else None
+    return reply if isinstance(reply, dict) else payload
 
 
 def parse_live_page(body: bytes) -> LivePage | None:
@@ -204,7 +215,7 @@ class LiveView:
                     status = response[4].get("status")
                     payload = response[4].get("response")
                     if status == "ok" and isinstance(payload, dict):
-                        return Observation.observed(payload)
+                        return Observation.observed(_event_reply(payload))
                     return Observation.unavailable()
         except (OSError, TimeoutError, ValueError, ConnectionClosed, WebSocketException):
             pass

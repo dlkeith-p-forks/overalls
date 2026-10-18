@@ -104,39 +104,38 @@ defmodule Porsche.InvalidBootPropertyTest do
   # supervisor or reviewed listener/status/observability starts. Rejection MUST
   # preserve recursive fixture custody and exclude original/mutated credentials,
   # host-key bytes and fixture paths from diagnostics. Unset is base-only startup.
-  property "generated invalid Porsche configurations refuse fresh OTP startup" do
+  property "generated invalid Porsche configurations refuse fresh OTP startup",
+    profile: :ci,
+    print_blob: false,
+    max_runs: 3 do
     root = private_directory("k-pb-")
     on_exit(fn -> File.rm_rf!(root) end)
     ca = disposable_ca(root)
 
-    check all(
-            order <- shuffle(@cases),
-            bytes <- binary(length: 32),
-            newline <- boolean(),
-            invalid_length <- member_of([58, 60, 257]),
-            max_runs: 3
-          ) do
-      token = "porsche_gateway_" <> Base.url_encode64(bytes, padding: false)
+    order = draw(shuffle(@cases))
+    bytes = draw(binary(length: 32))
+    newline = draw(boolean())
+    invalid_length = draw(member_of([58, 60, 257]))
+    token = "porsche_gateway_" <> Base.url_encode64(bytes, padding: false)
 
-      for mutation <- order do
-        directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
-        File.mkdir!(directory)
-        File.chmod!(directory, 0o700)
-        config = configuration(directory, token, newline, ca)
-        path = Path.join(directory, "config.json")
-        write_config(path, config)
-        assert {:ok, _} = Porsche.Config.load(path)
-        original = material(config)
-        mutate(mutation, path, config, invalid_length)
-        private = [token, directory | original ++ material(config)]
-        before = snapshot(directory)
-        {output, status} = boot(path, directory, config["status_socket"])
-        assert status == 0
-        assert projection(output) == expected("rejected", false)
-        private? = not Enum.any?(private, &String.contains?(output, &1))
-        assert private?, "boot diagnostics exposed fixture material or paths"
-        assert snapshot(directory) == before
-      end
+    for mutation <- order do
+      directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
+      File.mkdir!(directory)
+      File.chmod!(directory, 0o700)
+      config = configuration(directory, token, newline, ca)
+      path = Path.join(directory, "config.json")
+      write_config(path, config)
+      assert {:ok, _} = Porsche.Config.load(path)
+      original = material(config)
+      mutate(mutation, path, config, invalid_length)
+      private = [token, directory | original ++ material(config)]
+      before = snapshot(directory)
+      {output, status} = boot(path, directory, config["status_socket"])
+      assert status == 0
+      assert projection(output) == expected("rejected", false)
+      private? = not Enum.any?(private, &String.contains?(output, &1))
+      assert private?, "boot diagnostics exposed fixture material or paths"
+      assert snapshot(directory) == before
     end
   end
 

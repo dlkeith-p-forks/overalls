@@ -7,7 +7,9 @@
 # the Hyper-V leaves while relocating the KVM leaves, the CMOS clock encodes
 # the host time, the fixed firmware shutdown port
 # signals exit only for the exact CloudHv byte request and rejects malformed
-# writes through both the device and registered I/O bus, a BAR reprogrammed by
+# writes through both the device and registered I/O bus, and the OmniOS serial
+# sync marker signals that same exit event only after an exact split-safe match,
+# a BAR reprogrammed by
 # the guest moves on the MMIO bus with its queue notification ioeventfds, PCI configuration capability queue
 # notifications signal only valid matching queue events, MSI-X capability and
 # routing reset states agree and disabled MSI-X cannot inject queue interrupts,
@@ -34,6 +36,8 @@ packages.vmm.overrideAttrs (previous: {
     "test_apply_hyperv_leaves"
     "cmos_rtc::tests"
     "cloudhv_power::tests"
+    "serial::tests::test_omnios_shutdown_marker_signals_after_split_output"
+    "serial::tests::test_omnios_shutdown_marker_refuses_near_match"
     "test_native_uart_thre_enable_after_fifo"
     "bar_tests"
     "test_bar_relocation_follows_config_write"
@@ -45,6 +49,8 @@ packages.vmm.overrideAttrs (previous: {
     "msix::tests"
     "test_native_msix_disabled_refuses_queue_interrupt"
     "test_native_rx_reset_reuses_mapping_without_memfd"
+    "test_reset_deactivates_and_allows_reinitialization"
+    "rng::device::tests::test_reset_deactivates_and_allows_reinitialization"
     # The net variant of this test needs /dev/net/tun, which the sandbox lacks;
     # it is run outside the sandbox and recorded in the spike review.
     "block::virtio::device::tests::test_reset_returns_interrupt_and_deactivates"

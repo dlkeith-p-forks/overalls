@@ -16,14 +16,16 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
   # mutation MUST leave both reservations unchanged. The surviving owner's exact
   # bytes MUST publish without admitting the refused object.
   property "overlapping unknown-length owners preserve exact object quota and headroom boundaries" do
-    supervisor = start_supervised!(Task.Supervisor)
-
     check all(
             cap <- member_of([1, 4095, 4096, 65_535]),
             axis <- member_of([:object, :quota, :pool, :parent]),
             reverse <- boolean(),
             max_runs: 12
           ) do
+      {:ok, supervisor} = Task.Supervisor.start_link()
+      Process.unlink(supervisor)
+      Hegel.on_cleanup(fn -> Process.exit(supervisor, :shutdown) end)
+
       for {limit, boundary} <- [
             {cap, axis},
             {1, :quota},
@@ -43,14 +45,16 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
   # after restart. Recovery MUST clear incomplete leases without granting stale
   # references authority. Process loss MUST NOT establish native power-loss proof.
   property "unknown-length process loss preserves only completed payloads" do
-    supervisor = start_supervised!(Task.Supervisor)
-
     check all(
             size <- member_of([0, 1, 65_535, 65_536, 65_537]),
             target <- member_of([:owner, :store]),
             committed <- boolean(),
             max_runs: 8
           ) do
+      {:ok, supervisor} = Task.Supervisor.start_link()
+      Process.unlink(supervisor)
+      Hegel.on_cleanup(fn -> Process.exit(supervisor, :shutdown) end)
+
       for {bytes, loss, complete} <- [
             {size, target, committed},
             {0, :owner, false},
@@ -73,7 +77,8 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
     spec =
       Supervisor.child_spec({Store, root: root, limits: limits}, id: old_id, restart: :temporary)
 
-    store = start_supervised!(spec)
+    {:ok, store} = Store.start_link(root: root, limits: limits)
+    Process.unlink(store)
     key = String.duplicate("d", 64)
     neighbor = String.duplicate("e", 64)
     parent = self()
@@ -104,8 +109,8 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
           kill(writer)
       end
 
-      recovered =
-        start_supervised!(Supervisor.child_spec({Store, root: root, limits: limits}, id: new_id))
+      {:ok, recovered} = Store.start_link(root: root, limits: limits)
+      Process.unlink(recovered)
 
       assert %{writers: 0, readers: 0, pending: 0, writable: false} = Store.stats(recovered)
       assert File.ls!(Path.join(root, "tmp")) == []
@@ -192,7 +197,8 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
 
     limits = %{quota: quota, object: object, high: quota, low: quota - 1}
     id = {:boundary_store, make_ref()}
-    store = start_supervised!(Supervisor.child_spec({Store, root: root, limits: limits}, id: id))
+    {:ok, store} = Store.start_link(root: root, limits: limits)
+    Process.unlink(store)
     parent = self()
     keys = [String.duplicate("a", 64), String.duplicate("b", 64)]
 

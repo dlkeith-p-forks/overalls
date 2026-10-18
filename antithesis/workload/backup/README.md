@@ -11,9 +11,14 @@ live recovery target is used.
 The commands cover retained manifest reference closure, an uploaded point whose
 local reply was lost, a partial restore with absent publication marker and fresh
 retry, coordinator-produced manifest schema compatibility, and private-target
-quarantine of separately timed components. The coordinator compatibility command
-can observe a clock fault if the environment supplies one, but this fixture does
-not inject a controlled backward clock step. The mixed-time fixture contains
+quarantine of separately timed components. Antithesis does not step the wall
+clock backward here, so the coordinator compatibility command uses a labelled
+STUB (harness) for an SDK-chosen quarter of cases: `backward_clock_step`
+preloads the image's pinned libfaketime into the coordinator process alone and
+`helper_clock_step.py`, named as its Restic executable, steps that clock back
+120 seconds when the host-state upload begins. Restic and the raw oracle are
+unaffected and every existing `always` check applies. It is not evidence of a
+real host clock step. The mixed-time fixture contains
 synthetic host and guest bytes; it has no activation or reentry receipt and makes
 no claim about live fleet authority or UID reconciliation.
 

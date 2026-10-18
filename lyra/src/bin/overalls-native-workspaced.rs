@@ -41,6 +41,11 @@ fn main() -> ! {
             PathBuf::from("/etc/ssl/cacert.pem"),
         )
     };
+    let system_configuration = Some(PathBuf::from(if os == "freebsd" {
+        "/usr/local/etc/gitconfig"
+    } else {
+        "/etc/gitconfig"
+    }));
     let spawn = |state: &Arc<Receiver>, cloning: &Arc<AtomicBool>, source: WorkspaceSource| {
         if cloning.swap(true, Ordering::SeqCst) {
             return;
@@ -49,6 +54,7 @@ fn main() -> ! {
         let flag = Arc::clone(cloning);
         let git_program = git_program.clone();
         let ca = ca.clone();
+        let system_configuration = system_configuration.clone();
         let _ = thread::Builder::new()
             .name("workspace-clone".into())
             .spawn(move || {
@@ -56,6 +62,7 @@ fn main() -> ! {
                     program: git_program,
                     ca_bundle: ca,
                     home: state.paths().state.clone(),
+                    system_configuration,
                 };
                 let _ = state.clone_with_retry(
                     &source,

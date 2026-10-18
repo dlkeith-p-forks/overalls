@@ -16,18 +16,18 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 
 | File:line | Kind | Literal message | Catalog primary |
 | --- | --- | --- | --- |
-| `antithesis/workload/access/browser.py:286` | `always` | Magic-link preview and pending MFA cannot grant browser work authority | `magic-link-preview-post-mfa-boundary` |
-| `antithesis/workload/access/browser.py:305` | `reachable` | Magic-link CSRF POST created one stored login before MFA | support / startup |
-| `antithesis/workload/access/browser.py:314` | `always` | Replayed magic-link POST creates no second stored browser login | support / startup |
-| `antithesis/workload/access/browser.py:338` | `always` | Magic-link pending MFA login serves ordinary reads on another replica without elevation | support / startup |
-| `antithesis/workload/access/browser.py:348` | `always` | Magic-link pending MFA login cannot change a passkey on another replica before step-up | support / startup |
-| `antithesis/workload/access/browser.py:356` | `reachable` | Same-login WebAuthn verification completed after pending-MFA probes | support / startup |
-| `antithesis/workload/access/browser.py:409` | `reachable` | Remembered cookie exchanged through second Marshall before sign-out | support / startup |
-| `antithesis/workload/access/browser.py:426` | `always` | Revoked remembered cookie cannot mint or use browser authority across Marshall replicas | `remembered-cookie-revocation-cross-replica` |
-| `antithesis/workload/access/browser.py:432` | `reachable` | Copied remembered cookie was refused on second Marshall after sign-out | support / startup |
-| `antithesis/workload/access/browser.py:546` | `reachable` | Authorized Control room set-role committed target and audit before demotion | support / startup |
-| `antithesis/workload/access/browser.py:559` | `always` | Stale Control room tab cannot commit an admin mutation after authority withdrawal | `stale-admin-tab-current-mutation-authority` |
-| `antithesis/workload/access/browser.py:565` | `reachable` | Stale admin LiveView event was processed after committed demotion | support / startup |
+| `antithesis/workload/access/browser.py:298` | `always` | Magic-link preview and pending MFA cannot grant browser work authority | `magic-link-preview-post-mfa-boundary` |
+| `antithesis/workload/access/browser.py:317` | `reachable` | Magic-link CSRF POST created one stored login before MFA | support / startup |
+| `antithesis/workload/access/browser.py:326` | `always` | Replayed magic-link POST creates no second stored browser login | support / startup |
+| `antithesis/workload/access/browser.py:350` | `always` | Magic-link pending MFA login serves ordinary reads on another replica without elevation | support / startup |
+| `antithesis/workload/access/browser.py:360` | `always` | Magic-link pending MFA login cannot change a passkey on another replica before step-up | support / startup |
+| `antithesis/workload/access/browser.py:368` | `reachable` | Same-login WebAuthn verification completed after pending-MFA probes | support / startup |
+| `antithesis/workload/access/browser.py:421` | `reachable` | Remembered cookie exchanged through second Marshall before sign-out | support / startup |
+| `antithesis/workload/access/browser.py:442` | `always` | Revoked remembered cookie cannot mint or use browser authority across Marshall replicas | `remembered-cookie-revocation-cross-replica` |
+| `antithesis/workload/access/browser.py:449` | `reachable` | Copied remembered cookie was refused on second Marshall after sign-out | support / startup |
+| `antithesis/workload/access/browser.py:563` | `reachable` | Authorized Control room set-role committed target and audit before demotion | support / startup |
+| `antithesis/workload/access/browser.py:576` | `always` | Stale Control room tab cannot commit an admin mutation after authority withdrawal | `stale-admin-tab-current-mutation-authority` |
+| `antithesis/workload/access/browser.py:582` | `reachable` | Stale admin LiveView event was processed after committed demotion | support / startup |
 | `antithesis/workload/admission/physical_scenario.py:69` | `always` | marshall placement fits fresh measured physical headroom and all outstanding holds | `marshall-admission-measured-physical-capacity` |
 | `antithesis/workload/admission/physical_scenario.py:74` | `reachable` | Marshall admitted against independently sampled live ZFS capacity | support / startup |
 | `antithesis/workload/admission/scenarios.py:212` | `always` | Marshall acknowledged admission has one joined allocation and dispatch job | `marshall-admission-atomic-allocation` |
@@ -130,21 +130,21 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `antithesis/workload/recorder/scenarios.py:500` | `reachable` | Trace spool reached real archive or pending quota refusal | support / startup |
 | `antithesis/workload/recorder/scenarios.py:503` | `reachable` | Trace spool storage unavailable and refused further intake | support / startup |
 | `antithesis/workload/recorder/scenarios.py:510` | `always_or_unreachable` | Trace spool uncertain storage refuses later admission without evicting custody | support / startup |
-| `antithesis/workload/repository/scenarios.py:138` | `always` | Enrico published Git head remains addressable through failed refresh | `enrico-published-head-remains-addressable` |
-| `antithesis/workload/repository/scenarios.py:146` | `always` | Enrico explicit published SHA returns the original sentinel blob | support / startup |
-| `antithesis/workload/repository/scenarios.py:151` | `reachable` | Enrico retained prior published head across force push | support / startup |
-| `antithesis/workload/repository/scenarios.py:154` | `reachable` | Marshall settled failed Enrico refresh without replacing head | support / startup |
-| `antithesis/workload/repository/scenarios.py:208` | `always` | Enrico retained attempt replay returns its completed receipt | support / startup |
-| `antithesis/workload/repository/scenarios.py:213` | `always` | Enrico retained attempt replay starts no second fetch | `enrico-attempt-replay-bounded-receipts` |
-| `antithesis/workload/repository/scenarios.py:217` | `reachable` | Enrico returned retained attempt receipt without new fetch | support / startup |
-| `antithesis/workload/repository/scenarios.py:273` | `always` | Enrico oldest completed receipt evicts after 1,025 native Git attempts | support / startup |
-| `antithesis/workload/repository/scenarios.py:278` | `reachable` | Enrico evicted oldest completed attempt receipt at cap | support / startup |
-| `antithesis/workload/repository/scenarios.py:290` | `always` | Enrico newest receipt remains replayable at the bounded cap | support / startup |
-| `antithesis/workload/repository/scenarios.py:295` | `always` | Enrico retained attempt replay starts no second fetch at receipt cap | support / startup |
-| `antithesis/workload/repository/scenarios.py:364` | `reachable` | Enrico restart retired prior native Git slot owners | support / startup |
-| `antithesis/workload/repository/scenarios.py:395` | `always` | Enrico native Git ownership bounds physical concurrent refreshes | `enrico-native-git-admission-after-manager-restart` |
-| `antithesis/workload/repository/scenarios.py:416` | `always` | Enrico ninth refresh receives admission refusal while eight native slots remain held | support / startup |
-| `antithesis/workload/repository/scenarios.py:421` | `reachable` | Enrico observed ninth-admission refusal with eight physical slots held | support / startup |
+| `antithesis/workload/repository/scenarios.py:143` | `always` | Enrico published Git head remains addressable through failed refresh | `enrico-published-head-remains-addressable` |
+| `antithesis/workload/repository/scenarios.py:151` | `always` | Enrico explicit published SHA returns the original sentinel blob | support / startup |
+| `antithesis/workload/repository/scenarios.py:156` | `reachable` | Enrico retained prior published head across force push | support / startup |
+| `antithesis/workload/repository/scenarios.py:161` | `reachable` | Marshall settled failed Enrico refresh without replacing head | support / startup |
+| `antithesis/workload/repository/scenarios.py:226` | `always` | Enrico retained attempt replay returns its completed receipt | support / startup |
+| `antithesis/workload/repository/scenarios.py:231` | `always` | Enrico retained attempt replay starts no second fetch | `enrico-attempt-replay-bounded-receipts` |
+| `antithesis/workload/repository/scenarios.py:235` | `reachable` | Enrico returned retained attempt receipt without new fetch | support / startup |
+| `antithesis/workload/repository/scenarios.py:291` | `always` | Enrico oldest completed receipt evicts after 1,025 native Git attempts | support / startup |
+| `antithesis/workload/repository/scenarios.py:296` | `reachable` | Enrico evicted oldest completed attempt receipt at cap | support / startup |
+| `antithesis/workload/repository/scenarios.py:308` | `always` | Enrico newest receipt remains replayable at the bounded cap | support / startup |
+| `antithesis/workload/repository/scenarios.py:313` | `always` | Enrico retained attempt replay starts no second fetch at receipt cap | support / startup |
+| `antithesis/workload/repository/scenarios.py:382` | `reachable` | Enrico restart retired prior native Git slot owners | support / startup |
+| `antithesis/workload/repository/scenarios.py:439` | `always` | Enrico native Git ownership bounds physical concurrent refreshes | `enrico-native-git-admission-after-manager-restart` |
+| `antithesis/workload/repository/scenarios.py:467` | `always` | Enrico ninth refresh receives admission refusal while eight native slots remain held | support / startup |
+| `antithesis/workload/repository/scenarios.py:472` | `reachable` | Enrico observed ninth-admission refusal with eight physical slots held | support / startup |
 | `antithesis/workload/satellite/editor.py:280` | `reachable` | Editor login code committed while its only callback reply was lost | support / startup |
 | `antithesis/workload/satellite/editor.py:287` | `always` | Editor login code creates at most one credential after reply loss | `editor-login-code-single-use-after-reply-loss` |
 | `antithesis/workload/satellite/editor.py:291` | `sometimes` | Editor login code exchange issued one session through Audi | support / startup |

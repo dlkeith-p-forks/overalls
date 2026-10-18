@@ -262,13 +262,18 @@ let
     # package's catalog registered (run 8e582f650dd7092cda983705eb7b0e05-65-0).
     workload = closure.mkContext {
       name = "workload";
-      extraRoots = [ pkgs.python313 pythonWheels pkgs.git controlPeerTools controlPeerProtocol pkgs.restic backupModules traceSpool ];
+      # STUB (harness): libfaketime is preloaded only into a workload-selected
+      # backup coordinator run to step its wall clock backward; production
+      # hosts and every other workload process never load it.
+      extraRoots = [ pkgs.python313 pythonWheels pkgs.git controlPeerTools controlPeerProtocol pkgs.restic backupModules traceSpool pkgs.libfaketime ];
       extraLinks = {
         "opt/overalls/python" = toString pkgs.python313;
+        "opt/overalls/libfaketime" = toString pkgs.libfaketime;
         "opt/overalls/python-deps" = toString pythonWheels;
         "opt/overalls/control-peer-tools" = toString controlPeerTools;
         "opt/overalls/control-peer" = toString controlPeerProtocol;
         "opt/overalls/restic" = toString pkgs.restic;
+        "opt/overalls/git" = toString pkgs.git;
         "opt/overalls/backup-modules" = toString backupModules;
         "opt/overalls/trace-spool" = toString traceSpool;
         "opt/antithesis/catalog" = "/opt/overalls-antithesis/catalog/workload";
@@ -306,10 +311,14 @@ let
       extraRoots = [ traceSpool ];
       extraLinks."opt/overalls/trace-spool" = toString traceSpool;
     };
+    # OpenSSH generates the synthetic Marshall SSH host CA with the other secrets.
     pg = closure.mkContext {
       name = "pg";
-      extraRoots = [ pkgs.postgresql_18 ];
-      extraLinks."opt/overalls/postgresql" = toString pkgs.postgresql_18;
+      extraRoots = [ pkgs.postgresql_18 pkgs.openssh ];
+      extraLinks = {
+        "opt/overalls/postgresql" = toString pkgs.postgresql_18;
+        "opt/overalls/openssh" = toString pkgs.openssh;
+      };
     };
     guest-vmm = closure.mkContext {
       name = "guest-vmm";

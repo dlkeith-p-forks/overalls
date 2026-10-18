@@ -476,6 +476,8 @@ process_domain_action() {
         'type == "object" and .version == 1 and .request_id == $id and .operation == $op and ((.status == "ok" and (keys == ["operation","request_id","status","value","version"])) or ((.status == "error" or .status == "unavailable") and (keys == ["operation","reason","request_id","status","version"]) and (.reason | type == "string" and length >= 1 and length <= 100)))' \
         "$temporary" >/dev/null 2>&1; then
     rm -f "$temporary"
+    # Name only the closed operation; evaluation output stays discarded.
+    echo "overalls operator: $operation result uncertain" >&2
     publish_uncertain "$request_id"
     rm -f "$request"
     return
@@ -578,9 +580,29 @@ process_request() {
   esac
 }
 
+# @cc [owner:ghuntley,label:verification;capacity] stub-host-enablement
+# Only the stub-capacity profiles (admission-stub storage, guest-lifecycle
+# catalog) enable lilly-a, through Marshall's reviewed CLI enable action, which
+# itself refuses until Lilly's stub report is fresh and execution-ready. Lilly
+# connects after enrollment-ready, so this retries from the operator loop. It
+# fabricates no readiness, capacity or pool credit.
+stub_host_enabled=0
+stub_enable_after=0
+enable_stub_host() {
+  [[ ( "${OVERALLS_ANTITHESIS_STORAGE_STUB:-0}" == 1 || "${OVERALLS_ANTITHESIS_GUEST_CATALOG:-0}" == 1 ) &&
+    "$stub_host_enabled" == 0 ]] || return 0
+  (( SECONDS >= stub_enable_after )) || return 0
+  if "$release" eval 'Marshall.Operations.CLI.main()' enable "$host_id" >/dev/null 2>&1; then
+    stub_host_enabled=1
+  else
+    stub_enable_after=$((SECONDS + 5))
+  fi
+}
+
 while true; do
   enroll_optional_host
   register_guest_image
+  enable_stub_host
   # @cc [owner:ghuntley,label:security;verification] inner-satellites-after-host
   # Inner service credentials MUST be issued only after the measured host's
   # credential, committed pool and private fixture have been verified.

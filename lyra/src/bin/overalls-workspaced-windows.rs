@@ -87,6 +87,7 @@ mod daemon {
                             program: PathBuf::from(GIT),
                             ca_bundle: bundle,
                             home: state.paths().state.clone(),
+                            system_configuration: None,
                         };
                         let _ = fs::create_dir_all(state.paths().state.join("tmp"));
                         state.clone_with_retry(

@@ -85,6 +85,9 @@ let
           deadlineSeconds = 600;
         };
         systemd.slices.fixture.description = "Real producer identity boundary";
+        # Recovery commands restart these units back to back; systemd's default
+        # five-starts-per-ten-seconds limit would leave them failed (fixture only).
+        systemd.services.overalls-request-sdk.unitConfig.StartLimitIntervalSec = 0;
         systemd.tmpfiles.rules = [
           "d /run/overalls-trace-recorder 2750 ${traceAccount} ${traceGroup} -"
           "d /run/overalls-trace-recorder-source 0750 ${traceAccount} ${traceAccount} -"
@@ -107,8 +110,8 @@ let
             FIXTURE_MARKER = "/var/lib/recorder-peer/marker";
             FIXTURE_EFFECTS = "/var/lib/recorder-peer/effects.log";
             FIXTURE_TRACE_SOCKET = "/run/overalls-trace-recorder/ingest.sock";
-            FIXTURE_TRACE_SMALL = toString ../../nix/verification/tests/fixtures/trace-spool/request.hex;
-            FIXTURE_TRACE_LARGE = toString ../../nix/verification/tests/fixtures/trace-spool/batch.hex;
+            FIXTURE_TRACE_SMALL = "${../../nix/verification/tests/fixtures/trace-spool/request.hex}";
+            FIXTURE_TRACE_LARGE = "${../../nix/verification/tests/fixtures/trace-spool/batch.hex}";
             ERL_FLAGS = "+S 2:2";
           };
           serviceConfig = {
@@ -128,6 +131,7 @@ let
         # independent root storage. A full archive MUST not stop the producer.
         systemd.services.overalls-trace-recorder = {
           description = "Independent production Rust trace spool";
+          unitConfig.StartLimitIntervalSec = 0;
           wantedBy = [ "multi-user.target" ];
           after = [ "archive.mount" "systemd-tmpfiles-setup.service" ];
           requires = [ "archive.mount" ];

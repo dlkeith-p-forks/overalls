@@ -122,8 +122,13 @@ unchanged root followed by two expansions with retained-data, GPT and foreign-di
 verification. The exact canonical-roots/SSH FreeBSD image later passed full
 Firecracker service/growth composition over three clean boots and two expansions.
 The final reviewed blocking-flush image passed that boundary and all five scoped
-services/growth/policy/daemon-recovery/SIGKILL-recovery variants. OmniOS and
-interrupted expansion remain unexecuted.
+services/growth/policy/daemon-recovery/SIGKILL-recovery variants. The current
+source-qualified OmniOS service fixture passed two clean boots with the same
+current-boot, trust, flush, workspace, terminal, SSH and executor-fencing
+oracles. For illumos, a clean result additionally requires process status zero
+and the bounded serial marker `syncing file systems... done`; the patched VMM
+observes that marker before exiting. The source-qualified OmniOS growth replay is recorded separately; interrupted
+expansion remains unexecuted.
 
 OmniOS assembly applies a stock cloud-init/SSH disabling profile to only the
 cloned root's offline SMF repository. The exact profile passed native validation
@@ -138,7 +143,10 @@ The seed-fixed image passed those checks and diagnostic Firecracker transport
 after a debugger-only stock pseudo ISA setting restored late serial output.
 Persistent assembly now preserves `/etc/system` and `/boot/loader.conf.local`,
 appends reviewed pseudo ISA and loader/kernel serial settings, and binds both
-complete files/modes for second-boot verification. The first formal normal boot
+complete files/modes for second-boot verification. It removes only an inherited
+standalone `-s` from `/boot/transient.conf`, preserving the ZFS root, boot path
+and console arguments; second boot rejects any remaining single-user token. The
+first formal normal boot
 reached ordinary login with persistent serial but
 stock physical networking entered maintenance and withheld the required
 bootstrap dependency because the remaining plumb-only stock vioif0 file conflicted

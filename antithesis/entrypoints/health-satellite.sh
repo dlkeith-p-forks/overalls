@@ -15,7 +15,7 @@ case "$role" in
       '.version == 1 and .ready == true and .role == $role and .host_id == $host' <<< "$response" >/dev/null
     ;;
   audi-private)
-    [[ -S /run/audi-private/status.sock && -S /run/lilly-ingress/audi.sock ]] || exit 1
+    [[ -S /run/audi-private/status.sock && -S /run/lilly-ingress/private.sock ]] || exit 1
     response=$(socat -T 5 - 'UNIX-CONNECT:/run/audi-private/status.sock' </dev/null)
     jq -e '.version == 1 and .role == "private" and .ready == true' <<< "$response" >/dev/null
     ;;
