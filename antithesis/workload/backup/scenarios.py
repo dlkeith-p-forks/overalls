@@ -223,7 +223,8 @@ def run_published_compatibility() -> int:
         # these runs, so a small SDK-chosen fraction preloads libfaketime into
         # the coordinator alone and steps it back mid-capture. Every Always
         # check below still applies to the stepped case unchanged.
-        if choice((False, False, False, True)):
+        stepped = choice((False, False, False, True))
+        if stepped:
             LOG.info("STUB (harness): backup coordinator wall clock steps backward mid-capture")
             with case.backward_clock_step():
                 result = case.operator("backup", timeout=180)
@@ -245,9 +246,8 @@ def run_published_compatibility() -> int:
                 inspected.code == 0 and json.loads(inspected.output) == raw,
                 "Newly published backup point passes its retention manifest validator",
             )
-            started, completed = raw.get("started_at"), raw.get("completed_at")
-            if type(started) is int and type(completed) is int and completed < started:
-                reachable("Backup completion wall time precedes durable start time")
+            if stepped:
+                reachable("Backup coordinator published a point under a backward wall-clock step")
             reachable("Backup coordinator published a tag-visible host manifest")
     return 0
 

@@ -52,7 +52,7 @@ The source scanner is `python3.13 antithesis/verification/assertions.py`, coveri
 | `antithesis/workload/backup/scenarios.py:200` | `reachable` | Backup restore completed into a fresh isolated target after interruption | support / startup |
 | `antithesis/workload/backup/scenarios.py:225` | `always` | Successful coordinator backup advertises exactly one new host manifest | support / startup |
 | `antithesis/workload/backup/scenarios.py:235` | `always` | Newly published backup point passes its retention manifest validator | `backup-published-manifest-retention-compatible` |
-| `antithesis/workload/backup/scenarios.py:241` | `reachable` | Backup completion wall time precedes durable start time | support / startup |
+| `antithesis/workload/backup/scenarios.py:241` | `reachable` | Backup coordinator published a point under a backward wall-clock step | support / startup |
 | `antithesis/workload/backup/scenarios.py:242` | `reachable` | Backup coordinator published a tag-visible host manifest | support / startup |
 | `antithesis/workload/backup/scenarios.py:281` | `always` | Mixed-time backup restore remains in its private isolated target | support / startup |
 | `antithesis/workload/backup/scenarios.py:294` | `reachable` | Backup fixture published independently timed components | support / startup |

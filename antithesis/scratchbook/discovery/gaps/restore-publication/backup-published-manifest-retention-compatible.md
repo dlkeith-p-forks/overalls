@@ -54,8 +54,9 @@ The independent oracle is the encrypted repository's actual snapshot/tag list,
 dumped manifest bytes, public CLI inspect result, and pre/post snapshot ID sets.
 It is not `journal.phase == completed` or a mocked parser call. Record the clock
 step's observed before/after values and the run ID without printing secrets.
-SUT-side `Reachable` **"Backup completion wall time precedes durable start time"**
-would guide the rare interleaving before upload; `Reachable` **"Backup manifest upload completed before retention check"** distinguishes publication from a failed upload. These are branch/replay anchors, not proofs of safety.
+Workload `Reachable` **"Backup coordinator published a point under a backward wall-clock step"**
+confirms the stepped case published (run 6993853f found the original
+completed-before-started defect; the coordinator now clamps completed_at); `Reachable` **"Backup manifest upload completed before retention check"** distinguishes publication from a failed upload. These are branch/replay anchors, not proofs of safety.
 
 ## Values and environment
 
