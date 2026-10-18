@@ -482,6 +482,7 @@ mod tests {
 
     fn document() -> Document {
         Document {
+            git_identity: None,
             version: 1,
             placement: "dddddddd-dddd-4ddd-8ddd-000000000201".into(),
             execution_epoch: 7,

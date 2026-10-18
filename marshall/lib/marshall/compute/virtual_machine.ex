@@ -279,7 +279,8 @@ defmodule Marshall.Compute.VirtualMachine do
         :vcpu,
         :memory_bytes,
         :disk_bytes,
-        :provisioning_sizes
+        :provisioning_sizes,
+        :git_identity
       ]
 
       change fn changeset, _ ->
@@ -434,6 +435,10 @@ defmodule Marshall.Compute.VirtualMachine do
       allow_nil?: false,
       constraints: [one_of: [:customer, :standard, :oss, :inception]]
 
+    # @cc [owner:ghuntley,label:product] vm-git-identity-immutable
+    # Git identity MUST be captured only at allocation and retained across restarts,
+    # relocation and account preference changes.
+    attribute :git_identity, :map, sensitive?: true
     attribute :provisioning_sizes, :map, allow_nil?: false
     attribute :vcpu, :integer, allow_nil?: false, constraints: [min: 1, max: 32]
     attribute :memory_bytes, :integer, allow_nil?: false, constraints: [min: 536_870_912]

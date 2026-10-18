@@ -88,6 +88,7 @@ in {
     programs.git = {
       enable = true;
       config.safe.directory = "/workspace/*";
+      config.include.path = "/run/overalls-workspace/git-identity/gitconfig";
     };
     systemd.services.lilly-network = {
       requires = [ "overalls-guest-trust.service" ];

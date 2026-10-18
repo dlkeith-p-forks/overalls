@@ -160,7 +160,7 @@ defmodule Lilly.Control.Store do
   # @cc [owner:ghuntley,label:security] store-resize-is-only-resource-rebinding
   # Resource changes MUST require a resize command bound to the previous stopped
   # shape, or the exact target of that recorded resize. Readiness request markers
-  # (resize_id/clone_id) and the optional workspace_source reference (ADR-0128)
+  # (resize_id/clone_id), optional workspace_source reference (ADR-0128), and Git attribution
   # are operation metadata, not placement identity; changing them still requires
   # a newer generation and a distinct operation ID. All other
   # placement identity remains strict. The owner is governed separately by
@@ -214,7 +214,8 @@ defmodule Lilly.Control.Store do
         :resize_id,
         :clone_id,
         :owner_id,
-        :workspace_source
+        :workspace_source,
+        :git_identity
       ])
 
   defp revision(command), do: {command.execution_epoch, command.generation}

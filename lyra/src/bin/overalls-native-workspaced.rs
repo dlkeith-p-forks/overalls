@@ -20,6 +20,22 @@ fn main() -> ! {
         Ok(value) => value,
         Err(_) => std::process::exit(1),
     };
+    let identity =
+        lyra::guest::mmds::fetch(std::time::Duration::from_secs(5)).and_then(|document| {
+            if document.placement != boot.placement_id
+                || document.execution_epoch != boot.execution_epoch
+                || document.boot_challenge != boot.boot_challenge
+            {
+                return Err(std::io::Error::other("git identity boot mismatch"));
+            }
+            lyra::guest::git_identity::install(
+                std::path::Path::new("/run/overalls-workspace/git-identity"),
+                document.git_identity.as_ref(),
+            )
+        });
+    if identity.is_err() {
+        std::process::exit(1);
+    }
     let binding = Binding {
         placement_id: boot.placement_id,
         execution_epoch: boot.execution_epoch,

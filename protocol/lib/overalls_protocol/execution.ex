@@ -1,12 +1,13 @@
 defmodule OverallsProtocol.Execution do
   @moduledoc "Placement-bound executable commands and physical outcomes in v4 control documents."
-  alias OverallsProtocol.{ImageManifest, ProfilePolicy, VMShape, WorkspaceSource}
+  alias OverallsProtocol.{GitIdentity, ImageManifest, ProfilePolicy, VMShape, WorkspaceSource}
   @maximum 9_223_372_036_854_775_807
   @type command :: %{
           optional(:resize_from) => map(),
           optional(:resize_id) => OverallsProtocol.uuid(),
           optional(:clone_id) => OverallsProtocol.uuid(),
           optional(:workspace_source) => WorkspaceSource.t(),
+          optional(:git_identity) => GitIdentity.t(),
           id: OverallsProtocol.uuid(),
           owner_id: OverallsProtocol.uuid(),
           vm_id: OverallsProtocol.uuid(),
@@ -107,7 +108,7 @@ defmodule OverallsProtocol.Execution do
   # 15 fields plus the required owning-user metadata;
   # resize adds its source shape and stable request ID, and resize starts
   # add that request ID to require guest readiness. Clone starts add clone_id for readiness.
-  # Provision and start may add a workspace_source reference. Other fields MUST be rejected.
+  # Provision and start may add workspace_source and git_identity metadata. Other fields MUST be rejected.
   @spec command(term()) :: {:ok, command()} | failure()
   # @cc [owner:ghuntley,label:security] command-owner-is-validated-metadata
   # Every command MUST carry owner metadata as a canonical UUID that survives
@@ -130,6 +131,20 @@ defmodule OverallsProtocol.Execution do
   they bind; its result is never executable intent (see command/1).
   """
   @spec placement_command(term()) :: {:ok, map()} | failure()
+
+  # @cc [owner:ghuntley,label:security;protocol] command-git-attribution-metadata
+  # Optional git_identity MUST be closed validated attribution on provision/start
+  # only. Its absence MUST remain valid and MUST NOT imply a default identity;
+  # attribution MUST NOT relax placement, owner or execution validation.
+  def placement_command(%{"git_identity" => identity} = value) do
+    with {:ok, identity} <- GitIdentity.decode(identity),
+         {:ok, command} <- placement_command(Map.delete(value, "git_identity")),
+         true <- command.kind in [:provision, :start] do
+      {:ok, Map.put(command, :git_identity, identity)}
+    else
+      _ -> {:error, :invalid_message}
+    end
+  end
 
   # @cc [owner:ghuntley,label:security;protocol] command-workspace-source-reference
   # An optional workspace_source MUST be the closed versioned public repository reference, only on
@@ -325,6 +340,13 @@ defmodule OverallsProtocol.Execution do
   def outcome(_), do: {:error, :invalid_message}
 
   @spec encode_command(command()) :: map()
+  def encode_command(%{git_identity: identity} = command) do
+    command
+    |> Map.delete(:git_identity)
+    |> encode_command()
+    |> Map.put("git_identity", GitIdentity.encode(identity))
+  end
+
   def encode_command(%{workspace_source: source} = command) do
     command
     |> Map.delete(:workspace_source)

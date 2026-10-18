@@ -313,7 +313,8 @@ defmodule Lilly.VM.Executor do
       :vcpu,
       :memory_bytes,
       :disk_bytes,
-      :workspace_source
+      :workspace_source,
+      :git_identity
     ])
     |> Map.put(:id, command.placement_id)
     |> Spec.new()

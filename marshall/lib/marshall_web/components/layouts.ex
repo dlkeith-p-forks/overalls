@@ -308,9 +308,15 @@ defmodule MarshallWeb.Layouts do
                 <ul>
                   <li>
                     <.link
-                      id="nav-account"
+                      id="nav-settings"
                       navigate={~p"/settings"}
-                      aria-current={@active == "account" && "page"}
+                      aria-current={@active == "settings" && "page"}
+                    >Settings</.link>
+                  </li>
+                  <li>
+                    <.link
+                      navigate={~p"/settings/security"}
+                      aria-current={@active == "security" && "page"}
                     >
                       {gettext("Account")}
                     </.link>

@@ -363,3 +363,7 @@ serving. Production secret/TLS/mail/budget faults, optional integrations,
 packaged startup, file replacement and hosted faults remain open. Evidence:
 [boot property](repo:marshall/test/marshall/operations/invalid_runtime_boot_property_test.exs)
 and [execution review](repo:docs/architecture/reviews/2026-09-29-antithesis-property-audit.md).
+
+## Account Git preferences
+
+Settings defaults are Git username Overalls, Git email noreply@overalls.dev and enabled commit trailers. New machine admission captures identity atomically; cloned machines capture the creating account’s settings. Existing machines without a snapshot retain their configuration. Identity values are not diagnostic metadata.

@@ -1173,3 +1173,7 @@ a sanitized card with Implement plan and Revise, while partial output cannot
 be implemented. The server rechecks authority and the exact proposal identity
 before admitting a Work turn on the same machine. The composer stays above the
 newest-first transcript throughout these interactions.
+
+## Git settings
+
+The authenticated /settings page edits Git username, Git email and optional agent commit trailers for the current account. Git email is separate from sign-in email. Invalid or foreign-account changes refuse. Identity changes apply to newly created machines.

@@ -368,6 +368,26 @@ defmodule Overalls.HLDDTest do
     end
   end
 
+  test "explicit Hegel callbacks qualify without accepting function name prefixes", %{root: root} do
+    data = fixture(root)
+    [row] = data["scenarios"]
+
+    for {runner, valid?} <- [
+          {"Hegel.check(fn test_case -> generated_refusal end)", true},
+          {"Hegel.check(\n fn test_case -> generated_refusal end)", true},
+          {"Hegel.check_other(fn test_case -> generated_refusal end)", false},
+          {"OtherHegel.check(fn test_case -> generated_refusal end)", false}
+        ] do
+      write(root, "test.exs", runner)
+      evidence = %{
+        "kind" => "property", "execution" => "present", "path" => "test.exs",
+        "assertion" => "generated_refusal", "scope" => "Explicit callback runner recognition"
+      }
+      errors = HLDDCoverage.validate(root, %{data | "scenarios" => [%{row | "evidence" => [evidence], "status" => "partial"}]})
+      assert (errors == []) == valid?
+    end
+  end
+
   test "options retain required fields and normalize build-specific store hashes" do
     option = %{
       "name" => "services.example.keyFile",

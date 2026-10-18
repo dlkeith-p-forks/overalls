@@ -1,33 +1,6 @@
 # Architecture decision records
 
-[ADR-0197](0197-localized-human-surfaces.md) accepts offline Localize catalogs, validated language preference and browser negotiation, RTL/bidi rendering and a bounded locale in Porsche human-output sessions. Implementation remains partial.
-
-[ADR-0196](0196-single-account-settings-page.md) merges the Profile, Security
-and SSH keys pages into one `/settings` account page with anchored sections
-behind the security mount, removes `/settings/profile`, `/settings/security`
-and `/settings/ssh-keys` without redirects, and collapses the sidebar to one
-Account entry with AI usage beneath it.
-
-[ADR-0195](0195-user-time-zones.md) adds a per-user display time zone: a
-`/settings/profile` page with a `(GMT+09:30) Adelaide` picker, every browser
-timestamp rendered in the viewer's zone (saved, else browser, else UTC) with the
-UTC instant on hover, and each person's current local time plus the difference
-from the viewer wherever people appear. Storage stays UTC and the zone data is
-compiled in through `tz`; this amends the no-profile position inherited from
-ADR-0158/0159 for display preferences only.
-
-[ADR-0193](0193-per-user-machine-pins.md) adds per-user machine pins: pinned
-machines lead the machines page and overview, an owner's pin refuses every
-delete path (browser, Fleet workloads, SSH/Porsche `rm`, thread teardown) with
-`machine_pinned` except the owner's own account deletion, archival removes all
-pins, and Porsche gains `pin`/`unpin` commands.
-
-[ADR-0194](0194-marshall-http-security-headers.md) sends one strict
-Content-Security-Policy, permissions, opener, resource and framing header set
-from the Marshall endpoint on every response, no-index robots directives, HSTS
-with `includeSubDomains`, and `__Host-` prefixed, encrypted session and
-remember-me cookies; `style-src` alone keeps `'unsafe-inline'` for the xterm.js
-and Mermaid renderers.
+[ADR-0193](0193-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0192](0192-staged-detached-ingress.md) moves the browser editor and
 nested HTTPS onto ADR-0187's detached ingress bridges. The BEAM's only
@@ -914,4 +887,4 @@ and physical storage acceptance. See the
 [transfer review](../reviews/2026-10-05-transfer-stream-adopted-children.md);
 ADR-0015/0037 retain their statuses and accepted rationale.
 
-| [ADR-0197](0197-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |
+| [ADR-0193](0193-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |

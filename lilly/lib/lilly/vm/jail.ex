@@ -89,7 +89,7 @@ defmodule Lilly.VM.Jail do
           " lilly.execution_epoch=" <>
           Integer.to_string(boot.execution_epoch) <>
           " lilly.boot_challenge=" <>
-          boot.boot_challenge
+          boot.boot_challenge <> git_identity_argument(spec)
     }
 
     boot_source =
@@ -165,22 +165,44 @@ defmodule Lilly.VM.Jail do
   # command line (placement, execution epoch, boot challenge, IPv4 address) plus the
   # static network facts a firmware guest cannot derive (prefix length, gateway, MAC)
   # under the single `lilly` key with a version. It MUST NOT include the generation,
-  # which advances without a reboot, nor any credential or host path.
+  # which advances without a reboot, nor any credential or host path. An optional validated public Git identity
+  # MUST use the same versioned document on both boot transports.
   @spec metadata(WorkloadBundle.t(), Spec.t(), Boot.t()) :: map()
   def metadata(%{boot_kind: :firmware}, spec, boot) do
     %{
-      "lilly" => %{
-        "version" => 1,
-        "placement" => boot.placement_id,
-        "execution_epoch" => boot.execution_epoch,
-        "boot_challenge" => boot.boot_challenge,
-        "ipv4" => spec.network.address,
-        "prefix_length" => 32,
-        "gateway" => spec.network.gateway,
-        "mac" => spec.network.mac
-      }
+      "lilly" =>
+        %{
+          "version" => 1,
+          "placement" => boot.placement_id,
+          "execution_epoch" => boot.execution_epoch,
+          "boot_challenge" => boot.boot_challenge,
+          "ipv4" => spec.network.address,
+          "prefix_length" => 32,
+          "gateway" => spec.network.gateway,
+          "mac" => spec.network.mac
+        }
+        |> maybe_git_identity(spec)
     }
   end
+
+  @spec git_identity_argument(Spec.t()) :: String.t()
+  defp git_identity_argument(%{git_identity: nil}), do: ""
+
+  defp git_identity_argument(%{git_identity: identity}) do
+    encoded =
+      identity
+      |> OverallsProtocol.GitIdentity.encode()
+      |> JSON.encode!()
+      |> Base.url_encode64(padding: false)
+
+    " lilly.git_identity=" <> encoded
+  end
+
+  @spec maybe_git_identity(map(), Spec.t()) :: map()
+  defp maybe_git_identity(metadata, %{git_identity: nil}), do: metadata
+
+  defp maybe_git_identity(metadata, %{git_identity: identity}),
+    do: Map.put(metadata, "git_identity", OverallsProtocol.GitIdentity.encode(identity))
 
   @doc "Caller must first confirm the VM cgroup is empty. Unexpected mounts prevent cleanup."
   # @cc [owner:ghuntley,label:assumption;security] jail-cleanup-refuses-unexpected-mounts

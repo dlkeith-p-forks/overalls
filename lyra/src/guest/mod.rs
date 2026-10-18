@@ -3,6 +3,7 @@
 //! the operating-system layer in `platform`.
 
 pub mod flush;
+pub mod git_identity;
 pub mod kernel_probe;
 pub mod mmds;
 pub mod readiness;
