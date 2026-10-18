@@ -126,139 +126,137 @@ defmodule Audi.HTTP.FrontTest do
   # @cc [owner:ghuntley,label:verification;protocol] audi-fleet-version-owner-retirement
   # Verified 426 at fetch, acknowledgement or catalog MUST retire even a
   # suspended scheduler, stop later control work and preserve installed expiry.
-  test "fleet version refusal retires suspended readiness without reopening polling", c do
-    check all(
-            generated <- member_of([:fetch, :ack, :catalog, :ready, :catalog_with_job]),
-            max_runs: 1,
-            profile: :ci
-          ) do
-      for stage <- [:fetch, :ack, :catalog, :ready, :catalog_with_job, generated] do
-        tasks = start_supervised!({Task.Supervisor, max_children: 20})
+  property "fleet version refusal retires suspended readiness without reopening polling", c,
+    profile: :ci,
+    test_cases: 1 do
+    generated = draw("stage", member_of([:fetch, :ack, :catalog, :ready, :catalog_with_job]))
 
-        {:ok, listener} =
-          :ssl.listen(0, [
-            :inet,
-            :binary,
-            active: false,
-            ip: {127, 0, 0, 1},
-            certfile: String.to_charlist(Path.join(c.certificate_dir, "leaf.pem")),
-            keyfile: String.to_charlist(Path.join(c.certificate_dir, "leaf.key"))
-          ])
+    for stage <- [:fetch, :ack, :catalog, :ready, :catalog_with_job, generated] do
+      tasks = start_supervised!({Task.Supervisor, max_children: 20})
 
-        {:ok, {_, port}} = :ssl.sockname(listener)
-        fixture = spawn_link(fn -> accept_fleet_probes(listener) end)
+      {:ok, listener} =
+        :ssl.listen(0, [
+          :inet,
+          :binary,
+          active: false,
+          ip: {127, 0, 0, 1},
+          certfile: String.to_charlist(Path.join(c.certificate_dir, "leaf.pem")),
+          keyfile: String.to_charlist(Path.join(c.certificate_dir, "leaf.key"))
+        ])
 
-        worker =
-          start_supervised!(
-            {Audi.TLS.FleetWorker,
-             client: c.client,
-             store: c.store,
-             tasks: tasks,
-             zone: @zone,
-             trust_pem: c.roots,
-             probe_peer: {{127, 0, 0, 1}, port}}
-          )
+      {:ok, {_, port}} = :ssl.sockname(listener)
+      fixture = spawn_link(fn -> accept_fleet_probes(listener) end)
 
-        try do
-          fleet_reply("fleet-certificate", 503, "{}")
-          state = :sys.get_state(worker)
-          assert not state.halted?
-          assert Process.alive?(state.scheduler)
-          {:ok, metadata} = Audi.TLS.Store.fleet_metadata(c.store, @host)
-          monitor = Process.monitor(state.scheduler)
+      worker =
+        start_supervised!(
+          {Audi.TLS.FleetWorker,
+           client: c.client,
+           store: c.store,
+           tasks: tasks,
+           zone: @zone,
+           trust_pem: c.roots,
+           probe_peer: {{127, 0, 0, 1}, port}}
+        )
 
-          body =
-            JSON.encode!(%{
-              "version" => 1,
-              "bundle" => %{
-                "host_id" => c.client.host_id,
-                "zone" => @zone,
-                "generation" => 1,
-                "fingerprint" => metadata.fingerprint,
-                "expires_at" => DateTime.from_unix!(metadata.expires_at) |> DateTime.to_iso8601(),
-                "chain_pem" => c.chain,
-                "private_key_pem" => c.key
-              }
-            })
+      try do
+        fleet_reply("fleet-certificate", 503, "{}")
+        state = :sys.get_state(worker)
+        assert not state.halted?
+        assert Process.alive?(state.scheduler)
+        {:ok, metadata} = Audi.TLS.Store.fleet_metadata(c.store, @host)
+        monitor = Process.monitor(state.scheduler)
 
-          if stage == :fetch do
-            fleet_reply("fleet-certificate", 426, "invalid version", state.scheduler)
+        body =
+          JSON.encode!(%{
+            "version" => 1,
+            "bundle" => %{
+              "host_id" => c.client.host_id,
+              "zone" => @zone,
+              "generation" => 1,
+              "fingerprint" => metadata.fingerprint,
+              "expires_at" => DateTime.from_unix!(metadata.expires_at) |> DateTime.to_iso8601(),
+              "chain_pem" => c.chain,
+              "private_key_pem" => c.key
+            }
+          })
+
+        if stage == :fetch do
+          fleet_reply("fleet-certificate", 426, "invalid version", state.scheduler)
+        else
+          fleet_reply("fleet-certificate", 200, body)
+
+          if stage == :ack do
+            fleet_reply("fleet-certificate-ack", 426, "invalid version", state.scheduler)
           else
-            fleet_reply("fleet-certificate", 200, body)
+            fleet_reply(
+              "fleet-certificate-ack",
+              200,
+              JSON.encode!(%{
+                "version" => 1,
+                "ack" => %{"host_id" => c.client.host_id, "generation" => 1}
+              })
+            )
 
-            if stage == :ack do
-              fleet_reply("fleet-certificate-ack", 426, "invalid version", state.scheduler)
+            if stage == :catalog do
+              fleet_reply("gateway-catalog", 426, "invalid version", state.scheduler)
             else
               fleet_reply(
-                "fleet-certificate-ack",
+                "gateway-catalog",
                 200,
                 JSON.encode!(%{
                   "version" => 1,
-                  "ack" => %{"host_id" => c.client.host_id, "generation" => 1}
+                  "catalog" => %{
+                    "service_id" => "22222222-2222-4222-8222-222222222222",
+                    "host_id" => c.client.host_id,
+                    "service_generation" => 1,
+                    "ttl" => 5000,
+                    "entries" => [
+                      %{
+                        "vm_id" => "01234567-89ab-4def-8123-456789abcdef",
+                        "placement_id" => "33333333-3333-4333-8333-333333333333",
+                        "execution_epoch" => 1,
+                        "generation" => 1,
+                        "label" => @label
+                      }
+                    ]
+                  }
                 })
               )
 
-              if stage == :catalog do
-                fleet_reply("gateway-catalog", 426, "invalid version", state.scheduler)
+              if stage == :catalog_with_job do
+                assert_receive {:control_request, request_pid, request_ref,
+                                "/api/audi/v1/route-ready", _, _},
+                               4000
+
+                [job] = Task.Supervisor.children(tasks)
+                job_ref = Process.monitor(job)
+                :sys.suspend(state.scheduler)
+                fleet_reply("gateway-catalog", 426, "invalid version")
+                assert_receive {:DOWN, ^job_ref, :process, ^job, :killed}, 1000
+                send(request_pid, {request_ref, 503, "{}"})
               else
-                fleet_reply(
-                  "gateway-catalog",
-                  200,
-                  JSON.encode!(%{
-                    "version" => 1,
-                    "catalog" => %{
-                      "service_id" => "22222222-2222-4222-8222-222222222222",
-                      "host_id" => c.client.host_id,
-                      "service_generation" => 1,
-                      "ttl" => 5000,
-                      "entries" => [
-                        %{
-                          "vm_id" => "01234567-89ab-4def-8123-456789abcdef",
-                          "placement_id" => "33333333-3333-4333-8333-333333333333",
-                          "execution_epoch" => 1,
-                          "generation" => 1,
-                          "label" => @label
-                        }
-                      ]
-                    }
-                  })
-                )
-
-                if stage == :catalog_with_job do
-                  assert_receive {:control_request, request_pid, request_ref,
-                                  "/api/audi/v1/route-ready", _, _},
-                                 4000
-
-                  [job] = Task.Supervisor.children(tasks)
-                  job_ref = Process.monitor(job)
-                  :sys.suspend(state.scheduler)
-                  fleet_reply("gateway-catalog", 426, "invalid version")
-                  assert_receive {:DOWN, ^job_ref, :process, ^job, :killed}, 1000
-                  send(request_pid, {request_ref, 503, "{}"})
-                else
-                  fleet_reply("route-ready", 426, "invalid version")
-                  assert_receive {:DOWN, ^monitor, :process, _, :killed}, 1000
-                end
+                fleet_reply("route-ready", 426, "invalid version")
+                assert_receive {:DOWN, ^monitor, :process, _, :killed}, 1000
               end
             end
           end
-
-          assert :sys.get_state(worker, 1000).halted?
-          if stage != :ready, do: assert_receive({:DOWN, ^monitor, :process, _, :killed}, 1000)
-          for _ <- 1..3, do: send(worker, :tick)
-          _ = :sys.get_state(worker)
-          refute_receive {:control_request, _, _, _, _, _}, 1200
-          assert :sys.get_state(worker).last_error == :unsupported_version
-          refute Audi.TLS.FleetWorker.automatic_work_enabled?(worker)
-          assert {:ok, ^metadata} = Audi.TLS.Store.fleet_metadata(c.store, @host)
-          assert Task.Supervisor.children(tasks) == []
-        after
-          stop_supervised(Audi.TLS.FleetWorker)
-          stop_supervised(Task.Supervisor)
-          :ssl.close(listener)
-          monitor = Process.monitor(fixture)
-          assert_receive {:DOWN, ^monitor, :process, ^fixture, _}, 2000
         end
+
+        assert :sys.get_state(worker, 1000).halted?
+        if stage != :ready, do: assert_receive({:DOWN, ^monitor, :process, _, :killed}, 1000)
+        for _ <- 1..3, do: send(worker, :tick)
+        _ = :sys.get_state(worker)
+        refute_receive {:control_request, _, _, _, _, _}, 1200
+        assert :sys.get_state(worker).last_error == :unsupported_version
+        refute Audi.TLS.FleetWorker.automatic_work_enabled?(worker)
+        assert {:ok, ^metadata} = Audi.TLS.Store.fleet_metadata(c.store, @host)
+        assert Task.Supervisor.children(tasks) == []
+      after
+        stop_supervised(Audi.TLS.FleetWorker)
+        stop_supervised(Task.Supervisor)
+        :ssl.close(listener)
+        monitor = Process.monitor(fixture)
+        assert_receive {:DOWN, ^monitor, :process, ^fixture, _}, 2000
       end
     end
   end

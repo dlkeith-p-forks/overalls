@@ -13,6 +13,7 @@ defmodule Lilly.VM.GuestTrust do
   # sides of this exchange and persist the receipt before reporting running.
   @spec deliver(Path.t(), Boot.t(), [binary()], pos_integer()) :: result()
   def deliver(path, boot, roots, timeout) when is_integer(timeout) and timeout > 0 do
+    boot = Map.merge(boot, Boot.expectation(boot))
     nonce = Base.encode16(:crypto.strong_rand_bytes(32), case: :lower)
     digest = digest(roots)
 

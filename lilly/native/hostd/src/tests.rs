@@ -794,6 +794,7 @@ fn launch(firmware: bool) -> crate::vm_launch::Launch {
         vcpus: 2,
         firmware,
         logging: true,
+        restore: false,
         state_dir: b"/var/lib/lilly/vms".to_vec(),
         namespace: b"lilly-guests".to_vec(),
         pool: b"/pool".to_vec(),
@@ -894,6 +895,63 @@ fn vm_launch_hands_an_unprivileged_service_its_files() {
         .any(|a| a == "--reader-uid" || a == "--owner-uid"));
 }
 
+/// Snapshot loading is only legal on an unconfigured VMM. The independent
+/// model checks every launch mode, including firmware and logging, so a restore
+/// cannot accidentally follow the cold-boot configuration path.
+#[hegel::test]
+fn restore_launch_never_boots_before_snapshot_load(tc: TestCase) {
+    let pools = [PathBuf::from("/pool")];
+    let roots = [PathBuf::from("/var/lib/lilly")];
+    let tools = launch_tools();
+    let firmware = tc.draw(gs::booleans());
+    let mut request = launch(firmware);
+    request.restore = true;
+    request.logging = tc.draw(gs::booleans());
+    let arguments =
+        strings(crate::vm_launch::argv(Some(&tools), &roots, &pools, &request, 377).unwrap());
+    for forbidden in [
+        "--config-file",
+        "/firecracker.json",
+        "--metadata",
+        "/metadata.json",
+    ] {
+        assert!(!arguments.iter().any(|argument| argument == forbidden));
+    }
+    assert_eq!(
+        arguments.iter().any(|argument| argument == "--enable-pci"),
+        firmware
+    );
+    assert!(arguments
+        .windows(2)
+        .any(|pair| pair == ["--api-sock", "/api.sock"]));
+    assert!(arguments.iter().any(|argument| argument == "--owner-uid"));
+    assert!(arguments
+        .iter()
+        .any(|argument| argument == "--property=KillMode=control-group"));
+    // Restore mode changes no launch custody or resource restrictions.
+    request.uid = 0;
+    assert_eq!(
+        crate::vm_launch::argv(Some(&tools), &roots, &pools, &request, 377),
+        Err(Refusal::Malformed)
+    );
+}
+
+#[test]
+fn vm_launch_refuses_unknown_launch_flags() {
+    let envelope = Envelope {
+        id: 1,
+        request: Request::LaunchVm {
+            lease: 1,
+            launch: launch(false),
+        },
+    };
+    let mut frame = encode_request(&envelope);
+    // Datagram header (9), then lease/placement/epoch/generation/uid/memory/vCPU.
+    let flags = 9 + 8 + 36 + 8 + 8 + 4 + 8 + 1;
+    frame[flags] |= 0b1000;
+    assert_eq!(decode(&frame), None);
+}
+
 #[test]
 fn vm_launch_refuses_out_of_policy_requests() {
     let pools = [PathBuf::from("/pool")];
@@ -944,6 +1002,7 @@ fn vm_launch_refuses_out_of_policy_requests() {
 fn vm_launch_decoding_round_trips(tc: TestCase) {
     let mut request = launch(tc.draw(gs::booleans()));
     request.logging = tc.draw(gs::booleans());
+    request.restore = tc.draw(gs::booleans());
     request.epoch = tc.draw(gs::integers::<u64>());
     request.uid = tc.draw(gs::integers::<u32>());
     let envelope = Envelope {
@@ -976,7 +1035,7 @@ fn local_stream(lease: u64, producer: Option<crate::transfer::Producer>) -> Requ
         lease,
         timeout_ms: 5_000,
         rate: 0,
-        stream: crate::transfer::Stream {
+        stream: Box::new(crate::transfer::Stream {
             producer: producer.unwrap_or(crate::transfer::Producer::LocalSend {
                 dataset: b"tank/lilly".to_vec(),
                 placement: placement.clone(),
@@ -989,7 +1048,7 @@ fn local_stream(lease: u64, producer: Option<crate::transfer::Producer>) -> Requ
                 pool_id: b"55555555-6666-4777-8888-999999999999".to_vec(),
                 nonce: b"0123456789abcdef0123456789abcdef".to_vec(),
             },
-        },
+        }),
     }
 }
 

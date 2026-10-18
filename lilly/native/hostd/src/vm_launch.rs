@@ -35,6 +35,8 @@ pub struct Launch {
     pub vcpus: u8,
     pub firmware: bool,
     pub logging: bool,
+    /// Start an unconfigured API server for snapshot loading; never cold boot.
+    pub restore: bool,
     pub state_dir: Vec<u8>,
     pub namespace: Vec<u8>,
     pub pool: Vec<u8>,
@@ -77,7 +79,9 @@ fn text(value: impl AsRef<[u8]>) -> Result<CString, Refusal> {
 /// beneath one of hostd's lease roots;
 /// otherwise Malformed (or Unavailable without configured tools). Every
 /// executable and directory comes from `tools` and `pools`, never from the
-/// request. A firmware launch appends only `--enable-pci --metadata
+/// request. A restore launch MUST omit `--config-file` and `--metadata` so
+/// Firecracker cannot boot before its snapshot is loaded. Firmware restores
+/// retain `--enable-pci`; cold firmware boots append `--enable-pci --metadata
 /// /metadata.json` after the Firecracker configuration file. A non-zero
 /// service uid MUST be passed as the boot-log writer's `--reader-uid` and
 /// the launch guard's `--owner-uid`, and a zero service uid as neither.
@@ -183,15 +187,15 @@ pub fn argv(
         text("--")?,
         text("--api-sock")?,
         text("/api.sock")?,
-        text("--config-file")?,
-        text("/firecracker.json")?,
     ]);
+    if !launch.restore {
+        argv.extend([text("--config-file")?, text("/firecracker.json")?]);
+    }
     if launch.firmware {
-        argv.extend([
-            text("--enable-pci")?,
-            text("--metadata")?,
-            text("/metadata.json")?,
-        ]);
+        argv.push(text("--enable-pci")?);
+        if !launch.restore {
+            argv.extend([text("--metadata")?, text("/metadata.json")?]);
+        }
     }
     if launch.logging {
         let suffix = format!("{}-{}.fifo", launch.epoch, launch.generation);

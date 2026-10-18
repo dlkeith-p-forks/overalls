@@ -13,7 +13,7 @@ defmodule Marshall.Compute.RelocationReadinessState do
   # @cc [owner:ghuntley,label:recovery;capacity] readiness-retains-source-until-guest-proof
   # advance_locked!/2 requires host-before-VM serialization. A running workload
   # gets one deadline measured from its retained activation outcome; retries do
-  # not reset it. Only stopped workloads can become ready without a boot receipt.
+  # not reset it. Only stopped or paused workloads become ready without a boot receipt.
   # Timeout or changed activation is terminal for this request and releases no holds.
   @spec advance_locked!(Relocation.t(), VirtualMachine.t() | nil) :: ReadinessRequest.t() | nil
   def advance_locked!(relocation, vm) do
@@ -115,7 +115,7 @@ defmodule Marshall.Compute.RelocationReadinessState do
              operation.placement_id == vm.current_placement_id and
              operation.execution_epoch == vm.execution_epoch and
              operation.generation == vm.generation and
-             operation.kind == if(state == :running, do: :start, else: :stop),
+             operation.kind == Marshall.Compute.RelocationCoordinator.activation_kind(relocation),
          [outcome] <- Ledger.read!(PhysicalOutcome, id: operation.completion_outcome_id),
          {:ok, evidence} <- OverallsProtocol.Execution.outcome(outcome.observation),
          true <-
@@ -125,7 +125,7 @@ defmodule Marshall.Compute.RelocationReadinessState do
              evidence.execution_epoch == vm.execution_epoch and
              evidence.generation == vm.generation and
              evidence.state == state and evidence.disk_present and
-             evidence.compute_empty == (state == :stopped),
+             evidence.compute_empty == state in [:stopped, :paused],
          do: {:ok, outcome},
          else: (_ -> :error)
   end

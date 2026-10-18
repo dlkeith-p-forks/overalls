@@ -564,6 +564,8 @@ defmodule MarshallWeb.MachinesLive do
   defp label(:oss), do: "OSS"
   defp state(%{desired_state: :deleted}), do: "Deleting"
   defp state(%{desired_state: :stopped, observed_state: :running}), do: "Stopping"
+  defp state(%{desired_state: :paused, observed_state: :running}), do: "Suspending"
+  defp state(%{desired_state: :running, observed_state: :paused}), do: "Resuming"
 
   defp state(%{desired_state: :running, observed_state: state})
        when state in [:pending, :stopped], do: "Starting"
@@ -706,14 +708,20 @@ defmodule MarshallWeb.MachinesLive do
                 <td data-label="Connect">
                   <div class="machine-open-actions">
                     <.link
-                      :if={vm.desired_state == :running && vm.observed_state == :running}
+                      :if={
+                        vm.desired_state in [:running, :paused] &&
+                          vm.observed_state in [:running, :paused]
+                      }
                       navigate={~p"/machines/#{vm.id}/terminals"}
                       id={"machine-terminal-#{vm.id}"}
                       class="console-button"
                       aria-label={"Open terminal for #{vm.name}"}
                     >Open terminal</.link>
                     <span
-                      :if={vm.desired_state != :running || vm.observed_state != :running}
+                      :if={
+                        vm.desired_state not in [:running, :paused] ||
+                          vm.observed_state not in [:running, :paused]
+                      }
                       class="muted"
                     >Terminal unavailable</span>
                     <UI.machine_editor_action vm={vm} id_prefix="machine" />

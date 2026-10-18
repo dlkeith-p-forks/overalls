@@ -3,7 +3,7 @@ defmodule Audi.Config do
   import Bitwise
   alias Audi.Control.Client
 
-  @fields ~w(version role public_origin control_plane host_id credential_file host_key_dir bind port cacertfile connector_path connector_uid tls status_socket)
+  @fields ~w(version role public_origin control_plane host_id credential_file host_key_dir bind port cacertfile connector_path connector_uid tls status_socket relay)
 
   # @cc [owner:ghuntley,label:security] audi-configuration-secret-custody
   # Startup MUST reject unknown fields, inline credentials, non-HTTPS origins,
@@ -99,6 +99,7 @@ defmodule Audi.Config do
          bind = Map.get(value, "bind", "0.0.0.0"),
          true <- is_binary(bind) and byte_size(bind) <= 45,
          {:ok, address} <- :inet.parse_ipv4strict_address(String.to_charlist(bind)),
+         {:ok, relay} <- relay(value["relay"]),
          {:ok, tls} <- tls(value["tls"], port),
          true <- is_nil(tls) or tls[:browser_origin] != client.origin do
       {:ok,
@@ -110,8 +111,18 @@ defmodule Audi.Config do
          bind: address,
          backend:
            {Audi.SSH.ControlBackend,
-            %{client: client, connector: {Audi.Connector, %{path: connector, uid: connector_uid}}}}
-       ] ++ if(tls, do: [tls: tls], else: []) ++ status_option(value)}
+            %{
+              client: client,
+              connector:
+                {Audi.Connector,
+                 Map.merge(
+                   %{path: connector, uid: connector_uid},
+                   if(relay, do: %{relay: relay}, else: %{})
+                 )}
+            }}
+       ] ++
+         if(tls, do: [tls: tls], else: []) ++
+         if(relay, do: [relay: relay], else: []) ++ status_option(value)}
     else
       _ -> {:error, :invalid_runtime_configuration}
     end
@@ -168,6 +179,25 @@ defmodule Audi.Config do
   end
 
   defp decode(_), do: {:error, :invalid_runtime_configuration}
+
+  # @cc [owner:ghuntley,label:security] audi-relay-runtime-operator-peers
+  # Relay startup MUST require one fleet /32 and a finite distinct list of
+  # different fleet peer /32s. Public/wildcard binds and unknown fields refuse.
+  @spec relay(term()) :: {:ok, map() | nil} | {:error, :invalid_runtime_configuration}
+  defp relay(nil), do: {:ok, nil}
+
+  defp relay(%{"address" => address, "port" => port, "peers" => peers} = value)
+       when map_size(value) == 3 do
+    if OverallsProtocol.IngressRelay.fleet_address?(address) and is_integer(port) and
+         port in 1..65_535 and
+         is_list(peers) and length(peers) in 1..254 and Enum.uniq(peers) == peers and
+         address not in peers and
+         Enum.all?(peers, &OverallsProtocol.IngressRelay.fleet_address?/1),
+       do: {:ok, %{address: address, port: port, peers: peers}},
+       else: {:error, :invalid_runtime_configuration}
+  end
+
+  defp relay(_), do: {:error, :invalid_runtime_configuration}
 
   # @cc [owner:ghuntley,label:security] audi-status-private-directory
   # Status sockets MUST use canonical absolute paths under trusted nonsymlink

@@ -559,6 +559,7 @@ defmodule Marshall.Agents.ModelCalls do
   end
 
   defp queue_tools!(call, turn, thread, vm, calls) do
+    Marshall.Compute.Idle.touch_locked!(vm)
     {questions, calls} = Enum.split_with(calls, &(&1.tool == :request_user_input))
     {command_calls, child_calls} = Enum.split_with(calls, &(&1.tool != :spawn_child_agent))
 

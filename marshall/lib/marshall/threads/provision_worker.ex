@@ -72,6 +72,11 @@ defmodule Marshall.Threads.ProvisionWorker do
                      Map.put(spec, :idempotency_key, current.machine_key),
                      actor: actor
                    ) do
+              if current.machine_id == nil do
+                machine = Ledger.lock!(Marshall.Compute.VirtualMachine, vm.id)
+                Marshall.Compute.Idle.enable_locked!(machine)
+              end
+
               bound = Ledger.update!(current, :bind_machine, %{machine_id: vm.id})
               Generation.sync!(bound)
               {:ok, bound, actor, vm}

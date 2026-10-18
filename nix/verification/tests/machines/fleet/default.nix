@@ -1,4 +1,4 @@
-{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, editorFamily ? null, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, relocation ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false, hegel ? null }:
+{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, editorFamily ? null, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, relocation ? false, suspension ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false, hegel ? null }:
 let
   inherit (pkgs) lib;
   # @cc [owner:ghuntley,label:verification] editor-native-family-selection
@@ -113,13 +113,17 @@ let
   # plus about 0.9 GB; the enrolled overhead is 512 MiB.
   raceUsed = guestManifest.minimum_disk_bytes + GiB + GiB / 2;
   raceGiB = ceilDiv (raceUsed + raceReservation * 5 / 2) GiB;
-  storageGiB = if codingClis || cloning || cloneDestinationLoss || cloneMarshallRestart then lib.max 32 raceGiB else raceGiB;
+  # @cc [owner:ghuntley,label:verification;capacity] suspension-fixture-checkpoint-headroom
+  # Suspension scenarios MUST provide room for two full RAM checkpoints plus
+  # destination disk/checkpoint transfer holds. Admission MUST still use actual
+  # reported pool allocation; this budget MUST NOT fabricate free capacity.
+  storageGiB = if suspension then lib.max 64 raceGiB else if codingClis || cloning || cloneDestinationLoss || cloneMarshallRestart then lib.max 32 raceGiB else raceGiB;
   storageBudget = storageGiB * 1024 * 1024 * 1024;
   # @cc [owner:ghuntley,label:verification;capacity] editor-native-default-memory-budget
-  # Editor and coding-client fixtures MUST retain the real 1 GiB host overhead and 64 MiB VMM
+  # Editor, suspension and coding-client fixtures MUST retain the real 1 GiB host overhead and 64 MiB VMM
   # allowance when admitting the default 2 GiB guest. Only their native guest
   # cgroup budget may grow; measured headroom still decides actual admission.
-  fixtureGuestMemoryMiB = if editor || codingClis then 4096 else 3072;
+  fixtureGuestMemoryMiB = if editor || codingClis || suspension then 4096 else 3072;
   storage = import ./storage.nix { inherit pkgs hostFixture; imageSize = "${toString storageGiB}G"; };
   identity = builtins.fromJSON (builtins.readFile "${storage}/identity.json");
   # @cc [owner:ghuntley,label:verification] host-replacement-runtime-fresh-storage
@@ -198,8 +202,8 @@ let
     inherit pkgs;
     inherit (packages) terminald;
     codingClis = packages.codingClis;
-    vscodeWeb = if editor then packages.vscodeWeb else null;
-    vscodeWebBroker = if editor then packages.vscodeWebBroker else null;
+    vscodeWeb = if editor || suspension then packages.vscodeWeb else null;
+    vscodeWebBroker = if editor || suspension then packages.vscodeWebBroker else null;
     lyraLinux = if agent && !(agentCli || guestCliRecovery || executorLoss) then agentSeed else packages.lyraLinux;
     privateServiceRoots = guestPrivateRoots;
     extraModules = [ ({ ... }: {
@@ -267,8 +271,8 @@ let
     inherit pkgs;
     inherit (packages) terminald;
     codingClis = packages.codingClis;
-    vscodeWeb = if editor then packages.vscodeWeb else null;
-    vscodeWebBroker = if editor then packages.vscodeWebBroker else null;
+    vscodeWeb = if editor || suspension then packages.vscodeWeb else null;
+    vscodeWebBroker = if editor || suspension then packages.vscodeWebBroker else null;
     lyraLinux = if agent && !guestCliRecovery then agentSeed else packages.lyraLinux;
   };
   editorFixtureFiles = lib.optionalAttrs editor {
@@ -640,7 +644,7 @@ let
       enable = true;
       package = lib.mkIf cloneCancellation observedCloneMarshall;
       publicHost = "control.example.test";
-      editorPackage = if editor then packages.vscodeWeb else null;
+      editorPackage = if editor || suspension then packages.vscodeWeb else null;
       ingress.zone = "apps.example.test";
       sshHostCa = {
         publicKey = lib.removeSuffix "\n" (builtins.readFile ../../fixtures/ssh-host-ca/key.pub);
@@ -710,6 +714,7 @@ let
       ${lib.optionalString ubuntu "export FLEET_ALTERNATIVE_GUEST=${nixosGuest}"}
       export FLEET_GUEST_NAME=${lib.escapeShellArg (if foreignEditor then (if selectedEditorFamily == "arch" then "Arch Linux" else "AlmaLinux") else if ubuntu then "Ubuntu 26.04 LTS" else "nixos-fleet")}
       export FLEET_NODE=${name}
+      ${lib.optionalString suspension "export FLEET_SUSPENSION_RELAY=1"}
       mkdir -p "$RELEASE_TMP"
       if [ "$#" = 1 ] && [ "$1" = migrate ]; then
         exec ${packages.marshall}/bin/marshall eval 'Marshall.Operations.Migrate.main()'
@@ -725,8 +730,14 @@ let
     imports = [ ziggyFixture.lilly ]
       ++ [ (import ./audi.nix { inherit pkgs ubuntu; role = "gateway"; hostId = host.host; }) ]
       ++ [ galileoFixture.lilly ]
-      ++ lib.optional (otelAudiSsh || observabilityRecovery) (otelAudiSshHost name);
-    services.audi.editorPackage = if editor then packages.vscodeWeb else null;
+      ++ lib.optional (otelAudiSsh || observabilityRecovery || suspension) (otelAudiSshHost name);
+    services.audi.editorPackage = if editor || suspension then packages.vscodeWeb else null;
+    services.audi.relay = lib.mkIf suspension {
+      enable = true;
+      address = if name == "l1" then "10.90.0.1" else "10.90.0.2";
+      port = 9445;
+      peers = [ (if name == "l1" then "10.90.0.2" else "10.90.0.1") ];
+    };
     # A public unrelated CA tests trust refusal; it is never a guest root.
     environment.etc."fleet-coding-clis-untrusted-ca.pem" = lib.mkIf codingClis {
       source = "${githubFixture}/root.pem";
@@ -1329,7 +1340,7 @@ assert !sshRosterMatrix || (audi && relocation && !porsche && !cloning);
 # for the selected image, so image growth fails here rather than as a timeout.
 assert builtins.isInt guestManifest.minimum_disk_bytes
   && (let free = storageGiB * GiB - raceUsed;
-      in cloning || codingClis || cloneDestinationLoss || cloneMarshallRestart
+      in suspension || cloning || codingClis || cloneDestinationLoss || cloneMarshallRestart
         || (free >= 2 * raceReservation && free < 3 * raceReservation));
 # @cc [owner:ghuntley,label:verification] resize-fixture-image-minima
 # The selected real image's numeric disk/memory minima MUST fit the fixed
@@ -1370,6 +1381,7 @@ assert !porscheLifecycleOnly || (porsche && !terminal && !userSshJourney && !clo
 # Coding-client variants MUST exercise the production native guest packages
 # through mandatory private services, with no substitute provider/configuration
 # launcher. They MUST retain independent NixOS and Ubuntu driver identities.
+assert !suspension || (relocation && !editor && audi);
 assert !codingClis || (!editor && !audi && !porsche && !cloning && !agent && !relocation);
 assert !editor || (audi && !porsche && !cloning && !agent && !relocation);
 assert editorFamily == null || (editor && !ubuntu
@@ -1382,7 +1394,7 @@ assert editorFamily == null || (editor && !ubuntu
     redact = false;
   };
   hostPkgs = lib.mkForce (import ../../support/driver-pkgs.nix pkgs);
-  name = if codingClis then (if ubuntu then "overalls-coding-clis-ubuntu-fleet" else "overalls-coding-clis-nixos-fleet") else if editor then "overalls-vscode-web-${selectedEditorFamily}-fleet" else if observabilityRecovery then "overalls-lilly-observability-recovery" else if porscheLifecycleOnly then (if ubuntu then "overalls-porsche-lifecycle-ubuntu-fleet" else "overalls-porsche-lifecycle-fleet") else if runtimeReadiness then "overalls-lilly-runtime-readiness" else if otelPorsche then "overalls-otel-porsche-native" else if otelAudiSsh then "overalls-otel-audi-ssh-native" else if otelGalileo then "overalls-otel-galileo-native" else if otelGuest then "overalls-otel-guest-native" else if cloneDestinationLoss then "overalls-clone-destination-loss" else if cloneMarshallRestart then "overalls-clone-marshall-restart" else if hostReplacement then "overalls-host-replacement" else if executorLoss then "overalls-executor-loss" else if sharingSurfaces then "overalls-sharing-surfaces" else if cloneCancellation then "overalls-clone-cancellation" else if guestCliRecovery then (if ubuntu then "overalls-guest-cli-recovery-ubuntu" else "overalls-guest-cli-recovery") else if maintenanceEvacuation then "overalls-maintenance-evacuation" else if agentCli then "overalls-agent-cli-journey" else if privateWeb then "overalls-private-web" else if integrationRenewals then "overalls-integration-renewals" else if teamResources then "overalls-team-resources" else if guestTrust then "overalls-fleet-guest-trust" else if accountLifecycle then "overalls-account-lifecycle" else if resize then "overalls-resize-browser" else if repositoryLaunch then (if ubuntu then "overalls-repository-launch-ubuntu-fleet" else "overalls-repository-launch") else if defaultOss then "overalls-default-oss-creation" else if userSshJourney then (if ubuntu then "overalls-user-ssh-journey-ubuntu-fleet" else "overalls-user-ssh-journey-fleet") else if agent then (if ubuntu then "overalls-agent-ubuntu-fleet" else "overalls-agent-fleet") else if terminal then (if ubuntu then "overalls-terminal-ubuntu-fleet" else "overalls-terminal-fleet") else if galileo then "overalls-galileo-fleet" else if brady then "overalls-brady-fleet" else if sshRosterMatrix then (if ubuntu then "overalls-ssh-roster-matrix-ubuntu-fleet" else "overalls-ssh-roster-matrix-fleet") else if sshBootstrap then (if ubuntu then "overalls-ssh-bootstrap-ubuntu-fleet" else "overalls-ssh-bootstrap-fleet") else if ubuntu && audi then (if relocation then "overalls-audi-ubuntu-relocation-fleet" else "overalls-audi-ubuntu-fleet") else if ubuntu then "overalls-ubuntu-fleet" else if customerIsolation then "overalls-customer-isolation-fleet" else if cloning then "overalls-cloning-fleet" else if audi && relocation then "overalls-audi-relocation-fleet" else if audi then "overalls-audi-fleet" else if relocation then "overalls-relocation-fleet" else if porsche then "overalls-porsche-fleet" else "overalls-fleet";
+  name = if suspension then "overalls-memory-suspension-fleet" else if codingClis then (if ubuntu then "overalls-coding-clis-ubuntu-fleet" else "overalls-coding-clis-nixos-fleet") else if editor then "overalls-vscode-web-${selectedEditorFamily}-fleet" else if observabilityRecovery then "overalls-lilly-observability-recovery" else if porscheLifecycleOnly then (if ubuntu then "overalls-porsche-lifecycle-ubuntu-fleet" else "overalls-porsche-lifecycle-fleet") else if runtimeReadiness then "overalls-lilly-runtime-readiness" else if otelPorsche then "overalls-otel-porsche-native" else if otelAudiSsh then "overalls-otel-audi-ssh-native" else if otelGalileo then "overalls-otel-galileo-native" else if otelGuest then "overalls-otel-guest-native" else if cloneDestinationLoss then "overalls-clone-destination-loss" else if cloneMarshallRestart then "overalls-clone-marshall-restart" else if hostReplacement then "overalls-host-replacement" else if executorLoss then "overalls-executor-loss" else if sharingSurfaces then "overalls-sharing-surfaces" else if cloneCancellation then "overalls-clone-cancellation" else if guestCliRecovery then (if ubuntu then "overalls-guest-cli-recovery-ubuntu" else "overalls-guest-cli-recovery") else if maintenanceEvacuation then "overalls-maintenance-evacuation" else if agentCli then "overalls-agent-cli-journey" else if privateWeb then "overalls-private-web" else if integrationRenewals then "overalls-integration-renewals" else if teamResources then "overalls-team-resources" else if guestTrust then "overalls-fleet-guest-trust" else if accountLifecycle then "overalls-account-lifecycle" else if resize then "overalls-resize-browser" else if repositoryLaunch then (if ubuntu then "overalls-repository-launch-ubuntu-fleet" else "overalls-repository-launch") else if defaultOss then "overalls-default-oss-creation" else if userSshJourney then (if ubuntu then "overalls-user-ssh-journey-ubuntu-fleet" else "overalls-user-ssh-journey-fleet") else if agent then (if ubuntu then "overalls-agent-ubuntu-fleet" else "overalls-agent-fleet") else if terminal then (if ubuntu then "overalls-terminal-ubuntu-fleet" else "overalls-terminal-fleet") else if galileo then "overalls-galileo-fleet" else if brady then "overalls-brady-fleet" else if sshRosterMatrix then (if ubuntu then "overalls-ssh-roster-matrix-ubuntu-fleet" else "overalls-ssh-roster-matrix-fleet") else if sshBootstrap then (if ubuntu then "overalls-ssh-bootstrap-ubuntu-fleet" else "overalls-ssh-bootstrap-fleet") else if ubuntu && audi then (if relocation then "overalls-audi-ubuntu-relocation-fleet" else "overalls-audi-ubuntu-fleet") else if ubuntu then "overalls-ubuntu-fleet" else if customerIsolation then "overalls-customer-isolation-fleet" else if cloning then "overalls-cloning-fleet" else if audi && relocation then "overalls-audi-relocation-fleet" else if audi then "overalls-audi-fleet" else if relocation then "overalls-relocation-fleet" else if porsche then "overalls-porsche-fleet" else "overalls-fleet";
   requiredFeatures.nested-kvm = true;
   inherit skipTypeCheck;
   globalTimeout = if relocation then 10800 else 3600;
@@ -1852,6 +1864,7 @@ assert editorFamily == null || (editor && !ubuntu
             client.execute("systemctl reset-failed audi-slo-held.service")
         assert process_snapshot(vm) == audi_slo_guest_before
       ''
+      else if suspension then builtins.head otelAudiSshScenarioParts + "\n" + builtins.readFile ./scenarios/suspension.py
       else if ubuntu && audi then builtins.readFile ./scenarios/audi.py
         + lib.optionalString relocation (builtins.readFile ./scenarios/audi-relocation.py)
       else if ubuntu then builtins.readFile ./scenarios/relocation.py

@@ -128,4 +128,24 @@ defmodule OverallsProtocol.NativeAdmissionTest do
   test "the default reviewed manifest remains the FreeBSD identity" do
     assert NativeAdmission.reviewed_manifest() == NativeAdmission.reviewed_manifest(:freebsd)
   end
+
+  test "cold admission does not grant memory continuation to unqualified native images" do
+    assert NativeAdmission.checkpoint_admitted?(%{guest_agents: :linux, boot_kind: :kernel})
+
+    for os <- [:freebsd, :illumos] do
+      assert {:ok, image} = ImageManifest.validate(NativeAdmission.reviewed_manifest(os))
+      assert NativeAdmission.admitted?(image)
+      refute NativeAdmission.checkpoint_admitted?(image)
+    end
+
+    for identity <- [
+          nil,
+          %{},
+          %{guest_agents: :none, boot_kind: :kernel},
+          %{guest_agents: :windows_v1, boot_kind: :firmware},
+          %{guest_agents: :linux, boot_kind: :firmware}
+        ] do
+      refute NativeAdmission.checkpoint_admitted?(identity)
+    end
+  end
 end

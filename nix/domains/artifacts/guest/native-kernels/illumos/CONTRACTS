@@ -5,8 +5,10 @@ host CID 2 streams on guest CID 3. Payload and socket allocations MUST remain
 bounded. Guest-initiated streams and unused socket options MUST be refused.
 
 @cc [owner:ghuntley,label:security;recovery] illumos-transport-lifetime
-Transport reset or configuration change MUST fence existing sockets, including
-listeners and unbound sockets. A fenced socket MUST NOT bind or listen again.
+A validated transport-reset event with unchanged guest CID MUST preserve live
+listeners and fence established and unbound sockets. Malformed events and
+configuration changes MUST permanently fence all existing sockets and refuse
+new sockets. A fenced socket MUST NOT bind or listen again.
 Callback unsubscription MUST prevent replacement until existing callbacks drain;
 queue DMA MUST outlive interrupt and worker drainage. Syscall copies MUST hold
 references, preserve exclusive buffer ownership, and revalidate credit/shutdown

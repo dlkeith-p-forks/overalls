@@ -95,7 +95,7 @@ defmodule Lilly.Transfer.SourceSnapshotCleanup do
          true <-
            command.host_id == request.host_id and command.placement_id == request.placement_id and
              ((command.execution_epoch == request.execution_epoch + 1 and
-                 command.kind in [:start, :stop]) or
+                 command.kind in [:start, :stop, :resume, :pause]) or
                 (command.kind == :delete and
                    command.execution_epoch in [
                      request.execution_epoch,
@@ -115,9 +115,13 @@ defmodule Lilly.Transfer.SourceSnapshotCleanup do
         pool,
         spec,
         revision,
-        if(kind == :start, do: :running, else: :stopped),
+        source_state(kind),
         fun
       )
+
+  defp source_state(kind) when kind in [:start, :resume], do: :running
+  defp source_state(:pause), do: :paused
+  defp source_state(:stop), do: :stopped
 
   defp lease(request),
     do: if((request.expires_at - System.system_time(:second)) in 1..300, do: :ok, else: failure())

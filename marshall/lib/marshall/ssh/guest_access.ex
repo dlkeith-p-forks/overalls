@@ -275,7 +275,7 @@ defmodule Marshall.SSH.GuestAccess do
 
   # @cc [owner:ghuntley,label:security;recovery] guest-roster-before-relocation-readiness
   # An authenticated host's roster/certificate boot proof may precede completion of its
-  # exact current start/provision operation. It MUST match host, placement,
+  # exact current start/provision/resume operation. It MUST match host, placement,
   # epoch, generation and operation and deny cancelled/failed starts. Only the
   # six-field boot binding is accepted; SSH key and login decisions MUST
   # continue to require completed execution and relocation readiness.
@@ -291,7 +291,7 @@ defmodule Marshall.SSH.GuestAccess do
     unless operation.vm_id == vm.id and operation.placement_id == vm.current_placement_id and
              operation.execution_epoch == vm.execution_epoch and
              operation.generation == generation and
-             operation.kind in [:provision, :start],
+             operation.kind in [:provision, :start, :resume],
            do: deny!()
 
     case operation.status do
@@ -337,7 +337,7 @@ defmodule Marshall.SSH.GuestAccess do
       |> Ash.Query.filter(
         vm_id == ^vm.id and placement_id == ^vm.current_placement_id and
           execution_epoch == ^vm.execution_epoch and generation == ^vm.generation and
-          status == :completed and kind in [:provision, :start]
+          status == :completed and kind in [:provision, :start, :resume]
       )
       |> Ash.exists?(actor: SystemActor.compute())
 

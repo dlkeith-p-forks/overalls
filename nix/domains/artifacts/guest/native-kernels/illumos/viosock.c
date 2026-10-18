@@ -43,6 +43,7 @@ struct ov_device {
 	boolean_t stopping;
 	boolean_t queued;
 	boolean_t online;
+	boolean_t reset_failed;
 	boolean_t configuration_pending;
 };
 
@@ -295,8 +296,9 @@ ov_worker(void *arg)
 		}
 		if (device->configuration_pending) {
 			device->configuration_pending = B_FALSE;
-			device->online = virtio_dev_get64(device->vio, 0) ==
-			    OV_VSOCK_GUEST_CID;
+			/* Configuration changes are not a resumable transport event. */
+			device->online = B_FALSE;
+			device->reset_failed = B_TRUE;
 			mutex_exit(&device->lock);
 			ov_callback(NULL, NULL, B_TRUE);
 			mutex_enter(&device->lock);
@@ -310,9 +312,13 @@ ov_worker(void *arg)
 		if ((chain = virtio_queue_poll(device->queue[2])) != NULL) {
 			slot = virtio_chain_data(chain);
 			virtio_dma_sync(slot->dma, DDI_DMA_SYNC_FORCPU);
-			/* Every event fences all prior socket state, including malformed events. */
-			device->online = virtio_dev_get64(device->vio, 0) ==
-			    OV_VSOCK_GUEST_CID;
+			/* Only the defined transport-reset event may preserve listeners. */
+			device->online = !device->reset_failed &&
+			    virtio_chain_received_length(chain) ==
+			    sizeof (uint32_t) &&
+			    *(uint32_t *)virtio_dma_va(slot->dma, 0) == 0 &&
+			    virtio_dev_get64(device->vio, 0) == OV_VSOCK_GUEST_CID;
+			device->reset_failed = !device->online;
 			mutex_exit(&device->lock);
 			ov_callback(NULL, NULL, B_TRUE);
 			mutex_enter(&device->lock);

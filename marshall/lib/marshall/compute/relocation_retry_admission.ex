@@ -1,24 +1,20 @@
 defmodule Marshall.Compute.RelocationRetryAdmission do
-  @moduledoc "Authorized, idempotent restart of a failed committed destination."
+  @moduledoc "Authorized lookup of retained destination retry receipts."
   use Ash.Resource.Actions.Implementation
 
   alias Marshall.Compute.{
     Host,
     Ledger,
-    Lifecycle,
-    Operation,
     Relocation,
     RelocationRetry,
-    RelocationRetryState,
     VirtualMachine
   }
 
   # @cc [owner:ghuntley,label:security;recovery;concurrency] destination-retry-never-rolls-back
   # Retry MUST recheck manage permission under sorted endpoint locks before the
-  # VM lock. It may stop only the unchanged committed destination after failed
-  # readiness/activation, never the fenced source. Stop intent, generation, retry
-  # identity and reconciliation MUST commit atomically. Exact authorized retries
-  # return their retained request without another stop or a renewed deadline.
+  # VM lock. Exact historical requests return their retained receipt. New retry
+  # keys MUST be refused without changing intent, operations, capacity or history:
+  # a failed memory restore never authorizes a cold start or checkpoint replay.
   @impl true
   def run(input, _, context) do
     result =
@@ -47,42 +43,7 @@ defmodule Marshall.Compute.RelocationRetryAdmission do
               retry
 
             [] ->
-              unless RelocationRetryState.retryable?(r, vm),
-                do: Ledger.rollback(:relocation_retry_unavailable)
-
-              Ledger.update!(r, :begin_retry, %{})
-              Lifecycle.cancel_operations!(vm.id)
-
-              vm =
-                Ledger.intent!(vm, %{
-                  generation: Lifecycle.next_generation!(vm),
-                  desired_state: :stopped,
-                  crash_restart_times: []
-                })
-
-              operation =
-                Ledger.create!(Operation, :enqueue, %{
-                  vm_id: vm.id,
-                  placement_id: vm.current_placement_id,
-                  execution_epoch: vm.execution_epoch,
-                  generation: vm.generation,
-                  kind: :stop,
-                  initiator: :relocation,
-                  relocation_id: r.id
-                })
-
-              retry =
-                Ledger.create!(RelocationRetry, :record, %{
-                  relocation_id: r.id,
-                  vm_id: vm.id,
-                  requested_by_id: context.actor.id,
-                  request_key: input.arguments.idempotency_key,
-                  stop_operation_id: operation.id,
-                  stop_generation: operation.generation
-                })
-
-              Ledger.update!(r, :schedule, %{})
-              retry
+              Ledger.rollback(:relocation_retry_unavailable)
           end
         end,
         context.actor

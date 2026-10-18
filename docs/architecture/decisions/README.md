@@ -446,7 +446,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
 | [ADR-0186](0186-covenant-contract-verification.md) | accepted | partial | Covenant contract verification across Elixir applications |
 | [ADR-0192](0192-staged-detached-ingress.md) | accepted | partial | Editor and nested HTTPS use staged detached ingress bridges |
-| [ADR-0193](0193-per-user-machine-pins.md) | accepted | partial | Per-user machine pins and the owner-pin deletion guard |
+| [ADR-0193](0193-per-user-machine-pins.md) | superseded | partial | Per-user machine pins and the owner-pin deletion guard |
 | [ADR-0194](0194-marshall-http-security-headers.md) | accepted | partial | Marshall HTTP security headers, no-index and session cookie hardening |
 | [ADR-0195](0195-user-time-zones.md) | accepted | partial | User time zone preference and local-time display |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
@@ -472,7 +472,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0162](0162-clone-cleanup-liveness.md) | accepted | partial | Clone cleanup liveness and transfer slot release at quiescence |
 | [ADR-0161](0161-monospace-web-presentation.md) | accepted | partial | Monospace Web presentation for Marshall |
 | [ADR-0160](0160-privileged-administrator-step-up.md) | accepted | partial | Privileged administrator step-up and pending-action continuation |
-| [ADR-0159](0159-remove-legacy-compatibility.md) | accepted | implemented | Remove legacy compatibility after convergence |
+| [ADR-0159](0159-remove-legacy-compatibility.md) | superseded | implemented | Remove legacy compatibility after convergence |
 | [ADR-0158](0158-durable-guest-identities.md) | superseded | partial | Durable guest identities independent of email |
 | [ADR-0157](0157-multi-provider-authenticated-repository-launch.md) | accepted | implemented | Multi-provider repository launch and authentication resume |
 | [ADR-0156](0156-browser-launcher-distribution.md) | accepted | partial | Browser launcher build, distribution and exact-origin presence detection |
@@ -902,3 +902,5 @@ and physical storage acceptance. See the
 [host-lock review](../reviews/2026-10-05-host-lock-descendant-custody.md) and
 [transfer review](../reviews/2026-10-05-transfer-stream-adopted-children.md);
 ADR-0015/0037 retain their statuses and accepted rationale.
+
+| [ADR-0197](0197-memory-suspension-and-demand-wake.md) | accepted | partial | Memory-preserving suspension, relocation and demand wake |

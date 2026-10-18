@@ -39,6 +39,21 @@ defmodule Marshall.Compute.Lifecycle do
   # An unfinished resize MUST reject every new lifecycle intent, including delete;
   # allowing lifecycle on a ready relocation MUST NOT bypass resize exclusion.
   @impl true
+  def run(%{arguments: %{kind: :resume} = request}, _options, context) do
+    case Marshall.Compute.Wake.request(
+           request.vm_id,
+           :user,
+           context.actor,
+           request.idempotency_key
+         ) do
+      {:error, reason} when is_atom(reason) ->
+        {:error, Marshall.Compute.Error.exception(reason: reason)}
+
+      result ->
+        result
+    end
+  end
+
   def run(input, _options, context), do: execute(input.arguments, %{actor: context.actor})
 
   @doc "Trusted account cleanup only; the durable deletion is re-read before authorization."
@@ -51,19 +66,20 @@ defmodule Marshall.Compute.Lifecycle do
     )
   end
 
-  @doc "Narrow automatic start for a prompt admitted under current VM write access."
-  # @cc [owner:ghuntley,label:security;capacity] lifecycle-agent-wake-narrow
-  # A prompt may start only its current VM and only for a current write-capable
-  # user. A physically stopped or failed VM MUST receive a fresh start even
-  # when its desired state is already running. It MUST retain host-before-VM
-  # capacity locks and create agent provenance without general stop/delete authority.
+  @doc "Narrow durable wake for a prompt under fresh VM write authority."
+  # @cc [owner:ghuntley,label:security;recovery] lifecycle-agent-wake-narrow
+  # Prompt admission MUST retain current write authority and durable demand in
+  # its transaction. A running prompt MUST NOT refresh the idle tool clock.
   @spec wake_for_prompt(String.t(), Marshall.Accounts.User.t(), String.t()) ::
-          {:ok, Operation.t() | :already_running} | {:error, term()}
+          {:ok, Marshall.Compute.Wake.request_result()} | {:error, term()}
   def wake_for_prompt(vm_id, actor, request_key) do
-    execute(
-      %{vm_id: vm_id, kind: :start, idempotency_key: request_key},
-      %{actor: actor, agent_wake?: true}
-    )
+    case Marshall.Compute.Wake.request(vm_id, :prompt, actor, request_key) do
+      {:error, reason} when is_atom(reason) ->
+        {:error, Marshall.Compute.Error.exception(reason: reason)}
+
+      result ->
+        result
+    end
   end
 
   defp execute(request, context) do
@@ -100,6 +116,12 @@ defmodule Marshall.Compute.Lifecycle do
                    {vm.current_placement_id, vm.execution_epoch} == authority,
                  do: Ledger.rollback(:placement_changed)
 
+          if Ledger.read!(Marshall.Compute.WakeRequestKey,
+               vm_id: vm.id,
+               requested_by_id: context.actor.id,
+               request_key: request.idempotency_key
+             ) != [], do: Ledger.rollback(:idempotency_conflict)
+
           case Ledger.read!(Operation,
                  vm_id: vm.id,
                  requested_by_id: context.actor.id,
@@ -111,21 +133,13 @@ defmodule Marshall.Compute.Lifecycle do
                 else: Ledger.rollback(:idempotency_conflict)
 
             [] ->
-              if context[:agent_wake?] == true and vm.desired_state == :running and
-                   vm.observed_state not in [:stopped, :failed] do
-                {:already_running, vm}
-              else
-                enqueue_locked!(vm, host, hosts, request, context)
-              end
+              enqueue_locked!(vm, host, hosts, request, context)
           end
         end,
         context.actor
       )
 
     case result do
-      {:ok, {:already_running, _vm}} ->
-        {:ok, :already_running}
-
       {:ok, operation} ->
         unless Marshall.Repo.in_transaction?() do
           Marshall.Events.emit("vm.lifecycle_requested",
@@ -170,7 +184,13 @@ defmodule Marshall.Compute.Lifecycle do
         do: RelocationDeletion.active_locked!(vm, Enum.map(hosts, & &1.id))
 
     [reservation] = Ledger.read!(Reservation, placement_id: vm.current_placement_id)
+
+    if request.kind == :start and vm.current_checkpoint != nil,
+      do: Ledger.rollback(:machine_paused)
+
     if request.kind == :start, do: reserve_start!(host, vm, reservation)
+    if request.kind == :pause, do: reserve_pause!(host, vm, reservation)
+    Marshall.Compute.Wake.cancel_locked!(vm.id)
     cancel_operations!(vm.id)
 
     vm =
@@ -189,7 +209,7 @@ defmodule Marshall.Compute.Lifecycle do
         requested_by_id: context.actor.id,
         kind: request.kind,
         request_key: request.idempotency_key,
-        initiator: if(context[:agent_wake?], do: :agent, else: :user)
+        initiator: :user
       })
 
     audit_admin!(context.actor, vm.id, :vm_lifecycle)
@@ -306,9 +326,6 @@ defmodule Marshall.Compute.Lifecycle do
     end
   end
 
-  defp authorize!(vm, %{actor: actor, agent_wake?: true}),
-    do: Marshall.Access.Authorization.require!(vm, actor, "write")
-
   defp authorize!(vm, %{actor: actor}),
     do: Marshall.Access.Authorization.require!(vm, actor, "manage")
 
@@ -332,7 +349,61 @@ defmodule Marshall.Compute.Lifecycle do
     Ledger.update!(reservation, :hold_compute, %{memory_bytes: needed.memory_bytes})
   end
 
+  # @cc [owner:ghuntley,label:capacity;recovery] pause-reserves-immutable-backing-pair
+  # Pause MUST reserve both full checkpoint slots under the host lock before
+  # accepting intent; mapped backing is never overwritten or treated as free.
+  @spec reserve_pause!(Host.t(), VirtualMachine.t(), Reservation.t()) :: :ok
+  defp reserve_pause!(host, vm, reservation) do
+    unless vm.observed_state in [:running, :paused], do: Ledger.rollback(:workload_not_stable)
+
+    unless OverallsProtocol.ImageManifest.id?(host.inventory["checkpoint_compatibility"]),
+      do: Ledger.rollback(:checkpoint_unavailable)
+
+    [pool] = Ledger.read!(Marshall.Compute.StoragePool, id: vm.pool_id)
+    needed = 2 * OverallsProtocol.VMShape.checkpoint_bytes(vm.memory_bytes)
+    extra = max(0, needed - reservation.checkpoint_bytes)
+
+    available =
+      Marshall.Compute.Budget.physical_disk_available(
+        host,
+        pool,
+        Ledger.read!(Reservation, host_id: host.id)
+      )
+
+    unless Marshall.Compute.HostLiveness.capacity_fresh?(host.reported_at, Ledger.now()) and
+             Marshall.Compute.HostLiveness.capacity_fresh?(pool.reported_at, Ledger.now()) and
+             available >= extra,
+           do: Ledger.rollback(:insufficient_capacity)
+
+    Ledger.update!(reservation, :hold_checkpoint, %{checkpoint_bytes: needed})
+    :ok
+  end
+
+  @doc "Trusted idle coordinator; caller retains host then VM locks."
+  @spec pause_idle_locked!(VirtualMachine.t(), Host.t()) :: Operation.t()
+  def pause_idle_locked!(vm, host) do
+    [reservation] = Ledger.read!(Reservation, placement_id: vm.current_placement_id)
+    reserve_pause!(host, vm, reservation)
+
+    vm =
+      Ledger.intent!(vm, %{
+        generation: next_generation!(vm),
+        desired_state: :paused,
+        crash_restart_times: []
+      })
+
+    Ledger.create!(Operation, :enqueue, %{
+      vm_id: vm.id,
+      placement_id: vm.current_placement_id,
+      execution_epoch: vm.execution_epoch,
+      generation: vm.generation,
+      kind: :pause,
+      initiator: :idle
+    })
+  end
+
   defp desired(:start), do: :running
+  defp desired(:pause), do: :paused
   defp desired(:stop), do: :stopped
   defp desired(:delete), do: :deleted
 end

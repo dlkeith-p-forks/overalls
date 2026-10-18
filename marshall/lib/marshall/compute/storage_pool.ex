@@ -52,6 +52,7 @@ defmodule Marshall.Compute.StoragePool do
         :total_bytes,
         :free_bytes,
         :allocations,
+        :checkpoint_allocations,
         :reported_at,
         :observed_at,
         :storage_observation
@@ -89,6 +90,7 @@ defmodule Marshall.Compute.StoragePool do
       constraints: [min: 0]
 
     attribute :allocations, :map, allow_nil?: false, default: %{}
+    attribute :checkpoint_allocations, :map, allow_nil?: false, default: %{}
     attribute :reported_at, :utc_datetime_usec
     attribute :observed_at, :utc_datetime_usec
   end

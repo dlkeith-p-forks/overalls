@@ -1,5 +1,5 @@
 defmodule Marshall.Ingress.HistoryTest do
-  use Marshall.DataCase, async: false
+  use ExUnit.Case, async: false
   import Hegel
   import Hegel.Gen
   @moduletag capture_log: true
@@ -13,10 +13,6 @@ defmodule Marshall.Ingress.HistoryTest do
   @web_roles [:web, :viewer, :operator, :manager]
   @write_roles [:operator, :manager]
 
-  setup do
-    %{certificate: Fx.certificate(String.duplicate("a", 64), 1)}
-  end
-
   # @cc [owner:ghuntley,label:verification;security] ingress-composed-history-oracle
   # One generated history threads endpoint configuration, gateway route
   # report/refresh/expiry, web and SSH open/renew/close, and every documented
@@ -24,51 +20,50 @@ defmodule Marshall.Ingress.HistoryTest do
   # stop intent, execution epoch). The independent model MUST predict each exact
   # refusal class; durable PaperTrail rows MUST match the model's mutation counts
   # and never carry token material. Backdating and intent injection are synthetic
-  # faults; everything else drives public or gateway actions.
-  test "publication, lease and withdrawal histories follow one authority model", c do
-    check all(
-            tail <-
-              list_of(operations(),
-                min_length: 6,
-                max_length: 16
-              ),
-            test_cases: 10
-          ) do
-      c = Fx.new(c.certificate)
+  # faults; everything else drives public or gateway actions. Wake discovery and
+  # browser identity MUST remain distinct from completed stream execution. Each
+  # generated case and replay MUST own and roll back a separate SQL sandbox.
+  property "publication, lease and withdrawal histories follow one authority model",
+    profile: :ci,
+    test_cases: 10,
+    setup: &sandbox/0,
+    teardown: &cleanup/1 do
+    tail = draw("withdrawal_history", list_of(operations(), min_length: 6, max_length: 16))
+    c = Fx.new(Fx.certificate(String.duplicate("a", 64), 1))
 
-      model =
-        Enum.reduce(
-          [
-            {:configure, :public, 8080},
-            :acknowledge,
-            :report,
-            :publish,
-            {:open_web, :anonymous, 0},
-            {:open_web, :member, 0},
-            {:open_web, :member, 3000},
-            {:open_ssh, :owner},
-            {:open_ssh, :member}
-            | tail
-          ],
-          initial(c),
-          fn operation, model ->
-            Fx.fresh_report(c, model.sequence)
+    model =
+      Enum.reduce(
+        [
+          {:configure, :public, 8080},
+          :acknowledge,
+          :report,
+          :publish,
+          {:open_web, :anonymous, 0},
+          {:open_web, :member, 0},
+          {:open_web, :member, 3000},
+          {:open_ssh, :owner},
+          {:open_ssh, :member}
+          | tail
+        ],
+        initial(c),
+        fn operation, model ->
+          Fx.fresh_report(c, model.sequence)
 
-            apply_step(current(c, model), model, operation)
-            |> Map.update!(:sequence, &(&1 + 1))
-          end
-        )
+          apply_step(current(c, model), model, operation)
+          |> Map.update!(:sequence, &(&1 + 1))
+        end
+      )
 
-      Fx.fresh_report(c, model.sequence + 1)
-      audit(c, model)
-    end
+    Fx.fresh_report(c, model.sequence + 1)
+    audit(c, model)
   end
 
   # @cc [owner:ghuntley,label:verification;security] ingress-lease-exact-boundary
   # Renewal at the exact recorded instant counts as expired on both web streams
   # and SSH sessions; the documented expiry boundary is pinned by this oracle.
-  test "renewal at the exact expiry instant is denied on web and SSH", context do
-    c = Fx.new(context.certificate)
+  test "renewal at the exact expiry instant is denied on web and SSH" do
+    Marshall.DataCase.setup_sandbox(%{async: false})
+    c = Fx.new(Fx.certificate(String.duplicate("a", 64), 1))
     Fx.fresh_report(c, 1)
 
     assert {:ok, _} = Fx.configure_endpoint(c, 8080, :public)
@@ -94,11 +89,24 @@ defmodule Marshall.Ingress.HistoryTest do
     assert Enum.sort(actions(Session.Version, [ssh.binding.session_id])) == [:close, :record]
   end
 
+  @spec sandbox() :: %{sandbox_owner: pid()}
+  defp sandbox do
+    %{sandbox_owner: Ecto.Adapters.SQL.Sandbox.start_owner!(Marshall.Repo, shared: true)}
+  end
+
+  @spec cleanup(%{sandbox_owner: pid()}) :: :ok
+  defp cleanup(%{sandbox_owner: owner}) do
+    Ecto.Adapters.SQL.Sandbox.stop_owner(owner)
+    :ok
+  end
+
   @type model :: %{
           revision: pos_integer(),
           visibility: :private | :public,
           port: pos_integer(),
           execution: boolean(),
+          discovery: boolean(),
+          vm_generation: pos_integer(),
           service: %{generation: pos_integer(), cert_acked: boolean()},
           service_token: String.t(),
           login_token: String.t() | nil,
@@ -135,6 +143,8 @@ defmodule Marshall.Ingress.HistoryTest do
       visibility: :private,
       port: 8080,
       execution: true,
+      discovery: true,
+      vm_generation: c.vm.generation,
       service: %{generation: 1, cert_acked: false},
       service_token: c.service_token,
       login_token: nil,
@@ -327,21 +337,21 @@ defmodule Marshall.Ingress.HistoryTest do
 
   defp report_expected(m) do
     cond do
-      not m.execution -> :unauthorized
+      not m.discovery -> :unauthorized
       not m.service.cert_acked -> :unauthorized
       true -> :ok
     end
   end
 
   defp publish_membership?(m) do
-    m.route != nil and not m.route.expired and m.execution and m.service.cert_acked and
+    m.route != nil and not m.route.expired and m.discovery and m.service.cert_acked and
       m.route.service_generation == m.service.generation
   end
 
   defp create_cookie_expected(m) do
     cond do
       not m.login_alive -> :unauthorized
-      not m.execution -> :unauthorized
+      not m.discovery -> :unauthorized
       not web_member?(m.member_role) -> :forbidden
       true -> :ok
     end
@@ -394,7 +404,7 @@ defmodule Marshall.Ingress.HistoryTest do
                   revision: 1,
                   expired: false,
                   service_generation: m.service.generation,
-                  vm_generation: 1
+                  vm_generation: m.vm_generation
                 },
                 audit: Map.update!(m.audit, :route_versions, &(&1 + 1))
             }
@@ -402,7 +412,10 @@ defmodule Marshall.Ingress.HistoryTest do
           route ->
             assert reported.id == route.id
             assert reported.revision == route.revision + 1
-            replaced? = route.service_generation != m.service.generation
+
+            replaced? =
+              route.service_generation != m.service.generation or
+                route.vm_generation != m.vm_generation
 
             %{
               m
@@ -410,7 +423,8 @@ defmodule Marshall.Ingress.HistoryTest do
                   route
                   | revision: route.revision + 1,
                     expired: false,
-                    service_generation: m.service.generation
+                    service_generation: m.service.generation,
+                    vm_generation: m.vm_generation
                 },
                 audit:
                   if(replaced?,
@@ -705,12 +719,12 @@ defmodule Marshall.Ingress.HistoryTest do
 
   defp apply_step(c, m, {:withdraw, :stop}) do
     Fx.stop_intent(c)
-    %{m | execution: false}
+    %{m | execution: false, discovery: false, vm_generation: m.vm_generation + 1}
   end
 
   defp apply_step(c, m, {:withdraw, :epoch}) do
     Fx.epoch_bump(c)
-    %{m | execution: false}
+    %{m | execution: false, vm_generation: m.vm_generation + 1}
   end
 
   # ------------------------------------------------------------- model upkeep

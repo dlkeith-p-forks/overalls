@@ -195,7 +195,7 @@ defmodule MarshallWeb.MachineWorkspace do
          %{"kind" => kind, "key" => key},
          %{assigns: %{vm: %{id: _}}} = socket
        )
-       when kind in ["start", "stop"] do
+       when kind in ["start", "stop", "pause", "resume"] do
     case Compute.lifecycle(%{vm_id: socket.assigns.vm.id, kind: kind, idempotency_key: key},
            actor: socket.assigns.current_user
          ) do

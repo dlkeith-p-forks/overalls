@@ -289,7 +289,7 @@ defmodule Lilly.Clone.Effects do
         pool,
         spec,
         {current.execution_epoch, current.generation},
-        if(current.kind in [:start, :provision], do: :running, else: :stopped),
+        source_state(current.kind),
         2000,
         fn ->
           Storage.locked(
@@ -315,6 +315,10 @@ defmodule Lilly.Clone.Effects do
       )
     end
   end
+
+  defp source_state(kind) when kind in [:start, :provision, :resume], do: :running
+  defp source_state(:pause), do: :paused
+  defp source_state(_), do: :stopped
 
   defp source_command(store, intent) do
     with {:ok, command} when is_map(command) <- Store.read(store, intent.source.placement_id),

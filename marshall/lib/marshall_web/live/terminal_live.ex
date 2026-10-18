@@ -7,8 +7,8 @@ defmodule MarshallWeb.TerminalLive do
   alias MarshallWeb.{MachineWorkspace, TerminalOpening}
   import MarshallWeb.TerminalOpening, only: [is_retryable: 1]
 
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
-  on_mount MarshallWeb.MachineWorkspace
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
+  on_mount(MarshallWeb.MachineWorkspace)
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -25,6 +25,7 @@ defmodule MarshallWeb.TerminalLive do
         opening_notice: nil,
         boot_log_cursor: 0,
         boot_log?: false,
+        wake_on_mount?: true,
         boot_log_text: ""
       )
       |> stream(:terminal_sessions, [])
@@ -99,10 +100,13 @@ defmodule MarshallWeb.TerminalLive do
   def handle_event("terminal_ticket", %{"session_id" => session_id}, socket) do
     actor = socket.assigns.current_user
 
-    with {:ok, session} <- Marshall.Terminal.Authority.session_for(session_id, actor),
+    with {:ok, session} <- Marshall.Terminal.Authority.session_for(session_id, actor, :connect),
          {:ok, ticket} <- Marshall.Terminal.Authority.ticket(session, actor) do
       {:noreply, push_event(socket, "terminal_ticket", %{session_id: session_id, ticket: ticket})}
     else
+      {:error, :terminal_open_pending} ->
+        {:noreply, assign(socket, notice: "Resuming machine; waiting for capacity…")}
+
       refusal ->
         Marshall.Events.emit("terminal.ticket_refused", reason: ticket_refusal(refusal))
         {:noreply, assign(socket, notice: "Terminal access ended.")}
@@ -239,7 +243,14 @@ defmodule MarshallWeb.TerminalLive do
   # the independently authorized bounded host boot-log operation.
   defp refresh_current_sessions(%{assigns: %{boot_log?: true}} = socket), do: socket
 
+  # @cc [owner:ghuntley,label:recovery;capacity] terminal-server-refresh-is-passive
+  # The first terminal-page connection MAY join paused wake demand. Subsequent
+  # server refreshes MUST observe without waking; reopening or an explicit
+  # browser attach remains a new connection. Boot-log views never create demand.
   defp refresh_current_sessions(socket) do
+    wake_on_mount? = socket.assigns.wake_on_mount?
+    socket = assign(socket, wake_on_mount?: false)
+
     socket =
       if socket.assigns.opening.execution == socket.assigns.vm.execution_ref,
         do: socket,
@@ -259,7 +270,18 @@ defmodule MarshallWeb.TerminalLive do
     if vm.desired_state == :running and vm.observed_state == :running do
       list_current_sessions(socket)
     else
-      assign(socket, notice: socket.assigns.opening_notice || machine_waiting_notice(vm))
+      notice =
+        case Authority.ensure_awake(
+               vm,
+               socket.assigns.current_user,
+               "read",
+               if(wake_on_mount?, do: :connect, else: :observe)
+             ) do
+          {:error, :terminal_open_pending} -> "Resuming machine; waiting for capacity…"
+          _ -> socket.assigns.opening_notice || machine_waiting_notice(vm)
+        end
+
+      assign(socket, notice: notice)
     end
   end
 
@@ -273,10 +295,17 @@ defmodule MarshallWeb.TerminalLive do
   defp machine_waiting_notice(%{desired_state: :stopped}),
     do: "Machine is stopping or stopped. Choose Start to open a terminal."
 
+  defp machine_waiting_notice(%{desired_state: :paused}),
+    do: "Machine is paused. Resume it or reopen this terminal page."
+
   defp machine_waiting_notice(_vm), do: "Waiting for the machine to start…"
 
   defp list_current_sessions(socket) do
-    case Marshall.Terminal.Authority.list_sessions(socket.assigns.vm, socket.assigns.current_user) do
+    case Marshall.Terminal.Authority.list_sessions(
+           socket.assigns.vm,
+           socket.assigns.current_user,
+           :observe
+         ) do
       {:ok, sessions} ->
         notice =
           if Enum.any?(sessions, &(&1.kill_status == :pending)),
@@ -353,7 +382,7 @@ defmodule MarshallWeb.TerminalLive do
 
       task =
         Task.Supervisor.async_nolink(Marshall.Terminal.OpeningTasks, fn ->
-          Authority.open_personal_session(vm, user)
+          Authority.open_personal_session(vm, user, :default, :observe)
         end)
 
       assign(socket,

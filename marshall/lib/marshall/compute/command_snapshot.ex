@@ -56,6 +56,8 @@ defmodule Marshall.Compute.CommandSnapshot do
          true <- Map.take(command, Map.keys(fields)) == fields do
       snapshot =
         command
+        |> Map.delete(:checkpoint)
+        |> put_checkpoint(vm)
         |> Map.delete(:workspace_source)
         |> put_workspace_source(vm)
         |> OverallsProtocol.Execution.encode_command()
@@ -81,9 +83,24 @@ defmodule Marshall.Compute.CommandSnapshot do
       Map.take(vm, [:architecture, :profile, :vcpu, :memory_bytes, :disk_bytes, :image_id])
     )
     |> Map.put(:slot, address.slot)
+    |> put_checkpoint(vm)
     |> put_workspace_source(vm)
     |> OverallsProtocol.Execution.encode_command()
   end
+
+  # @cc [owner:ghuntley,label:security;recovery] resume-snapshot-authoritative-checkpoint
+  # Resume MUST pin the VM's current validated checkpoint, including explicitly
+  # supplied command snapshots. Callers MUST NOT replace its identity or hashes.
+  # Other kinds MUST NOT carry checkpoint restore authority.
+  @spec put_checkpoint(map(), VirtualMachine.t()) :: map()
+  defp put_checkpoint(%{kind: :resume} = fields, vm) do
+    case OverallsProtocol.Checkpoint.decode(vm.current_checkpoint) do
+      {:ok, checkpoint} -> Map.put(fields, :checkpoint, checkpoint)
+      _ -> Ledger.rollback(:checkpoint_unavailable)
+    end
+  end
+
+  defp put_checkpoint(fields, _vm), do: fields
 
   # @cc [owner:ghuntley,label:security] command-snapshot-workspace-source
   # Provision and start commands for a VM with a recorded workspace source MUST

@@ -1,5 +1,24 @@
 # Security boundaries and sensitive operations
 
+## Memory suspension and wake authority
+
+Suspension adds sensitive RAM storage and continuation authority. Checkpoint
+memory, manifests and hashes never enter ordinary diagnostics, backup/clone
+streams or public capabilities. Exact image/VMM/device and CPU/KVM compatibility
+must be proven before loading; guest continuation uses the captured boot tuple
+inside a separately fenced current placement/epoch. A durable consumed marker
+precedes possible execution, and ambiguous execution forbids replay.
+
+Wake admission follows identity and fresh authorization, then durable demand,
+then capacity admission and physical readiness, then a fresh connection grant.
+A personal pin never grants access. Network waiters renew authority, and revoked
+keys, sessions or publications must stop waiting. Relay capability consumption is
+single-use and destination-bound over authenticated fleet transport. No caller
+can use it as a general TCP proxy. BEAM properties establish admission/coalescing
+and refusal only; native RAM continuity, filesystem coherence and multi-node
+availability require the separate NixOS machine evidence recorded in the
+[suspension review](repo:docs/architecture/reviews/2026-10-18-memory-suspension.md).
+
 ## Agent context and guidance boundaries
 
 [ADR-0178](repo:docs/architecture/decisions/0178-durable-agent-context-and-planning.md)

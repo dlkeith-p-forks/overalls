@@ -41,10 +41,11 @@ defmodule Marshall.Compute.Operation do
         check: """
         (initiator = 'clone' AND clone_request_id IS NOT NULL AND requested_by_id IS NULL AND host_drain_id IS NULL AND relocation_id IS NULL AND kind IN ('stop', 'start'))
         OR (initiator = 'user' AND requested_by_id IS NOT NULL AND host_drain_id IS NULL AND relocation_id IS NULL)
-        OR (initiator = 'agent' AND requested_by_id IS NOT NULL AND host_drain_id IS NULL AND relocation_id IS NULL AND kind = 'start')
-        OR (initiator = 'recovery' AND requested_by_id IS NULL AND host_drain_id IS NULL AND relocation_id IS NULL AND kind = 'start')
+        OR (initiator = 'agent' AND requested_by_id IS NOT NULL AND host_drain_id IS NULL AND relocation_id IS NULL AND kind IN ('start', 'resume'))
+        OR (initiator = 'recovery' AND requested_by_id IS NULL AND host_drain_id IS NULL AND relocation_id IS NULL AND kind IN ('start', 'resume'))
         OR (initiator = 'maintenance' AND requested_by_id IS NULL AND host_drain_id IS NOT NULL AND relocation_id IS NULL AND kind = 'stop')
-        OR (initiator = 'relocation' AND requested_by_id IS NULL AND host_drain_id IS NULL AND relocation_id IS NOT NULL AND kind IN ('stop', 'start', 'delete'))
+        OR (initiator = 'relocation' AND requested_by_id IS NULL AND host_drain_id IS NULL AND relocation_id IS NOT NULL AND kind IN ('stop', 'start', 'delete', 'pause', 'resume'))
+        OR (initiator IN ('idle', 'wake') AND requested_by_id IS NULL AND host_drain_id IS NULL AND relocation_id IS NULL AND kind IN ('pause', 'resume', 'start'))
         """
     end
   end
@@ -147,11 +148,13 @@ defmodule Marshall.Compute.Operation do
     attribute :initiator, :atom,
       allow_nil?: false,
       default: :user,
-      constraints: [one_of: [:user, :agent, :recovery, :maintenance, :relocation, :clone]]
+      constraints: [
+        one_of: [:user, :agent, :recovery, :maintenance, :relocation, :clone, :idle, :wake]
+      ]
 
     attribute :kind, :atom,
       allow_nil?: false,
-      constraints: [one_of: [:provision, :start, :stop, :delete, :resize]]
+      constraints: [one_of: [:provision, :start, :stop, :delete, :resize, :pause, :resume]]
 
     attribute :status, :atom,
       allow_nil?: false,

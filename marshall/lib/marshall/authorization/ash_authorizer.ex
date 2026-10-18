@@ -93,6 +93,8 @@ defmodule Marshall.Authorization.AshAuthorizer do
     Marshall.Threads.Grant.Version => [:read, :create],
     Marshall.Threads.AccessChange => [:read, :record],
     Marshall.Threads.Generation => [:read, :open, :bind, :state],
+    Marshall.Compute.WakeRequest => [:read, :request, :advance],
+    Marshall.Compute.WakeRequestKey => [:read, :record],
     Marshall.Compute.LifecycleEvent => [:read, :record, :expire],
     Marshall.Galileo.Credential => [:read, :issue, :revoke],
     Marshall.Galileo.Credential.Version => [:read, :create],
@@ -221,6 +223,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
     ],
     Marshall.Ingress.Session.Version => [:read, :create],
     Marshall.Ingress.Service => [
+      :open_connection,
       :catalog,
       :read,
       :record,
@@ -233,6 +236,15 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :publish_host_key
     ],
     Marshall.Ingress.Service.Version => [:read, :create],
+    Marshall.Ingress.Relay => [
+      :read,
+      :record,
+      :consume,
+      :renew,
+      :purge,
+      :consume_connection,
+      :renew_connection
+    ],
     Marshall.Ingress.Endpoint => [:read, :record, :change_policy],
     Marshall.Ingress.Endpoint.Version => [:read, :create],
     Marshall.SSH.Request => [:read, :record, :finish, :execute],
@@ -314,7 +326,6 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :advance,
       :record_stop,
       :record_commit,
-      :record_retry_activation,
       :request_cancellation,
       :request_deletion,
       :offer_source_revocation,
@@ -337,8 +348,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :confirm_readiness,
       :fail_readiness,
       :fail_activation,
-      :observe_activation,
-      :begin_retry
+      :observe_activation
     ],
     Marshall.Compute.CleanupRequest => [
       :read,
@@ -373,6 +383,9 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :history,
       :allocate,
       :request_start,
+      :request_pause,
+      :idle_policy,
+      :checkpoint,
       :request_stop,
       :request_delete,
       :apply_resize,
@@ -389,6 +402,8 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :reserve,
       :hold_compute,
       :hold_temporary_disk,
+      :hold_checkpoint,
+      :release_checkpoint,
       :release_temporary_disk,
       :release_compute,
       :release_all
@@ -405,7 +420,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :cancel,
       :cancelled
     ],
-    Marshall.Compute.RelocationRetry => [:read, :record, :activate, :supersede],
+    Marshall.Compute.RelocationRetry => [:read],
     Marshall.Compute.CloneEffect => [:read, :record, :offer, :complete, :record_unconfirmed],
     Marshall.Compute.CloneRequest => [
       :request_cancel,

@@ -128,7 +128,7 @@ defmodule Lilly.VM.Actor do
            command == state.command and command.placement_id == state.command.placement_id and
              command.execution_epoch == state.command.execution_epoch and
              command.generation == state.command.generation and
-             command.kind in [:provision, :start],
+             command.kind in [:provision, :start, :resume],
          %{state: :running} = outcome <- state.journal.outcome,
          true <-
            outcome.execution_epoch == command.execution_epoch and
@@ -147,6 +147,7 @@ defmodule Lilly.VM.Actor do
           placement_id: command.placement_id,
           execution_epoch: command.execution_epoch,
           generation: command.generation,
+          guest_identity: Keyword.get(options, :guest_identity),
           boot_challenge: boot_challenge
         }}, state}
     else
@@ -157,7 +158,7 @@ defmodule Lilly.VM.Actor do
   def handle_call({:boot_log, vm_id, cursor}, {caller, _}, %{terminal_owner: caller} = state) do
     with true <- state.active and state.command.vm_id == vm_id,
          {:ok, command} <- Store.read(state.store, state.command.placement_id),
-         true <- command == state.command and command.kind in [:provision, :start],
+         true <- command == state.command and command.kind in [:provision, :start, :resume],
          {executor, context} = state.executor,
          true <- function_exported?(executor, :boot_log, 3),
          {:ok, page} <- executor.boot_log(context, command, cursor),
@@ -610,7 +611,7 @@ defmodule Lilly.VM.Actor do
   # physically verified running/stopped outcome; stale generations cannot cover startup.
   defp capacity_proof(state) do
     case state.journal.outcome do
-      %{state: status} = outcome when status in [:running, :stopped] ->
+      %{state: status} = outcome when status in [:running, :stopped, :paused] ->
         if outcome.placement_id == state.command.placement_id and
              outcome.execution_epoch == state.command.execution_epoch and
              outcome.generation == state.command.generation do
@@ -856,7 +857,8 @@ defmodule Lilly.VM.Actor do
   # @cc [owner:ghuntley,label:security;recovery] watch-exit-revokes-live
   # A watcher report of exited, error or a port crash MUST revoke the live row
   # at once and emit vm.watch_ended; reports from any port other than the
-  # current watcher MUST be ignored.
+  # current watcher MUST be ignored. A helper may exit before its queued report
+  # is handled; closing that already-exited port MUST NOT terminate the actor.
   defp watch(state, event) do
     case Watch.step(state.watch, event) do
       {:ok, machine, effects} -> Enum.reduce(effects, %{state | watch: machine}, &watch_effect/2)
@@ -879,7 +881,12 @@ defmodule Lilly.VM.Actor do
   defp watch_effect(:close, %{watch_port: nil} = state), do: state
 
   defp watch_effect(:close, %{watch_port: port} = state) do
-    if Port.info(port), do: Port.close(port)
+    try do
+      Port.close(port)
+    catch
+      :error, :badarg -> :ok
+    end
+
     %{state | watch_port: nil}
   end
 

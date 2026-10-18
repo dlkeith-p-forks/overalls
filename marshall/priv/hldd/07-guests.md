@@ -1,5 +1,15 @@
 # Guest systems and images
 
+## Snapshot continuation
+
+A full Firecracker snapshot resumes the original guest boot identity in a fresh
+VMM. Restored listeners must accept new connections after a valid vsock transport
+reset; established and unbound sockets are fenced. Malformed events, foreign CID
+and fatal queue/configuration changes still fail closed. The FreeBSD and OmniOS
+wrappers retain distinct native qualification requirements. Earlier reset receipts
+below describe the former permanently fenced behavior and do not qualify the
+new source. Exact-source machine results belong in the suspension review.
+
 ## Agent project context
 
 The accepted guest-context operations read the creator's permanent guest account
@@ -1195,10 +1205,10 @@ refusals, exact buffer size, socket-129 refusal and full capacity reuse; their
 final-candidate machine execution remains separate from test presence.
 
 The FreeBSD static driver retains interrupt-visible resources until VM disposal,
-refuses runtime detach/unload and requires a new VM after reset/configuration
-change. Illumos has separate `drv/viosock` and `socketmod/sockvsock` modules plus
-an opt-in sockfs listener failure path: reset fences listeners and idle sockets,
-wakes accepts, and prevents reuse. Its modern virtio ABI requires rebuilding
+refuses runtime detach/unload. Valid transport resets preserve listeners;
+fatal configuration changes still fence the device. Illumos has separate `drv/viosock` and `socketmod/sockvsock` modules plus
+a sockfs reset path: valid reset preserves listeners while fencing connected
+and unbound sockets. Earlier receipts below describe the previous behavior. Its modern virtio ABI requires rebuilding
 all five consumers with the framework. Cross-compiled objects do not establish
 native module linkage, native boot or reset safety. The native
 [link/install helper](repo:nix/domains/artifacts/guest/native-kernels/illumos/native_candidate.py)

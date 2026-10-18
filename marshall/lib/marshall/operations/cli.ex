@@ -57,6 +57,16 @@ defmodule Marshall.Operations.CLI do
   def run(["audi-gateway-rotate", name, host, addresses, output]),
     do: Marshall.Operations.Audi.rotate_gateway(name, host, addresses, output)
 
+  def run(["audi-gateway-rotate", name, host, addresses, relay, port, output]) do
+    case Integer.parse(port) do
+      {number, ""} ->
+        Marshall.Operations.Audi.rotate_gateway(name, host, addresses, relay, number, output)
+
+      _ ->
+        {:error, :invalid_arguments}
+    end
+  end
+
   def run(["audi-gateway-verify", path]), do: Marshall.Operations.Audi.verify(path)
   def run(["audi-gateway-revoke", name]), do: Marshall.Operations.Audi.revoke(name)
 

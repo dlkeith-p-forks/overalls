@@ -219,6 +219,7 @@ defmodule Marshall.Compute.Ledger do
       case state do
         :running -> :request_start
         :stopped -> :request_stop
+        :paused -> :request_pause
         :deleted -> :request_delete
       end
 

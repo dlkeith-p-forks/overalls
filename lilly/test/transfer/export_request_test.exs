@@ -70,12 +70,32 @@ defmodule Lilly.Transfer.ExportRequestTest do
     end
   end
 
+  test "RAM has a separate closed command and never accepts a resume token or paths" do
+    command = "lilly-checkpoint-v1 #{@relocation}"
+
+    assert {:ok, %{relocation_id: @relocation, component: :checkpoint}} =
+             ExportRequest.parse(command)
+
+    for invalid <- [
+          command <> " ",
+          command <> " 1-a-10-aabb",
+          command <> " /memory",
+          command <> ";id",
+          command <> "\n",
+          String.replace(command, " ", "\t"),
+          "lilly-checkpoint-v2 #{@relocation}"
+        ] do
+      assert {:error, :export_permit_unconfirmed} = ExportRequest.parse(invalid)
+    end
+  end
+
   property "arbitrary bytes can only decode to the exact canonical grammar" do
     check all(bytes <- binary(max_length: 256)) do
       case ExportRequest.parse(bytes) do
         {:ok, request} ->
           expected =
             case request do
+              %{component: :checkpoint} -> "lilly-checkpoint-v1 #{request.relocation_id}"
               %{resume_token: token} -> "lilly-resume-v4 #{request.relocation_id} #{token}"
               _ -> "lilly-export-v4 #{request.relocation_id}"
             end

@@ -71,6 +71,7 @@ defmodule Lilly.Transfer.Importer do
                      2000
                    ),
                  true <- guid == command.dataset_guid,
+                 :ok <- Lilly.Transfer.CheckpointTransfer.adopted(pool, spec, descriptor),
                  :ok <- Disk.adopt(pool, descriptor),
                  do: {:ok, guid},
                  else: (

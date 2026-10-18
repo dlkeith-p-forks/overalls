@@ -14,8 +14,10 @@ boot, CID, malformed-input, reset, isolation and recovery evidence under ADR-019
 FreeBSD socket creation and bind MUST require root privilege and use the reviewed vendor family
 45, guest CID 3 and peer host CID 2. Socket and queue allocations MUST remain
 bounded. The static driver MUST refuse runtime detach and unload after interrupt
-setup; reset and shutdown MUST fence sockets while retaining interrupt-visible
-resources until VM disposal. Guest-initiated streams and hardware hot unplug MUST
+setup. A validated transport-reset event with unchanged guest CID MUST fence
+non-listener sockets while preserving listeners and reposting the event buffer.
+Malformed events, configuration changes and shutdown MUST fence all sockets while
+retaining interrupt-visible resources until VM disposal. Guest-initiated streams and hardware hot unplug MUST
 NOT be claimed without separate implementation and machine evidence.
 
 @cc [owner:ghuntley,label:protocol;recovery] native-peer-reset-error

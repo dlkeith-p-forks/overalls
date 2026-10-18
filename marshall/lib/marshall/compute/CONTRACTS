@@ -26,8 +26,9 @@ audit rows.
 @cc [owner:ghuntley,label:product] compute-retained-placement
 Ordinary lifecycle transitions MUST retain the VM's owner, current placement,
 immutable image, network profile and requested shape outside explicit ADR-0051 resize. Stop and start MUST retain
-disk and address allocations; moving a VM is not a lifecycle fallback. Only the
-explicit ADR-0037 relocation coordinator may change current placement and epoch,
+disk and address allocations. Resume capacity fallback MUST use the durable
+checkpoint relocation coordinator, preserving RAM rather than rebooting. Only the
+serialized relocation coordinator may change current placement and epoch,
 while preserving workload identity, image, shape, sharing and address. The
 ADR-0051 resize coordinator alone may change shape after matching physical evidence;
 its unfinished request MUST exclude lifecycle, relocation and maintenance.

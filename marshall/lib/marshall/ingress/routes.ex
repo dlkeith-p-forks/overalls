@@ -19,8 +19,9 @@ defmodule Marshall.Ingress.Routes do
 
   # @cc [owner:ghuntley,label:security;concurrency] ingress-route-execution-binding
   # Report admission MUST lock service, host, VM and route in that order. The
-  # report MUST match current service generation and running execution exactly,
-  # with fresh host evidence, relocation readiness, registered key and addresses.
+  # report MUST match the current VM tuple and gateway generation with fresh host
+  # evidence, registered key and addresses. Sleeping discovery grants no execution;
+  # an enrolled prior gateway may keep discovery while relaying a relocated VM.
   # Certificate metadata is an authenticated infrastructure attestation, not
   # independent certificate proof. The gateway producer MUST validate and install
   # matching TLS material and verify the local SNI listener before reporting.
@@ -37,7 +38,7 @@ defmodule Marshall.Ingress.Routes do
   defp report!(request) do
     service = Services.authenticate!(request.service_token)
 
-    {vm, host, now} = Execution.current!(service, request, :exclusive)
+    {vm, host, now} = Execution.discover!(service, request, :exclusive)
 
     endpoint = List.first(Ledger.read!(Endpoint, vm_id: vm.id)) || deny!()
 
@@ -116,7 +117,7 @@ defmodule Marshall.Ingress.Routes do
   end
 
   # @cc [owner:ghuntley,label:security;concurrency] ingress-current-route-projection
-  # Reads MUST revalidate live gateway generation, execution and report/certificate
+  # Reads MUST revalidate live gateway generation, wake eligibility and report/certificate
   # expiry under service -> host -> VM -> route locks. Addresses and SSH keys MUST
   # come from that current gateway. Raw stored reports MUST NOT substitute for
   # this projection, and a projection MUST NOT grant end-user application access.
@@ -125,7 +126,7 @@ defmodule Marshall.Ingress.Routes do
     endpoint = List.first(Ledger.read!(Endpoint, label: label)) || deny!()
     candidate = List.first(Ledger.read!(Route, vm_id: endpoint.vm_id)) || deny!()
     service = shared!(Service, id: candidate.service_id)
-    {_vm, _host, _now} = Execution.current!(service, candidate, :shared)
+    {_vm, _host, _now} = Execution.discover!(service, candidate, :shared)
     route = shared!(Route, id: candidate.id)
 
     binding = [

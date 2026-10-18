@@ -126,7 +126,7 @@ defmodule Lilly.Control.Runtime do
          {:ok, _version, live} <- Lilly.Execution.current(view, binding.placement_id),
          command = live.command,
          true <- command.host_id == binding.host_id,
-         true <- command.kind in [:provision, :start],
+         true <- command.kind in [:provision, :start, :resume],
          true <- OverallsProtocol.IngressConnect.valid_for_profile?(binding, command.profile),
          true <-
            Enum.all?(
@@ -151,7 +151,7 @@ defmodule Lilly.Control.Runtime do
           {:ok, map()} | {:error, :private_service_unavailable}
   def private_binding(view, address) do
     with {:ok, _version, %{command: command}} <- Lilly.Execution.by_address(view, address),
-         true <- command.kind in [:provision, :start],
+         true <- command.kind in [:provision, :start, :resume],
          true <- OverallsProtocol.ProfilePolicy.allows?(command.profile, :ssh) do
       {:ok, Map.take(command, [:host_id, :vm_id, :placement_id, :execution_epoch])}
     else
@@ -208,7 +208,7 @@ defmodule Lilly.Control.Runtime do
            {:boot, Lilly.Execution.roster(view, address)},
          {:profile, true} <-
            {:profile,
-            command.kind in [:provision, :start] and
+            command.kind in [:provision, :start, :resume] and
               command.profile in [:customer, :oss, :standard, :inception]} do
       {:ok,
        command
@@ -412,7 +412,7 @@ defmodule Lilly.Control.Runtime do
       with [command] <-
              Enum.filter(
                Map.values(state.durable),
-               &(&1.vm_id == id and &1.kind in [:provision, :start])
+               &(&1.vm_id == id and &1.kind in [:provision, :start, :resume])
              ),
            %{pid: pid} <- state.actors[command.placement_id] do
         {:ok, pid}
@@ -432,7 +432,7 @@ defmodule Lilly.Control.Runtime do
       with [command] <-
              Enum.filter(
                Map.values(state.durable),
-               &(&1.vm_id == id and &1.kind in [:provision, :start])
+               &(&1.vm_id == id and &1.kind in [:provision, :start, :resume])
              ),
            true <- command.placement_id == placement and command.execution_epoch == epoch,
            %{pid: pid} <- state.actors[placement],
@@ -517,6 +517,15 @@ defmodule Lilly.Control.Runtime do
                     state.phase == :connected
                 )
                 |> Map.put("terminal_protocol", if(state.terminal_ready, do: 2, else: 0))
+                |> Map.put(
+                  "checkpoint_compatibility",
+                  case Lilly.VM.Checkpoint.compatibility(
+                         if(state.config.execution, do: state.config.execution.firecracker)
+                       ) do
+                    {:ok, digest} -> digest
+                    _ -> nil
+                  end
+                )
                 |> Map.put(
                   "inception_image_id",
                   Lilly.Host.InceptionProof.image_id(state.config.execution)

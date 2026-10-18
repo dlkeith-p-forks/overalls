@@ -57,6 +57,8 @@ defmodule MarshallWeb.WorkspaceComponents do
   @spec machine_state(map()) :: String.t()
   def machine_state(%{desired_state: :deleted}), do: "Deleting"
   def machine_state(%{desired_state: :stopped, observed_state: :running}), do: "Stopping"
+  def machine_state(%{desired_state: :paused, observed_state: :running}), do: "Suspending"
+  def machine_state(%{desired_state: :running, observed_state: :paused}), do: "Resuming"
 
   def machine_state(%{desired_state: :running, observed_state: state})
       when state in [:pending, :stopped], do: "Starting"
@@ -244,7 +246,10 @@ defmodule MarshallWeb.WorkspaceComponents do
               class="row"
             >
               <Layouts.action
-                :if={@vm.desired_state != :running || @vm.observed_state == :failed}
+                :if={
+                  (@vm.desired_state not in [:running, :paused] && @vm.observed_state != :paused) ||
+                    @vm.observed_state == :failed
+                }
                 id="start-machine"
                 tone="primary"
                 phx-click="machine-power"
@@ -254,7 +259,26 @@ defmodule MarshallWeb.WorkspaceComponents do
                 Start machine
               </Layouts.action>
               <Layouts.action
-                :if={@vm.desired_state == :running}
+                :if={@vm.desired_state == :paused || @vm.observed_state == :paused}
+                id="resume-machine"
+                tone="primary"
+                phx-click="machine-power"
+                phx-value-kind="resume"
+                phx-value-key={@power_key}
+              >
+                Resume machine
+              </Layouts.action>
+              <Layouts.action
+                :if={@vm.desired_state == :running && @vm.observed_state == :running}
+                id="pause-machine"
+                phx-click="machine-power"
+                phx-value-kind="pause"
+                phx-value-key={@power_key}
+              >
+                Pause
+              </Layouts.action>
+              <Layouts.action
+                :if={@vm.desired_state in [:running, :paused]}
                 id="stop-machine"
                 tone="default"
                 phx-click="machine-power"

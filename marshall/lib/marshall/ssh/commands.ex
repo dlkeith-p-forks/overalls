@@ -131,6 +131,7 @@ defmodule Marshall.SSH.Commands do
             relocation_id: execution.relocation_id,
             relocation_retry_id: execution.relocation_retry_id,
             resize_request_id: execution.resize_request_id,
+            wake_request_id: execution.wake_request_id,
             status: if(execution.physical?, do: :accepted, else: :succeeded),
             result: json(execution.result)
           })
@@ -393,15 +394,33 @@ defmodule Marshall.SSH.Commands do
   end
 
   defp perform(%{command: command, arguments: [ref]}, actor, key)
-       when command in ["start", "stop", "rm"] do
+       when command in ["start", "stop", "pause", "resume", "unpause", "rm"] do
     vm = resolve!(ref, actor)
-    kind = Map.fetch!(%{"start" => :start, "stop" => :stop, "rm" => :delete}, command)
+
+    kind =
+      Map.fetch!(
+        %{
+          "start" => :start,
+          "stop" => :stop,
+          "pause" => :pause,
+          "resume" => :resume,
+          "unpause" => :resume,
+          "rm" => :delete
+        },
+        command
+      )
 
     operation =
       Compute.lifecycle(%{vm_id: vm.id, kind: kind, idempotency_key: key}, actor: actor)
       |> unwrap!()
 
-    {%{id: vm.id, name: vm.name}, vm.id, operation.id}
+    case operation do
+      %Marshall.Compute.WakeRequest{} ->
+        %{result: %{id: vm.id, name: vm.name}, vm_id: vm.id, wake_request_id: operation.id}
+
+      %Operation{} ->
+        {%{id: vm.id, name: vm.name}, vm.id, operation.id}
+    end
   end
 
   # @cc [owner:ghuntley,label:product] ssh-pin-commands-idempotent
@@ -761,7 +780,7 @@ defmodule Marshall.SSH.Commands do
         [vm] ->
           permission =
             if request.relocation_id || request.relocation_retry_id ||
-                 request.resize_request_id,
+                 request.resize_request_id || request.wake_request_id,
                do: "manage",
                else: "read"
 
@@ -792,6 +811,29 @@ defmodule Marshall.SSH.Commands do
   # requires complete relocation/cancellation; retryable destination failure is
   # failed, and cancellation, deletion or retry supersession is superseded. Status
   # projection MUST omit host, placement, endpoint, key and permit data.
+
+  # @cc [owner:ghuntley,label:recovery;security] ssh-wake-receipt-physical-readiness
+  # A resume receipt MUST retain its durable wake identity while capacity is
+  # unavailable or relocation is pending. It MUST succeed only when that wake
+  # reaches ready, require current manage permission on every status read, and
+  # never expose checkpoint storage, transfer permits or gateway credentials.
+  defp refresh(%{status: :accepted, wake_request_id: id} = request) when not is_nil(id) do
+    case Ledger.read!(Marshall.Compute.WakeRequest, id: id, vm_id: request.vm_id) do
+      [wake] ->
+        extra = %{phase: wake.status, failure: wake.failure_reason}
+
+        case wake.status do
+          :ready -> finish(request, :succeeded, extra)
+          :failed -> finish(request, :failed, extra)
+          :cancelled -> finish(request, :superseded, extra)
+          _ -> %{request | result: Map.merge(request.result, json(extra))}
+        end
+
+      [] ->
+        Ledger.rollback(:request_not_found)
+    end
+  end
+
   defp refresh(%{status: :accepted, relocation_retry_id: retry_id} = request)
        when not is_nil(retry_id) do
     [retry] = Ledger.read!(RelocationRetry, id: retry_id)
@@ -879,7 +921,14 @@ defmodule Marshall.SSH.Commands do
 
         expected =
           Map.fetch!(
-            %{provision: "running", start: "running", stop: "stopped", delete: "deleted"},
+            %{
+              provision: "running",
+              start: "running",
+              resume: "running",
+              pause: "paused",
+              stop: "stopped",
+              delete: "deleted"
+            },
             operation.kind
           )
 
@@ -948,6 +997,7 @@ defmodule Marshall.SSH.Commands do
            relocation_id: String.t() | nil,
            relocation_retry_id: String.t() | nil,
            resize_request_id: String.t() | nil,
+           wake_request_id: String.t() | nil,
            physical?: boolean()
          }
 
@@ -971,7 +1021,8 @@ defmodule Marshall.SSH.Commands do
       clone_request_id: nil,
       relocation_id: nil,
       relocation_retry_id: nil,
-      resize_request_id: nil
+      resize_request_id: nil,
+      wake_request_id: nil
     }
 
     values = Map.merge(defaults, values)
@@ -985,7 +1036,8 @@ defmodule Marshall.SSH.Commands do
           values.clone_request_id,
           values.relocation_id,
           values.relocation_retry_id,
-          values.resize_request_id
+          values.resize_request_id,
+          values.wake_request_id
         ],
         &(&1 != nil)
       )
@@ -1016,7 +1068,7 @@ defmodule Marshall.SSH.Commands do
       status: Atom.to_string(request.status),
       operation_id:
         request.operation_id || request.clone_request_id || request.resize_request_id ||
-          request.relocation_retry_id || request.relocation_id,
+          request.relocation_retry_id || request.relocation_id || request.wake_request_id,
       result: request.result
     }
 end

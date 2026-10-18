@@ -1,5 +1,23 @@
 # Deployment topology
 
+## Suspended workloads and gateway relay
+
+Suspension adds no new deployed service. Marshall's existing PostgreSQL stores
+wake demand, idle clocks and current execution authority. Lilly retains sealed RAM
+and device state in private sibling ZFS datasets beside each owned VM disk, with
+host-local single-use journals outside transferred storage. A suspended VM has no
+VMM/cgroup compute but still consumes disk/checkpoint capacity.
+
+Audi's fleet-private relay listener joins the existing WireGuard peer topology.
+When a sleeping workload moves, its original discovery gateway keeps waiting
+connections and forwards one hop using a single-use destination-bound capability.
+The receiving Audi connects only to its local Lilly under renewed Marshall
+authority. This is neither public relay exposure nor guest-subnet routing.
+Full compatible-fleet exhaustion leaves durable demand pending; PostgreSQL,
+transport and destination capacity remain separate failure boundaries. Declared
+placement does not prove multi-host availability; the suspension fleet test is
+the corresponding native acceptance boundary.
+
 ## Foreign Linux guest PAM runtime
 
 Arch/Alma's `overalls-pam-helpers.service` is a root oneshot inside each guest,

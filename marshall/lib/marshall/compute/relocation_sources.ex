@@ -99,7 +99,7 @@ defmodule Marshall.Compute.RelocationSources do
          [relocation] <- Ledger.read!(Relocation, id: request.relocation_id) do
       Ledger.lock_history!(VirtualMachine, relocation.vm_id)
 
-      unless Map.delete(command.intent, :workload) == endpoint_scope(relocation) and
+      unless Map.drop(command.intent, [:workload, :checkpoint]) == endpoint_scope(relocation) and
                command.public_key == relocation.destination_public_key,
              do: Ledger.rollback(:invalid_outcome)
 
@@ -125,12 +125,12 @@ defmodule Marshall.Compute.RelocationSources do
   end
 
   # @cc [owner:ghuntley,label:capacity;recovery] stopped-source-request-retains-reservations
-  # A source request asks for the one full stream of a physically stopped disk
-  # (ADR-0155). Originally stopped workloads MUST have unchanged stopped intent
-  # and observation; originally running workloads MUST have the recorded
-  # physical relocation stop; connectivity alone MUST NOT authorize a snapshot.
+  # A source request asks for one full coherent stream of a quiescent disk
+  # and its checkpoint for memory-bearing moves (ADR-0197). Originally stopped
+  # workloads MUST remain stopped; running workloads MUST have the recorded
+  # physical relocation pause. Connectivity alone MUST NOT authorize a snapshot.
   # Both disk reservations and transfer slots MUST be held; requests MUST NOT
-  # require or acquire compute or temporary headroom. Expiry MUST use the
+  # acquire extra compute. Checkpoint holds MUST remain charged. Expiry MUST use the
   # database clock and a new immutable revision; retries MUST reuse the original
   # expiry and pin a previously returned snapshot GUID. Creating requests MUST
   # NOT stop the source, change current placement or release capacity.
@@ -156,6 +156,14 @@ defmodule Marshall.Compute.RelocationSources do
           |> Map.take([:image_id, :architecture, :profile, :vcpu, :memory_bytes, :disk_bytes])
           |> Map.put(:slot, address.slot)
         )
+
+      intent =
+        if vm.current_checkpoint do
+          {:ok, checkpoint} = OverallsProtocol.Checkpoint.decode(vm.current_checkpoint)
+          Map.put(intent, :checkpoint, checkpoint)
+        else
+          intent
+        end
 
       if last do
         with {:ok, previous} <- validated(last),
@@ -211,12 +219,21 @@ defmodule Marshall.Compute.RelocationSources do
     end
   end
 
-  # The source disk may be snapshotted only while physically stopped: an
-  # originally stopped workload that stayed stopped, or the recorded relocation stop.
+  # The source may be snapshotted only after physical disk/RAM quiescence:
+  # an unchanged stopped workload or its exact current paused checkpoint.
   defp stopped?(relocation, %{desired_state: :stopped, observed_state: :stopped} = vm),
     do:
       relocation.original_state == :stopped or
         Marshall.Compute.RelocationCoordinator.stop_confirmed?(relocation, vm)
+
+  defp stopped?(
+         relocation,
+         %{desired_state: :paused, observed_state: :paused, current_checkpoint: checkpoint} = vm
+       )
+       when is_map(checkpoint),
+       do:
+         relocation.original_state == :paused or relocation.wake_request_id != nil or
+           Marshall.Compute.RelocationCoordinator.stop_confirmed?(relocation, vm)
 
   defp stopped?(_, _), do: false
 

@@ -213,6 +213,7 @@ defmodule Lilly.Host.Hostd do
           memory_bytes: pos_integer(),
           vcpus: 1..64,
           firmware: boolean(),
+          restore: boolean(),
           logging: boolean(),
           state_dir: Path.t(),
           namespace: String.t(),
@@ -234,6 +235,8 @@ defmodule Lilly.Host.Hostd do
   @typedoc "The source of one guest dataset stream; hostd derives its command."
   @type stream_producer ::
           {:local_send, %{dataset: String.t(), placement: OverallsProtocol.uuid()}}
+          | {:checkpoint_send,
+             %{dataset: String.t(), placement: OverallsProtocol.uuid(), slot: String.t()}}
           | {:local_resume,
              %{
                dataset: String.t(),
@@ -249,7 +252,8 @@ defmodule Lilly.Host.Hostd do
                relocation: OverallsProtocol.uuid(),
                identity: Path.t(),
                known_hosts: Path.t(),
-               verb: :export | {:resume, String.t()} | {:probe, OverallsProtocol.uuid()}
+               verb:
+                 :export | :checkpoint | {:resume, String.t()} | {:probe, OverallsProtocol.uuid()}
              }}
 
   @typedoc "The sink of one guest dataset stream; hostd derives its command."
@@ -263,6 +267,16 @@ defmodule Lilly.Host.Hostd do
              pool_id: OverallsProtocol.uuid(),
              nonce: String.t()
            }}
+          | {:checkpoint_receive,
+             %{
+               dataset: String.t(),
+               pool: Path.t(),
+               placement: OverallsProtocol.uuid(),
+               host: OverallsProtocol.uuid(),
+               pool_id: OverallsProtocol.uuid(),
+               nonce: String.t(),
+               memory_bytes: pos_integer()
+             }}
           | {:compare, Path.t()}
 
   @type stream_result ::
@@ -315,6 +329,9 @@ defmodule Lilly.Host.Hostd do
        ),
        do: {2, [dataset, placement, guid, token]}
 
+  defp producer_fields({:checkpoint_send, %{dataset: dataset, placement: placement, slot: slot}}),
+    do: {6, [dataset, placement, slot]}
+
   defp producer_fields({:ssh, %{verb: verb} = ssh}) do
     common = [
       ssh.address,
@@ -327,6 +344,7 @@ defmodule Lilly.Host.Hostd do
 
     case verb do
       :export -> {3, common}
+      :checkpoint -> {7, common}
       {:resume, token} -> {4, common ++ [token]}
       {:probe, challenge} -> {5, common ++ [challenge]}
     end
@@ -342,6 +360,19 @@ defmodule Lilly.Host.Hostd do
          receive.host,
          receive.pool_id,
          receive.nonce
+       ]}
+
+  defp consumer_fields({:checkpoint_receive, receive}),
+    do:
+      {3,
+       [
+         receive.dataset,
+         receive.pool,
+         receive.placement,
+         receive.host,
+         receive.pool_id,
+         receive.nonce,
+         Integer.to_string(receive.memory_bytes)
        ]}
 
   defp consumer_fields({:compare, path}), do: {2, [path]}
@@ -539,7 +570,9 @@ defmodule Lilly.Host.Hostd do
   end
 
   def handle_call({:launch_vm, lease, launch}, from, state) do
-    flags = if(launch.firmware, do: 1, else: 0) + if(launch.logging, do: 2, else: 0)
+    flags =
+      if(launch.firmware, do: 1, else: 0) + if(launch.logging, do: 2, else: 0) +
+        if(Map.get(launch, :restore, false), do: 4, else: 0)
 
     send_request(
       state,

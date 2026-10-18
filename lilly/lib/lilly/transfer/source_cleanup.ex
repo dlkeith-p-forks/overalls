@@ -112,7 +112,8 @@ defmodule Lilly.Transfer.SourceCleanup do
 
     with {:ok, command} when is_map(command) <- Store.read(store, d.source.placement_id),
          true <-
-           command.kind == :stop and command.vm_id == d.vm_id and
+           command.kind == if(Map.has_key?(d, :checkpoint), do: :pause, else: :stop) and
+             command.vm_id == d.vm_id and
              command.host_id == d.source.host_id and command.pool_id == d.source.pool_id and
              command.placement_id == d.source.placement_id and
              command.execution_epoch == d.source_epoch and

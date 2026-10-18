@@ -48,54 +48,53 @@ defmodule Audi.DNS.ReplicaTest do
   # @cc [owner:ghuntley,label:verification;protocol] audi-version-refusal-transport
   # Explicit 426 MUST preserve its terminal class before payload-size or JSON
   # classification over real verified HTTPS, including configured-limit families.
-  test "verified TLS version refusal precedes malformed and oversized payloads", c do
-    check all(
-            generated <- member_of([0, 4095, 4096, 4097, 8_388_608, 8_388_609]),
-            max_runs: 2,
-          ) do
-      for size <- Enum.uniq([0, 4095, 4096, 4097, 8_388_608, 8_388_609, generated]),
-          operation <- [:dns, :identity] do
-        server_id = make_ref()
+  property "verified TLS version refusal precedes malformed and oversized payloads", c,
+    profile: :ci,
+    test_cases: 2 do
+    generated = draw("body_size", member_of([0, 4095, 4096, 4097, 8_388_608, 8_388_609]))
 
-        server =
-          start_supervised!(
-            {Bandit,
-             plug:
-               {Audi.Test.DNSControl, owner: self(), upgrade_refusal: String.duplicate("x", size)},
-             scheme: :https,
-             ip: {127, 0, 0, 1},
-             port: 0,
-             startup_log: false,
-             certfile: Path.join(@fixtures, "localhost.pem"),
-             keyfile: Path.join(@fixtures, "localhost.key")},
-            id: server_id
-          )
+    for size <- Enum.uniq([0, 4095, 4096, 4097, 8_388_608, 8_388_609, generated]),
+        operation <- [:dns, :identity] do
+      server_id = make_ref()
 
-        {:ok, {_, port}} = ThousandIsland.listener_info(server)
-        client = Audi.Test.DNSControl.started(%{c.client | origin: "https://127.0.0.1:#{port}"})
+      server =
+        start_supervised!(
+          {Bandit,
+           plug:
+             {Audi.Test.DNSControl, owner: self(), upgrade_refusal: String.duplicate("x", size)},
+           scheme: :https,
+           ip: {127, 0, 0, 1},
+           port: 0,
+           startup_log: false,
+           certfile: Path.join(@fixtures, "localhost.pem"),
+           keyfile: Path.join(@fixtures, "localhost.key")},
+          id: server_id
+        )
 
-        try do
-          assert_receive {:control_upgrade_refused, ^size}, 1_000
-          assert await_version_stop(client.control, System.monotonic_time(:millisecond) + 5_000)
+      {:ok, {_, port}} = ThousandIsland.listener_info(server)
+      client = Audi.Test.DNSControl.started(%{c.client | origin: "https://127.0.0.1:#{port}"})
 
-          task =
-            Task.async(fn ->
-              case operation do
-                :dns -> Client.dns_snapshot(client, @zone)
-                :identity -> Client.identity(client)
-              end
-            end)
+      try do
+        assert_receive {:control_upgrade_refused, ^size}, 1_000
+        assert await_version_stop(client.control, System.monotonic_time(:millisecond) + 5_000)
 
-          assert Task.await(task, 10_000) == {:error, :unsupported_version}
+        task =
+          Task.async(fn ->
+            case operation do
+              :dns -> Client.dns_snapshot(client, @zone)
+              :identity -> Client.identity(client)
+            end
+          end)
 
-          assert OverallsProtocol.Control.Client.status(client.control) ==
-                   {:disconnected, :unsupported_version}
+        assert Task.await(task, 10_000) == {:error, :unsupported_version}
 
-          refute_receive {:control_request, _, _, _, _, _}, 0
-        after
-          stop_supervised(client.control)
-          stop_supervised(server_id)
-        end
+        assert OverallsProtocol.Control.Client.status(client.control) ==
+                 {:disconnected, :unsupported_version}
+
+        refute_receive {:control_request, _, _, _, _, _}, 0
+      after
+        stop_supervised(client.control)
+        stop_supervised(server_id)
       end
     end
   end

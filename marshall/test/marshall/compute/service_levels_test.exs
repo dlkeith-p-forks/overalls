@@ -16,6 +16,109 @@ defmodule Marshall.Compute.ServiceLevelsTest do
 
   @origin ~U[2026-10-02 00:00:00.000000Z]
 
+  # @cc [owner:ghuntley,label:verification;accounting] suspension-measurements-use-physical-states
+  # Pause MUST complete only from paused evidence and resume only from running
+  # evidence. SSH resume additionally requires readiness; intent alone and the
+  # other operation's physical state MUST remain pending before the deadline.
+  property "pause and resume measurement states remain distinct",
+    test_cases: 32,
+    seed: 2_026_101_805 do
+    kind = draw("suspension operation", member_of([:pause, :resume]))
+    offset = draw("physical evidence seconds", integer(1..60))
+    at = DateTime.add(@origin, offset)
+    deadline = DateTime.add(@origin, 120)
+    expected = if kind == :pause, do: :paused, else: :running
+    other = if kind == :pause, do: :running, else: :paused
+    physical = %{state: expected, at: at}
+
+    assert {:finished, true, ^at, duration} =
+             ServiceLevels.decide(:lilly_physical, kind, @origin, deadline, physical, nil, at)
+
+    assert duration == offset * 1_000_000
+
+    assert :pending =
+             ServiceLevels.decide(
+               :lilly_physical,
+               kind,
+               @origin,
+               deadline,
+               %{physical | state: other},
+               nil,
+               at
+             )
+
+    if kind == :resume do
+      assert :pending =
+               ServiceLevels.decide(:porsche_physical, kind, @origin, deadline, physical, nil, at)
+
+      assert {:finished, true, ^at, _} =
+               ServiceLevels.decide(:porsche_physical, kind, @origin, deadline, physical, at, at)
+    end
+  end
+
+  test "retained paused evidence completes a physical pause measurement" do
+    Fixtures.host_fixture()
+    actor = Fixtures.user()
+    assert {:ok, vm} = Marshall.Compute.provision(Fixtures.request(), actor: actor)
+
+    operation =
+      Ledger.create!(Operation, :enqueue, %{
+        vm_id: vm.id,
+        placement_id: vm.current_placement_id,
+        execution_epoch: vm.execution_epoch,
+        generation: vm.generation + 1,
+        kind: :pause,
+        requested_by_id: actor.id
+      })
+
+    checkpoint = %{
+      id: Ash.UUID.generate(),
+      memory_bytes: vm.memory_bytes,
+      state_bytes: 4096,
+      compatibility: "sha256:" <> String.duplicate("a", 64),
+      memory_sha256: "sha256:" <> String.duplicate("b", 64),
+      state_sha256: "sha256:" <> String.duplicate("c", 64),
+      manifest_sha256: "sha256:" <> String.duplicate("d", 64),
+      dataset_guid: "81",
+      snapshot_guid: "82"
+    }
+
+    outcome = %{
+      id: Ash.UUID.generate(),
+      vm_id: vm.id,
+      placement_id: operation.placement_id,
+      execution_epoch: operation.execution_epoch,
+      operation_id: operation.id,
+      generation: operation.generation,
+      sequence: 1,
+      state: :paused,
+      compute_empty: true,
+      disk_present: true,
+      cleanup_complete: false,
+      reason: :none,
+      checkpoint: checkpoint
+    }
+
+    Ledger.create!(Marshall.Compute.PhysicalOutcome, :record, %{
+      id: outcome.id,
+      vm_id: vm.id,
+      host_id: vm.host_id,
+      placement_id: operation.placement_id,
+      execution_epoch: operation.execution_epoch,
+      operation_id: operation.id,
+      generation: operation.generation,
+      sequence: 1,
+      observation: OverallsProtocol.Execution.encode_outcome(outcome)
+    })
+
+    assert {:ok, 1} = ServiceLevels.reconcile()
+
+    assert [%{status: :finished, success: true}] =
+             Ledger.read!(ServiceLevelAttempt, operation_id: operation.id)
+
+    assert {:ok, 0} = ServiceLevels.reconcile()
+  end
+
   property "deadline histories never manufacture success from missing or late readiness" do
     check all(
             budget <- integer(1..3_000),

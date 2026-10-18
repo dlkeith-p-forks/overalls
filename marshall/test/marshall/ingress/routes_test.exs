@@ -251,7 +251,8 @@ defmodule Marshall.Ingress.RoutesTest do
   end
 
   @tag :hegel
-  test "only completed start or provision history admits readiness and current projection", c do
+  test "discovery survives incomplete history while execution admission requires completed startup",
+       c do
     {:ok, accepted} = report(c.request)
 
     check all(
@@ -259,7 +260,7 @@ defmodule Marshall.Ingress.RoutesTest do
               list_of(
                 tuple(
                   {member_of(["pending", "acknowledged", "completed", "cancelled"]),
-                   member_of(["provision", "start", "stop", "delete", "resize"])}
+                   member_of(["provision", "start", "resume", "stop", "delete", "resize"])}
                 ),
                 min_length: 1,
                 max_length: 12
@@ -271,7 +272,8 @@ defmodule Marshall.Ingress.RoutesTest do
 
       for {status, kind} <- states do
         # Only this sandbox fixture's operation history is changed. Keep the
-        # execution binding fixed so status/kind alone decide admissibility.
+        # execution binding fixed so status/kind alone decide stream admission.
+        # Discovery must remain available to let the next connection request wake.
         Ecto.Adapters.SQL.query!(
           Marshall.Repo,
           "UPDATE compute_operations SET status=$1, kind=$2 WHERE vm_id=$3",
@@ -279,9 +281,17 @@ defmodule Marshall.Ingress.RoutesTest do
           log: false
         )
 
-        eligible? = status == "completed" and kind in ["provision", "start"]
-        assert match?({:ok, _}, report(c.request)) == eligible?
-        assert match?({:ok, _}, current(accepted.label)) == eligible?
+        assert {:ok, _} = report(c.request)
+        assert {:ok, _} = current(accepted.label)
+        eligible? = status == "completed" and kind in ["provision", "start", "resume"]
+        [service] = Ledger.read!(Marshall.Ingress.Service, id: c.service.id)
+
+        execution =
+          Ledger.transaction(fn ->
+            Marshall.Ingress.Execution.current!(service, c.request, :shared)
+          end)
+
+        assert match?({:ok, _}, execution) == eligible?
       end
     end
   end

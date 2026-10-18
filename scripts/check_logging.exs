@@ -47,7 +47,14 @@ apps = %{
     catalog: Lilly.Events,
     infra: [Lilly.OTPReports, Lilly.Observability, Lilly.Events],
     exempt_from_logging_rule: [],
-    exempt_from_mutation_rule: []
+    # Reviewed: checkpoint completion/revocation use Lifecycle.Journal's
+    # post-durable-write transition events; Command emits native-effect events,
+    # and the execution journal publishes the confirmed outer VM outcome.
+    # Local emits would duplicate those events inside an unfinished operation.
+    exempt_from_mutation_rule: [
+      "lib/lilly/vm/checkpoint.ex",
+      "lib/lilly/vm/checkpoint_storage.ex"
+    ]
   },
   "audi" => %{
     catalog: Audi.Events,

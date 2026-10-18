@@ -4,14 +4,15 @@ defmodule Lilly.Transfer.ExportRequest do
 
   @type request :: %{
           required(:relocation_id) => String.t(),
-          optional(:resume_token) => String.t()
+          optional(:resume_token) => String.t(),
+          optional(:component) => :checkpoint
         }
   @type failure :: {:error, :export_permit_unconfirmed}
 
   # @cc [owner:ghuntley,label:security] export-request-is-never-shell-text
   # parse/1 MUST accept only the exact fixed v4 verb and canonical relocation
-  # UUID separated by a single space; there is one full stream per relocation
-  # (ADR-0155), so no stream kind is admissible. It MUST reject shell syntax,
+  # UUID separated by a single space; there is one full disk stream and, only
+  # with a RAM-bearing permit, one distinct lilly-checkpoint-v1 command. It MUST reject shell syntax,
   # extra arguments and alternate whitespace without normalization or evaluation.
   # The distinct resume verb permits exactly one bounded hexadecimal token envelope;
   # this syntax check grants no lineage or transfer authority.
@@ -27,6 +28,12 @@ defmodule Lilly.Transfer.ExportRequest do
          true <- token?(token),
          do: {:ok, Map.put(request, :resume_token, token)},
          else: (_ -> failure())
+  end
+
+  def parse("lilly-checkpoint-v1 " <> <<relocation::binary-size(36)>>) do
+    if OverallsProtocol.uuid?(relocation),
+      do: {:ok, %{relocation_id: relocation, component: :checkpoint}},
+      else: failure()
   end
 
   def parse(_), do: failure()
@@ -63,9 +70,13 @@ defmodule Lilly.Transfer.ExportRequest do
   @spec lookup(Path.t(), String.t(), String.t(), term(), integer()) ::
           {:ok, map()} | failure()
   def lookup(root, host, public, command, now) do
-    with {:ok, request} <- parse(command) do
-      PermitJournal.lookup(root, host, request.relocation_id, public, now)
-    end
+    with {:ok, request} <- parse(command),
+         {:ok, grant} <- PermitJournal.lookup(root, host, request.relocation_id, public, now),
+         true <-
+           Map.get(request, :component) != :checkpoint or
+             Map.has_key?(grant.descriptor, :checkpoint),
+         do: {:ok, grant},
+         else: (_ -> failure())
   end
 
   @doc "Bounded shell-inert token syntax only; native source lineage validation is mandatory."

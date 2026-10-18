@@ -89,7 +89,6 @@ defmodule MarshallComputeContractTest do
       Marshall.Compute.RelocationRestoration,
       Marshall.Compute.RelocationRetry,
       Marshall.Compute.RelocationRetryAdmission,
-      Marshall.Compute.RelocationRetryState,
       Marshall.Compute.RelocationRevocations,
       Marshall.Compute.RelocationSnapshotCleanups,
       Marshall.Compute.RelocationSources,

@@ -39,7 +39,10 @@ defmodule Marshall.Editor.Authority do
   @spec perform(atom(), map(), User.t() | nil) :: map()
   defp perform(:launch, request, actor) do
     vm = Ledger.lock!(VirtualMachine, request.vm_id) || deny!()
-    unless vm.desired_state == :running and vm.observed_state == :running, do: deny!()
+
+    unless vm.desired_state in [:running, :paused] and vm.observed_state in [:running, :paused],
+      do: deny!()
+
     capability!(vm)
     authorize!(vm, actor)
     account = GuestAccounts.ensure!(actor.id)
@@ -49,9 +52,10 @@ defmodule Marshall.Editor.Authority do
   end
 
   defp perform(:begin_login, request, _) do
-    service = Services.authenticate!(request.service_token, :exclusive)
+    service = Services.authenticate!(request.service_token)
+    Services.serialize_open!(service.id)
     identity = identity!(request.label)
-    {vm, host, now} = execution!(service, current_binding!(service, identity.vm_id))
+    {vm, host, now} = login_execution!(service, current_binding!(service, identity.vm_id))
     {_user, account} = current_account!(identity.guest_account_id)
     hash = state_digest!(request.state_digest)
     capacity!(Marshall.Editor.Login, service.id, now, 128)
@@ -92,7 +96,7 @@ defmodule Marshall.Editor.Authority do
 
     candidate = candidate!(Marshall.Editor.Login, request.ticket, :ticket)
     service = shared!(Service, id: candidate.service_id)
-    {vm, _, _} = execution!(service, candidate)
+    {vm, _, _} = login_execution!(service, candidate)
     {user, account} = current_account!(candidate.guest_account_id)
     unless user.id == actor.id, do: Ledger.rollback(:forbidden)
     authorize!(vm, Security.bind(user, jti))
@@ -113,10 +117,11 @@ defmodule Marshall.Editor.Authority do
   end
 
   defp perform(:exchange_login, request, _) do
-    service = Services.authenticate!(request.service_token, :exclusive)
+    service = Services.authenticate!(request.service_token)
+    Services.serialize_open!(service.id)
     candidate = candidate!(Marshall.Editor.Login, request.ticket, :ticket)
     service_binding!(candidate, service)
-    {vm, _, now} = execution!(service, candidate)
+    {vm, _, now} = login_execution!(service, candidate)
     {user, account} = current_account!(candidate.guest_account_id)
     unless user.id == candidate.user_id, do: deny!()
     expiry = stored_login!(candidate.login_jti, user.id)
@@ -158,7 +163,54 @@ defmodule Marshall.Editor.Authority do
   end
 
   defp perform(:open_editor, request, _) do
-    service = Services.authenticate!(request.service_token, :exclusive)
+    service = Services.authenticate!(request.service_token)
+    Services.serialize_open!(service.id)
+    open_for!(service, request)
+  end
+
+  # @cc [owner:ghuntley,label:security] editor-renewal-cannot-migrate
+  # Renewal MUST recheck live stored login, current write authority, permanent account,
+  # current execution on a live host and image descriptor before extending only
+  # expires_at. Expired, closed or changed bindings MUST refuse, without allocating
+  # another identity. The provisioner's control session is not part of the binding:
+  # a Lilly or lilly-hostd restart opens a new session while the execution, and the
+  # detached bridge carrying the stream, stay current (ADR-0192); a reconnecting
+  # host is inconclusive (ingress-renewal-host-reconnecting).
+  defp perform(:renew_editor, request, _) do
+    service =
+      Marshall.Ingress.Relays.authority_service!(
+        Services.authenticate!(request.service_token),
+        request.stream_token,
+        :editor
+      )
+
+    renew_for!(service, request)
+  end
+
+  defp perform(:close_editor, request, _) do
+    service =
+      Marshall.Ingress.Relays.authority_service!(
+        Services.authenticate!(request.service_token),
+        request.stream_token,
+        :editor
+      )
+
+    candidate = candidate!(Lease, request.stream_token, :lease)
+    service_binding!(candidate, service)
+    lease = Ledger.lock!(Lease, candidate.id) || deny!()
+
+    if is_nil(lease.closed_at) do
+      Ledger.update!(lease, :close, %{closed_at: Ledger.now()})
+      outcome(:closed, lease.vm_id, lease.user_id)
+    end
+
+    %{closed: true}
+  end
+
+  @doc false
+  @spec open_for!(Service.t(), map()) :: map()
+  def open_for!(service, request) do
+    Services.serialize_open!(service.id)
     identity = identity!(request.label)
     {vm, host, now} = execution!(service, current_binding!(service, identity.vm_id))
     {user, account} = current_account!(identity.guest_account_id)
@@ -198,16 +250,25 @@ defmodule Marshall.Editor.Authority do
     Map.put(view(lease), :ticket, ticket)
   end
 
-  # @cc [owner:ghuntley,label:security] editor-renewal-cannot-migrate
-  # Renewal MUST recheck live stored login, current write authority, permanent account,
-  # current execution on a live host and image descriptor before extending only
-  # expires_at. Expired, closed or changed bindings MUST refuse, without allocating
-  # another identity. The provisioner's control session is not part of the binding:
-  # a Lilly or lilly-hostd restart opens a new session while the execution, and the
-  # detached bridge carrying the stream, stay current (ADR-0192); a reconnecting
-  # host is inconclusive (ingress-renewal-host-reconnecting).
-  defp perform(:renew_editor, request, _) do
-    service = Services.authenticate!(request.service_token, :exclusive)
+  # @cc [owner:ghuntley,label:security] editor-wake-personal-authority
+  # Editor wake MUST require the canonical permanent account, approved image,
+  # live stored login and current write authority before enqueueing compute.
+  @doc false
+  @spec authorize_wake!(Service.t(), map(), VirtualMachine.t()) :: User.t()
+  def authorize_wake!(service, request, vm) do
+    identity = identity!(request.label)
+    unless identity.vm_id == vm.id, do: deny!()
+    capability!(vm)
+    {user, account} = current_account!(identity.guest_account_id)
+    unless is_binary(request[:cookie]), do: Ledger.rollback(:authentication_required)
+    candidate = candidate!(Credential, request.cookie, :cookie)
+    credential = credential!(candidate.id, service, vm, account, user, request.label)
+    Security.bind(user, credential.login_jti)
+  end
+
+  @doc false
+  @spec renew_for!(Service.t(), map()) :: map()
+  def renew_for!(service, request) do
     candidate = candidate!(Lease, request.stream_token, :lease)
     service_binding!(candidate, service)
     {vm, host, now} = execution!(service, candidate, :renew)
@@ -227,20 +288,6 @@ defmodule Marshall.Editor.Authority do
     # Conclusive checks are done; a reconnecting provisioner is inconclusive.
     Execution.renewable!(host, now)
     lease |> Ledger.update!(:renew, %{expires_at: expires_at}) |> view()
-  end
-
-  defp perform(:close_editor, request, _) do
-    service = Services.authenticate!(request.service_token, :exclusive)
-    candidate = candidate!(Lease, request.stream_token, :lease)
-    service_binding!(candidate, service)
-    lease = Ledger.lock!(Lease, candidate.id) || deny!()
-
-    if is_nil(lease.closed_at) do
-      Ledger.update!(lease, :close, %{closed_at: Ledger.now()})
-      outcome(:closed, lease.vm_id, lease.user_id)
-    end
-
-    %{closed: true}
   end
 
   # @cc [owner:ghuntley,label:security;persistence] editor-permanent-account
@@ -280,6 +327,13 @@ defmodule Marshall.Editor.Authority do
     Authorization.require!(vm, actor, "write")
   end
 
+  @spec login_execution!(Service.t(), map()) :: {VirtualMachine.t(), struct(), DateTime.t()}
+  defp login_execution!(service, binding) do
+    {vm, _, _} = result = Execution.login!(service, binding)
+    capability!(vm)
+    result
+  end
+
   @spec execution!(Service.t(), map(), :admit | :renew) ::
           {VirtualMachine.t(), struct(), DateTime.t()}
   defp execution!(service, binding, purpose \\ :admit) do
@@ -313,9 +367,9 @@ defmodule Marshall.Editor.Authority do
   defp credential!(id, service, vm, account, user, label) do
     credential = Ledger.lock!(Credential, id) || Ledger.rollback(:authentication_required)
 
-    unless credential.service_id == service.id and
-             credential.service_generation == service.generation and
-             credential.vm_id == vm.id and credential.guest_account_id == account.id and
+    Marshall.Ingress.Relays.credential_issuer!(credential, service, vm)
+
+    unless credential.vm_id == vm.id and credential.guest_account_id == account.id and
              credential.user_id == user.id and credential.label == label and
              is_nil(credential.revoked_at) and
              DateTime.compare(credential.expires_at, Ledger.now()) == :gt,
@@ -422,6 +476,17 @@ defmodule Marshall.Editor.Authority do
   end
 
   @spec service_binding!(struct(), Service.t()) :: :ok
+  # @cc [owner:ghuntley,label:security] editor-login-issuer-placement-separation
+  # Login identity MUST retain its exact current placement host and independently
+  # bind the issuing gateway id/generation. A relay origin MAY differ from that
+  # placement host. Execution leases MUST still bind their destination gateway host.
+  defp service_binding!(%Marshall.Editor.Login{} = record, service) do
+    unless record.service_id == service.id and record.service_generation == service.generation,
+      do: deny!()
+
+    :ok
+  end
+
   defp service_binding!(record, service) do
     unless record.service_id == service.id and record.service_generation == service.generation and
              record.host_id == service.host_id,

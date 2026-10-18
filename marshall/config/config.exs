@@ -71,7 +71,10 @@ config :marshall, Oban,
   lifeline: [rescue_after: {2, :hours}],
   pruner: [max_age: {1, :day}],
   repo: Marshall.Repo,
-  plugins: [{Oban.Plugins.Cron, crontab: [{"* * * * *", Marshall.Enrico.Worker}]}]
+  plugins: [
+    {Oban.Plugins.Cron,
+     crontab: [{"* * * * *", Marshall.Enrico.Worker}, {"* * * * *", Marshall.Compute.IdleWorker}]}
+  ]
 
 # These enable behaviors that will become the default in the next major
 # version of Ash. Setting them now opts your application into the new

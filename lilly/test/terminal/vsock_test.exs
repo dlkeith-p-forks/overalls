@@ -2,6 +2,8 @@ defmodule Lilly.Terminal.VsockTest do
   use ExUnit.Case, async: true
 
   alias Lilly.Terminal.Vsock
+  import Hegel
+  import Hegel.Gen
 
   @identity %{
     uds_path: "/tmp/lilly-terminal-test.sock",
@@ -9,6 +11,27 @@ defmodule Lilly.Terminal.VsockTest do
     execution_epoch: 4,
     boot_challenge: "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
   }
+
+  # @cc [owner:ghuntley,label:verification;security] restored-terminal-hello-continuity
+  # Across generated destination epochs the guest hello MUST retain the sealed
+  # source identity, while an unrelated fresh boot MUST have a different proof.
+  property "restore changes host authority without changing guest hello identity",
+    test_cases: 64,
+    seed: 2_026_101_802 do
+    epoch = draw("destination epoch", integer(5..100_000))
+    nonce = draw("hello nonce", binary(length: 16))
+    guest = Map.take(@identity, [:placement_id, :execution_epoch, :boot_challenge])
+
+    current = %{
+      @identity
+      | placement_id: "22222222-2222-4222-8222-222222222222",
+        execution_epoch: epoch
+    }
+
+    restored = Map.put(current, :guest_identity, guest)
+    assert Vsock.hello_tag(restored, nonce) == Vsock.hello_tag(@identity, nonce)
+    refute Vsock.hello_tag(current, nonce) == Vsock.hello_tag(@identity, nonce)
+  end
 
   test "invalid Firecracker handshake closes before sending terminal authority" do
     path =

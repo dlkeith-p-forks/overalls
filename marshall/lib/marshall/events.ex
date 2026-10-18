@@ -229,6 +229,27 @@ defmodule Marshall.Events do
     metadata: [vm_id: :uuid, reason: :atom]
   )
 
+  defevent("vm.wake_requested",
+    message: "VM wake requested",
+    metadata: [vm_id: :uuid, wake_id: :uuid]
+  )
+
+  defevent("vm.wake_ready",
+    message: "VM wake ready",
+    metadata: [vm_id: :uuid, wake_id: :uuid]
+  )
+
+  defevent("vm.wake_failed",
+    level: :warning,
+    message: "VM wake failed",
+    metadata: [vm_id: :uuid, wake_id: :uuid]
+  )
+
+  defevent("vm.wake_cancelled",
+    message: "VM wake cancelled",
+    metadata: [vm_id: :uuid, wake_id: :uuid]
+  )
+
   defevent("vm.pinned",
     message: "VM pinned by a user",
     metadata: [vm_id: :uuid]
@@ -674,6 +695,16 @@ defmodule Marshall.Events do
   )
 
   # Ingress (Audi)
+  defevent("ingress.relay_issued",
+    message: "Ingress relay issued",
+    metadata: [relay_id: :uuid, origin_host_id: :uuid, destination_host_id: :uuid]
+  )
+
+  defevent("ingress.relay_consumed",
+    message: "Ingress relay consumed",
+    metadata: [relay_id: :uuid, origin_host_id: :uuid, destination_host_id: :uuid]
+  )
+
   defevent("ingress.service_configured",
     message: "Ingress service configured",
     metadata: [service_id: :uuid, host_id: {:uuid, :optional}]

@@ -188,6 +188,10 @@ defmodule Marshall.Inference.Requests do
   # @cc [owner:ghuntley,label:security] inference-retired-owner-fence
   # Retiring an owner MUST deny new admission, identity authorization and renewal
   # even before physical VM cleanup. Retained accounting completion stays allowed.
+
+  # @cc [owner:ghuntley,label:security;recovery] inference-resume-current-receipt
+  # Same-boot resume MUST admit inference only after its exact current operation
+  # completed; pending restore and stale pre-pause execution MUST remain fenced.
   defp current!(host, binding) do
     vm =
       VirtualMachine
@@ -220,7 +224,7 @@ defmodule Marshall.Inference.Requests do
       |> Ash.Query.filter(
         vm_id == ^vm.id and placement_id == ^vm.current_placement_id and
           execution_epoch == ^vm.execution_epoch and generation == ^vm.generation and
-          status == :completed and kind in [:start, :provision]
+          status == :completed and kind in [:start, :provision, :resume]
       )
       |> Ash.exists?(actor: SystemActor.compute())
 

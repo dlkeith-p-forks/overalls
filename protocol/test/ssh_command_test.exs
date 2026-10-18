@@ -5,6 +5,38 @@ defmodule OverallsProtocol.SSHCommandTest do
   import Hegel.Gen
   alias OverallsProtocol.SSHCommand
 
+  property "memory lifecycle commands are bounded physical mutations with stable request identity",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 2_026_101_801 do
+    name = draw("name", member_of(["pause", "resume", "unpause"]))
+    suffix = draw("suffix", integer(1..999_999))
+    machine = "machine-#{suffix}"
+    key = "memory-#{suffix}"
+
+    assert {:ok, command} =
+             SSHCommand.parse("#{name} #{machine} --request-id #{key} --no-wait --json")
+
+    assert command.command == name
+    assert command.arguments == [machine]
+    assert command.options["request-id"] == key
+    assert SSHCommand.mutation?(name)
+    assert SSHCommand.physical?(name)
+
+    assert {:ok, ^command} =
+             SSHCommand.validate(%{
+               "version" => command.version,
+               "command" => command.command,
+               "arguments" => command.arguments,
+               "options" => command.options
+             })
+
+    assert {:error, :invalid_command} = SSHCommand.parse("#{name}")
+    assert {:error, :invalid_command} = SSHCommand.parse("#{name} #{machine} extra")
+    assert {:error, :invalid_command} = SSHCommand.parse("#{name} #{machine} --source nope")
+  end
+
   property "advertised peer flag parses as a boolean regardless of option ordering",
     database: :disabled,
     print_blob: false,

@@ -1,5 +1,22 @@
 # Browser editors, terminals, SSH, and management
 
+## Connecting to a suspended machine
+
+The machine controls expose Pause and Resume. Resume retains the guest's memory
+state and may wait for compatible capacity. A stopped machine still needs Start.
+Opening a browser terminal rechecks current Cedar access and the catalog terminal
+capability before joining wake demand. Pending wake grants neither a guest control
+nor a terminal ticket. Boot-log viewing, passive viewer authority checks and server-side refresh timers
+remain diagnostic/observational and do not wake. Only a fresh authorized connection
+or explicit terminal open may admit demand. Relocation retires old-placement
+terminal registry authority; reconnect is required and surviving PTY reattachment
+across a move is not promised.
+
+Authorized SSH, published web applications and editor requests can wait through
+resume and automatic relocation. Authentication and publication/account authority
+remain renewable while waiting. Existing connections can require reconnection
+after a move; snapshot transport reset does not preserve established sockets.
+
 ## Inline privileged browser actions
 
 The accepted ADR-0160 flow keeps a requested administrator mutation on its current

@@ -82,6 +82,27 @@ defmodule Audi.ConfigTest do
              Audi.Application.listener_children(c.path <> "-missing")
   end
 
+  test "relay endpoints come only from a closed canonical fleet configuration", c do
+    relay = %{"address" => "10.90.0.1", "port" => 9445, "peers" => ["10.90.0.2"]}
+    File.write!(c.path, JSON.encode!(Map.put(c.value, "relay", relay)))
+    assert {:ok, options} = Audi.Config.load(c.path)
+    assert options[:relay] == %{address: "10.90.0.1", port: 9445, peers: ["10.90.0.2"]}
+    assert {:ok, children} = Audi.Application.listener_children(c.path)
+    assert {Audi.Relay.Server, server} = Enum.find(children, &match?({Audi.Relay.Server, _}, &1))
+    assert server[:address] == "10.90.0.1" and server[:peers] == ["10.90.0.2"]
+
+    for invalid <- [
+          Map.put(relay, "address", "127.0.0.1"),
+          Map.put(relay, "peers", ["10.90.0.1"]),
+          Map.put(relay, "peers", ["10.90.0.2", "10.90.0.2"]),
+          Map.put(relay, "peers", ["10.90.0.02"]),
+          Map.put(relay, "next_hop", "10.90.0.3")
+        ] do
+      File.write!(c.path, JSON.encode!(Map.put(c.value, "relay", invalid)))
+      assert {:error, :invalid_runtime_configuration} = Audi.Config.load(c.path)
+    end
+  end
+
   test "TLS startup constructs the fleet worker after the in-memory store and listeners", c do
     ca = Path.expand("../../marshall/test/fixtures/tls/ca.pem", __DIR__)
 

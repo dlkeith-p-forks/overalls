@@ -113,7 +113,8 @@ defmodule Audi.HTTP.Proxy do
               source_vm_id: source_vm_id
             })},
          {:request_method, true} <- {:request_method, conn.method not in ["CONNECT", "TRACE"]},
-         {:connector, {:ok, socket}} <- {:connector, module.open(config, grant.binding)} do
+         {:connector, {:ok, socket}} <-
+           {:connector, Audi.StreamConnector.open({module, config}, grant)} do
       try do
         :ok =
           :inet.setopts(socket,

@@ -1,5 +1,9 @@
 # Architecture reviews
 
+- [Memory-preserving suspension and demand wake (2026-10-18)](2026-10-18-memory-suspension.md):
+  ADR-0197, durable lifecycle/wake/checkpoint state machines and authenticated
+  waiting connections; implementation and native acceptance in progress.
+
 - [Foreign Linux browser editor (2026-10-18)](2026-10-18-foreign-linux-browser-editor.md):
   repairs the missing Alma/Arch editor package, account broker and immutable
   descriptor while preserving exact-release authority; twelve Alma native browser

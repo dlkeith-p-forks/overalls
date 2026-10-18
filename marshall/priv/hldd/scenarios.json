@@ -2,9 +2,73 @@
   "version": 1,
   "scenarios": [
     {
+      "id": "memory-suspension-demand-wake",
+      "journey": "A thread machine suspends after four tool-idle hours and resumes its memory on a prompt or authorized SSH, web or editor connection, relocating automatically when its host is full",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "Current Cedar/key/publication/editor authority admits coalesced durable wake only; compute and private checkpoint capacity, sealed same-boot continuation, single-use restore and destination relay consumption independently fence execution.",
+      "denial": "Foreign or revoked authority, missing/corrupt/incompatible checkpoints, replayed restore and arbitrary relay targets refuse. Network activity cannot override explicit stop intent; a user prompt or explicit start may start a stopped VM. Full compatible-fleet capacity leaves wake pending; it never cold boots to replace memory.",
+      "scope": "Ash state machines and Hegel histories exercise BEAM admission, timer boundaries, coalescing and execution fences. Native hostd tests cover API-only restore launch and fixed checkpoint stream derivation. The real fleet scenario covers repeated capture, RAM-only nonce/PID/boot continuity, cgroup absence, running/paused moves and original authorized connections through measured source memory exhaustion.",
+      "status": "partial",
+      "gaps": "Full changed-source fleet execution and native image qualification are in progress. Existing socket migration, physical isolation, host power-loss and production deployment are not established by local application properties.",
+      "preferred_gap": "Run the memory-suspension-fleet NixOS check and record exact-source RAM/cgroup/connection evidence; separately qualify each native image before enabling its checkpoint operations.",
+      "evidence": [
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/fleet/scenarios/suspension.py",
+          "assertion": "pause releases execution and resume preserves RAM, PID and boot UUID",
+          "scope": "Real Firecracker lifecycle and repeated same-memory continuation; also running and paused relocation plus original waiting SSH/HTTPS/editor connections.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/compute/suspension_test.exs",
+          "assertion": "idle deadline is exactly four hours and opt-out never expires",
+          "scope": "Application policy, serialized durable idle timing and synthetic outcome accounting; no physical RAM continuity.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/terminal/authority_test.exs",
+          "assertion": "paused terminal retries coalesce only after current authorization",
+          "scope": "Generated allowed/foreign histories prove no premature terminal session creation while waiting for wake.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "lilly/native/hostd/src/transfer_tests.rs",
+          "assertion": "checkpoint_stream_custody",
+          "scope": "Native typed stream path, ownership policy, non-resumable receive and malformed/foreign slot refusal; no ZFS or VM execution.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "lilly/test/terminal/vsock_test.exs",
+          "assertion": "restore changes host authority without changing guest hello identity",
+          "scope": "Guest HMAC continuation inside separate current outer placement authority; no guest process or multi-host execution.",
+          "execution": "present"
+        }
+      ]
+    },
+    {
       "id": "foreign-linux-browser-editor",
       "journey": "Open the personal browser editor on a newly provisioned AlmaLinux or Arch image",
-      "layers": ["identity", "authorization", "transport", "execution", "isolation", "storage", "recovery"],
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
       "boundary": "The immutable image binds the pinned editor/broker closure and exact descriptor; Marshall retains current write/profile/Customer-owner authority, Audi retains the account origin, Lilly fences TCP 4444 to the current boot, and the guest broker reconciles the current personal UID before launching a systemd worker.",
       "denial": "Retained editor-free images, a changed release or image identity, missing package partner, insufficient headroom, unsafe customization paths, foreign gateway/boot/account and revoked browser authority must refuse. A Linux family capability or successful SSH does not grant editor authority.",
       "scope": "The shared Alma/Arch builder packages the pinned editor/broker/direnv, exact descriptor, registered offline closure and GC roots. Final evaluation and actual-filesystem custody gates passed, along with two exact-release/image property and absent-descriptor checks. Alma's isolated nine-node nested-KVM suite passed all twelve provisioning, editor/terminal/webview, policy, recovery, restart and current-authority subtests. Its fixture image90eca504 differs from production65e7700b by private roots and policy files. Both production Arch0b3da3e8 and Alma65e7700b passed fresh strict personal CLI SSH, stop/checkpoint/restart, repeated SSH and owned deletion, plus four PAM/sudo smokes. Arch's captured same-image diagnostic replay passed all twelve native stages in618.2s; the earlier broker-restart502 remains unexplained. Both native sources precede the later trunk merge.",
@@ -1044,7 +1108,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/default.nix",
           "assertion": "worker loss starts a fresh personal process without deleting data",
-          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334–3357, legitimate origin replacement L3358–3389 and worker loss with saved data L3390–3407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
+          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334\u20133357, legitimate origin replacement L3358\u20133389 and worker loss with saved data L3390\u20133407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-browser-editor.md",
           "record_assertion": "The corrected final-package standalone native check passed, exit 0, in 342 seconds"
@@ -2780,11 +2844,9 @@
         {
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
-          "assertion": "retained older physical proof cannot satisfy a newer retry measurement",
-          "scope": "Reviewed combined four-property run passed seed158289 in91.9seconds: exact ingress refusal inventories, historical failed-readiness ACKs, actual valid delayed source/destination physical receipts before and after current readiness/terminalization, independent current-proof times and complete firstscan/unrelated accounting conservation. Unchanged600-second window crosses actualDBclock after setup backdating with aboutfive seconds remaining. Full Marshall precommit passed 1,422 checks (221 properties, 1,201 tests), two exclusions, seed930025,1133.1seconds; forced Dialyzer42.96seconds with zero errors, skips or unnecessary skips; terminal exit0. No native ten-minute, committed publisher/restart or hosted timing claim.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-02-retry-proof-binding-histories.md",
-          "record_assertion": "The reviewed combined run passed four properties, seed `158289`, in 91.9 seconds,"
+          "assertion": "older archived activation proof cannot replace the retry proof",
+          "scope": "Directly seeded pre-upgrade retry rows exercise the historical WorkflowServiceLevels database reader: exact proof windows, mismatched bindings, older-proof refusal and immutable totals/deadlines. No current retry admission, protocol, guest or native execution is claimed.",
+          "execution": "present"
         },
         {
           "kind": "machine",
@@ -2906,11 +2968,9 @@
         {
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
-          "assertion": "retry measurements retain both received proof windows through repeated scans",
-          "scope": "Recorded actual authenticated retry followed by synthetic received-time controls for inclusive admission/deadline, missing/future proof and repeated scan witnesses. Exact bucket vectors, terminal rows/totals and complete execution/readiness/SSH/proof inventories. One focused property passed seed405587 in38.6seconds; Full Marshall precommit passed 1,419 checks (218 properties, 1,201 tests), two exclusions, seed404257,1135.7seconds; forced Dialyzer42.61seconds with zero errors, skips or unnecessary skips; terminal exit0. No native timing, independent committed publisher, process recovery or hosted claim. Reviewed late-proof extension passed seed768114 in44.3seconds: actual ready-state and success audit after terminal deadline failure cannot rewrite complete measurement/totals or post-receipt execution/proof inventories.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-02-retry-measurement-window-histories.md",
-          "record_assertion": "extension passed one property, seed `768114`, in 44.3 seconds,"
+          "assertion": "historical retry measurements retain both proof windows through repeated scans",
+          "scope": "Directly seeded pre-upgrade retry rows exercise the historical WorkflowServiceLevels database reader: exact proof windows, mismatched bindings, older-proof refusal and immutable totals/deadlines. No current retry admission, protocol, guest or native execution is claimed.",
+          "execution": "present"
         }
       ]
     },
@@ -4182,7 +4242,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
           "assertion": "every label carries the zone's offset in force at that instant",
-          "scope": "Every curated zone over random instants 2000–2040 plus fixed DST edges; half-hour and 45-minute zones pinned",
+          "scope": "Every curated zone over random instants 2000\u20132040 plus fixed DST edges; half-hour and 45-minute zones pinned",
           "execution": "present"
         },
         {
@@ -5365,7 +5425,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/database-recovery/driver.py",
           "assertion": "expected_holder_state",
-          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432–27.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
+          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432\u201327.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-02-database-loss-histories.md",
           "record_assertion": "All six cases preserved the twenty-second holder and thirty-five-second\nall-connection assertions and reacquired the row after reclamation."
@@ -5976,9 +6036,9 @@
         },
         {
           "kind": "property",
-          "path": "marshall/test/marshall/agents/prompt_test.exs",
-          "assertion": "stopped VM prompt retries and changed payload retain one turn and wake",
-          "scope": "Generated stopped-VM prompt text, repeated keys and changed payload against local Ash/PostgreSQL state; one turn, event, admission and wake receipts, and agent start operation. Synthetic capacity and no native guest wake.",
+          "path": "marshall/test/marshall/agents/prompt_wake_property_test.exs",
+          "assertion": "prompt retries join one wake without duplicating turns or starting a guest",
+          "scope": "Generated running, pending, stopped and paused prompt histories use a fresh SQL sandbox per case; one turn, event and durable wake identity, with no premature execution. Synthetic capacity and no native guest wake.",
           "execution": "present"
         },
         {
@@ -6534,7 +6594,7 @@
       ],
       "boundary": "Complete manifest, matching keyring, native ownership and isolated restoration.",
       "denial": "Reject unrelated decryption keys, malformed manifests, unavailable retained references, busy operator locks and unsafe or nonempty restore targets; keep historical authority isolated.",
-      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore→decrypt→repository-access composition with the historical-generation refusal in synthetic fixtures.",
+      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore\u2192decrypt\u2192repository-access composition with the historical-generation refusal in synthetic fixtures.",
       "status": "partial",
       "gaps": "No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation.",
       "preferred_gap": "Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.",
@@ -11247,7 +11307,7 @@
           "assertion": "foreign-linux-pam-nosuid-account",
           "scope": "Isolated VM/chroot using the exact pinned installer and PAM: missing-helper9, valid0, expired13, password-change12, unknown10 on nosuid runtime storage; root-owned04755 copy, unchanged0555 source, idempotence and twelve unsafe/argument/nonroot refusals. vmTools source ownership is replaced by a byte-identical root-owned overlay only inside the disposable chroot. No foreign guest SSH/sudo or nonroot elevation acceptance.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
-          "record_assertion": "The maintained VM gate records missing-helper9 → repaired0"
+          "record_assertion": "The maintained VM gate records missing-helper9 \u2192 repaired0"
         },
         {
           "kind": "manual",
@@ -12739,12 +12799,10 @@
         },
         {
           "kind": "unit",
-          "execution": "recorded",
+          "execution": "present",
           "path": "marshall/test/marshall_web/terminal_live_test.exs",
-          "assertion": "the Boot log entry reads host diagnostics without automatically opening a guest terminal",
-          "scope": "LiveView and synthetic host-stream fixtures deliver bounded diagnostic bytes with zero automatically opened registry rows across refresh. Header component fixtures link Boot log from the connection explanation while image terminal capability is false and render no Boot log tab. No actual browser, Lilly host or native guest.",
-          "record": "docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md",
-          "record_assertion": "LiveView and navigation suite passed 27 tests"
+          "assertion": "the paused Boot log entry reads host diagnostics without waking or opening a guest terminal",
+          "scope": "LiveView and synthetic host-stream fixtures deliver bounded diagnostic bytes with zero automatically opened registry rows across refresh. Header component fixtures link Boot log from the connection explanation while image terminal capability is false and render no Boot log tab. No actual browser, Lilly host or native guest."
         },
         {
           "kind": "unit",

@@ -3609,7 +3609,9 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
 
   for same_key <- [true, false] do
     @tag relocation_retry_race: true
-    test "three nodes serialize destination boot retries, same key #{same_key}", %{peers: peers} do
+    test "three nodes refuse cold retry of an uncertain memory restore, same key #{same_key}", %{
+      peers: peers
+    } do
       unboxed(fn ->
         alias Marshall.Compute.{Relocation, RelocationCoordinator, RelocationRetry}
         source = host_fixture()
@@ -3620,10 +3622,17 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
         Cleanup.protect peers do
           activation_state = if(unquote(same_key), do: :failed, else: :unknown)
 
-          {r, token, session} =
+          {r, _token, _session} =
             failed_relocation_activation(vm, owner, source, destination, activation_state)
 
           key = Ash.UUID.generate()
+          operations = Enum.sort_by(Ledger.read!(Operation, vm_id: vm.id), & &1.id)
+          reservations = Enum.sort_by(Ledger.read!(Reservation, vm_id: vm.id), & &1.id)
+          [before_vm] = Ledger.read!(VirtualMachine, id: vm.id)
+          [before_relocation] = Ledger.read!(Relocation, id: r.id)
+          [activation] = Ledger.read!(Operation, id: r.activation_operation_id)
+          assert activation.kind == :resume
+          assert activation.command_snapshot["checkpoint"] == before_vm.current_checkpoint
 
           results =
             for n <- 0..8 do
@@ -3646,41 +3655,30 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
             end
             |> Task.await_many(40_000)
 
-          accepted = for {:ok, retry} <- results, do: retry
-          assert length(accepted) == if(unquote(same_key), do: 9, else: 1)
-          assert length(Enum.uniq_by(accepted, & &1.id)) == 1
-          [retry] = Ledger.read!(RelocationRetry, relocation_id: r.id)
-          [stop] = Ledger.read!(Operation, id: retry.stop_operation_id)
-          assert stop.placement_id == r.destination_placement_id
-          assert stop.execution_epoch == r.destination_epoch
-          assert stop.generation == r.activation_generation + 1
-          assert retry.start_operation_id == nil
+          assert Enum.all?(results, fn
+                   {:error, error} -> Exception.message(error) =~ "relocation_retry_unavailable"
+                   _ -> false
+                 end)
+
+          assert [] == Ledger.read!(RelocationRetry, relocation_id: r.id)
+          assert operations == Enum.sort_by(Ledger.read!(Operation, vm_id: vm.id), & &1.id)
+          assert reservations == Enum.sort_by(Ledger.read!(Reservation, vm_id: vm.id), & &1.id)
+          assert [before_vm] == Ledger.read!(VirtualMachine, id: vm.id)
+          assert [before_relocation] == Ledger.read!(Relocation, id: r.id)
           assert [] == Ledger.read!(Marshall.Compute.CleanupRequest, id: r.id)
 
           assert Enum.all?(
                    relocation_calls(peers, RelocationCoordinator, :advance, [r.id]),
-                   &(&1 == {:ok, :retry_stopping})
+                   &(&1 == {:ok, :committed})
                  )
 
+          assert operations == Enum.sort_by(Ledger.read!(Operation, vm_id: vm.id), & &1.id)
+          assert reservations == Enum.sort_by(Ledger.read!(Reservation, vm_id: vm.id), & &1.id)
+
           if unquote(same_key) do
-            relocation_execution_receipt(token, session, vm.id, stop, :stopped)
-
-            for endpoint <- [source, destination] do
-              Ledger.update!(endpoint.host, :report, %{reported_at: Ledger.now()})
-              Ledger.update!(endpoint.pool, :report, %{reported_at: Ledger.now()})
-            end
-
-            advanced = relocation_calls(peers, RelocationCoordinator, :advance, [r.id])
-            assert Enum.count(advanced, &(&1 == {:ok, :reactivating})) == 1
-            assert Enum.all?(advanced, &(&1 in [{:ok, :reactivating}, {:ok, :committed}]))
-            [retained] = Ledger.read!(RelocationRetry, id: retry.id)
-            [start] = Ledger.read!(Operation, id: retained.start_operation_id)
-            assert start.kind == :start and start.generation == stop.generation + 1
-            assert start.placement_id == r.destination_placement_id
-            assert start.execution_epoch == r.destination_epoch
             [current] = Ledger.read!(VirtualMachine, id: vm.id)
-            assert current.generation == start.generation
-            assert current.desired_state == :running
+            assert current == before_vm
+            assert current.current_checkpoint != nil
           else
             [deleting | coordinators] = peers
 
@@ -3705,12 +3703,16 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
             ]
 
             assert [{:ok, _} | _] = Task.await_many(tasks, 40_000)
-            [retained] = Ledger.read!(RelocationRetry, id: retry.id)
-            assert retained.finished_at != nil and retained.start_operation_id == nil
+            assert [] == Ledger.read!(RelocationRetry, relocation_id: r.id)
             [deleted] = Ledger.read!(Relocation, id: r.id)
             assert deleted.deletion_requested_at != nil
+            [delete] = Ledger.read!(Operation, vm_id: vm.id, kind: :delete)
+            assert delete.placement_id == r.destination_placement_id
+            assert delete.execution_epoch == r.destination_epoch
+            assert delete.generation == r.activation_generation + 1
           end
 
+          assert [] == Ledger.read!(Operation, relocation_id: r.id, kind: :start)
           [current] = Ledger.read!(VirtualMachine, id: vm.id)
           assert current.current_placement_id == r.destination_placement_id
           assert current.execution_epoch == r.destination_epoch
@@ -3725,8 +3727,8 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
   end
 
   # @cc [owner:ghuntley,label:verification] retry-race-reaches-committed-authority
-  # The retry race MUST reach handoff through real control exchanges and the
-  # coordinator, including probe, source stop evidence and the full-copy receipt.
+  # The retry refusal race MUST reach handoff through real control exchanges and
+  # the coordinator, including probe, source pause evidence and full-copy receipt.
   # Synthetic physical receipts establish application test state only, not native
   # execution acceptance. Retry calls themselves MUST run on three independent peers.
   defp failed_relocation_activation(vm, owner, source, destination, activation_state) do
@@ -3765,7 +3767,7 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
          %{session_id: session["session_id"], epoch: session["epoch"], results: []}}
       end
 
-    # ADR-0155: connectivity proof, then the physical stop, then one full copy.
+    # ADR-0197: connectivity proof, then physical pause, then one coherent copy.
     [prepared] = Ledger.read!(Relocation, id: r.id)
     [running] = Ledger.read!(VirtualMachine, id: vm.id)
     Marshall.RelocationProbeFixture.applied!(prepared, running)
@@ -3776,7 +3778,8 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
     assert {:ok, :stopping} = RelocationCoordinator.advance(r.id)
     [stopping] = Ledger.read!(Relocation, id: r.id)
     [stop] = Ledger.read!(Operation, id: stopping.source_stop_operation_id)
-    relocation_execution_receipt(source_token, source_session, vm.id, stop, :stopped)
+    assert stop.kind == :pause
+    relocation_execution_receipt(source_token, source_session, vm.id, stop, :paused)
 
     {:ok, %{"commands" => [wire]}} = RelocationSources.exchange(source_token, source_session)
     {:ok, command} = OverallsProtocol.RelocationSource.command(wire)
@@ -3810,12 +3813,19 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
 
     assert [] == Ledger.read!(Marshall.Compute.ReadinessRequest, id: activation.id)
 
-    assert {:ok, %{relocation: %{retryable: true, phase: :activation_failed}}} =
+    assert {:ok, %{relocation: %{retryable: false, phase: :activation_failed}}} =
              Marshall.Compute.get_vm(%{vm_id: vm.id}, actor: owner)
 
     {committed, target_token, target_session}
   end
 
+  @spec relocation_execution_receipt(
+          String.t(),
+          map(),
+          String.t(),
+          Operation.t(),
+          :paused | :stopped | :running | :failed | :unknown
+        ) :: term()
   defp relocation_execution_receipt(token, session, vm_id, operation, state) do
     [current] = Ledger.read!(VirtualMachine, id: vm_id)
 
@@ -3828,17 +3838,41 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
       operation_id: operation.id,
       sequence: current.outcome_sequence + 1,
       state: state,
-      compute_empty: state != :unknown,
+      compute_empty: state in [:paused, :stopped, :failed],
       disk_present: true,
       cleanup_complete: false,
-      reason: %{failed: :execution_failed, stopped: :none, unknown: :unknown}[state]
+      reason:
+        if(state == :failed,
+          do: :execution_failed,
+          else: if(state == :unknown, do: :unknown, else: :none)
+        )
     }
+
+    outcome =
+      if state in [:paused, :running],
+        do: Map.put(outcome, :checkpoint, relocation_checkpoint(current)),
+        else: outcome
 
     assert {:ok, _} =
              Marshall.Compute.ProvisionerControl.exchange_execution(
                token,
                Map.merge(session, %{report: nil, acknowledgements: [], outcomes: [outcome]})
              )
+  end
+
+  @spec relocation_checkpoint(VirtualMachine.t()) :: OverallsProtocol.Checkpoint.t()
+  defp relocation_checkpoint(vm) do
+    %{
+      id: "11111111-1111-4111-8111-111111111111",
+      memory_bytes: vm.memory_bytes,
+      state_bytes: 4096,
+      compatibility: "sha256:" <> String.duplicate("a", 64),
+      memory_sha256: "sha256:" <> String.duplicate("b", 64),
+      state_sha256: "sha256:" <> String.duplicate("c", 64),
+      manifest_sha256: "sha256:" <> String.duplicate("d", 64),
+      dataset_guid: "81",
+      snapshot_guid: "82"
+    }
   end
 
   defp relocation_calls(peers, module, function, arguments) do

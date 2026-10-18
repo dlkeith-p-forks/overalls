@@ -2,6 +2,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <pthread.h>
 #include <signal.h>
 #include <stdatomic.h>
@@ -93,13 +94,20 @@ static void *blocked(void *argument) {
 /* @cc [owner:ghuntley,label:verification] native-reset-live-socket-oracle
  * The isolated probe MUST establish live kernel identity before reset, retain
  * a socket with no peer, and require its identity option to fail ECONNRESET.
- * Pending accept/read/write calls MUST wake with errors; host connection loss
- * alone MUST NOT satisfy the idle-socket condition. Fresh socket behavior MUST
- * distinguish FreeBSD device fencing from illumos current-CID revalidation.
+ * Pending read/write calls MUST wake with errors; host connection loss alone
+ * MUST NOT satisfy the idle-socket condition. The original listener MUST accept
+ * a fresh connection after reset, and fresh sockets MUST retain the build ID.
  */
 int main(void) {
     int idle, read_listener, write_listener;
     char original[65], current[65];
+    uint64_t memory_nonce;
+    pid_t original_pid = getpid();
+    int random_fd = open("/dev/urandom", O_RDONLY);
+    if (random_fd < 0 || read(random_fd, &memory_nonce, sizeof(memory_nonce)) !=
+        sizeof(memory_nonce) || close(random_fd) != 0) {
+        fail("memory-nonce");
+    }
     struct operation operations[3] = {
         { .kind = BLOCK_ACCEPT }, { .kind = BLOCK_READ }, { .kind = BLOCK_WRITE }
     };
@@ -122,7 +130,7 @@ int main(void) {
     operations[0].fd = listener(1101);
     read_listener = listener(1102);
     write_listener = listener(1103);
-    (void)printf("{\"event\":\"native-reset-listeners-ready\",\"build_id\":\"%s\"}\n", original);
+    (void)printf("{\"event\":\"native-reset-listeners-ready\",\"build_id\":\"%s\",\"memory_nonce\":\"%016llx\",\"pid\":%ld}\n", original, (unsigned long long)memory_nonce, (long)original_pid);
     operations[1].fd = accept(read_listener, NULL, NULL);
     operations[2].fd = accept(write_listener, NULL, NULL);
     if (operations[1].fd < 0 || operations[2].fd < 0) {
@@ -158,13 +166,12 @@ int main(void) {
         fail("idle-not-fenced");
     }
     for (size_t attempt = 0; attempt < 50; attempt++) {
-        if (atomic_load(&operations[0].done) && atomic_load(&operations[1].done) &&
-            atomic_load(&operations[2].done)) {
+        if (atomic_load(&operations[1].done) && atomic_load(&operations[2].done)) {
             break;
         }
         (void)usleep(100000);
     }
-    for (size_t index = 0; index < 3; index++) {
+    for (size_t index = 1; index < 3; index++) {
         if (!atomic_load(&operations[index].done) || operations[index].result != -1 ||
             operations[index].error == 0) {
             fail("blocked-operation-not-refused");
@@ -173,18 +180,20 @@ int main(void) {
             fail("thread-join");
         }
     }
-    int fresh = new_socket();
-#if defined(__FreeBSD__)
-    if (fresh != -1 || errno != ENXIO) {
-        fail("fresh-freebsd-not-fenced");
+    if (atomic_load(&operations[0].done)) {
+        fail("listener-fenced-by-reset");
     }
-    const char *fresh_state = "refused-until-new-vm";
-#else
+    int fresh = new_socket();
     if (fresh < 0 || identity(fresh, current) != 0 || strcmp(original, current) != 0) {
-        fail("fresh-illumos-not-revalidated");
+        fail("fresh-socket-not-revalidated");
     }
     const char *fresh_state = "current-cid-revalidated";
-#endif
+    (void)printf("{\"event\":\"native-reset-reconnect-ready\",\"memory_nonce\":\"%016llx\",\"pid\":%ld}\n", (unsigned long long)memory_nonce, (long)getpid());
+    if (pthread_join(operations[0].thread, NULL) != 0 ||
+        operations[0].result < 0 || operations[0].error != 0) {
+        fail("original-listener-not-reusable");
+    }
+    (void)close((int)operations[0].result);
     (void)printf("{\"event\":\"native-reset-verified\",\"idle_error\":%d,\"accept_error\":%d,\"read_error\":%d,\"write_error\":%d,\"written_before_refusal\":%zu,\"fresh_socket\":\"%s\",\"native_admission\":false}\n",
         ECONNRESET, operations[0].error, operations[1].error, operations[2].error,
         atomic_load(&operations[2].written), fresh_state);

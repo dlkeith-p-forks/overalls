@@ -467,6 +467,7 @@ defmodule Lilly.VM.ActorWatchTest do
   # report (ADR-0176 steady-state-reconcile-backstop).
   test "a steady watched actor reconciles on the backstop and on watcher evidence", ctx do
     actor = controlled_actor(ctx)
+    actor_monitor = Process.monitor(actor)
     controlled_result(actor, running())
     eventually(fn -> :sys.get_state(actor).watch.state == :watching end)
 
@@ -501,7 +502,17 @@ defmodule Lilly.VM.ActorWatchTest do
 
     # Watcher evidence ends steadiness and per-tick reconciles resume.
     File.write!(Path.join(ctx.dir, "exit"), "")
-    eventually(fn -> :sys.get_state(actor).steady == 0 end)
+
+    eventually(fn ->
+      try do
+        :sys.get_state(actor).steady == 0
+      catch
+        :exit, _ ->
+          assert_receive {:DOWN, ^actor_monitor, :process, ^actor, _reason}, 2000
+          flunk("processing an already-exited watcher must preserve the VM actor")
+      end
+    end)
+
     assert_receive {:execute, worker, _}, 2000
     send(worker, {:result, {:ok, running()}})
   end

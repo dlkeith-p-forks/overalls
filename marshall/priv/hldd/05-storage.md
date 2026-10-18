@@ -1,5 +1,24 @@
 # Storage and capacity
 
+## Suspension checkpoint custody
+
+Memory/device snapshots occupy private sibling checkpoint datasets, outside the
+ordinary VM disk, clone and backup streams. Two slots are bound into each VMM
+jail before launch; the mapped restore slot remains immutable while a later
+pause captures into the other slot. Files are sealed only after the VMM is gone.
+The patched VMM aborts snapshot creation if its block drain/flush barrier fails;
+a successful API response is required before sealing a checkpoint. Host sync alone
+cannot establish asynchronous device-state ordering. A coherent disk snapshot and
+memory checkpoint travel as separate authenticated
+components during a paused relocation. Adoption validates both before handoff.
+
+Admission reserves checkpoint headroom before capture. Physical allocation credit
+requires confirmed owned checkpoint datasets and is capped by their reservation;
+unknown artifacts consume pool space without granting credit. A durable restore
+consumption record precedes possible execution. An uncertain consumed checkpoint
+cannot be replayed against disks that may already have changed. Storage retention,
+compute absence and successful reclamation are independent facts.
+
 Lilly provisions native ZFS datasets containing sparse raw guest drives. Guest
 filesystems are distinct from host ZFS. Pool and dataset GUIDs establish identity;
 matching names or mount paths are insufficient. Host root storage is a separate
@@ -143,10 +162,10 @@ keeps this live evidence separate from native busy-file and neighbor preservatio
 Multi-disk profiles move as one placement dataset stream. Every expected drive
 must exist on adoption. A partial drive set cannot become a running destination.
 Relocation and clone transfers use one owned source snapshot, `lilly-b`, taken
-of a stopped disk and sent as one full stream; native policy admits only
+of a quiesced disk and sent as one full stream; native policy admits only
 `lilly-b` and `lilly-backup` snapshot names on guest datasets. Relocation holds
 no temporary snapshot headroom because a stopped snapshot cannot diverge.
-Transfer journals accept only the stopped-only schema: a journal in the removed
+Disk transfer journals reject the retired pre-copy schema: a journal in the removed
 pre-copy shape (`baseline_guid`, incremental stream or a `lilly-a` slot) fails
 closed. ADR-0159 removed the one-way startup migration after hosts were purged
 of that state.

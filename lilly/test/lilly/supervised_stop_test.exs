@@ -24,8 +24,15 @@ defmodule Lilly.SupervisedStopTest do
 
       assert SupervisedStop.category({:shutdown, secret}) == :shutdown
 
-      assert SupervisedStop.location({:badarg, [{Lilly.VM.Actor, :schedule, [secret], []}]}) ==
-               {Lilly.VM.Actor, :schedule, 1}
+      reason = {:badarg, [{:erlang, :port_close, [secret], []}]}
+      assert SupervisedStop.location(reason) == {:unknown, :unknown, 0}
+
+      assert :ok =
+               SupervisedStop.emit_actor(
+                 reason,
+                 "11111111-1111-4111-8111-111111111111",
+                 "11111111-1111-4111-8111-111111111111"
+               )
     end
   end
 end

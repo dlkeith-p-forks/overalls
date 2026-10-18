@@ -80,13 +80,13 @@ defmodule Marshall.Compute.ServiceLevelAdmission do
   end
 
   # @cc [owner:ghuntley,label:capacity;recovery] service-level-budget-by-agent-set
-  # Creation-to-ready provision/start measurements MUST use the same validated
+  # Creation-to-ready provision/start/resume measurements MUST use the same validated
   # agent-set budget Lilly records for the boot. Physical and non-readiness
   # services retain their operation windows, while an unavailable image keeps
   # the historical profile fallback for old snapshots.
   @spec deadline_seconds(Operation.t(), atom(), String.t() | nil) :: pos_integer()
   defp deadline_seconds(operation, :marshall_ready, profile)
-       when operation.kind in [:provision, :start] do
+       when operation.kind in [:provision, :start, :resume] do
     profile = if profile == "inception", do: :inception, else: :customer
 
     Marshall.Compute.Images.readiness_budget_ms(
@@ -101,7 +101,7 @@ defmodule Marshall.Compute.ServiceLevelAdmission do
 
   defp deadline_seconds(operation, _service, profile) do
     case operation.kind do
-      kind when kind in [:provision, :start] ->
+      kind when kind in [:provision, :start, :resume] ->
         if(profile == "inception", do: 3_000, else: 600)
 
       _ ->

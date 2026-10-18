@@ -6,6 +6,10 @@ let
   # string, Cargo.toml or Cargo.lock: Lilly matches `vmm_version` exactly and
   # the vendored dependency hash is keyed on the unpatched source.
   patches = [
+    # @cc [owner:ghuntley,label:recovery] snapshot-block-barrier-before-publication
+    # A failed asynchronous block drain/flush MUST terminate the VMM before
+    # memory/device snapshot publication, never become a successful API reply.
+    ../../../platform/patches/firecracker-snapshot-block-barrier.patch
     # PVH start info carries the ACPI RSDP address (ADR-0169). Firmware
     # payloads such as edk2 CloudHv find the tables only through this field.
     ../../../platform/patches/firecracker-pvh-rsdp-paddr.patch

@@ -4,15 +4,70 @@ defmodule Marshall.Terminal.Authority do
   alias Marshall.{Access, Compute, Terminal}
   alias Marshall.Compute.{Host, Ledger}
   alias Marshall.Terminal.{Creation, Termination}
+  @type access_mode :: :connect | :observe
+
+  # @cc [owner:ghuntley,label:security;recovery] terminal-wake-before-guest-access
+  # Wake admission MUST recheck Cedar and the image capability under the VM
+  # lock. Pending wake MUST NOT issue guest controls or tickets. A stopped VM
+  # still requires explicit start. A new connection MUST join existing demand;
+  # server-side observation MUST NOT create demand or refresh the idle clock.
+  @spec ensure_awake(map(), map(), String.t(), access_mode()) ::
+          {:ok, Compute.VirtualMachine.t()} | {:error, atom()}
+  def ensure_awake(vm, actor, action \\ "read", mode \\ :connect)
+      when mode in [:connect, :observe] do
+    case Ledger.transaction(
+           fn ->
+             current =
+               Ledger.lock!(Compute.VirtualMachine, vm.id) || Ledger.rollback(:unknown_session)
+
+             unless Access.Authorization.allowed?(current, actor, action),
+               do: Ledger.rollback(:forbidden)
+
+             unless Compute.Images.guest_capabilities(current.image_id).terminal,
+               do: Ledger.rollback(:terminal_unavailable)
+
+             cond do
+               Compute.Wake.ready?(current) ->
+                 current
+
+               mode == :observe ->
+                 Ledger.rollback(:terminal_unavailable)
+
+               current.desired_state == :paused or current.observed_state == :paused ->
+                 Compute.Wake.request_locked!(current, :network, actor)
+                 :pending
+
+               current.desired_state == :running and current.observed_state == :running ->
+                 :pending
+
+               true ->
+                 Ledger.rollback(:terminal_unavailable)
+             end
+           end,
+           actor
+         ) do
+      {:ok, :pending} -> {:error, :terminal_open_pending}
+      {:ok, current} -> {:ok, current}
+      {:error, reason} when is_atom(reason) -> {:error, reason}
+      _ -> {:error, :terminal_unavailable}
+    end
+  end
 
   # @cc [owner:ghuntley,label:security;recovery] personal-terminal-account
   # Browser creates MUST use the current actor's durable GuestAccounts identity
   # and fresh Cedar write permission, never a client-selected guest username.
   # Automatic creates MUST use one stable request per actor/account/VM execution;
   # retries and reloads MUST NOT replace a closed shell or duplicate a live shell.
-  @spec open_personal_session(map(), Marshall.Accounts.User.t(), :default | String.t()) ::
+  # Server-side automatic creates MUST observe readiness without creating wake
+  # demand if the machine pauses between listing and the supervised opening.
+  @spec open_personal_session(
+          map(),
+          Marshall.Accounts.User.t(),
+          :default | String.t(),
+          access_mode()
+        ) ::
           {:ok, Terminal.Session.t()} | {:error, atom()}
-  def open_personal_session(vm, actor, request_id \\ :default) do
+  def open_personal_session(vm, actor, request_id \\ :default, mode \\ :connect) do
     catch_capabilities(fn ->
       with {:ok, {current, account}} <-
              Ledger.transaction(
@@ -33,7 +88,7 @@ defmodule Marshall.Terminal.Authority do
             do: default_request(current, actor, account),
             else: request_id
 
-        open_on_vm(current, actor, account.username, "xterm-256color", request_id, "write")
+        open_on_vm(current, actor, account.username, "xterm-256color", request_id, "write", mode)
       else
         {:error, reason} when is_atom(reason) -> {:error, reason}
         _ -> {:error, :guest_account_unavailable}
@@ -90,16 +145,14 @@ defmodule Marshall.Terminal.Authority do
     end)
   end
 
-  defp open_on_vm(vm, actor, guest_user, term, request_id, action) do
-    with true <-
-           (vm.desired_state == :running and vm.observed_state == :running) ||
-             {:error, :terminal_unavailable},
+  defp open_on_vm(vm, actor, guest_user, term, request_id, action, mode \\ :connect) do
+    with {:ok, vm} <- ensure_awake(vm, actor, action, mode),
          {:ok, host} <- capability(vm),
          :ok <- authorize(vm, actor, action),
          {:ok, writable} <- authorized_mode(vm, actor),
          true <- OverallsProtocol.uuid?(request_id) || {:error, :invalid_terminal_request},
          :ok <- creation_supported(vm, host, request_id),
-         {:ok, _sessions} <- list_sessions(vm, actor),
+         {:ok, _sessions} <- list_sessions(vm, actor, mode),
          {:ok, opening} <- Creation.reserve(vm, actor, guest_user, term, request_id) do
       if opening.status == :ready do
         session_for(opening.session_id, actor)
@@ -173,9 +226,11 @@ defmodule Marshall.Terminal.Authority do
   # registry candidates before requesting the listing, so concurrently created
   # sessions cannot be mistaken for exited sessions. Archive and closed receipt
   # MUST commit together, once, with the observing actor identified.
-  @spec list_sessions(Compute.VirtualMachine.t(), map()) :: {:ok, [map()]} | {:error, atom()}
-  def list_sessions(vm, actor) do
+  @spec list_sessions(Compute.VirtualMachine.t(), map(), access_mode()) ::
+          {:ok, [map()]} | {:error, atom()}
+  def list_sessions(vm, actor, mode \\ :connect) do
     with {:ok, vm} <- live_vm(vm.id, actor, "read"),
+         {:ok, vm} <- ensure_awake(vm, actor, "read", mode),
          {:ok, host} <- capability(vm),
          {:ok, registry_sessions} <- Terminal.list_for_vm(vm.id, actor: actor, authorize?: false),
          {:ok, %{type: :listed, sessions: sessions}} <-
@@ -229,6 +284,7 @@ defmodule Marshall.Terminal.Authority do
   def users(vm, actor) do
     catch_capabilities(fn ->
       with {:ok, vm} <- live_vm(vm.id, actor, "read"),
+           {:ok, vm} <- ensure_awake(vm, actor),
            {:ok, host} <- capability(vm),
            {:ok, %{type: :users_listed, users: users}} <-
              stream_control(host.id, %{
@@ -242,12 +298,17 @@ defmodule Marshall.Terminal.Authority do
     end)
   end
 
-  @spec session_for(String.t(), map()) :: {:ok, Terminal.Session.t()} | {:error, atom()}
-  def session_for(session_id, actor) do
+  # @cc [owner:ghuntley,label:security;recovery] terminal-observation-has-no-wake-effects
+  # Periodic viewer checks MUST use passive observation. Only explicit attach
+  # admission may wake a suspended session; pending readiness grants no ticket.
+  @spec session_for(String.t(), map(), access_mode()) ::
+          {:ok, Terminal.Session.t()} | {:error, atom()}
+  def session_for(session_id, actor, mode \\ :observe) do
     case Ash.get(Terminal.Session, session_id, actor: actor, authorize?: false) do
       {:ok, %Terminal.Session{} = session} ->
         with {:ok, vm} <- live_vm(session.vm_id, actor, "read"),
              true <- Marshall.Terminal.Sharing.allowed?(session, actor) || {:error, :forbidden},
+             {:ok, vm} <- ensure_awake(vm, actor, "read", mode),
              true <-
                (current_session?(session, vm) and session.kill_status == :idle) ||
                  {:error, :unknown_session},
@@ -275,6 +336,7 @@ defmodule Marshall.Terminal.Authority do
     case Ledger.read!(Compute.VirtualMachine, id: session.vm_id) do
       [vm] ->
         with true <- current_session?(session, vm) || {:error, :unknown_session},
+             true <- Compute.Wake.ready?(vm) || {:error, :terminal_unavailable},
              {:ok, host} <- capability(vm),
              true <- Marshall.Terminal.Relay.ready?(host.id) || {:error, :terminal_unavailable} do
           {:ok, host.id}
@@ -302,7 +364,7 @@ defmodule Marshall.Terminal.Authority do
 
   @spec ticket(Terminal.Session.t(), map()) :: {:ok, String.t()} | {:error, atom()}
   def ticket(session, actor) do
-    with {:ok, session} <- session_for(session.id, actor),
+    with {:ok, session} <- session_for(session.id, actor, :connect),
          {:ok, vm} <- live_vm(session.vm_id, actor, "read"),
          true <- current_session?(session, vm) || {:error, :unknown_session},
          {:ok, host} <- capability(vm),

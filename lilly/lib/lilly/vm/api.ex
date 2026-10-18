@@ -1,21 +1,83 @@
 defmodule Lilly.VM.API do
   @moduledoc "Bounded private Unix-socket Firecracker requests. Responses never enter logs."
   @limit 16_384
+  @type state :: :running | :paused | :unconfigured
+
+  @spec state(Path.t(), String.t()) :: {:ok, state()} | {:error, :vmm_api_unavailable}
+  def state(path, id) do
+    with {:ok, 200, body} <- request(path, "GET", "/", ""),
+         {:ok, %{"id" => ^id, "state" => state, "vmm_version" => "1.16.1"}} <- JSON.decode(body),
+         {_, decoded} <-
+           Enum.find(
+             [{"Running", :running}, {"Paused", :paused}, {"Not started", :unconfigured}],
+             fn {wire, _} -> wire == state end
+           ) do
+      {:ok, decoded}
+    else
+      _ -> {:error, :vmm_api_unavailable}
+    end
+  end
+
   # @cc [owner:ghuntley,label:protocol] vmm-readiness-matches-id-version
   # API.running?/2 MUST require HTTP 200 with the requested VM ID, Running state and supported
   # Firecracker 1.16.1 version. Oversized, ambiguous, truncated or invalid replies must not
   # establish readiness.
   @spec running?(Path.t(), String.t()) :: boolean()
   def running?(path, id) do
-    case request(path, "GET", "/", "") do
-      {:ok, 200, body} ->
-        case JSON.decode(body) do
-          {:ok, %{"id" => ^id, "state" => "Running", "vmm_version" => "1.16.1"}} -> true
-          _ -> false
-        end
+    state(path, id) == {:ok, :running}
+  end
 
-      _ ->
-        false
+  # @cc [owner:ghuntley,label:recovery] vmm-pause-is-not-compute-release
+  # pause/1 MUST freeze vCPUs without guest shutdown. Acceptance alone MUST NOT
+  # authorize compute release; a durable checkpoint and empty cgroup are required.
+  @spec pause(Path.t()) :: :ok | {:error, :vmm_api_unavailable}
+  def pause(path), do: change_state(path, "Paused")
+
+  @spec resume(Path.t()) :: :ok | {:error, :vmm_api_unavailable}
+  def resume(path), do: change_state(path, "Resumed")
+
+  @spec create_checkpoint(Path.t(), :a | :b) :: :ok | {:error, :vmm_api_unavailable}
+  def create_checkpoint(path, slot) when slot in [:a, :b] do
+    root = "/checkpoint-" <> Atom.to_string(slot)
+
+    accepted(
+      path,
+      "PUT",
+      "/snapshot/create",
+      %{
+        "snapshot_type" => "Full",
+        "snapshot_path" => root <> "/state",
+        "mem_file_path" => root <> "/memory"
+      },
+      300_000
+    )
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] checkpoint-load-never-cold-boots
+  # load_checkpoint/3 MUST target only fixed jail-local immutable files, load into
+  # a fresh API-only VMM with resume_vm false, and override only the validated
+  # destination TAP/vsock paths. Failure MUST NOT fall back to InstanceStart.
+  @spec load_checkpoint(Path.t(), Lilly.Network.Guest.t(), boolean()) ::
+          :ok | {:error, :vmm_api_unavailable}
+  def load_checkpoint(path, network, vsock?) do
+    body = %{
+      "snapshot_path" => "/restore.state",
+      "mem_backend" => %{"backend_type" => "File", "backend_path" => "/restore.memory"},
+      "enable_diff_snapshots" => false,
+      "resume_vm" => false,
+      "network_overrides" => [%{"iface_id" => "eth0", "host_dev_name" => network.tap}]
+    }
+
+    body = if vsock?, do: Map.put(body, "vsock_override", %{"uds_path" => "/v.sock"}), else: body
+    accepted(path, "PUT", "/snapshot/load", body, 300_000)
+  end
+
+  defp change_state(path, state), do: accepted(path, "PATCH", "/vm", %{"state" => state}, 2000)
+
+  defp accepted(path, method, route, body, timeout) do
+    case request(path, method, route, JSON.encode!(body), timeout) do
+      {:ok, 204, _} -> :ok
+      _ -> {:error, :vmm_api_unavailable}
     end
   end
 
@@ -30,7 +92,7 @@ defmodule Lilly.VM.API do
     end
   end
 
-  defp request(path, method, route, body) do
+  defp request(path, method, route, body, timeout \\ 2000) do
     with {:ok, socket} <-
            Lilly.Host.Sockets.connect_local(
              path,
@@ -48,7 +110,7 @@ defmodule Lilly.VM.API do
                  "\r\nConnection: close\r\n\r\n",
                  body
                ]),
-             do: receive_response(socket, "", System.monotonic_time(:millisecond) + 2000)
+             do: receive_response(socket, "", System.monotonic_time(:millisecond) + timeout)
       after
         :gen_tcp.close(socket)
       end

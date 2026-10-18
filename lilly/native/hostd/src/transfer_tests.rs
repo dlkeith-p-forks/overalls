@@ -574,7 +574,7 @@ fn field(tc: &TestCase) -> Vec<u8> {
 }
 
 fn producer(tc: &TestCase) -> Producer {
-    match tc.draw(gs::integers::<u8>().min_value(0).max_value(4)) {
+    match tc.draw(gs::integers::<u8>().min_value(0).max_value(6)) {
         0 => Producer::LocalSend {
             dataset: field(tc),
             placement: field(tc),
@@ -585,6 +585,11 @@ fn producer(tc: &TestCase) -> Producer {
             to_guid: field(tc),
             token: field(tc),
         },
+        5 => Producer::CheckpointSend {
+            dataset: field(tc),
+            placement: field(tc),
+            slot: field(tc),
+        },
         kind => Producer::Ssh {
             address: field(tc),
             port: field(tc),
@@ -594,6 +599,7 @@ fn producer(tc: &TestCase) -> Producer {
             known_hosts: field(tc),
             verb: match kind {
                 2 => Verb::Export,
+                6 => Verb::Checkpoint,
                 3 => Verb::Resume { token: field(tc) },
                 _ => Verb::Probe {
                     challenge: field(tc),
@@ -604,17 +610,25 @@ fn producer(tc: &TestCase) -> Producer {
 }
 
 fn consumer(tc: &TestCase) -> Consumer {
-    if tc.draw(gs::booleans()) {
-        Consumer::Receive {
+    match tc.draw(gs::integers::<u8>().max_value(2)) {
+        0 => Consumer::Receive {
             dataset: field(tc),
             pool: field(tc),
             placement: field(tc),
             host: field(tc),
             pool_id: field(tc),
             nonce: field(tc),
-        }
-    } else {
-        Consumer::Compare { path: field(tc) }
+        },
+        1 => Consumer::CheckpointReceive {
+            memory_bytes: field(tc),
+            dataset: field(tc),
+            pool: field(tc),
+            placement: field(tc),
+            host: field(tc),
+            pool_id: field(tc),
+            nonce: field(tc),
+        },
+        _ => Consumer::Compare { path: field(tc) },
     }
 }
 
@@ -636,7 +650,7 @@ fn transfer_stream_decoding_round_trips(tc: TestCase) {
             lease: tc.draw(gs::integers::<u64>()),
             timeout_ms,
             rate,
-            stream,
+            stream: Box::new(stream),
         },
     };
     let bytes = encode_request(&envelope);
@@ -688,4 +702,81 @@ fn token_grammar_matches_model(tc: TestCase) {
     })()
     .unwrap_or(false);
     assert_eq!(crate::transfer::token(&token), model, "{token:?}");
+}
+
+/// @cc [owner:ghuntley,label:verification;security] checkpoint-stream-custody
+/// Generated valid slots MUST name only the private checkpoint sibling; unknown
+/// slots and foreign pools MUST refuse. Receive MUST retain fixed ownership,
+/// read-only policy and no resumable token, separate from ordinary disk targets.
+#[hegel::test]
+fn checkpoint_stream_custody(tc: TestCase) {
+    let (_bin, table) = table();
+    let pools = pools();
+    let ctx = context(&pools, &table);
+    let slot = if tc.draw(gs::booleans()) { b"a" } else { b"b" };
+    let checkpoint = |slot: &[u8], dataset: &[u8]| Stream {
+        producer: Producer::CheckpointSend {
+            dataset: dataset.to_vec(),
+            placement: PLACEMENT.to_vec(),
+            slot: slot.to_vec(),
+        },
+        consumer: Consumer::CheckpointReceive {
+            dataset: b"tank/lilly".to_vec(),
+            pool: b"/pool".to_vec(),
+            placement: PLACEMENT.to_vec(),
+            host: HOST.to_vec(),
+            pool_id: POOL_ID.to_vec(),
+            nonce: NONCE.to_vec(),
+            memory_bytes: b"1073741824".to_vec(),
+        },
+    };
+    let request = checkpoint(slot, b"tank/lilly");
+    let derived = plan(&request, &ctx, 10_000, 0, None).unwrap();
+    let argv = strings(&derived.helper);
+    let placement = std::str::from_utf8(PLACEMENT).unwrap();
+    let slot = std::str::from_utf8(slot).unwrap();
+    assert!(argv.contains(&format!(
+        "tank/lilly/checkpoint-{placement}-{slot}@lilly-checkpoint"
+    )));
+    assert!(argv.contains(&format!(
+        "mountpoint=/pool/.lilly-checkpoints/{placement}/a"
+    )));
+    assert_eq!(
+        argv.last(),
+        Some(&format!("tank/lilly/checkpoint-{placement}-a"))
+    );
+    for property in [
+        "readonly=on",
+        "canmount=noauto",
+        "exec=off",
+        "setuid=off",
+        "devices=off",
+        "quota=1140850688",
+    ] {
+        assert!(argv.iter().any(|value| value == property));
+    }
+    assert!(!argv
+        .iter()
+        .any(|value| value == "-s" || value.contains("/vm-")));
+    assert!(derived.resume_check.is_none());
+    let invalid = tc.draw(gs::vecs(gs::integers::<u8>()).max_size(24));
+    if invalid != b"a" && invalid != b"b" {
+        assert_eq!(
+            plan(&checkpoint(&invalid, b"tank/lilly"), &ctx, 10_000, 0, None),
+            Err(Refusal::Malformed)
+        );
+    }
+    assert_eq!(
+        plan(&checkpoint(b"a", b"other/pool"), &ctx, 10_000, 0, None),
+        Err(Refusal::Malformed)
+    );
+    let mut pull = request;
+    pull.producer = ssh(Verb::Checkpoint);
+    let pull = strings(&plan(&pull, &ctx, 10_000, 0, None).unwrap().helper);
+    assert!(pull.windows(2).any(|pair| pair
+        == [
+            "lilly-checkpoint-v1",
+            std::str::from_utf8(RELOCATION).unwrap()
+        ]));
+    assert_eq!(pull[3], "977");
 }

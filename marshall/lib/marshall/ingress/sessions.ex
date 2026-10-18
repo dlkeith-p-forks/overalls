@@ -3,7 +3,7 @@ defmodule Marshall.Ingress.Sessions do
   use Ash.Resource.Actions.Implementation
   alias Marshall.Authorization.SystemActor
   alias Marshall.Access.Authorization
-  alias Marshall.Compute.{Host, Ledger, Operation}
+  alias Marshall.Compute.{Host, Ledger, Operation, VirtualMachine}
   alias Marshall.Ingress.{Endpoint, Error, Execution, Services, Session, Token}
   alias Marshall.SSH.Key
   require Ash.Query
@@ -51,7 +51,46 @@ defmodule Marshall.Ingress.Sessions do
   # host, and completed relocation readiness. No public endpoint grants SSH.
   defp perform(:open, request) do
     service = gateway!(request.service_token)
-    serialize_open!(service.id)
+    open_for!(service, request)
+  end
+
+  # @cc [owner:ghuntley,label:security] ingress-ssh-renewal-no-resurrection
+  # Renewal MUST revalidate the exact unarchived key identity, gateway generation,
+  # current membership and immutable execution binding. Expired/closed sessions
+  # MUST never revive. The five-second client deadline begins before its request.
+  # A provisioner that is only reconnecting (ingress-renewal-host-reconnecting)
+  # MUST be decided last, after every conclusive check, as
+  # :temporarily_unavailable, leaving the lease unchanged (ADR-0187, ADR-0192).
+  defp perform(:renew_ssh, request) do
+    service =
+      Marshall.Ingress.Relays.authority_service!(
+        gateway!(request.service_token),
+        request.session_token,
+        :ssh
+      )
+
+    renew_for!(service, request)
+  end
+
+  defp perform(:close_ssh, request) do
+    service =
+      Marshall.Ingress.Relays.authority_service!(
+        gateway!(request.service_token),
+        request.session_token,
+        :ssh
+      )
+
+    candidate = by_token!(request.session_token)
+    session = Ledger.lock!(Session, candidate.id) || deny!()
+    bind_service!(session, service)
+    if is_nil(session.closed_at), do: Ledger.update!(session, :close, %{closed_at: Ledger.now()})
+    {%{closed: true}, {:ssh_session_closed, session.id}}
+  end
+
+  @doc false
+  @spec open_for!(Marshall.Ingress.Service.t(), map()) :: {map(), tuple()}
+  def open_for!(service, request) do
+    Services.serialize_open!(service.id)
     unless OverallsProtocol.IngressName.valid_label?(request.label), do: deny!()
 
     parsed =
@@ -95,15 +134,27 @@ defmodule Marshall.Ingress.Sessions do
     {Map.put(view(session), :ticket, token), {:ssh_session_opened, vm.id, host.id, session.id}}
   end
 
-  # @cc [owner:ghuntley,label:security] ingress-ssh-renewal-no-resurrection
-  # Renewal MUST revalidate the exact unarchived key identity, gateway generation,
-  # current membership and immutable execution binding. Expired/closed sessions
-  # MUST never revive. The five-second client deadline begins before its request.
-  # A provisioner that is only reconnecting (ingress-renewal-host-reconnecting)
-  # MUST be decided last, after every conclusive check, as
-  # :temporarily_unavailable, leaving the lease unchanged (ADR-0187, ADR-0192).
-  defp perform(:renew_ssh, request) do
-    service = gateway!(request.service_token)
+  # @cc [owner:ghuntley,label:security] ingress-ssh-wake-proof
+  # Waking MUST require the same proved registered key and current VM write
+  # permission as stream admission. This check MUST NOT create a stream.
+  @doc false
+  @spec authorize_wake!(map(), VirtualMachine.t()) :: Marshall.Accounts.User.t()
+  def authorize_wake!(request, vm) do
+    parsed =
+      case OverallsProtocol.SSHKey.parse(request.public_key) do
+        {:ok, key} -> key
+        _ -> deny!()
+      end
+
+    key = Marshall.SSH.KeyRegistry.find(parsed, :share) || deny!()
+    user = user!(key)
+    Authorization.require!(vm, user, "write")
+    user
+  end
+
+  @doc false
+  @spec renew_for!(Marshall.Ingress.Service.t(), map()) :: {map(), nil}
+  def renew_for!(service, request) do
     candidate = by_token!(request.session_token)
     bind_service!(candidate, service)
     key = shared!(Key, id: candidate.key_id)
@@ -124,15 +175,6 @@ defmodule Marshall.Ingress.Sessions do
     session
     |> Ledger.update!(:renew, %{expires_at: DateTime.add(Ledger.now(), @ttl, :millisecond)})
     |> then(&{view(&1), nil})
-  end
-
-  defp perform(:close_ssh, request) do
-    service = gateway!(request.service_token)
-    candidate = by_token!(request.session_token)
-    session = Ledger.lock!(Session, candidate.id) || deny!()
-    bind_service!(session, service)
-    if is_nil(session.closed_at), do: Ledger.update!(session, :close, %{closed_at: Ledger.now()})
-    {%{closed: true}, {:ssh_session_closed, session.id}}
   end
 
   defp gateway!(token) do
@@ -178,7 +220,7 @@ defmodule Marshall.Ingress.Sessions do
                  execution_epoch: vm.execution_epoch,
                  generation: vm.generation
                ),
-               &(&1.status == :completed and &1.kind in [:provision, :start])
+               &(&1.status == :completed and &1.kind in [:provision, :start, :resume])
              ),
            do: deny!()
   end
@@ -216,15 +258,6 @@ defmodule Marshall.Ingress.Sessions do
   defp live!(session) do
     if session.closed_at != nil or DateTime.compare(session.expires_at, Ledger.now()) != :gt,
       do: deny!()
-  end
-
-  defp serialize_open!(id) do
-    Ecto.Adapters.SQL.query!(
-      Marshall.Repo,
-      "SELECT pg_advisory_xact_lock(hashtextextended($1, 0))",
-      ["audi-open:" <> id],
-      log: false
-    )
   end
 
   defp view(session) do
