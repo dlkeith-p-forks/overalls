@@ -17,502 +17,502 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6
 #, elixir-autogen, elixir-format
 msgid "   A failed component restore leaves earlier numbered output for inspection and\n   does not write the final `manifest.json`. Preserve partial output, resolve the\n   cause and explicitly retry into a fresh empty private directory. The command\n   refuses an already populated target."
-msgstr ""
+msgstr "एक विफल घटक पुनर्स्थापना निरीक्षण के लिए पहले से क्रमांकित आउटपुट छोड़ देता है\n   अंतिम `manifest.json` नहीं लिखता. आंशिक आउटपुट सुरक्षित रखें, समाधान करें\n   कारण और स्पष्ट रूप से एक ताजा खाली निजी निर्देशिका में पुनः प्रयास करें। आदेश\n   पहले से ही आबादी वाले लक्ष्य को अस्वीकार कर देता है।"
 
 #: lib/marshall/documentation_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "  Before 2026-10-17 private Audi and Brady required uid 0. After the\n  unprivileged switch, every guest host-certificate and roster lookup was\n  refused, so sshd never started and readiness timed out. The fleet machine\n  test found this; Brady's attribution failed the same way, reporting\n  unresolved."
-msgstr ""
+msgstr "2026-10-17 से पहले निजी ऑडी और ब्रैडी को यूआईडी 0 की आवश्यकता थी\n  विशेषाधिकार रहित स्विच, प्रत्येक अतिथि होस्ट-प्रमाणपत्र और रोस्टर लुकअप था\n  इनकार कर दिया, इसलिए एसएसएचडी कभी शुरू नहीं हुआ और तैयारी का समय समाप्त हो गया। बेड़ा मशीन\n  परीक्षण में यह पाया गया; ब्रैडी का एट्रिब्यूशन उसी तरह विफल रहा, रिपोर्टिंग\n  अनसुलझा."
 
 #: lib/marshall/documentation_messages.ex:14
 #, elixir-autogen, elixir-format
 msgid "  Evidence:\n  - hostd fixture tests and Hegel decoding models;\n  - bridge process fixtures (the privilege-drop fixture runs only as root);\n  - a Lilly custody property test that fails if a socket is not released.\n  The namespace dial and the bridge in a real VM namespace are covered only\n  by the fleet machine test."
-msgstr ""
+msgstr "साक्ष्य:\n  - होस्टडी स्थिरता परीक्षण और हेगेल डिकोडिंग मॉडल;\n  - ब्रिज प्रोसेस फिक्स्चर (विशेषाधिकार-ड्रॉप फिक्स्चर केवल रूट के रूप में चलता है);\n  - एक लिली हिरासत संपत्ति परीक्षण जो सॉकेट जारी नहीं होने पर विफल हो जाता है।\n  वास्तविक वीएम नेमस्पेस में नेमस्पेस डायल और ब्रिज को ही कवर किया जाता है\n  बेड़े मशीन परीक्षण द्वारा."
 
 #: lib/marshall/documentation_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "  For this reason, callers of the module system can provide `specialArgs`\n  which are available during import resolution."
-msgstr ""
+msgstr "इस कारण से, मॉड्यूल सिस्टम के कॉलर्स `specialArgs` प्रदान कर सकते हैं \n  जो आयात समाधान के दौरान उपलब्ध हैं।"
 
 #: lib/marshall/documentation_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "  Lilly keeps the execution fence for detached bridges. Before the bridge\n  starts, it records the binding under a random key in a private 0700\n  directory beside its connector socket. A keeper process then holds an\n  ingress guardian for that binding and ends the bridge through hostd\n  (`cgroup.kill` on its scope) as soon as the guardian dies. A restarted\n  Lilly lists the live scopes. It ends any bridge with no readable record at\n  once, and any recorded bridge whose execution is not current within 30\n  seconds. While Lilly is down nothing fences, so a revoked execution's live\n  session can last the downtime plus 30 seconds. Audi's own account-key\n  revocation is unaffected."
-msgstr ""
+msgstr "लिली अलग पुलों के लिए निष्पादन बाड़ रखती है। पुल से पहले\n  प्रारंभ होता है, यह एक निजी 0700 में एक यादृच्छिक कुंजी के तहत बाइंडिंग को रिकॉर्ड करता है\n  इसके कनेक्टर सॉकेट के बगल में निर्देशिका। एक कीपर प्रक्रिया तब धारण करती है\n  उस बंधन के लिए प्रवेश अभिभावक और होस्ट के माध्यम से पुल को समाप्त करता है\n  (`cgroup.kill` इसके दायरे पर) जैसे ही अभिभावक की मृत्यु हो जाती है। ए पुनः प्रारंभ हुआ\n  लिली लाइव स्कोप सूचीबद्ध करती है। यह किसी भी पुल को बिना किसी पठनीय रिकॉर्ड के समाप्त कर देता है\n  एक बार, और कोई भी रिकॉर्ड किया गया पुल जिसका निष्पादन 30 के भीतर चालू नहीं है\n  सेकंड. जबकि लिली किसी भी बाड़ से नीचे नहीं है, इसलिए एक निरस्त निष्पादन लाइव है\n  सत्र डाउनटाइम प्लस 30 सेकंड तक चल सकता है। ऑडी की अपनी खाता-कुंजी\n  निरसन अप्रभावित है."
 
 #: lib/marshall/documentation_messages.ex:26
 #, elixir-autogen, elixir-format
 msgid "  Services that call Lilly authenticate it by `SO_PEERCRED` as the configured\n  Lilly uid, which the NixOS modules fill from `users.users.lilly.uid`:\n  - private Audi's guest lookup (`connector_uid`);\n  - the Audi gateway's ingress connector (`connectorUid`, which Lilly's module\n    asserts);\n  - Brady's egress attribution (`attribution_uid`)."
-msgstr ""
+msgstr "लिली को कॉल करने वाली सेवाएँ इसे `SO_PEERCRED` द्वारा कॉन्फ़िगर के रूप में प्रमाणित करती हैं\n  लिली यूआईडी, जिसे NixOS मॉड्यूल `users.users.lilly.uid` से भरते हैं:\n  - निजी ऑडी का अतिथि लुकअप (`connector_uid`);\n  - ऑडी गेटवे का इनग्रेस कनेक्टर (`connectorUid`, जो लिली का मॉड्यूल है\n    दावा);\n  - ब्रैडी का निकास एट्रिब्यूशन (`attribution_uid`)।"
 
 #: lib/marshall/documentation_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "  Whereas option values can generally depend on other option values\n  thanks to laziness, this does not apply to `imports`, which\n  must be computed statically before anything else."
-msgstr ""
+msgstr "जबकि विकल्प मान आम तौर पर अन्य विकल्प मानों पर निर्भर हो सकते हैं\n  आलस्य के लिए धन्यवाद, यह `imports` पर लागू नहीं होता है, जो\n  किसी भी अन्य चीज़ से पहले सांख्यिकीय रूप से गणना की जानी चाहिए।"
 
 #: lib/marshall/documentation_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "  hostd sends Lilly no descriptor. It refuses a received descriptor that is\n  not an unconnected, non-listening AF_UNIX stream socket, and it ends the\n  session on a descriptor attached to any other request, a missing\n  descriptor, more than one descriptor, or truncated or foreign ancillary\n  data. Lilly closes each socket once its `gen_tcp` port is down, whether\n  the owner closed it, died or handed it on."
-msgstr ""
+msgstr "होस्ट लिली को कोई डिस्क्रिप्टर नहीं भेजता है। यह एक प्राप्त विवरणकर्ता को अस्वीकार कर देता है\n  एक असंबद्ध, गैर-सुनने वाला AF_UNIX स्ट्रीम सॉकेट नहीं है, और यह समाप्त होता है\n  किसी अन्य अनुरोध से जुड़े डिस्क्रिप्टर पर सत्र, एक अनुपलब्ध\n  वर्णनकर्ता, एक से अधिक वर्णनकर्ता, या काट-छाँट या विदेशी सहायक\n  डेटा. `gen_tcp` पोर्ट डाउन होने पर लिली प्रत्येक सॉकेट को बंद कर देती है\n  मालिक ने इसे बंद कर दिया, मर गया या इसे सौंप दिया।"
 
 #: lib/marshall/documentation_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "# Accounts and access control"
-msgstr ""
+msgstr "# खाते और अभिगम नियंत्रण"
 
 #: lib/marshall/documentation_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "# Agent threads and tools"
-msgstr ""
+msgstr "# एजेंट धागे और उपकरण"
 
 #: lib/marshall/documentation_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "# Ash business domains"
-msgstr ""
+msgstr "# एश बिजनेस डोमेन"
 
 #: lib/marshall/documentation_messages.ex:49
 #, elixir-autogen, elixir-format
 msgid "# Automation"
-msgstr ""
+msgstr "# स्वचालन"
 
 #: lib/marshall/documentation_messages.ex:50
 #, elixir-autogen, elixir-format
 msgid "# Backup and recovery"
-msgstr ""
+msgstr "# बैकअप और पुनर्प्राप्ति"
 
 #: lib/marshall/documentation_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "# Browser editors, terminals, SSH, and management"
-msgstr ""
+msgstr "# ब्राउज़र संपादक, टर्मिनल, एसएसएच, और प्रबंधन"
 
 #: lib/marshall/documentation_messages.ex:52
 #, elixir-autogen, elixir-format
 msgid "# Browser extension"
-msgstr ""
+msgstr "# ब्राउज़र एक्सटेंशन"
 
 #: lib/marshall/documentation_messages.ex:53
 #, elixir-autogen, elixir-format
 msgid "# Command reference"
-msgstr ""
+msgstr "# कमांड संदर्भ"
 
 #: lib/marshall/documentation_messages.ex:54
 #, elixir-autogen, elixir-format
 msgid "# Control plane and durable authority"
-msgstr ""
+msgstr "# नियंत्रण विमान और टिकाऊ प्राधिकरण"
 
 #: lib/marshall/documentation_messages.ex:55
 #, elixir-autogen, elixir-format
 msgid "# Deployment topology"
-msgstr ""
+msgstr "# परिनियोजन टोपोलॉजी"
 
 #: lib/marshall/documentation_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "# Getting started"
-msgstr ""
+msgstr "# शुरू करना"
 
 #: lib/marshall/documentation_messages.ex:57
 #, elixir-autogen, elixir-format
 msgid "# Guest systems and images"
-msgstr ""
+msgstr "# अतिथि प्रणालियाँ और छवियाँ"
 
 #: lib/marshall/documentation_messages.ex:58
 #, elixir-autogen, elixir-format
 msgid "# Installation and deployment"
-msgstr ""
+msgstr "# स्थापना और परिनियोजन"
 
 #: lib/marshall/documentation_messages.ex:59
 #, elixir-autogen, elixir-format
 msgid "# Machine lifecycle"
-msgstr ""
+msgstr "# मशीन जीवनचक्र"
 
 #: lib/marshall/documentation_messages.ex:60
 #, elixir-autogen, elixir-format
 msgid "# Monitoring and troubleshooting"
-msgstr ""
+msgstr "# निगरानी और समस्या निवारण"
 
 #: lib/marshall/documentation_messages.ex:61
 #, elixir-autogen, elixir-format
 msgid "# Networking, ingress, and certificates"
-msgstr ""
+msgstr "# नेटवर्किंग, प्रवेश, और प्रमाणपत्र"
 
 #: lib/marshall/documentation_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "# Nix cache trust and fallback"
-msgstr ""
+msgstr "# निक्स कैश ट्रस्ट और फ़ॉलबैक"
 
 #: lib/marshall/documentation_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "# NixOS machine configuration"
-msgstr ""
+msgstr "# निक्सओएस मशीन कॉन्फ़िगरेशन"
 
 #: lib/marshall/documentation_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "# NixOS option reference"
-msgstr ""
+msgstr "# निक्सओएस विकल्प संदर्भ"
 
 #: lib/marshall/documentation_messages.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Overalls documentation"
-msgstr ""
+msgstr "# समग्र दस्तावेज़ीकरण"
 
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "# Resize, clone, and relocation"
-msgstr ""
+msgstr "# आकार बदलें, क्लोन करें और स्थानांतरण करें"
 
 #: lib/marshall/documentation_messages.ex:67
 #, elixir-autogen, elixir-format
 msgid "# Routine operations"
-msgstr ""
+msgstr "#नियमित संचालन"
 
 #: lib/marshall/documentation_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "# Security boundaries and sensitive operations"
-msgstr ""
+msgstr "# सुरक्षा सीमाएँ और संवेदनशील संचालन"
 
 #: lib/marshall/documentation_messages.ex:69
 #, elixir-autogen, elixir-format
 msgid "# Storage and capacity"
-msgstr ""
+msgstr "#भंडारण एवं क्षमता"
 
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "# Supporting services"
-msgstr ""
+msgstr "# सहायक सेवाएँ"
 
 #: lib/marshall/documentation_messages.ex:71
 #, elixir-autogen, elixir-format
 msgid "# System overview"
-msgstr ""
+msgstr "# तंत्र अवलोकन"
 
 #: lib/marshall/documentation_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "# User scenarios and test gaps"
-msgstr ""
+msgstr "# उपयोगकर्ता परिदृश्य और परीक्षण अंतराल"
 
 #: lib/marshall/documentation_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "# Verification and reference"
-msgstr ""
+msgstr "# सत्यापन और संदर्भ"
 
 #: lib/marshall/documentation_messages.ex:74
 #, elixir-autogen, elixir-format
 msgid "## A gateway creates and reads an authenticated SSH session through either control adapter"
-msgstr ""
+msgstr "## एक गेटवे नियंत्रण एडाप्टर के माध्यम से एक प्रमाणित एसएसएच सत्र बनाता है और पढ़ता है"
 
 #: lib/marshall/documentation_messages.ex:78
 #, elixir-autogen, elixir-format
 msgid "## A service binds its authenticated control socket before exchanging work or heartbeats"
-msgstr ""
+msgstr "## एक सेवा काम या दिल की धड़कन के आदान-प्रदान से पहले अपने प्रमाणित नियंत्रण सॉकेट को बांधती है"
 
 #: lib/marshall/documentation_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "## A service settles its pending control requests and recovers capacity after connection loss"
-msgstr ""
+msgstr "## एक सेवा अपने लंबित नियंत्रण अनुरोधों का निपटान करती है और कनेक्शन हानि के बाद क्षमता पुनर्प्राप्त करती है"
 
 #: lib/marshall/documentation_messages.ex:87
 #, elixir-autogen, elixir-format
 msgid "## Actual scrollback growth"
-msgstr ""
+msgstr "## वास्तविक स्क्रॉलबैक वृद्धि"
 
 #: lib/marshall/documentation_messages.ex:88
 #, elixir-autogen, elixir-format
 msgid "## Administrator action continuation"
-msgstr ""
+msgstr "## प्रशासक कार्रवाई निरंतरता"
 
 #: lib/marshall/documentation_messages.ex:89
 #, elixir-autogen, elixir-format
 msgid "## Admission observations and independent diagnostics"
-msgstr ""
+msgstr "## प्रवेश अवलोकन और स्वतंत्र निदान"
 
 #: lib/marshall/documentation_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "## Admit work without double-spending capacity"
-msgstr ""
+msgstr "## दोगुनी खर्च करने की क्षमता के बिना काम स्वीकार करना"
 
 #: lib/marshall/documentation_messages.ex:91
 #, elixir-autogen, elixir-format
 msgid "## Agent context and guidance boundaries"
-msgstr ""
+msgstr "## एजेंट संदर्भ और मार्गदर्शन सीमाएँ"
 
 #: lib/marshall/documentation_messages.ex:92
 #, elixir-autogen, elixir-format
 msgid "## Agent context remains within existing services"
-msgstr ""
+msgstr "## एजेंट का संदर्भ मौजूदा सेवाओं में ही रहता है"
 
 #: lib/marshall/documentation_messages.ex:93
 #, elixir-autogen, elixir-format
 msgid "## Agent loss and retry authority"
-msgstr ""
+msgstr "## एजेंट की हानि और पुनः प्रयास का अधिकार"
 
 #: lib/marshall/documentation_messages.ex:94
 #, elixir-autogen, elixir-format
 msgid "## Agent project context"
-msgstr ""
+msgstr "## एजेंट परियोजना संदर्भ"
 
 #: lib/marshall/documentation_messages.ex:95
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Brady with closed egress policy, private runtime signer and disposable cache settings"
-msgstr ""
+msgstr "## एक ऑपरेटर ब्रैडी को बंद निकास नीति, निजी रनटाइम हस्ताक्षरकर्ता और डिस्पोजेबल कैश सेटिंग्स के साथ शुरू करता है"
 
 #: lib/marshall/documentation_messages.ex:99
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Enrico with service-token, TLS file references, mirror state and readiness socket settings"
-msgstr ""
+msgstr "## एक ऑपरेटर एनरिको को सर्विस-टोकन, टीएलएस फ़ाइल संदर्भ, मिरर स्टेट और रेडीनेस सॉकेट सेटिंग्स के साथ शुरू करता है"
 
 #: lib/marshall/documentation_messages.ex:103
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Galileo with a private control credential and local integration socket"
-msgstr ""
+msgstr "## एक ऑपरेटर गैलीलियो को एक निजी नियंत्रण क्रेडेंशियल और स्थानीय एकीकरण सॉकेट के साथ शुरू करता है"
 
 #: lib/marshall/documentation_messages.ex:107
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Lilly with a private runtime configuration"
-msgstr ""
+msgstr "## एक ऑपरेटर लिली को एक निजी रनटाइम कॉन्फ़िगरेशन के साथ प्रारंभ करता है"
 
 #: lib/marshall/documentation_messages.ex:111
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Marshall with common runtime guard settings"
-msgstr ""
+msgstr "## एक ऑपरेटर सामान्य रनटाइम गार्ड सेटिंग्स के साथ मार्शल शुरू करता है"
 
 #: lib/marshall/documentation_messages.ex:115
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Porsche with private gateway credentials and host keys"
-msgstr ""
+msgstr "## एक ऑपरेटर निजी गेटवे क्रेडेंशियल्स और होस्ट कुंजियों के साथ पॉर्श शुरू करता है"
 
 #: lib/marshall/documentation_messages.ex:119
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Porsche with real private host keys and a host certificate"
-msgstr ""
+msgstr "## एक ऑपरेटर पॉर्श को वास्तविक निजी होस्ट कुंजियों और एक होस्ट प्रमाणपत्र के साथ शुरू करता है"
 
 #: lib/marshall/documentation_messages.ex:123
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Ziggy with private provider credentials and a local serving socket"
-msgstr ""
+msgstr "## एक ऑपरेटर निजी प्रदाता क्रेडेंशियल्स और एक स्थानीय सर्विंग सॉकेट के साथ जिग्गी शुरू करता है"
 
 #: lib/marshall/documentation_messages.ex:127
 #, elixir-autogen, elixir-format
 msgid "## An operator starts an Audi gateway, authoritative DNS replica or private-service frontend"
-msgstr ""
+msgstr "## एक ऑपरेटर एक ऑडी गेटवे, आधिकारिक डीएनएस प्रतिकृति या निजी-सेवा फ्रंटएंड शुरू करता है"
 
 #: lib/marshall/documentation_messages.ex:131
 #, elixir-autogen, elixir-format
 msgid "## Apply negotiated control request capacity and recover it after reconnect"
-msgstr ""
+msgstr "## बातचीत की गई नियंत्रण अनुरोध क्षमता लागू करें और पुनः कनेक्ट करने के बाद इसे पुनर्प्राप्त करें"
 
 #: lib/marshall/documentation_messages.ex:135
 #, elixir-autogen, elixir-format
 msgid "## Apply the thread creator's guest and project guidance with explicitly selected skills"
-msgstr ""
+msgstr "## स्पष्ट रूप से चयनित कौशल के साथ थ्रेड क्रिएटर के अतिथि और प्रोजेक्ट मार्गदर्शन को लागू करें"
 
 #: lib/marshall/documentation_messages.ex:139
 #, elixir-autogen, elixir-format
 msgid "## Approve a packaged agent CLI invocation in an ordinary browser and receive real guest work"
-msgstr ""
+msgstr "## एक साधारण ब्राउज़र में पैकेज्ड एजेंट सीएलआई आमंत्रण को मंजूरी दें और वास्तविक अतिथि कार्य प्राप्त करें"
 
 #: lib/marshall/documentation_messages.ex:143
 #, elixir-autogen, elixir-format
 msgid "## Attach and withdraw integrations, renew open requests and authenticate peer VM traffic"
-msgstr ""
+msgstr "## एकीकरण संलग्न करें और वापस लें, खुले अनुरोधों को नवीनीकृत करें और सहकर्मी वीएम ट्रैफ़िक को प्रमाणित करें"
 
 #: lib/marshall/documentation_messages.ex:147
 #, elixir-autogen, elixir-format
 msgid "## Audi browser editor and guest workers"
-msgstr ""
+msgstr "## ऑडी ब्राउज़र संपादक और अतिथि कर्मचारी"
 
 #: lib/marshall/documentation_messages.ex:148
 #, elixir-autogen, elixir-format
 msgid "## Audi private request monitoring"
-msgstr ""
+msgstr "## ऑडी निजी अनुरोध निगरानी"
 
 #: lib/marshall/documentation_messages.ex:149
 #, elixir-autogen, elixir-format
 msgid "## Audi public authoritative DNS monitoring"
-msgstr ""
+msgstr "## ऑडी सार्वजनिक आधिकारिक डीएनएस निगरानी"
 
 #: lib/marshall/documentation_messages.ex:150
 #, elixir-autogen, elixir-format
 msgid "## Audi terminal control-version refusal"
-msgstr ""
+msgstr "## ऑडी टर्मिनल नियंत्रण-संस्करण से इनकार"
 
 #: lib/marshall/documentation_messages.ex:151
 #, elixir-autogen, elixir-format
 msgid "## Authenticate CLI installation before adding SSH trust"
-msgstr ""
+msgstr "## एसएसएच ट्रस्ट जोड़ने से पहले सीएलआई इंस्टॉलेशन को प्रमाणित करें"
 
 #: lib/marshall/documentation_messages.ex:152
 #, elixir-autogen, elixir-format
 msgid "## Authority and interactions"
-msgstr ""
+msgstr "## प्राधिकरण और बातचीत"
 
 #: lib/marshall/documentation_messages.ex:153
 #, elixir-autogen, elixir-format
 msgid "## Backup custody"
-msgstr ""
+msgstr "## बैकअप हिरासत"
 
 #: lib/marshall/documentation_messages.ex:154
 #, elixir-autogen, elixir-format
 msgid "## Boot a disposable NixOS guest in the local Antithesis emulator and retain its disk identity across restart"
-msgstr ""
+msgstr "## स्थानीय एंटीथिसिस एमुलेटर में एक डिस्पोजेबल निक्सओएस गेस्ट को बूट करें और पुनरारंभ के दौरान इसकी डिस्क पहचान बनाए रखें"
 
 #: lib/marshall/documentation_messages.ex:158
 #, elixir-autogen, elixir-format
 msgid "## Boot and restart a guest with the current host trust roots"
-msgstr ""
+msgstr "## वर्तमान होस्ट ट्रस्ट रूट्स के साथ एक अतिथि को बूट करें और पुनः आरंभ करें"
 
 #: lib/marshall/documentation_messages.ex:162
 #, elixir-autogen, elixir-format
 msgid "## Boot the optional inner Lilly host and observe real ZFS and cgroup capacity before enrollment"
-msgstr ""
+msgstr "## वैकल्पिक आंतरिक लिली होस्ट को बूट करें और नामांकन से पहले वास्तविक ZFS और cgroup क्षमता का निरीक्षण करें"
 
 #: lib/marshall/documentation_messages.ex:166
 #, elixir-autogen, elixir-format
 msgid "## Brady"
-msgstr ""
+msgstr "## ब्रैडी"
 
 #: lib/marshall/documentation_messages.ex:167
 #, elixir-autogen, elixir-format
 msgid "## Browser editor authority and worker recovery"
-msgstr ""
+msgstr "## ब्राउज़र संपादक प्राधिकरण और कार्यकर्ता पुनर्प्राप्ति"
 
 #: lib/marshall/documentation_messages.ex:168
 #, elixir-autogen, elixir-format
 msgid "## Browser editor capability"
-msgstr ""
+msgstr "## ब्राउज़र संपादक क्षमता"
 
 #: lib/marshall/documentation_messages.ex:169
 #, elixir-autogen, elixir-format
 msgid "## Browser editor package and image updates"
-msgstr ""
+msgstr "## ब्राउज़र संपादक पैकेज और छवि अपडेट"
 
 #: lib/marshall/documentation_messages.ex:170
 #, elixir-autogen, elixir-format
 msgid "## Browser editor placement and failure boundary"
-msgstr ""
+msgstr "## ब्राउज़र संपादक प्लेसमेंट और विफलता सीमा"
 
 #: lib/marshall/documentation_messages.ex:171
 #, elixir-autogen, elixir-format
 msgid "## Browser editor release configuration"
-msgstr ""
+msgstr "## ब्राउज़र संपादक रिलीज़ कॉन्फ़िगरेशन"
 
 #: lib/marshall/documentation_messages.ex:172
 #, elixir-autogen, elixir-format
 msgid "## Browser extension package"
-msgstr ""
+msgstr "## ब्राउज़र एक्सटेंशन पैकेज"
 
 #: lib/marshall/documentation_messages.ex:173
 #, elixir-autogen, elixir-format
 msgid "## Browser extension presence layers"
-msgstr ""
+msgstr "## ब्राउज़र एक्सटेंशन उपस्थिति परतें"
 
 #: lib/marshall/documentation_messages.ex:174
 #, elixir-autogen, elixir-format
 msgid "## Browser presentation"
-msgstr ""
+msgstr "## ब्राउज़र प्रस्तुति"
 
 #: lib/marshall/documentation_messages.ex:175
 #, elixir-autogen, elixir-format
 msgid "## Browser response headers, transport and session cookies"
-msgstr ""
+msgstr "## ब्राउज़र प्रतिक्रिया शीर्षलेख, परिवहन और सत्र कुकीज़"
 
 #: lib/marshall/documentation_messages.ex:176
 #, elixir-autogen, elixir-format
 msgid "## Build Arch Linux and AlmaLinux images through the existing Linux guest contract"
-msgstr ""
+msgstr "## मौजूदा लिनक्स अतिथि अनुबंध के माध्यम से आर्क लिनक्स और अल्मालिनक्स छवियां बनाएं"
 
 #: lib/marshall/documentation_messages.ex:180
 #, elixir-autogen, elixir-format
 msgid "## Build a host or guest closure with the signed Overalls Nix cache"
-msgstr ""
+msgstr "## हस्ताक्षरित ओवरऑल निक्स कैश के साथ एक होस्ट या गेस्ट क्लोजर बनाएं"
 
 #: lib/marshall/documentation_messages.ex:184
 #, elixir-autogen, elixir-format
 msgid "## Build and activate a release"
-msgstr ""
+msgstr "## एक रिलीज़ बनाएं और सक्रिय करें"
 
 #: lib/marshall/documentation_messages.ex:185
 #, elixir-autogen, elixir-format
 msgid "## Build the Windows Server 2025 evaluation image offline and boot it under the patched Firecracker to the serial Special Administration Console"
-msgstr ""
+msgstr "## विंडोज सर्वर 2025 मूल्यांकन छवि ऑफ़लाइन बनाएं और इसे पैच किए गए फायरक्रैकर के तहत सीरियल स्पेशल एडमिनिस्ट्रेशन कंसोल में बूट करें"
 
 #: lib/marshall/documentation_messages.ex:189
 #, elixir-autogen, elixir-format
 msgid "## Burn delivery operations"
-msgstr ""
+msgstr "## जला वितरण कार्य"
 
 #: lib/marshall/documentation_messages.ex:190
 #, elixir-autogen, elixir-format
 msgid "## Burn notification credentials and refusal"
-msgstr ""
+msgstr "## अधिसूचना क्रेडेंशियल और इनकार जलाएं"
 
 #: lib/marshall/documentation_messages.ex:191
 #, elixir-autogen, elixir-format
 msgid "## Certified SSH boot identity"
-msgstr ""
+msgstr "## प्रमाणित एसएसएच बूट पहचान"
 
 #: lib/marshall/documentation_messages.ex:192
 #, elixir-autogen, elixir-format
 msgid "## Choose a display time zone in the profile section of the account page, read every timestamp in that zone and see collaborators' local time"
-msgstr ""
+msgstr "## खाता पृष्ठ के प्रोफ़ाइल अनुभाग में एक प्रदर्शन समय क्षेत्र चुनें, उस क्षेत्र में प्रत्येक टाइमस्टैम्प पढ़ें और सहयोगियों का स्थानीय समय देखें"
 
 #: lib/marshall/documentation_messages.ex:196
 #, elixir-autogen, elixir-format
 msgid "## Clone"
-msgstr ""
+msgstr "## क्लोन"
 
 #: lib/marshall/documentation_messages.ex:197
 #, elixir-autogen, elixir-format
 msgid "## Clone a machine"
-msgstr ""
+msgstr "## किसी मशीन का क्लोन बनाना"
 
 #: lib/marshall/documentation_messages.ex:198
 #, elixir-autogen, elixir-format
 msgid "## Clone a machine without sharing its mutable disk"
-msgstr ""
+msgstr "## किसी मशीन की परिवर्तनशील डिस्क को साझा किए बिना उसका क्लोन बनाना"
 
 #: lib/marshall/documentation_messages.ex:199
 #, elixir-autogen, elixir-format
 msgid "## Collect explicit-image guest OS and lifecycle evidence through Porsche and personal-account SSH"
-msgstr ""
+msgstr "## पॉर्श और व्यक्तिगत-खाता एसएसएच के माध्यम से स्पष्ट-छवि अतिथि ओएस और जीवनचक्र साक्ष्य एकत्र करें"
 
 #: lib/marshall/documentation_messages.ex:203
 #, elixir-autogen, elixir-format
 msgid "## Command reference"
-msgstr ""
+msgstr "## कमांड संदर्भ"
 
 #: lib/marshall/documentation_messages.ex:205
 #, elixir-autogen, elixir-format
 msgid "## Common runtime startup refusal evidence"
-msgstr ""
+msgstr "## सामान्य रनटाइम स्टार्टअप इनकार साक्ष्य"
 
 #: lib/marshall/documentation_messages.ex:206
 #, elixir-autogen, elixir-format
 msgid "## Complete Windows SSH bootstrap before ordinary key delivery and withhold readiness when bootstrap evidence is missing"
-msgstr ""
+msgstr "## सामान्य कुंजी डिलीवरी से पहले विंडोज़ एसएसएच बूटस्ट्रैप को पूरा करें और बूटस्ट्रैप साक्ष्य गायब होने पर तैयारी रोक दें"
 
 #: lib/marshall/documentation_messages.ex:210
 #, elixir-autogen, elixir-format
 msgid "## Complete a source export only after native sender descendants have been reaped"
-msgstr ""
+msgstr "## मूल प्रेषक वंशजों का लाभ प्राप्त होने के बाद ही स्रोत निर्यात पूरा करें"
 
 #: lib/marshall/documentation_messages.ex:214
 #, elixir-autogen, elixir-format
 msgid "## Configuration and change procedure"
-msgstr ""
+msgstr "## कॉन्फ़िगरेशन और परिवर्तन प्रक्रिया"
 
 #: lib/marshall/documentation_messages.ex:215
 #, elixir-autogen, elixir-format
 msgid "## Configure and open a repository"
-msgstr ""
+msgstr "## एक रिपॉजिटरी कॉन्फ़िगर करें और खोलें"
 
 #: lib/marshall/documentation_messages.ex:216
 #, elixir-autogen, elixir-format
 msgid "## Connect"
-msgstr ""
+msgstr "## जोड़ना"
 
 #: lib/marshall/documentation_messages.ex:217
 #, elixir-autogen, elixir-format
 msgid "## Context, compaction and collaboration"
-msgstr ""
+msgstr "## प्रसंग, संकलन और सहयोग"
 
 #: lib/marshall/documentation_messages.ex:218
 #, elixir-autogen, elixir-format
