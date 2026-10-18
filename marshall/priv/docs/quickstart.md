@@ -42,8 +42,10 @@ or complete approval in an interactive connection before retrying the command.
 
 ## Install the Overalls CLI
 
-Each machine's page has a "Connect from your computer" section with a one-line
-installer that sets up SSH and connects to that machine:
+Each machine's page shows the machine name, its state, its operating system and
+its machine ID (with a Copy button) at the top, followed by a "Connect from your
+computer" section with a one-line installer that sets up SSH and connects to
+that machine:
 
 - Linux and macOS: the `curl … /bin/install.sh | bash` command.
 - Windows: open "Windows (PowerShell)" and run its `powershell …` command in

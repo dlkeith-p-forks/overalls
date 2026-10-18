@@ -27,6 +27,21 @@ defmodule MarshallWeb.MachinesLiveTest do
     assert has_element?(view, "#machine-ssh-command-windows", "overalls ssh ")
     refute has_element?(view, "#download-ssh-config")
     refute has_element?(view, "a[href$='/ssh-config']")
+
+    # The header shows the operating system (the registered image name) beside
+    # the state and the machine ID inline with its own Copy button.
+    assert has_element?(view, "#machine-workspace-header h1", vm.name)
+    assert has_element?(view, "#machine-state[data-state]")
+    assert has_element?(view, "#machine-os.status-label", "synthetic-test-image")
+    assert has_element?(view, "#machine-id", vm.id)
+
+    assert has_element?(
+             view,
+             "#machine-workspace-header button[data-copy-command='machine-id'][data-copy-label='Machine ID']"
+           )
+
+    refute has_element?(view, "#machine-workspace-header summary", "Machine ID")
+    assert has_element?(view, "#machine-connect h3", "Linux / macOS")
   end
 
   test "Customer hides sharing but retains owner lifecycle controls", %{conn: conn, owner: owner} do
@@ -321,8 +336,26 @@ defmodule MarshallWeb.MachinesLiveTest do
     view |> form("#provision-form", machine: %{image_id: ubuntu.id}) |> render_change()
     assert_patch(view)
     view |> form("#provision-form", machine: %{}) |> render_submit()
-    assert [%{image_id: selected}] = Ledger.read!(VirtualMachine, owner_id: owner.id)
+    assert [%{id: vm_id, image_id: selected}] = Ledger.read!(VirtualMachine, owner_id: owner.id)
     assert selected == ubuntu.id
+
+    # The image's registered name is the operating-system label everywhere the
+    # machine appears: detail header, Settings resources, Machines list, Overview.
+    {:ok, detail, _} = live(signed_in(conn, owner), ~p"/machines/#{vm_id}")
+    assert has_element?(detail, "#machine-os", "Ubuntu 26.04 LTS")
+    {:ok, settings, _} = live(signed_in(conn, owner), ~p"/machines/#{vm_id}/settings")
+    assert has_element?(settings, "#machine-os", "Ubuntu 26.04 LTS")
+    assert has_element?(settings, "#machine-operating-system", "Ubuntu 26.04 LTS")
+    {:ok, list, _} = live(signed_in(conn, owner), ~p"/machines")
+
+    assert has_element?(
+             list,
+             "#machines td .machine-name + #machine-os-#{vm_id}",
+             "Ubuntu 26.04 LTS"
+           )
+
+    {:ok, overview, _} = live(signed_in(conn, owner), ~p"/overview")
+    assert has_element?(overview, "#overview-machine-os-#{vm_id}", "Ubuntu 26.04 LTS")
   end
 
   defp larger_image(fixture) do

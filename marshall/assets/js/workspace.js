@@ -63,28 +63,34 @@ export const WorkspaceNavigation = {
   destroyed() { this.cleanup?.(); },
 };
 
-/** Copy only the displayed authorized command, with accessible success/failure feedback. */
+/**
+ * Copy only the displayed authorized text, with accessible success/failure feedback.
+ * Copy buttons are delegated from the machine header root so the machine ID row
+ * above the connect box shares the same clipboard path and status element.
+ */
 export const MachineConnection = {
   /** @this {{el: HTMLElement, cleanup?: () => void}} */
   mounted() {
+    const root = this.el.closest("#machine-workspace-header") ?? this.el;
     /** @param {Event} event */
     const click = async (event) => {
       if (!(event.target instanceof Element)) return;
       const button = event.target.closest("[data-copy-command]");
       const id = button?.getAttribute("data-copy-command");
-      if (!id) return;
-      const command = this.el.querySelector(`#${CSS.escape(id)}`)?.textContent;
+      if (!button || !id) return;
+      const text = root.querySelector(`#${CSS.escape(id)}`)?.textContent;
       const status = this.el.querySelector("#machine-copy-status");
-      if (!command || !status) return;
+      if (!text || !status) return;
+      const label = button.getAttribute("data-copy-label") ?? "Command";
       try {
-        await navigator.clipboard.writeText(command);
-        status.textContent = "Command copied.";
+        await navigator.clipboard.writeText(text);
+        status.textContent = `${label} copied.`;
       } catch {
-        status.textContent = "Could not copy. Select the command and copy it manually.";
+        status.textContent = "Could not copy. Select the text and copy it manually.";
       }
     };
-    this.el.addEventListener("click", click);
-    this.cleanup = () => this.el.removeEventListener("click", click);
+    root.addEventListener("click", click);
+    this.cleanup = () => root.removeEventListener("click", click);
   },
   /** @this {{cleanup?: () => void}} */
   destroyed() { this.cleanup?.(); },

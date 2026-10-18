@@ -42,6 +42,7 @@ defmodule MarshallWeb.OverviewLiveTest do
     {:ok, _} = Access.set_access(grant, actor: owner)
     {:ok, view, _} = live(signed_in(conn, member), "/overview")
     assert has_element?(view, "#overview-machine-#{shared.id}")
+    assert has_element?(view, "#overview-machine-os-#{shared.id}", "synthetic-test-image")
     refute has_element?(view, "#overview-machine-#{private.id}")
 
     {:ok, _} =

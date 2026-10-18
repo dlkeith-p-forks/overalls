@@ -98,7 +98,13 @@ authorized projections. [Layouts](../../../marshall/lib/marshall_web/components/
 provides navigation. The Nekomo workspace stylesheet, colour tokens, font files
 and browser probe that implemented the presentation were removed by ADR-0161;
 their last revision is commit `235cd9df`. [Overview tests](../../../marshall/test/marshall_web/overview_live_test.exs)
-cover actor visibility, boundedness and revocation. The historical owner-accounting
+cover actor visibility, boundedness and revocation. The machine preview and the
+Machines list now also show each machine's operating system as the image's
+registered display name through the shared
+[`os_label/1`](../../../marshall/lib/marshall_web/components/workspace_components.ex)
+component, fed by the same bounded, actor-authorized projection (`image_name`);
+the [overview test](../../../marshall/test/marshall_web/overview_live_test.exs)
+pins the label on a shared machine. The historical owner-accounting
 panel and its test were removed by ADR-0116. The
 [completion review](../reviews/2026-09-24-overalls-nekomo-redesign.md) records the
 passing Marshall precommit, browser and Python checks and the functionality map

@@ -186,6 +186,39 @@ def check_machine_tabs(page: Page) -> None:
         )
 
 
+def check_machine_header(page: Page) -> None:
+    """The heading box shows name, state and operating system, then facts and the ID with Copy."""
+    heading = page.locator("#machine-workspace-header .machine-heading")
+    expect(heading).to_be_visible()
+    expect(heading.locator("h1")).to_be_visible()
+    expect(page.locator("#machine-state")).to_be_visible()
+    expect(page.locator("#machine-os")).to_be_visible()
+    os_name = page.locator("#machine-os").text_content()
+    assert os_name is not None and os_name.strip() not in ("", "nil"), "Operating system is blank"
+    expect(page.locator("#machine-id")).to_be_visible()
+    expect(page.locator("[data-copy-command='machine-id']")).to_be_visible()
+    bounds = heading.bounding_box()
+    assert bounds is not None, "Machine heading is missing"
+    for selector in ("h1", "#machine-state", "#machine-os", "#machine-id", "#lifecycle-actions"):
+        if selector == "#lifecycle-actions" and heading.locator(selector).count() == 0:
+            continue  # power actions render only for managers
+        item = heading.locator(selector).first.bounding_box()
+        assert item is not None, f"{selector} is hidden in the machine heading"
+        assert bounds["y"] - 0.1 <= item["y"], f"{selector} begins above the heading box"
+        assert item["y"] + item["height"] <= bounds["y"] + bounds["height"] + 0.1, (
+            f"{selector} escapes the heading box"
+        )
+        assert item["x"] + item["width"] <= bounds["x"] + bounds["width"] + 0.1, (
+            f"{selector} overflows the heading box"
+        )
+    title = heading.locator("h1").bounding_box()
+    state = page.locator("#machine-state").bounding_box()
+    assert title is not None and state is not None
+    assert abs(title["y"] - state["y"]) < 0.1 or state["y"] > title["y"], (
+        "State label sits above the machine name"
+    )
+
+
 def check_grid(page: Page, route: str) -> None:
     """Every laid-out element starts on a half-line boundary (renderer DOM excluded)."""
     result: object = page.evaluate("window.overallsGrid.check()")
@@ -742,6 +775,13 @@ def run(fixture: Context, artifacts: Path) -> None:
                     expect(page.locator("#terminal-status")).to_have_text("Boot log · read-only")
                     expect(page.locator("#terminal-create")).to_have_count(0)
                 if name == "machine":
+                    check_machine_header(page)
+                    page.locator("[data-copy-command='machine-id']").click()
+                    expect(page.locator("#machine-copy-status")).to_have_text("Machine ID copied.")
+                    assert (
+                        page.evaluate("navigator.clipboard.readText()")
+                        == page.locator("#machine-id").text_content()
+                    )
                     page.locator("[data-copy-command='machine-install-command']").click()
                     expect(page.locator("#machine-copy-status")).to_have_text("Command copied.")
                     assert (
@@ -769,6 +809,7 @@ def run(fixture: Context, artifacts: Path) -> None:
                 check_overflow(page)
                 if name in ("machine", "terminal", "boot-log"):
                     check_machine_tabs(page)
+                    check_machine_header(page)
                     check_grid(page, routes[name])
                     terminal = page.locator("#terminal-display").bounding_box()
                     sidebar = page.locator("#terminal-sidebar-list").bounding_box()

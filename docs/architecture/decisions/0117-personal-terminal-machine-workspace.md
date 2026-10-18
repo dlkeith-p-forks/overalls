@@ -133,6 +133,23 @@ mixed-width selection, retained-shell replay, machine-loss recovery, sharing,
 writer refusal and grant/login revocation. The linked review records exact
 artifacts and timing; existing guest-disk migration remains separate.
 
+The shared header decided above is implemented by
+[`machine_header/1`](../../../marshall/lib/marshall_web/components/workspace_components.ex):
+a bordered heading box with the name, state label and an operating-system label
+(the immutable image's registered display name, projected as `image_name` by
+[`Marshall.Compute.Views`](../../../marshall/lib/marshall/compute/views.ex)),
+the resource facts, the machine ID with a one-line Copy control, the authorized
+power actions, and the installation/SSH connect box with clipboard feedback on
+every tab. [Machines LiveView tests](../../../marshall/test/marshall_web/machines_live_test.exs)
+pin the header ids, the Ubuntu label on the detail, Settings, Machines and
+Overview pages, and the retained installer/SSH commands;
+[views tests](../../../marshall/test/marshall/compute/views_image_name_test.exs)
+prove the projection exposes only the display name. The
+[browser probe](../../../marshall/scripts/monospace_browser_probe.py) exercises
+the heading box, the machine-ID copy and the installer copy in both themes and
+at phone width against synthetic machines; it is presentation evidence, not
+guest execution evidence.
+
 ## Open questions
 
 The host release was deployed on both fleet hosts. Migration of existing guest

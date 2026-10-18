@@ -23,8 +23,12 @@
   margin: 0;
   color: var(--text-color-alt);
 }
-.preview-machine .status-label {
+.preview-labels {
   justify-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0 1ch;
 }
 .preview-links {
   grid-column: 1 / -1;
@@ -62,6 +66,13 @@ button.machine-editor-link {
   font-weight: var(--font-weight-medium);
   overflow-wrap: anywhere;
 }
+/* The operating system sits under the machine name, wrapping at word
+   boundaries, so the table gains no column and never outgrows the main column. */
+.machine-table .os-label {
+  display: block;
+  white-space: normal;
+  overflow-wrap: normal;
+}
 .machine-open-actions {
   display: flex;
   flex-wrap: wrap;
@@ -74,14 +85,20 @@ button.machine-editor-link {
 .machine-workspace-header {
   margin-bottom: var(--line-height);
 }
+/* Heading box: name, state and operating-system labels, then the resource
+   facts and the machine ID row on the left; actions on the right. The actions
+   wrap under the summary, one line apart, when the box is narrow. */
 .machine-heading {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 0 2ch;
+  gap: var(--line-height) 2ch;
+  border: var(--border-thickness) solid var(--text-color);
+  padding: calc(var(--line-height) - var(--border-thickness)) calc(2ch - var(--border-thickness));
+  margin-bottom: var(--line-height);
 }
-.machine-heading > div:first-child {
+.machine-summary {
   flex: 1 1 40ch;
   min-width: 0;
 }
@@ -89,59 +106,71 @@ button.machine-editor-link {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0 2ch;
+  gap: 0 1ch;
 }
 .machine-title h1 {
   font-size: 1rem;
   line-height: var(--line-height);
   text-transform: none;
-  margin: 0;
+  margin: 0 1ch 0 0;
   overflow-wrap: anywhere;
+}
+.machine-facts {
+  margin: 0;
 }
 .machine-identity {
-  border: 0;
-  padding: 0;
-  margin: 0 0 var(--line-height);
-  color: var(--text-color-alt);
-}
-.machine-identity summary {
-  display: inline;
-  font-weight: var(--font-weight-normal);
-}
-.machine-identity[open] summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0 1ch;
   margin: 0;
+  line-height: var(--line-height);
 }
 .machine-identity code {
-  margin-left: 1ch;
   overflow-wrap: anywhere;
+}
+.machine-identity .console-button {
+  line-height: var(--line-height);
 }
 .machine-actions {
   display: grid;
   gap: 0;
   justify-items: end;
+  margin-left: auto;
 }
 .machine-action-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--line-height) 1ch;
-  margin-bottom: var(--line-height);
 }
 .machine-editor-notice {
   margin: 0 0 var(--line-height);
   max-width: 40ch;
   text-align: right;
 }
+.machine-actions .machine-editor-notice {
+  margin: var(--line-height) 0 0;
+}
+/* Connect box: one title, then per platform a sub-heading with its explanation
+   on the same line, the command with its Copy button, and the SSH row. */
 .machine-connect {
   border: var(--border-thickness) solid var(--text-color);
   padding: calc(var(--line-height) - var(--border-thickness)) calc(2ch - var(--border-thickness));
   margin-bottom: var(--line-height);
 }
 .machine-connect h2 {
-  margin: 0;
+  margin: 0 0 var(--line-height);
 }
 .machine-connect > p {
   margin-bottom: 0;
+}
+.connection-platform {
+  margin: 0;
+  font-size: 1rem;
+}
+.connection-platform .muted {
+  font-weight: var(--font-weight-normal);
 }
 .connection-command {
   display: flex;

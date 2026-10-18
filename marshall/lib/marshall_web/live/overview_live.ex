@@ -118,7 +118,10 @@ defmodule MarshallWeb.OverviewLive do
                           else: "Shared"}
                       </p>
                     </div>
-                    <span class="status-label" data-state={vm.observed_state}>{UI.machine_state(vm)}</span>
+                    <div class="preview-labels">
+                      <span class="status-label" data-state={vm.observed_state}>{UI.machine_state(vm)}</span>
+                      <UI.os_label vm={vm} id={"overview-machine-os-#{vm.id}"} />
+                    </div>
                     <div class="preview-links">
                       <.link
                         :if={vm.desired_state == :running && vm.observed_state == :running}

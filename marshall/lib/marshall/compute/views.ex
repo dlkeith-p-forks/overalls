@@ -75,11 +75,12 @@ defmodule Marshall.Compute.Views do
   # @cc [owner:ghuntley,label:security] views-bounded-current-access
   # User VM pages MUST be bounded by the validated limit and cursor, include only
   # current Cedar-readable VMs, and expose only the view field allowlist, the
-  # current physical host name, opaque execution reference, finite editor image
-  # status, current permissions and bounded authorized operation summaries.
-  # The bounded SQL candidates MUST include current thread grants; every row
-  # still requires a fresh Cedar decision. Internal host IDs, placements and
-  # reservations stay private.
+  # current physical host name, the registered image display name, opaque
+  # execution reference, finite editor image status, current permissions and
+  # bounded authorized operation summaries. The bounded SQL candidates MUST
+  # include current thread grants; every row still requires a fresh Cedar
+  # decision. Internal host IDs, placements, reservations and image manifests
+  # stay private.
   defp list(request, actor) do
     query =
       VirtualMachine
@@ -118,10 +119,12 @@ defmodule Marshall.Compute.Views do
     }
   end
 
+  @spec view(VirtualMachine.t(), map()) :: map()
   defp view(vm, actor) do
     image = List.first(Ledger.read!(Image, id: vm.image_id))
 
     Map.merge(Map.take(vm, @fields), %{
+      image_name: image_name(image),
       execution_ref: execution_ref(vm),
       host: host_name(vm),
       ssh_host: ssh_host_name(vm),
@@ -140,6 +143,14 @@ defmodule Marshall.Compute.Views do
         )
     })
   end
+
+  # @cc [owner:ghuntley,label:product;security] views-image-display-name
+  # The view MUST expose the registered image's display name (`image_name`) as
+  # the machine's operating-system label, and nothing else from the image row;
+  # a missing image row MUST project nil rather than failing or a placeholder.
+  @spec image_name(Image.t() | nil) :: String.t() | nil
+  defp image_name(%Image{name: name}) when is_binary(name), do: name
+  defp image_name(_), do: nil
 
   # @cc [owner:ghuntley,label:security;product] views-editor-image-status
   # An authorized VM view MUST expose only a finite status derived from its

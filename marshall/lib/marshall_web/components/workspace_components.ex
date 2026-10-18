@@ -106,6 +106,30 @@ defmodule MarshallWeb.WorkspaceComponents do
     """
   end
 
+  @doc "The projected image display name shown as the machine's operating system, or nil."
+  @spec operating_system(map()) :: String.t() | nil
+  def operating_system(vm) do
+    case Map.get(vm, :image_name) do
+      name when is_binary(name) and name != "" -> name
+      _ -> nil
+    end
+  end
+
+  attr :vm, :map, required: true
+  attr :id, :string, required: true
+  # @cc [owner:ghuntley,label:product] workspace-operating-system-label
+  # The operating-system label MUST show only the projected image display name
+  # (`image_name`) as text. A missing or blank name MUST render no element at
+  # all, never "nil" or a placeholder; the label never conveys state by colour.
+  @spec os_label(map()) :: Phoenix.LiveView.Rendered.t()
+  def os_label(assigns) do
+    assigns = assign(assigns, :name, operating_system(assigns.vm))
+
+    ~H"""
+    <span :if={@name} id={@id} class="status-label os-label" data-tone="muted">{@name}</span>
+    """
+  end
+
   attr :vm, :map, required: true
   attr :connection, :map, default: nil
   attr :power_key, :string, required: true
@@ -123,21 +147,30 @@ defmodule MarshallWeb.WorkspaceComponents do
     ~H"""
     <div id="machine-workspace-header" class="machine-workspace-header">
       <header class="machine-heading">
-        <div>
+        <div class="machine-summary">
           <div class="machine-title">
             <h1>{@vm.name}</h1>
             <span id="machine-state" class="status-label" data-state={@vm.observed_state}>{machine_state(
               @vm
             )}</span>
+            <.os_label vm={@vm} id="machine-os" />
           </div>
-          <p class="muted">
+          <p class="machine-facts muted">
             {@vm.vcpu} vCPU · {workspace_gib(@vm.memory_bytes)} GiB memory · {workspace_gib(
               @vm.disk_bytes
             )} GiB disk · {profile_name(@vm.profile)}
           </p>
-          <details class="machine-identity">
-            <summary>Machine ID</summary><code>{@vm.id}</code>
-          </details>
+          <p class="machine-identity">
+            <span class="muted">ID</span>
+            <code id="machine-id">{@vm.id}</code>
+            <button
+              type="button"
+              class="console-button compact"
+              data-copy-command="machine-id"
+              data-copy-label="Machine ID"
+              aria-label="Copy machine ID"
+            >Copy</button>
+          </p>
         </div>
         <div class="machine-actions">
           <div class="machine-action-row">
@@ -209,11 +242,12 @@ defmodule MarshallWeb.WorkspaceComponents do
         class="machine-connect"
         aria-labelledby="machine-connect-title"
       >
-        <div class="row between">
-          <h2 id="machine-connect-title">Connect from your computer</h2><span class="muted">Linux / macOS</span>
-        </div>
+        <h2 id="machine-connect-title">Connect from your computer</h2>
         <%= if @connection && capability?(@vm, :ssh) do %>
-          <p class="muted">Installs Overalls, configures SSH, and connects to this machine.</p>
+          <h3 class="connection-platform">
+            Linux / macOS
+            <span class="muted">— installs Overalls, configures SSH, and connects to this machine.</span>
+          </h3>
           <div id="ssh-connection-commands" class="connection-command">
             <pre><code id="machine-install-command">{@connection.install}</code></pre>
             <button

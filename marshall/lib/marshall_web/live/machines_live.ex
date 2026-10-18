@@ -643,6 +643,7 @@ defmodule MarshallWeb.MachinesLive do
               <tr :for={{id, vm} <- @streams.machines} id={id} class="machine-row">
                 <td>
                   <.link navigate={~p"/machines/#{vm.id}"} class="machine-name">{vm.name}</.link>
+                  <UI.os_label vm={vm} id={"machine-os-#{vm.id}"} />
                 </td>
                 <td data-label="Status">
                   <span class="status-label" data-state={vm.observed_state}>{state(vm)}</span>
@@ -833,6 +834,9 @@ defmodule MarshallWeb.MachinesLive do
             </.link>
           </:actions>
           <.kv>
+            <:item title="Operating system">
+              <span id="machine-operating-system">{UI.operating_system(@vm) || "Unavailable"}</span>
+            </:item>
             <:item title="CPU">{@vm.vcpu} vCPU</:item>
             <:item title="Memory">{gib(@vm.memory_bytes)} GiB</:item>
             <:item title="Disk">{gib(@vm.disk_bytes)} GiB</:item>

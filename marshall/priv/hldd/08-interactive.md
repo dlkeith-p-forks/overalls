@@ -58,6 +58,27 @@ Retirement and current login/write/execution refusals remain authoritative.
 Pre-cutover leases closed during the breaking database migration; this continuity
 rule applies to subsequent generated-identity admissions.
 
+Every machine page (Terminal, Boot log, Access, Settings, Agents and Resize)
+shares one header. A bordered heading box carries the machine name, its state
+label (`[Running]`, `[Stopping]`, …) and an operating-system label that is the
+registered display name of the machine's immutable image (`[NixOS]`,
+`[Ubuntu 26.04 LTS]`, `[Windows Server 2025]`); a machine whose image row is
+missing shows no operating-system label rather than a placeholder. Beneath them
+sit the resource facts (vCPU, memory, disk, profile) and the machine ID with a
+one-line **Copy** control; the authorized power actions and **Open VS Code**
+stay on the right and wrap under the summary on phone widths. The "Connect from
+your computer" box follows with the Linux/macOS sub-heading and explanation on
+one line, the installer command and its **Copy** button, the "Already
+installed?" SSH command, and the Windows (PowerShell) disclosure. Copying any
+command or the machine ID writes only the displayed text to the user's own
+clipboard and reports "Machine ID copied." or "Command copied." in the status
+line; a refused clipboard write tells the user to select the text manually. The
+same image name appears as an **Operating system** row in Settings → Resources,
+beneath the machine name in the Machines list (the table gains no column, so it
+still fits the main column) and beside the state label in the Overview preview. The view projection exposes only the image's display name:
+manifests, placements and reservations stay private, and the label is shown
+only to principals who can already read the machine.
+
 The machine page offers **Open VS Code** only when desired and observed state are
 both running, its immutable image has the current editor capability, and the
 current write/profile and Customer owner policy allows it. Valid older or
