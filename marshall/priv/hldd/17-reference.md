@@ -598,9 +598,23 @@ check. `nixos-machine-tests.yml` runs daily or on dispatch and fans out one job
 per NixOS machine test selected from `meta.ci` (Inception is excluded); its
 discovery evaluates only that metadata, and each matrix job builds its test.
 `nix-upgrades.yml` updates `devenv.lock` weekly and pins the flake's
-`buildNixpkgs` to the same nixpkgs. A run is execution evidence only for the
-commit it ran; a selected matrix entry is not a passing result, and nested-KVM
-availability on the hosted runners is unverified.
+`buildNixpkgs` to the same nixpkgs. Two further weekly jobs apply security
+updates only. `mix-security-upgrades.yml` runs `mix hex.audit` (Hex 2.5.3 or
+newer) in every project with a `mix.lock` and updates packages with a security
+advisory or security retirement; `cargo-security-upgrades.yml` runs
+`cargo audit` against every tracked `Cargo.lock` and updates vulnerable crates
+with `cargo update --package NAME@VERSION`. Both resolve affected builds through
+the flake's `lib.dependencyPins` registry, which lists each entry's lock files,
+the derivation that must build and its fixed-output fetches. Changed entries get
+their `dependency-hashes.json` keys faked, rebuilt and filled from the reported
+mismatch by drvPath, then must build before the commit is pushed to trunk. Mix
+libraries without an entry compile with warnings as errors; a tracked
+`Cargo.lock` without an entry stops the Cargo job. A finding with no allowed
+fixed version fails the run after fixable updates are pushed. Bot-refreshed
+hashes are authenticated by that build, not by human source review, and the
+builds use the build nixpkgs rather than every consumer's package set. A run is
+execution evidence only for the commit it ran; a selected matrix entry is not a
+passing result, and nested-KVM availability on the hosted runners is unverified.
 
 `elixir/request_accounting/` is the shared typed request-accounting library.
 `Overalls.RequestAccounting.Producer` performs private quality-marker and local

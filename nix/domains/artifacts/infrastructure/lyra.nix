@@ -13,7 +13,7 @@ let
   vendor = pkgs.rustPlatform.fetchCargoVendor {
     name = "lyra-vendor";
     src = source;
-    hash = "sha256-o+6O8pHrqzY0ezdKh5jgT5vvCo0q/PU8i/NY94dacr0=";
+    hash = (builtins.fromJSON (builtins.readFile ../dependency-hashes.json)).lyraVendor;
   };
   rustStd = target: hash: pkgs.fetchurl {
     url = "https://static.rust-lang.org/dist/rust-std-${rustVersion}-${target}.tar.xz";
@@ -283,6 +283,7 @@ PY
     platforms = [ "x86_64-linux" ];
   };
   passthru.tests = tests;
+  passthru.vendor = vendor;
   passthru.windows = windows;
   passthru.toolchain = toolchain;
   passthru.nativeBinaries = nativeBinaries;

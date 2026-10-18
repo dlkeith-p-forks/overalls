@@ -57,6 +57,9 @@
       lib.mkFreeBSDImageCandidate = built.mkFreeBSDImageCandidate;
       lib.mkOmniOSGuest = built.mkOmniOSGuest;
       lib.mkIllumosGuest = built.mkIllumosGuest;
+      # Lock files, builds and fixed-output hash keys for the scheduled
+      # Mix and Cargo security upgrade scripts.
+      lib.dependencyPins = built.dependencyPins;
       packages.${system} = {
         default = built.marshall;
         service-marshall = built.marshall;

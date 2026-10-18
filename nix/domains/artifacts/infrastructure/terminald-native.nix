@@ -13,7 +13,7 @@ let
   vendor = pkgs.rustPlatform.fetchCargoVendor {
     name = "terminald-vendor";
     src = source;
-    hash = "sha256-rYcq/jq1efgS6Gm1OI7rB8jtV/Ab1f3N/B0LaARTpak=";
+    hash = (builtins.fromJSON (builtins.readFile ../dependency-hashes.json)).terminaldVendor;
   };
   targets = [ "x86_64-unknown-freebsd" "x86_64-unknown-illumos" ];
   buildMetadata = pkgs.writeText "terminald-native-build.json" (builtins.toJSON {

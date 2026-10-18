@@ -7,5 +7,7 @@
   "lilly": "sha256-Y97qxiAJX0NjehoQK7/6y9m5G9FDyswuGBTkl/4b+fo=",
   "marshall": "sha256-zMG5T9IR78f/4CHLQGIG+FB9oHBrZv7P+f4YcHgvpI4=",
   "porsche": "sha256-3cdmT+0RPku5VaXQMZxHgP5vESidySaLXt0iOWvZMmM=",
-  "ziggy": "sha256-elVaQ5kUi1ji6WSkSUax8P/AlvbBnH3azLaC9bjXB6I="
+  "ziggy": "sha256-elVaQ5kUi1ji6WSkSUax8P/AlvbBnH3azLaC9bjXB6I=",
+  "lyraVendor": "sha256-o+6O8pHrqzY0ezdKh5jgT5vvCo0q/PU8i/NY94dacr0=",
+  "terminaldVendor": "sha256-rYcq/jq1efgS6Gm1OI7rB8jtV/Ab1f3N/B0LaARTpak="
 }
