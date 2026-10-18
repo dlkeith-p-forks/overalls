@@ -14,7 +14,9 @@ defmodule Galileo.PendingVersionRefusalPropertyTest do
   # unsupported_version; close4008 MUST remain a transient transport class.
   # A prior successful call and peer-observed pending inventory MUST establish
   # reach. Connection loss MUST NOT replay any request.
-  property "pending calls retain a version refusal after the peer closes", profile: :ci, test_cases: 1 do
+  property "pending calls retain a version refusal after the peer closes",
+    profile: :ci,
+    test_cases: 1 do
     supervisor = start_supervised!(Task.Supervisor)
 
     check all(

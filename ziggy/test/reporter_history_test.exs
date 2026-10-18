@@ -20,7 +20,9 @@ defmodule Ziggy.ReporterHistoryTest do
   # Each controlled initial batch MUST attempt precisely min(128, pending) rows.
   # A single conflicted receipt MUST NOT prevent healthy neighbors from draining.
   # Reporting and spool recovery MUST preserve lifetime totals.
-  property "mixed reporter histories retain exact receipts and drain healthy neighbors", profile: :ci, test_cases: 1 do
+  property "mixed reporter histories retain exact receipts and drain healthy neighbors",
+    profile: :ci,
+    test_cases: 1 do
     check all(
             repeats <- member_of([1, 2, 4]),
             order <-

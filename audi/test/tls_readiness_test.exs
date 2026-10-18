@@ -12,7 +12,7 @@ defmodule Audi.TLS.ReadinessTest do
   # Terminal result from an owned job MUST retire every other job, notify the
   # owner and refuse queued refreshes without reopening authority.
   test "owned version refusal cancels jobs and cannot be reopened by ticks", c do
-    check all(count <- member_of([1, 7, 16]), max_runs: 3) do
+    check all(count <- member_of([1, 7, 16]), max_runs: 3, test_cases: 1) do
       parent = self()
       tag = make_ref()
 
@@ -54,7 +54,7 @@ defmodule Audi.TLS.ReadinessTest do
   end
 
   test "healthy refreshes do not wait for unfinished jobs", c do
-    check all(slow_count <- integer(1..8), max_runs: 3) do
+    check all(slow_count <- integer(1..8), max_runs: 3, test_cases: 1) do
       tag = make_ref()
       parent = self()
 
@@ -84,7 +84,7 @@ defmodule Audi.TLS.ReadinessTest do
   end
 
   test "concurrency stays bounded and each completion admits queued work", c do
-    check all(count <- integer(17..40), max_runs: 5) do
+    check all(count <- integer(17..40), max_runs: 5, test_cases: 1) do
       tag = make_ref()
       parent = self()
 

@@ -33,6 +33,7 @@ defmodule Brady.ProxyChunkedHistoryTest do
           ) do
       {:ok, supervisor} = Task.Supervisor.start_link()
       Process.unlink(supervisor)
+
       Hegel.on_cleanup(fn ->
         Process.exit(supervisor, :shutdown)
       end)
