@@ -11,7 +11,7 @@ let
     export DISPLAY=:0
     mkdir -p "$ANDROID_AVD_HOME"
     if [ ! -f "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" ]; then
-      yes "" | ${sdkRoot}/cmdline-tools/latest/bin/avdmanager create avd \
+      yes "" | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
         --force --name overalls-test \
         --package 'system-images;android-36;google_apis;x86_64' \
         --path "$ANDROID_AVD_HOME/overalls-test.avd"
@@ -64,8 +64,6 @@ pkgs.testers.runNixOSTest {
   # evidence only; it does not establish Firecracker, guest isolation, native
   # KVM, production Lilly authority, or multi-host recovery.
   testScript = ''
-    import re
-
     android.start()
     android.wait_for_unit("android-test-emulator.service")
     android.wait_until_succeeds("test -r /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
