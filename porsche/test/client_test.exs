@@ -191,6 +191,7 @@ defmodule Porsche.ClientTest do
           :placement_changed,
           :name_unavailable,
           :machine_pinned,
+          :machine_failed,
           :pin_limit,
           :idempotency_conflict
         ] do

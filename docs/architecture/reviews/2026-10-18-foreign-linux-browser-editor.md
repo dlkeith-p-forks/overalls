@@ -16,6 +16,16 @@ authorization grant or native guest capability. The broker remains a guest
 service under the existing Lilly TCP 4444 fence. The domain and deployment
 inventories retain their existing ownership and placement.
 
+Integration imports trunk through `9e7f6bd3`, preserving ADR-0193's failed-machine
+pin refusal, ADR-0195's time-zone feature and the `8fe9786` test-engine update.
+The imported clock hook ran before fresh-login checks, conflicting with
+ADR-0022 and the existing required-login contracts. Required/security mounts now
+install fresh-login checks first; optional/public behavior stays unchanged. A
+real persisted-login revocation regression first failed on the imported order.
+Merged-source execution is recorded separately from the earlier `cdd323d51`
+gates and immutable native fixtures. ADR-0191 and the handbook distinguish the
+new pin from historical NIF and dependency-snapshot acceptance.
+
 ## Implementation and refusal boundaries
 
 The [shared builder](../../../nix/domains/artifacts/guest/foreign-linux.nix)
@@ -164,8 +174,18 @@ The same-image diagnostic replay is captured as
 Its frozen source ledger has SHA-256
 `2855ba04a63ea24bee7e0abe855c8f449dfba31ee38b9127c0bb092328e72607`.
 The recursive closure retains the original `b1c8ff76` fixture image and
-`2a6f7729…` rootfs, 2 GiB RAM and 8 GiB disk minima. Its execution is pending;
-diagnostic-only source changes do not repair or erase the original failure.
+`2a6f7729…` rootfs, 2 GiB RAM and 8 GiB disk minima.
+Arch diagnostic replay passed all **12 native subtests**: 618.2 seconds native
+and 951 seconds including local prerequisite builds, exit 0. Receipt
+`/tmp/overalls-editor-arch-fleet-diagnostic-evidence.json` has SHA-256
+`aa1a30c10765d3920667f407944ce043ce7d4da9bb44422f00217676eb359eeb`;
+its closed runtime log has SHA-256
+`e7b4813a3fd4ba33acd0be10cb55d56715f40480454d2d91b2260bc8ed1e0d4b`.
+Six finite receive/closed events occurred during successful broker and worker
+recovery. They do not establish the original 502's cause; its receipt remains
+unchanged. Failure-only native memory/OOM/PID and corrected Node probes did not
+execute, so their evidence remains static. This passing captured premerge build
+does not qualify the later trunk merge or a production browser session.
 
 Both **production** replacement images passed fresh CLI lifecycles in
 `/tmp/porsche-20261018-132308`: create/readiness, strict personal-account
@@ -215,6 +235,18 @@ remain unchanged while their fixture cost is reviewed. Covenant **10/10** and
 forced Dialyzer with **zero errors/skips** passed. The full log has SHA-256
 `20915dc43f402f43483cddc083f2557c831763012818bdb85bd90ff3ba1d965c`.
 No full Audi gate pass is claimed.
+The merged `8fe9786` pin still runs 100 outer cases. The stream-guard property
+therefore retains all generated actions, TTLs and per-action 1/2-second refusal
+bounds while giving the complete property a finite 300-second aggregate budget.
+Its complete module passed **9/9** in 105.3 seconds, seed `342853`, directly
+exceeding the old 60-second budget without weakening a closure oracle. The
+42-mutation boot property still schedules 4,200 fresh OTP starts if completed;
+its 600-second limit and all assertions remain unchanged. Its old 126-start
+comment is corrected. A clean forced source build loaded the new pin's actual
+NIF with SHA-256
+`4b82b70e1562e02ad0751d5b31df1ef9cb5b024d6a26c2726c9d94d43a09b90d`,
+without an override; this differs from the older pin's library. Full merged
+consumer gates and configured fixed-output dependency builds remain separate.
 
 An initial Marshall full gate was interrupted after concurrent test fixtures
 exhausted its isolated PostgreSQL connection budget. The bounded replacement

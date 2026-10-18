@@ -182,8 +182,9 @@ applies the existing personal editor identity and immutable release boundaries
 to Arch and AlmaLinux. Their earlier CLI lifecycle passes do not establish
 editor support. New image packaging and native browser acceptance are recorded
 separately: Alma passed all twelve isolated native browser subtests, both new
-production images passed complete CLI lifecycles, and Arch passed eight browser
-stages before broker-restart recovery returned 502. Retained guest
+production images passed complete CLI lifecycles, and Arch's captured diagnostic
+replay passed all twelve stages. Its earlier broker-restart 502 remains unexplained.
+Retained guest
 disks receive no manifest or identity conversion; implementation stays partial.
 
 ## Open questions

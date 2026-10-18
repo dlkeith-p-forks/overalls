@@ -62,6 +62,7 @@ defmodule Marshall.SSH.AdminActions do
           id: key.id,
           user_id: key.user_id,
           email: users[key.user_id].email,
+          time_zone: users[key.user_id].time_zone,
           label: key.label,
           algorithm: key.algorithm,
           fingerprint: key.fingerprint,

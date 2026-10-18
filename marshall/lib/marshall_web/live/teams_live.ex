@@ -158,7 +158,14 @@ defmodule MarshallWeb.TeamsLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={%{user: @current_user}} compute={true} active="teams">
+    <Layouts.app
+      flash={@flash}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+      compute={true}
+      active="teams"
+    >
       <section id="teams-page" class="stack">
         <UI.heading
           title="Teams"
@@ -202,7 +209,15 @@ defmodule MarshallWeb.TeamsLive do
                   </thead>
                   <tbody>
                     <tr :for={member <- @members}>
-                      <td class="break">{member.email}</td>
+                      <td class="break">
+                        <.person
+                          id={"team-member-#{member.user_id}"}
+                          email={member.email}
+                          time_zone={member.time_zone}
+                          viewer_zone={@time_zone}
+                          now={@now}
+                        />
+                      </td>
                       <td><span class="status-label">{member.role}</span></td>
                       <td class="muted">{role_summary(member.role)}</td>
                     </tr>
@@ -256,8 +271,24 @@ defmodule MarshallWeb.TeamsLive do
               </.form>
               <div :if={@transfer} id="pending-transfer" class="stack">
                 <.kv>
-                  <:item title="Offered by">{@transfer.from_email}</:item>
-                  <:item title="Offered to">{@transfer.to_email}</:item>
+                  <:item title="Offered by">
+                    <.person
+                      id="transfer-from"
+                      email={@transfer.from_email}
+                      time_zone={@transfer.from_time_zone}
+                      viewer_zone={@time_zone}
+                      now={@now}
+                    />
+                  </:item>
+                  <:item title="Offered to">
+                    <.person
+                      id="transfer-to"
+                      email={@transfer.to_email}
+                      time_zone={@transfer.to_time_zone}
+                      viewer_zone={@time_zone}
+                      now={@now}
+                    />
+                  </:item>
                   <:item title="Status"><span class="status-label">pending</span></:item>
                 </.kv>
                 <p class="sr-only">

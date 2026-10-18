@@ -195,29 +195,37 @@ class AdmissionTest(unittest.TestCase):
         operator = self.operator()
         operator.catalog.return_value = catalog_reply(False)
         with (
-            patch("guest_lifecycle.scenarios.time.monotonic", side_effect=(0.0, 0.0, 95.0)),
+            patch("guest_lifecycle.scenarios.time.monotonic", side_effect=(0.0, 0.0, 195.0)),
             patch("guest_lifecycle.scenarios.time.sleep"),
         ):
             self.assertEqual(_usable_catalog(operator, self.witness()), "capacity_unknown")
 
-    def test_capacity_refusal_retries_once_with_a_fresh_key(self) -> None:
+    def test_stale_refusals_retry_with_a_fresh_key(self) -> None:
+        for reason in ("insufficient_capacity", "image_unavailable"):
+            with self.subTest(reason=reason):
+                operator = self.operator()
+                operator.provision.side_effect = (refused(reason), admitted())
+                with patch("guest_lifecycle.scenarios.time.monotonic", return_value=0.0):
+                    self.assertEqual(_admit(operator, self.witness()), (VM, OPERATION))
+                keys = {call.args[4] for call in operator.provision.call_args_list}
+                self.assertEqual(len(keys), 2)
+
+    def test_catalog_reads_are_bounded_by_the_poll_window(self) -> None:
         operator = self.operator()
-        operator.provision.side_effect = (refused("insufficient_capacity"), admitted())
-        with patch("guest_lifecycle.scenarios.time.monotonic", return_value=0.0):
-            self.assertEqual(_admit(operator, self.witness()), (VM, OPERATION))
-        keys = {call.args[4] for call in operator.provision.call_args_list}
-        self.assertEqual(len(keys), 2)
+        with patch("guest_lifecycle.scenarios.time.monotonic", side_effect=(0.0, 170.0)):
+            _usable_catalog(operator, self.witness())
+        operator.catalog.assert_called_once_with(10.0)
 
     def test_other_refusals_are_not_retried(self) -> None:
         operator = self.operator()
-        operator.provision.return_value = refused("image_unavailable")
+        operator.provision.return_value = refused("invalid_request")
         with (
             patch("guest_lifecycle.scenarios.time.monotonic", return_value=0.0),
             self.assertLogs("guest_lifecycle.scenarios", "INFO") as logs,
         ):
             self.assertIsNone(_admit(operator, self.witness()))
         operator.provision.assert_called_once()
-        self.assertIn("provision refused: image_unavailable", logs.output[0])
+        self.assertIn("provision refused: invalid_request", logs.output[0])
 
 
 if __name__ == "__main__":

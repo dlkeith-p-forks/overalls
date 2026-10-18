@@ -54,6 +54,8 @@ defmodule Marshall.MixProject do
     [
       {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:ex_cedar, "~> 0.1.2"},
+      # IANA zone data compiled in at build time; nothing is fetched at runtime.
+      {:tz, "~> 0.28.4"},
       {:yaml_elixir, "~> 2.12"},
       {:overalls_protocol, path: "../protocol"},
       {:overalls_diagnostics, path: "../elixir/diagnostics"},
@@ -93,7 +95,7 @@ defmodule Marshall.MixProject do
       {:lazy_html, ">= 0.1.0", only: :test},
       {:hegel_ex,
        git: "https://github.com/ghuntley/hegel-erlang.git",
-       ref: "08cd428",
+       ref: "8fe9786",
        subdir: "packages/hegel_ex",
        only: [:dev, :test],
        runtime: false},

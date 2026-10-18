@@ -302,7 +302,13 @@ defmodule Marshall.ThreadsSharingTest do
 
     grants = first.items ++ second.items ++ third.items
     assert MapSet.new(grants, & &1.user_id) == MapSet.new(members, & &1.id)
-    assert Enum.all?(grants, &(Enum.sort(Map.keys(&1)) == [:email, :id, :role, :user_id]))
+    # Recipient identity plus the saved display zone (ADR-0195); nothing else.
+    assert Enum.all?(
+             grants,
+             &(Enum.sort(Map.keys(&1)) == [:email, :id, :role, :time_zone, :user_id])
+           )
+
+    assert Enum.all?(grants, &is_nil(&1.time_zone))
 
     assert {:error, _} =
              Threads.list_grants(%{thread_id: context.thread.id, limit: 101},

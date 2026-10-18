@@ -94,6 +94,7 @@ defmodule Marshall.SSH.ControlRequests do
              :host_unavailable,
              :vm_deleted,
              :machine_pinned,
+             :machine_failed,
              :pin_limit,
              :workload_not_stable,
              :source_unavailable,

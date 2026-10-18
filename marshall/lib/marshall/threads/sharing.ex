@@ -133,17 +133,25 @@ defmodule Marshall.Threads.Sharing do
       |> Ash.Query.for_read(:internal_lookup)
       |> Ash.Query.filter(id in ^ids)
       |> Ash.read!(actor: SystemActor.compute())
-      |> Map.new(&{&1.id, to_string(&1.email)})
+      |> Map.new(&{&1.id, &1})
 
     %{
-      owner: %{user_id: thread.creator_id, email: users[thread.creator_id], role: :owner},
-      items:
-        Enum.map(
-          grants,
-          &%{id: &1.id, user_id: &1.user_id, email: users[&1.user_id], role: &1.role}
-        ),
+      owner: person(thread.creator_id, users) |> Map.put(:role, :owner),
+      items: Enum.map(grants, &Map.merge(person(&1.user_id, users), %{id: &1.id, role: &1.role})),
       next_cursor: if(length(rows) > request.limit, do: List.last(grants).id)
     }
+  end
+
+  # Participants carry their saved zone (ADR-0195) for the sharing panel's
+  # local-time line; nil means nothing is shown for that person.
+  @spec person(String.t(), %{String.t() => User.t()}) :: %{
+          user_id: String.t(),
+          email: String.t() | nil,
+          time_zone: String.t() | nil
+        }
+  defp person(user_id, users) do
+    user = users[user_id]
+    %{user_id: user_id, email: user && to_string(user.email), time_zone: user && user.time_zone}
   end
 
   @spec lock_machine!(Thread.t()) :: :ok

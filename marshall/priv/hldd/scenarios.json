@@ -7,10 +7,10 @@
       "layers": ["identity", "authorization", "transport", "execution", "isolation", "storage", "recovery"],
       "boundary": "The immutable image binds the pinned editor/broker closure and exact descriptor; Marshall retains current write/profile/Customer-owner authority, Audi retains the account origin, Lilly fences TCP 4444 to the current boot, and the guest broker reconciles the current personal UID before launching a systemd worker.",
       "denial": "Retained editor-free images, a changed release or image identity, missing package partner, insufficient headroom, unsafe customization paths, foreign gateway/boot/account and revoked browser authority must refuse. A Linux family capability or successful SSH does not grant editor authority.",
-      "scope": "The shared Alma/Arch builder packages the pinned editor/broker/direnv, exact descriptor, registered offline closure and GC roots. Final evaluation and actual-filesystem custody gates passed, along with two exact-release/image property and absent-descriptor checks. Alma's isolated nine-node nested-KVM suite passed all twelve actual provisioning, editor/terminal/webview, policy, recovery, same-disk restart and current-authority subtests. Its fixture image90eca504 differs from production65e7700b by private roots and immutable policy files. Both production Arch0b3da3e8 and Alma65e7700b passed fresh strict personal CLI SSH, stop/checkpoint/restart, repeated SSH and original owned deletion, plus four read-only PAM/sudo smokes. Arch passed eight native browser stages against merged HTTP security source, including live bridges across hostd/Lilly restarts, before folder navigation returned 502 after broker restart.",
+      "scope": "The shared Alma/Arch builder packages the pinned editor/broker/direnv, exact descriptor, registered offline closure and GC roots. Final evaluation and actual-filesystem custody gates passed, along with two exact-release/image property and absent-descriptor checks. Alma's isolated nine-node nested-KVM suite passed all twelve provisioning, editor/terminal/webview, policy, recovery, restart and current-authority subtests. Its fixture image90eca504 differs from production65e7700b by private roots and policy files. Both production Arch0b3da3e8 and Alma65e7700b passed fresh strict personal CLI SSH, stop/checkpoint/restart, repeated SSH and owned deletion, plus four PAM/sudo smokes. Arch's captured same-image diagnostic replay passed all twelve native stages in618.2s; the earlier broker-restart502 remains unexplained. Both native sources precede the later trunk merge.",
       "status": "partial",
-      "gaps": "Arch broker-restart recovery failed and its later worker recovery, same-disk restart and refusal stages were not reached. The cause remains under investigation. The production CLI journeys do not establish production browser sign-in or recurring history. Existing seven-family receipts retain earlier image IDs. Retained disks are not upgraded; physical isolation remains separate and Windows/native BSD/illumos editor support stays disabled.",
-      "preferred_gap": "Diagnose and repair Arch's broker-restart folder-navigation 502, then pass the complete Marshall/Audi/Lilly/Firecracker browser suite with unchanged default capacity and recovery/refusal assertions. Add separately owned production browser fixtures without fabricating operator session authority.",
+      "gaps": "The original Arch broker-restart502 remains unexplained despite a complete same-image passing replay. Six recv/closed diagnostics also occurred in successful recovery stages. Failure-only memory/OOM/PID/Node probes did not execute. Native acceptance of later merged trunk and production browser sign-in/history remain separate. Existing seven-family receipts retain earlier image IDs. Retained disks are not upgraded; physical isolation and Windows/native BSD/illumos editor support remain separate.",
+      "preferred_gap": "Reproduce and identify the intermittent broker-restart502 without changing default capacity, deadlines or recovery/refusal assertions. Qualify later merged releases separately and add owned production browser fixtures without fabricating operator session authority.",
       "evidence": [
         {
           "kind": "property",
@@ -34,10 +34,19 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/fleet.py",
           "assertion": "native editor opens from Marshall with personal terminal and isolated webview",
-          "scope": "Alma's complete twelve-subtest isolated nine-node real application/Chromium/Firecracker fixture passed in693.21 machine seconds, including immutable policy, live bridges, broker/worker recovery, same-disk current-boot restart, foreign-Origin refusal and sign-out. Fixture90eca504 is distinct from production65e7700b. Arch passed eight stages before broker-restart folder navigation returned502; no full Arch, production browser or physical-isolation claim.",
+          "scope": "Alma's complete twelve-subtest isolated nine-node real application/Chromium/Firecracker fixture passed in693.21 machine seconds, including immutable policy, live bridges, broker/worker recovery, same-disk current-boot restart, foreign-Origin refusal and sign-out. Fixture90eca504 is distinct from production65e7700b; no later merged-source, production browser or physical-isolation claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md",
           "record_assertion": "passed all **12 native subtests**: 693.21 seconds of machine execution"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/vscode-web/fleet.py",
+          "assertion": "broker restart preserves the independent editor process and user workspace",
+          "scope": "Captured Arch diagnostic driver sgnphysw passed all twelve unchanged native stages in618.2s against original fixtureb1c8ff76 and default2GiB/8GiB. Broker/worker recovery, same-disk restart and Origin/sign-out refusal passed. Six receive/closed events do not explain original502; failure-only resource/Node probes did not execute. Excludes later merged trunk and production browser acceptance.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md",
+          "record_assertion": "Arch diagnostic replay passed all **12 native subtests**: 618.2 seconds native"
         }
       ]
     },
@@ -4148,6 +4157,105 @@
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-18-machine-pins.md",
           "record_assertion": "Porsche's closed pin-refusal tests passed in that execution"
+        }
+      ]
+    },
+    {
+      "id": "user-time-zones",
+      "journey": "Choose a display time zone on the profile page, read every timestamp in that zone and see collaborators' local time",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "The zone is a nullable display preference on the user's own row, written only through the self-only set_time_zone action and validated against the compiled tz database; storage, ledger time, CSV export and SSH wire views stay UTC. The viewer zone resolves saved, then validated browser connect param, then UTC; other people's local time renders only from a saved zone.",
+      "denial": "Refuse unknown or malformed zones with invalid_time_zone, non-user actors with Forbidden and retired accounts with unauthorized; required/security minute ticks first refuse revoked or expired persisted logins. Never persist the browser zone, log the zone text, show a person's local time without a saved zone, or add owner fields to the SSH ls/show contract.",
+      "scope": "Hegel properties over every curated zone and random instants including DST edges for label offsets, ordering, uniqueness, antisymmetric differences and validation; database round trips of the action; LiveView tests of the profile page, resolution order, dead render, UTC-provenance timestamps and people on team, machine, thread and Control room pages; Covenant obligations; synthetic browser probe of the profile page and an Adelaide timestamp. During integration through 9e7f6bd3, 49 focused tests passed, including actual persisted-token revocation refused on the next clock tick after correcting hook order. No native journey.",
+      "status": "partial",
+      "gaps": "No NixOS machine test drives the profile page or the browser connect param in the packaged browser; local-time lines inside LiveView streams refresh on re-read, not on the minute tick; the browser probe inherits pre-existing off-grid and thread appearance failures.",
+      "preferred_gap": "Add a packaged-browser machine check that saves a zone, reloads and reads a converted timestamp, and a cross-session check that a collaborator sees the saved local time.",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
+          "assertion": "every label carries the zone's offset in force at that instant",
+          "scope": "Every curated zone over random instants 2000–2040 plus fixed DST edges; half-hour and 45-minute zones pinned",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
+          "assertion": "difference is antisymmetric, zero on itself and its text follows the sign",
+          "scope": "Random zone pairs and instants; text direction and hour/minute spans",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
+          "assertion": "arbitrary text is refused unless the database resolves it",
+          "scope": "Random printable and binary input against valid?/1 and the UTC fallback of shift/2",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/accounts/time_zone_test.exs",
+          "assertion": "set_time_zone round-trips valid zones and refuses everything else",
+          "scope": "Curated, non-curated resolvable, upper-cased and random zones through the real action against local PostgreSQL; refusals leave the row unchanged",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/accounts/time_zone_test.exs",
+          "assertion": "a user changes only their own zone; nil clears it",
+          "scope": "Self-only write, forged target argument rejected, nil clears, non-user and retired actors refused, event without zone text",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/profile_live_test.exs",
+          "assertion": "the viewer zone resolves saved, then browser, then UTC",
+          "scope": "Connected mount with connect params, invalid browser zone, dead render ignoring the browser",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/profile_live_test.exs",
+          "assertion": "a clock tick refuses a revoked persisted login",
+          "scope": "Real mounted profile and PostgreSQL-backed token: verify login, revoke that exact persisted token, verify durable refusal, then send only the minute tick and require sign-in redirect. Red on imported hook order, green after fresh-login hooks run first; 49 focused tests passed at merged 8fe9786 dependency pin. No packaged browser or native expiry journey.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-user-time-zones.md",
+          "record_assertion": "checks the durable refusal, sends only the clock tick and requires a sign-in"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/profile_live_test.exs",
+          "assertion": "team members show their local time and the difference from the viewer",
+          "scope": "Team, machine access and list, thread sharing and Control room pages with saved and unsaved people",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/time_components_test.exs",
+          "assertion": "timestamp renders in the zone with the UTC instant as provenance",
+          "scope": "Component rendering of formats, UTC fallback, saved-only person lines and the local clock",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/ssh/commands_test.exs",
+          "assertion": "refute Map.has_key?(hd(listed.result[\"items\"]), \"owner_time_zone\")",
+          "scope": "SSH ls/show wire views gain no owner keys",
+          "execution": "present"
+        },
+        {
+          "kind": "manual",
+          "path": "marshall/scripts/monospace_browser_probe.py",
+          "assertion": "check_profile",
+          "scope": "Synthetic fixture: profile page saves Adelaide, overview timestamp ends in ACST/ACDT, both themes and mobile",
+          "execution": "present"
         }
       ]
     },

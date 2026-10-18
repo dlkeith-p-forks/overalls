@@ -399,6 +399,14 @@ with the provision's tuple, polls the catalog for up to 90 s before
 provisioning, and retries an `insufficient_capacity` refusal once after a fresh
 wait, logging only the closed refusal token. Marshall's freshness decision is
 unchanged.
+Run `c011420b1c74f586054654f8d1023683-65-0` showed the operator's witness
+fence still required the stop's bumped generation while the guest server keeps
+the retained boot's: a `guest.witness` read of a VM desired and observed
+stopped now accepts the newest completed provision/start tuple on its
+placement. Operator `image_unavailable` refusals (a stale host image report
+between catalog and provision) are retried like `insufficient_capacity`, each
+catalog read is bounded to 30 s within a 180 s window, and an expired sample
+logs its last unmet step.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The
@@ -864,8 +872,8 @@ separate obligations. See
 
 ## Elixir property verification
 
-Elixir properties currently use the test-only Hegel frontend ref `08cd428`
-(`08cd4289b8b268ae14176e3391c791647e8affae`) under
+Elixir properties currently use the test-only Hegel frontend ref `8fe9786`
+(`8fe9786cf2e134689c1bd58229e186d97c2f05f8`) under
 [ADR-0191](repo:docs/architecture/decisions/0191-elixir-hegel-property-verification.md).
 Protocol properties run once per declared case count with fixed seeds and no
 example database or printed replay blobs. A local draw boundary records literal
@@ -885,7 +893,7 @@ errors or skips. These historical results do not verify the current pin or
 changed consumer tests. Standalone `check all` options now propagate, but the
 engine uses `test_cases` rather than `max_runs`. The earlier `f1ad336`
 map-context/options expansion failed a bounded compilation probe while a plain
-control passed. Current `08cd428` context forms passed isolated compilation and
+control passed. Earlier `08cd428` context forms passed isolated compilation and
 runtime checks; tuple bindings, filters and nested compatibility options retain
 their narrower consumer repairs.
 Narrow consumer repairs retain generated assertions in tagged ordinary tests;
@@ -981,8 +989,8 @@ Covenant 24/24, both JavaScript suites, Monospace and forced Dialyzer with zero
 errors, skips or unnecessary skips in 49.65 seconds. Its frozen runtime
 sources precede the machine-pin integration; final merged-source consumer gates
 remain separate. The matrix review records exact log and source-ledger digests.
-Actual Mix resolution normalizes all eleven Hegel locks to the full current
-commit. All eight incoming dependency snapshots were stale, so their hashes
+At the recorded `08cd428` checkpoint, actual Mix resolution normalized all
+eleven Hegel locks to that full commit. All eight incoming dependency snapshots were stale, so their hashes
 were refreshed from actual fetches. Every new stored lock snapshot equals its
 source and every independently computed recursive NAR hash equals its configured
 value. This repairs dependency custody without transferring any prior-pin test
@@ -990,6 +998,15 @@ or release result. Upstream `cdbc76086` merged byte-identical resolved locks and
 hashes, confirmed against the independent proof; both hosts then converged
 healthy to that exact revision with zero failures at 10:43 UTC. The exact
 custody and convergence scope is in the matrix review.
+The later `8fe9786` import again changes eleven pins and eight configured
+dependency hashes. The earlier custody and release results do not qualify this
+new NIF or its snapshots. New consumer checks retain their exact source scope.
+At the older pin, the default outer count was 100 even for CI properties;
+Audi's stream-guard menu therefore required at least 60–140 seconds of expiry
+waits, and its complete 42-mutation role menu scheduled 4,200 fresh OTP starts.
+Their aggregate timeouts preserve failures rather than establishing a product
+refusal defect. Fixture-budget corrections must retain the per-case closure
+and refusal assertions, default exploration and fresh-process boundaries.
 The combined `870eecef5` checkpoint also passed both actual-host toplevel builds
 in 357 seconds and converged healthy on both hosts at 10:10 UTC. Independent
 forced Dungarees rebuilds of the actual Arch/Alma ext4s and wrappers passed

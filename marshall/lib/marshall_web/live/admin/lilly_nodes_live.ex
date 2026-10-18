@@ -212,6 +212,8 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="admin"
       admin_active="nodes"
@@ -450,7 +452,7 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 </thead>
                 <tbody>
                   <tr :for={event <- @timeline}>
-                    <td><time>{DateTime.to_iso8601(event.at)}</time></td>
+                    <td><.timestamp at={event.at} zone={@time_zone} format={:datetime_seconds} /></td>
                     <td>{label(event.kind)}</td>
                     <td class="muted break">
                       <span :if={event.vm_id}>VM <code>{event.vm_id}</code></span>
@@ -484,9 +486,19 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                   <tr :for={campaign <- @campaign_history}>
                     <td class="break"><code>{campaign.id}</code></td>
                     <td>{label(campaign.status)}</td>
-                    <td class="muted">{DateTime.to_iso8601(campaign.inserted_at)}</td>
                     <td class="muted">
-                      {if campaign.closed_at, do: DateTime.to_iso8601(campaign.closed_at), else: "—"}
+                      <.timestamp
+                        at={campaign.inserted_at}
+                        zone={@time_zone}
+                        format={:datetime_seconds}
+                      />
+                    </td>
+                    <td class="muted">
+                      <.timestamp
+                        at={campaign.closed_at}
+                        zone={@time_zone}
+                        format={:datetime_seconds}
+                      />
                     </td>
                   </tr>
                 </tbody>

@@ -126,8 +126,9 @@ editor explanation. Final evaluation and actual-filesystem closure/configuration
 service checks pass for editor-bearing Arch `0b3da3e8` and Alma `65e7700b`.
 The actual Alma nine-node browser suite passed all twelve provisioning, editor,
 policy, recovery, restart and current-authority subtests. Arch's equivalent
-native suite passed eight stages, including hostd/Lilly restart survival, before
-folder navigation returned 502 after broker restart. Its recovery remains open.
+native suite passed all twelve stages on the captured same-image diagnostic
+replay; its earlier broker-restart 502 remains unexplained. Neither native result
+qualifies the later trunk merge or a production browser session.
 Both production replacement images passed fresh strict personal CLI SSH,
 stop/checkpoint/restart, repeat SSH, PAM/sudo checks and completed deletion.
 The seven-family CLI milestone retains its earlier exact image IDs; neither

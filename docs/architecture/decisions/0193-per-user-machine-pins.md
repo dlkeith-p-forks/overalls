@@ -50,8 +50,10 @@ through Porsche.
 2. **Pins are coordinated, not written by users.** `Marshall.Access.Pins` runs
    `pin_machine` and `unpin_machine` inside `Ledger.transaction`: a per-user
    advisory lock, the VM row lock shared with lifecycle, a fresh Cedar `read`
-   check for pinning (`vm_deleted` for deleted intent or an archived row), the
-   locked pin row, and a cap of 20 pinned machines per user (`pin_limit`).
+   check for pinning (`vm_deleted` for deleted intent or an archived row,
+   `machine_failed` for a machine whose observed state is failed — amended
+   2026-10-18: an existing pin on a failed machine stays and can be unpinned),
+   the locked pin row, and a cap of 20 pinned machines per user (`pin_limit`).
    Pinning a pinned machine and unpinning an unpinned one return the row
    unchanged. Unpinning needs a live row but not current read access, so a
    user whose access ended can still clear the pin. Changes emit `vm.pinned`,

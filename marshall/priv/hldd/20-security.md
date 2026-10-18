@@ -77,6 +77,29 @@ argument. Expected refusals: `machine_pinned` on delete, `pin_limit` on the 21st
 pin, `vm_deleted` when pinning a deleting machine, `forbidden` for a reader
 without access or an unpin without a live row.
 
+## Time zone preference disclosure layers
+
+[ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md) stores one
+display preference per account. It is not an authority: it never enters Cedar,
+policies, ledger comparisons or any wire contract, and only its owner can write
+it. Evidence is BEAM-level (Hegel properties, LiveView and Covenant tests); no
+native journey has run.
+
+| Layer | Authority and required refusal |
+| --- | --- |
+| Identity | The zone belongs to the authenticated user's own row. `set_time_zone` takes no target argument; a forged one is rejected by Ash, a non-user or retired actor is refused, and the browser's zone is used for the viewer's display only and is never persisted by the hook. |
+| Authorization | `actor_present()` admits the self-only action; the internal `store_time_zone` update is gated to the compute system actor. A saved zone is disclosed to users who share a team, machine or thread with its owner and to Control room readers, in exactly the projections that already disclose the email; a user without a saved zone discloses nothing. |
+| Transport | The browser sends only `timezone` in the LiveView connect params; the server validates it against the compiled database before use. Picker submissions are validated the same way; `invalid_time_zone` is a closed refusal with a fixed flash. SSH `ls`/`show` drop `owner_email`/`owner_time_zone`. |
+| Execution | The write runs inside `Ledger.transaction` under the actor's row lock; refusal rolls back and the event `account.time_zone_changed` (user id only) is emitted after commit. Zone text never enters structured events. |
+| Isolation | No guest, host or network state changes; the preference affects rendering in the viewer's browser session only. |
+| Storage | One nullable text column on `users`; `ValidTimeZone` refuses an unresolvable identifier even if the coordinator is bypassed. Zone data is compiled into the release from the pinned `tz` package and never fetched at runtime. |
+| Recovery | Clearing restores browser-zone display; a stale or unknown saved identifier renders UTC rather than failing the page. Rule changes arrive through a dependency bump and release hash refresh. |
+
+Untested boundaries: the packaged browser sending the connect param, and a
+saved zone whose rules change between tz releases. Expected refusals:
+`invalid_time_zone` for unknown identifiers, `Forbidden` for non-user actors,
+`unauthorized` for retired accounts.
+
 ## User-run guest coding CLI layers
 
 Codex and Claude Code are ordinary guest processes, separate from Marshall's
@@ -276,8 +299,9 @@ recorded personal browser journey. The
 records all twelve passing Alma native browser subtests and both new production
 CLI lifecycles separately. The native fixture checks recovery, current-boot
 restart, foreign-Origin refusal and sign-out; its private roots and policy files
-give it a different immutable image ID. Arch passed eight native stages before
-broker-restart folder navigation returned 502. Remaining Arch recovery, production
+give it a different immutable image ID. Arch's same-image diagnostic replay
+passed all twelve stages, while its earlier broker-restart 502 remains unexplained.
+The later trunk merge, production
 browser sign-in and physical isolation remain separate evidence boundaries.
 
 | Layer | Authority and refusal |

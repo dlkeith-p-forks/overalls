@@ -70,6 +70,8 @@ defmodule MarshallWeb.InferenceLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active={if @live_action == :admin, do: "admin", else: "usage"}
       admin_active="usage"
@@ -125,7 +127,7 @@ defmodule MarshallWeb.InferenceLive do
           <table>
             <thead>
               <tr>
-                <th class="width-min">Time · UTC</th>
+                <th class="width-min">Time</th>
                 <th class="width-auto">Model</th>
                 <th class="width-min num">Input tokens</th>
                 <th class="width-min num">Output tokens</th>
@@ -135,7 +137,9 @@ defmodule MarshallWeb.InferenceLive do
             </thead>
             <tbody id="usage-rows" phx-update="stream">
               <tr :for={{id, row} <- @streams.usage} id={id}>
-                <td class="nowrap">{Calendar.strftime(row.inserted_at, "%Y-%m-%d %H:%M:%S")}</td>
+                <td class="nowrap">
+                  <.timestamp at={row.inserted_at} zone={@time_zone} format={:datetime_seconds} />
+                </td>
                 <td class="break">
                   <strong>{row.model}</strong><br /><span class="muted">{row.provider}</span>
                 </td>

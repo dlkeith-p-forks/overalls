@@ -98,7 +98,11 @@ are eligible. Malformed domains and header injection refuse; there is no
 organization allowlist. Complete case-insensitive email addresses identify
 distinct Users, each with a separate reserved guest UUID/UID. All email edits of
 the same User preserve its guest identity. No profile username, public email-edit
-action or onboarding step is added. Native plus-alias/numeric-leading mailbox
+action or onboarding step is added; the only profile preference is the display
+time zone of [ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md),
+set on `/settings/profile` through the self-only `set_time_zone` action, which
+changes no identity, guest account or authority (see
+[time zones and local time](#interactive)). Native plus-alias/numeric-leading mailbox
 sign-in and SMTP inbox delivery remain separate gaps in [scenario coverage](#coverage).
 
 Opening a magic link in a JavaScript-enabled browser submits the token through
@@ -485,8 +489,11 @@ stateDiagram-v2
 ```
 
 Pinning requires current Cedar read access, checked under the machine's row lock
-in the same transaction, and refuses a machine with deleted intent (`vm_deleted`)
-or a 21st pinned machine (`pin_limit`). Unpinning needs only a live row, so a user
+in the same transaction, and refuses a machine with deleted intent (`vm_deleted`),
+a machine whose observed state is failed (`machine_failed`) or a 21st pinned
+machine (`pin_limit`). A pin taken before the machine failed stays, and its holder
+can still unpin it; the Pin control is hidden on failed machines while Unpin
+remains. Unpinning needs only a live row, so a user
 whose access ended can still clear the pin; a never-pinned machine refuses with
 `forbidden`. Repeating either request returns the row unchanged and emits no
 event. A pin grants no authority: it does not appear in the Cedar entity and

@@ -28,11 +28,15 @@ RELEASE_ATTEMPTS = 5
 # Marshall withholds capacity whose last accepted Lilly report is older than its
 # 5 s freshness window, which injected faults routinely exceed; the cycle polls
 # for a usable catalog instead of judging one instant.
-CATALOG_WAIT_SECONDS = 90.0
+CATALOG_WAIT_SECONDS = 180.0
 CATALOG_POLL_SECONDS = 2.0
-# Admission re-checks freshness transactionally, so a stale window between the
-# catalog read and provision is refused once and retried after a fresh wait.
-PROVISION_ATTEMPTS = 2
+# One read stalled behind the serial operator must not consume the window.
+CATALOG_READ_SECONDS = 30.0
+# Admission re-checks freshness transactionally (insufficient_capacity), and
+# the operator re-reads the catalog before provisioning (image_unavailable when
+# the host's image report went stale); either is retried after a fresh wait.
+PROVISION_ATTEMPTS = 3
+STALE_REFUSALS = frozenset({"insufficient_capacity", "image_unavailable"})
 
 
 @dataclass(frozen=True)
@@ -86,6 +90,8 @@ def _sample(
     tuple identifies the boot it produced.
     """
     deadline = time.monotonic() + timeout_seconds
+    # The last unmet step, logged once on expiry so a stalled join is visible.
+    stage = "not_sampled"
     while time.monotonic() < deadline:
         operation_reply = operator.operation(vm_id, operation_id)
         vm_reply = operator.get(vm_id)
@@ -95,15 +101,18 @@ def _sample(
             or vm_reply.state is not State.OBSERVED
             or vm_reply.value is None
         ):
+            stage = "compute_unavailable"
             time.sleep(1)
             continue
         try:
             operation = operation_view(operation_reply.value, vm_id, operation_id)
             vm = vm_view(vm_reply.value, vm_id)
         except (ValueError, TypeError):
+            stage = "compute_invalid"
             time.sleep(1)
             continue
         if operation.status != "completed" or operation.outcome is None:
+            stage = "operation_pending"
             time.sleep(1)
             continue
         if (
@@ -120,7 +129,9 @@ def _sample(
         guest_result = witness.witness(GuestSpec(vm.placement_id, epoch, generation))
         if guest_result.state is State.OBSERVED and guest_result.value is not None:
             return BootObservation(operation, vm, guest_result.value)
+        stage = "witness_unavailable"
         time.sleep(1)
+    LOG.info("Guest lifecycle %s sample expired: %s", expected_kind, stage)
     return None
 
 
@@ -161,7 +172,8 @@ def _usable_catalog(
     deadline = time.monotonic() + CATALOG_WAIT_SECONDS
     while True:
         identity_result = witness.identity()
-        catalog_result = operator.catalog()
+        remaining = deadline - time.monotonic()
+        catalog_result = operator.catalog(max(1.0, min(CATALOG_READ_SECONDS, remaining)))
         gap = observed_gap(identity_result, catalog_result)
         if gap is None and identity_result.value is not None and catalog_result.value is not None:
             return identity_result.value, None
@@ -190,7 +202,7 @@ def _admit(
         if admission.value.status != "ok":
             reason = admission.value.reason or "unrecognized_reason"
             LOG.info("Guest lifecycle provision refused: %s", reason)
-            if reason == "insufficient_capacity" and attempt + 1 < PROVISION_ATTEMPTS:
+            if reason in STALE_REFUSALS and attempt + 1 < PROVISION_ATTEMPTS:
                 continue
             return None
         try:

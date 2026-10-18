@@ -59,8 +59,8 @@ storage durability, physical recovery or deployed fleet behavior.
 - [Elixir Hegel testing guide](../../development/testing-with-hegel.md)
 - [Hegel Elixir skill](../../../.agents/skills/hegel-elixir-tests/SKILL.md)
 - [Protocol test-only dependency pin](../../../protocol/mix.exs)
-  currently selects frontend ref `08cd428`, resolved as
-  `08cd4289b8b268ae14176e3391c791647e8affae`,
+  currently selects frontend ref `8fe9786`, resolved as
+  `8fe9786cf2e134689c1bd58229e186d97c2f05f8`,
   as do Marshall and Lilly. The historical complete protocol gate at
   `2c9f7a4a9f2cf156de063bbc8058bcf297be5cf0` passed 299 tests and properties;
   the linked review retains that source hash and the earlier `6a62795` result.
@@ -75,9 +75,9 @@ storage durability, physical recovery or deployed fleet behavior.
   The complete final-repair Marshall gate at `02cd8bd` passed 1,694 tests,
   Covenant 24/24 and zero-error forced Dialyzer; the historical `f1ad336`
   checkpoint retained a failing bounded context/options
-  compilation probe. The current pin passed an isolated three-form context
+  compilation probe. The earlier `08cd428` pin passed an isolated three-form context
   compilation/runtime probe and the preserved two-case distributed lock
-  property. A complete current-pin Marshall gate subsequently passed 1,694
+  property. A complete `08cd428` Marshall gate subsequently passed 1,694
   tests with four exclusions, Covenant 24/24 and zero-error forced Dialyzer
   against frozen pre-machine-pin sources; it does not verify the later
   machine-pin integration. Final merged-source Marshall execution subsequently
@@ -88,10 +88,12 @@ storage durability, physical recovery or deployed fleet behavior.
   610 and 100 tests, Covenant15/15 and4/4 and zero-error forced Dialyzer;
   the frozen runtime ledger remained unchanged. These BEAM results do not
   complete the migration or establish native guarantees.
-  All eight
-  refreshed fixed-output dependency snapshots equal the normalized source locks
-  and their actual recursive NAR hashes equal the configured values.
-  Historical execution at earlier pins does not verify the new pin.
+  At that earlier pin, all eight refreshed fixed-output dependency snapshots
+  equalled the normalized source locks and their actual recursive NAR hashes
+  equalled the configured values. The imported `8fe9786` update changes all
+  eleven application pins and eight configured dependency hashes; those
+  historical builds do not qualify its snapshots or native NIF. New source-bound
+  smoke/replay and consumer evidence remain separate from the earlier results.
 - [Protocol terminal properties](../../../protocol/test/hegel_terminal_test.exs)
   define bounded frame round trips and truncation cases with deterministic seeds.
   Their presence does not record execution or completion of the wider migration.

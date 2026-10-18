@@ -3,6 +3,7 @@ defmodule MarshallWeb.ThreadsLive do
   use MarshallWeb, :live_view
 
   alias Marshall.{Compute, Threads}
+  alias Marshall.Accounts.TimeZones
   alias MarshallWeb.{ThreadCommands, WorkspaceComponents}
 
   on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
@@ -837,7 +838,8 @@ defmodule MarshallWeb.ThreadsLive do
         socket.assigns[:activity_owner_filter],
         socket.assigns[:activity_team_filter],
         socket.assigns[:activity_query],
-        actor.id
+        actor.id,
+        socket.assigns[:time_zone]
       )
 
     visible_threads =
@@ -1032,13 +1034,16 @@ defmodule MarshallWeb.ThreadsLive do
           String.t(),
           String.t(),
           String.t(),
-          String.t()
+          String.t(),
+          TimeZones.iana() | nil
         ) :: [thread()]
-  defp activity_threads(threads, status, time, owner, team, query, actor_id) do
+  defp activity_threads(threads, status, time, owner, team, query, actor_id, zone) do
+    now = DateTime.utc_now()
+
     threads
     |> Enum.filter(fn thread ->
       status_matches = status == "all" or Atom.to_string(thread.status) == status
-      time_matches = time_matches?(thread.updated_at, time)
+      time_matches = time_matches?(thread.updated_at, time, zone, now)
       owner_matches = owner_matches?(thread, owner, actor_id)
       team_matches = team == "all" or to_string(thread.team_id) == team
       query = String.downcase(String.trim(query))
@@ -1052,21 +1057,27 @@ defmodule MarshallWeb.ThreadsLive do
     )
   end
 
-  @spec time_matches?(DateTime.t(), String.t()) :: boolean()
-  defp time_matches?(_updated_at, "all"), do: true
+  # @cc [owner:ghuntley,label:product] activity-time-filter-viewer-days
+  # The today/week/month filters MUST compare calendar days in the viewer's
+  # zone: today is the viewer's current local date, week the last seven local
+  # dates and month the last thirty, all ending today. A thread updated after
+  # now MUST NOT match. No filter may compare raw UTC seconds.
+  @spec time_matches?(DateTime.t(), String.t(), TimeZones.iana() | nil, DateTime.t()) ::
+          boolean()
+  defp time_matches?(_updated_at, "all", _zone, _now), do: true
 
-  defp time_matches?(%DateTime{} = updated_at, filter)
+  defp time_matches?(%DateTime{} = updated_at, filter, zone, now)
        when filter in ["today", "week", "month"] do
-    age_seconds = DateTime.diff(DateTime.utc_now(), updated_at, :second)
+    today = TimeZones.local_date(now, zone)
+    day = TimeZones.local_date(updated_at, zone)
+    days = %{"today" => 0, "week" => 6, "month" => 29}
 
-    case filter do
-      "today" -> age_seconds >= 0 and age_seconds < 86_400
-      "week" -> age_seconds >= 0 and age_seconds < 604_800
-      "month" -> age_seconds >= 0 and age_seconds < 2_592_000
-    end
+    Date.compare(day, today) != :gt and
+      Date.diff(today, day) <= Map.fetch!(days, filter) and
+      DateTime.compare(updated_at, now) != :gt
   end
 
-  defp time_matches?(_, _), do: true
+  defp time_matches?(_, _, _, _), do: true
 
   @spec owner_matches?(thread(), String.t(), String.t()) :: boolean()
   defp owner_matches?(_thread, "all", _actor_id), do: true
@@ -1280,7 +1291,14 @@ defmodule MarshallWeb.ThreadsLive do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={%{user: @current_user}} compute={true} active="threads">
+    <Layouts.app
+      flash={@flash}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+      compute={true}
+      active="threads"
+    >
       <section
         id="threads"
         class="threads-surface"
@@ -1503,10 +1521,7 @@ defmodule MarshallWeb.ThreadsLive do
                   <span class="thread-navigation-meta">
                     <span class="status-label" data-state={thread.status}>{thread.status}</span>
                     <span class="thread-navigation-mode">{thread.mode}</span>
-                    <time datetime={DateTime.to_iso8601(thread.updated_at)}>{Calendar.strftime(
-                      thread.updated_at,
-                      "%d %b"
-                    )}</time>
+                    <.timestamp at={thread.updated_at} zone={@time_zone} format={:day_month} />
                   </span>
                   <span
                     :if={@live_action == :index and thread.objective != thread.title}
@@ -1648,8 +1663,8 @@ defmodule MarshallWeb.ThreadsLive do
                       datetime={DateTime.to_iso8601(thread.updated_at)}
                       class="thread-activity-time"
                     >
-                      <span>{Calendar.strftime(thread.updated_at, "%d %b")}</span>
-                      <span>{Calendar.strftime(thread.updated_at, "%H:%M UTC")}</span>
+                      <span>{TimeZones.format(thread.updated_at, @time_zone, :day_month)}</span>
+                      <span>{TimeZones.format(thread.updated_at, @time_zone, :time)}</span>
                     </time>
                     <span class="thread-activity-description">
                       <strong>{thread.title || "Untitled thread"}</strong>
@@ -1783,7 +1798,13 @@ defmodule MarshallWeb.ThreadsLive do
                       </p>
                       <%= if @grants_available do %>
                         <div :if={@grant_owner} id="thread-grant-owner" class="thread-grant-row">
-                          <span class="break">{@grant_owner.email}</span><span class="muted">Owner · cannot be changed</span>
+                          <.person
+                            id="thread-grant-owner-person"
+                            email={@grant_owner.email}
+                            time_zone={@grant_owner.time_zone}
+                            viewer_zone={@time_zone}
+                            now={@now}
+                          /><span class="muted">Owner · cannot be changed</span>
                         </div>
                         <div id="thread-grant-items" phx-update="stream">
                           <div
@@ -1791,7 +1812,13 @@ defmodule MarshallWeb.ThreadsLive do
                             id={dom_id}
                             class="thread-grant-row"
                           >
-                            <span class="break">{grant.email}</span>
+                            <.person
+                              id={"#{dom_id}-person"}
+                              email={grant.email}
+                              time_zone={grant.time_zone}
+                              viewer_zone={@time_zone}
+                              now={@now}
+                            />
                             <span class="status-label" data-role={grant.role}>{grant.role}</span>
                             <button
                               type="button"

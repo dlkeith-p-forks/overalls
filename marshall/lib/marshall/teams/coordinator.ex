@@ -205,13 +205,16 @@ defmodule Marshall.Teams.Coordinator do
       |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
       |> Ash.Query.filter(id in ^Enum.map(memberships, & &1.user_id))
       |> Ash.read!(actor: SystemActor.compute())
-      |> Map.new(&{&1.id, &1.email})
+      |> Map.new(&{&1.id, &1})
 
     Enum.map(memberships, fn membership ->
+      user = users[membership.user_id]
+
       %{
         user_id: membership.user_id,
         role: membership.role,
-        email: users[membership.user_id]
+        email: user && user.email,
+        time_zone: user && user.time_zone
       }
     end)
   end
@@ -233,16 +236,21 @@ defmodule Marshall.Teams.Coordinator do
       |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
       |> Ash.Query.filter(id in ^Enum.flat_map(transfers, &[&1.from_user_id, &1.to_user_id]))
       |> Ash.read!(actor: SystemActor.compute())
-      |> Map.new(&{&1.id, &1.email})
+      |> Map.new(&{&1.id, &1})
 
     Enum.map(transfers, fn transfer ->
+      from = users[transfer.from_user_id]
+      to = users[transfer.to_user_id]
+
       %{
         id: transfer.id,
         state: transfer.state,
         from_user_id: transfer.from_user_id,
-        from_email: users[transfer.from_user_id],
+        from_email: from && from.email,
+        from_time_zone: from && from.time_zone,
         to_user_id: transfer.to_user_id,
-        to_email: users[transfer.to_user_id]
+        to_email: to && to.email,
+        to_time_zone: to && to.time_zone
       }
     end)
   end

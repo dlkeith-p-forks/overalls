@@ -90,6 +90,8 @@ defmodule MarshallWeb do
       import Phoenix.HTML
       # Core UI components (Monospace Web presentation, ADR-0161)
       import MarshallWeb.CoreComponents
+      # Viewer-zone timestamps, people with local time and the local clock
+      import MarshallWeb.TimeComponents
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS

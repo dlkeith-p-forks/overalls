@@ -65,6 +65,20 @@ defmodule Marshall.Accounts.User do
       require_atomic? false
     end
 
+    update :store_time_zone do
+      accept [:time_zone]
+      require_atomic? false
+      validate Marshall.Accounts.ValidTimeZone
+    end
+
+    action :set_time_zone, :map do
+      argument :time_zone, :string,
+        allow_nil?: true,
+        constraints: [max_length: 64, trim?: true, allow_empty?: false]
+
+      run Marshall.Accounts.Profile
+    end
+
     action :invite_user, :map do
       argument :email, Marshall.Accounts.EmailAddress, allow_nil?: false
       validate Marshall.Accounts.EligibleEmail
@@ -206,7 +220,7 @@ defmodule Marshall.Accounts.User do
   end
 
   policies do
-    policy action([:assign_administrator, :security_state]) do
+    policy action([:assign_administrator, :security_state, :store_time_zone]) do
       authorize_if Marshall.Accounts.Checks.InternalLookup
     end
 
@@ -224,7 +238,7 @@ defmodule Marshall.Accounts.User do
       authorize_if Marshall.Accounts.Checks.ControlRoomRead
     end
 
-    policy action(:security) do
+    policy action([:security, :set_time_zone]) do
       authorize_if actor_present()
     end
 
@@ -253,6 +267,13 @@ defmodule Marshall.Accounts.User do
     attribute :deleted_at, :utc_datetime_usec
 
     attribute :administrator, :boolean, allow_nil?: false, default: false
+
+    # Display preference only (ADR-0195): storage stays UTC and this never
+    # enters authorization. Nil means "not saved"; the browser zone is used.
+    attribute :time_zone, :string,
+      allow_nil?: true,
+      public?: false,
+      constraints: [max_length: 64, allow_empty?: false]
 
     attribute :email, Marshall.Accounts.EmailAddress do
       allow_nil? false

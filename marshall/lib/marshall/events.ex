@@ -584,6 +584,12 @@ defmodule Marshall.Events do
     metadata: [user_id: :uuid]
   )
 
+  # The zone text is a preference, not an outcome; it is never metadata.
+  defevent("account.time_zone_changed",
+    message: "Account time zone changed",
+    metadata: [user_id: :uuid]
+  )
+
   defevent("auth.signed_in",
     message: "Account signed in",
     metadata: [user_id: {:uuid, :optional}]

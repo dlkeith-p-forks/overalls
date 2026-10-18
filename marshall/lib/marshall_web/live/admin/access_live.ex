@@ -65,6 +65,8 @@ defmodule MarshallWeb.Admin.AccessLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="admin"
       admin_active="access"
@@ -99,9 +101,19 @@ defmodule MarshallWeb.Admin.AccessLive do
               <tbody>
                 <tr :for={grant <- @grants} id={"admin-grant-#{grant.id}"}>
                   <td class="break">{grant.vm_name}</td>
-                  <td class="break">{grant.email}</td>
+                  <td class="break">
+                    <.person
+                      id={"admin-grant-#{grant.id}-person"}
+                      email={grant.email}
+                      time_zone={grant.time_zone}
+                      viewer_zone={@time_zone}
+                      now={@now}
+                    />
+                  </td>
                   <td><span class="status-label">{grant.role}</span></td>
-                  <td class="muted nowrap">{Calendar.strftime(grant.inserted_at, "%Y-%m-%d")}</td>
+                  <td class="muted nowrap">
+                    <.timestamp at={grant.inserted_at} zone={@time_zone} format={:date} />
+                  </td>
                   <td :if={@admin_authorized}>
                     <Layouts.action
                       tone="danger"
@@ -134,13 +146,23 @@ defmodule MarshallWeb.Admin.AccessLive do
               </thead>
               <tbody>
                 <tr :for={key <- @keys} id={"admin-key-#{key.id}"}>
-                  <td class="break">{key.email}</td>
+                  <td class="break">
+                    <.person
+                      id={"admin-key-#{key.id}-person"}
+                      email={key.email}
+                      time_zone={key.time_zone}
+                      viewer_zone={@time_zone}
+                      now={@now}
+                    />
+                  </td>
                   <td class="break">
                     {if key.label == "", do: "SSH key", else: key.label}<br />
                     <code>{key.fingerprint}</code><br />
                     <span class="muted">{key.algorithm}</span>
                   </td>
-                  <td class="muted nowrap">{Calendar.strftime(key.inserted_at, "%Y-%m-%d")}</td>
+                  <td class="muted nowrap">
+                    <.timestamp at={key.inserted_at} zone={@time_zone} format={:date} />
+                  </td>
                   <td :if={@admin_authorized}>
                     <Layouts.action
                       tone="danger"
@@ -176,7 +198,7 @@ defmodule MarshallWeb.Admin.AccessLive do
                   <td class="break">{session.gateway_name}</td>
                   <td class="break"><code>{session.fingerprint || "pending key approval"}</code></td>
                   <td class="muted nowrap">
-                    {Calendar.strftime(session.expires_at, "%Y-%m-%d %H:%M UTC")}
+                    <.timestamp at={session.expires_at} zone={@time_zone} format={:datetime} />
                   </td>
                   <td :if={@admin_authorized}>
                     <Layouts.action

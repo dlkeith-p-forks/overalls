@@ -32,6 +32,7 @@ defmodule Porsche.Client do
                        :placement_changed,
                        :name_unavailable,
                        :machine_pinned,
+                       :machine_failed,
                        :pin_limit
                      ],
                      &{Atom.to_string(&1), &1}
@@ -70,6 +71,7 @@ defmodule Porsche.Client do
           | :placement_changed
           | :name_unavailable
           | :machine_pinned
+          | :machine_failed
           | :pin_limit
           | :rate_limited
           | :unsupported_version
@@ -196,7 +198,7 @@ defmodule Porsche.Client do
 
   # @cc [owner:ghuntley,label:security;recovery] porsche-closed-conflict-reasons
   # Only predefined host/capacity/clone/name-custody and machine-pin reasons
-  # (`machine_pinned`, `pin_limit`) may refine a conflict; other conflict names
+  # (`machine_pinned`, `machine_failed`, `pin_limit`) may refine a conflict; other conflict names
   # stay generic and unknown names are an http_error. Remote values MUST NOT
   # create atoms or trigger automatic request redelivery.
   defp response({:error, name}, _client) when is_binary(name) do

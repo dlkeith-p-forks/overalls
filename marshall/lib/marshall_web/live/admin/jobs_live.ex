@@ -172,8 +172,6 @@ defmodule MarshallWeb.Admin.JobsLive do
   defp label(state),
     do: Enum.find_value(@states, "Unknown", fn {label, value} -> if value == state, do: label end)
 
-  defp timestamp(nil), do: "—"
-  defp timestamp(value), do: Calendar.strftime(value, "%Y-%m-%d %H:%M:%S UTC")
   defp duration(nil), do: "—"
   defp duration(milliseconds), do: "#{Float.round(milliseconds / 1000, 2)} s"
   defp age(nil), do: "—"
@@ -187,6 +185,8 @@ defmodule MarshallWeb.Admin.JobsLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="admin"
       admin_active="jobs"
@@ -197,7 +197,9 @@ defmodule MarshallWeb.Admin.JobsLive do
           subtitle="Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion."
         >
           <:actions>
-            <span class="muted">Updated {timestamp(@refreshed_at)} · every 5 seconds</span>
+            <span class="muted">Updated
+            <.timestamp at={@refreshed_at} zone={@time_zone} format={:datetime_seconds} />
+            · every 5 seconds</span>
           </:actions>
         </UI.heading>
         <%= if @live_action == :index do %>
@@ -314,9 +316,15 @@ defmodule MarshallWeb.Admin.JobsLive do
                 <:item title="Queue">{@job.queue}</:item>
                 <:item title="Worker"><span class="break">{@job.worker}</span></:item>
                 <:item title="Attempts">{@job.attempt} / {@job.max_attempts}</:item>
-                <:item title="Created">{timestamp(@job.inserted_at)}</:item>
-                <:item title="Scheduled / next retry">{timestamp(@job.scheduled_at)}</:item>
-                <:item title="Last attempt started">{timestamp(@job.attempted_at)}</:item>
+                <:item title="Created">
+                  <.timestamp at={@job.inserted_at} zone={@time_zone} format={:datetime_seconds} />
+                </:item>
+                <:item title="Scheduled / next retry">
+                  <.timestamp at={@job.scheduled_at} zone={@time_zone} format={:datetime_seconds} />
+                </:item>
+                <:item title="Last attempt started">
+                  <.timestamp at={@job.attempted_at} zone={@time_zone} format={:datetime_seconds} />
+                </:item>
                 <:item title="Last execution duration">{duration(@job.duration_ms)}</:item>
                 <:item title="Recorded failures">{@job.error_count}</:item>
               </.kv>
@@ -352,7 +360,13 @@ defmodule MarshallWeb.Admin.JobsLive do
                   </thead>
                   <tbody id="job-events" phx-update="stream">
                     <tr :for={{dom_id, event} <- @streams.events} id={dom_id}>
-                      <td class="nowrap"><time>{timestamp(event.captured_at)}</time></td>
+                      <td class="nowrap">
+                        <.timestamp
+                          at={event.captured_at}
+                          zone={@time_zone}
+                          format={:datetime_seconds}
+                        />
+                      </td>
                       <td class="nowrap">
                         <span class="status-label" data-tone={job_tone(event.state)}>{label(
                           event.state

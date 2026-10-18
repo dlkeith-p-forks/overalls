@@ -37,12 +37,25 @@ defmodule MarshallWeb.Layouts do
   attr(:active, :string, default: "machines")
   attr(:admin_active, :string, default: "nodes")
 
+  attr(:time_zone, :string,
+    default: nil,
+    doc: "the viewer's resolved IANA zone; nil hides the account clock"
+  )
+
+  attr(:now, :any, default: nil, doc: "the current UTC DateTime for the account clock")
+
   slot(:inner_block, required: true)
 
   def app(assigns) do
     ~H"""
     <div class="workspace-shell">
-      <.console_header current_scope={@current_scope} active={@active} admin_active={@admin_active} />
+      <.console_header
+        current_scope={@current_scope}
+        active={@active}
+        admin_active={@admin_active}
+        time_zone={@time_zone}
+        now={@now}
+      />
       <div class="workspace-body">
         <main
           id="main-content"
@@ -153,6 +166,13 @@ defmodule MarshallWeb.Layouts do
   attr(:current_scope, :map, default: nil)
   attr(:active, :string, default: nil)
   attr(:admin_active, :string, default: "nodes")
+  attr(:time_zone, :string, default: nil)
+  attr(:now, :any, default: nil)
+
+  # @cc [owner:ghuntley,label:product] signed-in-profile-navigation
+  # The "Your account" tree MUST place Profile first, immediately above
+  # Security, linking to /settings/profile, and the account menu MUST show the
+  # viewer's local clock under the email whenever a zone and instant are given.
 
   # @cc [owner:ghuntley,label:product] signed-in-control-room-navigation
   # Every signed-in account MUST see the Control room mode switch regardless of
@@ -271,6 +291,15 @@ defmodule MarshallWeb.Layouts do
                 <ul>
                   <li>
                     <.link
+                      id="nav-profile"
+                      navigate={~p"/settings/profile"}
+                      aria-current={@active == "profile" && "page"}
+                    >
+                      Profile
+                    </.link>
+                  </li>
+                  <li>
+                    <.link
                       navigate={~p"/settings/security"}
                       aria-current={@active == "security" && "page"}
                     >
@@ -311,6 +340,10 @@ defmodule MarshallWeb.Layouts do
           <details class="account-menu">
             <summary>{@current_scope.user.email}</summary>
             <p>{@current_scope.user.email}</p>
+            <p :if={@time_zone && @now} class="account-clock">
+              <.local_clock id="account-local-clock" zone={@time_zone} now={@now} />
+              <.link navigate={~p"/settings/profile"} class="nav-hint">Time zone</.link>
+            </p>
             <.link href={~p"/sign-out"}>Sign out</.link>
           </details>
         </div>
@@ -362,6 +395,7 @@ defmodule MarshallWeb.Layouts do
     do: "Control room · " <> String.capitalize(String.replace(key, "_", " "))
 
   defp section_title("ssh", _), do: "SSH keys"
+  defp section_title("profile", _), do: "Profile"
   defp section_title("usage", _), do: "AI usage"
   defp section_title(key, _), do: String.capitalize(key)
 

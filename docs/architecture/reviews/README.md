@@ -4,8 +4,14 @@
   repairs the missing Alma/Arch editor package, account broker and immutable
   descriptor while preserving exact-release authority; twelve Alma native browser
   subtests and both new production CLI lifecycles passed, while Arch browser
-  passed eight stages before a broker-recovery 502; all remain separate from
+  diagnostic replay passed all twelve stages after an unexplained broker-recovery
+  502; all remain separate from
   the frozen seven-family CLI milestone.
+- [User time zones (2026-10-18)](2026-10-18-user-time-zones.md): ADR-0195's
+  per-user display zone, self-only validated writes, saved → browser → UTC
+  viewer resolution, UTC-provenance timestamps, people's local time in team,
+  access, thread and Control room projections, the offline `tz` dependency and
+  its refreshed release hash; Hegel/LiveView/Covenant evidence, no native journey.
 - [Machine pins (2026-10-18)](2026-10-18-machine-pins.md): ADR-0193's per-user
   pins, pinned-first lists, the owner-pin deletion guard across every lifecycle
   delete path with the account-deletion exception, pin removal at archival and

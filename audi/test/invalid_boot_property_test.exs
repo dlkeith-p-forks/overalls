@@ -4,8 +4,9 @@ defmodule Audi.InvalidBootPropertyTest do
   import Hegel.Gen
 
   @moduletag :tmp_dir
-  # The three complete role/mutation menus start 126 fresh VMs. Keep this
-  # whole-property budget bounded while allowing slow, shared build hosts.
+  # Each of the 100 default cases traverses all 42 role/mutation pairs: 4200
+  # fresh VMs if completed. This bounded aggregate budget may expire before
+  # the complete run finishes on shared build hosts.
   @moduletag timeout: 600_000
   @id "11111111-1111-4111-8111-111111111111"
   @probe Path.expand("../scripts/invalid_boot_probe.exs", __DIR__)

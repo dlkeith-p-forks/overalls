@@ -167,6 +167,9 @@ defmodule MarshallWeb.MachineWorkspace do
       String.contains?(text, "vm_deleted") ->
         "This machine is being deleted and cannot be pinned."
 
+      String.contains?(text, "machine_failed") ->
+        "A failed machine cannot be pinned."
+
       true ->
         "The pin could not be changed. Refresh and try again."
     end

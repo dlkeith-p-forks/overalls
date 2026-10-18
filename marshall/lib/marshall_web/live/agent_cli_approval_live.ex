@@ -50,7 +50,13 @@ defmodule MarshallWeb.AgentCLIApprovalLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} compute={true} current_scope={%{user: @current_user}}>
+    <Layouts.app
+      flash={@flash}
+      compute={true}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+    >
       <section class="stack">
         <h1>Approve agent CLI</h1>
         <p :if={@vm}>Machine: <code>{@vm.name}</code></p>

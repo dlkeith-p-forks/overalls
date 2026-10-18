@@ -150,7 +150,13 @@ defmodule MarshallWeb.LaunchLive do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={%{user: @current_user}} compute={true}>
+    <Layouts.app
+      flash={@flash}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+      compute={true}
+    >
       <section
         id="repository-launch"
         phx-hook="RepositoryLaunchComplete"

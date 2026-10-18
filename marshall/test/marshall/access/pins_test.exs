@@ -74,6 +74,28 @@ defmodule Marshall.Access.PinsTest do
              Access.unpin_machine(%{vm_id: c.vm.id}, actor: c.member)
   end
 
+  test "a failed machine cannot gain a pin but keeps and can clear an existing one", c do
+    {:ok, other} = Compute.provision(request(), actor: c.owner)
+    assert {:ok, _} = Access.pin_machine(%{vm_id: other.id}, actor: c.owner)
+
+    for vm <- [c.vm, other] do
+      [current] = Ledger.read!(VirtualMachine, id: vm.id)
+      Ledger.update!(current, :observe, %{observed_state: :failed})
+    end
+
+    assert {:error, error} = Access.pin_machine(%{vm_id: c.vm.id}, actor: c.owner)
+    assert Exception.message(error) =~ "machine_failed"
+    assert Ledger.read!(Pin, vm_id: c.vm.id) == []
+
+    assert {:ok, %Pin{state: :pinned}} = Access.pin_machine(%{vm_id: other.id}, actor: c.owner)
+
+    assert {:ok, %Pin{state: :unpinned}} =
+             Access.unpin_machine(%{vm_id: other.id}, actor: c.owner)
+
+    assert {:error, error} = Access.pin_machine(%{vm_id: other.id}, actor: c.owner)
+    assert Exception.message(error) =~ "machine_failed"
+  end
+
   test "a deleting machine cannot be pinned and the cap refuses a 21st pin", c do
     # Each synthetic host admits two of these machines.
     for _ <- 1..10, do: host_fixture()

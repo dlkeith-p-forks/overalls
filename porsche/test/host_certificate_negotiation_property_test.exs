@@ -91,7 +91,7 @@ defmodule Porsche.HostCertificateNegotiationPropertyTest do
   # A trusted matching certificate MUST reach signed user-key proof with the real
   # Proof callback. The scripted pending reply MUST NOT establish account authority.
   property "strict OpenSSH certificate trust gates real signed-key session submission",
-    %{directory: directory, port: port, backend: backend} do
+           %{directory: directory, port: port, backend: backend} do
     cases = draw(shuffle([:trusted, :foreign_ca, :foreign_name, :absent]))
     fixture = %{directory: directory, port: port, backend: backend}
 

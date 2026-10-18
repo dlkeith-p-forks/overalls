@@ -155,15 +155,14 @@ defmodule MarshallWeb.Admin.AuditLive do
     end
   end
 
-  defp timestamp(nil), do: "—"
-  defp timestamp(value), do: Calendar.strftime(value, "%Y-%m-%d %H:%M:%S UTC")
-
   @impl true
   def render(assigns) do
     ~H"""
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="admin"
       admin_active="audit"
@@ -243,7 +242,8 @@ defmodule MarshallWeb.Admin.AuditLive do
           class="panel dashed"
         >
           Generation {@uncertain_order.generation} has an uncertain ACME order response.
-          The generation can be failed after {timestamp(@uncertain_order.retry_after)};
+          The generation can be failed after
+          <.timestamp at={@uncertain_order.retry_after} zone={@time_zone} format={:datetime_seconds} />;
           the next due check can then request a new generation.
         </p>
         <div :if={@admin_authorized and @certificate?} class="row actions">
@@ -268,7 +268,9 @@ defmodule MarshallWeb.Admin.AuditLive do
             </thead>
             <tbody id="audit-event-rows" phx-update="stream">
               <tr :for={{dom_id, event} <- @streams.events} id={dom_id}>
-                <td class="nowrap"><time>{timestamp(event.inserted_at)}</time></td>
+                <td class="nowrap">
+                  <.timestamp at={event.inserted_at} zone={@time_zone} format={:datetime_seconds} />
+                </td>
                 <td class="nowrap">{if @lifecycle?, do: event.action, else: event.kind}</td>
                 <td class="nowrap">
                   <code>{cond do

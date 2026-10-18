@@ -147,8 +147,9 @@ NixOS and Ubuntu declare the exact editor closure and manifest capability.
 The [foreign Linux repair](reviews/2026-10-18-foreign-linux-browser-editor.md)
 adds the missing package pair, broker service and descriptor to Arch/Alma.
 Alma passed all twelve isolated native browser subtests, and both rebuilt
-production images passed fresh strict CLI lifecycles. Arch passed eight browser
-stages on the merged HTTP security source before a broker-recovery 502. Their earlier
+production images passed fresh strict CLI lifecycles. Arch's captured same-image
+diagnostic replay passed all twelve browser stages; its earlier broker-recovery
+502 remains unexplained and the later trunk merge is a separate source scope. Their earlier
 seven-family milestone and retained disks keep their original image identities.
 The guest package disables built-in AI/Chat and workspace trust, includes four
 verified immutable Open VSX defaults, and delegates language tools to project
@@ -1258,6 +1259,12 @@ and account deletion archives the departing owner's pins before deletion.
 The shared SSH catalog and Porsche expose non-physical `pin`/`unpin` mutations.
 Its implementation remains partial, with merged-source gates and native
 browser/Porsche and cross-node race evidence retaining separate scope.
+[ADR-0195](decisions/0195-user-time-zones.md) adds a nullable display time zone
+on `User`, a self-only `set_time_zone` action, the `/settings/profile` page and
+viewer-zone rendering of every browser timestamp with people's local time and
+difference beside their email; storage stays UTC, the `tz` data is compiled into
+the offline release and SSH wire views are unchanged. Implementation is partial:
+BEAM property/LiveView evidence only, no packaged-browser journey.
 [ADR-0019](decisions/0019-terminal-session-and-writer-authority.md) adds persisted
 console sessions, fresh account-token checks and pending/active writer claims.
 [ADR-0020](decisions/0020-local-console-fences-and-bounded-streams.md) adds a local

@@ -86,6 +86,12 @@ defmodule Audi.Authority.StreamGuardTest do
   # @cc [owner:ghuntley,label:verification;security] audi-stream-lease-history
   # Generated grant and guard outcomes MUST close a live stream on refusal,
   # expiry, suspension or guard loss; a stale renewal MUST NOT extend it.
+  # The aggregate budget MUST preserve all 100 default histories and their
+  # per-action two-second owner-death and one-second socket-closure bounds.
+
+  # Two 300-700 ms expiry waits per history require 60-140 s across the default
+  # run, before 700 socket fixtures and the remaining fence assertions.
+  @tag timeout: 300_000
   property "a live TCP stream closes for every grant and guard fence",
     profile: :ci do
     check all(

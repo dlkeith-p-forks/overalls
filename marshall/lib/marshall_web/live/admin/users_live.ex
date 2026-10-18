@@ -122,6 +122,8 @@ defmodule MarshallWeb.Admin.UsersLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="admin"
       admin_active="users"
@@ -157,6 +159,14 @@ defmodule MarshallWeb.Admin.UsersLive do
                   else: "MFA not enrolled"}<span :if={user.id == @current_user.id}> · Your account</span>
               </p>
               <p :if={user.deletion_status} class="muted">{user.deletion_status}</p>
+              <p :if={user.time_zone}>
+                <.local_time
+                  id={"admin-user-local-time-#{user.id}"}
+                  zone={user.time_zone}
+                  viewer_zone={@time_zone}
+                  now={@now}
+                />
+              </p>
               <div
                 :if={@admin_authorized and (user.id != @current_user.id and is_nil(user.deleted_at))}
                 class="stack"

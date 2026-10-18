@@ -7,7 +7,7 @@ defmodule OverallsAntithesis.GuestWitness do
   @moduledoc "Closed, sanitized witness of the current integrated guest."
 
   alias OverallsAntithesis.Fixture
-  alias Marshall.Compute.{Host, Ledger, VirtualMachine, WorkloadPlacement}
+  alias Marshall.Compute.{Host, Ledger, Operation, VirtualMachine, WorkloadPlacement}
   alias Marshall.Terminal.{Directory, Session}
 
   @operations ~w(guest.identity guest.witness guest.terminal_witness guest.terminal_input_stall guest.crash terminal.replay_arm terminal.replay_receipt)
@@ -52,8 +52,12 @@ defmodule OverallsAntithesis.GuestWitness do
 
   # @cc [owner:ghuntley,label:security;verification] guest-witness-current-only
   # A successful placement receipt MUST be based on the current Marshall tuple
-  # and one matching guest-vmm witness. The operator MUST NOT return raw
-  # boot challenges, terminal bytes, arbitrary guest paths, or socket errors.
+  # and one matching guest-vmm witness. A stopped VM's witness names the boot
+  # the stop retained, whose tuple predates the stop's generation bump: only a
+  # guest.witness read of a VM both desired and observed stopped may name the
+  # newest completed provision/start tuple instead. The operator MUST NOT
+  # return raw boot challenges, terminal bytes, arbitrary guest paths, or
+  # socket errors.
   @spec main([String.t()]) :: :ok | no_return()
   def main([operation, manifest_path, request_path, result_path]) when operation in @operations do
     true = System.get_env("MARSHALL_INSTANCE_ID") == "enrollment-operator"
@@ -87,6 +91,15 @@ defmodule OverallsAntithesis.GuestWitness do
                :ok <- current_replay_binding(request, manifest),
                :ok <- current_tuple(request, manifest),
                {:ok, value} <- issue_replay_arm(request) do
+            {:ok, value}
+          else
+            {:unavailable, reason} -> {:unavailable, reason}
+          end
+
+        "guest.witness" ->
+          with :ok <- witness_tuple(request, manifest),
+               {:ok, value} <- observe(operation, request),
+               :ok <- witness_tuple(request, manifest) do
             {:ok, value}
           else
             {:unavailable, reason} -> {:unavailable, reason}
@@ -200,7 +213,13 @@ defmodule OverallsAntithesis.GuestWitness do
   def validate_request(_, _), do: raise(ArgumentError, "invalid guest witness request")
 
   @spec current_tuple(request(), map()) :: :ok | {:unavailable, String.t()}
-  defp current_tuple(request, manifest) do
+  defp current_tuple(request, manifest), do: placement_tuple(request, manifest, false)
+
+  @spec witness_tuple(request(), map()) :: :ok | {:unavailable, String.t()}
+  defp witness_tuple(request, manifest), do: placement_tuple(request, manifest, true)
+
+  @spec placement_tuple(request(), map(), boolean()) :: :ok | {:unavailable, String.t()}
+  defp placement_tuple(request, manifest, retained?) do
     placement_id = request["placement_id"]
     fixture_owners = for name <- ~w(admin_a admin_b target), do: get_in(manifest, [name, "id"])
 
@@ -208,8 +227,7 @@ defmodule OverallsAntithesis.GuestWitness do
          [placement] <- Ledger.read!(WorkloadPlacement, id: placement_id),
          [vm] <- Ledger.read!(VirtualMachine, id: placement.vm_id),
          true <- vm.current_placement_id == placement_id,
-         true <- vm.execution_epoch == request["execution_epoch"],
-         true <- vm.generation == request["generation"],
+         true <- tuple_matches?(vm, placement_id, request, retained?),
          true <- vm.owner_id in fixture_owners,
          true <- is_nil(vm.archived_at) do
       :ok
@@ -218,6 +236,31 @@ defmodule OverallsAntithesis.GuestWitness do
     end
   rescue
     _ -> {:unavailable, "current_placement_unavailable"}
+  end
+
+  @spec tuple_matches?(Ash.Resource.Record.t(), String.t(), request(), boolean()) :: boolean()
+  defp tuple_matches?(vm, placement_id, request, retained?) do
+    requested = {request["execution_epoch"], request["generation"]}
+
+    cond do
+      {vm.execution_epoch, vm.generation} == requested -> true
+      retained? and vm.desired_state == :stopped and vm.observed_state == :stopped ->
+        retained_boot(vm.id, placement_id) == requested
+
+      true ->
+        false
+    end
+  end
+
+  # The boot a stop retains is the newest completed provision or start on
+  # the current placement; a stop or resize never produces a boot.
+  @spec retained_boot(String.t(), String.t()) :: {pos_integer(), pos_integer()} | nil
+  defp retained_boot(vm_id, placement_id) do
+    Operation
+    |> Ledger.read!(vm_id: vm_id, placement_id: placement_id, status: :completed)
+    |> Enum.filter(&(&1.kind in [:provision, :start]))
+    |> Enum.map(&{&1.execution_epoch, &1.generation})
+    |> Enum.max(fn -> nil end)
   end
 
   @spec current_replay_binding(request(), map()) :: :ok | {:unavailable, String.t()}

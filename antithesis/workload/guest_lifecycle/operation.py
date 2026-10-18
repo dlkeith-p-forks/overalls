@@ -88,6 +88,7 @@ class ComputeLifecycleOperator:
         *,
         request_key: UUID | None = None,
         vm_id: UUID | None = None,
+        wait_seconds: float = 120,
     ) -> Observation[OperatorReply]:
         """@cc [owner:ghuntley,label:verification;recovery] lifecycle-attempt-is-not-effect
         Each published request MUST be logged as attempted. Only a matching
@@ -130,14 +131,16 @@ class ComputeLifecycleOperator:
             temporary.unlink(missing_ok=True)
             raise
         entry = self._ledger.attempted(request_id, operation, request_key, vm_id)
-        result = self._result(request_id, operation)
+        result = self._result(request_id, operation, wait_seconds)
         self._ledger.settle(entry, result)
         return result
 
-    def _result(self, request_id: UUID, operation: str) -> Observation[OperatorReply]:
+    def _result(
+        self, request_id: UUID, operation: str, wait_seconds: float
+    ) -> Observation[OperatorReply]:
         result_file = self._results / f"{request_id}.json"
         # The operator is serial and may retry a crashed evaluation.
-        deadline = time.monotonic() + 120
+        deadline = time.monotonic() + wait_seconds
         while time.monotonic() < deadline:
             try:
                 info = result_file.lstat()
@@ -171,8 +174,10 @@ class ComputeLifecycleOperator:
             return Observation.unavailable()
         return Observation.unavailable()
 
-    def catalog(self) -> Observation[OperatorReply]:
-        return self._call("compute.catalog", {})
+    def catalog(self, wait_seconds: float = 120) -> Observation[OperatorReply]:
+        """A shorter wait lets a caller poll again instead of spending its window
+        on one evaluation stalled behind injected faults."""
+        return self._call("compute.catalog", {}, wait_seconds=wait_seconds)
 
     def guest_identity(self) -> Observation[OperatorReply]:
         return self._call("guest.identity", {})

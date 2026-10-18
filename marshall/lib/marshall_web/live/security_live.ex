@@ -143,7 +143,13 @@ defmodule MarshallWeb.SecurityLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={%{user: @current_user}} active="security">
+    <Layouts.app
+      flash={@flash}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+      active="security"
+    >
       <section id="security-settings" class="stack">
         <UI.heading
           title="Security"
