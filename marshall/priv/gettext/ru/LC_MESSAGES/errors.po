@@ -1,3 +1,10 @@
+#
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
 ## This is a PO Template file.
 ##
 ## `msgid`s here are often extracted from source code.
@@ -9,110 +16,110 @@
 ## effect: edit them in PO (`.po`) files instead.
 ## From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr ""
+msgstr "не может быть пустым"
 
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "уже используется"
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "недопустимо"
 
 ## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr ""
+msgstr "должно быть принято"
 
 ## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr ""
+msgstr "имеет неверный формат"
 
 ## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr ""
+msgstr "содержит недопустимый элемент"
 
 ## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr ""
+msgstr "зарезервировано"
 
 ## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr ""
+msgstr "не совпадает с подтверждением"
 
 ## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "всё ещё связано с этой записью"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "всё ещё связаны с этой записью"
 
 ## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "должно содержать %{count} элемент"
+msgstr[1] "должно содержать %{count} элемента"
+msgstr[2] "должно содержать %{count} элементов"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "должно содержать %{count} символ"
+msgstr[1] "должно содержать %{count} символа"
+msgstr[2] "должно содержать %{count} символов"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "должно содержать %{count} байт"
+msgstr[1] "должно содержать %{count} байта"
+msgstr[2] "должно содержать %{count} байтов"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "должно содержать не менее %{count} элемента"
+msgstr[1] "должно содержать не менее %{count} элементов"
+msgstr[2] "должно содержать не менее %{count} элементов"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "должно содержать не менее %{count} символа"
+msgstr[1] "должно содержать не менее %{count} символов"
+msgstr[2] "должно содержать не менее %{count} символов"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "должно содержать не менее %{count} байта"
+msgstr[1] "должно содержать не менее %{count} байтов"
+msgstr[2] "должно содержать не менее %{count} байтов"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "должно содержать не более %{count} элемента"
+msgstr[1] "должно содержать не более %{count} элементов"
+msgstr[2] "должно содержать не более %{count} элементов"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "должно содержать не более %{count} символа"
+msgstr[1] "должно содержать не более %{count} символов"
+msgstr[2] "должно содержать не более %{count} символов"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "должно содержать не более %{count} байта"
+msgstr[1] "должно содержать не более %{count} байтов"
+msgstr[2] "должно содержать не более %{count} байтов"
 
 ## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "должно быть меньше %{number}"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "должно быть больше %{number}"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "должно быть меньше или равно %{number}"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "должно быть больше или равно %{number}"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "должно быть равно %{number}"

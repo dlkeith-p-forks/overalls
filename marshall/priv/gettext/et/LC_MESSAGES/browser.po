@@ -1,15 +1,18 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: et\n"
+msgstr ""
+"Language: et\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
@@ -79,7 +82,8 @@ msgstr "Ei saanud kopeerida. Valige tekst ja kopeerige see käsitsi."
 #: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
-msgstr "Juurdepääsu ei saanud värskendada. Kontrolli konto juurdepääsu masinale."
+msgstr ""
+"Juurdepääsu ei saanud värskendada. Kontrolli konto juurdepääsu masinale."
 
 #: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
@@ -114,7 +118,10 @@ msgstr "Ei leitud"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "Kas avada see link?\n\n%{url}"
+msgstr ""
+"Kas avada see link?\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -139,12 +146,16 @@ msgstr "Terminali nimi (ainult see brauser; tühi taastab genereeritud nime)"
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr "Tulemust ei saanud kinnitada. Laadige leht uuesti ja kontrollige tulemust enne uuesti proovimist."
+msgstr ""
+"Tulemust ei saanud kinnitada. Laadige leht uuesti ja kontrollige tulemust "
+"enne uuesti proovimist."
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "See masin palub kirjutada %{bytes} baite teie lõikelauale. Sisesta üks, seanss või vaigista."
+msgstr ""
+"See masin soovib kirjutada teie lõikelauale %{bytes} baiti. Sisestage once, "
+"session või mute."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
@@ -169,7 +180,9 @@ msgstr "Kinnitamist ei saanud lõpule viia. Proovige uuesti."
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr "Kinnita oma parooliga aadressile %{action}. See käivitub pärast kinnitamist üks kord."
+msgstr ""
+"Kinnita oma parooliga aadressile %{action}. See käivitub pärast kinnitamist "
+"üks kord."
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
@@ -199,17 +212,17 @@ msgstr "just praegu"
 #: lib/marshall_web/browser_messages.ex:45
 #, elixir-autogen, elixir-format
 msgid "● live"
-msgstr "REAALAJAS"
+msgstr "● reaalajas"
 
 #: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "● read-only"
-msgstr "Lugemisõigus"
+msgstr "● kirjutuskaitstud"
 
 #: lib/marshall_web/browser_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
-msgstr "Taasühendamine..."
+msgstr "⟳ taasühendamine…"
 
 #: lib/marshall_web/browser_messages.ex:48
 #, elixir-autogen, elixir-format

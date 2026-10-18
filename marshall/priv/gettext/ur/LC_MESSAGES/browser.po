@@ -1,15 +1,18 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: ur\n"
+msgstr ""
+"Language: ur\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
@@ -114,7 +117,10 @@ msgstr "کوئی مماثلت نہیں"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "یہ لنک کھولیں؟\n\n%{url}"
+msgstr ""
+"یہ لنک کھولیں؟\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -139,12 +145,16 @@ msgstr "ٹرمینل نام (صرف اس براؤزر میں؛ خالی کرنے
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr "نتیجے کی تصدیق نہیں ہو سکی۔ صفحہ دوبارہ لوڈ کر کے دوبارہ کوشش سے پہلے نتیجہ چیک کریں۔"
+msgstr ""
+"نتیجے کی تصدیق نہیں ہو سکی۔ صفحہ دوبارہ لوڈ کر کے دوبارہ کوشش سے پہلے نتیجہ "
+"چیک کریں۔"
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "یہ مشین آپ کے کلپ بورڈ میں %{bytes} بائٹس لکھنا چاہتی ہے۔ ایک بار، سیشن یا خاموش منتخب کریں۔"
+msgstr ""
+"یہ مشین آپ کے کلپ بورڈ میں %{bytes} بائٹس لکھنا چاہتی ہے۔ once، session یا "
+"mute ٹائپ کریں۔"
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
@@ -169,7 +179,8 @@ msgstr "تصدیق مکمل نہیں ہو سکی۔ دوبارہ کوشش کری�
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr "%{action} کے لیے اپنی پاس کی سے تصدیق کریں۔ تصدیق کے بعد یہ ایک بار چلے گا۔"
+msgstr ""
+"%{action} کے لیے اپنی پاس کی سے تصدیق کریں۔ تصدیق کے بعد یہ ایک بار چلے گا۔"
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format

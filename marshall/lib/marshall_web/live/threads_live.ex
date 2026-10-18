@@ -1154,7 +1154,7 @@ defmodule MarshallWeb.ThreadsLive do
 
   @spec generation_option(Marshall.Threads.Generation.t()) :: {String.t(), integer()}
   defp generation_option(generation) do
-    status = Atom.to_string(generation.status)
+    status = status_label(generation.status)
     {gettext("Generation %{value1} (%{value2})", value1: generation.ordinal, value2: status), generation.ordinal}
   end
 

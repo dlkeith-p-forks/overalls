@@ -1,14 +1,8 @@
 # Browser editors, terminals, SSH, and management
 
-The authenticated Overview may show a newsletter invitation in the right-hand
-panel. Dismissal is persisted on the account and removes the panel on every
-browser. Subscription validates the mailbox and sends the Ghost integrity-token
-and magic-link requests through Marshall; the native Ghost newsletter URL is a
-no-JavaScript fallback.
-
 ## Language and text direction
 
-[ADR-0200](repo:docs/architecture/decisions/0200-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.
+[ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial. RTL Gettext substitutions use Localize’s MF2 bidirectional isolation without changing source identifiers or placeholder syntax; LTR substitution and missing-binding semantics remain unchanged. Documentation extraction includes table cells and angle-bracket prose while fenced command examples and diagrams remain literal. Displayed date/time fields use bundled Localize CLDR data after shifting the stored UTC instant into the viewer’s time zone; UTC hover provenance remains invariant. Generated SSH documentation translates command summaries and option labels while preserving command names, usage and option tokens. Catalog checks distinguish empty, source-equal and fuzzy entries and refuse invalid placeholders, duplicate identities and obsolete messages; structural success alone does not establish translation quality or full coverage.
 
 ## Inline privileged browser actions
 
@@ -1191,4 +1185,4 @@ newest-first transcript throughout these interactions.
 
 ## Git settings
 
-The authenticated /settings page edits Git username, Git email and optional agent commit trailers for the current account. Git email is separate from sign-in email. Invalid or foreign-account changes refuse. Identity changes apply to newly created machines.
+The Profile section of the authenticated `/settings#profile` account page edits Git username, Git email and optional agent commit trailers for the current account. Git email is separate from sign-in email. Invalid or foreign-account changes refuse. Identity changes apply to newly created machines.

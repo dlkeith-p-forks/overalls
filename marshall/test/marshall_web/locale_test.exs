@@ -14,6 +14,20 @@ defmodule Marshall.LocalizationTest do
     assert Locale.normalize("PT_br") == "pt-BR"
   end
 
+  test "every supported locale has its own compiled Gettext catalog" do
+    assert Enum.sort(Gettext.known_locales(MarshallWeb.Gettext)) ==
+             Enum.sort(Locale.supported_locales())
+
+    for locale <- Locale.supported_locales(),
+        domain <- ~w(default browser documentation errors) do
+      path = Application.app_dir(:marshall, "priv/gettext/#{locale}/LC_MESSAGES/#{domain}.po")
+      assert File.regular?(path), "missing #{locale}/#{domain}"
+
+      assert path |> Expo.PO.parse_file!() |> Map.fetch!(:headers) |> IO.iodata_to_binary() =~
+               "Language: #{locale}\n"
+    end
+  end
+
   test "precedence selects persisted user override before session and browser" do
     assert Locale.choose("ja", "fi", "sv") == "ja"
     assert Locale.choose(nil, "fi", "sv") == "fi"

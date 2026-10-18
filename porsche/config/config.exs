@@ -32,7 +32,6 @@ config :localize,
     :sv
   ]
 
-
 config :overalls_diagnostics, events_catalog: Porsche.Events
 
 config :logger,

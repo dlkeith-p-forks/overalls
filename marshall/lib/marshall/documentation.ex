@@ -19,12 +19,6 @@ defmodule Marshall.Documentation do
     @external_resource Path.expand("../../priv/docs/#{slug}.md", __DIR__)
   end
 
-  @reference Enum.map_join(OverallsProtocol.SSHCommand.catalog(), "\n\n", fn command ->
-               "## #{command.name}\n\n`#{command.usage}`\n\n#{command.summary}\n\n" <>
-                 "Options: " <>
-                 Enum.map_join(command.options, ", ", &"`--#{&1}`") <> "."
-             end)
-
   @pages Map.new(Marshall.LocalizedMarkdown.locales(), fn locale ->
            {locale,
             Map.new(@sources, fn {slug, title} ->
@@ -32,7 +26,10 @@ defmodule Marshall.Documentation do
                 Path.expand("../../priv/docs/#{slug}.md", __DIR__)
                 |> File.read!()
                 |> Marshall.LocalizedMarkdown.translate(locale)
-                |> String.replace("{{COMMAND_REFERENCE}}", @reference)
+                |> String.replace(
+                  "{{COMMAND_REFERENCE}}",
+                  Marshall.LocalizedMarkdown.command_reference(locale, 2)
+                )
 
               {:ok, html, []} = Earmark.as_html(markdown, escape: true, smartypants: false)
 
@@ -63,11 +60,19 @@ defmodule Marshall.Documentation do
         @pages |> Map.fetch!(Marshall.LocalizedMarkdown.locale(locale)) |> Map.fetch!(slug)
       end)
 
+  use Gettext, backend: MarshallWeb.Gettext
+
   @spec llms() :: binary()
   def llms do
     "# Overalls\n\n" <>
-      "> Public documentation for Overalls browser extensions and SSH machine management (Porsche v1).\n\n" <>
-      "## Documentation\n\n" <>
+      "> " <>
+      dgettext(
+        "documentation",
+        "Public documentation for Overalls browser extensions and SSH machine management (Porsche v1)."
+      ) <>
+      "\n\n## " <>
+      dgettext("documentation", "Documentation") <>
+      "\n\n" <>
       Enum.map_join(pages(), "\n", fn page ->
         path = if page.slug == "index", do: "/docs.md", else: "/docs/#{page.slug}.md"
         "- [#{page.title}](#{path})"

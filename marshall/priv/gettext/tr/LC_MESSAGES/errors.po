@@ -1,3 +1,9 @@
+msgid ""
+msgstr ""
+"Language: tr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 ## This is a PO Template file.
 ##
 ## `msgid`s here are often extracted from source code.
@@ -9,101 +15,101 @@
 ## effect: edit them in PO (`.po`) files instead.
 ## From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr ""
+msgstr "boş bırakılamaz"
 
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "zaten kullanılıyor"
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "geçersiz"
 
 ## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr ""
+msgstr "kabul edilmeli"
 
 ## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr ""
+msgstr "biçimi geçersiz"
 
 ## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr ""
+msgstr "geçersiz kayıt içeriyor"
 
 ## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr ""
+msgstr "ayrılmış"
 
 ## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr ""
+msgstr "onayla eşleşmiyor"
 
 ## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "bu kayıtla hâlâ ilişkili"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "bu kayıtla hâlâ ilişkili"
 
 ## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} öğe içermeli"
+msgstr[1] "%{count} öğe içermeli"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} karakter olmalı"
+msgstr[1] "%{count} karakter olmalı"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} bayt olmalı"
+msgstr[1] "%{count} bayt olmalı"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "en az %{count} öğe içermeli"
+msgstr[1] "en az %{count} öğe içermeli"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "en az %{count} karakter olmalı"
+msgstr[1] "en az %{count} karakter olmalı"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "en az %{count} bayt olmalı"
+msgstr[1] "en az %{count} bayt olmalı"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "en fazla %{count} öğe içermeli"
+msgstr[1] "en fazla %{count} öğe içermeli"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "en fazla %{count} karakter olmalı"
+msgstr[1] "en fazla %{count} karakter olmalı"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "en fazla %{count} bayt olmalı"
+msgstr[1] "en fazla %{count} bayt olmalı"
 
 ## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "%{number} değerinden küçük olmalı"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "%{number} değerinden büyük olmalı"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "%{number} değerinden küçük veya eşit olmalı"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "%{number} değerinden büyük veya eşit olmalı"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "%{number} değerine eşit olmalı"

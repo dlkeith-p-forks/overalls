@@ -1,3 +1,10 @@
+#
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 ## This is a PO Template file.
 ##
 ## `msgid`s here are often extracted from source code.
@@ -9,101 +16,101 @@
 ## effect: edit them in PO (`.po`) files instead.
 ## From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr ""
+msgstr "காலியாக இருக்கக்கூடாது"
 
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "ஏற்கனவே பயன்படுத்தப்படுகிறது"
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "செல்லுபடியாகாது"
 
 ## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr ""
+msgstr "ஏற்கப்பட வேண்டும்"
 
 ## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr ""
+msgstr "வடிவம் செல்லுபடியாகாது"
 
 ## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr ""
+msgstr "செல்லாத பதிவு உள்ளது"
 
 ## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr ""
+msgstr "ஒதுக்கப்பட்டுள்ளது"
 
 ## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr ""
+msgstr "உறுதிப்படுத்தலுடன் பொருந்தவில்லை"
 
 ## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "இன்னும் இந்தப் பதிவுடன் தொடர்புடையது"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "இன்னும் இந்தப் பதிவுடன் தொடர்புடையவை"
 
 ## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} உருப்படிகள் இருக்க வேண்டும்"
+msgstr[1] "%{count} உருப்படிகள் இருக்க வேண்டும்"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} எழுத்துகள் இருக்க வேண்டும்"
+msgstr[1] "%{count} எழுத்துகள் இருக்க வேண்டும்"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} பைட்டுகள் இருக்க வேண்டும்"
+msgstr[1] "%{count} பைட்டுகள் இருக்க வேண்டும்"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "குறைந்தது %{count} உருப்படிகள் இருக்க வேண்டும்"
+msgstr[1] "குறைந்தது %{count} உருப்படிகள் இருக்க வேண்டும்"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "குறைந்தது %{count} எழுத்துகள் இருக்க வேண்டும்"
+msgstr[1] "குறைந்தது %{count} எழுத்துகள் இருக்க வேண்டும்"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "குறைந்தது %{count} பைட்டுகள் இருக்க வேண்டும்"
+msgstr[1] "குறைந்தது %{count} பைட்டுகள் இருக்க வேண்டும்"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "அதிகபட்சம் %{count} உருப்படிகள் இருக்கலாம்"
+msgstr[1] "அதிகபட்சம் %{count} உருப்படிகள் இருக்கலாம்"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "அதிகபட்சம் %{count} எழுத்துகள் இருக்கலாம்"
+msgstr[1] "அதிகபட்சம் %{count} எழுத்துகள் இருக்கலாம்"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "அதிகபட்சம் %{count} பைட்டுகள் இருக்கலாம்"
+msgstr[1] "அதிகபட்சம் %{count} பைட்டுகள் இருக்கலாம்"
 
 ## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "%{number} என்பதைவிடக் குறைவாக இருக்க வேண்டும்"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "%{number} என்பதைவிட அதிகமாக இருக்க வேண்டும்"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "%{number} என்பதற்குக் குறைவாகவோ சமமாகவோ இருக்க வேண்டும்"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "%{number} என்பதற்கு அதிகமாகவோ சமமாகவோ இருக்க வேண்டும்"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "%{number} என்பதற்குச் சமமாக இருக்க வேண்டும்"

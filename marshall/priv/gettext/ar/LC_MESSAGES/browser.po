@@ -1,15 +1,18 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\nLanguage: ar\n"
+msgstr ""
+"Language: ar\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
 
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
@@ -114,7 +117,10 @@ msgstr "لا توجد تطابقات"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "فتح هذا الرابط؟\n\n%{url}"
+msgstr ""
+"فتح هذا الرابط؟\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -139,12 +145,15 @@ msgstr "اسم المحطة الطرفية (هذا المتصفح فقط؛ إف�
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr "تعذر تأكيد النتيجة. أعد تحميل الصفحة وتحقق من النتيجة قبل إعادة المحاولة."
+msgstr ""
+"تعذر تأكيد النتيجة. أعد تحميل الصفحة وتحقق من النتيجة قبل إعادة المحاولة."
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "يطلب هذا الجهاز كتابة %{bytes} بايت إلى الحافظة. اكتب مرة واحدة أو للجلسة أو اكتم."
+msgstr ""
+"يطلب هذا الجهاز كتابة %{bytes} بايت إلى الحافظة. اكتب once أو session أو "
+"mute."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
@@ -169,7 +178,8 @@ msgstr "تعذر إكمال التحقق. حاول مجددًا."
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr "تحقق بمفتاح المرور من أجل %{action}. سيُنفَّذ هذا مرة واحدة بعد التحقق."
+msgstr ""
+"تحقق بمفتاح المرور من أجل %{action}. سيُنفَّذ هذا مرة واحدة بعد التحقق."
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format

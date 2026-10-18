@@ -1,31 +1,8 @@
 # Security boundaries and sensitive operations
 
-## GitHub.com delegated identity and rotating credentials
-
-[ADR-0198](repo:docs/architecture/decisions/0198-github-com-owner-integration.md)
-adds a built-in owner connection. These are accepted obligations; actual evidence
-and gaps remain in the
-[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
-
-| Layer | Allowed path and expected refusal |
-| --- | --- |
-| Identity | One connection per Marshall user and one active numeric GitHub owner. OAuth binds the login/account; expired, replayed, changed-login and retired callbacks refuse. |
-| Authorization | Current VM owner, profile and persistent exclusion select only that owner's grant. Shared writers intentionally use it. An absent, detached, disconnected or reconnect-required connection permits fresh anonymous forwarding with no token; GitHub decides authentication requirements. |
-| Transport | Private DNS/TLS, Galileo control and Lilly's pre-NAT proof remain mandatory. Fixed targets and safe response rewrites reject arbitrary credential recipients; guest headers cannot assert another user. |
-| Execution | Authenticated requests pin connection/generation/VM leases. Drain lasts at most five minutes before fencing. Detach, disconnect, retirement, expiry and failed renewal close the authenticated attempt without replay; fresh anonymous requests do not revive it. |
-| Isolation | No real credential enters guest files, environment or arguments. Sudo-capable shared writers exercise the same owner authority; personal UIDs do not isolate those privileges. Customer gains no private provider authority. |
-| Storage | Access/refresh pairs and staged exchanges are sensitive Cloak ciphertext. Tokens, codes, state/verifier bytes and provider bodies stay out of job arguments, audit versions, projections and Events. Exclusions survive reconnect. |
-| Recovery | Publish pairs only for current attempts. Uncertain rotating exchanges require reconnect. Historical ciphertext can hold consumed tokens; decryption is not provider validity. A fresh external restore epoch invalidates credentials, staged pairs, ceremonies and request pins before serving; its database acknowledgement is idempotent. Late callbacks/jobs cannot restore retired authority. |
-
-Broad daily scopes include `read:org` without organization administration or
-repository deletion. Organization approval, SAML SSO and repository policy remain
-independent. Seven-family execution, retained updates, live OAuth, backup restore
-and production withdrawal need scoped native/external evidence; BEAM properties
-and installed packages cannot establish them.
-
 ## Locale is presentation, not authority
 
-Language headers and session values are untrusted, bounded and validated against the supported locale set. Only the current user may persist their override; reset restores browser negotiation. Neither locale nor text direction changes login, Cedar, execution fences, storage ownership or recovery authority. The Porsche envelope carries a canonical locale for human prose, with English fallback for older peers; machine identifiers and terminal byte streams stay unchanged. Bidi isolation protects interpolated identifiers from misleading direction changes. See [ADR-0200](repo:docs/architecture/decisions/0200-localized-human-surfaces.md); native/browser execution and linguistic review remain gaps until recorded.
+Language headers and session values are untrusted, bounded and validated against the supported locale set. Only the current user may persist their override; reset restores browser negotiation. Neither locale nor text direction changes login, Cedar, execution fences, storage ownership or recovery authority. The Porsche envelope carries a canonical locale for human prose, with English fallback for older peers; machine identifiers and terminal byte streams stay unchanged. Bidi isolation protects interpolated identifiers from misleading direction changes. See [ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md); native/browser execution and linguistic review remain gaps until recorded.
 
 ## Agent context and guidance boundaries
 
@@ -1475,9 +1452,3 @@ reason before lifecycle deletion completes.
 ## Git identity configuration
 
 Account authorization controls preference updates. Validated identity is inert execution metadata bound to the machine’s admitted snapshot and current boot. Guest services atomically publish protected Git configuration; malformed metadata refuses. Identity values must not enter diagnostics. Guest sudo and Git local configuration retain their existing authority. Native cross-OS and production rollout acceptance remain separate from BEAM property evidence.
-# Newsletter boundary
-
-Newsletter signup keeps Ghost API calls server-side. The browser may submit
-only the fixed external fallback form action; no Ghost API token, response body,
-or email address is logged by Marshall. Dismissal is authorized only for the
-current non-retired account.

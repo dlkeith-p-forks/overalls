@@ -1,30 +1,33 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: fi\n"
+msgstr ""
+"Language: fi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
-msgstr "%{count}d sitten"
+msgstr "%{count} päivää sitten"
 
 #: lib/marshall_web/browser_messages.ex:12
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
-msgstr "%{count}h sitten"
+msgstr "%{count} tuntia sitten"
 
 #: lib/marshall_web/browser_messages.ex:13
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
-msgstr "%{count}m sitten"
+msgstr "%{count} minuuttia sitten"
 
 #: lib/marshall_web/browser_messages.ex:14
 #, elixir-autogen, elixir-format
@@ -34,17 +37,17 @@ msgstr "%{label} kopioitu."
 #: lib/marshall_web/browser_messages.ex:9
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing"
-msgstr "%{name} · %{count} katselu"
+msgstr "%{name} · %{count} katsojaa"
 
 #: lib/marshall_web/browser_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing · %{activity}"
-msgstr "%{name} · %{count} katselu · %{activity}"
+msgstr "%{name} · %{count} katsojaa · %{activity}"
 
 #: lib/marshall_web/browser_messages.ex:8
 #, elixir-autogen, elixir-format
 msgid "%{name} · Terminals"
-msgstr "%{name} · Liittimet"
+msgstr "%{name} · Päätteet"
 
 #: lib/marshall_web/browser_messages.ex:15
 #, elixir-autogen, elixir-format
@@ -54,7 +57,7 @@ msgstr "+ Uusi"
 #: lib/marshall_web/browser_messages.ex:16
 #, elixir-autogen, elixir-format
 msgid "Applying administrative change…"
-msgstr "Otetaan käyttöön hallinnollista muutosta…"
+msgstr "Toteutetaan ylläpitomuutosta…"
 
 #: lib/marshall_web/browser_messages.ex:17
 #, elixir-autogen, elixir-format
@@ -64,7 +67,7 @@ msgstr "Käynnistysloki · vain luku"
 #: lib/marshall_web/browser_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "Close this terminal session?"
-msgstr "Suljetaanko tämä terminaaliistunto?"
+msgstr "Suljetaanko tämä pääteistunto?"
 
 #: lib/marshall_web/browser_messages.ex:19
 #, elixir-autogen, elixir-format
@@ -74,17 +77,18 @@ msgstr "Komento"
 #: lib/marshall_web/browser_messages.ex:20
 #, elixir-autogen, elixir-format
 msgid "Could not copy. Select the text and copy it manually."
-msgstr "Kopioiminen epäonnistui. Valitse teksti ja kopioi se manuaalisesti."
+msgstr "Kopiointi epäonnistui. Valitse teksti ja kopioi se käsin."
 
 #: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
-msgstr "Käyttöoikeutta ei voitu päivittää. Tarkista tilin koneen käyttöoikeus."
+msgstr ""
+"Käyttöoikeutta ei voitu päivittää. Tarkista tilin käyttöoikeus koneeseen."
 
 #: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Design diagram; explanation follows in the handbook"
-msgstr "Suunnittelukaavio; selitys seuraa käsikirjassa"
+msgstr "Suunnittelukaavio; selitys on käsikirjassa"
 
 #: lib/marshall_web/browser_messages.ex:23
 #, elixir-autogen, elixir-format
@@ -99,12 +103,12 @@ msgstr "Poistu koko näytöstä"
 #: lib/marshall_web/browser_messages.ex:25
 #, elixir-autogen, elixir-format
 msgid "Input buffer full — that input was not sent"
-msgstr "Tulopuskuri täynnä – tätä syöttöä ei lähetetty"
+msgstr "Syötepuskuri täynnä — syötettä ei lähetetty"
 
 #: lib/marshall_web/browser_messages.ex:26
 #, elixir-autogen, elixir-format
 msgid "Match found"
-msgstr "Ottelu löytyi"
+msgstr "Osumia löytyi"
 
 #: lib/marshall_web/browser_messages.ex:27
 #, elixir-autogen, elixir-format
@@ -114,7 +118,10 @@ msgstr "Ei osumia"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "Avaa tämä linkki?\n\n%{url}"
+msgstr ""
+"Avataanko tämä linkki?\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -124,57 +131,65 @@ msgstr "Avataan…"
 #: lib/marshall_web/browser_messages.ex:30
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled. You can try again."
-msgstr "Salasanapyyntö peruutettu. Voit yrittää uudelleen."
+msgstr "Pääsyavainpyyntö peruutettiin. Voit yrittää uudelleen."
 
 #: lib/marshall_web/browser_messages.ex:31
 #, elixir-autogen, elixir-format
 msgid "Passkey verification failed or unavailable. Try again."
-msgstr "Salasanan vahvistus epäonnistui tai ei ole saatavilla. Yritä uudelleen."
+msgstr ""
+"Pääsyavaimen vahvistus epäonnistui tai ei ole käytettävissä. Yritä "
+"uudelleen."
 
 #: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
-msgstr "Päätteen nimi (vain tämä selain; tyhjä palauttaa luodun nimen)"
+msgstr "Päätteen nimi (vain tässä selaimessa; tyhjä palauttaa luodun nimen)"
 
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr "Tulosta ei voitu vahvistaa. Lataa sivu uudelleen ja tarkista tulos ennen kuin yrität uudelleen."
+msgstr ""
+"Tulosta ei voitu vahvistaa. Lataa sivu uudelleen ja tarkista tulos ennen "
+"uutta yritystä."
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "Tämä kone pyytää kirjoittamaan %{bytes}-tavuja leikepöydällesi. Kirjoita kerran, istunto tai mykistys."
+msgstr ""
+"Tämä kone pyytää kirjoittamaan %{bytes} tavua leikepöydällesi. Kirjoita "
+"once, session tai mute."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
-msgstr "Tätä arkistolinkkiä ei voitu käynnistää. Avaa linkki uudelleen."
+msgstr "Tätä tietovarastolinkkiä ei voitu käynnistää. Avaa linkki uudelleen."
 
 #: lib/marshall_web/browser_messages.ex:36
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
-msgstr "Kirjoita ollaksesi vuorovaikutuksessa"
+msgstr "Kirjoita käyttääksesi päätettä"
 
 #: lib/marshall_web/browser_messages.ex:37
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
-msgstr "Katseluoikeutta päivitetään…"
+msgstr "Päivitetään katseluoikeutta…"
 
 #: lib/marshall_web/browser_messages.ex:38
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
-msgstr "Vahvistusta ei voitu suorittaa loppuun. Yritä uudelleen."
+msgstr "Vahvistusta ei voitu suorittaa. Yritä uudelleen."
 
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr "Vahvista salasanallasi osoitteeseen %{action}. Tämä suoritetaan kerran vahvistuksen jälkeen."
+msgstr ""
+"Vahvista pääsyavaimellasi, jotta voit %{action}. Toiminto suoritetaan kerran"
+" vahvistuksen jälkeen."
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "View only"
-msgstr "Näytä vain"
+msgstr "Vain katselu"
 
 #: lib/marshall_web/browser_messages.ex:41
 #, elixir-autogen, elixir-format
@@ -184,12 +199,12 @@ msgstr "Katseluoikeus päivitetty."
 #: lib/marshall_web/browser_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
-msgstr "Odotetaan salasanaasi…"
+msgstr "Odotetaan pääsyavaintasi…"
 
 #: lib/marshall_web/browser_messages.ex:43
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
-msgstr "loppuun tämä hallinnollinen muutos"
+msgstr "suorittaa tämän ylläpitomuutoksen"
 
 #: lib/marshall_web/browser_messages.ex:44
 #, elixir-autogen, elixir-format
@@ -199,19 +214,19 @@ msgstr "juuri nyt"
 #: lib/marshall_web/browser_messages.ex:45
 #, elixir-autogen, elixir-format
 msgid "● live"
-msgstr "● livenä"
+msgstr "● reaaliaikainen"
 
 #: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "● read-only"
-msgstr "● vain luku -tilassa"
+msgstr "● vain luku"
 
 #: lib/marshall_web/browser_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
-msgstr "⟳ Yhdistetään uudelleen…"
+msgstr "⟳ yhdistetään uudelleen…"
 
 #: lib/marshall_web/browser_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
-msgstr "⟳ palautetaan vieritystä…"
+msgstr "⟳ palautetaan vierityshistoriaa…"

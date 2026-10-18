@@ -1,3 +1,10 @@
+#
+msgid ""
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 ## This is a PO Template file.
 ##
 ## `msgid`s here are often extracted from source code.
@@ -9,101 +16,101 @@
 ## effect: edit them in PO (`.po`) files instead.
 ## From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr ""
+msgstr "ఖాళీగా ఉండకూడదు"
 
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "ఇప్పటికే ఉపయోగంలో ఉంది"
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "చెల్లదు"
 
 ## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr ""
+msgstr "అంగీకరించాలి"
 
 ## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr ""
+msgstr "ఆకృతి చెల్లదు"
 
 ## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr ""
+msgstr "ఒక నమోదు చెల్లదు"
 
 ## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr ""
+msgstr "రిజర్వ్ చేయబడింది"
 
 ## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr ""
+msgstr "నిర్ధారణతో సరిపోలడం లేదు"
 
 ## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "ఇప్పటికీ ఈ నమోదుతో అనుబంధించబడి ఉంది"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "ఇప్పటికీ ఈ నమోదుతో అనుబంధించబడి ఉన్నాయి"
 
 ## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} అంశాలు ఉండాలి"
+msgstr[1] "%{count} అంశాలు ఉండాలి"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} అక్షరాలు ఉండాలి"
+msgstr[1] "%{count} అక్షరాలు ఉండాలి"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} బైట్లు ఉండాలి"
+msgstr[1] "%{count} బైట్లు ఉండాలి"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "కనీసం %{count} అంశాలు ఉండాలి"
+msgstr[1] "కనీసం %{count} అంశాలు ఉండాలి"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "కనీసం %{count} అక్షరాలు ఉండాలి"
+msgstr[1] "కనీసం %{count} అక్షరాలు ఉండాలి"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "కనీసం %{count} బైట్లు ఉండాలి"
+msgstr[1] "కనీసం %{count} బైట్లు ఉండాలి"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "గరిష్ఠంగా %{count} అంశాలు ఉండాలి"
+msgstr[1] "గరిష్ఠంగా %{count} అంశాలు ఉండాలి"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "గరిష్ఠంగా %{count} అక్షరాలు ఉండాలి"
+msgstr[1] "గరిష్ఠంగా %{count} అక్షరాలు ఉండాలి"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "గరిష్ఠంగా %{count} బైట్లు ఉండాలి"
+msgstr[1] "గరిష్ఠంగా %{count} బైట్లు ఉండాలి"
 
 ## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "%{number} కంటే తక్కువగా ఉండాలి"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "%{number} కంటే ఎక్కువగా ఉండాలి"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "%{number} కంటే తక్కువగా లేదా సమానంగా ఉండాలి"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "%{number} కంటే ఎక్కువగా లేదా సమానంగా ఉండాలి"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "%{number} కు సమానంగా ఉండాలి"

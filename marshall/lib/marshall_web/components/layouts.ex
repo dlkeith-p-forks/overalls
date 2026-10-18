@@ -311,9 +311,7 @@ defmodule MarshallWeb.Layouts do
                       id="nav-account"
                       navigate={~p"/settings"}
                       aria-current={@active == "account" && "page"}
-                    >
-                      {gettext("Account")}
-                    </.link>
+                    >{gettext("Account")}</.link>
                   </li>
                   <li>
                     <.link

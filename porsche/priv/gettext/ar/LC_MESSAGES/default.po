@@ -1,203 +1,417 @@
+#
 msgid ""
 msgstr ""
 "Language: ar\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
 
-msgid "Porsche machine management. Type help."
-msgstr "إدارة أجهزة Porsche. اكتب help."
+#: lib/porsche/ssh/onboarding.ex:60
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"\n"
+"Keep this SSH connection open while approving the key.\n"
+msgstr ""
+"\n"
+"\n"
+"أبقِ اتصال SSH هذا مفتوحًا أثناء الموافقة على المفتاح.\n"
 
-msgid "Docs:"
-msgstr "المستندات:"
+#: lib/porsche/ssh/onboarding.ex:75
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Open an interactive Porsche connection without a remote command:"
+msgstr ""
+"\n"
+"افتح اتصال Porsche تفاعليًا دون أمر بعيد:"
 
-msgid "Show command help."
-msgstr "عرض مساعدة الأوامر."
+#: lib/porsche/ssh/onboarding.ex:58
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Open this link, sign in, and approve the matching fingerprint:\n"
+"  "
+msgstr ""
+"\n"
+"افتح هذا الرابط، وسجّل الدخول، ووافق على البصمة المطابقة:\n"
+"  "
 
-msgid "Show the authenticated account."
-msgstr "عرض الحساب الذي تم توثيقه."
+#: lib/porsche/ssh/onboarding.ex:112
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Or manage your keys at:\n"
+"  "
+msgstr ""
+"\n"
+"أو أدِر مفاتيحك في:\n"
+"  "
 
-msgid "List available images."
-msgstr "سرد الصور المتاحة."
-
-msgid "List machines you can access."
-msgstr "سرد الأجهزة التي يمكنك الوصول إليها."
-
-msgid "Inspect a machine by name or UUID."
-msgstr "فحص جهاز بالاسم أو UUID."
-
-msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
-msgstr "إنشاء جهاز. الحد الأقصى للقرص: 500 GiB. يستنسخ --source مستودعًا عامًا من GitHub أو GitLab أو Codeberg أو Bitbucket داخل الضيف."
-
-msgid "Queue an independent full-disk copy of a machine."
-msgstr "إضافة نسخة مستقلة لكامل قرص جهاز إلى قائمة الانتظار."
-
-msgid "Move a machine to an automatically selected host."
-msgstr "نقل جهاز إلى مضيف يتم اختياره تلقائيًا."
-
-msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
-msgstr "تغيير معالج الجهاز وذاكرته؛ لا يمكن إلا زيادة حجم القرص. يتوقف الجهاز قيد التشغيل ثم يعاد تشغيله."
-
-msgid "Retry a failed clone or relocation request."
-msgstr "إعادة محاولة طلب استنساخ أو نقل فاشل."
-
-msgid "Cancel an unpublished clone or uncommitted relocation request."
-msgstr "إلغاء طلب استنساخ غير منشور أو نقل لم يتم اعتماده."
-
-msgid "Start a machine."
-msgstr "تشغيل جهاز."
-
-msgid "Stop a machine, retaining its disk."
-msgstr "إيقاف جهاز مع الاحتفاظ بقرصه."
-
-msgid "Delete a machine and its disk. Refused while its owner has it pinned."
-msgstr "حذف جهاز وقرصه. يُرفض الحذف ما دام مالكه قد ثبّته."
-
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "تثبيت جهاز في أعلى قوائمك. لا يمكن حذفه ما دمت تملكه وتثبّته."
-
-msgid "Remove your pin from a machine."
-msgstr "إزالة تثبيتك لجهاز."
-
-msgid "List access grants."
-msgstr "سرد أذونات الوصول الممنوحة."
-
-msgid "Grant viewer, operator or manager access."
-msgstr "منح وصول بصفة مشاهد أو مشغّل أو مدير."
-
-msgid "Revoke an account's shared access."
-msgstr "إلغاء وصول حساب مشترك."
-
-msgid "List your SSH keys."
-msgstr "سرد مفاتيح SSH الخاصة بك."
-
-msgid "Revoke one of your SSH keys."
-msgstr "إلغاء أحد مفاتيح SSH الخاصة بك."
-
-msgid "Create or replace a named integration at https://NAME.integration.internal."
-msgstr "إنشاء تكامل مسمّى أو استبداله في https://NAME.integration.internal."
-
-msgid "Remove a named integration."
-msgstr "إزالة تكامل مسمّى."
-
-msgid "List your integrations."
-msgstr "سرد تكاملاتك."
-
-msgid "Inspect an integration without secrets."
-msgstr "فحص تكامل دون كشف الأسرار."
-
-msgid "Make an integration available to a machine."
-msgstr "إتاحة تكامل لجهاز."
-
-msgid "Remove a machine's explicit availability."
-msgstr "إزالة الإتاحة الصريحة لجهاز."
-
-msgid "Create a team you own."
-msgstr "إنشاء فريق تملكه."
-
-msgid "List your teams and roles."
-msgstr "سرد فرقك وأدوارك."
-
-msgid "List a team's members."
-msgstr "سرد أعضاء فريق."
-
-msgid "Add or change an admin or member."
-msgstr "إضافة مسؤول أو عضو أو تغييره."
-
-msgid "Remove an account's membership."
-msgstr "إزالة عضوية حساب."
-
-msgid "Offer team ownership to an admin."
-msgstr "عرض ملكية الفريق على مسؤول."
-
+#: lib/porsche/ssh/command_messages.ex:46
+#, elixir-autogen, elixir-format
 msgid "Accept a pending ownership offer."
 msgstr "قبول عرض ملكية معلّق."
 
-msgid "Decline a pending ownership offer."
-msgstr "رفض عرض ملكية معلّق."
+#: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "إضافة مسؤول أو عضو أو تغييره."
 
-msgid "Cancel your pending ownership offer."
-msgstr "إلغاء عرض الملكية المعلّق الخاص بك."
-
-msgid "Inspect a previously accepted request."
-msgstr "فحص طلب سبق قبوله."
-
-msgid "Close this interactive channel."
-msgstr "إغلاق هذه القناة التفاعلية."
-
-msgid "We don't recognize this SSH key:\n  "
-msgstr "لا نتعرّف على مفتاح SSH هذا:\n  "
-
-msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
-msgstr "\nافتح هذا الرابط، وسجّل الدخول، ووافق على البصمة المطابقة:\n  "
-
-msgid "\n\nKeep this SSH connection open while approving the key.\n"
-msgstr "\n\nأبقِ اتصال SSH هذا مفتوحًا أثناء الموافقة على المفتاح.\n"
-
-msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
-msgstr "تنتهي صلاحية روابط الموافقة بعد %{minutes} دقائق أو عند إغلاق هذا الاتصال.\n"
-
+#: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
 msgid "After approval, retry your command here.\n"
 msgstr "بعد الموافقة، أعد محاولة الأمر هنا.\n"
 
-msgid "\nOpen an interactive Porsche connection without a remote command:"
-msgstr "\nافتح اتصال Porsche تفاعليًا دون أمر بعيد:"
+#: lib/porsche/ssh/onboarding.ex:61
+#, elixir-autogen, elixir-format
+msgid ""
+"Approval links expire after %{minutes} minutes or when this connection "
+"closes.\n"
+msgstr ""
+"تنتهي صلاحية روابط الموافقة بعد %{minutes} دقائق أو عند إغلاق هذا الاتصال.\n"
 
-msgid "Keep that connection open while approving your key in the browser,\n"
-msgstr "أبقِ ذلك الاتصال مفتوحًا أثناء الموافقة على مفتاحك في المتصفح،\n"
-
-msgid "then retry your original command.\n"
-msgstr "ثم أعد محاولة الأمر الأصلي.\n"
-
-msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
-msgstr "مرحبًا بك في Overalls.\n\nيتطلب هذا الاتصال إعداد SSH الخاص بـ Overalls.\n\n"
-
-msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
-msgstr "تعذر التحقق من مفتاح SSH هذا حاليًا. حاول مجددًا بعد قليل.\n\n"
-
-msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
-msgstr "تعذر التصريح باتصال SSH هذا. تحقق من وصولك إلى الجهاز وحاول مجددًا.\n\n"
-
-msgid "Register or check your key by connecting to:\n  ssh "
-msgstr "سجّل مفتاحك أو تحقّق منه بالاتصال بـ:\n  ssh "
-
-msgid "\nOr manage your keys at:\n  "
-msgstr "\nأو أدِر مفاتيحك في:\n  "
-
-msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
-msgstr "سجّل مفتاح SSH أو تحقّق منه في إعدادات حساب Overalls > مفاتيح SSH.\n\n"
-
-msgid "Follow the browser approval instructions, then run the setup command\n"
-msgstr "اتبع تعليمات الموافقة في المتصفح، ثم شغّل أمر الإعداد\n"
-
-msgid "from your machine's page and reconnect without root@.\n"
-msgstr "من صفحة جهازك وأعد الاتصال دون root@.\n"
-
-msgid "This connection is not authorized. Please sign in and try again."
-msgstr "هذا الاتصال غير مصرّح به. سجّل الدخول وحاول مجددًا."
-
-msgid "You do not have permission to perform this action."
-msgstr "ليس لديك إذن بتنفيذ هذا الإجراء."
-
-msgid "Invalid command. Type help to see available commands."
-msgstr "أمر غير صالح. اكتب help لعرض الأوامر المتاحة."
-
-msgid "The service is temporarily unavailable. Please try again shortly."
-msgstr "الخدمة غير متاحة مؤقتًا. حاول مجددًا بعد قليل."
-
+#: lib/porsche/ssh/output.ex:64
+#, elixir-autogen, elixir-format
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "وافق على مفتاح SSH هذا في متصفحك، ثم أعد محاولة الأمر."
 
-msgid "The requested resource could not be found."
-msgstr "تعذر العثور على المورد المطلوب."
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "إلغاء طلب استنساخ غير منشور أو نقل لم يتم اعتماده."
 
-msgid "Unexpected input. Please open a new SSH connection."
-msgstr "إدخال غير متوقع. افتح اتصال SSH جديدًا."
+#: lib/porsche/ssh/command_messages.ex:47
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "إلغاء عرض الملكية المعلّق الخاص بك."
 
-msgid "The command could not be completed: %{reason}"
-msgstr "تعذر إكمال الأمر: %{reason}"
+#: lib/porsche/ssh/command_messages.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Change a machine's CPU and memory; disk may only grow. A running machine "
+"stops and restarts."
+msgstr ""
+"تغيير معالج الجهاز وذاكرته؛ لا يمكن إلا زيادة حجم القرص. يتوقف الجهاز قيد "
+"التشغيل ثم يعاد تشغيله."
 
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "إغلاق هذه القناة التفاعلية."
+
+#: lib/porsche/ssh/command_messages.ex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
+"GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr ""
+"إنشاء جهاز. الحد الأقصى للقرص: 500 GiB. يستنسخ --source مستودعًا عامًا من "
+"GitHub أو GitLab أو Codeberg أو Bitbucket داخل الضيف."
+
+#: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "إنشاء فريق تملكه."
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"Create or replace a named integration at https://NAME.integration.internal."
+msgstr "إنشاء تكامل مسمّى أو استبداله في https://NAME.integration.internal."
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "رفض عرض ملكية معلّق."
+
+#: lib/porsche/ssh/command_messages.ex:32
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "حذف جهاز وقرصه. يُرفض الحذف ما دام مالكه قد ثبّته."
+
+#: lib/porsche/ssh/channel.ex:115
+#, elixir-autogen, elixir-format
+msgid "Docs:"
+msgstr "المستندات:"
+
+#: lib/porsche/ssh/onboarding.ex:120
+#, elixir-autogen, elixir-format
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "اتبع تعليمات الموافقة في المتصفح، ثم شغّل أمر الإعداد\n"
+
+#: lib/porsche/ssh/command_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "منح وصول بصفة مشاهد أو مشغّل أو مدير."
+
+#: lib/porsche/ssh/command_messages.ex:36
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "فحص جهاز بالاسم أو UUID."
+
+#: lib/porsche/ssh/command_messages.ex:27
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "فحص طلب سبق قبوله."
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "فحص تكامل دون كشف الأسرار."
+
+#: lib/porsche/ssh/output.ex:58
+#, elixir-autogen, elixir-format
+msgid "Invalid command. Type help to see available commands."
+msgstr "أمر غير صالح. اكتب help لعرض الأوامر المتاحة."
+
+#: lib/porsche/ssh/onboarding.ex:77
+#, elixir-autogen, elixir-format
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "أبقِ ذلك الاتصال مفتوحًا أثناء الموافقة على مفتاحك في المتصفح،\n"
+
+#: lib/porsche/ssh/command_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "سرد أعضاء فريق."
+
+#: lib/porsche/ssh/command_messages.ex:35
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "سرد أذونات الوصول الممنوحة."
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "سرد الصور المتاحة."
+
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "سرد الأجهزة التي يمكنك الوصول إليها."
+
+#: lib/porsche/ssh/command_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "سرد مفاتيح SSH الخاصة بك."
+
+#: lib/porsche/ssh/command_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "سرد تكاملاتك."
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "سرد فرقك وأدوارك."
+
+#: lib/porsche/ssh/command_messages.ex:11
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "إتاحة تكامل لجهاز."
+
+#: lib/porsche/ssh/command_messages.ex:24
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "نقل جهاز إلى مضيف يتم اختياره تلقائيًا."
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "عرض ملكية الفريق على مسؤول."
+
+#: lib/porsche/ssh/channel.ex:113
+#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "إدارة أجهزة Porsche. اكتب help."
+
+#: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "إضافة نسخة مستقلة لكامل قرص جهاز إلى قائمة الانتظار."
+
+#: lib/porsche/ssh/onboarding.ex:114
+#, elixir-autogen, elixir-format
+msgid ""
+"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
+"\n"
+msgstr ""
+"سجّل مفتاح SSH أو تحقّق منه في إعدادات حساب Overalls > مفاتيح SSH.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:110
+#, elixir-autogen, elixir-format
+msgid ""
+"Register or check your key by connecting to:\n"
+"  ssh "
+msgstr ""
+"سجّل مفتاحك أو تحقّق منه بالاتصال بـ:\n"
+"  ssh "
+
+#: lib/porsche/ssh/command_messages.ex:12
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "إزالة الإتاحة الصريحة لجهاز."
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "إزالة تكامل مسمّى."
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "إزالة عضوية حساب."
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "إزالة تثبيتك لجهاز."
+
+#: lib/porsche/ssh/output.ex:104
+#, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "الطلب %{id}: جارٍ الإرسال"
 
+#: lib/porsche/ssh/output.ex:107
+#, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "الطلب %{id}: في انتظار الاكتمال"
+
+#: lib/porsche/ssh/command_messages.ex:26
+#, elixir-autogen, elixir-format
+msgid "Retry a failed clone or relocation request."
+msgstr "إعادة محاولة طلب استنساخ أو نقل فاشل."
+
+#: lib/porsche/ssh/command_messages.ex:34
+#, elixir-autogen, elixir-format
+msgid "Revoke an account's shared access."
+msgstr "إلغاء وصول حساب مشترك."
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Revoke one of your SSH keys."
+msgstr "إلغاء أحد مفاتيح SSH الخاصة بك."
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "عرض مساعدة الأوامر."
+
+#: lib/porsche/ssh/command_messages.ex:52
+#, elixir-autogen, elixir-format
+msgid "Show the authenticated account."
+msgstr "عرض الحساب الذي تم توثيقه."
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "Start a machine."
+msgstr "تشغيل جهاز."
+
+#: lib/porsche/ssh/output.ex:73
+#, elixir-autogen, elixir-format
+msgid "The command could not be completed: %{reason}"
+msgstr "تعذر إكمال الأمر: %{reason}"
+
+#: lib/porsche/ssh/output.ex:67
+#, elixir-autogen, elixir-format
+msgid "The requested resource could not be found."
+msgstr "تعذر العثور على المورد المطلوب."
+
+#: lib/porsche/ssh/output.ex:61
+#, elixir-autogen, elixir-format
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "الخدمة غير متاحة مؤقتًا. حاول مجددًا بعد قليل."
+
+#: lib/porsche/ssh/onboarding.ex:100
+#, elixir-autogen, elixir-format
+msgid ""
+"This SSH connection could not be authorized. Check your machine access and try again.\n"
+"\n"
+msgstr ""
+"تعذر التصريح باتصال SSH هذا. تحقق من وصولك إلى الجهاز وحاول مجددًا.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:52
+#, elixir-autogen, elixir-format
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "هذا الاتصال غير مصرّح به. سجّل الدخول وحاول مجددًا."
+
+#: lib/porsche/ssh/output.ex:70
+#, elixir-autogen, elixir-format
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "إدخال غير متوقع. افتح اتصال SSH جديدًا."
+
+#: lib/porsche/ssh/onboarding.ex:97
+#, elixir-autogen, elixir-format
+msgid ""
+"We couldn't verify this SSH key right now. Please try again shortly.\n"
+"\n"
+msgstr ""
+"تعذر التحقق من مفتاح SSH هذا حاليًا. حاول مجددًا بعد قليل.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:53
+#, elixir-autogen, elixir-format
+msgid ""
+"We don't recognize this SSH key:\n"
+"  "
+msgstr ""
+"لا نتعرّف على مفتاح SSH هذا:\n"
+"  "
+
+#: lib/porsche/ssh/onboarding.ex:86
+#, elixir-autogen, elixir-format
+msgid ""
+"Welcome to Overalls.\n"
+"\n"
+"This connection needs the Overalls SSH configuration.\n"
+"\n"
+msgstr ""
+"مرحبًا بك في Overalls.\n"
+"\n"
+"يتطلب هذا الاتصال إعداد SSH الخاص بـ Overalls.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:55
+#, elixir-autogen, elixir-format
+msgid "You do not have permission to perform this action."
+msgstr "ليس لديك إذن بتنفيذ هذا الإجراء."
+
+#: lib/porsche/ssh/onboarding.ex:121
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "من صفحة جهازك وأعد الاتصال دون root@.\n"
+
+#: lib/porsche/ssh/onboarding.ex:78
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "ثم أعد محاولة الأمر الأصلي.\n"
+
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"Pin a machine to the top of your lists. Your owner pin wakes it, prevents "
+"automatic suspension, and prevents deletion."
+msgstr ""
+"تثبيت آلة في أعلى قوائمك. يوقظها تثبيتك بصفتك المالك ويمنع التعليق التلقائي "
+"والحذف."
+
+#: lib/porsche/ssh/command_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "Resume a suspended machine's preserved memory."
+msgstr "استئناف الذاكرة المحفوظة لآلة معلقة."
+
+#: lib/porsche/ssh/command_messages.ex:31
+#, elixir-autogen, elixir-format
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "استئناف الذاكرة المحفوظة مع انتظار السعة أو النقل."
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "إيقاف آلة مع الاحتفاظ بقرصها والتخلص من ذاكرة التعليق."
+
+#: lib/porsche/ssh/command_messages.ex:20
+#, elixir-autogen, elixir-format
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "تعليق آلة مع حفظ ذاكرتها وقرصها."

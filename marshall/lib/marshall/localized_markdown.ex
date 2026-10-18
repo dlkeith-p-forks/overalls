@@ -33,7 +33,7 @@ defmodule Marshall.LocalizedMarkdown do
 
         prose? =
           not fenced? and String.trim(block) != "" and
-            not String.contains?(block, ["{{COMMAND_REFERENCE}}", "<", "| ---"])
+            not String.contains?(block, "{{COMMAND_REFERENCE}}")
 
         {%{source: block, translatable?: prose?}, next}
       end)
@@ -59,6 +59,24 @@ defmodule Marshall.LocalizedMarkdown do
     end)
   end
 
+  @doc "Localized command prose with command syntax preserved byte for byte."
+  @spec command_reference(String.t(), 2 | 3) :: String.t()
+  def command_reference(requested_locale, level) when level in [2, 3] do
+    Gettext.with_locale(MarshallWeb.Gettext, locale(requested_locale), fn ->
+      Enum.map_join(OverallsProtocol.SSHCommand.catalog(), "\n\n", fn command ->
+        heading = String.duplicate("#", level)
+        summary = Gettext.dgettext(MarshallWeb.Gettext, "documentation", command.summary)
+        options = Gettext.dgettext(MarshallWeb.Gettext, "documentation", "Options:")
+
+        "#{heading} `#{command.name}`\n\n`#{command.usage}`\n\n#{summary}\n\n#{options} " <>
+          Enum.map_join(command.options, ", ", &"`--#{&1}`") <> "."
+      end)
+    end)
+  end
+
+  # @cc [owner:ghuntley,label:security] localized-markdown-protected-tokens
+  # Translated prose MUST preserve the exact multiset of inline code spans,
+  # including spans crossing line breaks, and link destinations from its source.
   @spec valid_translation?(String.t(), String.t()) :: boolean()
   def valid_translation?(source, translated) do
     protected(source) == protected(translated) and
@@ -67,8 +85,13 @@ defmodule Marshall.LocalizedMarkdown do
 
   @spec protected(String.t()) :: [String.t()]
   defp protected(value) do
-    Regex.scan(~r/`[^`\n]+`|\]\([^\s)]+\)|https?:\/\/[^\s)>]+/, value)
+    Regex.scan(~r/`[^`]+`|\]\([^\s)]+\)|https?:\/\/[^\s)>。！？、，؛؟]+/u, value)
     |> List.flatten()
+    |> Enum.map(fn token ->
+      if String.starts_with?(token, ["https://", "http://"]),
+        do: Regex.replace(~r/[.,;:!?。！？，、؛؟]+$/u, token, ""),
+        else: token
+    end)
     |> Enum.sort()
   end
 

@@ -1,3 +1,9 @@
+msgid ""
+msgstr ""
+"Language: fi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 ## This is a PO Template file.
 ##
 ## `msgid`s here are often extracted from source code.
@@ -9,101 +15,101 @@
 ## effect: edit them in PO (`.po`) files instead.
 ## From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr ""
+msgstr "ei voi olla tyhjä"
 
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "on jo käytössä"
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "on virheellinen"
 
 ## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr ""
+msgstr "on hyväksyttävä"
 
 ## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr ""
+msgstr "on virheellisessä muodossa"
 
 ## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr ""
+msgstr "sisältää virheellisen kohdan"
 
 ## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr ""
+msgstr "on varattu"
 
 ## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr ""
+msgstr "ei vastaa vahvistusta"
 
 ## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "liittyy edelleen tähän tietueeseen"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "liittyvät edelleen tähän tietueeseen"
 
 ## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "on sisällettävä %{count} kohta"
+msgstr[1] "on sisällettävä %{count} kohtaa"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pituuden on oltava %{count} merkki"
+msgstr[1] "pituuden on oltava %{count} merkkiä"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pituuden on oltava %{count} tavu"
+msgstr[1] "pituuden on oltava %{count} tavua"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "on sisällettävä vähintään %{count} kohta"
+msgstr[1] "on sisällettävä vähintään %{count} kohtaa"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pituuden on oltava vähintään %{count} merkki"
+msgstr[1] "pituuden on oltava vähintään %{count} merkkiä"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pituuden on oltava vähintään %{count} tavu"
+msgstr[1] "pituuden on oltava vähintään %{count} tavua"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "saa sisältää enintään %{count} kohta"
+msgstr[1] "saa sisältää enintään %{count} kohtaa"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pituus saa olla enintään %{count} merkki"
+msgstr[1] "pituus saa olla enintään %{count} merkkiä"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pituus saa olla enintään %{count} tavu"
+msgstr[1] "pituus saa olla enintään %{count} tavua"
 
 ## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "on oltava pienempi kuin %{number}"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "on oltava suurempi kuin %{number}"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "on oltava enintään %{number}"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "on oltava vähintään %{number}"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "on oltava yhtä suuri kuin %{number}"

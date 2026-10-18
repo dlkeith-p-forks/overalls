@@ -1,15 +1,18 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: ru\n"
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
@@ -79,7 +82,8 @@ msgstr "Не удалось скопировать. Выделите текст 
 #: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
-msgstr "Не удалось обновить доступ. Проверьте доступ к компьютеру учетной записи."
+msgstr ""
+"Не удалось обновить доступ. Проверьте доступ к компьютеру учетной записи."
 
 #: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
@@ -114,7 +118,10 @@ msgstr "Нет совпадений"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "Открыть эту ссылку?\n\n%{url}"
+msgstr ""
+"Открыть эту ссылку?\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -134,22 +141,29 @@ msgstr "Проверка пароля не удалась или недосту�
 #: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
-msgstr "Имя терминала (только для этого браузера; пустое значение восстанавливает сгенерированное имя)"
+msgstr ""
+"Имя терминала (только для этого браузера; пустое значение восстанавливает "
+"сгенерированное имя)"
 
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr "Результат не удалось подтвердить. Перезагрузите страницу и проверьте результат, прежде чем повторить попытку."
+msgstr ""
+"Результат не удалось подтвердить. Перезагрузите страницу и проверьте "
+"результат, прежде чем повторить попытку."
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "Эта машина просит записать байты %{bytes} в буфер обмена. Введите один раз, сеанс или отключение звука."
+msgstr ""
+"Эта машина запрашивает запись %{bytes} байт в буфер обмена. Введите once, "
+"session или mute."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
-msgstr "Эту ссылку на репозиторий не удалось запустить. Откройте ссылку еще раз."
+msgstr ""
+"Эту ссылку на репозиторий не удалось запустить. Откройте ссылку еще раз."
 
 #: lib/marshall_web/browser_messages.ex:36
 #, elixir-autogen, elixir-format
@@ -169,7 +183,9 @@ msgstr "Не удалось завершить проверку. Попробу�
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr "Подтвердите свой ключ доступа к %{action}. Это запускается один раз после проверки."
+msgstr ""
+"Подтвердите свой ключ доступа к %{action}. Это запускается один раз после "
+"проверки."
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
@@ -199,7 +215,7 @@ msgstr "прямо сейчас"
 #: lib/marshall_web/browser_messages.ex:45
 #, elixir-autogen, elixir-format
 msgid "● live"
-msgstr "● жить"
+msgstr "● в реальном времени"
 
 #: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
