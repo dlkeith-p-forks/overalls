@@ -7411,406 +7411,406 @@ msgstr "%{span} por detrás de tu hora"
 #: lib/marshall_web/live/admin/jobs_live.ex:430
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
-msgstr ""
+msgstr "Confirmado"
 
 #: lib/marshall_web/live/integrations_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "Awaiting GitHub authorization"
-msgstr ""
+msgstr "A la espera de la autorización de GitHub"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
-msgstr ""
+msgstr "Bloqueado: %{reason}"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
-msgstr ""
+msgstr "Campaña cerrada"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
-msgstr ""
+msgstr "Campaña solicitada"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
-msgstr ""
+msgstr "Cancelación solicitada"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:594
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
-msgstr ""
+msgstr "Candidato: %{name}"
 
 #: lib/marshall_web/live/overview_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
-msgstr ""
+msgstr "Revisa tu bandeja de entrada y haz clic en el enlace para confirmar tu suscripción."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
-msgstr ""
+msgstr "Limpiando tras la cancelación"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
-msgstr ""
+msgstr "Limpiando el origen"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:706
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
-msgstr ""
+msgstr "Clonación en curso"
 
 #: lib/marshall_web/live/integrations_live.ex:312
 #: lib/marshall_web/live/integrations_live.ex:400
 #: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Comment"
-msgstr ""
+msgstr "Comentario"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
-msgstr ""
+msgstr "Recursos reservados para el host configurados: %{cores} núcleos · %{memory} de memoria. Estos márgenes se incluyen en los cálculos de admisión y siguen estando controlados por el despliegue."
 
 #: lib/marshall_web/live/integrations_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Connect GitHub"
-msgstr ""
+msgstr "Conectar GitHub"
 
 #: lib/marshall_web/live/integrations_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
-msgstr ""
+msgstr "Conecta tu cuenta de GitHub para Git, solicitudes de incorporación de cambios, Actions, versiones y otros flujos de trabajo de desarrollo. Las credenciales de GitHub permanecen en el perímetro."
 
 #: lib/marshall_web/live/integrations_live.ex:126
 #: lib/marshall_web/live/integrations_live.ex:127
 #, elixir-autogen, elixir-format
 msgid "Connected"
-msgstr ""
+msgstr "Conectado"
 
 #: lib/marshall_web/live/integrations_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "Connected as %{login}"
-msgstr ""
+msgstr "Conectado como %{login}"
 
 #: lib/marshall_web/automatic_magic_sign_in_live.ex:33
 #, elixir-autogen, elixir-format
 msgid "Continue to Overalls"
-msgstr ""
+msgstr "Continuar a Overalls"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:573
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
-msgstr ""
+msgstr "Deseado: %{desired} · Observado: %{observed}"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
-msgstr ""
+msgstr "Limpieza del destino confirmada"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
-msgstr ""
+msgstr "Limpieza del destino solicitada"
 
 #: lib/marshall_web/live/integrations_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub"
-msgstr ""
+msgstr "Desconectar GitHub"
 
 #: lib/marshall_web/live/integrations_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub from your machines?"
-msgstr ""
+msgstr "¿Desconectar GitHub de tus máquinas?"
 
 #: lib/marshall_web/live/integrations_live.ex:128
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
-msgstr ""
+msgstr "Desconectado"
 
 #: lib/marshall_web/live/integrations_live.ex:133
 #, elixir-autogen, elixir-format
 msgid "Disconnecting GitHub"
-msgstr ""
+msgstr "Desconectando GitHub"
 
 #: lib/marshall_web/live/overview_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
-msgstr ""
+msgstr "Descartar"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
-msgstr ""
+msgstr "Se requiere aprobar el tiempo de inactividad"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
-msgstr ""
+msgstr "Tiempo de inactividad aprobado"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:434
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
 #, elixir-autogen, elixir-format
 msgid "Drained"
-msgstr ""
+msgstr "Vaciado"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:433
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Draining"
-msgstr ""
+msgstr "Vaciando"
 
 #: lib/marshall_web/live/overview_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
-msgstr ""
+msgstr "Introduce una dirección de correo electrónico válida."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
-msgstr ""
+msgstr "Evacuando"
 
 #: lib/marshall_web/live/integrations_live.ex:130
 #, elixir-autogen, elixir-format
 msgid "Finishing active GitHub requests"
-msgstr ""
+msgstr "Finalizando las solicitudes activas a GitHub"
 
 #: lib/marshall_web/live/overview_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
-msgstr ""
+msgstr "Recibe consejos, trucos y novedades sobre Overalls y la IA por correo electrónico."
 
 #: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
 #, elixir-autogen, elixir-format
 msgid "GitHub connected."
-msgstr ""
+msgstr "GitHub conectado."
 
 #: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
 #, elixir-autogen, elixir-format
 msgid "GitHub could not be connected. Try again from Integrations."
-msgstr ""
+msgstr "No se pudo conectar GitHub. Inténtalo de nuevo desde Integraciones."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #, elixir-autogen, elixir-format
 msgid "Importing"
-msgstr ""
+msgstr "Importando"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
-msgstr ""
+msgstr "Capacidad insuficiente"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "Job state"
-msgstr ""
+msgstr "Estado del trabajo"
 
 #: lib/marshall_web/live/machines_live.ex:1116
 #, elixir-autogen, elixir-format
 msgid "Labels"
-msgstr ""
+msgstr "Etiquetas"
 
 #: lib/marshall_web/live/machines_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
-msgstr ""
+msgstr "Metadatos de la máquina guardados."
 
 #: lib/marshall_web/live/integrations_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Machines excluded from your GitHub identity"
-msgstr ""
+msgstr "Máquinas excluidas de tu identidad de GitHub"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
-msgstr ""
+msgstr "Interrupción observada: %{seconds}s"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
-msgstr ""
+msgstr "Interrupción observada: %{seconds}s (en curso)"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Operation"
-msgstr ""
+msgstr "Operación"
 
 #: lib/marshall_web/live/integrations_live.ex:132
 #, elixir-autogen, elixir-format
 msgid "Reconnect required"
-msgstr ""
+msgstr "Se requiere volver a conectar"
 
 #: lib/marshall_web/live/machines_live.ex:1115
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
-msgstr ""
+msgstr "Metadatos de reflexión"
 
 #: lib/marshall_web/live/integrations_live.ex:131
 #, elixir-autogen, elixir-format
 msgid "Refreshing GitHub connection"
-msgstr ""
+msgstr "Actualizando la conexión con GitHub"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:424
 #, elixir-autogen, elixir-format
 msgid "Relocation"
-msgstr ""
+msgstr "Reubicación"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
-msgstr ""
+msgstr "Reubicación confirmada"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
-msgstr ""
+msgstr "Reubicación en curso"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
-msgstr ""
+msgstr "Reubicación iniciada"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
-msgstr ""
+msgstr "Restaurando el origen"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:435
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
 #, elixir-autogen, elixir-format
 msgid "Resumed"
-msgstr ""
+msgstr "Reanudado"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:436
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Retired"
-msgstr ""
+msgstr "Retirado"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
-msgstr ""
+msgstr "Reintentando el arranque del destino"
 
 #: lib/marshall_web/live/machines_live.ex:1118
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
-msgstr ""
+msgstr "Guardar metadatos"
 
 #: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
-msgstr ""
+msgstr "Descripción breve para los agentes"
 
 #: lib/marshall_web/live/integrations_live.ex:401
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
-msgstr ""
+msgstr "Descripción breve para la reflexión del huésped"
 
 #: lib/marshall_web/automatic_magic_sign_in_live.ex:27
 #, elixir-autogen, elixir-format
 msgid "Signing you in"
-msgstr ""
+msgstr "Iniciando tu sesión"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
-msgstr ""
+msgstr "Limpieza del origen confirmada"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
-msgstr ""
+msgstr "Limpieza del origen solicitada"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:684
 #, elixir-autogen, elixir-format
 msgid "Source ready"
-msgstr ""
+msgstr "Origen preparado"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:687
 #, elixir-autogen, elixir-format
 msgid "Source restored"
-msgstr ""
+msgstr "Origen restaurado"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:700
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
-msgstr ""
+msgstr "Origen no disponible"
 
 #: lib/marshall_web/live/overview_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
-msgstr ""
+msgstr "Mantente al día"
 
 #: lib/marshall_web/live/overview_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
-msgstr ""
+msgstr "Suscribirse"
 
 #: lib/marshall_web/live/integrations_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Temporarily unavailable"
-msgstr ""
+msgstr "No disponible temporalmente"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
-msgstr ""
+msgstr "Transferencia ocupada"
 
 #: lib/marshall_web/live/overview_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
-msgstr ""
+msgstr "Puedes cancelar tu suscripción en cualquier momento."
 
 #: lib/marshall_web/live/overview_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
-msgstr ""
+msgstr "No pudimos contactar con el servicio del boletín. Inténtalo más tarde."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
-msgstr ""
+msgstr "La carga de trabajo ha cambiado"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
-msgstr ""
+msgstr "La carga de trabajo no es estable"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:694
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
-msgstr ""
+msgstr "Carga de trabajo observada"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
-msgstr ""
+msgstr "Carga de trabajo resuelta"
 
 #: lib/marshall_web/automatic_magic_sign_in_live.ex:28
 #, elixir-autogen, elixir-format
 msgid "Your email link is being verified."
-msgstr ""
+msgstr "Se está verificando el enlace de tu correo electrónico."
 
 #: lib/marshall_web/live/integrations_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
-msgstr ""
+msgstr "Tus máquinas usan automáticamente tu identidad de GitHub conectada. Los colaboradores que utilicen una máquina compartida pueden usar los permisos de GitHub de su propietario. Las máquinas desvinculadas conservan el acceso público anónimo a GitHub."
 
 #: lib/marshall_web/live/machines_live.ex:1116
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
-msgstr ""
+msgstr "producción, nombre-del-proyecto"
 
 #: lib/marshall/accounts/time_zones.ex:300
 #, elixir-autogen, elixir-format
 msgid "same time as you"
-msgstr ""
+msgstr "la misma hora que tú"
