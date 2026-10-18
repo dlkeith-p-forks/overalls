@@ -3423,7 +3423,7 @@ msgstr "Mga token ng output"
 #: lib/marshall_web/live/hldd_live.ex:61
 #, elixir-autogen, elixir-format
 msgid "Overalls"
-msgstr "Overall"
+msgstr "Overalls"
 
 #: lib/marshall_web/controllers/error_html.ex:45
 #, elixir-autogen, elixir-format
