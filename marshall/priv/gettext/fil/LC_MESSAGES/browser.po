@@ -11,207 +11,208 @@
 msgid ""
 msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: fil\n"
 
+
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
-msgstr ""
+msgstr "%{count}d ang nakalipas"
 
 #: lib/marshall_web/browser_messages.ex:12
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
-msgstr ""
+msgstr "%{count}h ang nakalipas"
 
 #: lib/marshall_web/browser_messages.ex:13
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
-msgstr ""
+msgstr "%{count}m ang nakalipas"
 
 #: lib/marshall_web/browser_messages.ex:14
 #, elixir-autogen, elixir-format
 msgid "%{label} copied."
-msgstr ""
+msgstr "%{label} kinopya."
 
 #: lib/marshall_web/browser_messages.ex:9
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing"
-msgstr ""
+msgstr "%{name} · %{count} pagtingin"
 
 #: lib/marshall_web/browser_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing · %{activity}"
-msgstr ""
+msgstr "%{name} · %{count} pagtingin · %{activity}"
 
 #: lib/marshall_web/browser_messages.ex:8
 #, elixir-autogen, elixir-format
 msgid "%{name} · Terminals"
-msgstr ""
+msgstr "%{name} · Mga terminal"
 
 #: lib/marshall_web/browser_messages.ex:15
 #, elixir-autogen, elixir-format
 msgid "+ New"
-msgstr ""
+msgstr "+ Bago"
 
 #: lib/marshall_web/browser_messages.ex:16
 #, elixir-autogen, elixir-format
 msgid "Applying administrative change…"
-msgstr ""
+msgstr "Inilalapat ang administratibong pagbabago..."
 
 #: lib/marshall_web/browser_messages.ex:17
 #, elixir-autogen, elixir-format
 msgid "Boot log · read-only"
-msgstr ""
+msgstr "Boot log · read-only"
 
 #: lib/marshall_web/browser_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "Close this terminal session?"
-msgstr ""
+msgstr "Isara ang terminal session na ito?"
 
 #: lib/marshall_web/browser_messages.ex:19
 #, elixir-autogen, elixir-format
 msgid "Command"
-msgstr ""
+msgstr "Utos"
 
 #: lib/marshall_web/browser_messages.ex:20
 #, elixir-autogen, elixir-format
 msgid "Could not copy. Select the text and copy it manually."
-msgstr ""
+msgstr "Hindi makopya. Piliin ang teksto at kopyahin ito nang manu-mano."
 
 #: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
-msgstr ""
+msgstr "Hindi ma-update ang access. Suriin ang pag-access sa makina ng account."
 
 #: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Design diagram; explanation follows in the handbook"
-msgstr ""
+msgstr "Diagram ng disenyo; sumusunod ang paliwanag sa handbook"
 
 #: lib/marshall_web/browser_messages.ex:23
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
-msgstr ""
+msgstr "Ipasok ang buong screen"
 
 #: lib/marshall_web/browser_messages.ex:24
 #, elixir-autogen, elixir-format
 msgid "Exit full screen"
-msgstr ""
+msgstr "Lumabas sa full screen"
 
 #: lib/marshall_web/browser_messages.ex:25
 #, elixir-autogen, elixir-format
 msgid "Input buffer full — that input was not sent"
-msgstr ""
+msgstr "Puno ang buffer ng input — hindi naipadala ang input na iyon"
 
 #: lib/marshall_web/browser_messages.ex:26
 #, elixir-autogen, elixir-format
 msgid "Match found"
-msgstr ""
+msgstr "Natagpuan ang katugma"
 
 #: lib/marshall_web/browser_messages.ex:27
 #, elixir-autogen, elixir-format
 msgid "No matches"
-msgstr ""
+msgstr "Walang tugma"
 
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr ""
+msgstr "Buksan ang link na ito?\n\n%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
 msgid "Opening…"
-msgstr ""
+msgstr "Binubuksan…"
 
 #: lib/marshall_web/browser_messages.ex:30
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled. You can try again."
-msgstr ""
+msgstr "Kinansela ang kahilingan sa passkey. Maaari mong subukan muli."
 
 #: lib/marshall_web/browser_messages.ex:31
 #, elixir-autogen, elixir-format
 msgid "Passkey verification failed or unavailable. Try again."
-msgstr ""
+msgstr "Nabigo o hindi available ang pag-verify ng passkey. Subukan muli."
 
 #: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
-msgstr ""
+msgstr "Pangalan ng terminal (ang browser na ito lamang; ibinabalik ng walang laman ang nabuong pangalan)"
 
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr ""
+msgstr "Hindi makumpirma ang resulta. I-reload ang page at tingnan ang resulta bago subukang muli."
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr ""
+msgstr "Hinihiling ng makinang ito na isulat ang %{bytes} byte sa iyong clipboard. Mag-type nang isang beses, session, o i-mute."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
-msgstr ""
+msgstr "Hindi mailunsad ang link ng repositoryong ito. Buksan muli ang link."
 
 #: lib/marshall_web/browser_messages.ex:36
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
-msgstr ""
+msgstr "Mag-type upang makipag-ugnayan"
 
 #: lib/marshall_web/browser_messages.ex:37
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
-msgstr ""
+msgstr "Ina-update ang access sa pagtingin..."
 
 #: lib/marshall_web/browser_messages.ex:38
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
-msgstr ""
+msgstr "Hindi makumpleto ang pag-verify. Subukan muli."
 
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr ""
+msgstr "I-verify gamit ang iyong passkey sa %{action}. Ito ay tumatakbo nang isang beses pagkatapos ng pag-verify."
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "View only"
-msgstr ""
+msgstr "Tingnan lamang"
 
 #: lib/marshall_web/browser_messages.ex:41
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
-msgstr ""
+msgstr "Na-update ang access sa pagtingin."
 
 #: lib/marshall_web/browser_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
-msgstr ""
+msgstr "Hinihintay ang iyong passkey..."
 
 #: lib/marshall_web/browser_messages.ex:43
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
-msgstr ""
+msgstr "kumpletuhin ang administratibong pagbabagong ito"
 
 #: lib/marshall_web/browser_messages.ex:44
 #, elixir-autogen, elixir-format
 msgid "just now"
-msgstr ""
+msgstr "ngayon lang"
 
 #: lib/marshall_web/browser_messages.ex:45
 #, elixir-autogen, elixir-format
 msgid "● live"
-msgstr ""
+msgstr "● mabuhay"
 
 #: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "● read-only"
-msgstr ""
+msgstr "● read-only"
 
 #: lib/marshall_web/browser_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
-msgstr ""
+msgstr "⟳ muling kumokonekta…"
 
 #: lib/marshall_web/browser_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
-msgstr ""
+msgstr "⟳ nire-restore ang scrollback..."
