@@ -1434,3 +1434,23 @@ machine tests are present; their presence is not a recorded passing execution.
 The upstream Porsche 108-test/zero-Dialyzer result remains explicitly at
 `1f79f63e6`, and translation additions establish neither linguistic review nor
 all-locale browser acceptance.
+
+## Additional trunk integration through `2d598e3e2`
+
+The next normal pull adds an Android display WebSocket adapter and authenticated
+upgrade route, hook registration, and bounded GitHub `Link` response headers
+for the existing private-endpoint rewrite path. The preceding disconnected
+hook/endpoint findings describe `c89335a2a`; the new source advances that
+plumbing without establishing native integration or passing browser evidence.
+Read-only inspection finds that the hook registration still lacks its module
+import, so browser initialization requires a forward repair. The new socket
+adapter also does not establish current machine generation, claim-mode binding
+or a shared machine controller lease. Earlier viewer, framing, artifact and
+transport gaps remain open. These are source findings, not executed results.
+
+The GitHub allowlist regression assertion is present, with no new execution
+record. No new Android test or native/browser acceptance result accompanies
+this range. Earlier checkpoint test/type evidence retains its original scope;
+merged consumer gates and the normal finite-deadline Marshall gate remain
+pending. No deployment or native capability qualification is inferred from the
+pull.

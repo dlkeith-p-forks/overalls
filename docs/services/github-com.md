@@ -5,6 +5,9 @@ account and exposes it at `https://com-github.integration.internal`. See
 [ADR-0202](../architecture/decisions/0202-github-com-owner-integration.md) for its
 authority and lifecycle. Implementation and execution evidence remain partial in
 the [review](../architecture/reviews/2026-10-18-github-com-integration.md).
+Safe GitHub `Link` pagination headers are retained and rewritten to the private
+endpoint, so managed API clients can follow pagination without learning an
+upstream hostname.
 
 ## Connect and use
 

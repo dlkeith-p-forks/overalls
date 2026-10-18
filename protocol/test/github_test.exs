@@ -167,9 +167,14 @@ defmodule OverallsProtocol.GitHubTest do
     assert GitHub.response_headers([
              {"set-cookie", "provider=1"},
              {"www-authenticate", "Bearer secret"},
+             {"link", "<https://api.github.com/repos/o/r?page=2>; rel=\"next\""},
              {"etag", "\"tag\""},
              {"x-ratelimit-remaining", "20"}
-           ]) == [{"etag", "\"tag\""}, {"x-ratelimit-remaining", "20"}]
+           ]) == [
+             {"link", "<https://api.github.com/repos/o/r?page=2>; rel=\"next\""},
+             {"etag", "\"tag\""},
+             {"x-ratelimit-remaining", "20"}
+           ]
   end
 
   test "built-in name is unavailable to generic integration configuration" do
