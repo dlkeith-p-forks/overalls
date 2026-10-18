@@ -228,7 +228,7 @@ defmodule Marshall.Compute.Views do
   # editor and SSH controls the guest cannot serve; the booleans never authorize.
   @spec editor_image_status(Image.t() | nil) :: Image.editor_image_status()
   defp editor_image_status(image) do
-    case Image.editor_capability(image, Application.get_env(:marshall, :ingress_editor_release)) do
+    case Image.editor_capability(image, Application.get_env(:marshall, :ingress_editor_releases)) do
       {:ok, _} -> :available
       {:error, status} -> status
     end

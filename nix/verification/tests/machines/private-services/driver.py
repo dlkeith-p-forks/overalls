@@ -53,6 +53,10 @@ router.wait_until_succeeds(
     + " --cacert /run/private-audi/roots.pem -o /dev/null -w '%{http_code}' https://llm.internal/v1/models | grep -Fx 403"
 )
 router.wait_until_succeeds(
+    reflection_curl
+    + " --cacert /run/private-audi/roots.pem -o /dev/null -w '%{http_code}' https://reflection.internal/ | grep -Fx 403"
+)
+router.wait_until_succeeds(
     integration_curl
     + " --cacert /run/private-audi/roots.pem -o /dev/null -w '%{http_code}' https://esample.integration.internal/ | grep -Fx 403"
 )

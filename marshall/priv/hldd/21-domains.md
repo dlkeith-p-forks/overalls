@@ -26,6 +26,7 @@ the ownership inventory.
 | `Marshall.GitHub` | Personal OAuth connections, authorization/refresh attempts, persistent machine exclusions, generation-bound request leases and payload-free audit. The current VM owner selects the grant; guest claims, queued work and cached projections confer no authority. |
 | `Marshall.Inference` | Provider credentials, request admission and daily usage. Request authority and accounting remain distinct from provider-side execution. |
 | `Marshall.Ingress` | Public services, publications, DNS, TLS custody, readiness, ingress sessions and single-use relocation relay authority, including short-lived immutable EditorAssetsReceipt. Discovery binds current placement/assets but does not grant Editor authority. |
+| `Marshall.Peach` | Credentialed Peach service links and authenticated control-plane sessions; current identity and policy checks gate lifecycle operations, while the domain retains no guest execution or physical-host authority. |
 | `Marshall.SSH` | Account keys, browser approvals, gateway sessions, management requests, guest login and public host-certificate generations. Signing locks current service or boot authority through publication; the private CA remains outside PostgreSQL. Management authority does not grant host administrative SSH. |
 | `Marshall.Teams` | Teams, membership and resource transfers. Mutations enter Compute's ledger commit scope so authority changes share its transaction boundary. |
 | `Marshall.Terminal` | Grants, locations, openings, sessions, events and tickets. Exclusive writer leases and current execution fences govern terminal access. |
@@ -145,10 +146,11 @@ flowchart LR
   app --> d8["Marshall.GitHub"]
   app --> d9["Marshall.Inference"]
   app --> d10["Marshall.Ingress"]
-  app --> d11["Marshall.SSH"]
-  app --> d12["Marshall.Teams"]
-  app --> d13["Marshall.Terminal"]
-  app --> d14["Marshall.Threads"]
+  app --> d11["Marshall.Peach"]
+  app --> d12["Marshall.SSH"]
+  app --> d13["Marshall.Teams"]
+  app --> d14["Marshall.Terminal"]
+  app --> d15["Marshall.Threads"]
 ```
 
 | Ash domain | Declared resources |
@@ -165,6 +167,7 @@ flowchart LR
 | [`Marshall.GitHub`](repo:marshall/lib/marshall/github.ex) | `Marshall.GitHub.AuditEvent`, `Marshall.GitHub.AuthorizationAttempt`, `Marshall.GitHub.Connection`, `Marshall.GitHub.Exclusion`, `Marshall.GitHub.RefreshAttempt`, `Marshall.GitHub.RequestLease`, `Marshall.GitHub.RestoreEpoch` |
 | [`Marshall.Inference`](repo:marshall/lib/marshall/inference.ex) | `Marshall.Inference.Credential`, `Marshall.Inference.Daily`, `Marshall.Inference.Request` |
 | [`Marshall.Ingress`](repo:marshall/lib/marshall/ingress.ex) | `Marshall.Ingress.EditorAssetsReceipt`, `Marshall.Ingress.Endpoint`, `Marshall.Ingress.Environment`, `Marshall.Ingress.EnvironmentPublication`, `Marshall.Ingress.EnvironmentStream`, `Marshall.Ingress.FleetCertificate`, `Marshall.Ingress.FleetCertificateAccount`, `Marshall.Ingress.FleetCertificateInstallation`, `Marshall.Ingress.Publication`, `Marshall.Ingress.Relay`, `Marshall.Ingress.Route`, `Marshall.Ingress.Service`, `Marshall.Ingress.Session`, `Marshall.Ingress.WebCredential`, `Marshall.Ingress.WebLogin`, `Marshall.Ingress.WebStream` |
+| [`Marshall.Peach`](repo:marshall/lib/marshall/peach.ex) | `Marshall.Peach.Credential` |
 | [`Marshall.SSH`](repo:marshall/lib/marshall/ssh.ex) | `Marshall.SSH.Approval`, `Marshall.SSH.Gateway`, `Marshall.SSH.GuestLogin`, `Marshall.SSH.HostCertificate`, `Marshall.SSH.Key`, `Marshall.SSH.Request`, `Marshall.SSH.Session` |
 | [`Marshall.Teams`](repo:marshall/lib/marshall/teams.ex) | `Marshall.Teams.Team`, `Marshall.Teams.TeamMember`, `Marshall.Teams.Transfer` |
 | [`Marshall.Terminal`](repo:marshall/lib/marshall/terminal.ex) | `Marshall.Terminal.Event`, `Marshall.Terminal.Grant`, `Marshall.Terminal.Location`, `Marshall.Terminal.Opening`, `Marshall.Terminal.Session`, `Marshall.Terminal.Ticket` |

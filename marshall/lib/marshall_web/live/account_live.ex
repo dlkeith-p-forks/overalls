@@ -2,7 +2,7 @@ defmodule MarshallWeb.AccountLive do
   @moduledoc """
   The signed-in account page at `/settings` (ADR-0196): one LiveView with four
   anchored sections. Profile (`#profile`) holds the email and the display time
-  zone of ADR-0195; Sign-in and passkeys (`#security`) holds passkey
+  zone of ADR-0195, language, and Git preferences of ADR-0199; Sign-in and passkeys (`#security`) holds passkey
   enrollment, verification, the elevation return path of ADR-0160 and passkey
   management; SSH keys (`#ssh-keys`) holds the owner-scoped keys of ADR-0046.
   Git preferences (`#git-settings`) retain ADR-0198 account-owned identity defaults.
@@ -41,6 +41,7 @@ defmodule MarshallWeb.AccountLive do
        keys: []
      )
      |> assign_picker()
+     |> assign_git_settings()
      |> reset_key_form()
      |> refresh_security()
      |> refresh_keys()
@@ -391,6 +392,23 @@ defmodule MarshallWeb.AccountLive do
     )
   end
 
+  @spec assign_git_settings(socket()) :: socket()
+  defp assign_git_settings(socket) do
+    user = Marshall.Accounts.Security.current(socket.assigns.current_user.id)
+
+    assign(socket,
+      git_form:
+        to_form(
+          %{
+            "git_username" => user.git_username,
+            "git_email" => to_string(user.git_email),
+            "commit_trailers_enabled" => user.commit_trailers_enabled
+          },
+          as: :settings
+        )
+    )
+  end
+
   @spec zone_status(TimeZones.source(), TimeZones.iana()) :: String.t()
   defp zone_status(:saved, zone),
     do:
@@ -685,7 +703,7 @@ defmodule MarshallWeb.AccountLive do
                 label="Description"
                 maxlength="128"
               />
-              <button class="console-button">Rename</button>
+              <button class="console-button">{gettext("Rename")}</button>
             </.form>
             <.kv>
               <:item title={gettext("Fingerprint")}>

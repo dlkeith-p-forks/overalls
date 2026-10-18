@@ -5,6 +5,7 @@ defmodule MarshallWeb.IntegrationsLive do
   on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
 
   @impl true
+  @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_, _, socket) do
     {:ok, socket |> assign(integrations: []) |> reset_form() |> refresh()}
   end
@@ -16,6 +17,8 @@ defmodule MarshallWeb.IntegrationsLive do
   # MUST replace password inputs so browser-local values cannot survive a patch
   # whose server-side form values were already empty.
   @impl true
+  @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("add", %{"integration" => params}, socket) when is_map(params) do
     user = socket.assigns.current_user
 
@@ -96,6 +99,17 @@ defmodule MarshallWeb.IntegrationsLive do
     do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp refresh(socket) do
+    github =
+      case Marshall.GitHub.status(socket.assigns.current_user) do
+        {:ok, status} ->
+          status
+
+        {:error, _} ->
+          %{phase: :unavailable, github_login: nil, exclusions: [], configured: false}
+      end
+
+    socket = assign(socket, github: github)
+
     case Galileo.list_integrations(%{}, actor: socket.assigns.current_user) do
       {:ok, integrations} ->
         assign(socket, integrations: integrations)
@@ -106,6 +120,17 @@ defmodule MarshallWeb.IntegrationsLive do
         |> put_flash(:error, gettext("Integrations are temporarily unavailable."))
     end
   end
+
+  @spec github_state(atom()) :: String.t()
+  defp github_state(:connected), do: gettext("Connected")
+  defp github_state(:ready), do: gettext("Connected")
+  defp github_state(:disconnected), do: gettext("Disconnected")
+  defp github_state(:authorizing), do: gettext("Awaiting GitHub authorization")
+  defp github_state(:draining), do: gettext("Finishing active GitHub requests")
+  defp github_state(:refreshing), do: gettext("Refreshing GitHub connection")
+  defp github_state(:reconnect_required), do: gettext("Reconnect required")
+  defp github_state(:revoking), do: gettext("Disconnecting GitHub")
+  defp github_state(_), do: gettext("Temporarily unavailable")
 
   defp reset_form(socket) do
     assign(
@@ -158,6 +183,7 @@ defmodule MarshallWeb.IntegrationsLive do
   defp blank_to_nil(value), do: value
 
   @impl true
+  @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
     <Layouts.app
@@ -177,6 +203,71 @@ defmodule MarshallWeb.IntegrationsLive do
             )
           }
         />
+        <article id="github-com-integration" class="panel stack">
+          <header>
+            <h2>github-com</h2>
+            <span id="github-com-state" class="status-label">{github_state(@github.phase)}</span>
+          </header>
+          <p><code>https://com-github.integration.internal</code></p>
+          <p>
+            {gettext(
+              "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
+            )}
+          </p>
+          <p>
+            {gettext(
+              "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
+            )}
+          </p>
+          <p :if={@github.github_login} id="github-com-identity">
+            {gettext("Connected as %{login}", login: @github.github_login)}
+          </p>
+          <div class="row">
+            <.form for={%{}} id="github-com-connect" action="/auth/github-com/start" method="post">
+              <button class="console-button primary" type="submit" disabled={!@github.configured}>
+                {gettext("Connect GitHub")}
+              </button>
+            </.form>
+            <button
+              :if={@github.phase not in [:disconnected, :unavailable]}
+              id="github-com-disconnect"
+              phx-click="github-disconnect"
+              data-confirm={gettext("Disconnect GitHub from your machines?")}
+              class="console-button danger"
+            >
+              {gettext("Disconnect GitHub")}
+            </button>
+          </div>
+          <details id="github-com-machines">
+            <summary>{gettext("Machines excluded from your GitHub identity")}</summary>
+            <div class="stack">
+              <.form
+                for={to_form(%{"vm_id" => ""}, as: :github_machine)}
+                id="github-com-detach"
+                phx-submit="github-detach"
+                class="field-row"
+              >
+                <.input
+                  name="github_machine[vm_id]"
+                  value=""
+                  label={gettext("Machine UUID")}
+                  required
+                />
+                <button class="console-button" type="submit">{gettext("Detach")}</button>
+              </.form>
+              <div :for={vm_id <- @github.exclusions} id={"github-com-excluded-#{vm_id}"} class="row">
+                <code class="break">{vm_id}</code>
+                <button
+                  phx-click="github-attach"
+                  phx-value-vm-id={vm_id}
+                  class="console-button compact"
+                >
+                  {gettext("Attach")}
+                </button>
+              </div>
+            </div>
+          </details>
+        </article>
         <p :if={@integrations == []} class="empty-state">
           {gettext(
             "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."

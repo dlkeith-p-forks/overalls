@@ -1,12 +1,12 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
 msgstr "\nPlural-Forms: nplurals=1; plural=0;\nLanguage: ko\n"
@@ -114,7 +114,10 @@ msgstr "일치하는 항목 없음"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "이 링크를 열까요?\n\n%{url}"
+msgstr ""
+"이 링크를 열까요?\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -144,7 +147,7 @@ msgstr "결과를 확인할 수 없었습니다. 다시 시도하기 전에 페�
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "이 컴퓨터는 클립보드에 %{bytes} 바이트를 쓰도록 요청합니다. 한 번, 세션 또는 음소거를 입력합니다."
+msgstr "이 컴퓨터가 클립보드에 %{bytes}바이트를 쓰려고 합니다. once, session 또는 mute를 입력하세요."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format

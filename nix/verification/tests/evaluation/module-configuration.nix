@@ -92,6 +92,17 @@ let
   tunedStandalone = standalone true;
   profileKeys = [ "net.ipv4.tcp_congestion_control" "net.core.default_qdisc" ];
   onlyMarshall = evaluate marshall;
+  windowsEditor = pkgs.runCommand "windows-editor-module-fixture" {
+    passthru = { editorProtocol = 1; sourceCommit = lib.concatStrings (lib.replicate 40 "a"); releaseId = lib.concatStrings (lib.replicate 64 "d"); };
+  } ''touch "$out"'';
+  dualEditorMarshall = evaluate {
+    imports = [ marshall ];
+    services.marshall.editorPackages = {
+      linux-x64 = onlyMarshall.services.marshall.editorPackages.linux-x64;
+      win32-x64 = windowsEditor;
+    };
+  };
+  editorRegistry = builtins.fromJSON dualEditorMarshall.systemd.services.marshall-one.environment.MARSHALL_INGRESS_EDITOR_RELEASES;
   sshCa = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
   pinnedMarshall = evaluate {
     imports = [ marshall ];
@@ -388,7 +399,17 @@ let
     duplicatePorts = invalid { services.marshall.instances.two.port = lib.mkForce 4443; };
     editorSingleLabelZone = invalid { services.marshall.ingress.zone = "local"; };
     editorCanonicalZone = valid (evaluate { imports = [ marshall ]; services.marshall.ingress.zone = "apps.example.test"; });
-    nonEditorSingleLabelZone = valid (evaluate { imports = [ marshall ]; services.marshall = { editorPackage = null; ingress.zone = "local"; }; });
+    nonEditorSingleLabelZone = valid (evaluate { imports = [ marshall ]; services.marshall = { editorPackages = {}; ingress.zone = "local"; }; });
+    editorTargetRegistry = valid dualEditorMarshall && editorRegistry.version == 1
+      && builtins.attrNames editorRegistry.targets == [ "linux-x64" "win32-x64" ]
+      && editorRegistry.targets.win32-x64 == { protocol = 1; commit = windowsEditor.sourceCommit; release = windowsEditor.releaseId; }
+      && lib.hasInfix "MARSHALL_INGRESS_EDITOR_RELEASES=" dualEditorMarshall.systemd.services.marshall-one.script;
+    editorEmptyRegistry = (builtins.fromJSON (evaluate {
+      imports = [ marshall ]; services.marshall.editorPackages = {};
+    }).systemd.services.marshall-one.environment.MARSHALL_INGRESS_EDITOR_RELEASES) == { version = 1; targets = {}; };
+    editorUnknownTarget = !(builtins.tryEval (builtins.deepSeq (evaluate {
+      imports = [ marshall ]; services.marshall.editorPackages.windows-x64 = windowsEditor;
+    }).services.marshall.editorPackages true)).success;
     fleetTunnelHostRoutes = valid fleetTunnel
       && fleetTunnel.networking.wireguard.interfaces.fleet0.ips == [ "10.90.0.1/32" ]
       && (builtins.head fleetTunnel.networking.wireguard.interfaces.fleet0.peers).allowedIPs == [ "10.90.0.2/32" ]

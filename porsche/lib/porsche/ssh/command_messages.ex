@@ -1,5 +1,5 @@
 defmodule Porsche.SSH.CommandMessages do
-  @moduledoc "Extraction markers for language-neutral shared command descriptions."
+  @moduledoc "Extraction markers for shared command descriptions."
   use Gettext, backend: Porsche.Gettext
 
   @message_0 gettext_noop("Show command help.")

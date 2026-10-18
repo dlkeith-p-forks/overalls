@@ -670,7 +670,7 @@ let
       enable = true;
       package = lib.mkIf cloneCancellation observedCloneMarshall;
       publicHost = "control.example.test";
-      editorPackage = if editor || suspension then packages.vscodeWeb else null;
+      editorPackages = lib.optionalAttrs (editor || suspension) { linux-x64 = packages.vscodeWeb; };
       ingress.zone = "apps.example.test";
       sshHostCa = {
         publicKey = lib.removeSuffix "\n" (builtins.readFile ../../fixtures/ssh-host-ca/key.pub);

@@ -28,25 +28,45 @@ defmodule Marshall.EditorFixture do
           descriptor: map()
         }
 
-  @spec descriptor() :: %{String.t() => String.t() | pos_integer()}
-  def descriptor,
+  @type platform :: :linux | :windows
+
+  @spec descriptor(platform()) :: %{String.t() => String.t() | pos_integer()}
+  def descriptor(platform \\ :linux),
     do: %{
       "protocol" => 1,
       "commit" => String.duplicate("a", 40),
-      "release" => String.duplicate("b", 64)
+      "release" => String.duplicate(if(platform == :windows, do: "c", else: "b"), 64)
     }
+
+  @spec releases(map(), String.t()) :: map()
+  def releases(descriptor \\ descriptor(), target \\ "linux-x64"),
+    do: %{"version" => 1, "targets" => %{target => descriptor}}
 
   # @cc [owner:ghuntley,label:verification] editor-fixture-real-domain-boundary
   # Fixture images MUST be registered with a validated content-bound descriptor,
   # never mutate an existing immutable image. Provisioning, execution outcomes,
   # gateway authentication and browser login MUST use their production actions.
   # Synthetic execution evidence MUST NOT be claimed as native guest isolation.
-  @spec new(atom()) :: t()
-  def new(profile \\ :standard) do
+  @spec new(atom(), platform()) :: t()
+  def new(profile \\ :standard, platform \\ :linux) do
     manifest =
-      ComputeFixtures.image_manifest()
-      |> Map.put("version", 4)
-      |> Map.put("editor", descriptor())
+      case platform do
+        :linux ->
+          ComputeFixtures.image_manifest()
+          |> Map.put("editor", descriptor())
+
+        :windows ->
+          ComputeFixtures.windows_v1_image_manifest()
+          |> Map.merge(%{
+            "version" => 7,
+            "os" => "windows",
+            "editor" => descriptor(:windows),
+            "guest_agents" => "windows-editor-v1",
+            "minimum_memory_bytes" => 536_870_912,
+            "minimum_disk_bytes" => 2_147_483_648
+          })
+          |> put_in(["root", "bytes"], 1024)
+      end
 
     {:ok, image} = Images.register(manifest, "editor-test-image")
     machine = "sha256:" <> Base.encode16(:crypto.strong_rand_bytes(32), case: :lower)
@@ -144,7 +164,7 @@ defmodule Marshall.EditorFixture do
       host: source.host,
       report: report,
       connection: connection,
-      descriptor: descriptor()
+      descriptor: descriptor(platform)
     }
   end
 

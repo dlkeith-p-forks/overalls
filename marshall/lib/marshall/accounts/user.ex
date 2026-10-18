@@ -93,6 +93,9 @@ defmodule Marshall.Accounts.User do
       validate Marshall.Accounts.ValidLocale
     end
 
+    # @cc [owner:ghuntley,label:security;protocol] locale-explicit-clear
+    # Only an explicit nil MAY clear the saved locale. Empty or unsupported
+    # strings MUST reach validation unchanged and refuse without a write.
     action :set_locale, :map do
       argument :locale, :string,
         allow_nil?: true,

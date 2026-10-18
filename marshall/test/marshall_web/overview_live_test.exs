@@ -168,7 +168,7 @@ defmodule MarshallWeb.OverviewLiveTest do
              "requires a running machine"
            )
 
-    Application.delete_env(:marshall, :ingress_editor_release)
+    Application.delete_env(:marshall, :ingress_editor_releases)
     send(view.pid, :refresh)
     assert has_element?(view, "#overview-machine-#{machine_id}-vscode-disabled[disabled]")
 
@@ -294,20 +294,20 @@ defmodule MarshallWeb.OverviewLiveTest do
 
   @spec put_editor_release() :: :ok
   defp put_editor_release do
-    previous = Application.fetch_env(:marshall, :ingress_editor_release)
-    Application.put_env(:marshall, :ingress_editor_release, Marshall.EditorFixture.descriptor())
+    previous = Application.fetch_env(:marshall, :ingress_editor_releases)
+    Application.put_env(:marshall, :ingress_editor_releases, Marshall.EditorFixture.releases())
     on_exit(fn -> restore_editor_release(previous) end)
     :ok
   end
 
   @spec restore_editor_release({:ok, map()} | :error) :: :ok
   defp restore_editor_release({:ok, value}) do
-    Application.put_env(:marshall, :ingress_editor_release, value)
+    Application.put_env(:marshall, :ingress_editor_releases, value)
     :ok
   end
 
   defp restore_editor_release(:error) do
-    Application.delete_env(:marshall, :ingress_editor_release)
+    Application.delete_env(:marshall, :ingress_editor_releases)
     :ok
   end
 end

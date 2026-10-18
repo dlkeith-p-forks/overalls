@@ -5,16 +5,16 @@ defmodule Marshall.EditorPublicationTest do
   alias Marshall.EditorFixture, as: F
 
   setup context do
-    previous = Application.get_env(:marshall, :ingress_editor_release)
-    Application.put_env(:marshall, :ingress_editor_release, F.descriptor())
+    previous = Application.get_env(:marshall, :ingress_editor_releases)
+    Application.put_env(:marshall, :ingress_editor_releases, F.releases())
 
     on_exit(fn ->
       if previous,
-        do: Application.put_env(:marshall, :ingress_editor_release, previous),
-        else: Application.delete_env(:marshall, :ingress_editor_release)
+        do: Application.put_env(:marshall, :ingress_editor_releases, previous),
+        else: Application.delete_env(:marshall, :ingress_editor_releases)
     end)
 
-    c = F.new(Map.get(context, :profile, :standard))
+    c = F.new(Map.get(context, :profile, :standard), Map.get(context, :platform, :linux))
     certificate = Marshall.IngressHistoryFixture.certificate(String.duplicate("c", 64), 1)
 
     {:ok, _} =
@@ -111,6 +111,66 @@ defmodule Marshall.EditorPublicationTest do
 
     assert length(Ledger.read!(Marshall.Ingress.EditorAssetsReceipt.Version)) == count
   end
+
+  # @cc [owner:ghuntley,label:verification;security] editor-publication-complete-release-set
+  # A gateway MUST keep distinct release receipts for one current session.
+  # Publication MUST require all configured releases and expire when any one
+  # receipt expires; one target's receipt MUST NOT replace or refresh another.
+  test "distinct release receipts coexist and publication requires their complete fresh set", c do
+    Application.put_env(:marshall, :ingress_editor_releases, both_releases())
+    assert {:ok, _} = ready(c)
+    [linux] = Ledger.read!(Marshall.Ingress.EditorAssetsReceipt)
+    assert {:ok, incomplete} = publish(c)
+    refute Enum.any?(incomplete.routes, &(&1.label in [owner(c), "webview"]))
+
+    assert {:ok, _} = ready(c, descriptor_fields(F.descriptor(:windows)))
+    receipts = Ledger.read!(Marshall.Ingress.EditorAssetsReceipt)
+    assert length(receipts) == 2
+    windows = Enum.find(receipts, &(&1.editor_release == F.descriptor(:windows)["release"]))
+    assert windows.id != linux.id
+    assert Enum.find(receipts, &(&1.id == linux.id)).expires_at == linux.expires_at
+    assert {:ok, complete} = publish(c)
+    assert Enum.any?(complete.routes, &(&1.label == owner(c)))
+    assert Enum.any?(complete.routes, &(&1.label == "webview"))
+
+    Ledger.update!(windows, :refresh, %{expires_at: DateTime.add(Ledger.now(), -1)})
+    assert {:ok, expired} = publish(c)
+    refute Enum.any?(expired.routes, &(&1.label in [owner(c), "webview"]))
+  end
+
+  @tag platform: :windows
+  test "v7 Windows editor publication matches only its target's exact approved release", c do
+    Application.put_env(:marshall, :ingress_editor_releases, both_releases())
+    assert {:ok, _} = ready(c)
+    assert {:ok, _} = ready(c, descriptor_fields(F.descriptor()))
+    assert {:ok, snapshot} = publish(c)
+    assert Enum.any?(snapshot.routes, &(&1.label == owner(c)))
+    assert Enum.any?(snapshot.routes, &(&1.label == "webview"))
+
+    Application.put_env(:marshall, :ingress_editor_releases, %{
+      "version" => 1,
+      "targets" => %{"linux-x64" => F.descriptor(:windows), "win32-x64" => F.descriptor()}
+    })
+
+    assert {:ok, wrong_target} = publish(c)
+    refute Enum.any?(wrong_target.routes, &(&1.label == owner(c)))
+    assert Enum.any?(wrong_target.routes, &(&1.label == "webview"))
+  end
+
+  @spec both_releases() :: map()
+  defp both_releases,
+    do: %{
+      "version" => 1,
+      "targets" => %{"linux-x64" => F.descriptor(), "win32-x64" => F.descriptor(:windows)}
+    }
+
+  @spec descriptor_fields(map()) :: map()
+  defp descriptor_fields(descriptor),
+    do: %{
+      editor_protocol: descriptor["protocol"],
+      editor_commit: descriptor["commit"],
+      editor_release: descriptor["release"]
+    }
 
   @spec ready(map(), map()) :: {:ok, map()} | {:error, term()}
   defp ready(c, overrides \\ %{}),

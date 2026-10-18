@@ -38,14 +38,21 @@ defmodule Marshall.Ingress.EditorAssets do
       "release" => request.editor_release
     }
 
-    unless match?({:ok, _}, OverallsProtocol.EditorRelease.decode(descriptor)) and
-             descriptor == Application.get_env(:marshall, :ingress_editor_release),
-           do: Ledger.rollback(:image_unavailable)
+    with {:ok, approved} <- OverallsProtocol.EditorRelease.decode(descriptor),
+         true <-
+           Marshall.Editor.Releases.approved?(approved, Marshall.Editor.Releases.configured()) do
+      :ok
+    else
+      _ -> Ledger.rollback(:image_unavailable)
+    end
 
     binding = [
       service_id: service.id,
       service_generation: service.generation,
-      session_id: host.connection_session_id
+      session_id: host.connection_session_id,
+      editor_protocol: request.editor_protocol,
+      editor_commit: request.editor_commit,
+      editor_release: request.editor_release
     ]
 
     case Ledger.read!(EditorAssetsReceipt, binding) do

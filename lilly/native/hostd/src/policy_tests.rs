@@ -436,6 +436,40 @@ fn escapes_are_refused() {
 }
 
 #[test]
+fn systemctl_lifecycle_is_limited_to_one_exact_vm_service() {
+    let f = fixture();
+    let unit = "lilly-vm-11111111-2222-4333-8444-555555555555.service";
+    assert!(ok(&f, Utility::Systemctl, &["stop", unit]));
+    assert!(ok(
+        &f,
+        Utility::Systemctl,
+        &["kill", "--kill-who=all", "--signal=KILL", unit]
+    ));
+    for name in [
+        "lilly.slice",
+        "lilly-vm-*.service",
+        "lilly-vm-invalid.service",
+        "lilly-vm-11111111-2222-4333-8444-555555555555.scope",
+        "sshd.service",
+        "--all",
+        "",
+    ] {
+        assert!(!ok(&f, Utility::Systemctl, &["stop", name]));
+        assert!(!ok(
+            &f,
+            Utility::Systemctl,
+            &["kill", "--kill-who=all", "--signal=KILL", name]
+        ));
+    }
+    assert!(!ok(&f, Utility::Systemctl, &["stop", unit, unit]));
+    assert!(!ok(
+        &f,
+        Utility::Systemctl,
+        &["kill", "--kill-who=all", "--signal=KILL", unit, unit]
+    ));
+}
+
+#[test]
 fn namespaced_executables_are_replaced_by_hostds_own() {
     let f = fixture();
     match decide(

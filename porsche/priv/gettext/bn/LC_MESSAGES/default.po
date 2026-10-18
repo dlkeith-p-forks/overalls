@@ -135,72 +135,228 @@ msgstr "\nএই লিংক খুলুন, সাইন ইন করুন 
 msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr "\n\nকী অনুমোদনের সময় এই SSH সংযোগ খোলা রাখুন।\n"
 
-msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
-msgstr "অনুমোদনের লিংক %{minutes} মিনিট পরে অথবা এই সংযোগ বন্ধ হলে মেয়াদ হারাবে।\n"
-
-msgid "After approval, retry your command here.\n"
-msgstr "অনুমোদনের পর এখানে আপনার কমান্ড আবার চেষ্টা করুন।\n"
-
+#: lib/porsche/ssh/onboarding.ex:75
+#, elixir-autogen, elixir-format
 msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr "\nদূরবর্তী কমান্ড ছাড়া ইন্টার‌্যাক্টিভ Porsche সংযোগ খুলুন:"
 
-msgid "Keep that connection open while approving your key in the browser,\n"
-msgstr "ব্রাউজারে কী অনুমোদনের সময় সংযোগটি খোলা রাখুন,\n"
+#: lib/porsche/ssh/onboarding.ex:58
+#, elixir-autogen, elixir-format
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nএই লিংক খুলুন, সাইন ইন করুন এবং মিলে যাওয়া ফিঙ্গারপ্রিন্ট অনুমোদন করুন:\n  "
 
-msgid "then retry your original command.\n"
-msgstr "তারপর মূল কমান্ড আবার চেষ্টা করুন।\n"
-
-msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
-msgstr "Overalls-এ স্বাগতম।\n\nএই সংযোগের জন্য Overalls SSH কনফিগারেশন প্রয়োজন।\n\n"
-
-msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
-msgstr "এই মুহূর্তে SSH কী যাচাই করা যায়নি। একটু পরে আবার চেষ্টা করুন।\n\n"
-
-msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
-msgstr "এই SSH সংযোগ অনুমোদন করা যায়নি। মেশিনের প্রবেশাধিকার পরীক্ষা করে আবার চেষ্টা করুন।\n\n"
-
-msgid "Register or check your key by connecting to:\n  ssh "
-msgstr "এখানে সংযুক্ত হয়ে কী নিবন্ধন বা পরীক্ষা করুন:\n  ssh "
-
+#: lib/porsche/ssh/onboarding.ex:112
+#, elixir-autogen, elixir-format
 msgid "\nOr manage your keys at:\n  "
 msgstr "\nঅথবা এখানে আপনার কীগুলো পরিচালনা করুন:\n  "
 
-msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
-msgstr "Overalls অ্যাকাউন্ট সেটিংস > SSH কী-তে আপনার SSH কী নিবন্ধন বা পরীক্ষা করুন।\n\n"
+#: lib/porsche/ssh/command_messages.ex:46
+#, elixir-autogen, elixir-format
+msgid "Accept a pending ownership offer."
+msgstr "অপেক্ষমাণ মালিকানার প্রস্তাব গ্রহণ করুন।"
 
-msgid "Follow the browser approval instructions, then run the setup command\n"
-msgstr "ব্রাউজারে অনুমোদনের নির্দেশনা অনুসরণ করুন, তারপর সেটআপ কমান্ড চালান\n"
+#: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "প্রশাসক বা সদস্য যোগ করুন বা পরিবর্তন করুন।"
 
-msgid "from your machine's page and reconnect without root@.\n"
-msgstr "আপনার মেশিনের পৃষ্ঠা থেকে এবং root@ ছাড়া আবার সংযোগ করুন।\n"
+#: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
+msgid "After approval, retry your command here.\n"
+msgstr "অনুমোদনের পর এখানে আপনার কমান্ড আবার চেষ্টা করুন।\n"
 
-msgid "This connection is not authorized. Please sign in and try again."
-msgstr "এই সংযোগ অনুমোদিত নয়। সাইন ইন করে আবার চেষ্টা করুন।"
+#: lib/porsche/ssh/onboarding.ex:61
+#, elixir-autogen, elixir-format
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "অনুমোদনের লিংক %{minutes} মিনিট পরে অথবা এই সংযোগ বন্ধ হলে মেয়াদ হারাবে।\n"
 
-msgid "You do not have permission to perform this action."
-msgstr "এই কাজ করার অনুমতি আপনার নেই।"
-
-msgid "Invalid command. Type help to see available commands."
-msgstr "অবৈধ কমান্ড। উপলব্ধ কমান্ড দেখতে help লিখুন।"
-
-msgid "The service is temporarily unavailable. Please try again shortly."
-msgstr "পরিষেবা সাময়িকভাবে অনুপলব্ধ। একটু পরে আবার চেষ্টা করুন।"
-
+#: lib/porsche/ssh/output.ex:64
+#, elixir-autogen, elixir-format
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "ব্রাউজারে এই SSH কী অনুমোদন করুন, তারপর কমান্ড আবার চেষ্টা করুন।"
 
-msgid "The requested resource could not be found."
-msgstr "অনুরোধ করা রিসোর্স পাওয়া যায়নি।"
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "অপ্রকাশিত ক্লোন বা চূড়ান্ত না হওয়া স্থানান্তরের অনুরোধ বাতিল করুন।"
 
-msgid "Unexpected input. Please open a new SSH connection."
-msgstr "অপ্রত্যাশিত ইনপুট। নতুন SSH সংযোগ খুলুন।"
+#: lib/porsche/ssh/command_messages.ex:47
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "আপনার অপেক্ষমাণ মালিকানার প্রস্তাব বাতিল করুন।"
 
-msgid "The command could not be completed: %{reason}"
-msgstr "কমান্ড সম্পূর্ণ করা যায়নি: %{reason}"
+#: lib/porsche/ssh/command_messages.ex:28
+#, elixir-autogen, elixir-format
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "মেশিনের CPU ও মেমরি পরিবর্তন করুন; ডিস্ক কেবল বড় করা যায়। চলমান মেশিন থেমে আবার চালু হবে।"
 
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "এই ইন্টার‌্যাক্টিভ চ্যানেল বন্ধ করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:17
+#, elixir-autogen, elixir-format
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "মেশিন তৈরি করুন। ডিস্কের সর্বোচ্চ সীমা: 500 GiB। --source গেস্টে একটি সর্বজনীন GitHub, GitLab, Codeberg বা Bitbucket রিপোজিটরি ক্লোন করে।"
+
+#: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "আপনার মালিকানাধীন দল তৈরি করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "https://NAME.integration.internal-এ নামযুক্ত ইন্টিগ্রেশন তৈরি বা প্রতিস্থাপন করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "অপেক্ষমাণ মালিকানার প্রস্তাব প্রত্যাখ্যান করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:32
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "মেশিন ও তার ডিস্ক মুছুন। মালিক পিন করে রাখলে মুছতে দেওয়া হবে না।"
+
+#: lib/porsche/ssh/channel.ex:115
+#, elixir-autogen, elixir-format
+msgid "Docs:"
+msgstr "নথিপত্র:"
+
+#: lib/porsche/ssh/onboarding.ex:120
+#, elixir-autogen, elixir-format
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "ব্রাউজারে অনুমোদনের নির্দেশনা অনুসরণ করুন, তারপর সেটআপ কমান্ড চালান\n"
+
+#: lib/porsche/ssh/command_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "দর্শক, অপারেটর বা ব্যবস্থাপকের প্রবেশাধিকার দিন।"
+
+#: lib/porsche/ssh/command_messages.ex:36
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "নাম বা UUID দিয়ে মেশিন পরীক্ষা করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:27
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "আগে গৃহীত অনুরোধ পরীক্ষা করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "গোপন তথ্য ছাড়া ইন্টিগ্রেশন পরীক্ষা করুন।"
+
+#: lib/porsche/ssh/output.ex:58
+#, elixir-autogen, elixir-format
+msgid "Invalid command. Type help to see available commands."
+msgstr "অবৈধ কমান্ড। উপলব্ধ কমান্ড দেখতে help লিখুন।"
+
+#: lib/porsche/ssh/onboarding.ex:77
+#, elixir-autogen, elixir-format
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "ব্রাউজারে কী অনুমোদনের সময় সংযোগটি খোলা রাখুন,\n"
+
+#: lib/porsche/ssh/command_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "দলের সদস্যদের তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:35
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "প্রবেশাধিকারের অনুমতিগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "উপলব্ধ ইমেজগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "আপনি প্রবেশ করতে পারেন এমন মেশিনগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "আপনার SSH কীগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "আপনার ইন্টিগ্রেশনগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "আপনার দল ও ভূমিকাগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:11
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "মেশিনের জন্য ইন্টিগ্রেশন উপলব্ধ করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:24
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "মেশিনকে স্বয়ংক্রিয়ভাবে নির্বাচিত হোস্টে সরান।"
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "প্রশাসককে দলের মালিকানা হস্তান্তরের প্রস্তাব দিন।"
+
+#: lib/porsche/ssh/channel.ex:113
+#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Porsche মেশিন ব্যবস্থাপনা। help লিখুন।"
+
+#: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "মেশিনের সম্পূর্ণ ডিস্কের স্বতন্ত্র অনুলিপি সারিতে রাখুন।"
+
+#: lib/porsche/ssh/onboarding.ex:114
+#, elixir-autogen, elixir-format
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Overalls অ্যাকাউন্ট সেটিংস > SSH কী-তে আপনার SSH কী নিবন্ধন বা পরীক্ষা করুন।\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:110
+#, elixir-autogen, elixir-format
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "এখানে সংযুক্ত হয়ে কী নিবন্ধন বা পরীক্ষা করুন:\n  ssh "
+
+#: lib/porsche/ssh/command_messages.ex:12
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "মেশিনের জন্য সরাসরি দেওয়া উপলব্ধতা সরান।"
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "নামযুক্ত ইন্টিগ্রেশন সরান।"
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "অ্যাকাউন্টের সদস্যপদ সরান।"
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "মেশিন থেকে আপনার পিন সরান।"
+
+#: lib/porsche/ssh/output.ex:104
+#, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "অনুরোধ %{id}: জমা দেওয়া হচ্ছে"
 
+#: lib/porsche/ssh/output.ex:107
+#, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "অনুরোধ %{id}: সম্পূর্ণ হওয়ার অপেক্ষায়"
 

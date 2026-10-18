@@ -157,10 +157,16 @@ Editor admission under the current login, write grant, account and execution.
 The displayed eligibility is a bounded authorized view, not a grant. Opening
 still performs fresh Editor admission, and disabling an image for future launches
 does not revoke an already running machine's matching editor capability.
-Editor DNS publication requires the sole current manifest4 plus exact configured
-editor commit, release and protocol. Current route publication and gateway asset
-receipt must agree with the VM's current execution and host session; the source2
-cutover does not relax these existing publication checks.
+Editor admission selects the approved tuple from the validated image target:
+Linux/x86_64 kernel images use `linux-x64`; the separate Windows/x86_64
+firmware `windows-editor-v1` candidate uses `win32-x64`. Approval of a tuple for
+the other target grants no capability. DNS publication requires manifest4 for
+Linux or candidate manifest7 for Windows and the exact target's commit, release
+and protocol. Current route publication and each gateway asset receipt must
+agree with the VM's current execution and host session. Every advertised gateway
+also needs current receipts for the entire configured release set; expiry of
+either release withdraws its editor and neutral webview discovery. These records
+remain discovery only and do not authorize editor access.
 SSH `ls`/`show` keep their existing machine response fields; the workspace status
 is not added to their public command protocol.
 

@@ -1,3 +1,9 @@
+msgid ""
+msgstr ""
+"Language: et\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 ## This is a PO Template file.
 ##
 ## `msgid`s here are often extracted from source code.
@@ -9,101 +15,101 @@
 ## effect: edit them in PO (`.po`) files instead.
 ## From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr ""
+msgstr "ei tohi olla tühi"
 
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "on juba kasutusel"
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "on vigane"
 
 ## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr ""
+msgstr "tuleb kinnitada"
 
 ## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr ""
+msgstr "on vigases vormingus"
 
 ## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr ""
+msgstr "sisaldab vigast kirjet"
 
 ## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr ""
+msgstr "on reserveeritud"
 
 ## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr ""
+msgstr "ei vasta kinnitusele"
 
 ## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "on endiselt selle kirjega seotud"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "on endiselt selle kirjega seotud"
 
 ## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "peab sisaldama %{count} kirje"
+msgstr[1] "peab sisaldama %{count} kirjet"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pikkus peab olema %{count} märk"
+msgstr[1] "pikkus peab olema %{count} märki"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pikkus peab olema %{count} bait"
+msgstr[1] "pikkus peab olema %{count} baiti"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "peab sisaldama vähemalt %{count} kirje"
+msgstr[1] "peab sisaldama vähemalt %{count} kirjet"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pikkus peab olema vähemalt %{count} märk"
+msgstr[1] "pikkus peab olema vähemalt %{count} märki"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pikkus peab olema vähemalt %{count} bait"
+msgstr[1] "pikkus peab olema vähemalt %{count} baiti"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "võib sisaldada kuni %{count} kirje"
+msgstr[1] "võib sisaldada kuni %{count} kirjet"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pikkus võib olla kuni %{count} märk"
+msgstr[1] "pikkus võib olla kuni %{count} märki"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pikkus võib olla kuni %{count} bait"
+msgstr[1] "pikkus võib olla kuni %{count} baiti"
 
 ## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "peab olema väiksem kui %{number}"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "peab olema suurem kui %{number}"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "peab olema väiksem või võrdne väärtusega %{number}"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "peab olema suurem või võrdne väärtusega %{number}"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "peab võrduma väärtusega %{number}"

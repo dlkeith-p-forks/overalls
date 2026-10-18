@@ -42,8 +42,12 @@ encoding and expose only immutable `/code-assets/<release>/.../pre/` bootstrap
 files. Separate origins are browser-state boundaries, not additional guest UIDs.
 
 Marshall publishes editor VM owners and the neutral webview owner only through
-healthy gateways with a live five-second asset receipt matching service generation,
-host session and the approved package. Before each receipt, Audi validates all
+healthy gateways with separate live five-second asset receipts matching service
+generation, host session and every configured target's exact approved package.
+The per-release receipt identity allows Linux and Windows tuples to coexist
+without replacing or extending each other's expiry. Neutral webview DNS cannot
+route by release, so a missing or expired member withdraws that gateway from
+both editor and neutral webview discovery. Before each receipt, Audi validates all
 fixed asset files and requires a fresh verified TLS HEAD through its configured
 local IPv4 HTTPS listener, with operator roots, exact hash SNI/Host and the current
 release path. The bounded proof refuses suspended acceptors and wrong trust,

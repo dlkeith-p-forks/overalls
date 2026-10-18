@@ -8,7 +8,7 @@ defmodule Audi.SSH.TransportTest do
   setup context do
     directory = Path.join(System.tmp_dir!(), "audi-ssh-#{System.unique_integer([:positive])}")
     File.mkdir_p!(directory)
-    on_exit(fn -> File.rm_rf!(directory) end)
+    on_fixture_exit(fn -> File.rm_rf!(directory) end)
 
     for name <- ["ssh_host_ed25519_key", "id_ed25519"] do
       {_, 0} =
@@ -657,8 +657,13 @@ defmodule Audi.SSH.TransportTest do
         2000
       )
 
-    on_exit(fn -> :ssh.close(connection) end)
+    on_fixture_exit(fn -> :ssh.close(connection) end)
     connection
+  end
+
+  @spec on_fixture_exit((-> term())) :: :ok
+  defp on_fixture_exit(callback) do
+    if Hegel.in_property_case?(), do: Hegel.on_cleanup(callback), else: on_exit(callback)
   end
 
   defp receive_bytes(connection, channel, remaining, output \\ <<>>)

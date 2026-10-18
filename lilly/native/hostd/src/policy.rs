@@ -216,13 +216,16 @@ fn nft(argv: &[&[u8]], roots: &[PathBuf]) -> bool {
 
 /// @cc [owner:ghuntley,label:security] systemctl-lilly-units-only
 /// systemctl MUST accept only `show` and `list-units` queries of `lilly.slice`
-/// and `lilly-vm-*` units, and lifecycle stop/kill for one UUID unit.
+/// and `lilly-vm-*` units. Lifecycle stop/kill MUST target exactly one
+/// `lilly-vm-UUID.service`, never the shared slice or a wildcard.
 fn systemctl(argv: &[&[u8]]) -> bool {
     let vm_unit = |name: &[u8]| {
         name.strip_prefix(b"lilly-vm-")
             .and_then(|rest| rest.strip_suffix(b".service"))
             .is_some_and(crate::vm_launch::uuid)
     };
+    let query_unit =
+        |name: &[u8]| name == b"lilly.slice" || name == b"lilly-vm-*.service" || vm_unit(name);
     match argv {
         [b"stop", name] => vm_unit(name),
         [b"kill", b"--kill-who=all", b"--signal=KILL", name] => vm_unit(name),

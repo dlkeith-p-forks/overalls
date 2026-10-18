@@ -135,72 +135,228 @@ msgstr "\nBuka tautan ini, masuk, dan setujui sidik jari yang cocok:\n  "
 msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr "\n\nBiarkan koneksi SSH ini terbuka saat menyetujui kunci.\n"
 
-msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
-msgstr "Tautan persetujuan kedaluwarsa setelah %{minutes} menit atau saat koneksi ini ditutup.\n"
-
-msgid "After approval, retry your command here.\n"
-msgstr "Setelah disetujui, coba lagi perintah Anda di sini.\n"
-
+#: lib/porsche/ssh/onboarding.ex:75
+#, elixir-autogen, elixir-format
 msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr "\nBuka koneksi Porsche interaktif tanpa perintah jarak jauh:"
 
-msgid "Keep that connection open while approving your key in the browser,\n"
-msgstr "Biarkan koneksi tersebut terbuka saat menyetujui kunci di browser,\n"
+#: lib/porsche/ssh/onboarding.ex:58
+#, elixir-autogen, elixir-format
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nBuka tautan ini, masuk, dan setujui sidik jari yang cocok:\n  "
 
-msgid "then retry your original command.\n"
-msgstr "lalu coba lagi perintah awal Anda.\n"
-
-msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
-msgstr "Selamat datang di Overalls.\n\nKoneksi ini memerlukan konfigurasi SSH Overalls.\n\n"
-
-msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
-msgstr "Kami belum dapat memverifikasi kunci SSH ini. Coba lagi sebentar lagi.\n\n"
-
-msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
-msgstr "Koneksi SSH ini tidak dapat diotorisasi. Periksa akses mesin Anda dan coba lagi.\n\n"
-
-msgid "Register or check your key by connecting to:\n  ssh "
-msgstr "Daftarkan atau periksa kunci Anda dengan menghubungkan ke:\n  ssh "
-
+#: lib/porsche/ssh/onboarding.ex:112
+#, elixir-autogen, elixir-format
 msgid "\nOr manage your keys at:\n  "
 msgstr "\nAtau kelola kunci Anda di:\n  "
 
-msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
-msgstr "Daftarkan atau periksa kunci SSH Anda di pengaturan Akun Overalls > Kunci SSH.\n\n"
+#: lib/porsche/ssh/command_messages.ex:46
+#, elixir-autogen, elixir-format
+msgid "Accept a pending ownership offer."
+msgstr "Terima tawaran kepemilikan yang tertunda."
 
-msgid "Follow the browser approval instructions, then run the setup command\n"
-msgstr "Ikuti petunjuk persetujuan di browser, lalu jalankan perintah penyiapan\n"
+#: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "Tambahkan atau ubah admin atau anggota."
 
-msgid "from your machine's page and reconnect without root@.\n"
-msgstr "dari halaman mesin Anda dan hubungkan kembali tanpa root@.\n"
+#: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
+msgid "After approval, retry your command here.\n"
+msgstr "Setelah disetujui, coba lagi perintah Anda di sini.\n"
 
-msgid "This connection is not authorized. Please sign in and try again."
-msgstr "Koneksi ini tidak diotorisasi. Silakan masuk dan coba lagi."
+#: lib/porsche/ssh/onboarding.ex:61
+#, elixir-autogen, elixir-format
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "Tautan persetujuan kedaluwarsa setelah %{minutes} menit atau saat koneksi ini ditutup.\n"
 
-msgid "You do not have permission to perform this action."
-msgstr "Anda tidak memiliki izin untuk melakukan tindakan ini."
-
-msgid "Invalid command. Type help to see available commands."
-msgstr "Perintah tidak valid. Ketik help untuk melihat perintah yang tersedia."
-
-msgid "The service is temporarily unavailable. Please try again shortly."
-msgstr "Layanan sementara tidak tersedia. Coba lagi sebentar lagi."
-
+#: lib/porsche/ssh/output.ex:64
+#, elixir-autogen, elixir-format
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "Setujui kunci SSH ini di browser, lalu coba lagi perintahnya."
 
-msgid "The requested resource could not be found."
-msgstr "Sumber daya yang diminta tidak ditemukan."
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Batalkan kloning yang belum dipublikasikan atau permintaan pemindahan yang belum dikomit."
 
-msgid "Unexpected input. Please open a new SSH connection."
-msgstr "Masukan tidak terduga. Buka koneksi SSH baru."
+#: lib/porsche/ssh/command_messages.ex:47
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "Batalkan tawaran kepemilikan Anda yang tertunda."
 
-msgid "The command could not be completed: %{reason}"
-msgstr "Perintah tidak dapat diselesaikan: %{reason}"
+#: lib/porsche/ssh/command_messages.ex:28
+#, elixir-autogen, elixir-format
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "Ubah CPU dan memori mesin; disk hanya dapat diperbesar. Mesin yang berjalan akan berhenti dan dimulai ulang."
 
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "Tutup saluran interaktif ini."
+
+#: lib/porsche/ssh/command_messages.ex:17
+#, elixir-autogen, elixir-format
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Buat mesin. Kapasitas disk maksimum: 500 GiB. --source mengkloning repositori publik GitHub, GitLab, Codeberg, atau Bitbucket di mesin tamu."
+
+#: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "Buat tim milik Anda."
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "Buat atau ganti integrasi bernama di https://NAME.integration.internal."
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "Tolak tawaran kepemilikan yang tertunda."
+
+#: lib/porsche/ssh/command_messages.ex:32
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Hapus mesin beserta disknya. Ditolak selama pemiliknya menyematkannya."
+
+#: lib/porsche/ssh/channel.ex:115
+#, elixir-autogen, elixir-format
+msgid "Docs:"
+msgstr "Dokumentasi:"
+
+#: lib/porsche/ssh/onboarding.ex:120
+#, elixir-autogen, elixir-format
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "Ikuti petunjuk persetujuan di browser, lalu jalankan perintah penyiapan\n"
+
+#: lib/porsche/ssh/command_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "Berikan akses penampil, operator, atau pengelola."
+
+#: lib/porsche/ssh/command_messages.ex:36
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "Periksa mesin berdasarkan nama atau UUID."
+
+#: lib/porsche/ssh/command_messages.ex:27
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "Periksa permintaan yang sebelumnya diterima."
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "Periksa integrasi tanpa rahasia."
+
+#: lib/porsche/ssh/output.ex:58
+#, elixir-autogen, elixir-format
+msgid "Invalid command. Type help to see available commands."
+msgstr "Perintah tidak valid. Ketik help untuk melihat perintah yang tersedia."
+
+#: lib/porsche/ssh/onboarding.ex:77
+#, elixir-autogen, elixir-format
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "Biarkan koneksi tersebut terbuka saat menyetujui kunci di browser,\n"
+
+#: lib/porsche/ssh/command_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "Daftar anggota tim."
+
+#: lib/porsche/ssh/command_messages.ex:35
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "Daftar pemberian akses."
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "Daftar citra yang tersedia."
+
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "Daftar mesin yang dapat Anda akses."
+
+#: lib/porsche/ssh/command_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "Daftar kunci SSH Anda."
+
+#: lib/porsche/ssh/command_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "Daftar integrasi Anda."
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "Daftar tim dan peran Anda."
+
+#: lib/porsche/ssh/command_messages.ex:11
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "Sediakan integrasi untuk sebuah mesin."
+
+#: lib/porsche/ssh/command_messages.ex:24
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "Pindahkan mesin ke host yang dipilih otomatis."
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "Tawarkan kepemilikan tim kepada admin."
+
+#: lib/porsche/ssh/channel.ex:113
+#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Pengelolaan mesin Porsche. Ketik help."
+
+#: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Antrekan salinan seluruh disk mesin yang independen."
+
+#: lib/porsche/ssh/onboarding.ex:114
+#, elixir-autogen, elixir-format
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Daftarkan atau periksa kunci SSH Anda di pengaturan Akun Overalls > Kunci SSH.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:110
+#, elixir-autogen, elixir-format
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "Daftarkan atau periksa kunci Anda dengan menghubungkan ke:\n  ssh "
+
+#: lib/porsche/ssh/command_messages.ex:12
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "Hapus ketersediaan eksplisit sebuah mesin."
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "Hapus integrasi bernama."
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "Hapus keanggotaan akun."
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "Lepaskan sematan Anda dari mesin."
+
+#: lib/porsche/ssh/output.ex:104
+#, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "Permintaan %{id}: mengirim"
 
+#: lib/porsche/ssh/output.ex:107
+#, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "Permintaan %{id}: menunggu penyelesaian"
 

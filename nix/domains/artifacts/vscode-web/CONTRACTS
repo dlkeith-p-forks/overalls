@@ -85,3 +85,7 @@ compiler/MSBuild executable SHA-256 digests; recorded builder custody MUST NOT
 be presented as reproducible compilation. The import MUST refuse links and non-regular entries and
 MUST retain no Nix store references. Import is candidate packaging only and
 MUST NOT assert browser acceptance or promote an image capability.
+
+@cc [owner:ghuntley,label:build] windows-editor-native-shell-assets
+Shell assets carried by the native Windows source kit MUST retain their upstream
+interpreter lines; host Nix interpreters MUST NOT replace the Windows Git Bash path.

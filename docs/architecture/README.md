@@ -1,5 +1,7 @@
 # Architecture
 
+[ADR-0201](decisions/0201-localized-human-surfaces.md) accepts Localize-backed human surfaces with validated language preferences and LTR/RTL presentation; translation and native browser acceptance remain partial.
+
 [ADR-0200](decisions/0200-windows-browser-editor-candidate.md) accepts a native
 Windows browser editor with a SYSTEM gateway broker and personal SAM/S4U workers.
 Its separate `windows-editor-v1` manifest-v7 and bundle-v4 candidate contract

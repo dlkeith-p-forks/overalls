@@ -24,13 +24,15 @@ defmodule Marshall.Compute.ImageEditorCapabilityTest do
               editor_protocol: 1,
               editor_commit: commit,
               editor_release: release
-            }} = Image.editor_capability(image, descriptor)
+            }} = Image.editor_capability(image, registry(descriptor, platform))
 
     assert commit == descriptor["commit"] and release == descriptor["release"]
 
     for key <- ["commit", "release"] do
       other = Map.update!(descriptor, key, &different_digest/1)
-      assert {:error, :unsupported_image} = Image.editor_capability(image, other)
+
+      assert {:error, :unsupported_image} =
+               Image.editor_capability(image, registry(other, platform))
     end
 
     changed =
@@ -40,17 +42,17 @@ defmodule Marshall.Compute.ImageEditorCapabilityTest do
       end
 
     assert {:error, :unavailable} =
-             Image.editor_capability(%{image | manifest: changed}, descriptor)
+             Image.editor_capability(%{image | manifest: changed}, registry(descriptor, platform))
   end
 
   test "a current image without an editor is unsupported, and malformed data fails closed" do
     descriptor = Marshall.EditorFixture.descriptor()
     manifest = Marshall.ComputeFixtures.image_manifest()
     {:ok, validated} = OverallsProtocol.ImageManifest.validate(manifest)
-    assert {:error, :unsupported_image} = Image.editor_capability(validated, descriptor)
+    assert {:error, :unsupported_image} = Image.editor_capability(validated, registry(descriptor))
 
     for image <- [nil, %{}, %{id: validated.id, manifest: nil}, %{validated | id: "wrong"}] do
-      assert {:error, :unavailable} = Image.editor_capability(image, descriptor)
+      assert {:error, :unavailable} = Image.editor_capability(image, registry(descriptor))
     end
 
     image = editor_image(descriptor)
@@ -59,6 +61,40 @@ defmodule Marshall.Compute.ImageEditorCapabilityTest do
       assert {:error, :unavailable} = Image.editor_capability(image, configured)
     end
   end
+
+  test "Linux and Windows approve distinct releases together without cross-target substitution" do
+    linux = Marshall.EditorFixture.descriptor()
+    windows = Map.put(linux, "release", String.duplicate("c", 64))
+
+    approved = %{
+      "version" => 1,
+      "targets" => %{"linux-x64" => linux, "win32-x64" => windows}
+    }
+
+    for {target, descriptor} <- [{:linux, linux}, {:windows, windows}] do
+      image = editor_image(descriptor, target)
+      assert {:ok, _} = Image.editor_capability(image, approved)
+
+      assert {:error, :unsupported_image} =
+               Image.editor_capability(image, %{"version" => 1, "targets" => %{}})
+
+      swapped = %{
+        "version" => 1,
+        "targets" => %{"linux-x64" => windows, "win32-x64" => linux}
+      }
+
+      # Even a correctly shaped tuple approved for the other OS is insufficient.
+      assert {:error, :unsupported_image} = Image.editor_capability(image, swapped)
+    end
+  end
+
+  @spec registry(descriptor(), :linux | :windows) :: map()
+  defp registry(descriptor, platform \\ :linux),
+    do: Marshall.EditorFixture.releases(descriptor, target_key(platform))
+
+  @spec target_key(:linux | :windows) :: String.t()
+  defp target_key(:linux), do: "linux-x64"
+  defp target_key(:windows), do: "win32-x64"
 
   @spec descriptor_gen() :: Hegel.Gen.t(descriptor())
   defp descriptor_gen do

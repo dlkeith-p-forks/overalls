@@ -12,7 +12,7 @@ import struct
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 HOST = "github.com"
 PREFIX = "/overalls-native-fixture/unpublished-fixture.git"
@@ -118,6 +118,7 @@ class Repository:
         # matching the closed synthetic repository path.
         host = host.partition(":")[0].lower()
         parsed = urlsplit(path)
+        query = parse_qs(parsed.query, keep_blank_values=True)
         path = parsed.path + (("?" + parsed.query) if parsed.query else "")
         if host == "com-github.integration.internal" and path.startswith("/git/"):
             host, path = HOST, path.removeprefix("/git")
@@ -126,7 +127,12 @@ class Repository:
         if len(body) > MAX_REQUEST:
             raise ValueError("oversized isolated Git fixture request")
         bare = str(self.root / "repository.git")
-        if method == "GET" and path == PREFIX + "/info/refs?service=git-upload-pack" and not body:
+        if (
+            method == "GET"
+            and path == PREFIX + "/info/refs"
+            and query == {"service": ["git-upload-pack"]}
+            and not body
+        ):
             return Response(
                 b"application/x-git-upload-pack-advertisement",
                 b"001e# service=git-upload-pack\n0000"

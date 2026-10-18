@@ -1,5 +1,7 @@
 # Architecture decision records
 
+[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, browser language negotiation and validated account overrides with LTR/RTL presentation; implementation remains partial.
+
 [ADR-0200](0200-windows-browser-editor-candidate.md) accepts a source-built,
 account-bound Windows editor candidate with a separate `windows-editor-v1`
 manifest-v7/bundle-v4 contract. Native package, image and browser qualification
@@ -901,3 +903,5 @@ and physical storage acceptance. See the
 [host-lock review](../reviews/2026-10-05-host-lock-descendant-custody.md) and
 [transfer review](../reviews/2026-10-05-transfer-stream-adopted-children.md);
 ADR-0015/0037 retain their statuses and accepted rationale.
+
+| [ADR-0201](0201-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |

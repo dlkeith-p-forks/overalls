@@ -17,7 +17,10 @@ defmodule EditorZonePreflight do
     checkpoint(:descriptor)
     tls = Keyword.fetch!(options, :tls)
     "apps.example.test" = Keyword.fetch!(tls, :zone)
-    %{descriptor: %{release: ^expected_release}} = Keyword.fetch!(tls, :editor_assets)
+
+    %{"linux-x64" => %{descriptor: %{release: ^expected_release}}} =
+      Keyword.fetch!(tls, :editor_assets)
+
     checkpoint(:live_listener)
     {:ok, children} = Audi.Application.listener_children(source)
     true = children != []

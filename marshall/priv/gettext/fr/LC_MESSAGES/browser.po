@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Language: fr\n"
@@ -27,17 +28,17 @@ msgstr "%{label} copié."
 #: lib/marshall_web/browser_messages.ex:9
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing"
-msgstr ""
+msgstr "%{name} · %{count} personnes regardent"
 
 #: lib/marshall_web/browser_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing · %{activity}"
-msgstr ""
+msgstr "%{name} · %{count} personnes regardent · %{activity}"
 
 #: lib/marshall_web/browser_messages.ex:8
 #, elixir-autogen, elixir-format
 msgid "%{name} · Terminals"
-msgstr ""
+msgstr "%{name} · Terminaux"
 
 #: lib/marshall_web/browser_messages.ex:15
 #, elixir-autogen, elixir-format
@@ -67,12 +68,14 @@ msgstr "Commande"
 #: lib/marshall_web/browser_messages.ex:20
 #, elixir-autogen, elixir-format
 msgid "Could not copy. Select the text and copy it manually."
-msgstr "Impossible de copier. Sélectionnez le texte et copiez-le manuellement."
+msgstr ""
+"Impossible de copier. Sélectionnez le texte et copiez-le manuellement."
 
 #: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
-msgstr "Impossible de modifier l’accès. Vérifiez l’accès du compte à la machine."
+msgstr ""
+"Impossible de modifier l’accès. Vérifiez l’accès du compte à la machine."
 
 #: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
@@ -107,7 +110,10 @@ msgstr "Aucune correspondance"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "Ouvrir ce lien ?\n\n%{url}"
+msgstr ""
+"Ouvrir ce lien ?\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -127,17 +133,23 @@ msgstr "Vérification de clé d’accès échouée ou indisponible. Réessayez."
 #: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
-msgstr "Nom du terminal (dans ce navigateur uniquement ; vide rétablit le nom généré)"
+msgstr ""
+"Nom du terminal (dans ce navigateur uniquement ; vide rétablit le nom "
+"généré)"
 
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr "Le résultat n’a pas pu être confirmé. Rechargez la page et vérifiez le résultat avant de réessayer."
+msgstr ""
+"Le résultat n’a pas pu être confirmé. Rechargez la page et vérifiez le "
+"résultat avant de réessayer."
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "Cette machine demande d’écrire %{bytes} octets dans votre presse-papiers. Tapez once, session ou mute."
+msgstr ""
+"Cette machine demande d’écrire %{bytes} octets dans votre presse-papiers. "
+"Tapez once, session ou mute."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
@@ -162,7 +174,9 @@ msgstr "La vérification n’a pas pu être effectuée. Réessayez."
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr "Vérifiez avec votre clé d’accès pour %{action}. Cette opération s’exécute une fois après vérification."
+msgstr ""
+"Vérifiez avec votre clé d’accès pour %{action}. Cette opération s’exécute "
+"une fois après vérification."
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
