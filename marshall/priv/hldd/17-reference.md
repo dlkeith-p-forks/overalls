@@ -278,6 +278,13 @@ the VM row, which the placement migration had moved to
 `compute_workload_placements`, so every query failed and was reported as
 unavailable (`379970e17a2d5312bff3e5c5e2c17369-65-0`). The witness now joins the
 current placement, and oracle queries log each failing SQLSTATE class once.
+The following run (`642e01a83533ba33f07ba9e3eb4b17fd-65-0`) settled hundreds of
+decisions, all refusals, so the acceptance-path assertions held only vacuously;
+the refusal reason was invisible because the operator discards evaluation
+output. The workload now logs Marshall's closed refusal token once per process,
+and the operator names the operation whose result became uncertain. CPU and
+memory headroom here are measured over the whole Antithesis VM, so a refusal
+for capacity is Marshall's correct decision on a busy host, not a defect.
 Catalog headroom below the request shape no longer withholds a request: a
 definite `insufficient_capacity` refusal is Marshall's real decision, checked
 for absent rows and a bounded one-VM replay. Every stop before a settled
