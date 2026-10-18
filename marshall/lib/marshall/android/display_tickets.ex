@@ -41,12 +41,20 @@ defmodule Marshall.Android.DisplayTickets do
   @spec verify(String.t()) :: {:ok, claim()} | {:error, :invalid_ticket}
   def verify(token) when is_binary(token) do
     case Phoenix.Token.verify(MarshallWeb.Endpoint, @salt, token, max_age: @max_age) do
-      {:ok, %{machine_id: machine_id, actor_id: actor_id, mode: mode, issued_at: issued_at, generation: generation} = claim}
+      {:ok,
+       %{
+         machine_id: machine_id,
+         actor_id: actor_id,
+         mode: mode,
+         issued_at: issued_at,
+         generation: generation
+       } = claim}
       when is_binary(machine_id) and is_binary(actor_id) and mode in [:viewer, :controller] and
              is_integer(issued_at) and is_integer(generation) and generation > 0 ->
         {:ok, claim}
 
-      _ -> {:error, :invalid_ticket}
+      _ ->
+        {:error, :invalid_ticket}
     end
   end
 

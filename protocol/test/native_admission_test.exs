@@ -42,10 +42,22 @@ defmodule OverallsProtocol.NativeAdmissionTest do
       assert {:ok, image} = ImageManifest.validate(NativeAdmission.reviewed_manifest(@os))
       assert NativeAdmission.admitted?(image)
 
-      assert %{editor: false, inception: false} =
-               capabilities = GuestAgents.capabilities(@agents, image)
+      assert GuestAgents.capabilities(@agents, image) == %{
+               readiness: true,
+               trust: true,
+               terminal: true,
+               workspace: true,
+               flush: true,
+               ssh: true,
+               agents: true,
+               editor: false,
+               inception: false,
+               android_sdk: false,
+               adb: false,
+               android_emulator: false,
+               android_display: false
+             }
 
-      assert Enum.all?(Map.values(Map.drop(capabilities, [:editor, :inception])))
       refute Enum.any?(Map.values(GuestAgents.capabilities(@agents)))
       refute Enum.any?(Map.values(GuestAgents.capabilities(@other_agents, image)))
 

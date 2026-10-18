@@ -228,3 +228,23 @@ contract checks passed. After adding new maintained files to Git's source
 projection, the Nix HLDD gate passed; its earlier unstaged projection had correctly
 reported a stale Marshall digest. Full Marshall and authenticated Bombadil
 acceptance are still running or pending and are not represented as passed.
+
+## Concurrent trunk integration through `648793477`
+
+A separate detached worktree integrates the completed localization checkpoint
+with upstream Antithesis outcome-consistency/same-key retry checks, Android
+tooling and relay repairs, Gettext plural-context reconstruction, generated SQL
+fixture isolation, and Windows editor-candidate verification inputs. Existing
+ADR-0201, ADR-0200 and ADR-0206 decisions and partial acceptance remain unchanged.
+The repeated AndroidDisplay import introduced by combining the branches is
+removed while retaining the existing hook registration and local-only assets.
+
+The integrated source passes JavaScript syntax and the pinned esbuild bundle;
+five standalone plural/relay tests pass, including Arabic's six categories and
+viewer attachment. These use pinned Elixir and the existing dependency closure,
+without rebuilding the active application. Eleven lifecycle workload tests pass
+with the pinned Python/wheel closure, and changed Python static gates pass.
+Native governance checks and evaluated Nix HLDD passed before this later merge;
+they are rerun for its final source projection. The full Marshall suite,
+authenticated browser journeys, native Windows candidate execution and
+linguistic acceptance remain separate and are not claimed by this integration.

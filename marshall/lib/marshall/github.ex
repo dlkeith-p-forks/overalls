@@ -769,8 +769,8 @@ defmodule Marshall.GitHub do
         connection.authorization_attempt_id &&
           Ledger.lock!(AuthorizationAttempt, connection.authorization_attempt_id)
 
-      unless (attempt && attempt.phase == :pending && attempt.state_digest == digest(state) &&
-                attempt.login_digest == digest(jti)) and
+      unless not is_nil(attempt) and attempt.phase == :pending and
+               attempt.state_digest == digest(state) and attempt.login_digest == digest(jti) and
                attempt.generation == connection.generation and
                connection.phase in [:disconnected, :reconnect_required] and
                later?(attempt.expires_at, Ledger.now()),
@@ -1104,7 +1104,7 @@ defmodule Marshall.GitHub do
     AccountLifecycle.admit!(user_id)
     user = Security.lock_user!(user_id)
 
-    unless user && is_nil(user.deleted_at) && is_binary(jti) &&
+    unless is_nil(user.deleted_at) && is_binary(jti) &&
              match?({:ok, _}, Login.present(jti, user_id)),
            do: Ledger.rollback(:unauthorized)
 

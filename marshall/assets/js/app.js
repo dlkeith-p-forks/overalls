@@ -1,5 +1,5 @@
-import {AndroidDisplay} from "./android_display.js";
 import {ThreadComposer} from "./thread_composer.js";
+import {AndroidDisplay} from "./android_display.js";
 import {Handbook} from "./handbook.js";
 import {WorkspaceNavigation, MachineConnection} from "./workspace.js";
 import {readPalette} from "./palette.js";

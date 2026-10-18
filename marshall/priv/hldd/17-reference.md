@@ -1211,6 +1211,57 @@ binds its log digest. The earlier frozen 610-test gate does not verify this
 changed test source. No production runtime, native transfer or recovery
 behavior changes.
 
+The later `7c323f197` forward checkpoint retains separate rollout and test
+evidence. Marshall's Covenant run passed 35 of 36 tests and exposed a callback
+replay guard exception; the explicit non-nil attempt repair preserves all
+state/login/generation/expiry fences. Pins and Teams generated fixtures now
+create a fresh SQL sandbox and authority rows per case and replay, retaining
+their 100-case budgets and refusal oracles. The focused timing-only run passed
+23 tests, seed 52647, in 419.4 seconds, including the callback, Pins, Teams and
+sandbox regressions. It measured the full Teams HTTP history at 30.5206 seconds
+and Pins ordered-set history at 276.0067 seconds. Mix implicitly enables
+`--trace` for `--slowest 8`, so these results
+do not qualify finite ExUnit deadlines. The ordered-set history alone now has
+a 600,000-millisecond aggregate timeout; other Pins tests retain the
+300,000-millisecond module timeout, each case retains its 120,000-millisecond
+SQL ownership deadline, and Teams retains its 60,000-millisecond default.
+The required full Marshall `mix precommit` gate without trace/slowest remains
+pending and will verify these tests with their finite deadlines. The
+[matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
+records the exact failure scope, successful Marshall catalog structure check
+and separate three-test Porsche catalog run. The 22:32:58 UTC production
+observation subsequently found both hosts healthy with fresh six-key inventory,
+and ordinary Windows CLI routing passed through the normal proxy with strict
+certificate trust. These observations do not qualify browser/editor access or
+the full native OS matrix. Documentation translation completeness, linguistic
+review, isolation and recovery acceptance remain separate; no accepted ADR or
+deployment boundary changes.
+
+The later forward verification patch preserves the existing authority and
+localization decisions. The Gettext plural adapter keeps plain locale/header
+context in generated code and reconstructs the opaque plural value through
+Gettext's API at runtime, preserving explicit catalog rules and locale fallback
+at the cost of parsing on each plural selection. Viewer attachment retains its
+monitored relay state; typed guard and contract-syntax repairs preserve the
+existing limits. Native-admission regressions assert the exact 13-key map,
+retaining seven qualified native capabilities while editor, Inception and all
+four Android flags remain false. Lilly's incoming network changes are
+formatting only. The Windows browser fixture accepts inherited SYSTEM-only
+receipt grants only beneath a protected SYSTEM-only parent, retaining foreign
+access, reparse and ancestor refusals without changing product custody. An
+explicit Lilly editor-candidate fixture uses four GiB guest RAM and checks the
+exact version-7 image/version-4 bundle editor descriptor through restart;
+ordinary Windows expectations and production selection remain separate.
+The rebuilt receipt fixture passed native inherited-receipt admission and
+foreign-read refusal checks with the installed broker unchanged; this is
+separate from PTY, browser or recovery acceptance. Adapter regressions, full
+consumer gates and exact candidate native execution remain pending. The
+earlier mixed-source asset
+build does not verify this forward patch or complete browser behavior. The
+[matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
+records the source scope and remaining native, controller-lease, isolation and
+recovery gaps; partial ADR-0206 and ADR-0200 acceptance are unchanged.
+
 ## Keeping this handbook current
 
 `/hldd` lists sections. Each `/hldd/SECTION` page loads one chapter; previous and

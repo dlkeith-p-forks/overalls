@@ -159,8 +159,7 @@ defmodule Marshall.Agents.Prompt do
         outcome: :accepted
       })
 
-      if match?(%Marshall.Compute.Operation{}, wake) or
-           match?(%Marshall.Compute.WakeRequest{}, wake) do
+      if match?(%Marshall.Compute.WakeRequest{}, wake) do
         Ledger.create!(AuditEvent, :record, %{
           vm_id: root.vm_id,
           thread_id: locked.id,

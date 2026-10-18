@@ -12,7 +12,12 @@ defmodule MarshallWeb.TeamsSSHAPITest do
   @type inventory :: %{String.t() => [map()]}
   @tables ~w(teams team_members team_transfers teams_versions team_members_versions team_transfers_versions account_admin_events ssh_requests)
 
-  setup do
+  setup tags do
+    if tags[:hegel_case_sandbox], do: :ok, else: gateway_fixture()
+  end
+
+  @spec gateway_fixture() :: context()
+  defp gateway_fixture do
     {gateway, _} = SSH.Token.issue(:gateway)
 
     {:ok, _} =
@@ -23,14 +28,25 @@ defmodule MarshallWeb.TeamsSSHAPITest do
     %{gateway: gateway}
   end
 
+  # @cc [owner:ghuntley,label:verification] teams-generated-fixture-isolation
+  # Every generated case and replay MUST own a fresh SQL sandbox before gateway,
+  # account and team setup, and MUST release it before the next generated case.
+  @spec property_context() :: context()
+  defp property_context do
+    Marshall.DataCase.isolate_property_case()
+    gateway_fixture()
+  end
+
   # @cc [owner:ghuntley,label:verification;security] teams-ssh-http-history
   # Every generated history MUST cross the Porsche gateway requests (served on
   # the control socket since ADR-0142) with current session authority and
   # compare full durable inventories on refusals and pinned replays. A successful
   # historical receipt MUST NOT restore membership or mutate a reused team name.
-  test "HTTP histories preserve pinned receipts and permanent team refusals", c do
+  @tag hegel_case_sandbox: true
+  test "HTTP histories preserve pinned receipts and permanent team refusals" do
     Hegel.check(
       fn ->
+        c = property_context()
         suffix = draw("suffix", string(Enum.to_list(97..122), min_length: 1, max_length: 12))
 
         steps =
@@ -208,11 +224,12 @@ defmodule MarshallWeb.TeamsSSHAPITest do
   # Generated malformed names MUST refuse before any durable row changes; the
   # one- and 63-character boundaries MUST remain usable. Parser length refusal
   # and domain grammar refusal MUST both stay permanent HTTP 400 responses.
-  test "team name grammar and boundary refusals remain permanent", c do
-    owner = account(c)
-
+  @tag hegel_case_sandbox: true
+  test "team name grammar and boundary refusals remain permanent" do
     Hegel.check(
       fn ->
+        c = property_context()
+        owner = account(c)
         label = draw("label", string(Enum.to_list(97..122), min_length: 1, max_length: 20))
 
         for name <- [String.upcase(label), "0" <> label, label <> "-", label <> "_"] do

@@ -3,7 +3,13 @@ defmodule Marshall.Android.DisplaySocket do
   @behaviour WebSock
 
   @impl true
-  def init(%{claim: claim, actor: actor, login_jti: login_jti, generation: generation, mode: mode}) do
+  def init(%{
+        claim: claim,
+        actor: actor,
+        login_jti: login_jti,
+        generation: generation,
+        mode: mode
+      }) do
     with {:ok, _expiry} <- Marshall.Accounts.Login.present(login_jti, actor.id),
          true <- claim.actor_id == actor.id,
          {:ok, relay} <- Marshall.Android.DisplayRelay.start_link(generation),
@@ -18,7 +24,10 @@ defmodule Marshall.Android.DisplaySocket do
   def init(_), do: {:stop, :unauthorized, %{}}
 
   @impl true
-  def handle_in({bytes, [opcode: :binary]}, %{mode: :controller, relay: relay, generation: generation} = state) do
+  def handle_in(
+        {bytes, [opcode: :binary]},
+        %{mode: :controller, relay: relay, generation: generation} = state
+      ) do
     case Marshall.Android.DisplayRelay.input(relay, self(), generation, bytes) do
       :ok -> {:ok, state}
       _ -> {:stop, :normal, state}
