@@ -75,6 +75,25 @@ function Get-FixtureBroker {
     return $Matches[0]
 }
 
+# @cc [owner:ghuntley,label:verification;security] windows-editor-fixture-inherited-receipt
+# Broker-written receipts MAY inherit SYSTEM-only grants from their protected
+# SYSTEM-only parent. The fixture MUST still reject foreign owners, any effective
+# non-SYSTEM allow, reparse points and unsafe ancestors without changing the ACL.
+function Assert-FixtureReceipt {
+    [OutputType([void])]
+    param([Parameter(Mandatory = $true)][string]$Path)
+    Assert-EditorPath -Path ([IO.Path]::GetDirectoryName($Path)) -Private $true
+    Assert-EditorPath -Path $Path
+    [System.Security.AccessControl.FileSystemSecurity]$Acl = Get-Acl -LiteralPath $Path
+    if ($Acl.GetOwner([Security.Principal.SecurityIdentifier]).Value -cne 'S-1-5-18') { throw 'fixture_receipt_owner' }
+    $Rules = $Acl.GetAccessRules($true, $true, [Security.Principal.SecurityIdentifier])
+    foreach ($Rule in $Rules) {
+        if ($Rule.AccessControlType -eq [Security.AccessControl.AccessControlType]::Deny) { continue }
+        if (($Rule.PropagationFlags -band [Security.AccessControl.PropagationFlags]::InheritOnly) -ne 0) { continue }
+        if ($Rule.IdentityReference.Value -cne 'S-1-5-18') { throw 'fixture_receipt_foreign_access' }
+    }
+}
+
 function Test-CustodyRefusal {
     [OutputType([void])]
     param([Parameter(Mandatory = $true)][string]$Path, [bool]$Private = $false)
@@ -110,6 +129,18 @@ function Test-FixtureCustody {
     Test-CustodyRefusal -Path $Leaf
     Set-FixtureAcl -Path $Leaf -Sddl 'O:SYG:SYD:P(A;OICI;FA;;;SY)'
     Assert-EditorPath -Path $Leaf -Private $true
+    [string]$Receipt = $Leaf + '\worker.json'
+    [IO.File]::WriteAllText($Receipt, '{}')
+    if ((Get-Acl -LiteralPath $Receipt).AreAccessRulesProtected) { throw 'fixture_receipt_inheritance_missing' }
+    Assert-FixtureReceipt -Path $Receipt
+    Set-FixtureAcl -Path $Receipt -Sddl 'O:SYG:SYD:P(A;;FA;;;SY)(A;;FR;;;BA)'
+    [bool]$ReceiptRefused = $false
+    try { Assert-FixtureReceipt -Path $Receipt } catch {
+        if ($_.Exception.Message -cne 'fixture_receipt_foreign_access') { throw }
+        $ReceiptRefused = $true
+    }
+    if (-not $ReceiptRefused) { throw 'fixture_receipt_foreign_read_allowed' }
+    Remove-Item -LiteralPath $Receipt -Force
     Set-FixtureAcl -Path $Leaf -Sddl 'O:SYG:SYD:P(A;OICI;FA;;;SY)(A;OICI;FR;;;BA)'
     Test-CustodyRefusal -Path $Leaf -Private $true
     Set-FixtureAcl -Path $Leaf -Sddl ($Public + '(A;;FA;;;' + $TrustedInstaller + ')')
@@ -191,7 +222,7 @@ function Get-FixtureWorker {
     [pscustomobject]$Binding = Get-Content -LiteralPath ($Root + '\binding.json') -Raw | ConvertFrom-Json
     [string]$ReceiptPath = Get-FixtureReceiptPath -Binding $Binding.binding
     Assert-EditorPath -Path ([IO.Path]::GetDirectoryName($ReceiptPath)) -Private $true
-    Assert-EditorPath -Path $ReceiptPath -Private $true
+    Assert-FixtureReceipt -Path $ReceiptPath
     [pscustomobject]$Receipt = Get-Content -LiteralPath $ReceiptPath -Raw | ConvertFrom-Json
     foreach ($Property in $Binding.binding.PSObject.Properties) {
         if ($Property.Name -in @('session_id', 'generation')) { continue }

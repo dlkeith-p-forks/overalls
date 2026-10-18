@@ -74,7 +74,10 @@ with subtest("a firmware image refuses the Inception profile before any host eff
 with subtest("Lilly places the firmware image and records the guest branch"):
     facts = json.loads(storage.succeed("windows-lilly start 1", timeout=3600).splitlines()[-1])
     assert facts["placement"] == vm
-    assert facts["agents"] == ("windows-v1" if agents else "none"), facts
+    expected_agents = (
+        "windows-editor-v1" if editor_candidate else "windows-v1" if agents else "none"
+    )
+    assert facts["agents"] == expected_agents, facts
     if agents:
         assert facts["boot_id"] is not None, facts
     else:
@@ -149,6 +152,7 @@ with subtest("stop, restart from the portable bundle without the image, and dele
     restarted = json.loads(
         storage.succeed("windows-lilly restart 3", timeout=3600).splitlines()[-1]
     )
+    assert restarted["agents"] == expected_agents, restarted
     if agents:
         # A new physical boot earns a new guest boot identity.
         assert restarted["boot_id"] is not None and restarted["boot_id"] != facts["boot_id"], (

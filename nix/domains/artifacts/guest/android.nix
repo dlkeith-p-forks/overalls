@@ -11,10 +11,12 @@ in
   # The Android emulator MUST run inside this Firecracker guest with software
   # rendering and without nested KVM. A future change that removes either flag
   # would make the artifact depend on an unavailable host accelerator.
+
   # @cc [owner:ghuntley,label:storage;recovery] android-avd-persistent-state
   # The AVD directory MUST be a systemd-managed persistent state directory so a
   # guest restart reuses its device data while image rebuilds retain an immutable
   # SDK and system image closure.
+
   # @cc [owner:ghuntley,label:security] android-display-loopback-only
   # The guest display bridge MUST bind RFB to loopback. This module does not
   # claim authenticated host display access; no new guest ingress port is opened

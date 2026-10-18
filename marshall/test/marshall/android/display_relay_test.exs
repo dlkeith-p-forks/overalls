@@ -3,9 +3,9 @@ defmodule Marshall.Android.DisplayRelayTest do
   alias Marshall.Android.DisplayRelay
 
   test "allows viewers, fences one controller and sequences frames" do
-    {:ok, relay} = DisplayRelay.start_link(3)
+    relay = start_supervised!({DisplayRelay, 3})
     assert :ok = DisplayRelay.attach(relay, self(), :viewer)
-    controller = spawn(fn -> Process.sleep(:infinity) end)
+    controller = start_supervised!({Task, fn -> receive do: (:stop -> :ok) end})
     assert :ok = DisplayRelay.attach(relay, controller, :controller)
     assert {:error, :controller_busy} = DisplayRelay.attach(relay, self(), :controller)
     assert :ok = DisplayRelay.frame(relay, 3, <<1>>)
@@ -15,10 +15,11 @@ defmodule Marshall.Android.DisplayRelayTest do
   end
 
   test "only controller input is accepted" do
-    {:ok, relay} = DisplayRelay.start_link(4)
+    relay = start_supervised!({DisplayRelay, 4})
     assert :ok = DisplayRelay.attach(relay, self(), :controller)
     assert :ok = DisplayRelay.input(relay, self(), 4, <<7>>)
     assert_receive {:android_display_input_accepted, 4, <<7>>}
-    assert {:error, :input_denied} = DisplayRelay.input(relay, spawn(fn -> Process.sleep(:infinity) end), 4, <<7>>)
+    viewer = start_supervised!({Task, fn -> receive do: (:stop -> :ok) end})
+    assert {:error, :input_denied} = DisplayRelay.input(relay, viewer, 4, <<7>>)
   end
 end

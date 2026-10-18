@@ -1472,3 +1472,98 @@ hook import repair survives. These are source changes; the earlier missing
 claim-generation binding is historical, while current machine authority,
 shared controller lease, native transport and browser acceptance remain open.
 No new merged gate or native execution result is recorded.
+
+## Forward verification repairs after trunk integration
+
+The next forward patch addresses the recorded typing and relay findings while
+preserving accepted decisions. Prompt audit selection now matches the returned
+`WakeRequest` shape, and GitHub admission removes a redundant nullable-user
+check after `Security.lock_user!/1`; deleted-user and current-login refusals
+remain. The explicit positive step in the Android socket's bounded integer
+guard preserves the same accepted interval. These restore existing typed
+contracts rather than changing authority under ADR-0002, ADR-0199 or ADR-0202.
+
+`MarshallWeb.GettextPlural` uses the official Gettext plural callbacks. Generated
+backend code retains the plain locale/header context, while runtime callbacks
+reconstruct the Expo opaque value through `Gettext.Plural.init/1`. Explicit
+catalog rules, Arabic's six categories, missing-header territory fallback and
+full generated headers are retained. Three semantic regressions are present,
+including an explicit English header whose zero case differs from the built-in
+rule. Every plural selection reparses its header; there is no runtime cache,
+new dependency, catalog change or added Dialyzer exclusion. Runtime and typing
+results for this adapter remain pending; ADR-0201 is unchanged.
+
+The Android viewer attachment now replies `:ok` while retaining the monitored
+viewer in relay state. Its regression processes are supervised for cleanup.
+The stream contract's label metadata and adjacent Nix contract block separation
+are repaired without changing frame limits or emulator flags. These close the
+specific source defects identified above; shared controller custody, current
+machine generation, artifact admission, native transport and browser rendering
+still require separate implementation and acceptance under partial ADR-0206.
+
+The native-admission regression now asserts the exact 13-key capability map:
+seven previously qualified native capabilities remain true, while editor,
+Inception and all four Android flags remain false. This replaces the old
+assumption that every non-editor/non-Inception capability must be true; the
+raw and wrong-image refusal assertions remain. No capability is widened.
+Lilly's two incoming Android network modules and their target test receive
+formatting changes only.
+The initial protocol run has reported two failures against the older loaded
+capability assertion, and Lilly's first gate stopped on formatting; final-source
+reruns remain pending.
+
+The Windows browser fixture now accepts a broker receipt whose SYSTEM-only
+allow entries are inherited from its protected SYSTEM-only parent. It still
+checks SYSTEM ownership, effective foreign allows, reparse points and unsafe
+ancestors, and includes disposable inherited-receipt admission and foreign
+Administrators-read refusal oracles. This changes fixture validation only;
+the product custody script, Rust broker and original installed broker remain
+unchanged. The rebuilt harness is
+`/nix/store/16rgky75dbqrifks2nj9qlc0jkns785q-overalls-windows-editor-acceptance-harness-0.1.0`
+(`/tmp/windows-editor-harness-receipt-build.log`). The native receipt check
+passed the disposable inheritance/foreign-read refusal oracles and the real
+inherited receipt, with `broker_unchanged=true`
+(`/tmp/windows-editor-receipt-native-cases2.log` and
+`/tmp/windows-editor-receipt-native-cases-result.json`). The foreign-read case
+requires the exact `fixture_receipt_foreign_access` refusal. These receipt
+checks establish neither PTY nor browser/recovery acceptance.
+
+The Lilly Windows machine fixture adds explicit `editorCandidate` mode, which
+requires agents and provisions four GiB guest RAM within a 6,144-MiB host
+budget. That mode requires the exact version-7 `windows-editor-v1` manifest and
+version-4 bundle editor descriptor at first start and restart. Ordinary
+version-5/bundle-2 Windows expectations remain separate. The exact candidate
+run is pending; its intended scope is trust, bounded readiness, root ConPTY,
+workspace transfer, a new boot UUID and cleanup. It does not establish ordinary
+CLI, browser-editor acceptance, image promotion or physical isolation.
+
+The earlier asset build exited zero
+(`/tmp/osmatrix-merged-browser-assets.log`), but its mixed compile/source scope
+predates this forward patch and includes the earlier range-step warning.
+It establishes asset construction for that scope only. Protocol, Lilly and
+Galileo gates and focused Marshall checks are in progress; no new full gate,
+forced typing, native candidate or complete browser pass is recorded here.
+
+### Stock Windows browser stage and broker restart failure
+
+The latest stock-fixture `native_browser` stage passed: the workbench and native
+extension command ran, the saved-file oracle passed, a real PowerShell PTY
+appeared in xterm, and the exact worker snapshot matched. The subsequent
+automatic broker-restart stage failed after 100 seconds
+(`/tmp/windows-editor-native-browser-network.log`). The task remained enabled
+with its original restart settings, but no broker/listener returned and its
+last result was `0xFFFFFFFF`; scheduler history was disabled. The worker-loss
+stage was not run. Restoring the unchanged original task was cleanup, recorded
+with `definition_unchanged=true` and `automatic_recovery=false`
+(`/tmp/windows-editor-broker-cleanup-restore-result.json`). It is not recovery
+acceptance.
+
+The forward `start-editor.ps1` repair preserves native success as zero and maps
+every nonzero native result, including `-1`, to task failure one; exception
+failure remains one. Custody checks and scheduler settings are unchanged. The
+pinned PowerShell parser passed (`/tmp/windows-editor-launcher-parse.log`).
+Whether this normalization repairs the observed automatic restart remains a
+hypothesis pending native execution. The exact immutable candidate currently
+under Lilly qualification still contains the old launcher; stock-fixture
+browser results and this source change do not qualify that image or establish
+browser recovery, worker-loss recovery or production promotion.

@@ -1231,6 +1231,31 @@ the full native OS matrix. Documentation translation completeness, linguistic
 review, isolation and recovery acceptance remain separate; no accepted ADR or
 deployment boundary changes.
 
+The later forward verification patch preserves the existing authority and
+localization decisions. The Gettext plural adapter keeps plain locale/header
+context in generated code and reconstructs the opaque plural value through
+Gettext's API at runtime, preserving explicit catalog rules and locale fallback
+at the cost of parsing on each plural selection. Viewer attachment retains its
+monitored relay state; typed guard and contract-syntax repairs preserve the
+existing limits. Native-admission regressions assert the exact 13-key map,
+retaining seven qualified native capabilities while editor, Inception and all
+four Android flags remain false. Lilly's incoming network changes are
+formatting only. The Windows browser fixture accepts inherited SYSTEM-only
+receipt grants only beneath a protected SYSTEM-only parent, retaining foreign
+access, reparse and ancestor refusals without changing product custody. An
+explicit Lilly editor-candidate fixture uses four GiB guest RAM and checks the
+exact version-7 image/version-4 bundle editor descriptor through restart;
+ordinary Windows expectations and production selection remain separate.
+The rebuilt receipt fixture passed native inherited-receipt admission and
+foreign-read refusal checks with the installed broker unchanged; this is
+separate from PTY, browser or recovery acceptance. Adapter regressions, full
+consumer gates and exact candidate native execution remain pending. The
+earlier mixed-source asset
+build does not verify this forward patch or complete browser behavior. The
+[matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
+records the source scope and remaining native, controller-lease, isolation and
+recovery gaps; partial ADR-0206 and ADR-0200 acceptance are unchanged.
+
 ## Keeping this handbook current
 
 `/hldd` lists sections. Each `/hldd/SECTION` page loads one chapter; previous and

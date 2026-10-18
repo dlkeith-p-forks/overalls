@@ -4,7 +4,7 @@ defmodule OverallsProtocol.AndroidDisplayStream do
   @type data :: %{generation: pos_integer(), sequence: pos_integer(), bytes: binary()}
   @type input :: %{generation: pos_integer(), kind: :key | :pointer, payload: binary()}
 
-  # @cc [owner:ghuntley,label=security;protocol] android-display-stream-fencing
+  # @cc [owner:ghuntley,label:security;protocol] android-display-stream-fencing
   # Display data and input MUST be generation-bound and bounded. A relay MUST
   # reject stale generations and frames larger than the configured window before
   # forwarding bytes to the browser or guest.

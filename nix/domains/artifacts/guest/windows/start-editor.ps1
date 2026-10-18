@@ -24,7 +24,12 @@ try {
     Copy-Item -LiteralPath $Certificate -Destination 'C:\overalls\editor-broker\ca-bundle.pem' -Force
     Assert-EditorPath -Path 'C:\overalls\editor-broker\ca-bundle.pem'
     & 'C:\overalls\editor-broker\overalls-vscode-web-broker.exe' 'C:\overalls\editor-broker\broker.json'
-    exit $LASTEXITCODE
+    # @cc [owner:ghuntley,label:recovery] windows-editor-retryable-task-failure
+    # Native success MUST remain zero. Every nonzero native status, including
+    # forced termination's -1, MUST become ordinary task failure 1 for the
+    # unchanged Task Scheduler restart policy; no status may become success.
+    if ($LASTEXITCODE -eq 0) { exit 0 }
+    exit 1
 } catch {
     # Never render exception text: it can contain account, path or input data.
     [Console]::Error.WriteLine('{"service":"windows-editor-broker","event":"startup_refused"}')
