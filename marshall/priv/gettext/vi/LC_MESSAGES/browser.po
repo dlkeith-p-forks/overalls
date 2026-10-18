@@ -14,32 +14,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/browser_messages.ex:11
+#: lib/marshall_web/browser_messages.ex:17
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
 msgstr "%{count} ngày trước"
 
-#: lib/marshall_web/browser_messages.ex:12
+#: lib/marshall_web/browser_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
 msgstr "%{count} giờ trước"
 
-#: lib/marshall_web/browser_messages.ex:13
+#: lib/marshall_web/browser_messages.ex:19
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
 msgstr "%{count} phút trước"
 
-#: lib/marshall_web/browser_messages.ex:14
+#: lib/marshall_web/browser_messages.ex:20
 #, elixir-autogen, elixir-format
 msgid "%{label} copied."
 msgstr "Đã sao chép %{label}."
 
-#: lib/marshall_web/browser_messages.ex:9
+#: lib/marshall_web/browser_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing"
 msgstr "%{name} · %{count} người đang xem"
 
-#: lib/marshall_web/browser_messages.ex:10
+#: lib/marshall_web/browser_messages.ex:12
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing · %{activity}"
 msgstr "%{name} · %{count} người đang xem · %{activity}"
@@ -49,72 +49,72 @@ msgstr "%{name} · %{count} người đang xem · %{activity}"
 msgid "%{name} · Terminals"
 msgstr "%{name} · Thiết bị đầu cuối"
 
-#: lib/marshall_web/browser_messages.ex:15
+#: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ Mới"
 
-#: lib/marshall_web/browser_messages.ex:16
+#: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Applying administrative change…"
 msgstr "Đang áp dụng thay đổi quản trị…"
 
-#: lib/marshall_web/browser_messages.ex:17
+#: lib/marshall_web/browser_messages.ex:23
 #, elixir-autogen, elixir-format
 msgid "Boot log · read-only"
 msgstr "Nhật ký khởi động · chỉ đọc"
 
-#: lib/marshall_web/browser_messages.ex:18
+#: lib/marshall_web/browser_messages.ex:24
 #, elixir-autogen, elixir-format
 msgid "Close this terminal session?"
 msgstr "Đóng phiên terminal này?"
 
-#: lib/marshall_web/browser_messages.ex:19
+#: lib/marshall_web/browser_messages.ex:25
 #, elixir-autogen, elixir-format
 msgid "Command"
 msgstr "Lệnh"
 
-#: lib/marshall_web/browser_messages.ex:20
+#: lib/marshall_web/browser_messages.ex:27
 #, elixir-autogen, elixir-format
 msgid "Could not copy. Select the text and copy it manually."
 msgstr "Không thể sao chép. Hãy chọn văn bản và sao chép thủ công."
 
-#: lib/marshall_web/browser_messages.ex:21
+#: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
 msgstr "Không thể cập nhật quyền truy cập. Kiểm tra quyền máy của tài khoản."
 
-#: lib/marshall_web/browser_messages.ex:22
+#: lib/marshall_web/browser_messages.ex:31
 #, elixir-autogen, elixir-format
 msgid "Design diagram; explanation follows in the handbook"
 msgstr "Sơ đồ thiết kế; phần giải thích trong sổ tay"
 
-#: lib/marshall_web/browser_messages.ex:23
+#: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "Vào toàn màn hình"
 
-#: lib/marshall_web/browser_messages.ex:24
+#: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "Exit full screen"
 msgstr "Thoát toàn màn hình"
 
-#: lib/marshall_web/browser_messages.ex:25
+#: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
 msgid "Input buffer full — that input was not sent"
 msgstr "Bộ đệm đầu vào đầy — đầu vào đó chưa được gửi"
 
-#: lib/marshall_web/browser_messages.ex:26
+#: lib/marshall_web/browser_messages.ex:36
 #, elixir-autogen, elixir-format
 msgid "Match found"
 msgstr "Đã tìm thấy kết quả khớp"
 
-#: lib/marshall_web/browser_messages.ex:27
+#: lib/marshall_web/browser_messages.ex:37
 #, elixir-autogen, elixir-format
 msgid "No matches"
 msgstr "Không có kết quả khớp"
 
-#: lib/marshall_web/browser_messages.ex:28
+#: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
 msgstr ""
@@ -122,109 +122,109 @@ msgstr ""
 "\n"
 "%{url}"
 
-#: lib/marshall_web/browser_messages.ex:29
+#: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "Opening…"
 msgstr "Đang mở…"
 
-#: lib/marshall_web/browser_messages.ex:30
+#: lib/marshall_web/browser_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled. You can try again."
 msgstr "Yêu cầu passkey đã bị hủy. Bạn có thể thử lại."
 
-#: lib/marshall_web/browser_messages.ex:31
+#: lib/marshall_web/browser_messages.ex:44
 #, elixir-autogen, elixir-format
 msgid "Passkey verification failed or unavailable. Try again."
 msgstr "Xác minh passkey thất bại hoặc không khả dụng. Hãy thử lại."
 
-#: lib/marshall_web/browser_messages.ex:32
+#: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
 msgstr ""
 "Tên terminal (chỉ trình duyệt này; để trống sẽ khôi phục tên được tạo)"
 
-#: lib/marshall_web/browser_messages.ex:33
+#: lib/marshall_web/browser_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
 msgstr ""
 "Không thể xác nhận kết quả. Tải lại trang và kiểm tra kết quả trước khi thử "
 "lại."
 
-#: lib/marshall_web/browser_messages.ex:34
+#: lib/marshall_web/browser_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
 msgstr ""
 "Máy này yêu cầu ghi %{bytes} byte vào bộ nhớ tạm của bạn. Nhập once, session"
 " hoặc mute."
 
-#: lib/marshall_web/browser_messages.ex:35
+#: lib/marshall_web/browser_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
 msgstr "Không thể mở liên kết kho lưu trữ này. Hãy mở lại liên kết."
 
-#: lib/marshall_web/browser_messages.ex:36
+#: lib/marshall_web/browser_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Nhập để tương tác"
 
-#: lib/marshall_web/browser_messages.ex:37
+#: lib/marshall_web/browser_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "Đang cập nhật quyền xem…"
 
-#: lib/marshall_web/browser_messages.ex:38
+#: lib/marshall_web/browser_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr "Không thể hoàn tất xác minh. Hãy thử lại."
 
-#: lib/marshall_web/browser_messages.ex:39
+#: lib/marshall_web/browser_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr ""
 "Xác minh bằng passkey để %{action}. Thao tác này chạy một lần sau khi xác "
 "minh."
 
-#: lib/marshall_web/browser_messages.ex:40
+#: lib/marshall_web/browser_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "Chỉ xem"
 
-#: lib/marshall_web/browser_messages.ex:41
+#: lib/marshall_web/browser_messages.ex:74
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "Đã cập nhật quyền xem."
 
-#: lib/marshall_web/browser_messages.ex:42
+#: lib/marshall_web/browser_messages.ex:75
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "Đang chờ passkey của bạn…"
 
-#: lib/marshall_web/browser_messages.ex:43
+#: lib/marshall_web/browser_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "Hoàn tất thay đổi quản trị này"
 
-#: lib/marshall_web/browser_messages.ex:44
+#: lib/marshall_web/browser_messages.ex:78
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "vừa xong"
 
-#: lib/marshall_web/browser_messages.ex:45
+#: lib/marshall_web/browser_messages.ex:79
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "● trực tiếp"
 
-#: lib/marshall_web/browser_messages.ex:46
+#: lib/marshall_web/browser_messages.ex:80
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● chỉ đọc"
 
-#: lib/marshall_web/browser_messages.ex:47
+#: lib/marshall_web/browser_messages.ex:81
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ đang kết nối lại…"
 
-#: lib/marshall_web/browser_messages.ex:48
+#: lib/marshall_web/browser_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ đang khôi phục lịch sử cuộn…"
