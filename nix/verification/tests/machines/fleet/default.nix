@@ -765,7 +765,9 @@ let
       ++ [ galileoFixture.lilly ]
       ++ lib.optional (otelAudiSsh || observabilityRecovery || suspension) (otelAudiSshHost name);
     security.pki.certificateFiles = lib.optionals githubIntegration [ "${githubFixture}/root.pem" ];
-    services.audi.editorPackage = if editor || suspension then packages.vscodeWeb else null;
+    services.audi.editorPackages = lib.optionalAttrs (editor || suspension) {
+      linux-x64 = packages.vscodeWeb;
+    };
     services.audi.relay = lib.mkIf suspension {
       enable = true;
       address = if name == "l1" then "10.90.0.1" else "10.90.0.2";
