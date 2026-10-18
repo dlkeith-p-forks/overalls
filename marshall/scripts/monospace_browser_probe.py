@@ -395,8 +395,12 @@ def check_account(page: Page, origin: str, theme: str) -> None:
     assert section_top(page, "profile") <= 2 * line_height(page), (
         "The #profile anchor did not scroll its section into view"
     )
+    # A second fragment on the same document would not load a new page.
+    visit(page, origin, "/overview")
     visit(page, origin, "/settings#ssh-keys")
-    assert section_top(page, "ssh-keys") <= 2 * line_height(page), (
+    # The last section can be shorter than the viewport; then the page ends
+    # scrolled to its bottom with the section fully visible instead.
+    assert section_top(page, "ssh-keys") <= 2 * line_height(page) or scrolled_to_end(page), (
         "The #ssh-keys anchor did not scroll its section into view"
     )
     page.locator("#clear-time-zone").click()
@@ -413,10 +417,18 @@ def section_top(page: Page, anchor: str) -> float:
     return float(box["y"])
 
 
-def line_height(page: Page) -> float:
-    value: object = evaluate(
-        page, "parseFloat(getComputedStyle(document.documentElement).lineHeight)"
+def scrolled_to_end(page: Page) -> bool:
+    return (
+        evaluate(
+            page,
+            "window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 1",
+        )
+        is True
     )
+
+
+def line_height(page: Page) -> float:
+    value: object = evaluate(page, "parseFloat(getComputedStyle(document.body).lineHeight)")
     assert isinstance(value, (int, float)) and value > 0, "Line height must be a number"
     return float(value)
 

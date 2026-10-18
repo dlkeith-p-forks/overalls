@@ -77,7 +77,7 @@ old-link requirement ("breaking changes acceptable for links").
    time zone link uses `/settings#profile`. Fragments never carry
    authority; `return_to` keeps its allowlist.
 4. **One sidebar entry.** The "Your account" tree opens with Account
-   (`#nav-account`, `/settings`, hint "Profile · Passkeys · SSH keys"),
+   (`#nav-account`, `/settings`),
    followed by AI usage (`#nav-usage`, `/usage`, moved out of "Your
    workspace"), then the existing browser extension, field notes, HLDD and
    source code links. `#nav-profile` and the Security and SSH keys entries

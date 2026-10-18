@@ -298,7 +298,7 @@ defmodule MarshallWeb.Layouts do
                       navigate={~p"/settings"}
                       aria-current={@active == "account" && "page"}
                     >
-                      Account <span class="nav-hint">Profile · Passkeys · SSH keys</span>
+                      Account
                     </.link>
                   </li>
                   <li>
