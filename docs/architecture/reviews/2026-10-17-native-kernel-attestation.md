@@ -1355,6 +1355,42 @@ are unchanged. Logs `admin-ssh-config-final-assembly.log`,
 flags remain false; exact-image boot/service, lease withdrawal, growth,
 transport/reset, isolation and recovery replay remain pending.
 
+The sealed `wz4r` disk was subsequently audited against its payload receipt and
+found to contain an older cached kit: `/etc/gitconfig` still used the rejected
+`/workspace/*` wildcard and its workspaced binary predates the exact-path
+receiver. The current source-derived kit is
+`/nix/store/w5mg2jw3c2sispdkfg1r9ys5vxm41a97-overalls-omnios-native-image-candidate-kit`;
+the historical disk therefore cannot qualify current workspace ownership, lease
+withdrawal, service, growth or recovery behavior. A separate current
+source-qualified test image has since been assembled and replayed for native
+services; admission and OmniOS capability rows remain false.
+
+## Current OmniOS native service replay
+
+The current source-qualified OmniOS test image was replayed in the complete
+native service fixture with the patched Firecracker 1.16.1 build. The receipt
+`/tmp/overalls-omnios-native-probe/exact-services-jak6/service-receipt.json`
+records two clean boots and binds image SHA-256
+`4709cc444055528f53326d2e0c943b5ef002396008920f1940a0a06591a992cb`, kernel
+SHA-256 `c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21`,
+firmware SHA-256
+`261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2` and VMM
+SHA-256
+`ba91e85a7af3f96d02f845df543daec07353ed6bff4aaee0abf524c751476b68`.
+
+The recorded service matrix covers current-boot identity, readiness, trust,
+flush, workspace ownership and exact checkout bytes, managed terminal and PTY
+behavior, certified SSH/account/refusal paths, private HTTPS Git, executor
+heartbeat withdrawal and process-group fencing, fresh-fence recovery, host-key
+rotation and retained home data. The receipt and test-only manifest retain
+`native_admission=false`; no capability row or fleet authority was changed.
+
+This closes the prior exact-image service-replay gap for the current source
+payload. Mounted-root growth, network-policy isolation, supervised daemon
+recovery, abrupt VMM crash recovery, reset/DMA stress, physical or peer-VM
+isolation, stable-media durability and Marshall fleet admission remain open and
+require separate receipts.
+
 ## Verification boundary and follow-up
 
 Protocol, Lilly and Rust unit tests plus Nix evaluation provide typed, bounded

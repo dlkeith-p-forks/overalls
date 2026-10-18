@@ -162,6 +162,20 @@ paths. The `/run/overalls-workspace` canonicality check passed on the pinned
 OmniOS clone. This is checkout-ownership evidence and does not establish native
 service, PTY, recovery or admission acceptance.
 
+### Sealed-image provenance correction
+
+The sealed `wz4r` disk recorded below was assembled from an older cached kit.
+Its payload receipt contains the former wildcard `/etc/gitconfig` and the
+pre-fencing `overalls-native-workspaced` binary, even though the repository
+source had already moved to the exact-path include. The current source-derived
+kit
+`/nix/store/w5mg2jw3c2sispdkfg1r9ys5vxm41a97-overalls-omnios-native-image-candidate-kit`
+contains the include-only configuration and corrected receiver. Therefore the
+`wz4r` disk cannot establish current Git ownership, workspace checkout, lease
+withdrawal, or downstream native service/recovery behavior. Its hashes remain
+historical assembly evidence; a fresh target-native assembly and exact-image
+replay are required. Admission and all OmniOS capability rows remain false.
+
 The shared native command path also bypassed the executor's existing lease
 callback while running a command. The corrected
 [native runner](../../../lyra/src/agent/native_command.rs) now invokes that
@@ -225,6 +239,50 @@ The trunk integration also adds `protocol/priv` to the application release
 so the compile-time exact native registry input ships alongside Protocol's
 library and Mix files. This fixes release input closure under the existing
 ADR-0190 decision; a fresh application release build remains pending.
+
+## OmniOS transient single-user boot correction
+
+The assembled OmniOS target inherited `/boot/transient.conf` from the
+administration boot. Its `boot-args` included a standalone `-s`, so the pinned
+loader's automatic menu selection entered single-user maintenance and never
+started SMF. The image assembler now removes only that standalone token while
+preserving the transient ZFS root, boot path and console arguments; the assembly
+receipt records the closed check and second-boot verification rejects any
+remaining single-user token. Focused image-helper tests cover byte preservation,
+unsafe-file refusal and the retained non-matching `-shelf`/`-safe` arguments.
+This fixes the boot selection prerequisite but does not establish native
+services, growth, transport/reset, isolation, recovery or admission; those
+runtime receipts remain required.
+
+## Current OmniOS native service replay
+
+The current source-qualified test image at
+`/tmp/overalls-omnios-native-probe/exact-image-sanitized` was replayed with the
+patched Firecracker 1.16.1 build
+`/nix/store/jak6nj715kr4rpwxv9ki331mn0dayqml-firecracker-static-x86_64-unknown-linux-musl-1.16.1`.
+The receipt is
+`/tmp/overalls-omnios-native-probe/exact-services-jak6/service-receipt.json`.
+It binds image SHA-256
+`4709cc444055528f53326d2e0c943b5ef002396008920f1940a0a06591a992cb`, kernel
+SHA-256 `c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21`,
+firmware SHA-256
+`261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2` and VMM
+SHA-256
+`ba91e85a7af3f96d02f845df543daec07353ed6bff4aaee0abf524c751476b68`.
+
+Both boots reached the complete native service oracle and ended cleanly. The
+recorded checks cover current-boot MMDS/kernel identity, readiness gating,
+trust, flush, stale/foreign workspace refusal and exact checkout bytes, terminal
+HELLO/PING and PTY behavior, certified SSH/account/refusals, private HTTPS Git,
+executor heartbeat withdrawal and process-group fencing, fresh-fence recovery,
+host-key rotation and retained home data across clean reboot. The test-only
+manifest and receipt retain `native_admission=false`.
+
+This receipt is service and clean-reboot evidence only. It does not establish
+mounted-root growth, network policy isolation, daemon or abrupt-crash recovery,
+reset/DMA safety, direct peer-VM/jail/physical isolation, stable-media durability
+or Marshall fleet admission. The earlier sealed `wz4r` disk remains historical
+and stale; this replay uses the current source-qualified image and VMM hashes.
 
 ## Validation and remaining gaps
 

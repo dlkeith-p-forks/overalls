@@ -42,3 +42,6 @@ The fixed CloudHv firmware port 0x600 MUST signal the existing VMM exit event
 only for a single-byte value 0x34 at offset zero. Reads, malformed writes and other
 values MUST remain inert. Native clean-shutdown evidence MUST require the real
 guest to sync and power off with VMM exit zero; timeout termination cannot count.
+
+@cc [owner:ghuntley,label:protocol;recovery] firecracker-omnios-serial-shutdown
+The x86 serial output path MUST signal the existing VMM exit event only after the exact contiguous OmniOS filesystem-sync marker has been written, preserve bounded partial matches across output calls, and retain no guest output bytes in diagnostics.

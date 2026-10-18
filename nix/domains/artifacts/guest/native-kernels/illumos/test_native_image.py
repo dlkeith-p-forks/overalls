@@ -223,6 +223,47 @@ class NativeImageTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "configuration differs"):
                 image.check_console_configuration(root, records)
 
+    def test_transient_boot_arguments_remove_only_single_user_flag(self) -> None:
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            mock.patch("native_candidate.check_ownership"),
+            mock.patch("native_candidate.os.fchown"),
+        ):
+            root = Path(temporary).resolve()
+            path = root / image.TRANSIENT_CONFIG
+            path.parent.mkdir(parents=True)
+            original = (
+                b"bootfile='/platform/i86pc/kernel/amd64/unix;unix'\n"
+                b"boot-args='-B zfs-bootfs=pool/ROOT/candidate,bootpath=\"pci@0\" -s -B console=ttya'\n"
+                b"other='-shelf -safe'\n"
+            )
+            path.write_bytes(original)
+            with self.assertRaisesRegex(ValueError, "still requests single-user"):
+                image.check_transient_configuration(root)
+            image.sanitize_transient_configuration(root)
+            expected = original.replace(b" -s -B", b" -B")
+            self.assertEqual(path.read_bytes(), expected)
+            self.assertEqual(
+                image._remove_transient_single_user(b"boot-args='-s -B console=ttya'\n"),
+                b"boot-args='-B console=ttya'\n",
+            )
+            image.check_transient_configuration(root)
+            self.assertIn(b"-shelf", path.read_bytes())
+            self.assertIn(b"-safe", path.read_bytes())
+
+    def test_transient_boot_arguments_reject_unsafe_file(self) -> None:
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            mock.patch("native_candidate.check_ownership"),
+        ):
+            root = Path(temporary).resolve()
+            path = root / image.TRANSIENT_CONFIG
+            path.parent.mkdir(parents=True)
+            path.write_bytes(b"boot-args='-s'\n")
+            path.chmod(0o666)
+            with self.assertRaisesRegex(ValueError, "safe regular file"):
+                image.sanitize_transient_configuration(root)
+
     def test_network_handoff_removes_only_fixed_files_and_refuses_restoration(self) -> None:
         with (
             tempfile.TemporaryDirectory() as temporary,

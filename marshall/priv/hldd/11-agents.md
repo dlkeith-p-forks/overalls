@@ -67,10 +67,14 @@ recovery acceptance. A separate FreeBSD transport gate passed with
 token/CID/credit-window and ABI refusal assertions. A stock
 OmniOS probe passed native PTY shell/controlling-terminal,
 resize and inherited-descriptor checks; it does not execute the full terminal
-session protocol. Corrected OmniOS assembly has passed, but complete native
-services, growth, recovery and image qualification remain pending. Neither the
-capability table nor the historical partial candidates establish fleet
-acceptance. See the
+session protocol. The current source-qualified OmniOS image then passed the
+complete native service fixture over two clean boots: current-boot identity,
+readiness, trust, flush, workspace, terminal, SSH, executor fencing, retained
+home and clean shutdown all passed. The runner requires status zero and the
+bounded `syncing file systems... done` serial marker before recording a clean
+illumos boot. Growth, policy, daemon/crash recovery, physical isolation and
+image qualification remain pending. Neither the capability table nor these
+service receipts establish fleet acceptance. See the
 [native kernel attestation review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).
 
 Direct `sis8` diagnostics reached current-boot kernel/network/trust responses
@@ -90,7 +94,15 @@ and `sshd -T` passed with synthetic volatile host-key/certificate prerequisites,
 retaining effective PAM, public-key-only authentication and the authorization
 helper/forced command. That check starts no daemon or SSH session.
 
-Final `wz4r` disk SHA256
+The previously sealed `wz4r` disk was assembled from a stale cached kit: its
+receipt still carries the old `/workspace/*` Git ownership configuration and
+pre-fencing workspace receiver. The current source-derived kit is
+`/nix/store/w5mg2jw3c2sispdkfg1r9ys5vxm41a97-overalls-omnios-native-image-candidate-kit`
+and has not yet been assembled into a replacement disk. Consequently the
+historical `wz4r` hashes below do not qualify current workspace, lease, service,
+growth or recovery behavior; OmniOS admission remains disabled.
+
+Historical `wz4r` disk SHA256
 `e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41`
 passed native nine-module/764-payload assembly, all three SMF validations, the
 safe native SSH executable check, read-only receipt extraction/export and clean

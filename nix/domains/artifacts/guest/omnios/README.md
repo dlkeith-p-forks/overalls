@@ -68,10 +68,14 @@ The clone preserves the stock loader and configuration. Assembly appends
 `set pseudo_isa=1` to `/etc/system`, enabling the pinned kernel's UART nexus on
 Firecracker's virtual hardware. Its `/boot/loader.conf.local` selects `ttya` for
 both `console` and `os_console` and sets `ttya-mode="115200,8,n,1,-"`. The pinned
-loader reads this local file after its defaults and `/boot/loader.conf`.
-The exact final files and modes enter the payload receipt and are checked after
-boot. These settings add no debugger, singleuser, verbose boot or root autologin
-defaults; terminal authority remains boot-bound vsock.
+loader reads this local file after its defaults and `/boot/loader.conf`. The
+administration boot can leave a transient `/boot/transient.conf` with a
+standalone `-s` in `boot-args`; assembly removes only that token while preserving
+the ZFS root, boot path and console arguments, and second boot rejects any
+remaining single-user token. The exact final console files and modes enter the
+payload receipt and are checked after boot. These settings add no debugger,
+singleuser, verbose boot or root autologin defaults; terminal authority remains
+boot-bound vsock.
 
 The immutable vendor CA snapshot is `/etc/overalls/system-ca.pem`. Offline
 assembly verifies both this snapshot and the initial `/etc/ssl/cacert.pem`

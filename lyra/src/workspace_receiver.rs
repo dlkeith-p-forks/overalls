@@ -304,6 +304,10 @@ pub struct SystemGit {
     pub program: PathBuf,
     pub ca_bundle: PathBuf,
     pub home: PathBuf,
+    /// Native guests use a root-controlled system Git include for the exact
+    /// shared checkout ownership exception. Other callers keep system config
+    /// disabled so ambient host configuration cannot affect a checkout.
+    pub system_configuration: Option<PathBuf>,
 }
 
 impl SystemGit {
@@ -315,7 +319,6 @@ impl SystemGit {
             .env("HOME", &self.home)
             .env("LANG", "C")
             .env("GIT_TERMINAL_PROMPT", "0")
-            .env("GIT_CONFIG_NOSYSTEM", "1")
             .env("GIT_SSL_CAINFO", &self.ca_bundle)
             .env("SSL_CERT_FILE", &self.ca_bundle)
             .stdin(Stdio::null())
@@ -336,6 +339,11 @@ impl SystemGit {
                 .process_group(0)
                 .env("PATH", path)
                 .env("GIT_CONFIG_GLOBAL", "/dev/null");
+            if let Some(configuration) = &self.system_configuration {
+                command.env("GIT_CONFIG_SYSTEM", configuration);
+            } else {
+                command.env("GIT_CONFIG_NOSYSTEM", "1");
+            }
         }
         #[cfg(windows)]
         {
@@ -359,6 +367,7 @@ impl SystemGit {
                 .env("TEMP", self.home.join("tmp"))
                 .env("TMP", self.home.join("tmp"))
                 .env("GIT_CONFIG_GLOBAL", "NUL")
+                .env("GIT_CONFIG_NOSYSTEM", "1")
                 .env("GIT_CONFIG_COUNT", "1")
                 .env("GIT_CONFIG_KEY_0", "http.sslBackend")
                 .env("GIT_CONFIG_VALUE_0", "openssl");

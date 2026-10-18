@@ -25,6 +25,10 @@ let
     # edk2 CloudHv ResetShutdown writes one byte (0x34) to port 0x600 after the
     # native OS syncs its disks. Route that exact request to the VMM exit event.
     ../../../platform/patches/firecracker-cloudhv-poweroff.patch
+    # OmniOS emits a fixed filesystem-sync marker before its firmware reboot prompt;
+    # signal the same VMM exit event after that marker is written so clean shutdown
+    # does not require an interactive console key.
+    ../../../platform/patches/firecracker-omnios-serial-shutdown.patch
     # Exercise the pinned UART dependency through its production public API.
     ../../../platform/patches/firecracker-uart-thre-tests.patch
     # Guest-initiated BAR relocation: the MMIO bus follows a BAR the firmware
@@ -58,6 +62,12 @@ let
     # for each packet. The feature is still not offered, so Linux guests keep
     # their direct chains.
     ../../../platform/patches/firecracker-vsock-indirect-desc.patch
+    # Reset the vsock backend at guest shutdown, reusing its preallocated packet
+    # ring storage so the vCPU seccomp filter never needs memfd_create during reset.
+    ../../../platform/patches/firecracker-vsock-reset.patch
+    # Reset the entropy backend at guest shutdown, reusing its preallocated iovec
+    # storage so the vCPU seccomp filter never needs memfd_create during reset.
+    ../../../platform/patches/firecracker-rng-reset.patch
   ];
   # Applied to the pinned writable Cargo vendor copy, preserving Cargo metadata.
   uartPatch = ../../../platform/patches/firecracker-uart-thre-enable.patch;

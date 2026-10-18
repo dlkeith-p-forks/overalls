@@ -1063,6 +1063,14 @@ helper boundary tests include foreign/traversal links, writable or nested-link
 targets, vendor substitution, unrelated payload changes and malformed/oversized
 roots. This structural verification grants no current-boot trust authority;
 the trust protocol receipt must still match the current boot.
+The assembler also removes an inherited standalone `-s` from the cloned
+`/boot/transient.conf` while preserving its ZFS root, boot path and console
+arguments; second-boot verification rejects any remaining single-user token.
+This fixes loader selection only. The current source-qualified OmniOS image
+later passed two complete native service boots; the runner required status zero
+and the bounded `syncing file systems... done` serial marker before recording
+clean shutdown. Growth, policy, daemon/crash recovery and physical isolation
+remain pending.
 
 ## Windows guests (experimental)
 
