@@ -12,7 +12,9 @@ defmodule Marshall.Newsletter do
   @type requester :: (atom(), String.t(), keyword() -> {:ok, map()} | {:error, term()})
 
   @spec subscribe(term(), requester()) :: result()
-  def subscribe(email, requester \\ &request/3) when is_binary(email) do
+  def subscribe(email) when is_binary(email), do: subscribe(email, &request/3)
+
+  def subscribe(email, requester) when is_binary(email) do
     if EmailAddress.valid?(email), do: request(email, requester), else: {:error, :invalid_email}
   end
 
