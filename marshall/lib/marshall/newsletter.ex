@@ -1,4 +1,6 @@
 defmodule Marshall.Newsletter do
+  # @cc [owner:ghuntley,label:security;product] newsletter-subscription-api
+  # fixed server-side Ghost request sequence
   @moduledoc "Server-side Ghost newsletter subscription client."
   alias Marshall.Accounts.EmailAddress
 
@@ -9,18 +11,24 @@ defmodule Marshall.Newsletter do
   # @cc [owner:ghuntley,label:security;product] newsletter-request-boundary
   # Subscription MUST validate the bounded mailbox before any request, use only
   # the fixed Ghost endpoints, and collapse all upstream failures to :unavailable.
+  @type requester :: (atom(), String.t(), keyword() -> {:ok, map()} | {:error, term()})
+
   @spec subscribe(term()) :: result()
-  def subscribe(email) when is_binary(email) do
-    if EmailAddress.valid?(email), do: request(email), else: {:error, :invalid_email}
+  def subscribe(email), do: subscribe(email, &request/3)
+
+  @spec subscribe(term(), requester()) :: result()
+  def subscribe(email, requester) when is_binary(email) do
+    if EmailAddress.valid?(email), do: request(email, requester), else: {:error, :invalid_email}
   end
 
-  def subscribe(_), do: {:error, :invalid_email}
+  def subscribe(_, _), do: {:error, :invalid_email}
 
-  defp request(email) do
-    with {:ok, %{status: 200, body: token}} <- Req.get(@token_url, receive_timeout: 5_000),
+  defp request(email, requester) do
+    with {:ok, %{status: 200, body: token}} <-
+           requester.(:get, @token_url, receive_timeout: 5_000),
          token when is_binary(token) <- String.trim(token),
          {:ok, %{status: status}} when status in 200..299 <-
-           Req.post(@signup_url,
+           requester.(:post, @signup_url,
              json: %{email: email, emailType: "signup", integrityToken: token},
              receive_timeout: 5_000
            ) do
@@ -31,4 +39,8 @@ defmodule Marshall.Newsletter do
   rescue
     _ -> {:error, :unavailable}
   end
+
+  @spec request(atom(), String.t(), keyword()) :: {:ok, map()} | {:error, term()}
+  defp request(:get, url, opts), do: Req.get(url, opts)
+  defp request(:post, url, opts), do: Req.post(url, opts)
 end

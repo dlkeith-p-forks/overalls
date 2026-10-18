@@ -1,4 +1,6 @@
 defmodule Marshall.NewsletterPropertyTest do
+  # @cc [owner:ghuntley,label:security;product] newsletter-subscription-api
+  # invalid mailboxes, successful responses and Ghost/transport failures preserve safe outcomes
   use ExUnit.Case, async: true
   import Hegel
   import Hegel.Gen
