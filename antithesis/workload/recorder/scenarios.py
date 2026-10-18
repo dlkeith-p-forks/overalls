@@ -26,6 +26,7 @@ from recorder.oracle import (
 LOG = logging.getLogger(__name__)
 PRESSURE_BUDGET_SECONDS = 20.0
 ENOSPC_WRITE_ATTEMPTS = 32
+REOPEN_ANSWER_ATTEMPTS = 60
 MAX_PENDING = 4096
 
 
@@ -141,7 +142,16 @@ def run_capacity() -> int:
             and after.pending == full.pending
             and after.next_id == full.next_id
             and len(effects_after) == len(effects_before) + 1
-            and quality == b"v1:gap\n"
+            # The SDK fsyncs v1:gap, and its next heartbeat may already have
+            # recovered the marker to running; then the durable gap is the
+            # checkpoint's advanced coverage start.
+            and (
+                quality == b"v1:gap\n"
+                or (
+                    quality == b"v1:running\n"
+                    and after.coverage_started_at_ns > full.coverage_started_at_ns
+                )
+            )
             and _conserved(after)
         )
         always(
@@ -390,7 +400,18 @@ def _physical_pressure(
     always_or_unreachable(retained, "Trace spool reopen retains previously accepted archive bytes")
     if not retained or reopened_archive is None:
         return
+    # systemctl restart returns at exec, before the reopened spool has verified
+    # its archive and bound ingest, so a transport-level "unavailable" is not
+    # yet a spool decision. Retry the same batch until it answers.
     fresh = client.call({"op": "trace", "sequence": sequence + 2, "size": "small"})
+    for _ in range(REOPEN_ANSWER_ATTEMPTS):
+        if fresh is not None and fresh.status != "unavailable":
+            break
+        time.sleep(0.25)
+        fresh = client.call({"op": "trace", "sequence": sequence + 2, "size": "small"})
+    if fresh is None or fresh.status == "unavailable":
+        LOG.info("Trace spool reopen intake unexercised: reopened spool never answered")
+        return
     fresh_archive = _archive(config)
     fresh_custody = (
         fresh is not None

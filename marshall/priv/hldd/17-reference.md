@@ -270,8 +270,16 @@ fixture only, and the pressure loop has a 20 s budget. The next run
 real ENOSPC on the dedicated archive, but the one write attempted under ENOSPC
 committed into already allocated SQLite pages, so no refusal followed; the
 command now keeps writing, up to 32 batches, until the exhausted backing
-refuses. Archive quota refusal stays out of reach inside the 20 s loop. Its
-evidence is emulated, not native.
+refuses. Archive quota refusal stays out of reach inside the 20 s loop. Run
+`10d727fc7a050a9695a0b16e87a47db9-65-0` reached that refusal and the reopen path
+and reported two oracle races, not recorder defects: the fresh batch after a
+spool restart was sent before the reopened spool had bound ingest (systemd
+reports the restart at exec), and the request SDK heartbeat had already
+recovered its fsynced `v1:gap` marker to `v1:running` when the saturation
+check read it. The reopen check now retries a transport-unavailable reply,
+and the saturation check accepts `v1:running` only with the checkpoint's
+advanced coverage start as the durable gap. Both acknowledged-custody
+checks held throughout. Its evidence is emulated, not native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
