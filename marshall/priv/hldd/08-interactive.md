@@ -1239,3 +1239,8 @@ current generation and controller lease before opening RFB.
 The Android relay state machine permits read-only viewers and one controller,
 advances frame sequence numbers monotonically, and revokes controller authority
 when its process exits or the emulator generation changes.
+
+The Android display hook uses a same-origin WebSocket URL supplied by the page,
+keeps viewer input disabled, and sends controller key/pointer frames only after
+a controller ticket is granted. It does not use a foreign iframe or external
+resource.
