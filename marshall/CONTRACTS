@@ -25,3 +25,8 @@ before a relay accepts a ticket.
 The Android display relay MUST permit multiple viewers but at most one controller,
 reject stale generations, preserve monotonic frame sequences, and revoke controller
 authority when its process exits.
+
+@cc [owner:ghuntley,label:recovery;security] android-display-host-bridge
+The Android host bridge MUST forward only current-generation bounded frames into
+the display relay, drop stale frames, and route controller input back to the
+host stream without granting viewer input authority.

@@ -1251,3 +1251,6 @@ process; failed upgrades return a generic refusal without machine disclosure.
 
 Display tickets and WebSocket upgrades bind the signed emulator generation; a
 browser-supplied generation mismatch is refused before relay creation.
+
+The host-stream adapter drops stale Android frames before relay publication and
+routes input only from controller-authorized sockets back toward Lilly.
