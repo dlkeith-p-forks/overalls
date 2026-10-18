@@ -93,6 +93,9 @@ defmodule OverallsAntithesis.Lilly.Collector do
      StubStorage.image_ids(stub)}
   end
 
+  def stub_sample(_substrate, pools, _root, _path, _inventory, _limits, _previous, _coverage),
+    do: {nil, nil, Enum.map(pools, &%{id: &1.id, unavailable: true, storage: &1.storage}), []}
+
   @spec stub_compute(map() | nil, StubStorage.t(), Limits.t()) :: map() | nil
   defp stub_compute(capacity, stub, limits) when is_map(capacity) do
     budget = min(stub.stub_cpu_millicores, limits.effective_cores * 1000)
@@ -100,9 +103,6 @@ defmodule OverallsAntithesis.Lilly.Collector do
   end
 
   defp stub_compute(capacity, _stub, _limits), do: capacity
-
-  def stub_sample(_substrate, pools, _root, _path, _inventory, _limits, _previous, _coverage),
-    do: {nil, nil, Enum.map(pools, &%{id: &1.id, unavailable: true, storage: &1.storage}), []}
 
   # @cc [owner:ghuntley,label:capacity;security] hosted-self-cgroup-measured
   # Hosted CPU and memory limits MUST be read from the one unified cgroup v2
