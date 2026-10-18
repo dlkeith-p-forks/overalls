@@ -10,7 +10,7 @@
 
 ## Context
 
-The user requested exe.dev-style SSH machine management, named the new service
+The user requested sample-host-style SSH machine management, named the new service
 Porsche, and approved the implementation plan. They explicitly require Ash domain
 modeling, browser SSH-key management, public HTML and Markdown documentation,
 property-based testing and real NixOS machine tests.

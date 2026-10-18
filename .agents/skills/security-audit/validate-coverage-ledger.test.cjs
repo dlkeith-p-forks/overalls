@@ -448,7 +448,7 @@ test("rejects reassignment owner reuse and evidence mixing", () => {
   });
   assert(errorsFor([reusedOwner]).some((error) => error.includes("current assignment owner must be fresh")));
 
-  const mixedEvidence = unit({
+  const misampleidence = unit({
     attempts: [archivedAttempt({ local_checks: [localCheck()] })],
     wave: 2,
     status: "covered",
@@ -456,7 +456,7 @@ test("rejects reassignment owner reuse and evidence mixing", () => {
     reviewed_paths: ["src/router.ts"],
     local_checks: [localCheck()],
   });
-  const errors = errorsFor([mixedEvidence]);
+  const errors = errorsFor([misampleidence]);
   assert(errors.some((error) => error.includes("prior assignment owner evidence must remain")));
   assert(errors.some((error) => error.includes("artifact from an archived attempt cannot be reused")));
 

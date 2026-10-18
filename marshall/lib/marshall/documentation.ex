@@ -11,7 +11,8 @@ defmodule Marshall.Documentation do
     {"browser-extension", "Browser extension"},
     {"quickstart", "Getting started"},
     {"commands", "Command reference"},
-    {"automation", "Automation"}
+    {"automation", "Automation"},
+    {"reflection", "Reflection integration"}
   ]
 
   for {slug, _title} <- @sources do

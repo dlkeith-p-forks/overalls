@@ -1,5 +1,41 @@
 import Config
 
+case Marshall.Operations.GitHubConfig.from_env(System.get_env(),
+       allow_loopback: config_env() in [:dev, :test]
+     ) do
+  {:ok, nil} -> :ok
+  {:ok, settings} -> config :marshall, settings
+  {:error, _} -> raise "Invalid GitHub OAuth configuration"
+end
+
+case System.get_env("MARSHALL_GITHUB_TOOLS_MANIFEST_FILE") do
+  nil ->
+    :ok
+
+  "/nix/store/" <> _ = path ->
+    unless Path.expand(path) == path and Path.basename(path) == "manifest.json",
+      do: raise("Invalid managed GitHub tool manifest configuration")
+
+    config :marshall, github_tools_manifest_file: path
+
+  _ ->
+    raise "Invalid managed GitHub tool manifest configuration"
+end
+
+case System.get_env("MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE") do
+  nil ->
+    :ok
+
+  "/nix/store/" <> _ = path ->
+    unless Path.expand(path) == path and Path.basename(path) == "manifest.json",
+      do: raise("Invalid executor bootstrap manifest configuration")
+
+    config :marshall, executor_bootstrap_manifest_file: path
+
+  _ ->
+    raise "Invalid executor bootstrap manifest configuration"
+end
+
 case Marshall.Agents.ContextPolicy.from_env(System.get_env()) do
   {:ok, policy} -> config :marshall, agent_context_policy: policy
   {:error, _} -> raise "Invalid agent context policy configuration"
@@ -96,7 +132,7 @@ case Marshall.Ingress.FleetACMEConfig.from_env(System.get_env()) do
     config :marshall, fleet_acme: settings
 
     config :marshall, Oban,
-      queues: [default: 10, provisioning: 10, mail: 2, maintenance: 2, certificates: 1]
+      queues: [default: 10, provisioning: 10, mail: 2, maintenance: 2, github: 2, certificates: 1]
 
   {:error, _} ->
     raise "Invalid fleet ACME issuer configuration"

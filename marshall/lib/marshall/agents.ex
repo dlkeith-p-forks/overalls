@@ -16,6 +16,8 @@ defmodule Marshall.Agents do
     resource Marshall.Agents.Turn
     resource Marshall.Agents.Event
     resource Marshall.Agents.Executor
+    resource Marshall.Agents.ToolBootstrap
+    resource Marshall.Agents.ToolMaintenance
     resource Marshall.Agents.Command
     resource Marshall.Agents.ModelCall
     resource Marshall.Agents.CLISession

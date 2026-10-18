@@ -12,7 +12,7 @@
 
 The accepted plan specifies an x86-64 NixOS guest, persistent disks and a root
 TTY whose lifetime is independent of Lilly. Real execution is now possible on
-the local exe.dev VM: root can open KVM and create a VM. A second independent
+the local sample-host VM: root can open KVM and create a VM. A second independent
 host remains necessary for the cross-host acceptance tests.
 
 ## Decision

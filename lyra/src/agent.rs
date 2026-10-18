@@ -14,6 +14,7 @@ use std::thread;
 use std::time::{Duration, Instant};
 
 mod context;
+pub mod maintenance;
 mod managed_skills;
 #[cfg(all(
     unix,
@@ -121,7 +122,7 @@ pub fn run(host: &impl Host) -> Result<i32, AgentError> {
         let digest = host.digest().map_err(|_| AgentError)?;
         match rpc::<Registration, _>(
             "register",
-            &json!({"digest": digest, "capabilities": ["context-v1", "skills-v1"]}),
+            &json!({"digest": digest, "capabilities": ["context-v1", "skills-v1", "github-tools-v1"]}),
         ) {
             Ok(registration)
                 if registration.fence_epoch > 0 && !registration.executor_id.is_empty() =>
@@ -149,6 +150,7 @@ fn session(host: &impl Host, registration: &Registration) -> Result<(), AgentErr
         fence_epoch: registration.fence_epoch,
     };
     let mut last_heartbeat = Instant::now();
+    maintenance::reconcile().map_err(|_| AgentError)?;
 
     loop {
         if host.stop_requested() {
@@ -159,6 +161,10 @@ fn session(host: &impl Host, registration: &Registration) -> Result<(), AgentErr
             last_heartbeat = Instant::now();
         }
 
+        if maintenance::poll(host, &lease)? {
+            last_heartbeat = Instant::now();
+            continue;
+        }
         let claimed: Claim = rpc("claim", &lease)?;
         match claimed.command {
             Some(command) => {

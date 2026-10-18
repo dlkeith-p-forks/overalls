@@ -1,9 +1,9 @@
 {
   "apps": {
     "galileo": {
-      "active": 3,
-      "coverage": 1.0,
-      "covered": 3
+      "active": 4,
+      "coverage": 0.0,
+      "covered": 0
     },
     "system": {
       "active": 0,
@@ -13,41 +13,43 @@
   },
   "components": {
     "galileo.authorized_proxy": {
-      "active": 3,
+      "active": 4,
       "app": "galileo",
-      "coverage": 1.0,
-      "covered": 3,
+      "coverage": 0.0,
+      "covered": 0,
       "form": "light",
       "obligations": {
         "galileo.authorized_proxy.I1": {
           "failing": 0,
           "kind": "non_functional",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test declared modules compile and remain loadable"
-          ]
+          "tests": []
         },
         "galileo.authorized_proxy.I2": {
           "failing": 0,
           "kind": "security",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test strip only removes complete path segments"
-          ]
+          "tests": []
         },
         "galileo.authorized_proxy.I3": {
           "failing": 0,
           "kind": "functional",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test prefix stripping handles absent and wildcard prefixes"
-          ]
+          "tests": []
+        },
+        "galileo.authorized_proxy.I4": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": []
         }
       }
     },
@@ -62,8 +64,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 3,
-    "coverage": 1.0,
-    "covered": 3
+    "active": 4,
+    "coverage": 0.0,
+    "covered": 0
   }
 }

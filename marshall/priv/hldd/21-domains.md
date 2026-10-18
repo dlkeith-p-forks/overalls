@@ -17,12 +17,13 @@ the ownership inventory.
 | `Marshall.Accounts` | User identity, login tokens, email verification, passkeys, account deletion and permanent GuestAccount UUID/UID reservations. Immutable `u<uid>` guest identity belongs to the User UUID independently of its email. Authentication identifies a caller; resource policy still decides access. |
 | `Marshall.Access` | Persisted machine grants, grant changes and per-user machine pins. Cedar evaluates current ownership, direct VM sharing, team membership and canonical current-thread grants; a cached permission cannot authorize a later mutation. A pin confers no authority; the owner's pin fences deletion and automatic suspension and requests wake when needed (ADR-0193/0198). |
 | `Marshall.Administration` | Administrative job snapshots, retries and audit projections. Read access and elevated administrative mutations have separate checks. |
-| `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. Persisted leases and current authority fence execution. |
+| `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. ToolMaintenance owns desired public tool generations and executor-fenced installation receipts independently of conversations. Persisted leases and current authority fence execution. |
 | `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants and immutable sharing results. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |
 | `Marshall.Compute` | Host enrollment, pools, reservations, VM intent, placements, operation receipts, four-hour idle policy, durable WakeRequest and lifecycle/relocation workflows. The ledger owns admission and durable execution authority, including immutable source2 provider/namespace/revision `WorkspaceSource` references pinned in provision/start commands. Current manifest4 image identity/capability gates source admission and new source-bearing command snapshots, including retained starts; the signed pending browser cookie owns no domain authority. |
 | `Marshall.Editor` | Personal browser Login, Credential and Lease authority. Current stored login/write, permanent account and exact execution/release locks hold through the outer ledger commit; generic web/DNS visibility cannot authorize the editor. |
 | `Marshall.Enrico` | Repository registration, refresh state and audit. The Enrico service holds the quota-bound mirror cache; the domain holds control-plane intent. |
 | `Marshall.Galileo` | Integration definitions, encrypted header custody, attachments and peer tokens. Current attachment policy governs each authorized service interaction. |
+| `Marshall.GitHub` | Personal OAuth connections, authorization/refresh attempts, persistent machine exclusions, generation-bound request leases and payload-free audit. The current VM owner selects the grant; guest claims, queued work and cached projections confer no authority. |
 | `Marshall.Inference` | Provider credentials, request admission and daily usage. Request authority and accounting remain distinct from provider-side execution. |
 | `Marshall.Ingress` | Public services, publications, DNS, TLS custody, readiness, ingress sessions and single-use relocation relay authority, including short-lived immutable EditorAssetsReceipt. Discovery binds current placement/assets but does not grant Editor authority. |
 | `Marshall.SSH` | Account keys, browser approvals, gateway sessions, management requests, guest login and public host-certificate generations. Signing locks current service or boot authority through publication; the private CA remains outside PostgreSQL. Management authority does not grant host administrative SSH. |
@@ -141,12 +142,13 @@ flowchart LR
   app --> d5["Marshall.Editor"]
   app --> d6["Marshall.Enrico"]
   app --> d7["Marshall.Galileo"]
-  app --> d8["Marshall.Inference"]
-  app --> d9["Marshall.Ingress"]
-  app --> d10["Marshall.SSH"]
-  app --> d11["Marshall.Teams"]
-  app --> d12["Marshall.Terminal"]
-  app --> d13["Marshall.Threads"]
+  app --> d8["Marshall.GitHub"]
+  app --> d9["Marshall.Inference"]
+  app --> d10["Marshall.Ingress"]
+  app --> d11["Marshall.SSH"]
+  app --> d12["Marshall.Teams"]
+  app --> d13["Marshall.Terminal"]
+  app --> d14["Marshall.Threads"]
 ```
 
 | Ash domain | Declared resources |
@@ -155,11 +157,12 @@ flowchart LR
 | [`Marshall.Access`](repo:marshall/lib/marshall/access.ex) | `Marshall.Access.Change`, `Marshall.Access.Grant`, `Marshall.Access.Pin` |
 | [`Marshall.Accounts`](repo:marshall/lib/marshall/accounts.ex) | `Marshall.Accounts.AdminBootstrap`, `Marshall.Accounts.AdminEvent`, `Marshall.Accounts.AuthEmail`, `Marshall.Accounts.GuestAccount`, `Marshall.Accounts.GuestAccount.Version`, `Marshall.Accounts.Passkey`, `Marshall.Accounts.PasskeyChallenge`, `Marshall.Accounts.Token`, `Marshall.Accounts.User`, `Marshall.Accounts.UserDeletion`, `Marshall.Accounts.Verification` |
 | [`Marshall.Administration`](repo:marshall/lib/marshall/administration.ex) | `Marshall.Administration.AuditEvent`, `Marshall.Administration.JobEvent`, `Marshall.Administration.JobSnapshot` |
-| [`Marshall.Agents`](repo:marshall/lib/marshall/agents.ex) | `Marshall.Agents.AuditEvent`, `Marshall.Agents.CLISession`, `Marshall.Agents.Command`, `Marshall.Agents.ContextCheckpoint`, `Marshall.Agents.ContextSnapshot`, `Marshall.Agents.Event`, `Marshall.Agents.Executor`, `Marshall.Agents.ModelCall`, `Marshall.Agents.PlanProposal`, `Marshall.Agents.PlanningQuestion`, `Marshall.Agents.Root`, `Marshall.Agents.SearchCache`, `Marshall.Agents.SearchUsage`, `Marshall.Agents.SkillInstallation`, `Marshall.Agents.SkillOperation`, `Marshall.Agents.SkillRevision`, `Marshall.Agents.Thread`, `Marshall.Agents.Turn` |
+| [`Marshall.Agents`](repo:marshall/lib/marshall/agents.ex) | `Marshall.Agents.AuditEvent`, `Marshall.Agents.CLISession`, `Marshall.Agents.Command`, `Marshall.Agents.ContextCheckpoint`, `Marshall.Agents.ContextSnapshot`, `Marshall.Agents.Event`, `Marshall.Agents.Executor`, `Marshall.Agents.ModelCall`, `Marshall.Agents.PlanProposal`, `Marshall.Agents.PlanningQuestion`, `Marshall.Agents.Root`, `Marshall.Agents.SearchCache`, `Marshall.Agents.SearchUsage`, `Marshall.Agents.SkillInstallation`, `Marshall.Agents.SkillOperation`, `Marshall.Agents.SkillRevision`, `Marshall.Agents.Thread`, `Marshall.Agents.ToolBootstrap`, `Marshall.Agents.ToolMaintenance`, `Marshall.Agents.Turn` |
 | [`Marshall.Compute`](repo:marshall/lib/marshall/compute.ex) | `Marshall.Compute.CleanupRequest`, `Marshall.Compute.CloneEffect`, `Marshall.Compute.CloneRequest`, `Marshall.Compute.EnrollmentOperation`, `Marshall.Compute.Evacuation`, `Marshall.Compute.EvacuationItem`, `Marshall.Compute.Host`, `Marshall.Compute.HostCredential`, `Marshall.Compute.HostDrain`, `Marshall.Compute.HostSession`, `Marshall.Compute.Image`, `Marshall.Compute.LifecycleEvent`, `Marshall.Compute.NetworkAddress`, `Marshall.Compute.Operation`, `Marshall.Compute.PhysicalOutcome`, `Marshall.Compute.ProbeRequest`, `Marshall.Compute.ReadinessRequest`, `Marshall.Compute.Relocation`, `Marshall.Compute.RelocationRetry`, `Marshall.Compute.Reservation`, `Marshall.Compute.ResizeRequest`, `Marshall.Compute.ServiceLevelAttempt`, `Marshall.Compute.ServiceLevelTotal`, `Marshall.Compute.SourcePermitRequest`, `Marshall.Compute.StoragePool`, `Marshall.Compute.TransferSlot`, `Marshall.Compute.VirtualMachine`, `Marshall.Compute.WakeRequest`, `Marshall.Compute.WakeRequestKey`, `Marshall.Compute.WorkflowServiceLevelAttempt`, `Marshall.Compute.WorkloadPlacement`, `Marshall.Compute.WorkspaceSource` |
 | [`Marshall.Editor`](repo:marshall/lib/marshall/editor.ex) | `Marshall.Editor.Credential`, `Marshall.Editor.Lease`, `Marshall.Editor.Login` |
 | [`Marshall.Enrico`](repo:marshall/lib/marshall/enrico.ex) | `Marshall.Enrico.AuditEvent`, `Marshall.Enrico.Repository` |
 | [`Marshall.Galileo`](repo:marshall/lib/marshall/galileo.ex) | `Marshall.Galileo.Attachment`, `Marshall.Galileo.Credential`, `Marshall.Galileo.Integration`, `Marshall.Galileo.IntegrationHeader`, `Marshall.Galileo.PeerToken` |
+| [`Marshall.GitHub`](repo:marshall/lib/marshall/github.ex) | `Marshall.GitHub.AuditEvent`, `Marshall.GitHub.AuthorizationAttempt`, `Marshall.GitHub.Connection`, `Marshall.GitHub.Exclusion`, `Marshall.GitHub.RefreshAttempt`, `Marshall.GitHub.RequestLease`, `Marshall.GitHub.RestoreEpoch` |
 | [`Marshall.Inference`](repo:marshall/lib/marshall/inference.ex) | `Marshall.Inference.Credential`, `Marshall.Inference.Daily`, `Marshall.Inference.Request` |
 | [`Marshall.Ingress`](repo:marshall/lib/marshall/ingress.ex) | `Marshall.Ingress.EditorAssetsReceipt`, `Marshall.Ingress.Endpoint`, `Marshall.Ingress.Environment`, `Marshall.Ingress.EnvironmentPublication`, `Marshall.Ingress.EnvironmentStream`, `Marshall.Ingress.FleetCertificate`, `Marshall.Ingress.FleetCertificateAccount`, `Marshall.Ingress.FleetCertificateInstallation`, `Marshall.Ingress.Publication`, `Marshall.Ingress.Relay`, `Marshall.Ingress.Route`, `Marshall.Ingress.Service`, `Marshall.Ingress.Session`, `Marshall.Ingress.WebCredential`, `Marshall.Ingress.WebLogin`, `Marshall.Ingress.WebStream` |
 | [`Marshall.SSH`](repo:marshall/lib/marshall/ssh.ex) | `Marshall.SSH.Approval`, `Marshall.SSH.Gateway`, `Marshall.SSH.GuestLogin`, `Marshall.SSH.HostCertificate`, `Marshall.SSH.Key`, `Marshall.SSH.Request`, `Marshall.SSH.Session` |
@@ -169,6 +172,30 @@ flowchart LR
 <!-- hldd:view:end -->
 
 ## Verification and gaps
+
+### GitHub connection ownership
+
+GitHub stays inside Marshall and owns encrypted identity/lifecycle. Galileo owns
+one upstream attempt; Audi/Lilly authenticate current VM execution. Guest tools
+receive endpoint configuration only. Attempt/generation comparisons fence
+duplicate work and late settlement; provider waits happen outside transactions.
+Generic Galileo attachments remain separate from built-in owner eligibility.
+
+```mermaid
+flowchart LR
+  Browser[Current Marshall login] --> GitHub[Marshall GitHub domain]
+  GitHub --> DB[(Shared PostgreSQL and encrypted pair)]
+  Jobs[Oban and AshOban ID-only work] --> GitHub
+  Guest[Managed guest tools] --> Audi[Audi and Lilly execution binding]
+  Audi --> Edge[Galileo GitHub route]
+  Edge -->|owner and generation lease| GitHub
+  Edge -->|one verified attempt| Provider[Reviewed GitHub origins]
+```
+
+Arrows describe ownership/calls, not deployment units. Seven-family/provider
+execution, refresh faults and retained updates keep their gaps in
+[coverage](#coverage) and the
+[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
 
 Compute additionally owns `ServiceLevelAttempt`, `WorkflowServiceLevelAttempt`
 and `ServiceLevelTotal` under

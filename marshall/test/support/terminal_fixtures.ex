@@ -4,6 +4,8 @@ Code.require_file("../../../scripts/test/hegel_fixtures.exs", __DIR__)
 
 defmodule Marshall.TerminalFixtures do
   @moduledoc false
+  # This helper is required by test_helper.exs after test-support compilation.
+  @compile {:no_warn_undefined, {Overalls.HegelFixtures, :start_supervised!, 1}}
   import Marshall.ComputeFixtures
   alias Marshall.Compute.{Credentials, Host, Ledger, Operation, ProvisionerControl}
 

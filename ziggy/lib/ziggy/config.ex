@@ -15,6 +15,8 @@ defmodule Ziggy.Config do
                  "enabled_providers",
                  "openai_origin",
                  "agent_enabled",
+                 "github_tools_release",
+                 "executor_bootstrap_release",
                  "lyra_release"
                ])
              )
@@ -44,6 +46,18 @@ defmodule Ziggy.Config do
              (String.starts_with?(lyra_release, "/nix/store/") and
                 Path.expand(lyra_release) == lyra_release),
          {:ok, update_artifact} <- load_update_artifact(lyra_release),
+         github_release <- Map.get(value, "github_tools_release"),
+         true <-
+           is_nil(github_release) or
+             (is_binary(github_release) and String.starts_with?(github_release, "/nix/store/") and
+                Path.expand(github_release) == github_release),
+         {:ok, github_tools} <- Ziggy.ToolRelease.load(github_release),
+         bootstrap_root <- Map.get(value, "executor_bootstrap_release"),
+         true <-
+           is_nil(bootstrap_root) or
+             (is_binary(bootstrap_root) and String.starts_with?(bootstrap_root, "/nix/store/") and
+                Path.expand(bootstrap_root) == bootstrap_root),
+         {:ok, bootstrap_release} <- Ziggy.BootstrapRelease.load(bootstrap_root),
          true <- Enum.all?(~w(socket spool), &private_path?(value[&1])),
          true <- byte_size(value["socket"]) <= 107,
          maximum when is_integer(maximum) and maximum in 1..100_000 <- value["max_requests"],
@@ -61,6 +75,8 @@ defmodule Ziggy.Config do
          agent_enabled: agent_enabled,
          lyra_release: lyra_release,
          update_artifact: update_artifact,
+         github_tools: github_tools,
+         bootstrap_release: bootstrap_release,
          credentials: credentials,
          control: %{
            origin: value["control_plane"],

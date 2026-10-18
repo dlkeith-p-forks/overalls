@@ -1,4 +1,4 @@
-{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, editorFamily ? null, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, relocation ? false, suspension ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false, hegel ? null }:
+{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, editorFamily ? null, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, relocation ? false, suspension ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, githubIntegration ? false, githubFamily ? null, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false, hegel ? null }:
 let
   inherit (pkgs) lib;
   # @cc [owner:ghuntley,label:verification] editor-native-family-selection
@@ -7,6 +7,10 @@ let
   # NOT redirect another fleet scenario or substitute a NixOS guest for it.
   selectedEditorFamily = if editorFamily == null then (if ubuntu then "ubuntu" else "nixos") else editorFamily;
   foreignEditor = editor && builtins.elem selectedEditorFamily [ "arch" "almalinux" ];
+  selectedGitHubFamily = if githubFamily == null then "nixos" else githubFamily;
+  foreignGitHub = githubIntegration && builtins.elem selectedGitHubFamily [ "arch" "almalinux" ];
+  foreignGuest = foreignEditor || foreignGitHub;
+  selectedForeignFamily = if foreignGitHub then selectedGitHubFamily else selectedEditorFamily;
   # @cc [owner:ghuntley,label:verification] editor-native-packaged-runtime-probe
   # Native Node diagnostics MUST execute the selected editor package's own
   # runtime, never the separate NixOS fixture package set's Node installation.
@@ -151,10 +155,23 @@ let
       -subj /CN=repository-launch-github-root -keyout root.key -out "$out/root.pem" 2>/dev/null
     openssl req -new -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes \
       -subj /CN=github.com -keyout "$out/github.key" -out github.csr 2>/dev/null
-    printf 'subjectAltName=DNS:github.com,DNS:gitlab.com,DNS:codeberg.org,DNS:bitbucket.org,DNS:api.bitbucket.org\nextendedKeyUsage=serverAuth\n' > ext.cnf
+    printf 'subjectAltName=DNS:github.com,DNS:gitlab.com,DNS:codeberg.org,DNS:bitbucket.org,DNS:api.bitbucket.org,DNS:api.github.com,DNS:uploads.github.com,DNS:gist.github.com,DNS:raw.githubusercontent.com,DNS:gist.githubusercontent.com,DNS:release-assets.githubusercontent.com,DNS:github-cloud.githubusercontent.com,DNS:github-cloud.s3.amazonaws.com\nextendedKeyUsage=serverAuth\n' > ext.cnf
     openssl x509 -req -in github.csr -CA "$out/root.pem" -CAkey root.key -CAcreateserial \
       -days 3650 -extfile ext.cnf -out "$out/github.pem" 2>/dev/null
     openssl verify -CAfile "$out/root.pem" "$out/github.pem" >/dev/null
+  '';
+  githubProviderHosts = [ "github.com" "api.github.com" "uploads.github.com"
+    "gist.github.com" "raw.githubusercontent.com" "gist.githubusercontent.com"
+    "release-assets.githubusercontent.com" "github-cloud.githubusercontent.com"
+    "github-cloud.s3.amazonaws.com" ];
+  githubFleetArtifacts = pkgs.runCommand "github-integration-fleet-typed" {
+    nativeBuildInputs = [ pkgs.ty ];
+  } ''
+    mkdir -p "$out"
+    cp ${../github-integration-fleet/browser.py} "$out/browser.py"
+    cp ${../github-integration-fleet/provider.py} "$out/provider.py"
+    cp ${../github-integration/fixture.py} "$out/provider_data.py"
+    ty check --python ${python}/bin/python3 --extra-search-path "$out" "$out/browser.py" "$out/provider.py" "$out/provider_data.py"
   '';
   # The launch journey's default image is the selected guest, derived by the
   # shared manifest validator exactly like the production image catalog.
@@ -280,18 +297,18 @@ let
     "/opt/overalls-editor-fixture/conflicting-settings.json" = { source = editorConflictingSettings; mode = "0444"; };
   };
   foreignEditorBuilder = import
-    (if selectedEditorFamily == "arch" then ../../../../domains/artifacts/guest/arch else ../../../../domains/artifacts/guest/alma)
+    (if selectedForeignFamily == "arch" then ../../../../domains/artifacts/guest/arch else ../../../../domains/artifacts/guest/alma)
     {
       inherit pkgs;
       inherit (packages) terminald lyraLinux;
       mkUbuntuGuest = ubuntuGuestBuilder;
-      vscodeWeb = packages.vscodeWeb;
-      vscodeWebBroker = packages.vscodeWebBroker;
+      vscodeWeb = if editor then packages.vscodeWeb else null;
+      vscodeWebBroker = if editor then packages.vscodeWebBroker else null;
     };
-  guest = if foreignEditor then foreignEditorBuilder {
+  guest = if githubIntegration && selectedGitHubFamily == "windows" then packages.windowsGuestPublished else if foreignGuest then foreignEditorBuilder {
     privateServiceRoots = guestPrivateRoots;
     files = editorFixtureFiles;
-  } else if ubuntu then ubuntuGuestBuilder {
+  } else if ubuntu || (githubIntegration && selectedGitHubFamily == "ubuntu") then ubuntuGuestBuilder {
     privateServiceRoots = guestPrivateRoots;
     files = editorFixtureFiles;
   }
@@ -372,7 +389,7 @@ let
   updatesFleet = customerIsolation || !(porsche || relocation || audi || sshBootstrap
     || userSshJourney || cloning || ubuntu || brady || galileo || terminal || agent
     || agentCli || guestCliRecovery || defaultOss || resize || accountLifecycle
-    || guestTrust || teamResources || integrationRenewals || privateWeb
+    || guestTrust || teamResources || integrationRenewals || privateWeb || githubIntegration
     || maintenanceEvacuation || cloneCancellation || executorLoss || codingClis);
   lillyVariants = [ "updated" "secret-only" ]
     ++ lib.optionals audi [ "audi-updated" "audi-unhealthy" "audi-recovered" ]
@@ -594,7 +611,7 @@ let
       '';
     };
   };
-  marshall = name: { config, ... }: {
+  marshall = name: { config, nodes, ... }: {
     imports = lib.optional (name == "m1") ziggyFixture.provider
       ++ lib.optional (porsche && name == "m1") (import ./porsche.nix { inherit packages; })
       ++ lib.optional (otelPorsche && name == "m1") (import ../../support/request-source.nix {
@@ -625,7 +642,16 @@ let
             (if variant == "audi-unhealthy" then unhealthyAudi else updatedAudi);
         };
       }));
+    networking.extraHosts = lib.mkIf githubIntegration
+      "${nodes.egress.networking.primaryIPAddress} ${lib.concatStringsSep " " githubProviderHosts}";
+    security.pki.certificateFiles = lib.optionals githubIntegration [ "${githubFixture}/root.pem" ];
+    systemd.services."marshall-${name}".environment.ERL_AFLAGS = lib.mkIf githubIntegration
+      "-eval 'public_key:cacerts_load(\"/etc/ssl/certs/ca-bundle.crt\").'";
     systemd.services.fleet-credentials.preStart = ''
+      ${lib.optionalString githubIntegration ''
+        umask 077
+        printf '%s' synthetic-fleet-client-secret >${root}/github-client-secret
+      ''}
       install -m 0600 ${../../fixtures/ssh-host-ca/key} ${root}/ssh-host-ca
     '';
     # @cc [owner:ghuntley,label:verification;security] host-replacement-real-ssh-bridge
@@ -650,8 +676,13 @@ let
         publicKey = lib.removeSuffix "\n" (builtins.readFile ../../fixtures/ssh-host-ca/key.pub);
         keyFile = "${root}/ssh-host-ca";
       };
+      github = lib.mkIf githubIntegration {
+        clientId = "synthetic-fleet-client";
+        clientSecretFile = "${root}/github-client-secret";
+        redirectUri = "https://control.example.test/auth/github-com/callback";
+      };
       replicaCount = 3;
-      defaultImageId = lib.mkIf (repositoryLaunch || editor) guestImageId;
+      defaultImageId = lib.mkIf (repositoryLaunch || editor || githubIntegration) guestImageId;
       # Keep the production pool size: a two-connection fixture pool regularly
       # exhausts under real host/console polling and correctly fails readiness.
       poolSize = 10;
@@ -698,6 +729,7 @@ let
     networking.firewall.interfaces.eth1.allowedTCPPorts = [ 5443 ];
     environment.etc."fleet-operator.exs".source = ./operator.exs;
     environment.etc."fleet-account-lifecycle.exs".source = ../account-lifecycle/operator.exs;
+    environment.etc."fleet-github-historical.exs".source = ../github-integration-fleet/historical.exs;
     environment.etc."fleet-audi-ssh.conf.in".source = ./audi-ssh.conf.in;
     environment.systemPackages = [ (pkgs.writeShellScriptBin "fleet-op" ''
       set -euo pipefail
@@ -708,11 +740,12 @@ let
       export PHX_SERVER=false PHX_HOST=control.example.test RELEASE_DISTRIBUTION=none
       export RELEASE_COOKIE=isolated-fleet-operator RELEASE_TMP=/run/fleet-operator
       export MARSHALL_INSTANCE_ID=fleet-operator-${name} MARSHALL_REPLICA_COUNT=3
+      export FLEET_GITHUB_HISTORICAL_WINDOWS=${if githubIntegration && selectedGitHubFamily == "windows" then "1" else "0"}
       export MARSHALL_DB_CONNECTION_BUDGET=43 POOL_SIZE=2 MARSHALL_DB_TLS=verify
       export MARSHALL_DB_CA_CERTFILE=${root}/ca.crt ERL_CRASH_DUMP=/dev/null ERL_FLAGS="+S 2:2"
       export FLEET_GUEST=${guest}
       ${lib.optionalString ubuntu "export FLEET_ALTERNATIVE_GUEST=${nixosGuest}"}
-      export FLEET_GUEST_NAME=${lib.escapeShellArg (if foreignEditor then (if selectedEditorFamily == "arch" then "Arch Linux" else "AlmaLinux") else if ubuntu then "Ubuntu 26.04 LTS" else "nixos-fleet")}
+      export FLEET_GUEST_NAME=${lib.escapeShellArg (if foreignGuest then (if selectedForeignFamily == "arch" then "Arch Linux" else "AlmaLinux") else if ubuntu || (githubIntegration && selectedGitHubFamily == "ubuntu") then "Ubuntu 26.04 LTS" else "nixos-fleet")}
       export FLEET_NODE=${name}
       ${lib.optionalString suspension "export FLEET_SUSPENSION_RELAY=1"}
       mkdir -p "$RELEASE_TMP"
@@ -725,12 +758,13 @@ let
       exec ${packages.marshall}/bin/marshall eval 'Code.eval_file("/etc/fleet-operator.exs")' "$@"
     '') ];
   };
-  lilly = name: { config, lib, ... }:
+  lilly = name: { config, nodes, lib, ... }:
     let host = hosts.${name}; in {
     imports = [ ziggyFixture.lilly ]
       ++ [ (import ./audi.nix { inherit pkgs ubuntu; role = "gateway"; hostId = host.host; }) ]
       ++ [ galileoFixture.lilly ]
       ++ lib.optional (otelAudiSsh || observabilityRecovery || suspension) (otelAudiSshHost name);
+    security.pki.certificateFiles = lib.optionals githubIntegration [ "${githubFixture}/root.pem" ];
     services.audi.editorPackage = if editor || suspension then packages.vscodeWeb else null;
     services.audi.relay = lib.mkIf suspension {
       enable = true;
@@ -900,7 +934,9 @@ let
     systemd.services.audi-private.environment.AUDI_SLO_SNAPSHOT = lib.mkIf otelGalileo "/run/audi-private/slo.json";
     systemd.services.overalls-request-audi-private-exporter = lib.mkIf otelGalileo
       (requestExporter "audi-private" "audi_private" "overalls-otel-audi-private");
-    networking.extraHosts = lib.mkIf brady "11.0.0.1 origin.brady.test";
+    networking.extraHosts = lib.optionalString brady "11.0.0.1 origin.brady.test\n"
+      + lib.optionalString githubIntegration
+        "${nodes.egress.networking.primaryIPAddress} ${lib.concatStringsSep " " githubProviderHosts}";
     # @cc [owner:ghuntley,label:verification] brady-host-src-valid-mark
     # Production Lilly hosts are Tailscale exit nodes, which set host-wide
     # src_valid_mark=1. The Brady journey MUST run under that host setting so
@@ -1086,7 +1122,7 @@ let
         ../../../../../secrets/private-services-root.pem
         ../../../../../secrets/brady-root.pem
       ] ++ lib.optionals (name != "l1") [ ../../fixtures/ubuntu/ca.crt ]
-        ++ lib.optionals repositoryLaunch [ "${githubFixture}/root.pem" ];
+        ++ lib.optionals (repositoryLaunch || githubIntegration) [ "${githubFixture}/root.pem" ];
       # Leave a deterministic observation window for the real mid-stream fault.
       # Relocation scenarios need a long write-during-copy window; bootstrap
       # scenarios exercise readiness and retain the ordinary 64 MiB/s limit.
@@ -1174,6 +1210,11 @@ let
         # Config.load reads the control credential as lilly.service's systemd credential.
         export CREDENTIALS_DIRECTORY=/run/credentials/lilly.service
         exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${../fleet-guest-trust/guest.exs}")' "$@"
+      '')
+      (pkgs.writeShellScriptBin "fleet-github-integration-guest" ''
+        export RELEASE_COOKIE=isolated-github-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
+        export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}
+        exec ${packages.lilly}/bin/lilly eval 'Code.require_file("${./terminal.exs}"); Code.eval_file("${../github-integration-fleet/guest.exs}")' "$@"
       '')
       (pkgs.writeShellScriptBin "fleet-repository-launch-guest" ''
         export RELEASE_COOKIE=isolated-launch-probe RELEASE_DISTRIBUTION=none ERL_FLAGS="+S 2:2"
@@ -1326,9 +1367,11 @@ in
 # Default-profile, resize, account-lifecycle and team-resource journeys MUST use the trust-enabled Audi fleet image and
 # private-service fixtures. Disabling host trust or guest readiness MUST NOT
 # compensate for selecting a guest image without the boot trust receiver.
-assert !(defaultOss || repositoryLaunch || resize || accountLifecycle || teamResources || maintenanceEvacuation || cloneCancellation) || audi;
+assert !(defaultOss || repositoryLaunch || githubIntegration || resize || accountLifecycle || teamResources || maintenanceEvacuation || cloneCancellation) || audi;
 assert !otelPorsche || (porsche && builtins.length porscheScenarioParts == 2);
 assert !repositoryLaunch || (porsche && !defaultOss);
+assert !githubIntegration || (galileo && audi && !repositoryLaunch && !defaultOss && !ubuntu);
+assert githubFamily == null || (githubIntegration && builtins.elem githubFamily [ "nixos" "ubuntu" "arch" "almalinux" "windows" ]);
 assert !(defaultOss || resize || accountLifecycle || teamResources || maintenanceEvacuation || cloneCancellation) || audi;
 # @cc [owner:ghuntley,label:verification] roster-matrix-real-stack
 # The roster/identity matrix MUST run on the Audi fleet with real relocation
@@ -1394,10 +1437,10 @@ assert editorFamily == null || (editor && !ubuntu
     redact = false;
   };
   hostPkgs = lib.mkForce (import ../../support/driver-pkgs.nix pkgs);
-  name = if suspension then "overalls-memory-suspension-fleet" else if codingClis then (if ubuntu then "overalls-coding-clis-ubuntu-fleet" else "overalls-coding-clis-nixos-fleet") else if editor then "overalls-vscode-web-${selectedEditorFamily}-fleet" else if observabilityRecovery then "overalls-lilly-observability-recovery" else if porscheLifecycleOnly then (if ubuntu then "overalls-porsche-lifecycle-ubuntu-fleet" else "overalls-porsche-lifecycle-fleet") else if runtimeReadiness then "overalls-lilly-runtime-readiness" else if otelPorsche then "overalls-otel-porsche-native" else if otelAudiSsh then "overalls-otel-audi-ssh-native" else if otelGalileo then "overalls-otel-galileo-native" else if otelGuest then "overalls-otel-guest-native" else if cloneDestinationLoss then "overalls-clone-destination-loss" else if cloneMarshallRestart then "overalls-clone-marshall-restart" else if hostReplacement then "overalls-host-replacement" else if executorLoss then "overalls-executor-loss" else if sharingSurfaces then "overalls-sharing-surfaces" else if cloneCancellation then "overalls-clone-cancellation" else if guestCliRecovery then (if ubuntu then "overalls-guest-cli-recovery-ubuntu" else "overalls-guest-cli-recovery") else if maintenanceEvacuation then "overalls-maintenance-evacuation" else if agentCli then "overalls-agent-cli-journey" else if privateWeb then "overalls-private-web" else if integrationRenewals then "overalls-integration-renewals" else if teamResources then "overalls-team-resources" else if guestTrust then "overalls-fleet-guest-trust" else if accountLifecycle then "overalls-account-lifecycle" else if resize then "overalls-resize-browser" else if repositoryLaunch then (if ubuntu then "overalls-repository-launch-ubuntu-fleet" else "overalls-repository-launch") else if defaultOss then "overalls-default-oss-creation" else if userSshJourney then (if ubuntu then "overalls-user-ssh-journey-ubuntu-fleet" else "overalls-user-ssh-journey-fleet") else if agent then (if ubuntu then "overalls-agent-ubuntu-fleet" else "overalls-agent-fleet") else if terminal then (if ubuntu then "overalls-terminal-ubuntu-fleet" else "overalls-terminal-fleet") else if galileo then "overalls-galileo-fleet" else if brady then "overalls-brady-fleet" else if sshRosterMatrix then (if ubuntu then "overalls-ssh-roster-matrix-ubuntu-fleet" else "overalls-ssh-roster-matrix-fleet") else if sshBootstrap then (if ubuntu then "overalls-ssh-bootstrap-ubuntu-fleet" else "overalls-ssh-bootstrap-fleet") else if ubuntu && audi then (if relocation then "overalls-audi-ubuntu-relocation-fleet" else "overalls-audi-ubuntu-fleet") else if ubuntu then "overalls-ubuntu-fleet" else if customerIsolation then "overalls-customer-isolation-fleet" else if cloning then "overalls-cloning-fleet" else if audi && relocation then "overalls-audi-relocation-fleet" else if audi then "overalls-audi-fleet" else if relocation then "overalls-relocation-fleet" else if porsche then "overalls-porsche-fleet" else "overalls-fleet";
+  name = if suspension then "overalls-memory-suspension-fleet" else if codingClis then (if ubuntu then "overalls-coding-clis-ubuntu-fleet" else "overalls-coding-clis-nixos-fleet") else if editor then "overalls-vscode-web-${selectedEditorFamily}-fleet" else if observabilityRecovery then "overalls-lilly-observability-recovery" else if porscheLifecycleOnly then (if ubuntu then "overalls-porsche-lifecycle-ubuntu-fleet" else "overalls-porsche-lifecycle-fleet") else if runtimeReadiness then "overalls-lilly-runtime-readiness" else if otelPorsche then "overalls-otel-porsche-native" else if otelAudiSsh then "overalls-otel-audi-ssh-native" else if otelGalileo then "overalls-otel-galileo-native" else if otelGuest then "overalls-otel-guest-native" else if cloneDestinationLoss then "overalls-clone-destination-loss" else if cloneMarshallRestart then "overalls-clone-marshall-restart" else if hostReplacement then "overalls-host-replacement" else if executorLoss then "overalls-executor-loss" else if sharingSurfaces then "overalls-sharing-surfaces" else if cloneCancellation then "overalls-clone-cancellation" else if guestCliRecovery then (if ubuntu then "overalls-guest-cli-recovery-ubuntu" else "overalls-guest-cli-recovery") else if maintenanceEvacuation then "overalls-maintenance-evacuation" else if agentCli then "overalls-agent-cli-journey" else if privateWeb then "overalls-private-web" else if integrationRenewals then "overalls-integration-renewals" else if teamResources then "overalls-team-resources" else if guestTrust then "overalls-fleet-guest-trust" else if accountLifecycle then "overalls-account-lifecycle" else if resize then "overalls-resize-browser" else if githubIntegration then "overalls-github-integration-${selectedGitHubFamily}-fleet" else if repositoryLaunch then (if ubuntu then "overalls-repository-launch-ubuntu-fleet" else "overalls-repository-launch") else if defaultOss then "overalls-default-oss-creation" else if userSshJourney then (if ubuntu then "overalls-user-ssh-journey-ubuntu-fleet" else "overalls-user-ssh-journey-fleet") else if agent then (if ubuntu then "overalls-agent-ubuntu-fleet" else "overalls-agent-fleet") else if terminal then (if ubuntu then "overalls-terminal-ubuntu-fleet" else "overalls-terminal-fleet") else if galileo then "overalls-galileo-fleet" else if brady then "overalls-brady-fleet" else if sshRosterMatrix then (if ubuntu then "overalls-ssh-roster-matrix-ubuntu-fleet" else "overalls-ssh-roster-matrix-fleet") else if sshBootstrap then (if ubuntu then "overalls-ssh-bootstrap-ubuntu-fleet" else "overalls-ssh-bootstrap-fleet") else if ubuntu && audi then (if relocation then "overalls-audi-ubuntu-relocation-fleet" else "overalls-audi-ubuntu-fleet") else if ubuntu then "overalls-ubuntu-fleet" else if customerIsolation then "overalls-customer-isolation-fleet" else if cloning then "overalls-cloning-fleet" else if audi && relocation then "overalls-audi-relocation-fleet" else if audi then "overalls-audi-fleet" else if relocation then "overalls-relocation-fleet" else if porsche then "overalls-porsche-fleet" else "overalls-fleet";
   requiredFeatures.nested-kvm = true;
   inherit skipTypeCheck;
-  globalTimeout = if relocation then 10800 else 3600;
+  globalTimeout = if githubIntegration && selectedGitHubFamily == "windows" then 14400 else if relocation then 10800 else 3600;
   defaults = common;
   nodes = {
     m1 = marshall "m1";
@@ -1459,7 +1502,7 @@ assert editorFamily == null || (editor && !ubuntu
       environment.systemPackages = [ pkgs.socat ];
     };
     egress = { lib, ... }: {
-      imports = lib.optional galileo galileoFixture.origin;
+      imports = lib.optional (galileo && !githubIntegration) galileoFixture.origin;
       virtualisation.vlans = [ 1 2 ];
       networking.interfaces.eth2.ipv4.addresses = lib.mkForce [
         { address = "11.0.0.1"; prefixLength = 24; }
@@ -1467,7 +1510,20 @@ assert editorFamily == null || (editor && !ubuntu
         { address = "1.1.1.1"; prefixLength = 32; }
         { address = "9.9.9.9"; prefixLength = 32; }
       ];
-      networking.firewall.allowedTCPPorts = [ 8080 53 ] ++ lib.optionals (brady || repositoryLaunch) [ 80 443 ];
+      networking.firewall.allowedTCPPorts = [ 8080 53 ] ++ lib.optionals (brady || repositoryLaunch || githubIntegration) [ 80 443 ];
+      systemd.services.fleet-github-provider = lib.mkIf githubIntegration {
+        wantedBy = [ "multi-user.target" ];
+        path = [ pkgs.git ];
+        serviceConfig = {
+          ExecStart = "${python}/bin/python3 ${githubFleetArtifacts}/provider.py ${githubFixture}/github.pem ${githubFixture}/github.key";
+          RuntimeDirectory = "galileo-fixture";
+          RuntimeDirectoryMode = "0700";
+          NoNewPrivileges = true;
+          ProtectSystem = "strict";
+          ProtectHome = true;
+          PrivateTmp = true;
+        };
+      };
       # Smart-HTTP Git and bounded provider APIs share the isolated TLS origin.
       systemd.services.fleet-git-backend = lib.mkIf repositoryLaunch {
         wantedBy = [ "multi-user.target" ];
@@ -1546,6 +1602,8 @@ assert editorFamily == null || (editor && !ubuntu
     };
     client = { nodes, ... }: {
       networking.nameservers = [ nodes.m2.networking.primaryIPAddress nodes.m3.networking.primaryIPAddress ];
+      networking.extraHosts = lib.mkIf githubIntegration
+        "${nodes.egress.networking.primaryIPAddress} ${lib.concatStringsSep " " githubProviderHosts}";
       virtualisation.memorySize = 2048;
       users.users.tester = { isNormalUser = true; home = "/home/tester"; };
       environment.systemPackages = [ python pkgs.chromium pkgs.nssTools pkgs.openssh pkgs.dig
@@ -1572,6 +1630,10 @@ assert editorFamily == null || (editor && !ubuntu
         '')
         (pkgs.writeShellScriptBin "fleet-default-oss-browser" ''
           exec ${python}/bin/python ${defaultOssBrowser}/browser.py "$@"
+        '')
+      ] ++ lib.optionals githubIntegration [
+        (pkgs.writeShellScriptBin "fleet-github-integration-browser" ''
+          exec ${python}/bin/python ${githubFleetArtifacts}/browser.py "$@"
         '')
       ] ++ lib.optionals repositoryLaunch [
         (pkgs.writeShellScriptBin "fleet-repository-launch-browser" ''
@@ -1707,7 +1769,7 @@ assert editorFamily == null || (editor && !ubuntu
      + builtins.readFile ../../support/guest-diagnostics.py
      + builtins.readFile ../../support/update.py
      + builtins.readFile ../fleet-guest-trust/driver.py
-  else if defaultOss || repositoryLaunch || resize || accountLifecycle || teamResources || maintenanceEvacuation || cloneCancellation then ''
+  else if defaultOss || repositoryLaunch || githubIntegration || resize || accountLifecycle || teamResources || maintenanceEvacuation || cloneCancellation then ''
     storage_budget = ${toString storageBudget}
     storage_images = "${storage}"
     qemu_img = "${pkgs.qemu_kvm}/bin/qemu-img"
@@ -1720,6 +1782,10 @@ assert editorFamily == null || (editor && !ubuntu
        else if teamResources then builtins.readFile ../team-resources/driver.py
        else if accountLifecycle then builtins.readFile ../account-lifecycle/driver.py
        else if resize then builtins.readFile ../resize/driver.py
+       else if githubIntegration then ''
+         github_fixture_root = "${githubFixture}/root.pem"
+         github_guest_os = "${selectedGitHubFamily}"
+       '' + builtins.readFile ../default-oss/setup.py + builtins.readFile ../github-integration-fleet/driver.py
        else if repositoryLaunch then ''
          github_fixture_root = "${githubFixture}/root.pem"
          overalls_zone = "apps.example.test"
@@ -1890,4 +1956,4 @@ assert editorFamily == null || (editor && !ubuntu
     ./scenarios/staleness.py
     ./scenarios/credential-revocation.py
   ]);
-}) // { inherit defaultOssBrowser repositoryLaunchBrowser terminalBrowser audiBrowser porscheBrowser editorBrowser; }
+}) // { inherit defaultOssBrowser repositoryLaunchBrowser githubFleetArtifacts terminalBrowser audiBrowser porscheBrowser editorBrowser; }

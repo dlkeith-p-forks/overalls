@@ -58,6 +58,12 @@ mod daemon {
 
 #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
 fn main() -> ! {
+    if let Some(code) = lyra::agent::maintenance::run_tool() {
+        std::process::exit(code);
+    }
+    if let Some(code) = lyra::agent::maintenance::bootstrap_invocation() {
+        std::process::exit(code);
+    }
     std::process::exit(daemon::run());
 }
 

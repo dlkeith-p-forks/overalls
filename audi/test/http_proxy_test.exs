@@ -306,7 +306,7 @@ defmodule Audi.HTTP.ProxyTest do
          attestation: %{
            purpose: "galileo-peer",
            source_vm_id: @vm,
-           name: "exedev",
+           name: "esample",
            expires_at: System.system_time(:second) + 30
          }
        })}

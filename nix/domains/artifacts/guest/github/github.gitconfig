@@ -1,0 +1,24 @@
+# Public broker routing. GitHub credentials remain in Marshall.
+[url "https://com-github.integration.internal/git/"]
+	insteadOf = https://github.com/
+	insteadOf = git@github.com:
+	insteadOf = ssh://git@github.com/
+	insteadOf = ssh://git@github.com:22/
+[url "https://com-github.integration.internal/gist/"]
+	insteadOf = https://gist.github.com/
+	insteadOf = git@gist.github.com:
+	insteadOf = ssh://git@gist.github.com/
+	insteadOf = ssh://git@gist.github.com:22/
+[http "https://com-github.integration.internal/"]
+	sslVerify = true
+	version = HTTP/1.1
+	followRedirects = initial
+	proxy =
+	extraHeader =
+	extraHeader = Connection: close
+[credential "https://com-github.integration.internal"]
+	helper =
+	interactive = false
+[lfs]
+	sshtransfer = never
+	basictransfersonly = true

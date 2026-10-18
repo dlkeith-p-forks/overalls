@@ -145,6 +145,8 @@ defmodule Marshall.Galileo.Configurations do
             strip_prefix: validated.strip_prefix,
             peer: arguments.peer,
             peer_vm_id: arguments[:peer_vm_id],
+          comment: arguments.comment,
+            comment: arguments.comment,
             owner_id: if(arguments[:team_id], do: nil, else: actor.id),
             team_id: arguments[:team_id],
             idempotency_key: arguments.idempotency_key
@@ -174,6 +176,7 @@ defmodule Marshall.Galileo.Configurations do
         integration.strip_prefix == validated.strip_prefix and
         integration.peer == arguments.peer and
         integration.peer_vm_id == arguments[:peer_vm_id] and
+        integration.comment == arguments.comment and
         integration.owner_id == owner_id and
         integration.team_id == arguments[:team_id] and
         headers_equal?(integration.id, arguments.headers)
@@ -192,6 +195,7 @@ defmodule Marshall.Galileo.Configurations do
           strip_prefix: validated.strip_prefix,
           peer: arguments.peer,
           peer_vm_id: arguments[:peer_vm_id],
+          comment: arguments.comment,
           owner_id: owner_id,
           team_id: arguments[:team_id],
           idempotency_key: arguments.idempotency_key
@@ -278,6 +282,7 @@ defmodule Marshall.Galileo.Configurations do
       :strip_prefix,
       :peer,
       :peer_vm_id,
+      :comment,
       :owner_id,
       :team_id
     ])
@@ -326,6 +331,9 @@ defmodule Marshall.Galileo.Configurations do
   # protocol's closed refusal reason and roll back before persistence. Invalid
   # user input MUST NOT escape as an exception or crash its calling LiveView.
   defp validated!(arguments) do
+    unless OverallsProtocol.Integration.name?(arguments.name),
+      do: Ledger.rollback(:invalid_name)
+
     if arguments.peer do
       unless OverallsProtocol.uuid?(arguments[:peer_vm_id] || ""),
         do: Ledger.rollback(:peer_target_required)

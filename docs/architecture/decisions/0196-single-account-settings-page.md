@@ -154,6 +154,13 @@ management; their authority rules are untouched.
 
 ## Implementation evidence
 
+- The 2026-10-18 integration review found conflicting later route/navigation
+  declarations. The repair restores the single `#nav-account` entry and strict
+  `AccountLive` mount, and moves the existing Git-preferences form into its
+  profile section with its stable field IDs. This preserves the subsequent
+  [ADR-0199](0199-git-attribution-and-guest-identity.md) feature within this page;
+  it introduces no weaker settings route. Current validation is recorded in the
+  [integration review](../reviews/2026-10-18-github-com-integration.md).
 - Page: [`account_live.ex`](../../../marshall/lib/marshall_web/live/account_live.ex);
   routes: [`router.ex`](../../../marshall/lib/marshall_web/router.ex)
   (`live "/settings"`, old routes and the `/settings` controller redirect removed);

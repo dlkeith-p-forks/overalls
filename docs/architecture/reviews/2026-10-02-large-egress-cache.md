@@ -147,7 +147,7 @@ fixture retry recorded an unresolved attribution request; the final live windows
 met the strict two-current-attributed-completion requirement. These passes do
 not establish universal SSH or attribution availability.
 
-A disposable exe.dev origin could not be published because the team's documented
+A disposable sample-host origin could not be published because the team's documented
 public-sharing policy denied it. The created VM was deleted and independently
 absent from the later inventory. Public pinned LLVM supplied the large live
 case; no shared production service/storage faults were injected.

@@ -2,7 +2,7 @@
 
 ## Scope and architecture impact
 
-ADR-0198 introduces account-owned Git preferences, immutable machine snapshots,
+ADR-0199 introduces account-owned Git preferences, immutable machine snapshots,
 validated execution metadata and guest Git defaults. Existing Accounts, Compute
 and Agents domains retain authority. No deployment service or listener is added.
 ADR-0178/0179 stable configuration ownership and existing placement/boot fences

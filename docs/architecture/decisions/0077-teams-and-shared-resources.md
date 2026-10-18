@@ -10,7 +10,7 @@
 
 ## Context
 
-The user authorized an exe.dev-style team concept: multiple accounts share a
+The user authorized an sample-host-style team concept: multiple accounts share a
 pool of machines, team admins manage member machines, and team-owned
 resources such as integrations and their secrets are shared or tagged within
 the team. Roles are owner, admin and member. Billing, SSO and quotas are out

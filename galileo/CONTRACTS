@@ -1,7 +1,10 @@
 @cc [owner:ghuntley,label:security] galileo-secret-custody
-Injected credential values exist only inside per-request authorization
-responses. They MUST NOT be persisted, logged, cached or exposed on any
-status surface. Guests can use integrations but never read their secrets.
+Marshall-injected credential values exist only inside per-request authorization
+responses. They MUST NOT be persisted, logged, cached or exposed on any status
+surface. GitHub transfer action headers and signed URLs MAY remain in bounded
+ephemeral capability memory for at most sixty seconds under ADR-0198; they MUST
+NOT enter durable storage, diagnostics, status surfaces or guest responses.
+Guests can use integrations but never read their secrets.
 
 @cc [owner:ghuntley,label:security] galileo-authority-boundary
 Galileo MUST obtain current Marshall authorization before every upstream
@@ -11,7 +14,10 @@ retrying it. Guest headers cannot confer VM identity. Galileo MUST NOT access
 Marshall's database.
 
 @cc [owner:ghuntley,label:architecture] galileo-closed-routing
-Guest input selects only the integration name, method and path. The target
-origin, strip prefix, injected headers and peer endpoints come exclusively
+Guest input selects only the integration name, method and path. Generic target
+origins, strip prefixes, injected headers and peer endpoints come exclusively
 from the closed Marshall authorization response validated by the shared
-protocol library.
+protocol library. Built-in GitHub transfers MAY use only provider-issued,
+shared-protocol-allowlisted targets held in execution-, generation- and
+method-bound opaque capabilities. Fresh Marshall admission MUST precede every
+capability use; guest URLs and headers MUST NOT select transfer authority.

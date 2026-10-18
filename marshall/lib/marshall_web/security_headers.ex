@@ -34,7 +34,7 @@ defmodule MarshallWeb.SecurityHeaders do
     {"connect-src", "'self'"},
     {"object-src", "'none'"},
     {"base-uri", "'self'"},
-    {"form-action", "'self'"},
+    {"form-action", "'self' https://ghuntley.com"},
     {"frame-ancestors", "'self'"},
     {"frame-src", "'self'"},
     {"worker-src", "'self'"},

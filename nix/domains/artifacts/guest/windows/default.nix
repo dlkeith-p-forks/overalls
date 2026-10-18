@@ -52,6 +52,7 @@ assert editorBundle == null || (editorBundle.editorProtocol == 1 &&
   builtins.match "[0-9a-f]{64}" editorBundle.releaseId != null);
 assert editorBroker == null || (editorBroker.targetPlatform == "win32-x64" && !editorBroker.editorCapability);
 let
+  githubTools = import ../github { inherit pkgs; };
   inherit (pkgs) lib;
   editorDescriptor = if editorBundle == null then null else {
     protocol = editorBundle.editorProtocol;
@@ -227,6 +228,11 @@ let
     cp ${./specialize.cmd} tree/overalls/setup/specialize.cmd
     cp ${./overalls-winget.ps1} tree/overalls/setup/overalls-winget.ps1
     cp ${./FirstLogon.cmd} tree/overalls/setup/FirstLogon.cmd
+    cp ${./overalls-github-tools.ps1} tree/overalls/setup/overalls-github-tools.ps1
+    mkdir -p tree/overalls/github-tools
+    cp ${githubTools.gh.windows-amd64}/bin/gh.exe tree/overalls/github-tools/gh.exe
+    cp ${githubTools.lfs.windows-amd64}/bin/git-lfs.exe tree/overalls/github-tools/git-lfs.exe
+    cp ${githubTools.configuration} tree/overalls/github-tools/github.gitconfig
     mkdir -p tree/overalls/winget
     cp -r ${wingetPayload}/media/. tree/overalls/winget/
     cp ${./overalls-bootstrap.ps1} tree/overalls/bootstrap/overalls-bootstrap.ps1

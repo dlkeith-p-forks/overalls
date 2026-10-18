@@ -1,0 +1,261 @@
+# ADR-0198: Owner-bound GitHub.com integration
+
+- ID: ADR-0198
+- Date: 2026-10-18
+- Status: accepted
+- Implementation: partial
+- Components: Marshall, Galileo, Audi, protocol, Lyra, guest images, NixOS
+- Supersedes: none
+- Superseded by: none
+
+## Context
+
+Users need ordinary GitHub CLI, Git and Git LFS workflows without copying GitHub
+credentials into their machines. Existing Galileo integrations inject
+Marshall-custodied credentials into one authorized upstream attempt, but their
+globally unique names and user-entered headers do not model a separate GitHub
+account for every Marshall user or rotating OAuth credentials.
+
+The user approved `github-com` at `https://com-github.integration.internal`,
+automatic availability on eligible owner machines, persistent per-machine detach
+and the VM owner's GitHub identity for shared writers. The October 18
+implementation request authorizes this decision. Organization administration and
+additional providers are outside the selected daily development permissions.
+
+## Decision
+
+### Personal connection and permissions
+
+Marshall owns one current GitHub.com connection per User. A stable numeric GitHub
+account ID, rather than a mutable login, identifies the external account; one
+numeric account may have only one active Marshall connection. Connecting another
+Marshall account to an already connected GitHub account refuses rather than
+transferring authority. Users manage only their own connection through the
+signed-in Integrations page.
+
+Use a GitHub OAuth App with `offline_access`. Request exactly `repo`, `workflow`,
+`read:org`, `project`, `gist`, `notifications`, `read:user`, `user:email`,
+`read:packages`, `write:packages` and `offline_access`. These support repository
+read/write, workflow changes, ordinary organization reads, projects, gists,
+notifications and packages within the consenting user's GitHub rights. They do
+not override organization approval, SAML SSO, repository permissions or GitHub
+policy. Do not request organization administration or repository deletion.
+
+`POST /auth/github-com/start` begins authorization under the current completed
+Marshall login and CSRF protection. `GET /auth/github-com/callback` accepts only
+the current one-use, expiring attempt bound to that account and browser login.
+Provider errors, replay, expired state, changed login and retired accounts
+establish no connection. OAuth code/state values, token-bearing URLs and provider
+bodies stay out of diagnostics and browser storage. Return only to the fixed
+same-origin Integrations page.
+
+Access and refresh tokens are sensitive Cloak-encrypted attributes in Marshall
+PostgreSQL. Decrypt only for the provider exchange or authorized edge attempt.
+Neither plaintext nor ciphertext enters PaperTrail, administrative job
+projections, events or user responses. OAuth App credentials use the existing
+host secret pipeline, outside images and the Nix store. Ordinary browser
+sign-out preserves this separate GitHub connection; explicit disconnect and
+account retirement withdraw it.
+
+### Machine authority and forwarding
+
+`com-github.integration.internal` is a built-in Galileo route, not a globally
+registered generic integration name. Audi's private DNS, TLS frontend and
+Lilly-derived pre-NAT execution binding remain the ingress boundary. The hostname
+already matches `*.integration.internal`; ADR-0111's exact SAN set, offline issuer
+custody and root distribution remain unchanged.
+
+Each eligible non-Customer VM automatically resolves its owner's current GitHub
+connection unless that owner has persistently detached it. Detach survives
+reconnect, restart and relocation until explicit reattachment. New machines use
+the current owner connection; copied disks carry no credentials. Generic personal
+integrations retain ADR-0134's explicit attachment rule; team-owned integrations
+retain their existing membership policy.
+
+The trusted binding identifies a VM, not the human running a process. Every
+permitted process on a shared VM therefore uses the VM owner's GitHub identity.
+Guest usernames, environment, paths and headers cannot select another connection.
+Authorized writers retain passwordless sudo under ADR-0158; no confidentiality
+between those writers is introduced. Sharing an eligible machine intentionally
+delegates the owner's GitHub operations without revealing their token.
+
+Galileo accepts only reviewed REST, GraphQL, Git smart-HTTP and Git LFS routes.
+Fixed server-owned destinations and validated rewrites select GitHub.com, never
+an arbitrary guest-selected upstream. Platform credentials replace guest
+Authorization. Uploads, responses and LFS content remain bounded streams;
+redirects and response rewrites must not expose credentials or select an
+unreviewed credential recipient. Git SSH, arbitrary CONNECT and self-hosted
+origins acquire no GitHub authority.
+
+Mutations never follow redirects or automatically retry. GET/HEAD may follow at
+most three reviewed redirect hops under the same current lease and credential
+generation. Signed storage hops receive no OAuth bearer. Credential-bearing LFS
+action URLs and headers remain in Galileo memory behind opaque, method-bound,
+execution/generation-bound selectors with at most sixty seconds lifetime and
+earlier provider expiry. Mutation selectors have one winner; signed URLs and
+action credentials never enter guest responses. JSON rewriting is limited to
+eight MiB and thirty-two nested levels; binary content stays streamed.
+
+Every attempt checks current host, placement, execution, owner and machine
+eligibility. An absent, disconnected, detached, reconnect-required or
+configuration-disabled connection allows reviewed routes to forward anonymously
+without injecting a token. GitHub decides
+which operations require authentication; this fallback imposes no global
+GET/HEAD restriction. A connection actively draining or refreshing refuses new
+admissions rather than changing identity mid-attempt.
+
+An authenticated attempt additionally pins the connection generation and a short
+renewable lease. Renewal returns bounded authority only, never replacement
+credentials. Disconnect, detach, retirement or generation replacement withdraws
+credential-bearing authority. Failed or expired renewal closes the existing
+attempt without replaying it. A fresh anonymous request cannot revive the closed
+authenticated attempt.
+
+### Token lifecycle and recovery
+
+Use explicit Ash state machines for connection and operation progress.
+PostgreSQL owns attempt IDs, credential generations, deadlines and terminal
+outcomes; Oban and AshOban deliver and reconcile work. Jobs carry IDs only.
+Selecting an attempt and settling its result lock and re-read the connection;
+provider waits happen outside database transactions. Duplicate workers and stale
+results cannot publish another token generation or revive a disconnected user.
+
+Begin refresh ten minutes before access-token expiry. Stop new old-generation
+admissions, allow existing attempts to drain for at most five minutes, then
+withdraw remaining leases before exchanging refresh credentials. Commit the
+complete replacement access/refresh pair and expiry metadata atomically. Lease
+expiry, token expiry and the drain deadline remain separate facts; none proves
+an upstream request completed successfully.
+
+A provider may rotate a token before Marshall commits its reply. An unanswered
+exchange, lost worker or uncertain post-exchange commit must enter explicit
+reconnect-required recovery instead of blindly replaying the old refresh token.
+Definite pre-dispatch failures may retry under the same current-attempt rules;
+invalid or revoked provider authority requires reconnection. Reconnection creates
+a new fenced generation, so late callbacks, refresh replies and jobs cannot
+restore older authority.
+
+Known late or rejected pairs are retained encrypted in the failed attempt for
+ID-only access-token cleanup and then cleared; minute reconciliation retries
+that cleanup. Unknown provider replies remain an explicit recovery gap. Removing
+OAuth configuration withdraws private admission/renewal but retains the encrypted
+grant pending operator reconfiguration or revocation; it cannot prove remote
+revocation. Restore startup refuses a pending epoch-publication sentinel before
+starting the application, as well as invalid or unreadable final markers.
+
+Managed `gh`, Git HTTPS and Git LFS configuration targets the private endpoint
+without a real GitHub token in guest files, environment or arguments. Intended
+support includes NixOS, Ubuntu, Arch, AlmaLinux, Windows, FreeBSD and OmniOS, plus
+retained machines through a reviewed guest update path. Image recipes and
+installed binaries do not establish seven-family runtime acceptance or upgrade
+of existing writable disks. Exact admitted native images retain their immutable
+qualification; changed candidates require independent promotion evidence.
+
+## Alternatives
+
+- Static bearer integrations lack per-user account identity, OAuth consent and
+  refresh recovery; a globally unique name cannot represent this endpoint.
+- GitHub App installation tokens do not express the selected broad personal
+  identity and daily workflow permission model.
+- Guest `gh` login or credential helpers would violate credential custody.
+- Guest-selected user IDs cannot authenticate a human on a shared sudo-capable
+  VM. Per-process personal authority needs a separate authenticated model.
+- A new `*.internal` alias/certificate widens TLS without a required capability.
+- Blind retries after ambiguous rotating refresh can lose the only valid pair;
+  explicit reconnect preserves an honest recovery boundary.
+
+## Consequences
+
+Every permitted process on an eligible machine can exercise its owner's GitHub
+authority, including shared writers. A user can detach one machine without
+disconnecting their account. The scopes remain broad, while provider-side policy
+can still refuse operations. Anonymous public forwarding remains available when
+the connection is absent, detached or requires reconnection; it supplies no
+private-resource authority. Marshall/database loss denies new admission and
+eventually expires existing leases; it does not replay guest mutations or prove
+their upstream outcome.
+
+New resources, encrypted fields, audit retention and background work need
+migrations and matching backup custody. Historical ciphertext may hold an already
+consumed refresh token; decryption is not proof of usable provider authority.
+Database restore quiesces serving and applies a durable external restore epoch
+before any replica resumes. A singleton database acknowledgement makes a marker
+idempotent across repeated starts. A new marker atomically advances every
+connection generation, erases restored credentials and staged pairs, invalidates
+browser attempts and request pins, and requires browser reconnection. The
+supported restore wrapper durably publishes the marker before changing the
+database; failed publication or invalidation withholds recovery startup. Raw
+database replacement cannot be detected from restored database contents alone.
+Operators must stop every replica and distribute one common fresh epoch before
+any resumes; a local wrapper cannot prove remote fencing. Source and unit
+fixtures do not establish an
+executed backup/restore deployment journey.
+Consumers must understand the route/fences before managed guests select it.
+Retained-machine updates and seven-family acceptance remain delivery obligations.
+
+## Invariants and verification
+
+- Typed Hegel histories independently model callback replay, reconnect,
+  disconnect, detach, reattach, expiry, refresh, ambiguous exchange and retirement.
+  Compare durable rows and audit receipts after allowed/refused operations without
+  printing generated credential values.
+- Multi-Marshall schedules prove one refresh winner, unique active numeric
+  ownership, atomic pair replacement and stale-settlement refusal.
+- Protocol properties reject forged identity, unknown routes/fields, target
+  escapes, credential-smuggling headers and invalid generation/deadline values.
+- Controlled TLS origins independently count effects and observe cancellation,
+  proving credential replacement, no mutation replay and no target leakage.
+- Packaged machine journeys exercise browser OAuth and actual `gh`, Git and LFS
+  through Marshall/Audi/Lilly/Galileo, two owners, shared writers, detach, refresh,
+  revocation and relocation. Each OS and retained-machine update needs recorded
+  evidence. Fixtures cannot establish live OAuth App support, organization
+  approval or production rollout.
+- Colocated contracts, Covenant obligations and payload-free Events accompany
+  implementation; they complement native transport/isolation/recovery evidence.
+
+## Implementation evidence
+
+The [GitHub Ash domain](../../../marshall/lib/marshall/github.ex) owns browser
+attempts, encrypted connection generations, exclusions and request leases. Its
+[connection resource](../../../marshall/lib/marshall/github/connection.ex) and
+[worker](../../../marshall/lib/marshall/github/worker.ex) implement explicit
+progress and ID-only refresh/revocation delivery. The
+[restore acknowledgement](../../../marshall/lib/marshall/github/restore_epoch.ex)
+fences restored database authority using an external marker; the
+[persistence helper](../../../marshall/lib/marshall/github/persistence.ex) retries
+only settlement of the same received pair, never the provider exchange. The
+[configuration validator](../../../marshall/lib/marshall/operations/git_hub_config.ex)
+requires complete settings and a fixed HTTPS callback path; it does not require
+the registered callback host to equal the configured Marshall origin.
+
+The [wire route contract](../../../protocol/lib/overalls_protocol/github.ex),
+[Marshall admission](../../../marshall/lib/marshall/galileo/github.ex),
+[response rewrite](../../../galileo/lib/galileo/github/response.ex) and
+[transfer selectors](../../../galileo/lib/galileo/github/capabilities.ex) implement
+the provider-specific path over the retained
+[private binding](../../../protocol/lib/overalls_protocol/private_services.ex)
+and [single-attempt upstream](../../../galileo/lib/galileo/upstream.ex).
+[Managed guest transport](../../../nix/domains/artifacts/guest/github/) and the
+[tool manifest](../../../protocol/lib/overalls_protocol/github_tools.ex) add
+source delivery contracts. These sources establish implementation presence,
+not live provider, native guest or production acceptance. Exact inspected tests,
+executed results and remaining gaps are tracked in the
+[review](../reviews/2026-10-18-github-com-integration.md) and
+[service guide](../../services/github-com.md).
+
+## Open questions
+
+No product-policy choice remains for this version. OAuth App provisioning, live
+`offline_access`, provider/organization consent, seven-family runtime and
+retained-machine upgrade acceptance still require evidence.
+
+## Related decisions
+
+- [ADR-0080](0080-named-edge-integrations.md): single-attempt credential injection.
+- [ADR-0134](0134-personal-integration-owner-eligibility.md): generic attachments.
+- [ADR-0111](0111-private-service-tls-names.md): existing exact TLS names.
+- [ADR-0158](0158-durable-guest-identities.md): guest identities/shared sudo.
+- [ADR-0157](0157-multi-provider-authenticated-repository-launch.md): inert public source identity remains separate from credentials.
+- [ADR-0142](0142-overallsprotocol-control-websocket.md): control transport.
+- [ADR-0186](0186-covenant-contract-verification.md): bounded BEAM contracts.
+- [ADR-0191](0191-elixir-hegel-property-verification.md): typed property histories.
