@@ -132,10 +132,15 @@ assert lib.hasInfix "--arg guest_agents 'windows-v1'" (plain packages.windowsGue
   || lib.hasInfix "--arg guest_agents windows-v1" (plain packages.windowsGuestAgents.buildCommand);
 assert !(lib.hasInfix "tree/overalls/agents/" (plain (packages.mkWindowsGuest { }).passthru.configMedia.buildCommand));
 assert accepts { agents = packages.lyraWindows; terminald = packages.terminaldWindows; guestAgents = "windows-v1"; };
+assert accepts { agents = packages.lyraWindows; terminald = packages.terminaldWindows; editorRuntime = packages.windowsEditorRuntime; guestAgents = "windows-v1"; };
 assert !accepts { guestAgents = "windows-v1"; };
 # windows-v1 declares the terminal capability, so its image MUST carry the daemon.
 assert !accepts { agents = packages.lyraWindows; guestAgents = "windows-v1"; };
 assert !accepts { terminald = packages.terminaldWindows; };
+assert !accepts { agents = packages.lyraWindows; terminald = packages.terminaldWindows; editorRuntime = packages.windowsEditorRuntime; guestAgents = "none"; };
+assert lib.hasInfix "tree/overalls/editor-runtime/node.exe" (plain (packages.windowsGuestRuntime.passthru.configMedia.buildCommand));
+assert lib.hasInfix "tree/overalls/editor-runtime/runtime.json" (plain (packages.windowsGuestRuntime.passthru.configMedia.buildCommand));
+assert packages.windowsGuestRuntime.passthru.editorRuntime == packages.windowsEditorRuntime;
 assert lib.hasInfix "overalls-terminald.exe tree/overalls/agents/"
   (plain packages.windowsGuestAgents.passthru.configMedia.buildCommand);
 assert !(lib.hasInfix "overalls-terminald.exe" mediaScript);

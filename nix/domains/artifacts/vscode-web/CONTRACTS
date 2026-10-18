@@ -67,3 +67,11 @@ The editor and webview assets MUST be published from the same source build. The
 release descriptor MUST identify the source commit, protocol version and all
 maintained patches, trusted keys, product settings and pinned dependency inputs,
 including the extension lock and maintained validation/extraction/adapters.
+
+@cc [owner:ghuntley,label:build;security] windows-editor-runtime-staging
+The Windows runtime staging closure MUST contain only hash-pinned native
+`win32-x64` executables and a machine-readable manifest with their computed
+digests. It MUST declare `editor_capability: false` until a Windows Code OSS
+bundle, account-bound broker, service task and native browser acceptance are
+all reviewed. Runtime presence MUST NOT alter any image manifest or guest-agent
+capability row.

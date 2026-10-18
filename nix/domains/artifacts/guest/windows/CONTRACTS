@@ -33,6 +33,13 @@ MUST NOT be presented as version-4 kernel images, and the Linux
 `guest-image-identity` contract in the parent directory MUST NOT be weakened to
 admit them.
 
+@cc [owner:ghuntley,label:build;security] windows-editor-runtime-inert
+The optional `editorRuntime` staging payload MUST require the Windows v1 agents
+and terminal daemon, MUST be copied only to `C:\overalls\editor-runtime`, and
+MUST NOT register a listener, worker or task. Its presence MUST preserve the
+version-5 windows-v1 manifest without an editor descriptor; a new editor image
+contract and native acceptance remain required before enabling browser access.
+
 @cc [owner:ghuntley,label:security;network] windows-guest-agents-vsock
 Windows guest agents MUST reach Lilly only over virtio-vsock through the pinned
 virtio-win `viosock` driver and Winsock provider shipped in the image, speaking

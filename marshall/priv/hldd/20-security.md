@@ -1399,10 +1399,19 @@ path or a Marshall observation.
 
 The Windows `windows-v1` contract deliberately excludes the browser editor.
 Readiness, roster SSH, ConPTY, workspace and agent evidence therefore remains
-scoped to those capabilities; it supplies no editor package, broker, descriptor,
-browser authority or browser journey. Enabling an editor on Windows is a new
-architecture decision and requires reviewed image, agent/protocol, broker and
-browser evidence rather than an inference from existing guest readiness.
+scoped to those capabilities. The staged editor runtime/source keeps
+`editor_capability = false`; the portable broker model and Win32 launcher add
+no authority by their presence. If later admitted, identity would be checked
+at every layer: current MMDS execution and roster pair, the SSH authorizer's
+shared account lock, authenticated gateway preface, canonical local SAM SID and
+profile, SYSTEM-owned job, exact process/PID-time/executable/pipe custody, and
+an immutable receipt before reuse. Foreign, stale or incomplete custody refuses
+without terminating processes or deleting personal files. No native Windows
+listener, image admission or browser origin has been run, so sign-in,
+edit/save/readback, revocation and restart recovery remain gaps. Enabling an
+editor on Windows is a new architecture decision and requires reviewed image,
+agent/protocol, broker and browser evidence rather than an inference from
+existing guest readiness.
 
 ## Thread authorization boundary
 

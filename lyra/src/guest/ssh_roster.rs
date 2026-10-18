@@ -196,6 +196,24 @@ pub fn require_account(roster: &Roster, required_user: Option<&str>) -> io::Resu
     Ok(())
 }
 
+/// @cc [owner:ghuntley,label:security] editor-account-exact-roster-identity
+/// On-demand editor reconciliation MUST require both the exact name and UID in
+/// a valid current roster. A name-only or UID-only match, an unsafe account or
+/// an invalid roster MUST refuse before any local account mutation.
+pub fn require_identity(roster: &Roster, username: &str, uid: u32) -> io::Result<()> {
+    validate(roster)?;
+    if !valid_name(username)
+        || !UID_RANGE.contains(&uid)
+        || !roster
+            .accounts
+            .iter()
+            .any(|account| account.username == username && account.uid == uid)
+    {
+        return Err(io::Error::other("account not authorized"));
+    }
+    Ok(())
+}
+
 /// @cc [owner:ghuntley,label:security;recovery] ssh-roster-reconcile-order
 /// reconcile MUST refuse an older roster version, or the same version with a
 /// different digest, without touching accounts; MUST stage the union of old
@@ -382,5 +400,22 @@ mod tests {
         assert!(
             authorized_key("ssh-ed25519 AAAA", br#"{"public_key":"ssh-ed25519 BBBB"}"#).is_err()
         );
+    }
+
+    #[test]
+    fn editor_identity_requires_the_exact_roster_pair() {
+        let current = roster(7, &[200_001, 200_002]);
+        assert!(require_identity(&current, "u200001", 200_001).is_ok());
+        for (name, uid) in [
+            ("u200001", 200_002),
+            ("u200002", 200_001),
+            ("u200003", 200_003),
+            ("administrator", 200_001),
+            ("u200001", 199_999),
+        ] {
+            assert!(require_identity(&current, name, uid).is_err());
+        }
+        assert!(require_identity(&roster(0, &[200_001]), "u200001", 200_001).is_err());
+        assert!(require_identity(&roster(7, &[200_001, 200_001]), "u200001", 200_001).is_err());
     }
 }

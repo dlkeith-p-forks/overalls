@@ -61,7 +61,9 @@ code. Its agents are implemented: readiness, trust, roster SSH and host
 certificates, the shared terminald under ConPTY, the workspace receiver with
 winget's pinned Git for Windows and the shared agent executor; images are
 Desktop Experience with pinned winget packages and WSL features (ADR-0173). The fleet proofs and the image
-staging are pending.
+staging are pending. A separate Windows Code OSS runtime/source and broker
+bring-up is staged with editor capability false; its native bundle, image
+admission and browser acceptance remain outside this decision.
 
 [ADR-0190](decisions/0190-native-kernel-provenance-and-admission.md) records the
 cross-OS contract behind these detailed choices. Arch Linux and AlmaLinux retain

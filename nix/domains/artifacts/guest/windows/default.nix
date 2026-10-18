@@ -28,11 +28,16 @@
 , guestAgents ? "none"
   # ConPTY terminal daemon (bin/overalls-terminald.exe), copied beside the agents.
 , terminald ? null
+  # Native editor runtime inputs are staged for Windows bring-up diagnostics,
+  # but remain inert until a Windows broker and editor-capable image contract
+  # are reviewed. Presence MUST NOT change the manifest capability row.
+, editorRuntime ? null
 }:
 assert builtins.elem winpeDriverLoad [ "paths" "drvload" ];
 assert builtins.elem guestAgents [ "none" "windows-v1" ];
 assert guestAgents == "none" || (agents != null && terminald != null);
 assert terminald == null || agents != null;
+assert editorRuntime == null || (agents != null && terminald != null && guestAgents == "windows-v1");
 let
   inherit (pkgs) lib;
   # viosock is the virtio-vsock driver and Winsock provider the guest agents
@@ -201,6 +206,13 @@ let
       # Public-key-only sshd configuration fed by the roster agent's key files.
       cp ${./sshd_config} tree/overalls/ssh/sshd_config
     ''}
+    ${lib.optionalString (editorRuntime != null) ''
+      mkdir -p tree/overalls/editor-runtime
+      cp ${editorRuntime}/bin/node.exe tree/overalls/editor-runtime/node.exe
+      cp ${editorRuntime}/bin/rg.exe tree/overalls/editor-runtime/rg.exe
+      cp ${editorRuntime}/overalls-editor-windows-runtime.json tree/overalls/editor-runtime/runtime.json
+      cp -r ${editorRuntime}/licenses tree/overalls/editor-runtime/licenses
+    ''}
     chmod -R u+w tree
     xorriso -as mkisofs -iso-level 3 -J -R -V OVERALLS_SETUP \
       -eltorito-alt-boot -e efi/microsoft/boot/efisys_noprompt.bin -no-emul-boot \
@@ -297,7 +309,7 @@ pkgs.runCommand imageName {
   # pre-distribution copies it to every host).
   allowedReferences = [ disk firmware.fd ];
   passthru = {
-    inherit disk firmware configMedia bootWim bootFiles driverTree answerFile windowsIso wimImageName diskBytes agents guestAgents wingetPayload;
+    inherit disk firmware configMedia bootWim bootFiles driverTree answerFile windowsIso wimImageName diskBytes agents guestAgents editorRuntime wingetPayload;
   };
 } ''
   result=$(cat ${disk}/evidence/result)

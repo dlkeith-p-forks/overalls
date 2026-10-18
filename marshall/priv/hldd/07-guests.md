@@ -1646,6 +1646,33 @@ no self-update on Windows: a new executor ships with a rebuilt image. The
 private HTTPS client uses native TLS (schannel) on Windows, as Linux guests
 use OpenSSL, because rustls rejects the deployed private leaf.
 
+### Windows editor payload staging (not admitted)
+
+The Windows editor work is staged separately from the `windows-v1` capability
+row. [`windows-runtime.nix`](repo:nix/domains/artifacts/vscode-web/windows-runtime.nix)
+provides pinned Windows Node and ripgrep executables and writes a digest
+manifest; its metadata is runtime-only, has no store references and keeps
+`editor_capability = false`. [`windows-source.nix`](repo:nix/domains/artifacts/vscode-web/windows-source.nix)
+stages the pinned Code OSS source, Windows headers/import libraries, embedded
+Python, extension adapters and offline build scripts. A source payload or a
+successful compile does not alter the image manifest, add an editor descriptor
+or publish a browser origin. The native bundle, image admission and a Windows
+browser sign-in/edit/readback/recovery run remain unrecorded.
+
+The staged broker is a SYSTEM-owned boundary around that future payload. Its
+portable model binds boot, descriptor, placement, epoch, GuestAccount UUID,
+roster UID, canonical account name, local SAM SID and editor origin; identity
+derived pipe/job names and process creation time prevent foreign reuse. The
+Win32 launcher resolves the current local account, obtains an explicit S4U
+token, uses the SID-backed profile, starts a direct Node process suspended in a
+SYSTEM-only job, and verifies PID/time/SID/executable/job and named-pipe peer
+custody before forwarding. `windows_main.rs` fetches MMDS identity, runs the
+closed SSH authorizer and serializes one account startup; durable receipts
+permit only exact adoption after broker restart. Ambiguous paths, incomplete
+custody, stale roster pairs and foreign processes refuse without cleanup. The
+broker model's 22 Linux tests and clippy check passed; no native Windows
+listener, VM or browser evidence is recorded.
+
 Tools in Windows images ([ADR-0173](repo:docs/architecture/decisions/0173-windows-images-winget-desktop-experience.md)):
 Windows images install Windows Server 2025 **Desktop Experience**, because
 winget and AppX provisioning exist only there (Server Core has no DISM AppX
