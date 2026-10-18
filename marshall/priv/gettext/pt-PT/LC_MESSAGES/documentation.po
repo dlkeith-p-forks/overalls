@@ -4307,17 +4307,17 @@ msgstr "**Lacunas:** As consultas autenticadas de estatísticas, a desduplicaç�
 #: lib/marshall/documentation_messages.ex:1509
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated vsock/Firecracker/browser composition, aggregate64MiB admission, escaped descendant death and hosted fault reach remain open."
-msgstr ""
+msgstr "**Lacunas:** Continuam em aberto a composição autenticada de vsock/Firecracker/navegador, a admissão agregada de 64 MiB, a terminação de descendentes que escaparam e o alcance das falhas em alojamento."
 
 #: lib/marshall/documentation_messages.ex:1513
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authorized command-to-collector attribution, asynchronous physical completion, process-crash accounting and a measured target remain open. The production sample proves dispatch source collection only."
-msgstr ""
+msgstr "**Lacunas:** A atribuição de comandos autorizados ao coletor, a conclusão física assíncrona, a contabilização de falhas de processos e um objetivo medido continuam em aberto. A amostra de produção apenas comprova a recolha na origem do envio."
 
 #: lib/marshall/documentation_messages.ex:1517
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Binding changes during upload, customer-profile refusal, guest trace delivery to central Tempo over authenticated WireGuard, physical-host outage duration, long-duration queue capacity and production guest volume remain unverified."
-msgstr ""
+msgstr "**Lacunas:** As alterações de associação durante o envio, a recusa de perfis de clientes, a entrega de rastos do convidado ao Tempo central por WireGuard autenticado, a duração da indisponibilidade de anfitriões físicos, a capacidade da fila a longo prazo e o volume de convidados em produção continuam por verificar."
 
 #: lib/marshall/documentation_messages.ex:1521
 #, elixir-autogen, elixir-format
@@ -4347,7 +4347,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1541
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Capture overhead, database throughput, independent physical hosts, hardware authenticators, SMTP inbox delivery and production rollout remain outside finite functional evidence. Historical passes retain their captured revisions."
-msgstr ""
+msgstr "**Lacunas:** O custo da captura, o débito da base de dados, os anfitriões físicos independentes, os autenticadores de hardware, a entrega em caixas de correio SMTP e a implementação em produção permanecem fora da evidência funcional finita. As execuções históricas bem-sucedidas mantêm as revisões capturadas."
 
 #: lib/marshall/documentation_messages.ex:1549
 #, elixir-autogen, elixir-format
@@ -4362,7 +4362,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1557
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Concurrent native browser/SSH registration-versus-retirement delivery and independent physical control-plane hosts remain unverified. Existing native journeys retain their separate nonconcurrent scope."
-msgstr ""
+msgstr "**Lacunas:** A entrega nativa concorrente entre registo e retirada no navegador/SSH e os anfitriões físicos independentes do plano de controlo continuam por verificar. Os percursos nativos existentes mantêm o seu âmbito separado, sem concorrência."
 
 #: lib/marshall/documentation_messages.ex:1561
 #, elixir-autogen, elixir-format
@@ -4372,17 +4372,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1565
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Continuous pressure between observations, aggregate admission, complete byte fidelity, throughput, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Lacunas:** A pressão contínua entre observações, a admissão agregada, a fidelidade integral dos bytes, o débito, a composição autenticada de vsock/VM/navegador e as falhas em alojamento continuam em aberto."
 
 #: lib/marshall/documentation_messages.ex:1569
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Continuous pressure instrumentation, authenticated vsock/Firecracker/browser composition, RSS, sustained many-viewer throughput, host recovery and hosted faults remain open."
-msgstr ""
+msgstr "**Lacunas:** A instrumentação de pressão contínua, a composição autenticada de vsock/Firecracker/navegador, a RSS, o débito sustentado com muitos visualizadores, a recuperação do anfitrião e as falhas em alojamento continuam em aberto."
 
 #: lib/marshall/documentation_messages.ex:1573
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Coordinated v4 Lilly/v2 Ziggy publication is required; production version skew and retained production database migration acceptance remain separate."
-msgstr ""
+msgstr "**Lacunas:** É necessária a publicação coordenada do Lilly v4 e do Ziggy v2; o desfasamento de versões em produção e a aceitação da migração da base de dados de produção retida permanecem separados."
 
 #: lib/marshall/documentation_messages.ex:1577
 #, elixir-autogen, elixir-format
@@ -4392,7 +4392,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1581
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Cross-host Marshall scheduling, manager-crash accounting, production collection and a measured final target baseline remain open; the provisional seven-day rule consumes only the named candidate series."
-msgstr ""
+msgstr "**Lacunas:** O escalonamento do Marshall entre anfitriões, a contabilização de falhas do gestor, a recolha em produção e uma linha de base final medida continuam em aberto; a regra provisória de sete dias utiliza apenas as séries candidatas identificadas."
 
 #: lib/marshall/documentation_messages.ex:1585
 #, elixir-autogen, elixir-format
@@ -4402,7 +4402,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1589
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** DNS TTL alone is not authority; cross-host refresh and production DNS delegation, CA behavior and sustained load require separate acceptance. Gateway credential rotation and live route restoration have local database evidence but no native journey."
-msgstr ""
+msgstr "**Lacunas:** O TTL do DNS, por si só, não confere autoridade; a atualização entre anfitriões, a delegação DNS em produção, o comportamento da CA e a carga sustentada exigem aceitação separada. A rotação de credenciais do gateway e o restauro de rotas ativas têm evidência local de base de dados, mas não um percurso nativo."
 
 #: lib/marshall/documentation_messages.ex:1593
 #, elixir-autogen, elixir-format
@@ -4412,12 +4412,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1597
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Dynamic growth, interleaved create/retirement, child-exit/idle release, mixed stalled/healthy viewers, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Lacunas:** O crescimento dinâmico, a criação e retirada intercaladas, a libertação após saída do processo filho ou inatividade, a combinação de visualizadores bloqueados e saudáveis, a composição autenticada de vsock/VM/navegador e as falhas em alojamento continuam em aberto."
 
 #: lib/marshall/documentation_messages.ex:1601
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Dynamic growth, mixed-pressure aggregate admission, RSS/allocator peak, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Lacunas:** O crescimento dinâmico, a admissão agregada sob pressões mistas, o pico de RSS/alocação de memória, a composição autenticada de vsock/VM/navegador e as falhas em alojamento continuam em aberto."
 
 #: lib/marshall/documentation_messages.ex:1605
 #, elixir-autogen, elixir-format
@@ -4447,7 +4447,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1625
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Existing guest disks are intentionally excluded. Native macOS and a complete nested Inception deployment remain unverified. Production rollout is tracked separately in the execution review."
-msgstr ""
+msgstr "**Lacunas:** Os discos de convidados existentes são intencionalmente excluídos. O macOS nativo e uma implementação aninhada completa do Inception continuam por verificar. A implementação em produção é acompanhada separadamente na revisão de execução."
 
 #: lib/marshall/documentation_messages.ex:1629
 #, elixir-autogen, elixir-format
@@ -4472,7 +4472,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1649
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full Lilly application death at this boundary, start/restart completion, attempt-marker-before-submission, physical power loss and hosted faults remain open. Executor retry is witnessed; actor-deferred result consumption is not independently asserted."
-msgstr ""
+msgstr "**Lacunas:** Continuam em aberto a terminação completa da aplicação Lilly neste limite, a conclusão do arranque/reinício, a gravação do marcador de tentativa antes da submissão, a perda física de energia e as falhas em alojamento. A repetição pelo executor foi observada; o consumo de resultados diferido pelo ator não tem uma asserção independente."
 
 #: lib/marshall/documentation_messages.ex:1657
 #, elixir-autogen, elixir-format
@@ -4482,7 +4482,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1661
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated cross-target observation/arming histories remain absent. Native acceptance uses the captured guest runtime before incoming Starship defaults; physical host failure remains separate."
-msgstr ""
+msgstr "**Lacunas:** Continuam a faltar históricos gerados de observação e armação entre alvos. A aceitação nativa utiliza o ambiente de execução do convidado capturado antes das novas predefinições do Starship; a falha do anfitrião físico permanece separada."
 
 #: lib/marshall/documentation_messages.ex:1665
 #, elixir-autogen, elixir-format
@@ -4512,7 +4512,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1685
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, SMTP delivery and production rollout remain separate; full/native captures and previous Control room/retirement claims retain their exact revisions."
-msgstr ""
+msgstr "**Lacunas:** Os autenticadores de hardware, os anfitriões físicos independentes, a entrega SMTP e a implementação em produção permanecem separados; as capturas completas/nativas e as afirmações anteriores sobre Control room/retirada mantêm as suas revisões exatas."
 
 #: lib/marshall/documentation_messages.ex:1689
 #, elixir-autogen, elixir-format
@@ -4522,7 +4522,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1693
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, physically independent serving replicas and production rollout remain external acceptance. The native journey uses virtual authenticators inside one VM."
-msgstr ""
+msgstr "**Lacunas:** Os autenticadores de hardware, as réplicas de serviço fisicamente independentes e a implementação em produção exigem aceitação externa. O percurso nativo utiliza autenticadores virtuais dentro de uma única VM."
 
 #: lib/marshall/documentation_messages.ex:1697
 #, elixir-autogen, elixir-format
@@ -4542,7 +4542,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1709
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical hosts, production DNS/CA/load and native direct-grant withdrawal remain separate. Synthetic reports and expiry injection establish application decisions only."
-msgstr ""
+msgstr "**Lacunas:** Os anfitriões físicos independentes, o DNS/CA/carga em produção e a retirada nativa de concessões diretas permanecem separados. Os relatórios sintéticos e a injeção de expiração apenas comprovam decisões da aplicação."
 
 #: lib/marshall/documentation_messages.ex:1713
 #, elixir-autogen, elixir-format
@@ -4562,12 +4562,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1725
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Initial provisioning, host power loss, arbitrary generation boundaries, guest data usability and hosted faults remain separate. Mutation sensitivity and final publication gates remain pending."
-msgstr ""
+msgstr "**Lacunas:** O aprovisionamento inicial, a perda de energia do anfitrião, os limites arbitrários de gerações, a usabilidade dos dados do convidado e as falhas em alojamento permanecem separados. A sensibilidade a mutações e os controlos finais de publicação continuam pendentes."
 
 #: lib/marshall/documentation_messages.ex:1729
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Interrupted expansion and physical recovery acceptance remain open. The recorded source-qualified OmniOS no-op/expansion replay does not qualify interrupted recovery or native admission."
-msgstr ""
+msgstr "**Lacunas:** A expansão interrompida e a aceitação da recuperação física continuam em aberto. A repetição registada, qualificada pela origem, das operações sem efeito e de expansão do OmniOS não qualifica a recuperação interrompida nem a admissão nativa."
 
 #: lib/marshall/documentation_messages.ex:1733
 #, elixir-autogen, elixir-format

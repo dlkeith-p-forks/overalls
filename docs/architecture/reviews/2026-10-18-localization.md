@@ -84,3 +84,7 @@ result is upgraded by these structural checks.
 ## Public documentation direction follow-up
 
 The standalone public documentation layout now uses LocalePlug language and direction assignments, preserving ADR-0201 and ADR-0161 without changing authority, dependencies or protocol contracts. The docs controller suite recorded **7 passed**, seed **199192**, against the pending change based on `b595f7c2f`. Assertions cover English/Japanese LTR, Arabic/Urdu RTL, Content-Language and absence of session cookies. A 45-second scratch Bombadil rerun exited 0 after the original run exposed the missing documentation direction; exploration coverage has not been audited, so this is not all-locale browser acceptance. Documentation translation completeness and native-language review remain outstanding.
+
+## Porsche catalog repair and full gate
+
+At `1f79f63e6`, Porsche `mix precommit` passed: **108 tests passed**, followed by **zero Dialyzer errors**. The preceding full run exposed 317 missing extracted message identities across 25 locale catalogs; exact POT blocks and faithful translations were appended. `test/localization_catalog_test.exs` then passed all three tests (seed **570510**), checking every locale against the terminal extraction inventory, placeholder parity and Japanese human errors with stable JSON. This is BEAM/catalog evidence, not a native SSH journey or native-speaker review.

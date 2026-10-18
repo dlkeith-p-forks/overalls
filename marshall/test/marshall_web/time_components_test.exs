@@ -41,7 +41,7 @@ defmodule MarshallWeb.TimeComponentsTest do
     assert render.("Asia/Kathmandu", :date) == "2026-10-18"
     assert render.("Asia/Kathmandu", :time) == "14:57 +0545"
     assert render.("America/New_York", :clock) == "5:12 AM EDT"
-    assert render.("Pacific/Chatham", :day_month) == "18 Oct"
+    assert render.("Pacific/Chatham", :day_month) == "Oct 18"
 
     assert render_component(&TimeComponents.timestamp/1, at: nil, zone: "Etc/UTC")
            |> fragment()

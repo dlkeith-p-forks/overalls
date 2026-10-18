@@ -6937,7 +6937,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3745
 #, elixir-autogen, elixir-format
 msgid "A running VM in steady state is not reconciled every second (ADR-0176). An actor\ncounts as steady when all of the following hold:"
-msgstr ""
+msgstr "Hindi nire-reconcile bawat segundo ang tumatakbong VM na nasa matatag na kalagayan (ADR-0176). Itinuturing na\nmatatag ang actor kapag natutupad ang lahat ng sumusunod:"
 
 #: lib/marshall/documentation_messages.ex:3749
 #, elixir-autogen, elixir-format
@@ -7007,7 +7007,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3798
 #, elixir-autogen, elixir-format
 msgid "ADR-0154 keeps only changes whose effect was measured with the boot profile\n(1-vCPU fixture; seconds since guest kernel start):"
-msgstr ""
+msgstr "Pinananatili lamang ng ADR-0154 ang mga pagbabagong nasukat ang epekto gamit ang boot profile\n(1-vCPU fixture; segundo mula sa pagsisimula ng guest kernel):"
 
 #: lib/marshall/documentation_messages.ex:3802
 #, elixir-autogen, elixir-format
@@ -7102,17 +7102,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3873
 #, elixir-autogen, elixir-format
 msgid "Additional arguments passed to each module in addition to ones\nlike `lib`, `config`,\nand `pkgs`, `modulesPath`."
-msgstr ""
+msgstr "Mga karagdagang argumentong ipinapasa sa bawat module bukod sa mga\ntulad ng `lib`, `config`,\nat `pkgs`, `modulesPath`."
 
 #: lib/marshall/documentation_messages.ex:3877
 #, elixir-autogen, elixir-format
 msgid "Additional canonical IPv4 networks denied to guests, including public management endpoints."
-msgstr ""
+msgstr "Mga karagdagang canonical IPv4 network na ipinagbabawal sa guest, kabilang ang pampublikong management endpoint."
 
 #: lib/marshall/documentation_messages.ex:3881
 #, elixir-autogen, elixir-format
 msgid "Administrative access path. Console-only deployments must disable administrative OpenSSH."
-msgstr ""
+msgstr "Daan ng administratibong access. Kailangang huwag paganahin ng console-only deployment ang administratibong OpenSSH."
 
 #: lib/marshall/documentation_messages.ex:3885
 #, elixir-autogen, elixir-format
@@ -7132,7 +7132,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3901
 #, elixir-autogen, elixir-format
 msgid "Admit port 80 on the proxy address from any source through the fleet perimeter (ADR-0181), so the public CA can reach HTTP-01 challenges. The listener serves only challenges and HTTPS redirects."
-msgstr ""
+msgstr "Payagan ang port 80 sa proxy address mula sa anumang source sa fleet perimeter (ADR-0181), upang maabot ng pampublikong CA ang HTTP-01 challenge. Challenge at HTTPS redirect lamang ang inihahatid ng listener."
 
 #: lib/marshall/documentation_messages.ex:3905
 #, elixir-autogen, elixir-format
@@ -7167,7 +7167,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3941
 #, elixir-autogen, elixir-format
 msgid "After reviewing public users and host inventory, use a retained recovery identity:"
-msgstr ""
+msgstr "Matapos suriin ang mga pampublikong user at host inventory, gumamit ng pinanatiling recovery identity:"
 
 #: lib/marshall/documentation_messages.ex:3949
 #, elixir-autogen, elixir-format
@@ -7182,7 +7182,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3957
 #, elixir-autogen, elixir-format
 msgid "Age passed to nix-collect-garbage --delete-older-than. Generations\nyounger than this are preserved."
-msgstr ""
+msgstr "Edad na ipinapasa sa nix-collect-garbage --delete-older-than. Pinananatili ang mga generation\nna mas bata rito."
 
 #: lib/marshall/documentation_messages.ex:3961
 #, elixir-autogen, elixir-format
@@ -7237,7 +7237,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3992
 #, elixir-autogen, elixir-format
 msgid "Also bind fleet TLS to loopback for colocated clients when the main fleet bind uses a private interface."
-msgstr ""
+msgstr "I-bind din ang fleet TLS sa loopback para sa magkakalokasyong client kapag pribadong interface ang ginagamit ng pangunahing fleet bind."
 
 #: lib/marshall/documentation_messages.ex:3996
 #, elixir-autogen, elixir-format
@@ -7402,12 +7402,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4132
 #, elixir-autogen, elixir-format
 msgid "Arrows mean application ownership, not calls or deployment units. Resources below are literal declarations, deduplicated; extension-generated versions are excluded."
-msgstr ""
+msgstr "Ang mga palaso ay nangangahulugan ng pagmamay-ari ng application, hindi pagtawag o deployment unit. Literal na deklarasyon ang mga resource sa ibaba, na inalisan ng doble; hindi kasama ang mga bersiyong binuo ng extension."
 
 #: lib/marshall/documentation_messages.ex:4136
 #, elixir-autogen, elixir-format
 msgid "Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `overalls`. Administrative SSH ports: 2222."
-msgstr ""
+msgstr "Ang mga palaso ay nangangahulugan ng naka-configure na paglalagay ng serbisyo. Configuration: `dungarees`. Marshall instance: wala. Fleet address: `10.90.0.2`. Fleet peer: `overalls`. Administratibong SSH port: 2222."
 
 #: lib/marshall/documentation_messages.ex:4140
 #, elixir-autogen, elixir-format
@@ -7422,7 +7422,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4142
 #, elixir-autogen, elixir-format
 msgid "Atomically published PEM key and full certificate chain, readable by the haproxy group."
-msgstr ""
+msgstr "Atomikong inilathalang PEM key at buong certificate chain, na nababasa ng haproxy group."
 
 #: lib/marshall/documentation_messages.ex:4146
 #, elixir-autogen, elixir-format
@@ -7457,7 +7457,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4174
 #, elixir-autogen, elixir-format
 msgid "Authenticate the installed public host key from the receipt. Publish it in the\nhost inventory. Prepare encrypted Git custody, publish the enrolled configuration,\nthen activate the exact commit:"
-msgstr ""
+msgstr "Patunayan ang naka-install na pampublikong host key mula sa resibo. Ilathala ito sa\nhost inventory. Ihanda ang encrypted Git custody, ilathala ang naka-enroll na configuration,\nsaka i-activate ang eksaktong commit:"
 
 #: lib/marshall/documentation_messages.ex:4178
 #, elixir-autogen, elixir-format
@@ -7607,7 +7607,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4289
 #, elixir-autogen, elixir-format
 msgid "Boundary: A host-owned Rust probe calls only the pinned Underclass tokenless local Unix monitor; a separate collector intake assigns fixed Underclass-monitor and host provenance before Prometheus and private Grafana read it."
-msgstr ""
+msgstr "Hangganan: Ang Rust probe na pag-aari ng host ay tumatawag lamang sa pinned Underclass tokenless local Unix monitor; nagtatakda ang hiwalay na collector intake ng nakapirming Underclass-monitor at host provenance bago ito basahin ng Prometheus at pribadong Grafana."
 
 #: lib/marshall/documentation_messages.ex:4293
 #, elixir-autogen, elixir-format
@@ -7642,7 +7642,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4317
 #, elixir-autogen, elixir-format
 msgid "Boundary: A transport refusal does not prove a domain effect completed or authorize lifecycle cleanup; Lilly must preserve the permanent class used by Runtime fencing."
-msgstr ""
+msgstr "Hangganan: Hindi pinatutunayan ng pagtanggi sa transport na nakumpleto ang domain effect o nagbibigay ng pahintulot sa lifecycle cleanup; kailangang panatilihin ng Lilly ang permanenteng class na ginagamit ng Runtime fencing."
 
 #: lib/marshall/documentation_messages.ex:4321
 #, elixir-autogen, elixir-format
@@ -7667,7 +7667,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4345
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi DNS counts ordinary in-zone questions after an authoritative UDP or TCP reply and socket send; a mode-0600 numeric snapshot feeds a Rust exporter through an Audi-DNS-only collector intake."
-msgstr ""
+msgstr "Hangganan: Binibilang ng Audi DNS ang karaniwang in-zone question pagkatapos ng authoritative UDP o TCP reply at socket send; pinapakain ng mode-0600 numeric snapshot ang Rust exporter sa Audi-DNS-only collector intake."
 
 #: lib/marshall/documentation_messages.ex:4349
 #, elixir-autogen, elixir-format
@@ -7677,22 +7677,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4353
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi gets a current Lilly placement binding and forwards an exact private OTLP route to the Rust receiver; only host-bound sanitized guest metrics reach the local collector."
-msgstr ""
+msgstr "Hangganan: Kumukuha ang Audi ng kasalukuyang Lilly placement binding at ipinapasa ang eksaktong pribadong OTLP route sa Rust receiver; tanging host-bound sanitized guest metric ang umaabot sa lokal na collector."
 
 #: lib/marshall/documentation_messages.ex:4357
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi private counts completed non-OTLP requests only after current Lilly binding and TLS checks; a private fixed numeric snapshot feeds a Rust exporter through an Audi-private-only collector intake."
-msgstr ""
+msgstr "Hangganan: Binibilang lamang ng Audi private ang nakumpletong non-OTLP request pagkatapos ng kasalukuyang Lilly binding at TLS check; pinapakain ng pribadong nakapirming numeric snapshot ang Rust exporter sa Audi-private-only collector intake."
 
 #: lib/marshall/documentation_messages.ex:4361
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated current-incarnation report delivery and reconciled durable authority through the private Unix readiness socket."
-msgstr ""
+msgstr "Hangganan: Authenticated na paghahatid ng current-incarnation report at na-reconcile na matibay na awtoridad sa pamamagitan ng pribadong Unix readiness socket."
 
 #: lib/marshall/documentation_messages.ex:4365
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated upgrade principal must become a bound identity through the first hello; a valid envelope alone is not binding."
-msgstr ""
+msgstr "Hangganan: Kailangang maging bound identity ang authenticated upgrade principal sa unang hello; hindi sapat na binding ang valid envelope lamang."
 
 #: lib/marshall/documentation_messages.ex:4369
 #, elixir-autogen, elixir-format
@@ -7707,62 +7707,62 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4377
 #, elixir-autogen, elixir-format
 msgid "Boundary: Both adapters delegate to the same durable gateway/session authority; separate session creations issue separate identities."
-msgstr ""
+msgstr "Hangganan: Parehong ipinagkakatiwala ng dalawang adapter sa iisang matibay na gateway/session authority; magkahiwalay na identity ang inilalabas ng magkahiwalay na paglikha ng session."
 
 #: lib/marshall/documentation_messages.ex:4381
 #, elixir-autogen, elixir-format
 msgid "Boundary: Both creation entries select OSS by default; an explicit Customer choice remains restricted by the persisted profile policy."
-msgstr ""
+msgstr "Hangganan: Parehong pumipili ng OSS bilang default ang dalawang creation entry; nananatiling nililimitahan ng nakaimbak na profile policy ang tahasang pagpili ng Customer."
 
 #: lib/marshall/documentation_messages.ex:4385
 #, elixir-autogen, elixir-format
 msgid "Boundary: Central Prometheus and private loopback Alertmanager route only the reviewed provisional burn roster to a runtime HTTPS destination."
-msgstr ""
+msgstr "Hangganan: Tanging sinuring pansamantalang burn roster ang niruruta ng sentral na Prometheus at pribadong loopback Alertmanager sa runtime HTTPS destination."
 
 #: lib/marshall/documentation_messages.ex:4389
 #, elixir-autogen, elixir-format
 msgid "Boundary: Common runtime configuration is evaluated before Marshall application callbacks, Repo and listeners."
-msgstr ""
+msgstr "Hangganan: Sinusuri ang karaniwang runtime configuration bago ang Marshall application callback, Repo at listener."
 
 #: lib/marshall/documentation_messages.ex:4393
 #, elixir-autogen, elixir-format
 msgid "Boundary: Complete manifest, matching keyring, native ownership and isolated restoration."
-msgstr ""
+msgstr "Hangganan: Buong manifest, katugmang keyring, native ownership at hiwalay na restoration."
 
 #: lib/marshall/documentation_messages.ex:4397
 #, elixir-autogen, elixir-format
 msgid "Boundary: Compute owns transactional measurement admissions and retained numeric totals; authenticated physical outcomes and exact-execution readiness evidence supply observations without changing execution or receipt authority."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng Compute ang transactional measurement admission at pinanatiling numeric total; nagbibigay ng obserbasyon ang authenticated physical outcome at exact-execution readiness evidence nang hindi binabago ang execution o receipt authority."
 
 #: lib/marshall/documentation_messages.ex:4401
 #, elixir-autogen, elixir-format
 msgid "Boundary: Control documents and immutable business/security receipts retain authority; diagnostics cannot authorize work, release capacity or rewrite accounting."
-msgstr ""
+msgstr "Hangganan: Nananatiling awtoridad ang Control document at immutable business/security receipt; hindi maaaring mag-awtorisa ng gawain, magpalaya ng kapasidad o muling sumulat ng accounting ang diagnostics."
 
 #: lib/marshall/documentation_messages.ex:4409
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current administrator and passkey elevation share the audited catalog transaction; stored browser login/current registration gate reads; locked current attempt gates publication."
-msgstr ""
+msgstr "Hangganan: Magkasama sa audited catalog transaction ang kasalukuyang administrator at passkey elevation; nililimitahan ng nakaimbak na browser login/kasalukuyang registration ang pagbasa; nililimitahan ng naka-lock na kasalukuyang attempt ang paglalathala."
 
 #: lib/marshall/documentation_messages.ex:4413
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current administrator role, stored browser login and recent passkey elevation govern user controls through commit. Accepted fixed-cohort work has separate durable campaign authority."
-msgstr ""
+msgstr "Hangganan: Pinamamahalaan ng kasalukuyang administrator role, nakaimbak na browser login at bagong passkey elevation ang user control hanggang commit. May hiwalay na matibay na campaign authority ang tinanggap na fixed-cohort work."
 
 #: lib/marshall/documentation_messages.ex:4417
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current browser/CLI authority, durable command start, VM placement and executor fence; exact disposable guest process interruption."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang browser/CLI authority, matibay na command start, VM placement at executor fence; eksaktong pagkaantala ng disposable guest process."
 
 #: lib/marshall/documentation_messages.ex:4421
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current completed login; no administrator requirement and no public documentation fallback."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang kumpletong login; walang pangangailangang administrator at walang fallback sa pampublikong dokumentasyon."
 
 #: lib/marshall/documentation_messages.ex:4425
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current creator ownership, unique active team name and transactional owner membership."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang pagmamay-ari ng creator, natatanging aktibong pangalan ng team at transactional owner membership."
 
 #: lib/marshall/documentation_messages.ex:4429
 #, elixir-autogen, elixir-format
@@ -7772,27 +7772,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4433
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current locally confined Firecracker boot, host-only vsock delivery, installed public trust and readiness ordering."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang lokal na nakakulong na Firecracker boot, host-only vsock delivery, naka-install na pampublikong trust at pagkakasunod ng readiness."
 
 #: lib/marshall/documentation_messages.ex:4437
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current management authority, retained draft/request identity, host/VM serialization, immutable physical command and exact target evidence."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang management authority, pinanatiling draft/request identity, host/VM serialization, immutable physical command at eksaktong target evidence."
 
 #: lib/marshall/documentation_messages.ex:4441
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current publication, TLS identity, renewable request lease and current execution. Gateway catalog decoder refuses TTL above five seconds; ordinary web/SSH grants have their separate thirty-second limit."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang publication, TLS identity, renewable request lease at kasalukuyang execution. Tinatanggihan ng gateway catalog decoder ang TTL na lampas sa limang segundo; may hiwalay na tatlumpung-segundong limitasyon ang karaniwang web/SSH grant."
 
 #: lib/marshall/documentation_messages.ex:4445
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current stored browser login, administrator role and fixed passkey elevation retained through account mutation and audit commit; retirement keeps its exclusive admission fence before sorted participants."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang nakaimbak na browser login, administrator role at nakapirming passkey elevation na pinananatili sa account mutation at audit commit; pinananatili ng retirement ang eksklusibong admission fence bago ang pinagsunod-sunod na participant."
 
 #: lib/marshall/documentation_messages.ex:4449
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current team role, durable transfer workflow and exactly one active owner."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang team role, matibay na transfer workflow at eksaktong isang aktibong may-ari."
 
 #: lib/marshall/documentation_messages.ex:4453
 #, elixir-autogen, elixir-format
@@ -7802,17 +7802,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4457
 #, elixir-autogen, elixir-format
 msgid "Boundary: Dedicated unprivileged userspace tailnet node per host with its own state and socket; Underclass cgroup limited to loopback behind a privileged exit-node start gate; host tailscaled, routes and other services unchanged."
-msgstr ""
+msgstr "Hangganan: Nakalaang unprivileged userspace tailnet node bawat host na may sariling state at socket; nililimitahan ang Underclass cgroup sa loopback sa likod ng privileged exit-node start gate; hindi binabago ang host tailscaled, ruta at ibang serbisyo."
 
 #: lib/marshall/documentation_messages.ex:4461
 #, elixir-autogen, elixir-format
 msgid "Boundary: Deployment enrollment binds each host to its real machine identity, name and ZFS GUIDs. Retirement is the only way to release host authority permanently; the retired row is never recycled or renamed."
-msgstr ""
+msgstr "Hangganan: Itinatali ng deployment enrollment ang bawat host sa tunay nitong machine identity, pangalan at ZFS GUID. Retirement lamang ang paraan upang permanenteng palayain ang host authority; hindi kailanman muling ginagamit o pinapangalanan ang retired row."
 
 #: lib/marshall/documentation_messages.ex:4465
 #, elixir-autogen, elixir-format
 msgid "Boundary: Deployment-bound public CA policy from verified HTTPS and strict account-proof SSH."
-msgstr ""
+msgstr "Hangganan: Deployment-bound public CA policy mula sa verified HTTPS at mahigpit na account-proof SSH."
 
 #: lib/marshall/documentation_messages.ex:4469
 #, elixir-autogen, elixir-format
@@ -7822,32 +7822,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4473
 #, elixir-autogen, elixir-format
 msgid "Boundary: Distinct local guest-terminal PTY/socket pumps and shared drain coordination; authenticated guest authority remains separate."
-msgstr ""
+msgstr "Hangganan: Magkahiwalay na lokal na guest-terminal PTY/socket pump at shared drain coordination; hiwalay pa ang authenticated guest authority."
 
 #: lib/marshall/documentation_messages.ex:4477
 #, elixir-autogen, elixir-format
 msgid "Boundary: Durable Store/Journal attempt authority survives the actor; recorded controlled-executor and native Executor/Firecracker histories retain distinct evidence."
-msgstr ""
+msgstr "Hangganan: Nananatili ang matibay na Store/Journal attempt authority lampas sa buhay ng actor; may magkaibang katibayan ang naitalang controlled-executor at native Executor/Firecracker history."
 
 #: lib/marshall/documentation_messages.ex:4481
 #, elixir-autogen, elixir-format
 msgid "Boundary: Each host owns its independent account database and refresh tokens; account controls require its admin bearer token."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng bawat host ang hiwalay nitong account database at refresh token; kailangan ng account control ang admin bearer token nito."
 
 #: lib/marshall/documentation_messages.ex:4485
 #, elixir-autogen, elixir-format
 msgid "Boundary: Each private fleet API owns bounded decoding and its service credential; monitoring cache/history remains observational and cannot alter Compute authority."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng bawat pribadong fleet API ang may-hangganang decoding at service credential nito; nananatiling obserbasyonal ang monitoring cache/history at hindi maaaring baguhin ang Compute authority."
 
 #: lib/marshall/documentation_messages.ex:4489
 #, elixir-autogen, elixir-format
 msgid "Boundary: Enrico Manager serializes eight active repository owners; token-authenticated API dispatch cannot bypass admission. Marshall retains durable intent."
-msgstr ""
+msgstr "Hangganan: Pinoproseso nang sunod-sunod ng Enrico Manager ang walong aktibong repository owner; hindi malalampasan ng token-authenticated API dispatch ang admission. Pinananatili ng Marshall ang matibay na intent."
 
 #: lib/marshall/documentation_messages.ex:4493
 #, elixir-autogen, elixir-format
 msgid "Boundary: Enrico owns local worker generations and capped receipts; Marshall owns durable intent and account authority."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng Enrico ang lokal na worker generation at may-limitasyong resibo; pag-aari ng Marshall ang matibay na intent at account authority."
 
 #: lib/marshall/documentation_messages.ex:4497
 #, elixir-autogen, elixir-format
@@ -7857,7 +7857,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4501
 #, elixir-autogen, elixir-format
 msgid "Boundary: Exact Git revision, staged secrets, serialized migration, compatible storage identity and readiness."
-msgstr ""
+msgstr "Hangganan: Eksaktong Git revision, staged secret, serialized migration, katugmang storage identity at readiness."
 
 #: lib/marshall/documentation_messages.ex:4505
 #, elixir-autogen, elixir-format
@@ -7867,7 +7867,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4509
 #, elixir-autogen, elixir-format
 msgid "Boundary: Explicit Overalls IPv4 HTTPS frontend with existing certificate custody; Grafana login authorizes data, and backend/query stores remain private."
-msgstr ""
+msgstr "Hangganan: Tahasang Overalls IPv4 HTTPS frontend na may umiiral na certificate custody; nagbibigay ng pahintulot sa data ang Grafana login, at nananatiling pribado ang backend/query store."
 
 #: lib/marshall/documentation_messages.ex:4513
 #, elixir-autogen, elixir-format
@@ -7877,12 +7877,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4517
 #, elixir-autogen, elixir-format
 msgid "Boundary: Explicit personal source attachments (including owner machines), automatic live-team membership, injected secret custody, current peer token and renewal."
-msgstr ""
+msgstr "Hangganan: Tahasang personal source attachment (kabilang ang machine ng may-ari), awtomatikong live-team membership, injected secret custody, kasalukuyang peer token at renewal."
 
 #: lib/marshall/documentation_messages.ex:4521
 #, elixir-autogen, elixir-format
 msgid "Boundary: Fresh measured capacity, atomic reservations and owned physical allocation."
-msgstr ""
+msgstr "Hangganan: Bagong nasukat na kapasidad, atomic reservation at pag-aaring physical allocation."
 
 #: lib/marshall/documentation_messages.ex:4525
 #, elixir-autogen, elixir-format
@@ -7892,22 +7892,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4529
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald current session lifetime and registered PTY/socket ownership after authorized kill; upstream browser/vsock authority is a separate boundary."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang haba ng session ng guest terminald at registered PTY/socket ownership pagkatapos ng authorized kill; hiwalay na hangganan ang upstream browser/vsock authority."
 
 #: lib/marshall/documentation_messages.ex:4533
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald local Linux PTY, viewer queues and shared reservation/backing accounting; authenticated upstream authority remains separate."
-msgstr ""
+msgstr "Hangganan: Lokal na Linux PTY ng guest terminald, viewer queue at shared reservation/backing accounting; hiwalay pa ang authenticated upstream authority."
 
 #: lib/marshall/documentation_messages.ex:4537
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald local session and atomic ring reservations; authenticated upstream authority remains separate."
-msgstr ""
+msgstr "Hangganan: Lokal na session ng guest terminald at atomic ring reservation; hiwalay pa ang authenticated upstream authority."
 
 #: lib/marshall/documentation_messages.ex:4541
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald owns raw scrollback and frame prefix parsing; boot authentication and shared session admission remain independent."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng guest terminald ang raw scrollback at frame prefix parsing; nananatiling hiwalay ang boot authentication at shared session admission."
 
 #: lib/marshall/documentation_messages.ex:4545
 #, elixir-autogen, elixir-format
@@ -7927,12 +7927,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4557
 #, elixir-autogen, elixir-format
 msgid "Boundary: Immutable seed, verified candidate digest, saved executable identity and real current VM executor fence."
-msgstr ""
+msgstr "Hangganan: Immutable seed, verified candidate digest, naka-save na executable identity at tunay na kasalukuyang VM executor fence."
 
 #: lib/marshall/documentation_messages.ex:4561
 #, elixir-autogen, elixir-format
 msgid "Boundary: Incoming/outgoing peers share a process-owned budget and must retire when that accounting incarnation dies; a successor cannot retain live unaccounted peers."
-msgstr ""
+msgstr "Hangganan: Magkasama ang incoming/outgoing peer sa budget na pag-aari ng process at kailangang magretiro kapag namatay ang accounting incarnation na iyon; hindi maaaring magpanatili ang kapalit ng aktibong peer na hindi naitatala."
 
 #: lib/marshall/documentation_messages.ex:4565
 #, elixir-autogen, elixir-format
@@ -7942,57 +7942,57 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4573
 #, elixir-autogen, elixir-format
 msgid "Boundary: Initial TLS upgrade and hello bind volatile socket identity; each request retains current database-backed credential and session-generation authority."
-msgstr ""
+msgstr "Hangganan: Itinatali ng paunang TLS upgrade at hello ang volatile socket identity; pinananatili ng bawat request ang kasalukuyang database-backed credential at session-generation authority."
 
 #: lib/marshall/documentation_messages.ex:4577
 #, elixir-autogen, elixir-format
 msgid "Boundary: Kernel flow label, current execution proof, verified origin and fail-closed proxy path."
-msgstr ""
+msgstr "Hangganan: Kernel flow label, kasalukuyang execution proof, verified origin at fail-closed proxy path."
 
 #: lib/marshall/documentation_messages.ex:4581
 #, elixir-autogen, elixir-format
 msgid "Boundary: Lilly owns each linked/monitored opening worker; worker death cannot occupy an attempt forever or confer stream readiness, and abrupt stream-owner death retires its worker."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng Lilly ang bawat linked/monitored opening worker; hindi maaaring sakupin magpakailanman ng pagkamatay ng worker ang isang attempt o magbigay ng stream readiness, at inireretiro ng biglang pagkamatay ng stream owner ang worker nito."
 
 #: lib/marshall/documentation_messages.ex:4585
 #, elixir-autogen, elixir-format
 msgid "Boundary: Lilly-resolved attribution and a terminal Brady outcome enter fixed cumulative counters; a private file is checked by a Rust host exporter before separate local OTLP collection."
-msgstr ""
+msgstr "Hangganan: Pumapasok sa nakapirming cumulative counter ang Lilly-resolved attribution at terminal Brady outcome; sinusuri ng Rust host exporter ang pribadong file bago ang hiwalay na lokal na OTLP collection."
 
 #: lib/marshall/documentation_messages.ex:4589
 #, elixir-autogen, elixir-format
 msgid "Boundary: Live stored login and five-minute passkey elevation gate rename/remove through the locked account row; labels are bounded to 80 characters; accounts hold at most ten passkeys and one hundred SSH keys."
-msgstr ""
+msgstr "Hangganan: Nililimitahan ng live stored login at limang-minutong passkey elevation ang rename/remove sa naka-lock na account row; hanggang 80 character ang label; hanggang sampung passkey at isang daang SSH key ang hawak ng account."
 
 #: lib/marshall/documentation_messages.ex:4593
 #, elixir-autogen, elixir-format
 msgid "Boundary: Local guest terminald PTY growth, actual deque backing and reservations; authenticated guest authority remains separate."
-msgstr ""
+msgstr "Hangganan: Lokal na guest terminald PTY growth, aktuwal na deque backing at reservation; hiwalay pa ang authenticated guest authority."
 
 #: lib/marshall/documentation_messages.ex:4597
 #, elixir-autogen, elixir-format
 msgid "Boundary: Local terminald PTY EOF, atomic ring reservation and retained viewer threads; authenticated guest authority remains separate."
-msgstr ""
+msgstr "Hangganan: Lokal na terminald PTY EOF, atomic ring reservation at pinanatiling viewer thread; hiwalay pa ang authenticated guest authority."
 
 #: lib/marshall/documentation_messages.ex:4601
 #, elixir-autogen, elixir-format
 msgid "Boundary: Loopback Grafana authenticates the operator and reads only the nine Nix-provisioned candidate duration recordings; source-owned histograms enter the collector under assigned application provenance."
-msgstr ""
+msgstr "Hangganan: Pinatutunayan ng loopback Grafana ang operator at binabasa lamang ang siyam na Nix-provisioned candidate duration recording; pumapasok ang source-owned histogram sa collector sa ilalim ng itinalagang application provenance."
 
 #: lib/marshall/documentation_messages.ex:4605
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall Editor owns single-use account login and renewable current-write execution/release leases; DNS and generic web policy cannot grant editor authority. Each permanent GuestAccount has its own full-UUID origin."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng Marshall Editor ang single-use account login at renewable current-write execution/release lease; hindi maaaring magbigay ng editor authority ang DNS at generic web policy. May sariling full-UUID origin ang bawat permanenteng GuestAccount."
 
 #: lib/marshall/documentation_messages.ex:4609
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall authorizes Start and advances logical generation; Lilly owns the placement and proves native confinement before same-epoch boot journal adoption."
-msgstr ""
+msgstr "Hangganan: Inaawtorisahan ng Marshall ang Start at isinusulong ang logical generation; pag-aari ng Lilly ang placement at pinatutunayan nito ang native confinement bago ang same-epoch boot journal adoption."
 
 #: lib/marshall/documentation_messages.ex:4613
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall authorizes current guest inference; Ziggy durably reserves bounded usage metadata before provider effects and removes completed receipts only after acknowledgement."
-msgstr ""
+msgstr "Hangganan: Inaawtorisahan ng Marshall ang kasalukuyang guest inference; matibay na nirereserba ng Ziggy ang may-hangganang usage metadata bago ang provider effect at inaalis lamang ang kumpletong resibo pagkatapos ng acknowledgement."
 
 #: lib/marshall/documentation_messages.ex:4617
 #, elixir-autogen, elixir-format
@@ -8027,12 +8027,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4641
 #, elixir-autogen, elixir-format
 msgid "Boundary: Native helpers retain completion custody (the source-export lock; the transfer-stream hostd lease) across descendant process groups/sessions; direct leader exit does not prove cleanup."
-msgstr ""
+msgstr "Hangganan: Pinananatili ng native helper ang completion custody (ang source-export lock; ang transfer-stream hostd lease) sa mga descendant process group/session; hindi pinatutunayan ng direktang paglabas ng leader ang cleanup."
 
 #: lib/marshall/documentation_messages.ex:4645
 #, elixir-autogen, elixir-format
 msgid "Boundary: Native state journals, ownership fences and physical readiness receipts remain authoritative; observer ACKs cannot gate v2 actor progress."
-msgstr ""
+msgstr "Hangganan: Nananatiling awtoridad ang native state journal, ownership fence at physical readiness receipt; hindi maaaring hadlangan ng observer ACK ang pag-usad ng v2 actor."
 
 #: lib/marshall/documentation_messages.ex:4649
 #, elixir-autogen, elixir-format
@@ -8052,37 +8052,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4661
 #, elixir-autogen, elixir-format
 msgid "Boundary: Nix provisions stable dashboards and datasources; Grafana authenticates the operator while its server-side datasource holds only reader-scoped log-store authority."
-msgstr ""
+msgstr "Hangganan: Nagpo-provision ang Nix ng matatag na dashboard at datasource; pinatutunayan ng Grafana ang operator habang reader-scoped log-store authority lamang ang hawak ng server-side datasource nito."
 
 #: lib/marshall/documentation_messages.ex:4665
 #, elixir-autogen, elixir-format
 msgid "Boundary: Nix-owned measurement rosters and numeric diagnostic states; operator Grafana and signed-in Marshall reads; independent read-only loopback storage probe and one 15-bound Underclass duration histogram."
-msgstr ""
+msgstr "Hangganan: Nix-owned measurement roster at numeric diagnostic state; operator Grafana at signed-in Marshall read; hiwalay na read-only loopback storage probe at isang 15-bound Underclass duration histogram."
 
 #: lib/marshall/documentation_messages.ex:4669
 #, elixir-autogen, elixir-format
 msgid "Boundary: Official-source Nix package and broker bind exact boot address/gateway, execution/release/account preface and reconciled UID. Systemd worker/socket ownership is independent of the root broker."
-msgstr ""
+msgstr "Hangganan: Itinatali ng official-source Nix package at broker ang eksaktong boot address/gateway, execution/release/account preface at reconciled UID. Hiwalay sa root broker ang Systemd worker/socket ownership."
 
 #: lib/marshall/documentation_messages.ex:4673
 #, elixir-autogen, elixir-format
 msgid "Boundary: Official-source patch routes Open VSX gallery, dependencies and WEB-targeted installs through the native signature verifier before extraction; package identity includes the reviewed key ring."
-msgstr ""
+msgstr "Hangganan: Niruruta ng official-source patch ang Open VSX gallery, dependency at WEB-targeted install sa native signature verifier bago ang extraction; kasama sa package identity ang sinuring key ring."
 
 #: lib/marshall/documentation_messages.ex:4681
 #, elixir-autogen, elixir-format
 msgid "Boundary: Only the current connection owns a heartbeat schedule; retired timer messages cannot service its replacement."
-msgstr ""
+msgstr "Hangganan: Kasalukuyang koneksiyon lamang ang nagmamay-ari ng heartbeat schedule; hindi maaaring pagsilbihan ng retired timer message ang kapalit nito."
 
 #: lib/marshall/documentation_messages.ex:4685
 #, elixir-autogen, elixir-format
 msgid "Boundary: Operator-owned private configuration is validated before Lilly creates runtime authority or status listeners."
-msgstr ""
+msgstr "Hangganan: Sinusuri ang pribadong configuration na pag-aari ng operator bago lumikha ang Lilly ng runtime authority o status listener."
 
 #: lib/marshall/documentation_messages.ex:4689
 #, elixir-autogen, elixir-format
 msgid "Boundary: Overalls supervisors use private real operator session/guest fixtures and own browser deadlines; distinct durable recorders, numeric readers/exporters and collector sockets preserve outcome authority."
-msgstr ""
+msgstr "Hangganan: Gumagamit ang Overalls supervisor ng pribadong tunay na operator session/guest fixture at hawak ang browser deadline; pinananatili ng magkahiwalay na durable recorder, numeric reader/exporter at collector socket ang outcome authority."
 
 #: lib/marshall/documentation_messages.ex:4693
 #, elixir-autogen, elixir-format
@@ -8092,17 +8092,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4697
 #, elixir-autogen, elixir-format
 msgid "Boundary: Owner-only access, no sharing or web exposure, and denied outbound/lateral traffic."
-msgstr ""
+msgstr "Hangganan: Access para sa may-ari lamang, walang sharing o web exposure, at ipinagbabawal ang outbound/lateral traffic."
 
 #: lib/marshall/documentation_messages.ex:4701
 #, elixir-autogen, elixir-format
 msgid "Boundary: Peer activity renews a fifteen-second silence budget; outgoing ping cadence must not postpone retirement beyond that budget."
-msgstr ""
+msgstr "Hangganan: Nire-renew ng aktibidad ng peer ang labinlimang-segundong silence budget; hindi dapat ipagpaliban ng outgoing ping cadence ang retirement lampas sa budget na iyon."
 
 #: lib/marshall/documentation_messages.ex:4705
 #, elixir-autogen, elixir-format
 msgid "Boundary: Per-producer Unix UID/cgroup identity and private SQLite FULL-WAL archive determine diagnostic custody; the observer holds no application or guest authority."
-msgstr ""
+msgstr "Hangganan: Tinutukoy ng per-producer Unix UID/cgroup identity at pribadong SQLite FULL-WAL archive ang diagnostic custody; walang application o guest authority ang observer."
 
 #: lib/marshall/documentation_messages.ex:4709
 #, elixir-autogen, elixir-format
@@ -8117,42 +8117,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4717
 #, elixir-autogen, elixir-format
 msgid "Boundary: Personal account allocation, boot-bound opening receipt, current creator/read-only attachment authority and PTY ownership."
-msgstr ""
+msgstr "Hangganan: Personal account allocation, boot-bound opening receipt, kasalukuyang creator/read-only attachment authority at PTY ownership."
 
 #: lib/marshall/documentation_messages.ex:4721
 #, elixir-autogen, elixir-format
 msgid "Boundary: Pinned transfer, probe-gated source stop and quiescence, one full stream of the stopped disk, atomic placement handoff and destination readiness before source cleanup (ADR-0155)."
-msgstr ""
+msgstr "Hangganan: Pinned transfer, probe-gated source stop at quiescence, isang buong stream ng nakahintong disk, atomic placement handoff at destination readiness bago ang source cleanup (ADR-0155)."
 
 #: lib/marshall/documentation_messages.ex:4725
 #, elixir-autogen, elixir-format
 msgid "Boundary: Porsche counts terminal SSH command dispatch results in fixed cumulative outcomes and duration; a private numeric file feeds a Rust exporter through a Porsche-only collector intake with Nix-owned service identity."
-msgstr ""
+msgstr "Hangganan: Binibilang ng Porsche ang terminal SSH command dispatch result sa nakapirming cumulative outcome at duration; pinapakain ng pribadong numeric file ang Rust exporter sa Porsche-only collector intake na may Nix-owned service identity."
 
 #: lib/marshall/documentation_messages.ex:4729
 #, elixir-autogen, elixir-format
 msgid "Boundary: Post-backup revocations, epochs, generations and physical survivors must be reconciled."
-msgstr ""
+msgstr "Hangganan: Kailangang i-reconcile ang post-backup revocation, epoch, generation at pisikal na nanatili."
 
 #: lib/marshall/documentation_messages.ex:4733
 #, elixir-autogen, elixir-format
 msgid "Boundary: Presentation changes never alter authorization, terminal transport, element identifiers or hook names; every stylesheet, script and font is served from the application origin."
-msgstr ""
+msgstr "Hangganan: Hindi kailanman binabago ng pagbabago sa presentasyon ang authorization, terminal transport, element identifier o hook name; mula sa application origin ang bawat stylesheet, script at font."
 
 #: lib/marshall/documentation_messages.ex:4737
 #, elixir-autogen, elixir-format
 msgid "Boundary: Private file ownership, global recovery membership, selected host recipients, retained rekey identity, per-document publication, staged compatibility and old-key retention."
-msgstr ""
+msgstr "Hangganan: Pribadong file ownership, global recovery membership, napiling host recipient, pinanatiling rekey identity, per-document publication, staged compatibility at old-key retention."
 
 #: lib/marshall/documentation_messages.ex:4741
 #, elixir-autogen, elixir-format
 msgid "Boundary: Private stable intent lock, exact current-generation payload and trusted absolute exec target; shared custody must precede intent validation."
-msgstr ""
+msgstr "Hangganan: Pribadong matatag na intent lock, eksaktong current-generation payload at pinagkakatiwalaang absolute exec target; kailangang mauna ang shared custody sa intent validation."
 
 #: lib/marshall/documentation_messages.ex:4745
 #, elixir-autogen, elixir-format
 msgid "Boundary: Production Lilly Driver and independent systemd VM tree, durable launch authority and authenticated Marshall physical outcome settlement in a disposable fleet."
-msgstr ""
+msgstr "Hangganan: Production Lilly Driver at hiwalay na systemd VM tree, matibay na launch authority at authenticated Marshall physical outcome settlement sa disposable fleet."
 
 #: lib/marshall/documentation_messages.ex:4749
 #, elixir-autogen, elixir-format
@@ -8167,82 +8167,82 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4757
 #, elixir-autogen, elixir-format
 msgid "Boundary: Pure guest-terminal Ring retention allocation; actual PTY growth, viewer queues and authenticated upstream authority remain separate."
-msgstr ""
+msgstr "Hangganan: Purong guest-terminal Ring retention allocation; hiwalay pa ang aktuwal na PTY growth, viewer queue at authenticated upstream authority."
 
 #: lib/marshall/documentation_messages.ex:4761
 #, elixir-autogen, elixir-format
 msgid "Boundary: Registered SSH key, current Cedar decision, CA-authenticated gateway and guest, boot-bound roster, permanently reserved username/UID and durable account discovery."
-msgstr ""
+msgstr "Hangganan: Registered SSH key, kasalukuyang Cedar decision, CA-authenticated gateway at guest, boot-bound roster, permanenteng nakalaang username/UID at matibay na account discovery."
 
 #: lib/marshall/documentation_messages.ex:4765
 #, elixir-autogen, elixir-format
 msgid "Boundary: Required operator fields, IPv4 bind, port, absolute paths, token limits and regular certificate/key references are validated before worker or listener authority starts."
-msgstr ""
+msgstr "Hangganan: Sinusuri ang kinakailangang operator field, IPv4 bind, port, absolute path, token limit at regular certificate/key reference bago magsimula ang worker o listener authority."
 
 #: lib/marshall/documentation_messages.ex:4769
 #, elixir-autogen, elixir-format
 msgid "Boundary: Reviewed finite producer-health events use trusted journal service/unit, module host identity and the native journal clock; the loopback numeric bridge retains independent application log routing."
-msgstr ""
+msgstr "Hangganan: Gumagamit ang sinuring may-hangganang producer-health event ng pinagkakatiwalaang journal service/unit, module host identity at native journal clock; pinananatili ng loopback numeric bridge ang hiwalay na application log routing."
 
 #: lib/marshall/documentation_messages.ex:4773
 #, elixir-autogen, elixir-format
 msgid "Boundary: Role-specific operator configuration and private credentials/keys are validated before Audi creates listener authority."
-msgstr ""
+msgstr "Hangganan: Sinusuri ang role-specific operator configuration at pribadong credential/key bago lumikha ang Audi ng listener authority."
 
 #: lib/marshall/documentation_messages.ex:4777
 #, elixir-autogen, elixir-format
 msgid "Boundary: Runtime schema and file custody are validated before named supervision and SSH or status listeners."
-msgstr ""
+msgstr "Hangganan: Sinusuri ang runtime schema at file custody bago ang named supervision at SSH o status listener."
 
 #: lib/marshall/documentation_messages.ex:4781
 #, elixir-autogen, elixir-format
 msgid "Boundary: Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic and Urdu use RTL; locale does not grant authority or change machine output."
-msgstr ""
+msgstr "Hangganan: Inuuna ang naka-save na self-only locale override kaysa sa validated session/browser negotiation at English fallback. RTL ang Arabic at Urdu; hindi nagbibigay ng awtoridad o nagbabago ng machine output ang locale."
 
 #: lib/marshall/documentation_messages.ex:4785
 #, elixir-autogen, elixir-format
 msgid "Boundary: Schema is validated before named supervision; private matching CA signer material is validated by the first supervised child before cache and transparent listeners."
-msgstr ""
+msgstr "Hangganan: Sinusuri ang schema bago ang named supervision; sinusuri ng unang supervised child ang pribadong katugmang CA signer material bago ang cache at transparent listener."
 
 #: lib/marshall/documentation_messages.ex:4789
 #, elixir-autogen, elixir-format
 msgid "Boundary: Shared account admission through the outer manual/approval transaction, exclusive retirement and completed old-UUID credential cleanup."
-msgstr ""
+msgstr "Hangganan: Shared account admission sa outer manual/approval transaction, eksklusibong retirement at kumpletong old-UUID credential cleanup."
 
 #: lib/marshall/documentation_messages.ex:4793
 #, elixir-autogen, elixir-format
 msgid "Boundary: Shared client owns volatile request correlation and at most eight pending callers; disconnect is unproven domain completion and cannot authorize replay."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng shared client ang volatile request correlation at hanggang walong pending caller; hindi pa napatunayang domain completion ang disconnect at hindi nito maaawtorisahan ang replay."
 
 #: lib/marshall/documentation_messages.ex:4797
 #, elixir-autogen, elixir-format
 msgid "Boundary: Signed-in bounded redacted projections; current elevated administrator, installation/account/raw-job locks and actor/request-bound retry receipt."
-msgstr ""
+msgstr "Hangganan: Signed-in na may-hangganang redacted projection; kasalukuyang elevated administrator, installation/account/raw-job lock at actor/request-bound retry receipt."
 
 #: lib/marshall/documentation_messages.ex:4801
 #, elixir-autogen, elixir-format
 msgid "Boundary: Signed-in read access is separate from administrator membership plus fresh elevation."
-msgstr ""
+msgstr "Hangganan: Hiwalay ang signed-in read access sa administrator membership kasama ang bagong elevation."
 
 #: lib/marshall/documentation_messages.ex:4805
 #, elixir-autogen, elixir-format
 msgid "Boundary: Snapshot ownership, audit and current requester authority, serialized publication/cancellation, immutable snapshot, source restoration and independently proven cleanup."
-msgstr ""
+msgstr "Hangganan: Snapshot ownership, audit at kasalukuyang requester authority, serialized publication/cancellation, immutable snapshot, source restoration at hiwalay na napatunayang cleanup."
 
 #: lib/marshall/documentation_messages.ex:4809
 #, elixir-autogen, elixir-format
 msgid "Boundary: Stored browser login, current direct/team Cedar rights, exact app cookie and execution/policy-bound five-second request-start lease."
-msgstr ""
+msgstr "Hangganan: Nakaimbak na browser login, kasalukuyang direct/team Cedar right, eksaktong app cookie at execution/policy-bound limang-segundong request-start lease."
 
 #: lib/marshall/documentation_messages.ex:4813
 #, elixir-autogen, elixir-format
 msgid "Boundary: Strict operator configuration, private service/provider credentials, fixed upstream origins and runtime paths are validated before serving or provider worker authority starts."
-msgstr ""
+msgstr "Hangganan: Sinusuri ang mahigpit na operator configuration, pribadong service/provider credential, nakapirming upstream origin at runtime path bago magsimula ang serving o provider worker authority."
 
 #: lib/marshall/documentation_messages.ex:4817
 #, elixir-autogen, elixir-format
 msgid "Boundary: Strict operator schema, control origin, private credential and local socket are validated before Galileo creates serving authority."
-msgstr ""
+msgstr "Hangganan: Sinusuri ang mahigpit na operator schema, control origin, pribadong credential at lokal na socket bago lumikha ang Galileo ng serving authority."
 
 #: lib/marshall/documentation_messages.ex:4821
 #, elixir-autogen, elixir-format
@@ -8252,7 +8252,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4825
 #, elixir-autogen, elixir-format
 msgid "Boundary: The SSH channel captures request start before backend authorization; StreamGuard must refuse expired admission before invoking the locally configured guest connector."
-msgstr ""
+msgstr "Hangganan: Kinukuha ng SSH channel ang simula ng request bago ang backend authorization; kailangang tanggihan ng StreamGuard ang expired admission bago tawagin ang lokal na naka-configure na guest connector."
 
 #: lib/marshall/documentation_messages.ex:4829
 #, elixir-autogen, elixir-format
@@ -8262,7 +8262,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4833
 #, elixir-autogen, elixir-format
 msgid "Boundary: The encrypted outbox row controls whether a mail attempt may start; each retry carries one stable Message-ID and token payload, while token consumption remains single-use."
-msgstr ""
+msgstr "Hangganan: Kinokontrol ng encrypted outbox row kung maaaring magsimula ang mail attempt; may isang matatag na Message-ID at token payload ang bawat retry, habang single-use pa rin ang token consumption."
 
 #: lib/marshall/documentation_messages.ex:4837
 #, elixir-autogen, elixir-format
@@ -8272,7 +8272,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4841
 #, elixir-autogen, elixir-format
 msgid "Boundary: The first supervised listener validates certificate signature leaf binding current time and a single principal before the SSH daemon or later serving children."
-msgstr ""
+msgstr "Hangganan: Sinusuri ng unang supervised listener ang certificate signature, leaf binding, kasalukuyang oras at iisang principal bago ang SSH daemon o mga susunod na serving child."
 
 #: lib/marshall/documentation_messages.ex:4845
 #, elixir-autogen, elixir-format
@@ -8297,7 +8297,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4861
 #, elixir-autogen, elixir-format
 msgid "Boundary: The native helper owns stable command slots and repository writer locks; inherited descriptors retain uncertain descendant authority. Marshall retains durable intent."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng native helper ang matatag na command slot at repository writer lock; pinananatili ng inherited descriptor ang hindi tiyak na descendant authority. Pinananatili ng Marshall ang matibay na intent."
 
 #: lib/marshall/documentation_messages.ex:4865
 #, elixir-autogen, elixir-format
@@ -8317,7 +8317,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4877
 #, elixir-autogen, elixir-format
 msgid "Boundary: The pinned Underclass proxy stores sanitized stream outcomes and aggregate statistics in its host-local database; the stats API, event import route and CLI require the host administrator bearer token."
-msgstr ""
+msgstr "Hangganan: Iniimbak ng pinned Underclass proxy ang sanitized stream outcome at aggregate statistic sa host-local database nito; kailangan ng stats API, event import route at CLI ang host administrator bearer token."
 
 #: lib/marshall/documentation_messages.ex:4881
 #, elixir-autogen, elixir-format
@@ -8327,22 +8327,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4885
 #, elixir-autogen, elixir-format
 msgid "Boundary: The reset route, page button and underclass reset command require the host's admin bearer token; a remote --url call must carry UNDERCLASS_UI_TOKEN and never sends a database token."
-msgstr ""
+msgstr "Hangganan: Kailangan ng reset route, page button at underclass reset command ang admin bearer token ng host; kailangang magdala ang remote --url call ng UNDERCLASS_UI_TOKEN at hindi kailanman nagpapadala ng database token."
 
 #: lib/marshall/documentation_messages.ex:4889
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns socket retirement; public satellite adapters must preserve its stopped unsupported-version reason when pending calls resolve as unproven."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng shared client ang socket retirement; kailangang panatilihin ng public satellite adapter ang stopped unsupported-version reason nito kapag nalutas bilang unproven ang pending call."
 
 #: lib/marshall/documentation_messages.ex:4893
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns volatile pending requests under the current welcome's validated capacity; service admission and domain authority remain separate."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng shared client ang volatile pending request sa ilalim ng validated capacity ng kasalukuyang welcome; hiwalay pa ang service admission at domain authority."
 
 #: lib/marshall/documentation_messages.ex:4897
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns volatile reconnect scheduling; durable host freshness and domain authority remain independent."
-msgstr ""
+msgstr "Hangganan: Pag-aari ng shared client ang volatile reconnect scheduling; nananatiling hiwalay ang matibay na host freshness at domain authority."
 
 #: lib/marshall/documentation_messages.ex:4901
 #, elixir-autogen, elixir-format
@@ -8362,27 +8362,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4913
 #, elixir-autogen, elixir-format
 msgid "Boundary: Trusted absolute utility argv, private export lock and all-adopted-child kernel custody; source permit and SSH authority remain separate."
-msgstr ""
+msgstr "Hangganan: Pinagkakatiwalaang absolute utility argv, pribadong export lock at kernel custody sa lahat ng adopted child; hiwalay pa ang source permit at SSH authority."
 
 #: lib/marshall/documentation_messages.ex:4917
 #, elixir-autogen, elixir-format
 msgid "Boundary: Unsupported-version close is a terminal transport refusal, and disconnect cannot prove domain completion."
-msgstr ""
+msgstr "Hangganan: Terminal transport refusal ang unsupported-version close, at hindi mapatutunayan ng disconnect ang domain completion."
 
 #: lib/marshall/documentation_messages.ex:4921
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified HTTPS policy and one dedicated host CA; issuance requires locked service or physical boot authority."
-msgstr ""
+msgstr "Hangganan: Verified HTTPS policy at isang nakalaang host CA; kailangan ng issuance ang naka-lock na service o physical boot authority."
 
 #: lib/marshall/documentation_messages.ex:4925
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified TLS control upgrade, correlated error and pending-close classes plus local DNS, SSH publisher, Fleet and readiness ownership; Marshall remains publication authority."
-msgstr ""
+msgstr "Hangganan: Verified TLS control upgrade, correlated error at pending-close class kasama ang lokal na DNS, SSH publisher, Fleet at readiness ownership; nananatiling publication authority ang Marshall."
 
 #: lib/marshall/documentation_messages.ex:4929
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified email identity, current elevated administrator, immediate account revocation and old-UUID cleanup through physical lifecycle fences."
-msgstr ""
+msgstr "Hangganan: Verified email identity, kasalukuyang elevated administrator, agarang account revocation at old-UUID cleanup sa physical lifecycle fence."
 
 #: lib/marshall/documentation_messages.ex:4933
 #, elixir-autogen, elixir-format
@@ -8397,22 +8397,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4941
 #, elixir-autogen, elixir-format
 msgid "Boundary: Versioned authenticated control transport, durable generation, owned physical process and GUID-bound drives."
-msgstr ""
+msgstr "Hangganan: Versioned authenticated control transport, matibay na generation, pag-aaring physical process at GUID-bound drive."
 
 #: lib/marshall/documentation_messages.ex:4945
 #, elixir-autogen, elixir-format
 msgid "Boundary: Volatile proof binds the exact currently verified VMM; one native observer may outlive proof withdrawal to report its actual terminal outcome, without granting authority."
-msgstr ""
+msgstr "Hangganan: Itinatali ng volatile proof ang eksaktong kasalukuyang verified VMM; maaaring manatili ang isang native observer lampas sa proof withdrawal upang iulat ang aktuwal nitong terminal outcome, nang hindi nagbibigay ng awtoridad."
 
 #: lib/marshall/documentation_messages.ex:4949
 #, elixir-autogen, elixir-format
 msgid "Boundary: Write permission, profile tool allowlist, model claim and boot-bound executor fence."
-msgstr ""
+msgstr "Hangganan: Write permission, profile tool allowlist, model claim at boot-bound executor fence."
 
 #: lib/marshall/documentation_messages.ex:4953
 #, elixir-autogen, elixir-format
 msgid "Boundary: Ziggy counts a newly durable terminal spool completion, excludes caller cancellation and exports only fixed cumulative numbers through a private file, Rust exporter and Ziggy-only collector intake."
-msgstr ""
+msgstr "Hangganan: Binibilang ng Ziggy ang bagong matibay na terminal spool completion, hindi isinasama ang caller cancellation at nag-e-export lamang ng nakapirming cumulative number sa pribadong file, Rust exporter at Ziggy-only collector intake."
 
 #: lib/marshall/documentation_messages.ex:4957
 #, elixir-autogen, elixir-format
@@ -8492,7 +8492,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5008
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating the control-plane endpoint. Lilly reads it through systemd LoadCredential, so the file may be readable by root only."
-msgstr ""
+msgstr "CA bundle na nagpapatunay sa control-plane endpoint. Binabasa ito ng Lilly sa systemd LoadCredential, kaya maaaring root lamang ang makabasa sa file."
 
 #: lib/marshall/documentation_messages.ex:5012
 #, elixir-autogen, elixir-format
@@ -8652,7 +8652,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5126
 #, elixir-autogen, elixir-format
 msgid "Conservative per-pool artifact budget for sealed image templates (ADR-0130); images larger than the budget use fresh verification for every provision."
-msgstr ""
+msgstr "Konserbatibong per-pool artifact budget para sa sealed image template (ADR-0130); gumagamit ng bagong verification ang mga image na mas malaki sa budget sa bawat provision."
 
 #: lib/marshall/documentation_messages.ex:5130
 #, elixir-autogen, elixir-format
@@ -8737,7 +8737,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5182
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, pagpapatakbo, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5186
 #, elixir-autogen, elixir-format
@@ -8747,7 +8747,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5190
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, pagpapatakbo, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5194
 #, elixir-autogen, elixir-format
@@ -8762,7 +8762,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5202
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, isolation, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, paghihiwalay, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5206
 #, elixir-autogen, elixir-format
@@ -8802,12 +8802,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5228
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, execution, isolation, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, pagpapatakbo, paghihiwalay, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5232
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, execution, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, pagpapatakbo, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5236
 #, elixir-autogen, elixir-format
@@ -8832,27 +8832,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5252
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, pagpapatakbo, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5256
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, pagpapatakbo, paghihiwalay, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5260
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, pagpapatakbo, paghihiwalay."
 
 #: lib/marshall/documentation_messages.ex:5264
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, pagpapatakbo, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5268
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, pagpapatakbo, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5272
 #, elixir-autogen, elixir-format
@@ -8862,12 +8862,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5276
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5280
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, isolation, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, paghihiwalay, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5284
 #, elixir-autogen, elixir-format
@@ -8877,7 +8877,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5288
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5292
 #, elixir-autogen, elixir-format
@@ -8912,7 +8912,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5310
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, transportasyon, pagpapatakbo, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5314
 #, elixir-autogen, elixir-format
@@ -8967,7 +8967,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5348
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, isolation, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: transportasyon, pagpapatakbo, paghihiwalay, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5352
 #, elixir-autogen, elixir-format
@@ -9042,7 +9042,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5396
 #, elixir-autogen, elixir-format
 msgid "Database HA, WAL archival, PITR and independent failure domains are separate from\nthe host logical backup. Test actual restore and key recovery. Retain original\nstate until acceptance, and record RPO/RTO from measured drills."
-msgstr ""
+msgstr "Hiwalay sa lohikal na backup ng host ang database HA, WAL archival, PITR at magkakahiwalay na\nfailure domain. Subukan ang aktuwal na restore at key recovery. Panatilihin ang orihinal na\nstate hanggang acceptance, at itala ang RPO/RTO mula sa nasukat na drill."
 
 #: lib/marshall/documentation_messages.ex:5400
 #, elixir-autogen, elixir-format
@@ -9052,7 +9052,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5401
 #, elixir-autogen, elixir-format
 msgid "Deadline for one root-disk image copy or flush per pool (ADR-0173); expiry fails the placement closed. Raise it only where image I/O is known to be slow, such as nested test hosts reading a non-sparse store."
-msgstr ""
+msgstr "Deadline para sa isang root-disk image copy o flush bawat pool (ADR-0173); fail-closed ang placement kapag nag-expire. Taasan lamang kung alam na mabagal ang image I/O, gaya ng nested test host na nagbabasa ng non-sparse store."
 
 #: lib/marshall/documentation_messages.ex:5405
 #, elixir-autogen, elixir-format
@@ -9077,7 +9077,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5412
 #, elixir-autogen, elixir-format
 msgid "Default immutable image for new SSH machines and initial browser drafts; admission still requires image availability."
-msgstr ""
+msgstr "Default immutable image para sa bagong SSH machine at paunang browser draft; kailangan pa rin ng admission ang availability ng image."
 
 #: lib/marshall/documentation_messages.ex:5416
 #, elixir-autogen, elixir-format
@@ -9097,17 +9097,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5425
 #, elixir-autogen, elixir-format
 msgid "Delay between garbage collection checks. The first check runs one\ninterval after boot; missed checks are caught up after downtime."
-msgstr ""
+msgstr "Pagitan ng mga garbage collection check. Tumatakbo ang unang check isang\ninterval matapos ang boot; hinahabol ang nalaktawang check pagkatapos ng downtime."
 
 #: lib/marshall/documentation_messages.ex:5429
 #, elixir-autogen, elixir-format
 msgid "Delegated Audi application zone, shared by all gateways and DNS replicas. Editor authority requires at least two canonical lowercase DNS labels."
-msgstr ""
+msgstr "Delegated Audi application zone, na pinagsasaluhan ng lahat ng gateway at DNS replica. Nangangailangan ng hindi bababa sa dalawang canonical lowercase DNS label ang editor authority."
 
 #: lib/marshall/documentation_messages.ex:5433
 #, elixir-autogen, elixir-format
 msgid "Delegated application DNS zone. Browser editor assets require at least two canonical lowercase DNS labels."
-msgstr ""
+msgstr "Delegated application DNS zone. Nangangailangan ng hindi bababa sa dalawang canonical lowercase DNS label ang browser editor asset."
 
 #: lib/marshall/documentation_messages.ex:5437
 #, elixir-autogen, elixir-format
@@ -9392,7 +9392,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5653
 #, elixir-autogen, elixir-format
 msgid "Evidence: [backup procedures](repo:docs/operations/backups.md),\n[database recovery limits](repo:docs/operations/database-recovery.md),\n[backup module](repo:nix/domains/system/backups/default.nix)."
-msgstr ""
+msgstr "Katibayan: [mga pamamaraan ng backup](repo:docs/operations/backups.md),\n[mga limitasyon ng database recovery](repo:docs/operations/database-recovery.md),\n[backup module](repo:nix/domains/system/backups/default.nix)."
 
 #: lib/marshall/documentation_messages.ex:5657
 #, elixir-autogen, elixir-format
@@ -9472,7 +9472,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5718
 #, elixir-autogen, elixir-format
 msgid "Exact locally installed Inception image allowed to receive the shared SMTP bundle."
-msgstr ""
+msgstr "Eksaktong lokal na naka-install na Inception image na pinapayagang tumanggap ng shared SMTP bundle."
 
 #: lib/marshall/documentation_messages.ex:5722
 #, elixir-autogen, elixir-format
@@ -9497,7 +9497,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5732
 #, elixir-autogen, elixir-format
 msgid "Existing enrolled source host identity. This service never generates or replaces it."
-msgstr ""
+msgstr "Umiiral na identity ng naka-enroll na source host. Hindi ito kailanman binubuo o pinapalitan ng serbisyong ito."
 
 #: lib/marshall/documentation_messages.ex:5736
 #, elixir-autogen, elixir-format
@@ -9507,7 +9507,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5740
 #, elixir-autogen, elixir-format
 msgid "Expected Linux peer UID of the Lilly connector: the Lilly service user where Lilly runs."
-msgstr ""
+msgstr "Inaasahang Linux peer UID ng Lilly connector: ang Lilly service user kung saan tumatakbo ang Lilly."
 
 #: lib/marshall/documentation_messages.ex:5744
 #, elixir-autogen, elixir-format
@@ -9537,7 +9537,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5761
 #, elixir-autogen, elixir-format
 msgid "Explicit IPv4 fleet listener address. Remote access requires separate interface-scoped firewall policy."
-msgstr ""
+msgstr "Tahasang IPv4 fleet listener address. Kailangan ng remote access ang hiwalay na interface-scoped firewall policy."
 
 #: lib/marshall/documentation_messages.ex:5765
 #, elixir-autogen, elixir-format
@@ -9552,7 +9552,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5771
 #, elixir-autogen, elixir-format
 msgid "Explicit platform service units; VM units are discovered by bounded systemd metadata."
-msgstr ""
+msgstr "Tahasang platform service unit; natutuklasan ang VM unit sa pamamagitan ng may-hangganang systemd metadata."
 
 #: lib/marshall/documentation_messages.ex:5775
 #, elixir-autogen, elixir-format
