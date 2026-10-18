@@ -4,6 +4,7 @@ import logging
 import os
 import time
 from pathlib import Path
+from typing import LiteralString
 from uuid import NAMESPACE_URL, UUID, uuid4, uuid5
 
 from antithesis.assertions import always, reachable
@@ -248,25 +249,24 @@ def run_replay_cap() -> int:
     repository_id = uuid5(NAMESPACE_URL, f"enrico-replay-cap/{runtime.fixture.repository_id}")
     generation = service_generation(runtime.mirror_root)
     if generation.state is not State.OBSERVED or generation.value is None:
-        return 0
+        return _cap_unexercised("Enrico generation unavailable before campaign")
     if not runtime.origin.set_fault("normal"):
-        return 0
+        return _cap_unexercised("origin fault reset unavailable")
     first_id: UUID | None = None
     latest_id: UUID | None = None
     deadline = time.monotonic() + 1500
     for index in range(1025):
         if time.monotonic() >= deadline:
-            LOG.info("Enrico receipt-cap campaign unexercised: bounded deadline reached")
-            return 0
+            return _cap_unexercised("bounded deadline reached")
         attempt_id = uuid4()
         submitted = runtime.enrico.refresh(
             repository_id, attempt_id, runtime.fixture.owner, runtime.fixture.name
         )
         if submitted.state is not State.OBSERVED:
-            return 0
-        terminal = _settled(runtime, repository_id, attempt_id, 12)
-        if terminal is None or terminal.state != "succeeded":
-            return 0
+            return _cap_unexercised("refresh submission unavailable")
+        # A failed fetch is still a completed receipt that occupies the bounded cap.
+        if _settled(runtime, repository_id, attempt_id, 12) is None:
+            return _cap_unexercised("attempt did not settle")
         if index == 0:
             first_id = attempt_id
         latest_id = attempt_id
@@ -277,17 +277,17 @@ def run_replay_cap() -> int:
     if (
         newest.state is not State.OBSERVED
         or newest.value is None
-        or newest.value.state != "succeeded"
+        or newest.value.state not in ("failed", "succeeded")
         or oldest.state is not State.OBSERVED
         or oldest.value is None
     ):
-        return 0
+        return _cap_unexercised("final receipt status unavailable")
     finished_generation = service_generation(runtime.mirror_root)
     if (
         finished_generation.state is not State.OBSERVED
         or finished_generation.value != generation.value
     ):
-        return 0
+        return _cap_unexercised("Enrico restarted during campaign")
     always(
         oldest.value.state == "missing",
         "Enrico oldest completed receipt evicts after 1,025 native Git attempts",
@@ -296,14 +296,14 @@ def run_replay_cap() -> int:
         reachable("Enrico evicted oldest completed attempt receipt at cap")
     baseline = runtime.origin.state()
     if baseline.state is not State.OBSERVED or baseline.value is None:
-        return 0
+        return _cap_unexercised("origin receipt baseline unavailable")
     replayed = runtime.enrico.refresh(
         repository_id, latest_id, runtime.fixture.owner, runtime.fixture.name
     )
     after = runtime.origin.receipts(baseline.value.sequence)
     final_generation = service_generation(runtime.mirror_root)
     if final_generation.state is not State.OBSERVED or final_generation.value != generation.value:
-        return 0
+        return _cap_unexercised("Enrico restarted during replay")
     if replayed.state is State.OBSERVED and replayed.value is not None:
         always(
             replayed.value == newest.value,
@@ -314,6 +314,11 @@ def run_replay_cap() -> int:
             len(after.value) == 0,
             "Enrico retained attempt replay starts no second fetch at receipt cap",
         )
+    return 0
+
+
+def _cap_unexercised(reason: LiteralString) -> int:
+    LOG.info("Enrico receipt-cap campaign unexercised: %s", reason)
     return 0
 
 

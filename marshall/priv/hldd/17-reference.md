@@ -228,6 +228,11 @@ the native blob oracle could not run Git and every attempt stopped before the
 force push (run `30a420d501d5d6d22527e679a7f00005-65-0`). The image now links
 `/opt/overalls/git`, the oracle calls it explicitly, and each early stop logs a
 fixed `Enrico published-head case unexercised` reason.
+The 1,025-attempt receipt-cap campaign ran but stopped silently in hosted run
+`56a1285564c94413812835f74246cf04-65-0`: it abandoned the campaign on the first
+failed fetch, although Enrico retains failed and succeeded receipts alike under
+the same cap. It now counts any settled attempt and logs a fixed
+`Enrico receipt-cap campaign unexercised` reason at every early stop.
 The optional `recorder-host` profile selects the TCG NixOS recorder VM and the
 three recorder commands. The workload waits for the VM health check, then its
 own read-only probe requires a fresh all-active unit sample, producer and spool
