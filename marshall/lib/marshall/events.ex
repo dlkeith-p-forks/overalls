@@ -857,7 +857,7 @@ defmodule Marshall.Events do
 
   defevent("github.refresh_finished",
     message: "GitHub credential refresh settled",
-    metadata: [connection_id: :uuid, outcome: :atom]
+    metadata: [connection_id: :uuid, outcome: {:enum, [:connected, :reconnect_required]}]
   )
 
   defevent("github.authorization_failed",
