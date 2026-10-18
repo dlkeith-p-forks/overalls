@@ -397,7 +397,7 @@ defmodule Marshall.SSH.Commands do
   # `pin`/`unpin` MUST resolve the machine like `rm`, call the Access pin
   # coordinator with the current SSH actor and succeed without a physical
   # operation. Repeating either MUST succeed with the same `pinned` result; a
-  # refusal MUST keep the coordinator's closed reason (`pin_limit`, `vm_deleted`,
+  # refusal MUST keep the coordinator's closed reason (`pin_limit`, `machine_failed`, `vm_deleted`,
   # `forbidden`). The reply MUST carry only the machine id/name and pin state.
   defp perform(%{command: command, arguments: [ref]}, actor, _key)
        when command in ["pin", "unpin"] do

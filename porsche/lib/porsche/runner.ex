@@ -236,6 +236,7 @@ defmodule Porsche.Runner do
   defp hint(:machine_pinned),
     do: "The owner has this machine pinned; unpin it first: unpin MACHINE"
 
+  defp hint(:machine_failed), do: "A failed machine cannot be pinned; an existing pin can still be removed."
   defp hint(:pin_limit), do: "You already hold the maximum number of pins; unpin one first."
   defp hint(_), do: nil
 end

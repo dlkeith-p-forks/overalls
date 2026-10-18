@@ -148,7 +148,7 @@ defmodule MarshallWeb.OverviewLive do
                   >
                     <div>
                       <.link navigate={~p"/machines/#{vm.id}"} class="machine-name">{vm.name}</.link><p>
-                        {vm.vcpu} vCPU · {gib(vm.memory_bytes)} GiB memory · {if vm.owner,
+                        {vm.vcpu} vCPU · {gib(vm.memory_bytes)} GiB memory · {gib(vm.disk_bytes)} GiB disk · {if vm.owner,
                           do: "Personal",
                           else: "Shared"}
                       </p>

@@ -42,6 +42,13 @@ defmodule MarshallWeb.OverviewLiveTest do
     {:ok, _} = Access.set_access(grant, actor: owner)
     {:ok, view, _} = live(signed_in(conn, member), "/overview")
     assert has_element?(view, "#overview-machine-#{shared.id}")
+
+    assert has_element?(
+             view,
+             "#overview-machine-#{shared.id} p",
+             ~r/vCPU · .* GiB memory · .* GiB disk · Shared/
+           )
+
     assert has_element?(view, "#overview-machine-os-#{shared.id}", "synthetic-test-image")
     # Operating system comes first, then status.
     assert has_element?(view, "#overview-machine-os-#{shared.id} + .status-label")

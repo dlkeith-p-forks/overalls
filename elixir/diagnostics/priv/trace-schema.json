@@ -2977,6 +2977,7 @@
     "machine_changed",
     "machine_cleanup_failed",
     "machine_connection",
+    "machine_failed",
     "machine_grants",
     "machine_id",
     "machine_identity_mismatch",

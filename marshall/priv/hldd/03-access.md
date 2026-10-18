@@ -489,8 +489,11 @@ stateDiagram-v2
 ```
 
 Pinning requires current Cedar read access, checked under the machine's row lock
-in the same transaction, and refuses a machine with deleted intent (`vm_deleted`)
-or a 21st pinned machine (`pin_limit`). Unpinning needs only a live row, so a user
+in the same transaction, and refuses a machine with deleted intent (`vm_deleted`),
+a machine whose observed state is failed (`machine_failed`) or a 21st pinned
+machine (`pin_limit`). A pin taken before the machine failed stays, and its holder
+can still unpin it; the Pin control is hidden on failed machines while Unpin
+remains. Unpinning needs only a live row, so a user
 whose access ended can still clear the pin; a never-pinned machine refuses with
 `forbidden`. Repeating either request returns the row unchanged and emits no
 event. A pin grants no authority: it does not appear in the Cedar entity and

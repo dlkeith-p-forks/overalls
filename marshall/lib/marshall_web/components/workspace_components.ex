@@ -142,7 +142,7 @@ defmodule MarshallWeb.WorkspaceComponents do
 
     ~H"""
     <button
-      :if={@pinned || @vm.desired_state != :deleted}
+      :if={@pinned || (@vm.desired_state != :deleted && @vm.observed_state != :failed)}
       type="button"
       id={@id}
       class="console-button ghost pin-toggle"

@@ -185,4 +185,25 @@ defmodule MarshallWeb.MachinePinsLiveTest do
     |> LazyHTML.attribute("id")
     |> Enum.map(&String.replace_prefix(&1, "overview-machine-", ""))
   end
+
+  test "a failed machine shows no Pin control but a pinned one keeps Unpin", %{
+    conn: conn,
+    owner: owner,
+    vms: [first, second | _]
+  } do
+    {:ok, _} = Access.pin_machine(%{vm_id: second.id}, actor: owner)
+
+    for vm <- [first, second] do
+      [current] = Ledger.read!(VirtualMachine, id: vm.id)
+      Ledger.update!(current, :observe, %{observed_state: :failed})
+    end
+
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines")
+    refute has_element?(view, "#pin-#{first.id}")
+    assert has_element?(view, "#pin-#{second.id}[aria-pressed=true]", "Unpin")
+
+    view |> element("#pin-#{second.id}") |> render_click()
+    refute has_element?(view, "#pin-#{second.id}")
+    assert [%Pin{state: :unpinned}] = Ledger.read!(Pin, vm_id: second.id, user_id: owner.id)
+  end
 end

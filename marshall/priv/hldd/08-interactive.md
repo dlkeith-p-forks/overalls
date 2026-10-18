@@ -572,7 +572,8 @@ The pinned section is a separate bounded read (at most twenty rows, newest pin
 first) that applies the same per-row Cedar read decision and projection as the
 keyset page; the page then excludes those ids, so a machine appears once and
 paging neither repeats nor skips. The pinned section is shown on the first page
-only. The Overview fills its six preview slots with pinned machines first.
+only. The Overview fills its six preview slots with pinned machines first; each
+preview lists vCPU, memory, disk size and whether the machine is personal or shared.
 
 Every row, preview and machine header carries a text `Pin`/`Unpin` control
 (`#pin-<machine>`, `aria-pressed`) and a `[Pinned]` label that leads the status

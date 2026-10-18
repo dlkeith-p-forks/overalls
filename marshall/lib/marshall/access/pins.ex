@@ -67,6 +67,8 @@ defmodule Marshall.Access.Pins do
   # It MUST refuse a 21st pinned machine for one user with `pin_limit`, counted
   # under a per-user advisory lock so concurrent pins cannot exceed the cap.
   # Pinning an already pinned machine MUST return the existing row unchanged.
+  # A machine whose observed state is `failed` MUST NOT gain a new pin
+  # (`machine_failed`); a pin it already holds stays and MAY be unpinned.
   # Unpinning needs only a live pin row, not current read access, so a user
   # whose access ended can still clear the pin; a never-pinned machine refuses.
   @spec pin!(String.t(), User.t()) :: outcome()
@@ -79,10 +81,12 @@ defmodule Marshall.Access.Pins do
         {:unchanged, pin}
 
       %Pin{state: :unpinned} = pin ->
+        refuse_failed!(vm)
         check_limit!(user_id)
         {:pinned, Ledger.update!(pin, :repin, %{pinned_at: Ledger.now()})}
 
       nil ->
+        refuse_failed!(vm)
         check_limit!(user_id)
 
         {:pinned,
@@ -126,6 +130,12 @@ defmodule Marshall.Access.Pins do
     |> Ash.Query.lock(:for_update)
     |> Ash.read_one!(actor: SystemActor.compute())
   end
+
+  @spec refuse_failed!(VirtualMachine.t()) :: :ok
+  defp refuse_failed!(%VirtualMachine{observed_state: :failed}),
+    do: Ledger.rollback(:machine_failed)
+
+  defp refuse_failed!(_vm), do: :ok
 
   @spec check_limit!(String.t()) :: :ok
   defp check_limit!(user_id) do
