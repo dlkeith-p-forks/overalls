@@ -233,9 +233,11 @@ The 1,025-attempt receipt-cap campaign ran but stopped silently in hosted run
 failed fetch, although Enrico retains failed and succeeded receipts alike under
 the same cap. It now counts any settled attempt and logs a fixed
 `Enrico receipt-cap campaign unexercised` reason at every early stop. Run
-`3f76c3f47ad4062ba0d1c37896e5f3e9-65-0` showed the campaign is not completable in
-a hosted run (about 5.7 s per attempt, roughly 95 minutes for 1,025), so the cap
-stays covered by Enrico's unit and property tests. The same run produced one
+`3f76c3f47ad4062ba0d1c37896e5f3e9-65-0` measured about 5.7 s per attempt on its
+cleanest timeline, which suggested the campaign could not finish, yet the next
+run (`ddd07ab2f16fe84d9cf3020e10a648ce-65-0`) completed it once and hit every
+cap assertion (oldest receipt evicted, newest replayable, no second fetch);
+Enrico's unit and property tests remain the primary cap evidence. The 3f76c3f4 run produced one
 counterexample to the ninth-refresh refusal: a held fetch hit Enrico's 10 s
 read timeout under a slowed network, freeing a slot that the ninth refresh then
 legitimately took, while a holder snapshot scanned before that change still
