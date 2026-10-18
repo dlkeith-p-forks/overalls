@@ -8241,7 +8241,7 @@ Type: `package`.
 Default:
 
 ```nix
-<derivation underclass-0.1.0-469aff4>
+<derivation underclass-0.1.0-7169223>
 ```
 
 

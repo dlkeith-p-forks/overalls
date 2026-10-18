@@ -20,3 +20,14 @@ The migration, Ash action, LiveView behavior, Req client, Hegel input and
 success/failure properties, and security-header expectations are versioned with
 the feature. External Ghost delivery, provider availability, and production
 mail receipt remain unverified by local BEAM tests.
+
+The final focused Marshall run passed **40 tests** in **12.4 seconds**, seed
+**587216**. It includes the newsletter dismissal, Overview LiveView and
+newsletter property suites alongside Peach, PaperTrail and Galileo fixtures.
+The exact seven-file command is recorded in the
+[reflection review](2026-10-18-guest-reflection.md); its captured output is
+`/tmp/marshall-focused-final.log`. Each of the three newsletter Hegel properties
+runs **100 cases**. The run records self-only monotonic dismissal, stale and
+foreign actor refusals, bounded mailbox validation, injected Ghost success and
+failure mappings, and removal of the invitation in the local LiveView fixture.
+It does not establish a packaged browser remount or external Ghost delivery.

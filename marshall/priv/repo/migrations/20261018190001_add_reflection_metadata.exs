@@ -12,12 +12,15 @@ defmodule Marshall.Repo.Migrations.AddReflectionMetadata do
     end
 
     create constraint(:compute_virtual_machines, :compute_vm_labels_limit,
-      check: "cardinality(labels) <= 32")
+             check: "cardinality(labels) <= 32"
+           )
 
     create constraint(:compute_virtual_machines, :compute_vm_comment_limit,
-      check: "octet_length(comment) <= 2048")
+             check: "octet_length(comment) <= 2048"
+           )
 
     create constraint(:galileo_integrations, :galileo_comment_limit,
-      check: "octet_length(comment) <= 2048")
+             check: "octet_length(comment) <= 2048"
+           )
   end
 end

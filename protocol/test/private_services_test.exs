@@ -12,7 +12,11 @@ defmodule OverallsProtocol.PrivateServicesTest do
     assert PrivateServices.integration_zone() == "integration.internal"
     assert PrivateServices.lifetimes() == %{root: 20, intermediate: 10, server: 10}
 
-    assert PrivateServices.certificate_names() == ["llm.internal", "*.integration.internal"]
+    assert PrivateServices.certificate_names() == [
+             "llm.internal",
+             "reflection.internal",
+             "*.integration.internal"
+           ]
   end
 
   property "execution epochs cannot be missing, negative or unbounded",

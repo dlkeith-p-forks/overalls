@@ -436,3 +436,9 @@ beside `audiPrivate`: disabled Peach produces a null backend socket, and
 requires a bounded canonical Unix-socket path. Mandatory Lilly, Ziggy and Galileo
 dependencies remain. Fleet enablement, socket access and credential lifetime,
 and complete native guest journeys remain separate acceptance work.
+
+Before enabling reflection, reissue the private leaf through the existing offline
+issuer custody with the fixed `reflection.internal` SAN. Read-only inspection
+found only `llm.internal` and `*.integration.internal` on deployed leaves. Current
+private health checks validate `llm.internal`; their success does not establish
+reflection hostname verification. Disabled Peach requires no certificate change.

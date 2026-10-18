@@ -69,6 +69,10 @@ Recorded property histories for current/stale execution and credential expiry,
 successful packaged guest projection, host loss, and native same-host network
 isolation remain. The declared fleet currently does not enable Peach; enabled
 socket access and packaged credential lifetime still require review.
+The currently deployed private leaf lacks the fixed `reflection.internal` SAN;
+offline leaf reissue and actual hostname-verified guest TLS acceptance are
+required before enabling the service. Disabled Peach requires no certificate
+mutation.
 
 ## Related decisions
 
