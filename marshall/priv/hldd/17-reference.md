@@ -880,6 +880,11 @@ that host/target verification is separate from native guest growth execution.
 Both actual-host NixOS toplevel source builds passed in 691 seconds with the
 canonical locks and native-growth correction. Their release/build closure is
 separate from later handbook-only rebuilds, deployment and live guest readiness.
+The subsequent protocol merge serializes its control-client fixture and applies
+the CI profile directly to the standalone workspace-source check, retaining all
+500 intended native cases. The earlier repaired-count full gate passed 299
+tests, Covenant 14/14 and Dialyzer with zero errors or skips; the merged profile
+and serialization require a separate focused result.
 The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

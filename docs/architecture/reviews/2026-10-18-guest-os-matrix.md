@@ -306,6 +306,14 @@ seconds, seed 947632, Covenant 15/15 and forced Dialyzer with zero errors.
 That pass preceded these intended-count repairs; the final repaired-source
 protocol, Lilly and Marshall full gates remain separate pending records.
 
+The later protocol merge serializes the control-client fixture and selects the
+CI profile directly on the standalone workspace-source native check. The
+reviewed count stays 500: the incoming two-case outer wrapper and ignored inner
+`max_runs: 50` would reduce exploration from the already passing native count.
+The merged profile/serialization source requires its own focused verification;
+the prior 299-test full repaired-count gate passed in 417.3 seconds, seed
+953483, Covenant 14/14 and Dialyzer with zero errors or skips.
+
 The scenario validator additionally recognizes exact qualified Elixir
 `Hegel.check(...)`/`Hegel.run(...)` calls, alongside existing property markers.
 Negative-prefix and tag-only fixtures retain refusal; path containment, inspected
