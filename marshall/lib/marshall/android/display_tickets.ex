@@ -9,7 +9,8 @@ defmodule Marshall.Android.DisplayTickets do
           required(:machine_id) => String.t(),
           required(:actor_id) => String.t(),
           required(:mode) => mode(),
-          required(:issued_at) => integer()
+          required(:issued_at) => integer(),
+          required(:generation) => pos_integer()
         }
 
   # @cc [owner:ghuntley,label:security] android-display-ticket-fence
@@ -21,12 +22,14 @@ defmodule Marshall.Android.DisplayTickets do
     with true <- android_display?(vm),
          true <- is_binary(vm_id(vm)),
          true <- is_binary(actor_id(actor)),
-         true <- Marshall.Access.Authorization.allowed?(vm, actor, "read") do
+         true <- Marshall.Access.Authorization.allowed?(vm, actor, "read"),
+         generation when is_integer(generation) and generation > 0 <- generation(vm) do
       claim = %{
         machine_id: vm_id(vm),
         actor_id: actor_id(actor),
         mode: mode,
-        issued_at: System.system_time(:second)
+        issued_at: System.system_time(:second),
+        generation: generation
       }
 
       {:ok, Phoenix.Token.sign(MarshallWeb.Endpoint, @salt, claim)}
@@ -38,9 +41,9 @@ defmodule Marshall.Android.DisplayTickets do
   @spec verify(String.t()) :: {:ok, claim()} | {:error, :invalid_ticket}
   def verify(token) when is_binary(token) do
     case Phoenix.Token.verify(MarshallWeb.Endpoint, @salt, token, max_age: @max_age) do
-      {:ok, %{machine_id: machine_id, actor_id: actor_id, mode: mode, issued_at: issued_at} = claim}
+      {:ok, %{machine_id: machine_id, actor_id: actor_id, mode: mode, issued_at: issued_at, generation: generation} = claim}
       when is_binary(machine_id) and is_binary(actor_id) and mode in [:viewer, :controller] and
-             is_integer(issued_at) ->
+             is_integer(issued_at) and is_integer(generation) and generation > 0 ->
         {:ok, claim}
 
       _ -> {:error, :invalid_ticket}
@@ -58,4 +61,6 @@ defmodule Marshall.Android.DisplayTickets do
   defp vm_id(_), do: nil
   defp actor_id(%{id: id}), do: id
   defp actor_id(_), do: nil
+
+  defp generation(vm), do: Map.get(vm, :generation) || Map.get(vm, :execution_epoch) || 1
 end
