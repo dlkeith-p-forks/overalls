@@ -23,6 +23,8 @@ from guest_lifecycle.readiness import observed_gap
 from guest_lifecycle.witness import GuestSpec, GuestWitness, GuestWitnessClient
 
 LOG = logging.getLogger(__name__)
+# Uncertain final stops are resubmitted with one key before the slot is abandoned.
+RELEASE_ATTEMPTS = 5
 
 
 @dataclass(frozen=True)
@@ -256,7 +258,14 @@ def _release_slot(operator: ComputeLifecycleOperator, vm_id: UUID) -> None:
     """Submit a final stop so a later cycle can find the single guest slot free.
 
     The stop is an attempt only: its outcome is not sampled and proves nothing.
+    An uncertain reply is resubmitted with the same request key, which Marshall
+    deduplicates, so a lost reply cannot leave the slot occupied for later cycles.
     """
-    reply = operator.lifecycle(vm_id, "stop", uuid4())
-    if reply.state is not State.OBSERVED or reply.value is None:
-        LOG.info("Guest lifecycle final stop uncertain")
+    key = uuid4()
+    for attempt in range(RELEASE_ATTEMPTS):
+        if attempt:
+            time.sleep(5)
+        reply = operator.lifecycle(vm_id, "stop", key)
+        if reply.state is State.OBSERVED and reply.value is not None:
+            return
+    LOG.info("Guest lifecycle final stop uncertain")

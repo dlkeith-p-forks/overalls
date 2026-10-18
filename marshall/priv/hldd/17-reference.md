@@ -358,7 +358,17 @@ execution epoch and generation once a placement stopped, while the fixture
 executor binds a stop to that exact boot, so every stop was deferred until the
 driver gave up and later cycles found the slot held. The inventory now reports
 the stopped boot tuple from its stop record, and the driver submits a final
-stop on every exit after admission.
+stop on every exit after admission. Run `23988c965cff394cc43e5a8553dc12b0-65-0`
+logged per-dimension gap reasons: most cycles stopped at
+`compute_catalog_unavailable` because each operator request boots a fresh
+Marshall BEAM whose cold TLS pool missed the production 3 s handshake under
+injected latency, so the evaluation crashed before reaching Compute; a lost
+final stop then left the single slot occupied (`capacity_insufficient_vcpu`).
+Operator request evaluations now use a harness-only small pool with longer
+connect, handshake and queue budgets, reads and `request_key`-idempotent
+provision and lifecycle evaluations retry a crashed attempt, the final stop is
+resubmitted with one request key, and the driver waits up to 120 s for a reply.
+Production Repo settings and the long-lived Marshall nodes are unchanged.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The

@@ -126,7 +126,8 @@ class ComputeLifecycleOperator:
 
     def _result(self, request_id: UUID, operation: str) -> Observation[OperatorReply]:
         result_file = self._results / f"{request_id}.json"
-        deadline = time.monotonic() + 45
+        # The operator is serial and may retry a crashed evaluation.
+        deadline = time.monotonic() + 120
         while time.monotonic() < deadline:
             try:
                 info = result_file.lstat()
