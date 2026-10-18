@@ -47,6 +47,7 @@ defmodule MarshallWeb.AccountLiveTest do
 
       assert has_element?(view, "#profile #profile-account")
       assert has_element?(view, "#profile #time-zone-form")
+      assert has_element?(view, "#profile #git-settings #git-settings-form")
       assert has_element?(view, "#security #verification-status")
       assert has_element?(view, "#security #passkey-ceremony #add-passkey")
       assert has_element?(view, "#security #passkey-ceremony #verify-passkey")

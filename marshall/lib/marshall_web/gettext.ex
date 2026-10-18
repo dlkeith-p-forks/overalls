@@ -21,5 +21,5 @@ defmodule MarshallWeb.Gettext do
 
   See the [Gettext Docs](https://gettext.hexdocs.pm) for detailed usage.
   """
-  use Gettext.Backend, otp_app: :marshall
+  use Gettext.Backend, otp_app: :marshall, interpolation: MarshallWeb.GettextInterpolation
 end

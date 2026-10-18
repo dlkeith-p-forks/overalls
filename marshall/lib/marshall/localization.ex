@@ -38,8 +38,11 @@ defmodule Marshall.Localization do
 
   @spec direction(term()) :: direction()
   def direction(locale) do
-    case Localize.Locale.get(normalize(locale) || default(), [:layout, :character_order]) do
-      {:ok, direction} when direction in [:rtl, :ltr] -> direction
+    with {:ok, tag} <- Localize.LanguageTag.new(normalize(locale) || default()),
+         {:ok, direction} when direction in [:rtl, :ltr] <-
+           Localize.Locale.get(tag, [:layout, :character_order]) do
+      direction
+    else
       _ -> :ltr
     end
   end

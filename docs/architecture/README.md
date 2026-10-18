@@ -1,14 +1,15 @@
 # Architecture
 
-[ADR-0198](decisions/0198-github-com-owner-integration.md) accepts `github-com`
-at `com-github.integration.internal`: per-user OAuth custody, VM-owner identity,
-automatic eligible owner machines with persistent detach, and fenced scheduled
-refresh. Shared writers use the owner's authority. The existing wildcard,
-generic attachments and single-attempt leases remain. Seven-family client and
-retained-machine support, rotating-token recovery and provider acceptance retain
-the implementation boundaries in the [review](reviews/2026-10-18-github-com-integration.md).
+[ADR-0201](decisions/0201-localized-human-surfaces.md) accepts Localize-backed human surfaces with validated language preferences and LTR/RTL presentation; translation and native browser acceptance remain partial.
 
-[ADR-0199](decisions/0199-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
+[ADR-0200](decisions/0200-windows-browser-editor-candidate.md) accepts a native
+Windows browser editor with a SYSTEM gateway broker and personal SAM/S4U workers.
+Its separate `windows-editor-v1` manifest-v7 and bundle-v4 candidate contract
+requires the immutable editor tuple. The candidate remains outside the selected
+production catalog; `windows-v1` keeps editor false and exact native/browser
+acceptance remains unrecorded.
+
+[ADR-0198](decisions/0198-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0188](decisions/0188-signed-overalls-cachix-substitution.md) adds the
 signed Overalls Cachix read cache to all Nix-running hosts, installers and guest
@@ -718,7 +719,7 @@ request withdrawal acceptance passed on `7fda1272`; see the
 Current owner liveness also refuses
 archived teams despite retained memberships and attachments.
 [ADR-0077](decisions/0077-teams-and-shared-resources.md)
-partially adds sample-host-style teams sharing machines and integrations with
+partially adds exe.dev-style teams sharing machines and integrations with
 owner/admin/member roles and a consent-based ownership transfer state
 machine. Current team members can use shared guest SSH, personal terminals and
 profile-permitted agents; ordinary machine management remains owner/admin-only
@@ -1638,4 +1639,4 @@ escape cleanup or physical storage acceptance; those remain open.
 
 ADR-0186 records the Covenant test-only contract layer used by all Elixir applications. Covenant obligations and tests provide deterministic executable evidence while existing ADR, HLDD, native and integration records remain authoritative for deployment and isolation guarantees.
 
-Localization follows [ADR-0200](decisions/0200-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.
+Localization follows [ADR-0201](decisions/0201-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.

@@ -1,15 +1,18 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=1; plural=0;\nLanguage: ko\n"
+msgstr ""
+"Language: ko\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: lib/marshall_web/live/machines_live.ex:1064
 #, elixir-autogen, elixir-format
@@ -21,21 +24,18 @@ msgstr " 그리고 계산"
 msgid "%{count} member"
 msgid_plural "%{count} members"
 msgstr[0] "%{count} 회원"
-msgstr[1] "%{count} 회원들"
 
 #: lib/marshall_web/live/admin/users_live.ex:157
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} 소유 머신"
-msgstr[1] "%{count} 소유 머신"
 
-#: lib/marshall_web/live/account_live.ex:441
+#: lib/marshall_web/live/account_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
 msgstr[0] "%{count} 등록된 키"
-msgstr[1] "%{count} 등록된 키"
 
 #: lib/marshall_web/live/admin/operations_live.ex:218
 #, elixir-autogen, elixir-format
@@ -52,7 +52,6 @@ msgstr "%{seconds}초%{suffix}"
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
 msgstr[0] "%{user} · %{count} 보기"
-msgstr[1] "%{user} · %{count} 보기"
 
 #: lib/marshall_web/live/resize_live.ex:284
 #, elixir-autogen, elixir-format
@@ -132,7 +131,7 @@ msgstr "%{value1} → %{value2} GiB"
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
 
-#: lib/marshall_web/live/integrations_live.ex:342
+#: lib/marshall_web/live/integrations_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "****(쓰기 전용)"
@@ -153,12 +152,12 @@ msgstr "+ 신규"
 msgid "+ Queue clone"
 msgstr "+ 대기열 복제"
 
-#: lib/marshall_web/live/account_live.ex:451
+#: lib/marshall_web/live/account_live.ex:463
 #, elixir-autogen, elixir-format
 msgid "1. Profile"
 msgstr "1. 프로필"
 
-#: lib/marshall_web/live/account_live.ex:568
+#: lib/marshall_web/live/account_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "2. Sign-in and passkeys"
 msgstr "2. 로그인 및 비밀번호"
@@ -168,7 +167,7 @@ msgstr "2. 로그인 및 비밀번호"
 msgid "24 hours"
 msgstr "24시간"
 
-#: lib/marshall_web/live/account_live.ex:681
+#: lib/marshall_web/live/account_live.ex:691
 #, elixir-autogen, elixir-format
 msgid "3. SSH keys"
 msgstr "3. SSH 키"
@@ -191,7 +190,9 @@ msgstr "; 그러면 다음 기한 확인에서 새로운 세대를 요청할 수
 #: lib/marshall_web/live/machines_live.ex:527
 #, elixir-autogen, elixir-format
 msgid "A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents."
-msgstr "중첩된 기계를 위한 작업복 개발 환경. 전용 이미지, 추가 256GiB 데이터 디스크 및 더 높은 최소 리소스를 사용합니다. 해당 AI 에이전트는 하위 에이전트를 시작할 수 있습니다."
+msgstr ""
+"중첩된 기계를 위한 작업복 개발 환경. 전용 이미지, 추가 256GiB 데이터 디스크 및 더 높은 최소 리소스를 사용합니다. 해당 AI "
+"에이전트는 하위 에이전트를 시작할 수 있습니다."
 
 #: lib/marshall_web/live/threads_live.ex:2479
 #: lib/marshall_web/live/threads_live.ex:2481
@@ -269,8 +270,8 @@ msgstr "AI 요청"
 msgid "AI requests · last 30 days"
 msgstr "AI 요청 · 지난 30일"
 
-#: lib/marshall_web/components/layouts.ex:324
-#: lib/marshall_web/components/layouts.ex:412
+#: lib/marshall_web/components/layouts.ex:322
+#: lib/marshall_web/components/layouts.ex:410
 #, elixir-autogen, elixir-format
 msgid "AI usage"
 msgstr "AI 사용"
@@ -303,8 +304,8 @@ msgstr "소유권 수락"
 msgid "Access"
 msgstr "입장"
 
-#: lib/marshall_web/components/layouts.ex:385
-#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:383
+#: lib/marshall_web/components/layouts.ex:428
 #: lib/marshall_web/live/admin/access_live.ex:76
 #, elixir-autogen, elixir-format
 msgid "Access authority"
@@ -326,10 +327,10 @@ msgid "Access updated."
 msgstr "액세스가 업데이트되었습니다."
 
 #: lib/marshall_web/components/layouts.ex:232
-#: lib/marshall_web/components/layouts.ex:315
-#: lib/marshall_web/components/layouts.ex:418
+#: lib/marshall_web/components/layouts.ex:314
+#: lib/marshall_web/components/layouts.ex:416
 #: lib/marshall_web/live/account_live.ex:34
-#: lib/marshall_web/live/account_live.ex:426
+#: lib/marshall_web/live/account_live.ex:438
 #: lib/marshall_web/live/admin/access_live.ex:93
 #: lib/marshall_web/live/admin/access_live.ex:139
 #: lib/marshall_web/live/machines_live.ex:932
@@ -354,7 +355,7 @@ msgstr "계정 페이지"
 msgid "Account request accepted."
 msgstr "계정 요청이 승인되었습니다."
 
-#: lib/marshall_web/components/layouts.ex:374
+#: lib/marshall_web/components/layouts.ex:372
 #, elixir-autogen, elixir-format
 msgid "Accounting"
 msgstr "회계"
@@ -377,12 +378,13 @@ msgstr "행동"
 #: lib/marshall_web/live/admin/access_live.ex:192
 #: lib/marshall_web/live/admin/git_live.ex:101
 #: lib/marshall_web/live/admin/workloads_live.ex:112
-#: lib/marshall_web/live/integrations_live.ex:360
+#: lib/marshall_web/live/integrations_live.ex:230
 #: lib/marshall_web/live/threads_live.ex:1776
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "행위"
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
 #: lib/marshall_web/live/threads_live.ex:1502
 #, elixir-autogen, elixir-format
 msgid "Active"
@@ -405,12 +407,12 @@ msgstr "활동"
 msgid "Actor"
 msgstr "배우"
 
-#: lib/marshall_web/live/account_live.ex:757
+#: lib/marshall_web/live/account_live.ex:767
 #, elixir-autogen, elixir-format
 msgid "Add SSH key"
 msgstr "SSH 키 추가"
 
-#: lib/marshall_web/live/account_live.ex:734
+#: lib/marshall_web/live/account_live.ex:744
 #, elixir-autogen, elixir-format
 msgid "Add a key"
 msgstr "키 추가"
@@ -420,7 +422,7 @@ msgstr "키 추가"
 msgid "Add a mirror"
 msgstr "거울 추가"
 
-#: lib/marshall_web/live/integrations_live.ex:404
+#: lib/marshall_web/live/integrations_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "통합 추가"
@@ -430,7 +432,7 @@ msgstr "통합 추가"
 msgid "Add mirror"
 msgstr "거울 추가"
 
-#: lib/marshall_web/live/account_live.ex:602
+#: lib/marshall_web/live/account_live.ex:612
 #, elixir-autogen, elixir-format
 msgid "Add passkey"
 msgstr "패스키 추가"
@@ -440,14 +442,14 @@ msgstr "패스키 추가"
 msgid "Add, change or remove a member"
 msgstr "구성원 추가, 변경 또는 제거"
 
-#: lib/marshall_web/live/account_live.ex:665
-#: lib/marshall_web/live/account_live.ex:728
+#: lib/marshall_web/live/account_live.ex:675
+#: lib/marshall_web/live/account_live.ex:738
 #: lib/marshall_web/live/admin/access_live.ex:141
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "추가됨"
 
-#: lib/marshall_web/live/account_live.ex:755
+#: lib/marshall_web/live/account_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Adding…"
 msgstr "첨가…"
@@ -468,7 +470,7 @@ msgid "Admin"
 msgstr "관리자"
 
 #: lib/marshall_web/components/layouts.ex:283
-#: lib/marshall_web/components/layouts.ex:382
+#: lib/marshall_web/components/layouts.ex:380
 #, elixir-autogen, elixir-format
 msgid "Administration"
 msgstr "관리"
@@ -502,7 +504,7 @@ msgstr "관리자 작업"
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:234
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:267
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:302
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:323
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:321
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "가입"
@@ -517,10 +519,12 @@ msgstr "입학 설정이 업데이트되었습니다."
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "허용 설정이 잘못되었거나 노드가 준비되지 않았습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:507
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:505
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
-msgstr "이 페이지에 대한 권고 미리보기입니다. 각 워크로드는 독립적으로 평가됩니다. 목적지와 사용 가능한 용량은 변경될 수 있습니다. 입학은 각 이동이 시작될 때 자원을 재확인하고 예약합니다."
+msgstr ""
+"이 페이지에 대한 권고 미리보기입니다. 각 워크로드는 독립적으로 평가됩니다. 목적지와 사용 가능한 용량은 변경될 수 있습니다. 입학은 각"
+" 이동이 시작될 때 자원을 재확인하고 예약합니다."
 
 #: lib/marshall_web/live/threads_live.ex:2512
 #, elixir-autogen, elixir-format
@@ -599,7 +603,9 @@ msgstr "이미 설치됨"
 #: lib/marshall_web/controllers/auth_controller.ex:89
 #, elixir-autogen, elixir-format
 msgid "An account with this email already exists. We've sent a link to that\naddress - confirm it to finish linking this provider to your account.\n"
-msgstr "이 이메일을 사용하는 계정이 이미 존재합니다. 우리는 그것에 대한 링크를 보냈습니다\n주소 - 이 공급자를 귀하의 계정에 연결하는 것을 완료하려면 주소를 확인하세요.\n"
+msgstr ""
+"이 이메일을 사용하는 계정이 이미 존재합니다. 우리는 그것에 대한 링크를 보냈습니다\n"
+"주소 - 이 공급자를 귀하의 계정에 연결하는 것을 완료하려면 주소를 확인하세요.\n"
 
 #: lib/marshall_web/live/threads_live.ex:2062
 #, elixir-autogen, elixir-format
@@ -642,8 +648,8 @@ msgid "Any time"
 msgstr "언제든지"
 
 #: lib/marshall_web/components/layouts.ex:236
-#: lib/marshall_web/components/layouts.ex:476
-#: lib/marshall_web/components/layouts.ex:477
+#: lib/marshall_web/components/layouts.ex:474
+#: lib/marshall_web/components/layouts.ex:475
 #: lib/marshall_web/controllers/docs_html/show.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Appearance"
@@ -654,7 +660,7 @@ msgstr "모습"
 msgid "Apply"
 msgstr "적용하다"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:358
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:356
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "허용 설정 적용"
@@ -694,7 +700,7 @@ msgstr "에이전트 CLI 승인"
 msgid "Approve key"
 msgstr "키 승인"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:555
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:553
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "이동 중단 시간 승인"
@@ -768,13 +774,12 @@ msgstr "보관처리가 요청되었습니다. 보관이 완료되기 전에 머
 msgid "Archiving · releasing the machine"
 msgstr "보관 및 머신 해제"
 
-#: lib/marshall_web/live/integrations_live.ex:288
-#: lib/marshall_web/live/integrations_live.ex:398
+#: lib/marshall_web/live/integrations_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "붙이다"
 
-#: lib/marshall_web/live/integrations_live.ex:395
+#: lib/marshall_web/live/integrations_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "ID로 머신 연결"
@@ -802,8 +807,8 @@ msgstr "시도"
 msgid "Audi services"
 msgstr "아우디 서비스"
 
-#: lib/marshall_web/components/layouts.ex:387
-#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:385
+#: lib/marshall_web/components/layouts.ex:429
 #: lib/marshall_web/live/admin/audit_live.ex:172
 #, elixir-autogen, elixir-format
 msgid "Audit"
@@ -844,14 +849,16 @@ msgstr "스레드로 돌아가기"
 #: lib/marshall_web/live/admin/jobs_live.ex:200
 #, elixir-autogen, elixir-format
 msgid "Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion."
-msgstr "Oban이 운영하는 백그라운드 작업입니다. 성공적인 작업은 물리적 결과가 아직 보류 중인 작업을 파견했을 수 있습니다. 완료하려면 관련 작업을 따르세요."
+msgstr ""
+"Oban이 운영하는 백그라운드 작업입니다. 성공적인 작업은 물리적 결과가 아직 보류 중인 작업을 파견했을 수 있습니다. 완료하려면 관련 "
+"작업을 따르세요."
 
-#: lib/marshall_web/live/integrations_live.ex:433
+#: lib/marshall_web/live/integrations_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "기본 사용자:통과"
 
-#: lib/marshall_web/live/integrations_live.ex:427
+#: lib/marshall_web/live/integrations_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "무기명 토큰"
@@ -886,7 +893,9 @@ msgstr "디스크를 안전하게 캡처할 수 있도록 소스를 잠시 중�
 #: lib/marshall_web/live/overview_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
-msgstr "Chrome 또는 Firefox 확장 프로그램을 사용하여 GitHub, GitLab, Codeberg 또는 Bitbucket 저장소를 전체 작업복으로 가져옵니다."
+msgstr ""
+"Chrome 또는 Firefox 확장 프로그램을 사용하여 GitHub, GitLab, Codeberg 또는 Bitbucket 저장소를 "
+"전체 작업복으로 가져옵니다."
 
 #: lib/marshall_web/components/layouts.ex:224
 #, elixir-autogen, elixir-format
@@ -894,7 +903,7 @@ msgid "Browser"
 msgstr "브라우저"
 
 #: lib/marshall_web/components/layouts.ex:227
-#: lib/marshall_web/components/layouts.ex:329
+#: lib/marshall_web/components/layouts.ex:327
 #, elixir-autogen, elixir-format
 msgid "Browser extension"
 msgstr "브라우저 확장"
@@ -925,7 +934,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU(vCPU)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:369
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "보류 후 CPU"
@@ -935,28 +944,28 @@ msgstr "보류 후 CPU"
 msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "CPU와 메모리는 증가하거나 감소할 수 있습니다. 디스크 크기는 커질 수만 있습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "CPU 헤드룸"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:336
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "CPU 오버헤드(코어)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:402
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:477
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:400
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:475
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "운동"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:471
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:469
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "캠페인 내역"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:440
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:438
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "내구성 있는 제어 영역 기록을 통해 캠페인, 워크로드 및 재배치 마일스톤을 확인할 수 있습니다."
@@ -1005,6 +1014,8 @@ msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "취소를 요청했습니다. 복구 후에도 정리가 계속될 수 있습니다."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
+#: lib/marshall_web/live/admin/jobs_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:613
 #: lib/marshall_web/live/resize_live.ex:457
 #: lib/marshall_web/live/resize_live.ex:487
 #: lib/marshall_web/live/resize_live.ex:493
@@ -1093,11 +1104,13 @@ msgstr "변화"
 msgid "Check your email for a sign-in link. Your account will be created automatically when you sign in."
 msgstr "이메일에서 로그인 링크를 확인하세요. 로그인하면 계정이 자동으로 생성됩니다."
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:604
 #: lib/marshall_web/live/machines_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "목적지 준비 확인"
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
 #: lib/marshall_web/live/machines_live.ex:608
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
@@ -1113,12 +1126,12 @@ msgstr "하위 스레드"
 msgid "Child thread created"
 msgstr "하위 스레드가 생성되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:322
+#: lib/marshall_web/live/account_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Choose a language from the list."
 msgstr "목록에서 언어를 선택하세요."
 
-#: lib/marshall_web/live/account_live.ex:227
+#: lib/marshall_web/live/account_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Choose a time zone from the list."
 msgstr "목록에서 시간대를 선택하세요."
@@ -1143,7 +1156,7 @@ msgstr "환경에 맞는 이미지와 리소스를 선택하세요."
 msgid "Choose your environment"
 msgstr "환경을 선택하세요"
 
-#: lib/marshall_web/live/account_live.ex:521
+#: lib/marshall_web/live/account_live.ex:533
 #, elixir-autogen, elixir-format
 msgid "Clear saved zone"
 msgstr "저장된 영역 지우기"
@@ -1221,7 +1234,7 @@ msgstr "터미널 %{value1} 닫기"
 msgid "Close this SSH session?"
 msgstr "이 SSH 세션을 닫으시겠습니까?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "닫은"
@@ -1276,6 +1289,9 @@ msgstr "컴팩트한 컨텍스트"
 msgid "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
 msgstr "압축은 이 컨텍스트를 줄일 수 없습니다. 필요한 지침을 줄이거나 집중적인 스레드를 시작하세요."
 
+#: lib/marshall_web/live/admin/jobs_live.ex:347
+#: lib/marshall_web/live/admin/jobs_live.ex:406
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:612
 #: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Complete"
@@ -1347,7 +1363,7 @@ msgstr "컨텍스트 세부정보를 사용할 수 없습니다. 스레드가 �
 msgid "Context reload queued."
 msgstr "컨텍스트 다시 로드가 대기 중입니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:420
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "예약 계속하기"
@@ -1362,12 +1378,12 @@ msgstr "작업을 계속하세요…"
 msgid "Control room"
 msgstr "제어실"
 
-#: lib/marshall_web/components/layouts.ex:410
+#: lib/marshall_web/components/layouts.ex:408
 #, elixir-autogen, elixir-format
 msgid "Control room · %{section}"
 msgstr "제어실 · %{section}"
 
-#: lib/marshall_web/components/layouts.ex:407
+#: lib/marshall_web/components/layouts.ex:405
 #, elixir-autogen, elixir-format
 msgid "Control room · AI usage"
 msgstr "상황실·AI 활용"
@@ -1400,12 +1416,13 @@ msgstr "Windows PowerShell 설치 명령 복사"
 msgid "Copy machine ID"
 msgstr "컴퓨터 ID 복사"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:373
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:371
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "복사/크기 조정 보류"
 
 #: lib/marshall_web/components/clone_components.ex:237
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:601
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "사자"
@@ -1430,12 +1447,12 @@ msgstr "이 계정 변경사항을 수락할 수 없습니다. 확인을 확인�
 msgid "Could not accept this change. Refresh and check the workload state."
 msgstr "이 변경사항을 수락할 수 없습니다. 워크로드 상태를 새로 고치고 확인합니다."
 
-#: lib/marshall_web/live/account_live.ex:183
+#: lib/marshall_web/live/account_live.ex:166
 #, elixir-autogen, elixir-format
 msgid "Could not add this key. Paste one supported public key; it must not belong to another account."
 msgstr "이 키를 추가할 수 없습니다. 지원되는 공개 키 하나를 붙여넣으세요. 다른 계정에 속해 있어서는 안 됩니다."
 
-#: lib/marshall_web/live/integrations_live.ex:81
+#: lib/marshall_web/live/integrations_live.ex:72
 #, elixir-autogen, elixir-format
 msgid "Could not attach that machine."
 msgstr "해당 컴퓨터를 연결할 수 없습니다."
@@ -1445,7 +1462,7 @@ msgstr "해당 컴퓨터를 연결할 수 없습니다."
 msgid "Could not change administrator access."
 msgstr "관리자 액세스를 변경할 수 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:238
+#: lib/marshall_web/live/account_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Could not clear your time zone."
 msgstr "시간대를 지울 수 없습니다."
@@ -1465,7 +1482,7 @@ msgstr "하위 스레드를 생성할 수 없습니다."
 msgid "Could not create this team."
 msgstr "이 팀을 만들 수 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:94
+#: lib/marshall_web/live/integrations_live.ex:84
 #, elixir-autogen, elixir-format
 msgid "Could not detach that machine."
 msgstr "해당 컴퓨터를 분리할 수 없습니다."
@@ -1480,12 +1497,12 @@ msgstr "소유권을 제공할 수 없습니다."
 msgid "Could not register repository. Verify your passkey and labels."
 msgstr "저장소를 등록할 수 없습니다. 패스키와 라벨을 확인하세요."
 
-#: lib/marshall_web/live/integrations_live.ex:68
+#: lib/marshall_web/live/integrations_live.ex:60
 #, elixir-autogen, elixir-format
 msgid "Could not remove this integration."
 msgstr "이 통합을 삭제할 수 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:211
+#: lib/marshall_web/live/account_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Could not remove this key."
 msgstr "이 키를 제거할 수 없습니다."
@@ -1505,7 +1522,7 @@ msgstr "해당 VM 액세스를 취소할 수 없습니다."
 msgid "Could not revoke that key."
 msgstr "해당 키를 취소할 수 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:54
+#: lib/marshall_web/live/integrations_live.ex:49
 #, elixir-autogen, elixir-format
 msgid "Could not save this integration. Check the name, HTTPS target and header values."
 msgstr "이 통합을 저장할 수 없습니다. 이름, HTTPS 대상, 헤더 값을 확인하세요."
@@ -1523,7 +1540,9 @@ msgstr "이 소유권 제안을 업데이트할 수 없습니다."
 #: lib/marshall_web/live/admin/jobs_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Counts cover current and recently retained raw jobs. The list includes redacted history for up to 30 days; older history pruned before deployment is unavailable."
-msgstr "개수에는 현재 및 최근 유지된 원시 작업이 포함됩니다. 목록에는 최대 30일 동안의 수정된 기록이 포함됩니다. 배포 전에 정리된 이전 기록을 사용할 수 없습니다."
+msgstr ""
+"개수에는 현재 및 최근 유지된 원시 작업이 포함됩니다. 목록에는 최대 30일 동안의 수정된 기록이 포함됩니다. 배포 전에 정리된 이전 "
+"기록을 사용할 수 없습니다."
 
 #: lib/marshall_web/live/launch_live.ex:176
 #, elixir-autogen, elixir-format
@@ -1533,7 +1552,9 @@ msgstr "머신 생성"
 #: lib/marshall_web/live/machines_live.ex:1100
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
-msgstr "이 머신의 독립적인 개인 복사본을 만듭니다. 실행 중인 시스템은 각 스냅샷에 대해 잠시 중지되었다가 복사가 계속되는 동안 다시 시작됩니다. 복사본은 순서대로 처리되며 차례가 시작될 때 소스의 전원 상태와 일치합니다."
+msgstr ""
+"이 머신의 독립적인 개인 복사본을 만듭니다. 실행 중인 시스템은 각 스냅샷에 대해 잠시 중지되었다가 복사가 계속되는 동안 다시 "
+"시작됩니다. 복사본은 순서대로 처리되며 차례가 시작될 때 소스의 전원 상태와 일치합니다."
 
 #: lib/marshall_web/live/teams_live.ex:333
 #, elixir-autogen, elixir-format
@@ -1587,12 +1608,14 @@ msgstr "복제된 머신 생성"
 msgid "Creating…"
 msgstr "만드는 중…"
 
-#: lib/marshall_web/live/account_live.ex:148
+#: lib/marshall_web/live/account_live.ex:131
 #, elixir-autogen, elixir-format
 msgid "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
-msgstr "자격 증명 변경이 거부되었습니다. 이름은 1~80자여야 하며 변경 사항은 지난 15분 동안 확인된 암호 키가 필요하며 관리자는 하나 이상의 암호 키를 유지해야 합니다."
+msgstr ""
+"자격 증명 변경이 거부되었습니다. 이름은 1~80자여야 하며 변경 사항은 지난 15분 동안 확인된 암호 키가 필요하며 관리자는 하나 "
+"이상의 암호 키를 유지해야 합니다."
 
-#: lib/marshall_web/live/integrations_live.ex:422
+#: lib/marshall_web/live/integrations_live.ex:282
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "신임장"
@@ -1623,7 +1646,8 @@ msgstr "고객"
 #: lib/marshall_web/live/machines_live.ex:910
 #, elixir-autogen, elixir-format
 msgid "Customer machines allow only owner SSH and terminal access. Outbound networking, workspace sharing, and web service exposure are disabled."
-msgstr "고객 컴퓨터는 소유자 SSH 및 터미널 액세스만 허용합니다. 아웃바운드 네트워킹, 작업 공간 공유 및 웹 서비스 노출이 비활성화됩니다."
+msgstr ""
+"고객 컴퓨터는 소유자 SSH 및 터미널 액세스만 허용합니다. 아웃바운드 네트워킹, 작업 공간 공유 및 웹 서비스 노출이 비활성화됩니다."
 
 #: lib/marshall_web/live/admin/operations_live.ex:66
 #: lib/marshall_web/live/admin/operations_live.ex:152
@@ -1636,7 +1660,7 @@ msgstr "DNS 출판물"
 msgid "Daily AI request counts over the past 30 days"
 msgstr "지난 30일 동안의 일일 AI 요청 수"
 
-#: lib/marshall_web/components/layouts.ex:480
+#: lib/marshall_web/components/layouts.ex:478
 #, elixir-autogen, elixir-format
 msgid "Dark"
 msgstr "어두운"
@@ -1679,6 +1703,7 @@ msgid "Delete user and machines"
 msgstr "사용자 및 컴퓨터 삭제"
 
 #: lib/marshall_web/components/workspace_components.ex:78
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "삭제됨"
@@ -1690,6 +1715,7 @@ msgstr "삭제됨"
 msgid "Deleting"
 msgstr "삭제 중"
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
 #: lib/marshall_web/live/machines_live.ex:620
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
@@ -1700,11 +1726,13 @@ msgstr "보관된 복사본 삭제"
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr "작업을 설명하세요. 에이전트가 기계를 가져와 작업을 시작합니다."
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
 #: lib/marshall_web/live/machines_live.ex:614
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "대상 부팅에 실패했습니다. 원본 복사본이 유지됨"
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:605
 #: lib/marshall_web/live/machines_live.ex:615
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
@@ -1720,20 +1748,19 @@ msgstr "목적지가 준비되었습니다. 소스를 정리하다"
 msgid "Destination restart requested. The source copy remains retained until readiness succeeds."
 msgstr "대상 다시 시작이 요청되었습니다. 소스 복사본은 준비가 완료될 때까지 유지됩니다."
 
-#: lib/marshall_web/live/integrations_live.ex:279
-#: lib/marshall_web/live/integrations_live.ex:376
+#: lib/marshall_web/live/integrations_live.ex:246
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "분리하다"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
 #: lib/marshall_web/live/admin/workloads_live.ex:145
 #: lib/marshall_web/live/inference_live.ex:135
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "세부"
 
-#: lib/marshall_web/live/account_live.ex:385
+#: lib/marshall_web/live/account_live.ex:403
 #, elixir-autogen, elixir-format
 msgid "Detected from your browser: %{value1}. Save it so others can see your local time."
 msgstr "브라우저에서 감지됨: %{value1}. 다른 사람들이 귀하의 현지 시간을 볼 수 있도록 저장하세요."
@@ -1774,7 +1801,7 @@ msgstr "디스크(GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "디스크(GiB) — 최대 500GiB"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:371
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:369
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "보류 후 디스크"
@@ -1784,7 +1811,7 @@ msgstr "보류 후 디스크"
 msgid "Docs"
 msgstr "문서"
 
-#: lib/marshall_web/components/layouts.ex:334
+#: lib/marshall_web/components/layouts.ex:332
 #, elixir-autogen, elixir-format
 msgid "Docs ↗"
 msgstr "문서 ↗"
@@ -1799,7 +1826,7 @@ msgstr "선적 서류 비치"
 msgid "Download raw file ↗"
 msgstr "원시 파일 다운로드 ↗"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:556
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:554
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "이 워크로드 버전에 대해 다운타임이 승인되었습니다."
@@ -1810,7 +1837,7 @@ msgid "Duration"
 msgstr "지속"
 
 #: lib/marshall_web/auth_text.ex:16
-#: lib/marshall_web/live/account_live.ex:480
+#: lib/marshall_web/live/account_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Email"
 msgstr "이메일"
@@ -1842,7 +1869,7 @@ msgstr "JavaScript를 활성화하여 저장소 링크를 열거나"
 msgid "Enabled"
 msgstr "활성화됨"
 
-#: lib/marshall_web/live/account_live.ex:620
+#: lib/marshall_web/live/account_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "End this verification before the fifteen minutes are up."
 msgstr "15분이 지나기 전에 이 확인을 종료하세요."
@@ -1866,24 +1893,29 @@ msgstr "CPU, 메모리, 디스크 크기에 정수를 입력하세요."
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:292
 #, elixir-autogen, elixir-format
 msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
-msgstr "이 노드의 모든 워크로드를 제거하시겠습니까? 달리는 손님은 이동하는 동안 중단됩니다. 완전히 중지된 복사본에는 별도의 워크로드별 승인이 필요합니다."
+msgstr ""
+"이 노드의 모든 워크로드를 제거하시겠습니까? 달리는 손님은 이동하는 동안 중단됩니다. 완전히 중지된 복사본에는 별도의 워크로드별 승인이 "
+"필요합니다."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
-msgstr "대피로 인해 기존 손님에게 서비스가 계속 제공되는 동안 새로운 배치가 차단됩니다. 실행 중인 게스트를 이동하면 잠시 중단됩니다. 완전히 중지된 복사본은 훨씬 더 오랜 시간이 걸릴 수 있으며 각 워크로드에 대한 승인이 필요합니다."
+msgstr ""
+"대피로 인해 기존 손님에게 서비스가 계속 제공되는 동안 새로운 배치가 차단됩니다. 실행 중인 게스트를 이동하면 잠시 중단됩니다. 완전히 "
+"중지된 복사본은 훨씬 더 오랜 시간이 걸릴 수 있으며 각 워크로드에 대한 승인이 필요합니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
+#: lib/marshall_web/live/admin/jobs_live.ex:400
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:396
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "피난 캠페인"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:438
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "대피 일정"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:447
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "이벤트"
@@ -1891,12 +1923,15 @@ msgstr "이벤트"
 #: lib/marshall_web/live/admin/users_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
-msgstr "이 배포의 모든 계정입니다. 로그인한 사용자는 이 페이지를 읽을 수 있습니다. 변경하려면 관리자가 최근 암호 키를 확인해야 합니다."
+msgstr ""
+"이 배포의 모든 계정입니다. 로그인한 사용자는 이 페이지를 읽을 수 있습니다. 변경하려면 관리자가 최근 암호 키를 확인해야 합니다."
 
 #: lib/marshall_web/live/admin/workloads_live.ex:95
 #, elixir-autogen, elixir-format
 msgid "Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
-msgstr "소유자의 콘솔과 동일한 수명 주기, 크기 조정 및 재배치 안전 검사를 갖춘 차량의 모든 기계입니다. 터미널 데이터나 자격 증명은 포함되지 않습니다."
+msgstr ""
+"소유자의 콘솔과 동일한 수명 주기, 크기 조정 및 재배치 안전 검사를 갖춘 차량의 모든 기계입니다. 터미널 데이터나 자격 증명은 포함되지"
+" 않습니다."
 
 #: lib/marshall_web/live/teams_live.ex:351
 #, elixir-autogen, elixir-format
@@ -1956,6 +1991,7 @@ msgstr "AI 사용량 내보내기"
 
 #: lib/marshall_web/components/workspace_components.ex:77
 #: lib/marshall_web/live/admin/jobs_live.ex:16
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:594
 #: lib/marshall_web/live/threads_live.ex:1593
 #: lib/marshall_web/live/threads_live.ex:2497
 #, elixir-autogen, elixir-format
@@ -1963,7 +1999,7 @@ msgid "Failed"
 msgstr "실패한"
 
 #: lib/marshall_web/components/layouts.ex:215
-#: lib/marshall_web/components/layouts.ex:333
+#: lib/marshall_web/components/layouts.ex:331
 #: lib/marshall_web/controllers/docs_html/show.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Field notes"
@@ -2017,7 +2053,7 @@ msgstr "스크롤백에서 찾기"
 msgid "Find your people ↗"
 msgstr "당신의 사람들을 찾아보세요 ↗"
 
-#: lib/marshall_web/live/account_live.ex:724
+#: lib/marshall_web/live/account_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Fingerprint"
 msgstr "지문"
@@ -2038,7 +2074,7 @@ msgstr "마무리"
 msgid "First page"
 msgstr "첫 페이지"
 
-#: lib/marshall_web/components/layouts.ex:374
+#: lib/marshall_web/components/layouts.ex:372
 #: lib/marshall_web/live/inference_live.ex:81
 #, elixir-autogen, elixir-format
 msgid "Fleet AI usage"
@@ -2055,7 +2091,7 @@ msgid "Follow boot output"
 msgstr "부팅 출력을 따릅니다."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:247
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:379
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "신선한"
@@ -2087,14 +2123,14 @@ msgstr "%{generation} 세대: %{status}"
 msgid "Generation %{value1} (%{value2})"
 msgstr "세대 %{value1} (%{value2})"
 
-#: lib/marshall_web/components/layouts.ex:386
+#: lib/marshall_web/components/layouts.ex:384
 #: lib/marshall_web/live/admin/git_live.ex:69
 #, elixir-autogen, elixir-format
 msgid "Git mirrors"
 msgstr "Git 미러"
 
-#: lib/marshall_web/components/layouts.ex:400
-#: lib/marshall_web/components/layouts.ex:423
+#: lib/marshall_web/components/layouts.ex:398
+#: lib/marshall_web/components/layouts.ex:421
 #: lib/marshall_web/live/git_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Git repositories"
@@ -2105,7 +2141,7 @@ msgstr "힘내 저장소"
 msgid "GitHub organization"
 msgstr "GitHub 조직"
 
-#: lib/marshall_web/components/layouts.ex:344
+#: lib/marshall_web/components/layouts.ex:342
 #, elixir-autogen, elixir-format
 msgid "GitHub ↗"
 msgstr "GitHub ↗"
@@ -2145,7 +2181,7 @@ msgstr "부여된"
 msgid "Grow the filesystem on next boot"
 msgstr "다음 부팅 시 파일 시스템 확장"
 
-#: lib/marshall_web/components/layouts.ex:342
+#: lib/marshall_web/components/layouts.ex:340
 #: lib/marshall_web/live/hldd_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "HLDD"
@@ -2156,7 +2192,7 @@ msgstr "HLDD"
 msgid "HLDD · Design and operations"
 msgstr "HLDD · 설계 및 운영"
 
-#: lib/marshall_web/live/integrations_live.ex:418
+#: lib/marshall_web/live/integrations_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "HTTPS 대상"
@@ -2289,7 +2325,7 @@ msgstr "터미널 글꼴 크기 늘리기"
 msgid "Ingress routes"
 msgstr "수신 경로"
 
-#: lib/marshall_web/live/integrations_live.ex:337
+#: lib/marshall_web/live/integrations_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "주입된 자격 증명"
@@ -2328,37 +2364,39 @@ msgstr "설치 중…"
 #: lib/marshall_web/components/workspace_components.ex:336
 #, elixir-autogen, elixir-format
 msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
-msgstr "전체 설치, SSH 구성 및 이 시스템에 연결합니다. Windows에서는 설치 프로그램이 OpenSSH 9.6 이상도 설치하고 관리자 승인을 받아 이를 기본 SSH로 설정합니다."
+msgstr ""
+"전체 설치, SSH 구성 및 이 시스템에 연결합니다. Windows에서는 설치 프로그램이 OpenSSH 9.6 이상도 설치하고 관리자 "
+"승인을 받아 이를 기본 SSH로 설정합니다."
 
-#: lib/marshall_web/live/integrations_live.ex:46
+#: lib/marshall_web/live/integrations_live.ex:42
 #, elixir-autogen, elixir-format
 msgid "Integration %{value1} saved."
 msgstr "통합 %{value1}가 저장되었습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:64
+#: lib/marshall_web/live/integrations_live.ex:57
 #, elixir-autogen, elixir-format
 msgid "Integration removed."
 msgstr "통합이 제거되었습니다."
 
-#: lib/marshall_web/components/layouts.ex:399
-#: lib/marshall_web/components/layouts.ex:422
-#: lib/marshall_web/live/integrations_live.ex:222
+#: lib/marshall_web/components/layouts.ex:397
+#: lib/marshall_web/components/layouts.ex:420
+#: lib/marshall_web/live/integrations_live.ex:165
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "통합"
 
-#: lib/marshall_web/live/integrations_live.ex:143
+#: lib/marshall_web/live/integrations_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Integrations are temporarily unavailable."
 msgstr "일시적으로 통합을 사용할 수 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:253
+#: lib/marshall_web/live/account_live.ex:254
 #: lib/marshall_web/live/admin/access_live.ex:44
 #: lib/marshall_web/live/admin/jobs_live.ex:109
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:138
 #: lib/marshall_web/live/admin/users_live.ex:78
 #: lib/marshall_web/live/admin/workloads_live.ex:59
-#: lib/marshall_web/live/integrations_live.ex:111
+#: lib/marshall_web/live/integrations_live.ex:88
 #: lib/marshall_web/live/machines_live.ex:363
 #: lib/marshall_web/live/teams_live.ex:41
 #: lib/marshall_web/live/teams_live.ex:108
@@ -2391,8 +2429,8 @@ msgstr "채용 세부정보"
 msgid "Job pages"
 msgstr "채용정보 페이지"
 
-#: lib/marshall_web/components/layouts.ex:379
-#: lib/marshall_web/components/layouts.ex:427
+#: lib/marshall_web/components/layouts.ex:377
+#: lib/marshall_web/components/layouts.ex:425
 #: lib/marshall_web/live/admin/jobs_live.ex:199
 #, elixir-autogen, elixir-format
 msgid "Jobs"
@@ -2403,7 +2441,7 @@ msgstr "채용 정보"
 msgid "Jobs are unavailable or the filters are invalid."
 msgstr "작업을 사용할 수 없거나 필터가 잘못되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:671
+#: lib/marshall_web/live/account_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Keep a backup passkey. If you lose access, another administrator can reset your passkeys."
 msgstr "백업 패스키를 보관하세요. 액세스할 수 없는 경우 다른 관리자가 암호 키를 재설정할 수 있습니다."
@@ -2414,10 +2452,12 @@ msgstr "백업 패스키를 보관하세요. 액세스할 수 없는 경우 다�
 msgid "Key"
 msgstr "열쇠"
 
-#: lib/marshall_web/live/account_live.ex:683
+#: lib/marshall_web/live/account_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key."
-msgstr "여기에 등록된 키는 이 사이트와 동일한 계정 및 권한으로 SSH를 통해 컴퓨터를 엽니다. 액세스 권한을 취소하려면 키를 제거하세요. 이메일 로그인은 키 없이도 계속 작동합니다."
+msgstr ""
+"여기에 등록된 키는 이 사이트와 동일한 계정 및 권한으로 SSH를 통해 컴퓨터를 엽니다. 액세스 권한을 취소하려면 키를 제거하세요. "
+"이메일 로그인은 키 없이도 계속 작동합니다."
 
 #: lib/marshall_web/live/git_live.ex:187
 #, elixir-autogen, elixir-format
@@ -2429,18 +2469,18 @@ msgstr "친절한"
 msgid "LLM index"
 msgstr "LLM 지수"
 
-#: lib/marshall_web/live/account_live.ex:737
+#: lib/marshall_web/live/account_live.ex:747
 #: lib/marshall_web/live/ssh_approval_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "라벨(선택사항)"
 
-#: lib/marshall_web/live/account_live.ex:456
+#: lib/marshall_web/live/account_live.ex:468
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "언어"
 
-#: lib/marshall_web/live/account_live.ex:462
+#: lib/marshall_web/live/account_live.ex:474
 #, elixir-autogen, elixir-format
 msgid "Language is detected from your browser."
 msgstr "브라우저에서 언어가 감지되었습니다."
@@ -2509,7 +2549,7 @@ msgstr "수명 주기 요청이 대기 중입니다."
 msgid "Lifecycle request was rejected."
 msgstr "수명 주기 요청이 거부되었습니다."
 
-#: lib/marshall_web/components/layouts.ex:479
+#: lib/marshall_web/components/layouts.ex:477
 #, elixir-autogen, elixir-format
 msgid "Light"
 msgstr "빛"
@@ -2534,12 +2574,12 @@ msgstr "리눅스/맥OS"
 msgid "Loaded sources"
 msgstr "로드된 소스"
 
-#: lib/marshall_web/live/account_live.ex:481
+#: lib/marshall_web/live/account_live.ex:493
 #, elixir-autogen, elixir-format
 msgid "Local time"
 msgstr "현지 시간"
 
-#: lib/marshall_web/live/account_live.ex:619
+#: lib/marshall_web/live/account_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Lock now"
 msgstr "지금 잠그세요"
@@ -2567,7 +2607,7 @@ msgstr "MFA가 등록되지 않았습니다."
 #: lib/marshall_web/live/admin/access_live.ex:92
 #: lib/marshall_web/live/admin/operations_live.ex:145
 #: lib/marshall_web/live/inference_live.ex:172
-#: lib/marshall_web/live/integrations_live.ex:359
+#: lib/marshall_web/live/integrations_live.ex:229
 #: lib/marshall_web/live/machines_live.ex:665
 #, elixir-autogen, elixir-format
 msgid "Machine"
@@ -2578,18 +2618,17 @@ msgstr "기계"
 msgid "Machine ID"
 msgstr "머신 ID"
 
-#: lib/marshall_web/live/integrations_live.ex:276
-#: lib/marshall_web/live/integrations_live.ex:396
+#: lib/marshall_web/live/integrations_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "머신 UUID"
 
-#: lib/marshall_web/live/integrations_live.ex:77
+#: lib/marshall_web/live/integrations_live.ex:69
 #, elixir-autogen, elixir-format
 msgid "Machine attached."
 msgstr "기계가 부착되어 있습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:90
+#: lib/marshall_web/live/integrations_live.ex:81
 #, elixir-autogen, elixir-format
 msgid "Machine detached."
 msgstr "기계가 분리되었습니다."
@@ -2659,8 +2698,8 @@ msgstr "기계 작업 공간"
 msgid "Machine:"
 msgstr "기계:"
 
-#: lib/marshall_web/components/layouts.ex:398
-#: lib/marshall_web/components/layouts.ex:421
+#: lib/marshall_web/components/layouts.ex:396
+#: lib/marshall_web/components/layouts.ex:419
 #: lib/marshall_web/live/machines_live.ex:103
 #: lib/marshall_web/live/machines_live.ex:643
 #: lib/marshall_web/live/overview_live.ex:177
@@ -2678,7 +2717,7 @@ msgstr "일시적으로 기계를 사용할 수 없습니다."
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "머신을 로드할 수 없습니다. 다시 시도하려면 새로고침하세요."
 
-#: lib/marshall_web/live/integrations_live.ex:346
+#: lib/marshall_web/live/integrations_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "접근 가능한 기계"
@@ -2699,7 +2738,7 @@ msgstr "기본"
 msgid "Maintenance"
 msgstr "유지"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:570
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:568
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "유지보수 페이지"
@@ -2724,7 +2763,7 @@ msgstr "당신의 것으로 만드세요"
 msgid "Make yourself at home"
 msgstr "집처럼 편안하게 지내세요"
 
-#: lib/marshall_web/components/layouts.ex:354
+#: lib/marshall_web/components/layouts.ex:352
 #, elixir-autogen, elixir-format
 msgid "Make yourself comfy"
 msgstr "편안하게 지내세요"
@@ -2826,12 +2865,12 @@ msgstr "메모리"
 msgid "Memory (MiB)"
 msgstr "메모리(MiB)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "보류 후 메모리"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "메모리 헤드룸"
@@ -2913,26 +2952,30 @@ msgstr "이 시스템을 자동으로 선택된 호스트로 이동하시겠습�
 msgid "Move to another host"
 msgstr "다른 호스트로 이동"
 
-#: lib/marshall_web/live/account_live.ex:739
+#: lib/marshall_web/live/account_live.ex:749
 #: lib/marshall_web/live/ssh_approval_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "내 노트북"
 
-#: lib/marshall_web/live/integrations_live.ex:413
+#: lib/marshall_web/live/integrations_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "이름"
 
-#: lib/marshall_web/live/integrations_live.ex:406
+#: lib/marshall_web/live/integrations_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
-msgstr "엔드포인트의 이름을 지정하고 HTTPS API를 가리키거나 다른 머신에 대한 피어 연결로 표시하세요. 비밀은 쓰기 전용입니다. 주입을 위해 저장되며 다시 표시되지 않습니다."
+msgstr ""
+"엔드포인트의 이름을 지정하고 HTTPS API를 가리키거나 다른 머신에 대한 피어 연결로 표시하세요. 비밀은 쓰기 전용입니다. 주입을 "
+"위해 저장되며 다시 표시되지 않습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:224
+#: lib/marshall_web/live/integrations_live.ex:166
 #, elixir-autogen, elixir-format
 msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
-msgstr "https://NAME.integration.internal에서 머신이 도달하는 명명된 엔드포인트입니다. 자격 증명은 엣지에 삽입되며 머신에서 읽을 수 없습니다."
+msgstr ""
+"https://NAME.integration.internal에서 머신이 도달하는 명명된 엔드포인트입니다. 자격 증명은 엣지에 삽입되며 "
+"머신에서 읽을 수 없습니다."
 
 #: lib/marshall_web/components/clone_components.ex:126
 #: lib/marshall_web/live/resize_live.ex:302
@@ -2968,7 +3011,7 @@ msgstr "다음 경기"
 msgid "Next page"
 msgstr "다음 페이지"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:572
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:570
 #: lib/marshall_web/live/admin/users_live.ex:236
 #: lib/marshall_web/live/machines_live.ex:733
 #: lib/marshall_web/live/machines_live.ex:981
@@ -2996,7 +3039,7 @@ msgstr "등록된 아우디 서비스가 없습니다."
 msgid "No DNS publications are recorded."
 msgstr "DNS 게시는 기록되지 않습니다."
 
-#: lib/marshall_web/live/account_live.ex:688
+#: lib/marshall_web/live/account_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "No SSH keys yet. You can always sign in here using email."
 msgstr "아직 SSH 키가 없습니다. 언제든지 이메일을 사용하여 여기에서 로그인할 수 있습니다."
@@ -3042,7 +3085,7 @@ msgstr "아직 클론 요청이 없습니다. 여기에서 복사본을 대기�
 msgid "No direct machine grants."
 msgstr "직접적인 기계 부여는 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:351
+#: lib/marshall_web/live/integrations_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "명시적인 첨부 파일이 없습니다. 현재 팀 구성원의 컴퓨터에 액세스할 수 있습니다."
@@ -3072,7 +3115,7 @@ msgstr "아직 개별 스레드 부여가 없습니다."
 msgid "No ingress routes are published."
 msgstr "수신 경로가 게시되지 않습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:339
+#: lib/marshall_web/live/integrations_live.ex:211
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "삽입된 헤더가 없습니다."
@@ -3082,7 +3125,7 @@ msgstr "삽입된 헤더가 없습니다."
 msgid "No instruction sources collected yet."
 msgstr "아직 수집된 지침 소스가 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:295
+#: lib/marshall_web/live/integrations_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
 msgstr "아직 통합이 없습니다. 아래에 하나를 추가하여 귀하의 컴퓨터에 API 또는 다른 컴퓨터에 대한 명명된 연결을 제공하세요."
@@ -3097,7 +3140,7 @@ msgstr "이 필터와 일치하는 채용정보가 없습니다."
 msgid "No machine is shared with another account."
 msgstr "어떤 머신도 다른 계정과 공유되지 않습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:353
+#: lib/marshall_web/live/integrations_live.ex:223
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr "접근할 수 있는 기계가 없습니다. 이 통합을 사용하려면 머신을 연결하세요."
@@ -3127,10 +3170,12 @@ msgstr "미러 이벤트가 기록되지 않았습니다."
 msgid "No older threads are available on this page."
 msgstr "이 페이지에는 이전 스레드가 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:628
+#: lib/marshall_web/live/account_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action."
-msgstr "아직 비밀번호가 없습니다. 처음 등록하려면 마지막 5분 이내에 새로운 이메일 로그인이 완료되어야 합니다. 설정 후 원래 페이지로 돌아가서 작업을 다시 시도하세요."
+msgstr ""
+"아직 비밀번호가 없습니다. 처음 등록하려면 마지막 5분 이내에 새로운 이메일 로그인이 완료되어야 합니다. 설정 후 원래 페이지로 돌아가서"
+" 작업을 다시 시도하세요."
 
 #: lib/marshall_web/live/teams_live.ex:327
 #, elixir-autogen, elixir-format
@@ -3173,7 +3218,7 @@ msgstr "이 작업공간에서는 기술이 발견되지 않았습니다."
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "열려 있는 터미널이 없습니다. 새로 만들기를 선택하여 개인 셸을 엽니다."
 
-#: lib/marshall_web/live/account_live.ex:390
+#: lib/marshall_web/live/account_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "No zone saved and none detected; times are shown in UTC until you choose one."
 msgstr "저장된 영역이 없고 감지된 영역도 없습니다. 시간은 하나를 선택할 때까지 UTC로 표시됩니다."
@@ -3189,8 +3234,8 @@ msgstr "마디"
 msgid "Node information is unavailable."
 msgstr "노드 정보를 사용할 수 없습니다."
 
-#: lib/marshall_web/components/layouts.ex:377
-#: lib/marshall_web/components/layouts.ex:425
+#: lib/marshall_web/components/layouts.ex:375
+#: lib/marshall_web/components/layouts.ex:423
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
@@ -3257,7 +3302,7 @@ msgstr "이전 직업 →"
 msgid "Older transitions →"
 msgstr "이전 전환 →"
 
-#: lib/marshall_web/live/account_live.ex:429
+#: lib/marshall_web/live/account_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "On this page"
 msgstr "이 페이지에서"
@@ -3347,7 +3392,7 @@ msgstr "이 머신의 웹 앱을 엽니다. 터미널이 없습니다."
 msgid "OpenAI"
 msgstr "오픈AI"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:479
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "개설됨"
@@ -3372,7 +3417,7 @@ msgstr "작동상태"
 msgid "Operational status is temporarily unavailable."
 msgstr "일시적으로 작동 상태를 사용할 수 없습니다."
 
-#: lib/marshall_web/components/layouts.ex:375
+#: lib/marshall_web/components/layouts.ex:373
 #, elixir-autogen, elixir-format
 msgid "Operations"
 msgstr "운영"
@@ -3411,14 +3456,14 @@ msgstr "작업복"
 msgid "Overalls is briefly unavailable. This page will retry automatically."
 msgstr "작업복은 잠시 사용할 수 없습니다. 이 페이지는 자동으로 다시 시도됩니다."
 
-#: lib/marshall_web/components/layouts.ex:396
-#: lib/marshall_web/components/layouts.ex:419
+#: lib/marshall_web/components/layouts.ex:394
+#: lib/marshall_web/components/layouts.ex:417
 #: lib/marshall_web/live/overview_live.ex:20
 #, elixir-autogen, elixir-format
 msgid "Overview"
 msgstr "개요"
 
-#: lib/marshall_web/live/integrations_live.ex:328
+#: lib/marshall_web/live/integrations_live.ex:200
 #: lib/marshall_web/live/machines_live.ex:698
 #: lib/marshall_web/live/machines_live.ex:810
 #: lib/marshall_web/live/machines_live.ex:948
@@ -3452,32 +3497,31 @@ msgstr "소유권 제안이 업데이트되었습니다."
 msgid "Ownership offered by %{value1} to %{value2}."
 msgstr "%{value1}가 %{value2}에게 소유권을 제공했습니다."
 
-#: lib/marshall_web/live/account_live.ex:114
+#: lib/marshall_web/live/account_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Passkey added. Verify it when you need to approve an administrative change."
 msgstr "패스키가 추가되었습니다. 관리 변경을 승인해야 할 때 이를 확인하세요."
 
-#: lib/marshall_web/live/account_live.ex:646
+#: lib/marshall_web/live/account_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Passkey name"
 msgstr "패스키 이름"
 
-#: lib/marshall_web/live/account_live.ex:161
+#: lib/marshall_web/live/account_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled or unavailable. You can try again."
 msgstr "패스키 요청이 취소되었거나 사용할 수 없습니다. 다시 시도해 보세요."
 
-#: lib/marshall_web/live/account_live.ex:117
+#: lib/marshall_web/live/account_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "Passkey verified for 15 minutes."
 msgstr "15분 동안 패스키가 확인되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:578
+#: lib/marshall_web/live/account_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Passkey verified · %{count} second remaining."
 msgid_plural "Passkey verified · %{count} seconds remaining."
 msgstr[0] "비밀번호가 확인되었습니다. · %{count}초 남았습니다."
-msgstr[1] "비밀번호가 확인되었습니다. · %{count}초 남았습니다."
 
 #: lib/marshall_web/live/threads_live.ex:1608
 #, elixir-autogen, elixir-format
@@ -3489,7 +3533,7 @@ msgstr "지난 30일"
 msgid "Past 7 days"
 msgstr "지난 7일"
 
-#: lib/marshall_web/live/account_live.ex:749
+#: lib/marshall_web/live/account_live.ex:759
 #, elixir-autogen, elixir-format
 msgid "Paste a public key from your .pub file. Never paste a private key."
 msgstr ".pub 파일에서 공개 키를 붙여넣습니다. 개인 키를 붙여넣지 마세요."
@@ -3499,32 +3543,37 @@ msgstr ".pub 파일에서 공개 키를 붙여넣습니다. 개인 키를 붙여
 msgid "Paths"
 msgstr "경로"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "일정 일시 중지"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:404
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:402
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
-msgstr "일시 중지하면 새 동작이 예약되지 않습니다. 허용된 움직임은 계속됩니다. 유지 관리 준비에는 확인된 소스 정리가 필요합니다. 완료된 작업만으로는 부족합니다."
+msgstr ""
+"일시 중지하면 새 동작이 예약되지 않습니다. 허용된 움직임은 계속됩니다. 유지 관리 준비에는 확인된 소스 정리가 필요합니다. 완료된 "
+"작업만으로는 부족합니다."
 
-#: lib/marshall_web/live/integrations_live.ex:466
+#: lib/marshall_web/live/integrations_live.ex:326
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "동료 통합"
 
-#: lib/marshall_web/live/integrations_live.ex:325
+#: lib/marshall_web/live/integrations_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "피어 머신"
 
-#: lib/marshall_web/live/integrations_live.ex:469
+#: lib/marshall_web/live/integrations_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "피어 머신 ID"
 
 #: lib/marshall_web/components/workspace_components.ex:74
+#: lib/marshall_web/live/admin/jobs_live.ex:347
+#: lib/marshall_web/live/admin/jobs_live.ex:404
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:593
 #: lib/marshall_web/live/resize_live.ex:458
 #: lib/marshall_web/live/threads_live.ex:1590
 #: lib/marshall_web/live/threads_live.ex:2494
@@ -3542,7 +3591,7 @@ msgstr "이 계정과 다른 사람과 공유된 컴퓨터를 포함하여 소�
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "이 머신과 해당 디스크를 영구적으로 제거합니다. 이 작업은 취소할 수 없습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:433
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:431
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "이 빈 노드를 영구적으로 폐기하고 해당 자격 증명을 취소하시겠습니까?"
@@ -3558,7 +3607,7 @@ msgstr "이 머신을 복제할 수 있는 권한을 더 이상 사용할 수 �
 msgid "Personal"
 msgstr "개인의"
 
-#: lib/marshall_web/live/integrations_live.ex:331
+#: lib/marshall_web/live/integrations_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "개인 통합"
@@ -3569,7 +3618,7 @@ msgstr "개인 통합"
 msgid "Phase"
 msgstr "단계"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:527
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:525
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "단계: %{phase}"
@@ -3595,14 +3644,14 @@ msgstr "배치/시대"
 msgid "Plan"
 msgstr "계획"
 
-#: lib/marshall_web/components/layouts.ex:380
-#: lib/marshall_web/components/layouts.ex:428
+#: lib/marshall_web/components/layouts.ex:378
+#: lib/marshall_web/components/layouts.ex:426
 #: lib/marshall_web/live/admin/operations_live.ex:52
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "플랫폼 상태"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:363
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "수영장"
@@ -3624,6 +3673,7 @@ msgid "Power afterwards"
 msgstr "이후 전원"
 
 #: lib/marshall_web/components/clone_components.ex:237
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:598
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "준비 중"
@@ -3680,7 +3730,7 @@ msgstr "작업 공간 준비"
 msgid "Preview evacuation"
 msgstr "미리보기 대피"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:533
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "미리보기: %{blocker}"
@@ -3700,7 +3750,7 @@ msgstr "가격 소스/버전"
 msgid "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
 msgstr "개인 및 소유자 전용입니다. SSH 및 터미널 액세스; 아웃바운드 연결, 공유, 웹 앱 또는 AI 에이전트가 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:432
+#: lib/marshall_web/live/account_live.ex:444
 #: lib/marshall_web/live/machines_live.ex:668
 #: lib/marshall_web/live/machines_live.ex:692
 #: lib/marshall_web/live/machines_live.ex:788
@@ -3760,9 +3810,10 @@ msgstr "프로비저닝이 다시 시도됩니다."
 #: lib/marshall_web/live/admin/git_live.ex:70
 #, elixir-autogen, elixir-format
 msgid "Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification."
-msgstr "머신용으로 미러링되는 공개 GitHub 리포지토리입니다. 미러는 매시간 새로 고쳐집니다. 변경하려면 최근 암호 키 확인이 필요합니다."
+msgstr ""
+"머신용으로 미러링되는 공개 GitHub 리포지토리입니다. 미러는 매시간 새로 고쳐집니다. 변경하려면 최근 암호 키 확인이 필요합니다."
 
-#: lib/marshall_web/live/account_live.ex:744
+#: lib/marshall_web/live/account_live.ex:754
 #, elixir-autogen, elixir-format
 msgid "Public key"
 msgstr "공개키"
@@ -3805,17 +3856,17 @@ msgstr "대기 중: %{tools}"
 msgid "Queuing…"
 msgstr "대기 중…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:347
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:345
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "RAM 오버헤드(바이트)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:561
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr "현재 배치와 원하는 상태를 사용하여 이 워크로드를 다시 계획하시겠습니까? 이전의 다운타임 승인은 모두 지워집니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:565
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "워크로드 재계획"
@@ -3860,6 +3911,7 @@ msgstr "읽기 전용 이미지, Audi 수신 및 Porsche 게이트웨이 상태.
 msgid "Read-only mirrors of public GitHub repositories."
 msgstr "공개 GitHub 저장소의 읽기 전용 미러입니다."
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:589
 #: lib/marshall_web/live/threads_live.ex:1592
 #: lib/marshall_web/live/threads_live.ex:2496
 #, elixir-autogen, elixir-format
@@ -3909,14 +3961,15 @@ msgstr "기록된 실패"
 #: lib/marshall_web/live/admin/audit_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
-msgstr "권한 변경, 수명 주기 요청, 인증서 생성 및 편집자 액세스 권한이 수정되었습니다. 페이로드, 자격 증명 및 터미널 바이트는 제외됩니다."
+msgstr ""
+"권한 변경, 수명 주기 요청, 인증서 생성 및 편집자 액세스 권한이 수정되었습니다. 페이로드, 자격 증명 및 터미널 바이트는 제외됩니다."
 
 #: lib/marshall_web/live/git_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Ref"
 msgstr "참조"
 
-#: lib/marshall_web/components/layouts.ex:342
+#: lib/marshall_web/components/layouts.ex:340
 #, elixir-autogen, elixir-format
 msgid "Reference"
 msgstr "참조"
@@ -4015,10 +4068,10 @@ msgstr "나를 기억해"
 msgid "Removal queued."
 msgstr "제거가 대기 중입니다."
 
-#: lib/marshall_web/live/account_live.ex:662
-#: lib/marshall_web/live/account_live.ex:704
+#: lib/marshall_web/live/account_live.ex:672
+#: lib/marshall_web/live/account_live.ex:714
 #: lib/marshall_web/live/admin/git_live.ex:122
-#: lib/marshall_web/live/integrations_live.ex:316
+#: lib/marshall_web/live/integrations_live.ex:188
 #: lib/marshall_web/live/teams_live.ex:242
 #: lib/marshall_web/live/threads_live.ex:2352
 #: lib/marshall_web/live/threads_live.ex:2449
@@ -4052,27 +4105,28 @@ msgstr "이 계정의 관리자 액세스 권한을 삭제하시겠습니까?"
 msgid "Remove mirror?"
 msgstr "거울을 제거하시겠습니까?"
 
-#: lib/marshall_web/live/integrations_live.ex:313
+#: lib/marshall_web/live/integrations_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "이 통합을 삭제하시겠습니까?"
 
-#: lib/marshall_web/live/account_live.ex:699
+#: lib/marshall_web/live/account_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "Remove this key's SSH access? Already accepted machine operations will continue."
 msgstr "이 키의 SSH 액세스를 삭제하시겠습니까? 이미 승인된 기계 작동은 계속됩니다."
 
-#: lib/marshall_web/live/account_live.ex:657
+#: lib/marshall_web/live/account_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "이 패스키를 삭제하시겠습니까? 마지막 암호 키를 제거하면 모든 곳에서 로그아웃됩니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:524
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:522
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "이 소스에서 삭제되었습니다. 캠페인 정리 확인을 기다리는 중입니다."
 
-#: lib/marshall_web/live/account_live.ex:649
+#: lib/marshall_web/live/account_live.ex:659
+#: lib/marshall_web/live/account_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr "이름 바꾸기"
@@ -4099,7 +4153,7 @@ msgstr "다시 열린 머신은 이전 기록을 유지합니다. 읽으려면 �
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:235
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:268
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:366
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:364
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "보고서"
@@ -4190,7 +4244,7 @@ msgstr "재시도 요청 중…"
 msgid "Requesting…"
 msgstr "요청 중…"
 
-#: lib/marshall_web/live/integrations_live.ex:470
+#: lib/marshall_web/live/integrations_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "피어 통합에 필요"
@@ -4226,6 +4280,7 @@ msgstr "크기 조정이 취소되었습니다."
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr "크기 조정이 허용되지 않습니다. 크기와 현재 기계 상태를 확인하세요."
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:635
 #: lib/marshall_web/live/resize_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
@@ -4302,12 +4357,12 @@ msgstr "다시 시작하는 중"
 msgid "Restarting the destination; source copy retained"
 msgstr "대상을 다시 시작하는 중입니다. 원본 복사본이 유지됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:427
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "입학 복원"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:435
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:433
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "노드 폐기"
@@ -4358,7 +4413,7 @@ msgstr "Fleet 워크로드로 돌아가서 암호 키를 확인하여 머신을 
 msgid "Return to the conversation whenever you need."
 msgstr "필요할 때마다 대화로 돌아가세요."
 
-#: lib/marshall_web/live/account_live.ex:624
+#: lib/marshall_web/live/account_live.ex:634
 #, elixir-autogen, elixir-format
 msgid "Return to the requested page and retry the action →"
 msgstr "요청한 페이지로 돌아가서 작업을 다시 시도하세요 →"
@@ -4447,13 +4502,14 @@ msgstr "루트 디스크(GiB)"
 msgid "Route expires"
 msgstr "경로 만료"
 
-#: lib/marshall_web/live/integrations_live.ex:451
+#: lib/marshall_web/live/integrations_live.ex:311
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "라우팅, 팀 소유권 및 동료 연결"
 
 #: lib/marshall_web/components/workspace_components.ex:75
 #: lib/marshall_web/live/admin/jobs_live.ex:13
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
 #: lib/marshall_web/live/resize_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Running"
@@ -4469,13 +4525,13 @@ msgstr "SSH 연결 세부정보를 일시적으로 사용할 수 없습니다."
 msgid "SSH connection requires write access to this machine."
 msgstr "SSH를 연결하려면 이 머신에 대한 쓰기 권한이 필요합니다."
 
-#: lib/marshall_web/live/account_live.ex:393
+#: lib/marshall_web/live/account_live.ex:411
 #: lib/marshall_web/live/admin/access_live.ex:159
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "SSH 키"
 
-#: lib/marshall_web/live/account_live.ex:176
+#: lib/marshall_web/live/account_live.ex:159
 #, elixir-autogen, elixir-format
 msgid "SSH key added."
 msgstr "SSH 키가 추가되었습니다."
@@ -4485,7 +4541,7 @@ msgstr "SSH 키가 추가되었습니다."
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "SSH 키가 승인되었습니다. SSH 클라이언트로 돌아갈 수 있습니다."
 
-#: lib/marshall_web/live/account_live.ex:207
+#: lib/marshall_web/live/account_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "SSH key removed."
 msgstr "SSH 키가 제거되었습니다."
@@ -4495,12 +4551,12 @@ msgstr "SSH 키가 제거되었습니다."
 msgid "SSH key revoked."
 msgstr "SSH 키가 취소되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:440
+#: lib/marshall_web/live/account_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "SSH keys"
 msgstr "SSH 키"
 
-#: lib/marshall_web/live/account_live.ex:305
+#: lib/marshall_web/live/account_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "SSH keys are temporarily unavailable."
 msgstr "SSH 키를 일시적으로 사용할 수 없습니다."
@@ -4516,12 +4572,12 @@ msgstr "SSH 세션이 종료되었습니다."
 msgid "Save access"
 msgstr "액세스 저장"
 
-#: lib/marshall_web/live/integrations_live.ex:476
+#: lib/marshall_web/live/integrations_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "통합 저장"
 
-#: lib/marshall_web/live/account_live.ex:466
+#: lib/marshall_web/live/account_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Save language"
 msgstr "언어 저장"
@@ -4531,12 +4587,12 @@ msgstr "언어 저장"
 msgid "Save member"
 msgstr "회원 저장"
 
-#: lib/marshall_web/live/account_live.ex:512
+#: lib/marshall_web/live/account_live.ex:524
 #, elixir-autogen, elixir-format
 msgid "Save time zone"
 msgstr "시간대 저장"
 
-#: lib/marshall_web/live/account_live.ex:378
+#: lib/marshall_web/live/account_live.ex:396
 #, elixir-autogen, elixir-format
 msgid "Saved: %{value1}. Others who share a team, machine or thread with you see your local time."
 msgstr "저장됨: %{value1}. 귀하와 팀, 머신 또는 스레드를 공유하는 다른 사람들은 귀하의 현지 시간을 볼 수 있습니다."
@@ -4741,9 +4797,12 @@ msgstr "작업복에 로그인:"
 #: lib/marshall/accounts/deliver_auth_email.ex:135
 #, elixir-autogen, elixir-format
 msgid "Sign in to Overalls: %{link}\n\nIf you did not request this, ignore this email."
-msgstr "작업복에 로그인: %{link}\n\n이를 요청하지 않으셨다면 이 이메일을 무시하세요."
+msgstr ""
+"작업복에 로그인: %{link}\n"
+"\n"
+"이를 요청하지 않으셨다면 이 이메일을 무시하세요."
 
-#: lib/marshall_web/components/layouts.ex:363
+#: lib/marshall_web/components/layouts.ex:361
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "로그아웃"
@@ -4758,7 +4817,7 @@ msgstr "어디서나 로그아웃"
 msgid "Sign this account out of every browser session?"
 msgstr "모든 브라우저 세션에서 이 계정을 로그아웃하시겠습니까?"
 
-#: lib/marshall_web/live/account_live.ex:436
+#: lib/marshall_web/live/account_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Sign-in and passkeys"
 msgstr "로그인 및 암호키"
@@ -4841,7 +4900,7 @@ msgstr "문제가 발생했습니다."
 msgid "Source"
 msgstr "원천"
 
-#: lib/marshall_web/components/layouts.ex:344
+#: lib/marshall_web/components/layouts.ex:342
 #: lib/marshall_web/controllers/docs_html/show.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Source code"
@@ -4888,7 +4947,7 @@ msgid "Source was stopped when this request began."
 msgstr "이 요청이 시작되었을 때 소스가 중지되었습니다."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:247
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:379
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "오래되었거나 알 수 없음"
@@ -4942,7 +5001,7 @@ msgstr "새로운 리소스로 머신을 시작합니다."
 msgid "Starting…"
 msgstr "시작 중…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "시동 보류"
@@ -4955,17 +5014,17 @@ msgstr "시동 보류"
 msgid "State"
 msgstr "상태"
 
-#: lib/marshall_web/live/integrations_live.ex:440
+#: lib/marshall_web/live/integrations_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "정적 헤더 이름"
 
-#: lib/marshall_web/live/integrations_live.ex:446
+#: lib/marshall_web/live/integrations_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "정적 헤더 값"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:478
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:476
 #: lib/marshall_web/live/admin/operations_live.ex:78
 #: lib/marshall_web/live/admin/operations_live.ex:101
 #: lib/marshall_web/live/admin/operations_live.ex:124
@@ -4996,12 +5055,14 @@ msgstr "멈추다"
 msgid "Stop the machine"
 msgstr "기계를 멈추세요"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:553
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:551
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
-msgstr "전체 이동에 대해 실행 중인 워크로드를 중지하시겠습니까? 디스크를 복사하고 대상에서 다시 시작하면 가동 중지 시간이 길어질 수 있습니다."
+msgstr ""
+"전체 이동에 대해 실행 중인 워크로드를 중지하시겠습니까? 디스크를 복사하고 대상에서 다시 시작하면 가동 중지 시간이 길어질 수 있습니다."
 
 #: lib/marshall_web/components/workspace_components.ex:76
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:592
 #: lib/marshall_web/live/resize_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Stopped"
@@ -5029,17 +5090,18 @@ msgstr "복사를 중지하고 임시 리소스를 제거하는 중입니다. �
 msgid "Stopping the machine so its resources can change safely."
 msgstr "리소스가 안전하게 변경될 수 있도록 머신을 중지합니다."
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:600
 #: lib/marshall_web/live/machines_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "소스 중지"
 
-#: lib/marshall_web/live/integrations_live.ex:456
+#: lib/marshall_web/live/integrations_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "스트립 접두사"
 
-#: lib/marshall_web/live/integrations_live.ex:333
+#: lib/marshall_web/live/integrations_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "스트립 접두사"
@@ -5069,12 +5131,13 @@ msgstr "성공함"
 msgid "Suspended"
 msgstr "정지된"
 
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:603
 #: lib/marshall_web/live/machines_live.ex:612
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "배치 전환"
 
-#: lib/marshall_web/components/layouts.ex:478
+#: lib/marshall_web/components/layouts.ex:476
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "체계"
@@ -5085,7 +5148,7 @@ msgid "Taking snapshot"
 msgstr "스냅샷 찍기"
 
 #: lib/marshall_web/live/admin/audit_live.ex:265
-#: lib/marshall_web/live/integrations_live.ex:322
+#: lib/marshall_web/live/integrations_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "목표"
@@ -5095,7 +5158,7 @@ msgstr "목표"
 msgid "Team"
 msgstr "팀"
 
-#: lib/marshall_web/live/integrations_live.ex:330
+#: lib/marshall_web/live/integrations_live.ex:202
 #: lib/marshall_web/live/threads_live.ex:1097
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
@@ -5111,7 +5174,7 @@ msgstr "%{value1} 팀이 생성되었습니다."
 msgid "Team (optional)"
 msgstr "팀(선택사항)"
 
-#: lib/marshall_web/live/integrations_live.ex:461
+#: lib/marshall_web/live/integrations_live.ex:321
 #: lib/marshall_web/live/threads_live.ex:1415
 #, elixir-autogen, elixir-format
 msgid "Team ID"
@@ -5127,13 +5190,13 @@ msgstr "팀 구성원 자격과 스레드 공유도 시스템 액세스 권한�
 msgid "Team name"
 msgstr "팀 이름"
 
-#: lib/marshall_web/live/integrations_live.ex:462
+#: lib/marshall_web/live/integrations_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "팀 소유 통합"
 
-#: lib/marshall_web/components/layouts.ex:401
-#: lib/marshall_web/components/layouts.ex:424
+#: lib/marshall_web/components/layouts.ex:399
+#: lib/marshall_web/components/layouts.ex:422
 #: lib/marshall_web/live/teams_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Teams"
@@ -5155,7 +5218,6 @@ msgstr "단말기"
 msgid "Terminal %{name}, %{count} viewer, created %{created}"
 msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
 msgstr[0] "터미널 %{name}, %{count} 뷰어, %{created} 생성"
-msgstr[1] "터미널 %{name}, %{count} 뷰어, %{created} 생성"
 
 #: lib/marshall_web/live/terminal_live.ex:108
 #, elixir-autogen, elixir-format
@@ -5231,7 +5293,9 @@ msgstr "해당 저장소 참조를 시작할 수 없습니다."
 #: lib/marshall_web/live/machines_live.ex:988
 #, elixir-autogen, elixir-format
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
-msgstr "계정이 이미 등록되어 있어야 합니다. 역할을 저장하면 해당 사람의 직접적인 컴퓨터 역할이 대체됩니다. 해당 직접 부여를 제거하려면 액세스 제거를 선택합니다."
+msgstr ""
+"계정이 이미 등록되어 있어야 합니다. 역할을 저장하면 해당 사람의 직접적인 컴퓨터 역할이 대체됩니다. 해당 직접 부여를 제거하려면 액세스"
+" 제거를 선택합니다."
 
 #: lib/marshall_web/live/agent_threads_live.ex:114
 #: lib/marshall_web/live/threads_live.ex:2550
@@ -5302,7 +5366,10 @@ msgstr "이 초안이 작성된 이후 기계가 변경되었습니다. 위에�
 #: lib/marshall_web/live/machines_live.ex:1046
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
-msgstr "머신이 중지되고 한 번 복사된 후 자동으로 선택된 호스트에서 시작됩니다. 우리의 개발 제품군은 호스트 간에 1Gbit/s 연결을 사용하므로 이동하는 데 시간이 조금 더 걸릴 수 있습니다. 작업복이 프로덕션 환경에서 AWS에서 실행되면 이동이 훨씬 더 빨라질 것으로 예상됩니다."
+msgstr ""
+"머신이 중지되고 한 번 복사된 후 자동으로 선택된 호스트에서 시작됩니다. 우리의 개발 제품군은 호스트 간에 1Gbit/s 연결을 "
+"사용하므로 이동하는 데 시간이 조금 더 걸릴 수 있습니다. 작업복이 프로덕션 환경에서 AWS에서 실행되면 이동이 훨씬 더 빨라질 것으로 "
+"예상됩니다."
 
 #: lib/marshall_web/live/machines_live.ex:1055
 #, elixir-autogen, elixir-format
@@ -5667,8 +5734,8 @@ msgstr "스레드가 업데이트되었습니다."
 msgid "Thread views"
 msgstr "스레드 보기"
 
-#: lib/marshall_web/components/layouts.ex:397
-#: lib/marshall_web/components/layouts.ex:420
+#: lib/marshall_web/components/layouts.ex:395
+#: lib/marshall_web/components/layouts.ex:418
 #: lib/marshall_web/live/agent_threads_live.ex:146
 #: lib/marshall_web/live/agent_threads_live.ex:149
 #: lib/marshall_web/live/threads_live.ex:21
@@ -5684,24 +5751,24 @@ msgstr "스레드"
 msgid "Threads are temporarily unavailable. Try again shortly."
 msgstr "스레드를 일시적으로 사용할 수 없습니다. 잠시 후 다시 시도하세요."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
 #: lib/marshall_web/live/inference_live.ex:130
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "시간"
 
-#: lib/marshall_web/components/layouts.ex:361
-#: lib/marshall_web/live/account_live.ex:504
+#: lib/marshall_web/components/layouts.ex:359
+#: lib/marshall_web/live/account_live.ex:516
 #, elixir-autogen, elixir-format
 msgid "Time zone"
 msgstr "시간대"
 
-#: lib/marshall_web/live/account_live.ex:235
+#: lib/marshall_web/live/account_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Time zone cleared. Your browser's zone is used."
 msgstr "시간대가 삭제되었습니다. 귀하의 브라우저 영역이 사용됩니다."
 
-#: lib/marshall_web/live/account_live.ex:224
+#: lib/marshall_web/live/account_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Time zone saved."
 msgstr "시간대가 저장되었습니다."
@@ -5770,7 +5837,7 @@ msgstr "잠시 후 다시 시도하세요."
 msgid "Turn complete"
 msgstr "회전 완료"
 
-#: lib/marshall_web/live/account_live.ex:727
+#: lib/marshall_web/live/account_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "유형"
@@ -5801,6 +5868,7 @@ msgid "Unable to update terminal sharing. The recipient must have machine access
 msgstr "터미널 공유를 업데이트할 수 없습니다. 공유하려면 수신자가 컴퓨터에 액세스할 수 있어야 합니다."
 
 #: lib/marshall_web/components/workspace_components.ex:80
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:596
 #: lib/marshall_web/live/machines_live.ex:694
 #: lib/marshall_web/live/machines_live.ex:890
 #: lib/marshall_web/live/machines_live.ex:896
@@ -5811,10 +5879,13 @@ msgstr "없는"
 #: lib/marshall_web/components/workspace_components.ex:79
 #: lib/marshall_web/components/workspace_components.ex:493
 #: lib/marshall_web/live/admin/jobs_live.ex:176
+#: lib/marshall_web/live/admin/jobs_live.ex:401
+#: lib/marshall_web/live/admin/jobs_live.ex:412
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:273
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:597
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:639
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:641
 #: lib/marshall_web/live/inference_live.ex:58
 #: lib/marshall_web/live/inference_live.ex:156
 #: lib/marshall_web/live/inference_live.ex:162
@@ -5899,7 +5970,9 @@ msgstr "업데이트 중…"
 #: lib/marshall_web/live/threads_live.ex:2216
 #, elixir-autogen, elixir-format
 msgid "Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it."
-msgstr "명령을 사용하거나 작성하는 동안 Ctrl/Cmd+K를 누르세요. 명령을 찾으려면 /로 메시지를 시작하세요. 완료하려면 Tab을 사용하세요."
+msgstr ""
+"명령을 사용하거나 작성하는 동안 Ctrl/Cmd+K를 누르세요. 명령을 찾으려면 /로 메시지를 시작하세요. 완료하려면 Tab을 "
+"사용하세요."
 
 #: lib/marshall_web/live/threads_live.ex:2363
 #, elixir-autogen, elixir-format
@@ -5911,7 +5984,7 @@ msgstr "공개 GitHub, GitLab, Codeberg 또는 Bitbucket 저장소를 사용하�
 msgid "Use an existing account's email to grant, change or revoke a thread role."
 msgstr "스레드 역할을 부여, 변경 또는 취소하려면 기존 계정의 이메일을 사용하십시오."
 
-#: lib/marshall_web/live/account_live.ex:475
+#: lib/marshall_web/live/account_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Use browser language"
 msgstr "브라우저 언어 사용"
@@ -5941,14 +6014,14 @@ msgstr "이 스킬을 사용하세요"
 msgid "User"
 msgstr "사용자"
 
-#: lib/marshall_web/components/layouts.ex:384
-#: lib/marshall_web/components/layouts.ex:429
+#: lib/marshall_web/components/layouts.ex:382
+#: lib/marshall_web/components/layouts.ex:427
 #: lib/marshall_web/live/admin/users_live.ex:133
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "사용자"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:454
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
@@ -5994,23 +6067,23 @@ msgstr "이 컴퓨터에서는 VS Code를 사용할 수 없습니다."
 msgid "VS Code requires a running machine."
 msgstr "VS Code에는 실행 중인 머신이 필요합니다."
 
-#: lib/marshall_web/live/account_live.ex:127
+#: lib/marshall_web/live/account_live.ex:110
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Please try again."
 msgstr "확인을 완료할 수 없습니다. 다시 시도해 주세요."
 
-#: lib/marshall_web/live/account_live.ex:91
+#: lib/marshall_web/live/account_live.ex:74
 #, elixir-autogen, elixir-format
 msgid "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
 msgstr "확인이 필요합니다. 기존 암호 키를 사용하거나, 처음 등록하기 전에 로그아웃하고 새로운 이메일 링크를 요청하세요."
 
-#: lib/marshall_web/live/account_live.ex:585
+#: lib/marshall_web/live/account_live.ex:595
 #, elixir-autogen, elixir-format
 msgid "Verify a passkey before making administrative changes or changing passkeys."
 msgstr "관리 변경을 수행하거나 암호 키를 변경하기 전에 암호 키를 확인하십시오."
 
 #: lib/marshall_web/components/layouts.ex:111
-#: lib/marshall_web/live/account_live.ex:610
+#: lib/marshall_web/live/account_live.ex:620
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "패스키로 확인"
@@ -6169,9 +6242,11 @@ msgstr "이 시스템에 접근할 수 있는 사람과 각 역할이 허용하�
 #: lib/marshall_web/live/admin/access_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
-msgstr "누가 어떤 시스템에 접근할 수 있으며 어떤 키나 세션을 통해 접근할 수 있습니까? 개인 키, 세션 토큰 및 게이트웨이 자격 증명은 표시되지 않습니다."
+msgstr ""
+"누가 어떤 시스템에 접근할 수 있으며 어떤 키나 세션을 통해 접근할 수 있습니까? 개인 키, 세션 토큰 및 게이트웨이 자격 증명은 "
+"표시되지 않습니다."
 
-#: lib/marshall_web/live/account_live.ex:427
+#: lib/marshall_web/live/account_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "Who you are, how you prove it, and the keys that reach your machines."
 msgstr "당신이 누구인지, 그것을 증명하는 방법, 그리고 당신의 기계에 접근하는 열쇠."
@@ -6223,14 +6298,14 @@ msgstr "작업량"
 msgid "Workload inventory is temporarily unavailable."
 msgstr "워크로드 인벤토리를 일시적으로 사용할 수 없습니다."
 
-#: lib/marshall_web/components/layouts.ex:378
-#: lib/marshall_web/components/layouts.ex:426
+#: lib/marshall_web/components/layouts.ex:376
+#: lib/marshall_web/components/layouts.ex:424
 #, elixir-autogen, elixir-format
 msgid "Workloads"
 msgstr "워크로드"
 
 #: lib/marshall_web/components/layouts.ex:274
-#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:430
 #, elixir-autogen, elixir-format
 msgid "Workspace"
 msgstr "작업공간"
@@ -6329,7 +6404,9 @@ msgstr "이 시스템에 대한 터미널 액세스 권한이 없습니다."
 #: lib/marshall_web/controllers/auth_controller.ex:80
 #, elixir-autogen, elixir-format
 msgid "You have already signed in another way, but have not confirmed your account.\nYou can confirm your account using the link we sent to you, or by resetting your password.\n"
-msgstr "이미 다른 방법으로 로그인했지만 계정을 확인하지 않았습니다.\n귀하는 당사가 귀하에게 보낸 링크를 사용하거나 비밀번호를 재설정하여 귀하의 계정을 확인할 수 있습니다.\n"
+msgstr ""
+"이미 다른 방법으로 로그인했지만 계정을 확인하지 않았습니다.\n"
+"귀하는 당사가 귀하에게 보낸 링크를 사용하거나 비밀번호를 재설정하여 귀하의 계정을 확인할 수 있습니다.\n"
 
 #: lib/marshall_web/live/threads_live.ex:1929
 #, elixir-autogen, elixir-format
@@ -6341,10 +6418,12 @@ msgstr "이 스레드에 대한 읽기 전용 액세스 권한이 있습니다."
 msgid "You no longer have permission for this action."
 msgstr "더 이상 이 작업에 대한 권한이 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:570
+#: lib/marshall_web/live/account_live.ex:580
 #, elixir-autogen, elixir-format
 msgid "You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one."
-msgstr "이메일 링크로 로그인합니다. 암호 키는 관리 변경 전과 암호 키 변경 전에 본인임을 증명합니다. 일상적인 작업 공간 사용에는 절대 필요한 것이 없습니다."
+msgstr ""
+"이메일 링크로 로그인합니다. 암호 키는 관리 변경 전과 암호 키 변경 전에 본인임을 증명합니다. 일상적인 작업 공간 사용에는 절대 필요한"
+" 것이 없습니다."
 
 #: lib/marshall_web/live/inference_live.ex:81
 #, elixir-autogen, elixir-format
@@ -6401,15 +6480,18 @@ msgstr "머신이 중지되어도 디스크는 그대로 유지됩니다."
 msgid "Your email address has now been confirmed"
 msgstr "귀하의 이메일 주소가 확인되었습니다"
 
-#: lib/marshall_web/live/account_live.ex:496
+#: lib/marshall_web/live/account_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
-msgstr "귀하의 이메일은 귀하의 로그인 ID이므로 여기에서 편집할 수 없습니다. 작업복을 입을 때마다 해당 영역에 표시됩니다. 팀, 컴퓨터 또는 스레드를 귀하와 공유하는 사람들 및 관리자는 영역이 저장되면 이메일 옆에 현재 현지 시간을 볼 수 있습니다."
+msgstr ""
+"귀하의 이메일은 귀하의 로그인 ID이므로 여기에서 편집할 수 없습니다. 작업복을 입을 때마다 해당 영역에 표시됩니다. 팀, 컴퓨터 또는 "
+"스레드를 귀하와 공유하는 사람들 및 관리자는 영역이 저장되면 이메일 옆에 현재 현지 시간을 볼 수 있습니다."
 
 #: lib/marshall_web/live/terminal_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
-msgstr "귀하의 게스트 계정을 준비할 수 없습니다. 게스트 계정 서비스를 사용할 수 있는지 확인한 후 새로 만들기를 선택하여 다시 시도하세요."
+msgstr ""
+"귀하의 게스트 계정을 준비할 수 없습니다. 게스트 계정 서비스를 사용할 수 있는지 확인한 후 새로 만들기를 선택하여 다시 시도하세요."
 
 #: lib/marshall_web/live/threads_live.ex:2015
 #, elixir-autogen, elixir-format
@@ -6441,12 +6523,12 @@ msgstr "귀하의 기계"
 msgid "Your objective is saved. Retry to prepare the workspace again."
 msgstr "목표가 저장되었습니다. 작업공간을 다시 준비해 보세요."
 
-#: lib/marshall_web/live/account_live.ex:632
+#: lib/marshall_web/live/account_live.ex:642
 #, elixir-autogen, elixir-format
 msgid "Your passkeys"
 msgstr "귀하의 패스키"
 
-#: lib/marshall_web/live/account_live.ex:591
+#: lib/marshall_web/live/account_live.ex:601
 #, elixir-autogen, elixir-format
 msgid "Your passkeys were reset. Register a replacement before approving administrative changes."
 msgstr "암호키가 재설정되었습니다. 관리 변경을 승인하기 전에 교체를 등록하십시오."
@@ -6481,7 +6563,7 @@ msgstr "귀하의 개인 사본이 생성되었습니다. 소스 스냅샷은 �
 msgid "Your role: %{role}"
 msgstr "귀하의 역할: %{role}"
 
-#: lib/marshall_web/live/account_live.ex:461
+#: lib/marshall_web/live/account_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Your saved language overrides browser preferences."
 msgstr "저장된 언어는 브라우저 기본 설정보다 우선 적용됩니다."
@@ -6506,7 +6588,7 @@ msgstr "컴퓨터가 실행 중이고 준비되면 터미널이 열립니다."
 msgid "Your threads"
 msgstr "당신의 스레드"
 
-#: lib/marshall_web/components/layouts.ex:394
+#: lib/marshall_web/components/layouts.ex:392
 #, elixir-autogen, elixir-format
 msgid "Your workspace"
 msgstr "귀하의 작업 공간"
@@ -6521,12 +6603,12 @@ msgstr "숨 쉴 수 있는 작은 공간이 있는 작업 공간."
 msgid "Zone"
 msgstr "존"
 
-#: lib/marshall_web/live/account_live.ex:584
+#: lib/marshall_web/live/account_live.ex:594
 #, elixir-autogen, elixir-format
 msgid "[not verified]"
 msgstr "[확인되지 않음]"
 
-#: lib/marshall_web/live/account_live.ex:577
+#: lib/marshall_web/live/account_live.ex:587
 #, elixir-autogen, elixir-format
 msgid "[verified]"
 msgstr "[확인됨]"
@@ -6556,7 +6638,7 @@ msgstr "이 워크로드 다운타임을 승인하세요"
 msgid "attempt"
 msgstr "시도"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:460
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "%{attempt} 시도"
@@ -6566,7 +6648,7 @@ msgstr "%{attempt} 시도"
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "%{attempt} 시도 · %{count} 기록된 실패"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:458
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "운동"
@@ -6616,22 +6698,24 @@ msgstr "계속해서 작업복"
 msgid "delete this user account"
 msgstr "이 사용자 계정 삭제"
 
-#: lib/marshall_web/live/account_live.ex:433
+#: lib/marshall_web/live/account_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "email, time zone and your local clock"
 msgstr "이메일, 시간대 및 현지 시계"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:326
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:303
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "활성화됨"
 
-#: lib/marshall_web/live/integrations_live.ex:414
+#: lib/marshall_web/live/integrations_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "예제 통합"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:328
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:303
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:326
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "제외된"
@@ -6651,12 +6735,12 @@ msgstr "찾다"
 msgid "full"
 msgstr "가득한"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:460
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "직업"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:457
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "이동하다"
@@ -6784,12 +6868,12 @@ msgstr "없는"
 msgid "unknown"
 msgstr "알려지지 않은"
 
-#: lib/marshall_web/live/account_live.ex:437
+#: lib/marshall_web/live/account_live.ex:449
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "관리 변경 확인"
 
-#: lib/marshall_web/live/integrations_live.ex:441
+#: lib/marshall_web/live/integrations_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-토큰"
@@ -6804,7 +6888,7 @@ msgstr "예"
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· %{value1} 추론 · %{value2}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· 다운타임 승인 필요"
@@ -6835,7 +6919,7 @@ msgid "← All sections"
 msgstr "← 모든 섹션"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:296
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:571
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:569
 #: lib/marshall_web/live/admin/users_live.ex:231
 #: lib/marshall_web/live/machines_live.ex:732
 #: lib/marshall_web/live/machines_live.ex:978
@@ -6873,159 +6957,303 @@ msgstr "← 설정"
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ 선택 · 실행 입력 · 탈출 닫기"
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:151
+#: lib/marshall/accounts/time_zones.ex:314
 #, elixir-autogen, elixir-format
-msgid "Awaiting GitHub authorization"
-msgstr "Awaiting GitHub authorization"
+msgid "%{span} ahead of you"
+msgstr "내 시각보다 %{span} 빠름"
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:251
+#: lib/marshall/accounts/time_zones.ex:315
 #, elixir-autogen, elixir-format
-msgid "Connect GitHub"
-msgstr "Connect GitHub"
+msgid "%{span} behind you"
+msgstr "내 시각보다 %{span} 느림"
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:236
-#, elixir-autogen, elixir-format
-msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
-msgstr "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:148
-#: lib/marshall_web/live/integrations_live.ex:149
-#, elixir-autogen, elixir-format
-msgid "Connected"
-msgstr "Connected"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:246
-#, elixir-autogen, elixir-format
-msgid "Connected as %{login}"
-msgstr "Connected as %{login}"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:120
-#, elixir-autogen, elixir-format
-msgid "Could not update the GitHub connection."
-msgstr "Could not update the GitHub connection."
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:261
-#, elixir-autogen, elixir-format
-msgid "Disconnect GitHub"
-msgstr "Disconnect GitHub"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:258
-#, elixir-autogen, elixir-format
-msgid "Disconnect GitHub from your machines?"
-msgstr "Disconnect GitHub from your machines?"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:150
-#, elixir-autogen, elixir-format
-msgid "Disconnected"
-msgstr "Disconnected"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:155
-#, elixir-autogen, elixir-format
-msgid "Disconnecting GitHub"
-msgstr "Disconnecting GitHub"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:152
-#, elixir-autogen, elixir-format
-msgid "Finishing active GitHub requests"
-msgstr "Finishing active GitHub requests"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
-#, elixir-autogen, elixir-format
-msgid "GitHub connected."
-msgstr "GitHub connected."
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
-#, elixir-autogen, elixir-format
-msgid "GitHub could not be connected. Try again from Integrations."
-msgstr "GitHub could not be connected. Try again from Integrations."
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:265
-#, elixir-autogen, elixir-format
-msgid "Machines excluded from your GitHub identity"
-msgstr "Machines excluded from your GitHub identity"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:154
-#, elixir-autogen, elixir-format
-msgid "Reconnect required"
-msgstr "Reconnect required"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:153
-#, elixir-autogen, elixir-format
-msgid "Refreshing GitHub connection"
-msgstr "Refreshing GitHub connection"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:156
-#, elixir-autogen, elixir-format
-msgid "Temporarily unavailable"
-msgstr "Temporarily unavailable"
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/integrations_live.ex:241
-#, elixir-autogen, elixir-format
-msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
-msgstr "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
-
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/account_live.ex:547
+#: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
+msgstr "커밋에 Overalls 기여 표시 추가"
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/account_live.ex:72
+#: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
+msgstr "올바른 Git 이름과 이메일 주소를 입력하세요."
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/account_live.ex:540
+#: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git email"
+msgstr "Git 이메일"
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/account_live.ex:555
+#: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Git 신원 변경은 새 머신에 적용됩니다. 커밋 기여 표시 변경은 향후 에이전트 요청에 적용됩니다."
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/account_live.ex:68
+#: lib/marshall_web/live/account_live.ex:538
+#, elixir-autogen, elixir-format
+msgid "Git settings"
+msgstr "Git 설정"
+
+#: lib/marshall_web/live/account_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git settings saved."
+msgstr "Git 설정을 저장했습니다."
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/account_live.ex:533
+#: lib/marshall_web/live/account_live.ex:542
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git username"
+msgstr "Git 사용자 이름"
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/account_live.ex:559
+#: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Save Git settings"
+msgstr "Git 설정 저장"
 
-#. Reviewed English fallback for GitHub integration and account settings; native-language review pending.
-#: lib/marshall_web/live/account_live.ex:550
+#: lib/marshall_web/live/account_live.ex:559
 #, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgid "When enabled, new agent commits include %{trailer}."
+msgstr "활성화하면 에이전트의 새 커밋에 %{trailer}가 포함됩니다."
+
+#: lib/marshall/accounts/time_zones.ex:300
+#, elixir-autogen, elixir-format
+msgid "same time as you"
+msgstr "나와 같은 시각"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:405
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "확인됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:519
+#, elixir-autogen, elixir-format
+msgid "Blocked: %{reason}"
+msgstr "차단됨: %{reason}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:616
+#, elixir-autogen, elixir-format
+msgid "Campaign closed"
+msgstr "캠페인 종료됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:614
+#, elixir-autogen, elixir-format
+msgid "Campaign requested"
+msgstr "캠페인 요청됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:623
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "취소 요청됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
+#, elixir-autogen, elixir-format
+msgid "Candidate: %{name}"
+msgstr "후보: %{name}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:610
+#, elixir-autogen, elixir-format
+msgid "Cleaning up after cancellation"
+msgstr "취소 후 정리 중"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:608
+#, elixir-autogen, elixir-format
+msgid "Cleaning up the source"
+msgstr "원본 정리 중"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:637
+#, elixir-autogen, elixir-format
+msgid "Clone in progress"
+msgstr "복제 진행 중"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
+#, elixir-autogen, elixir-format
+msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
+msgstr ""
+"설정된 호스트 여유 자원: %{cores}코어 · 메모리 %{memory}. 이 여유분은 수용 용량 계산에 포함되며 배포 설정으로 "
+"관리됩니다."
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Continue to Overalls"
+msgstr "Overalls로 계속"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
+#, elixir-autogen, elixir-format
+msgid "Desired: %{desired} · Observed: %{observed}"
+msgstr "목표: %{desired} · 관측: %{observed}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:622
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup confirmed"
+msgstr "대상 정리 확인됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:621
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup requested"
+msgstr "대상 정리 요청됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:634
+#, elixir-autogen, elixir-format
+msgid "Downtime approval required"
+msgstr "중단 시간 승인 필요"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
+#, elixir-autogen, elixir-format
+msgid "Downtime approved"
+msgstr "중단 시간 승인됨"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:584
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "비우기 완료"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "비우는 중"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "대피 중"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:602
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "가져오는 중"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Insufficient capacity"
+msgstr "용량 부족"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
+#, elixir-autogen, elixir-format
+msgid "Job state"
+msgstr "작업 상태"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:582
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "정상"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:529
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s"
+msgstr "관측된 중단: %{seconds}초"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s (ongoing)"
+msgstr "관측된 중단: %{seconds}초(진행 중)"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:398
+#, elixir-autogen, elixir-format
+msgid "Operation"
+msgstr "작업"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "일시 중지됨"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:399
+#, elixir-autogen, elixir-format
+msgid "Relocation"
+msgstr "이동"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:617
+#, elixir-autogen, elixir-format
+msgid "Relocation committed"
+msgstr "이동 확정됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:636
+#, elixir-autogen, elixir-format
+msgid "Relocation in progress"
+msgstr "이동 진행 중"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:627
+#, elixir-autogen, elixir-format
+msgid "Relocation started"
+msgstr "이동 시작됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#, elixir-autogen, elixir-format
+msgid "Restoring the source"
+msgstr "원본 복원 중"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:590
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "재개됨"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "사용 종료됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
+#, elixir-autogen, elixir-format
+msgid "Retrying destination boot"
+msgstr "대상 부팅 재시도 중"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:27
+#, elixir-autogen, elixir-format
+msgid "Signing you in"
+msgstr "로그인 중"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:620
+#, elixir-autogen, elixir-format
+msgid "Source cleanup confirmed"
+msgstr "원본 정리 확인됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "Source cleanup requested"
+msgstr "원본 정리 요청됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
+#, elixir-autogen, elixir-format
+msgid "Source ready"
+msgstr "원본 준비됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:618
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "원본 복원됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
+#, elixir-autogen, elixir-format
+msgid "Source unavailable"
+msgstr "원본 사용 불가"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#, elixir-autogen, elixir-format
+msgid "Transfer busy"
+msgstr "전송 중"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
+#, elixir-autogen, elixir-format
+msgid "Workload changed"
+msgstr "워크로드 변경됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
+#, elixir-autogen, elixir-format
+msgid "Workload is not stable"
+msgstr "워크로드가 안정적이지 않습니다"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:625
+#, elixir-autogen, elixir-format
+msgid "Workload observed"
+msgstr "워크로드 관측됨"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:628
+#, elixir-autogen, elixir-format
+msgid "Workload resolved"
+msgstr "워크로드 식별됨"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:28
+#, elixir-autogen, elixir-format
+msgid "Your email link is being verified."
+msgstr "이메일 링크를 확인하고 있습니다."

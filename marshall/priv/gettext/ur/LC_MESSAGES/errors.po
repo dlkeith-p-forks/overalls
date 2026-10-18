@@ -1,3 +1,10 @@
+#
+msgid ""
+msgstr ""
+"Language: ur\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 ## This is a PO Template file.
 ##
 ## `msgid`s here are often extracted from source code.
@@ -9,101 +16,101 @@
 ## effect: edit them in PO (`.po`) files instead.
 ## From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr ""
+msgstr "خالی نہیں ہو سکتا"
 
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "پہلے ہی استعمال ہو چکا ہے"
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "درست نہیں ہے"
 
 ## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr ""
+msgstr "قبول کرنا ضروری ہے"
 
 ## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr ""
+msgstr "فارمیٹ درست نہیں ہے"
 
 ## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr ""
+msgstr "ایک اندراج درست نہیں ہے"
 
 ## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr ""
+msgstr "محفوظ ہے"
 
 ## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr ""
+msgstr "تصدیق سے میل نہیں کھاتا"
 
 ## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "اب بھی اس اندراج سے منسلک ہے"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "اب بھی اس اندراج سے منسلک ہیں"
 
 ## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} اشیا ہونی چاہئیں"
+msgstr[1] "%{count} اشیا ہونی چاہئیں"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} حروف ہونے چاہئیں"
+msgstr[1] "%{count} حروف ہونے چاہئیں"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} بائٹس ہونے چاہئیں"
+msgstr[1] "%{count} بائٹس ہونے چاہئیں"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "کم از کم %{count} اشیا ہونی چاہئیں"
+msgstr[1] "کم از کم %{count} اشیا ہونی چاہئیں"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "کم از کم %{count} حروف ہونے چاہئیں"
+msgstr[1] "کم از کم %{count} حروف ہونے چاہئیں"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "کم از کم %{count} بائٹس ہونے چاہئیں"
+msgstr[1] "کم از کم %{count} بائٹس ہونے چاہئیں"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "زیادہ سے زیادہ %{count} اشیا ہونی چاہئیں"
+msgstr[1] "زیادہ سے زیادہ %{count} اشیا ہونی چاہئیں"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "زیادہ سے زیادہ %{count} حروف ہونے چاہئیں"
+msgstr[1] "زیادہ سے زیادہ %{count} حروف ہونے چاہئیں"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "زیادہ سے زیادہ %{count} بائٹس ہونے چاہئیں"
+msgstr[1] "زیادہ سے زیادہ %{count} بائٹس ہونے چاہئیں"
 
 ## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "%{number} سے کم ہونا ضروری ہے"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "%{number} سے زیادہ ہونا ضروری ہے"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "%{number} سے کم یا برابر ہونا ضروری ہے"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "%{number} سے زیادہ یا برابر ہونا ضروری ہے"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "%{number} کے برابر ہونا ضروری ہے"

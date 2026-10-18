@@ -1,15 +1,18 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=1; plural=0;\nLanguage: vi\n"
+msgstr ""
+"Language: vi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
@@ -114,7 +117,10 @@ msgstr "Không có kết quả khớp"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "Mở liên kết này?\n\n%{url}"
+msgstr ""
+"Mở liên kết này?\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -134,17 +140,22 @@ msgstr "Xác minh passkey thất bại hoặc không khả dụng. Hãy thử l�
 #: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
-msgstr "Tên terminal (chỉ trình duyệt này; để trống sẽ khôi phục tên được tạo)"
+msgstr ""
+"Tên terminal (chỉ trình duyệt này; để trống sẽ khôi phục tên được tạo)"
 
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr "Không thể xác nhận kết quả. Tải lại trang và kiểm tra kết quả trước khi thử lại."
+msgstr ""
+"Không thể xác nhận kết quả. Tải lại trang và kiểm tra kết quả trước khi thử "
+"lại."
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "Máy này yêu cầu ghi %{bytes} byte vào clipboard của bạn. Chọn một lần, phiên hoặc tắt tiếng."
+msgstr ""
+"Máy này yêu cầu ghi %{bytes} byte vào bộ nhớ tạm của bạn. Nhập once, session"
+" hoặc mute."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
@@ -169,7 +180,9 @@ msgstr "Không thể hoàn tất xác minh. Hãy thử lại."
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr "Xác minh bằng passkey để %{action}. Thao tác này chạy một lần sau khi xác minh."
+msgstr ""
+"Xác minh bằng passkey để %{action}. Thao tác này chạy một lần sau khi xác "
+"minh."
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format

@@ -116,7 +116,7 @@ qualification followed by reviewed production image selection. FreeBSD and OmniO
 editor support remain outside this decision.
 
 The incoming ADR registry collision was reconciled without changing rationale:
-per-user pins retain ADR-0193 and localization retains ADR-0197; Git attribution
+per-user pins retain ADR-0193 and localization retains ADR-0201; Git attribution
 is ADR-0198 and memory suspension is ADR-0199, with reciprocal supersession links
 and the missing settings/localization index rows restored. The identical repeated
 Git action, policy and attributes in `Marshall.Accounts.User` were removed while

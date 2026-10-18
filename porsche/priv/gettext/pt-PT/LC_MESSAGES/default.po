@@ -1,203 +1,432 @@
+#
 msgid ""
 msgstr ""
 "Language: pt-PT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "Porsche machine management. Type help."
-msgstr "Gestão de máquinas Porsche. Introduza help."
+#: lib/porsche/ssh/onboarding.ex:60
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"\n"
+"Keep this SSH connection open while approving the key.\n"
+msgstr ""
+"\n"
+"\n"
+"Mantenha esta ligação SSH aberta enquanto aprova a chave.\n"
 
-msgid "Docs:"
-msgstr "Documentação:"
+#: lib/porsche/ssh/onboarding.ex:75
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Open an interactive Porsche connection without a remote command:"
+msgstr ""
+"\n"
+"Abra uma ligação interativa do Porsche sem um comando remoto:"
 
-msgid "Show command help."
-msgstr "Mostrar a ajuda dos comandos."
+#: lib/porsche/ssh/onboarding.ex:58
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Open this link, sign in, and approve the matching fingerprint:\n"
+"  "
+msgstr ""
+"\n"
+"Abra esta ligação, inicie sessão e aprove a impressão digital correspondente:\n"
+"  "
 
-msgid "Show the authenticated account."
-msgstr "Mostrar a conta autenticada."
+#: lib/porsche/ssh/onboarding.ex:112
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Or manage your keys at:\n"
+"  "
+msgstr ""
+"\n"
+"Ou gira as suas chaves em:\n"
+"  "
 
-msgid "List available images."
-msgstr "Listar as imagens disponíveis."
-
-msgid "List machines you can access."
-msgstr "Listar as máquinas às quais tem acesso."
-
-msgid "Inspect a machine by name or UUID."
-msgstr "Inspecionar uma máquina pelo nome ou UUID."
-
-msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
-msgstr "Criar uma máquina. Disco máximo: 500 GiB. --source clona um repositório público do GitHub, GitLab, Codeberg ou Bitbucket no sistema convidado."
-
-msgid "Queue an independent full-disk copy of a machine."
-msgstr "Colocar em fila uma cópia independente do disco completo de uma máquina."
-
-msgid "Move a machine to an automatically selected host."
-msgstr "Mover uma máquina para um host selecionado automaticamente."
-
-msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
-msgstr "Alterar a CPU e a memória de uma máquina; o disco só pode aumentar. Uma máquina em execução é parada e reiniciada."
-
-msgid "Retry a failed clone or relocation request."
-msgstr "Repetir um pedido de clonagem ou relocalização que falhou."
-
-msgid "Cancel an unpublished clone or uncommitted relocation request."
-msgstr "Cancelar um pedido de clonagem não publicado ou de relocalização não confirmado."
-
-msgid "Start a machine."
-msgstr "Iniciar uma máquina."
-
-msgid "Stop a machine, retaining its disk."
-msgstr "Parar uma máquina, mantendo o seu disco."
-
-msgid "Delete a machine and its disk. Refused while its owner has it pinned."
-msgstr "Eliminar uma máquina e o seu disco. Recusado enquanto o proprietário a mantiver fixada."
-
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "Fixar uma máquina no topo das suas listas. Enquanto ela lhe pertencer e estiver fixada, nada poderá eliminá-la."
-
-msgid "Remove your pin from a machine."
-msgstr "Remover a sua fixação de uma máquina."
-
-msgid "List access grants."
-msgstr "Listar as concessões de acesso."
-
-msgid "Grant viewer, operator or manager access."
-msgstr "Conceder acesso viewer, operator ou manager."
-
-msgid "Revoke an account's shared access."
-msgstr "Revogar o acesso partilhado de uma conta."
-
-msgid "List your SSH keys."
-msgstr "Listar as suas chaves SSH."
-
-msgid "Revoke one of your SSH keys."
-msgstr "Revogar uma das suas chaves SSH."
-
-msgid "Create or replace a named integration at https://NAME.integration.internal."
-msgstr "Criar ou substituir uma integração nomeada em https://NAME.integration.internal."
-
-msgid "Remove a named integration."
-msgstr "Remover uma integração nomeada."
-
-msgid "List your integrations."
-msgstr "Listar as suas integrações."
-
-msgid "Inspect an integration without secrets."
-msgstr "Inspecionar uma integração sem segredos."
-
-msgid "Make an integration available to a machine."
-msgstr "Disponibilizar uma integração para uma máquina."
-
-msgid "Remove a machine's explicit availability."
-msgstr "Remover a disponibilidade explícita de uma máquina."
-
-msgid "Create a team you own."
-msgstr "Criar uma equipa da qual seja proprietário."
-
-msgid "List your teams and roles."
-msgstr "Listar as suas equipas e funções."
-
-msgid "List a team's members."
-msgstr "Listar os membros de uma equipa."
-
-msgid "Add or change an admin or member."
-msgstr "Adicionar ou alterar um administrador ou membro."
-
-msgid "Remove an account's membership."
-msgstr "Remover a associação de uma conta."
-
-msgid "Offer team ownership to an admin."
-msgstr "Oferecer a propriedade da equipa a um administrador."
-
+#: lib/porsche/ssh/command_messages.ex:46
+#, elixir-autogen, elixir-format
 msgid "Accept a pending ownership offer."
 msgstr "Aceitar uma oferta de propriedade pendente."
 
-msgid "Decline a pending ownership offer."
-msgstr "Recusar uma oferta de propriedade pendente."
+#: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "Adicionar ou alterar um administrador ou membro."
 
-msgid "Cancel your pending ownership offer."
-msgstr "Cancelar a sua oferta de propriedade pendente."
-
-msgid "Inspect a previously accepted request."
-msgstr "Inspecionar um pedido aceite anteriormente."
-
-msgid "Close this interactive channel."
-msgstr "Fechar este canal interativo."
-
-msgid "We don't recognize this SSH key:\n  "
-msgstr "Não reconhecemos esta chave SSH:\n  "
-
-msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
-msgstr "\nAbra esta ligação, inicie sessão e aprove a impressão digital correspondente:\n  "
-
-msgid "\n\nKeep this SSH connection open while approving the key.\n"
-msgstr "\n\nMantenha esta ligação SSH aberta enquanto aprova a chave.\n"
-
-msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
-msgstr "As ligações de aprovação expiram após %{minutes} minutos ou quando esta ligação for fechada.\n"
-
+#: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
 msgid "After approval, retry your command here.\n"
 msgstr "Após a aprovação, tente executar o seu comando novamente aqui.\n"
 
-msgid "\nOpen an interactive Porsche connection without a remote command:"
-msgstr "\nAbra uma ligação interativa do Porsche sem um comando remoto:"
+#: lib/porsche/ssh/onboarding.ex:61
+#, elixir-autogen, elixir-format
+msgid ""
+"Approval links expire after %{minutes} minutes or when this connection "
+"closes.\n"
+msgstr ""
+"As ligações de aprovação expiram após %{minutes} minutos ou quando esta "
+"ligação for fechada.\n"
 
-msgid "Keep that connection open while approving your key in the browser,\n"
-msgstr "Mantenha essa ligação aberta enquanto aprova a sua chave no navegador,\n"
+#: lib/porsche/ssh/output.ex:64
+#, elixir-autogen, elixir-format
+msgid "Approve this SSH key in your browser, then retry the command."
+msgstr ""
+"Aprove esta chave SSH no navegador e tente executar o comando novamente."
 
-msgid "then retry your original command.\n"
-msgstr "depois tente executar o comando original novamente.\n"
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr ""
+"Cancelar um pedido de clonagem não publicado ou de relocalização não "
+"confirmado."
 
-msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
-msgstr "Bem-vindo ao Overalls.\n\nEsta ligação precisa da configuração SSH do Overalls.\n\n"
+#: lib/porsche/ssh/command_messages.ex:47
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "Cancelar a sua oferta de propriedade pendente."
 
-msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
-msgstr "Não foi possível verificar esta chave SSH agora. Tente novamente dentro de instantes.\n\n"
+#: lib/porsche/ssh/command_messages.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Change a machine's CPU and memory; disk may only grow. A running machine "
+"stops and restarts."
+msgstr ""
+"Alterar a CPU e a memória de uma máquina; o disco só pode aumentar. Uma "
+"máquina em execução é parada e reiniciada."
 
-msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
-msgstr "Não foi possível autorizar esta ligação SSH. Verifique o seu acesso à máquina e tente novamente.\n\n"
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "Fechar este canal interativo."
 
-msgid "Register or check your key by connecting to:\n  ssh "
-msgstr "Registe ou verifique a sua chave ligando-se a:\n  ssh "
+#: lib/porsche/ssh/command_messages.ex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
+"GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr ""
+"Criar uma máquina. Disco máximo: 500 GiB. --source clona um repositório "
+"público do GitHub, GitLab, Codeberg ou Bitbucket no sistema convidado."
 
-msgid "\nOr manage your keys at:\n  "
-msgstr "\nOu gira as suas chaves em:\n  "
+#: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "Criar uma equipa da qual seja proprietário."
 
-msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
-msgstr "Registe ou verifique a sua chave SSH em Definições da conta Overalls > Chaves SSH.\n\n"
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"Create or replace a named integration at https://NAME.integration.internal."
+msgstr ""
+"Criar ou substituir uma integração nomeada em "
+"https://NAME.integration.internal."
 
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "Recusar uma oferta de propriedade pendente."
+
+#: lib/porsche/ssh/command_messages.ex:32
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr ""
+"Eliminar uma máquina e o seu disco. Recusado enquanto o proprietário a "
+"mantiver fixada."
+
+#: lib/porsche/ssh/channel.ex:115
+#, elixir-autogen, elixir-format
+msgid "Docs:"
+msgstr "Documentação:"
+
+#: lib/porsche/ssh/onboarding.ex:120
+#, elixir-autogen, elixir-format
 msgid "Follow the browser approval instructions, then run the setup command\n"
-msgstr "Siga as instruções de aprovação no navegador e execute o comando de configuração\n"
+msgstr ""
+"Siga as instruções de aprovação no navegador e execute o comando de "
+"configuração\n"
 
-msgid "from your machine's page and reconnect without root@.\n"
-msgstr "na página da sua máquina e volte a ligar-se sem root@.\n"
+#: lib/porsche/ssh/command_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "Conceder acesso viewer, operator ou manager."
 
-msgid "This connection is not authorized. Please sign in and try again."
-msgstr "Esta ligação não está autorizada. Inicie sessão e tente novamente."
+#: lib/porsche/ssh/command_messages.ex:36
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "Inspecionar uma máquina pelo nome ou UUID."
 
-msgid "You do not have permission to perform this action."
-msgstr "Não tem permissão para realizar esta ação."
+#: lib/porsche/ssh/command_messages.ex:27
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "Inspecionar um pedido aceite anteriormente."
 
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "Inspecionar uma integração sem segredos."
+
+#: lib/porsche/ssh/output.ex:58
+#, elixir-autogen, elixir-format
 msgid "Invalid command. Type help to see available commands."
 msgstr "Comando inválido. Introduza help para ver os comandos disponíveis."
 
-msgid "The service is temporarily unavailable. Please try again shortly."
-msgstr "O serviço está temporariamente indisponível. Tente novamente dentro de instantes."
+#: lib/porsche/ssh/onboarding.ex:77
+#, elixir-autogen, elixir-format
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr ""
+"Mantenha essa ligação aberta enquanto aprova a sua chave no navegador,\n"
 
-msgid "Approve this SSH key in your browser, then retry the command."
-msgstr "Aprove esta chave SSH no navegador e tente executar o comando novamente."
+#: lib/porsche/ssh/command_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "Listar os membros de uma equipa."
 
-msgid "The requested resource could not be found."
-msgstr "O recurso solicitado não foi encontrado."
+#: lib/porsche/ssh/command_messages.ex:35
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "Listar as concessões de acesso."
 
-msgid "Unexpected input. Please open a new SSH connection."
-msgstr "Entrada inesperada. Abra uma nova ligação SSH."
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "Listar as imagens disponíveis."
 
-msgid "The command could not be completed: %{reason}"
-msgstr "Não foi possível concluir o comando: %{reason}"
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "Listar as máquinas às quais tem acesso."
 
+#: lib/porsche/ssh/command_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "Listar as suas chaves SSH."
+
+#: lib/porsche/ssh/command_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "Listar as suas integrações."
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "Listar as suas equipas e funções."
+
+#: lib/porsche/ssh/command_messages.ex:11
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "Disponibilizar uma integração para uma máquina."
+
+#: lib/porsche/ssh/command_messages.ex:24
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "Mover uma máquina para um host selecionado automaticamente."
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "Oferecer a propriedade da equipa a um administrador."
+
+#: lib/porsche/ssh/channel.ex:113
+#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Gestão de máquinas Porsche. Introduza help."
+
+#: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr ""
+"Colocar em fila uma cópia independente do disco completo de uma máquina."
+
+#: lib/porsche/ssh/onboarding.ex:114
+#, elixir-autogen, elixir-format
+msgid ""
+"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
+"\n"
+msgstr ""
+"Registe ou verifique a sua chave SSH em Definições da conta Overalls > Chaves SSH.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:110
+#, elixir-autogen, elixir-format
+msgid ""
+"Register or check your key by connecting to:\n"
+"  ssh "
+msgstr ""
+"Registe ou verifique a sua chave ligando-se a:\n"
+"  ssh "
+
+#: lib/porsche/ssh/command_messages.ex:12
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "Remover a disponibilidade explícita de uma máquina."
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "Remover uma integração nomeada."
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "Remover a associação de uma conta."
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "Remover a sua fixação de uma máquina."
+
+#: lib/porsche/ssh/output.ex:104
+#, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "Pedido %{id}: a enviar"
 
+#: lib/porsche/ssh/output.ex:107
+#, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "Pedido %{id}: a aguardar conclusão"
+
+#: lib/porsche/ssh/command_messages.ex:26
+#, elixir-autogen, elixir-format
+msgid "Retry a failed clone or relocation request."
+msgstr "Repetir um pedido de clonagem ou relocalização que falhou."
+
+#: lib/porsche/ssh/command_messages.ex:34
+#, elixir-autogen, elixir-format
+msgid "Revoke an account's shared access."
+msgstr "Revogar o acesso partilhado de uma conta."
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Revoke one of your SSH keys."
+msgstr "Revogar uma das suas chaves SSH."
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "Mostrar a ajuda dos comandos."
+
+#: lib/porsche/ssh/command_messages.ex:52
+#, elixir-autogen, elixir-format
+msgid "Show the authenticated account."
+msgstr "Mostrar a conta autenticada."
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "Start a machine."
+msgstr "Iniciar uma máquina."
+
+#: lib/porsche/ssh/output.ex:73
+#, elixir-autogen, elixir-format
+msgid "The command could not be completed: %{reason}"
+msgstr "Não foi possível concluir o comando: %{reason}"
+
+#: lib/porsche/ssh/output.ex:67
+#, elixir-autogen, elixir-format
+msgid "The requested resource could not be found."
+msgstr "O recurso solicitado não foi encontrado."
+
+#: lib/porsche/ssh/output.ex:61
+#, elixir-autogen, elixir-format
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr ""
+"O serviço está temporariamente indisponível. Tente novamente dentro de "
+"instantes."
+
+#: lib/porsche/ssh/onboarding.ex:100
+#, elixir-autogen, elixir-format
+msgid ""
+"This SSH connection could not be authorized. Check your machine access and try again.\n"
+"\n"
+msgstr ""
+"Não foi possível autorizar esta ligação SSH. Verifique o seu acesso à máquina e tente novamente.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:52
+#, elixir-autogen, elixir-format
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "Esta ligação não está autorizada. Inicie sessão e tente novamente."
+
+#: lib/porsche/ssh/output.ex:70
+#, elixir-autogen, elixir-format
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "Entrada inesperada. Abra uma nova ligação SSH."
+
+#: lib/porsche/ssh/onboarding.ex:97
+#, elixir-autogen, elixir-format
+msgid ""
+"We couldn't verify this SSH key right now. Please try again shortly.\n"
+"\n"
+msgstr ""
+"Não foi possível verificar esta chave SSH agora. Tente novamente dentro de instantes.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:53
+#, elixir-autogen, elixir-format
+msgid ""
+"We don't recognize this SSH key:\n"
+"  "
+msgstr ""
+"Não reconhecemos esta chave SSH:\n"
+"  "
+
+#: lib/porsche/ssh/onboarding.ex:86
+#, elixir-autogen, elixir-format
+msgid ""
+"Welcome to Overalls.\n"
+"\n"
+"This connection needs the Overalls SSH configuration.\n"
+"\n"
+msgstr ""
+"Bem-vindo ao Overalls.\n"
+"\n"
+"Esta ligação precisa da configuração SSH do Overalls.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:55
+#, elixir-autogen, elixir-format
+msgid "You do not have permission to perform this action."
+msgstr "Não tem permissão para realizar esta ação."
+
+#: lib/porsche/ssh/onboarding.ex:121
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "na página da sua máquina e volte a ligar-se sem root@.\n"
+
+#: lib/porsche/ssh/onboarding.ex:78
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "depois tente executar o comando original novamente.\n"
+
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"Pin a machine to the top of your lists. Your owner pin wakes it, prevents "
+"automatic suspension, and prevents deletion."
+msgstr ""
+"Fixar uma máquina no topo das suas listas. A sua fixação como proprietário "
+"ativa-a, impede a suspensão automática e impede a eliminação."
+
+#: lib/porsche/ssh/command_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Retomar a memória preservada de uma máquina suspensa."
+
+#: lib/porsche/ssh/command_messages.ex:31
+#, elixir-autogen, elixir-format
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Retomar a memória preservada, aguardando capacidade ou realocação."
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr ""
+"Parar uma máquina, mantendo o seu disco e descartando a memória suspensa."
+
+#: lib/porsche/ssh/command_messages.ex:20
+#, elixir-autogen, elixir-format
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspender uma máquina, preservando a sua memória e o seu disco."

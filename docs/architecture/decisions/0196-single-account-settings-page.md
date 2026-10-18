@@ -50,7 +50,9 @@ old-link requirement ("breaking changes acceptable for links").
 
 1. **One page, three anchored sections.** `MarshallWeb.AccountLive` serves
    `/settings` with, in this order, `#profile` (email, local clock, time zone
-   picker), `#security` (verification status, ceremony buttons, the
+   picker and [ADR-0198](0198-git-attribution-and-guest-identity.md) Git
+   identity/commit attribution preferences), `#security` (verification status,
+   ceremony buttons, the
    elevation return link, the passkey list with rename and remove) and
    `#ssh-keys` (registered keys, then the add form). A numbered index at the
    top links each section; `<hr>` double rules separate them. Profile leads

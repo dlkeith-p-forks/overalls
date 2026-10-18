@@ -337,14 +337,14 @@ defmodule MarshallWeb.Admin.JobsLive do
             </p>
             <UI.panel :if={@subject} id="job-subject" title={gettext("Related record")}>
               <.kv>
-                <:item title={String.capitalize(to_string(@subject.kind))}>
+                <:item title={subject_kind(@subject.kind)}>
                   <code>{@subject.id}</code>
                 </:item>
                 <:item :if={Map.has_key?(@subject, :status)} title={gettext("Operation state")}>
-                  {@subject.status}
+                  {subject_status(@subject.status)}
                 </:item>
                 <:item :if={Map.has_key?(@subject, :finished)} title={gettext("Relocation complete")}>
-                  {to_string(@subject.finished)}
+                  {if @subject.finished, do: gettext("Complete"), else: gettext("Pending")}
                 </:item>
               </.kv>
               <p :if={@subject[:vm_id]}>
@@ -393,6 +393,23 @@ defmodule MarshallWeb.Admin.JobsLive do
     </Layouts.app>
     """
   end
+
+  @spec subject_kind(atom()) :: String.t()
+  defp subject_kind(:operation), do: gettext("Operation")
+  defp subject_kind(:relocation), do: gettext("Relocation")
+  defp subject_kind(:drain), do: gettext("Evacuation campaign")
+  defp subject_kind(_), do: gettext("Unknown")
+
+  @spec subject_status(atom()) :: String.t()
+  defp subject_status(:pending), do: gettext("Pending")
+  defp subject_status(:acknowledged), do: gettext("Acknowledged")
+  defp subject_status(:completed), do: gettext("Complete")
+  defp subject_status(:cancelled), do: gettext("Cancelled")
+  defp subject_status(:draining), do: gettext("Draining")
+  defp subject_status(:drained), do: gettext("Drained")
+  defp subject_status(:resumed), do: gettext("Resumed")
+  defp subject_status(:retired), do: gettext("Retired")
+  defp subject_status(_), do: gettext("Unknown")
 
   @spec job_tone(atom()) :: String.t() | nil
   defp job_tone(:discarded), do: "danger"

@@ -2,232 +2,6 @@
   "version": 1,
   "scenarios": [
     {
-      "id": "github-owner-oauth",
-      "journey": "Connect a personal GitHub.com account in Integrations, refresh it automatically, disconnect and reconnect",
-      "layers": [
-        "identity",
-        "authorization",
-        "storage",
-        "recovery"
-      ],
-      "boundary": "Marshall's current completed login owns one-use PKCE authorization, one active numeric GitHub account, Cloak-encrypted credential generations and ID-only Oban/AshOban work. PostgreSQL state machines and locked settlement, rather than job delivery, authorize publication.",
-      "denial": "Expired, replayed, foreign-login and retired callbacks cannot exchange or publish authority; another Marshall owner cannot claim an active numeric identity; stale callback/refresh results cannot revive a disconnected generation; an ambiguous rotating exchange requires reconnect instead of resending the old token.",
-      "scope": "Source-present Ash state machines, persisted callback histories and bounded authorization/refresh tests against a synthetic provider. Configuration tests require complete file-referenced settings and fixed HTTPS callback syntax. The composed fleet source now includes a real Chromium PKCE/provider journey and two-owner scheduled refresh path, but no KVM run is recorded here yet; no live GitHub is claimed.",
-      "status": "partial",
-      "gaps": "Live OAuth App offline_access and rotating refresh behavior, organization/SAML approval, independent multi-replica commit races, provider-side revocation of the complete refresh pair, backup restore and packaged browser login remain unverified. BEAM fixtures cannot establish those boundaries.",
-      "preferred_gap": "Run github-integration-fleet and its Ubuntu/Arch/Alma/Windows variants, record browser/provider/Oban/anonymous fallback results, then separately record live OAuth App grant/refresh/revocation behavior without putting tokens in evidence.",
-      "evidence": [
-        {
-          "kind": "property",
-          "path": "marshall/test/marshall/github/authorization_test.exs",
-          "assertion": "callback histories retain one-use state across arbitrary replays and disconnects",
-          "scope": "Generated persisted callback/replay/disconnect histories with a synthetic provider and at most one consumed authorization attempt; no external OAuth or native transport.",
-          "execution": "present"
-        },
-        {
-          "kind": "property",
-          "path": "marshall/test/marshall/github/state_machine_test.exs",
-          "assertion": "connection histories cannot publish before refresh or resurrect after disconnect",
-          "scope": "Generated named Ash transitions and independent phase model in the BEAM test VM; not distributed commit or network evidence.",
-          "execution": "present"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/github/authorization_test.exs",
-          "assertion": "ambiguous refresh fails closed and a duplicate job cannot resend the rotating token",
-          "scope": "Synthetic provider invocation observation and persisted reconnect-required/failed attempt; no live provider rotation guarantee.",
-          "execution": "present"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/operations/git_hub_config_test.exs",
-          "assertion": "production callbacks reject plaintext, credentials, query and alternate paths",
-          "scope": "Complete-or-disabled deployment input and fixed callback syntax validation, with no credential bytes in application settings; not OAuth registration or live callback reachability.",
-          "execution": "present"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/github/request_lease_test.exs",
-          "assertion": "each durable restore epoch is applied once across repeat invocations",
-          "scope": "Source-present external marker acknowledgement, credential/generation invalidation and idempotence in the BEAM database fixture; not a serving-release or backup restore execution.",
-          "execution": "present"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/github/replica_history_test.exs",
-          "assertion": "duplicate refresh workers on separate replicas never exchange the same pair twice",
-          "scope": "Three independent BEAMs and committed database fixtures coordinate a delayed synthetic refresh, duplicate worker and independent observer. Test source exists; no passing run is yet recorded here.",
-          "execution": "present"
-        },
-        {
-          "kind": "machine",
-          "path": "nix/verification/tests/machines/github-integration-fleet/driver.py",
-          "assertion": "github-fleet-scheduled-refresh",
-          "scope": "Three Marshall replicas, PostgreSQL, two Lilly hosts, Audi/Galileo, Chromium and current KVM guests use an isolated fixed-host TLS provider; the provider control/connector authority is deliberately not started. Source-present only until a KVM run records results.",
-          "execution": "present"
-        }
-      ]
-    },
-    {
-      "id": "github-private-forwarding",
-      "journey": "Run GitHub REST, GraphQL, Git HTTPS or LFS from an owner machine or a shared writer, detach that machine and continue public requests",
-      "layers": [
-        "identity",
-        "authorization",
-        "transport",
-        "execution",
-        "isolation",
-        "recovery"
-      ],
-      "boundary": "Audi/Lilly's trusted pre-NAT binding identifies the current VM and execution. Marshall resolves the non-Customer VM owner's connection and persistent detach; shared writers exercise that identity. Galileo holds credential-bearing attempts and opaque transfer selectors over reviewed fixed HTTPS targets.",
-      "denial": "Guest user IDs, Authorization, arbitrary URLs, unknown routes, foreign execution/generation/method selectors and unsafe signed targets cannot choose credentials. Detach/disconnect/expiry withdraw old authenticated leases without replay. Absent, detached, disconnected or reconnect-required connections allow new anonymous requests without a token; GitHub decides authentication requirements.",
-      "scope": "Protocol route/header properties, durable owner/exclusion/lease unit tests and Galileo response/capability histories. Existing single-attempt upstream properties remain the foundation; the composed github-integration-fleet source now runs the packaged guest terminal through the fixed-host TLS provider, with source-present family variants; no KVM result or live origin is claimed.",
-      "status": "partial",
-      "gaps": "No recorded GitHub-specific NixOS machine journey proves actual gh/Git/LFS through private DNS/TLS, Lilly attribution, two owners, shared writers, detach, refresh, relocation or provider redirects. Unit/property tests cannot prove native routing/isolation or loss/cancellation outcomes across real service boundaries.",
-      "preferred_gap": "Run the composed NixOS/Ubuntu/Arch/Alma/Windows historical/new-admission journeys and record actual gh/Git/LFS, owner binding, detach and anonymous outcomes through the real private service path.",
-      "evidence": [
-        {
-          "kind": "property",
-          "path": "protocol/test/github_test.exs",
-          "assertion": "path traversal, URL targets, identity fields and credential queries refuse",
-          "scope": "Closed wire request parser and reviewed fixed-origin route selection in the focused 26-test run; does not execute DNS, TLS or an upstream.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**26 passed**, seed `768903`"
-        },
-        {
-          "kind": "unit",
-          "path": "marshall/test/marshall/github/request_lease_test.exs",
-          "assertion": "refresh drains the old durable request then rotates only after its close",
-          "scope": "Persisted BEAM request-generation pin, refresh drain, token-free renewal and old-generation refusal using a synthetic provider.",
-          "execution": "present"
-        },
-        {
-          "kind": "property",
-          "path": "galileo/test/github_capabilities_test.exs",
-          "assertion": "transfer histories preserve exact execution and generation custody",
-          "scope": "In-process selectors bind host, VM, placement, epoch, connection, generation and method in the focused 16-test run; expiry/refusal does not prove native traffic closure.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**16 passed**, seed `242957`, 13.9 seconds"
-        },
-        {
-          "kind": "unit",
-          "path": "galileo/test/github_response_test.exs",
-          "assertion": "LFS upload, download and verify credentials stay in method-bound selectors",
-          "scope": "Synthetic LFS JSON rewriter removes credential-bearing URLs/headers from guest replies and enforces transfer methods; does not perform an external transfer.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**16 passed**, seed `242957`, 13.9 seconds"
-        },
-        {
-          "kind": "property",
-          "path": "galileo/test/github_http_test.exs",
-          "assertion": "mutating responses never follow redirects or retry",
-          "scope": "Generated mutating methods and redirect statuses produce one synthetic upstream invocation; no second effect is dispatched, while control authority is stubbed.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**16 passed**, seed `242957`, 13.9 seconds"
-        },
-        {
-          "kind": "unit",
-          "path": "galileo/test/github_http_test.exs",
-          "assertion": "real verified TLS origin observes one injected mutation and sanitized response",
-          "scope": "Actual localhost TLS origin with fixture CA observes one bearer-injected POST and response sanitization using stubbed control and explicit test target replacement; no Audi/Lilly, native guest or GitHub acceptance.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**16 passed**, seed `242957`, 13.9 seconds"
-        },
-        {
-          "kind": "machine",
-          "path": "nix/verification/tests/machines/github-integration-fleet/guest.exs",
-          "assertion": "github-fleet-native-commands",
-          "scope": "Current KVM composition and fixed synthetic provider source, with Windows historical image explicitly separated from new UI admission. Source-present only until execution.",
-          "execution": "present"
-        }
-      ]
-    },
-    {
-      "id": "github-managed-guest-tools",
-      "journey": "Use managed gh, Git HTTPS and LFS on a new or retained machine without logging in or storing a GitHub token in that machine",
-      "layers": [
-        "transport",
-        "execution",
-        "isolation",
-        "storage",
-        "recovery"
-      ],
-      "boundary": "Pinned managed clients keep github.com as logical repository identity while rewriting reviewed transport to com-github.integration.internal. A content-addressed release is metadata, not activation authority; Marshall's current executor/placement fence owns retained-machine maintenance and Lyra verifies artifacts before publication.",
-      "denial": "Guest credentials, unsafe destinations, unknown manifest fields, duplicate tool names, traversal paths, changed artifact bytes and stale executor receipts cannot select upstream authority or publish another generation. Retained disks and exact native image qualifications cannot silently inherit a new acceptance claim.",
-      "scope": "Source-present recipes for seven OS families and four platform tool builds, generated transport cases and strict manifest properties. Retained-machine coordinator/installer source is distinct from recorded native upgrade execution.",
-      "status": "partial",
-      "gaps": "No current seven-family boot, actual patched gh/Git/LFS workflow, retained-disk update/rollback, interrupted activation or production rollout is recorded. Native image promotion, CLI diagnostics/localization and Windows/FreeBSD/OmniOS execution need their own evidence.",
-      "preferred_gap": "Run packaged native journeys for all seven OS families and retained-machine update fault histories, then record this composed fleet source and network agent receipts separately; verify routing, no real guest token, current executor fencing, interrupted install rollback and immutable image promotion.",
-      "evidence": [
-        {
-          "kind": "property",
-          "path": "nix/domains/artifacts/guest/github/transport/transport_test.go",
-          "assertion": "TestRouteProperty",
-          "scope": "One thousand generated stdlib transport cases check reviewed routing and malformed-target refusal; no native packaged gh or Git process.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**5 Go tests passed**"
-        },
-        {
-          "kind": "unit",
-          "path": "nix/domains/artifacts/guest/github/transport/transport_test.go",
-          "assertion": "TestRoundTripStripsAuthorityAndStreams",
-          "scope": "Synthetic RoundTripper observes one request, stripped caller authority and streamed body without consuming it ahead of dispatch.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**5 Go tests passed**"
-        },
-        {
-          "kind": "property",
-          "path": "lyra/src/agent/maintenance.rs",
-          "assertion": "generated_maintenance_histories_preserve_last_healthy_generation",
-          "scope": "Linux-host temporary-file and fixture-health histories check corruption, interrupted staging, rollback and last healthy generation; no native guest or cross-platform ACL guarantee.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**6 Lyra maintenance tests passed**"
-        },
-        {
-          "kind": "property",
-          "path": "protocol/test/github_tools_test.exs",
-          "assertion": "guest-selected paths and duplicate tool names never enter the release inventory",
-          "scope": "Closed metadata manifest rejects traversal, foreign platform paths and duplicate names even when content hash is recomputed; no installation authority or native activation.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**26 passed**, seed `768903`"
-        },
-        {
-          "kind": "unit",
-          "path": "ziggy/test/maintenance_artifact_test.exs",
-          "assertion": "only exact current authority releases packaged bytes",
-          "scope": "Synthetic immutable file and stubbed control decisions release bytes only for the exact digest and size; mismatches refuse. No real private network or retained executor runs.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**21 passed**, seed `225546`, 0.1 seconds"
-        },
-        {
-          "kind": "unit",
-          "path": "ziggy/test/bootstrap_release_test.exs",
-          "assertion": "bootstrap inventory verifies every executable before exposing digest selectors",
-          "scope": "Four-platform synthetic immutable loader validates bytes and corruption refusal before artifact selection; no native bootstrap activation.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
-          "record_assertion": "**21 passed**, seed `225546`, 0.1 seconds"
-        },
-        {
-          "kind": "machine",
-          "path": "nix/verification/tests/machines/github-integration-fleet/guest.exs",
-          "assertion": "github-fleet-native-commands",
-          "scope": "NixOS/Ubuntu/Arch/Alma constructors check guest OS identity; Windows uses exact published firmware artifact and historical nil identity allocation. Source-present only; no seven-family run recorded.",
-          "execution": "present"
-        }
-      ]
-    },
-    {
       "id": "localization",
       "journey": "Select a language, reset to the browser default, and use LTR/RTL human surfaces",
       "layers": [
@@ -237,11 +11,57 @@
       ],
       "boundary": "Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic and Urdu use RTL; locale does not grant authority or change machine output.",
       "denial": "Unsupported or malformed locale input cannot persist; a foreign user cannot change the preference; old Porsche protocol peers fall back to English; JSON fields, protocol identifiers and terminal bytes remain language-neutral.",
-      "scope": "Accepted design in ADR-0200; no implementation execution is claimed by this scenario.",
+      "scope": "ADR-0201 presentation boundaries with recorded bounded BEAM/LiveView execution; full browser, native Porsche and linguistic acceptance remain partial.",
       "status": "partial",
-      "gaps": "Catalog completeness, placeholder parity, browser layout/bidi behavior, locale isolation and protocol compatibility need executed evidence. Native linguistic review and packaged NixOS browser journeys are not established.",
+      "gaps": "Documentation translations and native linguistic review remain incomplete. Packaged NixOS LTR/RTL browser journeys, real browser layout/bidi behavior and native Porsche protocol journeys are not established by the focused BEAM run.",
       "preferred_gap": "Add generated negotiation and isolation properties, complete catalog checks, LTR/RTL browser journeys and a packaged NixOS account-language/Porsche journey; record exact outcomes.",
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/accounts/locale_test.exs",
+          "assertion": "a user cannot change another account or persist unsupported input",
+          "scope": "Persisted override self-only/unsupported-input refusal within the BEAM fixture; no native transport claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/locale_test.exs",
+          "assertion": "request processes have independent translation locale state",
+          "scope": "Negotiation and isolated request-process locale state; no browser rendering claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/gettext_interpolation_test.exs",
+          "assertion": "RTL interpolation isolates a mixed-script value through the configured backend",
+          "scope": "Configured Arabic Gettext interpolation wraps a mixed-script value through Localize; no browser visual-order claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/accounts/localized_time_zones_test.exs",
+          "assertion": "every supported locale formats shifted instants without changing UTC provenance",
+          "scope": "All 25 locales and six formats plus CLDR relative units preserve the UTC instant/provenance in the BEAM.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/localized_markdown_test.exs",
+          "assertion": "translated prose cannot change commands, links or heading structure",
+          "scope": "Bounded Markdown token guard and extracted prose; no claim of translated catalog completeness.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        }
+      ]
     },
     {
       "id": "account-settings-page",
@@ -3111,7 +2931,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
           "assertion": "older archived activation proof cannot replace the retry proof",
-          "scope": "Current generated histories import archived retry observations and refuse older activation proof without changing execution/readiness/SSH/proof inventories. Current source was inspected, not rerun here. The earlier four-property execution remains historical evidence in docs/architecture/reviews/2026-10-02-retry-proof-binding-histories.md and does not execute this revised fixture. No native timing, committed publisher/restart or hosted claim.",
+          "scope": "Current property imports typed archived retry operations and proves older activation receipts cannot replace retry receipts; repeated scans retain pending measurements until the exact retry proof arrives and preserve inventories. No current retry admission, guest execution or native timing. Historical predecessor execution remains recorded separately in docs/architecture/reviews/2026-10-02-retry-proof-binding-histories.md and does not establish execution of this revised fixture.",
           "execution": "present"
         },
         {
@@ -3235,7 +3055,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
           "assertion": "historical retry measurements retain both proof windows through repeated scans",
-          "scope": "Current generated histories import archived retry observations and control received times for inclusive admission/deadline, missing/future proof, repeated scans, exact totals/buckets and immutable proof inventories. Current source was inspected, not rerun here. Earlier authenticated-retry executions remain historical evidence in docs/architecture/reviews/2026-10-02-retry-measurement-window-histories.md and do not execute this revised fixture. No native timing, committed publisher or process recovery claim.",
+          "scope": "Current property imports archived retry history and models received timestamps at inclusive admission/deadline boundaries, missing/early/late/future proofs and repeated scans; asserts exact totals, bucket vectors and retained execution/proof inventories. No current cold retry admission, independent publisher, native timing or production claim. Historical predecessor execution remains recorded separately in docs/architecture/reviews/2026-10-02-retry-measurement-window-histories.md and does not establish execution of this revised fixture.",
           "execution": "present"
         }
       ]
@@ -6301,10 +6121,10 @@
           "execution": "present"
         },
         {
-          "kind": "unit",
-          "path": "marshall/test/marshall/agents/prompt_test.exs",
-          "assertion": "a stopped VM retains prompt wake provenance until physical stop and capacity admission",
-          "scope": "Current deterministic source checks prompt wake provenance through stop observation and capacity admission using synthetic local Ash/PostgreSQL state; it is no longer generated-history evidence and does not execute a native guest wake.",
+          "kind": "property",
+          "path": "marshall/test/marshall/agents/prompt_wake_property_test.exs",
+          "assertion": "prompt retries join one wake without duplicating turns or starting a guest",
+          "scope": "Generated prompt text, repeated keys and changed payload across synthetic pending/stopped/paused/running observations against local Ash/PostgreSQL state; one turn/event/admission and sleeping-state wake receipts, with unchanged operation inventory. No native guest wake or checkpoint acceptance.",
           "execution": "present"
         },
         {
@@ -13183,12 +13003,10 @@
         },
         {
           "kind": "unit",
-          "execution": "recorded",
+          "execution": "present",
           "path": "marshall/test/marshall_web/terminal_live_test.exs",
           "assertion": "the paused Boot log entry reads host diagnostics without waking or opening a guest terminal",
-          "scope": "The captured earlier LiveView and synthetic host-stream execution delivered bounded diagnostic bytes with zero automatically opened registry rows across refresh. Current source additionally names paused-VM no-wake behavior; that extension has source presence only. Header fixtures link Boot log from the connection explanation while image terminal capability is false and render no Boot log tab. No actual browser, Lilly host or native guest.",
-          "record": "docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md",
-          "record_assertion": "LiveView and navigation suite passed 27 tests"
+          "scope": "Current LiveView fixture checks bounded synthetic host diagnostic delivery while the VM is paused, with no guest terminal registry rows or wake requests. No actual browser, Lilly host or native guest. Historical predecessor execution remains in docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md; the revised paused-state fixture has no recorded execution here."
         },
         {
           "kind": "unit",

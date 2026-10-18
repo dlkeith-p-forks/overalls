@@ -9,6 +9,8 @@ defmodule Marshall.Accounts.TimeZones do
   force at the given instant, so daylight saving is reflected.
   """
 
+  use Gettext, backend: MarshallWeb.Gettext
+
   @utc "Etc/UTC"
 
   @typedoc "An IANA zone identifier such as `Australia/Adelaide`."
@@ -295,21 +297,27 @@ defmodule Marshall.Accounts.TimeZones do
   end
 
   @spec difference_text(integer()) :: String.t()
-  defp difference_text(0), do: "same time as you"
+  defp difference_text(0), do: gettext("same time as you")
 
   defp difference_text(minutes) do
-    direction = if minutes > 0, do: "ahead of you", else: "behind you"
     hours = div(abs(minutes), 60)
     rest = rem(abs(minutes), 60)
 
     span =
       case {hours, rest} do
-        {0, m} -> "#{m}m"
-        {h, 0} -> "#{h}h"
-        {h, m} -> "#{h}h #{m}m"
+        {0, m} -> localized_unit(m, "minute")
+        {h, 0} -> localized_unit(h, "hour")
+        {h, m} -> localized_unit(h, "hour") <> " " <> localized_unit(m, "minute")
       end
 
-    "#{span} #{direction}"
+    if minutes > 0,
+      do: gettext("%{span} ahead of you", span: span),
+      else: gettext("%{span} behind you", span: span)
+  end
+
+  @spec localized_unit(non_neg_integer(), String.t()) :: String.t()
+  defp localized_unit(amount, unit) do
+    amount |> Localize.Unit.new!(unit) |> Localize.Unit.to_string!(format: :narrow)
   end
 
   @doc """
@@ -317,17 +325,32 @@ defmodule Marshall.Accounts.TimeZones do
   `:datetime_seconds`, `:date`, `:day_month` (`18 Oct`), `:time` (`19:42 ACDT`)
   and `:clock` (`7:42 PM ACDT`).
   """
+  # @cc [owner:ghuntley,label:product] time-zone-localized-display
+  # Human date/time fields MUST use the active Localize locale and bundled CLDR
+  # data. The shifted instant and zone abbreviation MUST remain unchanged; the
+  # UTC hover provenance remains an invariant ISO-style representation.
   @spec format(DateTime.t(), iana() | nil, format()) :: String.t()
   def format(%DateTime{} = instant, zone, format) do
     local = shift(instant, zone)
 
     case format do
-      :datetime -> Calendar.strftime(local, "%Y-%m-%d %H:%M ") <> local.zone_abbr
-      :datetime_seconds -> Calendar.strftime(local, "%Y-%m-%d %H:%M:%S ") <> local.zone_abbr
-      :date -> Calendar.strftime(local, "%Y-%m-%d")
-      :day_month -> Calendar.strftime(local, "%d %b")
-      :time -> Calendar.strftime(local, "%H:%M ") <> local.zone_abbr
-      :clock -> Calendar.strftime(local, "%-I:%M %p ") <> local.zone_abbr
+      :datetime ->
+        Localize.DateTime.to_string!(local, format: "yyyy-MM-dd HH:mm ") <> local.zone_abbr
+
+      :datetime_seconds ->
+        Localize.DateTime.to_string!(local, format: "yyyy-MM-dd HH:mm:ss ") <> local.zone_abbr
+
+      :date ->
+        Localize.Date.to_string!(local, format: "yyyy-MM-dd")
+
+      :day_month ->
+        Localize.Date.to_string!(local, format: :MMMd)
+
+      :time ->
+        Localize.Time.to_string!(local, format: "HH:mm ") <> local.zone_abbr
+
+      :clock ->
+        Localize.Time.to_string!(local, format: "h:mm a ") <> local.zone_abbr
     end
   end
 

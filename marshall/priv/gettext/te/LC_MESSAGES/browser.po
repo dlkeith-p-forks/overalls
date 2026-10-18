@@ -1,15 +1,18 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: te\n"
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
@@ -79,7 +82,8 @@ msgstr "కాపీ చేయలేకపోయాం. వచనాన్ని
 #: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
-msgstr "యాక్సెస్‌ను అప్‌డేట్ చేయలేకపోయాం. ఖాతా మెషిన్ యాక్సెస్‌ను తనిఖీ చేయండి."
+msgstr ""
+"యాక్సెస్‌ను అప్‌డేట్ చేయలేకపోయాం. ఖాతా మెషిన్ యాక్సెస్‌ను తనిఖీ చేయండి."
 
 #: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
@@ -114,7 +118,10 @@ msgstr "మ్యాచ్‌లు లేవు"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "ఈ లింక్‌ను తెరవాలా?\n\n%{url}"
+msgstr ""
+"ఈ లింక్‌ను తెరవాలా?\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -134,17 +141,23 @@ msgstr "పాస్‌కీ ధృవీకరణ విఫలమైంది 
 #: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
-msgstr "టెర్మినల్ పేరు (ఈ బ్రౌజర్‌లో మాత్రమే; ఖాళీ చేస్తే రూపొందించిన పేరు పునరుద్ధరించబడుతుంది)"
+msgstr ""
+"టెర్మినల్ పేరు (ఈ బ్రౌజర్‌లో మాత్రమే; ఖాళీ చేస్తే రూపొందించిన పేరు "
+"పునరుద్ధరించబడుతుంది)"
 
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr "ఫలితాన్ని నిర్ధారించలేకపోయాం. పేజీని రీలోడ్ చేసి మళ్లీ ప్రయత్నించే ముందు ఫలితాన్ని తనిఖీ చేయండి."
+msgstr ""
+"ఫలితాన్ని నిర్ధారించలేకపోయాం. పేజీని రీలోడ్ చేసి మళ్లీ ప్రయత్నించే ముందు "
+"ఫలితాన్ని తనిఖీ చేయండి."
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "ఈ మెషిన్ మీ క్లిప్‌బోర్డ్‌కు %{bytes} బైట్‌లు రాయాలని అడుగుతోంది. ఒక్కసారి, సెషన్ లేదా మ్యూట్ ఎంచుకోండి."
+msgstr ""
+"ఈ మెషిన్ మీ క్లిప్‌బోర్డ్‌కు %{bytes} బైట్‌లు రాయాలని అడుగుతోంది. once, "
+"session లేదా mute అని టైప్ చేయండి."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
@@ -169,7 +182,9 @@ msgstr "ధృవీకరణ పూర్తి కాలేదు. మళ్�
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr "%{action} చేయడానికి మీ పాస్‌కీతో ధృవీకరించండి. ధృవీకరణ తర్వాత ఇది ఒక్కసారి అమలవుతుంది."
+msgstr ""
+"%{action} చేయడానికి మీ పాస్‌కీతో ధృవీకరించండి. ధృవీకరణ తర్వాత ఇది ఒక్కసారి "
+"అమలవుతుంది."
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
