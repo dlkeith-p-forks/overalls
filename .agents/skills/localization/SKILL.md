@@ -12,11 +12,13 @@ Use this skill whenever changing a user-facing string, adding a locale, changing
 ## Discovery and boundaries
 
 - Inventory human-facing text across HEEx, LiveView modules, mailers, browser JavaScript, CLI/SSH presentation, and public documentation before editing. Keep logs, telemetry, protocol field names, command names, JSON keys, and other machine contracts language-neutral unless the task explicitly changes them.
+- Include plain-text HTTP refusal and sign-in guidance in the human-string audit. Preserve successful installer scripts, downloads, checksums, raw files, CSV fields, JSON and redirect/session keys as machine contracts; keep status codes, privacy and session-free public routes unchanged.
 - Find existing Gettext domains, locale configuration, catalog generation, interpolation conventions, and tests. Preserve established domains and identifiers; use stable source identifiers supplied by Localize/Gettext rather than ad-hoc atoms or translated strings.
 - Treat translations as typed interfaces: every placeholder, plural/select variable, markup boundary, and format option must remain valid in every locale. Validate external locale tags before using them.
 
 ## Locale policy
 
+- Read `Marshall.Localization.supported_locales/0` in `marshall/lib/marshall/localization.ex` for the authoritative supported tags; keep Porsche catalogs and the versioned envelope aligned with that policy.
 - Define one central, typed policy for supported BCP 47 tags, canonicalization, `Accept-Language` negotiation, fallback, and text direction. Use the product's documented precedence (explicit user override, then browser preference, then default) and ensure an override is authorized and isolated to that user/session.
 - Keep locale data bundled and deterministic in production. Unsupported, malformed, oversized, or ambiguous input must fall back safely without raising from request rendering.
 - Derive `lang` and `dir` from the validated locale. Use logical CSS properties and semantic direction-aware layout; test both LTR and RTL with long strings and interpolated user data. Isolate interpolated values where the formatter supports bidi isolation.

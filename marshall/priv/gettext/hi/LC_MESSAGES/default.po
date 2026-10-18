@@ -7700,3 +7700,38 @@ msgstr "उत्पादन, परियोजना-नाम"
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "आपके ही समय पर"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "विवरण"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH कुंजी का नाम बदला गया।"
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "इस कुंजी का नाम नहीं बदल सके। अधिकतम 128 अक्षर उपयोग करें।"
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "प्रशासनिक बदलावों के लिए प्रशासक होना आवश्यक है।"
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "प्रशासनिक बदलाव अधिकृत नहीं हैं।"
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "पहले वर्तमान सत्यापन पूरा करें या रद्द करें।"
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "अमान्य प्रशासनिक अनुरोध।"

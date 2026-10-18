@@ -125,6 +125,9 @@ defmodule Marshall.GitHub do
           {:error, reason} when reason in [:unauthorized, :invalid_callback, :identity_in_use] ->
             {:error, reason}
 
+          {:error, %Ash.Error.Invalid{}} ->
+            {:error, :invalid_callback}
+
           _ ->
             {:error, :unavailable}
         end
@@ -1300,7 +1303,10 @@ defmodule Marshall.GitHub do
         result -> result
       end
     rescue
-      _ -> {:error, :unavailable}
+      _ ->
+        if Keyword.get(opts, :invalid) == :invalid_callback,
+          do: {:error, :invalid_callback},
+          else: {:error, :unavailable}
     catch
       :exit, _reason ->
         if Keyword.get(opts, :invalid) == :invalid_callback,

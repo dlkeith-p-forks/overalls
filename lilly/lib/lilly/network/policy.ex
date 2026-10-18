@@ -4,6 +4,7 @@ defmodule Lilly.Network.Policy do
   @ingress_mark 0x41554449
   @web_mark 0x41554457
   @editor_mark 0x45444954
+  @android_display_mark 0x414E4452
   @brady_mark 0x42524144
   @brady_egress 0x42524145
   @spec brady_mark() :: pos_integer()
@@ -14,6 +15,8 @@ defmodule Lilly.Network.Policy do
   def ingress_mark(:ssh), do: @ingress_mark
   def ingress_mark(:web), do: @web_mark
   def ingress_mark(:editor), do: @editor_mark
+  @spec android_display_mark() :: pos_integer()
+  def android_display_mark, do: @android_display_mark
   @spec ingress_mark() :: pos_integer()
   def ingress_mark, do: @ingress_mark
   @non_public ~w(0.0.0.0/8 10.0.0.0/8 100.64.0.0/10 127.0.0.0/8 169.254.0.0/16

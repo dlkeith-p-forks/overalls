@@ -20,6 +20,8 @@ transport reset does not preserve established sockets.
 
 [ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.
 
+SSH key rename descriptions, confirmation and refusal flashes, and administrative verification/refusal messages use the active locale catalog. Translation does not change ownership checks, recent-passkey requirements or accepted mutation outcomes. English date-only month/day output follows bundled CLDR ordering (`Oct 18`); the UTC provenance remains unchanged.
+
 ## Inline privileged browser actions
 
 The accepted ADR-0160 flow keeps a requested administrator mutation on its current
@@ -1218,3 +1220,22 @@ separate from sign-in email. Invalid or foreign-account changes refuse. Identity
 changes apply to newly created machines.
 
 Public documentation applies validated browser language negotiation without a login or session cookie. Its standalone HTML declares the negotiated `lang` and explicit `dir`, including RTL for Arabic and Urdu. Controller regression coverage checks English, Arabic, Urdu and Japanese; this does not establish visual bidi correctness or translation completeness.
+
+Porsche catalog verification compares all 25 terminal catalogs with the extracted message inventory and checks placeholders. The recorded full Porsche gate at `1f79f63e6` passed 108 tests and Dialyzer with zero errors. This establishes bounded BEAM/catalog behavior; native SSH onboarding, visual bidi behavior and native-language quality still require separate acceptance.
+
+## Android display authority
+
+Android-capable machines may mint a short-lived, machine- and actor-bound display
+claim through Marshall. The guest relay remains responsible for current emulator
+generation and controller-lease checks; a viewer claim cannot send input. Claims
+are refused for images without the `android_display` capability and do not expose
+ADB or RFB through a public browser route.
+
+The machine workspace exposes Android display controls only when the image's
+`android_display` capability is present. Viewer and controller ticket requests
+remain authenticated LiveView events; the browser relay must still enforce
+current generation and controller lease before opening RFB.
+
+The Android relay state machine permits read-only viewers and one controller,
+advances frame sequence numbers monotonically, and revokes controller authority
+when its process exits or the emulator generation changes.

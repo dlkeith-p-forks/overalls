@@ -7465,3 +7465,38 @@ msgstr "프로덕션, 프로젝트 이름"
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "동일한 시간"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "설명"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH 키 이름을 변경했습니다."
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "이 키의 이름을 변경할 수 없습니다. 128자 이하로 입력하세요."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "관리 설정을 변경하려면 관리자 권한이 필요합니다."
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "관리 설정 변경이 승인되지 않았습니다."
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "먼저 현재 인증을 완료하거나 취소하세요."
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "잘못된 관리 요청입니다."

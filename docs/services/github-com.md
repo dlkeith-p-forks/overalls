@@ -2,7 +2,7 @@
 
 The accepted `github-com` provider connects one Marshall user to their GitHub
 account and exposes it at `https://com-github.integration.internal`. See
-[ADR-0198](../architecture/decisions/0198-github-com-owner-integration.md) for its
+[ADR-0202](../architecture/decisions/0202-github-com-owner-integration.md) for its
 authority and lifecycle. Implementation and execution evidence remain partial in
 the [review](../architecture/reviews/2026-10-18-github-com-integration.md).
 

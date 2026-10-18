@@ -84,3 +84,13 @@ result is upgraded by these structural checks.
 ## Public documentation direction follow-up
 
 The standalone public documentation layout now uses LocalePlug language and direction assignments, preserving ADR-0201 and ADR-0161 without changing authority, dependencies or protocol contracts. The docs controller suite recorded **7 passed**, seed **199192**, against the pending change based on `b595f7c2f`. Assertions cover English/Japanese LTR, Arabic/Urdu RTL, Content-Language and absence of session cookies. A 45-second scratch Bombadil rerun exited 0 after the original run exposed the missing documentation direction; exploration coverage has not been audited, so this is not all-locale browser acceptance. Documentation translation completeness and native-language review remain outstanding.
+
+## Porsche catalog repair and full gate
+
+At `1f79f63e6`, Porsche `mix precommit` passed: **108 tests passed**, followed by **zero Dialyzer errors**. The preceding full run exposed 317 missing extracted message identities across 25 locale catalogs; exact POT blocks and faithful translations were appended. `test/localization_catalog_test.exs` then passed all three tests (seed **570510**), checking every locale against the terminal extraction inventory, placeholder parity and Japanese human errors with stable JSON. This is BEAM/catalog evidence, not a native SSH journey or native-speaker review.
+
+## Continued source audit
+
+The attribute/flash audit found a raw SSH key Description label, two rename flashes and four administrative verification/refusal flashes. They now use existing Gettext source identifiers with translations in all 25 locales. The administrative authority checks and their halting behavior are unchanged. French `Description` is an explicitly reviewed identical cognate, not evidence of a translated English prose fallback. The corrected date-component suite recorded **5 passed**, seed **685749**, in the working tree preceding these UI message additions; this establishes component/date behavior only. Full Marshall execution remains separate and has reported failures outside that focused scope.
+
+The continued controller audit identifies remaining untranslated human HTTP errors in repository launch, installer/download, SSH trust, browser sign-in, editor, inference export and raw Git controllers. Their existing pipelines already apply LocalePlug. Successful scripts, archives, manifests, checksums, CSV schemas, raw Git bytes and redirect/session keys must remain language-neutral; only refusal prose is a localization target. This audit is outstanding implementation work, not a claim of complete source coverage.

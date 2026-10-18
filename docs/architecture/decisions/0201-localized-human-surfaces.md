@@ -19,8 +19,9 @@ terminal bytes.
 ## Decision
 
 1. Use the Localize/LocalizeWeb stack with offline, checked-in CLDR data and
-   Gettext-compatible catalogs. The supported locale set is the reviewed list
-   in the localization skill, including Japanese, Hindi, Filipino, Estonian,
+   Gettext-compatible catalogs. The supported locale set is the reviewed central policy in
+   [Marshall.Localization](../../../marshall/lib/marshall/localization.ex),
+   including Japanese, Hindi, Filipino, Estonian,
    Finnish, Swedish and Portuguese variants.
 2. Resolve locale as an authorized persisted user override, then session
    locale, then a validated `Accept-Language` choice, then English. Invalid,

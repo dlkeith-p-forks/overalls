@@ -1369,9 +1369,13 @@ before readiness (`/tmp/windows-editor-native-browser-uri.log`); it is not a
 browser pass. The stock-fixture probe also remains separate from qualification
 of the exact immutable candidate image.
 
-The stable forced Marshall Dialyzer run remains pending after an earlier
-attempt lost a compiled `Collectable` input during overlapping compilation.
-No current typing pass or complete Marshall gate is recorded for this diff.
+The stable forced Marshall Dialyzer run exited **2** with **50 total errors,
+35 skipped and zero unnecessary skips**, leaving **15 findings**: one prompt
+pattern match, one GitHub guard and 13 generated Gettext opaque-call findings
+(`/tmp/osmatrix-marshall-stable-forward-types.log`). Its compiled scope is the
+pre-pull checkpoint. An earlier attempt lost a compiled `Collectable` input
+during overlapping compilation. No typing pass or complete Marshall gate is
+recorded for this diff.
 
 The merged Marshall catalog checker exited zero with **invalid=0** in every
 reported catalog (`/tmp/osmatrix-incoming-marshall-catalogs.log`); empty and
@@ -1380,3 +1384,53 @@ catalog regression passed **3 tests**, seed **691955**, in **0.05 seconds**
 (`/tmp/osmatrix-porsche-catalogs-retry.log`). These results establish bounded
 catalog/template checks, not linguistic review, packaged browser or native
 Porsche acceptance.
+
+## Trunk integration through `c89335a2a`
+
+The `a22c3ca7` callback, generated-fixture and browser-probe checkpoint was
+committed before the requested normal pull. The pull adds substantive Android
+source under accepted, partial ADR-0206, alongside catalog translations,
+localized SSH-key and administrative flashes, canonical GitHub ADR links and a
+suspension fixture that owns its VM and route. The GitHub non-nil attempt guard
+survives; incoming `Ash.Error.Invalid` handling and broad callback exception
+classification now return `invalid_callback`. This changes failure
+classification, not authorization. It does not establish that infrastructure
+failures are distinguishable from invalid callback state.
+
+The Android additions comprise a software-emulator guest recipe and machine
+fixture, a `linux_android_v1` capability row, relay-preface and bounded-stream
+codecs, Lilly's display connector, signed Marshall display tickets, relay state
+and workspace controls with a browser-hook source. The upstream
+[Android review](2026-10-18-android-firecracker.md) retains partial status and
+open native Firecracker and authenticated-display acceptance. These additions
+do not qualify another production guest image or widen the recorded native
+editor matrix. The constructed version-4 Linux artifact does not yet carry the
+new Android capability identity through admission; the hook is not registered
+in the main application and its `/android-display` endpoint is not connected.
+Lilly's TCP target also does not establish a working path to the guest's
+loopback RFB/vsock bridge.
+
+Read-only review found concrete source defects pending forward repair: the
+viewer branch of `DisplayRelay.handle_call/3` returns its updated state as the
+reply while retaining the old state, contrary to its new `:ok` assertion and
+multiple-viewer contract. The hook's full-canvas RGBA size exceeds its own
+bounded-frame maximum, and its input header uses generation and kind zero,
+which the protocol codec refuses. The stream module also has malformed
+`@cc` label metadata. These are source findings, not observed runtime results.
+The incoming handbook's generation-change revocation statement describes an
+intended obligation; the relay has no rollover API or lifecycle integration.
+Generation rollover, lease expiry/reacquisition, browser rendering, native
+transport and persistent emulator acceptance remain unverified. The Hegel
+lifecycle property uses a standalone model, and the emulator fixture uses its
+own service rather than the production image/relay path.
+
+The checkpoint's 23-test timing run, Python static/build results and public
+rollout/ordinary-CLI observations retain their original scope. The forced
+Marshall typing process started before the pull and covers its compiled
+checkpoint only; it cannot verify the incoming Android or localization source.
+No merged full Marshall, Lilly or protocol gate is recorded. Shared protocol
+changes require the library and both consumer gates. Incoming Hegel and NixOS
+machine tests are present; their presence is not a recorded passing execution.
+The upstream Porsche 108-test/zero-Dialyzer result remains explicitly at
+`1f79f63e6`, and translation additions establish neither linguistic review nor
+all-locale browser acceptance.

@@ -8,7 +8,7 @@
 
 [ADR-0202](0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding; implementation remains partial.
 
-[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, browser language negotiation and validated account overrides with LTR/RTL presentation; implementation remains partial.
+[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, the central 25-locale policy, browser language negotiation and validated account overrides with LTR/RTL presentation; implementation remains partial.
 
 [ADR-0200](0200-windows-browser-editor-candidate.md) accepts a source-built,
 account-bound Windows editor candidate with a separate `windows-editor-v1`
@@ -459,6 +459,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0200](0200-windows-browser-editor-candidate.md) | accepted | partial | Account-bound Windows browser editor candidate |
 | [ADR-0202](0202-github-com-owner-integration.md) | accepted | partial | Owner-bound GitHub.com integration |
 | [ADR-0203](0203-guest-reflection.md) | accepted | partial | Guest reflection service |
+| [ADR-0206](0206-android-firecracker-guest.md) | accepted | partial | Software-rendered Android in the Firecracker guest |
 | [ADR-0204](0204-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
 | [ADR-0205](0205-overview-newsletter.md) | accepted | partial | Overview newsletter signup |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
