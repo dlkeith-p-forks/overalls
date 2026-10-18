@@ -399,6 +399,14 @@ with the provision's tuple, polls the catalog for up to 90 s before
 provisioning, and retries an `insufficient_capacity` refusal once after a fresh
 wait, logging only the closed refusal token. Marshall's freshness decision is
 unchanged.
+Run `c011420b1c74f586054654f8d1023683-65-0` showed the operator's witness
+fence still required the stop's bumped generation while the guest server keeps
+the retained boot's: a `guest.witness` read of a VM desired and observed
+stopped now accepts the newest completed provision/start tuple on its
+placement. Operator `image_unavailable` refusals (a stale host image report
+between catalog and provision) are retried like `insufficient_capacity`, each
+catalog read is bounded to 30 s within a 180 s window, and an expired sample
+logs its last unmet step.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The
