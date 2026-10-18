@@ -51,6 +51,10 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
             committed <- boolean(),
             max_runs: 8
           ) do
+      {:ok, supervisor} = Task.Supervisor.start_link()
+      Process.unlink(supervisor)
+      Hegel.on_cleanup(fn -> Process.exit(supervisor, :shutdown) end)
+
       for {bytes, loss, complete} <- [
             {size, target, committed},
             {0, :owner, false},
