@@ -214,16 +214,16 @@ defmodule Audi.Application do
         {Task.Supervisor, name: Audi.TLS.Tasks, max_children: 20},
         {Audi.TLS.FleetWorker, worker}
       ] ++
-      if(tls[:editor_assets],
-        do: [
+      Enum.map(tls[:editor_assets], fn {target, assets} ->
+        Supervisor.child_spec(
           {Audi.HTTP.EditorAssetsPublisher,
            client: client,
-           assets: tls[:editor_assets],
+           assets: assets,
            probe_peer: {peer, tls[:https_port]},
            zone: tls[:zone],
-           trust_pem: tls[:trust_pem]}
-        ],
-        else: []
-      )
+           trust_pem: tls[:trust_pem]},
+          id: {Audi.HTTP.EditorAssetsPublisher, target}
+        )
+      end)
   end
 end

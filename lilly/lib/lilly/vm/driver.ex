@@ -521,7 +521,7 @@ defmodule Lilly.VM.Driver do
     end)
   end
 
-  defp finish_pause(config, pool, spec, authority, options) do
+  defp finish_pause(config, pool, spec, authority, _options) do
     with :ok <- Unit.kill_paused(spec),
          {:ok, :stopped} <- Unit.status(spec),
          :ok <- Jail.cleanup(pool, spec),

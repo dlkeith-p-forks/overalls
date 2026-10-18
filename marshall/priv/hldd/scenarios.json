@@ -1071,13 +1071,34 @@
         "execution",
         "storage"
       ],
-      "boundary": "Ingress EditorAssetsReceipt binds approved package to current host session/service generation; healthy publication remains discovery, separate from personal Editor admission.",
-      "denial": "Withhold editor/webview records without a live five-second matching receipt or healthy current route. Refuse wrong release, service role, stale credentials, unknown paths, symlinks and unsafe asset methods.",
+      "boundary": "Ingress EditorAssetsReceipt binds each approved target's full release tuple independently to current host session/service generation. Every advertised editor/webview gateway must hold the complete configured set because neutral DNS cannot route by release; discovery remains separate from personal Editor admission.",
+      "denial": "Withhold editor/webview records when any configured target lacks a live five-second matching receipt or the current route is unhealthy. A tuple approved only for the other image target grants no capability. Refuse malformed/foreign/duplicate registry entries, wrong release, service role, stale credentials, unknown paths, symlinks and unsafe asset methods.",
       "scope": "Recorded before integration with main independent-observability revision: SQL-backed publication tests passed in the 52-check focused run. Audi path-selection property and actual verified local TLS readiness/suspension passed in its final 197-check full component gate; native public DNS/TLS and multi-gateway publisher histories remain separate.",
       "status": "partial",
       "gaps": "Actual multi-gateway package mismatch/receipt expiry, native public DNS and TLS through Audi, publisher restart/version refusal and signing-key rollout have no recorded editor acceptance here.",
       "preferred_gap": "Add native gateway readiness/expiry histories and execute actual public DNS/TLS discovery in both editor fleet checks; the corrected merged NixOS physical-ready journey does not establish multi-gateway publication fault histories.",
       "evidence": [
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/editor/releases_test.exs",
+          "assertion": "distinct generated releases remain bound to finite configured targets",
+          "scope": "Generated Linux/Windows registry normalization and SQL rows, finite target names, distinct release admission and duplicate refusal. Pure configuration boundary; no native gateway runs.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/editor_publication_test.exs",
+          "assertion": "distinct release receipts coexist and publication requires their complete fresh set",
+          "scope": "Actual PostgreSQL publication query requires both configured releases, preserves independent receipt expiry and removes editor/webview discovery after one expires. No DNS packet, TLS listener or multi-gateway fault history.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/editor_publication_test.exs",
+          "assertion": "v7 Windows editor publication matches only its target's exact approved release",
+          "scope": "Actual SQL fixtures publish a v7 Windows owner only for its configured Windows tuple; swapping valid target descriptors removes that owner while complete neutral assets remain discoverable. No Windows guest or browser runs.",
+          "execution": "present"
+        },
         {
           "kind": "unit",
           "path": "marshall/test/marshall/editor_publication_test.exs",
@@ -11161,13 +11182,29 @@
         "storage",
         "recovery"
       ],
-      "boundary": "ADR-0200 accepts a source-built native Code OSS candidate and SYSTEM broker on dedicated gateway-only TCP 4444. The separate windows-editor-v1 row requires manifest v7 with a closed immutable editor descriptor; portable bundle v4 retains that tuple. Existing windows-v1/v5 remains editor false and no production catalog selects the candidate. The candidate binds current MMDS execution, the closed preface, locked roster reconciliation, canonical local SAM SID and S4U token, personal profile, exact Job Object/process/pipe custody and a private recovery receipt.",
+      "boundary": "ADR-0200 accepts a source-built native Code OSS candidate and SYSTEM broker on dedicated gateway-only TCP 4444. The separate windows-editor-v1 row requires manifest v7 with a closed immutable editor descriptor; portable bundle v4 retains that tuple. Marshall selects only the exact win32-x64 registry descriptor for a validated Windows candidate, independently of the concurrent Linux tuple. Existing windows-v1/v5 remains editor false and no production catalog selects the candidate. The candidate binds current MMDS execution, the closed preface, locked roster reconciliation, canonical local SAM SID and S4U token, personal profile, exact Job Object/process/pipe custody and a private recovery receipt.",
       "denial": "The accepted windows-v1 editor capability remains false. Missing or mismatched image descriptors, foreign gateway or execution, stale roster account, ambiguous package/PATH custody, wrong SID/process/job/pipe and exhausted pending-I/O capacity must refuse. A foreign process cannot be terminated or adopted without exact custody; a portable test or cross-link cannot qualify native Windows browser admission.",
-      "scope": "The Windows runtime/source recipes, broker model/native source, bundle importer, fixed-task installer and native acceptance harness are present. Focused protocol and Lilly tests cover immutable v7/v4 identity, release preservation and old-row refusal. Portable tests cover finite identity, path and capacity decisions. Thirty native Windows library tests pass, including actual named-pipe timeout/cancellation and Windows ACL descriptor/refusal checks. No completed native Code OSS bundle, admitted Windows image, Win32 listener/account/worker/task lifecycle or authenticated Windows browser journey is recorded.",
+      "scope": "The native Code OSS source build and reviewed import completed for exact release fbd3ccab8ae104bf2aee689e77deb6e47a3e9f12b2e4cbe3eeccdaf8afcb7dfe with four signed extensions, product policy, licenses and native provenance checked. Focused protocol and Lilly tests cover immutable v7/v4 identity, release preservation and old-row refusal. Portable tests cover finite identity, path and capacity decisions. Thirty native Windows library tests pass, including actual named-pipe timeout/cancellation and Windows ACL descriptor/refusal checks; thirteen SYSTEM fixture cases cover installer/task custody. No admitted Windows image, Win32 listener/account/worker/task lifecycle or authenticated Windows browser journey is recorded.",
       "status": "partial",
       "gaps": "Native Windows SAM/S4U/profile and executable/PATH lifecycle custody, sustained/interrupted overlapped cancellation, task crash/reboot supervision, exact bundle/image qualification, two-account browser separation, edit/readback, revocation, broker adoption and worker-loss recovery remain unrecorded. Guest administrator authority and physical isolation are separate boundaries.",
       "preferred_gap": "Run the isolated native Windows machine/browser harness against the exact reviewed bundle and candidate image, complete protocol and both consumer gates, then review exact production image selection.",
       "evidence": [
+        {
+          "kind": "manual",
+          "path": "nix/domains/artifacts/vscode-web/windows-bundle.nix",
+          "assertion": "native-build-complete",
+          "scope": "Actual Windows source build and exact reviewed recursive-NAR import at release fbd3ccab8ae104bf2aee689e77deb6e47a3e9f12b2e4cbe3eeccdaf8afcb7dfe. Validated descriptor, product policy, four signed extensions, licenses and provenance; refused links/store references. Build/import only, no installed image, native worker or browser acceptance.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md",
+          "record_assertion": "Native Windows Code OSS build and reviewed bundle import completed"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/compute/image_editor_capability_test.exs",
+          "assertion": "Linux and Windows approve distinct releases together without cross-target substitution",
+          "scope": "Pure validated image capability checks retain separate exact target tuples, reject swapped descriptors and preserve empty-registry refusal. No Windows guest, package execution or browser admission runs.",
+          "execution": "present"
+        },
         {
           "kind": "unit",
           "path": "nix/domains/artifacts/vscode-web-broker/src/windows_model.rs",

@@ -1666,8 +1666,12 @@ manifest; its metadata is runtime-only, has no store references and keeps
 stages the pinned Code OSS source, Windows headers/import libraries, embedded
 Python, extension adapters and offline build scripts. A source payload or a
 successful compile alone does not alter the selected image manifest, add an
-editor descriptor or publish a browser origin. The native bundle, image admission and a Windows
-browser sign-in/edit/readback/recovery run remain unrecorded.
+editor descriptor or publish a browser origin. The completed native Windows
+bundle passed reviewed import with exact source/release identity, product
+policy, licenses and native provenance; its digest and bounded scope are in the
+[cross-platform review](repo:docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md).
+Image admission and a Windows browser sign-in/edit/readback/recovery run remain
+unrecorded.
 
 The staged broker is a SYSTEM-owned boundary around that future payload. Its
 portable model binds boot, descriptor, placement, epoch, GuestAccount UUID,

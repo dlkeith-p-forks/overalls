@@ -160,6 +160,7 @@ defmodule Audi.ConfigTest do
     assert {Audi.HTTP.Listener, :start_link, [https_options]} = https_child.start
     assert https_options[:trusted_proxy_peer] == {10, 40, 0, 1}
     assert https_options[:browser_origin] == "https://control.example.test"
+    assert https_options[:editor_assets] == %{}
 
     for invalid <- [
           Map.delete(tls, "browser_origin"),
@@ -175,7 +176,12 @@ defmodule Audi.ConfigTest do
           Map.put(tls, "private_key", "inline"),
           Map.put(tls, "issuer", "https://ca.example/directory"),
           Map.put(tls, "https_port", 22),
-          Map.put(tls, "directory", "/var/lib/audi/certificates")
+          Map.put(tls, "directory", "/var/lib/audi/certificates"),
+          Map.put(tls, "editor_package", "/nix/store/missing"),
+          Map.put(tls, "editor_packages", nil),
+          Map.put(tls, "editor_packages", []),
+          Map.put(tls, "editor_packages", %{"windows-x64" => "/nix/store/missing"}),
+          Map.put(tls, "editor_packages", %{"linux-x64" => c.directory})
         ] do
       File.write!(c.path, JSON.encode!(Map.put(c.value, "tls", invalid)))
       assert {:error, :invalid_runtime_configuration} = Audi.Config.load(c.path)

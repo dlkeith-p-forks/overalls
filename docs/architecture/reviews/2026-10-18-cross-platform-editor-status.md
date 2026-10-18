@@ -14,7 +14,7 @@ The editor capability is an immutable image property. A package, a catalog row, 
 | Arch Linux and AlmaLinux | They retain the version-4 Linux contract. The shared foreign-Linux builder can carry the editor package, broker and descriptor; an old image without those bytes must refuse. | The retained Alma suite passed its twelve native stages and the Arch diagnostic replay passed twelve stages, but both are bound to captured image/source revisions. The Arch broker-restart 502 remains unresolved, and neither result establishes a current-revision or production browser journey. |
 | FreeBSD (`freebsd-v1`) | Editor remains false. ADR-0190 permits only the reviewed native subset after complete image admission; its version-6 manifest has no editor descriptor. | Native transport, service, growth and recovery evidence does not implement an editor broker, editor package or browser admission. Physical isolation, broader recovery and fleet acceptance remain separate. |
 | OmniOS/illumos (`illumos-v1`) | Editor remains false. Native admission qualifies only the exact reviewed image and its bounded non-editor subset. | Native service, growth, transport and crash records do not implement the editor package, broker or browser path. Physical recovery, isolation and fleet acceptance remain open. |
-| Windows | Existing `windows-v1` remains editor false by [ADR-0171](../decisions/0171-windows-guest-agents.md); version-5 firmware manifests reject editor descriptors. ADR-0200 adds the separate unselected `windows-editor-v1` candidate with manifest v7 and portable bundle v4. | Source/bundle staging retains `editorCapability = false`. Portable broker tests, Windows cross-link and 30 actual Windows library tests cover their stated scopes below. No complete native Code OSS bundle, admitted candidate image, listener/personal-worker lifecycle or authenticated browser journey is recorded. The workstation client in ADR-0172 remains a CLI/SSH client. |
+| Windows | Existing `windows-v1` remains editor false by [ADR-0171](../decisions/0171-windows-guest-agents.md); version-5 firmware manifests reject editor descriptors. ADR-0200 adds the separate unselected `windows-editor-v1` candidate with manifest v7 and portable bundle v4. | The completed native Code OSS bundle passed reviewed import; its package capability remains false. Portable broker tests, Windows cross-link, 30 native Windows library tests and 13 SYSTEM installer-custody cases cover their stated scopes below. No admitted candidate image, listener/personal-worker lifecycle or authenticated browser journey is recorded. The workstation client in ADR-0172 remains a CLI/SSH client. |
 
 ## Findings
 
@@ -28,6 +28,22 @@ Marshall still revalidates the exact image ID and configured editor release;
 Lilly retains the descriptor across portable starts. Exact native/browser
 qualification and production selection remain open; ADR-0171's false editor
 row is unchanged.
+
+The concurrent Linux/Windows asset path now uses a closed version-1 registry
+with only `linux-x64` and `win32-x64`. Marshall derives the target from the
+validated immutable image and requires its exact descriptor; a tuple approved
+for the other target does not authorize that image. Audi serves fixed immutable
+roots and reports each release separately. The receipt uniqueness constraint
+includes the complete tuple, preserving independent readiness and expiry.
+Publication's single SQL snapshot requires the complete configured asset set
+on every advertised editor or neutral webview gateway. This is necessary
+because neutral DNS cannot choose a gateway by release. Missing, malformed,
+duplicate or foreign configuration fails closed. Empty registries disable
+editor capability. The reviewed rollout applies the receipt-index migration
+first and rebuilds each host's application and generated configuration
+atomically; an old Linux-only gateway under a two-target registry stays absent
+from editor/webview discovery until both receipts are current. No old singular
+configuration reader or option is retained, preserving ADR-0159.
 
 1. **The Linux gap is evidence freshness, not an authorization exception.** The retained Linux editor records prove bounded package, broker, image and selected native-fleet behavior at their captured revisions. They do not prove the current source revision, a production browser sign-in, or a complete current-image recovery journey. The missing evidence must be closed with a fresh image-bound browser run; changing the capability table or treating a terminal/SSH pass as an editor pass would violate ADR-0153 and ADR-0190.
 2. **Native guest work does not imply editor support.** FreeBSD and OmniOS have explicit fail-closed native capability rows. Their accepted native evidence is deliberately limited to the named transport, service, storage, growth and recovery scopes. Editor support would require a new agent/editor implementation, a matching immutable descriptor and a separate authority and browser acceptance review.
@@ -72,10 +88,24 @@ foreign ancestor ownership and writes, reparse refusal, private-state access,
 the exact TrustedInstaller ancestor exception, the scheduler's private DACL and
 unlimited task settings. The disposable task and fixture were removed after the
 run. This establishes those bounded installer checks, not broker crash or reboot
-recovery. Code OSS and its native dependencies also compiled on the isolated
-Windows builder; extension packaging then failed on a PowerShell argument-splat
-error. The corrected build is being rerun against its changed release identity;
-there is still no completed, imported native editor bundle in this checkpoint.
+recovery.
+
+Native Windows Code OSS build and reviewed bundle import completed on
+2026-10-18 for source commit
+`2a59476c9bfcb90b3ddc372c36762471b7dfad1c` and exact release
+`fbd3ccab8ae104bf2aee689e77deb6e47a3e9f12b2e4cbe3eeccdaf8afcb7dfe`.
+The native source build includes its four signed extensions and the maintained
+Windows shebang correction. The imported output is
+`/nix/store/rhs8krgq3s8sk0apspmw3kbix8zc8pqy-overalls-vscode-web-windows-native-bundle`,
+reviewed recursive NAR
+`sha256-fc7oAJaJWv1eQf92InZoKNFAopzC/QI+GqbHxdRGreM=`; the transferred
+archive's SHA256 is
+`4de55ab22eae02f224df71f9e8557207bd666f35010aba2ecdf4704a9e5f049b`.
+The importer verified the exact descriptor, complete product policy, licenses,
+closed native provenance, regular entries and absence of Nix-store references.
+This is native build/import evidence. Package capability remains false; it does
+not qualify an installed candidate image, personal worker, browser journey,
+recovery path or workstation CLI.
 
 Existing decisions retain their statuses; ADR-0200 is new and accepted/partial.
 Architecture impact includes that Windows candidate design and the evidence
@@ -93,6 +123,27 @@ Git action, policy and attributes in `Marshall.Accounts.User` were removed while
 retaining the original action contract and authority rule. These integration
 repairs preserve accepted behavior and require no new handbook behavior claim.
 
+The incoming account-settings integration also restored routes to removed
+`SecurityLive` and `SSHKeysLive` modules, split the sidebar into a Settings link
+and stale Account link, and reintroduced removed URLs into the browser probe.
+These violated ADR-0196 and the adjacent `signed-in-account-navigation`
+contract. Removing those routes and probe visits and restoring the single
+`nav-account` entry preserves the accepted `/settings` page, section anchors,
+fresh-login mount and Git settings section. Existing account tests explicitly
+check old-path 404 responses and the single navigation entry. This repairs
+design drift and introduces no new architecture decision or handbook behavior.
+The same integration dropped the Ash policy entries for `set_time_zone` and
+`set_locale`, leaving the existing self-only locked implementations unreachable.
+Restoring their authenticated-actor policy preserves ADR-0195/ADR-0197; the
+implementations still reject non-User or retired actors and accept no target
+account identifier. Existing account and domain tests cover successful updates
+and unauthorized or invalid preference refusal.
+The locale action also preserves empty strings through Ash casting so its
+closed validator can reject them. Previously Ash converted an empty string to
+nil and cleared the preference, contradicting the existing invalid-input test.
+Only explicit nil clears the saved locale; this restores the accepted refusal
+boundary without broadening the supported language set.
+
 The full protocol gate also exposed an incoming baseline defect in
 `Execution.encode_command/1`: resume encoded the checkpoint's atom-key map
 without its closed wire codec, so its existing round-trip test failed. The
@@ -101,3 +152,21 @@ and pins the nested wire shape in that test. Architecture assessment: this
 preserves ADR-0199's accepted inert descriptor and execution requirements; it
 adds no capability, continuation authority or checkpoint admission. Final gate
 results must include the repaired source before claiming verification.
+
+The Lilly gate also exposed three incoming Hegel test incompatibilities:
+the stop oracle expected an unreviewed event enum, a VM spec property used
+unsupported nested execution options, and an image property called an obsolete
+draw API. Their repairs preserve production behavior and ADR-0191's property
+engine boundary. A separate code-contract review found that hostd's mutating
+`systemctl` predicate accepted `lilly.slice`, violating ADR-0176/ADR-0182's
+one-VM-unit confinement. The corrected predicate admits mutations only for an
+exact `lilly-vm-UUID.service`; slice and wildcard reads remain available.
+Recorded Rust execution passed all 58 hostd tests and Clippy, including explicit
+slice/wildcard refusal. This is grammar evidence, not native cgroup or systemctl
+execution. Full Lilly and Marshall gates remain separately required.
+
+Audi's forced Dialyzer run also exposed missing test-helper PLT entries for
+the development/test-only Hegel packages. Adding `ex_unit`, `hegel` and
+`hegel_ex` to that PLT inventory preserves ADR-0191's test-only dependency and
+runtime boundary; it does not add a production dependency or suppress unknown
+application calls. The final forced run must establish the repaired gate.

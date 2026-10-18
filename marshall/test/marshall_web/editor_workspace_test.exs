@@ -7,13 +7,13 @@ defmodule MarshallWeb.EditorWorkspaceTest do
   alias Marshall.EditorFixture, as: F
 
   setup context do
-    previous = Application.fetch_env(:marshall, :ingress_editor_release)
-    Application.put_env(:marshall, :ingress_editor_release, F.descriptor())
+    previous = Application.fetch_env(:marshall, :ingress_editor_releases)
+    Application.put_env(:marshall, :ingress_editor_releases, F.releases())
 
     on_exit(fn ->
       case previous do
-        {:ok, value} -> Application.put_env(:marshall, :ingress_editor_release, value)
-        :error -> Application.delete_env(:marshall, :ingress_editor_release)
+        {:ok, value} -> Application.put_env(:marshall, :ingress_editor_releases, value)
+        :error -> Application.delete_env(:marshall, :ingress_editor_releases)
       end
     end)
 
@@ -87,7 +87,7 @@ defmodule MarshallWeb.EditorWorkspaceTest do
     assert {:ok, view, _} = live(signed_in(c.owner, c.token), "/machines/#{c.vm.id}")
     assert has_element?(view, "#open-vscode")
     descriptor = Map.put(c.descriptor, "release", String.duplicate("c", 64))
-    Application.put_env(:marshall, :ingress_editor_release, descriptor)
+    Application.put_env(:marshall, :ingress_editor_releases, F.releases(descriptor))
     send(view.pid, :refresh_terminals)
     refute has_element?(view, "#open-vscode")
 
@@ -103,7 +103,7 @@ defmodule MarshallWeb.EditorWorkspaceTest do
 
   test "missing release configuration fails closed across refresh and direct launch", c do
     assert {:ok, view, _} = live(signed_in(c.owner, c.token), "/machines/#{c.vm.id}")
-    Application.delete_env(:marshall, :ingress_editor_release)
+    Application.delete_env(:marshall, :ingress_editor_releases)
     send(view.pid, :refresh_terminals)
     refute has_element?(view, "#open-vscode")
     assert has_element?(view, "#vscode-unavailable", "temporarily unavailable")

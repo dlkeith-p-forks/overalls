@@ -31,7 +31,7 @@ defmodule Marshall.MonospaceBrowserFixture do
 
     bootstrap = Ledger.lock!(Marshall.Accounts.AdminBootstrap, "installation")
     Ledger.update!(bootstrap, :complete, %{})
-    Application.put_env(:marshall, :ingress_editor_release, Marshall.EditorFixture.descriptor())
+    Application.put_env(:marshall, :ingress_editor_releases, Marshall.EditorFixture.releases())
     fixture = Marshall.EditorFixture.new()
     owner = Ash.Seed.update!(fixture.owner, %{email: "hana@example.test"})
     vm = Ash.Seed.update!(fixture.vm, %{name: "sakura-workshop"})

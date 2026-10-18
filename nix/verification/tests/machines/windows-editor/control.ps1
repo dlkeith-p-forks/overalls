@@ -135,6 +135,7 @@ function Read-FixtureMetadata {
         $Request.ContentLength = 0
         $Request.Headers.Add('X-metadata-token-ttl-seconds', '60')
     } else {
+        $Request.Accept = 'application/json'
         $Request.Headers.Add('X-metadata-token', $SessionToken)
     }
     [Net.HttpWebResponse]$Response = $Request.GetResponse()

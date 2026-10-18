@@ -349,13 +349,13 @@ defmodule MarshallWeb.ThreadsLiveTest do
     alias Marshall.Compute.Ledger
     alias Marshall.EditorFixture
 
-    previous = Application.fetch_env(:marshall, :ingress_editor_release)
-    Application.put_env(:marshall, :ingress_editor_release, EditorFixture.descriptor())
+    previous = Application.fetch_env(:marshall, :ingress_editor_releases)
+    Application.put_env(:marshall, :ingress_editor_releases, EditorFixture.releases())
 
     on_exit(fn ->
       case previous do
-        {:ok, value} -> Application.put_env(:marshall, :ingress_editor_release, value)
-        :error -> Application.delete_env(:marshall, :ingress_editor_release)
+        {:ok, value} -> Application.put_env(:marshall, :ingress_editor_releases, value)
+        :error -> Application.delete_env(:marshall, :ingress_editor_releases)
       end
     end)
 

@@ -9,13 +9,13 @@ defmodule Marshall.EditorTest do
   alias Marshall.EditorFixture, as: F
 
   setup context do
-    previous = Application.get_env(:marshall, :ingress_editor_release)
-    Application.put_env(:marshall, :ingress_editor_release, F.descriptor())
+    previous = Application.get_env(:marshall, :ingress_editor_releases)
+    Application.put_env(:marshall, :ingress_editor_releases, F.releases())
 
     on_exit(fn ->
       if previous,
-        do: Application.put_env(:marshall, :ingress_editor_release, previous),
-        else: Application.delete_env(:marshall, :ingress_editor_release)
+        do: Application.put_env(:marshall, :ingress_editor_releases, previous),
+        else: Application.delete_env(:marshall, :ingress_editor_releases)
     end)
 
     F.new(Map.get(context, :profile, :standard))
@@ -491,13 +491,14 @@ defmodule Marshall.EditorTest do
   end
 
   test "unsupported or differently approved releases cannot launch", c do
-    Application.put_env(:marshall, :ingress_editor_release, %{
-      c.descriptor
-      | "release" => String.duplicate("c", 64)
-    })
+    Application.put_env(
+      :marshall,
+      :ingress_editor_releases,
+      F.releases(%{c.descriptor | "release" => String.duplicate("c", 64)})
+    )
 
     assert {:error, _} = Marshall.Editor.launch(%{vm_id: c.vm.id}, actor: c.owner)
-    Application.put_env(:marshall, :ingress_editor_release, c.descriptor)
+    Application.put_env(:marshall, :ingress_editor_releases, F.releases(c.descriptor))
     old = Marshall.TerminalFixtures.terminal_fixture()
     token = Marshall.TerminalFixtures.user_token(old.owner)
     {:ok, jti, _} = Marshall.Accounts.Login.verify(token, old.owner)

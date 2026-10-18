@@ -70,21 +70,22 @@ if zone = System.get_env("MARSHALL_INGRESS_ZONE") do
   config :marshall, ingress_zone: zone
 end
 
-if descriptor = System.get_env("MARSHALL_INGRESS_EDITOR_RELEASE") do
+if registry = System.get_env("MARSHALL_INGRESS_EDITOR_RELEASES") do
   # @cc [owner:ghuntley,label:protocol;reliability] editor-runtime-zone-boundary
-  # An explicitly configured editor zone MUST satisfy the protocol's canonical
-  # multi-label boundary before application startup. Generic ingress without an
-  # editor descriptor retains its existing zone contract.
-  if zone = System.get_env("MARSHALL_INGRESS_ZONE") do
-    unless OverallsProtocol.EditorConnect.zone?(zone),
-      do: raise("Invalid editor MARSHALL_INGRESS_ZONE")
-  end
+  # A nonempty editor registry's explicitly configured zone MUST satisfy the
+  # protocol's canonical multi-label boundary before application startup.
+  # An empty registry MUST preserve generic ingress's existing zone contract.
+  with true <- byte_size(registry) <= 4096,
+       {:ok, value} <- JSON.decode(registry),
+       {:ok, releases} <- Marshall.Editor.Releases.decode(value) do
+    if map_size(releases) > 0 and System.get_env("MARSHALL_INGRESS_ZONE") != nil do
+      unless OverallsProtocol.EditorConnect.zone?(System.fetch_env!("MARSHALL_INGRESS_ZONE")),
+        do: raise("Invalid editor MARSHALL_INGRESS_ZONE")
+    end
 
-  with {:ok, value} <- JSON.decode(descriptor),
-       {:ok, _release} <- OverallsProtocol.EditorRelease.decode(value) do
-    config :marshall, ingress_editor_release: value
+    config :marshall, ingress_editor_releases: value
   else
-    _ -> raise "Invalid MARSHALL_INGRESS_EDITOR_RELEASE"
+    _ -> raise "Invalid MARSHALL_INGRESS_EDITOR_RELEASES"
   end
 end
 

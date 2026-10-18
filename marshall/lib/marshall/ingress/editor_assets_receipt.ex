@@ -37,7 +37,8 @@ defmodule Marshall.Ingress.EditorAssetsReceipt do
   # @cc [owner:ghuntley,label:security;protocol] editor-assets-attested-readiness
   # Only a freshly authenticated gateway may record assets readiness after local
   # descriptor/listener verification. The receipt MUST bind its current service
-  # generation and host session and exactly match the approved release config.
+  # generation, host session and complete approved descriptor, so distinct
+  # configured targets can attest independently without replacing one another.
   # Five-second readiness MUST expire without fresh authenticated announcements;
   # refresh MUST retain every binding and alter only the expiry.
   # Readiness MUST NOT authorize guest traffic or imply a browser probe passed.
@@ -100,6 +101,13 @@ defmodule Marshall.Ingress.EditorAssetsReceipt do
   end
 
   identities do
-    identity :gateway_session, [:service_id, :service_generation, :session_id]
+    identity :gateway_release, [
+      :service_id,
+      :service_generation,
+      :session_id,
+      :editor_protocol,
+      :editor_commit,
+      :editor_release
+    ]
   end
 end

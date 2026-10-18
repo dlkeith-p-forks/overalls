@@ -79,6 +79,15 @@ whose MAC is not the adapter's, never log the token or boot challenge, and
 grow C: only into space the host added. Nothing about the Administrator
 credential, EMS or SAC may change (ADR-0170).
 
+
+@cc [owner:ghuntley,label:build;security] windows-editor-media-archive
+An editor candidate ISO MUST stage the native payload as a deterministic regular-file
+archive under a short Joliet-safe path with a closed inventory and archive digest.
+The SYSTEM installer MUST validate the inventory and regular-file tar listing, reject
+traversal, links, duplicate case-insensitive names and stale destinations, extract to
+a fresh short staging directory with the fixed Windows tar implementation, verify every
+file's size and digest, and only then move the payload to its fixed editor path.
+
 @cc [owner:ghuntley,label:verification] windows-install-observability
 Every Windows installation MUST be observable after the fact without rerunning
 it: the build keeps a timestamped timeline of QEMU lifecycle events and guest

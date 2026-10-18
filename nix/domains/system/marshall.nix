@@ -10,6 +10,14 @@ let
   ports = map (instance: instance.port) (builtins.attrValues cfg.instances);
   fleetPorts = map (instance: instance.fleetPort) (builtins.attrValues cfg.instances);
   fleetOtelEnabled = lib.attrByPath [ "services" "overallsOtelFleet" "enable" ] false config;
+  editorReleases = {
+    version = 1;
+    targets = lib.mapAttrs (_: package: {
+      protocol = package.editorProtocol;
+      commit = package.sourceCommit;
+      release = package.releaseId;
+    }) cfg.editorPackages;
+  };
   sloCatalog = pkgs.writeText "marshall-fleet-slo-catalog.json" (builtins.toJSON (import ./otel-fleet/slo-catalog.nix));
 in
 {
@@ -22,10 +30,15 @@ in
       default = if cfg.crashDumps.enable then packages.encrypted.marshall else packages.marshall;
       description = "Source-built Marshall release.";
     };
-    editorPackage = mkOption {
-      type = types.nullOr types.package;
-      default = packages.vscodeWeb or null;
-      description = "Immutable official-source browser editor package whose protocol, commit and release digest govern image and gateway admission. Null disables editor authority.";
+    # @cc [owner:ghuntley,label:protocol;security] editor-package-target-registry
+    # Only the finite reviewed target names may select immutable packages. The
+    # module MUST emit each exact package descriptor; an empty map disables
+    # admission and MUST NOT inherit an environment-file release override.
+    editorPackages = mkOption {
+      type = types.addCheck (types.attrsOf types.package)
+        (value: lib.all (target: builtins.elem target [ "linux-x64" "win32-x64" ]) (builtins.attrNames value));
+      default = lib.optionalAttrs (packages ? vscodeWeb) { linux-x64 = packages.vscodeWeb; };
+      description = "Immutable official-source browser editor packages by linux-x64 or win32-x64 target; their exact descriptors govern image and gateway admission. Empty disables editor authority.";
     };
     marvinPackage = mkOption {
       type = types.nullOr types.package;
@@ -207,7 +220,7 @@ in
       # @cc [owner:ghuntley,label:protocol;reliability] editor-module-zone-boundary
       # A configured editor zone MUST satisfy the canonical multi-label protocol
       # boundary before service rendering. Null leaves discovery unconfigured.
-      { assertion = cfg.editorPackage == null || cfg.ingress.zone == null ||
+      { assertion = cfg.editorPackages == {} || cfg.ingress.zone == null ||
           (builtins.stringLength cfg.ingress.zone <= 189 &&
            builtins.length (lib.splitString "." cfg.ingress.zone) >= 2 &&
            lib.all (label: builtins.match "[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?" label != null) (lib.splitString "." cfg.ingress.zone));
@@ -269,12 +282,8 @@ in
         OVERALLS_LYRA_RELEASE = toString packages.lyra;
       } // lib.optionalAttrs (cfg.ingress.zone != null) {
         MARSHALL_INGRESS_ZONE = cfg.ingress.zone;
-      } // lib.optionalAttrs (cfg.editorPackage != null) {
-        MARSHALL_INGRESS_EDITOR_RELEASE = builtins.toJSON {
-          protocol = cfg.editorPackage.editorProtocol;
-          commit = cfg.editorPackage.sourceCommit;
-          release = cfg.editorPackage.releaseId;
-        };
+      } // {
+        MARSHALL_INGRESS_EDITOR_RELEASES = builtins.toJSON editorReleases;
       } // lib.optionalAttrs (cfg.ingress.wildcardAcme != null && cfg.ingress.wildcardAcme.issuerInstance == name) {
         MARSHALL_FLEET_ACME_DIRECTORY = cfg.ingress.wildcardAcme.directory;
         MARSHALL_FLEET_ACME_ISSUER_CA_FILE = "/run/credentials/marshall-${name}.service/fleet-issuer-ca.pem";
@@ -311,11 +320,11 @@ in
         ${lib.optionalString (cfg.defaultImageIdFile != null) ''
           default_image="$(${pkgs.python3}/bin/python3 ${./marshall-default-image.py} "$CREDENTIALS_DIRECTORY/default-image-id")" || exit 1
         ''}
-        exec ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_SLO_SNAPSHOT -u MARSHALL_SERVICE_LEVEL_DIRECTORY -u MARSHALL_INGRESS_EDITOR_RELEASE -u OVERALLS_MARVIN_RELEASE \
+        exec ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_SLO_SNAPSHOT -u MARSHALL_SERVICE_LEVEL_DIRECTORY -u MARSHALL_INGRESS_EDITOR_RELEASES -u OVERALLS_MARVIN_RELEASE \
           ${mailEnvironment}          PHX_SERVER=true RELEASE_DISTRIBUTION=none \
           ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_SNAPSHOT=/run/marshall-slo-${name}/slo.json"} \
           ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_CATALOG=${sloCatalog}"} \
-          ${lib.optionalString (cfg.editorPackage != null) ("MARSHALL_INGRESS_EDITOR_RELEASE=" + lib.escapeShellArg (builtins.toJSON { protocol = cfg.editorPackage.editorProtocol; commit = cfg.editorPackage.sourceCommit; release = cfg.editorPackage.releaseId; }))} \
+          MARSHALL_INGRESS_EDITOR_RELEASES=${lib.escapeShellArg (builtins.toJSON editorReleases)} \
           OVERALLS_MARVIN_RELEASE=${lib.escapeShellArg (if cfg.marvinPackage == null then "" else toString cfg.marvinPackage)} \
           ${lib.optionalString (fleetOtelEnabled && name == "overalls") "MARSHALL_SERVICE_LEVEL_DIRECTORY=/run/marshall-slo-overalls"} \
           ERL_CRASH_DUMP=/dev/null RELEASE_TMP=/run/marshall-${name} \

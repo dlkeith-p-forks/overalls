@@ -644,7 +644,7 @@ let
       enable = true;
       package = lib.mkIf cloneCancellation observedCloneMarshall;
       publicHost = "control.example.test";
-      editorPackage = if editor || suspension then packages.vscodeWeb else null;
+      editorPackages = lib.optionalAttrs (editor || suspension) { linux-x64 = packages.vscodeWeb; };
       ingress.zone = "apps.example.test";
       sshHostCa = {
         publicKey = lib.removeSuffix "\n" (builtins.readFile ../../fixtures/ssh-host-ca/key.pub);
@@ -731,7 +731,7 @@ let
       ++ [ (import ./audi.nix { inherit pkgs ubuntu; role = "gateway"; hostId = host.host; }) ]
       ++ [ galileoFixture.lilly ]
       ++ lib.optional (otelAudiSsh || observabilityRecovery || suspension) (otelAudiSshHost name);
-    services.audi.editorPackage = if editor || suspension then packages.vscodeWeb else null;
+    services.audi.editorPackages = lib.optionalAttrs (editor || suspension) { linux-x64 = packages.vscodeWeb; };
     services.audi.relay = lib.mkIf suspension {
       enable = true;
       address = if name == "l1" then "10.90.0.1" else "10.90.0.2";

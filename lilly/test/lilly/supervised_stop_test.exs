@@ -15,8 +15,11 @@ defmodule Lilly.SupervisedStopTest do
     assert SupervisedStop.category({RuntimeError.exception("private"), []}) == :exception
   end
 
-  property "arbitrary crash payloads collapse to a closed reason without disclosure" do
-    secret = draw("secret", binary(max_length: 256))
+  property "arbitrary crash payloads collapse to a closed reason without disclosure",
+    print_blob: false do
+    test_case = :hegel.current_test_case()
+    :hegel.note(test_case, "secret = <redacted>")
+    secret = :hegel.draw_silent(test_case, binary(max_length: 256))
     assert SupervisedStop.category({:unknown, secret}) == :unknown_tuple
 
     for reason <- [%{payload: secret}, [secret], secret],
@@ -25,6 +28,9 @@ defmodule Lilly.SupervisedStopTest do
     assert SupervisedStop.category({:shutdown, secret}) == :shutdown
 
     assert SupervisedStop.location({:badarg, [{Lilly.VM.Actor, :schedule, [secret], []}]}) ==
-             {Lilly.VM.Actor, :schedule, 1}
+             {:unknown, :unknown, 0}
+
+    assert SupervisedStop.location({:badarg, [{:gen_server, :init, [secret], []}]}) ==
+             {:gen_server, :init, 1}
   end
 end

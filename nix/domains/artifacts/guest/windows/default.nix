@@ -214,7 +214,7 @@ let
     test -s "$out/media/vslayout/files.tsv"
   '';
   configMedia = pkgs.runCommand "windows-boot-media.iso" {
-    nativeBuildInputs = [ pkgs.xorriso ];
+    nativeBuildInputs = [ pkgs.python3 pkgs.xorriso ];
   } ''
     mkdir -p tree/overalls/setup tree/overalls/bootstrap tree/overalls/drivers tree/sources
     cp -r ${bootFiles}/boot tree/boot
@@ -249,8 +249,11 @@ let
       cp -r ${editorRuntime}/licenses tree/overalls/editor-runtime/licenses
     ''}
     ${lib.optionalString (editorBundle != null) ''
-      mkdir -p tree/overalls/editor tree/overalls/editor-broker
-      cp -R ${editorBundle}/. tree/overalls/editor/
+      mkdir -p tree/overalls/editor-broker
+      # Joliet has a 240-character path limit. Keep the native payload in one
+      # short regular-file archive and let the SYSTEM installer verify and
+      # extract it after boot, preserving long editor paths exactly.
+      python3 -I ${./stage-editor.py} ${editorBundle} tree/overalls/editor-broker
       cp ${editorBroker}/bin/overalls-vscode-web-broker.exe tree/overalls/editor-broker/
       cp ${editorBroker}/manifest.json tree/overalls/editor-broker/manifest.json
       cp ${editorConfiguration} tree/overalls/editor-broker/broker.json

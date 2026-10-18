@@ -126,25 +126,30 @@ class Controller:
         script += "Write-Output 'FIXTURE-STAGED'"
         if self.powershell(script).strip() != b"FIXTURE-STAGED":
             raise RuntimeError("fixture staging failed")
-        files = {
-            name: (self.fixture / name).read_bytes()
-            for name in ("control.ps1", "extension.js", "package.json")
-        }
-        files["binding.json"] = self.admission.frame[4:]
-        for name, content in files.items():
-            # Independent small commands avoid both stdin behavior and the
-            # command-line bound, including an unusually large compiled fixture.
-            for offset in range(0, len(content), 768):
-                encoded = base64.b64encode(content[offset : offset + 768]).decode("ascii")
-                mode = "CreateNew" if offset == 0 else "Append"
-                write = (
-                    "$ErrorActionPreference='Stop'; "
-                    f"$Stream=[IO.File]::Open('{root}\\{name}',[IO.FileMode]::{mode},[IO.FileAccess]::Write,[IO.FileShare]::None); "
-                    f"try {{ $Bytes=[Convert]::FromBase64String('{encoded}'); $Stream.Write($Bytes,0,$Bytes.Length) }} finally {{ $Stream.Dispose() }}; "
-                    "Write-Output 'FIXTURE-STAGED'"
-                )
-                if self.powershell(write).strip() != b"FIXTURE-STAGED":
-                    raise RuntimeError("fixture file staging failed")
+        with tempfile.TemporaryDirectory(prefix="windows-editor-stage-") as temporary:
+            binding = Path(temporary) / "binding.json"
+            binding.write_bytes(self.admission.frame[4:])
+            command = [
+                "scp",
+                "-q",
+                "-F",
+                str(self.configuration),
+                "-o",
+                "BatchMode=yes",
+                "-o",
+                "LogLevel=ERROR",
+            ]
+            if self.identity is not None:
+                command.extend(["-i", str(self.identity)])
+            command.extend(
+                str(self.fixture / name) for name in ("control.ps1", "extension.js", "package.json")
+            )
+            command.extend(
+                [str(binding), f"{self.target}:C:/overalls/editor-acceptance/{self.run_id}/"]
+            )
+            staged = subprocess.run(command, check=False, capture_output=True, timeout=180)
+            if staged.returncode != 0:
+                raise RuntimeError("fixture file staging failed")
 
     def operation(self, operation: str) -> dict[str, object]:
         if operation not in {"setup", "snapshot", "kill-broker", "kill-worker"}:

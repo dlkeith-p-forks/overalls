@@ -3,13 +3,13 @@ defmodule MarshallWeb.EditorControllerTest do
   alias Marshall.EditorFixture, as: F
 
   setup do
-    previous = Application.get_env(:marshall, :ingress_editor_release)
-    Application.put_env(:marshall, :ingress_editor_release, F.descriptor())
+    previous = Application.get_env(:marshall, :ingress_editor_releases)
+    Application.put_env(:marshall, :ingress_editor_releases, F.releases())
 
     on_exit(fn ->
       if previous,
-        do: Application.put_env(:marshall, :ingress_editor_release, previous),
-        else: Application.delete_env(:marshall, :ingress_editor_release)
+        do: Application.put_env(:marshall, :ingress_editor_releases, previous),
+        else: Application.delete_env(:marshall, :ingress_editor_releases)
     end)
 
     F.new()

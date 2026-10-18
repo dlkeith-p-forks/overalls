@@ -255,7 +255,7 @@ defmodule Audi.Config do
        ) do
     with true <-
            Map.keys(value) --
-             ~w(zone trust_file browser_origin http_port https_port trusted_proxy_peer editor_package) ==
+             ~w(zone trust_file browser_origin http_port https_port trusted_proxy_peer editor_packages) ==
              [],
          true <- dns_name?(zone) and byte_size(zone) <= 189,
          {:ok, browser_origin} <- browser_origin(browser_origin),
@@ -267,8 +267,9 @@ defmodule Audi.Config do
            is_integer(http) and http in 1..65_535 and is_integer(https) and https in 1..65_535,
          true <- length(Enum.uniq([ssh_port, http, https])) == 3,
          {:ok, trusted_peer} <- proxy_peer(value["trusted_proxy_peer"]),
-         {:ok, assets} <- editor_assets(value["editor_package"]),
-         true <- is_nil(assets) or OverallsProtocol.EditorConnect.zone?(zone) do
+         {:ok, assets} <-
+           Audi.HTTP.EditorAssets.load_registry(Map.get(value, "editor_packages", %{})),
+         true <- map_size(assets) == 0 or OverallsProtocol.EditorConnect.zone?(zone) do
       {:ok,
        [
          zone: zone,
@@ -285,9 +286,6 @@ defmodule Audi.Config do
   end
 
   defp tls(_, _), do: {:error, :invalid_runtime_configuration}
-
-  defp editor_assets(nil), do: {:ok, nil}
-  defp editor_assets(root), do: Audi.HTTP.EditorAssets.load(root)
 
   # @cc [owner:ghuntley,label:security] audi-browser-public-origin
   # Browser approval MUST use a separately configured public HTTPS origin.

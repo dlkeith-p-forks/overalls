@@ -7,6 +7,7 @@ defmodule Audi.HTTP.EditorAssetsTest do
   @moduletag :tmp_dir
   @hash "1" <> String.duplicate("v", 51)
   @release String.duplicate("b", 64)
+  @windows_release String.duplicate("d", 64)
   @relative "out/vs/workbench/contrib/webview/browser/pre"
 
   setup %{tmp_dir: root} do
@@ -18,10 +19,25 @@ defmodule Audi.HTTP.EditorAssetsTest do
       File.chmod!(path, 0o444)
     end
 
+    windows = Path.join(root, "windows")
+    File.mkdir_p!(Path.join(windows, @relative))
+
+    for filename <- ["index.html", "fake.html", "service-worker.js"] do
+      path = Path.join([windows, @relative, filename])
+      File.write!(path, "windows/" <> filename)
+      File.chmod!(path, 0o444)
+    end
+
     %{
       assets: %{
-        root: root,
-        descriptor: %{protocol: 1, commit: String.duplicate("a", 40), release: @release}
+        "linux-x64" => %{
+          root: root,
+          descriptor: %{protocol: 1, commit: String.duplicate("a", 40), release: @release}
+        },
+        "win32-x64" => %{
+          root: windows,
+          descriptor: %{protocol: 1, commit: String.duplicate("a", 40), release: @windows_release}
+        }
       }
     }
   end
@@ -43,7 +59,51 @@ defmodule Audi.HTTP.EditorAssetsTest do
       refute_received {:guest_binding, _}
     end
 
-    assert {:error, :invalid_editor_assets} = EditorAssets.load(c.assets.root)
+    assert {:error, :invalid_editor_assets} = EditorAssets.load(c.assets["linux-x64"].root)
+  end
+
+  test "each exact release serves only its independently configured immutable tree", c do
+    for {release, expected} <- [
+          {@release, "index.html"},
+          {@windows_release, "windows/index.html"}
+        ] do
+      response =
+        Plug.Test.conn(
+          :get,
+          "https://#{@hash}.apps.test/code-assets/#{release}/#{@relative}/index.html"
+        )
+        |> EditorAssets.call(editor_assets: c.assets, zone: "apps.test")
+
+      assert response.status == 200
+      assert response.resp_body == expected
+    end
+
+    windows_only = Map.take(c.assets, ["win32-x64"])
+
+    assert EditorAssets.call(
+             Plug.Test.conn(
+               :get,
+               "https://#{@hash}.apps.test/code-assets/#{@release}/#{@relative}/index.html"
+             ),
+             editor_assets: windows_only,
+             zone: "apps.test"
+           ).status == 404
+  end
+
+  test "the package registry rejects unknown targets and non-immutable roots atomically", c do
+    assert {:ok, %{}} = EditorAssets.load_registry(%{})
+
+    for value <- [
+          nil,
+          [],
+          c.assets,
+          %{"linux-x64" => c.assets["linux-x64"].root},
+          %{"win32-x64" => "/etc"},
+          %{"unknown" => "/nix/store/missing"},
+          %{"linux-x64" => "/nix/store/missing", "win32-x64" => false}
+        ] do
+      assert {:error, :invalid_editor_assets} = EditorAssets.load_registry(value)
+    end
   end
 
   property "untrusted paths never select a file outside the three release assets", c do
@@ -88,9 +148,9 @@ defmodule Audi.HTTP.EditorAssetsTest do
              zone: "apps.test"
            ).status == 404
 
-    path = Path.join([c.assets.root, @relative, "index.html"])
+    path = Path.join([c.assets["linux-x64"].root, @relative, "index.html"])
     File.rm!(path)
-    File.ln_s!(Path.join(c.assets.root, "outside"), path)
+    File.ln_s!(Path.join(c.assets["linux-x64"].root, "outside"), path)
 
     assert EditorAssets.call(Plug.Test.conn(:get, correct),
              editor_assets: c.assets,

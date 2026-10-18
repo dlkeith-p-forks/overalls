@@ -126,12 +126,30 @@ See [installation](#interactive) and [verification](#reference).
 
 ## Browser editor release configuration
 
-`services.marshall.editorPackage` and `services.audi.editorPackage` select the
-approved source-built package; both default to the repository's `vscodeWeb` output.
-Set either to `null` to disable that role's editor capability. Marshall's wrapper
-owns the closed `MARSHALL_INGRESS_EDITOR_RELEASE` protocol/commit/release tuple;
-inherited environment-file values cannot override module authority. Audi reads
-the package's validated descriptor and fixed immutable asset root.
+`services.marshall.editorPackages` and `services.audi.editorPackages` map the
+finite targets `linux-x64` and `win32-x64` to approved source-built packages.
+Both default to `{ linux-x64 = packages.vscodeWeb; }`; an empty attribute set
+disables that role's editor capability. Windows requires an explicitly selected,
+reviewed native bundle and does not enter the default catalog.
+
+Marshall's wrapper owns `MARSHALL_INGRESS_EDITOR_RELEASES`, a closed JSON object
+with `version: 1` and a `targets` object mapping those target names to exact
+`protocol`, `commit` and `release` descriptors. Unknown fields or targets,
+malformed descriptors and duplicate release digests refuse startup. The wrapper
+always sets the registry, including the empty value; inherited environment files
+cannot supply editor authority. There is no singular-option or singleton-reader
+fallback. Audi's versioned configuration maps `tls.editor_packages` targets to
+immutable store roots, validates each package and runs a separate readiness
+publisher for each release.
+
+Apply the receipt-index migration before enabling concurrent releases. Rebuild
+each host's application and generated configuration atomically. During a
+coordinated rollout, a gateway serving only Linux assets cannot satisfy a
+two-target registry: its editor and neutral webview discovery stays withdrawn
+until both current release receipts exist. Every advertised gateway must serve
+the entire configured set because neutral webview DNS cannot choose a gateway
+by release. Changing either target's package changes its immutable identity and
+requires corresponding image and gateway updates.
 
 Configured editor zones must contain at least two canonical lowercase DNS labels
 and at most 189 bytes, matching the shared protocol and native broker. Marshall's

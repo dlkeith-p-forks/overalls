@@ -32,7 +32,7 @@ let
       http_port = cfg.tls.httpPort;
       https_port = cfg.tls.httpsPort;
       trusted_proxy_peer = cfg.tls.trustedProxyPeer;
-    } // lib.optionalAttrs (cfg.editorPackage != null) { editor_package = toString cfg.editorPackage; };
+    } // lib.optionalAttrs (cfg.editorPackages != {}) { editor_packages = lib.mapAttrs (_: package: toString package) cfg.editorPackages; };
   }));
 in {
   imports = [ ./crash-dumps/retention.nix (import ./audi-dns.nix { inherit packages; }) ];
@@ -52,10 +52,15 @@ in {
         default = map (peer: peer.address) (builtins.attrValues config.overalls.fleetNetwork.peers);
         description = "Explicit keyed fleet /32 peers allowed to present single-use relay capabilities."; };
     };
-    editorPackage = mkOption {
-      type = types.nullOr types.package;
-      default = packages.vscodeWeb;
-      description = "Immutable browser editor release serving self-hosted webview bootstrap assets; must match the guest image and Marshall release admission.";
+    # @cc [owner:ghuntley,label:protocol;security] editor-package-target-registry
+    # Only the finite reviewed target names may select immutable packages. The
+    # module MUST emit each exact package descriptor; an empty map disables
+    # admission and MUST NOT inherit an environment-file release override.
+    editorPackages = mkOption {
+      type = types.addCheck (types.attrsOf types.package)
+        (value: lib.all (target: builtins.elem target [ "linux-x64" "win32-x64" ]) (builtins.attrNames value));
+      default = lib.optionalAttrs (packages ? vscodeWeb) { linux-x64 = packages.vscodeWeb; };
+      description = "Immutable browser editor packages by linux-x64 or win32-x64 target, serving exact release webview assets; empty disables assets. Every published gateway must serve all Marshall-approved releases.";
     };
     controlPlane = mkOption { type = types.str; description = "Verified HTTPS Marshall origin."; };
     publicOrigin = mkOption {
@@ -128,7 +133,7 @@ in {
       # Configured editor assets MUST use the same canonical multi-label zone
       # as the protocol and broker. Disabled TLS or editor assets retain the
       # existing generic gateway configuration boundary.
-      { assertion = !cfg.tls.enable || cfg.editorPackage == null ||
+      { assertion = !cfg.tls.enable || cfg.editorPackages == {} ||
           (builtins.stringLength cfg.tls.zone <= 189 &&
            builtins.length (lib.splitString "." cfg.tls.zone) >= 2 &&
            lib.all (label: builtins.match "[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?" label != null) (lib.splitString "." cfg.tls.zone));

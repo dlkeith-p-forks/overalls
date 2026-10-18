@@ -5,10 +5,27 @@ defmodule Audi.SSH.TransportTest do
   @host "11111111-1111-4111-8111-111111111111"
   @label "vm-11111111111141118111111111111111"
 
-  setup do
+  @typep fixture_context :: %{
+           directory: Path.t(),
+           port: :inet.port_number(),
+           upstream: :inet.port_number(),
+           agent: pid(),
+           listener: pid()
+         }
+
+  setup context do
+    if context[:hegel], do: %{}, else: fixture()
+  end
+
+  # @cc [owner:ghuntley,label:verification] audi-ssh-generated-fixture-custody
+  # Every generated history and replay MUST own fresh keys, upstream, authority
+  # state and SSH listener. Cleanup MUST close connections and remove supervised
+  # fixtures and files before the next generated history starts.
+  @spec fixture() :: fixture_context()
+  defp fixture do
     directory = Path.join(System.tmp_dir!(), "audi-ssh-#{System.unique_integer([:positive])}")
     File.mkdir_p!(directory)
-    on_exit(fn -> File.rm_rf!(directory) end)
+    on_fixture_exit(fn -> File.rm_rf!(directory) end)
 
     for name <- ["ssh_host_ed25519_key", "id_ed25519"] do
       {_, 0} =
@@ -25,7 +42,7 @@ defmodule Audi.SSH.TransportTest do
 
     parent = self()
 
-    start_supervised!(
+    Overalls.HegelFixtures.start_fixture!(
       {Task,
        fn ->
          {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
@@ -41,10 +58,12 @@ defmodule Audi.SSH.TransportTest do
     assert_receive {:upstream, upstream}
 
     agent =
-      start_supervised!({Agent, fn -> %{allow: true, renew: :allow, host: @host, ttl: 1000} end})
+      Overalls.HegelFixtures.start_fixture!(
+        {Agent, fn -> %{allow: true, renew: :allow, host: @host, ttl: 1000} end}
+      )
 
     listener =
-      start_supervised!(
+      Overalls.HegelFixtures.start_fixture!(
         {Audi.SSH.Listener,
          [
            port: 0,
@@ -83,7 +102,8 @@ defmodule Audi.SSH.TransportTest do
   # @cc [owner:ghuntley,label:verification;security] ssh-delayed-admission-no-connector
   # A grant delivered after its request-start deadline MUST NOT invoke the
   # connector or forward bytes. Healthy admission MUST still establish a stream.
-  property "expired delayed authorization never reaches the guest connector", context do
+  property "expired delayed authorization never reaches the guest connector" do
+    context = fixture()
     supervisor = Overalls.HegelFixtures.start_supervised!({Task.Supervisor, []}, id: make_ref())
 
     ttl = draw("ttl", member_of([25, 75, 150]))
@@ -610,6 +630,7 @@ defmodule Audi.SSH.TransportTest do
     end
   end
 
+  @spec connect(fixture_context()) :: pid()
   defp connect(context) do
     {:ok, connection} =
       :ssh.connect(
@@ -625,8 +646,13 @@ defmodule Audi.SSH.TransportTest do
         2000
       )
 
-    on_exit(fn -> :ssh.close(connection) end)
+    on_fixture_exit(fn -> :ssh.close(connection) end)
     connection
+  end
+
+  @spec on_fixture_exit((-> term())) :: :ok
+  defp on_fixture_exit(callback) do
+    if Hegel.in_property_case?(), do: Hegel.on_cleanup(callback), else: on_exit(callback)
   end
 
   defp receive_bytes(connection, channel, remaining, output \\ <<>>)
