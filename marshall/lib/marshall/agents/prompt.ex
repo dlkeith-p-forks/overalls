@@ -8,8 +8,9 @@ defmodule Marshall.Agents.Prompt do
   require Marshall.Events
 
   # @cc [owner:ghuntley,label:security;concurrency] agent-prompt-wake-transaction
-  # A prompt MUST check current VM write access under lifecycle's host-before-VM
-  # locks. One request key MUST create at most one turn and one wake operation.
+  # A prompt MUST check current VM write access under the VM lock and retain
+  # durable wake demand. Capacity admission later takes host-before-VM locks.
+  # One request key MUST create at most one turn and one durable wake identity.
   # Failure to append its audit receipt MUST roll back prompt admission.
   @impl true
   @spec run(Ash.ActionInput.t(), keyword(), map()) :: {:ok, map()} | {:error, term()}
@@ -80,7 +81,7 @@ defmodule Marshall.Agents.Prompt do
          do: %{turn_id: turn.id, status: turn.status},
          else: Ledger.rollback(:idempotency_conflict)
     else
-      # Lifecycle retains its host/VM locks until this outer transaction commits.
+      # Wake retains the VM lock until this outer transaction commits.
       wake =
         case Lifecycle.wake_for_prompt(root.vm_id, actor, "agent:" <> key) do
           {:ok, result} ->
@@ -158,7 +159,8 @@ defmodule Marshall.Agents.Prompt do
         outcome: :accepted
       })
 
-      if match?(%Marshall.Compute.Operation{}, wake) do
+      if match?(%Marshall.Compute.Operation{}, wake) or
+           match?(%Marshall.Compute.WakeRequest{}, wake) do
         Ledger.create!(AuditEvent, :record, %{
           vm_id: root.vm_id,
           thread_id: locked.id,

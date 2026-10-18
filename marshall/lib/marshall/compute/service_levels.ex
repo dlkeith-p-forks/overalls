@@ -4,14 +4,15 @@ defmodule Marshall.Compute.ServiceLevels do
   alias Marshall.Compute.{Ledger, Operation, PhysicalOutcome, ServiceLevelAttempt}
   require Ash.Query
 
-  @type physical :: %{state: :running | :stopped | :deleted | :failed, at: DateTime.t()}
+  @type physical :: %{state: :running | :stopped | :paused | :deleted | :failed, at: DateTime.t()}
   @type decision :: :pending | {:finished, boolean(), DateTime.t(), non_neg_integer()}
   @type service :: :marshall_ready | :lilly_physical | :porsche_physical
-  @type operation_kind :: :provision | :start | :stop | :delete | :resize
+  @type operation_kind :: :provision | :start | :pause | :resume | :stop | :delete | :resize
 
   # @cc [owner:ghuntley,label:accounting;recovery] service-level-evidence-before-deadline
   # Success MUST match the admitted operation's terminal physical state and be
-  # received by its immutable deadline. Creation-to-ready and SSH provision/start
+  # received by its immutable deadline. Pause requires paused physical evidence;
+  # resume requires running evidence. Creation-to-ready and SSH provision/start/resume
   # additionally require a matching committed physical guest_ready fact by that
   # deadline. Unknown physical observations and daemon restarts MUST NOT become
   # physical failures. Missing evidence at the deadline is a measurement failure
@@ -29,6 +30,8 @@ defmodule Marshall.Compute.ServiceLevels do
     expected = %{
       provision: :running,
       start: :running,
+      pause: :paused,
+      resume: :running,
       stop: :stopped,
       delete: :deleted,
       resize: :stopped
@@ -36,7 +39,7 @@ defmodule Marshall.Compute.ServiceLevels do
 
     needs_ready =
       service == :marshall_ready or
-        (service == :porsche_physical and kind in [:provision, :start])
+        (service == :porsche_physical and kind in [:provision, :start, :resume])
 
     cond do
       physical && physical.state == :failed && eligible?(physical.at, admitted, deadline) ->
@@ -98,7 +101,13 @@ defmodule Marshall.Compute.ServiceLevels do
       PhysicalOutcome
       |> Ash.Query.filter(
         operation_id == ^operation.id and
-          fragment("?->>'state'", observation) in ["running", "stopped", "deleted", "failed"]
+          fragment("?->>'state'", observation) in [
+            "running",
+            "stopped",
+            "paused",
+            "deleted",
+            "failed"
+          ]
       )
       |> Ash.Query.sort(sequence: :asc)
       |> Ash.Query.limit(1)
@@ -114,7 +123,7 @@ defmodule Marshall.Compute.ServiceLevels do
                outcome.execution_epoch == operation.execution_epoch and
                outcome.generation == operation.generation and
                row.host_id == operation.command_snapshot["host_id"],
-           true <- outcome.state in [:running, :stopped, :deleted, :failed] do
+           true <- outcome.state in [:running, :stopped, :paused, :deleted, :failed] do
         %{state: outcome.state, at: row.inserted_at}
       else
         _ -> nil
@@ -149,7 +158,7 @@ defmodule Marshall.Compute.ServiceLevels do
   end
 
   @spec ready_at(Operation.t()) :: DateTime.t() | nil
-  defp ready_at(%{kind: kind} = operation) when kind in [:provision, :start] do
+  defp ready_at(%{kind: kind} = operation) when kind in [:provision, :start, :resume] do
     host_id = operation.command_snapshot["host_id"]
 
     PhysicalOutcome

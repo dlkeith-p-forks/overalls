@@ -32,6 +32,13 @@ defmodule Marshall.Ingress.WebLogins do
 
   def run(_, _, _), do: {:error, Ash.Error.Forbidden.exception([])}
 
+  @spec login_execution!(Service.t(), map()) :: {VirtualMachine.t(), struct(), DateTime.t()}
+  defp login_execution!(service, binding) do
+    {vm, _, _} = result = Execution.login!(service, binding)
+    unless OverallsProtocol.ProfilePolicy.allows?(vm.profile, :web), do: deny!(:invalid_binding)
+    result
+  end
+
   defp finish({:ok, {value, event}}) do
     unless Marshall.Repo.in_transaction?(), do: emit_event(event)
     {:ok, value}
@@ -57,7 +64,8 @@ defmodule Marshall.Ingress.WebLogins do
   # Expired, consumed or mismatched exchanges MUST NOT issue credentials. Locks
   # MUST follow service -> host -> VM -> exchange; raw proofs never persist.
   defp perform(:begin, request) do
-    service = Services.authenticate!(request.service_token, :exclusive)
+    service = Services.authenticate!(request.service_token)
+    Services.serialize_open!(service.id)
 
     unless OverallsProtocol.IngressName.valid_label?(request.label) and
              (request.app_port == 0 or request.app_port in 3000..9999) and
@@ -83,7 +91,7 @@ defmodule Marshall.Ingress.WebLogins do
       generation: vm.generation
     }
 
-    {vm, host, now} = Execution.web!(service, binding, :exclusive)
+    {vm, host, now} = login_execution!(service, binding)
 
     query =
       WebLogin
@@ -113,10 +121,11 @@ defmodule Marshall.Ingress.WebLogins do
   end
 
   defp perform(:exchange, request) do
-    service = Services.authenticate!(request.service_token, :exclusive)
+    service = Services.authenticate!(request.service_token)
+    Services.serialize_open!(service.id)
     candidate = candidate!(request.ticket)
     unless candidate.service_id == service.id, do: deny!(:service_mismatch)
-    {vm, _, _} = Execution.web!(service, candidate, :exclusive)
+    {vm, _, _} = login_execution!(service, candidate)
     login = Ledger.lock!(WebLogin, candidate.id) || deny!(:unknown_login)
     live!(login, :approved)
 
@@ -202,7 +211,7 @@ defmodule Marshall.Ingress.WebLogins do
       |> Ash.read_one!(actor: SystemActor.compute())
 
     unless service, do: deny!(:unknown_service)
-    {vm, _, _} = Execution.web!(service, candidate, :exclusive)
+    {vm, _, _} = login_execution!(service, candidate)
     Authorization.require!(vm, Marshall.Accounts.Security.bind(user, jti), "web")
     login = Ledger.lock!(WebLogin, candidate.id) || deny!(:unknown_login)
     live!(login, :pending)

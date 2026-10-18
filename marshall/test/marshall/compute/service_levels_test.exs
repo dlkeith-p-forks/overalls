@@ -16,73 +16,178 @@ defmodule Marshall.Compute.ServiceLevelsTest do
 
   @origin ~U[2026-10-02 00:00:00.000000Z]
 
-  @tag :hegel_case_sandbox
-  property "deadline histories never manufacture success from missing or late readiness" do
-    Marshall.DataCase.isolate_property_case()
-    budget = draw("budget", integer(1..3000))
-    physical_offset = draw("physical_offset", integer(0..4000))
-    ready_offset = draw("ready_offset", integer(0..4000))
-    observed_offset = draw("observed_offset", integer(0..4000))
-    deadline = DateTime.add(@origin, budget)
-    physical_at = DateTime.add(@origin, physical_offset)
-    ready_at = DateTime.add(@origin, ready_offset)
-    now = DateTime.add(@origin, observed_offset)
-    physical = %{state: :running, at: physical_at}
+  # @cc [owner:ghuntley,label:verification;accounting] suspension-measurements-use-physical-states
+  # Pause MUST complete only from paused evidence and resume only from running
+  # evidence. SSH resume additionally requires readiness; intent alone and the
+  # other operation's physical state MUST remain pending before the deadline.
+  property "pause and resume measurement states remain distinct",
+    test_cases: 32,
+    seed: 2_026_101_805 do
+    kind = draw("suspension operation", member_of([:pause, :resume]))
+    offset = draw("physical evidence seconds", integer(1..60))
+    at = DateTime.add(@origin, offset)
+    deadline = DateTime.add(@origin, 120)
+    expected = if kind == :pause, do: :paused, else: :running
+    other = if kind == :pause, do: :running, else: :paused
+    physical = %{state: expected, at: at}
 
-    result =
-      ServiceLevels.decide(
-        :marshall_ready,
-        :provision,
-        @origin,
-        deadline,
-        physical,
-        ready_at,
-        now
-      )
+    assert {:finished, true, ^at, duration} =
+             ServiceLevels.decide(:lilly_physical, kind, @origin, deadline, physical, nil, at)
 
-    cond do
-      physical_offset <= budget and ready_offset <= budget ->
-        assert {:finished, true, at, duration} = result
-        assert at == DateTime.add(@origin, max(physical_offset, ready_offset))
-        assert duration == max(physical_offset, ready_offset) * 1_000_000
+    assert duration == offset * 1_000_000
 
-      observed_offset >= budget ->
-        assert result == {:finished, false, deadline, budget * 1_000_000}
+    assert :pending =
+             ServiceLevels.decide(
+               :lilly_physical,
+               kind,
+               @origin,
+               deadline,
+               %{physical | state: other},
+               nil,
+               at
+             )
 
-      true ->
-        assert result == :pending
+    if kind == :resume do
+      assert :pending =
+               ServiceLevels.decide(:porsche_physical, kind, @origin, deadline, physical, nil, at)
+
+      assert {:finished, true, ^at, _} =
+               ServiceLevels.decide(:porsche_physical, kind, @origin, deadline, physical, at, at)
     end
-
-    missing =
-      ServiceLevels.decide(:marshall_ready, :provision, @origin, deadline, physical, nil, now)
-
-    if observed_offset < budget,
-      do: assert(missing == :pending),
-      else: assert(missing == {:finished, false, deadline, budget * 1_000_000})
   end
 
-  @tag :hegel_case_sandbox
-  property "missing physical evidence survives observation histories until the deadline" do
-    Marshall.DataCase.isolate_property_case()
-    budget = draw("budget", integer(1..3000))
-    offsets = draw("offsets", list_of(integer(-1000..4000), min_length: 1))
-    deadline = DateTime.add(@origin, budget)
+  test "retained paused evidence completes a physical pause measurement" do
+    Fixtures.host_fixture()
+    actor = Fixtures.user()
+    assert {:ok, vm} = Marshall.Compute.provision(Fixtures.request(), actor: actor)
 
-    for offset <- offsets do
+    operation =
+      Ledger.create!(Operation, :enqueue, %{
+        vm_id: vm.id,
+        placement_id: vm.current_placement_id,
+        execution_epoch: vm.execution_epoch,
+        generation: vm.generation + 1,
+        kind: :pause,
+        requested_by_id: actor.id
+      })
+
+    checkpoint = %{
+      id: Ash.UUID.generate(),
+      memory_bytes: vm.memory_bytes,
+      state_bytes: 4096,
+      compatibility: "sha256:" <> String.duplicate("a", 64),
+      memory_sha256: "sha256:" <> String.duplicate("b", 64),
+      state_sha256: "sha256:" <> String.duplicate("c", 64),
+      manifest_sha256: "sha256:" <> String.duplicate("d", 64),
+      dataset_guid: "81",
+      snapshot_guid: "82"
+    }
+
+    outcome = %{
+      id: Ash.UUID.generate(),
+      vm_id: vm.id,
+      placement_id: operation.placement_id,
+      execution_epoch: operation.execution_epoch,
+      operation_id: operation.id,
+      generation: operation.generation,
+      sequence: 1,
+      state: :paused,
+      compute_empty: true,
+      disk_present: true,
+      cleanup_complete: false,
+      reason: :none,
+      checkpoint: checkpoint
+    }
+
+    Ledger.create!(Marshall.Compute.PhysicalOutcome, :record, %{
+      id: outcome.id,
+      vm_id: vm.id,
+      host_id: vm.host_id,
+      placement_id: operation.placement_id,
+      execution_epoch: operation.execution_epoch,
+      operation_id: operation.id,
+      generation: operation.generation,
+      sequence: 1,
+      observation: OverallsProtocol.Execution.encode_outcome(outcome)
+    })
+
+    assert {:ok, 1} = ServiceLevels.reconcile()
+
+    assert [%{status: :finished, success: true}] =
+             Ledger.read!(ServiceLevelAttempt, operation_id: operation.id)
+
+    assert {:ok, 0} = ServiceLevels.reconcile()
+  end
+
+  property "deadline histories never manufacture success from missing or late readiness" do
+    check all(
+            budget <- integer(1..3_000),
+            physical_offset <- integer(0..4_000),
+            ready_offset <- integer(0..4_000),
+            observed_offset <- integer(0..4_000)
+          ) do
+      deadline = DateTime.add(@origin, budget)
+      physical_at = DateTime.add(@origin, physical_offset)
+      ready_at = DateTime.add(@origin, ready_offset)
+      now = DateTime.add(@origin, observed_offset)
+      physical = %{state: :running, at: physical_at}
+
       result =
         ServiceLevels.decide(
-          :lilly_physical,
-          :start,
+          :marshall_ready,
+          :provision,
           @origin,
           deadline,
-          nil,
-          nil,
-          DateTime.add(@origin, offset)
+          physical,
+          ready_at,
+          now
         )
 
-      if offset < budget,
-        do: assert(result == :pending),
-        else: assert(result == {:finished, false, deadline, budget * 1_000_000})
+      cond do
+        physical_offset <= budget and ready_offset <= budget ->
+          assert {:finished, true, at, duration} = result
+          assert at == DateTime.add(@origin, max(physical_offset, ready_offset))
+          assert duration == max(physical_offset, ready_offset) * 1_000_000
+
+        observed_offset >= budget ->
+          assert result == {:finished, false, deadline, budget * 1_000_000}
+
+        true ->
+          assert result == :pending
+      end
+
+      missing =
+        ServiceLevels.decide(:marshall_ready, :provision, @origin, deadline, physical, nil, now)
+
+      if observed_offset < budget,
+        do: assert(missing == :pending),
+        else: assert(missing == {:finished, false, deadline, budget * 1_000_000})
+    end
+  end
+
+  property "missing physical evidence survives observation histories until the deadline" do
+    check all(
+            budget <- integer(1..3_000),
+            offsets <- list_of(integer(-1_000..4_000), min_length: 1)
+          ) do
+      deadline = DateTime.add(@origin, budget)
+
+      for offset <- offsets do
+        result =
+          ServiceLevels.decide(
+            :lilly_physical,
+            :start,
+            @origin,
+            deadline,
+            nil,
+            nil,
+            DateTime.add(@origin, offset)
+          )
+
+        if offset < budget,
+          do: assert(result == :pending),
+          else: assert(result == {:finished, false, deadline, budget * 1_000_000})
+      end
     end
   end
 

@@ -53,7 +53,7 @@ defmodule Lilly.Host.ZFS do
            | :pool_identity
            | :storage_identity
            | :backing_extents
-  @maximum_rows 16_385
+  @maximum_rows 32_769
 
   # @cc [owner:ghuntley,label:security;capacity] zfs-canonical-mount-and-backing
   # inspect_path/1 MUST bind the actual dataset mount root, pool GUID and dataset GUID to
@@ -763,11 +763,11 @@ defmodule Lilly.Host.ZFS do
     name = identity.storage.dataset
 
     with {:shape, true} <-
-           {:shape, map_size(entries) in 1..@maximum_rows and map_size(snapshots) <= 12288},
+           {:shape, map_size(entries) in 1..@maximum_rows and map_size(snapshots) <= 20480},
          {:snapshot_binding, {:ok, retained}} <-
            {:snapshot_binding, snapshot_bindings(entries, snapshots, identity)},
          filesystems = Map.drop(entries, Map.keys(snapshots)),
-         {:filesystem_count, true} <- {:filesystem_count, map_size(filesystems) in 1..4097},
+         {:filesystem_count, true} <- {:filesystem_count, map_size(filesystems) in 1..12289},
          {:parent_missing, %{^name => parent}} <- {:parent_missing, filesystems},
          {:parent_guid, true} <- {:parent_guid, parent["guid"] == identity.storage.dataset_guid},
          {:parent_policy, true} <-
@@ -850,7 +850,9 @@ defmodule Lilly.Host.ZFS do
     else
       unless (policy?(row, "yes", retained?) and child?({name, row}, identity) and
                 Map.get(retained, name, 0) <= row["usedbysnapshots"]) or
-               template_row?({name, row}, identity),
+               template_row?({name, row}, identity) or
+               (checkpoint_row?({name, row}, identity) and
+                  Map.get(retained, name, 0) <= row["usedbysnapshots"]),
              do: :child
     end
   end
@@ -989,13 +991,15 @@ defmodule Lilly.Host.ZFS do
   defp snapshot_bindings(entries, snapshots, identity, resumable? \\ false) do
     Enum.reduce_while(snapshots, {:ok, %{}}, fn {name, expected}, {:ok, retained} ->
       with true <- is_binary(name),
-           [dataset, suffix] when suffix in ["lilly-b", "lilly-backup"] <-
+           [dataset, suffix] when suffix in ["lilly-b", "lilly-backup", "lilly-checkpoint"] <-
              String.split(name, "@"),
            %{dataset_guid: dataset_guid, snapshot_guid: snapshot_guid}
            when map_size(expected) == 2 <- expected,
            true <- guid?(dataset_guid) and guid?(snapshot_guid),
            %{"guid" => ^dataset_guid, "type" => "filesystem"} = child <- entries[dataset],
-           true <- child?({dataset, child}, identity, resumable?),
+           true <-
+             (suffix != "lilly-checkpoint" and child?({dataset, child}, identity, resumable?)) or
+               (suffix == "lilly-checkpoint" and checkpoint_row?({dataset, child}, identity)),
            %{"guid" => ^snapshot_guid, "type" => "snapshot"} = row <- entries[name],
            true <- snapshot_row?(row) do
         {:cont, {:ok, Map.update(retained, dataset, row["used"], &(&1 + row["used"]))}}
@@ -1187,6 +1191,7 @@ defmodule Lilly.Host.ZFS do
         value when value in [:receive, :adopt_readonly, :abort_receive] -> ["on"]
         :adopt_publish -> ["on", "off"]
         :template -> ["on", "off"]
+        :checkpoint -> ["on", "off"]
         _ -> ["off"]
       end
 
@@ -1206,6 +1211,24 @@ defmodule Lilly.Host.ZFS do
       row["dedup"] == "off" and row["sync"] == "standard" and row["origin"] == "-" and
       row["readonly"] in readonly and row["canmount"] in canmount and row["refquota"] == 0 and
       row["usedbyrefreservation"] == 0 and (snapshots? or row["usedbysnapshots"] == 0)
+  end
+
+  @doc "Native shape only; local checkpoint journals must independently establish ownership."
+  @spec checkpoint_row?({String.t(), dataset()}, t()) :: boolean()
+  def checkpoint_row?({name, row}, identity) do
+    prefix = identity.storage.dataset <> "/checkpoint-"
+    suffix = String.replace_prefix(name, prefix, "")
+
+    case String.split(suffix, ~r/-(?=[ab]$)/) do
+      [placement, slot] when slot in ["a", "b"] ->
+        String.starts_with?(name, prefix) and OverallsProtocol.uuid?(placement) and
+          row["mountpoint"] == Path.join([identity.path, ".lilly-checkpoints", placement, slot]) and
+          row["usedbychildren"] == 0 and row["quota"] in 603_979_776..274_945_015_808 and
+          policy?(row, "yes", true, :checkpoint)
+
+      _ ->
+        false
+    end
   end
 
   defp child?({name, row}, identity, resumable? \\ false) do

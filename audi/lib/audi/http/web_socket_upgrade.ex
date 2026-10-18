@@ -28,7 +28,7 @@ defmodule Audi.HTTP.WebSocketUpgrade do
              user_id: grant.user_id,
              source_vm_id: source_vm_id
            }),
-         {:ok, socket} <- module.open(config, grant.binding) do
+         {:ok, socket} <- Audi.StreamConnector.open({module, config}, grant) do
       result = handshake(conn, socket, headers, protocols, renewal, grant.binding)
       if result.state != :upgraded, do: :gen_tcp.close(socket)
       result

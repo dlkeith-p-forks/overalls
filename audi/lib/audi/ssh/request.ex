@@ -32,6 +32,25 @@ defmodule Audi.SSH.Request do
       match?({:ok, %{public_key: ^key}}, SSHKey.parse(key))
   end
 
+  def grant?(
+        %{
+          relay: %{origin_host_id: source, destination_host_id: destination} = relay,
+          binding: %{host_id: destination}
+        } = grant,
+        label,
+        host
+      )
+      when source == host and source != destination do
+    case OverallsProtocol.IngressRelay.route(
+           Map.new(relay, fn {key, value} -> {Atom.to_string(key), value} end)
+         ) do
+      {:ok, _} -> grant?(Map.delete(grant, :relay), label, destination)
+      _ -> false
+    end
+  end
+
+  def grant?(%{relay: _}, _, _), do: false
+
   def grant?(%{binding: binding, ticket: _, ttl: ttl}, label, host)
       when is_binary(label) and is_map(binding) and is_integer(ttl) and ttl in 1..30_000 do
     match?(%{service: :ssh, port: 22, label: ^label, host_id: ^host}, binding) and

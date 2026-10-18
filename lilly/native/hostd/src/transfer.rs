@@ -23,6 +23,7 @@ pub const SNAPSHOT: &str = "lilly-b";
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Verb {
     Export,
+    Checkpoint,
     Resume { token: Vec<u8> },
     Probe { challenge: Vec<u8> },
 }
@@ -34,6 +35,12 @@ pub enum Producer {
     LocalSend {
         dataset: Vec<u8>,
         placement: Vec<u8>,
+    },
+    /// Full immutable checkpoint leaf; its slot is exactly `a` or `b`.
+    CheckpointSend {
+        dataset: Vec<u8>,
+        placement: Vec<u8>,
+        slot: Vec<u8>,
     },
     /// `zfs send -t <token>` after `lilly-resume-token` confirmed the token
     /// names `<dataset>/vm-<placement>@lilly-b` with this to-GUID.
@@ -68,6 +75,16 @@ pub enum Consumer {
         pool_id: Vec<u8>,
         nonce: Vec<u8>,
     },
+    /// Unmounted, non-resumable sealed checkpoint receive into destination slot a.
+    CheckpointReceive {
+        dataset: Vec<u8>,
+        pool: Vec<u8>,
+        placement: Vec<u8>,
+        host: Vec<u8>,
+        pool_id: Vec<u8>,
+        nonce: Vec<u8>,
+        memory_bytes: Vec<u8>,
+    },
     /// `cmp --silent -- <path> -`, run as the service uid (the SSH probe).
     Compare { path: Vec<u8> },
 }
@@ -84,6 +101,9 @@ const PRODUCER_LOCAL_RESUME: u8 = 2;
 const PRODUCER_SSH_EXPORT: u8 = 3;
 const PRODUCER_SSH_RESUME: u8 = 4;
 const PRODUCER_SSH_PROBE: u8 = 5;
+const PRODUCER_CHECKPOINT_SEND: u8 = 6;
+const PRODUCER_SSH_CHECKPOINT: u8 = 7;
+const CONSUMER_CHECKPOINT_RECEIVE: u8 = 3;
 const CONSUMER_RECEIVE: u8 = 1;
 const CONSUMER_COMPARE: u8 = 2;
 
@@ -93,13 +113,15 @@ impl Stream {
     pub fn decode(producer: u8, consumer: u8, mut fields: Vec<Vec<u8>>) -> Option<Stream> {
         let producer_fields = match producer {
             PRODUCER_LOCAL_SEND => 2,
+            PRODUCER_CHECKPOINT_SEND => 3,
             PRODUCER_LOCAL_RESUME => 4,
-            PRODUCER_SSH_EXPORT => 6,
+            PRODUCER_SSH_EXPORT | PRODUCER_SSH_CHECKPOINT => 6,
             PRODUCER_SSH_RESUME | PRODUCER_SSH_PROBE => 7,
             _ => return None,
         };
         let consumer_fields = match consumer {
             CONSUMER_RECEIVE => 6,
+            CONSUMER_CHECKPOINT_RECEIVE => 7,
             CONSUMER_COMPARE => 1,
             _ => return None,
         };
@@ -114,6 +136,11 @@ impl Stream {
                 dataset: next(),
                 placement: next(),
             },
+            PRODUCER_CHECKPOINT_SEND => Producer::CheckpointSend {
+                dataset: next(),
+                placement: next(),
+                slot: next(),
+            },
             PRODUCER_LOCAL_RESUME => Producer::LocalResume {
                 dataset: next(),
                 placement: next(),
@@ -125,6 +152,7 @@ impl Stream {
                     (next(), next(), next(), next(), next(), next());
                 let verb = match kind {
                     PRODUCER_SSH_EXPORT => Verb::Export,
+                    PRODUCER_SSH_CHECKPOINT => Verb::Checkpoint,
                     PRODUCER_SSH_RESUME => Verb::Resume { token: next() },
                     _ => Verb::Probe { challenge: next() },
                 };
@@ -150,6 +178,15 @@ impl Stream {
                 pool_id: next(),
                 nonce: next(),
             },
+            CONSUMER_CHECKPOINT_RECEIVE => Consumer::CheckpointReceive {
+                dataset: next(),
+                pool: next(),
+                placement: next(),
+                host: next(),
+                pool_id: next(),
+                nonce: next(),
+                memory_bytes: next(),
+            },
             _ => Consumer::Compare { path: next() },
         };
         Some(Stream { producer, consumer })
@@ -162,6 +199,14 @@ impl Stream {
             Producer::LocalSend { dataset, placement } => {
                 fields.extend([dataset.clone(), placement.clone()]);
                 PRODUCER_LOCAL_SEND
+            }
+            Producer::CheckpointSend {
+                dataset,
+                placement,
+                slot,
+            } => {
+                fields.extend([dataset.clone(), placement.clone(), slot.clone()]);
+                PRODUCER_CHECKPOINT_SEND
             }
             Producer::LocalResume {
                 dataset,
@@ -196,6 +241,7 @@ impl Stream {
                 ]);
                 match verb {
                     Verb::Export => PRODUCER_SSH_EXPORT,
+                    Verb::Checkpoint => PRODUCER_SSH_CHECKPOINT,
                     Verb::Resume { token } => {
                         fields.push(token.clone());
                         PRODUCER_SSH_RESUME
@@ -225,6 +271,26 @@ impl Stream {
                     nonce.clone(),
                 ]);
                 CONSUMER_RECEIVE
+            }
+            Consumer::CheckpointReceive {
+                dataset,
+                pool,
+                placement,
+                host,
+                pool_id,
+                nonce,
+                memory_bytes,
+            } => {
+                fields.extend([
+                    dataset.clone(),
+                    pool.clone(),
+                    placement.clone(),
+                    host.clone(),
+                    pool_id.clone(),
+                    nonce.clone(),
+                    memory_bytes.clone(),
+                ]);
+                CONSUMER_CHECKPOINT_RECEIVE
             }
             Consumer::Compare { path } => {
                 fields.push(path.clone());
@@ -478,6 +544,10 @@ const RECEIVE_PROPERTIES: [&str; 12] = [
 /// another uid, and MUST be refused when a root hostd serves another uid
 /// with no service uid; only a private daemon whose caller is hostd's own
 /// uid keeps that uid. The ZFS sides run as hostd's uid.
+/// Checkpoint send MUST name only a validated a/b sibling leaf at
+/// `@lilly-checkpoint`; checkpoint receive MUST be non-resumable, unmounted,
+/// sealed read-only, and target only destination slot a. Checkpoint SSH uses
+/// only `lilly-checkpoint-v1` with the validated relocation identity.
 pub fn plan(
     stream: &Stream,
     context: &Context,
@@ -504,6 +574,28 @@ pub fn plan(
                 return Err(Refusal::Malformed);
             }
             let snapshot = concat(&[&dataset, b"/vm-", placement, b"@", SNAPSHOT.as_bytes()]);
+            (
+                vec![zfs()?, text("send")?, text("-c")?, text(snapshot)?],
+                "-".to_string(),
+            )
+        }
+        Producer::CheckpointSend {
+            dataset,
+            placement,
+            slot,
+        } => {
+            let (dataset, _) = pool(context, dataset, None)?;
+            if !uuid(placement) || !matches!(slot.as_slice(), b"a" | b"b") {
+                return Err(Refusal::Malformed);
+            }
+            let snapshot = concat(&[
+                &dataset,
+                b"/checkpoint-",
+                placement,
+                b"-",
+                slot,
+                b"@lilly-checkpoint",
+            ]);
             (
                 vec![zfs()?, text("send")?, text("-c")?, text(snapshot)?],
                 "-".to_string(),
@@ -570,6 +662,7 @@ pub fn plan(
             ]);
             match verb {
                 Verb::Export => argv.extend([text("lilly-export-v4")?, text(relocation)?]),
+                Verb::Checkpoint => argv.extend([text("lilly-checkpoint-v1")?, text(relocation)?]),
                 Verb::Resume { token: resume } if token(resume) => {
                     argv.extend([text("lilly-resume-v4")?, text(relocation)?, text(resume)?])
                 }
@@ -589,21 +682,58 @@ pub fn plan(
             host,
             pool_id,
             nonce: marker,
+        }
+        | Consumer::CheckpointReceive {
+            dataset,
+            pool: directory,
+            placement,
+            host,
+            pool_id,
+            nonce: marker,
+            memory_bytes: _,
         } => {
+            let checkpoint = matches!(&stream.consumer, Consumer::CheckpointReceive { .. });
             let (dataset, directory) = pool(context, dataset, Some(directory))?;
             if !uuid(placement) || !uuid(host) || !uuid(pool_id) || !nonce(marker) {
                 return Err(Refusal::Malformed);
             }
             let mountpoint = directory
-                .join("vms")
+                .join(if checkpoint {
+                    ".lilly-checkpoints"
+                } else {
+                    "vms"
+                })
                 .join(std::str::from_utf8(placement).map_err(|_| Refusal::Malformed)?);
-            let mut argv = vec![zfs()?, text("receive")?, text("-u")?, text("-s")?];
+            let mountpoint = if checkpoint {
+                mountpoint.join("a")
+            } else {
+                mountpoint
+            };
+            let mut argv = vec![zfs()?, text("receive")?, text("-u")?];
+            if !checkpoint {
+                argv.push(text("-s")?);
+            }
             argv.extend([
                 text("-o")?,
                 text(concat(&[b"mountpoint=", mountpoint.as_os_str().as_bytes()]))?,
             ]);
             for property in RECEIVE_PROPERTIES {
+                if checkpoint && property == "quota=none" {
+                    continue;
+                }
                 argv.extend([text("-o")?, text(property)?]);
+            }
+            if let Consumer::CheckpointReceive { memory_bytes, .. } = &stream.consumer {
+                let memory = std::str::from_utf8(memory_bytes)
+                    .ok()
+                    .and_then(|value| value.parse::<u64>().ok())
+                    .filter(|value| {
+                        (536_870_912..=274_877_906_944).contains(value)
+                            && value % 1_048_576 == 0
+                            && value.to_string().as_bytes() == memory_bytes
+                    })
+                    .ok_or(Refusal::Malformed)?;
+                argv.extend([text("-o")?, text(format!("quota={}", memory + 67_108_864))?]);
             }
             for (key, value) in [
                 (&b"lilly:host="[..], host.as_slice()),
@@ -613,7 +743,12 @@ pub fn plan(
             ] {
                 argv.extend([text("-o")?, text(concat(&[key, value]))?]);
             }
-            argv.push(text(concat(&[&dataset, b"/vm-", placement]))?);
+            let target = if checkpoint {
+                concat(&[&dataset, b"/checkpoint-", placement, b"-a"])
+            } else {
+                concat(&[&dataset, b"/vm-", placement])
+            };
+            argv.push(text(target)?);
             (argv, "-".to_string())
         }
         Consumer::Compare { path } => {

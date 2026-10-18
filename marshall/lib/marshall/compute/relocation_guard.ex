@@ -33,7 +33,7 @@ defmodule Marshall.Compute.RelocationGuard do
       [] ->
         false
 
-      [relocation] when kind in [:start, :stop] ->
+      [relocation] when kind in [:start, :stop, :pause, :resume] ->
         restored =
           relocation.cancellation_requested_at != nil and
             relocation.source_restored_at != nil and relocation.committed_at == nil and

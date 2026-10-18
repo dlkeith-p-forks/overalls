@@ -7,6 +7,11 @@ defmodule Marshall.Ingress do
   end
 
   resources do
+    resource Marshall.Ingress.Relay do
+      define :consume_relay, action: :consume_connection
+      define :renew_relay, action: :renew_connection
+    end
+
     resource Marshall.Ingress.EditorAssetsReceipt do
       define :report_editor_assets, action: :report
     end
@@ -66,6 +71,7 @@ defmodule Marshall.Ingress do
     end
 
     resource Marshall.Ingress.Service do
+      define :open_connection, action: :open_connection
       define :gateway_catalog, action: :catalog
       define :configure_service, action: :configure
       define :ensure_service, action: :ensure

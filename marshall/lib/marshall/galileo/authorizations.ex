@@ -14,7 +14,7 @@ defmodule Marshall.Galileo.Authorizations do
   # Authorization MUST authenticate the dedicated host credential, require the
   # binding host match and the same live execution fences as inference
   # admission (live owner, egress profile, enabled fresh host, exact
-  # placement/epoch, running states, completed start) before resolving any
+  # placement/epoch, running states, completed provision/start/resume) before resolving any
   # configuration. No response is ever cached or replayed.
   require Marshall.Events
 
@@ -205,7 +205,7 @@ defmodule Marshall.Galileo.Authorizations do
       |> Ash.Query.filter(
         vm_id == ^vm.id and placement_id == ^vm.current_placement_id and
           execution_epoch == ^vm.execution_epoch and generation == ^vm.generation and
-          status == :completed and kind in [:start, :provision]
+          status == :completed and kind in [:start, :provision, :resume]
       )
       |> Ash.exists?(actor: SystemActor.compute())
 

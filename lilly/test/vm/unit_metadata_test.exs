@@ -60,6 +60,7 @@ defmodule Lilly.VM.UnitMetadataTest do
              memory_bytes: Lilly.VM.Spec.host_memory(spec),
              vcpus: 2,
              firmware: false,
+             restore: false,
              logging: false,
              state_dir: "/tmp/vms",
              namespace: network.namespace,

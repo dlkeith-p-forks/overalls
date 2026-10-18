@@ -3,7 +3,7 @@ defmodule Lilly.VM.Jail do
   require Lilly.Events
   alias Lilly.Host.{Command, Pool, PrivateFiles, ZFSDataset}
   alias OverallsProtocol.WorkloadBundle, as: BundleMetadata
-  alias Lilly.VM.{Boot, Disk, Spec, WorkloadBundle}
+  alias Lilly.VM.{Boot, CheckpointStorage, Disk, Spec, WorkloadBundle}
 
   @spec base(Pool.t()) :: Path.t()
   def base(pool), do: Path.join(pool.path, ".lilly-jails")
@@ -39,6 +39,7 @@ defmodule Lilly.VM.Jail do
          {:ok, bundle} <- WorkloadBundle.load(bundle_directory, spec),
          :ok <- mount_boot_artifacts(bundle_directory, pool, spec, bundle),
          :ok <- mount_drives(pool, spec),
+         :ok <- mount_checkpoints(pool, spec),
          :ok <- write_metadata(pool, spec, bundle, boot),
          :ok <-
            PrivateFiles.write(
@@ -216,7 +217,9 @@ defmodule Lilly.VM.Jail do
 
     allowed =
       Enum.map(
-        WorkloadBundle.boot_artifacts() ++ Enum.map(Spec.drives(spec), & &1.name),
+        WorkloadBundle.boot_artifacts() ++
+          Enum.map(Spec.drives(spec), & &1.name) ++
+          ~w(checkpoint-a checkpoint-b restore.memory restore.state),
         &Path.join(root, &1)
       )
 
@@ -262,6 +265,55 @@ defmodule Lilly.VM.Jail do
              JSON.encode!(metadata(bundle, spec, boot))
            ),
          do: File.chmod(Path.join(root(pool, spec), "metadata.json"), 0o444)
+  end
+
+  @spec prepare_restore(Pool.t(), Spec.t(), Boot.t(), String.t()) ::
+          {:ok, WorkloadBundle.t()} | {:error, atom()}
+  def prepare_restore(pool, spec, boot, slot) when slot in ["a", "b"] do
+    with {:ok, bundle} <- prepare(pool, spec, boot),
+         :ok <-
+           mount_file(
+             Path.join(CheckpointStorage.output(pool, spec.id, slot), "memory"),
+             root(pool, spec),
+             "restore.memory",
+             true
+           ),
+         :ok <-
+           mount_file(
+             Path.join(CheckpointStorage.output(pool, spec.id, slot), "state"),
+             root(pool, spec),
+             "restore.state",
+             true
+           ),
+         do: {:ok, bundle}
+  end
+
+  defp mount_checkpoints(pool, spec) do
+    Enum.reduce_while(["a", "b"], :ok, fn slot, :ok ->
+      target = Path.join(root(pool, spec), "checkpoint-" <> slot)
+      {:ok, record} = Lilly.VM.Checkpoint.read(pool, spec.id)
+      access = if record["slots"][slot]["state"] == "sealed", do: "ro", else: "rw"
+
+      with :ok <- File.mkdir(target),
+           {:ok, _} <-
+             Command.run(:mount, [
+               "--bind",
+               "--",
+               CheckpointStorage.output(pool, spec.id, slot),
+               target
+             ]),
+           {:ok, _} <-
+             Command.run(:mount, [
+               "-o",
+               "remount,bind,nosuid,nodev,noexec," <> access,
+               "--",
+               target
+             ]) do
+        {:cont, :ok}
+      else
+        _ -> {:halt, {:error, :jail_prepare_failed}}
+      end
+    end)
   end
 
   defp mount_drives(pool, spec) do

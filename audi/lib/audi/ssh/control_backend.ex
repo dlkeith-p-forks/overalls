@@ -21,7 +21,13 @@ defmodule Audi.SSH.ControlBackend do
     end
   end
 
-  def authorize(%{client: client}, key, label), do: Client.open_ssh(client, key.public_key, label)
+  def authorize(%{client: client}, key, label) do
+    with {:ok, grant} <- Client.open_ssh(client, key.public_key, label) do
+      if Map.has_key?(grant, :relay),
+        do: {:ok, Map.put(grant, :ticket, {:relay, grant.ticket, grant.relay})},
+        else: {:ok, grant}
+    end
+  end
 
   @impl true
   def renew(%{client: client}, {:nested, ticket, host_key}, binding) do
@@ -31,9 +37,15 @@ defmodule Audi.SSH.ControlBackend do
     end
   end
 
+  def renew(%{client: client}, {:relay, ticket, _relay}, binding),
+    do: Client.renew_ssh(client, ticket, binding)
+
   def renew(%{client: client}, ticket, binding), do: Client.renew_ssh(client, ticket, binding)
 
   @impl true
+  def connect(%{connector: connector}, {:relay, ticket, relay}, binding),
+    do: Audi.StreamConnector.open(connector, %{ticket: ticket, binding: binding, relay: relay})
+
   def connect(%{connector: {module, options}}, _ticket, binding),
     do: module.open(options, binding)
 

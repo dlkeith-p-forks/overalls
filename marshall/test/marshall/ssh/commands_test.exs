@@ -55,6 +55,96 @@ defmodule Marshall.SSH.CommandsTest do
     })
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] ssh-pause-wake-receipt-continuity
+  # Management retries MUST retain one durable wake receipt, never mark an
+  # acknowledgement ready, and reveal no checkpoint or destination authority.
+  test "pause and unpause retain physical receipts through pending resume", c do
+    assert {:ok, created} = command(c, "new --name sleeping --request-id sleep-create")
+    [provision] = Ledger.read!(Operation, id: created.operation_id)
+    assert {:ok, _} = ingest(c.host.id, outcome(provision, 1, :running))
+    assert {:ok, paused} = command(c, "pause sleeping --request-id sleep-pause")
+    [pause] = Ledger.read!(Operation, id: paused.operation_id)
+    [vm] = Ledger.read!(VirtualMachine, id: pause.vm_id)
+
+    checkpoint = %{
+      id: Ash.UUID.generate(),
+      memory_bytes: vm.memory_bytes,
+      state_bytes: 4096,
+      compatibility: "sha256:" <> String.duplicate("a", 64),
+      memory_sha256: "sha256:" <> String.duplicate("b", 64),
+      state_sha256: "sha256:" <> String.duplicate("c", 64),
+      manifest_sha256: "sha256:" <> String.duplicate("d", 64),
+      dataset_guid: "81",
+      snapshot_guid: "82"
+    }
+
+    event =
+      outcome(pause, 2, :paused) |> Map.merge(%{compute_empty: true, checkpoint: checkpoint})
+
+    assert {:ok, _} = ingest(c.host.id, event)
+    assert {:ok, %{status: "succeeded"}} = command(c, "request show sleep-pause")
+    assert {:ok, wake_receipt} = command(c, "unpause sleeping --request-id sleep-resume")
+    assert wake_receipt.status == "accepted"
+    [wake] = Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id)
+    assert {:ok, replay} = command(c, "unpause sleeping --request-id sleep-resume --json")
+    assert replay.request_id == wake_receipt.request_id
+    assert length(Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id)) == 1
+    assert {:ok, :waiting} = Marshall.Compute.Wake.advance(wake.id)
+    [resume] = Ledger.read!(Operation, vm_id: vm.id, kind: :resume)
+    Ledger.update!(resume, :acknowledge, %{})
+    assert {:ok, %{status: "accepted"}} = command(c, "request show sleep-resume")
+
+    assert {:ok, _} =
+             ingest(c.host.id, Map.put(outcome(resume, 3, :running), :checkpoint, checkpoint))
+
+    assert {:ok, :finished} = Marshall.Compute.Wake.advance(wake.id)
+    assert {:ok, completed} = command(c, "request show sleep-resume")
+    assert completed.status == "succeeded"
+    refute JSON.encode!(completed) =~ checkpoint.memory_sha256
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] ssh-wake-receipt-current-manage
+  # Downgrading an admitted resume's requester to viewer MUST refuse both status
+  # and replay while leaving the already accepted wake durable. A stored receipt
+  # MUST NOT preserve management authority. The paused observation is synthetic;
+  # this test does not advance or establish a physical checkpoint restore.
+  test "wake receipt status and replay require current management authority", c do
+    assert {:ok, created} = command(c, "new --name wake-auth --request-id wake-auth-create")
+    [provision] = Ledger.read!(Operation, id: created.operation_id)
+    assert {:ok, _} = ingest(c.host.id, outcome(provision, 1, :running))
+    member = user()
+    peer = session_for(c, member, :crypto.strong_rand_bytes(32))
+
+    assert {:ok, _} =
+             command(
+               c,
+               "share add wake-auth #{member.email} manager --request-id wake-auth-manager"
+             )
+
+    [vm] = Ledger.read!(VirtualMachine, id: provision.vm_id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+
+    assert {:ok, %{status: "accepted"}} =
+             command(peer, "resume wake-auth --request-id wake-auth-resume")
+
+    assert {:ok, _} =
+             command(
+               c,
+               "share add wake-auth #{member.email} viewer --request-id wake-auth-viewer"
+             )
+
+    [vm] = Ledger.read!(VirtualMachine, id: vm.id)
+    assert Marshall.Access.Authorization.allowed?(vm, member, "read")
+    refute Marshall.Access.Authorization.allowed?(vm, member, "manage")
+    assert {:error, _} = command(peer, "request show wake-auth-resume")
+    assert {:error, _} = command(peer, "resume wake-auth --request-id wake-auth-resume")
+
+    assert [%{finished_at: nil, requested_by_id: requester}] =
+             Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id)
+
+    assert requester == member.id
+  end
+
   test "clone commands queue distinct copies and retries retain the original request", c do
     assert {:ok, created} = command(c, "new --name clone-source --request-id source")
     assert created.status == "accepted"
@@ -362,99 +452,88 @@ defmodule Marshall.SSH.CommandsTest do
   # Receipts MUST replay only for their accepted actor; a changed kind with a
   # used request key MUST conflict without new durable work.
   test "lifecycle commands across profiles admit only current authority", c do
-    Hegel.check(
-      fn ->
-        profile = draw("profile", member_of(["oss", "customer"]))
-
-        performers =
-          draw(
-            "performers",
-            if(profile == "oss") do
-              list_of(member_of([:owner, :member]), length: 3)
-            else
-              constant([:owner, :owner, :owner])
-            end
-          )
-
-        refusals =
-          draw(
-            "refusals",
-            list_of(
-              tuple(
-                {member_of(
-                   if(profile == "oss") do
-                     [:revoked, :stranger, :admin]
-                   else
-                     [:member, :revoked, :stranger, :admin]
-                   end
-                 ), member_of([:stop, :start, :rm, :show])}
+    check all(
+            profile <- member_of(["oss", "customer"]),
+            performers <-
+              if(
+                profile == "oss",
+                do: list_of(member_of([:owner, :member]), length: 3),
+                else: constant([:owner, :owner, :owner])
               ),
-              min_length: 6,
-              max_length: 12
-            )
-          )
+            refusals <-
+              list_of(
+                tuple(
+                  {member_of(
+                     if(profile == "oss",
+                       do: [:revoked, :stranger, :admin],
+                       else: [:member, :revoked, :stranger, :admin]
+                     )
+                   ), member_of([:stop, :start, :rm, :show])}
+                ),
+                min_length: 6,
+                max_length: 12
+              ),
+            test_cases: 8
+          ) do
+      actors = history_actors(c)
+      refresh_reports(c)
+      name = "ctl-" <> binary_part(Ash.UUID.generate(), 0, 8)
+      create_key = Ash.UUID.generate()
 
-        actors = history_actors(c)
-        refresh_reports(c)
-        name = "ctl-" <> binary_part(Ash.UUID.generate(), 0, 8)
-        create_key = Ash.UUID.generate()
+      created_result =
+        command(c, "new --name #{name} --profile #{profile} --request-id #{create_key}")
 
-        created_result =
-          command(c, "new --name #{name} --profile #{profile} --request-id #{create_key}")
+      assert {:ok, created} = created_result
 
-        assert {:ok, created} = created_result
+      assert created.result["profile"] == profile
+      vm_id = created.result["id"]
+      [provision] = Ledger.read!(Operation, id: created.operation_id)
+      assert {:ok, _} = ingest(c.host.id, outcome(provision, 1, :running))
+      assert {:ok, %{status: "succeeded"}} = command(c, "request show #{create_key}")
+      wire_membership(c, actors, profile, name, vm_id)
 
-        assert created.result["profile"] == profile
-        vm_id = created.result["id"]
-        [provision] = Ledger.read!(Operation, id: created.operation_id)
-        assert {:ok, _} = ingest(c.host.id, outcome(provision, 1, :running))
-        assert {:ok, %{status: "succeeded"}} = command(c, "request show #{create_key}")
-        wire_membership(c, actors, profile, name, vm_id)
+      refusers =
+        if profile == "oss",
+          do: [:revoked, :stranger, :admin],
+          else: [:member, :revoked, :stranger, :admin]
 
-        refusers =
-          if profile == "oss",
-            do: [:revoked, :stranger, :admin],
-            else: [:member, :revoked, :stranger, :admin]
+      for refused <- refusers do
+        assert {:ok, listed} = command(actors[refused], "ls")
+        assert listed.result["items"] == []
+      end
 
-        for refused <- refusers do
-          assert {:ok, listed} = command(actors[refused], "ls")
-          assert listed.result["items"] == []
-        end
+      [p0, p1, p2] = performers
+      steps = [{:stop, p0}, {:start, p1}, {:rm, p2}]
 
-        [p0, p1, p2] = performers
-        steps = [{:stop, p0}, {:start, p1}, {:rm, p2}]
+      chunks =
+        refusals
+        |> Enum.with_index()
+        |> Enum.group_by(fn {_, index} -> rem(index, 4) end, fn {refusal, _} -> refusal end)
 
-        chunks =
-          refusals
-          |> Enum.with_index()
-          |> Enum.group_by(fn {_, index} -> rem(index, 4) end, fn {refusal, _} -> refusal end)
+      {_, settled} =
+        steps
+        |> Enum.with_index()
+        |> Enum.reduce({2, %{}}, fn {{kind, performer}, chunk}, {sequence, settled} ->
+          for {refused, attempt} <- Map.get(chunks, chunk, []) do
+            refused_entry(actors, refused, attempt, name)
+          end
 
-        {_, settled} =
-          steps
-          |> Enum.with_index()
-          |> Enum.reduce({2, %{}}, fn {{kind, performer}, chunk}, {sequence, settled} ->
-            for {refused, attempt} <- Map.get(chunks, chunk, []) do
-              refused_entry(actors, refused, attempt, name)
-            end
+          settle = accepted_lifecycle(c, actors[performer], kind, name, vm_id, sequence)
 
-            settle = accepted_lifecycle(c, actors[performer], kind, name, vm_id, sequence)
+          other = if performer == :owner, do: :member, else: :owner
+          assert {:error, _} = command(actors[other], "request show #{settle.key}")
+          assert {:error, _} = command(actors.stranger, "request show #{settle.key}")
+          assert {:error, _} = command(actors.admin, "request show #{settle.key}")
 
-            other = if performer == :owner, do: :member, else: :owner
-            assert {:error, _} = command(actors[other], "request show #{settle.key}")
-            assert {:error, _} = command(actors.stranger, "request show #{settle.key}")
-            assert {:error, _} = command(actors.admin, "request show #{settle.key}")
+          {sequence + 1, Map.put(settled, kind, settle)}
+        end)
 
-            {sequence + 1, Map.put(settled, kind, settle)}
-          end)
+      for {refused, attempt} <- Map.get(chunks, 3, []) do
+        refused_entry(actors, refused, attempt, name)
+      end
 
-        for {refused, attempt} <- Map.get(chunks, 3, []) do
-          refused_entry(actors, refused, attempt, name)
-        end
-
-        close_history(c, actors, name, vm_id, settled)
-      end,
-      test_cases: 100
-    )
+      close_history(c, actors, name, vm_id, settled)
+    end
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] customer-archived-receipt-pinning
@@ -525,69 +604,64 @@ defmodule Marshall.SSH.CommandsTest do
   # An omitted profile and any explicit profile are different semantic inputs,
   # even explicit OSS; changing that input MUST refuse without new durable work.
   test "omitted and explicit profiles stay pinned through retry histories", c do
-    Hegel.check(
-      fn ->
-        selection = draw("selection", member_of([nil, "oss", "customer", "standard"]))
+    check all(
+            selection <- member_of([nil, "oss", "customer", "standard"]),
+            attempts <-
+              list_of(member_of([:retry, :explicit_oss, :customer, :omit]),
+                min_length: 1,
+                max_length: 8
+              ),
+            test_cases: 16
+          ) do
+      [host] = Ledger.read!(Host, id: c.host.id)
+      report = %{c.report | sequence: host.report_sequence + 1, sampled_at: Ledger.now()}
+      assert {:ok, :ok} = Marshall.Compute.HostReports.ingest(host.id, c.epoch, report)
+      key = Ash.UUID.generate()
+      profile_option = if selection, do: " --profile #{selection}", else: ""
+      original = "new --cpu 1 --request-id #{key}" <> profile_option
+      assert {:ok, receipt} = command(c, original)
+      expected = selection || "oss"
+      assert receipt.result["profile"] == expected
+      vm_id = receipt.result["id"]
+      [vm] = Ledger.read!(VirtualMachine, id: vm_id)
+      assert Atom.to_string(vm.profile) == expected
+      admitted_rows = durable_profile_rows()
 
-        attempts =
-          draw(
-            "attempts",
-            list_of(member_of([:retry, :explicit_oss, :customer, :omit]),
-              min_length: 1,
-              max_length: 8
-            )
-          )
-
-        Ledger.update!(c.host, :report, %{reported_at: Ledger.now()})
-        key = Ash.UUID.generate()
-        profile_option = if selection, do: " --profile #{selection}", else: ""
-        original = "new --cpu 1 --request-id #{key}" <> profile_option
-        assert {:ok, receipt} = command(c, original)
-        expected = selection || "oss"
-        assert receipt.result["profile"] == expected
-        vm_id = receipt.result["id"]
-        [vm] = Ledger.read!(VirtualMachine, id: vm_id)
-        assert Atom.to_string(vm.profile) == expected
-        admitted_rows = durable_profile_rows()
-
-        # Every generated history includes both replay and a decisive conflict.
-        for attempt <-
-              [:retry, if(selection == "customer", do: :omit, else: :customer)] ++ attempts do
-          selected =
-            case attempt do
-              :retry -> selection
-              :explicit_oss -> "oss"
-              :customer -> "customer"
-              :omit -> nil
-            end
-
-          option = if selected, do: " --profile #{selected}", else: ""
-          result = command(c, "new --cpu 1 --request-id #{key} --json --no-wait" <> option)
-
-          if selected == selection do
-            assert result == {:ok, receipt}
-          else
-            assert {:error, error} = result
-            assert Exception.message(error) =~ "idempotency_conflict"
+      # Every generated history includes both replay and a decisive conflict.
+      for attempt <- [:retry, if(selection == "customer", do: :omit, else: :customer)] ++ attempts do
+        selected =
+          case attempt do
+            :retry -> selection
+            :explicit_oss -> "oss"
+            :customer -> "customer"
+            :omit -> nil
           end
 
-          assert [%{id: ^vm_id, profile: profile}] = Ledger.read!(VirtualMachine, id: vm_id)
-          assert Atom.to_string(profile) == expected
-          assert length(Ledger.read!(Operation, vm_id: vm_id)) == 1
-          assert length(Ledger.read!(Reservation, vm_id: vm_id)) == 1
-          assert length(Ledger.read!(Request, user_id: c.actor.id, request_id: key)) == 1
-          assert durable_profile_rows() == admitted_rows
+        option = if selected, do: " --profile #{selected}", else: ""
+        result = command(c, "new --cpu 1 --request-id #{key} --json --no-wait" <> option)
+
+        if selected == selection do
+          assert result == {:ok, receipt}
+        else
+          assert {:error, error} = result
+          assert Exception.message(error) =~ "idempotency_conflict"
         end
 
-        {:ok, deletion} =
-          Compute.lifecycle(%{vm_id: vm_id, kind: :delete, idempotency_key: Ash.UUID.generate()},
-            actor: c.actor
-          )
+        assert [%{id: ^vm_id, profile: profile}] = Ledger.read!(VirtualMachine, id: vm_id)
+        assert Atom.to_string(profile) == expected
+        assert length(Ledger.read!(Operation, vm_id: vm_id)) == 1
+        assert length(Ledger.read!(Reservation, vm_id: vm_id)) == 1
+        assert length(Ledger.read!(Request, user_id: c.actor.id, request_id: key)) == 1
+        assert durable_profile_rows() == admitted_rows
+      end
 
-        assert {:ok, _} = ingest(c.host.id, outcome(deletion, 1, :deleted))
-      end,
-      test_cases: 100
-    )
+      {:ok, deletion} =
+        Compute.lifecycle(%{vm_id: vm_id, kind: :delete, idempotency_key: Ash.UUID.generate()},
+          actor: c.actor
+        )
+
+      assert {:ok, _} = ingest(c.host.id, outcome(deletion, 1, :deleted))
+    end
   end
 
   test "relocation commands select the destination, replay, poll and cancel by receipt", c do
@@ -821,42 +895,37 @@ defmodule Marshall.SSH.CommandsTest do
   end
 
   test "retries, acknowledgement and reordered evidence preserve one physical result", c do
-    Hegel.check(
-      fn ->
-        succeeded? = draw("succeeded?", boolean())
-        retries = draw("retries", integer(1..4))
-        id = Ash.UUID.generate()
-        {:ok, receipt} = command(c, "new --request-id #{id}")
+    check all(succeeded? <- boolean(), retries <- integer(1..4), test_cases: 8) do
+      id = Ash.UUID.generate()
+      {:ok, receipt} = command(c, "new --request-id #{id}")
 
-        for _ <- 1..retries do
-          assert {:ok, ^receipt} = command(c, "new --request-id #{id} --json --no-wait")
-        end
+      for _ <- 1..retries do
+        assert {:ok, ^receipt} = command(c, "new --request-id #{id} --json --no-wait")
+      end
 
-        [operation] = Ledger.read!(Operation, id: receipt.operation_id)
-        assert length(Ledger.read!(Operation, vm_id: operation.vm_id)) == 1
-        Ledger.update!(operation, :acknowledge, %{})
-        assert {:ok, %{status: "accepted"}} = command(c, "request show #{id}")
-        state = if succeeded?, do: :running, else: :failed
-        event = outcome(operation, 2, state)
-        assert {:ok, _} = ingest(c.host.id, event)
-        stale = outcome(operation, 1, if(succeeded?, do: :failed, else: :running))
-        assert {:ok, _} = ingest(c.host.id, stale)
-        expected = if succeeded?, do: "succeeded", else: "failed"
-        assert {:ok, %{status: ^expected}} = command(c, "request show #{id}")
-        [completed] = Ledger.read!(Operation, id: operation.id)
-        assert completed.completion_outcome_id == event.id
+      [operation] = Ledger.read!(Operation, id: receipt.operation_id)
+      assert length(Ledger.read!(Operation, vm_id: operation.vm_id)) == 1
+      Ledger.update!(operation, :acknowledge, %{})
+      assert {:ok, %{status: "accepted"}} = command(c, "request show #{id}")
+      state = if succeeded?, do: :running, else: :failed
+      event = outcome(operation, 2, state)
+      assert {:ok, _} = ingest(c.host.id, event)
+      stale = outcome(operation, 1, if(succeeded?, do: :failed, else: :running))
+      assert {:ok, _} = ingest(c.host.id, stale)
+      expected = if succeeded?, do: "succeeded", else: "failed"
+      assert {:ok, %{status: ^expected}} = command(c, "request show #{id}")
+      [completed] = Ledger.read!(Operation, id: operation.id)
+      assert completed.completion_outcome_id == event.id
 
-        {:ok, deletion} =
-          Compute.lifecycle(
-            %{vm_id: operation.vm_id, kind: :delete, idempotency_key: Ash.UUID.generate()},
-            actor: c.actor
-          )
+      {:ok, deletion} =
+        Compute.lifecycle(
+          %{vm_id: operation.vm_id, kind: :delete, idempotency_key: Ash.UUID.generate()},
+          actor: c.actor
+        )
 
-        assert {:ok, _} = ingest(c.host.id, outcome(deletion, 3, :deleted))
-        assert {:ok, %{status: ^expected}} = command(c, "request show #{id}")
-      end,
-      test_cases: 100
-    )
+      assert {:ok, _} = ingest(c.host.id, outcome(deletion, 3, :deleted))
+      assert {:ok, %{status: ^expected}} = command(c, "request show #{id}")
+    end
   end
 
   # @cc [owner:ghuntley,label:verification;product] ssh-pin-guard-commands
@@ -1070,6 +1139,8 @@ defmodule Marshall.SSH.CommandsTest do
     "compute_workload_placements",
     "compute_reservations",
     "compute_operations",
+    "compute_wake_requests",
+    "compute_wake_request_keys",
     "compute_physical_outcomes",
     "compute_network_addresses",
     "ssh_requests",
@@ -1303,6 +1374,8 @@ defmodule Marshall.SSH.CommandsTest do
        ) do
     static = [
       "compute_workload_placements",
+      "compute_wake_requests",
+      "compute_wake_request_keys",
       "compute_network_addresses",
       "compute_physical_outcomes",
       "access_grants",

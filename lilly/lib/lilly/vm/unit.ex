@@ -28,6 +28,16 @@ defmodule Lilly.VM.Unit do
     end
   end
 
+  @spec restore(Config.t(), Pool.t(), Spec.t(), Intent.t(), WorkloadBundle.t()) ::
+          :ok | {:error, atom()}
+  def restore(config, pool, spec, intent, bundle) do
+    with {:ok, "active\n"} <-
+           Command.run(:systemctl, ["show", "lilly.slice", "--property=ActiveState", "--value"]),
+         {:ok, _} <-
+           Command.launch_vm(Map.put(launch(config, pool, spec, intent, bundle), :restore, true)),
+         do: :ok
+  end
+
   defp unit_started(nil, _intent), do: :ok
 
   defp unit_started(vm_id, intent) do
@@ -54,7 +64,7 @@ defmodule Lilly.VM.Unit do
 
   # @cc [owner:ghuntley,label:security] vm-launch-fields-only
   # launch/5 MUST describe the unit only by typed fields (placement, epoch,
-  # generation, jail uid, memory, vCPUs, boot kind, logging, VM state
+  # generation, jail uid, memory, vCPUs, boot kind, restore flag, logging, VM state
   # directory, network namespace and pool root). The command line, including the forking log
   # writer outside the PID namespace and the guarded jailer/Firecracker exec
   # chain as PID 1 inside it, is built by lilly-hostd
@@ -70,11 +80,26 @@ defmodule Lilly.VM.Unit do
       memory_bytes: Spec.host_memory(spec),
       vcpus: spec.vcpu,
       firmware: bundle.boot_kind == :firmware,
+      restore: false,
       logging: config.firecracker_logging,
       state_dir: config.state_dir,
       namespace: config.network.namespace,
       pool: pool.path
     }
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] live-restore-retains-launched-revision
+  # launched?/2 MUST match systemd's immutable launch description to the exact
+  # current placement/epoch/generation. Current intent or a reusable unit name
+  # alone MUST NOT identify the process launched by a consumed restore attempt.
+  @spec launched?(Spec.t(), Intent.t()) :: boolean()
+  def launched?(spec, intent) do
+    expected =
+      "Overalls VM v1 placement=#{spec.id} epoch=#{intent.execution_epoch} generation=#{intent.generation}\n"
+
+    intent.placement_id == spec.id and
+      Command.run(:systemctl, ["show", name(spec), "--property=Description", "--value"]) ==
+        {:ok, expected}
   end
 
   # @cc [owner:ghuntley,label:recovery;observability] unit-stop-unconfirmed-closed

@@ -42,8 +42,18 @@ defmodule Marshall.Compute.Reservation do
         :memory_bytes,
         :disk_bytes,
         :compute_held,
-        :temporary_disk_bytes
+        :temporary_disk_bytes,
+        :checkpoint_bytes
       ]
+    end
+
+    update :hold_checkpoint do
+      accept [:checkpoint_bytes]
+    end
+
+    update :release_checkpoint do
+      accept []
+      change set_attribute(:checkpoint_bytes, 0)
     end
 
     update :hold_temporary_disk do
@@ -86,6 +96,7 @@ defmodule Marshall.Compute.Reservation do
       accept []
       change set_attribute(:compute_held, false)
       change set_attribute(:disk_held, false)
+      change set_attribute(:checkpoint_bytes, 0)
       change set_attribute(:startup_compute_held, false)
       change set_attribute(:startup_disk_held, false)
       change set_attribute(:temporary_disk_bytes, 0)
@@ -104,6 +115,7 @@ defmodule Marshall.Compute.Reservation do
       default: 0,
       constraints: [min: 0, max: 9_223_372_036_854_775_807]
 
+    attribute :checkpoint_bytes, :integer, allow_nil?: false, default: 0, constraints: [min: 0]
     attribute :compute_held, :boolean, allow_nil?: false, default: true
     attribute :disk_held, :boolean, allow_nil?: false, default: true
     # @cc [owner:ghuntley,label:capacity] startup-holds-are-not-ownership

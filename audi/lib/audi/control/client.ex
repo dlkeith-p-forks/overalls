@@ -33,6 +33,7 @@ defmodule Audi.Control.Client do
           | :unsupported_version
           | :binding_mismatch
           | :expired_response
+          | :capacity
 
   # @cc [owner:ghuntley,label:security] audi-control-ipv4-only
   # Control origins MUST reject IPv6 literals. Outbound transport MUST disable
@@ -363,12 +364,13 @@ defmodule Audi.Control.Client do
   @spec open_web(t(), binary(), integer(), binary() | nil) :: {:ok, map()} | {:error, error()}
   def open_web(client, label, app_port, cookie),
     do:
-      web_exchange(
+      open_admission(
         client,
         "web-open",
         %{label: label, app_port: app_port, cookie: cookie},
-        label,
-        nil
+        fn value, host ->
+          OverallsProtocol.WebStream.response("web-open", value, host, label, nil)
+        end
       )
 
   @spec renew_web(t(), binary(), map()) :: {:ok, map()} | {:error, error()}
@@ -393,7 +395,13 @@ defmodule Audi.Control.Client do
              client,
              route,
              message,
-             &OverallsProtocol.WebStream.response(route, &1, client.host_id, label, previous)
+             &OverallsProtocol.WebStream.response(
+               route,
+               &1,
+               if(previous, do: previous.binding.host_id, else: client.host_id),
+               label,
+               previous
+             )
            ) do
       if route == "web-close" do
         {:ok, result}
@@ -465,7 +473,10 @@ defmodule Audi.Control.Client do
 
   @spec open_editor(t(), binary(), binary() | nil) :: {:ok, map()} | {:error, error()}
   def open_editor(client, label, cookie),
-    do: editor_exchange(client, "editor-open", %{label: label, cookie: cookie}, label, nil)
+    do:
+      open_admission(client, "editor-open", %{label: label, cookie: cookie}, fn value, host ->
+        OverallsProtocol.EditorStream.response("editor-open", value, host, label, nil)
+      end)
 
   @spec renew_editor(t(), binary(), map()) :: {:ok, map()} | {:error, error()}
   def renew_editor(client, ticket, previous),
@@ -498,7 +509,13 @@ defmodule Audi.Control.Client do
              client,
              route,
              message,
-             &OverallsProtocol.EditorStream.response(route, &1, client.host_id, label, previous)
+             &OverallsProtocol.EditorStream.response(
+               route,
+               &1,
+               if(previous, do: previous.binding.host_id, else: client.host_id),
+               label,
+               previous
+             )
            ) do
       if route == "editor-close", do: {:ok, result}, else: with_deadline(result, started)
     end
@@ -546,12 +563,14 @@ defmodule Audi.Control.Client do
   def open_ssh(%{role: :gateway} = client, key, label) do
     with {:ok, parsed} <- OverallsProtocol.SSHKey.parse(key),
          true <- OverallsProtocol.IngressName.valid_label?(label) do
-      exchange(
-        client,
-        "ssh-open",
-        %{public_key: parsed.public_key, label: label},
-        &grant_response(&1, client, label, nil)
-      )
+      with {:ok, grant} <-
+             open_admission(
+               client,
+               "ssh-open",
+               %{public_key: parsed.public_key, label: label},
+               fn value, host -> grant_response(value, %{client | host_id: host}, label, nil) end
+             ),
+           do: {:ok, Map.put(grant, :ttl, grant.expires_at - grant.requested_at)}
     else
       _ -> {:error, :invalid_message}
     end
@@ -563,7 +582,13 @@ defmodule Audi.Control.Client do
   def renew_ssh(%{role: :gateway} = client, ticket, binding) when is_map(binding) do
     if session_token?(ticket) do
       exchange(client, "ssh-renew", %{session_token: ticket}, fn message ->
-        with {:ok, grant} <- grant_response(message, client, Map.get(binding, :label), ticket),
+        with {:ok, grant} <-
+               grant_response(
+                 message,
+                 %{client | host_id: binding.host_id},
+                 Map.get(binding, :label),
+                 ticket
+               ),
              true <- grant.binding == binding do
           {:ok, Map.delete(grant, :ticket)}
         else
@@ -596,6 +621,101 @@ defmodule Audi.Control.Client do
 
   def close_ssh(_, _), do: {:error, :binding_mismatch}
 
+  # @cc [owner:ghuntley,label:security] audi-wake-response-before-local-dial
+  # Only a fresh authenticated pending receipt may extend a wait. A remote grant
+  # MUST bind this origin and a distinct exact destination before its existing
+  # service-specific grant codec runs. Responses MUST never select another hop.
+  @spec open_admission(t(), String.t(), map(), (map(), String.t() ->
+                                                  {:ok, map()} | {:error, error()})) ::
+          {:ok, map()} | {:error, atom()}
+  defp open_admission(%{role: :gateway} = client, route, message, decode) do
+    wire =
+      Map.new(message, fn {key, value} -> {Atom.to_string(key), value} end)
+      |> Map.put("version", 1)
+
+    with :ok <- admission_request(route, wire) do
+      Audi.Wake.await(fn ->
+        started = System.monotonic_time(:millisecond)
+
+        case exchange(client, route, message, &admission_response(&1, client, decode)) do
+          {:ok, grant} -> with_deadline(grant, started)
+          result -> result
+        end
+      end)
+    end
+  end
+
+  defp open_admission(_, _, _, _), do: {:error, :binding_mismatch}
+
+  @spec admission_request(String.t(), map()) :: :ok | {:error, :invalid_message}
+  defp admission_request("ssh-open", _), do: :ok
+
+  defp admission_request(route, wire) when route in ["web-open", "editor-open"] do
+    codec =
+      if route == "web-open", do: OverallsProtocol.WebStream, else: OverallsProtocol.EditorStream
+
+    case codec.request(route, wire) do
+      {:ok, _, _} -> :ok
+      _ -> {:error, :invalid_message}
+    end
+  end
+
+  @spec admission_response(map(), t(), (map(), String.t() -> {:ok, map()} | {:error, error()})) ::
+          {:ok, map()} | {:pending, OverallsProtocol.IngressWake.receipt()} | {:error, error()}
+  defp admission_response(%{"pending" => _} = value, _, _) do
+    with {:ok, receipt} <- OverallsProtocol.IngressWake.decode(value), do: {:pending, receipt}
+  end
+
+  defp admission_response(
+         %{"version" => 1, "relay" => wire, "grant" => grant} = value,
+         client,
+         decode
+       )
+       when map_size(value) == 3 do
+    with {:ok, relay} <- OverallsProtocol.IngressRelay.route(wire),
+         true <- relay.origin_host_id == client.host_id,
+         {:ok, result} <- decode.(%{"version" => 1, "grant" => grant}, relay.destination_host_id) do
+      {:ok, Map.put(result, :relay, relay)}
+    else
+      {:error, _} = error -> error
+      _ -> {:error, :binding_mismatch}
+    end
+  end
+
+  defp admission_response(value, client, decode), do: decode.(value, client.host_id)
+
+  @spec relay_exchange(t(), :consume | :renew, map(), String.t()) ::
+          {:ok, map()} | {:error, atom()}
+  def relay_exchange(client, operation, preface, peer_address)
+      when operation in [:consume, :renew] do
+    message = Map.merge(preface, %{peer_address: peer_address})
+    route = if operation == :consume, do: "relay-consume", else: "relay-renew"
+    started = System.monotonic_time(:millisecond)
+
+    case exchange(client, route, message, fn value ->
+           relay_grant(value, client, preface.purpose)
+         end) do
+      {:ok, grant} -> with_deadline(grant, started)
+      error -> error
+    end
+  end
+
+  @spec relay_grant(map(), t(), :ssh | :web | :editor) :: {:ok, map()} | {:error, error()}
+  defp relay_grant(value, client, :ssh) do
+    label = get_in(value, ["grant", "binding", "label"])
+    grant_response(value, client, label, nil)
+  end
+
+  defp relay_grant(value, client, :web) do
+    label = get_in(value, ["grant", "binding", "label"])
+    OverallsProtocol.WebStream.response("web-open", value, client.host_id, label, nil)
+  end
+
+  defp relay_grant(value, client, :editor) do
+    label = get_in(value, ["grant", "binding", "label"])
+    OverallsProtocol.EditorStream.response("editor-open", value, client.host_id, label, nil)
+  end
+
   # @cc [owner:ghuntley,label:security] audi-https-control-bounds
   # Credentials MUST be sent only to the configured verified HTTPS origin, over
   # the control WebSocket. Requests are never retried or queued, responses and
@@ -613,6 +733,9 @@ defmodule Audi.Control.Client do
     |> case do
       {:ok, _} = success ->
         success
+
+      {:pending, _} = pending ->
+        pending
 
       {:error, reason} = failure when is_atom(reason) ->
         exchange_failed(client, reason)
@@ -637,9 +760,9 @@ defmodule Audi.Control.Client do
   @spec response(
           {:ok, map()} | {:error, OverallsProtocol.Control.Client.request_error()},
           t(),
-          (map() -> {:ok, map()} | {:error, error()}),
+          (map() -> Audi.Wake.result()),
           pos_integer()
-        ) :: {:ok, map()} | {:error, error()}
+        ) :: Audi.Wake.result()
   defp response({:ok, value}, _client, decode, maximum) do
     if byte_size(JSON.encode!(value)) <= maximum,
       do: decode.(value),

@@ -7,7 +7,9 @@ defmodule Lilly.Transfer.ReadinessProbe do
 
   # @cc [owner:ghuntley,label:security;recovery] readiness-probe-current-store-and-boot
   # execute/3 MUST match the activation ID, logical VM, placement, epoch, generation
-  # and shape to the host's retained start command before and after probing. Driver
+  # and shape to the host's retained activation command before and after probing.
+  # A memory relocation MUST match a resume with the exact checkpoint descriptor;
+  # a disk-only relocation MUST match a start without a checkpoint. Driver
   # readiness MUST verify its local boot challenge and confinement on both sides
   # of the wait. Receipt contains only the verified guest boot ID, never a challenge.
   # Placement-lock contention and guest timeout MUST retain their bounded reason
@@ -63,16 +65,26 @@ defmodule Lilly.Transfer.ReadinessProbe do
 
     with {:ok, command} when is_map(command) <-
            Store.read(store, descriptor.destination.placement_id),
-         true <-
-           command.id == request.id and command.kind == :start and
-             command.vm_id == descriptor.vm_id and
-             command.host_id == descriptor.destination.host_id and
-             command.pool_id == descriptor.destination.pool_id and
-             command.placement_id == descriptor.destination.placement_id and
-             command.execution_epoch == descriptor.destination_epoch and
-             command.generation == request.generation and
-             Map.take(command, Map.keys(descriptor.workload)) == descriptor.workload,
+         true <- activation_matches?(command, request),
          do: {:ok, command},
          else: (_ -> {:error, :readiness_unconfirmed})
+  end
+
+  @doc false
+  @spec activation_matches?(OverallsProtocol.Execution.command(), RelocationReadiness.command()) ::
+          boolean()
+  def activation_matches?(command, request) do
+    descriptor = request.descriptor
+    checkpoint = Map.get(descriptor, :checkpoint)
+
+    command.id == request.id and
+      command.kind == if(checkpoint == nil, do: :start, else: :resume) and
+      Map.get(command, :checkpoint) == checkpoint and command.vm_id == descriptor.vm_id and
+      command.host_id == descriptor.destination.host_id and
+      command.pool_id == descriptor.destination.pool_id and
+      command.placement_id == descriptor.destination.placement_id and
+      command.execution_epoch == descriptor.destination_epoch and
+      command.generation == request.generation and
+      Map.take(command, Map.keys(descriptor.workload)) == descriptor.workload
   end
 end

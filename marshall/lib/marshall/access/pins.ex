@@ -76,6 +76,11 @@ defmodule Marshall.Access.Pins do
     lock_user!(user_id)
     vm = Authorization.live_vm!(vm_id, actor, "read")
 
+    if vm.owner_id == actor.id and
+         (vm.desired_state == :paused or vm.observed_state in [:paused, :stopped]) do
+      Marshall.Compute.Wake.request_locked!(vm, :pin, actor)
+    end
+
     case lock_pin(user_id, vm.id) do
       %Pin{state: :pinned} = pin ->
         {:unchanged, pin}

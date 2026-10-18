@@ -248,6 +248,7 @@ defmodule Marshall.ComputeFixtures do
       effective_cores: 5,
       effective_memory_bytes: 4_294_967_296,
       inventory: %{
+        "checkpoint_compatibility" => "sha256:" <> String.duplicate("a", 64),
         "architecture" => "x86_64",
         "images" => [image_id()],
         "execution_ready" => true,
@@ -267,6 +268,7 @@ defmodule Marshall.ComputeFixtures do
           total_bytes: 10_737_418_240,
           free_bytes: 10_737_418_240,
           allocations: %{},
+          checkpoint_allocations: %{},
           storage: storage_observation(pool, 10_737_418_240, 10_737_418_240)
         }
       ]

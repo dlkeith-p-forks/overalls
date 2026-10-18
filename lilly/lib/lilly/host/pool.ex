@@ -248,7 +248,19 @@ defmodule Lilly.Host.Pool do
     with {:bind, :ok} <- {:bind, Lilly.Host.ZFSDataset.bind(pool)},
          {:read, {:ok, snapshot}} <- {:read, Lilly.Host.PoolSnapshot.read(pool)},
          {:allocations, {:ok, allocations}} <-
-           {:allocations, Lilly.Host.ZFSDataset.classify_allocations(pool, snapshot)} do
+           {:allocations, Lilly.Host.ZFSDataset.classify_allocations(pool, snapshot)},
+         checkpoint_children =
+           Map.filter(snapshot.observation.children, fn {name, _} ->
+             String.starts_with?(name, pool.storage.dataset <> "/checkpoint-")
+           end),
+         {:allocations, {:ok, checkpoint_allocations}} <-
+           {:allocations,
+            Lilly.VM.CheckpointStorage.audit(
+              pool,
+              checkpoint_children,
+              snapshot.owners,
+              snapshot.mounts
+            )} do
       observation = snapshot.observation
 
       {:ok,
@@ -257,7 +269,8 @@ defmodule Lilly.Host.Pool do
          total_bytes: observation.total_bytes,
          free_bytes: observation.free_bytes,
          storage: observation.storage,
-         allocations: allocations
+         allocations: allocations,
+         checkpoint_allocations: checkpoint_allocations
        }}
     else
       {:allocations, {:error, check}} ->

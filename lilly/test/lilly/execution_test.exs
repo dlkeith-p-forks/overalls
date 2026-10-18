@@ -148,19 +148,45 @@ defmodule Lilly.ExecutionTest do
                run(writer(), fn -> Execution.publish(view, :live, cmd, {:x, :y}, later()) end)
     end
 
-    test "actor exit removes its live row", %{view: view} do
+    # @cc [owner:ghuntley,label:verification;security;concurrency] dead-publisher-cannot-wait-for-view-cleanup
+    # Delaying View's DOWN handling MUST leave observable stale ETS rows but
+    # MUST NOT preserve actor or runtime authority for any local reader.
+    property "dead publishers revoke authority before queued view cleanup" do
+      publisher = Hegel.draw("exiting publisher", member_of([:runtime, :actor]))
+      view = :"delayed_down_view_#{System.unique_integer([:positive])}"
+      {:ok, view_pid} = View.start_link(name: view)
       runtime = writer()
       actor = writer()
       cmd = command(@a, 2, 1)
-      :ok = run(runtime, fn -> Execution.runtime_connected(view) end)
-      :ok = run(runtime, fn -> Execution.intent(view, cmd) end)
-      :ok = run(actor, fn -> Execution.publish(view, :live, cmd, {:e, :c}, later()) end)
-      assert {:ok, _, _} = Execution.current(view, @a)
-      ref = Process.monitor(actor)
-      Process.exit(actor, :kill)
-      assert_receive {:DOWN, ^ref, :process, ^actor, _}
-      Process.sleep(20)
-      assert Execution.current(view, @a) == :error
+
+      try do
+        :ok = run(runtime, fn -> Execution.runtime_connected(view) end)
+        :ok = run(runtime, fn -> Execution.intent(view, cmd) end)
+
+        for row <- [:live, :boot],
+            do: :ok = run(actor, fn -> Execution.publish(view, row, cmd, {:e, :c}, later()) end)
+
+        assert {:ok, _, _} = Execution.current(view, @a)
+        assert {:ok, _, _} = Execution.booted(view, @a)
+        {:ok, {label, source}} = Execution.flow_key(cmd)
+        :ok = :sys.suspend(view_pid)
+        exiting = if(publisher == :runtime, do: runtime, else: actor)
+        ref = Process.monitor(exiting)
+        Process.exit(exiting, :kill)
+        assert_receive {:DOWN, ^ref, :process, ^exiting, :killed}, 1000
+        stale_key = if(publisher == :runtime, do: :runtime, else: {:live, @a})
+        assert {:ok, _} = View.fetch(view, stale_key)
+        assert Execution.current(view, @a) == :error
+        assert Execution.booted(view, @a) == :error
+        assert Execution.by_address(view, "10.10.0.2") == :error
+        assert Execution.roster(view, "10.10.0.2") == :error
+        assert Execution.by_flow(view, label, source) == :error
+      after
+        :ok = :sys.resume(view_pid)
+        Process.exit(runtime, :kill)
+        Process.exit(actor, :kill)
+        :ok = GenServer.stop(view_pid)
+      end
     end
   end
 
@@ -171,7 +197,7 @@ defmodule Lilly.ExecutionTest do
       %{runtime: runtime}
     end
 
-    test "an address resolves only a unique current provision/start intent", ctx do
+    test "an address resolves only a unique current provision/start/resume intent", ctx do
       a = command(@a, 2, 1)
       actor = writer()
       :ok = run(ctx.runtime, fn -> Execution.intent(ctx.view, a) end)
@@ -188,6 +214,47 @@ defmodule Lilly.ExecutionTest do
       # A stop intent is not addressable.
       :ok = run(ctx.runtime, fn -> Execution.intent(ctx.view, command(@a, 2, 2, :stop)) end)
       assert Execution.by_address(ctx.view, "10.10.0.2") == :error
+    end
+
+    property "resumed incarnations restore routes and a later pause revokes them", ctx do
+      check all(
+              kind <- member_of([:provision, :start, :resume]),
+              generation <- integer(1..1_000_000)
+            ) do
+        current = command(@a, 2, generation, kind)
+        actor = writer()
+
+        try do
+          :ok = run(ctx.runtime, fn -> Execution.intent(ctx.view, current) end)
+
+          :ok =
+            run(actor, fn -> Execution.publish(ctx.view, :live, current, {:e, :c}, later()) end)
+
+          {:ok, {label, source}} = Execution.flow_key(current)
+
+          assert {:ok, _, %{command: ^current}} =
+                   Execution.by_address(ctx.view, "10.10.0.2")
+
+          assert {:ok, _, %{command: ^current}} = Execution.by_flow(ctx.view, label, source)
+
+          paused = %{
+            current
+            | id: Lilly.UUID.generate(),
+              kind: :pause,
+              generation: generation + 1
+          }
+
+          :ok = run(ctx.runtime, fn -> Execution.intent(ctx.view, paused) end)
+          assert Execution.current(ctx.view, @a) == :error
+          assert Execution.flow_key(paused) == :error
+          assert Execution.by_address(ctx.view, "10.10.0.2") == :error
+          assert Execution.by_flow(ctx.view, label, source) == :error
+        after
+          :ok = run(ctx.runtime, fn -> Execution.forget_intent(ctx.view, @a) end)
+          :ok = run(actor, fn -> View.release(ctx.view, {:live, @a}) end)
+          Process.exit(actor, :kill)
+        end
+      end
     end
 
     test "a new generation replaces only its own flow route", ctx do

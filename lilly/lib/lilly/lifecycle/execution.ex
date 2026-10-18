@@ -3,9 +3,22 @@ defmodule Lilly.Lifecycle.Execution do
   use Lilly.Lifecycle.Resource,
     initial: [:idle],
     edges: [
-      idle: [:idle, :starting, :stopping, :deleting, :resizing],
+      pausing: [:pausing, :paused, :unknown, :stopping, :deleting, :resuming],
+      paused: [:pausing, :paused, :resuming, :stopping, :deleting, :unknown],
+      resuming: [:resuming, :running, :pausing, :stopping, :deleting, :unknown, :failed],
+      idle: [
+        :idle,
+        :starting,
+        :pausing,
+        :resuming,
+        :stopping,
+        :deleting,
+        :resizing
+      ],
       starting: [
         :starting,
+        :pausing,
+        :resuming,
         :stopping,
         :deleting,
         :resizing,
@@ -17,6 +30,8 @@ defmodule Lilly.Lifecycle.Execution do
       running: [
         :running,
         :starting,
+        :pausing,
+        :resuming,
         :stopping,
         :deleting,
         :resizing,
@@ -27,6 +42,8 @@ defmodule Lilly.Lifecycle.Execution do
       ],
       stopping: [
         :starting,
+        :pausing,
+        :resuming,
         :stopping,
         :deleting,
         :resizing,
@@ -37,6 +54,8 @@ defmodule Lilly.Lifecycle.Execution do
       ],
       stopped: [
         :starting,
+        :pausing,
+        :resuming,
         :stopping,
         :deleting,
         :resizing,
@@ -46,10 +65,22 @@ defmodule Lilly.Lifecycle.Execution do
         :unknown,
         :deleted
       ],
-      resizing: [:starting, :stopping, :deleting, :resizing, :stopped, :failed, :unknown],
+      resizing: [
+        :starting,
+        :pausing,
+        :resuming,
+        :stopping,
+        :deleting,
+        :resizing,
+        :stopped,
+        :failed,
+        :unknown
+      ],
       deleting: [:deleting, :running, :stopped, :deleted, :failed, :unknown],
       failed: [
         :starting,
+        :pausing,
+        :resuming,
         :stopping,
         :deleting,
         :resizing,
@@ -61,6 +92,8 @@ defmodule Lilly.Lifecycle.Execution do
       ],
       unknown: [
         :starting,
+        :pausing,
+        :resuming,
         :stopping,
         :deleting,
         :resizing,

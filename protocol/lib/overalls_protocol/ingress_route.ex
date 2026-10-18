@@ -13,7 +13,8 @@ defmodule OverallsProtocol.IngressRoute do
   # Readiness requests MUST contain exactly the execution identity and bounded
   # certificate digest/UTC expiry. No addresses, user authority or route lifetime
   # may be supplied. Decoding does not prove installation; only the gateway's
-  # validating producer may send reports and Marshall must recheck execution.
+  # validating producer may send reports and Marshall must recheck the current
+  # wake-eligible VM tuple. This report MUST NOT prove running execution.
   @spec request(term()) :: {:ok, map()} | {:error, :invalid_request}
   def request(value) when is_map(value) and map_size(value) == 8 do
     with true <-

@@ -44,11 +44,19 @@ defmodule Marshall.Ingress.Service do
     end
 
     create :record do
-      accept [:name, :role, :host_id, :token_hash, :addresses]
+      accept [:name, :role, :host_id, :token_hash, :addresses, :relay_address, :relay_port]
     end
 
     update :rotate do
-      accept [:token_hash, :generation, :enabled, :ssh_host_key, :addresses]
+      accept [
+        :token_hash,
+        :generation,
+        :enabled,
+        :ssh_host_key,
+        :addresses,
+        :relay_address,
+        :relay_port
+      ]
     end
 
     update :record_host_key do
@@ -66,6 +74,12 @@ defmodule Marshall.Ingress.Service do
         argument :name, :string, allow_nil?: false, constraints: [min_length: 1, max_length: 128]
         argument :role, :atom, allow_nil?: false, constraints: [one_of: [:dns, :gateway]]
         argument :host_id, :uuid
+        argument :relay_address, :string, constraints: [max_length: 13]
+
+        argument :relay_port, :integer,
+          default: 9445,
+          allow_nil?: false,
+          constraints: [min: 1, max: 65_535]
 
         argument :addresses, {:array, :string},
           allow_nil?: false,
@@ -79,6 +93,28 @@ defmodule Marshall.Ingress.Service do
 
         run {Marshall.Ingress.Services, operation: action}
       end
+    end
+
+    action :open_connection, :map do
+      argument :service_token, :string,
+        allow_nil?: false,
+        sensitive?: true,
+        constraints: [max_length: 80]
+
+      argument :purpose, :atom, allow_nil?: false, constraints: [one_of: [:ssh, :web, :editor]]
+      argument :label, :string, allow_nil?: false, constraints: [max_length: 80, trim?: false]
+
+      argument :app_port, :integer,
+        default: 0,
+        allow_nil?: false,
+        constraints: [min: 0, max: 9999]
+
+      argument :public_key, :string,
+        sensitive?: true,
+        constraints: [max_length: 4096, trim?: false]
+
+      argument :cookie, :string, sensitive?: true, constraints: [max_length: 80, trim?: false]
+      run Marshall.Ingress.Open
     end
 
     action :disable, :map do
@@ -107,6 +143,12 @@ defmodule Marshall.Ingress.Service do
     attribute :enabled, :boolean, allow_nil?: false, default: true
     attribute :generation, :integer, allow_nil?: false, default: 1, constraints: [min: 1]
     attribute :ssh_host_key, :string, constraints: [max_length: 128]
+    attribute :relay_address, :string, constraints: [max_length: 13]
+
+    attribute :relay_port, :integer,
+      default: 9445,
+      allow_nil?: false,
+      constraints: [min: 1, max: 65_535]
 
     attribute :addresses, {:array, :string},
       allow_nil?: false,

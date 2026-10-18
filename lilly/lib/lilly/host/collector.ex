@@ -73,7 +73,8 @@ defmodule Lilly.Host.Collector do
           "images" => Image.available_ids(images),
           "execution_ready" => false,
           "terminal_protocol" => 0,
-          "inception_image_id" => nil
+          "inception_image_id" => nil,
+          "checkpoint_compatibility" => nil
         },
         pools: snapshots
       }

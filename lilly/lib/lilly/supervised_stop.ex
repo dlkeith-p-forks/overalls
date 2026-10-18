@@ -62,6 +62,8 @@ defmodule Lilly.SupervisedStop do
 
   # Stack frames may carry argument values. Keep only the compiled call site;
   # count at most 17 arguments and never format or publish their values or metadata.
+  # A call site outside the reviewed diagnostic enum MUST collapse to unknown;
+  # reporting a crash MUST NOT raise a second exception from catalog validation.
   @spec location(term()) :: {atom(), atom(), non_neg_integer()}
   def location({:badarg, stack}) when is_list(stack), do: first_frame(stack)
   def location({{:badarg, stack}, _}) when is_list(stack), do: first_frame(stack)
@@ -69,13 +71,21 @@ defmodule Lilly.SupervisedStop do
 
   defp first_frame([{module, function, arity, _} | _])
        when is_atom(module) and is_atom(function) and is_integer(arity) and arity in 0..16,
-       do: {module, function, arity}
+       do: reviewed_location(module, function, arity)
 
   defp first_frame([{module, function, arguments, _} | _])
        when is_atom(module) and is_atom(function) and is_list(arguments),
-       do: {module, function, arguments |> Enum.take(17) |> length() |> min(16)}
+       do: reviewed_location(module, function, arguments |> Enum.take(17) |> length() |> min(16))
 
   defp first_frame(_), do: {:unknown, :unknown, 0}
+
+  @spec reviewed_location(module(), atom(), non_neg_integer()) ::
+          {atom(), atom(), non_neg_integer()}
+  defp reviewed_location(module, function, arity) do
+    if Overalls.Diagnostics.Schema.enum?(module) and Overalls.Diagnostics.Schema.enum?(function),
+      do: {module, function, arity},
+      else: {:unknown, :unknown, 0}
+  end
 
   @spec emit(component(), term()) :: :ok
   def emit(component, reason) do

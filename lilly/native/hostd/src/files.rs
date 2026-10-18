@@ -58,7 +58,7 @@ fn arguments(arguments: &[CString]) -> Vec<&[u8]> {
 /// absolute path beneath one of `roots`, and MUST otherwise return Setup
 /// without touching the file system:
 /// `chmod MODE -- P` (MODE one of 0400, 0444, 0600, 0700),
-/// `chown U:G -- P` (U equal to G, in the VM range or the service uid),
+/// `chown [--no-dereference] U:G -- P` (U equal to G, in the VM range or the service uid),
 /// `mv [--no-clobber] --no-target-directory -- A B`,
 /// `rm [--force] -- P`, `rm -rf --one-file-system -- P`,
 /// `truncate --size N -- P`, `mkfifo --mode=0600 -- P`, `sync -- P...`
@@ -79,10 +79,13 @@ pub fn perform(utility: Utility, argv: &[CString], roots: &[PathBuf], owners: &O
                 _ => return Status::Setup,
             }
         }
-        (Utility::Chown, [owner, b"--", path]) => match owner_ids(owner, owners) {
-            Some(id) => chown(roots, path, id),
-            None => return Status::Setup,
-        },
+        (Utility::Chown, [owner, b"--", path])
+        | (Utility::Chown, [b"--no-dereference", owner, b"--", path]) => {
+            match owner_ids(owner, owners) {
+                Some(id) => chown(roots, path, id),
+                None => return Status::Setup,
+            }
+        }
         (Utility::Mv, [b"--no-target-directory", b"--", from, to]) => {
             rename(roots, from, to, false)
         }

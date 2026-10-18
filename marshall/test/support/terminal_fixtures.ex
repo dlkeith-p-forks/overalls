@@ -106,7 +106,7 @@ defmodule Marshall.TerminalFixtures do
     operation =
       Ledger.read!(Operation, vm_id: vm.id)
       |> Enum.filter(
-        &(&1.kind in [:provision, :start] and &1.placement_id == vm.current_placement_id and
+        &(&1.kind in [:provision, :start, :resume] and &1.placement_id == vm.current_placement_id and
             &1.execution_epoch == vm.execution_epoch and &1.generation == vm.generation)
       )
       |> Enum.max_by(& &1.inserted_at, DateTime)

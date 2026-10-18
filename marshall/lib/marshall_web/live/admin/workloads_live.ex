@@ -21,7 +21,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
 
   @impl true
   def handle_event("lifecycle", %{"id" => id, "kind" => kind}, socket)
-      when kind in ["start", "stop", "delete"] do
+      when kind in ["start", "stop", "pause", "resume", "delete"] do
     case Compute.lifecycle(
            %{
              vm_id: id,
@@ -162,6 +162,24 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                     </Layouts.action>
                   </div>
                   <div class="row">
+                    <Layouts.action
+                      :if={vm.desired_state == :paused || vm.observed_state == :paused}
+                      id={"resume-#{vm.id}"}
+                      phx-click="lifecycle"
+                      phx-value-id={vm.id}
+                      phx-value-kind="resume"
+                    >
+                      Resume
+                    </Layouts.action>
+                    <Layouts.action
+                      :if={vm.desired_state == :running && vm.observed_state == :running}
+                      id={"pause-#{vm.id}"}
+                      phx-click="lifecycle"
+                      phx-value-id={vm.id}
+                      phx-value-kind="pause"
+                    >
+                      Pause
+                    </Layouts.action>
                     <Layouts.action
                       :if={vm.desired_state == :stopped}
                       id={"start-#{vm.id}"}

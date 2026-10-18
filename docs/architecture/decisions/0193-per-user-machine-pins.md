@@ -2,13 +2,19 @@
 
 - ID: ADR-0193
 - Date: 2026-10-18
-- Status: accepted
+- Status: superseded
 - Implementation: partial
 - Components: Marshall Access and Compute domains, MarshallWeb, Marshall SSH commands, shared protocol command catalog, Porsche client
 - Supersedes: none
-- Superseded by: none
+- Superseded by: ADR-0197
 
 ## Context
+
+[ADR-0197](0197-memory-suspension-and-demand-wake.md) replaces only the
+memory-migration/stopped-source and cross-host-relay prohibitions where this
+record carries them, and extends owner pins with automatic-suspension prevention
+and wake. Unrelated requirements and historical rationale remain in force.
+
 
 Users keep a handful of machines that matter beside many short-lived ones. The
 machine list and the overview order by id, so the important machines drift down

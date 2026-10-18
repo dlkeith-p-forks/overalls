@@ -404,10 +404,12 @@ defmodule Lilly.Host.ZFSTest do
     assert :error = ZFS.parse_datasets(encode(%{parent | "quota" => "9223372036854775808"}))
     assert :error = ZFS.parse_datasets(String.duplicate("x", 4_194_305))
 
-    many = Enum.map_join(1..16_385, fn n -> encode(%{parent | "name" => "tank/item#{n}"}) end)
+    compact = row("t", "/", "1")
+    many = Enum.map_join(1..32_769, fn n -> encode(%{compact | "name" => "t#{n}"}) end)
     assert byte_size(many) > 65_536
+    assert byte_size(many <> encode(parent)) <= 4_194_304
     assert {:ok, parsed} = ZFS.parse_datasets(many)
-    assert map_size(parsed) == 16_385
+    assert map_size(parsed) == 32_769
     assert :error = ZFS.parse_datasets(many <> encode(parent))
   end
 

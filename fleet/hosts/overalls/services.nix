@@ -298,6 +298,7 @@
   };
 
   services.audi = {
+    relay.enable = true;
     enable = true;
     hostId = config.services.lilly.hostId;
     controlPlane = "https://ghuntley.dev:5443";

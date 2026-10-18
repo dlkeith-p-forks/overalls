@@ -32,6 +32,7 @@ defmodule Lilly.Terminal.Vsock do
           required(:placement_id) => String.t(),
           required(:execution_epoch) => pos_integer(),
           required(:boot_challenge) => String.t(),
+          optional(:guest_identity) => OverallsProtocol.Readiness.expectation() | nil,
           optional(:actor_pid) => pid(),
           optional(:host_id) => String.t(),
           optional(:generation) => pos_integer()
@@ -60,8 +61,11 @@ defmodule Lilly.Terminal.Vsock do
   # hello_tag/2 MUST derive the daemon key exactly as terminald does: the SHA-256
   # digest of the boot challenge bytes followed by the fixed domain label, and
   # the HMAC over the label, nonce, placement and epoch with no separators.
+  # Restored guests MUST use the verified checkpoint's original guest tuple;
+  # the outer current tuple remains the host dial and execution authority.
   @spec hello_tag(identity(), binary()) :: binary()
   def hello_tag(identity, nonce) do
+    identity = identity[:guest_identity] || identity
     key = :crypto.hash(:sha256, [identity.boot_challenge, "overalls-terminald-v1"])
 
     :crypto.mac(

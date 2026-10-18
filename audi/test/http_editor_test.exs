@@ -194,6 +194,22 @@ defmodule Audi.HTTP.EditorTest do
                      2000
 
       assert request["cookie"] == token
+
+      send(
+        control,
+        {ref, 200,
+         JSON.encode!(%{version: 1, pending: %{vm_id: @vm, ttl: 1000, retry_after_ms: 100}})}
+      )
+
+      refute_receive {:guest_binding, _}, 50
+
+      assert_receive {:control_request, resumed_control, resumed_ref, "/api/audi/v1/editor-open",
+                      _, repeated},
+                     2000
+
+      assert repeated == request
+      control = resumed_control
+      ref = resumed_ref
       binding = editor_binding(c.label)
 
       send(
@@ -223,6 +239,42 @@ defmodule Audi.HTTP.EditorTest do
       assert_receive {:control_request, close, close_ref, "/api/audi/v1/editor-close", _, _}, 2000
       send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
     end
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] editor-wake-refresh-refusal
+  # The same incoming HTTP request MUST repeat its cookie authority while asleep.
+  # Refusal on a later poll MUST end that request before any guest bytes/socket.
+  test "revoked authority during wake ends the held editor request", c do
+    owner = self()
+    token = "audi_editor_cookie_" <> Base.url_encode64(<<0::256>>, padding: false)
+
+    task =
+      Task.async(fn ->
+        Plug.Test.conn(:get, "https://#{c.label}.apps.test/")
+        |> put_req_header("cookie", "__Host-audi_editor_session=" <> token)
+        |> Editor.call(
+          client: c.client,
+          zone: "apps.test",
+          connector: {Audi.Test.WebConnector, %{port: 1, owner: owner}}
+        )
+      end)
+
+    assert_receive {:control_request, control, ref, "/api/audi/v1/editor-open", _, first}, 2000
+
+    send(
+      control,
+      {ref, 200,
+       JSON.encode!(%{version: 1, pending: %{vm_id: @vm, ttl: 1000, retry_after_ms: 100}})}
+    )
+
+    assert_receive {:control_request, next, next_ref, "/api/audi/v1/editor-open", _, repeated},
+                   2000
+
+    assert repeated == first
+    send(next, {next_ref, 403, JSON.encode!(%{error: "forbidden"})})
+    assert Task.await(task, 2000).status == 403
+    refute_received {:guest_binding, _}
+    refute_received {:control_request, _, _, "/api/audi/v1/editor-open", _, _}
   end
 
   @spec editor_binding(binary()) :: EditorConnect.binding()

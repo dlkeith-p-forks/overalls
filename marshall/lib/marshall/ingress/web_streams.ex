@@ -29,30 +29,9 @@ defmodule Marshall.Ingress.WebStreams do
   # An explicit TCP 4444 request MUST be refused by ordinary and peer web
   # authority; persisted endpoints cannot select it (`ingress_endpoint_not_editor_port`).
   defp perform(:open, request) do
-    service = Services.authenticate!(request.service_token, :exclusive)
-
-    unless OverallsProtocol.IngressName.valid_label?(request.label) and
-             (request.app_port == 0 or request.app_port in 3000..9999) and
-             request.app_port != 4444,
-           do: deny!()
-
-    endpoint = List.first(Ledger.read!(Endpoint, label: request.label)) || deny!()
-    candidate = List.first(Ledger.read!(VirtualMachine, id: endpoint.vm_id)) || deny!()
-
-    binding = %{
-      vm_id: candidate.id,
-      service_generation: service.generation,
-      placement_id: candidate.current_placement_id,
-      execution_epoch: candidate.execution_epoch,
-      generation: candidate.generation
-    }
-
-    {vm, host, now} = Execution.web!(service, binding, :exclusive)
-    require_owner!(vm)
-    endpoint = current_endpoint!(endpoint.id)
-    credential = identity!(request[:cookie], service, vm, endpoint, request.app_port)
-
-    create_stream!(service, host, vm, endpoint, request.app_port, binding, credential, %{}, now)
+    service = Services.authenticate!(request.service_token)
+    Services.serialize_open!(service.id)
+    open_for!(service, request)
   end
 
   # @cc [owner:ghuntley,label:security;concurrency] ingress-peer-destination-admission
@@ -61,7 +40,8 @@ defmodule Marshall.Ingress.WebStreams do
   # Only the target's primary web endpoint may be selected. The persisted
   # source/integration binding, not the token, governs every later renewal.
   defp perform(:open_peer, request) do
-    service = Services.authenticate!(request.service_token, :exclusive)
+    service = Services.authenticate!(request.service_token)
+    Services.serialize_open!(service.id)
 
     unless OverallsProtocol.IngressName.valid_label?(request.label) and request.app_port == 0,
       do: deny!()
@@ -112,7 +92,83 @@ defmodule Marshall.Ingress.WebStreams do
   end
 
   defp perform(:renew_web, request) do
-    service = Services.authenticate!(request.service_token, :exclusive)
+    service =
+      Marshall.Ingress.Relays.authority_service!(
+        Services.authenticate!(request.service_token),
+        request.stream_token,
+        :web
+      )
+
+    renew_for!(service, request)
+  end
+
+  defp perform(:close_web, request) do
+    service =
+      Marshall.Ingress.Relays.authority_service!(
+        Services.authenticate!(request.service_token),
+        request.stream_token,
+        :web
+      )
+
+    candidate = candidate!(request.stream_token)
+    bind!(candidate, service)
+    stream = Ledger.lock!(WebStream, candidate.id) || deny!()
+    if is_nil(stream.closed_at), do: Ledger.update!(stream, :close, %{closed_at: Ledger.now()})
+    %{closed: true}
+  end
+
+  @doc false
+  @spec open_for!(Marshall.Ingress.Service.t(), map()) :: map()
+  def open_for!(service, request) do
+    Services.serialize_open!(service.id)
+
+    unless OverallsProtocol.IngressName.valid_label?(request.label) and
+             (request.app_port == 0 or request.app_port in 3000..9999) and
+             request.app_port != 4444,
+           do: deny!()
+
+    endpoint = List.first(Ledger.read!(Endpoint, label: request.label)) || deny!()
+    candidate = List.first(Ledger.read!(VirtualMachine, id: endpoint.vm_id)) || deny!()
+
+    binding = %{
+      vm_id: candidate.id,
+      service_generation: service.generation,
+      placement_id: candidate.current_placement_id,
+      execution_epoch: candidate.execution_epoch,
+      generation: candidate.generation
+    }
+
+    {vm, host, now} = Execution.web!(service, binding, :exclusive)
+    require_owner!(vm)
+    endpoint = current_endpoint!(endpoint.id)
+    credential = identity!(request[:cookie], service, vm, endpoint, request.app_port)
+
+    create_stream!(service, host, vm, endpoint, request.app_port, binding, credential, %{}, now)
+  end
+
+  # @cc [owner:ghuntley,label:security] ingress-web-wake-policy
+  # Public wake MUST require the current primary endpoint's public policy.
+  # Private wake MUST revalidate its stored login and current web membership;
+  # generic web authority MUST never select the dedicated editor port.
+  @doc false
+  @spec authorize_wake!(Marshall.Ingress.Service.t(), map(), VirtualMachine.t(), Endpoint.t()) ::
+          Marshall.Accounts.User.t() | nil
+  def authorize_wake!(service, request, vm, endpoint) do
+    unless OverallsProtocol.ProfilePolicy.allows?(vm.profile, :web) and
+             (request.app_port == 0 or request.app_port in 3000..9999) and
+             request.app_port != 4444,
+           do: deny!()
+
+    require_owner!(vm)
+    credential = identity!(request[:cookie], service, vm, endpoint, request.app_port)
+
+    if credential,
+      do: Marshall.Accounts.Security.bind(%User{id: credential.user_id}, credential.login_jti)
+  end
+
+  @doc false
+  @spec renew_for!(Marshall.Ingress.Service.t(), map()) :: map()
+  def renew_for!(service, request) do
     candidate = candidate!(request.stream_token)
     bind!(candidate, service)
     # A reconnecting provisioner is inconclusive, not a revocation (ADR-0192).
@@ -141,15 +197,6 @@ defmodule Marshall.Ingress.WebStreams do
     |> view(credential)
   end
 
-  defp perform(:close_web, request) do
-    service = Services.authenticate!(request.service_token, :exclusive)
-    candidate = candidate!(request.stream_token)
-    bind!(candidate, service)
-    stream = Ledger.lock!(WebStream, candidate.id) || deny!()
-    if is_nil(stream.closed_at), do: Ledger.update!(stream, :close, %{closed_at: Ledger.now()})
-    %{closed: true}
-  end
-
   defp identity!(nil, service, vm, endpoint, app_port) do
     _ = {service, vm}
     unless public?(endpoint, app_port), do: Ledger.rollback(:authentication_required)
@@ -169,9 +216,9 @@ defmodule Marshall.Ingress.WebStreams do
   defp credential!(id, service, vm, endpoint, app_port) do
     credential = Ledger.lock!(WebCredential, id) || Ledger.rollback(:authentication_required)
 
-    unless credential.service_id == service.id and
-             credential.service_generation == service.generation and
-             credential.vm_id == vm.id and credential.label == endpoint.label and
+    Marshall.Ingress.Relays.credential_issuer!(credential, service, vm)
+
+    unless credential.vm_id == vm.id and credential.label == endpoint.label and
              credential.app_port == app_port and
              is_nil(credential.revoked_at) and
              DateTime.compare(credential.expires_at, Ledger.now()) == :gt,

@@ -35,7 +35,6 @@ defmodule Marshall.Compute.RelocationDeletion do
   # Before handoff it records cancellation to fence further transfer offers;
   # deletion MUST take precedence over source restoration and never enqueue a start.
   # After handoff it MUST preserve destination authority and old-source cleanup.
-  # Pending destination retries MUST be superseded before they can enqueue activation.
   @spec request_locked!(Relocation.t(), Operation.t(), Marshall.Accounts.User.t()) ::
           Relocation.t()
   def request_locked!(relocation, operation, actor) do
@@ -43,13 +42,6 @@ defmodule Marshall.Compute.RelocationDeletion do
              operation.vm_id == relocation.vm_id and operation.requested_by_id == actor.id and
              relocation.deletion_requested_at == nil,
            do: Ledger.rollback(:invalid_delete_intent)
-
-    for retry <-
-          Ledger.read!(Marshall.Compute.RelocationRetry,
-            relocation_id: relocation.id,
-            finished_at: [is_nil: true]
-          ),
-        do: Ledger.update!(retry, :supersede, %{finished_at: Ledger.now()})
 
     for readiness <-
           Ledger.read!(Marshall.Compute.ReadinessRequest,
@@ -132,7 +124,7 @@ defmodule Marshall.Compute.RelocationDeletion do
   defp reclaimed?(reservation),
     do:
       not reservation.compute_held and not reservation.disk_held and
-        reservation.temporary_disk_bytes == 0
+        reservation.temporary_disk_bytes == 0 and reservation.checkpoint_bytes == 0
 
   defp deleted?(%{status: :completed, completion_outcome_id: id} = operation)
        when not is_nil(id) do

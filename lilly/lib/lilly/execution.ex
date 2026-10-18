@@ -4,7 +4,7 @@ defmodule Lilly.Execution do
 
   Three single writers publish into one `OverallsProtocol.View`:
 
-    * the Runtime publishes `:runtime` while connected and `{:intent, placement}`
+    * the Runtime publishes its PID under `:runtime` while connected and `{:intent, placement}`
       with the exact durable command right after storing it;
     * each VM actor publishes `{:live, placement}` from its liveness machine
       after a running observation, with the command it observed, its executor
@@ -13,8 +13,8 @@ defmodule Lilly.Execution do
 
   Readers (egress attribution, ingress, private services) join these rows here
   and never call the Runtime or an actor. An execution is current only while the
-  runtime is connected, the live command is identical to the durable intent and
-  the deadline has not passed.
+  runtime is connected, both publishers are alive, the live command is identical
+  to the durable intent and the deadline has not passed.
   """
   alias OverallsProtocol.View
 
@@ -38,7 +38,7 @@ defmodule Lilly.Execution do
   ## Writers
 
   @spec runtime_connected(atom()) :: :ok | {:error, :not_owner}
-  def runtime_connected(view \\ @view), do: put(view, :runtime, :connected, [])
+  def runtime_connected(view \\ @view), do: put(view, :runtime, {:connected, self()}, [])
 
   @spec runtime_disconnected(atom()) :: :ok
   def runtime_disconnected(view \\ @view), do: delete(view, :runtime)
@@ -47,7 +47,7 @@ defmodule Lilly.Execution do
   @spec intent(atom(), command()) :: :ok | {:error, :not_owner}
   def intent(view \\ @view, command) do
     terms =
-      if command.kind in [:provision, :start],
+      if command.kind in [:provision, :start, :resume],
         do: address_terms(command, :intent_address) ++ flow_terms(command, :intent_flow),
         else: []
 
@@ -81,8 +81,10 @@ defmodule Lilly.Execution do
   # @cc [owner:ghuntley,label:security] execution-view-exact-current-read
   # current/1 MUST return a placement only while the runtime row is connected,
   # the actor's live command is identical to the durable intent row and the
-  # live deadline is in the future. Readers MUST NOT call the Runtime or an
-  # actor, and MUST treat every missing, stale or mismatched row as refusal.
+  # live deadline is in the future. Both publisher PIDs MUST still be alive;
+  # queued View DOWN cleanup MUST NOT extend a dead publisher's authority.
+  # Readers MUST NOT call the Runtime or an actor, and MUST treat every missing,
+  # stale or mismatched row as refusal.
   @spec current(atom(), OverallsProtocol.uuid()) :: {:ok, View.version(), live()} | :error
   def current(view \\ @view, placement), do: join(view, :live, placement)
 
@@ -104,10 +106,11 @@ defmodule Lilly.Execution do
   end
 
   defp join(view, row, placement) do
-    with {:ok, {_, :connected}} <- View.fetch(view, :runtime),
+    with {:ok, {_, {:connected, runtime}}} <- View.fetch(view, :runtime),
          {:ok, {_, intent}} <- View.fetch(view, {:intent, placement}),
          {:ok, {version, %{command: ^intent} = proof}} <- View.fetch(view, {row, placement}),
-         true <- System.monotonic_time(:millisecond) < proof.valid_until do
+         true <- System.monotonic_time(:millisecond) < proof.valid_until,
+         true <- Process.alive?(runtime) and Process.alive?(proof.actor) do
       {:ok, version, proof}
     else
       _ -> :error
@@ -115,7 +118,7 @@ defmodule Lilly.Execution do
   end
 
   # @cc [owner:ghuntley,label:security] execution-view-unique-address
-  # by_address/1 MUST resolve only when exactly one durable provision/start
+  # by_address/1 MUST resolve only when exactly one durable provision/start/resume
   # intent holds the pre-NAT address and that placement is current. Ambiguous,
   # missing or non-current placements MUST refuse.
   @spec by_address(atom(), String.t()) :: {:ok, View.version(), live()} | :error
@@ -169,13 +172,13 @@ defmodule Lilly.Execution do
   end
 
   # @cc [owner:ghuntley,label:security] flow-route-exact-incarnation
-  # A provision/start intent MUST be indexed under exactly its incarnation's
+  # A provision/start/resume intent MUST be indexed under exactly its incarnation's
   # kernel label and profile/slot source address; ambiguous flows MUST fail
   # lookup, and a replaced intent MUST no longer resolve under its old flow.
   @doc false
   @spec flow_key(map()) :: {:ok, {String.t(), :inet.ip4_address()}} | :error
   def flow_key(%{kind: kind, host_id: host, profile: profile, slot: slot} = command)
-      when kind in [:provision, :start] do
+      when kind in [:provision, :start, :resume] do
     with {:ok, label} <- Lilly.Network.FlowLabel.token(host, command),
          {:ok, address} <- OverallsProtocol.AddressPool.address(profile, slot),
          {:ok, source} <- :inet.parse_strict_address(String.to_charlist(address)),

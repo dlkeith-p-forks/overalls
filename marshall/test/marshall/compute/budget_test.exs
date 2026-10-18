@@ -4,6 +4,37 @@ defmodule Marshall.Compute.BudgetTest do
   import Hegel.Gen
   alias Marshall.Compute.Budget
 
+  # @cc [owner:ghuntley,label:verification;capacity] checkpoint-credit-separated-from-guest-disk
+  # Generated audited checkpoint materialization MUST credit at most its exact
+  # placement's checkpoint commitment; disk/foreign RAM reports MUST NOT offset it.
+  property "checkpoint physical credit is bounded and separate from disk credit" do
+    committed = draw("checkpoint commitment", integer(1..10_000))
+    materialized = draw("audited materialized RAM", integer(0..20_000))
+    foreign = draw("foreign checkpoint bytes", integer(0..20_000))
+    host = %{id: "h"}
+
+    reservation = %{
+      host_id: "h",
+      pool_id: "p",
+      placement_id: "vm",
+      disk_held: false,
+      disk_bytes: 100,
+      temporary_disk_bytes: 0,
+      checkpoint_bytes: committed
+    }
+
+    pool = %{
+      id: "p",
+      free_bytes: 30_000,
+      overhead_bytes: 0,
+      allocations: %{"vm" => 20_000},
+      checkpoint_allocations: %{"vm" => materialized, "other" => foreign}
+    }
+
+    assert Budget.physical_disk_available(host, pool, [reservation]) ==
+             30_000 - committed + min(committed, materialized)
+  end
+
   property "temporary snapshots remain charged beyond pending disk credit" do
     temporary = draw("temporary", integer(1..1000))
     materialized = draw("materialized", integer(0..1000))

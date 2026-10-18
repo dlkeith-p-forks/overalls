@@ -85,4 +85,41 @@ defmodule Audi.SSH.RequestTest do
     refute Request.grant?(grant, selector, "22222222-2222-4222-8222-222222222222")
     refute Request.grant?(grant, label, id)
   end
+
+  test "a remote grant binds this original host and one exact destination" do
+    source = "11111111-1111-4111-8111-111111111111"
+    destination = "22222222-2222-4222-8222-222222222222"
+    label = "vm-11111111111141118111111111111111"
+
+    relay = %{
+      origin_host_id: source,
+      destination_host_id: destination,
+      address: "10.90.0.2",
+      port: 9445,
+      capability: "audi_relay_" <> Base.url_encode64(<<0::256>>, padding: false)
+    }
+
+    grant = %{
+      ticket: :test,
+      ttl: 5000,
+      relay: relay,
+      binding: %{
+        vm_id: source,
+        placement_id: source,
+        host_id: destination,
+        session_id: source,
+        execution_epoch: 2,
+        generation: 3,
+        service: :ssh,
+        port: 22,
+        label: label
+      }
+    }
+
+    assert Request.grant?(grant, label, source)
+    refute Request.grant?(grant, label, destination)
+    refute Request.grant?(put_in(grant, [:relay, :origin_host_id], destination), label, source)
+    refute Request.grant?(put_in(grant, [:relay, :address], "127.0.0.1"), label, source)
+    refute Request.grant?(put_in(grant, [:binding, :host_id], source), label, source)
+  end
 end

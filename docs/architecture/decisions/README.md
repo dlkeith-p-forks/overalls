@@ -89,8 +89,6 @@ registry. Editor and Inception remain false; stock/altered identities and
 unreviewed OmniOS candidates remain refused. Stock source receipts contain no artifact bytes, and
 those constructors refuse before copying a stock disk. Pinned builds link the complete
 FreeBSD kernel, twenty native Lyra executables and both terminal daemons.
-The cross-platform editor review records the current Linux evidence gap and keeps
-Windows, FreeBSD and OmniOS editor capability refused.
 OmniOS native nine-module/full-payload clean-export assembly, QEMU file/runtime
 checks and diagnostic Firecracker executing-token/transport checks passed. Its
 earlier service, mounted-root growth and same-disk process-crash receipts remain
@@ -429,10 +427,9 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
 | [ADR-0186](0186-covenant-contract-verification.md) | accepted | partial | Covenant contract verification across Elixir applications |
 | [ADR-0192](0192-staged-detached-ingress.md) | accepted | partial | Editor and nested HTTPS use staged detached ingress bridges |
-| [ADR-0193](0193-per-user-machine-pins.md) | accepted | partial | Per-user machine pins and the owner-pin deletion guard |
+| [ADR-0193](0193-per-user-machine-pins.md) | superseded | partial | Per-user machine pins and the owner-pin deletion guard |
 | [ADR-0194](0194-marshall-http-security-headers.md) | accepted | partial | Marshall HTTP security headers, no-index and session cookie hardening |
 | [ADR-0195](0195-user-time-zones.md) | accepted | partial | User time zone preference and local-time display |
-| [ADR-0196](0196-single-account-settings-page.md) | accepted | partial | One account settings page |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
 | [ADR-0188](0188-signed-overalls-cachix-substitution.md) | accepted | partial | Use the signed Overalls Cachix cache across Nix machines |
 | [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |
@@ -456,7 +453,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0162](0162-clone-cleanup-liveness.md) | accepted | partial | Clone cleanup liveness and transfer slot release at quiescence |
 | [ADR-0161](0161-monospace-web-presentation.md) | accepted | partial | Monospace Web presentation for Marshall |
 | [ADR-0160](0160-privileged-administrator-step-up.md) | accepted | partial | Privileged administrator step-up and pending-action continuation |
-| [ADR-0159](0159-remove-legacy-compatibility.md) | accepted | implemented | Remove legacy compatibility after convergence |
+| [ADR-0159](0159-remove-legacy-compatibility.md) | superseded | implemented | Remove legacy compatibility after convergence |
 | [ADR-0158](0158-durable-guest-identities.md) | superseded | partial | Durable guest identities independent of email |
 | [ADR-0157](0157-multi-provider-authenticated-repository-launch.md) | accepted | implemented | Multi-provider repository launch and authentication resume |
 | [ADR-0156](0156-browser-launcher-distribution.md) | accepted | partial | Browser launcher build, distribution and exact-origin presence detection |

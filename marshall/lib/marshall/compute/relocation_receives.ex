@@ -172,7 +172,8 @@ defmodule Marshall.Compute.RelocationReceives do
 
   # @cc [owner:ghuntley,label:recovery;security] final-receipt-import-prerequisite
   # Under destination host/VM serialization, final_received/2 MUST select a
-  # source-confirmed full-stream descriptor, exact current stopped workload and
+  # source-confirmed full-stream descriptor, exact current quiescent workload and
+  # complete checkpoint identity for memory-bearing moves, plus its
   # local GUID receipt with retained reservations/slots. An older received
   # revision remains usable when renewal raced its acknowledgement.
   @spec final_received(Relocation.t(), VirtualMachine.t() | nil) :: SourcePermitRequest.t() | nil
@@ -224,21 +225,39 @@ defmodule Marshall.Compute.RelocationReceives do
   defp current_workload?(request, vm) do
     with {:ok, descriptor} <- OverallsProtocol.Relocation.descriptor(request.descriptor),
          [address] <- Ledger.read!(NetworkAddress, vm_id: vm.id) do
-      descriptor.workload ==
+      expected =
         vm
         |> Map.take([:image_id, :architecture, :profile, :vcpu, :memory_bytes, :disk_bytes])
         |> Map.put(:slot, address.slot)
+
+      checkpoint = Map.get(descriptor, :checkpoint)
+
+      descriptor.workload == expected and
+        if vm.current_checkpoint do
+          match?({:ok, ^checkpoint}, OverallsProtocol.Checkpoint.decode(vm.current_checkpoint))
+        else
+          checkpoint == nil
+        end
     else
       _ -> false
     end
   end
 
-  # The only stream is a full copy of a physically stopped source: an originally
-  # stopped workload that stayed stopped, or the recorded relocation stop.
+  # Full copies require physical quiescence: stopped disks or the exact paused
+  # checkpoint. Live guest writes cannot race the final disk/RAM copy.
   defp current_state?(relocation, %{desired_state: :stopped, observed_state: :stopped} = vm),
     do:
       relocation.original_state == :stopped or
         Marshall.Compute.RelocationCoordinator.stop_confirmed?(relocation, vm)
+
+  defp current_state?(
+         relocation,
+         %{desired_state: :paused, observed_state: :paused, current_checkpoint: checkpoint} = vm
+       )
+       when is_map(checkpoint),
+       do:
+         relocation.original_state == :paused or relocation.wake_request_id != nil or
+           Marshall.Compute.RelocationCoordinator.stop_confirmed?(relocation, vm)
 
   defp current_state?(_, _), do: false
 

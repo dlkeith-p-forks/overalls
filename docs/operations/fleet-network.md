@@ -23,7 +23,10 @@ Overalls local fleet clients -> 127.0.0.1:5443
 The fleet API still requires purpose-bound application credentials. WireGuard
 peer identity does not grant Marshall authority. Public browser endpoints return
 404 for machine API paths, retaining only current SSH host-key discovery there.
-The tunnel does not forward guest traffic or carry public Audi ingress.
+The tunnel does not route guest subnets. Audi may carry one authorized stream
+between its explicitly enrolled gateway peers on TCP 9445; a single-use Marshall
+capability binds the original peer, destination and inner lease. The destination
+still uses its local restricted Lilly connector.
 
 Overalls retains its loopback DNS mapping for local database and service TLS.
 Dungarees maps `ghuntley.dev` to the tunnel address and uses port 5443 with the
@@ -86,9 +89,9 @@ Operator rollout order:
 2. On Overalls, enroll services with the Marshall operator CLI, writing each
    token to private storage outside the checkout:
    `audi-dns-rotate audi-overalls-dns /private/overalls-dns.token`,
-   `audi-gateway-rotate audi-overalls HOST_ID 136.243.69.37 /private/overalls.token`,
+   `audi-gateway-rotate audi-overalls HOST_ID 136.243.69.37 10.90.0.1 9445 /private/overalls.token`,
    `audi-dns-rotate audi-dungarees-dns /private/dungarees-dns.token`, and
-   `audi-gateway-rotate audi-dungarees HOST_ID 136.243.69.32 /private/dungarees.token`.
+   `audi-gateway-rotate audi-dungarees HOST_ID 136.243.69.32 10.90.0.2 9445 /private/dungarees.token`.
    `HOST_ID` is the host's enrolled Lilly host UUID. Verify each file with
    `audi-dns-verify` / `audi-gateway-verify`.
 3. Encrypt the four values into the inventoried documents
@@ -114,3 +117,6 @@ inspect **Administrator audit → Certificates** for the active generation and a
 installation receipt from each gateway, then verify an actual VM hostname over
 HTTPS through both public gateway addresses. Nix evaluation and the isolated
 fleet machine test do not establish this physical cutover.
+
+The coordinated memory-suspension and relay credential cutover, refusal checks
+and held-connection acceptance are described in [HLDD operations](../../marshall/priv/hldd/14-operations.md#memory-suspension-and-ingress-handoff-rollout).

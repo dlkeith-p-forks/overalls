@@ -6,9 +6,15 @@
 - Implementation: implemented
 - Components: Audi, Marshall, Lilly, protocol, NixOS
 - Supersedes: none
-- Superseded by: ADR-0105
+- Superseded by: ADR-0105, ADR-0197
 
 ## Context
+
+[ADR-0197](0197-memory-suspension-and-demand-wake.md) replaces only the
+memory-migration/stopped-source and cross-host-relay prohibitions where this
+record carries them, and extends owner pins with automatic-suspension prevention
+and wake. Unrelated requirements and historical rationale remain in force.
+
 
 ADR-0105 supersedes this record's public certificate issuance, custody and
 hostname shape. The remaining ingress, DNS, SSH and authorization rationale is

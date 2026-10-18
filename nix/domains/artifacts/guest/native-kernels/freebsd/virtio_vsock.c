@@ -796,16 +796,24 @@ ovfb_interrupt(void *argument)
     mtx_unlock(&sc->lock);
 }
 
+/** @cc [owner:ghuntley,label:recovery;security] freebsd-reset-listener-continuation
+ * Only a validated transport-reset event with unchanged CID MAY preserve live
+ * listeners. All non-listener sockets MUST become permanently fenced. Invalid
+ * events, configuration changes and teardown MUST revoke transport readiness.
+ */
 static void
-ovfb_fence(struct ovfb_softc *sc)
+ovfb_fence(struct ovfb_softc *sc, bool preserve_listeners)
 {
     struct ovfb_pcb *pcb;
 
     sx_assert(&ovfb_domain_lock, SA_XLOCKED);
-    sc->ready = false;
+    if (!preserve_listeners)
+        sc->ready = false;
     if (ovfb_device != sc)
         return;
     LIST_FOREACH(pcb, &ovfb_pcbs, link) {
+        if (preserve_listeners && pcb->listening && !pcb->fenced)
+            continue;
         ov_vsock_reset(&pcb->connection);
         pcb->fenced = true;
         pcb->bound = false;
@@ -843,7 +851,8 @@ ovfb_work(void *argument, int pending)
     struct ovfb_pcb *pcb;
     uint32_t used;
     unsigned processed;
-    bool reset;
+    bool reset, event_received, valid_reset;
+    uint64_t cid;
     int error;
 
     sx_xlock(&ovfb_domain_lock);
@@ -856,15 +865,34 @@ ovfb_work(void *argument, int pending)
         packet->busy = false;
         explicit_bzero(packet->data, OVFB_FRAME);
     }
-    reset = virtqueue_dequeue(sc->event, &used) != NULL || sc->reset_pending;
+    event_received = virtqueue_dequeue(sc->event, &used) != NULL;
+    reset = event_received || sc->reset_pending;
+    valid_reset = event_received && !sc->reset_pending &&
+        used == sizeof(sc->event_data) && le32toh(sc->event_data) == 0;
     sc->reset_pending = false;
     mtx_unlock(&sc->lock);
     if (reset) {
-        /* Transport reset fences all streams until a fresh device attachment. */
-        ovfb_fence(sc);
-        virtio_stop(sc->dev);
-        sx_xunlock(&ovfb_domain_lock);
-        return;
+        virtio_read_device_config(sc->dev, 0, &cid, sizeof(cid));
+        valid_reset = valid_reset && le64toh(cid) == 3;
+        ovfb_fence(sc, valid_reset);
+        if (!valid_reset) {
+            virtio_stop(sc->dev);
+            sx_xunlock(&ovfb_domain_lock);
+            return;
+        }
+        mtx_lock(&sc->lock);
+        sc->event_data = 0;
+        error = virtqueue_enqueue(sc->event, &sc->event_data,
+            sc->event_sg, 0, sc->event_sg->sg_nseg);
+        if (error == 0)
+            virtqueue_notify(sc->event);
+        mtx_unlock(&sc->lock);
+        if (error != 0) {
+            ovfb_fence(sc, false);
+            virtio_stop(sc->dev);
+            sx_xunlock(&ovfb_domain_lock);
+            return;
+        }
     }
     for (processed = 0; processed < OVFB_BUFFERS; processed++) {
         mtx_lock(&sc->lock);
@@ -882,7 +910,7 @@ ovfb_work(void *argument, int pending)
             virtqueue_notify(sc->rx);
         mtx_unlock(&sc->lock);
         if (error != 0) {
-            ovfb_fence(sc);
+            ovfb_fence(sc, false);
             virtio_stop(sc->dev);
             break;
         }
@@ -1013,7 +1041,7 @@ ovfb_stop_device(device_t dev)
 
     sc = device_get_softc(dev);
     sx_xlock(&ovfb_domain_lock);
-    ovfb_fence(sc);
+    ovfb_fence(sc, false);
     mtx_lock(&sc->lock);
     sc->stopping = true;
     if (sc->queues_ready)

@@ -1,15 +1,9 @@
 # Architecture reviews
 
-- [Hegel exploration and native installation (2026-10-18)](2026-10-18-hegel-exploration-and-native-custody.md):
-  restores generated exploration and per-case fixture ownership, rejects ignored
-  runner options, and fixes truncation of mapped NIF libraries; intermediate
-  execution is recorded separately from pending complete consumer/release gates.
+- [Memory-preserving suspension and demand wake (2026-10-18)](2026-10-18-memory-suspension.md):
+  ADR-0197, durable lifecycle/wake/checkpoint state machines and authenticated
+  waiting connections; implementation and native acceptance in progress.
 
-- [One account settings page (2026-10-18)](2026-10-18-account-settings-page.md):
-  ADR-0196 merges Profile, Security and SSH keys into `/settings` behind the
-  security mount, removes the old routes without redirects and collapses the
-  sidebar; LiveView, contract, presentation and probe checks ran, while the
-  rewritten NixOS browser tests and Antithesis workload were not executed.
 - [Foreign Linux browser editor (2026-10-18)](2026-10-18-foreign-linux-browser-editor.md):
   repairs the missing Alma/Arch editor package, account broker and immutable
   descriptor while preserving exact-release authority; twelve Alma native browser
@@ -17,10 +11,6 @@
   diagnostic replay passed all twelve stages after an unexplained broker-recovery
   502; all remain separate from
   the frozen seven-family CLI milestone.
-- [Cross-platform browser editor status (2026-10-18)](2026-10-18-cross-platform-editor-status.md):
-  reconciles current Linux editor evidence with ADR-0153/0158 and records the
-  explicit FreeBSD, OmniOS/illumos and Windows editor refusals and their remaining
-  implementation and native-browser gaps.
 - [User time zones (2026-10-18)](2026-10-18-user-time-zones.md): ADR-0195's
   per-user display zone, self-only validated writes, saved → browser → UTC
   viewer resolution, UTC-provenance timestamps, people's local time in team,

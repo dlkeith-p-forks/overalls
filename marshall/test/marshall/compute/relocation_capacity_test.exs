@@ -236,12 +236,13 @@ defmodule Marshall.Compute.RelocationCapacityTest do
     assert relocation.destination_host_id == destination.host.id
   end
 
-  test "a destination with room for exactly one disk accepts the move, which waits for a probe",
+  test "a destination with room for disk and both checkpoints accepts and waits for a probe",
        context do
     Ledger.update!(context.destination.pool, :report, %{
       free_bytes:
         context.destination.pool.overhead_bytes +
-          OverallsProtocol.VMShape.reservation(context.vm).disk_bytes,
+          OverallsProtocol.VMShape.reservation(context.vm).disk_bytes +
+          2 * OverallsProtocol.VMShape.checkpoint_bytes(context.vm.memory_bytes),
       reported_at: Ledger.now()
     })
 
@@ -269,15 +270,15 @@ defmodule Marshall.Compute.RelocationCapacityTest do
     assert_unchanged(context)
   end
 
-  test "source snapshot headroom is never required for the stopped copy", context do
+  test "a running source must reserve both checkpoint slots before relocation", context do
     Ledger.update!(context.source.pool, :report, %{
       free_bytes: context.source.pool.overhead_bytes,
       reported_at: Ledger.now()
     })
 
-    assert {:ok, _relocation} = reserve(context)
+    assert {:error, :insufficient_capacity} = reserve(context)
 
-    assert [%{temporary_disk_bytes: 0}] =
+    assert [%{temporary_disk_bytes: 0, checkpoint_bytes: 0}] =
              Ledger.read!(Reservation, placement_id: context.vm.current_placement_id)
   end
 

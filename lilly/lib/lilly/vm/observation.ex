@@ -19,6 +19,38 @@ defmodule Lilly.VM.Observation do
           | :api_unavailable
           | :unit_stopped_during_check
   @type vmm :: %{pid: pos_integer(), cgroup: Path.t()}
+  @type incarnation :: {pos_integer(), pos_integer()}
+
+  # @cc [owner:ghuntley,label:isolation;recovery] interrupted-restore-same-process-incarnation
+  # incarnation/1 requires a separately confined VMM proof. Its kernel start
+  # ticks MUST distinguish PID reuse across a resume request; unavailable or
+  # malformed proc evidence MUST refuse. Process data MUST NOT enter logs.
+  @spec incarnation(vmm()) :: {:ok, incarnation()} | {:error, :physical_identity_unconfirmed}
+  def incarnation(%{pid: pid}) do
+    with {:ok, stat} <- File.read("/proc/#{pid}/stat"),
+         do: parse_incarnation(pid, stat),
+         else: (_ -> {:error, :physical_identity_unconfirmed})
+  end
+
+  @doc false
+  @spec parse_incarnation(pos_integer(), binary()) ::
+          {:ok, incarnation()} | {:error, :physical_identity_unconfirmed}
+  def parse_incarnation(pid, stat) when is_integer(pid) and pid > 0 and byte_size(stat) <= 4096 do
+    prefix = Integer.to_string(pid) <> " (firecracker) "
+
+    with true <- String.valid?(stat) and String.starts_with?(stat, prefix),
+         fields =
+           stat
+           |> binary_part(byte_size(prefix), byte_size(stat) - byte_size(prefix))
+           |> String.split(),
+         value when is_binary(value) <- Enum.at(fields, 19),
+         {started, ""} when started > 0 <- Integer.parse(value),
+         true <- Integer.to_string(started) == value,
+         do: {:ok, {pid, started}},
+         else: (_ -> {:error, :physical_identity_unconfirmed})
+  end
+
+  def parse_incarnation(_, _), do: {:error, :physical_identity_unconfirmed}
 
   @doc "The verified running VMM's host PID and unit cgroup, under the same checks as running?/3."
   # @cc [owner:ghuntley,label:observability;isolation] observation-failure-is-named
@@ -46,7 +78,12 @@ defmodule Lilly.VM.Observation do
 
   @doc "The same checks as vmm/3, naming the first one that fails."
   @spec check(Config.t(), Pool.t(), Spec.t()) :: {:ok, vmm()} | {:error, check()}
-  def check(config, pool, spec) do
+  def check(config, pool, spec), do: check_state(config, pool, spec, [:running])
+
+  @doc "Full confinement with an explicitly admitted API state for snapshot transitions."
+  @spec check_state(Config.t(), Pool.t(), Spec.t(), [API.state()]) ::
+          {:ok, vmm()} | {:error, check()}
+  def check_state(config, pool, spec, states) do
     with {:unit_not_running, {:ok, :running}} <- {:unit_not_running, Unit.status(spec)},
          {:cgroup_unreadable, {:ok, procs}} <-
            {:cgroup_unreadable, File.read(Path.join(Unit.cgroup(spec), "cgroup.procs"))},
@@ -63,7 +100,11 @@ defmodule Lilly.VM.Observation do
             ])},
          {:limits_mismatch, true} <- {:limits_mismatch, limits?(spec)},
          {:api_unavailable, true} <-
-           {:api_unavailable, API.running?(Path.join(Jail.root(pool, spec), "api.sock"), spec.id)},
+           {:api_unavailable,
+            case API.state(Path.join(Jail.root(pool, spec), "api.sock"), spec.id) do
+              {:ok, state} -> state in states
+              _ -> false
+            end},
          {:unit_stopped_during_check, {:ok, :running}} <-
            {:unit_stopped_during_check, Unit.status(spec)} do
       {:ok, %{pid: String.to_integer(pid), cgroup: Unit.cgroup(spec)}}

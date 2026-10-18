@@ -50,7 +50,9 @@ defmodule Marshall.Compute.Relocation do
         ]
 
       reference :source_placement, match_with: [vm_id: :vm_id, source_host_id: :host_id]
-      reference :destination_placement, match_with: [vm_id: :vm_id, destination_host_id: :host_id]
+
+      reference :destination_placement,
+        match_with: [vm_id: :vm_id, destination_host_id: :host_id]
 
       reference :import_request, match_with: [id: :relocation_id]
       reference :source_preflight_request, match_with: [id: :relocation_id]
@@ -82,6 +84,10 @@ defmodule Marshall.Compute.Relocation do
     end
 
     check_constraints do
+      check_constraint :wake_request_id, "relocation_initiator_provenance",
+        check:
+          "(requested_by_id IS NOT NULL) <> (wake_request_id IS NOT NULL) AND (wake_request_id IS NULL OR preserves_memory)"
+
       check_constraint :deletion_requested_at, "relocation_deletion_reference_complete",
         check:
           "(deletion_requested_at IS NULL AND deletion_operation_id IS NULL) OR (deletion_requested_at IS NOT NULL AND deletion_operation_id IS NOT NULL)"
@@ -96,7 +102,7 @@ defmodule Marshall.Compute.Relocation do
 
       check_constraint :source_restored_at, "relocation_source_restored_after_operation",
         check:
-          "source_restored_at IS NULL OR (cancellation_stop_operation_id IS NOT NULL AND (original_state = 'stopped' OR cancellation_start_operation_id IS NOT NULL))"
+          "source_restored_at IS NULL OR (cancellation_stop_operation_id IS NOT NULL AND (original_state IN ('stopped', 'paused') OR wake_request_id IS NOT NULL OR cancellation_start_operation_id IS NOT NULL))"
 
       check_constraint :source_snapshots_cleaned_at, "relocation_source_snapshot_cleanup_offered",
         check:
@@ -123,7 +129,7 @@ defmodule Marshall.Compute.Relocation do
           "(committed_at IS NULL AND import_request_id IS NULL AND activation_operation_id IS NULL AND activation_generation IS NULL) OR (committed_at IS NOT NULL AND import_request_id IS NOT NULL AND activation_operation_id IS NOT NULL AND activation_generation IS NOT NULL AND activation_generation > 0)"
 
       # Every relocation must prove destination connectivity before a running
-      # source is stopped (ADR-0155). Validated for all rows once the exported
+      # source is paused (ADR-0197). Validated for all rows once the exported
       # pre-copy history was purged (ADR-0159, migration 20261011200000).
       check_constraint :source_preflight_request_id, "relocation_stop_requires_probe",
         check:
@@ -141,7 +147,7 @@ defmodule Marshall.Compute.Relocation do
           "source_epoch > 0 AND destination_epoch > source_epoch AND destination_epoch - source_epoch = 1"
 
       check_constraint :original_state, "relocation_original_state",
-        check: "original_state IN ('running', 'stopped')"
+        check: "original_state IN ('running', 'stopped', 'paused')"
     end
   end
 
@@ -181,9 +187,9 @@ defmodule Marshall.Compute.Relocation do
   end
 
   # @cc [owner:ghuntley,label:recovery;concurrency] relocation-stopped-copy-flow
-  # Relocation MUST use one stopped full copy (ADR-0155): key preparation, then a
-  # running source is stopped only after fresh destination connectivity proof
-  # (checking_transfer -> stopping_source); one full stream of the stopped disk
+  # Relocation MUST use one quiescent full copy (ADR-0197): key preparation, then a
+  # running source is paused only after fresh destination connectivity proof
+  # (checking_transfer -> stopping_source); one coherent full stream of disk/RAM
   # (copying), destination adoption (importing), the fenced handoff commit, and
   # destination readiness before any source cleanup. Cancellation MUST be
   # possible only before the handoff commit and restores the source; terminal
@@ -211,14 +217,6 @@ defmodule Marshall.Compute.Relocation do
       transition :confirm_readiness, from: [:checking_destination], to: [:source_cleanup]
       transition :fail_readiness, from: [:checking_destination], to: [:readiness_failed]
       transition :fail_activation, from: [:checking_destination], to: [:activation_failed]
-
-      transition :begin_retry,
-        from: [:checking_destination, :readiness_failed, :activation_failed],
-        to: [:retrying_destination]
-
-      transition :record_retry_activation,
-        from: [:retrying_destination],
-        to: [:checking_destination]
 
       transition :request_cancellation,
         from: [
@@ -293,11 +291,6 @@ defmodule Marshall.Compute.Relocation do
       change transition_state(:activation_failed)
     end
 
-    update :begin_retry do
-      accept []
-      change transition_state(:retrying_destination)
-    end
-
     defaults [:read]
 
     create :record do
@@ -311,6 +304,8 @@ defmodule Marshall.Compute.Relocation do
         :source_epoch,
         :destination_epoch,
         :original_state,
+        :preserves_memory,
+        :wake_request_id,
         :source_endpoint,
         :requested_by_id,
         :request_key,
@@ -438,13 +433,13 @@ defmodule Marshall.Compute.Relocation do
     end
 
     update :record_commit do
-      accept [:committed_at, :import_request_id, :activation_operation_id, :activation_generation]
-      change transition_state(:checking_destination)
-    end
+      accept [
+        :committed_at,
+        :import_request_id,
+        :activation_operation_id,
+        :activation_generation
+      ]
 
-    update :record_retry_activation do
-      accept [:activation_operation_id, :activation_generation]
-      change run_oban_trigger(:coordinate)
       change transition_state(:checking_destination)
     end
 
@@ -492,9 +487,11 @@ defmodule Marshall.Compute.Relocation do
       allow_nil?: false,
       constraints: [min: 2, max: 9_223_372_036_854_775_807]
 
+    attribute :preserves_memory, :boolean, allow_nil?: false, default: false
+
     attribute :original_state, :atom,
       allow_nil?: false,
-      constraints: [one_of: [:running, :stopped]]
+      constraints: [one_of: [:running, :stopped, :paused]]
 
     attribute :request_key, :string,
       allow_nil?: false,
@@ -511,6 +508,7 @@ defmodule Marshall.Compute.Relocation do
   end
 
   relationships do
+    belongs_to :wake_request, Marshall.Compute.WakeRequest
     belongs_to :evacuation, Marshall.Compute.Evacuation
     belongs_to :deletion_operation, Marshall.Compute.Operation
     belongs_to :cancellation_stop_operation, Marshall.Compute.Operation
@@ -522,7 +520,7 @@ defmodule Marshall.Compute.Relocation do
     belongs_to :destination_placement, Marshall.Compute.WorkloadPlacement, allow_nil?: false
     belongs_to :source_host, Marshall.Compute.Host, allow_nil?: false
     belongs_to :destination_host, Marshall.Compute.Host, allow_nil?: false
-    belongs_to :requested_by, Marshall.Accounts.User, allow_nil?: false
+    belongs_to :requested_by, Marshall.Accounts.User
     belongs_to :cancellation_requested_by, Marshall.Accounts.User
     belongs_to :source_preflight_request, Marshall.Compute.ProbeRequest
     belongs_to :source_stop_operation, Marshall.Compute.Operation

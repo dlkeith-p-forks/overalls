@@ -6,6 +6,8 @@ defmodule Lilly.VM.Driver do
   alias Lilly.VM.{
     API,
     Boot,
+    Checkpoint,
+    CheckpointStorage,
     Config,
     Credentials,
     Disk,
@@ -29,14 +31,16 @@ defmodule Lilly.VM.Driver do
   # invoking transfer work. The caller names the required source state: :running
   # (connectivity probes, post-clone snapshot pruning) requires running intent;
   # :stopped (snapshot creation and stream grants) requires stopped intent plus
-  # confirmed unit, jail and network cleanup. This entry point MUST NOT create
+  # confirmed unit, jail and network cleanup; :paused additionally requires its
+  # durable ready checkpoint before memory relocation or snapshot cleanup.
+  # This entry point MUST NOT create
   # launch authority or stop a running guest.
   @spec with_transfer_source(
           Config.t(),
           Pool.t(),
           Spec.t(),
           {pos_integer(), pos_integer()},
-          :running | :stopped,
+          :running | :stopped | :paused,
           (-> {:ok, term()} | :ok | {:error, atom()})
         ) ::
           {:ok, term()} | :ok | {:error, atom()}
@@ -53,12 +57,12 @@ defmodule Lilly.VM.Driver do
           Pool.t(),
           Spec.t(),
           {pos_integer(), pos_integer()},
-          :running | :stopped,
+          :running | :stopped | :paused,
           0..2000,
           (-> {:ok, term()} | :ok | {:error, atom()})
         ) :: {:ok, term()} | :ok | {:error, atom()}
   def with_transfer_source(config, pool, spec, {epoch, generation}, required, retry_ms, fun)
-      when required in [:running, :stopped] and retry_ms in 0..2000 do
+      when required in [:running, :stopped, :paused] and retry_ms in 0..2000 do
     locked_value(config, spec, retry_ms, fn ->
       with :ok <- existing_claim(config, pool, spec),
            {:ok,
@@ -84,6 +88,15 @@ defmodule Lilly.VM.Driver do
     with {:ok, :stopped} <- Unit.status(spec),
          :ok <- Jail.cleanup(pool, spec),
          :ok <- Lilly.Network.detach(config.network, spec.network),
+         do: :ok,
+         else: (_ -> {:error, :source_authority_unconfirmed})
+  end
+
+  defp transfer_state(config, pool, spec, :paused, :paused) do
+    with {:ok, :stopped} <- Unit.status(spec),
+         :ok <- Jail.cleanup(pool, spec),
+         :ok <- Lilly.Network.detach(config.network, spec.network),
+         {:ok, _, _} <- Checkpoint.ready(pool, spec),
          do: :ok,
          else: (_ -> {:error, :source_authority_unconfirmed})
   end
@@ -154,6 +167,7 @@ defmodule Lilly.VM.Driver do
              {:intent,
               {intent.generation, intent.state} in [
                 {generation, :stopped},
+                {generation, :paused},
                 {generation + 1, :deleted}
               ]},
            {:unit, {:ok, :stopped}} <- {:unit, Unit.status(spec)},
@@ -171,6 +185,7 @@ defmodule Lilly.VM.Driver do
               )},
            {:boot_log, :ok} <- {:boot_log, remove_log(Unit.boot_log(config, spec))},
            {:snapshots, :ok} <- {:snapshots, fun.()},
+           {:snapshots, :ok} <- {:snapshots, CheckpointStorage.retire(pool, spec)},
            {:disk, :ok} <- {:disk, Disk.delete(pool, spec)},
            do: :ok,
            else: (
@@ -452,6 +467,216 @@ defmodule Lilly.VM.Driver do
     end
   end
 
+  # @cc [owner:ghuntley,label:recovery;security] durable-pause-preserves-guest-memory
+  # pause/4 MUST persist non-running authority before capture, freeze without a
+  # guest shutdown, durably record successful snapshot creation, then prove the
+  # cgroup empty and remove jail/network access before publishing immutable RAM.
+  # An already-paused continuation may advance authority without executing RAM.
+  @spec pause(Config.t(), Pool.t(), Spec.t(), keyword()) ::
+          {:ok, OverallsProtocol.Checkpoint.t()} | {:error, atom()}
+  def pause(config, pool, spec, options) do
+    locked_value(config, spec, fn ->
+      with :ok <- existing_claim(config, pool, spec),
+           {:ok, bundle} <- guest_bundle(pool, spec),
+           true <- OverallsProtocol.NativeAdmission.checkpoint_admitted?(bundle),
+           {:ok, compatibility} <- Checkpoint.compatibility(config.firecracker),
+           {:ok, intent} <-
+             Intent.set(directory(config, spec), spec.id, revision(options), :paused) do
+        authority =
+          Map.take(intent, [:placement_id, :execution_epoch, :generation])
+          |> stringify_authority()
+
+        case Checkpoint.read(pool, spec.id) do
+          {:ok, %{"phase" => "ready"}} ->
+            with {:ok, :stopped} <- Unit.status(spec),
+                 :ok <- Jail.cleanup(pool, spec),
+                 :ok <- Lilly.Network.detach(config.network, spec.network),
+                 {:ok, descriptor, _} <- Checkpoint.ready(pool, spec),
+                 :ok <- CheckpointStorage.recycle_other(pool, spec),
+                 do: {:ok, descriptor}
+
+          {:ok, %{"phase" => "copied", "capture_authority" => ^authority}} ->
+            finish_pause(config, pool, spec, authority, options)
+
+          {:ok, %{"phase" => phase}} when phase in ["empty", "consumed"] ->
+            with {:ok, _} <- Observation.check_state(config, pool, spec, [:running]),
+                 {:ok, boot} <- Boot.read(directory(config, spec)),
+                 true <- boot.placement_id == spec.id,
+                 {:ok, record} <-
+                   Checkpoint.begin_capture(pool, spec, boot, authority, compatibility),
+                 :ok <- API.pause(api_path(pool, spec)),
+                 {:ok, _} <- Observation.check_state(config, pool, spec, [:paused]),
+                 :ok <-
+                   API.create_checkpoint(
+                     api_path(pool, spec),
+                     if(record["slot"] == "a", do: :a, else: :b)
+                   ),
+                 :ok <- Checkpoint.copied(pool, spec, authority),
+                 do: finish_pause(config, pool, spec, authority, options)
+
+          _ ->
+            {:error, :checkpoint_unconfirmed}
+        end
+      end
+    end)
+  end
+
+  defp finish_pause(config, pool, spec, authority, options) do
+    with :ok <- Unit.stop(spec, Keyword.get(options, :vm_id)),
+         {:ok, :stopped} <- Unit.status(spec),
+         :ok <- Jail.cleanup(pool, spec),
+         :ok <- Lilly.Network.detach(config.network, spec.network),
+         {:ok, descriptor} <- Checkpoint.complete(pool, spec, authority),
+         :ok <- CheckpointStorage.recycle_other(pool, spec),
+         do: {:ok, descriptor}
+  end
+
+  # @cc [owner:ghuntley,label:recovery;security] resume-single-use-without-cold-fallback
+  # resume/5 MUST verify immutable content and compatibility, durably consume the
+  # checkpoint before launching a fresh API-only VMM, retain original guest boot
+  # identity, and use explicit snapshot load/resume. A consumed interrupted load
+  # cannot retry against mutated disk. The exact verified live restore VMM MAY
+  # continue from Paused with PATCH Resumed or be adopted from Running; neither
+  # continuation may load the snapshot again or replace its native process.
+  @spec resume(Config.t(), Pool.t(), Spec.t(), OverallsProtocol.Checkpoint.t(), keyword()) ::
+          result()
+  def resume(config, pool, spec, descriptor, options) do
+    locked(config, spec, fn ->
+      with :ok <- existing_claim(config, pool, spec),
+           {:ok, bundle} <- guest_bundle(pool, spec),
+           true <- OverallsProtocol.NativeAdmission.checkpoint_admitted?(bundle),
+           {:ok, compatibility} <- Checkpoint.compatibility(config.firecracker),
+           {:ok, intent} <-
+             Intent.set(directory(config, spec), spec.id, revision(options), :running) do
+        authority =
+          Map.take(intent, [:placement_id, :execution_epoch, :generation])
+          |> stringify_authority()
+
+        case Unit.status(spec) do
+          {:ok, :running} ->
+            with :ok <- Checkpoint.backing(pool, spec, descriptor, authority),
+                 {:ok, boot} <- Boot.current(directory(config, spec), spec.id, revision(options)),
+                 true <- Map.get(boot, :checkpoint_id) == descriptor.id,
+                 :ok <- resume_live(config, pool, spec, intent, authority),
+                 do: Checkpoint.consumed(pool, spec, authority)
+
+          {:ok, :stopped} ->
+            with :ok <- not_attempted(config, spec, intent),
+                 :ok <- Disk.ready(pool, spec),
+                 {:ok, record} <-
+                   Checkpoint.consume(pool, spec, descriptor, authority, compatibility),
+                 {:ok, boot} <-
+                   Boot.continue(
+                     directory(config, spec),
+                     intent,
+                     record["manifest"],
+                     descriptor.id
+                   ),
+                 :ok <- Provisioning.prepare(config, spec, revision(options)),
+                 :ok <- Provisioning.launching(config, spec, boot, readiness_budget(pool, spec)),
+                 {:ok, bundle} <- Jail.prepare_restore(pool, spec, boot, record["slot"]),
+                 :ok <- Lilly.VM.Logging.prepare(config, pool, spec, intent),
+                 :ok <-
+                   Lilly.Network.attach(
+                     config.network,
+                     spec.network,
+                     intent,
+                     Keyword.get(options, :vm_id)
+                   ),
+                 :ok <- commit(options),
+                 :ok <-
+                   PrivateFiles.write(
+                     directory(config, spec),
+                     "launch-attempt.bin",
+                     <<intent.placement_id::binary-size(36), intent.execution_epoch::64,
+                       intent.generation::64>>
+                   ),
+                 :ok <- Unit.restore(config, pool, spec, intent, bundle),
+                 :ok <- await_api(config, pool, spec, :unconfigured, 5000),
+                 :ok <-
+                   API.load_checkpoint(
+                     api_path(pool, spec),
+                     spec.network,
+                     OverallsProtocol.GuestAgents.vsock?(bundle.guest_agents)
+                   ),
+                 {:ok, _} <- Observation.check_state(config, pool, spec, [:paused]),
+                 :ok <- API.resume(api_path(pool, spec)),
+                 :ok <- await_api(config, pool, spec, :running, 5000),
+                 do: Checkpoint.consumed(pool, spec, authority)
+
+          _ ->
+            {:error, :execution_unavailable}
+        end
+      end
+    end)
+  end
+
+  # A restore interrupted after snapshot/load already owns mutated live RAM.
+  # Reconciliation can finish its resume only under that same launch and PID;
+  # an API-only process that never loaded memory remains unconfigured and refuses.
+  defp resume_live(config, pool, spec, intent, authority) do
+    with :ok <- exact_launch_attempt(config, spec, intent),
+         true <- Unit.launched?(spec, intent),
+         {:ok, vmm} <- Observation.check_state(config, pool, spec, [:running, :paused]),
+         {:ok, incarnation} <- Observation.incarnation(vmm),
+         {:ok, state} <- API.state(api_path(pool, spec), spec.id),
+         {:ok, record} <- Checkpoint.read(pool, spec.id),
+         {:ok, action} <- Checkpoint.restore_action(record, authority, state),
+         :ok <- continue_live(config, pool, spec, intent, vmm, incarnation, action),
+         do: :ok,
+         else: (_ -> {:error, :checkpoint_unconfirmed})
+  end
+
+  defp continue_live(config, pool, spec, intent, vmm, incarnation, action) do
+    state = if(action == :resume, do: :paused, else: :running)
+
+    with {:ok, ^vmm} <- Observation.check_state(config, pool, spec, [state]),
+         {:ok, ^incarnation} <- Observation.incarnation(vmm),
+         true <- Unit.launched?(spec, intent),
+         :ok <- if(action == :resume, do: API.resume(api_path(pool, spec)), else: :ok),
+         :ok <- await_api(config, pool, spec, :running, 5000),
+         {:ok, ^vmm} <- Observation.check_state(config, pool, spec, [:running]),
+         {:ok, ^incarnation} <- Observation.incarnation(vmm),
+         true <- Unit.launched?(spec, intent),
+         do: :ok,
+         else: (_ -> {:error, :checkpoint_unconfirmed})
+  end
+
+  defp exact_launch_attempt(config, spec, intent) do
+    expected =
+      <<intent.placement_id::binary-size(36), intent.execution_epoch::64, intent.generation::64>>
+
+    case PrivateFiles.read_secret(Path.join(directory(config, spec), "launch-attempt.bin")) do
+      {:ok, ^expected} -> :ok
+      _ -> {:error, :checkpoint_unconfirmed}
+    end
+  end
+
+  defp await_api(config, pool, spec, state, timeout) do
+    deadline = System.monotonic_time(:millisecond) + timeout
+    wait_api(config, pool, spec, state, deadline)
+  end
+
+  defp wait_api(config, pool, spec, state, deadline) do
+    case Observation.check_state(config, pool, spec, [state]) do
+      {:ok, _} ->
+        :ok
+
+      _ ->
+        if System.monotonic_time(:millisecond) < deadline do
+          Process.sleep(25)
+          wait_api(config, pool, spec, state, deadline)
+        else
+          {:error, :checkpoint_unconfirmed}
+        end
+    end
+  end
+
+  defp api_path(pool, spec), do: Path.join(Jail.root(pool, spec), "api.sock")
+
+  defp stringify_authority(authority),
+    do: Map.new(authority, fn {key, value} -> {Atom.to_string(key), value} end)
+
   # @cc [owner:ghuntley,label:recovery;concurrency] launch-steps-fenced
   # launch/5 MUST run as separate steps (begin, disk, boot, jail, network,
   # commit), each holding the placement lease only for its own duration
@@ -468,7 +693,8 @@ defmodule Lilly.VM.Driver do
       {:launch, intent} ->
         with :ok <-
                launch_section(config, spec, intent, fn ->
-                 launch_step(prepare_disk.(), spec, :disk)
+                 with :ok <- launch_step(prepare_disk.(), spec, :disk),
+                      do: CheckpointStorage.prepare(pool, spec)
                end),
              {:ok, boot} <-
                launch_section(config, spec, intent, fn ->
@@ -512,12 +738,25 @@ defmodule Lilly.VM.Driver do
 
         {:ok, :stopped} ->
           with :ok <- not_attempted(config, spec, intent),
+               :ok <- cold_checkpoint_empty(pool, spec),
                :ok <- Provisioning.prepare(config, spec, revision(options)),
                do: {:launch, intent}
 
         error ->
           error
       end
+    end
+  end
+
+  # @cc [owner:ghuntley,label:recovery;security] retained-memory-forbids-cold-launch
+  # A stopped unit with retained or consumed continuation state MUST NOT accept
+  # an ordinary cold launch. Only explicit stop/retirement may discard RAM; a
+  # failed restore never becomes a new InstanceStart attempt.
+  defp cold_checkpoint_empty(pool, spec) do
+    case Checkpoint.read(pool, spec.id) do
+      {:ok, nil} -> :ok
+      {:ok, %{"phase" => "empty"}} -> :ok
+      _ -> {:error, :checkpoint_unconfirmed}
     end
   end
 
@@ -779,8 +1018,10 @@ defmodule Lilly.VM.Driver do
                  ready_boot(config, pool, spec, Keyword.put(options, :timeout, timeout)) do
             locked(config, spec, 2000, fn ->
               with :ok <- readiness_claim(config, pool, spec, expected),
-                   {:ok, ^boot} <- Boot.current(directory(config, spec), spec.id, expected) do
-                Provisioning.ready(config, spec, boot, boot_id)
+                   {:ok, current_boot} <- Boot.current(directory(config, spec), spec.id, expected),
+                   true <-
+                     Map.delete(current_boot, :guest_boot_id) == Map.delete(boot, :guest_boot_id) do
+                Provisioning.ready(config, spec, current_boot, boot_id)
               else
                 _ -> {:error, :readiness_unconfirmed}
               end
@@ -1339,11 +1580,12 @@ defmodule Lilly.VM.Driver do
              remaining(deadline)
            ),
          :ok <- same_attested_boot(kernel_boot_id, boot_id),
+         true <- Map.get(boot, :guest_boot_id, boot_id) == boot_id,
          :ok <-
            locked(config, spec, min(remaining(deadline), 2000), fn ->
              with :ok <- readiness_claim(config, pool, spec, expected),
                   {:ok, ^boot} <- Boot.current(directory(config, spec), spec.id, expected) do
-               :ok
+               Boot.record_boot_id(directory(config, spec), boot, boot_id)
              else
                _ -> {:error, :readiness_unconfirmed}
              end
@@ -1596,6 +1838,7 @@ defmodule Lilly.VM.Driver do
            :ok <- shutdown(pool, spec, vm_id),
            :ok <- Jail.cleanup(pool, spec, vm_id),
            :ok <- Lilly.Network.detach(config.network, spec.network, vm_id),
+           :ok <- CheckpointStorage.retire(pool, spec),
            :ok <- Provisioning.cancel(config, spec, revision(options)) do
         stopped(vm_id, intent)
       end
@@ -1741,6 +1984,7 @@ defmodule Lilly.VM.Driver do
            :ok <- Jail.cleanup(pool, spec, vm_id),
            :ok <- Lilly.Network.detach(config.network, spec.network, vm_id),
            :ok <- remove_log(Unit.boot_log(config, spec)),
+           :ok <- CheckpointStorage.retire(pool, spec),
            :ok <- delete_disk(pool, spec),
            :ok <- Provisioning.cancel(config, spec, revision(options)) do
         deleted(vm_id, spec.id)

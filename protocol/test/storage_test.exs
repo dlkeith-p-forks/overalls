@@ -134,7 +134,8 @@ defmodule OverallsProtocol.StorageTest do
         "images" => [],
         "execution_ready" => false,
         "terminal_protocol" => 0,
-        "inception_image_id" => nil
+        "inception_image_id" => nil,
+        "checkpoint_compatibility" => nil
       },
       pools: [
         %{
@@ -142,6 +143,7 @@ defmodule OverallsProtocol.StorageTest do
           total_bytes: total,
           free_bytes: free,
           allocations: %{@id => div(total - free, 2)},
+          checkpoint_allocations: %{},
           storage: storage
         }
       ]

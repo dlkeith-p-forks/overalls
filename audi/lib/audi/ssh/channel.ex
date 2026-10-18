@@ -11,6 +11,7 @@ defmodule Audi.SSH.Channel do
     :logger.update_process_metadata(%{audi_private: true, audi_component: :ssh})
     Process.flag(:trap_exit, true)
     {:ok, timeout} = :timer.kill_after(8000, self())
+    Process.put({Audi.Wake, :setup_timer}, timeout)
 
     {:ok,
      %{
@@ -272,7 +273,7 @@ defmodule Audi.SSH.Channel do
     case invoke(state.config.backend, :authorize, [key, label]) do
       {:ok, grant} ->
         if Request.grant?(grant, label, state.config.host_id),
-          do: open_granted(state, grant, started, started_us),
+          do: open_granted(state, grant, Map.get(grant, :requested_at, started), started_us),
           else: {:error, :denied}
 
       _ ->

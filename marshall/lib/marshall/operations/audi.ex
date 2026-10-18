@@ -23,10 +23,31 @@ defmodule Marshall.Operations.Audi do
   # and retain the file. Neither the credential nor its digest may enter output.
   @spec rotate_gateway(String.t(), String.t(), String.t(), Path.t()) ::
           {:ok, map()} | {:error, atom()}
-  def rotate_gateway(name, host, addresses, output) do
+  def rotate_gateway(name, host, addresses, output),
+    do: rotate_gateway(name, host, addresses, nil, 9445, output)
+
+  # @cc [owner:ghuntley,label:security] audi-operator-relay-enrollment
+  # Relay metadata MUST be operator-provided canonical fleet addresses and valid
+  # ports. Invalid arguments MUST refuse before creating a credential or file.
+  @spec rotate_gateway(String.t(), String.t(), String.t(), String.t() | nil, integer(), Path.t()) ::
+          {:ok, map()} | {:error, atom()}
+  def rotate_gateway(name, host, addresses, relay_address, relay_port, output) do
     with {:ok, list} <- parse_addresses(addresses),
-         :ok <- validate_uuid(host) do
-      enroll(%{name: name, role: :gateway, host_id: host, addresses: list}, output)
+         :ok <- validate_uuid(host),
+         true <-
+           is_nil(relay_address) or OverallsProtocol.IngressRelay.fleet_address?(relay_address),
+         true <- is_integer(relay_port) and relay_port in 1..65_535 do
+      enroll(
+        %{
+          name: name,
+          role: :gateway,
+          host_id: host,
+          addresses: list,
+          relay_address: relay_address,
+          relay_port: relay_port
+        },
+        output
+      )
     else
       _ -> {:error, :invalid_arguments}
     end

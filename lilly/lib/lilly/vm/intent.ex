@@ -2,8 +2,8 @@ defmodule Lilly.VM.Intent do
   @moduledoc "Durable placement/epoch/generation authority shared with the in-service native launch guard."
   alias Lilly.Host.{Lock, PrivateFiles}
   @maximum 9_223_372_036_854_775_807
-  @states %{stopped: 0, running: 1, deleted: 2, failed: 3}
-  @type state :: :stopped | :running | :deleted | :failed
+  @states %{stopped: 0, running: 1, deleted: 2, failed: 3, paused: 4}
+  @type state :: :stopped | :running | :deleted | :failed | :paused
   @type revision :: {pos_integer(), pos_integer() | nil}
   @type t :: %{
           placement_id: OverallsProtocol.uuid(),

@@ -9,7 +9,8 @@ defmodule OverallsProtocol do
           id: uuid(),
           total_bytes: non_neg_integer(),
           free_bytes: non_neg_integer(),
-          allocations: %{uuid() => non_neg_integer()}
+          allocations: %{uuid() => non_neg_integer()},
+          checkpoint_allocations: %{uuid() => non_neg_integer()}
         }
   @type unavailable_pool :: %{
           id: uuid(),
@@ -145,6 +146,7 @@ defmodule OverallsProtocol do
       "total_bytes" => pool.total_bytes,
       "free_bytes" => pool.free_bytes,
       "allocations" => pool.allocations,
+      "checkpoint_allocations" => Map.get(pool, :checkpoint_allocations, %{}),
       "storage" => OverallsProtocol.Storage.encode(pool.storage)
     }
   end
@@ -192,18 +194,30 @@ defmodule OverallsProtocol do
            "id" => id,
            "total_bytes" => total,
            "free_bytes" => free,
-           "allocations" => allocations
+           "allocations" => allocations,
+           "checkpoint_allocations" => checkpoint_allocations
          } = pool
        )
-       when map_size(pool) == 5 do
+       when map_size(pool) == 6 do
     if uuid?(id) and non_negative?(total) and non_negative?(free) and free <= total and
          is_map(allocations) and map_size(allocations) <= 4096 and
          Enum.all?(allocations, fn {vm, bytes} -> uuid?(vm) and non_negative?(bytes) end) and
-         Enum.sum(Map.values(allocations)) <= total - free do
-      decoded = %{id: id, total_bytes: total, free_bytes: free, allocations: allocations}
+         is_map(checkpoint_allocations) and map_size(checkpoint_allocations) <= 4096 and
+         Enum.all?(checkpoint_allocations, fn {vm, bytes} ->
+           uuid?(vm) and non_negative?(bytes)
+         end) and
+         Enum.sum(Map.values(allocations)) + Enum.sum(Map.values(checkpoint_allocations)) <=
+           total - free do
+      decoded = %{
+        id: id,
+        total_bytes: total,
+        free_bytes: free,
+        allocations: allocations,
+        checkpoint_allocations: checkpoint_allocations
+      }
 
       case {map_size(pool), Map.fetch(pool, "storage")} do
-        {5, {:ok, storage}} ->
+        {6, {:ok, storage}} ->
           with {:ok, storage} <- OverallsProtocol.Storage.observation(storage),
                true <- OverallsProtocol.Storage.coherent?(storage, total, free) do
             {:ok, Map.put(decoded, :storage, storage)}
@@ -244,10 +258,13 @@ defmodule OverallsProtocol do
            "images" => images,
            "execution_ready" => ready,
            "terminal_protocol" => terminal,
-           "inception_image_id" => inception
+           "inception_image_id" => inception,
+           "checkpoint_compatibility" => compatibility
          } = inventory
        ) do
-    map_size(inventory) == 5 and OverallsProtocol.ImageManifest.ids?(images) and
+    map_size(inventory) == 6 and
+      (is_nil(compatibility) or OverallsProtocol.ImageManifest.id?(compatibility)) and
+      OverallsProtocol.ImageManifest.ids?(images) and
       is_boolean(ready) and terminal in [0, 2] and
       (is_nil(inception) or OverallsProtocol.ImageManifest.id?(inception))
   end

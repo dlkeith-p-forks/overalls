@@ -3,6 +3,9 @@ defmodule OverallsProtocol.VMShape do
   @overhead 67_108_864
   @maximum_disk_bytes 536_870_912_000
 
+  @spec checkpoint_bytes(pos_integer()) :: pos_integer()
+  def checkpoint_bytes(memory_bytes), do: OverallsProtocol.Checkpoint.storage_bytes(memory_bytes)
+
   @spec maximum_disk_bytes() :: pos_integer()
   def maximum_disk_bytes, do: @maximum_disk_bytes
 

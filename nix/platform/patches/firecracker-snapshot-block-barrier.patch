@@ -1,0 +1,25 @@
+From: Overalls maintainers
+Subject: [PATCH] Fail closed before snapshot publication when block drain fails
+
+A snapshot may only be published after all submitted block work is drained and
+flushed. The ordinary shutdown helper logs I/O errors and continues, which is
+not a sufficient barrier for a same-memory continuation. Abort the VMM on this
+error before saving transport/device state, rather than acknowledging a snapshot
+that may contain an incomplete asynchronous completion queue. Lilly retains its
+unfinished capture journal and cannot publish a ready checkpoint without the
+successful API response.
+
+diff --git a/src/vmm/src/devices/virtio/block/virtio/device.rs b/src/vmm/src/devices/virtio/block/virtio/device.rs
+--- a/src/vmm/src/devices/virtio/block/virtio/device.rs
++++ b/src/vmm/src/devices/virtio/block/virtio/device.rs
+@@ -577,4 +577,9 @@ impl VirtioBlock {
+-        self.drain_and_flush(false);
++        // Snapshot publication requires a successful block barrier. A failed
++        // barrier must never be converted into a successful memory snapshot.
++        self.disk
++            .file_engine
++            .drain_and_flush(false)
++            .expect("snapshot block barrier failed");
+         if let FileEngine::Async(ref _engine) = self.disk.file_engine {
+             self.process_async_completion_queue();
+         }

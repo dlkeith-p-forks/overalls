@@ -16,7 +16,7 @@ defmodule OverallsProtocol.Execution do
           host_id: OverallsProtocol.uuid(),
           pool_id: OverallsProtocol.uuid(),
           generation: pos_integer(),
-          kind: :provision | :start | :stop | :delete | :resize,
+          kind: :provision | :start | :stop | :delete | :resize | :pause | :resume,
           architecture: :x86_64,
           profile: :customer | :standard | :oss | :inception,
           vcpu: pos_integer(),
@@ -27,6 +27,7 @@ defmodule OverallsProtocol.Execution do
         }
   @type outcome :: %{
           optional(:guest_ready) => true,
+          optional(:checkpoint) => OverallsProtocol.Checkpoint.t(),
           id: OverallsProtocol.uuid(),
           vm_id: OverallsProtocol.uuid(),
           placement_id: OverallsProtocol.uuid(),
@@ -34,7 +35,7 @@ defmodule OverallsProtocol.Execution do
           operation_id: OverallsProtocol.uuid(),
           generation: pos_integer(),
           sequence: pos_integer(),
-          state: :running | :stopped | :deleted | :failed | :unknown,
+          state: :running | :stopped | :paused | :deleted | :failed | :unknown,
           compute_empty: boolean(),
           disk_present: boolean(),
           cleanup_complete: boolean(),
@@ -153,7 +154,7 @@ defmodule OverallsProtocol.Execution do
   def placement_command(%{"workspace_source" => source} = value) do
     with {:ok, source} <- WorkspaceSource.decode(source),
          {:ok, command} <- placement_command(Map.delete(value, "workspace_source")),
-         true <- command.kind in [:provision, :start],
+         true <- command.kind in [:provision, :start, :resume],
          true <- ProfilePolicy.allows?(command.profile, :egress) do
       {:ok, Map.put(command, :workspace_source, source)}
     else
@@ -192,6 +193,17 @@ defmodule OverallsProtocol.Execution do
          else: (_ -> {:error, :invalid_message})
   end
 
+  def placement_command(%{"kind" => "resume", "checkpoint" => value} = wire) do
+    with {:ok, checkpoint} <- OverallsProtocol.Checkpoint.decode(value),
+         {:ok, command} <- shaped_command(Map.delete(wire, "checkpoint")),
+         true <- command.memory_bytes == checkpoint.memory_bytes do
+      {:ok, Map.put(command, :checkpoint, checkpoint)}
+    else
+      _ -> {:error, :invalid_message}
+    end
+  end
+
+  def placement_command(%{"kind" => "resume"}), do: {:error, :invalid_message}
   def placement_command(%{"kind" => "resize"}), do: {:error, :invalid_message}
   def placement_command(value), do: shaped_command(value)
 
@@ -232,7 +244,7 @@ defmodule OverallsProtocol.Execution do
          true <- is_integer(memory) and memory in 536_870_912..274_877_906_944,
          true <- VMShape.valid?(cpu, memory, disk),
          {:ok, kind} <-
-           enum(kind, [:provision, :start, :stop, :delete, :resize]),
+           enum(kind, [:provision, :start, :stop, :delete, :resize, :pause, :resume]),
          {:ok, profile} <-
            enum(profile, [:customer, :standard, :oss, :inception]) do
       {:ok,
@@ -268,6 +280,19 @@ defmodule OverallsProtocol.Execution do
   # guest_ready MUST be true only on a coherent running outcome. Its absence is
   # unknown, never readiness. Consumers MUST additionally bind provision/start
   # operation identity; the fact grants no independent execution authority.
+  def outcome(%{"checkpoint" => value, "state" => state} = wire)
+      when state in ["paused", "running"] do
+    with {:ok, checkpoint} <- OverallsProtocol.Checkpoint.decode(value),
+         {:ok, outcome} <- checkpoint_outcome(Map.delete(wire, "checkpoint")) do
+      {:ok, Map.put(outcome, :checkpoint, checkpoint)}
+    else
+      _ -> {:error, :invalid_message}
+    end
+  end
+
+  def outcome(%{"checkpoint" => _}), do: {:error, :invalid_message}
+  def outcome(%{"state" => "paused"}), do: {:error, :invalid_message}
+
   def outcome(%{"guest_ready" => true, "state" => "running"} = value) do
     with {:ok, outcome} <- outcome(Map.delete(value, "guest_ready")),
          do: {:ok, Map.put(outcome, :guest_ready, true)}
@@ -285,28 +310,30 @@ defmodule OverallsProtocol.Execution do
     end
   end
 
-  def outcome(
-        %{
-          "id" => id,
-          "vm_id" => vm,
-          "placement_id" => placement,
-          "execution_epoch" => execution_epoch,
-          "operation_id" => operation,
-          "generation" => generation,
-          "sequence" => sequence,
-          "state" => state,
-          "compute_empty" => empty,
-          "disk_present" => disk,
-          "cleanup_complete" => cleanup,
-          "reason" => reason
-        } = value
-      )
-      when map_size(value) == 12 do
+  def outcome(value), do: decode_outcome(value)
+
+  defp decode_outcome(
+         %{
+           "id" => id,
+           "vm_id" => vm,
+           "placement_id" => placement,
+           "execution_epoch" => execution_epoch,
+           "operation_id" => operation,
+           "generation" => generation,
+           "sequence" => sequence,
+           "state" => state,
+           "compute_empty" => empty,
+           "disk_present" => disk,
+           "cleanup_complete" => cleanup,
+           "reason" => reason
+         } = value
+       )
+       when map_size(value) == 12 do
     with true <- Enum.all?([id, vm, placement, operation], &OverallsProtocol.uuid?/1),
          true <- positive?(execution_epoch),
          true <- positive?(generation) and positive?(sequence),
          true <- is_boolean(empty) and is_boolean(disk) and is_boolean(cleanup),
-         {:ok, state} <- enum(state, [:running, :stopped, :deleted, :failed, :unknown]),
+         {:ok, state} <- enum(state, [:running, :stopped, :paused, :deleted, :failed, :unknown]),
          {:ok, reason} <-
            enum(reason, [
              :none,
@@ -337,7 +364,14 @@ defmodule OverallsProtocol.Execution do
     end
   end
 
-  def outcome(_), do: {:error, :invalid_message}
+  defp decode_outcome(_), do: {:error, :invalid_message}
+
+  defp checkpoint_outcome(%{"guest_ready" => true, "state" => "running"} = wire) do
+    with {:ok, outcome} <- decode_outcome(Map.delete(wire, "guest_ready")),
+         do: {:ok, Map.put(outcome, :guest_ready, true)}
+  end
+
+  defp checkpoint_outcome(wire), do: decode_outcome(wire)
 
   @spec encode_command(command()) :: map()
   def encode_command(%{git_identity: identity} = command) do
@@ -361,6 +395,13 @@ defmodule OverallsProtocol.Execution do
   end
 
   @spec encode_outcome(outcome()) :: map()
+  def encode_outcome(%{checkpoint: checkpoint} = outcome) do
+    outcome
+    |> Map.delete(:checkpoint)
+    |> encode_outcome()
+    |> Map.put("checkpoint", OverallsProtocol.Checkpoint.encode(checkpoint))
+  end
+
   def encode_outcome(outcome) do
     Map.new(outcome, fn {key, value} ->
       {Atom.to_string(key),
@@ -378,6 +419,7 @@ defmodule OverallsProtocol.Execution do
   def machine_id?(_), do: false
 
   defp coherent?(:running, false, true, false, :none), do: true
+  defp coherent?(:paused, true, true, false, :none), do: true
   defp coherent?(:stopped, true, _disk, false, :none), do: true
   defp coherent?(:deleted, true, false, true, :none), do: true
 

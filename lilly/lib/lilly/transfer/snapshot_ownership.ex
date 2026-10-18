@@ -17,8 +17,9 @@ defmodule Lilly.Transfer.SnapshotOwnership do
     root = ZFSDataset.ownership_directory(pool)
 
     with {:ok, entries} <- File.ls(root),
-         true <- length(entries) <= 4096 and Enum.all?(entries, &OverallsProtocol.uuid?/1) do
-      Enum.reduce_while(entries, {:ok, %{}}, fn placement, {:ok, expected} ->
+         true <- length(entries) <= 4096 and Enum.all?(entries, &OverallsProtocol.uuid?/1),
+         {:ok, checkpoint_expected} <- Lilly.VM.CheckpointStorage.pool_expectations(pool) do
+      Enum.reduce_while(entries, {:ok, checkpoint_expected}, fn placement, {:ok, expected} ->
         with {:ok, snapshots} <-
                placement_expectations(pool, placement, Path.join(root, placement)),
              {:ok, backups} <- Lilly.Host.BackupSnapshot.expectations(pool, placement) do

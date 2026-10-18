@@ -59,6 +59,7 @@ defmodule Lilly.Transfer.DestinationCleanup do
                             intent.relocation_id,
                             spec.id
                           ),
+                        :ok <- Lilly.VM.CheckpointStorage.retire(pool, spec),
                         :ok <- Disk.discard_import_intent(pool, intent),
                         do: lease(expires)
                  end)

@@ -23,7 +23,7 @@ try:
     host.succeed(
         'jq -e \'.native_admission == false and .os == "illumos"'
         " and .api_statuses == [204,204,204] and .oracle.idle_error == 131"
-        " and .oracle.accept_error > 0 and .oracle.read_error > 0"
+        " and .oracle.accept_error == 0 and .oracle.read_error > 0"
         " and .oracle.write_error > 0 and .oracle.written_before_refusal >= 0"
         " and .oracle.written_before_refusal < 16777216"
         ' and .oracle.fresh_socket == "current-cid-revalidated"'
