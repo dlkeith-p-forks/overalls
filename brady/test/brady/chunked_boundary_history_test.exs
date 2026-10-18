@@ -77,7 +77,7 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
     spec =
       Supervisor.child_spec({Store, root: root, limits: limits}, id: old_id, restart: :temporary)
 
-    {:ok, store} = Store.start_link(root: root, limits: limits, name: old_id)
+    {:ok, store} = Store.start_link(root: root, limits: limits)
     key = String.duplicate("d", 64)
     neighbor = String.duplicate("e", 64)
     parent = self()
@@ -109,7 +109,7 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
       end
 
       recovered =
-        {:ok, recovered} = Store.start_link(root: root, limits: limits, name: new_id)
+        {:ok, recovered} = Store.start_link(root: root, limits: limits)
 
       assert %{writers: 0, readers: 0, pending: 0, writable: false} = Store.stats(recovered)
       assert File.ls!(Path.join(root, "tmp")) == []
@@ -196,7 +196,7 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
 
     limits = %{quota: quota, object: object, high: quota, low: quota - 1}
     id = {:boundary_store, make_ref()}
-    {:ok, store} = Store.start_link(root: root, limits: limits, name: id)
+    {:ok, store} = Store.start_link(root: root, limits: limits)
     parent = self()
     keys = [String.duplicate("a", 64), String.duplicate("b", 64)]
 
