@@ -1,6 +1,6 @@
-{ pkgs, mkUbuntuGuest, terminald, lyraLinux }:
+{ pkgs, mkUbuntuGuest, terminald, lyraLinux, vscodeWeb ? null, vscodeWebBroker ? null }:
 import ../foreign-linux.nix {
-  inherit pkgs mkUbuntuGuest terminald lyraLinux;
+  inherit pkgs mkUbuntuGuest terminald lyraLinux vscodeWeb vscodeWebBroker;
   distribution = "almalinux";
   defaultImageName = "lilly-almalinux-x86_64";
   source = pkgs.fetchurl {

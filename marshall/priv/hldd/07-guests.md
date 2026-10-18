@@ -118,7 +118,17 @@ Firecracker/KVM, ZFS or physical host isolation.
 
 ## Browser editor capability
 
-Both builders embed the source-built `vscode-web` package and its Rust broker.
+NixOS and Ubuntu embed the source-built `vscode-web` package and its Rust broker.
+The Arch/Alma shared builder now carries the same optional pinned package pair,
+offline registered closure, GC roots, account broker and exact descriptor. Their
+earlier selected images omitted that payload and correctly display an unsupported
+editor explanation. Final evaluation and actual-filesystem closure/configuration/
+service checks pass for editor-bearing Arch `0b3da3e8` and Alma `65e7700b`.
+Native browser and replacement-image CLI execution remain separate pending
+evidence; the seven-family CLI milestone applies to their earlier image IDs.
+Existing writable disks retain their original manifest and require a new machine
+from an editor-bearing image. See the
+[foreign Linux editor review](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).
 The same closure carries four reviewed Open VSX builtin extensions, immutable AI
 policy and project language adapters. No global language toolchain or server is
 added by the editor. Extension pins, verified extraction recipe, adapters and

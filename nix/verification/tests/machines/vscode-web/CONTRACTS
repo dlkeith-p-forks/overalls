@@ -8,7 +8,9 @@ as Marshall/Cedar/Audi or Firecracker image acceptance.
 The `fleet.py` and `guest.exs` acceptance scripts MUST exercise real Marshall,
 Audi and Lilly releases and actual Firecracker execution of the selected guest
 image. Their driver build or type check MUST NOT establish native acceptance;
-passing execution MUST identify the tested NixOS or Ubuntu guest family.
+passing execution MUST identify the tested NixOS, Ubuntu, Arch Linux or AlmaLinux
+guest family. Each selected family MUST preserve the same current boot, personal
+account, editor policy, file, terminal, recovery and authorization assertions.
 
 @cc [owner:ghuntley,label:verification;security] editor-local-browser-inputs
 Browser assets, workspace files and gallery responses MUST come from local

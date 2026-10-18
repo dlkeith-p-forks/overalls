@@ -177,6 +177,12 @@ Ubuntu SSH/editor boundaries. Native unit inventory passed in 8.22 seconds withi
 a failed complete native-zfs run; unrelated resource-tuning receipt acceptance
 and complete Runtime startup fencing remain separate gaps.
 
+The [foreign Linux editor review](../reviews/2026-10-18-foreign-linux-browser-editor.md)
+applies the existing personal editor identity and immutable release boundaries
+to Arch and AlmaLinux. Their earlier CLI lifecycle passes do not establish
+editor support. New image packaging and native browser acceptance are recorded
+separately; retained guest disks receive no manifest or identity conversion.
+
 ## Open questions
 
 Complete Ubuntu SSH/agent/relocation/reboot/clone acceptance, complete current

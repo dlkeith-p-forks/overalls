@@ -143,7 +143,11 @@ maintained patch stack. Marshall's Editor domain holds one-use approvals,
 host/account cookies and renewable current-authority leases. Audi handles account
 origins and immutable webview assets; Lilly opens the dedicated fenced port to a
 guest broker, which starts each editor under its reconciled GuestAccount UID.
-Both image builders declare the exact editor closure and manifest capability.
+NixOS and Ubuntu declare the exact editor closure and manifest capability.
+The [foreign Linux repair](reviews/2026-10-18-foreign-linux-browser-editor.md)
+adds the missing package pair, broker service and descriptor to Arch/Alma;
+fresh image and browser execution evidence remains separate from their earlier
+CLI lifecycle passes. Retained disks keep their original capability.
 The guest package disables built-in AI/Chat and workspace trust, includes four
 verified immutable Open VSX defaults, and delegates language tools to project
 environments. Policy, extension lock and adapters bind the release identity;

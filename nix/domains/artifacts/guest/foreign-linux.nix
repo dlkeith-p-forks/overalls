@@ -1,11 +1,87 @@
-{ pkgs, mkUbuntuGuest, terminald, lyraLinux, distribution, defaultImageName, source, sourceFormat }:
+{ pkgs, mkUbuntuGuest, terminald, lyraLinux, distribution, defaultImageName, source, sourceFormat,
+  vscodeWeb ? null, vscodeWebBroker ? null }:
 { imageName ? defaultImageName
 , privateServiceRoots ? [ ]
+, files ? { }
 , minimumMemoryBytes ? 2147483648
 , minimumDiskBytes ? 8589934592
 }:
 let
   inherit (pkgs) lib;
+  # @cc [owner:ghuntley,label:build;security] foreign-linux-fixture-files
+  # Custom files MUST use canonical absolute /opt destinations and ordinary
+  # read-only or owner-writable file modes. Assembly MUST refuse existing
+  # destinations and symlink parents; overlays MUST NOT replace platform files.
+  validFile = path: value:
+    let parts = lib.splitString "/" path;
+    in builtins.match "/opt/[ -~]+" path != null
+      && !(lib.any (part: part == "." || part == ".." || part == "") (lib.tail parts))
+      && builtins.isAttrs value && value ? source
+      && lib.all (name: builtins.elem name [ "source" "mode" ]) (builtins.attrNames value)
+      && (builtins.isPath value.source || builtins.isString value.source || lib.isDerivation value.source)
+      && builtins.isString (value.mode or "0644")
+      && builtins.elem (value.mode or "0644") [ "0444" "0644" "0555" "0755" ];
+  customization = lib.concatStringsSep "\n" (lib.mapAttrsToList (path: value: ''
+    test -f ${lib.escapeShellArg "${value.source}"}
+    test ! -L ${lib.escapeShellArg "${value.source}"}
+    destination=./files${lib.escapeShellArg path}
+    test ! -e "$destination" && test ! -L "$destination"
+    parent=$(dirname "$destination")
+    while test "$parent" != ./files; do
+      test ! -L "$parent"
+      test ! -e "$parent" || test -d "$parent"
+      parent=$(dirname "$parent")
+    done
+    install -D -m ${lib.escapeShellArg (value.mode or "0644")} ${lib.escapeShellArg "${value.source}"} "$destination"
+  '') files);
+  editorEnabled = vscodeWeb != null;
+  editorDescriptor = if editorEnabled then {
+    protocol = vscodeWeb.editorProtocol;
+    commit = vscodeWeb.sourceCommit;
+    release = vscodeWeb.releaseId;
+  } else null;
+  # @cc [owner:ghuntley,label:security;deployment] foreign-linux-editor-account-broker
+  # Editor-enabled roots MUST carry the exact pinned editor/broker descriptor
+  # and root-custodied configuration. The broker MUST use the distribution's
+  # systemd and current account authorizer; workers MUST retain personal UID
+  # custody. Private DNS and roster startup MUST precede the broker, while
+  # editor startup MUST NOT become a guest readiness dependency.
+  editorConfiguration = if editorEnabled then pkgs.writeText "foreign-linux-overalls-vscode-web-broker.json" (builtins.toJSON {
+    descriptor = editorDescriptor;
+    editor_executable = "${vscodeWeb}/bin/overalls-code";
+    systemd_run = "/usr/bin/systemd-run";
+    systemctl = "/usr/bin/systemctl";
+    account_authorizer = "/usr/local/bin/overalls-ssh-authorize";
+    worker_path = "/usr/local/bin:/usr/bin:/bin";
+  }) else null;
+  editorUnit = if editorEnabled then pkgs.writeText "foreign-linux-overalls-vscode-web.service" ''
+    [Unit]
+    Description=Overalls account-bound browser editor broker
+    Requires=lilly-network.service lilly-private-dns.service
+    Wants=overalls-ssh-sync.service
+    After=lilly-network.service lilly-private-dns.service overalls-ssh-sync.service
+    ConditionKernelCommandLine=lilly.ipv4
+    ConditionKernelCommandLine=lilly.placement
+    ConditionKernelCommandLine=lilly.execution_epoch
+
+    [Service]
+    ExecStart=${vscodeWebBroker}/bin/overalls-vscode-web-broker ${editorConfiguration}
+    Environment=OVERALLS_SSH_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+    Environment=PATH=/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    Restart=on-failure
+    RestartSec=2
+    RuntimeDirectory=overalls-vscode
+    RuntimeDirectoryMode=0711
+    RuntimeDirectoryPreserve=yes
+    StateDirectory=overalls-ssh
+    StateDirectoryMode=0700
+    UMask=0077
+    TasksMax=256
+    StandardOutput=null
+
+    [Install]
+    WantedBy=multi-user.target
+  '' else null;
   # Reuse only the reviewed Firecracker Linux kernel/initrd contract. The
   # distribution rootfs is assembled from its own pinned release input below.
   boot = mkUbuntuGuest {
@@ -81,7 +157,7 @@ let
     pkgs.cacert pkgs.coreutils pkgs.e2fsprogs pkgs.git pkgs.iproute2
     pkgs.openssh pkgs.pam pkgs.python3 pkgs.shadow pkgs.glibc.getent
     pkgs.sudo pkgs.systemd pkgs.util-linux terminald lyraLinux pamHelperInstaller
-  ];
+  ] ++ lib.optionals editorEnabled [ vscodeWeb vscodeWebBroker editorConfiguration editorUnit pkgs.direnv ];
   rootfs = (pkgs.callPackage (pkgs.path + "/nixos/lib/make-ext4-fs.nix") {
     storePaths = runtimeStorePaths;
     volumeLabel = "overalls-${distribution}";
@@ -167,6 +243,18 @@ let
       install -D -m 0755 ${./readiness.py} ./files/usr/local/lib/lilly-readiness.py
       install -D -m 0755 ${./flush.py} ./files/usr/local/lib/lilly-flush.py
       install -D -m 0755 ${./boot_report.py} ./files/usr/local/lib/lilly-boot-report.py
+      ${customization}
+      ${lib.optionalString editorEnabled ''
+        mkdir -p ./files/nix/var/nix/gcroots
+        ln -s ${vscodeWeb} ./files/nix/var/nix/gcroots/overalls-vscode-web
+        ln -s ${vscodeWebBroker} ./files/nix/var/nix/gcroots/overalls-vscode-web-broker
+        ln -s ${editorConfiguration} ./files/nix/var/nix/gcroots/overalls-vscode-web-configuration
+        ln -s ${editorUnit} ./files/nix/var/nix/gcroots/overalls-vscode-web-unit
+        ln -s ${pkgs.direnv} ./files/nix/var/nix/gcroots/overalls-vscode-web-direnv
+        ln -s ${vscodeWeb}/bin/overalls-code ./files/usr/local/bin/overalls-code
+        ln -s ${pkgs.direnv}/bin/direnv ./files/usr/local/bin/direnv
+        install -D -m 0644 ${editorUnit} ./files/etc/systemd/system/overalls-vscode-web.service
+      ''}
       # Unit sources live in the Nix store and are read-only. Do not preserve
       # those modes when copying because the distribution-neutral trust and
       # workspace units below replace files in this directory.
@@ -335,6 +423,9 @@ let
       ln -sfn /dev/null ./files/etc/systemd/system/serial-getty@.service
       ln -sfn /dev/null ./files/etc/systemd/system/console-getty.service
       ${lib.optionalString (privateServiceRoots != [ ]) ''
+        ${lib.optionalString editorEnabled ''
+          ln -sfn ../overalls-vscode-web.service ./files/etc/systemd/system/multi-user.target.wants/overalls-vscode-web.service
+        ''}
         ln -sfn ../overalls-guest-trust.service ./files/etc/systemd/system/multi-user.target.wants/overalls-guest-trust.service
         ln -sfn ../overalls-workspace.service ./files/etc/systemd/system/multi-user.target.wants/overalls-workspace.service
         ln -sfn ../ssh.service ./files/etc/systemd/system/multi-user.target.wants/ssh.service
@@ -442,6 +533,19 @@ let
     # filesystem hash seeds and every filesystem mutation's clock MUST be fixed.
     # Store optimisation's incidental hardlinks MUST NOT enter the filesystem.
     buildCommand = let
+      registrationAnchor = "# Make a crude approximation of the size of the target image.";
+      # @cc [owner:ghuntley,label:build;security] foreign-linux-editor-registered-closure
+      # Editor-enabled roots MUST register the complete copied closure before
+      # image construction and retain immutable package/configuration GC roots.
+      # The shared normalizer MUST remove registration clocks and WAL/SHM bytes
+      # without changing registered paths/references. No boot-time load or
+      # network package installation may replace this offline registration.
+      registerAtBuild = lib.optionalString editorEnabled ''
+        NIX_STATE_DIR=$PWD/rootImage/nix/var/nix ${pkgs.nix}/bin/nix-store \
+          --load-db --option build-users-group "" < ./rootImage/nix-path-registration
+        rm ./rootImage/nix-path-registration ./rootImage/nix/var/nix/db/reserved
+        ${pkgs.python3}/bin/python3 ${./ubuntu/normalize_nix_db.py} ./rootImage/nix/var/nix/db/db.sqlite
+      '';
       oldSizing = ''
         numDataBlocks=$(du -s -c -B 4096 --apparent-size ./rootImage | tail -1 | awk '{ print int($1 * 1.20) }')
       '';
@@ -454,7 +558,9 @@ let
     assert lib.hasInfix oldMkfs previous.buildCommand;
     assert lib.hasInfix "resize2fs -M $img" previous.buildCommand;
     assert lib.hasInfix "resize2fs $img $new_size" previous.buildCommand;
-    builtins.replaceStrings [ oldSizing oldMkfs "resize2fs -M $img" "resize2fs $img $new_size" "cp -a --reflink=auto" ] [
+    assert lib.hasInfix registrationAnchor previous.buildCommand;
+    assert lib.hasInfix "./rootImage/nix-path-registration" previous.buildCommand;
+    builtins.replaceStrings [ oldSizing oldMkfs "resize2fs -M $img" "resize2fs $img $new_size" "cp -a --reflink=auto" registrationAnchor ] [
       ''
         # Directory st_size differs between ext4 and ZFS build hosts. Charge
         # fixed inode headroom and sum only regular file/symlink content sizes.
@@ -466,9 +572,13 @@ let
       "faketime -f \"1970-01-01 00:00:01\" resize2fs -M $img"
       "faketime -f \"1970-01-01 00:00:01\" resize2fs $img $new_size"
       "cp -a --no-preserve=links --reflink=auto"
+      (registerAtBuild + registrationAnchor)
     ] previous.buildCommand;
   });
 in
+assert lib.assertMsg (lib.all (path: validFile path files.${path}) (builtins.attrNames files)) "Invalid or protected foreign Linux file destination/mode";
+assert lib.assertMsg ((vscodeWeb == null) == (vscodeWebBroker == null)) "Foreign Linux editor and broker packages must be supplied together";
+assert lib.assertMsg (!editorEnabled || minimumMemoryBytes >= 2147483648) "Browser editor guests require at least 2 GiB RAM";
 # @cc [owner:ghuntley,label:security;build] foreign-linux-explicit-kernel-lsm
 # Foreign Linux manifests MUST select the reviewed NixOS guest LSM stack
 # explicitly. A distribution's default SELinux policy MUST NOT activate against
@@ -478,7 +588,8 @@ pkgs.runCommand imageName {
   nativeBuildInputs = [ pkgs.jq ];
   preferLocalBuild = true;
   passthru = {
-    inherit distribution source sourceFormat boot rootfs runtimeStorePaths pamHelperInstaller;
+    inherit distribution source sourceFormat boot rootfs runtimeStorePaths pamHelperInstaller
+      editorEnabled editorDescriptor editorConfiguration editorUnit;
     workspaceSourceEnabled = privateServiceRoots != [ ];
   };
 } ''
@@ -490,13 +601,21 @@ pkgs.runCommand imageName {
   kernel_bytes=$(stat -Lc %s "$out/kernel")
   initrd_bytes=$(stat -Lc %s "$out/initrd")
   rootfs_bytes=$(stat -Lc %s "$out/rootfs.ext4")
-  minimum_disk_bytes=$(( rootfs_bytes > ${toString minimumDiskBytes} ? rootfs_bytes : ${toString minimumDiskBytes} ))
+  minimum_disk_bytes=$rootfs_bytes
+  # @cc [owner:ghuntley,label:build;capacity] foreign-linux-editor-writable-headroom
+  # An editor image MUST reserve at least 2 GiB beyond its immutable rootfs,
+  # rounded to whole GiB, while preserving any larger requested disk minimum.
+  ${lib.optionalString editorEnabled ''
+    minimum_disk_bytes=$(( (rootfs_bytes + 2147483648 + 1073741823) / 1073741824 * 1073741824 ))
+  ''}
+  minimum_disk_bytes=$(( minimum_disk_bytes > ${toString minimumDiskBytes} ? minimum_disk_bytes : ${toString minimumDiskBytes} ))
   jq -n \
     --arg distro ${lib.escapeShellArg distribution} \
     --argjson memory ${toString minimumMemoryBytes} --argjson disk "$minimum_disk_bytes" \
     --argjson kernel_bytes "$kernel_bytes" --arg kernel_sha256 "$(sha256sum "$out/kernel" | cut -d' ' -f1)" \
     --argjson initrd_bytes "$initrd_bytes" --arg initrd_sha256 "$(sha256sum "$out/initrd" | cut -d' ' -f1)" \
     --argjson rootfs_bytes "$rootfs_bytes" --arg rootfs_sha256 "$(sha256sum "$out/rootfs.ext4" | cut -d' ' -f1)" \
-    '{version:4,architecture:"x86_64",boot_args:("console=ttyS0 root=/dev/vda rw lsm=landlock,yama,bpf overalls.distribution=" + $distro),minimum_disk_bytes:$disk,minimum_memory_bytes:$memory,workspace_source_version:${if privateServiceRoots == [] then "null" else "2"},kernel:{bytes:$kernel_bytes,sha256:$kernel_sha256},initrd:{bytes:$initrd_bytes,sha256:$initrd_sha256},rootfs:{bytes:$rootfs_bytes,sha256:$rootfs_sha256}}' \
+    --argjson editor '${builtins.toJSON editorDescriptor}' \
+    '{version:4,architecture:"x86_64",boot_args:("console=ttyS0 root=/dev/vda rw lsm=landlock,yama,bpf overalls.distribution=" + $distro),minimum_disk_bytes:$disk,minimum_memory_bytes:$memory,workspace_source_version:${if privateServiceRoots == [] then "null" else "2"},kernel:{bytes:$kernel_bytes,sha256:$kernel_sha256},initrd:{bytes:$initrd_bytes,sha256:$initrd_sha256},rootfs:{bytes:$rootfs_bytes,sha256:$rootfs_sha256}} + (if $editor == null then {} else {editor:$editor} end)' \
     > "$out/manifest.json"
 ''

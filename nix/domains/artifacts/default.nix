@@ -233,11 +233,11 @@ rec {
   # their builders assemble roots from separately pinned distribution inputs.
   # The builders install the generic Linux guest runtime and keep image
   # identities separate in the fleet catalog by distribution and source pin.
-  mkArchGuest = import ./guest/arch { inherit pkgs mkUbuntuGuest terminald lyraLinux; };
+  mkArchGuest = import ./guest/arch { inherit pkgs mkUbuntuGuest terminald lyraLinux vscodeWeb vscodeWebBroker; };
   archGuest = mkArchGuest { inherit privateServiceRoots; minimumMemoryBytes = 2147483648; };
   mkArchLinuxGuest = mkArchGuest;
   archLinuxGuest = archGuest;
-  mkAlmaLinuxGuest = import ./guest/alma { inherit pkgs mkUbuntuGuest terminald lyraLinux; };
+  mkAlmaLinuxGuest = import ./guest/alma { inherit pkgs mkUbuntuGuest terminald lyraLinux vscodeWeb vscodeWebBroker; };
   almaLinuxGuest = mkAlmaLinuxGuest { inherit privateServiceRoots; minimumMemoryBytes = 2147483648; };
   # Short aliases follow the catalog's display name and preserve discoverability
   # for callers that use the conventional Alma naming.

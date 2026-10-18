@@ -2,6 +2,24 @@
 
 NixOS machine integration tests and property-based tests are the preferred evidence. Unit tests establish narrower behavior. **Present** means a test exists and its assertion was inspected; **recorded** links a historical execution record, not a rerun of the current tree. Partial coverage does not mean the feature is broken. Gaps identify what the evidence cannot establish.
 
+## Open the personal browser editor on a newly provisioned AlmaLinux or Arch image
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.
+
+Boundary: The immutable image binds the pinned editor/broker closure and exact descriptor; Marshall retains current write/profile/Customer-owner authority, Audi retains the account origin, Lilly fences TCP 4444 to the current boot, and the guest broker reconciles the current personal UID before launching a systemd worker.
+
+Required refusal: Retained editor-free images, a changed release or image identity, missing package partner, insufficient headroom, unsafe customization paths, foreign gateway/boot/account and revoked browser authority must refuse. A Linux family capability or successful SSH does not grant editor authority.
+
+Tested scope: The shared Alma/Arch builder now packages the pinned editor/broker/direnv, exact descriptor, registered offline closure and GC roots. Final evaluation and actual-filesystem custody gates passed, as did the unchanged two-check exact-release/image property and absent-descriptor refusal suite. Both pinned distro unit parsers accepted the exact service with dependency stubs. New image IDs are Arch0b3da3e8 and Alma65e7700b. The real Alma full-chain derivation is running; no passing Alma/Arch browser or production journey is claimed yet.
+
+- **property, recorded**: [editor compatibility binds the complete immutable release and image identity](repo:marshall/test/marshall/compute/image_editor_capability_test.exs) — Application-level generated exact-release/image binding and malformed/absent-descriptor refusal. Does not execute an editor or guest.; [execution record](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).
+- **unit, recorded**: [foreign-linux-final-editor-payload](repo:nix/verification/tests/evaluation/foreign-linux-filesystem.nix) — Final actual ext4 images pass exact editor/broker/configuration/unit bytes, root custody, GC links, complete registered closure paths/hashes/narSizes/references and capacity minima. Offline artifact evidence only, with separate old-image negative checks; no guest boot or browser acceptance.; [execution record](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).
+- **machine, present**: [native editor opens from Marshall with personal terminal and isolated webview](repo:nix/verification/tests/machines/vscode-web/fleet.py) — Explicit Alma/Arch fixture selection uses the real application chain and exact guest image. Presence is not a passing execution record..
+
+**Gaps:** Full-chain browser and replacement-image CLI journeys remain in progress. Existing seven-family CLI lifecycle receipts apply to the earlier immutable images. Retained disks are not upgraded. Production sign-in/recurring fixtures and physical isolation remain separate; Windows and native BSD/illumos editor support stay disabled.
+
+**Preferred test work:** Run the Alma and Arch Marshall/Audi/Lilly/Firecracker editor fixtures with the exact rebuilt images, including save/readback, personal UID, broker/worker recovery and same-disk restart. Preserve failed attempts and then observe the separately deployed production catalog.
+
 ## Observe healthy pool capacity beside an exactly owned retained disk with invalid launch metadata
 
 Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.

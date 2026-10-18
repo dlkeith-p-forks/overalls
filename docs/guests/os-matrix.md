@@ -6,18 +6,21 @@ entries: `omniosGuest` and `illumosGuest` select the exact reviewed immutable
 OmniOS promotion. Catalog declaration, deployment, staged artifacts, native machine
 execution and live fleet acceptance are separate evidence scopes.
 
-All seven selected immutable images now have separately recorded successful
+The seven immutable identities recorded below have separately recorded successful
 create/readiness, strict personal-account CLI SSH, stop with an independent
 current-owner stopped checkpoint, same-VM restart, repeated strict SSH and
 completed deletion. The [matrix review](../architecture/reviews/2026-10-18-guest-os-matrix.md)
 binds the 49 stage receipts at their distinct times and execution revisions.
+The source now selects editor-bearing replacement Arch/Alma images with passing
+artifact checks; their new browser and CLI lifecycle acceptance is tracked
+separately in the [editor repair review](../architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).
 
 | Family | Selected package | Boot and agent contract | Current evidence and limit |
 |--------|------------------|-------------------------|----------------------------|
 | NixOS | `guest` | Linux kernel, version 4, `linux` | Exact selected `92114604` passed fresh `101111` strict personal-account CLI SSH, stop with separate stopped checkpoint, restart, repeat SSH and deleted cleanup. Existing native scopes remain separate; see [ADR-0011](../architecture/decisions/0011-nixos-guest-and-console.md). |
 | Ubuntu 26.04 LTS | `ubuntuGuest` | Linux kernel, version 4, `linux` | Unchanged selected `8d468c67` retains the `075200` complete strict CLI lifecycle/deleted-cleanup evidence and final immutable artifact custody; see the [Ubuntu guide](ubuntu-guests.md). |
-| Arch Linux | `archGuest` | Linux kernel, version 4, `linux` | Fresh helper-fixed `99fa9876` in run `114223` passed create/readiness, strict personal SSH and read-only sudo/helper checks, stop with an independent current-owner stopped checkpoint, restart with repeated strict SSH/checks and completed deletion. Earlier `8ab89c2d` reached readiness but failed SSH at PAM account management; that failed fixture and its cleanup retain separate receipts. |
-| AlmaLinux | `almaLinuxGuest` | Linux kernel, version 4, `linux` | Fresh helper-fixed `473f9589` in run `114223` passed create/readiness, strict personal SSH and read-only sudo/helper checks, stop with an independent current-owner stopped checkpoint, restart with repeated strict SSH/checks and completed deletion. Earlier `bed87c33` reached readiness but failed SSH during authentication; it shares Arch's immutable helper omission, with no separate Alma PAM root probe recorded. Historical failure and cleanup receipts remain separate. |
+| Arch Linux | `archGuest` | Linux kernel, version 4, `linux` | Editor-bearing `0b3da3e8` passed actual-image closure/configuration/service checks; new browser and CLI lifecycles are pending. Earlier helper-fixed `99fa9876` in run `114223` passed strict personal SSH/sudo, an independent stopped-owner checkpoint, same-VM restart, repeated checks and deletion. Earlier `8ab89c2d` failed SSH at PAM account management; historical failure and cleanup retain their own receipts. |
+| AlmaLinux | `almaLinuxGuest` | Linux kernel, version 4, `linux` | Editor-bearing `65e7700b` passed actual-image closure/configuration/service checks; new browser and CLI lifecycles are pending. Earlier helper-fixed `473f9589` in run `114223` passed strict personal SSH/sudo, an independent stopped-owner checkpoint, same-VM restart, repeated checks and deletion. Earlier `bed87c33` failed SSH during authentication; its shared helper omission has no independent Alma PAM root probe. Historical failure and cleanup remain separate. |
 | FreeBSD 14.3 | `freebsdGuest` | CloudHv firmware, raw GPT/UFS, version 6, `freebsd-v1` | Exact promoted image; five native scenarios passed. Runs `072900` and `075200` passed CLI lifecycle and terminal deleted cleanup. The later cleanup required scoped idle rootless-namespace recovery; that manual recovery does not establish general automatic cleanup. |
 | OmniOS r151050 | `illumosGuest` | CloudHv firmware, raw GPT/ZFS, version 6, `illumos-v1` | Exact promoted image is selected and admitted. Disk `45983bb7` passed all five direct host-KVM scenarios, ordinary transport and reset. Fresh `122228` passed the full 16 GiB strict CLI lifecycle, separate current-owner stopped checkpoint and completed deletion. Earlier `091638` retains its own lifecycle and original release-label oracle failure; it lacked that separate checkpoint. |
 | Windows Server 2025 | `windowsGuestPublished` | CloudHv firmware, raw GPT, version 5, `windows-v1` | Repaired `8ca0a11f` passed installation, sealing, executable readback, signed publication and independent full-content substitution. Fresh `103842` passed create/readiness, exact strict CLI SSH, stop with separate stopped checkpoint, restart, repeat SSH and deleted cleanup. Its original warning-only failure is preserved; the runner admits only the exact stock Windows warning without changing trust/algorithms. Terminal, executor, workspace, growth and isolation remain separate. See the [Windows guide](windows-guests.md). |
@@ -37,6 +40,13 @@ The [foreign Linux evaluation](../../nix/verification/tests/evaluation/foreign-l
 checks the Arch/Alma inputs, manifests and offline closure. It does not execute
 either distribution. Distribution display names and the website's OS labels
 also do not prove what kernel or root actually ran.
+
+The seven CLI journeys do not prove browser editor support. In particular, the
+helper-fixed Arch `99fa9876` and Alma `473f9589` images omit the editor runtime,
+broker and immutable descriptor; the browser correctly refuses them. The
+[editor repair review](../architecture/reviews/2026-10-18-foreign-linux-browser-editor.md)
+tracks new editor-bearing images and separate browser acceptance. Host updates
+do not add the editor to existing disks.
 
 The qualified FreeBSD image ID is
 `sha256:d141e4266c29da00a1378157b1d39369b1d48e577bca4ce7375e8ff6d399557b`.

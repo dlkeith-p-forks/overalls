@@ -11,6 +11,92 @@ let
     imageName = "alma-private-evaluation";
     privateServiceRoots = [ ../../../../secrets/private-services-root.pem ];
   };
+  archPrivate = packages.mkArchGuest {
+    imageName = "arch-private-evaluation";
+    privateServiceRoots = [ ../../../../secrets/private-services-root.pem ];
+  };
+  expectedEditor = {
+    protocol = packages.vscodeWeb.editorProtocol;
+    commit = packages.vscodeWeb.sourceCommit;
+    release = packages.vscodeWeb.releaseId;
+  };
+  constructor = distribution: editor: broker: import (../../../domains/artifacts/guest + "/${distribution}") {
+    inherit pkgs;
+    inherit (packages) mkUbuntuGuest terminald lyraLinux;
+    vscodeWeb = editor;
+    vscodeWebBroker = broker;
+  };
+  accepts = builder: args: (builtins.tryEval (builder args).drvPath).success;
+  fixture = pkgs.writeText "foreign-linux-custom-file" "bounded fixture\n";
+  # @cc [owner:ghuntley,label:verification;security] foreign-linux-editor-options
+  # Both constructors MUST reject an incomplete editor/broker pair and an
+  # editor image below 2 GiB RAM. With neither package, no editor descriptor,
+  # payload, service or registration hook may enter the root builder.
+  editorOptions = distribution:
+    let
+      disabled = constructor distribution null null { };
+      disabledCommand = plain disabled.rootfs.buildCommand;
+    in assert !(accepts (constructor distribution packages.vscodeWeb null) { });
+       assert !(accepts (constructor distribution null packages.vscodeWebBroker) { });
+       assert !(accepts (constructor distribution packages.vscodeWeb packages.vscodeWebBroker) { minimumMemoryBytes = 2147483647; });
+       assert !disabled.editorEnabled && disabled.editorDescriptor == null;
+       assert disabled.editorConfiguration == null && disabled.editorUnit == null;
+       assert !(pkgs.lib.hasInfix "overalls-vscode" disabledCommand);
+       assert !(pkgs.lib.hasInfix "normalize_nix_db.py" disabledCommand);
+       assert pkgs.lib.hasInfix "--argjson editor 'null'" (plain disabled.buildCommand);
+       true;
+  # @cc [owner:ghuntley,label:verification;security] foreign-linux-custom-file-refusals
+  # Optional files MUST accept the bounded /opt fixture shape and refuse
+  # traversal, control characters, platform paths, writable-to-others modes,
+  # unknown fields, missing sources and untyped source/mode values.
+  fileOptions = builder:
+    assert accepts builder { files."/opt/overalls-editor-fixture/check.json" = { source = fixture; mode = "0444"; }; };
+    assert pkgs.lib.all (path: !(accepts builder { files.${path} = { source = fixture; }; })) [
+      "/opt/../etc/passwd" "/opt//fixture" "/opt/./fixture" "/opt/fixture/" "opt/fixture"
+      "/etc/systemd/system/ssh.service" "/usr/local/bin/overalls-ssh-authorize" "/opt/fixture\nother"
+    ];
+    assert pkgs.lib.all (value: !(accepts builder { files."/opt/fixture" = value; })) [
+      { source = fixture; mode = "04755"; } { source = fixture; mode = "0666"; }
+      { source = fixture; mode = 444; } { source = fixture; unexpected = true; }
+      { source = 7; } { source = { __toString = _: "/tmp/fixture"; }; } { mode = "0444"; }
+    ];
+    true;
+  # @cc [owner:ghuntley,label:verification;security] foreign-linux-editor-assembly
+  # Enabled roots MUST bind the exact package descriptor and current personal
+  # authorizer, register the copied closure, preserve its GC roots and reserve
+  # editor disk headroom. Activation MUST be private-only and independent of
+  # readiness; this evaluation is not execution of the editor or guest.
+  editorAssembly = base: private:
+    let
+      command = plain base.rootfs.buildCommand;
+      privateCommand = plain private.rootfs.buildCommand;
+      config = builtins.fromJSON (plain base.editorConfiguration.text);
+      unit = plain base.editorUnit.text;
+      activation = "../overalls-vscode-web.service ./files/etc/systemd/system/multi-user.target.wants/overalls-vscode-web.service";
+      readinessLines = builtins.filter (line: pkgs.lib.hasInfix "LILLY_REQUIRED_UNITS" line) (pkgs.lib.splitString "\n" privateCommand);
+    in assert base.editorEnabled && base.editorDescriptor == expectedEditor;
+       assert config == {
+         descriptor = expectedEditor;
+         editor_executable = "${packages.vscodeWeb}/bin/overalls-code";
+         systemd_run = "/usr/bin/systemd-run";
+         systemctl = "/usr/bin/systemctl";
+         account_authorizer = "/usr/local/bin/overalls-ssh-authorize";
+         worker_path = "/usr/local/bin:/usr/bin:/bin";
+       };
+       assert pkgs.lib.hasInfix "After=lilly-network.service lilly-private-dns.service overalls-ssh-sync.service" unit;
+       assert !(pkgs.lib.hasInfix "lilly-ready" unit);
+       assert !(pkgs.lib.hasInfix "KillMode=control-group" unit);
+       assert pkgs.lib.hasInfix "--load-db --option build-users-group" command;
+       assert pkgs.lib.hasInfix "normalize_nix_db.py" command;
+       assert pkgs.lib.all (name: pkgs.lib.hasInfix "./files/nix/var/nix/gcroots/${name}" command) [
+         "overalls-vscode-web" "overalls-vscode-web-broker" "overalls-vscode-web-configuration" "overalls-vscode-web-unit"
+         "overalls-vscode-web-direnv"
+       ];
+       assert pkgs.lib.hasInfix (plain "ln -s ${pkgs.direnv}/bin/direnv ./files/usr/local/bin/direnv") command;
+       assert !(pkgs.lib.hasInfix activation command) && pkgs.lib.hasInfix activation privateCommand;
+       assert readinessLines != [ ] && !(pkgs.lib.any (line: pkgs.lib.hasInfix "vscode" line) readinessLines);
+       assert pkgs.lib.hasInfix "rootfs_bytes + 2147483648 + 1073741823" (plain base.buildCommand);
+       true;
   almaPrivateRootCommand = plain almaPrivate.passthru.rootfs.buildCommand;
   archSourceName = builtins.baseNameOf (toString arch.passthru.source);
   almaSourceName = builtins.baseNameOf (toString alma.passthru.source);
@@ -85,6 +171,9 @@ let
 in
 assert check arch archCommand "arch";
 assert check alma almaCommand "almalinux";
+assert editorOptions "arch" && editorOptions "alma";
+assert fileOptions packages.mkArchGuest && fileOptions packages.mkAlmaLinuxGuest;
+assert editorAssembly arch archPrivate && editorAssembly alma almaPrivate;
 assert reproducible archRootCommand;
 assert reproducible almaRootCommand;
 assert accountRuntime archRootCommand;

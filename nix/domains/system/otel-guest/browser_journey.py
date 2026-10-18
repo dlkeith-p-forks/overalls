@@ -33,12 +33,25 @@ from playwright.sync_api import (
 )
 
 
+class GuestFamily(StrEnum):
+    """@cc [owner:ghuntley,label:verification] browser-editor-family-oracle
+    An accepted fixture family MUST equal the canonical /etc/os-release ID
+    observed in its managed guest terminal. Unknown families MUST refuse before
+    browser launch, rather than falling back to another family.
+    """
+
+    NIXOS = "nixos"
+    UBUNTU = "ubuntu"
+    ARCH = "arch"
+    ALMALINUX = "almalinux"
+
+
 @dataclass(frozen=True)
 class Fixture:
     marshall_origin: str
     machine_id: str
     expected_editor_origin: str
-    expected_guest: str
+    expected_guest: GuestFamily
     workspace_file: str
     expected_uid: int
     expected_username: str
@@ -300,9 +313,7 @@ def load_fixture(path: Path) -> Fixture:
     machine_id = text(value["machine_id"])
     if str(UUID(machine_id)) != machine_id:
         raise ValueError("canonical fixture VM UUID required")
-    guest = text(value["expected_guest"])
-    if guest not in {"nixos", "ubuntu"}:
-        raise ValueError("closed guest OS fixture required")
+    guest = GuestFamily(text(value["expected_guest"]))
     uid = value["expected_uid"]
     if isinstance(uid, bool) or not isinstance(uid, int) or not 200_000 <= uid <= 999_999:
         raise ValueError("personal guest UID fixture required")

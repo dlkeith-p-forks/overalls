@@ -1,5 +1,9 @@
 # Architecture reviews
 
+- [Foreign Linux browser editor (2026-10-18)](2026-10-18-foreign-linux-browser-editor.md):
+  repairs the missing Alma/Arch editor package, account broker and immutable
+  descriptor while preserving exact-release authority; fresh image and native
+  browser acceptance are tracked separately from the seven-family CLI milestone.
 - [Machine pins (2026-10-18)](2026-10-18-machine-pins.md): ADR-0193's per-user
   pins, pinned-first lists, the owner-pin deletion guard across every lifecycle
   delete path with the account-deletion exception, pin removal at archival and
@@ -10,9 +14,9 @@
   allocation credit while preserving neighboring pool observations. Current
   launch/readiness codecs and all native ownership refusals remain strict.
 - [Guest OS matrix evidence (2026-10-18)](2026-10-18-guest-os-matrix.md): seven
-  declared families, six admitted catalog rows, explicit-image live acceptance
-  tooling and corrected current evidence boundaries. OmniOS admission and a
-  complete seven-OS lifecycle pass remain open; accepted contracts are unchanged.
+  declared families and admitted catalog rows, explicit-image live acceptance,
+  and 49 separately recorded successful CLI lifecycle stages. Broader guest
+  capabilities and the custom-kernel plan remain partial.
 - [Staged detached ingress (2026-10-17)](2026-10-17-staged-detached-ingress.md): ADR-0192 finds that the editor and nested HTTPS needed the BEAM only for setup (a Lilly-derived preface and the editor's ready frame), not TLS, HTTP inspection, per-request authorization or multiplexing, and moves them onto ADR-0187's detached bridges with a hostd-executed stage. Rust and Elixir tests passed; the editor-fleet restart subtest has not run.
 - [Hegel NixOS property migration (2026-10-17)](2026-10-17-hegel-nixos-migration.md): selected live machine drivers use Hegel for generated histories and stateful schedules; evaluation, guest-side and exact acceptance checks retain their evidence boundaries.
 

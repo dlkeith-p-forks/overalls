@@ -268,6 +268,13 @@ installed validator and passed Ruff/ty; it still does not prove native isolation
 Per-user controls and separately installed extensions retain their
 existing authority. Static package defaults produce no invented audit events.
 
+The new Arch/Alma image packaging uses these same layers. Their earlier
+editor-free manifests remain refused, even though CLI SSH succeeds. Final-image
+closure checks and a newly displayed editor control cannot substitute for a
+recorded personal browser journey. The
+[foreign Linux review](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md)
+separates packaging, native fixtures and production acceptance.
+
 | Layer | Authority and refusal |
 | --- | --- |
 | Identity | Current completed stored login and permanent GuestAccount UUID. One-use exchange, host-only cookie and separate personal origins refuse cross-account/replayed proof; retirement loses old authority. Same-User email changes preserve the guest UUID/UID/name/home and editor origin. |
@@ -275,7 +282,7 @@ existing authority. Static package defaults produce no invented audit events.
 | Transport | Audi public TLS, service-authenticated control, exact unsafe HTTP/WebSocket Origin and fixed callback host. Same-site sibling origins and caller-supplied identity headers refuse before guest contact. Gallery VSIX authenticity uses packaged Ed25519 keys before extraction; local imports remain a separate user decision. |
 | Execution | Thirty-second leases bind service generation, host, VM placement/epoch/generation, account, UID/name, release and origin; admission also needs a live host connection session. Renewal while Lilly reconnects (no session, or a new one not yet reported) is `unavailable` and retried only inside the unchanged lease; sign-out, revoked write, stop, a newer generation and a stale report stay conclusive ([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)). Expired/closed or changed bindings cannot revive. Lilly binds the dedicated marked gateway path and writes the typed preface. |
 | Isolation | Broker binds exact boot IPv4/eth0 and admits only the derived gateway. Worker runs reconciled personal UID on its owner-only Unix socket; no root fallback. Separate browser/webview origins prevent automatic browser-state sharing. Passwordless sudo writers still hold root capability, so no cross-writer OS confidentiality is claimed. |
-| Storage | Current manifest v4 binds exact immutable editor package and declared source capability; obsolete/mismatched images refuse. Ubuntu registers and GC-roots the offline closure. Personal home/server/extensions data is never automatically inherited by another account incarnation. Disable state uses upstream browser-profile storage on the separate account origin, without a cross-device synchronization promise; shared builtins remain immutable. |
+| Storage | Current manifest v4 binds exact immutable editor package and declared source capability; obsolete/mismatched images refuse. Ubuntu, Arch and Alma register and GC-root their offline editor closures. Personal home/server/extensions data is never automatically inherited by another account incarnation. Disable state uses upstream browser-profile storage on the separate account origin, without a cross-device synchronization promise; shared builtins remain immutable. |
 | Recovery | Broker restart retains independent systemd workers and sockets. Authority loss closes communication without claiming process death. Fresh admission can start a lost worker but cannot revive an old lease; upstream native activity governs idle shutdown. |
 
 Machine-page editor eligibility reuses the validated image/release authority

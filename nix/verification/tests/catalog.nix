@@ -60,6 +60,8 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   };
   vscode-web-nixos-fleet = featureFleet { editor = true; audi = true; };
   vscode-web-ubuntu-fleet = featureFleet { editor = true; audi = true; ubuntu = true; };
+  vscode-web-arch-fleet = featureFleet { editor = true; audi = true; editorFamily = "arch"; };
+  vscode-web-almalinux-fleet = featureFleet { editor = true; audi = true; editorFamily = "almalinux"; };
   coding-clis-nixos-fleet = featureFleet { codingClis = true; };
   coding-clis-ubuntu-fleet = featureFleet { codingClis = true; ubuntu = true; };
   database-recovery = import ./machines/database-recovery { pkgs = testPkgs; inherit packages; };
