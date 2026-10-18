@@ -14,32 +14,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/marshall_web/browser_messages.ex:11
+#: lib/marshall_web/browser_messages.ex:17
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
 msgstr "%{count} দিন আগে"
 
-#: lib/marshall_web/browser_messages.ex:12
+#: lib/marshall_web/browser_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
 msgstr "%{count} ঘণ্টা আগে"
 
-#: lib/marshall_web/browser_messages.ex:13
+#: lib/marshall_web/browser_messages.ex:19
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
 msgstr "%{count} মিনিট আগে"
 
-#: lib/marshall_web/browser_messages.ex:14
+#: lib/marshall_web/browser_messages.ex:20
 #, elixir-autogen, elixir-format
 msgid "%{label} copied."
 msgstr "%{label} কপি করা হয়েছে।"
 
-#: lib/marshall_web/browser_messages.ex:9
+#: lib/marshall_web/browser_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing"
 msgstr "%{name} · %{count} জন দেখছেন"
 
-#: lib/marshall_web/browser_messages.ex:10
+#: lib/marshall_web/browser_messages.ex:12
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing · %{activity}"
 msgstr "%{name} · %{count} জন দেখছেন · %{activity}"
@@ -49,73 +49,73 @@ msgstr "%{name} · %{count} জন দেখছেন · %{activity}"
 msgid "%{name} · Terminals"
 msgstr "%{name} · টার্মিনাল"
 
-#: lib/marshall_web/browser_messages.ex:15
+#: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ নতুন"
 
-#: lib/marshall_web/browser_messages.ex:16
+#: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Applying administrative change…"
 msgstr "প্রশাসনিক পরিবর্তন প্রয়োগ হচ্ছে…"
 
-#: lib/marshall_web/browser_messages.ex:17
+#: lib/marshall_web/browser_messages.ex:23
 #, elixir-autogen, elixir-format
 msgid "Boot log · read-only"
 msgstr "বুট লগ · শুধু পড়া"
 
-#: lib/marshall_web/browser_messages.ex:18
+#: lib/marshall_web/browser_messages.ex:24
 #, elixir-autogen, elixir-format
 msgid "Close this terminal session?"
 msgstr "এই টার্মিনাল সেশন বন্ধ করবেন?"
 
-#: lib/marshall_web/browser_messages.ex:19
+#: lib/marshall_web/browser_messages.ex:25
 #, elixir-autogen, elixir-format
 msgid "Command"
 msgstr "কমান্ড"
 
-#: lib/marshall_web/browser_messages.ex:20
+#: lib/marshall_web/browser_messages.ex:27
 #, elixir-autogen, elixir-format
 msgid "Could not copy. Select the text and copy it manually."
 msgstr "কপি করা যায়নি। লেখা নির্বাচন করে ম্যানুয়ালি কপি করুন।"
 
-#: lib/marshall_web/browser_messages.ex:21
+#: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
 msgstr ""
 "অ্যাক্সেস আপডেট করা যায়নি। অ্যাকাউন্টের মেশিন অ্যাক্সেস পরীক্ষা করুন।"
 
-#: lib/marshall_web/browser_messages.ex:22
+#: lib/marshall_web/browser_messages.ex:31
 #, elixir-autogen, elixir-format
 msgid "Design diagram; explanation follows in the handbook"
 msgstr "ডিজাইন ডায়াগ্রাম; ব্যাখ্যা হ্যান্ডবুকে আছে"
 
-#: lib/marshall_web/browser_messages.ex:23
+#: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "পূর্ণ স্ক্রিনে প্রবেশ করুন"
 
-#: lib/marshall_web/browser_messages.ex:24
+#: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "Exit full screen"
 msgstr "পূর্ণ স্ক্রিন থেকে বের হন"
 
-#: lib/marshall_web/browser_messages.ex:25
+#: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
 msgid "Input buffer full — that input was not sent"
 msgstr "ইনপুট বাফার পূর্ণ — ইনপুটটি পাঠানো হয়নি"
 
-#: lib/marshall_web/browser_messages.ex:26
+#: lib/marshall_web/browser_messages.ex:36
 #, elixir-autogen, elixir-format
 msgid "Match found"
 msgstr "মিল পাওয়া গেছে"
 
-#: lib/marshall_web/browser_messages.ex:27
+#: lib/marshall_web/browser_messages.ex:37
 #, elixir-autogen, elixir-format
 msgid "No matches"
 msgstr "কোনো মিল নেই"
 
-#: lib/marshall_web/browser_messages.ex:28
+#: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
 msgstr ""
@@ -123,106 +123,106 @@ msgstr ""
 "\n"
 "%{url}"
 
-#: lib/marshall_web/browser_messages.ex:29
+#: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "Opening…"
 msgstr "খোলা হচ্ছে…"
 
-#: lib/marshall_web/browser_messages.ex:30
+#: lib/marshall_web/browser_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled. You can try again."
 msgstr "পাসকি অনুরোধ বাতিল হয়েছে। আবার চেষ্টা করতে পারেন।"
 
-#: lib/marshall_web/browser_messages.ex:31
+#: lib/marshall_web/browser_messages.ex:44
 #, elixir-autogen, elixir-format
 msgid "Passkey verification failed or unavailable. Try again."
 msgstr "পাসকি যাচাইকরণ ব্যর্থ বা অনুপলব্ধ। আবার চেষ্টা করুন।"
 
-#: lib/marshall_web/browser_messages.ex:32
+#: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
 msgstr "টার্মিনালের নাম (শুধু এই ব্রাউজারে; খালি করলে তৈরি নাম ফিরে আসে)"
 
-#: lib/marshall_web/browser_messages.ex:33
+#: lib/marshall_web/browser_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
 msgstr ""
 "ফলাফল নিশ্চিত করা যায়নি। পৃষ্ঠা রিলোড করে আবার চেষ্টা করার আগে ফলাফল দেখুন।"
 
-#: lib/marshall_web/browser_messages.ex:34
+#: lib/marshall_web/browser_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
 msgstr ""
 "এই মেশিনটি আপনার ক্লিপবোর্ডে %{bytes} বাইট লিখতে চায়। once, session অথবা "
 "mute লিখুন।"
 
-#: lib/marshall_web/browser_messages.ex:35
+#: lib/marshall_web/browser_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
 msgstr "এই রিপোজিটরি লিংক চালু করা যায়নি। লিংকটি আবার খুলুন।"
 
-#: lib/marshall_web/browser_messages.ex:36
+#: lib/marshall_web/browser_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "ইন্টার‌অ্যাক্ট করতে টাইপ করুন"
 
-#: lib/marshall_web/browser_messages.ex:37
+#: lib/marshall_web/browser_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "দেখার অ্যাক্সেস আপডেট হচ্ছে…"
 
-#: lib/marshall_web/browser_messages.ex:38
+#: lib/marshall_web/browser_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr "যাচাইকরণ সম্পূর্ণ করা যায়নি। আবার চেষ্টা করুন।"
 
-#: lib/marshall_web/browser_messages.ex:39
+#: lib/marshall_web/browser_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr ""
 "%{action} করতে আপনার পাসকি দিয়ে যাচাই করুন। যাচাইয়ের পরে এটি একবার চলবে।"
 
-#: lib/marshall_web/browser_messages.ex:40
+#: lib/marshall_web/browser_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "শুধু দেখুন"
 
-#: lib/marshall_web/browser_messages.ex:41
+#: lib/marshall_web/browser_messages.ex:74
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "দেখার অ্যাক্সেস আপডেট হয়েছে।"
 
-#: lib/marshall_web/browser_messages.ex:42
+#: lib/marshall_web/browser_messages.ex:75
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "আপনার পাসকির জন্য অপেক্ষা করা হচ্ছে…"
 
-#: lib/marshall_web/browser_messages.ex:43
+#: lib/marshall_web/browser_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "এই প্রশাসনিক পরিবর্তন সম্পূর্ণ করুন"
 
-#: lib/marshall_web/browser_messages.ex:44
+#: lib/marshall_web/browser_messages.ex:78
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "এইমাত্র"
 
-#: lib/marshall_web/browser_messages.ex:45
+#: lib/marshall_web/browser_messages.ex:79
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "● লাইভ"
 
-#: lib/marshall_web/browser_messages.ex:46
+#: lib/marshall_web/browser_messages.ex:80
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● শুধু পড়া"
 
-#: lib/marshall_web/browser_messages.ex:47
+#: lib/marshall_web/browser_messages.ex:81
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ পুনরায় সংযোগ হচ্ছে…"
 
-#: lib/marshall_web/browser_messages.ex:48
+#: lib/marshall_web/browser_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ স্ক্রলব্যাক পুনরুদ্ধার হচ্ছে…"

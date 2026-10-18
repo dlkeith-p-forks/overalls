@@ -30,8 +30,8 @@ in {
     # to 1024 MiB after the recorded 512 MiB startup cgroup OOM. This host-side
     # fixture allowance MUST NOT change guest resource or headroom assertions,
     # other fleet variants, or the production Ziggy memory default.
-    services.ziggy = { secretsFile = "${root}/ziggy.enc.json"; cpuCores = 1; memoryMiB = if codingClis then 1024 else 512; agentEnable = agent; };
-    services.galileo = { secretsFile = "${root}/galileo.enc.json"; cpuCores = 1; memoryMiB = 512; };
+    services.ziggy = { enable = true; secretsFile = "${root}/ziggy.enc.json"; cpuCores = 1; memoryMiB = if codingClis then 1024 else 512; agentEnable = agent; };
+    services.galileo = { enable = true; secretsFile = "${root}/galileo.enc.json"; cpuCores = 1; memoryMiB = 512; };
     systemd.services.fleet-ziggy-credentials = {
       serviceConfig = { Type = "oneshot"; RemainAfterExit = true; TimeoutStartSec = 600; };
       script = ''
