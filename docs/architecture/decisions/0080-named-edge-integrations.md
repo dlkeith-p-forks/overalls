@@ -10,7 +10,7 @@
 
 ## Context
 
-The user authorized a new application modeled on exe.dev's HTTP proxy
+The user authorized a new application modeled on sample-host's HTTP proxy
 integration: VM workloads call named upstream services at
 `https://<name>.integration.internal` while user-provided credentials
 (bearer tokens, basic auth, static headers) are injected at the network

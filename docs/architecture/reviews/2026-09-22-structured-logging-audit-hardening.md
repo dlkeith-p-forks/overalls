@@ -75,7 +75,7 @@ The full Marshall test phase reached 840/849 passing. Five failures were stale
 administrator-test assumptions that the expanded shared authority log contained
 only administrator receipts; those assertions were narrowed and their nine-test
 suite then passed on a fresh database. The remaining four failures require native
-helpers unavailable in the exe.dev shell (`openssl`, the ingress connector,
+helpers unavailable in the sample-host shell (`openssl`, the ingress connector,
 transfer SSH key preparation and export-permit confirmation). Lilly's full
 precommit test phase similarly hit 187 host-lock/native-helper failures, while
 its focused changed test and forced Dialyzer passed. `prek run --all-files` could

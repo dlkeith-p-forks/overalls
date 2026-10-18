@@ -717,7 +717,7 @@ request withdrawal acceptance passed on `7fda1272`; see the
 Current owner liveness also refuses
 archived teams despite retained memberships and attachments.
 [ADR-0077](decisions/0077-teams-and-shared-resources.md)
-partially adds exe.dev-style teams sharing machines and integrations with
+partially adds sample-host-style teams sharing machines and integrations with
 owner/admin/member roles and a consent-based ownership transfer state
 machine. Current team members can use shared guest SSH, personal terminals and
 profile-permitted agents; ordinary machine management remains owner/admin-only

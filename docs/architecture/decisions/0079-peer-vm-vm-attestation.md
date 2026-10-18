@@ -10,7 +10,7 @@
 
 ## Context
 
-The user included exe.dev-style peer integrations in scope: one VM calls
+The user included sample-host-style peer integrations in scope: one VM calls
 another VM through a named integration, with a platform-generated
 credential and a source-VM header that the target can trust because the
 platform, not the caller, attests it. The header must be impossible for

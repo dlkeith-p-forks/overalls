@@ -142,7 +142,7 @@ in pkgs.testers.runNixOSTest {
     };
   };
   nodes.client = { nodes, ... }: {
-    networking.extraHosts = "169.254.254.1 exedev.integration.internal";
+    networking.extraHosts = "169.254.254.1 esample.integration.internal";
     environment.systemPackages = [ pkgs.curl pkgs.dig pkgs.python3 ];
     environment.etc."galileo-client.py".source = ./client.py;
     environment.etc."galileo-ca.pem".source = "${tls}/ca.pem";

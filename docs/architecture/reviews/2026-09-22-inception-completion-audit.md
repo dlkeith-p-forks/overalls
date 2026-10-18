@@ -124,7 +124,7 @@ The shared profile now advertises `nested-kvm`; base storage configurations and
 enrolled hosts assert the setting and vendor module options. The existing
 remote-builder evaluation continues to cover both fleets. Advertisement is
 scheduler metadata, not runtime proof, so native suites still require and test a
-usable `/dev/kvm` inside the test machine. The current exe.dev VM lacks the
+usable `/dev/kvm` inside the test machine. The current sample-host VM lacks the
 feature in its daemon metadata even though direct driver execution has working
 nested KVM; the flake does not globally claim the feature for arbitrary hosts.
 

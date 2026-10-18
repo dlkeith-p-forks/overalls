@@ -46,7 +46,7 @@ defmodule Marshall.GalileoTest do
     Galileo.configure_integration(
       Map.merge(
         %{
-          name: "exedev",
+          name: "esample",
           target: "https://api.example.test",
           strip_prefix: nil,
           headers: [%{kind: :bearer, name: "authorization", value: "sk-secret-1"}],
@@ -71,7 +71,7 @@ defmodule Marshall.GalileoTest do
       capture_log([metadata: [:event, :operation_status]], fn ->
         {:ok, integration} = configure(actor)
 
-        assert integration.name == "exedev"
+        assert integration.name == "esample"
         assert integration.owner_id == actor.id
       end)
 
@@ -190,7 +190,7 @@ defmodule Marshall.GalileoTest do
                headers: [%{kind: :bearer, name: "authorization", value: "sk-a"}]
              })
 
-    assert {:ok, _} = Galileo.remove_integration(%{name: "exedev"}, actor: actor)
+    assert {:ok, _} = Galileo.remove_integration(%{name: "esample"}, actor: actor)
     assert [%{archived_at: %DateTime{}}] = Ledger.history!(Integration, id: integration.id)
 
     identical = %{
@@ -235,7 +235,7 @@ defmodule Marshall.GalileoTest do
     actor = Marshall.ComputeFixtures.user()
     stranger = Marshall.ComputeFixtures.user()
     {:ok, _integration} = configure(actor)
-    assert {:ok, _} = Galileo.remove_integration(%{name: "exedev"}, actor: actor)
+    assert {:ok, _} = Galileo.remove_integration(%{name: "esample"}, actor: actor)
 
     assert {:error, error} = configure(stranger, %{idempotency_key: Ash.UUID.generate()})
     assert Exception.message(error) =~ "forbidden"
@@ -295,11 +295,11 @@ defmodule Marshall.GalileoTest do
     {:ok, integration} = configure(actor)
 
     assert {:error, error} =
-             configure(other, %{name: "exedev", idempotency_key: Ash.UUID.generate()})
+             configure(other, %{name: "esample", idempotency_key: Ash.UUID.generate()})
 
     assert Exception.message(error) =~ "forbidden"
 
-    assert {:ok, view} = Galileo.show_integration(%{name: "exedev"}, actor: actor)
+    assert {:ok, view} = Galileo.show_integration(%{name: "esample"}, actor: actor)
     assert [%{kind: :bearer, name: "authorization"}] = view.headers
     assert view.headers == [%{kind: :bearer, name: "authorization"}]
 
@@ -318,17 +318,17 @@ defmodule Marshall.GalileoTest do
     {:ok, integration} = configure(actor)
 
     assert {:error, _} =
-             Galileo.attach_integration(%{name: "exedev", vm_id: fixture.vm.id}, actor: other)
+             Galileo.attach_integration(%{name: "esample", vm_id: fixture.vm.id}, actor: other)
 
     attach_logs =
       capture_log([metadata: [:event, :operation_status, :vm_id]], fn ->
-        assert {:ok, %{attached: "exedev", integration_id: integration_id}} =
-                 Galileo.attach_integration(%{name: "exedev", vm_id: fixture.vm.id}, actor: actor)
+        assert {:ok, %{attached: "esample", integration_id: integration_id}} =
+                 Galileo.attach_integration(%{name: "esample", vm_id: fixture.vm.id}, actor: actor)
 
         assert integration_id == integration.id
 
-        assert {:ok, %{attached: "exedev"}} =
-                 Galileo.attach_integration(%{name: "exedev", vm_id: fixture.vm.id}, actor: actor)
+        assert {:ok, %{attached: "esample"}} =
+                 Galileo.attach_integration(%{name: "esample", vm_id: fixture.vm.id}, actor: actor)
       end)
 
     assert attach_logs =~ "event=galileo.integration_configured"
@@ -338,16 +338,16 @@ defmodule Marshall.GalileoTest do
     assert [attachment] =
              Ledger.read!(Attachment, integration_id: integration.id, vm_id: fixture.vm.id)
 
-    assert {:ok, %{detached: "exedev"}} =
-             Galileo.detach_integration(%{name: "exedev", vm_id: fixture.vm.id}, actor: actor)
+    assert {:ok, %{detached: "esample"}} =
+             Galileo.detach_integration(%{name: "esample", vm_id: fixture.vm.id}, actor: actor)
 
     assert [] == Ledger.read!(Attachment, integration_id: integration.id, vm_id: fixture.vm.id)
     assert attachment.id
 
     detach_logs =
       ExUnit.CaptureLog.capture_log([metadata: [:event, :operation_status]], fn ->
-        assert {:ok, %{detached: "exedev"}} =
-                 Galileo.detach_integration(%{name: "exedev", vm_id: fixture.vm.id}, actor: actor)
+        assert {:ok, %{detached: "esample"}} =
+                 Galileo.detach_integration(%{name: "esample", vm_id: fixture.vm.id}, actor: actor)
       end)
 
     assert detach_logs =~ "event=galileo.integration_configured"
