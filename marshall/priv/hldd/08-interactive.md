@@ -1216,3 +1216,5 @@ section of the single Account page, behind the same fresh-login gate as profile,
 passkey and SSH key controls. The old settings URLs remain removed. Git email is
 separate from sign-in email. Invalid or foreign-account changes refuse. Identity
 changes apply to newly created machines.
+
+Public documentation applies validated browser language negotiation without a login or session cookie. Its standalone HTML declares the negotiated `lang` and explicit `dir`, including RTL for Arabic and Urdu. Controller regression coverage checks English, Arabic, Urdu and Japanese; this does not establish visual bidi correctness or translation completeness.

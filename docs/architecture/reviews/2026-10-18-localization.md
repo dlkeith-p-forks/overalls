@@ -80,3 +80,7 @@ result is upgraded by these structural checks.
   Swedish, Portuguese and Arabic, including both themes and RTL layouts.
 - Porsche tests for locale transport, old-version fallback and unchanged
   machine-readable output.
+
+## Public documentation direction follow-up
+
+The standalone public documentation layout now uses LocalePlug language and direction assignments, preserving ADR-0201 and ADR-0161 without changing authority, dependencies or protocol contracts. The docs controller suite recorded **7 passed**, seed **199192**, against the pending change based on `b595f7c2f`. Assertions cover English/Japanese LTR, Arabic/Urdu RTL, Content-Language and absence of session cookies. A 45-second scratch Bombadil rerun exited 0 after the original run exposed the missing documentation direction; exploration coverage has not been audited, so this is not all-locale browser acceptance. Documentation translation completeness and native-language review remain outstanding.
