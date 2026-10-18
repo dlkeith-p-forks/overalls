@@ -86,6 +86,174 @@ defmodule Lilly.VM.CheckpointTest do
            )
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] interrupted-capture-terminal-discard-model
+  # Reopened capturing journals MUST permit only local terminal cleanup under
+  # current or later authority, never RAM readiness, phase promotion or cold
+  # execution. Stale, foreign, missing and executable authorities MUST refuse.
+  property "terminal cleanup cannot promote an interrupted capture into usable RAM", %{
+    tmp_dir: directory
+  } do
+    generation = draw("capture generation", integer(2..1_000_000))
+    terminal_state = draw("terminal state", member_of([:stopped, :deleted, :failed]))
+    root = Path.join(directory, Lilly.UUID.generate())
+    File.mkdir!(root)
+    File.chmod!(root, 0o700)
+    {:ok, lock} = Lock.acquire(root)
+
+    try do
+      {pool, spec} = fixture(root)
+      empty = states(pool, spec, generation + 1).empty
+      authority = %{"placement_id" => spec.id, "execution_epoch" => 1, "generation" => generation}
+      capturing = states(pool, spec, generation + 1).capturing
+
+      capturing = %{
+        capturing
+        | "capture_authority" => authority,
+          "manifest" => %{capturing["manifest"] | "source_authority" => authority}
+      }
+
+      assert :ok = Checkpoint.write(pool, spec.id, empty)
+      assert :ok = Checkpoint.write(pool, spec.id, capturing)
+      assert {:ok, ^capturing} = Checkpoint.read(pool, spec.id)
+      intent_directory = Path.join(root, "intent")
+      :ok = PrivateFiles.directory(intent_directory)
+      assert {:ok, paused} = Intent.set(intent_directory, spec.id, {1, generation}, :paused)
+      refute Checkpoint.discardable_pause?(capturing, pool, spec, paused)
+
+      terminal_generation = if terminal_state == :failed, do: generation, else: generation + 1
+
+      assert {:ok, terminal} =
+               Intent.set(intent_directory, spec.id, {1, terminal_generation}, terminal_state)
+
+      assert {:ok, ^terminal} = Intent.read(intent_directory)
+      assert Checkpoint.discardable_pause?(capturing, pool, spec, terminal)
+      assert {:error, :checkpoint_unconfirmed} = Checkpoint.ready(pool, spec)
+      assert {:ok, ^capturing} = Checkpoint.read(pool, spec.id)
+
+      for rejected <- [
+            %{terminal | generation: generation - 1},
+            %{terminal | execution_epoch: 0},
+            %{terminal | placement_id: @other},
+            %{terminal | state: :running},
+            %{terminal | state: :paused}
+          ] do
+        refute Checkpoint.discardable_pause?(capturing, pool, spec, rejected)
+      end
+
+      for invalid <- [
+            nil,
+            %{},
+            Map.put(capturing, "phase", "ready"),
+            put_in(capturing, ["binding", "host_id"], @other)
+          ] do
+        refute Checkpoint.discardable_pause?(invalid, pool, spec, terminal)
+      end
+    after
+      assert :ok = Lock.release(lock)
+      File.rm_rf!(root)
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery;concurrency] acknowledged-capture-survives-pool-contention
+  # A real native pool lease held elsewhere MUST NOT prevent the acknowledged
+  # copy's private journal transition under its configured placement lease;
+  # an unrelated held native lease MUST refuse without advancing the journal.
+  # Reopening MUST retain copied, unchanged native ownership and no ready RAM descriptor.
+  # This exercises journal/lease integration, not a native Firecracker snapshot.
+  property "pool contention cannot discard an acknowledged capture result", %{
+    tmp_dir: directory
+  } do
+    generation = draw("capture generation", integer(2..1_000_000))
+    epoch = draw("capture epoch", integer(1..1_000_000))
+    root = Path.join(directory, Lilly.UUID.generate())
+    File.mkdir!(root)
+    File.chmod!(root, 0o700)
+    {pool, spec} = fixture(root)
+    placement_directory = Path.join([root, "state", spec.id, "lock"])
+    File.mkdir_p!(Path.dirname(placement_directory))
+    {:ok, placement} = Lock.acquire(placement_directory)
+    pool_directory = Path.join(root, ".lilly-storage")
+    parent = self()
+    ready = make_ref()
+
+    holder =
+      Task.async(fn ->
+        {:ok, lease} = Lock.acquire(pool_directory)
+        send(parent, {:pool_owned, ready})
+
+        receive do
+          {:release_pool, ^ready} -> :ok = Lock.release(lease)
+        end
+      end)
+
+    try do
+      assert_receive {:pool_owned, ^ready}, 5000
+      assert {:error, :host_already_owned} = Lock.acquire(pool_directory)
+      assert Lock.current() == placement
+      history = states(pool, spec, generation + 1)
+
+      authority = %{
+        "placement_id" => spec.id,
+        "execution_epoch" => epoch,
+        "generation" => generation
+      }
+
+      capturing = %{
+        history.capturing
+        | "capture_authority" => authority,
+          "manifest" => %{history.capturing["manifest"] | "source_authority" => authority}
+      }
+
+      assert :ok = Checkpoint.write(pool, spec.id, history.empty)
+      assert :ok = Checkpoint.write(pool, spec.id, capturing)
+
+      assert {:error, :checkpoint_unconfirmed} =
+               Checkpoint.copied(
+                 pool,
+                 spec,
+                 %{authority | "generation" => generation + 1},
+                 placement_directory
+               )
+
+      assert {:error, :checkpoint_unconfirmed} =
+               Checkpoint.copied(%{pool | id: @other}, spec, authority, placement_directory)
+
+      assert {:ok, wrong_lease} = Lock.acquire(Path.join(root, "wrong-lock"))
+
+      try do
+        assert Lock.current() == wrong_lease
+        assert Lock.held?(wrong_lease)
+
+        assert {:error, :checkpoint_unconfirmed} =
+                 Checkpoint.copied(pool, spec, authority, placement_directory)
+
+        assert {:ok, ^capturing} = Checkpoint.read(pool, spec.id)
+      after
+        assert :ok = Lock.release(wrong_lease)
+      end
+
+      assert {:ok, ^capturing} = Checkpoint.read(pool, spec.id)
+      assert Lock.current() == placement
+      assert :ok = Checkpoint.copied(pool, spec, authority, placement_directory)
+      assert {:ok, copied} = Checkpoint.read(pool, spec.id)
+      assert copied["phase"] == "copied"
+      assert copied["capture_authority"] == authority
+      assert copied["descriptor"] == nil
+      assert copied["slots"]["a"]["state"] == "empty"
+      assert copied["slots"]["a"]["dataset_guid"] == capturing["slots"]["a"]["dataset_guid"]
+      assert copied["slots"]["a"]["snapshot_guid"] == nil
+      assert copied["slots"]["a"]["checkpoint_id"] == copied["checkpoint_id"]
+      assert {:error, :checkpoint_unconfirmed} = Checkpoint.ready(pool, spec)
+      assert {:error, :host_already_owned} = Lock.acquire(pool_directory)
+      assert Lock.current() == placement
+    after
+      send(holder.pid, {:release_pool, ready})
+      assert :ok = Task.await(holder, 5000)
+      assert :ok = Lock.release(placement)
+      File.rm_rf!(root)
+    end
+  end
+
   # @cc [owner:ghuntley,label:verification;isolation;recovery] memory-relocation-network-compatibility-tested
   # RAM continuation MUST retain its source profile/slot and complete machine
   # shape even when placement/pool change. Different slot/profile admission

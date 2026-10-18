@@ -94,8 +94,8 @@ defmodule Lilly.Host.Command do
 
   # @cc [owner:ghuntley,label:security;recovery] mutations-require-lock-owner
   # run/3 MUST reject image_copy, cp, mv, rm, truncate, ZFS create/destroy/mount/unmount/snapshot/set/rename/receive-abort, mount, umount,
-  # chown, mkfifo, ssh_keygen, zfs_namespace_unmount and systemd_run without a
-  # current lease. Every utility MUST run in lilly-hostd, named from its
+  # chown, mkfifo, ssh_keygen, zfs_namespace_unmount and systemctl stop/kill without
+  # a current lease. Every utility MUST run in lilly-hostd, named from its
   # closed table and never by path: under the current lease when one is
   # held, so accepted mutations cannot race a successor after caller death,
   # and otherwise as a lease-less read. Lilly spawns no host utility itself.
@@ -201,6 +201,9 @@ defmodule Lilly.Host.Command do
                :chown,
                :chmod
              ] ->
+          {:error, :host_lock_required}
+
+        nil when name == :systemctl and hd(arguments) in ["stop", "kill"] ->
           {:error, :host_lock_required}
 
         nil ->

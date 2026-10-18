@@ -24,7 +24,7 @@ defmodule Lilly.VM.Intent do
   @doc "Caller holds the per-VM lock. A nil generation is reserved for local operator primitives."
   # @cc [owner:ghuntley,label:recovery] launch-intent-monotonic-and-terminal
   # set/4 MUST reject changed placement, decreasing epoch/generation pairs and equal-pair state conflicts, except running
-  # may become failed. Failed intent cannot return to running at the same epoch/generation, and deleted
+  # or paused may become failed. Failed intent cannot return to running at the same epoch/generation, and deleted
   # intent can never become non-deleted.
   @spec set(Path.t(), OverallsProtocol.uuid(), revision(), state()) ::
           {:ok, t()} | {:error, atom()}
@@ -132,7 +132,7 @@ defmodule Lilly.VM.Intent do
       current.state == state ->
         {:ok, current}
 
-      current.state == :running and state == :failed ->
+      current.state in [:running, :paused] and state == :failed ->
         {:ok, %{current | state: :failed}}
 
       true ->

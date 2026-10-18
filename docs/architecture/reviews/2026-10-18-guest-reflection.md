@@ -15,3 +15,11 @@ recorded execution result is claimed here. Peach's current HTTP-named test only
 validates a projection fixture through the codec and does not invoke the Plug.
 Successful packaged guest projection, execution/expiry histories, native
 isolation and cross-host recovery remain unverified.
+
+Merged deployment review found that requiring Peach beside Audi blocked hosts
+that had not enabled reflection, while Audi's closed runtime decoder rejected
+the emitted socket field. The repair makes that field optional and nullable,
+validates configured canonical bounded Unix paths, and refuses absent reflection
+before guest execution admission. Lilly, Ziggy and Galileo remain mandatory.
+This enables independent rollout; it does not establish enabled Peach socket
+access, service credential lifetime or a successful native projection.

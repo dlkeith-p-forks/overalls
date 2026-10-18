@@ -108,10 +108,16 @@ defmodule MarshallWeb.Admin.AuditLive do
         {:noreply,
          socket
          |> certificate_history()
-         |> put_flash(:info, gettext("Wildcard rotation requested for generation %{generation}.", generation: generation))}
+         |> put_flash(
+           :info,
+           gettext("Wildcard rotation requested for generation %{generation}.",
+             generation: generation
+           )
+         )}
 
       _ ->
-        {:noreply, put_flash(socket, :error, gettext("Wildcard rotation could not be requested."))}
+        {:noreply,
+         put_flash(socket, :error, gettext("Wildcard rotation could not be requested."))}
     end
   end
 
@@ -170,7 +176,11 @@ defmodule MarshallWeb.Admin.AuditLive do
       <section id="admin-audit" class="stack">
         <UI.heading
           title={gettext("Audit")}
-          subtitle={gettext("Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded.")}
+          subtitle={
+            gettext(
+              "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
+            )
+          }
         />
         <nav class="machine-tabs" aria-label={gettext("Audit kinds")}>
           <.link
@@ -181,8 +191,12 @@ defmodule MarshallWeb.Admin.AuditLive do
           >
             {gettext("Administrator actions")}
           </.link>
-          <.link patch={~p"/admin/audit?kind=lifecycle"} aria-current={@lifecycle? && "page"}>{gettext("VM lifecycle")}</.link>
-          <.link patch={~p"/admin/audit?kind=certificates"} aria-current={@certificate? && "page"}>{gettext("Certificates")}</.link>
+          <.link patch={~p"/admin/audit?kind=lifecycle"} aria-current={@lifecycle? && "page"}>{gettext(
+            "VM lifecycle"
+          )}</.link>
+          <.link patch={~p"/admin/audit?kind=certificates"} aria-current={@certificate? && "page"}>{gettext(
+            "Certificates"
+          )}</.link>
           <.link
             patch={~p"/admin/audit?kind=editor"}
             aria-current={Map.get(@filters, :kind) == "editor" && "page"}
@@ -233,7 +247,9 @@ defmodule MarshallWeb.Admin.AuditLive do
           {gettext("Human requests and system recovery transitions. History is retained for 90 days.")}
         </p>
         <p :if={@certificate?} class="muted">
-          {gettext("Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded.")}
+          {gettext(
+            "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
+          )}
         </p>
         <p
           :if={@certificate? and @uncertain_order}
@@ -243,7 +259,9 @@ defmodule MarshallWeb.Admin.AuditLive do
         >
           Generation {@uncertain_order.generation} has an uncertain ACME order response.
           The generation can be failed after
-          <.timestamp at={@uncertain_order.retry_after} zone={@time_zone} format={:datetime_seconds} />{gettext("; the next due check can then request a new generation.")}
+          <.timestamp at={@uncertain_order.retry_after} zone={@time_zone} format={:datetime_seconds} />{gettext(
+            "; the next due check can then request a new generation."
+          )}
         </p>
         <div :if={@admin_authorized and @certificate?} class="row actions">
           <button
@@ -254,7 +272,9 @@ defmodule MarshallWeb.Admin.AuditLive do
             class="console-button"
           >{gettext("Request wildcard rotation")}</button>
         </div>
-        <p :if={@unavailable?} role="alert" class="error">{gettext("Audit history is unavailable.")}</p>
+        <p :if={@unavailable?} role="alert" class="error">
+          {gettext("Audit history is unavailable.")}
+        </p>
         <div id="audit-events" class="table-flow">
           <table>
             <thead>
@@ -281,8 +301,15 @@ defmodule MarshallWeb.Admin.AuditLive do
                 <td class="break">
                   <span :if={@lifecycle?}><code>{event.resource_type} {event.resource_id}</code><br />{event.previous_state ||
                     "created"} → {event.next_state}</span>
-                  <span :if={@certificate? and event.kind == :account}>{gettext("ACME account: %{status}", status: event.status)}</span>
-                  <span :if={@certificate? and event.kind != :account}>{gettext("Generation %{generation}: %{status}", generation: event.generation, status: event.status)}<br /><code>{event.fingerprint ||
+                  <span :if={@certificate? and event.kind == :account}>{gettext(
+                    "ACME account: %{status}",
+                    status: event.status
+                  )}</span>
+                  <span :if={@certificate? and event.kind != :account}>{gettext(
+                    "Generation %{generation}: %{status}",
+                    generation: event.generation,
+                    status: event.status
+                  )}<br /><code>{event.fingerprint ||
                     "pending"}</code></span>
                   <span :if={!@lifecycle? and !@certificate?}><code>{event.target_id}</code></span>
                 </td>

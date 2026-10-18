@@ -1,5 +1,32 @@
 # Machine lifecycle
 
+## Memory-preserving suspension
+
+[ADR-0199](repo:docs/architecture/decisions/0199-memory-suspension-and-demand-wake.md)
+adds desired and observed `paused` states. Pause is a durable lifecycle operation;
+its physical outcome requires a sealed full memory/device checkpoint and proven
+VMM/cgroup absence. Only then can compute reservations be released. Resume is a
+coalesced durable `WakeRequest`, rather than an acknowledgement of execution.
+Its state machine waits for capacity, relocates if necessary, resumes, and reaches
+ready only after current execution readiness. Failed or ambiguous restore never
+falls back to cold boot. Stop explicitly discards suspended memory; delete also
+requires checkpoint reclamation. Start cannot bypass a retained checkpoint.
+
+New thread/Orb machines opt into suspension four hours after the last admitted
+or completed tool call. Provisioning and successful wake initialize that window.
+Active admitted tools/turns defer suspension. Existing machines remain opted out.
+Prompts and authorized network access wake sleeping machines; requests to an
+already running machine do not continually reset the tool clock. Only the owner's
+pin prevents automatic suspension, and pinning a suspended machine requests wake.
+
+```mermaid
+stateDiagram-v2
+  running --> paused: capture and compute-empty proof
+  paused --> running: admitted full-memory restore
+  paused --> stopped: discard memory
+  paused --> deleted: reclaim checkpoint and disk
+```
+
 Keep four facts separate: desired VM state, observed physical state, workflow
 phase, and cleanup receipts. A successful state transition records intent; it
 cannot prove that a process stopped or a disk disappeared.
@@ -15,7 +42,7 @@ stateDiagram-v2
 ```
 
 These are **desired states**. The VM resource permits idempotent start/stop
-requests. Deletion is terminal intent. Relocation has additional stopped-source
+requests. Deletion is terminal intent. Relocation has additional quiesced-source
 handoff and restoration transitions guarded by its coordinator.
 
 Deletion has one more admission check since
@@ -56,6 +83,15 @@ authority immediately. Its already bound watcher remains available to report
 the actual exit or error; retaining that observer cannot republish proof. One
 actor owns at most one watcher, and a superseding command, replacement target
 or actor shutdown closes the previous observer.
+
+Closing an observer tolerates its concurrent normal port exit; an already
+closed port must not crash the VM actor. Lock-free execution reads independently
+check that both the actor and runtime publishers are alive, rather than waiting
+for the shared view to process their monitor messages. Stale table rows cannot
+extend boot, ingress or live execution authority after either publisher dies.
+The [publisher-liveness property](repo:lilly/test/lilly/execution_test.exs)
+holds monitor cleanup pending while checking those refusals; this is BEAM
+authority evidence, not physical VMM-death evidence.
 
 The thirty-second backstop requires an armed watcher on the exact verified VMM
 that supplied the published proof. Unarmed or unavailable target bindings retain
@@ -444,6 +480,18 @@ The former audit-drain, cursor and reoffer evidence describes the retired
 application protocol and was preserved in the
 baseline lifecycle chapter, `marshall/priv/hldd/04-lifecycle.md` at overalls revision `a99f74f0` (repository deleted).
 Marshall's local transactional audit and PaperTrail retention tests remain active.
+
+After a restart during snapshot load, Lilly may continue the exact claimed live
+VMM. A paused process needs the same launch identity, PID/start time and full
+confinement proof before a Resume API call; it never reloads the checkpoint.
+Missing or changed authority leaves restoration fenced.
+
+Stop, delete and failure may discard a paused process left by interrupted capture
+or restore. This requires an active host lease, a reread terminal intent at least
+as new as the journal's authority, the exact local checkpoint binding and current
+paused-process confinement. Cleanup never promotes `capturing` to usable RAM.
+Confirmed unit/cgroup absence remains necessary before networking or checkpoint
+storage can be reclaimed; a failed kill reply alone proves neither outcome.
 
 ## Native submission and daemon-loss verification
 

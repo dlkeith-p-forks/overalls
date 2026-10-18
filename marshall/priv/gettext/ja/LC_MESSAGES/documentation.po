@@ -17027,37 +17027,37 @@ msgstr "Marshall のデータベースサーバーと互換性のある pg_dump/
 #: lib/marshall/documentation_messages.ex:86
 #, elixir-autogen, elixir-format
 msgid "## Account Git preferences"
-msgstr ""
+msgstr "## アカウントのGit設定"
 
 #: lib/marshall/documentation_messages.ex:204
 #, elixir-autogen, elixir-format
 msgid "## Commit attribution"
-msgstr ""
+msgstr "## コミットの帰属"
 
 #: lib/marshall/documentation_messages.ex:319
 #, elixir-autogen, elixir-format
 msgid "## Git author defaults"
-msgstr ""
+msgstr "## Git作成者の既定値"
 
 #: lib/marshall/documentation_messages.ex:320
 #, elixir-autogen, elixir-format
 msgid "## Git identity configuration"
-msgstr ""
+msgstr "## Git本人情報の設定"
 
 #: lib/marshall/documentation_messages.ex:321
 #, elixir-autogen, elixir-format
 msgid "## Git settings"
-msgstr ""
+msgstr "## Git設定"
 
 #: lib/marshall/documentation_messages.ex:804
 #, elixir-autogen, elixir-format
 msgid "## Save account Git defaults, create a machine and use optional agent attribution"
-msgstr ""
+msgstr "## アカウントのGit既定値を保存し、マシンを作成して任意のエージェント帰属を使用する"
 
 #: lib/marshall/documentation_messages.ex:1701
 #, elixir-autogen, elixir-format
 msgid "### Historical migration evidence"
-msgstr ""
+msgstr "### 過去の移行エビデンス"
 
 #: lib/marshall/documentation_messages.ex:2240
 #, elixir-autogen, elixir-format

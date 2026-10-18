@@ -1,12 +1,15 @@
 # Architecture reviews
 
-- [Overview newsletter (2026-10-18)](2026-10-18-overview-newsletter.md): ADR-0205's account-wide durable invitation, self-only dismissal and server-side Ghost subscription boundary; focused validation is recorded while external delivery remains outside local acceptance.
-- [Guest reflection (2026-10-18)](2026-10-18-guest-reflection.md): ADR-0203's secret-free, execution-fenced Peach projection; protocol and service tests are recorded while packaged guest deployment remains open.
+- [Overview newsletter (2026-10-18)](2026-10-18-overview-newsletter.md): ADR-0205's account-wide durable invitation, self-only dismissal and server-side Ghost subscription boundary; test presence is distinguished from external delivery and packaged browser acceptance.
+- [Guest reflection (2026-10-18)](2026-10-18-guest-reflection.md): ADR-0203's secret-free, execution-fenced Peach projection; protocol and credential tests are present while successful HTTP/native guest execution and fleet enablement remain open.
 - [GitHub.com owner integration (2026-10-18)](2026-10-18-github-com-integration.md): ADR-0202's owner-bound OAuth custody and managed guest route; source and focused tests are recorded while live provider and native rollout remain open.
 - [Fleet dependency convergence (2026-10-18)](2026-10-18-fleet-dependency-convergence.md):
   diagnoses mixed inventory versions and stale Marshall/Porsche dependency
   snapshots; repairs current release inputs without weakening the lock guard,
   hostd authority or current protocol. Live convergence is recorded separately.
+- [Memory-preserving suspension and demand wake (2026-10-18)](2026-10-18-memory-suspension.md):
+  ADR-0199, durable lifecycle/wake/checkpoint state machines and authenticated
+  waiting connections; implementation and native acceptance in progress.
 
 - [One account settings page (2026-10-18)](2026-10-18-account-settings-page.md):
   ADR-0196 merges Profile, Security and SSH keys into `/settings` behind the
@@ -646,3 +649,5 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [Antithesis five-attempt bootstrap admission (2026-10-16)](2026-10-16-antithesis-five-attempt-admission.md): verification campaign ledger admits five concurrent hosted attempts and refuses a sixth; no production architecture boundary changes.
 - [Antithesis guest-lifecycle profile (2026-10-17)](2026-10-17-antithesis-guest-lifecycle-profile.md): launchable QEMU TCG guest-lifecycle selection with a labelled stub-storage container Lilly; harness-only, no ADR change and no recorded run.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)
+
+- [Git attribution and guest identity (2026-10-18)](2026-10-18-git-attribution.md): ADR-0198 settings, immutable snapshots and guest configuration verification.

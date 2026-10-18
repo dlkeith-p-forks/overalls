@@ -8,7 +8,7 @@ defmodule Marshall.Repo.Migrations.MemorySuspension do
   use Ecto.Migration
 
   def up do
-    # ADR-0197 replaces the stopped-copy coordinator. Finish or cancel its
+    # ADR-0199 replaces the stopped-copy coordinator. Finish or cancel its
     # durable work before this cutover; translating an in-flight physical stop
     # into a RAM continuation would invent memory that no checkpoint retained.
     execute """

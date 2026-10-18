@@ -415,6 +415,7 @@ fn daemon() -> Fixture {
     std::fs::create_dir(&bin).unwrap();
     std::fs::create_dir(&root).unwrap();
     script(&bin, "stat", "echo \"$@\"");
+    script(&bin, "systemctl", "echo \"$@\"");
     script(&bin, "cp", "sleep \"$1\"");
     script(&bin, "realpath", "head -c \"$1\" /dev/zero");
     // The stream helper records its argv and progress descriptor, then exits
@@ -596,6 +597,60 @@ fn commands_capture_output_and_mutations_need_a_lease() {
     client.run(5, 0, Utility::Realpath, &["60000"], 5000);
     let (status, bytes) = client.result();
     assert_eq!((status, bytes.len()), (Status::Succeeded, 60_000));
+}
+
+/// Systemctl's read-only index MUST NOT permit lease-free stop/kill. The
+/// same confined lifecycle grammar becomes executable under a live lease.
+#[test]
+fn systemctl_queries_are_lease_free_but_lifecycle_is_serialized() {
+    let fixture = daemon();
+    let client = Client::connect(&fixture);
+    let vm = "lilly-vm-11111111-2222-4333-8444-555555555555.service";
+    for (index, arguments) in [vec!["show", vm], vec!["list-units", "--all", vm]]
+        .iter()
+        .enumerate()
+    {
+        client.run(2 + index as u64, 0, Utility::Systemctl, arguments, 5000);
+        assert_eq!(
+            client.result(),
+            (
+                Status::Succeeded,
+                format!("{}\n", arguments.join(" ")).into_bytes()
+            )
+        );
+    }
+    let operations = [
+        vec!["stop", vm],
+        vec!["kill", "--kill-who=all", "--signal=KILL", vm],
+    ];
+    for (index, arguments) in operations.iter().enumerate() {
+        let id = 4 + index as u64;
+        client.run(id, 0, Utility::Systemctl, arguments, 5000);
+        assert_eq!(
+            client.receive(),
+            (
+                id,
+                Reply::Refused {
+                    reason: Refusal::LeaseRequired
+                }
+            )
+        );
+    }
+    let Reply::Granted { lease } = client.acquire(6, &fixture.root, 0) else {
+        panic!("lease")
+    };
+    for (index, arguments) in operations.iter().enumerate() {
+        client.run(7 + index as u64, lease, Utility::Systemctl, arguments, 5000);
+        assert_eq!(
+            client.result(),
+            (
+                Status::Succeeded,
+                format!("{}\n", arguments.join(" ")).into_bytes()
+            )
+        );
+    }
+    client.send(9, Request::Release { lease });
+    assert_eq!(client.receive(), (9, Reply::Released));
 }
 
 #[test]

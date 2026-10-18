@@ -47,6 +47,13 @@ worktree source snapshot, not deployed convergence. Marshall compilation,
 post-integration gates, fresh reports from both hosts and an ordinary CLI
 request remain pending in this checkpoint.
 
+Integration also exposed a deployment assertion requiring disabled Peach and a
+closed Audi decoder rejecting its emitted socket field. The repair keeps Peach
+optional, emits null when disabled, validates configured bounded local socket
+paths, and refuses reflection before authority admission when absent. Existing
+Lilly/Ziggy/Galileo dependencies remain. This source repair does not enable
+production reflection or establish enabled socket/credential acceptance.
+
 No destructive guest operation, hostd restart or production database mutation
 was used for diagnosis. This repair does not qualify the separate Windows
 browser editor candidate or establish guest isolation or recovery.

@@ -4,7 +4,10 @@
     {Application.get_env(:live_debugger, :live_debugger_tags)}
 
     <meta charset="utf-8" />
-    <meta name="overalls-messages" content={Jason.encode!(MarshallWeb.BrowserMessages.messages())} />
+    <meta
+      name="overalls-messages"
+      content={Jason.encode!(MarshallWeb.BrowserMessages.messages())}
+    />
     <link rel="icon" type="image/svg+xml" href={~p"/images/overalls.svg"} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content={MarshallWeb.NoIndex.directive()} />

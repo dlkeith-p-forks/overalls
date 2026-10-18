@@ -8,9 +8,7 @@ defmodule Audi.MixProject do
       elixir: "== 1.20.4",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: if(Mix.env() == :test, do: ["lib", "test/support"], else: ["lib"]),
-      # @cc [owner:ghuntley,label:verification] audi-test-helper-analysis
-      # Test support calls ExUnit and both Hegel bindings. These test-only
-      # applications MUST enter the PLT despite their runtime:false dependency.
+      # Compiled test/support helpers call ExUnit and the pinned Hegel frontend.
       dialyzer: [plt_add_apps: [:ex_unit, :hegel, :hegel_ex]],
       deps: deps(),
       aliases: aliases()

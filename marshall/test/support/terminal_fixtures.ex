@@ -1,3 +1,7 @@
+# The helper is also required by test_helper.exs for test runtime. Load it before
+# compiling support modules so their static fixture calls remain checkable.
+Code.require_file("../../../scripts/test/hegel_fixtures.exs", __DIR__)
+
 defmodule Marshall.TerminalFixtures do
   @moduledoc false
   # This helper is required by test_helper.exs after test-support compilation.

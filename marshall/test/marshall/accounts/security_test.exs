@@ -33,6 +33,7 @@ defmodule Marshall.Accounts.SecurityTest do
   property "revocation and generation changes fence arbitrary verification sequences",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
+
     events =
       draw(
         "events",

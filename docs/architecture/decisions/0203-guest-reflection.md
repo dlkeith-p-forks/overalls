@@ -58,13 +58,17 @@ See [reflection protocol](../../../protocol/lib/overalls_protocol/reflection.ex)
 [Peach HTTP service](../../../peach/lib/peach/http.ex) and
 [packaged NixOS module](../../../nix/domains/system/peach.nix).
 The package/module and test presence do not establish deployed fleet enablement
-or a successful native HTTP projection.
+or a successful native HTTP projection. Audi permits Peach to remain disabled:
+its optional backend socket is null and reflection refuses before requesting
+guest execution authority. Configured sockets must be bounded canonical local
+paths; Lilly, Ziggy and Galileo remain mandatory private-service dependencies.
 
 ## Open questions
 
 Recorded property histories for current/stale execution and credential expiry,
 successful packaged guest projection, host loss, and native same-host network
-isolation remain. The declared fleet currently does not enable Peach.
+isolation remain. The declared fleet currently does not enable Peach; enabled
+socket access and packaged credential lifetime still require review.
 
 ## Related decisions
 

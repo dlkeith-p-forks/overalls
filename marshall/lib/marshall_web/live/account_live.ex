@@ -1,10 +1,11 @@
 defmodule MarshallWeb.AccountLive do
   @moduledoc """
-  The signed-in account page at `/settings` (ADR-0196): one LiveView with three
+  The signed-in account page at `/settings` (ADR-0196): one LiveView with four
   anchored sections. Profile (`#profile`) holds the email and the display time
   zone of ADR-0195, language, and Git preferences of ADR-0199; Sign-in and passkeys (`#security`) holds passkey
   enrollment, verification, the elevation return path of ADR-0160 and passkey
   management; SSH keys (`#ssh-keys`) holds the owner-scoped keys of ADR-0046.
+  Git preferences (`#git-settings`) retain ADR-0198 account-owned identity defaults.
   The security mount of `MarshallWeb.LiveUserAuth` guards every section.
   """
   use MarshallWeb, :live_view
@@ -37,14 +38,14 @@ defmodule MarshallWeb.AccountLive do
        security: nil,
        remaining: 0,
        enrollment_started?: false,
-       keys: [],
-       git_form: git_form(socket.assigns.current_user)
+       keys: []
      )
      |> assign_picker()
      |> assign_git_settings()
      |> reset_key_form()
      |> refresh_security()
-     |> refresh_keys()}
+     |> refresh_keys()
+     |> refresh_git_settings()}
   end
 
   @impl true
@@ -230,9 +231,12 @@ defmodule MarshallWeb.AccountLive do
     save_locale(socket, locale)
   end
 
+  def handle_event("clear_locale", _, socket), do: save_locale(socket, nil)
+
   # @cc [owner:ghuntley,label:security] self-git-settings
-  # Git updates MUST use the authenticated account and only accepted preference
-  # fields; submitted owner identifiers MUST NOT select an account.
+  # Git updates MUST use the freshly authenticated socket account and only the
+  # three accepted preference fields. Submitted owner identifiers MUST NOT
+  # select an account or weaken the page's security mount.
   def handle_event("save_git_settings", %{"settings" => params}, socket) when is_map(params) do
     actor = socket.assigns.current_user
     params = Map.take(params, ["git_username", "git_email", "commit_trailers_enabled"])
@@ -240,7 +244,7 @@ defmodule MarshallWeb.AccountLive do
     case actor |> Ash.Changeset.for_update(:git_settings, params) |> Ash.update(actor: actor) do
       {:ok, _} ->
         {:noreply,
-         socket |> assign_git_settings() |> put_flash(:info, gettext("Git settings saved."))}
+         socket |> refresh_git_settings() |> put_flash(:info, gettext("Git settings saved."))}
 
       {:error, _} ->
         {:noreply,
@@ -248,10 +252,25 @@ defmodule MarshallWeb.AccountLive do
     end
   end
 
-  def handle_event("clear_locale", _, socket), do: save_locale(socket, nil)
-
   def handle_event(_, _, socket),
     do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+
+  @spec refresh_git_settings(socket()) :: socket()
+  defp refresh_git_settings(socket) do
+    user = Marshall.Accounts.Security.current(socket.assigns.current_user.id)
+
+    assign(socket,
+      git_form:
+        to_form(
+          %{
+            "git_username" => user.git_username,
+            "git_email" => to_string(user.git_email),
+            "commit_trailers_enabled" => user.commit_trailers_enabled
+          },
+          as: :settings
+        )
+    )
+  end
 
   @spec refresh_security(socket()) :: socket()
   defp refresh_security(socket) do
@@ -411,18 +430,6 @@ defmodule MarshallWeb.AccountLive do
   defp key_title(label) when label in [nil, ""], do: gettext("SSH key")
   defp key_title(label), do: label
 
-  @spec git_form(User.t()) :: Phoenix.HTML.Form.t()
-  defp git_form(user) do
-    to_form(
-      %{
-        "git_username" => user.git_username,
-        "git_email" => to_string(user.git_email),
-        "commit_trailers_enabled" => user.commit_trailers_enabled
-      },
-      as: :settings
-    )
-  end
-
   @impl true
   def render(assigns) do
     ~H"""
@@ -455,6 +462,10 @@ defmodule MarshallWeb.AccountLive do
                 "%{count} registered keys",
                 length(@keys)
               )}</span>
+            </li>
+            <li>
+              <a href="#git-settings">{gettext("Git identity")}</a>
+              <span class="muted">{gettext("new machines and commit attribution")}</span>
             </li>
           </ol>
         </nav>
@@ -534,42 +545,6 @@ defmodule MarshallWeb.AccountLive do
               </button>
             </div>
           </.form>
-          <div id="git-settings" class="stack">
-            <h3>{gettext("Git settings")}</h3>
-            <.form for={@git_form} id="git-settings-form" phx-submit="save_git_settings" class="panel">
-              <.input
-                field={@git_form[:git_username]}
-                label={gettext("Git username")}
-                maxlength="128"
-                required
-              />
-              <.input
-                field={@git_form[:git_email]}
-                type="email"
-                label={gettext("Git email")}
-                maxlength="254"
-                required
-              />
-              <.input
-                field={@git_form[:commit_trailers_enabled]}
-                type="checkbox"
-                label={gettext("Add Overalls commit attribution")}
-              />
-              <p>
-                {gettext("When enabled, new agent commits include %{trailer}.",
-                  trailer: "Co-authored-by: Overalls <noreply@overalls.dev>"
-                )}
-              </p>
-              <p>
-                {gettext(
-                  "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-                )}
-              </p>
-              <Layouts.action id="save-git-settings" type="submit" tone="primary">
-                {gettext("Save Git settings")}
-              </Layouts.action>
-            </.form>
-          </div>
         </section>
 
         <hr />
@@ -765,6 +740,45 @@ defmodule MarshallWeb.AccountLive do
               phx-disable-with={gettext("Adding…")}
             >
               {gettext("Add SSH key")}
+            </Layouts.action>
+          </.form>
+        </section>
+
+        <hr />
+
+        <section id="git-settings" class="account-section stack" aria-labelledby="git-settings-title">
+          <h2 id="git-settings-title">{gettext("4. Git identity")}</h2>
+          <.form for={@git_form} id="git-settings-form" phx-submit="save_git_settings" class="panel">
+            <.input
+              field={@git_form[:git_username]}
+              label={gettext("Git username")}
+              maxlength="128"
+              required
+            />
+            <.input
+              field={@git_form[:git_email]}
+              type="email"
+              label={gettext("Git email")}
+              maxlength="254"
+              required
+            />
+            <.input
+              field={@git_form[:commit_trailers_enabled]}
+              type="checkbox"
+              label={gettext("Add Overalls commit attribution")}
+            />
+            <p>
+              {gettext(
+                "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+              )}
+            </p>
+            <p>
+              {gettext(
+                "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+              )}
+            </p>
+            <Layouts.action id="save-git-settings" type="submit" tone="primary">
+              {gettext("Save Git settings")}
             </Layouts.action>
           </.form>
         </section>

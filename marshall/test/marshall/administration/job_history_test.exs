@@ -43,6 +43,7 @@ defmodule Marshall.Administration.JobHistoryTest do
   property "generated transitions retain exact redacted history through pruning and expiry",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
+
     transitions =
       draw(
         "transitions",
@@ -116,6 +117,7 @@ defmodule Marshall.Administration.JobHistoryTest do
   property "retry histories bind receipts while role elevation and login authority change",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
+
     actions =
       draw(
         "actions",

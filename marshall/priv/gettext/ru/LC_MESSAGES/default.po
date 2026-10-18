@@ -4505,12 +4505,7 @@ msgstr "Перезапущено"
 msgid "Restarting"
 msgstr "Перезапуск"
 
-#: lib/marshall_web/live/machines_live.ex:616
-#, elixir-autogen, elixir-format
-msgid "Restarting the destination; source copy retained"
-msgstr "Перезапуск назначения; исходная копия сохранена"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:425
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:427
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "Восстановить допуск"
@@ -7226,349 +7221,94 @@ msgstr "← Настройки"
 #: lib/marshall_web/live/threads_live.ex:2196
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
-msgstr "↑ ↓ выбрать · Enter выполнить · Escape закрыть"
+msgstr "↑ ↓ choose · Enter run · Escape close"
 
-#: lib/marshall/accounts/time_zones.ex:314
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "%{span} ahead of you"
-msgstr "на %{span} впереди вас"
+msgid "4. Git identity"
+msgstr "4. Git identity"
 
-#: lib/marshall/accounts/time_zones.ex:315
-#, elixir-autogen, elixir-format
-msgid "%{span} behind you"
-msgstr "на %{span} позади вас"
-
-#: lib/marshall_web/live/account_live.ex:556
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "Добавлять указание авторства Overalls в коммиты"
+msgstr "Add Overalls commit attribution"
 
-#: lib/marshall_web/live/account_live.ex:247
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "Введите допустимые имя Git и адрес электронной почты."
+msgstr "Enter a valid Git name and email address."
 
-#: lib/marshall_web/live/account_live.ex:549
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Электронная почта Git"
+msgstr "Git email"
 
-#: lib/marshall_web/live/account_live.ex:564
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Git identity"
+msgstr "Git identity"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr ""
-"Изменения идентификационных данных Git применяются к новым машинам. "
-"Изменения указания авторства в коммитах применяются к будущим запросам "
-"агентов."
+msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 
-#: lib/marshall_web/live/account_live.ex:538
-#, elixir-autogen, elixir-format
-msgid "Git settings"
-msgstr "Настройки Git"
-
-#: lib/marshall_web/live/account_live.ex:243
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Настройки Git сохранены."
+msgstr "Git settings saved."
 
-#: lib/marshall_web/live/account_live.ex:542
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Имя пользователя Git"
+msgstr "Git username"
 
-#: lib/marshall_web/live/account_live.ex:569
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Save Git settings"
-msgstr "Сохранить настройки Git"
+msgid "Machine is paused. Resume it or reopen this terminal page."
+msgstr "Machine is paused. Resume it or reopen this terminal page."
 
-#: lib/marshall_web/live/account_live.ex:559
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include %{trailer}."
-msgstr "Если включено, новые коммиты агентов содержат %{trailer}."
+msgid "Pause"
+msgstr "Pause"
 
-#: lib/marshall/accounts/time_zones.ex:300
-#, elixir-autogen, elixir-format
-msgid "same time as you"
-msgstr "то же время, что и у вас"
-
-#: lib/marshall_web/live/admin/jobs_live.ex:405
-#, elixir-autogen, elixir-format
-msgid "Acknowledged"
-msgstr "Подтверждено"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:519
-#, elixir-autogen, elixir-format
-msgid "Blocked: %{reason}"
-msgstr "Заблокировано: %{reason}"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:616
-#, elixir-autogen, elixir-format
-msgid "Campaign closed"
-msgstr "Кампания закрыта"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:614
-#, elixir-autogen, elixir-format
-msgid "Campaign requested"
-msgstr "Кампания запрошена"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:623
-#, elixir-autogen, elixir-format
-msgid "Cancellation requested"
-msgstr "Отмена запрошена"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
-#, elixir-autogen, elixir-format
-msgid "Candidate: %{name}"
-msgstr "Кандидат: %{name}"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:610
-#, elixir-autogen, elixir-format
-msgid "Cleaning up after cancellation"
-msgstr "Очистка после отмены"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:608
-#, elixir-autogen, elixir-format
-msgid "Cleaning up the source"
-msgstr "Очистка источника"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:637
-#, elixir-autogen, elixir-format
-msgid "Clone in progress"
-msgstr "Клонирование выполняется"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
-#, elixir-autogen, elixir-format
-msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
-msgstr ""
-"Настроенные накладные расходы хоста: %{cores} ядер · %{memory} памяти. Эти "
-"резервы учитываются при расчёте допуска и остаются под управлением "
-"развёртывания."
-
-#: lib/marshall_web/automatic_magic_sign_in_live.ex:33
-#, elixir-autogen, elixir-format
-msgid "Continue to Overalls"
-msgstr "Перейти в Overalls"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
-#, elixir-autogen, elixir-format
-msgid "Desired: %{desired} · Observed: %{observed}"
-msgstr "Желаемое: %{desired} · Наблюдаемое: %{observed}"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:622
-#, elixir-autogen, elixir-format
-msgid "Destination cleanup confirmed"
-msgstr "Очистка назначения подтверждена"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:621
-#, elixir-autogen, elixir-format
-msgid "Destination cleanup requested"
-msgstr "Очистка назначения запрошена"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:634
-#, elixir-autogen, elixir-format
-msgid "Downtime approval required"
-msgstr "Требуется разрешение на простой"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
-#, elixir-autogen, elixir-format
-msgid "Downtime approved"
-msgstr "Простой разрешён"
-
-#: lib/marshall_web/live/admin/jobs_live.ex:409
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:584
-#, elixir-autogen, elixir-format
-msgid "Drained"
-msgstr "Освобождено"
-
-#: lib/marshall_web/live/admin/jobs_live.ex:408
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
-#, elixir-autogen, elixir-format
-msgid "Draining"
-msgstr "Освобождение"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
-#, elixir-autogen, elixir-format
-msgid "Evacuating"
-msgstr "Эвакуация"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:602
-#, elixir-autogen, elixir-format
-msgid "Importing"
-msgstr "Импорт"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:633
-#, elixir-autogen, elixir-format
-msgid "Insufficient capacity"
-msgstr "Недостаточно ресурсов"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
-#, elixir-autogen, elixir-format
-msgid "Job state"
-msgstr "Состояние задания"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:582
-#, elixir-autogen, elixir-format
-msgid "Normal"
-msgstr "Обычное"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:529
-#, elixir-autogen, elixir-format
-msgid "Observed interruption: %{seconds}s"
-msgstr "Наблюдаемое прерывание: %{seconds}с"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
-#, elixir-autogen, elixir-format
-msgid "Observed interruption: %{seconds}s (ongoing)"
-msgstr "Наблюдаемое прерывание: %{seconds}с (продолжается)"
-
-#: lib/marshall_web/live/admin/jobs_live.ex:398
-#, elixir-autogen, elixir-format
-msgid "Operation"
-msgstr "Операция"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Приостановлено"
+msgstr "Paused"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:399
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Relocation"
-msgstr "Перемещение"
+msgid "Resume machine"
+msgstr "Resume machine"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:617
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Relocation committed"
-msgstr "Перемещение зафиксировано"
+msgid "Resuming"
+msgstr "Resuming"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:636
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Relocation in progress"
-msgstr "Перемещение выполняется"
+msgid "Resuming machine; waiting for capacity…"
+msgstr "Resuming machine; waiting for capacity…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:627
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Relocation started"
-msgstr "Перемещение начато"
+msgid "Save Git settings"
+msgstr "Save Git settings"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Restoring the source"
-msgstr "Восстановление источника"
+msgid "Suspending"
+msgstr "Suspending"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:410
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:590
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Resumed"
-msgstr "Возобновлено"
+msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
 
-#: lib/marshall_web/live/admin/jobs_live.ex:411
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Retired"
-msgstr "Выведено из эксплуатации"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
-#, elixir-autogen, elixir-format
-msgid "Retrying destination boot"
-msgstr "Повторная попытка загрузки назначения"
-
-#: lib/marshall_web/automatic_magic_sign_in_live.ex:27
-#, elixir-autogen, elixir-format
-msgid "Signing you in"
-msgstr "Выполняется вход"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:620
-#, elixir-autogen, elixir-format
-msgid "Source cleanup confirmed"
-msgstr "Очистка источника подтверждена"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:619
-#, elixir-autogen, elixir-format
-msgid "Source cleanup requested"
-msgstr "Очистка источника запрошена"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
-#, elixir-autogen, elixir-format
-msgid "Source ready"
-msgstr "Источник готов"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:618
-#, elixir-autogen, elixir-format
-msgid "Source restored"
-msgstr "Источник восстановлен"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
-#, elixir-autogen, elixir-format
-msgid "Source unavailable"
-msgstr "Источник недоступен"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
-#, elixir-autogen, elixir-format
-msgid "Transfer busy"
-msgstr "Передача занята"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
-#, elixir-autogen, elixir-format
-msgid "Workload changed"
-msgstr "Рабочая нагрузка изменилась"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
-#, elixir-autogen, elixir-format
-msgid "Workload is not stable"
-msgstr "Рабочая нагрузка нестабильна"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:625
-#, elixir-autogen, elixir-format
-msgid "Workload observed"
-msgstr "Рабочая нагрузка обнаружена"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:628
-#, elixir-autogen, elixir-format
-msgid "Workload resolved"
-msgstr "Рабочая нагрузка определена"
-
-#: lib/marshall_web/automatic_magic_sign_in_live.ex:28
-#, elixir-autogen, elixir-format
-msgid "Your email link is being verified."
-msgstr "Проверяем ссылку из вашего письма."
-#: lib/marshall_web/live/overview_live.ex:213
-#, elixir-autogen, elixir-format
-msgid "Stay in the loop"
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:216
-#, elixir-autogen, elixir-format
-msgid "Dismiss"
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:218
-#, elixir-autogen, elixir-format
-msgid "Get tips, tricks and updates about Overalls and AI by email."
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:221
-#, elixir-autogen, elixir-format
-msgid "Subscribe"
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:225
-#, elixir-autogen, elixir-format
-msgid "Check your inbox and click the link to confirm your subscription."
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:226
-#, elixir-autogen, elixir-format
-msgid "Enter a valid email address."
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:227
-#, elixir-autogen, elixir-format
-msgid "We could not reach the newsletter service. Try again later."
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:228
-#, elixir-autogen, elixir-format
-msgid "Unsubscribe any time."
-msgstr ""
-
+msgid "new machines and commit attribution"
+msgstr "new machines and commit attribution"

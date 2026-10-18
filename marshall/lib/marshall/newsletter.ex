@@ -1,4 +1,6 @@
 defmodule Marshall.Newsletter do
+  # @cc [owner:ghuntley,label:security;product] newsletter-subscription-api
+  # fixed server-side Ghost request sequence
   @moduledoc "Server-side Ghost newsletter subscription client."
   alias Marshall.Accounts.EmailAddress
 
@@ -12,14 +14,14 @@ defmodule Marshall.Newsletter do
   @type requester :: (atom(), String.t(), keyword() -> {:ok, map()} | {:error, term()})
 
   @spec subscribe(term()) :: result()
-  @spec subscribe(term(), requester()) :: result()
-  def subscribe(email) when is_binary(email), do: subscribe(email, &request/3)
+  def subscribe(email), do: subscribe(email, &request/3)
 
+  @spec subscribe(term(), requester()) :: result()
   def subscribe(email, requester) when is_binary(email) do
     if EmailAddress.valid?(email), do: request(email, requester), else: {:error, :invalid_email}
   end
 
-  def subscribe(_, _requester), do: {:error, :invalid_email}
+  def subscribe(_, _), do: {:error, :invalid_email}
 
   defp request(email, requester) do
     with {:ok, %{status: 200, body: token}} <-

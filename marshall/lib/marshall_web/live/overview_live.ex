@@ -79,10 +79,8 @@ defmodule MarshallWeb.OverviewLive do
 
   @spec newsletter_dismissed(Marshall.Accounts.User.t()) :: boolean()
   defp newsletter_dismissed(%Marshall.Accounts.User{id: id} = actor) do
-    case Marshall.Accounts.Security.current(id) do
-      %Marshall.Accounts.User{newsletter_dismissed: dismissed} -> dismissed
-      _ -> actor.newsletter_dismissed
-    end
+    current = Marshall.Accounts.Security.current(id)
+    Map.get(current || actor, :newsletter_dismissed, false)
   end
 
   # Pinned machines take the first slots; the keyset page fills the rest. When

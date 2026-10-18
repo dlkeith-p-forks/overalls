@@ -1,7 +1,11 @@
 defmodule Marshall.NewsletterPropertyTest do
+  # @cc [owner:ghuntley,label:security;product] newsletter-subscription-api
+  # invalid mailboxes, successful responses and Ghost/transport failures preserve safe outcomes
   use ExUnit.Case, async: true
   import Hegel
   import Hegel.Gen
+
+  alias Marshall.Newsletter
 
   property "only bounded valid mailboxes can reach the subscription boundary", test_cases: 100 do
     value = draw("email", one_of([string(:printable, max_length: 300), binary(max_length: 300)]))
@@ -9,7 +13,8 @@ defmodule Marshall.NewsletterPropertyTest do
     if Marshall.Accounts.EmailAddress.valid?(value) do
       assert Marshall.Accounts.EmailAddress.valid?(value)
     else
-      assert Marshall.Newsletter.subscribe(value) == {:error, :invalid_email}
+      requester = fn _, _, _ -> flunk("invalid mailbox reached the request boundary") end
+      assert Newsletter.subscribe(value, requester) == {:error, :invalid_email}
     end
   end
 
@@ -18,20 +23,18 @@ defmodule Marshall.NewsletterPropertyTest do
     local = draw("local", string(:alphanumeric, min_length: 1, max_length: 24))
     email = local <> "@example.test"
     token = "token-" <> Integer.to_string(draw("token_id", integer(1..10_000)))
-    {:ok, calls} = Agent.start_link(fn -> [] end)
-    Hegel.on_cleanup(fn -> Agent.stop(calls) end)
+    status = draw("signup_status", integer(200..299))
+    calls = Overalls.HegelFixtures.start_supervised!({Agent, fn -> [] end})
 
-    requester = fn method, url, options ->
-      Agent.update(calls, &[{method, url, options} | &1])
+    assert Newsletter.subscribe(email, successful_requester(calls, token, status)) == :ok
 
-      case method do
-        :get -> {:ok, %{status: 200, body: token}}
-        :post -> {:ok, %{status: 204}}
-      end
-    end
+    [
+      {:get, "https://ghuntley.com/members/api/integrity-token/", get_options},
+      {:post, "https://ghuntley.com/members/api/send-magic-link/", post_options}
+    ] = Agent.get(calls, &Enum.reverse/1)
 
-    assert Marshall.Newsletter.subscribe(email, requester) == :ok
-    [{:post, _, post_options}, {:get, _, _}] = Agent.get(calls, &Enum.reverse/1)
+    assert get_options == [receive_timeout: 5_000]
+    assert post_options[:receive_timeout] == 5_000
     assert post_options[:json] == %{email: email, emailType: "signup", integrityToken: token}
   end
 
@@ -45,11 +48,23 @@ defmodule Marshall.NewsletterPropertyTest do
       case {failure, method} do
         {:token_http, :get} -> {:ok, %{status: 429, body: "refused"}}
         {:signup_http, :get} -> {:ok, %{status: 200, body: "token"}}
-        {:signup_http, :post} -> {:ok, %{status: 400, body: "secret upstream detail"}}
+        {:signup_http, :post} -> {:ok, %{status: 400, body: "synthetic upstream detail"}}
         {:transport, _} -> {:error, :timeout}
       end
     end
 
-    assert Marshall.Newsletter.subscribe(email, requester) == {:error, :unavailable}
+    assert Newsletter.subscribe(email, requester) == {:error, :unavailable}
+  end
+
+  @spec successful_requester(pid(), String.t(), 200..299) :: Newsletter.requester()
+  defp successful_requester(calls, token, status) do
+    fn method, url, options ->
+      Agent.update(calls, &[{method, url, options} | &1])
+
+      case method do
+        :get -> {:ok, %{status: 200, body: " \n" <> token <> "\t"}}
+        :post -> {:ok, %{status: status}}
+      end
+    end
   end
 end

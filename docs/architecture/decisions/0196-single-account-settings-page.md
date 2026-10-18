@@ -48,7 +48,7 @@ Accepted on 2026-10-18 under the user's request to collapse and redesign the
 settings pages ("consult fable and do it"); the user later dropped the
 old-link requirement ("breaking changes acceptable for links").
 
-1. **One page, three anchored sections.** `MarshallWeb.AccountLive` serves
+1. **One page with anchored sections.** `MarshallWeb.AccountLive` serves
    `/settings` with, in this order, `#profile` (email, local clock, time zone
    picker and [ADR-0198](0198-git-attribution-and-guest-identity.md) Git
    identity/commit attribution preferences), `#security` (verification status,
@@ -57,15 +57,19 @@ old-link requirement ("breaking changes acceptable for links").
    `#ssh-keys` (registered keys, then the add form). A numbered index at the
    top links each section; `<hr>` double rules separate them. Profile leads
    because it is identity and the most benign; sign-in follows because the
-   step-up flow lands there; SSH keys close because they are the outbound
-   credential. There is no account-deletion section: self-service deletion
+   step-up flow lands there; SSH keys follow because they are the outbound
+   credential. [ADR-0198](0198-git-attribution-and-guest-identity.md) appends
+   a fourth `#git-settings` section for Git author defaults and optional agent
+   commit attribution, preserving that original three-section order.
+   There is no account-deletion section: self-service deletion
    does not exist (retirement is an administrator action, ADR-0158), and
    this decision adds no new capability.
 2. **The strict gate covers the whole page.** `AccountLive` mounts through
    `{MarshallWeb.AuthenticationPrivacy, :default}` and
    `{MarshallWeb.LiveUserAuth, :security}` only, so the profile and SSH
    sections now sit behind the same required-login mount and fresh-login
-   hooks the Security page had. `AuthenticationPrivacy` tags every
+   hooks the Security page had. The appended Git section uses that same gate.
+   `AuthenticationPrivacy` tags every
    `/settings` request. `safe_return/2`, the `:security` action, `SSH`
    domain calls, `set_time_zone`, every `data-confirm` on a destructive
    button, the one-second verification countdown and the catalogued events
@@ -173,7 +177,10 @@ management; their authority rules are untouched.
   (`.account-index`, `.account-section`, `.passkey`).
 - Tests: [`account_live_test.exs`](../../../marshall/test/marshall_web/account_live_test.exs)
   (sections, navigation, mount pin, 404s, every former Security, SSH-key and
-  profile-page assertion), [`local_time_live_test.exs`](../../../marshall/test/marshall_web/local_time_live_test.exs)
+  profile-page assertion, plus the fourth Git section),
+  [`settings_live_test.exs`](../../../marshall/test/marshall_web/settings_live_test.exs)
+  (Git preferences and revoked-login refusal through the same page),
+  [`local_time_live_test.exs`](../../../marshall/test/marshall_web/local_time_live_test.exs)
   (people's local time, unchanged), updated `ssh_approval_live_test.exs`,
   `logged_out_access_test.exs`, `remember_me_login_test.exs`,
   `magic_link_flow_test.exs` and `auth_controller_test.exs`; Covenant
@@ -201,5 +208,6 @@ None.
 now lands on `/settings#security`),
 [ADR-0046](0046-porsche-ssh-management.md) (browser key management now at
 `/settings#ssh-keys`),
+[ADR-0198](0198-git-attribution-and-guest-identity.md) (the appended Git section),
 [ADR-0161](0161-monospace-web-presentation.md),
 [ADR-0022](0022-browser-terminal-and-live-login-checks.md).

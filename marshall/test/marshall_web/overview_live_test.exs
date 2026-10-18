@@ -1,4 +1,6 @@
 defmodule MarshallWeb.OverviewLiveTest do
+  # @cc [owner:ghuntley,label:product] overview-newsletter-and-localized-navigation
+  # Overview renders and dismisses the newsletter panel
   use MarshallWeb.ConnCase, async: false
   import Phoenix.LiveViewTest
   import Marshall.ComputeFixtures

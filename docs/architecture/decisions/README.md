@@ -15,6 +15,13 @@ account-bound Windows editor candidate with a separate `windows-editor-v1`
 manifest-v7/bundle-v4 contract. Native package, image and browser qualification
 remain separate; the selected `windows-v1` editor capability stays false.
 
+[ADR-0199](0199-memory-suspension-and-demand-wake.md) accepts full-memory
+suspension, paused relocation, durable demand wake and the four-hour tool-idle
+policy. It carries forward fencing, capacity and cleanup requirements while
+replacing stopped-source reboot and the cross-host relay prohibition. The
+[suspension review](../reviews/2026-10-18-memory-suspension.md) retains the
+distinction between source implementation and recorded native acceptance.
+
 [ADR-0198](0198-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0192](0192-staged-detached-ingress.md) moves the browser editor and
@@ -311,10 +318,11 @@ and both eight-subtest lifecycle journeys (NixOS 438.33 seconds, Ubuntu
 the native ZFS inventory helper are separate scopes. The helper passed inside a
 complete native-zfs run that failed unrelated resource-tuning receipt validation.
 
-Accepted [ADR-0155](0155-stopped-only-relocation.md) makes relocation one
-stopped full copy: live pre-copy, baseline/incremental streams, temporary
-headroom and the strategy column are removed. It supersedes the pre-copy parts
-of ADR-0037, ADR-0061 and ADR-0072 and carries their other requirements forward.
+Superseded [ADR-0155](0155-stopped-only-relocation.md) removed live pre-copy,
+baseline/incremental streams and the strategy column. ADR-0199 retains one full
+quiescent copy and replaces a running source's stop/reboot with pause/resume,
+adding separately reserved checkpoint custody. Historical results keep their
+original scope; inherited fencing and cleanup requirements remain in force.
 
 [ADR-0157](0157-multi-provider-authenticated-repository-launch.md) supersedes
 ADR-0128's GitHub-only/no-resume choices with source2, bounded signed-cookie

@@ -52,6 +52,26 @@ defmodule Marshall.Peach.CredentialsTest do
     assert credential_id == issued.id
   end
 
+  # @cc [owner:ghuntley,label:security;verification] peach-control-credential-domain-oracle
+  # Peach control MUST accept only a current Peach credential; a Galileo
+  # credential for the same host and a revoked Peach credential MUST refuse.
+  test "Peach control accepts its current credential and refuses a Galileo credential" do
+    %{host: host} = host_fixture()
+    assert {:ok, peach} = Credentials.rotate(host.id, 3_600)
+    assert {:ok, galileo} = Marshall.Galileo.Credentials.rotate(host.id, 3_600)
+
+    assert {:ok, %{host_id: host_id}} =
+             Marshall.Control.Services.Peach.authenticate(token(peach))
+
+    assert host_id == host.id
+
+    assert :refused =
+             Marshall.Control.Services.Peach.authenticate(galileo.id <> "." <> galileo.secret)
+
+    assert {:ok, :ok} = Credentials.revoke(host.id)
+    assert :refused = Marshall.Control.Services.Peach.authenticate(token(peach))
+  end
+
   @spec token(IssuedCredential.t()) :: String.t()
   defp token(%IssuedCredential{id: id, secret: secret}), do: id <> "." <> secret
 end

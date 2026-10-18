@@ -117,12 +117,26 @@ defmodule Lilly.VM.Unit do
     end
   end
 
-  @doc "Force-terminate a paused service after its checkpoint is durably sealed."
+  # @cc [owner:ghuntley,label:recovery;security] copied-pause-kill-proves-absence
+  # The caller MUST hold the placement lease and prove a confined paused VMM.
+  # Termination requires either a copied checkpoint under current capture
+  # authority or current terminal intent with a verified discardable capture.
+  # kill_paused/1 MUST accept already-proven absence and independently prove an
+  # empty unit after every kill result, including failure or timeout. A successful
+  # command alone MUST NOT authorize jail/network cleanup or checkpoint sealing.
+  @doc "Force-terminate a paused service after durable capture or terminal discard authority."
   @spec kill_paused(Spec.t()) :: :ok | {:error, atom()}
   def kill_paused(spec) do
-    case Command.run(:systemctl, ["kill", "--kill-who=all", "--signal=KILL", name(spec)], 5000) do
-      {:ok, _} -> await_stopped(spec, System.monotonic_time(:millisecond) + 5000)
-      error -> error
+    case status(spec) do
+      {:ok, :stopped} ->
+        :ok
+
+      {:ok, :running} ->
+        _ = Command.run(:systemctl, ["kill", "--kill-who=all", "--signal=KILL", name(spec)], 5000)
+        await_stopped(spec, System.monotonic_time(:millisecond) + 5000)
+
+      error ->
+        error
     end
   end
 

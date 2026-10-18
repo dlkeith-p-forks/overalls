@@ -25,6 +25,7 @@ defmodule MarshallWeb.TerminalLive do
         opening_notice: nil,
         boot_log_cursor: 0,
         boot_log?: false,
+        wake_on_mount?: true,
         boot_log_text: ""
       )
       |> stream(:terminal_sessions, [])
@@ -83,7 +84,9 @@ defmodule MarshallWeb.TerminalLive do
          assign(socket,
            opening_notice: nil,
            notice:
-             gettext("Opening terminal; recovering the same request if the connection was interrupted.")
+             gettext(
+               "Opening terminal; recovering the same request if the connection was interrupted."
+             )
          )}
 
       {:error, reason} ->
@@ -99,10 +102,13 @@ defmodule MarshallWeb.TerminalLive do
   def handle_event("terminal_ticket", %{"session_id" => session_id}, socket) do
     actor = socket.assigns.current_user
 
-    with {:ok, session} <- Marshall.Terminal.Authority.session_for(session_id, actor),
+    with {:ok, session} <- Marshall.Terminal.Authority.session_for(session_id, actor, :connect),
          {:ok, ticket} <- Marshall.Terminal.Authority.ticket(session, actor) do
       {:noreply, push_event(socket, "terminal_ticket", %{session_id: session_id, ticket: ticket})}
     else
+      {:error, :terminal_open_pending} ->
+        {:noreply, assign(socket, notice: gettext("Resuming machine; waiting for capacity…"))}
+
       refusal ->
         Marshall.Events.emit("terminal.ticket_refused", reason: ticket_refusal(refusal))
         {:noreply, assign(socket, notice: gettext("Terminal access ended."))}
@@ -121,7 +127,9 @@ defmodule MarshallWeb.TerminalLive do
     else
       {:error, :terminal_close_pending} ->
         {:noreply,
-         assign(socket, notice: gettext("Terminal close requested; waiting for guest confirmation."))}
+         assign(socket,
+           notice: gettext("Terminal close requested; waiting for guest confirmation.")
+         )}
 
       _ ->
         {:noreply, refresh_sessions(socket)}
@@ -150,7 +158,9 @@ defmodule MarshallWeb.TerminalLive do
         {:reply, %{ok: false},
          assign(socket,
            notice:
-             gettext("Unable to update terminal sharing. The recipient must have machine access before sharing.")
+             gettext(
+               "Unable to update terminal sharing. The recipient must have machine access before sharing."
+             )
          )}
     end
   end
@@ -239,7 +249,14 @@ defmodule MarshallWeb.TerminalLive do
   # the independently authorized bounded host boot-log operation.
   defp refresh_current_sessions(%{assigns: %{boot_log?: true}} = socket), do: socket
 
+  # @cc [owner:ghuntley,label:recovery;capacity] terminal-server-refresh-is-passive
+  # The first terminal-page connection MAY join paused wake demand. Subsequent
+  # server refreshes MUST observe without waking; reopening or an explicit
+  # browser attach remains a new connection. Boot-log views never create demand.
   defp refresh_current_sessions(socket) do
+    wake_on_mount? = socket.assigns.wake_on_mount?
+    socket = assign(socket, wake_on_mount?: false)
+
     socket =
       if socket.assigns.opening.execution == socket.assigns.vm.execution_ref,
         do: socket,
@@ -259,13 +276,27 @@ defmodule MarshallWeb.TerminalLive do
     if vm.desired_state == :running and vm.observed_state == :running do
       list_current_sessions(socket)
     else
-      assign(socket, notice: socket.assigns.opening_notice || machine_waiting_notice(vm))
+      notice =
+        case Authority.ensure_awake(
+               vm,
+               socket.assigns.current_user,
+               "read",
+               if(wake_on_mount?, do: :connect, else: :observe)
+             ) do
+          {:error, :terminal_open_pending} -> gettext("Resuming machine; waiting for capacity…")
+          _ -> socket.assigns.opening_notice || machine_waiting_notice(vm)
+        end
+
+      assign(socket, notice: notice)
     end
   end
 
   @spec machine_waiting_notice(map()) :: String.t()
   defp machine_waiting_notice(%{guest_capabilities: %{available: true, terminal: false}}),
-    do: gettext("This machine's image has no terminal agent, so the browser terminal is unavailable.")
+    do:
+      gettext(
+        "This machine's image has no terminal agent, so the browser terminal is unavailable."
+      )
 
   defp machine_waiting_notice(%{observed_state: :failed}),
     do: gettext("Machine startup failed. Check the machine status and boot log.")
@@ -273,10 +304,17 @@ defmodule MarshallWeb.TerminalLive do
   defp machine_waiting_notice(%{desired_state: :stopped}),
     do: gettext("Machine is stopping or stopped. Choose Start to open a terminal.")
 
+  defp machine_waiting_notice(%{desired_state: :paused}),
+    do: gettext("Machine is paused. Resume it or reopen this terminal page.")
+
   defp machine_waiting_notice(_vm), do: gettext("Waiting for the machine to start…")
 
   defp list_current_sessions(socket) do
-    case Marshall.Terminal.Authority.list_sessions(socket.assigns.vm, socket.assigns.current_user) do
+    case Marshall.Terminal.Authority.list_sessions(
+           socket.assigns.vm,
+           socket.assigns.current_user,
+           :observe
+         ) do
       {:ok, sessions} ->
         notice =
           if Enum.any?(sessions, &(&1.kill_status == :pending)),
@@ -353,7 +391,7 @@ defmodule MarshallWeb.TerminalLive do
 
       task =
         Task.Supervisor.async_nolink(Marshall.Terminal.OpeningTasks, fn ->
-          Authority.open_personal_session(vm, user)
+          Authority.open_personal_session(vm, user, :default, :observe)
         end)
 
       assign(socket,
@@ -396,18 +434,25 @@ defmodule MarshallWeb.TerminalLive do
 
   defp parse_cursor(_, fallback), do: fallback
 
-  defp notice(:too_many_terminal_sessions), do: gettext("Terminal limit reached for this machine.")
+  defp notice(:too_many_terminal_sessions),
+    do: gettext("Terminal limit reached for this machine.")
+
   defp notice(:forbidden), do: gettext("You do not have terminal access to this machine.")
-  defp notice(:terminal_unavailable), do: gettext("Terminals are unavailable while the host is offline.")
+
+  defp notice(:terminal_unavailable),
+    do: gettext("Terminals are unavailable while the host is offline.")
 
   defp notice(:unknown_session),
     do: gettext("Your previous shell has closed. Choose New to open another terminal.")
 
-  defp notice(:opening_expired), do: gettext("The previous opening has ended. Choose New to try again.")
+  defp notice(:opening_expired),
+    do: gettext("The previous opening has ended. Choose New to try again.")
 
   defp notice(:rejected),
     do:
-      gettext("Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry.")
+      gettext(
+        "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
+      )
 
   defp notice(:limit), do: gettext("The guest cannot host more terminal sessions.")
 
@@ -436,7 +481,9 @@ defmodule MarshallWeb.TerminalLive do
           role="status"
         >
           <%= if @vm.desired_state == :stopped do %>
-            {gettext("This machine is stopped. Start it to open your terminal. Your files are retained.")}
+            {gettext(
+              "This machine is stopped. Start it to open your terminal. Your files are retained."
+            )}
           <% else %>
             {gettext("Your terminal will open when the machine is running and ready.")}
           <% end %>
@@ -485,14 +532,25 @@ defmodule MarshallWeb.TerminalLive do
                   role="option"
                   aria-selected="false"
                   aria-label={
-                    ngettext("Terminal %{name}, %{count} viewer, created %{created}", "Terminal %{name}, %{count} viewers, created %{created}", session.viewers, name: session.display_name, created: session.created_ms)
+                    ngettext(
+                      "Terminal %{name}, %{count} viewer, created %{created}",
+                      "Terminal %{name}, %{count} viewers, created %{created}",
+                      session.viewers,
+                      name: session.display_name,
+                      created: session.created_ms
+                    )
                   }
                   class="terminal-session"
                 >
                   <span aria-hidden="true"><span class="terminal-unread-dot"></span></span>
                   <span>
                     <span class="terminal-label">{session.display_name}</span>
-                    <span class="terminal-meta">{ngettext("%{user} · %{count} viewing", "%{user} · %{count} viewing", session.viewers, user: session.guest_user)}</span>
+                    <span class="terminal-meta">{ngettext(
+                      "%{user} · %{count} viewing",
+                      "%{user} · %{count} viewing",
+                      session.viewers,
+                      user: session.guest_user
+                    )}</span>
                   </span>
                 </button>
                 <button
@@ -571,24 +629,45 @@ defmodule MarshallWeb.TerminalLive do
                 </div>
               </div>
               <div id="terminal-search-bar" role="search" class="hidden">
-                <label class="sr-only" for="terminal-search-query">{gettext("Search terminal scrollback")}</label>
+                <label class="sr-only" for="terminal-search-query">{gettext(
+                  "Search terminal scrollback"
+                )}</label>
                 <input
                   id="terminal-search-query"
                   type="search"
                   maxlength="256"
                   placeholder={gettext("Find in scrollback")}
                 />
-                <button type="button" data-terminal-tool="search-previous" aria-label={gettext("Previous match")}>↑</button>
-                <button type="button" data-terminal-tool="search-next" aria-label={gettext("Next match")}>↓</button>
-                <button type="button" data-terminal-tool="search-close" aria-label={gettext("Close search")}>×</button>
+                <button
+                  type="button"
+                  data-terminal-tool="search-previous"
+                  aria-label={gettext("Previous match")}
+                >↑</button>
+                <button
+                  type="button"
+                  data-terminal-tool="search-next"
+                  aria-label={gettext("Next match")}
+                >↓</button>
+                <button
+                  type="button"
+                  data-terminal-tool="search-close"
+                  aria-label={gettext("Close search")}
+                >×</button>
                 <span id="terminal-search-result" role="status"></span>
               </div>
               <div id="terminal-pane-holder"></div>
               <div id="terminal-boot-view" class="hidden">
                 <label>
-                  <input id="terminal-boot-autoscroll" type="checkbox" checked /> {gettext("Follow boot output")}
+                  <input id="terminal-boot-autoscroll" type="checkbox" checked /> {gettext(
+                    "Follow boot output"
+                  )}
                 </label>
-                <div id="terminal-boot-xterm" role="region" aria-label={gettext("Read-only boot console")}></div>
+                <div
+                  id="terminal-boot-xterm"
+                  role="region"
+                  aria-label={gettext("Read-only boot console")}
+                >
+                </div>
               </div>
             </div>
           </div>
@@ -596,7 +675,9 @@ defmodule MarshallWeb.TerminalLive do
             <dialog id="terminal-share-dialog" aria-labelledby="terminal-share-heading">
               <h2 id="terminal-share-heading">{gettext("Share this terminal")}</h2>
               <p>
-                {gettext("Viewing only, even for machine operators. The recipient must already have access to this machine.")}
+                {gettext(
+                  "Viewing only, even for machine operators. The recipient must already have access to this machine."
+                )}
               </p>
               <div class="field">
                 <label for="terminal-share-email">

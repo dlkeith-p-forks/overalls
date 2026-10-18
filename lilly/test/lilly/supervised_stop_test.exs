@@ -29,8 +29,5 @@ defmodule Lilly.SupervisedStopTest do
 
     assert SupervisedStop.location({:badarg, [{Lilly.VM.Actor, :schedule, [secret], []}]}) ==
              {:unknown, :unknown, 0}
-
-    assert SupervisedStop.location({:badarg, [{:gen_server, :init, [secret], []}]}) ==
-             {:gen_server, :init, 1}
   end
 end

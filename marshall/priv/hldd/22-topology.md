@@ -1,31 +1,22 @@
 # Deployment topology
 
-## GitHub.com uses existing service placement
+## Suspended workloads and gateway relay
 
-The accepted provider adds resources and scheduled work inside Marshall, not a
-fleet application or listener. Both existing Galileo instances carry
-`com-github.integration.internal` behind local Audi/Lilly execution binding.
-Existing PostgreSQL holds encrypted connections, operation progress, exclusions
-and leases. The existing wildcard already covers the hostname.
+Suspension adds no new deployed service. Marshall's existing PostgreSQL stores
+wake demand, idle clocks and current execution authority. Lilly retains sealed RAM
+and device state in private sibling ZFS datasets beside each owned VM disk, with
+host-local single-use journals outside transferred storage. A suspended VM has no
+VMM/cgroup compute but still consumes disk/checkpoint capacity.
 
-```mermaid
-flowchart LR
-  Browser[Browser OAuth] --> Marshall[Existing Marshall]
-  Marshall --> DB[(Existing PostgreSQL and Cloak custody)]
-  Marshall -->|verified OAuth exchange| GitHub[GitHub.com]
-  Guest[Managed gh Git and LFS] --> Private[Local Audi and Lilly proof]
-  Private --> Galileo[Local Galileo]
-  Galileo -->|owner and lease authority| Marshall
-  Galileo -->|one reviewed verified request| GitHub
-```
-
-Marshall/database loss prevents fresh credential-bearing admission and expires
-renewal at bounded lease deadlines; proxy health cannot substitute. Anonymous
-public traffic remains separate. Guests hold no token; Galileo persists none.
-New image payloads and retained delivery need separate per-family evidence.
-Unchanged declared placement does not establish deployment or live GitHub
-acceptance. See [services](#services), [security](#security) and the
-[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
+Audi's fleet-private relay listener joins the existing WireGuard peer topology.
+When a sleeping workload moves, its original discovery gateway keeps waiting
+connections and forwards one hop using a single-use destination-bound capability.
+The receiving Audi connects only to its local Lilly under renewed Marshall
+authority. This is neither public relay exposure nor guest-subnet routing.
+Full compatible-fleet exhaustion leaves durable demand pending; PostgreSQL,
+transport and destination capacity remain separate failure boundaries. Declared
+placement does not prove multi-host availability; the suspension fleet test is
+the corresponding native acceptance boundary.
 
 ## Peach private reflection placement
 
@@ -35,9 +26,12 @@ Marshall's Peach domain retains only credential digests; it builds each bounded
 projection from current Compute and integration authority. Peach/database loss
 withholds reflection rather than serving a retained snapshot. The source module
 and evaluation test exist, but the host inventory does not yet declare Peach
-enabled. The `audiPrivate` dependency assertion requires compatible fleet
-enablement before deployment. The public placement projection now includes the
-Peach role without serializing its credential or runtime configuration.
+enabled. Audi's mandatory Lilly, Ziggy and Galileo dependencies remain; disabled
+Peach emits a null optional socket and reflection refuses before execution
+admission. A configured backend requires a bounded canonical Unix-socket path.
+The public placement projection includes the Peach role without serializing its
+credential or runtime configuration. Enabled socket access and credential
+lifetime still need review and native execution.
 
 ```mermaid
 flowchart LR

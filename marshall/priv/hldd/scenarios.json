@@ -65,13 +65,13 @@
     },
     {
       "id": "account-settings-page",
-      "journey": "Open the single account page, move between its profile, sign-in and SSH key sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint",
+      "journey": "Open the single account page, move between its profile, sign-in, SSH key and Git sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint",
       "layers": [
         "identity",
         "authorization",
         "transport"
       ],
-      "boundary": "One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey and SSH key sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH and User.set_time_zone; fragments (#profile, #security, #ssh-keys) carry no authority and return_to keeps its allowlist.",
+      "boundary": "One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey, SSH key and Git sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH, User.set_time_zone and User.git_settings; fragments (#profile, #security, #ssh-keys, #git-settings) carry no authority and return_to keeps its allowlist.",
       "denial": "Refuse anonymous visitors with a sign-in redirect; answer 404 on /settings/profile, /settings/security and /settings/ssh-keys; refuse unknown events with a fixed flash and no change; a revoked login halts the next SSH key event or clock tick with a sign-in redirect; a weaker mount (optional, current_user or none) fails the pin test.",
       "scope": "LiveView tests of the merged page (sections, single navigation entry, the step-up redirect and Users link to /settings?return_to=%2Fadmin%2Fusers#security, the SSH approval navigation to /settings#ssh-keys, every former Security, SSH key and profile assertion) and a structural pin of the lifecycle ids and route; the synthetic browser probe checks the single sidebar entry, section order, anchors landing at the top, the zone round trip and grid alignment in both themes and at 390 px.",
       "status": "partial",
@@ -89,7 +89,7 @@
           "kind": "unit",
           "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "the page renders every section behind one Account navigation entry",
-          "scope": "Section ids, index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile",
+          "scope": "All four section ids and index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile",
           "execution": "present"
         },
         {
@@ -117,7 +117,7 @@
           "kind": "manual",
           "path": "marshall/scripts/monospace_browser_probe.py",
           "assertion": "check_account",
-          "scope": "Synthetic fixture: single navigation entry, section order, #profile and #ssh-keys anchors, zone round trip, grid alignment, screenshots in light, dark and at 390 px",
+          "scope": "Current synthetic browser fixture targets the Account route and all four sections, retains Git preference and zone round trips, anchor positioning, grid alignment and light/dark/mobile screenshots. Source and static checks do not record browser execution of this repaired probe.",
           "execution": "present"
         }
       ]
@@ -2931,7 +2931,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
           "assertion": "older archived activation proof cannot replace the retry proof",
-          "scope": "Current property imports typed archived retry operations and proves older activation receipts cannot replace retry receipts; repeated scans retain pending measurements until the exact retry proof arrives and preserve inventories. No current retry admission, guest execution or native timing. Historical predecessor execution remains recorded separately in docs/architecture/reviews/2026-10-02-retry-proof-binding-histories.md and does not establish execution of this revised fixture.",
+          "scope": "Directly seeded pre-upgrade retry rows exercise the historical WorkflowServiceLevels database reader: exact proof windows, mismatched bindings, older-proof refusal and immutable totals/deadlines. No current retry admission, protocol, guest or native execution is claimed.",
           "execution": "present"
         },
         {
@@ -3055,7 +3055,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
           "assertion": "historical retry measurements retain both proof windows through repeated scans",
-          "scope": "Current property imports archived retry history and models received timestamps at inclusive admission/deadline boundaries, missing/early/late/future proofs and repeated scans; asserts exact totals, bucket vectors and retained execution/proof inventories. No current cold retry admission, independent publisher, native timing or production claim. Historical predecessor execution remains recorded separately in docs/architecture/reviews/2026-10-02-retry-measurement-window-histories.md and does not establish execution of this revised fixture.",
+          "scope": "Directly seeded pre-upgrade retry rows exercise the historical WorkflowServiceLevels database reader: exact proof windows, mismatched bindings, older-proof refusal and immutable totals/deadlines. No current retry admission, protocol, guest or native execution is claimed.",
           "execution": "present"
         }
       ]
@@ -6124,7 +6124,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/agents/prompt_wake_property_test.exs",
           "assertion": "prompt retries join one wake without duplicating turns or starting a guest",
-          "scope": "Generated prompt text, repeated keys and changed payload across synthetic pending/stopped/paused/running observations against local Ash/PostgreSQL state; one turn/event/admission and sleeping-state wake receipts, with unchanged operation inventory. No native guest wake or checkpoint acceptance.",
+          "scope": "Generated running, pending, stopped and paused prompt histories use a fresh SQL sandbox per case; one turn, event and durable wake identity, with no premature execution. Synthetic capacity and no native guest wake.",
           "execution": "present"
         },
         {
@@ -6299,11 +6299,9 @@
         {
           "kind": "property",
           "path": "marshall/test/marshall/agents/executor_loss_history_test.exs",
-          "assertion": "executor loss preserves one dispatch and requires authorized explicit retry",
-          "scope": "Every order covers claimed/started loss, replacement/synthetic expiry, repeated polling, stale transitions, request identity and sharing withdrawal/regrant; complete public-table refusal inventories. Synthetic SQL control evidence only.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-09-26-executor-loss-histories.md",
-          "record_assertion": "Full Marshall gate 1,171 checks (133 properties, 1,038 tests), seed 536772; final focused suite 26 checks (2 properties, 24 tests), seed 799844"
+          "assertion": "preserves one dispatch and explicit retry",
+          "scope": "Eight separate 100-case property runners cover claimed/started loss, replacement/synthetic expiry and allowed/revoked access, with repeated polling, stale transitions, request identity, sharing withdrawal/regrant and an unrelated workload inventory in each case. The former shuffled combined runner's execution record remains historical. Current runner execution is present only; synthetic SQL control evidence cannot establish native effects.",
+          "execution": "present"
         },
         {
           "kind": "machine",
@@ -7393,6 +7391,15 @@
       "gaps": "The native browser checks one Marshall instance and controlled token invalidation; application-level three-replica revocation propagation for handbook and machine reads is recorded in docs/architecture/reviews/2026-09-26-cross-replica-revocation.md, while the native three-replica journey delivered through the administration UI belongs to the login scenario. It bounds visible chapter and diagram counts without measuring heap limits on every client, exercising physical authenticators or proving handbook prose semantically correct. Source code link metadata is checked without requesting GitHub or establishing its availability. The fixture login-error check is not exhaustive production authentication-diagnostic acceptance.",
       "preferred_gap": "Retain native per-section navigation and generated reader-authority, review and identifier properties; profile memory on affected clients if exhaustion persists. Multi-replica and hardware-authenticator acceptance belong to the login journey. A dedicated property adds little value for the constant external URL now asserted by the native journey.",
       "evidence": [
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/hldd/browser.py",
+          "assertion": "check_reference_navigation",
+          "scope": "Pre-Windows-merge captured source at 19:19:48 passed the packaged NixOS build in 640 seconds and VM driver in 90.79 seconds. Real Marshall/PostgreSQL/Chromium verified exact Reference/Source navigation including Control-room hiding, at least 22 sections and 14 diagrams, hook cleanup, desktop/dark/mobile/print, anonymous/removed-route refusal and mounted/stale-cookie revocation. This predates later sealing/evidence prose and the Windows merge; no Account-form, suspended-ingress, native VM or production acceptance claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-memory-suspension.md",
+          "record_assertion": "The packaged NixOS `hldd-browser` check passed in **640 seconds**"
+        },
         {
           "kind": "machine",
           "path": "nix/verification/tests/machines/hldd/browser.py",
@@ -11304,7 +11311,7 @@
       "denial": "An unknown agent set string, a workspace source version 2 on an agentless manifest or a ninth manifest key is refused by the protocol; an older Lilly refuses a windows-v1 bundle, so the converged push precedes any placement. A missing, corrupt or mismatched manifest yields every capability false in Marshall. A bare image path or any image key beyond path, including the retired standby key, refuses Lilly's configuration. The probe carries no identity or credential material. The editor and the Inception profile stay refused for windows-v1.",
       "scope": "Protocol tests pin the capability table and the windows-v1 manifest and bundle vectors; Lilly tests pin the agentless jail configuration, the vsock addition for windows-v1, the recorded readiness budget, the image configuration shape and template cacheability; Marshall tests bind the capabilities to the exact image ID for every agent set and exercise the per-capability surfaces; the windows-guest-unit evaluation checks the viosock driver, the agents directory, the probe task, the manifest arguments and the launcher's vsock device; the lyra check builds and type-checks the Windows target. Recorded on 2026-10-14: lyraWindows built overalls-winprobe.exe (PE32+, 320 000 bytes) through zig. The windows-guest machine test dials the probe through the launcher's vsock socket after the SAC prompt and reads its published log. The agents composition now also inspects the live Windows EFI log for the closed agentd startup line; this is present evidence only until the composed check runs. The staged Windows editor runtime and source recipes retain editor_capability=false; the editor-target-boundaries and windows-editor-runtime evaluations pass. The broker has 26 passing portable library and 7 Linux binary tests, Linux/Windows clippy and production Windows cross-link evidence. Thirty actual Windows library tests cover named-pipe timeout/cancellation and ACL descriptor/refusal checks; personal worker, task and browser lifecycle remain unrecorded. The separate editor candidate uses manifest v7/windows-editor-v1 and bundle v4 while this existing windows-v1 row remains editor false. The prior selected sealed e9ed22f1 image in live run 075200 reported ready while sshd was stopped and CLI SSH failed; that current failure is distinct from earlier dated fleet proofs.",
       "status": "partial",
-      "gaps": "Fleet proofs on 2026-10-15 cover creation to ready in seconds, trust, roster accounts and sshd, the host certificate, executor registration, a public workspace clone and a relocation between hosts (review). Still unproven: an SSH login through Audi, a roster-user ConPTY terminal under an S4U logon and an agent turn (they need a browser-approved key), crash restart of the scheduled-task agents, the pool-level refill with an uncacheable image configured, and no Marshall-driven Windows fleet test makes any of the fleet proofs repeatable; ConPTY re-renders terminal output. The staged editor runtime/source and portable broker custody model have no native Windows link, listener VM run, image admission, browser origin or editor sign-in/edit/readback/recovery evidence.",
+      "gaps": "Fleet proofs on 2026-10-15 cover creation to ready in seconds, trust, roster accounts and sshd, the host certificate, executor registration, a public workspace clone and a relocation between hosts (review). Still unproven: an SSH login through Audi, a roster-user ConPTY terminal under an S4U logon and an agent turn (they need a browser-approved key), crash restart of the scheduled-task agents, the pool-level refill with an uncacheable image configured, and no Marshall-driven Windows fleet test makes any of the fleet proofs repeatable; ConPTY re-renders terminal output. The staged editor runtime/source and broker custody model retain separate cross-link and bounded native library evidence; no native Windows listener/account/task VM journey, admitted image, browser origin or editor sign-in/edit/readback/recovery evidence is recorded.",
       "preferred_gap": "Record the browser-approved proofs (SSH through Audi, a roster-user terminal, an agent turn) and add a Marshall-driven Windows fleet test so the fleet proofs become machine tests.",
       "evidence": [
         {
@@ -13006,7 +13013,7 @@
           "execution": "present",
           "path": "marshall/test/marshall_web/terminal_live_test.exs",
           "assertion": "the paused Boot log entry reads host diagnostics without waking or opening a guest terminal",
-          "scope": "Current LiveView fixture checks bounded synthetic host diagnostic delivery while the VM is paused, with no guest terminal registry rows or wake requests. No actual browser, Lilly host or native guest. Historical predecessor execution remains in docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md; the revised paused-state fixture has no recorded execution here."
+          "scope": "Current LiveView synthetic host-stream fixture checks a paused machine's bounded boot-log reads across refresh with no guest session, ticket or wake demand. This changed test is present; the older 27-test record remains historical and does not record execution of this assertion."
         },
         {
           "kind": "unit",
@@ -13164,6 +13171,101 @@
       "boundary": "Account-owned preferences become immutable VM configuration; existing execution and guest custody boundaries remain."
     },
     {
+      "boundary": "Current Cedar/key/publication/editor authority admits coalesced durable wake only; compute and private checkpoint capacity, sealed same-boot continuation, single-use restore and destination relay consumption independently fence execution.",
+      "denial": "Foreign or revoked authority, missing/corrupt/incompatible checkpoints, replayed restore and arbitrary relay targets refuse. Network activity cannot override explicit stop intent; a user prompt or explicit start may start a stopped VM. Full compatible-fleet capacity leaves wake pending; it never cold boots to replace memory.",
+      "evidence": [
+        {
+          "assertion": "pause releases execution and resume preserves RAM, PID and boot UUID",
+          "execution": "present",
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/fleet/scenarios/suspension.py",
+          "scope": "The NixOS test definition asserts real Firecracker lifecycle and repeated same-memory continuation, running and paused relocation, and original waiting SSH/HTTPS/editor connections. Presence does not record a successful run."
+        },
+        {
+          "assertion": "idle deadline is exactly four hours and opt-out never expires",
+          "execution": "present",
+          "kind": "property",
+          "path": "marshall/test/marshall/compute/suspension_test.exs",
+          "scope": "Application policy, serialized durable idle timing and synthetic outcome accounting; no physical RAM continuity."
+        },
+        {
+          "assertion": "paused terminal retries coalesce only after current authorization",
+          "execution": "present",
+          "kind": "property",
+          "path": "marshall/test/marshall/terminal/authority_test.exs",
+          "scope": "Generated allowed/foreign histories prove no premature terminal session creation while waiting for wake."
+        },
+        {
+          "assertion": "a failure cannot finish demand without its exact relocation association",
+          "execution": "present",
+          "kind": "unit",
+          "path": "marshall/test/marshall/compute/wake_relocation_failure_test.exs",
+          "scope": "Ash/PostgreSQL fixtures distinguish an exact committed relocation failure from uncommitted or unrelated failure, retain checkpoint and reservation custody, and refuse premature wake success. No physical restore or transfer."
+        },
+        {
+          "assertion": "origin loses wake and relay authority",
+          "execution": "present",
+          "kind": "unit",
+          "path": "marshall/test/marshall/ingress_wake_test.exs",
+          "scope": "Local current-origin authority fixtures refuse new wake, relay consumption and renewal after disablement, drain, retirement, disconnect or expiry, while permitting an enabled evacuating origin. No WireGuard or gateway socket execution."
+        },
+        {
+          "assertion": "terminal cleanup cannot promote an interrupted capture into usable RAM",
+          "execution": "present",
+          "kind": "property",
+          "path": "lilly/test/vm/checkpoint_test.exs",
+          "scope": "Durably reopened checkpoint and intent fixtures permit only current local terminal cleanup, refuse old/foreign/nonterminal authority, and retain the capturing phase. This BEAM model does not establish native kill completion or KVM continuation."
+        },
+        {
+          "assertion": "checkpoint_stream_custody",
+          "execution": "present",
+          "kind": "property",
+          "path": "lilly/native/hostd/src/transfer_tests.rs",
+          "scope": "Native typed stream path, ownership policy, non-resumable receive and malformed/foreign slot refusal; no ZFS or VM execution."
+        },
+        {
+          "assertion": "interrupted output sealing verifies both files before skipping repair",
+          "execution": "recorded",
+          "kind": "property",
+          "path": "lilly/test/vm/checkpoint_sealing_test.exs",
+          "scope": "100 default Hegel cases passed with seed527600 in0.2seconds against current-source compiled BEAM modules and real local files. Histories cover interrupted mode changes and missing, hardlinked, symlinked or writable output refusal. This is not a full Lilly Mix gate and does not establish native ZFS readonly, privileged ownership changes or KVM continuation.",
+          "record": "docs/architecture/reviews/2026-10-18-memory-suspension.md",
+          "record_assertion": "The exact sealing property passed **100 default Hegel cases**"
+        },
+        {
+          "assertion": "pool contention cannot discard an acknowledged capture result",
+          "execution": "recorded",
+          "kind": "property",
+          "path": "lilly/test/vm/checkpoint_test.exs",
+          "scope": "100 default Hegel cases passed within a28-test/six-file focused run in8.4seconds. A real held hostd pool lease and reopened private journal verify acknowledged capture recording under the configured selected live placement lease; unrelated selected lease, foreign pool and stale authority refuse. Owned dataset/slot state and readyRAM authority do not advance. Firecracker API success, ZFS effects and full fleet continuation remain outside this BEAM/lease property.",
+          "record": "docs/architecture/reviews/2026-10-18-memory-suspension.md",
+          "record_assertion": "The current exact-placement focused Lilly run passed **28 tests**"
+        },
+        {
+          "assertion": "restore changes host authority without changing guest hello identity",
+          "execution": "present",
+          "kind": "property",
+          "path": "lilly/test/terminal/vsock_test.exs",
+          "scope": "Guest HMAC continuation inside separate current outer placement authority; no guest process or multi-host execution."
+        }
+      ],
+      "gaps": "Full changed-source fleet execution and native image qualification are in progress. Existing socket migration, physical isolation, host power-loss and production deployment are not established by local application properties.",
+      "id": "memory-suspension-demand-wake",
+      "journey": "A thread machine suspends after four tool-idle hours and resumes its memory on a prompt or authorized SSH, web or editor connection, relocating automatically when its host is full",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
+      "preferred_gap": "Run the memory-suspension-fleet NixOS check and record exact-source RAM/cgroup/connection evidence; separately qualify each native image before enabling its checkpoint operations.",
+      "scope": "Ash state machines and Hegel histories exercise BEAM admission, timer boundaries, coalescing and execution fences. Native hostd tests cover API-only restore launch and fixed checkpoint stream derivation. The real fleet test definition asserts repeated capture, RAM-only nonce/PID/boot continuity, cgroup absence, running/paused moves and original authorized connections through measured source memory exhaustion; successful changed-source execution is not yet recorded here.",
+      "status": "partial"
+    },
+    {
       "id": "overview-newsletter-signup",
       "journey": "Subscribe to the newsletter or permanently dismiss the Overview invitation",
       "layers": [
@@ -13185,20 +13287,6 @@
           "execution": "present"
         },
         {
-          "kind": "property",
-          "path": "marshall/test/marshall/newsletter_property_test.exs",
-          "assertion": "successful Ghost responses produce a success without exposing request data",
-          "scope": "Injected requester property checks safe success and the fixed subscription payload; no external Ghost request",
-          "execution": "present"
-        },
-        {
-          "kind": "property",
-          "path": "marshall/test/marshall/newsletter_property_test.exs",
-          "assertion": "Ghost and transport failures collapse to the safe unavailable result",
-          "scope": "Injected requester properties cover token HTTP, signup HTTP and transport failures; no provider acceptance",
-          "execution": "present"
-        },
-        {
           "kind": "unit",
           "path": "marshall/test/marshall_web/overview_live_test.exs",
           "assertion": "refute has_element?(view, \"#overview-newsletter\")",
@@ -13217,6 +13305,20 @@
           "path": "marshall/test/marshall/accounts/newsletter_dismissal_test.exs",
           "assertion": "foreign, anonymous and non-user actors cannot dismiss an account invitation",
           "scope": "Refused writes preserve both account preferences; separate tests reject false reset and retired-account stale actors",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/newsletter_property_test.exs",
+          "assertion": "successful Ghost responses produce a success without exposing request data",
+          "scope": "Injected requester property checks safe success and the fixed subscription payload; no external Ghost request",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/newsletter_property_test.exs",
+          "assertion": "Ghost and transport failures collapse to the safe unavailable result",
+          "scope": "Injected requester properties cover token HTTP, signup HTTP and transport failures; no provider acceptance",
           "execution": "present"
         }
       ],
@@ -13286,6 +13388,20 @@
           "path": "nix/verification/tests/machines/private-services/driver.py",
           "assertion": "https://reflection.internal/ | grep -Fx 403",
           "scope": "Declared native fixture checks the fixed private DNS/TLS endpoint refuses without a current binding; no recorded execution or successful projection",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "audi/test/config_test.exs",
+          "assertion": "private reflection backend is optional and accepts only bounded canonical socket paths",
+          "scope": "Runtime decoder permits omitted/null Peach backend and validates configured canonical bounded Unix paths; native enabled Peach socket and guest projection remain separate",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/peach/credentials_test.exs",
+          "assertion": "Peach control accepts its current credential and refuses a Galileo credential",
+          "scope": "Dedicated host credential admits only Peach control; same-host Galileo and revoked Peach credentials refuse in database-backed fixture, with execution pending",
           "execution": "present"
         }
       ],

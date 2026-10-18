@@ -197,6 +197,9 @@ defmodule Lilly.Control.Store do
           Map.drop(immutable(existing), [:resize_from, :resize_id]) ==
             Map.delete(immutable(command), :resize_id)
 
+        existing.kind == :pause and command.kind == :resume ->
+          Map.drop(immutable(existing), [:slot]) == Map.drop(immutable(command), [:slot])
+
         true ->
           immutable(existing) == immutable(command)
       end
@@ -215,7 +218,8 @@ defmodule Lilly.Control.Store do
         :clone_id,
         :owner_id,
         :workspace_source,
-        :git_identity
+        :git_identity,
+        :checkpoint
       ])
 
   defp revision(command), do: {command.execution_epoch, command.generation}

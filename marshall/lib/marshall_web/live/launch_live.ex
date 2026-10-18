@@ -21,7 +21,8 @@ defmodule MarshallWeb.LaunchLive do
   @impl true
   @spec mount(map(), map(), socket()) :: {:ok, socket()}
   def mount(_params, session, socket) do
-    socket = assign(socket, page_title: gettext("Launch"), status: :waiting, repository: nil, error: nil)
+    socket =
+      assign(socket, page_title: gettext("Launch"), status: :waiting, repository: nil, error: nil)
 
     case PendingLaunch.read(session) do
       nil ->
@@ -111,13 +112,21 @@ defmodule MarshallWeb.LaunchLive do
   @spec refuse(socket(), atom()) :: socket()
   defp refuse(socket, reason) do
     Marshall.Events.emit("vm.repository_launch_refused", reason: reason)
-    assign(socket, status: :refused, error: message(reason), page_title: gettext("Launch refused"))
+
+    assign(socket,
+      status: :refused,
+      error: message(reason),
+      page_title: gettext("Launch refused")
+    )
   end
 
   # Fixed public messages only; the submitted URL is never echoed back.
   @spec message(atom()) :: String.t()
   defp message(:unsupported_host),
-    do: gettext("Only public repositories on GitHub, GitLab, Codeberg or Bitbucket can be launched.")
+    do:
+      gettext(
+        "Only public repositories on GitHub, GitLab, Codeberg or Bitbucket can be launched."
+      )
 
   defp message(:invalid_url),
     do: gettext("That link is not a supported public repository URL.")
@@ -139,7 +148,9 @@ defmodule MarshallWeb.LaunchLive do
 
   defp message(:workspace_source_unavailable),
     do:
-      gettext("The default image cannot open repositories. Choose an image with the current workspace service.")
+      gettext(
+        "The default image cannot open repositories. Choose an image with the current workspace service."
+      )
 
   defp message(:forbidden), do: gettext("Your account cannot create machines.")
 
@@ -175,7 +186,9 @@ defmodule MarshallWeb.LaunchLive do
               >
                 {gettext("Create a machine")}
               </.link>
-              <.link navigate={~p"/overview"} class="console-button ghost">{gettext("Back to overview")}</.link>
+              <.link navigate={~p"/overview"} class="console-button ghost">{gettext(
+                "Back to overview"
+              )}</.link>
             </div>
           </UI.panel>
         <% else %>

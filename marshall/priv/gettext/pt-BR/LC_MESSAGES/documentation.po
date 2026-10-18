@@ -197,152 +197,152 @@ msgstr "# Verificação e referência"
 #: lib/marshall/documentation_messages.ex:74
 #, elixir-autogen, elixir-format
 msgid "## A gateway creates and reads an authenticated SSH session through either control adapter"
-msgstr ""
+msgstr "## Um gateway cria e lê uma sessão SSH autenticada por qualquer adaptador de controle"
 
 #: lib/marshall/documentation_messages.ex:78
 #, elixir-autogen, elixir-format
 msgid "## A service binds its authenticated control socket before exchanging work or heartbeats"
-msgstr ""
+msgstr "## Um serviço vincula seu soquete de controle autenticado antes de trocar trabalho ou pulsações"
 
 #: lib/marshall/documentation_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "## A service settles its pending control requests and recovers capacity after connection loss"
-msgstr ""
+msgstr "## Um serviço conclui suas solicitações de controle pendentes e recupera capacidade após a perda da conexão"
 
 #: lib/marshall/documentation_messages.ex:87
 #, elixir-autogen, elixir-format
 msgid "## Actual scrollback growth"
-msgstr ""
+msgstr "## Crescimento real do buffer de terminal"
 
 #: lib/marshall/documentation_messages.ex:88
 #, elixir-autogen, elixir-format
 msgid "## Administrator action continuation"
-msgstr ""
+msgstr "## Continuação de ação administrativa"
 
 #: lib/marshall/documentation_messages.ex:89
 #, elixir-autogen, elixir-format
 msgid "## Admission observations and independent diagnostics"
-msgstr ""
+msgstr "## Observações de admissão e diagnósticos independentes"
 
 #: lib/marshall/documentation_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "## Admit work without double-spending capacity"
-msgstr ""
+msgstr "## Admitir trabalho sem gastar capacidade duas vezes"
 
 #: lib/marshall/documentation_messages.ex:91
 #, elixir-autogen, elixir-format
 msgid "## Agent context and guidance boundaries"
-msgstr ""
+msgstr "## Limites de contexto e orientação do agente"
 
 #: lib/marshall/documentation_messages.ex:92
 #, elixir-autogen, elixir-format
 msgid "## Agent context remains within existing services"
-msgstr ""
+msgstr "## O contexto do agente permanece nos serviços existentes"
 
 #: lib/marshall/documentation_messages.ex:93
 #, elixir-autogen, elixir-format
 msgid "## Agent loss and retry authority"
-msgstr ""
+msgstr "## Perda do agente e autoridade para tentar novamente"
 
 #: lib/marshall/documentation_messages.ex:94
 #, elixir-autogen, elixir-format
 msgid "## Agent project context"
-msgstr ""
+msgstr "## Contexto do projeto do agente"
 
 #: lib/marshall/documentation_messages.ex:95
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Brady with closed egress policy, private runtime signer and disposable cache settings"
-msgstr ""
+msgstr "## Um operador inicia o Brady com política de saída fechada, assinador privado de runtime e configurações de cache descartável"
 
 #: lib/marshall/documentation_messages.ex:99
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Enrico with service-token, TLS file references, mirror state and readiness socket settings"
-msgstr ""
+msgstr "## Um operador inicia o Enrico com token de serviço, referências a arquivos TLS, estado do espelho e configurações do soquete de prontidão"
 
 #: lib/marshall/documentation_messages.ex:103
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Galileo with a private control credential and local integration socket"
-msgstr ""
+msgstr "## Um operador inicia o Galileo com uma credencial privada de controle e um soquete local de integração"
 
 #: lib/marshall/documentation_messages.ex:107
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Lilly with a private runtime configuration"
-msgstr ""
+msgstr "## Um operador inicia o Lilly com uma configuração privada de runtime"
 
 #: lib/marshall/documentation_messages.ex:111
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Marshall with common runtime guard settings"
-msgstr ""
+msgstr "## Um operador inicia o Marshall com configurações comuns de proteção do runtime"
 
 #: lib/marshall/documentation_messages.ex:115
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Porsche with private gateway credentials and host keys"
-msgstr ""
+msgstr "## Um operador inicia o Porsche com credenciais privadas do gateway e chaves de host"
 
 #: lib/marshall/documentation_messages.ex:119
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Porsche with real private host keys and a host certificate"
-msgstr ""
+msgstr "## Um operador inicia o Porsche com chaves privadas reais de host e um certificado de host"
 
 #: lib/marshall/documentation_messages.ex:123
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Ziggy with private provider credentials and a local serving socket"
-msgstr ""
+msgstr "## Um operador inicia o Ziggy com credenciais privadas do provedor e um soquete local de atendimento"
 
 #: lib/marshall/documentation_messages.ex:127
 #, elixir-autogen, elixir-format
 msgid "## An operator starts an Audi gateway, authoritative DNS replica or private-service frontend"
-msgstr ""
+msgstr "## Um operador inicia um gateway Audi, uma réplica DNS autoritativa ou um frontend de serviço privado"
 
 #: lib/marshall/documentation_messages.ex:131
 #, elixir-autogen, elixir-format
 msgid "## Apply negotiated control request capacity and recover it after reconnect"
-msgstr ""
+msgstr "## Aplicar a capacidade negociada de solicitações de controle e recuperá-la após a reconexão"
 
 #: lib/marshall/documentation_messages.ex:135
 #, elixir-autogen, elixir-format
 msgid "## Apply the thread creator's guest and project guidance with explicitly selected skills"
-msgstr ""
+msgstr "## Aplicar as orientações de convidado e projeto do criador da conversa com habilidades selecionadas explicitamente"
 
 #: lib/marshall/documentation_messages.ex:139
 #, elixir-autogen, elixir-format
 msgid "## Approve a packaged agent CLI invocation in an ordinary browser and receive real guest work"
-msgstr ""
+msgstr "## Aprovar uma invocação empacotada da CLI do agente em um navegador comum e receber trabalho real do convidado"
 
 #: lib/marshall/documentation_messages.ex:143
 #, elixir-autogen, elixir-format
 msgid "## Attach and withdraw integrations, renew open requests and authenticate peer VM traffic"
-msgstr ""
+msgstr "## Anexar e retirar integrações, renovar solicitações abertas e autenticar o tráfego de VMs pares"
 
 #: lib/marshall/documentation_messages.ex:147
 #, elixir-autogen, elixir-format
 msgid "## Audi browser editor and guest workers"
-msgstr ""
+msgstr "## Editor de navegador Audi e trabalhadores convidados"
 
 #: lib/marshall/documentation_messages.ex:148
 #, elixir-autogen, elixir-format
 msgid "## Audi private request monitoring"
-msgstr ""
+msgstr "## Monitoramento de solicitações privadas do Audi"
 
 #: lib/marshall/documentation_messages.ex:149
 #, elixir-autogen, elixir-format
 msgid "## Audi public authoritative DNS monitoring"
-msgstr ""
+msgstr "## Monitoramento do DNS autoritativo público do Audi"
 
 #: lib/marshall/documentation_messages.ex:150
 #, elixir-autogen, elixir-format
 msgid "## Audi terminal control-version refusal"
-msgstr ""
+msgstr "## Recusa de versão de controle do terminal Audi"
 
 #: lib/marshall/documentation_messages.ex:151
 #, elixir-autogen, elixir-format
 msgid "## Authenticate CLI installation before adding SSH trust"
-msgstr ""
+msgstr "## Autenticar a instalação da CLI antes de adicionar confiança SSH"
 
 #: lib/marshall/documentation_messages.ex:152
 #, elixir-autogen, elixir-format
 msgid "## Authority and interactions"
-msgstr ""
+msgstr "## Autoridade e interações"
 
 #: lib/marshall/documentation_messages.ex:153
 #, elixir-autogen, elixir-format

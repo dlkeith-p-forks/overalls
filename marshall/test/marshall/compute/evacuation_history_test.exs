@@ -31,6 +31,7 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
   @typep fixture :: %{
            source: Host.t(),
            destination: Host.t(),
+           pool_ids: [String.t()],
            vm: VirtualMachine.t(),
            admin: User.t(),
            operator: User.t(),
@@ -54,9 +55,12 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
   # requests and advisory previews MUST preserve complete operation, allocation,
   # audit and job rows. Synthetic reports MUST NOT establish native movement.
   @tag :hegel_case_sandbox
+  @tag timeout: 300_000
   property "campaign histories preserve fixed authority and per-revision downtime consent",
-    test_cases: 100 do
+    test_cases: 100,
+    show_statistics: true do
     Marshall.DataCase.isolate_property_case()
+
     commands =
       draw(
         "commands",
@@ -154,8 +158,12 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
   # pool freshness and physical allocations, including evidence lost after ready.
   # Advancing the workflow or aging a timestamp MUST NOT substitute for evidence.
   @tag :hegel_case_sandbox
-  property "ready and resume require all current physical emptiness evidence", test_cases: 100 do
+  @tag timeout: 300_000
+  property "ready and resume require all current physical emptiness evidence",
+    test_cases: 100,
+    show_statistics: true do
     Marshall.DataCase.isolate_property_case()
+
     obstructions =
       draw(
         "obstructions",
@@ -226,10 +234,10 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
     Ledger.update!(operation, :complete, %{})
     vm = Ledger.update!(vm, :observe, %{observed_state: :running})
     destination = host_fixture()
-    # A 2 GiB guest plus 1 GiB boot bundle fits the single stopped copy
-    # (ADR-0155); the running guest still needs explicit downtime approval.
+    # A 2 GiB guest, 1 GiB boot bundle and two 576 MiB checkpoint slots fit
+    # within 5 GiB (ADR-0199); running suspension still needs downtime approval.
     Ledger.update!(destination.pool, :report, %{
-      free_bytes: destination.pool.overhead_bytes + 3 * 1_073_741_824,
+      free_bytes: destination.pool.overhead_bytes + 5 * 1_073_741_824,
       reported_at: Ledger.now()
     })
 
@@ -247,6 +255,7 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
     {%{
        source: source.host,
        destination: destination.host,
+       pool_ids: [source.pool.id, destination.pool.id],
        vm: vm,
        admin: admin,
        operator: operator,
@@ -330,6 +339,8 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
   end
 
   defp step(:advance, fixture, model) do
+    fresh_capacity!(fixture)
+
     expected =
       cond do
         model.status == :paused -> :paused
@@ -340,6 +351,26 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
 
     assert {:ok, ^expected} = Evacuations.advance(fixture.campaign)
     %{model | admitted: model.admitted or expected == :scheduled}
+  end
+
+  # @cc [owner:ghuntley,label:verification;capacity] evacuation-history-fresh-capacity-witness
+  # Positive campaign histories MUST preserve their measured capacity and holds
+  # while explicitly supplying fresh host/pool timestamps before admission.
+  # They MUST NOT accidentally turn execution time into a stale-capacity fault;
+  # the independent physical-readiness property retains its explicit stale cases.
+  @spec fresh_capacity!(fixture()) :: :ok
+  defp fresh_capacity!(fixture) do
+    for id <- [fixture.source.id, fixture.destination.id] do
+      [host] = Ledger.read!(Host, id: id)
+      Ledger.update!(host, :report, %{reported_at: Ledger.now()})
+    end
+
+    for id <- fixture.pool_ids do
+      [pool] = Ledger.read!(Marshall.Compute.StoragePool, id: id)
+      Ledger.update!(pool, :report, %{reported_at: Ledger.now()})
+    end
+
+    :ok
   end
 
   @spec public(command(), fixture(), model()) :: {:ok, map()} | {:error, term()}

@@ -430,6 +430,9 @@ and the [multi-OS review](repo:docs/architecture/reviews/2026-10-16-multi-os-gue
 The private frontend routes `reflection.internal` to Peach's Unix socket.
 The declared module runs as the unprivileged `peach` user with a private runtime
 directory, dedicated host-bound Marshall credential and CA delivered as systemd
-credentials. It depends on Lilly for the local host identity. `audiPrivate`
-requires Peach to be enabled; fleet placement and complete guest journeys remain
-separate from the package/module and evaluation-test declarations.
+credentials. It depends on Lilly for the local host identity. Peach is optional
+beside `audiPrivate`: disabled Peach produces a null backend socket, and
+`reflection.internal` refuses before guest authority is requested. Enabling it
+requires a bounded canonical Unix-socket path. Mandatory Lilly, Ziggy and Galileo
+dependencies remain. Fleet enablement, socket access and credential lifetime,
+and complete native guest journeys remain separate acceptance work.

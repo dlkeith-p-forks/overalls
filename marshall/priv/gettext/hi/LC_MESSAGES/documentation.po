@@ -517,132 +517,132 @@ msgstr "## प्रसंग, संकलन और सहयोग"
 #: lib/marshall/documentation_messages.ex:218
 #, elixir-autogen, elixir-format
 msgid "## Continue a long thread through automatic or requested context compaction"
-msgstr ""
+msgstr "## स्वचालित या अनुरोधित संदर्भ संक्षेपण के माध्यम से लंबी बातचीत जारी रखें"
 
 #: lib/marshall/documentation_messages.ex:222
 #, elixir-autogen, elixir-format
 msgid "## Continue native state publication and recover actors while diagnostics are unavailable"
-msgstr ""
+msgstr "## निदान अनुपलब्ध होने पर भी मूल स्थिति का प्रकाशन जारी रखें और ऐक्टर पुनर्प्राप्त करें"
 
 #: lib/marshall/documentation_messages.ex:226
 #, elixir-autogen, elixir-format
 msgid "## Continuing physical boot adoption"
-msgstr ""
+msgstr "## भौतिक बूट अपनाने की प्रक्रिया जारी रखना"
 
 #: lib/marshall/documentation_messages.ex:227
 #, elixir-autogen, elixir-format
 msgid "## Control WebSocket"
-msgstr ""
+msgstr "## नियंत्रण WebSocket"
 
 #: lib/marshall/documentation_messages.ex:228
 #, elixir-autogen, elixir-format
 msgid "## Create a machine and wait for its exact boot to become usable over SSH"
-msgstr ""
+msgstr "## मशीन बनाएँ और उसके उसी बूट के SSH पर उपयोग योग्य होने की प्रतीक्षा करें"
 
 #: lib/marshall/documentation_messages.ex:232
 #, elixir-autogen, elixir-format
 msgid "## Create a machine in the browser or Porsche SSH without choosing a profile"
-msgstr ""
+msgstr "## प्रोफ़ाइल चुने बिना ब्राउज़र या Porsche SSH में मशीन बनाएँ"
 
 #: lib/marshall/documentation_messages.ex:236
 #, elixir-autogen, elixir-format
 msgid "## Create a team without claiming another account's active name"
-msgstr ""
+msgstr "## किसी अन्य खाते का सक्रिय नाम लिए बिना टीम बनाएँ"
 
 #: lib/marshall/documentation_messages.ex:240
 #, elixir-autogen, elixir-format
 msgid "## Create and recover a user thread with its dedicated machine"
-msgstr ""
+msgstr "## उपयोगकर्ता की बातचीत और उसकी समर्पित मशीन बनाएँ और पुनर्प्राप्त करें"
 
 #: lib/marshall/documentation_messages.ex:244
 #, elixir-autogen, elixir-format
 msgid "## Create, stop, restart and delete a machine"
-msgstr ""
+msgstr "## मशीन बनाएँ, रोकें, पुनः आरंभ करें और हटाएँ"
 
 #: lib/marshall/documentation_messages.ex:245
 #, elixir-autogen, elixir-format
 msgid "## Credential and key rotation"
-msgstr ""
+msgstr "## क्रेडेंशियल और कुंजियों का आवधिक प्रतिस्थापन"
 
 #: lib/marshall/documentation_messages.ex:246
 #, elixir-autogen, elixir-format
 msgid "## Dedicated editor path"
-msgstr ""
+msgstr "## समर्पित संपादक पथ"
 
 #: lib/marshall/documentation_messages.ex:247
 #, elixir-autogen, elixir-format
 msgid "## Deploy a candidate while preserving guests and authority"
-msgstr ""
+msgstr "## गेस्ट और प्राधिकार सुरक्षित रखते हुए उम्मीदवार संस्करण तैनात करें"
 
 #: lib/marshall/documentation_messages.ex:248
 #, elixir-autogen, elixir-format
 msgid "## Developer SSH"
-msgstr ""
+msgstr "## डेवलपर SSH"
 
 #: lib/marshall/documentation_messages.ex:249
 #, elixir-autogen, elixir-format
 msgid "## Developer verification"
-msgstr ""
+msgstr "## डेवलपर सत्यापन"
 
 #: lib/marshall/documentation_messages.ex:250
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic outages and queue recovery"
-msgstr ""
+msgstr "## निदान सेवा में व्यवधान और कतार की पुनर्प्राप्ति"
 
 #: lib/marshall/documentation_messages.ex:251
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic paths and custody"
-msgstr ""
+msgstr "## निदान पथ और अभिरक्षा"
 
 #: lib/marshall/documentation_messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "## Disable, drain, resume, retire"
-msgstr ""
+msgstr "## अक्षम करें, कार्य समाप्त होने दें, फिर से चालू करें, सेवामुक्त करें"
 
 #: lib/marshall/documentation_messages.ex:253
 #, elixir-autogen, elixir-format
 msgid "## Discover editor and neutral webview origins only through gateways with matching immutable assets"
-msgstr ""
+msgstr "## संपादक और तटस्थ वेबव्यू के ओरिजिन केवल मेल खाते अपरिवर्तनीय एसेट वाले गेटवे से खोजें"
 
 #: lib/marshall/documentation_messages.ex:257
 #, elixir-autogen, elixir-format
 msgid "## Drain a naturally exited terminal without retaining unreserved scrollback"
-msgstr ""
+msgstr "## स्वाभाविक रूप से बंद हुए टर्मिनल का शेष आउटपुट निकालें और आरक्षण रहित स्क्रॉलबैक न रखें"
 
 #: lib/marshall/documentation_messages.ex:261
 #, elixir-autogen, elixir-format
 msgid "## Durable guest accounts"
-msgstr ""
+msgstr "## टिकाऊ गेस्ट खाते"
 
 #: lib/marshall/documentation_messages.ex:262
 #, elixir-autogen, elixir-format
 msgid "## Durable guest identity reservations"
-msgstr ""
+msgstr "## गेस्ट पहचान के टिकाऊ आरक्षण"
 
 #: lib/marshall/documentation_messages.ex:263
 #, elixir-autogen, elixir-format
 msgid "## Durable objectives and measurement authority"
-msgstr ""
+msgstr "## टिकाऊ उद्देश्य और मापन प्राधिकार"
 
 #: lib/marshall/documentation_messages.ex:264
 #, elixir-autogen, elixir-format
 msgid "## Durable request sources"
-msgstr ""
+msgstr "## टिकाऊ अनुरोध स्रोत"
 
 #: lib/marshall/documentation_messages.ex:265
 #, elixir-autogen, elixir-format
 msgid "## Editor transition evidence"
-msgstr ""
+msgstr "## संपादक संक्रमण के साक्ष्य"
 
 #: lib/marshall/documentation_messages.ex:266
 #, elixir-autogen, elixir-format
 msgid "## Elixir contract verification"
-msgstr ""
+msgstr "## Elixir अनुबंध सत्यापन"
 
 #: lib/marshall/documentation_messages.ex:267
 #, elixir-autogen, elixir-format
 msgid "## Elixir property verification"
-msgstr ""
+msgstr "## Elixir गुण सत्यापन"
 
 #: lib/marshall/documentation_messages.ex:268
 #, elixir-autogen, elixir-format
@@ -652,22 +652,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:269
 #, elixir-autogen, elixir-format
 msgid "## Enroll"
-msgstr ""
+msgstr "## पंजीकृत करें"
 
 #: lib/marshall/documentation_messages.ex:270
 #, elixir-autogen, elixir-format
 msgid "## Enroll a replacement host with fresh physical identity after retiring the old one"
-msgstr ""
+msgstr "## पुराने होस्ट को सेवामुक्त करने के बाद नई भौतिक पहचान वाला प्रतिस्थापन होस्ट पंजीकृत करें"
 
 #: lib/marshall/documentation_messages.ex:274
 #, elixir-autogen, elixir-format
 msgid "## Evaluated placement"
-msgstr ""
+msgstr "## मूल्यांकित तैनाती स्थान"
 
 #: lib/marshall/documentation_messages.ex:275
 #, elixir-autogen, elixir-format
 msgid "## Evidence levels"
-msgstr ""
+msgstr "## साक्ष्य के स्तर"
 
 #: lib/marshall/documentation_messages.ex:276
 #, elixir-autogen, elixir-format

@@ -117,4 +117,16 @@ defmodule Lilly.Host.CommandTest do
 
     assert :ok = Lock.release(c.owner)
   end
+
+  test "systemctl lifecycle refuses without placement ownership", c do
+    assert :ok = Lock.release(c.owner)
+    unit = "lilly-vm-11111111-2222-4333-8444-555555555555.service"
+
+    for arguments <- [
+          ["stop", unit],
+          ["kill", "--kill-who=all", "--signal=KILL", unit]
+        ] do
+      assert {:error, :host_lock_required} = Command.run(:systemctl, arguments)
+    end
+  end
 end

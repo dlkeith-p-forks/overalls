@@ -34,4 +34,3 @@ defmodule Marshall.Repo.Migrations.AddPeachCredentialVersions do
     end
   end
 end
-

@@ -10,7 +10,7 @@ defmodule Marshall.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       dialyzer: [
-        plt_add_apps: [:ex_unit, :audi, :lilly],
+        plt_add_apps: [:ex_unit, :hegel, :hegel_ex, :audi, :lilly],
         ignore_warnings: ".dialyzer_ignore.exs",
         list_unused_filters: true
       ],

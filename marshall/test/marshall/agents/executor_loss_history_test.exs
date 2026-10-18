@@ -28,19 +28,24 @@ defmodule Marshall.Agents.ExecutorLossHistoryTest do
   # MUST follow the generated start boundary, independently of SUT predicates.
   # SQL sandbox observations and synthetic expiry establish durable dispatch
   # policy only; they MUST NOT be described as real guest side effects or TLS.
-  @tag :hegel_case_sandbox
-  property "executor loss preserves one dispatch and requires authorized explicit retry",
-    test_cases: 100 do
-    Marshall.DataCase.isolate_property_case()
-    scenarios =
-      for state <- [:claimed, :started],
-          loss <- [:replace, :expire],
-          access <- [:allowed, :revoked],
-          do: {state, loss, access}
-
-    order = draw("order", shuffle(scenarios))
-    repeats = draw("repeats", integer(1..3))
-    Enum.each(order, &history(&1, repeats))
+  # Each scenario retains 100 generated histories (800 total). Separate runners
+  # keep the engine's fixed generation health window from counting eight full
+  # database histories as one generated input. An unrelated fixture preserves
+  # the complete-inventory oracle's cross-workload refusal checks in every case.
+  for state <- [:claimed, :started],
+      loss <- [:replace, :expire],
+      access <- [:allowed, :revoked] do
+    scenario = {state, loss, access}
+    @tag :hegel_case_sandbox
+    @tag timeout: 300_000
+    property "executor loss #{state}/#{loss}/#{access} preserves one dispatch and explicit retry",
+      test_cases: 100,
+      show_statistics: true do
+      Marshall.DataCase.isolate_property_case()
+      repeats = draw("repeats", integer(1..3))
+      _unrelated = fixture()
+      history(unquote(Macro.escape(scenario)), repeats)
+    end
   end
 
   @spec history(scenario(), pos_integer()) :: :ok
@@ -393,19 +398,23 @@ defmodule Marshall.Agents.ExecutorLossHistoryTest do
         log: false
       )
 
-    Map.new(tables, fn [name] ->
-      quoted = "\"" <> String.replace(name, "\"", "\"\"") <> "\""
+    # One database round trip retains complete per-table, per-row evidence.
+    # Repeating a query for every public table obscures the actual state-machine
+    # work behind thousands of socket round trips in each generated history.
+    query =
+      Enum.map_join(tables, " UNION ALL ", fn [name] ->
+        quoted = "\"" <> String.replace(name, "\"", "\"\"") <> "\""
+        literal = "'" <> String.replace(name, "'", "''") <> "'"
 
-      %{rows: rows} =
-        Ecto.Adapters.SQL.query!(
-          Marshall.Repo,
-          "SELECT md5(row_to_json(t)::text) FROM " <> quoted <> " t ORDER BY 1",
-          [],
-          log: false
-        )
+        "SELECT " <>
+          literal <>
+          "::text, " <>
+          "COALESCE(array_agg(md5(row_to_json(t)::text) ORDER BY md5(row_to_json(t)::text)), " <>
+          "ARRAY[]::text[]) FROM " <> quoted <> " t"
+      end)
 
-      {name, Enum.map(rows, fn [hash] -> hash end)}
-    end)
+    %{rows: rows} = Ecto.Adapters.SQL.query!(Marshall.Repo, query, [], log: false)
+    Map.new(rows, fn [name, hashes] -> {name, hashes} end)
   end
 
   # Context preparation leaves a completed context_inventory command; these

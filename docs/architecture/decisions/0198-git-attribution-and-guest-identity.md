@@ -22,6 +22,11 @@ may update its preferences. Machine admission captures an immutable Git identity
 clones capture their new owner's current preference. Restart and relocation retain
 that snapshot, while existing machines without a snapshot remain unchanged.
 
+Preferences occupy the fourth `#git-settings` section of ADR-0196's single
+`MarshallWeb.AccountLive` page at `/settings`. Profile, passkeys, SSH keys and Git
+preferences share its strict fresh-login mount and single Account navigation entry.
+The removed settings URLs remain 404; Git settings introduce no parallel page.
+
 Provision/start commands carry the validated identity as inert guest configuration.
 Kernel guests receive encoded boot metadata; firmware guests receive MMDS metadata.
 Guest services publish an atomic protected Git configuration consumed through the
@@ -60,14 +65,9 @@ BEAM properties do not establish actual guest execution or production rollout.
 
 ## Implementation evidence
 
-The existing `#git-settings-form` and self-only preference action now live in
-[`AccountLive`](../../../marshall/lib/marshall_web/live/account_live.ex)'s profile
-section of `/settings`, under the complete strict settings gate specified by
-[ADR-0196](0196-single-account-settings-page.md). Stable Git field IDs remain;
-the duplicate later `SettingsLive` route/module has been removed. This is a
-reconciliation with the accepted single-page decision, not a change to Git
-snapshot scope or authorization.
-
+The [account page](../../../marshall/lib/marshall_web/live/account_live.ex) and
+[Git settings tests](../../../marshall/test/marshall_web/settings_live_test.exs)
+retain account-owned updates and revoked-login refusal within the combined page.
 The [command snapshot](../../../marshall/lib/marshall/compute/command_snapshot.ex)
 and [allocation snapshot](../../../marshall/lib/marshall/compute/git_identity.ex)
 retain VM-owned identity. Execution and guest evidence are recorded in the
@@ -83,3 +83,4 @@ Production rollout and complete cross-OS machine acceptance remain unrecorded.
 - [ADR-0178](0178-durable-agent-context-and-planning.md)
 - [ADR-0179](0179-guest-instructions-and-managed-skills.md)
 - [ADR-0191](0191-elixir-hegel-property-verification.md)
+- [ADR-0196](0196-single-account-settings-page.md)

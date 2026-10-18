@@ -9,10 +9,7 @@
 #  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr ""
-"Language: ru\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: ru\n"
 
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format

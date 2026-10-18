@@ -4450,12 +4450,7 @@ msgstr "रीस्टार्ट झाले"
 msgid "Restarting"
 msgstr "रीस्टार्ट करत आहे"
 
-#: lib/marshall_web/live/machines_live.ex:616
-#, elixir-autogen, elixir-format
-msgid "Restarting the destination; source copy retained"
-msgstr "गंतव्य रीस्टार्ट करत आहे; स्रोत प्रत राखली"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:425
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:427
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "प्रवेशमंजुरी पुनर्संचयित करा"
@@ -7135,335 +7130,96 @@ msgstr "तुमच्यापेक्षा %{span} पुढे"
 msgid "%{span} behind you"
 msgstr "तुमच्यापेक्षा %{span} मागे"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "कमिटमध्ये Overalls ला श्रेय द्या"
+msgstr "Add Overalls commit attribution"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "वैध Git नाव आणि ईमेल पत्ता द्या."
+msgstr "Enter a valid Git name and email address."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git ईमेल"
+msgstr "Git email"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr ""
-"Git ओळखीतील बदल नवीन मशीनना लागू होतात. कमिटच्या श्रेयातील बदल एजंटच्या "
-"पुढील विनंत्यांना लागू होतात."
+msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 
-#: lib/marshall_web/live/account_live.ex:538
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Git settings"
-msgstr "Git सेटिंग्ज"
+msgid "4. Git identity"
+msgstr "4. Git identity"
 
-#: lib/marshall_web/live/account_live.ex:243
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Git identity"
+msgstr "Git identity"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git सेटिंग्ज जतन केल्या."
+msgstr "Git settings saved."
 
-#: lib/marshall_web/live/account_live.ex:542
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git वापरकर्तानाव"
+msgstr "Git username"
 
-#: lib/marshall_web/live/account_live.ex:569
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Save Git settings"
-msgstr "Git सेटिंग्ज जतन करा"
+msgid "Machine is paused. Resume it or reopen this terminal page."
+msgstr "Machine is paused. Resume it or reopen this terminal page."
 
-#: lib/marshall_web/live/account_live.ex:559
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include %{trailer}."
-msgstr "हे सुरू असल्यास, एजंटच्या नवीन कमिटमध्ये %{trailer} समाविष्ट होते."
+msgid "Pause"
+msgstr "Pause"
 
-#: lib/marshall/accounts/time_zones.ex:300
-#, elixir-autogen, elixir-format
-msgid "same time as you"
-msgstr "तुमच्यासारखीच वेळ"
-
-#: lib/marshall_web/live/admin/jobs_live.ex:405
-#, elixir-autogen, elixir-format
-msgid "Acknowledged"
-msgstr "पोच मिळाली"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:519
-#, elixir-autogen, elixir-format
-msgid "Blocked: %{reason}"
-msgstr "अवरोधित: %{reason}"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:616
-#, elixir-autogen, elixir-format
-msgid "Campaign closed"
-msgstr "मोहीम बंद झाली"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:614
-#, elixir-autogen, elixir-format
-msgid "Campaign requested"
-msgstr "मोहिमेची विनंती केली"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:623
-#, elixir-autogen, elixir-format
-msgid "Cancellation requested"
-msgstr "रद्द करण्याची विनंती केली"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
-#, elixir-autogen, elixir-format
-msgid "Candidate: %{name}"
-msgstr "उमेदवार: %{name}"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:610
-#, elixir-autogen, elixir-format
-msgid "Cleaning up after cancellation"
-msgstr "रद्द केल्यानंतर साफ करत आहे"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:608
-#, elixir-autogen, elixir-format
-msgid "Cleaning up the source"
-msgstr "स्रोत साफ करत आहे"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:637
-#, elixir-autogen, elixir-format
-msgid "Clone in progress"
-msgstr "क्लोनिंग सुरू आहे"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
-#, elixir-autogen, elixir-format
-msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
-msgstr ""
-"कॉन्फिगर केलेला होस्ट अधिभार: %{cores} कोर · %{memory} मेमरी. ही राखीव "
-"क्षमता प्रवेशाच्या गणनेत समाविष्ट आहे आणि तिचे नियंत्रण उपयोजनाकडेच राहते."
-
-#: lib/marshall_web/automatic_magic_sign_in_live.ex:33
-#, elixir-autogen, elixir-format
-msgid "Continue to Overalls"
-msgstr "Overalls वर पुढे जा"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
-#, elixir-autogen, elixir-format
-msgid "Desired: %{desired} · Observed: %{observed}"
-msgstr "अपेक्षित: %{desired} · निरीक्षित: %{observed}"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:622
-#, elixir-autogen, elixir-format
-msgid "Destination cleanup confirmed"
-msgstr "गंतव्याची साफसफाई पुष्टी झाली"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:621
-#, elixir-autogen, elixir-format
-msgid "Destination cleanup requested"
-msgstr "गंतव्य साफ करण्याची विनंती केली"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:634
-#, elixir-autogen, elixir-format
-msgid "Downtime approval required"
-msgstr "सेवा खंडित करण्याची मंजुरी आवश्यक"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
-#, elixir-autogen, elixir-format
-msgid "Downtime approved"
-msgstr "सेवा खंडित करण्यास मंजुरी मिळाली"
-
-#: lib/marshall_web/live/admin/jobs_live.ex:409
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:584
-#, elixir-autogen, elixir-format
-msgid "Drained"
-msgstr "रिकामे झाले"
-
-#: lib/marshall_web/live/admin/jobs_live.ex:408
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
-#, elixir-autogen, elixir-format
-msgid "Draining"
-msgstr "रिकामे करत आहे"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
-#, elixir-autogen, elixir-format
-msgid "Evacuating"
-msgstr "स्थलांतरासाठी रिकामे करत आहे"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:602
-#, elixir-autogen, elixir-format
-msgid "Importing"
-msgstr "आयात करत आहे"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:633
-#, elixir-autogen, elixir-format
-msgid "Insufficient capacity"
-msgstr "अपुरेशी क्षमता"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
-#, elixir-autogen, elixir-format
-msgid "Job state"
-msgstr "कामाची स्थिती"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:582
-#, elixir-autogen, elixir-format
-msgid "Normal"
-msgstr "सामान्य"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:529
-#, elixir-autogen, elixir-format
-msgid "Observed interruption: %{seconds}s"
-msgstr "निरीक्षित व्यत्यय: %{seconds} सेकंद"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
-#, elixir-autogen, elixir-format
-msgid "Observed interruption: %{seconds}s (ongoing)"
-msgstr "निरीक्षित व्यत्यय: %{seconds} सेकंद (सुरू आहे)"
-
-#: lib/marshall_web/live/admin/jobs_live.ex:398
-#, elixir-autogen, elixir-format
-msgid "Operation"
-msgstr "क्रिया"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "विराम दिला"
+msgstr "Paused"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:399
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Relocation"
-msgstr "स्थलांतर"
+msgid "Resume machine"
+msgstr "Resume machine"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:617
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Relocation committed"
-msgstr "स्थलांतर निश्चित झाले"
+msgid "Resuming"
+msgstr "Resuming"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:636
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Relocation in progress"
-msgstr "स्थलांतर सुरू आहे"
+msgid "Resuming machine; waiting for capacity…"
+msgstr "Resuming machine; waiting for capacity…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:627
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Relocation started"
-msgstr "स्थलांतर सुरू झाले"
+msgid "Save Git settings"
+msgstr "Save Git settings"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Restoring the source"
-msgstr "स्रोत पुनर्संचयित करत आहे"
+msgid "Suspending"
+msgstr "Suspending"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:410
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:590
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Resumed"
-msgstr "पुन्हा सुरू केले"
+msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
 
-#: lib/marshall_web/live/admin/jobs_live.ex:411
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Retired"
-msgstr "निवृत्त केले"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
-#, elixir-autogen, elixir-format
-msgid "Retrying destination boot"
-msgstr "गंतव्य बूट करण्याचा पुन्हा प्रयत्न करत आहे"
-
-#: lib/marshall_web/automatic_magic_sign_in_live.ex:27
-#, elixir-autogen, elixir-format
-msgid "Signing you in"
-msgstr "तुम्हाला साइन इन करत आहे"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:620
-#, elixir-autogen, elixir-format
-msgid "Source cleanup confirmed"
-msgstr "स्रोताची साफसफाई पुष्टी झाली"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:619
-#, elixir-autogen, elixir-format
-msgid "Source cleanup requested"
-msgstr "स्रोत साफ करण्याची विनंती केली"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
-#, elixir-autogen, elixir-format
-msgid "Source ready"
-msgstr "स्रोत तयार आहे"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:618
-#, elixir-autogen, elixir-format
-msgid "Source restored"
-msgstr "स्रोत पुनर्संचयित झाला"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
-#, elixir-autogen, elixir-format
-msgid "Source unavailable"
-msgstr "स्रोत उपलब्ध नाही"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
-#, elixir-autogen, elixir-format
-msgid "Transfer busy"
-msgstr "हस्तांतरण व्यस्त आहे"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
-#, elixir-autogen, elixir-format
-msgid "Workload changed"
-msgstr "कार्यभार बदलला"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
-#, elixir-autogen, elixir-format
-msgid "Workload is not stable"
-msgstr "कार्यभार स्थिर नाही"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:625
-#, elixir-autogen, elixir-format
-msgid "Workload observed"
-msgstr "कार्यभार निरीक्षित केला"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:628
-#, elixir-autogen, elixir-format
-msgid "Workload resolved"
-msgstr "कार्यभार निश्चित केला"
-
-#: lib/marshall_web/automatic_magic_sign_in_live.ex:28
-#, elixir-autogen, elixir-format
-msgid "Your email link is being verified."
-msgstr "तुमच्या ईमेलमधील लिंकची पडताळणी होत आहे."
-#: lib/marshall_web/live/overview_live.ex:213
-#, elixir-autogen, elixir-format
-msgid "Stay in the loop"
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:216
-#, elixir-autogen, elixir-format
-msgid "Dismiss"
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:218
-#, elixir-autogen, elixir-format
-msgid "Get tips, tricks and updates about Overalls and AI by email."
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:221
-#, elixir-autogen, elixir-format
-msgid "Subscribe"
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:225
-#, elixir-autogen, elixir-format
-msgid "Check your inbox and click the link to confirm your subscription."
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:226
-#, elixir-autogen, elixir-format
-msgid "Enter a valid email address."
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:227
-#, elixir-autogen, elixir-format
-msgid "We could not reach the newsletter service. Try again later."
-msgstr ""
-
-#: lib/marshall_web/live/overview_live.ex:228
-#, elixir-autogen, elixir-format
-msgid "Unsubscribe any time."
-msgstr ""
-
+msgid "new machines and commit attribution"
+msgstr "new machines and commit attribution"

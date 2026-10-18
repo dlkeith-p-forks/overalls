@@ -10,7 +10,9 @@
 
 ## Context
 
-The Overview may offer a durable newsletter invitation without making the browser a direct provider client.
+Authenticated users need a durable, account-wide way to discover newsletter
+tips, AI updates and Overalls changes without repeatedly seeing a dismissed
+invitation. The existing public website already defines the Ghost signup flow.
 
 ## Decision
 
@@ -31,15 +33,31 @@ delivery and provider availability remain outside local acceptance.
 
 ## Alternatives
 
-A browser-only provider request would expose cross-origin behavior and provider details; Marshall's fixed server-side client keeps that boundary explicit.
+Browser-only local storage would not persist across devices. Direct browser
+requests to Ghost would violate Marshall's same-origin presentation boundary
+and expose provider details. Marshall's fixed server-side client keeps that
+boundary explicit.
 
 ## Invariants and verification
 
-Dismissal is self-only and monotonic, validation and provider failures use fixed safe messages, and diagnostic output excludes addresses, tokens and provider bodies. Focused LiveView and property tests cover the bounded behavior; external delivery remains outside local acceptance.
+Dismissal is self-only and monotonic; invalid email input makes no request; the
+fixed Ghost sequence maps all failures to a safe result. Diagnostic output
+excludes addresses, tokens and provider bodies. Hegel, database-backed account
+and LiveView tests cover these bounded cases; test presence does not establish
+external delivery or full runtime gate execution.
 
 ## Implementation evidence
 
-The [newsletter client](../../../marshall/lib/marshall/newsletter.ex), [Overview LiveView](../../../marshall/lib/marshall_web/live/overview_live.ex), [dismissal migration](../../../marshall/priv/repo/migrations/20261018190000_user_newsletter_dismissed.exs), [LiveView test](../../../marshall/test/marshall_web/overview_live_test.exs) and [property test](../../../marshall/test/marshall/newsletter_property_test.exs) implement and exercise the bounded account behavior. These sources do not establish external Ghost delivery or production rollout.
+The [User resource](../../../marshall/lib/marshall/accounts/user.ex),
+[newsletter client](../../../marshall/lib/marshall/newsletter.ex),
+[Overview LiveView](../../../marshall/lib/marshall_web/live/overview_live.ex),
+[dismissal migration](../../../marshall/priv/repo/migrations/20261018190000_user_newsletter_dismissed.exs),
+[account persistence/refusal tests](../../../marshall/test/marshall/accounts/newsletter_dismissal_test.exs),
+[LiveView test](../../../marshall/test/marshall_web/overview_live_test.exs) and
+[property test](../../../marshall/test/marshall/newsletter_property_test.exs)
+implement and exercise the bounded account behavior. These sources do not
+establish external Ghost delivery or production rollout. Full runtime gate
+execution remains a separate checkpoint.
 
 ## Open questions
 
@@ -48,3 +66,6 @@ External Ghost delivery, provider availability and the packaged browser journey 
 ## Related decisions
 
 - [ADR-0196](0196-single-account-settings-page.md): account settings placement and authority.
+- [ADR-0191](0191-elixir-hegel-property-verification.md): property verification.
+- [ADR-0194](0194-marshall-http-security-headers.md): browser same-origin boundary.
+- [ADR-0201](0201-localized-human-surfaces.md): localized human surfaces.

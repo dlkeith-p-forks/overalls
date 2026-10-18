@@ -1,9 +1,9 @@
 defmodule Marshall.Compute.RelocationStateMachinePropertyTest do
   # @cc [owner:ghuntley,label:verification] relocation-graph-is-stopped-copy-only
-  # The declared Relocation state machine MUST admit only the ADR-0155 stopped
+  # The declared Relocation state machine MUST admit only the ADR-0199 quiescent
   # copy: every route to :copying passes :checking_transfer, cancellation exists
   # only before the handoff commit, terminal phases are sinks, every phase can
-  # still finish, and no pre-copy phase remains declared.
+  # still finish, and no pre-copy or consumed-checkpoint retry phase remains declared.
   use Marshall.DataCase, async: false
   import Hegel
   import Hegel.Gen
@@ -17,11 +17,10 @@ defmodule Marshall.Compute.RelocationStateMachinePropertyTest do
     :checking_destination,
     :readiness_failed,
     :activation_failed,
-    :retrying_destination,
     :source_cleanup,
     :complete
   ]
-  @removed [:baseline_copy, :final_copy]
+  @removed [:baseline_copy, :final_copy, :retrying_destination]
 
   @spec edges() :: [{atom(), atom(), atom()}]
   defp edges do

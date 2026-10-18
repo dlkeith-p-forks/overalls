@@ -196,7 +196,9 @@ defmodule MarshallWeb.GitLive do
             </div>
             <button class="console-button">{gettext("Search")}</button>
           </form>
-          <p :if={@unavailable?} role="alert" class="error">{gettext("Mirror contents are unavailable.")}</p>
+          <p :if={@unavailable?} role="alert" class="error">
+            {gettext("Mirror contents are unavailable.")}
+          </p>
           <p :if={@view == "tree" and @path != ""}>
             <.link patch={link(@repo, %{view: "tree", ref: @ref, path: parent(@path)})}>
               {gettext("← Parent directory")}
@@ -224,7 +226,9 @@ defmodule MarshallWeb.GitLive do
             <table>
               <thead>
                 <tr>
-                  <th class="width-auto">{gettext("Ref")}</th><th class="width-min">{gettext("Commit")}</th>
+                  <th class="width-auto">{gettext("Ref")}</th><th class="width-min">
+                    {gettext("Commit")}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -241,7 +245,9 @@ defmodule MarshallWeb.GitLive do
             <table>
               <thead>
                 <tr>
-                  <th class="width-min">{gettext("Commit")}</th><th class="width-auto">{gettext("Subject")}</th>
+                  <th class="width-min">{gettext("Commit")}</th><th class="width-auto">
+                    {gettext("Subject")}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -258,7 +264,9 @@ defmodule MarshallWeb.GitLive do
           </div>
           <p :if={@view == "blob"}>
             <.link href={"/git/github/#{@repo.owner}/#{@repo.name}/raw?" <>
-            URI.encode_query(%{ref: @ref, path: @path})}>{gettext("Download raw file ↗")}</.link>
+            URI.encode_query(%{ref: @ref, path: @path})}>{gettext(
+              "Download raw file ↗"
+            )}</.link>
           </p>
           <pre :if={@view not in ["tree", "refs", "history"]} class="panel">{@content}</pre>
         <% else %>

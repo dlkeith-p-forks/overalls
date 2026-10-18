@@ -4,7 +4,7 @@
 //! executable from its own `PATH` once, at startup. A caller can therefore
 //! never choose an executable path.
 
-use std::ffi::OsStr;
+use std::ffi::{CString, OsStr};
 use std::os::unix::ffi::OsStrExt;
 use std::path::{Path, PathBuf};
 
@@ -47,8 +47,9 @@ macro_rules! utilities {
 // set (image copy, file moves and removal, dataset mutations, mounts,
 // ownership, keys, FIFOs and transient units) MUST be marked mutating, so
 // hostd refuses them without a lease even when the caller's own check is
-// bypassed. Network utilities run under Lilly's network lease and are not
-// refused here.
+// bypassed. Systemctl mixes queries and mutations: requires_lease MUST also
+// require a lease for stop/kill. Network utilities run under Lilly's network
+// lease and are not refused here.
 utilities! {
     ImageCopy = 0, "lilly-image-copy", true;
     Mkfifo = 1, "mkfifo", true;
@@ -85,6 +86,18 @@ utilities! {
 }
 
 impl Utility {
+    /// @cc [owner:ghuntley,label:security;concurrency] systemctl-lifecycle-requires-lease
+    /// Systemctl stop/kill MUST require a lease even though show/list-units
+    /// queries share its utility index and may run without one.
+    pub fn requires_lease(self, arguments: &[CString]) -> bool {
+        self.mutating()
+            || (self == Utility::Systemctl
+                && matches!(
+                    arguments.first().map(|argument| argument.as_bytes()),
+                    Some(b"stop" | b"kill")
+                ))
+    }
+
     /// @cc [owner:ghuntley,label:security] typed-only-utilities
     /// systemd-run, lilly-transfer-stream, ssh, cmp and lilly-ingress-bridge
     /// MUST be reachable only through the typed LaunchVm, TransferStream and

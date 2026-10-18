@@ -2,7 +2,7 @@ defmodule Lilly.VM.Checkpoint do
   @moduledoc "Durable single-use continuation journal and immutable checkpoint content verification."
   alias Lilly.Host.{Lock, Pool, PrivateFiles, Storage}
   alias Lilly.Lifecycle.Journal
-  alias Lilly.VM.{Boot, CheckpointStorage, Spec}
+  alias Lilly.VM.{Boot, CheckpointStorage, Intent, Spec}
   alias OverallsProtocol.Checkpoint, as: Descriptor
   @type slot :: :a | :b
   @type journal_record :: %{String.t() => term()}
@@ -65,6 +65,30 @@ defmodule Lilly.VM.Checkpoint do
       "relocation" => nil
     }
 
+  # @cc [owner:ghuntley,label:security;recovery] interrupted-pause-discard-needs-terminal-authority
+  # A paused VMM may be discarded without publishing RAM only under stopped,
+  # deleted or failed intent for this exact local binding, at least as new as
+  # its capture/restore authority. Missing, corrupt, foreign, ready or retired
+  # journals MUST NOT authorize forced paused cleanup. This predicate grants no
+  # execution authority and MUST NOT advance the checkpoint phase.
+  @spec discardable_pause?(term(), Pool.t(), Spec.t(), Intent.t()) :: boolean()
+  def discardable_pause?(record, pool, spec, intent) do
+    with true <- valid_record?(record),
+         true <- record["binding"] == binding(pool, spec),
+         true <- intent.placement_id == spec.id and intent.state in [:stopped, :deleted, :failed],
+         %{"placement_id" => placement, "execution_epoch" => epoch, "generation" => generation} <-
+           (case record["phase"] do
+              phase when phase in ["capturing", "copied"] -> record["capture_authority"]
+              phase when phase in ["restoring", "consumed"] -> record["restore_authority"]
+              _ -> nil
+            end) do
+      placement == spec.id and
+        {intent.execution_epoch, intent.generation} >= {epoch, generation}
+    else
+      _ -> false
+    end
+  end
+
   # @cc [owner:ghuntley,label:recovery;security] capture-journal-before-freeze
   # begin_capture/4 requires current running authority and the placement lock.
   # It MUST durably choose a fresh checkpoint ID and the empty opposite slot
@@ -125,15 +149,25 @@ defmodule Lilly.VM.Checkpoint do
     end)
   end
 
-  @spec copied(Pool.t(), Spec.t(), map()) :: :ok | failure()
-  def copied(pool, spec, authority) do
-    Storage.locked(pool, fn ->
-      with {:ok, %{"phase" => "capturing", "capture_authority" => ^authority} = value} <-
-             read(pool, spec.id),
-           next = put_in(value, ["slots", value["slot"], "checkpoint_id"], value["checkpoint_id"]),
-           do: write(pool, spec.id, %{next | "phase" => "copied"}),
-           else: (_ -> failure())
-    end)
+  # @cc [owner:ghuntley,label:recovery;concurrency] acknowledged-capture-journal-without-pool-turn
+  # After an acknowledged snapshot/create, the caller MUST retain its live
+  # placement lease for the configured placement directory and record copied
+  # only for the exact local capture binding and authority. This private journal
+  # transition changes no dataset, slot
+  # ownership or allocation credit, so it MUST NOT acquire a competing pool
+  # turn and discard the caller's successful-copy proof on storage contention.
+  # Without that acknowledged API result a capturing journal cannot be promoted.
+  @spec copied(Pool.t(), Spec.t(), map(), Path.t()) :: :ok | failure()
+  def copied(pool, spec, authority, placement_directory) do
+    with lease when is_struct(lease, Lilly.Host.Lease) <- Lock.current(),
+         true <- lease.directory == placement_directory,
+         true <- Lock.held?(lease),
+         {:ok, %{"phase" => "capturing", "capture_authority" => ^authority} = value} <-
+           read(pool, spec.id),
+         true <- value["binding"] == binding(pool, spec),
+         next = put_in(value, ["slots", value["slot"], "checkpoint_id"], value["checkpoint_id"]),
+         do: write(pool, spec.id, %{next | "phase" => "copied"}),
+         else: (_ -> failure())
   end
 
   @spec complete(Pool.t(), Spec.t(), map()) :: {:ok, Descriptor.t()} | failure()

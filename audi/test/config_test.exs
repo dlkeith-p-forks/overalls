@@ -200,6 +200,83 @@ defmodule Audi.ConfigTest do
     assert {:error, :invalid_runtime_configuration} = Audi.Config.load(c.path)
   end
 
+  test "private reflection backend is optional and accepts only bounded canonical socket paths",
+       c do
+    fixtures = Path.expand("../../marshall/test/fixtures/tls", __DIR__)
+    key = Path.join(c.directory, "private.key")
+    File.cp!(Path.join(fixtures, "localhost.key"), key)
+    File.chmod!(key, 0o400)
+
+    value = %{
+      "version" => 1,
+      "role" => "private",
+      "host_id" => c.value["host_id"],
+      "connector_path" => "/run/lilly/private.sock",
+      "connector_uid" => 0,
+      "ziggy_socket" => "/run/ziggy/proxy.sock",
+      "galileo_socket" => "/run/galileo/proxy.sock",
+      "certificate_file" => Path.join(fixtures, "localhost.pem"),
+      "key_file" => key,
+      "roots_file" => Path.join(fixtures, "ca.pem"),
+      "status_socket" => "/run/audi-private/status.sock"
+    }
+
+    for configured <- [value, Map.put(value, "peach_socket", nil)] do
+      File.write!(c.path, JSON.encode!(configured))
+      assert {:ok, options} = Audi.Config.load(c.path)
+      assert options[:peach_socket] == nil
+      assert {:ok, children} = Audi.Application.listener_children(c.path)
+
+      assert {Audi.Private.Listener, listener} =
+               Enum.find(children, &match?({Audi.Private.Listener, _}, &1))
+
+      assert listener[:peach_socket] == nil
+    end
+
+    socket = "/run/peach/reflection.sock"
+    File.write!(c.path, JSON.encode!(Map.put(value, "peach_socket", socket)))
+    assert {:ok, options} = Audi.Config.load(c.path)
+    assert options[:peach_socket] == socket
+
+    for invalid <- [
+          false,
+          1,
+          [],
+          %{},
+          "",
+          "relative.sock",
+          "/run/../peach.sock",
+          "/run/" <> String.duplicate("a", 103),
+          "https://peach.internal"
+        ] do
+      File.write!(c.path, JSON.encode!(Map.put(value, "peach_socket", invalid)))
+      assert {:error, :invalid_runtime_configuration} = Audi.Config.load(c.path)
+    end
+
+    File.write!(c.path, JSON.encode!(Map.put(value, "unknown_socket", socket)))
+    assert {:error, :invalid_runtime_configuration} = Audi.Config.load(c.path)
+  end
+
+  test "disabled reflection refuses before requesting connector authority" do
+    conn = Plug.Test.conn(:get, "https://reflection.internal/v1/snapshot")
+
+    {adapter, payload} = conn.adapter
+    ssl_data = [sni_hostname: ~c"reflection.internal"]
+
+    conn = %{
+      conn
+      | adapter: {adapter, Map.put(payload, :ssl_data, ssl_data)},
+        req_headers: [{"host", "reflection.internal"} | conn.req_headers]
+    }
+
+    for options <- [[], [peach_socket: nil]] do
+      # Invalid connector options make accidental authority lookup fail the test.
+      result = Audi.Private.Front.call(conn, options ++ [connector: :unconfigured])
+      assert result.status == 403
+      assert result.resp_body == "Unavailable\n"
+    end
+  end
+
   test "DNS role has a closed schema and starts an empty replica before its listeners", c do
     value = %{
       "version" => 1,
