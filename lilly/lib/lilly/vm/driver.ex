@@ -375,7 +375,8 @@ defmodule Lilly.VM.Driver do
   def start(config, pool, image, spec, options \\ []) do
     with :ok <- native_admission(image.manifest),
          :ok <- agents_profile(image, spec),
-         :ok <- source_capability(image, spec) do
+         :ok <- source_capability(image, spec),
+         :ok <- git_identity_capability(image.manifest, spec) do
       launch(config, pool, spec, options, fn -> Disk.prepare(pool, image, spec) end)
     end
   end
@@ -428,6 +429,29 @@ defmodule Lilly.VM.Driver do
     end
   end
 
+  # @cc [owner:ghuntley,label:security;protocol] git-identity-capability-before-launch
+  # Identity-bearing fresh and retained launches MUST require Git identity version
+  # 1 from the matching validated image or retained portable bundle before launch
+  # intent, disk preparation or boot metadata. Absence MUST refuse; VMs without an
+  # identity MUST preserve the existing launch path without consulting the catalog.
+  @spec git_identity_capability(
+          OverallsProtocol.ImageManifest.t() | OverallsProtocol.WorkloadBundle.t(),
+          Spec.t()
+        ) :: :ok | {:error, :git_identity_unavailable}
+  defp git_identity_capability(_identity, %{git_identity: nil}), do: :ok
+
+  defp git_identity_capability(%{manifest: raw}, spec) do
+    case OverallsProtocol.ImageManifest.validate(raw) do
+      {:ok, %{id: id, git_identity_version: 1}} when id == spec.image_id -> :ok
+      _ -> {:error, :git_identity_unavailable}
+    end
+  end
+
+  defp git_identity_capability(%{git_identity_version: 1, image_id: id}, %{image_id: id}),
+    do: :ok
+
+  defp git_identity_capability(_identity, _spec), do: {:error, :git_identity_unavailable}
+
   # @cc [owner:ghuntley,label:recovery;security] retained-start-uses-portable-bundle
   # restart/4 MUST verify the existing placement-local disk and boot bundle and
   # MUST NOT consult, load or recreate an image artifact. It retains the same
@@ -437,7 +461,8 @@ defmodule Lilly.VM.Driver do
   @spec restart(Config.t(), Pool.t(), Spec.t(), keyword()) :: result()
   def restart(config, pool, spec, options \\ []) do
     with {:ok, bundle} <- guest_bundle(pool, spec),
-         :ok <- native_admission(bundle) do
+         :ok <- native_admission(bundle),
+         :ok <- git_identity_capability(bundle, spec) do
       launch(config, pool, spec, options, fn -> Disk.ready(pool, spec) end)
     end
   end

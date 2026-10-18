@@ -628,3 +628,5 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [Antithesis five-attempt bootstrap admission (2026-10-16)](2026-10-16-antithesis-five-attempt-admission.md): verification campaign ledger admits five concurrent hosted attempts and refuses a sixth; no production architecture boundary changes.
 - [Antithesis guest-lifecycle profile (2026-10-17)](2026-10-17-antithesis-guest-lifecycle-profile.md): launchable QEMU TCG guest-lifecycle selection with a labelled stub-storage container Lilly; harness-only, no ADR change and no recorded run.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)
+
+- [Git attribution and guest identity (2026-10-18)](2026-10-18-git-attribution.md): ADR-0193 settings, immutable snapshots and guest configuration verification.

@@ -18,6 +18,7 @@ defmodule OverallsProtocol.WorkloadBundle do
   @type guest_agents :: OverallsProtocol.GuestAgents.t()
 
   @type kernel_bundle :: %{
+          optional(:git_identity_version) => 1,
           image_id: String.t(),
           architecture: :x86_64,
           boot_kind: :kernel,
@@ -28,6 +29,7 @@ defmodule OverallsProtocol.WorkloadBundle do
         }
 
   @type native_firmware_bundle :: %{
+          optional(:git_identity_version) => 1,
           image_id: String.t(),
           architecture: :x86_64,
           boot_kind: :firmware,
@@ -39,6 +41,7 @@ defmodule OverallsProtocol.WorkloadBundle do
         }
 
   @type native_freebsd_firmware_bundle :: %{
+          optional(:git_identity_version) => 1,
           image_id: String.t(),
           architecture: :x86_64,
           boot_kind: :firmware,
@@ -50,6 +53,7 @@ defmodule OverallsProtocol.WorkloadBundle do
         }
 
   @type firmware_bundle :: %{
+          optional(:git_identity_version) => 1,
           image_id: String.t(),
           architecture: :x86_64,
           boot_kind: :firmware,
@@ -75,6 +79,21 @@ defmodule OverallsProtocol.WorkloadBundle do
   # native firmware identity with matching OS, agent set and kernel provenance.
   # Portable metadata MUST NOT contain artifact paths, credentials or host-local authority.
   @spec validate(term()) :: {:ok, t()} | {:error, :invalid_workload_bundle}
+  # @cc [owner:ghuntley,label:security;protocol] workload-bundle-git-identity-capability
+  # A present Git identity capability MUST be exactly version 1 on a bundle
+  # with guest agents. Absence MUST preserve its original closed encoding;
+  # validated capability MUST survive portable storage and transfer round trips.
+  def validate(%{"git_identity_version" => 1} = value) do
+    with {:ok, bundle} <- validate(Map.delete(value, "git_identity_version")),
+         true <- bundle.guest_agents != :none do
+      {:ok, Map.put(bundle, :git_identity_version, 1)}
+    else
+      _ -> {:error, :invalid_workload_bundle}
+    end
+  end
+
+  def validate(%{"git_identity_version" => _}), do: {:error, :invalid_workload_bundle}
+
   def validate(
         %{
           "version" => 1,
@@ -242,8 +261,16 @@ defmodule OverallsProtocol.WorkloadBundle do
   # @cc [owner:ghuntley,label:protocol] workload-bundle-encode-by-kind
   # encode/1 MUST emit exactly the six version-1 keys for a Linux kernel bundle,
   # the seven version-2 keys for a Windows firmware bundle, or the closed version-3
-  # native shape, so an on-disk marker compares equal to its validated bundle.
+  # native shape, plus its validated optional Git identity capability, so an
+  # on-disk marker compares equal to its validated bundle.
   @spec encode(t()) :: map()
+  def encode(%{git_identity_version: 1} = bundle) do
+    bundle
+    |> Map.delete(:git_identity_version)
+    |> encode()
+    |> Map.put("git_identity_version", 1)
+  end
+
   def encode(%{boot_kind: :kernel} = bundle) do
     %{
       "version" => 1,

@@ -22,6 +22,8 @@ const MAXIMUM_RESPONSE: usize = 8192;
 #[serde(deny_unknown_fields)]
 pub struct Document {
     pub version: u8,
+    #[serde(default, deserialize_with = "deserialize_git_identity")]
+    pub git_identity: Option<super::git_identity::GitIdentity>,
     pub placement: String,
     pub execution_epoch: u64,
     pub boot_challenge: String,
@@ -29,6 +31,15 @@ pub struct Document {
     pub prefix_length: u8,
     pub gateway: String,
     pub mac: String,
+}
+
+fn deserialize_git_identity<'de, D>(
+    deserializer: D,
+) -> Result<Option<super::git_identity::GitIdentity>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    super::git_identity::GitIdentity::deserialize(deserializer).map(Some)
 }
 
 fn valid_hex(value: &str, size: usize) -> bool {
@@ -67,6 +78,9 @@ impl Document {
             || self.mac.len() != 17
         {
             return Err(invalid());
+        }
+        if let Some(identity) = &self.git_identity {
+            identity.validate()?;
         }
         Ok(self)
     }
@@ -216,6 +230,25 @@ mod tests {
     use std::net::TcpListener;
 
     const DOCUMENT: &str = r#"{"version":1,"placement":"dddddddd-dddd-4ddd-8ddd-000000000201","execution_epoch":7,"boot_challenge":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","ipv4":"10.10.0.203","prefix_length":32,"gateway":"10.10.0.1","mac":"02:fc:0a:00:00:cb"}"#;
+
+    #[test]
+    fn optional_git_identity_is_validated_and_null_is_not_absence() {
+        let mut document: serde_json::Value = serde_json::from_str(DOCUMENT).unwrap();
+        document["git_identity"] =
+            serde_json::json!({"version":1,"name":"Author","email":"author@example.test"});
+        assert!(Document::parse(&serde_json::to_vec(&document).unwrap())
+            .unwrap()
+            .git_identity
+            .is_some());
+        for value in [
+            serde_json::Value::Null,
+            serde_json::json!({"version":1,"name":"Bad\nName","email":"author@example.test"}),
+            serde_json::json!({"version":2,"name":"Author","email":"author@example.test"}),
+        ] {
+            document["git_identity"] = value;
+            assert!(Document::parse(&serde_json::to_vec(&document).unwrap()).is_err());
+        }
+    }
 
     fn serve(listener: TcpListener) {
         serve_with(listener, false)

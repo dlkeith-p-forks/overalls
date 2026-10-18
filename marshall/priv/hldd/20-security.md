@@ -1428,3 +1428,7 @@ outcome atoms; objective text, model content,
 terminal bytes, machine payloads and credentials remain in authorized data.
 Archival invalidates a pending planning barrier with the durable `archived`
 reason before lifecycle deletion completes.
+
+## Git identity configuration
+
+Account authorization controls preference updates. Validated identity is inert execution metadata bound to the machine’s admitted snapshot and current boot. Guest services atomically publish protected Git configuration; malformed metadata refuses. Identity values must not enter diagnostics. Guest sudo and Git local configuration retain their existing authority. Native cross-OS and production rollout acceptance remain separate from BEAM property evidence.

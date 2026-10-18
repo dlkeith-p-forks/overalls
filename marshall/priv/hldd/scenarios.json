@@ -1127,7 +1127,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/default.nix",
           "assertion": "worker loss starts a fresh personal process without deleting data",
-          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334–3357, legitimate origin replacement L3358–3389 and worker loss with saved data L3390–3407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
+          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334\u20133357, legitimate origin replacement L3358\u20133389 and worker loss with saved data L3390\u20133407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-browser-editor.md",
           "record_assertion": "The corrected final-package standalone native check passed, exit 0, in 342 seconds"
@@ -5448,7 +5448,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/database-recovery/driver.py",
           "assertion": "expected_holder_state",
-          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432–27.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
+          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432\u201327.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-02-database-loss-histories.md",
           "record_assertion": "All six cases preserved the twenty-second holder and thirty-five-second\nall-connection assertions and reacquired the row after reclamation."
@@ -6617,7 +6617,7 @@
       ],
       "boundary": "Complete manifest, matching keyring, native ownership and isolated restoration.",
       "denial": "Reject unrelated decryption keys, malformed manifests, unavailable retained references, busy operator locks and unsafe or nonempty restore targets; keep historical authority isolated.",
-      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore→decrypt→repository-access composition with the historical-generation refusal in synthetic fixtures.",
+      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore\u2192decrypt\u2192repository-access composition with the historical-generation refusal in synthetic fixtures.",
       "status": "partial",
       "gaps": "No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation.",
       "preferred_gap": "Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.",
@@ -12936,6 +12936,67 @@
           "record_assertion": "passed all six local real-process command tests"
         }
       ]
+    },
+    {
+      "id": "git-preferences-and-attribution",
+      "journey": "Save account Git defaults, create a machine and use optional agent attribution",
+      "layers": [
+        "identity",
+        "authorization",
+        "execution",
+        "storage",
+        "recovery"
+      ],
+      "scope": "Account preference, codec and immutable snapshot property coverage; guest acceptance remains separately recorded.",
+      "status": "partial",
+      "gaps": "Production rollout and complete cross-OS native Git commit acceptance remain unrecorded.",
+      "preferred_gap": "Run real guest commits under managed login accounts after setting custom identity and after reboot; retain native and property scopes separately.",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/compute/git_identity_test.exs",
+          "assertion": "allocation retains its snapshot through preference changes and idempotent retry",
+          "scope": "BEAM admission and stored command snapshot only.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "protocol/test/git_identity_test.exs",
+          "assertion": "identity",
+          "scope": "Bounded protocol identity and command metadata round trips and refusals; no guest execution.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "lilly/test/vm/spec_test.exs",
+          "assertion": "boot attribution never changes storage identity and both transports agree",
+          "scope": "BEAM storage encoding and kernel/MMDS metadata agreement; no KVM execution.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "lyra/src/guest/git_identity.rs",
+          "assertion": "fn generated_identity_roundtrips",
+          "scope": "Native local Rust identity parsing and kernel transport, 80 generated cases; no booted guest.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "lyra/src/guest/git_identity.rs",
+          "assertion": "fn current_identity_is_effective_without_a_repository",
+          "scope": "Local real Git consumes a generated system include with no repository; no guest image.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/settings_live_test.exs",
+          "assertion": "a revoked login cannot change settings on an existing page",
+          "scope": "LiveView revoked-session refusal in the BEAM VM.",
+          "execution": "present"
+        }
+      ],
+      "denial": "Foreign account updates and malformed Git identities refuse; settings changes cannot replace an existing machine snapshot. Images without version-1 Git identity support refuse new admissions.",
+      "boundary": "Account-owned preferences become immutable VM configuration; existing execution and guest custody boundaries remain."
     }
   ]
 }

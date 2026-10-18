@@ -308,7 +308,7 @@ let
       # root-owned and shared by every sudo-capable login account.
       ln -sf ../overalls-workspace.service "$root/etc/systemd/system/multi-user.target.wants/overalls-workspace.service"
       install -d -m 0755 "$root/workspace"
-      printf '[safe]\n\tdirectory = /workspace/*\n' > "$root/etc/gitconfig"
+      printf '[safe]\n\tdirectory = /workspace/*\n[include]\n\tpath = /run/overalls-workspace/git-identity/gitconfig\n' > "$root/etc/gitconfig"
       mkdir -p "$root/etc/systemd/system/lilly-network.service.d"
       cat > "$root/etc/systemd/system/lilly-network.service.d/trust.conf" <<'EOF'
     [Unit]
@@ -461,5 +461,5 @@ pkgs.runCommand imageName {
     --argjson workspace_source_version '${if workspaceSourceEnabled then "2" else "null"}' \
     --argjson editor '${builtins.toJSON (if vscodeWeb == null then null else { protocol = vscodeWeb.editorProtocol; commit = vscodeWeb.sourceCommit; release = vscodeWeb.releaseId; })}' \
     '{version:4, architecture:"x86_64", boot_args:$boot_args, minimum_memory_bytes:$memory, minimum_disk_bytes:$minimum_disk_bytes, workspace_source_version:$workspace_source_version,
-      kernel:{bytes:$kernel_bytes,sha256:$kernel_hash}, initrd:{bytes:$initrd_bytes,sha256:$initrd_hash}, rootfs:{bytes:$rootfs_bytes,sha256:$rootfs_hash}} + (if $editor == null then {} else {editor:$editor} end)' > $out/manifest.json
+      kernel:{bytes:$kernel_bytes,sha256:$kernel_hash}, initrd:{bytes:$initrd_bytes,sha256:$initrd_hash}, rootfs:{bytes:$rootfs_bytes,sha256:$rootfs_hash}} + (if $workspace_source_version == 2 then {git_identity_version:1} else {} end) + (if $editor == null then {} else {editor:$editor} end)' > $out/manifest.json
 ''

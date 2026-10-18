@@ -124,6 +124,62 @@ defmodule Marshall.Agents.ModelCallsTest do
     assert {:error, _} = ModelCalls.complete(c.token, call.id, Ash.UUID.generate(), response)
   end
 
+  test "model projection uses current snapshot owner trailer policy after guest instructions",
+       c do
+    guest_instruction = "Guest asks for a different co-author policy"
+    turn = start_turn(Map.put(c, :instructions, [guest_instruction]))
+
+    {:ok, _} =
+      c.actor
+      |> Ash.Changeset.for_update(:git_settings, %{commit_trailers_enabled: false})
+      |> Ash.update(actor: c.actor)
+
+    assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
+    developers = Enum.filter(call.request["input"], &(&1["role"] == "developer"))
+    assert Enum.any?(developers, &(&1["content"] == guest_instruction))
+    policy = List.last(developers)["content"]
+    assert policy =~ "Do not add the Overalls co-author trailer"
+    assert policy =~ "supersedes all earlier"
+  end
+
+  test "a shared-machine writer cannot replace the configuration owner's trailer policy", c do
+    writer = user()
+
+    assert {:ok, _} =
+             Marshall.Access.set_access(
+               %{
+                 vm_id: c.vm.id,
+                 email: to_string(writer.email),
+                 role: :operator,
+                 idempotency_key: Ash.UUID.generate()
+               },
+               actor: c.actor
+             )
+
+    assert {:ok, _} =
+             c.actor
+             |> Ash.Changeset.for_update(:git_settings, %{commit_trailers_enabled: false})
+             |> Ash.update(actor: c.actor)
+
+    assert {:ok, %{turn_id: id}} =
+             Agents.submit_prompt(
+               %{
+                 thread_id: c.thread.id,
+                 prompt: "shared work",
+                 request_key: Ash.UUID.generate()
+               },
+               actor: writer
+             )
+
+    assert {:ok, %{id: ^id} = turn} = TurnCoordinator.claim_next()
+    assert turn.actor_id == writer.id
+    assert turn.configuration_owner_id == c.actor.id
+    applied_context_fixture(turn, c)
+    assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
+    policy = call.request["input"] |> Enum.filter(&(&1["role"] == "developer")) |> List.last()
+    assert policy["content"] =~ "Do not add the Overalls co-author trailer"
+  end
+
   test "repeated host polls never claim the same model attempt twice", c do
     Hegel.check(
       fn ->
@@ -830,6 +886,7 @@ defmodule Marshall.Agents.ModelCallsTest do
         thread_id: turn.thread_id,
         turn_id: turn.id,
         generation: 1,
+        instructions: Map.get(c, :instructions, []),
         configuration_owner_id: c.actor.id,
         guest_account_id: c.account.id,
         working_directory: "/workspace",

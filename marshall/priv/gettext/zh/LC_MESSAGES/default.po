@@ -14,50 +14,50 @@ msgstr "\nPlural-Forms: nplurals=1; plural=0;\nLanguage: zh\n"
 #: lib/marshall_web/live/machines_live.ex:1064
 #, elixir-autogen, elixir-format
 msgid " and counting"
-msgstr ""
+msgstr "并且计数"
 
 #: lib/marshall_web/live/teams_live.ex:193
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} 名成员"
+msgstr[1] "%{count} 名成员"
 
 #: lib/marshall_web/live/admin/users_live.ex:157
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} 台自有机器"
+msgstr[1] "%{count} 台自有机器"
 
 #: lib/marshall_web/live/account_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} 个已注册密钥"
+msgstr[1] "%{count} 个已注册密钥"
 
 #: lib/marshall_web/live/admin/operations_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "%{count} · %{enabled} enabled"
-msgstr ""
+msgstr "%{count} · %{enabled} 个已启用"
 
 #: lib/marshall_web/live/machines_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
-msgstr ""
+msgstr "%{seconds} 秒%{suffix}"
 
 #: lib/marshall_web/live/terminal_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{user} · %{count} 人正在查看"
+msgstr[1] "%{user} · %{count} 人正在查看"
 
 #: lib/marshall_web/live/resize_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "%{value1} CPU"
-msgstr ""
+msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:893
 #: lib/marshall_web/live/machines_live.ex:894
@@ -66,12 +66,12 @@ msgstr ""
 #: lib/marshall_web/live/resize_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
-msgstr ""
+msgstr "%{value1} GiB"
 
 #: lib/marshall_web/live/resize_live.ex:285
 #, elixir-autogen, elixir-format
 msgid "%{value1} MiB"
-msgstr ""
+msgstr "%{value1} MiB"
 
 #: lib/marshall_web/live/threads_live.ex:1426
 #, elixir-autogen, elixir-format

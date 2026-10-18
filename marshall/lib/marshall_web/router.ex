@@ -96,43 +96,45 @@ defmodule MarshallWeb.Router do
     # session and install LiveUserAuth's required-user hook in their modules.
     ash_authentication_live_session :authenticated_routes,
       on_mount_prepend: MarshallWeb.DatabaseWait do
-      live("/hldd", HLDDLive, :index)
-      live("/hldd/:section", HLDDLive, :section)
-      live("/overview", OverviewLive, :index)
-      live("/launch", LaunchLive, :index)
-      live("/admin/users", Admin.UsersLive, :index)
-      live("/admin/nodes", Admin.LillyNodesLive, :index)
-      live("/admin/nodes/:id", Admin.LillyNodesLive, :show)
-      live("/admin/jobs", Admin.JobsLive, :index)
-      live("/admin/jobs/:id", Admin.JobsLive, :show)
-      live("/admin/access", Admin.AccessLive, :index)
-      live("/admin/workloads", Admin.WorkloadsLive, :index)
-      live("/admin/operations", Admin.OperationsLive, :index)
-      live("/usage", InferenceLive, :index)
-      live("/integrations", IntegrationsLive, :index)
-      live("/git", GitLive, :index)
-      live("/git/github/:owner/:repo", GitLive, :show)
-      live("/teams", TeamsLive, :index)
-      live("/threads", ThreadsLive, :index)
-      live("/threads/new", ThreadsLive, :new)
-      live("/threads/activity", ThreadsLive, :activity)
-      live("/threads/:id", ThreadsLive, :show)
-      live("/admin/usage", InferenceLive, :admin)
-      live("/admin/audit", Admin.AuditLive, :index)
-      live("/admin/git", Admin.GitLive, :index)
-      live("/settings", AccountLive, :index)
-      live("/machines", MachinesLive, :index)
-      live("/machines/new", MachinesLive, :new)
-      live("/machines/:id", TerminalLive, :show)
-      live("/machines/:id/resources", MachinesLive, :resources)
-      live("/machines/:id/access", MachinesLive, :access)
-      live("/machines/:id/settings", MachinesLive, :settings)
-      live("/machines/:id/resize", ResizeLive, :show)
-      live("/machines/:id/terminals", TerminalLive, :show)
-      live("/machines/:id/threads", AgentThreadsLive, :index)
-      live("/machines/:id/threads/:thread_id", AgentThreadsLive, :show)
-      live("/agents/cli/approve/:vm_id/:code", AgentCLIApprovalLive, :show)
-      get("/machines/:vm_id/terminals/:session_id/socket", TerminalSocket, :show)
+      live "/hldd", HLDDLive, :index
+      live "/hldd/:section", HLDDLive, :section
+      live "/overview", OverviewLive, :index
+      live "/launch", LaunchLive, :index
+      live "/admin/users", Admin.UsersLive, :index
+      live "/admin/nodes", Admin.LillyNodesLive, :index
+      live "/admin/nodes/:id", Admin.LillyNodesLive, :show
+      live "/admin/jobs", Admin.JobsLive, :index
+      live "/admin/jobs/:id", Admin.JobsLive, :show
+      live "/admin/access", Admin.AccessLive, :index
+      live "/admin/workloads", Admin.WorkloadsLive, :index
+      live "/admin/operations", Admin.OperationsLive, :index
+      live "/usage", InferenceLive, :index
+      live "/integrations", IntegrationsLive, :index
+      live "/git", GitLive, :index
+      live "/git/github/:owner/:repo", GitLive, :show
+      live "/teams", TeamsLive, :index
+      live "/threads", ThreadsLive, :index
+      live "/threads/new", ThreadsLive, :new
+      live "/threads/activity", ThreadsLive, :activity
+      live "/threads/:id", ThreadsLive, :show
+      live "/admin/usage", InferenceLive, :admin
+      live "/admin/audit", Admin.AuditLive, :index
+      live "/admin/git", Admin.GitLive, :index
+      live "/settings", SettingsLive, :index
+      live "/settings/security", SecurityLive, :index
+      live "/settings/ssh-keys", SSHKeysLive, :index
+      live "/machines", MachinesLive, :index
+      live "/machines/new", MachinesLive, :new
+      live "/machines/:id", TerminalLive, :show
+      live "/machines/:id/resources", MachinesLive, :resources
+      live "/machines/:id/access", MachinesLive, :access
+      live "/machines/:id/settings", MachinesLive, :settings
+      live "/machines/:id/resize", ResizeLive, :show
+      live "/machines/:id/terminals", TerminalLive, :show
+      live "/machines/:id/threads", AgentThreadsLive, :index
+      live "/machines/:id/threads/:thread_id", AgentThreadsLive, :show
+      live "/agents/cli/approve/:vm_id/:code", AgentCLIApprovalLive, :show
+      get "/machines/:vm_id/terminals/:session_id/socket", TerminalSocket, :show
       # in each liveview, add one of the following at the top of the module:
       #
       # If an authenticated user must be present:

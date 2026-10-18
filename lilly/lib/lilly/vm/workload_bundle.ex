@@ -113,8 +113,21 @@ defmodule Lilly.VM.WorkloadBundle do
     end)
   end
 
+  # @cc [owner:ghuntley,label:security;recovery] bundle-retains-git-identity-capability
+  # Materialized metadata MUST preserve the verified image's optional Git
+  # identity capability so retained starts use their placement-local bundle.
   @spec metadata(Image.t()) :: map()
-  defp metadata(%Image{manifest: %{boot_kind: :kernel} = manifest} = image) do
+  defp metadata(image) do
+    metadata = metadata_base(image)
+
+    case Map.fetch(image.manifest, :git_identity_version) do
+      {:ok, 1} -> Map.put(metadata, "git_identity_version", 1)
+      :error -> metadata
+    end
+  end
+
+  @spec metadata_base(Image.t()) :: map()
+  defp metadata_base(%Image{manifest: %{boot_kind: :kernel} = manifest} = image) do
     base = %{
       image_id: image.id,
       architecture: manifest.architecture,
@@ -129,7 +142,7 @@ defmodule Lilly.VM.WorkloadBundle do
     |> BundleMetadata.encode()
   end
 
-  defp metadata(%Image{manifest: %{boot_kind: :firmware, os: os} = manifest} = image)
+  defp metadata_base(%Image{manifest: %{boot_kind: :firmware, os: os} = manifest} = image)
        when os in [:freebsd, :illumos] do
     {_, firmware} = image.files["firmware"]
 
@@ -145,7 +158,7 @@ defmodule Lilly.VM.WorkloadBundle do
     })
   end
 
-  defp metadata(%Image{manifest: %{boot_kind: :firmware} = manifest} = image) do
+  defp metadata_base(%Image{manifest: %{boot_kind: :firmware} = manifest} = image) do
     {_, firmware} = image.files["firmware"]
 
     BundleMetadata.encode(%{

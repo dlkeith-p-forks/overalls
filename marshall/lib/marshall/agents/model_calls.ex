@@ -165,7 +165,10 @@ defmodule Marshall.Agents.ModelCalls do
       child?: thread.parent_thread_id != nil,
       instructions:
         projection.snapshot.instructions ++
-          ["Current working directory: " <> projection.snapshot.working_directory],
+          [
+            "Current working directory: " <> projection.snapshot.working_directory,
+            Marshall.Accounts.GitSettings.instruction(projection.snapshot.configuration_owner_id)
+          ],
       checkpoint: if(checkpoint, do: checkpoint.state),
       retained_input: if(checkpoint, do: checkpoint.retained_input, else: [])
     ]

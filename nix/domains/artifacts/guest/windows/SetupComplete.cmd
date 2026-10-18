@@ -36,6 +36,10 @@ powercfg /hibernate off >> %LOG% 2>&1
 powercfg /x standby-timeout-ac 0 >> %LOG% 2>&1
 powercfg /x monitor-timeout-ac 0 >> %LOG% 2>&1
 
+rem Git attribution is a public SYSTEM-written include shared by guest accounts.
+mkdir C:\overalls\git-identity 2>nul
+icacls C:\overalls\git-identity /inheritance:r /grant:r "SYSTEM:(OI)(CI)(F)" "Administrators:(OI)(CI)(F)" "Users:(OI)(CI)(RX)" >> %LOG% 2>&1
+
 rem OpenSSH server is an in-box feature on Windows Server 2025. Without the
 rem roster agent it starts automatically with its stock configuration; with the
 rem agent (ADR-0171 gate 3) it is started on demand by overalls-ssh-sync-windows

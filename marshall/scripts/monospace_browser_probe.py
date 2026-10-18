@@ -1004,7 +1004,9 @@ GRID_ROUTES = (
     "create",
     "machine",
     "boot-log",
-    "account",
+    "settings",
+    "security",
+    "ssh",
     "hldd",
 )
 
@@ -1042,7 +1044,9 @@ def run(fixture: Context, artifacts: Path) -> None:
             "teams": "/teams",
             "git": "/git",
             "usage": "/usage",
-            "account": "/settings",
+            "settings": "/settings",
+            "security": "/settings/security",
+            "ssh": "/settings/ssh-keys",
             "hldd": "/hldd",
             "hldd-section": "/hldd/system",
         }
@@ -1098,6 +1102,19 @@ def run(fixture: Context, artifacts: Path) -> None:
                         evaluate(page, "navigator.clipboard.readText()")
                         == page.locator("#machine-install-command").text_content()
                     )
+                if name == "settings":
+                    expect(page.locator("#git-settings-form")).to_be_visible()
+                    page.locator("#settings_git_username").fill("Browser Author")
+                    page.locator("#settings_git_email").fill("browser@example.test")
+                    page.locator("#settings_commit_trailers_enabled").uncheck()
+                    page.locator("#save-git-settings").click()
+                    expect(page.locator("#flash-info")).to_contain_text("Git settings saved")
+                    page.reload()
+                    expect(page.locator("#settings_git_username")).to_have_value("Browser Author")
+                    expect(page.locator("#settings_git_email")).to_have_value(
+                        "browser@example.test"
+                    )
+                    expect(page.locator("#settings_commit_trailers_enabled")).not_to_be_checked()
                 if name == "hldd-section":
                     expect(page.locator("pre.hldd-diagram svg").first).to_be_visible()
                 if name == "account":
@@ -1116,12 +1133,14 @@ def run(fixture: Context, artifacts: Path) -> None:
                 "integrations",
                 "teams",
                 "usage",
-                "account",
+                "security",
+                "settings",
             ):
                 visit(page, fixture["origin"], routes[name])
                 check_overflow(page)
-                if name in ("overview", "machines"):
-                    check_status_labels(page)
+                if name == "settings":
+                    check_grid(page, routes[name])
+                    expect(page.locator("#git-settings-form")).to_be_visible()
                 if name in ("machine", "terminal", "boot-log"):
                     check_machine_tabs(page)
                     check_machine_header(page)

@@ -3762,3 +3762,24 @@ Tested scope: The production native callback wiring and scoped cancellation/dead
 **Gaps:** No fresh FreeBSD exact-image machine history withdraws a real executor lease while a command is running; the OmniOS receipt covers that boundary on the current source-qualified image. Deliberate descendants escaping the process group are outside this cleanup guarantee. Local Linux process tests cannot establish native host isolation or revocation timing.
 
 **Preferred test work:** Run a NixOS machine history on each current native image: observe a started command, withdraw its actual lease or supervisor stop authority, prove its managed process group terminates and no result commits, then admit a fresh fence. Preserve bounded output and command-deadline checks during an unavailable lease endpoint.
+
+## Save account Git defaults, create a machine and use optional agent attribution
+
+Coverage: **partial**. Layers: identity, authorization, execution, storage, recovery.
+
+Boundary: Account-owned preferences become immutable VM configuration; existing execution and guest custody boundaries remain.
+
+Required refusal: Foreign account updates and malformed Git identities refuse; settings changes cannot replace an existing machine snapshot. Images without version-1 Git identity support refuse new admissions.
+
+Tested scope: Account preference, codec and immutable snapshot property coverage; guest acceptance remains separately recorded.
+
+- **property, present**: [allocation retains its snapshot through preference changes and idempotent retry](repo:marshall/test/marshall/compute/git_identity_test.exs) — BEAM admission and stored command snapshot only..
+- **property, present**: [identity](repo:protocol/test/git_identity_test.exs) — Bounded protocol identity and command metadata round trips and refusals; no guest execution..
+- **property, present**: [boot attribution never changes storage identity and both transports agree](repo:lilly/test/vm/spec_test.exs) — BEAM storage encoding and kernel/MMDS metadata agreement; no KVM execution..
+- **property, present**: [fn generated_identity_roundtrips](repo:lyra/src/guest/git_identity.rs) — Native local Rust identity parsing and kernel transport, 80 generated cases; no booted guest..
+- **unit, present**: [fn current_identity_is_effective_without_a_repository](repo:lyra/src/guest/git_identity.rs) — Local real Git consumes a generated system include with no repository; no guest image..
+- **unit, present**: [a revoked login cannot change settings on an existing page](repo:marshall/test/marshall_web/settings_live_test.exs) — LiveView revoked-session refusal in the BEAM VM..
+
+**Gaps:** Production rollout and complete cross-OS native Git commit acceptance remain unrecorded.
+
+**Preferred test work:** Run real guest commits under managed login accounts after setting custom identity and after reboot; retain native and property scopes separately.

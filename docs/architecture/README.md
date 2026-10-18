@@ -1,13 +1,6 @@
 # Architecture
 
-[ADR-0197](decisions/0197-memory-suspension-and-demand-wake.md) accepts
-memory-preserving suspension, paused relocation and demand wake with automatic
-capacity relocation. New thread/Orb machines use a four-hour tool-idle policy;
-owner pins wake and prevent automatic suspension. Checkpoints retain immutable
-RAM backing independently of disk clones/backups, and authorized connections
-wait through a fenced restore or one fleet-gateway relay hop. Implementation
-and native acceptance remain in progress in the
-[suspension review](reviews/2026-10-18-memory-suspension.md).
+[ADR-0193](decisions/0193-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0188](decisions/0188-signed-overalls-cachix-substitution.md) adds the
 signed Overalls Cachix read cache to all Nix-running hosts, installers and guest

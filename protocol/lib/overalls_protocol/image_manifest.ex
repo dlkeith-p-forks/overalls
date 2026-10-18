@@ -11,6 +11,7 @@ defmodule OverallsProtocol.ImageManifest do
   `sha256:` identity from an ordered identity array.
   """
   @type workspace_source_version :: 2 | nil
+  @type git_identity_version :: 1
   @type boot_kind :: :kernel | :firmware
   @type os :: :linux | :windows | :freebsd | :illumos
   @type root_format :: :ext4 | :raw_gpt
@@ -18,6 +19,7 @@ defmodule OverallsProtocol.ImageManifest do
 
   @type kernel_image :: %{
           optional(:editor) => OverallsProtocol.EditorRelease.t(),
+          optional(:git_identity_version) => git_identity_version(),
           id: String.t(),
           architecture: :x86_64,
           boot_kind: :kernel,
@@ -32,6 +34,7 @@ defmodule OverallsProtocol.ImageManifest do
         }
 
   @type firmware_image :: %{
+          optional(:git_identity_version) => git_identity_version(),
           id: String.t(),
           architecture: :x86_64,
           boot_kind: :firmware,
@@ -54,6 +57,7 @@ defmodule OverallsProtocol.ImageManifest do
         }
 
   @type native_image :: %{
+          optional(:git_identity_version) => git_identity_version(),
           id: String.t(),
           architecture: :x86_64,
           os: :freebsd | :illumos,
@@ -90,13 +94,29 @@ defmodule OverallsProtocol.ImageManifest do
   # artifacts through 64 MiB, inclusive, and reject a descriptor that exceeds its bound.
 
   # @cc [owner:ghuntley,label:protocol;security] image-firmware-manifest-closed
-  # A version-5 manifest MUST be accepted only with exactly the eight documented keys:
+  # A version-5 manifest MUST be accepted only with the eight documented keys and
+  # optional git_identity_version 1 for an agent-bearing image:
   # `boot.kind` `firmware` with `pci` true and one firmware descriptor, `root.format`
   # `raw-gpt` with one root descriptor, `guest_agents` `none` or `windows-v1`, and
   # `workspace_source_version` null, or 2 only together with `windows-v1`. Editor
   # descriptors, display names, boot arguments or kernel artifacts in a version-5
   # manifest MUST be refused. The agent set is part of the identity.
   @spec validate(term()) :: {:ok, t()} | {:error, :invalid_image_manifest}
+  def validate(%{"git_identity_version" => 1} = manifest) do
+    with {:ok, image} <- validate(Map.delete(manifest, "git_identity_version")),
+         true <- image.guest_agents != :none do
+      {:ok,
+       image
+       |> Map.put(:id, identity_id(["lilly-image-git-identity-v1", image.id]))
+       |> Map.put(:git_identity_version, 1)
+       |> Map.put(:manifest, manifest)}
+    else
+      _ -> {:error, :invalid_image_manifest}
+    end
+  end
+
+  def validate(%{"git_identity_version" => _}), do: {:error, :invalid_image_manifest}
+
   def validate(
         %{
           "version" => 4,
@@ -322,6 +342,16 @@ defmodule OverallsProtocol.ImageManifest do
   @spec workspace_source?(term()) :: boolean()
   def workspace_source?(manifest) do
     match?({:ok, %{workspace_source_version: 2}}, validate(manifest))
+  end
+
+  # @cc [owner:ghuntley,label:security;protocol] image-git-identity-capability-explicit
+  # Git identity delivery MUST require an explicit version 1 capability on a
+  # validated agent-bearing manifest. Absence means unsupported; null, other
+  # versions and agentless declarations refuse. Adding the capability MUST change
+  # immutable image identity without changing the IDs of manifests that omit it.
+  @spec git_identity?(term()) :: boolean()
+  def git_identity?(manifest) do
+    match?({:ok, %{git_identity_version: 1}}, validate(manifest))
   end
 
   @spec id?(term()) :: boolean()

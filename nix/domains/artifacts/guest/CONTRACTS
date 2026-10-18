@@ -15,6 +15,13 @@ Editor-capable images MUST additionally record the immutable protocol/source/pat
 release descriptor and at least 2 GiB writable disk headroom. The immutable rootfs
 is a template for a separate writable VM disk. See ADR-0011 and ADR-0016.
 
+@cc [owner:ghuntley,label:build;protocol] guest-git-identity-capability
+Linux and Windows image builders MUST declare git_identity_version 1 only when
+the current Git identity writer, system configuration include and enabled workspace
+service are installed in the image. Images without that service MUST omit the
+capability. Existing immutable native artifacts MUST NOT acquire it without a
+separately rebuilt, reviewed and admitted exact image.
+
 @cc [owner:ghuntley,label:build;security] native-agent-payload
 FreeBSD and illumos image builders MAY copy a reviewed native-agent payload only
 when its binaries are built from the pinned Lyra source and the manifest declares

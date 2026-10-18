@@ -337,6 +337,7 @@ let
   gitConfiguration = pkgs.writeText "overalls-native-shared-workspace-gitconfig" ''
     [include]
       path = /run/overalls-workspace/gitconfig
+      path = /run/overalls-workspace/git-identity/gitconfig
   '';
   freebsdService = pkgs.writeTextFile {
     name = "overalls-native-agents-freebsd";

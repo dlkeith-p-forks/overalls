@@ -74,6 +74,55 @@ defmodule OverallsProtocol.ImageManifestTest do
     }
   end
 
+  property "Git identity capability is explicit, identity-bound and closed across image kinds",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 50,
+    seed: 814_029_311 do
+    kind = draw("image kind", member_of([:linux, :windows, :none, :freebsd, :illumos]))
+
+    base =
+      case kind do
+        :linux -> manifest()
+        :windows -> Map.put(firmware_manifest(), "guest_agents", "windows-v1")
+        :none -> firmware_manifest()
+        :freebsd -> OverallsProtocol.NativeAdmission.reviewed_manifest()
+        :illumos -> illumos_manifest()
+      end
+
+    assert {:ok, original} = ImageManifest.validate(base)
+    refute ImageManifest.git_identity?(base)
+    capable = Map.put(base, "git_identity_version", 1)
+
+    if kind == :none do
+      assert {:error, :invalid_image_manifest} = ImageManifest.validate(capable)
+    else
+      assert {:ok, image} = ImageManifest.validate(capable)
+      refute image.id == original.id
+      assert image.git_identity_version == 1
+      assert ImageManifest.git_identity?(capable)
+      assert ImageManifest.encode(image) == capable
+
+      assert {:ok, ^image} =
+               capable |> JSON.encode!() |> JSON.decode!() |> ImageManifest.validate()
+
+      assert {:ok, ^original} =
+               capable |> Map.delete("git_identity_version") |> ImageManifest.validate()
+
+      assert {:error, :invalid_image_manifest} =
+               ImageManifest.validate(Map.put(capable, "extra", true))
+
+      if kind in [:freebsd, :illumos],
+        do: refute(OverallsProtocol.NativeAdmission.admitted?(image))
+    end
+
+    for value <- [nil, 0, 2, "1", true] do
+      malformed = Map.put(base, "git_identity_version", value)
+      assert {:error, :invalid_image_manifest} = ImageManifest.validate(malformed)
+      refute ImageManifest.git_identity?(malformed)
+    end
+  end
+
   property "identity survives serialization and changes with artifact bytes or boot requirements",
     database: :disabled,
     print_blob: false,
