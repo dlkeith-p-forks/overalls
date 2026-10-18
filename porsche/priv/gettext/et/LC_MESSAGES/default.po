@@ -272,3 +272,58 @@ msgstr "Resume preserved memory, waiting for capacity or relocation."
 # Reviewed English fallback pending translation of suspension behavior.
 msgid "Resume a suspended machine's preserved memory."
 msgstr "Resume a suspended machine's preserved memory."
+
+#: lib/porsche/ssh/output.ex:73
+#, elixir-autogen, elixir-format
+msgid "The command could not be completed: %{reason}"
+msgstr "Käsku ei saanud lõpule viia: %{reason}"
+
+#: lib/porsche/ssh/output.ex:67
+#, elixir-autogen, elixir-format
+msgid "The requested resource could not be found."
+msgstr "Taotletud ressurssi ei leitud."
+
+#: lib/porsche/ssh/output.ex:61
+#, elixir-autogen, elixir-format
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "Teenus pole ajutiselt saadaval. Proovi peagi uuesti."
+
+#: lib/porsche/ssh/onboarding.ex:100
+#, elixir-autogen, elixir-format
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "Seda SSH-ühendust ei saanud autoriseerida. Kontrolli oma juurdepääsu masinale ja proovi uuesti.\n\n"
+
+#: lib/porsche/ssh/output.ex:52
+#, elixir-autogen, elixir-format
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "See ühendus pole autoriseeritud. Logi sisse ja proovi uuesti."
+
+#: lib/porsche/ssh/output.ex:70
+#, elixir-autogen, elixir-format
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "Ootamatu sisend. Ava uus SSH-ühendus."
+
+#: lib/porsche/ssh/onboarding.ex:97
+#, elixir-autogen, elixir-format
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "Me ei saanud seda SSH-võtit praegu kinnitada. Proovi peagi uuesti.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:86
+#, elixir-autogen, elixir-format
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Tere tulemast Overallsi.\n\nSee ühendus vajab Overallsi SSH-seadistust.\n\n"
+
+#: lib/porsche/ssh/output.ex:55
+#, elixir-autogen, elixir-format
+msgid "You do not have permission to perform this action."
+msgstr "Sul pole selle toimingu tegemiseks õigust."
+
+#: lib/porsche/ssh/onboarding.ex:121
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "oma masina lehelt ja ühendu uuesti ilma root@-eesliiteta.\n"
+
+#: lib/porsche/ssh/onboarding.ex:78
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "seejärel proovi oma algset käsku uuesti.\n"

@@ -17,22 +17,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6
 #, elixir-autogen, elixir-format
 msgid "   A failed component restore leaves earlier numbered output for inspection and\n   does not write the final `manifest.json`. Preserve partial output, resolve the\n   cause and explicitly retry into a fresh empty private directory. The command\n   refuses an already populated target."
-msgstr ""
+msgstr "   Kapag nabigo ang pag-restore ng isang bahagi, naiiwan ang naunang may-bilang na output para masuri at\n   hindi isinusulat ang panghuling `manifest.json`. Panatilihin ang bahagyang output, lutasin ang\n   sanhi at tahasang ulitin sa isang bagong walang-lamang pribadong direktoryo. Tinatanggihan ng utos\n   ang target na may laman na."
 
 #: lib/marshall/documentation_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "  Before 2026-10-17 private Audi and Brady required uid 0. After the\n  unprivileged switch, every guest host-certificate and roster lookup was\n  refused, so sshd never started and readiness timed out. The fleet machine\n  test found this; Brady's attribution failed the same way, reporting\n  unresolved."
-msgstr ""
+msgstr "  Bago ang 2026-10-17, nangangailangan ng uid 0 ang pribadong Audi at Brady. Pagkatapos ng\n  paglipat sa walang pribilehiyo, tinanggihan ang bawat paghahanap ng host certificate at roster ng guest,\n  kaya hindi nagsimula ang sshd at lumampas sa takdang oras ang kahandaan. Natuklasan ito ng\n  pagsusuri sa fleet machine; nabigo rin ang attribution ng Brady at iniulat na\n  hindi matukoy."
 
 #: lib/marshall/documentation_messages.ex:14
 #, elixir-autogen, elixir-format
 msgid "  Evidence:\n  - hostd fixture tests and Hegel decoding models;\n  - bridge process fixtures (the privilege-drop fixture runs only as root);\n  - a Lilly custody property test that fails if a socket is not released.\n  The namespace dial and the bridge in a real VM namespace are covered only\n  by the fleet machine test."
-msgstr ""
+msgstr "  Katibayan:\n  - mga pagsusuri ng hostd fixture at mga modelo ng Hegel decoding;\n  - mga fixture ng bridge process (bilang root lamang tumatakbo ang privilege-drop fixture);\n  - isang property test ng kustodiya ng Lilly na nabibigo kung hindi pinakawalan ang socket.\n  Ang pagkonekta sa namespace at ang bridge sa isang tunay na VM namespace ay saklaw lamang\n  ng pagsusuri sa fleet machine."
 
 #: lib/marshall/documentation_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "  For this reason, callers of the module system can provide `specialArgs`\n  which are available during import resolution."
-msgstr ""
+msgstr "  Dahil dito, maaaring magbigay ang mga tumatawag sa module system ng `specialArgs`\n  na magagamit habang nilulutas ang mga import."
 
 #: lib/marshall/documentation_messages.ex:22
 #, elixir-autogen, elixir-format
@@ -42,12 +42,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:26
 #, elixir-autogen, elixir-format
 msgid "  Services that call Lilly authenticate it by `SO_PEERCRED` as the configured\n  Lilly uid, which the NixOS modules fill from `users.users.lilly.uid`:\n  - private Audi's guest lookup (`connector_uid`);\n  - the Audi gateway's ingress connector (`connectorUid`, which Lilly's module\n    asserts);\n  - Brady's egress attribution (`attribution_uid`)."
-msgstr ""
+msgstr "  Pinatutunayan ng mga serbisyong tumatawag sa Lilly ang pagkakakilanlan nito gamit ang `SO_PEERCRED` bilang naka-configure\n  na uid ng Lilly, na pinupunan ng mga NixOS module mula sa `users.users.lilly.uid`:\n  - paghahanap ng guest ng pribadong Audi (`connector_uid`);\n  - ingress connector ng Audi gateway (`connectorUid`, na iginiit ng module ng Lilly);\n  - egress attribution ng Brady (`attribution_uid`)."
 
 #: lib/marshall/documentation_messages.ex:30
 #, elixir-autogen, elixir-format
 msgid "  Whereas option values can generally depend on other option values\n  thanks to laziness, this does not apply to `imports`, which\n  must be computed statically before anything else."
-msgstr ""
+msgstr "  Bagaman karaniwang maaaring umasa ang mga halaga ng opsyon sa ibang halaga ng opsyon\n  dahil sa tamad na pagsusuri, hindi ito naaangkop sa `imports`, na\n  kailangang kalkulahin nang statiko bago ang lahat ng iba pa."
 
 #: lib/marshall/documentation_messages.ex:34
 #, elixir-autogen, elixir-format
@@ -4247,7 +4247,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1461
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A killed shell supervisor with surviving children is unverified. Storage power-loss durability, relocation, physical host failure and fleet availability remain separate from individual daemon replacement."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang pinatay na shell supervisor na may mga anak na nananatiling buhay. Hiwalay sa pagpapalit ng indibidwal na daemon ang tibay ng imbakan sa pagkawala ng kuryente, paglilipat, pagkabigo ng pisikal na host at availability ng fleet."
 
 #: lib/marshall/documentation_messages.ex:1465
 #, elixir-autogen, elixir-format
@@ -4257,12 +4257,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1469
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A separate full native run failed in Lilly crash recovery after passing the guest SSH collector assertion. Source-process crash accounting, production nonzero collection and measured targets remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Nabigo ang isang hiwalay na buong native na pagpapatakbo sa pagbawi mula sa pag-crash ng Lilly matapos pumasa sa assertion ng guest SSH collector. Bukas pa ang pagtatala ng pag-crash ng source process, koleksiyong hindi zero sa produksiyon at mga nasukat na target."
 
 #: lib/marshall/documentation_messages.ex:1473
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Actual multi-gateway package mismatch/receipt expiry, native public DNS and TLS through Audi, publisher restart/version refusal and signing-key rollout have no recorded editor acceptance here."
-msgstr ""
+msgstr "**Mga kakulangan:** Wala ritong naitalang pagtanggap ng editor para sa aktuwal na hindi pagtutugma ng package/pag-expire ng resibo sa maraming gateway, native na pampublikong DNS at TLS sa pamamagitan ng Audi, pagtanggi sa restart/bersiyon ng publisher at paglulunsad ng signing key."
 
 #: lib/marshall/documentation_messages.ex:1477
 #, elixir-autogen, elixir-format
@@ -4282,42 +4282,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1489
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Archive/live revocation, complete provider/tool continuation and browser keyboard/mobile question/proposal flows remain unverified. The instructional mode does not enforce operating-system read-only execution."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang pagbawi ng pahintulot sa archive/live, buong pagpapatuloy ng provider/tool at mga daloy ng tanong/panukala gamit ang keyboard/mobile sa browser. Hindi ipinapatupad ng instructional mode ang read-only na pagpapatakbo sa antas ng operating system."
 
 #: lib/marshall/documentation_messages.ex:1493
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Archived-name reuse has generated domain and SSH evidence but no native public archival journey; archival is currently a trusted resource action. Independent committed transfer/retirement overlap is recorded under the teams scenario, with native physical recovery acceptance separate."
-msgstr ""
+msgstr "**Mga kakulangan:** May nabuong katibayan sa domain at SSH ang muling paggamit ng naka-archive na pangalan ngunit walang native na pampublikong daloy ng pag-archive; kasalukuyang pinagkakatiwalaang resource action ang pag-archive. Naitala sa senaryo ng mga team ang hiwalay na nagsasabay na committed transfer/pagreretiro, at hiwalay ang pagtanggap sa native na pisikal na pagbawi."
 
 #: lib/marshall/documentation_messages.ex:1497
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Arguments remain caller-supplied until typed native effects replace the utility table. The peer cgroup check reads /proc after connect rather than through a pidfd. Lilly and hostd both run as root until the privilege drop."
-msgstr ""
+msgstr "**Mga kakulangan:** Ibinibigay pa rin ng tumatawag ang mga argumento hanggang mapalitan ng typed native effects ang utility table. Binabasa ng pagsusuri ng peer cgroup ang /proc pagkatapos kumonekta sa halip na sa pamamagitan ng pidfd. Parehong tumatakbo bilang root ang Lilly at hostd hanggang alisin ang pribilehiyo."
 
 #: lib/marshall/documentation_messages.ex:1501
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated redemption, the 409 refusals and force override, idempotency across restart and live upstream credit consumption have not been verified for this revision."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan para sa rebisyong ito ang authenticated redemption, mga pagtangging 409 at sapilitang pag-override, idempotency sa mga restart at aktuwal na pagkonsumo ng upstream credit."
 
 #: lib/marshall/documentation_messages.ex:1505
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated statistics queries, event import deduplication, retention pruning, rollup recovery and live provider capacity classification have not been verified for this revision."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan para sa rebisyong ito ang mga authenticated na query sa estadistika, pag-aalis ng dobleng event import, pagbabawas ayon sa retention, pagbawi ng rollup at pag-uuri ng aktuwal na kapasidad ng provider."
 
 #: lib/marshall/documentation_messages.ex:1509
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated vsock/Firecracker/browser composition, aggregate64MiB admission, escaped descendant death and hosted fault reach remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang authenticated na pagsasama ng vsock/Firecracker/browser, pinagsama-samang pagtanggap na 64MiB, pagkamatay ng nakatakas na descendant at abot ng mga hosted fault."
 
 #: lib/marshall/documentation_messages.ex:1513
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authorized command-to-collector attribution, asynchronous physical completion, process-crash accounting and a measured target remain open. The production sample proves dispatch source collection only."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang awtorisadong pag-uugnay ng utos sa collector, asynchronous na pisikal na pagkumpleto, pagtatala ng pag-crash ng process at isang nasukat na target. Pinatutunayan lamang ng sample sa produksiyon ang koleksiyon ng dispatch source."
 
 #: lib/marshall/documentation_messages.ex:1517
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Binding changes during upload, customer-profile refusal, guest trace delivery to central Tempo over authenticated WireGuard, physical-host outage duration, long-duration queue capacity and production guest volume remain unverified."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang pagbabago ng binding habang nag-a-upload, pagtanggi sa customer profile, paghahatid ng guest trace sa sentral na Tempo sa authenticated WireGuard, tagal ng pagkawala ng pisikal na host, kapasidad ng pangmatagalang pila at dami ng guest sa produksiyon."
 
 #: lib/marshall/documentation_messages.ex:1521
 #, elixir-autogen, elixir-format
@@ -4347,7 +4347,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1541
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Capture overhead, database throughput, independent physical hosts, hardware authenticators, SMTP inbox delivery and production rollout remain outside finite functional evidence. Historical passes retain their captured revisions."
-msgstr ""
+msgstr "**Mga kakulangan:** Nasa labas pa ng may-hangganang functional na katibayan ang dagdag na gastos ng capture, throughput ng database, magkakahiwalay na pisikal na host, hardware authenticator, paghahatid sa SMTP inbox at paglulunsad sa produksiyon. Nananatili sa mga nakuhang rebisyon ang mga makasaysayang pagpasa."
 
 #: lib/marshall/documentation_messages.ex:1549
 #, elixir-autogen, elixir-format
@@ -4362,7 +4362,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1557
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Concurrent native browser/SSH registration-versus-retirement delivery and independent physical control-plane hosts remain unverified. Existing native journeys retain their separate nonconcurrent scope."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang sabayang native na paghahatid ng browser/SSH registration laban sa retirement at magkakahiwalay na pisikal na control-plane host. Nananatili ang hiwalay at hindi sabayang saklaw ng mga umiiral na native na daloy."
 
 #: lib/marshall/documentation_messages.ex:1561
 #, elixir-autogen, elixir-format
@@ -4372,17 +4372,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1565
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Continuous pressure between observations, aggregate admission, complete byte fidelity, throughput, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang tuloy-tuloy na pressure sa pagitan ng mga obserbasyon, pinagsama-samang pagtanggap, ganap na katapatan ng byte, throughput, authenticated na pagsasama ng vsock/VM/browser at mga hosted fault."
 
 #: lib/marshall/documentation_messages.ex:1569
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Continuous pressure instrumentation, authenticated vsock/Firecracker/browser composition, RSS, sustained many-viewer throughput, host recovery and hosted faults remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang instrumentasyon ng tuloy-tuloy na pressure, authenticated na pagsasama ng vsock/Firecracker/browser, RSS, tuloy-tuloy na throughput para sa maraming viewer, pagbawi ng host at mga hosted fault."
 
 #: lib/marshall/documentation_messages.ex:1573
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Coordinated v4 Lilly/v2 Ziggy publication is required; production version skew and retained production database migration acceptance remain separate."
-msgstr ""
+msgstr "**Mga kakulangan:** Kailangan ang pinag-ugnay na paglalathala ng v4 Lilly/v2 Ziggy; hiwalay pa ang pagkakaiba ng bersiyon sa produksiyon at pagtanggap sa migration ng pinanatiling database ng produksiyon."
 
 #: lib/marshall/documentation_messages.ex:1577
 #, elixir-autogen, elixir-format
@@ -4392,7 +4392,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1581
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Cross-host Marshall scheduling, manager-crash accounting, production collection and a measured final target baseline remain open; the provisional seven-day rule consumes only the named candidate series."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang Marshall scheduling sa maraming host, pagtatala ng pag-crash ng manager, koleksiyon sa produksiyon at nasukat na baseline ng panghuling target; ang pansamantalang pitong-araw na tuntunin ay gumagamit lamang ng pinangalanang candidate series."
 
 #: lib/marshall/documentation_messages.ex:1585
 #, elixir-autogen, elixir-format
@@ -4402,7 +4402,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1589
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** DNS TTL alone is not authority; cross-host refresh and production DNS delegation, CA behavior and sustained load require separate acceptance. Gateway credential rotation and live route restoration have local database evidence but no native journey."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi sapat na awtoridad ang DNS TTL lamang; kailangan ng hiwalay na pagtanggap ang pag-refresh sa maraming host at DNS delegation sa produksiyon, asal ng CA at tuloy-tuloy na load. May lokal na katibayan sa database ang pag-ikot ng gateway credential at aktuwal na pagpapanumbalik ng ruta ngunit walang native na daloy."
 
 #: lib/marshall/documentation_messages.ex:1593
 #, elixir-autogen, elixir-format
@@ -4412,12 +4412,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1597
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Dynamic growth, interleaved create/retirement, child-exit/idle release, mixed stalled/healthy viewers, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang dinamikong paglaki, salit-salitang paglikha/pagreretiro, pagpapalaya sa paglabas ng anak/pagiging idle, halong nakahinto/malusog na viewer, authenticated na pagsasama ng vsock/VM/browser at mga hosted fault."
 
 #: lib/marshall/documentation_messages.ex:1601
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Dynamic growth, mixed-pressure aggregate admission, RSS/allocator peak, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang dinamikong paglaki, pinagsama-samang pagtanggap sa halo-halong pressure, pinakamataas na RSS/allocator, authenticated na pagsasama ng vsock/VM/browser at mga hosted fault."
 
 #: lib/marshall/documentation_messages.ex:1605
 #, elixir-autogen, elixir-format
@@ -4442,17 +4442,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1621
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Existing ZFS interruption and Customer SSH evidence retain historical scope. Native Ubuntu/Inception resizing and independent physical hosts remain separate; cancellation and disk shrink are excluded by ADR-0051/0053. current source2 native resize refusal and retained checkout acceptance remain separate."
-msgstr ""
+msgstr "**Mga kakulangan:** Nananatili ang makasaysayang saklaw ng umiiral na katibayan ng pagkaantala ng ZFS at Customer SSH. Hiwalay pa ang native na pagbabago ng laki sa Ubuntu/Inception at magkakahiwalay na pisikal na host; hindi saklaw ng ADR-0051/0053 ang pagkansela at pagliit ng disk. Hiwalay pa ang kasalukuyang pagtanggi sa native resize ng source2 at pagtanggap sa pinanatiling checkout."
 
 #: lib/marshall/documentation_messages.ex:1625
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Existing guest disks are intentionally excluded. Native macOS and a complete nested Inception deployment remain unverified. Production rollout is tracked separately in the execution review."
-msgstr ""
+msgstr "**Mga kakulangan:** Sadyang hindi kasama ang mga umiiral na guest disk. Hindi pa napatunayan ang native na macOS at isang buong nested na deployment ng Inception. Hiwalay na sinusubaybayan sa pagsusuri ng pagpapatakbo ang paglulunsad sa produksiyon."
 
 #: lib/marshall/documentation_messages.ex:1629
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Final extension publication and newer-main integration gates are pending. Real ZFS/authenticated SSH, physical transfer-slot release, automatic cgroup cleanup and uninterruptible I/O remain open. Historical native evidence retained by byte-identical source/test integration; fresh main29ad6228 combined packages/consumer gates remain pending."
-msgstr ""
+msgstr "**Mga kakulangan:** Nakabinbin ang panghuling paglalathala ng extension at mga integration gate ng mas bagong main. Bukas pa ang tunay na ZFS/authenticated SSH, pisikal na pagpapalaya ng transfer slot, awtomatikong paglilinis ng cgroup at hindi maaantalang I/O. Napanatili ang makasaysayang native na katibayan sa pamamagitan ng byte-identical na source/test integration; nakabinbin pa ang bagong pinagsamang package/consumer gate ng main29ad6228."
 
 #: lib/marshall/documentation_messages.ex:1633
 #, elixir-autogen, elixir-format
@@ -4462,32 +4462,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1637
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Fleet and user-SSH journey runs on df94ad026/b55b4e1ad record the namespace dial, guest SSH through lilly-ingress-bridge and the flat descriptor count. Op 13 bridges, now only a fallback, still end on a hostd or Lilly restart; guest SSH survival is the detached-ingress-bridge-survival scenario and editor/nested HTTPS survival the staged-detached-ingress-survival scenario."
-msgstr ""
+msgstr "**Mga kakulangan:** Itinatala ng mga fleet at user-SSH journey run sa df94ad026/b55b4e1ad ang pagkonekta sa namespace, guest SSH sa pamamagitan ng lilly-ingress-bridge at hindi tumataas na bilang ng descriptor. Nagtatapos pa rin sa restart ng hostd o Lilly ang mga Op 13 bridge, na fallback na lamang ngayon; ang pananatili ng guest SSH ay ang senaryong detached-ingress-bridge-survival at ang pananatili ng editor/nested HTTPS ay ang staged-detached-ingress-survival."
 
 #: lib/marshall/documentation_messages.ex:1645
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Focused execution passed3checks (1property,2tests),seed0,0.7seconds. Pending-status mutant failed the stable-field comparison after17successful draws,0.7seconds; restored3checks passed0.8seconds. Full integrated verification remains pending. Direct adapter invocation does not establish actual WebSocket upgrade, verified TLS, post-bind credential rotation or native gateway acceptance."
-msgstr ""
+msgstr "**Mga kakulangan:** Pumasa ang nakatutok na pagpapatakbo sa 3 pagsusuri (1 property, 2 test), seed 0, 0.7 segundo. Nabigo ang pending-status mutant sa paghahambing ng stable field matapos ang 17 matagumpay na draw, 0.7 segundo; pumasa ang naibalik na 3 pagsusuri sa 0.8 segundo. Nakabinbin pa ang buong integrated na pagpapatunay. Hindi pinatutunayan ng direktang pagtawag sa adapter ang aktuwal na WebSocket upgrade, beripikadong TLS, pag-ikot ng credential pagkatapos ng bind o native na pagtanggap ng gateway."
 
 #: lib/marshall/documentation_messages.ex:1649
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full Lilly application death at this boundary, start/restart completion, attempt-marker-before-submission, physical power loss and hosted faults remain open. Executor retry is witnessed; actor-deferred result consumption is not independently asserted."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang ganap na pagkamatay ng application ng Lilly sa hangganang ito, pagkumpleto ng start/restart, attempt-marker-before-submission, pisikal na pagkawala ng kuryente at mga hosted fault. Nasaksihan ang muling pagsubok ng executor; hindi hiwalay na iginigiit ang pagkonsumo ng resultang ipinagpaliban ng actor."
 
 #: lib/marshall/documentation_messages.ex:1657
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full integrated Protocol precommit passed251 checks (98 properties,153 tests),seed212242,390.4seconds with clean forced Dialyzer. Remaining consumer gates, server task saturation, authenticated native TLS/fleet pressure and hosted faults remain open. Always-eight mutation credit belongs to the earlier isolated prototype and does not execute the added fixed64 witness."
-msgstr ""
+msgstr "**Mga kakulangan:** Pumasa ang buong integrated na Protocol precommit sa 251 pagsusuri (98 property, 153 test), seed 212242, 390.4 segundo na may malinis na forced Dialyzer. Bukas pa ang natitirang consumer gate, saturation ng gawain ng server, authenticated na native TLS/fleet pressure at mga hosted fault. Ang always-eight mutation credit ay para sa naunang hiwalay na prototype at hindi nito pinapatakbo ang idinagdag na fixed64 witness."
 
 #: lib/marshall/documentation_messages.ex:1661
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated cross-target observation/arming histories remain absent. Native acceptance uses the captured guest runtime before incoming Starship defaults; physical host failure remains separate."
-msgstr ""
+msgstr "**Mga kakulangan:** Wala pa ang mga nabuong cross-target na kasaysayan ng obserbasyon/arming. Ginagamit ng native na pagtanggap ang nakuhang guest runtime bago ang paparating na mga default ng Starship; hiwalay pa ang pagkabigo ng pisikal na host."
 
 #: lib/marshall/documentation_messages.ex:1665
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated local histories do not execute native systemd units, real database migrations, guest-impact activation or live environment replacement on machines; independent physical rollout scheduling remains outside host-local updates and automatic database rollback is forbidden."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pinapatakbo ng mga nabuong lokal na kasaysayan ang native systemd unit, tunay na database migration, activation na nakaaapekto sa guest o aktuwal na pagpapalit ng environment sa mga machine; nasa labas ng host-local update ang hiwalay na pisikal na iskedyul ng paglulunsad at ipinagbabawal ang awtomatikong database rollback."
 
 #: lib/marshall/documentation_messages.ex:1669
 #, elixir-autogen, elixir-format
@@ -4502,27 +4502,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1677
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Guard-removal mutant killed at counter0 ping in0.9seconds; Marshall1466-check and zero-error forced Dialyzer gate passed. Incoming-main integration and publication remain pending; callback coverage does not prove native fleet or rollout behavior. Existing TLS smoke retains its separate scope."
-msgstr ""
+msgstr "**Mga kakulangan:** Napatay ang guard-removal mutant sa counter 0 ping sa 0.9 segundo; pumasa ang Marshall gate na may 1466 pagsusuri at forced Dialyzer na walang error. Nakabinbin pa ang integration sa paparating na main at paglalathala; hindi pinatutunayan ng callback coverage ang native fleet o asal ng paglulunsad. Nananatili ang hiwalay na saklaw ng umiiral na TLS smoke test."
 
 #: lib/marshall/documentation_messages.ex:1681
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, every administrative mutation family, populated drill-down projections and independent physical hosts remain unverified. Cross-replica revocation has recorded generated three-BEAM schedule evidence for mounted reads; the cross-replica native browser scenario is the login journey's three colocated services."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang hardware authenticator, bawat uri ng administratibong pagbabago, may-lamang drill-down projection at magkakahiwalay na pisikal na host. May naitalang nabuong three-BEAM schedule evidence para sa mounted read ang cross-replica revocation; ang cross-replica native browser scenario ay ang tatlong magkakalokasyong serbisyo ng login journey."
 
 #: lib/marshall/documentation_messages.ex:1685
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, SMTP delivery and production rollout remain separate; full/native captures and previous Control room/retirement claims retain their exact revisions."
-msgstr ""
+msgstr "**Mga kakulangan:** Hiwalay pa ang hardware authenticator, magkakahiwalay na pisikal na host, paghahatid ng SMTP at paglulunsad sa produksiyon; nananatili sa eksaktong rebisyon ang buong/native capture at mga naunang pahayag tungkol sa Control room/pagreretiro."
 
 #: lib/marshall/documentation_messages.ex:1689
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, actual inbox delivery and production rollout remain unverified. Native replicas share one NixOS VM and PostgreSQL. JavaScript-capable mail scanners may consume links; the native automatic-submit run uses three colocated replicas in one VM."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang hardware authenticator, magkakahiwalay na pisikal na host, aktuwal na paghahatid sa inbox at paglulunsad sa produksiyon. Magkakasama sa isang NixOS VM at PostgreSQL ang mga native replica. Maaaring gumamit ng mga link ang mga mail scanner na may JavaScript; gumagamit ng tatlong magkakalokasyong replica sa isang VM ang native automatic-submit run."
 
 #: lib/marshall/documentation_messages.ex:1693
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, physically independent serving replicas and production rollout remain external acceptance. The native journey uses virtual authenticators inside one VM."
-msgstr ""
+msgstr "**Mga kakulangan:** Panlabas na pagtanggap pa ang hardware authenticator, pisikal na magkakahiwalay na serving replica at paglulunsad sa produksiyon. Gumagamit ng mga virtual authenticator sa loob ng isang VM ang native na daloy."
 
 #: lib/marshall/documentation_messages.ex:1697
 #, elixir-autogen, elixir-format
@@ -4542,17 +4542,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1709
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical hosts, production DNS/CA/load and native direct-grant withdrawal remain separate. Synthetic reports and expiry injection establish application decisions only."
-msgstr ""
+msgstr "**Mga kakulangan:** Hiwalay pa ang magkakahiwalay na pisikal na host, DNS/CA/load sa produksiyon at native na pagbawi ng direct grant. Mga desisyon lamang ng application ang pinatutunayan ng mga sintetikong ulat at expiry injection."
 
 #: lib/marshall/documentation_messages.ex:1713
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical hosts, team terminal/agent journeys, existing SSH session termination, positive public CLI integration configuration and production rollout remain separate. Recorded native accounts remain ordinary; integration setup invokes the real Ash action through the private fixture."
-msgstr ""
+msgstr "**Mga kakulangan:** Hiwalay pa ang magkakahiwalay na pisikal na host, mga daloy ng team terminal/agent, pagtatapos ng umiiral na SSH session, positibong public CLI integration configuration at paglulunsad sa produksiyon. Karaniwan pa rin ang mga naitalang native account; tinatawag ng integration setup ang tunay na Ash action sa pamamagitan ng pribadong fixture."
 
 #: lib/marshall/documentation_messages.ex:1717
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical tunnel, ZFS quota and 100 GiB cache pressure, large repository durations, physical authenticators and production rollout remain separate. The browser cache uses an ordinary VM filesystem. Generated service responses do not establish native Git/network behavior. The initial failed UI fixture run remains separately recorded."
-msgstr ""
+msgstr "**Mga kakulangan:** Hiwalay pa ang hiwalay na pisikal na tunnel, ZFS quota at 100 GiB cache pressure, tagal ng malalaking repositoryo, pisikal na authenticator at paglulunsad sa produksiyon. Gumagamit ng karaniwang VM filesystem ang browser cache. Hindi pinatutunayan ng mga nabuong tugon ng serbisyo ang native na asal ng Git/network. Hiwalay na nakatala ang unang nabigong UI fixture run."
 
 #: lib/marshall/documentation_messages.ex:1721
 #, elixir-autogen, elixir-format
@@ -4562,22 +4562,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1725
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Initial provisioning, host power loss, arbitrary generation boundaries, guest data usability and hosted faults remain separate. Mutation sensitivity and final publication gates remain pending."
-msgstr ""
+msgstr "**Mga kakulangan:** Hiwalay pa ang paunang provisioning, pagkawala ng kuryente ng host, di-tiyak na hangganan ng generation, kakayahang gamitin ang guest data at mga hosted fault. Nakabinbin pa ang sensitivity sa mutation at mga panghuling publication gate."
 
 #: lib/marshall/documentation_messages.ex:1729
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Interrupted expansion and physical recovery acceptance remain open. The recorded source-qualified OmniOS no-op/expansion replay does not qualify interrupted recovery or native admission."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang pagtanggap sa naputol na pagpapalawak at pisikal na pagbawi. Hindi ginagawang kwalipikado ng naitalang source-qualified OmniOS no-op/expansion replay ang naputol na pagbawi o native na pagtanggap."
 
 #: lib/marshall/documentation_messages.ex:1733
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Interrupted writes, interrupted expansion, physical stable-media/host power loss, direct isolation, relocation and fleet recovery remain unproven; both native crash receipts retain admission false, while exact sealed FreeBSD activation is recorded separately."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatutunayan ang naputol na pagsusulat, naputol na pagpapalawak, pagkawala ng kuryente ng pisikal na stable media/host, direktang isolation, paglilipat at pagbawi ng fleet; pinananatili ng parehong native crash receipt na false ang admission, samantalang hiwalay na nakatala ang eksaktong sealed FreeBSD activation."
 
 #: lib/marshall/documentation_messages.ex:1737
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Live revocation failure classification, production collection and a measured baseline remain open; no compliance rule consumes this candidate series."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang pag-uuri ng pagkabigo ng aktuwal na pagbawi ng pahintulot, koleksiyon sa produksiyon at nasukat na baseline; walang compliance rule na gumagamit ng candidate series na ito."
 
 #: lib/marshall/documentation_messages.ex:1741
 #, elixir-autogen, elixir-format
@@ -4587,22 +4587,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1745
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Local monitor readiness is not authorized proxy completion, tailnet availability or a live-provider result. A provisional monitor target exists, but full seven-day production coverage remains unverified."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi katumbas ng awtorisadong pagkumpleto ng proxy, availability ng tailnet o resulta ng aktuwal na provider ang kahandaan ng lokal na monitor. May pansamantalang target ng monitor, ngunit hindi pa napatunayan ang buong pitong-araw na coverage sa produksiyon."
 
 #: lib/marshall/documentation_messages.ex:1749
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Manager/role histories, URL/path attacks, interrupted guest installation reconciliation, local-edit preservation, immutable revision retention and pinned physical reopen restoration remain unverified on Linux and Windows."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan sa Linux at Windows ang mga kasaysayan ng manager/role, pag-atake sa URL/path, reconciliation ng naputol na pag-install sa guest, pagpapanatili ng lokal na pag-edit, pagpapanatili ng immutable revision at pinned na pisikal na pagpapanumbalik sa muling pagbubukas."
 
 #: lib/marshall/documentation_messages.ex:1753
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Marshall account authorization/browser approval, HTTPS management, production release/systemd startup, native isolation, production CA rotation, concurrent replacement and hosted faults remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang awtorisasyon ng Marshall account/pag-apruba sa browser, pamamahala ng HTTPS, production release/systemd startup, native isolation, pag-ikot ng CA sa produksiyon, sabayang pagpapalit at mga hosted fault."
 
 #: lib/marshall/documentation_messages.ex:1757
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Namespace ready receipts do not establish Marshall authority, TLS or guest isolation. Native candidate injection bypasses artifact delivery. Ubuntu failure recovery, real guest-command drain, power-loss/I/O faults, physical hosts and production rollout remain separate; registered-but-bad semantic rollback is outside the accepted decision."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pinatutunayan ng namespace ready receipt ang awtoridad ng Marshall, TLS o guest isolation. Nilalampasan ng native candidate injection ang paghahatid ng artifact. Hiwalay pa ang pagbawi sa pagkabigo ng Ubuntu, tunay na guest-command drain, power-loss/I/O fault, pisikal na host at paglulunsad sa produksiyon; wala sa tinanggap na desisyon ang registered-but-bad semantic rollback."
 
 #: lib/marshall/documentation_messages.ex:1761
 #, elixir-autogen, elixir-format
@@ -4612,12 +4612,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1769
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native Windows SID/profile lookup, Linux account resolution through authenticated operations, changed-file retry histories, complete skill selection across compaction and transport revocation remain unverified. Local temporary-file tests do not establish VM or host filesystem isolation."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang native Windows SID/profile lookup, Linux account resolution sa authenticated na operasyon, mga kasaysayan ng retry sa binagong file, buong pagpili ng skill sa buong compaction at pagbawi ng transport. Hindi pinatutunayan ng mga lokal na temporary-file test ang isolation ng VM o host filesystem."
 
 #: lib/marshall/documentation_messages.ex:1773
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native attempt two's executor interruption remains unexplained; the passing capture predates the subsequent Underclass package pin. Independent physical hosts, production providers/load/rollout, Ubuntu browser-approved CLI and native hostile-tool/profile permutations remain separate. Inception verification is excluded by user direction."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa naipapaliwanag ang pagkaantala ng executor sa ikalawang native na pagtatangka; mas maaga ang pumasa na capture kaysa sa kasunod na Underclass package pin. Hiwalay pa ang magkakahiwalay na pisikal na host, provider/load/rollout sa produksiyon, Ubuntu browser-approved CLI at native hostile-tool/profile permutation. Hindi kasama ang Inception verification ayon sa utos ng user."
 
 #: lib/marshall/documentation_messages.ex:1777
 #, elixir-autogen, elixir-format
@@ -4627,7 +4627,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1781
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native cross-node sharing races, active terminal/editor/SSH/web revocation and physical archive/reopen grant continuity remain unverified. Synthetic VM/roster and browser outcomes do not prove transport closure, guest isolation or personal-session refusal. A thread manager can intentionally delegate independent machine access, whose lifetime is separate from thread revocation."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang native cross-node sharing race, aktibong terminal/editor/SSH/web revocation at pisikal na pagpapatuloy ng grant sa archive/reopen. Hindi pinatutunayan ng mga sintetikong resulta ng VM/roster at browser ang pagsasara ng transport, guest isolation o pagtanggi sa personal session. Maaaring sadyang magtalaga ang thread manager ng hiwalay na machine access, na may habang-buhay na hiwalay sa pagbawi ng thread."
 
 #: lib/marshall/documentation_messages.ex:1785
 #, elixir-autogen, elixir-format
@@ -4637,22 +4637,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1789
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native finite scenarios do not prove all packet encodings, kernel versions or physical network configurations."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pinatutunayan ng may-hangganang native na senaryo ang lahat ng packet encoding, bersiyon ng kernel o pisikal na network configuration."
 
 #: lib/marshall/documentation_messages.ex:1793
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native foreign/corrupt ownership refusal remains open; metadata properties do not establish all physical isolation boundaries."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang native na pagtanggi sa banyaga/sirang ownership; hindi pinatutunayan ng metadata property ang lahat ng hangganan ng pisikal na isolation."
 
 #: lib/marshall/documentation_messages.ex:1797
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native legacy-database migration, scheduled rotation, issuer failure, authenticated recovery and live provider behavior have not been verified for this revision."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan para sa rebisyong ito ang native legacy-database migration, nakaiskedyul na pag-ikot, pagkabigo ng issuer, authenticated na pagbawi at asal ng aktuwal na provider."
 
 #: lib/marshall/documentation_messages.ex:1801
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native macOS installation/runtime and arbitrary pre-existing SSH configurations remain outside this tested Linux scope; guest connections are recorded under ssh-host-ca and the fleet user journey revocation cycle."
-msgstr ""
+msgstr "**Mga kakulangan:** Nasa labas ng nasuring saklaw na Linux na ito ang native macOS installation/runtime at anumang dati nang SSH configuration; nakatala ang mga koneksiyon ng guest sa ssh-host-ca at sa siklo ng pagbawi ng fleet user journey."
 
 #: lib/marshall/documentation_messages.ex:1805
 #, elixir-autogen, elixir-format
@@ -4662,17 +4662,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1809
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native pre-start loss has no safe identified observation seam; application histories use synthetic running receipts/expiry and model results. The recorded native run is one started-effect interruption on one staged tree. Earlier native CLI attempt two remains unexplained. Physical hosts, Ubuntu, live providers, native expiry histories and long-duration replay absence remain separate."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang natukoy na ligtas na observation seam ang native pre-start loss; gumagamit ang mga kasaysayan ng application ng sintetikong running receipt/expiry at resulta ng modelo. Ang naitalang native run ay isang started-effect interruption sa isang staged tree. Hindi pa naipapaliwanag ang naunang ikalawang pagtatangka ng native CLI. Hiwalay pa ang pisikal na host, Ubuntu, aktuwal na provider, native expiry history at kawalan ng pangmatagalang replay."
 
 #: lib/marshall/documentation_messages.ex:1813
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native reboot, quota refusal, canonical identity, ACK preservation and corrupt-store refusal pass in disposable machines. Test VM fsync does not establish physical host power-loss or production ninety-day retention."
-msgstr ""
+msgstr "**Mga kakulangan:** Pumapasa sa mga disposable machine ang native reboot, pagtanggi sa quota, canonical identity, pagpapanatili ng ACK at pagtanggi sa sirang store. Hindi pinatutunayan ng fsync ng test VM ang pagkawala ng kuryente ng pisikal na host o siyamnapung-araw na retention sa produksiyon."
 
 #: lib/marshall/documentation_messages.ex:1817
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native running-workload downtime consent (every running move now needs it per ADR-0155), cancellation/replan and interruption permutations, physically independent hosts, hardware passkeys, Ubuntu evacuation and production rollout remain unverified."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang native na pahintulot sa downtime ng tumatakbong workload (kailangan na ito sa bawat paglilipat ng tumatakbong workload ayon sa ADR-0155), mga kombinasyon ng pagkansela/muling pagpaplano at pagkaantala, pisikal na magkakahiwalay na host, hardware passkey, Ubuntu evacuation at paglulunsad sa produksiyon."
 
 #: lib/marshall/documentation_messages.ex:1821
 #, elixir-autogen, elixir-format
@@ -4697,7 +4697,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1837
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No NixOS machine test drives a pin over a live Porsche SSH session or in the packaged browser; cross-node pin/delete races are argued from the shared VM row lock, not observed; team-admin pinning is undecided."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang NixOS machine test na nagpapatakbo ng pin sa aktuwal na Porsche SSH session o packaged browser; ipinapangatuwiran mula sa shared VM row lock ang cross-node pin/delete race, hindi naoobserbahan; hindi pa napagpapasiyahan ang team-admin pinning."
 
 #: lib/marshall/documentation_messages.ex:1841
 #, elixir-autogen, elixir-format
@@ -4707,7 +4707,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1845
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No complete NixOS/browser journey through a pending/failed guest is recorded for this correction yet. Reading sparse serial output does not identify the failed guest stage, install guest agents or prove native readiness, isolation or recovery."
-msgstr ""
+msgstr "**Mga kakulangan:** Wala pang naitalang buong NixOS/browser journey sa pending/failed guest para sa pagwawastong ito. Hindi tinutukoy ng pagbasa sa kakaunting serial output ang nabigong yugto ng guest, hindi nito ini-install ang guest agent o pinatutunayan ang native na kahandaan, isolation o pagbawi."
 
 #: lib/marshall/documentation_messages.ex:1849
 #, elixir-autogen, elixir-format
@@ -4732,7 +4732,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1865
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang pangkalahatang awtomatikong reconciliation na nagbibigay ng awtoridad sa makasaysayang database sa mga nananatiling guest; kailangan ng operator reconciliation ang pag-ampon ng GUID ng pisikal na kapalit."
 
 #: lib/marshall/documentation_messages.ex:1869
 #, elixir-autogen, elixir-format
@@ -4752,7 +4752,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1881
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No native guest survival, physical channel custody, independent-node partition or hosted acceptance. Wrong-budget-PID mutant was caught at old owner retirement and restored four-check execution passed; full Marshall gate/typing remain pending."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang native guest survival, pisikal na channel custody, independent-node partition o hosted acceptance. Nahuli ang wrong-budget-PID mutant sa pagreretiro ng lumang may-ari at pumasa ang naibalik na apat na pagsusuri; nakabinbin pa ang buong Marshall gate/typing."
 
 #: lib/marshall/documentation_messages.ex:1885
 #, elixir-autogen, elixir-format
@@ -4762,52 +4762,52 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1889
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged invalid systemd startup, configured TLS serving, native isolation, concurrent file replacement, hosted configuration faults or remaining component boot validators."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang packaged na invalid systemd startup, configured TLS serving, native isolation, sabayang pagpapalit ng file, hosted configuration fault o natitirang component boot validator."
 
 #: lib/marshall/documentation_messages.ex:1893
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged invalid systemd startup, configured transparent serving, native interception, guest trust, ZFS/isolation, concurrent file replacement, hosted config faults or Porsche/Marshall boot validators."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang packaged na invalid systemd startup, configured transparent serving, native interception, guest trust, ZFS/isolation, sabayang pagpapalit ng file, hosted config fault o Porsche/Marshall boot validator."
 
 #: lib/marshall/documentation_messages.ex:1897
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged systemd or successful configured startup, concurrent file replacement, native host/isolation effects, other application boot validators or hosted configuration faults."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang packaged systemd o matagumpay na configured startup, sabayang pagpapalit ng file, native host/isolation effect, ibang application boot validator o hosted configuration fault."
 
 #: lib/marshall/documentation_messages.ex:1901
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged systemd startup, successful configured serving, native guest isolation, concurrent file replacement, hosted configuration faults or remaining component boot validators."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang packaged systemd startup, matagumpay na configured serving, native guest isolation, sabayang pagpapalit ng file, hosted configuration fault o natitirang component boot validator."
 
 #: lib/marshall/documentation_messages.ex:1905
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged systemd startup, successful configured serving, native network/isolation, concurrent file replacement, hosted configuration faults or other components boot validators."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang packaged systemd startup, matagumpay na configured serving, native network/isolation, sabayang pagpapalit ng file, hosted configuration fault o boot validator ng ibang component."
 
 #: lib/marshall/documentation_messages.ex:1909
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No physical power-loss durability, KVM/Firecracker behavior, production reverse-path validation, real guest attribution, composed container startup or hosted Antithesis baseline. Preferred native machine/property coverage remains separate."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang pisikal na tibay sa pagkawala ng kuryente, asal ng KVM/Firecracker, reverse-path validation sa produksiyon, tunay na guest attribution, composed container startup o hosted Antithesis baseline. Hiwalay pa ang ginustong native machine/property coverage."
 
 #: lib/marshall/documentation_messages.ex:1913
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No recorded hosted peer execution, independent Marshall/Lilly integration, fault campaign or native guest proof. Preferred property and machine tests for the real service graph remain separate."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang naitalang hosted peer execution, hiwalay na Marshall/Lilly integration, fault campaign o katibayan ng native guest. Hiwalay pa ang ginustong property at machine test para sa tunay na service graph."
 
 #: lib/marshall/documentation_messages.ex:1917
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No recorded native signed/tampered dependency or WEB-gallery install through the complete workbench here. Production Open VSX key rotation, outage and coordinated image/gateway rollout remain separate."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang naitalang native na pag-install ng signed/tampered dependency o WEB gallery sa buong workbench dito. Hiwalay pa ang pag-ikot ng Open VSX key sa produksiyon, outage at pinag-ugnay na image/gateway rollout."
 
 #: lib/marshall/documentation_messages.ex:1921
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No recorded physical host/guest run demonstrates a Cachix hit or outage fallback. Cache freshness, availability and deployment convergence remain unverified."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang naitalang pisikal na host/guest run na nagpapakita ng Cachix hit o outage fallback. Hindi pa napatunayan ang pagiging sariwa ng cache, availability at deployment convergence."
 
 #: lib/marshall/documentation_messages.ex:1925
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No repeated/racing reset stress, malformed DMA, DMA reclamation or physical/multi-host safety. The single OmniOS event establishes socket fencing, separately from service restoration and exact-image promotion."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang paulit-ulit/nag-uunahang reset stress, malformed DMA, DMA reclamation o pisikal/multi-host safety. Pinatutunayan ng iisang OmniOS event ang socket fencing, na hiwalay sa pagpapanumbalik ng serbisyo at exact-image promotion."
 
 #: lib/marshall/documentation_messages.ex:1929
 #, elixir-autogen, elixir-format
@@ -4827,17 +4827,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1941
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Packaged TLS, native Git resource consumption, physical cache quota and durable Marshall overload-retry composition remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang packaged TLS, paggamit ng native Git resource, pisikal na cache quota at matibay na pagsasama ng Marshall overload-retry."
 
 #: lib/marshall/documentation_messages.ex:1945
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Packaged invalid startup, configured SSH and host-certificate serving, native isolation, concurrent file replacement, hosted faults and Marshall fresh boots remain untested."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa nasusuri ang packaged invalid startup, configured SSH at host-certificate serving, native isolation, sabayang pagpapalit ng file, hosted fault at bagong boot ng Marshall."
 
 #: lib/marshall/documentation_messages.ex:1949
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Packaged service-cgroup restart and escaped-session cleanup, authenticated remote Git pressure, physical cache quota and durable Marshall retry composition remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang packaged service-cgroup restart at paglilinis ng nakatakas na session, authenticated remote Git pressure, pisikal na cache quota at matibay na pagsasama ng Marshall retry."
 
 #: lib/marshall/documentation_messages.ex:1953
 #, elixir-autogen, elixir-format
@@ -4852,12 +4852,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1961
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Power-loss recovery, native Firecracker provider-to-collector delivery, production collection and measured targets remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang pagbawi mula sa pagkawala ng kuryente, native na paghahatid mula Firecracker provider patungo sa collector, koleksiyon sa produksiyon at nasukat na target."
 
 #: lib/marshall/documentation_messages.ex:1965
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Process-crash counter recovery, binding changes during streaming and measured targets remain open. The production sample does not establish an authorized end-to-end user outcome."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang pagbawi ng counter mula sa process crash, pagbabago ng binding habang nag-i-stream at nasukat na target. Hindi pinatutunayan ng sample sa produksiyon ang awtorisadong end-to-end na resulta ng user."
 
 #: lib/marshall/documentation_messages.ex:1969
 #, elixir-autogen, elixir-format
@@ -4867,7 +4867,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1973
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Production destination, external receipt and independent central-host failure monitoring remain unverified."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pa napatunayan ang destinasyon sa produksiyon, panlabas na pagtanggap at hiwalay na pagsubaybay sa pagkabigo ng sentral na host."
 
 #: lib/marshall/documentation_messages.ex:1977
 #, elixir-autogen, elixir-format
@@ -4877,7 +4877,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1981
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Production operator rendering and 28-day baseline remain open; candidate source durations have different workflow boundaries and may omit failures with unknown duration."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang production operator rendering at 28-araw na baseline; may magkakaibang hangganan ng workflow ang candidate source duration at maaaring hindi maisama ang mga pagkabigong hindi alam ang tagal."
 
 #: lib/marshall/documentation_messages.ex:1985
 #, elixir-autogen, elixir-format
@@ -4887,7 +4887,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1993
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Production-built release startup, required production secret/TLS/mail/budget faults, other optional integrations, packaged and configured serving, concurrent file replacement and hosted faults remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang startup ng production-built release, mga kinakailangang fault sa production secret/TLS/mail/budget, ibang opsyonal na integration, packaged at configured serving, sabayang pagpapalit ng file at hosted fault."
 
 #: lib/marshall/documentation_messages.ex:1997
 #, elixir-autogen, elixir-format
@@ -4897,7 +4897,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2001
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Public production activation remains pending; no Marshall single sign-on or external notification delivery. Generated Nix cases are not a randomized application property framework."
-msgstr ""
+msgstr "**Mga kakulangan:** Nakabinbin pa ang pampublikong activation sa produksiyon; walang Marshall single sign-on o panlabas na paghahatid ng notification. Hindi randomized application property framework ang mga nabuong Nix case."
 
 #: lib/marshall/documentation_messages.ex:2005
 #, elixir-autogen, elixir-format
@@ -4907,22 +4907,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2009
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Pure byte checks do not prove authenticated vsock, PTY backpressure, shared session budgets or browser delivery."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pinatutunayan ng purong pagsusuri ng byte ang authenticated vsock, PTY backpressure, shared session budget o paghahatid sa browser."
 
 #: lib/marshall/documentation_messages.ex:2013
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Real external operator login, certificate rotation, production activation and effective retention require deployment acceptance. No notification delivery is implied."
-msgstr ""
+msgstr "**Mga kakulangan:** Kailangan ng deployment acceptance ang tunay na pag-login ng panlabas na operator, pag-ikot ng certificate, activation sa produksiyon at epektibong retention. Hindi ipinahihiwatig ang paghahatid ng notification."
 
 #: lib/marshall/documentation_messages.ex:2017
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Real remote TLS, packaged recovery, physical cache quota, aggregate active admission and hosted faults remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang tunay na remote TLS, packaged recovery, pisikal na cache quota, pinagsama-samang aktibong pagtanggap at hosted fault."
 
 #: lib/marshall/documentation_messages.ex:2021
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Resize/growth, actual PTY aggregate mixed-pressure admission, viewer-stream byte ordering, RSS and authenticated guest/hosted composition remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang resize/growth, aktuwal na pinagsama-samang PTY mixed-pressure admission, pagkakasunod ng byte sa viewer stream, RSS at authenticated guest/hosted composition."
 
 #: lib/marshall/documentation_messages.ex:2025
 #, elixir-autogen, elixir-format
@@ -4942,7 +4942,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2037
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Simultaneous mixed stalled/healthy growth and admission, RSS, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang sabayang halong paglaki at pagtanggap ng nakahinto/malusog na viewer, RSS, authenticated na pagsasama ng vsock/VM/browser at hosted fault."
 
 #: lib/marshall/documentation_messages.ex:2041
 #, elixir-autogen, elixir-format
@@ -4952,7 +4952,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2045
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The NixOS browser tests, the passkey probe and the Antithesis access workload were rewritten to /settings by inspection and have not been executed against the merged page; no property test fits a page composition."
-msgstr ""
+msgstr "**Mga kakulangan:** Muling isinulat sa /settings ang mga NixOS browser test, passkey probe at Antithesis access workload batay sa inspeksiyon at hindi pa pinapatakbo laban sa pinagsamang pahina; walang property test na angkop sa komposisyon ng pahina."
 
 #: lib/marshall/documentation_messages.ex:2049
 #, elixir-autogen, elixir-format
@@ -5007,12 +5007,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2089
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The full native Brady fleet gate still fails in restart recovery; native malformed-request refusal through the collector and an independent production baseline remain absent. No compliance rule consumes this candidate series."
-msgstr ""
+msgstr "**Mga kakulangan:** Nabibigo pa rin ang buong native Brady fleet gate sa restart recovery; wala pa ang native na pagtanggi sa malformed request sa pamamagitan ng collector at hiwalay na baseline sa produksiyon. Walang compliance rule na gumagamit ng candidate series na ito."
 
 #: lib/marshall/documentation_messages.ex:2093
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The lock-wait race has no regression test because the reset check interval is not injectable; no NixOS test drives saturation and no live provider throttling observation covers this revision."
-msgstr ""
+msgstr "**Mga kakulangan:** Walang regression test ang lock-wait race dahil hindi maaaring i-inject ang pagitan ng reset check; walang NixOS test na nagtutulak ng saturation at walang obserbasyon ng aktuwal na provider throttling na sumasaklaw sa rebisyong ito."
 
 #: lib/marshall/documentation_messages.ex:2097
 #, elixir-autogen, elixir-format
@@ -5027,12 +5027,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2109
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The packaged authenticated two-host collector/spool outage and fresh transition-delivery journey passes in disposable machines. Physical host power loss, measured production archive sizing and coordinated deployment acceptance remain open."
-msgstr ""
+msgstr "**Mga kakulangan:** Pumapasa sa mga disposable machine ang packaged authenticated two-host collector/spool outage at bagong transition-delivery journey. Bukas pa ang pagkawala ng kuryente ng pisikal na host, nasukat na laki ng production archive at pagtanggap sa pinag-ugnay na deployment."
 
 #: lib/marshall/documentation_messages.ex:2113
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The process fixture does not run every real SDK producer in systemd or establish retained health through host restart. Generated producer/normalizer shape histories and a complete eight-service NixOS health journey remain absent."
-msgstr ""
+msgstr "**Mga kakulangan:** Hindi pinapatakbo ng process fixture ang bawat tunay na SDK producer sa systemd o pinatutunayan ang pagpapanatili ng kalusugan sa restart ng host. Wala pa ang nabuong producer/normalizer shape history at buong eight-service NixOS health journey."
 
 #: lib/marshall/documentation_messages.ex:2117
 #, elixir-autogen, elixir-format
@@ -5072,7 +5072,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2145
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Two properties passed2.3seconds,seed0. Oracle mutation, complete consumer gates, independent committed-replica ordering, native gateway rollout and hosted exploration remain unverified."
-msgstr ""
+msgstr "**Mga kakulangan:** Pumasa ang dalawang property sa 2.3 segundo, seed 0. Hindi pa napatunayan ang oracle mutation, buong consumer gate, hiwalay na committed-replica ordering, native gateway rollout at hosted exploration."
 
 #: lib/marshall/documentation_messages.ex:2149
 #, elixir-autogen, elixir-format
@@ -5082,7 +5082,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2157
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Unexported crash accounting, client-side resolution, complete gateway outcomes and measured targets remain open. The production sample proves only observed authoritative source collection."
-msgstr ""
+msgstr "**Mga kakulangan:** Bukas pa ang hindi na-export na crash accounting, client-side resolution, buong resulta ng gateway at nasukat na target. Pinatutunayan lamang ng sample sa produksiyon ang naobserbahang authoritative source collection."
 
 #: lib/marshall/documentation_messages.ex:2161
 #, elixir-autogen, elixir-format
@@ -5112,12 +5112,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2181
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** A dedicated host-effects-custody machine test for wrong-peer refusal, BEAM SIGKILL mid-command and escaped descendants under cgroup custody."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Isang nakalaang host-effects-custody machine test para sa pagtanggi sa maling peer, BEAM SIGKILL sa kalagitnaan ng utos at nakatakas na descendant sa ilalim ng cgroup custody."
 
 #: lib/marshall/documentation_messages.ex:2185
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Activate the coordinated fleet packages and verify an external authenticated operator's dashboards, freshness and source-to-trace/log correlation."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** I-activate ang pinag-ugnay na fleet package at patunayan ang mga dashboard, pagiging sariwa at source-to-trace/log correlation ng isang panlabas na authenticated operator."
 
 #: lib/marshall/documentation_messages.ex:2189
 #, elixir-autogen, elixir-format
@@ -5132,17 +5132,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2197
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add a direct second native VM/TAP, jail and physical-host boundaries without transferring the Linux-sink policy result to those scopes."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng direktang ikalawang native VM/TAP, jail at pisikal na host boundary nang hindi inililipat ang resulta ng Linux-sink policy sa mga saklaw na iyon."
 
 #: lib/marshall/documentation_messages.ex:2201
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add a native Porsche journey that pins, is refused rm, unpins and deletes, and a packaged-browser toggle check; keep the generated BEAM histories as the model oracle."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng native Porsche journey na nagpi-pin, tinatanggihan sa rm, nag-a-unpin at nagde-delete, at isang packaged-browser toggle check; panatilihin ang nabuong BEAM history bilang model oracle."
 
 #: lib/marshall/documentation_messages.ex:2205
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add a packaged-browser machine check that saves a zone, reloads and reads a converted timestamp, and a cross-session check that a collaborator sees the saved local time."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged-browser machine check na nagse-save ng zone, nagre-reload at nagbabasa ng na-convert na timestamp, at cross-session check na nakikita ng collaborator ang na-save na lokal na oras."
 
 #: lib/marshall/documentation_messages.ex:2209
 #, elixir-autogen, elixir-format
@@ -5152,7 +5152,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2213
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add actual production-build bootstrap and packaged machine refusal before claiming the production guard boundary; local common runtime checks do not establish serving or native recovery."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng aktuwal na production-build bootstrap at packaged machine refusal bago magpahayag ng production guard boundary; hindi pinatutunayan ng lokal na common runtime check ang serving o native recovery."
 
 #: lib/marshall/documentation_messages.ex:2217
 #, elixir-autogen, elixir-format
@@ -5162,42 +5162,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2221
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add an integrated faulted Marshall acknowledgement and reporter recovery property, then exercise native provider-independent spool restart and retained usage accounting."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng integrated na property para sa faulted Marshall acknowledgement at reporter recovery, saka subukan ang native provider-independent spool restart at retained usage accounting."
 
 #: lib/marshall/documentation_messages.ex:2225
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add and execute generated source/operation histories plus native Linux/Windows install/update/remove/reopen journeys using public-repository fixtures, exact digest assertions, mid-operation guest loss and current-authority withdrawal."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag at magpatakbo ng nabuong source/operation history at native Linux/Windows install/update/remove/reopen journey gamit ang public-repository fixture, exact digest assertion, pagkawala ng guest sa kalagitnaan ng operasyon at pagbawi ng kasalukuyang awtoridad."
 
 #: lib/marshall/documentation_messages.ex:2229
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add authenticated NixOS guest mixed-viewer pressure and independent reservation/backing refusal through the real terminal authority path."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng authenticated NixOS guest mixed-viewer pressure at hiwalay na reservation/backing refusal sa tunay na terminal authority path."
 
 #: lib/marshall/documentation_messages.ex:2233
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add authenticated socket credential-rotation histories and native gateway evidence; finish full integrated gates."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng authenticated socket credential-rotation history at native gateway evidence; tapusin ang buong integrated gate."
 
 #: lib/marshall/documentation_messages.ex:2237
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add boot-authenticated guest admission with mixed ring growth and slow viewers; measure aggregate retired allocations independently of reservation counters."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng boot-authenticated guest admission na may halong ring growth at mabagal na viewer; sukatin nang hiwalay sa reservation counter ang pinagsama-samang retired allocation."
 
 #: lib/marshall/documentation_messages.ex:2241
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add bounded overload/refusal/retry and packaged authenticated Git/cache-pressure histories."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng may-hangganang overload/refusal/retry at packaged authenticated Git/cache-pressure history."
 
 #: lib/marshall/documentation_messages.ex:2245
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add concurrent growth/admission under mixed native viewer pressure, then authenticated NixOS guest accounting and refusal."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng sabayang paglaki/pagtanggap sa ilalim ng halong native viewer pressure, saka authenticated NixOS guest accounting at refusal."
 
 #: lib/marshall/documentation_messages.ex:2249
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add generated closed-shape histories and a NixOS journey using all actual SDK producers with trace intake unavailable, exact trusted identities and recovery; retain malformed and foreign-message refusals."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng nabuong closed-shape history at NixOS journey gamit ang lahat ng aktuwal na SDK producer habang hindi magagamit ang trace intake, may eksaktong pinagkakatiwalaang identity at recovery; panatilihin ang pagtanggi sa malformed at foreign message."
 
 #: lib/marshall/documentation_messages.ex:2253
 #, elixir-autogen, elixir-format
@@ -5207,92 +5207,92 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2257
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add generated negotiation and isolation properties, complete catalog checks, LTR/RTL browser journeys and a packaged NixOS account-language/Porsche journey; record exact outcomes."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng nabuong negotiation at isolation property, buong catalog check, LTR/RTL browser journey at packaged NixOS account-language/Porsche journey; itala ang eksaktong resulta."
 
 #: lib/marshall/documentation_messages.ex:2261
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add hardware-authenticator and independent-host credential acceptance in their required environments."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng pagtanggap sa hardware authenticator at independent-host credential sa mga kinakailangang environment nito."
 
 #: lib/marshall/documentation_messages.ex:2265
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native authenticated viewer pressure and shared-budget histories across guest lifetime boundaries."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng native authenticated viewer pressure at shared-budget history sa mga hangganan ng buhay ng guest."
 
 #: lib/marshall/documentation_messages.ex:2269
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native foreign/corrupt ownership refusal against the confined running-boot adoption boundary."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng native na pagtanggi sa foreign/corrupt ownership laban sa nakakulong na running-boot adoption boundary."
 
 #: lib/marshall/documentation_messages.ex:2273
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native gateway readiness/expiry histories and execute actual public DNS/TLS discovery in both editor fleet checks; the corrected merged NixOS physical-ready journey does not establish multi-gateway publication fault histories."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng native gateway readiness/expiry history at magpatakbo ng aktuwal na public DNS/TLS discovery sa parehong editor fleet check; hindi pinatutunayan ng naiwastong pinagsamang NixOS physical-ready journey ang multi-gateway publication fault history."
 
 #: lib/marshall/documentation_messages.ex:2277
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native growth/timekeeping and independent-host recovery evidence, then run the Marshall-driven multi-OS fleet journey."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng native growth/timekeeping at independent-host recovery evidence, saka patakbuhin ang Marshall-driven multi-OS fleet journey."
 
 #: lib/marshall/documentation_messages.ex:2281
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native unauthorized creation and owner guest-SSH cases; retain separate packet/tool and complete legacy feature-matrix acceptance after campaign 011's shared trust fixture repair."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng native unauthorized creation at owner guest-SSH case; panatilihin ang hiwalay na packet/tool at buong legacy feature-matrix acceptance pagkatapos ayusin ang shared trust fixture ng campaign 011."
 
 #: lib/marshall/documentation_messages.ex:2285
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add nested-KVM Arch/Alma and generated authority/refusal histories covering current roster revocation, guest capabilities, network guard, storage growth and recovery; preserve the recorded live SSH/lifecycle scope separately."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng nested-KVM Arch/Alma at nabuong authority/refusal history na sumasaklaw sa kasalukuyang roster revocation, guest capability, network guard, storage growth at recovery; hiwalay na panatilihin ang naitalang live SSH/lifecycle scope."
 
 #: lib/marshall/documentation_messages.ex:2289
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged authenticated overload and real Marshall retry histories with native resource and quota witnesses."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged authenticated overload at tunay na Marshall retry history na may native resource at quota witness."
 
 #: lib/marshall/documentation_messages.ex:2293
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged gateway refusal while a real readiness job is active and verify health remains refused until operator restart."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged gateway refusal habang aktibo ang tunay na readiness job at patunayang nananatiling tinatanggihan ang health hanggang sa operator restart."
 
 #: lib/marshall/documentation_messages.ex:2297
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged machine startup and real certificate/Marshall account approval and authorized HTTPS management journeys; local scripted pending authority does not establish domain authorization."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged machine startup at tunay na certificate/Marshall account approval at awtorisadong HTTPS management journey; hindi pinatutunayan ng lokal na scripted pending authority ang domain authorization."
 
 #: lib/marshall/documentation_messages.ex:2301
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native invalid schema/signer refusal and remaining component boot properties; local startup refusal does not establish guest traffic interception or native storage custody."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged native invalid schema/signer refusal at natitirang component boot property; hindi pinatutunayan ng lokal na startup refusal ang pagharang sa guest traffic o native storage custody."
 
 #: lib/marshall/documentation_messages.ex:2305
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native invalid-startup refusal and remaining component boot properties; regular synthetic certificate/key baseline files do not establish successful TLS serving."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged native invalid-startup refusal at natitirang component boot property; hindi pinatutunayan ng karaniwang synthetic certificate/key baseline file ang matagumpay na TLS serving."
 
 #: lib/marshall/documentation_messages.ex:2309
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native refusal and real disposable host-certificate startup properties; local loader custody does not establish configured serving."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged native refusal at tunay na disposable host-certificate startup property; hindi pinatutunayan ng lokal na loader custody ang configured serving."
 
 #: lib/marshall/documentation_messages.ex:2313
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native startup/refusal and equivalent generated fresh-boot properties for remaining applications; local process checks do not establish native execution."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged native startup/refusal at katumbas na nabuong fresh-boot property para sa natitirang application; hindi pinatutunayan ng lokal na process check ang native execution."
 
 #: lib/marshall/documentation_messages.ex:2317
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native startup/refusal and remaining application boot properties; fresh test-build process rejection does not establish native serving or guest isolation."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged native startup/refusal at natitirang application boot property; hindi pinatutunayan ng pagtanggi ng bagong test-build process ang native serving o guest isolation."
 
 #: lib/marshall/documentation_messages.ex:2321
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native startup/refusal and remaining component boot properties; local refusal does not establish native integration transport or guest isolation."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged native startup/refusal at natitirang component boot property; hindi pinatutunayan ng lokal na pagtanggi ang native integration transport o guest isolation."
 
 #: lib/marshall/documentation_messages.ex:2325
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native startup/refusal and remaining component fresh-boot properties. Test-build refusal does not establish native provider transport or guest isolation."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng packaged native startup/refusal at natitirang component fresh-boot property. Hindi pinatutunayan ng test-build refusal ang native provider transport o guest isolation."
 
 #: lib/marshall/documentation_messages.ex:2329
 #, elixir-autogen, elixir-format
@@ -5307,7 +5307,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2337
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add real guest PTY growth and concurrent admission with independent aggregate backing measurements and mixed stalled/healthy viewers."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng tunay na guest PTY growth at sabayang admission na may hiwalay na pinagsama-samang backing measurement at halong nakahinto/malusog na viewer."
 
 #: lib/marshall/documentation_messages.ex:2341
 #, elixir-autogen, elixir-format
@@ -5317,22 +5317,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2345
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add relocation destination retry/cancellation measurement acceptance and verify fresh production creation without resetting retained failures."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng pagtanggap sa pagsukat ng retry/cancellation ng relocation destination at patunayan ang bagong production creation nang hindi nire-reset ang pinanatiling pagkabigo."
 
 #: lib/marshall/documentation_messages.ex:2349
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add repeated/racing events and independently bounded DMA/lifetime fault scenarios; retain separate service-restoration and physical-safety evidence."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng paulit-ulit/nag-uunahang event at hiwalay na may-hangganang DMA/lifetime fault scenario; panatilihin ang hiwalay na katibayan ng service restoration at physical safety."
 
 #: lib/marshall/documentation_messages.ex:2353
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add the Marshall-driven multi-OS fleet journey and record WSL 2, timekeeping and SAC security evidence; retain the operator-only boundary for this scenario."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magdagdag ng Marshall-driven multi-OS fleet journey at itala ang katibayan ng WSL 2, timekeeping at SAC security; panatilihin ang operator-only boundary para sa senaryong ito."
 
 #: lib/marshall/documentation_messages.ex:2357
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Assert exact signed-in browser response export through the collector, then measure the live baseline before selecting a target; retain the passing native recorder/application-loss conservation oracles."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Igiit ang eksaktong signed-in browser response export sa pamamagitan ng collector, saka sukatin ang live baseline bago pumili ng target; panatilihin ang pumapasang native recorder/application-loss conservation oracle."
 
 #: lib/marshall/documentation_messages.ex:2361
 #, elixir-autogen, elixir-format
@@ -5347,12 +5347,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2369
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Both preferred forms have recorded execution for this functional scope. Add bounded capture-cost/load measurements before claiming throughput; physical-host and rollout acceptance remain separate."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** May naitalang pagpapatakbo ang parehong ginustong anyo para sa functional scope na ito. Magdagdag ng may-hangganang capture-cost/load measurement bago magpahayag ng throughput; hiwalay pa ang physical-host at rollout acceptance."
 
 #: lib/marshall/documentation_messages.ex:2373
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Build a NixOS multi-host restore scenario and a property model of post-backup revocations before enabling automated reactivation."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Bumuo ng NixOS multi-host restore scenario at property model ng mga pagbawi ng pahintulot pagkatapos ng backup bago paganahin ang awtomatikong muling activation."
 
 #: lib/marshall/documentation_messages.ex:2377
 #, elixir-autogen, elixir-format
@@ -5372,17 +5372,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2389
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Drive authorized native vsock kill with real guest PTY saturation and independently verify current execution fencing and memory accounting."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magpatakbo ng awtorisadong native vsock kill na may tunay na guest PTY saturation at hiwalay na patunayan ang kasalukuyang execution fencing at memory accounting."
 
 #: lib/marshall/documentation_messages.ex:2393
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Enforce the accepted completion-wait bound with a scoped timeout regression, record boot reports from fleet NixOS and Ubuntu creates after deployment, and add an issued-leaf TLS check to the rotation journey."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Ipatupad ang tinanggap na completion-wait bound gamit ang scoped timeout regression, itala ang boot report mula sa fleet NixOS at Ubuntu creation pagkatapos ng deployment, at magdagdag ng issued-leaf TLS check sa rotation journey."
 
 #: lib/marshall/documentation_messages.ex:2397
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute a NixOS and Ubuntu browser/guest journey with valid plus and numeric-leading mailboxes, equal local parts on different domains and retired reservations; retain generated UID-name and email-history properties."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magpatakbo ng NixOS at Ubuntu browser/guest journey na may valid na plus at numeric-leading mailbox, magkaparehong local part sa magkaibang domain at retired reservation; panatilihin ang nabuong UID-name at email-history property."
 
 #: lib/marshall/documentation_messages.ex:2401
 #, elixir-autogen, elixir-format
@@ -5392,57 +5392,57 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2405
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute generated file/chunk/parser histories and Linux/Windows native guest discovery through the full fenced control path, including changed content, oversized skills, duplicate identities and current-authority loss."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Magpatakbo ng nabuong file/chunk/parser history at native Linux/Windows guest discovery sa buong fenced control path, kabilang ang binagong nilalaman, sobrang laking skill, dobleng identity at pagkawala ng kasalukuyang awtoridad."
 
 #: lib/marshall/documentation_messages.ex:2409
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute the actual-TLS property, repair any reproduced classification mismatch and run full consumer gates before native Runtime/transfer acceptance."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Patakbuhin ang actual-TLS property, ayusin ang anumang naulit na classification mismatch at patakbuhin ang buong consumer gate bago ang native Runtime/transfer acceptance."
 
 #: lib/marshall/documentation_messages.ex:2413
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute the replacement independent-observability native and property scenarios; historical test receipts cannot establish the cutover. Current journeys are recorded in the independent-observability scenarios."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Patakbuhin ang kapalit na independent-observability native at property scenario; hindi mapatutunayan ng makasaysayang test receipt ang cutover. Nakatala ang kasalukuyang journey sa mga senaryo ng independent-observability."
 
 #: lib/marshall/documentation_messages.ex:2417
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute the selected integrated guest adapter with measured ownership and capacity, add a NixOS machine journey and generated recovery properties, then record a separate hosted execution identity."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Patakbuhin ang napiling integrated guest adapter na may nasukat na ownership at capacity, magdagdag ng NixOS machine journey at nabuong recovery property, saka magtala ng hiwalay na hosted execution identity."
 
 #: lib/marshall/documentation_messages.ex:2421
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise Marshall-to-Enrico scheduling and manager restart under native NixOS, then verify live collection and measure the production baseline."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Subukan ang Marshall-to-Enrico scheduling at manager restart sa native NixOS, saka patunayan ang aktuwal na koleksiyon at sukatin ang baseline sa produksiyon."
 
 #: lib/marshall/documentation_messages.ex:2425
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise all eight application hooks under producer/recorder faults through actual source and collector paths; verify production lifetime continuity and seven-day eligibility."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Subukan ang lahat ng walong application hook sa producer/recorder fault sa pamamagitan ng aktuwal na source at collector path; patunayan ang pagpapatuloy ng buhay sa produksiyon at pitong-araw na eligibility."
 
 #: lib/marshall/documentation_messages.ex:2429
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise packaged reconnect histories against authenticated fleet sockets after incoming-main integration."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Subukan ang packaged reconnect history laban sa authenticated fleet socket pagkatapos ng incoming-main integration."
 
 #: lib/marshall/documentation_messages.ex:2433
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise shell-supervisor death with surviving children, then physical host failure and fleet recovery separately."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Subukan ang pagkamatay ng shell supervisor na may nananatiling anak, saka hiwalay na subukan ang pagkabigo ng pisikal na host at pagbawi ng fleet."
 
 #: lib/marshall/documentation_messages.ex:2437
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise the full guest-to-Ziggy provider result and spool recovery with collector export under Firecracker, then measure the live baseline."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Subukan ang buong guest-to-Ziggy provider result at spool recovery na may collector export sa Firecracker, saka sukatin ang live baseline."
 
 #: lib/marshall/documentation_messages.ex:2441
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend live delivered-report boundary and independently faulted readiness gates, preserving separate updater, physical and hosted acceptance."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang live delivered-report boundary at hiwalay na faulted readiness gate, habang pinananatili ang hiwalay na updater, physical at hosted acceptance."
 
 #: lib/marshall/documentation_messages.ex:2445
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend native recovery to Ubuntu failures and real guest-command drain; retain the recorded NixOS failure and historical two-distribution private successful-update scopes."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang native recovery sa mga pagkabigo ng Ubuntu at tunay na guest-command drain; panatilihin ang naitalang NixOS failure at makasaysayang two-distribution private successful-update scope."
 
 #: lib/marshall/documentation_messages.ex:2449
 #, elixir-autogen, elixir-format
@@ -5452,42 +5452,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2453
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend recorded native completion recovery to full daemon/start interruption and marker-before-systemd-submission histories."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang naitalang native completion recovery sa buong daemon/start interruption at marker-before-systemd-submission history."
 
 #: lib/marshall/documentation_messages.ex:2457
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the Underclass NixOS service test with a controlled credit issuer; drive the reset route and CLI, check refusals, force and restart idempotency; run upstream reset fixtures."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang Underclass NixOS service test gamit ang kontroladong credit issuer; patakbuhin ang reset route at CLI, suriin ang pagtanggi, force at restart idempotency; patakbuhin ang upstream reset fixture."
 
 #: lib/marshall/documentation_messages.ex:2461
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the Underclass NixOS service test with a legacy database and controlled issuer; run upstream generated rotation-interval properties and recovery fixtures. Tests were skipped at the user's request."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang Underclass NixOS service test gamit ang legacy database at kontroladong issuer; patakbuhin ang upstream na nabuong rotation-interval property at recovery fixture. Nilaktawan ang mga pagsusuri ayon sa kahilingan ng user."
 
 #: lib/marshall/documentation_messages.ex:2465
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the Underclass NixOS service test with controlled streams and an event importer; verify authorization, sanitized persistence, retention, rollups, bounded windows and restart recovery."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang Underclass NixOS service test gamit ang kontroladong stream at event importer; patunayan ang authorization, sanitized persistence, retention, rollup, may-hangganang window at restart recovery."
 
 #: lib/marshall/documentation_messages.ex:2469
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the native Porsche fleet journey to assert an authorized command result through the exporter and collector, then measure the 28-day live baseline."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang native Porsche fleet journey upang igiit ang awtorisadong resulta ng utos sa pamamagitan ng exporter at collector, saka sukatin ang 28-araw na live baseline."
 
 #: lib/marshall/documentation_messages.ex:2473
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the native browser fixture with signed and tampered gallery/dependency/WEB installs and execute both guest distributions; the corrected merged NixOS ordinary journey does not close gallery-installation gaps."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang native browser fixture gamit ang signed at tampered gallery/dependency/WEB install at patakbuhin ang parehong guest distribution; hindi isinasara ng naiwastong pinagsamang karaniwang NixOS journey ang mga kakulangan sa gallery installation."
 
 #: lib/marshall/documentation_messages.ex:2477
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the real guest journey to test rebinding and customer-profile refusal, then deliver that guest trace over authenticated WireGuard to central Tempo."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang tunay na guest journey upang subukan ang rebinding at pagtanggi sa customer profile, saka ihatid ang guest trace na iyon sa authenticated WireGuard patungo sa sentral na Tempo."
 
 #: lib/marshall/documentation_messages.ex:2481
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the recorded bounded native campaign to running-workload downtime consent and cancellation/replan histories and Ubuntu; retain earlier relocation failure evidence with its original scope."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Palawakin ang naitalang may-hangganang native campaign sa running-workload downtime consent at cancellation/replan history at Ubuntu; panatilihin ang naunang relocation failure evidence sa orihinal nitong saklaw."
 
 #: lib/marshall/documentation_messages.ex:2485
 #, elixir-autogen, elixir-format
@@ -5497,17 +5497,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2489
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Falsify current-revocation and gateway-generation oracles, then verify native authenticated gateway rotation and independent-replica ordering."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Subukang pabulaanan ang current-revocation at gateway-generation oracle, saka patunayan ang native authenticated gateway rotation at independent-replica ordering."
 
 #: lib/marshall/documentation_messages.ex:2493
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Falsify the request-start deadline oracle and compose delayed actual TLS ControlBackend with native guest connector evidence."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Subukang pabulaanan ang request-start deadline oracle at isama ang delayed actual TLS ControlBackend sa native guest connector evidence."
 
 #: lib/marshall/documentation_messages.ex:2497
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Finish combined integrated/full gates, then compose with native guest attachments and independent frontend loss."
-msgstr ""
+msgstr "**Ginustong gawaing pagsusuri:** Tapusin ang pinagsamang integrated/full gate, saka isama ang native guest attachment at hiwalay na pagkawala ng frontend."
 
 #: lib/marshall/documentation_messages.ex:2501
 #, elixir-autogen, elixir-format

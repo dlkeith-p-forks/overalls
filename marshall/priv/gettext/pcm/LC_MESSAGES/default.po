@@ -7077,7 +7077,7 @@ msgstr "Host overhead wey dem configure: %{cores} cores · %{memory} memory. Di 
 #: lib/marshall_web/live/integrations_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Connect GitHub"
-msgstr "Connect GitHub"
+msgstr "Link your GitHub account"
 
 #: lib/marshall_web/live/integrations_live.ex:215
 #, elixir-autogen, elixir-format
@@ -7118,7 +7118,7 @@ msgstr "Dem don request destination cleanup"
 #: lib/marshall_web/live/integrations_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub"
-msgstr "Disconnect GitHub"
+msgstr "Remove di GitHub link"
 
 #: lib/marshall_web/live/integrations_live.ex:237
 #, elixir-autogen, elixir-format
@@ -7210,7 +7210,7 @@ msgstr "How di job dey"
 #: lib/marshall_web/live/machines_live.ex:1116
 #, elixir-autogen, elixir-format
 msgid "Labels"
-msgstr "Labels"
+msgstr "Di labels"
 
 #: lib/marshall_web/live/machines_live.ex:219
 #, elixir-autogen, elixir-format
@@ -7307,7 +7307,7 @@ msgstr "Save di metadata"
 #: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
-msgstr "Short description for agents"
+msgstr "Small description for di agents"
 
 #: lib/marshall_web/live/integrations_live.ex:401
 #, elixir-autogen, elixir-format
@@ -7352,7 +7352,7 @@ msgstr "Dey hear the latest gist"
 #: lib/marshall_web/live/overview_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
-msgstr "Subscribe"
+msgstr "Join di mailing list"
 
 #: lib/marshall_web/live/integrations_live.ex:134
 #, elixir-autogen, elixir-format
