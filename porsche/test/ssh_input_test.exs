@@ -5,10 +5,10 @@ defmodule Porsche.SSH.InputTest do
   alias Porsche.SSH.Input
 
   property "line normalization is independent of packet boundaries" do
-    first = draw(string(:alphanumeric, max_length: 100))
-    second = draw(string(:alphanumeric, max_length: 100))
-    suffix = draw(member_of(["", "é", "猫", "👩‍💻"]))
-    size = draw(integer(1..30))
+    first = draw("first", string(:alphanumeric, max_length: 100))
+    second = draw("second", string(:alphanumeric, max_length: 100))
+    suffix = draw("suffix", member_of(["", "é", "猫", "👩‍💻"]))
+    size = draw("size", integer(1..30))
     first = first <> suffix
     bytes = first <> "\r\n" <> second <> "\n"
 
@@ -43,8 +43,8 @@ defmodule Porsche.SSH.InputTest do
   end
 
   property "fragmented editing and Unicode produce the same submitted command" do
-    size = draw(integer(1..20))
-    word = draw(string(:alphanumeric, min_length: 1, max_length: 40))
+    size = draw("size", integer(1..20))
+    word = draw("word", string(:alphanumeric, min_length: 1, max_length: 40))
     bytes = word <> "é👩‍💻猫\e[D\b\eOC!\e[999~\r\n"
     state = feed_chunks(bytes, size)
     assert {:line, command, rest} = Input.take(state)
@@ -119,7 +119,7 @@ defmodule Porsche.SSH.InputTest do
   end
 
   property "arbitrary packet bytes cannot grow parser state beyond its bounds" do
-    chunks = draw(list_of(binary(max_length: 100), max_length: 20))
+    chunks = draw("chunks", list_of(binary(max_length: 100), max_length: 20))
 
     Enum.reduce_while(chunks, %Input{}, fn bytes, state ->
       case Input.feed(state, bytes) do

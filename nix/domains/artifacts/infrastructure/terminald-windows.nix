@@ -18,11 +18,12 @@ let
   vendor = pkgs.rustPlatform.fetchCargoVendor {
     name = "terminald-vendor";
     src = source;
-    hash = "sha256-rYcq/jq1efgS6Gm1OI7rB8jtV/Ab1f3N/B0LaARTpak=";
+    hash = (builtins.fromJSON (builtins.readFile ../dependency-hashes.json)).terminaldVendor;
   };
 in
 pkgs.stdenv.mkDerivation {
   pname = "lilly-terminald-windows";
+  passthru.vendor = vendor;
   version = "0.1.0";
   allowedReferences = [ ];
   src = source;

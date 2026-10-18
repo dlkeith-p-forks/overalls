@@ -19,7 +19,7 @@ defmodule Porsche.PrivacyTest do
   end
 
   property "report redaction is independent of arbitrary secret payloads and metadata" do
-    secret = draw(binary(min_length: 1, max_length: 4096))
+    secret = draw("secret", binary(min_length: 1, max_length: 4096))
 
     event = %{
       level: :error,
@@ -166,7 +166,7 @@ defmodule Porsche.PrivacyTest do
   end
 
   property "fingerprints, command markers and credentials never appear in any filter output" do
-    payload = draw(string(:printable, min_length: 1, max_length: 128))
+    payload = draw("payload", string(:printable, min_length: 1, max_length: 128))
     secret = "synthetic-secret-" <> payload
 
     events = [

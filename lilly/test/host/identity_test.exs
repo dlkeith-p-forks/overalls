@@ -5,14 +5,13 @@ defmodule Lilly.Host.IdentityTest do
   alias Lilly.Host.{Identity, UIDReservation}
 
   property "host identity is stable with either allowed line termination and hides the raw ID" do
-    check all(raw <- binary(length: 16)) do
-      Hegel.assume(raw != <<0::128>>)
-      machine = Base.encode16(raw, case: :lower)
-      assert {:ok, id} = Identity.derive(machine)
-      assert {:ok, ^id} = Identity.derive(machine <> "\n")
-      assert OverallsProtocol.Execution.machine_id?(id)
-      refute String.contains?(id, machine)
-    end
+    raw = draw("raw", binary(length: 16))
+    Hegel.assume(raw != <<0::128>>)
+    machine = Base.encode16(raw, case: :lower)
+    assert {:ok, id} = Identity.derive(machine)
+    assert {:ok, ^id} = Identity.derive(machine <> "\n")
+    assert OverallsProtocol.Execution.machine_id?(id)
+    refute String.contains?(id, machine)
   end
 
   test "uninitialized, zero, uppercase and malformed machine IDs are rejected" do

@@ -27,17 +27,16 @@ defmodule Ziggy.AgentErrorTest do
   end
 
   property "free-form provider errors never become recovery classes or diagnostics" do
-    check all(message <- string(:printable, min_length: 0, max_length: 256)) do
-      assert :upstream_failed = Ziggy.AgentError.classify(%{"error" => %{"message" => message}})
+    message = draw("message", string(:printable, min_length: 0, max_length: 256))
+    assert :upstream_failed = Ziggy.AgentError.classify(%{"error" => %{"message" => message}})
 
-      assert :upstream_failed =
-               Ziggy.AgentError.classify(%{
-                 "error" => %{
-                   "code" => "invalid_request",
-                   "message" => message,
-                   "param" => message
-                 }
-               })
-    end
+    assert :upstream_failed =
+             Ziggy.AgentError.classify(%{
+               "error" => %{
+                 "code" => "invalid_request",
+                 "message" => message,
+                 "param" => message
+               }
+             })
   end
 end

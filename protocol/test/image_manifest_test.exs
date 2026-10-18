@@ -281,6 +281,7 @@ defmodule OverallsProtocol.ImageManifestTest do
             Map.put(base, "boot_args", "console=ttyS0"),
             Map.put(base, "kernel", %{"bytes" => 1, "sha256" => String.duplicate("a", 64)}),
             Map.put(base, "editor", %{}),
+            Map.put(base, "editor_platform", %{"version" => 1, "os" => "windows"}),
             Map.put(base, "workspace_source_version", 2),
             Map.delete(base, "workspace_source_version"),
             Map.put(base, "guest_agents", "linux"),
@@ -441,6 +442,7 @@ defmodule OverallsProtocol.ImageManifestTest do
       for invalid <- [
             Map.put(illumos_manifest(), "guest_agents", "freebsd-v1"),
             Map.put(illumos_manifest(), "name", "OmniOS"),
+            Map.put(illumos_manifest(), "editor_platform", %{"version" => 1, "os" => "illumos"}),
             Map.put(illumos_manifest(), "version", 5),
             put_in(illumos_manifest(), ["boot", "pci"], false)
           ] do

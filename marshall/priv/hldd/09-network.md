@@ -1,27 +1,5 @@
 # Networking, ingress, and certificates
 
-## Demand wake and relocation relay
-
-The VM profile/address slot is reserved globally across Lilly hosts and remains
-unchanged across relocation. A restored guest retains its IP/MAC; a destination
-placement does not allocate a new address. Checkpoint admission independently
-compares the retained guest workload shape and slot with current authority.
-
-Suspended-machine discovery retains publication and identity lookup without
-pretending the guest is reachable. Audi admits wake only after current SSH key,
-web publication/login or editor authority. A waiting connection joins one durable
-wake and polls with bounded local work; it does not receive an execution grant.
-When compatible capacity is unavailable, the wake stays pending rather than
-silently rebooting or exhausting a short retry budget.
-
-After relocation, the original gateway uses one authenticated fleet relay hop to
-the destination gateway over WireGuard. Its single-use capability is bound to
-current placement and the specific admitted service/account. The destination
-consumes authority through Marshall and uses its local Lilly connector. Peer
-input cannot select arbitrary upstream hosts or ports. Revoked, expired, foreign
-or replayed authority refuses before guest connection. TCP acceptance and waiting
-are not evidence of guest readiness.
-
 ## Experimental Antithesis guest transport boundary
 
 The optional TCG guest TAP runs directly in its inner Lilly host's network

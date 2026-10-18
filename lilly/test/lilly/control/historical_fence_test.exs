@@ -226,86 +226,94 @@ defmodule Lilly.Control.HistoricalFenceTest do
     store: store,
     newer: newer
   } do
-    check all(actor_count <- integer(1..4), test_cases: 4) do
-      for reason <- [
-            :stale_connection,
-            :unauthorized,
-            :unsupported_version,
-            :machine_identity_mismatch,
-            :outcome_conflict,
-            :invalid_outcome
-          ] do
-        extra =
-          if actor_count > 1 do
-            Enum.map(2..actor_count, fn _ ->
-              %{
-                command(2, :start)
-                | placement_id: Lilly.UUID.generate(),
-                  vm_id: Lilly.UUID.generate()
-              }
-            end)
-          else
-            []
+    Hegel.check(
+      fn ->
+        actor_count = draw("actor_count", integer(1..4))
+
+        for reason <- [
+              :stale_connection,
+              :unauthorized,
+              :unsupported_version,
+              :machine_identity_mismatch,
+              :outcome_conflict,
+              :invalid_outcome
+            ] do
+          extra =
+            if actor_count > 1 do
+              Enum.map(2..actor_count, fn _ ->
+                %{
+                  command(2, :start)
+                  | placement_id: Lilly.UUID.generate(),
+                    vm_id: Lilly.UUID.generate()
+                }
+              end)
+            else
+              []
+            end
+
+          commands = [newer | extra]
+
+          for command <- extra do
+            assert {:ok, :stored} = Store.accept(store, command)
           end
 
-        commands = [newer | extra]
+          durable = Map.new(commands, &{&1.placement_id, &1})
 
-        for command <- extra do
-          assert {:ok, :stored} = Store.accept(store, command)
+          supervisor =
+            Overalls.HegelFixtures.start_supervised!(
+              Supervisor.child_spec({DynamicSupervisor, strategy: :one_for_one},
+                id: make_ref(),
+                restart: :temporary
+              )
+            )
+
+          actors =
+            Enum.map(commands, fn command ->
+              options = [
+                store: store,
+                placement_id: command.placement_id,
+                vm_id: command.vm_id,
+                owner: self(),
+                executor: {IdleExecutor, nil}
+              ]
+
+              {:ok, actor} = DynamicSupervisor.start_child(supervisor, {Actor, options})
+              placement = command.placement_id
+              assert_receive {:vm_actor_ready, ^placement, ^actor, nil}, 2000
+              {command, actor, Process.monitor(actor), Process.monitor(actor)}
+            end)
+
+          state =
+            Map.merge(connected_state(store, durable), %{
+              vm_supervisor: supervisor,
+              actors:
+                Map.new(actors, fn {command, actor, ref, _watch} ->
+                  {command.placement_id, %{pid: actor, ref: ref, reconciled: nil}}
+                end),
+              actor_refs:
+                Map.new(actors, fn {command, _actor, ref, _watch} ->
+                  {ref, command.placement_id}
+                end)
+            })
+
+          assert {:noreply, fenced} = deliver(state, {:error, reason})
+          assert fenced.phase == :fenced
+          assert fenced.last_error == reason
+          assert fenced.vm_supervisor == nil
+          assert fenced.actors == %{}
+          assert fenced.actor_refs == %{}
+          assert fenced.durable == durable
+          assert {:reply, %{ready: false}, ^fenced} = Runtime.handle_call(:status, nil, fenced)
+          assert {:noreply, ^fenced} = Runtime.handle_info(:tick, fenced)
+
+          for {command, actor, _ref, watch} <- actors do
+            assert_receive {:DOWN, ^watch, :process, ^actor, _reason}, 2000
+            assert {:ok, ^command} = Store.read(store, command.placement_id)
+          end
         end
-
-        durable = Map.new(commands, &{&1.placement_id, &1})
-
-        supervisor =
-          start_supervised!(
-            Supervisor.child_spec({DynamicSupervisor, strategy: :one_for_one}, id: make_ref())
-          )
-
-        actors =
-          Enum.map(commands, fn command ->
-            options = [
-              store: store,
-              placement_id: command.placement_id,
-              vm_id: command.vm_id,
-              owner: self(),
-              executor: {IdleExecutor, nil}
-            ]
-
-            {:ok, actor} = DynamicSupervisor.start_child(supervisor, {Actor, options})
-            placement = command.placement_id
-            assert_receive {:vm_actor_ready, ^placement, ^actor, nil}, 2000
-            {command, actor, Process.monitor(actor), Process.monitor(actor)}
-          end)
-
-        state =
-          Map.merge(connected_state(store, durable), %{
-            vm_supervisor: supervisor,
-            actors:
-              Map.new(actors, fn {command, actor, ref, _watch} ->
-                {command.placement_id, %{pid: actor, ref: ref, reconciled: nil}}
-              end),
-            actor_refs:
-              Map.new(actors, fn {command, _actor, ref, _watch} ->
-                {ref, command.placement_id}
-              end)
-          })
-
-        assert {:noreply, fenced} = deliver(state, {:error, reason})
-        assert fenced.phase == :fenced
-        assert fenced.last_error == reason
-        assert fenced.vm_supervisor == nil
-        assert fenced.actors == %{}
-        assert fenced.actor_refs == %{}
-        assert fenced.durable == durable
-        assert {:reply, %{ready: false}, ^fenced} = Runtime.handle_call(:status, nil, fenced)
-        assert {:noreply, ^fenced} = Runtime.handle_info(:tick, fenced)
-
-        for {command, actor, _ref, watch} <- actors do
-          assert_receive {:DOWN, ^watch, :process, ^actor, _reason}, 2000
-          assert {:ok, ^command} = Store.read(store, command.placement_id)
-        end
-      end
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
@@ -313,76 +321,81 @@ defmodule Lilly.Control.HistoricalFenceTest do
     store: store,
     newer: newer
   } do
-    check all(
-            errors <-
-              list_of(
-                member_of([
-                  :transport_error,
-                  :http_error,
-                  :temporarily_unavailable,
-                  :invalid_message,
-                  :invalid_report
-                ]),
-                min_length: 1,
-                max_length: 6
-              ),
-            test_cases: 15
-          ) do
-      authority = {newer.placement_id, newer.execution_epoch, newer.generation}
+    Hegel.check(
+      fn ->
+        errors =
+          draw(
+            "errors",
+            list_of(
+              member_of([
+                :transport_error,
+                :http_error,
+                :temporarily_unavailable,
+                :invalid_message,
+                :invalid_report
+              ]),
+              min_length: 1,
+              max_length: 6
+            )
+          )
 
-      state =
-        Map.merge(connected_state(store, %{@placement => newer}), %{
-          terminal_ready: true,
-          actors: %{@placement => %{pid: self(), reconciled: authority}},
-          delivered_report_at: DateTime.add(DateTime.utc_now(), -16, :second)
-        })
+        authority = {newer.placement_id, newer.execution_epoch, newer.generation}
 
-      assert {:reply, %{ready: false}, ^state} = Runtime.handle_call(:status, nil, state)
+        state =
+          Map.merge(connected_state(store, %{@placement => newer}), %{
+            terminal_ready: true,
+            actors: %{@placement => %{pid: self(), reconciled: authority}},
+            delivered_report_at: DateTime.add(DateTime.utc_now(), -16, :second)
+          })
 
-      degraded =
-        errors
-        |> Enum.with_index(1)
-        |> Enum.reduce(state, fn {reason, attempt}, current ->
-          before_exchange = System.monotonic_time(:millisecond)
-          assert {:noreply, next} = deliver(current, {:error, reason})
-          after_exchange = System.monotonic_time(:millisecond)
-          failures = min(attempt, 5)
-          delay = Runtime.retry_delay(failures)
-          assert delay == min(4_000, 1000 * Integer.pow(2, failures - 1))
+        assert {:reply, %{ready: false}, ^state} = Runtime.handle_call(:status, nil, state)
 
-          assert next.phase == :connected
-          assert next.failures == failures
-          assert next.last_error == reason
-          assert next.retry_at > before_exchange + delay
-          assert next.retry_at <= after_exchange + delay + 500
-          assert next.durable == %{@placement => newer}
-          assert {:ok, ^newer} = Store.read(store, @placement)
-          assert {:reply, %{ready: false}, ^next} = Runtime.handle_call(:status, nil, next)
-          next
-        end)
+        degraded =
+          errors
+          |> Enum.with_index(1)
+          |> Enum.reduce(state, fn {reason, attempt}, current ->
+            before_exchange = System.monotonic_time(:millisecond)
+            assert {:noreply, next} = deliver(current, {:error, reason})
+            after_exchange = System.monotonic_time(:millisecond)
+            failures = min(attempt, 5)
+            delay = Runtime.retry_delay(failures)
+            assert delay == min(4_000, 1000 * Integer.pow(2, failures - 1))
 
-      sampled_at = DateTime.utc_now()
+            assert next.phase == :connected
+            assert next.failures == failures
+            assert next.last_error == reason
+            assert next.retry_at > before_exchange + delay
+            assert next.retry_at <= after_exchange + delay + 500
+            assert next.durable == %{@placement => newer}
+            assert {:ok, ^newer} = Store.read(store, @placement)
+            assert {:reply, %{ready: false}, ^next} = Runtime.handle_call(:status, nil, next)
+            next
+          end)
 
-      ready_to_retry = %{
-        degraded
-        | retry_at: System.monotonic_time(:millisecond) - 1,
-          exchange_report: %{sampled_at: sampled_at}
-      }
+        sampled_at = DateTime.utc_now()
 
-      assert {:noreply, recovered} =
-               deliver(
-                 ready_to_retry,
-                 {:ok, %{commands: [], outcome_acknowledgements: []}}
-               )
+        ready_to_retry = %{
+          degraded
+          | retry_at: System.monotonic_time(:millisecond) - 1,
+            exchange_report: %{sampled_at: sampled_at}
+        }
 
-      assert recovered.phase == :connected
-      assert recovered.failures == 0
-      assert recovered.last_error == nil
-      assert recovered.delivered_report_at == sampled_at
-      assert recovered.session_id == state.session_id
-      assert recovered.durable == %{@placement => newer}
-      assert {:reply, %{ready: true}, ^recovered} = Runtime.handle_call(:status, nil, recovered)
-    end
+        assert {:noreply, recovered} =
+                 deliver(
+                   ready_to_retry,
+                   {:ok, %{commands: [], outcome_acknowledgements: []}}
+                 )
+
+        assert recovered.phase == :connected
+        assert recovered.failures == 0
+        assert recovered.last_error == nil
+        assert recovered.delivered_report_at == sampled_at
+        assert recovered.session_id == state.session_id
+        assert recovered.durable == %{@placement => newer}
+        assert {:reply, %{ready: true}, ^recovered} = Runtime.handle_call(:status, nil, recovered)
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] version-refusal-fences-after-transients
@@ -393,31 +406,36 @@ defmodule Lilly.Control.HistoricalFenceTest do
     store: store,
     newer: newer
   } do
-    check all(
-            errors <-
-              list_of(member_of([:transport_error, :temporarily_unavailable, :http_error]),
-                max_length: 5
-              ),
-            test_cases: 12
-          ) do
-      state = connected_state(store, %{@placement => newer})
+    Hegel.check(
+      fn ->
+        errors =
+          draw(
+            "errors",
+            list_of(member_of([:transport_error, :temporarily_unavailable, :http_error]),
+              max_length: 5
+            )
+          )
 
-      degraded =
-        Enum.reduce(errors, state, fn reason, current ->
-          assert {:noreply, next} = deliver(current, {:error, reason})
-          assert next.phase == :connected
-          next
-        end)
+        state = connected_state(store, %{@placement => newer})
 
-      assert {:noreply, fenced} = deliver(degraded, {:error, :unsupported_version})
-      assert fenced.phase == :fenced
-      assert fenced.last_error == :unsupported_version
-      assert fenced.durable == %{@placement => newer}
-      assert {:ok, ^newer} = Store.read(store, @placement)
-      assert fenced.exchange_task == nil
-      assert {:reply, %{ready: false}, ^fenced} = Runtime.handle_call(:status, nil, fenced)
-      assert {:noreply, ^fenced} = Runtime.handle_info(:tick, fenced)
-    end
+        degraded =
+          Enum.reduce(errors, state, fn reason, current ->
+            assert {:noreply, next} = deliver(current, {:error, reason})
+            assert next.phase == :connected
+            next
+          end)
+
+        assert {:noreply, fenced} = deliver(degraded, {:error, :unsupported_version})
+        assert fenced.phase == :fenced
+        assert fenced.last_error == :unsupported_version
+        assert fenced.durable == %{@placement => newer}
+        assert {:ok, ^newer} = Store.read(store, @placement)
+        assert fenced.exchange_task == nil
+        assert {:reply, %{ready: false}, ^fenced} = Runtime.handle_call(:status, nil, fenced)
+        assert {:noreply, ^fenced} = Runtime.handle_info(:tick, fenced)
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;security] unknown-units-fence-execution-readiness

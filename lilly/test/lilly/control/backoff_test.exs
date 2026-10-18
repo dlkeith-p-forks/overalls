@@ -9,10 +9,9 @@ defmodule Lilly.Control.RuntimeBackoffTest do
   property "control backoff starts at one second, grows, and stays within four seconds" do
     assert Lilly.Control.Runtime.retry_delay(1) == 1_000
 
-    check all(failures <- integer(1..1_000)) do
-      delay = Lilly.Control.Runtime.retry_delay(failures)
-      assert delay in 1_000..4_000
-      assert delay <= Lilly.Control.Runtime.retry_delay(failures + 1)
-    end
+    failures = draw("failures", integer(1..1000))
+    delay = Lilly.Control.Runtime.retry_delay(failures)
+    assert delay in 1_000..4_000
+    assert delay <= Lilly.Control.Runtime.retry_delay(failures + 1)
   end
 end

@@ -76,7 +76,7 @@ def administrator(browser: Browser, name: str) -> tuple[BrowserContext, Page]:
         },
     )
     sign_in(page, name)
-    visit(page, "/settings/security")
+    visit(page, "/settings")
     page.locator("#add-passkey").click()
     expect(page.locator("#passkey-list > div")).to_have_count(1)
     page.locator("#verify-passkey").click()
@@ -256,7 +256,7 @@ def main() -> None:
         STAGE = "current elevation and role refusals"
         visit(admin, f"/admin/jobs/{second}")
         security = admin_context.new_page()
-        visit(security, "/settings/security")
+        visit(security, "/settings")
         security.locator("#lock-elevation").click()
         forge_retry(admin)
         expect(admin.locator("#admin-elevation-modal")).to_be_visible()
@@ -264,7 +264,7 @@ def main() -> None:
         assert stored_job(second) == unchanged_second
         admin.locator("#admin-elevation-cancel").click()
         expect(admin.locator("#admin-elevation-modal")).not_to_be_visible()
-        visit(admin, "/settings/security")
+        visit(admin, "/settings")
         admin.locator("#verify-passkey").click()
         expect(admin.locator("#verification-status")).to_contain_text("Passkey verified")
         visit(admin, f"/admin/jobs/{second}")

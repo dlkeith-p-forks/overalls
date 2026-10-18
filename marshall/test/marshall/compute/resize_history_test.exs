@@ -27,114 +27,110 @@ defmodule Marshall.Compute.ResizeHistoryTest do
   # Refusals and exact replays MUST preserve complete durable rows; unknown effects
   # MUST retain holds. Shape expectations MUST include the fixed extra Inception
   # drive and bundle/VMM costs independently of the production accounting helpers.
+  @tag :hegel_case_sandbox
   property "resize histories preserve identity, evidence boundaries and held resources",
-    test_cases: 16 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     previous = Application.get_env(:marshall, :inception_image_id)
-    on_exit(fn -> restore_inception(previous) end)
+    Hegel.on_cleanup(fn -> restore_inception(previous) end)
 
-    check all(
-            profile <- member_of([:oss, :customer, :standard, :inception]),
-            power <- member_of([:running, :stopped]),
-            cpu <- integer(1..3),
-            memory <- integer(512..1536),
-            growth <- integer(1..32),
-            unknowns <- list_of(integer(0..2), length: 2),
-            pressure <- boolean(),
-            restart_failure <- boolean(),
-            test_cases: 16
-          ) do
-      minimum =
-        if profile == :inception,
-          do: %{vcpu: 16, memory_bytes: 32 * @gib, disk_bytes: 64 * @gib},
-          else: %{vcpu: 2, memory_bytes: @gib, disk_bytes: 2 * @gib}
+    profile = draw("profile", member_of([:oss, :customer, :standard, :inception]))
+    power = draw("power", member_of([:running, :stopped]))
+    cpu = draw("cpu", integer(1..3))
+    memory = draw("memory", integer(512..1536))
+    growth = draw("growth", integer(1..32))
+    unknowns = draw("unknowns", list_of(integer(0..2), length: 2))
+    pressure = draw("pressure", boolean())
+    restart_failure = draw("restart_failure", boolean())
 
-      target = %{
-        vcpu: if(profile == :inception, do: 16 + cpu, else: cpu),
-        memory_bytes:
-          if(profile == :inception, do: 32 * @gib + memory * @mib, else: memory * @mib),
-        disk_bytes: minimum.disk_bytes + growth * 4096
-      }
+    minimum =
+      if profile == :inception,
+        do: %{vcpu: 16, memory_bytes: 32 * @gib, disk_bytes: 64 * @gib},
+        else: %{vcpu: 2, memory_bytes: @gib, disk_bytes: 2 * @gib}
 
-      history = %{
-        profile: profile,
-        power: power,
-        target: target,
-        unknowns: unknowns,
-        pressure: pressure,
-        restart_failure: restart_failure
-      }
+    target = %{
+      vcpu: if(profile == :inception, do: 16 + cpu, else: cpu),
+      memory_bytes: if(profile == :inception, do: 32 * @gib + memory * @mib, else: memory * @mib),
+      disk_bytes: minimum.disk_bytes + growth * 4096
+    }
 
-      run_history(history, minimum)
-    end
+    history = %{
+      profile: profile,
+      power: power,
+      target: target,
+      unknowns: unknowns,
+      pressure: pressure,
+      restart_failure: restart_failure
+    }
+
+    run_history(history, minimum)
   end
 
   # @cc [owner:ghuntley,label:verification;security] resize-current-manager-history
   # An original request receipt MUST NOT grant authority after management is
   # downgraded or revoked. Retry authorization follows the current persisted grant;
   # automatic phases retain the retrying actor without changing original ownership.
+  @tag :hegel_case_sandbox
   property "management transitions fence original request replays and phase retries",
-    test_cases: 10 do
-    check all(
-            roles <- list_of(member_of([:manager, :viewer, :revoked]), max_length: 6),
-            test_cases: 10
-          ) do
-      fixture = host_fixture()
-      owner = user()
-      manager = user()
-      assert {:ok, vm} = Compute.provision(request(), actor: owner)
-      assert {:ok, _} = ingest(vm, operation(vm), :running)
-      grant(vm, owner, manager, :manager)
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    roles = draw("roles", list_of(member_of([:manager, :viewer, :revoked]), max_length: 6))
+    fixture = host_fixture()
+    owner = user()
+    manager = user()
+    assert {:ok, vm} = Compute.provision(request(), actor: owner)
+    assert {:ok, _} = ingest(vm, operation(vm), :running)
+    grant(vm, owner, manager, :manager)
 
-      args = %{
-        vm_id: vm.id,
-        expected_generation: current(vm).generation,
-        idempotency_key: Ash.UUID.generate(),
-        vcpu: 1,
-        memory_bytes: @gib,
-        disk_bytes: 3 * @gib
-      }
+    args = %{
+      vm_id: vm.id,
+      expected_generation: current(vm).generation,
+      idempotency_key: Ash.UUID.generate(),
+      vcpu: 1,
+      memory_bytes: @gib,
+      disk_bytes: 3 * @gib
+    }
 
-      assert {:ok, resize} = Compute.resize(args, actor: manager)
-      assert resize.requested_by_id == manager.id
+    assert {:ok, resize} = Compute.resize(args, actor: manager)
+    assert resize.requested_by_id == manager.id
 
-      assert {:ok, _} =
-               ingest(vm, operation(vm), :unknown, %{compute_empty: false, reason: :unknown})
+    assert {:ok, _} =
+             ingest(vm, operation(vm), :unknown, %{compute_empty: false, reason: :unknown})
 
-      for role <- [:viewer, :manager, :revoked] ++ roles do
-        grant(vm, owner, manager, role)
+    for role <- [:viewer, :manager, :revoked] ++ roles do
+      grant(vm, owner, manager, role)
 
-        if role == :manager do
-          unchanged(fn ->
-            assert {:ok, %{id: id}} = Compute.resize(args, actor: manager)
-            assert id == resize.id
-          end)
+      if role == :manager do
+        unchanged(fn ->
+          assert {:ok, %{id: id}} = Compute.resize(args, actor: manager)
+          assert id == resize.id
+        end)
 
-          assert {:ok, _} = Compute.retry_resize(retry_args(vm, resize.id), actor: manager)
-          assert operation(vm).requested_by_id == manager.id
+        assert {:ok, _} = Compute.retry_resize(retry_args(vm, resize.id), actor: manager)
+        assert operation(vm).requested_by_id == manager.id
 
-          assert {:ok, _} =
-                   ingest(vm, operation(vm), :unknown, %{compute_empty: false, reason: :unknown})
-        else
-          unchanged(fn -> assert {:error, _} = Compute.resize(args, actor: manager) end)
+        assert {:ok, _} =
+                 ingest(vm, operation(vm), :unknown, %{compute_empty: false, reason: :unknown})
+      else
+        unchanged(fn -> assert {:error, _} = Compute.resize(args, actor: manager) end)
 
-          unchanged(fn ->
-            assert {:error, _} = Compute.retry_resize(retry_args(vm, resize.id), actor: manager)
-          end)
-        end
+        unchanged(fn ->
+          assert {:error, _} = Compute.retry_resize(retry_args(vm, resize.id), actor: manager)
+        end)
       end
-
-      assert {:ok, _} = Compute.retry_resize(retry_args(vm, resize.id), actor: owner)
-      assert operation(vm).requested_by_id == owner.id
-      assert {:ok, _} = ingest(vm, operation(vm), :stopped)
-      assert operation(vm).requested_by_id == owner.id
-      assert {:ok, _} = ingest(vm, operation(vm), :stopped, %{applied_sizes: resize.target_sizes})
-      assert operation(vm).requested_by_id == owner.id
-      assert Resize.active(vm.id).requested_by_id == manager.id
-      assert {:ok, _} = ingest(vm, operation(vm), :running)
-      assert Resize.active(vm.id) == nil
-      assert current(vm).owner_id == owner.id
-      Ledger.update!(fixture.host, :configure, %{enabled: false})
     end
+
+    assert {:ok, _} = Compute.retry_resize(retry_args(vm, resize.id), actor: owner)
+    assert operation(vm).requested_by_id == owner.id
+    assert {:ok, _} = ingest(vm, operation(vm), :stopped)
+    assert operation(vm).requested_by_id == owner.id
+    assert {:ok, _} = ingest(vm, operation(vm), :stopped, %{applied_sizes: resize.target_sizes})
+    assert operation(vm).requested_by_id == owner.id
+    assert Resize.active(vm.id).requested_by_id == manager.id
+    assert {:ok, _} = ingest(vm, operation(vm), :running)
+    assert Resize.active(vm.id) == nil
+    assert current(vm).owner_id == owner.id
+    Ledger.update!(fixture.host, :configure, %{enabled: false})
   end
 
   @spec grant(

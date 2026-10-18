@@ -47,16 +47,16 @@ defmodule Marshall.Operations.PrivateFilesTest do
   end
 
   property "operator diagnostics cannot retain arbitrary credential payloads" do
-    check all(secret <- binary(min_length: 1, max_length: 256)) do
-      event = %{
-        level: :error,
-        msg: {:report, %{secret: secret}},
-        meta: %{marshall_operator: true, secret: secret, event: :operator_test}
-      }
+    secret = draw("secret", binary(min_length: 1, max_length: 256))
 
-      filtered = Privacy.filter(event, nil)
-      assert filtered.msg == {:string, "Operator process diagnostic (payload redacted)"}
-      assert filtered.meta == %{event: :operator_test}
-    end
+    event = %{
+      level: :error,
+      msg: {:report, %{secret: secret}},
+      meta: %{marshall_operator: true, secret: secret, event: :operator_test}
+    }
+
+    filtered = Privacy.filter(event, nil)
+    assert filtered.msg == {:string, "Operator process diagnostic (payload redacted)"}
+    assert filtered.meta == %{event: :operator_test}
   end
 end

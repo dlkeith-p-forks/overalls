@@ -29,29 +29,32 @@ defmodule Marshall.Accounts.CredentialHistoryTest do
   # real security action against a model of login liveness, elevation, credential
   # labels, MFA generation and token presence. Every refused step MUST leave the
   # passkey, verification, token, challenge and audit rows byte-identical.
+  @tag :hegel_case_sandbox
   property "current login, elevation and inventory govern credential self-service",
-    test_cases: 25 do
-    check all(
-            admin <- Gen.boolean(),
-            initial <- Gen.integer(1..3),
-            events <-
-              Gen.list_of(
-                Gen.frequency([
-                  {4, Gen.tuple({Gen.constant(:rename), Gen.integer(0..999), label_gen()})},
-                  {3, Gen.tuple({Gen.constant(:remove), Gen.integer(0..999)})},
-                  {3, Gen.constant(:verify)},
-                  {2, Gen.tuple({Gen.constant(:verify_removed), Gen.integer(0..999)})},
-                  {1, Gen.constant(:lock)},
-                  {2, Gen.constant(:register)},
-                  {1, Gen.constant(:revoke_login)}
-                ]),
-                min_length: 1,
-                max_length: 8
-              ),
-            test_cases: 25
-          ) do
-      history(admin, initial, events)
-    end
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    admin = draw("admin", Gen.boolean())
+    initial = draw("initial", Gen.integer(1..3))
+
+    events =
+      draw(
+        "events",
+        Gen.list_of(
+          Gen.frequency([
+            {4, Gen.tuple({Gen.constant(:rename), Gen.integer(0..999), label_gen()})},
+            {3, Gen.tuple({Gen.constant(:remove), Gen.integer(0..999)})},
+            {3, Gen.constant(:verify)},
+            {2, Gen.tuple({Gen.constant(:verify_removed), Gen.integer(0..999)})},
+            {1, Gen.constant(:lock)},
+            {2, Gen.constant(:register)},
+            {1, Gen.constant(:revoke_login)}
+          ]),
+          min_length: 1,
+          max_length: 8
+        )
+      )
+
+    history(admin, initial, events)
   end
 
   @spec label_gen() :: Gen.t(term())

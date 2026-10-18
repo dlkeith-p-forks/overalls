@@ -6,7 +6,7 @@ as Marshall’s web interface.
 ## Register your key
 
 Sign in to Marshall using your email login and open
-[SSH keys](/settings/ssh-keys). Paste one OpenSSH public key and optionally give it
+[Account settings › SSH keys](/settings#ssh-keys). Paste one OpenSSH public key and optionally give it
 a label. Paste the `.pub` file, never the private key. Supported public keys are
 Ed25519, ECDSA and RSA (at least 2048 bits). Certificates and `authorized_keys`
 options are not accepted.

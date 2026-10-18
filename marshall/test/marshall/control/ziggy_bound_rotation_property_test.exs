@@ -15,35 +15,36 @@ defmodule Marshall.Control.ZiggyBoundRotationPropertyTest do
   # A bound socket MUST refuse fresh identity requests after its credential
   # rotates. A fresh credential MUST bind and serve the same host; the old
   # connection's prior welcome MUST NOT substitute for current authority.
-  property "bound Ziggy sockets recheck rotated credentials on every request", test_cases: 4 do
+  @tag :hegel_case_sandbox
+  property "bound Ziggy sockets recheck rotated credentials on every request", test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     fixture = host_fixture()
     base = listener()
 
-    check all(prefix <- integer(0..3), test_cases: 4) do
-      {:ok, first} = Credentials.rotate(fixture.host.id, 3600)
-      {old, old_id} = connected(base, first.id <> "." <> first.secret, fixture.host.id)
-      body = %{"version" => 2}
-      expected = %{"host_id" => fixture.host.id}
+    prefix = draw("prefix", integer(0..3))
+    {:ok, first} = Credentials.rotate(fixture.host.id, 3600)
+    {old, old_id} = connected(base, first.id <> "." <> first.secret, fixture.host.id)
+    body = %{"version" => 2}
+    expected = %{"host_id" => fixture.host.id}
 
+    assert Client.request(old, "ziggy.identity", body) == {:ok, expected}
+
+    for _ <- List.duplicate(:request, prefix) do
       assert Client.request(old, "ziggy.identity", body) == {:ok, expected}
-
-      for _ <- List.duplicate(:request, prefix) do
-        assert Client.request(old, "ziggy.identity", body) == {:ok, expected}
-      end
-
-      {:ok, replacement} = Credentials.rotate(fixture.host.id, 3600)
-      assert Client.ready?(old)
-      assert Client.request(old, "ziggy.identity", body) == {:error, "unauthorized"}
-      assert Client.request(old, "ziggy.identity", body) == {:error, "unauthorized"}
-
-      {fresh, fresh_id} =
-        connected(base, replacement.id <> "." <> replacement.secret, fixture.host.id)
-
-      assert Client.request(fresh, "ziggy.identity", body) == {:ok, expected}
-      assert Client.request(old, "ziggy.identity", body) == {:error, "unauthorized"}
-      :ok = stop_supervised(fresh_id)
-      :ok = stop_supervised(old_id)
     end
+
+    {:ok, replacement} = Credentials.rotate(fixture.host.id, 3600)
+    assert Client.ready?(old)
+    assert Client.request(old, "ziggy.identity", body) == {:error, "unauthorized"}
+    assert Client.request(old, "ziggy.identity", body) == {:error, "unauthorized"}
+
+    {fresh, fresh_id} =
+      connected(base, replacement.id <> "." <> replacement.secret, fixture.host.id)
+
+    assert Client.request(fresh, "ziggy.identity", body) == {:ok, expected}
+    assert Client.request(old, "ziggy.identity", body) == {:error, "unauthorized"}
+    :ok = stop_supervised(fresh_id)
+    :ok = stop_supervised(old_id)
   end
 
   @spec connected(String.t(), binary(), String.t()) :: {pid(), reference()}

@@ -8,12 +8,11 @@ defmodule Lilly.VM.DeleteRetryTest do
   # All positive attempt counts MUST produce a positive delay no greater than
   # thirty seconds, and repeated failures MUST never reduce that delay.
   property "delete retries grow monotonically and remain bounded" do
-    check all(attempt <- integer(1..100_000)) do
-      current = DeleteRetry.delay(attempt)
-      following = DeleteRetry.delay(attempt + 1)
-      assert current in 1000..30_000
-      assert following >= current
-    end
+    attempt = draw("attempt", integer(1..100_000))
+    current = DeleteRetry.delay(attempt)
+    following = DeleteRetry.delay(attempt + 1)
+    assert current in 1000..30_000
+    assert following >= current
   end
 
   test "early retries leave a window for mount teardown" do

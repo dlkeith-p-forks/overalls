@@ -36,52 +36,52 @@ defmodule Marshall.Compute.BudgetTest do
   end
 
   property "temporary snapshots remain charged beyond pending disk credit" do
-    check all(temporary <- integer(1..1000), materialized <- integer(0..1000)) do
-      used = min(temporary, materialized)
+    temporary = draw("temporary", integer(1..1000))
+    materialized = draw("materialized", integer(0..1000))
+    used = min(temporary, materialized)
 
-      host = %{
-        id: "h",
-        effective_cores: 8,
-        capacity: %{
-          "version" => 1,
-          "cpu_headroom_millicores" => 8000,
-          "memory_headroom_bytes" => 100
-        },
-        overhead_cores: 0,
-        effective_memory_bytes: 100,
-        overhead_memory_bytes: 0
-      }
+    host = %{
+      id: "h",
+      effective_cores: 8,
+      capacity: %{
+        "version" => 1,
+        "cpu_headroom_millicores" => 8000,
+        "memory_headroom_bytes" => 100
+      },
+      overhead_cores: 0,
+      effective_memory_bytes: 100,
+      overhead_memory_bytes: 0
+    }
 
-      reservation = %{
-        host_id: "h",
-        pool_id: "p",
-        vm_id: "vm",
-        placement_id: "copy",
-        disk_bytes: 100,
-        temporary_disk_bytes: temporary,
-        disk_held: true,
-        compute_held: false,
-        vcpu: 1,
-        memory_bytes: 10
-      }
+    reservation = %{
+      host_id: "h",
+      pool_id: "p",
+      vm_id: "vm",
+      placement_id: "copy",
+      disk_bytes: 100,
+      temporary_disk_bytes: temporary,
+      disk_held: true,
+      compute_held: false,
+      vcpu: 1,
+      memory_bytes: 10
+    }
 
-      pool = %{
-        id: "p",
-        backend: :zfs,
-        free_bytes: 2000 - used,
-        overhead_bytes: 0,
-        allocations: %{"copy" => used}
-      }
+    pool = %{
+      id: "p",
+      backend: :zfs,
+      free_bytes: 2000 - used,
+      overhead_bytes: 0,
+      allocations: %{"copy" => used}
+    }
 
-      assert Budget.available(host, pool, [reservation]).disk_bytes ==
-               max(0, 1900 - temporary - used + min(100, used))
+    assert Budget.available(host, pool, [reservation]).disk_bytes ==
+             max(0, 1900 - temporary - used + min(100, used))
 
-      # A VM-wide report cannot credit this placement, even for the same workload.
-      vm_report = %{pool | allocations: %{"vm" => used}}
+    # A VM-wide report cannot credit this placement, even for the same workload.
+    vm_report = %{pool | allocations: %{"vm" => used}}
 
-      assert Budget.available(host, vm_report, [reservation]).disk_bytes ==
-               max(0, 1900 - temporary - used)
-    end
+    assert Budget.available(host, vm_report, [reservation]).disk_bytes ==
+             max(0, 1900 - temporary - used)
   end
 
   test "two retained placements of one VM receive only their own physical credit" do
@@ -131,116 +131,112 @@ defmodule Marshall.Compute.BudgetTest do
   end
 
   property "materializing reserved disks never charges space twice or credits orphan disks" do
-    check all(
-            sizes <- list_of(integer(1..1000), min_length: 1, max_length: 15),
-            fraction <- integer(0..100),
-            orphan <- integer(0..1000),
-            overhead <- integer(0..1000)
-          ) do
-      reservations =
-        Enum.with_index(sizes, fn size, index ->
-          %{
-            host_id: "h",
-            pool_id: "p",
-            temporary_disk_bytes: 0,
-            placement_id: "#{index}",
-            disk_bytes: size,
-            vcpu: 1,
-            memory_bytes: 10,
-            disk_held: true,
-            compute_held: true
-          }
-        end)
+    sizes = draw("sizes", list_of(integer(1..1000), min_length: 1, max_length: 15))
+    fraction = draw("fraction", integer(0..100))
+    orphan = draw("orphan", integer(0..1000))
+    overhead = draw("overhead", integer(0..1000))
 
-      allocations = Map.new(reservations, &{&1.placement_id, div(&1.disk_bytes * fraction, 100)})
-      materialized = Enum.sum(Map.values(allocations))
+    reservations =
+      Enum.with_index(sizes, fn size, index ->
+        %{
+          host_id: "h",
+          pool_id: "p",
+          temporary_disk_bytes: 0,
+          placement_id: "#{index}",
+          disk_bytes: size,
+          vcpu: 1,
+          memory_bytes: 10,
+          disk_held: true,
+          compute_held: true
+        }
+      end)
 
-      host = %{
-        id: "h",
-        effective_cores: 20,
-        capacity: %{
-          "version" => 1,
-          "cpu_headroom_millicores" => 20000,
-          "memory_headroom_bytes" => 1000
-        },
-        overhead_cores: 2,
-        effective_memory_bytes: 1000,
-        overhead_memory_bytes: 100
-      }
+    allocations = Map.new(reservations, &{&1.placement_id, div(&1.disk_bytes * fraction, 100)})
+    materialized = Enum.sum(Map.values(allocations))
 
-      pool = %{
-        id: "p",
-        backend: :zfs,
-        total_bytes: 20_000,
-        free_bytes: 20_000 - materialized - orphan,
-        overhead_bytes: overhead,
-        allocations: Map.put(allocations, "orphan", orphan)
-      }
+    host = %{
+      id: "h",
+      effective_cores: 20,
+      capacity: %{
+        "version" => 1,
+        "cpu_headroom_millicores" => 20000,
+        "memory_headroom_bytes" => 1000
+      },
+      overhead_cores: 2,
+      effective_memory_bytes: 1000,
+      overhead_memory_bytes: 100
+    }
 
-      budget = Budget.available(host, pool, reservations)
-      assert budget.disk_bytes == max(0, 20_000 - orphan - overhead - Enum.sum(sizes))
-      assert budget.vcpu == max(0, 18 - length(sizes))
-      assert budget.memory_bytes == max(0, 900 - 10 * length(sizes))
-    end
+    pool = %{
+      id: "p",
+      backend: :zfs,
+      total_bytes: 20_000,
+      free_bytes: 20_000 - materialized - orphan,
+      overhead_bytes: overhead,
+      allocations: Map.put(allocations, "orphan", orphan)
+    }
+
+    budget = Budget.available(host, pool, reservations)
+    assert budget.disk_bytes == max(0, 20_000 - orphan - overhead - Enum.sum(sizes))
+    assert budget.vcpu == max(0, 18 - length(sizes))
+    assert budget.memory_bytes == max(0, 900 - 10 * length(sizes))
   end
 
   property "physical usage gates admission independently of legacy logical budgets" do
-    check all(
-            commitment <- integer(1..100_000),
-            allocated <- integer(0..commitment),
-            free <- integer(0..100_000),
-            overhead <- integer(0..1000),
-            orphan <- integer(0..100_000)
-          ) do
-      host = %{
-        id: "h",
-        effective_cores: 8,
-        capacity: %{
-          "version" => 1,
-          "cpu_headroom_millicores" => 8000,
-          "memory_headroom_bytes" => 1000
-        },
-        overhead_cores: 0,
-        effective_memory_bytes: 1000,
-        overhead_memory_bytes: 0
-      }
+    commitment = draw("commitment", integer(1..100_000))
+    allocated = draw("allocated", integer(0..commitment))
+    free = draw("free", integer(0..100_000))
+    overhead = draw("overhead", integer(0..1000))
+    orphan = draw("orphan", integer(0..100_000))
 
-      pool = %{
-        id: "p",
-        backend: :zfs,
-        total_bytes: free + allocated + orphan,
-        free_bytes: free,
-        overhead_bytes: overhead,
-        allocations: %{"vm" => allocated, "orphan" => orphan}
-      }
+    host = %{
+      id: "h",
+      effective_cores: 8,
+      capacity: %{
+        "version" => 1,
+        "cpu_headroom_millicores" => 8000,
+        "memory_headroom_bytes" => 1000
+      },
+      overhead_cores: 0,
+      effective_memory_bytes: 1000,
+      overhead_memory_bytes: 0
+    }
 
-      reservation = %{
-        host_id: "h",
-        pool_id: "p",
-        temporary_disk_bytes: 0,
-        placement_id: "vm",
-        disk_bytes: commitment,
-        disk_held: true,
-        compute_held: false,
-        vcpu: 1,
-        memory_bytes: 10
-      }
+    pool = %{
+      id: "p",
+      backend: :zfs,
+      total_bytes: free + allocated + orphan,
+      free_bytes: free,
+      overhead_bytes: overhead,
+      allocations: %{"vm" => allocated, "orphan" => orphan}
+    }
 
-      remaining = Budget.available(host, pool, [reservation]).disk_bytes
-      assert remaining == max(0, free + allocated - overhead - commitment)
-      assert remaining <= max(0, free - overhead)
+    reservation = %{
+      host_id: "h",
+      pool_id: "p",
+      temporary_disk_bytes: 0,
+      placement_id: "vm",
+      disk_bytes: commitment,
+      disk_held: true,
+      compute_held: false,
+      vcpu: 1,
+      memory_bytes: 10
+    }
 
-      compressed = %{
-        pool
-        | free_bytes: free + allocated,
-          allocations: %{"vm" => 0, "orphan" => orphan}
-      }
+    remaining = Budget.available(host, pool, [reservation]).disk_bytes
+    assert remaining == max(0, free + allocated - overhead - commitment)
+    assert remaining <= max(0, free - overhead)
 
-      # total_bytes is not the logical cap and compression does not free a commitment.
-      assert Budget.available(host, compressed, [reservation]).disk_bytes == remaining
-      # Once the reservation is gone, only observed free bytes may be admitted.
-      assert Budget.available(host, pool, []).disk_bytes == max(0, free - overhead)
-    end
+    compressed = %{
+      pool
+      | free_bytes: free + allocated,
+        allocations: %{"vm" => 0, "orphan" => orphan}
+    }
+
+    # total_bytes is not the logical cap and compression does not free a commitment.
+    assert Budget.available(host, compressed, [reservation]).disk_bytes == remaining
+    # Once the reservation is gone, only observed free bytes may be admitted.
+    assert Budget.available(host, pool, []).disk_bytes == max(0, free - overhead)
   end
 
   test "a confirmed stopped reservation retains disk while releasing compute" do

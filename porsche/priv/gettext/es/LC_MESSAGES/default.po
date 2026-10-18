@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Language: es\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Porsche machine management. Type help."
+msgstr "Gestión de máquinas Porsche. Escriba help."
+
+msgid "Docs:"
+msgstr "Documentación:"
+
+msgid "Show command help."
+msgstr "Mostrar la ayuda de los comandos."
+
+msgid "Show the authenticated account."
+msgstr "Mostrar la cuenta autenticada."
+
+msgid "List available images."
+msgstr "Listar las imágenes disponibles."
+
+msgid "List machines you can access."
+msgstr "Listar las máquinas a las que tiene acceso."
+
+msgid "Inspect a machine by name or UUID."
+msgstr "Inspeccionar una máquina por nombre o UUID."
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Crear una máquina. Disco máximo: 500 GiB. --source clona un repositorio público de GitHub, GitLab, Codeberg o Bitbucket en el huésped."
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Poner en cola una copia independiente del disco completo de una máquina."
+
+msgid "Move a machine to an automatically selected host."
+msgstr "Mover una máquina a un anfitrión seleccionado automáticamente."
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "Cambiar la CPU y la memoria de una máquina; el disco solo puede ampliarse. Una máquina en ejecución se detiene y reinicia."
+
+msgid "Retry a failed clone or relocation request."
+msgstr "Reintentar una solicitud fallida de clonación o reubicación."
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Cancelar una solicitud de clonación no publicada o de reubicación no confirmada."
+
+msgid "Start a machine."
+msgstr "Iniciar una máquina."
+
+msgid "Stop a machine, retaining its disk."
+msgstr "Detener una máquina y conservar su disco."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Eliminar una máquina y su disco. Se rechaza mientras su propietario la tenga fijada."
+
+msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
+msgstr "Fijar una máquina al principio de sus listas. Mientras sea su propietario y esté fijada, nada podrá eliminarla."
+
+msgid "Remove your pin from a machine."
+msgstr "Quitar su fijación de una máquina."
+
+msgid "List access grants."
+msgstr "Listar las concesiones de acceso."
+
+msgid "Grant viewer, operator or manager access."
+msgstr "Conceder acceso viewer, operator o manager."
+
+msgid "Revoke an account's shared access."
+msgstr "Revocar el acceso compartido de una cuenta."
+
+msgid "List your SSH keys."
+msgstr "Listar sus claves SSH."
+
+msgid "Revoke one of your SSH keys."
+msgstr "Revocar una de sus claves SSH."
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "Crear o reemplazar una integración con nombre en https://NAME.integration.internal."
+
+msgid "Remove a named integration."
+msgstr "Eliminar una integración con nombre."
+
+msgid "List your integrations."
+msgstr "Listar sus integraciones."
+
+msgid "Inspect an integration without secrets."
+msgstr "Inspeccionar una integración sin secretos."
+
+msgid "Make an integration available to a machine."
+msgstr "Poner una integración a disposición de una máquina."
+
+msgid "Remove a machine's explicit availability."
+msgstr "Retirar la disponibilidad explícita de una máquina."
+
+msgid "Create a team you own."
+msgstr "Crear un equipo del que sea propietario."
+
+msgid "List your teams and roles."
+msgstr "Listar sus equipos y roles."
+
+msgid "List a team's members."
+msgstr "Listar los miembros de un equipo."
+
+msgid "Add or change an admin or member."
+msgstr "Añadir o cambiar un administrador o miembro."
+
+msgid "Remove an account's membership."
+msgstr "Retirar la pertenencia de una cuenta."
+
+msgid "Offer team ownership to an admin."
+msgstr "Ofrecer la propiedad del equipo a un administrador."
+
+msgid "Accept a pending ownership offer."
+msgstr "Aceptar una oferta de propiedad pendiente."
+
+msgid "Decline a pending ownership offer."
+msgstr "Rechazar una oferta de propiedad pendiente."
+
+msgid "Cancel your pending ownership offer."
+msgstr "Cancelar su oferta de propiedad pendiente."
+
+msgid "Inspect a previously accepted request."
+msgstr "Inspeccionar una solicitud aceptada anteriormente."
+
+msgid "Close this interactive channel."
+msgstr "Cerrar este canal interactivo."
+
+msgid "We don't recognize this SSH key:\n  "
+msgstr "No reconocemos esta clave SSH:\n  "
+
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nAbra este enlace, inicie sesión y apruebe la huella coincidente:\n  "
+
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
+msgstr "\n\nMantenga abierta esta conexión SSH mientras aprueba la clave.\n"
+
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "Los enlaces de aprobación caducan tras %{minutes} minutos o al cerrar esta conexión.\n"
+
+msgid "After approval, retry your command here.\n"
+msgstr "Después de la aprobación, vuelva a intentar su comando aquí.\n"
+
+msgid "\nOpen an interactive Porsche connection without a remote command:"
+msgstr "\nAbra una conexión interactiva de Porsche sin un comando remoto:"
+
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "Mantenga esa conexión abierta mientras aprueba su clave en el navegador,\n"
+
+msgid "then retry your original command.\n"
+msgstr "y después vuelva a intentar su comando original.\n"
+
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Le damos la bienvenida a Overalls.\n\nEsta conexión requiere la configuración SSH de Overalls.\n\n"
+
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "No pudimos verificar esta clave SSH en este momento. Vuelva a intentarlo en breve.\n\n"
+
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "No se pudo autorizar esta conexión SSH. Compruebe su acceso a la máquina y vuelva a intentarlo.\n\n"
+
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "Registre o compruebe su clave conectándose a:\n  ssh "
+
+msgid "\nOr manage your keys at:\n  "
+msgstr "\nO gestione sus claves en:\n  "
+
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Registre o compruebe su clave SSH en Configuración de la cuenta de Overalls > Claves SSH.\n\n"
+
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "Siga las instrucciones de aprobación en el navegador y ejecute el comando de configuración\n"
+
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "desde la página de su máquina y vuelva a conectarse sin root@.\n"
+
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "Esta conexión no está autorizada. Inicie sesión y vuelva a intentarlo."
+
+msgid "You do not have permission to perform this action."
+msgstr "No tiene permiso para realizar esta acción."
+
+msgid "Invalid command. Type help to see available commands."
+msgstr "Comando no válido. Escriba help para ver los comandos disponibles."
+
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "El servicio no está disponible temporalmente. Vuelva a intentarlo en breve."
+
+msgid "Approve this SSH key in your browser, then retry the command."
+msgstr "Apruebe esta clave SSH en su navegador y vuelva a intentar el comando."
+
+msgid "The requested resource could not be found."
+msgstr "No se encontró el recurso solicitado."
+
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "Entrada inesperada. Abra una nueva conexión SSH."
+
+msgid "The command could not be completed: %{reason}"
+msgstr "No se pudo completar el comando: %{reason}"
+
+msgid "Request %{id}: submitting"
+msgstr "Solicitud %{id}: enviando"
+
+msgid "Request %{id}: waiting for completion"
+msgstr "Solicitud %{id}: esperando a que finalice"

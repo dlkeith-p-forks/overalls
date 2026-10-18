@@ -17,18 +17,19 @@ defmodule Marshall.CommittedFixtureCleanupTest do
   # Setup MUST use real public provisioning actions. Synthetic host receipts do
   # not establish native guest or isolation behavior.
   property "committed fixture success and failure restore the prior complete inventory",
-    test_cases: 8 do
-    check all(
-            history <-
-              shuffle(
-                for kind <- [:admission, :peer, :roster],
-                    fail? <- [false, true],
-                    do: {kind, fail?}
-              ),
-            test_cases: 8
-          ) do
-      for control_kind <- [:unused_image, :vm], do: verify_history!(history, control_kind)
-    end
+    test_cases: 100 do
+    history =
+      draw(
+        "history",
+        shuffle(
+          for kind <- [:admission, :peer, :roster],
+              fail? <- [false, true] do
+            {kind, fail?}
+          end
+        )
+      )
+
+    for control_kind <- [:unused_image, :vm], do: verify_history!(history, control_kind)
   end
 
   @spec verify_history!([{kind(), boolean()}], :unused_image | :vm) :: :ok

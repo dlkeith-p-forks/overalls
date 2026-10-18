@@ -3,7 +3,9 @@ defmodule Enrico.InvalidBootPropertyTest do
   import Hegel
   import Hegel.Gen
 
-  @moduletag timeout: 240_000
+  # A full matrix takes tens of seconds in fresh VMs; preserve all 100 cases.
+  # The aggregate budget includes shared-host headroom; each boot stays bounded.
+  @moduletag timeout: 10_800_000
   @probe Path.expand("../scripts/invalid_boot_probe.exs", __DIR__)
   @fields ~w(bind port state_dir token_file certificate_file key_file status_socket)
   @paths ~w(state_dir token_file certificate_file key_file status_socket)
@@ -61,41 +63,37 @@ defmodule Enrico.InvalidBootPropertyTest do
   # credentials and fixture paths from diagnostics. Unset is an empty boot.
   property "generated invalid Enrico configurations refuse fresh OTP startup",
     profile: :ci,
-    print_blob: false,
-  do
+    print_blob: false do
     root = private_directory("k-eb-")
-    on_exit(fn -> File.rm_rf!(root) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(
-            order <- shuffle(@cases),
-            token <- string(:alphanumeric, length: 32),
-            valid_length <- member_of([32, 33, 255, 256]),
-            invalid_length <- member_of([31, 257, 512]),
-            max_runs: 1
-          ) do
-      credential = String.slice(String.duplicate(token, 8), 0, valid_length)
+    order = draw("order", shuffle(@cases))
+    token = draw("token", string(:alphanumeric, length: 32))
+    valid_length = draw("valid_length", member_of([32, 33, 255, 256]))
+    invalid_length = draw("invalid_length", member_of([31, 257, 512]))
 
-      for mutation <- Enum.take(order, 1) do
-        directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
-        File.mkdir!(directory)
-        File.chmod!(directory, 0o700)
-        config = configuration(directory, credential)
-        path = Path.join(directory, "config.json")
-        write_config(path, config)
-        assert {:ok, _} = Enrico.Config.load(path)
-        mutate(mutation, path, config, invalid_length)
-        credentials = credential_bytes(config["token_file"])
-        before = snapshot(directory)
-        {output, status} = boot(path, config["status_socket"])
-        assert status == 0
-        assert projection(output) == expected("rejected", false, true)
+    credential = String.slice(String.duplicate(token, 8), 0, valid_length)
 
-        private? =
-          not Enum.any?([credential, directory | credentials], &String.contains?(output, &1))
+    for mutation <- order do
+      directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
+      File.mkdir!(directory)
+      File.chmod!(directory, 0o700)
+      config = configuration(directory, credential)
+      path = Path.join(directory, "config.json")
+      write_config(path, config)
+      assert {:ok, _} = Enrico.Config.load(path)
+      mutate(mutation, path, config, invalid_length)
+      credentials = credential_bytes(config["token_file"])
+      before = snapshot(directory)
+      {output, status} = boot(path, config["status_socket"])
+      assert status == 0
+      assert projection(output) == expected("rejected", false, true)
 
-        assert private?, "boot diagnostics exposed fixture paths or credentials"
-        assert snapshot(directory) == before
-      end
+      private? =
+        not Enum.any?([credential, directory | credentials], &String.contains?(output, &1))
+
+      assert private?, "boot diagnostics exposed fixture paths or credentials"
+      assert snapshot(directory) == before
     end
   end
 
@@ -113,25 +111,26 @@ defmodule Enrico.InvalidBootPropertyTest do
   property "generated non-string bind values refuse without loader side effects",
     profile: :ci do
     root = private_directory("k-el-")
-    on_exit(fn -> File.rm_rf!(root) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(
-            value <-
-              member_of([nil, false, true, 0, 42, 1.5, [], ["127.0.0.1"], %{}, %{"x" => 1}]),
-            token <- string(:alphanumeric, length: 32),
-            max_runs: 40
-          ) do
-      config = configuration(root, token)
-      state = config["state_dir"]
-      refute File.exists?(state)
-      path = Path.join(root, "config.json")
-      write_config(path, Map.put(config, "bind", value))
-      before = snapshot(root)
-      rejected? = match?({:error, :invalid_configuration}, Enrico.Config.load(path))
-      assert rejected?, "non-string bind did not return fixed loader refusal"
-      refute File.exists?(state)
-      assert snapshot(root) == before
-    end
+    value =
+      draw(
+        "value",
+        member_of([nil, false, true, 0, 42, 1.5, [], ["127.0.0.1"], %{}, %{"x" => 1}])
+      )
+
+    token = draw("token", string(:alphanumeric, length: 32))
+
+    config = configuration(root, token)
+    state = config["state_dir"]
+    refute File.exists?(state)
+    path = Path.join(root, "config.json")
+    write_config(path, Map.put(config, "bind", value))
+    before = snapshot(root)
+    rejected? = match?({:error, :invalid_configuration}, Enrico.Config.load(path))
+    assert rejected?, "non-string bind did not return fixed loader refusal"
+    refute File.exists?(state)
+    assert snapshot(root) == before
   end
 
   @spec private_directory(String.t()) :: Path.t()
@@ -157,9 +156,25 @@ defmodule Enrico.InvalidBootPropertyTest do
     }
   end
 
+  # @cc [owner:ghuntley,label:verification] fresh-boot-operation-deadline
+  # Each probe MUST run in a fresh VM with the complete startup oracle. A boot
+  # exceeding 30 seconds MUST fail; its process group gets at most five seconds
+  # to terminate before forced cleanup, independently of the aggregate budget.
   @spec boot(Path.t() | nil, Path.t()) :: {String.t(), non_neg_integer()}
   defp boot(path, socket) do
-    System.cmd("mix", ["run", "--no-start", "--no-compile", "--no-deps-check", @probe],
+    System.cmd(
+      "timeout",
+      [
+        "--signal=TERM",
+        "--kill-after=5s",
+        "30s",
+        "mix",
+        "run",
+        "--no-start",
+        "--no-compile",
+        "--no-deps-check",
+        @probe
+      ],
       env: [
         {"MIX_ENV", "test"},
         {"ERL_FLAGS", "+S 2:2 +SDcpu 1 +SDio 1"},

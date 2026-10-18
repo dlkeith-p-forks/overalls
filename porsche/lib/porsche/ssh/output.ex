@@ -1,5 +1,6 @@
 defmodule Porsche.SSH.Output do
   @moduledoc "Single-result channel output, separate from bounded progress messages."
+  use Gettext, backend: Porsche.Gettext
 
   # @cc [owner:ghuntley,label:security;protocol] porsche-terminal-result-framing
   # JSON output MUST decode to the original response as one newline-terminated
@@ -12,7 +13,7 @@ defmodule Porsche.SSH.Output do
     rows =
       for %{"usage" => usage, "summary" => summary} <- commands,
           is_binary(usage) and is_binary(summary),
-          do: safe(usage) <> "\n  " <> safe(summary)
+          do: safe(usage) <> "\n  " <> safe(Gettext.gettext(Porsche.Gettext, summary))
 
     if rows == [], do: human(response), else: Enum.join(rows, "\n") <> "\n"
   end
@@ -22,7 +23,10 @@ defmodule Porsche.SSH.Output do
         false
       )
       when is_binary(fingerprint) and is_binary(url),
-      do: OverallsProtocol.SSHOnboarding.approval(fingerprint, url)
+      do: Porsche.SSH.Onboarding.approval(fingerprint, url)
+
+  def render(%{"status" => "error", "error" => reason}, false) when is_binary(reason),
+    do: error_message(reason) <> "\n"
 
   def render(response, false), do: human(response)
 
@@ -37,9 +41,38 @@ defmodule Porsche.SSH.Output do
         {:exec, origin}
       )
       when is_binary(fingerprint),
-      do: OverallsProtocol.SSHOnboarding.retry_interactively(fingerprint, origin)
+      do: Porsche.SSH.Onboarding.retry_interactively(fingerprint, origin)
 
   def render(response, json, _context), do: render(response, json)
+
+  @spec error_message(String.t()) :: String.t()
+  defp error_message(reason) do
+    case reason do
+      "unauthorized" ->
+        gettext("This connection is not authorized. Please sign in and try again.")
+
+      "forbidden" ->
+        gettext("You do not have permission to perform this action.")
+
+      "invalid_command" ->
+        gettext("Invalid command. Type help to see available commands.")
+
+      "temporarily_unavailable" ->
+        gettext("The service is temporarily unavailable. Please try again shortly.")
+
+      "approval_required" ->
+        gettext("Approve this SSH key in your browser, then retry the command.")
+
+      "not_found" ->
+        gettext("The requested resource could not be found.")
+
+      "unexpected_input" ->
+        gettext("Unexpected input. Please open a new SSH connection.")
+
+      _ ->
+        gettext("The command could not be completed: %{reason}", reason: safe(reason))
+    end
+  end
 
   defp human(response) do
     response
@@ -67,8 +100,9 @@ defmodule Porsche.SSH.Output do
   end
 
   @spec progress(map()) :: binary()
-  def progress(%{event: :submitting, request_id: id}), do: "Request " <> id <> ": submitting\n"
+  def progress(%{event: :submitting, request_id: id}),
+    do: gettext("Request %{id}: submitting", id: safe(id)) <> "\n"
 
   def progress(%{event: :waiting, request_id: id}),
-    do: "Request " <> id <> ": waiting for completion\n"
+    do: gettext("Request %{id}: waiting for completion", id: safe(id)) <> "\n"
 end

@@ -101,33 +101,30 @@ defmodule Brady.CacheHistoryTest do
   # Every history MUST exercise each interrupted publication outcome and restart;
   # asserted hits MUST stream the exact modeled origin/variant bytes from disk.
   property "public download histories publish only complete current origin and variant bytes" do
-    check all(
-            body <- binary(min_length: 2, max_length: 96),
-            commands <- list_of(command(), min_length: 8, max_length: 20),
-            max_runs: 30
-          ) do
-      with_store(fn state ->
-        mandatory =
-          Enum.with_index(@outcomes, fn outcome, id ->
-            {:download, id, outcome, body <> <<id>>, 80, id, 1}
-          end)
+    body = draw("body", binary(min_length: 2, max_length: 96))
+    commands = draw("commands", list_of(command(), min_length: 8, max_length: 20))
 
-        complete = for id <- 0..6, do: {:download, id, :complete, body <> <<id>>, 80, 0, 0}
-
-        history =
-          [:resume] ++
-            mandatory ++
-            [:resume] ++
-            complete ++
-            [:restart] ++
-            commands ++
-            [:restart, {:advance, 100}, :resume] ++ complete ++ [:pressure, :resume]
-
-        Enum.reduce(history, state, fn command, current ->
-          current |> step(command) |> assert_model()
+    with_store(fn state ->
+      mandatory =
+        Enum.with_index(@outcomes, fn outcome, id ->
+          {:download, id, outcome, body <> <<id>>, 80, id, 1}
         end)
+
+      complete = for id <- 0..6, do: {:download, id, :complete, body <> <<id>>, 80, 0, 0}
+
+      history =
+        [:resume] ++
+          mandatory ++
+          [:resume] ++
+          complete ++
+          [:restart] ++
+          commands ++
+          [:restart, {:advance, 100}, :resume] ++ complete ++ [:pressure, :resume]
+
+      Enum.reduce(history, state, fn command, current ->
+        current |> step(command) |> assert_model()
       end)
-    end
+    end)
   end
 
   # @cc [owner:ghuntley,label:verification] brady-history-current-privacy
@@ -135,48 +132,45 @@ defmodule Brady.CacheHistoryTest do
   # publication and Store restart, including mixed-case duplicate headers and
   # ranges. Refused writes MUST leave the real object inventory unchanged.
   property "current private requests and responses cannot consume or populate shared objects" do
-    check all(
-            body <- binary(min_length: 2, max_length: 128),
-            order <- shuffle(Enum.to_list(0..11)),
-            uppercase <- boolean(),
-            max_runs: 30
-          ) do
-      with_store(fn state ->
-        state = step(state, :resume)
-        request = request(0)
-        response = response(body, state.now, 80, 0)
-        private = private_requests(request, uppercase)
+    body = draw("body", binary(min_length: 2, max_length: 128))
+    order = draw("order", shuffle(Enum.to_list(0..11)))
+    uppercase = draw("uppercase", boolean())
 
-        assert_private(state, private, response, order)
-        state = step(state, {:download, 0, :complete, body, 80, 0, 0}) |> assert_model()
-        assert_private(state, private, response, order)
-        state = step(state, :restart) |> assert_model() |> step(:resume)
-        assert_private(state, private, response, Enum.reverse(order))
+    with_store(fn state ->
+      state = step(state, :resume)
+      request = request(0)
+      response = response(body, state.now, 80, 0)
+      private = private_requests(request, uppercase)
 
-        for headers <- [[{"range", "bytes=1-"}], [{"if-range", "\"fixture\""}]] do
-          before = inventory(state)
-          ranged = add_headers(request(6), headers)
-          assert :bypass = Cache.begin_write(state.store, ranged, response, @now, @now)
-          assert inventory(state) == before
-        end
+      assert_private(state, private, response, order)
+      state = step(state, {:download, 0, :complete, body, 80, 0, 0}) |> assert_model()
+      assert_private(state, private, response, order)
+      state = step(state, :restart) |> assert_model() |> step(:resume)
+      assert_private(state, private, response, Enum.reverse(order))
 
-        for headers <- [
-              [{"set-cookie", "fixture-only"}],
-              [{"cache-control", "private"}],
-              [{"cache-control", "no-store"}],
-              [{"cache-control", "max-age=80"}],
-              [{"vary", "*"}],
-              [{"age", "0"}, {"age", "0"}]
-            ] do
-          before = inventory(state)
-          rejected = %{response | headers: response.headers ++ headers}
-          assert :bypass = Cache.begin_write(state.store, request(6), rejected, @now, @now)
-          assert inventory(state) == before
-        end
+      for headers <- [[{"range", "bytes=1-"}], [{"if-range", "\"fixture\""}]] do
+        before = inventory(state)
+        ranged = add_headers(request(6), headers)
+        assert :bypass = Cache.begin_write(state.store, ranged, response, @now, @now)
+        assert inventory(state) == before
+      end
 
-        assert_model(state)
-      end)
-    end
+      for headers <- [
+            [{"set-cookie", "fixture-only"}],
+            [{"cache-control", "private"}],
+            [{"cache-control", "no-store"}],
+            [{"cache-control", "max-age=80"}],
+            [{"vary", "*"}],
+            [{"age", "0"}, {"age", "0"}]
+          ] do
+        before = inventory(state)
+        rejected = %{response | headers: response.headers ++ headers}
+        assert :bypass = Cache.begin_write(state.store, request(6), rejected, @now, @now)
+        assert inventory(state) == before
+      end
+
+      assert_model(state)
+    end)
   end
 
   # @cc [owner:ghuntley,label:verification] brady-history-owner-pins
@@ -184,39 +178,36 @@ defmodule Brady.CacheHistoryTest do
   # MUST retain that owner's exact bytes until close or owner death; a later
   # pressure observation MUST reclaim the now-unpinned object before recovery.
   property "reader ownership survives pressure and releases on close or process loss" do
-    check all(
-            body <- binary(min_length: 2, max_length: 128),
-            endings <- shuffle([:close, :owner_loss]),
-            max_runs: 20
-          ) do
-      with_store(fn state ->
-        Enum.reduce(endings, state, fn ending, state ->
-          state = state |> step(:resume) |> step({:download, 0, :complete, body, 80, 0, 0})
-          state = step(state, {:download, 1, :complete, body <> "other", 80, 0, 0})
-          owner = start_owner(state)
-          {:hit, ref, _, 0, length} = Owner.call(owner, {:lookup, request(0), state.now})
-          assert {:error, :storage} = Store.read(state.store, ref, 0, length)
-          assert :ok = Cache.close(state.store, ref)
-          assert Store.stats(state.store).readers == 1
+    body = draw("body", binary(min_length: 2, max_length: 128))
+    endings = draw("endings", shuffle([:close, :owner_loss]))
 
-          assert :ok = Store.observe(state.store, 10, 100, true)
-          assert %{objects: 1, readers: 1, writable: false} = Store.stats(state.store)
-          assert :miss = Cache.lookup(state.store, request(1), state.now)
-          assert {:ok, ^body} = Owner.call(owner, {:read, ref, 0, length})
+    with_store(fn state ->
+      Enum.reduce(endings, state, fn ending, state ->
+        state = state |> step(:resume) |> step({:download, 0, :complete, body, 80, 0, 0})
+        state = step(state, {:download, 1, :complete, body <> "other", 80, 0, 0})
+        owner = start_owner(state)
+        {:hit, ref, _, 0, length} = Owner.call(owner, {:lookup, request(0), state.now})
+        assert {:error, :storage} = Store.read(state.store, ref, 0, length)
+        assert :ok = Cache.close(state.store, ref)
+        assert Store.stats(state.store).readers == 1
 
-          case ending do
-            :close -> assert :ok = Owner.call(owner, {:close, ref})
-            :owner_loss -> kill_and_drain(owner)
-          end
+        assert :ok = Store.observe(state.store, 10, 100, true)
+        assert %{objects: 1, readers: 1, writable: false} = Store.stats(state.store)
+        assert :miss = Cache.lookup(state.store, request(1), state.now)
+        assert {:ok, ^body} = Owner.call(owner, {:read, ref, 0, length})
 
-          await_leases(state.store, 0, 0)
-          assert :ok = Store.observe(state.store, 10, 100, true)
-          assert %{objects: 0, used: 0} = Store.stats(state.store)
-          stop_owner(owner)
-          %{state | entries: %{}, writable: false} |> step(:restart) |> assert_model()
-        end)
+        case ending do
+          :close -> assert :ok = Owner.call(owner, {:close, ref})
+          :owner_loss -> kill_and_drain(owner)
+        end
+
+        await_leases(state.store, 0, 0)
+        assert :ok = Store.observe(state.store, 10, 100, true)
+        assert %{objects: 0, used: 0} = Store.stats(state.store)
+        stop_owner(owner)
+        %{state | entries: %{}, writable: false} |> step(:restart) |> assert_model()
       end)
-    end
+    end)
   end
 
   @spec command() :: Hegel.Gen.t()

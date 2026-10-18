@@ -54,16 +54,45 @@ defmodule MarshallWeb.WorkspaceComponents do
     """
   end
 
+  # @cc [owner:ghuntley,label:product] machine-state-label-text-and-tone
+  # Every machine status label MUST name the state in text from machine_state/1
+  # (Deleting, Stopping, Starting, or the capitalised observed state) and carry
+  # the observed state in `data-state` plus the severity in `data-tone`, decided
+  # in the same clause order as the text: pending for every transition
+  # (Deleting, Stopping, Starting, Pending, Unknown), danger for a failed
+  # machine, success for a settled running machine and no tone for the neutral
+  # settled states (Stopped, Deleted). Colour never carries meaning.
   @spec machine_state(map()) :: String.t()
-  def machine_state(%{desired_state: :deleted}), do: "Deleting"
-  def machine_state(%{desired_state: :stopped, observed_state: :running}), do: "Stopping"
-  def machine_state(%{desired_state: :paused, observed_state: :running}), do: "Suspending"
-  def machine_state(%{desired_state: :running, observed_state: :paused}), do: "Resuming"
+  def machine_state(%{desired_state: :deleted}), do: gettext("Deleting")
+  def machine_state(%{desired_state: :stopped, observed_state: :running}), do: gettext("Stopping")
 
   def machine_state(%{desired_state: :running, observed_state: state})
-      when state in [:pending, :stopped], do: "Starting"
+      when state in [:pending, :stopped], do: gettext("Starting")
 
-  def machine_state(%{observed_state: state}), do: String.capitalize(to_string(state))
+  def machine_state(%{observed_state: state}) do
+    case state do
+      :pending -> gettext("Pending")
+      :running -> gettext("Running")
+      :stopped -> gettext("Stopped")
+      :failed -> gettext("Failed")
+      :deleted -> gettext("Deleted")
+      :unknown -> gettext("Unknown")
+      _ -> gettext("Unavailable")
+    end
+  end
+
+  @doc "The status-label severity tone matching machine_state/1, or nil for neutral states."
+  @spec machine_tone(map()) :: String.t() | nil
+  def machine_tone(%{desired_state: :deleted}), do: "pending"
+  def machine_tone(%{desired_state: :stopped, observed_state: :running}), do: "pending"
+
+  def machine_tone(%{desired_state: :running, observed_state: state})
+      when state in [:pending, :stopped], do: "pending"
+
+  def machine_tone(%{observed_state: :failed}), do: "danger"
+  def machine_tone(%{observed_state: :running}), do: "success"
+  def machine_tone(%{observed_state: state}) when state in [:pending, :unknown], do: "pending"
+  def machine_tone(_vm), do: nil
 
   attr :vm, :map, required: true
   attr :active, :string, default: "terminal"
@@ -86,21 +115,21 @@ defmodule MarshallWeb.WorkspaceComponents do
   @spec machine_nav(map()) :: Phoenix.LiveView.Rendered.t()
   def machine_nav(assigns) do
     ~H"""
-    <nav class="machine-tabs" aria-label="Machine workspace">
+    <nav class="machine-tabs" aria-label={gettext("Machine workspace")}>
       <.link
         :if={capability?(@vm, :terminal)}
         navigate={~p"/machines/#{@vm.id}"}
         aria-current={@active == "terminal" && "page"}
-      >Terminal</.link>
+      >{gettext("Terminal")}</.link>
       <.link
         :if={@vm.permissions.manage && OverallsProtocol.ProfilePolicy.allows?(@vm.profile, :sharing)}
         navigate={~p"/machines/#{@vm.id}/access"}
         aria-current={@active == "access" && "page"}
-      >Access</.link>
+      >{gettext("Access")}</.link>
       <.link
         navigate={~p"/machines/#{@vm.id}/settings"}
         aria-current={@active == "settings" && "page"}
-      >Settings</.link>
+      >{gettext("Settings")}</.link>
     </nav>
     """
   end
@@ -165,7 +194,7 @@ defmodule MarshallWeb.WorkspaceComponents do
     assigns = assign(assigns, :pinned, pinned?(assigns.vm))
 
     ~H"""
-    <span :if={@pinned} id={@id} class="status-label pinned-label" data-tone="muted">Pinned</span>
+    <span :if={@pinned} id={@id} class="status-label pinned-label" data-tone="muted">{gettext("Pinned")}</span>
     """
   end
 
@@ -196,25 +225,28 @@ defmodule MarshallWeb.WorkspaceComponents do
             <h1>{@vm.name}</h1>
             <.pinned_label vm={@vm} id="machine-pinned" />
             <.os_label vm={@vm} id="machine-os" />
-            <span id="machine-state" class="status-label" data-state={@vm.observed_state}>{machine_state(
-              @vm
-            )}</span>
+            <span
+              id="machine-state"
+              class="status-label"
+              data-state={@vm.observed_state}
+              data-tone={machine_tone(@vm)}
+            >{machine_state(@vm)}</span>
           </div>
           <p class="machine-facts muted">
-            {@vm.vcpu} vCPU · {workspace_gib(@vm.memory_bytes)} GiB memory · {workspace_gib(
+            {gettext("%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}", value1: @vm.vcpu, value2: workspace_gib(@vm.memory_bytes), value3: workspace_gib(
               @vm.disk_bytes
-            )} GiB disk · {profile_name(@vm.profile)}
+            ), value4: profile_name(@vm.profile))}
           </p>
           <p class="machine-identity">
-            <span class="muted">ID</span>
+            <span class="muted">{gettext("ID")}</span>
             <code id="machine-id">{@vm.id}</code>
             <button
               type="button"
               class="console-button compact copy-button"
               data-copy-command="machine-id"
-              data-copy-label="Machine ID"
-              aria-label="Copy machine ID"
-            >Copy</button>
+              data-copy-label={gettext("Machine ID")}
+              aria-label={gettext("Copy machine ID")}
+            >{gettext("Copy")}</button>
           </p>
         </div>
         <div class="machine-actions">
@@ -228,7 +260,7 @@ defmodule MarshallWeb.WorkspaceComponents do
               rel="noopener noreferrer"
               class="console-button machine-editor-button"
             >
-              Open VS Code <.glyph name="arrow_up_right" />
+              {gettext("Open VS Code")} <.glyph name="arrow_up_right" />
             </.link>
             <button
               :if={@editor_control not in [:available, :hidden]}
@@ -238,7 +270,7 @@ defmodule MarshallWeb.WorkspaceComponents do
               aria-describedby="vscode-unavailable"
               class="console-button machine-editor-button"
             >
-              Open VS Code
+              {gettext("Open VS Code")}
             </button>
             <div
               :if={@vm.permissions.manage && @vm.desired_state != :deleted}
@@ -246,46 +278,24 @@ defmodule MarshallWeb.WorkspaceComponents do
               class="row"
             >
               <Layouts.action
-                :if={
-                  (@vm.desired_state not in [:running, :paused] && @vm.observed_state != :paused) ||
-                    @vm.observed_state == :failed
-                }
+                :if={@vm.desired_state != :running || @vm.observed_state == :failed}
                 id="start-machine"
                 tone="primary"
                 phx-click="machine-power"
                 phx-value-kind="start"
                 phx-value-key={@power_key}
               >
-                Start machine
+                {gettext("Start machine")}
               </Layouts.action>
               <Layouts.action
-                :if={@vm.desired_state == :paused || @vm.observed_state == :paused}
-                id="resume-machine"
-                tone="primary"
-                phx-click="machine-power"
-                phx-value-kind="resume"
-                phx-value-key={@power_key}
-              >
-                Resume machine
-              </Layouts.action>
-              <Layouts.action
-                :if={@vm.desired_state == :running && @vm.observed_state == :running}
-                id="pause-machine"
-                phx-click="machine-power"
-                phx-value-kind="pause"
-                phx-value-key={@power_key}
-              >
-                Pause
-              </Layouts.action>
-              <Layouts.action
-                :if={@vm.desired_state in [:running, :paused]}
+                :if={@vm.desired_state == :running}
                 id="stop-machine"
                 tone="default"
                 phx-click="machine-power"
                 phx-value-kind="stop"
                 phx-value-key={@power_key}
               >
-                Stop
+                {gettext("Stop")}
               </Layouts.action>
             </div>
           </div>
@@ -293,11 +303,11 @@ defmodule MarshallWeb.WorkspaceComponents do
             <p id="vscode-unavailable" class="machine-editor-notice muted">
               <%= case @editor_control do %>
                 <% :unsupported_image -> %>
-                  This machine's image does not support the current browser editor.
+                  {gettext("This machine's image does not support the current browser editor.")}
                 <% :not_running -> %>
-                  VS Code requires a running machine.
+                  {gettext("VS Code requires a running machine.")}
                 <% _ -> %>
-                  VS Code is temporarily unavailable for this machine.
+                  {gettext("VS Code is temporarily unavailable for this machine.")}
               <% end %>
             </p>
           <% end %>
@@ -319,66 +329,63 @@ defmodule MarshallWeb.WorkspaceComponents do
           phx-mounted={JS.ignore_attributes(["open"])}
         >
           <summary>
-            <h2 id="machine-connect-title">Connect from your computer</h2>
+            <h2 id="machine-connect-title">{gettext("Connect from your computer")}</h2>
           </summary>
           <%= if @connection && capability?(@vm, :ssh) do %>
             <p class="muted">
-              Installs Overalls, configures SSH, and connects to this machine. On Windows
-              the installer also installs OpenSSH 9.6 or newer and, with administrator
-              approval, makes it the default ssh.
+              {gettext("Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh.")}
             </p>
-            <h3 class="connection-step">Install and connect</h3>
+            <h3 class="connection-step">{gettext("Install and connect")}</h3>
             <div class="connection-grid">
-              <span class="connection-platform muted">Linux / macOS</span>
+              <span class="connection-platform muted">{gettext("Linux / macOS")}</span>
               <div id="ssh-connection-commands" class="connection-command">
                 <pre><code id="machine-install-command">{@connection.install}</code></pre>
                 <button
                   type="button"
                   class="console-button compact copy-button"
                   data-copy-command="machine-install-command"
-                  aria-label="Copy Linux and macOS install command"
-                >Copy</button>
+                  aria-label={gettext("Copy Linux and macOS install command")}
+                >{gettext("Copy")}</button>
               </div>
-              <span class="connection-platform muted">Windows</span>
+              <span class="connection-platform muted">{gettext("Windows")}</span>
               <div id="machine-connect-windows" class="connection-command">
                 <pre><code id="machine-install-command-windows">{@connection.install_windows}</code></pre>
                 <button
                   type="button"
                   class="console-button compact copy-button"
                   data-copy-command="machine-install-command-windows"
-                  aria-label="Copy Windows PowerShell install command"
-                >Copy</button>
+                  aria-label={gettext("Copy Windows PowerShell install command")}
+                >{gettext("Copy")}</button>
               </div>
             </div>
-            <h3 class="connection-step">Already installed</h3>
+            <h3 class="connection-step">{gettext("Already installed")}</h3>
             <div class="connection-command">
               <pre><code id="machine-ssh-command">{@connection.ssh}</code></pre>
               <button
                 type="button"
                 class="console-button compact copy-button"
                 data-copy-command="machine-ssh-command"
-                aria-label="Copy SSH command"
-              >Copy</button>
+                aria-label={gettext("Copy SSH command")}
+              >{gettext("Copy")}</button>
             </div>
           <% else %>
             <p id="machine-connect-unavailable" class="muted">
               <%= cond do %>
                 <% capability?(@vm, :available) && !capability?(@vm, :ssh) -> %>
-                  This machine's image has no guest agents yet: SSH, the browser terminal
-                  and agents are unavailable. Use
+                  {gettext("This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use")}
                   <.link
                     :if={@vm.permissions.read}
                     id="machine-boot-log"
                     navigate={~p"/machines/#{@vm.id}/terminals?view=boot-log"}
                     aria-current={@active == "boot-log" && "page"}
-                  >Boot log</.link>
-                  to view the read-only host console.
+                  >{gettext("Boot log")}</.link>
+                  {gettext("to view the read-only host console.")}
                 <% !@vm.permissions.write -> %>
-                  SSH connection requires write access to this machine.
+                  {gettext("SSH connection requires write access to this machine.")}
                 <% @vm.profile == :inception -> %>
-                  Use the browser terminal for this Inception environment.
+                  {gettext("Use the browser terminal for this Inception environment.")}
                 <% true -> %>
-                  SSH connection details are temporarily unavailable.
+                  {gettext("SSH connection details are temporarily unavailable.")}
               <% end %>
             </p>
           <% end %>
@@ -410,8 +417,8 @@ defmodule MarshallWeb.WorkspaceComponents do
       target="_blank"
       rel="noopener noreferrer"
       class={if @variant == :button, do: "console-button", else: "machine-editor-link"}
-      aria-label={"Open VS Code for #{@vm.name}"}
-    >Open VS Code{if @variant == :link, do: " ↗"}</.link>
+      aria-label={gettext("Open VS Code for %{value1}", value1: @vm.name)}
+    >{gettext("Open VS Code")}{if @variant == :link, do: " ↗"}</.link>
     <button
       :if={@editor_control not in [:available, :hidden]}
       id={"#{@id_prefix}-#{@vm.id}-vscode-disabled"}
@@ -419,7 +426,7 @@ defmodule MarshallWeb.WorkspaceComponents do
       disabled
       aria-describedby={"#{@id_prefix}-#{@vm.id}-vscode-reason"}
       class={if @variant == :button, do: "console-button", else: "machine-editor-link"}
-    >Open VS Code</button>
+    >{gettext("Open VS Code")}</button>
     <p
       :if={@editor_control not in [:available, :hidden]}
       id={"#{@id_prefix}-#{@vm.id}-vscode-reason"}
@@ -461,11 +468,11 @@ defmodule MarshallWeb.WorkspaceComponents do
 
   @spec editor_unavailable_message(atom()) :: String.t()
   def editor_unavailable_message(:unsupported_image),
-    do: "This machine's image does not support the current browser editor."
+    do: gettext("This machine's image does not support the current browser editor.")
 
-  def editor_unavailable_message(:not_running), do: "VS Code requires a running machine."
-  def editor_unavailable_message(:unavailable), do: "VS Code is temporarily unavailable."
-  def editor_unavailable_message(_), do: "VS Code is unavailable for this machine."
+  def editor_unavailable_message(:not_running), do: gettext("VS Code requires a running machine.")
+  def editor_unavailable_message(:unavailable), do: gettext("VS Code is temporarily unavailable.")
+  def editor_unavailable_message(_), do: gettext("VS Code is unavailable for this machine.")
 
   @spec capability?(map(), atom()) :: boolean()
   defp capability?(vm, name) do
@@ -480,5 +487,8 @@ defmodule MarshallWeb.WorkspaceComponents do
 
   @spec profile_name(atom()) :: String.t()
   defp profile_name(:oss), do: "OSS"
-  defp profile_name(profile), do: profile |> Atom.to_string() |> String.capitalize()
+  defp profile_name(:customer), do: gettext("Customer")
+  defp profile_name(:standard), do: gettext("Standard")
+  defp profile_name(:inception), do: "Inception"
+  defp profile_name(_), do: gettext("Unknown")
 end

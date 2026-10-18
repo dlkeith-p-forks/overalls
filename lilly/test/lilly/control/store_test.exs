@@ -124,38 +124,46 @@ defmodule Lilly.Control.StoreTest do
       revision: %{kind: :default}
     }
 
-    check all(
-            kinds <- list_of(member_of([:stop, :start, :delete]), min_length: 1, max_length: 8),
-            carries <- list_of(boolean(), length: length(kinds)),
-            test_cases: 25
-          ) do
-      root = Path.join(directory, Integer.to_string(System.unique_integer([:positive])))
-      File.mkdir_p!(root)
-      File.chmod!(root, 0o700)
-      {:ok, store} = Store.open(root, @id)
+    Hegel.check(
+      fn ->
+        kinds =
+          draw(
+            "kinds",
+            list_of(member_of([:stop, :start, :delete]), min_length: 1, max_length: 8)
+          )
 
-      provision =
-        Map.put(%{command(1, Lilly.UUID.generate()) | profile: :oss}, :workspace_source, source)
+        carries = draw("carries", list_of(boolean(), length: length(kinds)))
+        root = Path.join(directory, Integer.to_string(System.unique_integer([:positive])))
+        File.mkdir_p!(root)
+        File.chmod!(root, 0o700)
+        {:ok, store} = Store.open(root, @id)
 
-      assert {:ok, :stored} = Store.accept(store, provision)
+        provision =
+          Map.put(%{command(1, Lilly.UUID.generate()) | profile: :oss}, :workspace_source, source)
 
-      last =
-        kinds
-        |> Enum.zip(carries)
-        |> Enum.with_index(2)
-        |> Enum.reduce(provision, fn {{kind, carry}, generation}, _previous ->
-          next = %{command(generation, Lilly.UUID.generate()) | kind: kind, profile: :oss}
+        assert {:ok, :stored} = Store.accept(store, provision)
 
-          next =
-            if carry and kind == :start, do: Map.put(next, :workspace_source, source), else: next
+        last =
+          kinds
+          |> Enum.zip(carries)
+          |> Enum.with_index(2)
+          |> Enum.reduce(provision, fn {{kind, carry}, generation}, _previous ->
+            next = %{command(generation, Lilly.UUID.generate()) | kind: kind, profile: :oss}
 
-          assert {:ok, :stored} = Store.accept(store, next)
-          next
-        end)
+            next =
+              if carry and kind == :start,
+                do: Map.put(next, :workspace_source, source),
+                else: next
 
-      altered = Map.merge(last, %{id: Lilly.UUID.generate(), generation: 100, slot: 3})
-      assert {:error, :vm_identity_conflict} = Store.accept(store, altered)
-    end
+            assert {:ok, :stored} = Store.accept(store, next)
+            next
+          end)
+
+        altered = Map.merge(last, %{id: Lilly.UUID.generate(), generation: 100, slot: 3})
+        assert {:error, :vm_identity_conflict} = Store.accept(store, altered)
+      end,
+      test_cases: 100
+    )
   end
 
   test "unrecognized guest SSH key field cannot enter the durable store", %{
@@ -221,23 +229,24 @@ defmodule Lilly.Control.StoreTest do
 
   @tag :hegel
   test "out-of-order delivery preserves the highest generation", %{store: store} do
-    check all(
-            generations <- uniq_list_of(integer(1..10000), min: 1, max: 8),
-            test_cases: 20
-          ) do
-      File.rm(Path.join(store.path, @id <> ".json"))
+    Hegel.check(
+      fn ->
+        generations = draw("generations", uniq_list_of(integer(1..10000), min: 1, max: 8))
+        File.rm(Path.join(store.path, @id <> ".json"))
 
-      for generation <- generations do
-        operation =
-          "00000000-0000-4000-8000-" <>
-            String.pad_leading(String.downcase(Integer.to_string(generation, 16)), 12, "0")
+        for generation <- generations do
+          operation =
+            "00000000-0000-4000-8000-" <>
+              String.pad_leading(String.downcase(Integer.to_string(generation, 16)), 12, "0")
 
-        assert {:ok, _} = Store.accept(store, command(generation, operation))
-      end
+          assert {:ok, _} = Store.accept(store, command(generation, operation))
+        end
 
-      assert {:ok, current} = Store.read(store, @id)
-      assert current.generation == Enum.max(generations)
-    end
+        assert {:ok, current} = Store.read(store, @id)
+        assert current.generation == Enum.max(generations)
+      end,
+      test_cases: 100
+    )
   end
 
   test "another process cannot own the directory until the port owner exits", %{

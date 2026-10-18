@@ -20,10 +20,9 @@ defmodule MarshallWeb.PendingLaunchTest do
     assert is_nil(PendingLaunch.validate(%{pending | source: @url <> ".git"}, 100))
   end
 
-  property "arbitrary staged values never bypass the exact validated shape", test_cases: 50 do
-    check all(value <- term(), test_cases: 50) do
-      assert is_nil(PendingLaunch.validate(value, 100))
-    end
+  property "arbitrary staged values never bypass the exact validated shape", test_cases: 100 do
+    value = draw("value", term())
+    assert is_nil(PendingLaunch.validate(value, 100))
   end
 
   test "nonces reject oversized malformed and missing input" do

@@ -22,79 +22,77 @@ defmodule Marshall.Ingress.FleetCertificateTest do
   # Delayed issued generations MUST fail activation after any newer generation
   # exists. Refusal MUST preserve the active certificate and audit rows; only
   # the latest issued generation may retire its predecessor and become active.
+  @tag :hegel_case_sandbox
   property "generated delayed certificate jobs never activate an older generation",
-    test_cases: 12 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     previous_acme = Application.get_env(:marshall, :fleet_acme)
-    on_exit(fn -> restore_env(:fleet_acme, previous_acme) end)
+    Hegel.on_cleanup(fn -> restore_env(:fleet_acme, previous_acme) end)
 
-    check all(
-            count <- integer(1..3),
-            order <- shuffle(Enum.to_list(1..count)),
-            newer_status <- member_of([:pending, :failed, :issued]),
-            retries <- integer(1..3),
-            test_cases: 12
-          ) do
-      zone = "#{Ash.UUID.generate()}.example.test"
-      base = System.unique_integer([:positive, :monotonic]) * 10
+    count = draw("count", integer(1..3))
+    order = draw("order", shuffle(Enum.to_list(1..count)))
+    newer_status = draw("newer_status", member_of([:pending, :failed, :issued]))
+    retries = draw("retries", integer(1..3))
+    zone = "#{Ash.UUID.generate()}.example.test"
+    base = System.unique_integer([:positive, :monotonic]) * 10
 
-      Application.put_env(:marshall, :fleet_acme, %{
-        zone: zone,
-        directory: "https://acme.example.test/directory",
-        issuer_ca_file: @ca,
-        roots_file: @ca,
-        nameservers: [{{192, 0, 2, 1}, 53}, {{192, 0, 2, 2}, 53}],
-        accept_terms: true
-      })
+    Application.put_env(:marshall, :fleet_acme, %{
+      zone: zone,
+      directory: "https://acme.example.test/directory",
+      issuer_ca_file: @ca,
+      roots_file: @ca,
+      nameservers: [{{192, 0, 2, 1}, 53}, {{192, 0, 2, 2}, 53}],
+      accept_terms: true
+    })
 
-      incumbent = issued_certificate(base, zone)
-      assert :ok = Marshall.Ingress.CertificateAuthority.step(incumbent.id)
+    incumbent = issued_certificate(base, zone)
+    assert :ok = Marshall.Ingress.CertificateAuthority.step(incumbent.id)
 
-      delayed = Map.new(1..count, &{&1, issued_certificate(base + &1, zone)})
+    delayed = Map.new(1..count, &{&1, issued_certificate(base + &1, zone)})
 
-      newer =
-        Ledger.create!(FleetCertificate, :enqueue, %{generation: base + count + 1, zone: zone})
+    newer =
+      Ledger.create!(FleetCertificate, :enqueue, %{generation: base + count + 1, zone: zone})
 
-      newer =
-        case newer_status do
-          :pending -> newer
-          :failed -> Ledger.update!(newer, :fail, %{})
-          :issued -> issue_certificate(newer)
-        end
-
-      before = certificate_projection(zone)
-
-      for index <- order, _ <- 1..retries do
-        assert {:error, :invalid_state} =
-                 Marshall.Ingress.CertificateAuthority.step(delayed[index].id)
-
-        assert certificate_projection(zone) == before
+    newer =
+      case newer_status do
+        :pending -> newer
+        :failed -> Ledger.update!(newer, :fail, %{})
+        :issued -> issue_certificate(newer)
       end
 
-      if newer_status == :issued do
+    before = certificate_projection(zone)
+
+    for index <- order, _ <- 1..retries do
+      assert {:error, :invalid_state} =
+               Marshall.Ingress.CertificateAuthority.step(delayed[index].id)
+
+      assert certificate_projection(zone) == before
+    end
+
+    if newer_status == :issued do
+      assert :ok = Marshall.Ingress.CertificateAuthority.step(newer.id)
+      assert [%{id: active_id}] = Ledger.read!(FleetCertificate, zone: zone, status: :active)
+      assert active_id == newer.id
+      assert [%{status: :retired}] = Ledger.read!(FleetCertificate, id: incumbent.id)
+    else
+      assert [%{id: active_id}] = Ledger.read!(FleetCertificate, zone: zone, status: :active)
+      assert active_id == incumbent.id
+    end
+
+    after_activation = certificate_projection(zone)
+
+    if newer_status == :issued do
+      for _ <- 1..retries do
         assert :ok = Marshall.Ingress.CertificateAuthority.step(newer.id)
-        assert [%{id: active_id}] = Ledger.read!(FleetCertificate, zone: zone, status: :active)
-        assert active_id == newer.id
-        assert [%{status: :retired}] = Ledger.read!(FleetCertificate, id: incumbent.id)
-      else
-        assert [%{id: active_id}] = Ledger.read!(FleetCertificate, zone: zone, status: :active)
-        assert active_id == incumbent.id
-      end
-
-      after_activation = certificate_projection(zone)
-
-      if newer_status == :issued do
-        for _ <- 1..retries do
-          assert :ok = Marshall.Ingress.CertificateAuthority.step(newer.id)
-          assert certificate_projection(zone) == after_activation
-        end
-      end
-
-      for index <- Enum.reverse(order) do
-        assert {:error, :invalid_state} =
-                 Marshall.Ingress.CertificateAuthority.step(delayed[index].id)
-
         assert certificate_projection(zone) == after_activation
       end
+    end
+
+    for index <- Enum.reverse(order) do
+      assert {:error, :invalid_state} =
+               Marshall.Ingress.CertificateAuthority.step(delayed[index].id)
+
+      assert certificate_projection(zone) == after_activation
     end
   end
 

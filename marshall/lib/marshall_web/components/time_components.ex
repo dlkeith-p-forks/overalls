@@ -6,6 +6,7 @@ defmodule MarshallWeb.TimeComponents do
   `datetime` attribute and hover title always carry the UTC instant.
   """
   use Phoenix.Component
+  use Gettext, backend: MarshallWeb.Gettext
   alias Marshall.Accounts.TimeZones
 
   @doc """
@@ -100,7 +101,7 @@ defmodule MarshallWeb.TimeComponents do
 
     ~H"""
     <span id={@id} class={["local-time muted", @class]} data-zone={@zone}>
-      {TimeZones.format(@now, @zone, :clock)} local time · {@difference.text}
+      {gettext("%{value1} local time · %{value2}", value1: TimeZones.format(@now, @zone, :clock), value2: @difference.text)}
     </span>
     """
   end

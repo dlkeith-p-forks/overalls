@@ -51,27 +51,29 @@ defmodule Marshall.Control.HintsTest do
   end
 
   property "only closed kinds and canonical UUIDs are delivered" do
-    check all(
-            kind <-
-              one_of([
-                member_of(Enum.map(Hints.kinds(), &Atom.to_string/1)),
-                string(:alphanumeric)
-              ]),
-            id <-
-              one_of([map(constant(nil), fn _ -> Ecto.UUID.generate() end), string(:printable)])
-          ) do
-      valid? =
-        kind in Enum.map(Hints.kinds(), &Atom.to_string/1) and
-          match?({:ok, ^id}, Ecto.UUID.cast(id))
+    kind =
+      draw(
+        "kind",
+        one_of([member_of(Enum.map(Hints.kinds(), &Atom.to_string/1)), string(:alphanumeric)])
+      )
 
-      if valid? do
-        atom = String.to_existing_atom(kind)
-        :ok = Hints.subscribe(atom, id)
-        assert Hints.deliver(%{"kind" => kind, "id" => id}) == :ok
-        assert_receive {:control_hint, ^atom, ^id}
-      else
-        assert Hints.deliver(%{"kind" => kind, "id" => id}) == :ignored
-      end
+    id =
+      draw(
+        "id",
+        one_of([map(constant(nil), fn _ -> Ecto.UUID.generate() end), string(:printable)])
+      )
+
+    valid? =
+      kind in Enum.map(Hints.kinds(), &Atom.to_string/1) and
+        match?({:ok, ^id}, Ecto.UUID.cast(id))
+
+    if valid? do
+      atom = String.to_existing_atom(kind)
+      :ok = Hints.subscribe(atom, id)
+      assert Hints.deliver(%{"kind" => kind, "id" => id}) == :ok
+      assert_receive {:control_hint, ^atom, ^id}
+    else
+      assert Hints.deliver(%{"kind" => kind, "id" => id}) == :ignored
     end
   end
 

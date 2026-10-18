@@ -23,93 +23,89 @@ defmodule Marshall.Mailer.SMTPTest do
     # connection, preserving pending ciphertext. All retries MUST retain decoded
     # payload and Message-ID, and terminal replay MUST open no SMTP connection.
     # Each case retains its actual ten-second post-DATA timeout attempts.
-    property name, profile: :ci, test_cases: 3 do
+    property name, profile: :ci, test_cases: 100 do
       mode = unquote(mode)
 
-      check all(
-              uncertain_attempts <- integer(1..2),
-              rejection? <- boolean(),
-              terminal_replays <- integer(1..3),
-              test_cases: 3
-            ) do
-        {record, expected_token} = enqueue()
-        ciphertext = record.encrypted_payload
+      uncertain_attempts = draw("uncertain_attempts", integer(1..2))
+      rejection? = draw("rejection?", boolean())
+      terminal_replays = draw("terminal_replays", integer(1..3))
+      {record, expected_token} = enqueue()
+      ciphertext = record.encrypted_payload
 
-        identities =
-          Enum.map(1..uncertain_attempts, fn _attempt ->
-            server = listener(mode, stall_after_data: true)
-            configure(server, Atom.to_string(mode))
-            started = System.monotonic_time(:millisecond)
-            assert {:error, _} = deliver(record)
-            elapsed = System.monotonic_time(:millisecond) - started
-            assert elapsed >= 9_000 and elapsed < 13_000
-            assert_receive {:smtp_connection, connection_owner}
-            assert_receive {:smtp_auth, true}
-            assert_receive {:smtp_message, bytes}
-            assert_receive {:smtp_data_stalled, owner}
-            assert owner == connection_owner
-            assert_receive {:smtp_data_closed, ^owner}, 1000
+      identities =
+        Enum.map(1..uncertain_attempts, fn _attempt ->
+          server = listener(mode, stall_after_data: true)
+          configure(server, Atom.to_string(mode))
+          started = System.monotonic_time(:millisecond)
+          assert {:error, _} = deliver(record)
+          elapsed = System.monotonic_time(:millisecond) - started
+          assert elapsed >= 9_000 and elapsed < 13_000
+          assert_receive {:smtp_connection, connection_owner}
+          assert_receive {:smtp_auth, true}
+          assert_receive {:smtp_message, bytes}
+          assert_receive {:smtp_data_stalled, owner}
+          assert owner == connection_owner
+          assert_receive {:smtp_data_closed, ^owner}, 1000
 
-            current =
-              Ash.get!(AuthEmail, record.id, actor: Marshall.Authorization.SystemActor.compute())
+          current =
+            Ash.get!(AuthEmail, record.id, actor: Marshall.Authorization.SystemActor.compute())
 
-            assert current.status == :pending
-            # Compare only the boolean so failed assertions cannot print ciphertext.
-            unchanged? = current.encrypted_payload == ciphertext
-            assert unchanged?
-            message_identity(bytes)
-          end)
-
-        identities =
-          if rejection? do
-            server = listener(mode, reply: "451 synthetic refusal\r\n")
-            configure(server, Atom.to_string(mode))
-            assert {:error, _} = deliver(record)
-            assert_receive {:smtp_connection, _}
-            assert_receive {:smtp_auth, true}
-            assert_receive {:smtp_message, bytes}
-
-            assert %{status: :pending} =
-                     current =
-                     Ash.get!(AuthEmail, record.id,
-                       actor: Marshall.Authorization.SystemActor.compute()
-                     )
-
-            unchanged? = current.encrypted_payload == ciphertext
-            assert unchanged?
-
-            [message_identity(bytes) | identities]
-          else
-            identities
-          end
-
-        server = listener(mode)
-        configure(server, Atom.to_string(mode))
-        assert {:ok, %{status: :delivered, encrypted_payload: nil}} = deliver(record)
-        assert_receive {:smtp_connection, _}
-        assert_receive {:smtp_auth, true}
-        assert_receive {:smtp_message, bytes}
-        final_identity = message_identity(bytes)
-
-        linked_token? =
-          case Regex.run(~r{/magic_link/([^\s]+)}, decoded_text(bytes) || "") do
-            [_, observed] -> Plug.Crypto.secure_compare(observed, expected_token)
-            _ -> false
-          end
-
-        assert linked_token?
-        assert Enum.all?(identities, &(&1 == final_identity))
-        {message_id, _, _} = final_identity
-        assert message_id == "<#{record.id}@overalls.invalid>"
-
-        Enum.each(1..terminal_replays, fn _ ->
-          assert {:ok, %{status: :delivered, encrypted_payload: nil}} = deliver(record)
+          assert current.status == :pending
+          # Compare only the boolean so failed assertions cannot print ciphertext.
+          unchanged? = current.encrypted_payload == ciphertext
+          assert unchanged?
+          message_identity(bytes)
         end)
 
-        refute_receive {:smtp_connection, _}
-        refute_receive {:smtp_auth, _}
-        refute_receive {:smtp_message, _}
-      end
+      identities =
+        if rejection? do
+          server = listener(mode, reply: "451 synthetic refusal\r\n")
+          configure(server, Atom.to_string(mode))
+          assert {:error, _} = deliver(record)
+          assert_receive {:smtp_connection, _}
+          assert_receive {:smtp_auth, true}
+          assert_receive {:smtp_message, bytes}
+
+          assert %{status: :pending} =
+                   current =
+                   Ash.get!(AuthEmail, record.id,
+                     actor: Marshall.Authorization.SystemActor.compute()
+                   )
+
+          unchanged? = current.encrypted_payload == ciphertext
+          assert unchanged?
+
+          [message_identity(bytes) | identities]
+        else
+          identities
+        end
+
+      server = listener(mode)
+      configure(server, Atom.to_string(mode))
+      assert {:ok, %{status: :delivered, encrypted_payload: nil}} = deliver(record)
+      assert_receive {:smtp_connection, _}
+      assert_receive {:smtp_auth, true}
+      assert_receive {:smtp_message, bytes}
+      final_identity = message_identity(bytes)
+
+      linked_token? =
+        case Regex.run(~r{/magic_link/([^\s]+)}, decoded_text(bytes) || "") do
+          [_, observed] -> Plug.Crypto.secure_compare(observed, expected_token)
+          _ -> false
+        end
+
+      assert linked_token?
+      assert Enum.all?(identities, &(&1 == final_identity))
+      {message_id, _, _} = final_identity
+      assert message_id == "<#{record.id}@overalls.invalid>"
+
+      Enum.each(1..terminal_replays, fn _ ->
+        assert {:ok, %{status: :delivered, encrypted_payload: nil}} = deliver(record)
+      end)
+
+      refute_receive {:smtp_connection, _}
+      refute_receive {:smtp_auth, _}
+      refute_receive {:smtp_message, _}
     end
   end
 

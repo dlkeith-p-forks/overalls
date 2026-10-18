@@ -70,7 +70,7 @@ def enrolled(browser: Browser, name: str) -> tuple[BrowserContext, Page]:
         page.wait_for_url("**/overview")
     except (Error, AssertionError):
         raise AssertionError("Fixture sign-in navigation failed") from None
-    visit(page, "/settings/security")
+    visit(page, "/settings")
     page.locator("#add-passkey").click()
     expect(page.locator("#passkey-list > div")).to_have_count(1)
     page.locator("#verify-passkey").click()
@@ -114,7 +114,7 @@ def main() -> None:
         _, operator = enrolled(browser, "operator")
         _, target = enrolled(browser, "target")
         security = actor_context.new_page()
-        visit(security, "/settings/security")
+        visit(security, "/settings")
         visit(mounted, "/admin/users")
         expect(mounted.locator(f"#reset-mfa-{target_id}")).to_be_visible()
 

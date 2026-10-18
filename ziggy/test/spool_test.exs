@@ -51,93 +51,98 @@ defmodule Ziggy.SpoolTest do
   # Generated saturation and partial-ack histories MUST retain every unacked
   # completed receipt through restart and reclaim exactly the acknowledged slots.
   property "completed receipts consume slots until their exact acknowledgements", %{dir: root} do
-    check all(
-            capacity <- integer(1..6),
-            acknowledged <- list_of(boolean(), length: capacity),
-            max_runs: 20
-          ) do
-      directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
-      File.mkdir!(directory)
-      File.chmod!(directory, 0o700)
-      {:ok, spool} = Ziggy.Spool.start_link(directory: directory, max_requests: capacity)
-      originals = Enum.map(1..capacity, &request_id/1)
-      assert Enum.all?(originals, &OverallsProtocol.uuid?/1)
+    capacity = draw("capacity", integer(1..6))
+    acknowledged = draw("acknowledged", list_of(boolean(), length: capacity))
 
-      for id <- originals do
-        assert :ok = Ziggy.Spool.admit(spool, Map.put(admission(), "request_id", id))
-        assert :ok = Ziggy.Spool.complete(spool, id, completion())
-        assert File.exists?(Path.join(directory, id <> ".json"))
-      end
+    directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
+    File.mkdir!(directory)
+    File.chmod!(directory, 0o700)
+    Hegel.on_cleanup(fn -> File.rm_rf!(directory) end)
+    {:ok, spool} = Ziggy.Spool.start_link(directory: directory, max_requests: capacity)
+    Hegel.on_cleanup(fn -> if Process.alive?(spool), do: GenServer.stop(spool) end)
+    originals = Enum.map(1..capacity, &request_id/1)
+    assert Enum.all?(originals, &OverallsProtocol.uuid?/1)
 
-      assert {:error, :spool_full} =
-               Ziggy.Spool.admit(spool, Map.put(admission(), "request_id", request_id(99)))
-
-      retained =
-        originals
-        |> Enum.zip(acknowledged)
-        |> Enum.flat_map(fn {id, ack?} ->
-          if ack? do
-            assert :ok = Ziggy.Spool.acknowledge(spool, id)
-            refute File.exists?(Path.join(directory, id <> ".json"))
-            []
-          else
-            [id]
-          end
-        end)
-
-      expected_pending =
-        Ziggy.Spool.pending(spool)
-        |> Enum.sort_by(&get_in(&1, ["admission", "request_id"]))
-
-      retained_bytes = Map.new(retained, &{&1, File.read!(Path.join(directory, &1 <> ".json"))})
-      before_slo = stable_slo(spool)
-
-      GenServer.stop(spool)
-      {:ok, recovered} = Ziggy.Spool.start_link(directory: directory, max_requests: capacity)
-
-      recovered_pending =
-        Ziggy.Spool.pending(recovered)
-        |> Enum.sort_by(&get_in(&1, ["admission", "request_id"]))
-
-      pending_ids = Enum.map(recovered_pending, &get_in(&1, ["admission", "request_id"]))
-
-      assert pending_ids == Enum.sort(retained)
-      assert recovered_pending == expected_pending
-      assert stable_slo(recovered) == before_slo
-
-      assert Map.new(retained, &{&1, File.read!(Path.join(directory, &1 <> ".json"))}) ==
-               retained_bytes
-
-      assert Ziggy.Spool.ready?(recovered) == Enum.any?(acknowledged)
-
-      replacements = Enum.count(acknowledged, & &1)
-
-      if replacements > 0 do
-        for offset <- 1..replacements do
-          id = request_id(100 + offset)
-          assert OverallsProtocol.uuid?(id)
-          assert :ok = Ziggy.Spool.admit(recovered, Map.put(admission(), "request_id", id))
-          assert :ok = Ziggy.Spool.complete(recovered, id, completion())
-        end
-      end
-
-      assert length(Ziggy.Spool.pending(recovered)) == capacity
-      assert Ziggy.Spool.ready?(recovered) == false
-
-      for %{"admission" => %{"request_id" => id}} <- Ziggy.Spool.pending(recovered) do
-        assert :ok = Ziggy.Spool.acknowledge(recovered, id)
-      end
-
-      assert Ziggy.Spool.pending(recovered) == []
-      assert Ziggy.Spool.ready?(recovered)
-      totals = stable_slo(recovered)
-      assert totals.requests == capacity + replacements
-      GenServer.stop(recovered)
-      final = start_supervised!({Ziggy.Spool, directory: directory, max_requests: capacity})
-      assert Ziggy.Spool.pending(final) == []
-      assert stable_slo(final) == totals
-      stop_supervised!(Ziggy.Spool)
+    for id <- originals do
+      assert :ok = Ziggy.Spool.admit(spool, Map.put(admission(), "request_id", id))
+      assert :ok = Ziggy.Spool.complete(spool, id, completion())
+      assert File.exists?(Path.join(directory, id <> ".json"))
     end
+
+    assert {:error, :spool_full} =
+             Ziggy.Spool.admit(spool, Map.put(admission(), "request_id", request_id(99)))
+
+    retained =
+      originals
+      |> Enum.zip(acknowledged)
+      |> Enum.flat_map(fn {id, ack?} ->
+        if ack? do
+          assert :ok = Ziggy.Spool.acknowledge(spool, id)
+          refute File.exists?(Path.join(directory, id <> ".json"))
+          []
+        else
+          [id]
+        end
+      end)
+
+    expected_pending =
+      Ziggy.Spool.pending(spool)
+      |> Enum.sort_by(&get_in(&1, ["admission", "request_id"]))
+
+    retained_bytes = Map.new(retained, &{&1, File.read!(Path.join(directory, &1 <> ".json"))})
+    before_slo = stable_slo(spool)
+
+    GenServer.stop(spool)
+    {:ok, recovered} = Ziggy.Spool.start_link(directory: directory, max_requests: capacity)
+    Hegel.on_cleanup(fn -> if Process.alive?(recovered), do: GenServer.stop(recovered) end)
+
+    recovered_pending =
+      Ziggy.Spool.pending(recovered)
+      |> Enum.sort_by(&get_in(&1, ["admission", "request_id"]))
+
+    pending_ids = Enum.map(recovered_pending, &get_in(&1, ["admission", "request_id"]))
+
+    assert pending_ids == Enum.sort(retained)
+    assert recovered_pending == expected_pending
+    assert stable_slo(recovered) == before_slo
+
+    assert Map.new(retained, &{&1, File.read!(Path.join(directory, &1 <> ".json"))}) ==
+             retained_bytes
+
+    assert Ziggy.Spool.ready?(recovered) == Enum.any?(acknowledged)
+
+    replacements = Enum.count(acknowledged, & &1)
+
+    if replacements > 0 do
+      for offset <- 1..replacements do
+        id = request_id(100 + offset)
+        assert OverallsProtocol.uuid?(id)
+        assert :ok = Ziggy.Spool.admit(recovered, Map.put(admission(), "request_id", id))
+        assert :ok = Ziggy.Spool.complete(recovered, id, completion())
+      end
+    end
+
+    assert length(Ziggy.Spool.pending(recovered)) == capacity
+    assert Ziggy.Spool.ready?(recovered) == false
+
+    for %{"admission" => %{"request_id" => id}} <- Ziggy.Spool.pending(recovered) do
+      assert :ok = Ziggy.Spool.acknowledge(recovered, id)
+    end
+
+    assert Ziggy.Spool.pending(recovered) == []
+    assert Ziggy.Spool.ready?(recovered)
+    totals = stable_slo(recovered)
+    assert totals.requests == capacity + replacements
+    GenServer.stop(recovered)
+
+    final =
+      Overalls.HegelFixtures.start_supervised!(
+        {Ziggy.Spool, directory: directory, max_requests: capacity}
+      )
+
+    assert Ziggy.Spool.pending(final) == []
+    assert stable_slo(final) == totals
+    stop_supervised!(Ziggy.Spool)
   end
 
   # @cc [owner:ghuntley,label:verification] spool-generated-id-canonical

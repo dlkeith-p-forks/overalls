@@ -302,10 +302,10 @@ test("clipboard queries are exact and read responses are bounded UTF-8", () => {
 });
 
 test("activity age handles future clocks and minute/hour/day transitions", () => {
-  assert.equal(relativeActivity(1001, 1000), "just now");
-  assert.equal(relativeActivity(0, 60000), "1m ago");
-  assert.equal(relativeActivity(0, 3600000), "1h ago");
-  assert.equal(relativeActivity(0, 86400000), "1d ago");
+  assert.equal(relativeActivity(1001, 1000), "now");
+  assert.equal(relativeActivity(0, 60000), "1 minute ago");
+  assert.equal(relativeActivity(0, 3600000), "1 hour ago");
+  assert.equal(relativeActivity(0, 86400000), "yesterday");
 });
 
 test("input batching preserves binary bytes and bounds network frames", (t) => {

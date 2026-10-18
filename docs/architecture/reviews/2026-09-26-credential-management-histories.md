@@ -44,8 +44,8 @@ discrepancy adjudications are documented below.
 Account credential self-management through the real `Marshall.Accounts` user
 `:security` action (`Marshall.Accounts.Security`) and the
 `Marshall.SSH.Key` owner actions (`Marshall.SSH.KeyActions`), the same actions
-the [`Security` settings page](../../../marshall/lib/marshall_web/live/security_live.ex)
-and the [SSH key page](../../../marshall/lib/marshall_web/live/ssh_keys_live.ex)/
+the [`Security` settings page](../../../marshall/lib/marshall_web/live/account_live.ex)
+and the [SSH key page](../../../marshall/lib/marshall_web/live/account_live.ex)/
 [SSH command surface](../../../marshall/lib/marshall/ssh/commands.ex) invoke.
 
 ### Allowed results

@@ -1,7 +1,5 @@
 defmodule Audi.HTTP.FrontTest do
   use ExUnit.Case, async: true
-  import Hegel
-  import Hegel.Gen
   import Plug.Conn
   alias Audi.Control.Client
   @zone "apps.example"
@@ -126,12 +124,9 @@ defmodule Audi.HTTP.FrontTest do
   # @cc [owner:ghuntley,label:verification;protocol] audi-fleet-version-owner-retirement
   # Verified 426 at fetch, acknowledgement or catalog MUST retire even a
   # suspended scheduler, stop later control work and preserve installed expiry.
-  property "fleet version refusal retires suspended readiness without reopening polling", c,
-    profile: :ci,
-    test_cases: 1 do
-    generated = draw("stage", member_of([:fetch, :ack, :catalog, :ready, :catalog_with_job]))
-
-    for stage <- [:fetch, :ack, :catalog, :ready, :catalog_with_job, generated] do
+  test "fleet version refusal retires suspended readiness without reopening polling", c do
+    # Exhaustively visit the finite matrix; a random duplicate adds no coverage.
+    for stage <- [:fetch, :ack, :catalog, :ready, :catalog_with_job] do
       tasks = start_supervised!({Task.Supervisor, max_children: 20})
 
       {:ok, listener} =

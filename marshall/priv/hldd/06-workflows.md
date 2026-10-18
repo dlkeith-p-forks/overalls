@@ -49,8 +49,8 @@ consumed once. No workflow, catalog intent or audit row is admitted merely by
 opening the ceremony. Verification permits the same action to retry with fresh
 login, role, fifteen-minute receipt, Cedar and workflow-generation checks.
 
-If a new administrator has no key, Security settings first require fresh email
-authentication for enrollment. The user returns to the original page and
+If a new administrator has no key, the sign-in section of the account page
+(`/settings#security`) first requires fresh email authentication for enrollment. The user returns to the original page and
 explicitly submits the action again; setup retains only an allowlisted return
 path, never administrative arguments or a pending continuation.
 Cancelled, expired, replayed or substituted continuations, stale targets and
@@ -387,40 +387,40 @@ The diagnostic cannot retrospectively classify the ninth failed capture.
 
 ## Relocation
 
-Relocation uses one full disk copy, with a separate sealed memory/device
-checkpoint for a running or paused source
-([ADR-0197](repo:docs/architecture/decisions/0197-memory-suspension-and-demand-wake.md)).
-Fresh destination connectivity precedes source quiescence. A running machine is
-paused, its coherent disk and memory state are copied, and the destination resumes
-the same guest boot after committed handoff. An already paused machine remains
-paused after an explicit move. A stopped machine remains a disk-only move.
-There is no pre-copy: downtime includes full transfer and restore, but does not
-include a guest reboot. The coordinator reserves destination disk, checkpoint
-and required compute capacity plus endpoint transfer slots before handoff.
+Relocation is one stopped full copy
+([ADR-0155](repo:docs/architecture/decisions/0155-stopped-only-relocation.md)).
+A move reserves one disk footprint (plus compute for a running machine) on one
+destination pool and a transfer slot per endpoint, prepares pinned transfer
+authority, and for a running machine proves fresh destination connectivity before
+stopping it. After the recorded physical stop the source takes its single
+`lilly-b` snapshot and sends one full ZFS stream; the destination receives,
+adopts, and the handoff commits placement and execution epoch. Destination
+readiness precedes source retirement. The machine's user-facing identity stays
+stable. There is no live pre-copy: a running machine is down for the whole copy
+plus a reboot, and no temporary headroom is reserved on either endpoint.
+The database enforces probe-before-stop for every relocation row; the earlier
+pre-copy history was exported and purged under ADR-0159.
 
 ```mermaid
 stateDiagram-v2
-  preparing --> checking_transfer: pinned authority
-  checking_transfer --> stopping_source: fresh probe
-  stopping_source --> copying: pause or stop physically confirmed
-  copying --> importing: disk and optional checkpoint received
-  importing --> handoff: both components adopted
+  preparing --> checking_transfer: destination key recorded
+  checking_transfer --> stopping_source: fresh probe, running source
+  checking_transfer --> copying: originally stopped source
+  stopping_source --> copying: recorded physical stop
+  copying --> importing: full stream received
+  importing --> handoff: disk adopted
   handoff --> checking_destination: placement and epoch committed
-  checking_destination --> source_cleanup: required destination state proven
-  source_cleanup --> complete: source artifacts reclaimed
+  checking_destination --> source_cleanup: destination ready
+  source_cleanup --> complete: source reclaimed
+  checking_destination --> retrying_destination: fenced explicit retry
   copying --> restoring_source: cancel before commit
-  restoring_source --> cancelled_cleanup: original desired state restored
+  restoring_source --> cancelled_cleanup: source restored
   cancelled_cleanup --> cancelled: destination reclaimed
 ```
 
 Cancellation is accepted only before the handoff commit, from any phase up to
-`handoff`, and restores the original running, paused or stopped source under fresh
+`handoff`, and restores the original running or stopped source under fresh
 authority. Deletion supersedes any unfinished phase through `deleting_copies`.
-
-An ambiguous or failed memory restore retains its execution fence and storage
-holds. It cannot replay the consumed checkpoint or use the former cold destination
-boot retry. Historical retry receipts remain readable; new retry admission refuses.
-Explicit Stop retires memory before an intentional later cold Start.
 
 Transfer byte counters and stream diagnostics emit independently through
 OpenTelemetry and structured logs. Relocation commands carry leased authority;

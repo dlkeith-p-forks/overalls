@@ -107,52 +107,53 @@ defmodule Marshall.Control.AudiServiceTest do
         {"dns-snapshot", %{"zone" => "apps.example.test", "extra" => 1}}
       ])
 
-    check all(
-            route_body <- cases,
-            credential <- member_of([:gateway, :dns]),
-            version <- member_of([1, 1, 1, 2]),
-            test_cases: 40
-          ) do
-      {route, body} = route_body
-      token = Map.fetch!(c, credential)
-      document = Map.put(body, "version", version)
-      http = api(token, document, route)
-      {:ok, principal} = Audi.authenticate(token)
+    Hegel.check(
+      fn ->
+        route_body = draw("route_body", cases)
+        credential = draw("credential", member_of([:gateway, :dns]))
+        version = draw("version", member_of([1, 1, 1, 2]))
+        {route, body} = route_body
+        token = Map.fetch!(c, credential)
+        document = Map.put(body, "version", version)
+        http = api(token, document, route)
+        {:ok, principal} = Audi.authenticate(token)
 
-      socket =
-        Audi.handle_request("audi." <> String.replace(route, "-", "_"), document, principal)
+        socket =
+          Audi.handle_request("audi." <> String.replace(route, "-", "_"), document, principal)
 
-      case {http.status, socket} do
-        # A snapshot's revision advances with every read; nothing else may differ.
-        {200, {:ok, value}} ->
-          assert Map.delete(value, "revision") ==
-                   Map.delete(Jason.decode!(http.resp_body), "revision")
+        case {http.status, socket} do
+          # A snapshot's revision advances with every read; nothing else may differ.
+          {200, {:ok, value}} ->
+            assert Map.delete(value, "revision") ==
+                     Map.delete(Jason.decode!(http.resp_body), "revision")
 
-        {400, {:error, "invalid_request"}} ->
-          :ok
+          {400, {:error, "invalid_request"}} ->
+            :ok
 
-        {401, {:error, name}} ->
-          assert name in ["unauthorized", "authentication_required"]
+          {401, {:error, name}} ->
+            assert name in ["unauthorized", "authentication_required"]
 
-        {403, {:error, "forbidden"}} ->
-          :ok
+          {403, {:error, "forbidden"}} ->
+            :ok
 
-        {409, {:error, "host_key_conflict"}} ->
-          :ok
+          {409, {:error, "host_key_conflict"}} ->
+            :ok
 
-        {426, {:error, "unsupported_version"}} ->
-          :ok
+          {426, {:error, "unsupported_version"}} ->
+            :ok
 
-        {429, {:error, name}} ->
-          assert name in ["capacity", "session_limit"]
+          {429, {:error, name}} ->
+            assert name in ["capacity", "session_limit"]
 
-        {503, {:error, "unavailable"}} ->
-          :ok
+          {503, {:error, "unavailable"}} ->
+            :ok
 
-        other ->
-          flunk("transport classes differ for #{route}: #{inspect(other)}")
-      end
-    end
+          other ->
+            flunk("transport classes differ for #{route}: #{inspect(other)}")
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   @spec api(binary(), map(), String.t()) :: Plug.Conn.t()

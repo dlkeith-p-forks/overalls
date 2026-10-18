@@ -1,21 +1,8 @@
 # Browser editors, terminals, SSH, and management
 
-## Connecting to a suspended machine
+## Language and text direction
 
-The machine controls expose Pause and Resume. Resume retains the guest's memory
-state and may wait for compatible capacity. A stopped machine still needs Start.
-Opening a browser terminal rechecks current Cedar access and the catalog terminal
-capability before joining wake demand. Pending wake grants neither a guest control
-nor a terminal ticket. Boot-log viewing, passive viewer authority checks and server-side refresh timers
-remain diagnostic/observational and do not wake. Only a fresh authorized connection
-or explicit terminal open may admit demand. Relocation retires old-placement
-terminal registry authority; reconnect is required and surviving PTY reattachment
-across a move is not promised.
-
-Authorized SSH, published web applications and editor requests can wait through
-resume and automatic relocation. Authentication and publication/account authority
-remain renewable while waiting. Existing connections can require reconnection
-after a move; snapshot transport reset does not preserve established sockets.
+[ADR-0197](repo:docs/architecture/decisions/0197-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.
 
 ## Inline privileged browser actions
 
@@ -26,8 +13,9 @@ retains only its exact server-bound actor/login/resource/action/arguments and
 never replays an arbitrary browser event after verification. A successful step-up
 creates a fixed fifteen-minute receipt and retries once after fresh admission.
 
-No-key administrators visit Security settings for fresh-email first enrollment,
-then return to the original page and explicitly retry the action. Cancel,
+No-key administrators are sent to the sign-in section of the account page
+(`/settings#security`) for fresh-email first enrollment, then return to the
+original page and explicitly retry the action. Cancel,
 ceremony failure, continuation expiry, another
 tab's input, stale resource state or loss of login/role/key authority refuse the
 mutation and keep the page usable for permitted reads. Passkey changes require
@@ -75,12 +63,33 @@ Retirement and current login/write/execution refusals remain authoritative.
 Pre-cutover leases closed during the breaking database migration; this continuity
 rule applies to subsequent generated-identity admissions.
 
+The editor-bearing capability is currently limited to the reviewed version-4
+Linux image contract. Windows `windows-v1` and native FreeBSD/OmniOS
+(`freebsd-v1` and `illumos-v1`) rows are refused before this flow because their
+protocol capabilities set `editor: false`; their terminal, SSH, readiness or
+agent receipts do not widen that boundary. The Linux package and authority
+checks also do not constitute a current-revision browser journey: no current
+NixOS or Ubuntu sign-in, edit/save/readback and recovery receipt is recorded in
+this status review, and the captured Alma/Arch receipts retain their earlier
+image and source scope.
+
 Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
 shares one header. A bordered heading box carries the machine name, then an
 operating-system label that is the registered display name of the machine's
 immutable image (`[NixOS]`, `[Ubuntu 26.04 LTS]`, `[Windows Server 2025]`), then
 its state label (`[Running]`, `[Stopping]`, …); a machine whose image row is
-missing shows no operating-system label rather than a placeholder. Beneath them
+missing shows no operating-system label rather than a placeholder. Every status
+label is one bracketed word on the character grid whose text names the state;
+severity is weight, style or inverse video, never colour: `[Pinned]` and the
+operating system are secondary-colour metadata, `[Stopped]` is plain text,
+`[Running]` is bold, transitions (`[Starting]`, `[Stopping]`, `[Deleting]`,
+`[Pending]`, `[Unknown]`) are italic, and `[Failed]` is a bold inverse-video
+block one row tall with a one-cell margin inside the block. The label carries
+the observed state in `data-state` and the severity in `data-tone` (`danger`,
+`success`, `pending`, `muted`, or none for neutral states) on the Overview,
+the Machines list and the machine header alike; the tone is decided in the
+same order as the text, so a failed machine with delete intent reads
+`[Deleting]` as a transition rather than `[Failed]`. Beneath them
 sit the resource facts (vCPU, memory, disk, profile) and the machine ID with a
 one-line **Copy** control; the authorized power actions and **Open VS Code**
 stay on the right and wrap under the summary on phone widths. The "Connect from
@@ -195,6 +204,11 @@ The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant
 source commit permits same-origin framing for the upstream browser extension host.
 Other editor responses deny framing. Foreign commits, unversioned paths and
 suffix paths cannot inherit that exception.
+
+The browser-fleet fixture retries focus custody before submitting a palette
+command and stops its fixture-owned personal worker after the policy probe. Those
+actions prevent stale Chromium focus and worker processes from contaminating a
+later fixture, but they add no product authority, transport or editor evidence.
 
 An expired/revoked personal cookie or its stored login requires authentication
 again and redirects a safe browser visit into the fixed approval/sign-in flow.
@@ -642,8 +656,18 @@ The dead render trusts only the saved zone. `MarshallWeb.LiveUserAuth` assigns
 one-minute tick refreshes `now` only after fresh-login validation on required
 and security views. Optional and public views retain their existing behavior.
 
-`/settings/profile` (reached from Profile at the top of "Your account" and from
-`/settings`) shows the email read-only, a `<select>` of about 160 curated zones
+The signed-in sidebar groups Overview through Teams under "Your workspace";
+Account, AI usage and Browser extension under "Your account"; and Field notes,
+HLDD and Source code under a separate "Reference" section. In the Control room
+the sidebar shows only the administration tree; neither "Your account" nor
+"Reference" is rendered there. Each SSH key on the
+account page carries an inline Description field with Rename.
+
+The profile section of the account page (`/settings#profile`, reached from the
+single Account entry at the top of "Your account" and from the account menu's
+clock; [ADR-0196](repo:docs/architecture/decisions/0196-single-account-settings-page.md)
+merged the former Profile, Security and SSH keys pages into this one LiveView
+with a numbered section index) shows the email read-only, a `<select>` of about 160 curated zones
 labelled `(GMT+09:30) Adelaide` from the offset in force now (so daylight saving
 is reflected), Save and Clear, a status line naming the source, and the viewer's
 live local clock. A detected browser zone outside the curated list is added to
@@ -669,7 +693,7 @@ email alone; the browser zone is never shown to others. Lines inside LiveView
 streams (machine and thread grants) refresh when the list is re-read, not on the
 minute tick. Terminal viewers show Linux guest names, not accounts, and are
 unchanged. Evidence is in
-[profile_live_test.exs](repo:marshall/test/marshall_web/profile_live_test.exs),
+[account_live_test.exs](repo:marshall/test/marshall_web/account_live_test.exs),
 [time_components_test.exs](repo:marshall/test/marshall_web/time_components_test.exs)
 and the Hegel properties in
 [time_zones_property_test.exs](repo:marshall/test/marshall/accounts/time_zones_property_test.exs);

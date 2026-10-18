@@ -7,16 +7,18 @@ defmodule Brady.DestinationTest do
   property "all guest/private sources remain denied as proxy destinations" do
     {:ok, policy} = Destination.policy([])
 
-    check all(b <- integer(0..255), c <- integer(0..255), port <- integer(1..65535)) do
-      for ip <- [
-            {10, b, c, 1},
-            {127, b, c, 1},
-            {192, 168, b, c},
-            {169, 254, b, c},
-            {172, 16, b, c}
-          ] do
-        refute Destination.allowed?(ip, port, policy)
-      end
+    b = draw("b", integer(0..255))
+    c = draw("c", integer(0..255))
+    port = draw("port", integer(1..65535))
+
+    for ip <- [
+          {10, b, c, 1},
+          {127, b, c, 1},
+          {192, 168, b, c},
+          {169, 254, b, c},
+          {172, 16, b, c}
+        ] do
+      refute Destination.allowed?(ip, port, policy)
     end
   end
 
@@ -57,35 +59,32 @@ defmodule Brady.DestinationTest do
   # different addresses. HTTPS admission MUST NOT depend on that agreement;
   # plain HTTP authority still MUST resolve to the original destination.
   property "HTTPS admits any resolver view while HTTP requires the original address" do
-    check all(
-            a <- integer(1..223),
-            b <- integer(0..255),
-            dialled <- integer(1..254),
-            resolved <- integer(1..254),
-            port <- member_of([80, 443, 8443]),
-            resolver_result <- member_of([:agree, :disagree, :error])
-          ) do
-      destination = {{a, b, 0, dialled}, port}
+    a = draw("a", integer(1..223))
+    b = draw("b", integer(0..255))
+    dialled = draw("dialled", integer(1..254))
+    resolved = draw("resolved", integer(1..254))
+    port = draw("port", member_of([80, 443, 8443]))
+    resolver_result = draw("resolver_result", member_of([:agree, :disagree, :error]))
+    destination = {{a, b, 0, dialled}, port}
 
-      resolver = fn "github.com" ->
-        case resolver_result do
-          :agree -> {:ok, [{a, b, 0, dialled}]}
-          :disagree -> {:ok, [{a, b, 1, resolved}]}
-          :error -> {:error, :timeout}
-        end
+    resolver = fn "github.com" ->
+      case resolver_result do
+        :agree -> {:ok, [{a, b, 0, dialled}]}
+        :disagree -> {:ok, [{a, b, 1, resolved}]}
+        :error -> {:error, :timeout}
       end
+    end
 
-      assert Destination.acceptable?(:https, "github.com", port, destination, resolver)
+    assert Destination.acceptable?(:https, "github.com", port, destination, resolver)
 
-      assert Destination.acceptable?(:http, "github.com", port, destination, resolver) ==
-               (resolver_result == :agree)
+    assert Destination.acceptable?(:http, "github.com", port, destination, resolver) ==
+             (resolver_result == :agree)
 
-      # Port and hostname validity still bind HTTPS admission.
-      refute Destination.acceptable?(:https, "github.com", port + 1, destination, resolver)
+    # Port and hostname validity still bind HTTPS admission.
+    refute Destination.acceptable?(:https, "github.com", port + 1, destination, resolver)
 
-      for invalid <- ["", "-bad.example", "a..b", "exa mple.com", "Example.COM."] do
-        refute Destination.acceptable?(:https, invalid, port, destination, resolver)
-      end
+    for invalid <- ["", "-bad.example", "a..b", "exa mple.com", "Example.COM."] do
+      refute Destination.acceptable?(:https, invalid, port, destination, resolver)
     end
   end
 end

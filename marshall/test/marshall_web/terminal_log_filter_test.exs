@@ -5,52 +5,54 @@ defmodule MarshallWeb.TerminalLogFilterTest do
   import ExUnit.CaptureLog
 
   property "only the closed viewer refusal reasons survive tagged process redaction" do
-    check all(
-            secret <- string(:alphanumeric, min_length: 24),
-            reason <-
-              member_of([
-                :authority,
-                :authority_unconfirmed,
-                :authority_login,
-                :authority_session,
-                :authority_host,
-                :authority_writer,
-                :input_window,
-                :output_window,
-                :input_ack,
-                :output_ack,
-                :slow_viewer
-              ])
-          ) do
-      event = %{
-        msg: {:string, secret},
-        meta: %{
-          marshall_terminal: true,
-          event: "terminal.viewer_refused",
-          reason: reason,
-          bytes: secret
-        }
+    secret = draw("secret", string(:alphanumeric, min_length: 24))
+
+    reason =
+      draw(
+        "reason",
+        member_of([
+          :authority,
+          :authority_unconfirmed,
+          :authority_login,
+          :authority_session,
+          :authority_host,
+          :authority_writer,
+          :input_window,
+          :output_window,
+          :input_ack,
+          :output_ack,
+          :slow_viewer
+        ])
+      )
+
+    event = %{
+      msg: {:string, secret},
+      meta: %{
+        marshall_terminal: true,
+        event: "terminal.viewer_refused",
+        reason: reason,
+        bytes: secret
       }
+    }
 
-      filtered = MarshallWeb.TerminalLogFilter.filter(event, nil)
-      assert filtered.meta == %{event: "terminal.viewer_refused", reason: reason}
-      assert filtered.msg == {:string, "Terminal process diagnostic (payload redacted)"}
+    filtered = MarshallWeb.TerminalLogFilter.filter(event, nil)
+    assert filtered.meta == %{event: "terminal.viewer_refused", reason: reason}
+    assert filtered.msg == {:string, "Terminal process diagnostic (payload redacted)"}
 
-      for unsafe <- [secret, {:error, secret}, :unexpected] do
-        redacted =
-          MarshallWeb.TerminalLogFilter.filter(put_in(event, [:meta, :reason], unsafe), nil)
+    for unsafe <- [secret, {:error, secret}, :unexpected] do
+      redacted =
+        MarshallWeb.TerminalLogFilter.filter(put_in(event, [:meta, :reason], unsafe), nil)
 
-        assert redacted.meta == %{event: "terminal.viewer_refused"}
-      end
-
-      other =
-        MarshallWeb.TerminalLogFilter.filter(
-          put_in(event, [:meta, :event], "terminal.attached"),
-          nil
-        )
-
-      refute Map.has_key?(other.meta, :reason)
+      assert redacted.meta == %{event: "terminal.viewer_refused"}
     end
+
+    other =
+      MarshallWeb.TerminalLogFilter.filter(
+        put_in(event, [:meta, :event], "terminal.attached"),
+        nil
+      )
+
+    refute Map.has_key?(other.meta, :reason)
   end
 
   test "OTP crash reports from terminal processes exclude reason, queued data and state" do

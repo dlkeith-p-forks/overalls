@@ -118,80 +118,85 @@ defmodule MarshallWeb.ControlAPITest do
   # unbound upgraded socket with protocol_violation without identity or tasks.
   # The same heartbeat counters MUST work after a valid identity-binding hello.
   test "every non-hello first envelope is refused before identity binding", context do
-    check all(drawn <- integer(0..9_007_199_254_740_991), test_cases: 10) do
-      for counter <- [0, 1, 9_007_199_254_740_991, drawn] do
-        messages = [
-          {:ping, counter},
-          {:pong, counter},
-          :resync,
-          {:req, %{id: counter, op: "galileo.identity", body: %{}}},
-          {:res, %{id: counter, result: {:ok, %{}}}},
-          {:res, %{id: counter, result: {:error, "unavailable"}}},
-          {:hint, %{kind: "user", id: context.owner.id}},
-          {:welcome, %{conn: "fixture", heartbeat_ms: 5_000, limits: %{}}}
-        ]
+    Hegel.check(
+      fn ->
+        drawn = draw("drawn", integer(0..9_007_199_254_740_991))
 
-        for message <- messages do
-          state = socket(context)
-          text = Envelope.encode(message)
-          assert {:ok, _decoded} = Envelope.decode(text)
+        for counter <- [0, 1, 9_007_199_254_740_991, drawn] do
+          messages = [
+            {:ping, counter},
+            {:pong, counter},
+            :resync,
+            {:req, %{id: counter, op: "galileo.identity", body: %{}}},
+            {:res, %{id: counter, result: {:ok, %{}}}},
+            {:res, %{id: counter, result: {:error, "unavailable"}}},
+            {:hint, %{kind: "user", id: context.owner.id}},
+            {:welcome, %{conn: "fixture", heartbeat_ms: 5_000, limits: %{}}}
+          ]
 
-          case Socket.handle_in({text, [opcode: :text]}, state) do
-            {:stop, :normal, {4005, ""}, refused} ->
-              identity_absent = is_nil(refused.identity)
-              tasks_empty = refused.tasks == %{}
-              principal_unchanged = refused.principal == state.principal
-              assert identity_absent
+          for message <- messages do
+            state = socket(context)
+            text = Envelope.encode(message)
+            assert {:ok, _decoded} = Envelope.decode(text)
+
+            case Socket.handle_in({text, [opcode: :text]}, state) do
+              {:stop, :normal, {4005, ""}, refused} ->
+                identity_absent = is_nil(refused.identity)
+                tasks_empty = refused.tasks == %{}
+                principal_unchanged = refused.principal == state.principal
+                assert identity_absent
+                assert tasks_empty
+                assert principal_unchanged
+
+              result ->
+                kind =
+                  case message do
+                    {kind, _fields} -> kind
+                    :resync -> :resync
+                  end
+
+                flunk(
+                  "non-hello first envelope was not refused: kind=#{kind}, result=#{result_tag(result)}"
+                )
+            end
+          end
+
+          {welcome, bound} =
+            case hello(socket(context)) do
+              {:push, {:text, welcome}, bound} -> {welcome, bound}
+              result -> flunk("valid hello control failed: result=#{result_tag(result)}")
+            end
+
+          assert {:ok, {:welcome, _}} = Envelope.decode(welcome)
+          identity_bound = not is_nil(bound.identity)
+          assert identity_bound
+
+          case Socket.handle_in({Envelope.encode({:ping, counter}), [opcode: :text]}, bound) do
+            {:push, {:text, pong}, ping_state} ->
+              assert {:ok, {:pong, ^counter}} = Envelope.decode(pong)
+              identity_unchanged = ping_state.identity == bound.identity
+              tasks_empty = ping_state.tasks == %{}
+              assert identity_unchanged
               assert tasks_empty
-              assert principal_unchanged
 
             result ->
-              kind =
-                case message do
-                  {kind, _fields} -> kind
-                  :resync -> :resync
-                end
-
-              flunk(
-                "non-hello first envelope was not refused: kind=#{kind}, result=#{result_tag(result)}"
-              )
-          end
-        end
-
-        {welcome, bound} =
-          case hello(socket(context)) do
-            {:push, {:text, welcome}, bound} -> {welcome, bound}
-            result -> flunk("valid hello control failed: result=#{result_tag(result)}")
+              flunk("bound ping control failed: result=#{result_tag(result)}")
           end
 
-        assert {:ok, {:welcome, _}} = Envelope.decode(welcome)
-        identity_bound = not is_nil(bound.identity)
-        assert identity_bound
+          case Socket.handle_in({Envelope.encode({:pong, counter}), [opcode: :text]}, bound) do
+            {:ok, pong_state} ->
+              identity_unchanged = pong_state.identity == bound.identity
+              tasks_empty = pong_state.tasks == %{}
+              assert identity_unchanged
+              assert tasks_empty
 
-        case Socket.handle_in({Envelope.encode({:ping, counter}), [opcode: :text]}, bound) do
-          {:push, {:text, pong}, ping_state} ->
-            assert {:ok, {:pong, ^counter}} = Envelope.decode(pong)
-            identity_unchanged = ping_state.identity == bound.identity
-            tasks_empty = ping_state.tasks == %{}
-            assert identity_unchanged
-            assert tasks_empty
-
-          result ->
-            flunk("bound ping control failed: result=#{result_tag(result)}")
+            result ->
+              flunk("bound pong control failed: result=#{result_tag(result)}")
+          end
         end
-
-        case Socket.handle_in({Envelope.encode({:pong, counter}), [opcode: :text]}, bound) do
-          {:ok, pong_state} ->
-            identity_unchanged = pong_state.identity == bound.identity
-            tasks_empty = pong_state.tasks == %{}
-            assert identity_unchanged
-            assert tasks_empty
-
-          result ->
-            flunk("bound pong control failed: result=#{result_tag(result)}")
-        end
-      end
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;security] control-property-closed-result-diagnostics

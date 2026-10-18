@@ -17,35 +17,39 @@ defmodule Lilly.Host.CommandTest do
 
   @tag :hegel
   test "bounded utility failures never log private arguments or output", c do
-    check all(bytes <- binary(min_length: 1, max_length: 64), test_cases: 8) do
-      secret = "private-utility-" <> Base.encode16(bytes)
-      format = String.duplicate(secret, div(20_000, byte_size(secret)) + 1)
+    Hegel.check(
+      fn ->
+        bytes = draw("bytes", binary(min_length: 1, max_length: 64))
+        secret = "private-utility-" <> Base.encode16(bytes)
+        format = String.duplicate(secret, div(20_000, byte_size(secret)) + 1)
 
-      log =
-        ExUnit.CaptureLog.capture_log([metadata: @metadata], fn ->
-          stdout =
-            ExUnit.CaptureIO.capture_io(fn ->
-              assert {:error, :command_output_limit} =
-                       Command.run(:stat, [
-                         "--printf",
-                         format,
-                         "--" | List.duplicate(c.fixture_path, 4)
-                       ])
-            end)
+        log =
+          ExUnit.CaptureLog.capture_log([metadata: @metadata], fn ->
+            stdout =
+              ExUnit.CaptureIO.capture_io(fn ->
+                assert {:error, :command_output_limit} =
+                         Command.run(:stat, [
+                           "--printf",
+                           format,
+                           "--" | List.duplicate(c.fixture_path, 4)
+                         ])
+              end)
 
-          assert stdout == ""
-        end)
+            assert stdout == ""
+          end)
 
-      assert log =~ "lilly.utility_unconfirmed"
-      assert log =~ "utility=stat"
-      assert log =~ "command_output_limit"
-      assert log =~ "lease_id=#{c.owner.id}"
-      assert log =~ "duration_ms="
-      refute log =~ secret
-      refute log =~ c.fixture_path
-      assert Lock.current() == c.owner
-      assert {:ok, ^secret} = Command.run(:stat, ["--printf", secret, "--", c.fixture_path])
-    end
+        assert log =~ "lilly.utility_unconfirmed"
+        assert log =~ "utility=stat"
+        assert log =~ "command_output_limit"
+        assert log =~ "lease_id=#{c.owner.id}"
+        assert log =~ "duration_ms="
+        refute log =~ secret
+        refute log =~ c.fixture_path
+        assert Lock.current() == c.owner
+        assert {:ok, ^secret} = Command.run(:stat, ["--printf", secret, "--", c.fixture_path])
+      end,
+      test_cases: 100
+    )
 
     assert :ok = Lock.release(c.owner)
   end

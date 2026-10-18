@@ -51,42 +51,43 @@ defmodule Marshall.Access.PinsPropertyTest do
   # enqueue nothing; an admission MUST then archive every live pin on the VM once
   # the deleted outcome arrives.
   test "deletion is admitted exactly when the owner's pin is absent", c do
-    check all(
-            commands <- list_of(guard_commands(), min_length: 4, max_length: 16),
-            test_cases: 16
-          ) do
-      host_fixture()
-      owner = user()
-      member = user()
-      {:ok, vm} = Compute.provision(request(), actor: owner)
-      share!(vm, owner, member, :manager)
+    Hegel.check(
+      fn ->
+        commands = draw("commands", list_of(guard_commands(), min_length: 4, max_length: 16))
+        host_fixture()
+        owner = user()
+        member = user()
+        {:ok, vm} = Compute.provision(request(), actor: owner)
+        share!(vm, owner, member, :manager)
 
-      sessions = %{
-        owner: session(owner, c.gateway_token),
-        member: session(member, c.gateway_token)
-      }
+        sessions = %{
+          owner: session(owner, c.gateway_token),
+          member: session(member, c.gateway_token)
+        }
 
-      model = %{owner: false, member: false, deleted: false}
+        model = %{owner: false, member: false, deleted: false}
 
-      model =
-        Enum.reduce(commands, model, fn command, model ->
-          step(command, model, vm, %{owner: owner, member: member}, sessions)
-        end)
+        model =
+          Enum.reduce(commands, model, fn command, model ->
+            step(command, model, vm, %{owner: owner, member: member}, sessions)
+          end)
 
-      if model.deleted do
-        assert [%{desired_state: :deleted}] = Ledger.read!(VirtualMachine, id: vm.id)
-        [delete] = Enum.filter(Ledger.read!(Operation, vm_id: vm.id), &(&1.kind == :delete))
-        assert {:ok, _} = ingest(vm.host_id, outcome(delete, 1, :deleted))
-        assert [] = Ledger.read!(Pin, vm_id: vm.id)
-        assert [] = Ledger.read!(VirtualMachine, id: vm.id)
-        assert Enum.all?(Ledger.history!(Pin, vm_id: vm.id), &(&1.archived_at != nil))
-      else
-        assert [%{desired_state: :running}] = Ledger.read!(VirtualMachine, id: vm.id)
-        assert [] = Enum.filter(Ledger.read!(Operation, vm_id: vm.id), &(&1.kind == :delete))
-      end
+        if model.deleted do
+          assert [%{desired_state: :deleted}] = Ledger.read!(VirtualMachine, id: vm.id)
+          [delete] = Enum.filter(Ledger.read!(Operation, vm_id: vm.id), &(&1.kind == :delete))
+          assert {:ok, _} = ingest(vm.host_id, outcome(delete, 1, :deleted))
+          assert [] = Ledger.read!(Pin, vm_id: vm.id)
+          assert [] = Ledger.read!(VirtualMachine, id: vm.id)
+          assert Enum.all?(Ledger.history!(Pin, vm_id: vm.id), &(&1.archived_at != nil))
+        else
+          assert [%{desired_state: :running}] = Ledger.read!(VirtualMachine, id: vm.id)
+          assert [] = Enum.filter(Ledger.read!(Operation, vm_id: vm.id), &(&1.kind == :delete))
+        end
 
-      assert Pins.owner_pinned?(vm) == (model.owner and not model.deleted)
-    end
+        assert Pins.owner_pinned?(vm) == (model.owner and not model.deleted)
+      end,
+      test_cases: 100
+    )
   end
 
   @spec step(guard_command(), guard_model(), VirtualMachine.t(), map(), map()) :: guard_model()
@@ -185,57 +186,53 @@ defmodule Marshall.Access.PinsPropertyTest do
   # list unless already pinned, an unpin removes it, repeats change nothing,
   # each user/VM pair keeps at most one live row, and `pinned_vm_ids/1` and the
   # pinned view return exactly the model order and never another user's pins.
-  property "pin histories match the per-user ordered-set model", test_cases: 16 do
-    check all(
-            commands <- list_of(pin_commands(), min_length: 3, max_length: 20),
-            test_cases: 16
-          ) do
-      # Each synthetic host admits two of these machines.
-      for _ <- 1..2, do: host_fixture()
-      alice = user()
-      bob = user()
+  property "pin histories match the per-user ordered-set model", test_cases: 100 do
+    commands = draw("commands", list_of(pin_commands(), min_length: 3, max_length: 20))
+    # Each synthetic host admits two of these machines.
+    for _ <- 1..2, do: host_fixture()
+    alice = user()
+    bob = user()
 
-      vms =
-        for _ <- 0..2 do
-          {:ok, vm} = Compute.provision(request(), actor: alice)
-          share!(vm, alice, bob, :viewer)
-          vm
+    vms =
+      for _ <- 0..2 do
+        {:ok, vm} = Compute.provision(request(), actor: alice)
+        share!(vm, alice, bob, :viewer)
+        vm
+      end
+
+    actors = %{alice: alice, bob: bob}
+
+    model =
+      Enum.reduce(commands, %{alice: [], bob: []}, fn {action, who, index}, model ->
+        vm = Enum.at(vms, index)
+        actor = actors[who]
+        pinned? = vm.id in model[who]
+
+        case action do
+          :pin ->
+            assert {:ok, %Pin{state: :pinned}} =
+                     Access.pin_machine(%{vm_id: vm.id}, actor: actor)
+
+          :unpin ->
+            case Access.unpin_machine(%{vm_id: vm.id}, actor: actor) do
+              {:ok, %Pin{state: :unpinned}} -> assert live_row?(vm, actor)
+              {:error, _} -> refute live_row?(vm, actor)
+            end
         end
 
-      actors = %{alice: alice, bob: bob}
-
-      model =
-        Enum.reduce(commands, %{alice: [], bob: []}, fn {action, who, index}, model ->
-          vm = Enum.at(vms, index)
-          actor = actors[who]
-          pinned? = vm.id in model[who]
-
+        expected =
           case action do
-            :pin ->
-              assert {:ok, %Pin{state: :pinned}} =
-                       Access.pin_machine(%{vm_id: vm.id}, actor: actor)
-
-            :unpin ->
-              case Access.unpin_machine(%{vm_id: vm.id}, actor: actor) do
-                {:ok, %Pin{state: :unpinned}} -> assert live_row?(vm, actor)
-                {:error, _} -> refute live_row?(vm, actor)
-              end
+            :pin when pinned? -> model[who]
+            :pin -> [vm.id | model[who]]
+            :unpin -> List.delete(model[who], vm.id)
           end
 
-          expected =
-            case action do
-              :pin when pinned? -> model[who]
-              :pin -> [vm.id | model[who]]
-              :unpin -> List.delete(model[who], vm.id)
-            end
+        model = Map.put(model, who, expected)
+        assert_model(model, actors, vms)
+        model
+      end)
 
-          model = Map.put(model, who, expected)
-          assert_model(model, actors, vms)
-          model
-        end)
-
-      assert_model(model, actors, vms)
-    end
+    assert_model(model, actors, vms)
   end
 
   @spec assert_model(pin_model(), map(), [VirtualMachine.t()]) :: :ok
@@ -261,38 +258,34 @@ defmodule Marshall.Access.PinsPropertyTest do
   # pinned section followed by the excluded keyset pages MUST yield every
   # authorized machine exactly once, pinned machines first in pin order and the
   # rest in id order, independent of the page size.
-  property "pinned section plus excluded pages covers each machine once", test_cases: 12 do
-    check all(
-            pin_order <- list_of(integer(0..5), min_length: 0, max_length: 8),
-            page_size <- integer(1..4),
-            test_cases: 12
-          ) do
-      for _ <- 1..3, do: host_fixture()
-      owner = user()
+  property "pinned section plus excluded pages covers each machine once", test_cases: 100 do
+    pin_order = draw("pin_order", list_of(integer(0..5), min_length: 0, max_length: 8))
+    page_size = draw("page_size", integer(1..4))
+    for _ <- 1..3, do: host_fixture()
+    owner = user()
 
-      vms =
-        for _ <- 0..5 do
-          {:ok, vm} = Compute.provision(request(), actor: owner)
-          vm
-        end
+    vms =
+      for _ <- 0..5 do
+        {:ok, vm} = Compute.provision(request(), actor: owner)
+        vm
+      end
 
-      pinned_ids =
-        Enum.reduce(pin_order, [], fn index, acc ->
-          vm = Enum.at(vms, index)
-          assert {:ok, _} = Access.pin_machine(%{vm_id: vm.id}, actor: owner)
-          if vm.id in acc, do: acc, else: [vm.id | acc]
-        end)
+    pinned_ids =
+      Enum.reduce(pin_order, [], fn index, acc ->
+        vm = Enum.at(vms, index)
+        assert {:ok, _} = Access.pin_machine(%{vm_id: vm.id}, actor: owner)
+        if vm.id in acc, do: acc, else: [vm.id | acc]
+      end)
 
-      assert {:ok, %{items: pinned}} = Compute.pinned_vms(%{}, actor: owner)
-      assert Enum.map(pinned, & &1.id) == pinned_ids
+    assert {:ok, %{items: pinned}} = Compute.pinned_vms(%{}, actor: owner)
+    assert Enum.map(pinned, & &1.id) == pinned_ids
 
-      pages = collect_pages(owner, page_size, pinned_ids, nil, [])
-      rest = Enum.map(pages, & &1.id)
-      assert rest == Enum.sort(rest)
-      assert rest == Enum.sort(Enum.map(vms, & &1.id) -- pinned_ids)
-      assert Enum.sort(pinned_ids ++ rest) == Enum.sort(Enum.map(vms, & &1.id))
-      assert Enum.all?(pages, &(not &1.pinned))
-    end
+    pages = collect_pages(owner, page_size, pinned_ids, nil, [])
+    rest = Enum.map(pages, & &1.id)
+    assert rest == Enum.sort(rest)
+    assert rest == Enum.sort(Enum.map(vms, & &1.id) -- pinned_ids)
+    assert Enum.sort(pinned_ids ++ rest) == Enum.sort(Enum.map(vms, & &1.id))
+    assert Enum.all?(pages, &(not &1.pinned))
   end
 
   @spec collect_pages(User.t(), pos_integer(), [String.t()], String.t() | nil, [map()]) :: [map()]

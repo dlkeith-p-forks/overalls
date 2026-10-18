@@ -116,6 +116,62 @@ let
     hash = hashes.cedarCargo;
   };
 
+  # Every Mix application with fixed-output dependencies, keyed like
+  # dependency-hashes.json; adding one to `dependencies` adds it here.
+  mixReleases = lib.genAttrs (lib.attrNames dependencies) release;
+
+  # @cc [owner:ghuntley,label:build;security] dependency-pin-registry
+  # Each entry names the lock files it builds from, the derivation that MUST
+  # build after those locks change, and the dependency-hashes.json keys of its
+  # fixed-output fetches. scripts/mix_security_upgrades.exs and
+  # scripts/cargo_security_upgrades.exs refresh hashes and build only through
+  # this registry; the Cargo script refuses a tracked Cargo.lock missing here.
+  dependencyPins = {
+    mix = lib.mapAttrs (application: build: {
+      locks = [ "${application}/mix.lock" ];
+      inherit build;
+      hashes = { ${application} = dependencies.${application}; }
+        // lib.optionalAttrs (application == "marshall") { inherit cedarCargo; };
+    }) mixReleases;
+    cargo = let
+      nativeCrates = lib.attrNames (lib.filterAttrs (name: type:
+        type == "directory" && builtins.pathExists (../../../lilly/native + "/${name}/Cargo.lock"))
+        (builtins.readDir ../../../lilly/native));
+    in {
+      lyra = { locks = [ "lyra/Cargo.lock" ]; build = lyra; hashes.lyraVendor = lyra.vendor; };
+      terminald = {
+        locks = [ "nix/domains/artifacts/terminald/Cargo.lock" ];
+        build = pkgs.linkFarmFromDrvs "terminald-pins" [ terminald terminaldWindows ];
+        hashes.terminaldVendor = terminaldWindows.vendor;
+      };
+      lilly-native = {
+        locks = map (name: "lilly/native/${name}/Cargo.lock") nativeCrates;
+        build = hostLock;
+        hashes = { };
+      };
+      enrico-git-owner = {
+        locks = [ "enrico/native/git-owner/Cargo.lock" ];
+        build = import ./applications/enrico-git-owner.nix { inherit pkgs; };
+        hashes = { };
+      };
+      trace-spool = {
+        locks = [ "elixir/diagnostics/native/spool/Cargo.lock" ];
+        build = import ./infrastructure/trace-spool.nix { inherit pkgs; };
+        hashes = { };
+      };
+      vscode-web-broker = {
+        locks = [ "nix/domains/artifacts/vscode-web-broker/Cargo.lock" ];
+        build = import ./vscode-web-broker { inherit pkgs; };
+        hashes = { };
+      };
+      otel-guest-receiver = {
+        locks = [ "nix/domains/system/otel-guest/receiver/Cargo.lock" ];
+        build = pkgs.callPackage ../system/otel-guest/receiver.nix { };
+        hashes = { };
+      };
+    };
+  };
+
   release = application:
     let
       isMarshall = application == "marshall";
@@ -215,14 +271,8 @@ rec {
   secretTools = { inherit (pkgs) secretspec sops ssh-to-age age; };
   userRecipients = secretPackages.recipients;
   secrets = secretPackages.command;
-  marshall = release "marshall";
-  lilly = release "lilly";
-  audi = release "audi";
-  brady = release "brady";
-  porsche = release "porsche";
-  ziggy = release "ziggy";
-  galileo = release "galileo";
-  enrico = release "enrico";
+  inherit mixReleases dependencyPins;
+  inherit (mixReleases) marshall lilly audi brady porsche ziggy galileo enrico;
   guest = import ./guest {
     inherit pkgs privateServiceRoots terminald lyraLinux vscodeWeb vscodeWebBroker codingClis;
     minimumMemoryBytes = 2147483648;

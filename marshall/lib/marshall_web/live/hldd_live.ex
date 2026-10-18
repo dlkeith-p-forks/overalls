@@ -28,7 +28,7 @@ defmodule MarshallWeb.HLDDLive do
 
         {:noreply,
          assign(socket,
-           page_title: "#{chapter.title} · HLDD",
+           page_title: gettext("%{value1} · HLDD", value1: chapter.title),
            chapter: chapter,
            previous: List.last(before),
            following: List.first(following)
@@ -40,7 +40,7 @@ defmodule MarshallWeb.HLDDLive do
   end
 
   def handle_params(_params, _uri, socket) do
-    {:noreply, assign(socket, page_title: "HLDD", chapter: nil, previous: nil, following: nil)}
+    {:noreply, assign(socket, page_title: gettext("HLDD"), chapter: nil, previous: nil, following: nil)}
   end
 
   @impl true
@@ -56,11 +56,11 @@ defmodule MarshallWeb.HLDDLive do
     >
       <div id="hldd" class="hldd">
         <header class="hldd-heading">
-          <p class="muted">HLDD · Design and operations</p>
-          <h1>Overalls</h1>
-          <p>A reference for the system, its configuration, and its operation.</p>
+          <p class="muted">{gettext("HLDD · Design and operations")}</p>
+          <h1>{gettext("Overalls")}</h1>
+          <p>{gettext("A reference for the system, its configuration, and its operation.")}</p>
         </header>
-        <nav :if={!@chapter} id="hldd-index" aria-label="Handbook contents">
+        <nav :if={!@chapter} id="hldd-index" aria-label={gettext("Handbook contents")}>
           <ol class="hldd-index">
             <li :for={{section, number} <- Enum.with_index(@contents, 1)}>
               <.link patch={~p"/hldd/#{section.id}"}>
@@ -71,10 +71,10 @@ defmodule MarshallWeb.HLDDLive do
         </nav>
         <div :if={@chapter} class="hldd-grid">
           <aside class="hldd-contents">
-            <p><.link patch={~p"/hldd"}>← All sections</.link></p>
+            <p><.link patch={~p"/hldd"}>{gettext("← All sections")}</.link></p>
             <details open>
-              <summary>Contents</summary>
-              <nav aria-label="Handbook contents">
+              <summary>{gettext("Contents")}</summary>
+              <nav aria-label={gettext("Handbook contents")}>
                 <.link
                   :for={section <- @contents}
                   patch={~p"/hldd/#{section.id}"}
@@ -95,7 +95,7 @@ defmodule MarshallWeb.HLDDLive do
             >
               <section id={@chapter.id}>{raw(@chapter.html)}</section>
             </article>
-            <nav class="hldd-pagination" aria-label="Adjacent sections">
+            <nav class="hldd-pagination" aria-label={gettext("Adjacent sections")}>
               <.link :if={@previous} patch={~p"/hldd/#{@previous.id}"} rel="prev">
                 ← {@previous.title}
               </.link>

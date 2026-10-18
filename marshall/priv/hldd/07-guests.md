@@ -1,15 +1,5 @@
 # Guest systems and images
 
-## Snapshot continuation
-
-A full Firecracker snapshot resumes the original guest boot identity in a fresh
-VMM. Restored listeners must accept new connections after a valid vsock transport
-reset; established and unbound sockets are fenced. Malformed events, foreign CID
-and fatal queue/configuration changes still fail closed. The FreeBSD and OmniOS
-wrappers retain distinct native qualification requirements. Earlier reset receipts
-below describe the former permanently fenced behavior and do not qualify the
-new source. Exact-source machine results belong in the suspension review.
-
 ## Agent project context
 
 The accepted guest-context operations read the creator's permanent guest account
@@ -147,6 +137,24 @@ session or physical isolation.
 Existing writable disks retain their original manifest and require a new machine
 from an editor-bearing image. See the
 [foreign Linux editor review](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).
+
+This capability remains an explicitly Linux-only v4 contract. At the current
+revision there is no recorded native browser sign-in, edit/save/readback or
+recovery receipt against the current NixOS or Ubuntu image; the historical and
+captured Alma/Arch results retain their source, image and fixture scope. Package
+closure, descriptor, broker, CLI, terminal or SSH evidence cannot be promoted
+to current browser acceptance. Windows `windows-v1`, FreeBSD `freebsd-v1` and
+OmniOS/illumos `illumos-v1` rows keep `editor: false`; their readiness, agent,
+terminal or SSH evidence does not create an editor capability. A future
+non-Linux editor requires a separately reviewed image, agent/protocol contract,
+broker and browser journey.
+
+The evaluated `editor-target-boundaries` check independently asserts that the
+editor and broker package metadata target `x86_64-linux`, while the reviewed
+Windows v5 and native v6 package metadata has no editor field or capability.
+This is an artifact-boundary check only; it does not establish a booted guest or
+browser journey.
+
 The same closure carries four reviewed Open VSX builtin extensions, immutable AI
 policy and project language adapters. No global language toolchain or server is
 added by the editor. Extension pins, verified extraction recipe, adapters and
@@ -1205,10 +1213,10 @@ refusals, exact buffer size, socket-129 refusal and full capacity reuse; their
 final-candidate machine execution remains separate from test presence.
 
 The FreeBSD static driver retains interrupt-visible resources until VM disposal,
-refuses runtime detach/unload. Valid transport resets preserve listeners;
-fatal configuration changes still fence the device. Illumos has separate `drv/viosock` and `socketmod/sockvsock` modules plus
-a sockfs reset path: valid reset preserves listeners while fencing connected
-and unbound sockets. Earlier receipts below describe the previous behavior. Its modern virtio ABI requires rebuilding
+refuses runtime detach/unload and requires a new VM after reset/configuration
+change. Illumos has separate `drv/viosock` and `socketmod/sockvsock` modules plus
+an opt-in sockfs listener failure path: reset fences listeners and idle sockets,
+wakes accepts, and prevents reuse. Its modern virtio ABI requires rebuilding
 all five consumers with the framework. Cross-compiled objects do not establish
 native module linkage, native boot or reset safety. The native
 [link/install helper](repo:nix/domains/artifacts/guest/native-kernels/illumos/native_candidate.py)

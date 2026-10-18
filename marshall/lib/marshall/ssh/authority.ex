@@ -304,7 +304,7 @@ defmodule Marshall.SSH.Authority do
         status: "authenticated",
         session_id: session.id,
         expires_at: session.expires_at,
-        user: %{id: user.id, email: to_string(user.email)}
+        user: %{id: user.id, email: to_string(user.email), locale: user.locale || "en"}
       }
     end
   end

@@ -1,0 +1,158 @@
+name: "mix security upgrades"
+
+on:
+  schedule:
+    # Run every Monday at 6:00 AM UTC, after the automatic nix upgrades
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: mix-security-upgrades
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+env:
+  TARGET_BRANCH: ${{ github.event.repository.default_branch }}
+
+jobs:
+  mix-security-upgrades:
+    runs-on: namespace-profile-cached-amd64
+
+    steps:
+      - name: Checkout repository
+        uses: namespacelabs/nscloud-checkout-action@v9
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+
+      - name: Set up Nix cache
+        run: |
+          sudo mkdir -p /cache/nix /nix
+          sudo mount --bind /cache/nix /nix
+          sudo chown runner /nix
+
+      - name: Setup Nix
+        uses: cachix/install-nix-action@9aaadd8b85853f67fcdf488e6a4e9efa94ee96e2
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@ee79db531bfb851a7cf47035057b7cca88d26449
+        with:
+          name: devenv
+
+      - name: Install devenv.sh
+        run: nix profile install nixpkgs#devenv
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Update, commit and push
+        id: update
+        run: |
+          set -euo pipefail
+
+          summary_file="$RUNNER_TEMP/mix-security-summary.md"
+          unresolved_file="$RUNNER_TEMP/mix-security-unresolved.txt"
+
+          # Audits every Mix project with the latest Hex (the script requires
+          # 2.5.3 or newer, which reports security advisories), updates only packages
+          # with security advisories or security retirements, refreshes the
+          # fixed-output Nix hashes of each changed application and requires
+          # its source release to build. Returns non-zero when nothing changed.
+          update_and_commit() {
+            rm -f "$summary_file" "$unresolved_file"
+            # shellcheck disable=SC2016 # $1 and $2 expand inside the dev shell
+            devenv shell -- bash -euo pipefail -c '
+              mix local.hex --force
+              mix local.rebar --force
+              elixir scripts/mix_security_upgrades.exs --summary "$1" --unresolved "$2"
+            ' _ "$summary_file" "$unresolved_file"
+
+            git add -u -- '*mix.lock' nix/domains/artifacts/dependency-hashes.json
+            if git diff --cached --quiet; then
+              return 1
+            fi
+
+            echo "Changes detected:"
+            git --no-pager diff --cached --stat
+
+            git commit -F - <<EOF
+          chore(deps): apply Mix security updates
+
+          Automated update of Hex packages with security advisories or
+          security retirements. Nix dependency hashes were refreshed and each
+          changed application's source release built successfully.
+
+          $(cat "$summary_file")
+
+          🤖 Generated automatically by the mix security upgrades workflow
+          EOF
+          }
+
+          finish() {
+            if [ -f "$summary_file" ]; then
+              cat "$summary_file" >> "$GITHUB_STEP_SUMMARY"
+            fi
+            if [ -f "$unresolved_file" ]; then
+              echo "unresolved=true" >> "$GITHUB_OUTPUT"
+            fi
+          }
+
+          if ! update_and_commit; then
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+            echo "No Mix security updates applied"
+            finish
+            exit 0
+          fi
+          echo "changes=true" >> "$GITHUB_OUTPUT"
+
+          # Push directly to the default branch. If the branch moved while we
+          # were updating, rebase onto the latest tip and retry. A lock or hash
+          # conflict is resolved by discarding our commit and regenerating the
+          # updates from the new tip rather than attempting a textual merge.
+          for attempt in 1 2 3 4 5; do
+            git fetch origin "$TARGET_BRANCH"
+
+            if ! git rebase "origin/$TARGET_BRANCH"; then
+              echo "Rebase conflicted; regenerating the updates on top of origin/$TARGET_BRANCH"
+              git rebase --abort
+              git reset --hard "origin/$TARGET_BRANCH"
+              if ! update_and_commit; then
+                echo "Upstream already contains these updates; nothing to push"
+                finish
+                exit 0
+              fi
+            fi
+
+            if git push origin "HEAD:$TARGET_BRANCH"; then
+              echo "Pushed to $TARGET_BRANCH on attempt $attempt"
+              finish
+              exit 0
+            fi
+
+            echo "Push rejected (attempt $attempt); retrying"
+            sleep $((attempt * 5))
+          done
+
+          echo "Failed to push after 5 attempts" >&2
+          exit 1
+
+      - name: Summary
+        run: |
+          if [ "${{ steps.update.outputs.changes }}" = "true" ]; then
+            echo "✅ Mix security updates found and pushed to ${TARGET_BRANCH}"
+          else
+            echo "✅ No Mix security updates needed"
+          fi
+
+          # Fixable updates were pushed above; packages with no allowed fixed
+          # version keep the badge red until someone resolves them.
+          if [ "${{ steps.update.outputs.unresolved }}" = "true" ]; then
+            echo "❌ Hex packages remain vulnerable with no allowed fixed version" >&2
+            cat "$RUNNER_TEMP/mix-security-unresolved.txt" >&2
+            exit 1
+          fi

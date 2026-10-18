@@ -50,8 +50,36 @@ defmodule Marshall.MonospaceBrowserFixture do
     {:ok, third} = Marshall.Compute.provision(Marshall.ComputeFixtures.request(), actor: owner)
     Ash.Seed.update!(third, %{name: "paper-lantern"})
 
+    # Settled failed and stopped machines so the lists render every status
+    # label severity. These observations are seeded, not provisioner outcomes.
+    Marshall.ComputeFixtures.host_fixture()
+    {:ok, failed} = Marshall.Compute.provision(Marshall.ComputeFixtures.request(), actor: owner)
+    Ash.Seed.update!(failed, %{name: "ember-kiln"})
+
+    Ledger.update!(failed, :observe, %{
+      observed_state: :failed,
+      failure_reason: :execution_failed,
+      observed_at: Ledger.now()
+    })
+
+    Marshall.ComputeFixtures.host_fixture()
+    {:ok, stopped} = Marshall.Compute.provision(Marshall.ComputeFixtures.request(), actor: owner)
+    Ash.Seed.update!(stopped, %{name: "quiet-harbour"})
+
+    stopped =
+      Ledger.intent!(stopped, %{desired_state: :stopped, generation: stopped.generation + 1})
+
+    Ledger.update!(stopped, :observe, %{observed_state: :stopped, observed_at: Ledger.now()})
+
     {:ok, _} =
       Marshall.Teams.create_team(%{name: "little-workshop", idempotency_key: Ash.UUID.generate()},
+        actor: owner
+      )
+
+    # One registered key so the account page's SSH section renders a key article.
+    {:ok, _} =
+      Marshall.SSH.add_key(
+        %{public_key: Marshall.SharingSurfacesFixture.key_text(), label: "hana-laptop"},
         actor: owner
       )
 

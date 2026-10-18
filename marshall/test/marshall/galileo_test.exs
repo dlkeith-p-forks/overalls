@@ -8,36 +8,38 @@ defmodule Marshall.GalileoTest do
   alias Marshall.Galileo
   alias Marshall.Galileo.{Attachment, Credentials, Integration, IntegrationHeader, PeerTokens}
 
+  @tag :hegel_case_sandbox
   property "exclusive integration cursors enumerate every visible row exactly once",
-    test_cases: 15 do
-    check all(count <- integer(1..6), limit <- integer(1..3), test_cases: 15) do
-      actor = Marshall.ComputeFixtures.user()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    count = draw("count", integer(1..6))
+    limit = draw("limit", integer(1..3))
+    actor = Marshall.ComputeFixtures.user()
 
-      integrations =
-        for _ <- 1..count do
-          {:ok, integration} = configure(actor, %{name: "page" <> Ash.UUID.generate()})
-          integration
-        end
+    integrations =
+      for _ <- 1..count do
+        {:ok, integration} = configure(actor, %{name: "page" <> Ash.UUID.generate()})
+        integration
+      end
 
-      {:ok, expected} = Galileo.list_integrations(%{limit: 100}, actor: actor)
+    {:ok, expected} = Galileo.list_integrations(%{limit: 100}, actor: actor)
 
-      {seen, cursor} =
-        Enum.reduce(1..count, {[], nil}, fn _, {seen, cursor} ->
-          {:ok, page} = Galileo.list_integrations(%{after: cursor, limit: limit}, actor: actor)
-          next = if page == [], do: cursor, else: List.last(page).id
-          {seen ++ Enum.map(page, & &1.id), next}
-        end)
+    {seen, cursor} =
+      Enum.reduce(1..count, {[], nil}, fn _, {seen, cursor} ->
+        {:ok, page} = Galileo.list_integrations(%{after: cursor, limit: limit}, actor: actor)
+        next = if page == [], do: cursor, else: List.last(page).id
+        {seen ++ Enum.map(page, & &1.id), next}
+      end)
 
-      assert seen == Enum.map(expected, & &1.id)
-      assert length(Enum.uniq(seen)) == count
-      assert Enum.sort(seen) == Enum.sort(Enum.map(integrations, & &1.id))
-      assert {:ok, []} = Galileo.list_integrations(%{after: cursor, limit: limit}, actor: actor)
+    assert seen == Enum.map(expected, & &1.id)
+    assert length(Enum.uniq(seen)) == count
+    assert Enum.sort(seen) == Enum.sort(Enum.map(integrations, & &1.id))
+    assert {:ok, []} = Galileo.list_integrations(%{after: cursor, limit: limit}, actor: actor)
 
-      assert {:ok, []} =
-               Galileo.list_integrations(%{after: Ash.UUID.generate(), limit: limit},
-                 actor: actor
-               )
-    end
+    assert {:ok, []} =
+             Galileo.list_integrations(%{after: Ash.UUID.generate(), limit: limit},
+               actor: actor
+             )
   end
 
   defp configure(actor, overrides \\ %{}) do
@@ -256,36 +258,35 @@ defmodule Marshall.GalileoTest do
     end
   end
 
+  @tag :hegel_case_sandbox
   property "malformed routing and static headers refuse without exceptions or persistence",
-    test_cases: 15 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     actor = Marshall.ComputeFixtures.user()
 
-    check all(
-            kind <- member_of([:target, :prefix, :header]),
-            suffix <- string(:alphanumeric, min_length: 1, max_length: 12),
-            test_cases: 15
-          ) do
-      {overrides, reason} =
-        case kind do
-          :target ->
-            {%{target: "http://#{suffix}.example.test"}, "invalid_target"}
+    kind = draw("kind", member_of([:target, :prefix, :header]))
+    suffix = draw("suffix", string(:alphanumeric, min_length: 1, max_length: 12))
 
-          :prefix ->
-            {%{strip_prefix: "/#{suffix}//bad"}, "invalid_strip_prefix"}
+    {overrides, reason} =
+      case kind do
+        :target ->
+          {%{target: "http://#{suffix}.example.test"}, "invalid_target"}
 
-          :header ->
-            {%{
-               headers: [%{kind: :static, name: "authorization", value: "private-invalid-secret"}]
-             }, "invalid_header"}
-        end
+        :prefix ->
+          {%{strip_prefix: "/#{suffix}//bad"}, "invalid_strip_prefix"}
 
-      assert {:error, error} = configure(actor, overrides)
-      assert Exception.message(error) =~ reason
-      refute Exception.message(error) =~ "private-invalid-secret"
-      assert Ledger.read!(Integration) == []
-      assert Ledger.read!(IntegrationHeader) == []
-      assert Ledger.read!(AdminEvent) == []
-    end
+        :header ->
+          {%{
+             headers: [%{kind: :static, name: "authorization", value: "private-invalid-secret"}]
+           }, "invalid_header"}
+      end
+
+    assert {:error, error} = configure(actor, overrides)
+    assert Exception.message(error) =~ reason
+    refute Exception.message(error) =~ "private-invalid-secret"
+    assert Ledger.read!(Integration) == []
+    assert Ledger.read!(IntegrationHeader) == []
+    assert Ledger.read!(AdminEvent) == []
   end
 
   test "only managers configure and views never return stored values" do

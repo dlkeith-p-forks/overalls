@@ -15,20 +15,17 @@ defmodule Brady.Cache.PressureHistoryTest do
   # existing reader. Changed or missing custody MUST stop the Store while its
   # recovery process survives. Synthetic proof MUST NOT establish native custody.
   property "repeated pressure transitions preserve readers and fence pending writes" do
-    check all(
-            payload <- binary(min_length: 1, max_length: 65_537),
-            repetitions <- member_of([1, 2, 3]),
-            ending <- member_of([:missing, :changed_fresh, :changed_stale]),
-            max_runs: 6
-          ) do
-      for {bytes, loss} <- [
-            {payload, ending},
-            {<<1>>, :missing},
-            {:binary.copy(<<19>>, 65_536), :changed_fresh},
-            {:binary.copy(<<23>>, 65_537), :changed_stale}
-          ] do
-        history(bytes, repetitions, loss)
-      end
+    payload = draw("payload", binary(min_length: 1, max_length: 65537))
+    repetitions = draw("repetitions", member_of([1, 2, 3]))
+    ending = draw("ending", member_of([:missing, :changed_fresh, :changed_stale]))
+
+    for {bytes, loss} <- [
+          {payload, ending},
+          {<<1>>, :missing},
+          {:binary.copy(<<19>>, 65_536), :changed_fresh},
+          {:binary.copy(<<23>>, 65_537), :changed_stale}
+        ] do
+      history(bytes, repetitions, loss)
     end
   end
 

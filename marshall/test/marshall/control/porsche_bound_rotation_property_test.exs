@@ -19,8 +19,10 @@ defmodule Marshall.Control.PorscheBoundRotationPropertyTest do
   # credential MUST serve new sessions without adopting old-generation sessions.
   # Every case MUST own a fresh public key so global key uniqueness cannot
   # prevent a later case from reaching the credential/session fence oracle.
+  @tag :hegel_case_sandbox
   property "bound Porsche sockets preserve credential and session generation fences",
-    test_cases: 4 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     account = user()
     {public, _private} = :crypto.generate_key(:eddsa, :ed25519)
 
@@ -30,55 +32,54 @@ defmodule Marshall.Control.PorscheBoundRotationPropertyTest do
     {:ok, _} = SSH.add_key(%{public_key: public_key}, actor: account)
     base = listener()
 
-    check all(prefix <- integer(0..3), test_cases: 4) do
-      name = "rotation-" <> Ash.UUID.generate()
-      {token, _} = SSH.Token.issue(:gateway)
+    prefix = draw("prefix", integer(0..3))
+    name = "rotation-" <> Ash.UUID.generate()
+    {token, _} = SSH.Token.issue(:gateway)
 
-      {:ok, configured} =
-        SSH.configure_gateway(%{name: name, token: token}, actor: SystemActor.compute())
+    {:ok, configured} =
+      SSH.configure_gateway(%{name: name, token: token}, actor: SystemActor.compute())
 
-      {old, old_id} = connected(base, token)
-      create = %{"version" => 1, "public_key" => public_key}
-      {:ok, issued} = Client.request(old, "porsche.sessions", create)
-      assert issued["status"] == "authenticated"
-      assert issued["user"]["id"] == account.id
-      read = %{"version" => 1, "session_token" => issued["session_token"]}
-      expected = Map.delete(issued, "session_token")
+    {old, old_id} = connected(base, token)
+    create = %{"version" => 1, "public_key" => public_key}
+    {:ok, issued} = Client.request(old, "porsche.sessions", create)
+    assert issued["status"] == "authenticated"
+    assert issued["user"]["id"] == account.id
+    read = %{"version" => 1, "session_token" => issued["session_token"]}
+    expected = Map.delete(issued, "session_token")
+    assert Client.request(old, "porsche.session", read) == {:ok, expected}
+
+    for _ <- List.duplicate(:request, prefix) do
       assert Client.request(old, "porsche.session", read) == {:ok, expected}
-
-      for _ <- List.duplicate(:request, prefix) do
-        assert Client.request(old, "porsche.session", read) == {:ok, expected}
-      end
-
-      {replacement, _} = SSH.Token.issue(:gateway)
-
-      {:ok, rotated} =
-        SSH.configure_gateway(%{name: name, token: replacement}, actor: SystemActor.compute())
-
-      assert rotated.id == configured.id
-      assert rotated.generation == configured.generation + 1
-      assert Client.ready?(old)
-      assert Client.request(old, "porsche.session", read) == {:error, "unauthorized"}
-      assert Client.request(old, "porsche.sessions", create) == {:error, "unauthorized"}
-
-      assert Enum.map(Ledger.read!(Session, gateway_id: configured.id), & &1.id) ==
-               [issued["session_id"]]
-
-      {fresh, fresh_id} = connected(base, replacement)
-      assert Client.request(fresh, "porsche.session", read) == {:error, "unauthorized"}
-      assert {:ok, new_session} = Client.request(fresh, "porsche.sessions", create)
-      assert new_session["status"] == "authenticated"
-      assert new_session["user"]["id"] == account.id
-      refute new_session["session_id"] == issued["session_id"]
-      new_read = %{"version" => 1, "session_token" => new_session["session_token"]}
-
-      assert Client.request(fresh, "porsche.session", new_read) ==
-               {:ok, Map.delete(new_session, "session_token")}
-
-      assert Client.request(old, "porsche.session", new_read) == {:error, "unauthorized"}
-      :ok = stop_supervised(fresh_id)
-      :ok = stop_supervised(old_id)
     end
+
+    {replacement, _} = SSH.Token.issue(:gateway)
+
+    {:ok, rotated} =
+      SSH.configure_gateway(%{name: name, token: replacement}, actor: SystemActor.compute())
+
+    assert rotated.id == configured.id
+    assert rotated.generation == configured.generation + 1
+    assert Client.ready?(old)
+    assert Client.request(old, "porsche.session", read) == {:error, "unauthorized"}
+    assert Client.request(old, "porsche.sessions", create) == {:error, "unauthorized"}
+
+    assert Enum.map(Ledger.read!(Session, gateway_id: configured.id), & &1.id) ==
+             [issued["session_id"]]
+
+    {fresh, fresh_id} = connected(base, replacement)
+    assert Client.request(fresh, "porsche.session", read) == {:error, "unauthorized"}
+    assert {:ok, new_session} = Client.request(fresh, "porsche.sessions", create)
+    assert new_session["status"] == "authenticated"
+    assert new_session["user"]["id"] == account.id
+    refute new_session["session_id"] == issued["session_id"]
+    new_read = %{"version" => 1, "session_token" => new_session["session_token"]}
+
+    assert Client.request(fresh, "porsche.session", new_read) ==
+             {:ok, Map.delete(new_session, "session_token")}
+
+    assert Client.request(old, "porsche.session", new_read) == {:error, "unauthorized"}
+    :ok = stop_supervised(fresh_id)
+    :ok = stop_supervised(old_id)
   end
 
   @spec connected(String.t(), binary()) :: {pid(), reference()}

@@ -301,34 +301,38 @@ defmodule Marshall.Terminal.HostStreamTest do
     refute_receive {:terminal_output, "duplicate"}
   end
 
+  @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "a future output sequence closes its channel while a replay is ignored",
-    test_cases: 12 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    Marshall.TerminalFixtures.drain_case_messages()
+    Hegel.on_cleanup(&Marshall.TerminalFixtures.drain_case_messages/0)
     state = accepted_state()
 
-    check all(gap <- integer(3..64), test_cases: 12) do
-      {channel, state} = attach(state, self(), 11)
+    gap = draw("gap", integer(3..64))
+    {channel, state} = attach(state, self(), 11)
 
-      first = Codec.encode_data_frame(channel, 1, "one")
-      duplicate = Codec.encode_data_frame(channel, 1, "duplicate")
-      future = Codec.encode_data_frame(channel, gap, "future")
+    first = Codec.encode_data_frame(channel, 1, "one")
+    duplicate = Codec.encode_data_frame(channel, 1, "duplicate")
+    future = Codec.encode_data_frame(channel, gap, "future")
 
-      assert {:reply, :ok, {:binary, close_frames}, state} =
-               HostStream.handle_in({first <> duplicate <> future, [opcode: :binary]}, state)
+    assert {:reply, :ok, {:binary, close_frames}, state} =
+             HostStream.handle_in({first <> duplicate <> future, [opcode: :binary]}, state)
 
-      assert_receive {:terminal_output, "one"}
-      refute_receive {:terminal_output, "duplicate"}
-      refute_receive {:terminal_output, "future"}
-      assert_receive {:terminal_closed, %{reason: :fenced}}
-      refute Map.has_key?(state.channels, channel)
-      refute Map.has_key?(state.viewers, channel)
+    assert_receive {:terminal_output, "one"}
+    refute_receive {:terminal_output, "duplicate"}
+    refute_receive {:terminal_output, "future"}
+    assert_receive {:terminal_closed, %{reason: :fenced}}
+    refute Map.has_key?(state.channels, channel)
+    refute Map.has_key?(state.viewers, channel)
 
-      assert Enum.any?(List.wrap(close_frames), fn frame ->
-               match?(
-                 {:ok, %{message: %{type: :channel_close, channel: ^channel}}},
-                 Codec.decode_frame(frame)
-               )
-             end)
-    end
+    assert Enum.any?(List.wrap(close_frames), fn frame ->
+             match?(
+               {:ok, %{message: %{type: :channel_close, channel: ^channel}}},
+               Codec.decode_frame(frame)
+             )
+           end)
   end
 
   test "a slow viewer closes only its channel without delaying another viewer" do
@@ -363,84 +367,89 @@ defmodule Marshall.Terminal.HostStreamTest do
   # @cc [owner:ghuntley,label:verification;reliability] generated-viewer-mailbox-isolation
   # A slow viewer at the 64-message bound MUST be shed once, without forwarding
   # beyond the bound or preventing any other active channel from advancing.
-  property "generated mailbox pressure sheds only the stalled viewer", test_cases: 8 do
-    check all(prefill <- integer(60..64), fast_count <- integer(1..3), test_cases: 8) do
-      state = accepted_state()
-      owner = self()
+  @tag :hegel_case_sandbox
+  @tag timeout: 600_000
+  property "generated mailbox pressure sheds only the stalled viewer", test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    Marshall.TerminalFixtures.drain_case_messages()
+    Hegel.on_cleanup(&Marshall.TerminalFixtures.drain_case_messages/0)
+    prefill = draw("prefill", integer(60..64))
+    fast_count = draw("fast_count", integer(1..3))
+    state = accepted_state()
+    owner = self()
 
-      slow =
-        start_supervised!(
-          {Task,
-           fn ->
-             receive do
-               {:terminal_attached, _} -> send(owner, :slow_attached)
-             end
+    slow =
+      Overalls.HegelFixtures.start_supervised!(
+        {Task,
+         fn ->
+           receive do
+             {:terminal_attached, _} -> send(owner, :slow_attached)
+           end
 
-             receive do
-               :release -> :ok
-             end
-           end},
-          id: make_ref()
-        )
+           receive do
+             :release -> :ok
+           end
+         end},
+        id: make_ref()
+      )
 
-      {slow_channel, state} = attach(state, slow, 11)
-      assert_receive :slow_attached
+    {slow_channel, state} = attach(state, slow, 11)
+    assert_receive :slow_attached
 
-      {fast_channels, state} =
-        Enum.map_reduce(1..fast_count, state, fn index, current ->
-          attach(current, self(), index + 11)
-        end)
+    {fast_channels, state} =
+      Enum.map_reduce(1..fast_count, state, fn index, current ->
+        attach(current, self(), index + 11)
+      end)
 
-      for channel <- fast_channels do
-        assert_receive {:terminal_attached, %{channel: ^channel}}
-      end
+    for channel <- fast_channels do
+      assert_receive {:terminal_attached, %{channel: ^channel}}
+    end
 
-      Enum.each(1..prefill, fn index -> send(slow, {:queued, index}) end)
-      assert {:message_queue_len, ^prefill} = Process.info(slow, :message_queue_len)
+    Enum.each(1..prefill, fn index -> send(slow, {:queued, index}) end)
+    assert {:message_queue_len, ^prefill} = Process.info(slow, :message_queue_len)
 
-      first =
-        Enum.map(fast_channels, fn channel ->
-          Codec.encode_data_frame(channel, 1, "fast-#{channel}-one")
-        end)
+    first =
+      Enum.map(fast_channels, fn channel ->
+        Codec.encode_data_frame(channel, 1, "fast-#{channel}-one")
+      end)
 
-      stalled =
-        Enum.map(1..6, fn sequence ->
-          Codec.encode_data_frame(slow_channel, sequence, "slow")
-        end)
+    stalled =
+      Enum.map(1..6, fn sequence ->
+        Codec.encode_data_frame(slow_channel, sequence, "slow")
+      end)
 
-      second =
-        Enum.map(fast_channels, fn channel ->
-          Codec.encode_data_frame(channel, 2, "fast-#{channel}-two")
-        end)
+    second =
+      Enum.map(fast_channels, fn channel ->
+        Codec.encode_data_frame(channel, 2, "fast-#{channel}-two")
+      end)
 
-      assert {:reply, :ok, {:binary, close_frames}, state} =
-               HostStream.handle_in(
-                 {IO.iodata_to_binary([first, stalled, second]), [opcode: :binary]},
-                 state
-               )
+    assert {:reply, :ok, {:binary, close_frames}, state} =
+             HostStream.handle_in(
+               {IO.iodata_to_binary([first, stalled, second]), [opcode: :binary]},
+               state
+             )
 
-      refute Map.has_key?(state.channels, slow_channel)
-      refute Map.has_key?(state.viewers, slow_channel)
+    refute Map.has_key?(state.channels, slow_channel)
+    refute Map.has_key?(state.viewers, slow_channel)
 
-      assert Enum.count(List.wrap(close_frames), fn frame ->
-               match?(
-                 {:ok, %{message: %{type: :channel_close, channel: ^slow_channel}}},
-                 Codec.decode_frame(frame)
-               )
-             end) == 1
+    assert Enum.count(List.wrap(close_frames), fn frame ->
+             match?(
+               {:ok, %{message: %{type: :channel_close, channel: ^slow_channel}}},
+               Codec.decode_frame(frame)
+             )
+           end) == 1
 
-      assert {:messages, slow_messages} = Process.info(slow, :messages)
-      assert Enum.count(slow_messages, &match?({:terminal_output, _}, &1)) == 64 - prefill
-      assert Enum.count(slow_messages, &(&1 == :terminal_slow_viewer)) == 1
+    assert {:messages, slow_messages} = Process.info(slow, :messages)
+    assert Enum.count(slow_messages, &match?({:terminal_output, _}, &1)) == 64 - prefill
+    assert Enum.count(slow_messages, &(&1 == :terminal_slow_viewer)) == 1
 
-      for channel <- fast_channels do
-        first_output = "fast-#{channel}-one"
-        second_output = "fast-#{channel}-two"
-        assert_receive {:terminal_output, ^first_output}
-        assert_receive {:terminal_output, ^second_output}
-        assert state.channels[channel].output_sequence == 2
-        assert Map.has_key?(state.viewers, channel)
-      end
+    for channel <- fast_channels do
+      first_output = "fast-#{channel}-one"
+      second_output = "fast-#{channel}-two"
+      assert_receive {:terminal_output, ^first_output}
+      assert_receive {:terminal_output, ^second_output}
+      assert state.channels[channel].output_sequence == 2
+      assert Map.has_key?(state.viewers, channel)
     end
   end
 

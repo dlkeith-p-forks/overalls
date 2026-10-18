@@ -171,7 +171,8 @@ defmodule MarshallWeb.LiveAdminAuth do
         {:halt,
          Phoenix.LiveView.redirect(clear_intent(socket),
            to:
-             ~p"/settings/security?#{%{return_to: socket.private[:security_return_to] || "/admin/users"}}"
+             ~p"/settings?#{%{return_to: socket.private[:security_return_to] || "/admin/users"}}" <>
+               "#security"
          )}
       else
         intent = AdminElevation.stage(event, normalized, socket)

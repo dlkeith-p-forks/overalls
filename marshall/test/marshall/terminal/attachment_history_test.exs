@@ -25,261 +25,264 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
   # Expected attachment authority MUST come from generated user commands and
   # the creator/shared permission table, never from the SUT's authorization
   # answer. Tickets remain bounded by their issued mode and are consumed once.
+  @tag :hegel_case_sandbox
   property "issued tickets compose current roles, explicit sharing and one-use socket lifetimes",
-    test_cases: 6 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     fixture = fixture()
 
-    check all(
-            steps <-
-              list_of(
-                tuple(
-                  {member_of([:viewer, :operator, :manager, :revoked]),
-                   member_of([:viewer, :operator, :manager, :revoked]), boolean(), boolean(),
-                   integer(0..1_000_000)}
-                ),
-                min_length: 5,
-                max_length: 8
-              ),
-            test_cases: 6
-          ) do
-      fresh(fixture)
-      role(fixture, :operator)
-      own = session(fixture, fixture.member)
-      foreign = session(fixture, fixture.owner)
-      token = Marshall.TerminalFixtures.user_token(fixture.member)
-      {server, port} = server(fixture.member, token)
+    steps =
+      draw(
+        "steps",
+        list_of(
+          tuple(
+            {member_of([:viewer, :operator, :manager, :revoked]),
+             member_of([:viewer, :operator, :manager, :revoked]), boolean(), boolean(),
+             integer(0..1_000_000)}
+          ),
+          min_length: 5,
+          max_length: 8
+        )
+      )
 
-      try do
-        # Mandatory decisive transitions accompany every generated history.
-        steps =
-          steps ++
-            [
-              {:viewer, :operator, true, true, 0},
-              {:operator, :viewer, true, true, 1},
-              {:operator, :revoked, true, true, 2},
-              {:manager, :manager, false, true, 3},
-              {:operator, :operator, false, false, 4}
-            ]
+    fresh(fixture)
+    role(fixture, :operator)
+    own = session(fixture, fixture.member)
+    foreign = session(fixture, fixture.owner)
+    token = Marshall.TerminalFixtures.user_token(fixture.member)
+    {server, port} = server(fixture.member, token)
 
-        Enum.each(steps, fn {issued_role, current_role, creator?, shared?, cursor} ->
-          fresh(fixture)
-          role(fixture, :operator)
-          :ok = Sharing.set(foreign, fixture.owner, to_string(fixture.member.email), :shared)
-          role(fixture, issued_role)
-          selected = if creator?, do: own, else: foreign
+    try do
+      # Mandatory decisive transitions accompany every generated history.
+      steps =
+        steps ++
+          [
+            {:viewer, :operator, true, true, 0},
+            {:operator, :viewer, true, true, 1},
+            {:operator, :revoked, true, true, 2},
+            {:manager, :manager, false, true, 3},
+            {:operator, :operator, false, false, 4}
+          ]
 
-          if issued_role == :revoked do
-            before = inventory(fixture)
-            assert {:error, :forbidden} = Authority.ticket(selected, fixture.member)
-            assert inventory(fixture) == before
-          else
-            assert {:ok, ticket} = Authority.ticket(selected, fixture.member)
-            role(fixture, current_role)
+      Enum.each(steps, fn {issued_role, current_role, creator?, shared?, cursor} ->
+        fresh(fixture)
+        role(fixture, :operator)
+        :ok = Sharing.set(foreign, fixture.owner, to_string(fixture.member.email), :shared)
+        role(fixture, issued_role)
+        selected = if creator?, do: own, else: foreign
 
-            if not shared?,
-              do:
-                assert(
-                  :ok =
-                    Sharing.set(foreign, fixture.owner, to_string(fixture.member.email), :revoked)
-                )
+        if issued_role == :revoked do
+          before = inventory(fixture)
+          assert {:error, :forbidden} = Authority.ticket(selected, fixture.member)
+          assert inventory(fixture) == before
+        else
+          assert {:ok, ticket} = Authority.ticket(selected, fixture.member)
+          role(fixture, current_role)
 
-            allowed? = current_role != :revoked and (creator? or shared?)
+          if not shared?,
+            do:
+              assert(
+                :ok =
+                  Sharing.set(foreign, fixture.owner, to_string(fixture.member.email), :revoked)
+              )
 
-            mode =
-              if creator? and issued_role in [:operator, :manager] and
-                   current_role in [:operator, :manager], do: :rw, else: :ro
+          allowed? = current_role != :revoked and (creator? or shared?)
 
-            before = inventory(fixture)
-            effects = Stream.effects(fixture.stream)
-            client = Socket.connect(port, ticket, cursor)
+          mode =
+            if creator? and issued_role in [:operator, :manager] and
+                 current_role in [:operator, :manager], do: :rw, else: :ro
 
-            try do
-              if allowed? do
-                channel = attached(client, mode)
+          before = inventory(fixture)
+          effects = Stream.effects(fixture.stream)
+          client = Socket.connect(port, ticket, cursor)
 
-                assert [{:attach, process, request}] =
-                         Enum.drop(Stream.effects(fixture.stream), length(effects))
+          try do
+            if allowed? do
+              channel = attached(client, mode)
 
-                assert process == client.process
+              assert [{:attach, process, request}] =
+                       Enum.drop(Stream.effects(fixture.stream), length(effects))
 
-                assert request == %{
-                         type: :attach,
-                         cols: if(mode == :rw, do: 91, else: 0),
-                         rows: if(mode == :rw, do: 31, else: 0),
+              assert process == client.process
+
+              assert request == %{
+                       type: :attach,
+                       cols: if(mode == :rw, do: 91, else: 0),
+                       rows: if(mode == :rw, do: 31, else: 0),
+                       vm_id: selected.vm_id,
+                       placement_id: selected.placement_id,
+                       execution_epoch: selected.execution_epoch,
+                       guest_session_id: selected.guest_session_id,
+                       mode: mode,
+                       cursor: cursor
+                     }
+
+              assert :ok = Socket.send_frame(client, 2, "fixture-input")
+
+              assert :ok =
+                       Socket.send_frame(client, 1, ~s({"op":"resize","cols":103,"rows":37}))
+
+              Socket.barrier(client)
+              new_effects = Enum.drop(Stream.effects(fixture.stream), length(effects) + 1)
+
+              if mode == :rw do
+                assert [{:input, ^channel, "fixture-input"}, {:resize, resize}] = new_effects
+
+                assert resize == %{
+                         type: :resize,
                          vm_id: selected.vm_id,
                          placement_id: selected.placement_id,
                          execution_epoch: selected.execution_epoch,
                          guest_session_id: selected.guest_session_id,
-                         mode: mode,
-                         cursor: cursor
+                         cols: 103,
+                         rows: 37
                        }
-
-                assert :ok = Socket.send_frame(client, 2, "fixture-input")
-
-                assert :ok =
-                         Socket.send_frame(client, 1, ~s({"op":"resize","cols":103,"rows":37}))
-
-                Socket.barrier(client)
-                new_effects = Enum.drop(Stream.effects(fixture.stream), length(effects) + 1)
-
-                if mode == :rw do
-                  assert [{:input, ^channel, "fixture-input"}, {:resize, resize}] = new_effects
-
-                  assert resize == %{
-                           type: :resize,
-                           vm_id: selected.vm_id,
-                           placement_id: selected.placement_id,
-                           execution_epoch: selected.execution_epoch,
-                           guest_session_id: selected.guest_session_id,
-                           cols: 103,
-                           rows: 37
-                         }
-                else
-                  assert new_effects == []
-                end
-
-                Socket.disconnect(client)
-                assert List.last(Stream.effects(fixture.stream)) == {:gone, channel}
               else
-                Socket.closed(client)
-                assert Stream.effects(fixture.stream) == effects
+                assert new_effects == []
               end
 
-              # Audit and ticket receipts may change; VM/session/grant data must not.
-              assert inventory(fixture) == before
-              assert {:error, :invalid_ticket} = Tickets.consume(ticket)
-              replay = Socket.connect(port, ticket, cursor)
-
-              try do
-                Socket.closed(replay)
-              after
-                Socket.dispose(replay)
-              end
-            after
-              Socket.dispose(client)
+              Socket.disconnect(client)
+              assert List.last(Stream.effects(fixture.stream)) == {:gone, channel}
+            else
+              Socket.closed(client)
+              assert Stream.effects(fixture.stream) == effects
             end
+
+            # Audit and ticket receipts may change; VM/session/grant data must not.
+            assert inventory(fixture) == before
+            assert {:error, :invalid_ticket} = Tickets.consume(ticket)
+            replay = Socket.connect(port, ticket, cursor)
+
+            try do
+              Socket.closed(replay)
+            after
+              Socket.dispose(replay)
+            end
+          after
+            Socket.dispose(client)
           end
-        end)
-      after
-        stop_supervised!(server)
-      end
+        end
+      end)
+    after
+      stop_supervised!(server)
     end
   end
 
+  @tag :hegel_case_sandbox
   property "expired and foreign-actor tickets refuse a real attachment without relay dispatch",
-    test_cases: 4 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     fixture = fixture()
     own = session(fixture, fixture.member)
     foreign = session(fixture, fixture.owner)
     token = Marshall.TerminalFixtures.user_token(fixture.member)
 
-    check all(cursor <- integer(0..1_000_000), expired_first? <- boolean(), test_cases: 4) do
-      fresh(fixture)
-      cases = if expired_first?, do: [:expired, :foreign], else: [:foreign, :expired]
+    cursor = draw("cursor", integer(0..1_000_000))
+    expired_first? = draw("expired_first?", boolean())
+    fresh(fixture)
+    cases = if expired_first?, do: [:expired, :foreign], else: [:foreign, :expired]
 
-      Enum.each(cases, fn kind ->
-        {selected, issuer} =
-          if kind == :expired, do: {own, fixture.member}, else: {foreign, fixture.owner}
+    Enum.each(cases, fn kind ->
+      {selected, issuer} =
+        if kind == :expired, do: {own, fixture.member}, else: {foreign, fixture.owner}
 
-        {:ok, ticket} = Authority.ticket(selected, issuer)
+      {:ok, ticket} = Authority.ticket(selected, issuer)
 
-        if kind == :expired do
-          # Inject elapsed ticket time without sleeping for the 30-second TTL.
-          hash = :crypto.hash(:sha256, ticket) |> Base.encode16(case: :lower)
+      if kind == :expired do
+        # Inject elapsed ticket time without sleeping for the 30-second TTL.
+        hash = :crypto.hash(:sha256, ticket) |> Base.encode16(case: :lower)
 
-          %{num_rows: 1} =
-            Ecto.Adapters.SQL.query!(
-              Marshall.Repo,
-              "UPDATE terminal_tickets SET expires_at = clock_timestamp() - interval '1 second' WHERE token_hash = $1",
-              [hash],
-              log: false
-            )
-        end
+        %{num_rows: 1} =
+          Ecto.Adapters.SQL.query!(
+            Marshall.Repo,
+            "UPDATE terminal_tickets SET expires_at = clock_timestamp() - interval '1 second' WHERE token_hash = $1",
+            [hash],
+            log: false
+          )
+      end
 
-        before = inventory(fixture)
-        effects = Stream.effects(fixture.stream)
-        with_connection(fixture.member, token, ticket, cursor, &Socket.closed/1)
-        assert Stream.effects(fixture.stream) == effects
-        assert inventory(fixture) == before
-        assert {:error, :invalid_ticket} = Tickets.consume(ticket)
-      end)
-    end
+      before = inventory(fixture)
+      effects = Stream.effects(fixture.stream)
+      with_connection(fixture.member, token, ticket, cursor, &Socket.closed/1)
+      assert Stream.effects(fixture.stream) == effects
+      assert inventory(fixture) == before
+      assert {:error, :invalid_ticket} = Tickets.consume(ticket)
+    end)
   end
 
   for trigger <- [:input, :resize, :idle] do
     @trigger trigger
-    property "live #{@trigger} attachment closes across every authority boundary and needs a fresh socket",
-      test_cases: 3 do
+    @tag :hegel_case_sandbox
+  property "live #{@trigger} attachment closes across every authority boundary and needs a fresh socket",
+      test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
       fixture = fixture()
 
-      check all(
-              order <- list_of(integer(0..100), length: 6),
-              cursor <- integer(0..1_000_000),
-              test_cases: 3
-            ) do
-        boundaries =
-          Enum.zip(order, [:grant, :login, :capability, :freshness, :execution, :kill])
-          |> Enum.sort()
-          |> Enum.map(&elem(&1, 1))
+      order = draw("order", list_of(integer(0..100), length: 6))
+      cursor = draw("cursor", integer(0..1_000_000))
 
-        Enum.each(boundaries, fn boundary ->
+      boundaries =
+        Enum.zip(order, [:grant, :login, :capability, :freshness, :execution, :kill])
+        |> Enum.sort()
+        |> Enum.map(&elem(&1, 1))
+
+      Enum.each(boundaries, fn boundary ->
+        fresh(fixture)
+        role(fixture, :operator)
+        selected = session(fixture, fixture.member)
+        token = Marshall.TerminalFixtures.user_token(fixture.member)
+        {:ok, jti, _} = Marshall.Accounts.Login.verify(token, fixture.member)
+        {:ok, ticket} = Authority.ticket(selected, fixture.member)
+
+        with_connection(fixture.member, token, ticket, cursor, fn client ->
+          channel = attached(client, :rw)
+          before_effects = Stream.effects(fixture.stream)
+          revoke(fixture, selected, boundary, jti)
+
+          # Committed authority changes notify their user and VM; the sandbox
+          # never commits pg_notify, so deliver those hints as the relay would.
+          # An idle viewer otherwise waits for its five-second backstop.
+          if @trigger == :idle do
+            for {kind, id} <- [{"user", fixture.member.id}, {"vm", fixture.vm.id}],
+                do: Marshall.Control.Hints.deliver(%{"kind" => kind, "id" => id})
+          end
+
+          before = inventory(fixture)
+          trigger(client, @trigger)
+          Socket.closed(client)
+          assert Stream.effects(fixture.stream) == before_effects ++ [{:gone, channel}]
+          assert inventory(fixture) == before
+          assert {:error, :invalid_ticket} = Tickets.consume(ticket)
+
+          # Sending after the monitored process ended cannot dispatch anything,
+          # even when authority is explicitly restored for a new attachment.
           fresh(fixture)
           role(fixture, :operator)
-          selected = session(fixture, fixture.member)
-          token = Marshall.TerminalFixtures.user_token(fixture.member)
-          {:ok, jti, _} = Marshall.Accounts.Login.verify(token, fixture.member)
-          {:ok, ticket} = Authority.ticket(selected, fixture.member)
-
-          with_connection(fixture.member, token, ticket, cursor, fn client ->
-            channel = attached(client, :rw)
-            before_effects = Stream.effects(fixture.stream)
-            revoke(fixture, selected, boundary, jti)
-
-            # Committed authority changes notify their user and VM; the sandbox
-            # never commits pg_notify, so deliver those hints as the relay would.
-            # An idle viewer otherwise waits for its five-second backstop.
-            if @trigger == :idle do
-              for {kind, id} <- [{"user", fixture.member.id}, {"vm", fixture.vm.id}],
-                  do: Marshall.Control.Hints.deliver(%{"kind" => kind, "id" => id})
-            end
-
-            before = inventory(fixture)
-            trigger(client, @trigger)
-            Socket.closed(client)
-            assert Stream.effects(fixture.stream) == before_effects ++ [{:gone, channel}]
-            assert inventory(fixture) == before
-            assert {:error, :invalid_ticket} = Tickets.consume(ticket)
-
-            # Sending after the monitored process ended cannot dispatch anything,
-            # even when authority is explicitly restored for a new attachment.
-            fresh(fixture)
-            role(fixture, :operator)
-            _ = Socket.send_frame(client, 2, "after-close")
-            assert Stream.effects(fixture.stream) == before_effects ++ [{:gone, channel}]
-          end)
-
-          # Kill/execution changes retain old-session refusal. Restoration uses a
-          # new explicit session in those cases; login restoration mints a new JTI.
-          selected =
-            if boundary in [:execution, :kill] do
-              assert {:error, :unknown_session} = Authority.ticket(selected, fixture.member)
-              session(fixture, fixture.member)
-            else
-              selected
-            end
-
-          token = Marshall.TerminalFixtures.user_token(fixture.member)
-          {:ok, ticket} = Authority.ticket(selected, fixture.member)
-
-          with_connection(fixture.member, token, ticket, cursor + 1, fn client ->
-            channel = attached(client, :rw)
-            assert :ok = Socket.send_frame(client, 2, "fresh-input")
-            Socket.barrier(client)
-            assert List.last(Stream.effects(fixture.stream)) == {:input, channel, "fresh-input"}
-            Socket.disconnect(client)
-          end)
+          _ = Socket.send_frame(client, 2, "after-close")
+          assert Stream.effects(fixture.stream) == before_effects ++ [{:gone, channel}]
         end)
-      end
+
+        # Kill/execution changes retain old-session refusal. Restoration uses a
+        # new explicit session in those cases; login restoration mints a new JTI.
+        selected =
+          if boundary in [:execution, :kill] do
+            assert {:error, :unknown_session} = Authority.ticket(selected, fixture.member)
+            session(fixture, fixture.member)
+          else
+            selected
+          end
+
+        token = Marshall.TerminalFixtures.user_token(fixture.member)
+        {:ok, ticket} = Authority.ticket(selected, fixture.member)
+
+        with_connection(fixture.member, token, ticket, cursor + 1, fn client ->
+          channel = attached(client, :rw)
+          assert :ok = Socket.send_frame(client, 2, "fresh-input")
+          Socket.barrier(client)
+          assert List.last(Stream.effects(fixture.stream)) == {:input, channel, "fresh-input"}
+          Socket.disconnect(client)
+        end)
+      end)
     end
   end
 

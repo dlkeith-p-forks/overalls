@@ -92,28 +92,29 @@ defmodule Lilly.VM.ActorWatchTest do
     property "terminal reports always revoke and only :absent opens a watcher" do
       target = %{pid: 1, cgroup: "/sys/fs/cgroup/x"}
 
-      check all(
-              events <-
-                list_of(
-                  member_of([{:start, target}, :armed, :exited, :error, :crashed, :stop]),
-                  max_length: 60
-                )
-            ) do
-        Enum.reduce(events, Watch.new(), fn event, watch ->
-          case Watch.step(watch, event) do
-            {:ok, next, effects} ->
-              if event in [:exited, :error, :crashed],
-                do: assert(effects == [{:revoke, event}])
+      events =
+        draw(
+          "events",
+          list_of(
+            member_of([{:start, target}, :armed, :exited, :error, :crashed, :stop]),
+            max_length: 60
+          )
+        )
 
-              if match?({:open, _}, List.first(effects)), do: assert(watch.state == :absent)
-              assert Watch.watching?(next, target) == (next.state == :watching)
-              next
+      Enum.reduce(events, Watch.new(), fn event, watch ->
+        case Watch.step(watch, event) do
+          {:ok, next, effects} ->
+            if event in [:exited, :error, :crashed],
+              do: assert(effects == [{:revoke, event}])
 
-            {:error, :invalid_transition} ->
-              watch
-          end
-        end)
-      end
+            if match?({:open, _}, List.first(effects)), do: assert(watch.state == :absent)
+            assert Watch.watching?(next, target) == (next.state == :watching)
+            next
+
+          {:error, :invalid_transition} ->
+            watch
+        end
+      end)
     end
   end
 

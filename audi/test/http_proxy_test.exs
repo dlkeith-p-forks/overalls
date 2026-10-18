@@ -71,72 +71,72 @@ defmodule Audi.HTTP.ProxyTest do
     refute hd(get_resp_header(response, "location")) =~ c.client.origin
   end
 
-  test "HTTPS-authorized HTTP streams bytes and removes platform authority from guest headers",
-       c do
-    check all(payload <- binary(min_length: 1, max_length: 80_000), max_runs: 5) do
-      {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
-      {:ok, {_, port}} = :inet.sockname(listener)
-      owner = self()
+  property "HTTPS-authorized HTTP streams bytes and removes platform authority from guest headers",
+           c do
+    payload = draw("payload", binary(min_length: 1, max_length: 80000))
 
-      guest =
-        Task.async(fn ->
-          {:ok, socket} = :gen_tcp.accept(listener, 3000)
-          request = empty_chunked_get(socket)
-          send(owner, {:guest_headers, request})
+    {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
+    {:ok, {_, port}} = :inet.sockname(listener)
+    owner = self()
 
-          :ok =
-            :gen_tcp.send(socket, [
-              "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n",
-              "Set-Cookie: __Host-audi_session=forged; Secure\r\n",
-              "Set-Cookie: app=value; Domain=apps.example\r\n\r\n"
-            ])
+    guest =
+      Task.async(fn ->
+        {:ok, socket} = :gen_tcp.accept(listener, 3000)
+        request = empty_chunked_get(socket)
+        send(owner, {:guest_headers, request})
 
-          for chunk <- chunks(payload),
-              do:
-                :ok =
-                  :gen_tcp.send(socket, [
-                    Integer.to_string(byte_size(chunk), 16),
-                    "\r\n",
-                    chunk,
-                    "\r\n"
-                  ])
+        :ok =
+          :gen_tcp.send(socket, [
+            "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n",
+            "Set-Cookie: __Host-audi_session=forged; Secure\r\n",
+            "Set-Cookie: app=value; Domain=apps.example\r\n\r\n"
+          ])
 
-          :ok = :gen_tcp.send(socket, "0\r\n\r\n")
-          :gen_tcp.close(socket)
-        end)
+        for chunk <- chunks(payload),
+            do:
+              :ok =
+                :gen_tcp.send(socket, [
+                  Integer.to_string(byte_size(chunk), 16),
+                  "\r\n",
+                  chunk,
+                  "\r\n"
+                ])
 
-      task =
-        Task.async(fn ->
-          Plug.Test.conn(:get, "https://#{@label}.apps.example/path")
-          |> put_req_header("cookie", "app=ok; __Host-audi_state=secret")
-          |> put_req_header("x-forwarded-for", "forged")
-          |> put_req_header("x-audi-user-id", @host)
-          |> Audi.HTTP.Proxy.call(
-            client: c.client,
-            zone: "apps.example",
-            connector: {Audi.Test.WebConnector, %{port: port, owner: owner}}
-          )
-        end)
+        :ok = :gen_tcp.send(socket, "0\r\n\r\n")
+        :gen_tcp.close(socket)
+      end)
 
-      assert_receive {:control_request, control, ref, "/api/audi/v1/web-open", _, request}, 2000
-      assert request["app_port"] == 0
-      assert request["cookie"] == nil
-      send(control, {ref, 200, JSON.encode!(grant())})
-      assert_receive {:guest_binding, %{service: :web, port: 8080, host_id: @host}}, 2000
-      assert_receive {:guest_headers, headers}, 2000
-      refute headers =~ "secret"
-      refute headers =~ "forged"
-      refute headers =~ "x-audi-user-id"
-      assert headers =~ "app=ok"
-      response = Task.await(task, 4000)
-      assert response.status == 200
-      assert IO.iodata_to_binary(response.resp_body) == payload
-      assert get_resp_header(response, "set-cookie") == ["app=value"]
-      Task.await(guest, 1000)
-      assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
-      send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
-      :gen_tcp.close(listener)
-    end
+    task =
+      Task.async(fn ->
+        Plug.Test.conn(:get, "https://#{@label}.apps.example/path")
+        |> put_req_header("cookie", "app=ok; __Host-audi_state=secret")
+        |> put_req_header("x-forwarded-for", "forged")
+        |> put_req_header("x-audi-user-id", @host)
+        |> Audi.HTTP.Proxy.call(
+          client: c.client,
+          zone: "apps.example",
+          connector: {Audi.Test.WebConnector, %{port: port, owner: owner}}
+        )
+      end)
+
+    assert_receive {:control_request, control, ref, "/api/audi/v1/web-open", _, request}, 2000
+    assert request["app_port"] == 0
+    assert request["cookie"] == nil
+    send(control, {ref, 200, JSON.encode!(grant())})
+    assert_receive {:guest_binding, %{service: :web, port: 8080, host_id: @host}}, 2000
+    assert_receive {:guest_headers, headers}, 2000
+    refute headers =~ "secret"
+    refute headers =~ "forged"
+    refute headers =~ "x-audi-user-id"
+    assert headers =~ "app=ok"
+    response = Task.await(task, 4000)
+    assert response.status == 200
+    assert IO.iodata_to_binary(response.resp_body) == payload
+    assert get_resp_header(response, "set-cookie") == ["app=value"]
+    Task.await(guest, 1000)
+    assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
+    send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
+    :gen_tcp.close(listener)
   end
 
   # @cc [owner:ghuntley,label:verification;security] audi-http-failure-diagnostics-private
@@ -221,9 +221,9 @@ defmodule Audi.HTTP.ProxyTest do
     end
   end
 
-  test "binary uploads preserve bytes across bounded upstream chunks", c do
+  property "binary uploads preserve bytes across bounded upstream chunks", c do
     upstream =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         Supervisor.child_spec(
           {Bandit, plug: Upload, scheme: :http, ip: {127, 0, 0, 1}, port: 0, startup_log: false},
           id: :upload_guest
@@ -233,28 +233,28 @@ defmodule Audi.HTTP.ProxyTest do
     {:ok, {_, port}} = ThousandIsland.listener_info(upstream)
     owner = self()
 
-    check all(payload <- binary(min_length: 65_537, max_length: 200_000), max_runs: 5) do
-      task =
-        Task.async(fn ->
-          Plug.Test.conn(:post, "https://#{@label}.apps.example/upload", payload)
-          |> Audi.HTTP.Proxy.call(
-            client: c.client,
-            zone: "apps.example",
-            connector: {Audi.Test.WebConnector, %{port: port, owner: owner}}
-          )
-        end)
+    payload = draw("payload", binary(min_length: 65537, max_length: 200_000))
 
-      assert_receive {:control_request, control, ref, "/api/audi/v1/web-open", _, _}, 2000
-      send(control, {ref, 200, JSON.encode!(grant())})
-      response = Task.await(task, 4000)
-      assert response.status == 200
+    task =
+      Task.async(fn ->
+        Plug.Test.conn(:post, "https://#{@label}.apps.example/upload", payload)
+        |> Audi.HTTP.Proxy.call(
+          client: c.client,
+          zone: "apps.example",
+          connector: {Audi.Test.WebConnector, %{port: port, owner: owner}}
+        )
+      end)
 
-      assert IO.iodata_to_binary(response.resp_body) ==
-               Base.encode16(:crypto.hash(:sha256, payload))
+    assert_receive {:control_request, control, ref, "/api/audi/v1/web-open", _, _}, 2000
+    send(control, {ref, 200, JSON.encode!(grant())})
+    response = Task.await(task, 4000)
+    assert response.status == 200
 
-      assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
-      send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
-    end
+    assert IO.iodata_to_binary(response.resp_body) ==
+             Base.encode16(:crypto.hash(:sha256, payload))
+
+    assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
+    send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
   end
 
   test "peer authorization is verified before connection and replaced by trusted provenance", c do
@@ -369,14 +369,14 @@ defmodule Audi.HTTP.ProxyTest do
         conn |> Plug.Conn.put_resp_header("connection", "close") |> Audi.HTTP.Proxy.call(options)
   end
 
-  test "truncated guest bodies cannot become successfully terminated HTTP responses", c do
+  property "truncated guest bodies cannot become successfully terminated HTTP responses", c do
     {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
-    on_exit(fn -> :gen_tcp.close(listener) end)
+    on_cleanup(fn -> :gen_tcp.close(listener) end)
     {:ok, {_, guest_port}} = :inet.sockname(listener)
     owner = self()
 
     proxy =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         {Bandit,
          plug:
            {Relay,
@@ -392,48 +392,48 @@ defmodule Audi.HTTP.ProxyTest do
 
     {:ok, {_, proxy_port}} = ThousandIsland.listener_info(proxy)
 
-    check all(payload <- string(:alphanumeric, min_length: 1, max_length: 4096), max_runs: 5) do
-      guest =
-        Task.async(fn ->
-          {:ok, socket} = :gen_tcp.accept(listener, 3000)
-          request(socket, "")
+    payload = draw("payload", string(:alphanumeric, min_length: 1, max_length: 4096))
 
-          :ok =
-            :gen_tcp.send(socket, [
-              "HTTP/1.1 200 OK\r\nContent-Length: ",
-              Integer.to_string(byte_size(payload) + 100),
-              "\r\n\r\n",
-              payload
-            ])
+    guest =
+      Task.async(fn ->
+        {:ok, socket} = :gen_tcp.accept(listener, 3000)
+        request(socket, "")
 
-          receive do
-            :truncate -> :gen_tcp.close(socket)
-          after
-            3000 -> flunk("client did not receive response headers")
-          end
-        end)
+        :ok =
+          :gen_tcp.send(socket, [
+            "HTTP/1.1 200 OK\r\nContent-Length: ",
+            Integer.to_string(byte_size(payload) + 100),
+            "\r\n\r\n",
+            payload
+          ])
 
-      client =
-        Task.async(fn ->
-          {:ok, socket} = :gen_tcp.connect({127, 0, 0, 1}, proxy_port, [:binary, active: false])
-          :ok = :gen_tcp.send(socket, "GET / HTTP/1.1\r\nHost: #{@label}.apps.example\r\n\r\n")
-          initial = request(socket, "")
-          send(guest.pid, :truncate)
-          response = closed_response(socket, initial)
-          :gen_tcp.close(socket)
-          response
-        end)
+        receive do
+          :truncate -> :gen_tcp.close(socket)
+        after
+          3000 -> flunk("client did not receive response headers")
+        end
+      end)
 
-      assert_receive {:control_request, control, ref, "/api/audi/v1/web-open", _, _}, 2000
-      send(control, {ref, 200, JSON.encode!(grant())})
-      response = Task.await(client, 4000)
-      assert response =~ "HTTP/1.1 200"
-      refute String.ends_with?(response, "0\r\n\r\n")
-      refute response =~ "HTTP/1.1 502"
-      Task.await(guest, 1000)
-      assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
-      send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
-    end
+    client =
+      Task.async(fn ->
+        {:ok, socket} = :gen_tcp.connect({127, 0, 0, 1}, proxy_port, [:binary, active: false])
+        :ok = :gen_tcp.send(socket, "GET / HTTP/1.1\r\nHost: #{@label}.apps.example\r\n\r\n")
+        initial = request(socket, "")
+        send(guest.pid, :truncate)
+        response = closed_response(socket, initial)
+        :gen_tcp.close(socket)
+        response
+      end)
+
+    assert_receive {:control_request, control, ref, "/api/audi/v1/web-open", _, _}, 2000
+    send(control, {ref, 200, JSON.encode!(grant())})
+    response = Task.await(client, 4000)
+    assert response =~ "HTTP/1.1 200"
+    refute String.ends_with?(response, "0\r\n\r\n")
+    refute response =~ "HTTP/1.1 502"
+    Task.await(guest, 1000)
+    assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
+    send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
   end
 
   defp closed_response(socket, acc) do
@@ -444,13 +444,14 @@ defmodule Audi.HTTP.ProxyTest do
     end
   end
 
-  test "WebSocket handshakes and masked messages traverse the authorized guest connection", c do
+  property "WebSocket handshakes and masked messages traverse the authorized guest connection",
+           c do
     {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
     {:ok, {_, guest_port}} = :inet.sockname(listener)
     owner = self()
 
     proxy =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         Supervisor.child_spec(
           {Bandit,
            plug:
@@ -473,72 +474,72 @@ defmodule Audi.HTTP.ProxyTest do
 
     {:ok, {_, proxy_port}} = ThousandIsland.listener_info(proxy)
 
-    check all(payload <- binary(min_length: 1, max_length: 125), max_runs: 4) do
-      guest =
-        Task.async(fn ->
-          {:ok, socket} = :gen_tcp.accept(listener, 3000)
-          headers = request(socket, "")
+    payload = draw("payload", binary(min_length: 1, max_length: 125))
 
-          [key] =
-            Regex.run(~r/sec-websocket-key: ([^\r]+)\r\n/i, headers, capture: :all_but_first)
+    guest =
+      Task.async(fn ->
+        {:ok, socket} = :gen_tcp.accept(listener, 3000)
+        headers = request(socket, "")
 
-          accept =
-            Base.encode64(:crypto.hash(:sha, key <> "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"))
+        [key] =
+          Regex.run(~r/sec-websocket-key: ([^\r]+)\r\n/i, headers, capture: :all_but_first)
 
-          :ok =
-            :gen_tcp.send(socket, [
-              "HTTP/1.1 101 Switching Protocols\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Accept: ",
-              accept,
-              "\r\n\r\n"
-            ])
+        accept =
+          Base.encode64(:crypto.hash(:sha, key <> "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"))
 
-          {:ok, <<0x82, 1::1, size::7>>} = :gen_tcp.recv(socket, 2, 2000)
-          {:ok, <<mask::binary-size(4), encoded::binary>>} = :gen_tcp.recv(socket, size + 4, 2000)
-          repeated = binary_part(:binary.copy(mask, div(size + 3, 4)), 0, size)
-          assert :crypto.exor(encoded, repeated) == payload
-          :ok = :gen_tcp.send(socket, <<0x82, size, payload::binary>>)
-          :gen_tcp.close(socket)
-        end)
+        :ok =
+          :gen_tcp.send(socket, [
+            "HTTP/1.1 101 Switching Protocols\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Accept: ",
+            accept,
+            "\r\n\r\n"
+          ])
 
-      client =
-        Task.async(fn ->
-          {:ok, socket} =
-            :gen_tcp.connect({127, 0, 0, 1}, proxy_port, [:binary, active: false], 1000)
+        {:ok, <<0x82, 1::1, size::7>>} = :gen_tcp.recv(socket, 2, 2000)
+        {:ok, <<mask::binary-size(4), encoded::binary>>} = :gen_tcp.recv(socket, size + 4, 2000)
+        repeated = binary_part(:binary.copy(mask, div(size + 3, 4)), 0, size)
+        assert :crypto.exor(encoded, repeated) == payload
+        :ok = :gen_tcp.send(socket, <<0x82, size, payload::binary>>)
+        :gen_tcp.close(socket)
+      end)
 
-          key = Base.encode64(:crypto.strong_rand_bytes(16))
+    client =
+      Task.async(fn ->
+        {:ok, socket} =
+          :gen_tcp.connect({127, 0, 0, 1}, proxy_port, [:binary, active: false], 1000)
 
-          :ok =
-            :gen_tcp.send(socket, [
-              "GET /ws HTTP/1.1\r\nHost: ",
-              @label,
-              ".apps.example\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Version: 13\r\nSec-WebSocket-Key: ",
-              key,
-              "\r\n\r\n"
-            ])
+        key = Base.encode64(:crypto.strong_rand_bytes(16))
 
-          headers = request(socket, "")
-          assert headers =~ "101"
+        :ok =
+          :gen_tcp.send(socket, [
+            "GET /ws HTTP/1.1\r\nHost: ",
+            @label,
+            ".apps.example\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Version: 13\r\nSec-WebSocket-Key: ",
+            key,
+            "\r\n\r\n"
+          ])
 
-          expected =
-            Base.encode64(:crypto.hash(:sha, key <> "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"))
+        headers = request(socket, "")
+        assert headers =~ "101"
 
-          assert String.downcase(headers) =~ String.downcase("sec-websocket-accept: " <> expected)
-          {:ok, frame} = Audi.HTTP.WebSocketFrame.encode(:binary, payload)
-          :ok = :gen_tcp.send(socket, frame)
-          {:ok, <<0x82, size>>} = :gen_tcp.recv(socket, 2, 2000)
-          {:ok, received} = :gen_tcp.recv(socket, size, 2000)
-          :gen_tcp.close(socket)
-          received
-        end)
+        expected =
+          Base.encode64(:crypto.hash(:sha, key <> "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"))
 
-      assert_receive {:control_request, control, ref, "/api/audi/v1/web-open", _, _}, 2000
-      send(control, {ref, 200, JSON.encode!(grant())})
-      assert_receive {:guest_binding, %{service: :web}}, 2000
-      assert Task.await(client, 4000) == payload
-      Task.await(guest, 1000)
-      assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
-      send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
-    end
+        assert String.downcase(headers) =~ String.downcase("sec-websocket-accept: " <> expected)
+        {:ok, frame} = Audi.HTTP.WebSocketFrame.encode(:binary, payload)
+        :ok = :gen_tcp.send(socket, frame)
+        {:ok, <<0x82, size>>} = :gen_tcp.recv(socket, 2, 2000)
+        {:ok, received} = :gen_tcp.recv(socket, size, 2000)
+        :gen_tcp.close(socket)
+        received
+      end)
+
+    assert_receive {:control_request, control, ref, "/api/audi/v1/web-open", _, _}, 2000
+    send(control, {ref, 200, JSON.encode!(grant())})
+    assert_receive {:guest_binding, %{service: :web}}, 2000
+    assert Task.await(client, 4000) == payload
+    Task.await(guest, 1000)
+    assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
+    send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
 
     :gen_tcp.close(listener)
   end

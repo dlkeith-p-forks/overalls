@@ -53,165 +53,166 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
   # state with independent approval/revision/pause expectations. Denied or stale
   # requests and advisory previews MUST preserve complete operation, allocation,
   # audit and job rows. Synthetic reports MUST NOT establish native movement.
+  @tag :hegel_case_sandbox
   property "campaign histories preserve fixed authority and per-revision downtime consent",
-    test_cases: 12 do
-    check all(
-            commands <-
-              list_of(
-                member_of([
-                  :pause,
-                  :continue,
-                  :approve,
-                  :replan,
-                  :advance,
-                  :preview,
-                  :demote,
-                  :promote
-                ]),
-                min_length: 5,
-                max_length: 14
-              ),
-            test_cases: 12
-          ) do
-      {fixture, initial} = fixture()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    commands =
+      draw(
+        "commands",
+        list_of(
+          member_of([
+            :pause,
+            :continue,
+            :approve,
+            :replan,
+            :advance,
+            :preview,
+            :demote,
+            :promote
+          ]),
+          min_length: 5,
+          max_length: 14
+        )
+      )
 
-      # Every history crosses consent invalidation, then carries admitted work
-      # across demotion. Random interleavings add repeat and refusal schedules.
-      model =
-        Enum.reduce([:approve, :replan, :advance] ++ commands, initial, fn command, model ->
+    {fixture, initial} = fixture()
+
+    # Every history crosses consent invalidation, then carries admitted work
+    # across demotion. Random interleavings add repeat and refusal schedules.
+    model =
+      Enum.reduce([:approve, :replan, :advance] ++ commands, initial, fn command, model ->
+        next = step(command, fixture, model)
+        assert_model(fixture, next)
+        next
+      end)
+
+    model =
+      Enum.reduce(
+        [:promote, :continue, :approve, :demote, :advance, :advance],
+        model,
+        fn command, model ->
           next = step(command, fixture, model)
           assert_model(fixture, next)
           next
-        end)
+        end
+      )
 
-      model =
-        Enum.reduce(
-          [:promote, :continue, :approve, :demote, :advance, :advance],
-          model,
-          fn command, model ->
-            next = step(command, fixture, model)
-            assert_model(fixture, next)
-            next
-          end
-        )
+    assert model.admitted
+    [move] = Ledger.read!(Relocation, evacuation_id: fixture.campaign)
+    assert move.requested_by_id == fixture.admin.id
+    assert move.original_state == :running
+    assert move.destination_host_id == fixture.destination.id
 
-      assert model.admitted
-      [move] = Ledger.read!(Relocation, evacuation_id: fixture.campaign)
-      assert move.requested_by_id == fixture.admin.id
-      assert move.original_state == :running
-      assert move.destination_host_id == fixture.destination.id
-
-      # Campaign acceptance survives demotion. The same retained browser actor
-      # must fail all fresh control/approval/replan requests after demotion.
-      for command <- [:pause, :continue, :resume, :retire] do
-        unchanged(fn ->
-          assert {:error, _} =
-                   Compute.control_evacuation(%{id: fixture.campaign, command: command},
-                     actor: fixture.admin
-                   )
-        end)
-      end
-
-      for actor <- [fixture.admin, fixture.ordinary] do
-        unchanged(fn ->
-          assert {:error, _} =
-                   Compute.approve_evacuation_downtime(args(fixture, model.key), actor: actor)
-
-          assert {:error, _} =
-                   Compute.replan_evacuation_workload(args(fixture, model.key), actor: actor)
-        end)
-      end
-
-      # Pausing admitted work leaves the exact campaign-bound recovery authority.
-      promoted = step(:promote, fixture, model)
-      paused = step(:pause, fixture, promoted)
-      assert {:ok, :paused} = Evacuations.advance(fixture.campaign)
-      assert_model(fixture, paused)
-
-      assert {:ok, :ok} =
-               Ledger.transaction(fn ->
-                 source = Ledger.lock!(Host, fixture.source.id)
-                 assert Evacuations.source_allowed?(source, move)
-                 refute Evacuations.source_allowed?(source, %{move | evacuation_id: nil})
-
-                 refute Evacuations.source_allowed?(source, %{
-                          move
-                          | evacuation_id: Ash.UUID.generate()
-                        })
-
-                 :ok
-               end)
-
-      # Later generated fixtures must not become destinations for earlier ones.
-      Ledger.update!(fixture.destination, :configure, %{enabled: false})
+    # Campaign acceptance survives demotion. The same retained browser actor
+    # must fail all fresh control/approval/replan requests after demotion.
+    for command <- [:pause, :continue, :resume, :retire] do
+      unchanged(fn ->
+        assert {:error, _} =
+                 Compute.control_evacuation(%{id: fixture.campaign, command: command},
+                   actor: fixture.admin
+                 )
+      end)
     end
+
+    for actor <- [fixture.admin, fixture.ordinary] do
+      unchanged(fn ->
+        assert {:error, _} =
+                 Compute.approve_evacuation_downtime(args(fixture, model.key), actor: actor)
+
+        assert {:error, _} =
+                 Compute.replan_evacuation_workload(args(fixture, model.key), actor: actor)
+      end)
+    end
+
+    # Pausing admitted work leaves the exact campaign-bound recovery authority.
+    promoted = step(:promote, fixture, model)
+    paused = step(:pause, fixture, promoted)
+    assert {:ok, :paused} = Evacuations.advance(fixture.campaign)
+    assert_model(fixture, paused)
+
+    assert {:ok, :ok} =
+             Ledger.transaction(fn ->
+               source = Ledger.lock!(Host, fixture.source.id)
+               assert Evacuations.source_allowed?(source, move)
+               refute Evacuations.source_allowed?(source, %{move | evacuation_id: nil})
+
+               refute Evacuations.source_allowed?(source, %{
+                        move
+                        | evacuation_id: Ash.UUID.generate()
+                      })
+
+               :ok
+             end)
+
+    # Later generated fixtures must not become destinations for earlier ones.
+    Ledger.update!(fixture.destination, :configure, %{enabled: false})
   end
 
   # @cc [owner:ghuntley,label:verification] evacuation-physical-readiness-history
   # Readiness and resume MUST be independently tested against host freshness,
   # pool freshness and physical allocations, including evidence lost after ready.
   # Advancing the workflow or aging a timestamp MUST NOT substitute for evidence.
-  property "ready and resume require all current physical emptiness evidence", test_cases: 8 do
-    check all(
-            obstructions <-
-              list_of(member_of([:host_stale, :pool_stale, :allocation]),
-                min_length: 2,
-                max_length: 7
-              ),
-            close <- member_of([:resume, :retire]),
-            test_cases: 8
-          ) do
-      source = host_fixture()
-      admin = Marshall.PasskeyFixture.elevate(Marshall.PasskeyFixture.user(true))
+  @tag :hegel_case_sandbox
+  property "ready and resume require all current physical emptiness evidence", test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    obstructions =
+      draw(
+        "obstructions",
+        list_of(member_of([:host_stale, :pool_stale, :allocation]), min_length: 2, max_length: 7)
+      )
 
-      assert {:ok, campaign} =
-               Compute.request_evacuation(
-                 %{host_id: source.host.id, request_id: Ash.UUID.generate()},
-                 actor: admin
-               )
+    close = draw("close", member_of([:resume, :retire]))
+    source = host_fixture()
+    admin = Marshall.PasskeyFixture.elevate(Marshall.PasskeyFixture.user(true))
 
-      for obstruction <- [:host_stale, :pool_stale, :allocation] ++ obstructions do
-        physical(source, obstruction)
-        assert {:ok, :awaiting_cleanup} = Evacuations.advance(campaign.id)
-        assert [%{status: :active, ready_at: nil}] = Ledger.read!(Evacuation, id: campaign.id)
+    assert {:ok, campaign} =
+             Compute.request_evacuation(
+               %{host_id: source.host.id, request_id: Ash.UUID.generate()},
+               actor: admin
+             )
 
-        unchanged(fn ->
-          assert {:error, _} =
-                   Compute.control_evacuation(%{id: campaign.id, command: close}, actor: admin)
-        end)
-
-        physical(source, :empty)
-      end
-
-      assert {:ok, :ready} = Evacuations.advance(campaign.id)
-
-      for obstruction <- [:host_stale, :pool_stale, :allocation] do
-        physical(source, obstruction)
-
-        unchanged(fn ->
-          assert {:error, _} =
-                   Compute.control_evacuation(%{id: campaign.id, command: close}, actor: admin)
-        end)
-
-        physical(source, :empty)
-      end
-
-      assert {:ok, closed} =
-               Compute.control_evacuation(%{id: campaign.id, command: close}, actor: admin)
-
-      assert closed.status == if(close == :resume, do: :resumed, else: :retired)
-      assert closed.closed_at != nil
-      [host] = Ledger.read!(Host, id: source.host.id)
-      assert host.maintenance_mode == if(close == :resume, do: :normal, else: :retired)
-      assert host.enabled == (close == :resume)
+    for obstruction <- [:host_stale, :pool_stale, :allocation] ++ obstructions do
+      physical(source, obstruction)
+      assert {:ok, :awaiting_cleanup} = Evacuations.advance(campaign.id)
+      assert [%{status: :active, ready_at: nil}] = Ledger.read!(Evacuation, id: campaign.id)
 
       unchanged(fn ->
         assert {:error, _} =
                  Compute.control_evacuation(%{id: campaign.id, command: close}, actor: admin)
       end)
 
-      Ledger.update!(host, :configure, %{enabled: false})
+      physical(source, :empty)
     end
+
+    assert {:ok, :ready} = Evacuations.advance(campaign.id)
+
+    for obstruction <- [:host_stale, :pool_stale, :allocation] do
+      physical(source, obstruction)
+
+      unchanged(fn ->
+        assert {:error, _} =
+                 Compute.control_evacuation(%{id: campaign.id, command: close}, actor: admin)
+      end)
+
+      physical(source, :empty)
+    end
+
+    assert {:ok, closed} =
+             Compute.control_evacuation(%{id: campaign.id, command: close}, actor: admin)
+
+    assert closed.status == if(close == :resume, do: :resumed, else: :retired)
+    assert closed.closed_at != nil
+    [host] = Ledger.read!(Host, id: source.host.id)
+    assert host.maintenance_mode == if(close == :resume, do: :normal, else: :retired)
+    assert host.enabled == (close == :resume)
+
+    unchanged(fn ->
+      assert {:error, _} =
+               Compute.control_evacuation(%{id: campaign.id, command: close}, actor: admin)
+    end)
+
+    Ledger.update!(host, :configure, %{enabled: false})
   end
 
   @spec fixture() :: {fixture(), model()}

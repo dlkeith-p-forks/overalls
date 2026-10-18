@@ -142,10 +142,10 @@ def main() -> None:
         admin.locator('input[name="git[owner]"]').fill("Fixture")
         admin.locator('input[name="git[repo]"]').fill("sample")
         admin.get_by_role("button", name="Add mirror", exact=True).click()
-        admin.wait_for_url("**/settings/security**")
+        admin.wait_for_url("**/settings**")
         expect(admin.locator("[data-phx-main].phx-connected")).to_be_visible()
         assert sql(inventory) == before
-        visit(admin, "/settings/security")
+        visit(admin, "/settings")
         admin.locator("#add-passkey").click()
         expect(admin.locator("#passkey-list > div")).to_have_count(1)
         admin.locator("#verify-passkey").click()

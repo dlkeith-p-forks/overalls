@@ -29,63 +29,67 @@ defmodule Lilly.Lifecycle.WorkspaceSourceTest do
 
   @tag :hegel
   test "journal transitions match the delivery edge table", c do
-    check all(history <- list_of(member_of(@states), max_length: 30), test_cases: 25) do
-      directory = Path.join(c.root, Lilly.UUID.generate())
-      {:ok, lock} = Lock.acquire(directory)
+    Hegel.check(
+      fn ->
+        history = draw("history", list_of(member_of(@states), max_length: 30))
+        directory = Path.join(c.root, Lilly.UUID.generate())
+        {:ok, lock} = Lock.acquire(directory)
 
-      try do
-        final =
-          history
-          |> Enum.with_index(1)
-          |> Enum.reduce({nil, 0}, fn {target, attempts}, {state, accepted} ->
-            payload =
-              Lilly.VM.WorkspaceSource.payload(
-                c.host,
-                c.boot,
-                target,
-                attempts,
-                String.duplicate("d", 64)
-              )
+        try do
+          final =
+            history
+            |> Enum.with_index(1)
+            |> Enum.reduce({nil, 0}, fn {target, attempts}, {state, accepted} ->
+              payload =
+                Lilly.VM.WorkspaceSource.payload(
+                  c.host,
+                  c.boot,
+                  target,
+                  attempts,
+                  String.duplicate("d", 64)
+                )
 
-            allowed =
-              if state, do: target in Map.fetch!(@edges, state), else: target == :pending
+              allowed =
+                if state, do: target in Map.fetch!(@edges, state), else: target == :pending
 
-            result = Journal.write(WorkspaceSource, directory, "workspace-source.json", payload)
-            assert result == :ok == allowed
+              result = Journal.write(WorkspaceSource, directory, "workspace-source.json", payload)
+              assert result == :ok == allowed
 
-            {:ok, loaded} = Journal.load(WorkspaceSource, directory, "workspace-source.json")
+              {:ok, loaded} = Journal.load(WorkspaceSource, directory, "workspace-source.json")
 
-            if allowed do
-              assert loaded.state == target
-              {target, accepted + 1}
-            else
-              assert (loaded && loaded.state) == state
-              {state, accepted}
-            end
-          end)
+              if allowed do
+                assert loaded.state == target
+                {target, accepted + 1}
+              else
+                assert (loaded && loaded.state) == state
+                {state, accepted}
+              end
+            end)
 
-        {state, accepted} = final
+          {state, accepted} = final
 
-        case Journal.load(WorkspaceSource, directory, "workspace-source.json") do
-          {:ok, nil} ->
-            assert state == nil
+          case Journal.load(WorkspaceSource, directory, "workspace-source.json") do
+            {:ok, nil} ->
+              assert state == nil
 
-          {:ok, record} ->
-            assert record.state == state
-            assert record.revision == accepted
+            {:ok, record} ->
+              assert record.state == state
+              assert record.revision == accepted
 
-            assert {:ok, _, metadata} =
-                     Path.join(directory, "workspace-source.json")
-                     |> File.read!()
-                     |> Journal.envelope()
+              assert {:ok, _, metadata} =
+                       Path.join(directory, "workspace-source.json")
+                       |> File.read!()
+                       |> Journal.envelope()
 
-            assert metadata["version"] == 2
-            refute Map.has_key?(metadata, "events")
+              assert metadata["version"] == 2
+              refute Map.has_key?(metadata, "events")
+          end
+        after
+          Lock.release(lock)
         end
-      after
-        Lock.release(lock)
-      end
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   test "delivered cannot be reached without delivering and settles only its own boot", c do

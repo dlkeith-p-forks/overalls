@@ -26,42 +26,42 @@ defmodule Ziggy.ControlResponseTest do
   # actual-TLS property.
   property(
     "only an exact completion conflict is classified as a durable conflict",
-    %{control: control},
-    profile: :ci,
+    %{control: control}
   ) do
-    check all(
-            route <- member_of(["complete", "admit", "renew", "agent_result"]),
-            answer <-
-              member_of([
-                {:error, "completion_conflict"},
-                {:error, "duplicate_request"},
-                {:error, "invalid_request"},
-                {:error, "unauthorized"},
-                {:error, "unsupported_version"},
-                {:error, "unavailable"},
-                {:error, :timeout},
-                {:error, :busy},
-                {:error, :unproven}
-              ]),
-            max_runs: 100
-          ) do
-      expected =
-        case answer do
-          {:error, "unauthorized"} ->
-            {:error, :unauthorized}
+    route = draw("route", member_of(["complete", "admit", "renew", "agent_result"]))
 
-          {:error, "unsupported_version"} ->
-            {:error, :unsupported_version}
+    answer =
+      draw(
+        "answer",
+        member_of(
+          error: "completion_conflict",
+          error: "duplicate_request",
+          error: "invalid_request",
+          error: "unauthorized",
+          error: "unsupported_version",
+          error: "unavailable",
+          error: :timeout,
+          error: :busy,
+          error: :unproven
+        )
+      )
 
-          {:error, "completion_conflict"} when route == "complete" ->
-            {:error, :completion_conflict}
+    expected =
+      case answer do
+        {:error, "unauthorized"} ->
+          {:error, :unauthorized}
 
-          _ ->
-            {:error, :authority_unavailable}
-        end
+        {:error, "unsupported_version"} ->
+          {:error, :unsupported_version}
 
-      assert Ziggy.Control.socket_result(answer, route, 16_384, control) == expected
-    end
+        {:error, "completion_conflict"} when route == "complete" ->
+          {:error, :completion_conflict}
+
+        _ ->
+          {:error, :authority_unavailable}
+      end
+
+    assert Ziggy.Control.socket_result(answer, route, 16_384, control) == expected
   end
 
   test "documents are bounded and only maps become acknowledgements" do

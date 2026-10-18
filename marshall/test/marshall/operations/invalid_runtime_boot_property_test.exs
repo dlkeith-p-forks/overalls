@@ -52,30 +52,30 @@ defmodule Marshall.Operations.InvalidRuntimeBootPropertyTest do
   # or production-release acceptance. Child diagnostics MUST omit fixture data.
   @tag timeout: 300_000
   property "invalid common Marshall runtime settings refuse before application startup",
-    test_cases: 3 do
-    check all(order <- shuffle(Enum.to_list(0..(length(@cases) - 1))), test_cases: 3) do
-      for index <- order do
-        {name, value} = Enum.at(@cases, index)
+    test_cases: 100 do
+    order = draw("order", shuffle(Enum.to_list(0..(length(@cases) - 1))))
 
-        material =
-          "private_boot_" <> Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)
+    for index <- order do
+      {name, value} = Enum.at(@cases, index)
 
-        mutated = if value == "private-material", do: material, else: value
+      material =
+        "private_boot_" <> Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)
 
-        {projection, output} = probe("refusal", [{name, mutated}])
+      mutated = if value == "private-material", do: material, else: value
 
-        assert projection == %{
-                 "outcome" => Map.fetch!(@outcomes, name),
-                 "startup_attempted" => false,
-                 "trace_calibrated" => true,
-                 "serving_present" => false,
-                 "application_started" => false
-               },
-               "case #{index}: #{inspect(projection)}"
+      {projection, output} = probe("refusal", [{name, mutated}])
 
-        refute String.contains?(output, material)
-        refute String.contains?(output, @project)
-      end
+      assert projection == %{
+               "outcome" => Map.fetch!(@outcomes, name),
+               "startup_attempted" => false,
+               "trace_calibrated" => true,
+               "serving_present" => false,
+               "application_started" => false
+             },
+             "case #{index}: #{inspect(projection)}"
+
+      refute String.contains?(output, material)
+      refute String.contains?(output, @project)
     end
   end
 

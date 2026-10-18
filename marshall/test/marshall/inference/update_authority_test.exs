@@ -105,21 +105,34 @@ defmodule Marshall.Inference.UpdateAuthorityTest do
   end
 
   test "arbitrary wire shapes never disclose artifacts and never raise", c do
-    check all(
-            wire <-
-              map_of(
-                string(:alphanumeric, max_length: 8),
-                one_of([string(:alphanumeric), integer(), boolean()]),
-                max_length: 6
-              )
-          ) do
-      case Requests.authorize_update(c.ziggy_token, wire) do
-        {:error, :invalid_binding} -> :ok
-        {:error, :unauthorized} -> :ok
-        {:ok, _} -> flunk("update authorization disclosed an artifact")
-        other -> flunk("update authorization returned an unclassified result: #{inspect(other)}")
-      end
-    end
+    Hegel.check(
+      fn ->
+        wire =
+          draw(
+            "wire",
+            map_of(
+              string(:alphanumeric, max_length: 8),
+              one_of([string(:alphanumeric), integer(), boolean()]),
+              max_length: 6
+            )
+          )
+
+        case Requests.authorize_update(c.ziggy_token, wire) do
+          {:error, :invalid_binding} ->
+            :ok
+
+          {:error, :unauthorized} ->
+            :ok
+
+          {:ok, _} ->
+            flunk("update authorization disclosed an artifact")
+
+          other ->
+            flunk("update authorization returned an unclassified result: #{inspect(other)}")
+        end
+      end,
+      []
+    )
   end
 
   test "exactly-shaped bindings with mutated decisive fields never reach eligibility", c do
@@ -131,18 +144,23 @@ defmodule Marshall.Inference.UpdateAuthorityTest do
       :future_epoch
     ]
 
-    check all(mutation <- member_of(mutations)) do
-      wire =
-        case mutation do
-          :foreign_host -> %{c.binding | "host_id" => Ash.UUID.generate()}
-          :foreign_vm -> %{c.binding | "vm_id" => Ash.UUID.generate()}
-          :foreign_placement -> %{c.binding | "placement_id" => Ash.UUID.generate()}
-          :zero_epoch -> %{c.binding | "execution_epoch" => 0}
-          :future_epoch -> %{c.binding | "execution_epoch" => c.vm.execution_epoch + 1}
-        end
+    Hegel.check(
+      fn ->
+        mutation = draw("mutation", member_of(mutations))
 
-      assert_closed_denial(Requests.authorize_update(c.ziggy_token, wire))
-    end
+        wire =
+          case mutation do
+            :foreign_host -> %{c.binding | "host_id" => Ash.UUID.generate()}
+            :foreign_vm -> %{c.binding | "vm_id" => Ash.UUID.generate()}
+            :foreign_placement -> %{c.binding | "placement_id" => Ash.UUID.generate()}
+            :zero_epoch -> %{c.binding | "execution_epoch" => 0}
+            :future_epoch -> %{c.binding | "execution_epoch" => c.vm.execution_epoch + 1}
+          end
+
+        assert_closed_denial(Requests.authorize_update(c.ziggy_token, wire))
+      end,
+      []
+    )
   end
 
   # A closed denial carries a stable atom and never artifact material: no

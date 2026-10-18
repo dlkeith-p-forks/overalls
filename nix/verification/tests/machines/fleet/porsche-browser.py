@@ -150,12 +150,12 @@ def run() -> None:
                     expect(page.locator("#ssh-approval-fingerprint")).to_have_text(fingerprint)
                     stage = role + " approval submission"
                     page.locator("#approve-ssh-key").click()
-                    page.wait_for_url("**/settings/ssh-keys")
+                    page.wait_for_url("**/settings*")
                     expect(page.locator("article")).to_contain_text(fingerprint)
                     context.close()
                     continue
                 stage = role + " keys navigation"
-                page.goto("https://control.example.test/settings/ssh-keys")
+                page.goto("https://control.example.test/settings")
                 stage = role + " keys connection"
                 expect(page.locator("[data-phx-main].phx-connected")).to_be_visible(timeout=20000)
                 if mode == "add":

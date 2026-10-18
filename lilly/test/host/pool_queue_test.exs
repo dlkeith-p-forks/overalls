@@ -46,38 +46,41 @@ defmodule Lilly.Host.PoolQueueTest do
   # arrivals; the queue is never asked to order against itself.
   @tag :hegel
   test "turns are exclusive, priority-ordered and FIFO within a priority" do
-    check all(
-            priorities <- list_of(member_of([:observe, :mutate, :upkeep]), max_length: 12),
-            test_cases: 25
-          ) do
-      directory = directory()
-      parent = self()
-      {:ok, holder} = PoolQueue.enter(directory, :mutate, 0)
+    Hegel.check(
+      fn ->
+        priorities =
+          draw("priorities", list_of(member_of([:observe, :mutate, :upkeep]), max_length: 12))
 
-      for {priority, index} <- Enum.with_index(priorities) do
-        waiter(parent, directory, index, priority, 10_000)
-        eventually(fn -> queued(directory) == index + 1 end)
-      end
+        directory = directory()
+        parent = self()
+        {:ok, holder} = PoolQueue.enter(directory, :mutate, 0)
 
-      expected =
-        priorities
-        |> Enum.with_index()
-        |> Enum.sort_by(fn {priority, index} -> {@rank[priority], index} end)
-        |> Enum.map(&elem(&1, 1))
-
-      :ok = PoolQueue.leave(directory, holder)
-
-      granted =
-        for _ <- expected do
-          assert_receive {:granted, index, pid}, 2000
-          refute_receive {:granted, _, _}, 20
-          send(pid, :leave)
-          index
+        for {priority, index} <- Enum.with_index(priorities) do
+          waiter(parent, directory, index, priority, 10_000)
+          eventually(fn -> queued(directory) == index + 1 end)
         end
 
-      assert granted == expected
-      eventually(fn -> is_nil(:sys.get_state(PoolQueue).lanes[directory]) end)
-    end
+        expected =
+          priorities
+          |> Enum.with_index()
+          |> Enum.sort_by(fn {priority, index} -> {@rank[priority], index} end)
+          |> Enum.map(&elem(&1, 1))
+
+        :ok = PoolQueue.leave(directory, holder)
+
+        granted =
+          for _ <- expected do
+            assert_receive {:granted, index, pid}, 2000
+            refute_receive {:granted, _, _}, 20
+            send(pid, :leave)
+            index
+          end
+
+        assert granted == expected
+        eventually(fn -> is_nil(:sys.get_state(PoolQueue).lanes[directory]) end)
+      end,
+      test_cases: 100
+    )
   end
 
   test "a zero wait never queues and an expired wait leaves without a grant" do

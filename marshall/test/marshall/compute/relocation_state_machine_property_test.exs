@@ -81,42 +81,41 @@ defmodule Marshall.Compute.RelocationStateMachinePropertyTest do
   end
 
   property "random declared walks reach copying only through connectivity checking" do
-    check all(choices <- list_of(integer(0..15), min_length: 1, max_length: 24)) do
-      path = random_walk(choices)
-      assert hd(path) == :preparing
+    choices = draw("choices", list_of(integer(0..15), min_length: 1, max_length: 24))
+    path = random_walk(choices)
+    assert hd(path) == :preparing
 
-      for {before, index} <- Enum.with_index(path), before == :copying do
-        prior = Enum.take(path, index)
-        assert :checking_transfer in prior
-        refute Enum.any?(prior, &(&1 in @committed))
-      end
-
-      # Once committed, a walk never returns to a pre-commit or restoring phase.
-      case Enum.find_index(path, &(&1 in @committed)) do
-        nil ->
-          :ok
-
-        index ->
-          later = Enum.drop(path, index)
-
-          refute Enum.any?(
-                   later,
-                   &(&1 in [
-                       :preparing,
-                       :checking_transfer,
-                       :stopping_source,
-                       :copying,
-                       :importing,
-                       :handoff,
-                       :restoring_source,
-                       :cancelled_cleanup,
-                       :cancelled
-                     ])
-                 )
-      end
-
-      assert Enum.all?(path, &(&1 not in @removed))
+    for {before, index} <- Enum.with_index(path), before == :copying do
+      prior = Enum.take(path, index)
+      assert :checking_transfer in prior
+      refute Enum.any?(prior, &(&1 in @committed))
     end
+
+    # Once committed, a walk never returns to a pre-commit or restoring phase.
+    case Enum.find_index(path, &(&1 in @committed)) do
+      nil ->
+        :ok
+
+      index ->
+        later = Enum.drop(path, index)
+
+        refute Enum.any?(
+                 later,
+                 &(&1 in [
+                     :preparing,
+                     :checking_transfer,
+                     :stopping_source,
+                     :copying,
+                     :importing,
+                     :handoff,
+                     :restoring_source,
+                     :cancelled_cleanup,
+                     :cancelled
+                   ])
+               )
+    end
+
+    assert Enum.all?(path, &(&1 not in @removed))
   end
 
   describe "record_key" do

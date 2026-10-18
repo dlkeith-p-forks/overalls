@@ -7,45 +7,44 @@ defmodule Ziggy.SLOCheckpointTest do
   @id "01234567-89ab-4def-8123-456789abcdef"
 
   property "generated terminal aggregates restore exact totals and source lifetime" do
-    check all(
-            outcomes <- list_of(member_of(~w(completed interrupted cancelled)), max_length: 30),
-            duration <- one_of([constant(nil), integer(0..20_000)])
-          ) do
-      slo =
-        Enum.reduce(outcomes, SLO.new(), fn outcome, state ->
-          SLO.record(state, %{
-            "outcome" => outcome,
-            "http_status" => 200,
-            "duration_ms" => duration
-          })
-        end)
+    outcomes =
+      draw("outcomes", list_of(member_of(~w(completed interrupted cancelled)), max_length: 30))
 
-      seen = MapSet.new([@id])
-      wire = slo |> SLOCheckpoint.wire(seen) |> Jason.encode!() |> Jason.decode!()
-      assert {:ok, ^slo, ^seen} = SLOCheckpoint.decode(wire, 1)
-      refute inspect(SLO.snapshot(slo)) =~ @id
-    end
+    duration = draw("duration", one_of([constant(nil), integer(0..20000)]))
+
+    slo =
+      Enum.reduce(outcomes, SLO.new(), fn outcome, state ->
+        SLO.record(state, %{
+          "outcome" => outcome,
+          "http_status" => 200,
+          "duration_ms" => duration
+        })
+      end)
+
+    seen = MapSet.new([@id])
+    wire = slo |> SLOCheckpoint.wire(seen) |> Jason.encode!() |> Jason.decode!()
+    assert {:ok, ^slo, ^seen} = SLOCheckpoint.decode(wire, 1)
+    refute inspect(SLO.snapshot(slo)) =~ @id
   end
 
   property "malformed arithmetic identities and schema cannot restore a counter" do
-    check all(
-            corruption <- member_of([:count, :buckets, :identity, :duplicate, :foreign, :extra]),
-            value <- integer(1..1_000_000)
-          ) do
-      wire = SLOCheckpoint.wire(SLO.new(), MapSet.new([@id]))
+    corruption =
+      draw("corruption", member_of([:count, :buckets, :identity, :duplicate, :foreign, :extra]))
 
-      invalid =
-        case corruption do
-          :count -> put_in(wire, ["slo", "requests"], value)
-          :buckets -> put_in(wire, ["slo", "bucket_counts"], [value, 0, 0, 0, 0, 0, 0, 0])
-          :identity -> put_in(wire, ["slo", "incarnation"], "foreign")
-          :duplicate -> Map.put(wire, "seen", [@id, @id])
-          :foreign -> Map.put(wire, "seen", ["not-a-request-id"])
-          :extra -> Map.put(wire, "payload", "excluded")
-        end
+    value = draw("value", integer(1..1_000_000))
+    wire = SLOCheckpoint.wire(SLO.new(), MapSet.new([@id]))
 
-      assert {:error, :invalid_checkpoint} = SLOCheckpoint.decode(invalid, 2)
-    end
+    invalid =
+      case corruption do
+        :count -> put_in(wire, ["slo", "requests"], value)
+        :buckets -> put_in(wire, ["slo", "bucket_counts"], [value, 0, 0, 0, 0, 0, 0, 0])
+        :identity -> put_in(wire, ["slo", "incarnation"], "foreign")
+        :duplicate -> Map.put(wire, "seen", [@id, @id])
+        :foreign -> Map.put(wire, "seen", ["not-a-request-id"])
+        :extra -> Map.put(wire, "payload", "excluded")
+      end
+
+    assert {:error, :invalid_checkpoint} = SLOCheckpoint.decode(invalid, 2)
   end
 
   test "private interrupted stage is discarded without replacing committed totals" do

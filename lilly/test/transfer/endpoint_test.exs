@@ -10,25 +10,25 @@ defmodule Lilly.Transfer.EndpointTest do
   @pool "00000000-0000-0000-0000-000000000005"
 
   property "export failure diagnostics exclude arbitrary and wrapped payloads" do
-    check all(bytes <- binary(min_length: 1, max_length: 128), wrapped <- boolean()) do
-      secret = "private-export-" <> Base.encode16(bytes)
-      result = if wrapped, do: {:error, {:storage_busy, secret}}, else: {:error, secret}
+    bytes = draw("bytes", binary(min_length: 1, max_length: 128))
+    wrapped = draw("wrapped", boolean())
+    secret = "private-export-" <> Base.encode16(bytes)
+    result = if wrapped, do: {:error, {:storage_busy, secret}}, else: {:error, secret}
 
-      log =
-        ExUnit.CaptureLog.capture_log([metadata: [:event, :reason]], fn ->
-          stdout =
-            ExUnit.CaptureIO.capture_io(fn ->
-              assert Endpoint.export_status(result) == 1
-            end)
+    log =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :reason]], fn ->
+        stdout =
+          ExUnit.CaptureIO.capture_io(fn ->
+            assert Endpoint.export_status(result) == 1
+          end)
 
-          assert stdout == ""
-        end)
+        assert stdout == ""
+      end)
 
-      assert log =~ "lilly.transfer_export_failed"
-      assert log =~ "export_unconfirmed"
-      refute log =~ secret
-      refute log =~ "storage_busy"
-    end
+    assert log =~ "lilly.transfer_export_failed"
+    assert log =~ "export_unconfirmed"
+    refute log =~ secret
+    refute log =~ "storage_busy"
   end
 
   test "successful export is silent and known source failures retain a closed reason" do

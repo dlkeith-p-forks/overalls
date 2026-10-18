@@ -24,33 +24,35 @@ defmodule Marshall.Accounts.TimeZoneTest do
     |> Map.fetch!(:time_zone)
   end
 
-  property "set_time_zone round-trips valid zones and refuses everything else", test_cases: 25 do
+  @tag :hegel_case_sandbox
+  property "set_time_zone round-trips valid zones and refuses everything else", test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     actor = user()
     curated = Enum.map(TimeZones.curated(), &elem(&1, 1))
 
-    check all(
-            zone <-
-              one_of([
-                member_of(curated),
-                constant("America/Argentina/Ushuaia"),
-                string(:printable, max_length: 70),
-                map(member_of(curated), &String.upcase/1)
-              ]),
-            test_cases: 25
-          ) do
-      before = stored(actor.id)
+    zone =
+      draw(
+        "zone",
+        one_of([
+          member_of(curated),
+          constant("America/Argentina/Ushuaia"),
+          string(:printable, max_length: 70),
+          map(member_of(curated), &String.upcase/1)
+        ])
+      )
 
-      case set(actor, zone) do
-        {:ok, %{user_id: id, time_zone: saved}} ->
-          assert id == actor.id
-          assert TimeZones.valid?(zone)
-          assert saved == String.trim(zone)
-          assert stored(actor.id) == saved
+    before = stored(actor.id)
 
-        {:error, _} ->
-          refute TimeZones.valid?(String.trim(zone)) and String.trim(zone) != ""
-          assert stored(actor.id) == before
-      end
+    case set(actor, zone) do
+      {:ok, %{user_id: id, time_zone: saved}} ->
+        assert id == actor.id
+        assert TimeZones.valid?(zone)
+        assert saved == String.trim(zone)
+        assert stored(actor.id) == saved
+
+      {:error, _} ->
+        refute TimeZones.valid?(String.trim(zone)) and String.trim(zone) != ""
+        assert stored(actor.id) == before
     end
   end
 

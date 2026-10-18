@@ -33,331 +33,353 @@ defmodule Lilly.Terminal.ChannelHistoryTest do
   # MUST NOT claim guest PTY, TLS, native isolation or reconnect acceptance.
   @tag :hegel
   test "replay credit histories preserve exact output and drain only after consumption" do
-    check all(
-            size <- member_of([1, 32_767, 32_768, 32_769, 262_143, 262_144, 262_145, 524_289]),
-            stride <- member_of([1, 2, 7, 8, 9, 16]),
-            channel_id <- member_of([1, 4_294_967_295]),
-            test_cases: 24
-          ) do
-      # Every generated history contains a byte-exhaustion witness as well as
-      # the drawn replay/receipt schedule.
-      for {size, stride} <- [{size, stride}, {262_145, 9}] do
-        with_channel(channel_id, fn channel, producer, state, receiver ->
-          replay = :binary.copy(<<0, 27, 255>>, div(size + 2, 3)) |> binary_part(0, size)
-          send(channel, {:activate, replay})
-          total = div(size + @chunk - 1, @chunk)
+    Hegel.check(
+      fn ->
+        size =
+          draw("size", member_of([1, 32767, 32768, 32769, 262_143, 262_144, 262_145, 524_289]))
 
-          {frames, bytes} =
-            Enum.reduce(1..total, {0, 0}, fn sequence, {acked, acknowledged_bytes} ->
-              message = receive_output(channel, channel_id)
-              {:channel_output, _, _, _, frame} = message
-              decoded = decode_data(frame)
-              assert decoded.sequence == sequence
-              offset = (sequence - 1) * @chunk
-              length = min(@chunk, size - offset)
+        stride = draw("stride", member_of([1, 2, 7, 8, 9, 16]))
+        channel_id = draw("channel_id", member_of([1, 4_294_967_295]))
+        # Every generated history contains a byte-exhaustion witness as well as
+        # the drawn replay/receipt schedule.
+        for {size, stride} <- [{size, stride}, {262_145, 9}] do
+          with_channel(channel_id, fn channel, producer, state, receiver ->
+            replay = :binary.copy(<<0, 27, 255>>, div(size + 2, 3)) |> binary_part(0, size)
+            send(channel, {:activate, replay})
+            total = div(size + @chunk - 1, @chunk)
 
-              assert :crypto.hash(:sha256, decoded.bytes) ==
-                       :crypto.hash(:sha256, binary_part(replay, offset, length))
+            {frames, bytes} =
+              Enum.reduce(1..total, {0, 0}, fn sequence, {acked, acknowledged_bytes} ->
+                message = receive_output(channel, channel_id)
+                {:channel_output, _, _, _, frame} = message
+                decoded = decode_data(frame)
+                assert decoded.sequence == sequence
+                offset = (sequence - 1) * @chunk
+                length = min(@chunk, size - offset)
 
-              # Before forwarding, delivery has not been acknowledged. A barrier
-              # observes the real channel process without relying on a sleep.
-              snapshot = :sys.get_state(channel)
-              assert snapshot.sequence == sequence
-              assert is_reference(snapshot.delivery)
-              no_output(channel, channel_id)
-              unchanged(state, message)
-              wire = receive_wire(receiver)
-              assert :crypto.hash(:sha256, wire) == :crypto.hash(:sha256, frame)
+                assert :crypto.hash(:sha256, decoded.bytes) ==
+                         :crypto.hash(:sha256, binary_part(replay, offset, length))
 
-              outstanding = sequence - acked
-              assert outstanding <= Window.frame_limit()
-              assert offset + length - acknowledged_bytes <= Window.byte_limit()
-
-              if outstanding == 8 and sequence < total do
-                stalled = :sys.get_state(channel)
-                assert stalled.sequence == sequence
-                assert stalled.delivery == nil
+                # Before forwarding, delivery has not been acknowledged. A barrier
+                # observes the real channel process without relying on a sleep.
+                snapshot = :sys.get_state(channel)
+                assert snapshot.sequence == sequence
+                assert is_reference(snapshot.delivery)
                 no_output(channel, channel_id)
-              end
+                unchanged(state, message)
+                wire = receive_wire(receiver)
+                assert :crypto.hash(:sha256, wire) == :crypto.hash(:sha256, frame)
 
-              if (rem(sequence, stride) == 0 or outstanding == 8) and sequence < total do
-                consumed = offset + length
-                :ok = Channel.consumed(channel, sequence, consumed)
-                # Duplicate and older cumulative receipts cannot grant more credit.
-                :ok = Channel.consumed(channel, sequence, consumed)
-                :ok = Channel.consumed(channel, acked, acknowledged_bytes)
-                {sequence, consumed}
-              else
-                {acked, acknowledged_bytes}
-              end
-            end)
+                outstanding = sequence - acked
+                assert outstanding <= Window.frame_limit()
+                assert offset + length - acknowledged_bytes <= Window.byte_limit()
 
-          assert frames < total
-          assert bytes < size
-          _ = :sys.get_state(channel)
-          no_output(channel, channel_id)
-          :ok = :gen_tcp.close(producer)
-          eof = await_channel(channel, & &1.eof)
-          assert eof.delivery == nil
-          assert eof.window.pending != []
+                if outstanding == 8 and sequence < total do
+                  stalled = :sys.get_state(channel)
+                  assert stalled.sequence == sequence
+                  assert stalled.delivery == nil
+                  no_output(channel, channel_id)
+                end
 
-          receive do
-            {:channel_closed, ^channel_id, _} -> flunk("channel closed before consumption")
-          after
-            0 -> :ok
-          end
+                if (rem(sequence, stride) == 0 or outstanding == 8) and sequence < total do
+                  consumed = offset + length
+                  :ok = Channel.consumed(channel, sequence, consumed)
+                  # Duplicate and older cumulative receipts cannot grant more credit.
+                  :ok = Channel.consumed(channel, sequence, consumed)
+                  :ok = Channel.consumed(channel, acked, acknowledged_bytes)
+                  {sequence, consumed}
+                else
+                  {acked, acknowledged_bytes}
+                end
+              end)
 
-          :ok = Channel.consumed(channel, total, size)
-          await_event(&match?({:channel_closed, ^channel_id, :session_exit}, &1))
-        end)
-      end
-    end
+            assert frames < total
+            assert bytes < size
+            _ = :sys.get_state(channel)
+            no_output(channel, channel_id)
+            :ok = :gen_tcp.close(producer)
+            eof = await_channel(channel, & &1.eof)
+            assert eof.delivery == nil
+            assert eof.window.pending != []
+
+            receive do
+              {:channel_closed, ^channel_id, _} -> flunk("channel closed before consumption")
+            after
+              0 -> :ok
+            end
+
+            :ok = Channel.consumed(channel, total, size)
+            await_event(&match?({:channel_closed, ^channel_id, :session_exit}, &1))
+          end)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
   test "transport loss stops old channels before a successor accepts queued output" do
-    check all(
-            size <- member_of([1, 32_768, 32_769, 262_145]),
-            channel_id <- member_of([1, 4_294_967_295]),
-            test_cases: 16
-          ) do
-      with_channel(channel_id, fn old, producer, state, receiver ->
-        guests = %{{"synthetic-vm", "synthetic-placement", 1} => %{pid: self()}}
-        state = %{state | guests: guests}
-        send(old, {:activate, :binary.copy(<<42>>, size)})
-        queued = receive_output(old, channel_id)
-        monitor = Process.monitor(old)
-        :ok = :gen_tcp.close(receiver.socket)
-        disconnected = callback(state, {:tcp_closed, state.websocket.socket})
-        assert disconnected.phase == :disconnected
-        assert disconnected.channels == %{}
-        assert disconnected.guests == guests
-        await_event(&match?({:terminal_stream_ready, _, false}, &1))
-        await_event(&match?({:DOWN, ^monitor, :process, ^old, :normal}, &1))
-        socket_error(producer, :closed, 1000)
+    Hegel.check(
+      fn ->
+        size = draw("size", member_of([1, 32768, 32769, 262_145]))
+        channel_id = draw("channel_id", member_of([1, 4_294_967_295]))
 
-        # Reattachment is explicit. It gets a new local socket and starts a new
-        # sequence space; uncertain input is never replayed by this history.
-        with_channel(channel_id, fn successor, _producer, current, peer ->
-          unchanged(current, queued)
+        with_channel(channel_id, fn old, producer, state, receiver ->
+          guests = %{{"synthetic-vm", "synthetic-placement", 1} => %{pid: self()}}
+          state = %{state | guests: guests}
+          send(old, {:activate, :binary.copy(<<42>>, size)})
+          queued = receive_output(old, channel_id)
+          monitor = Process.monitor(old)
+          :ok = :gen_tcp.close(receiver.socket)
+          disconnected = callback(state, {:tcp_closed, state.websocket.socket})
+          assert disconnected.phase == :disconnected
+          assert disconnected.channels == %{}
+          assert disconnected.guests == guests
+          await_event(&match?({:terminal_stream_ready, _, false}, &1))
+          await_event(&match?({:DOWN, ^monitor, :process, ^old, :normal}, &1))
+          socket_error(producer, :closed, 1000)
 
-          unchanged(current, {:channel_input_ack, old, channel_id, 1, 1})
+          # Reattachment is explicit. It gets a new local socket and starts a new
+          # sequence space; uncertain input is never replayed by this history.
+          with_channel(channel_id, fn successor, _producer, current, peer ->
+            unchanged(current, queued)
 
-          socket_error(peer.socket, :timeout, 1)
-          send(successor, {:activate, <<42>>})
-          message = receive_output(successor, channel_id)
-          unchanged(current, message)
+            unchanged(current, {:channel_input_ack, old, channel_id, 1, 1})
 
-          decoded = decode_data(receive_wire(peer))
-          assert decoded.channel == channel_id
-          assert decoded.sequence == 1
+            socket_error(peer.socket, :timeout, 1)
+            send(successor, {:activate, <<42>>})
+            message = receive_output(successor, channel_id)
+            unchanged(current, message)
+
+            decoded = decode_data(receive_wire(peer))
+            assert decoded.channel == channel_id
+            assert decoded.sequence == 1
+          end)
         end)
-      end)
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
   test "input duplicates have no socket effect and a gap fences only its channel" do
-    check all(
-            lengths <-
-              list_of(member_of([1, 2, 125, 126, 32_768, 65_535]), min_length: 1, max_length: 6),
-            gap <- member_of([2, 3, 65_535]),
-            channel_id <- member_of([1, 4_294_967_295]),
-            test_cases: 24
-          ) do
-      with_channel(channel_id, fn channel, producer, state, receiver ->
-        sibling_id = if channel_id == 1, do: 2, else: 1
+    Hegel.check(
+      fn ->
+        lengths =
+          draw(
+            "lengths",
+            list_of(member_of([1, 2, 125, 126, 32768, 65535]), min_length: 1, max_length: 6)
+          )
 
-        with_channel(sibling_id, fn sibling, _producer, sibling_state, _receiver ->
-          sibling_entry = sibling_state.channels[sibling_id]
-          state = %{state | channels: Map.put(state.channels, sibling_id, sibling_entry)}
+        gap = draw("gap", member_of([2, 3, 65535]))
+        channel_id = draw("channel_id", member_of([1, 4_294_967_295]))
 
-          state =
-            lengths
-            |> Enum.with_index(1)
-            |> Enum.reduce(state, fn {length, sequence}, acc ->
-              payload = :binary.copy(<<sequence>>, length)
-              frame = Codec.encode_data_frame(channel_id, sequence, payload)
-              next = pump(acc, receiver, frame)
-              applied = socket_bytes(producer, length)
-              assert :crypto.hash(:sha256, applied) == :crypto.hash(:sha256, payload)
-              cumulative = next.channels[channel_id].input_window.sent_bytes
-              ack = receive_ack(channel, channel_id)
-              {:channel_input_ack, _, _, frames, bytes} = ack
-              assert frames == sequence
-              assert bytes == cumulative
-              next = callback(next, ack)
-              receipt = decode_control(receive_wire(receiver))
+        with_channel(channel_id, fn channel, producer, state, receiver ->
+          sibling_id = if channel_id == 1, do: 2, else: 1
 
-              assert receipt == %{
-                       type: :input_ack,
-                       channel: channel_id,
-                       frames: sequence,
-                       bytes: cumulative
-                     }
+          with_channel(sibling_id, fn sibling, _producer, sibling_state, _receiver ->
+            sibling_entry = sibling_state.channels[sibling_id]
+            state = %{state | channels: Map.put(state.channels, sibling_id, sibling_entry)}
 
-              assert next.channels[channel_id].input_window.acknowledged_frames == sequence
-              assert next.channels[channel_id].input_window.acknowledged_bytes == cumulative
+            state =
+              lengths
+              |> Enum.with_index(1)
+              |> Enum.reduce(state, fn {length, sequence}, acc ->
+                payload = :binary.copy(<<sequence>>, length)
+                frame = Codec.encode_data_frame(channel_id, sequence, payload)
+                next = pump(acc, receiver, frame)
+                applied = socket_bytes(producer, length)
+                assert :crypto.hash(:sha256, applied) == :crypto.hash(:sha256, payload)
+                cumulative = next.channels[channel_id].input_window.sent_bytes
+                ack = receive_ack(channel, channel_id)
+                {:channel_input_ack, _, _, frames, bytes} = ack
+                assert frames == sequence
+                assert bytes == cumulative
+                next = callback(next, ack)
+                receipt = decode_control(receive_wire(receiver))
 
-              for stale <- Enum.uniq([sequence, 1]) do
-                same_state(
-                  next,
-                  pump(next, receiver, Codec.encode_data_frame(channel_id, stale, payload))
-                )
+                assert receipt == %{
+                         type: :input_ack,
+                         channel: channel_id,
+                         frames: sequence,
+                         bytes: cumulative
+                       }
 
-                _ = :sys.get_state(channel)
-                socket_error(producer, :timeout, 1)
+                assert next.channels[channel_id].input_window.acknowledged_frames == sequence
+                assert next.channels[channel_id].input_window.acknowledged_bytes == cumulative
 
-                receive do
-                  {:channel_input_ack, ^channel, ^channel_id, _, _} ->
-                    flunk("duplicate input receipt")
-                after
-                  0 -> :ok
+                for stale <- Enum.uniq([sequence, 1]) do
+                  same_state(
+                    next,
+                    pump(next, receiver, Codec.encode_data_frame(channel_id, stale, payload))
+                  )
+
+                  _ = :sys.get_state(channel)
+                  socket_error(producer, :timeout, 1)
+
+                  receive do
+                    {:channel_input_ack, ^channel, ^channel_id, _, _} ->
+                      flunk("duplicate input receipt")
+                  after
+                    0 -> :ok
+                  end
                 end
-              end
 
-              next
-            end)
+                next
+              end)
 
-          monitor = Process.monitor(channel)
+            monitor = Process.monitor(channel)
 
-          next =
-            pump(
-              state,
-              receiver,
-              Codec.encode_data_frame(channel_id, length(lengths) + gap, <<42>>)
-            )
+            next =
+              pump(
+                state,
+                receiver,
+                Codec.encode_data_frame(channel_id, length(lengths) + gap, <<42>>)
+              )
 
-          assert next.channels == %{sibling_id => sibling_entry}
-          await_event(&match?({:DOWN, ^monitor, :process, ^channel, :normal}, &1))
-          socket_error(producer, :closed, 1000)
-          closed = receive_wire(receiver)
+            assert next.channels == %{sibling_id => sibling_entry}
+            await_event(&match?({:DOWN, ^monitor, :process, ^channel, :normal}, &1))
+            socket_error(producer, :closed, 1000)
+            closed = receive_wire(receiver)
 
-          assert decode_control(closed) == %{type: :closed, channel: channel_id, reason: :fenced}
+            assert decode_control(closed) == %{
+                     type: :closed,
+                     channel: channel_id,
+                     reason: :fenced
+                   }
 
-          # Late messages from the stopped incarnation cannot forward output or ACKs.
-          unchanged(next, {:channel_output, channel, channel_id, make_ref(), <<>>})
+            # Late messages from the stopped incarnation cannot forward output or ACKs.
+            unchanged(next, {:channel_output, channel, channel_id, make_ref(), <<>>})
 
-          unchanged(next, {:channel_input_ack, channel, channel_id, 1, 1})
+            unchanged(next, {:channel_input_ack, channel, channel_id, 1, 1})
 
-          socket_error(receiver.socket, :timeout, 1)
-          send(sibling, {:activate, <<42>>})
-          output = receive_output(sibling, sibling_id)
-          unchanged(next, output)
+            socket_error(receiver.socket, :timeout, 1)
+            send(sibling, {:activate, <<42>>})
+            output = receive_output(sibling, sibling_id)
+            unchanged(next, output)
 
-          decoded = decode_data(receive_wire(receiver))
-          assert decoded.channel == sibling_id
-          assert decoded.sequence == 1
+            decoded = decode_data(receive_wire(receiver))
+            assert decoded.channel == sibling_id
+            assert decoded.sequence == 1
+          end)
         end)
-      end)
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
   test "live frames stop at frame credit and malformed consumption fences the channel" do
-    check all(
-            length <- member_of([1, 125, 126, 127]),
-            prefix <- member_of([1, 8, 15, 16]),
-            invalid <- member_of([:future, :inconsistent]),
-            test_cases: 16
-          ) do
-      with_channel(1, fn channel, producer, state, receiver ->
-        payload = :binary.copy(<<1>>, length)
-        send(channel, {:activate, payload})
+    Hegel.check(
+      fn ->
+        length = draw("length", member_of([1, 125, 126, 127]))
+        prefix = draw("prefix", member_of([1, 8, 15, 16]))
+        invalid = draw("invalid", member_of([:future, :inconsistent]))
 
-        for sequence <- 1..16 do
-          payload = :binary.copy(<<sequence>>, length)
-          if sequence > 1, do: :ok = :gen_tcp.send(producer, payload)
+        with_channel(1, fn channel, producer, state, receiver ->
+          payload = :binary.copy(<<1>>, length)
+          send(channel, {:activate, payload})
+
+          for sequence <- 1..16 do
+            payload = :binary.copy(<<sequence>>, length)
+            if sequence > 1, do: :ok = :gen_tcp.send(producer, payload)
+            message = receive_output(channel, 1)
+            {:channel_output, _, _, _, frame} = message
+            decoded = decode_data(frame)
+            assert decoded.sequence == sequence
+            assert :crypto.hash(:sha256, decoded.bytes) == :crypto.hash(:sha256, payload)
+            unchanged(state, message)
+            wire = decode_data(receive_wire(receiver))
+            assert wire.sequence == sequence
+            _ = await_channel(channel, & &1.reading)
+          end
+
+          payload = :binary.copy(<<17>>, length)
+          :ok = :gen_tcp.send(producer, payload)
+          stalled = await_channel(channel, &(not &1.reading and &1.pending != []))
+          assert stalled.sequence == 16
+          assert stalled.window.sent_bytes == 16 * length
+          assert stalled.window.sent_bytes < Window.byte_limit()
+          assert stalled.delivery == nil
+          no_output(channel, 1)
+          :ok = Channel.consumed(channel, 0, 0)
+          _ = :sys.get_state(channel)
+          no_output(channel, 1)
+
+          :ok = Channel.consumed(channel, prefix, prefix * length)
           message = receive_output(channel, 1)
           {:channel_output, _, _, _, frame} = message
           decoded = decode_data(frame)
-          assert decoded.sequence == sequence
+          assert decoded.sequence == 17
           assert :crypto.hash(:sha256, decoded.bytes) == :crypto.hash(:sha256, payload)
           unchanged(state, message)
-          wire = decode_data(receive_wire(receiver))
-          assert wire.sequence == sequence
-          _ = await_channel(channel, & &1.reading)
-        end
+          assert decode_data(receive_wire(receiver)).sequence == 17
+          :ok = Channel.consumed(channel, prefix, prefix * length)
+          snapshot = :sys.get_state(channel)
+          assert snapshot.window.acknowledged_frames == prefix
+          assert snapshot.window.acknowledged_bytes == prefix * length
 
-        payload = :binary.copy(<<17>>, length)
-        :ok = :gen_tcp.send(producer, payload)
-        stalled = await_channel(channel, &(not &1.reading and &1.pending != []))
-        assert stalled.sequence == 16
-        assert stalled.window.sent_bytes == 16 * length
-        assert stalled.window.sent_bytes < Window.byte_limit()
-        assert stalled.delivery == nil
-        no_output(channel, 1)
-        :ok = Channel.consumed(channel, 0, 0)
-        _ = :sys.get_state(channel)
-        no_output(channel, 1)
+          monitor = Process.monitor(channel)
 
-        :ok = Channel.consumed(channel, prefix, prefix * length)
-        message = receive_output(channel, 1)
-        {:channel_output, _, _, _, frame} = message
-        decoded = decode_data(frame)
-        assert decoded.sequence == 17
-        assert :crypto.hash(:sha256, decoded.bytes) == :crypto.hash(:sha256, payload)
-        unchanged(state, message)
-        assert decode_data(receive_wire(receiver)).sequence == 17
-        :ok = Channel.consumed(channel, prefix, prefix * length)
-        snapshot = :sys.get_state(channel)
-        assert snapshot.window.acknowledged_frames == prefix
-        assert snapshot.window.acknowledged_bytes == prefix * length
+          {frames, bytes} =
+            case invalid do
+              :future -> {18, 18 * length}
+              :inconsistent -> {17, 17 * length + 1}
+            end
 
-        monitor = Process.monitor(channel)
-
-        {frames, bytes} =
-          case invalid do
-            :future -> {18, 18 * length}
-            :inconsistent -> {17, 17 * length + 1}
-          end
-
-        :ok = Channel.consumed(channel, frames, bytes)
-        await_event(&match?({:channel_closed, 1, :fenced}, &1))
-        await_event(&match?({:DOWN, ^monitor, :process, ^channel, :normal}, &1))
-        socket_error(producer, :closed, 1000)
-      end)
-    end
+          :ok = Channel.consumed(channel, frames, bytes)
+          await_event(&match?({:channel_closed, 1, :fenced}, &1))
+          await_event(&match?({:DOWN, ^monitor, :process, ^channel, :normal}, &1))
+          socket_error(producer, :closed, 1000)
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
   test "unacknowledged input credit fences before an excess guest effect" do
-    check all(order <- member_of([[:frames, :bytes], [:bytes, :frames]]), test_cases: 8) do
-      for family <- order do
-        {length, accepted} = if family == :frames, do: {1, 16}, else: {65_535, 4}
+    Hegel.check(
+      fn ->
+        order = draw("order", member_of([[:frames, :bytes], [:bytes, :frames]]))
 
-        with_channel(1, fn channel, producer, state, receiver ->
-          payload = :binary.copy(<<42>>, length)
+        for family <- order do
+          {length, accepted} = if family == :frames, do: {1, 16}, else: {65_535, 4}
 
-          state =
-            Enum.reduce(1..accepted, state, fn sequence, state ->
-              next = pump(state, receiver, Codec.encode_data_frame(1, sequence, payload))
-              applied = socket_bytes(producer, length)
-              assert :crypto.hash(:sha256, applied) == :crypto.hash(:sha256, payload)
-              ack = receive_ack(channel, 1)
-              # Simulate delayed guest-effect receipts at the stream callback boundary.
-              # The channel has written, but the stream has not yet released credit.
-              {:channel_input_ack, _, _, frames, bytes} = ack
-              assert frames == sequence
-              assert bytes == sequence * length
-              assert next.channels[1].input_window.acknowledged_frames == 0
-              next
-            end)
+          with_channel(1, fn channel, producer, state, receiver ->
+            payload = :binary.copy(<<42>>, length)
 
-          monitor = Process.monitor(channel)
-          next = pump(state, receiver, Codec.encode_data_frame(1, accepted + 1, payload))
-          assert next.channels == %{}
-          await_event(&match?({:DOWN, ^monitor, :process, ^channel, :normal}, &1))
-          socket_error(producer, :closed, 1000)
+            state =
+              Enum.reduce(1..accepted, state, fn sequence, state ->
+                next = pump(state, receiver, Codec.encode_data_frame(1, sequence, payload))
+                applied = socket_bytes(producer, length)
+                assert :crypto.hash(:sha256, applied) == :crypto.hash(:sha256, payload)
+                ack = receive_ack(channel, 1)
+                # Simulate delayed guest-effect receipts at the stream callback boundary.
+                # The channel has written, but the stream has not yet released credit.
+                {:channel_input_ack, _, _, frames, bytes} = ack
+                assert frames == sequence
+                assert bytes == sequence * length
+                assert next.channels[1].input_window.acknowledged_frames == 0
+                next
+              end)
 
-          assert decode_control(receive_wire(receiver)) == %{
-                   type: :closed,
-                   channel: 1,
-                   reason: :fenced
-                 }
-        end)
-      end
-    end
+            monitor = Process.monitor(channel)
+            next = pump(state, receiver, Codec.encode_data_frame(1, accepted + 1, payload))
+            assert next.channels == %{}
+            await_event(&match?({:DOWN, ^monitor, :process, ^channel, :normal}, &1))
+            socket_error(producer, :closed, 1000)
+
+            assert decode_control(receive_wire(receiver)) == %{
+                     type: :closed,
+                     channel: 1,
+                     reason: :fenced
+                   }
+          end)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   @spec callback(stream_state(), term()) :: stream_state()

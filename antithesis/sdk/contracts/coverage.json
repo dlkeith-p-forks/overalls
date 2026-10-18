@@ -1,9 +1,9 @@
 {
   "apps": {
     "overalls_antithesis_sdk": {
-      "active": 4,
+      "active": 5,
       "coverage": 1.0,
-      "covered": 4
+      "covered": 5
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "overalls_antithesis_sdk.sdk": {
-      "active": 4,
+      "active": 5,
       "app": "overalls_antithesis_sdk",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 5,
       "form": "light",
       "obligations": {
         "overalls_antithesis_sdk.sdk.I1": {
@@ -58,6 +58,16 @@
           "tests": [
             "test details reject values beyond wire bounds"
           ]
+        },
+        "overalls_antithesis_sdk.sdk.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test writer is disabled without external helper configuration"
+          ]
         }
       }
     },
@@ -72,8 +82,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 4,
+    "active": 5,
     "coverage": 1.0,
-    "covered": 4
+    "covered": 5
   }
 }

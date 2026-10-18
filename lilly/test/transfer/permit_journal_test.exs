@@ -564,9 +564,13 @@ defmodule Lilly.Transfer.PermitJournalTest do
   end
 
   test "leases reject zero, negative and excessive validity before persistence", c do
-    check all(offset <- one_of([integer(-1000..0), integer(301..10_000)])) do
-      assert {:error, _} = grant(c, 1, 1000 + offset)
-      refute File.exists?(path(c))
-    end
+    Hegel.check(
+      fn ->
+        offset = draw("offset", one_of([integer(-1000..0), integer(301..10000)]))
+        assert {:error, _} = grant(c, 1, 1000 + offset)
+        refute File.exists?(path(c))
+      end,
+      []
+    )
   end
 end

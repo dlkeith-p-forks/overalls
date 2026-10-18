@@ -16,93 +16,93 @@ defmodule Ziggy.PendingVersionRefusalPropertyTest do
   # reach. Connection loss MUST NOT replay any request.
   property "pending calls retain a version refusal after the peer closes",
     profile: :ci do
-    supervisor = start_supervised!(Task.Supervisor)
+    supervisor = Overalls.HegelFixtures.start_supervised!(Task.Supervisor)
 
-    check all(count <- integer(1..3), max_runs: 3, max_shrinking_steps: 0) do
-      for reason <- [:unsupported_version, :draining] do
-        reference = make_ref()
-        ca = Path.join(@fixtures, "ca.pem")
+    count = draw("count", integer(1..3))
 
-        {:ok, listener} =
-          :ssl.listen(0, [
-            :binary,
-            active: false,
-            ip: {127, 0, 0, 1},
-            certfile: Path.join(@fixtures, "localhost.pem"),
-            keyfile: Path.join(@fixtures, "localhost.key")
-          ])
+    for reason <- [:unsupported_version, :draining] do
+      reference = make_ref()
+      ca = Path.join(@fixtures, "ca.pem")
 
-        on_exit(fn -> :ssl.close(listener) end)
-        {:ok, {_, port}} = :ssl.sockname(listener)
-        owner = self()
-        peer_id = make_ref()
+      {:ok, listener} =
+        :ssl.listen(0, [
+          :binary,
+          active: false,
+          ip: {127, 0, 0, 1},
+          certfile: Path.join(@fixtures, "localhost.pem"),
+          keyfile: Path.join(@fixtures, "localhost.key")
+        ])
 
-        peer =
-          start_supervised!(%{
-            id: peer_id,
-            start:
-              {Task, :start_link, [fn -> ControlClosePeer.serve(listener, owner, reference) end]},
-            restart: :temporary
-          })
+      Hegel.on_cleanup(fn -> :ssl.close(listener) end)
+      {:ok, {_, port}} = :ssl.sockname(listener)
+      owner = self()
+      peer_id = make_ref()
 
-        client_id = make_ref()
-        base = "https://127.0.0.1:#{port}"
+      peer =
+        Overalls.HegelFixtures.start_supervised!(%{
+          id: peer_id,
+          start:
+            {Task, :start_link, [fn -> ControlClosePeer.serve(listener, owner, reference) end]},
+          restart: :temporary
+        })
 
-        client =
-          start_supervised!(
-            {Client,
-             [
-               url: base,
-               service: "ziggy",
-               credential: fn -> {:ok, "fixture-token"} end,
-               bind: fn -> %{} end,
-               cacertfile: ca,
-               owner: self()
-             ]},
-            id: client_id
-          )
+      client_id = make_ref()
+      base = "https://127.0.0.1:#{port}"
 
-        config = %{origin: base, token: "fixture-token", ca_file: ca, client: client}
-        assert_receive {:peer_welcomed, ^reference}, 3_000
-        assert_receive {:control, ^client, {:connected, _}}, 3_000
+      client =
+        Overalls.HegelFixtures.start_supervised!(
+          {Client,
+           [
+             url: base,
+             service: "ziggy",
+             credential: fn -> {:ok, "fixture-token"} end,
+             bind: fn -> %{} end,
+             cacertfile: ca,
+             owner: self()
+           ]},
+          id: client_id
+        )
 
-        healthy =
-          Task.Supervisor.async_nolink(supervisor, fn ->
-            Ziggy.Control.request(config, "identity", %{})
-          end)
+      config = %{origin: base, token: "fixture-token", ca_file: ca, client: client}
+      assert_receive {:peer_welcomed, ^reference}, 3_000
+      assert_receive {:control, ^client, {:connected, _}}, 3_000
 
-        assert_receive {:peer_request, ^reference, healthy_id, "ziggy.identity"}, 2_000
-        send(peer, {:reply, healthy_id, {:ok, %{}}})
-        assert Task.await(healthy, 2_000) == {:ok, %{}}
+      healthy =
+        Task.Supervisor.async_nolink(supervisor, fn ->
+          Ziggy.Control.request(config, "identity", %{})
+        end)
 
-        tasks =
-          for _ <- 1..count,
-              do:
-                Task.Supervisor.async_nolink(supervisor, fn ->
-                  Ziggy.Control.request(config, "identity", %{})
-                end)
+      assert_receive {:peer_request, ^reference, healthy_id, "ziggy.identity"}, 2_000
+      send(peer, {:reply, healthy_id, {:ok, %{}}})
+      assert Task.await(healthy, 2_000) == {:ok, %{}}
 
-        ids =
-          for _ <- 1..count do
-            assert_receive {:peer_request, ^reference, id, "ziggy.identity"}, 2_000
-            id
-          end
+      tasks =
+        for _ <- 1..count,
+            do:
+              Task.Supervisor.async_nolink(supervisor, fn ->
+                Ziggy.Control.request(config, "identity", %{})
+              end)
 
-        assert length(Enum.uniq(ids)) == count
-        send(peer, {:close, Close.code(reason)})
-        assert_receive {:control, ^client, {:disconnected, ^reason}}, 2_000
+      ids =
+        for _ <- 1..count do
+          assert_receive {:peer_request, ^reference, id, "ziggy.identity"}, 2_000
+          id
+        end
 
-        expected =
-          if reason == :unsupported_version,
-            do: {:error, :unsupported_version},
-            else: {:error, :authority_unavailable}
+      assert length(Enum.uniq(ids)) == count
+      send(peer, {:close, Close.code(reason)})
+      assert_receive {:control, ^client, {:disconnected, ^reason}}, 2_000
 
-        assert Enum.map(tasks, &Task.await(&1, 2_000)) == List.duplicate(expected, count)
-        refute_receive {:peer_request, ^reference, _, _}, 50
-        :ok = stop_supervised(client_id)
-        _ = stop_supervised(peer_id)
-        :ssl.close(listener)
-      end
+      expected =
+        if reason == :unsupported_version,
+          do: {:error, :unsupported_version},
+          else: {:error, :authority_unavailable}
+
+      assert Enum.map(tasks, &Task.await(&1, 2_000)) == List.duplicate(expected, count)
+      refute_receive {:peer_request, ^reference, _, _}, 50
+      :ok = stop_supervised(client_id)
+      _ = stop_supervised(peer_id)
+      :ssl.close(listener)
     end
   end
 end

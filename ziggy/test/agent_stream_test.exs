@@ -25,12 +25,12 @@ defmodule Ziggy.AgentStreamTest do
           "response" => %{"status" => "completed", "output" => []}
         }) <> "\n\n"
 
-    check all(midpoint <- integer(1..(byte_size(bytes) - 1)), max_runs: 25) do
-      <<first::binary-size(^midpoint), second::binary>> = bytes
-      assert {:ok, partial} = Ziggy.AgentStream.feed(%Ziggy.AgentStream{}, first)
-      assert {:ok, complete} = Ziggy.AgentStream.feed(partial, second)
-      assert {:ok, %{"output" => [^item]}} = Ziggy.AgentStream.finish(complete)
-    end
+    midpoint = draw("midpoint", integer(1..(byte_size(bytes) - 1)))
+
+    <<first::binary-size(^midpoint), second::binary>> = bytes
+    assert {:ok, partial} = Ziggy.AgentStream.feed(%Ziggy.AgentStream{}, first)
+    assert {:ok, complete} = Ziggy.AgentStream.feed(partial, second)
+    assert {:ok, %{"output" => [^item]}} = Ziggy.AgentStream.finish(complete)
   end
 
   test "missing completion and oversized frames cannot yield model output" do
@@ -49,50 +49,51 @@ defmodule Ziggy.AgentStreamTest do
 
     bytes = frame(%{"type" => "response.completed", "response" => response}, "\r\n")
 
-    check all(size <- integer(1..byte_size(bytes)), max_runs: 40) do
-      state = collect(bytes, size)
-      assert {:ok, ^response} = Ziggy.AgentStream.finish(state)
-    end
+    size = draw("size", integer(1..byte_size(bytes)))
+
+    state = collect(bytes, size)
+    assert {:ok, ^response} = Ziggy.AgentStream.finish(state)
   end
 
   property "SSE failures are terminal closed classes across arbitrary chunks" do
-    check all(
-            pair <-
-              member_of([
-                {%{
-                   "type" => "error",
-                   "code" => "context_length_exceeded",
-                   "message" => "private"
-                 }, :context_length_exceeded},
-                {%{
-                   "type" => "response.failed",
-                   "response" => %{
-                     "error" => %{"code" => "unsupported_compaction", "message" => "private"}
-                   }
-                 }, :unsupported_compaction},
-                {%{
-                   "type" => "response.incomplete",
-                   "response" => %{"incomplete_details" => %{"reason" => "private"}}
-                 }, :incomplete},
-                {%{"type" => "response.cancelled", "response" => %{}}, :cancelled},
-                {%{"type" => "error", "message" => "private"}, :upstream_failed}
-              ]),
-            size <- integer(1..31),
-            max_runs: 60
-          ) do
-      {event, expected} = pair
-      # A later success cannot turn a known failed stream into executable output.
-      bytes =
-        frame(event) <>
-          frame(%{
-            "type" => "response.completed",
-            "response" => %{"status" => "completed", "output" => []}
-          })
+    pair =
+      draw(
+        "pair",
+        member_of([
+          {%{
+             "type" => "error",
+             "code" => "context_length_exceeded",
+             "message" => "private"
+           }, :context_length_exceeded},
+          {%{
+             "type" => "response.failed",
+             "response" => %{
+               "error" => %{"code" => "unsupported_compaction", "message" => "private"}
+             }
+           }, :unsupported_compaction},
+          {%{
+             "type" => "response.incomplete",
+             "response" => %{"incomplete_details" => %{"reason" => "private"}}
+           }, :incomplete},
+          {%{"type" => "response.cancelled", "response" => %{}}, :cancelled},
+          {%{"type" => "error", "message" => "private"}, :upstream_failed}
+        ])
+      )
 
-      state = collect(bytes, size)
-      assert {:error, ^expected} = Ziggy.AgentStream.finish(state)
-      refute inspect(state) =~ "private"
-    end
+    size = draw("size", integer(1..31))
+
+    {event, expected} = pair
+    # A later success cannot turn a known failed stream into executable output.
+    bytes =
+      frame(event) <>
+        frame(%{
+          "type" => "response.completed",
+          "response" => %{"status" => "completed", "output" => []}
+        })
+
+    state = collect(bytes, size)
+    assert {:error, ^expected} = Ziggy.AgentStream.finish(state)
+    refute inspect(state) =~ "private"
   end
 
   test "missing item indices and conflicting terminal responses cannot dispatch tools" do

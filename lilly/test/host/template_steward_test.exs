@@ -26,38 +26,43 @@ defmodule Lilly.Host.TemplateStewardTest do
   # crashed build answers template_unconfirmed.
   @tag :hegel
   test "concurrent callers for one pool and image share one build" do
-    check all(callers <- integer(1..12), images <- integer(1..3), test_cases: 15) do
-      pool = pool()
-      parent = self()
+    Hegel.check(
+      fn ->
+        callers = draw("callers", integer(1..12))
+        images = draw("images", integer(1..3))
+        pool = pool()
+        parent = self()
 
-      build = fn _pool, image ->
-        send(parent, {:build, image.id})
-        Process.sleep(60)
-        {:error, :template_unconfirmed}
-      end
-
-      results =
-        for caller <- 1..callers, image_n <- 1..images do
-          Task.async(fn -> TemplateSteward.ensure(pool, image(image_n), 5_000, build) end)
-          |> then(&{caller, image_n, &1})
+        build = fn _pool, image ->
+          send(parent, {:build, image.id})
+          Process.sleep(60)
+          {:error, :template_unconfirmed}
         end
-        |> Enum.map(fn {_caller, _image, task} -> Task.await(task, 10_000) end)
 
-      assert Enum.all?(results, &(&1 == {:error, :template_unconfirmed}))
-
-      builds =
-        Stream.repeatedly(fn ->
-          receive do
-            {:build, id} -> id
-          after
-            100 -> nil
+        results =
+          for caller <- 1..callers, image_n <- 1..images do
+            Task.async(fn -> TemplateSteward.ensure(pool, image(image_n), 5_000, build) end)
+            |> then(&{caller, image_n, &1})
           end
-        end)
-        |> Enum.take_while(& &1)
+          |> Enum.map(fn {_caller, _image, task} -> Task.await(task, 10_000) end)
 
-      # Every caller arrives while its image's 60 ms build runs: one build each.
-      assert Enum.sort(builds) == Enum.sort(Enum.map(1..images, &image(&1).id))
-    end
+        assert Enum.all?(results, &(&1 == {:error, :template_unconfirmed}))
+
+        builds =
+          Stream.repeatedly(fn ->
+            receive do
+              {:build, id} -> id
+            after
+              100 -> nil
+            end
+          end)
+          |> Enum.take_while(& &1)
+
+        # Every caller arrives while its image's 60 ms build runs: one build each.
+        assert Enum.sort(builds) == Enum.sort(Enum.map(1..images, &image(&1).id))
+      end,
+      test_cases: 100
+    )
   end
 
   test "an expired wait does not cancel the build; a crash answers unconfirmed" do

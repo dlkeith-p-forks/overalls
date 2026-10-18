@@ -33,100 +33,106 @@ defmodule Marshall.SSH.GuestRosterMigrationHistoryTest do
   test "generated grant, team and retirement histories match the PostgreSQL roster oracle", %{
     admin: admin
   } do
-    check all(
-            count <- integer(3..4),
-            ops <-
-              list_of(
-                tuple(
-                  {(count - 1) |> then(&integer(0..&1)),
-                   member_of([:grant, :revoke, :join, :leave, :retire])}
-                ),
-                min_length: 3,
-                max_length: 10
+    Hegel.check(
+      fn ->
+        count = draw("count", integer(3..4))
+
+        ops =
+          draw(
+            "ops",
+            list_of(
+              tuple(
+                {(count - 1) |> then(&integer(0..&1)),
+                 member_of([:grant, :revoke, :join, :leave, :retire])}
               ),
-            test_cases: 6
-          ) do
-      fixture = Marshall.TerminalFixtures.terminal_fixture(%{profile: :oss})
+              min_length: 3,
+              max_length: 10
+            )
+          )
 
-      # Each generated history gets its own VM on this fixture's host; disable
-      # earlier runs' hosts so placement is deterministic inside one sandbox.
-      for host <- Ledger.read!(Marshall.Compute.Host), host.id != fixture.host.id do
-        Ledger.update!(host, :configure, %{enabled: false})
-      end
+        fixture = Marshall.TerminalFixtures.terminal_fixture(%{profile: :oss})
 
-      {:ok, team} =
-        Marshall.Teams.create_team(
-          %{
-            name: "roster-history-" <> Ash.UUID.generate(),
-            idempotency_key: Ash.UUID.generate()
-          },
-          actor: fixture.owner
-        )
+        # Each generated history gets its own VM on this fixture's host; disable
+        # earlier runs' hosts so placement is deterministic inside one sandbox.
+        for host <- Ledger.read!(Marshall.Compute.Host), host.id != fixture.host.id do
+          Ledger.update!(host, :configure, %{enabled: false})
+        end
 
-      {:ok, vm} =
-        Marshall.Compute.provision(
-          Marshall.ComputeFixtures.request(%{team_id: team.id, profile: :oss, vcpu: 1}),
-          actor: fixture.owner
-        )
+        {:ok, team} =
+          Marshall.Teams.create_team(
+            %{
+              name: "roster-history-" <> Ash.UUID.generate(),
+              idempotency_key: Ash.UUID.generate()
+            },
+            actor: fixture.owner
+          )
 
-      {:ok, credential} = Credentials.rotate(vm.host_id, 3600)
-      ziggy_token = credential.id <> "." <> credential.secret
-      [operation] = Ledger.read!(Marshall.Compute.Operation, vm_id: vm.id)
-      # The boot proof keeps the operation pending; roster composition, not the
-      # start receipt, is under test here (see GuestAccessTest for the fences).
-      binding = %{
-        "host_id" => vm.host_id,
-        "vm_id" => vm.id,
-        "placement_id" => vm.current_placement_id,
-        "execution_epoch" => vm.execution_epoch,
-        "generation" => vm.generation,
-        "operation_id" => operation.id
-      }
+        {:ok, vm} =
+          Marshall.Compute.provision(
+            Marshall.ComputeFixtures.request(%{team_id: team.id, profile: :oss, vcpu: 1}),
+            actor: fixture.owner
+          )
 
-      users = for _ <- 1..count, do: Marshall.ComputeFixtures.user()
-      state = %{grants: MapSet.new(), members: MapSet.new(), retired: MapSet.new()}
-      versions = [roster!(binding, ziggy_token, vm, fixture, users, state)]
+        {:ok, credential} = Credentials.rotate(vm.host_id, 3600)
+        ziggy_token = credential.id <> "." <> credential.secret
+        [operation] = Ledger.read!(Marshall.Compute.Operation, vm_id: vm.id)
+        # The boot proof keeps the operation pending; roster composition, not the
+        # start receipt, is under test here (see GuestAccessTest for the fences).
+        binding = %{
+          "host_id" => vm.host_id,
+          "vm_id" => vm.id,
+          "placement_id" => vm.current_placement_id,
+          "execution_epoch" => vm.execution_epoch,
+          "generation" => vm.generation,
+          "operation_id" => operation.id
+        }
 
-      {_state, versions} =
-        Enum.reduce(ops, {state, versions}, fn {index, op}, {state, versions} ->
-          user = Enum.at(users, index)
+        users = for _ <- 1..count, do: Marshall.ComputeFixtures.user()
+        state = %{grants: MapSet.new(), members: MapSet.new(), retired: MapSet.new()}
+        versions = [roster!(binding, ziggy_token, vm, fixture, users, state)]
 
-          state =
-            case {op, MapSet.member?(state.retired, user.id)} do
-              {:retire, false} ->
-                retire!(user, admin)
-                %{state | retired: MapSet.put(state.retired, user.id)}
+        {_state, versions} =
+          Enum.reduce(ops, {state, versions}, fn {index, op}, {state, versions} ->
+            user = Enum.at(users, index)
 
-              {:grant, false} ->
-                assert {:ok, _} =
-                         Marshall.TerminalFixtures.grant(%{fixture | vm: vm}, user, :operator)
+            state =
+              case {op, MapSet.member?(state.retired, user.id)} do
+                {:retire, false} ->
+                  retire!(user, admin)
+                  %{state | retired: MapSet.put(state.retired, user.id)}
 
-                %{state | grants: MapSet.put(state.grants, user.id)}
+                {:grant, false} ->
+                  assert {:ok, _} =
+                           Marshall.TerminalFixtures.grant(%{fixture | vm: vm}, user, :operator)
 
-              {:revoke, false} ->
-                assert {:ok, _} =
-                         Marshall.TerminalFixtures.grant(%{fixture | vm: vm}, user, :revoked)
+                  %{state | grants: MapSet.put(state.grants, user.id)}
 
-                %{state | grants: MapSet.delete(state.grants, user.id)}
+                {:revoke, false} ->
+                  assert {:ok, _} =
+                           Marshall.TerminalFixtures.grant(%{fixture | vm: vm}, user, :revoked)
 
-              {:join, false} ->
-                member!(team, user, fixture.owner, :member)
-                %{state | members: MapSet.put(state.members, user.id)}
+                  %{state | grants: MapSet.delete(state.grants, user.id)}
 
-              {:leave, false} ->
-                member!(team, user, fixture.owner, :removed)
-                %{state | members: MapSet.delete(state.members, user.id)}
+                {:join, false} ->
+                  member!(team, user, fixture.owner, :member)
+                  %{state | members: MapSet.put(state.members, user.id)}
 
-              {_, true} ->
-                state
-            end
+                {:leave, false} ->
+                  member!(team, user, fixture.owner, :removed)
+                  %{state | members: MapSet.delete(state.members, user.id)}
 
-          {state, [roster!(binding, ziggy_token, vm, fixture, users, state) | versions]}
-        end)
+                {_, true} ->
+                  state
+              end
 
-      assert versions == Enum.uniq(versions)
-      assert versions == Enum.sort(versions, :desc)
-    end
+            {state, [roster!(binding, ziggy_token, vm, fixture, users, state) | versions]}
+          end)
+
+        assert versions == Enum.uniq(versions)
+        assert versions == Enum.sort(versions, :desc)
+      end,
+      test_cases: 100
+    )
   end
 
   test "more than 512 roster candidates refuse; exactly 512 remain admitted" do

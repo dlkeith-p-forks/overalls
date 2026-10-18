@@ -31,53 +31,58 @@ defmodule Marshall.ThreadsSharingTest do
   # Role replacement and revocation MUST be checked against fresh authorization
   # and public reads, including after a previously sufficient grant is removed.
   test "persisted roles control thread permissions and visibility", context do
-    check all(
-            roles <-
-              list_of(member_of([:viewer, :operator, :manager, :revoked]),
-                min_length: 1,
-                max_length: 6
-              ),
-            test_cases: 8
-          ) do
-      for role <- roles do
-        assert {:ok, %AccessChange{}} = share(context, role)
-
-        expected = %{
-          read: role != :revoked,
-          write: role in [:operator, :manager],
-          manage: role == :manager
-        }
-
-        assert Authorization.permissions(context.thread, context.member) == expected
-
-        for {action, allowed} <- expected do
-          assert Authorization.allowed?(context.thread, context.member, Atom.to_string(action)) ==
-                   allowed
-
-          assert Authorization.allowed?(context.thread, context.owner, Atom.to_string(action))
-        end
-
-        if expected.read do
-          assert {:ok, %{id: id}} =
-                   Threads.get_thread(%{thread_id: context.thread.id}, actor: context.member)
-
-          assert id == context.thread.id
-          assert {:ok, [%{id: ^id}]} = Threads.list_threads(%{}, actor: context.member)
-        else
-          assert_error(
-            Threads.get_thread(%{thread_id: context.thread.id}, actor: context.member),
-            :forbidden
+    Hegel.check(
+      fn ->
+        roles =
+          draw(
+            "roles",
+            list_of(member_of([:viewer, :operator, :manager, :revoked]),
+              min_length: 1,
+              max_length: 6
+            )
           )
 
-          assert {:ok, []} = Threads.list_threads(%{}, actor: context.member)
-        end
+        for role <- roles do
+          assert {:ok, %AccessChange{}} = share(context, role)
 
-        assert length(
-                 Ledger.read!(Grant, thread_id: context.thread.id, user_id: context.member.id)
-               ) ==
-                 if(role == :revoked, do: 0, else: 1)
-      end
-    end
+          expected = %{
+            read: role != :revoked,
+            write: role in [:operator, :manager],
+            manage: role == :manager
+          }
+
+          assert Authorization.permissions(context.thread, context.member) == expected
+
+          for {action, allowed} <- expected do
+            assert Authorization.allowed?(context.thread, context.member, Atom.to_string(action)) ==
+                     allowed
+
+            assert Authorization.allowed?(context.thread, context.owner, Atom.to_string(action))
+          end
+
+          if expected.read do
+            assert {:ok, %{id: id}} =
+                     Threads.get_thread(%{thread_id: context.thread.id}, actor: context.member)
+
+            assert id == context.thread.id
+            assert {:ok, [%{id: ^id}]} = Threads.list_threads(%{}, actor: context.member)
+          else
+            assert_error(
+              Threads.get_thread(%{thread_id: context.thread.id}, actor: context.member),
+              :forbidden
+            )
+
+            assert {:ok, []} = Threads.list_threads(%{}, actor: context.member)
+          end
+
+          assert length(
+                   Ledger.read!(Grant, thread_id: context.thread.id, user_id: context.member.id)
+                 ) ==
+                   if(role == :revoked, do: 0, else: 1)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   test "delayed replay retains its receipt without restoring revoked access", context do

@@ -180,7 +180,11 @@ defmodule Porsche.Connection do
          } = value
        ),
        do:
-         map_size(value) == 4 and map_size(account) == 2 and OverallsProtocol.uuid?(id) and
+         map_size(value) == 4 and map_size(account) in [2, 3] and
+           Map.keys(account) -- ["id", "email", "locale"] == [] and
+           (not Map.has_key?(account, "locale") or
+              OverallsProtocol.SSHManagement.locale?(account["locale"])) and
+           OverallsProtocol.uuid?(id) and
            OverallsProtocol.uuid?(user) and is_binary(email) and byte_size(email) in 1..320 and
            String.valid?(email) and expiry?(expires)
 

@@ -5,27 +5,24 @@ defmodule Audi.DNS.WireTest do
   alias Audi.DNS.Wire
 
   property "arbitrary packets always produce a bounded result" do
-    check all(packet <- binary(max_length: 2048)) do
-      assert match?({:error, _}, Wire.decode(packet)) or match?({:ok, _}, Wire.decode(packet))
-    end
+    packet = draw("packet", binary(max_length: 2048))
+    assert match?({:error, _}, Wire.decode(packet)) or match?({:ok, _}, Wire.decode(packet))
   end
 
   property "valid questions preserve identity and normalize only ASCII case" do
-    check all(
-            id <- integer(0..65_535),
-            type <- integer(0..65_535),
-            label <- string(:alphanumeric, min_length: 1, max_length: 63)
-          ) do
-      packet =
-        <<id::16, 0x0100::16, 1::16, 0::16, 0::16, 0::16, byte_size(label), label::binary, 0,
-          type::16, 1::16>>
+    id = draw("id", integer(0..65535))
+    type = draw("type", integer(0..65535))
+    label = draw("label", string(:alphanumeric, min_length: 1, max_length: 63))
 
-      assert {:ok, question} = Wire.decode(packet)
-      assert question.id == id
-      assert question.type == type
-      assert question.labels == [String.downcase(label)]
-      assert question.udp_size == 512
-    end
+    packet =
+      <<id::16, 0x0100::16, 1::16, 0::16, 0::16, 0::16, byte_size(label), label::binary, 0,
+        type::16, 1::16>>
+
+    assert {:ok, question} = Wire.decode(packet)
+    assert question.id == id
+    assert question.type == type
+    assert question.labels == [String.downcase(label)]
+    assert question.udp_size == 512
   end
 
   test "rejects cyclic pointers, oversized labels, trailing bytes and truncated records" do

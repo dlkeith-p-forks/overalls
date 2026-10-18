@@ -5,17 +5,19 @@ defmodule MarshallWeb.AuthText do
   plain-language text and interpolates bindings for everything else.
   """
 
-  @replacements %{
-    "Request magic link" => "Email me a sign-in link",
-    "Requesting ..." => "Sending link…"
-  }
+  use Gettext, backend: MarshallWeb.Gettext
 
   @spec translate(String.t(), keyword() | map()) :: String.t()
   def translate(msgid, bindings) when is_binary(msgid) do
-    text = Map.get(@replacements, msgid, msgid)
-
-    Enum.reduce(bindings, text, fn {key, value}, acc ->
-      String.replace(acc, "%{#{key}}", to_string(value))
-    end)
+    case msgid do
+      "Request magic link" -> gettext("Email me a sign-in link", bindings)
+      "Requesting ..." -> gettext("Sending link…", bindings)
+      "Sign in" -> gettext("Sign in", bindings)
+      "Email" -> gettext("Email", bindings)
+      "Remember me" -> gettext("Remember me", bindings)
+      "Check your email for a sign-in link. Your account will be created automatically when you sign in." ->
+        gettext("Check your email for a sign-in link. Your account will be created automatically when you sign in.", bindings)
+      _ -> Gettext.gettext(MarshallWeb.Gettext, msgid, bindings)
+    end
   end
 end

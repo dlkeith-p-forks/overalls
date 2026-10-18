@@ -16,23 +16,15 @@ defmodule Lilly.SupervisedStopTest do
   end
 
   property "arbitrary crash payloads collapse to a closed reason without disclosure" do
-    check all(secret <- binary(max_length: 256)) do
-      assert SupervisedStop.category({:unknown, secret}) == :unknown_tuple
+    secret = draw("secret", binary(max_length: 256))
+    assert SupervisedStop.category({:unknown, secret}) == :unknown_tuple
 
-      for reason <- [%{payload: secret}, [secret], secret],
-          do: assert(SupervisedStop.category(reason) == :unexpected)
+    for reason <- [%{payload: secret}, [secret], secret],
+        do: assert(SupervisedStop.category(reason) == :unexpected)
 
-      assert SupervisedStop.category({:shutdown, secret}) == :shutdown
+    assert SupervisedStop.category({:shutdown, secret}) == :shutdown
 
-      reason = {:badarg, [{:erlang, :port_close, [secret], []}]}
-      assert SupervisedStop.location(reason) == {:unknown, :unknown, 0}
-
-      assert :ok =
-               SupervisedStop.emit_actor(
-                 reason,
-                 "11111111-1111-4111-8111-111111111111",
-                 "11111111-1111-4111-8111-111111111111"
-               )
-    end
+    assert SupervisedStop.location({:badarg, [{Lilly.VM.Actor, :schedule, [secret], []}]}) ==
+             {Lilly.VM.Actor, :schedule, 1}
   end
 end

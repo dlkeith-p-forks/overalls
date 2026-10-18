@@ -15,15 +15,14 @@ defmodule Lilly.Lifecycle.ImageTemplateTest do
         }
 
   property "template charge includes the manifest at maximum supported artifact sizes" do
-    check all(manifest_bytes <- integer(1..16_384)) do
-      artifact_bytes = 128 * 1024 ** 3 + 2 * 8 * 1024 ** 3
+    manifest_bytes = draw("manifest_bytes", integer(1..16384))
+    artifact_bytes = 128 * 1024 ** 3 + 2 * 8 * 1024 ** 3
 
-      assert ImageTemplate.valid_payload?(
-               Map.put(payload(), "bytes", artifact_bytes + manifest_bytes)
-             )
+    assert ImageTemplate.valid_payload?(
+             Map.put(payload(), "bytes", artifact_bytes + manifest_bytes)
+           )
 
-      refute ImageTemplate.valid_payload?(Map.put(payload(), "bytes", artifact_bytes + 16_385))
-    end
+    refute ImageTemplate.valid_payload?(Map.put(payload(), "bytes", artifact_bytes + 16_385))
   end
 
   test "native firmware identities include the firmware and complete disk" do
@@ -53,14 +52,14 @@ defmodule Lilly.Lifecycle.ImageTemplateTest do
     unsafe = member_of(["../kernel", "a/b", ".hidden", "", "Kernel", String.duplicate("a", 65)])
     names = ~w(manifest.json kernel initrd rootfs.ext4)
 
-    check all(name <- unsafe, size <- integer(2..3)) do
-      safe = Map.new(Enum.take(names, size), &{&1, Enum.to_list(1..11)})
-      assert ImageTemplate.valid_payload?(Map.put(payload(), "identities", safe))
+    name = draw("name", unsafe)
+    size = draw("size", integer(2..3))
+    safe = Map.new(Enum.take(names, size), &{&1, Enum.to_list(1..11)})
+    assert ImageTemplate.valid_payload?(Map.put(payload(), "identities", safe))
 
-      refute ImageTemplate.valid_payload?(
-               Map.put(payload(), "identities", Map.put(safe, name, Enum.to_list(1..11)))
-             )
-    end
+    refute ImageTemplate.valid_payload?(
+             Map.put(payload(), "identities", Map.put(safe, name, Enum.to_list(1..11)))
+           )
 
     without_manifest = Map.new(tl(names), &{&1, Enum.to_list(1..11)})
     refute ImageTemplate.valid_payload?(Map.put(payload(), "identities", without_manifest))
@@ -72,56 +71,61 @@ defmodule Lilly.Lifecycle.ImageTemplateTest do
   # state and revision on refusal. Replays MUST NOT change either.
   @tag :hegel
   test "publication and retirement require evidence; bindings and tombstones survive reopen", c do
-    check all(
-            commands <-
-              list_of(
-                member_of([
-                  :verify,
-                  :seal,
-                  :publish,
-                  :quarantine,
-                  :retire,
-                  :delete,
-                  :replace_guid,
-                  :replace_identity,
-                  :replay
-                ]),
-                min_length: 1,
-                max_length: 25
-              ),
-            test_cases: 35
-          ) do
-      directory = Path.join(c.tmp_dir, Lilly.UUID.generate())
-      payload = payload()
+    Hegel.check(
+      fn ->
+        commands =
+          draw(
+            "commands",
+            list_of(
+              member_of([
+                :verify,
+                :seal,
+                :publish,
+                :quarantine,
+                :retire,
+                :delete,
+                :replace_guid,
+                :replace_identity,
+                :replay
+              ]),
+              min_length: 1,
+              max_length: 25
+            )
+          )
 
-      locked(directory, fn ->
-        assert :ok = Journal.write(ImageTemplate, directory, "template.json", payload)
-      end)
+        directory = Path.join(c.tmp_dir, Lilly.UUID.generate())
+        payload = payload()
 
-      initial = %{payload: payload, verified: false, sealed: false, retired: false, gone: false}
+        locked(directory, fn ->
+          assert :ok = Journal.write(ImageTemplate, directory, "template.json", payload)
+        end)
 
-      Enum.reduce(commands, initial, fn command, model ->
-        {allowed, next, facts} = step(command, model)
-        {:ok, before} = Journal.load(ImageTemplate, directory, "template.json")
+        initial = %{payload: payload, verified: false, sealed: false, retired: false, gone: false}
 
-        result =
-          locked(directory, fn ->
-            Journal.write(ImageTemplate, directory, "template.json", next)
-          end)
+        Enum.reduce(commands, initial, fn command, model ->
+          {allowed, next, facts} = step(command, model)
+          {:ok, before} = Journal.load(ImageTemplate, directory, "template.json")
 
-        assert result == :ok == allowed
-        {:ok, after_record} = Journal.load(ImageTemplate, directory, "template.json")
+          result =
+            locked(directory, fn ->
+              Journal.write(ImageTemplate, directory, "template.json", next)
+            end)
 
-        if allowed and next != model.payload do
-          assert after_record.revision == before.revision + 1
-          assert after_record.payload == next
-        else
-          assert after_record == before
-        end
+          assert result == :ok == allowed
+          {:ok, after_record} = Journal.load(ImageTemplate, directory, "template.json")
 
-        if allowed, do: %{facts | payload: next}, else: model
-      end)
-    end
+          if allowed and next != model.payload do
+            assert after_record.revision == before.revision + 1
+            assert after_record.payload == next
+          else
+            assert after_record == before
+          end
+
+          if allowed, do: %{facts | payload: next}, else: model
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   @spec step(atom(), model()) :: {boolean(), map(), model()}

@@ -1,5 +1,38 @@
 import Config
 
+config :localize,
+  otp_app: :porsche,
+  default_locale: :en,
+  allow_runtime_locale_download: false,
+  supported_locales: [
+    :en,
+    :"zh-Hans",
+    :hi,
+    :es,
+    :ar,
+    :fr,
+    :bn,
+    :"pt-BR",
+    :"pt-PT",
+    :ru,
+    :ur,
+    :id,
+    :de,
+    :ja,
+    :pcm,
+    :mr,
+    :te,
+    :tr,
+    :ta,
+    :vi,
+    :ko,
+    :fil,
+    :et,
+    :fi,
+    :sv
+  ]
+
+
 config :overalls_diagnostics, events_catalog: Porsche.Events
 
 config :logger,

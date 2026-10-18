@@ -1,23 +1,8 @@
 # Security boundaries and sensitive operations
 
-## Memory suspension and wake authority
+## Locale is presentation, not authority
 
-Suspension adds sensitive RAM storage and continuation authority. Checkpoint
-memory, manifests and hashes never enter ordinary diagnostics, backup/clone
-streams or public capabilities. Exact image/VMM/device and CPU/KVM compatibility
-must be proven before loading; guest continuation uses the captured boot tuple
-inside a separately fenced current placement/epoch. A durable consumed marker
-precedes possible execution, and ambiguous execution forbids replay.
-
-Wake admission follows identity and fresh authorization, then durable demand,
-then capacity admission and physical readiness, then a fresh connection grant.
-A personal pin never grants access. Network waiters renew authority, and revoked
-keys, sessions or publications must stop waiting. Relay capability consumption is
-single-use and destination-bound over authenticated fleet transport. No caller
-can use it as a general TCP proxy. BEAM properties establish admission/coalescing
-and refusal only; native RAM continuity, filesystem coherence and multi-node
-availability require the separate NixOS machine evidence recorded in the
-[suspension review](repo:docs/architecture/reviews/2026-10-18-memory-suspension.md).
+Language headers and session values are untrusted, bounded and validated against the supported locale set. Only the current user may persist their override; reset restores browser negotiation. Neither locale nor text direction changes login, Cedar, execution fences, storage ownership or recovery authority. The Porsche envelope carries a canonical locale for human prose, with English fallback for older peers; machine identifiers and terminal byte streams stay unchanged. Bidi isolation protects interpolated identifiers from misleading direction changes. See [ADR-0197](repo:docs/architecture/decisions/0197-localized-human-surfaces.md); native/browser execution and linguistic review remain gaps until recorded.
 
 ## Agent context and guidance boundaries
 
@@ -1117,6 +1102,14 @@ payloads do not inherit admission from that image. Missing, foreign, replayed or
 incomplete promotion evidence refuses; evidence and debugging hooks stay outside
 the published image. The candidate's original false admission flags are retained.
 
+These native-family boundaries are also editor boundaries. FreeBSD and OmniOS
+have no admitted editor package, broker, descriptor or browser acceptance, and
+their explicit false capability rows remain false even where a sealed image has
+readiness, terminal, workspace, SSH or agent evidence. Those receipts cannot be
+used as a browser-editor result. A future native editor would require a new
+reviewed image and kernel/agent contract, protocol capability, broker admission
+and browser sign-in/edit/readback/recovery receipt.
+
 All seven selected image identities now bind separately recorded strict
 personal-account SSH and current-owner create/readiness, stop, independent
 stopped checkpoint, same-VM restart, repeated SSH and completed deletion. The
@@ -1407,6 +1400,13 @@ leave a bootable guest. The host policy drops unmarked
 traffic between the host and a Customer guest by design, so the machine test's
 reachability probe is a test-only allowance for one address, never a product
 path or a Marshall observation.
+
+The Windows `windows-v1` contract deliberately excludes the browser editor.
+Readiness, roster SSH, ConPTY, workspace and agent evidence therefore remains
+scoped to those capabilities; it supplies no editor package, broker, descriptor,
+browser authority or browser journey. Enabling an editor on Windows is a new
+architecture decision and requires reviewed image, agent/protocol, broker and
+browser evidence rather than an inference from existing guest readiness.
 
 ## Thread authorization boundary
 

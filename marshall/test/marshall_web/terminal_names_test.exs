@@ -5,11 +5,10 @@ defmodule MarshallWeb.TerminalNamesTest do
   alias MarshallWeb.TerminalNames
 
   property "names are deterministic, lower-case adjective-noun pairs" do
-    check all(id <- string(:printable, min_length: 1, max_length: 64)) do
-      name = TerminalNames.display_name(id)
-      assert name == TerminalNames.display_name(id)
-      assert name =~ ~r/^[a-z]+-[a-z]+$/
-    end
+    id = draw("id", string(:printable, min_length: 1, max_length: 64))
+    name = TerminalNames.display_name(id)
+    assert name == TerminalNames.display_name(id)
+    assert name =~ ~r/^[a-z]+-[a-z]+$/
   end
 
   test "different sessions usually receive different names" do

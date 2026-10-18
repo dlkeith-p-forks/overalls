@@ -539,53 +539,54 @@ defmodule Lilly.VM.ActorTest do
   # durable intent advances, even when the replacement changes epoch or kind.
   @tag :hegel
   test "generated supersession histories publish only the current revision", context do
-    check all(
-            newer_epoch? <- boolean(),
-            next_generation <- integer(2..30),
-            kind <- member_of([:start, :stop]),
-            test_cases: 25
-          ) do
-      directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
-      File.mkdir!(directory)
-      File.chmod!(directory, 0o700)
-      {:ok, store} = Store.open(directory, @id, 3)
-      first = command(1, :provision)
-      assert {:ok, :stored} = Store.accept(store, first)
-      options = Keyword.put(context.options, :store, store)
-      actor = start_supervised!({Actor, options})
-      assert_receive {:vm_actor_ready, @id, ^actor, nil}, 2_000
-      Actor.reconcile(actor)
-      assert_receive {:execute, old_task, ^first, _}, 2_000
+    Hegel.check(
+      fn ->
+        newer_epoch? = draw("newer_epoch?", boolean())
+        next_generation = draw("next_generation", integer(2..30))
+        kind = draw("kind", member_of([:start, :stop]))
+        directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
+        File.mkdir!(directory)
+        File.chmod!(directory, 0o700)
+        {:ok, store} = Store.open(directory, @id, 3)
+        first = command(1, :provision)
+        assert {:ok, :stored} = Store.accept(store, first)
+        options = Keyword.put(context.options, :store, store)
+        actor = Overalls.HegelFixtures.start_supervised!({Actor, options})
+        assert_receive {:vm_actor_ready, @id, ^actor, nil}, 2_000
+        Actor.reconcile(actor)
+        assert_receive {:execute, old_task, ^first, _}, 2_000
 
-      replacement =
-        if newer_epoch? do
-          %{command(next_generation, kind) | execution_epoch: 2}
-        else
-          command(next_generation, kind)
-        end
+        replacement =
+          if newer_epoch? do
+            %{command(next_generation, kind) | execution_epoch: 2}
+          else
+            command(next_generation, kind)
+          end
 
-      assert {:ok, :stored} = Store.accept(store, replacement)
-      send(old_task, {:result, {:ok, running()}})
-      assert_receive {:execute, current_task, ^replacement, %{running_generation: 0}}, 2_000
-      refute_received {:vm_actor_outcome, @id, ^actor, _}
+        assert {:ok, :stored} = Store.accept(store, replacement)
+        send(old_task, {:result, {:ok, running()}})
+        assert_receive {:execute, current_task, ^replacement, %{running_generation: 0}}, 2_000
+        refute_received {:vm_actor_outcome, @id, ^actor, _}
 
-      observation =
-        if kind == :stop,
-          do: %{running() | state: :stopped, compute_empty: true},
-          else: running()
+        observation =
+          if kind == :stop,
+            do: %{running() | state: :stopped, compute_empty: true},
+            else: running()
 
-      send(current_task, {:result, {:ok, observation}})
-      assert_receive {:vm_actor_outcome, @id, ^actor, outcome}, 2_000
-      assert outcome.execution_epoch == replacement.execution_epoch
-      assert outcome.generation == replacement.generation
-      assert outcome.state == observation.state
-      assert outcome.sequence == 1
-      stop_supervised!(Actor)
+        send(current_task, {:result, {:ok, observation}})
+        assert_receive {:vm_actor_outcome, @id, ^actor, outcome}, 2_000
+        assert outcome.execution_epoch == replacement.execution_epoch
+        assert outcome.generation == replacement.generation
+        assert outcome.state == observation.state
+        assert outcome.sequence == 1
+        stop_supervised!(Actor)
 
-      replacement_actor = start_supervised!({Actor, options})
-      assert_receive {:vm_actor_ready, @id, ^replacement_actor, ^outcome}, 2_000
-      stop_supervised!(Actor)
-    end
+        replacement_actor = Overalls.HegelFixtures.start_supervised!({Actor, options})
+        assert_receive {:vm_actor_ready, @id, ^replacement_actor, ^outcome}, 2_000
+        stop_supervised!(Actor)
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;recovery] generated-journal-before-effect
@@ -593,34 +594,40 @@ defmodule Lilly.VM.ActorTest do
   # attempted epoch and generation before the executor can return any effect.
   @tag :hegel
   test "generated revisions are durably attempted before executor work", context do
-    check all(
-            epoch <- integer(1..8),
-            generation <- integer(1..100),
-            kind <- member_of([:provision, :start]),
-            test_cases: 25
-          ) do
-      directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
-      File.mkdir!(directory)
-      File.chmod!(directory, 0o700)
-      {:ok, store} = Store.open(directory, @id, 3)
-      intent = %{command(generation, kind) | execution_epoch: epoch}
-      assert {:ok, :stored} = Store.accept(store, intent)
-      actor = start_supervised!({Actor, Keyword.put(context.options, :store, store)})
-      assert_receive {:vm_actor_ready, @id, ^actor, nil}, 2_000
-      Actor.reconcile(actor)
-      assert_receive {:execute, worker, ^intent, _}, 2_000
+    Hegel.check(
+      fn ->
+        epoch = draw("epoch", integer(1..8))
+        generation = draw("generation", integer(1..100))
+        kind = draw("kind", member_of([:provision, :start]))
+        directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
+        File.mkdir!(directory)
+        File.chmod!(directory, 0o700)
+        {:ok, store} = Store.open(directory, @id, 3)
+        intent = %{command(generation, kind) | execution_epoch: epoch}
+        assert {:ok, :stored} = Store.accept(store, intent)
 
-      path = Path.join([directory, "actors", @id, "journal.json"])
-      {:ok, bytes} = Lilly.Host.PrivateFiles.read_secret(path)
-      assert {:ok, payload, _metadata} = Lilly.Lifecycle.Journal.envelope(bytes)
-      assert payload["attempted_epoch"] == epoch
-      assert payload["attempted_generation"] == generation
-      assert payload["outcome"] == nil
+        actor =
+          Overalls.HegelFixtures.start_supervised!(
+            {Actor, Keyword.put(context.options, :store, store)}
+          )
 
-      send(worker, {:result, {:ok, running()}})
-      assert_receive {:vm_actor_outcome, @id, ^actor, %{state: :running}}, 2_000
-      stop_supervised!(Actor)
-    end
+        assert_receive {:vm_actor_ready, @id, ^actor, nil}, 2_000
+        Actor.reconcile(actor)
+        assert_receive {:execute, worker, ^intent, _}, 2_000
+
+        path = Path.join([directory, "actors", @id, "journal.json"])
+        {:ok, bytes} = Lilly.Host.PrivateFiles.read_secret(path)
+        assert {:ok, payload, _metadata} = Lilly.Lifecycle.Journal.envelope(bytes)
+        assert payload["attempted_epoch"] == epoch
+        assert payload["attempted_generation"] == generation
+        assert payload["outcome"] == nil
+
+        send(worker, {:result, {:ok, running()}})
+        assert_receive {:vm_actor_outcome, @id, ^actor, %{state: :running}}, 2_000
+        stop_supervised!(Actor)
+      end,
+      test_cases: 100
+    )
   end
 
   test "lock deferral preserves a confirmed stopped outcome across actor restart", context do
@@ -665,71 +672,72 @@ defmodule Lilly.VM.ActorTest do
   @tag :hegel
   test "storage retry histories preserve authority and observations until success or failure",
        context do
-    check all(
-            restarts <- list_of(boolean(), min_length: 1, max_length: 8),
-            terminal? <- boolean(),
-            test_cases: 20
-          ) do
-      directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
-      File.mkdir!(directory)
-      File.chmod!(directory, 0o700)
-      {:ok, store} = Store.open(directory, @id, 3)
-      stopped_command = command(2, :stop)
-      {:ok, :stored} = Store.accept(store, stopped_command)
-      options = Keyword.put(context.options, :store, store)
-      actor = start_supervised!({Actor, options})
-      assert_receive {:vm_actor_ready, @id, ^actor, nil}, 2000
-      Actor.reconcile(actor)
-      assert_receive {:execute, task, ^stopped_command, history}, 2000
-      stopped = %{running() | state: :stopped, compute_empty: true}
-      send(task, {:result, {:ok, stopped}})
-      assert_receive {:vm_actor_outcome, @id, ^actor, previous}, 2000
-      restart = command(3, :start)
-      {:ok, :stored} = Store.accept(store, restart)
+    Hegel.check(
+      fn ->
+        restarts = draw("restarts", list_of(boolean(), min_length: 1, max_length: 8))
+        terminal? = draw("terminal?", boolean())
+        directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
+        File.mkdir!(directory)
+        File.chmod!(directory, 0o700)
+        {:ok, store} = Store.open(directory, @id, 3)
+        stopped_command = command(2, :stop)
+        {:ok, :stored} = Store.accept(store, stopped_command)
+        options = Keyword.put(context.options, :store, store)
+        actor = Overalls.HegelFixtures.start_supervised!({Actor, options})
+        assert_receive {:vm_actor_ready, @id, ^actor, nil}, 2000
+        Actor.reconcile(actor)
+        assert_receive {:execute, task, ^stopped_command, history}, 2000
+        stopped = %{running() | state: :stopped, compute_empty: true}
+        send(task, {:result, {:ok, stopped}})
+        assert_receive {:vm_actor_outcome, @id, ^actor, previous}, 2000
+        restart = command(3, :start)
+        {:ok, :stored} = Store.accept(store, restart)
 
-      actor =
-        Enum.reduce(restarts, actor, fn reboot?, current ->
-          Actor.reconcile(current)
-          assert_receive {:execute, worker, ^restart, ^history}, 2000
-          monitor = Process.monitor(worker)
-          send(worker, {:result, {:retry, :storage_busy}})
-          assert_receive {:DOWN, ^monitor, :process, ^worker, :normal}, 2000
-          await_idle(current, System.monotonic_time(:millisecond) + 2000)
-          assert Actor.status(current).outcome_sequence == previous.sequence
-          assert {:ok, ^restart} = Store.read(store, @id)
-          refute_received {:vm_actor_outcome, @id, ^current, _}
+        actor =
+          Enum.reduce(restarts, actor, fn reboot?, current ->
+            Actor.reconcile(current)
+            assert_receive {:execute, worker, ^restart, ^history}, 2000
+            monitor = Process.monitor(worker)
+            send(worker, {:result, {:retry, :storage_busy}})
+            assert_receive {:DOWN, ^monitor, :process, ^worker, :normal}, 2000
+            await_idle(current, System.monotonic_time(:millisecond) + 2000)
+            assert Actor.status(current).outcome_sequence == previous.sequence
+            assert {:ok, ^restart} = Store.read(store, @id)
+            refute_received {:vm_actor_outcome, @id, ^current, _}
 
-          if reboot? do
-            stop_supervised!(Actor)
-            replacement = start_supervised!({Actor, options})
-            assert_receive {:vm_actor_ready, @id, ^replacement, ^previous}, 2000
-            replacement
-          else
-            current
-          end
-        end)
+            if reboot? do
+              stop_supervised!(Actor)
+              replacement = Overalls.HegelFixtures.start_supervised!({Actor, options})
+              assert_receive {:vm_actor_ready, @id, ^replacement, ^previous}, 2000
+              replacement
+            else
+              current
+            end
+          end)
 
-      Actor.reconcile(actor)
-      assert_receive {:execute, worker, ^restart, ^history}, 2000
+        Actor.reconcile(actor)
+        assert_receive {:execute, worker, ^restart, ^history}, 2000
 
-      final =
-        if terminal?,
-          do: %{stopped | state: :failed, reason: :execution_failed},
-          else: running()
+        final =
+          if terminal?,
+            do: %{stopped | state: :failed, reason: :execution_failed},
+            else: running()
 
-      send(worker, {:result, {:ok, final}})
-      assert_receive {:vm_actor_outcome, @id, ^actor, outcome}, 2000
-      assert outcome.state == final.state
-      assert outcome.sequence == previous.sequence + 1
+        send(worker, {:result, {:ok, final}})
+        assert_receive {:vm_actor_outcome, @id, ^actor, outcome}, 2000
+        assert outcome.state == final.state
+        assert outcome.sequence == previous.sequence + 1
 
-      assert Map.take(outcome, [:placement_id, :execution_epoch, :generation]) ==
-               Map.take(restart, [:placement_id, :execution_epoch, :generation])
+        assert Map.take(outcome, [:placement_id, :execution_epoch, :generation]) ==
+                 Map.take(restart, [:placement_id, :execution_epoch, :generation])
 
-      stop_supervised!(Actor)
-      recovered = start_supervised!({Actor, options})
-      assert_receive {:vm_actor_ready, @id, ^recovered, ^outcome}, 2000
-      stop_supervised!(Actor)
-    end
+        stop_supervised!(Actor)
+        recovered = Overalls.HegelFixtures.start_supervised!({Actor, options})
+        assert_receive {:vm_actor_ready, @id, ^recovered, ^outcome}, 2000
+        stop_supervised!(Actor)
+      end,
+      test_cases: 100
+    )
   end
 
   @spec await_idle(pid(), integer()) :: :ok
@@ -828,60 +836,66 @@ defmodule Lilly.VM.ActorTest do
   # generation MUST be attempted immediately despite the old retry deadline.
   @tag :hegel
   test "generated cleanup failures plateau without retiring or delaying new intent", context do
-    check all(failures <- integer(6..8), test_cases: 6) do
-      directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
-      File.mkdir!(directory)
-      File.chmod!(directory, 0o700)
-      {:ok, store} = Store.open(directory, @id, 3)
-      deletion = command(2, :delete)
-      {:ok, :stored} = Store.accept(store, deletion)
-      options = Keyword.put(context.options, :store, store)
-      actor = start_supervised!({Actor, options})
-      assert_receive {:vm_actor_ready, @id, ^actor, nil}, 2000
+    Hegel.check(
+      fn ->
+        failures = draw("failures", integer(6..8))
+        directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
+        File.mkdir!(directory)
+        File.chmod!(directory, 0o700)
+        {:ok, store} = Store.open(directory, @id, 3)
+        deletion = command(2, :delete)
+        {:ok, :stored} = Store.accept(store, deletion)
+        options = Keyword.put(context.options, :store, store)
+        actor = Overalls.HegelFixtures.start_supervised!({Actor, options})
+        assert_receive {:vm_actor_ready, @id, ^actor, nil}, 2000
 
-      for attempt <- 1..failures do
-        if attempt > 1 do
-          :sys.replace_state(actor, fn state ->
-            %{state | next_delete_attempt_at: System.monotonic_time(:millisecond) - 1}
-          end)
+        for attempt <- 1..failures do
+          if attempt > 1 do
+            :sys.replace_state(actor, fn state ->
+              %{state | next_delete_attempt_at: System.monotonic_time(:millisecond) - 1}
+            end)
+          end
+
+          Actor.reconcile(actor)
+          assert_receive {:execute, worker, ^deletion, _}, 2000
+          before_result = System.monotonic_time(:millisecond)
+
+          send(worker, {
+            :result,
+            {:ok,
+             %{
+               state: :unknown,
+               compute_empty: false,
+               disk_present: false,
+               cleanup_complete: false,
+               reason: :cleanup_failed
+             }}
+          })
+
+          assert_receive {:vm_actor_outcome, @id, ^actor, %{state: :unknown}}, 2000
+          after_result = System.monotonic_time(:millisecond)
+          state = :sys.get_state(actor)
+
+          delay =
+            Enum.at([1_000, 2_000, 4_000, 8_000, 16_000, 30_000, 30_000, 30_000], attempt - 1)
+
+          assert state.delete_attempts == attempt
+          assert state.next_delete_attempt_at >= before_result + delay
+          assert state.next_delete_attempt_at <= after_result + delay + 500
+          assert {:ok, ^deletion} = Store.read(store, @id)
+          refute_received {:vm_actor_retire, @id, ^actor, _}
         end
 
+        newer = command(3, :delete)
+        {:ok, :stored} = Store.accept(store, newer)
         Actor.reconcile(actor)
-        assert_receive {:execute, worker, ^deletion, _}, 2000
-        before_result = System.monotonic_time(:millisecond)
-
-        send(worker, {
-          :result,
-          {:ok,
-           %{
-             state: :unknown,
-             compute_empty: false,
-             disk_present: false,
-             cleanup_complete: false,
-             reason: :cleanup_failed
-           }}
-        })
-
-        assert_receive {:vm_actor_outcome, @id, ^actor, %{state: :unknown}}, 2000
-        after_result = System.monotonic_time(:millisecond)
-        state = :sys.get_state(actor)
-        delay = Enum.at([1_000, 2_000, 4_000, 8_000, 16_000, 30_000, 30_000, 30_000], attempt - 1)
-
-        assert state.delete_attempts == attempt
-        assert state.next_delete_attempt_at >= before_result + delay
-        assert state.next_delete_attempt_at <= after_result + delay + 500
-        assert {:ok, ^deletion} = Store.read(store, @id)
-        refute_received {:vm_actor_retire, @id, ^actor, _}
-      end
-
-      newer = command(3, :delete)
-      {:ok, :stored} = Store.accept(store, newer)
-      Actor.reconcile(actor)
-      assert_receive {:execute, worker, ^newer, _}, 2000
-      assert :sys.get_state(actor).delete_attempts == 0
-      send(worker, {:result, {:retry, :storage_busy}})
-      stop_supervised!(Actor)
-    end
+        assert_receive {:execute, worker, ^newer, _}, 2000
+        assert :sys.get_state(actor).delete_attempts == 0
+        send(worker, {:result, {:retry, :storage_busy}})
+        stop_supervised!(Actor)
+      end,
+      test_cases: 100
+    )
   end
 
   test "resize interruption and actor restart retain source intent and applied-size proof",

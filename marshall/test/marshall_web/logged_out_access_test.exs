@@ -4,7 +4,7 @@ defmodule MarshallWeb.LoggedOutAccessTest do
 
   alias Marshall.Accounts.User
 
-  @app_nav_hrefs ~w(/overview /git /machines /integrations /teams /usage /settings/security /settings/ssh-keys /admin/users /admin/usage)
+  @app_nav_hrefs ~w(/overview /git /machines /integrations /teams /usage /settings /admin/users /admin/usage)
 
   test "the root path sends anonymous visitors through public capture to sign-in", %{conn: conn} do
     assert redirected_to(get(conn, "/")) == "/launch/entry"

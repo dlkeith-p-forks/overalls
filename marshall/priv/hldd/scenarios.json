@@ -2,57 +2,76 @@
   "version": 1,
   "scenarios": [
     {
-      "id": "memory-suspension-demand-wake",
-      "journey": "A thread machine suspends after four tool-idle hours and resumes its memory on a prompt or authorized SSH, web or editor connection, relocating automatically when its host is full",
+      "id": "localization",
+      "journey": "Select a language, reset to the browser default, and use LTR/RTL human surfaces",
       "layers": [
         "identity",
         "authorization",
-        "transport",
-        "execution",
-        "isolation",
-        "storage",
-        "recovery"
+        "transport"
       ],
-      "boundary": "Current Cedar/key/publication/editor authority admits coalesced durable wake only; compute and private checkpoint capacity, sealed same-boot continuation, single-use restore and destination relay consumption independently fence execution.",
-      "denial": "Foreign or revoked authority, missing/corrupt/incompatible checkpoints, replayed restore and arbitrary relay targets refuse. Network activity cannot override explicit stop intent; a user prompt or explicit start may start a stopped VM. Full compatible-fleet capacity leaves wake pending; it never cold boots to replace memory.",
-      "scope": "Ash state machines and Hegel histories exercise BEAM admission, timer boundaries, coalescing and execution fences. Native hostd tests cover API-only restore launch and fixed checkpoint stream derivation. The real fleet scenario covers repeated capture, RAM-only nonce/PID/boot continuity, cgroup absence, running/paused moves and original authorized connections through measured source memory exhaustion.",
+      "boundary": "Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic and Urdu use RTL; locale does not grant authority or change machine output.",
+      "denial": "Unsupported or malformed locale input cannot persist; a foreign user cannot change the preference; old Porsche protocol peers fall back to English; JSON fields, protocol identifiers and terminal bytes remain language-neutral.",
+      "scope": "Accepted design in ADR-0197; no implementation execution is claimed by this scenario.",
       "status": "partial",
-      "gaps": "Full changed-source fleet execution and native image qualification are in progress. Existing socket migration, physical isolation, host power-loss and production deployment are not established by local application properties.",
-      "preferred_gap": "Run the memory-suspension-fleet NixOS check and record exact-source RAM/cgroup/connection evidence; separately qualify each native image before enabling its checkpoint operations.",
+      "gaps": "Catalog completeness, placeholder parity, browser layout/bidi behavior, locale isolation and protocol compatibility need executed evidence. Native linguistic review and packaged NixOS browser journeys are not established.",
+      "preferred_gap": "Add generated negotiation and isolation properties, complete catalog checks, LTR/RTL browser journeys and a packaged NixOS account-language/Porsche journey; record exact outcomes.",
+      "evidence": []
+    },
+    {
+      "id": "account-settings-page",
+      "journey": "Open the single account page, move between its profile, sign-in and SSH key sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport"
+      ],
+      "boundary": "One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey and SSH key sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH and User.set_time_zone; fragments (#profile, #security, #ssh-keys) carry no authority and return_to keeps its allowlist.",
+      "denial": "Refuse anonymous visitors with a sign-in redirect; answer 404 on /settings/profile, /settings/security and /settings/ssh-keys; refuse unknown events with a fixed flash and no change; a revoked login halts the next SSH key event or clock tick with a sign-in redirect; a weaker mount (optional, current_user or none) fails the pin test.",
+      "scope": "LiveView tests of the merged page (sections, single navigation entry, the step-up redirect and Users link to /settings?return_to=%2Fadmin%2Fusers#security, the SSH approval navigation to /settings#ssh-keys, every former Security, SSH key and profile assertion) and a structural pin of the lifecycle ids and route; the synthetic browser probe checks the single sidebar entry, section order, anchors landing at the top, the zone round trip and grid alignment in both themes and at 390 px.",
+      "status": "partial",
+      "gaps": "The NixOS browser tests, the passkey probe and the Antithesis access workload were rewritten to /settings by inspection and have not been executed against the merged page; no property test fits a page composition.",
+      "preferred_gap": "Rerun the credential-self-service, mfa-login, admin-account, account-lifecycle, control-room and fleet Porsche browser machine tests on the merged page and record them; rerun the Antithesis access workload.",
       "evidence": [
         {
-          "kind": "machine",
-          "path": "nix/verification/tests/machines/fleet/scenarios/suspension.py",
-          "assertion": "pause releases execution and resume preserves RAM, PID and boot UUID",
-          "scope": "Real Firecracker lifecycle and repeated same-memory continuation; also running and paused relocation plus original waiting SSH/HTTPS/editor connections.",
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "the merged page keeps the strict security mount of the former Security page",
+          "scope": "Exact lifecycle mount ids [{AuthenticationPrivacy, :default}, {LiveUserAuth, :security}] and the /settings route to AccountLive",
           "execution": "present"
         },
         {
-          "kind": "property",
-          "path": "marshall/test/marshall/compute/suspension_test.exs",
-          "assertion": "idle deadline is exactly four hours and opt-out never expires",
-          "scope": "Application policy, serialized durable idle timing and synthetic outcome accounting; no physical RAM continuity.",
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "the page renders every section behind one Account navigation entry",
+          "scope": "Section ids, index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile",
           "execution": "present"
         },
         {
-          "kind": "property",
-          "path": "marshall/test/marshall/terminal/authority_test.exs",
-          "assertion": "paused terminal retries coalesce only after current authorization",
-          "scope": "Generated allowed/foreign histories prove no premature terminal session creation while waiting for wake.",
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "anonymous visitors must sign in and the old settings pages are gone",
+          "scope": "Sign-in redirect on /settings and 404 on the three removed paths",
           "execution": "present"
         },
         {
-          "kind": "property",
-          "path": "lilly/native/hostd/src/transfer_tests.rs",
-          "assertion": "checkpoint_stream_custody",
-          "scope": "Native typed stream path, ownership policy, non-resumable receive and malformed/foreign slot refusal; no ZFS or VM execution.",
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "admin reads remain available but a mutation prompts step-up",
+          "scope": "The no-key administrator redirect and the Users page link target /settings?return_to=%2Fadmin%2Fusers#security",
           "execution": "present"
         },
         {
-          "kind": "property",
-          "path": "lilly/test/terminal/vsock_test.exs",
-          "assertion": "restore changes host authority without changing guest hello identity",
-          "scope": "Guest HMAC continuation inside separate current outer placement authority; no guest process or multi-host execution.",
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "revoked browser login cannot change keys through an existing LiveView",
+          "scope": "A revoked persisted token halts the SSH key event on the merged page with a sign-in redirect and no key is stored",
+          "execution": "present"
+        },
+        {
+          "kind": "manual",
+          "path": "marshall/scripts/monospace_browser_probe.py",
+          "assertion": "check_account",
+          "scope": "Synthetic fixture: single navigation entry, section order, #profile and #ssh-keys anchors, zone round trip, grid alignment, screenshots in light, dark and at 390 px",
           "execution": "present"
         }
       ]
@@ -71,9 +90,9 @@
       ],
       "boundary": "The immutable image binds the pinned editor/broker closure and exact descriptor; Marshall retains current write/profile/Customer-owner authority, Audi retains the account origin, Lilly fences TCP 4444 to the current boot, and the guest broker reconciles the current personal UID before launching a systemd worker.",
       "denial": "Retained editor-free images, a changed release or image identity, missing package partner, insufficient headroom, unsafe customization paths, foreign gateway/boot/account and revoked browser authority must refuse. A Linux family capability or successful SSH does not grant editor authority.",
-      "scope": "The shared Alma/Arch builder packages the pinned editor/broker/direnv, exact descriptor, registered offline closure and GC roots. Final evaluation and actual-filesystem custody gates passed, along with two exact-release/image property and absent-descriptor checks. Alma's isolated nine-node nested-KVM suite passed all twelve provisioning, editor/terminal/webview, policy, recovery, restart and current-authority subtests. Its fixture image90eca504 differs from production65e7700b by private roots and policy files. Both production Arch0b3da3e8 and Alma65e7700b passed fresh strict personal CLI SSH, stop/checkpoint/restart, repeated SSH and owned deletion, plus four PAM/sudo smokes. Arch's captured same-image diagnostic replay passed all twelve native stages in618.2s; the earlier broker-restart502 remains unexplained. Both native sources precede the later trunk merge.",
+      "scope": "The shared Alma/Arch builder packages the pinned editor/broker/direnv, exact descriptor, registered offline closure and GC roots. Final evaluation and actual-filesystem custody gates passed, along with two exact-release/image property and absent-descriptor checks. Alma's isolated nine-node nested-KVM suite passed all twelve provisioning, editor/terminal/webview, policy, recovery, restart and current-authority subtests. Its fixture image90eca504 differs from production65e7700b by private roots and policy files. Both production Arch0b3da3e8 and Alma65e7700b passed fresh strict personal CLI SSH, stop/checkpoint/restart, repeated SSH and owned deletion, plus four PAM/sudo smokes. Arch's captured same-image diagnostic replay passed all twelve native stages in618.2s; the earlier broker-restart502 remains unexplained. Both native sources precede the later trunk merge. No current-revision NixOS or Ubuntu native browser sign-in, edit/save/readback and recovery receipt is recorded here.",
       "status": "partial",
-      "gaps": "The original Arch broker-restart502 remains unexplained despite a complete same-image passing replay. Six recv/closed diagnostics also occurred in successful recovery stages. Failure-only memory/OOM/PID/Node probes did not execute. Native acceptance of later merged trunk and production browser sign-in/history remain separate. Existing seven-family receipts retain earlier image IDs. Retained disks are not upgraded; physical isolation and Windows/native BSD/illumos editor support remain separate.",
+      "gaps": "The original Arch broker-restart502 remains unexplained despite a complete same-image passing replay. Six recv/closed diagnostics also occurred in successful recovery stages. Failure-only memory/OOM/PID/Node probes did not execute. Native acceptance of later merged trunk and production browser sign-in/history remain separate; current NixOS/Ubuntu package, descriptor, broker or eligibility evidence does not close that browser gap. Existing seven-family receipts retain earlier image IDs. Retained disks are not upgraded; physical isolation and Windows/native BSD/illumos editor support remain explicitly refused rather than inferred from readiness, terminal, agent or SSH evidence.",
       "preferred_gap": "Reproduce and identify the intermittent broker-restart502 without changing default capacity, deadlines or recovery/refusal assertions. Qualify later merged releases separately and add owned production browser fixtures without fabricating operator session authority.",
       "evidence": [
         {
@@ -888,9 +907,9 @@
       ],
       "boundary": "Marshall Editor owns single-use account login and renewable current-write execution/release leases; DNS and generic web policy cannot grant editor authority. Each permanent GuestAccount has its own full-UUID origin.",
       "denial": "Refuse viewer/web/revoked roles, foreign Customer administrators, cross-account cookies/approval, replay, retirement, stale login/grant, changed execution/release and expired/closed leases. Same-User email changes preserve the guest account and editor origin. Safe stale-cookie requests begin fresh authentication; current permission refusal remains403 and unavailable execution or unanswered login lookup503.",
-      "scope": "Historical pre-observability records: SQL-backed Marshall selection passed 52 checks; full gate passed 1,532 checks including 256 properties and forced Dialyzer with zero errors. Protocol/Lilly/Audi component gates passed. Complete NixOS Marshall/Audi/Lilly/Firecracker browser login, unsafe Origin refusal, sign-out/WebSocket closure and fresh sign-in recovery passed. Ubuntu failed after expected-origin handoff at initial workbench visibility. The later exact image eligibility/workspace/domain/controller/SSH selection passed 58 checks (5 properties, 53 tests), seed 369052, in 19.9 seconds. The merged Marshall full gate passed 1,424 checks (237 properties, 1,187 tests; two excluded), seed 309061, with zero-error forced typing; later cosmetic toolbar verification is separate. Corrected merged NixOS completed the full native journey in 742 seconds total build plus execution; corrected Ubuntu reproduced initial workbench failure. Application gates do not establish native or production acceptance.",
+      "scope": "Historical pre-observability records: SQL-backed Marshall selection passed 52 checks; full gate passed 1,532 checks including 256 properties and forced Dialyzer with zero errors. Protocol/Lilly/Audi component gates passed. Complete NixOS Marshall/Audi/Lilly/Firecracker browser login, unsafe Origin refusal, sign-out/WebSocket closure and fresh sign-in recovery passed. Ubuntu failed after expected-origin handoff at initial workbench visibility. The later exact image eligibility/workspace/domain/controller/SSH selection passed 58 checks (5 properties, 53 tests), seed 369052, in 19.9 seconds. The merged Marshall full gate passed 1,424 checks (237 properties, 1,187 tests; two excluded), seed 309061, with zero-error forced typing; later cosmetic toolbar verification is separate. Corrected merged NixOS completed the full native journey in 742 seconds total build plus execution; corrected Ubuntu reproduced initial workbench failure. This status review records no current-revision NixOS or Ubuntu browser sign-in, edit/save/readback and recovery receipt. Application gates do not establish native or production acceptance.",
       "status": "partial",
-      "gaps": "Two-writer native origin/UID separation, broader stale-account/lease histories, physical host faults and multi-gateway failover remain unexecuted. Earlier Ubuntu prompt/workbench/closure failures and058f13d8 policy failures retain their observed scope. Both corrected pre-template startup-snapshot complete family scripts now pass current physical readiness/recovery and foreign-Origin/sign-out closure; these results do not validate periodic template sweeps. Healthy63a/release73ad host activation is separate from authenticated production editor acceptance and retained-disk capability.",
+      "gaps": "Two-writer native origin/UID separation, broader stale-account/lease histories, physical host faults and multi-gateway failover remain unexecuted. Earlier Ubuntu prompt/workbench/closure failures and058f13d8 policy failures retain their observed scope. Both corrected pre-template startup-snapshot complete family scripts now pass current physical readiness/recovery and foreign-Origin/sign-out closure; these results do not validate periodic template sweeps or the current-revision browser journey. Healthy63a/release73ad host activation is separate from authenticated production editor acceptance and retained-disk capability. Windows, FreeBSD and OmniOS/illumos remain editor-false contracts; their readiness, SSH and agent receipts do not qualify editor access.",
       "preferred_gap": "The corrected pre-template startup snapshot now passes both complete family policy/control/recovery/Origin/sign-out scripts. Add two-writer/stale-account and multi-gateway native histories; keep current production browser acceptance separate from healthy63a/release73ad activation.",
       "evidence": [
         {
@@ -1108,7 +1127,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/default.nix",
           "assertion": "worker loss starts a fresh personal process without deleting data",
-          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334\u20133357, legitimate origin replacement L3358\u20133389 and worker loss with saved data L3390\u20133407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
+          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334–3357, legitimate origin replacement L3358–3389 and worker loss with saved data L3390–3407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-browser-editor.md",
           "record_assertion": "The corrected final-package standalone native check passed, exit 0, in 342 seconds"
@@ -1871,10 +1890,10 @@
           "record_assertion": "Focused execution passed exit0,seed0,20.8seconds:"
         },
         {
-          "kind": "property",
+          "kind": "unit",
           "path": "protocol/test/control/opening_worker_property_test.exs",
           "assertion": "opening worker death permits a fresh control handshake",
-          "scope": "Final matching isolated fork: real plain-loopback worker deaths, production jitter, exact version/service/binding hello and orderly/abrupt owner socket cleanup. Scripted welcome is not domain/TLS/native acceptance.",
+          "scope": "Current source exhaustively enumerates the finite matrix as ordinary ExUnit tests. The linked execution record belongs to its historical generated form and does not qualify this conversion. Final matching isolated fork: real plain-loopback worker deaths, production jitter, exact version/service/binding hello and orderly/abrupt owner socket cleanup. Scripted welcome is not domain/TLS/native acceptance.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-05-control-first-envelope.md",
           "record_assertion": "Final matching fork baseline passed one property, seed 0, 13.6 seconds, exit 0."
@@ -2844,9 +2863,11 @@
         {
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
-          "assertion": "older archived activation proof cannot replace the retry proof",
-          "scope": "Directly seeded pre-upgrade retry rows exercise the historical WorkflowServiceLevels database reader: exact proof windows, mismatched bindings, older-proof refusal and immutable totals/deadlines. No current retry admission, protocol, guest or native execution is claimed.",
-          "execution": "present"
+          "assertion": "retained older physical proof cannot satisfy a newer retry measurement",
+          "scope": "Reviewed combined four-property run passed seed158289 in91.9seconds: exact ingress refusal inventories, historical failed-readiness ACKs, actual valid delayed source/destination physical receipts before and after current readiness/terminalization, independent current-proof times and complete firstscan/unrelated accounting conservation. Unchanged600-second window crosses actualDBclock after setup backdating with aboutfive seconds remaining. Full Marshall precommit passed 1,422 checks (221 properties, 1,201 tests), two exclusions, seed930025,1133.1seconds; forced Dialyzer42.96seconds with zero errors, skips or unnecessary skips; terminal exit0. No native ten-minute, committed publisher/restart or hosted timing claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-02-retry-proof-binding-histories.md",
+          "record_assertion": "The reviewed combined run passed four properties, seed `158289`, in 91.9 seconds,"
         },
         {
           "kind": "machine",
@@ -2968,9 +2989,11 @@
         {
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
-          "assertion": "historical retry measurements retain both proof windows through repeated scans",
-          "scope": "Directly seeded pre-upgrade retry rows exercise the historical WorkflowServiceLevels database reader: exact proof windows, mismatched bindings, older-proof refusal and immutable totals/deadlines. No current retry admission, protocol, guest or native execution is claimed.",
-          "execution": "present"
+          "assertion": "retry measurements retain both received proof windows through repeated scans",
+          "scope": "Recorded actual authenticated retry followed by synthetic received-time controls for inclusive admission/deadline, missing/future proof and repeated scan witnesses. Exact bucket vectors, terminal rows/totals and complete execution/readiness/SSH/proof inventories. One focused property passed seed405587 in38.6seconds; Full Marshall precommit passed 1,419 checks (218 properties, 1,201 tests), two exclusions, seed404257,1135.7seconds; forced Dialyzer42.61seconds with zero errors, skips or unnecessary skips; terminal exit0. No native timing, independent committed publisher, process recovery or hosted claim. Reviewed late-proof extension passed seed768114 in44.3seconds: actual ready-state and success audit after terminal deadline failure cannot rewrite complete measurement/totals or post-receipt execution/proof inventories.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-02-retry-measurement-window-histories.md",
+          "record_assertion": "extension passed one property, seed `768114`, in 44.3 seconds,"
         }
       ]
     },
@@ -3993,7 +4016,7 @@
     },
     {
       "id": "credential-self-service",
-      "journey": "Rename and remove own passkeys and manage SSH keys from account settings",
+      "journey": "Rename and remove own passkeys and manage SSH keys from the account page",
       "layers": [
         "identity",
         "authorization",
@@ -4026,7 +4049,7 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/security_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "invalid or unverified credential changes are refused without crashing the view",
           "scope": "Mounted LiveView regressions: rename, exact 80-character acceptance, label refusal copy, unknown credential, locked elevation and administrator last-passkey refusal.",
           "execution": "recorded",
@@ -4222,7 +4245,7 @@
     },
     {
       "id": "user-time-zones",
-      "journey": "Choose a display time zone on the profile page, read every timestamp in that zone and see collaborators' local time",
+      "journey": "Choose a display time zone in the profile section of the account page, read every timestamp in that zone and see collaborators' local time",
       "layers": [
         "identity",
         "authorization",
@@ -4242,7 +4265,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
           "assertion": "every label carries the zone's offset in force at that instant",
-          "scope": "Every curated zone over random instants 2000\u20132040 plus fixed DST edges; half-hour and 45-minute zones pinned",
+          "scope": "Every curated zone over random instants 2000–2040 plus fixed DST edges; half-hour and 45-minute zones pinned",
           "execution": "present"
         },
         {
@@ -4275,14 +4298,14 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/profile_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "the viewer zone resolves saved, then browser, then UTC",
           "scope": "Connected mount with connect params, invalid browser zone, dead render ignoring the browser",
           "execution": "present"
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/profile_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "a clock tick refuses a revoked persisted login",
           "scope": "Real mounted profile and PostgreSQL-backed token: verify login, revoke that exact persisted token, verify durable refusal, then send only the minute tick and require sign-in redirect. Red on imported hook order, green after fresh-login hooks run first; 49 focused tests passed at merged 8fe9786 dependency pin. No packaged browser or native expiry journey.",
           "execution": "recorded",
@@ -4291,7 +4314,7 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/profile_live_test.exs",
+          "path": "marshall/test/marshall_web/local_time_live_test.exs",
           "assertion": "team members show their local time and the difference from the viewer",
           "scope": "Team, machine access and list, thread sharing and Control room pages with saved and unsaved people",
           "execution": "present"
@@ -4320,8 +4343,8 @@
         {
           "kind": "manual",
           "path": "marshall/scripts/monospace_browser_probe.py",
-          "assertion": "check_profile",
-          "scope": "Synthetic fixture: profile page saves Adelaide, overview timestamp ends in ACST/ACDT, both themes and mobile",
+          "assertion": "check_account",
+          "scope": "Synthetic fixture: the profile section of /settings saves Adelaide, overview timestamp ends in ACST/ACDT, both themes and mobile",
           "execution": "present"
         }
       ]
@@ -5425,7 +5448,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/database-recovery/driver.py",
           "assertion": "expected_holder_state",
-          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432\u201327.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
+          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432–27.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-02-database-loss-histories.md",
           "record_assertion": "All six cases preserved the twenty-second holder and thirty-five-second\nall-connection assertions and reacquired the row after reclamation."
@@ -6036,9 +6059,9 @@
         },
         {
           "kind": "property",
-          "path": "marshall/test/marshall/agents/prompt_wake_property_test.exs",
-          "assertion": "prompt retries join one wake without duplicating turns or starting a guest",
-          "scope": "Generated running, pending, stopped and paused prompt histories use a fresh SQL sandbox per case; one turn, event and durable wake identity, with no premature execution. Synthetic capacity and no native guest wake.",
+          "path": "marshall/test/marshall/agents/prompt_test.exs",
+          "assertion": "stopped VM prompt retries and changed payload retain one turn and wake",
+          "scope": "Generated stopped-VM prompt text, repeated keys and changed payload against local Ash/PostgreSQL state; one turn, event, admission and wake receipts, and agent start operation. Synthetic capacity and no native guest wake.",
           "execution": "present"
         },
         {
@@ -6594,7 +6617,7 @@
       ],
       "boundary": "Complete manifest, matching keyring, native ownership and isolated restoration.",
       "denial": "Reject unrelated decryption keys, malformed manifests, unavailable retained references, busy operator locks and unsafe or nonempty restore targets; keep historical authority isolated.",
-      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore\u2192decrypt\u2192repository-access composition with the historical-generation refusal in synthetic fixtures.",
+      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore→decrypt→repository-access composition with the historical-generation refusal in synthetic fixtures.",
       "status": "partial",
       "gaps": "No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation.",
       "preferred_gap": "Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.",
@@ -7859,7 +7882,7 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/security_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "passkey verification offers the staged launch without automatic navigation",
           "scope": "Optional Security verification exposes an allowlisted staged-launch return link without automatic navigation or allocation. The October 10 recorded result tested the superseded mandatory login-MFA continuation.",
           "execution": "present"
@@ -9320,8 +9343,8 @@
         {
           "kind": "property",
           "path": "lilly/test/lilly/control/invalid_boot_property_test.exs",
-          "assertion": "generated invalid configurations reject fresh OTP boots before serving",
-          "scope": "52 fresh OTP rejections across thirteen invalid classes, no traced named supervisor/Runtime/StatusServer start attempt and no surviving supervisor/Runtime/status/terminal-metrics sockets, unchanged files/runtime directories, no started event and no synthetic credential in captured output. Valid loader precheck; no configured native execution claim.",
+          "assertion": "configuration rejects fresh OTP boot before serving",
+          "scope": "Current source runs each mutation in a separate Hegel check with the full case budget; the linked result predates that restructuring. 52 fresh OTP rejections across thirteen invalid classes, no traced named supervisor/Runtime/StatusServer start attempt and no surviving supervisor/Runtime/status/terminal-metrics sockets, unchanged files/runtime directories, no started event and no synthetic credential in captured output. Valid loader precheck; no configured native execution claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-09-29-antithesis-property-audit.md",
           "record_assertion": "2 checks (1 property, 1 test)"
@@ -9643,10 +9666,10 @@
       "preferred_gap": "Add packaged machine startup and real certificate/Marshall account approval and authorized HTTPS management journeys; local scripted pending authority does not establish domain authorization.",
       "evidence": [
         {
-          "kind": "property",
+          "kind": "unit",
           "path": "porsche/test/host_certificate_boot_property_test.exs",
           "assertion": "invalid host certificates refuse Porsche startup before the SSH daemon",
-          "scope": "Exact first-child refusal before traced daemon/status/observability, absent service state and preserved fixture custody/privacy; semantic certificate mutants retain valid signatures.",
+          "scope": "Current source exhaustively enumerates the finite matrix as ordinary ExUnit tests. The linked execution record belongs to its historical generated form and does not qualify this conversion. Exact first-child refusal before traced daemon/status/observability, absent service state and preserved fixture custody/privacy; semantic certificate mutants retain valid signatures.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-09-29-antithesis-property-audit.md",
           "record_assertion": "54 fresh OTP refusals across 18"
@@ -9763,10 +9786,10 @@
           "record_assertion": "passed exit0,seed0,33.3seconds"
         },
         {
-          "kind": "property",
+          "kind": "unit",
           "path": "audi/test/http_front_test.exs",
           "assertion": "fleet version refusal retires suspended readiness without reopening polling",
-          "scope": "Fixed five stages plus generated draw; prior transient retry, real wildcard validation/probe, active Installation task and suspended scheduler death; retained Store metadata.",
+          "scope": "Current source exhaustively enumerates the finite matrix as ordinary ExUnit tests. The linked execution record belongs to its historical generated form and does not qualify this conversion. Fixed five stages plus generated draw; prior transient retry, real wildcard validation/probe, active Installation task and suspended scheduler death; retained Store metadata.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-03-audi-terminal-version-refusal.md",
           "record_assertion": "The expanded five-stage Fleet property passed in 39.9 seconds"
@@ -10172,10 +10195,10 @@
       "preferred_gap": "Verify the complete component gate and authenticated native reconnect/worker-loss behavior with production backoff.",
       "evidence": [
         {
-          "kind": "property",
+          "kind": "unit",
           "path": "lilly/test/terminal/opening_worker_property_test.exs",
           "assertion": "a killed opening worker retires its attempt and permits a fresh dial",
-          "scope": "Actual local sockets and process death with scripted session hello acceptance and opening shutdown.",
+          "scope": "Current source exhaustively enumerates the finite matrix as ordinary ExUnit tests. The linked execution record belongs to its historical generated form and does not qualify this conversion. Actual local sockets and process death with scripted session hello acceptance and opening shutdown.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-05-control-first-envelope.md",
           "record_assertion": "Integrated focused execution passed eight checks (seven properties,"
@@ -10641,7 +10664,7 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/security_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "first enrollment returns to the original page for an explicit retry",
           "scope": "No-key admin redirects to Security, enrolls via a signed ceremony and receives the allowlisted original-page link without executing the role change.",
           "execution": "recorded",
@@ -10731,7 +10754,7 @@
       ],
       "boundary": "Presentation changes never alter authorization, terminal transport, element identifiers or hook names; every stylesheet, script and font is served from the application origin.",
       "denial": "Reject utility-framework classes, colour literals outside the token file, external resource references, cross-origin requests, horizontal overflow, off-grid layout on workspace routes and utility classes on the public sign-in page.",
-      "scope": "Structural gate over templates, stylesheets and presentation JavaScript; Playwright probe against the disposable fixture covering both themes, 390-pixel layouts, token contrast, JetBrains Mono availability, grid alignment on workspace routes, drawer focus containment and Escape, creation draft identity across reload, reduced-motion compliance, administration navigation, empty overview, session-free public documentation and the absence of any request to another origin. The machine header check asserts the bordered heading box holds the name, state label, operating-system label (image display name), machine ID and power actions on desktop and phone widths, and that the machine-ID and installer Copy controls write only the displayed text.",
+      "scope": "Structural gate over templates, stylesheets and presentation JavaScript; Playwright probe against the disposable fixture covering both themes, 390-pixel layouts, token contrast, JetBrains Mono availability, grid alignment on workspace routes, drawer focus containment and Escape, creation draft identity across reload, reduced-motion compliance, administration navigation, empty overview, session-free public documentation and the absence of any request to another origin. The machine header check asserts the bordered heading box holds the name, state label, operating-system label (image display name), machine ID and power actions on desktop and phone widths, and that the machine-ID and installer Copy controls write only the displayed text. The status-label check asserts the one-row inverse-video Failed, bold Running and plain Stopped presentation on the Overview and Machines pages in both themes and at phone width.",
       "status": "partial",
       "gaps": "The fixture holds synthetic accounts and machines, so the probe proves rendering and interaction rather than guest execution. Contrast sampling and the grid check are not an assistive-technology audit. Native NixOS browser tests exercise the packaged release only where recorded by their own scenarios.",
       "preferred_gap": "Rerun the NixOS handbook and control-room browser machine tests on the merged presentation and record them here; a property over the token file and glyph table would add little beyond the structural gate.",
@@ -10775,6 +10798,20 @@
           "path": "marshall/scripts/monospace_browser_probe.py",
           "assertion": "check_machine_header",
           "scope": "Heading-box containment of name, state, operating system, machine ID and power actions in both themes and at 390px; machine-ID copy reports \"Machine ID copied.\" and the clipboard holds only the displayed ID before the installer copy check. Synthetic fixture machines only.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/machines_live_test.exs",
+          "assertion": "status labels name the state in text and carry its severity tone",
+          "scope": "Machines list and machine header labels render Failed/danger, Running/success, Starting and Stopping/pending and Stopped without a tone, with the observed data-state and the [OS] [State] order; the Overview test covers the same Failed and Running labels in the preview label row. Seeded observations, not provisioner outcomes.",
+          "execution": "present"
+        },
+        {
+          "kind": "manual",
+          "path": "marshall/scripts/monospace_browser_probe.py",
+          "assertion": "check_status_labels",
+          "scope": "Overview and Machines in both themes at desktop and 390px: the seeded Failed label is bold inverse video exactly one grid row tall, Running is bold and Stopped plain on the page colours, and the Failed and Stopped labels never share a colour. Synthetic fixture machines; no guest execution.",
           "execution": "present"
         }
       ]
@@ -11307,7 +11344,7 @@
           "assertion": "foreign-linux-pam-nosuid-account",
           "scope": "Isolated VM/chroot using the exact pinned installer and PAM: missing-helper9, valid0, expired13, password-change12, unknown10 on nosuid runtime storage; root-owned04755 copy, unchanged0555 source, idempotence and twelve unsafe/argument/nonroot refusals. vmTools source ownership is replaced by a byte-identical root-owned overlay only inside the disposable chroot. No foreign guest SSH/sudo or nonroot elevation acceptance.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
-          "record_assertion": "The maintained VM gate records missing-helper9 \u2192 repaired0"
+          "record_assertion": "The maintained VM gate records missing-helper9 → repaired0"
         },
         {
           "kind": "manual",
@@ -12799,10 +12836,12 @@
         },
         {
           "kind": "unit",
-          "execution": "present",
+          "execution": "recorded",
           "path": "marshall/test/marshall_web/terminal_live_test.exs",
-          "assertion": "the paused Boot log entry reads host diagnostics without waking or opening a guest terminal",
-          "scope": "LiveView and synthetic host-stream fixtures deliver bounded diagnostic bytes with zero automatically opened registry rows across refresh. Header component fixtures link Boot log from the connection explanation while image terminal capability is false and render no Boot log tab. No actual browser, Lilly host or native guest."
+          "assertion": "the Boot log entry reads host diagnostics without automatically opening a guest terminal",
+          "scope": "LiveView and synthetic host-stream fixtures deliver bounded diagnostic bytes with zero automatically opened registry rows across refresh. Header component fixtures link Boot log from the connection explanation while image terminal capability is false and render no Boot log tab. No actual browser, Lilly host or native guest.",
+          "record": "docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md",
+          "record_assertion": "LiveView and navigation suite passed 27 tests"
         },
         {
           "kind": "unit",

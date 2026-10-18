@@ -35,6 +35,10 @@ defmodule Marshall.SSH.Key do
       accept [:user_id, :label, :algorithm, :public_key, :fingerprint]
     end
 
+    update :relabel do
+      accept [:label]
+    end
+
     destroy :revoke
 
     action :list_for_user, {:array, :map} do
@@ -53,6 +57,17 @@ defmodule Marshall.SSH.Key do
         constraints: [max_length: 128, allow_empty?: true]
 
       run {Marshall.SSH.KeyActions, operation: :add}
+    end
+
+    action :rename_for_user, :map do
+      argument :id, :uuid, allow_nil?: false
+
+      argument :label, :string,
+        allow_nil?: false,
+        default: "",
+        constraints: [max_length: 128, allow_empty?: true]
+
+      run {Marshall.SSH.KeyActions, operation: :rename}
     end
 
     action :remove_for_user, :map do

@@ -22,33 +22,34 @@ defmodule Lilly.Host.ImageCatalogTest do
   } do
     File.chmod!(root, 0o700)
 
-    check all(
-            count <- integer(1..3),
-            commands <- list_of(command(count), max_length: 8),
-            test_cases: 15
-          ) do
-      base = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
-      File.mkdir_p!(base)
-      File.chmod!(base, 0o700)
-      paths = for index <- 0..(count - 1), do: image(base, index)
-      table = table()
-      {staged, pid} = restart(table, paths, nil)
+    Hegel.check(
+      fn ->
+        count = draw("count", integer(1..3))
+        commands = draw("commands", list_of(command(count), max_length: 8))
+        base = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
+        File.mkdir_p!(base)
+        File.chmod!(base, 0o700)
+        paths = for index <- 0..(count - 1), do: image(base, index)
+        table = table()
+        {staged, pid} = restart(table, paths, nil)
 
-      model = %{
-        valid: Map.new(0..(count - 1), &{&1, true}),
-        advertisable: MapSet.new(0..(count - 1))
-      }
+        model = %{
+          valid: Map.new(0..(count - 1), &{&1, true}),
+          advertisable: MapSet.new(0..(count - 1))
+        }
 
-      {staged, pid, _model} =
-        Enum.reduce(commands, {staged, pid, model}, fn command, {staged, pid, model} ->
-          {staged, pid, model} = step(command, table, paths, staged, pid, model)
-          assert_projection(table, staged, model)
-          {staged, pid, model}
-        end)
+        {staged, pid, _model} =
+          Enum.reduce(commands, {staged, pid, model}, fn command, {staged, pid, model} ->
+            {staged, pid, model} = step(command, table, paths, staged, pid, model)
+            assert_projection(table, staged, model)
+            {staged, pid, model}
+          end)
 
-      GenServer.stop(pid)
-      assert ImageCatalog.verified(table, staged) == []
-    end
+        GenServer.stop(pid)
+        assert ImageCatalog.verified(table, staged) == []
+      end,
+      test_cases: 100
+    )
   end
 
   test "startup returns before hashing and an absent catalog advertises nothing", %{

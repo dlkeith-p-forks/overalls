@@ -14,7 +14,9 @@ defmodule MarshallWeb.LiveUserAuth do
     {:cont, AshAuthentication.Phoenix.LiveSession.assign_new_resources(socket, session)}
   end
 
-  def on_mount(:live_user_optional, _params, _session, socket) do
+  def on_mount(:live_user_optional, _params, session, socket) do
+    socket = Marshall.Localization.assign_socket(socket, session)
+
     if socket.assigns[:current_user] do
       socket |> assign_time_zone() |> fresh_login(:mount)
     else
@@ -28,6 +30,8 @@ defmodule MarshallWeb.LiveUserAuth do
   # messages (including clock ticks) and parameter changes. Only the token
   # identifier may be retained.
   def on_mount(mode, _params, session, socket) when mode in [:live_user_required, :security] do
+    socket = Marshall.Localization.assign_socket(socket, session)
+
     if socket.view == MarshallWeb.TerminalLive and Phoenix.LiveView.connected?(socket),
       do: Logger.metadata(marshall_terminal: true)
 
@@ -54,7 +58,9 @@ defmodule MarshallWeb.LiveUserAuth do
     end
   end
 
-  def on_mount(:live_no_user, _params, _session, socket) do
+  def on_mount(:live_no_user, _params, session, socket) do
+    socket = Marshall.Localization.assign_socket(socket, session)
+
     if socket.assigns[:current_user] do
       {:halt, Phoenix.LiveView.redirect(socket, to: ~p"/")}
     else

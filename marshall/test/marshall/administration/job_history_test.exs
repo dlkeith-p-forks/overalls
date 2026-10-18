@@ -39,140 +39,144 @@ defmodule Marshall.Administration.JobHistoryTest do
   # Generated raw transitions MUST be compared with an independent event model
   # through ordinary-user projections. Pruning MUST preserve the exact history
   # without preserving retry authority; raw fixture transitions prove no worker execution.
+  @tag :hegel_case_sandbox
   property "generated transitions retain exact redacted history through pruning and expiry",
-    test_cases: 25 do
-    check all(
-            transitions <-
-              list_of(
-                tuple(
-                  {member_of([
-                     :available,
-                     :suspended,
-                     :scheduled,
-                     :executing,
-                     :retryable,
-                     :completed,
-                     :discarded,
-                     :cancelled
-                   ]), integer(0..2), integer(0..3)}
-                ),
-                min_length: 1,
-                max_length: 12
-              ),
-            test_cases: 25
-          ) do
-      reader = Passkeys.user()
-      job = Fixture.insert("history_#{System.unique_integer([:positive])}")
-      initial = %{state: :available, attempt: 0, error_count: 0}
-      model = %{id: job.id, current: initial, events: [initial], raw: true}
-
-      model =
-        Enum.reduce(transitions, model, fn {state, attempt, errors}, model ->
-          current = %{state: state, attempt: attempt, error_count: errors}
-          Fixture.transition(job.id, Atom.to_string(state), attempt, errors)
-          model = %{model | current: current, events: append_event(model, current)}
-          assert_projection(model, reader)
-          model
-        end)
-
-      Fixture.act(:prune, job.id, reader, reader, Ash.UUID.generate())
-      assert_projection(%{model | raw: false}, reader)
-      assert {:ok, page} = Administration.jobs(%{queue: job.queue}, actor: reader)
-      assert Enum.map(page.items, & &1.id) == [job.id]
-      assert Enum.all?(Map.values(page.counts), &(&1 == 0))
-
-      Fixture.query(
-        "UPDATE admin_job_snapshots SET expires_at=clock_timestamp()-interval '1 second' WHERE id=$1",
-        [job.id]
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    transitions =
+      draw(
+        "transitions",
+        list_of(
+          tuple(
+            {member_of([
+               :available,
+               :suspended,
+               :scheduled,
+               :executing,
+               :retryable,
+               :completed,
+               :discarded,
+               :cancelled
+             ]), integer(0..2), integer(0..3)}
+          ),
+          min_length: 1,
+          max_length: 12
+        )
       )
 
-      Fixture.query(
-        "UPDATE admin_job_events SET expires_at=clock_timestamp()-interval '1 second' WHERE job_id=$1",
-        [job.id]
-      )
+    reader = Passkeys.user()
+    job = Fixture.insert("history_#{System.unique_integer([:positive])}")
+    initial = %{state: :available, attempt: 0, error_count: 0}
+    model = %{id: job.id, current: initial, events: [initial], raw: true}
 
-      assert {:error, _} = Administration.job(%{id: job.id}, actor: reader)
-      assert {:ok, %{items: []}} = Administration.jobs(%{queue: job.queue}, actor: reader)
+    model =
+      Enum.reduce(transitions, model, fn {state, attempt, errors}, model ->
+        current = %{state: state, attempt: attempt, error_count: errors}
+        Fixture.transition(job.id, Atom.to_string(state), attempt, errors)
+        model = %{model | current: current, events: append_event(model, current)}
+        assert_projection(model, reader)
+        model
+      end)
 
-      assert {:ok, _} =
-               Administration.JobSnapshot
-               |> Ash.ActionInput.for_action(:expire, %{},
-                 actor: Marshall.Authorization.SystemActor.compute()
-               )
-               |> Ash.run_action()
+    Fixture.act(:prune, job.id, reader, reader, Ash.UUID.generate())
+    assert_projection(%{model | raw: false}, reader)
+    assert {:ok, page} = Administration.jobs(%{queue: job.queue}, actor: reader)
+    assert Enum.map(page.items, & &1.id) == [job.id]
+    assert Enum.all?(Map.values(page.counts), &(&1 == 0))
 
-      assert Ledger.read!(Administration.JobSnapshot, id: job.id) == []
-      assert Ledger.read!(Administration.JobEvent, job_id: job.id) == []
-    end
+    Fixture.query(
+      "UPDATE admin_job_snapshots SET expires_at=clock_timestamp()-interval '1 second' WHERE id=$1",
+      [job.id]
+    )
+
+    Fixture.query(
+      "UPDATE admin_job_events SET expires_at=clock_timestamp()-interval '1 second' WHERE job_id=$1",
+      [job.id]
+    )
+
+    assert {:error, _} = Administration.job(%{id: job.id}, actor: reader)
+    assert {:ok, %{items: []}} = Administration.jobs(%{queue: job.queue}, actor: reader)
+
+    assert {:ok, _} =
+             Administration.JobSnapshot
+             |> Ash.ActionInput.for_action(:expire, %{},
+               actor: Marshall.Authorization.SystemActor.compute()
+             )
+             |> Ash.run_action()
+
+    assert Ledger.read!(Administration.JobSnapshot, id: job.id) == []
+    assert Ledger.read!(Administration.JobEvent, job_id: job.id) == []
   end
 
   # @cc [owner:ghuntley,label:verification] job-retry-generated-current-authority
   # The model MUST derive retry acceptance from its own role, elevation, login,
   # raw-state and receipt history. Refused and replayed requests MUST preserve
   # every job/history/audit row; changed request meaning MUST never mutate another job.
+  @tag :hegel_case_sandbox
   property "retry histories bind receipts while role elevation and login authority change",
-    test_cases: 25 do
-    check all(
-            actions <-
-              list_of(
-                one_of([
-                  member_of([:lock, :elevate, :demote, :promote, :revoke]),
-                  tuple({constant(:retry), integer(0..1), integer(0..2)}),
-                  tuple({constant(:fail), integer(0..1)})
-                ]),
-                max_length: 5
-              ),
-            test_cases: 25
-          ) do
-      admin = Passkeys.elevate(Passkeys.user(true))
-      operator = Passkeys.elevate(Passkeys.user(true))
-      reader = Passkeys.user()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    actions =
+      draw(
+        "actions",
+        list_of(
+          one_of([
+            member_of([:lock, :elevate, :demote, :promote, :revoke]),
+            tuple({constant(:retry), integer(0..1), integer(0..2)}),
+            tuple({constant(:fail), integer(0..1)})
+          ]),
+          max_length: 5
+        )
+      )
 
-      jobs =
-        for _ <- 1..2 do
-          job = Fixture.insert("retry_history_#{System.unique_integer([:positive])}")
-          Fixture.transition(job.id, "discarded", 2, 1)
-          first = %{state: :available, attempt: 0, error_count: 0}
-          last = %{state: :discarded, attempt: 2, error_count: 1}
-          %{id: job.id, current: last, events: [first, last], raw: true}
-        end
+    admin = Passkeys.elevate(Passkeys.user(true))
+    operator = Passkeys.elevate(Passkeys.user(true))
+    reader = Passkeys.user()
 
-      requests = for _ <- 1..3, do: Ash.UUID.generate()
-      initial = %{role: true, elevated: true, live: true, receipts: %{}}
+    jobs =
+      for _ <- 1..2 do
+        job = Fixture.insert("retry_history_#{System.unique_integer([:positive])}")
+        Fixture.transition(job.id, "discarded", 2, 1)
+        first = %{state: :available, attempt: 0, error_count: 0}
+        last = %{state: :discarded, attempt: 2, error_count: 1}
+        %{id: job.id, current: last, events: [first, last], raw: true}
+      end
 
-      fixed = [
-        {:retry, 0, 0},
-        {:retry, 1, 0},
-        :lock,
-        {:retry, 0, 0},
-        :elevate,
-        {:retry, 0, 0},
-        :demote,
-        {:retry, 1, 1},
-        :promote
-      ]
+    requests = for _ <- 1..3, do: Ash.UUID.generate()
+    initial = %{role: true, elevated: true, live: true, receipts: %{}}
 
-      {models, authority} =
-        Enum.reduce(fixed ++ actions, {jobs, initial}, fn action, {models, authority} ->
-          {models, authority} = step(action, admin, operator, requests, models, authority)
-          for model <- models, do: assert_projection(model, reader)
-          assert_receipts(admin, requests, models, authority)
-          {models, authority}
-        end)
+    fixed = [
+      {:retry, 0, 0},
+      {:retry, 1, 0},
+      :lock,
+      {:retry, 0, 0},
+      :elevate,
+      {:retry, 0, 0},
+      :demote,
+      {:retry, 1, 1},
+      :promote
+    ]
 
-      Enum.reduce(0..1, models, fn index, models ->
-        model = Enum.at(models, index)
-        Fixture.act(:prune, model.id, admin, operator, Ash.UUID.generate())
-        models = List.replace_at(models, index, %{model | raw: false})
-
-        for request <- 0..2 do
-          {_, _} = step({:retry, index, request}, admin, operator, requests, models, authority)
-        end
-
-        for retained <- models, do: assert_projection(retained, reader)
-        models
+    {models, authority} =
+      Enum.reduce(fixed ++ actions, {jobs, initial}, fn action, {models, authority} ->
+        {models, authority} = step(action, admin, operator, requests, models, authority)
+        for model <- models, do: assert_projection(model, reader)
+        assert_receipts(admin, requests, models, authority)
+        {models, authority}
       end)
-    end
+
+    Enum.reduce(0..1, models, fn index, models ->
+      model = Enum.at(models, index)
+      Fixture.act(:prune, model.id, admin, operator, Ash.UUID.generate())
+      models = List.replace_at(models, index, %{model | raw: false})
+
+      for request <- 0..2 do
+        {_, _} = step({:retry, index, request}, admin, operator, requests, models, authority)
+      end
+
+      for retained <- models, do: assert_projection(retained, reader)
+      models
+    end)
   end
 
   @spec step(action(), User.t(), User.t(), [String.t()], [job_model()], authority()) ::

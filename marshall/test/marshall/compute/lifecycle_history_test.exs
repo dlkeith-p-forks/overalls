@@ -152,29 +152,30 @@ defmodule Marshall.Compute.LifecycleHistoryTest do
   # safe restart bounds; the dead-restart limit (three per ten minutes) is
   # crossed deterministically in the fixed arc before the generated middle.
   property "generated lifecycle histories preserve the durable transition model",
-    test_cases: 24 do
-    check all(
-            middle <- list_of(commands(), min_length: 6, max_length: 24),
-            late <-
-              list_of(tuple({integer(0..3), member_of([:normal, :unknown])}),
-                min_length: 1,
-                max_length: 4
-              ),
-            test_cases: 24
-          ) do
-      unboxed(fn ->
-        fixture = host_fixture()
-        owner = user()
-        foreign = user()
-        manager = user()
+    test_cases: 100 do
+    middle = draw("middle", list_of(commands(), min_length: 6, max_length: 24))
 
-        Cleanup.protect do
-          journey(fixture, owner, foreign, manager, middle, late)
-        after
-          cleanup(fixture.host.id, [owner.id, foreign.id, manager.id])
-        end
-      end)
-    end
+    late =
+      draw(
+        "late",
+        list_of(tuple({integer(0..3), member_of([:normal, :unknown])}),
+          min_length: 1,
+          max_length: 4
+        )
+      )
+
+    unboxed(fn ->
+      fixture = host_fixture()
+      owner = user()
+      foreign = user()
+      manager = user()
+
+      Cleanup.protect do
+        journey(fixture, owner, foreign, manager, middle, late)
+      after
+        cleanup(fixture.host.id, [owner.id, foreign.id, manager.id])
+      end
+    end)
   end
 
   @spec journey(

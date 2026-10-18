@@ -6,30 +6,27 @@ defmodule Audi.Authority.LeaseTest do
   @binding %{session_id: "s", placement_id: "p", execution_epoch: 3}
 
   property "network delay consumes grant lifetime instead of extending it" do
-    check all(
-            start <- integer(-1_000_000..1_000_000),
-            ttl <- integer(-100..31_000),
-            delay <- integer(-100..32_000)
-          ) do
-      result = Lease.new(@binding, start, ttl, start + delay)
+    start = draw("start", integer(-1_000_000..1_000_000))
+    ttl = draw("ttl", integer(-100..31000))
+    delay = draw("delay", integer(-100..32000))
+    result = Lease.new(@binding, start, ttl, start + delay)
 
-      if ttl in 1..30_000 and delay >= 0 and delay < ttl do
-        assert {:ok, lease} = result
-        assert lease.expires_at == start + ttl
-        assert lease.expires_at - (start + delay) <= 30_000 - delay
-        refute Lease.active?(lease, start + ttl)
-      else
-        assert {:error, :invalid_grant} = result
-      end
+    if ttl in 1..30_000 and delay >= 0 and delay < ttl do
+      assert {:ok, lease} = result
+      assert lease.expires_at == start + ttl
+      assert lease.expires_at - (start + delay) <= 30_000 - delay
+      refute Lease.active?(lease, start + ttl)
+    else
+      assert {:error, :invalid_grant} = result
     end
   end
 
   property "a late renewal cannot resurrect an expired stream" do
-    check all(ttl <- integer(1..5000), late <- integer(0..10_000)) do
-      assert {:ok, lease} = Lease.new(@binding, -10_000, ttl, -10_000)
-      now = -10_000 + ttl + late
-      assert {:error, :expired} = Lease.renew(lease, @binding, now, 5000, now)
-    end
+    ttl = draw("ttl", integer(1..5000))
+    late = draw("late", integer(0..10000))
+    assert {:ok, lease} = Lease.new(@binding, -10_000, ttl, -10_000)
+    now = -10_000 + ttl + late
+    assert {:error, :expired} = Lease.renew(lease, @binding, now, 5000, now)
   end
 
   test "renewal pins placement and epoch, and ignores reordered or replayed replies" do

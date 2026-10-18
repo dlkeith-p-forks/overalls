@@ -46,24 +46,24 @@ defmodule Audi.HTTP.EditorAssetsTest do
     assert {:error, :invalid_editor_assets} = EditorAssets.load(c.assets.root)
   end
 
-  test "untrusted paths never select a file outside the three release assets", c do
-    check all(fragment <- string(:alphanumeric, min_length: 1, max_length: 40)) do
-      for path <- [
-            fragment,
-            "../#{fragment}",
-            "index.html/#{fragment}",
-            "index.html%2f#{fragment}",
-            "index.html/../fake.html"
-          ] do
-        response =
-          Plug.Test.conn(
-            :get,
-            "https://#{@hash}.apps.test/code-assets/#{@release}/#{@relative}/#{path}"
-          )
-          |> EditorAssets.call(editor_assets: c.assets, zone: "apps.test")
+  property "untrusted paths never select a file outside the three release assets", c do
+    fragment = draw("fragment", string(:alphanumeric, min_length: 1, max_length: 40))
 
-        assert response.status == 404
-      end
+    for path <- [
+          fragment,
+          "../#{fragment}",
+          "index.html/#{fragment}",
+          "index.html%2f#{fragment}",
+          "index.html/../fake.html"
+        ] do
+      response =
+        Plug.Test.conn(
+          :get,
+          "https://#{@hash}.apps.test/code-assets/#{@release}/#{@relative}/#{path}"
+        )
+        |> EditorAssets.call(editor_assets: c.assets, zone: "apps.test")
+
+      assert response.status == 404
     end
   end
 

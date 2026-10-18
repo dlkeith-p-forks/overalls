@@ -37,33 +37,30 @@ defmodule Marshall.Compute.ServiceLevelBacklogHistoryTest do
   # profile permits those histories without reducing their generated cases.
   property "mixed deadline backlogs preserve totals and refuse premature freshness",
     profile: :ci,
-    test_cases: 4 do
-    check all(
-            overdue <- member_of([0, 1, 99, 100, 101, 102]),
-            future_first <- boolean(),
-            family <- member_of([:operation, :workflow]),
-            test_cases: 4
-          ) do
-      for {kind, expired, first} <- [
-            {family, overdue, future_first},
-            {:operation, 0, true},
-            {:operation, 99, true},
-            {:operation, 100, false},
-            {:operation, 101, true},
-            {:operation, 102, false},
-            {:workflow, 0, true},
-            {:workflow, 99, true},
-            {:workflow, 100, false},
-            {:workflow, 101, true},
-            {:workflow, 102, false}
-          ] do
-        :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+    test_cases: 100 do
+    overdue = draw("overdue", member_of([0, 1, 99, 100, 101, 102]))
+    future_first = draw("future_first", boolean())
+    family = draw("family", member_of([:operation, :workflow]))
 
-        try do
-          :ok = backlog_history(kind, expired, first)
-        after
-          :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
-        end
+    for {kind, expired, first} <- [
+          {family, overdue, future_first},
+          {:operation, 0, true},
+          {:operation, 99, true},
+          {:operation, 100, false},
+          {:operation, 101, true},
+          {:operation, 102, false},
+          {:workflow, 0, true},
+          {:workflow, 99, true},
+          {:workflow, 100, false},
+          {:workflow, 101, true},
+          {:workflow, 102, false}
+        ] do
+      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
+
+      try do
+        :ok = backlog_history(kind, expired, first)
+      after
+        :ok = Ecto.Adapters.SQL.Sandbox.checkin(Marshall.Repo)
       end
     end
   end

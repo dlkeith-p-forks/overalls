@@ -158,13 +158,18 @@ defmodule Lilly.VM.BootLogReaderTest do
   test "pages preserve arbitrary bytes and clamp cursors after truncation", %{
     tmp_dir: directory
   } do
-    check all(bytes <- binary(max_length: 40_000), cursor <- integer(0..50_000), test_cases: 30) do
-      fixture(directory, :running, 2, 2, bytes)
-      start = min(cursor, byte_size(bytes))
-      length = min(16_384, byte_size(bytes) - start)
-      assert {:ok, page} = BootLog.read(directory, @placement, {1, 2}, cursor)
-      assert page == %{next: start + length, bytes: binary_part(bytes, start, length)}
-    end
+    Hegel.check(
+      fn ->
+        bytes = draw("bytes", binary(max_length: 40000))
+        cursor = draw("cursor", integer(0..50000))
+        fixture(directory, :running, 2, 2, bytes)
+        start = min(cursor, byte_size(bytes))
+        length = min(16_384, byte_size(bytes) - start)
+        assert {:ok, page} = BootLog.read(directory, @placement, {1, 2}, cursor)
+        assert page == %{next: start + length, bytes: binary_part(bytes, start, length)}
+      end,
+      test_cases: 100
+    )
   end
 
   @spec fixture(Path.t(), :running | :failed, pos_integer(), pos_integer(), binary()) :: :ok

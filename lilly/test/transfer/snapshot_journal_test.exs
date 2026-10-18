@@ -210,17 +210,21 @@ defmodule Lilly.Transfer.SnapshotJournalTest do
 
   @tag :hegel
   test "arbitrary journal bytes never crash or rebind identity", c do
-    check all(bytes <- binary(max_length: 1024), test_cases: 30) do
-      :ok = PrivateFiles.write(c.directory, "snapshots.json", bytes)
+    Hegel.check(
+      fn ->
+        bytes = draw("bytes", binary(max_length: 1024))
+        :ok = PrivateFiles.write(c.directory, "snapshots.json", bytes)
 
-      case Journal.read(c.directory, c.binding) do
-        {:error, :snapshot_state_unconfirmed} ->
-          :ok
+        case Journal.read(c.directory, c.binding) do
+          {:error, :snapshot_state_unconfirmed} ->
+            :ok
 
-        {:ok, record} ->
-          assert record["binding"] ==
-                   Map.new(c.binding, fn {key, value} -> {Atom.to_string(key), value} end)
-      end
-    end
+          {:ok, record} ->
+            assert record["binding"] ==
+                     Map.new(c.binding, fn {key, value} -> {Atom.to_string(key), value} end)
+        end
+      end,
+      test_cases: 100
+    )
   end
 end

@@ -51,6 +51,12 @@ protocol metadata. Lilly must not infer a guest family from a filename or
 package contents, and Marshall must not grant a capability merely because an
 image contains a tool.
 
+The personal browser editor remains a version-4 Linux image capability under
+ADR-0153. The version-5 Windows contract and version-6 native contracts do not
+carry an editor descriptor or editor capability. Historical Linux package or
+machine evidence does not establish the current source revision or a production
+browser journey; those remain separately recorded acceptance obligations.
+
 ## Decision
 
 1. **Foreign Linux variants retain the Linux contract.** Arch Linux and
@@ -143,6 +149,14 @@ image contains a tool.
     native assembly, physical recovery or fleet rollout. The OmniOS identity
     recorded below now satisfies those existing promotion requirements;
     unrelated candidates remain closed.
+11. **Editor admission remains Linux-only in this decision.** A version-4 Linux
+    image may expose the personal browser editor only when its validated
+    descriptor, package/broker release and existing ADR-0153 authority checks
+    match. Version-5 Windows and version-6 FreeBSD/illumos manifests refuse an
+    editor descriptor, and their agent rows remain editor-false. Terminal, SSH,
+    workspace, native transport or workstation-client evidence cannot widen that
+    capability. A future native or Windows editor requires a new reviewed image,
+    agent/protocol contract, broker and browser acceptance record.
 
 Authorization: the multi-OS guest-image implementation plan of 2026-10-16 and
 the custom native-kernel plan of 2026-10-17, followed by the explicit instruction
@@ -182,6 +196,11 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
   identity to obtain the reviewed image's subset and must not treat an agent
   name, kernel digest or retained catalog row as authority. The implementation
   remains partial for the broader native and fleet requirements.
+- The editor boundary is narrower than the guest-family boundary: Linux image
+  packaging and historical browser evidence do not establish current-revision
+  or production acceptance, while Windows, FreeBSD and illumos remain explicitly
+  editor-false. No native or Windows editor implementation is accepted by this
+  decision.
 
 ## Invariants and verification
 
@@ -278,6 +297,11 @@ overlay and independent lifecycle receipts.
 This repairs the accepted owned PAM runtime without changing host isolation,
 protocol identity, account policy or capability authority; implementation remains
 partial.
+
+The [cross-platform editor status review](../reviews/2026-10-18-cross-platform-editor-status.md)
+records the current Linux evidence-freshness gap and the explicit native and
+Windows blockers. It does not upgrade historical Linux browser records to the
+current source revision or grant editor capability to another guest family.
 
 Native builders and catalog entries are in
 [`native.nix`](../../../nix/domains/artifacts/guest/native.nix),
@@ -634,6 +658,10 @@ retain their own scope.
   recovery and broader isolation retain separate gaps. The one reset receipt
   and exact image promotion do not establish those broader guarantees or admit
   unrelated members of either native family.
+- A fresh current-revision Linux browser journey remains open. Native and
+  Windows editor support would require separate package, broker, descriptor,
+  authority and browser-machine evidence; existing terminal/SSH and native
+  service receipts are insufficient.
 
 ## Related decisions
 

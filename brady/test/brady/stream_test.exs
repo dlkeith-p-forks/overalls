@@ -80,62 +80,59 @@ defmodule Brady.HTTP.StreamTest do
   # decoded payload/count and trailer markers. Write boundaries MUST NOT be
   # presented as guaranteed TCP recv boundaries or cache publication evidence.
   property "decoded chunk payload is independent of wire partition and framing" do
-    check all(
-            chunks <- list_of(binary(max_length: 90_000), min_length: 1, max_length: 4),
-            trailer <- boolean(),
-            cuts <- list_of(integer(1..1024), min_length: 1, max_length: 6),
-            buffered <- member_of([0, 1, 2, 7, 65_535]),
-            max_runs: 30
-          ) do
-      for {chunks, trailer, buffered} <- [
-            {chunks, trailer, buffered},
-            {[], false, 65_535},
-            {[], true, 65_535},
-            {["fixed"], true, 65_535}
-          ] do
-        chunks = Enum.reject(chunks, &(byte_size(&1) == 0))
+    chunks = draw("chunks", list_of(binary(max_length: 90000), min_length: 1, max_length: 4))
+    trailer = draw("trailer", boolean())
+    cuts = draw("cuts", list_of(integer(1..1024), min_length: 1, max_length: 6))
+    buffered = draw("buffered", member_of([0, 1, 2, 7, 65535]))
 
-        wire =
-          IO.iodata_to_binary(
-            Enum.map(chunks, fn part ->
-              [Integer.to_string(byte_size(part), 16), ";synthetic-extension\r\n", part, "\r\n"]
-            end) ++ [if(trailer, do: "0\r\nSet-Cookie: synthetic\r\n\r\n", else: "0\r\n\r\n")]
-          )
+    for {chunks, trailer, buffered} <- [
+          {chunks, trailer, buffered},
+          {[], false, 65_535},
+          {[], true, 65_535},
+          {["fixed"], true, 65_535}
+        ] do
+      chunks = Enum.reject(chunks, &(byte_size(&1) == 0))
 
-        parent = self()
-        expected = IO.iodata_to_binary(chunks)
+      wire =
+        IO.iodata_to_binary(
+          Enum.map(chunks, fn part ->
+            [Integer.to_string(byte_size(part), 16), ";synthetic-extension\r\n", part, "\r\n"]
+          end) ++ [if(trailer, do: "0\r\nSet-Cookie: synthetic\r\n\r\n", else: "0\r\n\r\n")]
+        )
 
-        prefix_size = min(buffered, byte_size(wire))
-        <<prefix::binary-size(^prefix_size), remaining::binary>> = wire
-        # Separate writes may coalesce in TCP. The explicitly supplied prefix is
-        # a deterministic parser-buffer boundary; recv boundaries remain native.
-        fragments = partition(remaining, cuts ++ [65_536])
-        assert IO.iodata_to_binary(fragments) == remaining
+      parent = self()
+      expected = IO.iodata_to_binary(chunks)
 
-        source_fragments(fragments, fn socket ->
-          assert {:ok, "", count} =
-                   Stream.body(socket, :chunked, prefix, fn _ -> :ok end, fn
-                     {:payload, bytes} ->
-                       assert byte_size(bytes) <= 65_536
-                       send(parent, {:chunk, bytes})
-                       :ok
+      prefix_size = min(buffered, byte_size(wire))
+      <<prefix::binary-size(^prefix_size), remaining::binary>> = wire
+      # Separate writes may coalesce in TCP. The explicitly supplied prefix is
+      # a deterministic parser-buffer boundary; recv boundaries remain native.
+      fragments = partition(remaining, cuts ++ [65_536])
+      assert IO.iodata_to_binary(fragments) == remaining
 
-                     :trailers ->
-                       send(parent, :trailers)
-                       :ok
-                   end)
+      source_fragments(fragments, fn socket ->
+        assert {:ok, "", count} =
+                 Stream.body(socket, :chunked, prefix, fn _ -> :ok end, fn
+                   {:payload, bytes} ->
+                     assert byte_size(bytes) <= 65_536
+                     send(parent, {:chunk, bytes})
+                     :ok
 
-          assert count == byte_size(expected)
-        end)
+                   :trailers ->
+                     send(parent, :trailers)
+                     :ok
+                 end)
 
-        assert collect([]) == expected
-        if trailer, do: assert_received(:trailers)
-        refute_received(:trailers)
+        assert count == byte_size(expected)
+      end)
 
-        source(binary_part(wire, 0, max(0, byte_size(wire) - 2)), fn socket ->
-          assert {:error, _} = Stream.body(socket, :chunked, "", fn _ -> :ok end)
-        end)
-      end
+      assert collect([]) == expected
+      if trailer, do: assert_received(:trailers)
+      refute_received(:trailers)
+
+      source(binary_part(wire, 0, max(0, byte_size(wire) - 2)), fn socket ->
+        assert {:error, _} = Stream.body(socket, :chunked, "", fn _ -> :ok end)
+      end)
     end
   end
 

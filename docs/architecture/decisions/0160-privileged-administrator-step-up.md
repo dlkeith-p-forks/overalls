@@ -153,7 +153,8 @@ The [LiveView guard](../../../marshall/lib/marshall_web/live_admin_auth.ex),
 [continuation grammar](../../../marshall/lib/marshall_web/admin_elevation.ex),
 [security coordinator](../../../marshall/lib/marshall/accounts/security.ex),
 [browser ceremony](../../../marshall/assets/js/admin_elevation.js) and
-[Security settings](../../../marshall/lib/marshall_web/live/security_live.ex)
+[account settings](../../../marshall/lib/marshall_web/live/account_live.ex)
+(the sign-in section, `/settings#security` since [ADR-0196](0196-single-account-settings-page.md); formerly `security_live.ex`)
 add the fifteen-minute receipt, enrolled-key modal, socket-local continuation
 and no-key setup return path. The focused backend run passed 35 checks (3
 properties, 32 tests), including real signed-assertion continuation/refusal
@@ -190,6 +191,8 @@ cross-replica authority.
 
 ## Related decisions
 
+[ADR-0196](0196-single-account-settings-page.md) (the Security page is now
+the `#security` section of `/settings`),
 [ADR-0119](0119-authenticated-control-room-reads.md),
 [ADR-0065](0065-passkey-administration.md),
 [ADR-0058](0058-administrative-authority.md),

@@ -314,17 +314,17 @@ defmodule Audi.TLS.FleetMaterialTest do
     assert :unrecognized = Audi.TLS.Store.sni(store, @host)
   end
 
-  test "arbitrary bytes fail validation without exposing decoder exceptions", c do
-    check all(bytes <- binary(max_length: 2048)) do
-      assert {:error, :invalid_tls_material} =
-               FleetMaterial.validate(bytes, c.key, c.roots, "apps.example")
+  property "arbitrary bytes fail validation without exposing decoder exceptions", c do
+    bytes = draw("bytes", binary(max_length: 2048))
 
-      assert {:error, :invalid_tls_material} =
-               FleetMaterial.validate(c.fleet_chain, bytes, c.roots, "apps.example")
+    assert {:error, :invalid_tls_material} =
+             FleetMaterial.validate(bytes, c.key, c.roots, "apps.example")
 
-      assert {:error, :invalid_tls_material} =
-               FleetMaterial.validate(c.fleet_chain, c.key, bytes, "apps.example")
-    end
+    assert {:error, :invalid_tls_material} =
+             FleetMaterial.validate(c.fleet_chain, bytes, c.roots, "apps.example")
+
+    assert {:error, :invalid_tls_material} =
+             FleetMaterial.validate(c.fleet_chain, c.key, bytes, "apps.example")
   end
 
   defp sni_connection(store, name, roots) do

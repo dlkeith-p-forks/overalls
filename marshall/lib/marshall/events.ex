@@ -664,6 +664,11 @@ defmodule Marshall.Events do
     metadata: [key_id: :uuid, user_id: :uuid]
   )
 
+  defevent("ssh.key_renamed",
+    message: "Account SSH key renamed",
+    metadata: [key_id: :uuid, user_id: :uuid]
+  )
+
   defevent("ssh.key_removed",
     message: "Account SSH key removed",
     metadata: [key_id: :uuid, user_id: :uuid]

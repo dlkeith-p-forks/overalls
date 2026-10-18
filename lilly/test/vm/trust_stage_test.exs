@@ -43,20 +43,20 @@ defmodule Lilly.VM.TrustStageTest do
   # never the former collapsed trust_unconfirmed atom; with no trust roots it
   # MUST succeed without touching the placement.
   property "unconfirmed trust always names a closed stage" do
-    check all(
-            epoch <- positive_integer(),
-            generation <- positive_integer(),
-            roots <- list_of(string(:printable, min_length: 1), min_length: 1, max_length: 3)
-          ) do
-      {config, pool, spec} = fixture(roots)
-      options = [execution_epoch: epoch, generation: generation, vm_id: spec.id]
+    epoch = draw("epoch", positive_integer())
+    generation = draw("generation", positive_integer())
 
-      assert {:error, :trust_boot_unconfirmed} = Driver.trust(config, pool, spec, options)
-      assert :trust_boot_unconfirmed in Driver.trust_stages()
-      refute :trust_unconfirmed in Driver.trust_stages()
+    roots =
+      draw("roots", list_of(string(:printable, min_length: 1), min_length: 1, max_length: 3))
 
-      {untrusted, pool, spec} = fixture([])
-      assert :ok = Driver.trust(untrusted, pool, spec, options)
-    end
+    {config, pool, spec} = fixture(roots)
+    options = [execution_epoch: epoch, generation: generation, vm_id: spec.id]
+
+    assert {:error, :trust_boot_unconfirmed} = Driver.trust(config, pool, spec, options)
+    assert :trust_boot_unconfirmed in Driver.trust_stages()
+    refute :trust_unconfirmed in Driver.trust_stages()
+
+    {untrusted, pool, spec} = fixture([])
+    assert :ok = Driver.trust(untrusted, pool, spec, options)
   end
 end

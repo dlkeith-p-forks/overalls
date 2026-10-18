@@ -10,72 +10,73 @@ defmodule Marshall.Accounts.AuthEmailsTest do
   # An accepted attempt with an unobserved result MUST leave the row pending;
   # retries MUST retain the delivery's Message-ID and body, and a committed
   # delivered row MUST cause no further mail attempt.
+  @tag :hegel_case_sandbox
   property "generated uncertain mail results retain identity and stop after commit",
-    test_cases: 5 do
-    check all(uncertain_attempts <- integer(1..3), test_cases: 5) do
-      original_config = Application.fetch_env!(:marshall, Marshall.Mailer)
-      counter = start_supervised!({Agent, fn -> 0 end}, id: Ash.UUID.generate())
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    uncertain_attempts = draw("uncertain_attempts", integer(1..3))
+    original_config = Application.fetch_env!(:marshall, Marshall.Mailer)
 
-      Application.put_env(
-        :marshall,
-        Marshall.Mailer,
-        adapter: Marshall.Test.UncertainMailAdapter,
-        owner: self(),
-        counter: counter,
-        uncertain_attempts: uncertain_attempts
-      )
+    counter =
+      Overalls.HegelFixtures.start_supervised!({Agent, fn -> 0 end}, id: Ash.UUID.generate())
 
-      try do
-        email = "uncertain-#{Ash.UUID.generate()}@example.test"
-        assert :ok = AuthEmails.enqueue(email, token(email))
-        record = Enum.find(Ledger.read!(AuthEmail), &(&1.status == :pending))
-        assert record
+    Application.put_env(
+      :marshall,
+      Marshall.Mailer,
+      adapter: Marshall.Test.UncertainMailAdapter,
+      owner: self(),
+      counter: counter,
+      uncertain_attempts: uncertain_attempts
+    )
 
-        attempts =
-          Enum.map(1..(uncertain_attempts + 1), fn attempt ->
-            result =
-              record
-              |> Ash.Changeset.for_update(:deliver, %{},
-                actor: Marshall.Authorization.SystemActor.compute()
-              )
-              |> Ash.update()
+    try do
+      email = "uncertain-#{Ash.UUID.generate()}@example.test"
+      assert :ok = AuthEmails.enqueue(email, token(email))
+      record = Enum.find(Ledger.read!(AuthEmail), &(&1.status == :pending))
+      assert record
 
-            if attempt <= uncertain_attempts do
-              assert {:error, _} = result
+      attempts =
+        Enum.map(1..(uncertain_attempts + 1), fn attempt ->
+          result =
+            record
+            |> Ash.Changeset.for_update(:deliver, %{},
+              actor: Marshall.Authorization.SystemActor.compute()
+            )
+            |> Ash.update()
 
-              assert %{status: :pending} =
-                       Ash.get!(AuthEmail, record.id,
-                         actor: Marshall.Authorization.SystemActor.compute()
-                       )
-            else
-              assert {:ok, %{status: :delivered}} = result
-            end
+          if attempt <= uncertain_attempts do
+            assert {:error, _} = result
 
-            assert_receive {:auth_mail_attempt, ^attempt, message_id, text_digest, html_digest}
-            {message_id, text_digest, html_digest}
-          end)
+            assert %{status: :pending} =
+                     Ash.get!(AuthEmail, record.id,
+                       actor: Marshall.Authorization.SystemActor.compute()
+                     )
+          else
+            assert {:ok, %{status: :delivered}} = result
+          end
 
-        assert length(Enum.uniq(attempts)) == 1
-        [{message_id, _, _} | _] = attempts
-        assert message_id == "<#{record.id}@overalls.invalid>"
+          assert_receive {:auth_mail_attempt, ^attempt, message_id, text_digest, html_digest}
+          {message_id, text_digest, html_digest}
+        end)
 
-        assert %{status: :delivered, encrypted_payload: nil} =
-                 Ash.get!(AuthEmail, record.id,
-                   actor: Marshall.Authorization.SystemActor.compute()
-                 )
+      assert length(Enum.uniq(attempts)) == 1
+      [{message_id, _, _} | _] = attempts
+      assert message_id == "<#{record.id}@overalls.invalid>"
 
-        assert {:ok, %{status: :delivered}} =
-                 record
-                 |> Ash.Changeset.for_update(:deliver, %{},
-                   actor: Marshall.Authorization.SystemActor.compute()
-                 )
-                 |> Ash.update()
+      assert %{status: :delivered, encrypted_payload: nil} =
+               Ash.get!(AuthEmail, record.id, actor: Marshall.Authorization.SystemActor.compute())
 
-        refute_receive {:auth_mail_attempt, _, _, _, _}
-        assert Agent.get(counter, & &1) == uncertain_attempts + 1
-      after
-        Application.put_env(:marshall, Marshall.Mailer, original_config)
-      end
+      assert {:ok, %{status: :delivered}} =
+               record
+               |> Ash.Changeset.for_update(:deliver, %{},
+                 actor: Marshall.Authorization.SystemActor.compute()
+               )
+               |> Ash.update()
+
+      refute_receive {:auth_mail_attempt, _, _, _, _}
+      assert Agent.get(counter, & &1) == uncertain_attempts + 1
+    after
+      Application.put_env(:marshall, Marshall.Mailer, original_config)
     end
   end
 

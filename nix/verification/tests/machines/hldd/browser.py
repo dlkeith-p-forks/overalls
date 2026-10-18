@@ -54,11 +54,11 @@ def check_login_failure_custody(page: Page, origin: str, token_path: Path) -> No
 
 def check_reference_navigation(page: Page) -> None:
     """@cc [owner:ghuntley,label:verification] handbook-source-code-navigation
-    Both signed-in navigation contexts MUST place the Source code link immediately
-    after HLDD with the exact repository destination and ordinary href navigation.
-    Verification MUST NOT require an external GitHub request.
+    The workspace sidebar's Reference tree MUST place the Source code link
+    immediately after HLDD with the exact repository destination and ordinary
+    href navigation. Verification MUST NOT require an external GitHub request.
     """
-    source = page.locator("#nav-hldd + a#nav-source-code")
+    source = page.locator("#nav-reference li:has(#nav-hldd) + li > a#nav-source-code")
     expect(source).to_be_visible()
     expect(source).to_contain_text("Source code")
     expect(source).to_have_attribute("href", "https://github.com/ghuntley/overalls")
@@ -177,6 +177,11 @@ def main() -> None:
         check_section(page, "system")
         page.screenshot(path="/tmp/hldd-dark.png")
         page.goto(origin + "/admin/nodes")
+        expect(page.locator("[data-phx-main].phx-connected")).to_be_visible()
+        # The Control room sidebar carries only administration links.
+        expect(page.locator("#nav-reference")).to_have_count(0)
+        expect(page.locator("#nav-hldd")).to_have_count(0)
+        page.goto(origin + "/overview")
         expect(page.locator("[data-phx-main].phx-connected")).to_be_visible()
         check_reference_navigation(page)
         expect(page.locator("#nav-hldd")).to_be_visible()

@@ -50,17 +50,16 @@ defmodule MarshallWeb.OverallsInstallerTest do
   end
 
   property "generated deployment mismatches and malformed CA policies cannot render installers" do
-    check all(label <- string(:alphanumeric, min_length: 1, max_length: 30)) do
-      other = String.downcase(label) <> ".other.test"
-      assert :error = OverallsInstaller.render(other, @policy)
+    label = draw("label", string(:alphanumeric, min_length: 1, max_length: 30))
+    other = String.downcase(label) <> ".other.test"
+    assert :error = OverallsInstaller.render(other, @policy)
 
-      assert :error =
-               OverallsInstaller.render("control.example.test", Map.put(@policy, "ca", label))
+    assert :error =
+             OverallsInstaller.render("control.example.test", Map.put(@policy, "ca", label))
 
-      for field <- ["management_host", "zone"] do
-        policy = Map.put(@policy, field, "$(" <> label <> ")")
-        assert :error = OverallsInstaller.render("control.example.test", policy)
-      end
+    for field <- ["management_host", "zone"] do
+      policy = Map.put(@policy, field, "$(" <> label <> ")")
+      assert :error = OverallsInstaller.render("control.example.test", policy)
     end
   end
 end

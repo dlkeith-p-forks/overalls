@@ -229,12 +229,17 @@ defmodule Lilly.VM.WorkspaceSourceTest do
 
   @tag :hegel
   test "generated sources always encode within the request bound" do
-    check all(source <- source_gen(), test_cases: 200) do
-      assert {:ok, line} =
-               WorkspaceSource.request(expectation(boot(1)), String.duplicate("a", 64), source)
+    Hegel.check(
+      fn ->
+        source = draw("source", source_gen())
 
-      assert byte_size(line) <= 4096
-    end
+        assert {:ok, line} =
+                 WorkspaceSource.request(expectation(boot(1)), String.duplicate("a", 64), source)
+
+        assert byte_size(line) <= 4096
+      end,
+      test_cases: 200
+    )
   end
 
   property "only an exact echo of binding and nonce is accepted" do
@@ -261,26 +266,26 @@ defmodule Lilly.VM.WorkspaceSourceTest do
 
     refute WorkspaceSource.reply(JSON.encode!(good), expected, nonce) == :accepted
 
-    check all(
-            key <- member_of(Map.keys(good)),
-            value <- one_of([integer(), constant(nil), string(:alphanumeric, max_length: 70)])
-          ) do
-      Hegel.assume(value != good[key])
+    key = draw("key", member_of(Map.keys(good)))
 
-      assert :rejected =
-               WorkspaceSource.reply(
-                 JSON.encode!(Map.put(good, key, value)) <> "\n",
-                 expected,
-                 nonce
-               )
+    value =
+      draw("value", one_of([integer(), constant(nil), string(:alphanumeric, max_length: 70)]))
 
-      assert :rejected =
-               WorkspaceSource.reply(
-                 JSON.encode!(Map.put(good, "extra", value)) <> "\n",
-                 expected,
-                 nonce
-               )
-    end
+    Hegel.assume(value != good[key])
+
+    assert :rejected =
+             WorkspaceSource.reply(
+               JSON.encode!(Map.put(good, key, value)) <> "\n",
+               expected,
+               nonce
+             )
+
+    assert :rejected =
+             WorkspaceSource.reply(
+               JSON.encode!(Map.put(good, "extra", value)) <> "\n",
+               expected,
+               nonce
+             )
   end
 
   # Model-based command sequences. The model mirrors Driver.deliver_workspace_source/4:
@@ -304,55 +309,56 @@ defmodule Lilly.VM.WorkspaceSourceTest do
         max_length: 8
       )
 
-    check all(
-            source <- source_gen(),
-            other <- source_gen(),
-            sequence <- commands,
-            test_cases: 20
-          ) do
-      Hegel.assume(other != source)
-      path = Path.join(root, "#{System.unique_integer([:positive])}.sock")
-      first = boot(1, Lilly.UUID.generate())
-      {guest, acceptor} = Guest.start(path, first)
-      digest = WorkspaceSource.digest(source)
+    Hegel.check(
+      fn ->
+        source = draw("source", source_gen())
+        other = draw("other", source_gen())
+        sequence = draw("sequence", commands)
+        Hegel.assume(other != source)
+        path = Path.join(root, "#{System.unique_integer([:positive])}.sock")
+        first = boot(1, Lilly.UUID.generate())
+        {guest, acceptor} = Guest.start(path, first)
+        digest = WorkspaceSource.digest(source)
 
-      model = %{boot: first, journal: nil, delivered: []}
+        model = %{boot: first, journal: nil, delivered: []}
 
-      final =
-        Enum.reduce(sequence, model, fn command, model ->
-          run(command, model, %{
-            path: path,
-            guest: guest,
-            source: source,
-            other: other,
-            digest: digest
-          })
-        end)
+        final =
+          Enum.reduce(sequence, model, fn command, model ->
+            run(command, model, %{
+              path: path,
+              guest: guest,
+              source: source,
+              other: other,
+              digest: digest
+            })
+          end)
 
-      requests = Agent.get(guest, & &1.requests)
-      accepted = Agent.get(guest, & &1.accepted)
+        requests = Agent.get(guest, & &1.requests)
+        accepted = Agent.get(guest, & &1.accepted)
 
-      # Every request carries a fresh nonce.
-      nonces = Enum.map(requests, & &1["nonce"])
-      assert length(Enum.uniq(nonces)) == length(nonces)
+        # Every request carries a fresh nonce.
+        nonces = Enum.map(requests, & &1["nonce"])
+        assert length(Enum.uniq(nonces)) == length(nonces)
 
-      # At most one accepted source per placement/epoch, and never a foreign one.
-      accepted
-      |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
-      |> Enum.each(fn {_epoch, sources} -> assert length(Enum.uniq(sources)) == 1 end)
+        # At most one accepted source per placement/epoch, and never a foreign one.
+        accepted
+        |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
+        |> Enum.each(fn {_epoch, sources} -> assert length(Enum.uniq(sources)) == 1 end)
 
-      # Lilly settles a boot once: no epoch is delivered (accepted) twice.
-      assert length(Enum.uniq(final.delivered)) == length(final.delivered)
+        # Lilly settles a boot once: no epoch is delivered (accepted) twice.
+        assert length(Enum.uniq(final.delivered)) == length(final.delivered)
 
-      if final.journal && final.journal["state"] == "delivered" do
-        assert final.journal["execution_epoch"] in final.delivered
-        assert final.journal["execution_epoch"] <= final.boot.execution_epoch
-      end
+        if final.journal && final.journal["state"] == "delivered" do
+          assert final.journal["execution_epoch"] in final.delivered
+          assert final.journal["execution_epoch"] <= final.boot.execution_epoch
+        end
 
-      Process.unlink(acceptor)
-      Process.exit(acceptor, :kill)
-      Agent.stop(guest)
-    end
+        Process.unlink(acceptor)
+        Process.exit(acceptor, :kill)
+        Agent.stop(guest)
+      end,
+      test_cases: 100
+    )
   end
 
   defp run(:new_epoch, model, context) do

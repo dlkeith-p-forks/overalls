@@ -40,7 +40,8 @@ let
   ] ++ lib.optionals (application == "marshall") [
     ../../../../marshall/assets
     ../../../../marshall/priv
-  ] ++ lib.optionals (application == "audi") [ ../../../../audi/priv ];
+  ] ++ lib.optionals (application == "audi") [ ../../../../audi/priv ]
+    ++ lib.optionals (application == "porsche") [ ../../../../porsche/priv ];
   selected = lib.fileset.unions inputs;
   generated = lib.fileset.unions [
     (lib.fileset.maybeMissing ../../../../marshall/priv/static/assets)

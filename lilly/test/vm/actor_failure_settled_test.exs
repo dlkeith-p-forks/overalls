@@ -31,40 +31,45 @@ defmodule Lilly.VM.ActorFailureSettledTest do
   # MUST remain the pending outcome Marshall receives.
   @tag :hegel
   test "a recorded failure is driven once per actor process and command", context do
-    check all(
-            events <-
-              list_of(
-                frequency([
-                  {4, constant(:tick)},
-                  {4, constant(:cast)},
-                  {1, constant(:restart)},
-                  {2, constant(:newer_command)}
-                ]),
-                max_length: 14
-              ),
-            reason <- member_of([:execution_failed, :crashed]),
-            test_cases: 20
-          ) do
-      run = boot(context.tmp_dir)
-      before = drive_failure(run, reason)
-      assert before.sequence == 1
+    Hegel.check(
+      fn ->
+        events =
+          draw(
+            "events",
+            list_of(
+              frequency([
+                {4, constant(:tick)},
+                {4, constant(:cast)},
+                {1, constant(:restart)},
+                {2, constant(:newer_command)}
+              ]),
+              max_length: 14
+            )
+          )
 
-      run =
-        Enum.reduce(events, run, fn event, run ->
-          step(event, run, reason)
-        end)
+        reason = draw("reason", member_of([:execution_failed, :crashed]))
+        run = boot(context.tmp_dir)
+        before = drive_failure(run, reason)
+        assert before.sequence == 1
 
-      # A delete is a newer command and drives at once, even from a settled failure.
-      delete = %{newer(run.command) | kind: :delete}
-      {:ok, :stored} = Store.accept(run.store, delete)
-      Actor.reconcile(run.actor)
-      assert_receive {:execute, worker, ^delete, _}, 2000
-      send(worker, {:result, {:ok, observation(:deleted, :none)}})
-      id = delete.placement_id
-      actor = run.actor
-      assert_receive {:vm_actor_outcome, ^id, ^actor, %{state: :deleted}}, 2000
-      stop_supervised!(id)
-    end
+        run =
+          Enum.reduce(events, run, fn event, run ->
+            step(event, run, reason)
+          end)
+
+        # A delete is a newer command and drives at once, even from a settled failure.
+        delete = %{newer(run.command) | kind: :delete}
+        {:ok, :stored} = Store.accept(run.store, delete)
+        Actor.reconcile(run.actor)
+        assert_receive {:execute, worker, ^delete, _}, 2000
+        send(worker, {:result, {:ok, observation(:deleted, :none)}})
+        id = delete.placement_id
+        actor = run.actor
+        assert_receive {:vm_actor_outcome, ^id, ^actor, %{state: :deleted}}, 2000
+        stop_supervised!(id)
+      end,
+      test_cases: 100
+    )
   end
 
   # The actor's own one-second timer: two periods after a recorded failure no

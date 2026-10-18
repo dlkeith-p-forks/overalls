@@ -14,16 +14,20 @@ defmodule Lilly.VM.ImageSourceCapabilityTest do
   # resources or creating any files; synthetic bytes cannot prove guest execution.
   @tag :hegel
   test "source images refuse before creating launch state", %{tmp_dir: directory} do
-    check all(capability <- member_of([nil, 1, "2", true]), test_cases: 8) do
-      {image, spec} = fixture(directory)
-      raw = Map.put(image.manifest.manifest, "workspace_source_version", capability)
-      image = put_in(image.manifest.manifest, raw)
+    Hegel.check(
+      fn ->
+        capability = draw("capability", member_of([nil, 1, "2", true]))
+        {image, spec} = fixture(directory)
+        raw = Map.put(image.manifest.manifest, "workspace_source_version", capability)
+        image = put_in(image.manifest.manifest, raw)
 
-      assert {:error, :workspace_source_unavailable} =
-               Driver.start(config(directory), pool(directory, spec), image, spec)
+        assert {:error, :workspace_source_unavailable} =
+                 Driver.start(config(directory), pool(directory, spec), image, spec)
 
-      assert File.ls!(directory) == []
-    end
+        assert File.ls!(directory) == []
+      end,
+      test_cases: 100
+    )
   end
 
   test "obsolete manifest and image identity mismatch refuse before host effects", %{

@@ -44,36 +44,42 @@ defmodule Marshall.Access.SharingMatrixHistoryTest do
   @spec grants?(role(), capability()) :: boolean()
   defp grants?(role, capability), do: capability in Map.fetch!(@matrix, role)
 
+  # Real database/transport histories cost 5–12 seconds per case; preserve100 cases.
+  @tag timeout: 1_800_000
+  @tag :hegel_case_sandbox
   property "every shared role composes terminal, SSH and web entries in one generated history",
-    test_cases: 6 do
-    check all(
-            tail <-
-              list_of(member_of([:manager, :operator, :viewer, :web, :revoked]),
-                min_length: 2,
-                max_length: 6
-              ),
-            test_cases: 6
-          ) do
-      fixture = Fixture.create()
-      Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    profile: :ci,
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
 
-      roles =
-        [:manager, :viewer, :operator, :web, :revoked, :viewer, :manager, :revoked] ++ tail
+    tail =
+      draw(
+        "tail",
+        list_of(member_of([:manager, :operator, :viewer, :web, :revoked]),
+          min_length: 2,
+          max_length: 6
+        )
+      )
 
-      leases =
-        Enum.reduce(roles, empty_leases(), fn role, leases ->
-          assert {:ok, _} = set_role(fixture, fixture.vm, role)
-          Fixture.fresh(fixture)
-          leases = renew_leases(leases, fixture, role)
-          refuse_closed_leases(leases, fixture)
-          probe_inventory(fixture, role)
-          probe_terminal(fixture, role)
-          leases = probe_ssh(leases, fixture, role)
-          probe_web(leases, fixture, role)
-        end)
+    fixture = Fixture.create()
+    Marshall.TerminalFixtures.stream_fixture(fixture.host.id, :property)
 
-      settle(fixture, leases)
-    end
+    roles =
+      [:manager, :viewer, :operator, :web, :revoked, :viewer, :manager, :revoked] ++ tail
+
+    leases =
+      Enum.reduce(roles, empty_leases(), fn role, leases ->
+        assert {:ok, _} = set_role(fixture, fixture.vm, role)
+        Fixture.fresh(fixture)
+        leases = renew_leases(leases, fixture, role)
+        refuse_closed_leases(leases, fixture)
+        probe_inventory(fixture, role)
+        probe_terminal(fixture, role)
+        leases = probe_ssh(leases, fixture, role)
+        probe_web(leases, fixture, role)
+      end)
+
+    settle(fixture, leases)
   end
 
   test "one ordinary withdrawal closes terminal, SSH and web derived entries" do
@@ -155,71 +161,76 @@ defmodule Marshall.Access.SharingMatrixHistoryTest do
     assert {:ok, %{closed: true}} = close_ssh(fixture, fresh_ssh.ticket)
   end
 
+  @tag timeout: 1_800_000
+  @tag :hegel_case_sandbox
   property "grant churn across two machines keeps each machine on its own matrix cell",
-    test_cases: 5 do
-    check all(
-            tail <-
-              list_of(
-                tuple(
-                  {member_of([:first, :second]),
-                   member_of([:manager, :operator, :viewer, :web, :revoked])}
-                ),
-                min_length: 2,
-                max_length: 4
-              ),
-            test_cases: 5
-          ) do
-      fixture = Fixture.create()
-      Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
-      second = Fixture.provision_second(fixture)
-      vms = [fixture.vm, second.vm]
+    profile: :ci,
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
 
-      churn =
-        [
-          {:first, :operator},
-          {:second, :manager},
-          {:first, :viewer},
-          {:second, :web},
-          {:first, :revoked},
-          {:second, :revoked}
-        ] ++ tail
+    tail =
+      draw(
+        "tail",
+        list_of(
+          tuple(
+            {member_of([:first, :second]),
+             member_of([:manager, :operator, :viewer, :web, :revoked])}
+          ),
+          min_length: 2,
+          max_length: 4
+        )
+      )
 
-      states = %{
-        first: %{vm: fixture.vm, label: fixture.label, role: :revoked, leases: empty_leases()},
-        second: %{vm: second.vm, label: second.label, role: :revoked, leases: empty_leases()}
-      }
+    fixture = Fixture.create()
+    Marshall.TerminalFixtures.stream_fixture(fixture.host.id, :property)
+    second = Fixture.provision_second(fixture)
+    vms = [fixture.vm, second.vm]
 
-      states =
-        Enum.reduce(churn, states, fn {which, role}, states ->
-          state = Map.fetch!(states, which)
-          assert {:ok, _} = set_role(fixture, state.vm, role)
-          states = Map.put(states, which, %{state | role: role})
-          Fixture.fresh(fixture)
-          states = probe_vm(states, fixture, vms, :first)
-          probe_vm(states, fixture, vms, :second)
-        end)
+    churn =
+      [
+        {:first, :operator},
+        {:second, :manager},
+        {:first, :viewer},
+        {:second, :web},
+        {:first, :revoked},
+        {:second, :revoked}
+      ] ++ tail
 
-      for which <- [:first, :second] do
+    states = %{
+      first: %{vm: fixture.vm, label: fixture.label, role: :revoked, leases: empty_leases()},
+      second: %{vm: second.vm, label: second.label, role: :revoked, leases: empty_leases()}
+    }
+
+    states =
+      Enum.reduce(churn, states, fn {which, role}, states ->
         state = Map.fetch!(states, which)
-        leases = state.leases
+        assert {:ok, _} = set_role(fixture, state.vm, role)
+        states = Map.put(states, which, %{state | role: role})
+        Fixture.fresh(fixture)
+        states = probe_vm(states, fixture, vms, :first)
+        probe_vm(states, fixture, vms, :second)
+      end)
 
-        if leases.ssh,
-          do: assert({:ok, %{closed: true}} = close_ssh(fixture, leases.ssh.ticket))
+    for which <- [:first, :second] do
+      state = Map.fetch!(states, which)
+      leases = state.leases
 
-        if leases.web,
-          do: assert({:ok, %{closed: true}} = close_web(fixture, leases.web.ticket))
+      if leases.ssh,
+        do: assert({:ok, %{closed: true}} = close_ssh(fixture, leases.ssh.ticket))
 
-        for ticket <-
-              if(leases.ssh, do: [leases.ssh.ticket], else: []) ++ leases.closed_ssh,
-            do: denied_vm(fixture, vms, fn -> renew_ssh(fixture, ticket) end)
+      if leases.web,
+        do: assert({:ok, %{closed: true}} = close_web(fixture, leases.web.ticket))
 
-        for ticket <-
-              if(leases.web, do: [leases.web.ticket], else: []) ++ leases.closed_web,
-            do: denied_vm(fixture, vms, fn -> renew_web(fixture, ticket) end)
-      end
+      for ticket <-
+            if(leases.ssh, do: [leases.ssh.ticket], else: []) ++ leases.closed_ssh,
+          do: denied_vm(fixture, vms, fn -> renew_ssh(fixture, ticket) end)
 
-      :ok
+      for ticket <-
+            if(leases.web, do: [leases.web.ticket], else: []) ++ leases.closed_web,
+          do: denied_vm(fixture, vms, fn -> renew_web(fixture, ticket) end)
     end
+
+    :ok
   end
 
   @spec empty_leases() :: leases()

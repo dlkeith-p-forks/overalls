@@ -120,33 +120,37 @@ defmodule Lilly.Host.ClaimShapeTest do
   # source still prunes, captures and adopts.
   @tag :hegel
   test "a ready claim matches its spec with or without a workspace source", %{tmp_dir: tmp_dir} do
-    check all(source <- source_gen(), test_cases: 25) do
-      path = Path.join(tmp_dir, Lilly.UUID.generate())
-      File.mkdir_p!(path)
-      pool = pool(path)
-      placement = Lilly.UUID.generate()
-      stopped = spec(pool, placement)
-      started = %{stopped | workspace_source: source}
-      plant_ready_claim(pool, stopped)
+    Hegel.check(
+      fn ->
+        source = draw("source", source_gen())
+        path = Path.join(tmp_dir, Lilly.UUID.generate())
+        File.mkdir_p!(path)
+        pool = pool(path)
+        placement = Lilly.UUID.generate()
+        stopped = spec(pool, placement)
+        started = %{stopped | workspace_source: source}
+        plant_ready_claim(pool, stopped)
 
-      assert {:ok, %{state: "ready", dataset_guid: @guid} = claim} =
-               ZFSDataset.snapshot_claim(pool, placement)
+        assert {:ok, %{state: "ready", dataset_guid: @guid} = claim} =
+                 ZFSDataset.snapshot_claim(pool, placement)
 
-      assert claim.spec == stopped
-      refute claim.spec == started
-      assert ZFSDataset.claim_matches?(claim, stopped)
-      assert ZFSDataset.claim_matches?(claim, started)
+        assert claim.spec == stopped
+        refute claim.spec == started
+        assert ZFSDataset.claim_matches?(claim, stopped)
+        assert ZFSDataset.claim_matches?(claim, started)
 
-      for changed <- [
-            %{started | disk_bytes: stopped.disk_bytes + 4096},
-            %{started | vcpu: 2},
-            %{started | memory_bytes: stopped.memory_bytes * 2},
-            %{started | image_id: "sha256:" <> String.duplicate("b", 64)}
-          ] do
-        refute ZFSDataset.claim_matches?(claim, changed)
-      end
+        for changed <- [
+              %{started | disk_bytes: stopped.disk_bytes + 4096},
+              %{started | vcpu: 2},
+              %{started | memory_bytes: stopped.memory_bytes * 2},
+              %{started | image_id: "sha256:" <> String.duplicate("b", 64)}
+            ] do
+          refute ZFSDataset.claim_matches?(claim, changed)
+        end
 
-      refute ZFSDataset.claim_matches?(%{claim | state: "creating", spec: nil}, started)
-    end
+        refute ZFSDataset.claim_matches?(%{claim | state: "creating", spec: nil}, started)
+      end,
+      test_cases: 100
+    )
   end
 end

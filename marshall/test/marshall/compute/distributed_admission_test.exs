@@ -1460,94 +1460,95 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
   @tag uncertain_admission: true
   @tag :hegel
   test "lost post-commit admission replies replay across three nodes", %{peers: peers} do
-    check all(
-            repeats <- integer(1..3),
-            origin <- integer(0..2),
-            changed <-
-              member_of([
-                %{vcpu: 1},
-                %{memory_bytes: 1_073_741_824},
-                %{disk_bytes: 4_294_967_296}
-              ]),
-            test_cases: 2,
-            max_shrinking_steps: 0
-          ) do
-      for loss <- [:worker, :node], archived <- [false, true] do
-        unboxed(fn ->
-          origin_peer =
-            if loss == :node, do: start_owned_admission_peer(), else: Enum.fetch!(peers, origin)
+    Hegel.check(
+      fn ->
+        repeats = draw("repeats", integer(1..3))
+        origin = draw("origin", integer(0..2))
 
-          fixture = host_fixture()
-          actor = user()
-          params = request()
-          owned_peers = Enum.uniq([origin_peer | peers])
-          receipt = make_ref()
+        changed =
+          draw(
+            "changed",
+            member_of([%{vcpu: 1}, %{memory_bytes: 1_073_741_824}, %{disk_bytes: 4_294_967_296}])
+          )
 
-          Cleanup.protect owned_peers do
-            worker =
-              :peer.call(
-                origin_peer,
-                Marshall.UncertainAdmissionFixture,
-                :start,
-                [self(), receipt, params, actor],
-                30_000
-              )
+        for loss <- [:worker, :node], archived <- [false, true] do
+          unboxed(fn ->
+            origin_peer =
+              if loss == :node, do: start_owned_admission_peer(), else: Enum.fetch!(peers, origin)
 
-            monitor = Process.monitor(worker)
-            assert_receive {^receipt, :committed, ^worker, vm_id}, 30_000
-            refute_receive {^receipt, :returned, _id}, 0
-            assert [%{id: ^vm_id} = vm] = Ledger.read!(VirtualMachine, owner_id: actor.id)
-            assert [%{vm_id: ^vm_id}] = Ledger.read!(Reservation, vm_id: vm_id)
+            fixture = host_fixture()
+            actor = user()
+            params = request()
+            owned_peers = Enum.uniq([origin_peer | peers])
+            receipt = make_ref()
 
-            assert [%{vm_id: ^vm_id, kind: :provision}] =
-                     Ledger.read!(Operation, requested_by_id: actor.id)
+            Cleanup.protect owned_peers do
+              worker =
+                :peer.call(
+                  origin_peer,
+                  Marshall.UncertainAdmissionFixture,
+                  :start,
+                  [self(), receipt, params, actor],
+                  30_000
+                )
 
-            case loss do
-              :worker ->
-                assert true = :peer.call(origin_peer, Process, :exit, [worker, :kill], 30_000)
-                assert_receive {:DOWN, ^monitor, :process, ^worker, :killed}, 10_000
+              monitor = Process.monitor(worker)
+              assert_receive {^receipt, :committed, ^worker, vm_id}, 30_000
+              refute_receive {^receipt, :returned, _id}, 0
+              assert [%{id: ^vm_id} = vm] = Ledger.read!(VirtualMachine, owner_id: actor.id)
+              assert [%{vm_id: ^vm_id}] = Ledger.read!(Reservation, vm_id: vm_id)
 
-              :node ->
-                peer_monitor = Process.monitor(origin_peer)
-                catch_exit(:peer.call(origin_peer, :erlang, :halt, [137], 30_000))
+              assert [%{vm_id: ^vm_id, kind: :provision}] =
+                       Ledger.read!(Operation, requested_by_id: actor.id)
 
-                assert_receive {:DOWN, ^peer_monitor, :process, ^origin_peer,
-                                {:exit_status, 137}},
-                               10_000
+              case loss do
+                :worker ->
+                  assert true = :peer.call(origin_peer, Process, :exit, [worker, :kill], 30_000)
+                  assert_receive {:DOWN, ^monitor, :process, ^worker, :killed}, 10_000
 
-                assert_receive {:DOWN, ^monitor, :process, ^worker, :noconnection}, 10_000
+                :node ->
+                  peer_monitor = Process.monitor(origin_peer)
+                  catch_exit(:peer.call(origin_peer, :erlang, :halt, [137], 30_000))
+
+                  assert_receive {:DOWN, ^peer_monitor, :process, ^origin_peer,
+                                  {:exit_status, 137}},
+                                 10_000
+
+                  assert_receive {:DOWN, ^monitor, :process, ^worker, :noconnection}, 10_000
+              end
+
+              refute_receive {^receipt, :returned, _id}, 0
+
+              if archived, do: assert(:ok = Ledger.archive!(vm, :archive))
+              committed = Marshall.CommittedFixtureInventory.snapshot()
+
+              for _ <- 1..repeats do
+                results = race(peers, List.duplicate(params, 9), actor)
+                assert Enum.all?(results, &match?({:ok, %{id: ^vm_id}}, &1))
+                Marshall.CommittedFixtureInventory.assert_restored!(committed)
+              end
+
+              for peer <- peers do
+                assert {:error, error} =
+                         :peer.call(
+                           peer,
+                           Marshall.Compute,
+                           :provision,
+                           [Map.merge(params, changed), [actor: actor]],
+                           30_000
+                         )
+
+                assert Exception.message(error) =~ "idempotency_conflict"
+                Marshall.CommittedFixtureInventory.assert_restored!(committed)
+              end
+            after
+              cleanup(fixture.host.id, actor.id)
             end
-
-            refute_receive {^receipt, :returned, _id}, 0
-
-            if archived, do: assert(:ok = Ledger.archive!(vm, :archive))
-            committed = Marshall.CommittedFixtureInventory.snapshot()
-
-            for _ <- 1..repeats do
-              results = race(peers, List.duplicate(params, 9), actor)
-              assert Enum.all?(results, &match?({:ok, %{id: ^vm_id}}, &1))
-              Marshall.CommittedFixtureInventory.assert_restored!(committed)
-            end
-
-            for peer <- peers do
-              assert {:error, error} =
-                       :peer.call(
-                         peer,
-                         Marshall.Compute,
-                         :provision,
-                         [Map.merge(params, changed), [actor: actor]],
-                         30_000
-                       )
-
-              assert Exception.message(error) =~ "idempotency_conflict"
-              Marshall.CommittedFixtureInventory.assert_restored!(committed)
-            end
-          after
-            cleanup(fixture.host.id, actor.id)
-          end
-        end)
-      end
-    end
+          end)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   test "three nodes allocate distinct addresses across different hosts", %{peers: peers} do
@@ -1609,141 +1610,141 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
   # inventory; a later success MUST create one linked admission set, and replay
   # or conflict MUST NOT add another row to that set.
   @tag timeout: 300_000
-  property "injected insert failures preserve the admission commit set", test_cases: 2 do
-    check all(
-            tables <-
-              shuffle([
-                "compute_virtual_machines",
-                "compute_virtual_machines_versions",
-                "agent_roots",
-                "agent_threads",
-                "agent_audit_events",
-                "ingress_endpoints",
-                "ingress_endpoints_versions",
-                "compute_workload_placements",
-                "compute_reservations",
-                "compute_network_addresses",
-                "compute_operations",
-                "oban_jobs"
-              ]),
-            test_cases: 2
-          ) do
-      for vcpu <- [1, 2], table <- tables do
-        unboxed(fn ->
-          fixture = host_fixture()
-          actor = user()
-          params = request(%{vcpu: vcpu})
+  property "injected insert failures preserve the admission commit set", test_cases: 100 do
+    tables =
+      draw(
+        "tables",
+        shuffle([
+          "compute_virtual_machines",
+          "compute_virtual_machines_versions",
+          "agent_roots",
+          "agent_threads",
+          "agent_audit_events",
+          "ingress_endpoints",
+          "ingress_endpoints_versions",
+          "compute_workload_placements",
+          "compute_reservations",
+          "compute_network_addresses",
+          "compute_operations",
+          "oban_jobs"
+        ])
+      )
 
-          Cleanup.protect do
-            before = Marshall.CommittedFixtureInventory.snapshot()
+    for vcpu <- [1, 2], table <- tables do
+      unboxed(fn ->
+        fixture = host_fixture()
+        actor = user()
+        params = request(%{vcpu: vcpu})
 
-            failed =
-              try do
-                Repo.transaction(fn ->
-                  Ecto.Adapters.SQL.query!(Repo, """
-                  CREATE FUNCTION pg_temp.reject_admission_insert() RETURNS trigger LANGUAGE plpgsql AS
-                  $$ BEGIN RAISE EXCEPTION 'injected admission insert failure'; END $$
-                  """)
+        Cleanup.protect do
+          before = Marshall.CommittedFixtureInventory.snapshot()
 
-                  Ecto.Adapters.SQL.query!(Repo, """
-                  CREATE TRIGGER reject_admission_insert BEFORE INSERT ON #{table}
-                  FOR EACH ROW EXECUTE FUNCTION pg_temp.reject_admission_insert()
-                  """)
+          failed =
+            try do
+              Repo.transaction(fn ->
+                Ecto.Adapters.SQL.query!(Repo, """
+                CREATE FUNCTION pg_temp.reject_admission_insert() RETURNS trigger LANGUAGE plpgsql AS
+                $$ BEGIN RAISE EXCEPTION 'injected admission insert failure'; END $$
+                """)
 
-                  Marshall.Compute.provision(params, actor: actor)
-                end)
-              rescue
-                error -> {:raised, error}
-              end
+                Ecto.Adapters.SQL.query!(Repo, """
+                CREATE TRIGGER reject_admission_insert BEFORE INSERT ON #{table}
+                FOR EACH ROW EXECUTE FUNCTION pg_temp.reject_admission_insert()
+                """)
 
-            if table == "oban_jobs" do
-              assert match?({:raised, %Ash.Error.Unknown{}}, failed)
-              assert inspect(failed) =~ "Marshall.Compute.Operation.enqueue"
-            else
-              assert inspect(failed) =~ "injected admission insert failure"
+                Marshall.Compute.provision(params, actor: actor)
+              end)
+            rescue
+              error -> {:raised, error}
             end
 
-            Marshall.CommittedFixtureInventory.assert_restored!(before)
-
-            refreshed = %{
-              fixture.report
-              | sequence: fixture.report.sequence + 1,
-                sampled_at: Ledger.now()
-            }
-
-            assert {:ok, :ok} =
-                     Marshall.Compute.HostReports.ingest(
-                       fixture.host.id,
-                       fixture.epoch,
-                       refreshed
-                     )
-
-            assert {:ok, vm} = Marshall.Compute.provision(params, actor: actor)
-            vm_id = vm.id
-            assert [%{id: ^vm_id}] = Ledger.read!(VirtualMachine, owner_id: actor.id)
-
-            assert [%{id: placement_id, vm_id: ^vm_id}] =
-                     Ledger.read!(WorkloadPlacement, vm_id: vm_id)
-
-            assert [%{vm_id: ^vm_id, placement_id: ^placement_id}] =
-                     Ledger.read!(Reservation, vm_id: vm_id)
-
-            assert [%{vm_id: ^vm_id}] = Ledger.read!(NetworkAddress, vm_id: vm_id)
-
-            assert [%{id: root_id, vm_id: ^vm_id, owner_id: owner_id}] =
-                     Ledger.read!(Marshall.Agents.Root, vm_id: vm_id)
-
-            assert owner_id == actor.id
-
-            assert [%{id: thread_id, root_id: ^root_id}] =
-                     Ledger.read!(Marshall.Agents.Thread, root_id: root_id)
-
-            assert [%{vm_id: ^vm_id, thread_id: ^thread_id, kind: :agent_registered}] =
-                     Ledger.read!(Marshall.Agents.AuditEvent, vm_id: vm_id)
-
-            assert [%{vm_id: ^vm_id}] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: vm_id)
-
-            assert [
-                     %{
-                       id: operation_id,
-                       vm_id: ^vm_id,
-                       placement_id: ^placement_id,
-                       kind: :provision
-                     }
-                   ] =
-                     Ledger.read!(Operation, requested_by_id: actor.id)
-
-            assert [
-                     %{
-                       version_source_id: ^vm_id,
-                       version_action_name: :allocate,
-                       version_action_type: :create,
-                       changes: changes
-                     }
-                   ] =
-                     Ledger.read!(VirtualMachine.Version, version_source_id: vm_id)
-
-            assert changes["owner_id"] == actor.id
-
-            assert [%{args: %{"primary_key" => %{"id" => ^operation_id}}}] =
-                     Oban.Testing.all_enqueued(
-                       repo: Repo,
-                       worker: Marshall.Compute.Workers.Dispatch
-                     )
-
-            committed = Marshall.CommittedFixtureInventory.snapshot()
-            assert {:ok, %{id: ^vm_id}} = Marshall.Compute.provision(params, actor: actor)
-
-            assert {:error, error} =
-                     Marshall.Compute.provision(%{params | vcpu: 3}, actor: actor)
-
-            assert Exception.message(error) =~ "idempotency_conflict"
-            Marshall.CommittedFixtureInventory.assert_restored!(committed)
-          after
-            cleanup(fixture.host.id, actor.id)
+          if table == "oban_jobs" do
+            assert match?({:raised, %Ash.Error.Unknown{}}, failed)
+            assert inspect(failed) =~ "Marshall.Compute.Operation.enqueue"
+          else
+            assert inspect(failed) =~ "injected admission insert failure"
           end
-        end)
-      end
+
+          Marshall.CommittedFixtureInventory.assert_restored!(before)
+
+          refreshed = %{
+            fixture.report
+            | sequence: fixture.report.sequence + 1,
+              sampled_at: Ledger.now()
+          }
+
+          assert {:ok, :ok} =
+                   Marshall.Compute.HostReports.ingest(
+                     fixture.host.id,
+                     fixture.epoch,
+                     refreshed
+                   )
+
+          assert {:ok, vm} = Marshall.Compute.provision(params, actor: actor)
+          vm_id = vm.id
+          assert [%{id: ^vm_id}] = Ledger.read!(VirtualMachine, owner_id: actor.id)
+
+          assert [%{id: placement_id, vm_id: ^vm_id}] =
+                   Ledger.read!(WorkloadPlacement, vm_id: vm_id)
+
+          assert [%{vm_id: ^vm_id, placement_id: ^placement_id}] =
+                   Ledger.read!(Reservation, vm_id: vm_id)
+
+          assert [%{vm_id: ^vm_id}] = Ledger.read!(NetworkAddress, vm_id: vm_id)
+
+          assert [%{id: root_id, vm_id: ^vm_id, owner_id: owner_id}] =
+                   Ledger.read!(Marshall.Agents.Root, vm_id: vm_id)
+
+          assert owner_id == actor.id
+
+          assert [%{id: thread_id, root_id: ^root_id}] =
+                   Ledger.read!(Marshall.Agents.Thread, root_id: root_id)
+
+          assert [%{vm_id: ^vm_id, thread_id: ^thread_id, kind: :agent_registered}] =
+                   Ledger.read!(Marshall.Agents.AuditEvent, vm_id: vm_id)
+
+          assert [%{vm_id: ^vm_id}] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: vm_id)
+
+          assert [
+                   %{
+                     id: operation_id,
+                     vm_id: ^vm_id,
+                     placement_id: ^placement_id,
+                     kind: :provision
+                   }
+                 ] =
+                   Ledger.read!(Operation, requested_by_id: actor.id)
+
+          assert [
+                   %{
+                     version_source_id: ^vm_id,
+                     version_action_name: :allocate,
+                     version_action_type: :create,
+                     changes: changes
+                   }
+                 ] =
+                   Ledger.read!(VirtualMachine.Version, version_source_id: vm_id)
+
+          assert changes["owner_id"] == actor.id
+
+          assert [%{args: %{"primary_key" => %{"id" => ^operation_id}}}] =
+                   Oban.Testing.all_enqueued(
+                     repo: Repo,
+                     worker: Marshall.Compute.Workers.Dispatch
+                   )
+
+          committed = Marshall.CommittedFixtureInventory.snapshot()
+          assert {:ok, %{id: ^vm_id}} = Marshall.Compute.provision(params, actor: actor)
+
+          assert {:error, error} =
+                   Marshall.Compute.provision(%{params | vcpu: 3}, actor: actor)
+
+          assert Exception.message(error) =~ "idempotency_conflict"
+          Marshall.CommittedFixtureInventory.assert_restored!(committed)
+        after
+          cleanup(fixture.host.id, actor.id)
+        end
+      end)
     end
   end
 

@@ -993,4 +993,65 @@ defmodule MarshallWeb.MachinesLiveTest do
 
   defp redirect_flash({_kind, options}) when is_map(options),
     do: Map.get(options, :flash) || %{}
+
+  # @cc [owner:ghuntley,label:product;verification] machines-status-label-severity
+  # The list and header status labels MUST name each state in text and carry
+  # the observed `data-state` plus a `data-tone` severity: Failed/danger,
+  # Running/success, Starting and Stopping/pending, and Stopped with no tone.
+  test "status labels name the state in text and carry its severity tone", %{
+    conn: conn,
+    owner: owner
+  } do
+    for _ <- 1..2, do: host_fixture()
+    {:ok, failed} = Compute.provision(request(), actor: owner)
+
+    Ledger.update!(failed, :observe, %{observed_state: :failed, failure_reason: :execution_failed})
+
+    {:ok, running} = Compute.provision(request(), actor: owner)
+    Ledger.update!(running, :observe, %{observed_state: :running})
+    {:ok, stopping} = Compute.provision(request(), actor: owner)
+    stopping = Ledger.update!(stopping, :observe, %{observed_state: :running})
+    Ledger.intent!(stopping, %{desired_state: :stopped, generation: stopping.generation + 1})
+    {:ok, stopped} = Compute.provision(request(), actor: owner)
+
+    stopped =
+      Ledger.intent!(stopped, %{desired_state: :stopped, generation: stopped.generation + 1})
+
+    Ledger.update!(stopped, :observe, %{observed_state: :stopped})
+    # A fresh provision is observed pending while its desired state is running.
+    {:ok, starting} = Compute.provision(request(), actor: owner)
+
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines")
+    label = fn vm -> "#machines tr#machines-#{vm.id} td[data-label=Status] .status-label" end
+
+    assert has_element?(view, label.(failed) <> "[data-state=failed][data-tone=danger]", "Failed")
+
+    assert has_element?(
+             view,
+             label.(running) <> "[data-state=running][data-tone=success]",
+             "Running"
+           )
+
+    assert has_element?(
+             view,
+             label.(stopping) <> "[data-state=running][data-tone=pending]",
+             "Stopping"
+           )
+
+    assert has_element?(
+             view,
+             label.(starting) <> "[data-state=pending][data-tone=pending]",
+             "Starting"
+           )
+
+    assert has_element?(
+             view,
+             label.(stopped) <> "[data-state=stopped]:not([data-tone])",
+             "Stopped"
+           )
+
+    {:ok, view, _} = live(signed_in(conn, owner), ~p"/machines/#{failed.id}")
+    assert has_element?(view, "#machine-state[data-state=failed][data-tone=danger]", "Failed")
+    assert has_element?(view, ".machine-title h1 + #machine-os[data-tone=muted] + #machine-state")
+  end
 end

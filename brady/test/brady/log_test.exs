@@ -4,27 +4,27 @@ defmodule Brady.LogTest do
   import Hegel.Gen
 
   property "arbitrary request and crash payloads cannot enter serialized events" do
-    check all(payload <- binary()) do
-      event = %{
-        msg: {:report, %{reason: payload, state: payload}},
-        meta: %{
+    payload = draw("payload", binary())
+
+    event = %{
+      msg: {:report, %{reason: payload, state: payload}},
+      meta: %{
+        url: payload,
+        body: payload,
+        password: payload,
+        brady_event: %{
+          event: :request,
           url: payload,
-          body: payload,
-          password: payload,
-          brady_event: %{
-            event: :request,
-            url: payload,
-            request_body: payload,
-            response_body: payload,
-            headers: payload,
-            reason: payload
-          }
+          request_body: payload,
+          response_body: payload,
+          headers: payload,
+          reason: payload
         }
       }
+    }
 
-      assert event |> Brady.Log.format(%{}) |> IO.iodata_to_binary() |> JSON.decode!() ==
-               %{"event" => "runtime_event"}
-    end
+    assert event |> Brady.Log.format(%{}) |> IO.iodata_to_binary() |> JSON.decode!() ==
+             %{"event" => "runtime_event"}
   end
 
   test "preserves validated identifiers and bounded request measurements" do
@@ -118,52 +118,49 @@ defmodule Brady.LogTest do
   end
 
   property "smuggled secrets cannot ride catalogued event names" do
-    check all(suffix <- string(:printable, min_length: 1, max_length: 128)) do
-      secret = "smuggled-secret-" <> suffix
+    suffix = draw("suffix", string(:printable, min_length: 1, max_length: 128))
+    secret = "smuggled-secret-" <> suffix
 
-      undeclared = %{
-        msg: {:string, "Listener failed"},
-        meta: %{
-          event: "brady.listener_failed",
-          reason: :acceptor_stopped,
-          host: secret,
-          secret: secret
-        }
+    undeclared = %{
+      msg: {:string, "Listener failed"},
+      meta: %{
+        event: "brady.listener_failed",
+        reason: :acceptor_stopped,
+        host: secret,
+        secret: secret
       }
+    }
 
-      assert undeclared |> Brady.Log.format(%{}) |> IO.iodata_to_binary() |> JSON.decode!() ==
-               %{"event" => "brady.listener_failed", "reason" => "acceptor_stopped"}
+    assert undeclared |> Brady.Log.format(%{}) |> IO.iodata_to_binary() |> JSON.decode!() ==
+             %{"event" => "brady.listener_failed", "reason" => "acceptor_stopped"}
 
-      wrong_shape = %{
-        msg: {:string, "Listener failed" <> secret},
-        meta: %{event: "brady.listener_failed", reason: secret}
-      }
+    wrong_shape = %{
+      msg: {:string, "Listener failed" <> secret},
+      meta: %{event: "brady.listener_failed", reason: secret}
+    }
 
-      output = wrong_shape |> Brady.Log.format(%{}) |> IO.iodata_to_binary()
+    output = wrong_shape |> Brady.Log.format(%{}) |> IO.iodata_to_binary()
 
-      refute output =~ secret
-      assert JSON.decode!(output) == %{"event" => "runtime_event"}
-    end
+    refute output =~ secret
+    assert JSON.decode!(output) == %{"event" => "runtime_event"}
   end
 
   property "arbitrary payload on catalogued names is redacted when shapes mismatch" do
-    check all(payload <- binary()) do
-      event = %{msg: payload, meta: %{event: "brady.cache_store_lost", reason: payload}}
+    payload = draw("payload", binary())
+    event = %{msg: payload, meta: %{event: "brady.cache_store_lost", reason: payload}}
 
-      assert event |> Brady.Log.format(%{}) |> IO.iodata_to_binary() |> JSON.decode!() ==
-               %{"event" => "runtime_event"}
-    end
+    assert event |> Brady.Log.format(%{}) |> IO.iodata_to_binary() |> JSON.decode!() ==
+             %{"event" => "runtime_event"}
   end
 
   property "cache publication outcomes cannot carry arbitrary diagnostic payload" do
-    check all(secret <- binary()) do
-      assert Brady.Log.sanitize(%{cache_write: secret}) == %{}
+    secret = draw("secret", binary())
+    assert Brady.Log.sanitize(%{cache_write: secret}) == %{}
 
-      for outcome <- [:published, :abandoned, :not_attempted] do
-        assert Brady.Log.sanitize(%{cache_write: outcome, url: secret, payload: secret}) == %{
-                 cache_write: outcome
-               }
-      end
+    for outcome <- [:published, :abandoned, :not_attempted] do
+      assert Brady.Log.sanitize(%{cache_write: outcome, url: secret, payload: secret}) == %{
+               cache_write: outcome
+             }
     end
   end
 

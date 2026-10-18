@@ -30,89 +30,91 @@ defmodule Marshall.Access.SharingSurfacesTest do
   # renewals MUST extend the same live lease; denied renewals MUST be closed
   # explicitly by the fixture and MUST never revive; fresh admission after
   # re-sharing MUST yield a new lease identity, never a recycled one.
+  @tag :hegel_case_sandbox
   property "one generated role history drives terminal, SSH and web entry and renewals",
-    test_cases: 6 do
-    check all(
-            tail <-
-              list_of(member_of([:web, :viewer, :operator, :manager, :revoked]),
-                min_length: 2,
-                max_length: 6
-              ),
-            test_cases: 6
-          ) do
-      c = Fixture.fixture()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    tail =
+      draw(
+        "tail",
+        list_of(member_of([:web, :viewer, :operator, :manager, :revoked]),
+          min_length: 2,
+          max_length: 6
+        )
+      )
 
-      # Mandatory decisive transitions precede the generated tail: full
-      # collapse to :revoked and re-admission are always exercised.
-      roles = [:operator, :viewer, :manager, :web, :revoked, :operator] ++ tail
+    c = Fixture.fixture()
 
-      initial = %{
-        role: :revoked,
-        terminal_shared: false,
-        terminal_attaches: 0,
-        ssh_ticket: nil,
-        web_ticket: nil,
-        web_cookie: nil,
-        ssh_closed: [],
-        web_closed: [],
-        ssh_opened: [],
-        web_opened: []
-      }
+    # Mandatory decisive transitions precede the generated tail: full
+    # collapse to :revoked and re-admission are always exercised.
+    roles = [:operator, :viewer, :manager, :web, :revoked, :operator] ++ tail
 
-      finished = Enum.reduce(roles, initial, &step(c, &2, &1))
+    initial = %{
+      role: :revoked,
+      terminal_shared: false,
+      terminal_attaches: 0,
+      ssh_ticket: nil,
+      web_ticket: nil,
+      web_cookie: nil,
+      ssh_closed: [],
+      web_closed: [],
+      ssh_opened: [],
+      web_opened: []
+    }
 
-      # A closed lease is terminal: no renewal or reuse revives it.
-      for ticket <- finished.ssh_closed do
-        assert {:error, _} = Fixture.renew_ssh(c, ticket)
-      end
+    finished = Enum.reduce(roles, initial, &step(c, &2, &1))
 
-      for ticket <- finished.web_closed do
-        assert {:error, _} = Fixture.renew_web(c, ticket)
-      end
-
-      # Every fresh admission created a distinct lease row identity.
-      assert Enum.uniq(finished.ssh_opened) == finished.ssh_opened
-      assert Enum.uniq(finished.web_opened) == finished.web_opened
-
-      final = Fixture.expected(finished.role)
-
-      assert length(Ledger.read!(Marshall.Access.Grant, vm_id: c.vm.id, user_id: c.member.id)) ==
-               if(finished.role == :revoked, do: 0, else: 1)
-
-      # The terminal grant requires read on the VM; once it exists it persists
-      # across write/web-only roles, but tickets always recheck current read.
-      terminal_grants =
-        Ledger.read!(Marshall.Terminal.Grant, session_id: c.session.id, user_id: c.member.id)
-
-      assert terminal_grants != [] == finished.terminal_shared
-
-      events =
-        Ledger.read!(Marshall.Terminal.Event, session_id: c.session.id)
-        |> Enum.map(& &1.kind)
-
-      assert Enum.count(events, &(&1 == :shared)) == if(finished.terminal_shared, do: 1, else: 0)
-      assert Enum.count(events, &(&1 == :revoked)) == 0
-      assert Enum.count(events, &(&1 == :attached)) == finished.terminal_attaches
-      assert Enum.count(events, &(&1 == :detached)) == finished.terminal_attaches
-
-      if final.read do
-        assert finished.terminal_shared
-      end
-
-      # Every attachment was read-only: a shared member never dispatches input.
-      effects = Fixture.effects(c)
-      assert Enum.count(effects, &match?({:attach, _, _}, &1)) == finished.terminal_attaches
-      assert Enum.count(effects, &match?({:gone, _}, &1)) == finished.terminal_attaches
-
-      for {:attach, _, request} <- effects do
-        assert request.mode == :ro
-        assert request.cols == 0
-        assert request.rows == 0
-      end
-
-      refute Enum.any?(effects, &match?({:input, _, _}, &1))
-      refute Enum.any?(effects, &match?({:resize, _}, &1))
+    # A closed lease is terminal: no renewal or reuse revives it.
+    for ticket <- finished.ssh_closed do
+      assert {:error, _} = Fixture.renew_ssh(c, ticket)
     end
+
+    for ticket <- finished.web_closed do
+      assert {:error, _} = Fixture.renew_web(c, ticket)
+    end
+
+    # Every fresh admission created a distinct lease row identity.
+    assert Enum.uniq(finished.ssh_opened) == finished.ssh_opened
+    assert Enum.uniq(finished.web_opened) == finished.web_opened
+
+    final = Fixture.expected(finished.role)
+
+    assert length(Ledger.read!(Marshall.Access.Grant, vm_id: c.vm.id, user_id: c.member.id)) ==
+             if(finished.role == :revoked, do: 0, else: 1)
+
+    # The terminal grant requires read on the VM; once it exists it persists
+    # across write/web-only roles, but tickets always recheck current read.
+    terminal_grants =
+      Ledger.read!(Marshall.Terminal.Grant, session_id: c.session.id, user_id: c.member.id)
+
+    assert terminal_grants != [] == finished.terminal_shared
+
+    events =
+      Ledger.read!(Marshall.Terminal.Event, session_id: c.session.id)
+      |> Enum.map(& &1.kind)
+
+    assert Enum.count(events, &(&1 == :shared)) == if(finished.terminal_shared, do: 1, else: 0)
+    assert Enum.count(events, &(&1 == :revoked)) == 0
+    assert Enum.count(events, &(&1 == :attached)) == finished.terminal_attaches
+    assert Enum.count(events, &(&1 == :detached)) == finished.terminal_attaches
+
+    if final.read do
+      assert finished.terminal_shared
+    end
+
+    # Every attachment was read-only: a shared member never dispatches input.
+    effects = Fixture.effects(c)
+    assert Enum.count(effects, &match?({:attach, _, _}, &1)) == finished.terminal_attaches
+    assert Enum.count(effects, &match?({:gone, _}, &1)) == finished.terminal_attaches
+
+    for {:attach, _, request} <- effects do
+      assert request.mode == :ro
+      assert request.cols == 0
+      assert request.rows == 0
+    end
+
+    refute Enum.any?(effects, &match?({:input, _, _}, &1))
+    refute Enum.any?(effects, &match?({:resize, _}, &1))
   end
 
   @spec step(Fixture.fixture(), model(), role()) :: model()

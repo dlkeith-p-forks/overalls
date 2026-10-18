@@ -2,7 +2,9 @@ defmodule Ziggy.ReporterHistoryTest do
   use ExUnit.Case, async: true
   import Hegel
   import Hegel.Gen
-  @moduletag timeout: 300_000
+  # Complete matrices take tens of seconds on a loaded host. Retain all 100
+  # cases with aggregate headroom; each controlled batch stays bounded.
+  @moduletag timeout: 3_600_000
 
   @identity "01234567-89ab-4def-8123-456789abcdef"
   @type mode :: :transient | :wrong_ack | :conflict | :healthy
@@ -22,35 +24,39 @@ defmodule Ziggy.ReporterHistoryTest do
   # Reporting and spool recovery MUST preserve lifetime totals.
   property "mixed reporter histories retain exact receipts and drain healthy neighbors",
     profile: :ci do
-    check all(
-            repeats <- member_of([1, 2, 4]),
-            order <-
-              member_of([
-                [:transient, :wrong_ack, :conflict],
-                [:conflict, :transient, :wrong_ack]
-              ]),
-            max_runs: 2
-          ) do
-      for count <- [2, 127, 128, 129],
-          position <- Enum.uniq([0, div(min(count, 128), 2), min(count, 128) - 1]) do
-        run_history(count, position, repeats, order)
-      end
+    repeats = draw("repeats", member_of([1, 2, 4]))
+
+    order =
+      draw(
+        "order",
+        member_of([[:transient, :wrong_ack, :conflict], [:conflict, :transient, :wrong_ack]])
+      )
+
+    for count <- [2, 127, 128, 129],
+        position <- Enum.uniq([0, div(min(count, 128), 2), min(count, 128) - 1]) do
+      run_history(count, position, repeats, order)
     end
   end
 
+  # @cc [owner:ghuntley,label:verification] reporter-history-fixture-custody
+  # Concurrent BEAM runs MUST use independently named fixture directories.
+  # Each generated case MUST remove only its own directory and children.
   @spec run_history(pos_integer(), non_neg_integer(), pos_integer(), [mode()]) :: :ok
   defp run_history(count, position, repeats, order) do
     directory =
-      Path.join(System.tmp_dir!(), "ziggy-reporter-history-#{System.unique_integer([:positive])}")
+      Path.join(
+        System.tmp_dir!(),
+        "ziggy-reporter-history-" <> Base.encode16(:crypto.strong_rand_bytes(12))
+      )
 
     File.mkdir!(directory)
     File.chmod!(directory, 0o700)
-    on_exit(fn -> File.rm_rf!(directory) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(directory) end)
     spool_id = {:spool, make_ref()}
     controller_id = {:controller, make_ref()}
 
     spool =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         Supervisor.child_spec({Ziggy.Spool, directory: directory, max_requests: count},
           id: spool_id
         )
@@ -105,7 +111,7 @@ defmodule Ziggy.ReporterHistoryTest do
            ]
 
     controller =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         Supervisor.child_spec(
           {Agent,
            fn ->
@@ -167,7 +173,7 @@ defmodule Ziggy.ReporterHistoryTest do
     :ok = stop_supervised(spool_id)
 
     recovered =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         Supervisor.child_spec({Ziggy.Spool, directory: directory, max_requests: count},
           id: spool_id
         )
@@ -188,9 +194,10 @@ defmodule Ziggy.ReporterHistoryTest do
   end
 
   # @cc [owner:ghuntley,label:verification;concurrency] reporter-one-initial-batch
-  # The first callback MUST block outside the controller until a suspend system
-  # message is confirmed in the Reporter mailbox. Its initial handle_info batch
-  # MUST finish before suspension; no queued timer may supply extra attempts.
+  # The first callback MUST verify a queued suspend system message before its
+  # first controller request. Suspension and release MUST share one sender so
+  # message ordering cannot release the callback before suspension is queued.
+  # The initial batch MUST finish before suspension, without timer attempts.
   @spec one_batch(GenServer.server(), pid()) :: :ok
   defp one_batch(spool, controller) do
     batch = Ziggy.Spool.completed(spool, 128)
@@ -208,7 +215,15 @@ defmodule Ziggy.ReporterHistoryTest do
         send(owner, {:initial_callback, pass_ref, self()})
 
         receive do
-          {:release_callback, ^pass_ref} -> Process.put(:initial_callback_released, true)
+          {:release_callback, ^pass_ref} ->
+            {:messages, messages} = Process.info(self(), :messages)
+
+            assert Enum.any?(messages, fn
+                     {:system, {^owner, ^pass_ref}, :suspend} -> true
+                     _ -> false
+                   end)
+
+            Process.put(:initial_callback_released, true)
         after
           60_000 -> raise "controlled reporter callback was not released"
         end
@@ -218,7 +233,7 @@ defmodule Ziggy.ReporterHistoryTest do
     end
 
     reporter =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         Supervisor.child_spec({Ziggy.Reporter, spool: spool, control: %{}, request: request},
           id: reporter_id,
           restart: :temporary,
@@ -229,43 +244,18 @@ defmodule Ziggy.ReporterHistoryTest do
     try do
       assert_receive {:initial_callback, ^pass_ref, ^reporter}, 10_000
 
-      task =
-        Task.async(fn ->
-          receive do
-            {:suspend_now, ^pass_ref} -> :sys.suspend(reporter, 60_000)
-          after
-            10_000 -> raise "controlled suspension was not started"
-          end
-        end)
+      # OTP's system request and callback release come from this process;
+      # the reporter cannot observe release before the queued system request.
+      send(reporter, {:system, {self(), pass_ref}, :suspend})
+      send(reporter, {:release_callback, pass_ref})
+      assert_receive {^pass_ref, :ok}, 60_000
+      after_attempts = Agent.get(controller, & &1.attempts)
 
-      try do
-        task_pid = task.pid
-        :erlang.trace(task_pid, true, [:send, {:tracer, self()}])
-        send(task_pid, {:suspend_now, pass_ref})
+      expected_attempts =
+        Enum.reduce(selected, before, fn id, acc -> Map.update(acc, id, 1, &(&1 + 1)) end)
 
-        assert_receive {:trace, ^task_pid, :send, {:system, {^task_pid, _tag}, :suspend},
-                        ^reporter},
-                       10_000
-
-        {:messages, messages} = Process.info(reporter, :messages)
-
-        assert Enum.any?(messages, fn
-                 {:system, {^task_pid, _tag}, :suspend} -> true
-                 _ -> false
-               end)
-
-        send(reporter, {:release_callback, pass_ref})
-        assert Task.await(task, 60_000) == :ok
-        after_attempts = Agent.get(controller, & &1.attempts)
-
-        expected_attempts =
-          Enum.reduce(selected, before, fn id, acc -> Map.update(acc, id, 1, &(&1 + 1)) end)
-
-        assert after_attempts == expected_attempts
-        :ok
-      after
-        if Process.alive?(task.pid), do: Task.shutdown(task, :brutal_kill)
-      end
+      assert after_attempts == expected_attempts
+      :ok
     after
       stop_supervised(reporter_id)
     end

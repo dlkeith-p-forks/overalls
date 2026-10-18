@@ -12,11 +12,15 @@ defmodule Lilly.Control.CredentialFileTest do
     File.chmod!(dir, 0o700)
     path = Path.join(dir, "credential.json")
 
-    check all(bytes <- binary(max_length: 1024)) do
-      File.write!(path, bytes)
-      File.chmod!(path, 0o600)
-      assert {:error, :invalid_credential_file} = CredentialFile.read(path, @id)
-    end
+    Hegel.check(
+      fn ->
+        bytes = draw("bytes", binary(max_length: 1024))
+        File.write!(path, bytes)
+        File.chmod!(path, 0o600)
+        assert {:error, :invalid_credential_file} = CredentialFile.read(path, @id)
+      end,
+      []
+    )
   end
 
   test "envelopes reject mismatched IDs, unknown fields and malformed metadata", %{tmp_dir: dir} do

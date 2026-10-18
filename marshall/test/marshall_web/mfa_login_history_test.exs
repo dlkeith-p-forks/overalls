@@ -24,24 +24,27 @@ defmodule MarshallWeb.MFALoginHistoryTest do
   test "subsequent login histories separate ordinary access from passkey elevation", %{
     conn: conn
   } do
-    check all(
-            events <-
-              list_of(
-                tuple(
-                  {member_of([0, 1]),
-                   member_of([:verify, :uv, :expired, :wrong_session, :expire, :lock, :revoke])}
-                ),
-                max_length: 5
+    Hegel.check(
+      fn ->
+        events =
+          draw(
+            "events",
+            list_of(
+              tuple(
+                {member_of([0, 1]),
+                 member_of([:verify, :uv, :expired, :wrong_session, :expire, :lock, :revoke])}
               ),
-            # Real LiveView/passkey work consumes the engine's input timer.
-            # Keep every history and use CI's scoped slow-input allowance.
-            profile: :ci,
-            test_cases: 20
-          ) do
-      # Registration plus four fixed ceremonies plus five generated ceremonies
-      # fit the independent ten-retained-challenge limit without pruning fixtures.
-      assert_history(conn, events)
-    end
+              max_length: 5
+            )
+          )
+
+        # Registration plus four fixed ceremonies plus five generated ceremonies
+        # fit the independent ten-retained-challenge limit without pruning fixtures.
+        assert_history(conn, events)
+      end,
+      test_cases: 100,
+      profile: :ci
+    )
   end
 
   @spec assert_history(Plug.Conn.t(), [event()]) :: :ok

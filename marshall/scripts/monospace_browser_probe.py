@@ -297,18 +297,79 @@ def check_machine_header(page: Page) -> None:
     )
 
 
+def label_style(page: Page, selector: str) -> dict[str, object]:
+    """Computed presentation of the first status label matching `selector`."""
+    value: object = evaluate_on(
+        page,
+        selector,
+        """({
+          text: node.textContent,
+          color: getComputedStyle(node).color,
+          background: getComputedStyle(node).backgroundColor,
+          weight: getComputedStyle(node).fontWeight,
+          style: getComputedStyle(node).fontStyle,
+          height: node.getBoundingClientRect().height,
+          page: getComputedStyle(document.documentElement).color,
+          pageBackground: getComputedStyle(document.documentElement).backgroundColor,
+        })""",
+    )
+    assert isinstance(value, dict), f"No status label matches {selector}"
+    return value
+
+
+def check_status_labels(page: Page) -> None:
+    """@cc [owner:ghuntley,label:product;verification] status-label-severity-presentation
+    Machine status labels MUST name the state in text and carry severity
+    without colour-only meaning: Failed is bold inverse video exactly one grid
+    row tall, Running is bold on the page colours, Stopped is plain weight on
+    the page colours, and the pinned/OS labels keep the secondary colour. The
+    fixture seeds these observations; they are not guest execution evidence.
+    """
+    row = line_height(page)
+    failed = label_style(page, ".status-label[data-state='failed']")
+    running = label_style(page, ".status-label[data-state='running'][data-tone='success']")
+    stopped = label_style(page, ".status-label[data-state='stopped']:not([data-tone])")
+    assert failed["text"] == "Failed" and running["text"] == "Running", "State text differs"
+    assert stopped["text"] == "Stopped", "Stopped label text differs"
+    assert failed["background"] == failed["page"] and failed["color"] == failed["pageBackground"], (
+        "Failed label is not inverse video"
+    )
+    assert failed["weight"] == "800" and failed["style"] == "normal", "Failed label weight differs"
+    height = failed["height"]
+    assert isinstance(height, (int, float)) and abs(float(height) - row) < 0.1, (
+        "Failed label is not one grid row tall"
+    )
+    assert running["background"] == "rgba(0, 0, 0, 0)" and running["weight"] == "800", (
+        "Running label is not bold on the page background"
+    )
+    assert stopped["background"] == "rgba(0, 0, 0, 0)" and stopped["weight"] == "500", (
+        "Stopped label is not plain weight on the page background"
+    )
+    assert stopped["color"] == stopped["page"], "Stopped label is not the page text colour"
+    assert running["color"] == running["page"], "Running label is not the page text colour"
+    assert failed["color"] != stopped["color"], "Failed and Stopped labels share a colour"
+
+
 def check_machine_pins(page: Page) -> None:
     """@cc [owner:ghuntley,label:product;verification] machines-pin-toggle-order
-    Pinning the second row MUST move it to the first row with its Pinned label
-    and pressed toggle, keep every row exactly once, and unpinning MUST restore
-    the id order. The probe waits for the LiveView connection before clicking.
+    Pinning a later row that offers a Pin control MUST move it to the first row
+    with its Pinned label and pressed toggle, keep every row exactly once, and
+    unpinning MUST restore the id order. Failed machines offer no Pin control,
+    so the probe picks the first pinnable row after the first; it waits for the
+    LiveView connection before clicking.
     """
     expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1)
     rows = page.locator("#machines tr.machine-row")
     before = row_ids(page)
     assert len(before) >= 2, "The fixture owner needs at least two listed machines"
-    second = before[1]
-    toggle = rows.nth(1).locator("button.pin-toggle")
+    pinnable = [
+        index
+        for index in range(1, len(before))
+        if rows.nth(index).locator("button.pin-toggle[aria-pressed='false']").count() == 1
+    ]
+    assert pinnable, "No later machine row offers a Pin control"
+    second = before[pinnable[0]]
+    toggle = rows.nth(pinnable[0]).locator("button.pin-toggle")
     expect(toggle).to_have_attribute("aria-pressed", "false")
     expect(toggle).to_have_text("Pin")
     toggle.click()
@@ -328,17 +389,34 @@ def check_machine_pins(page: Page) -> None:
     assert row_ids(page) == before, "Unpinning did not restore the id order"
 
 
-def check_profile(page: Page, origin: str, theme: str) -> None:
-    """@cc [owner:ghuntley,label:product;verification] profile-time-zone-presentation
-    The profile page MUST preselect the browser's zone until one is saved, save
-    the chosen zone through the picker, show the viewer's local clock in that
-    zone, and every converted timestamp on the overview MUST end in the saved
-    zone's abbreviation while keeping the UTC instant in its title. The probe
-    checks this in both themes and restores the detected zone afterwards.
+def check_account(page: Page, origin: str, theme: str) -> None:
+    """@cc [owner:ghuntley,label:product;verification] account-page-presentation
+    The account page at /settings MUST be the only "Your account" settings
+    entry (#nav-account current) and MUST render the profile, sign-in and SSH
+    key sections in that order with an index whose anchors land each section
+    at the top of the viewport. The profile section MUST preselect the
+    browser's zone until one is saved, save the chosen zone through the picker
+    and show the viewer's local clock in that zone; every converted timestamp
+    on the overview MUST end in the saved zone's abbreviation while keeping the
+    UTC instant in its title. The probe checks this in both themes and restores
+    the detected zone afterwards.
     """
-    visit(page, origin, "/settings/profile")
-    expect(page.locator("#nav-profile")).to_have_attribute("aria-current", "page")
+    visit(page, origin, "/settings")
+    expect(page.locator("#nav-account")).to_have_attribute("aria-current", "page")
+    expect(page.locator("#nav-usage")).to_have_attribute("href", "/usage")
+    expect(page.locator("#workspace-sidebar a[href^='/settings/']")).to_have_count(0)
     expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1)
+    sections = ("profile", "security", "ssh-keys")
+    for anchor in sections:
+        expect(page.locator(f"#account-index a[href='#{anchor}']")).to_be_visible()
+        expect(page.locator(f"section#{anchor}.account-section")).to_be_visible()
+    tops = [section_top(page, anchor) for anchor in sections]
+    assert tops == sorted(tops), "Account sections are out of order"
+    expect(page.locator("#passkey-ceremony #add-passkey")).to_be_visible()
+    expect(page.locator("#passkey-ceremony #verify-passkey")).to_be_visible()
+    expect(page.locator("#verification-status")).to_contain_text("[not verified]")
+    expect(page.locator("#ssh-key-form #add-ssh-key")).to_be_visible()
+    expect(page.locator("article[id^='ssh-key-'] code")).to_have_count(1)
     detected: object = evaluate(page, "Intl.DateTimeFormat().resolvedOptions().timeZone")
     assert isinstance(detected, str) and detected, "Browser must report an Intl zone"
     status = page.locator("#time-zone-status")
@@ -362,20 +440,58 @@ def check_profile(page: Page, origin: str, theme: str) -> None:
         "data-zone", "Australia/Adelaide"
     )
     expect(page.locator("#clear-time-zone")).to_be_visible()
-    check_grid(page, "/settings/profile")
+    check_grid(page, "/settings")
     visit(page, origin, "/overview")
     stamp = page.locator(".overview-refresh time.timestamp")
     expect(stamp).to_have_attribute("data-zone", "Australia/Adelaide")
     expect(stamp).to_have_text(re.compile(r"\d{2}:\d{2} AC[DS]T$"))
     title: object = stamp.get_attribute("title")
     assert isinstance(title, str) and title.endswith(" UTC"), "Hover title must keep UTC"
-    visit(page, origin, "/settings/profile")
+    # The sidebar clock links to the profile anchor; the SSH anchor used by
+    # the CLI hint and approval page lands its section at the top.
+    expect(page.locator("#account-local-clock + a.nav-hint")).to_have_attribute(
+        "href", "/settings#profile"
+    )
+    visit(page, origin, "/settings#profile")
+    assert section_top(page, "profile") <= 2 * line_height(page), (
+        "The #profile anchor did not scroll its section into view"
+    )
+    # A second fragment on the same document would not load a new page.
+    visit(page, origin, "/overview")
+    visit(page, origin, "/settings#ssh-keys")
+    # The last section can be shorter than the viewport; then the page ends
+    # scrolled to its bottom with the section fully visible instead.
+    assert section_top(page, "ssh-keys") <= 2 * line_height(page) or scrolled_to_end(page), (
+        "The #ssh-keys anchor did not scroll its section into view"
+    )
     page.locator("#clear-time-zone").click()
     expect(status).to_have_attribute("data-source", "browser")
     expect(page.locator("#profile_time_zone")).to_have_value(detected)
     expect(page.locator("#clear-time-zone")).to_have_count(0)
     if theme == "dark":
         expect(page.locator("html")).to_have_attribute("data-theme", "dark")
+
+
+def section_top(page: Page, anchor: str) -> float:
+    box = page.locator(f"section#{anchor}").bounding_box()
+    assert box is not None, f"Section #{anchor} is not laid out"
+    return float(box["y"])
+
+
+def scrolled_to_end(page: Page) -> bool:
+    return (
+        evaluate(
+            page,
+            "window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 1",
+        )
+        is True
+    )
+
+
+def line_height(page: Page) -> float:
+    value: object = evaluate(page, "parseFloat(getComputedStyle(document.body).lineHeight)")
+    assert isinstance(value, (int, float)) and value > 0, "Line height must be a number"
+    return float(value)
 
 
 def row_ids(page: Page) -> list[str]:
@@ -888,9 +1004,7 @@ GRID_ROUTES = (
     "create",
     "machine",
     "boot-log",
-    "profile",
-    "security",
-    "ssh",
+    "account",
     "hldd",
 )
 
@@ -928,9 +1042,7 @@ def run(fixture: Context, artifacts: Path) -> None:
             "teams": "/teams",
             "git": "/git",
             "usage": "/usage",
-            "profile": "/settings/profile",
-            "security": "/settings/security",
-            "ssh": "/settings/ssh-keys",
+            "account": "/settings",
             "hldd": "/hldd",
             "hldd-section": "/hldd/system",
         }
@@ -960,6 +1072,9 @@ def run(fixture: Context, artifacts: Path) -> None:
                     expect(page.locator("#terminal-boot-view")).to_be_visible()
                     expect(page.locator("#terminal-status")).to_have_text("Boot log · read-only")
                     expect(page.locator("#terminal-create")).to_have_count(0)
+                if name in ("overview", "machines"):
+                    # Failed, running and stopped fixture machines in every theme.
+                    check_status_labels(page)
                 if name == "machines" and theme == "light":
                     check_machine_pins(page)
                     screenshot(page, artifacts, "machines-pinned")
@@ -985,8 +1100,8 @@ def run(fixture: Context, artifacts: Path) -> None:
                     )
                 if name == "hldd-section":
                     expect(page.locator("pre.hldd-diagram svg").first).to_be_visible()
-                if name == "profile":
-                    check_profile(page, fixture["origin"], theme)
+                if name == "account":
+                    check_account(page, fixture["origin"], theme)
                     visit(page, fixture["origin"], route)
                 screenshot(page, artifacts, f"{name}-{theme}")
             page.set_viewport_size({"width": 390, "height": 844})
@@ -1001,11 +1116,12 @@ def run(fixture: Context, artifacts: Path) -> None:
                 "integrations",
                 "teams",
                 "usage",
-                "profile",
-                "security",
+                "account",
             ):
                 visit(page, fixture["origin"], routes[name])
                 check_overflow(page)
+                if name in ("overview", "machines"):
+                    check_status_labels(page)
                 if name in ("machine", "terminal", "boot-log"):
                     check_machine_tabs(page)
                     check_machine_header(page)

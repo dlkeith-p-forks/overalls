@@ -133,14 +133,15 @@ defmodule MarshallWeb.CrossReplicaRevocationTest do
   # replicas.
   @tag :hegel
   test "generated invalidation schedules refuse on every replica", %{peers: peers} do
-    check all(
-            kind <- member_of([:revoke_sessions, :token_revoke, :expire]),
-            revoker <- member_of([0, 1, 2]),
-            order <- shuffle([0, 1, 2]),
-            test_cases: 6
-          ) do
-      assert_schedule(Enum.map(order, &Enum.at(peers, &1)), kind, revoker)
-    end
+    Hegel.check(
+      fn ->
+        kind = draw("kind", member_of([:revoke_sessions, :token_revoke, :expire]))
+        revoker = draw("revoker", member_of([0, 1, 2]))
+        order = draw("order", shuffle([0, 1, 2]))
+        assert_schedule(Enum.map(order, &Enum.at(peers, &1)), kind, revoker)
+      end,
+      test_cases: 100
+    )
   end
 
   @spec assert_schedule([pid()], Reads.invalidation_kind(), non_neg_integer()) :: :ok

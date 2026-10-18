@@ -11,74 +11,66 @@ defmodule Marshall.Ingress.PropagationTest do
   # Generated live TCP replies MUST distinguish authoritative proof readiness,
   # absent proof, malformed DNS, expired TTL, value mismatch and transport loss.
   # Only exact, live proof bytes from the configured peer may acknowledge readiness.
-  property "DNS proof checks retain the negative cause class", test_cases: 42 do
-    check all(
-            proof_bytes <- binary(length: 32),
-            mode <- member_of([:valid, :absent, :malformed, :expired, :mismatch, :transport]),
-            test_cases: 42
-          ) do
-      proof = Base.url_encode64(proof_bytes, padding: false)
-      {listener, port, server} = start_server(mode, proof)
+  property "DNS proof checks retain the negative cause class", test_cases: 100 do
+    proof_bytes = draw("proof_bytes", binary(length: 32))
+    mode = draw("mode", member_of([:valid, :absent, :malformed, :expired, :mismatch, :transport]))
+    proof = Base.url_encode64(proof_bytes, padding: false)
+    {listener, port, server} = start_server(mode, proof)
 
-      try do
-        expected =
-          case mode do
-            :valid -> :ok
-            :absent -> {:error, :absent}
-            :malformed -> {:error, :malformed_reply}
-            :expired -> {:error, :ttl_out_of_window}
-            :mismatch -> {:error, :value_mismatch}
-            :transport -> {:error, :transport}
-          end
+    try do
+      expected =
+        case mode do
+          :valid -> :ok
+          :absent -> {:error, :absent}
+          :malformed -> {:error, :malformed_reply}
+          :expired -> {:error, :ttl_out_of_window}
+          :mismatch -> {:error, :value_mismatch}
+          :transport -> {:error, :transport}
+        end
 
-        assert Propagation.check(@owner, [proof], [{@ip, port}]) == expected
-        server_pid = server.pid
-        assert_receive {:dns_query, ^server_pid}, 2_000
-        assert :ok = Task.await(server, 2_000)
-      after
-        :gen_tcp.close(listener)
-        Task.shutdown(server, :brutal_kill)
-      end
+      assert Propagation.check(@owner, [proof], [{@ip, port}]) == expected
+      server_pid = server.pid
+      assert_receive {:dns_query, ^server_pid}, 2_000
+      assert :ok = Task.await(server, 2_000)
+    after
+      :gen_tcp.close(listener)
+      Task.shutdown(server, :brutal_kill)
     end
   end
 
-  property "each configured DNS replica must return the exact live proof", test_cases: 24 do
-    check all(
-            proof_bytes <- binary(length: 32),
-            mode <- member_of([:valid, :absent, :malformed, :expired, :mismatch, :transport]),
-            failed_first? <- boolean(),
-            test_cases: 24
-          ) do
-      proof = Base.url_encode64(proof_bytes, padding: false)
-      first = start_server(:valid, proof)
-      second = start_server(mode, proof)
-      peers = if failed_first?, do: [second, first], else: [first, second]
+  property "each configured DNS replica must return the exact live proof", test_cases: 100 do
+    proof_bytes = draw("proof_bytes", binary(length: 32))
+    mode = draw("mode", member_of([:valid, :absent, :malformed, :expired, :mismatch, :transport]))
+    failed_first? = draw("failed_first?", boolean())
+    proof = Base.url_encode64(proof_bytes, padding: false)
+    first = start_server(:valid, proof)
+    second = start_server(mode, proof)
+    peers = if failed_first?, do: [second, first], else: [first, second]
 
-      try do
-        expected =
-          case mode do
-            :valid -> :ok
-            :absent -> {:error, :absent}
-            :malformed -> {:error, :malformed_reply}
-            :expired -> {:error, :ttl_out_of_window}
-            :mismatch -> {:error, :value_mismatch}
-            :transport -> {:error, :transport}
-          end
-
-        assert Propagation.check(@owner, [proof], Enum.map(peers, &{@ip, elem(&1, 1)})) ==
-                 expected
-
-        if expected == :ok do
-          first_pid = elem(first, 2).pid
-          second_pid = elem(second, 2).pid
-          assert_receive {:dns_query, ^first_pid}, 2_000
-          assert_receive {:dns_query, ^second_pid}, 2_000
+    try do
+      expected =
+        case mode do
+          :valid -> :ok
+          :absent -> {:error, :absent}
+          :malformed -> {:error, :malformed_reply}
+          :expired -> {:error, :ttl_out_of_window}
+          :mismatch -> {:error, :value_mismatch}
+          :transport -> {:error, :transport}
         end
-      after
-        for {listener, _port, task} <- [first, second] do
-          :gen_tcp.close(listener)
-          Task.shutdown(task, :brutal_kill)
-        end
+
+      assert Propagation.check(@owner, [proof], Enum.map(peers, &{@ip, elem(&1, 1)})) ==
+               expected
+
+      if expected == :ok do
+        first_pid = elem(first, 2).pid
+        second_pid = elem(second, 2).pid
+        assert_receive {:dns_query, ^first_pid}, 2_000
+        assert_receive {:dns_query, ^second_pid}, 2_000
+      end
+    after
+      for {listener, _port, task} <- [first, second] do
+        :gen_tcp.close(listener)
+        Task.shutdown(task, :brutal_kill)
       end
     end
   end

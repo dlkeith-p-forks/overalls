@@ -64,7 +64,7 @@ def run(context_file: str) -> None:
             expect(page.locator("#verification-status")).to_contain_text("seconds remaining")
 
         login(fixture["admin_token"])
-        page.goto(origin + "/settings/security")
+        page.goto(origin + "/settings")
         connected()
         page.locator("#add-passkey").click()
         expect(page.locator("#passkey-list > div")).to_have_count(1)
@@ -82,7 +82,7 @@ def run(context_file: str) -> None:
         connected()
         role = "#role-" + fixture["victim_id"]
         page.locator(role).click()
-        page.wait_for_url("**/settings/security?**")
+        page.wait_for_url("**/settings?**")
         connected()
         verify()
         page.locator("#security-continue").click()
@@ -100,7 +100,7 @@ def run(context_file: str) -> None:
         # A second email login must prove MFA independently of the first session.
         context.clear_cookies()
         login(fixture["second_token"])
-        expect(page).to_have_url(origin + "/settings/security")
+        expect(page).to_have_url(origin + "/settings")
         expect(page.locator("#security-continue")).to_have_count(0)
         verify()
         expect(page.locator("#security-continue")).to_have_count(1)

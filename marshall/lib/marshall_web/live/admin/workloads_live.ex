@@ -31,7 +31,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
            actor: socket.assigns.current_user
          ) do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, "Lifecycle request queued.") |> refresh()}
+        {:noreply, socket |> put_flash(:info, gettext("Lifecycle request queued.")) |> refresh()}
 
       {:error, error} ->
         {:noreply, put_flash(socket, :error, lifecycle_refusal(error))}
@@ -43,10 +43,10 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
            actor: socket.assigns.current_user
          ) do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, "Relocation request queued.") |> refresh()}
+        {:noreply, socket |> put_flash(:info, gettext("Relocation request queued.")) |> refresh()}
 
       {:error, _} ->
-        {:noreply, put_flash(socket, :error, "Relocation request was rejected.")}
+        {:noreply, put_flash(socket, :error, gettext("Relocation request was rejected."))}
     end
   end
 
@@ -56,15 +56,15 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
     {:noreply, push_navigate(socket, to: "/machines/" <> id <> suffix)}
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, "Invalid request.")}
+  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   # The owner's pin fences administrator deletes too (ADR-0193); every other
   # refusal keeps the generic text so no coordinator detail leaks.
   @spec lifecycle_refusal(Exception.t()) :: String.t()
   defp lifecycle_refusal(error) do
     if Exception.message(error) =~ "machine_pinned",
-      do: "The owner has pinned this machine; it cannot be deleted until they unpin it.",
-      else: "Lifecycle request was rejected."
+      do: gettext("The owner has pinned this machine; it cannot be deleted until they unpin it."),
+      else: gettext("Lifecycle request was rejected.")
   end
 
   defp refresh(socket) do
@@ -73,7 +73,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
         assign(socket, workloads: workloads, refreshed_at: DateTime.utc_now())
 
       _ ->
-        put_flash(socket, :error, "Workload inventory is temporarily unavailable.")
+        put_flash(socket, :error, gettext("Workload inventory is temporarily unavailable."))
     end
   end
 
@@ -91,25 +91,25 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
     >
       <section id="admin-workloads" class="stack">
         <UI.heading
-          title="Fleet workloads"
-          subtitle="Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
+          title={gettext("Fleet workloads")}
+          subtitle={gettext("Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included.")}
         >
           <:actions>
-            <span class="muted">Updated
+            <span class="muted">{gettext("Updated")}
             <.timestamp at={@refreshed_at} zone={@time_zone} format={:datetime_seconds} />
-            · every 15 seconds</span>
+            {gettext("· every 15 seconds")}</span>
           </:actions>
         </UI.heading>
-        <p :if={@workloads == []} class="empty-state">No active workloads.</p>
+        <p :if={@workloads == []} class="empty-state">{gettext("No active workloads.")}</p>
         <div :if={@workloads != []} class="table-flow">
           <table>
             <thead>
               <tr>
-                <th class="width-auto">Workload</th>
-                <th class="width-min">Host</th>
-                <th class="width-min">Shape</th>
-                <th class="width-min">State</th>
-                <th :if={@admin_authorized} class="width-min">Actions</th>
+                <th class="width-auto">{gettext("Workload")}</th>
+                <th class="width-min">{gettext("Host")}</th>
+                <th class="width-min">{gettext("Shape")}</th>
+                <th class="width-min">{gettext("State")}</th>
+                <th :if={@admin_authorized} class="width-min">{gettext("Actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -142,7 +142,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                       phx-value-id={vm.id}
                       phx-value-destination="details"
                     >
-                      Details
+                      {gettext("Details")}
                     </Layouts.action>
                     <Layouts.action
                       id={"terminals-#{vm.id}"}
@@ -150,7 +150,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                       phx-value-id={vm.id}
                       phx-value-destination="terminals"
                     >
-                      Terminal
+                      {gettext("Terminal")}
                     </Layouts.action>
                     <Layouts.action
                       id={"resize-#{vm.id}"}
@@ -158,7 +158,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                       phx-value-id={vm.id}
                       phx-value-destination="resize"
                     >
-                      Resize
+                      {gettext("Resize")}
                     </Layouts.action>
                   </div>
                   <div class="row">
@@ -187,7 +187,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                       phx-value-id={vm.id}
                       phx-value-kind="start"
                     >
-                      Start
+                      {gettext("Start")}
                     </Layouts.action>
                     <Layouts.action
                       :if={vm.desired_state == :running}
@@ -196,10 +196,10 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                       phx-value-id={vm.id}
                       phx-value-kind="stop"
                     >
-                      Stop
+                      {gettext("Stop")}
                     </Layouts.action>
                     <Layouts.action id={"relocate-#{vm.id}"} phx-click="relocate" phx-value-id={vm.id}>
-                      Move
+                      {gettext("Move")}
                     </Layouts.action>
                     <Layouts.action
                       tone="danger"
@@ -207,9 +207,9 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                       phx-click="lifecycle"
                       phx-value-id={vm.id}
                       phx-value-kind="delete"
-                      data-confirm="Archive this VM?"
+                      data-confirm={gettext("Archive this VM?")}
                     >
-                      Delete
+                      {gettext("Delete")}
                     </Layouts.action>
                   </div>
                 </td>

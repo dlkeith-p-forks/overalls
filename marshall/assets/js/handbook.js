@@ -1,3 +1,4 @@
+import {t} from "./localization.js";
 // @ts-check
 import mermaid from "../vendor/mermaid/mermaid.mjs";
 import {readPalette} from "./palette.js";
@@ -53,7 +54,7 @@ async function render(hook) {
       if (hook.disposed || hook.revision !== revision) return;
       pre.classList.add("hldd-diagram");
       pre.innerHTML = svg;
-      pre.setAttribute("aria-label", "Design diagram; explanation follows in the handbook");
+      pre.setAttribute("aria-label", t("Design diagram; explanation follows in the handbook"));
     } catch {
       if (hook.disposed || hook.revision !== revision) return;
       pre.classList.remove("hldd-diagram");

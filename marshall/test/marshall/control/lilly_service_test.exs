@@ -122,47 +122,47 @@ defmodule Marshall.Control.LillyServiceTest do
   # Opens and exchanges over the control socket MUST follow the session
   # ratchet the retired HTTPS routes did: the newest session exchanges, and
   # every superseded session is stale_connection.
-  property "socket opens and exchanges follow the session ratchet", test_cases: 10 do
-    check all(
-            steps <-
-              list_of(
-                member_of([:open, :latest, :superseded]),
-                min_length: 2,
-                max_length: 7
-              ),
-            test_cases: 10
-          ) do
-      fixture = host_fixture()
-      {:ok, issued} = Credentials.rotate(fixture.host.id, 3600)
-      c = %{issued: issued, host: fixture.host}
-      first = call(c, "sessions", open_body(c))
-      assert {:ok, %{"session_id" => _}} = first
+  property "socket opens and exchanges follow the session ratchet", test_cases: 100 do
+    steps =
+      draw(
+        "steps",
+        list_of(
+          member_of([:open, :latest, :superseded]),
+          min_length: 2,
+          max_length: 7
+        )
+      )
 
-      Enum.reduce(steps, [elem(first, 1)], fn step, [latest | _] = sessions ->
-        case step do
-          :open ->
-            assert {:ok, %{"session_id" => _} = session} =
-                     call(c, "sessions", open_body(c))
+    fixture = host_fixture()
+    {:ok, issued} = Credentials.rotate(fixture.host.id, 3600)
+    c = %{issued: issued, host: fixture.host}
+    first = call(c, "sessions", open_body(c))
+    assert {:ok, %{"session_id" => _}} = first
 
-            [session | sessions]
+    Enum.reduce(steps, [elem(first, 1)], fn step, [latest | _] = sessions ->
+      case step do
+        :open ->
+          assert {:ok, %{"session_id" => _} = session} =
+                   call(c, "sessions", open_body(c))
 
-          :latest ->
-            assert {:ok, %{"commands" => _}} =
-                     call(c, "exchange", exchange_body(latest))
+          [session | sessions]
 
-            sessions
+        :latest ->
+          assert {:ok, %{"commands" => _}} =
+                   call(c, "exchange", exchange_body(latest))
 
-          :superseded when length(sessions) > 1 ->
-            assert call(c, "exchange", exchange_body(List.last(sessions))) ==
-                     {:error, "stale_connection"}
+          sessions
 
-            sessions
+        :superseded when length(sessions) > 1 ->
+          assert call(c, "exchange", exchange_body(List.last(sessions))) ==
+                   {:error, "stale_connection"}
 
-          :superseded ->
-            sessions
-        end
-      end)
-    end
+          sessions
+
+        :superseded ->
+          sessions
+      end
+    end)
   end
 
   @spec call(map(), String.t(), map()) :: {:ok, map()} | {:error, String.t()}

@@ -72,7 +72,7 @@ def authenticator(session: CDPSession) -> None:
 
 
 def verify(page: Page, enroll: bool = False) -> None:
-    visit(page, "/settings/security")
+    visit(page, "/settings")
     if enroll:
         page.locator("#add-passkey").click()
         expect(page.locator("#passkey-list > div")).to_have_count(1)
@@ -98,7 +98,7 @@ def copy_cookie(cookie: Cookie) -> SetCookieParam:
 
 
 def register_key(page: Page, role: str) -> None:
-    visit(page, "/settings/ssh-keys")
+    visit(page, "/settings")
     page.get_by_label("Public key", exact=True).fill((ROOT / (role + ".pub")).read_text())
     page.get_by_label("Label (optional)", exact=True).fill("retirement-" + role)
     page.locator("#add-ssh-key").click()
@@ -216,7 +216,7 @@ def run() -> None:
         invited_context.clear_cookies()
         invited_context.add_cookies(remembered)
         invited.goto(ORIGIN + "/overview")
-        expect(invited).to_have_url(ORIGIN + "/settings/security")
+        expect(invited).to_have_url(ORIGIN + "/settings")
         connected(invited)
         expect(invited.locator("#security-continue")).to_have_count(0)
         verify(invited)
@@ -271,9 +271,9 @@ def run() -> None:
         fresh_context = browser.new_context()
         fresh = fresh_context.new_page()
         sign_in(fresh, "replacement-token")
-        visit(fresh, "/settings/security")
+        visit(fresh, "/settings")
         expect(fresh.locator("#passkey-list > div")).to_have_count(0)
-        visit(fresh, "/settings/ssh-keys")
+        visit(fresh, "/settings")
         expect(fresh.locator("#ssh-keys-empty")).to_be_visible()
         visit(fresh, "/admin/users")
         expect(fresh.locator("#invite-user")).to_have_count(0)

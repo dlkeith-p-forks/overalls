@@ -1,10 +1,10 @@
 defmodule Porsche.HostCertificateBootPropertyTest do
   use ExUnit.Case, async: false
-  import Hegel
-  import Hegel.Gen
   import Bitwise
   alias OverallsProtocol.{SSHHostCertificate, SSHKey}
-  @moduletag timeout: 240_000
+  # All 18 independent mutations must boot; each subprocess has a 30-second bound.
+  # The finite aggregate budget includes shared-host and positive-control headroom.
+  @moduletag timeout: 900_000
   @probe Path.expand("../scripts/host_certificate_boot_probe.exs", __DIR__)
   @cases [
     :missing,
@@ -92,29 +92,29 @@ defmodule Porsche.HostCertificateBootPropertyTest do
   end
 
   # @cc [owner:ghuntley,label:security;verification] certificate-boot-oracle
-  # Every history MUST cover each mutation of a real-loader and Proof-accepted
+  # The exhaustive matrix MUST cover each mutation of a real-loader and Proof-accepted
   # baseline. Refusal MUST occur in the first listener child, before ssh.daemon,
   # status or observability, with no surviving service state and unchanged owned
   # fixtures. Original/mutated private material and paths MUST stay out of output.
+  # Each mutation boots an independent VM from the same accepted baseline;
+  # repeating random permutations cannot explore additional histories.
   test "invalid host certificates refuse Porsche startup before the SSH daemon", context do
-    check all(order <- shuffle(@cases), max_runs: 3) do
-      for kind <- order do
-        f = fixture(context.root, context.template)
-        assert {:ok, _} = Porsche.Config.load(f.config)
-        assert {:ok, _} = host_certificate(f)
-        original = materials(f)
-        mutate(f, context.template, kind)
-        assert {:ok, _} = Porsche.Config.load(f.config)
-        before = snapshot(f.root)
-        sensitive = original ++ materials(f) ++ [context.template.seed, f.token, f.root]
-        {projection, output} = boot(f, "refusal")
-        assert projection == expected(false), "host-certificate case #{kind}"
-        assert snapshot(f.root) == before
+    for kind <- @cases do
+      f = fixture(context.root, context.template)
+      assert {:ok, _} = Porsche.Config.load(f.config)
+      assert {:ok, _} = host_certificate(f)
+      original = materials(f)
+      mutate(f, context.template, kind)
+      assert {:ok, _} = Porsche.Config.load(f.config)
+      before = snapshot(f.root)
+      sensitive = original ++ materials(f) ++ [context.template.seed, f.token, f.root]
+      {projection, output} = boot(f, "refusal")
+      assert projection == expected(false), "host-certificate case #{kind}"
+      assert snapshot(f.root) == before
 
-        Enum.each(sensitive, fn material ->
-          if byte_size(material) >= 24, do: refute(String.contains?(output, material))
-        end)
-      end
+      Enum.each(sensitive, fn material ->
+        if byte_size(material) >= 24, do: refute(String.contains?(output, material))
+      end)
     end
   end
 
@@ -145,10 +145,26 @@ defmodule Porsche.HostCertificateBootPropertyTest do
     |> Map.put("outcome", if(started, do: "started", else: "rejected"))
   end
 
+  # @cc [owner:ghuntley,label:verification] fresh-boot-operation-deadline
+  # Each probe MUST run in a fresh VM with the complete startup oracle. A boot
+  # exceeding 30 seconds MUST fail; its process group gets at most five seconds
+  # to terminate before forced cleanup, independently of the aggregate budget.
   @spec boot(fixture(), String.t()) :: {projection(), String.t()}
   defp boot(f, mode) do
     {output, status} =
-      System.cmd("mix", ["run", "--no-start", "--no-compile", "--no-deps-check", @probe],
+      System.cmd(
+        "timeout",
+        [
+          "--signal=TERM",
+          "--kill-after=5s",
+          "30s",
+          "mix",
+          "run",
+          "--no-start",
+          "--no-compile",
+          "--no-deps-check",
+          @probe
+        ],
         env: [
           {"MIX_ENV", "test"},
           {"ERL_FLAGS", "+S 2:2 +SDcpu 1 +SDio 1"},

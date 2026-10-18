@@ -13,63 +13,60 @@ defmodule Enrico.ManagerHistoryPropertyTest do
 
   property "occupied native writer refuses clone cleanup and administrative removal before effects",
     profile: :ci do
-    check all(suffix <- member_of(["a", "b", "c"]), max_runs: 3) do
-      with_state(fn initial ->
-        root = Path.join(initial.config.state_dir, "owned-#{suffix}.git")
-        temporary = root <> ".new"
-        File.mkdir_p!(temporary)
-        sentinel = Path.join(temporary, "retained")
-        File.write!(sentinel, "existing clone bytes")
-        witness = root <> ".owner"
-        helper = System.find_executable("enrico-git-owner") || raise ArgumentError
-        shell = System.find_executable("bash") || raise ArgumentError
+    suffix = draw("suffix", member_of(["a", "b", "c"]))
 
-        port =
-          Port.open({:spawn_executable, helper}, [
-            :binary,
-            :exit_status,
-            args: [
-              "10000",
-              "65536",
-              initial.config.state_dir,
-              Path.basename(root),
-              "exclusive",
-              shell,
-              "-c",
-              "printf ready > \"$1\"; sleep 600",
-              "fixture",
-              witness
-            ]
-          ])
+    with_state(fn initial ->
+      root = Path.join(initial.config.state_dir, "owned-#{suffix}.git")
+      temporary = root <> ".new"
+      File.mkdir_p!(temporary)
+      sentinel = Path.join(temporary, "retained")
+      File.write!(sentinel, "existing clone bytes")
+      witness = root <> ".owner"
+      helper = System.find_executable("enrico-git-owner") || raise ArgumentError
+      shell = System.find_executable("bash") || raise ArgumentError
 
-        try do
-          await(fn -> File.read(witness) == {:ok, "ready"} end)
-          assert {:error, :git_failed} = Enrico.Git.refresh(root, "NixOS", "nixpkgs")
-          assert {:error, :git_failed} = Enrico.Git.remove(temporary)
-          assert File.read!(sentinel) == "existing clone bytes"
-          refute File.exists?(root)
-          refute File.exists?(root <> ".calls")
-        after
-          if Port.info(port), do: Port.close(port)
-        end
+      port =
+        Port.open({:spawn_executable, helper}, [
+          :binary,
+          :exit_status,
+          args: [
+            "10000",
+            "65536",
+            initial.config.state_dir,
+            Path.basename(root),
+            "exclusive",
+            shell,
+            "-c",
+            "printf ready > \"$1\"; sleep 600",
+            "fixture",
+            witness
+          ]
+        ])
 
-        await(fn -> Enrico.Git.remove(temporary) == :ok end)
-        refute File.exists?(temporary)
-      end)
-    end
+      try do
+        await(fn -> File.read(witness) == {:ok, "ready"} end)
+        assert {:error, :git_failed} = Enrico.Git.refresh(root, "NixOS", "nixpkgs")
+        assert {:error, :git_failed} = Enrico.Git.remove(temporary)
+        assert File.read!(sentinel) == "existing clone bytes"
+        refute File.exists?(root)
+        refute File.exists?(root <> ".calls")
+      after
+        if Port.info(port), do: Port.close(port)
+      end
+
+      await(fn -> Enrico.Git.remove(temporary) == :ok end)
+      refute File.exists?(temporary)
+    end)
   end
 
   property "manager replacement retires saturated workers before new admission",
     profile: :ci do
     for culprit <- [:manager, :tasks], count <- [1, 7, 8], do: restart_history(culprit, count)
 
-    check all(
-            culprit <- member_of([:manager, :tasks]),
-            count <- member_of([1, 7, 8]),
-            max_runs: 1
-          ) do
-      restart_history(culprit, count)
-    end
+    culprit = draw("culprit", member_of([:manager, :tasks]))
+    count = draw("count", member_of([1, 7, 8]))
+
+    restart_history(culprit, count)
   end
 
   @spec restart_history(:manager | :tasks, pos_integer()) :: term()
@@ -147,14 +144,11 @@ defmodule Enrico.ManagerHistoryPropertyTest do
     profile: :ci do
     for terminal <- [:success, :failure, :death], do: saturation_history(terminal, 1, 2)
 
-    check all(
-            terminal <- member_of([:success, :failure, :death]),
-            victim <- integer(1..8),
-            refusals <- integer(1..3),
-            max_runs: 3
-          ) do
-      saturation_history(terminal, victim, refusals)
-    end
+    terminal = draw("terminal", member_of([:success, :failure, :death]))
+    victim = draw("victim", integer(1..8))
+    refusals = draw("refusals", integer(1..3))
+
+    saturation_history(terminal, victim, refusals)
   end
 
   @spec native_process_retired?(pos_integer()) :: boolean()
@@ -279,56 +273,53 @@ defmodule Enrico.ManagerHistoryPropertyTest do
 
   property "saturated refresh admission preserves replay and refuses without effects",
     profile: :ci do
-    check all(extra <- integer(0..3), max_runs: 8) do
-      with_state(fn initial ->
-        state =
-          Enum.reduce(1..(8 + extra), initial, fn index, acc ->
-            {next, _generation} = admit(acc, neighbor(index), @attempt)
-            next
-          end)
+    extra = draw("extra", integer(0..3))
 
-        assert {:reply, {:error, :unavailable}, ^state} =
-                 Manager.handle_call({:refresh, @id, @attempt, "NixOS", "nixpkgs"}, self(), state)
+    with_state(fn initial ->
+      state =
+        Enum.reduce(1..(8 + extra), initial, fn index, acc ->
+          {next, _generation} = admit(acc, neighbor(index), @attempt)
+          next
+        end)
 
-        assert {:reply, {:ok, :running}, ^state} =
-                 Manager.handle_call(
-                   {:refresh, neighbor(1), @attempt, "NixOS", "nixpkgs"},
-                   self(),
-                   state
-                 )
+      assert {:reply, {:error, :unavailable}, ^state} =
+               Manager.handle_call({:refresh, @id, @attempt, "NixOS", "nixpkgs"}, self(), state)
 
-        assert {:reply, {:error, :busy}, ^state} =
-                 Manager.handle_call(
-                   {:refresh, neighbor(1), @id, "NixOS", "nixpkgs"},
-                   self(),
-                   state
-                 )
+      assert {:reply, {:ok, :running}, ^state} =
+               Manager.handle_call(
+                 {:refresh, neighbor(1), @attempt, "NixOS", "nixpkgs"},
+                 self(),
+                 state
+               )
 
-        assert state.slo.requests == 0
-        assert state.monitors == %{}
-        assert File.ls!(state.config.state_dir) == []
-      end)
-    end
+      assert {:reply, {:error, :busy}, ^state} =
+               Manager.handle_call(
+                 {:refresh, neighbor(1), @id, "NixOS", "nixpkgs"},
+                 self(),
+                 state
+               )
+
+      assert state.slo.requests == 0
+      assert state.monitors == %{}
+      assert File.ls!(state.config.state_dir) == []
+    end)
   end
 
   property "unknown or missing completion generations cannot manufacture an outcome",
     profile: :ci do
-    check all(
-            generation <- member_of([nil, false, 0, "", make_ref()]),
-            attempt <- member_of([nil, @attempt]),
-            max_runs: 15
-          ) do
-      with_state(fn state ->
-        assert {:noreply, ^state} =
-                 Manager.handle_info({:finished, @id, nil, nil, {:error, :git_failed}}, state)
+    generation = draw("generation", member_of([nil, false, 0, "", make_ref()]))
+    attempt = draw("attempt", member_of([nil, @attempt]))
 
-        assert {:noreply, ^state} =
-                 Manager.handle_info({:finished, @id, attempt, generation, {:ok, @head}}, state)
+    with_state(fn state ->
+      assert {:noreply, ^state} =
+               Manager.handle_info({:finished, @id, nil, nil, {:error, :git_failed}}, state)
 
-        assert state.slo.requests == 0
-        assert state.attempts == %{}
-      end)
-    end
+      assert {:noreply, ^state} =
+               Manager.handle_info({:finished, @id, attempt, generation, {:ok, @head}}, state)
+
+      assert state.slo.requests == 0
+      assert state.attempts == %{}
+    end)
   end
 
   property "real refresh workers preserve reuse against retired generation messages",
@@ -337,13 +328,10 @@ defmodule Enrico.ManagerHistoryPropertyTest do
       real_refresh_history(terminal, neighbors)
     end
 
-    check all(
-            terminal <- member_of([:success, :death]),
-            neighbors <- member_of([1_023, 1_024, 1_025]),
-            max_runs: 3
-          ) do
-      real_refresh_history(terminal, neighbors)
-    end
+    terminal = draw("terminal", member_of([:success, :death]))
+    neighbors = draw("neighbors", member_of([1023, 1024, 1025]))
+
+    real_refresh_history(terminal, neighbors)
   end
 
   @spec real_refresh_history(:success | :death, pos_integer()) :: term()
@@ -454,138 +442,135 @@ defmodule Enrico.ManagerHistoryPropertyTest do
 
   property "removed receipts cannot evict a reused running attempt at the retention boundary",
     profile: :ci do
-    check all(neighbors <- member_of([1_023, 1_024, 1_025]), max_runs: 6) do
-      with_state(fn state ->
-        {state, generation} = admit(state, @id, @attempt)
+    neighbors = draw("neighbors", member_of([1023, 1024, 1025]))
 
-        {:noreply, state} =
-          Manager.handle_info({:finished, @id, @attempt, generation, {:ok, @head}}, state)
+    with_state(fn state ->
+      {state, generation} = admit(state, @id, @attempt)
 
-        {:reply, :ok, state} = Manager.handle_call({:remove, @id}, self(), state)
-        assert state.completed_count == 0
-        assert :queue.is_empty(state.completed)
+      {:noreply, state} =
+        Manager.handle_info({:finished, @id, @attempt, generation, {:ok, @head}}, state)
 
-        {state, generation} = admit(state, @id, @attempt)
+      {:reply, :ok, state} = Manager.handle_call({:remove, @id}, self(), state)
+      assert state.completed_count == 0
+      assert :queue.is_empty(state.completed)
 
-        state =
-          Enum.reduce(1..neighbors, state, fn index, current ->
-            id = neighbor(index)
-            {current, token} = admit(current, id, @attempt)
+      {state, generation} = admit(state, @id, @attempt)
 
-            {:noreply, next} =
-              Manager.handle_info({:finished, id, @attempt, token, {:ok, @head}}, current)
+      state =
+        Enum.reduce(1..neighbors, state, fn index, current ->
+          id = neighbor(index)
+          {current, token} = admit(current, id, @attempt)
 
-            next
-          end)
+          {:noreply, next} =
+            Manager.handle_info({:finished, id, @attempt, token, {:ok, @head}}, current)
 
-        assert {:reply, :running, ^state} =
-                 Manager.handle_call({:status, @id, @attempt}, self(), state)
+          next
+        end)
 
-        assert state.active[@id] == @attempt
+      assert {:reply, :running, ^state} =
+               Manager.handle_call({:status, @id, @attempt}, self(), state)
 
-        assert {:reply, {:ok, :running}, ^state} =
-                 Manager.handle_call({:refresh, @id, @attempt, "NixOS", "nixpkgs"}, self(), state)
+      assert state.active[@id] == @attempt
 
-        assert state.completed_count == min(neighbors, 1_024)
-        assert :queue.len(state.completed) == state.completed_count
-        assert map_size(state.attempts) == state.completed_count + 1
+      assert {:reply, {:ok, :running}, ^state} =
+               Manager.handle_call({:refresh, @id, @attempt, "NixOS", "nixpkgs"}, self(), state)
 
-        assert state.attempts[{neighbor(neighbors), @attempt}] == %{
-                 state: :succeeded,
-                 head: @head
-               }
+      assert state.completed_count == min(neighbors, 1_024)
+      assert :queue.len(state.completed) == state.completed_count
+      assert map_size(state.attempts) == state.completed_count + 1
 
-        assert Map.has_key?(state.attempts, {neighbor(1), @attempt}) == neighbors <= 1_024
+      assert state.attempts[{neighbor(neighbors), @attempt}] == %{
+               state: :succeeded,
+               head: @head
+             }
 
-        previous_requests = state.slo.requests
+      assert Map.has_key?(state.attempts, {neighbor(1), @attempt}) == neighbors <= 1_024
 
-        {:noreply, settled} =
-          Manager.handle_info({:finished, @id, @attempt, generation, {:ok, @head}}, state)
+      previous_requests = state.slo.requests
 
-        status = %{state: :succeeded, head: @head}
+      {:noreply, settled} =
+        Manager.handle_info({:finished, @id, @attempt, generation, {:ok, @head}}, state)
 
-        assert {:reply, ^status, ^settled} =
-                 Manager.handle_call({:status, @id, @attempt}, self(), settled)
+      status = %{state: :succeeded, head: @head}
 
-        assert {:reply, {:ok, ^status}, ^settled} =
-                 Manager.handle_call(
-                   {:refresh, @id, @attempt, "NixOS", "nixpkgs"},
-                   self(),
-                   settled
-                 )
+      assert {:reply, ^status, ^settled} =
+               Manager.handle_call({:status, @id, @attempt}, self(), settled)
 
-        assert settled.slo.requests == previous_requests + 1
-        assert settled.completed_count == 1_024
-        assert :queue.len(settled.completed) == 1_024
-        assert map_size(settled.attempts) == 1_024
-        assert settled.attempts[{neighbor(neighbors), @attempt}] == status
-        assert Map.has_key?(settled.attempts, {neighbor(1), @attempt}) == (neighbors == 1_023)
-        assert Map.has_key?(settled.attempts, {neighbor(2), @attempt}) == neighbors <= 1_024
-      end)
-    end
+      assert {:reply, {:ok, ^status}, ^settled} =
+               Manager.handle_call(
+                 {:refresh, @id, @attempt, "NixOS", "nixpkgs"},
+                 self(),
+                 settled
+               )
+
+      assert settled.slo.requests == previous_requests + 1
+      assert settled.completed_count == 1_024
+      assert :queue.len(settled.completed) == 1_024
+      assert map_size(settled.attempts) == 1_024
+      assert settled.attempts[{neighbor(neighbors), @attempt}] == status
+      assert Map.has_key?(settled.attempts, {neighbor(1), @attempt}) == (neighbors == 1_023)
+      assert Map.has_key?(settled.attempts, {neighbor(2), @attempt}) == neighbors <= 1_024
+    end)
   end
 
   property "old-generation results and death cannot settle a reused attempt",
     profile: :ci do
-    check all(
-            result <- member_of([{:ok, @head}, {:error, :git_failed}]),
-            order <- member_of([:result_first, :death_first]),
-            max_runs: 12
-          ) do
-      with_state(fn state ->
-        worker =
-          spawn(fn ->
-            receive do
-              :stop -> :ok
-            end
-          end)
+    result = draw("result", member_of(ok: @head, error: :git_failed))
+    order = draw("order", member_of([:result_first, :death_first]))
 
-        monitor = Process.monitor(worker)
-
-        try do
-          {state, old} = admit(state, @id, @attempt)
-          state = %{state | monitors: %{monitor => {@id, @attempt, old, worker}}}
-          {:noreply, state} = Manager.handle_info({:finished, @id, @attempt, old, result}, state)
-          assert state.monitors == %{}
-          assert state.generations == %{}
-          assert state.slo.requests == 1
-          {:reply, :ok, state} = Manager.handle_call({:remove, @id}, self(), state)
-          {state, current} = admit(state, @id, @attempt)
-
-          messages = [
-            {:finished, @id, @attempt, old, result},
-            {:DOWN, monitor, :process, worker, :killed}
-          ]
-
-          messages = if order == :death_first, do: Enum.reverse(messages), else: messages
-
-          Enum.each(messages, fn message ->
-            assert {:noreply, ^state} = Manager.handle_info(message, state)
-          end)
-
-          {:noreply, settled} =
-            Manager.handle_info({:finished, @id, @attempt, current, result}, state)
-
-          assert settled.slo.requests == 2
-          assert settled.active == %{}
-          assert settled.generations == %{}
-          assert settled.completed_count == 1
-
-          assert {:noreply, ^settled} =
-                   Manager.handle_info({:finished, @id, @attempt, current, result}, settled)
-        after
-          Process.demonitor(monitor, [:flush])
-          shutdown = Process.monitor(worker)
-          Process.exit(worker, :kill)
-
+    with_state(fn state ->
+      worker =
+        spawn(fn ->
           receive do
-            {:DOWN, ^shutdown, :process, ^worker, _reason} -> :ok
-          after
-            1_000 -> flunk("fixture worker did not terminate")
+            :stop -> :ok
           end
+        end)
+
+      monitor = Process.monitor(worker)
+
+      try do
+        {state, old} = admit(state, @id, @attempt)
+        state = %{state | monitors: %{monitor => {@id, @attempt, old, worker}}}
+        {:noreply, state} = Manager.handle_info({:finished, @id, @attempt, old, result}, state)
+        assert state.monitors == %{}
+        assert state.generations == %{}
+        assert state.slo.requests == 1
+        {:reply, :ok, state} = Manager.handle_call({:remove, @id}, self(), state)
+        {state, current} = admit(state, @id, @attempt)
+
+        messages = [
+          {:finished, @id, @attempt, old, result},
+          {:DOWN, monitor, :process, worker, :killed}
+        ]
+
+        messages = if order == :death_first, do: Enum.reverse(messages), else: messages
+
+        Enum.each(messages, fn message ->
+          assert {:noreply, ^state} = Manager.handle_info(message, state)
+        end)
+
+        {:noreply, settled} =
+          Manager.handle_info({:finished, @id, @attempt, current, result}, state)
+
+        assert settled.slo.requests == 2
+        assert settled.active == %{}
+        assert settled.generations == %{}
+        assert settled.completed_count == 1
+
+        assert {:noreply, ^settled} =
+                 Manager.handle_info({:finished, @id, @attempt, current, result}, settled)
+      after
+        Process.demonitor(monitor, [:flush])
+        shutdown = Process.monitor(worker)
+        Process.exit(worker, :kill)
+
+        receive do
+          {:DOWN, ^shutdown, :process, ^worker, _reason} -> :ok
+        after
+          1_000 -> flunk("fixture worker did not terminate")
         end
-      end)
-    end
+      end
+    end)
   end
 
   # These are callback histories with synthetic admission state, not real

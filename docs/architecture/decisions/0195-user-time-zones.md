@@ -75,11 +75,14 @@ shown in the web UI.
    before that tick updates the clock, preserving ADR-0022; optional/public
    mount behavior is unchanged. The dead render uses only the saved zone or
    UTC. The browser zone is validated and never persisted by the hook.
-6. **A profile page.** `/settings/profile` (with `/settings` redirecting to it)
+6. **A profile page.** `/settings/profile` (with `/settings` redirecting to it;
+   since [ADR-0196](0196-single-account-settings-page.md) the `#profile`
+   section of `/settings`)
    shows the email read-only, the picker preselected with the saved or detected
    zone, Save and Clear, and the viewer's live local clock. The sidebar's
    "Your account" tree gains Profile above Security and the account menu shows
-   the local clock under the email.
+   the local clock under the email. ADR-0196 later collapses that tree to one
+   Account entry; the clock link now points at `/settings#profile`.
 7. **Other people's local time.** Team members and transfers, machine-access
    owner and grants, the owner of a shared machine in the machines list, thread
    owner and grants, and the Control room's users, access and workloads pages
@@ -154,11 +157,11 @@ public email edit or onboarding step, and guest identity is untouched.
   non-user or retired actors; the event carries no zone text
   (`time-zone-self-only`, `time-zone-validated`, `time_zone_test.exs`).
 - The viewer zone resolves saved → browser → UTC and the dead render ignores
-  the browser (`viewer-time-zone-resolution`, `profile_live_test.exs`).
+  the browser (`viewer-time-zone-resolution`, `account_live_test.exs`).
 - Required and security clock refreshes retain the persisted-login check of
   ADR-0022. Revoking the connected profile's actual token makes its next clock
   tick redirect before updating the clock (`clock-tick-rechecks-login`,
-  `profile_live_test.exs`).
+  `account_live_test.exs`).
 - Converted timestamps keep UTC provenance (`timestamp-utc-provenance`,
   Covenant `marshall.web_surface.I9`); a person's local time renders only from
   a saved zone (`person-local-time-saved-only`).
@@ -184,7 +187,8 @@ public email edit or onboarding step, and guest identity is untouched.
   [`app.js`](../../../marshall/assets/js/app.js) (`timezone` connect param),
   [`time_components.ex`](../../../marshall/lib/marshall_web/components/time_components.ex),
   [`layouts.ex`](../../../marshall/lib/marshall_web/components/layouts.ex),
-  [`profile_live.ex`](../../../marshall/lib/marshall_web/live/profile_live.ex),
+  [`account_live.ex`](../../../marshall/lib/marshall_web/live/account_live.ex)
+  (the profile section; formerly `profile_live.ex`),
   [`router.ex`](../../../marshall/lib/marshall_web/router.ex),
   [`threads_live.ex`](../../../marshall/lib/marshall_web/live/threads_live.ex)
   (viewer-day filters) and the converted admin, git, usage, overview, SSH-key
@@ -201,7 +205,9 @@ public email edit or onboarding step, and guest identity is untouched.
 - Tests: [`time_zones_property_test.exs`](../../../marshall/test/marshall/accounts/time_zones_property_test.exs),
   [`time_zone_test.exs`](../../../marshall/test/marshall/accounts/time_zone_test.exs),
   [`time_components_test.exs`](../../../marshall/test/marshall_web/time_components_test.exs),
-  [`profile_live_test.exs`](../../../marshall/test/marshall_web/profile_live_test.exs),
+  [`account_live_test.exs`](../../../marshall/test/marshall_web/account_live_test.exs)
+  (profile section) and [`local_time_live_test.exs`](../../../marshall/test/marshall_web/local_time_live_test.exs)
+  (people's local time; both formerly `profile_live_test.exs`),
   [`commands_test.exs`](../../../marshall/test/marshall/ssh/commands_test.exs),
   Covenant obligations `marshall.identity_authorization.I7`/`I8` and
   `marshall.web_surface.I9`, and the profile checks in
@@ -225,6 +231,8 @@ re-inserted, not on the minute tick.
 
 ## Related decisions
 
+[ADR-0196](0196-single-account-settings-page.md) moves the profile page into the
+`#profile` section of `/settings`.
 - [ADR-0158](0158-durable-guest-identities.md) and
   [ADR-0159](0159-remove-legacy-compatibility.md): the no-profile position this
   record amends for display preferences only.

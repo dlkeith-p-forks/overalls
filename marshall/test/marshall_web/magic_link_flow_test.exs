@@ -104,7 +104,7 @@ defmodule MarshallWeb.MagicLinkFlowTest do
           assert users_for(email) == users_before
 
           signed_in = post(recycle(page), @sign_in_path, user: %{token: token, remember_me: true})
-          assert redirected_to(signed_in) == "/settings/ssh-keys"
+          assert redirected_to(signed_in) == "/settings"
           refute get_session(signed_in, :return_to)
           [user] = users_for(email)
           if previous, do: assert(user.id == previous.id)
@@ -157,7 +157,7 @@ defmodule MarshallWeb.MagicLinkFlowTest do
   @spec request(String.t()) :: Plug.Conn.t()
   defp request(email) do
     build_conn()
-    |> init_test_session(%{return_to: "/settings/ssh-keys"})
+    |> init_test_session(%{return_to: "/settings"})
     |> post(@request_path, user: %{email: email})
   end
 
@@ -177,7 +177,7 @@ defmodule MarshallWeb.MagicLinkFlowTest do
     assert redirected_to(response) == "/sign-in"
     assert Phoenix.Flash.get(response.assigns.flash, :info) == @feedback
     refute Phoenix.Flash.get(response.assigns.flash, :error)
-    assert get_session(response, :return_to) == "/settings/ssh-keys"
+    assert get_session(response, :return_to) == "/settings"
     refute get_session(response, :user_token)
     :ok
   end

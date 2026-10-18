@@ -301,41 +301,43 @@ defmodule Marshall.Compute.DrainsTest do
   @tag :hegel
   test "duplicate work and reordered old outcomes cannot release a pending drain reservation",
        c do
-    check all(
-            actions <-
-              list_of(member_of([:duplicate, :old_crash, :unknown]),
-                min_length: 1,
-                max_length: 12
-              ),
-            test_cases: 15
-          ) do
-      {:error, :example_complete} =
-        Ledger.transaction(fn ->
-          refresh(c)
-          {:ok, vm} = Compute.provision(request(), actor: c.user)
-          [provision] = Ledger.read!(Operation, vm_id: vm.id)
-          id = Ash.UUID.generate()
-          {:ok, _} = Drains.request(c.host.id, id, "property")
-          {:ok, 1} = Drains.advance(id)
-          [stop] = Ledger.read!(Operation, host_drain_id: id)
+    Hegel.check(
+      fn ->
+        actions =
+          draw(
+            "actions",
+            list_of(member_of([:duplicate, :old_crash, :unknown]), min_length: 1, max_length: 12)
+          )
 
-          for {action, sequence} <- Enum.with_index(actions, 1) do
-            case action do
-              :duplicate -> assert {:ok, 0} = Drains.advance(id)
-              :old_crash -> ingest(provision, sequence, :failed, :crashed)
-              :unknown -> ingest(stop, sequence, :unknown)
+        {:error, :example_complete} =
+          Ledger.transaction(fn ->
+            refresh(c)
+            {:ok, vm} = Compute.provision(request(), actor: c.user)
+            [provision] = Ledger.read!(Operation, vm_id: vm.id)
+            id = Ash.UUID.generate()
+            {:ok, _} = Drains.request(c.host.id, id, "property")
+            {:ok, 1} = Drains.advance(id)
+            [stop] = Ledger.read!(Operation, host_drain_id: id)
+
+            for {action, sequence} <- Enum.with_index(actions, 1) do
+              case action do
+                :duplicate -> assert {:ok, 0} = Drains.advance(id)
+                :old_crash -> ingest(provision, sequence, :failed, :crashed)
+                :unknown -> ingest(stop, sequence, :unknown)
+              end
+
+              assert %{compute_held: true, disk_held: true} = allocation(vm)
+              assert {:ok, %{status: "draining"}} = Drains.status(id)
             end
 
-            assert %{compute_held: true, disk_held: true} = allocation(vm)
-            assert {:ok, %{status: "draining"}} = Drains.status(id)
-          end
-
-          ingest(stop, length(actions) + 1, :stopped)
-          assert {:ok, %{status: "drained"}} = Drains.status(id)
-          refute allocation(vm).compute_held
-          Ledger.rollback(:example_complete)
-        end)
-    end
+            ingest(stop, length(actions) + 1, :stopped)
+            assert {:ok, %{status: "drained"}} = Drains.status(id)
+            refute allocation(vm).compute_held
+            Ledger.rollback(:example_complete)
+          end)
+      end,
+      test_cases: 100
+    )
   end
 
   defp refresh(c) do

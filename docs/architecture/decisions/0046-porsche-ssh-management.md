@@ -42,7 +42,8 @@ Unknown SSH keys obtain restricted onboarding only after signature verification.
 A ten-minute browser approval binds the key to the signed-in account after an
 explicit fingerprint confirmation using existing magic-link authentication.
 Interactive sessions may continue; exec commands require explicit retry. The
-authenticated browser also adds/removes keys directly at /settings/ssh-keys.
+authenticated browser also adds/removes keys directly at /settings/ssh-keys
+(the `#ssh-keys` section of `/settings` since [ADR-0196](0196-single-account-settings-page.md)).
 One canonical active key belongs to one account. Revocation affects existing
 sessions before subsequent commands/polls, without reviving them on re-addition.
 Users may remove their final key and retain email login. Every command and poll
@@ -120,9 +121,9 @@ the 403 and absence of grant, audit, change and SSH receipt effects.
 [properties](../../../protocol/test/ssh_key_test.exs) cover bounded canonical keys.
 [SSH domain](../../../marshall/lib/marshall/ssh.ex),
 [key resource](../../../marshall/lib/marshall/ssh/key.ex) and
-[browser page](../../../marshall/lib/marshall_web/live/ssh_keys_live.ex) establish
+[browser page](../../../marshall/lib/marshall_web/live/account_live.ex) (the SSH keys section of `/settings` since [ADR-0196](0196-single-account-settings-page.md)) establish
 the first implementation slice. [Domain tests](../../../marshall/test/marshall/ssh/key_test.exs)
-and [browser tests](../../../marshall/test/marshall_web/ssh_keys_live_test.exs)
+and [browser tests](../../../marshall/test/marshall_web/account_live_test.exs)
 pass their targeted checks.
 
 [Gateway](../../../marshall/lib/marshall/ssh/gateway.ex),

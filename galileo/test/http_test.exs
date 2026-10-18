@@ -11,43 +11,40 @@ defmodule Galileo.HTTPTest do
   # HTTP403; invalid/outage statuses MUST remain HTTP503. No refused request
   # may read its upload, invoke an upstream callback or change active counters.
   property "verified authority refusals preserve guest status without upstream effects" do
-    check all(
-            refusal <-
-              member_of([{:error, "unauthorized"}, {:error, "invalid_request"}, {:refuse, 503}]),
-            max_runs: 6
-          ) do
-      control =
-        case refusal do
-          {:refuse, status} -> Galileo.ControlStub.start({:refuse, status})
-          error -> Galileo.ControlStub.start(fn _op, _body -> error end)
-        end
+    refusal =
+      draw("refusal", member_of(error: "unauthorized", error: "invalid_request", refuse: 503))
 
-      owner = self()
-      baseline = :counters.get(Galileo.Counter.counters(), 1)
-
-      conn =
-        Plug.Test.conn("POST", "/upload", "unread")
-        |> put_req_header("x-overalls-binding", binding_header())
-        |> raising_body_adapter()
-        |> Map.put(:host, "fixture.integration.internal")
-
-      conn = %{conn | req_headers: [{"host", "fixture.integration.internal"} | conn.req_headers]}
-
-      result =
-        Galileo.HTTP.call(conn, %{
-          host_id: @host_id,
-          control: control,
-          upstream_stream: fn _, _ -> send(owner, :unexpected_upstream) end
-        })
-
-      unauthorized? = refusal == {:error, "unauthorized"}
-      assert result.status == if(unauthorized?, do: 403, else: 503)
-      assert :counters.get(Galileo.Counter.counters(), 1) == baseline
-      refute_receive :unexpected_upstream, 10
-
-      if unauthorized? do
-        assert {:error, :unauthorized} = Galileo.Control.request(control, "renew", %{})
+    control =
+      case refusal do
+        {:refuse, status} -> Galileo.ControlStub.start({:refuse, status})
+        error -> Galileo.ControlStub.start(fn _op, _body -> error end)
       end
+
+    owner = self()
+    baseline = :counters.get(Galileo.Counter.counters(), 1)
+
+    conn =
+      Plug.Test.conn("POST", "/upload", "unread")
+      |> put_req_header("x-overalls-binding", binding_header())
+      |> raising_body_adapter()
+      |> Map.put(:host, "fixture.integration.internal")
+
+    conn = %{conn | req_headers: [{"host", "fixture.integration.internal"} | conn.req_headers]}
+
+    result =
+      Galileo.HTTP.call(conn, %{
+        host_id: @host_id,
+        control: control,
+        upstream_stream: fn _, _ -> send(owner, :unexpected_upstream) end
+      })
+
+    unauthorized? = refusal == {:error, "unauthorized"}
+    assert result.status == if(unauthorized?, do: 403, else: 503)
+    assert :counters.get(Galileo.Counter.counters(), 1) == baseline
+    refute_receive :unexpected_upstream, 10
+
+    if unauthorized? do
+      assert {:error, :unauthorized} = Galileo.Control.request(control, "renew", %{})
     end
   end
 

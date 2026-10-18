@@ -32,8 +32,8 @@ defmodule MarshallWeb.SSHApprovalLive do
         {:noreply,
          socket
          |> assign(approval_token: nil)
-         |> put_flash(:info, "SSH key approved. You can return to your SSH client.")
-         |> push_navigate(to: ~p"/settings/ssh-keys")}
+         |> put_flash(:info, gettext("SSH key approved. You can return to your SSH client."))
+         |> push_navigate(to: ~p"/settings#ssh-keys")}
 
       {:error, _} ->
         {:noreply, unavailable(socket)}
@@ -47,7 +47,7 @@ defmodule MarshallWeb.SSHApprovalLive do
     |> assign(approval: nil, approval_token: nil)
     |> put_flash(
       :error,
-      "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+      gettext("This SSH approval is unavailable or has expired. Start a new SSH connection to try again.")
     )
   end
 
@@ -63,31 +63,31 @@ defmodule MarshallWeb.SSHApprovalLive do
       active="ssh"
     >
       <section class="stack">
-        <h1>Approve SSH key</h1>
+        <h1>{gettext("Approve SSH key")}</h1>
         <.form :if={@approval} for={@form} id="ssh-approval-form" phx-submit="approve" class="panel">
           <p>
-            Approve this key only if you started the SSH connection and its fingerprint matches your SSH client.
+            {gettext("Approve this key only if you started the SSH connection and its fingerprint matches your SSH client.")}
           </p>
           <pre id="ssh-approval-fingerprint"><code>{@approval.fingerprint}</code></pre>
           <p class="muted">
-            This key will sign in as {@current_user.email}. It can manage machines according to your account's permissions.
+            {gettext("This key will sign in as %{value1}. It can manage machines according to your account's permissions.", value1: @current_user.email)}
           </p>
           <.input
             field={@form[:label]}
-            label="Label (optional)"
+            label={gettext("Label (optional)")}
             maxlength="128"
-            placeholder="My laptop"
+            placeholder={gettext("My laptop")}
           />
           <Layouts.action
             tone="primary"
             id="approve-ssh-key"
             type="submit"
-            phx-disable-with="Approving…"
+            phx-disable-with={gettext("Approving…")}
           >
-            Approve key
+            {gettext("Approve key")}
           </Layouts.action>
         </.form>
-        <p><.link navigate={~p"/settings/ssh-keys"}>Manage your SSH keys</.link></p>
+        <p><.link navigate={~p"/settings#ssh-keys"}>{gettext("Manage your SSH keys")}</.link></p>
       </section>
     </Layouts.app>
     """

@@ -8,6 +8,7 @@ defmodule Overalls.RequestAccounting.QualityMarkerTest do
     directory = Path.join(System.tmp_dir!(), "slo-marker-#{System.unique_integer([:positive])}")
     File.mkdir!(directory)
     File.chmod!(directory, 0o700)
+
     try do
       fun.(directory)
     after
@@ -16,20 +17,20 @@ defmodule Overalls.RequestAccounting.QualityMarkerTest do
   end
 
   property "quality histories persist exactly without carrying request data" do
-    check all(
-            qualities <-
-              list_of(member_of([:running, :gap, :clean]), min_length: 1, max_length: 30),
-            max_runs: 32
-          ) do
-      with_temp_directory(fn directory ->
-        for quality <- qualities do
-          assert :ok = QualityMarker.write(directory, quality)
-          assert {:ok, ^quality} = QualityMarker.read(directory)
-          assert {:ok, stat} = File.stat(Path.join(directory, "quality"))
-          assert Bitwise.band(stat.mode, 0o777) == 0o600
-        end
-      end)
-    end
+    qualities =
+      draw(
+        "qualities",
+        list_of(member_of([:running, :gap, :clean]), min_length: 1, max_length: 30)
+      )
+
+    with_temp_directory(fn directory ->
+      for quality <- qualities do
+        assert :ok = QualityMarker.write(directory, quality)
+        assert {:ok, ^quality} = QualityMarker.read(directory)
+        assert {:ok, stat} = File.stat(Path.join(directory, "quality"))
+        assert Bitwise.band(stat.mode, 0o777) == 0o600
+      end
+    end)
   end
 
   test "corrupt marker refuses replacement rather than inventing clean history" do

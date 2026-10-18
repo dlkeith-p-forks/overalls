@@ -43,8 +43,8 @@ a.console-button {
   font-weight: var(--font-weight-bold);
   border-style: double;
   border-width: calc(var(--border-thickness) * 3);
-  padding-left: calc(1ch - var(--border-thickness) * 3);
-  padding-right: calc(1ch - var(--border-thickness) * 3);
+  padding-inline-start: calc(1ch - var(--border-thickness) * 3);
+  padding-inline-end: calc(1ch - var(--border-thickness) * 3);
 }
 .console-button:disabled, .console-button[aria-disabled="true"] {
   cursor: not-allowed;
@@ -61,10 +61,22 @@ a.console-button {
   text-decoration-thickness: var(--border-thickness);
 }
 
-/* Status is text: [state]. The brackets are decoration; DOM text stays exact. */
+/* Status labels: one bracketed word per cell row, ordered [Pinned] [OS] [State].
+   The brackets are decoration and the DOM text names the state, so nothing
+   rests on colour. Severity is carried by weight, style or inverse video, and
+   a later tone rule wins over the observed-state fallback:
+   - muted (Pinned, OS, archived, tone muted): secondary colour;
+   - neutral (Stopped, Deleted, roles, phases): plain text;
+   - active (Running, ready, tone success): bold;
+   - transitional (Pending, Starting, Stopping, Deleting, provisioning,
+     unknown, tone pending): italic at normal weight;
+   - failed (state failed, tones danger and warning): bold inverse video padded
+     one cell each side, so the block sits on the grid as a solid tag. */
 .status-label {
   display: inline-block;
   white-space: nowrap;
+  line-height: var(--line-height);
+  align-self: flex-start;
 }
 .status-label::before {
   content: "[";
@@ -73,20 +85,32 @@ a.console-button {
   content: "]";
 }
 .status-label[data-state="running"],
+.status-label[data-state="ready"],
 .status-label[data-tone="success"] {
   font-weight: var(--font-weight-bold);
+}
+.status-label[data-state="pending"],
+.status-label[data-state="unknown"],
+.status-label[data-state="provisioning"],
+.status-label[data-state="deleting"],
+.status-label[data-tone="pending"] {
+  font-style: italic;
+  font-weight: var(--font-weight-normal);
+}
+.status-label[data-state="archived"],
+.status-label[data-tone="muted"] {
+  color: var(--text-color-alt);
+  font-style: normal;
+  font-weight: var(--font-weight-normal);
 }
 .status-label[data-state="failed"],
 .status-label[data-tone="danger"],
 .status-label[data-tone="warning"] {
+  padding: 0 1ch;
   background: var(--text-color);
   color: var(--background-color);
+  font-style: normal;
   font-weight: var(--font-weight-bold);
-}
-.status-label[data-state="stopped"],
-.status-label[data-state="pending"],
-.status-label[data-tone="muted"] {
-  color: var(--text-color-alt);
 }
 
 .panel {
@@ -298,7 +322,7 @@ table .console-button, a.console-button.compact {
   text-decoration-thickness: var(--border-thickness);
 }
 td > .console-button + .console-button {
-  margin-left: 1ch;
+  margin-inline-start: 1ch;
 }
 td pre, th pre {
   margin: 0;

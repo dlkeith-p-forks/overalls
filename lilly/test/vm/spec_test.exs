@@ -18,24 +18,22 @@ defmodule Lilly.VM.SpecTest do
   end
 
   property "execution preserves exact aligned guest sizes and reserves VMM memory separately" do
-    check all(
-            cpu <- integer(1..32),
-            memory_mib <- integer(512..262_144),
-            disk_blocks <- integer(524_288..131_072_000)
-          ) do
-      input = %{
-        valid()
-        | vcpu: cpu,
-          memory_bytes: memory_mib * 1_048_576,
-          disk_bytes: disk_blocks * 4096
-      }
+    cpu = draw("cpu", integer(1..32))
+    memory_mib = draw("memory_mib", integer(512..262_144))
+    disk_blocks = draw("disk_blocks", integer(524_288..131_072_000))
 
-      assert {:ok, spec} = Spec.new(input)
-      assert spec.memory_bytes == input.memory_bytes
-      assert spec.disk_bytes == input.disk_bytes
-      assert Spec.host_memory(spec) == input.memory_bytes + 67_108_864
-      assert Spec.encode(spec)["vcpu"] == cpu
-    end
+    input = %{
+      valid()
+      | vcpu: cpu,
+        memory_bytes: memory_mib * 1_048_576,
+        disk_bytes: disk_blocks * 4096
+    }
+
+    assert {:ok, spec} = Spec.new(input)
+    assert spec.memory_bytes == input.memory_bytes
+    assert spec.disk_bytes == input.disk_bytes
+    assert Spec.host_memory(spec) == input.memory_bytes + 67_108_864
+    assert Spec.encode(spec)["vcpu"] == cpu
   end
 
   test "rejects imprecise sizes, extra fields and invalid identities before host effects" do

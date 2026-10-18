@@ -5,7 +5,8 @@ defmodule Porsche.SLOTest do
   alias Porsche.{Observability, SLO}
 
   property "generated terminal command dispatches keep closed cumulative outcomes and buckets" do
-    outcomes = draw(list_of(tuple({boolean(), integer(0..20_000_000)}), max_length: 100))
+    outcomes =
+      draw("outcomes", list_of(tuple({boolean(), integer(0..20_000_000)}), max_length: 100))
 
     final =
       Enum.reduce(outcomes, SLO.new(), fn {success, duration}, state ->

@@ -45,39 +45,45 @@ defmodule Lilly.Lifecycle.JournalTest do
   # More than the old 64-event bound MUST commit without a collector
   # acknowledgement. Reopening MUST retain the same authority and no event queue.
   @tag :hegel
+  # Full100-case journal workload measured87 seconds under parallel suite load.
+  @tag timeout: 180_000
   test "collector outage cannot bound state history", c do
-    check all(count <- integer(65..96), test_cases: 8) do
-      directory = Path.join(c.root, Lilly.UUID.generate())
+    Hegel.check(
+      fn ->
+        count = draw("count", integer(65..96))
+        directory = Path.join(c.root, Lilly.UUID.generate())
 
-      locked(directory, fn ->
-        for revision <- 1..count do
+        locked(directory, fn ->
+          for revision <- 1..count do
+            assert :ok =
+                     Journal.write(
+                       Dataset,
+                       directory,
+                       "claim.json",
+                       Map.put(c.payload, "revision_fixture", revision)
+                     )
+          end
+
           assert :ok =
                    Journal.write(
                      Dataset,
                      directory,
                      "claim.json",
-                     Map.put(c.payload, "revision_fixture", revision)
+                     Map.put(c.payload, "revision_fixture", count + 1)
                    )
-        end
 
-        assert :ok =
-                 Journal.write(
-                   Dataset,
-                   directory,
-                   "claim.json",
-                   Map.put(c.payload, "revision_fixture", count + 1)
-                 )
+          assert {:ok, %{revision: revision}} = Journal.load(Dataset, directory, "claim.json")
+          assert revision == count + 1
 
-        assert {:ok, %{revision: revision}} = Journal.load(Dataset, directory, "claim.json")
-        assert revision == count + 1
+          assert {:ok, _, metadata} =
+                   Path.join(directory, "claim.json") |> File.read!() |> Journal.envelope()
 
-        assert {:ok, _, metadata} =
-                 Path.join(directory, "claim.json") |> File.read!() |> Journal.envelope()
-
-        assert metadata["version"] == 2
-        refute Map.has_key?(metadata, "events")
-      end)
-    end
+          assert metadata["version"] == 2
+          refute Map.has_key?(metadata, "events")
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   test "only version-2 envelopes load; other versions fail closed without rewriting", c do
@@ -103,37 +109,42 @@ defmodule Lilly.Lifecycle.JournalTest do
 
   @tag :hegel
   test "arbitrary histories cannot skip materialization or resurrect deleted datasets", c do
-    check all(
-            targets <-
-              list_of(member_of(~w(creating bound ready deleting deleted)), max_length: 15),
-            test_cases: 20
-          ) do
-      directory = Path.join(c.root, Lilly.UUID.generate())
+    Hegel.check(
+      fn ->
+        targets =
+          draw(
+            "targets",
+            list_of(member_of(~w(creating bound ready deleting deleted)), max_length: 15)
+          )
 
-      locked(directory, fn ->
-        assert :ok = Journal.write(Dataset, directory, "claim.json", c.payload)
+        directory = Path.join(c.root, Lilly.UUID.generate())
 
-        Enum.reduce(targets, "creating", fn target, state ->
-          allowed =
-            case state do
-              "creating" -> target in ~w(creating bound deleting)
-              "bound" -> target in ~w(bound ready deleting)
-              "ready" -> target in ~w(ready deleting)
-              "deleting" -> target in ~w(deleting deleted)
-              "deleted" -> target == "deleted"
-            end
+        locked(directory, fn ->
+          assert :ok = Journal.write(Dataset, directory, "claim.json", c.payload)
 
-          result =
-            Journal.write(Dataset, directory, "claim.json", %{c.payload | "state" => target})
+          Enum.reduce(targets, "creating", fn target, state ->
+            allowed =
+              case state do
+                "creating" -> target in ~w(creating bound deleting)
+                "bound" -> target in ~w(bound ready deleting)
+                "ready" -> target in ~w(ready deleting)
+                "deleting" -> target in ~w(deleting deleted)
+                "deleted" -> target == "deleted"
+              end
 
-          assert result == :ok == allowed
-          assert {:ok, record} = Journal.load(Dataset, directory, "claim.json")
-          expected = if allowed, do: target, else: state
-          assert Atom.to_string(record.state) == expected
-          expected
+            result =
+              Journal.write(Dataset, directory, "claim.json", %{c.payload | "state" => target})
+
+            assert result == :ok == allowed
+            assert {:ok, record} = Journal.load(Dataset, directory, "claim.json")
+            expected = if allowed, do: target, else: state
+            assert Atom.to_string(record.state) == expected
+            expected
+          end)
         end)
-      end)
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   defp locked(directory, callback) do

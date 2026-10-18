@@ -101,9 +101,9 @@ defmodule OverallsProtocol.SSHOnboarding do
       if public_origin?(origin) do
         "Register or check your key by connecting to:\n  ssh " <>
           URI.parse(origin).host <>
-          "\nOr manage your keys at:\n  " <> origin <> "/settings/ssh-keys\n\n"
+          "\nOr manage your keys at:\n  " <> origin <> "/settings#ssh-keys\n\n"
       else
-        "Register or check your SSH key in Overalls Settings > SSH keys.\n\n"
+        "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
       end
 
     heading <>

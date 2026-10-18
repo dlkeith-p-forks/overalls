@@ -26,61 +26,60 @@ defmodule Marshall.Accounts.AccountLifecycleHistoryTest do
   # sets after every refused/retried action. A replacement MUST appear while old
   # cleanup still holds disk, inherit no authority, and survive old-UUID cleanup.
   # Synthetic outcomes prove coordinator fencing only, never native reclamation.
+  @tag :hegel_case_sandbox
   property "same-email generations cannot inherit retired authority or redirect cleanup",
-    test_cases: 12 do
-    check all(
-            generations <-
-              list_of(
-                tuple({
-                  boolean(),
-                  list_of(member_of([:ordinary, :wrong_email, :self]),
-                    min_length: 1,
-                    max_length: 5
-                  ),
-                  integer(1..3)
-                }),
-                min_length: 2,
-                max_length: 3
-              ),
-            test_cases: 12
-          ) do
-      fixture = fixture()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    generations =
+      draw(
+        "generations",
+        list_of(
+          tuple({
+            boolean(),
+            list_of(member_of([:ordinary, :wrong_email, :self]), min_length: 1, max_length: 5),
+            integer(1..3)
+          }),
+          min_length: 2,
+          max_length: 3
+        )
+      )
 
-      assert {:ok, %{invited: true}} =
-               command(:invite_user, %{email: fixture.email}, fixture.admin)
+    fixture = fixture()
 
-      assert active_email(fixture.email) == []
+    assert {:ok, %{invited: true}} =
+             command(:invite_user, %{email: fixture.email}, fixture.admin)
 
-      assert [mail] =
-               AuthEmail
-               |> Ash.Query.filter(recipient_fingerprint == ^fingerprint(fixture.email))
-               |> Ash.read!(actor: SystemActor.compute())
+    assert active_email(fixture.email) == []
 
-      payload = Ash.load!(mail, :payload, actor: SystemActor.compute()).payload
-      assert payload["email"] == fixture.email
-      assert {:ok, first} = sign_in(payload["token"])
-      assert_fresh(first)
+    assert [mail] =
+             AuthEmail
+             |> Ash.Query.filter(recipient_fingerprint == ^fingerprint(fixture.email))
+             |> Ash.read!(actor: SystemActor.compute())
 
-      {last, history} =
-        Enum.reduce(generations, {first, %{identities: [], tokens: [], receipts: []}}, fn
-          generation, {current, history} ->
-            advance_generation(generation, current, history, fixture)
-        end)
+    payload = Ash.load!(mail, :payload, actor: SystemActor.compute()).payload
+    assert payload["email"] == fixture.email
+    assert {:ok, first} = sign_in(payload["token"])
+    assert_fresh(first)
 
-      assert active_email(fixture.email) == [last.id]
-      assert Enum.uniq([last.id | history.identities]) == [last.id | history.identities]
+    {last, history} =
+      Enum.reduce(generations, {first, %{identities: [], tokens: [], receipts: []}}, fn
+        generation, {current, history} ->
+          advance_generation(generation, current, history, fixture)
+      end)
 
-      assert Enum.sort(Enum.map(Ledger.read!(UserDeletion, email: fixture.email), & &1.id)) ==
-               Enum.sort(history.receipts)
+    assert active_email(fixture.email) == [last.id]
+    assert Enum.uniq([last.id | history.identities]) == [last.id | history.identities]
 
-      for id <- history.identities do
-        assert %User{deleted_at: %DateTime{}, administrator: false} = Security.current(id)
-        assert [] == Ledger.read!(VirtualMachine, owner_id: id)
-      end
+    assert Enum.sort(Enum.map(Ledger.read!(UserDeletion, email: fixture.email), & &1.id)) ==
+             Enum.sort(history.receipts)
 
-      assert_fresh(last)
-      assert_survivor(fixture)
+    for id <- history.identities do
+      assert %User{deleted_at: %DateTime{}, administrator: false} = Security.current(id)
+      assert [] == Ledger.read!(VirtualMachine, owner_id: id)
     end
+
+    assert_fresh(last)
+    assert_survivor(fixture)
   end
 
   @spec advance_generation(generation(), User.t(), history(), fixture()) :: {User.t(), history()}

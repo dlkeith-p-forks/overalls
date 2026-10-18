@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Language: fil\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
+
+msgid "Porsche machine management. Type help."
+msgstr "Pamamahala ng mga machine sa Porsche. I-type ang help."
+
+msgid "Docs:"
+msgstr "Dokumentasyon:"
+
+msgid "Show command help."
+msgstr "Ipakita ang tulong sa mga command."
+
+msgid "Show the authenticated account."
+msgstr "Ipakita ang na-authenticate na account."
+
+msgid "List available images."
+msgstr "Ilista ang mga magagamit na image."
+
+msgid "List machines you can access."
+msgstr "Ilista ang mga machine na maa-access mo."
+
+msgid "Inspect a machine by name or UUID."
+msgstr "Suriin ang isang machine gamit ang pangalan o UUID."
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Gumawa ng machine. Pinakamalaking disk: 500 GiB. Kino-clone ng --source ang isang pampublikong GitHub, GitLab, Codeberg o Bitbucket repository sa guest."
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Ipila ang hiwalay na kopya ng buong disk ng isang machine."
+
+msgid "Move a machine to an automatically selected host."
+msgstr "Ilipat ang isang machine sa awtomatikong napiling host."
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "Baguhin ang CPU at memory ng isang machine; maaari lamang palakihin ang disk. Ihihinto at sisimulang muli ang tumatakbong machine."
+
+msgid "Retry a failed clone or relocation request."
+msgstr "Subukang muli ang nabigong kahilingan sa pag-clone o paglipat."
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Kanselahin ang hindi pa nailalathalang clone o hindi pa nakukumpirmang paglipat."
+
+msgid "Start a machine."
+msgstr "Simulan ang isang machine."
+
+msgid "Stop a machine, retaining its disk."
+msgstr "Ihinto ang isang machine habang pinapanatili ang disk nito."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Burahin ang isang machine at disk nito. Tatanggihan habang naka-pin ito ng may-ari."
+
+msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
+msgstr "I-pin ang isang machine sa itaas ng iyong mga listahan. Hindi ito mabubura habang pag-aari mo at naka-pin ito."
+
+msgid "Remove your pin from a machine."
+msgstr "Alisin ang iyong pin sa isang machine."
+
+msgid "List access grants."
+msgstr "Ilista ang mga ipinagkaloob na pahintulot sa access."
+
+msgid "Grant viewer, operator or manager access."
+msgstr "Magbigay ng access bilang tagatingin, operator o tagapamahala."
+
+msgid "Revoke an account's shared access."
+msgstr "Bawiin ang nakabahaging access ng isang account."
+
+msgid "List your SSH keys."
+msgstr "Ilista ang iyong mga SSH key."
+
+msgid "Revoke one of your SSH keys."
+msgstr "Bawiin ang isa sa iyong mga SSH key."
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "Gumawa o palitan ang isang pinangalanang integration sa https://NAME.integration.internal."
+
+msgid "Remove a named integration."
+msgstr "Alisin ang isang pinangalanang integration."
+
+msgid "List your integrations."
+msgstr "Ilista ang iyong mga integration."
+
+msgid "Inspect an integration without secrets."
+msgstr "Suriin ang isang integration nang walang lihim na impormasyon."
+
+msgid "Make an integration available to a machine."
+msgstr "Gawing magagamit ang isang integration sa isang machine."
+
+msgid "Remove a machine's explicit availability."
+msgstr "Alisin ang tahasang ibinigay na availability para sa isang machine."
+
+msgid "Create a team you own."
+msgstr "Gumawa ng team na pag-aari mo."
+
+msgid "List your teams and roles."
+msgstr "Ilista ang iyong mga team at tungkulin."
+
+msgid "List a team's members."
+msgstr "Ilista ang mga miyembro ng isang team."
+
+msgid "Add or change an admin or member."
+msgstr "Magdagdag o magpalit ng admin o miyembro."
+
+msgid "Remove an account's membership."
+msgstr "Alisin ang pagiging miyembro ng isang account."
+
+msgid "Offer team ownership to an admin."
+msgstr "Ialok sa isang admin ang pagmamay-ari ng team."
+
+msgid "Accept a pending ownership offer."
+msgstr "Tanggapin ang nakabinbing alok ng pagmamay-ari."
+
+msgid "Decline a pending ownership offer."
+msgstr "Tanggihan ang nakabinbing alok ng pagmamay-ari."
+
+msgid "Cancel your pending ownership offer."
+msgstr "Kanselahin ang iyong nakabinbing alok ng pagmamay-ari."
+
+msgid "Inspect a previously accepted request."
+msgstr "Suriin ang isang dati nang tinanggap na kahilingan."
+
+msgid "Close this interactive channel."
+msgstr "Isara ang interactive na channel na ito."
+
+msgid "We don't recognize this SSH key:\n  "
+msgstr "Hindi namin nakikilala ang SSH key na ito:\n  "
+
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nBuksan ang link na ito, mag-sign in, at aprubahan ang katugmang fingerprint:\n  "
+
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
+msgstr "\n\nPanatilihing bukas ang SSH connection na ito habang inaaprubahan ang key.\n"
+
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "Mawawalan ng bisa ang mga link ng pag-apruba pagkalipas ng %{minutes} minuto o kapag isinara ang connection na ito.\n"
+
+msgid "After approval, retry your command here.\n"
+msgstr "Pagkatapos maaprubahan, subukang muli ang iyong command dito.\n"
+
+msgid "\nOpen an interactive Porsche connection without a remote command:"
+msgstr "\nMagbukas ng interactive na Porsche connection nang walang remote command:"
+
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "Panatilihing bukas ang connection habang inaaprubahan ang iyong key sa browser,\n"
+
+msgid "then retry your original command.\n"
+msgstr "pagkatapos ay subukang muli ang orihinal mong command.\n"
+
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Maligayang pagdating sa Overalls.\n\nKailangan ng connection na ito ang SSH configuration ng Overalls.\n\n"
+
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "Hindi namin ma-verify ang SSH key na ito ngayon. Pakisubukang muli makalipas ang ilang sandali.\n\n"
+
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "Hindi pinahintulutan ang SSH connection na ito. Suriin ang access mo sa machine at subukang muli.\n\n"
+
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "Irehistro o suriin ang iyong key sa pamamagitan ng pagkonekta sa:\n  ssh "
+
+msgid "\nOr manage your keys at:\n  "
+msgstr "\nO pamahalaan ang iyong mga key sa:\n  "
+
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Irehistro o suriin ang iyong SSH key sa Mga setting ng account sa Overalls > Mga SSH key.\n\n"
+
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "Sundin ang mga tagubilin sa pag-apruba sa browser, pagkatapos patakbuhin ang setup command\n"
+
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "mula sa pahina ng iyong machine at kumonekta muli nang walang root@.\n"
+
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "Hindi pinahihintulutan ang connection na ito. Mag-sign in at subukang muli."
+
+msgid "You do not have permission to perform this action."
+msgstr "Wala kang pahintulot na gawin ang pagkilos na ito."
+
+msgid "Invalid command. Type help to see available commands."
+msgstr "Hindi wastong command. I-type ang help upang makita ang mga available na command."
+
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "Pansamantalang hindi magagamit ang serbisyo. Pakisubukang muli makalipas ang ilang sandali."
+
+msgid "Approve this SSH key in your browser, then retry the command."
+msgstr "Aprubahan ang SSH key na ito sa iyong browser, pagkatapos subukang muli ang command."
+
+msgid "The requested resource could not be found."
+msgstr "Hindi mahanap ang hiniling na resource."
+
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "Hindi inaasahang input. Magbukas ng bagong SSH connection."
+
+msgid "The command could not be completed: %{reason}"
+msgstr "Hindi makumpleto ang command: %{reason}"
+
+msgid "Request %{id}: submitting"
+msgstr "Kahilingang %{id}: isinusumite"
+
+msgid "Request %{id}: waiting for completion"
+msgstr "Kahilingang %{id}: hinihintay ang pagkumpleto"

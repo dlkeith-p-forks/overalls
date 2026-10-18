@@ -23,7 +23,7 @@ instead of refusing. The failure landed in the view's generic error clause, so
 even a non-crashing shape would have misattributed it to missing elevation.
 SecurityCoordinator now validates the label as a closed `:invalid_label`
 refusal before any credential write, and the
-[Security UI](../../../marshall/lib/marshall_web/live/security_live.ex) copy
+[Security UI](../../../marshall/lib/marshall_web/live/account_live.ex) copy
 names the refusal classes (name bound, fresh verification and administrator
 last-passkey rule). Failing reproduction first, minimal fix, then regression
 tests at domain and LiveView layers; see the mutant table for the gate check.
@@ -57,7 +57,7 @@ generation bump and full token revocation, administrator last-passkey refusal
 (until a second passkey exists), locked-elevation and signed-out stale-actor
 refusals, the ten-passkey begin/finish bound with retained-challenge reuse, and
 failed registration never enabling MFA with its challenge consumed.
-[LiveView regressions](../../../marshall/test/marshall_web/security_live_test.exs)
+[LiveView regressions](../../../marshall/test/marshall_web/account_live_test.exs)
 cover rename, exact-80 acceptance, the corrected refusal copy, unknown
 credentials, locked elevation and the administrator refusal without a view
 crash. [SSH key bounds](../../../marshall/test/marshall/ssh/key_test.exs)

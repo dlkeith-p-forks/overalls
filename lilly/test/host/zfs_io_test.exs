@@ -5,30 +5,27 @@ defmodule Lilly.Host.ZFSIOTest do
   alias Lilly.Host.ZFSIO
 
   property "native rate rows preserve measured zero and ignore space columns" do
-    check all(
-            rates <- list_of(integer(0..1_000_000), length: 4),
-            allocated <- integer(0..1_000_000_000),
-            free <- integer(0..1_000_000_000)
-          ) do
-      output = Enum.join(["tank", allocated, free | rates], "\t") <> "\n"
-      assert {:ok, %{"tank" => io}} = ZFSIO.parse_rates(output, ["tank"])
-      assert Map.values(io) |> Enum.sort() == Enum.sort(rates)
-      assert io["read_iops"] == Enum.at(rates, 0)
-      assert io["write_iops"] == Enum.at(rates, 1)
-      assert io["read_bytes_per_second"] == Enum.at(rates, 2)
-      assert io["write_bytes_per_second"] == Enum.at(rates, 3)
-      refute Map.has_key?(io, "free_bytes")
-    end
+    rates = draw("rates", list_of(integer(0..1_000_000), length: 4))
+    allocated = draw("allocated", integer(0..1_000_000_000))
+    free = draw("free", integer(0..1_000_000_000))
+    output = Enum.join(["tank", allocated, free | rates], "\t") <> "\n"
+    assert {:ok, %{"tank" => io}} = ZFSIO.parse_rates(output, ["tank"])
+    assert Map.values(io) |> Enum.sort() == Enum.sort(rates)
+    assert io["read_iops"] == Enum.at(rates, 0)
+    assert io["write_iops"] == Enum.at(rates, 1)
+    assert io["read_bytes_per_second"] == Enum.at(rates, 2)
+    assert io["write_bytes_per_second"] == Enum.at(rates, 3)
+    refute Map.has_key?(io, "free_bytes")
   end
 
   property "arbitrary utility bytes cannot crash either parser" do
-    check all(output <- binary(max_length: 4096)) do
-      assert match?(:error, ZFSIO.parse_rates(output, ["tank"])) or
-               match?({:ok, %{}}, ZFSIO.parse_rates(output, ["tank"]))
+    output = draw("output", binary(max_length: 4096))
 
-      assert match?(:error, ZFSIO.parse_identities(output, ["tank"])) or
-               match?({:ok, %{}}, ZFSIO.parse_identities(output, ["tank"]))
-    end
+    assert match?(:error, ZFSIO.parse_rates(output, ["tank"])) or
+             match?({:ok, %{}}, ZFSIO.parse_rates(output, ["tank"]))
+
+    assert match?(:error, ZFSIO.parse_identities(output, ["tank"])) or
+             match?({:ok, %{}}, ZFSIO.parse_identities(output, ["tank"]))
   end
 
   test "rate rows require exactly the expected pools and bounded canonical fields" do
