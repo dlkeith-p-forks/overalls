@@ -1,5 +1,11 @@
 # Browser editors, terminals, SSH, and management
 
+The authenticated Overview may show a newsletter invitation in the right-hand
+panel. Dismissal is persisted on the account and removes the panel on every
+browser. Subscription validates the mailbox and sends the Ghost integrity-token
+and magic-link requests through Marshall; the native Ghost newsletter URL is a
+no-JavaScript fallback.
+
 ## Language and text direction
 
 [ADR-0200](repo:docs/architecture/decisions/0200-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.

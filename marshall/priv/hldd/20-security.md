@@ -1475,3 +1475,9 @@ reason before lifecycle deletion completes.
 ## Git identity configuration
 
 Account authorization controls preference updates. Validated identity is inert execution metadata bound to the machine’s admitted snapshot and current boot. Guest services atomically publish protected Git configuration; malformed metadata refuses. Identity values must not enter diagnostics. Guest sudo and Git local configuration retain their existing authority. Native cross-OS and production rollout acceptance remain separate from BEAM property evidence.
+# Newsletter boundary
+
+Newsletter signup keeps Ghost API calls server-side. The browser may submit
+only the fixed external fallback form action; no Ghost API token, response body,
+or email address is logged by Marshall. Dismissal is authorized only for the
+current non-retired account.

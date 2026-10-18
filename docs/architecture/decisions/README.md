@@ -1,5 +1,7 @@
 # Architecture decision records
 
+[ADR-0201](0201-overview-newsletter.md) accepts an account-wide durable Overview newsletter invitation and a server-side Ghost subscription boundary.
+
 [ADR-0198](0198-github-com-owner-integration.md) accepts the built-in GitHub.com
 connection, owner-bound machine authority, persistent detach, encrypted rotating
 tokens and fenced scheduled refresh through the existing private service path.
