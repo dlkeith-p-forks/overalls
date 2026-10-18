@@ -10,8 +10,8 @@ defmodule MarshallWeb.AccountLive do
   use MarshallWeb, :live_view
   alias Marshall.Accounts.{TimeZones, User}
   alias Marshall.SSH
-  on_mount {MarshallWeb.AuthenticationPrivacy, :default}
-  on_mount {MarshallWeb.LiveUserAuth, :security}
+  on_mount({MarshallWeb.AuthenticationPrivacy, :default})
+  on_mount({MarshallWeb.LiveUserAuth, :security})
 
   @type socket :: Phoenix.LiveView.Socket.t()
   @type reply :: {:noreply, socket()} | {:reply, map(), socket()}
@@ -395,18 +395,6 @@ defmodule MarshallWeb.AccountLive do
   defp key_title(label), do: label
 
   @spec refresh_git_settings(socket()) :: socket()
-  @spec git_form(User.t()) :: Phoenix.HTML.Form.t()
-  defp git_form(user) do
-    to_form(
-      %{
-        "git_username" => user.git_username,
-        "git_email" => to_string(user.git_email),
-        "commit_trailers_enabled" => user.commit_trailers_enabled
-      },
-      as: :settings
-    )
-  end
-
   defp refresh_git_settings(socket) do
     user = Marshall.Accounts.Security.current(socket.assigns.current_user.id)
 

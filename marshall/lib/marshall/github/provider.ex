@@ -1,6 +1,7 @@
 defmodule Marshall.GitHub.Provider do
   @moduledoc "Fixed-origin GitHub OAuth transport. Responses and errors never escape as diagnostics."
   alias Marshall.GitHub.Grant
+  require Marshall.Events
 
   @scopes ~w(repo workflow read:org project gist notifications read:user user:email read:packages write:packages offline_access)
   @type identity :: %{id: pos_integer(), login: binary()}
@@ -80,10 +81,10 @@ defmodule Marshall.GitHub.Provider do
   def revoke(token) do
     result = revoke_at(token, "grant")
 
-    Marshall.Events.emit("github.token_revoked", %{
+    Marshall.Events.emit("github.token_revoked",
       kind: :grant,
       outcome: if(result == :ok, do: :ok, else: :error)
-    })
+    )
 
     result
   end
@@ -92,10 +93,10 @@ defmodule Marshall.GitHub.Provider do
   def revoke_token(token) do
     result = revoke_at(token, "token")
 
-    Marshall.Events.emit("github.token_revoked", %{
+    Marshall.Events.emit("github.token_revoked",
       kind: :token,
       outcome: if(result == :ok, do: :ok, else: :error)
-    })
+    )
 
     result
   end
