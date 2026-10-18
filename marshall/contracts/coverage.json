@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 29,
+      "active": 32,
       "coverage": 1.0,
-      "covered": 29
+      "covered": 32
     },
     "system": {
       "active": 0,
@@ -62,10 +62,10 @@
       }
     },
     "marshall.identity_authorization": {
-      "active": 6,
+      "active": 8,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 6,
+      "covered": 8,
       "form": "light",
       "obligations": {
         "marshall.identity_authorization.I1": {
@@ -126,6 +126,26 @@
           "testable": true,
           "tests": [
             "test pin projections are empty for every non-user actor"
+          ]
+        },
+        "marshall.identity_authorization.I7": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test time zone validation accepts only resolvable identifiers and never raises"
+          ]
+        },
+        "marshall.identity_authorization.I8": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test picker labels carry the current offset and differences are antisymmetric"
           ]
         }
       }
@@ -268,10 +288,10 @@
       }
     },
     "marshall.web_surface": {
-      "active": 8,
+      "active": 9,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 8,
+      "covered": 9,
       "form": "light",
       "obligations": {
         "marshall.web_surface.I1": {
@@ -353,6 +373,16 @@
           "tests": [
             "test secure session options are host-prefixed, secure and encrypted"
           ]
+        },
+        "marshall.web_surface.I9": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test converted timestamps keep the UTC instant and people show saved zones only"
+          ]
         }
       }
     },
@@ -367,8 +397,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 29,
+    "active": 32,
     "coverage": 1.0,
-    "covered": 29
+    "covered": 32
   }
 }

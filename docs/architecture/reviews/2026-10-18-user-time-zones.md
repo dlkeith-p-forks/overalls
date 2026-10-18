@@ -114,6 +114,17 @@ restore ADR-0195's existing boundaries without changing authorization or time
 authority. The running full suite compiled before these final corrections;
 their focused compilation/tests and typing retain separate execution scope.
 
+The complete merged Marshall gate then passed **1,757 tests with 4 exclusions**
+(seed `254814`, default Hegel exploration and distributed mode), followed by
+Monospace and forced Dialyzer with zero errors. After the final formatter rewrite,
+the focused projection/timestamp run passed **63 tests** (seed `161214`, 8
+cases), contracts, logging, Monospace, workspace typing and forced Dialyzer
+with zero errors. The focused run covers the new share/team exact-map
+regression, thread UTC title, operational expiration conversion and profile
+time-zone behavior; it is separate from the full gate's pre-correction test
+phase. The generated contract coverage now records 32/32 active Marshall
+obligations.
+
 Evidence is BEAM-level: Hegel properties drive `TimeZones` over every curated
 zone and random instants including DST edges; the action property and tests
 run against local PostgreSQL; LiveView tests cover resolution order, the dead

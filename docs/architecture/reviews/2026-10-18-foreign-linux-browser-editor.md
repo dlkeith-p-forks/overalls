@@ -301,6 +301,13 @@ review documents and the generated diagnostic schema changed during the run;
 the final schema's focused execution is separate from this full-suite result.
 No complete passing Audi or Porsche gate is claimed.
 
+The complete merged Marshall gate passed **1,757 tests with 4 exclusions**,
+Monospace and forced Dialyzer with zero errors. Its focused post-correction
+run passed **63 tests**, contracts, logging, workspace and Monospace checks,
+and forced Dialyzer with zero errors. These checks cover the final CLI
+projection and timestamp corrections; they do not rerun native browser or
+production sign-in journeys.
+
 An initial Marshall full gate was interrupted after concurrent test fixtures
 exhausted its isolated PostgreSQL connection budget. The bounded replacement
 passed: **1,725 tests passed, 4 excluded**, Covenant **29/29**, terminal **36/36**,

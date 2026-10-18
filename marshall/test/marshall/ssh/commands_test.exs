@@ -163,7 +163,10 @@ defmodule Marshall.SSH.CommandsTest do
              command(c, "new --profile standard --name zone-wire --request-id zone-wire-create")
 
     assert {:ok, _} =
-             command(c, "share add zone-wire #{member.email} manager --request-id zone-wire-grant")
+             command(
+               c,
+               "share add zone-wire #{member.email} manager --request-id zone-wire-grant"
+             )
 
     assert {:ok, %{owner: owner_view, items: [grant]}} =
              Marshall.Access.list_grants(%{vm_id: created.result["id"]}, actor: owner)
