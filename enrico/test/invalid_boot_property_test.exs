@@ -59,7 +59,7 @@ defmodule Enrico.InvalidBootPropertyTest do
   # supervisor or reviewed Tasks/Manager/Bandit startup entry points are called.
   # Refusal MUST preserve recursive fixture contents and custody and exclude
   # credentials and fixture paths from diagnostics. Unset is an empty boot.
-  property "generated invalid Enrico configurations refuse fresh OTP startup" do
+  property "generated invalid Enrico configurations refuse fresh OTP startup", profile: :ci, print_blob: false do
     root = private_directory("k-eb-")
     on_exit(fn -> File.rm_rf!(root) end)
 
