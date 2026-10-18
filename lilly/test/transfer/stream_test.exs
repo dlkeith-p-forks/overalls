@@ -77,7 +77,10 @@ defmodule Lilly.Transfer.StreamTest do
     assert {:error, reason} =
              Stream.run(c.ownership, ssh(c, "127.0.0.1"), compare(c), 10_000, 0, owner)
 
-    assert reason in [:stream_producer_failed, :stream_children_failed]
+    # Depending on which side observes the refused SSH connection first, the
+    # pipeline reports the producer, children, or consumer failure.  All three
+    # are closed observations and must release the lease.
+    assert reason in [:stream_producer_failed, :stream_children_failed, :stream_consumer_failed]
     assert_received {:lilly_transfer_progress, ^owner, 0}
     assert reacquirable(c.ownership)
   end
