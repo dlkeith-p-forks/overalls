@@ -7015,7 +7015,7 @@ msgstr "Onaylandı"
 #: lib/marshall_web/live/integrations_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "Awaiting GitHub authorization"
-msgstr ""
+msgstr "GitHub yetkilendirmesi bekleniyor"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
 #, elixir-autogen, elixir-format
@@ -7045,7 +7045,7 @@ msgstr "Aday: %{name}"
 #: lib/marshall_web/live/overview_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
-msgstr ""
+msgstr "Gelen kutunuzu kontrol edin ve aboneliğinizi onaylamak için bağlantıya tıklayın."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
@@ -7067,7 +7067,7 @@ msgstr "Klonlama sürüyor"
 #: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Comment"
-msgstr ""
+msgstr "Yorum"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
 #, elixir-autogen, elixir-format
@@ -7077,23 +7077,23 @@ msgstr "Yapılandırılan ana makine ek yükü: %{cores} çekirdek · %{memory} 
 #: lib/marshall_web/live/integrations_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Connect GitHub"
-msgstr ""
+msgstr "GitHub hesabını bağla"
 
 #: lib/marshall_web/live/integrations_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
-msgstr ""
+msgstr "Git, çekme istekleri, Actions, sürümler ve diğer geliştirme iş akışları için GitHub hesabınızı bağlayın. GitHub kimlik bilgileri uç katmanda kalır."
 
 #: lib/marshall_web/live/integrations_live.ex:126
 #: lib/marshall_web/live/integrations_live.ex:127
 #, elixir-autogen, elixir-format
 msgid "Connected"
-msgstr ""
+msgstr "Bağlı"
 
 #: lib/marshall_web/live/integrations_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "Connected as %{login}"
-msgstr ""
+msgstr "%{login} olarak bağlı"
 
 #: lib/marshall_web/automatic_magic_sign_in_live.ex:33
 #, elixir-autogen, elixir-format
@@ -7118,27 +7118,27 @@ msgstr "Hedef temizliği istendi"
 #: lib/marshall_web/live/integrations_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub"
-msgstr ""
+msgstr "GitHub bağlantısını kes"
 
 #: lib/marshall_web/live/integrations_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub from your machines?"
-msgstr ""
+msgstr "Makinelerinizin GitHub bağlantısı kesilsin mi?"
 
 #: lib/marshall_web/live/integrations_live.ex:128
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
-msgstr ""
+msgstr "Bağlantı kesildi"
 
 #: lib/marshall_web/live/integrations_live.ex:133
 #, elixir-autogen, elixir-format
 msgid "Disconnecting GitHub"
-msgstr ""
+msgstr "GitHub bağlantısı kesiliyor"
 
 #: lib/marshall_web/live/overview_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
-msgstr ""
+msgstr "Kapat"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
 #, elixir-autogen, elixir-format
@@ -7165,7 +7165,7 @@ msgstr "Yükü boşaltılıyor"
 #: lib/marshall_web/live/overview_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
-msgstr ""
+msgstr "Geçerli bir e-posta adresi girin."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
 #, elixir-autogen, elixir-format
@@ -7175,22 +7175,22 @@ msgstr "Tahliye ediliyor"
 #: lib/marshall_web/live/integrations_live.ex:130
 #, elixir-autogen, elixir-format
 msgid "Finishing active GitHub requests"
-msgstr ""
+msgstr "Etkin GitHub istekleri tamamlanıyor"
 
 #: lib/marshall_web/live/overview_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
-msgstr ""
+msgstr "Overalls ve yapay zekâ hakkında ipuçlarını, püf noktalarını ve güncellemeleri e-postayla alın."
 
 #: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
 #, elixir-autogen, elixir-format
 msgid "GitHub connected."
-msgstr ""
+msgstr "GitHub bağlandı."
 
 #: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
 #, elixir-autogen, elixir-format
 msgid "GitHub could not be connected. Try again from Integrations."
-msgstr ""
+msgstr "GitHub bağlanamadı. Entegrasyonlar bölümünden tekrar deneyin."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #, elixir-autogen, elixir-format
@@ -7210,17 +7210,17 @@ msgstr "İş durumu"
 #: lib/marshall_web/live/machines_live.ex:1116
 #, elixir-autogen, elixir-format
 msgid "Labels"
-msgstr ""
+msgstr "Etiketler"
 
 #: lib/marshall_web/live/machines_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
-msgstr ""
+msgstr "Makine meta verileri kaydedildi."
 
 #: lib/marshall_web/live/integrations_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Machines excluded from your GitHub identity"
-msgstr ""
+msgstr "GitHub kimliğinizin dışında tutulan makineler"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #, elixir-autogen, elixir-format
@@ -7245,17 +7245,17 @@ msgstr "İşlem"
 #: lib/marshall_web/live/integrations_live.ex:132
 #, elixir-autogen, elixir-format
 msgid "Reconnect required"
-msgstr ""
+msgstr "Yeniden bağlantı gerekiyor"
 
 #: lib/marshall_web/live/machines_live.ex:1115
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
-msgstr ""
+msgstr "Yansıtma meta verileri"
 
 #: lib/marshall_web/live/integrations_live.ex:131
 #, elixir-autogen, elixir-format
 msgid "Refreshing GitHub connection"
-msgstr ""
+msgstr "GitHub bağlantısı yenileniyor"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:424
 #, elixir-autogen, elixir-format
@@ -7302,17 +7302,17 @@ msgstr "Hedef önyüklemesi yeniden deneniyor"
 #: lib/marshall_web/live/machines_live.ex:1118
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
-msgstr ""
+msgstr "Meta verileri kaydet"
 
 #: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
-msgstr ""
+msgstr "Ajanlar için kısa açıklama"
 
 #: lib/marshall_web/live/integrations_live.ex:401
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
-msgstr ""
+msgstr "Konuk ortamına yansıtma için kısa açıklama"
 
 #: lib/marshall_web/automatic_magic_sign_in_live.ex:27
 #, elixir-autogen, elixir-format
@@ -7352,12 +7352,12 @@ msgstr "Gelişmelerden haberdar olun"
 #: lib/marshall_web/live/overview_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
-msgstr ""
+msgstr "Abone ol"
 
 #: lib/marshall_web/live/integrations_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Temporarily unavailable"
-msgstr ""
+msgstr "Geçici olarak kullanılamıyor"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
 #, elixir-autogen, elixir-format
@@ -7367,12 +7367,12 @@ msgstr "Aktarım meşgul"
 #: lib/marshall_web/live/overview_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
-msgstr ""
+msgstr "İstediğiniz zaman abonelikten çıkabilirsiniz."
 
 #: lib/marshall_web/live/overview_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
-msgstr ""
+msgstr "Bülten hizmetine erişemedik. Daha sonra tekrar deneyin."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
 #, elixir-autogen, elixir-format
@@ -7402,12 +7402,12 @@ msgstr "E-posta bağlantınız doğrulanıyor."
 #: lib/marshall_web/live/integrations_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
-msgstr ""
+msgstr "Makineleriniz bağlı GitHub kimliğinizi otomatik olarak kullanır. Paylaşılan bir makineyi kullanan ortak çalışanlar, makine sahibinin GitHub izinlerini kullanabilir. Bağlantısı ayrılan makineler, GitHub üzerindeki herkese açık kaynaklara anonim erişimi korur."
 
 #: lib/marshall_web/live/machines_live.ex:1116
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
-msgstr ""
+msgstr "üretim, proje-adı"
 
 #: lib/marshall/accounts/time_zones.ex:300
 #, elixir-autogen, elixir-format
