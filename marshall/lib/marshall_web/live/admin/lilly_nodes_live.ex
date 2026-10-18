@@ -343,7 +343,11 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
               </:item>
             </.kv>
             <p id="admission-overhead" class="muted">
-              {gettext("Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled.", cores: @capacity.host.overhead_cores, memory: bytes(@capacity.host.overhead_memory_bytes))}
+              {gettext(
+                "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled.",
+                cores: @capacity.host.overhead_cores,
+                memory: bytes(@capacity.host.overhead_memory_bytes)
+              )}
             </p>
             <form
               :if={@admin_authorized}
@@ -570,7 +574,10 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 </span>
               </header>
               <p class="muted">
-                {gettext("Desired: %{desired} · Observed: %{observed}", desired: label(row.desired_state), observed: label(row.observed_state))}
+                {gettext("Desired: %{desired} · Observed: %{observed}",
+                  desired: label(row.desired_state),
+                  observed: label(row.observed_state)
+                )}
               </p>
               <p :if={row.item && row.item.blocker} class="error">
                 {gettext("Blocked: %{reason}", reason: label(row.item.blocker))}
@@ -582,8 +589,14 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 <p>{gettext("Phase: %{phase}", phase: label(row.progress.phase))}</p>
                 <p :if={row.progress.downtime}>
                   {if row.progress.downtime.ongoing,
-                    do: gettext("Observed interruption: %{seconds}s (ongoing)", seconds: row.progress.downtime.seconds),
-                    else: gettext("Observed interruption: %{seconds}s", seconds: row.progress.downtime.seconds)}
+                    do:
+                      gettext("Observed interruption: %{seconds}s (ongoing)",
+                        seconds: row.progress.downtime.seconds
+                      ),
+                    else:
+                      gettext("Observed interruption: %{seconds}s",
+                        seconds: row.progress.downtime.seconds
+                      )}
                 </p>
               </div>
               <div :if={row.preview}>
@@ -665,45 +678,115 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
   defp label(value) when value in [:unavailable, "unavailable"], do: gettext("Unavailable")
   defp label(value) when value in [:unknown, "unknown"], do: gettext("Unknown")
   defp label(value) when value in [:preparing, "preparing"], do: gettext("Preparing")
-  defp label(value) when value in [:checking_transfer, "checking_transfer"], do: gettext("Checking transfer connectivity")
-  defp label(value) when value in [:stopping_source, "stopping_source"], do: gettext("Stopping the source")
+
+  defp label(value) when value in [:checking_transfer, "checking_transfer"],
+    do: gettext("Checking transfer connectivity")
+
+  defp label(value) when value in [:stopping_source, "stopping_source"],
+    do: gettext("Stopping the source")
+
   defp label(value) when value in [:copying, "copying"], do: gettext("Copying")
   defp label(value) when value in [:importing, "importing"], do: gettext("Importing")
   defp label(value) when value in [:handoff, "handoff"], do: gettext("Switching placement")
-  defp label(value) when value in [:checking_destination, "checking_destination"], do: gettext("Checking destination readiness")
-  defp label(value) when value in [:readiness_failed, "readiness_failed"], do: gettext("Destination readiness failed; source copy retained")
-  defp label(value) when value in [:activation_failed, "activation_failed"], do: gettext("Destination boot failed; source copy retained")
-  defp label(value) when value in [:retrying_destination, "retrying_destination"], do: gettext("Retrying destination boot")
-  defp label(value) when value in [:source_cleanup, "source_cleanup"], do: gettext("Cleaning up the source")
-  defp label(value) when value in [:restoring_source, "restoring_source"], do: gettext("Restoring the source")
-  defp label(value) when value in [:cancelled_cleanup, "cancelled_cleanup"], do: gettext("Cleaning up after cancellation")
-  defp label(value) when value in [:deleting_copies, "deleting_copies"], do: gettext("Deleting retained copies")
+
+  defp label(value) when value in [:checking_destination, "checking_destination"],
+    do: gettext("Checking destination readiness")
+
+  defp label(value) when value in [:readiness_failed, "readiness_failed"],
+    do: gettext("Destination readiness failed; source copy retained")
+
+  defp label(value) when value in [:activation_failed, "activation_failed"],
+    do: gettext("Destination boot failed; source copy retained")
+
+  defp label(value) when value in [:retrying_destination, "retrying_destination"],
+    do: gettext("Retrying destination boot")
+
+  defp label(value) when value in [:source_cleanup, "source_cleanup"],
+    do: gettext("Cleaning up the source")
+
+  defp label(value) when value in [:restoring_source, "restoring_source"],
+    do: gettext("Restoring the source")
+
+  defp label(value) when value in [:cancelled_cleanup, "cancelled_cleanup"],
+    do: gettext("Cleaning up after cancellation")
+
+  defp label(value) when value in [:deleting_copies, "deleting_copies"],
+    do: gettext("Deleting retained copies")
+
   defp label(value) when value in [:complete, "complete"], do: gettext("Complete")
   defp label(value) when value in [:cancelled, "cancelled"], do: gettext("Cancelled")
-  defp label(value) when value in [:campaign_requested, "campaign_requested"], do: gettext("Campaign requested")
+
+  defp label(value) when value in [:campaign_requested, "campaign_requested"],
+    do: gettext("Campaign requested")
+
   defp label(value) when value in [:source_ready, "source_ready"], do: gettext("Source ready")
-  defp label(value) when value in [:campaign_closed, "campaign_closed"], do: gettext("Campaign closed")
-  defp label(value) when value in [:relocation_committed, "relocation_committed"], do: gettext("Relocation committed")
-  defp label(value) when value in [:source_restored, "source_restored"], do: gettext("Source restored")
-  defp label(value) when value in [:source_cleanup_requested, "source_cleanup_requested"], do: gettext("Source cleanup requested")
-  defp label(value) when value in [:source_cleanup_confirmed, "source_cleanup_confirmed"], do: gettext("Source cleanup confirmed")
-  defp label(value) when value in [:destination_cleanup_requested, "destination_cleanup_requested"], do: gettext("Destination cleanup requested")
-  defp label(value) when value in [:destination_cleanup_confirmed, "destination_cleanup_confirmed"], do: gettext("Destination cleanup confirmed")
-  defp label(value) when value in [:cancellation_requested, "cancellation_requested"], do: gettext("Cancellation requested")
+
+  defp label(value) when value in [:campaign_closed, "campaign_closed"],
+    do: gettext("Campaign closed")
+
+  defp label(value) when value in [:relocation_committed, "relocation_committed"],
+    do: gettext("Relocation committed")
+
+  defp label(value) when value in [:source_restored, "source_restored"],
+    do: gettext("Source restored")
+
+  defp label(value) when value in [:source_cleanup_requested, "source_cleanup_requested"],
+    do: gettext("Source cleanup requested")
+
+  defp label(value) when value in [:source_cleanup_confirmed, "source_cleanup_confirmed"],
+    do: gettext("Source cleanup confirmed")
+
+  defp label(value)
+       when value in [:destination_cleanup_requested, "destination_cleanup_requested"],
+       do: gettext("Destination cleanup requested")
+
+  defp label(value)
+       when value in [:destination_cleanup_confirmed, "destination_cleanup_confirmed"],
+       do: gettext("Destination cleanup confirmed")
+
+  defp label(value) when value in [:cancellation_requested, "cancellation_requested"],
+    do: gettext("Cancellation requested")
+
   defp label(value) when value in [:job_state, "job_state"], do: gettext("Job state")
-  defp label(value) when value in [:workload_observed, "workload_observed"], do: gettext("Workload observed")
-  defp label(value) when value in [:downtime_approved, "downtime_approved"], do: gettext("Downtime approved")
-  defp label(value) when value in [:relocation_started, "relocation_started"], do: gettext("Relocation started")
-  defp label(value) when value in [:workload_resolved, "workload_resolved"], do: gettext("Workload resolved")
-  defp label(value) when value in [:workload_changed, "workload_changed"], do: gettext("Workload changed")
-  defp label(value) when value in [:workload_not_stable, "workload_not_stable"], do: gettext("Workload is not stable")
-  defp label(value) when value in [:source_unavailable, "source_unavailable"], do: gettext("Source unavailable")
+
+  defp label(value) when value in [:workload_observed, "workload_observed"],
+    do: gettext("Workload observed")
+
+  defp label(value) when value in [:downtime_approved, "downtime_approved"],
+    do: gettext("Downtime approved")
+
+  defp label(value) when value in [:relocation_started, "relocation_started"],
+    do: gettext("Relocation started")
+
+  defp label(value) when value in [:workload_resolved, "workload_resolved"],
+    do: gettext("Workload resolved")
+
+  defp label(value) when value in [:workload_changed, "workload_changed"],
+    do: gettext("Workload changed")
+
+  defp label(value) when value in [:workload_not_stable, "workload_not_stable"],
+    do: gettext("Workload is not stable")
+
+  defp label(value) when value in [:source_unavailable, "source_unavailable"],
+    do: gettext("Source unavailable")
+
   defp label(value) when value in [:transfer_busy, "transfer_busy"], do: gettext("Transfer busy")
-  defp label(value) when value in [:insufficient_capacity, "insufficient_capacity"], do: gettext("Insufficient capacity")
-  defp label(value) when value in [:downtime_approval_required, "downtime_approval_required"], do: gettext("Downtime approval required")
-  defp label(value) when value in [:resize_in_progress, "resize_in_progress"], do: gettext("Resize in progress")
-  defp label(value) when value in [:relocation_in_progress, "relocation_in_progress"], do: gettext("Relocation in progress")
-  defp label(value) when value in [:clone_in_progress, "clone_in_progress"], do: gettext("Clone in progress")
+
+  defp label(value) when value in [:insufficient_capacity, "insufficient_capacity"],
+    do: gettext("Insufficient capacity")
+
+  defp label(value) when value in [:downtime_approval_required, "downtime_approval_required"],
+    do: gettext("Downtime approval required")
+
+  defp label(value) when value in [:resize_in_progress, "resize_in_progress"],
+    do: gettext("Resize in progress")
+
+  defp label(value) when value in [:relocation_in_progress, "relocation_in_progress"],
+    do: gettext("Relocation in progress")
+
+  defp label(value) when value in [:clone_in_progress, "clone_in_progress"],
+    do: gettext("Clone in progress")
+
   defp label(_), do: gettext("Unknown")
   defp quantity(nil, _), do: gettext("Unknown")
   defp quantity(value, unit), do: "#{value} #{unit}"

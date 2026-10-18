@@ -170,7 +170,9 @@ defmodule Marshall.Galileo.GitHubTest do
                  headers: [],
                  peer: false,
                  idempotency_key: Ash.UUID.generate()
-               }, actor: context.owner)
+               },
+               actor: context.owner
+             )
   end
 
   @spec input(map()) :: map()

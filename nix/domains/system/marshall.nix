@@ -352,12 +352,18 @@ in
       # The final wrapper MUST remove inherited OAuth configuration and select
       # only module settings. Disabled OAuth MUST remain disabled; secret bytes
       # MUST stay in systemd credentials and never enter Nix or command arguments.
+
+      # @cc [owner:ghuntley,label:security;deployment] marshall-prestart-mail-authority
+      # Pre-start release evaluation MUST apply the module's selected mail
+      # transport, clearing inherited provider credentials in local-relay mode
+      # exactly as the serving and migration launchers do.
       preStart = ''
           export RELEASE_COOKIE
           RELEASE_COOKIE="$(${pkgs.coreutils}/bin/head -c 32 /dev/urandom | ${pkgs.coreutils}/bin/basenc --base16 -w0)"
           ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_FLEET_TLS_PORT -u MARSHALL_FLEET_BIND_IP \
             -u MARSHALL_GITHUB_CLIENT_ID -u MARSHALL_GITHUB_CLIENT_SECRET_FILE -u MARSHALL_GITHUB_REDIRECT_URI \
             -u MARSHALL_GITHUB_TOOLS_MANIFEST_FILE -u MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE \
+            ${mailEnvironment} \
             PHX_SERVER=false RELEASE_DISTRIBUTION=none ERL_CRASH_DUMP=/dev/null RELEASE_TMP=/run/marshall-${name} \
             PHX_HOST=${lib.escapeShellArg cfg.publicHost} MARSHALL_INSTANCE_ID=${lib.escapeShellArg name} \
             MARSHALL_GITHUB_RESTORE_EPOCH_FILE=${lib.escapeShellArg cfg.githubRestoreEpochFile} \
@@ -378,8 +384,8 @@ in
         ''}
         exec ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_SLO_SNAPSHOT -u MARSHALL_SERVICE_LEVEL_DIRECTORY -u MARSHALL_INGRESS_EDITOR_RELEASES -u OVERALLS_MARVIN_RELEASE \
           -u MARSHALL_GITHUB_CLIENT_ID -u MARSHALL_GITHUB_CLIENT_SECRET_FILE -u MARSHALL_GITHUB_REDIRECT_URI -u MARSHALL_GITHUB_TOOLS_MANIFEST_FILE -u MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE \
-          ${lib.optionalString (cfg.githubBootstrapRelease != null) ("MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE=" + lib.escapeShellArg "${cfg.githubBootstrapRelease}/manifest.json")} \
           ${mailEnvironment}          PHX_SERVER=true RELEASE_DISTRIBUTION=none \
+          ${lib.optionalString (cfg.githubBootstrapRelease != null) ("MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE=" + lib.escapeShellArg "${cfg.githubBootstrapRelease}/manifest.json")} \
           ${lib.optionalString (cfg.github.clientId != null) ("MARSHALL_GITHUB_CLIENT_ID=" + lib.escapeShellArg cfg.github.clientId)} \
           ${lib.optionalString (cfg.github.clientSecretFile != null) ''MARSHALL_GITHUB_CLIENT_SECRET_FILE="$CREDENTIALS_DIRECTORY/github-oauth-secret"''} \
           ${lib.optionalString (cfg.github.redirectUri != null) ("MARSHALL_GITHUB_REDIRECT_URI=" + lib.escapeShellArg cfg.github.redirectUri)} \

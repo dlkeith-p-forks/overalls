@@ -442,3 +442,11 @@ issuer custody with the fixed `reflection.internal` SAN. Read-only inspection
 found only `llm.internal` and `*.integration.internal` on deployed leaves. Current
 private health checks validate `llm.internal`; their success does not establish
 reflection hostname verification. Disabled Peach requires no certificate change.
+
+Marshall's serving, migration, operator and pre-start release commands use the
+same module-selected mail environment. The GitHub restore-credential invalidation
+pre-start command must apply it before evaluating runtime configuration; inherited
+remote SMTP settings cannot override an enabled local relay. Environment removal
+options precede assignments, including the optional executor bootstrap manifest.
+A source-built release and successful migrations do not establish successful
+pre-start execution, activation, fresh control reports or ordinary CLI routing.

@@ -72,7 +72,7 @@ defmodule MarshallWeb.SecurityHeadersTest do
     assert development =~ "default-src 'self'; "
     assert development =~ "object-src 'none'; "
     assert development =~ "form-action 'self' https://ghuntley.com; frame-ancestors 'self'; "
-    refute development =~ "https:"
+    refute "https:" in String.split(development, [" ", ";"], trim: true)
   end
 
   test "the production policy never allows inline or evaluated script" do

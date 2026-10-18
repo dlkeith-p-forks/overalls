@@ -309,9 +309,9 @@ defmodule MarshallWeb.IntegrationsLive do
                     do: gettext("Team %{team}", team: integration.team_id),
                     else: gettext("Personal integration")}
                 </:item>
-              <:item :if={integration.comment != ""} title={gettext("Comment")}>
-                <span class="break">{integration.comment}</span>
-              </:item>
+                <:item :if={integration.comment != ""} title={gettext("Comment")}>
+                  <span class="break">{integration.comment}</span>
+                </:item>
                 <:item :if={integration.strip_prefix} title={gettext("Strips prefix")}>
                   <code>{integration.strip_prefix}</code>
                 </:item>

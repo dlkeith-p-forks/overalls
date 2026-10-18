@@ -192,7 +192,7 @@
         "recovery"
       ],
       "boundary": "MarshallWeb.SecurityHeaders sets one Content-Security-Policy (script-src 'self' alone; style-src keeps 'unsafe-inline' for the vendored xterm.js and Mermaid renderers), Permissions-Policy, same-origin opener and resource policies, nosniff, SAMEORIGIN framing and no cross-domain policies before health, static files, the early /api refusals and the router. MarshallWeb.NoIndex adds X-Robots-Tag on the same surfaces and the root layout repeats it as a robots meta tag beside the disallow-all robots.txt. Production sends HSTS max-age=63072000 with includeSubDomains and no preload. The production session cookie is __Host-marshall (Secure, HttpOnly, Path=/, no Domain, SameSite=Lax, signed and encrypted) and the remembered credential is __Host-remember_me; MarshallWeb.BrowserSession owns the options for Plug.Session, the LiveView socket and every forged-session test or release probe, and expires legacy cookie names carried by a request. Headers and cookies grant nothing: stored-login checks, Cedar and CSRF tokens decide access, and user applications on *.apps.ghuntley.dev remain same-site with Marshall.",
-      "denial": "Inline, foreign or evaluated script, plugins, foreign frames, foreign form targets and cross-site framing of Marshall are refused by the browser; a __Host- cookie set by a sibling origin or without Secure/Path=/ is dropped; the test build refuses development-tooling policy sources; a route may tighten but never duplicate a header.",
+      "denial": "Inline, foreign or evaluated script, plugins, foreign frames, form targets outside self and the fixed https://ghuntley.com newsletter fallback origin, and cross-site framing of Marshall are refused by the browser; unrestricted https: is not a form source. A __Host- cookie set by a sibling origin or without Secure/Path=/ is dropped; the test build refuses development-tooling policy sources; a route may tighten but never duplicate a header.",
       "scope": "Unit tests assert the exact header set on a rendered page, the signed-out redirect, a static file, the health probe, a refused /api path and a JSON API reply, the production versus development policy strings, the :secure and :plain session options through Plug.Session including encryption and legacy-name expiry, and the __Host-remember_me Set-Cookie attributes issued by a real magic-link sign-in. Covenant obligations I7 and I8 repeat the header and cookie invariants. The Playwright probe asserts the strict policy header on every navigation and fails on any securitypolicyviolation or Chromium CSP console report; it recorded zero violations through the owner routes in both themes and the thread views before stopping on pre-existing thread layout findings unrelated to the headers.",
       "status": "partial",
       "gaps": "No NixOS machine test asserts the headers, HSTS or cookie attributes over the packaged release and TLS proxy, and the production deployment has not been observed sending them. The credential-rotation and mfa-login machine tests were not re-run after the cookie rename. The browser probe did not reach its final evidence line because of a two-pixel thread-workspace grid offset and a thread-activity overflow that reproduce with CSP bypassed. User applications stay same-site with the control plane, so SameSite gives no CSRF protection against them.",
@@ -3077,6 +3077,15 @@
       "preferred_gap": "Run a native or hosted fault workload with a controlled SMTP relay and independent Marshall workers; retain the local generated retry property as bounded state-machine evidence.",
       "evidence": [
         {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/module-configuration.nix",
+          "assertion": "smtpPresets = lib.all",
+          "scope": "All three relay provider fixtures and three pre-start wrappers select local_relay, loopback SMTP and credential unsets; an explicit bootstrap package checks serving environment-option ordering. Evaluated configuration only, without activation or delivery evidence",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-fleet-dependency-convergence.md",
+          "record_assertion": "module-configuration` check passed in **73 seconds**"
+        },
+        {
           "kind": "property",
           "path": "marshall/test/marshall/accounts/auth_emails_test.exs",
           "assertion": "generated uncertain mail results retain identity and stop after commit",
@@ -4417,15 +4426,44 @@
       "journey": "Keep Customer machines private and isolated",
       "layers": [
         "authorization",
+        "transport",
+        "execution",
         "isolation"
       ],
-      "boundary": "Owner-only access, no sharing or web exposure, and denied outbound/lateral traffic.",
-      "denial": "Reject administrator ownership bypass, stale manager grants and forged guest marks.",
+      "boundary": "Owner-only access, dedicated SSH/bootstrap purposes and a separate editor gateway; no generic private-service, sharing, web exposure or outbound/lateral authority.",
+      "denial": "Reject administrator ownership bypass, stale manager grants, forged guest marks and Customer inference/reflection/integration/telemetry before a private execution binding.",
       "scope": "Customer authorization properties, generated lifecycle/receipt histories across entry actors, generated local guest network identity tuples and real Firecracker guest network/ingress plus owner CLI lifecycle cases.",
       "status": "partial",
       "gaps": "Native finite scenarios do not prove all packet encodings, kernel versions or physical network configurations.",
       "preferred_gap": "Retain generated refusal histories and the native owner CLI lifecycle journey; extend native guest SSH and packet matrices separately.",
       "evidence": [
+        {
+          "kind": "property",
+          "path": "protocol/test/profile_policy_test.exs",
+          "assertion": "customer capabilities form a closed set",
+          "scope": "100 generated capability cases include private_services and unknown terms; Customer retains exactly SSH, terminal and editor. BEAM policy only.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-fleet-dependency-convergence.md",
+          "record_assertion": "Protocol **4 passed**, seed **8487**"
+        },
+        {
+          "kind": "unit",
+          "path": "audi/test/private_front_test.exs",
+          "assertion": "Customer refuses every non-SSH private service before binding",
+          "scope": "Plug connections at both Customer range ends refuse inference, reflection, integrations and telemetry before connector lookup; SSH purpose and non-Customer controls use a local Unix fixture. No native TLS or packet isolation.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-fleet-dependency-convergence.md",
+          "record_assertion": "Audi **21 passed**, seed **153872**"
+        },
+        {
+          "kind": "unit",
+          "path": "lilly/test/ingress_execution_test.exs",
+          "assertion": "customer actor allows private SSH binding but rejects web",
+          "scope": "BEAM current-execution private SSH binding and web refusal with bootstrap-purpose controls; no native guest acceptance.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-fleet-dependency-convergence.md",
+          "record_assertion": "Lilly **18 passed**"
+        },
         {
           "kind": "property",
           "path": "lilly/test/network/identity_test.exs",

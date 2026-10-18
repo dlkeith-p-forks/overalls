@@ -322,7 +322,7 @@ defmodule Marshall.Accounts.TimeZones do
 
   @doc """
   `instant` formatted in `zone`. Formats: `:datetime` (`2026-10-18 19:42 ACDT`),
-  `:datetime_seconds`, `:date`, `:day_month` (`18 Oct`), `:time` (`19:42 ACDT`)
+  `:datetime_seconds`, `:date`, `:day_month` (`Oct 18` in English), `:time` (`19:42 ACDT`)
   and `:clock` (`7:42 PM ACDT`).
   """
   # @cc [owner:ghuntley,label:product] time-zone-localized-display

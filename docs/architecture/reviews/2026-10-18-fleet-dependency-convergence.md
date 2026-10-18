@@ -93,3 +93,80 @@ does not establish activation or a successful ordinary SSH request.
 No destructive guest operation, hostd restart or production database mutation
 was used for diagnosis. This repair does not qualify the separate Windows
 browser editor candidate or establish guest isolation or recovery.
+
+## Integrated build and activation follow-up
+
+The integrated `1451c0b00` source build passed for Marshall, Lilly and Porsche;
+log: `/tmp/osmatrix-final-integrated-releases.log`. Marshall produced
+`/nix/store/s8gf2avrpfvlq8k94cjf2y2gzybh3lbg-overalls-marshall-0.1.0`, and Lilly
+produced `/nix/store/pmd069rvidsp1r3k08zdm5wmrp5z2cw1-overalls-lilly-0.1.0`.
+This build captured source before the later typespec, test-assertion and
+formatter follow-ups; it does not establish their complete gates or activation.
+
+The Overalls activation attempt then failed before Marshall served requests.
+The newsletter `190000`, reflection `190001` and Peach reconciliation `213000`
+migrations had all applied; this was not a schema failure. The GitHub
+restore-credential invalidation pre-start wrapper omitted the shared mail
+environment used by serving, migration and operator wrappers. With the local
+SMTP relay enabled, inherited remote mail settings caused runtime mail
+configuration to refuse startup. The forward repair applies that same reviewed
+mail environment to the pre-start command; it changes no OAuth, inventory or
+guest-authority validation. The serving wrapper also keeps all environment
+removal options before the optional bootstrap assignment. Successful activation and ordinary CLI routing still
+require a fresh observation after the repair.
+
+The final `module-configuration` check passed in **73 seconds** after both
+wrapper repairs. It evaluates all three relay providers and all three pre-start
+commands for local-relay selection, loopback SMTP and inherited credential
+removal, and an explicit bootstrap package checks serving-option ordering.
+Both enrolled serving/pre-start scripts also passed `bash -n` after Nix
+evaluation. Log: `/tmp/cli-routing-mail-module-configuration-final.log`.
+These are configuration and shell-syntax results, without a new activation or
+SMTP delivery claim.
+
+During this partial rollout, Dungarees' newer six-field inventory reached the
+older Overalls control plane, which refused it before recording a host report.
+The resulting absent current report also explains the Windows fresh roster
+request's 403. Running Lilly/hostd processes do not establish converged control
+authority. No validation relaxation or manual service restart is acceptance
+evidence for this checkpoint. The long Marshall full gate was interrupted when
+the agent-owned session ended after model-capacity failures, without a final
+test count or summary. Its observed failures include the two now-corrected
+CSP/date assertion fixtures, Teams SSH and Pins property database/time-limit
+failures, and a Customer inference authorization contract violation. No complete
+Marshall passing result is recorded here. The mandatory
+formatter's thirteen Marshall source/test diffs
+were reviewed as formatting only; the additional time-zone change corrects an
+English documentation example without changing its CLDR formatter.
+
+## Customer private-service boundary restoration
+
+The Customer capability policy had accidentally included generic
+`:private_services`, contrary to its closed-capability contract and ADR-0064.
+The repair restores exactly SSH, terminal and editor capabilities. Lilly's
+private execution binding checks the dedicated SSH capability, preserving owner
+SSH and exact boot-roster/host-certificate purposes. Audi refuses every non-SSH
+service from the Customer `10.10/16` range before requesting a Lilly binding;
+inference, reflection, GitHub/ordinary integrations and telemetry gain no
+exception. This restores existing ADR-0064, ADR-0158 and ADR-0203 boundaries
+without changing domain ownership or the wire protocol.
+
+Focused warnings-as-errors runs passed: Protocol **4 passed**, seed **8487**
+(`/tmp/windows-customer-protocol-focused.log`), including the closed-capability
+property's 100 cases with seed 761162639; Audi **21 passed**, seed **153872**
+(`/tmp/windows-customer-audi-focused.log`); and Lilly **18 passed**, seed
+**530280** (`/tmp/windows-customer-lilly-focused.log`). The Audi test
+`Customer refuses every non-SSH private service before binding` exercises both
+ends of the Customer address range with Plug connections and a local Unix-socket
+fixture; its SSH and non-Customer controls preserve the permitted paths. Lilly's
+`customer actor allows private SSH binding but rejects web` checks the retained
+binding. These BEAM/property results establish bounded policy and connector
+behavior, not native packet isolation, browser access, production activation or
+Windows editor acceptance. Existing native and recovery gaps remain.
+
+After the restoration, Marshall's focused Requests, CSP and date-component run
+passed **18 tests in 3.6 seconds**
+(`/tmp/osmatrix-marshall-boundary-and-assertions.log`). It covers Customer
+authorize/admit/renew refusal and the corrected CSP/date assertions. This does
+not replace the interrupted full Marshall gate or resolve the separate Teams
+SSH/Pins property failures.
