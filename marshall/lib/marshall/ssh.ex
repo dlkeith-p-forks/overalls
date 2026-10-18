@@ -40,6 +40,7 @@ defmodule Marshall.SSH do
     resource Marshall.SSH.Key do
       define :list_keys, action: :list_for_user
       define :add_key, action: :add_for_user
+      define :rename_key, action: :rename_for_user
       define :remove_key, action: :remove_for_user
       define :list_keys_for_admin, action: :list_for_admin
       define :revoke_key_for_admin, action: :revoke_for_admin

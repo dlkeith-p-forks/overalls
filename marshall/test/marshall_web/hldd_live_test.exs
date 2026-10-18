@@ -15,6 +15,11 @@ defmodule MarshallWeb.HLDDLiveTest do
     conn = signed_in(conn, user())
     {:ok, view, _} = live(conn, "/hldd")
     assert has_element?(view, "#nav-hldd[aria-current=page][href='/hldd']")
+    assert has_element?(view, "#nav-reference h2", "Reference")
+    assert has_element?(view, "#nav-reference a[href='/docs']", "Field notes")
+    assert has_element?(view, "#nav-reference #nav-hldd")
+    assert has_element?(view, "#nav-reference #nav-source-code")
+    refute has_element?(view, "#nav-reference #nav-account")
 
     for chapter <- Marshall.Handbook.contents() do
       assert has_element?(view, "#hldd-index a[href='/hldd/#{chapter.id}']")

@@ -181,6 +181,10 @@ defmodule MarshallWeb.Layouts do
   # Every signed-in account MUST see the Control room mode switch regardless of
   # administrator membership. Public navigation MUST still require sign-in.
 
+  # @cc [owner:ghuntley,label:product] signed-in-reference-navigation
+  # Field notes, HLDD and Source code MUST form their own "Reference" tree
+  # (#nav-reference) after "Your account", in that order, not inside it.
+
   # @cc [owner:ghuntley,label:product] signed-in-hldd-reference-navigation
   # The shared signed-in menu MUST place HLDD immediately below Field notes,
   # using the same link styling and a Reference hint.
@@ -315,6 +319,15 @@ defmodule MarshallWeb.Layouts do
                       Browser extension
                     </.link>
                   </li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+          <section id="nav-reference">
+            <ul class="tree">
+              <li>
+                <h2>Reference</h2>
+                <ul>
                   <li>
                     <.link href={~p"/docs"}>Field notes <span class="nav-hint">Docs ↗</span></.link>
                   </li>
@@ -325,7 +338,10 @@ defmodule MarshallWeb.Layouts do
                       aria-current={@active == "hldd" && "page"}
                     >
                       HLDD <span class="nav-hint">Reference</span>
-                    </.link><.link id="nav-source-code" href="https://github.com/ghuntley/overalls">
+                    </.link>
+                  </li>
+                  <li>
+                    <.link id="nav-source-code" href="https://github.com/ghuntley/overalls">
                       Source code <span class="nav-hint">GitHub ↗</span>
                     </.link>
                   </li>

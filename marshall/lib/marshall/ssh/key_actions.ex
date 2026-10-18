@@ -80,6 +80,27 @@ defmodule Marshall.SSH.KeyActions do
     end
   end
 
+  # @cc [owner:ghuntley,label:security] key-rename-owner-check
+  # Renaming a key MUST verify persisted ownership under a row lock and change
+  # only its label; fingerprint, algorithm, public key and access are untouched.
+  # Another account's or a revoked key MUST refuse as not found. An unchanged
+  # label MUST succeed without writing or emitting an event.
+  defp perform(:rename, %{id: id, label: label}, user) do
+    label = String.trim(label)
+
+    case Ledger.lock!(Key, id) do
+      %{user_id: owner, label: ^label} = key when owner == user.id ->
+        {view(key), nil}
+
+      %{user_id: owner} = key when owner == user.id ->
+        key = Ledger.update!(key, :relabel, %{label: label})
+        {view(key), {:key_renamed, id, user.id}}
+
+      _ ->
+        Ledger.rollback(:key_not_found)
+    end
+  end
+
   # @cc [owner:ghuntley,label:security] key-removal-owner-check
   # Removing a key MUST verify persisted ownership under a row lock. Revoked key
   # identities MUST remain archived so existing sessions cannot be resurrected.
@@ -96,6 +117,9 @@ defmodule Marshall.SSH.KeyActions do
 
   defp emit_event({:key_added, key_id, user_id}),
     do: Marshall.Events.emit("ssh.key_added", key_id: key_id, user_id: user_id)
+
+  defp emit_event({:key_renamed, key_id, user_id}),
+    do: Marshall.Events.emit("ssh.key_renamed", key_id: key_id, user_id: user_id)
 
   defp emit_event({:key_removed, key_id, user_id}),
     do: Marshall.Events.emit("ssh.key_removed", key_id: key_id, user_id: user_id)

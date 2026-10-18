@@ -151,6 +151,20 @@ defmodule MarshallWeb.AccountLive do
     end
   end
 
+  def handle_event("rename_ssh_key", %{"key_id" => id, "label" => label}, socket)
+      when is_binary(id) and is_binary(label) do
+    case SSH.rename_key(%{id: id, label: label}, actor: socket.assigns.current_user) do
+      {:ok, _} ->
+        {:noreply, socket |> put_flash(:info, "SSH key renamed.") |> refresh_keys()}
+
+      {:error, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Could not rename this key. Use at most 128 characters.")
+         |> refresh_keys()}
+    end
+  end
+
   def handle_event("remove_ssh_key", %{"id" => id}, socket) do
     case SSH.remove_key(%{id: id}, actor: socket.assigns.current_user) do
       {:ok, _} ->
@@ -500,6 +514,22 @@ defmodule MarshallWeb.AccountLive do
                 Remove
               </Layouts.action>
             </header>
+            <.form
+              for={to_form(%{"label" => key.label})}
+              id={"rename-ssh-key-#{key.id}"}
+              phx-submit="rename_ssh_key"
+              class="field-row"
+            >
+              <input type="hidden" name="key_id" value={key.id} />
+              <.input
+                name="label"
+                id={"ssh-key-label-#{key.id}"}
+                value={key.label}
+                label="Description"
+                maxlength="128"
+              />
+              <button class="console-button">Rename</button>
+            </.form>
             <.kv>
               <:item title="Fingerprint"><code class="break">{key.fingerprint}</code></:item>
               <:item title="Type">{key.algorithm}</:item>

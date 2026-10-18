@@ -434,6 +434,48 @@ defmodule MarshallWeb.AccountLiveTest do
       assert {:ok, []} = SSH.list_keys(%{}, actor: owner)
     end
 
+    test "a user renames their key's description without changing its identity", %{conn: conn} do
+      owner = user()
+      text = "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, 44::256>>)
+      {:ok, key} = SSH.add_key(%{public_key: text, label: "Laptop"}, actor: owner)
+      {:ok, view, _} = live(signed_in(conn, owner), ~p"/settings")
+      assert has_element?(view, "#ssh-key-label-#{key.id}[value=Laptop]")
+
+      view
+      |> form("#rename-ssh-key-#{key.id}", %{label: "  Work desktop  "})
+      |> render_submit()
+
+      assert has_element?(view, "article#ssh-key-#{key.id} h3", "Work desktop")
+      assert {:ok, [renamed]} = SSH.list_keys(%{}, actor: owner)
+      assert renamed.label == "Work desktop"
+
+      assert Map.take(renamed, [:id, :fingerprint, :algorithm]) ==
+               Map.take(key, [:id, :fingerprint, :algorithm])
+
+      # An unchanged description is accepted without a further write.
+      assert {:ok, %{label: "Work desktop"}} =
+               SSH.rename_key(%{id: key.id, label: "Work desktop"}, actor: owner)
+
+      view
+      |> form("#rename-ssh-key-#{key.id}", %{label: String.duplicate("x", 129)})
+      |> render_submit()
+
+      assert render(view) =~ "Could not rename this key"
+      assert {:ok, [%{label: "Work desktop"}]} = SSH.list_keys(%{}, actor: owner)
+    end
+
+    test "forged rename cannot relabel another account's key", %{conn: conn} do
+      owner = user()
+      other = user()
+      text = "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, 45::256>>)
+      {:ok, key} = SSH.add_key(%{public_key: text, label: "Mine"}, actor: owner)
+      {:ok, view, _} = live(signed_in(conn, other), ~p"/settings")
+      render_submit(view, "rename_ssh_key", %{"key_id" => key.id, "label" => "Stolen"})
+      assert render(view) =~ "Could not rename this key"
+      assert {:ok, [%{label: "Mine"}]} = SSH.list_keys(%{}, actor: owner)
+      assert {:error, _} = SSH.rename_key(%{id: key.id, label: "Stolen"}, actor: other)
+    end
+
     test "forged removal cannot revoke another account's key", %{conn: conn} do
       owner = user()
       other = user()

@@ -626,6 +626,11 @@ The dead render trusts only the saved zone. `MarshallWeb.LiveUserAuth` assigns
 one-minute tick refreshes `now` only after fresh-login validation on required
 and security views. Optional and public views retain their existing behavior.
 
+The signed-in sidebar groups Overview through Teams under "Your workspace";
+Account, AI usage and Browser extension under "Your account"; and Field notes,
+HLDD and Source code under a separate "Reference" section. Each SSH key on the
+account page carries an inline Description field with Rename.
+
 The profile section of the account page (`/settings#profile`, reached from the
 single Account entry at the top of "Your account" and from the account menu's
 clock; [ADR-0196](repo:docs/architecture/decisions/0196-single-account-settings-page.md)

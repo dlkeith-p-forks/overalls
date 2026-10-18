@@ -252,7 +252,10 @@ last passkey. Accounts enroll at most ten passkeys: registration refuses at the
 limit without consuming the challenge, which stays usable after the inventory
 drops back below ten, and failed ceremonies consume their challenge without
 enabling MFA. The **SSH keys** section is owner-scoped; accounts hold at most one
-hundred keys and removal is permanent. The
+hundred keys and removal is permanent. A key's description can be renamed in place
+(`rename_for_user`): ownership is rechecked under the key's row lock, only the
+label changes, another account's key refuses as not found, and the change emits
+`ssh.key_renamed`. The
 [credential self-service review](repo:docs/architecture/reviews/2026-09-26-credential-self-service.md)
 records generated inventory histories, the label-crash repair and the packaged
 browser journey; execution status is recorded in [scenario coverage](#coverage).

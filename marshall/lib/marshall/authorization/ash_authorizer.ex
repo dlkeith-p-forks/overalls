@@ -249,7 +249,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :close_session
     ],
     Marshall.SSH.Approval => [:read, :record, :consume, :purge],
-    Marshall.SSH.Key => [:read, :history, :register, :revoke],
+    Marshall.SSH.Key => [:read, :history, :register, :relabel, :revoke],
     Marshall.SSH.Key.Version => [:read, :create],
     Marshall.Accounts.AuthEmail => [:read, :enqueue, :deliver, :purge],
     Marshall.Terminal.Event => [:read, :record, :recent],
@@ -527,7 +527,12 @@ defmodule Marshall.Authorization.AshAuthorizer do
                  (state.resource == Marshall.SSH.Approval and
                     state.action in [:inspect_approval, :approve_key]) or
                  (state.resource == Marshall.SSH.Key and
-                    state.action in [:list_for_user, :add_for_user, :remove_for_user]) or
+                    state.action in [
+                      :list_for_user,
+                      :add_for_user,
+                      :rename_for_user,
+                      :remove_for_user
+                    ]) or
                  (state.resource == Marshall.Compute.VirtualMachine and
                     state.action in [
                       :clone,
