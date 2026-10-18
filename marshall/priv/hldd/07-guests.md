@@ -1823,6 +1823,7 @@ New identity-bearing admissions require an image manifest advertising `git_ident
 `linux-android-v1` is an additive NixOS Firecracker guest profile. Its emulator
 uses TCG software rendering and persistent AVD state; readiness is bounded at
 600 seconds. ADB and display authority are withheld until emulator readiness.
-The display bridge is machine-authenticated and loopback-bound, with one input
-controller and read-only viewers. Native Firecracker and authenticated display
-acceptance remain pending the Android machine evidence.
+The image's current RFB bridge is loopback-bound for diagnostics only; it is not
+an authenticated display authority. An authenticated vsock relay with one input
+controller and read-only viewers remains pending, as does native Firecracker
+acceptance.

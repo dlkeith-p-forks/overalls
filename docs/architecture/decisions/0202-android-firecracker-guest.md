@@ -14,11 +14,12 @@ rendering (`-no-accel`, `-gpu swiftshader_indirect`) and no `/dev/kvm`, GPU,
 USB or framebuffer device. The image carries SDK/platform and x86_64 Google APIs
 system images for API 34, 35 and 36, with API 36 as the persistent AVD default.
 
-Visual access is a guest display bridge reached through authenticated machine
-transport; it must not expose public ADB or RFB listeners. A single controller
-lease and read-only viewers are required. Emulator userdata is persistent across
-restarts. The profile starts at 4 vCPUs, 8 GiB RAM and 32 GiB disk with a
-600-second readiness budget.
+The image currently provides only a loopback-bound diagnostic RFB bridge; it
+does not claim authenticated display access or expose public ADB/RFB listeners.
+An authenticated vsock display relay, controller lease and read-only viewers
+remain a follow-up integration. Emulator userdata is persistent across restarts.
+The profile starts at 4 vCPUs, 8 GiB RAM and 32 GiB disk with a 600-second
+readiness budget.
 
 ## Consequences and verification
 
