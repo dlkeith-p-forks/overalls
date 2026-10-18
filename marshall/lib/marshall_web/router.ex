@@ -135,6 +135,7 @@ defmodule MarshallWeb.Router do
       live "/machines/:id/threads/:thread_id", AgentThreadsLive, :show
       live "/agents/cli/approve/:vm_id/:code", AgentCLIApprovalLive, :show
       get "/machines/:vm_id/terminals/:session_id/socket", TerminalSocket, :show
+      get "/android-display", AndroidDisplaySocket, :show
       # in each liveview, add one of the following at the top of the module:
       #
       # If an authenticated user must be present:
