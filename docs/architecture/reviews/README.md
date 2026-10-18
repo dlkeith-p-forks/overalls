@@ -9,6 +9,12 @@
   delete path with the account-deletion exception, pin removal at archival and
   Porsche `pin`/`unpin`; BEAM-level property, LiveView and SSH evidence, no
   native journey.
+- [Marshall HTTP security headers, no-index and session cookies (2026-10-18)](2026-10-18-marshall-security-headers.md):
+  ADR-0194's endpoint-level header set, strict script policy with a style-only
+  inline relaxation for xterm.js and Mermaid, HSTS with subdomains, `__Host-`
+  session and remember-me cookies and no-index directives; unit, Covenant and
+  Python gates passed, the browser probe recorded no CSP violation but stopped
+  on pre-existing thread layout findings, and no machine test was run.
 - [Retained launch-bundle capacity (2026-10-18)](2026-10-18-retained-bundle-capacity.md):
   exactly owned storage with an invalid current launch bundle contributes no
   allocation credit while preserving neighboring pool observations. Current

@@ -31,6 +31,7 @@ defmodule CredentialRotationProbe do
       machine_id: host.machine_id,
       user_id: user.id,
       token: token,
+      cookie_name: MarshallWeb.BrowserSession.key(),
       cookie: cookie(user, token)
     })
   end
@@ -75,13 +76,8 @@ defmodule CredentialRotationProbe do
   defp cookie(user, token) do
     user = Ash.Resource.set_metadata(user, %{token: token})
 
-    options =
-      Plug.Session.init(
-        store: :cookie,
-        key: "_marshall_key",
-        signing_salt: "OrkORZio",
-        same_site: "Lax"
-      )
+    # The release's own session options: cookie name, salts and attributes.
+    options = Plug.Session.init(MarshallWeb.BrowserSession.options())
 
     conn = Plug.Test.conn(:get, "https://control.example.test/")
 
@@ -97,7 +93,7 @@ defmodule CredentialRotationProbe do
       |> AshAuthentication.Plug.Helpers.store_in_session(user)
       |> Plug.Conn.send_resp(200, "")
 
-    conn.resp_cookies["_marshall_key"].value
+    conn.resp_cookies[MarshallWeb.BrowserSession.key()].value
   end
 
   defp read(name), do: path(name) |> File.read!() |> JSON.decode!()

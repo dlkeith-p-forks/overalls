@@ -103,13 +103,7 @@ defmodule MarshallWeb.RepositoryLaunchControllerTest do
     assert {:ok, pending} = PendingLaunch.new(url, @visit)
     assert byte_size(pending.source) >= 630
 
-    options =
-      Plug.Session.init(
-        store: :cookie,
-        key: "_marshall_key",
-        signing_salt: "OrkORZio",
-        same_site: "Lax"
-      )
+    options = Plug.Session.init(MarshallWeb.BrowserSession.options())
 
     conn = %{build_conn() | secret_key_base: MarshallWeb.Endpoint.config(:secret_key_base)}
 

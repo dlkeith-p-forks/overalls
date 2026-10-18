@@ -241,9 +241,15 @@ def verify_http(node: str, state_name: str, expected: str) -> None:
         session = control_session(node, str(token), str(state["host_id"]), str(state["machine_id"]))
         if session.get("version") != 3:
             raise ControlStage("session_version")
+    # The release names its own session cookie (__Host-marshall in production
+    # builds); the probe records that name beside the forged value.
+    cookie_name = state["cookie_name"]
+    cookie = state["cookie"]
+    if not isinstance(cookie_name, str) or not isinstance(cookie, str):
+        raise ControlStage("state_cookie")
     status, body = http(
         urllib.request.Request(
-            f"https://{node}:4443/machines", headers={"Cookie": "_marshall_key=" + state["cookie"]}
+            f"https://{node}:4443/machines", headers={"Cookie": f"{cookie_name}={cookie}"}
         )
     )
     if status != (200 if expected == "accept" else 302):

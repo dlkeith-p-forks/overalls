@@ -1,15 +1,10 @@
 defmodule MarshallWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :marshall
 
-  # The session will be stored in the cookie and signed,
-  # this means its contents can be read but not tampered with.
-  # Set :encryption_salt if you would also like to encrypt it.
-  @session_options [
-    store: :cookie,
-    key: "_marshall_key",
-    signing_salt: "OrkORZio",
-    same_site: "Lax"
-  ]
+  # The session is stored in a signed and encrypted cookie. MarshallWeb.BrowserSession
+  # owns the options so Plug.Session, the LiveView socket and every test or
+  # probe that forges a session agree on the cookie name, salts and attributes.
+  @session_options MarshallWeb.BrowserSession.options()
 
   socket "/live", MarshallWeb.LiveSocket,
     websocket: [connect_info: [session: @session_options]],
@@ -19,6 +14,9 @@ defmodule MarshallWeb.Endpoint do
   # AuthenticationPrivacy MUST run before request loggers, telemetry and body
   # parsers so token-bearing request paths are tagged before diagnostics occur.
   plug MarshallWeb.AuthenticationPrivacy
+  # SecurityHeaders and NoIndex run before health, static files and the early
+  # /api refusals so every response carries the same browser policy.
+  plug MarshallWeb.SecurityHeaders
   plug MarshallWeb.NoIndex
   plug MarshallWeb.Health
 
@@ -66,5 +64,6 @@ defmodule MarshallWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug MarshallWeb.BrowserSession
   plug MarshallWeb.ObservedRouter
 end

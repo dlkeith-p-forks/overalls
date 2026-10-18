@@ -12,6 +12,7 @@ from urllib.parse import urlsplit
 from playwright.sync_api import (
     Browser,
     BrowserContext,
+    ConsoleMessage,
     Page,
     Request,
     expect,
@@ -86,7 +87,24 @@ def read_context(path: Path) -> Context:
     )
 
 
-class ExternalRequests:
+# Forwards every Content-Security-Policy violation of a document (including
+# iframes) to the console with a fixed prefix, so one context-level console
+# listener sees violations from every page without reading page state.
+CSP_VIOLATION_PREFIX = "overalls-csp-violation"
+CSP_INIT_SCRIPT = (
+    "document.addEventListener('securitypolicyviolation', (event) => {"
+    f"  console.error('{CSP_VIOLATION_PREFIX}', event.violatedDirective, "
+    "    event.blockedURI, new URL(event.documentURI).pathname);"
+    "});"
+)
+
+
+def redact_path(text: str) -> str:
+    """Replace token-like path segments so a violation record never carries a credential."""
+    return re.sub(r"[A-Za-z0-9_-]{20,}", "<redacted>", text)
+
+
+class OriginWatch:
     """@cc [owner:ghuntley,label:security;product] presentation-no-external-resources
     Every stylesheet, script, font and image MUST load from the application origin.
     A request to any other host fails the probe regardless of its outcome; this
@@ -96,17 +114,37 @@ class ExternalRequests:
     def __init__(self, origin: str) -> None:
         self.host = urlsplit(origin).netloc
         self.urls: list[str] = []
+        self.csp_violations: list[str] = []
 
     def observe(self, request: Request) -> None:
         if urlsplit(request.url).netloc != self.host:
             self.urls.append(request.url)
+
+    def observe_console(self, message: ConsoleMessage) -> None:
+        """@cc [owner:ghuntley,label:security;verification] presentation-no-csp-violations
+        Every document the probe opens MUST render under the production
+        Content-Security-Policy without a violation: neither the forwarded
+        `securitypolicyviolation` event nor Chromium's own "Content Security
+        Policy" console report may occur. Records keep directives and
+        redacted paths only, never page text or credential-bearing URLs.
+        """
+        text = message.text
+        if text.startswith(CSP_VIOLATION_PREFIX):
+            self.csp_violations.append(redact_path(text))
+        elif "Content Security Policy" in text:
+            self.csp_violations.append("console: " + redact_path(text)[:200])
+
+    def attach(self, context: BrowserContext) -> None:
+        context.on("request", self.observe)
+        context.add_init_script(CSP_INIT_SCRIPT)
+        context.on("console", self.observe_console)
 
 
 def sign_in(
     browser: Browser,
     fixture: Context,
     role: Literal["owner", "admin", "empty", "viewer", "operator", "manager"],
-    watch: ExternalRequests,
+    watch: OriginWatch,
 ) -> BrowserContext:
     context = browser.new_context(
         viewport={"width": 1440, "height": 1000},
@@ -114,7 +152,7 @@ def sign_in(
         # retaining the same authenticated context for desktop checks.
         has_touch=True,
     )
-    context.on("request", watch.observe)
+    watch.attach(context)
     page = context.new_page()
     login = fixture[role]
     page.goto(fixture["origin"] + login)
@@ -140,34 +178,73 @@ def check_browser_extension_presence(page: Page) -> None:
     expect(setup).to_have_count(2)
     expect(setup.nth(0)).to_be_visible()
     expect(setup.nth(1)).to_be_visible()
-    page.evaluate(
-        "document.documentElement.setAttribute('data-overalls-browser-extension', 'installed')"
+    evaluate(
+        page,
+        "document.documentElement.setAttribute('data-overalls-browser-extension', 'installed')",
     )
     expect(setup.nth(0)).not_to_be_visible()
     expect(setup.nth(1)).not_to_be_visible()
-    page.evaluate("document.documentElement.removeAttribute('data-overalls-browser-extension')")
+    evaluate(page, "document.documentElement.removeAttribute('data-overalls-browser-extension')")
     expect(setup.nth(0)).to_be_visible()
     expect(setup.nth(1)).to_be_visible()
 
 
+def evaluate(page: Page, expression: str) -> object:
+    """Evaluate an expression in the page's main world through the inspector.
+
+    The production Content-Security-Policy forbids `eval`, which Playwright's own
+    `page.evaluate` relies on. An inspector-compiled expression is not page
+    `eval`, so the policy stays fully enforced for the application's scripts
+    while the probe reads page state. Promises are awaited; the value must be
+    JSON-serialisable or it is returned as `None`.
+    """
+    session = page.context.new_cdp_session(page)
+    try:
+        reply: object = session.send(
+            "Runtime.evaluate",
+            {"expression": expression, "returnByValue": True, "awaitPromise": True},
+        )
+    finally:
+        session.detach()
+    if not isinstance(reply, dict):
+        raise ValueError("Inspector reply is not an object")
+    if "exceptionDetails" in reply:
+        # The exception text can quote page content; report only the failure.
+        raise RuntimeError("Page evaluation failed")
+    result: object = reply.get("result")
+    if not isinstance(result, dict):
+        raise ValueError("Inspector result is not an object")
+    return result.get("value")
+
+
+def evaluate_on(page: Page, selector: str, body: str) -> object:
+    """Call `(node) => body` on the first element matching `selector`."""
+    return evaluate(page, f"((node) => {body})(document.querySelector({json.dumps(selector)}))")
+
+
 def visit(page: Page, origin: str, route: str) -> None:
-    page.goto(origin + route)
+    response = page.goto(origin + route)
+    # Every document is served under the strict production policy; the CSP
+    # violation watch then proves the page renders within it.
+    assert response is not None, "Navigation produced no response"
+    policy = response.headers.get("content-security-policy", "")
+    assert "script-src 'self';" in policy and "frame-ancestors 'self';" in policy, (
+        f"Missing strict Content-Security-Policy on {route}"
+    )
     expect(page.locator("#main-content")).to_be_visible()
     page.locator("[data-phx-main]").wait_for(state="attached")
-    page.wait_for_function(
-        "document.querySelector('[data-phx-main]')?.classList.contains('phx-connected')"
-    )
-    page.evaluate("document.fonts.ready")
+    page.locator("[data-phx-main].phx-connected").wait_for(state="attached")
+    evaluate(page, "document.fonts.ready.then(() => true)")
 
 
 def check_overflow(page: Page) -> None:
-    assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 1"), (
+    assert evaluate(page, "document.documentElement.scrollWidth <= window.innerWidth + 1"), (
         "Page overflows the viewport"
     )
 
 
 def check_font(page: Page) -> None:
-    assert page.evaluate("document.fonts.check('16px \"JetBrains Mono\"')"), (
+    assert evaluate(page, "document.fonts.check('16px \"JetBrains Mono\"')"), (
         "JetBrains Mono is not available from the application origin"
     )
 
@@ -263,7 +340,7 @@ def row_ids(page: Page) -> list[str]:
 
 def check_grid(page: Page, route: str) -> None:
     """Every laid-out element starts on a half-line boundary (renderer DOM excluded)."""
-    result: object = page.evaluate("window.overallsGrid.check()")
+    result: object = evaluate(page, "window.overallsGrid.check()")
     if not isinstance(result, list):
         raise ValueError("Grid check must return a list")
     offenders: list[OffGrid] = []
@@ -313,9 +390,11 @@ def check_thread_order(page: Page, *, composer: bool) -> None:
 
     if composer:
         form = page.locator("#thread-prompt-form")
-        before: object = form.evaluate(
-            "node => Boolean(node.compareDocumentPosition("
-            "document.querySelector('#thread-transcript')) & Node.DOCUMENT_POSITION_FOLLOWING)"
+        before: object = evaluate_on(
+            page,
+            "#thread-prompt-form",
+            "Boolean(node.compareDocumentPosition("
+            "document.querySelector('#thread-transcript')) & Node.DOCUMENT_POSITION_FOLLOWING)",
         )
         assert before is True, "Composer must precede the transcript in DOM order"
         form_bounds = form.bounding_box()
@@ -438,19 +517,23 @@ def check_thread_composer_controls(page: Page, *, mobile: bool) -> None:
     # During IME composition the input event must not open the palette. The
     # follow-up input after compositionend may open it normally.
     composer.fill("")
-    composer.evaluate(
-        """node => {
+    evaluate_on(
+        page,
+        "#thread-prompt-form textarea[data-thread-input]",
+        """{
           node.value = "/";
           node.dispatchEvent(new CompositionEvent("compositionstart", {bubbles: true}));
           node.dispatchEvent(new Event("input", {bubbles: true}));
-        }"""
+        }""",
     )
     expect(palette).not_to_be_visible()
-    composer.evaluate(
-        """node => {
+    evaluate_on(
+        page,
+        "#thread-prompt-form textarea[data-thread-input]",
+        """{
           node.dispatchEvent(new CompositionEvent("compositionend", {bubbles: true}));
           node.dispatchEvent(new Event("input", {bubbles: true}));
-        }"""
+        }""",
     )
     expect(palette).to_be_visible()
     search.press("Escape")
@@ -577,7 +660,7 @@ def check_thread_collaborators(
     owner_page: Page,
     fixture: Context,
     artifacts: Path,
-    watch: ExternalRequests,
+    watch: OriginWatch,
     page_errors: list[str],
 ) -> None:
     """@cc [owner:ghuntley,label:security;verification] thread-browser-role-controls
@@ -707,8 +790,9 @@ def check_thread_refusal(page: Page, fixture: Context, artifacts: Path) -> None:
 
 
 def luminance(page: Page, token: str) -> float:
-    channels: object = page.evaluate(
-        """token => {
+    channels: object = evaluate(
+        page,
+        """(token => {
           const sample = document.createElement('span');
           sample.style.color = `var(${token})`;
           document.body.append(sample);
@@ -717,8 +801,9 @@ def luminance(page: Page, token: str) -> float:
           context.fillRect(0, 0, 1, 1);
           sample.remove();
           return Array.from(context.getImageData(0, 0, 1, 1).data).slice(0, 3);
-        }""",
-        token,
+        })("""
+        + json.dumps(token)
+        + ")",
     )
     if not isinstance(channels, list) or len(channels) != 3:
         raise ValueError("Expected three color channels")
@@ -756,7 +841,7 @@ def run(fixture: Context, artifacts: Path) -> None:
     These checks MUST NOT claim synthetic machines executed guest commands.
     """
     artifacts.mkdir(parents=True, exist_ok=True)
-    watch = ExternalRequests(fixture["origin"])
+    watch = OriginWatch(fixture["origin"])
     page_errors: list[str] = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(
@@ -822,7 +907,7 @@ def run(fixture: Context, artifacts: Path) -> None:
                     page.locator("[data-copy-command='machine-id']").click()
                     expect(page.locator("#machine-copy-status")).to_have_text("Machine ID copied.")
                     assert (
-                        page.evaluate("navigator.clipboard.readText()")
+                        evaluate(page, "navigator.clipboard.readText()")
                         == page.locator("#machine-id").text_content()
                     )
                     # The connect box starts collapsed; open it, then keep it open
@@ -834,7 +919,7 @@ def run(fixture: Context, artifacts: Path) -> None:
                     page.locator("[data-copy-command='machine-install-command']").click()
                     expect(page.locator("#machine-copy-status")).to_have_text("Command copied.")
                     assert (
-                        page.evaluate("navigator.clipboard.readText()")
+                        evaluate(page, "navigator.clipboard.readText()")
                         == page.locator("#machine-install-command").text_content()
                     )
                 if name == "hldd-section":
@@ -868,9 +953,7 @@ def run(fixture: Context, artifacts: Path) -> None:
             page.locator("#navigation-open").click()
             expect(page.locator("#navigation-close")).to_be_focused()
             page.keyboard.press("Shift+Tab")
-            assert page.locator("#workspace-sidebar").evaluate(
-                "node => node.contains(document.activeElement)"
-            )
+            assert evaluate_on(page, "#workspace-sidebar", "node.contains(document.activeElement)")
             page.keyboard.press("Escape")
             expect(page.locator("#navigation-open")).to_be_focused()
             page.locator("#navigation-open").click()
@@ -890,8 +973,10 @@ def run(fixture: Context, artifacts: Path) -> None:
         expect(page.locator("#machine_vcpu")).to_have_value("3")
         expect(page.locator("#machine_request_key")).to_have_value(key)
         page.emulate_media(reduced_motion="reduce")
-        assert page.locator(".console-button.primary").first.evaluate(
-            "node => parseFloat(getComputedStyle(node).transitionDuration) < 0.01"
+        assert evaluate_on(
+            page,
+            ".console-button.primary",
+            "parseFloat(getComputedStyle(node).transitionDuration) < 0.01",
         )
         context.close()
 
@@ -926,7 +1011,7 @@ def run(fixture: Context, artifacts: Path) -> None:
         empty.close()
 
         public = browser.new_context(color_scheme="dark", viewport={"width": 390, "height": 844})
-        public.on("request", watch.observe)
+        watch.attach(public)
         page = public.new_page()
         page.on("pageerror", lambda error: page_errors.append(type(error).__name__))
         page.goto(fixture["origin"] + "/docs")
@@ -947,10 +1032,14 @@ def run(fixture: Context, artifacts: Path) -> None:
         public.close()
         browser.close()
     assert watch.urls == [], f"External resources were requested: {sorted(set(watch.urls))[:5]}"
+    assert watch.csp_violations == [], (
+        f"Content-Security-Policy violations: {sorted(set(watch.csp_violations))[:5]}"
+    )
     assert not page_errors, "Browser runtime error"
     print(
         "Monospace presentation passed: layouts, navigation, both themes, grid alignment, "
-        "self-hosted font, no external requests or browser errors, drafts and public documentation. "
+        "self-hosted font, no external requests, no Content-Security-Policy violations or "
+        "browser errors, drafts and public documentation. "
         "Threads passed 32 route/theme/viewport combinations, settings, filters, lifecycle controls, "
         "reading order, 36 collaborator role/state/theme/viewport combinations, sharing, "
         "live revocation and unrelated-account refusals. Synthetic fixtures only."
