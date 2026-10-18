@@ -14,204 +14,204 @@ msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: ta\n"
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
-msgstr ""
+msgstr "%{count} நாட்களுக்கு முன்"
 
 #: lib/marshall_web/browser_messages.ex:12
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
-msgstr ""
+msgstr "%{count} மணிநேரங்களுக்கு முன்"
 
 #: lib/marshall_web/browser_messages.ex:13
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
-msgstr ""
+msgstr "%{count} நிமிடங்களுக்கு முன்"
 
 #: lib/marshall_web/browser_messages.ex:14
 #, elixir-autogen, elixir-format
 msgid "%{label} copied."
-msgstr ""
+msgstr "%{label} நகலெடுக்கப்பட்டது."
 
 #: lib/marshall_web/browser_messages.ex:9
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing"
-msgstr ""
+msgstr "%{name} · %{count} பேர் பார்க்கிறார்கள்"
 
 #: lib/marshall_web/browser_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing · %{activity}"
-msgstr ""
+msgstr "%{name} · %{count} பேர் பார்க்கிறார்கள் · %{activity}"
 
 #: lib/marshall_web/browser_messages.ex:8
 #, elixir-autogen, elixir-format
 msgid "%{name} · Terminals"
-msgstr ""
+msgstr "%{name} · முனையங்கள்"
 
 #: lib/marshall_web/browser_messages.ex:15
 #, elixir-autogen, elixir-format
 msgid "+ New"
-msgstr ""
+msgstr "+ புதியது"
 
 #: lib/marshall_web/browser_messages.ex:16
 #, elixir-autogen, elixir-format
 msgid "Applying administrative change…"
-msgstr ""
+msgstr "நிர்வாக மாற்றம் பயன்படுத்தப்படுகிறது…"
 
 #: lib/marshall_web/browser_messages.ex:17
 #, elixir-autogen, elixir-format
 msgid "Boot log · read-only"
-msgstr ""
+msgstr "துவக்கப் பதிவு · படிக்க மட்டும்"
 
 #: lib/marshall_web/browser_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "Close this terminal session?"
-msgstr ""
+msgstr "இந்த முனைய அமர்வை மூடவா?"
 
 #: lib/marshall_web/browser_messages.ex:19
 #, elixir-autogen, elixir-format
 msgid "Command"
-msgstr ""
+msgstr "கட்டளை"
 
 #: lib/marshall_web/browser_messages.ex:20
 #, elixir-autogen, elixir-format
 msgid "Could not copy. Select the text and copy it manually."
-msgstr ""
+msgstr "நகலெடுக்க முடியவில்லை. உரையைத் தேர்ந்தெடுத்து கைமுறையாக நகலெடுக்கவும்."
 
 #: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
-msgstr ""
+msgstr "அணுகலைப் புதுப்பிக்க முடியவில்லை. கணக்கின் இயந்திர அணுகலைச் சரிபார்க்கவும்."
 
 #: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Design diagram; explanation follows in the handbook"
-msgstr ""
+msgstr "வடிவமைப்பு வரைபடம்; விளக்கம் கையேட்டில் உள்ளது"
 
 #: lib/marshall_web/browser_messages.ex:23
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
-msgstr ""
+msgstr "முழுத்திரைக்குச் செல்லவும்"
 
 #: lib/marshall_web/browser_messages.ex:24
 #, elixir-autogen, elixir-format
 msgid "Exit full screen"
-msgstr ""
+msgstr "முழுத்திரையிலிருந்து வெளியேறவும்"
 
 #: lib/marshall_web/browser_messages.ex:25
 #, elixir-autogen, elixir-format
 msgid "Input buffer full — that input was not sent"
-msgstr ""
+msgstr "உள்ளீட்டு இடையகம் நிரம்பியது — அந்த உள்ளீடு அனுப்பப்படவில்லை"
 
 #: lib/marshall_web/browser_messages.ex:26
 #, elixir-autogen, elixir-format
 msgid "Match found"
-msgstr ""
+msgstr "பொருத்தம் கிடைத்தது"
 
 #: lib/marshall_web/browser_messages.ex:27
 #, elixir-autogen, elixir-format
 msgid "No matches"
-msgstr ""
+msgstr "பொருத்தங்கள் இல்லை"
 
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr ""
+msgstr "இந்த இணைப்பைத் திறக்கவா?\n\n%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
 msgid "Opening…"
-msgstr ""
+msgstr "திறக்கிறது…"
 
 #: lib/marshall_web/browser_messages.ex:30
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled. You can try again."
-msgstr ""
+msgstr "Passkey கோரிக்கை ரத்துசெய்யப்பட்டது. மீண்டும் முயற்சிக்கலாம்."
 
 #: lib/marshall_web/browser_messages.ex:31
 #, elixir-autogen, elixir-format
 msgid "Passkey verification failed or unavailable. Try again."
-msgstr ""
+msgstr "Passkey சரிபார்ப்பு தோல்வியடைந்தது அல்லது கிடைக்கவில்லை. மீண்டும் முயற்சிக்கவும்."
 
 #: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
-msgstr ""
+msgstr "முனையப் பெயர் (இந்த உலாவியில் மட்டும்; காலியாக்கினால் உருவாக்கப்பட்ட பெயர் மீட்டமைக்கப்படும்)"
 
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr ""
+msgstr "முடிவை உறுதிப்படுத்த முடியவில்லை. பக்கத்தை மீளேற்றி மீண்டும் முயற்சிக்கும் முன் முடிவைச் சரிபார்க்கவும்."
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr ""
+msgstr "இந்த இயந்திரம் உங்கள் கிளிப்போர்டில் %{bytes} பைட்டுகளை எழுதக் கேட்கிறது. ஒருமுறை, அமர்வு அல்லது முடக்கு என்பதைத் தேர்வுசெய்க."
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
-msgstr ""
+msgstr "இந்த களஞ்சிய இணைப்பைத் தொடங்க முடியவில்லை. இணைப்பை மீண்டும் திறக்கவும்."
 
 #: lib/marshall_web/browser_messages.ex:36
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
-msgstr ""
+msgstr "தொடர்புகொள்ள தட்டச்சு செய்யவும்"
 
 #: lib/marshall_web/browser_messages.ex:37
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
-msgstr ""
+msgstr "பார்வை அணுகல் புதுப்பிக்கப்படுகிறது…"
 
 #: lib/marshall_web/browser_messages.ex:38
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
-msgstr ""
+msgstr "சரிபார்ப்பை முடிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr ""
+msgstr "%{action} செய்ய உங்கள் passkey மூலம் சரிபார்க்கவும். சரிபார்ப்புக்குப் பிறகு இது ஒருமுறை இயங்கும்."
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "View only"
-msgstr ""
+msgstr "பார்வை மட்டும்"
 
 #: lib/marshall_web/browser_messages.ex:41
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
-msgstr ""
+msgstr "பார்வை அணுகல் புதுப்பிக்கப்பட்டது."
 
 #: lib/marshall_web/browser_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
-msgstr ""
+msgstr "உங்கள் passkeyக்காக காத்திருக்கிறது…"
 
 #: lib/marshall_web/browser_messages.ex:43
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
-msgstr ""
+msgstr "இந்த நிர்வாக மாற்றத்தை முடிக்கவும்"
 
 #: lib/marshall_web/browser_messages.ex:44
 #, elixir-autogen, elixir-format
 msgid "just now"
-msgstr ""
+msgstr "இப்போது"
 
 #: lib/marshall_web/browser_messages.ex:45
 #, elixir-autogen, elixir-format
 msgid "● live"
-msgstr ""
+msgstr "● நேரலை"
 
 #: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "● read-only"
-msgstr ""
+msgstr "● படிக்க மட்டும்"
 
 #: lib/marshall_web/browser_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
-msgstr ""
+msgstr "⟳ மீண்டும் இணைக்கிறது…"
 
 #: lib/marshall_web/browser_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
-msgstr ""
+msgstr "⟳ ஸ்க்ரோல்பேக்கை மீட்டமைக்கிறது…"

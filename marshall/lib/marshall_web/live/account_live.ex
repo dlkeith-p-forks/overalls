@@ -37,7 +37,8 @@ defmodule MarshallWeb.AccountLive do
        security: nil,
        remaining: 0,
        enrollment_started?: false,
-       keys: []
+       keys: [],
+       git_form: git_form(socket.assigns.current_user)
      )
      |> assign_picker()
      |> reset_key_form()
@@ -208,6 +209,23 @@ defmodule MarshallWeb.AccountLive do
 
   def handle_event("clear_locale", _, socket), do: save_locale(socket, nil)
 
+  def handle_event("save_git_settings", %{"settings" => params}, socket) when is_map(params) do
+    params = Map.take(params, ["git_username", "git_email", "commit_trailers_enabled"])
+
+    case socket.assigns.current_user
+         |> Ash.Changeset.for_update(:git_settings, params)
+         |> Ash.update(actor: socket.assigns.current_user) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> assign(git_form: git_form(socket.assigns.current_user))
+         |> put_flash(:info, gettext("Git settings saved."))}
+
+      {:error, _} ->
+        {:noreply, put_flash(socket, :error, gettext("Enter a valid Git name and email address."))}
+    end
+  end
+
   def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   @spec refresh_security(socket()) :: socket()
@@ -342,6 +360,18 @@ defmodule MarshallWeb.AccountLive do
   defp key_title(label) when label in [nil, ""], do: gettext("SSH key")
   defp key_title(label), do: label
 
+  @spec git_form(User.t()) :: Phoenix.HTML.Form.t()
+  defp git_form(user) do
+    to_form(
+      %{
+        "git_username" => user.git_username,
+        "git_email" => to_string(user.git_email),
+        "commit_trailers_enabled" => user.commit_trailers_enabled
+      },
+      as: :settings
+    )
+  end
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -370,6 +400,10 @@ defmodule MarshallWeb.AccountLive do
             <li>
               <a href="#ssh-keys">{gettext("SSH keys")}</a>
               <span class="muted">{ngettext("%{count} registered key", "%{count} registered keys", length(@keys))}</span>
+            </li>
+            <li>
+              <a href="#git-settings">{gettext("Git commits")}</a>
+              <span class="muted">{gettext("identity and commit attribution")}</span>
             </li>
           </ol>
         </nav>
@@ -446,6 +480,21 @@ defmodule MarshallWeb.AccountLive do
                 {gettext("Clear saved zone")}
               </button>
             </div>
+          </.form>
+        </section>
+
+        <hr />
+
+        <section id="git-settings" class="account-section stack" aria-labelledby="git-settings-title">
+          <h2 id="git-settings-title">{gettext("4. Git commits")}</h2>
+          <p class="muted">
+            {gettext("New machines use this Git identity. Agent commits can include the Overalls co-author trailer.")}
+          </p>
+          <.form for={@git_form} id="git-settings-form" phx-submit="save_git_settings" class="stack">
+            <.input field={@git_form[:git_username]} label={gettext("Git username")} maxlength="128" required />
+            <.input field={@git_form[:git_email]} type="email" label={gettext("Git email")} maxlength="254" required />
+            <.input field={@git_form[:commit_trailers_enabled]} type="checkbox" label={gettext("Add Overalls commit attribution")} />
+            <button id="save-git-settings" type="submit" class="console-button primary">{gettext("Save Git settings")}</button>
           </.form>
         </section>
 
