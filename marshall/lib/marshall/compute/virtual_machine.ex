@@ -504,20 +504,6 @@ defmodule Marshall.Compute.VirtualMachine do
     attribute :idle_revision, :integer, allow_nil?: false, default: 0, constraints: [min: 0]
     attribute :observed_at, :utc_datetime_usec
 
-    attribute(:labels, {:array, :string},
-      allow_nil?: false,
-      default: [],
-      constraints: [max_length: 32]
-    )
-
-    attribute(:comment, :string, allow_nil?: false, default: "", constraints: [max_length: 2048])
-    attribute(:generation, :integer, allow_nil?: false, default: 1, constraints: [min: 1])
-    attribute(:outcome_sequence, :integer, allow_nil?: false, default: 0, constraints: [min: 0])
-    attribute(:current_checkpoint, :map)
-    attribute(:idle_suspend_enabled, :boolean, allow_nil?: false, default: false)
-    attribute(:idle_activity_at, :utc_datetime_usec)
-    attribute(:idle_revision, :integer, allow_nil?: false, default: 0, constraints: [min: 0])
-    attribute(:observed_at, :utc_datetime_usec)
 
     attribute(:failure_reason, :atom,
       constraints: [
