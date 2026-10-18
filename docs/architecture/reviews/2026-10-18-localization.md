@@ -192,3 +192,39 @@ the newly allowlisted original Link may survive alongside the rewritten Link.
 This integration preserves upstream behavior and records the gap rather than
 claiming the handbook's no-upstream-hostname assertion is established. ADR0201
 remains partial; no localization authority or persistence decision changes.
+
+## Continued documentation coverage and exact invariant reviews
+
+The next batch adds 1,199 documentation entries: Arabic 500, Japanese 350, Korean
+250 and Finnish 99. Entries preserve source identities and protected code, links
+and placeholders; native-language acceptance remains unrecorded. The native
+checker caught and prompted correction of a Japanese bare-URL boundary missed
+by a scratch validator. Remaining empty entries remain explicit gaps.
+
+The catalog gate now validates an exact reviewed-source-equality manifest keyed
+by application, locale, domain, nullable context, source/plural source and plural
+form. Its initial 24 Finnish default records cover individually inspected brands,
+units and technical literals. Duplicate, stale, fuzzy or structurally invalid
+reviews fail. Raw equality counts stay visible and reviewed invariant coverage
+is reported separately. Any unreviewed copied plural form now remains a strict
+gap even when another form is translated. Seven standalone ExUnit tests passed,
+including a real Expo plural message, identity mismatches and review eligibility.
+The strict full-catalog run correctly rejects remaining translation gaps.
+
+A subsequent source audit localizes the malformed SSH approval browser refusal
+using the existing generic Unavailable identity. It retains the 404/no-return-path
+boundary; new English/Arabic/Japanese assertions await focused execution. Machine
+listener and public machine-API refusal bytes remain protocol-facing literals.
+A contract metadata separator in upstream Android framing is corrected from
+label= to label: without changing any framing behavior. These changes preserve
+ADR0201 and introduce no new runtime authority, persistence or domain boundary.
+
+On this continued batch, the refreshed account/controller run passed **60 tests**,
+with two excluded, seed532189, in43.3seconds. The previously stale Arabic
+documentation404 assertion now passes after the real forced compile. The new
+SSH refusal assertion is outside that run. The final non-strict catalog check
+passed across all25locales/fourdomains, and current ADR203, scenario/view and
+contract checks passed. After adding new maintained files to Git's source
+projection, the Nix HLDD gate passed; its earlier unstaged projection had correctly
+reported a stale Marshall digest. Full Marshall and authenticated Bombadil
+acceptance are still running or pending and are not represented as passed.

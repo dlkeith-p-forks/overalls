@@ -242,12 +242,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:89
 #, elixir-autogen, elixir-format
 msgid "## Agent loss and retry authority"
-msgstr ""
+msgstr "## 에이전트 상실 및 재시도 권한"
 
 #: lib/marshall/documentation_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "## Agent project context"
-msgstr ""
+msgstr "## 에이전트 프로젝트 컨텍스트"
 
 #: lib/marshall/documentation_messages.ex:91
 #, elixir-autogen, elixir-format
@@ -322,7 +322,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:144
 #, elixir-autogen, elixir-format
 msgid "## Audi private request monitoring"
-msgstr ""
+msgstr "## Audi 비공개 요청 모니터링"
 
 #: lib/marshall/documentation_messages.ex:145
 #, elixir-autogen, elixir-format
@@ -342,12 +342,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:148
 #, elixir-autogen, elixir-format
 msgid "## Authority and interactions"
-msgstr ""
+msgstr "## 권한 및 상호작용"
 
 #: lib/marshall/documentation_messages.ex:149
 #, elixir-autogen, elixir-format
 msgid "## Backup custody"
-msgstr ""
+msgstr "## 백업 보관 책임"
 
 #: lib/marshall/documentation_messages.ex:150
 #, elixir-autogen, elixir-format
@@ -377,7 +377,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:164
 #, elixir-autogen, elixir-format
 msgid "## Browser editor capability"
-msgstr ""
+msgstr "## 브라우저 편집기 기능"
 
 #: lib/marshall/documentation_messages.ex:165
 #, elixir-autogen, elixir-format
@@ -392,22 +392,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:167
 #, elixir-autogen, elixir-format
 msgid "## Browser editor release configuration"
-msgstr ""
+msgstr "## 브라우저 편집기 릴리스 구성"
 
 #: lib/marshall/documentation_messages.ex:168
 #, elixir-autogen, elixir-format
 msgid "## Browser extension package"
-msgstr ""
+msgstr "## 브라우저 확장 프로그램 패키지"
 
 #: lib/marshall/documentation_messages.ex:169
 #, elixir-autogen, elixir-format
 msgid "## Browser extension presence layers"
-msgstr ""
+msgstr "## 브라우저 확장 프로그램 존재 감지 계층"
 
 #: lib/marshall/documentation_messages.ex:170
 #, elixir-autogen, elixir-format
 msgid "## Browser presentation"
-msgstr ""
+msgstr "## 브라우저 표시 방식"
 
 #: lib/marshall/documentation_messages.ex:171
 #, elixir-autogen, elixir-format
@@ -427,7 +427,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:180
 #, elixir-autogen, elixir-format
 msgid "## Build and activate a release"
-msgstr ""
+msgstr "## 릴리스 빌드 및 활성화"
 
 #: lib/marshall/documentation_messages.ex:181
 #, elixir-autogen, elixir-format
@@ -437,7 +437,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:185
 #, elixir-autogen, elixir-format
 msgid "## Burn delivery operations"
-msgstr ""
+msgstr "## Burn 전달 작업"
 
 #: lib/marshall/documentation_messages.ex:186
 #, elixir-autogen, elixir-format
@@ -447,7 +447,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:187
 #, elixir-autogen, elixir-format
 msgid "## Certified SSH boot identity"
-msgstr ""
+msgstr "## 인증된 SSH 부팅 ID"
 
 #: lib/marshall/documentation_messages.ex:188
 #, elixir-autogen, elixir-format
@@ -457,12 +457,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:192
 #, elixir-autogen, elixir-format
 msgid "## Clone"
-msgstr ""
+msgstr "## 복제"
 
 #: lib/marshall/documentation_messages.ex:193
 #, elixir-autogen, elixir-format
 msgid "## Clone a machine"
-msgstr ""
+msgstr "## 머신 복제하기"
 
 #: lib/marshall/documentation_messages.ex:194
 #, elixir-autogen, elixir-format
@@ -477,7 +477,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:199
 #, elixir-autogen, elixir-format
 msgid "## Command reference"
-msgstr ""
+msgstr "## 명령 참조"
 
 #: lib/marshall/documentation_messages.ex:201
 #, elixir-autogen, elixir-format
@@ -497,17 +497,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:210
 #, elixir-autogen, elixir-format
 msgid "## Configuration and change procedure"
-msgstr ""
+msgstr "## 구성 및 변경 절차"
 
 #: lib/marshall/documentation_messages.ex:211
 #, elixir-autogen, elixir-format
 msgid "## Configure and open a repository"
-msgstr ""
+msgstr "## 저장소 구성 및 열기"
 
 #: lib/marshall/documentation_messages.ex:212
 #, elixir-autogen, elixir-format
 msgid "## Connect"
-msgstr ""
+msgstr "## 연결"
 
 #: lib/marshall/documentation_messages.ex:214
 #, elixir-autogen, elixir-format
@@ -527,12 +527,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:223
 #, elixir-autogen, elixir-format
 msgid "## Continuing physical boot adoption"
-msgstr ""
+msgstr "## 물리적 부팅 도입 이어가기"
 
 #: lib/marshall/documentation_messages.ex:224
 #, elixir-autogen, elixir-format
 msgid "## Control WebSocket"
-msgstr ""
+msgstr "## 제어 WebSocket"
 
 #: lib/marshall/documentation_messages.ex:225
 #, elixir-autogen, elixir-format
@@ -562,12 +562,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:242
 #, elixir-autogen, elixir-format
 msgid "## Credential and key rotation"
-msgstr ""
+msgstr "## 자격 증명 및 키 교체"
 
 #: lib/marshall/documentation_messages.ex:243
 #, elixir-autogen, elixir-format
 msgid "## Dedicated editor path"
-msgstr ""
+msgstr "## 전용 편집기 경로"
 
 #: lib/marshall/documentation_messages.ex:245
 #, elixir-autogen, elixir-format
@@ -577,12 +577,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:246
 #, elixir-autogen, elixir-format
 msgid "## Developer SSH"
-msgstr ""
+msgstr "## 개발자 SSH"
 
 #: lib/marshall/documentation_messages.ex:247
 #, elixir-autogen, elixir-format
 msgid "## Developer verification"
-msgstr ""
+msgstr "## 개발자 검증"
 
 #: lib/marshall/documentation_messages.ex:248
 #, elixir-autogen, elixir-format
@@ -592,12 +592,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:249
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic paths and custody"
-msgstr ""
+msgstr "## 진단 경로 및 보관 책임"
 
 #: lib/marshall/documentation_messages.ex:250
 #, elixir-autogen, elixir-format
 msgid "## Disable, drain, resume, retire"
-msgstr ""
+msgstr "## 비활성화, 드레인, 재개, 사용 종료"
 
 #: lib/marshall/documentation_messages.ex:251
 #, elixir-autogen, elixir-format
@@ -612,12 +612,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:259
 #, elixir-autogen, elixir-format
 msgid "## Durable guest accounts"
-msgstr ""
+msgstr "## 영속적인 게스트 계정"
 
 #: lib/marshall/documentation_messages.ex:260
 #, elixir-autogen, elixir-format
 msgid "## Durable guest identity reservations"
-msgstr ""
+msgstr "## 영속적인 게스트 ID 예약"
 
 #: lib/marshall/documentation_messages.ex:261
 #, elixir-autogen, elixir-format
@@ -627,22 +627,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:262
 #, elixir-autogen, elixir-format
 msgid "## Durable request sources"
-msgstr ""
+msgstr "## 영속적인 요청 소스"
 
 #: lib/marshall/documentation_messages.ex:263
 #, elixir-autogen, elixir-format
 msgid "## Editor transition evidence"
-msgstr ""
+msgstr "## 편집기 전환 증거"
 
 #: lib/marshall/documentation_messages.ex:264
 #, elixir-autogen, elixir-format
 msgid "## Elixir contract verification"
-msgstr ""
+msgstr "## Elixir 계약 검증"
 
 #: lib/marshall/documentation_messages.ex:265
 #, elixir-autogen, elixir-format
 msgid "## Elixir property verification"
-msgstr ""
+msgstr "## Elixir 속성 검증"
 
 #: lib/marshall/documentation_messages.ex:266
 #, elixir-autogen, elixir-format
@@ -652,7 +652,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:267
 #, elixir-autogen, elixir-format
 msgid "## Enroll"
-msgstr ""
+msgstr "## 등록"
 
 #: lib/marshall/documentation_messages.ex:268
 #, elixir-autogen, elixir-format
@@ -662,17 +662,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:272
 #, elixir-autogen, elixir-format
 msgid "## Evaluated placement"
-msgstr ""
+msgstr "## 평가된 배치"
 
 #: lib/marshall/documentation_messages.ex:273
 #, elixir-autogen, elixir-format
 msgid "## Evidence levels"
-msgstr ""
+msgstr "## 증거 수준"
 
 #: lib/marshall/documentation_messages.ex:274
 #, elixir-autogen, elixir-format
 msgid "## Executor loss and explicit retry"
-msgstr ""
+msgstr "## 실행기 상실 및 명시적 재시도"
 
 #: lib/marshall/documentation_messages.ex:275
 #, elixir-autogen, elixir-format
@@ -717,12 +717,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:292
 #, elixir-autogen, elixir-format
 msgid "## Experimental local guest emulation"
-msgstr ""
+msgstr "## 실험적인 로컬 게스트 에뮬레이션"
 
 #: lib/marshall/documentation_messages.ex:293
 #, elixir-autogen, elixir-format
 msgid "## Experimental native daemon recovery"
-msgstr ""
+msgstr "## 실험적인 네이티브 데몬 복구"
 
 #: lib/marshall/documentation_messages.ex:294
 #, elixir-autogen, elixir-format
@@ -757,12 +757,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:312
 #, elixir-autogen, elixir-format
 msgid "## First commands"
-msgstr ""
+msgstr "## 첫 번째 명령"
 
 #: lib/marshall/documentation_messages.ex:313
 #, elixir-autogen, elixir-format
 msgid "## Foreign Linux guest PAM runtime"
-msgstr ""
+msgstr "## 외부 Linux 게스트 PAM 런타임"
 
 #: lib/marshall/documentation_messages.ex:314
 #, elixir-autogen, elixir-format
@@ -772,7 +772,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:315
 #, elixir-autogen, elixir-format
 msgid "## Full ring overwrite allocation"
-msgstr ""
+msgstr "## 전체 링 덮어쓰기 할당"
 
 #: lib/marshall/documentation_messages.ex:316
 #, elixir-autogen, elixir-format
@@ -792,22 +792,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:328
 #, elixir-autogen, elixir-format
 msgid "## Guest CLI replacement"
-msgstr ""
+msgstr "## 게스트 CLI 교체"
 
 #: lib/marshall/documentation_messages.ex:329
 #, elixir-autogen, elixir-format
 msgid "## Guest boot profile"
-msgstr ""
+msgstr "## 게스트 부팅 프로필"
 
 #: lib/marshall/documentation_messages.ex:330
 #, elixir-autogen, elixir-format
 msgid "## Guest coding CLI configuration"
-msgstr ""
+msgstr "## 게스트 코딩 CLI 구성"
 
 #: lib/marshall/documentation_messages.ex:331
 #, elixir-autogen, elixir-format
 msgid "## Guest instructions and skills"
-msgstr ""
+msgstr "## 게스트 지침 및 스킬"
 
 #: lib/marshall/documentation_messages.ex:332
 #, elixir-autogen, elixir-format
@@ -832,47 +832,47 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:348
 #, elixir-autogen, elixir-format
 msgid "## Host evacuation"
-msgstr ""
+msgstr "## 호스트 워크로드 대피"
 
 #: lib/marshall/documentation_messages.ex:349
 #, elixir-autogen, elixir-format
 msgid "## Host responsibilities"
-msgstr ""
+msgstr "## 호스트의 책임"
 
 #: lib/marshall/documentation_messages.ex:350
 #, elixir-autogen, elixir-format
 msgid "## Host-effects engine boundary"
-msgstr ""
+msgstr "## 호스트 효과 엔진 경계"
 
 #: lib/marshall/documentation_messages.ex:351
 #, elixir-autogen, elixir-format
 msgid "## Host-effects engine loss"
-msgstr ""
+msgstr "## 호스트 효과 엔진 상실"
 
 #: lib/marshall/documentation_messages.ex:352
 #, elixir-autogen, elixir-format
 msgid "## Independent diagnostic custody"
-msgstr ""
+msgstr "## 독립적인 진단 보관 책임"
 
 #: lib/marshall/documentation_messages.ex:353
 #, elixir-autogen, elixir-format
 msgid "## Independent observability recovery"
-msgstr ""
+msgstr "## 독립적인 관측 복구"
 
 #: lib/marshall/documentation_messages.ex:354
 #, elixir-autogen, elixir-format
 msgid "## Independent observability roles"
-msgstr ""
+msgstr "## 독립적인 관측 역할"
 
 #: lib/marshall/documentation_messages.ex:355
 #, elixir-autogen, elixir-format
 msgid "## Independent service diagnostics"
-msgstr ""
+msgstr "## 독립적인 서비스 진단"
 
 #: lib/marshall/documentation_messages.ex:356
 #, elixir-autogen, elixir-format
 msgid "## Inline privileged browser actions"
-msgstr ""
+msgstr "## 인라인 특권 브라우저 작업"
 
 #: lib/marshall/documentation_messages.ex:357
 #, elixir-autogen, elixir-format
@@ -917,12 +917,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:389
 #, elixir-autogen, elixir-format
 msgid "## Install the Overalls CLI"
-msgstr ""
+msgstr "## Overalls CLI 설치하기"
 
 #: lib/marshall/documentation_messages.ex:390
 #, elixir-autogen, elixir-format
 msgid "## Install the developer archive"
-msgstr ""
+msgstr "## 개발자 아카이브 설치하기"
 
 #: lib/marshall/documentation_messages.ex:391
 #, elixir-autogen, elixir-format
@@ -932,7 +932,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:395
 #, elixir-autogen, elixir-format
 msgid "## Internal service TLS trust"
-msgstr ""
+msgstr "## 내부 서비스 TLS 신뢰"
 
 #: lib/marshall/documentation_messages.ex:396
 #, elixir-autogen, elixir-format
@@ -942,7 +942,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:397
 #, elixir-autogen, elixir-format
 msgid "## Invalid provisioner startup"
-msgstr ""
+msgstr "## 잘못된 프로비저너 시작"
 
 #: lib/marshall/documentation_messages.ex:398
 #, elixir-autogen, elixir-format
@@ -952,12 +952,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:402
 #, elixir-autogen, elixir-format
 msgid "## Isolated restoration"
-msgstr ""
+msgstr "## 격리된 복원"
 
 #: lib/marshall/documentation_messages.ex:403
 #, elixir-autogen, elixir-format
 msgid "## Job history and operational readers"
-msgstr ""
+msgstr "## 작업 이력 및 운영 조회"
 
 #: lib/marshall/documentation_messages.ex:404
 #, elixir-autogen, elixir-format
@@ -1007,17 +1007,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:437
 #, elixir-autogen, elixir-format
 msgid "## Keeping this handbook current"
-msgstr ""
+msgstr "## 이 핸드북을 최신 상태로 유지하기"
 
 #: lib/marshall/documentation_messages.ex:438
 #, elixir-autogen, elixir-format
 msgid "## Language and text direction"
-msgstr ""
+msgstr "## 언어 및 텍스트 방향"
 
 #: lib/marshall/documentation_messages.ex:439
 #, elixir-autogen, elixir-format
 msgid "## Lilly role"
-msgstr ""
+msgstr "## Lilly의 역할"
 
 #: lib/marshall/documentation_messages.ex:440
 #, elixir-autogen, elixir-format
@@ -1027,17 +1027,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:441
 #, elixir-autogen, elixir-format
 msgid "## Logs, queues and independent health"
-msgstr ""
+msgstr "## 로그, 큐 및 독립적인 상태 점검"
 
 #: lib/marshall/documentation_messages.ex:442
 #, elixir-autogen, elixir-format
 msgid "## Lost database clients"
-msgstr ""
+msgstr "## 데이터베이스 클라이언트 연결 상실"
 
 #: lib/marshall/documentation_messages.ex:443
 #, elixir-autogen, elixir-format
 msgid "## Machine pins"
-msgstr ""
+msgstr "## 머신 고정"
 
 #: lib/marshall/documentation_messages.ex:444
 #, elixir-autogen, elixir-format
@@ -1047,17 +1047,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:445
 #, elixir-autogen, elixir-format
 msgid "## Mail and reclamation"
-msgstr ""
+msgstr "## 메일 및 회수"
 
 #: lib/marshall/documentation_messages.ex:446
 #, elixir-autogen, elixir-format
 msgid "## Maintenance control authority"
-msgstr ""
+msgstr "## 유지보수 제어 권한"
 
 #: lib/marshall/documentation_messages.ex:447
 #, elixir-autogen, elixir-format
 msgid "## Marshall role"
-msgstr ""
+msgstr "## Marshall의 역할"
 
 #: lib/marshall/documentation_messages.ex:448
 #, elixir-autogen, elixir-format
@@ -1077,7 +1077,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:460
 #, elixir-autogen, elixir-format
 msgid "## Multi-OS image families"
-msgstr ""
+msgstr "## 여러 OS 이미지 계열"
 
 #: lib/marshall/documentation_messages.ex:461
 #, elixir-autogen, elixir-format
@@ -1092,7 +1092,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:463
 #, elixir-autogen, elixir-format
 msgid "## Native coding CLI defaults"
-msgstr ""
+msgstr "## 네이티브 코딩 CLI 기본값"
 
 #: lib/marshall/documentation_messages.ex:464
 #, elixir-autogen, elixir-format
@@ -1102,17 +1102,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:465
 #, elixir-autogen, elixir-format
 msgid "## Native fleet trust verification"
-msgstr ""
+msgstr "## 네이티브 플릿 신뢰 검증"
 
 #: lib/marshall/documentation_messages.ex:466
 #, elixir-autogen, elixir-format
 msgid "## Native guest agent boundary"
-msgstr ""
+msgstr "## 네이티브 게스트 에이전트 경계"
 
 #: lib/marshall/documentation_messages.ex:467
 #, elixir-autogen, elixir-format
 msgid "## Native guest protocol reference"
-msgstr ""
+msgstr "## 네이티브 게스트 프로토콜 참조"
 
 #: lib/marshall/documentation_messages.ex:468
 #, elixir-autogen, elixir-format
@@ -1122,7 +1122,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:469
 #, elixir-autogen, elixir-format
 msgid "## Native utility descendant custody"
-msgstr ""
+msgstr "## 네이티브 유틸리티 하위 프로세스 보관 책임"
 
 #: lib/marshall/documentation_messages.ex:470
 #, elixir-autogen, elixir-format
@@ -1242,22 +1242,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:560
 #, elixir-autogen, elixir-format
 msgid "## Operator encrypted-document custody"
-msgstr ""
+msgstr "## 운영자 암호화 문서 보관 책임"
 
 #: lib/marshall/documentation_messages.ex:561
 #, elixir-autogen, elixir-format
 msgid "## Personal browser editor"
-msgstr ""
+msgstr "## 개인 브라우저 편집기"
 
 #: lib/marshall/documentation_messages.ex:562
 #, elixir-autogen, elixir-format
 msgid "## Personal browser editor layers"
-msgstr ""
+msgstr "## 개인 브라우저 편집기 계층"
 
 #: lib/marshall/documentation_messages.ex:563
 #, elixir-autogen, elixir-format
 msgid "## Physical guest readiness receipts"
-msgstr ""
+msgstr "## 물리 게스트 준비 상태 확인 기록"
 
 #: lib/marshall/documentation_messages.ex:564
 #, elixir-autogen, elixir-format
@@ -1267,7 +1267,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:568
 #, elixir-autogen, elixir-format
 msgid "## Pinned machines in the lists"
-msgstr ""
+msgstr "## 목록의 고정된 머신"
 
 #: lib/marshall/documentation_messages.ex:569
 #, elixir-autogen, elixir-format
@@ -1287,7 +1287,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:578
 #, elixir-autogen, elixir-format
 msgid "## Prepare a host"
-msgstr ""
+msgstr "## 호스트 준비하기"
 
 #: lib/marshall/documentation_messages.ex:579
 #, elixir-autogen, elixir-format
@@ -1297,7 +1297,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:583
 #, elixir-autogen, elixir-format
 msgid "## Privacy and availability"
-msgstr ""
+msgstr "## 개인정보 보호 및 가용성"
 
 #: lib/marshall/documentation_messages.ex:584
 #, elixir-autogen, elixir-format
@@ -1307,7 +1307,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:585
 #, elixir-autogen, elixir-format
 msgid "## Privileged administrator step-up"
-msgstr ""
+msgstr "## 특권 관리자 추가 인증"
 
 #: lib/marshall/documentation_messages.ex:586
 #, elixir-autogen, elixir-format
@@ -1322,17 +1322,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:588
 #, elixir-autogen, elixir-format
 msgid "## Provisioning performance acceptance"
-msgstr ""
+msgstr "## 프로비저닝 성능 인수 검증"
 
 #: lib/marshall/documentation_messages.ex:589
 #, elixir-autogen, elixir-format
 msgid "## Public Grafana"
-msgstr ""
+msgstr "## 공개 Grafana"
 
 #: lib/marshall/documentation_messages.ex:590
 #, elixir-autogen, elixir-format
 msgid "## Public HTTP-01 listener"
-msgstr ""
+msgstr "## 공개 HTTP-01 리스너"
 
 #: lib/marshall/documentation_messages.ex:591
 #, elixir-autogen, elixir-format
@@ -1497,7 +1497,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:704
 #, elixir-autogen, elixir-format
 msgid "## Register your key"
-msgstr ""
+msgstr "## 키 등록하기"
 
 #: lib/marshall/documentation_messages.ex:705
 #, elixir-autogen, elixir-format
@@ -1507,12 +1507,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:709
 #, elixir-autogen, elixir-format
 msgid "## Relocate a machine"
-msgstr ""
+msgstr "## 머신 재배치하기"
 
 #: lib/marshall/documentation_messages.ex:710
 #, elixir-autogen, elixir-format
 msgid "## Relocation"
-msgstr ""
+msgstr "## 재배치"
 
 #: lib/marshall/documentation_messages.ex:711
 #, elixir-autogen, elixir-format
@@ -1522,12 +1522,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:715
 #, elixir-autogen, elixir-format
 msgid "## Replace a Lilly host"
-msgstr ""
+msgstr "## Lilly 호스트 교체하기"
 
 #: lib/marshall/documentation_messages.ex:716
 #, elixir-autogen, elixir-format
 msgid "## Replace a host"
-msgstr ""
+msgstr "## 호스트 교체하기"
 
 #: lib/marshall/documentation_messages.ex:717
 #, elixir-autogen, elixir-format
@@ -1537,7 +1537,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:721
 #, elixir-autogen, elixir-format
 msgid "## Repository launch workspaces"
-msgstr ""
+msgstr "## 저장소 실행 작업공간"
 
 #: lib/marshall/documentation_messages.ex:722
 #, elixir-autogen, elixir-format
@@ -1557,12 +1557,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:731
 #, elixir-autogen, elixir-format
 msgid "## Resize"
-msgstr ""
+msgstr "## 크기 변경"
 
 #: lib/marshall/documentation_messages.ex:732
 #, elixir-autogen, elixir-format
 msgid "## Resize a machine"
-msgstr ""
+msgstr "## 머신 크기 변경하기"
 
 #: lib/marshall/documentation_messages.ex:733
 #, elixir-autogen, elixir-format
@@ -1572,7 +1572,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:737
 #, elixir-autogen, elixir-format
 msgid "## Responsibilities"
-msgstr ""
+msgstr "## 책임"
 
 #: lib/marshall/documentation_messages.ex:738
 #, elixir-autogen, elixir-format
@@ -1597,7 +1597,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:754
 #, elixir-autogen, elixir-format
 msgid "## Results and completion"
-msgstr ""
+msgstr "## 결과 및 완료"
 
 #: lib/marshall/documentation_messages.ex:755
 #, elixir-autogen, elixir-format
@@ -1627,7 +1627,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:772
 #, elixir-autogen, elixir-format
 msgid "## Retained profile migration"
-msgstr ""
+msgstr "## 보존된 프로필 마이그레이션"
 
 #: lib/marshall/documentation_messages.ex:773
 #, elixir-autogen, elixir-format
@@ -1637,7 +1637,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:774
 #, elixir-autogen, elixir-format
 msgid "## Retention and capacity"
-msgstr ""
+msgstr "## 보존 및 용량"
 
 #: lib/marshall/documentation_messages.ex:775
 #, elixir-autogen, elixir-format
@@ -1652,7 +1652,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:783
 #, elixir-autogen, elixir-format
 msgid "## Retired terminal scrollback"
-msgstr ""
+msgstr "## 사용 종료된 터미널 스크롤백"
 
 #: lib/marshall/documentation_messages.ex:784
 #, elixir-autogen, elixir-format
@@ -1667,7 +1667,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:792
 #, elixir-autogen, elixir-format
 msgid "## Retry safely"
-msgstr ""
+msgstr "## 안전하게 재시도하기"
 
 #: lib/marshall/documentation_messages.ex:793
 #, elixir-autogen, elixir-format
@@ -1687,27 +1687,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:802
 #, elixir-autogen, elixir-format
 msgid "## SSH host CA configuration"
-msgstr ""
+msgstr "## SSH 호스트 CA 구성"
 
 #: lib/marshall/documentation_messages.ex:803
 #, elixir-autogen, elixir-format
 msgid "## SSH host authority recovery"
-msgstr ""
+msgstr "## SSH 호스트 권한 복구"
 
 #: lib/marshall/documentation_messages.ex:804
 #, elixir-autogen, elixir-format
 msgid "## SSH host certificate authority"
-msgstr ""
+msgstr "## SSH 호스트 인증 기관"
 
 #: lib/marshall/documentation_messages.ex:809
 #, elixir-autogen, elixir-format
 msgid "## Sealed image authority"
-msgstr ""
+msgstr "## 봉인된 이미지의 권한"
 
 #: lib/marshall/documentation_messages.ex:810
 #, elixir-autogen, elixir-format
 msgid "## Search engine exposure"
-msgstr ""
+msgstr "## 검색 엔진 노출"
 
 #: lib/marshall/documentation_messages.ex:811
 #, elixir-autogen, elixir-format
@@ -1732,7 +1732,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:827
 #, elixir-autogen, elixir-format
 msgid "## Share a VM and revoke a collaborator"
-msgstr ""
+msgstr "## VM 공유 및 공동 작업자 권한 폐기"
 
 #: lib/marshall/documentation_messages.ex:828
 #, elixir-autogen, elixir-format
@@ -1742,7 +1742,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:829
 #, elixir-autogen, elixir-format
 msgid "## Shared terminal scrollback admission"
-msgstr ""
+msgstr "## 공유 터미널 스크롤백 허용 판단"
 
 #: lib/marshall/documentation_messages.ex:830
 #, elixir-autogen, elixir-format
@@ -1782,7 +1782,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:867
 #, elixir-autogen, elixir-format
 msgid "## Streaming cache history verification"
-msgstr ""
+msgstr "## 스트리밍 캐시 이력 검증"
 
 #: lib/marshall/documentation_messages.ex:868
 #, elixir-autogen, elixir-format
@@ -1792,12 +1792,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:874
 #, elixir-autogen, elixir-format
 msgid "## Telemetry retention and capacity"
-msgstr ""
+msgstr "## 텔레메트리 보존 및 용량"
 
 #: lib/marshall/documentation_messages.ex:875
 #, elixir-autogen, elixir-format
 msgid "## Thread authorization boundary"
-msgstr ""
+msgstr "## 스레드 인가 경계"
 
 #: lib/marshall/documentation_messages.ex:876
 #, elixir-autogen, elixir-format
@@ -1817,7 +1817,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:880
 #, elixir-autogen, elixir-format
 msgid "## Time zones and local time"
-msgstr ""
+msgstr "## 시간대 및 현지 시간"
 
 #: lib/marshall/documentation_messages.ex:881
 #, elixir-autogen, elixir-format
@@ -1832,7 +1832,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:886
 #, elixir-autogen, elixir-format
 msgid "## Underclass provider egress layers"
-msgstr ""
+msgstr "## Underclass 공급자 송신 계층"
 
 #: lib/marshall/documentation_messages.ex:887
 #, elixir-autogen, elixir-format
@@ -1842,7 +1842,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:891
 #, elixir-autogen, elixir-format
 msgid "## Updates and migrations"
-msgstr ""
+msgstr "## 업데이트 및 마이그레이션"
 
 #: lib/marshall/documentation_messages.ex:892
 #, elixir-autogen, elixir-format
@@ -1867,17 +1867,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:908
 #, elixir-autogen, elixir-format
 msgid "## User-run guest coding CLI layers"
-msgstr ""
+msgstr "## 사용자가 실행하는 게스트 코딩 CLI 계층"
 
 #: lib/marshall/documentation_messages.ex:909
 #, elixir-autogen, elixir-format
 msgid "## Users and secrets"
-msgstr ""
+msgstr "## 사용자 및 비밀 정보"
 
 #: lib/marshall/documentation_messages.ex:910
 #, elixir-autogen, elixir-format
 msgid "## VM actor completion before recording"
-msgstr ""
+msgstr "## 기록 전 VM 액터 완료"
 
 #: lib/marshall/documentation_messages.ex:911
 #, elixir-autogen, elixir-format
@@ -1887,7 +1887,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:915
 #, elixir-autogen, elixir-format
 msgid "## Verification and gaps"
-msgstr ""
+msgstr "## 검증 및 미비점"
 
 #: lib/marshall/documentation_messages.ex:916
 #, elixir-autogen, elixir-format
@@ -1897,27 +1897,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:917
 #, elixir-autogen, elixir-format
 msgid "## Verified image templates"
-msgstr ""
+msgstr "## 검증된 이미지 템플릿"
 
 #: lib/marshall/documentation_messages.ex:918
 #, elixir-autogen, elixir-format
 msgid "## Waiting launch authority"
-msgstr ""
+msgstr "## 대기 중인 실행의 권한"
 
 #: lib/marshall/documentation_messages.ex:919
 #, elixir-autogen, elixir-format
 msgid "## Windows guest boundaries"
-msgstr ""
+msgstr "## Windows 게스트 경계"
 
 #: lib/marshall/documentation_messages.ex:920
 #, elixir-autogen, elixir-format
 msgid "## Windows guests (experimental)"
-msgstr ""
+msgstr "## Windows 게스트(실험적)"
 
 #: lib/marshall/documentation_messages.ex:921
 #, elixir-autogen, elixir-format
 msgid "## Windows image build inputs"
-msgstr ""
+msgstr "## Windows 이미지 빌드 입력"
 
 #: lib/marshall/documentation_messages.ex:922
 #, elixir-autogen, elixir-format
@@ -4142,12 +4142,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1438
 #, elixir-autogen, elixir-format
 msgid "### Antithesis harness retirement"
-msgstr ""
+msgstr "### Antithesis 하니스 사용 종료"
 
 #: lib/marshall/documentation_messages.ex:1439
 #, elixir-autogen, elixir-format
 msgid "### Browser helper type gates"
-msgstr ""
+msgstr "### 브라우저 도우미 유형 검사 게이트"
 
 #: lib/marshall/documentation_messages.ex:1440
 #, elixir-autogen, elixir-format
@@ -4162,12 +4162,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1442
 #, elixir-autogen, elixir-format
 msgid "### Committed database fixtures"
-msgstr ""
+msgstr "### 커밋된 데이터베이스 픽스처"
 
 #: lib/marshall/documentation_messages.ex:1443
 #, elixir-autogen, elixir-format
 msgid "### Current OmniOS accept ordering"
-msgstr ""
+msgstr "### 현재 OmniOS 수락 순서"
 
 #: lib/marshall/documentation_messages.ex:1444
 #, elixir-autogen, elixir-format
@@ -4177,7 +4177,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1445
 #, elixir-autogen, elixir-format
 msgid "### Experimental Antithesis foundation"
-msgstr ""
+msgstr "### 실험적인 Antithesis 기반"
 
 #: lib/marshall/documentation_messages.ex:1447
 #, elixir-autogen, elixir-format
@@ -4207,7 +4207,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1452
 #, elixir-autogen, elixir-format
 msgid "### Measured boot reductions"
-msgstr ""
+msgstr "### 측정된 부팅 시간 단축"
 
 #: lib/marshall/documentation_messages.ex:1453
 #, elixir-autogen, elixir-format
@@ -4222,7 +4222,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1455
 #, elixir-autogen, elixir-format
 msgid "### Open a repository from the terminal"
-msgstr ""
+msgstr "### 터미널에서 저장소 열기"
 
 #: lib/marshall/documentation_messages.ex:1456
 #, elixir-autogen, elixir-format
@@ -4237,7 +4237,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1459
 #, elixir-autogen, elixir-format
 msgid "### Windows workstations"
-msgstr ""
+msgstr "### Windows 워크스테이션"
 
 #: lib/marshall/documentation_messages.ex:1460
 #, elixir-autogen, elixir-format
@@ -6977,7 +6977,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3789
 #, elixir-autogen, elixir-format
 msgid "ACME account contact email."
-msgstr ""
+msgstr "ACME 계정 연락처 이메일입니다."
 
 #: lib/marshall/documentation_messages.ex:3790
 #, elixir-autogen, elixir-format
@@ -7032,7 +7032,7 @@ msgstr "ADR-0185는 전용 tailnet 노드와 호주에 있는 운영자의 출�
 #: lib/marshall/documentation_messages.ex:3830
 #, elixir-autogen, elixir-format
 msgid "AWS signing region."
-msgstr ""
+msgstr "AWS 서명 리전입니다."
 
 #: lib/marshall/documentation_messages.ex:3831
 #, elixir-autogen, elixir-format
@@ -7177,7 +7177,7 @@ msgstr "Marshall 인스턴스에 대한 논리 코어 단위의 총 CPU 할당�
 #: lib/marshall/documentation_messages.ex:3969
 #, elixir-autogen, elixir-format
 msgid "Aggregate Marshall memory limit in MiB."
-msgstr ""
+msgstr "Marshall 전체의 메모리 한도(MiB)입니다."
 
 #: lib/marshall/documentation_messages.ex:3970
 #, elixir-autogen, elixir-format
@@ -7397,7 +7397,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4141
 #, elixir-autogen, elixir-format
 msgid "At the Porsche prompt, enter:"
-msgstr ""
+msgstr "Porsche 프롬프트에서 다음을 입력하세요:"
 
 #: lib/marshall/documentation_messages.ex:4142
 #, elixir-autogen, elixir-format
@@ -7462,17 +7462,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4194
 #, elixir-autogen, elixir-format
 msgid "Automation"
-msgstr ""
+msgstr "자동화"
 
 #: lib/marshall/documentation_messages.ex:4199
 #, elixir-autogen, elixir-format
 msgid "Backend HTTPS port."
-msgstr ""
+msgstr "백엔드 HTTPS 포트입니다."
 
 #: lib/marshall/documentation_messages.ex:4200
 #, elixir-autogen, elixir-format
 msgid "Backend IPv4 address or hostname."
-msgstr ""
+msgstr "백엔드 IPv4 주소 또는 호스트 이름입니다."
 
 #: lib/marshall/documentation_messages.ex:4201
 #, elixir-autogen, elixir-format
@@ -8422,7 +8422,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4981
 #, elixir-autogen, elixir-format
 msgid "Browser extension"
-msgstr ""
+msgstr "브라우저 확장 프로그램"
 
 #: lib/marshall/documentation_messages.ex:4982
 #, elixir-autogen, elixir-format
@@ -8512,7 +8512,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5039
 #, elixir-autogen, elixir-format
 msgid "Canonical mounted pool path."
-msgstr ""
+msgstr "마운트된 풀의 정규 경로입니다."
 
 #: lib/marshall/documentation_messages.ex:5040
 #, elixir-autogen, elixir-format
@@ -8597,7 +8597,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5105
 #, elixir-autogen, elixir-format
 msgid "Command reference"
-msgstr ""
+msgstr "명령 참조"
 
 #: lib/marshall/documentation_messages.ex:5106
 #, elixir-autogen, elixir-format
@@ -9042,7 +9042,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5410
 #, elixir-autogen, elixir-format
 msgid "Dedicated SSH host CA public key."
-msgstr ""
+msgstr "전용 SSH 호스트 CA 공개 키입니다."
 
 #: lib/marshall/documentation_messages.ex:5411
 #, elixir-autogen, elixir-format
@@ -9057,7 +9057,7 @@ msgstr "새 SSH 머신과 초기 브라우저 초안의 기본 불변 이미지�
 #: lib/marshall/documentation_messages.ex:5416
 #, elixir-autogen, elixir-format
 msgid "Default:"
-msgstr ""
+msgstr "기본값:"
 
 #: lib/marshall/documentation_messages.ex:5417
 #, elixir-autogen, elixir-format
@@ -9087,7 +9087,7 @@ msgstr "위임된 애플리케이션 DNS 영역입니다. 브라우저 편집기
 #: lib/marshall/documentation_messages.ex:5437
 #, elixir-autogen, elixir-format
 msgid "Delegated application zone."
-msgstr ""
+msgstr "위임된 애플리케이션 존입니다."
 
 #: lib/marshall/documentation_messages.ex:5438
 #, elixir-autogen, elixir-format
@@ -9282,12 +9282,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5590
 #, elixir-autogen, elixir-format
 msgid "Enrolled local Lilly host identity."
-msgstr ""
+msgstr "등록된 로컬 Lilly 호스트 ID입니다."
 
 #: lib/marshall/documentation_messages.ex:5591
 #, elixir-autogen, elixir-format
 msgid "Enrolled pool UUID."
-msgstr ""
+msgstr "등록된 풀의 UUID입니다."
 
 #: lib/marshall/documentation_messages.ex:5592
 #, elixir-autogen, elixir-format
@@ -9452,7 +9452,7 @@ msgstr "공유 SMTP 번들을 받을 수 있는 로컬에 설치된 정확한 In
 #: lib/marshall/documentation_messages.ex:5722
 #, elixir-autogen, elixir-format
 msgid "Example:"
-msgstr ""
+msgstr "예시:"
 
 #: lib/marshall/documentation_messages.ex:5723
 #, elixir-autogen, elixir-format
@@ -9827,7 +9827,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6006
 #, elixir-autogen, elixir-format
 msgid "Getting started"
-msgstr ""
+msgstr "시작하기"
 
 #: lib/marshall/documentation_messages.ex:6011
 #, elixir-autogen, elixir-format
@@ -9872,7 +9872,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6040
 #, elixir-autogen, elixir-format
 msgid "Group under which Audiobookshelf runs."
-msgstr ""
+msgstr "Audiobookshelf를 실행할 그룹입니다."
 
 #: lib/marshall/documentation_messages.ex:6041
 #, elixir-autogen, elixir-format
@@ -9982,7 +9982,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6116
 #, elixir-autogen, elixir-format
 msgid "Host-wide native log file budget."
-msgstr ""
+msgstr "호스트 전체의 네이티브 로그 파일 한도입니다."
 
 #: lib/marshall/documentation_messages.ex:6117
 #, elixir-autogen, elixir-format
@@ -10092,7 +10092,7 @@ msgstr "생산자별 독립 영속 추적 보관입니다. 실패해도 생산�
 #: lib/marshall/documentation_messages.ex:6201
 #, elixir-autogen, elixir-format
 msgid "Independent source-built Audi release."
-msgstr ""
+msgstr "독립적으로 소스에서 빌드한 Audi 릴리스입니다."
 
 #: lib/marshall/documentation_messages.ex:6202
 #, elixir-autogen, elixir-format
@@ -10312,12 +10312,12 @@ msgstr "list는 호스트 매니페스트 후보를 보고하고 inspect는 선�
 #: lib/marshall/documentation_messages.ex:6380
 #, elixir-autogen, elixir-format
 msgid "Literal IPv4 backend bind address."
-msgstr ""
+msgstr "리터럴 IPv4 백엔드 바인딩 주소입니다."
 
 #: lib/marshall/documentation_messages.ex:6381
 #, elixir-autogen, elixir-format
 msgid "Literal public listener address."
-msgstr ""
+msgstr "공개 리스너 주소의 리터럴 값입니다."
 
 #: lib/marshall/documentation_messages.ex:6382
 #, elixir-autogen, elixir-format
@@ -10397,7 +10397,7 @@ msgstr "플릿 원격 측정과 로깅이 활성화된 경우의 루프백 전�
 #: lib/marshall/documentation_messages.ex:6430
 #, elixir-autogen, elixir-format
 msgid "Loopback-only VictoriaLogs HTTP port."
-msgstr ""
+msgstr "루프백 전용 VictoriaLogs HTTP 포트입니다."
 
 #: lib/marshall/documentation_messages.ex:6431
 #, elixir-autogen, elixir-format
@@ -10862,7 +10862,7 @@ msgstr "Audiobookshelf 웹 인터페이스용 방화벽 포트를 엽니다."
 #: lib/marshall/documentation_messages.ex:6825
 #, elixir-autogen, elixir-format
 msgid "Open the public HTTPS port."
-msgstr ""
+msgstr "공개 HTTPS 포트를 엽니다."
 
 #: lib/marshall/documentation_messages.ex:6826
 #, elixir-autogen, elixir-format
@@ -10887,7 +10887,7 @@ msgstr "운영자 RSA 공개 키입니다(최소 3072비트). 해당 개인 키�
 #: lib/marshall/documentation_messages.ex:6842
 #, elixir-autogen, elixir-format
 msgid "Operator selected ACME directory."
-msgstr ""
+msgstr "운영자가 선택한 ACME 디렉터리입니다."
 
 #: lib/marshall/documentation_messages.ex:6843
 #, elixir-autogen, elixir-format
@@ -10997,7 +10997,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6927
 #, elixir-autogen, elixir-format
 msgid "Overalls documentation"
-msgstr ""
+msgstr "Overalls 문서"
 
 #: lib/marshall/documentation_messages.ex:6928
 #, elixir-autogen, elixir-format
@@ -11047,7 +11047,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6961
 #, elixir-autogen, elixir-format
 msgid "Peer's Lego responder port."
-msgstr ""
+msgstr "피어의 Lego 응답기 포트입니다."
 
 #: lib/marshall/documentation_messages.ex:6962
 #, elixir-autogen, elixir-format
@@ -11097,12 +11097,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6998
 #, elixir-autogen, elixir-format
 msgid "Pinned Rust request recorder package."
-msgstr ""
+msgstr "고정된 Rust 요청 기록기 패키지입니다."
 
 #: lib/marshall/documentation_messages.ex:6999
 #, elixir-autogen, elixir-format
 msgid "Pinned Underclass package."
-msgstr ""
+msgstr "고정된 Underclass 패키지입니다."
 
 #: lib/marshall/documentation_messages.ex:7000
 #, elixir-autogen, elixir-format
@@ -11177,7 +11177,7 @@ msgstr "발급 전에 발급자 신뢰 또는 선택한 DNS 자격 증명을 게
 #: lib/marshall/documentation_messages.ex:7047
 #, elixir-autogen, elixir-format
 msgid "Primary Unix group."
-msgstr ""
+msgstr "기본 Unix 그룹입니다."
 
 #: lib/marshall/documentation_messages.ex:7048
 #, elixir-autogen, elixir-format
@@ -11287,7 +11287,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7123
 #, elixir-autogen, elixir-format
 msgid "Provenance of the IOPS limit."
-msgstr ""
+msgstr "IOPS 한도의 출처입니다."
 
 #: lib/marshall/documentation_messages.ex:7124
 #, elixir-autogen, elixir-format
@@ -11377,7 +11377,7 @@ msgstr "Audi 게이트웨이가 공유하는 공개 HTTPS 포트입니다. 브�
 #: lib/marshall/documentation_messages.ex:7183
 #, elixir-autogen, elixir-format
 msgid "Public HTTPS port."
-msgstr ""
+msgstr "공개 HTTPS 포트입니다."
 
 #: lib/marshall/documentation_messages.ex:7184
 #, elixir-autogen, elixir-format
@@ -12472,7 +12472,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8080
 #, elixir-autogen, elixir-format
 msgid "Reviewed IPv4 source address."
-msgstr ""
+msgstr "검토된 IPv4 소스 주소입니다."
 
 #: lib/marshall/documentation_messages.ex:8081
 #, elixir-autogen, elixir-format
@@ -12622,7 +12622,7 @@ msgstr "런타임 서명 CA 인증서입니다. Brady는 CA를 프로비저닝�
 #: lib/marshall/documentation_messages.ex:8183
 #, elixir-autogen, elixir-format
 msgid "Runtime signing CA key."
-msgstr ""
+msgstr "런타임 서명 CA 키입니다."
 
 #: lib/marshall/documentation_messages.ex:8184
 #, elixir-autogen, elixir-format
@@ -12802,7 +12802,7 @@ msgstr "정규 호스트 도구 메타데이터를 포함한 소스에서 빌드
 #: lib/marshall/documentation_messages.ex:8307
 #, elixir-autogen, elixir-format
 msgid "Source-built Marshall release."
-msgstr ""
+msgstr "소스에서 빌드한 Marshall 릴리스입니다."
 
 #: lib/marshall/documentation_messages.ex:8308
 #, elixir-autogen, elixir-format
@@ -12862,7 +12862,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8360
 #, elixir-autogen, elixir-format
 msgid "Supplementary Unix groups."
-msgstr ""
+msgstr "추가 Unix 그룹입니다."
 
 #: lib/marshall/documentation_messages.ex:8361
 #, elixir-autogen, elixir-format
@@ -14147,7 +14147,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9444
 #, elixir-autogen, elixir-format
 msgid "The audiobookshelf package to use."
-msgstr ""
+msgstr "사용할 audiobookshelf 패키지입니다."
 
 #: lib/marshall/documentation_messages.ex:9445
 #, elixir-autogen, elixir-format
@@ -14472,7 +14472,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9729
 #, elixir-autogen, elixir-format
 msgid "The host Audiobookshelf binds to."
-msgstr ""
+msgstr "Audiobookshelf가 바인딩할 호스트입니다."
 
 #: lib/marshall/documentation_messages.ex:9730
 #, elixir-autogen, elixir-format
@@ -15132,7 +15132,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10283
 #, elixir-autogen, elixir-format
 msgid "Type: `attribute set of (JSON value)`."
-msgstr ""
+msgstr "유형: `attribute set of (JSON value)`."
 
 #: lib/marshall/documentation_messages.ex:10284
 #, elixir-autogen, elixir-format
@@ -15142,7 +15142,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10288
 #, elixir-autogen, elixir-format
 msgid "Type: `attribute set of (submodule)`."
-msgstr ""
+msgstr "유형: `attribute set of (submodule)`."
 
 #: lib/marshall/documentation_messages.ex:10289
 #, elixir-autogen, elixir-format
@@ -15162,7 +15162,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10299
 #, elixir-autogen, elixir-format
 msgid "Type: `boolean`."
-msgstr ""
+msgstr "유형: `boolean`."
 
 #: lib/marshall/documentation_messages.ex:10300
 #, elixir-autogen, elixir-format
@@ -15282,7 +15282,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10341
 #, elixir-autogen, elixir-format
 msgid "Type: `list of (submodule)`."
-msgstr ""
+msgstr "유형: `list of (submodule)`."
 
 #: lib/marshall/documentation_messages.ex:10342
 #, elixir-autogen, elixir-format
@@ -15292,7 +15292,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10346
 #, elixir-autogen, elixir-format
 msgid "Type: `list of absolute path`."
-msgstr ""
+msgstr "유형: `list of absolute path`."
 
 #: lib/marshall/documentation_messages.ex:10347
 #, elixir-autogen, elixir-format
@@ -15362,12 +15362,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10390
 #, elixir-autogen, elixir-format
 msgid "Type: `list of string`."
-msgstr ""
+msgstr "유형: `list of string`."
 
 #: lib/marshall/documentation_messages.ex:10391
 #, elixir-autogen, elixir-format
 msgid "Type: `null or (attribute set)`."
-msgstr ""
+msgstr "유형: `null or (attribute set)`."
 
 #: lib/marshall/documentation_messages.ex:10392
 #, elixir-autogen, elixir-format
@@ -15377,22 +15377,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10393
 #, elixir-autogen, elixir-format
 msgid "Type: `null or (submodule)`."
-msgstr ""
+msgstr "유형: `null or (submodule)`."
 
 #: lib/marshall/documentation_messages.ex:10394
 #, elixir-autogen, elixir-format
 msgid "Type: `null or absolute path`."
-msgstr ""
+msgstr "유형: `null or absolute path`."
 
 #: lib/marshall/documentation_messages.ex:10395
 #, elixir-autogen, elixir-format
 msgid "Type: `null or optionType`."
-msgstr ""
+msgstr "유형: `null or optionType`."
 
 #: lib/marshall/documentation_messages.ex:10396
 #, elixir-autogen, elixir-format
 msgid "Type: `null or package`."
-msgstr ""
+msgstr "유형: `null or package`."
 
 #: lib/marshall/documentation_messages.ex:10397
 #, elixir-autogen, elixir-format
@@ -15457,7 +15457,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10439
 #, elixir-autogen, elixir-format
 msgid "Type: `null or string`."
-msgstr ""
+msgstr "유형: `null or string`."
 
 #: lib/marshall/documentation_messages.ex:10440
 #, elixir-autogen, elixir-format
@@ -15467,7 +15467,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10441
 #, elixir-autogen, elixir-format
 msgid "Type: `one of \"central\", \"worker\"`."
-msgstr ""
+msgstr "유형: `one of \"central\", \"worker\"`."
 
 #: lib/marshall/documentation_messages.ex:10442
 #, elixir-autogen, elixir-format
@@ -15482,7 +15482,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10444
 #, elixir-autogen, elixir-format
 msgid "Type: `one of \"http-01\", \"dns-01\"`."
-msgstr ""
+msgstr "유형: `one of \"http-01\", \"dns-01\"`."
 
 #: lib/marshall/documentation_messages.ex:10445
 #, elixir-autogen, elixir-format
@@ -15502,37 +15502,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10457
 #, elixir-autogen, elixir-format
 msgid "Type: `one of \"none\", \"ec2\", \"file\"`."
-msgstr ""
+msgstr "유형: `one of \"none\", \"ec2\", \"file\"`."
 
 #: lib/marshall/documentation_messages.ex:10458
 #, elixir-autogen, elixir-format
 msgid "Type: `one of \"openssh\", \"console\"`."
-msgstr ""
+msgstr "유형: `one of \"openssh\", \"console\"`."
 
 #: lib/marshall/documentation_messages.ex:10459
 #, elixir-autogen, elixir-format
 msgid "Type: `one of \"plain\", \"login\"`."
-msgstr ""
+msgstr "유형: `one of \"plain\", \"login\"`."
 
 #: lib/marshall/documentation_messages.ex:10460
 #, elixir-autogen, elixir-format
 msgid "Type: `one of \"raw\", \"environment\"`."
-msgstr ""
+msgstr "유형: `one of \"raw\", \"environment\"`."
 
 #: lib/marshall/documentation_messages.ex:10461
 #, elixir-autogen, elixir-format
 msgid "Type: `one of \"starttls\", \"implicit\"`."
-msgstr ""
+msgstr "유형: `one of \"starttls\", \"implicit\"`."
 
 #: lib/marshall/documentation_messages.ex:10462
 #, elixir-autogen, elixir-format
 msgid "Type: `package`."
-msgstr ""
+msgstr "유형: `package`."
 
 #: lib/marshall/documentation_messages.ex:10463
 #, elixir-autogen, elixir-format
 msgid "Type: `positive integer, meaning >0`."
-msgstr ""
+msgstr "유형: `positive integer, meaning >0`."
 
 #: lib/marshall/documentation_messages.ex:10464
 #, elixir-autogen, elixir-format
@@ -15712,27 +15712,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10550
 #, elixir-autogen, elixir-format
 msgid "Type: `string`."
-msgstr ""
+msgstr "유형: `string`."
 
 #: lib/marshall/documentation_messages.ex:10551
 #, elixir-autogen, elixir-format
 msgid "Type: `submodule`."
-msgstr ""
+msgstr "유형: `submodule`."
 
 #: lib/marshall/documentation_messages.ex:10552
 #, elixir-autogen, elixir-format
 msgid "Type: `unsigned integer, meaning >=0`."
-msgstr ""
+msgstr "유형: `unsigned integer, meaning >=0`."
 
 #: lib/marshall/documentation_messages.ex:10553
 #, elixir-autogen, elixir-format
 msgid "Type: `unspecified value`."
-msgstr ""
+msgstr "유형: `unspecified value`."
 
 #: lib/marshall/documentation_messages.ex:10554
 #, elixir-autogen, elixir-format
 msgid "Type: `value \"zfs\" (singular enum)`."
-msgstr ""
+msgstr "유형: `value \"zfs\" (singular enum)`."
 
 #: lib/marshall/documentation_messages.ex:10555
 #, elixir-autogen, elixir-format
@@ -15887,12 +15887,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10666
 #, elixir-autogen, elixir-format
 msgid "Verified HTTPS ACME directory."
-msgstr ""
+msgstr "검증된 HTTPS ACME 디렉터리입니다."
 
 #: lib/marshall/documentation_messages.ex:10667
 #, elixir-autogen, elixir-format
 msgid "Verified HTTPS Marshall origin."
-msgstr ""
+msgstr "검증된 HTTPS Marshall 오리진입니다."
 
 #: lib/marshall/documentation_messages.ex:10668
 #, elixir-autogen, elixir-format
@@ -15912,7 +15912,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10677
 #, elixir-autogen, elixir-format
 msgid "Verified filesystem identity."
-msgstr ""
+msgstr "검증된 파일시스템 ID입니다."
 
 #: lib/marshall/documentation_messages.ex:10678
 #, elixir-autogen, elixir-format
@@ -16467,37 +16467,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "## Account Git preferences"
-msgstr ""
+msgstr "## 계정 Git 환경설정"
 
 #: lib/marshall/documentation_messages.ex:200
 #, elixir-autogen, elixir-format
 msgid "## Commit attribution"
-msgstr ""
+msgstr "## 커밋 귀속"
 
 #: lib/marshall/documentation_messages.ex:213
 #, elixir-autogen, elixir-format
 msgid "## Connecting to a suspended machine"
-msgstr ""
+msgstr "## 일시 중지된 머신에 연결하기"
 
 #: lib/marshall/documentation_messages.ex:244
 #, elixir-autogen, elixir-format
 msgid "## Demand wake and relocation relay"
-msgstr ""
+msgstr "## 요청 시 깨우기 및 재배치 릴레이"
 
 #: lib/marshall/documentation_messages.ex:317
 #, elixir-autogen, elixir-format
 msgid "## Git author defaults"
-msgstr ""
+msgstr "## Git 작성자 기본값"
 
 #: lib/marshall/documentation_messages.ex:318
 #, elixir-autogen, elixir-format
 msgid "## Git identity configuration"
-msgstr ""
+msgstr "## Git ID 구성"
 
 #: lib/marshall/documentation_messages.ex:319
 #, elixir-autogen, elixir-format
 msgid "## Git settings"
-msgstr ""
+msgstr "## Git 설정"
 
 #: lib/marshall/documentation_messages.ex:452
 #, elixir-autogen, elixir-format
@@ -16512,7 +16512,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:454
 #, elixir-autogen, elixir-format
 msgid "## Memory-preserving suspension"
-msgstr ""
+msgstr "## 메모리를 보존하는 일시 중지"
 
 #: lib/marshall/documentation_messages.ex:552
 #, elixir-autogen, elixir-format
@@ -16527,7 +16527,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:834
 #, elixir-autogen, elixir-format
 msgid "## Snapshot continuation"
-msgstr ""
+msgstr "## 스냅샷에서 이어서 실행하기"
 
 #: lib/marshall/documentation_messages.ex:835
 #: lib/marshall/documentation_messages.ex:839
@@ -16543,12 +16543,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:873
 #, elixir-autogen, elixir-format
 msgid "## Suspension checkpoint custody"
-msgstr ""
+msgstr "## 일시 중지 체크포인트 보관 책임"
 
 #: lib/marshall/documentation_messages.ex:877
 #, elixir-autogen, elixir-format
 msgid "## Thread machine suspension"
-msgstr ""
+msgstr "## 스레드 머신 일시 중지"
 
 #: lib/marshall/documentation_messages.ex:963
 #, elixir-autogen, elixir-format
@@ -16573,7 +16573,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1446
 #, elixir-autogen, elixir-format
 msgid "### Historical migration evidence"
-msgstr ""
+msgstr "### 과거 마이그레이션 증거"
 
 #: lib/marshall/documentation_messages.ex:1458
 #, elixir-autogen, elixir-format
@@ -17099,7 +17099,7 @@ msgstr ""
 #: lib/marshall/documentation.ex:74
 #, elixir-autogen, elixir-format
 msgid "Documentation"
-msgstr ""
+msgstr "문서"
 
 #: lib/marshall/documentation_messages.ex:6141
 #, elixir-autogen, elixir-format
@@ -17144,7 +17144,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10290
 #, elixir-autogen, elixir-format
 msgid "Type: `attribute set of package`."
-msgstr ""
+msgstr "유형: `attribute set of package`."
 
 #: lib/marshall/documentation_messages.ex:11062
 #, elixir-autogen, elixir-format
@@ -17164,22 +17164,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "# Reflection integration"
-msgstr ""
+msgstr "# 리플렉션 통합"
 
 #: lib/marshall/documentation_messages.ex:136
 #, elixir-autogen, elixir-format
 msgid "## Android display authority"
-msgstr ""
+msgstr "## Android 디스플레이 권한"
 
 #: lib/marshall/documentation_messages.ex:137
 #, elixir-autogen, elixir-format
 msgid "## Android software guest"
-msgstr ""
+msgstr "## Android 소프트웨어 게스트"
 
 #: lib/marshall/documentation_messages.ex:254
 #, elixir-autogen, elixir-format
 msgid "## Customer private-service boundaries"
-msgstr ""
+msgstr "## 고객 비공개 서비스 경계"
 
 #: lib/marshall/documentation_messages.ex:267
 #, elixir-autogen, elixir-format
@@ -17189,12 +17189,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:282
 #, elixir-autogen, elixir-format
 msgid "## Endpoints"
-msgstr ""
+msgstr "## 엔드포인트"
 
 #: lib/marshall/documentation_messages.ex:337
 #, elixir-autogen, elixir-format
 msgid "## GitHub OAuth deployment inputs"
-msgstr ""
+msgstr "## GitHub OAuth 배포 입력"
 
 #: lib/marshall/documentation_messages.ex:338
 #, elixir-autogen, elixir-format
@@ -17204,12 +17204,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:339
 #, elixir-autogen, elixir-format
 msgid "## GitHub rotating credential recovery"
-msgstr ""
+msgstr "## GitHub 순환 자격 증명 복구"
 
 #: lib/marshall/documentation_messages.ex:340
 #, elixir-autogen, elixir-format
 msgid "## GitHub.com connection authority"
-msgstr ""
+msgstr "## GitHub.com 연결 권한"
 
 #: lib/marshall/documentation_messages.ex:353
 #, elixir-autogen, elixir-format
@@ -17219,12 +17219,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:477
 #, elixir-autogen, elixir-format
 msgid "## Metadata controls"
-msgstr ""
+msgstr "## 메타데이터 제어"
 
 #: lib/marshall/documentation_messages.ex:584
 #, elixir-autogen, elixir-format
 msgid "## Peach private reflection placement"
-msgstr ""
+msgstr "## Peach 비공개 리플렉션 배치"
 
 #: lib/marshall/documentation_messages.ex:892
 #, elixir-autogen, elixir-format
@@ -17904,17 +17904,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1745
 #, elixir-autogen, elixir-format
 msgid "### Built-in GitHub.com provider"
-msgstr ""
+msgstr "### 내장 GitHub.com 공급자"
 
 #: lib/marshall/documentation_messages.ex:1752
 #, elixir-autogen, elixir-format
 msgid "### GitHub connection ownership"
-msgstr ""
+msgstr "### GitHub 연결 소유권"
 
 #: lib/marshall/documentation_messages.ex:1763
 #, elixir-autogen, elixir-format
 msgid "### Peach reflection authority"
-msgstr ""
+msgstr "### Peach 리플렉션 권한"
 
 #: lib/marshall/documentation_messages.ex:1901
 #, elixir-autogen, elixir-format
@@ -18034,7 +18034,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4189
 #, elixir-autogen, elixir-format
 msgid "Accept a pending ownership offer."
-msgstr ""
+msgstr "대기 중인 소유권 제안을 수락합니다."
 
 #: lib/marshall/documentation_messages.ex:4198
 #, elixir-autogen, elixir-format
@@ -18044,7 +18044,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4236
 #, elixir-autogen, elixir-format
 msgid "Add or change an admin or member."
-msgstr ""
+msgstr "관리자 또는 구성원을 추가하거나 변경합니다."
 
 #: lib/marshall/documentation_messages.ex:4325
 #, elixir-autogen, elixir-format
@@ -18124,7 +18124,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5431
 #, elixir-autogen, elixir-format
 msgid "Cancel your pending ownership offer."
-msgstr ""
+msgstr "대기 중인 내 소유권 제안을 취소합니다."
 
 #: lib/marshall/documentation_messages.ex:5474
 #, elixir-autogen, elixir-format
@@ -18134,7 +18134,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5510
 #, elixir-autogen, elixir-format
 msgid "Close this interactive channel."
-msgstr ""
+msgstr "이 대화형 채널을 닫습니다."
 
 #: lib/marshall/documentation_messages.ex:5532
 #, elixir-autogen, elixir-format
@@ -18164,7 +18164,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5808
 #, elixir-autogen, elixir-format
 msgid "Create a team you own."
-msgstr ""
+msgstr "내가 소유하는 팀을 만듭니다."
 
 #: lib/marshall/documentation_messages.ex:5809
 #, elixir-autogen, elixir-format
@@ -18179,7 +18179,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5856
 #, elixir-autogen, elixir-format
 msgid "Decline a pending ownership offer."
-msgstr ""
+msgstr "대기 중인 소유권 제안을 거절합니다."
 
 #: lib/marshall/documentation_messages.ex:5886
 #, elixir-autogen, elixir-format
@@ -18269,12 +18269,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6737
 #, elixir-autogen, elixir-format
 msgid "Inspect a machine by name or UUID."
-msgstr ""
+msgstr "이름 또는 UUID로 머신을 검사합니다."
 
 #: lib/marshall/documentation_messages.ex:6738
 #, elixir-autogen, elixir-format
 msgid "Inspect a previously accepted request."
-msgstr ""
+msgstr "이전에 수락된 요청을 검사합니다."
 
 #: lib/marshall/documentation_messages.ex:6739
 #, elixir-autogen, elixir-format
@@ -18304,37 +18304,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6904
 #, elixir-autogen, elixir-format
 msgid "List a team's members."
-msgstr ""
+msgstr "팀 구성원 목록을 표시합니다."
 
 #: lib/marshall/documentation_messages.ex:6905
 #, elixir-autogen, elixir-format
 msgid "List access grants."
-msgstr ""
+msgstr "접근 권한 부여 목록을 표시합니다."
 
 #: lib/marshall/documentation_messages.ex:6906
 #, elixir-autogen, elixir-format
 msgid "List available images."
-msgstr ""
+msgstr "사용 가능한 이미지 목록을 표시합니다."
 
 #: lib/marshall/documentation_messages.ex:6907
 #, elixir-autogen, elixir-format
 msgid "List machines you can access."
-msgstr ""
+msgstr "접근할 수 있는 머신 목록을 표시합니다."
 
 #: lib/marshall/documentation_messages.ex:6912
 #, elixir-autogen, elixir-format
 msgid "List your SSH keys."
-msgstr ""
+msgstr "내 SSH 키 목록을 표시합니다."
 
 #: lib/marshall/documentation_messages.ex:6913
 #, elixir-autogen, elixir-format
 msgid "List your integrations."
-msgstr ""
+msgstr "내 통합 목록을 표시합니다."
 
 #: lib/marshall/documentation_messages.ex:6914
 #, elixir-autogen, elixir-format
 msgid "List your teams and roles."
-msgstr ""
+msgstr "내 팀과 역할 목록을 표시합니다."
 
 #: lib/marshall/documentation_messages.ex:6970
 #, elixir-autogen, elixir-format
@@ -18399,7 +18399,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7313
 #, elixir-autogen, elixir-format
 msgid "Offer team ownership to an admin."
-msgstr ""
+msgstr "관리자에게 팀 소유권을 제안합니다."
 
 #: lib/marshall/documentation_messages.ex:7334
 #, elixir-autogen, elixir-format
@@ -18414,7 +18414,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7477
 #, elixir-autogen, elixir-format
 msgid "Options:"
-msgstr ""
+msgstr "옵션:"
 
 #: lib/marshall/documentation_messages.ex:7540
 #, elixir-autogen, elixir-format
@@ -18499,17 +18499,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7915
 #, elixir-autogen, elixir-format
 msgid "Remove a named integration."
-msgstr ""
+msgstr "이름으로 지정한 통합을 제거합니다."
 
 #: lib/marshall/documentation_messages.ex:7916
 #, elixir-autogen, elixir-format
 msgid "Remove an account's membership."
-msgstr ""
+msgstr "계정의 멤버십을 제거합니다."
 
 #: lib/marshall/documentation_messages.ex:7917
 #, elixir-autogen, elixir-format
 msgid "Remove your pin from a machine."
-msgstr ""
+msgstr "머신에서 내 고정을 해제합니다."
 
 #: lib/marshall/documentation_messages.ex:8105
 #, elixir-autogen, elixir-format
@@ -18559,12 +18559,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8758
 #, elixir-autogen, elixir-format
 msgid "Revoke an account's shared access."
-msgstr ""
+msgstr "계정의 공유 접근 권한을 폐기합니다."
 
 #: lib/marshall/documentation_messages.ex:8759
 #, elixir-autogen, elixir-format
 msgid "Revoke one of your SSH keys."
-msgstr ""
+msgstr "내 SSH 키 하나를 폐기합니다."
 
 #: lib/marshall/documentation_messages.ex:8776
 #, elixir-autogen, elixir-format
@@ -18599,12 +18599,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8972
 #, elixir-autogen, elixir-format
 msgid "Show command help."
-msgstr ""
+msgstr "명령 도움말을 표시합니다."
 
 #: lib/marshall/documentation_messages.ex:8973
 #, elixir-autogen, elixir-format
 msgid "Show the authenticated account."
-msgstr ""
+msgstr "인증된 계정을 표시합니다."
 
 #: lib/marshall/documentation_messages.ex:9020
 #, elixir-autogen, elixir-format
@@ -18614,7 +18614,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9028
 #, elixir-autogen, elixir-format
 msgid "Start a machine."
-msgstr ""
+msgstr "머신을 시작합니다."
 
 #: lib/marshall/documentation_messages.ex:9029
 #, elixir-autogen, elixir-format
