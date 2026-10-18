@@ -153,12 +153,12 @@ function activate(hook, command, complete) {
  */
 function restorePalette(hook) {
   const dialog = palette(hook);
-  if (!hook.paletteOpen || !dialog || dialog.open) return;
+  if (!hook.paletteOpen || !dialog) return;
 
   // A composer `phx-change` patch can reconcile the dialog while it is open.
   // The server intentionally does not render the client-only `open` state, so
   // restore it from the hook before the next keystroke reaches the composer.
-  dialog.showModal();
+  if (!dialog.open) dialog.showModal();
   const composer = hook.composer?.isConnected
     ? hook.composer
     : hook.el.querySelector("textarea[data-thread-input]");

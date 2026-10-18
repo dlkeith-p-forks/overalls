@@ -832,6 +832,12 @@ FreeBSD release, OmniOS release or Windows edition/build output is required;
 raw probe output is not written to evidence. Stop/start/delete receipts and a
 second SSH stage retain separate outcomes. Configuration and resume procedures
 are in the [acceptance guide](repo:docs/acceptance/porsche-acceptance.md).
+Windows alone may emit the exact stock three-line OpenSSH post-quantum
+key-exchange warning with LF or CRLF endings. Attempts record the closed stderr
+classification and digest; the runner changes no trust or algorithm settings.
+Extra, modified or repeated stderr, another guest family, nonzero exit,
+timeout or a wrong edition/build still fails. This classification does not
+establish post-quantum transport or promote a prior failed attempt.
 Implementation and host-side tests do not establish a live seven-OS pass,
 native attestation, physical isolation, storage growth or multi-host recovery.
 The 2026-10-18 live subset created NixOS, Ubuntu and exact promoted FreeBSD
@@ -927,6 +933,23 @@ copy; only current reconciler-managed per-user policies grant access. Vendor
 sshd enablement resolves to the same readiness-gated listener. These assembly
 contracts and account-allocator tests do not establish a working distro-native
 SSH/PAM or sudo session.
+
+The shared foreign root now recreates pinned PAM's compiled account helper at
+`/run/wrappers/bin/unix_chkpwd` on every boot. The root oneshot
+`overalls-pam-helpers.service` installs only the immutable pinned 0555 source
+as a regular root-owned 04755 runtime copy; SSH requires its successful
+completion. The installer accepts no arguments and refuses symlink, foreign
+ownership or unsafe parent paths. Existing nosuid runtime mounts remain in
+place: pinned PAM's root account caller sets UID 0 before invoking the helper.
+The isolated VM gate records missing-helper PAM9, repaired account success0,
+and expired13/password-change12/unknown10 refusals, exact bytes, repeat
+installation and twelve unsafe-input refusals. It uses a byte-identical
+root-owned source overlay inside its disposable chroot because vmTools projects
+store ownership to nobody; actual images separately verify root-owned 0555
+source custody. This does not establish unprivileged setuid elevation or a
+foreign guest SSH/sudo session. Exact rebuilt Arch `99fa9876` and Alma
+`473f9589` artifacts passed offline and independent rebuild checks; their fresh
+guest lifecycle remains separate in the matrix review.
 
 Foreign-Linux ext4 construction derives filesystem sizing from regular-file and
 symlink content, fixes source timestamps and the filesystem hash seed, and fixes

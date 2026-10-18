@@ -12,10 +12,12 @@ LSM and temporary-directory construction, and the exact OmniOS release probe;
 it preserves diagnostic failures and separate source/build/native/live scopes.
 The following checkpoint restores Arch's boot-time root policy, normalizes
 actual Hegel lock identities and refreshes all eight dependency snapshots. It
-records completed OmniOS and fresh NixOS lifecycles without upgrading failed
-foreign-Linux or unrun repaired-Windows acceptance.
+records completed OmniOS and fresh NixOS lifecycles while preserving failed
+foreign-Linux and then-pending repaired-Windows acceptance. The later checkpoint
+records the exact repaired Windows full CLI lifecycle and keeps current foreign
+Linux PAM refusals separate from pending immutable helper repairs.
 
-There is no new Ash domain/resource, deployment host/service, persistence shape,
+The matrix-specific repairs add no Ash domain/resource, deployment host/service, persistence shape,
 authorization grant, wire protocol or guest capability kind. Exact-image
 qualification enables only the previously reviewed native subset. The work preserves
 [ADR-0190](../decisions/0190-native-kernel-provenance-and-admission.md),
@@ -881,6 +883,238 @@ Negative-prefix and tag-only fixtures retain refusal; path containment, inspecte
 assertions and recorded-execution requirements remain unchanged. This prevents
 real explicit-runner properties from losing their existing evidence category;
 lexical recognition alone remains no proof of execution or native behavior.
+
+### Completed current-pin execution and final-source custody
+
+The full pre-machine-pin Marshall `mix precommit` at frontend `08cd428`
+exited zero: **1,694 passed, four excluded**, seed **325708**, in **1,382.3
+seconds** (32.1 async, 1,350.2 sync). Covenant passed **24/24**, terminal
+JavaScript **36/36**, presentation JavaScript **9/9**, Monospace and forced
+Dialyzer with **zero errors, zero skipped and zero unnecessary skips** in
+**49.65 seconds**. The pinned devenv execution used four schedulers and a
+6 GiB memory cap with no swap. Its exact frozen runtime sources remained
+unchanged through `439a71e96`. Log
+`/tmp/overalls-os-matrix-marshall-08cd-full.log` has SHA-256
+`dd8f73eda5811aff43da64738bd55bb0df0b5e43523355c2c270f735cc87ceb4`;
+source ledger `/tmp/overalls-os-matrix-marshall-08cd-frozen-sources.sha256`
+has SHA-256
+`f4ebb2f8f7ceab830355ca5eeccfddcf801124ed1fe7be555762645e3234ede8`.
+This completes that current-pin execution record while preserving the failed
+`f1ad336` run. It excludes the machine-pin implementation and tests imported
+at `132bc28b5`, whose complete consumer gates require new execution.
+
+At `132bc28b5`, `devenv shell -- prek run --all-files` exited zero. Ruff,
+Ruff format, ty, conflict markers, all eight application logging checks and
+the remaining installed hooks passed. Log
+`/tmp/overalls-os-matrix-132-prek-all-files.log` has SHA-256
+`9d1885de225f7035055b88f65212189c605f5e2219a95a13bf29e9511513b446`.
+Static Python verification establishes neither browser rendering nor guest
+execution.
+
+The final `132bc28b5` protocol `mix precommit` exited zero: **303 passed** in
+**420.6 seconds**, seed **476754**, Covenant **14/14**, the shared contract
+validator **19/19**, and Dialyzer with **zero errors, zero skipped and zero
+unnecessary skips** in **2.77 seconds**. Log
+`/tmp/overalls-os-matrix-protocol-132-final.log` has SHA-256
+`1679f6d5b0cabeace7b81a542ff7cf78662e122ef8ab02429c71842f10cb8b15`.
+The frozen four-consumer runtime source ledger
+`/tmp/overalls-os-matrix-132-final-consumer-sources.sha256` has SHA-256
+`ed5721b9b633c20f632c760b0ee8d269fd6f3cad1c059aef56e9391f9ee1f82c`
+and checked unchanged after execution. This protocol result does not replace
+the final consumer gates.
+
+The final frozen `132bc28b5` Marshall `mix precommit` also exited zero:
+**1,712 passed, four excluded**, seed **576982**, in **1,413.8 seconds**
+(27.6 async, 1,386.2 sync), including the machine-pin integration. Covenant
+passed **27/27**, terminal JavaScript **36/36**, presentation JavaScript
+**9/9**, Monospace and forced Dialyzer with **zero errors, zero skipped and
+zero unnecessary skips** in **51.78 seconds**. The same four-consumer
+runtime ledger verified unchanged after completion. Log
+`/tmp/overalls-os-matrix-marshall-132-final.log` has SHA-256
+`d52868d3b51b25421a4d945096155655c3d767e29488119ad9d6ff303b546981`.
+This BEAM/static gate excludes subsequent fixture-script and CSS corrections;
+their browser execution has separate receipts. Lilly and Porsche's final
+full consumer gates remain separate.
+
+The final frozen Lilly `mix precommit` exited zero with **610 passed**, seed
+**132572**, in **62.1 seconds** (18.2 async,43.8 sync), Covenant **15/15**,
+and forced Dialyzer **0 errors,0 skipped,0 unnecessary skips** in
+**11.43 seconds**. The runtime ledger remained unchanged. Log
+`/tmp/overalls-os-matrix-lilly-132-final.log` has SHA-256
+`b193a17760c14c179670d55125cb0a4efd0c9e719286e22e8d112e6b97f786fb`.
+The final frozen Porsche `mix precommit` then exited zero with **100 passed**,
+seed **486608**, in **76.5 seconds** (6.4 async,70.1 sync), Covenant **4/4**,
+and forced Dialyzer **0 errors,0 skipped,0 unnecessary skips** in **4.26 seconds**.
+Log `/tmp/overalls-os-matrix-porsche-132-final.log` has SHA-256
+`45ab9b63cb56da8bdcc80d9fc2a8bbbdecb2fc8f3e15b2993d5b8e8e327ddbdc`.
+The four-consumer ledger verified unchanged after all four full gates completed.
+
+The same final source's two evaluated host catalogs select the seven exact
+immutable image paths already bound by the artifact custody receipts. Actual
+small manifests also passed `OverallsProtocol.validate` with canonical IDs
+NixOS `92114604`, Ubuntu `8d468c67`, Arch `8ab89c2d`, AlmaLinux `bed87c33`,
+FreeBSD `d141e426`, OmniOS `98b23b79` and Windows `8ca0a11f`. The audit reuses
+prior full-artifact custody only where the immutable store path is unchanged;
+it does not repeat large-disk hashing or any guest/runtime execution. The
+standalone validator emitted one unused unloaded-module reference warning;
+all manifest validations completed with exit zero. Receipts and SHA-256:
+
+| Receipt | SHA-256 |
+| --- | --- |
+| `/tmp/overalls-final-seven-selected-paths.json` | `110d6eacb874d3f4dde9e82ef80868dd8030cc7dc4d1306dc26bdad59897805e` |
+| `/tmp/overalls-final-seven-identity.json` | `82d42c95c930bc5632a0ea768a5ad2f7ed5135cb4fadb187ca83d48ca14983ef` |
+| `/tmp/overalls-final-seven-identity-bindings.json` | `3af2025af850b8cba44a62d95878777904f41ba90f6f826827365db817d38f5a` |
+| `/tmp/overalls-final-seven-lifecycle-applicability.json` | `85fef32a62d712a71b51a6fc2cb3187169e441ab7b01334fa776ea025a9f36c3` |
+
+The four historical completed lifecycle records remain image-applicable for
+their exact selected NixOS, Ubuntu, FreeBSD and OmniOS artifacts at their
+recorded revisions. This identity proof does not establish the final control
+plane's runtime acceptance. The repaired Arch and AlmaLinux complete lifecycles
+remain separate obligations. The later current-image Windows lifecycle is
+recorded below.
+
+### Strict SSH warning classification
+
+The fresh repaired Windows image reached readiness and its same-VM diagnostic
+returned exact Server 2025 edition/build 26100 with exit zero. The original
+strict attempt remains failed because stderr contained the stock three-line
+OpenSSH non-post-quantum key-exchange warning. Byte comparison identified that
+exact warning with LF and CRLF endings; no arbitrary stderr is admitted.
+The reviewed runner now recognizes that exact Windows-only warning, alongside
+empty stderr and the existing native SSH login event. Immutable attempts record
+one closed `stderr_classification`: `none`, `native-ssh-login-event`,
+`windows-openssh-pq-warning` or `unexpected`, plus the existing digest and length.
+No raw stderr is persisted. The client changes no SSH algorithms, warning flags,
+trust settings or guest image. A warning is not post-quantum transport evidence.
+Nonzero exits, timeout, wrong exact OS output, changed/truncated/repeated/extra
+stderr and the same warning from every other OS family still fail.
+
+27 runner tests passed, including both accepted line endings and the refusal
+cases above; the pinned all-files Ruff, Ruff format and ty hooks passed again.
+The final checks log `/tmp/windows-pq-warning-harness-final-checks.log` has
+SHA-256 `30ee3f9c1ecce5a15612083fa3cf4e16e96da538c3e28bfaa339526a1e565d93`;
+all-files static log `/tmp/windows-pq-warning-harness-full-static.log` has
+SHA-256 `b5695d3f70cb508283675778bac5a7500dffdf3dc53f79c8dbd255d93873d6ff`.
+These controlled tests establish the classifier boundary only. The original
+Windows failed attempt is preserved.
+
+The new explicit `windows-profile-qualified` stage then passed on the fresh
+exact `8ca0a11f` image and original UUID: create/readiness, strict authenticated
+CLI SSH with exact Win32NT/Server 2025 edition/build 26100, stop, an independent
+current-owner stopped-state checkpoint, restart, repeated strict SSH at
+`windows-profile-restarted`, and terminal deleted cleanup. Both hosts remained
+healthy at `132bc28b5`. The immutable summary
+`/tmp/porsche-20261018-103842/windows-qualification-summary.json` has SHA-256
+`db17809c7cdf54d2027fa36a03b598e9ef0b41be31efb33ae52733aa94970020` and
+binds the individual receipts, artifact custody and exact stock warning proof.
+Warning custody `/tmp/porsche-20261018-103842/windows-stock-warning-custody.json`
+has SHA-256 `7eb7cf0c30c19513efb6930bcb2eeeb290a3433704804d67f291db1f59792084`.
+This is the fifth separately qualified OS family. It establishes the recorded
+create, strict SSH and lifecycle outcomes only; terminal, executor, workspace,
+storage growth, native isolation and physical recovery remain separate.
+
+### Foreign Linux PAM helper repair
+
+The exact preceding Arch/Alma images both reached create/readiness, but their
+strict personal SSH closed during authentication. Arch's boot-bound diagnostics
+found working NSS/startup, PAM account refusal and missing compiled
+`unix_chkpwd`. Alma has the same SSH symptom and shared immutable helper
+omission; no independent Alma PAM root probe is recorded. Both owned
+fixtures were ordinary-deleted. The shared builder now installs only the
+pinned PAM helper at `/run/wrappers/bin/unix_chkpwd` through a root-only,
+argument-free oneshot, with regular root-owned04755 runtime bytes and immutable
+root-owned0555 source. Exact root-owned0755 parents and destination custody
+are checked before copying; SSH requires and follows helper success. Key-only
+policy, account expiry, roster/private login receipts and nosuid mounts remain.
+Pinned PAM1.7.2's root account caller sets real UID0 before helper execution;
+this grants no direct unprivileged setuid elevation under nosuid.
+
+The final eight-file implementation and actual unit/filesystem/isolated VM
+checks passed. The maintained VM gate records missing-helper9 → repaired0,
+expired13, password-change12, unknown10, exact bytes/ownership/mode,
+idempotence and twelve unsafe/argument/nonroot refusals. vmTools projects the
+source store UID/GID to65534, so the disposable chroot overlays a byte-identical
+root-owned0555 source; the actual final-image check separately verifies source
+root ownership. Its immutable receipt
+`/nix/store/91ikl29mjkway8h0djrvdw96p01kmk3k-foreign-linux-pam-helper-runtime/receipt.json`
+has SHA-256 `792400d714a963c0842c11fd91ef0d8aa22ab4f611c0ccaa7128e2b57cd81305`.
+The pinned Python format/lint/type gates and contract structural checks passed.
+
+Exact rebuilt Arch image
+`sha256:99fa9876f927fe02dbc2151e01f35b73d6f381b646fe8b924ade5d467667fefb`
+and Alma image
+`sha256:473f958974b821d2b8e13b11c6fb28206aa64eddbe743325359433215578e559`
+passed actual artifacts, native Protocol and independent canonical-ID checks,
+plus forced Dungarees rootfs/package rebuilds with equal content hashes.
+`/tmp/overalls-pam-helper-artifact-receipt.json` has SHA-256
+`4331461635c779b3d670300489ecc3021632820bcbbeb126135361a24ef07ca2`
+and binds exact sources, caller evidence, installer and all artifacts. These
+results do not establish fresh guest SSH/sudo, distribution boot or lifecycle.
+Architecture impact: repair of accepted owned PAM runtime under ADR-0190;
+no new host service, protocol, capability or deployment placement.
+The exact immutable root helper/SSH units also passed the pinned systemd261.1
+image parser with no diagnostics or service starts for both images; receipt
+`/tmp/overalls-pam-helper-unit-parser-proof.json` has SHA-256
+`d10f9bc90d0a084f44e849c8158a7e805582c80c883f0e7a448b47139dd26301`.
+
+### Completed browser layout verification
+
+The first final-source browser attempt failed the existing grid assertion on
+the machines list. Its log `/tmp/overalls-os-matrix-132-browser/probe.log` has
+SHA-256 `281b9195aff7d94033426a0b9024901da06e5f88657b2b9f14ab8400ac23b048`.
+Fresh diagnostic fixtures reproduced editor/pin offsets of 0.125/0.15625 px;
+computed geometry showed that the inherited character-unit row gap accumulated
+against the half-line grid. The narrow CSS repair retains a one-character
+column gap and uses an exact half-line row gap, preserving grid tolerance and
+all controls. The actual asset build, Monospace structural gate and
+TypeScript/presentation checks passed; log
+`/tmp/overalls-os-matrix-132-browser/css-gates.log` has SHA-256
+`c767b0960d8668a4c6e7ebc704a646c40833626930b4120c925270a2d6478f35`.
+An on-page comparison removed those offenders at 1,440 and 1,000 px. An extra
+800 px exploration still found responsive border offsets; that width is outside
+the full probe's 1,440/390 px geometry scope and is not claimed fixed.
+
+A separate pre-repair diagnostic completed 61 main-route screenshots, then
+timed out selecting the theme before thread checks. Its exact cause remains
+unresolved; log `/tmp/overalls-os-matrix-132-browser/probe-diagnostic2.log`
+has SHA-256 `3f92b83ed12f4b0bd5110332507d178d30afff646c2ce1722f928c6b51987334`.
+The post-repair original probe also completed the 61 main-route screenshots
+before a later grid assertion failed in the thread phase. These remain failed
+full browser attempts; the machine-list correction does not establish a full
+probe pass, packaged-browser acceptance or guest execution.
+
+Later focused checks found three additional layout causes: whitespace-only
+empty thread workspace boxes, a20ch minimum field conflicting with the narrower
+activity grid, and a2px iframe border shifting its viewport off-grid. Narrow
+CSS corrections hide only element-empty workspace boxes, let the existing
+grid own field width, and preserve the visible2px terminal frame with an inset
+outline. The actual lazy disclosure populated its owned machine terminal
+iframe and rendered inner content; computed outline/offset and inspected
+screenshot confirm its visible frame without claiming guest execution.
+
+The fixture also bound a synthetic thread to a random machine key instead of
+its VM's actual admission key. Production `valid_binding` correctly refused
+that transcript. The fixture now uses the actual key and checks event kinds
+through the public retained-transcript read before serving. Its source digest
+is `0d19d584c400905d9248d08e8cd53afc7c037e7caaa47324c0c92c145c2a22f1`.
+The next untouched probe reproduced an open palette whose composer ARIA state
+reset false after validation. Focused DOM confirmed open=true/expanded=false;
+the two-line JS correction restores state/query/focus even if the dialog
+remains open and only calls showModal when closed. Assets, Monospace,
+TypeScript, contracts and logging gates passed; log
+`/tmp/overalls-os-matrix-132-browser/palette-fix-gates.log` has SHA-256
+`eee9ee2d389f7a901cce337175dd18004f25350528d78d2add55b3abae6f1257`.
+These preserve production permissions and the existing browser assertions.
+
+The original, unmodified full browser probe then exited zero with153 screenshots:
+both themes/mobile, grid/overflow/contrast, self-hosted font, no external
+resources or browser errors, drafts/public docs,32 thread route/theme/viewport
+combinations,36 collaborator role/state/theme/viewport combinations, sharing,
+live revocation and unrelated-account refusals. Log
+`/tmp/overalls-os-matrix-132-browser/probe-final8.log` has SHA-256
+`458895226c5fdc47e82715b99a7cdeba71980b4799fd21da67498fbe1b5c2d18`.
+This is local synthetic fixture browser evidence, separate from packaged
+browser, actual guest execution, and the earlier frozen runtime test ledger.
 
 ## Verification boundary
 

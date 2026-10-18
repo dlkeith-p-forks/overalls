@@ -964,7 +964,12 @@ Monospace and forced Dialyzer with zero errors/skips passed. The current scoped
 CI-profile repair preserves both cases, every rotation, three real peers,
 clocks and SQL/allocation oracles; its selected actual `08cd428` run passed in
 26.9 seconds at the same seed. A separate 512 MiB/10-second context probe
-passed three forms at seed 454122. Full current-pin gates remain separate.
+passed three forms at seed 454122. The complete current-pin Marshall gate then
+passed 1,694 tests with four exclusions in 1,382.3 seconds, seed 325708,
+Covenant 24/24, both JavaScript suites, Monospace and forced Dialyzer with zero
+errors, skips or unnecessary skips in 49.65 seconds. Its frozen runtime
+sources precede the machine-pin integration; final merged-source consumer gates
+remain separate. The matrix review records exact log and source-ledger digests.
 Actual Mix resolution normalizes all eleven Hegel locks to the full current
 commit. All eight incoming dependency snapshots were stale, so their hashes
 were refreshed from actual fetches. Every new stored lock snapshot equals its
@@ -1005,9 +1010,50 @@ history exploration; it does not establish a new passing execution record.
 The later machine-pin integration adds the Access resource and deletion fence,
 the protocol `pin`/`unpin` commands and Porsche's closed refusal hints under
 [ADR-0193](repo:docs/architecture/decisions/0193-per-user-machine-pins.md).
-Its scenario evidence remains source-present/partial. Imported execution
+Its scenario evidence remains partial. Imported execution
 reports and the earlier checkout's frozen current-Hegel run do not establish
-the combined source's consumer gates; final integration execution is separate.
+the combined source's consumer gates. Final frozen `132bc28b5` Marshall
+`mix precommit` subsequently passed 1,712 tests with four exclusions in
+1,413.8 seconds, seed 576982, Covenant 27/27, terminal/presentation JavaScript
+36/36 and 9/9, Monospace and forced Dialyzer with zero errors, skips or
+unnecessary skips in 51.78 seconds. The frozen runtime ledger verified
+unchanged after exit zero; subsequent fixture-script/CSS corrections retain
+separate browser evidence. Lilly and Porsche full consumer gates remain
+separate. The matrix review records exact log and ledger digests.
+The final `132bc28b5` all-files prek gate passed, including Ruff, Ruff format
+and ty. The same source's two evaluated host catalogs and actual manifest
+validation match all seven selected immutable image identities. Prior artifact
+custody and four completed NixOS, Ubuntu, FreeBSD and OmniOS lifecycle records
+remain applicable only to those exact unchanged images and their recorded
+execution revisions. This adds no final control-plane runtime or repaired
+Arch, AlmaLinux or Windows lifecycle claim; exact receipts are in the matrix
+review.
+The later fresh sealed Windows `8ca0a11f` fixture completed exact personal-account
+CLI SSH, stop with a separate current-owner stopped-state checkpoint, restart,
+repeat SSH and terminal deleted cleanup at healthy `132bc28b5`. Its original
+warning-only failure remains intact; only the exact stock Windows OpenSSH
+three-line post-quantum warning is classified as expected, with no trust or
+algorithm change. The matrix review binds all receipts and the 27-test/pinned
+Python classifier verification. Five families now have separately scoped
+lifecycle evidence; Arch and AlmaLinux remain open, and no all-capability or
+native isolation claim follows.
+The final protocol precommit passed 303 tests in 420.6 seconds, seed 476754,
+Covenant 14/14, shared contract tests 19/19 and Dialyzer with zero errors,
+skips or unnecessary skips in 2.77 seconds. Its frozen runtime source ledger
+checked unchanged; Marshall, Lilly and Porsche retain separate final gates.
+Final Lilly execution subsequently passed610 tests in62.1 seconds,
+seed132572, Covenant15/15 and zero-error forced Dialyzer in11.43 seconds;
+its runtime source ledger remained unchanged. Porsche's final gate passed
+100 tests in76.5 seconds, seed486608, Covenant4/4 and zero-error forced
+Dialyzer in4.26 seconds; the same ledger verified after all four consumer
+gates completed. The original full local browser probe passed
+after four narrow CSS, fixture machine-key and palette accessibility repairs,
+including153 screenshots and thread/collaborator revocation checks. These
+synthetic browser results are separate from guest/package acceptance.
+The reviewed PAM helper repair also passes actual image, independent rebuild,
+unit parser and isolated root-account nosuid checks for Arch99fa9876/Alma473f9589;
+fresh exact-image guest SSH/sudo and lifecycle remain pending. The matrix review
+binds all receipts and explains the isolated VM's source-ownership overlay.
 The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

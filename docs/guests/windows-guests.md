@@ -303,10 +303,15 @@ The repaired profile/bootstrap image `8ca0a11f` passed actual installation in
 match the reviewed payloads; the sealed recursive NAR has no references.
 Signed cache publication and Ed25519 verification of the exact NAR fingerprint
 also passed, followed by independent full-content Dungarees substitution and
-whole-artifact hashes. Source selection now pins the reviewed image; deployment
-and a clean exact-image create/CLI SSH/stop/restart/repeated SSH/delete lifecycle
-remain separate pending evidence. The old disposable
-fixture's manual profile repair is not an unchanged-image lifecycle pass.
+whole-artifact hashes. After healthy deployment at `132bc28b5`, a fresh exact
+`8ca0a11f` fixture passed create/readiness, strict personal-account CLI SSH with
+the exact Server 2025 edition/build 26100 oracle, stop with an independent
+stopped-state checkpoint, restart, repeated strict SSH and deleted cleanup.
+The runner admits only the exact stock three-line OpenSSH post-quantum warning
+for Windows, with unchanged algorithms and trust; its original warning-only
+failed stage remains preserved. This records CLI identity and lifecycle scope,
+not terminal, executor, workspace, growth or native isolation acceptance. The
+old disposable fixture's manual profile repair remains separate evidence.
 The [matrix review](../architecture/reviews/2026-10-18-guest-os-matrix.md)
 records exact image, NAR and private receipt identities.
 

@@ -586,6 +586,18 @@ other users' pins. The SSH `ls`/`show` wire views omit the pin flag so the
 Porsche JSON contract is unchanged. LiveView evidence is in
 [machine_pins_live_test.exs](repo:marshall/test/marshall_web/machine_pins_live_test.exs);
 the browser probe checks the toggle's presentation on both themes.
+Wrapped machine-list actions use half-line vertical spacing and one-character
+horizontal spacing. The pin integration exposed accumulated vertical drift from
+using character units on both axes; the correction preserves the existing grid
+tolerance, controls and authority. Its browser results and remaining responsive
+coverage gap are recorded in the matrix review.
+Thread layouts also suppress element-empty workspace boxes, retain grid-owned
+activity field widths and use an inset terminal frame without shifting its
+iframe viewport. Command-palette patches restore accessibility/query/focus
+state even when the dialog remains open. The original local synthetic browser
+probe passed both themes/mobile,32 thread and36 collaborator combinations,
+sharing/revocation/refusals and153 screenshots after these corrections; actual
+guest execution and packaged-browser coverage remain separate.
 
 ## Developer SSH
 

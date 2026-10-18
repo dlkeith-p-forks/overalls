@@ -142,3 +142,31 @@ all eleven source locks, and all eight refreshed fixed-output snapshots and
 independently computed recursive NAR hashes now match. These focused and
 dependency-custody results do not replace complete consumer execution. The
 matrix review records exact failed and focused scopes and receipt identities.
+
+The complete `08cd428` Marshall gate then passed **1,694 tests**, with four
+exclusions, in **1,382.3 seconds**, seed **325708**. Covenant passed **24/24**,
+terminal JavaScript **36/36**, presentation JavaScript **9/9**, Monospace and
+forced Dialyzer with **0 errors, 0 skipped and 0 unnecessary skips** in
+**49.65 seconds**. The command exited zero under a 6 GiB, zero-swap scope.
+Its frozen runtime source ledger remained unchanged through `439a71e96`;
+this pre-machine-pin execution does not verify the later `132bc28b5`
+integration. The matrix review records the exact log and ledger digests;
+complete merged-source consumer gates remain separate. ADR-0191 remains partial.
+
+The final `132bc28b5` protocol gate passed **303 tests** in **420.6 seconds**,
+seed **476754**, with Covenant **14/14**, shared contract tests **19/19**, and
+Dialyzer **0 errors, 0 skipped and 0 unnecessary skips** in **2.77 seconds**.
+The frozen runtime source ledger checked unchanged after the command exited
+zero. The matrix review records exact log and ledger digests.
+
+Final frozen `132bc28b5` Marshall execution subsequently exited zero with
+**1,712 passed, four excluded**, seed **576982**, in **1,413.8 seconds**.
+Covenant passed **27/27**, terminal/presentation JavaScript **36/36** and
+**9/9**, Monospace, and forced Dialyzer with **0 errors, 0 skipped and
+0 unnecessary skips** in **51.78 seconds**. The runtime ledger checked
+unchanged; this includes machine-pin integration and excludes subsequent
+fixture-script/CSS corrections. Final Lilly and Porsche gates subsequently
+passed 610/100 tests, Covenant15/15 and4/4 and zero-error forced Dialyzer;
+the frozen runtime ledger remained unchanged after all four consumer gates.
+The matrix review retains the exact log and ledger digests. Migration and
+native guarantees remain partial under ADR-0191.

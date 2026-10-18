@@ -1,5 +1,16 @@
 # Deployment topology
 
+## Foreign Linux guest PAM runtime
+
+Arch/Alma's `overalls-pam-helpers.service` is a root oneshot inside each guest,
+not a fleet service. It creates the fixed pinned PAM account-helper copy on
+volatile runtime storage before the existing owned SSH listener, which requires
+its success. Unsafe path custody or installer failure withholds SSH startup;
+account expiry, current roster and private login receipt remain independent
+refusal boundaries. No host, listener, domain or placement is added. The
+isolated VM helper check establishes root account behavior on nosuid storage;
+fresh guest SSH/sudo and fleet lifecycle remain separate.
+
 ## Agent context remains within existing services
 
 ADR-0178/0179 add no deployable service or listener. Marshall's Agents domain

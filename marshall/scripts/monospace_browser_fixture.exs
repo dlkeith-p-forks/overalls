@@ -129,6 +129,7 @@ defmodule Marshall.MonospaceBrowserFixture do
   # @cc [owner:ghuntley,label:verification] thread-browser-fixture-transcript
   # Ready and archived browser fixtures MUST retain a bound, synthetic transcript
   # containing prompt, tool request, tool result and assistant events in sequence.
+  # The binding MUST retain the actual machine admission key and pass public reads.
   # No browser assertion may treat these rows as observed agent or guest execution.
   @spec thread_fixture(
           Marshall.Accounts.User.t(),
@@ -148,7 +149,7 @@ defmodule Marshall.MonospaceBrowserFixture do
         mode: :medium,
         machine_spec: Marshall.ComputeFixtures.request(),
         idempotency_key: key,
-        machine_key: key
+        machine_key: vm.idempotency_key
       })
 
     thread = Ledger.update!(thread, :set_title, %{title: title})
@@ -234,6 +235,9 @@ defmodule Marshall.MonospaceBrowserFixture do
         body: body
       })
     end)
+
+    {:ok, retained_events} = Marshall.Threads.events(thread.id, owner)
+    true = Enum.map(retained_events, & &1.kind) == Enum.map(events, &elem(&1, 0))
 
     if status == :archived do
       :ok = Ledger.archive!(vm, :archive)

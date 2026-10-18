@@ -250,6 +250,24 @@ sysinit/D-Bus/resolver startup, preserving vendor conditions and unrelated
 accounts. Actual artifact, isolated sysusers and native unit-parser checks
 pass; these do not establish a fresh guest boot or resolver/SSH readiness.
 
+Later fresh Arch and Alma images reached readiness but refused personal SSH.
+Arch's boot-bound probe isolated PAM account refusal and absent compiled
+`/run/wrappers/bin/unix_chkpwd`. Alma shares that immutable helper omission;
+its matching SSH symptom has no separate recorded PAM root probe. The shared builder now installs
+only the pinned helper as a regular root-owned 04755 runtime copy before SSH;
+its immutable source remains 0555. A root-only, argument-free installer refuses
+unsafe parents or destinations. SSH requires successful helper installation.
+The maintained isolated VM gate reproduces missing-helper status 9, succeeds
+with status 0 on nosuid runtime storage, and preserves expired/password-change/
+unknown-account refusals. Pinned PAM's root account caller sets real UID 0
+before helper execution; no mount flags or unprivileged elevation are added.
+Actual image and independent rebuild checks pass for Arch `99fa9876` and Alma
+`473f9589`; fresh guest SSH/sudo and lifecycle remain separate. The matrix review
+binds exact artifacts, the VM fixture's source-ownership overlay and receipts.
+This repairs the accepted owned PAM runtime without changing host isolation,
+protocol identity, account policy or capability authority; implementation remains
+partial.
+
 Native builders and catalog entries are in
 [`native.nix`](../../../nix/domains/artifacts/guest/native.nix),
 [`freebsd/default.nix`](../../../nix/domains/artifacts/guest/freebsd/default.nix),

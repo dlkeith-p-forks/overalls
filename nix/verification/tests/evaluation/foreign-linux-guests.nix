@@ -69,6 +69,19 @@ let
     assert pkgs.lib.hasInfix ''for directory in ./files/tmp ./files/var/tmp'' command;
     assert pkgs.lib.hasInfix ''chmod 1777 "$directory"'' command;
     true;
+  # @cc [owner:ghuntley,label:verification;security] foreign-linux-pam-helper-assembly
+  # Both builders MUST install the fixed runtime helper installer and order the
+  # owned SSH listener after its successful persistent oneshot. Missing helper
+  # units, dependencies or installation MUST fail, including on older inputs.
+  pamHelperAssembly = command: pkgs.lib.all (input: pkgs.lib.hasInfix input command) [
+    "./files/usr/local/lib/lilly/install-pam-helper"
+    "cat > ./files/etc/systemd/system/overalls-pam-helpers.service <<'EOF'"
+    "Requires=overalls-pam-helpers.service"
+    "After=overalls-ssh-sync.service overalls-pam-helpers.service"
+    "ExecStart=/usr/local/lib/lilly/install-pam-helper"
+    "RemainAfterExit=yes"
+    "../overalls-pam-helpers.service ./files/etc/systemd/system/multi-user.target.wants/overalls-pam-helpers.service"
+  ];
 in
 assert check arch archCommand "arch";
 assert check alma almaCommand "almalinux";
@@ -76,6 +89,11 @@ assert reproducible archRootCommand;
 assert reproducible almaRootCommand;
 assert accountRuntime archRootCommand;
 assert accountRuntime almaRootCommand;
+assert pamHelperAssembly archRootCommand;
+assert pamHelperAssembly almaRootCommand;
+assert !pamHelperAssembly (builtins.replaceStrings [ "cat > ./files/etc/systemd/system/overalls-pam-helpers.service <<'EOF'" ] [ "" ] archRootCommand);
+assert !pamHelperAssembly (builtins.replaceStrings [ "Requires=overalls-pam-helpers.service" ] [ "" ] almaRootCommand);
+assert !pamHelperAssembly (builtins.replaceStrings [ "After=overalls-ssh-sync.service overalls-pam-helpers.service" ] [ "After=overalls-ssh-sync.service" ] archRootCommand);
 assert pkgs.lib.hasInfix "z / 0755 root root -" archRootCommand;
 assert !(pkgs.lib.hasInfix "z / 0755 root root -" almaRootCommand);
 # @cc [owner:ghuntley,label:verification;build;security] almalinux-resolver-assembly-scope

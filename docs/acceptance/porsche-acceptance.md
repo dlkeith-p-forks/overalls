@@ -145,6 +145,12 @@ retains output byte counts and SHA-256 digests rather than raw guest stdout or
 stderr. Immutable attempt records preserve prior outcomes; the latest stage
 summary records `verified=false` on failure, including a failed rerun after an
 earlier success.
+Windows alone may return the exact stock three-line OpenSSH post-quantum
+key-exchange warning, with LF or CRLF endings. The immutable attempt records its
+closed `stderr_classification`; all other stderr remains refused except the
+existing exact native SSH login event. This changes no SSH trust, algorithms or
+warning settings. Nonzero exit, timeout and wrong exact OS output still fail,
+and a newly qualified stage never overwrites an earlier failed attempt.
 
 These phases establish only their recorded catalog, request, SSH identity and
 lifecycle outcomes. They do not perform the existing 50-VM physical snapshots or

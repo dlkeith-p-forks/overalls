@@ -1143,6 +1143,20 @@ account rows and is byte-idempotent. Artifact custody and native unit parsing
 pass, but new-image resolver/D-Bus behavior, readiness and CLI acceptance still
 need a fresh guest journey. This adds no host, transport or protocol authority.
 
+Fresh Arch/Alma fixtures later reached readiness but refused personal SSH.
+Arch's boot-bound probe identified PAM account refusal and its absent compiled
+shadow helper. Alma shares the immutable omission and SSH symptom; no separate
+Alma PAM root probe is recorded. The reviewed helper
+oneshot now precedes and is required by the owned SSH listener. Its fixed
+root-only, argument-free installer copies only pinned `unix_chkpwd` to the
+compiled runtime path with root ownership and mode04755, preserving the
+immutable source0555 and refusing unsafe parents/destinations. Existing nosuid
+mount flags remain unchanged. Root PAM account checks succeed because the
+pinned caller sets real UID0 before helper execution; the runtime inode mode
+does not establish unprivileged elevation. Isolated VM checks preserve expired,
+password-change and unknown-account refusals. Actual guest SSH/sudo, roster
+revocation and complete lifecycle require fresh exact-image acceptance.
+
 ## Windows guest boundaries
 
 The firmware-booted Windows image ([ADR-0169](repo:docs/architecture/decisions/0169-firmware-booted-windows-guests.md),

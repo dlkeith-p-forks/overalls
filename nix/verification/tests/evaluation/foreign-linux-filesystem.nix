@@ -13,7 +13,20 @@ let
     "/usr/bin/sudo" = "04755";
     "/etc/shadow" = "0600";
     "/etc/gshadow" = "0600";
+    "/usr/local/lib/lilly/install-pam-helper" = "0755";
+    "/etc/systemd/system/overalls-pam-helpers.service" = "0644";
   };
+  pamHelperUnit = pkgs.writeText "expected-pam-helpers.service" ''
+    [Unit]
+    Description=Install the pinned PAM account helper
+    Before=ssh.service
+    [Service]
+    Type=oneshot
+    RemainAfterExit=yes
+    ExecStart=/usr/local/lib/lilly/install-pam-helper
+    [Install]
+    WantedBy=multi-user.target
+  '';
   almaResolverFiles = {
     "/usr/lib/systemd/system/systemd-resolved.service" = "${pkgs.systemd}/example/systemd/system/systemd-resolved.service";
     "/usr/lib/systemd/system/systemd-resolved-varlink.socket" = "${pkgs.systemd}/example/systemd/system/systemd-resolved-varlink.socket";
@@ -57,7 +70,10 @@ let
   checkImage = distribution: image:
   let
     loader = if distribution == "arch" then "/usr/lib/ld-linux-x86-64.so.2" else "/usr/lib64/ld-linux-x86-64.so.2";
-    modes = expectedModes // { ${loader} = "0755"; };
+    modes = expectedModes // {
+      ${loader} = "0755";
+      ${builtins.unsafeDiscardStringContext "${pkgs.pam}/bin/unix_chkpwd"} = "0555";
+    };
     entries = lib.mapAttrs (_: mode: { inherit mode; kind = "regular"; }) modes // {
       "/" = { mode = "0755"; kind = "directory"; };
       "/tmp" = { mode = "01777"; kind = "directory"; };
@@ -68,6 +84,22 @@ let
       (lib.mapAttrs (_: _: { mode = "0644"; kind = "regular"; }) almaResolverFiles
         // lib.mapAttrs (_: _: { mode = "0777"; kind = "symlink"; }) almaResolverLinks);
   in ''
+    # @cc [owner:ghuntley,label:verification;security] foreign-linux-final-pam-helper
+    # Actual images MUST retain the exact reviewed helper unit, pinned installer
+    # and immutable non-setuid PAM source; SSH MUST require and follow helper
+    # success. This is offline artifact evidence, not native login acceptance.
+    debugfs -R 'cat /etc/systemd/system/overalls-pam-helpers.service' ${image}/rootfs.ext4 2>/dev/null > pam-helper-unit
+    cmp ${pamHelperUnit} pam-helper-unit
+    debugfs -R 'cat /usr/local/lib/lilly/install-pam-helper' ${image}/rootfs.ext4 2>/dev/null > pam-helper-installer
+    cmp ${image.passthru.pamHelperInstaller} pam-helper-installer
+    debugfs -R 'cat ${pkgs.pam}/bin/unix_chkpwd' ${image}/rootfs.ext4 2>/dev/null > pam-helper-source
+    cmp ${pkgs.pam}/bin/unix_chkpwd pam-helper-source
+    debugfs -R 'cat /etc/systemd/system/ssh.service' ${image}/rootfs.ext4 2>/dev/null > pam-ssh-unit
+    grep -Fx 'Requires=overalls-pam-helpers.service' pam-ssh-unit
+    grep -Fx 'After=overalls-ssh-sync.service overalls-pam-helpers.service' pam-ssh-unit
+    metadata=$(debugfs -R 'stat /etc/systemd/system/multi-user.target.wants/overalls-pam-helpers.service' ${image}/rootfs.ext4 2>/dev/null)
+    target=$(printf '%s\n' "$metadata" | sed -nE 's/^Fast link dest: "([^"]+)"$/\1/p')
+    test "$target" = ../overalls-pam-helpers.service
     # @cc [owner:ghuntley,label:verification;security] foreign-linux-final-kernel-lsm
     # Actual private-service manifests MUST select exactly one reviewed LSM
     # stack and retain their own distribution marker. Missing, duplicate or
@@ -121,7 +153,7 @@ let
   '') entries);
 in
 pkgs.runCommand "foreign-linux-guest-filesystem" {
-  nativeBuildInputs = [ pkgs.e2fsprogs pkgs.gnused pkgs.jq ];
+  nativeBuildInputs = [ pkgs.e2fsprogs pkgs.gnused pkgs.gnugrep pkgs.jq ];
   passthru = { inherit images; };
 } ''
   ${lib.concatStringsSep "\n" (lib.mapAttrsToList checkImage images)}

@@ -40,6 +40,39 @@ let
     file = "${rootfsDir}/rootfs.ext4";
     fs = "ext4";
   };
+  # @cc [owner:ghuntley,label:security;deployment] foreign-linux-pam-account-helper
+  # Every boot MUST install only the pinned unix_chkpwd as a regular root-owned
+  # mode-04755 runtime copy at PAM's compiled helper path. The immutable source
+  # MUST remain mode 0555. Unsafe runtime parents or destination nodes MUST fail
+  # before copying; callers MUST NOT select paths or supply arguments.
+  pamHelperInstaller = pkgs.writeShellScript "overalls-install-pam-helper" ''
+    set -eu
+    export LC_ALL=C
+    test "$#" -eq 0
+    test "$(${pkgs.coreutils}/bin/id -u)" -eq 0
+    for directory in /run /run/wrappers /run/wrappers/bin; do
+      test ! -L "$directory"
+      if test ! -e "$directory"; then
+        ${pkgs.coreutils}/bin/install -d --owner=0 --group=0 --mode=0755 -- "$directory"
+      fi
+      test -d "$directory"
+      test "$(${pkgs.coreutils}/bin/stat -c '%u:%g:%a' -- "$directory")" = 0:0:755
+    done
+    helper=/run/wrappers/bin/unix_chkpwd
+    if test -e "$helper" || test -L "$helper"; then
+      test ! -L "$helper"
+      test -f "$helper"
+      test "$(${pkgs.coreutils}/bin/stat -c '%u:%g' -- "$helper")" = 0:0
+    fi
+    test ! -L ${pkgs.pam}/bin/unix_chkpwd
+    test -f ${pkgs.pam}/bin/unix_chkpwd
+    test "$(${pkgs.coreutils}/bin/stat -c '%u:%g:%a' ${pkgs.pam}/bin/unix_chkpwd)" = 0:0:555
+    ${pkgs.coreutils}/bin/install --no-target-directory --owner=0 --group=0 --mode=04755 \
+      ${pkgs.pam}/bin/unix_chkpwd "$helper"
+    test ! -L "$helper"
+    test -f "$helper"
+    test "$(${pkgs.coreutils}/bin/stat -c '%u:%g:%a' -- "$helper")" = 0:0:4755
+  '';
   # Nixpkgs' ext4 builder copies these closures into the guest and registers
   # their store paths. The foreign distro keeps its own package manager and
   # libc, while the guest contract uses stable FHS links to these reviewed,
@@ -47,7 +80,7 @@ let
   runtimeStorePaths = [
     pkgs.cacert pkgs.coreutils pkgs.e2fsprogs pkgs.git pkgs.iproute2
     pkgs.openssh pkgs.pam pkgs.python3 pkgs.shadow pkgs.glibc.getent
-    pkgs.sudo pkgs.systemd pkgs.util-linux terminald lyraLinux
+    pkgs.sudo pkgs.systemd pkgs.util-linux terminald lyraLinux pamHelperInstaller
   ];
   rootfs = (pkgs.callPackage (pkgs.path + "/nixos/lib/make-ext4-fs.nix") {
     storePaths = runtimeStorePaths;
@@ -129,6 +162,7 @@ let
       install -D -m 0755 ${lyraLinux}/bin/overalls-trustd ./files/usr/local/bin/overalls-trustd
       install -D -m 0755 ${lyraLinux}/bin/overalls-workspaced ./files/usr/local/bin/overalls-workspaced
       install -D -m 0755 ${terminald}/bin/lilly-terminald ./files/usr/local/lib/lilly/lilly-terminald
+      install -D -m 0755 ${pamHelperInstaller} ./files/usr/local/lib/lilly/install-pam-helper
       install -D -m 0755 ${./network.py} ./files/usr/local/lib/lilly-network.py
       install -D -m 0755 ${./readiness.py} ./files/usr/local/lib/lilly-readiness.py
       install -D -m 0755 ${./flush.py} ./files/usr/local/lib/lilly-flush.py
@@ -237,10 +271,24 @@ let
       session required ${pkgs.pam}/lib/security/pam_unix.so
       EOF
       done
+      # /run is volatile: PAM's privileged shadow helper must be recreated on
+      # every boot, before the owned sshd can accept key-authenticated users.
+      cat > ./files/etc/systemd/system/overalls-pam-helpers.service <<'EOF'
+      [Unit]
+      Description=Install the pinned PAM account helper
+      Before=ssh.service
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      ExecStart=/usr/local/lib/lilly/install-pam-helper
+      [Install]
+      WantedBy=multi-user.target
+      EOF
       cat > ./files/etc/systemd/system/ssh.service <<'EOF'
       [Unit]
       Description=Overalls roster-bound SSH server
-      After=overalls-ssh-sync.service
+      Requires=overalls-pam-helpers.service
+      After=overalls-ssh-sync.service overalls-pam-helpers.service
       ConditionPathExists=/run/overalls-ssh-ready
       [Service]
       Type=simple
@@ -283,6 +331,7 @@ let
       for unit in lilly-network lilly-grow-root lilly-readiness lilly-flush lilly-terminals lilly-console-ready lilly-boot-report; do
         ln -sfn ../$unit.service ./files/etc/systemd/system/multi-user.target.wants/$unit.service
       done
+      ln -sfn ../overalls-pam-helpers.service ./files/etc/systemd/system/multi-user.target.wants/overalls-pam-helpers.service
       ln -sfn /dev/null ./files/etc/systemd/system/serial-getty@.service
       ln -sfn /dev/null ./files/etc/systemd/system/console-getty.service
       ${lib.optionalString (privateServiceRoots != [ ]) ''
@@ -429,7 +478,7 @@ pkgs.runCommand imageName {
   nativeBuildInputs = [ pkgs.jq ];
   preferLocalBuild = true;
   passthru = {
-    inherit distribution source sourceFormat boot rootfs runtimeStorePaths;
+    inherit distribution source sourceFormat boot rootfs runtimeStorePaths pamHelperInstaller;
     workspaceSourceEnabled = privateServiceRoots != [ ];
   };
 } ''

@@ -64,7 +64,11 @@ storage durability, physical recovery or deployed fleet behavior.
   as do Marshall and Lilly. The historical complete protocol gate at
   `2c9f7a4a9f2cf156de063bbc8058bcf297be5cf0` passed 299 tests and properties;
   the linked review retains that source hash and the earlier `6a62795` result.
-  Those results do not establish execution at the current pin. The frontend now
+  Those historical results do not establish execution at the current pin.
+  The final merged-source protocol gate at `132bc28b5` subsequently passed
+  303 tests, Covenant 14/14 and Dialyzer with zero errors or skips; the linked
+  matrix review records its exact log, seed and frozen source ledger.
+  The frontend now
   propagates standalone `check all` options; tuple bindings and filter
   compatibility still require narrow consumer repairs.
   These repairs preserve generated assertions and production interfaces.
@@ -73,10 +77,21 @@ storage durability, physical recovery or deployed fleet behavior.
   checkpoint retained a failing bounded context/options
   compilation probe. The current pin passed an isolated three-form context
   compilation/runtime probe and the preserved two-case distributed lock
-  property; complete current-pin consumer gates remain separate. All eight
+  property. A complete current-pin Marshall gate subsequently passed 1,694
+  tests with four exclusions, Covenant 24/24 and zero-error forced Dialyzer
+  against frozen pre-machine-pin sources; it does not verify the later
+  machine-pin integration. Final merged-source Marshall execution subsequently
+  passed 1,712 tests with four exclusions, Covenant 27/27 and zero-error forced
+  Dialyzer against unchanged frozen runtime sources. The linked matrix review
+  records exact receipts and excludes later fixture/CSS corrections from that
+  runtime gate. Final Lilly and Porsche consumer gates subsequently passed
+  610 and 100 tests, Covenant15/15 and4/4 and zero-error forced Dialyzer;
+  the frozen runtime ledger remained unchanged. These BEAM results do not
+  complete the migration or establish native guarantees.
+  All eight
   refreshed fixed-output dependency snapshots equal the normalized source locks
   and their actual recursive NAR hashes equal the configured values.
-  Historical execution does not verify the new pin.
+  Historical execution at earlier pins does not verify the new pin.
 - [Protocol terminal properties](../../../protocol/test/hegel_terminal_test.exs)
   define bounded frame round trips and truncation cases with deterministic seeds.
   Their presence does not record execution or completion of the wider migration.

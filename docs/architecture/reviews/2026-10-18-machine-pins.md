@@ -62,6 +62,19 @@ not establish this integration checkout's passing gates; source-present
 scenario evidence remains `present`, and final merged-source consumer checks
 retain separate execution records.
 
+The final frozen integration at `132bc28b5` subsequently passed the complete
+Marshall gate: **1,712 passed, four excluded**, seed **576982**, Covenant
+**27/27**, and forced Dialyzer with zero errors, skipped or unnecessary skips.
+The pin property, unit, LiveView and SSH tests passed in that execution;
+their modules contain no excluded distributed, host or capacity tags. The
+[matrix review](2026-10-18-guest-os-matrix.md) records its exact frozen source
+ledger and log digest. The final protocol gate also passed 303 tests;
+Lilly's final gate passed 610 tests with Covenant15/15 and Porsche's passed
+100 tests with Covenant4/4, both with zero-error forced Dialyzer and unchanged
+runtime sources. Porsche's closed pin-refusal tests passed in that execution.
+These results support the
+recorded BEAM evidence without closing the native or cross-node gaps below.
+
 Gaps: no NixOS machine test exercises a pin over a live Porsche SSH session or
 in the packaged browser; cross-node pin/delete races are argued from the shared
 VM row lock rather than observed; team-admin pinning is an open question.
@@ -82,6 +95,17 @@ host/service placement is unchanged. The account-deletion exception, revoked
 holder unpin and owner-only deletion fence remain explicit in the combined
 handbook and scenario ledger. ADR-0193 remains accepted/partial.
 
-The full current-Hegel Marshall run in the earlier checkout excludes the pin
-implementation and tests. Its eventual result cannot verify this merged source;
+The full current-Hegel Marshall run in the earlier checkout passed 1,694 tests,
+Covenant 24/24 and zero-error forced Dialyzer, but excludes the pin
+implementation and tests. Its result cannot verify this merged source;
 protocol, Marshall, Lilly and Porsche checks must use the final integration.
+
+An actual Chromium check found that wrapping the added machine-list pin control
+accumulated vertical drift: the inherited `gap: 1ch` used 9.60002 px on both
+axes against a 9.625 px half-line, eventually exceeding the unchanged 0.1 px
+grid tolerance. The narrow correction uses a half-line row gap and retains
+the one-character column gap. An on-page comparison removed the exact editor
+and pin offenders at 1,440 and 1,000 px; asset, Monospace structural and
+TypeScript/presentation gates passed. Full browser execution and its retained
+failures have separate records in the matrix review. This preserves ADR-0161
+and changes no template hooks, protocol, authorization or pin semantics.

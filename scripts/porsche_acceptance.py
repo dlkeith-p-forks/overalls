@@ -49,6 +49,11 @@ IMAGE_NAMES: dict[GuestOS, str] = {
 SSH_LOGIN_EVENT = (
     '{"service":"overalls-ssh-authorize","event":"ssh.login_recorded","severity":"info"}\n'
 )
+SSH_WINDOWS_PQ_WARNING = (
+    "** WARNING: connection is not using a post-quantum key exchange algorithm.\n"
+    '** This session may be vulnerable to "store now, decrypt later" attacks.\n'
+    "** The server may need to be upgraded. See https://openssh.com/pq.html\n"
+)
 
 
 def object_map(value: object) -> dict[str, object]:
@@ -964,6 +969,12 @@ class Acceptance:
             raise ValueError(f"Guest OS differs from the expected {kind} image")
 
     def matrix_ssh(self, kinds: tuple[GuestOS, ...], stage: str = "initial") -> None:
+        """@cc [owner:ghuntley,label:security;verification] porsche-windows-known-kex-warning
+        Windows MAY emit only the exact stock three-line OpenSSH post-quantum
+        warning with LF or CRLF endings. Other stderr, nonzero exit, timeout or
+        a failed exact OS oracle MUST fail. SSH trust and algorithms MUST remain
+        unchanged; the warning MUST NOT be accepted for another guest family.
+        """
         if not re.fullmatch(r"[a-z][a-z0-9-]{0,30}", stage):
             raise ValueError("Invalid matrix SSH evidence stage")
         config = self.matrix_config()
@@ -1029,6 +1040,18 @@ class Acceptance:
                     os.killpg(process.pid, signal.SIGKILL)
                 stdout, stderr = process.communicate()
                 timed_out = True
+            stderr_classification: Literal[
+                "none", "native-ssh-login-event", "windows-openssh-pq-warning", "unexpected"
+            ] = "unexpected"
+            if stderr == "":
+                stderr_classification = "none"
+            elif fixture.kind in ("freebsd", "omnios") and stderr == SSH_LOGIN_EVENT:
+                stderr_classification = "native-ssh-login-event"
+            elif fixture.kind == "windows" and stderr in (
+                SSH_WINDOWS_PQ_WARNING,
+                SSH_WINDOWS_PQ_WARNING.replace("\n", "\r\n"),
+            ):
+                stderr_classification = "windows-openssh-pq-warning"
             attempt = dict(
                 fixture=asdict(fixture),
                 probe="os-identity",
@@ -1039,13 +1062,11 @@ class Acceptance:
                 stderr_bytes=len(stderr.encode()),
                 stdout_sha256=hashlib.sha256(stdout.encode()).hexdigest(),
                 stderr_sha256=hashlib.sha256(stderr.encode()).hexdigest(),
+                stderr_classification=stderr_classification,
             )
             self.save(f"matrix-ssh-{stage}-{fixture.kind}-attempt-{uuid.uuid4()}.json", attempt)
             self.save(f"matrix-ssh-{stage}-{fixture.kind}.json", dict(**attempt, verified=False))
-            allowed_stderr = (
-                ("", SSH_LOGIN_EVENT) if fixture.kind in ("freebsd", "omnios") else ("",)
-            )
-            if timed_out or process.returncode != 0 or stderr not in allowed_stderr:
+            if timed_out or process.returncode != 0 or stderr_classification == "unexpected":
                 raise RuntimeError(f"Matrix {fixture.kind} guest SSH failed; see private evidence")
             self.matrix_verify_os(fixture.kind, stdout)
             self.save(f"matrix-ssh-{stage}-{fixture.kind}.json", dict(**attempt, verified=True))

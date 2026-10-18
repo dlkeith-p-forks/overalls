@@ -15,6 +15,7 @@ from porsche_acceptance import (
     GUEST_OSES,
     IMAGE_NAMES,
     SSH_LOGIN_EVENT,
+    SSH_WINDOWS_PQ_WARNING,
     Acceptance,
     CommandOutcome,
     GuestOS,
@@ -554,6 +555,112 @@ class MatrixSafetyTest(unittest.TestCase):
         self.assertFalse(
             json.loads((self.path / "matrix-ssh-initial-freebsd.json").read_text())["verified"]
         )
+
+    def test_windows_exact_pq_warning_accepts_only_known_line_endings(self) -> None:
+        self.runner.save("matrix-vm-windows.json", self.receipt("windows"))
+        self.runner.command = Mock(
+            return_value={"result": dict(email="test@example.invalid", guest_username="u200000")}
+        )
+        self.runner.matrix_owned = Mock(
+            return_value=dict(observed_state="running", desired_state="running")
+        )
+        output = json.dumps(
+            dict(
+                family="Win32NT",
+                caption="Microsoft Windows Server 2025 Standard Evaluation",
+                build="26100",
+            )
+        )
+        for index, warning in enumerate(
+            (SSH_WINDOWS_PQ_WARNING, SSH_WINDOWS_PQ_WARNING.replace("\n", "\r\n"))
+        ):
+            with self.subTest(index=index):
+                process = Mock(returncode=0)
+                process.communicate.return_value = (output, warning)
+                with patch("porsche_acceptance.subprocess.Popen", return_value=process) as popen:
+                    self.runner.matrix_ssh(("windows",), f"known-warning-{index}")
+                argv = popen.call_args.args[0]
+                for option in ("BatchMode=yes", "IdentitiesOnly=yes", "StrictHostKeyChecking=yes"):
+                    self.assertIn(option, argv)
+                self.assertFalse(
+                    any("WarnWeakCrypto" in item or "KexAlgorithms" in item for item in argv)
+                )
+                record = json.loads(
+                    (self.path / f"matrix-ssh-known-warning-{index}-windows.json").read_text()
+                )
+                self.assertTrue(record["verified"])
+                self.assertEqual(record["stderr_classification"], "windows-openssh-pq-warning")
+                self.assertNotIn("stderr", record)
+
+    def test_windows_warning_never_accepts_changed_stderr_nonzero_or_wrong_os(self) -> None:
+        self.runner.save("matrix-vm-windows.json", self.receipt("windows"))
+        self.runner.command = Mock(
+            return_value={"result": dict(email="test@example.invalid", guest_username="u200000")}
+        )
+        self.runner.matrix_owned = Mock(
+            return_value=dict(observed_state="running", desired_state="running")
+        )
+        expected = dict(
+            family="Win32NT",
+            caption="Microsoft Windows Server 2025 Standard Evaluation",
+            build="26100",
+        )
+        cases: list[tuple[int, str, str]] = [
+            (0, json.dumps(expected), SSH_WINDOWS_PQ_WARNING + "unexpected warning\n"),
+            (0, json.dumps(expected), "extra prefix\n" + SSH_WINDOWS_PQ_WARNING),
+            (0, json.dumps(expected), SSH_WINDOWS_PQ_WARNING.replace("post-quantum", "different")),
+            (0, json.dumps(expected), SSH_WINDOWS_PQ_WARNING.rstrip("\n")),
+            (0, json.dumps(expected), SSH_WINDOWS_PQ_WARNING * 2),
+            (255, json.dumps(expected), SSH_WINDOWS_PQ_WARNING),
+            (1, json.dumps(expected), SSH_WINDOWS_PQ_WARNING),
+            (0, json.dumps(dict(expected, build="26000")), SSH_WINDOWS_PQ_WARNING),
+            (0, json.dumps(dict(expected, family="Unix")), SSH_WINDOWS_PQ_WARNING),
+            (0, "malformed output", SSH_WINDOWS_PQ_WARNING),
+        ]
+        for index, (exit_status, output, warning) in enumerate(cases):
+            with self.subTest(index=index):
+                process = Mock(returncode=exit_status)
+                process.communicate.return_value = (output, warning)
+                with (
+                    patch("porsche_acceptance.subprocess.Popen", return_value=process),
+                    self.assertRaises((RuntimeError, ValueError)),
+                ):
+                    self.runner.matrix_ssh(("windows",), f"refused-warning-{index}")
+                record = json.loads(
+                    (self.path / f"matrix-ssh-refused-warning-{index}-windows.json").read_text()
+                )
+                self.assertFalse(record["verified"])
+                self.assertEqual(
+                    record["stderr_classification"],
+                    "windows-openssh-pq-warning" if index >= 5 else "unexpected",
+                )
+
+    def test_windows_pq_warning_is_refused_for_every_other_guest_family(self) -> None:
+        self.runner.command = Mock(
+            return_value={"result": dict(email="test@example.invalid", guest_username="u200000")}
+        )
+        self.runner.matrix_owned = Mock(
+            return_value=dict(observed_state="running", desired_state="running")
+        )
+        for kind in GUEST_OSES:
+            if kind == "windows":
+                continue
+            with self.subTest(kind=kind):
+                self.runner.save(f"matrix-vm-{kind}.json", self.receipt(kind))
+                process = Mock(returncode=0)
+                process.communicate.return_value = ("", SSH_WINDOWS_PQ_WARNING)
+                with (
+                    patch("porsche_acceptance.subprocess.Popen", return_value=process),
+                    patch.object(self.runner, "matrix_verify_os") as oracle,
+                    self.assertRaises(RuntimeError),
+                ):
+                    self.runner.matrix_ssh((kind,), "wrong-family-warning")
+                oracle.assert_not_called()
+                record = json.loads(
+                    (self.path / f"matrix-ssh-wrong-family-warning-{kind}.json").read_text()
+                )
+                self.assertFalse(record["verified"])
+                self.assertEqual(record["stderr_classification"], "unexpected")
 
 
 if __name__ == "__main__":
