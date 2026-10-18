@@ -59,7 +59,7 @@ in
         set -eu
         mkdir -p "$ANDROID_AVD_HOME"
         if [ ! -f "$ANDROID_AVD_HOME/${avdName}.avd/config.ini" ]; then
-          yes "" | ${sdkRoot}/cmdline-tools/latest/bin/avdmanager create avd \
+          yes "" | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
             --force --name ${avdName} \
             --package "system-images;android-36;google_apis;x86_64" \
             --path "$ANDROID_AVD_HOME/${avdName}.avd"
