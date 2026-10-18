@@ -280,3 +280,10 @@ new identities and retires3. All3797 retained entry blocks per locale preserve
 metadata, fuzzy flags and translations byte-for-byte; one retired nonempty
 translation is privately archived. Native Gettext extraction freshness remains
 a separate pending check. The localization skill passes its structural validator.
+
+The publication merge through `3c139bcce` preserves the incoming Antithesis
+assertion message as a literal for SDK discovery, without changing its predicate.
+Fleet launch-failure diagnostics add process identity inspection using
+PID, command name and executable path; they do not print command arguments.
+These harness-only changes preserve the existing ownership, topology and
+acceptance boundaries. No additional native machine execution is claimed.
