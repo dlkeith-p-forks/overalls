@@ -575,7 +575,8 @@ paging neither repeats nor skips. The pinned section is shown on the first page
 only. The Overview fills its six preview slots with pinned machines first.
 
 Every row, preview and machine header carries a text `Pin`/`Unpin` control
-(`#pin-<machine>`, `aria-pressed`) and a `[Pinned]` label; the control sends the
+(`#pin-<machine>`, `aria-pressed`) and a `[Pinned]` label that leads the status
+labels (`[Pinned] [Running]`); the control sends the
 server-selected machine id and the displayed state, and the Access coordinator
 decides. On the Settings tab the owner's own pin disables Delete with "Unpin to
 delete"; a forged delete event is still refused by the domain with a fixed flash.
