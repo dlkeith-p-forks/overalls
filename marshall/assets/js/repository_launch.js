@@ -1,3 +1,4 @@
+import {t} from "./localization.js";
 // @ts-check
 const PREFIX = "overalls.launch:";
 
@@ -62,7 +63,7 @@ export function captureRepositoryLaunch(doc, browser) {
   }
   const source = capturedRepositorySource(hash);
   if (source === null) {
-    entry.textContent = "This repository link could not be launched. Open the link again.";
+    entry.textContent = t("This repository link could not be launched. Open the link again.");
     return;
   }
   let visit;

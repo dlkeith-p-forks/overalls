@@ -28,6 +28,8 @@ defmodule Porsche.MixProject do
     [
       {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:logger_json, "~> 7.0"},
+      {:gettext, "~> 1.0"},
+      {:localize, "~> 1.3"},
       {:overalls_protocol, path: "../protocol"},
       {:overalls_diagnostics, path: "../elixir/diagnostics"},
       {:overalls_request_accounting, path: "../elixir/request_accounting"},

@@ -1,3 +1,4 @@
+import {t} from "./localization.js";
 // @ts-check
 /**
  * @typedef {{id: string, publicKey: PublicKeyCredentialRequestOptions}} Challenge
@@ -103,8 +104,8 @@ export const AdminElevation = {
       if (dialog.open || !record(payload) || typeof payload.nonce !== "string") return;
       nonce = payload.nonce;
       previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      const action = typeof payload.action === "string" ? payload.action : "complete this administrative change";
-      status.textContent = `Verify with your passkey to ${action}. This runs once after verification.`;
+      const action = typeof payload.action === "string" ? payload.action : t("complete this administrative change");
+      status.textContent = t("Verify with your passkey to %{action}. This runs once after verification.", {action});
       resetButton();
       dialog.showModal();
       verifyButton.focus();
@@ -121,7 +122,7 @@ export const AdminElevation = {
       const current = () => dialog.open && nonce === intentNonce && attempt === currentAttempt;
       verifyButton.disabled = true;
       verifyButton.setAttribute("aria-busy", "true");
-      status.textContent = "Waiting for your passkey…";
+      status.textContent = t("Waiting for your passkey…");
       try {
         if (!window.PublicKeyCredential) throw new Error("Unavailable");
         const started = await reply(this, "admin-step-up-begin", {nonce: intentNonce});
@@ -136,17 +137,17 @@ export const AdminElevation = {
           authenticator_data: encode(credential.response.authenticatorData), signature: encode(credential.response.signature),
           client_data_json: encode(credential.response.clientDataJSON)};
         submitted = true;
-        status.textContent = "Applying administrative change…";
+        status.textContent = t("Applying administrative change…");
         cancelButtons.forEach(button => { if (button instanceof HTMLButtonElement) button.disabled = true; });
         const finished = await reply(this, "admin-step-up-finish", {nonce: intentNonce, payload});
         if (!current()) return;
         if (record(finished) && finished.ok === true) close();
-        else showError("Verification could not be completed. Try again.");
+        else showError(t("Verification could not be completed. Try again."));
       } catch (error) {
         if (current()) {
           const cancelled = error instanceof Error && ["NotAllowedError", "AbortError"].includes(error.name);
-          showError(submitted ? "The result could not be confirmed. Reload the page and check the result before retrying." :
-            cancelled ? "Passkey request cancelled. You can try again." : "Passkey verification failed or unavailable. Try again.");
+          showError(submitted ? t("The result could not be confirmed. Reload the page and check the result before retrying.") :
+            cancelled ? t("Passkey request cancelled. You can try again.") : t("Passkey verification failed or unavailable. Try again."));
         }
       } finally {
         if (current()) { controller = null; resetButton(); }

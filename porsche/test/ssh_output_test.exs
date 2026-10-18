@@ -19,6 +19,12 @@ defmodule Porsche.SSH.OutputTest do
     assert Output.render(response, false, :interactive) =~ response["approval_url"]
   end
 
+  test "human errors translate prose while JSON retains the exact error contract" do
+    response = %{"version" => 1, "status" => "error", "error" => "invalid_command"}
+    assert Output.render(response, false) =~ "Invalid command."
+    assert JSON.decode!(Output.render(response, true)) == response
+  end
+
   property "JSON results round-trip arbitrary Unicode without raw terminal control sequences" do
     text = draw("text", string(:utf8, max_length: 200))
     response = %{"version" => 1, "status" => "succeeded", "result" => %{"value" => [text]}}

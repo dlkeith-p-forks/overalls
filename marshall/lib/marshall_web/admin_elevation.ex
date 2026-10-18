@@ -1,6 +1,8 @@
 defmodule MarshallWeb.AdminElevation do
   @moduledoc "Bounded socket-local administrative continuations."
 
+  use Gettext, backend: MarshallWeb.Gettext
+
   @type params :: %{String.t() => String.t() | %{String.t() => String.t()}}
   @type binding :: %{
           actor_id: String.t(),
@@ -25,33 +27,36 @@ defmodule MarshallWeb.AdminElevation do
 
   @id_events ~w(revoke-sessions revoke-key revoke-session revoke-grant reset-mfa refresh remove relocate)
   @empty_events ~w(evacuate rotate-certificate retry)
-  @action_labels %{
-    "set-role" => "change administrator access",
-    "revoke-sessions" => "sign this account out everywhere",
-    "revoke-key" => "revoke this SSH key",
-    "revoke-session" => "close this SSH session",
-    "revoke-grant" => "revoke this VM access",
-    "invite" => "send this invitation",
-    "delete-user" => "delete this user account",
-    "reset-mfa" => "reset this account's passkeys",
-    "register" => "add this Git mirror",
-    "refresh" => "refresh this Git mirror",
-    "remove" => "remove this Git mirror",
-    "evacuate" => "start this node evacuation",
-    "control" => "change this evacuation",
-    "approve" => "approve this workload downtime",
-    "replan" => "replan this workload move",
-    "lifecycle" => "change this machine's state",
-    "relocate" => "move this machine",
-    "rotate-certificate" => "rotate the fleet certificate",
-    "admin-override" => "open this machine with administrator access",
-    "configure" => "change this node's admission settings",
-    "retry" => "retry this background job"
+  @spec action_labels() :: %{String.t() => String.t()}
+  defp action_labels do
+    %{
+    "set-role" => gettext("change administrator access"),
+    "revoke-sessions" => gettext("sign this account out everywhere"),
+    "revoke-key" => gettext("revoke this SSH key"),
+    "revoke-session" => gettext("close this SSH session"),
+    "revoke-grant" => gettext("revoke this VM access"),
+    "invite" => gettext("send this invitation"),
+    "delete-user" => gettext("delete this user account"),
+    "reset-mfa" => gettext("reset this account's passkeys"),
+    "register" => gettext("add this Git mirror"),
+    "refresh" => gettext("refresh this Git mirror"),
+    "remove" => gettext("remove this Git mirror"),
+    "evacuate" => gettext("start this node evacuation"),
+    "control" => gettext("change this evacuation"),
+    "approve" => gettext("approve this workload downtime"),
+    "replan" => gettext("replan this workload move"),
+    "lifecycle" => gettext("change this machine's state"),
+    "relocate" => gettext("move this machine"),
+    "rotate-certificate" => gettext("rotate the fleet certificate"),
+    "admin-override" => gettext("open this machine with administrator access"),
+    "configure" => gettext("change this node's admission settings"),
+    "retry" => gettext("retry this background job")
   }
+  end
 
   @doc "A static action label from the same closed administrative event grammar."
   @spec action_label(String.t()) :: String.t()
-  def action_label(event), do: Map.fetch!(@action_labels, event)
+  def action_label(event), do: Map.fetch!(action_labels(), event)
 
   # @cc [owner:ghuntley,label:security;concurrency] admin-elevation-bounded-intent
   # Pending actions MUST retain only this closed event grammar, server-side and

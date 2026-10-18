@@ -2,9 +2,29 @@
   "version": 1,
   "scenarios": [
     {
+      "id": "localization",
+      "journey": "Select a language, reset to the browser default, and use LTR/RTL human surfaces",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport"
+      ],
+      "boundary": "Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic and Urdu use RTL; locale does not grant authority or change machine output.",
+      "denial": "Unsupported or malformed locale input cannot persist; a foreign user cannot change the preference; old Porsche protocol peers fall back to English; JSON fields, protocol identifiers and terminal bytes remain language-neutral.",
+      "scope": "Accepted design in ADR-0197; no implementation execution is claimed by this scenario.",
+      "status": "partial",
+      "gaps": "Catalog completeness, placeholder parity, browser layout/bidi behavior, locale isolation and protocol compatibility need executed evidence. Native linguistic review and packaged NixOS browser journeys are not established.",
+      "preferred_gap": "Add generated negotiation and isolation properties, complete catalog checks, LTR/RTL browser journeys and a packaged NixOS account-language/Porsche journey; record exact outcomes.",
+      "evidence": []
+    },
+    {
       "id": "account-settings-page",
       "journey": "Open the single account page, move between its profile, sign-in and SSH key sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint",
-      "layers": ["identity", "authorization", "transport"],
+      "layers": [
+        "identity",
+        "authorization",
+        "transport"
+      ],
       "boundary": "One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey and SSH key sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH and User.set_time_zone; fragments (#profile, #security, #ssh-keys) carry no authority and return_to keeps its allowlist.",
       "denial": "Refuse anonymous visitors with a sign-in redirect; answer 404 on /settings/profile, /settings/security and /settings/ssh-keys; refuse unknown events with a fixed flash and no change; a revoked login halts the next SSH key event or clock tick with a sign-in redirect; a weaker mount (optional, current_user or none) fails the pin test.",
       "scope": "LiveView tests of the merged page (sections, single navigation entry, the step-up redirect and Users link to /settings?return_to=%2Fadmin%2Fusers#security, the SSH approval navigation to /settings#ssh-keys, every former Security, SSH key and profile assertion) and a structural pin of the lifecycle ids and route; the synthetic browser probe checks the single sidebar entry, section order, anchors landing at the top, the zone round trip and grid alignment in both themes and at 390 px.",
@@ -59,7 +79,15 @@
     {
       "id": "foreign-linux-browser-editor",
       "journey": "Open the personal browser editor on a newly provisioned AlmaLinux or Arch image",
-      "layers": ["identity", "authorization", "transport", "execution", "isolation", "storage", "recovery"],
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
       "boundary": "The immutable image binds the pinned editor/broker closure and exact descriptor; Marshall retains current write/profile/Customer-owner authority, Audi retains the account origin, Lilly fences TCP 4444 to the current boot, and the guest broker reconciles the current personal UID before launching a systemd worker.",
       "denial": "Retained editor-free images, a changed release or image identity, missing package partner, insufficient headroom, unsafe customization paths, foreign gateway/boot/account and revoked browser authority must refuse. A Linux family capability or successful SSH does not grant editor authority.",
       "scope": "The shared Alma/Arch builder packages the pinned editor/broker/direnv, exact descriptor, registered offline closure and GC roots. Final evaluation and actual-filesystem custody gates passed, along with two exact-release/image property and absent-descriptor checks. Alma's isolated nine-node nested-KVM suite passed all twelve provisioning, editor/terminal/webview, policy, recovery, restart and current-authority subtests. Its fixture image90eca504 differs from production65e7700b by private roots and policy files. Both production Arch0b3da3e8 and Alma65e7700b passed fresh strict personal CLI SSH, stop/checkpoint/restart, repeated SSH and owned deletion, plus four PAM/sudo smokes. Arch's captured same-image diagnostic replay passed all twelve native stages in618.2s; the earlier broker-restart502 remains unexplained. Both native sources precede the later trunk merge. No current-revision NixOS or Ubuntu native browser sign-in, edit/save/readback and recovery receipt is recorded here.",

@@ -1,5 +1,9 @@
 # Security boundaries and sensitive operations
 
+## Locale is presentation, not authority
+
+Language headers and session values are untrusted, bounded and validated against the supported locale set. Only the current user may persist their override; reset restores browser negotiation. Neither locale nor text direction changes login, Cedar, execution fences, storage ownership or recovery authority. The Porsche envelope carries a canonical locale for human prose, with English fallback for older peers; machine identifiers and terminal byte streams stay unchanged. Bidi isolation protects interpolated identifiers from misleading direction changes. See [ADR-0197](repo:docs/architecture/decisions/0197-localized-human-surfaces.md); native/browser execution and linguistic review remain gaps until recorded.
+
 ## Agent context and guidance boundaries
 
 [ADR-0178](repo:docs/architecture/decisions/0178-durable-agent-context-and-planning.md)

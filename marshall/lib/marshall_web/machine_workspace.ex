@@ -1,5 +1,6 @@
 defmodule MarshallWeb.MachineWorkspace do
   @moduledoc "Shared, actor-authorized machine header state and power actions."
+  use Gettext, backend: MarshallWeb.Gettext
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [attach_hook: 4, put_flash: 3, push_navigate: 2]
   alias Marshall.Accounts.{Security, User}
@@ -86,13 +87,13 @@ defmodule MarshallWeb.MachineWorkspace do
       |> assign(machine_connection: nil)
       |> put_flash(
         :error,
-        "Administrative verification expired. Choose the machine in Fleet workloads and verify your passkey to reopen it."
+        gettext("Administrative verification expired. Choose the machine in Fleet workloads and verify your passkey to reopen it.")
       )
       |> push_navigate(to: "/admin/workloads")
     else
       socket
       |> assign(machine_connection: nil)
-      |> put_flash(:error, "This machine is unavailable or your access has ended.")
+      |> put_flash(:error, gettext("This machine is unavailable or your access has ended."))
       |> push_navigate(to: "/machines")
     end
   end
@@ -162,16 +163,16 @@ defmodule MarshallWeb.MachineWorkspace do
 
     cond do
       String.contains?(text, "pin_limit") ->
-        "You can pin up to #{Access.Pins.limit()} machines. Unpin one before pinning another."
+        gettext("You can pin up to %{value1} machines. Unpin one before pinning another.", value1: Access.Pins.limit())
 
       String.contains?(text, "vm_deleted") ->
-        "This machine is being deleted and cannot be pinned."
+        gettext("This machine is being deleted and cannot be pinned.")
 
       String.contains?(text, "machine_failed") ->
         "A failed machine cannot be pinned."
 
       true ->
-        "The pin could not be changed. Refresh and try again."
+        gettext("The pin could not be changed. Refresh and try again.")
     end
   end
 
@@ -214,7 +215,7 @@ defmodule MarshallWeb.MachineWorkspace do
           {:halt,
            socket
            |> assign(machine_connection: nil)
-           |> put_flash(:error, "The machine could not be updated. Refresh and try again.")}
+           |> put_flash(:error, gettext("The machine could not be updated. Refresh and try again."))}
         end
     end
   end

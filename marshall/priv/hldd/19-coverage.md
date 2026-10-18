@@ -2,6 +2,22 @@
 
 NixOS machine integration tests and property-based tests are the preferred evidence. Unit tests establish narrower behavior. **Present** means a test exists and its assertion was inspected; **recorded** links a historical execution record, not a rerun of the current tree. Partial coverage does not mean the feature is broken. Gaps identify what the evidence cannot establish.
 
+## Select a language, reset to the browser default, and use LTR/RTL human surfaces
+
+Coverage: **partial**. Layers: identity, authorization, transport.
+
+Boundary: Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic and Urdu use RTL; locale does not grant authority or change machine output.
+
+Required refusal: Unsupported or malformed locale input cannot persist; a foreign user cannot change the preference; old Porsche protocol peers fall back to English; JSON fields, protocol identifiers and terminal bytes remain language-neutral.
+
+Tested scope: Accepted design in ADR-0197; no implementation execution is claimed by this scenario.
+
+
+
+**Gaps:** Catalog completeness, placeholder parity, browser layout/bidi behavior, locale isolation and protocol compatibility need executed evidence. Native linguistic review and packaged NixOS browser journeys are not established.
+
+**Preferred test work:** Add generated negotiation and isolation properties, complete catalog checks, LTR/RTL browser journeys and a packaged NixOS account-language/Porsche journey; record exact outcomes.
+
 ## Open the single account page, move between its profile, sign-in and SSH key sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint
 
 Coverage: **partial**. Layers: identity, authorization, transport.

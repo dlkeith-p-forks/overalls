@@ -22,7 +22,7 @@ defmodule MarshallWeb.Admin.OperationsLive do
   defp refresh(socket) do
     case Operations.snapshot(socket.assigns.current_user) do
       {:ok, snapshot} -> assign(socket, snapshot: snapshot, refreshed_at: DateTime.utc_now())
-      _ -> put_flash(socket, :error, "Operational status is temporarily unavailable.")
+      _ -> put_flash(socket, :error, gettext("Operational status is temporarily unavailable."))
     end
   end
 
@@ -49,33 +49,33 @@ defmodule MarshallWeb.Admin.OperationsLive do
     >
       <section id="admin-operations" class="stack">
         <UI.heading
-          title="Platform status"
-          subtitle="Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
+          title={gettext("Platform status")}
+          subtitle={gettext("Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld.")}
         >
           <:actions>
-            <span class="muted">Updated
+            <span class="muted">{gettext("Updated")}
             <.timestamp at={@refreshed_at} zone={@time_zone} format={:datetime_seconds} />
-            · every 30 seconds</span>
+            {gettext("· every 30 seconds")}</span>
           </:actions>
         </UI.heading>
         <.kv id="platform-summary">
-          <:item title="Images">{tally(@snapshot.images)}</:item>
-          <:item title="Porsche gateways">{tally(@snapshot.gateways)}</:item>
-          <:item title="Audi services">{tally(@snapshot.services)}</:item>
-          <:item title="Ingress routes">{length(@snapshot.routes)}</:item>
-          <:item title="DNS publications">{length(@snapshot.publications)}</:item>
+          <:item title={gettext("Images")}>{tally(@snapshot.images)}</:item>
+          <:item title={gettext("Porsche gateways")}>{tally(@snapshot.gateways)}</:item>
+          <:item title={gettext("Audi services")}>{tally(@snapshot.services)}</:item>
+          <:item title={gettext("Ingress routes")}>{length(@snapshot.routes)}</:item>
+          <:item title={gettext("DNS publications")}>{length(@snapshot.publications)}</:item>
         </.kv>
-        <UI.panel id="image-catalog" title="Image catalog">
-          <p :if={@snapshot.images == []} class="muted">No images in the catalog.</p>
+        <UI.panel id="image-catalog" title={gettext("Image catalog")}>
+          <p :if={@snapshot.images == []} class="muted">{gettext("No images in the catalog.")}</p>
           <div :if={@snapshot.images != []} class="table-flow">
             <table>
               <thead>
                 <tr>
-                  <th class="width-auto">Image</th>
-                  <th class="width-min">Architecture</th>
-                  <th class="width-min num">Minimum RAM</th>
-                  <th class="width-min num">Minimum disk</th>
-                  <th class="width-min">Status</th>
+                  <th class="width-auto">{gettext("Image")}</th>
+                  <th class="width-min">{gettext("Architecture")}</th>
+                  <th class="width-min num">{gettext("Minimum RAM")}</th>
+                  <th class="width-min num">{gettext("Minimum disk")}</th>
+                  <th class="width-min">{gettext("Status")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -90,15 +90,15 @@ defmodule MarshallWeb.Admin.OperationsLive do
             </table>
           </div>
         </UI.panel>
-        <UI.panel id="porsche-gateways" title="Porsche gateways">
-          <p :if={@snapshot.gateways == []} class="muted">No gateways enrolled.</p>
+        <UI.panel id="porsche-gateways" title={gettext("Porsche gateways")}>
+          <p :if={@snapshot.gateways == []} class="muted">{gettext("No gateways enrolled.")}</p>
           <div :if={@snapshot.gateways != []} class="table-flow">
             <table>
               <thead>
                 <tr>
-                  <th class="width-auto">Gateway</th>
-                  <th class="width-min num">Generation</th>
-                  <th class="width-min">Status</th>
+                  <th class="width-auto">{gettext("Gateway")}</th>
+                  <th class="width-min num">{gettext("Generation")}</th>
+                  <th class="width-min">{gettext("Status")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -111,17 +111,17 @@ defmodule MarshallWeb.Admin.OperationsLive do
             </table>
           </div>
         </UI.panel>
-        <UI.panel id="audi-services" title="Audi services">
-          <p :if={@snapshot.services == []} class="muted">No Audi services enrolled.</p>
+        <UI.panel id="audi-services" title={gettext("Audi services")}>
+          <p :if={@snapshot.services == []} class="muted">{gettext("No Audi services enrolled.")}</p>
           <div :if={@snapshot.services != []} class="table-flow">
             <table>
               <thead>
                 <tr>
-                  <th class="width-auto">Service</th>
-                  <th class="width-min">Role</th>
-                  <th class="width-min num">Generation</th>
-                  <th class="width-min num">Addresses</th>
-                  <th class="width-min">Status</th>
+                  <th class="width-auto">{gettext("Service")}</th>
+                  <th class="width-min">{gettext("Role")}</th>
+                  <th class="width-min num">{gettext("Generation")}</th>
+                  <th class="width-min num">{gettext("Addresses")}</th>
+                  <th class="width-min">{gettext("Status")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,25 +136,25 @@ defmodule MarshallWeb.Admin.OperationsLive do
             </table>
           </div>
         </UI.panel>
-        <UI.panel id="ingress-routes" title="Ingress routes">
+        <UI.panel id="ingress-routes" title={gettext("Ingress routes")}>
           <.status_list
             rows={@snapshot.routes}
             zone={@time_zone}
-            empty="No ingress routes are published."
+            empty={gettext("No ingress routes are published.")}
             fields={[
-              {:vm_id, "Machine"},
-              {:revision, "Revision"},
-              {:certificate_expires_at, "Certificate expires"},
-              {:expires_at, "Route expires"}
+              {:vm_id, gettext("Machine")},
+              {:revision, gettext("Revision")},
+              {:certificate_expires_at, gettext("Certificate expires")},
+              {:expires_at, gettext("Route expires")}
             ]}
           />
         </UI.panel>
-        <UI.panel id="dns-publications" title="DNS publications">
+        <UI.panel id="dns-publications" title={gettext("DNS publications")}>
           <.status_list
             rows={@snapshot.publications}
             zone={@time_zone}
-            empty="No DNS publications are recorded."
-            fields={[{:zone, "Zone"}, {:revision, "Revision"}]}
+            empty={gettext("No DNS publications are recorded.")}
+            fields={[{:zone, gettext("Zone")}, {:revision, gettext("Revision")}]}
           />
         </UI.panel>
       </section>
@@ -205,7 +205,7 @@ defmodule MarshallWeb.Admin.OperationsLive do
   defp enabled(assigns) do
     ~H"""
     <span class="status-label" data-tone={if @value, do: "success", else: "muted"}>
-      {if @value, do: "Enabled", else: "Disabled"}
+      {if @value, do: gettext("Enabled"), else: gettext("Disabled")}
     </span>
     """
   end
@@ -215,13 +215,13 @@ defmodule MarshallWeb.Admin.OperationsLive do
 
   defp tally(rows) do
     enabled = Enum.count(rows, & &1.enabled)
-    "#{length(rows)} · #{enabled} enabled"
+    gettext("%{count} · %{enabled} enabled", count: length(rows), enabled: enabled)
   end
 
-  defp bytes(nil), do: "unknown"
+  defp bytes(nil), do: gettext("unknown")
   defp bytes(value), do: "#{Float.round(value / 1_073_741_824, 1)} GiB"
 
   @spec format(String.t() | integer() | nil) :: String.t()
-  defp format(nil), do: "unknown"
+  defp format(nil), do: gettext("unknown")
   defp format(value), do: to_string(value)
 end

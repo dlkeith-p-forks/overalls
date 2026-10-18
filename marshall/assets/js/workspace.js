@@ -1,3 +1,4 @@
+import {t} from "./localization.js";
 // @ts-check
 /**
  * @cc [owner:ghuntley,label:accessibility] workspace-drawer-focus
@@ -81,12 +82,12 @@ export const MachineConnection = {
       const text = root.querySelector(`#${CSS.escape(id)}`)?.textContent;
       const status = this.el.querySelector("#machine-copy-status");
       if (!text || !status) return;
-      const label = button.getAttribute("data-copy-label") ?? "Command";
+      const label = button.getAttribute("data-copy-label") ?? t("Command");
       try {
         await navigator.clipboard.writeText(text);
-        status.textContent = `${label} copied.`;
+        status.textContent = t("%{label} copied.", {label});
       } catch {
-        status.textContent = "Could not copy. Select the text and copy it manually.";
+        status.textContent = t("Could not copy. Select the text and copy it manually.");
       }
     };
     root.addEventListener("click", click);

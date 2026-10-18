@@ -1,5 +1,13 @@
 defmodule OverallsProtocol.SSHManagement do
   @moduledoc "Closed Porsche-to-Marshall session envelopes, independent of provisioner control versions."
+  @locales ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv)
+
+  # @cc [owner:ghuntley,label:security] ssh-locale-display-only
+  # Locale values MUST come from this finite display-only set; they MUST NOT
+  # grant account authority or create atoms from peer-controlled text.
+  @spec locale?(term()) :: boolean()
+  def locale?(value), do: value in @locales
+
   @spec request(binary(), term()) :: {:ok, map()} | {:error, atom()}
 
   # @cc [owner:ghuntley,label:protocol;security] ssh-management-session-envelope

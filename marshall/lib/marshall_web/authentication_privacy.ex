@@ -60,8 +60,8 @@ defmodule MarshallWeb.AuthenticationPrivacy do
 
   @spec on_mount(:default, map(), map(), Phoenix.LiveView.Socket.t()) ::
           {:cont, Phoenix.LiveView.Socket.t()}
-  def on_mount(:default, _params, _session, socket) do
+  def on_mount(:default, _params, session, socket) do
     Logger.metadata(marshall_authentication: true)
-    {:cont, socket}
+    {:cont, Marshall.Localization.assign_socket(socket, session)}
   end
 end

@@ -1,5 +1,7 @@
 # Architecture decision records
 
+[ADR-0197](0197-localized-human-surfaces.md) accepts offline Localize catalogs, validated language preference and browser negotiation, RTL/bidi rendering and a bounded locale in Porsche human-output sessions. Implementation remains partial.
+
 [ADR-0196](0196-single-account-settings-page.md) merges the Profile, Security
 and SSH keys pages into one `/settings` account page with anchored sections
 behind the security mount, removes `/settings/profile`, `/settings/security`
@@ -911,3 +913,5 @@ and physical storage acceptance. See the
 [host-lock review](../reviews/2026-10-05-host-lock-descendant-custody.md) and
 [transfer review](../reviews/2026-10-05-transfer-stream-adopted-children.md);
 ADR-0015/0037 retain their statuses and accepted rationale.
+
+| [ADR-0197](0197-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |

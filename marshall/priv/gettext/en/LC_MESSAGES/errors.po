@@ -7,7 +7,7 @@
 ## Use `mix gettext.extract --merge` or `mix gettext.merge`
 ## to merge POT files into PO files.
 msgid ""
-msgstr ""
+msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: en\n"
 "Language: en\n"
 
 ## From Ecto.Changeset.cast/4

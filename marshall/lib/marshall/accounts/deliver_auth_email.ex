@@ -2,6 +2,7 @@ defmodule Marshall.Accounts.DeliverAuthEmail do
   @moduledoc "Serialized, bounded delivery of a still-valid token; no provider diagnostics escape."
   use Ash.Resource.Change
   use MarshallWeb, :verified_routes
+  use Gettext, backend: MarshallWeb.Gettext
   require Marshall.Events
   import Swoosh.Email
   alias Marshall.Accounts.{AuthEmail, Token, User}
@@ -61,9 +62,9 @@ defmodule Marshall.Accounts.DeliverAuthEmail do
 
       true ->
         case payload(record) do
-          {:ok, email, token} ->
+          {:ok, email, token, locale} ->
             if valid_token?(token) do
-              case send_bounded(email, token, record.id) do
+              case send_bounded(email, token, record.id, locale) do
                 :ok -> finish(changeset, :delivered)
                 :error -> failed(changeset)
               end
@@ -79,7 +80,9 @@ defmodule Marshall.Accounts.DeliverAuthEmail do
 
   defp payload(record) do
     case Ash.load!(record, :payload, actor: SystemActor.compute()).payload do
-      %{"email" => email, "token" => token} -> {:ok, email, token}
+      %{"email" => email, "token" => token} = payload when is_binary(email) and is_binary(token) ->
+        locale = Marshall.Localization.normalize(payload["locale"]) || "en"
+        {:ok, email, token, locale}
       _ -> :error
     end
   rescue
@@ -110,11 +113,12 @@ defmodule Marshall.Accounts.DeliverAuthEmail do
   # Message-ID MUST derive only from the immutable delivery ID and a fixed
   # application namespace. Changing sender configuration MUST NOT change the
   # identity of a retry; the current sender still supplies the From header.
-  @spec send_bounded(String.t(), String.t(), String.t()) :: :ok | :error
-  defp send_bounded(email, token, delivery_id) do
+  @spec send_bounded(String.t(), String.t(), String.t(), String.t()) :: :ok | :error
+  defp send_bounded(email, token, delivery_id, locale) do
     task =
       Task.async(fn ->
         try do
+          Marshall.Localization.put_locale(locale)
           # gen_smtp's receive timeout is much longer than its connect timeout.
           # This process owns the connection; the total deadline closes it too.
           Logger.metadata(marshall_mail: true)
@@ -125,13 +129,19 @@ defmodule Marshall.Accounts.DeliverAuthEmail do
             new()
             |> from(Application.fetch_env!(:marshall, :mail_from))
             |> to(email)
-            |> subject("Your Overalls sign-in link")
+            |> subject(gettext("Your Overalls sign-in link"))
             |> header("Message-ID", "<#{delivery_id}@#{@message_id_domain}>")
             |> text_body(
-              "Sign in to Overalls: #{link}\n\nIf you did not request this, ignore this email."
+              gettext("Sign in to Overalls: %{link}\n\nIf you did not request this, ignore this email.", link: link)
             )
             |> html_body(
-              "<p>Sign in to Overalls:</p><p><a href=\"#{escaped}\">Sign in</a></p><p>If you did not request this, ignore this email.</p>"
+              "<div lang=\"#{locale}\" dir=\"#{Marshall.Localization.direction(locale)}\"><p>" <>
+                Phoenix.HTML.safe_to_string(Phoenix.HTML.html_escape(gettext("Sign in to Overalls:"))) <>
+                "</p><p><a href=\"#{escaped}\">" <>
+                Phoenix.HTML.safe_to_string(Phoenix.HTML.html_escape(gettext("Sign in"))) <>
+                "</a></p><p>" <>
+                Phoenix.HTML.safe_to_string(Phoenix.HTML.html_escape(gettext("If you did not request this, ignore this email."))) <>
+                "</p></div>"
             )
 
           case Marshall.Mailer.deliver(message) do

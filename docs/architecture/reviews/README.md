@@ -638,3 +638,4 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [Antithesis five-attempt bootstrap admission (2026-10-16)](2026-10-16-antithesis-five-attempt-admission.md): verification campaign ledger admits five concurrent hosted attempts and refuses a sixth; no production architecture boundary changes.
 - [Antithesis guest-lifecycle profile (2026-10-17)](2026-10-17-antithesis-guest-lifecycle-profile.md): launchable QEMU TCG guest-lifecycle selection with a labelled stub-storage container Lilly; harness-only, no ADR change and no recorded run.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)
+- [Localized human surfaces (2026-10-18)](2026-10-18-localization.md): ADR-0197 records offline Localize catalogs, validated user/browser locale precedence, RTL/bidi behavior and bounded Marshall-to-Porsche locale transport; implementation and execution evidence remain partial.

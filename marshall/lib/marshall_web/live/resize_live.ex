@@ -9,7 +9,7 @@ defmodule MarshallWeb.ResizeLive do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket), do: Process.send_after(self(), :refresh, 1000)
-    {:ok, assign(socket, vm: nil, form: nil, page_title: "Resize machine")}
+    {:ok, assign(socket, vm: nil, form: nil, page_title: gettext("Resize machine"))}
   end
 
   # @cc [owner:ghuntley,label:product;security] resize-draft-is-not-authority
@@ -122,7 +122,7 @@ defmodule MarshallWeb.ResizeLive do
            ) do
       {:noreply,
        socket
-       |> put_flash(:info, "Resize requested.")
+       |> put_flash(:info, gettext("Resize requested."))
        |> push_patch(to: ~p"/machines/#{socket.assigns.vm_id}/resize", replace: true)}
     else
       _ ->
@@ -130,7 +130,7 @@ defmodule MarshallWeb.ResizeLive do
          socket
          |> put_flash(
            :error,
-           "Resize could not be accepted. Check the sizes and current machine state."
+           gettext("Resize could not be accepted. Check the sizes and current machine state.")
          )
          |> refresh()}
     end
@@ -145,14 +145,14 @@ defmodule MarshallWeb.ResizeLive do
                actor: socket.assigns.current_user
              ) do
           {:ok, _} ->
-            {:noreply, socket |> put_flash(:info, "Resize cancelled.") |> refresh()}
+            {:noreply, socket |> put_flash(:info, gettext("Resize cancelled.")) |> refresh()}
 
           _ ->
             {:noreply,
              put_flash(
                socket,
                :error,
-               "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
+               gettext("Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed.")
              )}
         end
 
@@ -178,7 +178,7 @@ defmodule MarshallWeb.ResizeLive do
              put_flash(
                socket,
                :error,
-               "Retry could not be accepted. Capacity or machine state may have changed."
+               gettext("Retry could not be accepted. Capacity or machine state may have changed.")
              )}
         end
 
@@ -259,33 +259,33 @@ defmodule MarshallWeb.ResizeLive do
           power_key={@machine_power_key}
           active="settings"
         />
-        <p><.link navigate={~p"/machines/#{@vm_id}/settings"}>← Settings</.link></p>
+        <p><.link navigate={~p"/machines/#{@vm_id}/settings"}>{gettext("← Settings")}</.link></p>
         <div :if={@vm == nil} id="resize-unavailable" class="panel">
           <%= if @admin_access_expired do %>
             <p>
-              Administrative verification expired. Your resize draft is kept in this page's address.
+              {gettext("Administrative verification expired. Your resize draft is kept in this page's address.")}
             </p>
             <p>
               <.link id="admin-access-recovery" navigate={~p"/admin/workloads"}>
-                Return to Fleet workloads and verify your passkey to reopen the machine →
+                {gettext("Return to Fleet workloads and verify your passkey to reopen the machine →")}
               </.link>
             </p>
           <% else %>
-            This machine is unavailable or you no longer have management access.
+            {gettext("This machine is unavailable or you no longer have management access.")}
           <% end %>
         </div>
         <div :if={@vm} class="stack">
           <UI.heading
-            title="Resize machine"
-            subtitle="CPU and memory can increase or decrease. Disk size can only grow."
+            title={gettext("Resize machine")}
+            subtitle={gettext("CPU and memory can increase or decrease. Disk size can only grow.")}
           />
-          <UI.panel id="confirmed-resources" title="Confirmed resources">
+          <UI.panel id="confirmed-resources" title={gettext("Confirmed resources")}>
             <.kv>
-              <:item title="CPU">{@vm.vcpu} CPU</:item>
-              <:item title="Memory">{div(@vm.memory_bytes, 1_048_576)} MiB</:item>
-              <:item title="Disk">{disk_gib(@vm.disk_bytes)} GiB</:item>
-              <:item title="Power">
-                {if @vm.desired_state == :running, do: "Running", else: "Stopped"}
+              <:item title={gettext("CPU")}>{gettext("%{value1} CPU", value1: @vm.vcpu)}</:item>
+              <:item title={gettext("Memory")}>{gettext("%{value1} MiB", value1: div(@vm.memory_bytes, 1_048_576))}</:item>
+              <:item title={gettext("Disk")}>{gettext("%{value1} GiB", value1: disk_gib(@vm.disk_bytes))}</:item>
+              <:item title={gettext("Power")}>
+                {if @vm.desired_state == :running, do: gettext("Running"), else: gettext("Stopped")}
               </:item>
             </.kv>
           </UI.panel>
@@ -297,14 +297,14 @@ defmodule MarshallWeb.ResizeLive do
             aria-labelledby="resize-progress-heading"
           >
             <header>
-              <h2 id="resize-progress-heading">Resize in progress</h2>
+              <h2 id="resize-progress-heading">{gettext("Resize in progress")}</h2>
               <span class="status-label" data-tone={if @vm.resize.failure, do: "warning", else: nil}>
-                {if @vm.resize.failure, do: "Needs attention", else: phase_label(@vm.resize.phase)}
+                {if @vm.resize.failure, do: gettext("Needs attention"), else: phase_label(@vm.resize.phase)}
               </span>
             </header>
             <div class="panel-body">
               <p>{phase_detail(@vm.resize)}</p>
-              <ol class="steps" aria-label="Resize stages">
+              <ol class="steps" aria-label={gettext("Resize stages")}>
                 <li
                   :for={{label, state} <- resize_steps(@vm.resize)}
                   data-state={state}
@@ -315,28 +315,28 @@ defmodule MarshallWeb.ResizeLive do
                 </li>
               </ol>
               <.kv id="pending-resources">
-                <:item title="CPU">
-                  {@vm.resize.original_sizes["vcpu"]} → {@vm.resize.target_sizes["vcpu"]} CPU
+                <:item title={gettext("CPU")}>
+                  {gettext("%{value1} → %{value2} CPU", value1: @vm.resize.original_sizes["vcpu"], value2: @vm.resize.target_sizes["vcpu"])}
                 </:item>
-                <:item title="Memory">
-                  {div(@vm.resize.original_sizes["memory_bytes"], 1_048_576)} → {div(
+                <:item title={gettext("Memory")}>
+                  {gettext("%{value1} → %{value2} MiB", value1: div(@vm.resize.original_sizes["memory_bytes"], 1_048_576), value2: div(
                     @vm.resize.target_sizes["memory_bytes"],
                     1_048_576
-                  )} MiB
+                  ))}
                 </:item>
-                <:item title="Disk">
-                  {disk_gib(@vm.resize.original_sizes["disk_bytes"])} → {disk_gib(
+                <:item title={gettext("Disk")}>
+                  {gettext("%{value1} → %{value2} GiB", value1: disk_gib(@vm.resize.original_sizes["disk_bytes"]), value2: disk_gib(
                     @vm.resize.target_sizes["disk_bytes"]
-                  )} GiB
+                  ))}
                 </:item>
-                <:item title="Power afterwards">
+                <:item title={gettext("Power afterwards")}>
                   {if @vm.resize.original_power_state == :running,
-                    do: "Restarted",
-                    else: "Remains stopped; the filesystem grows on the next boot"}
+                    do: gettext("Restarted"),
+                    else: gettext("Remains stopped; the filesystem grows on the next boot")}
                 </:item>
               </.kv>
               <p :if={@vm.resize.failure} id="resize-failure" class="error">
-                Resize needs attention. Confirmed disk growth is retained. Retry resumes the recorded phase.
+                {gettext("Resize needs attention. Confirmed disk growth is retained. Retry resumes the recorded phase.")}
               </p>
               <div :if={@vm.resize.failure || cancellable?(@vm.resize)} class="row actions">
                 <button
@@ -345,7 +345,7 @@ defmodule MarshallWeb.ResizeLive do
                   phx-click="retry"
                   class="console-button primary"
                 >
-                  Retry resize
+                  {gettext("Retry resize")}
                 </button>
                 <button
                   :if={cancellable?(@vm.resize)}
@@ -353,7 +353,7 @@ defmodule MarshallWeb.ResizeLive do
                   phx-click="cancel"
                   class="console-button"
                 >
-                  Cancel resize
+                  {gettext("Cancel resize")}
                 </button>
               </div>
             </div>
@@ -366,30 +366,30 @@ defmodule MarshallWeb.ResizeLive do
             phx-submit="resize"
             class="panel stack"
           >
-            <h2>New sizes</h2>
+            <h2>{gettext("New sizes")}</h2>
             <div
               :if={@form.params["expected_generation"] != to_string(@vm.generation)}
               id="resize-stale-draft"
               class="panel dashed"
             >
               <p>
-                The machine has changed since this draft was created. Review the confirmed resources above.
+                {gettext("The machine has changed since this draft was created. Review the confirmed resources above.")}
               </p>
               <button
                 id="refresh-resize-request"
                 type="button"
                 phx-click="refresh_request"
                 class="console-button compact"
-              >Use current machine state, keeping these sizes</button>
+              >{gettext("Use current machine state, keeping these sizes")}</button>
             </div>
             <.input field={@form[:request_key]} type="hidden" />
             <.input field={@form[:expected_generation]} type="hidden" />
             <div class="grid">
-              <.input field={@form[:vcpu]} type="number" label="CPU" min="1" max="32" required />
+              <.input field={@form[:vcpu]} type="number" label={gettext("CPU")} min="1" max="32" required />
               <.input
                 field={@form[:memory_mib]}
                 type="number"
-                label="Memory (MiB)"
+                label={gettext("Memory (MiB)")}
                 min="512"
                 max="262144"
                 step="1"
@@ -398,7 +398,7 @@ defmodule MarshallWeb.ResizeLive do
               <.input
                 field={@form[:disk_gib]}
                 type="number"
-                label="Disk (GiB) — Maximum 500 GiB"
+                label={gettext("Disk (GiB) — Maximum 500 GiB")}
                 min={disk_gib(@vm.disk_bytes)}
                 max={OverallsProtocol.VMShape.maximum_disk_gib()}
                 step="any"
@@ -406,13 +406,13 @@ defmodule MarshallWeb.ResizeLive do
               />
             </div>
             <.kv id="resize-preview">
-              <:item title="CPU">{@vm.vcpu} → {@form.params["vcpu"]} CPU</:item>
-              <:item title="Memory">
-                {div(@vm.memory_bytes, 1_048_576)} → {@form.params["memory_mib"]} MiB
+              <:item title={gettext("CPU")}>{gettext("%{value1} → %{value2} CPU", value1: @vm.vcpu, value2: @form.params["vcpu"])}</:item>
+              <:item title={gettext("Memory")}>
+                {gettext("%{value1} → %{value2} MiB", value1: div(@vm.memory_bytes, 1_048_576), value2: @form.params["memory_mib"])}
               </:item>
-              <:item title="Disk">{disk_gib(@vm.disk_bytes)} → {@form.params["disk_gib"]} GiB</:item>
+              <:item title={gettext("Disk")}>{gettext("%{value1} → %{value2} GiB", value1: disk_gib(@vm.disk_bytes), value2: @form.params["disk_gib"])}</:item>
             </.kv>
-            <ol class="steps" aria-label="What happens">
+            <ol class="steps" aria-label={gettext("What happens")}>
               <li :for={label <- planned_steps(@vm)} data-state="pending">
                 <span class="step-marker" aria-hidden="true"></span>
                 <span>{label}</span>
@@ -420,17 +420,17 @@ defmodule MarshallWeb.ResizeLive do
             </ol>
             <p class="muted">
               {if @vm.desired_state == :running,
-                do: "Your machine will stop while resources change, then restart. Expect downtime.",
+                do: gettext("Your machine will stop while resources change, then restart. Expect downtime."),
                 else:
-                  "Your machine will remain stopped. Disk filesystem growth completes on its next boot."}
+                  gettext("Your machine will remain stopped. Disk filesystem growth completes on its next boot.")}
             </p>
             <button
               id="submit-resize"
               type="submit"
-              phx-disable-with="Requesting resize…"
+              phx-disable-with={gettext("Requesting resize…")}
               class="console-button primary"
             >
-              {if @vm.desired_state == :running, do: "Resize and restart", else: "Resize machine"}
+              {if @vm.desired_state == :running, do: gettext("Resize and restart"), else: gettext("Resize machine")}
             </button>
           </.form>
         </div>
@@ -448,56 +448,56 @@ defmodule MarshallWeb.ResizeLive do
   defp cancellable?(_), do: false
 
   @spec phase_label(atom()) :: String.t()
-  defp phase_label(:stopping), do: "Stopping"
-  defp phase_label(:resizing), do: "Resizing"
-  defp phase_label(:restarting), do: "Restarting"
-  defp phase_label(:fencing), do: "Restarting"
-  defp phase_label(:complete), do: "Complete"
-  defp phase_label(:cancelling), do: "Cancelling"
-  defp phase_label(:cancelled), do: "Cancelled"
-  defp phase_label(other), do: other |> to_string() |> String.capitalize()
+  defp phase_label(:stopping), do: gettext("Stopping")
+  defp phase_label(:resizing), do: gettext("Resizing")
+  defp phase_label(:restarting), do: gettext("Restarting")
+  defp phase_label(:fencing), do: gettext("Restarting")
+  defp phase_label(:complete), do: gettext("Complete")
+  defp phase_label(:cancelling), do: gettext("Cancelling")
+  defp phase_label(:cancelled), do: gettext("Cancelled")
+  defp phase_label(_), do: gettext("Pending")
 
   @spec phase_detail(map()) :: String.t()
   defp phase_detail(%{failure: failure}) when is_binary(failure),
     do:
-      "The last step did not finish. Retry resumes from the recorded phase without repeating completed work."
+      gettext("The last step did not finish. Retry resumes from the recorded phase without repeating completed work.")
 
   defp phase_detail(%{phase: :stopping}),
-    do: "Stopping the machine so its resources can change safely."
+    do: gettext("Stopping the machine so its resources can change safely.")
 
   defp phase_detail(%{phase: :cancelling, original_power_state: :running}),
-    do: "Cancelling: waiting for the stop to confirm, then restarting with the current sizes."
+    do: gettext("Cancelling: waiting for the stop to confirm, then restarting with the current sizes.")
 
   defp phase_detail(%{phase: :cancelling}),
-    do: "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
+    do: gettext("Cancelling: waiting for the stop to confirm; the sizes stay unchanged.")
 
   defp phase_detail(%{phase: :resizing}),
-    do: "Applying the new CPU, memory and disk sizes on the host."
+    do: gettext("Applying the new CPU, memory and disk sizes on the host.")
 
   defp phase_detail(%{phase: phase}) when phase in [:restarting, :fencing],
-    do: "Starting the machine with its new resources."
+    do: gettext("Starting the machine with its new resources.")
 
   defp phase_detail(_),
-    do: "The resize has completed; this page refreshes with the confirmed sizes."
+    do: gettext("The resize has completed; this page refreshes with the confirmed sizes.")
 
   # Stage ladder from the persisted phase; failure never fabricates completed stages.
   @spec resize_steps(map()) :: [{String.t(), :done | :current | :pending}]
   defp resize_steps(%{phase: :cancelling, original_power_state: power}) do
-    restart = if power == :running, do: "Restart unchanged", else: "Leave stopped"
-    [{"Stop", :current}, {restart, :pending}, {"Cancelled", :pending}]
+    restart = if power == :running, do: gettext("Restart unchanged"), else: gettext("Leave stopped")
+    [{gettext("Stop"), :current}, {restart, :pending}, {gettext("Cancelled"), :pending}]
   end
 
   defp resize_steps(%{phase: :restarting, cancelled_at: at, original_power_state: power})
        when not is_nil(at) do
-    restart = if power == :running, do: "Restart unchanged", else: "Leave stopped"
-    [{"Stop", :done}, {restart, :current}, {"Cancelled", :pending}]
+    restart = if power == :running, do: gettext("Restart unchanged"), else: gettext("Leave stopped")
+    [{gettext("Stop"), :done}, {restart, :current}, {gettext("Cancelled"), :pending}]
   end
 
   defp resize_steps(%{phase: phase, original_power_state: power}) do
     current =
       Enum.find_index(@phases, &(&1 == if(phase == :fencing, do: :restarting, else: phase))) || 0
 
-    restart = if power == :running, do: "Restart", else: "Leave stopped"
+    restart = if power == :running, do: gettext("Restart"), else: gettext("Leave stopped")
 
     ["Stop", "Resize", restart, "Confirm"]
     |> Enum.with_index()
@@ -513,8 +513,8 @@ defmodule MarshallWeb.ResizeLive do
 
   @spec planned_steps(map()) :: [String.t()]
   defp planned_steps(%{desired_state: :running}),
-    do: ["Stop the machine", "Apply the new sizes", "Restart with the new resources", "Confirm"]
+    do: [gettext("Stop the machine"), gettext("Apply the new sizes"), gettext("Restart with the new resources"), "Confirm"]
 
   defp planned_steps(_),
-    do: ["Apply the new sizes while stopped", "Grow the filesystem on next boot", "Confirm"]
+    do: [gettext("Apply the new sizes while stopped"), gettext("Grow the filesystem on next boot"), "Confirm"]
 end

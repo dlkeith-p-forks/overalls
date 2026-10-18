@@ -145,6 +145,7 @@ defmodule Porsche.SSH.ProofTest do
     assert_receive {:connection_actor, actor, [{:ok, pending}, {:ok, approved}, {:ok, cached}]}
     assert pending["status"] == "pending"
     assert approved["status"] == "authenticated"
+    assert Porsche.Locale.from_session(approved) == "ja"
     refute Map.has_key?(approved, "approval_path")
     assert cached == approved
     assert_receive {:backend, "session", %{"session_token" => token}}
@@ -242,7 +243,7 @@ defmodule Porsche.SSH.ProofTest do
           {:ok,
            Map.merge(base, %{
              "status" => "authenticated",
-             "user" => %{"id" => id, "email" => "owner@example.test"}
+             "user" => %{"id" => id, "email" => "owner@example.test", "locale" => "ja"}
            })}
         end
 

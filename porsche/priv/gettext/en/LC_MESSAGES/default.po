@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Porsche machine management. Type help."
+msgstr "Porsche machine management. Type help."
+
+msgid "Docs:"
+msgstr "Docs:"
+
+msgid "Show command help."
+msgstr "Show command help."
+
+msgid "Show the authenticated account."
+msgstr "Show the authenticated account."
+
+msgid "List available images."
+msgstr "List available images."
+
+msgid "List machines you can access."
+msgstr "List machines you can access."
+
+msgid "Inspect a machine by name or UUID."
+msgstr "Inspect a machine by name or UUID."
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Queue an independent full-disk copy of a machine."
+
+msgid "Move a machine to an automatically selected host."
+msgstr "Move a machine to an automatically selected host."
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+
+msgid "Retry a failed clone or relocation request."
+msgstr "Retry a failed clone or relocation request."
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Cancel an unpublished clone or uncommitted relocation request."
+
+msgid "Start a machine."
+msgstr "Start a machine."
+
+msgid "Stop a machine, retaining its disk."
+msgstr "Stop a machine, retaining its disk."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Delete a machine and its disk. Refused while its owner has it pinned."
+
+msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
+msgstr "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
+
+msgid "Remove your pin from a machine."
+msgstr "Remove your pin from a machine."
+
+msgid "List access grants."
+msgstr "List access grants."
+
+msgid "Grant viewer, operator or manager access."
+msgstr "Grant viewer, operator or manager access."
+
+msgid "Revoke an account's shared access."
+msgstr "Revoke an account's shared access."
+
+msgid "List your SSH keys."
+msgstr "List your SSH keys."
+
+msgid "Revoke one of your SSH keys."
+msgstr "Revoke one of your SSH keys."
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "Create or replace a named integration at https://NAME.integration.internal."
+
+msgid "Remove a named integration."
+msgstr "Remove a named integration."
+
+msgid "List your integrations."
+msgstr "List your integrations."
+
+msgid "Inspect an integration without secrets."
+msgstr "Inspect an integration without secrets."
+
+msgid "Make an integration available to a machine."
+msgstr "Make an integration available to a machine."
+
+msgid "Remove a machine's explicit availability."
+msgstr "Remove a machine's explicit availability."
+
+msgid "Create a team you own."
+msgstr "Create a team you own."
+
+msgid "List your teams and roles."
+msgstr "List your teams and roles."
+
+msgid "List a team's members."
+msgstr "List a team's members."
+
+msgid "Add or change an admin or member."
+msgstr "Add or change an admin or member."
+
+msgid "Remove an account's membership."
+msgstr "Remove an account's membership."
+
+msgid "Offer team ownership to an admin."
+msgstr "Offer team ownership to an admin."
+
+msgid "Accept a pending ownership offer."
+msgstr "Accept a pending ownership offer."
+
+msgid "Decline a pending ownership offer."
+msgstr "Decline a pending ownership offer."
+
+msgid "Cancel your pending ownership offer."
+msgstr "Cancel your pending ownership offer."
+
+msgid "Inspect a previously accepted request."
+msgstr "Inspect a previously accepted request."
+
+msgid "Close this interactive channel."
+msgstr "Close this interactive channel."
+
+msgid "We don't recognize this SSH key:\n  "
+msgstr "We don't recognize this SSH key:\n  "
+
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
+msgstr "\n\nKeep this SSH connection open while approving the key.\n"
+
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+
+msgid "After approval, retry your command here.\n"
+msgstr "After approval, retry your command here.\n"
+
+msgid "\nOpen an interactive Porsche connection without a remote command:"
+msgstr "\nOpen an interactive Porsche connection without a remote command:"
+
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "Keep that connection open while approving your key in the browser,\n"
+
+msgid "then retry your original command.\n"
+msgstr "then retry your original command.\n"
+
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "Register or check your key by connecting to:\n  ssh "
+
+msgid "\nOr manage your keys at:\n  "
+msgstr "\nOr manage your keys at:\n  "
+
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "Follow the browser approval instructions, then run the setup command\n"
+
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "from your machine's page and reconnect without root@.\n"
+
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "This connection is not authorized. Please sign in and try again."
+
+msgid "You do not have permission to perform this action."
+msgstr "You do not have permission to perform this action."
+
+msgid "Invalid command. Type help to see available commands."
+msgstr "Invalid command. Type help to see available commands."
+
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "The service is temporarily unavailable. Please try again shortly."
+
+msgid "Approve this SSH key in your browser, then retry the command."
+msgstr "Approve this SSH key in your browser, then retry the command."
+
+msgid "The requested resource could not be found."
+msgstr "The requested resource could not be found."
+
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "Unexpected input. Please open a new SSH connection."
+
+msgid "The command could not be completed: %{reason}"
+msgstr "The command could not be completed: %{reason}"
+
+msgid "Request %{id}: submitting"
+msgstr "Request %{id}: submitting"
+
+msgid "Request %{id}: waiting for completion"
+msgstr "Request %{id}: waiting for completion"

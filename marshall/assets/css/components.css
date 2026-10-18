@@ -43,8 +43,8 @@ a.console-button {
   font-weight: var(--font-weight-bold);
   border-style: double;
   border-width: calc(var(--border-thickness) * 3);
-  padding-left: calc(1ch - var(--border-thickness) * 3);
-  padding-right: calc(1ch - var(--border-thickness) * 3);
+  padding-inline-start: calc(1ch - var(--border-thickness) * 3);
+  padding-inline-end: calc(1ch - var(--border-thickness) * 3);
 }
 .console-button:disabled, .console-button[aria-disabled="true"] {
   cursor: not-allowed;
@@ -322,7 +322,7 @@ table .console-button, a.console-button.compact {
   text-decoration-thickness: var(--border-thickness);
 }
 td > .console-button + .console-button {
-  margin-left: 1ch;
+  margin-inline-start: 1ch;
 }
 td pre, th pre {
   margin: 0;

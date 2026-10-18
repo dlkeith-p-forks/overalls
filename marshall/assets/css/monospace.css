@@ -98,7 +98,7 @@ hr:after {
   content: "";
   position: absolute;
   top: calc(var(--line-height) / 2 - var(--border-thickness));
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   border-top: calc(var(--border-thickness) * 3) double var(--text-color);
   height: 0;
@@ -153,7 +153,7 @@ th, td {
   ;
   line-height: var(--line-height);
   vertical-align: top;
-  text-align: left;
+  text-align: start;
 }
 table tbody tr:first-child > * {
   padding-top: calc((var(--line-height) / 2) - var(--border-thickness));
@@ -170,7 +170,7 @@ th {
   width: 100%;
 }
 td.num, th.num {
-  text-align: right;
+  text-align: end;
 }
 
 .header {
@@ -180,7 +180,7 @@ td.num, th.num {
   margin: 0;
 }
 .header tr td:last-child {
-  text-align: right;
+  text-align: end;
 }
 
 img, video {
@@ -320,7 +320,7 @@ textarea {
 }
 
 select {
-  padding-right: 3ch;
+  padding-inline-end: 3ch;
   cursor: pointer;
 }
 .select {
@@ -331,7 +331,7 @@ select {
 .select::after {
   content: "▾";
   position: absolute;
-  right: 1ch;
+  inset-inline-end: 1ch;
   top: 0;
   line-height: calc(var(--line-height) * 2);
   pointer-events: none;
@@ -431,7 +431,7 @@ label input:not([type=checkbox]):not([type=radio]), label select, label textarea
 
 .tree, .tree ul {
   position: relative;
-  padding-left: 0;
+  padding-inline-start: 0;
   list-style-type: none;
   line-height: var(--line-height);
 }
@@ -440,30 +440,30 @@ label input:not([type=checkbox]):not([type=radio]), label select, label textarea
 }
 .tree ul li {
   position: relative;
-  padding-left: 1.5ch;
-  margin-left: 1.5ch;
-  border-left: var(--border-thickness) solid var(--text-color);
+  padding-inline-start: 1.5ch;
+  margin-inline-start: 1.5ch;
+  border-inline-start: var(--border-thickness) solid var(--text-color);
 }
 .tree ul li:before {
   position: absolute;
   display: block;
   top: calc(var(--line-height) / 2);
-  left: 0;
+  inset-inline-start: 0;
   content: "";
   width: 1ch;
   border-bottom: var(--border-thickness) solid var(--text-color);
 }
 .tree ul li:last-child {
-  border-left: none;
+  border-inline-start: none;
 }
 .tree ul li:last-child:after {
   position: absolute;
   display: block;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   content: "";
   height: calc(var(--line-height) / 2);
-  border-left: var(--border-thickness) solid var(--text-color);
+  border-inline-start: var(--border-thickness) solid var(--text-color);
 }
 
 .grid {
@@ -494,8 +494,8 @@ label input:not([type=checkbox]):not([type=radio]), label select, label textarea
   --color: color-mix(in srgb, var(--text-color) 10%, var(--background-color) 90%);
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   z-index: -1;
   background-image:

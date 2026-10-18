@@ -65,8 +65,12 @@ defmodule MarshallWeb.Layouts do
             @active == "admin" && "console-admin"
           ]}
         >
-          <nav :if={@active != "overview"} class="workspace-breadcrumb" aria-label="Breadcrumb">
-            <.link navigate={~p"/overview"}>Home</.link><span aria-hidden="true">/</span>
+          <nav
+            :if={@active != "overview"}
+            class="workspace-breadcrumb"
+            aria-label={gettext("Breadcrumb")}
+          >
+            <.link navigate={~p"/overview"}>{gettext("Home")}</.link><span aria-hidden="true">/</span>
             <span>{section_title(@active, @admin_active)}</span>
           </nav>
           {render_slot(@inner_block)}
@@ -88,28 +92,30 @@ defmodule MarshallWeb.Layouts do
         aria-describedby="admin-elevation-description"
       >
         <div class="row between">
-          <h2 id="admin-elevation-title">Confirm administrative change</h2>
+          <h2 id="admin-elevation-title">{gettext("Confirm administrative change")}</h2>
           <button
             type="button"
             data-admin-elevation-cancel
-            aria-label="Cancel verification"
+            aria-label={gettext("Cancel verification")}
             class="console-button ghost"
           >×</button>
         </div>
         <p id="admin-elevation-description" class="muted">
-          This change needs a fresh passkey verification. Your verification lasts 15 minutes.
+          {gettext(
+            "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
+          )}
         </p>
         <p id="admin-elevation-status" aria-live="polite" role="status"></p>
         <div class="dialog-actions">
           <button id="admin-elevation-verify" type="button" class="console-button primary">
-            Verify with passkey
+            {gettext("Verify with passkey")}
           </button>
           <button
             id="admin-elevation-cancel"
             type="button"
             data-admin-elevation-cancel
             class="console-button ghost"
-          >Cancel</button>
+          >{gettext("Cancel")}</button>
         </div>
       </dialog>
     </div>
@@ -181,22 +187,16 @@ defmodule MarshallWeb.Layouts do
   # Every signed-in account MUST see the Control room mode switch regardless of
   # administrator membership. Public navigation MUST still require sign-in.
 
-  # @cc [owner:ghuntley,label:product] signed-in-reference-navigation
-  # Field notes, HLDD and Source code MUST form their own "Reference" tree
-  # (#nav-reference) after "Your account", in that order, not inside it.
-  # In the Control room only the administration tree is shown: neither the
-  # "Your account" nor the "Reference" tree renders there.
-
   # @cc [owner:ghuntley,label:product] signed-in-hldd-reference-navigation
-  # The workspace sidebar MUST place HLDD immediately below Field notes,
+  # The shared signed-in menu MUST place HLDD immediately below Field notes,
   # using the same link styling and a Reference hint.
 
   # @cc [owner:ghuntley,label:product] signed-in-source-code-navigation
-  # The workspace sidebar MUST place Source code immediately below HLDD,
+  # The shared signed-in menu MUST place Source code immediately below HLDD,
   # linking to https://github.com/ghuntley/overalls with ordinary navigation.
 
   # @cc [owner:ghuntley,label:product] browser-extension-guide-navigation
-  # The public header and the workspace sidebar MUST expose a browser extension
+  # The public header and shared signed-in menu MUST expose a browser extension
   # link to /docs/browser-extension with ordinary navigation. The setup links
   # remain presentation hints and cannot grant access or change authorization.
   @spec console_header(map()) :: Phoenix.LiveView.Rendered.t()
@@ -204,36 +204,36 @@ defmodule MarshallWeb.Layouts do
     assigns = assign(assigns, :groups, navigation(assigns.active))
 
     ~H"""
-    <a href="#main-content" class="skip-link">Skip to content</a>
+    <a href="#main-content" class="skip-link">{gettext("Skip to content")}</a>
     <header :if={!@current_scope} class="public-header">
       <table class="header">
         <tr>
           <td colspan="2" rowspan="2" class="width-auto">
             <p class="title"><.link href={~p"/"} class="console-brand">Overalls</.link></p>
           </td>
-          <th>Docs</th>
-          <td class="width-min"><.link href={~p"/docs"}>Field notes</.link></td>
+          <th>{gettext("Docs")}</th>
+          <td class="width-min"><.link href={~p"/docs"}>{gettext("Field notes")}</.link></td>
         </tr>
         <tr>
-          <th>Source</th>
+          <th>{gettext("Source")}</th>
           <td class="width-min">
             <a href="https://github.com/ghuntley/overalls">GitHub <span aria-hidden="true">↗</span></a>
           </td>
         </tr>
         <tr data-overalls-extension-setup="true">
-          <th>Browser</th>
+          <th>{gettext("Browser")}</th>
           <td class="width-min">
             <.link id="public-marvin-extension" href={~p"/docs/browser-extension"}>
-              Browser extension <span aria-hidden="true">↗</span>
+              {gettext("Browser extension")} <span aria-hidden="true">↗</span>
             </.link>
           </td>
         </tr>
         <tr>
-          <th class="width-min">Account</th>
+          <th class="width-min">{gettext("Account")}</th>
           <td class="width-auto">
-            <.link href={~p"/sign-in"} class="console-button primary">Sign in</.link>
+            <.link href={~p"/sign-in"} class="console-button primary">{gettext("Sign in")}</.link>
           </td>
-          <th class="width-min">Appearance</th>
+          <th class="width-min">{gettext("Appearance")}</th>
           <td class="width-min"><.theme_toggle /></td>
         </tr>
       </table>
@@ -247,32 +247,40 @@ defmodule MarshallWeb.Layouts do
           type="button"
           aria-controls="workspace-sidebar"
           aria-expanded="false"
-        ><.glyph name="menu" /> Menu</button>
+        ><.glyph name="menu" /> {gettext("Menu")}</button>
       </header>
       <button
         id="navigation-backdrop"
         class="navigation-backdrop"
-        aria-label="Close navigation"
+        aria-label={gettext("Close navigation")}
         hidden
       ></button>
-      <aside id="workspace-sidebar" class="workspace-sidebar" aria-label="Workspace navigation">
+      <aside
+        id="workspace-sidebar"
+        class="workspace-sidebar"
+        aria-label={gettext("Workspace navigation")}
+      >
         <div class="sidebar-brand">
           <.link navigate={~p"/overview"} class="console-brand">Overalls<span class="brand-dot">.</span></.link>
           <button
             id="navigation-close"
             type="button"
             class="mobile-only console-button ghost"
-            aria-label="Close navigation"
+            aria-label={gettext("Close navigation")}
           >×</button>
         </div>
-        <p class="brand-caption">Made to get dirty</p>
-        <nav class="workspace-switch" aria-label="Workspace mode">
-          <.link navigate={~p"/overview"} aria-current={@active != "admin" && "true"}>Workspace</.link>
-          <.link navigate={~p"/admin/nodes"} aria-current={@active == "admin" && "true"}>Control room</.link>
+        <p class="brand-caption">{gettext("Made to get dirty")}</p>
+        <nav class="workspace-switch" aria-label={gettext("Workspace mode")}>
+          <.link navigate={~p"/overview"} aria-current={@active != "admin" && "true"}>{gettext(
+            "Workspace"
+          )}</.link>
+          <.link navigate={~p"/admin/nodes"} aria-current={@active == "admin" && "true"}>{gettext(
+            "Control room"
+          )}</.link>
         </nav>
         <nav
           class="sidebar-links"
-          aria-label={if @active == "admin", do: "Administration", else: "Main"}
+          aria-label={if @active == "admin", do: gettext("Administration"), else: gettext("Main")}
         >
           <section :for={{title, links} <- @groups}>
             <ul class="tree">
@@ -293,10 +301,10 @@ defmodule MarshallWeb.Layouts do
               </li>
             </ul>
           </section>
-          <section :if={@active != "admin"} id="nav-account-section">
+          <section>
             <ul class="tree">
               <li>
-                <h2>Your account</h2>
+                <h2>{gettext("Your account")}</h2>
                 <ul>
                   <li>
                     <.link
@@ -304,7 +312,7 @@ defmodule MarshallWeb.Layouts do
                       navigate={~p"/settings"}
                       aria-current={@active == "account" && "page"}
                     >
-                      Account
+                      {gettext("Account")}
                     </.link>
                   </li>
                   <li>
@@ -313,25 +321,17 @@ defmodule MarshallWeb.Layouts do
                       navigate={~p"/usage"}
                       aria-current={@active == "usage" && "page"}
                     >
-                      AI usage
+                      {gettext("AI usage")}
                     </.link>
                   </li>
                   <li data-overalls-extension-setup="true">
                     <.link id="nav-marvin-extension" href={~p"/docs/browser-extension"}>
-                      Browser extension
+                      {gettext("Browser extension")}
                     </.link>
                   </li>
-                </ul>
-              </li>
-            </ul>
-          </section>
-          <section :if={@active != "admin"} id="nav-reference">
-            <ul class="tree">
-              <li>
-                <h2>Reference</h2>
-                <ul>
                   <li>
-                    <.link href={~p"/docs"}>Field notes <span class="nav-hint">Docs ↗</span></.link>
+                    <.link href={~p"/docs"}>{gettext("Field notes")}
+                    <span class="nav-hint">{gettext("Docs ↗")}</span></.link>
                   </li>
                   <li>
                     <.link
@@ -339,12 +339,9 @@ defmodule MarshallWeb.Layouts do
                       navigate={~p"/hldd"}
                       aria-current={@active == "hldd" && "page"}
                     >
-                      HLDD <span class="nav-hint">Reference</span>
-                    </.link>
-                  </li>
-                  <li>
-                    <.link id="nav-source-code" href="https://github.com/ghuntley/overalls">
-                      Source code <span class="nav-hint">GitHub ↗</span>
+                      {gettext("HLDD")} <span class="nav-hint">{gettext("Reference")}</span>
+                    </.link><.link id="nav-source-code" href="https://github.com/ghuntley/overalls">
+                      {gettext("Source code")} <span class="nav-hint">{gettext("GitHub ↗")}</span>
                     </.link>
                   </li>
                 </ul>
@@ -353,15 +350,17 @@ defmodule MarshallWeb.Layouts do
           </section>
         </nav>
         <div class="sidebar-bottom">
-          <div class="sidebar-appearance"><span>Make yourself comfy</span><.theme_toggle /></div>
+          <div class="sidebar-appearance">
+            <span>{gettext("Make yourself comfy")}</span><.theme_toggle />
+          </div>
           <details class="account-menu">
             <summary>{@current_scope.user.email}</summary>
             <p>{@current_scope.user.email}</p>
             <p :if={@time_zone && @now} class="account-clock">
               <.local_clock id="account-local-clock" zone={@time_zone} now={@now} />
-              <.link navigate={~p"/settings#profile"} class="nav-hint">Time zone</.link>
+              <.link navigate={~p"/settings#profile"} class="nav-hint">{gettext("Time zone")}</.link>
             </p>
-            <.link href={~p"/sign-out"}>Sign out</.link>
+            <.link href={~p"/sign-out"}>{gettext("Sign out")}</.link>
           </details>
         </div>
       </aside>
@@ -372,46 +371,66 @@ defmodule MarshallWeb.Layouts do
   @spec navigation(String.t() | nil) :: [{String.t(), [{String.t(), String.t(), String.t()}]}]
   defp navigation("admin") do
     [
-      {"Accounting", [{"usage", "Fleet AI usage", "/admin/usage"}]},
-      {"Operations",
+      {gettext("Accounting"), [{"usage", gettext("Fleet AI usage"), "/admin/usage"}]},
+      {gettext("Operations"),
        [
-         {"nodes", "Node maintenance", "/admin/nodes"},
-         {"workloads", "Workloads", "/admin/workloads"},
-         {"jobs", "Jobs", "/admin/jobs"},
-         {"operations", "Platform status", "/admin/operations"}
+         {"nodes", gettext("Node maintenance"), "/admin/nodes"},
+         {"workloads", gettext("Workloads"), "/admin/workloads"},
+         {"jobs", gettext("Jobs"), "/admin/jobs"},
+         {"operations", gettext("Platform status"), "/admin/operations"}
        ]},
-      {"Administration",
+      {gettext("Administration"),
        [
-         {"users", "Users", "/admin/users"},
-         {"access", "Access authority", "/admin/access"},
-         {"git", "Git mirrors", "/admin/git"},
-         {"audit", "Audit", "/admin/audit"}
+         {"users", gettext("Users"), "/admin/users"},
+         {"access", gettext("Access authority"), "/admin/access"},
+         {"git", gettext("Git mirrors"), "/admin/git"},
+         {"audit", gettext("Audit"), "/admin/audit"}
        ]}
     ]
   end
 
   defp navigation(_) do
     [
-      {"Your workspace",
+      {gettext("Your workspace"),
        [
-         {"overview", "Overview", "/overview"},
-         {"threads", "Threads", "/threads"},
-         {"machines", "Machines", "/machines"},
-         {"integrations", "Integrations", "/integrations"},
-         {"git", "Git repositories", "/git"},
-         {"teams", "Teams", "/teams"}
+         {"overview", gettext("Overview"), "/overview"},
+         {"threads", gettext("Threads"), "/threads"},
+         {"machines", gettext("Machines"), "/machines"},
+         {"integrations", gettext("Integrations"), "/integrations"},
+         {"git", gettext("Git repositories"), "/git"},
+         {"teams", gettext("Teams"), "/teams"}
        ]}
     ]
   end
 
   @spec section_title(String.t(), String.t()) :: String.t()
-  defp section_title("admin", "usage"), do: "Control room · AI usage"
+  defp section_title("admin", "usage"), do: gettext("Control room · AI usage")
 
   defp section_title("admin", key),
-    do: "Control room · " <> String.capitalize(String.replace(key, "_", " "))
+    do: gettext("Control room · %{section}", section: section_name(key))
 
-  defp section_title("usage", _), do: "AI usage"
-  defp section_title(key, _), do: String.capitalize(key)
+  defp section_title("usage", _), do: gettext("AI usage")
+  defp section_title(key, _), do: section_name(key)
+
+  @spec section_name(String.t()) :: String.t()
+  defp section_name(key) do
+    %{
+      "account" => gettext("Account"),
+      "overview" => gettext("Overview"),
+      "threads" => gettext("Threads"),
+      "machines" => gettext("Machines"),
+      "integrations" => gettext("Integrations"),
+      "git" => gettext("Git repositories"),
+      "teams" => gettext("Teams"),
+      "nodes" => gettext("Node maintenance"),
+      "workloads" => gettext("Workloads"),
+      "jobs" => gettext("Jobs"),
+      "operations" => gettext("Platform status"),
+      "users" => gettext("Users"),
+      "access" => gettext("Access authority"),
+      "audit" => gettext("Audit")
+    }[key] || gettext("Workspace")
+  end
 
   @doc """
   Renders an action as a button, or as a link when `href`, `navigate` or
@@ -440,12 +459,7 @@ defmodule MarshallWeb.Layouts do
 
   attr(:id, :string, default: nil)
   attr(:state, :string, default: nil)
-
-  attr(:tone, :string,
-    default: nil,
-    values: [nil, "success", "warning", "danger", "pending", "muted"]
-  )
-
+  attr(:tone, :string, default: nil, values: [nil, "success", "warning", "danger", "muted"])
   slot(:inner_block, required: true)
 
   def status(assigns) do
@@ -459,11 +473,11 @@ defmodule MarshallWeb.Layouts do
   def theme_toggle(assigns) do
     ~H"""
     <label class="appearance-control select">
-      <span class="sr-only">Appearance</span>
-      <select data-appearance aria-label="Appearance">
-        <option value="system">System</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+      <span class="sr-only">{gettext("Appearance")}</span>
+      <select data-appearance aria-label={gettext("Appearance")}>
+        <option value="system">{gettext("System")}</option>
+        <option value="light">{gettext("Light")}</option>
+        <option value="dark">{gettext("Dark")}</option>
       </select>
     </label>
     """

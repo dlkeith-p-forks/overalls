@@ -15,7 +15,15 @@ defmodule Marshall.Accounts.User.Senders.SendMagicLinkEmail do
         email -> to_string(email)
       end
 
-    case Marshall.Accounts.AuthEmails.enqueue(email, token) do
+    override = if is_map(user_or_email), do: Map.get(user_or_email, :locale)
+    locale = Marshall.Localization.choose(override, Gettext.get_locale(MarshallWeb.Gettext), nil)
+
+    result =
+      Gettext.with_locale(MarshallWeb.Gettext, locale, fn ->
+        Marshall.Accounts.AuthEmails.enqueue(email, token)
+      end)
+
+    case result do
       :ok -> :ok
       {:error, _} -> Marshall.Events.emit("mail.enqueue_failed", [])
     end

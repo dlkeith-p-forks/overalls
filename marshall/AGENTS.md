@@ -381,3 +381,9 @@ Where the server handled it via:
       document = LazyHTML.from_fragment(html)
       matches = LazyHTML.filter(document, "your-complex-selector")
       IO.inspect(matches, label: "Matches")
+
+## Localization
+
+- Load the [localization skill](../.agents/skills/localization/SKILL.md) before changing any user-facing HEEx, LiveView, mailer, browser JavaScript, documentation, or locale setting behavior.
+- Route strings through the existing Localize/Gettext integration and stable source identifiers. Keep IDs, hooks, machine-oriented data attributes, logs, JSON fields, and protocol names stable and language-neutral; translate human-facing accessibility labels and descriptions.
+- Use the central typed locale policy for user override, validated `Accept-Language` negotiation, fallback, `lang`/`dir`, and CLDR formatting. Preserve Monospace Web constraints and use logical CSS properties for RTL. Verify catalogs, placeholders, both directions, long translations, and browser probes.

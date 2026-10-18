@@ -21,7 +21,7 @@ defmodule MarshallWeb.LaunchLive do
   @impl true
   @spec mount(map(), map(), socket()) :: {:ok, socket()}
   def mount(_params, session, socket) do
-    socket = assign(socket, page_title: "Launch", status: :waiting, repository: nil, error: nil)
+    socket = assign(socket, page_title: gettext("Launch"), status: :waiting, repository: nil, error: nil)
 
     case PendingLaunch.read(session) do
       nil ->
@@ -35,7 +35,7 @@ defmodule MarshallWeb.LaunchLive do
          assign(socket,
            status: :launching,
            repository: repository,
-           page_title: "Launching repository"
+           page_title: gettext("Launching repository")
          )}
     end
   end
@@ -111,40 +111,40 @@ defmodule MarshallWeb.LaunchLive do
   @spec refuse(socket(), atom()) :: socket()
   defp refuse(socket, reason) do
     Marshall.Events.emit("vm.repository_launch_refused", reason: reason)
-    assign(socket, status: :refused, error: message(reason), page_title: "Launch refused")
+    assign(socket, status: :refused, error: message(reason), page_title: gettext("Launch refused"))
   end
 
   # Fixed public messages only; the submitted URL is never echoed back.
   @spec message(atom()) :: String.t()
   defp message(:unsupported_host),
-    do: "Only public repositories on GitHub, GitLab, Codeberg or Bitbucket can be launched."
+    do: gettext("Only public repositories on GitHub, GitLab, Codeberg or Bitbucket can be launched.")
 
   defp message(:invalid_url),
-    do: "That link is not a supported public repository URL."
+    do: gettext("That link is not a supported public repository URL.")
 
-  defp message(:invalid_namespace), do: "That repository namespace is not valid."
-  defp message(:invalid_repository), do: "That repository name is not valid."
+  defp message(:invalid_namespace), do: gettext("That repository namespace is not valid.")
+  defp message(:invalid_repository), do: gettext("That repository name is not valid.")
 
   defp message(:invalid_reference),
-    do: "That repository reference cannot be launched."
+    do: gettext("That repository reference cannot be launched.")
 
-  defp message(:invalid_visit), do: "This launch link could not be read. Open it again."
-  defp message(:expired_visit), do: "This launch link has expired. Open it again."
+  defp message(:invalid_visit), do: gettext("This launch link could not be read. Open it again.")
+  defp message(:expired_visit), do: gettext("This launch link has expired. Open it again.")
 
   defp message(:insufficient_capacity),
-    do: "There is not enough available capacity for a new machine right now."
+    do: gettext("There is not enough available capacity for a new machine right now.")
 
   defp message(reason) when reason in [:image_unavailable, :image_requirements_not_met],
-    do: "The default machine image is not available right now."
+    do: gettext("The default machine image is not available right now.")
 
   defp message(:workspace_source_unavailable),
     do:
-      "The default image cannot open repositories. Choose an image with the current workspace service."
+      gettext("The default image cannot open repositories. Choose an image with the current workspace service.")
 
-  defp message(:forbidden), do: "Your account cannot create machines."
+  defp message(:forbidden), do: gettext("Your account cannot create machines.")
 
   defp message(_),
-    do: "The machine could not be created. Try again, or create one manually."
+    do: gettext("The machine could not be created. Try again, or create one manually.")
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
@@ -165,7 +165,7 @@ defmodule MarshallWeb.LaunchLive do
       >
         <%= if @status == :refused do %>
           <UI.panel class="auth-panel">
-            <h1 class="ident">We couldn't launch that repository</h1>
+            <h1 class="ident">{gettext("We couldn't launch that repository")}</h1>
             <p id="launch-error" role="alert">{@error}</p>
             <div class="row actions">
               <.link
@@ -173,22 +173,22 @@ defmodule MarshallWeb.LaunchLive do
                 navigate={~p"/machines/new"}
                 class="console-button primary"
               >
-                Create a machine
+                {gettext("Create a machine")}
               </.link>
-              <.link navigate={~p"/overview"} class="console-button ghost">Back to overview</.link>
+              <.link navigate={~p"/overview"} class="console-button ghost">{gettext("Back to overview")}</.link>
             </div>
           </UI.panel>
         <% else %>
           <div class="auth-panel" aria-live="polite">
             <h1 id="launch-status" class="ident">
               <%= if @repository do %>
-                Launching <code>{@repository}</code>…
+                {gettext("Launching")} <code>{@repository}</code>…
               <% else %>
-                Preparing your machine…
+                {gettext("Preparing your machine…")}
               <% end %>
             </h1>
             <p class="muted">
-              A new OSS machine will clone the repository when it boots.
+              {gettext("A new OSS machine will clone the repository when it boots.")}
             </p>
           </div>
         <% end %>

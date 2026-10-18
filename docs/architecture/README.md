@@ -1625,3 +1625,5 @@ escape cleanup or physical storage acceptance; those remain open.
 ## Contract verification
 
 ADR-0186 records the Covenant test-only contract layer used by all Elixir applications. Covenant obligations and tests provide deterministic executable evidence while existing ADR, HLDD, native and integration records remain authoritative for deployment and isolation guarantees.
+
+Localization follows [ADR-0197](decisions/0197-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.
