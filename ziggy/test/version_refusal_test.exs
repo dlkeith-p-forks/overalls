@@ -41,8 +41,7 @@ defmodule Ziggy.VersionRefusalTest do
   end
 
   property "wire 426 stays terminal even when its body exceeds the reply limit",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     endpoint =
       start_supervised!(
         {Bandit,

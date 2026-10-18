@@ -83,7 +83,7 @@ defmodule Audi.InvalidBootPropertyTest do
   property "generated invalid Audi role configurations refuse fresh OTP startup",
     profile: :ci,
     print_blob: false,
-    test_cases: 2 do
+  do
     root = Path.join(System.tmp_dir!(), "k-ab-" <> Base.encode16(:crypto.strong_rand_bytes(8)))
     File.mkdir!(root)
     File.chmod!(root, 0o700)
