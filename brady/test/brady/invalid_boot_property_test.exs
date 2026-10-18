@@ -93,7 +93,7 @@ defmodule Brady.InvalidBootPropertyTest do
     on_exit(fn -> File.rm_rf!(root) end)
 
     check all(
-            order <- shuffle(@cases) |> Enum.take(3),
+            order <- list_of(member_of(@cases), min_length: 1, max_length: 3),
             quota <- member_of([1_048_576, 1_048_577, 274_877_906_944]),
             max_runs: 1
           ) do
