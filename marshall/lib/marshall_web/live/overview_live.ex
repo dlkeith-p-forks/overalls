@@ -223,7 +223,7 @@ defmodule MarshallWeb.OverviewLive do
               <:actions>
                 <button id="overview-newsletter-dismiss" type="button" class="console-button ghost" phx-click="dismiss_newsletter">{gettext("Dismiss")}</button>
               </:actions>
-              <p class="muted">{gettext("Get tips, tricks and updates about Overalls by email.")}</p>
+              <p class="muted">{gettext("Get tips, tricks and updates about Overalls and AI by email.")}</p>
               <.form for={@newsletter_form} id="overview-newsletter-form" phx-submit="subscribe_newsletter" action="https://ghuntley.com/newsletter/" method="get">
                 <.input field={@newsletter_form[:email]} type="email" autocomplete="email" placeholder="you@example.com" required label={gettext("Email address")} />
                 <button id="overview-newsletter-submit" type="submit" class="console-button primary">{gettext("Subscribe")}</button>

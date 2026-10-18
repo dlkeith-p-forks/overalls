@@ -1,8 +1,8 @@
 defmodule MarshallWeb.MachinesLive do
   use MarshallWeb, :live_view
   alias Marshall.{Access, Compute, Teams}
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
-  on_mount MarshallWeb.MachineWorkspace
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
+  on_mount(MarshallWeb.MachineWorkspace)
   alias MarshallWeb.{MachineDefaults, MachineWorkspace}
   alias MarshallWeb.CloneComponents
 
@@ -36,6 +36,7 @@ defmodule MarshallWeb.MachinesLive do
        relocation_retry_key: Ash.UUID.generate(),
        lifecycle_key: Ash.UUID.generate()
      )
+     |> assign(metadata_form: to_form(%{"labels" => "", "comment" => ""}, as: :metadata))
      |> new_form()
      |> share_form()
      |> stream(:machines, [])
@@ -89,7 +90,8 @@ defmodule MarshallWeb.MachinesLive do
         |> Map.merge(creation_params(params["machine"]))
         |> MachineDefaults.creation_defaults(socket.assigns.catalog.images)
 
-      socket = assign(socket, form: to_form(values, as: :machine), page_title: gettext("Create machine"))
+      socket =
+        assign(socket, form: to_form(values, as: :machine), page_title: gettext("Create machine"))
 
       if connected?(socket) and
            creation_params(params["machine"])["request_key"] != values["request_key"] do
@@ -205,6 +207,22 @@ defmodule MarshallWeb.MachinesLive do
     end
   end
 
+  def handle_event("save-reflection-metadata", %{"metadata" => params}, socket) do
+    labels =
+      params["labels"] |> to_string() |> String.split(",", trim: true) |> Enum.map(&String.trim/1)
+
+    case Compute.update_reflection_metadata(
+           %{id: socket.assigns.vm_id, labels: labels, comment: params["comment"] || ""},
+           actor: socket.assigns.current_user
+         ) do
+      {:ok, _} ->
+        {:noreply, socket |> put_flash(:info, gettext("Machine metadata saved.")) |> refresh()}
+
+      {:error, error} ->
+        {:noreply, put_flash(socket, :error, error_message(error))}
+    end
+  end
+
   # @cc [owner:ghuntley,label:security;recovery] clone-form-durable-request-identity
   # Clone submission MUST use the current actor and the form's retained key.
   # Duplicate events MUST reuse that key; a new intentional submission receives
@@ -266,7 +284,10 @@ defmodule MarshallWeb.MachinesLive do
         {:noreply,
          socket
          |> assign(relocation_key: Ash.UUID.generate())
-         |> put_flash(:info, gettext("Relocation requested. A destination is selected automatically."))
+         |> put_flash(
+           :info,
+           gettext("Relocation requested. A destination is selected automatically.")
+         )
          |> refresh()}
 
       {:error, error} ->
@@ -284,7 +305,10 @@ defmodule MarshallWeb.MachinesLive do
         {:ok, _} ->
           {:noreply,
            socket
-           |> put_flash(:info, gettext("Cancellation requested. Cleanup may continue after recovery."))
+           |> put_flash(
+             :info,
+             gettext("Cancellation requested. Cleanup may continue after recovery.")
+           )
            |> refresh()}
 
         {:error, error} ->
@@ -312,7 +336,9 @@ defmodule MarshallWeb.MachinesLive do
            |> assign(relocation_retry_key: Ash.UUID.generate())
            |> put_flash(
              :info,
-             gettext("Destination restart requested. The source copy remains retained until readiness succeeds.")
+             gettext(
+               "Destination restart requested. The source copy remains retained until readiness succeeds."
+             )
            )
            |> refresh()}
 
@@ -339,7 +365,8 @@ defmodule MarshallWeb.MachinesLive do
            actor: socket.assigns.current_user
          ) do
       {:ok, _} ->
-        {:noreply, socket |> share_form() |> put_flash(:info, gettext("Access updated.")) |> refresh()}
+        {:noreply,
+         socket |> share_form() |> put_flash(:info, gettext("Access updated.")) |> refresh()}
 
       {:error, error} ->
         {:noreply, put_flash(socket, :error, error_message(error))}
@@ -360,7 +387,8 @@ defmodule MarshallWeb.MachinesLive do
   def handle_event("grants_first", _, socket),
     do: {:noreply, socket |> assign(grant_cursor: nil) |> refresh()}
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp integer(value) when is_binary(value) and byte_size(value) <= 12, do: Integer.parse(value)
   defp integer(_), do: :error
@@ -502,7 +530,11 @@ defmodule MarshallWeb.MachinesLive do
   defp blank_to_nil(value), do: value
 
   defp profile_options(images) do
-    ordinary = [{gettext("Customer"), "customer"}, {gettext("Standard"), "standard"}, {"OSS", "oss"}]
+    ordinary = [
+      {gettext("Customer"), "customer"},
+      {gettext("Standard"), "standard"},
+      {"OSS", "oss"}
+    ]
 
     if Enum.any?(images, &(&1.id == Marshall.Compute.Profiles.inception_image_id())),
       do: ordinary ++ [{gettext("Inception"), "inception"}],
@@ -512,19 +544,27 @@ defmodule MarshallWeb.MachinesLive do
   @spec profile_description(String.t()) :: String.t()
   defp profile_description("customer"),
     do:
-      gettext("Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent.")
+      gettext(
+        "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
+      )
 
   defp profile_description("standard"),
     do:
-      gettext("Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents.")
+      gettext(
+        "Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents."
+      )
 
   defp profile_description("oss"),
     do:
-      gettext("The same network and access options as Standard, with AI agents that can start child agents.")
+      gettext(
+        "The same network and access options as Standard, with AI agents that can start child agents."
+      )
 
   defp profile_description("inception"),
     do:
-      gettext("A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents.")
+      gettext(
+        "A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents."
+      )
 
   defp share_form(socket),
     do:
@@ -582,7 +622,8 @@ defmodule MarshallWeb.MachinesLive do
 
     messages = [
       insufficient_capacity: gettext("There is not enough available capacity for this machine."),
-      image_unavailable: gettext("This image is no longer available. Refresh and choose another image."),
+      image_unavailable:
+        gettext("This image is no longer available. Refresh and choose another image."),
       image_requirements_not_met: gettext("The selected image needs more memory or disk space."),
       host_unavailable: gettext("This machine's host is currently unavailable."),
       recipient_not_registered: gettext("No registered account matches that email address."),
@@ -590,7 +631,8 @@ defmodule MarshallWeb.MachinesLive do
       forbidden: gettext("You no longer have permission for this action."),
       vm_deleted: gettext("This machine is being deleted."),
       machine_pinned: gettext("Unpin this machine before deleting it."),
-      idempotency_conflict: gettext("This request has already been used. Refresh before trying again.")
+      idempotency_conflict:
+        gettext("This request has already been used. Refresh before trying again.")
     ]
 
     Enum.find_value(
@@ -1027,6 +1069,12 @@ defmodule MarshallWeb.MachinesLive do
           id="machine-advanced"
           class="stack"
         >
+          <.form for={@metadata_form} id="reflection-metadata" phx-submit="save-reflection-metadata" class="panel stack">
+            <h2>{gettext("Reflection metadata")}</h2>
+            <.input field={@metadata_form[:labels]} label={gettext("Labels")} value={Enum.join(@vm.labels || [], ", ")} placeholder={gettext("production, project-name")} />
+            <.input field={@metadata_form[:comment]} label={gettext("Comment")} value={@vm.comment || ""} type="textarea" placeholder={gettext("Short description for agents")} />
+            <Layouts.action tone="primary" id="reflection-metadata-submit">{gettext("Save metadata")}</Layouts.action>
+          </.form>
           <UI.panel id="relocation-controls" title={gettext("Relocate machine")}>
             <:actions>
               <Layouts.action

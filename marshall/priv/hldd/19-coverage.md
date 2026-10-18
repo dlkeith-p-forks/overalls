@@ -3816,3 +3816,21 @@ Tested scope: Account preference, codec and immutable snapshot property coverage
 **Gaps:** Production rollout and complete cross-OS native Git commit acceptance remain unrecorded.
 
 **Preferred test work:** Run real guest commits under managed login accounts after setting custom identity and after reboot; retain native and property scopes separately.
+
+## Subscribe to the newsletter or permanently dismiss the Overview invitation
+
+Coverage: **partial**. Layers: identity, authorization, storage, recovery.
+
+Boundary: Marshall owns account preference and request validation; Ghost owns subscription state and delivery.
+
+Required refusal: Foreign actors cannot dismiss another account; malformed mailboxes and all upstream failures are refused safely without secret diagnostics.
+
+Tested scope: Authenticated Overview account preference and server-side Ghost request boundary; local BEAM evidence does not establish external delivery.
+
+- **property, present**: [invalid mailboxes, successful responses and Ghost/transport failures preserve safe outcomes](repo:marshall/test/marshall/newsletter_property_test.exs) — Bounded Hegel requester properties; no external delivery..
+- **unit, present**: [Overview renders and dismisses the newsletter panel](repo:marshall/test/marshall_web/overview_live_test.exs) — LiveView presentation and event behavior..
+- **unit, present**: [fixed server-side Ghost request sequence](repo:marshall/lib/marshall/newsletter.ex) — Req client boundary; no provider acceptance..
+
+**Gaps:** Ghost availability, external receipt, and native browser journey remain unverified.
+
+**Preferred test work:** Run the authenticated browser journey against a controlled Ghost-compatible endpoint and record receipt without exposing mailbox or token data.

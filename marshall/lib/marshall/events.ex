@@ -912,6 +912,16 @@ defmodule Marshall.Events do
     metadata: [host_id: :uuid]
   )
 
+  defevent("peach.credential_rotated",
+    message: "Reflection service credential rotated",
+    metadata: [host_id: :uuid, credential_id: :uuid]
+  )
+
+  defevent("peach.credential_revoked",
+    message: "Reflection service credential revoked",
+    metadata: [host_id: :uuid]
+  )
+
   # Teams
   defevent("team.transfer_changed",
     message: "Team ownership transfer changed state",

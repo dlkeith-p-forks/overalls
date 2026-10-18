@@ -1,4 +1,6 @@
 defmodule Marshall.NewsletterPropertyTest do
+  # @cc [owner:ghuntley,label:security;product] newsletter-subscription-api
+  # invalid mailboxes, successful responses and Ghost/transport failures preserve safe outcomes
   use ExUnit.Case, async: true
   import Hegel
   import Hegel.Gen
@@ -19,6 +21,7 @@ defmodule Marshall.NewsletterPropertyTest do
     email = local <> "@example.test"
     token = "token-" <> Integer.to_string(draw("token_id", integer(1..10_000)))
     {:ok, calls} = Agent.start_link(fn -> [] end)
+    Hegel.on_cleanup(fn -> Agent.stop(calls) end)
 
     requester = fn method, url, options ->
       Agent.update(calls, &[{method, url, options} | &1])

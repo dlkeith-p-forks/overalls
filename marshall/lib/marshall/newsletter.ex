@@ -1,4 +1,6 @@
 defmodule Marshall.Newsletter do
+  # @cc [owner:ghuntley,label:security;product] newsletter-subscription-api
+  # fixed server-side Ghost request sequence
   @moduledoc "Server-side Ghost newsletter subscription client."
   alias Marshall.Accounts.EmailAddress
 

@@ -7495,3 +7495,43 @@ msgstr "वर्कलोड की पहचान हुई"
 #, elixir-autogen, elixir-format
 msgid "Your email link is being verified."
 msgstr "आपके ईमेल लिंक का सत्यापन किया जा रहा है।"
+#: lib/marshall_web/live/overview_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Stay in the loop"
+msgstr ""
+
+#: lib/marshall_web/live/overview_live.ex:216
+#, elixir-autogen, elixir-format
+msgid "Dismiss"
+msgstr ""
+
+#: lib/marshall_web/live/overview_live.ex:218
+#, elixir-autogen, elixir-format
+msgid "Get tips, tricks and updates about Overalls and AI by email."
+msgstr ""
+
+#: lib/marshall_web/live/overview_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Subscribe"
+msgstr ""
+
+#: lib/marshall_web/live/overview_live.ex:225
+#, elixir-autogen, elixir-format
+msgid "Check your inbox and click the link to confirm your subscription."
+msgstr ""
+
+#: lib/marshall_web/live/overview_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Enter a valid email address."
+msgstr ""
+
+#: lib/marshall_web/live/overview_live.ex:227
+#, elixir-autogen, elixir-format
+msgid "We could not reach the newsletter service. Try again later."
+msgstr ""
+
+#: lib/marshall_web/live/overview_live.ex:228
+#, elixir-autogen, elixir-format
+msgid "Unsubscribe any time."
+msgstr ""
+
