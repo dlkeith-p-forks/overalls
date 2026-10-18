@@ -28,8 +28,13 @@ defmodule MarshallWeb.HLDDLiveTest do
     refute has_element?(view, "[data-hldd-section]")
     refute has_element?(view, "pre code.mermaid")
 
+    # The Control room sidebar shows only administration links.
     {:ok, control, _} = live(conn, "/admin/nodes")
-    assert has_element?(control, "#nav-hldd[href='/hldd']")
+    refute has_element?(control, "#nav-account-section")
+    refute has_element?(control, "#nav-reference")
+    refute has_element?(control, "#nav-hldd")
+    refute has_element?(control, "#nav-usage")
+    assert has_element?(control, "nav[aria-label=Administration]")
   end
 
   test "direct visits and section navigation render only the selected body", %{conn: conn} do

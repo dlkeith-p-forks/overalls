@@ -643,7 +643,9 @@ and security views. Optional and public views retain their existing behavior.
 
 The signed-in sidebar groups Overview through Teams under "Your workspace";
 Account, AI usage and Browser extension under "Your account"; and Field notes,
-HLDD and Source code under a separate "Reference" section. Each SSH key on the
+HLDD and Source code under a separate "Reference" section. In the Control room
+the sidebar shows only the administration tree; neither "Your account" nor
+"Reference" is rendered there. Each SSH key on the
 account page carries an inline Description field with Rename.
 
 The profile section of the account page (`/settings#profile`, reached from the

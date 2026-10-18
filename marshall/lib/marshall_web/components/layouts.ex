@@ -184,17 +184,19 @@ defmodule MarshallWeb.Layouts do
   # @cc [owner:ghuntley,label:product] signed-in-reference-navigation
   # Field notes, HLDD and Source code MUST form their own "Reference" tree
   # (#nav-reference) after "Your account", in that order, not inside it.
+  # In the Control room only the administration tree is shown: neither the
+  # "Your account" nor the "Reference" tree renders there.
 
   # @cc [owner:ghuntley,label:product] signed-in-hldd-reference-navigation
-  # The shared signed-in menu MUST place HLDD immediately below Field notes,
+  # The workspace sidebar MUST place HLDD immediately below Field notes,
   # using the same link styling and a Reference hint.
 
   # @cc [owner:ghuntley,label:product] signed-in-source-code-navigation
-  # The shared signed-in menu MUST place Source code immediately below HLDD,
+  # The workspace sidebar MUST place Source code immediately below HLDD,
   # linking to https://github.com/ghuntley/overalls with ordinary navigation.
 
   # @cc [owner:ghuntley,label:product] browser-extension-guide-navigation
-  # The public header and shared signed-in menu MUST expose a browser extension
+  # The public header and the workspace sidebar MUST expose a browser extension
   # link to /docs/browser-extension with ordinary navigation. The setup links
   # remain presentation hints and cannot grant access or change authorization.
   @spec console_header(map()) :: Phoenix.LiveView.Rendered.t()
@@ -291,7 +293,7 @@ defmodule MarshallWeb.Layouts do
               </li>
             </ul>
           </section>
-          <section>
+          <section :if={@active != "admin"} id="nav-account-section">
             <ul class="tree">
               <li>
                 <h2>Your account</h2>
@@ -323,7 +325,7 @@ defmodule MarshallWeb.Layouts do
               </li>
             </ul>
           </section>
-          <section id="nav-reference">
+          <section :if={@active != "admin"} id="nav-reference">
             <ul class="tree">
               <li>
                 <h2>Reference</h2>
