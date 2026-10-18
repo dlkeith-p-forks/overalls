@@ -30,6 +30,19 @@ let
   mkWindowsEditorBundle = import ./vscode-web/windows-bundle.nix { inherit pkgs; source = windowsEditorSource; };
   windowsEditorBroker = import ./vscode-web-broker/windows.nix { inherit pkgs; inherit (lyra) toolchain; };
   codingClis = import ./guest/coding-clis.nix { inherit pkgs; };
+  # Google emulator/system-image inputs are accepted explicitly here so the
+  # Android guest remains reproducible and does not depend on host SDK state.
+  androidEnvironment = pkgs.callPackage (pkgs.path + "/pkgs/development/mobile/androidenv") {
+    licenseAccepted = true;
+  };
+  androidSdk = (androidEnvironment.composeAndroidPackages {
+    cmdLineToolsVersion = "latest";
+    includeEmulator = true;
+    includeSystemImages = true;
+    platformVersions = [ "34" "35" "36" ];
+    systemImageTypes = [ "google_apis" ];
+    abiVersions = [ "x86_64" ];
+  }).androidsdk;
   githubTools = import ./guest/github { inherit pkgs; };
   # Patched static Firecracker/jailer pair (ADR-0169); the only VMM Lilly runs.
   inherit (import ./infrastructure/firecracker.nix { inherit pkgs; }) vmm;
@@ -275,7 +288,7 @@ let
     };
 in
 rec {
-  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestRuntime windowsGuestPublished windowsGuestDrvload windowsBoot windowsEditorRuntime windowsEditorSource windowsEditorBroker mkWindowsEditorBundle;
+  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestRuntime windowsGuestPublished windowsGuestDrvload windowsBoot windowsEditorRuntime windowsEditorSource windowsEditorBroker mkWindowsEditorBundle androidSdk;
   inherit terminald terminaldChecks terminaldWindows;
   inherit codingClis githubTools;
   inherit lyra lyraLinux lyraWindows lyraNative githubBootstrapRelease;
@@ -294,6 +307,10 @@ rec {
     inherit pkgs privateServiceRoots terminald lyraLinux vscodeWeb vscodeWebBroker codingClis;
     minimumMemoryBytes = 2147483648;
   };
+  mkAndroidGuest = import ./guest/android {
+    inherit pkgs terminald lyraLinux codingClis androidSdk;
+  };
+  androidGuest = mkAndroidGuest { inherit privateServiceRoots; };
   mkUbuntuGuest = import ./guest/ubuntu { inherit pkgs terminald lyraLinux vscodeWeb vscodeWebBroker codingClis; };
   ubuntuGuest = mkUbuntuGuest { inherit privateServiceRoots; minimumMemoryBytes = 2147483648; };
   # Foreign Linux variants share the reviewed kernel/initrd boot contract while

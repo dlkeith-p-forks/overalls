@@ -48,6 +48,7 @@
       # Exported application packages MUST compile clean source and locked
       # dependencies; existing working-tree releases MUST NOT be build inputs.
       lib.mkUbuntuGuest = built.mkUbuntuGuest;
+      lib.mkAndroidGuest = built.mkAndroidGuest;
       lib.mkArchGuest = built.mkArchGuest;
       lib.mkArchLinuxGuest = built.mkArchLinuxGuest;
       lib.mkAlmaLinuxGuest = built.mkAlmaLinuxGuest;
@@ -73,6 +74,8 @@
         service-enrico = built.enrico;
         service-brady = built.brady;
         guest-nixos = built.guest;
+        android-sdk = built.androidSdk;
+        guest-android = built.androidGuest;
         guest-ubuntu = built.ubuntuGuest;
         guest-arch = built.archGuest;
         guest-alma = built.almaLinuxGuest;

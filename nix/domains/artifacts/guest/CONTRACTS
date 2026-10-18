@@ -64,3 +64,14 @@ Inception MUST also derive its Audi address in 10.41 at exactly the same slot.
 Other profiles MUST NOT receive a secondary address.
 The guest configuration alone MUST NOT be treated as sibling/host isolation;
 the host's routing and nftables policy supply that boundary under ADR-0015.
+
+@cc [owner:ghuntley,label:deployment;recovery] android-emulator-guest-identity
+The Android emulator guest MUST be a Linux version-4 guest artifact assembled from
+the pinned Android SDK/system-image closure. Its emulator service MUST run with
+software rendering and no accelerator, and its AVD state MUST live under a
+systemd-managed writable state directory separate from the immutable image root.
+
+@cc [owner:ghuntley,label:security] android-display-ingress
+The Android display bridge MUST bind only to guest loopback. The image MUST NOT
+open a new externally reachable display port or claim authenticated display
+access without a separately reviewed relay and runtime evidence.
