@@ -241,6 +241,16 @@ def await_running(vm: str) -> None:
                     f"ON p.id=v.current_placement_id WHERE v.id='{vm}'"
                 )
             )
+            placement = sql(
+                f"SELECT current_placement_id FROM compute_virtual_machines WHERE id='{vm}'"
+            )
+            if placement and placement != "":
+                for machine in provisioners:
+                    machine.execute(
+                        "for pid in $(find /sys/fs/cgroup/lilly.slice -path '*lilly-vm-*' -name cgroup.procs -exec cat {} + 2>/dev/null); "
+                        "do printf '%s ' \"$pid\"; cat /proc/$pid/comm 2>/dev/null || true; "
+                        "readlink /proc/$pid/exe 2>/dev/null || true; done"
+                    )
         assert state != "failed", "Real guest launch failed"
         return state == "running"
 
