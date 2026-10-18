@@ -118,9 +118,7 @@ defmodule MarshallWeb.Router do
       live "/admin/usage", InferenceLive, :admin
       live "/admin/audit", Admin.AuditLive, :index
       live "/admin/git", Admin.GitLive, :index
-      live "/settings/profile", ProfileLive, :index
-      live "/settings/security", SecurityLive, :index
-      live "/settings/ssh-keys", SSHKeysLive, :index
+      live "/settings", AccountLive, :index
       live "/machines", MachinesLive, :index
       live "/machines/new", MachinesLive, :new
       live "/machines/:id", TerminalLive, :show
@@ -150,7 +148,6 @@ defmodule MarshallWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    get "/settings", PageController, :settings
     get "/launch/entry", PageController, :entry
     post "/launch/pending", RepositoryLaunchController, :stage
     post "/launch/pending/clear", RepositoryLaunchController, :clear

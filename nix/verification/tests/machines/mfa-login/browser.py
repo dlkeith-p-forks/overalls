@@ -197,7 +197,7 @@ def main() -> None:
         enable_authenticator(reader_cdp)
         sign_in(reader, "reader", "initial", "first")
         assert sql(f"SELECT administrator FROM users WHERE id = '{reader_id}';") == "f"
-        visit(reader, "/settings/security", "first")
+        visit(reader, "/settings", "first")
         reader.locator("#add-passkey").click()
         expect(reader.locator("#passkey-list > div")).to_have_count(1)
         verify(reader)
@@ -218,7 +218,7 @@ def main() -> None:
 
         sign_in(reader, "reader", "subsequent", "first", remember=True)
         ordinary_access(reader, "first")
-        visit(reader, "/settings/security", "first")
+        visit(reader, "/settings", "first")
         expect(reader.locator("#security-continue")).to_have_count(0)
         verify(reader)
         visit(reader, "/admin/users", "first")
@@ -236,7 +236,7 @@ def main() -> None:
         select_replica(reader_context, "first")
         visit(reader, "/overview", "first")
         ordinary_access(reader, "first")
-        visit(reader, "/settings/security", "first")
+        visit(reader, "/settings", "first")
         expect(reader.locator("#security-continue")).to_have_count(0)
         verify(reader)
         visit(reader, "/admin/users", "first")
@@ -253,7 +253,7 @@ def main() -> None:
         sign_in(admin, "admin", "initial", "second")
         visit(admin, "/admin/users", "second")
         admin.locator(f"#sessions-{reader_id}").click()
-        expect(admin).to_have_url(ORIGIN + "/settings/security?return_to=%2Fadmin%2Fusers")
+        expect(admin).to_have_url(ORIGIN + "/settings?return_to=%2Fadmin%2Fusers#security")
         expect(admin.locator("[data-phx-main].phx-connected")).to_be_visible()
         admin.locator("#add-passkey").click()
         expect(admin.locator("#passkey-list > div")).to_have_count(1)
@@ -343,7 +343,7 @@ def main() -> None:
         # begin/verify succeeds on a different serving replica.
         sign_in(reader, "reader", "expiry", "first")
         ordinary_access(reader, "first")
-        visit(reader, "/settings/security", "first")
+        visit(reader, "/settings", "first")
         open_challenges = (
             "SELECT count(*) FROM account_passkey_challenges "
             f"WHERE user_id = '{reader_id}' AND consumed_at IS NULL;"
@@ -379,7 +379,7 @@ def main() -> None:
         reader_set_replica("third")
         sockets_before = len(reader_sockets)
         select_replica(reader_context, "third")
-        visit(reader, "/settings/security", "third")
+        visit(reader, "/settings", "third")
         try:
             verify(reader)
         except AssertionError:

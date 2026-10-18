@@ -2,6 +2,61 @@
   "version": 1,
   "scenarios": [
     {
+      "id": "account-settings-page",
+      "journey": "Open the single account page, move between its profile, sign-in and SSH key sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint",
+      "layers": ["identity", "authorization", "transport"],
+      "boundary": "One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey and SSH key sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH and User.set_time_zone; fragments (#profile, #security, #ssh-keys) carry no authority and return_to keeps its allowlist.",
+      "denial": "Refuse anonymous visitors with a sign-in redirect; answer 404 on /settings/profile, /settings/security and /settings/ssh-keys; refuse unknown events with a fixed flash and no change; a revoked login halts the next SSH key event or clock tick with a sign-in redirect; a weaker mount (optional, current_user or none) fails the pin test.",
+      "scope": "LiveView tests of the merged page (sections, single navigation entry, the step-up redirect and Users link to /settings?return_to=%2Fadmin%2Fusers#security, the SSH approval navigation to /settings#ssh-keys, every former Security, SSH key and profile assertion) and a structural pin of the lifecycle ids and route; the synthetic browser probe checks the single sidebar entry, section order, anchors landing at the top, the zone round trip and grid alignment in both themes and at 390 px.",
+      "status": "partial",
+      "gaps": "The NixOS browser tests, the passkey probe and the Antithesis access workload were rewritten to /settings by inspection and have not been executed against the merged page; no property test fits a page composition.",
+      "preferred_gap": "Rerun the credential-self-service, mfa-login, admin-account, account-lifecycle, control-room and fleet Porsche browser machine tests on the merged page and record them; rerun the Antithesis access workload.",
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "the merged page keeps the strict security mount of the former Security page",
+          "scope": "Exact lifecycle mount ids [{AuthenticationPrivacy, :default}, {LiveUserAuth, :security}] and the /settings route to AccountLive",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "the page renders every section behind one Account navigation entry",
+          "scope": "Section ids, index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "anonymous visitors must sign in and the old settings pages are gone",
+          "scope": "Sign-in redirect on /settings and 404 on the three removed paths",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "admin reads remain available but a mutation prompts step-up",
+          "scope": "The no-key administrator redirect and the Users page link target /settings?return_to=%2Fadmin%2Fusers#security",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "revoked browser login cannot change keys through an existing LiveView",
+          "scope": "A revoked persisted token halts the SSH key event on the merged page with a sign-in redirect and no key is stored",
+          "execution": "present"
+        },
+        {
+          "kind": "manual",
+          "path": "marshall/scripts/monospace_browser_probe.py",
+          "assertion": "check_account",
+          "scope": "Synthetic fixture: single navigation entry, section order, #profile and #ssh-keys anchors, zone round trip, grid alignment, screenshots in light, dark and at 390 px",
+          "execution": "present"
+        }
+      ]
+    },
+    {
       "id": "foreign-linux-browser-editor",
       "journey": "Open the personal browser editor on a newly provisioned AlmaLinux or Arch image",
       "layers": ["identity", "authorization", "transport", "execution", "isolation", "storage", "recovery"],
@@ -3933,7 +3988,7 @@
     },
     {
       "id": "credential-self-service",
-      "journey": "Rename and remove own passkeys and manage SSH keys from account settings",
+      "journey": "Rename and remove own passkeys and manage SSH keys from the account page",
       "layers": [
         "identity",
         "authorization",
@@ -3966,7 +4021,7 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/security_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "invalid or unverified credential changes are refused without crashing the view",
           "scope": "Mounted LiveView regressions: rename, exact 80-character acceptance, label refusal copy, unknown credential, locked elevation and administrator last-passkey refusal.",
           "execution": "recorded",
@@ -4162,7 +4217,7 @@
     },
     {
       "id": "user-time-zones",
-      "journey": "Choose a display time zone on the profile page, read every timestamp in that zone and see collaborators' local time",
+      "journey": "Choose a display time zone in the profile section of the account page, read every timestamp in that zone and see collaborators' local time",
       "layers": [
         "identity",
         "authorization",
@@ -4215,14 +4270,14 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/profile_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "the viewer zone resolves saved, then browser, then UTC",
           "scope": "Connected mount with connect params, invalid browser zone, dead render ignoring the browser",
           "execution": "present"
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/profile_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "a clock tick refuses a revoked persisted login",
           "scope": "Real mounted profile and PostgreSQL-backed token: verify login, revoke that exact persisted token, verify durable refusal, then send only the minute tick and require sign-in redirect. Red on imported hook order, green after fresh-login hooks run first; 49 focused tests passed at merged 8fe9786 dependency pin. No packaged browser or native expiry journey.",
           "execution": "recorded",
@@ -4231,7 +4286,7 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/profile_live_test.exs",
+          "path": "marshall/test/marshall_web/local_time_live_test.exs",
           "assertion": "team members show their local time and the difference from the viewer",
           "scope": "Team, machine access and list, thread sharing and Control room pages with saved and unsaved people",
           "execution": "present"
@@ -4260,8 +4315,8 @@
         {
           "kind": "manual",
           "path": "marshall/scripts/monospace_browser_probe.py",
-          "assertion": "check_profile",
-          "scope": "Synthetic fixture: profile page saves Adelaide, overview timestamp ends in ACST/ACDT, both themes and mobile",
+          "assertion": "check_account",
+          "scope": "Synthetic fixture: the profile section of /settings saves Adelaide, overview timestamp ends in ACST/ACDT, both themes and mobile",
           "execution": "present"
         }
       ]
@@ -7799,7 +7854,7 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/security_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "passkey verification offers the staged launch without automatic navigation",
           "scope": "Optional Security verification exposes an allowlisted staged-launch return link without automatic navigation or allocation. The October 10 recorded result tested the superseded mandatory login-MFA continuation.",
           "execution": "present"
@@ -10581,7 +10636,7 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/security_live_test.exs",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "first enrollment returns to the original page for an explicit retry",
           "scope": "No-key admin redirects to Security, enrolls via a signed ceremony and receives the allowlisted original-page link without executing the role change.",
           "execution": "recorded",

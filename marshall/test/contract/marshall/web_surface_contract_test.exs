@@ -5,6 +5,7 @@ defmodule MarshallWebSurfaceContractTest do
   test "declared modules compile and remain loadable" do
     modules = [
       MarshallWeb,
+      MarshallWeb.AccountLive,
       MarshallWeb.Admin.AccessLive,
       MarshallWeb.Admin.AuditLive,
       MarshallWeb.Admin.GitLive,
@@ -62,7 +63,6 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.PageController,
       MarshallWeb.PageHTML,
       MarshallWeb.PendingLaunch,
-      MarshallWeb.ProfileLive,
       MarshallWeb.ProvisionerAPI,
       MarshallWeb.PublicIngress,
       MarshallWeb.RepositoryLaunchController,
@@ -71,9 +71,7 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.SSHAPI,
       MarshallWeb.SSHApprovalLive,
       MarshallWeb.SSHApprovalLogin,
-      MarshallWeb.SSHKeysLive,
       MarshallWeb.SecurityHeaders,
-      MarshallWeb.SecurityLive,
       MarshallWeb.TeamsLive,
       MarshallWeb.Telemetry,
       MarshallWeb.TerminalLive,

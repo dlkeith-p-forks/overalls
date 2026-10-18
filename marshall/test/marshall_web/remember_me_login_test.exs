@@ -18,7 +18,7 @@ defmodule MarshallWeb.RememberMeLoginTest do
   test "remembered enrolled login allows reads, requires its own admin elevation and revokes copied cookies" do
     actor = Fixture.elevate(Fixture.user(true))
     {cookie_name, cookie} = remember_cookie(actor)
-    response = build_conn() |> put_req_cookie(cookie_name, cookie) |> get("/settings/security")
+    response = build_conn() |> put_req_cookie(cookie_name, cookie) |> get("/settings")
     assert response.status == 200
     token = get_session(response, "user_token")
     assert is_binary(token)
@@ -56,7 +56,7 @@ defmodule MarshallWeb.RememberMeLoginTest do
   test "remembered first enrollment cannot replace fresh primary email authentication" do
     actor = Fixture.user()
     {cookie_name, cookie} = remember_cookie(actor)
-    response = build_conn() |> put_req_cookie(cookie_name, cookie) |> get("/settings/security")
+    response = build_conn() |> put_req_cookie(cookie_name, cookie) |> get("/settings")
     assert response.status == 200
     {:ok, jti, _} = Login.verify(get_session(response, "user_token"), actor)
     assert Ledger.read!(Verification, id: jti) == []

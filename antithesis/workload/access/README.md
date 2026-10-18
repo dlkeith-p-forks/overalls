@@ -14,7 +14,7 @@ credential state, submits Marshall's rendered CSRF form, retries that token on
 the second release, and checks pending MFA on a copied session context
 against ADR-0160: the unverified login's ordinary `/overview` read on the second
 release is served without verification or a new stored login, while a real
-SecurityLive passkey rename there is refused with an unchanged passkey
+AccountLive (/settings) passkey rename there is refused with an unchanged passkey
 inventory. A server error or missing reply leaves either check unexercised.
 The Control room administrator step-up redirect is not exercised because the
 target is not a fixture administrator. A same-login WebAuthn verification runs

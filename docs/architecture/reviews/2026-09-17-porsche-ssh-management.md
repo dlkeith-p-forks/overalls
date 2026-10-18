@@ -22,7 +22,7 @@ No existing execution, capacity or recovery requirement is superseded.
 - [SSH domain](../../../marshall/lib/marshall/ssh.ex) owns an audited, archived Ash
   key resource. Owner and fingerprint serialization enforce the account limit and
   one active owner. Public operations use the actor, not client ownership.
-- [Browser page](../../../marshall/lib/marshall_web/live/ssh_keys_live.ex) uses the
+- [Browser page](../../../marshall/lib/marshall_web/live/account_live.ex) uses the
   existing fresh-login hook and authentication diagnostic redaction. Failed input
   is cleared so an accidentally pasted private key is not reflected to the UI.
 - [Migration](../../../marshall/priv/repo/migrations/20260917082520_ssh_keys.exs)

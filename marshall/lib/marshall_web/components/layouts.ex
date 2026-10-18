@@ -169,10 +169,13 @@ defmodule MarshallWeb.Layouts do
   attr(:time_zone, :string, default: nil)
   attr(:now, :any, default: nil)
 
-  # @cc [owner:ghuntley,label:product] signed-in-profile-navigation
-  # The "Your account" tree MUST place Profile first, immediately above
-  # Security, linking to /settings/profile, and the account menu MUST show the
-  # viewer's local clock under the email whenever a zone and instant are given.
+  # @cc [owner:ghuntley,label:product] signed-in-account-navigation
+  # The "Your account" tree MUST open with one Account entry (#nav-account,
+  # /settings) that covers profile, sign-in passkeys and SSH keys, followed by
+  # AI usage (#nav-usage, /usage); the account menu MUST show the viewer's local
+  # clock under the email, linking to /settings#profile, whenever a zone and
+  # instant are given. There MUST be no separate Profile, Security or SSH keys
+  # navigation entries.
 
   # @cc [owner:ghuntley,label:product] signed-in-control-room-navigation
   # Every signed-in account MUST see the Control room mode switch regardless of
@@ -291,24 +294,11 @@ defmodule MarshallWeb.Layouts do
                 <ul>
                   <li>
                     <.link
-                      id="nav-profile"
-                      navigate={~p"/settings/profile"}
-                      aria-current={@active == "profile" && "page"}
+                      id="nav-account"
+                      navigate={~p"/settings"}
+                      aria-current={@active == "account" && "page"}
                     >
-                      Profile
-                    </.link>
-                  </li>
-                  <li>
-                    <.link
-                      navigate={~p"/settings/security"}
-                      aria-current={@active == "security" && "page"}
-                    >
-                      Security
-                    </.link>
-                  </li>
-                  <li>
-                    <.link navigate={~p"/settings/ssh-keys"} aria-current={@active == "ssh" && "page"}>
-                      SSH keys
+                      Account <span class="nav-hint">Profile · Passkeys · SSH keys</span>
                     </.link>
                   </li>
                   <li>
@@ -351,7 +341,7 @@ defmodule MarshallWeb.Layouts do
             <p>{@current_scope.user.email}</p>
             <p :if={@time_zone && @now} class="account-clock">
               <.local_clock id="account-local-clock" zone={@time_zone} now={@now} />
-              <.link navigate={~p"/settings/profile"} class="nav-hint">Time zone</.link>
+              <.link navigate={~p"/settings#profile"} class="nav-hint">Time zone</.link>
             </p>
             <.link href={~p"/sign-out"}>Sign out</.link>
           </details>
@@ -402,8 +392,6 @@ defmodule MarshallWeb.Layouts do
   defp section_title("admin", key),
     do: "Control room · " <> String.capitalize(String.replace(key, "_", " "))
 
-  defp section_title("ssh", _), do: "SSH keys"
-  defp section_title("profile", _), do: "Profile"
   defp section_title("usage", _), do: "AI usage"
   defp section_title(key, _), do: String.capitalize(key)
 

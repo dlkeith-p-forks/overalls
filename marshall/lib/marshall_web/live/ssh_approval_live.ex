@@ -33,7 +33,7 @@ defmodule MarshallWeb.SSHApprovalLive do
          socket
          |> assign(approval_token: nil)
          |> put_flash(:info, "SSH key approved. You can return to your SSH client.")
-         |> push_navigate(to: ~p"/settings/ssh-keys")}
+         |> push_navigate(to: ~p"/settings#ssh-keys")}
 
       {:error, _} ->
         {:noreply, unavailable(socket)}
@@ -87,7 +87,7 @@ defmodule MarshallWeb.SSHApprovalLive do
             Approve key
           </Layouts.action>
         </.form>
-        <p><.link navigate={~p"/settings/ssh-keys"}>Manage your SSH keys</.link></p>
+        <p><.link navigate={~p"/settings#ssh-keys"}>Manage your SSH keys</.link></p>
       </section>
     </Layouts.app>
     """

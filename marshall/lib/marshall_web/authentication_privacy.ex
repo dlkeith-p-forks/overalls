@@ -24,8 +24,9 @@ defmodule MarshallWeb.AuthenticationPrivacy do
     conn
   end
 
-  def call(%{path_info: ["settings", page | _]} = conn, _)
-      when page in ["ssh-keys", "security"] do
+  # The account page at /settings carries passkey ceremonies and pasted SSH
+  # key material in one LiveView, so the whole settings tree is tagged.
+  def call(%{path_info: ["settings" | _]} = conn, _) do
     Logger.metadata(marshall_authentication: true)
     conn
   end

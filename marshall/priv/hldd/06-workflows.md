@@ -49,8 +49,8 @@ consumed once. No workflow, catalog intent or audit row is admitted merely by
 opening the ceremony. Verification permits the same action to retry with fresh
 login, role, fifteen-minute receipt, Cedar and workflow-generation checks.
 
-If a new administrator has no key, Security settings first require fresh email
-authentication for enrollment. The user returns to the original page and
+If a new administrator has no key, the sign-in section of the account page
+(`/settings#security`) first requires fresh email authentication for enrollment. The user returns to the original page and
 explicitly submits the action again; setup retains only an allowlisted return
 path, never administrative arguments or a pending continuation.
 Cancelled, expired, replayed or substituted continuations, stale targets and

@@ -55,6 +55,13 @@ defmodule Marshall.MonospaceBrowserFixture do
         actor: owner
       )
 
+    # One registered key so the account page's SSH section renders a key article.
+    {:ok, _} =
+      Marshall.SSH.add_key(
+        %{public_key: Marshall.SharingSurfacesFixture.key_text(), label: "hana-laptop"},
+        actor: owner
+      )
+
     Ledger.create!(Marshall.Inference.Daily, :record, %{
       owner_id: owner.id,
       day: DateTime.to_date(Ledger.now()),

@@ -9,8 +9,9 @@ retains only its exact server-bound actor/login/resource/action/arguments and
 never replays an arbitrary browser event after verification. A successful step-up
 creates a fixed fifteen-minute receipt and retries once after fresh admission.
 
-No-key administrators visit Security settings for fresh-email first enrollment,
-then return to the original page and explicitly retry the action. Cancel,
+No-key administrators are sent to the sign-in section of the account page
+(`/settings#security`) for fresh-email first enrollment, then return to the
+original page and explicitly retry the action. Cancel,
 ceremony failure, continuation expiry, another
 tab's input, stale resource state or loss of login/role/key authority refuse the
 mutation and keep the page usable for permitted reads. Passkey changes require
@@ -625,8 +626,11 @@ The dead render trusts only the saved zone. `MarshallWeb.LiveUserAuth` assigns
 one-minute tick refreshes `now` only after fresh-login validation on required
 and security views. Optional and public views retain their existing behavior.
 
-`/settings/profile` (reached from Profile at the top of "Your account" and from
-`/settings`) shows the email read-only, a `<select>` of about 160 curated zones
+The profile section of the account page (`/settings#profile`, reached from the
+single Account entry at the top of "Your account" and from the account menu's
+clock; [ADR-0196](repo:docs/architecture/decisions/0196-single-account-settings-page.md)
+merged the former Profile, Security and SSH keys pages into this one LiveView
+with a numbered section index) shows the email read-only, a `<select>` of about 160 curated zones
 labelled `(GMT+09:30) Adelaide` from the offset in force now (so daylight saving
 is reflected), Save and Clear, a status line naming the source, and the viewer's
 live local clock. A detected browser zone outside the curated list is added to
@@ -652,7 +656,7 @@ email alone; the browser zone is never shown to others. Lines inside LiveView
 streams (machine and thread grants) refresh when the list is re-read, not on the
 minute tick. Terminal viewers show Linux guest names, not accounts, and are
 unchanged. Evidence is in
-[profile_live_test.exs](repo:marshall/test/marshall_web/profile_live_test.exs),
+[account_live_test.exs](repo:marshall/test/marshall_web/account_live_test.exs),
 [time_components_test.exs](repo:marshall/test/marshall_web/time_components_test.exs)
 and the Hegel properties in
 [time_zones_property_test.exs](repo:marshall/test/marshall/accounts/time_zones_property_test.exs);

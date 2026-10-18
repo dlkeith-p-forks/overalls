@@ -38,7 +38,7 @@ defmodule MarshallWeb.SSHApprovalLiveTest do
     assert has_element?(view, "#ssh-approval-fingerprint", c.pending.fingerprint)
     assert {:ok, %{status: "pending"}} = status(c)
     view |> form("#ssh-approval-form", key: %{label: "Laptop"}) |> render_submit()
-    assert_redirect(view, ~p"/settings/ssh-keys")
+    assert_redirect(view, ~p"/settings#ssh-keys")
     assert {:ok, %{status: "authenticated", user: %{id: id}}} = status(c)
     assert id == c.owner.id
     {:ok, replay, _} = live(signed_in(build_conn(), c.owner), c.pending.approval_path)

@@ -143,13 +143,13 @@ def login_fixture(config: Config, links: LinkSource, actor: Actor, origin: str) 
 
 
 def verify_fixture_login(config: Config, login: Login, actor: Actor, webauthn_origin: str) -> bool:
-    """Complete a real WebAuthn ceremony for this login over SecurityLive."""
+    """Complete a real WebAuthn ceremony for this login over the sign-in section of /settings."""
     if login.origin != webauthn_origin:
         # A virtual authenticator must obey the same origin restriction as a
         # browser. A signed assertion for another URL would be false evidence.
         LOG.info("WebAuthn verification unexercised: login origin is not the RP origin")
         return False
-    response = _value(login.browser.request("GET", f"{login.origin}/settings/security"))
+    response = _value(login.browser.request("GET", f"{login.origin}/settings"))
     if response is None or response.status != 200:
         LOG.info("WebAuthn verification unexercised: security page unavailable")
         return False
@@ -157,9 +157,7 @@ def verify_fixture_login(config: Config, login: Login, actor: Actor, webauthn_or
     if page is None:
         LOG.info("WebAuthn verification unexercised: security page is not a LiveView")
         return False
-    mounted = _value(
-        LiveView.mount(login.browser, login.origin, "/settings/security", page, config.ca_file)
-    )
+    mounted = _value(LiveView.mount(login.browser, login.origin, "/settings", page, config.ca_file))
     if mounted is None:
         LOG.info("WebAuthn verification unexercised: security LiveView mount failed")
         return False

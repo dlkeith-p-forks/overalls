@@ -88,10 +88,10 @@ MFA journey or deployed administrator recovery.
 
 [Coordinator](../../../marshall/lib/marshall/accounts/security.ex),
 [Cedar policy](../../../marshall/priv/cedar/compute.cedar), and
-[Security UI](../../../marshall/lib/marshall_web/live/security_live.ex) implement the
+[Security UI](../../../marshall/lib/marshall_web/live/account_live.ex) (the sign-in section of `/settings` since [ADR-0196](0196-single-account-settings-page.md)) implement the
 boundary. [Unit/property tests](../../../marshall/test/marshall/accounts/security_test.exs)
 exercise real signed assertions and generated state transitions.
-[LiveView tests](../../../marshall/test/marshall_web/security_live_test.exs) exercise
+[LiveView tests](../../../marshall/test/marshall_web/account_live_test.exs) exercise
 pending login and step-up behavior. Validation and remaining native acceptance are
 tracked in the [review](../reviews/2026-09-18-passkey-administration.md).
 
@@ -103,7 +103,7 @@ remaining cross-replica/hardware limits are recorded in the
 
 [Generated credential self-service histories](../../../marshall/test/marshall/accounts/credential_history_test.exs),
 [domain regressions](../../../marshall/test/marshall/accounts/security_credential_test.exs),
-[LiveView regressions](../../../marshall/test/marshall_web/security_live_test.exs)
+[LiveView regressions](../../../marshall/test/marshall_web/account_live_test.exs)
 and the
 [credential self-service browser journey](../../../nix/verification/tests/machines/credential-self-service/browser.py)
 pin rename/remove bounds, immediate elevation loss on proving-credential

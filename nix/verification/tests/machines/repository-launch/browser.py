@@ -90,7 +90,7 @@ def signed_in(
     vm_id = machine_id(login_page)
     login_page.close()
     stage = "owner key registration"
-    page.goto(ORIGIN + "/settings/ssh-keys")
+    page.goto(ORIGIN + "/settings")
     connected(page)
     page.get_by_label("Public key", exact=True).fill((ROOT / "owner.pub").read_text())
     page.get_by_label("Label (optional)", exact=True).fill("repository-launch-owner")
@@ -122,7 +122,7 @@ def enrolled_launch(page: Page, token: str, source: str) -> str:
             }
         },
     )
-    page.goto(ORIGIN + "/settings/security")
+    page.goto(ORIGIN + "/settings")
     connected(page)
     page.locator("#add-passkey").click()
     expect(page.locator("#passkey-list > div")).to_have_count(1)

@@ -127,7 +127,7 @@ defmodule MarshallWeb.AuthControllerTest do
     conn =
       session_conn()
       |> put_session(MarshallWeb.PendingLaunch.key(), pending)
-      |> put_session(:return_to, "/settings/ssh-keys")
+      |> put_session(:return_to, "/settings")
       |> AuthController.success({:magic_link, :sign_in}, account, nil)
 
     assert redirected_to(conn) == "/launch"
@@ -173,9 +173,9 @@ defmodule MarshallWeb.AuthControllerTest do
     conn =
       session_conn()
       |> put_session(MarshallWeb.PendingLaunch.key(), pending)
-      |> put_session(:return_to, "/settings/ssh-keys")
+      |> put_session(:return_to, "/settings")
       |> AuthController.success({:magic_link, :sign_in}, account, nil)
 
-    assert redirected_to(conn) == "/settings/ssh-keys"
+    assert redirected_to(conn) == "/settings"
   end
 end

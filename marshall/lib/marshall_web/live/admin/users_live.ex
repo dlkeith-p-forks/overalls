@@ -139,7 +139,7 @@ defmodule MarshallWeb.Admin.UsersLive do
             <button class="console-button primary">Send invitation</button>
           </.form>
           <p class="muted">
-            <.link href={~p"/settings/security?#{%{return_to: "/admin/users"}}"}>
+            <.link href={~p"/settings?#{%{return_to: "/admin/users"}}" <> "#security"}>
               Verify with passkey · administrative access lasts 15 minutes →
             </.link>
           </p>

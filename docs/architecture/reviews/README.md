@@ -1,5 +1,10 @@
 # Architecture reviews
 
+- [One account settings page (2026-10-18)](2026-10-18-account-settings-page.md):
+  ADR-0196 merges Profile, Security and SSH keys into `/settings` behind the
+  security mount, removes the old routes without redirects and collapses the
+  sidebar; LiveView, contract, presentation and probe checks ran, while the
+  rewritten NixOS browser tests and Antithesis workload were not executed.
 - [Foreign Linux browser editor (2026-10-18)](2026-10-18-foreign-linux-browser-editor.md):
   repairs the missing Alma/Arch editor package, account broker and immutable
   descriptor while preserving exact-release authority; twelve Alma native browser

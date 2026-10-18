@@ -1260,7 +1260,10 @@ The shared SSH catalog and Porsche expose non-physical `pin`/`unpin` mutations.
 Its implementation remains partial, with merged-source gates and native
 browser/Porsche and cross-node race evidence retaining separate scope.
 [ADR-0195](decisions/0195-user-time-zones.md) adds a nullable display time zone
-on `User`, a self-only `set_time_zone` action, the `/settings/profile` page and
+on `User`, a self-only `set_time_zone` action, the profile page (now the
+`#profile` section of `/settings` under [ADR-0196](decisions/0196-single-account-settings-page.md),
+which merges Profile, Security and SSH keys into one account page without
+redirects) and
 viewer-zone rendering of every browser timestamp with people's local time and
 difference beside their email; storage stays UTC, the `tz` data is compiled into
 the offline release and SSH wire views are unchanged. Implementation is partial:

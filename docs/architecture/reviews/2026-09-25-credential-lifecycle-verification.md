@@ -52,7 +52,7 @@ counterpart before disabling the account. If registration wins, retirement waits
 for its outer commit and cleanup sees the committed key. If retirement wins,
 registration refuses and leaves key and audit state unchanged.
 
-The manual [LiveView](../../../marshall/lib/marshall_web/live/ssh_keys_live.ex)
+The manual [LiveView](../../../marshall/lib/marshall_web/live/account_live.ex)
 and nested [approval action](../../../marshall/lib/marshall/ssh/authority.ex)
 both call the same public key action. Approval retains gateway, session and
 approval locks through the nested registration and outer commit. Retirement

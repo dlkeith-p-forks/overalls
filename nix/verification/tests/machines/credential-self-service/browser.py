@@ -93,7 +93,7 @@ def remove_authenticator(cdp: CDPSession, authenticator_id: str) -> None:
 
 def enroll(page: Page) -> None:
     page.bring_to_front()
-    visit(page, "/settings/security")
+    visit(page, "/settings")
     page.evaluate(
         """() => {
           const create = navigator.credentials.create.bind(navigator.credentials);
@@ -108,7 +108,7 @@ def enroll(page: Page) -> None:
 
 def verify_now(page: Page) -> None:
     page.bring_to_front()
-    visit(page, "/settings/security")
+    visit(page, "/settings")
     page.locator("#verify-passkey").click()
     expect(page.locator("#verification-status")).to_contain_text("Passkey verified")
 
@@ -262,7 +262,7 @@ def main() -> None:
         after_signout = inventory(admin_id, target_id)
         mounted.goto(ORIGIN + "/admin/users")
         expect(mounted).to_have_url(ORIGIN + "/sign-in")
-        mounted.goto(ORIGIN + "/settings/security")
+        mounted.goto(ORIGIN + "/settings")
         expect(mounted).to_have_url(ORIGIN + "/sign-in")
         assert inventory(admin_id, target_id) == after_signout
         sql_eventually(
@@ -291,7 +291,7 @@ def main() -> None:
             f"SELECT count(*) FROM tokens WHERE subject = 'user?id={ordinary_id}' AND purpose != 'revocation';",
             "0",
         )
-        ordinary.goto(ORIGIN + "/settings/security")
+        ordinary.goto(ORIGIN + "/settings")
         expect(ordinary).to_have_url(ORIGIN + "/sign-in")
 
         browser.close()

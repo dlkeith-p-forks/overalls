@@ -128,7 +128,7 @@ def main() -> None:
         sign_in(admin, "admin")
         visit(admin, "/admin/users")
         admin.locator(f"#role-{target_id}").click()
-        admin.wait_for_url("**/settings/security?*")
+        admin.wait_for_url("**/settings?*")
         expect(admin.locator("[data-phx-main].phx-connected")).to_be_visible()
         assert sql(f"SELECT administrator FROM users WHERE id = '{target_id}';") == "f"
         admin.locator("#add-passkey").click()

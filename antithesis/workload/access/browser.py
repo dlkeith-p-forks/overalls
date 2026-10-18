@@ -58,7 +58,7 @@ def _pending_rename_refused(
 ) -> bool | None:
     """@cc [owner:ghuntley,label:verification;security] pending-mfa-mutation-refusal
     The privileged probe MUST use the copied pending-login session on the given
-    replica, send a real SecurityLive credential rename with a fresh label for
+    replica, send a real AccountLive credential rename with a fresh label for
     the actor's existing passkey, and compare the stored passkey inventory,
     verification and login rows. A missing page, mount, reply or SQL read MUST
     return None (unexercised), never a refusal.
@@ -68,7 +68,7 @@ def _pending_rename_refused(
     tokens_before = _value(oracle.tokens(actor.user_id))
     if before is None or tokens_before is None or not before:
         return None
-    response = _value(context.request("GET", f"{origin}/settings/security"))
+    response = _value(context.request("GET", f"{origin}/settings"))
     # ADR-0160 keeps Security reachable for a signed-in login so setup is not
     # circular; any other reply sends no mutation and proves nothing.
     if response is None or response.status != 200:
@@ -76,7 +76,7 @@ def _pending_rename_refused(
     page = parse_live_page(response.body)
     if page is None:
         return None
-    mounted = _value(LiveView.mount(context, origin, "/settings/security", page, config.ca_file))
+    mounted = _value(LiveView.mount(context, origin, "/settings", page, config.ca_file))
     if mounted is None:
         return None
     try:

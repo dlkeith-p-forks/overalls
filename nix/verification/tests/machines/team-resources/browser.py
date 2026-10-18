@@ -47,7 +47,7 @@ def run() -> None:
                 expect(page.locator("[data-phx-main].phx-connected")).to_be_visible()
                 page.wait_for_url("**/overview")
                 stage = role + " key registration"
-                page.goto(ORIGIN + "/settings/ssh-keys")
+                page.goto(ORIGIN + "/settings")
                 expect(page.locator("[data-phx-main].phx-connected")).to_be_visible()
                 page.get_by_label("Public key", exact=True).fill(
                     (ROOT / (role + ".pub")).read_text()

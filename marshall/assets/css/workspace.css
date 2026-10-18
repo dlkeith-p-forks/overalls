@@ -1620,3 +1620,32 @@ button.machine-editor-link,
   flex-wrap: wrap;
   gap: 0 2ch;
 }
+
+/* Account page: a numbered index of the three anchored sections, double-rule
+   separators between them and one-line passkey rows (rename form + remove). */
+.account-index ol {
+  margin-bottom: var(--line-height);
+}
+.account-index li .muted {
+  white-space: nowrap;
+}
+.account-section {
+  scroll-margin-top: var(--line-height);
+}
+.account-section h2 {
+  margin-top: 0;
+}
+.passkey {
+  margin: 0 0 var(--line-height);
+}
+.passkey .field-row > .field {
+  flex: 1 1 24ch;
+}
+.passkey > p {
+  margin: 0;
+}
+@media (max-width: 800px) {
+  .account-index li .muted {
+    white-space: normal;
+  }
+}

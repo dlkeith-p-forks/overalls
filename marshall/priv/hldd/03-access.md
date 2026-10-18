@@ -5,7 +5,9 @@
 [ADR-0160](repo:docs/architecture/decisions/0160-privileged-administrator-step-up.md)
 accepts a fixed fifteen-minute administrator elevation and inline retry of the
 exact pending action for enrolled administrators. No-key administrators complete
-setup on the Security page and explicitly retry. This section states that design;
+setup in the sign-in section of the account page (`/settings#security`,
+[ADR-0196](repo:docs/architecture/decisions/0196-single-account-settings-page.md))
+and explicitly retry. This section states that design;
 the historical baseline used five-minute elevation and redirected all verification.
 Scoped final packaged browser acceptance is recorded in [scenario coverage](#coverage).
 
@@ -31,8 +33,8 @@ privileged mutation or target-action audit row. Successful passkey verification
 retains its separate security audit even if the target later refuses.
 The pending action is not a permission grant.
 
-An administrator with no passkey visits Security settings with an allowlisted
-return path. First-key setup uses email authentication completed within five
+An administrator with no passkey is sent to `/settings?return_to=…#security`,
+the sign-in section of the account page, with an allowlisted return path. First-key setup uses email authentication completed within five
 minutes; missing freshness requires a new email sign-in. The administrator then
 returns to the original page and explicitly retries the action. No administrative
 arguments survive setup navigation and enrollment alone does not elevate the
@@ -100,7 +102,8 @@ distinct Users, each with a separate reserved guest UUID/UID. All email edits of
 the same User preserve its guest identity. No profile username, public email-edit
 action or onboarding step is added; the only profile preference is the display
 time zone of [ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md),
-set on `/settings/profile` through the self-only `set_time_zone` action, which
+set in the profile section of `/settings` through the self-only `set_time_zone`
+action, which
 changes no identity, guest account or authority (see
 [time zones and local time](#interactive)). Native plus-alias/numeric-leading mailbox
 sign-in and SMTP inbox delivery remain separate gaps in [scenario coverage](#coverage).
@@ -109,8 +112,9 @@ Opening a magic link in a JavaScript-enabled browser submits the token through
 the CSRF-protected sign-in POST without another click and remembers the browser.
 The initial GET does not consume the link. A browser without JavaScript can use
 the fallback button. A successful sign-in returns to the requested destination
-or Overview. Pending first-key setup does not block ordinary reads; Security is
-opened by an explicit credential action or by the privileged step-up setup flow.
+or Overview. Pending first-key setup does not block ordinary reads; the account
+page's sign-in section is opened by an explicit credential action or by the
+privileged step-up setup flow.
 Invalid, expired and replayed links leave no login or remembered credential.
 JavaScript-capable automated link visitors may consume a valid single-use link;
 GET-only scanners cannot. The updated three-replica native MFA browser journey
@@ -193,7 +197,9 @@ tracks independent login histories, committed exchange/revocation races and a
 three-replica native browser scenario. Execution status is recorded in
 [scenario coverage](#coverage); all three native services are colocated in one VM.
 
-Credentials are managed from the Security and SSH key settings pages. A first
+Credentials are managed from the sign-in and SSH key sections of the account
+page at `/settings` (ADR-0196), one LiveView behind the security mount and the
+authentication privacy tag. A first
 passkey enrollment requires an email link completed within the previous five
 minutes; every further registration, rename or removal requires a fresh passkey
 verification. Accounts admit up to ten passkeys, up to ten retained
@@ -233,7 +239,8 @@ checks reads, one audited role-change path, demotion, revocation and expiry.
 Execution status is recorded in [scenario coverage](#coverage). One replica does
 not establish cross-replica revocation propagation or physical authenticator behavior.
 
-Accounts rename and remove their own passkeys in **Security** settings; both
+Accounts rename and remove their own passkeys in the **Sign-in and passkeys**
+section of the account page; both
 require a passkey verified within the last fifteen minutes and a live stored login.
 A missing, blank, or over-80-character name is refused closed without touching
 stored state. Removing a credential that is not proving the current elevation
@@ -244,7 +251,7 @@ and revokes every browser credential; an administrator can never remove their
 last passkey. Accounts enroll at most ten passkeys: registration refuses at the
 limit without consuming the challenge, which stays usable after the inventory
 drops back below ten, and failed ceremonies consume their challenge without
-enabling MFA. **SSH keys** settings are owner-scoped; accounts hold at most one
+enabling MFA. The **SSH keys** section is owner-scoped; accounts hold at most one
 hundred keys and removal is permanent. The
 [credential self-service review](repo:docs/architecture/reviews/2026-09-26-credential-self-service.md)
 records generated inventory histories, the label-crash repair and the packaged

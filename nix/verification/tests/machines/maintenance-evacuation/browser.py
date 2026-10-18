@@ -71,7 +71,7 @@ def login(browser: Browser, token: str, elevated: bool = False) -> Page:
     connected(page)
     page.wait_for_url("**/overview")
     if elevated:
-        page.goto(ORIGIN + "/settings/security")
+        page.goto(ORIGIN + "/settings")
         connected(page)
         page.locator("#add-passkey").click()
         expect(page.locator("#passkey-list > div")).to_have_count(1)
@@ -141,7 +141,7 @@ def run() -> None:
             # A long real copy can outlive elevation. Reverify the existing
             # authenticator through production UI before the final control.
             stage = "fresh elevation before restoring admission"
-            admin.goto(ORIGIN + "/settings/security")
+            admin.goto(ORIGIN + "/settings")
             connected(admin)
             admin.locator("#verify-passkey").click()
             expect(admin.locator("#verification-status")).to_contain_text("Passkey verified")

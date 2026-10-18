@@ -58,7 +58,7 @@ def run() -> None:
                 connected(page)
                 page.wait_for_url("**/overview")
                 stage = role + " key registration"
-                page.goto(ORIGIN + "/settings/ssh-keys")
+                page.goto(ORIGIN + "/settings")
                 connected(page)
                 page.get_by_label("Public key", exact=True).fill(
                     (ROOT / (role + ".pub")).read_text()

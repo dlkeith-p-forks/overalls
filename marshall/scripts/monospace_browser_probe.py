@@ -328,17 +328,34 @@ def check_machine_pins(page: Page) -> None:
     assert row_ids(page) == before, "Unpinning did not restore the id order"
 
 
-def check_profile(page: Page, origin: str, theme: str) -> None:
-    """@cc [owner:ghuntley,label:product;verification] profile-time-zone-presentation
-    The profile page MUST preselect the browser's zone until one is saved, save
-    the chosen zone through the picker, show the viewer's local clock in that
-    zone, and every converted timestamp on the overview MUST end in the saved
-    zone's abbreviation while keeping the UTC instant in its title. The probe
-    checks this in both themes and restores the detected zone afterwards.
+def check_account(page: Page, origin: str, theme: str) -> None:
+    """@cc [owner:ghuntley,label:product;verification] account-page-presentation
+    The account page at /settings MUST be the only "Your account" settings
+    entry (#nav-account current) and MUST render the profile, sign-in and SSH
+    key sections in that order with an index whose anchors land each section
+    at the top of the viewport. The profile section MUST preselect the
+    browser's zone until one is saved, save the chosen zone through the picker
+    and show the viewer's local clock in that zone; every converted timestamp
+    on the overview MUST end in the saved zone's abbreviation while keeping the
+    UTC instant in its title. The probe checks this in both themes and restores
+    the detected zone afterwards.
     """
-    visit(page, origin, "/settings/profile")
-    expect(page.locator("#nav-profile")).to_have_attribute("aria-current", "page")
+    visit(page, origin, "/settings")
+    expect(page.locator("#nav-account")).to_have_attribute("aria-current", "page")
+    expect(page.locator("#nav-usage")).to_have_attribute("href", "/usage")
+    expect(page.locator("#workspace-sidebar a[href^='/settings/']")).to_have_count(0)
     expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1)
+    sections = ("profile", "security", "ssh-keys")
+    for anchor in sections:
+        expect(page.locator(f"#account-index a[href='#{anchor}']")).to_be_visible()
+        expect(page.locator(f"section#{anchor}.account-section")).to_be_visible()
+    tops = [section_top(page, anchor) for anchor in sections]
+    assert tops == sorted(tops), "Account sections are out of order"
+    expect(page.locator("#passkey-ceremony #add-passkey")).to_be_visible()
+    expect(page.locator("#passkey-ceremony #verify-passkey")).to_be_visible()
+    expect(page.locator("#verification-status")).to_contain_text("[not verified]")
+    expect(page.locator("#ssh-key-form #add-ssh-key")).to_be_visible()
+    expect(page.locator("article[id^='ssh-key-'] code")).to_have_count(1)
     detected: object = evaluate(page, "Intl.DateTimeFormat().resolvedOptions().timeZone")
     assert isinstance(detected, str) and detected, "Browser must report an Intl zone"
     status = page.locator("#time-zone-status")
@@ -362,20 +379,46 @@ def check_profile(page: Page, origin: str, theme: str) -> None:
         "data-zone", "Australia/Adelaide"
     )
     expect(page.locator("#clear-time-zone")).to_be_visible()
-    check_grid(page, "/settings/profile")
+    check_grid(page, "/settings")
     visit(page, origin, "/overview")
     stamp = page.locator(".overview-refresh time.timestamp")
     expect(stamp).to_have_attribute("data-zone", "Australia/Adelaide")
     expect(stamp).to_have_text(re.compile(r"\d{2}:\d{2} AC[DS]T$"))
     title: object = stamp.get_attribute("title")
     assert isinstance(title, str) and title.endswith(" UTC"), "Hover title must keep UTC"
-    visit(page, origin, "/settings/profile")
+    # The sidebar clock links to the profile anchor; the SSH anchor used by
+    # the CLI hint and approval page lands its section at the top.
+    expect(page.locator("#account-local-clock + a.nav-hint")).to_have_attribute(
+        "href", "/settings#profile"
+    )
+    visit(page, origin, "/settings#profile")
+    assert section_top(page, "profile") <= 2 * line_height(page), (
+        "The #profile anchor did not scroll its section into view"
+    )
+    visit(page, origin, "/settings#ssh-keys")
+    assert section_top(page, "ssh-keys") <= 2 * line_height(page), (
+        "The #ssh-keys anchor did not scroll its section into view"
+    )
     page.locator("#clear-time-zone").click()
     expect(status).to_have_attribute("data-source", "browser")
     expect(page.locator("#profile_time_zone")).to_have_value(detected)
     expect(page.locator("#clear-time-zone")).to_have_count(0)
     if theme == "dark":
         expect(page.locator("html")).to_have_attribute("data-theme", "dark")
+
+
+def section_top(page: Page, anchor: str) -> float:
+    box = page.locator(f"section#{anchor}").bounding_box()
+    assert box is not None, f"Section #{anchor} is not laid out"
+    return float(box["y"])
+
+
+def line_height(page: Page) -> float:
+    value: object = evaluate(
+        page, "parseFloat(getComputedStyle(document.documentElement).lineHeight)"
+    )
+    assert isinstance(value, (int, float)) and value > 0, "Line height must be a number"
+    return float(value)
 
 
 def row_ids(page: Page) -> list[str]:
@@ -888,9 +931,7 @@ GRID_ROUTES = (
     "create",
     "machine",
     "boot-log",
-    "profile",
-    "security",
-    "ssh",
+    "account",
     "hldd",
 )
 
@@ -928,9 +969,7 @@ def run(fixture: Context, artifacts: Path) -> None:
             "teams": "/teams",
             "git": "/git",
             "usage": "/usage",
-            "profile": "/settings/profile",
-            "security": "/settings/security",
-            "ssh": "/settings/ssh-keys",
+            "account": "/settings",
             "hldd": "/hldd",
             "hldd-section": "/hldd/system",
         }
@@ -985,8 +1024,8 @@ def run(fixture: Context, artifacts: Path) -> None:
                     )
                 if name == "hldd-section":
                     expect(page.locator("pre.hldd-diagram svg").first).to_be_visible()
-                if name == "profile":
-                    check_profile(page, fixture["origin"], theme)
+                if name == "account":
+                    check_account(page, fixture["origin"], theme)
                     visit(page, fixture["origin"], route)
                 screenshot(page, artifacts, f"{name}-{theme}")
             page.set_viewport_size({"width": 390, "height": 844})
@@ -1001,8 +1040,7 @@ def run(fixture: Context, artifacts: Path) -> None:
                 "integrations",
                 "teams",
                 "usage",
-                "profile",
-                "security",
+                "account",
             ):
                 visit(page, fixture["origin"], routes[name])
                 check_overflow(page)
