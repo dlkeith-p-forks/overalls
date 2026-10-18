@@ -31,13 +31,18 @@ class Allocation:
     version_rows: int
 
     def joined_at_admission(self) -> bool:
-        """Check the immutable first allocation before job retention or archive cleanup."""
+        """Check the immutable first allocation before job retention or archive cleanup.
+
+        Dispatch jobs are only host hints: AshOban's minute scheduler enqueues a
+        repeat for a provision operation still pending at its tick, so the
+        admission transaction guarantees at least one job, not exactly one.
+        """
         return (
             self.placements == 1
             and self.matching_reservations == 1
             and self.addresses == 1
             and self.provision_operations == 1
-            and self.dispatch_jobs == 1
+            and self.dispatch_jobs >= 1
         )
 
 

@@ -225,7 +225,7 @@ secrets into the serial log, keep `assert` messages value-free.
 ## Elixir and BEAM properties
 
 Elixir properties use the same native Hegel engine but run inside the Mix test VM.
-The current protocol, Marshall and Lilly frontend pin is `9b13af8`. The recorded
+The current protocol, Marshall and Lilly frontend ref is `02cd8bd`. The recorded
 299-test protocol gate used the earlier `2c9f7a4` frontend; the review preserves
 the passing `6a62795` result separately. Those historical results do not verify
 the current pin or changed consumer tests.
@@ -237,8 +237,10 @@ filesystem durability, and multi-host recovery claims in their dedicated suites.
 The current protocol suite uses one `property` runner with explicit `test_cases`,
 `seed`, `database: :disabled` and `print_blob: false` options. Do not nest the
 frontend's `check all` compatibility runner inside a property: compatibility
-options and filter clauses are not preserved. Context-pattern `property/3`
-expansion at `9b13af8` can also recurse without bound; affected consumer tests use
+options inside a property and filter clauses are not preserved. Standalone
+`check all` now propagates options, but the engine uses `test_cases`, not
+`max_runs`. Context-pattern `property/3` expansion can still recurse without
+bound; affected consumer tests use
 tagged ordinary ExUnit declarations around their existing generated checks.
 Draw labelled values
 once at the property boundary instead. Protocol's

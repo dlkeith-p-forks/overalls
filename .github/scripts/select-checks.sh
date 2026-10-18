@@ -6,13 +6,14 @@
 #   machine  enabled NixOS machine tests
 #   build    enabled checks that are not machine tests
 #
-# Build selection evaluates each check's derivation in isolation with
-# nix-eval-jobs, so one check that fails to evaluate does not hide the others
-# from the build. Machine selection evaluates only each check's meta.ci:
-# forcing a machine test's derivation runs its import-from-derivation guest
-# builds, which belong to the matrix job that tests it, not to choosing the
-# matrix. All meta.ci values are evaluated together first and, if that fails,
-# each check in isolation. Writes `checks` (JSON array of names) and `errors`
+# Both selections start from each check's meta.ci alone: forcing a machine
+# test's derivation runs its import-from-derivation guest builds, which belong
+# to the matrix job that tests it, and evaluating every fleet test at once
+# exhausts the runner's memory. All meta.ci values are evaluated together
+# first and, if that fails, each check in isolation. Build selection then
+# evaluates the derivation of every check not known to be a machine test in
+# isolation with nix-eval-jobs, so one check that fails to evaluate does not
+# hide the others from the build. Writes `checks` (JSON array of names) and `errors`
 # (count) to $GITHUB_OUTPUT and records evaluation errors in the job summary.
 # Exits non-zero only when no result can be produced.
 set -euo pipefail
@@ -33,14 +34,10 @@ work=$(mktemp -d)
 results="$work/results"
 flake_checks='.#checks.x86_64-linux'
 
-if [ "$kind" = build ]; then
-  # Workers share the runner's memory with import-from-derivation builds.
-  nix shell --inputs-from . nixpkgs#nix-eval-jobs --command \
-    nix-eval-jobs --flake "$flake_checks" --meta \
-      --workers 8 --max-memory-size 4096 > "$results"
-elif nix eval --json "$flake_checks" --apply 'builtins.mapAttrs (_: check: check.meta.ci)' \
+meta="$work/meta"
+if nix eval --json "$flake_checks" --apply 'builtins.mapAttrs (_: check: check.meta.ci)' \
     > "$work/all.json" 2> "$work/all.err"; then
-  jq -c 'to_entries[] | {attr: .key, meta: {ci: .value}}' "$work/all.json" > "$results"
+  jq -c 'to_entries[] | {attr: .key, meta: {ci: .value}}' "$work/all.json" > "$meta"
 else
   echo "Combined meta.ci evaluation failed; evaluating each check in isolation" >&2
   tail -n 5 "$work/all.err" >&2
@@ -52,7 +49,19 @@ else
           jq -c --arg attr "$attr" "{attr: \$attr, meta: {ci: .}}" <<<"$ci"
         else
           jq -cn --arg attr "$attr" --rawfile error "$work/$attr.err" "{attr: \$attr, error: \$error}"
-        fi' _ {} "$work" "$flake_checks" > "$results"
+        fi' _ {} "$work" "$flake_checks" > "$meta"
+fi
+
+if [ "$kind" = build ]; then
+  # A check whose meta.ci failed to evaluate stays in, so its error is reported.
+  machines=$(jq -c -s 'map(select(.meta.ci.machine == true) | .attr)' "$meta")
+  # Workers share the runner's memory with import-from-derivation builds.
+  nix shell --inputs-from . nixpkgs#nix-eval-jobs --command \
+    nix-eval-jobs --flake "$flake_checks" --meta \
+      --select "checks: builtins.removeAttrs checks (builtins.fromJSON ''$machines'')" \
+      --workers 8 --max-memory-size 4096 > "$results"
+else
+  cp "$meta" "$results"
 fi
 
 # Every line must be a JSON object naming its attribute.

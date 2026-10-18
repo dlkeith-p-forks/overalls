@@ -319,6 +319,15 @@ definite `insufficient_capacity` refusal is Marshall's real decision, checked
 for absent rows and a bounded one-VM replay. Every stop before a settled
 decision logs a fixed `Compute admission unexercised` reason; the first hosted
 run reached no admission assertion because those lines were never emitted.
+Run `6890e1608b75e9b82fe11382bb4aeefc-65-0` still refused every request for
+vCPU: the hosted VM has one logical CPU, so the measured headroom never frees a
+whole core, hence the stub CPU budget above. The next run
+(`74188918d21886495a53d124a725c7e5-65-0`) admitted requests and failed the
+joined-allocation check once in 267 examples: a partition held a provision
+operation pending across a minute tick, and AshOban's dispatch scheduler
+correctly enqueued a repeat hint, so the oracle counted two dispatch jobs. The
+oracle now requires at least one dispatch job; placement, reservation, address
+and provision-operation counts remain exact.
 The results are admission-logic evidence only, never ZFS, physical-capacity,
 KVM or isolation evidence; the measured-capacity command stays in a separate,
 unselected template for the measured host graph.
@@ -815,7 +824,7 @@ separate obligations. See
 
 ## Elixir property verification
 
-Elixir properties currently use the test-only Hegel frontend pin `9b13af8` under
+Elixir properties currently use the test-only Hegel frontend ref `02cd8bd` under
 [ADR-0191](repo:docs/architecture/decisions/0191-elixir-hegel-property-verification.md).
 Protocol properties run once per declared case count with fixed seeds and no
 example database or printed replay blobs. A local draw boundary records literal
@@ -832,8 +841,10 @@ StreamData, and the wider migration remains partial. The recorded 299-test pass
 used the previous frontend pin `6a62795`; the `2c9f7a4` merged frontend's complete
 gate also passed 299 tests and properties, Covenant 14/14 and Dialyzer with zero
 errors or skips. These historical results do not verify the current pin or
-changed consumer tests. At `9b13af8`, context-pattern property expansion can
-recurse without bound and compatibility clauses can discard filters/options.
+changed consumer tests. Standalone `check all` options now propagate, but the
+engine uses `test_cases` rather than `max_runs`. Context-pattern property
+expansion can still recurse without bound and compatibility clauses can discard
+tuple bindings, filters or nested options.
 Narrow consumer repairs retain generated assertions in tagged ordinary tests;
 the handbook unknown-ID check uses an explicit bounded silent draw and actual
 filter. Current consumer gates retain separate execution records. The

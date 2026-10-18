@@ -54,6 +54,7 @@ defmodule MarshallWeb.TerminalOpeningTest do
             access <- member_of([{false, false}, {false, true}, {true, false}]),
             sessions <- boolean()
           ) do
+      # Hegel's check all binds plain variables only, so destructure here.
       {running, writable} = access
 
       assert {_, :none} =

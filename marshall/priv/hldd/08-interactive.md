@@ -58,7 +58,7 @@ Retirement and current login/write/execution refusals remain authoritative.
 Pre-cutover leases closed during the breaking database migration; this continuity
 rule applies to subsequent generated-identity admissions.
 
-Every machine page (Terminal, Boot log, Access, Settings, Agents and Resize)
+Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
 shares one header. A bordered heading box carries the machine name, its state
 label (`[Running]`, `[Stopping]`, …) and an operating-system label that is the
 registered display name of the machine's immutable image (`[NixOS]`,
@@ -67,9 +67,12 @@ missing shows no operating-system label rather than a placeholder. Beneath them
 sit the resource facts (vCPU, memory, disk, profile) and the machine ID with a
 one-line **Copy** control; the authorized power actions and **Open VS Code**
 stay on the right and wrap under the summary on phone widths. The "Connect from
-your computer" box follows with the Linux/macOS sub-heading and explanation on
-one line, the installer command and its **Copy** button, the "Already
-installed?" SSH command, and the Windows (PowerShell) disclosure. Copying any
+your computer" box follows with one explanation and two steps, "Install and
+connect" lists the Linux / macOS and Windows installer commands side by side,
+each with a platform label and **Copy** button, and "Already installed" shows a
+single `ssh HOST` command for every platform, replacing the former Linux/macOS
+`ssh HOST` and Windows `overalls ssh HOST` pair (see "Windows workstations").
+Copying any
 command or the machine ID writes only the displayed text to the user's own
 clipboard and reports "Machine ID copied." or "Command copied." in the status
 line; a refused clipboard write tells the user to select the text manually. The
@@ -504,8 +507,11 @@ disabled. Each response holds at most 16 KiB plus a cursor; it returns no guest
 socket path or boot challenge and never dials the guest. A newer command or
 changed boot/log incarnation refuses the read. Sparse serial output remains
 observation, not proof of the failed guest stage.
-The machine navigation's `Boot log` link opens
-`/machines/:id/terminals?view=boot-log` directly. This diagnostic view selects
+The machine navigation has no Boot log tab. A machine whose image has no
+guest agents, whose only console is host diagnostics, links `Boot log` from
+its connection explanation; the link opens
+`/machines/:id/terminals?view=boot-log` directly, and that URL stays
+available for every machine reader. This diagnostic view selects
 the read-only serial pane and skips guest-session listing and automatic shell
 creation, so pending and failed boots do not depend on a guest terminal.
 A local browser fixture passed desktop/mobile and both themes, grid, contrast,
@@ -628,16 +634,27 @@ after old-account cleanup; old sessions retain their original registration ID.
 ### Windows workstations
 
 A Windows 10, 11 or Server user installs the CLI from the machine page's
-"Windows (PowerShell)" section
+Windows row under "Install and connect"
 ([ADR-0172](repo:docs/architecture/decisions/0172-windows-workstation-client.md)).
 The command runs [`/bin/install.ps1`](repo:marshall/priv/overalls-install.ps1),
 templated with the same deployment trust as `install.sh` and refused (503)
 without it, under Windows PowerShell 5.1 or PowerShell 7. It validates the
 origin, zone and host against the issued values. It then requires an OpenSSH
 client with hostname protection (9.6 or newer), because the in-box Win32-OpenSSH
-9.5 lacks it: when none is found it offers
-`winget install Microsoft.OpenSSH.Preview`, and otherwise stops with the manual
-step. It downloads `/bin/windows-amd64`, verifies the SHA-256 digest from
+9.5 lacks it: when the administrator-owned `%ProgramFiles%\OpenSSH` lacks a
+9.6+ client it installs `Microsoft.OpenSSH.Preview` with winget without asking
+(the MSI requests administrator approval itself), and stops with the manual
+step only when no verified client exists afterwards. Because Windows searches
+the machine PATH, where the in-box `%SystemRoot%\System32\OpenSSH` lives,
+before the user PATH, the installer then asks once for administrator approval
+and, in that elevated process, places `%ProgramFiles%\OpenSSH` immediately
+before the in-box entry in the machine PATH (resolved inside the elevated
+process, never a user-writable or caller-supplied directory) and broadcasts the
+environment change. Plain `ssh HOST` in new terminals then runs the verified
+client, so the machine page shows one reconnect command for every platform.
+Declined or failed elevation leaves the machine PATH unchanged and prints
+`overalls ssh HOST`, which always uses the recorded client.
+It downloads `/bin/windows-amd64`, verifies the SHA-256 digest from
 `/bin/sha256/windows-amd64`, runs `config-ssh --staged-installer` with the
 downloaded binary before installing it as
 `%LOCALAPPDATA%\Overalls\bin\overalls.exe`, adds that directory to the user PATH

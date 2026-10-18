@@ -99,6 +99,7 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
             bytes <- binary(min_length: 1, max_length: 64),
             wrapped? <- boolean()
           ) do
+      # Hegel's check all binds plain variables only, so destructure here.
       {mode, reason} = stage
       secret = "private-cleanup-" <> Base.encode16(bytes)
       failure = if wrapped?, do: {:error, {reason, secret}}, else: {:error, reason}

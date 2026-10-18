@@ -152,25 +152,38 @@ button.machine-editor-link {
 .machine-actions .machine-editor-notice {
   margin: var(--line-height) 0 0;
 }
-/* Connect box: one title, then per platform a sub-heading with its explanation
-   on the same line, the command with its Copy button, and the SSH row. */
+/* Connect box: one title and explanation, then "Install and connect" and
+   "Already installed" steps; each step is a platform label column beside the
+   command with its Copy button. Every platform is visible: no disclosure. */
 .machine-connect {
   border: var(--border-thickness) solid var(--text-color);
   padding: calc(var(--line-height) - var(--border-thickness)) calc(2ch - var(--border-thickness));
   margin-bottom: var(--line-height);
 }
 .machine-connect h2 {
-  margin: 0 0 var(--line-height);
+  margin: 0;
 }
 .machine-connect > p {
-  margin-bottom: 0;
-}
-.connection-platform {
   margin: 0;
+}
+.connection-step {
+  margin: var(--line-height) 0 0;
   font-size: 1rem;
 }
-.connection-platform .muted {
-  font-weight: var(--font-weight-normal);
+.connection-grid {
+  display: grid;
+  grid-template-columns: 14ch minmax(0, 1fr);
+  gap: calc(var(--line-height) / 2) 1ch;
+  align-items: start;
+}
+.connection-platform {
+  padding-top: calc(var(--line-height) / 2);
+}
+@media screen and (max-width: 480px) {
+  .connection-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
 }
 .connection-command {
   display: flex;
@@ -188,16 +201,6 @@ button.machine-editor-link {
   background: var(--background-color-alt);
   padding: calc(var(--line-height) / 2) 1ch;
   line-height: var(--line-height);
-}
-.connection-secondary {
-  display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 0 1ch;
-  margin-top: var(--line-height);
-}
-.connection-secondary code {
-  overflow-wrap: anywhere;
 }
 #machine-copy-status:empty {
   display: none;

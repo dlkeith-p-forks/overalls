@@ -9,9 +9,8 @@ defmodule MarshallWeb.MachineWorkspace do
   @type connection ::
           %{
             install: String.t(),
-            ssh: String.t(),
             install_windows: String.t(),
-            ssh_windows: String.t()
+            ssh: String.t()
           }
           | nil
 
@@ -108,11 +107,13 @@ defmodule MarshallWeb.MachineWorkspace do
           host = endpoint.label <> "." <> zone
           origin = MarshallWeb.Endpoint.url()
 
+          # @cc [owner:ghuntley,label:product] workstation-single-ssh-command
+          # One `ssh HOST` command reconnects on every platform: install.ps1
+          # makes its verified OpenSSH 9.6+ client the default `ssh` on Windows.
           %{
             install: "curl -fsSL #{origin}/bin/install.sh | bash -s -- #{origin} #{zone} #{host}",
-            ssh: "ssh #{host}",
             install_windows: windows_install(origin, zone, host),
-            ssh_windows: "overalls ssh #{host}"
+            ssh: "ssh #{host}"
           }
 
         _ ->
