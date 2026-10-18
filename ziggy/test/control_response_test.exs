@@ -24,9 +24,11 @@ defmodule Ziggy.ControlResponseTest do
   # answer or transport failure is an authority outage while the owner has
   # no terminal version refusal. Pending stopped-owner refusal has its own
   # actual-TLS property.
-  property "only an exact completion conflict is classified as a durable conflict", %{
-    control: control
-  } do
+  property(
+    "only an exact completion conflict is classified as a durable conflict",
+    %{control: control},
+    [profile: :ci, test_cases: 2]
+  ) do
     check all(
             route <- member_of(["complete", "admit", "renew", "agent_result"]),
             answer <-

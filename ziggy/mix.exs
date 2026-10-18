@@ -39,7 +39,7 @@ defmodule Ziggy.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:hegel_ex,
        git: "https://github.com/ghuntley/hegel-erlang.git",
-       ref: "f1ad336",
+       ref: "7faa1b7",
        subdir: "packages/hegel_ex",
        only: [:dev, :test],
        runtime: false}
