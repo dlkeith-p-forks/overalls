@@ -1461,3 +1461,14 @@ missing-import source finding without changing authorization, display
 contracts or accepted architecture; ADR-0161 and partial ADR-0206 remain
 unchanged. Startup smoke and the broader feature qualification retain separate
 evidence scopes.
+
+## Additional trunk integration through `31002e49f`
+
+The next pull adds signed-generation equality at the Android WebSocket upgrade,
+generation propagation in the browser-hook interface, and a bounded host-stream
+bridge with two regression tests present. It also sends the terminal empty
+chunk for Galileo's existing GitHub streaming response. The `910e1622` browser
+hook import repair survives. These are source changes; the earlier missing
+claim-generation binding is historical, while current machine authority,
+shared controller lease, native transport and browser acceptance remain open.
+No new merged gate or native execution result is recorded.

@@ -18,7 +18,8 @@ defmodule MarshallWeb.AndroidDisplaySocket do
          {:ok, claim} <- Marshall.Android.DisplayTickets.verify(ticket),
          true <- claim.actor_id == actor_id,
          {:ok, generation} <- bounded_integer(conn.query_params["generation"], 1, 9_223_372_036_854_775_807),
-         {:ok, mode} <- mode(conn.query_params["mode"]) do
+         {:ok, mode} <- mode(conn.query_params["mode"]),
+         true <- claim.generation == generation do
       WebSockAdapter.upgrade(conn, Marshall.Android.DisplaySocket,
         %{claim: claim, actor: actor, login_jti: login_jti, generation: generation, mode: mode},
         timeout: :infinity, max_frame_size: 262_144, compress: false

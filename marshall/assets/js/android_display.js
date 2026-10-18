@@ -8,7 +8,7 @@ export const AndroidDisplay = {
   mounted() {
     this.canvas = /** @type {HTMLCanvasElement} */ (this.el.querySelector("canvas"));
     this.status = this.el.querySelector("[data-display-status]");
-    this.handleEvent("android_display_ticket", ({ticket, mode}) => this.connect(ticket, mode));
+    this.handleEvent("android_display_ticket", ({ticket, mode, generation}) => this.connect(ticket, mode, generation));
     this.el.addEventListener("keydown", (event) => this.key(event));
     this.el.addEventListener("pointerdown", (event) => this.pointer(event, 1));
     this.el.addEventListener("pointerup", (event) => this.pointer(event, 0));
@@ -16,8 +16,8 @@ export const AndroidDisplay = {
   },
   /** @this {AndroidDisplayHook} */
   destroyed() { this.socket?.close(); },
-  /** @this {AndroidDisplayHook} @param {string} ticket @param {string} mode */
-  connect(ticket, mode) {
+  /** @this {AndroidDisplayHook} @param {string} ticket @param {string} mode @param {number} generation */
+  connect(ticket, mode, generation) {
     if (!ticket || !this.canvas) return;
     this.mode = mode;
     const base = this.el.dataset.displayWebsocketUrl;
@@ -25,6 +25,7 @@ export const AndroidDisplay = {
     const url = new URL(base, window.location.origin);
     url.searchParams.set("ticket", ticket);
     url.searchParams.set("mode", mode);
+    url.searchParams.set("generation", String(generation));
     this.socket?.close();
     this.socket = new WebSocket(url, "android-display-v1");
     this.socket.binaryType = "arraybuffer";
