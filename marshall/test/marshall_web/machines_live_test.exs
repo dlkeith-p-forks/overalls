@@ -21,11 +21,12 @@ defmodule MarshallWeb.MachinesLiveTest do
 
     assert has_element?(view, "#machine-install-command", "/bin/install.sh")
     assert has_element?(view, "#machine-ssh-command", "ssh ")
+    refute has_element?(view, "#machine-ssh-command", "overalls ssh")
     assert has_element?(view, "#machine-connect-windows #machine-install-command-windows")
     refute has_element?(view, "#machine-connect details")
     assert has_element?(view, "#machine-install-command-windows", "/bin/install.ps1")
     assert has_element?(view, "#machine-install-command-windows", "-ExecutionPolicy Bypass")
-    assert has_element?(view, "#machine-ssh-command-windows", "overalls ssh ")
+    refute has_element?(view, "#machine-ssh-command-windows")
     refute has_element?(view, "#download-ssh-config")
     refute has_element?(view, "a[href$='/ssh-config']")
 

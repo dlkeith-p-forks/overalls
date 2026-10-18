@@ -242,8 +242,8 @@ defmodule MarshallWeb.WorkspaceComponents do
         <%= if @connection && capability?(@vm, :ssh) do %>
           <p class="muted">
             Installs Overalls, configures SSH, and connects to this machine. On Windows
-            the installer also offers OpenSSH 9.6 or newer through winget when the
-            built-in client is older.
+            the installer also installs OpenSSH 9.6 or newer and, with administrator
+            approval, makes it the default ssh.
           </p>
           <h3 class="connection-step">Install and connect</h3>
           <div class="connection-grid">
@@ -269,27 +269,14 @@ defmodule MarshallWeb.WorkspaceComponents do
             </div>
           </div>
           <h3 class="connection-step">Already installed</h3>
-          <div class="connection-grid">
-            <span class="connection-platform muted">Linux / macOS</span>
-            <div class="connection-command">
-              <pre><code id="machine-ssh-command">{@connection.ssh}</code></pre>
-              <button
-                type="button"
-                class="console-button compact"
-                data-copy-command="machine-ssh-command"
-                aria-label="Copy SSH command"
-              >Copy</button>
-            </div>
-            <span class="connection-platform muted">Windows</span>
-            <div class="connection-command">
-              <pre><code id="machine-ssh-command-windows">{@connection.ssh_windows}</code></pre>
-              <button
-                type="button"
-                class="console-button compact"
-                data-copy-command="machine-ssh-command-windows"
-                aria-label="Copy Windows SSH command"
-              >Copy</button>
-            </div>
+          <div class="connection-command">
+            <pre><code id="machine-ssh-command">{@connection.ssh}</code></pre>
+            <button
+              type="button"
+              class="console-button compact"
+              data-copy-command="machine-ssh-command"
+              aria-label="Copy SSH command"
+            >Copy</button>
           </div>
         <% else %>
           <p id="machine-connect-unavailable" class="muted">

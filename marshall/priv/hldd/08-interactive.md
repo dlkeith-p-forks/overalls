@@ -68,10 +68,11 @@ sit the resource facts (vCPU, memory, disk, profile) and the machine ID with a
 one-line **Copy** control; the authorized power actions and **Open VS Code**
 stay on the right and wrap under the summary on phone widths. The "Connect from
 your computer" box follows with one explanation and two steps, "Install and
-connect" and "Already installed"; each step lists Linux / macOS and Windows
-side by side as a platform label beside its command and **Copy** button, so
-every platform's commands are visible without a disclosure and the "already
-installed" wording appears once. Copying any
+connect" lists the Linux / macOS and Windows installer commands side by side,
+each with a platform label and **Copy** button, and "Already installed" shows a
+single `ssh HOST` command for every platform, replacing the former Linux/macOS
+`ssh HOST` and Windows `overalls ssh HOST` pair (see "Windows workstations").
+Copying any
 command or the machine ID writes only the displayed text to the user's own
 clipboard and reports "Machine ID copied." or "Command copied." in the status
 line; a refused clipboard write tells the user to select the text manually. The
@@ -640,9 +641,20 @@ templated with the same deployment trust as `install.sh` and refused (503)
 without it, under Windows PowerShell 5.1 or PowerShell 7. It validates the
 origin, zone and host against the issued values. It then requires an OpenSSH
 client with hostname protection (9.6 or newer), because the in-box Win32-OpenSSH
-9.5 lacks it: when none is found it offers
-`winget install Microsoft.OpenSSH.Preview`, and otherwise stops with the manual
-step. It downloads `/bin/windows-amd64`, verifies the SHA-256 digest from
+9.5 lacks it: when the administrator-owned `%ProgramFiles%\OpenSSH` lacks a
+9.6+ client it installs `Microsoft.OpenSSH.Preview` with winget without asking
+(the MSI requests administrator approval itself), and stops with the manual
+step only when no verified client exists afterwards. Because Windows searches
+the machine PATH, where the in-box `%SystemRoot%\System32\OpenSSH` lives,
+before the user PATH, the installer then asks once for administrator approval
+and, in that elevated process, places `%ProgramFiles%\OpenSSH` immediately
+before the in-box entry in the machine PATH (resolved inside the elevated
+process, never a user-writable or caller-supplied directory) and broadcasts the
+environment change. Plain `ssh HOST` in new terminals then runs the verified
+client, so the machine page shows one reconnect command for every platform.
+Declined or failed elevation leaves the machine PATH unchanged and prints
+`overalls ssh HOST`, which always uses the recorded client.
+It downloads `/bin/windows-amd64`, verifies the SHA-256 digest from
 `/bin/sha256/windows-amd64`, runs `config-ssh --staged-installer` with the
 downloaded binary before installing it as
 `%LOCALAPPDATA%\Overalls\bin\overalls.exe`, adds that directory to the user PATH

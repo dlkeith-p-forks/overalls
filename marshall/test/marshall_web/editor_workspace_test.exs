@@ -156,9 +156,8 @@ defmodule MarshallWeb.EditorWorkspaceTest do
 
     connection = %{
       install: "curl install",
-      ssh: "ssh overalls",
       install_windows: "windows install",
-      ssh_windows: "windows ssh"
+      ssh: "ssh host"
     }
 
     render = fn projection ->

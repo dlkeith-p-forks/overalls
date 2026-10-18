@@ -59,19 +59,88 @@ function Find-OpenSsh {
     return $null
 }
 
+# 3a. Install the Microsoft build (winget, machine scope) when the
+# administrator-owned %ProgramFiles%\OpenSSH lacks a 9.6+ client. The MSI asks
+# for administrator approval itself.
+$ProgramFilesSsh = $null
+if ($env:ProgramFiles) { $ProgramFilesSsh = Join-Path $env:ProgramFiles 'OpenSSH\ssh.exe' }
+if (-not (Test-OpenSsh $ProgramFilesSsh) -and (Get-Command winget.exe -ErrorAction SilentlyContinue)) {
+    [Console]::Error.WriteLine('Installing OpenSSH 9.6 or newer (Microsoft.OpenSSH.Preview) with winget; the Windows in-box client is older.')
+    & winget.exe install --id Microsoft.OpenSSH.Preview --exact --silent --accept-source-agreements --accept-package-agreements
+    if ($LASTEXITCODE -ne 0) { [Console]::Error.WriteLine('overalls install: winget could not install OpenSSH') }
+}
 $Ssh = Find-OpenSsh
 if (-not $Ssh) {
-    [Console]::Error.WriteLine('Overalls needs OpenSSH 9.6 or newer; the Windows in-box client is older.')
-    if (Get-Command winget.exe -ErrorAction SilentlyContinue) {
-        $Answer = Read-Host 'Install OpenSSH (Microsoft.OpenSSH.Preview) now with winget? [Y/n]'
-        if ($Answer -and $Answer -notmatch '^[Yy]') { Fail 'OpenSSH 9.6 or newer is required' }
-        & winget.exe install --id Microsoft.OpenSSH.Preview --exact --accept-source-agreements --accept-package-agreements
-        if ($LASTEXITCODE -ne 0) { Fail 'winget could not install OpenSSH' }
-        $Ssh = Find-OpenSsh
+    Fail 'install OpenSSH 9.6 or newer (https://github.com/PowerShell/Win32-OpenSSH/releases), then run this command again'
+}
+
+# 3b. Make plain `ssh` in new terminals run the verified client. The in-box
+# %SystemRoot%\System32\OpenSSH sits in the machine PATH, which Windows searches
+# before the user PATH, so only an elevated machine PATH change can put the new
+# client first.
+# @cc [owner:ghuntley,label:security] installer-machine-path-ssh
+# The machine PATH MUST only gain %ProgramFiles%\OpenSSH, an administrator-owned
+# directory resolved inside the elevated process, never a path supplied by this
+# unelevated script or a user-writable directory. Declined or failed elevation
+# MUST leave the machine PATH unchanged and the installation usable through
+# `overalls ssh HOST`.
+function Get-NormalPath([string] $Entry) {
+    return [Environment]::ExpandEnvironmentVariables($Entry.Trim().Trim('"')).TrimEnd('\')
+}
+
+function Get-NewTerminalSsh {
+    $Paths = @([Environment]::GetEnvironmentVariable('Path', 'Machine'), [Environment]::GetEnvironmentVariable('Path', 'User'))
+    foreach ($Entry in (($Paths | Where-Object { $_ }) -join ';') -split ';') {
+        if (-not $Entry.Trim()) { continue }
+        $Candidate = Join-Path (Get-NormalPath $Entry) 'ssh.exe'
+        if (Test-Path -LiteralPath $Candidate -PathType Leaf) { return $Candidate }
     }
-    if (-not $Ssh) {
-        Fail 'install OpenSSH 9.6 or newer (https://github.com/PowerShell/Win32-OpenSSH/releases), then run this command again'
+    return $null
+}
+
+$Elevated = @'
+$ErrorActionPreference = 'Stop'
+$Directory = Join-Path $env:ProgramFiles 'OpenSSH'
+if (-not (Test-Path -LiteralPath (Join-Path $Directory 'ssh.exe') -PathType Leaf)) { exit 3 }
+function Get-NormalPath([string] $Entry) {
+    return [Environment]::ExpandEnvironmentVariables($Entry.Trim().Trim('"')).TrimEnd('\')
+}
+$Wanted = Get-NormalPath $Directory
+$InBox = Get-NormalPath (Join-Path $env:SystemRoot 'System32\OpenSSH')
+$Key = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey('SYSTEM\CurrentControlSet\Control\Session Manager\Environment', $true)
+$Raw = [string]$Key.GetValue('Path', '', [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+$Entries = [Collections.Generic.List[string]]::new()
+foreach ($Entry in $Raw -split ';') {
+    if ($Entry.Trim() -and (Get-NormalPath $Entry) -ine $Wanted) { $Entries.Add($Entry) }
+}
+$Index = -1
+for ($i = 0; $i -lt $Entries.Count; $i++) {
+    if ((Get-NormalPath $Entries[$i]) -ieq $InBox) { $Index = $i; break }
+}
+if ($Index -lt 0) { $Entries.Add($Directory) } else { $Entries.Insert($Index, $Directory) }
+$Key.SetValue('Path', ($Entries -join ';'), [Microsoft.Win32.RegistryValueKind]::ExpandString)
+$Key.Close()
+Add-Type -Namespace Overalls -Name Native -MemberDefinition '[DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern System.IntPtr SendMessageTimeout(System.IntPtr window, uint message, System.UIntPtr wParam, string lParam, uint flags, uint timeout, out System.UIntPtr result);'
+$Result = [UIntPtr]::Zero
+[void][Overalls.Native]::SendMessageTimeout([IntPtr]0xffff, 0x1A, [UIntPtr]::Zero, 'Environment', 2, 5000, [ref]$Result)
+exit 0
+'@
+
+if ($ProgramFilesSsh -and (Test-OpenSsh $ProgramFilesSsh) -and
+    ((Get-NewTerminalSsh) -ine $ProgramFilesSsh)) {
+    [Console]::Error.WriteLine('Making OpenSSH 9.6+ the default ssh for new terminals; Windows will ask for administrator approval.')
+    try {
+        $Encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($Elevated))
+        $Process = Start-Process -FilePath 'powershell.exe' -Verb RunAs -Wait -PassThru -WindowStyle Hidden `
+            -ArgumentList @('-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', $Encoded)
+        if ($Process.ExitCode -ne 0) { [Console]::Error.WriteLine('overalls install: could not update the machine PATH') }
     }
+    catch {
+        [Console]::Error.WriteLine('overalls install: administrator approval was not granted')
+    }
+}
+if ((Get-NewTerminalSsh) -ine $Ssh) {
+    [Console]::Error.WriteLine("Plain ssh in new terminals still runs an older client; connect with: overalls ssh $Machine")
 }
 
 # 4. Download the published binary and verify its SHA-256 digest.

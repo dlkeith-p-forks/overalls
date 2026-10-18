@@ -69,10 +69,39 @@ update by renaming over the running binary, which Windows forbids.
    against the issued values, verifies the download's SHA-256, runs
    `config-ssh --staged-installer` with the downloaded binary before installing
    it, adds the binary directory to the user PATH and connects with
-   `overalls ssh <host>`. The machine page keeps its Linux/macOS commands and adds
-   the equivalent Windows PowerShell install and SSH commands beside them (a
-   Windows row under each of the "Install and connect" and "Already installed"
-   steps; originally a collapsible section).
+   `overalls ssh <host>`. The machine page keeps its Linux/macOS installer and
+   adds the equivalent Windows PowerShell installer beside it (originally a
+   collapsible section). See the 2026-10-18 amendment below for the single
+   `ssh <host>` reconnect command.
+
+## Amendment (2026-10-18): one reconnect command
+
+While this ADR is proposed, items 3 and 6 are amended so the machine page shows
+one `ssh <host>` reconnect command on Linux, macOS and Windows instead of
+`ssh <host>` beside a Windows-only `overalls ssh <host>`:
+
+- When `%ProgramFiles%\OpenSSH` lacks a 9.6+ client, `install.ps1` installs
+  `Microsoft.OpenSSH.Preview` with winget without asking; it still fails with
+  the manual step when no verified client exists afterwards.
+- Windows searches the machine PATH, which holds the in-box
+  `%SystemRoot%\System32\OpenSSH`, before the user PATH, so a user-scope change
+  cannot make plain `ssh` resolve to the verified client. The installer asks
+  once for administrator approval and, in that elevated process, inserts
+  `%ProgramFiles%\OpenSSH` immediately before the in-box entry in the machine
+  PATH (`REG_EXPAND_SZ`, other entries preserved) and broadcasts
+  `WM_SETTINGCHANGE`. The directory is resolved inside the elevated process and
+  is administrator-owned; a user-writable or caller-supplied directory never
+  enters the machine PATH, because every account and elevated process on the
+  workstation searches it.
+- Declined or failed elevation leaves the machine PATH unchanged and the
+  installer prints `overalls ssh <host>`, which keeps using the recorded client.
+
+Trade-off: plain `ssh` now means the 9.6+ client for every account on that
+workstation, and locked-down machines that refuse elevation keep the
+`overalls ssh` fallback. Evidence: [installer](../../../marshall/priv/overalls-install.ps1),
+[page command](../../../marshall/lib/marshall_web/machine_workspace.ex); the Nix
+`overalls-install-ps1` check parses the script and pins its pre-network
+refusals. No execution on a real Windows workstation is recorded yet.
 
 ## Alternatives
 

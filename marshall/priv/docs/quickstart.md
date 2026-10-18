@@ -49,9 +49,12 @@ that machine:
 
 - Linux and macOS: the `curl … /bin/install.sh | bash` command.
 - Windows: run the Windows `powershell …` command under "Install and connect"
-  in PowerShell. Windows needs OpenSSH 9.6 or newer; the installer offers to
-  install it with winget when the built-in client is older. Afterwards connect
-  with `overalls ssh HOST`.
+  in PowerShell. Windows needs OpenSSH 9.6 or newer: the installer installs it
+  with winget when the built-in client is older and, after you approve the
+  administrator prompt, makes it the default `ssh` for new terminals.
+
+Reconnecting later is the same everywhere: `ssh HOST`. (On Windows, if you
+declined the administrator prompt, use `overalls ssh HOST` instead.)
 
 ## First commands
 
