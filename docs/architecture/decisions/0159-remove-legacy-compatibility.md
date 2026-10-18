@@ -6,11 +6,11 @@
 - Implementation: implemented
 - Components: Marshall, Lilly, Protocol, Audi, Brady, Ziggy, Lyra, NixOS, auto-update, observability, deployment
 - Supersedes: ADR-0087, ADR-0088, ADR-0105, ADR-0126, ADR-0136, ADR-0138, ADR-0149, ADR-0151, ADR-0155, ADR-0158
-- Superseded by: ADR-0198
+- Superseded by: ADR-0199
 
 ## Context
 
-[ADR-0198](0198-memory-suspension-and-demand-wake.md) replaces only the
+[ADR-0199](0199-memory-suspension-and-demand-wake.md) replaces only the
 memory-migration/stopped-source and cross-host-relay prohibitions where this
 record carries them, and extends owner pins with automatic-suspension prevention
 and wake. Unrelated requirements and historical rationale remain in force.

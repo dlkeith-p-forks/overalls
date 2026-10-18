@@ -12,7 +12,7 @@
   # 64 GiB: Desktop Experience, the winget packages and Visual Studio with
   # the C++ and .NET desktop workloads use about 29 GiB (ADR-0173).
 , diskBytes ? 68719476736
-, minimumMemoryBytes ? 2147483648
+, minimumMemoryBytes ? (if editorBundle == null then 2147483648 else 4294967296)
 , installMemoryMiB ? 4096
 , installCores ? 4
 , installTimeoutSeconds ? 10800
@@ -23,18 +23,58 @@
   # Guest agents shipped on the configuration media (a derivation whose
   # bin/*.exe are copied to C:\overalls\agents), or null for an agentless image.
 , agents ? null
-  # Agent set the manifest declares (OverallsProtocol.GuestAgents): "none" or
-  # "windows-v1". "windows-v1" requires the agents and the terminal daemon.
-, guestAgents ? "none"
+  # Editor candidates use their separate versioned contract; supplying the pair
+  # chooses it by default, and explicitly mixing it with windows-v1 refuses.
+, guestAgents ? (if editorBundle == null then "none" else "windows-editor-v1")
   # ConPTY terminal daemon (bin/overalls-terminald.exe), copied beside the agents.
 , terminald ? null
+  # Native editor runtime inputs are staged for Windows bring-up diagnostics,
+  # but remain inert until a Windows broker and editor-capable image contract
+  # are reviewed. Presence MUST NOT change the manifest capability row.
+, editorRuntime ? null
+  # Reviewed native source-built bundle and broker for isolated bring-up only.
+  # This installs a supervised SYSTEM task under the separate v7 candidate
+  # contract. Its metadata stays unqualified and the fleet remains unchanged.
+, editorBundle ? null
+, editorBroker ? null
 }:
 assert builtins.elem winpeDriverLoad [ "paths" "drvload" ];
-assert builtins.elem guestAgents [ "none" "windows-v1" ];
+assert builtins.elem guestAgents [ "none" "windows-v1" "windows-editor-v1" ];
 assert guestAgents == "none" || (agents != null && terminald != null);
 assert terminald == null || agents != null;
+assert editorRuntime == null || (agents != null && terminald != null && guestAgents == "windows-v1");
+assert (editorBundle == null) == (editorBroker == null);
+assert (guestAgents == "windows-editor-v1") == (editorBundle != null);
+assert editorBundle == null || (agents != null && terminald != null);
+assert editorBundle == null || (editorBundle.targetPlatform == "win32-x64" && editorBundle.nativeBundle && !editorBundle.editorCapability);
+assert editorBundle == null || (editorBundle.editorProtocol == 1 &&
+  builtins.match "[0-9a-f]{40}" editorBundle.sourceCommit != null &&
+  builtins.match "[0-9a-f]{64}" editorBundle.releaseId != null);
+assert editorBroker == null || (editorBroker.targetPlatform == "win32-x64" && !editorBroker.editorCapability);
 let
   inherit (pkgs) lib;
+  editorDescriptor = if editorBundle == null then null else {
+    protocol = editorBundle.editorProtocol;
+    commit = editorBundle.sourceCommit;
+    release = editorBundle.releaseId;
+  };
+  editorConfiguration = if editorBundle == null then null else pkgs.writeText "overalls-windows-editor-broker.json" (builtins.toJSON {
+    descriptor = editorDescriptor;
+    node = "C:\\overalls\\editor\\node.exe";
+    server = "C:\\overalls\\editor\\out\\server-main.js";
+    system_root = "C:\\Windows";
+    account_authorizer = "C:\\overalls\\agents\\overalls-ssh-sync-windows.exe";
+    state_directory = "C:\\overalls\\editor-state";
+    ca_bundle = "C:\\overalls\\editor-broker\\ca-bundle.pem";
+    worker_path = lib.concatStringsSep ";" [
+      "C:\\overalls\\editor\\project-language-adapters"
+      "C:\\overalls\\editor"
+      "C:\\Program Files\\Git\\cmd"
+      "C:\\Windows\\System32"
+      "C:\\Windows"
+      "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+    ];
+  });
   # viosock is the virtio-vsock driver and Winsock provider the guest agents
   # use to reach Lilly (ADR-0171); it binds PCI\VEN_1AF4&DEV_1053 at first boot.
   driverDirectories = [ "viostor" "NetKVM" "vioserial" "viorng" "Balloon" "viosock" ];
@@ -201,6 +241,23 @@ let
       # Public-key-only sshd configuration fed by the roster agent's key files.
       cp ${./sshd_config} tree/overalls/ssh/sshd_config
     ''}
+    ${lib.optionalString (editorRuntime != null) ''
+      mkdir -p tree/overalls/editor-runtime
+      cp ${editorRuntime}/bin/node.exe tree/overalls/editor-runtime/node.exe
+      cp ${editorRuntime}/bin/rg.exe tree/overalls/editor-runtime/rg.exe
+      cp ${editorRuntime}/overalls-editor-windows-runtime.json tree/overalls/editor-runtime/runtime.json
+      cp -r ${editorRuntime}/licenses tree/overalls/editor-runtime/licenses
+    ''}
+    ${lib.optionalString (editorBundle != null) ''
+      mkdir -p tree/overalls/editor tree/overalls/editor-broker
+      cp -R ${editorBundle}/. tree/overalls/editor/
+      cp ${editorBroker}/bin/overalls-vscode-web-broker.exe tree/overalls/editor-broker/
+      cp ${editorBroker}/manifest.json tree/overalls/editor-broker/manifest.json
+      cp ${editorConfiguration} tree/overalls/editor-broker/broker.json
+      cp ${./editor-custody.ps1} tree/overalls/editor-broker/custody.ps1
+      cp ${./install-editor.ps1} tree/overalls/editor-broker/install.ps1
+      cp ${./start-editor.ps1} tree/overalls/editor-broker/start.ps1
+    ''}
     chmod -R u+w tree
     xorriso -as mkisofs -iso-level 3 -J -R -V OVERALLS_SETUP \
       -eltorito-alt-boot -e efi/microsoft/boot/efisys_noprompt.bin -no-emul-boot \
@@ -283,12 +340,15 @@ let
 in
 # @cc [owner:ghuntley,label:build] windows-image-artifacts
 # The image directory MUST contain `firmware` (the PVH UEFI firmware),
-# `disk.raw` (the installed GPT disk) and a version-5 `manifest.json` with
-# exactly the eight protocol keys: `boot.kind` `firmware` with `pci` true,
-# `root.format` `raw-gpt`, the configured `guest_agents` (`none` or
-# `windows-v1`), the minima and a workspace source version that is 2 for
-# `windows-v1` and null otherwise, with digests and byte counts matching the
-# two artifacts exactly. No display name: Marshall names images at
+# `disk.raw` (the installed GPT disk) and a `manifest.json` with only
+# protocol-owned keys: `boot.kind` `firmware` with `pci` true,
+# `root.format` `raw-gpt`, the configured `guest_agents` (`none`,
+# `windows-v1` or `windows-editor-v1`), the minima and a workspace source version that is 2 for
+# an agent-bearing image and null otherwise, and git_identity_version 1 only
+# with agents, with digests and byte counts matching the two artifacts exactly.
+# Ordinary images MUST remain v5 without an editor descriptor. Editor
+# candidates MUST use v7, os windows and the exact immutable editor descriptor.
+# No display name: Marshall names images at
 # registration. The installation evidence directory is kept beside them.
 pkgs.runCommand imageName {
   nativeBuildInputs = [ pkgs.jq ];
@@ -297,7 +357,8 @@ pkgs.runCommand imageName {
   # pre-distribution copies it to every host).
   allowedReferences = [ disk firmware.fd ];
   passthru = {
-    inherit disk firmware configMedia bootWim bootFiles driverTree answerFile windowsIso wimImageName diskBytes agents guestAgents wingetPayload;
+    inherit disk firmware configMedia bootWim bootFiles driverTree answerFile windowsIso wimImageName diskBytes agents guestAgents editorRuntime editorBundle editorBroker editorConfiguration editorDescriptor wingetPayload;
+    editorCapability = false;
   };
 } ''
   result=$(cat ${disk}/evidence/result)
@@ -308,7 +369,7 @@ pkgs.runCommand imageName {
   fi
   # A complete installation without its tools, or with any trace of the
   # build's one-shot autologon, is not an image.
-  for marker in OVERALLS-SPECIALIZE-FEATURES-ENABLED OVERALLS-WINGET-INSTALLED OVERALLS-WINGET-COMPLETE OVERALLS-AUTOLOGON-CLEARED; do
+  for marker in OVERALLS-SPECIALIZE-FEATURES-ENABLED OVERALLS-WINGET-INSTALLED OVERALLS-WINGET-COMPLETE OVERALLS-AUTOLOGON-CLEARED ${lib.optionalString (editorBundle != null) "OVERALLS-EDITOR-CANDIDATE-INSTALLED"}; do
     if ! grep -aq "$marker" ${disk}/evidence/serial.log; then
       echo "Windows installation lacks $marker; evidence kept in ${disk}/evidence" >&2
       exit 1
@@ -329,7 +390,8 @@ pkgs.runCommand imageName {
     --argjson minimum_memory_bytes ${toString minimumMemoryBytes} \
     --argjson minimum_disk_bytes ${toString diskBytes} \
     --arg guest_agents ${lib.escapeShellArg guestAgents} \
-    --argjson workspace_source_version ${if guestAgents == "windows-v1" then "2" else "null"} \
+    --argjson workspace_source_version ${if guestAgents != "none" then "2" else "null"} \
+    --argjson editor_descriptor ${lib.escapeShellArg (builtins.toJSON editorDescriptor)} \
     '{
       version: 5,
       architecture: "x86_64",
@@ -339,5 +401,6 @@ pkgs.runCommand imageName {
       minimum_memory_bytes: $minimum_memory_bytes,
       minimum_disk_bytes: $minimum_disk_bytes,
       workspace_source_version: $workspace_source_version
-    } + (if $guest_agents == "windows-v1" then {git_identity_version:1} else {} end)' > "$out/manifest.json"
+    } + (if $guest_agents != "none" then {git_identity_version:1} else {} end)
+      + (if $editor_descriptor == null then {} else {version:7,os:"windows",editor:$editor_descriptor} end)' > "$out/manifest.json"
 ''

@@ -54,6 +54,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   hegel-framework-packages = hegel-framework-packages;
   team-ssh = import ./machines/team-ssh service;
   vscode-web-package = import ./machines/vscode-web { pkgs = testPkgs; inherit packages; };
+  windows-editor-acceptance-harness = import ./machines/windows-editor { pkgs = testPkgs; inherit packages; };
   vscode-web-broker = packages.vscodeWebBroker;
   vscode-web-extensions = import ../../domains/artifacts/vscode-web/check-extensions.nix {
     pkgs = buildPkgs;
@@ -160,6 +161,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   foreign-linux-guest-filesystem = import ./evaluation/foreign-linux-filesystem.nix { pkgs = buildPkgs; inherit packages; };
   foreign-linux-pam-helper = import ./evaluation/foreign-linux-pam-helper.nix { pkgs = buildPkgs; inherit packages; };
   editor-target-boundaries = import ./evaluation/editor-target-boundaries.nix { pkgs = buildPkgs; inherit packages; };
+  windows-editor-runtime = import ./evaluation/windows-editor-runtime.nix { pkgs = buildPkgs; inherit packages; };
   native-os-guest-unit = import ./evaluation/native-os-guests.nix { pkgs = buildPkgs; inherit packages; };
   native-image-promotion = packages.nativeImagePromotionChecks;
   # Windows guest spike (ADR-0169): VMM identity, firmware provenance and the

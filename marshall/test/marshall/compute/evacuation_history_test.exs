@@ -235,7 +235,7 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
     vm = Ledger.update!(vm, :observe, %{observed_state: :running})
     destination = host_fixture()
     # A 2 GiB guest, 1 GiB boot bundle and two 576 MiB checkpoint slots fit
-    # within 5 GiB (ADR-0198); running suspension still needs downtime approval.
+    # within 5 GiB (ADR-0199); running suspension still needs downtime approval.
     Ledger.update!(destination.pool, :report, %{
       free_bytes: destination.pool.overhead_bytes + 5 * 1_073_741_824,
       reported_at: Ledger.now()

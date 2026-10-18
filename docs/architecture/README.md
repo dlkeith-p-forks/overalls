@@ -1,6 +1,13 @@
 # Architecture
 
-[ADR-0198](decisions/0198-memory-suspension-and-demand-wake.md) accepts
+[ADR-0200](decisions/0200-windows-browser-editor-candidate.md) accepts a native
+Windows browser editor with a SYSTEM gateway broker and personal SAM/S4U workers.
+Its separate `windows-editor-v1` manifest-v7 and bundle-v4 candidate contract
+requires the immutable editor tuple. The candidate remains outside the selected
+production catalog; `windows-v1` keeps editor false and exact native/browser
+acceptance remains unrecorded.
+
+[ADR-0199](decisions/0199-memory-suspension-and-demand-wake.md) accepts
 memory-preserving suspension, paused relocation and demand wake with automatic
 capacity relocation. New thread/Orb machines use a four-hour tool-idle policy;
 owner pins wake and prevent automatic suspension. Checkpoints retain immutable
@@ -9,7 +16,7 @@ wait through fenced restore or one fleet-gateway relay hop. Implementation and
 native acceptance remain partial in the
 [suspension review](reviews/2026-10-18-memory-suspension.md).
 
-[ADR-0199](decisions/0199-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
+[ADR-0198](decisions/0198-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0188](decisions/0188-signed-overalls-cachix-substitution.md) adds the
 signed Overalls Cachix read cache to all Nix-running hosts, installers and guest
@@ -72,7 +79,9 @@ code. Its agents are implemented: readiness, trust, roster SSH and host
 certificates, the shared terminald under ConPTY, the workspace receiver with
 winget's pinned Git for Windows and the shared agent executor; images are
 Desktop Experience with pinned winget packages and WSL features (ADR-0173). The fleet proofs and the image
-staging are pending.
+staging are pending. A separate Windows Code OSS runtime/source and broker
+bring-up is staged with editor capability false; its native bundle, image
+admission and browser acceptance remain outside this decision.
 
 [ADR-0190](decisions/0190-native-kernel-provenance-and-admission.md) records the
 cross-OS contract behind these detailed choices. Arch Linux and AlmaLinux retain
@@ -1038,7 +1047,7 @@ and local lookup checks, three-frontend HTTP issuance/renewal, Route 53 and
 service-role regressions pass; acceptance scope is tracked in the
 [HTTP-01 review](reviews/2026-09-17-http01-validation.md).
 
-[ADR-0198](decisions/0198-memory-suspension-and-demand-wake.md) replaces
+[ADR-0199](decisions/0199-memory-suspension-and-demand-wake.md) replaces
 ADR-0155's stopped-source reboot with pause, coherent full disk/checkpoint
 transfer and same-memory resume. Already paused machines remain paused after
 an explicit move; stopped machines remain disk-only moves. There is no live

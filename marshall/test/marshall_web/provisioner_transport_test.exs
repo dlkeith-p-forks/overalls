@@ -597,7 +597,7 @@ defmodule MarshallWeb.ProvisionerTransportTest do
     {:ok, foreign} = client(context, base, cacertfile: @ca)
     {:ok, foreign_session} = Client.open(foreign, Ash.UUID.generate())
 
-    # ADR-0198: fresh connectivity proof gates memory-preserving suspension;
+    # ADR-0199: fresh connectivity proof gates memory-preserving suspension;
     # only its exact checkpoint permits the coherent disk/RAM stream.
     assert {:ok, %{commands: []}} =
              Client.exchange_relocation_source(foreign, foreign_session, [])

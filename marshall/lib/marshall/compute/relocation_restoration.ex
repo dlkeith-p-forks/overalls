@@ -18,7 +18,7 @@ defmodule Marshall.Compute.RelocationRestoration do
   # attempted restore MUST NOT fall back to cold boot or checkpoint replay.
   # Originally stopped or paused sources retain that state. Destination
   # unavailability MUST NOT block this path. Disk and checkpoint holds remain
-  # charged until their physical cleanup evidence arrives (ADR-0198).
+  # charged until their physical cleanup evidence arrives (ADR-0199).
   # Source outcome sequence remains monotonic for its retained placement across
   # the epoch change; restoration MUST NOT reset or reuse those sequence numbers.
   # An old completed outcome MUST NOT authorize restart/completion while the

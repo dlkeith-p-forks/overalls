@@ -122,10 +122,19 @@ if exist C:\overalls\agents\overalls-terminald.exe (
   schtasks /Create /TN "Overalls\Terminald" /SC ONSTART /RU SYSTEM /RL HIGHEST /F /TR "C:\overalls\agents\overalls-terminald.exe" >> %LOG% 2>&1
   schtasks /Query /TN "Overalls\Terminald" >> %LOG% 2>&1 && echo OVERALLS-TERMINALD-REGISTERED > COM1
 )
+rem Candidate Windows browser editor only: the bundle and broker are supplied
+rem together by the image builder. Installation establishes fixed package/task
+rem custody and the firewall bound; its marker is required by that candidate.
+rem This does not change windows-v1 or select a candidate for fleet admission.
+if exist C:\overalls\editor-broker\install.ps1 (
+  powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File C:\overalls\editor-broker\install.ps1 >> %LOG% 2>&1
+  if not errorlevel 1 echo OVERALLS-EDITOR-CANDIDATE-INSTALLED > COM1
+)
 rem schtasks gives every task a 72-hour execution limit; the agents are
 rem long-running daemons, so remove the limit, never start a second instance
 rem and ask the scheduler to restart a task that fails.
-powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "$s = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries; Get-ScheduledTask -TaskPath '\Overalls\' | Where-Object TaskName -ne 'Bootstrap' | ForEach-Object { Set-ScheduledTask -TaskPath $_.TaskPath -TaskName $_.TaskName -Settings $s | Out-Null; 'settings ' + $_.TaskName }" >> %LOG% 2>&1 && echo OVERALLS-AGENT-TASKS-UNBOUNDED > COM1
+rem EditorBroker already has verified private custody and supervision settings.
+powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "$s = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries; Get-ScheduledTask -TaskPath '\Overalls\' | Where-Object { $_.TaskName -notin @('Bootstrap', 'EditorBroker') } | ForEach-Object { Set-ScheduledTask -TaskPath $_.TaskPath -TaskName $_.TaskName -Settings $s | Out-Null; 'settings ' + $_.TaskName }" >> %LOG% 2>&1 && echo OVERALLS-AGENT-TASKS-UNBOUNDED > COM1
 
 rem Emergency Management Services: Windows boot manager, loader and the kernel
 rem Special Administration Console all use COM1 at 115200 baud from next boot.

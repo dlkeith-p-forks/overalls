@@ -126,7 +126,7 @@ defmodule Marshall.Compute.RelocationSources do
 
   # @cc [owner:ghuntley,label:capacity;recovery] stopped-source-request-retains-reservations
   # A source request asks for one full coherent stream of a quiescent disk
-  # and its checkpoint for memory-bearing moves (ADR-0198). Originally stopped
+  # and its checkpoint for memory-bearing moves (ADR-0199). Originally stopped
   # workloads MUST remain stopped; running workloads MUST have the recorded
   # physical relocation pause. Connectivity alone MUST NOT authorize a snapshot.
   # Both disk reservations and transfer slots MUST be held; requests MUST NOT

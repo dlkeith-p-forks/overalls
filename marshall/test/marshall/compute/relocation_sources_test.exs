@@ -361,7 +361,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
           {:ok, command} = Wire.command(wire)
           assert {:ok, _} = exchange(c, [reply(command)])
         else
-          # A running source is never copied before its recorded pause (ADR-0198).
+          # A running source is never copied before its recorded pause (ADR-0199).
           assert {:ok, %{"commands" => []}} = exchange(c)
         end
       end
@@ -1431,7 +1431,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
 
   test "cancelling a running move before its stop preserves execution and never snapshotted",
        c do
-    # ADR-0198: no source request exists for a running source before its recorded pause.
+    # ADR-0199: no source request exists for a running source before its recorded pause.
     assert {:ok, %{"commands" => []}} = exchange(c)
     assert [] == Ledger.read!(SourcePermitRequest, relocation_id: c.relocation.id)
 
@@ -1846,7 +1846,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       alias Marshall.Compute.{Relocation, RelocationCoordinator}
       holds = Ledger.read!(Reservation, vm_id: c.vm.id)
       assert {:ok, :waiting} = RelocationCoordinator.advance(c.relocation.id)
-      # Nothing is copied while the source runs (ADR-0198).
+      # Nothing is copied while the source runs (ADR-0199).
       assert {:ok, %{"commands" => []}} = exchange(c)
       assert {:ok, :waiting} = RelocationCoordinator.advance(c.relocation.id)
 

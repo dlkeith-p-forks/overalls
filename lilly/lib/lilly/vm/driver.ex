@@ -511,7 +511,13 @@ defmodule Lilly.VM.Driver do
                      api_path(pool, spec),
                      if(record["slot"] == "a", do: :a, else: :b)
                    ),
-                 :ok <- Checkpoint.copied(pool, spec, authority),
+                 :ok <-
+                   Checkpoint.copied(
+                     pool,
+                     spec,
+                     authority,
+                     Path.join(directory(config, spec), "lock")
+                   ),
                  do: finish_pause(config, pool, spec, authority)
 
           _ ->

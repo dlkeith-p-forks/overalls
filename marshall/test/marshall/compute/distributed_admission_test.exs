@@ -3768,7 +3768,7 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
          %{session_id: session["session_id"], epoch: session["epoch"], results: []}}
       end
 
-    # ADR-0198: connectivity proof, then physical pause, then one coherent copy.
+    # ADR-0199: connectivity proof, then physical pause, then one coherent copy.
     [prepared] = Ledger.read!(Relocation, id: r.id)
     [running] = Ledger.read!(VirtualMachine, id: vm.id)
     Marshall.RelocationProbeFixture.applied!(prepared, running)

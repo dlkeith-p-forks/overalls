@@ -2,7 +2,7 @@
 
 ## Memory-preserving suspension
 
-[ADR-0198](repo:docs/architecture/decisions/0198-memory-suspension-and-demand-wake.md)
+[ADR-0199](repo:docs/architecture/decisions/0199-memory-suspension-and-demand-wake.md)
 adds desired and observed `paused` states. Pause is a durable lifecycle operation;
 its physical outcome requires a sealed full memory/device checkpoint and proven
 VMM/cgroup absence. Only then can compute reservations be released. Resume is a

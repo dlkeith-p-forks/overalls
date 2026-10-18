@@ -80,7 +80,7 @@ defmodule Marshall.Compute.RelocationCapacity do
   end
 
   # Memory-preserving relocation pauses a running workload for its full copy,
-  # so evacuating a running workload still needs downtime approval (ADR-0198).
+  # so evacuating a running workload still needs downtime approval (ADR-0199).
   defp downtime_approval_required?(vm), do: vm.desired_state == :running
 
   defp prepare!(vm, hosts, source_mode, wake? \\ false) do

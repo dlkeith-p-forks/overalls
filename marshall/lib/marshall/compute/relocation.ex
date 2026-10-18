@@ -129,7 +129,7 @@ defmodule Marshall.Compute.Relocation do
           "(committed_at IS NULL AND import_request_id IS NULL AND activation_operation_id IS NULL AND activation_generation IS NULL) OR (committed_at IS NOT NULL AND import_request_id IS NOT NULL AND activation_operation_id IS NOT NULL AND activation_generation IS NOT NULL AND activation_generation > 0)"
 
       # Every relocation must prove destination connectivity before a running
-      # source is paused (ADR-0198). Validated for all rows once the exported
+      # source is paused (ADR-0199). Validated for all rows once the exported
       # pre-copy history was purged (ADR-0159, migration 20261011200000).
       check_constraint :source_preflight_request_id, "relocation_stop_requires_probe",
         check:
@@ -187,7 +187,7 @@ defmodule Marshall.Compute.Relocation do
   end
 
   # @cc [owner:ghuntley,label:recovery;concurrency] relocation-stopped-copy-flow
-  # Relocation MUST use one quiescent full copy (ADR-0198): key preparation, then a
+  # Relocation MUST use one quiescent full copy (ADR-0199): key preparation, then a
   # running source is paused only after fresh destination connectivity proof
   # (checking_transfer -> stopping_source); one coherent full stream of disk/RAM
   # (copying), destination adoption (importing), the fenced handoff commit, and

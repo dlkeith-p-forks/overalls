@@ -56,7 +56,7 @@ old-link requirement ("breaking changes acceptable for links").
    top links each section; `<hr>` double rules separate them. Profile leads
    because it is identity and the most benign; sign-in follows because the
    step-up flow lands there; SSH keys follow because they are the outbound
-   credential. [ADR-0199](0199-git-attribution-and-guest-identity.md) appends
+   credential. [ADR-0198](0198-git-attribution-and-guest-identity.md) appends
    a fourth `#git-settings` section for Git author defaults and optional agent
    commit attribution, preserving that original three-section order.
    There is no account-deletion section: self-service deletion
@@ -199,6 +199,6 @@ None.
 now lands on `/settings#security`),
 [ADR-0046](0046-porsche-ssh-management.md) (browser key management now at
 `/settings#ssh-keys`),
-[ADR-0199](0199-git-attribution-and-guest-identity.md) (the appended Git section),
+[ADR-0198](0198-git-attribution-and-guest-identity.md) (the appended Git section),
 [ADR-0161](0161-monospace-web-presentation.md),
 [ADR-0022](0022-browser-terminal-and-live-login-checks.md).

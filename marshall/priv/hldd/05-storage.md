@@ -12,6 +12,12 @@ cannot establish asynchronous device-state ordering. A coherent disk snapshot an
 memory checkpoint travel as separate authenticated
 components during a paused relocation. Adoption validates both before handoff.
 
+After the acknowledged snapshot response, Lilly records `copied` under the
+current placement/capture authority without reacquiring the pool lock. This
+private journal update changes neither dataset ownership nor allocation credit.
+Sealing and ready publication still serialize through the pool. A merely
+`capturing` journal never infers success from files or repeats the snapshot.
+
 Interrupted sealing skips repair only when both memory and device-state files
 are regular, singly linked, root/service-owned and mode `0444`. Incomplete files
 can be repaired only after independently confirming a writable owned dataset;

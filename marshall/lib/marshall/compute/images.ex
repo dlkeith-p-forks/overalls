@@ -73,12 +73,13 @@ defmodule Marshall.Compute.Images do
   @doc "The guest operating system family agents should be told about."
   # @cc [owner:ghuntley,label:product] images-guest-platform-by-id
   # guest_platform/1 MUST be :windows exactly when the catalog row's validated
-  # manifest declares the windows-v1 agent set, and :unix otherwise (including
+  # manifest declares windows-v1 or windows-editor-v1, and :unix otherwise (including
   # unknown or invalid images); it grants no authority.
   @spec guest_platform(term()) :: :unix | :windows
   def guest_platform(id) when is_binary(id) do
     with [image] <- Ledger.read!(Image, id: id),
-         {:ok, :windows_v1} <- Image.guest_agents_capability(image) do
+         {:ok, agents} when agents in [:windows_v1, :windows_editor_v1] <-
+           Image.guest_agents_capability(image) do
       :windows
     else
       _ -> :unix

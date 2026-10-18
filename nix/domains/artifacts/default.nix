@@ -22,6 +22,13 @@ let
   hostLock = import ./hosts/host-tools.nix { inherit pkgs; };
   terminald = import ./infrastructure/terminald.nix { inherit pkgs; };
   terminaldChecks = import ./infrastructure/terminald-checks.nix { inherit pkgs; };
+  # Hash-pinned Windows native runtime inputs. This is a staging closure only:
+  # it does not contain the Code OSS bundle or broker and cannot widen
+  # windows-v1 editor capability (ADR-0171).
+  windowsEditorRuntime = import ./vscode-web/windows-runtime.nix { inherit pkgs; };
+  windowsEditorSource = import ./vscode-web/windows-source.nix { inherit pkgs; };
+  mkWindowsEditorBundle = import ./vscode-web/windows-bundle.nix { inherit pkgs; source = windowsEditorSource; };
+  windowsEditorBroker = import ./vscode-web-broker/windows.nix { inherit pkgs; inherit (lyra) toolchain; };
   codingClis = import ./guest/coding-clis.nix { inherit pkgs; };
   # Patched static Firecracker/jailer pair (ADR-0169); the only VMM Lilly runs.
   inherit (import ./infrastructure/firecracker.nix { inherit pkgs; }) vmm;
@@ -35,6 +42,14 @@ let
   # The windows-v1 image: the same installation with the readiness and trust
   # daemons declared in its manifest (ADR-0171 gate 2).
   windowsGuestAgents = mkWindowsGuest { agents = lyraWindows; terminald = terminaldWindows; guestAgents = "windows-v1"; };
+  # Windows editor runtime bring-up image. The runtime is staged for native
+  # diagnostics only; this remains a windows-v1 manifest with editor=false.
+  windowsGuestRuntime = mkWindowsGuest {
+    agents = lyraWindows;
+    terminald = terminaldWindows;
+    editorRuntime = windowsEditorRuntime;
+    guestAgents = "windows-v1";
+  };
   windowsGuestPublished = import ./guest/windows/published.nix { inherit pkgs; };
   # Variant that loads the virtio storage driver with drvload instead of the
   # answer file's DriverPaths; kept for diagnosing Setup's WinPE initialization.
@@ -258,7 +273,7 @@ let
     };
 in
 rec {
-  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestPublished windowsGuestDrvload windowsBoot;
+  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestRuntime windowsGuestPublished windowsGuestDrvload windowsBoot windowsEditorRuntime windowsEditorSource windowsEditorBroker mkWindowsEditorBundle;
   inherit terminald terminaldChecks terminaldWindows;
   inherit codingClis;
   inherit lyra lyraLinux lyraWindows lyraNative;

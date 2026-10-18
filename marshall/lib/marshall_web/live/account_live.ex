@@ -5,7 +5,7 @@ defmodule MarshallWeb.AccountLive do
   zone of ADR-0195; Sign-in and passkeys (`#security`) holds passkey
   enrollment, verification, the elevation return path of ADR-0160 and passkey
   management; SSH keys (`#ssh-keys`) holds the owner-scoped keys of ADR-0046.
-  Git preferences (`#git-settings`) retain ADR-0199 account-owned identity defaults.
+  Git preferences (`#git-settings`) retain ADR-0198 account-owned identity defaults.
   The security mount of `MarshallWeb.LiveUserAuth` guards every section.
   """
   use MarshallWeb, :live_view

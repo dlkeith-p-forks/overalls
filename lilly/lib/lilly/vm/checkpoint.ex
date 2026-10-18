@@ -149,15 +149,25 @@ defmodule Lilly.VM.Checkpoint do
     end)
   end
 
-  @spec copied(Pool.t(), Spec.t(), map()) :: :ok | failure()
-  def copied(pool, spec, authority) do
-    Storage.locked(pool, fn ->
-      with {:ok, %{"phase" => "capturing", "capture_authority" => ^authority} = value} <-
-             read(pool, spec.id),
-           next = put_in(value, ["slots", value["slot"], "checkpoint_id"], value["checkpoint_id"]),
-           do: write(pool, spec.id, %{next | "phase" => "copied"}),
-           else: (_ -> failure())
-    end)
+  # @cc [owner:ghuntley,label:recovery;concurrency] acknowledged-capture-journal-without-pool-turn
+  # After an acknowledged snapshot/create, the caller MUST retain its live
+  # placement lease for the configured placement directory and record copied
+  # only for the exact local capture binding and authority. This private journal
+  # transition changes no dataset, slot
+  # ownership or allocation credit, so it MUST NOT acquire a competing pool
+  # turn and discard the caller's successful-copy proof on storage contention.
+  # Without that acknowledged API result a capturing journal cannot be promoted.
+  @spec copied(Pool.t(), Spec.t(), map(), Path.t()) :: :ok | failure()
+  def copied(pool, spec, authority, placement_directory) do
+    with lease when is_struct(lease, Lilly.Host.Lease) <- Lock.current(),
+         true <- lease.directory == placement_directory,
+         true <- Lock.held?(lease),
+         {:ok, %{"phase" => "capturing", "capture_authority" => ^authority} = value} <-
+           read(pool, spec.id),
+         true <- value["binding"] == binding(pool, spec),
+         next = put_in(value, ["slots", value["slot"], "checkpoint_id"], value["checkpoint_id"]),
+         do: write(pool, spec.id, %{next | "phase" => "copied"}),
+         else: (_ -> failure())
   end
 
   @spec complete(Pool.t(), Spec.t(), map()) :: {:ok, Descriptor.t()} | failure()

@@ -6,11 +6,11 @@
 - Implementation: partial
 - Components: Marshall Access and Compute domains, MarshallWeb, Marshall SSH commands, shared protocol command catalog, Porsche client
 - Supersedes: none
-- Superseded by: ADR-0198
+- Superseded by: ADR-0199
 
 ## Context
 
-[ADR-0198](0198-memory-suspension-and-demand-wake.md) replaces only the
+[ADR-0199](0199-memory-suspension-and-demand-wake.md) replaces only the
 memory-migration/stopped-source and cross-host-relay prohibitions where this
 record carries them, and extends owner pins with automatic-suspension prevention
 and wake. Unrelated requirements and historical rationale remain in force.

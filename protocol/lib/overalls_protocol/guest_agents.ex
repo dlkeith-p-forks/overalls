@@ -4,7 +4,7 @@ defmodule OverallsProtocol.GuestAgents do
   can do. Lilly and Marshall branch on these capabilities, never on the set name.
   """
 
-  @type t :: :linux | :none | :windows_v1 | :freebsd_v1 | :illumos_v1
+  @type t :: :linux | :none | :windows_v1 | :windows_editor_v1 | :freebsd_v1 | :illumos_v1
 
   @type capabilities :: %{
           readiness: boolean(),
@@ -45,6 +45,7 @@ defmodule OverallsProtocol.GuestAgents do
   def capabilities(:linux), do: @all
   def capabilities(:none), do: @none
   def capabilities(:windows_v1), do: %{@all | inception: false, editor: false}
+  def capabilities(:windows_editor_v1), do: %{@all | inception: false}
   # A native agent-set name alone remains fail-closed. Reviewed image context
   # is required by capabilities/2. Native transport remains
   # discoverable through vsock?/1 so the setup path cannot accidentally fall
@@ -64,6 +65,27 @@ defmodule OverallsProtocol.GuestAgents do
       else: @none
   end
 
+  # @cc [owner:ghuntley,label:security;protocol] windows-editor-context-required
+  # The separate Windows editor row MUST require normalized Windows firmware,
+  # x86_64, PCI and a closed EditorRelease descriptor in capabilities/2. Callers
+  # MUST first validate the immutable v7 image or v4 bundle through its codec;
+  # an old Windows row or a missing descriptor MUST NOT gain editor capability.
+  def capabilities(:windows_editor_v1, %{
+        guest_agents: :windows_editor_v1,
+        os: :windows,
+        boot_kind: :firmware,
+        architecture: :x86_64,
+        pci: true,
+        editor: %{protocol: 1, commit: commit, release: release} = editor
+      })
+      when map_size(editor) == 3 do
+    if OverallsProtocol.EditorRelease.digest?(commit, 40) and
+         OverallsProtocol.EditorRelease.digest?(release, 64),
+       do: capabilities(:windows_editor_v1),
+       else: @none
+  end
+
+  def capabilities(:windows_editor_v1, _), do: @none
   def capabilities(agents, %{guest_agents: agents}), do: capabilities(agents)
   def capabilities(_, _), do: @none
 
@@ -71,6 +93,7 @@ defmodule OverallsProtocol.GuestAgents do
   def wire(:linux), do: "linux"
   def wire(:none), do: "none"
   def wire(:windows_v1), do: "windows-v1"
+  def wire(:windows_editor_v1), do: "windows-editor-v1"
   def wire(:freebsd_v1), do: "freebsd-v1"
   def wire(:illumos_v1), do: "illumos-v1"
 
@@ -78,6 +101,7 @@ defmodule OverallsProtocol.GuestAgents do
   def parse("linux"), do: {:ok, :linux}
   def parse("none"), do: {:ok, :none}
   def parse("windows-v1"), do: {:ok, :windows_v1}
+  def parse("windows-editor-v1"), do: {:ok, :windows_editor_v1}
   def parse("freebsd-v1"), do: {:ok, :freebsd_v1}
   def parse("illumos-v1"), do: {:ok, :illumos_v1}
   def parse(_), do: :error
@@ -105,6 +129,7 @@ defmodule OverallsProtocol.GuestAgents do
   def readiness_budget_ms(:linux, :inception), do: 2_400_000
   def readiness_budget_ms(:linux, _profile), do: 120_000
   def readiness_budget_ms(:windows_v1, _profile), do: 600_000
+  def readiness_budget_ms(:windows_editor_v1, _profile), do: 600_000
   def readiness_budget_ms(:freebsd_v1, _profile), do: 600_000
   def readiness_budget_ms(:illumos_v1, _profile), do: 600_000
   def readiness_budget_ms(:none, _profile), do: 120_000

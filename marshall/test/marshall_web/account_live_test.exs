@@ -54,7 +54,28 @@ defmodule MarshallWeb.AccountLiveTest do
       assert has_element?(view, "#security #passkeys-empty")
       assert has_element?(view, "#ssh-keys #ssh-keys-empty")
       assert has_element?(view, "#ssh-keys #ssh-key-form #add-ssh-key")
+      assert has_element?(view, "#git-settings-form")
       assert has_element?(view, ".workspace-breadcrumb", "Account")
+    end
+
+    test "the Git settings form persists identity and trailer preference", %{conn: conn} do
+      owner = user()
+      {:ok, view, _} = live(signed_in(conn, owner), ~p"/settings")
+
+      view
+      |> form("#git-settings-form",
+        settings: %{
+          git_username: "Account Author",
+          git_email: "author@example.org",
+          commit_trailers_enabled: false
+        }
+      )
+      |> render_submit()
+
+      saved = Marshall.Accounts.Security.current(owner.id)
+      assert saved.git_username == "Account Author"
+      assert to_string(saved.git_email) == "author@example.org"
+      refute saved.commit_trailers_enabled
     end
 
     # @cc [owner:ghuntley,label:security;verification] account-page-strict-mount-pin

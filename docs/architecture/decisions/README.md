@@ -1,13 +1,18 @@
 # Architecture decision records
 
-[ADR-0198](0198-memory-suspension-and-demand-wake.md) accepts full-memory
+[ADR-0200](0200-windows-browser-editor-candidate.md) accepts a source-built,
+account-bound Windows editor candidate with a separate `windows-editor-v1`
+manifest-v7/bundle-v4 contract. Native package, image and browser qualification
+remain separate; the selected `windows-v1` editor capability stays false.
+
+[ADR-0199](0199-memory-suspension-and-demand-wake.md) accepts full-memory
 suspension, paused relocation, durable demand wake and the four-hour tool-idle
 policy. It carries forward fencing, capacity and cleanup requirements while
 replacing stopped-source reboot and the cross-host relay prohibition. The
 [suspension review](../reviews/2026-10-18-memory-suspension.md) retains the
 distinction between source implementation and recorded native acceptance.
 
-[ADR-0199](0199-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
+[ADR-0198](0198-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0192](0192-staged-detached-ingress.md) moves the browser editor and
 nested HTTPS onto ADR-0187's detached ingress bridges. The BEAM's only
@@ -304,7 +309,7 @@ the native ZFS inventory helper are separate scopes. The helper passed inside a
 complete native-zfs run that failed unrelated resource-tuning receipt validation.
 
 Superseded [ADR-0155](0155-stopped-only-relocation.md) removed live pre-copy,
-baseline/incremental streams and the strategy column. ADR-0198 retains one full
+baseline/incremental streams and the strategy column. ADR-0199 retains one full
 quiescent copy and replaces a running source's stop/reboot with pause/resume,
 adding separately reserved checkpoint custody. Historical results keep their
 original scope; inherited fencing and cleanup requirements remain in force.
@@ -440,8 +445,9 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0195](0195-user-time-zones.md) | accepted | partial | User time zone preference and local-time display |
 | [ADR-0196](0196-single-account-settings-page.md) | accepted | partial | One account settings page |
 | [ADR-0197](0197-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |
-| [ADR-0198](0198-memory-suspension-and-demand-wake.md) | accepted | partial | Memory-preserving suspension, relocation and demand wake |
-| [ADR-0199](0199-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
+| [ADR-0198](0198-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
+| [ADR-0199](0199-memory-suspension-and-demand-wake.md) | accepted | partial | Memory-preserving suspension, relocation and demand wake |
+| [ADR-0200](0200-windows-browser-editor-candidate.md) | accepted | partial | Account-bound Windows browser editor candidate |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
 | [ADR-0188](0188-signed-overalls-cachix-substitution.md) | accepted | partial | Use the signed Overalls Cachix cache across Nix machines |
 | [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |

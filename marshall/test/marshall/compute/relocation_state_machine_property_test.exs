@@ -1,6 +1,6 @@
 defmodule Marshall.Compute.RelocationStateMachinePropertyTest do
   # @cc [owner:ghuntley,label:verification] relocation-graph-is-stopped-copy-only
-  # The declared Relocation state machine MUST admit only the ADR-0198 quiescent
+  # The declared Relocation state machine MUST admit only the ADR-0199 quiescent
   # copy: every route to :copying passes :checking_transfer, cancellation exists
   # only before the handoff commit, terminal phases are sinks, every phase can
   # still finish, and no pre-copy or consumed-checkpoint retry phase remains declared.

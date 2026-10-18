@@ -1,9 +1,14 @@
 # Architecture reviews
 
 - [Memory-preserving suspension and demand wake (2026-10-18)](2026-10-18-memory-suspension.md):
-  ADR-0198, durable lifecycle/wake/checkpoint state machines and authenticated
+  ADR-0199, durable lifecycle/wake/checkpoint state machines and authenticated
   waiting connections; implementation and native acceptance in progress.
 
+- [One account settings page (2026-10-18)](2026-10-18-account-settings-page.md):
+  ADR-0196 merges Profile, Security and SSH keys into `/settings` behind the
+  security mount, removes the old routes without redirects and collapses the
+  sidebar; LiveView, contract, presentation and probe checks ran, while the
+  rewritten NixOS browser tests and Antithesis workload were not executed.
 - [Foreign Linux browser editor (2026-10-18)](2026-10-18-foreign-linux-browser-editor.md):
   repairs the missing Alma/Arch editor package, account broker and immutable
   descriptor while preserving exact-release authority; twelve Alma native browser
@@ -11,6 +16,15 @@
   diagnostic replay passed all twelve stages after an unexplained broker-recovery
   502; all remain separate from
   the frozen seven-family CLI milestone.
+- [Cross-platform browser editor status (2026-10-18)](2026-10-18-cross-platform-editor-status.md):
+  reconciles current Linux editor evidence with ADR-0153/0158 and records the
+  explicit FreeBSD, OmniOS/illumos and Windows editor refusals and their remaining
+  implementation and native-browser gaps. Windows runtime/source staging,
+  portable broker custody tests and the roster authorizer lock are recorded as
+  partial evidence; ADR-0200 accepts a separate manifest-v7/bundle-v4 Windows
+  editor candidate without changing selected Windows images. Native pipe/ACL
+  library checks are recorded; personal account/task execution and the complete
+  Windows browser journey remain unrecorded.
 - [User time zones (2026-10-18)](2026-10-18-user-time-zones.md): ADR-0195's
   per-user display zone, self-only validated writes, saved → browser → UTC
   viewer resolution, UTC-provenance timestamps, people's local time in team,
@@ -629,4 +643,4 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [Antithesis guest-lifecycle profile (2026-10-17)](2026-10-17-antithesis-guest-lifecycle-profile.md): launchable QEMU TCG guest-lifecycle selection with a labelled stub-storage container Lilly; harness-only, no ADR change and no recorded run.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)
 
-- [Git attribution and guest identity (2026-10-18)](2026-10-18-git-attribution.md): ADR-0199 settings, immutable snapshots and guest configuration verification.
+- [Git attribution and guest identity (2026-10-18)](2026-10-18-git-attribution.md): ADR-0198 settings, immutable snapshots and guest configuration verification.

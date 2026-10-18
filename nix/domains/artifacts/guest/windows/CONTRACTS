@@ -2,8 +2,9 @@
 Windows guest images MUST be assembled from a hash-pinned installation ISO
 recorded in iso.json, the pinned nixpkgs virtio-win driver tree and the
 source-built CloudHv firmware, inside a KVM-enabled Nix sandbox whose guest
-network is restricted. Guest agents come only from the source-built
-`lyraWindows` and `terminaldWindows` derivations, and winget and every
+network is restricted. Core guest agents come only from the source-built
+`lyraWindows` and `terminaldWindows` derivations, and the optional candidate
+editor broker only from the source-built `windowsEditorBroker`; winget and every
 winget package (Git among them) only from winget.json, fetched by Nix against
 the recorded SHA-256 digests. No build step may fetch anything at build time;
 the installation guest's only reachable endpoint is the guestfwd file server
@@ -25,13 +26,37 @@ from the Linux no-serial-login-shell contract and MUST stay recorded as a
 security gap while it exists.
 
 @cc [owner:ghuntley,label:build] windows-image-identity-separate
-Windows images MUST use manifest version 5 with `boot.kind = firmware`,
+Ordinary Windows images MUST use manifest version 5 with `boot.kind = firmware`,
 `root.format = raw-gpt` and `guest_agents` of `none` or `windows-v1` (the
 builder's `guestAgents` argument, `windows-v1` only when the agents are
 supplied), with `workspace_source_version` 2 exactly for `windows-v1`. They
 MUST NOT be presented as version-4 kernel images, and the Linux
 `guest-image-identity` contract in the parent directory MUST NOT be weakened to
 admit them.
+
+@cc [owner:ghuntley,label:build;security] windows-editor-runtime-inert
+The optional `editorRuntime` staging payload MUST require the Windows v1 agents
+and terminal daemon, MUST be copied only to `C:\overalls\editor-runtime`, and
+MUST NOT register a listener, worker or task. Its presence MUST preserve the
+version-5 windows-v1 manifest without an editor descriptor. The separately
+supplied candidate bundle/broker pair MUST use the version-7 windows-editor-v1
+contract; native acceptance and separate qualification remain required before
+selecting it for fleet browser access.
+
+@cc [owner:ghuntley,label:build;security] windows-editor-candidate-installation
+The optional editorBundle/editorBroker candidate MUST require both packages and
+the Windows agents with terminald. Its native bundle MUST have an exact source
+release descriptor and recursive NAR pin; its fixed SYSTEM task MUST have private
+scheduler custody, failure supervision and no execution time limit. Package and
+authorizer paths MUST prohibit foreign writes and receipt storage MUST be
+SYSTEM-only. Every ancestor owner MUST be SYSTEM, Administrators or the exact
+Windows TrustedInstaller SID; leaves MUST NOT accept TrustedInstaller ownership.
+Candidate installation MUST require at least 2 GiB free writable
+headroom, use the separate version-7 windows-editor-v1 manifest with the exact
+editor descriptor, and keep package/image qualification metadata false until
+native acceptance is recorded. Explicitly combining the pair with windows-v1
+MUST refuse. The default v5 and published fleet images MUST NOT acquire the task
+from runtime-only staging or select the candidate implicitly.
 
 @cc [owner:ghuntley,label:security;network] windows-guest-agents-vsock
 Windows guest agents MUST reach Lilly only over virtio-vsock through the pinned

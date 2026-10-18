@@ -389,7 +389,7 @@ The diagnostic cannot retrospectively classify the ninth failed capture.
 
 Relocation uses one full disk copy, with a separate sealed memory/device
 checkpoint for a running or paused source
-([ADR-0198](repo:docs/architecture/decisions/0198-memory-suspension-and-demand-wake.md)).
+([ADR-0199](repo:docs/architecture/decisions/0199-memory-suspension-and-demand-wake.md)).
 Fresh destination connectivity precedes source quiescence. A running machine is
 paused, its coherent disk and memory state are copied, and the destination resumes
 the same guest boot after committed handoff. An already paused machine remains
