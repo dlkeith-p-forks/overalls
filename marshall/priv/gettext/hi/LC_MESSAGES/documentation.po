@@ -162,7 +162,7 @@ msgstr "# आकार बदलें, क्लोन करें और स�
 #: lib/marshall/documentation_messages.ex:67
 #, elixir-autogen, elixir-format
 msgid "# Routine operations"
-msgstr "#नियमित संचालन"
+msgstr "# नियमित संचालन"
 
 #: lib/marshall/documentation_messages.ex:68
 #, elixir-autogen, elixir-format
@@ -172,7 +172,7 @@ msgstr "# सुरक्षा सीमाएँ और संवेदनश�
 #: lib/marshall/documentation_messages.ex:69
 #, elixir-autogen, elixir-format
 msgid "# Storage and capacity"
-msgstr "#भंडारण एवं क्षमता"
+msgstr "# भंडारण एवं क्षमता"
 
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format

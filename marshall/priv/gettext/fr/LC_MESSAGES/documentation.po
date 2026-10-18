@@ -4392,47 +4392,47 @@ msgstr "**Lacunes :** La pression continue entre les observations, l’admission
 #: lib/marshall/documentation_messages.ex:1820
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Continuous pressure instrumentation, authenticated vsock/Firecracker/browser composition, RSS, sustained many-viewer throughput, host recovery and hosted faults remain open."
-msgstr ""
+msgstr "**Lacunes :** L’instrumentation continue de la pression, la composition authentifiée vsock/Firecracker/navigateur, le RSS, le débit soutenu avec de nombreux spectateurs, la récupération de l’hôte et les défaillances en environnement hébergé restent à traiter."
 
 #: lib/marshall/documentation_messages.ex:1824
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Coordinated v4 Lilly/v2 Ziggy publication is required; production version skew and retained production database migration acceptance remain separate."
-msgstr ""
+msgstr "**Lacunes :** Une publication coordonnée de Lilly v4 et Ziggy v2 est nécessaire ; le décalage de versions en production et l’acceptation de la migration d’une base de production conservée restent distincts."
 
 #: lib/marshall/documentation_messages.ex:1828
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Corrected OmniOS policy, supervised-daemon-recovery and isolation evidence remain required; current native service, growth and crash replays are recorded separately. Wrong-CID injection, DMA/socket lifetime, reset, direct native peer-VM/jail/host isolation and integrated fleet admission remain open. FreeBSD and OmniOS process-SIGKILL evidence does not establish physical stable-media or host power-loss durability; OmniOS capabilities remain false; exact sealed FreeBSD activation is recorded separately."
-msgstr ""
+msgstr "**Lacunes :** La politique OmniOS corrigée, la récupération du démon supervisé et les preuves d’isolation restent requises ; les rejeux natifs actuels du service, de la croissance et des plantages sont consignés séparément. L’injection d’un CID incorrect, la durée de vie DMA/socket, la réinitialisation, l’isolation native directe entre VM homologues, jail et hôte, et l’admission intégrée de la flotte restent à traiter. Les preuves de SIGKILL des processus FreeBSD et OmniOS n’établissent pas la durabilité sur support physique stable ni après une coupure électrique de l’hôte ; les capacités OmniOS restent fausses ; l’activation FreeBSD exacte et scellée est consignée séparément."
 
 #: lib/marshall/documentation_messages.ex:1832
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Cross-host Marshall scheduling, manager-crash accounting, production collection and a measured final target baseline remain open; the provisional seven-day rule consumes only the named candidate series."
-msgstr ""
+msgstr "**Lacunes :** La planification Marshall entre hôtes, la comptabilisation après plantage du gestionnaire, la collecte en production et une référence cible finale mesurée restent à traiter ; la règle provisoire de sept jours n’utilise que les séries candidates nommées."
 
 #: lib/marshall/documentation_messages.ex:1836
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Current Audi precommit passed183checks (52properties,131tests),seed368095,142.0seconds and zero-error forced typing5.63seconds after the asynchronous426 stop barrier was corrected. Targeted classifier mutants were killed at early error/work-fence assertions; later expiry assertions are not mutation-credited. Other merged consumers remain under verification. Prior packaged DNS record does not validate its migrated fixture/package. Packaged gateway SSH/Fleet pending-close fencing, real Marshall version skew and independent physical-host behavior remain unverified."
-msgstr ""
+msgstr "**Lacunes :** Le precommit Audi actuel a réussi 183 vérifications (52 propriétés, 131 tests), graine 368095, en 142.0 secondes, ainsi que le typage forcé sans erreur en 5.63 secondes après correction de la barrière d’arrêt asynchrone 426. Les mutants ciblés du classificateur ont été tués par les assertions précoces d’erreur/de clôture du travail ; les assertions d’expiration ultérieures ne bénéficient d’aucun crédit de mutation. Les autres consommateurs fusionnés restent en cours de vérification. L’enregistrement DNS empaqueté antérieur ne valide pas sa fixture ni son paquet migrés. La clôture des fermetures en attente SSH/Fleet de la passerelle empaquetée, le décalage réel des versions Marshall et le comportement d’hôtes physiques indépendants restent non vérifiés."
 
 #: lib/marshall/documentation_messages.ex:1840
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** DNS TTL alone is not authority; cross-host refresh and production DNS delegation, CA behavior and sustained load require separate acceptance. Gateway credential rotation and live route restoration have local database evidence but no native journey."
-msgstr ""
+msgstr "**Lacunes :** Le TTL DNS seul ne confère aucune autorité ; le renouvellement entre hôtes et la délégation DNS en production, le comportement de l’autorité de certification et la charge soutenue nécessitent une acceptation distincte. La rotation des identifiants de la passerelle et la restauration des routes actives disposent de preuves en base locale, mais d’aucun parcours natif."
 
 #: lib/marshall/documentation_messages.ex:1844
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Default hosted Lilly still refuses guest effects, while the optional integrated GuestExecutor has no composed journey. A separate inner-host TCG boot measured ZFS/cgroups but did not connect Control or admit a guest. No workspace delivery, Firecracker/KVM, physical isolation or hosted baseline is established by this guest boot. The router has a separate local TCG result. This manual check lacks preferred NixOS machine/property evidence for the integrated guest bridge."
-msgstr ""
+msgstr "**Lacunes :** Lilly hébergé par défaut refuse toujours les effets sur les invités, tandis que le GuestExecutor intégré facultatif ne dispose d’aucun parcours composé. Un démarrage TCG distinct sur l’hôte interne a mesuré ZFS/cgroups, mais n’a ni connecté Control ni admis d’invité. Ce démarrage invité n’établit ni livraison d’espace de travail, ni Firecracker/KVM, ni isolation physique, ni référence hébergée. Le routeur dispose d’un résultat TCG local distinct. Cette vérification manuelle ne fournit pas les preuves privilégiées par tests machine/propriétés NixOS pour le pont invité intégré."
 
 #: lib/marshall/documentation_messages.ex:1852
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Dynamic growth, interleaved create/retirement, child-exit/idle release, mixed stalled/healthy viewers, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Lacunes :** La croissance dynamique, la création et le retrait entrelacés, la libération à la sortie d’un enfant ou à l’inactivité, le mélange de spectateurs bloqués et sains, la composition authentifiée vsock/VM/navigateur et les défaillances hébergées restent à traiter."
 
 #: lib/marshall/documentation_messages.ex:1856
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Dynamic growth, mixed-pressure aggregate admission, RSS/allocator peak, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**Lacunes :** La croissance dynamique, l’admission agrégée sous pressions mixtes, le pic RSS/de l’allocateur, la composition authentifiée vsock/VM/navigateur et les défaillances hébergées restent à traiter."
 
 #: lib/marshall/documentation_messages.ex:1860
 #, elixir-autogen, elixir-format
@@ -4442,7 +4442,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1864
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Editor and nested HTTPS moved to this path under ADR-0192 (staged-detached-ingress-survival). While Lilly is down no keeper runs, so a revoked execution's live session can last the downtime plus 30 s (Audi's key revocation is unaffected). The adoption grace is measured only on the test host. Until 2026-10-17 Marshall refused SSH renewal while Lilly reconnected, so a session whose renewal fell in the restart window was cut despite its bridge; the recorded machine run's renewals missed that window, and no machine run yet forces a renewal into it."
-msgstr ""
+msgstr "**Lacunes :** L’éditeur et HTTPS imbriqué ont été déplacés vers ce chemin conformément à ADR-0192 (staged-detached-ingress-survival). Pendant l’arrêt de Lilly, aucun gardien ne s’exécute ; la session active d’une exécution révoquée peut donc durer le temps de l’indisponibilité plus 30 s (la révocation des clés d’Audi n’est pas affectée). Le délai de grâce d’adoption n’est mesuré que sur l’hôte de test. Jusqu’au 2026-10-17, Marshall refusait le renouvellement SSH pendant la reconnexion de Lilly ; une session dont le renouvellement tombait dans la fenêtre de redémarrage était donc coupée malgré son pont ; les renouvellements de l’exécution machine enregistrée ont évité cette fenêtre et aucune exécution machine n’y force encore de renouvellement."
 
 #: lib/marshall/documentation_messages.ex:1868
 #, elixir-autogen, elixir-format
@@ -4452,22 +4452,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1872
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Exact helper-fixed Arch and Alma now have separately recorded boot/readiness, strict personal-account SSH, bounded read-only sudo/helper checks before and after restart, independent stopped checkpoints and completed deletion. Broader distro package behavior, current roster/credential revocation, terminal/workspace/executor capabilities, network/native isolation, storage growth, relocation and physical recovery remain unproven. Nosuid helper custody does not establish direct unprivileged setuid elevation. Final fleet-context cross-host reproduction passed after the historical hardlink correction; changed future inputs require new comparisons."
-msgstr ""
+msgstr "**Lacunes :** Les versions exactes d’Arch et Alma avec assistant corrigé disposent désormais d’enregistrements distincts du démarrage/de la disponibilité, de SSH strict sur compte personnel, de vérifications bornées en lecture seule de sudo/de l’assistant avant et après redémarrage, de points de contrôle arrêtés indépendants et de suppression achevée. Le comportement plus large des paquets des distributions, la révocation actuelle des membres/identifiants, les capacités terminal/espace de travail/exécuteur, l’isolation réseau/native, la croissance du stockage, le déplacement et la récupération physique restent non démontrés. La garde de l’assistant sous nosuid n’établit pas d’élévation setuid directe sans privilèges. La reproduction finale entre hôtes en contexte de flotte a réussi après la correction historique du lien physique ; toute modification future des entrées nécessite de nouvelles comparaisons."
 
 #: lib/marshall/documentation_messages.ex:1876
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Existing ZFS interruption and Customer SSH evidence retain historical scope. Native Ubuntu/Inception resizing and independent physical hosts remain separate; cancellation and disk shrink are excluded by ADR-0051/0053. current source2 native resize refusal and retained checkout acceptance remain separate."
-msgstr ""
+msgstr "**Lacunes :** Les preuves existantes d’interruption ZFS et de Customer SSH conservent leur portée historique. Le redimensionnement natif Ubuntu/Inception et les hôtes physiques indépendants restent distincts ; l’annulation et la réduction de disque sont exclues par ADR-0051/0053. Le refus actuel du redimensionnement natif source2 et l’acceptation du checkout conservé restent distincts."
 
 #: lib/marshall/documentation_messages.ex:1880
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Existing guest disks are intentionally excluded. Native macOS and a complete nested Inception deployment remain unverified. Production rollout is tracked separately in the execution review."
-msgstr ""
+msgstr "**Lacunes :** Les disques invités existants sont volontairement exclus. macOS natif et un déploiement Inception imbriqué complet restent non vérifiés. Le déploiement en production est suivi séparément dans la revue d’exécution."
 
 #: lib/marshall/documentation_messages.ex:1884
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Final extension publication and newer-main integration gates are pending. Real ZFS/authenticated SSH, physical transfer-slot release, automatic cgroup cleanup and uninterruptible I/O remain open. Historical native evidence retained by byte-identical source/test integration; fresh main29ad6228 combined packages/consumer gates remain pending."
-msgstr ""
+msgstr "**Lacunes :** La publication finale de l’extension et les contrôles d’intégration avec la branche principale plus récente sont en attente. ZFS réel/SSH authentifié, la libération physique des créneaux de transfert, le nettoyage automatique des cgroups et les E/S non interruptibles restent à traiter. Les preuves natives historiques sont conservées grâce à une intégration source/tests identique octet par octet ; les contrôles combinés des paquets/consommateurs sur le nouveau main29ad6228 restent en attente."
 
 #: lib/marshall/documentation_messages.ex:1888
 #, elixir-autogen, elixir-format
@@ -4477,72 +4477,72 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1892
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Fleet and user-SSH journey runs on df94ad026/b55b4e1ad record the namespace dial, guest SSH through lilly-ingress-bridge and the flat descriptor count. Op 13 bridges, now only a fallback, still end on a hostd or Lilly restart; guest SSH survival is the detached-ingress-bridge-survival scenario and editor/nested HTTPS survival the staged-detached-ingress-survival scenario."
-msgstr ""
+msgstr "**Lacunes :** Les parcours Fleet et SSH utilisateur exécutés sur df94ad026/b55b4e1ad consignent la connexion dans l’espace de noms, SSH invité via lilly-ingress-bridge et le nombre constant de descripteurs. Les ponts Op 13, désormais simples solutions de repli, se terminent toujours au redémarrage de hostd ou Lilly ; la survie de SSH invité relève du scénario detached-ingress-bridge-survival et celle de l’éditeur/HTTPS imbriqué du scénario staged-detached-ingress-survival."
 
 #: lib/marshall/documentation_messages.ex:1900
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Focused execution passed3checks (1property,2tests),seed0,0.7seconds. Pending-status mutant failed the stable-field comparison after17successful draws,0.7seconds; restored3checks passed0.8seconds. Full integrated verification remains pending. Direct adapter invocation does not establish actual WebSocket upgrade, verified TLS, post-bind credential rotation or native gateway acceptance."
-msgstr ""
+msgstr "**Lacunes :** L’exécution ciblée a réussi 3 vérifications (1 propriété, 2 tests), graine 0, en 0.7 seconde. Le mutant d’état en attente a échoué à la comparaison des champs stables après 17 tirages réussis, en 0.7 seconde ; les 3 vérifications restaurées ont réussi en 0.8 seconde. La vérification intégrée complète reste en attente. L’appel direct de l’adaptateur n’établit ni mise à niveau WebSocket réelle, ni TLS vérifié, ni rotation des identifiants après liaison, ni acceptation de la passerelle native."
 
 #: lib/marshall/documentation_messages.ex:1904
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full Lilly application death at this boundary, start/restart completion, attempt-marker-before-submission, physical power loss and hosted faults remain open. Executor retry is witnessed; actor-deferred result consumption is not independently asserted."
-msgstr ""
+msgstr "**Lacunes :** La mort complète de l’application Lilly à cette frontière, l’achèvement du démarrage/redémarrage, le marqueur de tentative avant soumission, la coupure électrique physique et les défaillances hébergées restent à traiter. La nouvelle tentative de l’exécuteur est attestée ; la consommation du résultat différée par l’acteur ne fait pas l’objet d’une assertion indépendante."
 
 #: lib/marshall/documentation_messages.ex:1908
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full integrated Protocol precommit passed251 checks (98 properties,153 tests),seed212242,390.4seconds with clean forced Dialyzer. Remaining consumer gates, server task saturation, authenticated native TLS/fleet pressure and hosted faults remain open. Always-eight mutation credit belongs to the earlier isolated prototype and does not execute the added fixed64 witness."
-msgstr ""
+msgstr "**Lacunes :** Le precommit Protocol intégré complet a réussi 251 vérifications (98 propriétés, 153 tests), graine 212242, en 390.4 secondes, avec Dialyzer forcé sans erreur. Les contrôles des consommateurs restants, la saturation des tâches serveur, la pression TLS/flotte native authentifiée et les défaillances hébergées restent à traiter. Le crédit de mutation always-eight appartient au prototype isolé antérieur et n’exécute pas le témoin fixed64 ajouté."
 
 #: lib/marshall/documentation_messages.ex:1912
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated cross-target observation/arming histories remain absent. Native acceptance uses the captured guest runtime before incoming Starship defaults; physical host failure remains separate."
-msgstr ""
+msgstr "**Lacunes :** Les historiques générés d’observation/d’armement entre cibles restent absents. L’acceptation native utilise l’environnement d’exécution invité capturé avant l’arrivée des valeurs par défaut Starship ; la défaillance d’un hôte physique reste distincte."
 
 #: lib/marshall/documentation_messages.ex:1916
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated local histories do not execute native systemd units, real database migrations, guest-impact activation or live environment replacement on machines; independent physical rollout scheduling remains outside host-local updates and automatic database rollback is forbidden."
-msgstr ""
+msgstr "**Lacunes :** Les historiques locaux générés n’exécutent ni unités systemd natives, ni migrations réelles de base de données, ni activation affectant les invités, ni remplacement de l’environnement actif sur les machines ; la planification indépendante du déploiement physique reste hors des mises à jour locales à l’hôte et le retour arrière automatique de la base est interdit."
 
 #: lib/marshall/documentation_messages.ex:1920
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated pressure inputs do not establish ZFS custody or kernel/TLS isolation. Native veth peers do not establish Firecracker attribution. Arbitrary power loss, disk-full/deletion failures, every HTTP parser combination remain separate. Earlier SSH interruptions and unresolved-attribution requests remain availability gaps; bounded receipt polling does not fix them. An earlier multi-GiB fill abandonment remains unexplained; the later full native pass and closed refusal diagnostics do not establish its resolution. A concurrent main activation interrupted an in-flight Ubuntu transfer (curl 18); connection survival across proxy restart remains separate."
-msgstr ""
+msgstr "**Lacunes :** Les entrées de pression générées n’établissent ni garde ZFS ni isolation noyau/TLS. Les pairs veth natifs n’établissent pas l’attribution Firecracker. Les coupures électriques arbitraires, les échecs de disque plein/suppression et toutes les combinaisons d’analyseurs HTTP restent distincts. Les interruptions SSH antérieures et les requêtes à attribution non résolue restent des lacunes de disponibilité ; l’interrogation bornée des reçus ne les corrige pas. Un abandon antérieur de remplissage de plusieurs Gio reste inexpliqué ; la réussite native complète ultérieure et les diagnostics de refus clos n’établissent pas sa résolution. Une activation main concurrente a interrompu un transfert Ubuntu en cours (curl 18) ; la survie de la connexion au redémarrage du proxy reste distincte."
 
 #: lib/marshall/documentation_messages.ex:1924
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated shell-change/reconciliation-failure histories and native custom per-user configuration rendering remain untested, so coverage stays partial. Root/manual-user suites retain their exact historical revision scope; no merged root rerun is claimed. Historical artifacts are not reruns of the new control/diagnostic boundary, and managed prompt journeys do not establish independent diagnostic-custody recovery. NixOS TERM=dumb intentionally retains its native skip. No existing-disk migration, production rollout, independent physical-host availability or new production isolation claim."
-msgstr ""
+msgstr "**Lacunes :** Les historiques générés de changement de shell/d’échec de réconciliation et le rendu natif des configurations personnalisées par utilisateur restent non testés ; la couverture reste donc partielle. Les suites root/utilisateur manuel conservent leur portée historique de révision exacte ; aucune réexécution root fusionnée n’est revendiquée. Les artefacts historiques ne sont pas des réexécutions de la nouvelle frontière de contrôle/diagnostic, et les parcours d’invite gérée n’établissent pas de récupération indépendante de la garde des diagnostics. NixOS TERM=dumb conserve volontairement son omission native. Aucune migration de disque existant, aucun déploiement en production, aucune disponibilité sur hôtes physiques indépendants ni nouvelle garantie d’isolation en production n’est établi."
 
 #: lib/marshall/documentation_messages.ex:1928
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Guard-removal mutant killed at counter0 ping in0.9seconds; Marshall1466-check and zero-error forced Dialyzer gate passed. Incoming-main integration and publication remain pending; callback coverage does not prove native fleet or rollout behavior. Existing TLS smoke retains its separate scope."
-msgstr ""
+msgstr "**Lacunes :** Le mutant supprimant la garde a été tué au ping counter0 en 0.9 seconde ; le contrôle Marshall de 1466 vérifications et Dialyzer forcé sans erreur ont réussi. L’intégration avec main entrant et la publication restent en attente ; la couverture des rappels ne prouve pas le comportement de la flotte native ou du déploiement. Le test rapide TLS existant conserve sa portée distincte."
 
 #: lib/marshall/documentation_messages.ex:1932
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, every administrative mutation family, populated drill-down projections and independent physical hosts remain unverified. Cross-replica revocation has recorded generated three-BEAM schedule evidence for mounted reads; the cross-replica native browser scenario is the login journey's three colocated services."
-msgstr ""
+msgstr "**Lacunes :** Les authentificateurs matériels, chaque famille de mutations administratives, les projections détaillées renseignées et les hôtes physiques indépendants restent non vérifiés. La révocation entre répliques dispose de preuves enregistrées de planification générée à trois BEAM pour les lectures montées ; le scénario navigateur natif entre répliques correspond aux trois services colocalisés du parcours de connexion."
 
 #: lib/marshall/documentation_messages.ex:1936
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, SMTP delivery and production rollout remain separate; full/native captures and previous Control room/retirement claims retain their exact revisions."
-msgstr ""
+msgstr "**Lacunes :** Les authentificateurs matériels, les hôtes physiques indépendants, la livraison SMTP et le déploiement en production restent distincts ; les captures complètes/natives et les affirmations antérieures relatives aux salles Control/au retrait conservent leurs révisions exactes."
 
 #: lib/marshall/documentation_messages.ex:1940
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, actual inbox delivery and production rollout remain unverified. Native replicas share one NixOS VM and PostgreSQL. JavaScript-capable mail scanners may consume links; the native automatic-submit run uses three colocated replicas in one VM."
-msgstr ""
+msgstr "**Lacunes :** Les authentificateurs matériels, les hôtes physiques indépendants, la livraison réelle dans la boîte de réception et le déploiement en production restent non vérifiés. Les répliques natives partagent une VM NixOS et PostgreSQL. Les analyseurs de courrier capables d’exécuter JavaScript peuvent consommer les liens ; l’exécution native de soumission automatique utilise trois répliques colocalisées dans une VM."
 
 #: lib/marshall/documentation_messages.ex:1944
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, physically independent serving replicas and production rollout remain external acceptance. The native journey uses virtual authenticators inside one VM."
-msgstr ""
+msgstr "**Lacunes :** Les authentificateurs matériels, les répliques de service physiquement indépendantes et le déploiement en production restent soumis à une acceptation externe. Le parcours natif utilise des authentificateurs virtuels dans une seule VM."
 
 #: lib/marshall/documentation_messages.ex:1948
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Historical Protocol249, Lilly503, Marshall1466 and Galileo31-check gates retain their own revisions. Merged Protocol251 includes the extended test and passed with clean forced Dialyzer. Remaining merged consumer gates, merge publication, verified TLS and native fleet acceptance remain open. The4900ms observation allows100ms transit in this healthy loopback fixture and is not a production latency or arbitrary scheduler guarantee."
-msgstr ""
+msgstr "**Lacunes :** Les contrôles historiques Protocol249, Lilly503, Marshall1466 et Galileo31 conservent leurs propres révisions. Protocol251 fusionné inclut le test étendu et a réussi avec Dialyzer forcé sans erreur. Les contrôles restants des consommateurs fusionnés, la publication de la fusion, TLS vérifié et l’acceptation de la flotte native restent à traiter. L’observation de 4900 ms autorise 100 ms de transit dans cette fixture locale saine et ne garantit ni latence en production ni ordonnancement arbitraire."
 
 #: lib/marshall/documentation_messages.ex:1952
 #, elixir-autogen, elixir-format
@@ -4557,12 +4557,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1960
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical hosts, production DNS/CA/load and native direct-grant withdrawal remain separate. Synthetic reports and expiry injection establish application decisions only."
-msgstr ""
+msgstr "**Lacunes :** Les hôtes physiques indépendants, DNS/CA/charge en production et le retrait natif d’une autorisation directe restent distincts. Les rapports synthétiques et l’injection d’expiration établissent uniquement les décisions de l’application."
 
 #: lib/marshall/documentation_messages.ex:1964
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical hosts, team terminal/agent journeys, existing SSH session termination, positive public CLI integration configuration and production rollout remain separate. Recorded native accounts remain ordinary; integration setup invokes the real Ash action through the private fixture."
-msgstr ""
+msgstr "**Lacunes :** Les hôtes physiques indépendants, les parcours de terminal/d’agent d’équipe, la terminaison des sessions SSH existantes, la configuration positive d’intégration de la CLI publique et le déploiement en production restent distincts. Les comptes natifs enregistrés restent ordinaires ; la configuration de l’intégration appelle l’action Ash réelle via la fixture privée."
 
 #: lib/marshall/documentation_messages.ex:1968
 #, elixir-autogen, elixir-format
