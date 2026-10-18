@@ -245,8 +245,15 @@ Antithesis container filesystem refuses O_DIRECT, which QEMU `cache=none`
 needs to open the qcow2 backing image. The recorder, host and storage VMM
 runners now probe O_DIRECT on every disk and its backing image and fall back to
 flush-respecting `cache=writeback` (never `cache=unsafe`), printing the
-effective mode. The profile is selectable, but no hosted run has completed
-setup; its evidence is emulated, not native.
+effective mode. Hosted run `109aecb1aca881ff09e15403e72802cb-65-0` completed
+setup but reached no trace spool custody: the guest fixture paths were
+context-free strings, so the trace fixtures were absent and the BEAM producer
+crashed on every trace request; back-to-back recovery restarts also tripped
+systemd's default start limit, and the pressure loop outran the command window.
+The fixture paths now carry store context, the producer refuses a failed
+request instead of exiting, the two restarted units have no start limit in this
+fixture only, and the pressure loop has a 20 s budget. Its evidence is
+emulated, not native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub

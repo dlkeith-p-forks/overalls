@@ -24,6 +24,7 @@ from recorder.oracle import (
 )
 
 LOG = logging.getLogger(__name__)
+PRESSURE_BUDGET_SECONDS = 20.0
 MAX_PENDING = 4096
 
 
@@ -464,7 +465,12 @@ def run_traces() -> int:
         _audit_archive(client, replayed)
         prior = replayed
         synchronized = True
+    # Each pressure iteration costs about half a second hosted; bound the loop so
+    # the physical-pressure paths below run inside the command window.
+    deadline = time.monotonic() + PRESSURE_BUDGET_SECONDS
     for index in range(1, 257):
+        if time.monotonic() > deadline:
+            break
         sequence = ((attempts + index + 1) % 999_999) + 1
         before_filesystem = read_filesystem(config)
         reply = client.call({"op": "trace", "sequence": sequence, "size": "large"})
