@@ -1,8 +1,8 @@
 defmodule MarshallWeb.IntegrationsLive do
   use MarshallWeb, :live_view
   alias Marshall.Galileo
-  on_mount {MarshallWeb.AuthenticationPrivacy, :default}
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
+  on_mount({MarshallWeb.AuthenticationPrivacy, :default})
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
 
   @impl true
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -26,6 +26,7 @@ defmodule MarshallWeb.IntegrationsLive do
       Galileo.configure_integration(
         %{
           name: params["name"],
+          comment: params["comment"] || "",
           target: blank_to_nil(params["target"]),
           strip_prefix: blank_to_nil(params["strip_prefix"]),
           headers: header_params(params),
@@ -163,6 +164,7 @@ defmodule MarshallWeb.IntegrationsLive do
         to_form(
           %{
             "name" => "",
+            "comment" => "",
             "target" => "",
             "strip_prefix" => "",
             "bearer" => "",
@@ -330,6 +332,9 @@ defmodule MarshallWeb.IntegrationsLive do
                     do: gettext("Team %{team}", team: integration.team_id),
                     else: gettext("Personal integration")}
                 </:item>
+              <:item :if={integration.comment != ""} title={gettext("Comment")}>
+                <span class="break">{integration.comment}</span>
+              </:item>
                 <:item :if={integration.strip_prefix} title={gettext("Strips prefix")}>
                   <code>{integration.strip_prefix}</code>
                 </:item>
@@ -412,6 +417,11 @@ defmodule MarshallWeb.IntegrationsLive do
               field={@form[:name]}
               label={gettext("Name")}
               placeholder={gettext("example-integration")}
+            />
+            <.input
+              field={@form[:comment]}
+              label={gettext("Comment")}
+              placeholder={gettext("Short description for guest reflection")}
             />
             <.input
               field={@form[:target]}
