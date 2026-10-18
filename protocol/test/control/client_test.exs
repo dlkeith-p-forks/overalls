@@ -1,5 +1,5 @@
 defmodule OverallsProtocol.Control.ClientTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   import Hegel, except: [draw: 2]
   import OverallsProtocol.TestProperties, only: [draw: 2]
   import Hegel.Gen
