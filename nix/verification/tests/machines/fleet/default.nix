@@ -1147,6 +1147,8 @@ let
         storage = identity;
       }];
     };
+    services.ziggy.enable = true;
+    services.galileo.enable = true;
     environment.systemPackages = lib.optionals runtimeReadiness [
       (pkgs.writeShellScriptBin "fleet-readiness" ''
         exec ${pkgs.python313}/bin/python3 ${./readiness-probe.py} /run/lilly-release/status.sock "$@"
