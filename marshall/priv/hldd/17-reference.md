@@ -319,6 +319,15 @@ definite `insufficient_capacity` refusal is Marshall's real decision, checked
 for absent rows and a bounded one-VM replay. Every stop before a settled
 decision logs a fixed `Compute admission unexercised` reason; the first hosted
 run reached no admission assertion because those lines were never emitted.
+Run `6890e1608b75e9b82fe11382bb4aeefc-65-0` still refused every request for
+vCPU: the hosted VM has one logical CPU, so the measured headroom never frees a
+whole core, hence the stub CPU budget above. The next run
+(`74188918d21886495a53d124a725c7e5-65-0`) admitted requests and failed the
+joined-allocation check once in 267 examples: a partition held a provision
+operation pending across a minute tick, and AshOban's dispatch scheduler
+correctly enqueued a repeat hint, so the oracle counted two dispatch jobs. The
+oracle now requires at least one dispatch job; placement, reservation, address
+and provision-operation counts remain exact.
 The results are admission-logic evidence only, never ZFS, physical-capacity,
 KVM or isolation evidence; the measured-capacity command stays in a separate,
 unselected template for the measured host graph.

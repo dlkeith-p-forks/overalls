@@ -28,7 +28,9 @@ class AllocationTests(unittest.TestCase):
         )
         self.assertTrue(allocation.joined_at_admission())
         self.assertFalse(replace(allocation, dispatch_jobs=0).joined_at_admission())
-        self.assertFalse(replace(allocation, dispatch_jobs=2).joined_at_admission())
+        # The minute scheduler may repeat the hint for a still-pending operation.
+        self.assertTrue(replace(allocation, dispatch_jobs=2).joined_at_admission())
+        self.assertFalse(replace(allocation, provision_operations=2).joined_at_admission())
 
 
 if __name__ == "__main__":
