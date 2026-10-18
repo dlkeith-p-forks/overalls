@@ -1,3 +1,7 @@
+# ADR-0202: Android software-rendered Firecracker guest
+
+[ADR-0202](0202-android-firecracker-guest.md) accepts the additive NixOS Android guest profile with software-rendered emulator and authenticated display boundary; implementation remains partial.
+
 # Architecture decision records
 
 [ADR-0205](0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
